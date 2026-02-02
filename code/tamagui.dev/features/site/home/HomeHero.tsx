@@ -6,9 +6,11 @@ import {
   Paragraph,
   SizableText,
   Spacer,
+  Span,
   Text,
   Theme,
   TooltipSimple,
+  View,
   VisuallyHidden,
   XStack,
   YStack,
@@ -115,19 +117,34 @@ const HeroContents = memo(function HeroContents() {
               my: '8%',
             }}
           >
-            <Text
-              className="clip-text"
-              bg="$color"
-              $theme-light={{
-                backgroundImage: `-webkit-linear-gradient(
-                  -90deg,
-                  transparent,
-                  var(--${tint}12) 70%
-                )`,
-              }}
-            >
-              Write less
-            </Text>
+            <Span position="relative" color="$accent1">
+              <View
+                position="absolute"
+                inset={0}
+                bg="$accent3"
+                skewX="-10deg"
+                rotate="-1deg"
+                scaleY={0.9}
+                scaleX={1.1}
+                opacity={0.5}
+                z={0}
+              />
+              <View
+                position="absolute"
+                inset={0}
+                bg="$accent12"
+                skewX="-10deg"
+                rotate="0.5deg"
+                opacity={0.9}
+                scaleY={0.9}
+                scaleX={1.1}
+                // mixBlendMode="difference"
+                // z={2}
+              />
+              <Span position="relative" z={5}>
+                Write less
+              </Span>
+            </Span>
             {/* add gradient to other colors: */}
             <br />
             <span style={{ position: 'relative', display: 'inline-block' }}>

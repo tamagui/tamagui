@@ -1,4 +1,4 @@
-import { LogoWords, TamaguiLogo, ThemeTint, setTintFamily, useTint } from '@tamagui/logo'
+import { LogoWords, setTintFamily, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
 import { isTouchable, Theme, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
@@ -28,9 +28,9 @@ import {
   type PopoverProps,
 } from 'tamagui'
 import { Link } from '~/components/Link'
-import { bannerHeight } from '~/components/PromoBanner'
+import { useBannerHeight } from '~/components/PromoBanner'
 import { GithubIcon } from '~/features/icons/GithubIcon'
-import { SeasonTogglePopover, seasons } from '~/features/site/seasons/SeasonTogglePopover'
+import { seasons, SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { useLoginLink } from '../../auth/useLoginLink'
@@ -51,6 +51,7 @@ import type { HeaderProps } from './types'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
+  const bannerHeight = useBannerHeight()
 
   if (isClient) {
     React.useEffect(() => {
@@ -560,13 +561,6 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   const { height } = useWindowDimensions()
   const maxHeight = height - 50
 
-  const maxMenuHeight = Math.min(maxHeight * 0.9, 900)
-
-  // track measured content heights per menu
-  const [contentHeights, setContentHeights] = React.useState<Partial<Record<ID, number>>>(
-    {}
-  )
-  const measuredHeight = contentHeights[active]
   const heights = {
     core: Math.min(maxHeight, 1300),
     compiler: 117,
@@ -660,8 +654,6 @@ const HeaderMenuContents = (props: { id: ID }) => {
   const bentoStore = useBentoStore()
   const themeHistories = data?.themeHistories || []
   const bentoTheme = useBentoTheme()
-  const pathName = usePathname()
-  const isOnBentoPage = pathName.startsWith('/bento')
   const isOnlyShowingMenu = useMedia().maxMd
   const isMobile = isTouchable && isOnlyShowingMenu
 
@@ -689,7 +681,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
     if (props.id === 'theme') {
       return (
         <YStack flex={1} gap="$2" flexBasis="auto">
-          {!isOnBentoPage || !themeHistories.length ? (
+          {!themeHistories.length ? (
             <>
               <PromoCardTheme />
               <Paragraph
@@ -702,11 +694,10 @@ const HeaderMenuContents = (props: { id: ID }) => {
                 opacity={0.5}
                 p="$4"
               >
-                Once you create themes, visit the Bento page and open this menu to preview
-                them.
+                Create themes to preview them across the site.
                 {`\n`}
-                <Link href="/bento" theme="blue" style={{ pointerEvents: 'auto' }}>
-                  Go to Bento to preview your themes →
+                <Link href="/theme" theme="blue" style={{ pointerEvents: 'auto' }}>
+                  Go to Theme Builder →
                 </Link>
               </Paragraph>
             </>

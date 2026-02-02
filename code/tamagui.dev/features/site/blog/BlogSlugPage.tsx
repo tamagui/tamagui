@@ -32,9 +32,13 @@ export function BlogArticleHeader({ frontmatter }: BlogPost) {
   const isDraft = pathname.startsWith('/draft')
   return (
     <YStack mt="$-10" pt="$12" mb="$4" position="relative">
-      <ThemeTint>
-        <LinearGradient fullscreen colors={['$background', 'transparent']} />
-      </ThemeTint>
+      <YStack
+        position="absolute"
+        inset={0}
+        maxH={1000}
+        z={0}
+        backgroundImage="linear-gradient($color5, $colorTransparent)"
+      />
 
       <Container>
         <YStack mt="$2" items="flex-start">

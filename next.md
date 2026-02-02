@@ -1,3 +1,7 @@
+- tooltip simpel theme not accent/inverse?
+
+- lineheight at size="$3" in web is a bit tall
+
 - maxXXL => max-xxl to further align w tailwind-style
   - probably ok for RC, it's a single find/replace
 

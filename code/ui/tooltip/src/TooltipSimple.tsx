@@ -66,7 +66,17 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
           {...contentProps}
         >
           <Tooltip.Arrow />
-          <Paragraph size="$3">{label}</Paragraph>
+          <Paragraph
+            maxWidth={350}
+            overflow="hidden"
+            size="$3"
+            textAlign="center"
+            $platform-web={{
+              textWrap: 'balance',
+            }}
+          >
+            {label}
+          </Paragraph>
         </Tooltip.Content>
       </Tooltip>
     )

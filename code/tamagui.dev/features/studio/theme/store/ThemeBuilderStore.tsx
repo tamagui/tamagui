@@ -23,11 +23,11 @@ export class ThemeBuilderStore {
   loaded = false
   state: ThemeBuilderState | null = null
   themeSuiteVersion = 0
-  themeSuiteId = 'base'
   listeners = new Set<Function>()
 
+  // returns the current theme ID based on version
   get themeSuiteUID() {
-    return `${this.themeSuiteId}`
+    return this.themeSuiteVersion ? String(this.themeSuiteVersion) : ''
   }
 
   // "working state" => directly derived from this.themeSuite values
@@ -59,12 +59,12 @@ export class ThemeBuilderStore {
   componentParentTheme: string | null = null
 
   private async sync(state: ThemeBuilderState) {
-    if (!this.themeSuiteId) {
-      console.warn(`Can't sync without themeSuiteId`)
+    if (!this.themeSuiteUID) {
+      console.warn(`Can't sync without themeSuiteUID`)
       return
     }
     this.state = state
-    const themeSuite = state.themeSuites[this.themeSuiteId]
+    const themeSuite = state.themeSuites[this.themeSuiteUID]
     if (themeSuite) {
       await this.updateCurrentThemeSuite(themeSuite)
     }
@@ -75,16 +75,16 @@ export class ThemeBuilderStore {
     if (!this.state) {
       return {
         ...this.getWorkingThemeSuite(),
-        id: this.themeSuiteId || '',
+        id: this.themeSuiteUID || '',
         createdAt: Date.now(),
         updatedAt: Date.now(),
         name: '',
       }
     }
 
-    return this.state && this.themeSuiteId
+    return this.state && this.themeSuiteUID
       ? {
-          ...this.state.themeSuites[this.themeSuiteId],
+          ...this.state.themeSuites[this.themeSuiteUID],
           ...this.getWorkingThemeSuite(),
         }
       : undefined
@@ -98,11 +98,8 @@ export class ThemeBuilderStore {
       ...this.themeSuite,
       ...next,
     }
-    if (
-      this.themeSuiteVersion > 1 &&
-      JSON.stringify(row) === JSON.stringify(this.themeSuite)
-    ) {
-      // avoid update if it can
+    if (JSON.stringify(row) === JSON.stringify(this.themeSuite)) {
+      // avoid update if nothing changed
       return
     }
     // sync to working data:
@@ -112,7 +109,6 @@ export class ThemeBuilderStore {
       }
     }
     this.updateDisabledState()
-    this.themeSuiteVersion++
     await this.refreshThemeSuite()
   }
 
@@ -123,6 +119,14 @@ export class ThemeBuilderStore {
     this.accentSetting = 'color'
     this.templateStrategy = 'base'
     await this.refreshThemeSuite()
+  }
+
+  // clears the active custom theme, returning to default tint system
+  clearTheme() {
+    this.themeSuiteVersion = 0
+    this.currentThemeId = ''
+    this.currentQuery = ''
+    this.save()
   }
 
   // state:
@@ -205,17 +209,25 @@ export class ThemeBuilderStore {
     themeSuite: ThemeSuiteItemData,
     query?: string,
     themeId?: string | number,
-    username?: string | null
+    _username?: string | null
   ) {
     this.palettes = themeSuite.palettes
-    this.themeSuiteVersion++
+    if (themeSuite.schemes) {
+      this.schemes = themeSuite.schemes
+    }
+    if (themeSuite.templateStrategy) {
+      this.templateStrategy = themeSuite.templateStrategy
+    }
 
     if (query && themeId) {
       this.currentQuery = query
       this.currentThemeId = String(themeId)
     }
 
-    this.themeSuiteId = `${this.themeSuiteId}${this.themeSuiteVersion}`
+    // increment version first to get a new unique theme ID
+    // refreshThemeSuite will use this new ID to create the theme
+    this.themeSuiteVersion++
+
     await this.refreshThemeSuite()
   }
 
@@ -277,18 +289,14 @@ export class ThemeBuilderStore {
       }
     }
 
-    if (
-      await updatePreviewTheme({
-        id: this.themeSuiteUID,
-        palettes,
-        schemes: this.schemes,
-        templateStrategy: this.templateStrategy,
-      })
-    ) {
-      // this.themeSuiteId = `${Math.round(Math.random() * 100_000)}`
-      this.themeSuiteVersion++
-      this.save()
-    }
+    await updatePreviewTheme({
+      id: this.themeSuiteUID,
+      palettes,
+      schemes: this.schemes,
+      templateStrategy: this.templateStrategy,
+    })
+
+    this.save()
   }
 
   randomizeId = 0

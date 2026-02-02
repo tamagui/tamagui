@@ -1,4 +1,3 @@
-import { LinearGradient } from '@tamagui/linear-gradient'
 import { Slot } from 'one'
 import { ScrollView } from 'react-native'
 import { View, XStack, YStack } from 'tamagui'
@@ -12,15 +11,12 @@ export default function DocsLayout() {
 
   return (
     <ThemeNameEffect theme={themeName} colorKey="$color1">
-      <LinearGradient
+      <YStack
         position="absolute"
-        t={0}
-        r={0}
-        l={0}
-        height="100%"
+        inset={0}
         maxH={1000}
         z={0}
-        colors={['$color1', '$accent12']}
+        backgroundImage="linear-gradient($color4, $colorTransparent)"
       />
 
       <YStack z={-1} fullscreen bg="$accent12" />

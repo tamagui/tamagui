@@ -9,6 +9,9 @@ export const ConsultingButton = (props: ButtonProps) => {
       elevation="$2"
       size="$3"
       rounded="$10"
+      hoverStyle={{
+        z: 100,
+      }}
       {...props}
     >
       <Button.Text fontFamily="$silkscreen" fontSize={12}>
