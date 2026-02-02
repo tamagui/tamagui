@@ -10,25 +10,8 @@ import { useState, useCallback, useRef, useEffect, memo } from 'react'
 import { Button, YStack, XStack, Text, H3, Separator, Theme, ScrollView } from 'tamagui'
 import { _TamaguiView, _TamaguiText } from '@tamagui/native'
 import * as registry from '@tamagui/native-style-registry'
-import { NativeModules, TurboModuleRegistry, processColor } from 'react-native'
-
-// debug: check what's in NativeModules
-const debugTurbo = TurboModuleRegistry.get('TamaguiStyleRegistry')
-const debugBridge = (NativeModules as any).TamaguiStyleRegistry
-const debugInfo = {
-  turbo: debugTurbo ? 'found' : 'null',
-  bridge: debugBridge ? 'found' : 'undefined',
-  bridgeKeys: Object.keys(NativeModules).filter(k => k.toLowerCase().includes('tamagui')),
-}
-
-// test processColor with HSLA
-const colorTests = {
-  hex: processColor('#ffffff'),
-  hsla: processColor('hsla(0, 0%, 100%, 1)'),
-  hsl: processColor('hsl(0, 0%, 100%)'),
-  rgba: processColor('rgba(255, 255, 255, 1)'),
-}
-console.log('[NativeStyleOptimization] processColor tests:', JSON.stringify(colorTests))
+import { View, Text as RNText } from 'react-native'
+import { useThemeName } from '@tamagui/core'
 
 // pre-computed styles (what compiler would generate)
 const viewStyles = {
@@ -74,18 +57,14 @@ const boxStyles = {
   },
 }
 
-// render counters - tracked globally
-let optimizedRenders = 0
-let regularRenders = 0
-let boxRenders = 0
-
 // optimized components - should NOT re-render on theme change
 const OptimizedCard = memo(function OptimizedCard() {
-  optimizedRenders++
+  const count = useRef(0)
+  count.current++
   return (
     <_TamaguiView __styles={viewStyles} testID="optimized-card">
       <_TamaguiText __styles={textStyles}>
-        Optimized card (renders: {optimizedRenders})
+        Optimized card (renders: {count.current})
       </_TamaguiText>
       <_TamaguiText __styles={textStyles}>
         Theme changes via ShadowTree, no re-render.
@@ -95,7 +74,8 @@ const OptimizedCard = memo(function OptimizedCard() {
 })
 
 const OptimizedBox = memo(function OptimizedBox({ index }: { index: number }) {
-  boxRenders++
+  const count = useRef(0)
+  count.current++
   return (
     <_TamaguiView __styles={boxStyles} testID={`optimized-box-${index}`}>
       <_TamaguiText __styles={textStyles}>
@@ -105,25 +85,31 @@ const OptimizedBox = memo(function OptimizedBox({ index }: { index: number }) {
   )
 })
 
-// regular tamagui - WILL re-render on theme change
+// regular component using useThemeName - WILL re-render on theme change
 function RegularCard() {
-  regularRenders++
+  const themeName = useThemeName()
+  const count = useRef(0)
+  count.current++
+
+  const isLight = themeName === 'light'
   return (
-    <YStack
-      bg="$color3"
-      p="$4"
-      borderRadius="$4"
-      borderWidth={1}
-      borderColor="$borderColor"
+    <View
+      style={{
+        backgroundColor: isLight ? '#f5f5f5' : '#2a2a2a',
+        padding: 16,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: isLight ? '#e0e0e0' : '#444',
+      }}
       testID="regular-card"
     >
-      <Text color="$color">
-        Regular card (renders: {regularRenders})
-      </Text>
-      <Text color="$color">
-        Theme changes trigger full re-render tree.
-      </Text>
-    </YStack>
+      <RNText style={{ color: isLight ? '#000' : '#fff', fontSize: 16 }}>
+        Regular card (renders: {count.current})
+      </RNText>
+      <RNText style={{ color: isLight ? '#000' : '#fff', fontSize: 16 }}>
+        Uses useThemeName - re-renders on theme change.
+      </RNText>
+    </View>
   )
 }
 
@@ -144,15 +130,11 @@ export function NativeStyleOptimization() {
   const toggleTheme = useCallback(() => {
     const newTheme = currentTheme === 'light' ? 'dark' : 'light'
     toggleCount.current++
-    setCurrentTheme(newTheme)
-    // this should update views without re-render when native module is available
     registry.setTheme(newTheme)
+    setCurrentTheme(newTheme)
   }, [currentTheme])
 
   const resetCounts = useCallback(() => {
-    optimizedRenders = 0
-    regularRenders = 0
-    boxRenders = 0
     toggleCount.current = 0
     setRenderKey(k => k + 1)
   }, [])
@@ -175,21 +157,6 @@ export function NativeStyleOptimization() {
             <Text fontSize={12}>Toggles: {toggleCount.current}</Text>
           </XStack>
 
-          <Separator />
-
-          {/* render count comparison */}
-          <XStack gap="$4">
-            <YStack flex={1} gap="$1" p="$2" borderRadius="$2" bg="$green3">
-              <Text fontWeight="bold" fontSize={12} color="$green11">Optimized</Text>
-              <Text fontSize={11} testID="optimized-count">Card: {optimizedRenders}</Text>
-              <Text fontSize={11} testID="box-count">Boxes: {boxRenders}</Text>
-            </YStack>
-            <YStack flex={1} gap="$1" p="$2" borderRadius="$2" bg="$red3">
-              <Text fontWeight="bold" fontSize={12} color="$red11">Regular</Text>
-              <Text fontSize={11} testID="regular-count">Card: {regularRenders}</Text>
-            </YStack>
-          </XStack>
-
           <YStack gap="$1" p="$2" borderRadius="$2" bg="$color3">
             <Text fontWeight="bold" fontSize={12}>
               Registry: {isNative ? '✅ Native' : '⚠️ JS Fallback'}
@@ -199,23 +166,14 @@ export function NativeStyleOptimization() {
                 Views: {stats.viewCount} | Theme: {stats.currentTheme}
               </Text>
             )}
-            <Text fontSize={9} color="$color8">
-              Debug: turbo={debugInfo.turbo}, bridge={debugInfo.bridge}
-            </Text>
-            <Text fontSize={9} color="$color8">
-              Keys: {debugInfo.bridgeKeys.join(', ') || 'none'}
-            </Text>
-            <Text fontSize={9} color="$color8">
-              getTheme: {registry.getTheme()}
-            </Text>
           </YStack>
 
           <Separator />
 
-          <Text fontWeight="bold" fontSize={13}>Optimized Card:</Text>
+          <Text fontWeight="bold" fontSize={13}>Optimized Card (should stay at 1):</Text>
           <OptimizedCard key={`opt-${renderKey}`} />
 
-          <Text fontWeight="bold" fontSize={13}>Optimized Boxes (6):</Text>
+          <Text fontWeight="bold" fontSize={13}>Optimized Boxes (should stay at 1 each):</Text>
           <XStack gap="$2" flexWrap="wrap">
             {[0, 1, 2, 3, 4, 5].map((i) => (
               <OptimizedBox key={`box-${i}-${renderKey}`} index={i} />
@@ -224,24 +182,21 @@ export function NativeStyleOptimization() {
 
           <Separator />
 
-          <Text fontWeight="bold" fontSize={13}>Regular Tamagui Card:</Text>
-          <RegularCard />
+          <Text fontWeight="bold" fontSize={13}>Regular Card (increments on toggle):</Text>
+          <RegularCard key={`reg-${renderKey}`} />
 
           <Separator />
 
           <YStack gap="$2" p="$3" bg="$color2" borderRadius="$3">
             <Text fontWeight="bold" fontSize={13}>Expected Behavior:</Text>
             <Text fontSize={12}>
-              • After initial render, "Optimized" counts should stay at 1 + 6 boxes
+              • Optimized components: render count stays at 1
             </Text>
             <Text fontSize={12}>
-              • "Regular" count increases with each theme toggle
+              • Regular component: render count increases each toggle
             </Text>
             <Text fontSize={12}>
-              • With native module: colors change instantly, no re-render
-            </Text>
-            <Text fontSize={12}>
-              • Without native module (JS Fallback): still works, but re-renders
+              • Both should visually update themes correctly
             </Text>
           </YStack>
         </YStack>

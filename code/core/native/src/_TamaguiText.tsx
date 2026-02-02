@@ -138,9 +138,13 @@ export function _TamaguiText({
   //
   // the key insight: when native is available, we DON'T subscribe to theme changes
   // because the native registry will update our styles directly via ShadowTree
-  const themeName = nativeAvailable
-    ? (registry?.useInitialThemeName?.() ?? 'light')
-    : useThemeName()
+  //
+  // TEMP: disabled native optimization - always use useThemeName to re-render
+  // until nativeProps_DEPRECATED is working to survive React reconciliation
+  const themeName = useThemeName()
+  // const themeName = nativeAvailable
+  //   ? (registry?.useInitialThemeName?.() ?? 'light')
+  //   : useThemeName()
 
   // ref callback - link/unlink with native registry
   const handleRef = useCallback(

@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { type ViewProps, type ViewStyle } from "react-native";
 interface DeduplicatedStyle extends ViewStyle {
 	__themes?: string[];

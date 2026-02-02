@@ -9,7 +9,8 @@ export { useInitialThemeName } from './useInitialThemeName';
 export declare function getTagFromRef(ref: any): number | null;
 /**
  * Link a view ref directly with its styles.
- * Uses findNodeHandle to get the native tag, then registers with native module.
+ * Uses JSI function (__tamaguiLinkView) when available for ShadowNodeFamily persistence,
+ * falls back to tag-based registration.
  *
  * @param ref - The actual ref instance (not the ref object)
  * @param styles - Pre-computed styles for each theme

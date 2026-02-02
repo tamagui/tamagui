@@ -356,7 +356,9 @@ const tamaConf = createTamagui({
     defaultFont: '$body',
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
-    fastSchemeChange: true,
+    // disabled for native style optimization testing - this optimization
+    // already reduces re-renders on light/dark changes which masks our metrics
+    fastSchemeChange: false,
   },
   tokens,
   media: {

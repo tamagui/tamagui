@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { type TextProps, type TextStyle } from "react-native";
 interface DeduplicatedStyle extends TextStyle {
 	__themes?: string[];

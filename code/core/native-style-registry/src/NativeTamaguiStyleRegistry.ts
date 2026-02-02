@@ -9,8 +9,16 @@ import { TurboModuleRegistry } from 'react-native'
 
 export interface Spec extends TurboModule {
   /**
+   * Install JSI bindings for direct ref access (synchronous).
+   * Call this early to enable __tamaguiLinkView global function.
+   * Returns true if bindings were installed, false otherwise.
+   */
+  installBindings(): boolean
+
+  /**
    * Link a view by its native tag with pre-computed theme styles.
-   * The native module will track this view and update its styles on theme change.
+   * NOTE: This is the legacy method - prefer using __tamaguiLinkView for
+   * full ShadowNodeFamily support (styles persist through reconciliation).
    */
   link(tag: number, stylesJson: string, scopeId?: string | null): void
 

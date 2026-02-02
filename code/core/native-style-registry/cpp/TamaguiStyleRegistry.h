@@ -3,6 +3,10 @@
  *
  * Native style registry for zero-re-render theme switching.
  * Uses UIManager.updateShadowTree() available in RN 0.81+.
+ *
+ * Key insight from Unistyles: to survive React reconciliation,
+ * we must update ShadowNodeFamily::nativeProps_DEPRECATED
+ * before calling updateShadowTree().
  */
 
 #pragma once
@@ -11,6 +15,8 @@
 #include <jsi/jsi.h>
 #include <react/renderer/uimanager/primitives.h>
 #include <react/renderer/uimanager/UIManagerBinding.h>
+#include <react/renderer/bridging/bridging.h>
+#include <react/renderer/core/ShadowNodeFamily.h>
 
 #include <mutex>
 #include <string>
@@ -31,10 +37,23 @@ struct RegistryStats {
 };
 
 /**
+ * View entry with ShadowNodeFamily pointer for persistent updates.
+ */
+struct LinkedView {
+  const ShadowNodeFamily* family;  // used to update nativeProps_DEPRECATED
+  folly::dynamic styles;           // { themeName: { prop: value, ... }, ... }
+  std::string scopeId;             // optional scope for nested themes
+};
+
+/**
  * Minimal registry that uses RN 0.81's UIManager.updateShadowTree().
  *
- * Stores: tag -> theme styles map
- * On theme change: builds tag -> new style map, calls updateShadowTree()
+ * Stores: tag -> LinkedView (with ShadowNodeFamily* for persistent updates)
+ * On theme change: builds tag -> new style map, updates nativeProps_DEPRECATED,
+ * then calls updateShadowTree()
+ *
+ * Key insight: updating nativeProps_DEPRECATED ensures changes survive
+ * React reconciliation.
  */
 class TamaguiStyleRegistry {
 public:
@@ -44,10 +63,20 @@ public:
   TamaguiStyleRegistry& operator=(const TamaguiStyleRegistry&) = delete;
 
   /**
-   * Link a view (by tag) with pre-computed theme styles.
+   * Link a view with pre-computed theme styles.
+   * Uses JSI Bridging to extract ShadowNodeFamily from the ref.
    * styles is a folly::dynamic object: { themeName: { prop: value, ... }, ... }
    */
-  void link(Tag tag, const folly::dynamic& styles, const std::string& scopeId = "");
+  void link(
+      jsi::Runtime& rt,
+      const jsi::Value& ref,
+      const folly::dynamic& styles,
+      const std::string& scopeId = "");
+
+  /**
+   * Legacy link by tag (for backwards compatibility, but won't persist through reconciliation).
+   */
+  void linkByTag(Tag tag, const folly::dynamic& styles, const std::string& scopeId = "");
 
   /**
    * Unlink a view when it unmounts.
@@ -97,13 +126,10 @@ private:
   mutable std::mutex _mutex;
   std::string _currentTheme = "light";
 
-  // tag -> { themeName: style, ... }
-  std::unordered_map<Tag, folly::dynamic> _linkedViews;
+  // tag -> LinkedView (contains ShadowNodeFamily*, styles, scopeId)
+  std::unordered_map<Tag, LinkedView> _linkedViews;
 
-  // tag -> scopeId
-  std::unordered_map<Tag, std::string> _viewScopes;
-
-  // scopeId -> themeName
+  // scopeId -> themeName (for nested theme contexts)
   std::unordered_map<std::string, std::string> _scopeThemes;
 };
 

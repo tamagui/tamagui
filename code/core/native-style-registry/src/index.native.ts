@@ -28,28 +28,38 @@ export { useInitialThemeName } from './useInitialThemeName'
 const turboModule = TurboModuleRegistry.get<NativeStyleRegistryModule>('TamaguiStyleRegistry')
 const bridgeModule = NativeModules.TamaguiStyleRegistry as NativeStyleRegistryModule | undefined
 
-// debug logging - remove after testing
+const NativeRegistry: NativeStyleRegistryModule | undefined = turboModule ?? bridgeModule
+
+// install JSI bindings early to get __tamaguiLinkView
+let jsiBindingsInstalled = false
+function ensureJSIBindings(): boolean {
+  if (jsiBindingsInstalled) {
+    return true
+  }
+  if (!NativeRegistry) {
+    return false
+  }
+  try {
+    // synchronous call - blocks until bindings are installed
+    const result = NativeRegistry.installBindings()
+    jsiBindingsInstalled = result
+    if (__DEV__) {
+      console.log('[TamaguiStyleRegistry] JSI bindings installed:', result, ', __tamaguiLinkView:', typeof global.__tamaguiLinkView)
+    }
+    return result
+  } catch (e) {
+    if (__DEV__) {
+      console.warn('[TamaguiStyleRegistry] Failed to install JSI bindings:', e)
+    }
+    return false
+  }
+}
+
+// debug logging
 if (__DEV__) {
   console.log('[TamaguiStyleRegistry] TurboModule:', turboModule ? 'found' : 'not found')
   console.log('[TamaguiStyleRegistry] BridgeModule:', bridgeModule ? 'found' : 'not found')
-  console.log('[TamaguiStyleRegistry] NativeModules keys:', Object.keys(NativeModules).filter(k => k.toLowerCase().includes('tamagui')))
-
-  // test processColor with different formats
-  const testColors = [
-    '#ffffff',
-    '#1a1a1a',
-    'hsla(0, 0%, 100%, 1)',
-    'hsla(0, 0%, 10%, 1)',
-    'rgba(255, 255, 255, 1)',
-  ]
-  console.log('[TamaguiStyleRegistry] processColor test:')
-  testColors.forEach(c => {
-    const result = processColor(c)
-    console.log(`  ${c} -> ${String(result)} (type: ${typeof result})`)
-  })
 }
-
-const NativeRegistry: NativeStyleRegistryModule | undefined = turboModule ?? bridgeModule
 
 // map from tag -> { ref, styles } for setNativeProps calls
 const tagToView = new Map<number, { ref: any; styles: ThemeStyleMap; scopeId?: string }>()
@@ -144,9 +154,7 @@ function findStyleForTheme(
  * Uses setNativeProps for zero-re-render updates.
  */
 function applyThemeUpdates(themeName: string, scopeId?: string) {
-  if (__DEV__) {
-    console.log(`[TamaguiStyleRegistry] applyThemeUpdates called, theme: ${themeName}, views: ${tagToView.size}`)
-  }
+  console.log(`[TamaguiStyleRegistry] applyThemeUpdates called, theme: ${themeName}, views: ${tagToView.size}`)
 
   for (const [tag, view] of tagToView) {
     // if scopeId specified, only update views in that scope
@@ -155,9 +163,12 @@ function applyThemeUpdates(themeName: string, scopeId?: string) {
     }
 
     const style = findStyleForTheme(view.styles, themeName)
-    if (__DEV__) {
-      console.log(`[TamaguiStyleRegistry] tag ${tag}: style found: ${!!style}, hasSetNativeProps: ${!!(view.ref && view.ref.setNativeProps)}`)
-    }
+
+    // debug: log ref structure
+    const refKeys = view.ref ? Object.keys(view.ref) : []
+    const protoKeys = view.ref ? Object.getOwnPropertyNames(Object.getPrototypeOf(view.ref) || {}) : []
+    console.log(`[TamaguiStyleRegistry] tag ${tag}: ref keys: ${refKeys.slice(0, 5).join(',')}, proto: ${protoKeys.slice(0, 5).join(',')}`)
+    console.log(`[TamaguiStyleRegistry] tag ${tag}: style found: ${!!style}, hasSetNativeProps: ${!!(view.ref && view.ref.setNativeProps)}`)
 
     if (style && view.ref) {
       // remove __themes metadata if present
@@ -165,15 +176,17 @@ function applyThemeUpdates(themeName: string, scopeId?: string) {
       delete (cleanStyle as any).__themes
 
       if (view.ref.setNativeProps) {
-        if (__DEV__) {
-          console.log(`[TamaguiStyleRegistry] calling setNativeProps on tag ${tag}:`, JSON.stringify(cleanStyle))
+        console.log(`[TamaguiStyleRegistry] calling setNativeProps on tag ${tag}:`, JSON.stringify(cleanStyle))
+        try {
+          view.ref.setNativeProps({ style: cleanStyle })
+          console.log(`[TamaguiStyleRegistry] setNativeProps SUCCESS on tag ${tag}`)
+        } catch (e) {
+          console.error(`[TamaguiStyleRegistry] setNativeProps FAILED on tag ${tag}:`, e)
         }
-        view.ref.setNativeProps({ style: cleanStyle })
       } else {
-        // setNativeProps not available - try direct style assignment
-        if (__DEV__) {
-          console.warn(`[TamaguiStyleRegistry] setNativeProps not available on tag ${tag}, ref type:`, typeof view.ref, view.ref?.constructor?.name)
-        }
+        // setNativeProps not available - log available methods
+        console.warn(`[TamaguiStyleRegistry] setNativeProps NOT available on tag ${tag}`)
+        console.warn(`[TamaguiStyleRegistry] ref methods:`, Object.getOwnPropertyNames(Object.getPrototypeOf(view.ref) || {}).join(', '))
       }
     }
   }
@@ -197,7 +210,8 @@ let jsCurrentTheme = 'light'
 
 /**
  * Link a view ref directly with its styles.
- * Uses findNodeHandle to get the native tag, then registers with native module.
+ * Uses JSI function (__tamaguiLinkView) when available for ShadowNodeFamily persistence,
+ * falls back to tag-based registration.
  *
  * @param ref - The actual ref instance (not the ref object)
  * @param styles - Pre-computed styles for each theme
@@ -209,27 +223,54 @@ export function link(ref: any, styles: ThemeStyleMap, scopeId?: string): () => v
     return () => {}
   }
 
+  // ensure JSI bindings are installed
+  ensureJSIBindings()
+
   const tag = getTagFromRef(ref)
 
   // process colors in styles to integer format for native
   const processedStyles = processColorsInThemeStyles(styles)
+  const stylesJson = JSON.stringify(processedStyles)
 
   if (__DEV__ && tag !== null) {
-    // debug: log first few styles to verify color processing
     const firstTheme = Object.keys(processedStyles)[0]
     if (firstTheme && tagToView.size < 3) {
       console.log(`[TamaguiStyleRegistry] link tag ${tag} processed style:`, JSON.stringify(processedStyles[firstTheme]))
     }
   }
 
-  if (NativeRegistry && tag !== null) {
-    // store ref and styles for setNativeProps updates
-    tagToView.set(tag, { ref, styles: processedStyles, scopeId })
+  // try JSI function first (provides ShadowNodeFamily persistence)
+  if (global.__tamaguiLinkView) {
+    try {
+      // pass ref directly to native - it will extract ShadowNodeFamily
+      global.__tamaguiLinkView(ref, stylesJson, scopeId)
+      if (__DEV__) {
+        console.log(`[TamaguiStyleRegistry] linked via JSI, tag=${tag}`)
+      }
 
-    // register with native module for tracking
-    NativeRegistry.link(tag, JSON.stringify(processedStyles), scopeId ?? null)
+      // store ref for setNativeProps fallback
+      if (tag !== null) {
+        tagToView.set(tag, { ref, styles: processedStyles, scopeId })
+      }
+
+      return () => {
+        if (tag !== null) {
+          tagToView.delete(tag)
+          NativeRegistry?.unlink(tag)
+        }
+      }
+    } catch (e) {
+      if (__DEV__) {
+        console.warn('[TamaguiStyleRegistry] JSI link failed, falling back to tag-based:', e)
+      }
+    }
+  }
+
+  // fallback to tag-based registration (won't persist through reconciliation)
+  if (NativeRegistry && tag !== null) {
+    tagToView.set(tag, { ref, styles: processedStyles, scopeId })
+    NativeRegistry.link(tag, stylesJson, scopeId ?? null)
     return () => {
-      // cleanup
       tagToView.delete(tag)
       const unlinkTag = getTagFromRef(ref) ?? tag
       NativeRegistry.unlink(unlinkTag)
@@ -254,14 +295,22 @@ export function link(ref: any, styles: ThemeStyleMap, scopeId?: string): () => v
  * @param themeName - The theme name (e.g., 'light', 'dark', 'dark_blue')
  */
 export function setTheme(themeName: string): void {
+  console.log('[TamaguiStyleRegistry] JS setTheme called:', themeName)
   if (NativeRegistry) {
-    // native registry handles everything via UIManager.updateShadowTree()
-    // this is the zero-re-render path - updates go directly to native views
+    // native registry updates theme state
     NativeRegistry.setTheme(themeName)
+    // DISABLED: applyThemeUpdates causes crash when refs become stale after React re-render
+    // the refs we registered become invalid after React reconciliation
+    // TODO: need to validate refs are still valid before calling setNativeProps
+    // setTimeout(() => {
+    //   console.log('[TamaguiStyleRegistry] delayed applyThemeUpdates starting')
+    //   applyThemeUpdates(themeName)
+    // }, 100)
   } else {
     jsCurrentTheme = themeName
     // JS fallback - use setNativeProps if we have refs
-    applyThemeUpdates(themeName)
+    // ALSO DISABLED for same reason - refs may be stale
+    // applyThemeUpdates(themeName)
   }
 }
 

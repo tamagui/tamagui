@@ -14,6 +14,7 @@
 #include <sstream>
 #include <string>
 #include <unordered_set>
+#include <vector>
 
 namespace tamagui {
 
@@ -191,8 +192,11 @@ static int64_t parseColor(const std::string& color) {
  */
 static folly::dynamic processColorsInStyle(const folly::dynamic& style) {
   if (!style.isObject()) {
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] processColorsInStyle: not an object");
     return style;
   }
+
+  os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] processColorsInStyle: processing %zu keys", style.size());
 
   folly::dynamic processed = folly::dynamic::object();
 
@@ -201,9 +205,11 @@ static folly::dynamic processColorsInStyle(const folly::dynamic& style) {
 
     if (colorProps.count(keyStr) && value.isString()) {
       std::string colorStr = value.asString();
+      os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] parsing color %{public}s: %{public}s", keyStr.c_str(), colorStr.c_str());
       int64_t colorInt = parseColor(colorStr);
 
       if (colorInt >= 0) {
+        os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] parsed color %{public}s -> %lld", keyStr.c_str(), colorInt);
         processed[key] = colorInt;
       } else {
         // keep original if parsing failed
@@ -215,6 +221,7 @@ static folly::dynamic processColorsInStyle(const folly::dynamic& style) {
     }
   }
 
+  os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] processColorsInStyle done");
   return processed;
 }
 
@@ -226,78 +233,140 @@ TamaguiStyleRegistry& TamaguiStyleRegistry::getInstance() {
 }
 
 void TamaguiStyleRegistry::link(
+    jsi::Runtime& rt,
+    const jsi::Value& ref,
+    const folly::dynamic& styles,
+    const std::string& scopeId) {
+  std::lock_guard<std::mutex> lock(_mutex);
+
+  try {
+    // extract ShadowNode from ref using RN 0.81+ Bridging API
+    auto shadowNode = Bridging<std::shared_ptr<const ShadowNode>>::fromJs(rt, ref);
+    if (!shadowNode) {
+      os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] link: shadowNode is null");
+      return;
+    }
+
+    // get the family - this is what we need to update nativeProps_DEPRECATED
+    const ShadowNodeFamily* family = &shadowNode->getFamily();
+    Tag tag = family->getTag();
+
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] link: tag=%d family=%p scopeId=%{public}s",
+           tag, (void*)family, scopeId.c_str());
+
+    _linkedViews[tag] = LinkedView{
+      .family = family,
+      .styles = styles,
+      .scopeId = scopeId
+    };
+  } catch (const std::exception& e) {
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] link exception: %{public}s", e.what());
+  }
+}
+
+void TamaguiStyleRegistry::linkByTag(
     Tag tag,
     const folly::dynamic& styles,
     const std::string& scopeId) {
   std::lock_guard<std::mutex> lock(_mutex);
 
-  _linkedViews[tag] = styles;
+  // legacy method - no family pointer, won't persist through reconciliation
+  os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] linkByTag: tag=%d, scopeId=%{public}s, styles keys=%zu", tag, scopeId.c_str(), styles.size());
 
-  if (!scopeId.empty()) {
-    _viewScopes[tag] = scopeId;
+  // log the first theme key for debugging
+  if (styles.isObject() && styles.size() > 0) {
+    auto it = styles.items().begin();
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] linkByTag: first theme=%{public}s", it->first.asString().c_str());
   }
+
+  _linkedViews[tag] = LinkedView{
+    .family = nullptr,  // can't update nativeProps_DEPRECATED without family
+    .styles = styles,
+    .scopeId = scopeId
+  };
+
+  os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] linkByTag: total linkedViews=%zu", _linkedViews.size());
 }
 
 void TamaguiStyleRegistry::unlink(Tag tag) {
   std::lock_guard<std::mutex> lock(_mutex);
-
   _linkedViews.erase(tag);
-  _viewScopes.erase(tag);
 }
 
 void TamaguiStyleRegistry::setTheme(
     jsi::Runtime& rt,
     const std::string& themeName) {
+  os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] C++ setTheme: %{public}s (DISABLED - just storing theme)", themeName.c_str());
+
+  // DISABLED: all native style updates are disabled until we properly handle
+  // React reconciliation invalidating tags. Just store the theme name for now.
   std::lock_guard<std::mutex> lock(_mutex);
+  _currentTheme = themeName;
+  return;
+
+  // ORIGINAL CODE BELOW - DISABLED
+  os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] acquired lock, linkedViews: %zu", _linkedViews.size());
 
   // store the new theme
-  _currentTheme = themeName;
+  // _currentTheme = themeName;
+
+  // get UIManager for looking up ShadowNodes by tag
+  auto binding = UIManagerBinding::getBinding(rt);
+  if (!binding) {
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] UIManagerBinding is null!");
+    return;
+  }
+  auto& uiManager = binding->getUIManager();
+  os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] got UIManager");
 
   // build tag -> props map for all linked views
   std::unordered_map<Tag, folly::dynamic> tagToProps;
 
-  for (const auto& [tag, styles] : _linkedViews) {
-    // check if this view has a scoped theme
+  for (auto& [tag, view] : _linkedViews) {
+    // check if this view has a scoped theme override
     std::string effectiveTheme = themeName;
-    auto scopeIt = _viewScopes.find(tag);
-    if (scopeIt != _viewScopes.end()) {
-      auto scopedThemeIt = _scopeThemes.find(scopeIt->second);
+    if (!view.scopeId.empty()) {
+      auto scopedThemeIt = _scopeThemes.find(view.scopeId);
       if (scopedThemeIt != _scopeThemes.end()) {
         effectiveTheme = scopedThemeIt->second;
       }
     }
 
     // get the style for this theme
-    auto style = getStyleForTheme(styles, effectiveTheme);
+    auto style = getStyleForTheme(view.styles, effectiveTheme);
     if (!style.empty()) {
-      // pass style properties directly (not wrapped in "style" key)
-      // updateShadowTree expects raw props like { backgroundColor: ..., padding: ... }
+      // pass style props directly - updateShadowTree will merge them via RawProps
+      // which then gets processed by the component descriptor
       tagToProps[tag] = style;
-      if (tagToProps.size() <= 3) {
-        os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] tag %d style: %{public}s", tag, folly::toJson(style).c_str());
-      }
+      os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] tag %d -> props: %{public}s", tag, folly::toJson(style).c_str());
+    } else {
+      os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] tag %d -> NO STYLE for theme %{public}s", tag, effectiveTheme.c_str());
     }
   }
 
   if (tagToProps.empty()) {
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] setTheme: no views to update!");
     return;
   }
 
-  // use UIManager.updateShadowTree() to update all views in a single batch
-  // this is the zero-re-render path - updates go directly to native views
-  try {
-    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] About to call updateShadowTree with %zu views", tagToProps.size());
-    auto binding = UIManagerBinding::getBinding(rt);
-    if (binding) {
-      os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] Got UIManagerBinding, calling updateShadowTree");
-      binding->getUIManager().updateShadowTree(std::move(tagToProps));
-      os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] updateShadowTree completed");
-    } else {
-      os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] UIManagerBinding is null!");
-    }
-  } catch (const std::exception& e) {
-    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] updateShadowTree exception: %{public}s", e.what());
-  }
+  os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] setTheme '%{public}s': %zu views", themeName.c_str(), tagToProps.size());
+
+  // DISABLED: updateShadowTree causes crash when React reconciliation invalidates tags
+  // the tags we registered become stale after React re-renders on theme change
+  // TODO: need to either validate tags or use ShadowNodeFamily persistence properly
+  os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] updateShadowTree DISABLED - relying on JS setNativeProps fallback");
+
+  // // SIMPLIFIED: just call updateShadowTree without nativeProps_DEPRECATED for now
+  // // this won't persist through reconciliation but should show the visual update
+  // try {
+  //   os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] calling updateShadowTree...");
+  //   uiManager.updateShadowTree(std::move(tagToProps));
+  //   os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] updateShadowTree completed");
+  // } catch (const std::exception& e) {
+  //   os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] updateShadowTree exception: %{public}s", e.what());
+  // }
+
+  os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] C++ setTheme END");
 }
 
 std::string TamaguiStyleRegistry::getTheme() const {
@@ -316,19 +385,23 @@ void TamaguiStyleRegistry::setScopedTheme(
 
   // build tag -> props map for views in this scope
   std::unordered_map<Tag, folly::dynamic> tagToProps;
+  std::vector<std::pair<const ShadowNodeFamily*, folly::dynamic>> familyUpdates;
 
-  for (const auto& [tag, styles] : _linkedViews) {
+  for (const auto& [tag, view] : _linkedViews) {
     // only update views in this scope
-    auto scopeIt = _viewScopes.find(tag);
-    if (scopeIt == _viewScopes.end() || scopeIt->second != scopeId) {
+    if (view.scopeId != scopeId) {
       continue;
     }
 
     // get the style for this theme
-    auto style = getStyleForTheme(styles, themeName);
+    auto style = getStyleForTheme(view.styles, themeName);
     if (!style.empty()) {
-      // pass style properties directly (not wrapped in "style" key)
+      // pass style props directly
       tagToProps[tag] = style;
+
+      if (view.family != nullptr) {
+        familyUpdates.push_back({view.family, style});
+      }
     }
   }
 
@@ -336,14 +409,24 @@ void TamaguiStyleRegistry::setScopedTheme(
     return;
   }
 
-  // update all views in this scope
+  // update nativeProps_DEPRECATED for persistence
+  for (const auto& [family, propsToUpdate] : familyUpdates) {
+    auto* mutableFamily = const_cast<ShadowNodeFamily*>(family);
+    if (mutableFamily->nativeProps_DEPRECATED) {
+      mutableFamily->nativeProps_DEPRECATED->update(propsToUpdate);
+    } else {
+      mutableFamily->nativeProps_DEPRECATED = std::make_unique<folly::dynamic>(propsToUpdate);
+    }
+  }
+
+  // update shadow tree
   try {
     auto binding = UIManagerBinding::getBinding(rt);
     if (binding) {
       binding->getUIManager().updateShadowTree(std::move(tagToProps));
     }
   } catch (const std::exception& e) {
-    // log error but don't crash
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] setScopedTheme exception: %{public}s", e.what());
   }
 }
 
@@ -360,7 +443,6 @@ void TamaguiStyleRegistry::reset() {
   std::lock_guard<std::mutex> lock(_mutex);
 
   _linkedViews.clear();
-  _viewScopes.clear();
   _scopeThemes.clear();
   _currentTheme = "light";
 }
@@ -370,8 +452,11 @@ folly::dynamic TamaguiStyleRegistry::getStyleForTheme(
     const std::string& themeName) const {
   folly::dynamic result = folly::dynamic::object();
 
+  os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] getStyleForTheme looking for: %{public}s", themeName.c_str());
+
   // direct lookup
   if (styles.count(themeName)) {
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] getStyleForTheme: found direct match");
     auto style = styles[themeName];
     // remove __themes metadata if present
     if (style.isObject() && style.count("__themes")) {
@@ -384,7 +469,10 @@ folly::dynamic TamaguiStyleRegistry::getStyleForTheme(
       result = style;
     }
     // process colors to integers
-    return processColorsInStyle(result);
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] getStyleForTheme: calling processColorsInStyle");
+    auto processed = processColorsInStyle(result);
+    os_log(OS_LOG_DEFAULT, "[TamaguiStyleRegistry] getStyleForTheme: returning processed style");
+    return processed;
   }
 
   // search through __themes arrays for deduplication
