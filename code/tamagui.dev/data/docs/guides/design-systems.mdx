@@ -55,18 +55,16 @@ Add package.json:
 
 If using Typescript, a `tsconfig.json` of your choosing:
 
-```
+```json fileName="tsconfig.json"
 {
-  "types": ["node", "react"],
-  "lib": ["dom", "esnext"],
   "compilerOptions": {
-    "baseUrl": "./", // resolve absolute module names from here
+    "types": ["node", "react"],
+    "lib": ["dom", "esnext"],
+    "baseUrl": "./",
     "outDir": "dist"
   },
   "include": ["./**/*.ts"],
-  "exclude": [
-    "node_modules/**/*"
-  ]
+  "exclude": ["node_modules/**/*"]
 }
 ```
 

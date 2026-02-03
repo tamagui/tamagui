@@ -100,6 +100,7 @@ export const docsRoutes = [
     title: 'Guides',
     section: 'core',
     pages: [
+      { title: 'Design Systems', route: '/docs/guides/design-systems' },
       { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
       {
         title: 'How to Build a Button',
