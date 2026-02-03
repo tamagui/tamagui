@@ -66,59 +66,59 @@ export const PromoBanner = () => {
       z={10000000000000}
       position="relative"
     >
-        <ContainerLarge px={0} flexDirection="row">
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              alignItems: 'center',
-              justify: 'center',
-              minW: '100%',
-            }}
-          >
-            <XStack flex={1} items="center" gap="$4" px="$4" py="$2">
-              <XStack items="center" gap="$4">
-                <Link href="/">
-                  <Button chromeless size="$2" circular icon={HomeIcon} scaleIcon={1.5} />
+      <ContainerLarge px={0} flexDirection="row">
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            alignItems: 'center',
+            justify: 'center',
+            minW: '100%',
+          }}
+        >
+          <XStack flex={1} items="center" gap="$4" px="$4" py="$2">
+            <XStack items="center" gap="$4">
+              <Link href="/">
+                <Button chromeless size="$2" circular icon={HomeIcon} scaleIcon={1.5} />
+              </Link>
+
+              <TooltipSimple label="Tamagui 2 is here! It's a massive new release »">
+                <Link href="/blog/version-two">
+                  <Paragraph
+                    size="$2"
+                    color="$color11"
+                    hoverStyle={{ color: '$color12' }}
+                    cursor="pointer"
+                  >
+                    Version 2 is here 🎉
+                  </Paragraph>
                 </Link>
+              </TooltipSimple>
 
-                <TooltipSimple label="Tamagui 2 is here! It's a massive new release »">
-                  <Link href="/blog/version-two">
-                    <Paragraph
-                      size="$2"
-                      color="$color11"
-                      hoverStyle={{ color: '$color12' }}
-                      cursor="pointer"
-                    >
-                      Version 2 is here 🎉
-                    </Paragraph>
-                  </Link>
-                </TooltipSimple>
+              <Separator vertical height={16} borderColor="$color5" />
 
-                <Separator vertical height={16} borderColor="$color5" />
+              <TooltipSimple label="Ever wished there was a Rails for cross-platform React?">
+                <Link href="/takeout">
+                  <Paragraph
+                    size="$2"
+                    color="$color10"
+                    hoverStyle={{ color: '$color11' }}
+                    cursor="pointer"
+                  >
+                    Takeout 2 is here, too!
+                  </Paragraph>
+                </Link>
+              </TooltipSimple>
 
-                <TooltipSimple label="Ever wished there was a Rails for cross-platform React?">
-                  <Link href="/takeout">
-                    <Paragraph
-                      size="$2"
-                      color="$color10"
-                      hoverStyle={{ color: '$color11' }}
-                      cursor="pointer"
-                    >
-                      Takeout 2 is here, too!
-                    </Paragraph>
-                  </Link>
-                </TooltipSimple>
-
-                {/* <Separator vertical height={16} borderColor="$color5" /> */}
-              </XStack>
-
-              <Spacer flex={1} />
-
-              <BannerThemes />
+              {/* <Separator vertical height={16} borderColor="$color5" /> */}
             </XStack>
-          </ScrollView>
-        </ContainerLarge>
+
+            <Spacer flex={1} />
+
+            <BannerThemes />
+          </XStack>
+        </ScrollView>
+      </ContainerLarge>
     </XStack>
   )
 }

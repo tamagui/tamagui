@@ -105,6 +105,7 @@ export const docsRoutes = [
         title: 'How to Build a Button',
         route: '/docs/guides/how-to-build-a-button',
       },
+      { title: 'Design Systems', route: '/docs/guides/design-systems' },
       { title: 'Developing', route: '/docs/guides/developing' },
       { title: 'create-tamagui', route: '/docs/guides/create-tamagui-app' },
       { title: 'Server Rendering', route: '/docs/core/server-rendering' },
