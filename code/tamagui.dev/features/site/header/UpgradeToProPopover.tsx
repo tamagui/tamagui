@@ -5,7 +5,6 @@ import {
   Button,
   H2,
   H5,
-  Paragraph,
   Popover,
   Sheet,
   Theme,
@@ -22,8 +21,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
     via: undefined as 'hover' | 'press' | undefined,
     viaAt: Date.now(),
   })
-  const { showAppropriateModal, subscriptionStatus } = useSubscriptionModal()
-  const isProUser = subscriptionStatus?.pro
+  const { showAppropriateModal, hasPro } = useSubscriptionModal()
 
   return (
     <Popover
@@ -114,7 +112,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
         <YStack maxH="90vh" p="$3" width={280} overflow="hidden" rounded="$6">
           <Popover.ScrollView>
             <YStack gap="$2">
-              {!isProUser && (
+              {!hasPro && (
                 <H5
                   py="$2"
                   pointerEvents="none"
@@ -128,7 +126,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
 
               <PromoCards less />
 
-              {!isProUser && (
+              {!hasPro && (
                 <Theme name="accent">
                   <Button
                     rounded="$10"
