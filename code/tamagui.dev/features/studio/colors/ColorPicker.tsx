@@ -78,7 +78,7 @@ const HueSlider = memo(
           position="absolute"
           index={0}
           size="$1"
-          bg="$color12"
+          bg="$color1"
           circular
           elevate
         />
@@ -122,7 +122,7 @@ const SatSlider = memo(
           position="absolute"
           index={0}
           size="$1"
-          bg="$color12"
+          bg="$color1"
           circular
           elevate
         />
@@ -165,7 +165,7 @@ const LightSlider = memo(
           position="absolute"
           index={0}
           size="$1"
-          bg="$color12"
+          bg="$color1"
           circular
           elevate
         />
