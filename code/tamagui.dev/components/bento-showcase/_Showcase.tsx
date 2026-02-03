@@ -157,18 +157,26 @@ const ShowcaseView = forwardRef<any, Props>(
                 disableDeactivation
               >
                 <XGroup rounded="$10" position="relative" overflow="visible">
-                  <XGroup.Item>
-                    <ToggleGroup.Item value="preview" aria-label="Preview" asChild>
-                      <Button icon={Eye} />
-                    </ToggleGroup.Item>
-                  </XGroup.Item>
-                  <XGroup.Item>
-                    <ToggleGroup.Item value="code" aria-label="Code" asChild>
-                      <Button icon={approved ? <Code size={16} /> : <Lock size={16} />}>
+                  <ToggleGroup.Item value="preview" aria-label="Preview" asChild>
+                    <XGroup.Item>
+                      <Button
+                        theme={view === 'preview' ? 'accent' : null}
+                        size="$3"
+                        icon={Eye}
+                      />
+                    </XGroup.Item>
+                  </ToggleGroup.Item>
+                  <ToggleGroup.Item value="code" aria-label="Code" asChild>
+                    <XGroup.Item>
+                      <Button
+                        size="$3"
+                        icon={approved ? <Code size={16} /> : <Lock size={16} />}
+                        theme={view === 'code' ? 'accent' : null}
+                      >
                         Code
                       </Button>
-                    </ToggleGroup.Item>
-                  </XGroup.Item>
+                    </XGroup.Item>
+                  </ToggleGroup.Item>
                 </XGroup>
               </ToggleGroup>
             </XStack>
