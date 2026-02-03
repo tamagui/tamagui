@@ -23,7 +23,7 @@ export type GroupItemProps = {
      */
     forcePlacement?: 'first' | 'center' | 'last';
 };
-declare function GroupItem(props: ScopedProps<GroupItemProps>): any;
+declare function GroupItem(props: ScopedProps<GroupItemProps & Record<string, any>>): any;
 export declare const useGroupItem: (childrenProps: {
     disabled?: boolean;
 }, forcePlacement?: GroupItemProps["forcePlacement"], __scopeGroup?: Scope) => {

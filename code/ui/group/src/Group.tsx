@@ -1,5 +1,5 @@
 import type { GetProps } from '@tamagui/core'
-import { styled } from '@tamagui/core'
+import { mergeSlotStyleProps, styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -88,8 +88,8 @@ export type GroupItemProps = {
   forcePlacement?: 'first' | 'center' | 'last'
 }
 
-function GroupItem(props: ScopedProps<GroupItemProps>) {
-  const { __scopeGroup, children, forcePlacement } = props
+function GroupItem(props: ScopedProps<GroupItemProps & Record<string, any>>) {
+  const { __scopeGroup, children, forcePlacement, ...forwardedProps } = props
   const context = useGroupContext('GroupItem', __scopeGroup)
   const treeIndex = useIndex()
 
@@ -110,15 +110,22 @@ function GroupItem(props: ScopedProps<GroupItemProps>) {
   // zero out border radius on connecting sides
   const radiusStyles = getZeroedRadius(isFirst, isLast, context.vertical)
 
-  const childProps: Record<string, any> = {
+  // start with forwarded props (from parent Slot via asChild)
+  // then merge in group-specific props (radius styles, disabled)
+  // child's own props win via mergeSlotStyleProps
+  const groupProps: Record<string, any> = {
+    ...forwardedProps,
     ...radiusStyles,
   }
 
   if (context.disabled != null) {
-    childProps.disabled = (children.props as any).disabled ?? context.disabled
+    groupProps.disabled = (children.props as any).disabled ?? context.disabled
   }
 
-  return React.cloneElement(children, childProps)
+  // use mergeSlotStyleProps to properly compose event handlers
+  const mergedProps = mergeSlotStyleProps(groupProps, children.props as any)
+
+  return React.cloneElement(children, mergedProps)
 }
 
 export const useGroupItem = (
