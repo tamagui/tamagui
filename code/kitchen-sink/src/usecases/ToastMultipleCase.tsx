@@ -253,11 +253,7 @@ export function ToastMultipleCase() {
           >
             Show 4 Toasts
           </Button>
-          <Button
-            size="$3"
-            onPress={() => toast.dismiss()}
-            testID="toast-dismiss-all"
-          >
+          <Button size="$3" onPress={() => toast.dismiss()} testID="toast-dismiss-all">
             Dismiss All
           </Button>
         </XStack>

@@ -119,7 +119,9 @@ test.describe('Toast v2 API', () => {
     await page.click('[data-testid="toast-promise-success"]')
 
     // should show loading first
-    const loadingToast = await page.waitForSelector('[data-type="loading"]', { timeout: 5000 })
+    const loadingToast = await page.waitForSelector('[data-type="loading"]', {
+      timeout: 5000,
+    })
     expect(loadingToast).toBeTruthy()
 
     // wait for promise to resolve (2s + some buffer)
@@ -134,7 +136,9 @@ test.describe('Toast v2 API', () => {
     await page.click('[data-testid="toast-promise-error"]')
 
     // should show loading first
-    const loadingToast = await page.waitForSelector('[data-type="loading"]', { timeout: 5000 })
+    const loadingToast = await page.waitForSelector('[data-type="loading"]', {
+      timeout: 5000,
+    })
     expect(loadingToast).toBeTruthy()
 
     // wait for promise to reject (2s + some buffer)
@@ -149,7 +153,9 @@ test.describe('Toast v2 API', () => {
     await page.click('[data-testid="toast-update"]')
 
     // should show loading first
-    const loadingToast = await page.waitForSelector('[data-type="loading"]', { timeout: 5000 })
+    const loadingToast = await page.waitForSelector('[data-type="loading"]', {
+      timeout: 5000,
+    })
     expect(loadingToast).toBeTruthy()
 
     // wait for update (2s + some buffer)
