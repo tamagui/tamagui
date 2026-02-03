@@ -155,13 +155,14 @@ const ShowcaseView = forwardRef<any, Props>(
                 onValueChange={(val) => val && setView(val as 'preview' | 'code')}
                 disableDeactivation
               >
-                <XGroup rounded="$10">
+                <XGroup rounded="$10" position="relative" overflow="visible">
                   <XGroup.Item>
                     <ToggleGroup.Item
                       value="preview"
                       aria-label="Preview"
                       size="$3"
                       activeStyle={{ bg: '$color5' }}
+                      gap="$2"
                     >
                       <Eye size={16} />
                       <SizableText size="$3" display="none" $gtMd={{ display: 'block' }}>
@@ -175,6 +176,7 @@ const ShowcaseView = forwardRef<any, Props>(
                       aria-label="Code"
                       size="$3"
                       activeStyle={{ bg: '$color5' }}
+                      gap="$2"
                     >
                       {approved ? <Code size={16} /> : <Lock size={16} />}
                       <SizableText size="$3" display="none" $gtMd={{ display: 'block' }}>
