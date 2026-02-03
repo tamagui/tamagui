@@ -28,6 +28,7 @@ import { useCurrentRouteParams } from '@tamagui/bento'
 import { useGroupMedia } from '@tamagui/bento/component/hooks/useGroupMedia'
 import { CodeWindow } from './CodeWindow'
 // import { ThemeButton } from './ThemeButton'
+import { authFetch } from '~/features/api/authFetch'
 import { useBentoShowcase } from './BentoProvider'
 import { type ShowcaseTheme, ShowcaseProvider } from './ShowcaseProvider'
 
@@ -84,7 +85,7 @@ const ShowcaseView = forwardRef<any, Props>(
     const approved = unlock || isProUser
 
     const fetcher = async (url: string) => {
-      const res = await fetch(url, { headers: { 'Content-Type': 'application/json' } })
+      const res = await authFetch(url)
       if (!res.ok) {
         const error = new Error('An error occurred while fetching the data.') as any
         error.info = await res.json()
@@ -157,31 +158,15 @@ const ShowcaseView = forwardRef<any, Props>(
               >
                 <XGroup rounded="$10" position="relative" overflow="visible">
                   <XGroup.Item>
-                    <ToggleGroup.Item
-                      value="preview"
-                      aria-label="Preview"
-                      size="$3"
-                      activeStyle={{ bg: '$color5' }}
-                      gap="$2"
-                    >
-                      <Eye size={16} />
-                      <SizableText size="$3" display="none" $gtMd={{ display: 'block' }}>
-                        Preview
-                      </SizableText>
+                    <ToggleGroup.Item value="preview" aria-label="Preview" asChild>
+                      <Button icon={Eye} />
                     </ToggleGroup.Item>
                   </XGroup.Item>
                   <XGroup.Item>
-                    <ToggleGroup.Item
-                      value="code"
-                      aria-label="Code"
-                      size="$3"
-                      activeStyle={{ bg: '$color5' }}
-                      gap="$2"
-                    >
-                      {approved ? <Code size={16} /> : <Lock size={16} />}
-                      <SizableText size="$3" display="none" $gtMd={{ display: 'block' }}>
+                    <ToggleGroup.Item value="code" aria-label="Code" asChild>
+                      <Button icon={approved ? <Code size={16} /> : <Lock size={16} />}>
                         Code
-                      </SizableText>
+                      </Button>
                     </ToggleGroup.Item>
                   </XGroup.Item>
                 </XGroup>
