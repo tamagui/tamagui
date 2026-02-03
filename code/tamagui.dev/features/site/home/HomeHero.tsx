@@ -69,7 +69,7 @@ const HeroContents = memo(function HeroContents() {
         r={-500}
         b={-100}
         style={{
-          maskImage: `linear-gradient(#000 50%, transparent)`,
+          maskImage: `linear-gradient(#000 0%, transparent)`,
         }}
       >
         <YStack
@@ -87,8 +87,8 @@ const HeroContents = memo(function HeroContents() {
         overflow="hidden"
         gap="$3"
         position="relative"
-        pt="$16"
-        mb="$4"
+        pt="$17"
+        mb="$6"
         $sm={{
           pb: '$4',
           mx: '$-4',
@@ -138,7 +138,6 @@ const HeroContents = memo(function HeroContents() {
                 opacity={0.9}
                 scaleY={0.9}
                 scaleX={1.1}
-                // mixBlendMode="difference"
                 // z={2}
               />
               <Span position="relative" z={5}>
