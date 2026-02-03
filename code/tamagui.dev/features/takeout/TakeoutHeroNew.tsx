@@ -62,6 +62,7 @@ const PromoBadgeContainer = styled(XStack, {
   justify: 'center',
   gap: '$2',
   cursor: 'pointer',
+  transformOrigin: 'center',
   borderWidth: 0.5,
 
   hoverStyle: {
@@ -73,10 +74,9 @@ const PromoBadgeContainer = styled(XStack, {
     opacity: 0.9,
   },
 
-  // mobile: scale down and move left
-  $sm: {
-    scale: 0.75,
-    x: '-90%',
+  // mobile: hidden for space
+  $maxMd: {
+    display: 'none',
   },
 })
 
@@ -134,14 +134,12 @@ export function TakeoutHeroNew({
           <ButtonLink
             href="https://github.com/tamagui/takeout-free"
             target="_blank"
-            size="$3"
+            size="$2"
           >
-            <SizableText fontFamily="$mono" color="$color10">
-              Free
-            </SizableText>
+            <SizableText fontFamily="$mono">Free</SizableText>
             <ExternalLink size={12} opacity={0.5} />
           </ButtonLink>
-          <PurchaseButton onPress={onBuyPress} size="$4" theme="accent">
+          <PurchaseButton onPress={onBuyPress} size="$5" theme="accent">
             Pro
           </PurchaseButton>
         </XStack>

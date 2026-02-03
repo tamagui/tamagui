@@ -42,17 +42,6 @@ export const ACTIVE_PROMOS: PromoConfig[] = [
     active: true,
     theme: 'green',
   },
-  // legacy promo - deactivated
-  {
-    id: 'tko2-launch',
-    code: 'TKO2',
-    couponId: 'ULFkuEYE',
-    label: '50% off',
-    description: 'during Takeout 2 beta',
-    percentOff: 50,
-    active: false,
-    theme: 'green',
-  },
 ]
 
 // get the currently active promo (first active one)
