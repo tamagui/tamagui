@@ -385,8 +385,6 @@ function ThemeToggle() {
       justify="center"
       items="center"
       cursor="pointer"
-      borderWidth={2}
-      borderColor="$color5"
     >
       <View
         key="background"
