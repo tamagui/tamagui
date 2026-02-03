@@ -1,5 +1,5 @@
-import * as React from 'react';
-import type { TamaguiElement } from './types';
+import type * as React from 'react'
+import type { TamaguiElement } from './types'
 /**
  * Creates a ref for web-only code that properly types to HTMLElement.
  * Useful when you need to access HTMLElement-specific properties (like selectionStart)
@@ -12,7 +12,9 @@ import type { TamaguiElement } from './types';
  * // composedRef is for passing to components
  * ```
  */
-export declare function useWebRef<T extends TamaguiElement | HTMLElement>(forwardedRef?: React.ForwardedRef<TamaguiElement>): {
-    ref: React.RefObject<T | null>;
-    composedRef: (node: T | null) => void;
-};
+export declare function useWebRef<T extends TamaguiElement | HTMLElement>(
+  forwardedRef?: React.ForwardedRef<TamaguiElement>
+): {
+  ref: React.RefObject<T | null>
+  composedRef: (node: T | null) => void
+}

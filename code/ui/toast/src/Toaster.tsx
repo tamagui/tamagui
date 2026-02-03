@@ -434,7 +434,12 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
         onMouseMove={() => {
           // expand on sustained hover, not just entry
           // skip during cooldown to prevent flicker during repositioning
-          if (toasts.length > 1 && !interacting && !expanded && !hoverCooldownRef.current) {
+          if (
+            toasts.length > 1 &&
+            !interacting &&
+            !expanded &&
+            !hoverCooldownRef.current
+          ) {
             if (!hoverTimeoutRef.current) {
               hoverTimeoutRef.current = setTimeout(() => {
                 setExpanded(true)
@@ -491,12 +496,10 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
 
             // calculate sum of heights of all toasts BEFORE this one
             // toasts[0..index-1] are rendered before this toast (visually above it for bottom position)
-            const heightBeforeMe = toasts
-              .slice(0, index)
-              .reduce((sum, t) => {
-                const h = heights.find((h) => h.toastId === t.id)
-                return sum + (h?.height ?? 55)
-              }, 0)
+            const heightBeforeMe = toasts.slice(0, index).reduce((sum, t) => {
+              const h = heights.find((h) => h.toastId === t.id)
+              return sum + (h?.height ?? 55)
+            }, 0)
 
             return (
               <ToastItem

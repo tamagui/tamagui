@@ -53,15 +53,8 @@ function shouldGrantGestureMove(dir: SwipeDirection, dx: number, dy: number): bo
 }
 
 export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
-  const {
-    direction,
-    threshold,
-    disabled,
-    onDragMove,
-    onDragStart,
-    onDismiss,
-    onCancel,
-  } = options
+  const { direction, threshold, disabled, onDragMove, onDragStart, onDismiss, onCancel } =
+    options
 
   const [isDragging, setIsDragging] = React.useState(false)
 

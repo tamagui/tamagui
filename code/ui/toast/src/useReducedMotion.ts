@@ -27,8 +27,8 @@ function getReducedMotion(): boolean {
 }
 
 export function useReducedMotion(forceReducedMotion?: boolean): boolean {
-  const [reducedMotion, setReducedMotion] = React.useState(() =>
-    forceReducedMotion ?? getReducedMotion()
+  const [reducedMotion, setReducedMotion] = React.useState(
+    () => forceReducedMotion ?? getReducedMotion()
   )
 
   React.useEffect(() => {

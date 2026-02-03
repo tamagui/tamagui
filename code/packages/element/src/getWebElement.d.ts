@@ -1,4 +1,4 @@
-import type { TamaguiElement } from './types';
+import type { TamaguiElement } from './types'
 /**
  * Narrows a TamaguiElement to an HTMLElement, with optional generic for further casting.
  * Throws if the element is not an instanceof HTMLElement.
@@ -9,4 +9,6 @@ import type { TamaguiElement } from './types';
  * const input = getWebElement<HTMLInputElement>(ref.current) // HTMLInputElement
  * ```
  */
-export declare function getWebElement<T extends HTMLElement = HTMLElement>(element: TamaguiElement | null | undefined): T;
+export declare function getWebElement<T extends HTMLElement = HTMLElement>(
+  element: TamaguiElement | null | undefined
+): T

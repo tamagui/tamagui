@@ -30,14 +30,44 @@ export const ToastDemo = () => {
 
       <YStack gap="$2" self="center">
         <XStack gap="$2">
-          <PositionButton position="top-left" current={position} onPress={showToast} Icon={ArrowUpLeft} />
-          <PositionButton position="top-center" current={position} onPress={showToast} Icon={ArrowUp} />
-          <PositionButton position="top-right" current={position} onPress={showToast} Icon={ArrowUpRight} />
+          <PositionButton
+            position="top-left"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowUpLeft}
+          />
+          <PositionButton
+            position="top-center"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowUp}
+          />
+          <PositionButton
+            position="top-right"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowUpRight}
+          />
         </XStack>
         <XStack gap="$2">
-          <PositionButton position="bottom-left" current={position} onPress={showToast} Icon={ArrowDownLeft} />
-          <PositionButton position="bottom-center" current={position} onPress={showToast} Icon={ArrowDown} />
-          <PositionButton position="bottom-right" current={position} onPress={showToast} Icon={ArrowDownRight} />
+          <PositionButton
+            position="bottom-left"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowDownLeft}
+          />
+          <PositionButton
+            position="bottom-center"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowDown}
+          />
+          <PositionButton
+            position="bottom-right"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowDownRight}
+          />
         </XStack>
       </YStack>
     </Toast>
@@ -54,10 +84,14 @@ function ToastList() {
           {({ handleClose }) => (
             <XStack gap="$3" alignItems="flex-start">
               <YStack flex={1} gap="$1">
-                <Toast.Title>{typeof t.title === 'function' ? t.title() : t.title}</Toast.Title>
+                <Toast.Title>
+                  {typeof t.title === 'function' ? t.title() : t.title}
+                </Toast.Title>
                 {t.description && (
                   <Toast.Description>
-                    {typeof t.description === 'function' ? t.description() : t.description}
+                    {typeof t.description === 'function'
+                      ? t.description()
+                      : t.description}
                   </Toast.Description>
                 )}
               </YStack>
