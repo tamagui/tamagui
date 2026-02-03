@@ -6,7 +6,6 @@ import {
   ScrollView,
   Separator,
   Spacer,
-  Theme,
   TooltipSimple,
   XGroup,
   XStack,
@@ -59,15 +58,14 @@ export const PromoBanner = () => {
   }
 
   return (
-    <Theme name="black">
-      <XStack
-        bg="$background02"
-        width="100%"
-        items="center"
-        justify="center"
-        z={10000000000000}
-        position="relative"
-      >
+    <XStack
+      bg="$background02"
+      width="100%"
+      items="center"
+      justify="center"
+      z={10000000000000}
+      position="relative"
+    >
         <ContainerLarge px={0} flexDirection="row">
           <ScrollView
             horizontal
@@ -121,8 +119,7 @@ export const PromoBanner = () => {
             </XStack>
           </ScrollView>
         </ContainerLarge>
-      </XStack>
-    </Theme>
+    </XStack>
   )
 }
 
