@@ -29,12 +29,24 @@ interface CommitInfo {
 }
 
 const TAMAGUI_PACKAGES_PATTERN = /^(@tamagui\/|tamagui$)/
-const COMMIT_TYPE_ORDER = ['feat', 'fix', 'perf', 'refactor', 'docs', 'chore', 'test', 'ci']
+const COMMIT_TYPE_ORDER = [
+  'feat',
+  'fix',
+  'perf',
+  'refactor',
+  'docs',
+  'chore',
+  'test',
+  'ci',
+]
 
 /**
  * Parse version specifier from a dependency version string
  */
-function parseVersionSpecifier(version: string): { specifier: '^' | '~' | '' | '>=' | '>'; cleanVersion: string } {
+function parseVersionSpecifier(version: string): {
+  specifier: '^' | '~' | '' | '>=' | '>'
+  cleanVersion: string
+} {
   if (version.startsWith('>=')) {
     return { specifier: '>=', cleanVersion: version.slice(2) }
   }
@@ -73,7 +85,7 @@ function findPackageJsonFiles(root: string): string[] {
       { encoding: 'utf-8', maxBuffer: 10 * 1024 * 1024 }
     )
     const foundFiles = result.trim().split('\n').filter(Boolean)
-    files.push(...foundFiles.filter(f => !files.includes(f)))
+    files.push(...foundFiles.filter((f) => !files.includes(f)))
   } catch {
     // Fallback: just use root
   }
@@ -140,7 +152,7 @@ async function getLatestVersion(): Promise<string> {
  * Get current version from found packages (most common version)
  */
 function getCurrentVersion(packages: PackageInfo[]): string | null {
-  const versions = packages.map(p => p.version)
+  const versions = packages.map((p) => p.version)
   if (versions.length === 0) return null
 
   // Count occurrences
@@ -165,7 +177,9 @@ function getCurrentVersion(packages: PackageInfo[]): string | null {
 /**
  * Parse conventional commit message
  */
-function parseConventionalCommit(message: string): { type: string; scope?: string; message: string; breaking: boolean } | null {
+function parseConventionalCommit(
+  message: string
+): { type: string; scope?: string; message: string; breaking: boolean } | null {
   // Match conventional commit format: type(scope)!: message or type!: message
   const match = message.match(/^(\w+)(?:\(([^)]+)\))?(!)?: (.+)$/)
   if (!match) return null
@@ -173,7 +187,18 @@ function parseConventionalCommit(message: string): { type: string; scope?: strin
   const [, type, scope, breaking, msg] = match
 
   // Only include valid types
-  const validTypes = ['feat', 'fix', 'perf', 'refactor', 'docs', 'chore', 'test', 'ci', 'build', 'style']
+  const validTypes = [
+    'feat',
+    'fix',
+    'perf',
+    'refactor',
+    'docs',
+    'chore',
+    'test',
+    'ci',
+    'build',
+    'style',
+  ]
   if (!validTypes.includes(type)) return null
 
   return {
@@ -187,7 +212,11 @@ function parseConventionalCommit(message: string): { type: string; scope?: strin
 /**
  * Fetch changelog from git commits between two versions
  */
-function getChangelogFromGit(fromVersion: string, toVersion: string, debug?: boolean): CommitInfo[] {
+function getChangelogFromGit(
+  fromVersion: string,
+  toVersion: string,
+  debug?: boolean
+): CommitInfo[] {
   const commits: CommitInfo[] = []
 
   try {
@@ -253,13 +282,17 @@ function getChangelogFromGit(fromVersion: string, toVersion: string, debug?: boo
 /**
  * Try to fetch changelog from GitHub releases API
  */
-async function getChangelogFromGitHub(fromVersion: string, toVersion: string, debug?: boolean): Promise<string | null> {
+async function getChangelogFromGitHub(
+  fromVersion: string,
+  toVersion: string,
+  debug?: boolean
+): Promise<string | null> {
   try {
     const response = await fetch(
       `https://api.github.com/repos/tamagui/tamagui/releases/tags/v${toVersion}`,
       {
         headers: {
-          'Accept': 'application/vnd.github.v3+json',
+          Accept: 'application/vnd.github.v3+json',
           'User-Agent': 'tamagui-cli',
         },
       }
@@ -272,7 +305,7 @@ async function getChangelogFromGitHub(fromVersion: string, toVersion: string, de
       return null
     }
 
-    const data = await response.json() as { body?: string }
+    const data = (await response.json()) as { body?: string }
     return data.body || null
   } catch (err) {
     if (debug) {
@@ -308,13 +341,15 @@ function formatChangelog(commits: CommitInfo[]): string {
   const lines: string[] = []
 
   // Show breaking changes first
-  const breakingChanges = commits.filter(c => c.breaking)
+  const breakingChanges = commits.filter((c) => c.breaking)
   if (breakingChanges.length > 0) {
     lines.push('')
     lines.push(chalk.red.bold('  BREAKING CHANGES'))
     for (const commit of breakingChanges) {
       const scope = commit.scope ? chalk.cyan(`(${commit.scope})`) : ''
-      lines.push(`    ${chalk.red('!')} ${scope} ${commit.message} ${chalk.gray(`(${commit.hash})`)}`)
+      lines.push(
+        `    ${chalk.red('!')} ${scope} ${commit.message} ${chalk.gray(`(${commit.hash})`)}`
+      )
     }
   }
 
@@ -341,7 +376,7 @@ function formatChangelog(commits: CommitInfo[]): string {
   }
 
   for (const type of sortedTypes) {
-    const typeCommits = grouped.get(type)!.filter(c => !c.breaking)
+    const typeCommits = grouped.get(type)!.filter((c) => !c.breaking)
     if (typeCommits.length === 0) continue
 
     const label = typeLabels[type] || type
@@ -352,7 +387,9 @@ function formatChangelog(commits: CommitInfo[]): string {
 
     for (const commit of typeCommits) {
       const scope = commit.scope ? chalk.cyan(`(${commit.scope})`) : ''
-      lines.push(`    ${chalk.gray('-')} ${scope} ${commit.message} ${chalk.gray(`(${commit.hash})`)}`)
+      lines.push(
+        `    ${chalk.gray('-')} ${scope} ${commit.message} ${chalk.gray(`(${commit.hash})`)}`
+      )
     }
   }
 
@@ -376,7 +413,7 @@ function displayPackageSummary(packages: PackageInfo[]): void {
   }
 
   // Track all versions for mismatch warning
-  const allVersions = new Set(packages.map(p => p.version))
+  const allVersions = new Set(packages.map((p) => p.version))
 
   for (const [filePath, pkgs] of byFile) {
     const relativePath = filePath.replace(process.cwd(), '.').replace(/^\.\//, '')
@@ -384,9 +421,15 @@ function displayPackageSummary(packages: PackageInfo[]): void {
 
     for (const pkg of pkgs) {
       const versionDisplay = `${pkg.versionSpecifier}${pkg.version}`
-      const depTypeLabel = pkg.depType === 'devDependencies' ? chalk.gray(' (dev)') :
-                          pkg.depType === 'peerDependencies' ? chalk.gray(' (peer)') : ''
-      console.log(`    ${chalk.white(pkg.name)} ${chalk.yellow(versionDisplay)}${depTypeLabel}`)
+      const depTypeLabel =
+        pkg.depType === 'devDependencies'
+          ? chalk.gray(' (dev)')
+          : pkg.depType === 'peerDependencies'
+            ? chalk.gray(' (peer)')
+            : ''
+      console.log(
+        `    ${chalk.white(pkg.name)} ${chalk.yellow(versionDisplay)}${depTypeLabel}`
+      )
     }
     console.log('')
   }
@@ -396,7 +439,7 @@ function displayPackageSummary(packages: PackageInfo[]): void {
     console.log(chalk.yellow.bold('Warning: Version mismatch detected!'))
     console.log(chalk.yellow('  Found multiple versions:'))
     for (const v of allVersions) {
-      const count = packages.filter(p => p.version === v).length
+      const count = packages.filter((p) => p.version === v).length
       console.log(chalk.yellow(`    - ${v} (${count} packages)`))
     }
     console.log('')
@@ -406,7 +449,11 @@ function displayPackageSummary(packages: PackageInfo[]): void {
 /**
  * Update package.json files with new version
  */
-function updatePackages(packages: PackageInfo[], newVersion: string, dryRun?: boolean): void {
+function updatePackages(
+  packages: PackageInfo[],
+  newVersion: string,
+  dryRun?: boolean
+): void {
   // Group by file path
   const byFile = new Map<string, PackageInfo[]>()
   for (const pkg of packages) {
@@ -469,7 +516,11 @@ export async function upgrade(options: UpgradeOptions = {}): Promise<void> {
 
   if (!fromVersion) {
     if (changelogOnly) {
-      console.log(chalk.red('Error: --from version is required when using --changelog-only without packages'))
+      console.log(
+        chalk.red(
+          'Error: --from version is required when using --changelog-only without packages'
+        )
+      )
       process.exit(1)
     }
     fromVersion = toVersion
@@ -509,7 +560,11 @@ export async function upgrade(options: UpgradeOptions = {}): Promise<void> {
           console.log(chalk.gray('  ... (truncated, see full release notes on GitHub)'))
         }
       } else {
-        console.log(chalk.gray('  No changelog available. Check https://github.com/tamagui/tamagui/releases'))
+        console.log(
+          chalk.gray(
+            '  No changelog available. Check https://github.com/tamagui/tamagui/releases'
+          )
+        )
       }
     }
     console.log('')
@@ -534,7 +589,11 @@ export async function upgrade(options: UpgradeOptions = {}): Promise<void> {
     console.log(chalk.green.bold('Upgrade complete!'))
     console.log('')
     console.log(chalk.gray('Next steps:'))
-    console.log(chalk.gray('  1. Run your package manager install (npm install, yarn, pnpm install)'))
+    console.log(
+      chalk.gray(
+        '  1. Run your package manager install (npm install, yarn, pnpm install)'
+      )
+    )
     console.log(chalk.gray('  2. Review the changelog above for any breaking changes'))
     console.log(chalk.gray('  3. Test your application'))
   } else {

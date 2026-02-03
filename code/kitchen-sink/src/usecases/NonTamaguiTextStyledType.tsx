@@ -1,4 +1,4 @@
-import { GetBaseStyles, GetVariantProps, styled } from "@tamagui/web";
+import { GetBaseStyles, GetVariantProps, styled } from '@tamagui/web'
 
 const SomeNonTamaguiTextComponent = (props: {}) => {
   return null
@@ -13,10 +13,10 @@ export const SomeTextComponent = styled(
       foo: {
         true: {
           // making sure this has color
-          color: '$background'
-        }
-      }
-    } as const
+          color: '$background',
+        },
+      },
+    } as const,
   },
 
   { isText: true }

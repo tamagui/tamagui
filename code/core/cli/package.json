@@ -1,25 +1,25 @@
 {
   "name": "@tamagui/cli",
-  "version": "2.0.0-1769588848304",
-  "sideEffects": false,
-  "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/index.cjs",
+  "version": "2.0.0-rc.0-1770084657117",
   "bin": {
     "tama": "./dist/index.cjs",
     "tamagui": "./dist/index.cjs"
   },
-  "publishConfig": {
-    "access": "public"
-  },
+  "source": "src/index.ts",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "sideEffects": false,
+  "main": "dist/index.cjs",
+  "types": "./types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build --skip-native",
-    "watch": "yarn build --skip-native --watch",
+    "watch": "bun run build --skip-native --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "test": "vitest run"
@@ -34,7 +34,7 @@
     "chalk": "^4.1.2",
     "change-case": "^4.1.2",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.25.11",
+    "esbuild": "^0.27.2",
     "express": "^4.18.2",
     "fs-extra": "^11.2.0",
     "get-port": "^7.0.0",
@@ -51,6 +51,6 @@
     "@tamagui/build": "workspace:*",
     "@types/chokidar": "^2.1.3",
     "@types/marked": "^5.0.0",
-    "vitest": "^4.0.4"
+    "vitest": "4.0.4"
   }
 }

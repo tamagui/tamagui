@@ -1,17 +1,34 @@
 import * as StaticWorker from '@tamagui/static-worker'
 import type { TamaguiOptions } from '@tamagui/types'
 
-let loadPromise: Promise<TamaguiOptions> | null = null
-let loadedOptions: TamaguiOptions | null = null
-let fullConfigLoaded = false
-let fullConfigLoadPromise: Promise<void> | null = null
+// use globalThis to share state across vite environments (SSR, client, etc.)
+const LOAD_STATE_KEY = '__tamagui_load_state__'
+
+type LoadState = {
+  loadPromise: Promise<TamaguiOptions> | null
+  loadedOptions: TamaguiOptions | null
+  fullConfigLoaded: boolean
+  fullConfigLoadPromise: Promise<void> | null
+}
+
+function getLoadState(): LoadState {
+  if (!(globalThis as any)[LOAD_STATE_KEY]) {
+    ;(globalThis as any)[LOAD_STATE_KEY] = {
+      loadPromise: null,
+      loadedOptions: null,
+      fullConfigLoaded: false,
+      fullConfigLoadPromise: null,
+    }
+  }
+  return (globalThis as any)[LOAD_STATE_KEY]
+}
 
 export function getTamaguiOptions(): TamaguiOptions | null {
-  return loadedOptions
+  return getLoadState().loadedOptions
 }
 
 export function getLoadPromise(): Promise<TamaguiOptions> | null {
-  return loadPromise
+  return getLoadState().loadPromise
 }
 
 /**
@@ -21,20 +38,21 @@ export function getLoadPromise(): Promise<TamaguiOptions> | null {
 export async function loadTamaguiBuildConfig(
   optionsIn?: Partial<TamaguiOptions>
 ): Promise<TamaguiOptions> {
-  if (loadedOptions) return loadedOptions
-  if (loadPromise) return loadPromise
+  const state = getLoadState()
+  if (state.loadedOptions) return state.loadedOptions
+  if (state.loadPromise) return state.loadPromise
 
-  loadPromise = (async () => {
+  state.loadPromise = (async () => {
     const options = await StaticWorker.loadTamaguiBuildConfig({
       ...optionsIn,
       platform: 'web',
     })
 
-    loadedOptions = options
+    state.loadedOptions = options
     return options
   })()
 
-  return loadPromise
+  return state.loadPromise
 }
 
 /**
@@ -42,12 +60,16 @@ export async function loadTamaguiBuildConfig(
  * Call this lazily when transform/extraction is actually needed
  */
 export async function ensureFullConfigLoaded(): Promise<void> {
-  if (fullConfigLoaded) return
-  if (fullConfigLoadPromise) return fullConfigLoadPromise
+  const state = getLoadState()
 
-  const options = await loadTamaguiBuildConfig()
+  if (state.fullConfigLoaded) return
+  if (state.fullConfigLoadPromise) return state.fullConfigLoadPromise
 
-  fullConfigLoadPromise = (async () => {
+  // set promise immediately to prevent race conditions
+  // (don't await loadTamaguiBuildConfig before setting this)
+  state.fullConfigLoadPromise = (async () => {
+    const options = await loadTamaguiBuildConfig()
+
     // load full tamagui config in worker (asynchronous)
     if (!options.disableWatchTamaguiConfig && !options.disable) {
       await StaticWorker.loadTamagui({
@@ -56,16 +78,17 @@ export async function ensureFullConfigLoaded(): Promise<void> {
         ...options,
       })
     }
-    fullConfigLoaded = true
+    state.fullConfigLoaded = true
   })()
 
-  return fullConfigLoadPromise
+  return state.fullConfigLoadPromise
 }
 
 export async function cleanup() {
   await StaticWorker.destroyPool()
-  loadPromise = null
-  loadedOptions = null
-  fullConfigLoaded = false
-  fullConfigLoadPromise = null
+  const state = getLoadState()
+  state.loadPromise = null
+  state.loadedOptions = null
+  state.fullConfigLoaded = false
+  state.fullConfigLoadPromise = null
 }

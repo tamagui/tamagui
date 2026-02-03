@@ -1,4 +1,4 @@
-import { LogoWords, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
+import { LogoWords, setTintFamily, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
 import { isTouchable, Theme, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
@@ -28,9 +28,9 @@ import {
   type PopoverProps,
 } from 'tamagui'
 import { Link } from '~/components/Link'
-import { bannerHeight } from '~/components/PromoBanner'
+import { useBannerHeight } from '~/components/PromoBanner'
 import { GithubIcon } from '~/features/icons/GithubIcon'
-import { SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
+import { seasons, SeasonTogglePopover } from '~/features/site/seasons/SeasonTogglePopover'
 import { ThemeToggle } from '~/features/site/theme/ThemeToggle'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { useLoginLink } from '../../auth/useLoginLink'
@@ -51,6 +51,7 @@ import type { HeaderProps } from './types'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
+  const bannerHeight = useBannerHeight()
 
   if (isClient) {
     React.useEffect(() => {
@@ -216,9 +217,14 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               bg="$color3"
               borderWidth={0}
               theme="teal"
-              boxShadow="inset 0 -2px 0 1px $color3"
+              $theme-light={{
+                boxShadow: 'inset 0 -2px 0 1px $color8',
+              }}
+              pressStyle={{
+                y: 1,
+              }}
             >
-              <Span fontSize="$2" y={-2}>
+              <Span fontSize="$2" fontWeight="600">
                 v2 RC
               </Span>
             </Button>
@@ -302,12 +308,11 @@ const HeaderMenuButton = () => {
     <Popover.Trigger>
       <SlidingPopoverTarget id="menu">
         <Button
-          size="$3"
-          my={10}
+          size="$5"
+          circular
+          my={2}
           bg="transparent"
-          rounded="$10"
-          borderWidth={2}
-          px="$2"
+          borderWidth={0}
           onPress={(e) => {
             if (isTouchable) {
               setOpen(!open)
@@ -329,11 +334,11 @@ const HeaderMenuButton = () => {
           }}
           aria-label="Open the main menu"
           hoverStyle={{
-            borderColor: 'color-mix(in srgb, var(--color10) 30%, transparent 60%)' as any,
+            bg: '$shadow1',
           }}
         >
           <Circle size={34} items="center" justify="center">
-            {haveUser ? <UserAvatar /> : <Menu size={16} />}
+            {haveUser ? <UserAvatar /> : <Menu size={20} />}
           </Circle>
         </Button>
       </SlidingPopoverTarget>
@@ -423,11 +428,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
 
 type ID = 'core' | 'ui' | 'theme' | 'menu'
 
-export const HeaderLink = (props: {
-  id: ID
-  children: string
-  href: string
-}) => {
+export const HeaderLink = (props: { id: ID; children: string; href: string }) => {
   const pathname = usePathname()
   const section = getDocsSectionFromPath(pathname)
   const isActive =
@@ -653,8 +654,6 @@ const HeaderMenuContents = (props: { id: ID }) => {
   const bentoStore = useBentoStore()
   const themeHistories = data?.themeHistories || []
   const bentoTheme = useBentoTheme()
-  const pathName = usePathname()
-  const isOnBentoPage = pathName.startsWith('/bento')
   const isOnlyShowingMenu = useMedia().maxMd
   const isMobile = isTouchable && isOnlyShowingMenu
 
@@ -667,7 +666,14 @@ const HeaderMenuContents = (props: { id: ID }) => {
       return (
         <>
           <HeaderMenuMoreContents />
-          {isOnlyShowingMenu && <ActivePageDocsMenuContents />}
+          <Separator borderColor="$color02" opacity={0.25} my="$2" />
+          {isOnlyShowingMenu && (
+            <>
+              <ActivePageDocsMenuContents />
+              <Separator borderColor="$color02" opacity={0.25} my="$2" />
+            </>
+          )}
+          <SeasonChooser />
         </>
       )
     }
@@ -675,7 +681,7 @@ const HeaderMenuContents = (props: { id: ID }) => {
     if (props.id === 'theme') {
       return (
         <YStack flex={1} gap="$2" flexBasis="auto">
-          {!isOnBentoPage || !themeHistories.length ? (
+          {!themeHistories.length ? (
             <>
               <PromoCardTheme />
               <Paragraph
@@ -688,11 +694,10 @@ const HeaderMenuContents = (props: { id: ID }) => {
                 opacity={0.5}
                 p="$4"
               >
-                Once you create themes, visit the Bento page and open this menu to preview
-                them.
+                Create themes to preview them across the site.
                 {`\n`}
-                <Link href="/bento" theme="blue" style={{ pointerEvents: 'auto' }}>
-                  Go to Bento to preview your themes →
+                <Link href="/theme" theme="blue" style={{ pointerEvents: 'auto' }}>
+                  Go to Theme Builder →
                 </Link>
               </Paragraph>
             </>
@@ -840,16 +845,16 @@ const HeaderMenuMoreContents = () => {
 
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
-      {!userSwr.data?.userDetails && (
+      {!userSwr.data?.user && (
         <HeadAnchor grid onPress={handleLogin}>
-          Login
+          <span>Login</span>
           <YStack display={'inline-block' as any} y={2} x={10} self="flex-end">
             <LogIn color="$color10" size={14} />
           </YStack>
         </HeadAnchor>
       )}
 
-      {userSwr.data?.userDetails && (
+      {userSwr.data?.user && (
         <HeadAnchor
           grid
           onPress={() => {
@@ -858,7 +863,7 @@ const HeaderMenuMoreContents = () => {
           }}
         >
           <XStack items="center" justify="center">
-            Account
+            <span>Account</span>
             <YStack flex={10} />
             <YStack display={'inline-block' as any} y={-2} my={-3} self="flex-end">
               <UserAvatar size={22} />
@@ -869,47 +874,38 @@ const HeaderMenuMoreContents = () => {
 
       <Separator bg="$color02" opacity={0.25} my="$2" />
 
-      <XStack flexWrap="wrap" flex={1} flexBasis="auto" gap="$2" width="100%">
-        <Link asChild href="/takeout">
-          <HeadAnchor grid half render="a">
-            <XStack items="center">
-              <span>Takeout </span>
-              <YStack display={'inline-block' as any} x={6} my={-20} opacity={0.8}>
-                <TakeoutIcon scale={0.65} />
-              </YStack>
-            </XStack>
-            <SizableText size="$2" color="$color9">
-              Starter Kit
-            </SizableText>
-          </HeadAnchor>
-        </Link>
-
-        <Link asChild href="/bento">
-          <HeadAnchor grid half render="a">
-            <XStack items="center">
-              <span>Bento </span>
-              <YStack
-                ml={3}
-                display={'inline-block' as any}
-                x={6}
-                y={-1}
-                my={-10}
-                opacity={0.8}
-              >
-                <BentoIcon scale={0.65} />
-              </YStack>
-            </XStack>
-            <SizableText size="$2" color="$color9">
-              Copy-paste UI
-            </SizableText>
-          </HeadAnchor>
-        </Link>
-      </XStack>
-      <Separator bg="$color02" opacity={0.25} my="$2" />
-
-      <Link asChild href="/community">
+      <Link asChild href="/takeout">
         <HeadAnchor grid render="a">
-          Community
+          <XStack items="center">
+            <span>Takeout</span>
+            <YStack display={'inline-block' as any} x={6} my={-20} opacity={0.8}>
+              <TakeoutIcon scale={0.65} />
+            </YStack>
+          </XStack>
+          <SizableText size="$2" color="$color9">
+            Starter Kit
+          </SizableText>
+        </HeadAnchor>
+      </Link>
+
+      <Link asChild href="/bento">
+        <HeadAnchor grid render="a">
+          <XStack items="center">
+            <span>Bento</span>
+            <YStack
+              ml={3}
+              display={'inline-block' as any}
+              x={6}
+              y={-1}
+              my={-10}
+              opacity={0.8}
+            >
+              <BentoIcon scale={0.65} />
+            </YStack>
+          </XStack>
+          <SizableText size="$2" color="$color9">
+            Copy-paste UI
+          </SizableText>
         </HeadAnchor>
       </Link>
 
@@ -931,6 +927,14 @@ const HeaderMenuMoreContents = () => {
           <SizableText size="$2" color="$color9">
             Expert Consulting
           </SizableText>
+        </HeadAnchor>
+      </Link>
+
+      <Separator bg="$color02" opacity={0.25} my="$2" />
+
+      <Link asChild href="/community">
+        <HeadAnchor grid render="a">
+          Community
         </HeadAnchor>
       </Link>
 
@@ -970,6 +974,44 @@ const HeaderMenuMoreContents = () => {
         </HeadAnchor>
       </Link>
     </YStack>
+  )
+}
+
+const SeasonChooser = () => {
+  const { name } = useTint()
+
+  return (
+    <XStack flexWrap="wrap" items="center" justify="center">
+      {Object.keys(seasons).map((seasonName) => {
+        const isActive = name === seasonName
+        return (
+          <Circle
+            key={seasonName}
+            size="$4"
+            cursor="pointer"
+            items="center"
+            justify="center"
+            hoverStyle={{
+              bg: '$backgroundHover',
+            }}
+            pressStyle={{
+              bg: '$backgroundPress',
+            }}
+            {...(isActive && {
+              bg: '$color5',
+              hoverStyle: {
+                bg: '$color5',
+              },
+            })}
+            onPress={() => {
+              setTintFamily(seasonName as any)
+            }}
+          >
+            <SizableText size="$5">{seasons[seasonName]}</SizableText>
+          </Circle>
+        )
+      })}
+    </XStack>
   )
 }
 

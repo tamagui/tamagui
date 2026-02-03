@@ -40,7 +40,8 @@ const ToastAnnounceExclude = React.forwardRef<TamaguiElement, ToastAnnounceExclu
 /* -----------------------------------------------------------------------------------------------*/
 
 interface ToastAnnounceProps
-  extends Omit<GetProps<typeof VisuallyHidden>, 'children'>,
+  extends
+    Omit<GetProps<typeof VisuallyHidden>, 'children'>,
     ScopedProps<{ children: string[] }> {}
 
 const ToastAnnounce: React.FC<ToastAnnounceProps> = (

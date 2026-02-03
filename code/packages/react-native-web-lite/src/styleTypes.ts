@@ -19,7 +19,7 @@ type AnimationDirection = 'alternate' | 'alternate-reverse' | 'normal' | 'revers
 
 type AnimationFillMode = 'none' | 'forwards' | 'backwards' | 'both'
 type AnimationIterationCount = number | 'infinite'
-type AnimationKeyframes = string | Object
+type AnimationKeyframes = string | object
 type AnimationPlayState = 'paused' | 'running'
 
 export type AnimationStyles = {

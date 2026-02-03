@@ -7,9 +7,8 @@ package: focus-scope
 ---
 
 <IntroParagraph marginTop={-5} marginBottom={30}>
-  A utility component for managing keyboard focus within a container. Controls
-  focus trapping, auto-focus behavior, and focus cycling for accessible
-  interactive components.
+  A utility component for managing keyboard focus within a container. Controls focus
+  trapping, auto-focus behavior, and focus cycling for accessible interactive components.
 </IntroParagraph>
 
 Note that this is a web-only component, on native it is a no-op.
@@ -213,14 +212,12 @@ export default () => (
     {
       name: 'onMountAutoFocus',
       type: '(event: Event) => void',
-      description:
-        'Event handler called when auto-focusing on mount. Can be prevented',
+      description: 'Event handler called when auto-focusing on mount. Can be prevented',
     },
     {
       name: 'onUnmountAutoFocus',
       type: '(event: Event) => void',
-      description:
-        'Event handler called when auto-focusing on unmount. Can be prevented',
+      description: 'Event handler called when auto-focusing on unmount. Can be prevented',
     },
     {
       name: 'forceUnmount',
@@ -318,9 +315,8 @@ FocusScope follows accessibility best practices:
 - Handles edge cases like disabled elements and hidden content
 
 <Notice>
-  FocusScope is primarily designed for web platforms. On React Native, it
-  renders children without focus management since native platforms handle focus
-  differently.
+  FocusScope is primarily designed for web platforms. On React Native, it renders children
+  without focus management since native platforms handle focus differently.
 </Notice>
 
 ## Examples

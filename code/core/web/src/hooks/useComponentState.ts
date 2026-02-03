@@ -50,10 +50,13 @@ export const useComponentState = (
   // after we get states mount we need to turn off isAnimated for server side
   const hasAnimationProp = Boolean(
     (!isHOC && 'transition' in props) ||
-      (props.style && hasAnimatedStyleValue(props.style))
+    (props.style && hasAnimatedStyleValue(props.style))
   )
 
-  const supportsCSS = animationDriver?.supportsCSS
+  // for backwards compat, derive from supportsCSS if new props not set
+  const inputStyle =
+    animationDriver?.inputStyle ?? (animationDriver?.supportsCSS ? 'css' : 'inline')
+  const supportsCSS = inputStyle === 'css'
   const curStateRef = stateRef.current
 
   if (!needsHydration && hasAnimationProp) {
@@ -244,7 +247,7 @@ export const useComponentState = (
   }
 }
 
-function hasAnimatedStyleValue(style: Object) {
+function hasAnimatedStyleValue(style: object) {
   return Object.keys(style).some((k) => {
     const val = style[k]
     return val && typeof val === 'object' && '_animation' in val

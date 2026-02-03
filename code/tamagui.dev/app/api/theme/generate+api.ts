@@ -61,9 +61,12 @@ export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
 
   try {
-    const { hasTakeoutAccess, hasBentoAccess } = await ensureAccess({ req, supabase })
+    const { hasPro } = await ensureAccess({ supabase, user })
 
-    if (!(hasTakeoutAccess || hasBentoAccess)) {
+    console.info(`[theme/generate] user=${user.email} hasPro=${hasPro}`)
+
+    if (!hasPro) {
+      console.info(`[theme/generate] user=${user.email} denied - no Pro access`)
       throw Response.json(
         {
           error: `Must have Pro account`,
@@ -74,6 +77,11 @@ export default apiRoute(async (req) => {
       )
     }
   } catch (err) {
+    // re-throw Response errors as-is
+    if (err instanceof Response) {
+      throw err
+    }
+    console.error(`[theme/generate] user=${user.email} access check error:`, err)
     throw Response.json(
       {
         error: `Must have Pro account`,

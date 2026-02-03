@@ -6,5 +6,5 @@
  *
  * @noflow
  */
-export declare function validate(obj: Object): void;
+export declare function validate(obj: object): void;
 //# sourceMappingURL=validate.d.ts.map

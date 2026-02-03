@@ -60,7 +60,10 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     if (typeof value === 'string' && value[0] === '$') {
       value = getTokenForKey(key, value, styleProps, styleState)
     } else if (
-      (key === 'boxShadow' || key === 'filter' || key === 'backgroundImage') &&
+      (key === 'boxShadow' ||
+        key === 'textShadow' ||
+        key === 'filter' ||
+        key === 'backgroundImage') &&
       typeof value === 'string' &&
       value.includes('$')
     ) {
@@ -219,7 +222,7 @@ export function getFontFamilyFromNameOrVariable(input: any, conf: TamaguiInterna
 
 const variableToFontNameCache = new WeakMap<Variable, string>()
 
-const resolveTokensAndVariants: StyleResolver<Object> = (
+const resolveTokensAndVariants: StyleResolver<object> = (
   key, // we dont use key assume value is object instead
   value,
   styleProps,

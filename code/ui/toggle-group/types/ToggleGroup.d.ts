@@ -25,18 +25,18 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
             };
         }>> | undefined;
     }, {
-        size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         defaultActiveStyle?: boolean | undefined;
-    }>, `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | "size" | "activeStyle" | "unstyled" | "defaultActiveStyle" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    }>, "theme" | "debug" | "style" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "render" | "hitSlop" | "children" | "target" | "htmlFor" | "asChild" | "dangerouslySetInnerHTML" | "disabled" | "className" | "themeShallow" | "unstyled" | "id" | "group" | "untilMeasured" | "componentName" | "tabIndex" | "role" | "disableOptimization" | "forceStyle" | "disableClassName" | "animatedBy" | "onFocus" | "onBlur" | "onPointerCancel" | "onPointerDown" | "onPointerMove" | "onPointerUp" | "needsOffscreenAlphaCompositing" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "collapsableChildren" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMoveCapture" | "onPointerCancelCapture" | "onPointerDownCapture" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-modal" | "accessibilityLabelledBy" | "aria-labelledby" | "accessibilityLiveRegion" | "aria-live" | "screenReaderFocusable" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "accessibilityShowsLargeContentViewer" | "accessibilityLargeContentTitle" | "accessibilityRespondsToUserInteraction" | keyof import("@tamagui/web").StackStyleBase | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onClick" | "onDoubleClick" | "onContextMenu" | "onWheel" | "onKeyDown" | "onKeyUp" | "onChange" | "onInput" | "onBeforeInput" | "onScroll" | "onCopy" | "onCut" | "onPaste" | "onDrag" | "onDragStart" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDrop" | "size" | "activeStyle" | "defaultActiveStyle" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
                 readonly activeStyle: "style";
             };
         }>> | undefined;
     }> & {
-        size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         defaultActiveStyle?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
@@ -44,15 +44,15 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
                 readonly activeStyle: "style";
             };
         }>> | undefined;
-    }>>> | "value" | "__scopeToggleGroup"> & Omit<import("@tamagui/web").StackNonStyleProps, keyof import("@tamagui/web").StackStyleBase | "size" | "activeStyle" | "unstyled" | "defaultActiveStyle"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    }>>> | "value" | "__scopeToggleGroup"> & Omit<import("@tamagui/web").StackNonStyleProps, "unstyled" | keyof import("@tamagui/web").StackStyleBase | "size" | "activeStyle" | "defaultActiveStyle"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
                 readonly activeStyle: "style";
             };
         }>> | undefined;
     }> & {
-        size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         defaultActiveStyle?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
@@ -67,8 +67,8 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
             };
         }>> | undefined;
     }> & {
-        size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         defaultActiveStyle?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
@@ -83,8 +83,8 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
             };
         }>> | undefined;
     }, {
-        size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         defaultActiveStyle?: boolean | undefined;
     }>> & {
         value: string;
@@ -92,15 +92,15 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
         disabled?: boolean;
     } & {
         __scopeToggleGroup?: string;
-    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & Omit<import("@tamagui/web").StackNonStyleProps, keyof import("@tamagui/web").StackStyleBase | "size" | "activeStyle" | "unstyled" | "defaultActiveStyle"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
+    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & Omit<import("@tamagui/web").StackNonStyleProps, "unstyled" | keyof import("@tamagui/web").StackStyleBase | "size" | "activeStyle" | "defaultActiveStyle"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
             accept: {
                 readonly activeStyle: "style";
             };
         }>> | undefined;
     }> & {
-        size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         defaultActiveStyle?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
@@ -115,8 +115,8 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
             };
         }>> | undefined;
     }> & {
-        size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         defaultActiveStyle?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").ViewProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {}, {}>, {
@@ -131,8 +131,8 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
             };
         }>> | undefined;
     }, {
-        size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         defaultActiveStyle?: boolean | undefined;
     }>> & {
         value: string;
@@ -147,8 +147,8 @@ declare const ToggleGroup: React.ForwardRefExoticComponent<ScopedProps<ToggleGro
             };
         }>> | undefined;
     }, {
-        size?: number | import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: number | import("@tamagui/web").SizeTokens | undefined;
         defaultActiveStyle?: boolean | undefined;
     }, {
         accept: {

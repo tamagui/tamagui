@@ -6,13 +6,12 @@ import { readBodyJSON } from '~/features/api/readBodyJSON'
 import * as APIs from '~/features/studio/api'
 
 export default apiRoute(async (req) => {
-  const { supabase } = await ensureAuth({ req })
+  const { supabase, user } = await ensureAuth({ req })
 
-  await ensureAccess({
-    req,
-    supabase,
-    checkForStudioAccess: true,
-  })
+  const { hasPro } = await ensureAccess({ supabase, user })
+  if (!hasPro) {
+    return Response.json({ error: 'Must have Pro account' }, { status: 403 })
+  }
 
   const query = getQuery(req)
   const procedureName = query.procedure

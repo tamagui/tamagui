@@ -5,18 +5,11 @@ const disableExtraction =
   (process.env.DISABLE_EXTRACTION ? JSON.parse(process.env.DISABLE_EXTRACTION) : true)
 
 export default {
-  /**
-   * these two probably are all you need!
-   **/
   config: './tamagui.config.ts',
   components: ['tamagui'],
-
-  /**
-   * these are mostly not necessary except for advanced cases:
-   **/
+  outputCSS: './public/tamagui.generated.css',
   importsWhitelist: ['constants.js', 'colors.js'],
   disableExtraction,
-
   excludeReactNativeWebExports: [
     'Switch',
     'ProgressBar',

@@ -153,7 +153,7 @@ export const DialogPortalFrame = styled(YStack, {
           height: 'auto',
           // ensure always in frame and right height
           maxHeight: '100vh',
-          position: 'fixed' as any,
+          position: 'fixed',
           // ensure dialog inherits stacking context from portal wrapper
           zIndex: 1,
         },
@@ -171,7 +171,10 @@ const needsRepropagation = needsPortalRepropagation()
 const DialogPortalItem = ({
   context,
   children,
-}: { context: DialogContextValue; children: React.ReactNode }) => {
+}: {
+  context: DialogContextValue
+  children: React.ReactNode
+}) => {
   const themeName = useThemeName()
   const isAdapted = useAdaptIsActive(context.adaptScope)
   const adaptContext = useAdaptContext(context.adaptScope)
@@ -472,12 +475,8 @@ type DialogContentTypeProps = DialogContentImplProps & {
 
 const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
   ({ children, context, ...props }, forwardedRef) => {
-    const contentRef = React.useRef<HTMLDivElement>(null)
-    const composedRefs = useComposedRefs(
-      forwardedRef,
-      context.contentRef,
-      contentRef as any
-    )
+    const contentRef = React.useRef<TamaguiElement>(null)
+    const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
 
     return (
       <DialogContentImpl
@@ -608,11 +607,8 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
       ...contentProps
     } = props
 
-    const contentRef = React.useRef<HTMLDivElement>(
-      // TODO react 19 type workaround
-      undefined as unknown as HTMLDivElement
-    )
-    const composedRefs = useComposedRefs(forwardedRef, contentRef as any)
+    const contentRef = React.useRef<TamaguiElement>(null)
+    const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const isAdapted = useAdaptIsActive(context.adaptScope)
 
     // TODO this will re-parent, ideally we would not change tree structure

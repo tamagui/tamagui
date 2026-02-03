@@ -14,8 +14,8 @@ export function SwitchDemo() {
           <SwitchWithLabel size="$3" defaultChecked />
         </XStack>
         <XStack gap="$3" $xs={{ flexDirection: 'column' }}>
-          <SwitchWithLabel size="$4" activeStyle />
-          <SwitchWithLabel size="$4" activeStyle defaultChecked />
+          <SwitchWithLabel size="$4" />
+          <SwitchWithLabel size="$4" defaultChecked />
         </XStack>
       </YStack>
     </>
@@ -35,15 +35,17 @@ export function SwitchWithLabel(props: {
       </Label>
       <Separator minH={20} vertical />
       <Switch
-        theme="surface2"
         id={id}
+        transition="300ms"
         size={props.size}
         defaultChecked={props.defaultChecked}
-        {...(props.activeStyle && {
-          activeStyle: { backgroundColor: '$green8' },
-        })}
+        // use activeStyle to choose youra active color
+        // default to $backgroundActive unless "unstyled" boolean prop is on
+        activeStyle={{
+          backgroundColor: '$color6',
+        }}
       >
-        <Switch.Thumb theme="accent" transition="quickest" animateOnly={['transform']} />
+        <Switch.Thumb transition="quickest" />
       </Switch>
     </XStack>
   )

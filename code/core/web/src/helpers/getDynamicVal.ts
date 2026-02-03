@@ -41,7 +41,11 @@ export function getDynamicVal({
   scheme,
   val,
   oppositeVal,
-}: { scheme: string; val: string; oppositeVal: string }) {
+}: {
+  scheme: string
+  val: string
+  oppositeVal: string
+}) {
   const oppositeScheme = getOppositeScheme(scheme)
   return {
     dynamic: {

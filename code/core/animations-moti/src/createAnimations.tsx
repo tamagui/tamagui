@@ -77,8 +77,8 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
       const result = getSplitStyles(
         propsRest,
         isText ? Text.staticConfig : View.staticConfig,
-        state?.theme!,
-        state?.name!,
+        state?.theme,
+        state?.name,
         {
           unmounted: false,
         } as any,
@@ -151,6 +151,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     // Text: Animated.Text,
     isReactNative: true,
     supportsCSS: false,
+    inputStyle: 'value',
+    outputStyle: 'inline',
     animations,
     usePresence,
     ResetPresence,

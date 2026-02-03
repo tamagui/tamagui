@@ -56,8 +56,6 @@ export const SwitchFrame = styled(
         false: {
           borderRadius: 1000,
           backgroundColor: '$background',
-          borderWidth: 2,
-          borderColor: '$background',
 
           focusVisibleStyle: {
             outlineColor: '$outlineColor',
@@ -68,9 +66,10 @@ export const SwitchFrame = styled(
       },
 
       size: {
-        '...size': (val) => {
-          const height = getSwitchHeight(val) + 4
-          const width = getSwitchWidth(val) + 4
+        '...size': (val, { props }) => {
+          if (props['unstyled']) return
+          const height = getSwitchHeight(val)
+          const width = getSwitchWidth(val)
           return {
             height,
             minHeight: height,

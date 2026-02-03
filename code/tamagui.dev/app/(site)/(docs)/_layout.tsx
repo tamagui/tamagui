@@ -1,33 +1,22 @@
-import { LinearGradient } from '@tamagui/linear-gradient'
 import { Slot } from 'one'
 import { ScrollView } from 'react-native'
 import { View, XStack, YStack } from 'tamagui'
 import { DocsMenuContents } from '~/features/docs/DocsMenuContents'
-import { useDocsMenu } from '~/features/docs/useDocsMenu'
 import { Footer } from '~/features/site/Footer'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export default function DocsLayout() {
-  const { section } = useDocsMenu()
-
-  const themeName =
-    section === 'core' || section === 'compiler'
-      ? 'red'
-      : section === 'ui'
-        ? 'blue'
-        : null
+  // disabled route-based tint changes
+  const themeName = null
 
   return (
     <ThemeNameEffect theme={themeName} colorKey="$color1">
-      <LinearGradient
+      <YStack
         position="absolute"
-        t={0}
-        r={0}
-        l={0}
-        height="100%"
+        inset={0}
         maxH={1000}
         z={0}
-        colors={['$color1', '$accent12']}
+        backgroundImage="linear-gradient($color4, $colorTransparent)"
       />
 
       <YStack z={-1} fullscreen bg="$accent12" />
@@ -49,9 +38,6 @@ export default function DocsLayout() {
               shrink: 0,
               alignSelf: 'flex-start',
               x: 20,
-            }}
-            $gtLg={{
-              x: 0,
             }}
           >
             <ScrollView showsVerticalScrollIndicator={false}>

@@ -225,7 +225,6 @@ export function createSheet<
             <Frame
               {...props}
               componentName="SheetCover"
-              // biome-ignore lint/correctness/noChildrenProp: <explanation>
               children={null}
               // Don't inherit testID - this is a visual helper element
               testID={undefined}

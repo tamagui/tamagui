@@ -5,34 +5,17 @@
 
 import { Check, ChevronDown } from '@tamagui/lucide-icons'
 import React from 'react'
-import {
-  Adapt,
-  Button,
-  Popover,
-  Select,
-  Sheet,
-  Text,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Adapt, Button, Popover, Select, Sheet, Text, XStack, YStack } from 'tamagui'
 import { getPortal } from '@tamagui/native'
 
-const items = [
-  { name: 'Apple' },
-  { name: 'Pear' },
-  { name: 'Blackberry' },
-]
+const items = [{ name: 'Apple' }, { name: 'Pear' }, { name: 'Blackberry' }]
 
 function SelectWithSheet({ id }: { id: string }) {
   const [val, setVal] = React.useState('apple')
 
   return (
     <Select value={val} onValueChange={setVal} disablePreventBodyScroll>
-      <Select.Trigger
-        testID={`${id}-trigger`}
-        maxWidth={220}
-        iconAfter={ChevronDown}
-      >
+      <Select.Trigger testID={`${id}-trigger`} maxWidth={220} iconAfter={ChevronDown}>
         <Select.Value placeholder="Select a fruit" />
       </Select.Trigger>
 
@@ -153,7 +136,13 @@ export function NativePortalTest() {
             width={12}
             height={12}
             borderRadius={6}
-            bg={portalState.type === 'teleport' ? '$green10' : portalState.type === 'legacy' ? '$yellow10' : '$red10'}
+            bg={
+              portalState.type === 'teleport'
+                ? '$green10'
+                : portalState.type === 'legacy'
+                  ? '$yellow10'
+                  : '$red10'
+            }
           />
           <Text testID="portal-status">
             {portalState.type === 'teleport'

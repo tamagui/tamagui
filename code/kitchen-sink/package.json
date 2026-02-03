@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "2.0.0-1769588848304",
+  "version": "2.0.0-rc.0-1770084657117",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -9,16 +9,16 @@
     "start:web:prod": "NODE_ENV=production webpack serve",
     "start:web:extract": "DISABLE_EXTRACTION=false NODE_ENV=development webpack serve",
     "start": "EXPO_NO_TELEMETRY=true expo start --dev-client --offline",
-    "start:extract": "TAMAGUI_OPTIMIZE_NATIVE_VIEWS=1 TAMAGUI_ENABLE_DYNAMIC_LOAD=1 yarn start",
+    "start:extract": "TAMAGUI_OPTIMIZE_NATIVE_VIEWS=1 TAMAGUI_ENABLE_DYNAMIC_LOAD=1 bun run start",
     "start:prod": "DISABLE_EXTRACTION=false TAMAGUI_ENABLE_DYNAMIC_LOAD=1 expo start --dev-client --offline --no-dev --minify",
     "start:tamagui": "tama dev",
-    "start:android": "yarn start --android",
-    "start:ios": "yarn start --ios",
-    "start:clean": "watchman watch-del-all & rm -r $TMPDIR/metro-cache & yarn start -c",
+    "start:android": "bun run start --android",
+    "start:ios": "bun run start --ios",
+    "start:clean": "watchman watch-del-all & rm -r $TMPDIR/metro-cache & bun run start -c",
     "pod": "./pod-install.sh",
-    "android": "EXPO_NO_TELEMETRY=true yarn expo run:android",
-    "ios": "yarn pod && EXPO_NO_TELEMETRY=true yarn expo run:ios",
-    "ios:prod": "yarn ios --configuration Release",
+    "android": "EXPO_NO_TELEMETRY=true expo run:android",
+    "ios": "bun run pod && EXPO_NO_TELEMETRY=true expo run:ios",
+    "ios:prod": "bun run ios --configuration Release",
     "eject": "EXPO_NO_TELEMETRY=true expo eject",
     "screenshot": "node -r esbuild-register ../../node_modules/.bin/playwright test --config ./playwright-screenshot.config.ts",
     "test:native:ios": "bun run ../packages/native-ci/src/cli.ts test ios --project-root .",
@@ -27,13 +27,13 @@
     "test:web": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:driver": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:debug": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test --debug",
-    "detox:build:ios": "detox build -c ios.sim.debug",
+    "detox:build:ios": "bun run pod && detox build -c ios.sim.debug",
     "detox:build:android": "detox build -c android.emu.debug",
-    "detox:test:ios": "./run-detox.sh ios.sim.debug",
-    "detox:test:android": "./run-detox.sh android.emu.debug",
+    "detox:run:ios": "./run-detox.sh ios",
+    "detox:run:android": "./run-detox.sh android",
     "prod:web": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
-    "test:native": "yarn test:native:ios && yarn test:native:maestro",
-    "test": "yarn test:web && ./run-native-tests.sh"
+    "test:native": "bun run test:native:ios && bun run test:native:maestro",
+    "test": "bun run test:web && ./run-native-tests.sh"
   },
   "dependencies": {
     "@dominicstop/ts-event-emitter": "1.1.0",
@@ -47,7 +47,6 @@
     "@tamagui/animations-motion": "workspace:*",
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/animations-reanimated": "workspace:*",
-    "@tamagui/cli": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/config": "workspace:*",
     "@tamagui/constants": "workspace:*",
@@ -77,7 +76,7 @@
     "expo-linear-gradient": "~15.0.7",
     "expo-linking": "~8.0.8",
     "expo-splash-screen": "~31.0.10",
-    "react": "*",
+    "react": ">=19",
     "react-dom": "*",
     "react-native": "0.81.5",
     "react-native-actions-sheet": "^10.1.2",
@@ -96,10 +95,9 @@
     "sf-symbols-typescript": "^2.2.0",
     "solito": "^4.3.0",
     "tamagui": "workspace:*",
-    "vitest": "^4.0.4",
+    "vitest": "4.0.4",
     "zeego": "^3.0.0"
   },
-  "packageManager": "yarn@4.5.0",
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@expo/fingerprint": "^0.15.3",
@@ -114,7 +112,7 @@
     "html-webpack-plugin": "^5.5.0",
     "jest": "^29",
     "mini-css-extract-plugin": "^2.9.1",
-    "one": "1.2.93",
+    "one": "1.4.8",
     "pngjs": "^7.0.0",
     "pod-install": "^0.3.2",
     "tilg": "0.1.1",
@@ -122,5 +120,6 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "^4.8.1"
-  }
+  },
+  "packageManager": "bun@1.2.22"
 }

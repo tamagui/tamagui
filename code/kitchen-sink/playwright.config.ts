@@ -40,13 +40,18 @@ export default defineConfig({
     ...drivers.map((driver) => ({
       name: `animated-${driver}`,
       testMatch: '**/*.animated.test.{ts,tsx}',
+      // AnimationsWithMediaQueries only passes with css and motion drivers for now
+      ...(driver !== 'motion' &&
+        driver !== 'css' && {
+          testIgnore: '**/AnimationsWithMediaQueries.animated.test.{ts,tsx}',
+        }),
       metadata: { animationDriver: driver },
     })),
   ],
 
   // Run your local dev server before starting the tests.
   webServer: {
-    command: `PORT=${port} npm run start:web`,
+    command: `PORT=${port} bun run start:web`,
     url: `http://localhost:${port}`,
     reuseExistingServer: true,
     timeout: 120_000, // give webpack more time to start

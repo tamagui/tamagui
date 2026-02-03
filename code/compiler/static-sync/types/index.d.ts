@@ -9,17 +9,12 @@
  */
 import type { BabelFileResult } from '@babel/core';
 import type { TamaguiOptions } from '@tamagui/types';
-export type { ExtractedResponse, TamaguiProjectInfo, } from '@tamagui/static';
+export type { ExtractedResponse, TamaguiProjectInfo } from '@tamagui/static';
 export type { TamaguiOptions } from '@tamagui/types';
 export declare const getPragmaOptions: (props: {
     source: string;
     path: string;
 }) => any;
-/**
- * Load Tamagui build configuration synchronously
- * This is only used for loading tamagui.build.ts config
- */
-export declare function loadTamaguiBuildConfigSync(tamaguiOptions: Partial<TamaguiOptions> | undefined): TamaguiOptions;
 /**
  * Extract Tamagui components to className-based CSS for web (synchronous)
  */

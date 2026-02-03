@@ -37,9 +37,7 @@ export default () => (
   <Sheet>
     <Sheet.Overlay />
     <Sheet.Handle />
-    <Sheet.Frame>
-      {/* ...inner contents */}
-    </Sheet.Frame>
+    <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
   </Sheet>
 )
 ```
@@ -126,8 +124,9 @@ Contains every component for the sheet.
       name: 'moveOnKeyboardChange',
       type: 'boolean',
       default: 'false',
-      description: 'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.'
-    }
+      description:
+        'Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible.',
+    },
   ]}
 />
 

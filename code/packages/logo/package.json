@@ -1,64 +1,62 @@
 {
   "name": "@tamagui/logo",
-  "version": "2.0.0-1769588848304",
+  "version": "2.0.0-rc.0-1770084657117",
   "source": "src/index.tsx",
-  "types": "./types/index.d.ts",
-  "type": "module",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "type": "module",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "module": "./dist/esm/index.native.js",
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     },
     "./icon": {
+      "types": "./types/LogoIcon.d.ts",
       "react-native": {
         "module": "./dist/esm/LogoIcon.native.js",
         "import": "./dist/esm/LogoIcon.native.js",
         "require": "./dist/cjs/LogoIcon.native.js"
       },
-      "types": "./types/LogoIcon.d.ts",
       "module": "./dist/esm/LogoIcon.mjs",
       "import": "./dist/esm/LogoIcon.mjs",
       "require": "./dist/cjs/LogoIcon.cjs",
       "default": "./dist/cjs/LogoIcon.native.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
-  },
-  "devDependencies": {
-    "@tamagui/build": "workspace:*",
-    "react": "*"
-  },
-  "peerDependencies": {
-    "react": "*"
-  },
-  "publishConfig": {
-    "access": "public"
   },
   "dependencies": {
     "@tamagui/use-element-layout": "workspace:*",
     "@tamagui/web": "workspace:*",
     "tamagui": "workspace:*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "react": ">=19"
+  },
+  "peerDependencies": {
+    "react": ">=19"
   }
 }

@@ -1,26 +1,17 @@
 {
   "name": "@tamagui/static-worker",
-  "version": "2.0.0-1769588848304",
+  "version": "2.0.0-rc.0-1770084657117",
+  "license": "MIT",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "type": "module",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "test": "vitest run",
-    "test:watch": "vitest"
-  },
+  "type": "module",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -33,7 +24,14 @@
   "publishConfig": {
     "access": "public"
   },
-  "license": "MIT",
+  "scripts": {
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
   "dependencies": {
     "@tamagui/static": "workspace:*",
     "@tamagui/types": "workspace:*",
@@ -41,6 +39,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "vitest": "^4.0.4"
+    "vitest": "4.0.4"
   }
 }

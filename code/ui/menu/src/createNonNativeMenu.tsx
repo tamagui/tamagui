@@ -29,7 +29,7 @@ type ScopedProps<P> = P & { scope?: string }
 
 type MenuContextValue = {
   triggerId: string
-  triggerRef: React.RefObject<HTMLButtonElement>
+  triggerRef: React.RefObject<TamaguiElement | null>
   contentId: string
   open: boolean
   onOpenChange(open: boolean): void
@@ -67,8 +67,10 @@ type MenuPortalProps = React.ComponentPropsWithoutRef<BaseMenu['Portal']>
  * -----------------------------------------------------------------------------------------------*/
 
 type MenuContentElement = React.ElementRef<BaseMenu['Content']>
-interface MenuContentProps
-  extends Omit<React.ComponentPropsWithoutRef<BaseMenu['Content']>, 'onEntryFocus'> {}
+interface MenuContentProps extends Omit<
+  React.ComponentPropsWithoutRef<BaseMenu['Content']>,
+  'onEntryFocus'
+> {}
 
 /* -------------------------------------------------------------------------------------------------
  * MenuGroup
@@ -156,7 +158,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
       modal = true,
       ...rest
     } = props
-    const triggerRef = React.useRef<HTMLButtonElement>(null)
+    const triggerRef = React.useRef<TamaguiElement>(null)
     const [open = false, setOpen] = useControllableState({
       prop: openProp,
       defaultProp: defaultOpen!,
@@ -168,7 +170,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
         scope={scope}
         triggerId={useId()}
         // TODO
-        triggerRef={triggerRef as any}
+        triggerRef={triggerRef}
         contentId={useId()}
         open={open}
         onOpenChange={setOpen}
@@ -226,7 +228,6 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
           componentName={TRIGGER_NAME}
           scope={scope || DROPDOWN_MENU_CONTEXT}
         >
-          {/* biome-ignore lint/a11y/useSemanticElements: intentionally not using button element for styling flexibility */}
           <Comp
             role="button"
             id={context.triggerId}
@@ -236,7 +237,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             data-state={context.open ? 'open' : 'closed'}
             data-disabled={disabled ? '' : undefined}
             aria-disabled={disabled || undefined}
-            ref={composeRefs(forwardedRef, context.triggerRef as any)}
+            ref={composeRefs(forwardedRef, context.triggerRef)}
             {...{
               [pressEvent]: composeEventHandlers(
                 //@ts-ignore
@@ -339,7 +340,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             const isRightClick = originalEvent.button === 2 || ctrlLeftClick
             if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
           })}
-          {...(props.style as Object)}
+          {...(props.style as object)}
         />
       )
     }
@@ -620,7 +621,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
         style={
           isWeb
             ? {
-                ...(props.style as Object),
+                ...(props.style as object),
                 // re-namespace exposed content custom properties
                 // TODO: find a better way to do this, or maybe not do it at all
                 ...({

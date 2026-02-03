@@ -56,8 +56,9 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     allowFontScaling,
     multiline: multilineProp,
     keyboardType: keyboardTypeProp,
-    autoCapitalize,
-    autoCorrect,
+    inputMode: inputModeProp,
+    autoCapitalize: autoCapitalizeProp,
+    autoCorrect: autoCorrectProp,
     autoFocusNative,
     textContentType,
 
@@ -111,10 +112,10 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
   // Convert web type to native props (if not explicitly overridden)
   let secureTextEntry = secureTextEntryProp ?? false
   let keyboardType: RNTextInputProps['keyboardType'] = keyboardTypeProp ?? 'default'
-  let inputMode: RNTextInputProps['inputMode'] = undefined
+  let inputMode: RNTextInputProps['inputMode'] = inputModeProp
 
   // only derive from type if native props weren't explicitly set
-  if (!secureTextEntryProp && !keyboardTypeProp) {
+  if (!secureTextEntryProp && !keyboardTypeProp && !inputModeProp) {
     switch (type) {
       case 'password':
         secureTextEntry = true
@@ -166,6 +167,18 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
   // Determine multiline
   const multiline = multilineProp ?? (render === 'textarea' || (rows && rows > 1))
   const numberOfLines = numberOfLinesProp ?? rows
+
+  // convert web-style autoCorrect string to native boolean
+  const autoCorrect =
+    autoCorrectProp === 'on' ? true : autoCorrectProp === 'off' ? false : autoCorrectProp
+
+  // convert web-style autoCapitalize to native values
+  const autoCapitalize =
+    autoCapitalizeProp === 'on'
+      ? 'sentences'
+      : autoCapitalizeProp === 'off'
+        ? 'none'
+        : autoCapitalizeProp
 
   // Resolve color tokens
   const resolveColor = (color: any) => {

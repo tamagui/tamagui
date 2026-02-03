@@ -19,7 +19,7 @@ test.describe('Popover Focus Scope', () => {
 
     // Wait for auto-focus
     await page.waitForTimeout(300)
-    
+
     const nameInput = popoverContent.getByTestId('popover-name-input')
     await expect(nameInput).toBeFocused()
 
@@ -76,7 +76,7 @@ test.describe('Popover Focus Scope', () => {
     // Tab to the close button
     await page.keyboard.press('Tab')
     await page.waitForTimeout(100)
-    
+
     const closeButton = popoverContent.getByTestId('no-trap-close-button')
     await expect(closeButton).toBeFocused()
 
@@ -84,40 +84,41 @@ test.describe('Popover Focus Scope', () => {
     // Focus might go to browser chrome or other page elements
     await page.keyboard.press('Tab')
     await page.waitForTimeout(200)
-    
+
     // When trapFocus is false, focus is NOT trapped in the popover
     // We can't reliably predict where focus will go as it depends on page structure
     // The important thing is that FocusScope is not preventing the Tab key
-    
-    // Let's verify that trapFocus=false is working by checking that 
+
+    // Let's verify that trapFocus=false is working by checking that
     // we can focus back on the trigger button (outside the popover)
     await page.getByTestId('no-trap-popover-trigger').focus()
     await expect(page.getByTestId('no-trap-popover-trigger')).toBeFocused()
-    
+
     // And we can still focus elements inside the popover
     await input.focus()
     await expect(input).toBeFocused()
-    
-    // The key difference from trapFocus=true is that FocusScope is not 
+
+    // The key difference from trapFocus=true is that FocusScope is not
     // handling the Tab key - it's the browser's default behavior.
     // With trapFocus=false and loop=false, FocusScope doesn't interfere.
-    
+
     // Verify that the popover has the correct setup
     const focusScopeInfo = await page.evaluate(() => {
       const popover = document.querySelector('[data-testid="no-trap-popover-content"]')
       const focusScope = popover?.closest('[data-focus-scope]') || popover?.parentElement
-      
+
       // Check if there are any event handlers that would indicate focus trapping
       const hasKeydownHandler = !!(focusScope as any)?._keydownHandler
-      
+
       return {
         popoverFound: !!popover,
         // If FocusScope was trapping, it would have special attributes or handlers
-        hasFocusScopeAttributes: focusScope?.hasAttribute?.('data-focus-scope-trapped') || false,
-        hasKeydownHandler
+        hasFocusScopeAttributes:
+          focusScope?.hasAttribute?.('data-focus-scope-trapped') || false,
+        hasKeydownHandler,
       }
     })
-    
+
     // FocusScope should not be actively trapping focus
     expect(focusScopeInfo.hasFocusScopeAttributes).toBe(false)
   })
@@ -178,17 +179,17 @@ test.describe('Popover Focus Scope', () => {
     // Check if popover content is already visible (might be open by default)
     let popoverContent = page.locator('[data-testid="basic-popover-content"]')
     const isAlreadyVisible = await popoverContent.isVisible()
-    
+
     if (!isAlreadyVisible) {
       // If not visible, click the trigger
       const trigger = page.getByTestId('basic-popover-trigger')
       await expect(trigger).toBeVisible({ timeout: 5000 })
       await trigger.click()
-      
+
       // Wait a bit for popover animation
       await page.waitForTimeout(500)
     }
-    
+
     await expect(popoverContent).toBeVisible({ timeout: 5000 })
 
     // Wait for auto-focus

@@ -23,7 +23,9 @@ import {
   createStyledContext,
   isWeb,
   Text,
+  Theme,
   useComposedRefs,
+  useThemeName,
   View,
   withStaticProperties,
 } from '@tamagui/web'
@@ -145,8 +147,10 @@ interface MenuContentProps extends MenuRootContentTypeProps {
 /* ---------------------------------------------------------------------------------------------- */
 
 type MenuRootContentTypeElement = MenuContentImplElement
-interface MenuRootContentTypeProps
-  extends Omit<MenuContentImplProps, keyof MenuContentImplPrivateProps> {}
+interface MenuRootContentTypeProps extends Omit<
+  MenuContentImplProps,
+  keyof MenuContentImplPrivateProps
+> {}
 
 /* ---------------------------------------------------------------------------------------------- */
 
@@ -169,10 +173,15 @@ type MenuContentImplPrivateProps = {
    * (default: false)
    */
   trapFocus?: FocusScopeProps['trapped']
+
+  /**
+   * Whether to disable dismissing the menu when the user scrolls outside of it
+   * (default: false, meaning scroll will dismiss on web)
+   */
+  disableDismissOnScroll?: boolean
 }
 interface MenuContentImplProps
-  extends MenuContentImplPrivateProps,
-    Omit<PopperContentProps, 'dir' | 'onPlaced'> {
+  extends MenuContentImplPrivateProps, Omit<PopperContentProps, 'dir' | 'onPlaced'> {
   /**
    * Event handler called when auto-focusing on close.
    * Can be prevented.
@@ -325,15 +334,14 @@ interface MenuSubTriggerProps extends MenuItemImplProps {}
  * -----------------------------------------------------------------------------------------------*/
 
 export type MenuSubContentElement = MenuContentImplElement
-export interface MenuSubContentProps
-  extends Omit<
-    MenuContentImplProps,
-    | keyof MenuContentImplPrivateProps
-    | 'onCloseAutoFocus'
-    | 'onEntryFocus'
-    | 'side'
-    | 'align'
-  > {
+export interface MenuSubContentProps extends Omit<
+  MenuContentImplProps,
+  | keyof MenuContentImplPrivateProps
+  | 'onCloseAutoFocus'
+  | 'onEntryFocus'
+  | 'side'
+  | 'align'
+> {
   /**
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
@@ -513,6 +521,14 @@ export function createBaseMenu({
     const rootContext = useMenuRootContext(scope)
     const popperContext = PopperPrimitive.usePopperContext(scope)
     const menuSubContext = useMenuSubContext(scope)
+    const themeName = useThemeName()
+
+    const themedChildren = (
+      <Theme forceClassName name={themeName}>
+        {children}
+      </Theme>
+    )
+
     const content = needsPortalRepropagation() ? (
       <RepropagateMenuAndMenuRootProvider
         menuContext={menuContext}
@@ -521,10 +537,10 @@ export function createBaseMenu({
         menuSubContext={menuSubContext}
         scope={scope}
       >
-        {children}
+        {themedChildren}
       </RepropagateMenuAndMenuRootProvider>
     ) : (
-      children
+      themedChildren
     )
 
     // For submenus, we need to check if the root menu is still open
@@ -614,7 +630,7 @@ export function createBaseMenu({
         // make sure to only disable pointer events when open
         // this avoids blocking interactions while animating out
         disableOutsidePointerEvents={context.open}
-        disableOutsideScroll
+        disableOutsideScroll={false}
         // When focus is trapped, a `focusout` event may still happen.
         // We make sure we don't trigger our `onDismiss` in such case.
         onFocusOutside={composeEventHandlers(
@@ -664,6 +680,7 @@ export function createBaseMenu({
       onInteractOutside,
       onDismiss,
       disableOutsideScroll,
+      disableDismissOnScroll = false,
       unstyled = process.env.TAMAGUI_HEADLESS === '1',
       ...contentProps
     } = props
@@ -715,6 +732,18 @@ export function createBaseMenu({
     React.useEffect(() => {
       return () => clearTimeout(timerRef.current)
     }, [])
+
+    // dismiss on scroll (web only)
+    React.useEffect(() => {
+      if (!isWeb || disableDismissOnScroll || !context.open) return
+      const handleScroll = () => {
+        onDismiss?.()
+      }
+      window.addEventListener('scroll', handleScroll, { capture: true, passive: true })
+      return () => {
+        window.removeEventListener('scroll', handleScroll, { capture: true })
+      }
+    }, [disableDismissOnScroll, context.open, onDismiss])
 
     // Make sure the whole tree has focus guards as our `MenuContent` may be
     // the last element in the DOM (beacuse of the `Portal`)
@@ -917,24 +946,25 @@ export function createBaseMenu({
         iosIconName,
         ...itemProps
       } = props
-      const ref = React.useRef<HTMLDivElement>(null)
+      const ref = React.useRef<TamaguiElement>(null)
       const rootContext = useMenuRootContext(scope)
       const contentContext = useMenuContentContext(scope)
-      const composedRefs = useComposedRefs(forwardedRef, ref as any)
+      const composedRefs = useComposedRefs(forwardedRef, ref)
       const isPointerDownRef = React.useRef(false)
 
       const handleSelect = () => {
         const menuItem = ref.current
         if (!disabled && menuItem) {
           if (isWeb) {
+            const menuItemEl = menuItem as HTMLElement
             const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
               bubbles: true,
               cancelable: true,
             })
-            menuItem.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
+            menuItemEl.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
               once: true,
             })
-            dispatchDiscreteCustomEvent(menuItem, itemSelectEvent)
+            dispatchDiscreteCustomEvent(menuItemEl, itemSelectEvent)
             if (itemSelectEvent.defaultPrevented) {
               isPointerDownRef.current = false
             } else {

@@ -1,20 +1,21 @@
 {
   "name": "@tamagui/code-to-html",
-  "version": "2.0.0-1769588848304",
+  "version": "2.0.0-rc.0-1770084657117",
   "source": "src/index.ts",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -31,8 +32,5 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

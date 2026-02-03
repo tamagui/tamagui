@@ -38,7 +38,7 @@ const dataExtensions = Object.keys(esbuildLoaderConfig)
   )
   .map((k) => k.slice(1))
 
-export const esbuildIgnoreFilesRegex = new RegExp(`\.(${dataExtensions.join('|')})$`, 'i')
+export const esbuildIgnoreFilesRegex = new RegExp(`.(${dataExtensions.join('|')})$`, 'i')
 
 /**
  * For internal loading of new files

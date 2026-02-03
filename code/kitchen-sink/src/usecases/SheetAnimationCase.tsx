@@ -9,25 +9,13 @@ export function SheetAnimationCase() {
   return (
     <YStack gap="$4" padding="$4" flex={1}>
       {/* Test 1: animation prop only - "quick" */}
-      <SheetTest
-        testId="animation-quick"
-        transition="quick"
-        label='transition="quick"'
-      />
+      <SheetTest testId="animation-quick" transition="quick" label='transition="quick"' />
 
       {/* Test 2: animation prop only - "lazy" */}
-      <SheetTest
-        testId="animation-lazy"
-        transition="lazy"
-        label='transition="lazy"'
-      />
+      <SheetTest testId="animation-lazy" transition="lazy" label='transition="lazy"' />
 
       {/* Test 3: animation prop only - "slow" */}
-      <SheetTest
-        testId="animation-slow"
-        transition="slow"
-        label='transition="slow"'
-      />
+      <SheetTest testId="animation-slow" transition="slow" label='transition="slow"' />
 
       {/* Test 4: transitionConfig prop only */}
       <SheetTest

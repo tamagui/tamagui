@@ -1,8 +1,8 @@
 import { Image } from '@tamagui/image'
 import './_layout.css'
-import './tamagui.css'
+import './tamagui.generated.css'
 
-import { Toaster } from '@tamagui/toast'
+// import { Toaster } from '@tamagui/toast'
 import { SchemeProvider, useUserScheme } from '@vxrn/color-scheme'
 import { LoadProgressBar, SafeAreaView, Slot } from 'one'
 import { Configuration, isWeb, TamaguiProvider, XStack, YStack } from 'tamagui'
@@ -32,7 +32,7 @@ export default function Layout() {
         <TamaguiRootProvider>
           <YStack bg="$color1" minH="100%" gap="$4" flex={1}>
             <SafeAreaView>
-              <Toaster position="top-center" />
+              {/* <Toaster position="top-center" /> */}
 
               <XStack items="center" justify="center" gap="$4" py="$4">
                 <Image src={oneBall} width={42} height={42} />

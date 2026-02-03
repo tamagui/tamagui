@@ -13,9 +13,7 @@ export function CheckboxDisabledOnPress() {
 
   return (
     <YStack padding="$4" gap="$4">
-      <Paragraph>
-        Test: Disabled checkbox should NOT trigger onPress
-      </Paragraph>
+      <Paragraph>Test: Disabled checkbox should NOT trigger onPress</Paragraph>
 
       {/* Enabled checkbox - onPress SHOULD work */}
       <XStack gap="$4" alignItems="center">

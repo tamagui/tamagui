@@ -38,8 +38,13 @@ const exchangeSession = async (supabase: ReturnType<typeof useSupabase>['supabas
 
   if (!code) {
     // no code is our new flow we can remove old one
-    window.opener?.postMessage({ type: 'SUPABASE_AUTH_SUCCESS' }, window.location.origin)
-    window.close()
+    if (window.opener && window.opener !== window) {
+      window.opener.postMessage({ type: 'SUPABASE_AUTH_SUCCESS' }, window.location.origin)
+      window.close()
+    } else {
+      // not a popup, redirect to account
+      window.location.href = '/account'
+    }
     return
   }
 
@@ -51,6 +56,12 @@ const exchangeSession = async (supabase: ReturnType<typeof useSupabase>['supabas
     return
   }
 
-  window.opener?.postMessage({ type: 'SUPABASE_AUTH_SUCCESS' }, window.location.origin)
-  window.close()
+  // if opened as popup, notify opener and close
+  if (window.opener && window.opener !== window) {
+    window.opener.postMessage({ type: 'SUPABASE_AUTH_SUCCESS' }, window.location.origin)
+    window.close()
+  } else {
+    // not a popup, redirect to account
+    window.location.href = '/account'
+  }
 }

@@ -21,7 +21,11 @@ export function ThemeShallowCase() {
       <YStack gap="$2">
         <Text fontWeight="bold">Without themeShallow (normal)</Text>
         <Theme name="dark">
-          <View id={TEST_IDS.themeShallowNormal} backgroundColor="$background" padding="$4">
+          <View
+            id={TEST_IDS.themeShallowNormal}
+            backgroundColor="$background"
+            padding="$4"
+          >
             <Text color="$color">Normal theme - children get dark theme</Text>
             <Theme name="light">
               <Square backgroundColor="$background" size={50}>
@@ -44,7 +48,9 @@ export function ThemeShallowCase() {
             backgroundColor="$background"
             padding="$4"
           >
-            <Text color="$color">Shallow theme - grandchildren reset to parent theme</Text>
+            <Text color="$color">
+              Shallow theme - grandchildren reset to parent theme
+            </Text>
             <Theme name="light">
               <Square backgroundColor="$background" size={50}>
                 <Text color="$color" fontSize="$1">

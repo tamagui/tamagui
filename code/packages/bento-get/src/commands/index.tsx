@@ -21,9 +21,8 @@ import Conf from 'conf'
 
 import { handleGlobalKeyPress } from '../app/handle-global-keypress.js'
 
-// Wrapper function for conditional logging
+// wrapper function for conditional logging
 export const debugLog = (...args: any[]) => {
-  // biome-ignore lint/suspicious/noConsoleLog: This is a debug logging function
   if (process.env.DEBUG === 'true') console.log(...args)
 }
 

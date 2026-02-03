@@ -6,12 +6,17 @@ import { TooltipLabelLarge } from './TooltipLabelLarge'
 
 const Card = styled(YStack, {
   maxH: 120,
-  maxW: 'calc(min(100%, 257px))',
+  width: 'calc(50% - 6px)',
   flex: 1,
   flexBasis: 'auto',
   rounded: '$4',
   borderWidth: 0.5,
   borderColor: '$color4',
+
+  $gtXs: {
+    width: 'auto',
+    maxW: 'calc(min(100%, 257px))',
+  },
 })
 
 export const PromoCards = ({ less }: { less?: boolean }) => {
@@ -21,8 +26,17 @@ export const PromoCards = ({ less }: { less?: boolean }) => {
         <TooltipLabelLarge
           icon={<TakeoutIcon />}
           href="/takeout"
-          title="Takeout"
-          subtitle="Starter kit for making universal apps fast."
+          title="Takeout v1"
+          subtitle="Next.js + Expo with Supabase, tRPC, Vercel."
+        />
+      </Card>
+
+      <Card>
+        <TooltipLabelLarge
+          icon={<TakeoutIcon />}
+          href="/takeout"
+          title="Takeout v2"
+          subtitle="One framework, Zero sync, SST/Uncloud IaC, Agents."
         />
       </Card>
 
@@ -35,7 +49,7 @@ export const PromoCards = ({ less }: { less?: boolean }) => {
             </YStack>
           }
           title="Bento"
-          subtitle="OSS and paid copy-paste components and screens."
+          subtitle="OSS and paid copy-paste components."
         />
       </Card>
 
@@ -45,36 +59,25 @@ export const PromoCards = ({ less }: { less?: boolean }) => {
 
       <Card>
         <TooltipLabelLarge
-          href="/chat"
           icon={
             <YStack>
               <MessageCircle size={20} />
             </YStack>
           }
-          title="Chat"
-          subtitle="Our beta chatbot for answers and generation."
+          title="Discord"
+          subtitle="Chat support in private Discord room."
         />
       </Card>
 
       {!less && (
-        <>
-          <Card>
-            <TooltipLabelLarge
-              icon={null as any}
-              title="#takeout"
-              subtitle="Access to private Discord chat room."
-            />
-          </Card>
-
-          <Card>
-            <TooltipLabelLarge
-              href="/takeout"
-              icon={<Box size={20} />}
-              title="Assets"
-              subtitle="Scripts to easily add fonts and icon packs."
-            />
-          </Card>
-        </>
+        <Card>
+          <TooltipLabelLarge
+            href="/takeout"
+            icon={<Box size={20} />}
+            title="Assets"
+            subtitle="Scripts to easily add fonts and icon packs."
+          />
+        </Card>
       )}
     </>
   )

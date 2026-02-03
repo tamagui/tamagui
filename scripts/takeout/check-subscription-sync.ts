@@ -72,10 +72,11 @@ async function getActiveTakeoutClaims() {
     throw error
   }
 
-  const takeoutClaims = claims?.filter((claim: Claim) => {
-    const data = claim.data as ClaimData
-    return data?.repository_name === 'takeout'
-  }) || []
+  const takeoutClaims =
+    claims?.filter((claim: Claim) => {
+      const data = claim.data as ClaimData
+      return data?.repository_name === 'takeout'
+    }) || []
 
   return takeoutClaims as Claim[]
 }
@@ -88,28 +89,30 @@ async function getActiveStripeSubscriptions() {
 
   console.log(`   Found ${products.data.length} total active products`)
   console.log('   Listing all products:')
-  products.data.forEach(p => {
-    const metadata = Object.keys(p.metadata).length > 0 ? JSON.stringify(p.metadata) : 'none'
+  products.data.forEach((p) => {
+    const metadata =
+      Object.keys(p.metadata).length > 0 ? JSON.stringify(p.metadata) : 'none'
     console.log(`     - ${p.name} (${p.id}) - metadata: ${metadata}`)
   })
 
   // Products that grant early-access team membership:
   // - Tamagui Pro (includes takeout access)
   // - Takeout Stack (includes unistack repo access)
-  const takeoutProducts = products.data.filter(p =>
-    p.name.toLowerCase().includes('takeout') ||
-    p.name.toLowerCase().includes('tamagui pro') ||
-    p.id === 'prod_RlRd2DVrG0frHe' || // Tamagui Pro
-    p.id === 'prod_NzLEazaqBgoKnC' || // Takeout Stack
-    p.metadata?.type === 'repo' ||
-    p.metadata?.includes_takeout === 'true' ||
-    p.metadata?.repository === 'takeout' ||
-    p.metadata?.repository_name === 'takeout' ||
-    p.metadata?.repository_name === 'unistack'
+  const takeoutProducts = products.data.filter(
+    (p) =>
+      p.name.toLowerCase().includes('takeout') ||
+      p.name.toLowerCase().includes('tamagui pro') ||
+      p.id === 'prod_RlRd2DVrG0frHe' || // Tamagui Pro
+      p.id === 'prod_NzLEazaqBgoKnC' || // Takeout Stack
+      p.metadata?.type === 'repo' ||
+      p.metadata?.includes_takeout === 'true' ||
+      p.metadata?.repository === 'takeout' ||
+      p.metadata?.repository_name === 'takeout' ||
+      p.metadata?.repository_name === 'unistack'
   )
 
   console.log(`\n   Identified ${takeoutProducts.length} takeout-related products:`)
-  takeoutProducts.forEach(p => {
+  takeoutProducts.forEach((p) => {
     console.log(`     - ${p.name} (${p.id})`)
   })
 
@@ -139,12 +142,15 @@ async function getActiveStripeSubscriptions() {
   console.log(`   Found ${allSubscriptions.length} total active subscriptions`)
 
   // Create a set of takeout product IDs for faster lookup
-  const takeoutProductIds = new Set(takeoutProducts.map(p => p.id))
+  const takeoutProductIds = new Set(takeoutProducts.map((p) => p.id))
 
   // Filter for takeout subscriptions
-  const takeoutSubscriptions = allSubscriptions.filter(sub => {
-    return sub.items.data.some(item => {
-      const productId = typeof item.price.product === 'string' ? item.price.product : item.price.product.id
+  const takeoutSubscriptions = allSubscriptions.filter((sub) => {
+    return sub.items.data.some((item) => {
+      const productId =
+        typeof item.price.product === 'string'
+          ? item.price.product
+          : item.price.product.id
       return takeoutProductIds.has(productId)
     })
   })
@@ -154,7 +160,7 @@ async function getActiveStripeSubscriptions() {
   return {
     all: allSubscriptions,
     takeout: takeoutSubscriptions,
-    takeoutProducts
+    takeoutProducts,
   }
 }
 
@@ -170,10 +176,10 @@ async function getGitHubTeamMembers() {
       `https://api.github.com/orgs/${ORG_NAME}/teams/${TEAM_SLUG}/members?per_page=100&page=${page}`,
       {
         headers: {
-          'Accept': 'application/vnd.github+json',
-          'Authorization': `Bearer ${GITHUB_ADMIN_TOKEN}`,
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
           'X-GitHub-Api-Version': '2022-11-28',
-        }
+        },
       }
     )
 
@@ -199,10 +205,10 @@ async function getGitHubTeamMembers() {
       `https://api.github.com/orgs/${ORG_NAME}/teams/${TEAM_SLUG}/invitations?per_page=100&page=${invitePage}`,
       {
         headers: {
-          'Accept': 'application/vnd.github+json',
-          'Authorization': `Bearer ${GITHUB_ADMIN_TOKEN}`,
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${GITHUB_ADMIN_TOKEN}`,
           'X-GitHub-Api-Version': '2022-11-28',
-        }
+        },
       }
     )
 
@@ -222,7 +228,7 @@ async function getGitHubTeamMembers() {
   return {
     active: allMembers,
     pending: pendingInvitations,
-    total: allMembers.length + pendingInvitations.length
+    total: allMembers.length + pendingInvitations.length,
   }
 }
 
@@ -236,7 +242,7 @@ async function main() {
     const [claims, stripeData, githubTeam] = await Promise.all([
       getActiveTakeoutClaims(),
       getActiveStripeSubscriptions(),
-      getGitHubTeamMembers()
+      getGitHubTeamMembers(),
     ])
 
     console.log('\n' + '='.repeat(80))
@@ -245,8 +251,8 @@ async function main() {
     console.log(`\n📊 Database Claims:`)
     console.log(`   Active takeout claims: ${claims.length}`)
 
-    const migratedClaims = claims.filter(c =>
-      (c.data as ClaimData)?.team_slug === 'early-access'
+    const migratedClaims = claims.filter(
+      (c) => (c.data as ClaimData)?.team_slug === 'early-access'
     )
     console.log(`   Migrated to team: ${migratedClaims.length}`)
     console.log(`   Not yet migrated: ${claims.length - migratedClaims.length}`)
@@ -269,11 +275,17 @@ async function main() {
     const githubVsClaims = githubTeam.total - claims.length
 
     console.log(`\n🔍 Differences:`)
-    console.log(`   Database claims vs Stripe subscriptions: ${claimsVsStripe > 0 ? '+' : ''}${claimsVsStripe}`)
-    console.log(`   GitHub team vs Database claims: ${githubVsClaims > 0 ? '+' : ''}${githubVsClaims}`)
+    console.log(
+      `   Database claims vs Stripe subscriptions: ${claimsVsStripe > 0 ? '+' : ''}${claimsVsStripe}`
+    )
+    console.log(
+      `   GitHub team vs Database claims: ${githubVsClaims > 0 ? '+' : ''}${githubVsClaims}`
+    )
 
     if (Math.abs(claimsVsStripe) > 5) {
-      console.log('\n⚠️  WARNING: Significant difference between database claims and Stripe subscriptions!')
+      console.log(
+        '\n⚠️  WARNING: Significant difference between database claims and Stripe subscriptions!'
+      )
       console.log('   This could indicate:')
       console.log('   - Subscriptions without claims in the database')
       console.log('   - Claims for cancelled subscriptions')
@@ -281,7 +293,9 @@ async function main() {
     }
 
     if (Math.abs(githubVsClaims) > 5) {
-      console.log('\n⚠️  WARNING: Significant difference between GitHub team and database claims!')
+      console.log(
+        '\n⚠️  WARNING: Significant difference between GitHub team and database claims!'
+      )
       console.log('   This could indicate:')
       console.log('   - Incomplete migration')
       console.log('   - Users manually added/removed from team')
@@ -290,28 +304,36 @@ async function main() {
 
     // List subscription IDs for cross-reference
     console.log(`\n📋 Subscription IDs in database claims:`)
-    const claimSubIds = new Set(claims.map(c => c.subscription_id))
+    const claimSubIds = new Set(claims.map((c) => c.subscription_id))
     console.log(`   Unique subscription IDs: ${claimSubIds.size}`)
 
-    const stripeSubIds = new Set(stripeData.takeout.map(s => s.id))
+    const stripeSubIds = new Set(stripeData.takeout.map((s) => s.id))
     console.log(`\n📋 Active Stripe subscription IDs:`)
     console.log(`   Count: ${stripeSubIds.size}`)
 
     // Find discrepancies
-    const inClaimsNotInStripe = Array.from(claimSubIds).filter(id => !stripeSubIds.has(id))
-    const inStripeNotInClaims = Array.from(stripeSubIds).filter(id => !claimSubIds.has(id))
+    const inClaimsNotInStripe = Array.from(claimSubIds).filter(
+      (id) => !stripeSubIds.has(id)
+    )
+    const inStripeNotInClaims = Array.from(stripeSubIds).filter(
+      (id) => !claimSubIds.has(id)
+    )
 
     if (inClaimsNotInStripe.length > 0) {
-      console.log(`\n⚠️  Subscriptions in database but NOT in Stripe (${inClaimsNotInStripe.length}):`)
-      inClaimsNotInStripe.slice(0, 10).forEach(id => console.log(`   - ${id}`))
+      console.log(
+        `\n⚠️  Subscriptions in database but NOT in Stripe (${inClaimsNotInStripe.length}):`
+      )
+      inClaimsNotInStripe.slice(0, 10).forEach((id) => console.log(`   - ${id}`))
       if (inClaimsNotInStripe.length > 10) {
         console.log(`   ... and ${inClaimsNotInStripe.length - 10} more`)
       }
     }
 
     if (inStripeNotInClaims.length > 0) {
-      console.log(`\n⚠️  Subscriptions in Stripe but NOT in database (${inStripeNotInClaims.length}):`)
-      inStripeNotInClaims.slice(0, 10).forEach(id => console.log(`   - ${id}`))
+      console.log(
+        `\n⚠️  Subscriptions in Stripe but NOT in database (${inStripeNotInClaims.length}):`
+      )
+      inStripeNotInClaims.slice(0, 10).forEach((id) => console.log(`   - ${id}`))
       if (inStripeNotInClaims.length > 10) {
         console.log(`   ... and ${inStripeNotInClaims.length - 10} more`)
       }
@@ -328,10 +350,9 @@ async function main() {
       githubTotal: githubTeam.total,
       differences: {
         claimsVsStripe,
-        githubVsClaims
-      }
+        githubVsClaims,
+      },
     }
-
   } catch (error) {
     console.error('\n❌ Error:', error)
     throw error

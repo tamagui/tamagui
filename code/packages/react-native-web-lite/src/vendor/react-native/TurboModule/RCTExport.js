@@ -8,7 +8,7 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
 /**
  * NOTE: This is React Native specific export type.
@@ -29,9 +29,9 @@
 // eslint-disable-next-line no-unused-vars
 export const RCTExport = {
   getConstants: () => ({}),
-};
+}
 
 // eslint-disable-next-line lint/react-native-modules
 export const TurboModule = {
   ...RCTExport,
-};
+}

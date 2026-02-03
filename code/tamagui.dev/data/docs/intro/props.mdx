@@ -33,30 +33,20 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       required: false,
       type: '(e: GestureResponderEvent) => void',
       description: (
-        <span>
-          Called when a press is released. Works on both web and native.
-        </span>
+        <span>Called when a press is released. Works on both web and native.</span>
       ),
     },
     {
       name: 'onPressIn',
       required: false,
       type: '(e: GestureResponderEvent) => void',
-      description: (
-        <span>
-          Called immediately when a press starts.
-        </span>
-      ),
+      description: <span>Called immediately when a press starts.</span>,
     },
     {
       name: 'onPressOut',
       required: false,
       type: '(e: GestureResponderEvent) => void',
-      description: (
-        <span>
-          Called when a press is released or cancelled.
-        </span>
-      ),
+      description: <span>Called when a press is released or cancelled.</span>,
     },
     {
       name: 'onLongPress',
@@ -64,7 +54,8 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       type: '(e: GestureResponderEvent) => void',
       description: (
         <span>
-          Called when a press is held for longer than <code>delayLongPress</code> (default 500ms).
+          Called when a press is held for longer than <code>delayLongPress</code> (default
+          500ms).
         </span>
       ),
     },
@@ -74,7 +65,8 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       type: '(e: MouseEvent) => void',
       description: (
         <span>
-          <strong>Web Only</strong>: Called when the mouse enters the element. Maps to <code>onMouseEnter</code>.
+          <strong>Web Only</strong>: Called when the mouse enters the element. Maps to{' '}
+          <code>onMouseEnter</code>.
         </span>
       ),
     },
@@ -84,7 +76,8 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       type: '(e: MouseEvent) => void',
       description: (
         <span>
-          <strong>Web Only</strong>: Called when the mouse leaves the element. Maps to <code>onMouseLeave</code>.
+          <strong>Web Only</strong>: Called when the mouse leaves the element. Maps to{' '}
+          <code>onMouseLeave</code>.
         </span>
       ),
     },
@@ -92,21 +85,13 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       name: 'onFocus',
       required: false,
       type: '(e: FocusEvent) => void',
-      description: (
-        <span>
-          Called when the element receives focus.
-        </span>
-      ),
+      description: <span>Called when the element receives focus.</span>,
     },
     {
       name: 'onBlur',
       required: false,
       type: '(e: FocusEvent) => void',
-      description: (
-        <span>
-          Called when the element loses focus.
-        </span>
-      ),
+      description: <span>Called when the element loses focus.</span>,
     },
     {
       name: 'delayPressIn',
@@ -124,7 +109,8 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       type: 'number',
       description: (
         <span>
-          Duration in ms to wait before calling <code>onPressOut</code> after press is released.
+          Duration in ms to wait before calling <code>onPressOut</code> after press is
+          released.
         </span>
       ),
     },
@@ -134,7 +120,8 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       type: 'number',
       description: (
         <span>
-          Duration in ms to wait before calling <code>onLongPress</code>. Default is 500ms.
+          Duration in ms to wait before calling <code>onLongPress</code>. Default is
+          500ms.
         </span>
       ),
     },
@@ -144,7 +131,8 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       type: 'number',
       description: (
         <span>
-          Minimum duration in ms that a press must be held before <code>onPressOut</code> is called.
+          Minimum duration in ms that a press must be held before <code>onPressOut</code>{' '}
+          is called.
         </span>
       ),
     },
@@ -162,11 +150,7 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       name: 'disabled',
       required: false,
       type: 'boolean',
-      description: (
-        <span>
-          Disables all press and hover interactions on the element.
-        </span>
-      ),
+      description: <span>Disables all press and hover interactions on the element.</span>,
     },
     {
       name: 'focusable',
@@ -184,7 +168,9 @@ All Tamagui View-based components have Pressable-like functionality built in. Yo
       type: `number | Insets`,
       description: (
         <span>
-          Extends the pressable area beyond the element bounds. Accepts a number (applies to all sides) or an object with <code>top</code>, <code>bottom</code>, <code>left</code>, <code>right</code>.
+          Extends the pressable area beyond the element bounds. Accepts a number (applies
+          to all sides) or an object with <code>top</code>, <code>bottom</code>,{' '}
+          <code>left</code>, <code>right</code>.
         </span>
       ),
     },
@@ -197,6 +183,19 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
 
 <PropsTable
   data={[
+    {
+      name: 'render',
+      required: false,
+      type: `string | JSX.Element | ((props, state) => JSX.Element)`,
+      description: (
+        <span>
+          Control which element or component is rendered. Accepts an HTML tag name (e.g., <code>"button"</code>, <code>"a"</code>),
+          a JSX element, or a render function receiving props and component state. String render props are compiler-optimized.
+          See <a href="/docs/core/styled#render">styled() render documentation</a> for details.
+        </span>
+      ),
+    },
+
     {
       name: 'transition',
       required: false,
@@ -301,7 +300,7 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
     {
       name: 'disableClassName',
       required: false,
-      type: 'boolean ',
+      type: 'boolean',
       description: (
         <span>
           <strong>Web Only</strong>: Disables className output of styles, instead using only inline styles.
@@ -375,7 +374,7 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
 
       name: 'disableOptimization',
       required: false,
-      type: `boolean `,
+      type: 'boolean',
       description: (
         <span>
           Disable all compiler optimization.
@@ -435,39 +434,51 @@ Use these events alongside style states like `pressStyle`, `hoverStyle`, and `fo
 Tamagui supports all React Native events on all platforms. On web, we also support all standard DOM event handlers:
 
 ### Cross-Platform Events
+
 - `onPress`, `onLongPress`, `onPressIn`, `onPressOut` - Touch/press events that work on both native and web
 
+**Pointer Events** - Modern events that unify mouse, touch, and pen input. On native, these are mapped to touch events with a normalized event shape including `clientX/Y`, `pointerId`, and `pointerType`:
+
+- `onPointerDown`, `onPointerUp`, `onPointerMove`
+- `onPointerEnter`, `onPointerLeave`, `onPointerCancel`
+
+On native, `e.target.setPointerCapture(pointerId)` and `releasePointerCapture(pointerId)` are supported for drag scenarios where you need to receive move events outside the element bounds.
+
 ### Web-Only Events
+
 The following events are available on web and automatically ignored on native:
 
 **Mouse Events**
+
 - `onClick`, `onDoubleClick`, `onContextMenu`
 - `onMouseEnter`, `onMouseLeave`, `onMouseMove`, `onMouseOver`, `onMouseOut`
 - `onMouseDown`, `onMouseUp`
 - `onWheel`
 
 **Keyboard Events**
+
 - `onKeyDown`, `onKeyUp`, `onKeyPress`
 
-**Pointer Events** - Modern events that work across mouse, touch, and pen:
-- `onPointerDown`, `onPointerUp`, `onPointerMove`
-- `onPointerEnter`, `onPointerLeave`, `onPointerCancel`
-
 **Drag and Drop**
+
 - `onDrag`, `onDragStart`, `onDragEnd`
 - `onDragEnter`, `onDragLeave`, `onDragOver`
 - `onDrop`
 
 **Input Events**
+
 - `onChange`, `onInput`, `onBeforeInput`
 
 **Scroll Events**
+
 - `onScroll`
 
 **Clipboard Events**
+
 - `onCopy`, `onCut`, `onPaste`
 
 **Focus Events**
+
 - `onFocus`, `onBlur`
 
 All event handlers receive the standard React synthetic event as their argument.

@@ -5,6 +5,7 @@
 The Sheet + ScrollView gesture coordination on native iOS has limitations because Tamagui uses React Native's built-in `PanResponder`, while iOS's `UIScrollView` gesture recognizers fire BEFORE the RN responder system can claim the gesture.
 
 This causes:
+
 - Minor scroll "flicker" when starting to drag down from scroll top
 - Imperfect handoff between scroll and sheet drag gestures
 
@@ -42,11 +43,13 @@ export default function App() {
 ## Implementation Notes
 
 If `setupGestureHandler()` is called:
+
 - Use `GestureDetector` with `Gesture.Pan()` instead of `PanResponder`
 - Use `simultaneousHandlers` to coordinate with ScrollView's gesture
 - Implement `blockPan` flag pattern from actions-sheet for smooth handoff
 
 If not called:
+
 - Fall back to current `PanResponder` implementation
 - Accept the minor limitations on native
 

@@ -78,7 +78,8 @@ function DialogInstance({ level = 1 }: { level?: number }) {
           <YStack data-testid={`${testId}-dialog-content`} gap="$4">
             <Dialog.Title>Dialog Level {level}</Dialog.Title>
             <Dialog.Description>
-              This is dialog level {level}. {level < 3 ? 'You can open another dialog inside.' : ''}
+              This is dialog level {level}.{' '}
+              {level < 3 ? 'You can open another dialog inside.' : ''}
             </Dialog.Description>
 
             <Paragraph data-testid={`${testId}-dialog-paragraph`}>
@@ -90,7 +91,11 @@ function DialogInstance({ level = 1 }: { level?: number }) {
               {level < 3 && <DialogInstance level={level + 1} />}
 
               <Dialog.Close displayWhenAdapted asChild>
-                <Button theme="blue" aria-label="Close" data-testid={`${testId}-dialog-close`}>
+                <Button
+                  theme="blue"
+                  aria-label="Close"
+                  data-testid={`${testId}-dialog-close`}
+                >
                   Close
                 </Button>
               </Dialog.Close>
@@ -98,7 +103,14 @@ function DialogInstance({ level = 1 }: { level?: number }) {
 
             <Unspaced>
               <Dialog.Close asChild>
-                <Button position="absolute" right="$3" top="$3" size="$2" circular icon={X} />
+                <Button
+                  position="absolute"
+                  right="$3"
+                  top="$3"
+                  size="$2"
+                  circular
+                  icon={X}
+                />
               </Dialog.Close>
             </Unspaced>
           </YStack>

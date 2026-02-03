@@ -90,13 +90,27 @@ describe('extract-tests', () => {
     }
     const styles = getCSSStylesAtomic(style)
 
-    expect(styles.find((x) => x[StyleObjectProperty] === 'flexWrap')?.[StyleObjectValue]).toBe('wrap')
-    expect(styles.find((x) => x[StyleObjectProperty] === 'flexDirection')?.[StyleObjectValue]).toBe('row')
-    expect(styles.find((x) => x[StyleObjectProperty] === 'flexGrow')?.[StyleObjectValue]).toBe(1)
-    expect(styles.find((x) => x[StyleObjectProperty] === 'flexShrink')?.[StyleObjectValue]).toBe(0)
-    expect(styles.find((x) => x[StyleObjectProperty] === 'flexBasis')?.[StyleObjectValue]).toBe('auto')
-    expect(styles.find((x) => x[StyleObjectProperty] === 'alignItems')?.[StyleObjectValue]).toBe('center')
-    expect(styles.find((x) => x[StyleObjectProperty] === 'justifyContent')?.[StyleObjectValue]).toBe('space-between')
+    expect(
+      styles.find((x) => x[StyleObjectProperty] === 'flexWrap')?.[StyleObjectValue]
+    ).toBe('wrap')
+    expect(
+      styles.find((x) => x[StyleObjectProperty] === 'flexDirection')?.[StyleObjectValue]
+    ).toBe('row')
+    expect(
+      styles.find((x) => x[StyleObjectProperty] === 'flexGrow')?.[StyleObjectValue]
+    ).toBe(1)
+    expect(
+      styles.find((x) => x[StyleObjectProperty] === 'flexShrink')?.[StyleObjectValue]
+    ).toBe(0)
+    expect(
+      styles.find((x) => x[StyleObjectProperty] === 'flexBasis')?.[StyleObjectValue]
+    ).toBe('auto')
+    expect(
+      styles.find((x) => x[StyleObjectProperty] === 'alignItems')?.[StyleObjectValue]
+    ).toBe('center')
+    expect(
+      styles.find((x) => x[StyleObjectProperty] === 'justifyContent')?.[StyleObjectValue]
+    ).toBe('space-between')
   })
 
   test('handles flexWrap variations', () => {

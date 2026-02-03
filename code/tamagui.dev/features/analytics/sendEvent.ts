@@ -1,6 +1,6 @@
 import { currentUser } from '../user/useUser'
 
-export const sendEvent = (name: string, props?: Object) => {
+export const sendEvent = (name: string, props?: object) => {
   // @ts-expect-error
   const oneDollarAnalytics = window.stonks?.event
 

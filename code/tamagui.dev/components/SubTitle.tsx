@@ -32,8 +32,8 @@ export const SubTitle = ({ children, ...props }) => {
     <H3
       position="relative"
       maxW="100%"
-      color="$gray9"
-      width="max-content"
+      color="$accent7"
+      width="100%"
       fontFamily="$mono"
       size="$7"
       letterSpacing={-0.25}
@@ -42,6 +42,9 @@ export const SubTitle = ({ children, ...props }) => {
       mb="$3"
       $platform-web={{
         textWrap: 'balance',
+      }}
+      $gtSm={{
+        width: 'max-content',
       }}
       {...props}
     >

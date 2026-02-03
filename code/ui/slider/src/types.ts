@@ -48,7 +48,8 @@ type SliderOrientationPrivateProps = {
 }
 
 interface SliderOrientationProps
-  extends Omit<SliderImplProps, keyof SliderImplPrivateProps | 'orientation'>,
+  extends
+    Omit<SliderImplProps, keyof SliderImplPrivateProps | 'orientation'>,
     SliderOrientationPrivateProps {}
 
 export interface SliderHorizontalProps extends SliderOrientationProps {
@@ -60,10 +61,8 @@ export interface SliderVerticalProps extends SliderOrientationProps {
 }
 
 export interface SliderProps
-  extends Omit<
-      SliderHorizontalProps,
-      keyof SliderOrientationPrivateProps | 'defaultValue'
-    >,
+  extends
+    Omit<SliderHorizontalProps, keyof SliderOrientationPrivateProps | 'defaultValue'>,
     SliderEventProps {
   size?: SizeTokens
   name?: string

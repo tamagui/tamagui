@@ -44,26 +44,40 @@ describe('PressStyleNative (no RNGH)', () => {
   })
 
   it('should render the test case screen', async () => {
-    await waitFor(element(by.id('color-test-pressable'))).toBeVisible().withTimeout(5000)
-    await waitFor(element(by.id('animated-color-test-pressable'))).toBeVisible().withTimeout(5000)
+    await waitFor(element(by.id('color-test-pressable')))
+      .toBeVisible()
+      .withTimeout(5000)
+    await waitFor(element(by.id('animated-color-test-pressable')))
+      .toBeVisible()
+      .withTimeout(5000)
   })
 
   describe('pressStyle without transition', () => {
     it('should fire pressIn and pressOut events on tap', async () => {
-      await waitFor(element(by.id('simple-press-in-count'))).toHaveText('In: 0').withTimeout(5000)
-      await waitFor(element(by.id('simple-press-out-count'))).toHaveText('Out: 0').withTimeout(5000)
+      await waitFor(element(by.id('simple-press-in-count')))
+        .toHaveText('In: 0')
+        .withTimeout(5000)
+      await waitFor(element(by.id('simple-press-out-count')))
+        .toHaveText('Out: 0')
+        .withTimeout(5000)
 
       await element(by.id('color-test-pressable')).tap()
       await new Promise((resolve) => setTimeout(resolve, 300))
 
-      await waitFor(element(by.id('simple-press-in-count'))).toHaveText('In: 1').withTimeout(5000)
-      await waitFor(element(by.id('simple-press-out-count'))).toHaveText('Out: 1').withTimeout(5000)
+      await waitFor(element(by.id('simple-press-in-count')))
+        .toHaveText('In: 1')
+        .withTimeout(5000)
+      await waitFor(element(by.id('simple-press-out-count')))
+        .toHaveText('Out: 1')
+        .withTimeout(5000)
     })
 
     it('should not be stuck in pressed state after tap', async () => {
       await element(by.id('color-test-pressable')).tap()
       await new Promise((resolve) => setTimeout(resolve, 300))
-      await waitFor(element(by.id('simple-is-pressed'))).toHaveText('Pressed: NO').withTimeout(5000)
+      await waitFor(element(by.id('simple-is-pressed')))
+        .toHaveText('Pressed: NO')
+        .withTimeout(5000)
     })
 
     it('should show blue background at rest', async () => {
@@ -76,8 +90,12 @@ describe('PressStyleNative (no RNGH)', () => {
     })
 
     it('should unpress when finger drags off element', async () => {
-      await waitFor(element(by.id('simple-press-in-count'))).toHaveText('In: 0').withTimeout(5000)
-      await waitFor(element(by.id('simple-press-out-count'))).toHaveText('Out: 0').withTimeout(5000)
+      await waitFor(element(by.id('simple-press-in-count')))
+        .toHaveText('In: 0')
+        .withTimeout(5000)
+      await waitFor(element(by.id('simple-press-out-count')))
+        .toHaveText('Out: 0')
+        .withTimeout(5000)
 
       await element(by.id('color-test-pressable')).longPressAndDrag(
         500,
@@ -92,9 +110,15 @@ describe('PressStyleNative (no RNGH)', () => {
 
       await new Promise((resolve) => setTimeout(resolve, 400))
 
-      await waitFor(element(by.id('simple-press-in-count'))).toHaveText('In: 1').withTimeout(5000)
-      await waitFor(element(by.id('simple-press-out-count'))).toHaveText('Out: 1').withTimeout(5000)
-      await waitFor(element(by.id('simple-is-pressed'))).toHaveText('Pressed: NO').withTimeout(5000)
+      await waitFor(element(by.id('simple-press-in-count')))
+        .toHaveText('In: 1')
+        .withTimeout(5000)
+      await waitFor(element(by.id('simple-press-out-count')))
+        .toHaveText('Out: 1')
+        .withTimeout(5000)
+      await waitFor(element(by.id('simple-is-pressed')))
+        .toHaveText('Pressed: NO')
+        .withTimeout(5000)
     })
 
     it('should return to blue after drag off', async () => {
@@ -121,29 +145,42 @@ describe('PressStyleNative (no RNGH)', () => {
 
   describe('pressStyle with transition (animation driver)', () => {
     it('should fire pressIn and pressOut events on animated pressable', async () => {
-      await waitFor(element(by.id('animated-press-in-count'))).toHaveText('In: 0').withTimeout(5000)
-      await waitFor(element(by.id('animated-press-out-count'))).toHaveText('Out: 0').withTimeout(5000)
+      await waitFor(element(by.id('animated-press-in-count')))
+        .toHaveText('In: 0')
+        .withTimeout(5000)
+      await waitFor(element(by.id('animated-press-out-count')))
+        .toHaveText('Out: 0')
+        .withTimeout(5000)
 
       await element(by.id('animated-color-test-pressable')).tap()
       await new Promise((resolve) => setTimeout(resolve, 300))
 
-      await waitFor(element(by.id('animated-press-in-count'))).toHaveText('In: 1').withTimeout(5000)
-      await waitFor(element(by.id('animated-press-out-count'))).toHaveText('Out: 1').withTimeout(5000)
+      await waitFor(element(by.id('animated-press-in-count')))
+        .toHaveText('In: 1')
+        .withTimeout(5000)
+      await waitFor(element(by.id('animated-press-out-count')))
+        .toHaveText('Out: 1')
+        .withTimeout(5000)
     })
 
     it('should not be stuck in pressed state after tap (animated)', async () => {
       await element(by.id('animated-color-test-pressable')).tap()
       await new Promise((resolve) => setTimeout(resolve, 300))
-      await waitFor(element(by.id('animated-is-pressed'))).toHaveText('Pressed: NO').withTimeout(5000)
+      await waitFor(element(by.id('animated-is-pressed')))
+        .toHaveText('Pressed: NO')
+        .withTimeout(5000)
     })
 
     it('should show blue background at rest (animated)', async () => {
       await new Promise((resolve) => setTimeout(resolve, 300))
-      const restScreenshot = await element(by.id('animated-color-test-pressable')).takeScreenshot(
-        'animated-color-test-rest-norngh'
-      )
+      const restScreenshot = await element(
+        by.id('animated-color-test-pressable')
+      ).takeScreenshot('animated-color-test-rest-norngh')
       const color = getDominantColor(restScreenshot)
-      assert.ok(isBlueish(color), `Expected blue at rest (animated), got ${formatRGB(color)}`)
+      assert.ok(
+        isBlueish(color),
+        `Expected blue at rest (animated), got ${formatRGB(color)}`
+      )
     })
   })
 })

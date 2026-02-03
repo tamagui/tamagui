@@ -32,12 +32,7 @@ A single-line text input:
 ```tsx
 import { Input } from 'tamagui'
 
-export default () => (
-  <Input
-    placeholder="Enter text..."
-    size="$4"
-  />
-)
+export default () => <Input placeholder="Enter text..." size="$4" />
 ```
 
 For multi-line text input, use `TextArea`:
@@ -45,12 +40,7 @@ For multi-line text input, use `TextArea`:
 ```tsx
 import { TextArea } from 'tamagui'
 
-export default () => (
-  <TextArea
-    placeholder="Enter long text..."
-    rows={4}
-  />
-)
+export default () => <TextArea placeholder="Enter long text..." rows={4} />
 ```
 
 ## Web-First API
@@ -83,14 +73,14 @@ Use the standard HTML `type` attribute. On native, these automatically map to th
 
 **Cross-platform mapping:**
 
-| Web `type`     | Native behavior                    |
-|----------------|-----------------------------------|
-| `password`     | `secureTextEntry={true}`          |
-| `email`        | `keyboardType="email-address"`    |
-| `tel`          | `keyboardType="phone-pad"`        |
-| `number`       | `keyboardType="numeric"`          |
-| `url`          | `keyboardType="url"`              |
-| `search`       | `inputMode="search"`              |
+| Web `type` | Native behavior                |
+| ---------- | ------------------------------ |
+| `password` | `secureTextEntry={true}`       |
+| `email`    | `keyboardType="email-address"` |
+| `tel`      | `keyboardType="phone-pad"`     |
+| `number`   | `keyboardType="numeric"`       |
+| `url`      | `keyboardType="url"`           |
+| `search`   | `inputMode="search"`           |
 
 ### Enter Key Behavior
 
@@ -178,11 +168,9 @@ Input accepts all Tamagui style props and supports the `size` prop for consisten
   color="$color"
   placeholderTextColor="$placeholderColor"
   selectionColor="$accentColor"
-
   hoverStyle={{
     borderColor: '$borderColorHover',
   }}
-
   focusStyle={{
     borderColor: '$borderColorFocus',
   }}
@@ -214,22 +202,56 @@ Some props only apply on native platforms and have no web equivalent:
 
 For web autofill, use the standard `autoComplete` attribute instead.
 
+## Cross-Platform Text Behavior
+
+These props work on both web and native with automatic value conversion:
+
+### autoCorrect
+
+Controls automatic spelling correction:
+
+```tsx
+// Boolean values (work everywhere)
+<Input autoCorrect={false} />
+<Input autoCorrect={true} />
+
+// String values (web-style, converted on native)
+<Input autoCorrect="off" />
+<Input autoCorrect="on" />
+```
+
+### autoCapitalize
+
+Controls automatic text capitalization. Native values provide more granular control:
+
+```tsx
+// Native-style values (recommended - work everywhere)
+<Input autoCapitalize="none" />        // No capitalization
+<Input autoCapitalize="sentences" />   // Capitalize first letter of sentences
+<Input autoCapitalize="words" />       // Capitalize first letter of each word
+<Input autoCapitalize="characters" />  // Capitalize all characters
+
+// Web-style values (mapped on native)
+<Input autoCapitalize="off" />  // Maps to "none" on native
+<Input autoCapitalize="on" />   // Maps to "sentences" on native
+```
+
 ## Migration from v1
 
 If you're migrating from v1 Input, here are the key changes:
 
-| v1 (React Native style)        | v2 (Web style)                    |
-|-------------------------------|-----------------------------------|
-| `secureTextEntry`             | `type="password"`                 |
-| `keyboardType="email-address"`| `type="email"`                    |
-| `keyboardType="phone-pad"`    | `type="tel"`                      |
-| `keyboardType="numeric"`      | `type="number"`                   |
-| `keyboardType="url"`          | `type="url"`                      |
-| `returnKeyType="search"`      | `enterKeyHint="search"`           |
-| `editable={false}`            | `readOnly` or `disabled`          |
-| `onChangeText`                | `onChange`                        |
-| `multiline`                   | Use `TextArea` or `rows > 1`      |
-| `numberOfLines`               | `rows`                            |
+| v1 (React Native style)        | v2 (Web style)               |
+| ------------------------------ | ---------------------------- |
+| `secureTextEntry`              | `type="password"`            |
+| `keyboardType="email-address"` | `type="email"`               |
+| `keyboardType="phone-pad"`     | `type="tel"`                 |
+| `keyboardType="numeric"`       | `type="number"`              |
+| `keyboardType="url"`           | `type="url"`                 |
+| `returnKeyType="search"`       | `enterKeyHint="search"`      |
+| `editable={false}`             | `readOnly` or `disabled`     |
+| `onChangeText`                 | `onChange`                   |
+| `multiline`                    | Use `TextArea` or `rows > 1` |
+| `numberOfLines`                | `rows`                       |
 
 The v1 props still work but are deprecated. We recommend updating to the web-standard props for better cross-platform consistency.
 

@@ -10,12 +10,7 @@ export function TextNestedInheritance() {
   return (
     <>
       {/* Test 1: numberOfLines should apply to nested text */}
-      <Text
-        testID="parent-number-of-lines"
-        numberOfLines={1}
-        width={200}
-        color="red"
-      >
+      <Text testID="parent-number-of-lines" numberOfLines={1} width={200} color="red">
         This is a very long text that should be truncated with an ellipsis and
         <Text testID="nested-in-number-of-lines" fontWeight="bold">
           {' '}
@@ -43,12 +38,7 @@ export function TextNestedInheritance() {
       </Text>
 
       {/* Test 4: whiteSpace should inherit (important for numberOfLines) */}
-      <Text
-        testID="parent-whitespace"
-        whiteSpace="nowrap"
-        width={200}
-        overflow="hidden"
-      >
+      <Text testID="parent-whitespace" whiteSpace="nowrap" width={200} overflow="hidden">
         Long text that should not wrap because whiteSpace is nowrap and
         <Text testID="nested-whitespace" fontWeight="bold">
           {' '}

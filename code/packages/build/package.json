@@ -1,15 +1,16 @@
 {
   "name": "@tamagui/build",
-  "version": "2.0.0-1769588848304",
+  "version": "2.0.0-rc.0-1770084657117",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "bin": {
     "tamagui-build": "tamagui-build.js",
     "teesx": "./teesx.sh"
   },
-  "scripts": {
-    "test": "vitest --run"
-  },
   "publishConfig": {
     "access": "public"
+  },
+  "scripts": {
+    "test": "vitest --run"
   },
   "dependencies": {
     "@babel/core": "^7.25.2",
@@ -20,7 +21,7 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "baseline-browser-mapping": "^2.9.15",
     "chokidar": "^3.5.2",
-    "esbuild": "^0.25.11",
+    "esbuild": "^0.27.2",
     "esbuild-plugin-es5": "^2.1.1",
     "esbuild-register": "^3.6.0",
     "execa": "^5.0.0",
@@ -30,8 +31,7 @@
     "oxc-transform": "^0.95.0",
     "typescript": "~5.9.2"
   },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "devDependencies": {
-    "vitest": "^4.0.4"
+    "vitest": "4.0.4"
   }
 }

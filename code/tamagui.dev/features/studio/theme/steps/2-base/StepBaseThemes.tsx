@@ -12,6 +12,7 @@ import {
   TooltipGroup,
   TooltipSimple,
   useThemeName,
+  View,
   XStack,
   YStack,
 } from 'tamagui'
@@ -288,25 +289,31 @@ const PaletteView = memo((props: Props) => {
       $group-content-hover={{ opacity: 1 }}
       gap="$4"
       items="center"
-      ml={60}
+      ml={20}
+      flex={1}
     >
-      <XStack justify="space-between" width={160}>
-        <SyncButtons
-          anchorKey="hue"
-          {...props}
-          anchor={anchor}
-          prevAnchor={prevAnchor}
-          nextAnchor={nextAnchor}
-        />
-      </XStack>
-      <XStack justify="space-between" width={100} ml={10}>
-        <SyncButtons
-          anchorKey="sat"
-          {...props}
-          anchor={anchor}
-          prevAnchor={prevAnchor}
-          nextAnchor={nextAnchor}
-        />
+      {/* Spacer to match color circle in ColorPickerContents */}
+      <View width={24} />
+      <XStack gap="$4" flex={1}>
+        <XStack justify="space-between" flex={1}>
+          <SyncButtons
+            anchorKey="hue"
+            {...props}
+            anchor={anchor}
+            prevAnchor={prevAnchor}
+            nextAnchor={nextAnchor}
+          />
+        </XStack>
+        <XStack justify="space-between" flex={1}>
+          <SyncButtons
+            anchorKey="sat"
+            {...props}
+            anchor={anchor}
+            prevAnchor={prevAnchor}
+            nextAnchor={nextAnchor}
+          />
+        </XStack>
+        <View flex={1} />
       </XStack>
     </XStack>
   )
@@ -321,9 +328,7 @@ const PaletteView = memo((props: Props) => {
           shouldDim={lightDarkSynced && isDark}
         />
 
-        <YStack mt={-18} mb={-8}>
-          {syncButtons}
-        </YStack>
+        <YStack py="$2">{syncButtons}</YStack>
 
         <XLabeledItem label={<SizableText size="$4">Light</SizableText>}>
           <StepThemeHoverablePalette
@@ -397,9 +402,7 @@ const PaletteView = memo((props: Props) => {
           />
         </XLabeledItem>
 
-        <YStack mt={-10} mb={-18}>
-          {syncButtons}
-        </YStack>
+        <YStack py="$2">{syncButtons}</YStack>
 
         <ColorPickerContents
           isActive={isDark}
@@ -527,7 +530,11 @@ const DataItem = ({
   labelTop,
   labelBottom,
   width,
-}: { labelTop: any; labelBottom: any; width?: any }) => {
+}: {
+  labelTop: any
+  labelBottom: any
+  width?: any
+}) => {
   return (
     <YStack width={width} maxW={width}>
       <SizableText lineHeight="$1" select="none">

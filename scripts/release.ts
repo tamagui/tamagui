@@ -1,8 +1,7 @@
+import fs, { ensureDir, writeJSON } from 'fs-extra'
 import * as proc from 'node:child_process'
-import { join } from 'node:path'
+import path, { join } from 'node:path'
 import { promisify } from 'node:util'
-import path from 'node:path'
-import fs, { writeJSON, ensureDir } from 'fs-extra'
 import pMap from 'p-map'
 import prompts from 'prompts'
 
@@ -62,13 +61,20 @@ const nextVersion = (() => {
     return `${curVersion.replace(/(-\d+)+$/, '')}-${Date.now()}`
   }
 
-  // RC mode: bump existing RC or will prompt for new RC version
+  // RC mode: bump existing RC or compute new RC version
   if (isRC) {
     if (isCurrentRC) {
       // Already an RC, bump the RC number
       return `${currentRCBase}-rc.${currentRCNumber + 1}`
     }
-    // Not an RC yet, return null - will be set via prompt
+    // Not an RC yet - compute the RC version
+    const baseVersion = curVersion.replace(/-.*$/, '') // strip any existing prerelease
+    const isCanaryOfCurrent = /-\d+$/.test(curVersion)
+    if (isCanaryOfCurrent) {
+      // canary of X.Y.Z -> X.Y.Z-rc.0
+      return `${baseVersion}-rc.0`
+    }
+    // otherwise return null - will be set via prompt
     return null
   }
 
@@ -100,6 +106,72 @@ if (!skipVersion) {
 
 const isMain = (await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() === 'main'
 
+async function getWorkspacePackages() {
+  const rootPkg = await fs.readJSON('package.json')
+  const workspaceGlobs = rootPkg.workspaces || []
+  const packages: { name: string; location: string }[] = []
+
+  for (const pattern of workspaceGlobs) {
+    // normalize pattern: remove leading ./ and handle glob patterns
+    const normalizedPattern = pattern.replace(/^\.\//, '')
+
+    if (normalizedPattern.includes('**')) {
+      // for **/* patterns, we need to scan subdirectories
+      // e.g., code/ui/**/* -> scan all subdirs of code/ui/
+      const baseDir = normalizedPattern.split('**')[0].replace(/\/$/, '')
+      try {
+        const entries = await fs.readdir(baseDir, { withFileTypes: true })
+        for (const entry of entries) {
+          if (!entry.isDirectory()) continue
+          const pkgPath = path.join(baseDir, entry.name, 'package.json')
+          try {
+            const pkg = await fs.readJSON(pkgPath)
+            if (pkg.name) {
+              packages.push({ name: pkg.name, location: path.join(baseDir, entry.name) })
+            }
+          } catch {
+            // skip directories without package.json
+          }
+        }
+      } catch {
+        // skip patterns that don't resolve
+      }
+    } else if (normalizedPattern.includes('*')) {
+      // for single * patterns, scan the parent directory
+      const baseDir = normalizedPattern.replace(/\/\*$/, '')
+      try {
+        const entries = await fs.readdir(baseDir, { withFileTypes: true })
+        for (const entry of entries) {
+          if (!entry.isDirectory()) continue
+          const pkgPath = path.join(baseDir, entry.name, 'package.json')
+          try {
+            const pkg = await fs.readJSON(pkgPath)
+            if (pkg.name) {
+              packages.push({ name: pkg.name, location: path.join(baseDir, entry.name) })
+            }
+          } catch {
+            // skip directories without package.json
+          }
+        }
+      } catch {
+        // skip patterns that don't resolve
+      }
+    } else {
+      // exact path - just check if it has a package.json
+      try {
+        const pkg = await fs.readJSON(path.join(normalizedPattern, 'package.json'))
+        if (pkg.name) {
+          packages.push({ name: pkg.name, location: normalizedPattern })
+        }
+      } catch {
+        // skip if no package.json
+      }
+    }
+  }
+
+  return packages
+}
+
 async function run() {
   try {
     let version = curVersion
@@ -115,13 +187,7 @@ async function run() {
       }
     }
 
-    const workspaces = (await exec(`yarn workspaces list --json`)).stdout
-      .trim()
-      .split('\n')
-    const packagePaths = workspaces.map((p) => JSON.parse(p)) as {
-      name: string
-      location: string
-    }[]
+    const packagePaths = await getWorkspacePackages()
 
     const allPackageJsons = (
       await Promise.all(
@@ -209,11 +275,31 @@ async function run() {
         const baseVersion = curVersion.replace(/-.*$/, '') // strip any existing prerelease
         const [major, minor, patch] = baseVersion.split('.').map(Number)
 
-        const rcChoices = [
-          { title: `${major}.${minor + 1}.0-rc.1 (next minor)`, value: `${major}.${minor + 1}.0-rc.1` },
-          { title: `${major}.${minor}.${patch + 1}-rc.1 (next patch)`, value: `${major}.${minor}.${patch + 1}-rc.1` },
-          { title: `${major + 1}.0.0-rc.1 (next major)`, value: `${major + 1}.0.0-rc.1` },
-        ]
+        // check if current version is a canary (has prerelease suffix like -1234567)
+        const isCanaryOfCurrent = /-\d+$/.test(curVersion)
+
+        const rcChoices = isCanaryOfCurrent
+          ? [
+              // canary of X.Y.Z -> offer X.Y.Z-rc.0 as the RC
+              {
+                title: `${major}.${minor}.${patch}-rc.0`,
+                value: `${major}.${minor}.${patch}-rc.0`,
+              },
+            ]
+          : [
+              {
+                title: `${major}.${minor + 1}.0-rc.0 (next minor)`,
+                value: `${major}.${minor + 1}.0-rc.0`,
+              },
+              {
+                title: `${major}.${minor}.${patch + 1}-rc.0 (next patch)`,
+                value: `${major}.${minor}.${patch + 1}-rc.0`,
+              },
+              {
+                title: `${major + 1}.0.0-rc.0 (next major)`,
+                value: `${major + 1}.0.0-rc.0`,
+              },
+            ]
 
         const rcAnswer = await prompts({
           type: 'select',
@@ -239,16 +325,16 @@ async function run() {
     console.info('install and build')
 
     if (!rePublish && !shouldFinish) {
-      await spawnify(`yarn install`)
+      await spawnify(`bun install`)
     }
 
     // build from fresh
     if (!skipBuild && !shouldFinish) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
       if (buildFast) {
-        await spawnify(`yarn build`)
+        await spawnify(`bun run build`)
       } else {
-        await spawnify(`yarn build:force`)
+        await spawnify(`bun run build:force`)
       }
       await checkDistDirs()
     }
@@ -259,14 +345,14 @@ async function run() {
         console.info('run checks')
         await Promise.all([
           spawnify(`chmod ug+x ./node_modules/.bin/tamagui`),
-          spawnify(`yarn check`),
-          spawnify(`yarn lint`),
+          spawnify(`bun run check`),
+          spawnify(`bun run lint`),
         ])
-        await spawnify(`yarn typecheck`)
+        await spawnify(`bun run typecheck`)
       }
       if (!skipTest) {
         console.info('run tests')
-        await spawnify(`yarn test`, {
+        await spawnify(`bun run test`, {
           env: {
             ...process.env,
             ...(skipNativeTests ? { SKIP_NATIVE_TESTS: 'true' } : {}),
@@ -324,20 +410,50 @@ async function run() {
         packageJsons,
         async ({ name, cwd }) => {
           const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
-          const publishTag = canary || isCanaryVersion ? 'canary' : version.includes('-rc.') ? 'rc' : undefined
-          const publishOptions = [publishTag && `--tag ${publishTag}`].filter(Boolean).join(' ')
+          const publishTag = canary || isCanaryVersion ? 'canary' : undefined
+          const publishOptions = [publishTag && `--tag ${publishTag}`]
+            .filter(Boolean)
+            .join(' ')
 
-          const absolutePath = `${tmpDir}/${name.replace('/', '_')}-package.tmp.tgz`
-          await spawnify(`yarn pack --out ${absolutePath}`, {
-            cwd,
+          // Copy to temp directory and replace workspace:* with versions
+          const tmpPackageDir = join(tmpDir, name.replace('/', '_'))
+          await fs.copy(cwd, tmpPackageDir, {
+            filter: (src) => {
+              // exclude node_modules to avoid symlink issues
+              return !src.includes('node_modules')
+            },
+          })
+
+          // replace workspace:* with version in temp copy
+          const pkgJsonPath = join(tmpPackageDir, 'package.json')
+          const pkgJson = await fs.readJSON(pkgJsonPath)
+          for (const field of [
+            'dependencies',
+            'devDependencies',
+            'optionalDependencies',
+            'peerDependencies',
+          ]) {
+            if (!pkgJson[field]) continue
+            for (const depName in pkgJson[field]) {
+              if (pkgJson[field][depName].startsWith('workspace:')) {
+                pkgJson[field][depName] = version
+              }
+            }
+          }
+          await writeJSON(pkgJsonPath, pkgJson, { spaces: 2 })
+
+          const filename = `${name.replace('/', '_')}-package.tmp.tgz`
+          const absolutePath = `${tmpDir}/${filename}`
+          await spawnify(`npm pack --pack-destination ${tmpDir}`, {
+            cwd: tmpPackageDir,
             avoidLog: true,
           })
 
-          const publishCommand = [
-            'npm publish',
-            absolutePath, // produced by `yarn pack`
-            publishOptions,
-          ]
+          // npm pack creates a file with the package name, rename it to our expected name
+          const npmFilename = `${name.replace('@', '').replace('/', '-')}-${version}.tgz`
+          await fs.rename(join(tmpDir, npmFilename), absolutePath)
+
+          const publishCommand = ['npm publish', absolutePath, publishOptions]
             .filter(Boolean)
             .join(' ')
 
@@ -361,7 +477,7 @@ async function run() {
     if (!skipFinish) {
       // then git tag, commit, push
       if (!shouldFinish) {
-        await spawnify(`yarn install`)
+        await spawnify(`bun install`)
       }
 
       const tagPrefix = canary ? 'canary' : 'v'
@@ -375,15 +491,14 @@ async function run() {
       if (!canary && !skipStarters) {
         const starterFreeDir = join(process.cwd(), '../starter-free')
         if (!dirty) {
-          const starterBranch = (await exec(`git rev-parse --abbrev-ref HEAD`, { cwd: starterFreeDir })).stdout.trim()
-          await spawnify(`git pull --rebase origin ${starterBranch}`, { cwd: starterFreeDir })
+          await spawnify(`git pull --rebase origin HEAD`, { cwd: starterFreeDir })
         }
 
-        await spawnify(`yarn upgrade:starters`)
+        await spawnify(`bun run upgrade:starters`)
 
         if (!shouldFinish) {
-          // Run yarn test in starter-free directory
-          await spawnify(`yarn test`, { cwd: starterFreeDir })
+          // Run bun test in starter-free directory
+          await spawnify(`bun run test`, { cwd: starterFreeDir })
           await finishAndCommit(starterFreeDir)
         }
       }
@@ -400,7 +515,9 @@ async function run() {
 
           if (!dirty) {
             // pull once more before pushing so if there was a push in interim we get it
-            const currentBranch = (await exec(`git rev-parse --abbrev-ref HEAD`, { cwd })).stdout.trim()
+            const currentBranch = (
+              await exec(`git rev-parse --abbrev-ref HEAD`, { cwd })
+            ).stdout.trim()
             await spawnify(`git pull --rebase origin ${currentBranch}`, { cwd })
           }
 

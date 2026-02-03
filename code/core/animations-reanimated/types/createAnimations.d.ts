@@ -12,6 +12,8 @@ type TimingConfig = {
 } & Partial<WithTimingConfig>;
 /** Combined animation configuration type */
 export type TransitionConfig = SpringConfig | TimingConfig;
+/** Options for createAnimations (reserved for future use) */
+export type CreateAnimationsOptions = {};
 /**
 * Create a Reanimated-based animation driver for Tamagui.
 *
@@ -29,6 +31,7 @@ export type TransitionConfig = SpringConfig | TimingConfig;
 *   fast: { type: 'spring', damping: 20, stiffness: 250 },
 *   slow: { type: 'timing', duration: 500 },
 * })
+*
 * ```
 */
 export declare function createAnimations<A extends Record<string, TransitionConfig>>(animationsConfig: A): AnimationDriver<A>;

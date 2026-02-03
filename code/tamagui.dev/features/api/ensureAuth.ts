@@ -1,5 +1,6 @@
 import type { User } from '@supabase/supabase-js'
 import { redirect } from 'one'
+import { supabaseAdmin } from '../auth/supabaseAdmin'
 import { setupCors } from './cors'
 import { getSupabaseServerClient } from './getSupabaseServerClient'
 
@@ -23,12 +24,8 @@ export const ensureAuth = async ({
 
   if (authHeader?.startsWith('Bearer ')) {
     const token = authHeader.slice(7)
-    // Set the session so RLS policies work with auth.uid()
-    await supabase.auth.setSession({
-      access_token: token,
-      refresh_token: '',
-    })
-    const { data, error } = await supabase.auth.getUser()
+    // Validate the JWT directly with Supabase
+    const { data, error } = await supabase.auth.getUser(token)
     if (!error && data.user) {
       user = data.user
     }
@@ -78,8 +75,8 @@ export const ensureAuth = async ({
 
     console.info(`Update user info`, updateData.email)
 
-    // fill in info
-    const result = await supabase
+    // use supabaseAdmin to bypass RLS - server-side client doesn't have proper session for RLS
+    const result = await supabaseAdmin
       .from('users_private')
       .upsert(updateData)
       .eq('id', user.id)

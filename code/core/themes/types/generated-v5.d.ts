@@ -80,6 +80,16 @@ type Theme = {
     shadow4: string;
     shadow5: string;
     shadow6: string;
+    shadow7: string;
+    shadow8: string;
+    highlight1: string;
+    highlight2: string;
+    highlight3: string;
+    highlight4: string;
+    highlight5: string;
+    highlight6: string;
+    highlight7: string;
+    highlight8: string;
     shadowColor: string;
     gray1: string;
     gray2: string;

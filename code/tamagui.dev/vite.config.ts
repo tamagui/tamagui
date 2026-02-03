@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs'
 import { execSync } from 'node:child_process'
+import { createRequire } from 'node:module'
 import { resolve as pathResolve } from 'node:path'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
@@ -25,13 +26,13 @@ if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
   console.info('')
   console.info('Building tamagui packages (dist not found)...')
   try {
-    execSync('yarn build:js', {
+    execSync('bun run build:js', {
       cwd: pathResolve(import.meta.dirname, '../..'),
       stdio: 'inherit',
     })
     console.info('Build complete!')
   } catch (e) {
-    console.error('Build failed. You may need to run `yarn build` from the repo root.')
+    console.error('Build failed. You may need to run `bun run build` from the repo root.')
     throw e
   }
 }
@@ -46,12 +47,10 @@ if (hasBento) {
   console.info('Using ../bento')
 }
 
+// use createRequire instead of import.meta.resolve for bun compatibility in vite config
+const require = createRequire(import.meta.url)
 const resolve = (path: string) => {
-  const resolved = import.meta.resolve?.(path)
-  if (!resolved) {
-    throw new Error(`Not found: ${path}, maybe on wrong node version`)
-  }
-  return resolved.replace('file:/', '')
+  return require.resolve(path)
 }
 
 const include = [
@@ -223,13 +222,11 @@ export const LocationNotification = BentoComponentStub
         }
       },
     },
-    tamaguiPlugin({
+    tamaguiPlugin(
       // see tamagui.build.ts
-      optimize: process.env.NODE_ENV === 'production',
-    }),
+    ),
 
     one({
-      devtools: false,
       react: {
         compiler: process.env.NODE_ENV === 'production',
       },
@@ -297,21 +294,7 @@ export const LocationNotification = BentoComponentStub
       web: {
         experimental_scriptLoading: 'after-lcp-aggressive',
         redirects: [
-          {
-            source: '/llms.txt',
-            destination: '/api/llms',
-            permanent: false,
-          },
-          {
-            source: '/llms-full.txt',
-            destination: '/api/llms-full',
-            permanent: false,
-          },
-          {
-            source: '/docs.txt',
-            destination: '/api/llms-full',
-            permanent: false,
-          },
+          // llms.txt, llms-full.txt, docs.txt are handled by middleware directly
           {
             source: '/account/subscriptions',
             destination: '/account',
@@ -363,5 +346,3 @@ export const LocationNotification = BentoComponentStub
       : []),
   ],
 } satisfies UserConfig
-
-console.warn('done')

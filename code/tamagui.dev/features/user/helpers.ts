@@ -8,7 +8,7 @@ import { getArray } from '~/helpers/getArray'
 import { getSingle } from '~/helpers/getSingle'
 import { ProductName, ProductSlug, SubscriptionStatus } from '~/shared/types/subscription'
 import { supabaseAdmin } from '../auth/supabaseAdmin'
-import { hasBentoAccess } from '../bento/hasBentoAccess'
+import { hasProAccess } from '../bento/hasProAccess'
 import { tiersPriority } from '../stripe/tiers'
 import { ThemeSuiteSchema } from '../studio/theme/getTheme'
 import type { ThemeSuiteItemData } from '../studio/theme/types'
@@ -169,6 +169,15 @@ function checkAccessToProduct(
   subscriptions: Awaited<ReturnType<typeof getSubscriptions>>,
   ownedProducts: Awaited<ReturnType<typeof getOwnedProducts>>
 ) {
+  // Valid Pro products that grant access
+  const validProProducts = [
+    ProductName.TamaguiPro,
+    ProductName.TamaguiProV2,
+    ProductName.TamaguiProV2Upgrade,
+    ProductName.TamaguiSupportDirect,
+    ProductName.TamaguiSupportSponsor,
+  ]
+
   const hasActiveSubscription = subscriptions.some(
     (subscription) =>
       (subscription.status === SubscriptionStatus.Trialing ||
@@ -177,7 +186,7 @@ function checkAccessToProduct(
         (item) => getSingle(item.price.product?.metadata?.['slug']) === productSlug
       ) ||
         subscription.subscription_items.some((item) =>
-          item.price.product?.name?.includes(ProductName.TamaguiPro)
+          validProProducts.some((product) => item.price.product?.name?.includes(product))
         ))
   )
   if (hasActiveSubscription) {
@@ -213,59 +222,32 @@ export async function getUserAccessInfo(
 ) {
   if (!user) {
     return {
-      hasBentoAccess: false,
-      hasTakeoutAccess: false,
-      hasStudioAccess: false,
+      hasPro: false,
       teamsWithAccess: [],
     }
   }
 
-  const [subscriptions, ownedProducts, bentoAccess] = await Promise.all([
-    getSubscriptions(user.id),
-    getOwnedProducts(supabase),
-    hasBentoAccess(user.id),
+  const [proAccess, teamsResult] = await Promise.all([
+    hasProAccess(user.id),
+    supabase.from('teams').select('id, name, is_active'),
   ])
 
-  const takeoutAccessInfo = checkAccessToProduct(
-    ProductSlug.UniversalStarter,
-    subscriptions,
-    ownedProducts
-  )
-
-  const teamsResult = await supabase.from('teams').select('id, name, is_active')
   if (teamsResult.error) {
     throw teamsResult.error
   }
-  const teams = getArray(teamsResult.data)
 
+  const teams = getArray(teamsResult.data)
   const teamsWithAccess = teams.filter(
     (team) =>
       team.is_active || whitelistGithubUsernames.some((name) => team.name === name)
   )
-
   const hasTeamAccess = teamsWithAccess.length > 0
 
-  // Determine if the user is directly whitelisted for Bento via their GitHub username or email
-  let isUserDirectlyBentoWhitelisted = false
-  const githubUsername = user.user_metadata?.user_name // GitHub username from user metadata
-  const userEmail = user.email // User's email
-
-  // Check if GitHub username is in the Bento whitelist
-  if (githubUsername && whitelistBentoUsernames.has(githubUsername)) {
-    isUserDirectlyBentoWhitelisted = true
-  } else if (userEmail && whitelistBentoUsernames.has(userEmail)) {
-    // If GitHub username isn't whitelisted or not present, check email
-    isUserDirectlyBentoWhitelisted = true
-  }
-
-  const hasStudioAccess =
-    takeoutAccessInfo.access || // if the user has purchased takeout, we give them studio access
-    hasTeamAccess // if the user is a member of at least one team (this could be a personal team too - so basically a personal sponsorship) with active sponsorship, we give them studio access
+  // user has Pro if they have subscription/legacy access OR team sponsorship access
+  const hasPro = proAccess || hasTeamAccess
 
   return {
-    hasBentoAccess: isUserDirectlyBentoWhitelisted || bentoAccess,
-    hasTakeoutAccess: takeoutAccessInfo.access,
-    hasStudioAccess,
+    hasPro,
     teamsWithAccess,
   }
 }

@@ -1,20 +1,21 @@
-import { normalizeTransition, getEffectiveAnimation } from '@tamagui/animation-helpers'
+import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
+import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimatedNumberStrategy,
   type AnimationDriver,
-  type TransitionProp,
   fixStyles,
+  getConfig,
   getSplitStyles,
   hooks,
   styleToCSS,
   Text,
+  type TransitionProp,
   type UniversalAnimatedNumber,
   useComposedRefs,
   useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
 } from '@tamagui/web'
-import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import {
   type AnimationOptions,
   type AnimationPlaybackControlsWithThen,
@@ -63,6 +64,10 @@ type AnimationProps = {
   animationOptions?: AnimationOptions
 }
 
+// track if we're still in the initial hydration phase
+// TODO didnt realize claude took the wrong one here - this should uust be isComponentHydrating ideally
+// but this is fine for beta motion driver rc.0 fix in rc.1
+
 export function createAnimations<A extends Record<string, AnimationConfig>>(
   animationsProp: A
 ): AnimationDriver<A> {
@@ -87,19 +92,33 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     }
   }
 
+  let isHydratingGlobal: boolean | undefined
+  const hydratingComponents = new Set<Function>()
+
   return {
     // this is only used by Sheet basically for now to pass result of useAnimatedStyle to
     View: MotionView,
     Text: MotionText,
     isReactNative: false,
     supportsCSS: true,
+    inputStyle: 'css',
+    outputStyle: 'inline',
     needsWebStyles: true,
     avoidReRenders: true,
     animations,
     usePresence,
     ResetPresence,
 
+    onMount() {
+      isHydratingGlobal = false
+      hydratingComponents.forEach((cb) => cb())
+    },
+
     useAnimations: (animationProps) => {
+      if (isHydratingGlobal === undefined && !getConfig().settings.disableSSR) {
+        isHydratingGlobal = true
+      }
+
       const { props, style, componentState, stateRef, useStyleEmitter, presence } =
         animationProps
 
@@ -107,7 +126,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         ? props.transition[0]
         : props.transition
 
-      const isHydrating = componentState.unmounted === true
+      const isComponentHydrating = componentState.unmounted === true
       const isMounting = componentState.unmounted === 'should-enter'
       const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
@@ -130,7 +149,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       // Disable animation during hydration AND during mounting (should-enter phase)
       // This prevents the "flying across the page" effect on initial render
-      const disableAnimation = isHydrating || isMounting || !animationKey
+      const disableAnimation = isComponentHydrating || isMounting || !animationKey
 
       const isFirstRender = useRef(true)
       const [scope, animate] = useAnimate()
@@ -164,9 +183,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const [firstRenderStyle] = useState(style)
 
       // avoid first render returning wrong styles - always render all, after that we can just mutate
-      const lastDontAnimate = useRef<Record<string, unknown>>(firstRenderStyle)
+      const lastDontAnimate = useRef<Record<string, unknown> | null>(firstRenderStyle)
+      const [isHydrating, setIsHydrating] = useState(isHydratingGlobal)
 
       useLayoutEffect(() => {
+        if (isHydratingGlobal) {
+          hydratingComponents.add(() => {
+            setIsHydrating(false)
+          })
+        }
         return () => {
           disposed.current = true
         }
@@ -179,6 +204,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }: AnimationProps) => {
         try {
           const node = stateRef.current.host
+
+          // on first render, reset stale animation refs - they can persist if component
+          // instance is reused (e.g. AnimatePresence keepChildrenMounted)
+          if (isFirstRender.current) {
+            lastDontAnimate.current = null
+            lastDoAnimate.current = null
+          }
 
           if (shouldDebug) {
             console.groupCollapsed(
@@ -296,13 +328,16 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // check if this is a Popper element with animated position
               const isPopperElement = node.hasAttribute('data-popper-animate-position')
 
+              // also apply fix for AnimatePresence children that just finished entering
+              // this fixes roving tabs indicator jumping when rapidly switching
+              const isEnteringPresenceChild = presence && justFinishedEntering
+
               if (
                 isRunning &&
                 controls.current &&
                 isPositionOnlyTransform &&
-                isPopperElement
+                (isPopperElement || isEnteringPresenceChild)
               ) {
-                // get current visual position BEFORE stopping animation
                 const currentTransform = getComputedStyle(node).transform
 
                 if (currentTransform && currentTransform !== 'none') {
@@ -342,6 +377,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // IMPORTANT: Spread to create mutable copy - style objects may be frozen
               // fix transparent colors to use rgba for motion.dev compatibility
               const fixedDiff = fixTransparentColors({ ...diff }, lastDoAnimate.current)
+
               controls.current = animate(scope.current, fixedDiff, animationOptions)
               lastAnimateAt.current = Date.now()
             }
@@ -374,45 +410,54 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         flushAnimation(animationProps)
       })
 
-      const animateKey = JSON.stringify(style)
-
       useIsomorphicLayoutEffect(() => {
         if (isFirstRender.current) {
           isFirstRender.current = false
-          const node = stateRef.current.host
 
-          if (node instanceof HTMLElement) {
-            // IMPORTANT: On first render, we need to:
-            // 1. Apply dontAnimate styles to the DOM (enterStyle values like scale(0))
-            // 2. Tell motion about these styles so it knows the starting state
-            // This ensures AnimatePresence enter animations work correctly.
+          // during hydration, use full sync logic to prevent flash
+          // doing this - will fix some of the enter (accordion) glitches but breaks animatepresence
+          //  isHydrating || (isMounting && !isEntering)
+          if (isHydrating) {
+            const node = stateRef.current.host
 
-            if (dontAnimate) {
-              // Apply initial styles to DOM
-              Object.assign(node.style, dontAnimate as any)
+            if (node instanceof HTMLElement) {
+              // IMPORTANT: On first render, we need to:
+              // 1. Apply dontAnimate styles to the DOM (enterStyle values like scale(0))
+              // 2. Tell motion about these styles so it knows the starting state
+              // This ensures AnimatePresence enter animations work correctly.
 
-              // Tell motion about the initial state by animating instantly to dontAnimate
-              // This syncs motion's internal state with what's actually on the DOM
-              // IMPORTANT: Spread to create mutable copy - React/Tamagui style objects may be frozen
-              animate(scope.current, { ...dontAnimate }, { duration: 0 })
+              if (dontAnimate) {
+                // Apply initial styles to DOM
+                Object.assign(node.style, dontAnimate as any)
+
+                // Tell motion about the initial state by animating instantly to dontAnimate
+                // This syncs motion's internal state with what's actually on the DOM
+                // IMPORTANT: Spread to create mutable copy - React/Tamagui style objects may be frozen
+                animate(scope.current, { ...dontAnimate }, { duration: 0 })
+              }
+
+              // If there are styles to animate, set them up (but animation is disabled on first render)
+              if (doAnimate && Object.keys(doAnimate).length > 0) {
+                // IMPORTANT: Spread to create mutable copy - objects may be frozen
+                lastDoAnimate.current = { ...doAnimate }
+                animate(scope.current, { ...doAnimate }, { duration: 0 })
+              } else {
+                // doAnimate is empty, so track dontAnimate as the initial animated state
+                // This way on next render, getDiff will detect the change
+                // IMPORTANT: Spread to create mutable copy - objects may be frozen
+                lastDoAnimate.current = dontAnimate ? { ...dontAnimate } : {}
+              }
             }
 
-            // If there are styles to animate, set them up (but animation is disabled on first render)
-            if (doAnimate && Object.keys(doAnimate).length > 0) {
-              // IMPORTANT: Spread to create mutable copy - objects may be frozen
-              lastDoAnimate.current = { ...doAnimate }
-              animate(scope.current, { ...doAnimate }, { duration: 0 })
-            } else {
-              // doAnimate is empty, so track dontAnimate as the initial animated state
-              // This way on next render, getDiff will detect the change
-              // IMPORTANT: Spread to create mutable copy - objects may be frozen
-              lastDoAnimate.current = dontAnimate ? { ...dontAnimate } : {}
-            }
+            // IMPORTANT: Spread to create mutable copy - objects may be frozen
+            lastDontAnimate.current = dontAnimate ? { ...dontAnimate } : {}
+            lastAnimateAt.current = Date.now()
+            return
           }
 
-          // IMPORTANT: Spread to create mutable copy - objects may be frozen
+          // after hydration, use simpler logic
           lastDontAnimate.current = dontAnimate ? { ...dontAnimate } : {}
-          lastAnimateAt.current = Date.now()
+          lastDoAnimate.current = doAnimate ? { ...doAnimate } : {}
           return
         }
 
@@ -422,7 +467,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           dontAnimate,
           animationOptions,
         })
-      }, [animateKey, isExiting, disableAnimation])
+      }, [styleKey, isExiting, disableAnimation])
 
       if (shouldDebug) {
         console.groupCollapsed(`[motion] 🌊 render`)
@@ -430,7 +475,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           style,
           doAnimate,
           dontAnimate,
-          animateKey,
+          styleKey,
           scope,
           animationOptions,
           isExiting,
@@ -603,6 +648,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const baseConfig = animationNameOrConfig.type
           ? animations[animationNameOrConfig.type]
           : defaultConfig
+
+        // @ts-expect-error
         result[propName] = {
           ...baseConfig,
           ...animationNameOrConfig,
@@ -615,10 +662,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 }
 
 function removeRemovedStyles(
-  prev: Object,
-  next: Object,
+  prev: object,
+  next: object,
   node: HTMLElement,
-  dontClearIfIn?: Object
+  dontClearIfIn?: object
 ) {
   for (const key in prev) {
     if (!(key in next)) {
@@ -709,8 +756,8 @@ function createMotionView(defaultTag: string) {
       const out = getSplitStyles(
         props,
         isText ? Text.staticConfig : View.staticConfig,
-        state?.theme!,
-        state?.name!,
+        state?.theme,
+        state?.name,
         {
           unmounted: false,
         },

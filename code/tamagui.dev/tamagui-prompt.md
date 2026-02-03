@@ -70,53 +70,32 @@ Themes are organized hierarchically and can be combined:
 - accent
 - black
 - blue
-- burgundy
-- cyan
-- forest
 - gray
 - green
-- jade
+- neutral
 - orange
-- orangeRed
 - pink
 - purple
 - red
-- royalBlue
-- supreme
 - surface1
 - surface2
-- surface3
-- tan
 - teal
 - white
 - yellow
 
-**Level 3 (Variants):**
-
-- alt1
-- alt2
-
 **Component Themes:**
 
 - Button
-- Card
-- Checkbox
 - Input
-- ListItem
 - Progress
 - ProgressIndicator
-- RadioGroupItem
-- SelectItem
-- SelectTrigger
+- Slider
+- SliderActive
 - SliderThumb
-- SliderTrack
-- SliderTrackActive
 - Switch
 - SwitchThumb
 - TextArea
 - Tooltip
-- TooltipArrow
-- TooltipContent
 
 ### Theme Usage
 
@@ -362,23 +341,6 @@ Available font families:
 
 Available animation presets:
 
-- 100ms
-- 200ms
-- 75ms
-- bouncy
-- kindaBouncy
-- lazy
-- medium
-- quick
-- quicker
-- quickest
-- select
-- slow
-- slowest
-- superBouncy
-- superLazy
-- tooltip
-
 ## Components
 
 The following components are available:
@@ -414,6 +376,7 @@ The following components are available:
 - DialogPortalFrame
 - DialogTitle
 - DialogTrigger
+- Em
 - EnsureFlexed
 - Fieldset
 - Footer
@@ -462,17 +425,16 @@ The following components are available:
 - Separator
 - SizableStack
 - SizableText
+- SliderActiveFrame
 - SliderFrame
 - SliderThumb
   - SliderThumb.Frame
-- SliderTrackActiveFrame
 - SliderTrackFrame
 - Spacer
-- Spacer
+- Span
 - Spinner
 - Square
-- View
-- View
+- Strong
 - Switch
   - Switch.Frame
   - Switch.Thumb

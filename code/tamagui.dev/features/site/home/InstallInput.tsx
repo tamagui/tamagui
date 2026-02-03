@@ -23,12 +23,11 @@ export const InstallInput = memo(() => {
         elevation="$3"
         rounded="$10"
         position="relative"
-        bg="$color005"
       >
-        <YStack z={-1} fullscreen bg="$background02" className="blur-8" />
+        <YStack bg="$color9" opacity={0.125} fullscreen backdropFilter="blur(50px)" />
         <Paragraph
           text="center"
-          size="$4"
+          size="$5"
           fontWeight="500"
           fontFamily="$mono"
           letterSpacing={1}
@@ -46,6 +45,7 @@ export const InstallInput = memo(() => {
             size="$3"
             rounded="$8"
             mr="$-6"
+            zIndex={1}
             icon={hasCopied ? Check : Copy}
             onPress={onCopy}
           />

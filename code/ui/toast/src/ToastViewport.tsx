@@ -28,7 +28,7 @@ const ToastViewportWrapperFrame = styled(YStack, {
         bottom: 0,
         left: 0,
         right: 0,
-        position: isWeb ? ('fixed' as any) : 'absolute',
+        position: 'fixed',
         maxWidth: '100%',
         tabIndex: 0,
         zIndex: 100000,
@@ -48,7 +48,7 @@ const ToastViewportFrame = styled(YStack, {
     unstyled: {
       false: {
         pointerEvents: 'box-none',
-        position: isWeb ? ('fixed' as any) : 'absolute',
+        position: 'fixed',
         maxWidth: '100%',
       },
     },
@@ -262,7 +262,6 @@ const ToastViewport = React.memo(
       const contents = (
         <ToastViewportWrapperFrame
           ref={wrapperRef as any}
-          // biome-ignore lint/a11y/useSemanticElements: <explanation>
           role="region"
           aria-label={label.replace('{hotkey}', hotkeyLabel)}
           // // Ensure virtual cursor from landmarks menus triggers focus/blur for pause/resume
@@ -364,7 +363,7 @@ const FocusProxy = React.forwardRef<FocusProxyElement, ScopedProps<FocusProxyPro
         {...proxyProps}
         ref={forwardedRef}
         // Avoid page scrolling when focus is on the focus proxy
-        position={isWeb ? ('fixed' as any) : 'absolute'}
+        position="fixed"
         onFocus={(event) => {
           if (!isWeb) return
           const prevFocusedElement = event.relatedTarget as HTMLElement | null

@@ -1,4 +1,9 @@
-FROM node:24.3
+# use node base with bun installed - avoids vite+bun+docker hanging issues
+# see: https://github.com/vitejs/vite/discussions/16030
+FROM node:22
+
+# install bun
+RUN npm install -g bun
 
 ARG CF_API_KEY
 ARG CF_EMAIL
@@ -34,6 +39,7 @@ ARG APP_NAME
 ARG TAMAGUI_PRO_SECRET
 ARG DEEPSEEK_API_KEY
 ARG BENTO_GITHUB_TOKEN
+ARG BENTO_BRANCH
 
 # install dependencies (sharp needs libvips for image processing)
 RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh libvips-dev
@@ -41,19 +47,20 @@ RUN apt-get update && apt-get install -y git bsdmainutils vim-common gh libvips-
 WORKDIR /root/tamagui
 COPY . .
 
-# init git
-RUN git config --global user.email "you@example.com" && git init . && git add -A && git commit -m 'add' > /dev/null
+# init git (allow empty commit if nothing to commit)
+RUN git config --global user.email "you@example.com" && git config --global user.name "Docker Build" && git init . && git add -A && (git commit -m 'add' > /dev/null || true)
 
 # Clone bento repository as sibling directory (optional)
+# Use BENTO_BRANCH env var if set, otherwise default to main
 WORKDIR /root
 RUN if [ -n "$BENTO_GITHUB_TOKEN" ]; then \
-      echo "Cloning bento repository..."; \
+      BRANCH="${BENTO_BRANCH:-main}"; \
+      echo "Cloning bento repository (branch: $BRANCH)..."; \
       unset GITHUB_TOKEN && \
       echo "$BENTO_GITHUB_TOKEN" | gh auth login --with-token && \
-      # TODO: change back to main branch once migrate-tamagui-v2 is merged
-      gh repo clone tamagui/bento -- --branch migrate-tamagui-v2 && \
+      gh repo clone tamagui/bento -- --branch "$BRANCH" && \
       gh auth logout --hostname github.com && \
-      echo "✅ Bento repository cloned" && \
+      echo "✅ Bento repository cloned (branch: $BRANCH)" && \
       echo "REQUIRE_BENTO=true" > /tmp/bento_status; \
     else \
       echo "⚠️ BENTO_GITHUB_TOKEN not provided - bento features will not be available" && \
@@ -65,17 +72,14 @@ WORKDIR /root/tamagui
 # Set REQUIRE_BENTO based on whether bento was cloned
 RUN export $(cat /tmp/bento_status)
 
-RUN corepack enable
-RUN corepack prepare yarn@4.5.0 --activate
-
 # First install without bento deps
-RUN yarn install --immutable
+RUN bun install
 
-# Merge bento dependencies into root package.json and reinstall
-RUN node scripts/with-bento.mjs
-RUN yarn build:js
-RUN yarn build:app
+# Merge bento dependencies into root package.json and reinstall (only if bento was cloned)
+RUN if [ -d "../bento" ]; then node scripts/with-bento.mjs && bun install; fi
+RUN bun run build:js
+RUN bun run build:app
 
 EXPOSE 3000
 
-CMD ["yarn", "docker:serve"]
+CMD ["bun", "run", "docker:serve"]

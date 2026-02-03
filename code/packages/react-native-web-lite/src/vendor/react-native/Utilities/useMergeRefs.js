@@ -8,9 +8,7 @@
  * @format
  */
 
-import {useCallback} from 'react';
-
-
+import { useCallback } from 'react'
 
 /**
  * Constructs a new ref that forwards new values to each of the given refs. The
@@ -21,24 +19,22 @@ import {useCallback} from 'react';
  * the returned callback ref is supplied as a `ref` to a React element, this may
  * lead to problems with the given refs being invoked more times than desired.
  */
-function useMergeRefs(
-  ...refs
-) {
+function useMergeRefs(...refs) {
   return useCallback(
     (current) => {
       for (const ref of refs) {
         if (ref != null) {
           if (typeof ref === 'function') {
-            ref(current);
+            ref(current)
           } else {
-            ref.current = current;
+            ref.current = current
           }
         }
       }
     },
-    [...refs], // eslint-disable-line react-hooks/exhaustive-deps
-  );
+    [...refs] // eslint-disable-line react-hooks/exhaustive-deps
+  )
 }
 
 export { useMergeRefs }
-export default useMergeRefs;
+export default useMergeRefs

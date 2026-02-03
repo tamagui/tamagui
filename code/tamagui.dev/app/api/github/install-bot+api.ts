@@ -29,5 +29,5 @@ export default apiRoute(async (req) => {
     )
   }
 
-  return Response.error()
+  return new Response('Failed to create installation', { status: 500 })
 })

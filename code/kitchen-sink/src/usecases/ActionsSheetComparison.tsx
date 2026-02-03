@@ -1,6 +1,9 @@
 import { useState, useRef } from 'react'
 import { View, Text as RNText, StyleSheet } from 'react-native'
-import ActionSheet, { type ActionSheetRef, ScrollView as ActionScrollView } from 'react-native-actions-sheet'
+import ActionSheet, {
+  type ActionSheetRef,
+  ScrollView as ActionScrollView,
+} from 'react-native-actions-sheet'
 import { Button, Sheet, Text, YStack } from 'tamagui'
 
 /**
@@ -37,7 +40,9 @@ export function ActionsSheetComparison() {
         <Text fontSize="$2">1. Open each sheet</Text>
         <Text fontSize="$2">2. Drag down to lower snap point</Text>
         <Text fontSize="$2">3. Drag up - watch for jitter when sheet hits top</Text>
-        <Text fontSize="$2">4. Scroll content, then drag down - watch for jitter at scroll=0</Text>
+        <Text fontSize="$2">
+          4. Scroll content, then drag down - watch for jitter at scroll=0
+        </Text>
       </YStack>
 
       {/* Tamagui Sheet */}
@@ -113,7 +118,9 @@ export function ActionsSheetComparison() {
             {Array.from({ length: 50 }).map((_, i) => (
               <View key={i} style={styles.itemTall}>
                 <RNText style={styles.itemTextLarge}>Item {i + 1}</RNText>
-                <RNText style={styles.itemSubtext}>Scroll me and test drag handoff</RNText>
+                <RNText style={styles.itemSubtext}>
+                  Scroll me and test drag handoff
+                </RNText>
               </View>
             ))}
           </ActionScrollView>

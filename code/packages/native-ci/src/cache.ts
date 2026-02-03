@@ -115,7 +115,9 @@ export function saveCache(
   options: LocalCacheOptions = {}
 ): void {
   const { cacheDir } = options
-  const cachePath = cacheDir ? join(process.cwd(), cacheDir, filePath) : join(process.cwd(), filePath)
+  const cachePath = cacheDir
+    ? join(process.cwd(), cacheDir, filePath)
+    : join(process.cwd(), filePath)
 
   mkdirSync(dirname(cachePath), { recursive: true })
   writeFileSync(cachePath, JSON.stringify(data, null, 2))
@@ -130,7 +132,9 @@ export function loadCache<T extends Record<string, unknown>>(
   options: LocalCacheOptions = {}
 ): T | null {
   const { cacheDir } = options
-  const cachePath = cacheDir ? join(process.cwd(), cacheDir, filePath) : join(process.cwd(), filePath)
+  const cachePath = cacheDir
+    ? join(process.cwd(), cacheDir, filePath)
+    : join(process.cwd(), filePath)
 
   if (!existsSync(cachePath)) {
     return null

@@ -60,3 +60,14 @@ test(`SizableText keeps its explicit fontFamily (does not inherit)`, async ({ pa
   expect(nestedStyles.fontFamily).not.toBe(parentStyles.fontFamily)
   expect(nestedStyles.fontFamily).toContain('Inter')
 })
+
+test(`Text (like Link) inside Paragraph inherits fontFamily`, async ({ page }) => {
+  const parentStyles = await getStyles(page.getByTestId('parent-para-link').first())
+  const nestedStyles = await getStyles(page.getByTestId('nested-link-text').first())
+
+  // parent should have mono font family
+  expect(parentStyles.fontFamily).toContain('mono')
+
+  // nested Text should inherit the mono font family
+  expect(nestedStyles.fontFamily).toBe(parentStyles.fontFamily)
+})

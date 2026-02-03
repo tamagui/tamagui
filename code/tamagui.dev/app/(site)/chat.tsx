@@ -1,11 +1,16 @@
 import { H1, Paragraph, Separator, Spacer } from 'tamagui'
 import { Container } from '../../components/Containers'
+import { HeadInfo } from '../../components/HeadInfo'
 import { Link } from '../../components/Link'
 import { Notice } from '../../components/Notice'
 
 export const ChatPage = () => {
   return (
     <>
+      <HeadInfo
+        title="Tamagui Chat"
+        description="A chatbot and AI code generator, built from scratch to be an expert in all things Tamagui."
+      />
       <Container py="$12" gap="$4">
         <Paragraph fontFamily="$mono" color="$color9" mb="$-4">
           Introducing

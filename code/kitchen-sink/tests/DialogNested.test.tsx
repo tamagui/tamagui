@@ -6,7 +6,9 @@ test.describe('Dialog Nested Stacking', () => {
     await setupPage(page, { name: 'DialogNestedCase', type: 'useCase' })
   })
 
-  test('nested dialog appears above parent dialog (z-index stacking)', async ({ page }) => {
+  test('nested dialog appears above parent dialog (z-index stacking)', async ({
+    page,
+  }) => {
     await page.waitForLoadState('networkidle')
 
     // Open parent dialog

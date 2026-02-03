@@ -7,71 +7,60 @@
  * @format
  */
 
-'use strict';
+'use strict'
 
-import { NativeAnimatedHelper } from '../NativeAnimatedHelper';
+import { NativeAnimatedHelper } from '../NativeAnimatedHelper'
 
-
-let startNativeAnimationNextId = 1;
+let startNativeAnimationNextId = 1
 
 // Important note: start() and stop() will only be called at most once.
 // Once an animation has been stopped or finished its course, it will
 // not be reused.
 class Animation {
-  __active;
-  __isInteraction;
-  __nativeId;
-  __onEnd;
-  __iterations;
-  start(
-    fromValue,
-    onUpdate,
-    onEnd,
-    previousAnimation,
-    animatedValue,
-  ) {}
+  __active
+  __isInteraction
+  __nativeId
+  __onEnd
+  __iterations
+  start(fromValue, onUpdate, onEnd, previousAnimation, animatedValue) {}
   stop() {
     if (this.__nativeId) {
-      NativeAnimatedHelper.API.stopAnimation(this.__nativeId);
+      NativeAnimatedHelper.API.stopAnimation(this.__nativeId)
     }
   }
   __getNativeAnimationConfig() {
     // Subclasses that have corresponding animation implementation done in native
     // should override this method
-    throw new Error('This animation type cannot be offloaded to native');
+    throw new Error('This animation type cannot be offloaded to native')
   }
   // Helper function for subclasses to make sure onEnd is only called once.
   __debouncedOnEnd(result) {
-    const onEnd = this.__onEnd;
-    this.__onEnd = null;
-    onEnd && onEnd(result);
+    const onEnd = this.__onEnd
+    this.__onEnd = null
+    onEnd && onEnd(result)
   }
   __startNativeAnimation(animatedValue) {
-    const startNativeAnimationWaitId = `${startNativeAnimationNextId}:startAnimation`;
-    startNativeAnimationNextId += 1;
-    NativeAnimatedHelper.API.setWaitingForIdentifier(
-      startNativeAnimationWaitId,
-    );
+    const startNativeAnimationWaitId = `${startNativeAnimationNextId}:startAnimation`
+    startNativeAnimationNextId += 1
+    NativeAnimatedHelper.API.setWaitingForIdentifier(startNativeAnimationWaitId)
     try {
-      const config = this.__getNativeAnimationConfig();
-      animatedValue.__makeNative(config.platformConfig);
-      this.__nativeId = NativeAnimatedHelper.generateNewAnimationId();
+      const config = this.__getNativeAnimationConfig()
+      animatedValue.__makeNative(config.platformConfig)
+      this.__nativeId = NativeAnimatedHelper.generateNewAnimationId()
       NativeAnimatedHelper.API.startAnimatingNode(
         this.__nativeId,
         animatedValue.__getNativeTag(),
         config,
         // $FlowFixMe[method-unbinding] added when improving typing for this parameters
-        this.__debouncedOnEnd.bind(this),
-      );
+        this.__debouncedOnEnd.bind(this)
+      )
     } catch (e) {
-      throw e;
+      throw e
     } finally {
-      NativeAnimatedHelper.API.unsetWaitingForIdentifier(
-        startNativeAnimationWaitId,
-      );
+      NativeAnimatedHelper.API.unsetWaitingForIdentifier(startNativeAnimationWaitId)
     }
   }
 }
 
 export { Animation }
-export default Animation;
+export default Animation

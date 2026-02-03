@@ -6,9 +6,53 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath, transformWithEsbuild, type Environment } from 'vite'
-import { loadTamaguiBuildConfig, getLoadPromise, getTamaguiOptions, ensureFullConfigLoaded } from './loadTamagui'
+import {
+  loadTamaguiBuildConfig,
+  getLoadPromise,
+  getTamaguiOptions,
+  ensureFullConfigLoaded,
+} from './loadTamagui'
 
 const resolve = (name: string) => fileURLToPath(import.meta.resolve(name))
+
+// shared cache across all plugin instances/environments via globalThis
+type CacheEntry = {
+  js: string
+  map: any
+  cssImport: string | null
+}
+
+const CACHE_KEY = '__tamagui_vite_cache__'
+const CACHE_SIZE_KEY = '__tamagui_vite_cache_size__'
+const PENDING_KEY = '__tamagui_vite_pending__'
+
+function getSharedCache(): Record<string, CacheEntry> {
+  if (!(globalThis as any)[CACHE_KEY]) {
+    ;(globalThis as any)[CACHE_KEY] = {}
+  }
+  return (globalThis as any)[CACHE_KEY]
+}
+
+function getSharedCacheSize(): number {
+  return (globalThis as any)[CACHE_SIZE_KEY] || 0
+}
+
+function setSharedCacheSize(size: number) {
+  ;(globalThis as any)[CACHE_SIZE_KEY] = size
+}
+
+function clearSharedCache() {
+  ;(globalThis as any)[CACHE_KEY] = {}
+  ;(globalThis as any)[CACHE_SIZE_KEY] = 0
+}
+
+// pending extractions map - dedupes concurrent requests for same file
+function getPendingExtractions(): Map<string, Promise<CacheEntry | null>> {
+  if (!(globalThis as any)[PENDING_KEY]) {
+    ;(globalThis as any)[PENDING_KEY] = new Map()
+  }
+  return (globalThis as any)[PENDING_KEY]
+}
 
 type AliasOptions = {
   /** use @tamagui/react-native-web-lite, 'without-animated' for smaller bundle */
@@ -72,13 +116,11 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
 }
 
 export function tamaguiPlugin({
-  optimize,
   disableResolveConfig,
   ...tamaguiOptionsIn
-}: TamaguiOptions & { optimize?: boolean; disableResolveConfig?: boolean } = {}):
-  | Plugin
-  | Plugin[] {
-  const shouldExtract = !!optimize
+}: TamaguiOptions & { disableResolveConfig?: boolean } = {}): Plugin | Plugin[] {
+  // extraction ON by default, set disableExtraction: true to opt out
+  let shouldExtract = !tamaguiOptionsIn.disableExtraction
   let watcher: Promise<{ dispose: () => void } | void | undefined> | undefined
 
   // TODO temporary fix
@@ -106,25 +148,19 @@ export function tamaguiPlugin({
   const ensureLoaded = async () => {
     const promise = getLoadPromise()
     if (promise) await promise
-    return getTamaguiOptions()
+    const options = getTamaguiOptions()
+    // update shouldExtract from loaded config (tamagui.build.ts)
+    if (options) {
+      shouldExtract = !options.disableExtraction
+    }
+    return options
   }
 
-  // extract plugin state (only used when optimize=true)
+  // extract plugin state
   const getHash = (input: string) => createHash('sha1').update(input).digest('base64')
 
-  type CacheEntry = {
-    js: string
-    map: any
-    cssImport: string | null
-  }
-
-  let memoryCache: Record<string, CacheEntry> = {}
-  let cacheSize = 0
-
-  const clearCompilerCache = () => {
-    memoryCache = {}
-    cacheSize = 0
-  }
+  // use shared cache across environments
+  const memoryCache = getSharedCache()
 
   const cssMap = new Map<string, string>()
   let config: ResolvedConfig
@@ -271,16 +307,17 @@ export function tamaguiPlugin({
     },
   }
 
-  if (!shouldExtract) {
-    return [basePlugin, rnwLitePlugin]
-  }
-
   // extract plugin for optimize mode
+  // always included, but checks shouldExtract dynamically after config loads
   const extractPlugin: Plugin = {
     name: 'tamagui-extract',
     enforce: 'pre',
 
-    config(userConf) {
+    async config(userConf) {
+      // wait for config to load to know if we should extract
+      await ensureLoaded()
+      if (!shouldExtract) return
+
       userConf.optimizeDeps ||= {}
       userConf.optimizeDeps.include ||= []
       userConf.optimizeDeps.include.push('@tamagui/core/inject-styles')
@@ -291,6 +328,8 @@ export function tamaguiPlugin({
     },
 
     async resolveId(source) {
+      if (!shouldExtract) return
+
       if (isNative(this.environment)) {
         return
       }
@@ -315,6 +354,8 @@ export function tamaguiPlugin({
     },
 
     async load(id) {
+      if (!shouldExtract) return
+
       const options = getTamaguiOptions()
       if (options?.disable) {
         return
@@ -341,6 +382,7 @@ export function tamaguiPlugin({
         // ensure full config (heavy bundling) is loaded before extraction
         await ensureFullConfigLoaded()
 
+        // fully disabled = no extraction AND no debug attrs
         if (options?.disable) {
           return
         }
@@ -375,78 +417,132 @@ export function tamaguiPlugin({
 
         // cache key without environment - share compiled JS between SSR/client
         const cacheKey = getHash(`${code}${id}`)
+        const pending = getPendingExtractions()
+
+        // helper to format result based on environment
+        const formatResult = (entry: CacheEntry) => {
+          const finalCode =
+            !isSSR && entry.cssImport ? `${entry.js}\n${entry.cssImport}` : entry.js
+          return { code: finalCode, map: entry.map }
+        }
+
+        // check cache first
         const cached = memoryCache[cacheKey]
-
         if (cached) {
-          // for client, append the CSS import if we have one
-          if (!isSSR && cached.cssImport) {
-            return {
-              code: `${cached.js}\n${cached.cssImport}`,
-              map: cached.map,
+          if (process.env.DEBUG_TAMAGUI_CACHE) {
+            console.info(
+              `[tamagui-cache] HIT ${this.environment?.name || 'unknown'} ${id.split('/').pop()} key=${cacheKey.slice(0, 8)}`
+            )
+          }
+          return formatResult(cached)
+        }
+
+        // check if another request is already extracting this file
+        const pendingExtraction = pending.get(cacheKey)
+        if (pendingExtraction) {
+          if (process.env.DEBUG_TAMAGUI_CACHE) {
+            console.info(
+              `[tamagui-cache] WAIT ${this.environment?.name || 'unknown'} ${id.split('/').pop()} key=${cacheKey.slice(0, 8)}`
+            )
+          }
+          const result = await pendingExtraction
+          if (result) {
+            return formatResult(result)
+          }
+          return
+        }
+
+        if (process.env.DEBUG_TAMAGUI_CACHE) {
+          console.info(
+            `[tamagui-cache] EXTRACT ${this.environment?.name || 'unknown'} ${id.split('/').pop()} key=${cacheKey.slice(0, 8)}`
+          )
+        }
+
+        // create extraction promise and store it for deduplication
+        const extractionPromise = (async (): Promise<CacheEntry | null> => {
+          let extracted: ExtractedResponse | null
+          try {
+            extracted = await Static!.extractToClassNames({
+              source: code,
+              sourcePath: validId,
+              options: options!,
+              shouldPrintDebug,
+            })
+          } catch (err) {
+            if (process.env.DEBUG_TAMAGUI_CACHE) {
+              console.info(
+                `[tamagui-cache] ERROR extracting ${id.split('/').pop()}:`,
+                err
+              )
             }
+            console.error(err instanceof Error ? err.message : String(err))
+            return null
           }
-          // for SSR, just return the JS without CSS import
-          return {
-            code: cached.js,
-            map: cached.map,
-          }
-        }
 
-        let extracted: ExtractedResponse | null
+          if (!extracted) {
+            if (process.env.DEBUG_TAMAGUI_CACHE) {
+              console.info(
+                `[tamagui-cache] no extraction result for ${id.split('/').pop()}`
+              )
+            }
+            return null
+          }
+
+          const rootRelativeId = `${validId}${virtualExt}`
+          const absoluteId = getAbsoluteVirtualFileId(rootRelativeId)
+
+          let cssImport: string | null = null
+
+          // store CSS and prepare import (but don't include in cached JS)
+          if (extracted.styles) {
+            this.addWatchFile(rootRelativeId)
+
+            if (server && cssMap.has(absoluteId)) {
+              invalidateModule(rootRelativeId)
+            }
+
+            cssImport = `import "${rootRelativeId}";`
+            cssMap.set(absoluteId, extracted.styles)
+          }
+
+          // cache the JS separately from CSS import
+          const jsCode = extracted.js.toString()
+          const cacheEntry: CacheEntry = {
+            js: jsCode,
+            map: extracted.map,
+            cssImport,
+          }
+
+          // track cache size and clear if too large (64MB)
+          const newSize = getSharedCacheSize() + jsCode.length
+          if (newSize > 67108864) {
+            clearSharedCache()
+          } else {
+            setSharedCacheSize(newSize)
+          }
+          memoryCache[cacheKey] = cacheEntry
+
+          if (process.env.DEBUG_TAMAGUI_CACHE) {
+            console.info(
+              `[tamagui-cache] WRITE key=${cacheKey.slice(0, 8)} cacheSize=${Object.keys(memoryCache).length}`
+            )
+          }
+
+          return cacheEntry
+        })()
+
+        // store pending promise for deduplication
+        pending.set(cacheKey, extractionPromise)
+
         try {
-          extracted = await Static!.extractToClassNames({
-            source: code,
-            sourcePath: validId,
-            options: options!,
-            shouldPrintDebug,
-          })
-        } catch (err) {
-          console.error(err instanceof Error ? err.message : String(err))
-          return
-        }
-
-        if (!extracted) {
-          return
-        }
-
-        const rootRelativeId = `${validId}${virtualExt}`
-        const absoluteId = getAbsoluteVirtualFileId(rootRelativeId)
-
-        let cssImport: string | null = null
-
-        // store CSS and prepare import (but don't include in cached JS)
-        if (extracted.styles) {
-          this.addWatchFile(rootRelativeId)
-
-          if (server && cssMap.has(absoluteId)) {
-            invalidateModule(rootRelativeId)
+          const result = await extractionPromise
+          if (result) {
+            return formatResult(result)
           }
-
-          cssImport = `import "${rootRelativeId}";`
-          cssMap.set(absoluteId, extracted.styles)
-        }
-
-        // cache the JS separately from CSS import
-        const jsCode = extracted.js.toString()
-        const cacheEntry: CacheEntry = {
-          js: jsCode,
-          map: extracted.map,
-          cssImport,
-        }
-
-        cacheSize += jsCode.length
-        // 64MB cache
-        if (cacheSize > 67108864) {
-          clearCompilerCache()
-        }
-        memoryCache[cacheKey] = cacheEntry
-
-        // return with or without CSS import based on environment
-        const finalCode = !isSSR && cssImport ? `${jsCode}\n${cssImport}` : jsCode
-
-        return {
-          code: finalCode,
-          map: extracted.map,
+          return
+        } finally {
+          // clean up pending map
+          pending.delete(cacheKey)
         }
       },
     },

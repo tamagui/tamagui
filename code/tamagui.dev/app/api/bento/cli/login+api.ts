@@ -4,15 +4,12 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 
 export const GET: Endpoint = async (req) => {
   try {
-    // Ensure the user is authenticated
     const { supabase, user } = await ensureAuth({ req })
 
-    // Check if the user has access to Bento
-    await ensureAccess({
-      req,
-      supabase,
-      checkForBentoAccess: true,
-    })
+    const { hasPro } = await ensureAccess({ supabase, user })
+    if (!hasPro) {
+      return Response.json({ error: 'Must have Pro account' }, { status: 403 })
+    }
 
     // Create a new session for the CLI
     const { data, error } = await supabase.auth.refreshSession()

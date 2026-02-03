@@ -10,21 +10,15 @@ describe('animation props', () => {
   test(`renders with animation props`, () => {
     const tree = render(
       <TamaguiProvider config={config} defaultTheme="light">
-        <View
-          id="test-id"
-          transition="quick"
-          x={0}
-          backgroundColor="red"
-          margin={200}
-        />
+        <View id="test-id" transition="quick" x={0} backgroundColor="red" margin={200} />
       </TamaguiProvider>
     )
 
     expect(tree.asFragment()).toMatchInlineSnapshot(`
       <DocumentFragment>
         <span
-          class=""
-          style="display: contents;"
+          class="font_body"
+          style="display: contents; font-family: var(--f-family);"
         >
           <span
             class="t_light _dsp_contents"

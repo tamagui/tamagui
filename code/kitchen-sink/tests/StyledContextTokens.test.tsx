@@ -43,7 +43,9 @@ test('default context value should be preserved as token string', async ({ page 
   expect(gapValue).toBe('$4')
 })
 
-test('debug display should show green background when token is preserved', async ({ page }) => {
+test('debug display should show green background when token is preserved', async ({
+  page,
+}) => {
   // The debug display has green background if gap is a token string, red if CSS variable
   const debugSmall = page.locator('#debug-small')
   const bgColor = await debugSmall.evaluate((el) => getComputedStyle(el).backgroundColor)

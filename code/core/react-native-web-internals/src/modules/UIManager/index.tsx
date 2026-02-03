@@ -52,9 +52,9 @@ export const UIManager = {
   // note its flipped fail and success on purpose lol
   async measureLayout(
     node: HTMLElement,
-    relativeToNativeNode?: HTMLElement,
-    onFail,
-    onSuccess
+    relativeToNativeNode: HTMLElement | undefined,
+    onFail: () => void,
+    onSuccess: (x: number, y: number, width: number, height: number) => void
   ) {
     return measureLayout(node, relativeToNativeNode, onSuccess)
   },

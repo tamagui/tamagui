@@ -1,4 +1,5 @@
 import { PALETTE_BACKGROUND_OFFSET, type BuildTemplates } from '@tamagui/theme-builder'
+import { opacify } from './opacify'
 
 const objectFromEntries = <const T extends readonly (readonly [string, any])[]>(
   entries: T
@@ -38,7 +39,7 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
 
   // base
   const background = PALETTE_BACKGROUND_OFFSET
-  const borderColor = background + 3
+  const borderColor = background + 2
   const color = -background
 
   // helper for surface themes - they need their own hover/press/focus calculations
@@ -104,8 +105,9 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     colorTransparent: -1,
   }
 
-  const surface1 = makeSurface(3, 1)
-  const surface2 = makeSurface(5, 1)
+  const surface1 = makeSurface(2, 1)
+  const surface2 = makeSurface(3, 1)
+  const surface3 = makeSurface(5, 1)
 
   const accent = Object.fromEntries(
     Object.entries(base).map(([key, index]) => {
@@ -117,6 +119,7 @@ const getBaseTemplates = (scheme: 'dark' | 'light') => {
     base,
     surface1,
     surface2,
+    surface3,
     accent,
   } satisfies BuildTemplates
 }

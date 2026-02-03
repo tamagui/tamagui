@@ -1,5 +1,4 @@
 import { cleanup, render } from '@testing-library/react'
-import * as React from 'react'
 
 export async function getTestElement(Provider: any, Component: any, conditional = false) {
   const out = render(

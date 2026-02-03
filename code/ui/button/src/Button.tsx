@@ -33,7 +33,7 @@ const Frame = styled(View, {
   context,
   name: 'Button',
   role: 'button',
-  render: 'button',
+  render: <button type="button" />,
   tabIndex: 0,
 
   variants: {

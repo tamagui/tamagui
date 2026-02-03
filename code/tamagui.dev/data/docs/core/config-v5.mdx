@@ -4,9 +4,9 @@ description: Modern config and themes with @tamagui/config/v5
 ---
 
 <IntroParagraph>
-  The recommended Tamagui configuration gives you a complete design system,
-  flexible theme generation, Tailwind aligned shorthands, multiple animation
-  drivers, and easy customization.
+  The recommended Tamagui configuration gives you a complete design system, flexible theme
+  generation, Tailwind aligned shorthands, multiple animation drivers, and easy
+  customization.
 </IntroParagraph>
 
 V5 builds on v4 with more colors, theme helpers, and expanded media queries.
@@ -126,12 +126,14 @@ All v5 animation drivers include these preset animations:
 <PropsTable
   data={[
     { name: '0ms', description: 'Instant (0ms)' },
-    { name: '30ms', description: '30 milliseconds' },
     { name: '50ms', description: '50 milliseconds' },
     { name: '75ms', description: '75 milliseconds' },
     { name: '100ms', description: '100 milliseconds' },
     { name: '200ms', description: '200 milliseconds' },
+    { name: '250ms', description: '250 milliseconds' },
     { name: '300ms', description: '300 milliseconds' },
+    { name: '400ms', description: '400 milliseconds' },
+    { name: '500ms', description: '500 milliseconds' },
   ]}
 />
 
@@ -141,7 +143,6 @@ All v5 animation drivers include these preset animations:
   data={[
     { name: 'superBouncy', description: 'Very bouncy, playful spring' },
     { name: 'bouncy', description: 'Bouncy spring with natural feel' },
-    { name: 'kindaBouncy', description: 'Subtle bounce, good for UI elements' },
     { name: 'superLazy', description: 'Very slow, heavy spring' },
     { name: 'lazy', description: 'Slow, relaxed spring' },
     { name: 'medium', description: 'Balanced spring for general use' },
@@ -156,7 +157,6 @@ All v5 animation drivers include these preset animations:
       name: 'quickestLessBouncy',
       description: 'Fastest with minimal overshoot',
     },
-    { name: 'tooltip', description: 'Tuned for tooltip enter/exit' },
   ]}
 />
 
@@ -169,11 +169,7 @@ easiest way to add or change colors is using `@tamagui/colors` which provides
 Radix color palettes:
 
 ```tsx fileName="tamagui.config.ts"
-import {
-  createV5Theme,
-  defaultChildrenThemes,
-  defaultConfig,
-} from '@tamagui/config/v5'
+import { createV5Theme, defaultChildrenThemes, defaultConfig } from '@tamagui/config/v5'
 import { cyan, cyanDark, amber, amberDark } from '@tamagui/colors'
 import { createTamagui } from 'tamagui'
 
@@ -221,14 +217,12 @@ const themes = createV5Theme({
     {
       name: 'darkPalette',
       type: 'string[]',
-      description:
-        'Override the dark base palette (12 colors from darkest to lightest)',
+      description: 'Override the dark base palette (12 colors from darkest to lightest)',
     },
     {
       name: 'lightPalette',
       type: 'string[]',
-      description:
-        'Override the light base palette (12 colors from lightest to darkest)',
+      description: 'Override the light base palette (12 colors from lightest to darkest)',
     },
     {
       name: 'grandChildrenThemes',
@@ -334,17 +328,15 @@ Standard semantic values that adapt to each theme:
 
 ### Opacity Variants
 
-Foreground color with opacity (useful for subtle overlays and borders):
+Foreground and background colors with opacity variants. The naming uses the
+opacity value without the decimal point (e.g., `01` = 10%, `0025` = 2.5%).
 
-- `color01` (10% opacity), `color0075`, `color005`, `color0025`, `color002`,
-  `color001`
-
-Background color with opacity:
-
-- `background01` (10% opacity), `background0075`, `background005`,
-  `background0025`, `background002`, `background001`
-
-### Extra Colors
+- `color01` (10%), `color0075` (7.5%), `color005` (5%), `color0025` (2.5%),
+  `color002` (2%), `color001` (1%)
+- `background01` (10%), `background0075` (7.5%), `background005` (5%),
+  `background0025` (2.5%), `background002` (2%), `background001` (1%)
+- `background02` (20%), `background04` (40%), `background06` (60%),
+  `background08` (80%)
 
 ### White & Black (Fixed)
 
@@ -354,16 +346,20 @@ Always available regardless of theme, with opacity variants:
 - `black`, `black0` (transparent), `black02`, `black04`, `black06`, `black08`
 - `white1`-`white12`, `black1`-`black12` (12-step scales)
 
-### Shadow Colors
+### Shadow & Highlight Colors
 
-Pre-tuned shadow opacities for light and dark modes:
+Pre-tuned shadow opacities (black) for light and dark modes:
 
-- `shadow1` through `shadow6` (light shadows are subtler, dark are stronger)
+- `shadow1` through `shadow8` (light shadows are subtler, dark are stronger)
 - `shadowColor` - Default shadow color for the theme
+
+Pre-tuned highlight opacities (white) for light and dark modes:
+
+- `highlight1` through `highlight8` (matching shadow scale, useful for glows/overlays)
 
 ### Radix Color Scales
 
-All color themes (gray, blue, red, etc.) expose their full 12-step scale:
+All color themes expose their full 12-step scale:
 
 ```tsx
 <View bg="$blue5" />
@@ -371,7 +367,8 @@ All color themes (gray, blue, red, etc.) expose their full 12-step scale:
 <View borderColor="$green7" />
 ```
 
-Available scales: `gray1-12`, `blue1-12`, `red1-12`, `green1-12`, `yellow1-12`
+Available scales: `gray1-12`, `blue1-12`, `red1-12`, `green1-12`, `yellow1-12`,
+`orange1-12`, `pink1-12`, `purple1-12`, `teal1-12`
 
 ### Neutral Colors
 
@@ -400,11 +397,26 @@ Every theme includes an inverted accent scale for contrast elements:
 V5 includes these color themes by default:
 
 - **Grayscale**: gray, neutral
-- **Colors**: blue, green, red, yellow
-- **Fixed**: black, white (don't change between light/dark)
+- **Colors**: blue, green, red, yellow, orange, pink, purple, teal
+- **Fixed**: black, white (generated from base palettes, don't change between
+  light/dark)
 
 Each color theme has 12 steps following the
 [Radix Colors](https://www.radix-ui.com/colors) pattern.
+
+Use any color theme with the `theme` prop:
+
+```tsx
+<Button theme="blue">Blue button</Button>
+<Card theme="purple">Purple card</Card>
+```
+
+Access individual color values in any theme:
+
+```tsx
+<View bg="$orange5" borderColor="$teal7" />
+<Text color="$pink11" />
+```
 
 ---
 
@@ -457,13 +469,11 @@ V5 config includes these default settings:
     },
     {
       name: 'allowedStyleValues',
-      description:
-        '"somewhat-strict-web" - Allows web-only values like vh, vw.',
+      description: '"somewhat-strict-web" - Allows web-only values like vh, vw.',
     },
     {
       name: 'addThemeClassName',
-      description:
-        '"html" - Adds theme className to html tag for CSS variable access.',
+      description: '"html" - Adds theme className to html tag for CSS variable access.',
     },
     {
       name: 'onlyAllowShorthands',
@@ -483,6 +493,12 @@ V5 config includes these default settings:
 
 V5 includes an expanded set of media queries with height-based, max-width, and
 min-width variants.
+
+The `$sm` through `$xxl` breakpoints match Tailwind CSS exactly (640, 768, 1024,
+1280, 1536), making it easy to work across both ecosystems. The smaller
+breakpoints (`$xxxs`, `$xxs`, `$xs`) provide finer control below 640px, which is
+especially useful for container queries where you need granularity at smaller
+sizes.
 
 ### Min-Width (Mobile-First)
 
@@ -540,11 +556,9 @@ V5 uses the same Tailwind-aligned shorthands as v4. See the
 
 ---
 
-## Tree Shaking Themes (Production Optimization)
+## Tree Shaking Themes
 
-Theme JS can grow to 20KB or more. Since Tamagui can hydrate themes from CSS
-variables, you can remove the themes JS from your client bundle for better
-Lighthouse scores.
+**Production Optimization** - Theme JS can grow to 20KB or more. Since Tamagui can hydrate themes from CSS variables, you can remove the themes JS from your client bundle for better Lighthouse scores.
 
 This works because Tamagui generates CSS variables for all theme values. On the
 client, it reads these from the DOM instead of needing the JS object.
@@ -559,15 +573,14 @@ export const config = createTamagui({
   ...defaultConfig,
   // only load themes on server - client hydrates from CSS
   // for non-One Vite apps, use import.meta.env.SSR instead
-  themes:
-    process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
+  themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
 })
 ```
 
 <Notice theme="green">
-  This optimization requires server-side rendering. The CSS must be rendered on
-  the server for the client to hydrate from it. Make sure you're using
-  `config.getCSS()` or the bundler plugin's `outputCSS` option.
+  This optimization requires server-side rendering. The CSS must be rendered on the server
+  for the client to hydrate from it. Make sure you're using `config.getCSS()` or the
+  bundler plugin's `outputCSS` option.
 </Notice>
 
 ---

@@ -27,7 +27,7 @@ export const StudioBar = memo(function Header() {
       z={100_000}
       justify="space-between"
       data-tauri-drag-region
-      position={'fixed' as any}
+      position="fixed"
       self="center"
       elevation="$2"
       items="center"

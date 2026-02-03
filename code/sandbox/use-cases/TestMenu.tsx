@@ -22,7 +22,6 @@ import { isTouchable } from '@tamagui/constants'
  * Note: you'll want to use createMenu() to customize further.
  */
 
-
 export function MenuDemo() {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
   const [native, setNative] = React.useState(true)
@@ -33,7 +32,7 @@ export function MenuDemo() {
     console.info(`selected`, item)
   }
 
-  console.log("isTouchable: ", isTouchable)
+  console.log('isTouchable: ', isTouchable)
   return (
     <>
       <Menu
@@ -112,10 +111,7 @@ export function MenuDemo() {
               >
                 <>
                   <Menu.ItemTitle>Actions</Menu.ItemTitle>
-                  <View
-                    rotate={subMenuOpen ? '90deg' : '0deg'}
-                    animation="quicker"
-                  >
+                  <View rotate={subMenuOpen ? '90deg' : '0deg'} animation="quicker">
                     <ChevronRight size="$1" />
                   </View>
                 </>
@@ -131,13 +127,21 @@ export function MenuDemo() {
                   scale={1.02}
                   backgroundColor="$color1"
                 >
-                  <Menu.Item onSelect={onSelect} key="create-note" textValue="Create note">
+                  <Menu.Item
+                    onSelect={onSelect}
+                    key="create-note"
+                    textValue="Create note"
+                  >
                     <Menu.ItemTitle>Create note</Menu.ItemTitle>
                     <Menu.ItemIcon>
                       <FilePlus size={18} color="$color10" />
                     </Menu.ItemIcon>
                   </Menu.Item>
-                  <Menu.Item onSelect={onSelect} key="delete-all" textValue="Delete all notes">
+                  <Menu.Item
+                    onSelect={onSelect}
+                    key="delete-all"
+                    textValue="Delete all notes"
+                  >
                     <Menu.ItemTitle>Delete all notes</Menu.ItemTitle>
                     <Menu.ItemIcon>
                       <Trash2 size={18} color="$color10" />

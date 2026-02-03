@@ -19,6 +19,8 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { authFetch } from '../../api/authFetch'
+import { getAccessToken } from '../../auth/useSupabaseClient'
 import { defaultModel } from '../../api/generateModels'
 import { getActivePromo } from '../../site/purchase/promoConfig'
 import { purchaseModal } from '../../site/purchase/purchaseModalStore'
@@ -63,15 +65,14 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
     inputRef.current?.focus()
   }, [id])
 
-  const hasAccess =
-    user.data?.accessInfo.hasBentoAccess || user.data?.accessInfo.hasTakeoutAccess
+  const hasAccess = user.data?.accessInfo.hasPro
 
   const username = user.data?.userDetails?.full_name
 
   const { data: historiesData } = useSWR(
     user.data ? '/api/theme/histories' : null,
     async (url) => {
-      const res = await fetch(url)
+      const res = await authFetch(url)
       const data = await res.json()
       return data.histories.map((history) => ({
         themeSuite: history.theme_data,
@@ -84,7 +85,6 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
 
   useLayoutEffect(() => {
     if (initialTheme) {
-      initialTheme
       inputRef.current!.value = initialTheme.query ?? ''
       themeBuilderStore.updateGenerate(
         initialTheme.themeSuite,
@@ -141,6 +141,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
 
       const lastId = `${type === 'delete' ? themeIdToDelete : id}`
 
+      const accessToken = await getAccessToken()
       const res = await fetch(`/api/theme/generate`, {
         body: JSON.stringify({
           prompt,
@@ -153,6 +154,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
         }),
         headers: {
           'Content-Type': 'application/json',
+          ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
         },
         method: 'POST',
       })
@@ -378,11 +380,10 @@ const ThemeToggle = () => {
       <Configuration animationDriver={animationsCSS}>
         <Switch
           checked={checked}
-          outlineColor="$accent11"
           outlineWidth={0}
           outlineStyle="solid"
-          pressStyle={{
-            bg: '$color2',
+          activeStyle={{
+            backgroundColor: '$accent10',
           }}
           onCheckedChange={(on) => {
             setChecked(on)

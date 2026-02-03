@@ -14,8 +14,8 @@ type UsePropsOptions = Pick<SplitStyleProps, 'noExpand' | 'noNormalize' | 'noCla
 export type PropsWithoutMediaStyles<A> = {
     [Key in keyof A as Key extends `$${string}` ? never : Key]?: A[Key];
 };
-type PropsLikeObject = (ViewProps & Record<string, any>) | Object;
-type StyleLikeObject = (ViewStyle & Record<string, any>) | Object;
+type PropsLikeObject = (ViewProps & Record<string, any>) | object;
+type StyleLikeObject = (ViewStyle & Record<string, any>) | object;
 /**
  * Returns props and style as a single object, expanding and merging shorthands and media queries.
  *

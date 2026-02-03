@@ -167,7 +167,11 @@ const AlertDialogContent = React.forwardRef<TamaguiElement, AlertDialogContentPr
         titleName={TITLE_NAME}
         docsSlug="alert-dialog"
       >
-        <AlertDialogContextProvider scope={scope} cancelRef={cancelRef} destructiveRef={destructiveRef}>
+        <AlertDialogContextProvider
+          scope={scope}
+          cancelRef={cancelRef}
+          destructiveRef={destructiveRef}
+        >
           <DialogContent
             role="alertdialog"
             aria-modal={true}
@@ -312,14 +316,17 @@ const AlertDialogDestructiveFrame = styled(View, {
   name: DESTRUCTIVE_NAME,
 })
 
-const AlertDialogDestructive = AlertDialogDestructiveFrame.styleable<AlertDialogDestructiveProps>(
-  function AlertDialogDestructive(props, forwardedRef) {
-    const { scope, ...destructiveProps } = props
-    const { destructiveRef } = useAlertDialogContentContext(scope)
-    const ref = useComposedRefs(forwardedRef, destructiveRef)
-    return <DialogClose scope={getAlertDialogScope(scope)} {...destructiveProps} ref={ref} />
-  }
-)
+const AlertDialogDestructive =
+  AlertDialogDestructiveFrame.styleable<AlertDialogDestructiveProps>(
+    function AlertDialogDestructive(props, forwardedRef) {
+      const { scope, ...destructiveProps } = props
+      const { destructiveRef } = useAlertDialogContentContext(scope)
+      const ref = useComposedRefs(forwardedRef, destructiveRef)
+      return (
+        <DialogClose scope={getAlertDialogScope(scope)} {...destructiveProps} ref={ref} />
+      )
+    }
+  )
 
 /* ---------------------------------------------------------------------------------------------- */
 
@@ -333,7 +340,7 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({ contentRef }) =
       if (!isWeb) return
       const hasDescription = document.getElementById(
         // @ts-ignore
-        contentRef.current?.getAttribute('aria-describedby')!
+        contentRef.current?.getAttribute('aria-describedby')
       )
       if (!hasDescription) {
         console.warn(`\`${CONTENT_NAME}\` requires a description for the component to be accessible for screen reader users.
@@ -395,7 +402,11 @@ const AlertDialogInner: React.FC<AlertDialogProps> = (props) => {
         case DESTRUCTIVE_NAME:
         case CANCEL_NAME: {
           const style =
-            name === ACTION_NAME ? 'default' : name === DESTRUCTIVE_NAME ? 'destructive' : 'cancel'
+            name === ACTION_NAME
+              ? 'default'
+              : name === DESTRUCTIVE_NAME
+                ? 'destructive'
+                : 'cancel'
           const text = getStringChildren(child)
           const onPress = () => {
             const childProps = child.props as any

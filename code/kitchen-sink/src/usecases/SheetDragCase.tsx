@@ -49,20 +49,14 @@ function DraggableSheetPercent() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle data-testid="drag-percent-handle" />
-        <Sheet.Frame
-          data-testid="drag-percent-frame"
-          padding="$4"
-          gap="$4"
-        >
+        <Sheet.Frame data-testid="drag-percent-frame" padding="$4" gap="$4">
           <Paragraph data-testid="drag-percent-snap-indicator">
             Current snap point index: {position}
           </Paragraph>
           <Paragraph>
             Drag the handle to move between snap points (80% and 40% of viewport)
           </Paragraph>
-          <Paragraph>
-            Drag past 40% to dismiss the sheet
-          </Paragraph>
+          <Paragraph>Drag past 40% to dismiss the sheet</Paragraph>
           <YStack flex={1} justifyContent="center" alignItems="center">
             <Paragraph opacity={0.5}>Sheet content area</Paragraph>
           </YStack>
@@ -109,11 +103,7 @@ function DraggableSheetConstant() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle data-testid="drag-constant-handle" />
-        <Sheet.Frame
-          data-testid="drag-constant-frame"
-          padding="$4"
-          gap="$4"
-        >
+        <Sheet.Frame data-testid="drag-constant-frame" padding="$4" gap="$4">
           <Paragraph data-testid="drag-constant-snap-indicator">
             Current snap point index: {position}
           </Paragraph>
@@ -145,7 +135,9 @@ function DismissOnDragSheet() {
       <Button data-testid="dismiss-drag-trigger" onPress={() => setOpen(true)}>
         Open Dismissable Sheet (drag to dismiss)
       </Button>
-      <Paragraph data-testid="dismiss-drag-count">Dismiss count: {dismissCount}</Paragraph>
+      <Paragraph data-testid="dismiss-drag-count">
+        Dismiss count: {dismissCount}
+      </Paragraph>
       <Sheet
         modal
         open={open}

@@ -93,9 +93,16 @@ export default apiRoute(async (req) => {
 
         if (isV1Subscription) {
           // Send V1 expiration email with upgrade info
-          await sendV1ExpirationEmail(info.customer_email, {
-            name: 'friend',
-          })
+          const subscriptionId =
+            typeof info.subscription === 'string'
+              ? info.subscription
+              : info.subscription?.id
+          if (subscriptionId) {
+            await sendV1ExpirationEmail(info.customer_email, {
+              name: 'friend',
+              subscriptionId,
+            })
+          }
         } else {
           // Regular renewal email for V2 upgrades
           await sendProductRenewalEmail(info.customer_email, {
@@ -234,11 +241,14 @@ async function manageOneTimePayment(invoice: Stripe.Invoice) {
 }
 
 /**
- * Create a project from a V2 Pro License purchase
+ * Create a project and subscriptions from a V2 Pro License purchase
+ * Called by webhook after payment succeeds (handles both normal and 3DS flows)
  */
 async function createProjectFromV2Purchase(invoice: Stripe.Invoice, userId: string) {
   const projectName = invoice.metadata?.project_name
   const projectDomain = invoice.metadata?.project_domain
+  const supportTier = invoice.metadata?.support_tier || 'chat'
+  const paymentMethodId = invoice.metadata?.payment_method_id
 
   if (!projectName || !projectDomain) {
     console.error(
@@ -248,10 +258,18 @@ async function createProjectFromV2Purchase(invoice: Stripe.Invoice, userId: stri
     return
   }
 
+  const customerId =
+    typeof invoice.customer === 'string' ? invoice.customer : invoice.customer?.id
+
+  if (!customerId) {
+    console.error('V2 invoice missing customer ID', invoice.id)
+    return
+  }
+
   const oneYearFromNow = new Date()
   oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1)
 
-  // Create the project
+  // Create the project (may fail if domain already exists - that's ok)
   const { data: project, error: projectError } = await supabaseAdmin
     .from('projects')
     .insert({
@@ -265,18 +283,121 @@ async function createProjectFromV2Purchase(invoice: Stripe.Invoice, userId: stri
     .single()
 
   if (projectError) {
-    console.error('Error creating project from V2 purchase:', projectError)
-    return
+    console.error(
+      'Error creating project from V2 purchase (may already exist):',
+      projectError
+    )
+  } else {
+    // Add owner as team member only if project was created
+    await supabaseAdmin.from('project_team_members').insert({
+      project_id: project.id,
+      user_id: userId,
+      role: 'owner',
+    })
+    console.info(
+      `Created V2 project: ${projectName} (${projectDomain}) for user ${userId}`
+    )
   }
 
-  // Add owner as team member
-  await supabaseAdmin.from('project_team_members').insert({
-    project_id: project.id,
-    user_id: userId,
-    role: 'owner',
+  // Create subscriptions if they don't already exist (handles 3DS case)
+  // For normal flow, API already created them - webhook checks and skips
+  await createV2SubscriptionsIfNeeded({
+    customerId,
+    projectName,
+    projectDomain,
+    supportTier,
+    paymentMethodId,
   })
+}
 
-  console.info(`Created V2 project: ${projectName} (${projectDomain}) for user ${userId}`)
+/**
+ * Create V2 subscriptions only if they don't already exist
+ * This handles both normal flow (API creates) and 3DS flow (webhook creates)
+ */
+async function createV2SubscriptionsIfNeeded({
+  customerId,
+  projectName,
+  projectDomain,
+  supportTier,
+  paymentMethodId,
+}: {
+  customerId: string
+  projectName: string
+  projectDomain: string
+  supportTier: string
+  paymentMethodId?: string
+}) {
+  try {
+    // Check if subscriptions already exist for this project
+    const existingSubscriptions = await stripe.subscriptions.list({
+      customer: customerId,
+      limit: 10,
+    })
+
+    const hasUpgradeSubscription = existingSubscriptions.data.some(
+      (sub) =>
+        sub.metadata?.type === 'pro_v2_upgrade' &&
+        sub.metadata?.project_domain === projectDomain &&
+        sub.status !== 'canceled'
+    )
+
+    if (hasUpgradeSubscription) {
+      console.info(`V2 subscriptions already exist for ${projectDomain}, skipping`)
+      return
+    }
+
+    // Create subscriptions (3DS case - API returned early)
+    const oneYearFromNow = new Date()
+    oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1)
+
+    const upgradeSubscription = await stripe.subscriptions.create({
+      customer: customerId,
+      items: [{ price: STRIPE_PRODUCTS.PRO_V2_UPGRADE.priceId }],
+      billing_cycle_anchor: Math.floor(oneYearFromNow.getTime() / 1000),
+      proration_behavior: 'none',
+      payment_settings: { save_default_payment_method: 'on_subscription' },
+      ...(paymentMethodId && { default_payment_method: paymentMethodId }),
+      metadata: {
+        project_name: projectName,
+        project_domain: projectDomain,
+        version: 'v2',
+        type: 'pro_v2_upgrade',
+      },
+    })
+
+    console.info(
+      `Created V2 upgrade subscription: ${upgradeSubscription.id} for ${projectDomain}`
+    )
+
+    // Create support subscription if paid tier selected
+    if (supportTier === 'direct' || supportTier === 'sponsor') {
+      const supportPriceId =
+        supportTier === 'direct'
+          ? STRIPE_PRODUCTS.SUPPORT_DIRECT.priceId
+          : STRIPE_PRODUCTS.SUPPORT_SPONSOR.priceId
+
+      const supportSubscription = await stripe.subscriptions.create({
+        customer: customerId,
+        items: [{ price: supportPriceId }],
+        payment_settings: { save_default_payment_method: 'on_subscription' },
+        ...(paymentMethodId && { default_payment_method: paymentMethodId }),
+        metadata: {
+          project_name: projectName,
+          project_domain: projectDomain,
+          version: 'v2',
+          type: 'pro_v2_support',
+          support_tier: supportTier,
+        },
+      })
+
+      console.info(
+        `Created V2 ${supportTier} support subscription: ${supportSubscription.id}`
+      )
+    }
+  } catch (error) {
+    // Log but don't throw - payment already succeeded
+    console.error('Failed to create V2 subscriptions in webhook:', error)
+  }
 }
 
 // async function handleCreateSubscription(

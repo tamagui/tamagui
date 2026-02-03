@@ -1,10 +1,13 @@
 import { ToastViewport } from '@tamagui/toast'
 import { lazy, Suspense } from 'react'
 import { LoadProgressBar, Slot, usePathname } from 'one'
+import { Theme, YStack } from 'tamagui'
 import { PromoBanner } from '~/components/PromoBanner'
 import { Footer } from '~/features/site/Footer'
 import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { Header } from '~/features/site/header/Header'
+import { useSiteTheme } from '~/features/site/theme/useSiteTheme'
+import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 // lazy load modals to avoid loading stripe on initial page load
 const NewAccountModal = lazy(() =>
@@ -44,19 +47,28 @@ export default function SiteLayout() {
   const showAuth = isAuthPage || isProductLandingPage || isAccountPage
   const hideFooter = isDocs || isTakeout || isBento
 
+  const { themeName, enabled } = useSiteTheme()
+
+  // use custom theme when enabled (skip bento - it has its own wrapper)
+  // always render the same tree structure to avoid remounting on enable toggle
+  const customThemeActive = enabled && themeName && !isBento
+  const customThemeName = customThemeActive ? themeName : null
+
   return (
-    <>
+    <YStack minHeight="100vh">
       {/* stats */}
       <script defer src="https://assets.onedollarstats.com/stonks.js" />
-
-      <script defer src="https://cdn.paritydeals.com/banner.js" />
 
       <PromoBanner />
       <Header showAuth={showAuth} disableNew={disableNew} />
       <LoadCherryBomb prefetch />
       <Modals />
       <LoadProgressBar />
-      <Slot />
+      <Theme name={customThemeName}>
+        <YStack inset={0} position="absolute" bg="$color1" z={0} pointerEvents="none" />
+        <ThemeNameEffect colorKey="$color1" disableTint={customThemeActive} />
+        <Slot />
+      </Theme>
       {!hideFooter && <Footer />}
       <ToastViewport flexDirection="column-reverse" top="$2" left={0} right={0} />
       <ToastViewport
@@ -67,6 +79,6 @@ export default function SiteLayout() {
         left={0}
         right={0}
       />
-    </>
+    </YStack>
   )
 }

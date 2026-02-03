@@ -118,9 +118,7 @@ const light_Circle = {
 }
 ```
 
-<Notice theme="blue">
-  Component themes must have the first letter capitalized.
-</Notice>
+<Notice theme="blue">Component themes must have the first letter capitalized.</Notice>
 
 - `dark_Circle`
 - `dark_green_Circle`
@@ -234,7 +232,8 @@ const ButtonText = styled(Text, {
 
 type ButtonProps = GetProps<typeof ButtonFrame>
 
-// note: styleable will tell the tamagui compiler to optimize usages of this:
+// styleable() wraps a functional component so it can be further styled with styled()
+// see /docs/core/styled#styleable for full documentation
 export const Button = ButtonFrame.styleable<ButtonProps>(
   ({ children, ...props }, ref) => {
     return (
@@ -242,7 +241,7 @@ export const Button = ButtonFrame.styleable<ButtonProps>(
         <ButtonText>{children}</ButtonText>
       </ButtonFrame>
     )
-  },
+  }
 )
 ```
 
@@ -273,8 +272,8 @@ const config = createTamagui({
     },
     light: {
       red: tokens.color.lightRed,
-    }
-  }
+    },
+  },
 })
 
 export const App = () => (

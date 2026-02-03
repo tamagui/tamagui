@@ -34,7 +34,7 @@ fi
 
 if [ -z "$APP_PATH" ]; then
     echo "❌ No built app found. Build with:"
-    echo "   cd code/kitchen-sink && yarn ios"
+    echo "   cd code/kitchen-sink && bun run ios"
     echo ""
     echo "   Or run expo prebuild + xcodebuild:"
     echo "   cd code/kitchen-sink"

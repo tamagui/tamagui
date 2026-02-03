@@ -1,18 +1,18 @@
 {
   "name": "@tamagui/text-test",
-  "version": "2.0.0-1769588848304",
-  "main": "dist/cjs",
+  "version": "2.0.0-rc.0-1770084657117",
+  "private": true,
   "type": "module",
   "sideEffects": [
     "*.css"
   ],
-  "private": true,
+  "main": "dist/cjs",
   "module": "dist/esm",
   "scripts": {
     "test": "TAMAGUI_TARGET=web vitest --config ../../packages/vite-plugin-internal/src/vite.config.ts --run"
   },
   "devDependencies": {
     "@tamagui/text": "workspace:*",
-    "vitest": "^4.0.4"
+    "vitest": "4.0.4"
   }
 }

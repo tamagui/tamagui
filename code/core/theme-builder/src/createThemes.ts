@@ -453,10 +453,7 @@ export function createSimpleThemeBuilder<
 
   if (componentThemes) {
     themeBuilder = themeBuilder.addComponentThemes(getComponentThemes(componentThemes), {
-      avoidNestingWithin: [
-        // ...Object.keys(childrenThemes || {}),
-        ...Object.keys(grandChildrenThemes || {}),
-      ],
+      avoidNestingWithin: Object.keys(grandChildrenThemes || {}),
     })
   }
 
@@ -782,7 +779,7 @@ export function createV4ThemeBuilder<
 
   if (componentThemes) {
     themeBuilder = themeBuilder.addComponentThemes(getComponentThemes(componentThemes), {
-      avoidNestingWithin: [...Object.keys(grandChildrenThemes || {})],
+      avoidNestingWithin: Object.keys(grandChildrenThemes || {}),
     })
   }
 

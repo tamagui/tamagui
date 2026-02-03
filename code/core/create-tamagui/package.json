@@ -1,24 +1,28 @@
 {
   "name": "create-tamagui",
-  "version": "2.0.0-1769588848304",
-  "sideEffects": false,
+  "version": "2.0.0-rc.0-1770084657117",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "bin": "./run.js",
-  "main": "dist/index.cjs",
   "files": [
     "run.js",
     "dist"
   ],
+  "sideEffects": false,
+  "main": "dist/index.cjs",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "./run.js",
     "//": "disabling for now need to migrate to new stack",
     "test-disabled": "NODE_ENV=test node -r esbuild-register ../../../node_modules/.bin/playwright test integration.test.ts",
-    "test:debug": "yarn test --debug",
-    "test": "yarn build:test && vitest run",
-    "build:test": "yarn build",
+    "test:debug": "bun run test --debug",
+    "test": "bun run build:test && vitest run",
+    "build:test": "bun run build",
     "prerelease": "rimraf ./dist/",
-    "prepublish": "yarn build",
+    "prepublish": "bun run build",
     "build": "tamagui-build --skip-types --bundle",
-    "watch": "yarn build --watch",
+    "watch": "bun run build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -53,11 +57,7 @@
     "tar": "4.4.10",
     "tempy": "^3.1.0",
     "update-check": "1.5.4",
-    "vitest": "^4.0.4",
+    "vitest": "4.0.4",
     "wait-port": "^0.3.0"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  }
 }

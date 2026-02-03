@@ -11,9 +11,9 @@ setTimeout(() => {
 
 function something() {
   const time = t.start()
-  
+
   // do stuff...
-  
+
   time`firstTag`
 
   // do stuff...

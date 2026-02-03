@@ -148,7 +148,7 @@ const AnimatedMockExports = {
   forkEvent: AnimatedImplementation.forkEvent,
   unforkEvent: AnimatedImplementation.unforkEvent,
   Event: AnimatedEvent,
-};
+}
 
 export { AnimatedMockExports }
 export { AnimatedMockExports as AnimatedMock }

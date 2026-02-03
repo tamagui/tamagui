@@ -20,6 +20,7 @@ These scripts help manage the sync between Stripe subscriptions and GitHub team 
 ## Available Scripts
 
 ### 1. `check-discord-sync.ts`
+
 **Purpose:** Audit Discord Takeout role vs active Stripe subscriptions
 
 ```bash
@@ -27,6 +28,7 @@ npx tsx scripts/takeout/check-discord-sync.ts
 ```
 
 **Shows:**
+
 - Discord users with Takeout role
 - Active Stripe subscriptions
 - Users who should be removed (no active subscription)
@@ -39,6 +41,7 @@ npx tsx scripts/takeout/check-discord-sync.ts
 ---
 
 ### 2. `remove-discord-users.ts`
+
 **Purpose:** Remove Discord Takeout role from users based on analysis file
 
 ```bash
@@ -54,6 +57,7 @@ npx tsx scripts/takeout/remove-discord-users.ts tmp/discord-users-to-remove-*.js
 ---
 
 ### 3. `check-subscription-sync.ts`
+
 **Purpose:** Audit sync between Stripe subscriptions and GitHub team membership
 
 ```bash
@@ -61,6 +65,7 @@ npx tsx scripts/takeout/check-subscription-sync.ts
 ```
 
 **Shows:**
+
 - Active Stripe subscriptions count
 - GitHub team members (active + pending)
 - Database claims count
@@ -71,6 +76,7 @@ npx tsx scripts/takeout/check-subscription-sync.ts
 ---
 
 ### 2. `check-webhook-events.ts`
+
 **Purpose:** View recent Stripe webhook events to debug issues
 
 ```bash
@@ -78,6 +84,7 @@ npx tsx scripts/takeout/check-webhook-events.ts [--limit 100]
 ```
 
 **Shows:**
+
 - Recent webhook events by type
 - Recent subscription events (created/updated/deleted)
 - Webhook endpoint configuration
@@ -87,6 +94,7 @@ npx tsx scripts/takeout/check-webhook-events.ts [--limit 100]
 ---
 
 ### 3. `analyze-stale-claims.ts`
+
 **Purpose:** Find claims for cancelled subscriptions that need cleanup
 
 ```bash
@@ -94,6 +102,7 @@ npx tsx scripts/takeout/analyze-stale-claims.ts
 ```
 
 **Creates files in `/tmp/`:**
+
 - `active-subscriptions-*.json` - All active Stripe subscription IDs
 - `valid-claims-*.json` - Claims that should be kept
 - `stale-claims-*.json` - Claims to clean up (subscriptions cancelled)
@@ -104,6 +113,7 @@ npx tsx scripts/takeout/analyze-stale-claims.ts
 ---
 
 ### 4. `cleanup-stale-claims.ts`
+
 **Purpose:** Clean up stale claims (mark as unclaimed)
 
 ```bash
@@ -135,6 +145,7 @@ await supabaseAdmin.from('claims').update({
 ```
 
 **Fix:**
+
 ```typescript
 // AFTER (FIXED)
 await supabaseAdmin
@@ -142,10 +153,11 @@ await supabaseAdmin
   .update({
     unclaimed_at: new Date().toISOString(),
   })
-  .eq('id', claim.id)  // ← Added WHERE clause
+  .eq('id', claim.id) // ← Added WHERE clause
 ```
 
 **Additional fixes:**
+
 - Added `await` before `unclaimRepoAccess()` call
 - Added fallback to 'early-access' team for old claims without `team_slug`
 - Fixed date format to use ISO string
@@ -158,15 +170,18 @@ await supabaseAdmin
 Migrated from direct repo collaborator access to GitHub team-based access:
 
 **Before:**
+
 - Users added as collaborators to individual repos
 - Claims had `repository_name: 'takeout'` or `'unistack'`
 
 **After:**
+
 - Users added to `early-access` GitHub team
 - Team has access to all relevant repos
 - Claims have `team_slug: 'early-access'`
 
 **Migration Stats:**
+
 - Invited 197 active subscribers to GitHub team
 - Removed 40 users from Discord Takeout role (cancelled subscriptions)
 - Cleaned up 590 stale claims from cancelled subscriptions
@@ -201,17 +216,20 @@ All scripts need these environment variables (automatically loaded from `code/ta
 ## Common Tasks
 
 ### Check if sync is healthy
+
 ```bash
 npx tsx scripts/takeout/check-subscription-sync.ts
 npx tsx scripts/takeout/check-discord-sync.ts
 ```
 
 ### Debug webhook issues
+
 ```bash
 npx tsx scripts/takeout/check-webhook-events.ts
 ```
 
 ### Monthly cleanup of stale claims
+
 ```bash
 # 1. Analyze
 npx tsx scripts/takeout/analyze-stale-claims.ts
@@ -223,6 +241,7 @@ npx tsx scripts/takeout/cleanup-stale-claims.ts tmp/stale-claims-*.json
 ```
 
 ### Monthly Discord cleanup
+
 ```bash
 # 1. Check Discord sync
 npx tsx scripts/takeout/check-discord-sync.ts
@@ -238,7 +257,9 @@ npx tsx scripts/takeout/remove-discord-users.ts tmp/discord-users-to-remove-*.js
 ## Troubleshooting
 
 ### "Subscriptions without claims"
+
 Some subscriptions may not have claims if:
+
 - User hasn't clicked "Claim Access" on the website yet
 - Webhook failed when subscription was created
 - User subscribed before claim system existed
@@ -246,13 +267,17 @@ Some subscriptions may not have claims if:
 **Solution:** Users can claim access by visiting their account page on tamagui.dev
 
 ### "Users not in GitHub team"
+
 If active subscribers aren't in the team:
+
 - Check if they have claimed access on the website
 - Run `check-subscription-sync.ts` to identify missing users
 - Verify webhooks are working with `check-webhook-events.ts`
 
 ### "Stale claims piling up"
+
 If claims aren't being marked as unclaimed:
+
 - Verify the bug fix in `unclaimProduct.ts` is deployed
 - Check webhook events are being received
 - Look for errors in webhook logs

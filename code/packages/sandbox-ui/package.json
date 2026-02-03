@@ -1,28 +1,24 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "2.0.0-1769588848304",
+  "version": "2.0.0-rc.0-1770084657117",
   "private": true,
-  "sideEffects": [
-    "*.css"
-  ],
-  "types": "./types/index",
-  "main": "dist/cjs",
-  "module": "dist/esm/index.mjs",
-  "module:jsx": "dist/jsx",
   "files": [
     "types",
     "dist"
   ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm/index.mjs",
+  "types": "./types/index",
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@expo/vector-icons": "^15.0.3",
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
@@ -34,9 +30,10 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*"
+    "react": ">=19"
   },
   "peerDependencies": {
-    "react": "*"
-  }
+    "react": ">=19"
+  },
+  "module:jsx": "dist/jsx"
 }

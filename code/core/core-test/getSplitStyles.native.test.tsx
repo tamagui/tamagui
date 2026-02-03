@@ -275,11 +275,7 @@ function getSplitStylesFor(props: Record<string, any>, Component = View) {
   )!
 }
 
-function getThemeStylesView(
-  props: Record<string, any>,
-  themeName: string,
-  tag?: string
-) {
+function getThemeStylesView(props: Record<string, any>, themeName: string, tag?: string) {
   return getSplitStyles(
     props,
     View.staticConfig,

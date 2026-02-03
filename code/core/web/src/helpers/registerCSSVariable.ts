@@ -34,3 +34,21 @@ export const getOrCreateVariable = (val: any): Variable => {
   autoVariables.push(v)
   return v
 }
+
+// For mutated themes (runtime theme changes like in /theme builder)
+// Uses same 't' prefix but starts at 10000 to avoid conflicts with SSR-generated vars
+let mutatedVarId = 10000
+export const mutatedAutoVariables: Variable[] = []
+const mutatedTokensValueToVariable = new Map<any, any>()
+
+export const getOrCreateMutatedVariable = (val: any): Variable => {
+  if (mutatedTokensValueToVariable.has(val)) {
+    return mutatedTokensValueToVariable.get(val)!
+  }
+  const name = `t${mutatedVarId++}`
+  const variable = `var(--${name})`
+  const v = { val, name, variable } as Variable
+  mutatedTokensValueToVariable.set(val, v)
+  mutatedAutoVariables.push(v)
+  return v
+}

@@ -5,7 +5,7 @@ description: Tamagui accepts a superset of React Native styles
 
 Tamagui supports a superset of the React Native style properties on to any
 styled component like the base
-[View and Text components](/docs/core/view-and-text/), or through the
+[View and Text components](/docs/core/view-and-text), or through the
 [`styled()` function](/docs/core/styled) as the second argument.
 
 Here's how that looks in practice:
@@ -299,6 +299,38 @@ For native border styling, use individual props:
 <View borderWidth={1} borderStyle="solid" borderColor="$borderColor" />
 ```
 
+### textShadow
+
+Text shadows support CSS shorthand with token resolution, just like `boxShadow`:
+
+```tsx
+import { Text } from 'tamagui'
+
+// CSS shorthand with tokens
+<Text textShadow="2px 2px 4px $shadowColor">
+  Shadowed Text
+</Text>
+
+// multiple shadows (web only)
+<Text textShadow="1px 1px 2px $shadowColor, 0 0 8px $color">
+  Glowing Text
+</Text>
+```
+
+You can also use the individual React Native props:
+
+```tsx
+<Text
+  textShadowColor="$shadowColor"
+  textShadowOffset={{ width: 2, height: 2 }}
+  textShadowRadius={4}
+>
+  Shadowed Text
+</Text>
+```
+
+On native, only a single text shadow is supported (React Native limitation).
+
 ## Parent based styling
 
 Tamagui has a variety of ways to style a child based on the "parent", a parent
@@ -409,9 +441,10 @@ set up your Tamagui types:
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
 
-  // if you want types for group styling props, define them like so:
+  // if you want types for named group styling props (e.g. $group-card-hover),
+  // define your group names here:
   interface TypeOverride {
-    groupNames(): 'a' | 'b' | 'c'
+    groupNames(): 'card' | 'header' | 'sidebar'
   }
 }
 ```
@@ -437,10 +470,7 @@ For more advanced use cases, you can use named groups with container queries:
 ```tsx
 <View group="card">
   <View group>
-    <Text
-      $group-card-sm={{ color: 'white' }}
-      $group-card-sm-hover={{ color: 'green' }}
-    />
+    <Text $group-card-sm={{ color: 'white' }} $group-card-sm-hover={{ color: 'green' }} />
     <Text $group-sm={{ color: 'white' }} $group-sm-hover={{ color: 'green' }} />
   </View>
 </View>
@@ -492,9 +522,7 @@ Let's see how it lets us control overriding styles:
 ```tsx
 import { View, ViewProps } from '@tamagui/core'
 
-export default (props: ViewProps) => (
-  <View background="red" {...props} width={200} />
-)
+export default (props: ViewProps) => <View background="red" {...props} width={200} />
 ```
 
 In this case we set a default `background` to red, but it can be overridden by

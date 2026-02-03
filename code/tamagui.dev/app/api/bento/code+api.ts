@@ -3,7 +3,7 @@ import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { getQuery } from '~/features/api/getQuery'
 import { getBentoCode, supabaseAdmin } from '~/features/auth/supabaseAdmin'
-import { hasBentoAccess } from '~/features/bento/hasBentoAccess'
+import { hasProAccess } from '~/features/bento/hasProAccess'
 
 export const GET: Endpoint = async (req) => {
   const query = getQuery(req)
@@ -12,8 +12,8 @@ export const GET: Endpoint = async (req) => {
 
   // CLI
   if (query.userGithubId) {
-    const resultHasBentoAccess = await hasBentoAccess(`${query.userGithubId}`)
-    if (!resultHasBentoAccess) {
+    const hasPro = await hasProAccess(`${query.userGithubId}`)
+    if (!hasPro) {
       return Response.json({ error: `no_access` }, { status: 500 })
     }
     return new Response(await getBentoCode(codePath), {
@@ -34,12 +34,11 @@ export const GET: Endpoint = async (req) => {
   }
 
   // Authorize
-  const { supabase } = await ensureAuth({ req })
-  await ensureAccess({
-    req,
-    supabase,
-    checkForBentoAccess: true,
-  })
+  const { supabase, user } = await ensureAuth({ req })
+  const { hasPro } = await ensureAccess({ supabase, user })
+  if (!hasPro) {
+    return Response.json({ error: 'Must have Pro account' }, { status: 403 })
+  }
 
   const fileResult = await supabaseAdmin.storage
     .from('bento')

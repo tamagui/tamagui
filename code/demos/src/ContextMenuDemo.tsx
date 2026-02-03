@@ -1,7 +1,7 @@
 import { ContextMenu } from '@tamagui/context-menu'
 import { Calendar, Check, ChevronRight } from '@tamagui/lucide-icons'
 import React from 'react'
-import { Text, YStack } from 'tamagui'
+import { Text, View, YStack } from 'tamagui'
 
 /**
  * Note: you'll want to use createMenu() to customize further.
@@ -18,9 +18,18 @@ export function ContextMenuDemo() {
   return (
     <ContextMenu allowFlip native={native} placement="bottom-start" offset={14}>
       <ContextMenu.Trigger asChild>
-        <Text text="center" userSelect="none">
-          Right Click or Long Press
-        </Text>
+        <View
+          p="$4"
+          rounded="$4"
+          borderWidth={1}
+          borderStyle="dashed"
+          borderColor="$color6"
+          cursor="default"
+        >
+          <Text text="center" select="none" color="$color10">
+            Right Click or Long Press
+          </Text>
+        </View>
       </ContextMenu.Trigger>
 
       <ContextMenu.Portal zIndex={100}>

@@ -13,16 +13,10 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import Piscina from 'piscina'
 
-export type {
-  ExtractedResponse,
-  TamaguiProjectInfo,
-} from '@tamagui/static'
+export type { ExtractedResponse, TamaguiProjectInfo } from '@tamagui/static'
 export type { TamaguiOptions } from '@tamagui/types'
 
-export const getPragmaOptions = async (props: {
-  source: string
-  path: string
-}) => {
+export const getPragmaOptions = async (props: { source: string; path: string }) => {
   const { default: Static } = await import('@tamagui/static')
   return Static.getPragmaOptions(props)
 }
@@ -44,6 +38,13 @@ const getWorkerPath = () => {
 // Use globalThis to share pool across module instances (Vite environments)
 const POOL_KEY = '__tamagui_piscina_pool__'
 const CLOSING_KEY = '__tamagui_piscina_closing__'
+const TASK_COUNT_KEY = '__tamagui_piscina_task_count__'
+const RECYCLING_KEY = '__tamagui_piscina_recycling__'
+
+// recycle worker after this many tasks to prevent RSS bloat from V8 memory fragmentation
+// Node.js worker threads don't release memory properly - see https://github.com/nodejs/node/issues/51868
+// Lower threshold to recycle before hitting V8 memory limits
+const MAX_TASKS_BEFORE_RECYCLE = 200
 
 function getSharedPool(): Piscina | null {
   return (globalThis as any)[POOL_KEY] ?? null
@@ -61,32 +62,64 @@ function setClosing(value: boolean) {
   ;(globalThis as any)[CLOSING_KEY] = value
 }
 
+function isRecycling(): boolean {
+  return (globalThis as any)[RECYCLING_KEY] === true
+}
+
+function setRecycling(value: boolean) {
+  ;(globalThis as any)[RECYCLING_KEY] = value
+}
+
+function getTaskCount(): number {
+  return (globalThis as any)[TASK_COUNT_KEY] ?? 0
+}
+
+function incrementTaskCount(): number {
+  const count = getTaskCount() + 1
+  ;(globalThis as any)[TASK_COUNT_KEY] = count
+  return count
+}
+
+function resetTaskCount() {
+  ;(globalThis as any)[TASK_COUNT_KEY] = 0
+}
+
+/**
+ * Create a new Piscina pool instance
+ */
+function createPool(): Piscina {
+  const pool = new Piscina({
+    filename: getWorkerPath(),
+    // Single worker for state consistency and simpler caching
+    minThreads: 1,
+    maxThreads: 1,
+    // Never terminate due to idle - worker stays alive until close() or process exit
+    // This prevents "Terminating worker thread" errors from Piscina during idle
+    idleTimeout: Number.POSITIVE_INFINITY,
+    // no resourceLimits - we rely on task-based recycling instead
+    // V8 resourceLimits cause "Terminating worker thread" messages when hit
+  })
+
+  // Handle error events to prevent uncaught exceptions during pool destruction
+  pool.on('error', (err) => {
+    if (isClosing() || isRecycling()) return
+    const message =
+      err && typeof err === 'object' && 'message' in err ? String(err.message) : ''
+    // Suppress termination errors (can still occur during explicit close/destroy)
+    if (message.includes('Terminating worker thread')) return
+    console.error('[tamagui] Worker pool error:', err)
+  })
+
+  return pool
+}
+
 /**
  * Get or create the Piscina worker pool
  */
 function getPool(): Piscina {
   let pool = getSharedPool()
   if (!pool) {
-    pool = new Piscina({
-      filename: getWorkerPath(),
-      // Single worker for state consistency and simpler caching
-      minThreads: 1,
-      maxThreads: 1,
-      // Never terminate due to idle - worker stays alive until close() or process exit
-      // This prevents "Terminating worker thread" errors from Piscina during idle
-      idleTimeout: Number.POSITIVE_INFINITY,
-    })
-
-    // Handle error events to prevent uncaught exceptions during pool destruction
-    pool.on('error', (err) => {
-      if (isClosing()) return
-      const message =
-        err && typeof err === 'object' && 'message' in err ? String(err.message) : ''
-      // Suppress termination errors (can still occur during explicit close/destroy)
-      if (message.includes('Terminating worker thread')) return
-      console.error('[tamagui] Worker pool error:', err)
-    })
-
+    pool = createPool()
     setSharedPool(pool)
   }
   return pool
@@ -119,6 +152,86 @@ export async function loadTamagui(options: Partial<TamaguiOptions>): Promise<any
     console.error('[static-worker] Error loading Tamagui config:', error)
     throw error
   }
+}
+
+/**
+ * Recycle the worker pool to release RSS memory
+ * Creates new pool, swaps immediately, then destroys old pool
+ * V8 doesn't return memory to OS, so we need to restart the worker periodically
+ */
+async function recyclePool(options: TamaguiOptions): Promise<void> {
+  if (isClosing() || isRecycling()) return
+
+  const oldPool = getSharedPool()
+  if (!oldPool) return
+
+  setRecycling(true)
+
+  const start = Date.now()
+
+  try {
+    // suppress "Terminating worker thread" messages during recycle
+    const originalStderr = process.stderr.write.bind(process.stderr)
+    const originalStdout = process.stdout.write.bind(process.stdout)
+    const filter = (chunk: any, ...args: any[]) => {
+      const str = typeof chunk === 'string' ? chunk : chunk?.toString?.() || ''
+      if (str.includes('Terminating worker thread')) return true
+      return false
+    }
+    process.stderr.write = ((chunk: any, ...args: any[]) => {
+      if (filter(chunk)) return true
+      return originalStderr(chunk, ...args)
+    }) as any
+    process.stdout.write = ((chunk: any, ...args: any[]) => {
+      if (filter(chunk)) return true
+      return originalStdout(chunk, ...args)
+    }) as any
+
+    // create new pool and swap immediately
+    const newPool = createPool()
+    setSharedPool(newPool)
+
+    // warm up new pool with config (this caches it in the new worker)
+    const warmupTask = {
+      type: 'extractToClassNames',
+      source: '// warmup',
+      sourcePath: '__warmup__.tsx',
+      options: {
+        ...options,
+        // skip the "built config" log on warmup since it's a recycle
+        _skipBuildLog: true,
+      },
+      shouldPrintDebug: false,
+    }
+
+    await newPool.run(warmupTask, { name: 'runTask' })
+
+    // destroy old pool - pending tasks will be rejected
+    oldPool.removeAllListeners()
+    oldPool.destroy().catch(() => {})
+
+    // restore stderr/stdout after a delay
+    setTimeout(() => {
+      process.stderr.write = originalStderr
+      process.stdout.write = originalStdout
+    })
+
+    console.log(`  ♻️  [tamagui] recycled worker pool (${Date.now() - start}ms)`)
+  } finally {
+    setRecycling(false)
+  }
+}
+
+/**
+ * Load Tamagui build configuration asynchronously
+ * Uses esbuild-wasm to avoid EPIPE errors from native esbuild service lifecycle
+ */
+export async function loadTamaguiBuildConfig(
+  tamaguiOptions: Partial<TamaguiOptions> | undefined
+): Promise<TamaguiOptions> {
+  const { default: Static } = await import('@tamagui/static')
+
+  return Static.loadTamaguiBuildConfigAsync(tamaguiOptions)
 }
 
 /**
@@ -160,6 +273,14 @@ export async function extractToClassNames(params: {
     throw new Error(errorMessage)
   }
 
+  // check if we need to recycle the worker to prevent RSS bloat
+  const count = incrementTaskCount()
+  if (count >= MAX_TASKS_BEFORE_RECYCLE) {
+    resetTaskCount()
+    // recycle asynchronously with hot-swap to not block current request
+    recyclePool(options).catch(() => {})
+  }
+
   return result.data
 }
 
@@ -194,6 +315,14 @@ export async function extractToNative(
     throw new Error(errorMessage)
   }
 
+  // check if we need to recycle the worker to prevent RSS bloat
+  const count = incrementTaskCount()
+  if (count >= MAX_TASKS_BEFORE_RECYCLE) {
+    resetTaskCount()
+    // recycle asynchronously with hot-swap to not block current request
+    recyclePool(options).catch(() => {})
+  }
+
   return result.data
 }
 
@@ -223,19 +352,6 @@ export async function watchTamaguiConfig(
       }
     },
   }
-}
-
-/**
- * Load Tamagui build configuration synchronously
- * This is only used for loading tamagui.build.ts config, not the full tamagui config
- */
-export async function loadTamaguiBuildConfig(
-  tamaguiOptions: Partial<TamaguiOptions> | undefined
-): Promise<TamaguiOptions> {
-  // Import from static package for this sync operation
-  const { default: Static } = await import('@tamagui/static')
-
-  return Static.loadTamaguiBuildConfigSync(tamaguiOptions)
 }
 
 /**

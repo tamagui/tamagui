@@ -78,4 +78,3 @@ describe('ThemeMutation', () => {
       .withTimeout(5000)
   })
 })
-

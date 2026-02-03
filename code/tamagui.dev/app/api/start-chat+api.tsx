@@ -5,11 +5,10 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 export const POST: Endpoint = async (req) => {
   const { supabase, user } = await ensureAuth({ req })
 
-  await ensureAccess({
-    req,
-    supabase,
-    checkForBentoAccess: true,
-  })
+  const { hasPro } = await ensureAccess({ supabase, user })
+  if (!hasPro) {
+    return Response.json({ error: 'Must have Pro account' }, { status: 403 })
+  }
 
   const email = user.email
 

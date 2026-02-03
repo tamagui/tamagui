@@ -14,7 +14,7 @@ import { createReactDOMStyle } from './createReactDOMStyle'
 import { hyphenateStyleName } from './hyphenateStyleName'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 
-type Value = Object | Array<any> | string | number
+type Value = object | Array<any> | string | number
 
 type Style = {
   [K in string]: Value
@@ -429,7 +429,7 @@ function createIdentifier(prefix: string, name: string, value: Value): string {
 /**
  * Create individual CSS keyframes rules.
  */
-function createKeyframes(keyframes: Object): [string, Rules] {
+function createKeyframes(keyframes: object): [string, Rules] {
   const prefixes = ['-webkit-', '']
   const identifier = createIdentifier('r', 'animation', keyframes)
 

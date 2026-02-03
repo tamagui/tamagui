@@ -5,7 +5,7 @@
  * RN-specific accessibility props are no longer converted - use aria-* directly.
  */
 
-import { View, Text, View, createTamagui } from '@tamagui/core'
+import { View, Text, createTamagui } from '@tamagui/core'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'

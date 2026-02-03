@@ -184,9 +184,7 @@ test.describe('Render Prop', () => {
       await expect(element).toBeVisible()
 
       // Check cursor style
-      const cursor = await element.evaluate((el) =>
-        window.getComputedStyle(el).cursor
-      )
+      const cursor = await element.evaluate((el) => window.getComputedStyle(el).cursor)
       expect(cursor).toBe('pointer')
     })
 
@@ -195,8 +193,8 @@ test.describe('Render Prop', () => {
       await expect(element).toBeVisible()
 
       // Just verify the element has some background set
-      const bg = await element.evaluate((el) =>
-        window.getComputedStyle(el).backgroundColor
+      const bg = await element.evaluate(
+        (el) => window.getComputedStyle(el).backgroundColor
       )
       expect(bg).toBeTruthy()
       expect(bg).not.toBe('rgba(0, 0, 0, 0)')
@@ -240,8 +238,8 @@ test.describe('Render Prop', () => {
       await expect(element).toBeVisible()
 
       // Should have padding and background from Stack props
-      const bg = await element.evaluate((el) =>
-        window.getComputedStyle(el).backgroundColor
+      const bg = await element.evaluate(
+        (el) => window.getComputedStyle(el).backgroundColor
       )
       expect(bg).toBeTruthy()
       expect(bg).not.toBe('rgba(0, 0, 0, 0)')
@@ -285,8 +283,8 @@ test.describe('Render Prop', () => {
       const element = page.getByTestId('function-render')
       await expect(element).toBeVisible()
 
-      const bg = await element.evaluate((el) =>
-        window.getComputedStyle(el).backgroundColor
+      const bg = await element.evaluate(
+        (el) => window.getComputedStyle(el).backgroundColor
       )
       expect(bg).toBeTruthy()
       expect(bg).not.toBe('rgba(0, 0, 0, 0)')

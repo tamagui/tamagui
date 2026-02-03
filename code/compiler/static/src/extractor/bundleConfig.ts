@@ -103,6 +103,11 @@ function updateLastLoaded(config: any) {
 
 let hasBundledOnce = false
 
+// use global to dedupe logging - this works within a single process
+// but may log multiple times if worker threads are recreated
+// that's acceptable - better than nothing
+let hasLoggedBuild = false
+
 export async function bundleConfig(props: TamaguiOptions) {
   // webpack is calling this a ton for no reason
   if (global.tamaguiLastBundledConfig && Date.now() - global.tamaguiLastLoaded < 3000) {
@@ -174,22 +179,25 @@ export async function bundleConfig(props: TamaguiOptions) {
         }),
       ])
 
-      colorLog(
-        Color.FgYellow,
-        `
-  ➡ [tamagui] built config, components, prompt (${Date.now() - start}ms)`
-      )
-
-      if (process.env.DEBUG?.startsWith('tamagui')) {
+      // only log once per process to avoid duplicate messages
+      // also skip if _skipBuildLog is set (used during worker recycle warmup)
+      if (!hasLoggedBuild && !props['_skipBuildLog']) {
+        hasLoggedBuild = true
         colorLog(
-          Color.Dim,
+          Color.FgYellow,
           `
-          Config     .${sep}${relative(process.cwd(), configOutPath)}
-          Components ${[
-            ...componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`),
-          ].join('\n             ')}
-          `
+  ➡ [tamagui] built config, components, prompt (${Date.now() - start}ms)`
         )
+
+        if (process.env.DEBUG?.startsWith('tamagui')) {
+          colorLog(
+            Color.Dim,
+            `
+          Config     .${sep}${relative(process.cwd(), configOutPath)}
+          Components ${componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`).join('\n             ')}
+          `
+          )
+        }
       }
     }
 
@@ -201,7 +209,7 @@ export async function bundleConfig(props: TamaguiOptions) {
         // clear cache to get new files
         for (const key in require.cache) {
           // avoid clearing core/web it seems to break things
-          if (!/(core|web)[\/\\]dist/.test(key)) {
+          if (!/(core|web)[/\\]dist/.test(key)) {
             delete require.cache[key]
           }
         }
@@ -210,9 +218,6 @@ export async function bundleConfig(props: TamaguiOptions) {
       }
 
       out = require(configOutPath)
-    } catch (err) {
-      // biome-ignore lint/complexity/noUselessCatch: <explanation>
-      throw err
     } finally {
       unregister()
     }

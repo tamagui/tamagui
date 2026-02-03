@@ -3,8 +3,10 @@ import { useDidFinishSSR, type ThemeName } from 'tamagui'
 import { getTints, setNextTintFamily, useTints } from './tints'
 
 let current = 3
+let disableTintTheme = false
 
 const listeners = new Set<Function>()
+const disableListeners = new Set<Function>()
 
 export const onTintChange = (listener: (cur: number) => void) => {
   listeners.add(listener)
@@ -21,6 +23,15 @@ export const setTintIndex = (next: number): void => {
   current = val
   listeners.forEach((x) => x(val))
 }
+
+// when true, useTint returns null for tint/tintAlt so ThemeTint doesn't apply sub-themes
+export const setDisableTintTheme = (disable: boolean): void => {
+  if (disable === disableTintTheme) return
+  disableTintTheme = disable
+  disableListeners.forEach((x) => x(disable))
+}
+
+export const getDisableTintTheme = (): boolean => disableTintTheme
 
 export function getDocsSection(pathname: string): 'compiler' | 'ui' | 'core' | null {
   return pathname === '/docs/intro/compiler-install' ||
@@ -47,6 +58,8 @@ export const useTint = (
   setTintIndex: (next: number) => void
   setNextTintFamily: () => void
   setNextTint: () => void
+  setDisableTintTheme: (disable: boolean) => void
+  disableTintTheme: boolean
   name: string
   families: {
     tamagui: string[]
@@ -60,6 +73,7 @@ export const useTint = (
   const initial = useContext(InitialPathContext)
   const didHydrate = useDidFinishSSR()
   const [index, setIndex] = useState(didHydrate ? current : initial)
+  const [disabled, setDisabled] = useState(disableTintTheme)
   const tintsContext = useTints()
   const { tints } = tintsContext
   const tintAltIndex = Math.abs((index + altOffset) % tints.length)
@@ -70,9 +84,17 @@ export const useTint = (
     })
   }, [])
 
-  // index 3 is the "none" position - return null for no tint
-  const tint = index === 3 ? null : tints[index]
-  const tintAlt = tintAltIndex === 3 ? null : tints[tintAltIndex]
+  useEffect(() => {
+    const cb = (val: boolean) => setDisabled(val)
+    disableListeners.add(cb)
+    return () => {
+      disableListeners.delete(cb)
+    }
+  }, [])
+
+  // return null for tint when disabled or at the "none" position (index 3)
+  const tint = disabled || index === 3 ? null : tints[index]
+  const tintAlt = disabled || tintAltIndex === 3 ? null : tints[tintAltIndex]
 
   return {
     ...tintsContext,
@@ -83,6 +105,8 @@ export const useTint = (
     tintAlt: tintAlt as ThemeName,
     setTintIndex,
     setNextTintFamily,
+    setDisableTintTheme,
+    disableTintTheme: disabled,
     setNextTint: () => {
       React.startTransition(() => {
         setTintIndex(index + 1)

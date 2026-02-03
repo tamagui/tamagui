@@ -1,3 +1,10 @@
+- tooltip simpel theme not accent/inverse?
+
+- lineheight at size="$3" in web is a bit tall
+
+- maxXXL => max-xxl to further align w tailwind-style
+  - probably ok for RC, it's a single find/replace
+
 ## Fix ref type issues properly
 
 Many components have `as any` casts for refs due to `HTMLElement` subtypes not being assignable to `TamaguiElement`. These were pre-existing issues exposed during the `@tamagui/element` package work. Files with `as any` ref casts that could be fixed properly:
@@ -13,7 +20,10 @@ Consider using `useWebRef` from `@tamagui/element` for these components to prope
 
 ---
 
-- remove the transparencies from *palette* and background0: 1 etc from template
+- motion has a ton of hacks, but also dont forget:
+  const animateKey = JSON.stringify(style)
+
+- remove the transparencies from _palette_ and background0: 1 etc from template
   thats all done in getTheme now + we should add color-mix or /opacity
 
 ⚠️ When bento `migrate-tamagui-v2` branch is merged to main, update Dockerfile to remove the branch specifier
@@ -44,15 +54,16 @@ AFTER v2 RC (nice to haves):
   - reanimated too but requires testing native + worklets
 
 - Text weirdness fixes (explore)
-    - remove suppressHighlighting / margin 0 default from Text
-    - fix display: inline issue
-    - see what react-strict-dom is doing
-    - move it to <div><span> where div is flex, span is text only props
-        <div {...nonTextStyleProps}>
-          <span {...textStylePropsOnly} style={{ display: 'contents' }}>
+  - remove suppressHighlighting / margin 0 default from Text
+  - fix display: inline issue
+  - see what react-strict-dom is doing
+  - move it to <div><span> where div is flex, span is text only props
+      <div {...nonTextStyleProps}>
+        <span {...textStylePropsOnly} style={{ display: 'contents' }}>
 
-          </span>
-        </div>
+        </span>
+
+      </div>
 
 - smaller bugfixes/things to check work:
   - ensure onlyAllowShorthands changes types properly
@@ -62,7 +73,6 @@ AFTER v2 RC (nice to haves):
   - seems <Switch checked defaultChecked> isnt showing in the checked position
 
 - option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
-
   - useTheme().x.val may have bug on light/dark switch
   - react native 78 dialogs not working
     - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
@@ -80,7 +90,7 @@ AFTER v2 RC (nice to haves):
 
 - bug: if you name a file `polyfill-native.ts` tamagui-build doesnt output the .native files properly
 
-- When using <Adapt.Contents />  inside an Adapt when="maxMd"  it seems to hide the children before fully closed
+- When using <Adapt.Contents /> inside an Adapt when="maxMd" it seems to hide the children before fully closed
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
 
 - When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
@@ -115,7 +125,7 @@ AFTER v2 RC (nice to haves):
 - perf: could avoid even creating style rules, easy / big win:
   - note that in addStyleToInsertRules it checks if shouldInsert
   - note that we create all the style rules before we actually check if should insert
-  - refactor: not *super* simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
+  - refactor: not _super_ simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
 
 - import `tamagui/styled` / `@tamagui/button/styled`
   - adds styles, sizing, unstyled prop
@@ -132,7 +142,6 @@ const padding = !props.unstyled
         : undefined
 ```
 
-
 - checkbox disableActiveTheme not workign
 - ssr fix i think select not showing value until after load?
 
@@ -141,7 +150,7 @@ animations improvements:
 - make tamagui package work in some simple way
   - probably making tamagui + tamagui/ui both work is fine
 
-- react-native-web-lite 
+- react-native-web-lite
   - tree shakeable, smaller, fixes things like data- attributes not passing
   - shares core style logic with tamagui for smaller bundles used together
   - outstanding bug? https://discord.com/channels/909986013848412191/1354817119233118288/1354839267771285546
@@ -188,18 +197,19 @@ animations improvements:
   - https://share.cleanshot.com/4rKTYFkl
 
 v3:
-  - aim for fast follow
-  - remove component themes, instead theme="surface2" etc
-  - remove `name` from styled()
-  - remove inverse in favor of sub-themes that can inverse already ssr safe
-  - naming:
-    - themes => variables, control any property
-    - remove tokens in favor of variables
-  
-  - RSD - no View + Text (just Element and we can extend it later)
-    - compiler can optimize
-    - mimic text inhertance on native (or remove it on web)
-    - https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
+
+- aim for fast follow
+- remove component themes, instead theme="surface2" etc
+- remove `name` from styled()
+- remove inverse in favor of sub-themes that can inverse already ssr safe
+- naming:
+  - themes => variables, control any property
+  - remove tokens in favor of variables
+
+- RSD - no View + Text (just Element and we can extend it later)
+  - compiler can optimize
+  - mimic text inhertance on native (or remove it on web)
+  - https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
 - todo:
   - remove $true tokens and concept
@@ -216,9 +226,9 @@ v3:
   - createSystemFont into package
   - remove component themes by default instead just do:
     - "surface1-3" and have components use that instead of name by default when not unstyled
-  - theme inverse only works with sub-themes named _inverse. createThemes.generateInverseSubThemes: boolean 
+  - theme inverse only works with sub-themes named \_inverse. createThemes.generateInverseSubThemes: boolean
     - v4 config can add a boolean to do this by default
-  <!-- - button-next is mostly ready now to replace button:
+    <!-- - button-next is mostly ready now to replace button:
     - remove old button, move new button into place, fix issues around the site/bento
     - docs update: we should show "headless" style and non-headless
       - <Button.Frame><Button.Icon></Button.Icon></Button.Frame> for headless
@@ -226,7 +236,7 @@ v3:
   - input-next
     - rather than wrapping react-native-web we implement our own
     - keep it simple, align to web props as much as possible
-  <!-- - swap image-next => image -->
+    <!-- - swap image-next => image -->
   - make sure webContainerType is "right" - probably not `normal` default (currently `inline-size`)
   - we should fix "tag" and have it so you can pass typed props to the tag
     - tag => as?
@@ -248,9 +258,10 @@ v3:
 
 potential
 
-  - group => container
+- group => container
 
 is this a bug? the is_static conditional is odd, maybe backward
+
 - if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
 
 ---
@@ -258,27 +269,29 @@ is this a bug? the is_static conditional is odd, maybe backward
 v3
 
 - perspective={1000} can be on either transform OR on flat, need to figure that out
- - `core-nested`, `core-flat`, `core-tailwind`:
+- `core-nested`, `core-flat`, `core-tailwind`:
 
 ```tsx
 createCore<CustomTypes>({
-  propMapper(propsIn) { return propsOut }
+  propMapper(propsIn) {
+    return propsOut
+  },
 })
 ```
 
-  - can we remove the need for separate Text/View?
-      - seems like we could scan just the direct descendents?
-      https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
+- can we remove the need for separate Text/View?
+  - seems like we could scan just the direct descendents?
+    https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
-  - light-dark()
-    - this is an official css thing so would be easy-ish to implement
+- light-dark()
+  - this is an official css thing so would be easy-ish to implement
 
-  - run over components and review for removing some assumptions about `size`
-  - disableInjectCSS should maybe just be automated better or defaulted on
-  - flat vs style mode, style moves all tamagui styles into `style` besides the other psuedos like hover, enter, etc
-  - no react-native deps across the ui kit on web
-  - html.div, styled('div'), styled(html.div)
-  - `<Theme values={{}} />` dynamic override
+- run over components and review for removing some assumptions about `size`
+- disableInjectCSS should maybe just be automated better or defaulted on
+- flat vs style mode, style moves all tamagui styles into `style` besides the other psuedos like hover, enter, etc
+- no react-native deps across the ui kit on web
+- html.div, styled('div'), styled(html.div)
+- `<Theme values={{}} />` dynamic override
 
 - reanimated animate presence is making me set `opacity: 1` type default values
 
@@ -303,12 +316,11 @@ createCore<CustomTypes>({
 - SSR safe styled context, something like:
 
 const Context = createStyledContext({
-  isVertical: {
-    $sm: true,
-    $gtSm: false,
-  },
+isVertical: {
+$sm: true,
+$gtSm: false,
+},
 })
-
 
 - Select is using focusScope which React.Children.only erroring in most usages
   - we should try and redo FocusScope to not cloneElement at all and instead wrap with an element + display: contents
@@ -362,7 +374,6 @@ const Context = createStyledContext({
 - settings page in takeout SSR hydration issue due to useThemeSetting
 
 - animatedStyle showing up in animated component snapshot on native
-
   - add some native snapshots in ci tests
 
 - addTheme updateTheme regression needs a test
@@ -388,7 +399,6 @@ const Context = createStyledContext({
 - get takeout users studio access
 
 - studio color scales first class:
-
   - adding a color/scale really adds a theme
   - but also adds $colorName1 => $colorNameX to base theme
 
@@ -423,16 +433,12 @@ const mySubStyle: StackStyle = style({
 
   pressStyle: {
     backgroundColor: 'blue', // optimizes on web to _press-bg-blue
-  }
+  },
 })
 
 const MyComponent = (props: { accentedStyle?: StackStyle }) => {
-  return (
-    <Stack style={[accentedStyle]} />
-  )
+  return <Stack style={[accentedStyle]} />
 }
-
-
 ```
 
 ---

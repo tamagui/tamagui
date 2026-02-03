@@ -1,23 +1,16 @@
 {
   "name": "tamagui-loader",
-  "version": "2.0.0-1769588848304",
-  "type": "module",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
+  "version": "2.0.0-rc.0-1770084657117",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "scripts": {
-    "build": "tamagui-build --skip-native",
-    "watch": "tamagui-build --skip-native --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
-    "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
-  },
+  "type": "module",
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -27,6 +20,15 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.cjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build --skip-native",
+    "watch": "tamagui-build --skip-native --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
     "@tamagui/cli-color": "workspace:*",
@@ -44,9 +46,5 @@
     "@tamagui/build": "workspace:*",
     "prettyjson": "^1.2.5",
     "webpack": "^5.88.2"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14"
+  }
 }

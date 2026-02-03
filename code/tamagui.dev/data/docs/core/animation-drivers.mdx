@@ -3,17 +3,52 @@ title: Animation Drivers
 description: Choose and configure animation drivers for your platform
 ---
 
-Tamagui supports four animation drivers, each with different strengths. The animation keys match between all drivers, so you can swap them out based on your platform needs.
+Tamagui supports four animation drivers, each with different strengths for different use cases:
 
 <SimpleTable
   headers={['Driver', 'Platform', 'Bundle Impact', 'Performance', 'Spring Physics']}
   rows={[
     ['**CSS**', 'Web only', 'Lightest', 'Fast (CSS transitions)', 'No (easing only)'],
-    ['**React Native**', 'Web + Native', 'No extra beyond RNW', 'On-thread', 'Yes (basic)'],
-    ['**Reanimated**', 'Web + Native', 'Larger', 'Off-thread (native), slower (web)', 'Yes (advanced)'],
-    ['**Motion**', 'Web only', 'Medium', 'Off-thread (WAAPI)', 'Yes (excellent)'],
+    [
+      '**React Native**',
+      'Web + Native',
+      'Web: heavy (RNW), Native: none',
+      'On-thread',
+      'Yes (basic)',
+    ],
+    [
+      '**Reanimated**',
+      'Web + Native',
+      'Larger',
+      'Off-thread (native), medium (web)',
+      'Yes',
+    ],
+    ['**Motion**', 'Web only', 'Medium', 'Off-thread (WAAPI)', 'Yes'],
   ]}
 />
+
+You can swap drivers per-platform, or even dynamically load heavier drivers later in your app — for example, starting with the lightweight CSS driver on initial load and upgrading to Motion once the user is authenticated.
+
+---
+
+## Using Config v5
+
+The easiest way to get started is with [`@tamagui/config/v5`](/docs/core/config-v5), which provides pre-configured animations for all four drivers with matching keys:
+
+```tsx fileName="tamagui.config.ts"
+import { defaultConfig } from '@tamagui/config/v5'
+import { animations } from '@tamagui/config/v5-css' // or v5-motion, v5-rn, v5-reanimated
+import { createTamagui } from 'tamagui'
+
+export const config = createTamagui({
+  ...defaultConfig,
+  animations,
+})
+```
+
+The v5 presets include timing animations (`100ms`, `200ms`, etc.) and spring animations (`bouncy`, `quick`, `lazy`, etc.) that work identically across all drivers. See [Config v5](/docs/core/config-v5#choosing-an-animation-driver) for the full list.
+
+---
 
 ## CSS Driver
 
@@ -50,7 +85,7 @@ The format is: `<easing-function> <duration>`
 
 ## React Native Driver
 
-No extra bundle size beyond React Native Web, but runs on-thread. Good for basic cross-platform animations.
+Uses React Native's built-in Animated API. No extra bundle on native, but requires React Native Web on the web side. Runs on-thread. Good for basic cross-platform animations.
 
 ### Installation
 
@@ -86,6 +121,7 @@ export default createTamagui({
 ```
 
 **Spring parameters:**
+
 - `damping` - How quickly the spring settles (higher = less bouncy)
 - `mass` - Mass of the object (higher = more inertia)
 - `stiffness` - Spring stiffness coefficient (higher = faster)
@@ -177,40 +213,33 @@ Motion uses the Web Animations API (WAAPI) which runs animations on the composit
 
 ---
 
-## Platform-Specific Drivers
+## Swapping Drivers
 
-Use different drivers per-platform with file extensions:
+Tamagui provides several ways to use different drivers — at build time per platform, at runtime in specific parts of your app, or dynamically loaded after initial render.
 
-```tsx
-// animations.ts (web)
+### Per-Platform with File Extensions
+
+Use `.native.ts` and `.ts` file extensions to bundle different drivers per platform:
+
+```tsx fileName="animations.ts"
+// web
 import { createAnimations } from '@tamagui/animations-motion'
 
 export const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 100,
-  },
+  bouncy: { type: 'spring', damping: 10, stiffness: 100 },
 })
 ```
 
-```tsx
-// animations.native.ts
+```tsx fileName="animations.native.ts"
+// native
 import { createAnimations } from '@tamagui/animations-reanimated'
 
 export const animations = createAnimations({
-  bouncy: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 100,
-  },
+  bouncy: { type: 'spring', damping: 10, stiffness: 100 },
 })
 ```
 
-Then import without the extension:
-
-```tsx
-// tamagui.config.ts
+```tsx fileName="tamagui.config.ts"
 import { animations } from './animations'
 
 export default createTamagui({
@@ -219,11 +248,34 @@ export default createTamagui({
 })
 ```
 
-## Multiple Drivers
+### Dynamic with Configuration
 
-Configure multiple drivers at the root and select per-component with `animatedBy`:
+Use the `<Configuration>` component to swap the animation driver for a subtree. This is useful for lazy loading heavier drivers only when needed — for example, keeping initial page load fast with CSS animations, then upgrading to Motion for authenticated users:
 
-```tsx
+```tsx fileName="app/_layout.tsx"
+import { Configuration, Slot } from 'tamagui'
+import { createAnimations } from '@tamagui/animations-motion'
+
+const motionDriver = createAnimations({
+  bouncy: { type: 'spring', damping: 10, stiffness: 100 },
+})
+
+export function AuthenticatedLayout() {
+  return (
+    <Configuration animationDriver={motionDriver}>
+      <Slot />
+    </Configuration>
+  )
+}
+```
+
+This pattern works well with route-based code splitting — the Motion driver is only loaded when the user navigates to an authenticated route.
+
+### Multiple Drivers with animatedBy
+
+Configure multiple drivers at the root and select per-component:
+
+```tsx fileName="tamagui.config.ts"
 import { createAnimations as createCSS } from '@tamagui/animations-css'
 import { createAnimations as createSpring } from '@tamagui/animations-motion'
 
@@ -236,61 +288,29 @@ export default createTamagui({
 ```
 
 ```tsx
-<Square transition="bouncy" />                    {/* uses default */}
-<Square animatedBy="spring" transition="bouncy" /> {/* uses spring */}
+<Square transition="bouncy" />                    {/* uses default (CSS) */}
+<Square animatedBy="spring" transition="bouncy" /> {/* uses spring (Motion) */}
 ```
 
-## Lazy Loading Drivers
+### Runtime Loading with loadAnimationDriver
 
-For apps that start static but need richer animations later, you can lazy load drivers.
-
-**Swap the default driver** with `Configuration`:
-
-```tsx
-import { Configuration } from 'tamagui'
-import { createAnimations } from '@tamagui/animations-motion'
-
-const springDriver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
-
-export function AuthenticatedLayout({ children }) {
-  return (
-    <Configuration animationDriver={springDriver}>
-      {children}
-    </Configuration>
-  )
-}
-```
-
-**Add multiple drivers** with `loadAnimationDriver`:
+Add drivers at runtime after app initialization:
 
 ```tsx
 import { loadAnimationDriver } from 'tamagui'
 import { createAnimations } from '@tamagui/animations-motion'
 
+// call this after some condition (user auth, route change, etc.)
 const driver = createAnimations({ bouncy: { type: 'spring', damping: 10 } })
 loadAnimationDriver('spring', driver)
 
-// Now components can use animatedBy="spring"
+// now components can use animatedBy="spring"
 ```
 
-## Bundle Size Optimization
-
-<Notice theme="green">
-  **Experimental:** Use `react-native-web-lite` to tree-shake animation drivers on web. Set `useReactNativeWebLite: true` in any Tamagui plugin configuration.
-</Notice>
-
-```tsx
-// next.config.js
-const { withTamagui } = require('@tamagui/next-plugin')
-
-module.exports = withTamagui({
-  config: './tamagui.config.ts',
-  components: ['tamagui'],
-  useReactNativeWebLite: true,
-})
-```
+---
 
 ## See Also
 
 - [Animations Overview](/docs/core/animations)
 - [AnimatePresence](/docs/core/animate-presence)
+- [Config v5](/docs/core/config-v5#choosing-an-animation-driver)

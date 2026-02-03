@@ -19,7 +19,12 @@ export const PromoLinksRow = () => {
             asChild
             onMouseEnter={() => setLabel('Takeout — universal RN starter kit')}
           >
-            <Link href="/takeout">
+            <Link
+              hoverStyle={{
+                z: 100,
+              }}
+              href="/takeout"
+            >
               <XGroup.Item>
                 <TakeoutButton mr={-1} />
               </XGroup.Item>
@@ -31,7 +36,12 @@ export const PromoLinksRow = () => {
             asChild
             onMouseEnter={() => setLabel('Bento — Free + paid pre-made UI')}
           >
-            <Link href="/bento">
+            <Link
+              hoverStyle={{
+                z: 100,
+              }}
+              href="/bento"
+            >
               <XGroup.Item>
                 <BentoButton mr={-1} />
               </XGroup.Item>
@@ -43,7 +53,13 @@ export const PromoLinksRow = () => {
             asChild
             onMouseEnter={() => setLabel('Add Even — Expert React Native developers')}
           >
-            <Link href="https://addeven.com" target="_blank">
+            <Link
+              hoverStyle={{
+                z: 100,
+              }}
+              href="https://addeven.com"
+              target="_blank"
+            >
               <XGroup.Item>
                 <ConsultingButton />
               </XGroup.Item>

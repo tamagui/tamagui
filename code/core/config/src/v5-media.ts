@@ -15,23 +15,23 @@ export const breakpoints = {
 export const media = {
   pointerTouch: { pointer: 'coarse' },
 
-  // Height-based queries
-  heightXXXS: { minHeight: breakpoints.xxxs },
-  heightXXS: { minHeight: breakpoints.xxs },
-  heightXS: { minHeight: breakpoints.xs },
-  heightSM: { minHeight: breakpoints.sm },
-  heightMD: { minHeight: breakpoints.md },
-  heightLG: { minHeight: breakpoints.lg },
+  // Height-based queries (min-height, mobile-first)
+  'height-xxxs': { minHeight: breakpoints.xxxs },
+  'height-xxs': { minHeight: breakpoints.xxs },
+  'height-xs': { minHeight: breakpoints.xs },
+  'height-sm': { minHeight: breakpoints.sm },
+  'height-md': { minHeight: breakpoints.md },
+  'height-lg': { minHeight: breakpoints.lg },
 
-  // Max-width queries (desktop-first)
-  maxXXXS: { maxWidth: breakpoints.xxxs },
-  maxXXS: { maxWidth: breakpoints.xxs },
-  maxXS: { maxWidth: breakpoints.xs },
-  maxSM: { maxWidth: breakpoints.sm },
-  maxMD: { maxWidth: breakpoints.md },
-  maxLG: { maxWidth: breakpoints.lg },
-  maxXL: { maxWidth: breakpoints.xl },
-  maxXXL: { maxWidth: breakpoints.xxl },
+  // Max-width queries (desktop-first, ordered large-to-small so smaller wins)
+  'max-xxl': { maxWidth: breakpoints.xxl },
+  'max-xl': { maxWidth: breakpoints.xl },
+  'max-lg': { maxWidth: breakpoints.lg },
+  'max-md': { maxWidth: breakpoints.md },
+  'max-sm': { maxWidth: breakpoints.sm },
+  'max-xs': { maxWidth: breakpoints.xs },
+  'max-xxs': { maxWidth: breakpoints.xxs },
+  'max-xxxs': { maxWidth: breakpoints.xxxs },
 
   // Min-width queries (mobile-first)
   xxxs: { minWidth: breakpoints.xxxs },
@@ -47,21 +47,21 @@ export const media = {
 export const mediaQueryDefaultActive = {
   pointerTouch: false,
   // Height queries
-  heightXXXS: true,
-  heightXXS: true,
-  heightXS: true,
-  heightSM: false,
-  heightMD: false,
-  heightLG: false,
-  // Max queries
-  maxXXXS: false,
-  maxXXS: false,
-  maxXS: true,
-  maxSM: true,
-  maxMD: true,
-  maxLG: true,
-  maxXL: true,
-  maxXXL: true,
+  'height-xxxs': true,
+  'height-xxs': true,
+  'height-xs': true,
+  'height-sm': false,
+  'height-md': false,
+  'height-lg': false,
+  // Max queries (ordered large-to-small to match media object)
+  'max-xxl': true,
+  'max-xl': true,
+  'max-lg': true,
+  'max-md': true,
+  'max-sm': true,
+  'max-xs': true,
+  'max-xxs': false,
+  'max-xxxs': false,
   // Min queries
   xxxs: true,
   xxs: true,

@@ -38,7 +38,10 @@ const sections = {
 export const DocsMenuContents = React.memo(function DocsMenuContents({
   section: propsSection,
   inMenu,
-}: { inMenu?: boolean; section?: keyof typeof sections }) {
+}: {
+  inMenu?: boolean
+  section?: keyof typeof sections
+}) {
   const { currentPath, section: docsSection } = useDocsMenu()
   // compiler pages now show core section (merged)
   const rawSection = propsSection ?? docsSection
@@ -184,9 +187,9 @@ const ToggleAllButton = ({
     <TooltipSimple label={expanded ? 'Collapse all' : 'Expand all'} placement="right">
       <Button
         circular
-        size="$2"
+        size="$3"
+        my="$-3"
         chromeless
-        opacity={0.5}
         hoverStyle={{ opacity: 1, backgroundColor: '$color3' }}
         pressStyle={{ opacity: 0.8, backgroundColor: '$color2' }}
         onPress={onPress}

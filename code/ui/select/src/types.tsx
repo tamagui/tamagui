@@ -152,5 +152,7 @@ export type SelectScrollButtonImplProps = YStackProps &
     componentName: string
   }>
 
-export interface SelectScrollButtonProps
-  extends Omit<SelectScrollButtonImplProps, 'dir' | 'componentName'> {}
+export interface SelectScrollButtonProps extends Omit<
+  SelectScrollButtonImplProps,
+  'dir' | 'componentName'
+> {}

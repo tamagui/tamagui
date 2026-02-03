@@ -48,16 +48,21 @@ export default apiRoute(async (req) => {
   // 4. Verify the subscription includes the requested product
   const prices = getArray(subscription.subscription_items).map((s) => getSingle(s?.price))
 
-  const alternativeProductId =
-    productId === 'prod_RlRd2DVrG0frHe' /* Tamagui Pro */
-      ? 'prod_Rxu0x7jR0nWJSv' /* Tamagui Pro Team Seats */
-      : productId /* no additional product ID to check */
+  // All valid Pro product IDs (V1 and V2) that grant GitHub access
+  const validProProductIds = [
+    'prod_RlRd2DVrG0frHe', // V1 Tamagui Pro
+    'prod_Rxu0x7jR0nWJSv', // V1 Tamagui Pro Team Seats
+    'prod_TneqayKPO32G63', // V2 Tamagui Pro V2 License/Upgrade
+    'prod_TsDjQ6tmdFy7M6', // V2 Support Direct
+    'prod_TsDjG5QpL21tT1', // V2 Support Sponsor
+  ]
 
   let hasProduct = false
   for (const price of prices) {
     for (const product of getArray(price?.products)) {
       if (!product) continue
-      if (product.id === productId || product.id === alternativeProductId) {
+      // Check if the product is a valid Pro product OR matches the requested productId
+      if (validProProductIds.includes(product.id) || product.id === productId) {
         hasProduct = true
         break
       }

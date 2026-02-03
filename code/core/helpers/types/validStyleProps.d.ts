@@ -356,6 +356,7 @@ export declare const stylePropsTextOnly: {
     textDecorationDistance?: boolean | undefined;
     WebkitLineClamp?: boolean | undefined;
     WebkitBoxOrient?: boolean | undefined;
+    textShadow: boolean;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     userSelect: boolean;
@@ -382,6 +383,7 @@ export declare const stylePropsText: {
     textDecorationDistance?: boolean | undefined;
     WebkitLineClamp: boolean;
     WebkitBoxOrient?: boolean | undefined;
+    textShadow: boolean;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     userSelect: boolean;
@@ -645,6 +647,7 @@ export declare const stylePropsAll: {
     textDecorationDistance?: boolean | undefined;
     WebkitLineClamp: boolean;
     WebkitBoxOrient?: boolean | undefined;
+    textShadow: boolean;
     textShadowOffset: boolean;
     textShadowRadius: boolean;
     userSelect: boolean;

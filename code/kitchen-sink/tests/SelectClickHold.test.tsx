@@ -40,7 +40,10 @@ test.describe('Select Click and Hold', () => {
     // 3. Move to banana item
     // 4. Release to select
 
-    await page.mouse.move(triggerBox!.x + triggerBox!.width / 2, triggerBox!.y + triggerBox!.height / 2)
+    await page.mouse.move(
+      triggerBox!.x + triggerBox!.width / 2,
+      triggerBox!.y + triggerBox!.height / 2
+    )
     await page.mouse.down()
 
     // Wait for menu to open and the 300ms mouseUp guard to pass
@@ -50,7 +53,10 @@ test.describe('Select Click and Hold', () => {
     await expect(bananaItem).toBeVisible()
 
     // Move to banana item
-    await page.mouse.move(bananaBox!.x + bananaBox!.width / 2, bananaBox!.y + bananaBox!.height / 2)
+    await page.mouse.move(
+      bananaBox!.x + bananaBox!.width / 2,
+      bananaBox!.y + bananaBox!.height / 2
+    )
     await page.waitForTimeout(50)
 
     // Release to select
@@ -115,14 +121,20 @@ test.describe('Select Click and Hold', () => {
     await page.waitForTimeout(200)
 
     // Now do a fast click-move-release (under 300ms)
-    await page.mouse.move(triggerBox!.x + triggerBox!.width / 2, triggerBox!.y + triggerBox!.height / 2)
+    await page.mouse.move(
+      triggerBox!.x + triggerBox!.width / 2,
+      triggerBox!.y + triggerBox!.height / 2
+    )
     await page.mouse.down()
 
     // Wait just a tiny bit - not enough for the guard
     await page.waitForTimeout(50)
 
     // Move toward where apple would be and release quickly
-    await page.mouse.move(appleBox!.x + appleBox!.width / 2, appleBox!.y + appleBox!.height / 2)
+    await page.mouse.move(
+      appleBox!.x + appleBox!.width / 2,
+      appleBox!.y + appleBox!.height / 2
+    )
     await page.mouse.up()
 
     await page.waitForTimeout(200)

@@ -1,38 +1,39 @@
 {
   "name": "@tamagui/create-menu",
-  "version": "2.0.0-1769588848304",
-  "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
+  "version": "2.0.0-rc.0-1770084657117",
+  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.tsx",
-  "types": "./types/index.d.ts",
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "module:jsx": "dist/jsx",
   "files": [
     "src",
     "types",
     "dist"
   ],
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": {
         "import": "./dist/esm/index.native.js",
         "require": "./dist/cjs/index.native.js"
       },
-      "types": "./types/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
-    "lint": "biome check src",
-    "lint:fix": "biome check --write src",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
@@ -45,7 +46,6 @@
     "@tamagui/focus-guard": "workspace:*",
     "@tamagui/focus-scope": "workspace:*",
     "@tamagui/get-token": "workspace:*",
-    "@tamagui/helpers": "workspace:*",
     "@tamagui/image": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/popper": "workspace:*",
@@ -54,23 +54,17 @@
     "@tamagui/roving-focus": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-callback-ref": "workspace:*",
-    "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-direction": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "tamagui": "workspace:*"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5"
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "peerDependencies": {
     "@react-native-menu/menu": "^2.0.0",
-    "react": "*",
+    "react": ">=19",
     "react-native": "*",
     "react-native-ios-context-menu": "^3.2.1",
     "react-native-ios-utilities": "^5.2.0",
@@ -93,5 +87,6 @@
     "zeego": {
       "optional": true
     }
-  }
+  },
+  "module:jsx": "dist/jsx"
 }

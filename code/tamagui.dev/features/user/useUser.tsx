@@ -42,6 +42,7 @@ export const useUser = () => {
     revalidateOnFocus: false,
     revalidateIfStale: false,
     refreshWhenHidden: false,
+    keepPreviousData: true,
   })
 
   useEffect(() => {

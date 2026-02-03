@@ -176,7 +176,7 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             display: 'none',
           }}
           $gtSm={{
-            position: 'fixed' as any,
+            position: 'fixed',
             t: 0,
             b: 0,
             width: 245,
@@ -196,7 +196,6 @@ export function DocsPage({ children }: { children: React.ReactNode }) {
             <ThemeTint>
               <YStack
                 display="none"
-                contain="paint layout"
                 $gtMd={{
                   display: 'block',
                   p: '$0.5',

@@ -7,8 +7,8 @@ We've created a new template repo for starting an Expo Router app based on
 the Expo starter repo.
 
 <Notice theme="blue">
-  This template requires Yarn 4.4.0 or greater. You can set yarn to the latest
-  version by running `yarn set version stable`.
+  This template requires Yarn 4.4.0 or greater. You can set yarn to the latest version by
+  running `yarn set version stable`.
 </Notice>
 
 ```bash
@@ -34,7 +34,9 @@ Create a new [Expo](https://docs.expo.dev/get-started/create-a-project/#initiali
 yarn dlx create-expo-app -t expo-template-blank-typescript
 ```
 
-<Notice theme="blue">This guide assumes Expo is configured with TypeScript support.</Notice>
+<Notice theme="blue">
+  This guide assumes Expo is configured with TypeScript support.
+</Notice>
 
 The following steps are optional but useful for many apps. They enable the optimizing compiler, Reanimated, and support for `process.env.XYZ` environment variables.
 
@@ -67,7 +69,6 @@ module.exports = function (api) {
     ],
   }
 }
-
 ```
 
 <Notice>
@@ -99,7 +100,7 @@ declare module 'tamagui' {
 Then update `app/_layout.tsx`:
 
 ```tsx showMore fileName="app/_layout.tsx"
-import '../tamagui-web.css'
+import '../tamagui.generated.css'
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'
@@ -182,9 +183,8 @@ Use the `@expo-google-fonts` package, a collection of Google Fonts that work wit
 
 <Notice theme="green">
   You can find the [full list of
-  fonts](https://github.com/expo/google-fonts/tree/master/font-packages) and
-  usage instructions in the [Expo
-  documentation](https://github.com/expo/google-fonts).
+  fonts](https://github.com/expo/google-fonts/tree/master/font-packages) and usage
+  instructions in the [Expo documentation](https://github.com/expo/google-fonts).
 </Notice>
 
 Install the font package:

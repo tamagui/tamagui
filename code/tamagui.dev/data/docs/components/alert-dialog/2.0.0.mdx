@@ -196,9 +196,7 @@ A destructive action button for the AlertDialog. When using `native` mode on iOS
     <AlertDialog.Overlay />
     <AlertDialog.Content>
       <AlertDialog.Title>Delete Account?</AlertDialog.Title>
-      <AlertDialog.Description>
-        This action cannot be undone.
-      </AlertDialog.Description>
+      <AlertDialog.Description>This action cannot be undone.</AlertDialog.Description>
       <AlertDialog.Cancel asChild>
         <Button>Cancel</Button>
       </AlertDialog.Cancel>
@@ -245,9 +243,7 @@ import { PortalProvider } from 'tamagui'
 // this component used in react-navigation/expo-router with `presentation: "modal"`
 export function Page() {
   return (
-    <PortalProvider>
-      {/* rest of your page, including the Dialog... */}
-    </PortalProvider>
+    <PortalProvider>{/* rest of your page, including the Dialog... */}</PortalProvider>
   )
 }
 ```

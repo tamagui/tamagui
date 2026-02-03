@@ -5,6 +5,7 @@
 Sheet + Sheet.ScrollView gesture coordination on native iOS has fundamental limitations because Tamagui uses React Native's built-in `PanResponder`, while iOS's `UIScrollView` gesture recognizers fire BEFORE the RN responder system can claim the gesture.
 
 This causes:
+
 - Minor scroll "flicker" when starting to drag down from scroll top
 - Imperfect handoff between scroll and sheet drag gestures
 - Impossible to achieve native-quality feel
@@ -36,8 +37,9 @@ Gesture.Pan()
 ```
 
 **blockPan flag pattern** - Simple boolean to control gesture routing:
+
 ```tsx
-let blockPan = false;
+let blockPan = false
 
 // In onChange:
 // 1. Sheet not fully open, swiping up: scrollable(false); blockPan = false → allow panning
@@ -45,17 +47,18 @@ let blockPan = false;
 // 3. Sheet not fully open, swiping down: depends on nodeIsScrolling
 // 4. Sheet fully open, swiping down with scroll offset: hand off when scrollY=0
 
-if (blockPan) return; // Exit early
+if (blockPan) return // Exit early
 ```
 
 **scrollable() function** - Enable/disable scroll and restore positions:
+
 ```tsx
 function scrollable(value: boolean) {
   for (let node of draggableNodes.current) {
     if (Platform.OS === 'ios') {
-      scrollRef.scrollTo({x: 0, y: offsets[i], animated: false})
+      scrollRef.scrollTo({ x: 0, y: offsets[i], animated: false })
     } else if (Platform.OS === 'android') {
-      scrollRef?.setNativeProps({scrollEnabled: value})
+      scrollRef?.setNativeProps({ scrollEnabled: value })
     }
   }
 }
@@ -66,6 +69,7 @@ function scrollable(value: boolean) {
 **Key Patterns:**
 
 **simultaneousHandlers for gesture coordination:**
+
 ```tsx
 // In createBottomSheetScrollableComponent.tsx
 const scrollableGesture = useMemo(
@@ -76,10 +80,11 @@ const scrollableGesture = useMemo(
           .shouldCancelWhenOutside(false)
       : undefined,
   [draggableGesture]
-);
+)
 ```
 
 **Context-based gesture state:**
+
 ```tsx
 // GestureHandlersProvider creates content and handle pan gestures
 const contentPanGestureHandler = useGestureHandler(
@@ -96,6 +101,7 @@ const handlePanGestureHandler = useGestureHandler(
 ```
 
 **Worklet-based gesture handlers (useGestureEventsHandlersDefault):**
+
 ```tsx
 const handleOnChange = useCallback(
   function handleOnChange(source, { translationY }) {
@@ -130,11 +136,13 @@ const handleOnChange = useCallback(
 ### Phase 1: Setup Infrastructure (Following Teleport Pattern)
 
 **Files to create:**
+
 - `code/ui/sheet/src/setupGestureHandler.ts` - Setup function
 - `code/ui/sheet/src/gestureState.ts` - Global state for RNGH availability
 - `code/ui/sheet/src/GestureSheetContext.tsx` - Context for gesture refs
 
 **Pattern (following @tamagui/portal):**
+
 ```tsx
 // setupGestureHandler.ts
 export type GestureHandlerState = {
@@ -282,10 +290,13 @@ function onChange(absoluteX, absoluteY, translationY) {
 ### Phase 5: Export Public API
 
 **Update package.json exports:**
+
 ```json
 {
   "exports": {
-    ".": { /* existing */ },
+    ".": {
+      /* existing */
+    },
     "./setup-gesture-handler": {
       "react-native": {
         "types": "./types/setupGestureHandler.d.ts",
@@ -299,10 +310,15 @@ function onChange(absoluteX, absoluteY, translationY) {
 ```
 
 **Documentation for users:**
+
 ```tsx
 // In app entry point (index.js or App.tsx)
 import { setupGestureHandler } from '@tamagui/sheet/setup-gesture-handler'
-import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler'
+import {
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler'
 
 // Call once at startup
 setupGestureHandler({ Gesture, GestureDetector })
@@ -320,6 +336,7 @@ export default function App() {
 ## File Changes Summary
 
 ### New Files
+
 1. `code/ui/sheet/src/setupGestureHandler.ts` - Setup function and state
 2. `code/ui/sheet/src/gestureState.ts` - Global state management
 3. `code/ui/sheet/src/GestureSheetContext.tsx` - Context for gesture refs
@@ -327,12 +344,14 @@ export default function App() {
 5. `code/ui/sheet/src/GestureDetectorWrapper.tsx` - Conditional wrapper component
 
 ### Modified Files
+
 1. `code/ui/sheet/src/SheetImplementationCustom.tsx` - Conditional gesture handling
 2. `code/ui/sheet/src/SheetScrollView.tsx` - simultaneousHandlers integration
 3. `code/ui/sheet/src/SheetContext.tsx` - Extended scrollBridge interface
 4. `code/ui/sheet/package.json` - Export setup-gesture-handler
 
 ### Test Files
+
 1. `code/kitchen-sink/tests/SheetGestureHandler.test.tsx` - New E2E tests for RNGH path
 2. `code/kitchen-sink/src/usecases/SheetScrollableDrag.tsx` - Update for testing
 
@@ -405,6 +424,7 @@ describe('Sheet with RNGH', () => {
 ### Fallback Behavior
 
 When `setupGestureHandler()` is NOT called:
+
 - Sheet uses current `PanResponder` implementation
 - Minor iOS limitations remain (as documented in next.md)
 - Web always uses PanResponder (fine for web)
@@ -413,6 +433,7 @@ When `setupGestureHandler()` is NOT called:
 ### Package Dependencies
 
 **Optional peer dependency:**
+
 ```json
 {
   "peerDependencies": {
@@ -450,6 +471,7 @@ When `setupGestureHandler()` is NOT called:
 ## Current Status (Iteration 3)
 
 Core implementation complete:
+
 - `gestureState.ts` - global state for RNGH availability (no native deps)
 - `setupGestureHandler.ts` - auto-detects RNGH via require() (like teleport pattern)
 - `useGestureHandlerPan.tsx` - pan gesture hook with blockPan logic
@@ -460,9 +482,11 @@ Core implementation complete:
 - `package.json` - added `setup-gesture-handler` export and optional peer dep
 
 Kitchen sink setup:
+
 - Added `setupGestureHandler()` call in `App.native.tsx`
 
 **Next step**: Test on iOS simulator to verify behavior:
+
 1. Dragging sheet should NOT cause scroll
 2. Scrolling content should NOT cause sheet drag
 3. Handoff at scroll top should be seamless

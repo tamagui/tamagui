@@ -39,6 +39,15 @@ export function ParagraphSpanFontInheritance() {
         </SizableText>{' '}
         inside
       </Text>
+
+      {/* Test 6: Text (like Link) inside Paragraph should inherit fontFamily */}
+      <Paragraph testID="parent-para-link" fontFamily="$mono">
+        mono paragraph with{' '}
+        <Text testID="nested-link-text" render="a" cursor="pointer">
+          link text
+        </Text>{' '}
+        inside
+      </Paragraph>
     </>
   )
 }
