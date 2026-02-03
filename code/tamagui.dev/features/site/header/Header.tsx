@@ -75,7 +75,7 @@ export function Header(props: HeaderProps) {
         items="center"
         pointerEvents="none"
         justify="center"
-        z={50000}
+        z={10000}
         className="all ease-out s1"
         $gtSm={{
           px: '$1',
