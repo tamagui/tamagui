@@ -22,4 +22,6 @@ export type SheetControllerContextValue = {
   // hide without "closing" to prevent re-animation when shown again
   hidden?: boolean
   onOpenChange?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void)
+  // when true, the sheet should skip its open animation (used for adapt handoff)
+  skipNextAnimation?: boolean
 }
