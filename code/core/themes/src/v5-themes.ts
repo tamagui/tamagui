@@ -39,7 +39,7 @@ export const v5ComponentThemes = {
   SliderThumb: { template: 'surface2' },
   Switch: { template: 'surface1' },
   TextArea: { template: 'surface1' },
-  Tooltip: { template: 'surface3' },
+  Tooltip: { template: 'accent' },
   SwitchThumb: { template: 'surface3' },
 } as const
 
