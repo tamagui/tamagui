@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/native-ci",
-  "version": "2.0.0-rc.0-1770174617628",
+  "version": "2.0.0-rc.1",
   "description": "Native CI/CD helpers for React Native apps with Expo - fingerprinting, caching, and build optimization",
   "license": "MIT",
   "repository": {
