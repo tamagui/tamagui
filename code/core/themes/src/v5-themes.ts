@@ -37,10 +37,10 @@ export const v5ComponentThemes = {
   Slider: { template: 'surface1' },
   SliderActive: { template: 'surface3' },
   SliderThumb: { template: 'surface2' },
-  Switch: { template: 'surface1' },
+  Switch: { template: 'surface2' },
   TextArea: { template: 'surface1' },
   Tooltip: { template: 'accent' },
-  SwitchThumb: { template: 'surface3' },
+  SwitchThumb: { template: 'accent' },
 } as const
 
 // inverses are confusing af
@@ -48,7 +48,6 @@ export const v5ComponentThemesWithInverses = {
   ...v5ComponentThemes,
   ProgressIndicator: { template: 'accent' },
   SliderThumb: { template: 'accent' },
-  SwitchThumb: { template: 'accent' },
   Tooltip: { template: 'accent' },
 } as const
 
