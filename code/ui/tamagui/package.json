@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "2.0.0-rc.0-1770084657117",
+  "version": "2.0.0-rc.0-1770174617628",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "repository": {
