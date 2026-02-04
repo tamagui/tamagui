@@ -28,6 +28,7 @@ import { useCurrentRouteParams } from '@tamagui/bento'
 import { useGroupMedia } from '@tamagui/bento/component/hooks/useGroupMedia'
 import { CodeWindow } from './CodeWindow'
 // import { ThemeButton } from './ThemeButton'
+import { authFetch } from '~/features/api/authFetch'
 import { useBentoShowcase } from './BentoProvider'
 import { type ShowcaseTheme, ShowcaseProvider } from './ShowcaseProvider'
 
@@ -84,7 +85,7 @@ const ShowcaseView = forwardRef<any, Props>(
     const approved = unlock || isProUser
 
     const fetcher = async (url: string) => {
-      const res = await fetch(url, { headers: { 'Content-Type': 'application/json' } })
+      const res = await authFetch(url)
       if (!res.ok) {
         const error = new Error('An error occurred while fetching the data.') as any
         error.info = await res.json()
@@ -155,33 +156,27 @@ const ShowcaseView = forwardRef<any, Props>(
                 onValueChange={(val) => val && setView(val as 'preview' | 'code')}
                 disableDeactivation
               >
-                <XGroup rounded="$10">
-                  <XGroup.Item>
-                    <ToggleGroup.Item
-                      value="preview"
-                      aria-label="Preview"
-                      size="$3"
-                      activeStyle={{ bg: '$color5' }}
-                    >
-                      <Eye size={16} />
-                      <SizableText size="$3" display="none" $gtMd={{ display: 'block' }}>
-                        Preview
-                      </SizableText>
-                    </ToggleGroup.Item>
-                  </XGroup.Item>
-                  <XGroup.Item>
-                    <ToggleGroup.Item
-                      value="code"
-                      aria-label="Code"
-                      size="$3"
-                      activeStyle={{ bg: '$color5' }}
-                    >
-                      {approved ? <Code size={16} /> : <Lock size={16} />}
-                      <SizableText size="$3" display="none" $gtMd={{ display: 'block' }}>
+                <XGroup rounded="$10" position="relative" overflow="visible">
+                  <ToggleGroup.Item value="preview" aria-label="Preview" asChild>
+                    <XGroup.Item>
+                      <Button
+                        theme={view === 'preview' ? 'accent' : null}
+                        size="$3"
+                        icon={Eye}
+                      />
+                    </XGroup.Item>
+                  </ToggleGroup.Item>
+                  <ToggleGroup.Item value="code" aria-label="Code" asChild>
+                    <XGroup.Item>
+                      <Button
+                        size="$3"
+                        icon={approved ? <Code size={16} /> : <Lock size={16} />}
+                        theme={view === 'code' ? 'accent' : null}
+                      >
                         Code
-                      </SizableText>
-                    </ToggleGroup.Item>
-                  </XGroup.Item>
+                      </Button>
+                    </XGroup.Item>
+                  </ToggleGroup.Item>
                 </XGroup>
               </ToggleGroup>
             </XStack>

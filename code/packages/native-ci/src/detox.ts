@@ -93,8 +93,8 @@ export function buildDetoxArgs(options: DetoxRunnerOptions): string[] {
   return args
 }
 
-// 30 min timeout for detox tests (in ms)
-const DETOX_TIMEOUT_MS = 30 * 60 * 1000
+// 45 min timeout for detox tests (in ms) - allows room within 60 min CI job timeout
+const DETOX_TIMEOUT_MS = 45 * 60 * 1000
 
 /**
  * Reset Detox lock file to prevent ECOMPROMISED errors in CI

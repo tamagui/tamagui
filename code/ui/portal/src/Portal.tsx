@@ -1,7 +1,7 @@
 import '@tamagui/polyfill-dev'
 
 import { isServer } from '@tamagui/constants'
-import { useStackedZIndex } from '@tamagui/z-index-stack'
+import { useStackedZIndex, ZIndexHardcodedContext } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
 import { getStackedZIndexProps } from './helpers'
@@ -25,6 +25,13 @@ export const Portal = React.memo((propsIn: PortalProps) => {
     return children
   }
 
+  // provide computed z-index to children so nested portals can stack above
+  const content = (
+    <ZIndexHardcodedContext.Provider value={zIndex}>
+      {children}
+    </ZIndexHardcodedContext.Provider>
+  )
+
   return createPortal(
     <span
       style={{
@@ -37,7 +44,7 @@ export const Portal = React.memo((propsIn: PortalProps) => {
         touchAction: 'none',
       }}
     >
-      {children}
+      {content}
     </span>,
     body
   )

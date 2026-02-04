@@ -273,9 +273,9 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
       return (
         <Portal
           zIndex={zIndex}
-          // set to 1000 which "boosts" it 1000 above baseline for current context
-          // this makes sure its above (this first 1k) popovers on the same layer
-          stackZIndex={1000}
+          // set to 100000 which ensures dialogs are above most fixed UI (headers, navs)
+          // this makes sure its above typical stacking contexts
+          stackZIndex={100000}
           passThrough={isAdapted}
         >
           <PassthroughTheme passThrough={isAdapted}>{framedContents}</PassthroughTheme>

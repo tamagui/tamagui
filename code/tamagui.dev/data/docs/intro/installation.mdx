@@ -46,7 +46,7 @@ import config from './tamagui.config' // your configuration
 
 export default function App() {
   return (
-    <TamaguiProvider config={config}>
+    <TamaguiProvider config={config} defaultTheme="light">
       <View width={200} height={200} backgroundColor="$background" />
     </TamaguiProvider>
   )
@@ -76,9 +76,13 @@ declare module '@tamagui/core' {
 }
 
 export default () => {
-  return <TamaguiProvider config={config}>{/* your app here */}</TamaguiProvider>
+  return <TamaguiProvider config={config} defaultTheme="light">{/* your app here */}</TamaguiProvider>
 }
 ```
+
+<Notice>
+  Set your root theme using the `defaultTheme` prop on `TamaguiProvider` rather than wrapping your app with `<Theme>`. This ensures the [`fastSchemeChange` setting](/docs/core/configuration#settings) works on native, and allows light/dark changes on web to use faster media query-based updates during SSR.
+</Notice>
 
 And that's it!
 
@@ -113,6 +117,8 @@ Once you have Tamagui installed, you'll want to explore:
   managing your Tamagui projects
 - **[Bundler Setup](/docs/guides/next-js)** - Integration guides for Next.js,
   Expo, Vite, Webpack, Metro, and more
+- **[Design Systems](/docs/guides/design-systems)** - Build your own optimized
+  component library with Tamagui
 
 Later on, you can [set up the compiler](/docs/intro/compiler-install) to gain
 more performance and some nice development helpers.

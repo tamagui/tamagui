@@ -25,13 +25,16 @@ const isTestPurchaseMode = (): boolean => {
 export const useSubscriptionModal = () => {
   const { data: userData, isLoading, subscriptionStatus } = useUser()
 
+  // use server-side computed hasPro which includes subscriptions, legacy access, whitelist, and team access
+  const hasPro = userData?.accessInfo?.hasPro || subscriptionStatus.pro
+
   const showAppropriateModal = () => {
     if (isLoading) return
 
     // developers can bypass pro check with ?testPurchase=true
     const devTestMode = subscriptionStatus.isDeveloper && isTestPurchaseMode()
 
-    if (subscriptionStatus.pro && !devTestMode) {
+    if (hasPro && !devTestMode) {
       accountModal.show = true
     } else {
       // always apply active promo if one exists
@@ -58,5 +61,6 @@ export const useSubscriptionModal = () => {
     isLoading,
     userData,
     subscriptionStatus,
+    hasPro,
   }
 }

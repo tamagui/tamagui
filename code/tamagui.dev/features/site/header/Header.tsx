@@ -75,7 +75,7 @@ export function Header(props: HeaderProps) {
         items="center"
         pointerEvents="none"
         justify="center"
-        z={50000}
+        z={10000}
         className="all ease-out s1"
         $gtSm={{
           px: '$1',
@@ -91,6 +91,8 @@ export function Header(props: HeaderProps) {
             width="100%"
             bg="transparent"
             rounded="$10"
+            borderColor={'transparent'}
+            borderWidth={0.5}
             $sm={{
               rounded: 0,
               borderWidth: 0,
@@ -99,6 +101,7 @@ export function Header(props: HeaderProps) {
             }}
             {...(isScrolled && {
               $gtSm: {
+                borderColor: '$color5',
                 y: 6,
               },
             })}
@@ -124,9 +127,6 @@ export function Header(props: HeaderProps) {
               className={`ease-out all ms300`}
               fullscreen
               bg="$color2"
-              $theme-dark={{
-                bg: '$color7',
-              }}
             />
             <YStack mx="auto" px="$4" width="100%">
               <ThemeTint>
@@ -210,7 +210,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
 
         <UpgradeToProPopover />
 
-        <Theme name="teal">
+        {/* <Theme name="teal">
           <Link href="/blog/version-two">
             <Button
               size="$2"
@@ -229,7 +229,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
               </Span>
             </Button>
           </Link>
-        </Theme>
+        </Theme> */}
       </XStack>
 
       <View flex={1} />

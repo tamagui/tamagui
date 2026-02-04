@@ -246,6 +246,12 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const hasntMeasured = at.current === hiddenSize
     const [disableAnimation, setDisableAnimation] = useState(hasntMeasured)
 
+    // use skipNextAnimation signal from controller (set when adapt handoff occurs)
+    const skipAdaptAnimation = React.useRef(false)
+    if (controller?.skipNextAnimation) {
+      skipAdaptAnimation.current = true
+    }
+
     const hasScrollView = React.useRef(false)
 
     useAnimatedNumberReaction(
@@ -296,6 +302,13 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
       at.current = toValue
       stopSpring()
+
+      // skip animation when adapting from dialog to sheet
+      if (skipAdaptAnimation.current) {
+        skipAdaptAnimation.current = false
+        animatedNumber.setValue(toValue, { type: 'timing', duration: 0 })
+        return
+      }
 
       animatedNumber.setValue(
         toValue,

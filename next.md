@@ -1,3 +1,5 @@
+- border="" shorthand
+
 - tooltip simpel theme not accent/inverse?
 
 - lineheight at size="$3" in web is a bit tall

@@ -55,18 +55,16 @@ Add package.json:
 
 If using Typescript, a `tsconfig.json` of your choosing:
 
-```
+```json fileName="tsconfig.json"
 {
-  "types": ["node", "react"],
-  "lib": ["dom", "esnext"],
   "compilerOptions": {
-    "baseUrl": "./", // resolve absolute module names from here
+    "types": ["node", "react"],
+    "lib": ["dom", "esnext"],
+    "baseUrl": "./",
     "outDir": "dist"
   },
   "include": ["./**/*.ts"],
-  "exclude": [
-    "node_modules/**/*"
-  ]
+  "exclude": ["node_modules/**/*"]
 }
 ```
 
@@ -202,7 +200,7 @@ export default () => <Circle size="$large" />
 When it compiles you should see something like:
 
 ```bash
-»                  app.tsx  16ms ׁ·    1 optimized · 1 flattened
+tamagui built app.tsx in 16ms (1 optimized, 1 flattened)
 ```
 
 To get more information on any extraction, use the `// debug` pragma:

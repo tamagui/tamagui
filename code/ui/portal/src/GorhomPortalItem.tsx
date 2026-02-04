@@ -25,6 +25,13 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
     portalListeners[props.hostName] ||= new Set()
     portalListeners[props.hostName].add(listener)
 
+    // check if host was already registered before we added our listener
+    // this handles the race where PortalHost's ref callback runs before our effect
+    const existingHost = allPortalHosts.get(props.hostName)
+    if (existingHost && existingHost !== node) {
+      setNode(existingHost)
+    }
+
     return () => {
       portalListeners[props.hostName!]?.delete(listener)
     }

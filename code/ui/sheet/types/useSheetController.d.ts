@@ -12,5 +12,6 @@ export type SheetControllerContextValue = {
     open?: boolean;
     hidden?: boolean;
     onOpenChange?: React.Dispatch<React.SetStateAction<boolean>> | ((val: boolean) => void);
+    skipNextAnimation?: boolean;
 };
 //# sourceMappingURL=useSheetController.d.ts.map
