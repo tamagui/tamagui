@@ -10,7 +10,7 @@ export const templates: Array<{
   value: string
   type: 'free' | 'premium' | 'included-in-monorepo'
   hidden: boolean
-  packageManager: 'yarn' | 'npm' | 'pnpm'
+  packageManager: 'yarn' | 'npm' | 'pnpm' | 'bun'
   repo: { url: string; sshFallback: string; dir: string[]; branch: string }
   extraSteps?: ExtraSteps
 }> = [
@@ -21,7 +21,7 @@ export const templates: Array<{
     value: 'takeout-free',
     type: 'free',
     hidden: false,
-    packageManager: 'yarn',
+    packageManager: 'bun',
     repo: {
       url: `https://github.com/tamagui/takeout-free`,
       sshFallback: `git@github.com:tamagui/takeout-free.git`,
