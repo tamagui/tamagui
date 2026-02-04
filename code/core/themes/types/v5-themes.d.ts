@@ -24,7 +24,7 @@ export declare const v5ComponentThemes: {
         readonly template: "surface2";
     };
     readonly Switch: {
-        readonly template: "surface1";
+        readonly template: "surface2";
     };
     readonly TextArea: {
         readonly template: "surface1";
@@ -33,7 +33,7 @@ export declare const v5ComponentThemes: {
         readonly template: "accent";
     };
     readonly SwitchThumb: {
-        readonly template: "surface3";
+        readonly template: "accent";
     };
 };
 export declare const v5ComponentThemesWithInverses: {
@@ -41,9 +41,6 @@ export declare const v5ComponentThemesWithInverses: {
         readonly template: "accent";
     };
     readonly SliderThumb: {
-        readonly template: "accent";
-    };
-    readonly SwitchThumb: {
         readonly template: "accent";
     };
     readonly Tooltip: {
@@ -65,10 +62,13 @@ export declare const v5ComponentThemesWithInverses: {
         readonly template: "surface3";
     };
     readonly Switch: {
-        readonly template: "surface1";
+        readonly template: "surface2";
     };
     readonly TextArea: {
         readonly template: "surface1";
+    };
+    readonly SwitchThumb: {
+        readonly template: "accent";
     };
 };
 /** Default grandchildren themes available in v5 */
