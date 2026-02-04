@@ -275,6 +275,36 @@ describe('getSplitStyles', () => {
     )
   })
 
+  test(`group container queries with single-part media keys`, () => {
+    // use sm which exists in the default config
+    const styles = simplifiedGetSplitStyles(Text, {
+      '$group-frame-sm': {
+        paddingRight: 0,
+      },
+    })
+    const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
+
+    // should generate valid selector with t_group_frame
+    expect(rule).toContain('@container frame')
+    expect(rule).toContain('.t_group_frame')
+    // should not have the media key as a pseudo selector
+    expect(rule).not.toContain(':sm')
+  })
+
+  test(`group container queries with multi-part pseudo like focus-visible`, () => {
+    // test focus-visible pseudo which has a dash
+    const styles = simplifiedGetSplitStyles(Text, {
+      '$group-frame-focus-visible': {
+        paddingRight: 0,
+      },
+    })
+    const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
+
+    // should have focus-visible pseudo selector
+    expect(rule).toContain(':focus-visible')
+    expect(rule).toContain('.t_group_frame')
+  })
+
   // const timed = async (fn: Function, opts?: { runs?: number }) => {
   //   const start = performance.now()
   //   const runs = opts?.runs ?? 1
@@ -537,5 +567,52 @@ describe('getSplitStyles - pseudo prop merging', () => {
     const { viewProps } = simplifiedGetSplitStyles(StyledButton, {})
     // No press state simulated, so no class is generated
     expect(viewProps.className).not.toContain('_bg-0active-green')
+  })
+})
+
+describe('getSplitStyles - kebab-case media keys', () => {
+  beforeAll(() => {
+    // reconfigure with kebab-case media keys like v5 config uses
+    const baseConfig = config.getDefaultTamaguiConfig()
+    createTamagui({
+      ...baseConfig,
+      media: {
+        ...baseConfig.media,
+        'max-md': { maxWidth: 1020 },
+        'min-lg': { minWidth: 1280 },
+      },
+    })
+  })
+
+  test('group container queries with kebab-case media key max-md', () => {
+    const styles = simplifiedGetSplitStyles(Text, {
+      '$group-frame-max-md': {
+        paddingRight: 0,
+      },
+    })
+    const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
+
+    // should generate valid @container query with frame container name
+    expect(rule).toContain('@container frame')
+    expect(rule).toContain('.t_group_frame')
+    // should NOT have :max as a pseudo selector - this was the bug
+    expect(rule).not.toContain(':max')
+    expect(rule).not.toContain(':max-md')
+  })
+
+  test('group container queries with kebab-case media key and pseudo', () => {
+    const styles = simplifiedGetSplitStyles(Text, {
+      '$group-frame-max-md-hover': {
+        paddingRight: 0,
+      },
+    })
+    const rule = Object.values(styles.rulesToInsert)[0][StyleObjectRules][0]
+
+    // should have both the container query and the hover pseudo
+    expect(rule).toContain('@container frame')
+    expect(rule).toContain('.t_group_frame:hover')
+    // max-md should be part of the container query, not a pseudo selector
+    expect(rule).not.toContain(':max-md')
+    expect(rule).not.toContain(':max')
   })
 })

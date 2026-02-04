@@ -3,21 +3,19 @@ import { getMedia } from '../hooks/useMedia'
 export type GroupParts = { name: string; pseudo?: string; media?: string }
 
 export function getGroupPropParts(groupProp: string): GroupParts {
-  const mediaQueries = getMedia()
-  const [_, name, part3, part4] = groupProp.split('-')
-  let pseudo:
-    | 'focus'
-    | 'press'
-    | 'hover'
-    | 'focus-visible'
-    | 'focus-within'
-    | 'disabled'
-    | undefined
-  const media = part3 in mediaQueries ? part3 : undefined
-  if (!media) {
-    pseudo = part3 as any
-  } else {
-    pseudo = part4 as any
-  }
+  const m = getMedia()
+  const [_, name, a, b, c] = groupProp.split('-')
+  // check 2-part media key first (e.g. "max-md"), then 1-part
+  const m2 = a && b ? `${a}-${b}` : ''
+  const media = (m2 && m2 in m && m2) || (a && a in m && a) || undefined
+  const pseudo = media
+    ? media === m2
+      ? c
+      : b
+        ? `${b}${c ? `-${c}` : ''}`
+        : undefined
+    : a
+      ? `${a}${b ? `-${b}` : ''}${c ? `-${c}` : ''}`
+      : undefined
   return { name, pseudo, media }
 }
