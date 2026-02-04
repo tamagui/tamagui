@@ -30,7 +30,7 @@ export declare const v5ComponentThemes: {
         readonly template: "surface1";
     };
     readonly Tooltip: {
-        readonly template: "surface3";
+        readonly template: "accent";
     };
     readonly SwitchThumb: {
         readonly template: "surface3";

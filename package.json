@@ -49,7 +49,7 @@
     "docs": "bun --filter @tamagui/one-docs run dev",
     "fix:deps": "bun run manypkg fix",
     "fix": "bun run lint:fix",
-    "generate-css": "bun --filter @tamagui/themes run generate && bun --filter @tamagui/themes run build && bun --filter @tamagui/dot-dev run build",
+    "generate-css": "cd code/core/themes && bun run generate && bun run build && cd ../../tamagui.dev && bun run build",
     "kitchen-sink:android": "bun --filter @tamagui/kitchen-sink run start:android",
     "kitchen-sink:build:android": "bun --filter @tamagui/kitchen-sink run android",
     "kitchen-sink:build:ios": "bun --filter @tamagui/kitchen-sink run ios",

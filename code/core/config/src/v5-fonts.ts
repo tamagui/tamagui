@@ -49,9 +49,13 @@ const nativeSizes = {
 
 const defaultSizes = isNative ? nativeSizes : webSizes
 
-// line height: native ~125% per iOS HIG, web ~160%
-const defaultLineHeight = (size: number) =>
-  Math.round(isNative ? size * 1.25 : size * 1.05 + 8)
+// line height: native per iOS HIG (size + 5), web 150% tapering to ~142% for large sizes
+const defaultLineHeight = (size: number) => {
+  if (isNative) return Math.round(size + 5)
+  // taper from 1.5 at small sizes to ~1.42 at 40px
+  const ratio = 1.5 - Math.max(0, (size - 20) * 0.004)
+  return Math.round(size * ratio)
+}
 
 export const createSystemFont = <A extends GenericFont>({
   font = {},
