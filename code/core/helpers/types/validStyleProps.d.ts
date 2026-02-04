@@ -110,7 +110,6 @@ export declare const stylePropsView: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -164,6 +163,7 @@ export declare const stylePropsView: {
     userSelect?: boolean | undefined;
     willChange?: boolean | undefined;
     boxShadow: boolean;
+    border: boolean;
     filter: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;
@@ -407,7 +407,6 @@ export declare const stylePropsText: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -460,6 +459,7 @@ export declare const stylePropsText: {
     transformStyle?: boolean | undefined;
     willChange?: boolean | undefined;
     boxShadow: boolean;
+    border: boolean;
     filter: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;
@@ -671,7 +671,6 @@ export declare const stylePropsAll: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -724,6 +723,7 @@ export declare const stylePropsAll: {
     transformStyle?: boolean | undefined;
     willChange?: boolean | undefined;
     boxShadow: boolean;
+    border: boolean;
     filter: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;
@@ -920,7 +920,6 @@ export declare const validStyles: {
     backdropFilter?: boolean | undefined;
     WebkitBackdropFilter?: boolean | undefined;
     background?: boolean | undefined;
-    border: boolean;
     borderTop?: boolean | undefined;
     borderRight?: boolean | undefined;
     borderBottom?: boolean | undefined;
@@ -974,6 +973,7 @@ export declare const validStyles: {
     userSelect?: boolean | undefined;
     willChange?: boolean | undefined;
     boxShadow: boolean;
+    border: boolean;
     filter: boolean;
     backgroundImage: boolean;
     experimental_backgroundImage: boolean;

@@ -103,9 +103,100 @@ describe('shorthand variables - native', () => {
   })
 })
 
+describe('border shorthand - native', () => {
+  // border shorthand expands to borderWidth/borderStyle/borderColor on native
+
+  test('border with width, style and color', () => {
+    const { style } = getSplitStylesFor({
+      border: '1px solid red',
+    })
+
+    // border expands to borderWidth/borderStyle/borderColor which then expand further
+    expect(style?.borderTopWidth).toBe(1)
+    expect(style?.borderRightWidth).toBe(1)
+    expect(style?.borderBottomWidth).toBe(1)
+    expect(style?.borderLeftWidth).toBe(1)
+    expect(style?.borderStyle).toBe('solid')
+    expect(style?.borderTopColor).toBe('red')
+    expect(style?.borderRightColor).toBe('red')
+    expect(style?.borderBottomColor).toBe('red')
+    expect(style?.borderLeftColor).toBe('red')
+  })
+
+  test('border with $variable color resolves token', () => {
+    const { style } = getSplitStylesFor({
+      border: '2px dashed $white',
+    })
+
+    expect(style?.borderTopWidth).toBe(2)
+    expect(style?.borderStyle).toBe('dashed')
+    expect(style?.borderTopColor).toBe('#fff')
+  })
+
+  test('border with just width and style', () => {
+    const { style } = getSplitStylesFor({
+      border: '1px solid',
+    })
+
+    expect(style?.borderTopWidth).toBe(1)
+    expect(style?.borderStyle).toBe('solid')
+  })
+
+  test('border "none" expands to borderWidth: 0', () => {
+    const { style } = getSplitStylesFor({
+      border: 'none',
+    })
+
+    expect(style?.borderTopWidth).toBe(0)
+  })
+
+  test('border with different order (color first)', () => {
+    const { style } = getSplitStylesFor({
+      border: 'blue 2px dotted',
+    })
+
+    expect(style?.borderTopWidth).toBe(2)
+    expect(style?.borderStyle).toBe('dotted')
+    expect(style?.borderTopColor).toBe('blue')
+  })
+})
+
+describe('border shorthand with media queries - native', () => {
+  test('border in $sm applies when media state sm is true', () => {
+    const { style } = getSplitStylesFor({ $sm: { border: '2px solid green' } }, View, {
+      mediaState: { sm: true },
+    })
+
+    expect(style?.borderTopWidth).toBe(2)
+    expect(style?.borderStyle).toBe('solid')
+    expect(style?.borderTopColor).toBe('green')
+  })
+
+  test('border in $sm does not apply when media state sm is false', () => {
+    const { style } = getSplitStylesFor({ $sm: { border: '2px solid green' } }, View, {
+      mediaState: { sm: false },
+    })
+
+    expect(style?.borderTopWidth).toBeUndefined()
+    expect(style?.borderStyle).toBeUndefined()
+    expect(style?.borderTopColor).toBeUndefined()
+  })
+
+  test('border in $sm with token resolves when media matches', () => {
+    const { style } = getSplitStylesFor({ $sm: { border: '1px dashed $white' } }, View, {
+      mediaState: { sm: true },
+    })
+
+    expect(style?.borderTopWidth).toBe(1)
+    expect(style?.borderStyle).toBe('dashed')
+    expect(style?.borderTopColor).toBe('#fff')
+  })
+})
+
 function getSplitStylesFor(
   props: Record<string, unknown>,
-  Component: { staticConfig: Parameters<typeof getSplitStyles>[1] } = View
+  Component: { staticConfig: Parameters<typeof getSplitStyles>[1] } = View,
+  options?: { mediaState?: Record<string, boolean> }
 ): GetStyleResult {
   return getSplitStyles(
     props,
@@ -124,6 +215,7 @@ function getSplitStylesFor(
     {
       isAnimated: false,
       resolveValues: 'value',
+      mediaState: options?.mediaState,
     },
     undefined,
     undefined,

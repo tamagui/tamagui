@@ -1919,6 +1919,19 @@ type FilterPreset =
 // Supports embedded $tokens that get resolved at runtime
 export type FilterValue = FilterPreset | (string & {})
 
+// border shorthand presets - examples for autocomplete hints
+type BorderPreset =
+  | '1px solid' // width + style
+  | '1px solid $borderColor' // width + style + color token
+  | '2px dashed $borderColor' // width + style + color
+  | '1px dotted red' // width + style + color
+  | 'none'
+
+// Border - CSS shorthand string format (e.g. "1px solid $borderColor")
+// Expands to borderWidth, borderStyle, borderColor on web and native
+// Note: on native, only supports a single border (all sides)
+export type BorderValue = BorderPreset | (string & {})
+
 interface ExtraStyleProps {
   /**
    * Controls the curve style of rounded corners.
@@ -1990,6 +2003,12 @@ interface ExtraStyleProps {
    * Works on web and native (RN 0.76+).
    */
   boxShadow?: BoxShadowValue
+  /**
+   * CSS border shorthand string. Supports tokens: "1px solid $borderColor"
+   * Expands to borderWidth, borderStyle, borderColor.
+   * Works on web and native. On native, applies to all sides.
+   */
+  border?: BorderValue
   /**
    * Web-only style property. Will be omitted on native.
    */

@@ -49,7 +49,6 @@ export declare const webPropsToSkip: {
     backdropFilter: boolean;
     WebkitBackdropFilter: boolean;
     background: boolean;
-    border: boolean;
     borderTop: boolean;
     borderRight: boolean;
     borderBottom: boolean;

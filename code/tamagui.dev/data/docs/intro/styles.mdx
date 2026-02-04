@@ -276,8 +276,27 @@ Supported shorthand properties with variable resolution:
 - `boxShadow` - Works on both web and native
 - `backgroundImage` - Works on both web and native (see below)
 - `filter` - Works on both web and native
-- `border`, `borderTop`, `borderRight`, `borderBottom`, `borderLeft` - Web only
+- `border` - Works on both web and native (expands to borderWidth/Style/Color on native)
+- `borderTop`, `borderRight`, `borderBottom`, `borderLeft` - Web only
 - `background` - Web only
+
+### border
+
+The `border` shorthand now works cross-platform:
+
+```tsx
+// Works on both web and native
+<View border="1px solid $borderColor" />
+<View border="2px dashed red" />
+<View border="none" />
+```
+
+On web, the CSS shorthand is passed through directly. On native, it expands to individual properties:
+- `borderWidth` → `borderTopWidth`, `borderRightWidth`, `borderBottomWidth`, `borderLeftWidth`
+- `borderStyle` → `borderStyle`
+- `borderColor` → `borderTopColor`, `borderRightColor`, `borderBottomColor`, `borderLeftColor`
+
+Note: On native, only a single border (all sides) is supported. For per-side borders on native, use individual props.
 
 ### backgroundImage
 
@@ -287,16 +306,6 @@ support `url()` on native - use `<ImageBackground>` for images.
 ```tsx
 <View backgroundImage="linear-gradient(to bottom, $background, $color)" />
 <View backgroundImage="radial-gradient(circle, $white, $black)" />
-```
-
-For native border styling, use individual props:
-
-```tsx
-// Web
-<View border="1px solid $borderColor" />
-
-// Native (or cross-platform)
-<View borderWidth={1} borderStyle="solid" borderColor="$borderColor" />
 ```
 
 ### textShadow

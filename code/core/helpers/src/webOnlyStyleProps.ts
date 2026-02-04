@@ -7,10 +7,7 @@ export const webOnlyStylePropsView = {
   textWrap: true,
   backdropFilter: true,
   WebkitBackdropFilter: true,
-  // These background-* props are web-only CSS, but NOT backgroundColor
   background: true,
-  // CSS border shorthand (e.g., "1px solid red") - RN only supports individual props
-  border: true,
   borderTop: true,
   borderRight: true,
   borderBottom: true,
@@ -18,7 +15,6 @@ export const webOnlyStylePropsView = {
   backgroundAttachment: true,
   backgroundBlendMode: true,
   backgroundClip: true,
-  // backgroundImage: now cross-platform via experimental_backgroundImage in RN 0.76+
   backgroundOrigin: true,
   backgroundPosition: true,
   backgroundRepeat: true,
@@ -28,13 +24,11 @@ export const webOnlyStylePropsView = {
   borderLeftStyle: true,
   borderRightStyle: true,
   borderTopStyle: true,
-  // boxSizing: now supported in RN 0.77+ (New Architecture)
   caretColor: true,
   clipPath: true,
   contain: true,
   containerType: true,
   content: true,
-  // cursor: now cross-platform - supported on iOS 17+ (trackpad/stylus) with limited values
   float: true,
   mask: true,
   maskBorder: true,
@@ -53,10 +47,8 @@ export const webOnlyStylePropsView = {
   maskRepeat: true,
   maskSize: true,
   maskType: true,
-  // mixBlendMode: now supported in RN 0.77+ (New Architecture)
   objectFit: true,
   objectPosition: true,
-  // outline*: now supported in RN 0.77+ (New Architecture)
   overflowBlock: true,
   overflowInline: true,
   overflowX: true,

@@ -7,6 +7,7 @@ import { isAndroid, isWeb } from '@tamagui/constants'
 
 import { getSetting } from '../config'
 import type { PropMappedValue } from '../types'
+import { parseBorderShorthand } from './parseBorderShorthand'
 
 const neg1Flex = [
   ['flexGrow', 0],
@@ -65,6 +66,17 @@ export function expandStyle(key: string, value: any): PropMappedValue {
       case 'backgroundImage': {
         // RN 0.76+ uses experimental_backgroundImage
         return [['experimental_backgroundImage', value]]
+      }
+      case 'border': {
+        // parse border shorthand string to individual properties
+        // on native, only supports a single border (all sides)
+        if (typeof value === 'string') {
+          const parsed = parseBorderShorthand(value)
+          if (parsed) {
+            return parsed
+          }
+        }
+        return
       }
     }
 

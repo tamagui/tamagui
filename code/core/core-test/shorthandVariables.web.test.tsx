@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { View, createTamagui, StyleObjectValue } from '../web/src'
+import { View, createTamagui, StyleObjectValue, StyleObjectRules } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -115,5 +115,68 @@ describe('shorthand variables - web', () => {
     const value = getStyleValue(styles, 'backgroundImage')
 
     expect(value).toMatch(/linear-gradient\(\$nonexistent, var\(--.*white/)
+  })
+})
+
+describe('border shorthand - web', () => {
+  // border shorthand passed through as CSS string on web
+
+  test('border with width, style and color', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      border: '1px solid red',
+    })
+    const value = getStyleValue(styles, 'border')
+
+    expect(value).toBe('1px solid red')
+  })
+
+  test('border with $variable color resolves to CSS var', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      border: '2px dashed $white',
+    })
+    const value = getStyleValue(styles, 'border')
+
+    expect(value).toMatch(/2px dashed var\(--.*white.*\)/)
+  })
+
+  test('border without variables passed through unchanged', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      border: '1px solid blue',
+    })
+    const value = getStyleValue(styles, 'border')
+
+    expect(value).toBe('1px solid blue')
+  })
+
+  test('border "none" passed through', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      border: 'none',
+    })
+    const value = getStyleValue(styles, 'border')
+
+    expect(value).toBe('none')
+  })
+})
+
+describe('border shorthand with media queries - web', () => {
+  test('border in $sm generates className with media key', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      $sm: { border: '2px solid green' },
+    })
+
+    // on web, $sm should generate a className with media key
+    expect(styles.hasMedia).toBe(true)
+    expect(styles.classNames?.['border-sm']).toBeDefined()
+    // classname contains _sm_ marker
+    expect(styles.classNames?.['border-sm']).toContain('_sm_')
+  })
+
+  test('border in $sm with token generates className', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      $sm: { border: '1px dashed $white' },
+    })
+
+    expect(styles.hasMedia).toBe(true)
+    expect(styles.classNames?.['border-sm']).toBeDefined()
   })
 })

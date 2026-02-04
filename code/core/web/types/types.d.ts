@@ -1030,6 +1030,8 @@ type BoxShadowPreset = '0 0' | '0 1px 2px' | '0 1px 2px 0' | '0 1px 2px $shadowC
 export type BoxShadowValue = BoxShadowPreset | (string & {});
 type FilterPreset = 'blur(4px)' | 'brightness(1.2)' | 'contrast(1.2)' | 'drop-shadow(0 4px 8px $shadowColor)' | 'grayscale(1)' | 'hue-rotate(90deg)' | 'invert(1)' | 'opacity(0.5)' | 'saturate(1.5)' | 'sepia(1)' | 'none';
 export type FilterValue = FilterPreset | (string & {});
+type BorderPreset = '1px solid' | '1px solid $borderColor' | '2px dashed $borderColor' | '1px dotted red' | 'none';
+export type BorderValue = BorderPreset | (string & {});
 interface ExtraStyleProps {
     /**
      * Controls the curve style of rounded corners.
@@ -1100,6 +1102,12 @@ interface ExtraStyleProps {
      * Works on web and native (RN 0.76+).
      */
     boxShadow?: BoxShadowValue;
+    /**
+     * CSS border shorthand string. Supports tokens: "1px solid $borderColor"
+     * Expands to borderWidth, borderStyle, borderColor.
+     * Works on web and native. On native, applies to all sides.
+     */
+    border?: BorderValue;
     /**
      * Web-only style property. Will be omitted on native.
      */
