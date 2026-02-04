@@ -46,8 +46,10 @@ const skipFinish = rePublish || process.argv.includes('--skip-finish')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
-// Check if current version is an RC (e.g., 1.143.0-rc.1)
-const rcMatch = curVersion.match(/^(\d+\.\d+\.\d+)-rc\.(\d+)$/)
+// Check if current version is an RC (e.g., 1.143.0-rc.1 or 1.143.0-rc.1-1234567890)
+// Strip any canary timestamp suffix first
+const curVersionStripped = curVersion.replace(/-\d{10,}$/, '')
+const rcMatch = curVersionStripped.match(/^(\d+\.\d+\.\d+)-rc\.(\d+)$/)
 const isCurrentRC = !!rcMatch
 const currentRCBase = rcMatch ? rcMatch[1] : null
 const currentRCNumber = rcMatch ? Number.parseInt(rcMatch[2], 10) : 0
