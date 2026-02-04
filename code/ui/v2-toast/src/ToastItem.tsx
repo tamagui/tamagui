@@ -8,8 +8,7 @@ import type { LayoutChangeEvent } from 'react-native'
 
 import type { HeightT, ToasterPosition } from './Toaster'
 import type { ToastT, ToastType } from './ToastState'
-import { useAnimatedDragGesture } from './useAnimatedDragGesture'
-import { useToastAnimations } from './useToastAnimations'
+import { useDragGesture } from './useDragGesture'
 import type { SwipeDirection } from './ToastProvider'
 import type { BurntToastOptions } from './types'
 import { createNativeToast } from './createNativeToast'
@@ -18,67 +17,12 @@ import { createNativeToast } from './createNativeToast'
 const TIME_BEFORE_UNMOUNT = 200
 
 /* -------------------------------------------------------------------------------------------------
- * DragWrapper - handles drag gestures with proper event handling
- * Uses raw div on web for pointer events, AnimatedView on native
+ * ToastItemFrame
  * -----------------------------------------------------------------------------------------------*/
 
-interface DragWrapperProps {
-  isWeb: boolean
-  animatedStyle: any
-  gestureHandlers: any
-  AnimatedView: any
-  dragRef: React.RefObject<HTMLDivElement | null>
-  children: React.ReactNode
-}
-
-function DragWrapper({
-  isWeb: isWebProp,
-  animatedStyle,
-  gestureHandlers,
-  AnimatedView,
-  dragRef,
-  children,
-}: DragWrapperProps) {
-  if (isWebProp) {
-    // on web, use a raw div with ref for direct DOM manipulation (CSS driver)
-    // the dragRef is used by useToastAnimations to directly set transform
-    return (
-      <div
-        ref={dragRef}
-        style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          // prevent text selection during drag
-          userSelect: 'none',
-          WebkitUserSelect: 'none',
-          // prevent touch scrolling interference
-          touchAction: 'none',
-          // visual feedback that this is draggable
-          cursor: 'grab',
-        }}
-        {...gestureHandlers}
-      >
-        {children}
-      </div>
-    )
-  }
-
-  // on native, use AnimatedView with animatedStyle
-  return (
-    <AnimatedView style={[{ flex: 1 }, animatedStyle]} {...gestureHandlers}>
-      {children}
-    </AnimatedView>
-  )
-}
-
-/* -------------------------------------------------------------------------------------------------
- * ToastPositionWrapper - handles absolute positioning and stacking animations
- * This is separate from visual styling so drag transform can move the entire visual toast
- * -----------------------------------------------------------------------------------------------*/
-
-const ToastPositionWrapper = styled(YStack, {
-  name: 'ToastPositionWrapper',
+const ToastItemFrame = styled(YStack, {
+  name: 'ToastItem',
+  focusable: true,
   pointerEvents: 'auto',
   position: 'absolute',
   left: 0,
@@ -88,18 +32,6 @@ const ToastPositionWrapper = styled(YStack, {
   scale: 1,
   y: 0,
   x: 0,
-})
-
-/* -------------------------------------------------------------------------------------------------
- * ToastItemFrame - visual styling for the toast
- * -----------------------------------------------------------------------------------------------*/
-
-const ToastItemFrame = styled(YStack, {
-  name: 'ToastItem',
-  // prevent text selection during drag - critical for gesture handling
-  userSelect: 'none',
-  cursor: 'grab',
-  focusable: true,
 
   variants: {
     unstyled: {
@@ -108,17 +40,20 @@ const ToastItemFrame = styled(YStack, {
         borderRadius: '$4',
         paddingHorizontal: '$4',
         paddingVertical: '$3',
+        // shadow using elevation for cross-platform
+        elevation: '$4',
+        shadowColor: '$shadowColor',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 12,
         borderWidth: 1,
         borderColor: '$borderColor',
-        shadowColor: 'rgba(0, 0, 0, 0.15)',
-        shadowOffset: { width: 0, height: 4 },
-        shadowRadius: 12,
 
-        // sonner-style focus ring using outline
+        // only show focus outline on keyboard navigation, not on click/tap
         focusVisibleStyle: {
-          outlineWidth: 2,
-          outlineColor: '$color8',
           outlineStyle: 'solid',
+          outlineWidth: 2,
+          outlineColor: '$outlineColor',
         },
       },
     },
@@ -306,8 +241,6 @@ export interface ToastItemProps {
   removeToast: (toast: ToastT) => void
   heights: HeightT[]
   setHeights: React.Dispatch<React.SetStateAction<HeightT[]>>
-  /** Sum of heights of all toasts before this one (for expanded positioning) */
-  heightBeforeMe: number
   duration: number
   gap: number
   swipeDirection: SwipeDirection
@@ -324,8 +257,6 @@ export interface ToastItemProps {
   disableNative?: boolean
   burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
   notificationOptions?: NotificationOptions
-  /** When true, disables animations for accessibility */
-  reducedMotion?: boolean
 }
 
 export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
@@ -339,7 +270,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     removeToast,
     heights,
     setHeights,
-    heightBeforeMe,
     duration,
     gap,
     swipeDirection,
@@ -349,7 +279,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     disableNative,
     burntOptions,
     notificationOptions,
-    reducedMotion,
   } = props
 
   const [mounted, setMounted] = React.useState(false)
@@ -470,36 +399,23 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     remainingTimeRef.current = duration
   }, [duration])
 
-  // animation driver for drag gestures
-  const { setDragOffset, springBack, animateOut, animatedStyle, AnimatedView, dragRef } =
-    useToastAnimations({ reducedMotion })
-
-  // drag gesture with animation driver integration
-  const { isDragging, gestureHandlers } = useAnimatedDragGesture({
+  // drag gesture for swipe-to-dismiss
+  const { dragState, gestureHandlers } = useDragGesture({
     direction: swipeDirection,
     threshold: swipeThreshold,
     disabled: !dismissible || toastType === 'loading',
-    expanded,
     onDragStart: pauseTimer,
-    onDragMove: setDragOffset,
-    onDismiss: (exitDirection, velocity) => {
-      setSwipeOut(true)
-      toast.onDismiss?.(toast)
-      setRemoved(true)
-      // remove height immediately so remaining toasts can reposition right away
-      // (don't wait for exit animation to complete)
-      setHeights((prev) => prev.filter((h) => h.toastId !== toast.id))
-      // use animateOut for smooth velocity-based exit animation
-      // this continues the drag momentum into the exit, then removes the toast
-      animateOut(exitDirection, velocity, () => {
-        removeToast(toast)
-      })
+    onDragEnd: (dismissed) => {
+      if (dismissed) {
+        setSwipeOut(true)
+        toast.onDismiss?.(toast)
+        setRemoved(true)
+        setTimeout(() => {
+          removeToast(toast)
+        }, TIME_BEFORE_UNMOUNT)
+      }
     },
-    onCancel: () => {
-      springBack(() => {
-        resumeTimer()
-      })
-    },
+    onDragCancel: resumeTimer,
   })
 
   // measure height
@@ -553,7 +469,16 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   const icon = getIcon()
 
   // calculate values for stacking effect using Tamagui animation props
-  // NOTE: drag offset is now handled separately by AnimatedView with useAnimatedNumber
+  const isHorizontalSwipe =
+    swipeDirection === 'left' ||
+    swipeDirection === 'right' ||
+    swipeDirection === 'horizontal'
+  const isVerticalSwipe =
+    swipeDirection === 'up' || swipeDirection === 'down' || swipeDirection === 'vertical'
+
+  // drag offset based on swipe direction
+  const dragOffsetX = isHorizontalSwipe ? dragState.offsetX : 0
+  const dragOffsetY = isVerticalSwipe ? dragState.offsetY : 0
 
   // scale non-front toasts when not expanded (sonner-style stacking)
   // each toast behind front is scaled down by 5% - this creates visual depth
@@ -562,26 +487,32 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   // get the height of the front toast for collapsed positioning
   const frontToastHeight = heights.length > 0 ? (heights[0]?.height ?? 55) : 55
 
-  // y position: expanded shows full offset based on preceding toast heights
-  // collapsed mode shows visual stacking with small peek
+  // y position: expanded shows full offset, collapsed stacks visually
+  // sonner uses gap (14px) as the lift amount per toast in collapsed mode
+  const baseOffset = isTop ? offset : -offset
 
-  // expanded offset: use heightBeforeMe (sum of preceding heights) + gaps
-  const expandedOffset = heightBeforeMe + (index * gap)
-
-  // collapsed mode: create visual stack where each toast peeks behind the one in front
+  // in collapsed mode, create visual stack where each toast peeks behind the one in front
+  // for bottom position with transformOrigin: bottom, back toasts need to move UP
+  // enough that their TOP edge peeks ABOVE the front toast's TOP edge
+  // since scale shrinks toward bottom, we need: lift > frontHeight * (1 - scale)
+  // but we only want a small peek (8-12px visible), so lift = frontHeight - peekAmount
+  // simplified: use a fixed peek amount that creates nice visual stacking
+  // for bottom position: back toasts need to peek ABOVE front toast
+  // with bottom:0 anchor and transformOrigin:bottom, we need lift > toast height to peek
+  // use front toast height minus desired overlap as lift
   const peekVisible = 10 // how many pixels of back toast border should peek
   const liftPerToast = peekVisible // lift this much for each toast in stack
-
   const stackY = expanded
-    ? (isTop ? expandedOffset : -expandedOffset)
+    ? baseOffset
     : isFront
       ? 0
       : isTop
         ? liftPerToast * index // for top position, toasts stack downward
         : -liftPerToast * index // for bottom position, toasts stack upward
 
-  // stacking position (drag offset handled separately by AnimatedView)
-  const computedY = stackY
+  // final computed values including drag
+  const computedY = stackY + dragOffsetY
+  const computedX = dragOffsetX
   const computedScale = stackScale
 
   // opacity: toasts beyond visibleToasts are always hidden (like Sonner)
@@ -596,8 +527,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
 
   // z-index: front toast should be on top, back toasts below
   // higher z-index = more in front
-  // exiting toasts (removed=true) get lower z-index so entering toasts appear above them
-  const computedZIndex = removed ? 0 : visibleToasts - index + 1
+  const computedZIndex = visibleToasts - index
   // in collapsed mode, set back toasts to front toast height (sonner pattern)
   // this makes the stack work by having all toasts same height
   const computedHeight = !expanded && !isFront ? frontToastHeight : undefined
@@ -613,16 +543,16 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   const description =
     typeof toast.description === 'function' ? toast.description() : toast.description
 
-  // data attributes for testing/styling
-  const dataAttributes = {
-    'data-mounted': mounted ? 'true' : 'false',
-    'data-removed': removed ? 'true' : 'false',
-    'data-swipe-out': swipeOut ? 'true' : 'false',
-    'data-visible': isVisible ? 'true' : 'false',
-    'data-front': isFront ? 'true' : 'false',
-    'data-index': String(index),
-    'data-type': toastType,
-    'data-expanded': expanded ? 'true' : 'false',
+  // data attributes for testing/styling - use dataSet for RN Web compatibility
+  const dataSet = {
+    mounted: mounted ? 'true' : 'false',
+    removed: removed ? 'true' : 'false',
+    swipeOut: swipeOut ? 'true' : 'false',
+    visible: isVisible ? 'true' : 'false',
+    front: isFront ? 'true' : 'false',
+    index: String(index),
+    type: toastType,
+    expanded: expanded ? 'true' : 'false',
   }
 
   // gap filler height - extends hit area to prevent flicker when moving between toasts
@@ -630,17 +560,21 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   const gapFillerHeight = expanded ? gap + 1 : 0
 
   return (
-    <ToastPositionWrapper
+    <ToastItemFrame
       ref={toastRef}
-      {...dataAttributes}
+      role="status"
+      aria-live="polite"
+      aria-atomic
+      tabIndex={0}
+      // @ts-expect-error dataSet is a valid prop for RN Web compatibility
+      dataSet={dataSet}
+      data-expanded={expanded ? 'true' : 'false'}
       onLayout={handleLayout}
-      // use Tamagui transition for stacking animations (y, scale, opacity)
-      // use a fast timing animation (not spring) so exit doesn't take forever
-      // disable during drag so stacking doesn't interfere with drag gesture
-      // also disable for reduced motion preference
-      transition={isDragging || reducedMotion ? undefined : '200ms'}
-      // stacking animation props (NOT drag - drag is handled by inner DragWrapper)
+      // use Tamagui animation system - disable animation while dragging
+      transition={dragState.isDragging ? undefined : 'quick'}
+      // animation props
       y={computedY}
+      x={computedX}
       scale={computedScale}
       opacity={computedOpacity}
       zIndex={computedZIndex}
@@ -659,119 +593,100 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         })}
       // enter/exit styles for AnimatePresence
       // subtle animations - small y shift + opacity fade
-      // when reducedMotion, only fade opacity (no transform)
-      enterStyle={
-        reducedMotion
-          ? { opacity: 0 }
-          : {
-              opacity: 0,
-              y: isTop ? -10 : 10,
-              scale: 0.95,
-            }
-      }
-      exitStyle={
-        reducedMotion
-          ? { opacity: 0 }
-          : {
-              opacity: 0,
-              // for swipe dismissal, drag transform handles position via animateOut
-              // for non-swipe dismissal (close button, timeout), use subtle position shift
-              x: 0,
-              y: swipeOut ? 0 : isTop ? -10 : 10,
-              scale: swipeOut ? 1 : 0.95,
-            }
-      }
+      enterStyle={{
+        opacity: 0,
+        y: isTop ? -10 : 10,
+        scale: 0.95,
+      }}
+      exitStyle={{
+        opacity: 0,
+        // for swipe dismissal, continue in swipe direction with subtle movement
+        x: isHorizontalSwipe && swipeOut ? (swipeDirection === 'left' ? -30 : 30) : 0,
+        y:
+          isVerticalSwipe && swipeOut
+            ? swipeDirection === 'up'
+              ? -30
+              : 30
+            : isTop
+              ? -10
+              : 10,
+        scale: 0.95,
+      }}
+      {...gestureHandlers}
+      {...(isWeb && {
+        onKeyDown: (event: React.KeyboardEvent) => {
+          if (event.key === 'Escape' && dismissible) {
+            handleClose()
+          }
+        },
+      })}
     >
-      {/* Drag wrapper - wraps the entire visual toast so drag moves everything */}
-      <DragWrapper
-        isWeb={isWeb}
-        animatedStyle={animatedStyle}
-        gestureHandlers={gestureHandlers}
-        AnimatedView={AnimatedView}
-        dragRef={dragRef}
-      >
-        <ToastItemFrame
-          // biome-ignore lint/a11y/useSemanticElements: we can't use <output> element as this is a styled Tamagui component
-          role="status"
-          aria-live="polite"
-          aria-atomic
-          tabIndex={0}
-          {...(isWeb && {
-            onKeyDown: (event: React.KeyboardEvent) => {
-              if (event.key === 'Escape' && dismissible) {
+      {/* invisible hit area that fills the gap above/below toast when expanded
+          this prevents hover state flickering when mouse moves between toasts */}
+      {expanded && gapFillerHeight > 0 && (
+        <View
+          position="absolute"
+          left={0}
+          right={0}
+          height={gapFillerHeight}
+          pointerEvents="auto"
+          {
+            ...(isTop
+              ? { top: '100%' } // for top position, extend downward
+              : { bottom: '100%' }) // for bottom position, extend upward
+          }
+        />
+      )}
+      <XStack alignItems="flex-start" gap="$3">
+        {icon && (
+          <View flexShrink={0} marginTop="$0.5">
+            {icon}
+          </View>
+        )}
+
+        <YStack flex={1} gap="$1">
+          {title && <ToastItemTitle>{title}</ToastItemTitle>}
+          {description && <ToastItemDescription>{description}</ToastItemDescription>}
+        </YStack>
+
+        {closeButton && dismissible && (
+          <ToastCloseButton onPress={handleClose} aria-label="Close toast">
+            {icons?.close ?? <DefaultCloseIcon />}
+          </ToastCloseButton>
+        )}
+      </XStack>
+
+      {/* Action buttons */}
+      {(toast.action || toast.cancel) && (
+        <XStack marginTop="$3" gap="$2" justifyContent="flex-end">
+          {toast.cancel && (
+            <ToastActionButton
+              onPress={(event) => {
+                toast.cancel?.onClick?.(event as any)
                 handleClose()
-              }
-            },
-          })}
-        >
-          {/* invisible hit area that fills the gap above/below toast when expanded
-              this prevents hover state flickering when mouse moves between toasts */}
-          {expanded && gapFillerHeight > 0 && (
-            <View
-              position="absolute"
-              left={0}
-              right={0}
-              height={gapFillerHeight}
-              pointerEvents="auto"
-              {
-                ...(isTop
-                  ? { top: '100%' } // for top position, extend downward
-                  : { bottom: '100%' }) // for bottom position, extend upward
-              }
-            />
+              }}
+            >
+              <SizableText size="$2">{toast.cancel.label}</SizableText>
+            </ToastActionButton>
           )}
-          <XStack alignItems="flex-start" gap="$3">
-            {icon && (
-              <View flexShrink={0} marginTop="$0.5">
-                {icon}
-              </View>
-            )}
-
-            <YStack flex={1} gap="$1">
-              {title && <ToastItemTitle>{title}</ToastItemTitle>}
-              {description && <ToastItemDescription>{description}</ToastItemDescription>}
-            </YStack>
-
-            {closeButton && dismissible && (
-              <ToastCloseButton onPress={handleClose} aria-label="Close toast">
-                {icons?.close ?? <DefaultCloseIcon />}
-              </ToastCloseButton>
-            )}
-          </XStack>
-
-          {/* Action buttons */}
-          {(toast.action || toast.cancel) && (
-            <XStack marginTop="$3" gap="$2" justifyContent="flex-end">
-              {toast.cancel && (
-                <ToastActionButton
-                  onPress={(event) => {
-                    toast.cancel?.onClick?.(event as any)
-                    handleClose()
-                  }}
-                >
-                  <SizableText size="$2">{toast.cancel.label}</SizableText>
-                </ToastActionButton>
-              )}
-              {toast.action && (
-                <ToastActionButton
-                  primary
-                  onPress={(event) => {
-                    toast.action?.onClick?.(event as any)
-                    if (!(event as any).defaultPrevented) {
-                      handleClose()
-                    }
-                  }}
-                >
-                  <SizableText size="$2" fontWeight="600" color="$background">
-                    {toast.action.label}
-                  </SizableText>
-                </ToastActionButton>
-              )}
-            </XStack>
+          {toast.action && (
+            <ToastActionButton
+              primary
+              onPress={(event) => {
+                toast.action?.onClick?.(event as any)
+                if (!(event as any).defaultPrevented) {
+                  handleClose()
+                }
+              }}
+            >
+              <SizableText size="$2" fontWeight="600" color="$background">
+                {toast.action.label}
+              </SizableText>
+            </ToastActionButton>
           )}
-        </ToastItemFrame>
-      </DragWrapper>
-    </ToastPositionWrapper>
+        </XStack>
+      )}
+    </ToastItemFrame>
   )
 })
 

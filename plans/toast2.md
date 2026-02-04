@@ -463,60 +463,61 @@ const ToastTitle = styled(SizableText, {
 
 New test categories added:
 - Toast Gesture Physics (6 tests):
-  - diagonal drag direction lock prevents horizontal swipe (maybe verified)
-  - resistance caps at ~25px when dragging far in wrong direction (maybe verified)
-  - fast flick in wrong direction does NOT dismiss (maybe verified)
-  - transform follows sqrt resistance curve during wrong-direction drag (maybe verified)
-  - orphaned pointer move without pointer down is ignored (maybe verified)
-  - right-click during drag triggers cancel and snaps back (maybe verified)
+  - diagonal drag direction lock prevents horizontal swipe (needs validation)
+  - resistance caps at ~25px when dragging far in wrong direction (needs validation)
+  - fast flick in wrong direction does NOT dismiss (needs validation)
+  - transform follows sqrt resistance curve during wrong-direction drag (needs validation)
+  - orphaned pointer move without pointer down is ignored (needs validation)
+  - right-click during drag triggers cancel and snaps back (needs validation)
 
 - Toast Stacking Drag Interactions (3 tests):
-  - dragging stacked (non-front) toast works correctly (maybe verified)
-  - drag one toast while another is entering does not cause glitches (maybe verified)
-  - escape key during drag cancels drag and dismisses toast (maybe verified)
+  - dragging stacked (non-front) toast works correctly (needs validation)
+  - drag one toast while another is entering does not cause glitches (needs validation)
+  - escape key during drag cancels drag and dismisses toast (needs validation)
 
 - Toast Timer Interactions (2 tests):
-  - drag pauses auto-dismiss timer and resumes on cancel (maybe verified)
-  - multiple rapid hovers do not corrupt timer state (maybe verified)
+  - drag pauses auto-dismiss timer and resumes on cancel (needs validation)
+  - multiple rapid hovers do not corrupt timer state (needs validation)
 
 - Toast Position Swipe Directions (1 test):
-  - bottom-right position allows right swipe dismissal (maybe verified)
+  - bottom-right position allows right swipe dismissal (needs validation)
 
 **Sub-agent Test Critique**
 Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
-- Direction lock mechanism (fixed + maybe tested)
-- Resistance physics boundary (maybe tested)
-- Orphaned pointer moves (maybe tested)
-- Pointer cancel handling (maybe tested)
-- Stacking + drag interactions (maybe tested)
-- Timer pause/resume during gestures (maybe tested)
+- Direction lock mechanism (fixed, needs validation)
+- Resistance physics boundary (needs validation)
+- Orphaned pointer moves (needs validation)
+- Pointer cancel handling (needs validation)
+- Stacking + drag interactions (needs validation)
+- Timer pause/resume during gestures (needs validation)
 
 **Additional Fix: Pointer Capture Release**
 - Added explicit `releasePointerCapture()` calls in `handlePointerUp` and `handlePointerCancel`
 - While browsers auto-release on pointer end, explicit release is safer practice
 
-**Final Test Summary:**
+**Test Summary:**
 - 36 tests in Toast.test.tsx
 - 13 tests in ToastMultiple.test.tsx
-- 49 total tests covering gestures, stacking, timing, edge cases
+- 49 total tests covering gestures, stacking, timing, edge cases (all need manual validation)
 
 ### 2026-01-27 (continued)
 
 **Bug Fix: Entering toasts behind exiting toasts**
 - Issue: New toasts appeared behind exiting toasts during animation
 - Root cause: Z-index was computed without considering `removed` state
-- Fixed: Added `removed ? 0 : visibleToasts - index + 1` for z-index calculation
-- Exiting toasts now get z-index 0, so entering toasts appear above them
-- Added test: "entering toast appears above exiting toast"
+- Change: Added `removed ? 0 : visibleToasts - index + 1` for z-index calculation
+- Theory: Exiting toasts should get z-index 0, so entering toasts appear above them
+- Added test but needs manual validation
 
 **Bug Fix: Drag only moving content, not outer frame**
 - Issue: Dragging was moving text/content but the background/border stayed in place
 - Root cause: DragWrapper was inside ToastItemFrame; drag transform only applied to content
-- Fixed: Restructured component hierarchy:
+- Change: Restructured component hierarchy:
   - New `ToastPositionWrapper` handles absolute positioning and stacking animations
   - `DragWrapper` now wraps `ToastItemFrame` entirely
   - `ToastItemFrame` only contains visual styling (background, border, shadow)
-- Now drag transform moves the entire visual toast including styling
+- Theory: drag transform should now move the entire visual toast including styling
+- NEEDS MANUAL VALIDATION
 
 **Ultra-slow 5000ms animation added**
 - Added 5000ms animation to all drivers (CSS, Motion, Native, Reanimated)
@@ -525,18 +526,20 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 **Test Summary (Updated):**
 - 37 tests in Toast.test.tsx (added z-index test)
 - 13 tests in ToastMultiple.test.tsx
-- 50 total tests (all passing with CSS driver)
+- 50 total tests (need manual validation with each driver)
 
 ### 2026-01-27 (continued - interactions polish)
 
 **Feature: All-direction drag with resistance when collapsed (Sonner-like)**
-- When collapsed, allow drag in all directions with resistance except exit direction
-- This creates the satisfying "rubber band" feel in all directions
+- Intended: When collapsed, allow drag in all directions with resistance except exit direction
+- This should create the satisfying "rubber band" feel in all directions
 - When expanded, still use direction locking to prevent accidental scrolls
+- NEEDS MANUAL VALIDATION
 
 **Feature: Opacity fade during swipe exit**
 - Added fadeOut parameter to animateSpring for smooth opacity animation during swipe dismiss
-- Exit animation now fades opacity based on progress toward target position
+- Exit animation should fade opacity based on progress toward target position
+- NEEDS MANUAL VALIDATION - exit opacity may still be choppy
 
 **Feature: Sonner-style focus ring**
 - Changed from outline to box-shadow for focus-visible styling
@@ -544,7 +547,8 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 
 **Feature: Immediate toast repositioning on swipe dismiss**
 - Removed height from heights array immediately when swipe dismiss starts
-- Remaining toasts reposition immediately instead of waiting for exit animation
+- Remaining toasts should reposition immediately instead of waiting for exit animation
+- NEEDS MANUAL VALIDATION
 
 **Bug Fix: Test helpers updated for new component hierarchy**
 - getDragTransformX now looks for parent element (DragWrapper is parent of ToastItemFrame)
@@ -565,9 +569,14 @@ Spawned sub-agent to critique test coverage. Key gaps identified and addressed:
 
 ### TODO / Known Issues
 
-- [x] Top-right position: can't pull left with resistance when expanded - FIXED (all-direction resistance works)
-- [x] Mixed height toasts don't position correctly in stack - FIXED (heightBeforeMe calculation)
-- [x] swipeDirection 'auto' option to auto-detect based on edge position - DONE
+- [ ] Top-right position: can't pull left with resistance when expanded - attempted fix, needs validation
+- [ ] Mixed height toasts don't position correctly in stack - attempted fix (heightBeforeMe), needs validation
+- [ ] swipeDirection 'auto' option to auto-detect based on edge position - implemented, needs validation
+- [ ] Exit animations may not be smooth - needs investigation
+- [ ] Drag may still only move inner content not outer frame - needs validation
+- [ ] Stacking z-index during enter/exit - needs validation
+- [ ] Velocity-based exit animation - needs validation
+- [ ] All animation drivers need testing (CSS, RN, Reanimated, Motion)
 
 ### 2026-01-27 (continued - mixed height fix)
 

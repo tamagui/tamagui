@@ -57,10 +57,7 @@ interface ToastContextValue {
   reducedMotion: boolean
 }
 
-const ToastContext = createStyledContext<ToastContextValue>(
-  {} as ToastContextValue,
-  'Toast__'
-)
+const ToastContext = createStyledContext<ToastContextValue>({} as ToastContextValue, 'Toast__')
 
 const useToastContext = ToastContext.useStyledContext
 
@@ -120,109 +117,98 @@ function resolveSwipeDirection(
   position: ToastPosition
 ): Exclude<SwipeDirection, 'auto'> {
   if (direction !== 'auto') return direction
-  const [yPosition, xPosition] = position.split('-') as [
-    'top' | 'bottom',
-    'left' | 'center' | 'right',
-  ]
+  const [yPosition, xPosition] = position.split('-') as ['top' | 'bottom', 'left' | 'center' | 'right']
   if (xPosition === 'left') return 'left'
   if (xPosition === 'right') return 'right'
   return yPosition === 'top' ? 'up' : 'down'
 }
 
-const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
-  function ToastRoot(props, ref) {
-    const {
-      children,
-      position = 'bottom-right',
-      duration = TOAST_LIFETIME,
-      gap = TOAST_GAP,
-      visibleToasts = VISIBLE_TOASTS_AMOUNT,
-      swipeDirection: swipeDirectionProp = 'auto',
-      swipeThreshold = 50,
-      closeButton = false,
-      theme: themeProp,
-      reducedMotion: reducedMotionProp,
-    } = props
+const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(function ToastRoot(props, ref) {
+  const {
+    children,
+    position = 'bottom-right',
+    duration = TOAST_LIFETIME,
+    gap = TOAST_GAP,
+    visibleToasts = VISIBLE_TOASTS_AMOUNT,
+    swipeDirection: swipeDirectionProp = 'auto',
+    swipeThreshold = 50,
+    closeButton = false,
+    theme: themeProp,
+    reducedMotion: reducedMotionProp,
+  } = props
 
-    const reducedMotion = useReducedMotion(reducedMotionProp)
-    const [toasts, setToasts] = React.useState<ToastT[]>([])
-    const [heights, setHeights] = React.useState<HeightT[]>([])
-    const [expanded, setExpanded] = React.useState(false)
-    const [interacting, setInteracting] = React.useState(false)
+  const reducedMotion = useReducedMotion(reducedMotionProp)
+  const [toasts, setToasts] = React.useState<ToastT[]>([])
+  const [heights, setHeights] = React.useState<HeightT[]>([])
+  const [expanded, setExpanded] = React.useState(false)
+  const [interacting, setInteracting] = React.useState(false)
 
-    // subscribe to toast state
-    React.useEffect(() => {
-      return ToastState.subscribe((toast) => {
-        if ((toast as ToastToDismiss).dismiss) {
-          setToasts((toasts) =>
-            toasts.map((t) => (t.id === toast.id ? { ...t, delete: true } : t))
-          )
-          return
-        }
-        setToasts((toasts) => {
-          const idx = toasts.findIndex((t) => t.id === toast.id)
-          if (idx !== -1) {
-            return [
-              ...toasts.slice(0, idx),
-              { ...toasts[idx], ...toast },
-              ...toasts.slice(idx + 1),
-            ]
-          }
-          return [toast as ToastT, ...toasts]
-        })
-      })
-    }, [])
-
-    // collapse when 1 toast
-    React.useEffect(() => {
-      if (toasts.length <= 1) setExpanded(false)
-    }, [toasts.length])
-
-    const removeToast = React.useCallback((toastToRemove: ToastT) => {
+  // subscribe to toast state
+  React.useEffect(() => {
+    return ToastState.subscribe((toast) => {
+      if ((toast as ToastToDismiss).dismiss) {
+        setToasts((toasts) => toasts.map((t) => (t.id === toast.id ? { ...t, delete: true } : t)))
+        return
+      }
       setToasts((toasts) => {
-        if (!toasts.find((t) => t.id === toastToRemove.id)?.delete) {
-          ToastState.dismiss(toastToRemove.id)
+        const idx = toasts.findIndex((t) => t.id === toast.id)
+        if (idx !== -1) {
+          return [...toasts.slice(0, idx), { ...toasts[idx], ...toast }, ...toasts.slice(idx + 1)]
         }
-        return toasts.filter(({ id }) => id !== toastToRemove.id)
+        return [toast as ToastT, ...toasts]
       })
-    }, [])
+    })
+  }, [])
 
-    const swipeDirection = resolveSwipeDirection(swipeDirectionProp, position)
+  // collapse when 1 toast
+  React.useEffect(() => {
+    if (toasts.length <= 1) setExpanded(false)
+  }, [toasts.length])
 
-    const currentTheme = useThemeName()
-    const resolvedTheme =
-      themeProp === 'system' || !themeProp
-        ? currentTheme?.includes('dark')
-          ? 'dark'
-          : 'light'
-        : themeProp
+  const removeToast = React.useCallback((toastToRemove: ToastT) => {
+    setToasts((toasts) => {
+      if (!toasts.find((t) => t.id === toastToRemove.id)?.delete) {
+        ToastState.dismiss(toastToRemove.id)
+      }
+      return toasts.filter(({ id }) => id !== toastToRemove.id)
+    })
+  }, [])
 
-    const contextValue: ToastContextValue = {
-      toasts,
-      heights,
-      setHeights,
-      expanded,
-      setExpanded,
-      interacting,
-      setInteracting,
-      removeToast,
-      position,
-      duration,
-      gap,
-      visibleToasts,
-      swipeDirection,
-      swipeThreshold,
-      closeButton,
-      reducedMotion,
-    }
+  const swipeDirection = resolveSwipeDirection(swipeDirectionProp, position)
 
-    return (
-      <ToastContext.Provider {...contextValue}>
-        <Theme name={resolvedTheme as any}>{children}</Theme>
-      </ToastContext.Provider>
-    )
+  const currentTheme = useThemeName()
+  const resolvedTheme =
+    themeProp === 'system' || !themeProp
+      ? currentTheme?.includes('dark')
+        ? 'dark'
+        : 'light'
+      : themeProp
+
+  const contextValue: ToastContextValue = {
+    toasts,
+    heights,
+    setHeights,
+    expanded,
+    setExpanded,
+    interacting,
+    setInteracting,
+    removeToast,
+    position,
+    duration,
+    gap,
+    visibleToasts,
+    swipeDirection,
+    swipeThreshold,
+    closeButton,
+    reducedMotion,
   }
-)
+
+  return (
+    <ToastContext.Provider {...contextValue}>
+      <Theme name={resolvedTheme as any}>{children}</Theme>
+    </ToastContext.Provider>
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * ToastViewport
@@ -287,10 +273,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
     const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
     const hoverCooldownRef = React.useRef(false)
 
-    const [yPosition, xPosition] = ctx.position.split('-') as [
-      'top' | 'bottom',
-      'left' | 'center' | 'right',
-    ]
+    const [yPosition, xPosition] = ctx.position.split('-') as ['top' | 'bottom', 'left' | 'center' | 'right']
 
     // offset styles
     const offsetStyles = React.useMemo(() => {
@@ -299,12 +282,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
       const offsetObj =
         typeof offset === 'object'
           ? offset
-          : {
-              top: defaultOffset,
-              right: defaultOffset,
-              bottom: defaultOffset,
-              left: defaultOffset,
-            }
+          : { top: defaultOffset, right: defaultOffset, bottom: defaultOffset, left: defaultOffset }
 
       if (yPosition === 'top') styles.top = offsetObj.top ?? defaultOffset
       else styles.bottom = offsetObj.bottom ?? defaultOffset
@@ -323,9 +301,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
     React.useEffect(() => {
       if (!isWeb) return
       const handleKeyDown = (event: KeyboardEvent) => {
-        const isHotkeyPressed =
-          hotkey.length > 0 &&
-          hotkey.every((key) => (event as any)[key] || event.code === key)
+        const isHotkeyPressed = hotkey.length > 0 && hotkey.every((key) => (event as any)[key] || event.code === key)
         if (isHotkeyPressed) {
           ctx.setExpanded(true)
           ;(listRef.current as HTMLElement)?.focus()
@@ -416,213 +392,171 @@ const ToastItemFrame = styled(YStack, {
 export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
   toast: ToastT
   index: number
-  children: React.ReactNode
+  children: React.ReactNode | ((props: { toast: ToastT; handleClose: () => void }) => React.ReactNode)
 }
 
-const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
-  function ToastItem(props, ref) {
-    const { toast, index, children, ...rest } = props
-    const ctx = useToastContext()
+const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(function ToastItem(props, ref) {
+  const { toast, index, children, ...rest } = props
+  const ctx = useToastContext()
 
-    const [mounted, setMounted] = React.useState(false)
-    const [removed, setRemoved] = React.useState(false)
-    const [swipeOut, setSwipeOut] = React.useState(false)
+  const [mounted, setMounted] = React.useState(false)
+  const [removed, setRemoved] = React.useState(false)
+  const [swipeOut, setSwipeOut] = React.useState(false)
 
-    const closeTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-    const closeTimerStartRef = React.useRef(0)
-    const remainingTimeRef = React.useRef(toast.duration ?? ctx.duration)
+  const closeTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const closeTimerStartRef = React.useRef(0)
+  const remainingTimeRef = React.useRef(toast.duration ?? ctx.duration)
 
-    const isFront = index === 0
-    const isVisible = index < ctx.visibleToasts
-    const toastType = toast.type ?? 'default'
-    const dismissible = toast.dismissible !== false
-    const duration = toast.duration ?? ctx.duration
+  const isFront = index === 0
+  const isVisible = index < ctx.visibleToasts
+  const toastType = toast.type ?? 'default'
+  const dismissible = toast.dismissible !== false
+  const duration = toast.duration ?? ctx.duration
 
-    const [yPosition] = ctx.position.split('-') as ['top' | 'bottom', string]
-    const isTop = yPosition === 'top'
+  const [yPosition] = ctx.position.split('-') as ['top' | 'bottom', string]
+  const isTop = yPosition === 'top'
 
-    // height tracking
-    const heightIndex = React.useMemo(
-      () => ctx.heights.findIndex((h) => h.toastId === toast.id) || 0,
-      [ctx.heights, toast.id]
-    )
+  // height tracking
+  const heightIndex = React.useMemo(
+    () => ctx.heights.findIndex((h) => h.toastId === toast.id) || 0,
+    [ctx.heights, toast.id]
+  )
 
-    const toastsHeightBefore = React.useMemo(() => {
-      return ctx.heights.reduce((prev, curr, i) => {
-        if (i >= heightIndex) return prev
-        return prev + curr.height
-      }, 0)
-    }, [ctx.heights, heightIndex])
+  const toastsHeightBefore = React.useMemo(() => {
+    return ctx.heights.reduce((prev, curr, i) => {
+      if (i >= heightIndex) return prev
+      return prev + curr.height
+    }, 0)
+  }, [ctx.heights, heightIndex])
 
-    // timer
-    const startTimer = React.useCallback(() => {
-      if (duration === Number.POSITIVE_INFINITY) return
-      closeTimerStartRef.current = Date.now()
-      closeTimerRef.current = setTimeout(() => {
-        toast.onAutoClose?.(toast)
-        setRemoved(true)
-        setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
-      }, remainingTimeRef.current)
-    }, [duration, toast, ctx.removeToast])
-
-    const pauseTimer = React.useCallback(() => {
-      if (closeTimerRef.current) {
-        clearTimeout(closeTimerRef.current)
-        const elapsed = Date.now() - closeTimerStartRef.current
-        remainingTimeRef.current = Math.max(0, remainingTimeRef.current - elapsed)
-      }
-    }, [])
-
-    React.useEffect(() => {
-      setMounted(true)
-      startTimer()
-      return () => {
-        if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-      }
-    }, [])
-
-    React.useEffect(() => {
-      if (ctx.expanded || ctx.interacting) pauseTimer()
-      else startTimer()
-    }, [ctx.expanded, ctx.interacting])
-
-    // animations
-    const {
-      setDragOffset,
-      springBack,
-      animateOut,
-      animatedStyle,
-      AnimatedView,
-      dragRef,
-    } = useToastAnimations({ reducedMotion: ctx.reducedMotion })
-
-    const { isDragging, gestureHandlers } = useAnimatedDragGesture({
-      direction: ctx.swipeDirection,
-      threshold: ctx.swipeThreshold,
-      disabled: !dismissible || toastType === 'loading',
-      expanded: ctx.expanded,
-      onDragStart: pauseTimer,
-      onDragMove: setDragOffset,
-      onDismiss: (exitDirection, velocity) => {
-        setSwipeOut(true)
-        toast.onDismiss?.(toast)
-        setRemoved(true)
-        ctx.setHeights((prev) => prev.filter((h) => h.toastId !== toast.id))
-        animateOut(exitDirection, velocity, () => ctx.removeToast(toast))
-      },
-      onCancel: () => springBack(() => startTimer()),
-    })
-
-    // measure height
-    const handleLayout = React.useCallback(
-      (event: any) => {
-        const { height } = event.nativeEvent.layout
-        ctx.setHeights((prev) => {
-          const exists = prev.find((h) => h.toastId === toast.id)
-          if (exists)
-            return prev.map((h) => (h.toastId === toast.id ? { ...h, height } : h))
-          return [{ toastId: toast.id, height }, ...prev]
-        })
-      },
-      [toast.id]
-    )
-
-    React.useEffect(() => {
-      return () => {
-        ctx.setHeights((prev) => prev.filter((h) => h.toastId !== toast.id))
-      }
-    }, [toast.id])
-
-    const handleClose = React.useCallback(() => {
-      if (!dismissible) return
-      toast.onDismiss?.(toast)
+  // timer
+  const startTimer = React.useCallback(() => {
+    if (duration === Number.POSITIVE_INFINITY) return
+    closeTimerStartRef.current = Date.now()
+    closeTimerRef.current = setTimeout(() => {
+      toast.onAutoClose?.(toast)
       setRemoved(true)
       setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
-    }, [dismissible, toast, ctx.removeToast])
+    }, remainingTimeRef.current)
+  }, [duration, toast, ctx.removeToast])
 
-    // stacking calculations
-    const frontToastHeight = ctx.heights.length > 0 ? (ctx.heights[0]?.height ?? 55) : 55
-    const stackScale = !ctx.expanded && !isFront ? 1 - index * 0.05 : 1
-    const expandedOffset = toastsHeightBefore + index * ctx.gap
-    const peekVisible = 10
-    const stackY = ctx.expanded
-      ? isTop
-        ? expandedOffset
-        : -expandedOffset
-      : isFront
-        ? 0
-        : isTop
-          ? peekVisible * index
-          : -peekVisible * index
+  const pauseTimer = React.useCallback(() => {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current)
+      const elapsed = Date.now() - closeTimerStartRef.current
+      remainingTimeRef.current = Math.max(0, remainingTimeRef.current - elapsed)
+    }
+  }, [])
 
-    const computedOpacity =
-      index >= ctx.visibleToasts
-        ? 0
-        : !ctx.expanded && index === ctx.visibleToasts - 1
-          ? 0.5
-          : 1
-    const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
-    const computedHeight = !ctx.expanded && !isFront ? frontToastHeight : undefined
+  React.useEffect(() => {
+    setMounted(true)
+    startTimer()
+    return () => {
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+    }
+  }, [])
 
-    const dragContent =
-      typeof children === 'function'
-        ? (children as any)({ toast, handleClose })
-        : children
+  React.useEffect(() => {
+    if (ctx.expanded || ctx.interacting) pauseTimer()
+    else startTimer()
+  }, [ctx.expanded, ctx.interacting])
 
-    return (
-      <ToastItemFrame
-        ref={ref}
-        onLayout={handleLayout}
-        transition={isDragging || ctx.reducedMotion ? undefined : '200ms'}
-        y={stackY}
-        scale={stackScale}
-        opacity={computedOpacity}
-        zIndex={computedZIndex}
-        height={computedHeight}
-        overflow={computedHeight ? 'hidden' : undefined}
-        pointerEvents={index >= ctx.visibleToasts ? 'none' : 'auto'}
-        top={isTop ? 0 : undefined}
-        bottom={isTop ? undefined : 0}
-        enterStyle={
-          ctx.reducedMotion
-            ? { opacity: 0 }
-            : { opacity: 0, y: isTop ? -10 : 10, scale: 0.95 }
-        }
-        exitStyle={
-          ctx.reducedMotion
-            ? { opacity: 0 }
-            : {
-                opacity: 0,
-                y: swipeOut ? 0 : isTop ? -10 : 10,
-                scale: swipeOut ? 1 : 0.95,
-              }
-        }
-        {...rest}
-      >
-        {isWeb ? (
-          <div
-            ref={dragRef as any}
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              userSelect: 'none',
-              touchAction: 'none',
-              cursor: 'grab',
-            }}
-            {...gestureHandlers}
-          >
-            {dragContent}
-          </div>
-        ) : (
-          <View style={{ flex: 1 }} {...(gestureHandlers as any)}>
-            {dragContent}
-          </View>
-        )}
-      </ToastItemFrame>
-    )
-  }
-)
+  // animations
+  const { setDragOffset, springBack, animateOut, animatedStyle, AnimatedView, dragRef } =
+    useToastAnimations({ reducedMotion: ctx.reducedMotion })
+
+  const { isDragging, gestureHandlers } = useAnimatedDragGesture({
+    direction: ctx.swipeDirection,
+    threshold: ctx.swipeThreshold,
+    disabled: !dismissible || toastType === 'loading',
+    expanded: ctx.expanded,
+    onDragStart: pauseTimer,
+    onDragMove: setDragOffset,
+    onDismiss: (exitDirection, velocity) => {
+      setSwipeOut(true)
+      toast.onDismiss?.(toast)
+      setRemoved(true)
+      ctx.setHeights((prev) => prev.filter((h) => h.toastId !== toast.id))
+      animateOut(exitDirection, velocity, () => ctx.removeToast(toast))
+    },
+    onCancel: () => springBack(() => startTimer()),
+  })
+
+  // measure height
+  const handleLayout = React.useCallback(
+    (event: any) => {
+      const { height } = event.nativeEvent.layout
+      ctx.setHeights((prev) => {
+        const exists = prev.find((h) => h.toastId === toast.id)
+        if (exists) return prev.map((h) => (h.toastId === toast.id ? { ...h, height } : h))
+        return [{ toastId: toast.id, height }, ...prev]
+      })
+    },
+    [toast.id]
+  )
+
+  React.useEffect(() => {
+    return () => {
+      ctx.setHeights((prev) => prev.filter((h) => h.toastId !== toast.id))
+    }
+  }, [toast.id])
+
+  const handleClose = React.useCallback(() => {
+    if (!dismissible) return
+    toast.onDismiss?.(toast)
+    setRemoved(true)
+    setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
+  }, [dismissible, toast, ctx.removeToast])
+
+  // stacking calculations
+  const frontToastHeight = ctx.heights.length > 0 ? (ctx.heights[0]?.height ?? 55) : 55
+  const stackScale = !ctx.expanded && !isFront ? 1 - index * 0.05 : 1
+  const expandedOffset = toastsHeightBefore + index * ctx.gap
+  const peekVisible = 10
+  const stackY = ctx.expanded
+    ? isTop ? expandedOffset : -expandedOffset
+    : isFront ? 0 : isTop ? peekVisible * index : -peekVisible * index
+
+  const computedOpacity = index >= ctx.visibleToasts ? 0 : !ctx.expanded && index === ctx.visibleToasts - 1 ? 0.5 : 1
+  const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
+  const computedHeight = !ctx.expanded && !isFront ? frontToastHeight : undefined
+
+  const dragContent = typeof children === 'function' ? (children as any)({ toast, handleClose }) : children
+
+  return (
+    <ToastItemFrame
+      ref={ref}
+      onLayout={handleLayout}
+      transition={isDragging || ctx.reducedMotion ? undefined : '200ms'}
+      y={stackY}
+      scale={stackScale}
+      opacity={computedOpacity}
+      zIndex={computedZIndex}
+      height={computedHeight}
+      overflow={computedHeight ? 'hidden' : undefined}
+      pointerEvents={index >= ctx.visibleToasts ? 'none' : 'auto'}
+      top={isTop ? 0 : undefined}
+      bottom={isTop ? undefined : 0}
+      enterStyle={ctx.reducedMotion ? { opacity: 0 } : { opacity: 0, y: isTop ? -10 : 10, scale: 0.95 }}
+      exitStyle={ctx.reducedMotion ? { opacity: 0 } : { opacity: 0, y: swipeOut ? 0 : isTop ? -10 : 10, scale: swipeOut ? 1 : 0.95 }}
+      {...rest}
+    >
+      {isWeb ? (
+        <div
+          ref={dragRef as any}
+          style={{ flex: 1, display: 'flex', flexDirection: 'column', userSelect: 'none', touchAction: 'none', cursor: 'grab' }}
+          {...gestureHandlers}
+        >
+          {dragContent}
+        </div>
+      ) : (
+        <View style={{ flex: 1 }} {...(gestureHandlers as any)}>
+          {dragContent}
+        </View>
+      )}
+    </ToastItemFrame>
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * ToastTitle
@@ -699,11 +633,7 @@ const ToastCloseFrame = styled(XStack, {
 const ToastClose = ToastCloseFrame.styleable(function ToastClose(props, ref) {
   return (
     <ToastCloseFrame ref={ref} aria-label="Close toast" {...props}>
-      {props.children ?? (
-        <SizableText size="$1" color="$color11">
-          ✕
-        </SizableText>
-      )}
+      {props.children ?? <SizableText size="$1" color="$color11">✕</SizableText>}
     </ToastCloseFrame>
   )
 })

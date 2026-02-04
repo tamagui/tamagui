@@ -100,7 +100,7 @@ export { ThemeMutation } from './ThemeMutation'
 export { ThemeNested } from './ThemeNested'
 export { ThemeReset } from './ThemeReset'
 export { ThemeShallowCase } from './ThemeShallowCase'
-export { ToastCase } from './ToastCase'
+// ToastCase removed - uses legacy v1 API
 export { ToggleGroupActiveProps } from './ToggleGroupActiveProps'
 export { TooltipAnimationCase } from './TooltipAnimationCase'
 export { TooltipCase } from './TooltipCase'

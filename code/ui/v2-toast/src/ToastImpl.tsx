@@ -21,15 +21,8 @@ import type {
   Animated,
   GestureResponderEvent,
   PanResponderGestureState,
-  PanResponder as PanResponderType,
 } from 'react-native'
-
-// Lazy load PanResponder only on native to avoid SSR issues
-const getPanResponder = (): typeof PanResponderType | null => {
-  if (isWeb) return null
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  return require('react-native').PanResponder
-}
+import { PanResponder } from 'react-native'
 import { TOAST_CONTEXT, TOAST_NAME } from './constants'
 import { ToastAnnounce } from './ToastAnnounce'
 import type { ScopedProps, SwipeDirection } from './ToastProvider'
@@ -38,7 +31,7 @@ import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 
 const ToastImplFrame = styled(YStack, {
   name: 'ToastImpl',
-  tabIndex: 0,
+  focusable: true,
 
   variants: {
     unstyled: {
@@ -288,8 +281,6 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
     })
 
     const panResponder = React.useMemo(() => {
-      const PanResponder = getPanResponder()
-      if (!PanResponder) return null
       return PanResponder.create({
         onMoveShouldSetPanResponder: (e, gesture) => {
           const shouldMove = shouldGrantGestureMove(context.swipeDirection, gesture)
@@ -339,8 +330,7 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
         {announceTextContent && (
           <ToastAnnounce
             scope={scope}
-            // Toasts are always role=status to avoid stuttering issues with role=alert in SRs.
-            // biome-ignore lint/a11y/useSemanticElements: <explanation>
+            // toasts are always role=status to avoid stuttering issues with role=alert in SRs
             role="status"
             aria-live={type === 'foreground' ? 'assertive' : 'polite'}
             aria-atomic

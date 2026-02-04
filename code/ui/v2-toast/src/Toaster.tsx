@@ -9,39 +9,12 @@ import type { SwipeDirection } from './ToastProvider'
 import type { ExternalToast, ToastT, ToastToDismiss } from './ToastState'
 import { ToastState } from './ToastState'
 import type { BurntToastOptions } from './types'
-import { useReducedMotion } from './useReducedMotion'
 
 // defaults
 const VISIBLE_TOASTS_AMOUNT = 4
 const VIEWPORT_OFFSET = 24
 const TOAST_GAP = 14
 const TOAST_LIFETIME = 4000
-
-/**
- * Resolves 'auto' swipe direction based on toast position.
- * Swipe toward the nearest edge to dismiss.
- */
-function resolveSwipeDirection(
-  direction: SwipeDirection,
-  position: ToasterPosition
-): Exclude<SwipeDirection, 'auto'> {
-  if (direction !== 'auto') {
-    return direction
-  }
-
-  // parse position to determine edges
-  const [yPosition, xPosition] = position.split('-') as [
-    'top' | 'bottom',
-    'left' | 'center' | 'right',
-  ]
-
-  // for left/right positions, swipe horizontally toward that edge
-  if (xPosition === 'left') return 'left'
-  if (xPosition === 'right') return 'right'
-
-  // for center positions, swipe vertically toward the y edge
-  return yPosition === 'top' ? 'up' : 'down'
-}
 
 export type ToasterPosition =
   | 'top-left'
@@ -65,7 +38,7 @@ const ToasterFrame = styled(View, {
   variants: {
     unstyled: {
       false: {
-        position: isWeb ? ('fixed' as any) : 'absolute',
+        position: 'fixed',
         zIndex: 100000,
         pointerEvents: 'box-none',
         maxWidth: '100%',
@@ -131,9 +104,8 @@ export interface ToasterProps {
   hotkey?: string[]
 
   /**
-   * Direction(s) toasts can be swiped to dismiss.
-   * 'auto' detects based on position (swipe toward nearest edge).
-   * @default 'auto'
+   * Direction(s) toasts can be swiped to dismiss
+   * @default 'right'
    */
   swipeDirection?: SwipeDirection
 
@@ -202,13 +174,6 @@ export interface ToasterProps {
    * Custom style for the container
    */
   style?: React.CSSProperties
-
-  /**
-   * Force reduced motion mode (disables animations)
-   * When true, animations are disabled. When false, animations are enabled.
-   * When undefined, respects system preference (prefers-reduced-motion).
-   */
-  reducedMotion?: boolean
 }
 
 export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
@@ -222,7 +187,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       duration = TOAST_LIFETIME,
       offset = VIEWPORT_OFFSET,
       hotkey = ['altKey', 'KeyT'],
-      swipeDirection = 'auto',
+      swipeDirection = 'right',
       swipeThreshold = 50,
       closeButton = false,
       theme: themeProp,
@@ -234,11 +199,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       notificationOptions,
       className,
       style,
-      reducedMotion: reducedMotionProp,
     } = props
-
-    // detect reduced motion preference
-    const reducedMotion = useReducedMotion(reducedMotionProp)
 
     const [toasts, setToasts] = React.useState<ToastT[]>([])
     const [heights, setHeights] = React.useState<HeightT[]>([])
@@ -248,9 +209,6 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     const listRef = React.useRef<TamaguiElement>(null)
     const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
     const isFocusWithinRef = React.useRef(false)
-    const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-    // cooldown ref to ignore hover events during toast repositioning animation
-    const hoverCooldownRef = React.useRef(false)
 
     // subscribe to toast state changes
     React.useEffect(() => {
@@ -329,22 +287,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       }
     }, [])
 
-    // cleanup hover timeout on unmount
-    React.useEffect(() => {
-      return () => {
-        if (hoverTimeoutRef.current) {
-          clearTimeout(hoverTimeoutRef.current)
-        }
-      }
-    }, [])
-
     const removeToast = React.useCallback((toastToRemove: ToastT) => {
-      // enable cooldown to ignore hover events during repositioning animation
-      hoverCooldownRef.current = true
-      setTimeout(() => {
-        hoverCooldownRef.current = false
-      }, 300) // 300ms cooldown matches the transition duration
-
       setToasts((toasts) => {
         if (!toasts.find((toast) => toast.id === toastToRemove.id)?.delete) {
           ToastState.dismiss(toastToRemove.id)
@@ -421,50 +364,14 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
         className={className}
         data-y-position={yPosition}
         data-x-position={xPosition}
-        onMouseEnter={() => {
-          // only expand on hover if there are multiple toasts
-          // and not currently interacting (dragging) or in cooldown
-          if (toasts.length > 1 && !interacting && !hoverCooldownRef.current) {
-            // small delay to allow pass-through mouse movement
-            hoverTimeoutRef.current = setTimeout(() => {
-              setExpanded(true)
-            }, 50)
-          }
-        }}
-        onMouseMove={() => {
-          // expand on sustained hover, not just entry
-          // skip during cooldown to prevent flicker during repositioning
-          if (
-            toasts.length > 1 &&
-            !interacting &&
-            !expanded &&
-            !hoverCooldownRef.current
-          ) {
-            if (!hoverTimeoutRef.current) {
-              hoverTimeoutRef.current = setTimeout(() => {
-                setExpanded(true)
-              }, 50)
-            }
-          }
-        }}
+        onMouseEnter={() => setExpanded(true)}
+        onMouseMove={() => setExpanded(true)}
         onMouseLeave={() => {
-          // cancel pending expansion
-          if (hoverTimeoutRef.current) {
-            clearTimeout(hoverTimeoutRef.current)
-            hoverTimeoutRef.current = null
-          }
           if (!interacting) {
             setExpanded(false)
           }
         }}
-        onPointerDown={() => {
-          // cancel any pending expansion when drag starts
-          if (hoverTimeoutRef.current) {
-            clearTimeout(hoverTimeoutRef.current)
-            hoverTimeoutRef.current = null
-          }
-          setInteracting(true)
-        }}
+        onPointerDown={() => setInteracting(true)}
         onPointerUp={() => setInteracting(false)}
         {...(isWeb && {
           onBlur: (event: React.FocusEvent) => {
@@ -494,13 +401,6 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
             const isVisible = index < visibleToasts
             const isFront = index === 0
 
-            // calculate sum of heights of all toasts BEFORE this one
-            // toasts[0..index-1] are rendered before this toast (visually above it for bottom position)
-            const heightBeforeMe = toasts.slice(0, index).reduce((sum, t) => {
-              const h = heights.find((h) => h.toastId === t.id)
-              return sum + (h?.height ?? 55)
-            }, 0)
-
             return (
               <ToastItem
                 key={toast.id}
@@ -513,17 +413,15 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
                 removeToast={removeToast}
                 heights={heights}
                 setHeights={setHeights}
-                heightBeforeMe={heightBeforeMe}
                 duration={toast.duration ?? toastOptions?.duration ?? duration}
                 gap={gap}
-                swipeDirection={resolveSwipeDirection(swipeDirection, position)}
+                swipeDirection={swipeDirection}
                 swipeThreshold={swipeThreshold}
                 closeButton={toast.closeButton ?? closeButton}
                 icons={icons}
                 disableNative={disableNative}
                 burntOptions={burntOptions}
                 notificationOptions={notificationOptions}
-                reducedMotion={reducedMotion}
               />
             )
           })}

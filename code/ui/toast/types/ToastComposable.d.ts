@@ -79,14 +79,17 @@ export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> 
     portalToRoot?: boolean;
 }
 declare const ToastItemFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
-    unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
     toast: ToastT;
     index: number;
-    children: React.ReactNode;
+    children: React.ReactNode | ((props: {
+        toast: ToastT;
+        handleClose: () => void;
+    }) => React.ReactNode);
 }
 export declare function useToasts(): {
     toasts: ToastT[];
@@ -100,35 +103,35 @@ export declare const Toast: React.ForwardRefExoticComponent<ToastRootProps & Rea
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Item: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-        unstyled?: boolean | undefined;
     }>, keyof ToastItemProps> & ToastItemProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastItemProps, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-        unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Title: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Description: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: import("@tamagui/core").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
+        size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Close: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-        unstyled?: boolean | undefined;
     }>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-        unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Action: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
-        unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
 };
 export type { ToastT, ExternalToast };
