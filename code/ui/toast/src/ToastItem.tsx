@@ -566,14 +566,16 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   // collapsed mode shows visual stacking with small peek
 
   // expanded offset: use heightBeforeMe (sum of preceding heights) + gaps
-  const expandedOffset = heightBeforeMe + (index * gap)
+  const expandedOffset = heightBeforeMe + index * gap
 
   // collapsed mode: create visual stack where each toast peeks behind the one in front
   const peekVisible = 10 // how many pixels of back toast border should peek
   const liftPerToast = peekVisible // lift this much for each toast in stack
 
   const stackY = expanded
-    ? (isTop ? expandedOffset : -expandedOffset)
+    ? isTop
+      ? expandedOffset
+      : -expandedOffset
     : isFront
       ? 0
       : isTop
