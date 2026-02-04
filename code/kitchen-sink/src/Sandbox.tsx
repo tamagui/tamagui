@@ -20,15 +20,15 @@ const sizes = ['$1', '$2', '$3', '$4', '$5', '$6', '$7', '$8', '$9', '$10'] as c
 
 export const Sandbox = () => {
   return (
-    <ScrollView f={1} w="100%" contentContainerStyle={{ padding: 20 }}>
-      <YStack gap="$6" maw={800}>
+    <ScrollView flex={1} width="100%" contentContainerStyle={{ padding: 20 }}>
+      <YStack gap="$6" maxWidth={800}>
         <YStack gap="$4">
-          <Heading size="$8" mb="$2">
+          <Heading size="$8" marginBottom="$2">
             SizableText Sizes
           </Heading>
           {sizes.map((size) => (
             <YStack key={size} gap="$1">
-              <SizableText size="$2" o={0.5}>
+              <SizableText size="$2" opacity={0.5}>
                 size="{size}"
               </SizableText>
               <SizableText size={size}>{lorem}</SizableText>
@@ -37,12 +37,12 @@ export const Sandbox = () => {
         </YStack>
 
         <YStack gap="$4">
-          <Heading size="$8" mb="$2">
+          <Heading size="$8" marginBottom="$2">
             Heading Sizes
           </Heading>
           {sizes.map((size) => (
             <YStack key={size} gap="$1">
-              <SizableText size="$2" o={0.5}>
+              <SizableText size="$2" opacity={0.5}>
                 Heading size="{size}"
               </SizableText>
               <Heading size={size}>{lorem}</Heading>
@@ -51,31 +51,31 @@ export const Sandbox = () => {
         </YStack>
 
         <YStack gap="$4">
-          <Heading size="$8" mb="$2">
+          <Heading size="$8" marginBottom="$2">
             H1-H6 Components
           </Heading>
           <YStack gap="$3">
-            <SizableText size="$2" o={0.5}>
+            <SizableText size="$2" opacity={0.5}>
               H1
             </SizableText>
             <H1>{lorem}</H1>
-            <SizableText size="$2" o={0.5}>
+            <SizableText size="$2" opacity={0.5}>
               H2
             </SizableText>
             <H2>{lorem}</H2>
-            <SizableText size="$2" o={0.5}>
+            <SizableText size="$2" opacity={0.5}>
               H3
             </SizableText>
             <H3>{lorem}</H3>
-            <SizableText size="$2" o={0.5}>
+            <SizableText size="$2" opacity={0.5}>
               H4
             </SizableText>
             <H4>{lorem}</H4>
-            <SizableText size="$2" o={0.5}>
+            <SizableText size="$2" opacity={0.5}>
               H5
             </SizableText>
             <H5>{lorem}</H5>
-            <SizableText size="$2" o={0.5}>
+            <SizableText size="$2" opacity={0.5}>
               H6
             </SizableText>
             <H6>{lorem}</H6>
