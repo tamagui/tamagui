@@ -1,10 +1,13 @@
 // Toast v2 - composable component API
-export { Toast, useToasts } from './ToastComposable'
+export { Toast, useToasts, useToastItem } from './ToastComposable'
 export type {
   ToastRootProps,
   ToastViewportProps,
   ToastItemProps,
+  ToastItemRenderProps,
+  ToastListProps,
   ToastPosition,
+  ToastIcons,
 } from './ToastComposable'
 
 // Toast v2 - imperative API

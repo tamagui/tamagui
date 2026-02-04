@@ -1,9 +1,16 @@
 /**
  * Demo case for new Toast API with composable components, multiple toasts, stacking, and all positions.
+ * Uses the new Toast.List API that handles iteration internally.
  */
 
 import { Button, H4, XStack, YStack, Text, Separator, SizableText } from 'tamagui'
-import { toast, Toast, useToasts, type ToastPosition } from '@tamagui/toast'
+import {
+  toast,
+  Toast,
+  useToastItem,
+  type ToastPosition,
+  type ToastT,
+} from '@tamagui/toast'
 import * as React from 'react'
 
 const positions: ToastPosition[] = [
@@ -22,8 +29,15 @@ export function ToastMultipleCase() {
 
   return (
     <Toast position={position} closeButton={closeButton} visibleToasts={4} gap={12}>
+      {/* New API: Toast.Viewport contains Toast.List which handles iteration */}
       <Toast.Viewport>
-        <ToastList showCloseButton={closeButton} />
+        <Toast.List
+          renderItem={({ toast, index }) => (
+            <Toast.Item toast={toast} index={index}>
+              <CustomToastContent toast={toast} />
+            </Toast.Item>
+          )}
+        />
       </Toast.Viewport>
 
       <YStack flex={1} gap="$4" padding="$4">
@@ -281,66 +295,66 @@ export function ToastMultipleCase() {
   )
 }
 
-// composable toast list component
-function ToastList({ showCloseButton }: { showCloseButton: boolean }) {
-  const { toasts } = useToasts()
+/**
+ * Custom toast content component demonstrating the new API.
+ * Uses useToastItem() hook to get handleClose - no need to pass it down.
+ * Toast.Close auto-wires to handleClose from context.
+ */
+function CustomToastContent({ toast: t }: { toast: ToastT }) {
+  const { handleClose } = useToastItem()
+  const toastType = t.type ?? 'default'
+
+  const title = typeof t.title === 'function' ? t.title() : t.title
+  const description =
+    typeof t.description === 'function' ? t.description() : t.description
 
   return (
-    <>
-      {toasts.map((t, index) => (
-        <Toast.Item key={t.id} toast={t} index={index}>
-          {({ handleClose }) => (
-            <XStack gap="$3" alignItems="flex-start">
-              {/* icon based on type */}
-              {t.type && t.type !== 'default' && <ToastIcon type={t.type} />}
-              <YStack flex={1} gap="$1">
-                <Toast.Title>
-                  {typeof t.title === 'function' ? t.title() : t.title}
-                </Toast.Title>
-                {t.description && (
-                  <Toast.Description>
-                    {typeof t.description === 'function'
-                      ? t.description()
-                      : t.description}
-                  </Toast.Description>
-                )}
-                {/* actions */}
-                {(t.action || t.cancel) && (
-                  <XStack gap="$2" marginTop="$2">
-                    {t.action && (
-                      <Toast.Action
-                        onPress={(e: any) => {
-                          t.action?.onClick?.(e)
-                          handleClose()
-                        }}
-                      >
-                        <SizableText size="$1" fontWeight="600">
-                          {t.action.label}
-                        </SizableText>
-                      </Toast.Action>
-                    )}
-                    {t.cancel && (
-                      <Toast.Action
-                        backgroundColor="transparent"
-                        onPress={(e: any) => {
-                          t.cancel?.onClick?.(e)
-                          handleClose()
-                        }}
-                      >
-                        <SizableText size="$1" color="$color11">
-                          {t.cancel.label}
-                        </SizableText>
-                      </Toast.Action>
-                    )}
-                  </XStack>
-                )}
-              </YStack>
-              {showCloseButton && <Toast.Close onPress={handleClose} />}
-            </XStack>
-          )}
-        </Toast.Item>
-      ))}
-    </>
+    <XStack gap="$3" alignItems="flex-start">
+      {/* Toast.Icon auto-reads toast type from context */}
+      <Toast.Icon />
+
+      <YStack flex={1} gap="$1">
+        {title && <Toast.Title>{title}</Toast.Title>}
+        {description && <Toast.Description>{description}</Toast.Description>}
+
+        {/* actions */}
+        {(t.action || t.cancel) && (
+          <XStack gap="$2" marginTop="$2">
+            {t.action && (
+              <Toast.Action
+                backgroundColor="$color12"
+                hoverStyle={{ backgroundColor: '$color11' }}
+                pressStyle={{ backgroundColor: '$color10' }}
+                onPress={(e: any) => {
+                  t.action?.onClick?.(e)
+                  if (!e.defaultPrevented) handleClose()
+                }}
+              >
+                <SizableText size="$1" fontWeight="600" color="$background">
+                  {t.action.label}
+                </SizableText>
+              </Toast.Action>
+            )}
+            {t.cancel && (
+              <Toast.Action
+                backgroundColor="transparent"
+                onPress={(e: any) => {
+                  t.cancel?.onClick?.(e)
+                  handleClose()
+                }}
+              >
+                <SizableText size="$1" color="$color11">
+                  {t.cancel.label}
+                </SizableText>
+              </Toast.Action>
+            )}
+          </XStack>
+        )}
+      </YStack>
+
+      {/* Toast.Close auto-wires to handleClose from context - no onPress needed! */}
+      <Toast.Close />
+    </XStack>
   )
 }
 
