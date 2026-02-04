@@ -40,19 +40,22 @@ export type ToastPosition =
  * Context
  * -----------------------------------------------------------------------------------------------*/
 
-interface HeightT {
-  toastId: string | number
-  height: number
-}
+// Map of toastId -> height (keyed storage prevents ordering drift)
+type HeightsMap = Record<string | number, number>
 
 interface ToastContextValue {
   toasts: ToastT[]
-  heights: HeightT[]
-  setHeights: React.Dispatch<React.SetStateAction<HeightT[]>>
+  heights: HeightsMap
+  setToastHeight: (toastId: string | number, height: number) => void
+  removeToastHeight: (toastId: string | number) => void
   expanded: boolean
   setExpanded: React.Dispatch<React.SetStateAction<boolean>>
   interacting: boolean
   setInteracting: React.Dispatch<React.SetStateAction<boolean>>
+  /** Trigger cooldown period after dismiss - prevents collapse during stack rebalance */
+  triggerDismissCooldown: () => void
+  /** Check if currently in dismiss cooldown */
+  isInDismissCooldown: () => boolean
   removeToast: (toast: ToastT) => void
   position: ToastPosition
   duration: number
@@ -104,34 +107,134 @@ export interface ToastIcons {
   close?: React.ReactNode
 }
 
+const ICON_SIZE = 20
+
 const DefaultSuccessIcon = () => (
-  <SizableText size="$5" color="$green10">
-    ✓
-  </SizableText>
+  <View width={ICON_SIZE} height={ICON_SIZE}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={ICON_SIZE}
+      height={ICON_SIZE}
+      fill="none"
+    >
+      <circle cx="12" cy="12" r="10" fill="var(--green5)" />
+      <path
+        d="M8 12.5l2.5 2.5 5.5-5.5"
+        stroke="var(--green10)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </View>
 )
 
 const DefaultErrorIcon = () => (
-  <SizableText size="$5" color="$red10">
-    ✕
-  </SizableText>
+  <View width={ICON_SIZE} height={ICON_SIZE}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={ICON_SIZE}
+      height={ICON_SIZE}
+      fill="none"
+    >
+      <circle cx="12" cy="12" r="10" fill="var(--red5)" />
+      <path
+        d="M15 9l-6 6M9 9l6 6"
+        stroke="var(--red10)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </View>
 )
 
 const DefaultWarningIcon = () => (
-  <SizableText size="$5" color="$yellow10">
-    ⚠
-  </SizableText>
+  <View width={ICON_SIZE} height={ICON_SIZE}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={ICON_SIZE}
+      height={ICON_SIZE}
+      fill="none"
+    >
+      <path
+        d="M12 3L2 21h20L12 3z"
+        fill="var(--yellow5)"
+        stroke="var(--yellow8)"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+      <path d="M12 10v4" stroke="var(--yellow11)" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="12" cy="17" r="1" fill="var(--yellow11)" />
+    </svg>
+  </View>
 )
 
 const DefaultInfoIcon = () => (
-  <SizableText size="$5" color="$blue10">
-    ℹ
-  </SizableText>
+  <View width={ICON_SIZE} height={ICON_SIZE}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={ICON_SIZE}
+      height={ICON_SIZE}
+      fill="none"
+    >
+      <circle cx="12" cy="12" r="10" fill="var(--blue5)" />
+      <path d="M12 11v5" stroke="var(--blue10)" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="12" cy="8" r="1" fill="var(--blue10)" />
+    </svg>
+  </View>
 )
 
+const spinKeyframes = isWeb
+  ? `
+@keyframes toast-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+`
+  : ''
+
+// inject keyframes once on web
+if (isWeb && typeof document !== 'undefined') {
+  const styleId = 'tamagui-toast-spin'
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement('style')
+    style.id = styleId
+    style.textContent = spinKeyframes
+    document.head.appendChild(style)
+  }
+}
+
 const DefaultLoadingIcon = () => (
-  <SizableText size="$5" color="$color11">
-    ⟳
-  </SizableText>
+  <View
+    width={ICON_SIZE}
+    height={ICON_SIZE}
+    {...(isWeb && {
+      style: {
+        animation: 'toast-spin 1s linear infinite',
+      },
+    })}
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width={ICON_SIZE}
+      height={ICON_SIZE}
+      fill="none"
+    >
+      <circle cx="12" cy="12" r="10" stroke="var(--color5)" strokeWidth="2.5" />
+      <path
+        d="M12 2a10 10 0 0 1 10 10"
+        stroke="var(--color11)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  </View>
 )
 
 const DefaultCloseIcon = () => (
@@ -227,9 +330,44 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
 
     const reducedMotion = useReducedMotion(reducedMotionProp)
     const [toasts, setToasts] = React.useState<ToastT[]>([])
-    const [heights, setHeights] = React.useState<HeightT[]>([])
+    const [heights, setHeights] = React.useState<HeightsMap>({})
     const [expanded, setExpanded] = React.useState(false)
     const [interacting, setInteracting] = React.useState(false)
+
+    // Helper to set a single toast's height
+    const setToastHeight = React.useCallback(
+      (toastId: string | number, height: number) => {
+        setHeights((prev) => ({ ...prev, [toastId]: height }))
+      },
+      []
+    )
+
+    // Helper to remove a toast's height
+    const removeToastHeight = React.useCallback((toastId: string | number) => {
+      setHeights((prev) => {
+        const next = { ...prev }
+        delete next[toastId]
+        return next
+      })
+    }, [])
+
+    // Cooldown after dismiss - prevents collapse while stack rebalances
+    const dismissCooldownRef = React.useRef(false)
+    const dismissCooldownTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+      null
+    )
+
+    const triggerDismissCooldown = () => {
+      dismissCooldownRef.current = true
+      if (dismissCooldownTimerRef.current) {
+        clearTimeout(dismissCooldownTimerRef.current)
+      }
+      dismissCooldownTimerRef.current = setTimeout(() => {
+        dismissCooldownRef.current = false
+      }, 800) // 800ms cooldown for stack to rebalance after dismiss
+    }
+
+    const isInDismissCooldown = () => dismissCooldownRef.current
 
     // subscribe to toast state
     React.useEffect(() => {
@@ -254,9 +392,11 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       })
     }, [])
 
-    // collapse when 1 toast
+    // collapse when 1 toast (but respect dismiss cooldown for smooth animation)
     React.useEffect(() => {
-      if (toasts.length <= 1) setExpanded(false)
+      if (toasts.length <= 1 && !dismissCooldownRef.current) {
+        setExpanded(false)
+      }
     }, [toasts.length])
 
     const removeToast = React.useCallback((toastToRemove: ToastT) => {
@@ -281,11 +421,14 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
     const contextValue: ToastContextValue = {
       toasts,
       heights,
-      setHeights,
+      setToastHeight,
+      removeToastHeight,
       expanded,
       setExpanded,
       interacting,
       setInteracting,
+      triggerDismissCooldown,
+      isInDismissCooldown,
       removeToast,
       position,
       duration,
@@ -443,7 +586,10 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
             clearTimeout(hoverTimeoutRef.current)
             hoverTimeoutRef.current = null
           }
-          if (!ctx.interacting) ctx.setExpanded(false)
+          // Don't collapse during dismiss cooldown (stack is rebalancing)
+          if (!ctx.interacting && !ctx.isInDismissCooldown()) {
+            ctx.setExpanded(false)
+          }
         }}
         onPointerDown={() => {
           if (hoverTimeoutRef.current) {
@@ -453,6 +599,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
           ctx.setInteracting(true)
         }}
         onPointerUp={() => ctx.setInteracting(false)}
+        onPointerCancel={() => ctx.setInteracting(false)}
         {...rest}
       >
         {children}
@@ -486,17 +633,6 @@ export interface ToastListProps {
 
 function ToastList({ renderItem }: ToastListProps) {
   const ctx = useToastContext()
-
-  // calculate heightBeforeMe for each toast
-  const getHeightBeforeMe = (index: number): number => {
-    const heightIndex = ctx.heights.findIndex((h) => h.toastId === ctx.toasts[index]?.id)
-    if (heightIndex === -1) return 0
-
-    return ctx.heights.reduce((prev, curr, i) => {
-      if (i >= heightIndex) return prev
-      return prev + curr.height
-    }, 0)
-  }
 
   return (
     <AnimatePresence>
@@ -726,18 +862,17 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     const [yPosition] = ctx.position.split('-') as ['top' | 'bottom', string]
     const isTop = yPosition === 'top'
 
-    // height tracking
-    const heightIndex = React.useMemo(
-      () => ctx.heights.findIndex((h) => h.toastId === toast.id) || 0,
-      [ctx.heights, toast.id]
-    )
-
+    // height tracking - iterate toasts in order for stable positioning
     const toastsHeightBefore = React.useMemo(() => {
-      return ctx.heights.reduce((prev, curr, i) => {
-        if (i >= heightIndex) return prev
-        return prev + curr.height
-      }, 0)
-    }, [ctx.heights, heightIndex])
+      let total = 0
+      for (let i = 0; i < index; i++) {
+        const toastId = ctx.toasts[i]?.id
+        if (toastId != null) {
+          total += ctx.heights[toastId] ?? 55 // fallback height if not yet measured
+        }
+      }
+      return total
+    }, [ctx.toasts, ctx.heights, index])
 
     // timer
     const startTimer = React.useCallback(() => {
@@ -813,11 +948,15 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       onDragStart: pauseTimer,
       onDragMove: setDragOffset,
       onDismiss: (exitDirection, velocity) => {
+        // Trigger cooldown to prevent collapse while stack rebalances
+        ctx.triggerDismissCooldown()
         setSwipeOut(true)
         toast.onDismiss?.(toast)
         setRemoved(true)
-        ctx.setHeights((prev) => prev.filter((h) => h.toastId !== toast.id))
-        animateOut(exitDirection, velocity, () => ctx.removeToast(toast))
+        animateOut(exitDirection, velocity, () => {
+          // Just remove toast - unmount cleanup handles height removal
+          ctx.removeToast(toast)
+        })
       },
       onCancel: () => {
         springBack(() => {
@@ -830,21 +969,17 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     const handleLayout = React.useCallback(
       (event: any) => {
         const { height } = event.nativeEvent.layout
-        ctx.setHeights((prev) => {
-          const exists = prev.find((h) => h.toastId === toast.id)
-          if (exists)
-            return prev.map((h) => (h.toastId === toast.id ? { ...h, height } : h))
-          return [{ toastId: toast.id, height }, ...prev]
-        })
+        ctx.setToastHeight(toast.id, height)
       },
-      [toast.id]
+      [toast.id, ctx.setToastHeight]
     )
 
+    // Remove height on unmount
     React.useEffect(() => {
       return () => {
-        ctx.setHeights((prev) => prev.filter((h) => h.toastId !== toast.id))
+        ctx.removeToastHeight(toast.id)
       }
-    }, [toast.id])
+    }, [toast.id, ctx.removeToastHeight])
 
     const handleClose = React.useCallback(() => {
       if (!dismissible) return
@@ -854,7 +989,8 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     }, [dismissible, toast, ctx.removeToast])
 
     // stacking calculations
-    const frontToastHeight = ctx.heights.length > 0 ? (ctx.heights[0]?.height ?? 55) : 55
+    const frontToastId = ctx.toasts[0]?.id
+    const frontToastHeight = frontToastId != null ? (ctx.heights[frontToastId] ?? 55) : 55
     const stackScale = !ctx.expanded && !isFront ? 1 - index * 0.05 : 1
 
     const expandedOffset = toastsHeightBefore + index * ctx.gap
