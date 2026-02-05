@@ -1,3 +1,6 @@
+- activeStyle / accept not taking shorthands
+  - wait on Switch.Thumb is is oppsoite
+
 - border="" shorthand
 
 - tooltip simpel theme not accent/inverse?
