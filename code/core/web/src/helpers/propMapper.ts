@@ -70,10 +70,16 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
     ) {
       // boxShadow/filter/backgroundImage/border with embedded $tokens - resolve each token
       // Try size first (for dimensions), then color (for the color value)
+      // On native, force 'value' resolution — DynamicColorIOS objects can't be
+      // embedded in CSS strings (String() produces '[object Object]')
+      const embeddedStyleProps =
+        process.env.TAMAGUI_TARGET === 'native'
+          ? { ...styleProps, resolveValues: 'value' as ResolveVariableAs }
+          : styleProps
       value = value.replace(/(\$[\w.-]+)/g, (t) => {
-        let r = getTokenForKey('size', t, styleProps, styleState)
+        let r = getTokenForKey('size', t, embeddedStyleProps, styleState)
         if (r == null) {
-          r = getTokenForKey('color', t, styleProps, styleState)
+          r = getTokenForKey('color', t, embeddedStyleProps, styleState)
         }
         return r != null ? String(r) : t
       })

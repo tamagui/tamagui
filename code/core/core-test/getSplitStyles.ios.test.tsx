@@ -1,6 +1,7 @@
 import { View, createTamagui } from '@tamagui/core'
 import { beforeAll, describe, expect, test, vi } from 'vitest'
 import { isColorStyleKey } from '../web/src/helpers/getDynamicVal'
+import { getThemeProxied } from '../web/src/hooks/getThemeProxied'
 
 // Set TAMAGUI_TARGET before importing getSplitStyles
 process.env.TAMAGUI_TARGET = 'native'
@@ -20,6 +21,10 @@ vi.mock('@tamagui/constants', async () => {
     isAndroid: false,
   }
 })
+
+vi.mock('../web/src/hooks/doesRootSchemeMatchSystem', () => ({
+  doesRootSchemeMatchSystem: () => true,
+}))
 
 // Now import from mocked modules
 import * as configModule from '../web/src/config'
@@ -330,6 +335,96 @@ describe('getSplitStyles iOS specific', () => {
     // In light theme, light's opacity should apply
     const lightResult = getSplitStylesWithTheme(props, 'light')
     expect(lightResult?.style?.opacity).toBe(1)
+  })
+})
+
+describe('backgroundImage with theme tokens and DynamicColorIOS', () => {
+  // When resolveValues is 'auto' (real rendering), theme tokens go through
+  // .get() which returns DynamicColorIOS objects on iOS with fastSchemeChange.
+  // These objects can't be embedded in CSS strings — String() produces '[object Object]'.
+
+  function getProxiedTheme() {
+    const conf = configModule.getConfig()
+    const rawTheme = conf.themes.light
+    // Wrap with getThemeProxied so theme values have .get() that returns DynamicColorIOS
+    return getThemeProxied(
+      {} as any,
+      { id: 'light', name: 'light', theme: rawTheme, scheme: 'light' },
+      { current: null },
+      { current: null }
+    )
+  }
+
+  test('backgroundImage with embedded theme tokens should resolve to plain strings, not DynamicColorIOS objects', () => {
+    const theme = getProxiedTheme()
+
+    const result = getSplitStyles(
+      {
+        backgroundImage: 'linear-gradient($background, $color)',
+      },
+      View.staticConfig as any,
+      theme as any,
+      'light',
+      {
+        hover: false,
+        press: false,
+        pressIn: false,
+        focus: false,
+        unmounted: true,
+        disabled: false,
+        focusVisible: false,
+      },
+      {
+        isAnimated: false,
+        resolveValues: 'auto',
+      },
+      undefined,
+      undefined,
+      undefined,
+      undefined
+    )
+
+    const bgImage = (result?.style as any)?.experimental_backgroundImage
+    expect(bgImage).toBeDefined()
+    // Must NOT contain '[object Object]' — that means DynamicColorIOS leaked into the string
+    expect(bgImage).not.toContain('[object Object]')
+    // Should contain resolved hex color values
+    expect(bgImage).toContain('#')
+  })
+
+  test('boxShadow with embedded theme tokens should resolve to plain strings, not DynamicColorIOS objects', () => {
+    const theme = getProxiedTheme()
+
+    const result = getSplitStyles(
+      {
+        boxShadow: '0 0 10px $color',
+      },
+      View.staticConfig as any,
+      theme as any,
+      'light',
+      {
+        hover: false,
+        press: false,
+        pressIn: false,
+        focus: false,
+        unmounted: true,
+        disabled: false,
+        focusVisible: false,
+      },
+      {
+        isAnimated: false,
+        resolveValues: 'auto',
+      },
+      undefined,
+      undefined,
+      undefined,
+      undefined
+    )
+
+    const boxShadow = result?.style?.boxShadow as string
+    expect(boxShadow).toBeDefined()
+    expect(boxShadow).not.toContain('[object Object]')
+    expect(boxShadow).toContain('#')
   })
 })
 
