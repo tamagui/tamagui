@@ -182,10 +182,10 @@ function checkAccessToProduct(
     (subscription) =>
       (subscription.status === SubscriptionStatus.Trialing ||
         subscription.status === SubscriptionStatus.Active) &&
-      (subscription.subscription_items.some(
+      (subscription.subscription_items?.some(
         (item) => getSingle(item.price.product?.metadata?.['slug']) === productSlug
       ) ||
-        subscription.subscription_items.some((item) =>
+        subscription.subscription_items?.some((item) =>
           validProProducts.some((product) => item.price.product?.name?.includes(product))
         ))
   )

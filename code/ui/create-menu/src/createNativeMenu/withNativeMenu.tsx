@@ -21,12 +21,17 @@ export function withNativeMenu<
   }
 
   // On native platform, always use native component
+  // If NativeComponent is missing (zeego not set up), fall back to web Component
+  if (!NativeComponent) {
+    return Component as React.FC<Props>
+  }
+
   const Menu: React.FC<Props> = (props) => {
     return <NativeComponent {...(props as any)} />
   }
 
   // displayName is required for Portal flattening (checks displayName.includes('Portal'))
-  Menu.displayName = NativeComponent.displayName || Component.displayName
+  Menu.displayName = NativeComponent.displayName || Component?.displayName
 
   return Menu
 }

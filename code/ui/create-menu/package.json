@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-menu",
-  "version": "2.0.0-rc.2-1770298821200",
+  "version": "2.0.0-rc.4",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.tsx",
   "files": [
@@ -47,6 +47,7 @@
     "@tamagui/focus-scope": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/image": "workspace:*",
+    "@tamagui/native": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/popper": "workspace:*",
     "@tamagui/portal": "workspace:*",
@@ -55,8 +56,7 @@
     "@tamagui/text": "workspace:*",
     "@tamagui/use-callback-ref": "workspace:*",
     "@tamagui/use-direction": "workspace:*",
-    "@tamagui/web": "workspace:*",
-    "@tamagui/native": "workspace:*"
+    "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

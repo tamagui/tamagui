@@ -71,7 +71,7 @@ export function PurchaseModalContents() {
   const hasSubscribedBefore = useMemo(() => {
     return (
       userData?.subscriptions?.some((sub) =>
-        sub.subscription_items.some(
+        sub.subscription_items?.some(
           (item) =>
             (item.price?.product?.name === ProductName.TamaguiBento ||
               item.price?.product?.name === ProductName.TamaguiTakeoutStack) &&
