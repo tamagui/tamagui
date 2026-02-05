@@ -117,8 +117,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       return null
     })()
 
-    console.log('transitionConfig', transition, transitionConfig, transitionConfigProp)
-
     /**
      * This is a hacky workaround for native:
      */
@@ -410,7 +408,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         }
       }
 
-      const release = ({ vy, dragAt }: { dragAt: number; vy: number }) => {
+      const release = ({ vy }: { dragAt: number; vy: number }) => {
         scrollBridge.setParentDragging(false)
         if (scrollBridge.scrollLock) {
           return

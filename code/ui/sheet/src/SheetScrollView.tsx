@@ -181,8 +181,6 @@ export const SheetScrollView = React.forwardRef<
         onScroll={(e) => {
           const { y } = e.nativeEvent.contentOffset
           scrollBridge.y = y
-          // note: on web, scrollLock is managed by useSheetScrollViewGestures
-          // setting it here would cause race conditions with the touch handler
           if (y > 0) scrollBridge.scrollStartY = -1
           onScroll?.(e)
         }}
