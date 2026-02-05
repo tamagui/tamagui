@@ -795,17 +795,16 @@ p {
 
 .bento-shadow {
   text-shadow:
-    1px 1px var(--color2),
+    1px 1px var(--color1),
     1px 2px 1px var(--color3),
     1px 3px 1px var(--color4),
-    1px 4px 1px var(--color5),
-    1px 5px 1px var(--color6),
+    1px 4px 1px var(--color4),
+    1px 5px 1px var(--color5),
     1px 6px 1px var(--color6),
-    1px 7px 1px var(--color8),
-    1px 8px 1px var(--color8),
-    1px 9px 1px var(--color8),
-    1px 12px 1px var(--color9),
-    1px 10px 150px rgba(255, 255, 255, 0.3);
+    1px 7px 1px var(--color6),
+    1px 8px 1px var(--color7),
+    1px 9px 0px var(--color7),
+    1px 12px 0px var(--color7);
 }
 
 .t_dark .bento-shadow {
@@ -819,9 +818,7 @@ p {
     1px 7px 1px var(--color8),
     1px 8px 1px var(--color8),
     1px 9px 1px var(--color8),
-    1px 11px 1px var(--color7),
-    1px 10px 40px rgba(255, 255, 255, 0.01),
-    1px 0px 30px var(--color02);
+    1px 11px 1px var(--color7);
 }
 
 .bento-up-text {
@@ -857,7 +854,6 @@ p {
 .bento-text-3 {
   background-image: linear-gradient(var(--color7), var(--color9));
   mix-blend-mode: hard-light;
-  opacity: 0.65;
   text-shadow:
     0 10px 20px var(--color05),
     0 30px 30px var(--color025);
