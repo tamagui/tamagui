@@ -1,14 +1,15 @@
+import { Image } from '@tamagui/image'
 import './_layout.css'
 import './tamagui.generated.css'
 
 // import { Toaster } from '@tamagui/toast'
 import { SchemeProvider, useUserScheme } from '@vxrn/color-scheme'
 import { LoadProgressBar, SafeAreaView, Slot } from 'one'
-import { Image, isWeb, TamaguiProvider, XStack, YStack } from 'tamagui'
+import { Configuration, isWeb, TamaguiProvider, XStack, YStack } from 'tamagui'
 import { ToggleThemeButton } from '~/components/ToggleThemeButton'
 import config from '~/config/tamagui/tamagui.config'
 import oneBall from '~/public/app-icon.png'
-// import { animationsMotion } from '../config/tamagui/animationMotion'
+import { animationsMotion } from '../config/tamagui/animationMotion'
 
 export default function Layout() {
   return (
@@ -29,7 +30,7 @@ export default function Layout() {
 
       <SchemeProvider>
         <TamaguiRootProvider>
-          <YStack py="$8" bg="$color1" minH="100%" gap="$4" flex={1}>
+          <YStack bg="$color1" minH="100%" gap="$4" flex={1}>
             <SafeAreaView>
               {/* <Toaster position="top-center" /> */}
 
@@ -38,9 +39,9 @@ export default function Layout() {
                 <ToggleThemeButton />
               </XStack>
 
-              {/* <Configuration animationDriver={animationsMotion}> */}
-              <Slot />
-              {/* </Configuration> */}
+              <Configuration animationDriver={animationsMotion}>
+                <Slot />
+              </Configuration>
             </SafeAreaView>
           </YStack>
         </TamaguiRootProvider>

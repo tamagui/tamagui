@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+// debug
+import React, { forwardRef, useEffect, useState } from 'react'
 import { View } from 'react-native'
 import {
   AnimatePresence,
@@ -13,10 +14,12 @@ import {
   useThemeName,
 } from 'tamagui'
 
-import { animationsMotion } from '../config/tamagui/animationMotion'
-import { animationsNative } from '../config/tamagui/animationNative'
-import { animationsCSS } from '../config/tamagui/animationsCSS'
+import { PopoverDemo } from '../../demos/src/PopoverDemo'
+import { DialogDemo } from '../../demos/src/DialogDemo'
 import { TestPopoverTransformOrigin } from '../use-cases/TestPopoverTransformOrigin'
+import { animationsMotion } from '../config/tamagui/animationMotion'
+import { animationsCSS } from '../config/tamagui/animationsCSS'
+import { animationsNative } from '../config/tamagui/animationNative'
 
 const delayColors = ['red', 'green', 'blue', 'purple'] as const
 

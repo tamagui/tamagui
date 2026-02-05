@@ -26,18 +26,6 @@ export declare const animationsMotion: import("@tamagui/web").AnimationDriver<{
     '500ms': {
         duration: number;
     };
-    superBouncy: {
-        type: "spring";
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    bouncy: {
-        type: "spring";
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
     superLazy: {
         type: "spring";
         damping: number;
@@ -50,11 +38,6 @@ export declare const animationsMotion: import("@tamagui/web").AnimationDriver<{
         mass: number;
         stiffness: number;
     };
-    medium: {
-        damping: number;
-        stiffness: number;
-        mass: number;
-    };
     slowest: {
         type: "spring";
         damping: number;
@@ -63,6 +46,23 @@ export declare const animationsMotion: import("@tamagui/web").AnimationDriver<{
     slow: {
         type: "spring";
         damping: number;
+        stiffness: number;
+    };
+    medium: {
+        damping: number;
+        stiffness: number;
+        mass: number;
+    };
+    superBouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    bouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
         stiffness: number;
     };
     quick: {
@@ -131,18 +131,6 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
     '500ms': {
         duration: number;
     };
-    superBouncy: {
-        type: "spring";
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
-    bouncy: {
-        type: "spring";
-        damping: number;
-        mass: number;
-        stiffness: number;
-    };
     superLazy: {
         type: "spring";
         damping: number;
@@ -155,11 +143,6 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
         mass: number;
         stiffness: number;
     };
-    medium: {
-        damping: number;
-        stiffness: number;
-        mass: number;
-    };
     slowest: {
         type: "spring";
         damping: number;
@@ -168,6 +151,23 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
     slow: {
         type: "spring";
         damping: number;
+        stiffness: number;
+    };
+    medium: {
+        damping: number;
+        stiffness: number;
+        mass: number;
+    };
+    superBouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
+        stiffness: number;
+    };
+    bouncy: {
+        type: "spring";
+        damping: number;
+        mass: number;
         stiffness: number;
     };
     quick: {
