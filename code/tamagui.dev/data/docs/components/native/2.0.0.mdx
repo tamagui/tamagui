@@ -75,7 +75,12 @@ integration.
 ### Setup
 
 ```bash
-npm install zeego @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities
+npm install zeego @react-native-menu/menu react-native-ios-context-menu react-native-ios-utilities sf-symbols-typescript
+```
+
+```tsx
+// App.tsx - before any Tamagui imports
+import '@tamagui/native/setup-zeego'
 ```
 
 Then use the `native` prop:

@@ -5,6 +5,7 @@
  * On Native: Uses Zeego for native menus (Credit to nandorojo/Zeego)
  */
 
+import { getZeego } from '@tamagui/native'
 import { isWeb, withStaticProperties, isIos } from '@tamagui/web'
 import type { FC } from 'react'
 import React from 'react'
@@ -114,8 +115,15 @@ export const createNativeMenu = (
   // Native implementation using Zeego
   // ===========================================
 
-  const ZeegoDropdownMenu = require('zeego/dropdown-menu')
-  const ZeegoContextMenu = require('zeego/context-menu')
+  const zeego = getZeego()
+  if (!zeego.isEnabled) {
+    console.warn(
+      `Warning: Must call import '@tamagui/native/setup-zeego' at your app entry point to use native menus`
+    )
+    return { Menu: {} as any }
+  }
+
+  const { DropdownMenu: ZeegoDropdownMenu, ContextMenu: ZeegoContextMenu } = zeego.state
 
   const isContextMenu = MenuType === 'ContextMenu'
   const ZeegoMenu = isContextMenu ? ZeegoContextMenu : ZeegoDropdownMenu
