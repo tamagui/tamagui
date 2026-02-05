@@ -29,6 +29,7 @@ export type {
   SafeAreaFrame,
   SafeAreaMetrics,
   LinearGradientState,
+  ZeegoState,
   NativePortalProps,
   NativePortalHostProps,
   NativePortalProviderProps,
@@ -61,6 +62,10 @@ export {
   setKeyboardControllerState,
 } from './keyboardControllerState'
 export type { KeyboardControllerState } from './keyboardControllerState'
+
+// zeego (native menus)
+export { getZeego } from './zeegoState'
+export type { ZeegoAccessor } from './zeegoState'
 
 // components
 export { NativePortal, NativePortalHost, NativePortalProvider } from './components'

@@ -52,5 +52,10 @@ export interface LinearGradientState {
 	enabled: boolean;
 	Component: any;
 }
+export interface ZeegoState {
+	enabled: boolean;
+	DropdownMenu: any;
+	ContextMenu: any;
+}
 
 //# sourceMappingURL=types.d.ts.map

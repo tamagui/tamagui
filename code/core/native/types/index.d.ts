@@ -18,7 +18,7 @@
 * // LinearGradient will use expo-linear-gradient when installed
 * ```
 */
-export type { NativePortalState, GestureState, WorkletsState, SafeAreaState, SafeAreaInsets, SafeAreaFrame, SafeAreaMetrics, LinearGradientState, NativePortalProps, NativePortalHostProps, NativePortalProviderProps } from "./types";
+export type { NativePortalState, GestureState, WorkletsState, SafeAreaState, SafeAreaInsets, SafeAreaFrame, SafeAreaMetrics, LinearGradientState, ZeegoState, NativePortalProps, NativePortalHostProps, NativePortalProviderProps } from "./types";
 export { getPortal } from "./portalState";
 export type { PortalAccessor } from "./portalState";
 export { getGestureHandler } from "./gestureState";
@@ -31,6 +31,8 @@ export { getLinearGradient } from "./linearGradientState";
 export type { LinearGradientAccessor } from "./linearGradientState";
 export { isKeyboardControllerEnabled, getKeyboardControllerState, setKeyboardControllerState } from "./keyboardControllerState";
 export type { KeyboardControllerState } from "./keyboardControllerState";
+export { getZeego } from "./zeegoState";
+export type { ZeegoAccessor } from "./zeegoState";
 export { NativePortal, NativePortalHost, NativePortalProvider } from "./components";
 
 //# sourceMappingURL=index.d.ts.map

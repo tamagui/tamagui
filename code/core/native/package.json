@@ -33,6 +33,9 @@
       ],
       "setup-keyboard-controller": [
         "./types/setup-keyboard-controller.d.ts"
+      ],
+      "setup-zeego": [
+        "./types/setup-zeego.d.ts"
       ]
     }
   },
@@ -121,6 +124,18 @@
       "module": "./dist/esm/setup-keyboard-controller.mjs",
       "import": "./dist/esm/setup-keyboard-controller.mjs",
       "require": "./dist/cjs/setup-keyboard-controller.cjs"
+    },
+    "./setup-zeego": {
+      "types": "./types/setup-zeego.d.ts",
+      "react-native": {
+        "types": "./types/setup-zeego.d.ts",
+        "module": "./dist/esm/setup-zeego.native.js",
+        "import": "./dist/esm/setup-zeego.native.js",
+        "require": "./dist/cjs/setup-zeego.native.js"
+      },
+      "module": "./dist/esm/setup-zeego.mjs",
+      "import": "./dist/esm/setup-zeego.mjs",
+      "require": "./dist/cjs/setup-zeego.cjs"
     }
   },
   "publishConfig": {
@@ -140,7 +155,8 @@
     "react-native-keyboard-controller": "^1.16.0",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-teleport": "^0.5.6",
-    "react-native-worklets-core": "^1.0.0"
+    "react-native-worklets-core": "^1.0.0",
+    "zeego": "^3.0.0"
   },
   "peerDependencies": {
     "react": "*",
@@ -149,7 +165,12 @@
     "react-native-keyboard-controller": ">=1.0.0",
     "react-native-safe-area-context": ">=4.0.0",
     "react-native-teleport": ">=0.5.0",
-    "react-native-worklets-core": ">=1.0.0"
+    "react-native-worklets-core": ">=1.0.0",
+    "zeego": ">=3.0.0",
+    "@react-native-menu/menu": ">=2.0.0",
+    "react-native-ios-context-menu": ">=3.0.0",
+    "react-native-ios-utilities": ">=5.0.0",
+    "sf-symbols-typescript": "*"
   },
   "peerDependenciesMeta": {
     "react-native-gesture-handler": {
@@ -165,6 +186,21 @@
       "optional": true
     },
     "react-native-worklets-core": {
+      "optional": true
+    },
+    "zeego": {
+      "optional": true
+    },
+    "@react-native-menu/menu": {
+      "optional": true
+    },
+    "react-native-ios-context-menu": {
+      "optional": true
+    },
+    "react-native-ios-utilities": {
+      "optional": true
+    },
+    "sf-symbols-typescript": {
       "optional": true
     }
   }
