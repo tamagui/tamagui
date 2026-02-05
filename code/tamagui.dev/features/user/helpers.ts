@@ -216,6 +216,50 @@ function checkAccessToProduct(
  * We can remove the check for owned products and the subscription_items.
  * However, for the backwards compatibility, we keep the function.
  */
+/**
+ * Check if user has lifetime Bento access via product_ownership
+ * This is separate from Pro subscription - Bento is a lifetime purchase
+ */
+async function checkBentoAccess(userId: string): Promise<boolean> {
+  const result = await supabaseAdmin
+    .from('product_ownership')
+    .select(`
+      *,
+      prices (
+        *,
+        products (
+          *
+        )
+      )
+    `)
+    .eq('user_id', userId)
+
+  if (!result?.data?.length) {
+    return false
+  }
+
+  // check for direct Bento product ownership
+  const hasBentoOwnership = result.data.some(
+    (ownership) => ownership.prices?.products?.name === ProductName.TamaguiBento
+  )
+
+  if (hasBentoOwnership) {
+    return true
+  }
+
+  // check for legacy lifetime purchases with is_lifetime metadata
+  const hasLifetimeBento = result.data.some((ownership) => {
+    const productMetadata = ownership.prices?.metadata as Record<string, any> | null
+    const productName = ownership.prices?.products?.name
+    // only count as bento if it's a bento product with lifetime flag
+    return (
+      productMetadata?.is_lifetime === '1' && productName === ProductName.TamaguiBento
+    )
+  })
+
+  return hasLifetimeBento
+}
+
 export async function getUserAccessInfo(
   supabase: SupabaseClient<Database>,
   user: User | null
@@ -223,12 +267,14 @@ export async function getUserAccessInfo(
   if (!user) {
     return {
       hasPro: false,
+      hasBento: false,
       teamsWithAccess: [],
     }
   }
 
-  const [proAccess, teamsResult] = await Promise.all([
+  const [proAccess, bentoAccess, teamsResult] = await Promise.all([
     hasProAccess(user.id),
+    checkBentoAccess(user.id),
     supabase.from('teams').select('id, name, is_active'),
   ])
 
@@ -246,8 +292,12 @@ export async function getUserAccessInfo(
   // user has Pro if they have subscription/legacy access OR team sponsorship access
   const hasPro = proAccess || hasTeamAccess
 
+  // user has Bento if they have lifetime bento ownership OR pro access (pro includes bento)
+  const hasBento = bentoAccess || hasPro
+
   return {
     hasPro,
+    hasBento,
     teamsWithAccess,
   }
 }

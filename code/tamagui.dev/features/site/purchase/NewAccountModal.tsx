@@ -285,6 +285,7 @@ export const AccountView = () => {
             supportSubscription={supportSubscription!}
             setCurrentTab={setCurrentTab}
             isTeamMember={!!isTeamMember}
+            hasBento={data?.accessInfo?.hasBento ?? false}
           />
         )
 
@@ -1053,11 +1054,13 @@ const PlanTab = ({
   supportSubscription,
   setCurrentTab,
   isTeamMember,
+  hasBento,
 }: {
   subscription?: Subscription
   supportSubscription?: Subscription
   setCurrentTab: (value: 'plan' | 'manage' | 'team') => void
   isTeamMember: boolean
+  hasBento: boolean
 }) => {
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
   const [showSupportAccess, setShowSupportAccess] = useState(false)
@@ -1180,7 +1183,7 @@ const PlanTab = ({
             }
           />
 
-          <BentoCard subscription={subscription as Subscription} />
+          <BentoCard subscription={subscription as Subscription} hasBento={hasBento} />
 
           <ServiceCard
             title="Discord Access"
@@ -2279,12 +2282,21 @@ const TeamMemberRow = ({
   )
 }
 
-const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
+const BentoCard = ({
+  subscription,
+  hasBento,
+}: {
+  subscription?: Subscription
+  hasBento: boolean
+}) => {
   const supabase = useSupabaseClient()
   const { onCopy, hasCopied } = useClipboard()
 
+  // user has access if they have active subscription OR lifetime bento
+  const hasAccess = !!subscription || hasBento
+
   const { data, isLoading, mutate } = useSWR(
-    '/api/bento/cli/login',
+    hasAccess ? '/api/bento/cli/login' : null,
     async (url) => {
       const response = await authFetch(url)
       if (!response.ok) {
@@ -2324,7 +2336,7 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
         throw new Error('Failed to download Bento components')
       }
 
-      // Create a blob from the response
+      // create a blob from the response
       const blob = await response.blob()
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -2333,7 +2345,7 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
       document.body.appendChild(a)
       a.click()
 
-      // Cleanup
+      // cleanup
       window.URL.revokeObjectURL(url)
       document.body.removeChild(a)
     } catch (error) {
@@ -2358,10 +2370,16 @@ const BentoCard = ({ subscription }: { subscription?: Subscription }) => {
     <ServiceCard
       title="Bento"
       description="Download the entire suite of Bento components."
-      actionLabel="Download"
-      onAction={handleBentoDownload}
+      actionLabel={hasAccess ? 'Download' : 'Purchase'}
+      onAction={
+        hasAccess
+          ? handleBentoDownload
+          : () => {
+              paymentModal.show = true
+            }
+      }
       secondAction={
-        subscription
+        hasAccess
           ? {
               label: hasCopied ? 'Copied' : isLoading ? 'Loading...' : `Copy Code`,
               onPress: onCopyCode,
