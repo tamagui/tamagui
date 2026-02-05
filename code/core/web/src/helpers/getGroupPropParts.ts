@@ -3,9 +3,16 @@ import { pseudoPriorities } from './pseudoDescriptors'
 
 export type GroupParts = { name: string; pseudo?: string; media?: string }
 
+// convert kebab-case to camelCase (e.g. "focus-visible" -> "focusVisible")
+function kebabToCamel(str: string): string {
+  return str.replace(/-([a-z])/g, (_, c) => c.toUpperCase())
+}
+
 // validate that a string is a known pseudo selector
 function isValidPseudo(str: string | undefined): str is string {
-  return !!str && str in pseudoPriorities
+  if (!str) return false
+  // pseudoPriorities uses camelCase keys, but parsed candidates may be kebab-case
+  return kebabToCamel(str) in pseudoPriorities
 }
 
 export function getGroupPropParts(groupProp: string): GroupParts {
