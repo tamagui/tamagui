@@ -15,13 +15,20 @@ function getGlobalState(): GestureState {
   return g[GLOBAL_KEY]
 }
 
+export interface Insets {
+  top?: number
+  left?: number
+  bottom?: number
+  right?: number
+}
+
 export type PressGestureConfig = {
   onPressIn?: (e: any) => void
   onPressOut?: (e: any) => void
   onPress?: (e: any) => void
   onLongPress?: (e: any) => void
   delayLongPress?: number
-  hitSlop?: any
+  hitSlop?: number | Insets | null
 }
 
 export interface GestureHandlerAccessor {
