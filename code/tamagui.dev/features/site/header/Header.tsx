@@ -136,15 +136,16 @@ export function Header(props: HeaderProps) {
           </XStack>
           {/* do shadow separate so we can contain paint because its causing perf issues */}
           <XStack
-            className={`ease-in-out all ms200`}
             z={-1}
             rounded="$10"
             fullscreen
+            boxShadow="0 8px 20px $shadow3"
+            opacity={0}
             {...(isScrolled && {
               $gtSm: {
+                opacity: 1,
                 py: '$2',
                 y: 5,
-                elevation: '$5',
               },
             })}
           />

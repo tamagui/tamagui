@@ -67,6 +67,7 @@ export const BentoLogo = ({
           userSelect="none"
           pointerEvents="none"
           className="bento-shadow"
+          text="center"
         >
           {children}&nbsp;
         </H1>
@@ -96,6 +97,7 @@ export const BentoLogo = ({
           userSelect="none"
           pointerEvents="none"
           className="clip-text mask-gradient-down"
+          text="center"
           style={{
             backgroundImage: 'linear-gradient(var(--color10), transparent)',
             textShadow: `0 0 10px var(--color025), 0 0 8px rgba(255,255,255,0.44)`,
@@ -126,6 +128,7 @@ export const BentoLogo = ({
           userSelect="none"
           pointerEvents="none"
           className="clip-text mask-gradient-down bento-text-3"
+          text="center"
         >
           {children}&nbsp;
         </H1>
@@ -153,6 +156,7 @@ export const BentoLogo = ({
           fontSize={180}
           userSelect="none"
           pointerEvents="none"
+          text="center"
           style={{
             maskImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0) 60%)`,
           }}

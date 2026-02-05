@@ -55,9 +55,13 @@ const Intermediate = () => {
         py="$6"
         pt={20}
         mb={-20}
+        mx="auto"
+        maxW={900}
         $sm={{
           flexDirection: 'column',
           px: '$2',
+          pt: '$4',
+          mb: 0,
         }}
       >
         <IntermediateCard Icon={Globe} title="Universal">
@@ -140,6 +144,8 @@ const Hero = () => {
             items="flex-start"
             $sm={{
               maxW: '100%',
+              items: 'center',
+              minHeight: 'max-content',
             }}
           >
             <YStack
@@ -147,14 +153,16 @@ const Hero = () => {
               transformOrigin="center top"
               $xxs={{
                 scale: 0.4,
+                mb: -80,
               }}
               $xs={{
                 scale: 0.5,
+                mb: -80,
               }}
               $sm={{
                 self: 'center',
                 scale: 0.6,
-                mb: -100,
+                mb: -60,
               }}
               $md={{ mb: -100, scale: 0.72 }}
             >
@@ -163,7 +171,7 @@ const Hero = () => {
 
             <Spacer size="$6" />
 
-            <YStack maxW={500} gap="$7" $sm={{ px: '$4', maxW: 400, ml: 0, mx: 'auto' }}>
+            <YStack maxW={500} gap="$7" mx="auto" $sm={{ px: '$4', maxW: 400 }}>
               <XStack gap="$6">
                 <Paragraph
                   fontFamily="$mono"

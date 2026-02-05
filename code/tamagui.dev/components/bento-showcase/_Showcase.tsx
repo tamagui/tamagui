@@ -264,10 +264,6 @@ const MessagesFrame = (props: {
       overflow="hidden"
       borderWidth={1}
       borderColor={'$borderColor'}
-      $theme-light={{
-        borderColor: '$gray6',
-        bg: '$color1',
-      }}
     >
       <XStack
         bg="$color1"
