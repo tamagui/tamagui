@@ -258,7 +258,9 @@ test.describe('Bug #2: Sheet with scrollable ScrollView - drag up resistance', (
     await page.getByTestId('scrollable-reset').click()
 
     // ensure we're at scroll top and position 0
-    await expect(page.getByTestId('scrollable-at-top')).toContainText('At scroll top: YES')
+    await expect(page.getByTestId('scrollable-at-top')).toContainText(
+      'At scroll top: YES'
+    )
 
     // get handle position
     const handle = page.getByTestId('scrollable-handle')
@@ -276,7 +278,9 @@ test.describe('Bug #2: Sheet with scrollable ScrollView - drag up resistance', (
     await page.waitForTimeout(600)
 
     // after rubber band, should still be at scroll top (no scroll happened)
-    await expect(page.getByTestId('scrollable-at-top')).toContainText('At scroll top: YES')
+    await expect(page.getByTestId('scrollable-at-top')).toContainText(
+      'At scroll top: YES'
+    )
 
     // frame should still be visible (sheet didn't disappear)
     await expect(frame).toBeVisible()
@@ -292,7 +296,9 @@ test.describe('Bug #2: Sheet with scrollable ScrollView - drag up resistance', (
     await expect(frame).toBeVisible({ timeout: 5000 })
 
     // verify starting state - at scroll top
-    await expect(page.getByTestId('scrollable-at-top')).toContainText('At scroll top: YES')
+    await expect(page.getByTestId('scrollable-at-top')).toContainText(
+      'At scroll top: YES'
+    )
 
     // get scrollview
     const scrollview = page.getByTestId('scrollable-scrollview')
@@ -319,7 +325,9 @@ test.describe('Bug #2: Sheet with scrollable ScrollView - drag up resistance', (
     await expect(frame).toBeVisible({ timeout: 5000 })
 
     // verify at scroll top
-    await expect(page.getByTestId('scrollable-at-top')).toContainText('At scroll top: YES')
+    await expect(page.getByTestId('scrollable-at-top')).toContainText(
+      'At scroll top: YES'
+    )
 
     // get handle position
     const handle = page.getByTestId('scrollable-handle')
@@ -337,7 +345,9 @@ test.describe('Bug #2: Sheet with scrollable ScrollView - drag up resistance', (
     await page.waitForTimeout(600)
 
     // sheet should be at lower snap point (position 1)
-    await expect(page.getByTestId('scrollable-snap-indicator')).toContainText('Position: 1')
+    await expect(page.getByTestId('scrollable-snap-indicator')).toContainText(
+      'Position: 1'
+    )
   })
 
   test('should drag sheet DOWN via scrollview area when at scroll top', async ({
@@ -350,7 +360,9 @@ test.describe('Bug #2: Sheet with scrollable ScrollView - drag up resistance', (
     await expect(frame).toBeVisible({ timeout: 5000 })
 
     // verify at scroll top
-    await expect(page.getByTestId('scrollable-at-top')).toContainText('At scroll top: YES')
+    await expect(page.getByTestId('scrollable-at-top')).toContainText(
+      'At scroll top: YES'
+    )
 
     // get scrollview position
     const scrollview = page.getByTestId('scrollable-scrollview')
@@ -368,6 +380,8 @@ test.describe('Bug #2: Sheet with scrollable ScrollView - drag up resistance', (
     await page.waitForTimeout(600)
 
     // sheet should be at lower snap point (position 1)
-    await expect(page.getByTestId('scrollable-snap-indicator')).toContainText('Position: 1')
+    await expect(page.getByTestId('scrollable-snap-indicator')).toContainText(
+      'Position: 1'
+    )
   })
 })

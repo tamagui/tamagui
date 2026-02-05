@@ -131,14 +131,21 @@ export const SheetScrollView = React.forwardRef<
 
             if (scrollBridge.scrollLockY !== undefined) {
               if (y !== scrollBridge.scrollLockY) {
-                scrollRef.current?.scrollTo?.({ x: 0, y: scrollBridge.scrollLockY, animated: false })
+                scrollRef.current?.scrollTo?.({
+                  x: 0,
+                  y: scrollBridge.scrollLockY,
+                  animated: false,
+                })
               }
               scrollBridge.y = scrollBridge.scrollLockY
               onScroll?.({
                 ...e,
                 nativeEvent: {
                   ...e.nativeEvent,
-                  contentOffset: { ...e.nativeEvent.contentOffset, y: scrollBridge.scrollLockY },
+                  contentOffset: {
+                    ...e.nativeEvent.contentOffset,
+                    y: scrollBridge.scrollLockY,
+                  },
                 },
               })
               return

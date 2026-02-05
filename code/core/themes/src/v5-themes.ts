@@ -30,7 +30,7 @@ export const V5_BG_OFFSET = 6 + 1
 export { interpolateColor, opacify } from './opacify'
 
 export const v5ComponentThemes = {
-  Button: { template: 'surface3' },
+  Button: { template: 'surface2' },
   Input: { template: 'surface1' },
   Progress: { template: 'surface1' },
   ProgressIndicator: { template: 'surface3' },
@@ -216,7 +216,7 @@ const lightPalette = [
   '#fff',
   '#f8f8f8',
   'hsl(0, 0%, 93%)',
-  'hsl(0, 0%, 87%)',
+  'hsl(0, 0%, 85%)',
   'hsl(0, 0%, 80%)',
   'hsl(0, 0%, 70%)',
   'hsl(0, 0%, 59%)',

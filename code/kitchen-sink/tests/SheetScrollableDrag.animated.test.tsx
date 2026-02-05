@@ -23,7 +23,11 @@ test.use({
 test.beforeEach(async ({ page }) => {
   // capture console logs for debugging
   page.on('console', (msg) => {
-    if (msg.text().includes('[Sheet') || msg.text().includes('[ScrollView') || msg.text().includes('[gesture')) {
+    if (
+      msg.text().includes('[Sheet') ||
+      msg.text().includes('[ScrollView') ||
+      msg.text().includes('[gesture')
+    ) {
       console.log(`BROWSER: ${msg.text()}`)
     }
   })
@@ -114,7 +118,6 @@ async function dragSheet(
   )
 }
 
-
 test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
   test('should open sheet at position 0', async ({ page }) => {
     await page.getByTestId('sheet-scrollable-drag-trigger').click()
@@ -132,7 +135,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     )
   })
 
-  test('Case 1: drag DOWN at scrollY=0 should drag sheet, NOT scroll', async ({ page }) => {
+  test('Case 1: drag DOWN at scrollY=0 should drag sheet, NOT scroll', async ({
+    page,
+  }) => {
     // open sheet
     await page.getByTestId('sheet-scrollable-drag-trigger').click()
     await page.waitForTimeout(600)
@@ -197,26 +202,38 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
       await page.waitForTimeout(200)
 
       // verify scroll happened, sheet still at 0
-      const scrollY1 = await page.getByTestId('sheet-scrollable-drag-scroll-y').textContent()
+      const scrollY1 = await page
+        .getByTestId('sheet-scrollable-drag-scroll-y')
+        .textContent()
       const scrollVal1 = parseInt(scrollY1?.replace('ScrollView Y: ', '') || '0', 10)
       expect(scrollVal1).toBeGreaterThan(20)
-      await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText('Sheet position: 0')
+      await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText(
+        'Sheet position: 0'
+      )
 
       // 2. drag down past scroll=0 to pull sheet
       await dragSheet(page, cx, cy, 300, { steps: 30, stepDelay: 12 })
       await page.waitForTimeout(200)
 
       // verify sheet moved, scroll at 0
-      await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText('Sheet position: 1')
-      await expect(page.getByTestId('sheet-scrollable-drag-scroll-y')).toContainText('ScrollView Y: 0')
+      await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText(
+        'Sheet position: 1'
+      )
+      await expect(page.getByTestId('sheet-scrollable-drag-scroll-y')).toContainText(
+        'ScrollView Y: 0'
+      )
 
       // 3. drag up to bring sheet back (no scroll should happen here)
       await dragSheet(page, cx, cy, -200, { steps: 25, stepDelay: 12 })
       await page.waitForTimeout(200)
 
       // verify sheet back at 0, scroll still 0
-      await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText('Sheet position: 0')
-      const scrollY2 = await page.getByTestId('sheet-scrollable-drag-scroll-y').textContent()
+      await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText(
+        'Sheet position: 0'
+      )
+      const scrollY2 = await page
+        .getByTestId('sheet-scrollable-drag-scroll-y')
+        .textContent()
       const scrollVal2 = parseInt(scrollY2?.replace('ScrollView Y: ', '') || '0', 10)
       expect(scrollVal2).toBeLessThanOrEqual(10)
     }
@@ -246,8 +263,12 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
       await page.waitForTimeout(400)
 
       // verify sheet moved, scroll still 0
-      await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText('Sheet position: 1')
-      await expect(page.getByTestId('sheet-scrollable-drag-scroll-y')).toContainText('ScrollView Y: 0')
+      await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText(
+        'Sheet position: 1'
+      )
+      await expect(page.getByTestId('sheet-scrollable-drag-scroll-y')).toContainText(
+        'ScrollView Y: 0'
+      )
 
       // wait for animation to settle
       await page.waitForTimeout(400)
@@ -258,9 +279,13 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
       await page.waitForTimeout(400)
 
       // verify sheet at 0
-      await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText('Sheet position: 0')
+      await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText(
+        'Sheet position: 0'
+      )
       // scroll should still be 0 (no scroll during drag up when sheet not at top)
-      await expect(page.getByTestId('sheet-scrollable-drag-scroll-y')).toContainText('ScrollView Y: 0')
+      await expect(page.getByTestId('sheet-scrollable-drag-scroll-y')).toContainText(
+        'ScrollView Y: 0'
+      )
     }
   })
 
@@ -363,7 +388,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
 
     // check maxScrollY - this captures if scroll happened at ANY point during "push up" phases
     // if scroll happened during push up, maxScrollY will be > what it should be
-    const maxScrollY = await page.getByTestId('sheet-scrollable-drag-max-scroll-y').textContent()
+    const maxScrollY = await page
+      .getByTestId('sheet-scrollable-drag-max-scroll-y')
+      .textContent()
     const maxScrollVal = parseInt(maxScrollY?.replace('Max scroll Y: ', '') || '0', 10)
 
     console.log('maxScrollVal:', maxScrollVal)
@@ -409,7 +436,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
       { steps: 25, stepDelay: 16, mode: 'mouse' }
     )
     await page.waitForTimeout(600)
-    await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText('Sheet position: 1')
+    await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText(
+      'Sheet position: 1'
+    )
     await page.waitForTimeout(400)
 
     const scrollview = page.getByTestId('sheet-scrollable-drag-scrollview')
@@ -427,18 +456,28 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     // the position text element updates when setPosition is called.
     // any position change between touchstart and touchend is a mid-gesture snap (the bug).
     await page.evaluate(() => {
-      const posEl = document.querySelector('[data-testid="sheet-scrollable-drag-position"]')
+      const posEl = document.querySelector(
+        '[data-testid="sheet-scrollable-drag-position"]'
+      )
       if (!posEl) return
       ;(window as any).__midGestureSnaps = []
       ;(window as any).__gestureActive = false
 
       // track touch state
-      document.addEventListener('touchstart', () => {
-        ;(window as any).__gestureActive = true
-      }, { capture: true })
-      document.addEventListener('touchend', () => {
-        ;(window as any).__gestureActive = false
-      }, { capture: true })
+      document.addEventListener(
+        'touchstart',
+        () => {
+          ;(window as any).__gestureActive = true
+        },
+        { capture: true }
+      )
+      document.addEventListener(
+        'touchend',
+        () => {
+          ;(window as any).__gestureActive = false
+        },
+        { capture: true }
+      )
 
       // observe position text changes
       const observer = new MutationObserver(() => {
@@ -455,19 +494,29 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
       ({ cx, startY }) => {
         return new Promise<void>((resolve) => {
           const target = document.elementFromPoint(cx, startY)
-          if (!target) { resolve(); return }
+          if (!target) {
+            resolve()
+            return
+          }
 
           const dispatchTouch = (type: string, x: number, y: number) => {
             const touch = new Touch({
-              identifier: 0, target,
-              clientX: x, clientY: y, pageX: x, pageY: y,
+              identifier: 0,
+              target,
+              clientX: x,
+              clientY: y,
+              pageX: x,
+              pageY: y,
             })
-            target.dispatchEvent(new TouchEvent(type, {
-              bubbles: true, cancelable: true,
-              touches: type === 'touchend' ? [] : [touch],
-              targetTouches: type === 'touchend' ? [] : [touch],
-              changedTouches: [touch],
-            }))
+            target.dispatchEvent(
+              new TouchEvent(type, {
+                bubbles: true,
+                cancelable: true,
+                touches: type === 'touchend' ? [] : [touch],
+                targetTouches: type === 'touchend' ? [] : [touch],
+                changedTouches: [touch],
+              })
+            )
           }
 
           dispatchTouch('touchstart', cx, startY)
@@ -503,11 +552,13 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     await page.waitForTimeout(600)
 
     // no Maximum update depth exceeded
-    expect(errors.filter(e => e.includes('Maximum update depth'))).toHaveLength(0)
+    expect(errors.filter((e) => e.includes('Maximum update depth'))).toHaveLength(0)
 
     // CRITICAL: no position changes should happen during the gesture
     // snapToPosition should only be called on release, not mid-gesture
-    const midGestureSnaps = await page.evaluate(() => (window as any).__midGestureSnaps || [])
+    const midGestureSnaps = await page.evaluate(
+      () => (window as any).__midGestureSnaps || []
+    )
     console.log('mid-gesture snaps:', midGestureSnaps)
     expect(midGestureSnaps).toHaveLength(0)
   })
@@ -544,7 +595,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
       { steps: 25, stepDelay: 16, mode: 'mouse' }
     )
     await page.waitForTimeout(600)
-    await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText('Sheet position: 1')
+    await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText(
+      'Sheet position: 1'
+    )
     await page.waitForTimeout(400)
 
     const scrollview = page.getByTestId('sheet-scrollable-drag-scrollview')
@@ -559,19 +612,29 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
       ({ cx, startY }) => {
         return new Promise<void>((resolve) => {
           const target = document.elementFromPoint(cx, startY)
-          if (!target) { resolve(); return }
+          if (!target) {
+            resolve()
+            return
+          }
 
           const dispatchTouch = (type: string, x: number, y: number) => {
             const touch = new Touch({
-              identifier: 0, target,
-              clientX: x, clientY: y, pageX: x, pageY: y,
+              identifier: 0,
+              target,
+              clientX: x,
+              clientY: y,
+              pageX: x,
+              pageY: y,
             })
-            target.dispatchEvent(new TouchEvent(type, {
-              bubbles: true, cancelable: true,
-              touches: type === 'touchend' ? [] : [touch],
-              targetTouches: type === 'touchend' ? [] : [touch],
-              changedTouches: [touch],
-            }))
+            target.dispatchEvent(
+              new TouchEvent(type, {
+                bubbles: true,
+                cancelable: true,
+                touches: type === 'touchend' ? [] : [touch],
+                targetTouches: type === 'touchend' ? [] : [touch],
+                changedTouches: [touch],
+              })
+            )
           }
 
           dispatchTouch('touchstart', cx, startY)
@@ -610,7 +673,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     // the bug: stale startY in release() causes it to compute a position way
     // below the screen. with dismissOnSnapToBottom, this triggers setOpen(false)
     // which dismisses the sheet unexpectedly.
-    const unexpectedClose = await page.getByTestId('sheet-scrollable-drag-unexpected-close').textContent()
+    const unexpectedClose = await page
+      .getByTestId('sheet-scrollable-drag-unexpected-close')
+      .textContent()
     console.log('unexpected close:', unexpectedClose)
 
     // the sheet should NOT have been dismissed during this gesture
@@ -677,7 +742,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     )
 
     // CRITICAL: scroll should still be 0 - no scrolling during drag up
-    const scrollAfter = await page.getByTestId('sheet-scrollable-drag-scroll-y').textContent()
+    const scrollAfter = await page
+      .getByTestId('sheet-scrollable-drag-scroll-y')
+      .textContent()
     const scrollVal = parseInt(scrollAfter?.replace('ScrollView Y: ', '') || '0', 10)
     expect(scrollVal).toBeLessThanOrEqual(5) // allow tiny tolerance
   })
@@ -709,8 +776,13 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     await page.waitForTimeout(300)
 
     // verify we scrolled
-    const scrollBefore = await page.getByTestId('sheet-scrollable-drag-scroll-y').textContent()
-    const scrollValBefore = parseInt(scrollBefore?.replace('ScrollView Y: ', '') || '0', 10)
+    const scrollBefore = await page
+      .getByTestId('sheet-scrollable-drag-scroll-y')
+      .textContent()
+    const scrollValBefore = parseInt(
+      scrollBefore?.replace('ScrollView Y: ', '') || '0',
+      10
+    )
     expect(scrollValBefore).toBeGreaterThan(30)
 
     // now do a long drag DOWN - should first scroll back to 0, then drag sheet
@@ -725,7 +797,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     await page.waitForTimeout(100)
 
     // check final scroll position - should be 0 (scrolled back) not negative or jumping around
-    const scrollAfter = await page.getByTestId('sheet-scrollable-drag-scroll-y').textContent()
+    const scrollAfter = await page
+      .getByTestId('sheet-scrollable-drag-scroll-y')
+      .textContent()
     const scrollValAfter = parseInt(scrollAfter?.replace('ScrollView Y: ', '') || '0', 10)
 
     // scroll should be at 0 (not negative, not jumping around)
@@ -831,7 +905,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     )
   })
 
-  test('Case 4: scroll down, then drag down should scroll back first', async ({ page }) => {
+  test('Case 4: scroll down, then drag down should scroll back first', async ({
+    page,
+  }) => {
     // open sheet
     await page.getByTestId('sheet-scrollable-drag-trigger').click()
     await page.waitForTimeout(600)
@@ -853,8 +929,13 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     await page.waitForTimeout(400)
 
     // verify we scrolled
-    const scrollBefore = await page.getByTestId('sheet-scrollable-drag-scroll-y').textContent()
-    const scrollValBefore = parseInt(scrollBefore?.replace('ScrollView Y: ', '') || '0', 10)
+    const scrollBefore = await page
+      .getByTestId('sheet-scrollable-drag-scroll-y')
+      .textContent()
+    const scrollValBefore = parseInt(
+      scrollBefore?.replace('ScrollView Y: ', '') || '0',
+      10
+    )
     expect(scrollValBefore).toBeGreaterThan(50)
 
     // now drag DOWN - should scroll back first before dragging sheet
@@ -868,17 +949,23 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     await page.waitForTimeout(600)
 
     // either scroll absorbed the swipe (scroll at 0 or close) OR sheet moved
-    const scrollAfter = await page.getByTestId('sheet-scrollable-drag-scroll-y').textContent()
+    const scrollAfter = await page
+      .getByTestId('sheet-scrollable-drag-scroll-y')
+      .textContent()
     const scrollValAfter = parseInt(scrollAfter?.replace('ScrollView Y: ', '') || '0', 10)
 
-    const posAfter = await page.getByTestId('sheet-scrollable-drag-position').textContent()
+    const posAfter = await page
+      .getByTestId('sheet-scrollable-drag-position')
+      .textContent()
     const posValAfter = parseInt(posAfter?.replace('Sheet position: ', '') || '0', 10)
 
     // success if either: scroll went back to 0, or sheet moved to position 1
     expect(scrollValAfter < scrollValBefore || posValAfter === 1).toBeTruthy()
   })
 
-  test('Case 5: HANDOFF - scroll to 0 then drag sheet in one gesture', async ({ page }) => {
+  test('Case 5: HANDOFF - scroll to 0 then drag sheet in one gesture', async ({
+    page,
+  }) => {
     // open sheet
     await page.getByTestId('sheet-scrollable-drag-trigger').click()
     await page.waitForTimeout(600)
@@ -900,8 +987,13 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     await page.waitForTimeout(300)
 
     // verify we scrolled
-    const scrollBefore = await page.getByTestId('sheet-scrollable-drag-scroll-y').textContent()
-    const scrollValBefore = parseInt(scrollBefore?.replace('ScrollView Y: ', '') || '0', 10)
+    const scrollBefore = await page
+      .getByTestId('sheet-scrollable-drag-scroll-y')
+      .textContent()
+    const scrollValBefore = parseInt(
+      scrollBefore?.replace('ScrollView Y: ', '') || '0',
+      10
+    )
     expect(scrollValBefore).toBeGreaterThan(0)
 
     // long drag down - should scroll to 0 then drag sheet
@@ -980,7 +1072,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     await page.mouse.wheel(0, 150)
     await page.waitForTimeout(400)
 
-    const scrollAfter = await page.getByTestId('sheet-scrollable-drag-scroll-y').textContent()
+    const scrollAfter = await page
+      .getByTestId('sheet-scrollable-drag-scroll-y')
+      .textContent()
     const scrollVal = parseInt(scrollAfter?.replace('ScrollView Y: ', '') || '0', 10)
     expect(scrollVal).toBeGreaterThan(30)
 
@@ -1058,7 +1152,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     expect(scrollVal).toBeLessThanOrEqual(5)
   })
 
-  test('Case 8: rubber band at top - dragging up keeps sheet at top', async ({ page }) => {
+  test('Case 8: rubber band at top - dragging up keeps sheet at top', async ({
+    page,
+  }) => {
     // open sheet
     await page.getByTestId('sheet-scrollable-drag-trigger').click()
     await page.waitForTimeout(600)
@@ -1096,7 +1192,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     // frame should still be visible (sheet didn't disappear)
     await expect(frame).toBeVisible()
     // scroll should NOT have happened during drag
-    const maxScrollY = await page.getByTestId('sheet-scrollable-drag-max-scroll-y').textContent()
+    const maxScrollY = await page
+      .getByTestId('sheet-scrollable-drag-max-scroll-y')
+      .textContent()
     const maxScrollVal = parseInt(maxScrollY?.replace('Max scroll Y: ', '') || '0', 10)
     expect(maxScrollVal).toBeLessThanOrEqual(5)
   })
@@ -1156,7 +1254,9 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
 
     // AND scroll should have happened (handoff successful)
     // check maxScrollY instead of current scrollY because scroll may bounce back
-    const maxScrollY = await page.getByTestId('sheet-scrollable-drag-max-scroll-y').textContent()
+    const maxScrollY = await page
+      .getByTestId('sheet-scrollable-drag-max-scroll-y')
+      .textContent()
     const maxScrollVal = parseInt(maxScrollY?.replace('Max scroll Y: ', '') || '0', 10)
     expect(maxScrollVal).toBeGreaterThan(30) // handoff occurred
   })

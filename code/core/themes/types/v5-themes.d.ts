@@ -3,7 +3,7 @@ export declare const V5_BG_OFFSET: number;
 export { interpolateColor, opacify } from './opacify';
 export declare const v5ComponentThemes: {
     readonly Button: {
-        readonly template: "surface3";
+        readonly template: "surface2";
     };
     readonly Input: {
         readonly template: "surface1";
@@ -47,7 +47,7 @@ export declare const v5ComponentThemesWithInverses: {
         readonly template: "accent";
     };
     readonly Button: {
-        readonly template: "surface3";
+        readonly template: "surface2";
     };
     readonly Input: {
         readonly template: "surface1";

@@ -1,5 +1,4 @@
 import { PALETTE_BACKGROUND_OFFSET, type BuildTemplates } from '@tamagui/theme-builder'
-import { opacify } from './opacify'
 
 const objectFromEntries = <const T extends readonly (readonly [string, any])[]>(
   entries: T

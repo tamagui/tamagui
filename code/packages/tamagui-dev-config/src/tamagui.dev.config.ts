@@ -18,25 +18,21 @@ const fonts = {
   cherryBomb: cherryBombFont,
 }
 
+export const animations = {
+  default: animationsMotion,
+  css: animationsCSS,
+}
+
 // Use v5 config as base, but with tamagui.dev custom themes
 export const config = {
   ...defaultConfig,
   themes: process.env.VITE_ENVIRONMENT === 'client' ? ({} as typeof themes) : themes,
   fonts,
-  animations: {
-    default: animationsMotion,
-    css: animationsCSS,
-  },
+  animations,
   media,
   settings: {
     ...defaultConfig.settings,
-    defaultFont: 'body',
-    shouldAddPrefersColorThemes: true,
     mediaQueryDefaultActive,
-    selectionStyles: (theme) => ({
-      backgroundColor: theme.color5,
-      color: theme.color11,
-    }),
     allowedStyleValues: 'somewhat-strict-web',
     autocompleteSpecificTokens: 'except-special',
     // Allow both shorthands and longhand names for flexibility

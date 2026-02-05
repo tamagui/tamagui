@@ -254,7 +254,9 @@ function ScrollableContentSheet() {
         Test 3: Scrollable ScrollView
       </Button>
       <Paragraph data-testid="scrollable-position">Position: {position}</Paragraph>
-      <Paragraph data-testid="scrollable-scroll-y">Scroll Y: {scrollY.toFixed(0)}</Paragraph>
+      <Paragraph data-testid="scrollable-scroll-y">
+        Scroll Y: {scrollY.toFixed(0)}
+      </Paragraph>
       <Paragraph data-testid="scrollable-max-drag">
         Max drag up (at top): {maxDragUp.toFixed(0)}px
       </Paragraph>

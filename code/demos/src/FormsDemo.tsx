@@ -44,7 +44,7 @@ export function FormsDemo(props: { size: SizeTokens }) {
             <AnimatePresence>
               {status === 'submitting' ? (
                 <Spinner
-                  transition="kindaBouncy"
+                  transition="medium"
                   enterStyle={{ opacity: 0 }}
                   alignSelf="center"
                   key="spinner"
