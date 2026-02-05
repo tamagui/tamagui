@@ -2840,7 +2840,7 @@ const AdminParitySubTab = () => {
             {currentOverride ? (
               <>
                 Viewing as:{' '}
-                <Paragraph fontWeight="bold" tag="span">
+                <Paragraph fontWeight="bold">
                   {countryCodeToFlag(currentOverride)}{' '}
                   {COUNTRY_NAMES[currentOverride] || currentOverride} (
                   {getParityDiscountForCountry(currentOverride)}% off)

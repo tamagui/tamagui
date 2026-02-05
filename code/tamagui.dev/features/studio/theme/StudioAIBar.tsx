@@ -1,7 +1,7 @@
 import slugify from '@sindresorhus/slugify'
 import { Input } from '@tamagui/input'
 import { History, Moon, Plus, Sun, X } from '@tamagui/lucide-icons'
-import { animationsCSS } from '@tamagui/tamagui-dev-config'
+import { animations } from '@tamagui/tamagui-dev-config'
 import { useStore } from '@tamagui/use-store'
 import { useUserScheme } from '@vxrn/color-scheme'
 import { router } from 'one'
@@ -377,7 +377,7 @@ const ThemeToggle = () => {
 
   return (
     <XStack gap="$3" items="center">
-      <Configuration animationDriver={animationsCSS}>
+      <Configuration animationDriver={animations.css}>
         <Switch
           checked={checked}
           outlineWidth={0}
