@@ -110,8 +110,22 @@ function SignIn() {
 
   if (!user)
     return (
-      <YStack minH="100vh" minW="100vw" items="center" justify="center" p="$2">
-        <YStack minW={300} maxW={320} justify="space-between" p="$2" gap="$4">
+      <YStack
+        flex={1}
+        minH="100vh"
+        items="center"
+        justify="center"
+        p="$2"
+        bg="$background"
+      >
+        <YStack
+          minW={300}
+          maxW={320}
+          justify="space-between"
+          p="$2"
+          gap="$4"
+          items="center"
+        >
           <YStack mb="$4">
             <LogoIcon />
           </YStack>

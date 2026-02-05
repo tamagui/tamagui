@@ -948,7 +948,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               </XStack>
             )}
 
-            <YStack gap="$2" bg="$color3" p="$3" rounded="$3">
+            <YStack gap="$1" bg="$color3" p="$3" rounded="$3">
               <Paragraph size="$3" fontFamily="$mono" fontWeight="600">
                 What's included:
               </Paragraph>
@@ -956,16 +956,16 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 - All templates (v1 Takeout, v2 Takeout, Takeout Static)
               </Paragraph>
               <Paragraph size="$2" color="$color9">
-                - 1 year of updates included
+                - Bento pro components
               </Paragraph>
               <Paragraph size="$2" color="$color9">
-                - Unlimited team members
+                - Opus-powered AI /theme generation
               </Paragraph>
               <Paragraph size="$2" color="$color9">
-                - Basic chat support included
+                - 1 year of updates, unlimited team members
               </Paragraph>
               <Paragraph size="$2" color="$color9">
-                - Lifetime rights to code
+                - Chat support, lifetime right
               </Paragraph>
             </YStack>
 

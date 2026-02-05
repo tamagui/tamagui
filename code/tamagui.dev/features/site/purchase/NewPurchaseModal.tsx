@@ -480,7 +480,7 @@ export function PurchaseModalContents() {
                     </Paragraph>
                   </YStack>
 
-                  <YStack gap="$2" width="100%" pt="$4" $gtXs={{ width: '42%', pt: 0 }}>
+                  <YStack gap="$2" width="100%" pt="$2" $gtXs={{ width: '42%', pt: 0 }}>
                     {parityDeals && (
                       <Theme name="green">
                         <XStack
@@ -497,8 +497,7 @@ export function PurchaseModalContents() {
                             style={{ textWrap: 'balance' }}
                           >
                             {parityDeals.flag} {parityDeals.discountPercentage}% parity
-                            discount for {parityDeals.country} — auto-applied
-                            {store.activePromo && ' (stacks with beta discount!)'}
+                            discount for {parityDeals.country}
                           </Paragraph>
                         </XStack>
                       </Theme>
