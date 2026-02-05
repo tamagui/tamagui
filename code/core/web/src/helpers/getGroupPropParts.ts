@@ -1,6 +1,12 @@
 import { getMedia } from '../hooks/useMedia'
+import { pseudoPriorities } from './pseudoDescriptors'
 
 export type GroupParts = { name: string; pseudo?: string; media?: string }
+
+// validate that a string is a known pseudo selector
+function isValidPseudo(str: string | undefined): str is string {
+  return !!str && str in pseudoPriorities
+}
 
 export function getGroupPropParts(groupProp: string): GroupParts {
   const m = getMedia()
@@ -8,7 +14,7 @@ export function getGroupPropParts(groupProp: string): GroupParts {
   // check 2-part media key first (e.g. "max-md"), then 1-part
   const m2 = a && b ? `${a}-${b}` : ''
   const media = (m2 && m2 in m && m2) || (a && a in m && a) || undefined
-  const pseudo = media
+  let pseudoCandidate = media
     ? media === m2
       ? c
       : b
@@ -17,5 +23,17 @@ export function getGroupPropParts(groupProp: string): GroupParts {
     : a
       ? `${a}${b ? `-${b}` : ''}${c ? `-${c}` : ''}`
       : undefined
-  return { name, pseudo, media }
+
+  // only treat as pseudo if it's a known pseudo selector
+  // otherwise it might be an unrecognized media query
+  if (pseudoCandidate && !isValidPseudo(pseudoCandidate)) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        `Unknown group prop part "${pseudoCandidate}" in "${groupProp}". If this is a media query, ensure it's defined in your tamagui config.`
+      )
+    }
+    pseudoCandidate = undefined
+  }
+
+  return { name, pseudo: pseudoCandidate, media }
 }
