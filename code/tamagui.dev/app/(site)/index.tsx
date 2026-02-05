@@ -16,7 +16,10 @@ import { HomeResponsive } from '~/features/site/home/HomeResponsive'
 import { HomeThemes } from '~/features/site/home/HomeThemes'
 import { HomeTypography } from '~/features/site/home/HomeTypography'
 import { HomeSection, SectionTinted, TintSection } from '~/features/site/home/TintSection'
-import { ThemeNameEffectNoTheme } from '~/features/site/theme/ThemeNameEffect'
+import {
+  ThemeNameEffect,
+  ThemeNameEffectNoTheme,
+} from '~/features/site/theme/ThemeNameEffect'
 
 export async function loader() {
   const { getCompilationExamples } = await import('~/features/mdx/getMDXBySlug')
@@ -41,9 +44,10 @@ export default function TamaguiHomePage() {
         description="React Native style library and UI kit with the best web performance"
       />
 
-      <ThemeNameEffectNoTheme disableTint={3} colorKey="$color3" />
+      <ThemeNameEffect colorKey="$color3" />
 
       <HomeGlow />
+
       <YStack
         fullscreen
         className="grain"

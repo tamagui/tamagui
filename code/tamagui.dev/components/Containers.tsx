@@ -16,6 +16,7 @@ export const Container = styled(YStack, {
   position: 'relative',
 
   $gtSm: {
+    px: '$6',
     maxW: 760,
   },
 

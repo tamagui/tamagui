@@ -1,4 +1,4 @@
-import { ThemeTintAlt, useTint } from '@tamagui/logo'
+import { ThemeTintAlt } from '@tamagui/logo'
 import { memo } from 'react'
 import {
   Button,
@@ -8,9 +8,7 @@ import {
   Spacer,
   Span,
   Text,
-  Theme,
   TooltipSimple,
-  View,
   VisuallyHidden,
   XStack,
   YStack,
@@ -59,7 +57,7 @@ const HeroSubTitle = memo(() => {
 })
 
 const HeroContents = memo(function HeroContents() {
-  const { name, tint } = useTint()
+  // const { name, tint } = useTint()
 
   return (
     <ContainerLarge position="relative">
@@ -118,7 +116,7 @@ const HeroContents = memo(function HeroContents() {
             }}
           >
             <Span position="relative" color="$accent1">
-              <View
+              {/* <View
                 position="absolute"
                 inset={0}
                 bg="$accent3"
@@ -139,7 +137,7 @@ const HeroContents = memo(function HeroContents() {
                 scaleY={0.9}
                 scaleX={1.1}
                 // z={2}
-              />
+              /> */}
               <Span position="relative" z={5}>
                 Write less
               </Span>

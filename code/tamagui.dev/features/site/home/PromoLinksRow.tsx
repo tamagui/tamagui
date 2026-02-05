@@ -12,7 +12,7 @@ export const PromoLinksRow = () => {
 
   return (
     <TooltipGroup delay={tooltipDelay}>
-      <Tooltip scope="promo-tooltip" offset={12} placement="bottom">
+      <Tooltip scope="promo-tooltip" offset={20} placement="bottom">
         <XGroup position="absolute" self="center" y={-80} rounded="$8">
           <Tooltip.Trigger
             scope="promo-tooltip"

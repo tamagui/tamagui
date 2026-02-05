@@ -161,9 +161,9 @@ export function PurchaseModalContents() {
       return (
         <YStack>
           <YStack $gtMd={{ gap: '$6' }} gap="$5">
-            <BigP mt={-10} text="center" size="$4" $gtXs={{ size: '$6' }}>
-              The new Takeout stack represents years of effort: AI&nbsp;integration, docs,
-              scripting, and UI result in remarkably fast development.
+            <BigP mt={-10} text="center">
+              We've put together tools that make starting and building a universal app as
+              good as it gets.
             </BigP>
 
             <XStack
@@ -205,11 +205,11 @@ export function PurchaseModalContents() {
                 justifyContent: 'space-between',
               }}
             >
-              <YStack gap="$2" flexShrink={1} $gtMd={{ flex: 1 }}>
+              <YStack gap="$1" flexShrink={1} $gtMd={{ flex: 1 }}>
                 <Paragraph fontFamily="$mono" fontWeight="600" size="$5">
                   Support Level
                 </Paragraph>
-                <Paragraph fontFamily="$mono" size="$4" color="$color9">
+                <Paragraph size="$4" color="$color8">
                   {SUPPORT_TIERS[supportTier].description}
                 </Paragraph>
               </YStack>
@@ -227,16 +227,15 @@ export function PurchaseModalContents() {
                   <YStack
                     key={tier}
                     items="center"
-                    gap="$0.5"
                     py="$2"
                     px="$4"
-                    bg={supportTier === tier ? '$color4' : '$color1'}
+                    bg={supportTier === tier ? '$color3' : '$color1'}
                     hoverStyle={{ bg: supportTier === tier ? '$color4' : '$color2' }}
                     pressStyle={{ bg: '$color3' }}
                     cursor="pointer"
                     onPress={() => setSupportTier(tier)}
                   >
-                    <Paragraph fontWeight="600" size="$3">
+                    <Paragraph fontWeight="600" size="$3" mb={-3}>
                       {SUPPORT_TIERS[tier].label}
                     </Paragraph>
                     <Paragraph size="$2" color="$color9">
@@ -249,10 +248,10 @@ export function PurchaseModalContents() {
 
             <Separator />
 
-            <P size="$2" color="$color9">
+            <Paragraph size="$5" color="$color9">
               License covers one project: your web domain + iOS app + Android app. After
               the first year, continue receiving updates for $100/year (auto-subscribed).
-            </P>
+            </Paragraph>
 
             {/* Enterprise Notice */}
             <Theme name="yellow">

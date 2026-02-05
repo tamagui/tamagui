@@ -7,19 +7,20 @@ import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
 
 export default function DocsLayout() {
   // disabled route-based tint changes
-  const themeName = null
+  // const themeName = useThemeName()
 
   return (
-    <ThemeNameEffect theme={themeName} colorKey="$color1">
+    <>
+      <ThemeNameEffect colorKey="$color1" />
       <YStack
         position="absolute"
         inset={0}
         maxH={1000}
         z={0}
-        backgroundImage="linear-gradient($color4, $colorTransparent)"
+        backgroundImage="linear-gradient($color3, $colorTransparent)"
       />
 
-      <YStack z={-1} fullscreen bg="$accent12" />
+      {/* <YStack z={-1} fullscreen bg="$accent12" /> */}
 
       {/* main layout container */}
       <YStack minH="100vh" position="relative" z={1}>
@@ -53,6 +54,6 @@ export default function DocsLayout() {
 
       {/* footer outside the main layout */}
       <Footer />
-    </ThemeNameEffect>
+    </>
   )
 }

@@ -1,6 +1,6 @@
 import { LogoWords, setTintFamily, TamaguiLogo, ThemeTint, useTint } from '@tamagui/logo'
 import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons'
-import { isTouchable, Theme, useGet, useMedia } from '@tamagui/web'
+import { isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
 import * as React from 'react'
 import { useWindowDimensions, type LayoutRectangle } from 'react-native'
@@ -16,7 +16,6 @@ import {
   Separator,
   Sheet,
   SizableText,
-  Span,
   styled,
   TooltipGroup,
   useComposedRefs,
@@ -414,9 +413,9 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
       </SlidingPopoverContext.Provider>
 
       <Adapt platform="touch" when="sm">
-        <Sheet zIndex={100000000} modal dismissOnSnapToBottom>
+        <Sheet transition={'quicker'} zIndex={100000000} modal dismissOnSnapToBottom>
           <Sheet.Frame>
-            <Sheet.ScrollView>
+            <Sheet.ScrollView showsVerticalScrollIndicator={false}>
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>
@@ -560,7 +559,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
   }, [active])
 
   const { height } = useWindowDimensions()
-  const maxHeight = height - 50
+  const maxHeight = height - 150
 
   const heights = {
     core: Math.min(maxHeight, 1300),
@@ -913,7 +912,7 @@ const HeaderMenuMoreContents = () => {
       <Link asChild href="https://addeven.com" target="_blank">
         <HeadAnchor grid render="a">
           <XStack items="center">
-            Add Even
+            <SizableText>Add Even</SizableText>
             <YStack
               ml={3}
               display={'inline-block' as any}
@@ -1022,7 +1021,7 @@ const HeadAnchor = styled(Paragraph, {
   px: '$4',
   py: '$4',
   cursor: 'pointer',
-  fontSize: 16,
+  fontSize: 18,
   color: '$color11',
 
   hoverStyle: {

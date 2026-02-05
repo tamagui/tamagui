@@ -1,11 +1,11 @@
 // @ts-expect-error - bento component wildcard import
 import { LocationNotification } from '@tamagui/bento/component/user/preferences/LocationNotification'
-import { ThemeTintAlt, ThemeTint } from '@tamagui/logo'
-import { YStack, XStack, Spacer, Paragraph, Circle, Theme, Button } from 'tamagui'
-import { ContainerLarge } from './Containers'
+import { ThemeTint, ThemeTintAlt } from '@tamagui/logo'
+import { Button, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
 import { BentoLogo } from '../features/bento/BentoLogo'
-import { useSubscriptionModal } from '../features/site/purchase/useSubscriptionModal'
 import { LoadCherryBomb } from '../features/site/fonts/LoadFonts'
+import { useSubscriptionModal } from '../features/site/purchase/useSubscriptionModal'
+import { ContainerLarge } from './Containers'
 
 export const BentoHero = () => {
   const { showAppropriateModal } = useSubscriptionModal()
