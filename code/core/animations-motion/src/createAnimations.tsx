@@ -630,12 +630,27 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     const delay =
       typeof normalized.delay === 'number' ? normalized.delay / 1000 : undefined
 
+    // Convert global config overrides from ms to seconds where needed
+    let globalConfigOverride: Record<string, unknown> | undefined
+    if (normalized.config) {
+      globalConfigOverride = { ...normalized.config }
+      if (typeof normalized.config.duration === 'number') {
+        globalConfigOverride.duration = normalized.config.duration / 1000
+      }
+    }
+
     // Build the animation options
     const result: TransitionAnimationOptions = {}
 
-    // Set default animation config
+    // Set default animation config with global overrides
     if (defaultConfig) {
-      result.default = delay ? { ...defaultConfig, delay } : defaultConfig
+      result.default = {
+        ...defaultConfig,
+        ...globalConfigOverride,
+        ...(delay ? { delay } : null),
+      }
+    } else if (globalConfigOverride) {
+      result.default = globalConfigOverride as any
     }
 
     // Add property-specific animations

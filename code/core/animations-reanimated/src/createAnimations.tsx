@@ -499,6 +499,11 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           base = { ...base, delay: normalized.delay }
         }
 
+        // Apply global spring config overrides (from transition={['bouncy', { stiffness: 1000 }]})
+        if (normalized.config) {
+          base = { ...base, ...normalized.config }
+        }
+
         // Build per-property overrides from normalized properties
         const overrides: Record<string, TransitionConfig> = {}
 

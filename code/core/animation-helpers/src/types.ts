@@ -21,6 +21,23 @@ export type AnimationConfig = {
 export type TransitionPropInput = any
 
 /**
+ * Spring configuration parameters that can override preset defaults.
+ * These are the common parameters across animation drivers.
+ */
+export type SpringConfig = {
+  stiffness?: number
+  damping?: number
+  mass?: number
+  tension?: number
+  friction?: number
+  velocity?: number
+  overshootClamping?: boolean
+  duration?: number
+  bounciness?: number
+  speed?: number
+}
+
+/**
  * Normalized output format that all animation drivers consume.
  * Provides a consistent structure regardless of input format.
  */
@@ -35,4 +52,6 @@ export type NormalizedTransition = {
   delay: number | undefined
   /** Per-property animation configs: propertyName -> animationKey or config */
   properties: Record<string, string | AnimationConfig>
+  /** Global spring config overrides that merge with the preset defaults */
+  config?: SpringConfig
 }

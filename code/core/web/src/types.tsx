@@ -1414,29 +1414,58 @@ export type MatchMedia = (query: string) => MediaQueryList
 // TODO can override for better types
 export type AnimationConfigType = any
 
+/**
+ * Spring configuration parameters that can override preset defaults.
+ * Use with array syntax: transition={['bouncy', { stiffness: 1000, damping: 70 }]}
+ */
+export type TransitionSpringConfig = {
+  stiffness?: number
+  damping?: number
+  mass?: number
+  tension?: number
+  friction?: number
+  velocity?: number
+  overshootClamping?: boolean
+  duration?: number
+  bounciness?: number
+  speed?: number
+}
+
 export type TransitionProp =
   | TransitionKeys
-  | {
-      [key: string]:
-        | TransitionKeys
-        | {
-            type: TransitionKeys
-            [key: string]: any
-          }
-    }
+  | ({
+      default?: TransitionKeys
+      enter?: TransitionKeys
+      exit?: TransitionKeys
+      delay?: number
+    } & TransitionSpringConfig & {
+        [key: string]:
+          | TransitionKeys
+          | {
+              type: TransitionKeys
+              [key: string]: any
+            }
+          | number
+          | boolean
+          | undefined
+      })
   | [
       TransitionKeys,
       {
         delay?: number
-        [key: string]:
-          | TransitionKeys
-          | {
-              type?: TransitionKeys
-              [key: string]: any
-            }
-          | number
-          | undefined
-      },
+        enter?: TransitionKeys
+        exit?: TransitionKeys
+      } & TransitionSpringConfig & {
+          [key: string]:
+            | TransitionKeys
+            | {
+                type?: TransitionKeys
+                [key: string]: any
+              }
+            | number
+            | boolean
+            | undefined
+        },
     ]
 
 /**
