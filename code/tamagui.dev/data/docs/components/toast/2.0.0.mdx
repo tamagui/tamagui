@@ -27,17 +27,26 @@ demoName: Toast
 
 ## Installation
 
-Note that `@tamagui/toast` is the only UI package not included by default in `tamagui`. The reason for this is that Metro would force you to install the native `burnt` dependency, and that would mean `tamagui` wouldn't work with Expo Go and would require a native install step no matter if you used Toast or not. This is due to a limitation in Metro.
-
-To install toast:
+Toast is included by default in `tamagui`. If you're using it standalone:
 
 ```bash
-yarn add @tamagui/toast burnt
+yarn add @tamagui/toast
 ```
 
-Then, if targeting native, rebuild your React Native app. React Native requires sub-dependencies with native dependencies always be hoisted to your apps package.json and Toast relies on the amazing [Burnt](https://github.com/nandorojo/burnt) library by Fernando Rojo to provide its native functionality.
+### Native Toast Setup
 
-We're open to a refactor that moves the burnt dependency into a sub-path like `@tamagui/toast/burnt` and forces setup through there, that likely fixes the Metro issue and allow us to include it by default.
+For native toasts on iOS/Android (using [Burnt](https://github.com/nandorojo/burnt) by Fernando Rojo), install the native dependency and import the setup module:
+
+```bash
+yarn add burnt
+```
+
+```tsx
+// App.tsx - before any Tamagui imports
+import '@tamagui/native/setup-burnt'
+```
+
+Then rebuild your React Native app. Without this setup, toasts will still work but the `native` prop will have no effect on mobile.
 
 ## Anatomy
 

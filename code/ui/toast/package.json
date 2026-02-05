@@ -53,23 +53,17 @@
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/native": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "burnt": "^0.12.2",
     "react": ">=19",
     "react-native": "0.81.5"
   },
   "peerDependencies": {
-    "burnt": "^0.12.2",
     "react": ">=19",
     "react-native": "*"
-  },
-  "peerDependenciesMeta": {
-    "burnt": {
-      "optional": true
-    }
   },
   "module:jsx": "dist/jsx"
 }

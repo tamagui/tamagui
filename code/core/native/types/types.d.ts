@@ -57,5 +57,10 @@ export interface ZeegoState {
 	DropdownMenu: any;
 	ContextMenu: any;
 }
+export interface BurntState {
+	enabled: boolean;
+	toast: ((options: any) => void) | null;
+	dismissAllAlerts: (() => void) | null;
+}
 
 //# sourceMappingURL=types.d.ts.map

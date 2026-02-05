@@ -1,13 +1,19 @@
+import { getBurnt } from '@tamagui/native'
 import type { CreateNativeToastsFn, HideNativeToastsFn } from './types'
 
 export const createNativeToast: CreateNativeToastsFn = (
   title,
   { message, duration, burntOptions }
 ) => {
-  // import inline to allow lazy usage of native dependecy:
-  const Burnt = require('burnt') as typeof import('burnt')
+  const burnt = getBurnt()
+  if (!burnt.isEnabled) {
+    console.warn(
+      `Warning: Must call import '@tamagui/native/setup-burnt' at your app entry point to use native toasts`
+    )
+    return false
+  }
 
-  Burnt.toast({
+  burnt.state.toast!({
     title,
     message,
     duration: duration ? duration / 1000 : undefined,
@@ -17,6 +23,7 @@ export const createNativeToast: CreateNativeToastsFn = (
 }
 
 export const hideNativeToast: HideNativeToastsFn = () => {
-  const Burnt = require('burnt') as typeof import('burnt')
-  Burnt.dismissAllAlerts()
+  const burnt = getBurnt()
+  if (!burnt.isEnabled) return
+  burnt.state.dismissAllAlerts!()
 }

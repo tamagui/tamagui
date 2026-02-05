@@ -858,6 +858,7 @@
       "version": "2.0.0-rc.4",
       "devDependencies": {
         "@tamagui/build": "workspace:*",
+        "burnt": "^0.12.2",
         "react": ">=19",
         "react-native": "0.81.5",
         "react-native-gesture-handler": "~2.28.0",
@@ -869,6 +870,7 @@
       },
       "peerDependencies": {
         "@react-native-menu/menu": ">=2.0.0",
+        "burnt": ">=0.12.0",
         "react": "*",
         "react-native": "*",
         "react-native-gesture-handler": ">=2.0.0",
@@ -883,6 +885,7 @@
       },
       "optionalPeers": [
         "@react-native-menu/menu",
+        "burnt",
         "react-native-gesture-handler",
         "react-native-ios-context-menu",
         "react-native-ios-utilities",
@@ -3271,6 +3274,7 @@
         "@tamagui/create-context": "workspace:*",
         "@tamagui/dismissable": "workspace:*",
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/native": "workspace:*",
         "@tamagui/polyfill-dev": "workspace:*",
         "@tamagui/portal": "workspace:*",
         "@tamagui/stacks": "workspace:*",
@@ -3281,18 +3285,13 @@
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
-        "burnt": "^0.12.2",
         "react": ">=19",
         "react-native": "0.81.5",
       },
       "peerDependencies": {
-        "burnt": "^0.12.2",
         "react": ">=19",
         "react-native": "*",
       },
-      "optionalPeers": [
-        "burnt",
-      ],
     },
     "code/ui/toggle-group": {
       "name": "@tamagui/toggle-group",
@@ -3360,6 +3359,7 @@
         "@tamagui/create-context": "workspace:*",
         "@tamagui/dismissable": "workspace:*",
         "@tamagui/helpers": "workspace:*",
+        "@tamagui/native": "workspace:*",
         "@tamagui/polyfill-dev": "workspace:*",
         "@tamagui/portal": "workspace:*",
         "@tamagui/stacks": "workspace:*",
@@ -3370,18 +3370,13 @@
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
-        "burnt": "^0.12.2",
         "react": ">=19",
         "react-native": "0.81.5",
       },
       "peerDependencies": {
-        "burnt": "^0.12.2",
         "react": "*",
         "react-native": "*",
       },
-      "optionalPeers": [
-        "burnt",
-      ],
     },
     "code/ui/visually-hidden": {
       "name": "@tamagui/visually-hidden",
