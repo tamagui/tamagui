@@ -124,6 +124,8 @@ export type ScrollBridge = {
   forceScrollTo?: (y: number) => void
   // whether sheet is at top position (for scroll enable/disable)
   isAtTop?: boolean
+  // snap sheet to a specific position (for handoff UP)
+  snapToPosition?: (positionIndex: number) => void
 }
 
 // keyboard controller sheet types

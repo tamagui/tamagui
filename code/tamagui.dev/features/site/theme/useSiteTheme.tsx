@@ -10,8 +10,6 @@ export const useSiteTheme = () => {
   const themeName: any = `studiodemointernal${store.themeSuiteUID}`
   const enabled = !bentoStore.disableCustomTheme && store.themeSuiteUID
 
-  console.warn('themeName', themeName)
-
   // disable tint sub-themes when custom theme is active (it doesn't have them)
   useEffect(() => {
     setDisableTintTheme(!!enabled)

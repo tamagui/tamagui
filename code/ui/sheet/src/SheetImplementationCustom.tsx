@@ -1,7 +1,7 @@
 import { ProvideAdaptContext, useAdaptContext } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { currentPlatform, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   LayoutMeasurementController,
   View as TamaguiView,
@@ -11,6 +11,7 @@ import {
   useEvent,
   useThemeName,
 } from '@tamagui/core'
+import { getSafeArea } from '@tamagui/native'
 import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import React, { useState } from 'react'
 import type {
@@ -23,7 +24,6 @@ import { Dimensions, PanResponder, View } from 'react-native'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { GestureDetectorWrapper } from './GestureDetectorWrapper'
 import { GestureSheetProvider } from './GestureSheetContext'
-import { getSafeArea } from '@tamagui/native'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
@@ -417,10 +417,13 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         isExternalDrag = false
         previouslyScrolling = false
         setPanning(false)
-        const at = dragAt + startY
-        // seems liky vy goes up to about 4 at the very most (+ is down, - is up)
-        // lets base our multiplier on the total layout height
-        const end = at + frameSize * vy * 0.2
+        // use the actual current animated position rather than dragAt + startY.
+        // after mid-gesture handoffs (pan→scroll→pan), startY can be stale
+        // causing the computed position to be wildly wrong (triggering dismiss).
+        const currentPos = at.current
+        // vy goes up to about 4 at most (+ is down, - is up)
+        const end = currentPos + frameSize * vy * 0.2
+
         let closestPoint = 0
         let dist = Number.POSITIVE_INFINITY
 
@@ -512,6 +515,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
 
       scrollBridge.release = release
+
+      // direct snap to position without release calculation (for handoff cases)
+      scrollBridge.snapToPosition = (positionIndex: number) => {
+        isExternalDrag = false
+        previouslyScrolling = false
+        setPanning(false)
+        setPosition(positionIndex)
+        animateTo(positionIndex)
+      }
 
       return PanResponder.create({
         onMoveShouldSetPanResponder: onMoveShouldSet,

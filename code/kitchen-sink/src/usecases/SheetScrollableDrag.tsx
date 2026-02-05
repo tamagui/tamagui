@@ -20,6 +20,8 @@ export function SheetScrollableDrag() {
   const [minScrollY, setMinScrollY] = useState(0)
   const [maxScrollY, setMaxScrollY] = useState(0)
   const [itemCount, setItemCount] = useState(20)
+  const [maxPosition, setMaxPosition] = useState(0)
+  const [unexpectedClose, setUnexpectedClose] = useState(false)
   const lastScrollY = useRef(0)
 
   const rnghEnabled = getGestureHandler().isEnabled
@@ -80,6 +82,7 @@ export function SheetScrollableDrag() {
             setScrollEventCount(0)
             setMinScrollY(0)
             setMaxScrollY(0)
+            setMaxPosition(0)
             setDragEvents([])
             setItemCount(10)
             lastScrollY.current = 0
@@ -104,6 +107,12 @@ export function SheetScrollableDrag() {
         <Text testID="sheet-scrollable-drag-max-scroll-y">
           Max scroll Y: {maxScrollY.toFixed(0)}
         </Text>
+        <Text testID="sheet-scrollable-drag-max-position">
+          Max position: {maxPosition}
+        </Text>
+        <Text testID="sheet-scrollable-drag-unexpected-close">
+          Unexpected close: {unexpectedClose ? 'yes' : 'no'}
+        </Text>
         <Text testID="sheet-scrollable-drag-events">
           Events: {dragEvents.join(', ') || '(none)'}
         </Text>
@@ -122,12 +131,19 @@ export function SheetScrollableDrag() {
       <Sheet
         modal
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={(val) => {
+          if (!val && open) {
+            // sheet closing while it was open - track this
+            setUnexpectedClose(true)
+          }
+          setOpen(val)
+        }}
         snapPoints={[85, 50]}
         snapPointsMode="percent"
         position={position}
         onPositionChange={(pos) => {
           setPosition(pos)
+          setMaxPosition((prev) => Math.max(prev, pos))
           addEvent(`snap:${pos}`)
         }}
         dismissOnSnapToBottom

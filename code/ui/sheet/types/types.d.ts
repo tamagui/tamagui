@@ -97,6 +97,7 @@ export type ScrollBridge = {
     scrollLockY?: number;
     forceScrollTo?: (y: number) => void;
     isAtTop?: boolean;
+    snapToPosition?: (positionIndex: number) => void;
 };
 export interface KeyboardControllerSheetOptions {
     /**
