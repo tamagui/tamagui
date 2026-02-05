@@ -45,7 +45,9 @@ export default function SiteLayout() {
 
   const disableNew = isBlog || isAuthPage || isProductLandingPage || isAccountPage
   const showAuth = isAuthPage || isProductLandingPage || isAccountPage
-  const hideFooter = isDocs || isTakeout || isBento
+  const hideFooter = isDocs || isTakeout || isBento || isAuthPage
+  const hideHeader = isAuthPage
+  const hidePromoBanner = isAuthPage
 
   const { themeName, enabled } = useSiteTheme()
 
@@ -59,13 +61,13 @@ export default function SiteLayout() {
       {/* stats */}
       <script defer src="https://assets.onedollarstats.com/stonks.js" />
 
-      <PromoBanner />
-      <Header showAuth={showAuth} disableNew={disableNew} />
+      {!hidePromoBanner && <PromoBanner />}
+      {!hideHeader && <Header showAuth={showAuth} disableNew={disableNew} />}
       <LoadCherryBomb prefetch />
       <Modals />
       <LoadProgressBar />
       <Theme name={customThemeName}>
-        <YStack inset={0} position="absolute" bg="$color1" z={0} pointerEvents="none" />
+        <YStack inset={0} position="absolute" bg="$color1" z={-1} pointerEvents="none" />
         <ThemeNameEffect colorKey="$color1" disableTint={customThemeActive} />
         <Slot />
       </Theme>

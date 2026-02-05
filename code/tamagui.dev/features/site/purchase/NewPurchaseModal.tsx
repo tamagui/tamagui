@@ -402,33 +402,78 @@ export function PurchaseModalContents() {
                   }}
                 >
                   <YStack
-                    gap="$1"
+                    gap="$2"
                     width="100%"
                     $gtXs={{ flex: 1, flexBasis: 'auto', width: '40%' }}
                   >
-                    <XStack items="baseline" gap="$2" flexWrap="wrap">
-                      <H3 size="$9" $gtXs={{ size: '$11' }} letterSpacing={-2}>
-                        $
-                        {Intl.NumberFormat('en-US').format(
-                          calculatePromoPrice(V2_PRICE, store.activePromo)
-                        )}
-                      </H3>
-
-                      {store.activePromo && (
-                        <XStack items="baseline" gap="$1">
+                    {/* price breakdown */}
+                    <YStack gap="$1">
+                      {/* original price - only show if there's any discount */}
+                      {(store.activePromo || parityDeals) && (
+                        <XStack items="center" gap="$2">
                           <Paragraph
-                            size="$4"
+                            size="$3"
                             color="$color8"
                             textDecorationLine="line-through"
                           >
                             ${Intl.NumberFormat('en-US').format(V2_PRICE)}
                           </Paragraph>
-                          <Paragraph size="$2" color="$color8">
+                          <Paragraph size="$2" color="$color9">
+                            original
+                          </Paragraph>
+                        </XStack>
+                      )}
+
+                      {/* after beta discount */}
+                      {store.activePromo && (
+                        <XStack items="center" gap="$2">
+                          <Paragraph
+                            size="$3"
+                            color={parityDeals ? '$color8' : '$color11'}
+                            textDecorationLine={parityDeals ? 'line-through' : 'none'}
+                          >
+                            $
+                            {Intl.NumberFormat('en-US').format(
+                              calculatePromoPrice(V2_PRICE, store.activePromo)
+                            )}
+                          </Paragraph>
+                          <Paragraph size="$2" color="$color9">
                             {store.activePromo.description}
                           </Paragraph>
                         </XStack>
                       )}
-                    </XStack>
+
+                      {/* after parity discount (final price) */}
+                      {parityDeals && (
+                        <XStack items="center" gap="$2">
+                          <Paragraph size="$3" color="$green10">
+                            $
+                            {Intl.NumberFormat('en-US').format(
+                              Math.round(
+                                calculatePromoPrice(V2_PRICE, store.activePromo) *
+                                  (1 - Number(parityDeals.discountPercentage) / 100)
+                              )
+                            )}
+                          </Paragraph>
+                          <Paragraph size="$2" color="$green9">
+                            {parityDeals.flag} {parityDeals.discountPercentage}% parity
+                          </Paragraph>
+                        </XStack>
+                      )}
+                    </YStack>
+
+                    {/* final price display */}
+                    <H3 size="$9" $gtXs={{ size: '$11' }} letterSpacing={-2}>
+                      $
+                      {Intl.NumberFormat('en-US').format(
+                        parityDeals
+                          ? Math.round(
+                              calculatePromoPrice(V2_PRICE, store.activePromo) *
+                                (1 - Number(parityDeals.discountPercentage) / 100)
+                            )
+                          : calculatePromoPrice(V2_PRICE, store.activePromo)
+                      )}
+                    </H3>
 
                     <Paragraph color="$color9" size="$3">
                       One payment, one year updates, $100/year subscription

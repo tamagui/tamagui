@@ -128,9 +128,10 @@ function SignIn() {
             disabled={loading}
             onClick={() => handleOAuthSignIn('github')}
             size="$4"
-            icon={GithubIcon}
+            icon={loading ? <Spinner size="small" /> : GithubIcon}
+            opacity={loading ? 0.5 : 1}
           >
-            Continue with GitHub
+            {loading ? 'Redirecting...' : 'Continue with GitHub'}
           </Button>
 
           {!emailAuthDisabledFlag && (
