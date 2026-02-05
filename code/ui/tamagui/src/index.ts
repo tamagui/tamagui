@@ -23,9 +23,6 @@ export * from '@tamagui/helpers-tamagui'
 export * from '@tamagui/image'
 export * from '@tamagui/label'
 export * from '@tamagui/list-item'
-export * from '@tamagui/menu'
-export * from '@tamagui/context-menu'
-export * from '@tamagui/create-menu'
 export * from '@tamagui/popover'
 export * from '@tamagui/popper'
 export * from '@tamagui/portal'
@@ -42,7 +39,6 @@ export * from '@tamagui/switch'
 export * from '@tamagui/tabs'
 export * from '@tamagui/text'
 export * from '@tamagui/theme'
-export * from '@tamagui/toast'
 export * from '@tamagui/toggle-group'
 export * from '@tamagui/tooltip'
 export * from '@tamagui/use-controllable-state'
@@ -50,20 +46,6 @@ export * from '@tamagui/use-debounce'
 export * from '@tamagui/use-force-update'
 export * from '@tamagui/element'
 export * from '@tamagui/use-window-dimensions'
-// v2-toast - export only non-conflicting items (types shared with @tamagui/toast are already exported)
-export { toast, Toaster } from '@tamagui/v2-toast'
-export type {
-  ToastT,
-  ToastType,
-  ToastToDismiss,
-  ExternalToast,
-  PromiseT,
-  PromiseData,
-  ToastAction,
-  ToasterProps,
-  ToasterPosition,
-  HeightT,
-} from '@tamagui/v2-toast'
 export * from '@tamagui/visually-hidden'
 
 export * from './createTamagui'
