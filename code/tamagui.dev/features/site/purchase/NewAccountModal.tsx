@@ -61,6 +61,15 @@ import {
   type TeamMember,
   type TeamSubscription,
 } from './useTeamSeats'
+import {
+  getParityCountryOverride,
+  setParityCountryOverride,
+  useParityDiscount,
+} from '~/hooks/useParityDiscount'
+import {
+  COUNTRY_NAMES,
+  getParityDiscount as getParityDiscountForCountry,
+} from '~/features/geo-pricing/parityConfig'
 
 const AddTeamMemberModalComponent = lazy(() =>
   import('./AddTeamMemberModal').then((mod) => ({
@@ -2385,14 +2394,14 @@ type WhitelistEntry = {
   created_by: string | null
 }
 
-type AdminSubTab = 'purchases' | 'whitelist'
+type AdminSubTab = 'purchases' | 'whitelist' | 'parity'
 
 const AdminTab = () => {
   const [subTab, setSubTab] = useState<AdminSubTab>('purchases')
 
   return (
     <YStack gap="$4">
-      <XStack gap="$2">
+      <XStack gap="$2" flexWrap="wrap">
         <Button
           size="$3"
           theme={subTab === 'purchases' ? 'accent' : undefined}
@@ -2409,12 +2418,21 @@ const AdminTab = () => {
         >
           <Button.Text>Whitelist</Button.Text>
         </Button>
+        <Button
+          size="$3"
+          theme={subTab === 'parity' ? 'accent' : undefined}
+          onPress={() => setSubTab('parity')}
+          chromeless={subTab !== 'parity'}
+        >
+          <Button.Text>Parity</Button.Text>
+        </Button>
       </XStack>
 
       <Separator />
 
       {subTab === 'purchases' && <AdminPurchasesSubTab />}
       {subTab === 'whitelist' && <AdminWhitelistSubTab />}
+      {subTab === 'parity' && <AdminParitySubTab />}
     </YStack>
   )
 }
@@ -2755,6 +2773,127 @@ const AdminWhitelistSubTab = () => {
             </XStack>
           ))
         )}
+      </YStack>
+    </YStack>
+  )
+}
+
+// sample countries from each parity tier for quick testing
+const PARITY_SAMPLE_COUNTRIES = {
+  '40% off': ['IN', 'PK', 'UA', 'VN', 'PH'],
+  '30% off': ['BR', 'MX', 'AR', 'TR', 'ZA'],
+  '25% off': ['CN', 'TW', 'KR', 'IT', 'ES'],
+  '15% off': ['DE', 'FR', 'JP', 'SE', 'NL'],
+  '0% (no discount)': ['US', 'GB', 'AU', 'CA', 'CH'],
+}
+
+function countryCodeToFlag(countryCode: string): string {
+  if (!countryCode || countryCode.length !== 2) return '🌍'
+  const code = countryCode.toUpperCase()
+  const offset = 127397
+  return String.fromCodePoint(code.charCodeAt(0) + offset, code.charCodeAt(1) + offset)
+}
+
+const AdminParitySubTab = () => {
+  const { parityDeals } = useParityDiscount()
+  const [currentOverride, setCurrentOverride] = useState<string | null>(null)
+
+  useEffect(() => {
+    setCurrentOverride(getParityCountryOverride())
+  }, [])
+
+  const handleSetCountry = (countryCode: string) => {
+    setParityCountryOverride(countryCode)
+    setCurrentOverride(countryCode)
+  }
+
+  const handleClearOverride = () => {
+    setParityCountryOverride(null)
+    setCurrentOverride(null)
+  }
+
+  return (
+    <YStack gap="$6">
+      <YStack gap="$2">
+        <H3>Parity Pricing Preview</H3>
+        <Paragraph color="$color10">
+          Test how the site appears to users from different countries. This only affects
+          the UI preview — actual payments still use real geo-detection.
+        </Paragraph>
+      </YStack>
+
+      {/* current status */}
+      <YStack
+        bg={currentOverride ? '$yellow3' : '$green3'}
+        rounded="$4"
+        borderWidth={0.5}
+        borderColor={currentOverride ? '$yellow8' : '$green8'}
+        p="$3"
+        gap="$3"
+      >
+        <XStack gap="$3" items="center" flexWrap="wrap">
+          <Paragraph
+            size="$4"
+            color={currentOverride ? '$yellow11' : '$green11'}
+            flex={1}
+          >
+            {currentOverride ? (
+              <>
+                Viewing as:{' '}
+                <Paragraph fontWeight="bold" tag="span">
+                  {countryCodeToFlag(currentOverride)}{' '}
+                  {COUNTRY_NAMES[currentOverride] || currentOverride} (
+                  {getParityDiscountForCountry(currentOverride)}% off)
+                </Paragraph>
+              </>
+            ) : (
+              'No override active — using real location'
+            )}
+          </Paragraph>
+          {currentOverride && (
+            <Button size="$2" theme="red" onPress={handleClearOverride}>
+              <Button.Text>Clear Override</Button.Text>
+            </Button>
+          )}
+        </XStack>
+      </YStack>
+
+      {/* current parity deals display */}
+      {parityDeals && (
+        <XStack bg="$color2" rounded="$4" borderWidth={0.5} borderColor="$color5" p="$3">
+          <Paragraph size="$3" color="$color11">
+            Current parity: {parityDeals.flag} {parityDeals.country} —{' '}
+            {parityDeals.discountPercentage}% discount
+          </Paragraph>
+        </XStack>
+      )}
+
+      {/* quick select by tier */}
+      <YStack gap="$4">
+        {Object.entries(PARITY_SAMPLE_COUNTRIES).map(([tierLabel, countries]) => (
+          <YStack key={tierLabel} gap="$2">
+            <Paragraph fontWeight="600" size="$3" color="$color10">
+              {tierLabel}
+            </Paragraph>
+            <XStack gap="$2" flexWrap="wrap">
+              {countries.map((code) => {
+                const isActive = currentOverride === code
+                return (
+                  <Button
+                    key={code}
+                    size="$3"
+                    bg={isActive ? '$color8' : '$color3'}
+                    onPress={() => handleSetCountry(code)}
+                  >
+                    <Button.Text>
+                      {countryCodeToFlag(code)} {COUNTRY_NAMES[code] || code}
+                    </Button.Text>
+                  </Button>
+                )
+              })}
+            </XStack>
+          </YStack>
+        ))}
       </YStack>
     </YStack>
   )

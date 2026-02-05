@@ -1,6 +1,6 @@
 import { useParams } from 'one'
 import { H1, YStack } from 'tamagui'
-import { AllTests } from '~/components/allComponents'
+// import { AllTests } from '~/components/allComponents'
 
 export function generateStaticParams() {
   return [{ slug: 'a' }]
@@ -8,15 +8,16 @@ export function generateStaticParams() {
 
 export function TestPage() {
   const params = useParams<any>()
-  const Component = AllTests[params.slug]
+  // const Component = AllTests[params.slug]
 
-  if (!Component) {
-    return <H1>No Test!</H1>
-  }
+  return null
+  // if (!Component) {
+  //   return <H1>No Test!</H1>
+  // }
 
-  return (
-    <YStack flex={1}>
-      <Component />
-    </YStack>
-  )
+  // return (
+  //   <YStack flex={1}>
+  //     <Component />
+  //   </YStack>
+  // )
 }

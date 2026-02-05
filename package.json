@@ -74,7 +74,7 @@
     "check:references:fix": "bun ./scripts/check-references.ts --fix",
     "repair": "bun ./scripts/repair.ts",
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\"",
-    "sandbox": "bun --filter sandbox run dev",
+    "sandbox": "bun --filter sandbox dev",
     "scripts:format": "node -r esbuild-register ./scripts/format.ts",
     "scripts:setup": "node -r esbuild-register ./scripts/setup.ts",
     "starter:native": "bun --filter @tamagui/starter run native",

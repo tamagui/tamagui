@@ -7,16 +7,19 @@ import { getParityDiscount, getCountryName } from '~/features/geo-pricing/parity
  *
  * Security: The country is determined server-side from CF-IPCountry header,
  * which Cloudflare sets based on the user's IP. Cannot be spoofed by the client.
+ *
+ * Admin override: Allows ?country=XX query param for testing parity pricing.
+ * This is client-side only (for preview) - actual payment still uses CF-IPCountry.
  */
 export default apiRoute(async (req) => {
   // cloudflare adds this header automatically (cannot be spoofed by client)
   const countryCode = req.headers.get('CF-IPCountry')
 
-  // for local dev only, allow override via query param
+  // allow override via query param for admin testing (client-side preview only)
+  // actual payment validation still uses CF-IPCountry header
   const url = new URL(req.url)
-  const debugCountry =
-    process.env.NODE_ENV === 'development' ? url.searchParams.get('country') : null
-  const country = debugCountry || countryCode
+  const overrideCountry = url.searchParams.get('country')
+  const country = overrideCountry || countryCode
 
   const discount = getParityDiscount(country)
   const countryName = getCountryName(country)
@@ -25,6 +28,8 @@ export default apiRoute(async (req) => {
     country: country?.toUpperCase() || null,
     countryName,
     discount,
+    // flag if this is an override (for UI indication)
+    ...(overrideCountry && { isOverride: true }),
     // only include if there's a discount
     ...(discount > 0 && {
       message: `${discount}% parity discount available for ${countryName}`,

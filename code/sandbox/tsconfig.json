@@ -2,21 +2,11 @@
   "extends": "../../tsconfig",
   "compilerOptions": {
     "baseUrl": ".",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "paths": {
       "~/*": [
         "./*"
-      ],
-      // tsconfig doesnt support merging so we have to duplicate:
-      "tamagui": [
-        "../ui/tamagui"
-      ],
-      "@tamagui/*": [
-        "../core/*",
-        "../ui/*",
-        "../packages/*"
-      ],
-      "@tamagui/demos": [
-        "../demos"
       ]
     },
     "types": [

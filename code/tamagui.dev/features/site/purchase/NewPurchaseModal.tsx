@@ -16,7 +16,6 @@ import {
   Tabs,
   Text,
   Theme,
-  ToggleGroup,
   Unspaced,
   XStack,
   YStack,
@@ -46,8 +45,8 @@ export { purchaseModal, usePurchaseModal } from './purchaseModalStore'
 
 // import for internal use
 import { FaqTabContent } from './FaqTabContent'
-import { calculatePromoPrice } from './promoConfig'
 import { SUPPORT_TIERS, type SupportTier } from './paymentModalStore'
+import { calculatePromoPrice } from './promoConfig'
 
 export const NewPurchaseModal = () => {
   return <PurchaseModalContents />
