@@ -263,25 +263,25 @@ const whiteBlack = {
 }
 
 const darkShadows = {
-  shadow1: 'rgba(0,0,0,0.1)',
-  shadow2: 'rgba(0,0,0,0.2)',
-  shadow3: 'rgba(0,0,0,0.3)',
+  shadow1: 'rgba(0,0,0,0.15)',
+  shadow2: 'rgba(0,0,0,0.23)',
+  shadow3: 'rgba(0,0,0,0.33)',
   shadow4: 'rgba(0,0,0,0.45)',
   shadow5: 'rgba(0,0,0,0.65)',
-  shadow6: 'rgba(0,0,0,0.85)',
-  shadow7: 'rgba(0,0,0,0.95)',
+  shadow6: 'rgba(0,0,0,0.8)',
+  shadow7: 'rgba(0,0,0,0.9)',
   shadow8: 'rgba(0,0,0,1)',
 }
 
 const lightShadows = {
-  shadow1: 'rgba(0,0,0,0.05)',
-  shadow2: 'rgba(0,0,0,0.1)',
-  shadow3: 'rgba(0,0,0,0.15)',
-  shadow4: 'rgba(0,0,0,0.3)',
-  shadow5: 'rgba(0,0,0,0.4)',
-  shadow6: 'rgba(0,0,0,0.55)',
-  shadow7: 'rgba(0,0,0,0.7)',
-  shadow8: 'rgba(0,0,0,0.85)',
+  shadow1: 'rgba(0,0,0,0.04)',
+  shadow2: 'rgba(0,0,0,0.08)',
+  shadow3: 'rgba(0,0,0,0.12)',
+  shadow4: 'rgba(0,0,0,0.22)',
+  shadow5: 'rgba(0,0,0,0.33)',
+  shadow6: 'rgba(0,0,0,0.44)',
+  shadow7: 'rgba(0,0,0,0.6)',
+  shadow8: 'rgba(0,0,0,0.75)',
 }
 
 const darkHighlights = {
