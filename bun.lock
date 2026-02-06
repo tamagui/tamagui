@@ -439,9 +439,12 @@
       "devDependencies": {
         "@tamagui/build": "workspace:*",
       },
-      "optionalDependencies": {
+      "peerDependencies": {
         "@tamagui/animations-moti": "workspace:*",
       },
+      "optionalPeers": [
+        "@tamagui/animations-moti",
+      ],
     },
     "code/core/config-base": {
       "name": "@tamagui/config-base",
