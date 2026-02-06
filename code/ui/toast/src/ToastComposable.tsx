@@ -1006,8 +1006,9 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
           ? peekVisible * index
           : -peekVisible * index
 
-    const computedOpacity =
-      index >= ctx.visibleToasts
+    const computedOpacity = removed
+      ? 0
+      : index >= ctx.visibleToasts
         ? 0
         : !ctx.expanded && index === ctx.visibleToasts - 1
           ? 0.5
@@ -1059,12 +1060,9 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         exitStyle={
           ctx.reducedMotion
             ? { opacity: 0 }
-            : {
-                opacity: 0,
-                x: 0,
-                y: swipeOut ? 0 : isTop ? -10 : 10,
-                scale: swipeOut ? 1 : 0.95,
-              }
+            : swipeOut
+              ? { opacity: 0, x: 0, y: 0, scale: 1 }
+              : { opacity: 0, y: stackY, scale: stackScale }
         }
       >
         <DragWrapper
