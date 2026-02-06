@@ -333,6 +333,55 @@ describe('getSplitStyles iOS specific', () => {
   })
 })
 
+describe('DynamicColorIOS preserved in object format', () => {
+  test('boxShadow with $theme tokens produces object with DynamicColorIOS color', () => {
+    const props = {
+      '$theme-light': {
+        backgroundColor: 'white',
+      },
+      '$theme-dark': {
+        backgroundColor: 'black',
+      },
+    }
+
+    const result = getSplitStylesWithTheme(props, 'dark')
+
+    // backgroundColor is a color key, should have DynamicColorIOS wrapper
+    expect(result?.style?.backgroundColor).toEqual({
+      dynamic: {
+        light: 'white',
+        dark: 'black',
+      },
+    })
+  })
+
+  test('boxShadow string fallback for deopt (no parseNativeStyle)', () => {
+    // filter has no native object equivalent, should stay as string
+    const props = {
+      filter: 'brightness(1.2)',
+    }
+
+    const result = getSplitStylesForValue(props)
+    expect(result?.style?.filter).toBe('brightness(1.2)')
+  })
+
+  test('backgroundImage as object preserves through expandStyle', () => {
+    const props = {
+      backgroundImage: 'linear-gradient(to bottom, red, blue)',
+    }
+
+    const result = getSplitStylesForValue(props)
+    // on native, backgroundImage should be parsed to object and renamed
+    expect((result?.style as any)?.experimental_backgroundImage).toEqual([
+      {
+        type: 'linearGradient',
+        direction: 'to bottom',
+        colorStops: [{ color: 'red' }, { color: 'blue' }],
+      },
+    ])
+  })
+})
+
 // Helper function for easier testing
 function getSplitStylesWithTheme(
   props: Record<string, any>,
@@ -360,6 +409,33 @@ function getSplitStylesWithTheme(
     undefined,
     undefined,
     tag
+  )
+}
+
+// Helper for value-resolution testing (resolveValues: 'value')
+function getSplitStylesForValue(props: Record<string, any>) {
+  return getSplitStyles(
+    props,
+    View.staticConfig as any,
+    {} as any,
+    '',
+    {
+      hover: false,
+      press: false,
+      pressIn: false,
+      focus: false,
+      unmounted: true,
+      disabled: false,
+      focusVisible: false,
+    },
+    {
+      isAnimated: false,
+      resolveValues: 'value',
+    },
+    undefined,
+    undefined,
+    undefined,
+    undefined
   )
 }
 

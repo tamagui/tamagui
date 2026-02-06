@@ -9,38 +9,48 @@ beforeAll(() => {
 })
 
 describe('shorthand variables - native', () => {
-  // boxShadow/filter/backgroundImage are string-only, passed through to RN 0.76+
+  // on native, boxShadow/backgroundImage are parsed to RN object format
+  // filter stays as string (no RN object equivalent)
 
-  test('boxShadow with $variable resolves token to raw value', () => {
+  test('boxShadow with $variable resolves token to object format', () => {
     const { style } = getSplitStylesFor({
       boxShadow: '0 0 10px $white',
     })
 
-    expect(style?.boxShadow).toBe('0 0 10px #fff')
+    expect(style?.boxShadow).toEqual([
+      { offsetX: 0, offsetY: 0, blurRadius: 10, color: '#fff' },
+    ])
   })
 
-  test('boxShadow with multiple tokens resolves all', () => {
+  test('boxShadow with multiple tokens resolves all to objects', () => {
     const { style } = getSplitStylesFor({
       boxShadow: '0 0 10px $white, 0 0 20px $black',
     })
 
-    expect(style?.boxShadow).toBe('0 0 10px #fff, 0 0 20px #000')
+    expect(style?.boxShadow).toEqual([
+      { offsetX: 0, offsetY: 0, blurRadius: 10, color: '#fff' },
+      { offsetX: 0, offsetY: 0, blurRadius: 20, color: '#000' },
+    ])
   })
 
-  test('boxShadow without variables passed through unchanged', () => {
+  test('boxShadow without variables passed through as object', () => {
     const { style } = getSplitStylesFor({
       boxShadow: '0 0 10px red',
     })
 
-    expect(style?.boxShadow).toBe('0 0 10px red')
+    expect(style?.boxShadow).toEqual([
+      { offsetX: 0, offsetY: 0, blurRadius: 10, color: 'red' },
+    ])
   })
 
-  test('boxShadow with unresolvable $variable keeps token string', () => {
+  test('boxShadow with unresolvable $variable keeps token string in object', () => {
     const { style } = getSplitStylesFor({
       boxShadow: '0 0 10px $nonexistent',
     })
 
-    expect(style?.boxShadow).toBe('0 0 10px $nonexistent')
+    expect(style?.boxShadow).toEqual([
+      { offsetX: 0, offsetY: 0, blurRadius: 10, color: '$nonexistent' },
+    ])
   })
 
   test('filter with $variable resolves space token', () => {
@@ -61,15 +71,19 @@ describe('shorthand variables - native', () => {
   })
 
   // backgroundImage - RN 0.76+ uses experimental_backgroundImage
-  // note: ViewStyle types don't include this yet, so we cast
-  test('backgroundImage with $variable resolves tokens to raw values', () => {
+  // on native, parsed to object array format
+  test('backgroundImage with $variable resolves tokens to object format', () => {
     const { style } = getSplitStylesFor({
       backgroundImage: 'linear-gradient(to bottom, $white, $black)',
     })
 
-    expect((style as any)?.experimental_backgroundImage).toBe(
-      'linear-gradient(to bottom, #fff, #000)'
-    )
+    expect((style as any)?.experimental_backgroundImage).toEqual([
+      {
+        type: 'linearGradient',
+        direction: 'to bottom',
+        colorStops: [{ color: '#fff' }, { color: '#000' }],
+      },
+    ])
   })
 
   test('backgroundImage with angle and multiple color stops', () => {
@@ -77,29 +91,45 @@ describe('shorthand variables - native', () => {
       backgroundImage: 'linear-gradient(45deg, $black 0%, $white 50%, $black 100%)',
     })
 
-    expect((style as any)?.experimental_backgroundImage).toBe(
-      'linear-gradient(45deg, #000 0%, #fff 50%, #000 100%)'
-    )
+    expect((style as any)?.experimental_backgroundImage).toEqual([
+      {
+        type: 'linearGradient',
+        direction: '45deg',
+        colorStops: [
+          { color: '#000', positions: ['0%'] },
+          { color: '#fff', positions: ['50%'] },
+          { color: '#000', positions: ['100%'] },
+        ],
+      },
+    ])
   })
 
-  test('backgroundImage without variables passed through unchanged', () => {
+  test('backgroundImage without variables passed through as object', () => {
     const { style } = getSplitStylesFor({
       backgroundImage: 'linear-gradient(to bottom, red, blue)',
     })
 
-    expect((style as any)?.experimental_backgroundImage).toBe(
-      'linear-gradient(to bottom, red, blue)'
-    )
+    expect((style as any)?.experimental_backgroundImage).toEqual([
+      {
+        type: 'linearGradient',
+        direction: 'to bottom',
+        colorStops: [{ color: 'red' }, { color: 'blue' }],
+      },
+    ])
   })
 
-  test('backgroundImage with unresolvable $variable keeps token string', () => {
+  test('backgroundImage with unresolvable $variable keeps token in object', () => {
     const { style } = getSplitStylesFor({
       backgroundImage: 'linear-gradient($nonexistent, $white)',
     })
 
-    expect((style as any)?.experimental_backgroundImage).toBe(
-      'linear-gradient($nonexistent, #fff)'
-    )
+    // $nonexistent is not a valid direction, so parsed as color stop
+    expect((style as any)?.experimental_backgroundImage).toEqual([
+      {
+        type: 'linearGradient',
+        colorStops: [{ color: '$nonexistent' }, { color: '#fff' }],
+      },
+    ])
   })
 })
 

@@ -40,13 +40,15 @@ function getSplitStylesFor(props: Record<string, any>, Component = View) {
 }
 
 describe('RN 0.76+ Style Alignment - Native', () => {
-  // boxShadow and filter are string-only - passed directly to RN 0.76+
+  // boxShadow is parsed to RN object format on native
   describe('boxShadow', () => {
-    test('boxShadow string passed through directly', () => {
+    test('boxShadow parsed to object format', () => {
       const { style } = getSplitStylesFor({
         boxShadow: '5px 5px 10px red',
       })
-      expect(style?.boxShadow).toBe('5px 5px 10px red')
+      expect(style?.boxShadow).toEqual([
+        { offsetX: 5, offsetY: 5, blurRadius: 10, color: 'red' },
+      ])
     })
 
     test('boxShadow with tokens resolves them', () => {
@@ -54,21 +56,28 @@ describe('RN 0.76+ Style Alignment - Native', () => {
         boxShadow: '0 0 10px $white',
       })
       expect(style?.boxShadow).toBeDefined()
-      expect(style?.boxShadow).not.toContain('$white')
+      expect(style?.boxShadow).toEqual([
+        { offsetX: 0, offsetY: 0, blurRadius: 10, color: '#fff' },
+      ])
     })
 
     test('boxShadow with multiple shadows', () => {
       const { style } = getSplitStylesFor({
         boxShadow: '0 0 10px red, 0 0 20px blue',
       })
-      expect(style?.boxShadow).toBe('0 0 10px red, 0 0 20px blue')
+      expect(style?.boxShadow).toEqual([
+        { offsetX: 0, offsetY: 0, blurRadius: 10, color: 'red' },
+        { offsetX: 0, offsetY: 0, blurRadius: 20, color: 'blue' },
+      ])
     })
 
     test('boxShadow inset syntax', () => {
       const { style } = getSplitStylesFor({
         boxShadow: 'inset 0 2px 4px black',
       })
-      expect(style?.boxShadow).toBe('inset 0 2px 4px black')
+      expect(style?.boxShadow).toEqual([
+        { inset: true, offsetX: 0, offsetY: 2, blurRadius: 4, color: 'black' },
+      ])
     })
   })
 

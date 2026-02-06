@@ -276,13 +276,15 @@ describe('Web Alignment - Native Event Mapping', () => {
 
 describe('Web Alignment - Native Shadow Props', () => {
   describe('boxShadow should work on native (RN 0.76+)', () => {
-    test('boxShadow string is passed through directly on native', () => {
+    test('boxShadow is parsed to object format on native', () => {
       const result = getSplitStylesFor({
         boxShadow: '0 2px 10px rgba(0,0,0,0.5)',
       })
 
-      // boxShadow strings are passed through directly to RN 0.76+ which handles CSS syntax
-      expect(result.style?.boxShadow).toBe('0 2px 10px rgba(0,0,0,0.5)')
+      // boxShadow is parsed to RN object format, preserving DynamicColorIOS compatibility
+      expect(result.style?.boxShadow).toEqual([
+        { offsetX: 0, offsetY: 2, blurRadius: 10, color: 'rgba(0,0,0,0.5)' },
+      ])
     })
   })
 
