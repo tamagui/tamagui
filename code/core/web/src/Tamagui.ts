@@ -2,7 +2,7 @@ import * as Helpers from '@tamagui/helpers'
 
 import { getConfig } from './config'
 import { getAllRules, getAllSelectors } from './helpers/insertStyleRule'
-import { mediaState } from './hooks/useMedia'
+import { mediaState } from './helpers/mediaState'
 
 // easy introspection
 // only included in dev mode

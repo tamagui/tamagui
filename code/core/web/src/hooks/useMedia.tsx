@@ -1,48 +1,26 @@
 import { isServer, isWeb } from '@tamagui/constants'
 import { useRef, useSyncExternalStore } from 'react'
-import { getConfig, getSetting } from '../config'
+import { getSetting } from '../config'
 import { resetMediaStyleCache } from '../helpers/createMediaStyle'
 import { matchMedia } from '../helpers/matchMedia'
+import { mediaObjectToString } from '../helpers/mediaObjectToString'
+import {
+  getMedia,
+  mediaKeys,
+  mediaQueryConfig,
+  setMediaState,
+} from '../helpers/mediaState'
 import type {
   ComponentContextI,
   DebugProp,
   GetStyleState,
   IsMediaType,
-  MediaQueries,
-  MediaQueryObject,
   MediaQueryState,
   TamaguiInternalConfig,
   UseMediaState,
   WidthHeight,
 } from '../types'
 import { defaultMediaImportance } from '../helpers/pseudoDescriptors'
-
-export let mediaState: MediaQueryState =
-  // development only safeguard
-  process.env.NODE_ENV === 'development'
-    ? new Proxy(
-        {},
-        {
-          get(target, key) {
-            if (
-              typeof key === 'string' &&
-              key[0] === '$' &&
-              // dont error on $$typeof
-              key[1] !== '$'
-            ) {
-              throw new Error(`Access mediaState should not use "$": ${key}`)
-            }
-            return Reflect.get(target, key)
-          },
-        }
-      )
-    : ({} as any)
-
-export const mediaQueryConfig: MediaQueries = {}
-
-export const getMedia = () => mediaState
-
-export const mediaKeys = new Set<string>() // with $ prefix
 
 const mediaKeyRegex = /\$(platform|theme|group)-/
 
@@ -89,11 +67,11 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   // reset cached media style prefixes/selectors so they get recalculated with new key order
   resetMediaStyleCache()
   for (const key in media) {
-    mediaState[key] = mediaQueryDefaultActive?.[key] || false
+    getMedia()[key] = mediaQueryDefaultActive?.[key] || false
     mediaKeys.add(`$${key}`)
   }
   Object.assign(mediaQueryConfig, media)
-  initState = { ...mediaState }
+  initState = { ...getMedia() }
   mediaKeysOrdered = Object.keys(media)
   setupMediaListeners()
 }
@@ -121,7 +99,7 @@ export function setupMediaListeners() {
   unlisten()
 
   for (const key in mediaQueryConfig) {
-    const str = mediaObjectToString(mediaQueryConfig[key], key)
+    const str = mediaObjectToString(mediaQueryConfig[key])
     const getMatch = () => matchMedia(str)
     const match = getMatch()
     if (!match) {
@@ -136,8 +114,8 @@ export function setupMediaListeners() {
 
     function update() {
       const next = !!getMatch().matches
-      if (next === mediaState[key]) return
-      mediaState = { ...mediaState, [key]: next }
+      if (next === getMedia()[key]) return
+      setMediaState({ ...getMedia(), [key]: next })
       updateMediaListeners()
     }
 
@@ -148,7 +126,7 @@ export function setupMediaListeners() {
 const listeners = new Set<any>()
 
 export function updateMediaListeners() {
-  listeners.forEach((cb) => cb(mediaState))
+  listeners.forEach((cb) => cb(getMedia()))
 }
 
 type MediaState = {
@@ -195,7 +173,7 @@ export function useMedia(
   if (!internalRef.current) {
     internalRef.current = {
       keys: new Set(),
-      lastState: mediaState,
+      lastState: getMedia(),
     }
   }
 
@@ -222,22 +200,23 @@ export function useMedia(
         return lastState
       }
 
+      const ms = getMedia()
       for (const key of curKeys) {
-        if (mediaState[key] !== (pendingState || lastState)[key]) {
+        if (ms[key] !== (pendingState || lastState)[key]) {
           if (process.env.NODE_ENV === 'development' && debug) {
-            console.warn(`useMedia() ✍️`, key, lastState[key], '=>', mediaState[key])
+            console.warn(`useMedia() ✍️`, key, lastState[key], '=>', ms[key])
           }
 
           // in emitter mode (no-rerender) avoid changing state, instead emit
           if (componentContext?.mediaEmit) {
-            componentContext.mediaEmit(mediaState)
-            internalRef.current!.pendingState = mediaState
+            componentContext.mediaEmit(ms)
+            internalRef.current!.pendingState = ms
             return lastState
           }
 
-          internalRef.current!.lastState = mediaState
+          internalRef.current!.lastState = ms
 
-          return mediaState
+          return ms
         }
       }
 
@@ -291,41 +270,13 @@ export const getMediaImportanceIfMoreImportant = (
   return !usedKeys[key] || importance > usedKeys[key] ? importance : null
 }
 
-function camelToHyphen(str: string) {
-  return str.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`).toLowerCase()
-}
-
-const cache = new WeakMap<any, string>()
 const cachedMediaKeyToQuery: Record<string, string> = {}
 
-export function mediaObjectToString(query: string | MediaQueryObject, key?: string) {
-  if (typeof query === 'string') {
-    return query
-  }
-  if (cache.has(query)) {
-    return cache.get(query)!
-  }
-  const res = Object.entries(query)
-    .map(([feature, value]) => {
-      feature = camelToHyphen(feature)
-      if (typeof value === 'string') {
-        return `(${feature}: ${value})`
-      }
-      if (typeof value === 'number' && /[height|width]$/.test(feature)) {
-        value = `${value}px`
-      }
-      return `(${feature}: ${value})`
-    })
-    .join(' and ')
-  if (key) {
-    cachedMediaKeyToQuery[key] = res
-  }
-  cache.set(query, res)
-  return res
-}
-
 export function mediaKeyToQuery(key: string) {
-  return cachedMediaKeyToQuery[key] || mediaObjectToString(mediaQueryConfig[key], key)
+  return (
+    cachedMediaKeyToQuery[key] ||
+    (cachedMediaKeyToQuery[key] = mediaObjectToString(mediaQueryConfig[key]))
+  )
 }
 
 export function mediaKeyMatch(

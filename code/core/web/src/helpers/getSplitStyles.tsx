@@ -22,10 +22,9 @@ import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
   getMediaKey,
-  mediaState as globalMediaState,
   mediaKeyMatch,
-  mediaQueryConfig,
 } from '../hooks/useMedia'
+import { mediaState as globalMediaState, mediaQueryConfig } from './mediaState'
 import type {
   AllGroupContexts,
   ClassNamesObject,

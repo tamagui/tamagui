@@ -73,13 +73,11 @@ export * from './hooks/useIsTouchDevice'
 export {
   _disableMediaTouch,
   configureMedia,
-  getMedia,
   mediaKeyMatch,
-  mediaObjectToString,
-  mediaQueryConfig,
-  mediaState,
   useMedia,
 } from './hooks/useMedia'
+export { mediaObjectToString } from './helpers/mediaObjectToString'
+export { getMedia, mediaQueryConfig, mediaState } from './helpers/mediaState'
 export * from './hooks/useProps'
 export * from './hooks/useTheme'
 export * from './hooks/useThemeName'

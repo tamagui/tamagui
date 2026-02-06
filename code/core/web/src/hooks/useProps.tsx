@@ -9,7 +9,8 @@ import type { SplitStyleProps, StaticConfig, ThemeParsed, UseMediaState } from '
 import type { ViewProps, ViewStyle } from '../views/View'
 import { View } from '../views/View'
 import { useComponentState } from './useComponentState'
-import { mediaState, useMedia } from './useMedia'
+import { mediaState } from '../helpers/mediaState'
+import { useMedia } from './useMedia'
 import { useThemeWithState } from './useTheme'
 
 type UsePropsOptions = Pick<

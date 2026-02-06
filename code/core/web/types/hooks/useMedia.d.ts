@@ -1,8 +1,4 @@
-import type { ComponentContextI, DebugProp, GetStyleState, IsMediaType, MediaQueries, MediaQueryObject, MediaQueryState, TamaguiInternalConfig, UseMediaState, WidthHeight } from '../types';
-export declare let mediaState: MediaQueryState;
-export declare const mediaQueryConfig: MediaQueries;
-export declare const getMedia: () => MediaQueryState;
-export declare const mediaKeys: Set<string>;
+import type { ComponentContextI, DebugProp, GetStyleState, IsMediaType, TamaguiInternalConfig, UseMediaState, WidthHeight } from '../types';
 export declare const isMediaKey: (key: string) => boolean;
 export declare const getMediaKey: (key: string) => IsMediaType;
 export declare const getMediaKeyImportance: (key: string) => number;
@@ -18,7 +14,6 @@ export declare function useMedia(componentContext?: ComponentContextI, debug?: D
 export declare function _disableMediaTouch(val: boolean): void;
 export declare function getMediaState(mediaGroups: Set<string>, layout: WidthHeight): Record<string, boolean>;
 export declare const getMediaImportanceIfMoreImportant: (mediaKey: string, key: string, styleState: GetStyleState, isSizeMedia: boolean) => number | null;
-export declare function mediaObjectToString(query: string | MediaQueryObject, key?: string): string;
 export declare function mediaKeyToQuery(key: string): string;
 export declare function mediaKeyMatch(key: string, dimensions: {
     width: number;

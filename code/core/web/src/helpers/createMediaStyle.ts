@@ -1,5 +1,5 @@
 import { getSetting } from '../config'
-import { mediaObjectToString } from '../hooks/useMedia'
+import { mediaObjectToString } from './mediaObjectToString'
 import type { IsMediaType, MediaQueries, MediaStyleObject, StyleObject } from '../types'
 import { getGroupPropParts, type GroupParts } from './getGroupPropParts'
 

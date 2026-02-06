@@ -1,4 +1,4 @@
-import { getMedia } from '../hooks/useMedia'
+import { getMedia } from './mediaState'
 import { pseudoPriorities } from './pseudoDescriptors'
 
 export type GroupParts = { name: string; pseudo?: string; media?: string }

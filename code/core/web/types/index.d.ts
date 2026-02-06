@@ -51,7 +51,9 @@ export { getConfig, getSetting, getThemes, getToken, getTokens, getTokenValue, l
 export { setNonce } from './helpers/insertStyleRule';
 export * from './constants/constants';
 export * from './hooks/useIsTouchDevice';
-export { _disableMediaTouch, configureMedia, getMedia, mediaKeyMatch, mediaObjectToString, mediaQueryConfig, mediaState, useMedia, } from './hooks/useMedia';
+export { _disableMediaTouch, configureMedia, mediaKeyMatch, useMedia, } from './hooks/useMedia';
+export { mediaObjectToString } from './helpers/mediaObjectToString';
+export { getMedia, mediaQueryConfig, mediaState } from './helpers/mediaState';
 export * from './hooks/useProps';
 export * from './hooks/useTheme';
 export * from './hooks/useThemeName';

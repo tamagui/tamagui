@@ -1,26 +1,10 @@
+import { createGlobalState } from './globalState'
 import type { LinearGradientState } from './types'
 
-const GLOBAL_KEY = '__tamagui_linear_gradient_state__'
-
-type TamaguiGlobal = typeof globalThis & {
-  [GLOBAL_KEY]?: LinearGradientState
-}
-
-// reset on module load so reloadReactNative gets a clean state
-// (globalThis persists across reloads but module scope re-evaluates)
-;(globalThis as TamaguiGlobal)[GLOBAL_KEY] = { enabled: false, Component: null }
-
-function getGlobalState(): LinearGradientState {
-  const g = globalThis as TamaguiGlobal
-  if (!g[GLOBAL_KEY]) {
-    g[GLOBAL_KEY] = { enabled: false, Component: null }
-  }
-  return g[GLOBAL_KEY]
-}
-
-function setGlobalState(newState: LinearGradientState): void {
-  ;(globalThis as TamaguiGlobal)[GLOBAL_KEY] = newState
-}
+const state = createGlobalState<LinearGradientState>(`linear_gradient`, {
+  enabled: false,
+  Component: null,
+})
 
 export interface LinearGradientAccessor {
   readonly isEnabled: boolean
@@ -31,13 +15,13 @@ export interface LinearGradientAccessor {
 export function getLinearGradient(): LinearGradientAccessor {
   return {
     get isEnabled(): boolean {
-      return getGlobalState().enabled
+      return state.get().enabled
     },
     get state(): LinearGradientState {
-      return getGlobalState()
+      return state.get()
     },
     set(newState: LinearGradientState): void {
-      setGlobalState(newState)
+      state.set(newState)
     },
   }
 }

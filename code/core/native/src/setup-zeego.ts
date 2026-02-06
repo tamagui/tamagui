@@ -30,7 +30,10 @@ function setup(): void {
         ContextMenu,
       })
     }
-  } catch {
+  } catch (err) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`Error setting up Zeego`, err)
+    }
     // zeego not installed
   }
 }

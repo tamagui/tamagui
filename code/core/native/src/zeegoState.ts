@@ -1,6 +1,11 @@
+import { createGlobalState } from './globalState'
 import type { ZeegoState } from './types'
 
-let state: ZeegoState = { enabled: false, DropdownMenu: null, ContextMenu: null }
+const state = createGlobalState<ZeegoState>(`zeego`, {
+  enabled: false,
+  DropdownMenu: null,
+  ContextMenu: null,
+})
 
 export interface ZeegoAccessor {
   readonly isEnabled: boolean
@@ -11,13 +16,13 @@ export interface ZeegoAccessor {
 export function getZeego(): ZeegoAccessor {
   return {
     get isEnabled(): boolean {
-      return state.enabled
+      return state.get().enabled
     },
     get state(): ZeegoState {
-      return state
+      return state.get()
     },
     set(newState: ZeegoState): void {
-      state = newState
+      state.set(newState)
     },
   }
 }

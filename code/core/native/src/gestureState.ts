@@ -1,19 +1,12 @@
+import { createGlobalState } from './globalState'
 import type { GestureState } from './types'
 
-const GLOBAL_KEY = '__tamagui_native_gesture_state__'
-
-function getGlobalState(): GestureState {
-  const g = globalThis as any
-  if (!g[GLOBAL_KEY]) {
-    g[GLOBAL_KEY] = {
-      enabled: false,
-      Gesture: null,
-      GestureDetector: null,
-      ScrollView: null,
-    }
-  }
-  return g[GLOBAL_KEY]
-}
+const state = createGlobalState<GestureState>(`gesture`, {
+  enabled: false,
+  Gesture: null,
+  GestureDetector: null,
+  ScrollView: null,
+})
 
 export interface Insets {
   top?: number
@@ -42,23 +35,21 @@ export interface GestureHandlerAccessor {
 export function getGestureHandler(): GestureHandlerAccessor {
   return {
     get isEnabled(): boolean {
-      return getGlobalState().enabled
+      return state.get().enabled
     },
     get state(): GestureState {
-      return getGlobalState()
+      return state.get()
     },
     set(updates: Partial<GestureState>): void {
-      const state = getGlobalState()
-      Object.assign(state, updates)
+      Object.assign(state.get(), updates)
     },
 
     disable(): void {
-      const state = getGlobalState()
-      state.enabled = false
+      state.get().enabled = false
     },
 
     createPressGesture(config: PressGestureConfig): any {
-      const { Gesture } = getGlobalState()
+      const { Gesture } = state.get()
       if (!Gesture) return null
 
       const longPressDuration = config.delayLongPress ?? 500

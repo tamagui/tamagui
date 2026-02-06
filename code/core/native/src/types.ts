@@ -75,3 +75,14 @@ export interface BurntState {
   toast: ((options: any) => void) | null
   dismissAllAlerts: (() => void) | null
 }
+
+export interface KeyboardControllerState {
+  enabled: boolean
+  KeyboardProvider: any
+  KeyboardAwareScrollView: any
+  useKeyboardHandler: any
+  useReanimatedKeyboardAnimation: any
+  KeyboardController: any
+  KeyboardEvents: any
+  KeyboardStickyView: any
+}

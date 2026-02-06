@@ -1,6 +1,11 @@
+import { createGlobalState } from './globalState'
 import type { BurntState } from './types'
 
-let state: BurntState = { enabled: false, toast: null, dismissAllAlerts: null }
+const state = createGlobalState<BurntState>(`burnt`, {
+  enabled: false,
+  toast: null,
+  dismissAllAlerts: null,
+})
 
 export interface BurntAccessor {
   readonly isEnabled: boolean
@@ -11,13 +16,13 @@ export interface BurntAccessor {
 export function getBurnt(): BurntAccessor {
   return {
     get isEnabled(): boolean {
-      return state.enabled
+      return state.get().enabled
     },
     get state(): BurntState {
-      return state
+      return state.get()
     },
     set(newState: BurntState): void {
-      state = newState
+      state.set(newState)
     },
   }
 }

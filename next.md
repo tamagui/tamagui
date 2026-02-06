@@ -1,57 +1,28 @@
-- this is wrong / weird:
-  // reset on module load so reloadReactNative gets a clean state
-  // (globalThis persists across reloads but module scope re-evaluates)
-  ;(globalThis as TamaguiGlobal)[GLOBAL_KEY] = { enabled: false, Component: null }
+before v2 final:
+
+- // import '@tamagui/native/setup-safe-area'
 
 - activeStyle / accept not taking shorthands
   - wait on Switch.Thumb is is oppsoite
 
-- border="" shorthand
-
-- tooltip simpel theme not accent/inverse?
-
-- lineheight at size="$3" in web is a bit tall
-
-## Fix ref type issues properly
-
-Many components have `as any` casts for refs due to `HTMLElement` subtypes not being assignable to `TamaguiElement`. These were pre-existing issues exposed during the `@tamagui/element` package work. Files with `as any` ref casts that could be fixed properly:
-
-- `code/ui/dialog/src/Dialog.tsx` - triggerRef, contentRef
-- `code/ui/select/src/Select.tsx` - onValueNodeChange, nativeSelectRef
-- `code/ui/select/src/SelectViewport.tsx` - floatingContext refs
-- `code/ui/create-menu/src/createBaseMenu.tsx` - composedRefs
-- `code/ui/menu/src/createNonNativeMenu.tsx` - triggerRef
-- `code/ui/context-menu/src/createNonNativeContextMenu.tsx` - triggerRef
-
-Consider using `useWebRef` from `@tamagui/element` for these components to properly type the refs.
+- accept type not looking right?
 
 ---
 
-- motion has a ton of hacks, but also dont forget:
+can be after v2 final
+
+- its beta - motion has a ton of hacks, but also dont forget:
   const animateKey = JSON.stringify(style)
-
-- remove the transparencies from _palette_ and background0: 1 etc from template
-  thats all done in getTheme now + we should add color-mix or /opacity
-
-⚠️ When bento `migrate-tamagui-v2` branch is merged to main, update Dockerfile to remove the branch specifier
-
-- accept type not looking right?
-
-- Sheet scope prop (like Dialog/Popover/Tooltip have)
-
-- linear-gradient on native should fall back to just backgroundImage now
-
-- fullscreen prop deprecated, use `inset: 0, position: 'absolute'` instead
-
-- split input/textinput into SizableTextInput / SizableInput or not?
-  - otherwise its annoying af if you want your OWN size
 
 - /Users/n8/tamagui/code/core/web/src/helpers/defaultAnimationDriver.tsx
   - should just be native on native, css on web? use platfomr extensions
 
----
+- split input/textinput into SizableTextInput / SizableInput or not?
+  - otherwise its annoying af if you want your OWN size
 
-AFTER v2 RC (nice to haves):
+- fullscreen prop deprecated, use `inset: 0, position: 'absolute'` instead
+
+- Sheet scope prop (like Dialog/Popover/Tooltip have)
 
 - @tamagui/web can just merge into core, .native paths are perfectly fine since we build separate so no need to serapte.
 
