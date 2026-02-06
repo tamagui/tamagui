@@ -46,6 +46,10 @@ Add `@tamagui/babel-plugin`:
 yarn add @tamagui/babel-plugin
 ```
 
+If you have a `tamagui.build.ts` (recommended — see
+[compiler install docs](/docs/intro/compiler-install#configuration-with-tamaguibuildts)),
+no options are needed:
+
 Update your `babel.config.js` to include the optional `@tamagui/babel-plugin`:
 
 ```js fileName="babel.config.js"
@@ -54,18 +58,7 @@ module.exports = function (api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [
-      [
-        '@tamagui/babel-plugin',
-        {
-          components: ['tamagui'],
-          config: './tamagui.config.ts',
-          logTimings: true,
-          disableExtraction: process.env.NODE_ENV === 'development',
-        },
-      ],
-
-      // NOTE: this is only necessary if you are using reanimated for animations
-      'react-native-reanimated/plugin',
+      '@tamagui/babel-plugin',
     ],
   }
 }
