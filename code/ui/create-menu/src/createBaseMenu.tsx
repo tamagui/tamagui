@@ -399,6 +399,8 @@ export function createBaseMenu({
       dir,
       onOpenChange,
       modal = true,
+      allowFlip = { padding: 10 },
+      stayInFrame = { padding: 10 },
       ...rest
     } = props
     const [content, setContent] = React.useState<MenuContentElement | null>(null)
@@ -433,7 +435,12 @@ export function createBaseMenu({
     }
 
     return (
-      <PopperPrimitive.Popper scope={scope} {...rest}>
+      <PopperPrimitive.Popper
+        scope={scope}
+        allowFlip={allowFlip}
+        stayInFrame={stayInFrame}
+        {...rest}
+      >
         <MenuProvider
           scope={scope}
           open={open}
