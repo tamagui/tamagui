@@ -49,8 +49,6 @@ export * from '@tamagui/use-debounce';
 export * from '@tamagui/use-force-update';
 export * from '@tamagui/element';
 export * from '@tamagui/use-window-dimensions';
-export { toast, Toaster } from '@tamagui/v2-toast';
-export type { ToastT, ToastType, ToastToDismiss, ExternalToast, PromiseT, PromiseData, ToastAction, ToasterProps, ToasterPosition, HeightT, } from '@tamagui/v2-toast';
 export * from '@tamagui/visually-hidden';
 export * from './createTamagui';
 export * from './viewTypes';
