@@ -8,9 +8,54 @@ import {
 import type { AllPlatforms, MediaQueryKey } from '@tamagui/core'
 import { createStyledContext, useMedia } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
+import { getPortal } from '@tamagui/native'
 import { PortalHost, PortalItem } from '@tamagui/portal'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
 import React, { createContext, useContext, useId, useMemo } from 'react'
+
+/**
+ * External store for passing children from AdaptPortalContents to Adapt.Contents
+ * when teleport is enabled. This bypasses PortalItem to avoid nested teleport
+ * (inner portal inside an already-teleported Sheet) which breaks touch
+ * coordinate mapping on iOS.
+ */
+type AdaptChildrenStore = {
+  set(children: React.ReactNode): void
+  get(): React.ReactNode
+  subscribe(callback: () => void): () => void
+}
+
+function createAdaptChildrenStore(): AdaptChildrenStore {
+  let children: React.ReactNode = null
+  const listeners = new Set<() => void>()
+  return {
+    set(c) {
+      children = c
+      for (const l of listeners) l()
+    },
+    get: () => children,
+    subscribe(callback) {
+      listeners.add(callback)
+      return () => listeners.delete(callback)
+    },
+  }
+}
+
+const AdaptChildrenStoreContext = createContext<AdaptChildrenStore | null>(null)
+
+const emptySubscribe = () => () => {}
+const emptyGet = () => null
+
+/** Renders adapt children from external store (used when teleport is enabled) */
+function TeleportAdaptContents() {
+  const store = useContext(AdaptChildrenStoreContext)
+  const children = React.useSyncExternalStore(
+    store?.subscribe ?? emptySubscribe,
+    store?.get ?? emptyGet,
+    store?.get ?? emptyGet
+  )
+  return <>{children}</>
+}
 
 /**
  * Interfaces
@@ -102,10 +147,25 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
   const id = useId()
   const portalName = `AdaptPortal${scope}${id}`
 
+  const childrenStoreRef = React.useRef<AdaptChildrenStore | null>(null)
+  if (!childrenStoreRef.current) {
+    childrenStoreRef.current = createAdaptChildrenStore()
+  }
+
+  const isTeleport = !isWeb && getPortal().state.type === 'teleport'
+
   const FinalContents = useMemo(() => {
     if (Contents) {
       return Contents
     }
+
+    // When teleport is enabled, use store-based children passing to avoid
+    // nested teleport (inner PortalItem inside already-teleported Sheet)
+    // which breaks touch coordinate mapping on iOS.
+    if (isTeleport) {
+      return TeleportAdaptContents
+    }
+
     if (AdaptPortals.has(portalName)) {
       return AdaptPortals.get(portalName)
     }
@@ -120,14 +180,16 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
     }
     AdaptPortals.set(portalName, element)
     return element
-  }, [portalName, Contents])
+  }, [portalName, Contents, isTeleport])
 
   useIsomorphicLayoutEffect(() => {
-    AdaptPortals.set(portalName, FinalContents)
-    return () => {
-      AdaptPortals.delete(portalName)
+    if (!isTeleport) {
+      AdaptPortals.set(portalName, FinalContents)
+      return () => {
+        AdaptPortals.delete(portalName)
+      }
     }
-  }, [portalName])
+  }, [portalName, isTeleport])
 
   const [when, setWhen] = React.useState<AdaptWhen>(null)
   const [platform, setPlatform] = React.useState<AdaptPlatform>(null)
@@ -136,20 +198,22 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
   const [children2, setChildren] = React.useState(null)
 
   return (
-    <LastAdaptContextScope.Provider value={scope}>
-      <ProvideAdaptContext
-        Contents={FinalContents}
-        when={when}
-        platform={platform}
-        setPlatform={setPlatform}
-        setWhen={setWhen}
-        setChildren={setChildren}
-        portalName={portalName}
-        scopeName={scope}
-      >
-        {children}
-      </ProvideAdaptContext>
-    </LastAdaptContextScope.Provider>
+    <AdaptChildrenStoreContext.Provider value={childrenStoreRef.current}>
+      <LastAdaptContextScope.Provider value={scope}>
+        <ProvideAdaptContext
+          Contents={FinalContents}
+          when={when}
+          platform={platform}
+          setPlatform={setPlatform}
+          setWhen={setWhen}
+          setChildren={setChildren}
+          portalName={portalName}
+          scopeName={scope}
+        >
+          {children}
+        </ProvideAdaptContext>
+      </LastAdaptContextScope.Provider>
+    </AdaptChildrenStoreContext.Provider>
   )
 }
 
@@ -223,12 +287,44 @@ export const AdaptPortalContents = (props: {
 }) => {
   const isActive = useAdaptIsActive(props.scope)
   const { portalName } = useAdaptContext(props.scope)
+  const childrenStore = useContext(AdaptChildrenStoreContext)
+  const isTeleport = !isWeb && getPortal().state.type === 'teleport'
+
+  // When teleport is enabled, bypass PortalItem to avoid nested teleport
+  // (inner portal inside already-teleported Sheet) which breaks touch
+  // coordinate mapping on iOS. Children are passed via external store
+  // to TeleportAdaptContents rendered at Adapt.Contents.
+  if (isTeleport && childrenStore) {
+    return (
+      <AdaptPortalTeleport isActive={isActive} store={childrenStore}>
+        {props.children}
+      </AdaptPortalTeleport>
+    )
+  }
 
   return (
     <PortalItem passThrough={!isActive} hostName={portalName}>
       {props.children}
     </PortalItem>
   )
+}
+
+function AdaptPortalTeleport({
+  isActive,
+  store,
+  children,
+}: {
+  isActive: boolean
+  store: AdaptChildrenStore
+  children: React.ReactNode
+}) {
+  useIsomorphicLayoutEffect(() => {
+    if (!isActive) return
+    store.set(children)
+    return () => store.set(null)
+  })
+
+  return isActive ? null : <>{children}</>
 }
 
 const useAdaptIsActiveGiven = ({
