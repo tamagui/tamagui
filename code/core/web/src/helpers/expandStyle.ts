@@ -65,6 +65,7 @@ export function expandStyle(key: string, value: any): PropMappedValue {
       }
       case 'backgroundImage': {
         // RN 0.76+ uses experimental_backgroundImage
+        // value may be a parsed array (from parseNativeStyle) or a plain string
         return [['experimental_backgroundImage', value]]
       }
       case 'border': {

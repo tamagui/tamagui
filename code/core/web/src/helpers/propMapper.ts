@@ -16,6 +16,7 @@ import { expandStyle } from './expandStyle'
 import { getFontsForLanguage, getVariantExtras } from './getVariantExtras'
 import { isObj } from './isObj'
 import { normalizeStyle } from './normalizeStyle'
+import { parseNativeStyle } from './parseNativeStyle'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { isRemValue, resolveRem } from './resolveRem'
 // import { resolveSafeAreaValue } from './resolveSafeArea'
@@ -68,19 +69,76 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
       typeof value === 'string' &&
       value.includes('$')
     ) {
-      // boxShadow/filter/backgroundImage/border with embedded $tokens - resolve each token
-      // Try size first (for dimensions), then color (for the color value)
-      value = value.replace(/(\$[\w.-]+)/g, (t) => {
-        let r = getTokenForKey('size', t, styleProps, styleState)
-        if (r == null) {
-          r = getTokenForKey('color', t, styleProps, styleState)
+      // on native, backgroundImage/boxShadow/textShadow get parsed to RN objects
+      // so we resolve tokens keeping DynamicColorIOS objects intact via a token map
+      if (
+        process.env.TAMAGUI_TARGET === 'native' &&
+        (key === 'backgroundImage' || key === 'boxShadow' || key === 'textShadow')
+      ) {
+        const tokenMap = new Map<string, any>()
+        let placeholderIdx = 0
+        const withPlaceholders = value.replace(/(\$[\w.-]+)/g, (t) => {
+          let r = getTokenForKey('size', t, styleProps, styleState)
+          if (r == null) {
+            r = getTokenForKey('color', t, styleProps, styleState)
+          }
+          if (r == null) return t
+          // if resolved to a non-string (object like DynamicColorIOS), use placeholder
+          if (typeof r !== 'string' && typeof r !== 'number') {
+            const placeholder = `__tk${placeholderIdx++}__`
+            tokenMap.set(placeholder, r)
+            return placeholder
+          }
+          return String(r)
+        })
+        const parsed = parseNativeStyle(key, withPlaceholders, tokenMap)
+        if (parsed) {
+          value = parsed
+        } else {
+          // fallback: resolve all tokens to plain string values
+          value = value.replace(/(\$[\w.-]+)/g, (t) => {
+            let r = getTokenForKey('size', t, styleProps, styleState)
+            if (r == null) {
+              r = getTokenForKey('color', t, styleProps, styleState)
+            }
+            return r != null ? String(r) : t
+          })
         }
-        return r != null ? String(r) : t
-      })
+      } else {
+        // web + filter + border: resolve tokens to string values
+        value = value.replace(/(\$[\w.-]+)/g, (t) => {
+          let r = getTokenForKey('size', t, styleProps, styleState)
+          if (r == null) {
+            r = getTokenForKey('color', t, styleProps, styleState)
+          }
+          return r != null ? String(r) : t
+        })
+      }
     } else if (isVariable(value)) {
       value = resolveVariableValue(key, value, styleProps.resolveValues)
     } else if (isRemValue(value)) {
       value = resolveRem(value)
+    }
+  }
+
+  // on native, parse string backgroundImage/boxShadow/textShadow to RN object format
+  // this handles both token-resolved strings and plain strings without tokens
+  if (
+    process.env.TAMAGUI_TARGET === 'native' &&
+    value != null &&
+    typeof value === 'string' &&
+    (key === 'backgroundImage' || key === 'boxShadow' || key === 'textShadow')
+  ) {
+    const parsed = parseNativeStyle(key, value)
+    if (parsed) {
+      // textShadow returns [key, value] pairs to expand into separate properties
+      if (key === 'textShadow' && Array.isArray(parsed) && Array.isArray(parsed[0])) {
+        for (const [nkey, nvalue] of parsed) {
+          map(nkey, nvalue, originalValue)
+        }
+        return
+      }
+      value = parsed
     }
   }
 
