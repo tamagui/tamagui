@@ -1,3 +1,8 @@
+- this is wrong / weird:
+  // reset on module load so reloadReactNative gets a clean state
+  // (globalThis persists across reloads but module scope re-evaluates)
+  ;(globalThis as TamaguiGlobal)[GLOBAL_KEY] = { enabled: false, Component: null }
+
 - activeStyle / accept not taking shorthands
   - wait on Switch.Thumb is is oppsoite
 

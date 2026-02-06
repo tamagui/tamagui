@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/v2-toast",
-  "version": "2.0.0-rc.4",
+  "version": "2.0.0-rc.5",
   "source": "src/index.ts",
   "files": [
     "src",

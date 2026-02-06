@@ -6,6 +6,10 @@ type TamaguiGlobal = typeof globalThis & {
   [GLOBAL_KEY]?: NativePortalState
 }
 
+// reset on module load so reloadReactNative gets a clean state
+// (globalThis persists across reloads but module scope re-evaluates)
+;(globalThis as TamaguiGlobal)[GLOBAL_KEY] = { enabled: false, type: null }
+
 function getGlobalState(): NativePortalState {
   const g = globalThis as TamaguiGlobal
   if (!g[GLOBAL_KEY]) {
