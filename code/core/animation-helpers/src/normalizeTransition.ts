@@ -5,10 +5,6 @@ import type {
   TransitionPropInput,
 } from './types'
 
-/**
- * Spring config keys that should be extracted as global overrides.
- * Using Set for O(1) lookup performance.
- */
 const SPRING_CONFIG_KEYS: Set<string> = new Set([
   'stiffness',
   'damping',

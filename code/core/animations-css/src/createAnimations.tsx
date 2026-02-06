@@ -10,7 +10,6 @@ import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import { transformsToString } from '@tamagui/web'
 import React, { useState } from 'react' // import { animate } from '@tamagui/cubic-bezier-animator'
 
-// Hoisted RegExp patterns for duration extraction
 const EXTRACT_MS_REGEX = /(\d+(?:\.\d+)?)\s*ms/
 const EXTRACT_S_REGEX = /(\d+(?:\.\d+)?)\s*s/
 
@@ -36,7 +35,6 @@ function extractDuration(animation: string): number {
   return 300
 }
 
-// Hoisted RegExp patterns for duration matching
 const MS_DURATION_REGEX = /(\d+(?:\.\d+)?)\s*ms/
 const S_DURATION_REGEX = /(\d+(?:\.\d+)?)\s*s(?!tiffness)/
 
