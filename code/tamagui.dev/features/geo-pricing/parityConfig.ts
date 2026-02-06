@@ -17,9 +17,9 @@ export type ParityTier = {
   countries: string[] // ISO 3166-1 alpha-2 codes
 }
 
-// 40% off - very low purchasing power
-const TIER_40: ParityTier = {
-  discount: 40,
+// low purchasing power
+const TIER_5: ParityTier = {
+  discount: 60,
   countries: [
     'IN', // India
     'PK', // Pakistan
@@ -44,9 +44,9 @@ const TIER_40: ParityTier = {
   ],
 }
 
-// 30% off - low purchasing power (from your screenshot 0.5-0.6)
-const TIER_30: ParityTier = {
-  discount: 30,
+// low purchasing power
+const TIER_4: ParityTier = {
+  discount: 45,
   countries: [
     'GR', // Greece
     'TT', // Trinidad and Tobago
@@ -83,9 +83,9 @@ const TIER_30: ParityTier = {
   ],
 }
 
-// 25% off - medium-low purchasing power (from your screenshot 0.6-0.7)
-const TIER_25: ParityTier = {
-  discount: 25,
+// medium-low purchasing power
+const TIER_3: ParityTier = {
+  discount: 35,
   countries: [
     'AE', // UAE
     'ES', // Spain
@@ -108,9 +108,9 @@ const TIER_25: ParityTier = {
   ],
 }
 
-// 15% off - medium purchasing power (from your screenshot 0.7-0.8)
-const TIER_15: ParityTier = {
-  discount: 15,
+// medium purchasing power (from your screenshot 0.7-0.8)
+const TIER_2: ParityTier = {
+  discount: 25,
   countries: [
     'AT', // Austria
     'JP', // Japan
@@ -145,7 +145,7 @@ const TIER_15: ParityTier = {
 }
 
 // all tiers for lookup
-export const PARITY_TIERS = [TIER_40, TIER_30, TIER_25, TIER_15]
+export const PARITY_TIERS = [TIER_5, TIER_4, TIER_3, TIER_2]
 
 /**
  * Get the parity discount for a country code
