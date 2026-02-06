@@ -594,12 +594,42 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     const delay =
       typeof normalized.delay === 'number' ? normalized.delay / 1000 : undefined
 
+    // Convert global config overrides from ms to seconds where needed
+    let globalConfigOverride: Record<string, unknown> | undefined
+    if (normalized.config) {
+      globalConfigOverride = { ...normalized.config }
+      if (typeof normalized.config.duration === 'number') {
+        globalConfigOverride.duration = normalized.config.duration / 1000
+      }
+    }
+
     // Build the animation options
+    // Framer Motion's animate() expects default config at the TOP LEVEL, not nested under 'default'
+    // Per-property configs can be nested under property names like { scale: { duration: 1 } }
     const result: TransitionAnimationOptions = {}
 
-    // Set default animation config
+    // Apply base config from preset at top level (this is what animate() reads as default)
     if (defaultConfig) {
-      result.default = delay ? { ...defaultConfig, delay } : defaultConfig
+      Object.assign(result, defaultConfig)
+    }
+
+    // Apply global spring config overrides at top level
+    if (globalConfigOverride) {
+      Object.assign(result, globalConfigOverride)
+    }
+
+    // Apply delay at top level
+    if (delay) {
+      result.delay = delay
+    }
+
+    // Also set the 'default' key for backwards compatibility with per-property fallback logic
+    if (defaultConfig || globalConfigOverride || delay) {
+      result.default = {
+        ...(defaultConfig || {}),
+        ...globalConfigOverride,
+        ...(delay ? { delay } : null),
+      }
     }
 
     // Add property-specific animations

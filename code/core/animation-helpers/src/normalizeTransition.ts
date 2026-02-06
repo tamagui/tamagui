@@ -1,4 +1,29 @@
-import type { AnimationConfig, NormalizedTransition, TransitionPropInput } from './types'
+import type {
+  AnimationConfig,
+  NormalizedTransition,
+  SpringConfig,
+  TransitionPropInput,
+} from './types'
+
+const SPRING_CONFIG_KEYS: Set<string> = new Set([
+  'stiffness',
+  'damping',
+  'mass',
+  'tension',
+  'friction',
+  'velocity',
+  'overshootClamping',
+  'duration',
+  'bounciness',
+  'speed',
+])
+
+/**
+ * Check if a key is a spring config parameter
+ */
+function isSpringConfigKey(key: string): key is keyof SpringConfig {
+  return SPRING_CONFIG_KEYS.has(key)
+}
 
 /**
  * Normalizes the various transition prop formats into a consistent structure.
@@ -38,21 +63,26 @@ export function normalizeTransition(
   }
 
   // Array format: ['bouncy', { delay: 100, x: 'quick', enter: 'slow', exit: 'fast' }]
+  // Also supports spring config overrides: ['bouncy', { stiffness: 1000, damping: 70 }]
   if (Array.isArray(transition)) {
-    const [defaultAnimation, config] = transition
+    const [defaultAnimation, configObj] = transition
     const properties: Record<string, string | AnimationConfig> = {}
+    const springConfig: SpringConfig = {}
     let delay: number | undefined
     let enter: string | null = null
     let exit: string | null = null
 
-    if (config && typeof config === 'object') {
-      for (const [key, value] of Object.entries(config)) {
+    if (configObj && typeof configObj === 'object') {
+      for (const [key, value] of Object.entries(configObj)) {
         if (key === 'delay' && typeof value === 'number') {
           delay = value
         } else if (key === 'enter' && typeof value === 'string') {
           enter = value
         } else if (key === 'exit' && typeof value === 'string') {
           exit = value
+        } else if (isSpringConfigKey(key) && value !== undefined) {
+          // Spring config override: { stiffness: 1000, damping: 70 }
+          springConfig[key] = value as SpringConfig[keyof SpringConfig]
         } else if (value !== undefined) {
           // Property-specific animation: string or config object
           properties[key] = value as string | AnimationConfig
@@ -66,12 +96,15 @@ export function normalizeTransition(
       exit,
       delay,
       properties,
+      config: Object.keys(springConfig).length > 0 ? springConfig : undefined,
     }
   }
 
   // Object format: { x: 'quick', y: 'bouncy', default: 'slow', enter: 'bouncy', exit: 'quick' }
+  // Also supports spring config overrides: { default: 'bouncy', stiffness: 1000 }
   if (typeof transition === 'object') {
     const properties: Record<string, string | AnimationConfig> = {}
+    const springConfig: SpringConfig = {}
     let defaultAnimation: string | null = null
     let enter: string | null = null
     let exit: string | null = null
@@ -86,6 +119,9 @@ export function normalizeTransition(
         exit = value
       } else if (key === 'delay' && typeof value === 'number') {
         delay = value
+      } else if (isSpringConfigKey(key) && value !== undefined) {
+        // Spring config override: { stiffness: 1000, damping: 70 }
+        springConfig[key] = value as SpringConfig[keyof SpringConfig]
       } else if (value !== undefined) {
         // Property-specific animation: string or config object
         properties[key] = value as string | AnimationConfig
@@ -98,6 +134,7 @@ export function normalizeTransition(
       exit,
       delay,
       properties,
+      config: Object.keys(springConfig).length > 0 ? springConfig : undefined,
     }
   }
 

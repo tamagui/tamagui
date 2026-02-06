@@ -507,6 +507,9 @@ function getAnimationConfig(
   const found = animationType ? animations[animationType] : {}
   return {
     ...found,
+    // Apply global spring config overrides (from transition={['bouncy', { stiffness: 1000 }]})
+    ...normalized.config,
+    // Property-specific config takes highest precedence
     ...extraConf,
   }
 }

@@ -10,6 +10,9 @@ import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
 import { transformsToString } from '@tamagui/web'
 import React, { useState } from 'react' // import { animate } from '@tamagui/cubic-bezier-animator'
 
+const EXTRACT_MS_REGEX = /(\d+(?:\.\d+)?)\s*ms/
+const EXTRACT_S_REGEX = /(\d+(?:\.\d+)?)\s*s/
+
 /**
  * Helper function to extract duration from CSS animation string
  * Examples: "ease-in 200ms" -> 200, "cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms" -> 400
@@ -17,19 +20,43 @@ import React, { useState } from 'react' // import { animate } from '@tamagui/cub
  */
 function extractDuration(animation: string): number {
   // Try to match milliseconds first
-  const msMatch = animation.match(/(\d+(?:\.\d+)?)\s*ms/)
+  const msMatch = animation.match(EXTRACT_MS_REGEX)
   if (msMatch) {
     return Number.parseInt(msMatch[1], 10)
   }
 
   // Try to match seconds and convert to milliseconds
-  const sMatch = animation.match(/(\d+(?:\.\d+)?)\s*s/)
+  const sMatch = animation.match(EXTRACT_S_REGEX)
   if (sMatch) {
     return Math.round(Number.parseFloat(sMatch[1]) * 1000)
   }
 
   // Default to 300ms if no duration found
   return 300
+}
+
+const MS_DURATION_REGEX = /(\d+(?:\.\d+)?)\s*ms/
+const S_DURATION_REGEX = /(\d+(?:\.\d+)?)\s*s(?!tiffness)/
+
+/**
+ * Apply duration override to a CSS animation string
+ * Replaces the existing duration with the override value
+ */
+function applyDurationOverride(animation: string, durationMs: number): string {
+  // Replace ms duration
+  const msReplaced = animation.replace(MS_DURATION_REGEX, `${durationMs}ms`)
+  if (msReplaced !== animation) {
+    return msReplaced
+  }
+
+  // Replace seconds duration
+  const sReplaced = animation.replace(S_DURATION_REGEX, `${durationMs}ms`)
+  if (sReplaced !== animation) {
+    return sReplaced
+  }
+
+  // No duration found, prepend the duration
+  return `${durationMs}ms ${animation}`
 }
 
 export function createAnimations<A extends object>(animations: A): AnimationDriver<A> {
@@ -204,6 +231,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       // TODO: we disabled the transform transition, because it will create issue for inverse function and animate function
       // for non layout transform properties either use animate function or find a workaround to do it with css
       const delayStr = normalized.delay ? ` ${normalized.delay}ms` : ''
+      const durationOverride = normalized.config?.duration
       style.transition = keys
         .map((key) => {
           // Check for property-specific animation, fall back to default
@@ -220,6 +248,11 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
             animationValue = animations[propAnimation.type]
           } else if (defaultAnimation) {
             animationValue = defaultAnimation
+          }
+
+          // Apply global duration override if specified
+          if (animationValue && durationOverride) {
+            animationValue = applyDurationOverride(animationValue, durationOverride)
           }
 
           return animationValue ? `${key} ${animationValue}${delayStr}` : null

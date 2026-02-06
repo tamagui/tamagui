@@ -866,19 +866,43 @@ export interface MediaQueryList {
 }
 export type MatchMedia = (query: string) => MediaQueryList;
 export type AnimationConfigType = any;
-export type TransitionProp = TransitionKeys | {
+/**
+ * Spring configuration parameters that can override preset defaults.
+ * Use with array syntax: transition={['bouncy', { stiffness: 1000, damping: 70 }]}
+ */
+export type TransitionSpringConfig = {
+    stiffness?: number;
+    damping?: number;
+    mass?: number;
+    tension?: number;
+    friction?: number;
+    velocity?: number;
+    overshootClamping?: boolean;
+    duration?: number;
+    bounciness?: number;
+    speed?: number;
+};
+export type TransitionProp = TransitionKeys | ({
+    default?: TransitionKeys;
+    enter?: TransitionKeys;
+    exit?: TransitionKeys;
+    delay?: number;
+} & TransitionSpringConfig & {
     [key: string]: TransitionKeys | {
         type: TransitionKeys;
         [key: string]: any;
-    };
-} | [
+    } | number | boolean | undefined;
+}) | [
     TransitionKeys,
     {
         delay?: number;
+        enter?: TransitionKeys;
+        exit?: TransitionKeys;
+    } & TransitionSpringConfig & {
         [key: string]: TransitionKeys | {
             type?: TransitionKeys;
             [key: string]: any;
-        } | number | undefined;
+        } | number | boolean | undefined;
     }
 ];
 /**
