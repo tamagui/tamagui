@@ -26,6 +26,7 @@ interface DragStartData {
   startX: number
   startY: number
   startTime: number
+  pointerId: number
 }
 
 const VELOCITY_THRESHOLD = 0.11
@@ -57,26 +58,66 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
 
   const dragStartRef = React.useRef<DragStartData | null>(null)
   const lockedDirectionRef = React.useRef<'x' | 'y' | null>(null)
+  // Stable ref for pointer capture - avoids issues with event.target changing
+  const captureElementRef = React.useRef<HTMLElement | null>(null)
 
   const isHorizontal =
     direction === 'left' || direction === 'right' || direction === 'horizontal'
   const isVertical =
     direction === 'up' || direction === 'down' || direction === 'vertical'
 
+  // Cleanup function to reset all drag state
+  const cleanup = React.useCallback(() => {
+    dragStartRef.current = null
+    lockedDirectionRef.current = null
+    setIsDragging(false)
+  }, [])
+
+  // Defensive cleanup on unmount - if toast unmounts while dragging
+  React.useEffect(() => {
+    return () => {
+      if (dragStartRef.current) {
+        // Release pointer capture if we have it
+        if (captureElementRef.current && dragStartRef.current.pointerId) {
+          try {
+            captureElementRef.current.releasePointerCapture(
+              dragStartRef.current.pointerId
+            )
+          } catch {
+            // ignore
+          }
+        }
+        cleanup()
+        // Note: can't call onCancel here as component is unmounting
+      }
+    }
+  }, [cleanup])
+
   const handlePointerDown = React.useCallback(
     (event: React.PointerEvent) => {
       if (disabled) return
       if (event.button !== 0) return
 
+      // don't start drag if clicking on interactive elements (buttons, links, inputs)
+      const target = event.target as HTMLElement
+      if (target.closest('button, a, input, textarea, select, [role="button"]')) {
+        return
+      }
+
       // don't start drag if user has text selected (let them copy it)
       const hasSelection = (window.getSelection()?.toString().length ?? 0) > 0
       if (hasSelection) return
-      ;(event.target as HTMLElement).setPointerCapture(event.pointerId)
+
+      // Use currentTarget (the element with the handler) for stable capture
+      const captureElement = event.currentTarget as HTMLElement
+      captureElementRef.current = captureElement
+      captureElement.setPointerCapture(event.pointerId)
 
       dragStartRef.current = {
         startX: event.clientX,
         startY: event.clientY,
         startTime: Date.now(),
+        pointerId: event.pointerId,
       }
 
       setIsDragging(true)
@@ -197,17 +238,17 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
 
       const shouldDismiss = exitDirection && (passedThreshold || hasVelocity)
 
-      // release pointer capture (explicit release for safety, though browsers auto-release)
-      try {
-        ;(event.target as HTMLElement).releasePointerCapture(event.pointerId)
-      } catch {
-        // ignore if already released
+      // release pointer capture using stable ref
+      if (captureElementRef.current) {
+        try {
+          captureElementRef.current.releasePointerCapture(event.pointerId)
+        } catch {
+          // ignore if already released
+        }
       }
 
-      // reset refs
-      dragStartRef.current = null
-      lockedDirectionRef.current = null
-      setIsDragging(false)
+      // reset state
+      cleanup()
 
       if (shouldDismiss && exitDirection) {
         onDismiss(exitDirection, relevantVelocity)
@@ -215,31 +256,49 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
         onCancel()
       }
     },
-    [disabled, direction, threshold, isHorizontal, isVertical, onDismiss, onCancel]
+    [
+      disabled,
+      direction,
+      threshold,
+      isHorizontal,
+      isVertical,
+      onDismiss,
+      onCancel,
+      cleanup,
+    ]
   )
 
   const handlePointerCancel = React.useCallback(
     (event: React.PointerEvent) => {
-      // release pointer capture
-      try {
-        ;(event.target as HTMLElement).releasePointerCapture(event.pointerId)
-      } catch {
-        // ignore if already released
+      // release pointer capture using stable ref
+      if (captureElementRef.current) {
+        try {
+          captureElementRef.current.releasePointerCapture(event.pointerId)
+        } catch {
+          // ignore if already released
+        }
       }
 
-      dragStartRef.current = null
-      lockedDirectionRef.current = null
-      setIsDragging(false)
+      cleanup()
       onCancel()
     },
-    [onCancel]
+    [onCancel, cleanup]
   )
+
+  // Handle lost pointer capture - treat like cancel
+  const handleLostPointerCapture = React.useCallback(() => {
+    if (dragStartRef.current) {
+      cleanup()
+      onCancel()
+    }
+  }, [onCancel, cleanup])
 
   const gestureHandlers = {
     onPointerDown: handlePointerDown,
     onPointerMove: handlePointerMove,
     onPointerUp: handlePointerUp,
     onPointerCancel: handlePointerCancel,
+    onLostPointerCapture: handleLostPointerCapture,
   }
 
   return {

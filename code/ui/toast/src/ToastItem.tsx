@@ -253,42 +253,12 @@ const ToastActionButton = styled(XStack, {
 })
 
 /* -------------------------------------------------------------------------------------------------
- * Icons
+ * Icons - users provide their own via icons prop, no built-in defaults
  * -----------------------------------------------------------------------------------------------*/
 
 const DefaultCloseIcon = () => (
   <SizableText size="$1" color="$color11">
     ✕
-  </SizableText>
-)
-
-const DefaultSuccessIcon = () => (
-  <SizableText size="$5" color="$green10">
-    ✓
-  </SizableText>
-)
-
-const DefaultErrorIcon = () => (
-  <SizableText size="$5" color="$red10">
-    ✕
-  </SizableText>
-)
-
-const DefaultWarningIcon = () => (
-  <SizableText size="$5" color="$yellow10">
-    ⚠
-  </SizableText>
-)
-
-const DefaultInfoIcon = () => (
-  <SizableText size="$5" color="$blue10">
-    ℹ
-  </SizableText>
-)
-
-const DefaultLoadingIcon = () => (
-  <SizableText size="$5" color="$color11">
-    ⟳
   </SizableText>
 )
 
@@ -534,20 +504,13 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     }, TIME_BEFORE_UNMOUNT)
   }, [dismissible, toast, removeToast])
 
-  // get icon - just use what's passed on the toast, or type-based defaults
+  // get icon - only show if explicitly provided via toast.icon or icons prop
   const getIcon = () => {
+    // per-toast icon takes priority
     if (toast.icon !== undefined) return toast.icon
 
-    const typeIcons: Record<ToastType, React.ReactNode> = {
-      default: null,
-      success: icons?.success ?? <DefaultSuccessIcon />,
-      error: icons?.error ?? <DefaultErrorIcon />,
-      warning: icons?.warning ?? <DefaultWarningIcon />,
-      info: icons?.info ?? <DefaultInfoIcon />,
-      loading: icons?.loading ?? <DefaultLoadingIcon />,
-    }
-
-    return typeIcons[toastType]
+    // fall back to type-based icon from icons prop (no built-in defaults)
+    return icons?.[toastType] ?? null
   }
 
   const icon = getIcon()
