@@ -8,10 +8,10 @@ on:
       - 'v*'
   workflow_dispatch:
 
-# Cancel in-progress runs when a new run is triggered
+# cancel in-progress runs on feature branches, but let main finish for full history
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
   test_container_app_path: code/kitchen-sink
