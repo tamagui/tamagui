@@ -29,6 +29,7 @@ export declare function ensureIOSFolder(): Promise<void>;
  *
  * IMPORTANT: Fingerprint only changes when NATIVE dependencies change
  * (Podfile, native modules, etc). JS-only changes don't require rebuild.
+ * Set SKIP_IOS_REBUILD=1 to skip rebuild even when fingerprint changes.
  */
 export declare function ensureIOSApp(config?: string): Promise<void>;
 //# sourceMappingURL=ios.d.ts.map

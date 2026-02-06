@@ -69,29 +69,8 @@ type AnimationProps = {
 // but this is fine for beta motion driver rc.0 fix in rc.1
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
-  animationsProp: A
+  animations: A
 ): AnimationDriver<A> {
-  // normalize animation configs
-  // @ts-expect-error avoid doing a spread for no reason, sub-constraint type issue
-  const animations: A = {}
-  for (const key in animationsProp) {
-    const config = animationsProp[key]
-    // If config only has duration (timing-based), use 'tween' type
-    // Otherwise default to 'spring' which matches the moti driver
-    const isTimingBased =
-      config.duration !== undefined &&
-      config.damping === undefined &&
-      config.stiffness === undefined &&
-      config.mass === undefined
-    animations[key] = {
-      type: isTimingBased ? 'tween' : 'spring',
-      ...config,
-      // Convert duration/delay from ms to seconds for motion library
-      ...(config.duration ? { duration: config.duration / 1000 } : null),
-      ...(config.delay ? { delay: config.delay / 1000 } : null),
-    }
-  }
-
   let isHydratingGlobal: boolean | undefined
   const hydratingComponents = new Set<Function>()
 
@@ -571,10 +550,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
-    const animationOptions = transitionPropToAnimationConfig(
-      props.transition,
-      animationState
-    )
+    const animationOptions = getAnimationOptions(props.transition, animationState)
 
     let dontAnimate: Record<string, unknown> | undefined
     let doAnimate: Record<string, unknown> | undefined
@@ -591,18 +567,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
-    // half works in chrome but janky and stops working after first animation
-    // if (
-    //   typeof doAnimate?.opacity !== 'undefined' &&
-    //   typeof dontAnimate?.backdropFilter === 'string'
-    // ) {
-    //   if (!dontAnimate.backdropFilter.includes('opacity(')) {
-    //     dontAnimate.backdropFilter += ` opacity(${doAnimate.opacity})`
-    //     dontAnimate.WebkitBackdropFilter += ` opacity(${doAnimate.opacity})`
-    //     dontAnimate.transition = 'backdrop-filter ease-in 1000ms'
-    //   }
-    // }
-
     return {
       dontAnimate,
       doAnimate,
@@ -610,7 +574,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     }
   }
 
-  function transitionPropToAnimationConfig(
+  function getAnimationOptions(
     transitionProp: TransitionProp | null,
     animationState: 'enter' | 'exit' | 'default' = 'default'
   ): TransitionAnimationOptions {
@@ -624,7 +588,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       return {}
     }
 
-    const defaultConfig = effectiveKey ? animations[effectiveKey] : null
+    const defaultConfig = effectiveKey ? withInferredType(animations[effectiveKey]) : null
 
     // Framer Motion uses seconds, so convert from ms
     const delay =
@@ -643,10 +607,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       normalized.properties
     )) {
       if (typeof animationNameOrConfig === 'string') {
-        result[propName] = animations[animationNameOrConfig]
+        result[propName] = withInferredType(animations[animationNameOrConfig])
       } else if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
         const baseConfig = animationNameOrConfig.type
-          ? animations[animationNameOrConfig.type]
+          ? withInferredType(animations[animationNameOrConfig.type])
           : defaultConfig
 
         // @ts-expect-error
@@ -657,8 +621,32 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
+    // we standardize to ms across drivers, motion expects s
+    // apply to default and each per-property config
+    convertMsToS(result.default)
+    for (const key in result) {
+      if (key !== 'default') convertMsToS(result[key])
+    }
+
     return result
   }
+}
+
+// infer type from config shape if not explicitly set, always returns a copy
+function withInferredType(config: AnimationConfig): AnimationConfig {
+  const isTimingBased =
+    config.duration !== undefined &&
+    config.damping === undefined &&
+    config.stiffness === undefined &&
+    config.mass === undefined
+  return { type: isTimingBased ? 'tween' : 'spring', ...config }
+}
+
+// convert tween duration/delay from ms to s (motion expects seconds)
+function convertMsToS(config: ValueTransition | undefined) {
+  if (!config || config.type !== 'tween') return
+  if (typeof config.duration === 'number') config.duration = config.duration / 1000
+  if (typeof config.delay === 'number') config.delay = config.delay / 1000
 }
 
 function removeRemovedStyles(

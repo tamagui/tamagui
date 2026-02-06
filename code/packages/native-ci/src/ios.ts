@@ -107,6 +107,7 @@ function saveFingerprintCache(projectRoot: string, cache: FingerprintCache): voi
  *
  * IMPORTANT: Fingerprint only changes when NATIVE dependencies change
  * (Podfile, native modules, etc). JS-only changes don't require rebuild.
+ * Set SKIP_IOS_REBUILD=1 to skip rebuild even when fingerprint changes.
  */
 export async function ensureIOSApp(config: string = 'ios.sim.debug'): Promise<void> {
   // On CI, the app is built separately - don't build here
@@ -153,29 +154,24 @@ export async function ensureIOSApp(config: string = 'ios.sim.debug'): Promise<vo
     return
   }
 
-  // Fingerprint changed - but let user decide if they want to rebuild
-  // Many fingerprint changes are false positives (timestamp changes, etc)
+  // fingerprint changed - rebuild by default since native deps likely changed
   if (cache?.fingerprint) {
     console.info(`\n--- iOS fingerprint changed ---`)
     console.info(`Previous: ${cache.fingerprint.slice(0, 16)}...`)
     console.info(`Current:  ${currentFingerprint.slice(0, 16)}...`)
-    console.info(`App exists at ${appPath}`)
 
-    // Check if FORCE_IOS_REBUILD is set
-    if (process.env.FORCE_IOS_REBUILD) {
-      console.info('FORCE_IOS_REBUILD set, rebuilding...')
-      await buildIOSApp(config, projectRoot, appPath, currentFingerprint)
+    if (process.env.SKIP_IOS_REBUILD) {
+      console.info('SKIP_IOS_REBUILD set, using existing app')
+      saveFingerprintCache(projectRoot, {
+        fingerprint: currentFingerprint,
+        timestamp: new Date().toISOString(),
+        appPath,
+      })
       return
     }
 
-    // Otherwise use existing app but update fingerprint cache
-    // This avoids unnecessary rebuilds from timestamp/metadata changes
-    console.info('Using existing app (set FORCE_IOS_REBUILD=1 to force rebuild)')
-    saveFingerprintCache(projectRoot, {
-      fingerprint: currentFingerprint,
-      timestamp: new Date().toISOString(),
-      appPath,
-    })
+    console.info('Native dependencies changed, rebuilding...')
+    await buildIOSApp(config, projectRoot, appPath, currentFingerprint)
     return
   }
 
