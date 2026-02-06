@@ -510,6 +510,18 @@ async function run() {
       async function finishAndCommit(cwd = process.cwd()) {
         if (!rePublish || reRun || shouldFinish) {
           await spawnify(`git add -A`, { cwd })
+
+          // check if there are staged changes before committing
+          const hasChanges = await exec(`git diff --cached --quiet`, { cwd }).then(
+            () => false,
+            () => true
+          )
+
+          if (!hasChanges) {
+            console.info(`No changes to commit in ${cwd}, skipping`)
+            return
+          }
+
           await spawnify(`git commit -m ${gitTag}`, { cwd })
           if (!canary) {
             await spawnify(`git tag ${gitTag}`, { cwd })

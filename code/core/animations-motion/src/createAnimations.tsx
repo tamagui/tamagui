@@ -626,7 +626,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     // Also set the 'default' key for backwards compatibility with per-property fallback logic
     if (defaultConfig || globalConfigOverride || delay) {
       result.default = {
-        ...(defaultConfig || {}),
+        ...defaultConfig,
         ...globalConfigOverride,
         ...(delay ? { delay } : null),
       }
