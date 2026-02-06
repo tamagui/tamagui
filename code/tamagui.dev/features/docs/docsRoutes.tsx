@@ -100,6 +100,7 @@ export const docsRoutes = [
     title: 'Guides',
     section: 'core',
     pages: [
+      { title: 'Upgrading from v1 to v2', route: '/docs/guides/how-to-upgrade' },
       { title: 'Custom UI Package', route: '/docs/guides/design-systems' },
       { title: 'Creating Custom Themes', route: '/docs/guides/theme-builder' },
       {
