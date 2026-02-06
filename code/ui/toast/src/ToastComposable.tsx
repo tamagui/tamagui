@@ -107,135 +107,7 @@ export interface ToastIcons {
   close?: React.ReactNode
 }
 
-const ICON_SIZE = 20
-
-const DefaultSuccessIcon = () => (
-  <View width={ICON_SIZE} height={ICON_SIZE}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={ICON_SIZE}
-      height={ICON_SIZE}
-      fill="none"
-    >
-      <circle cx="12" cy="12" r="10" fill="var(--green5)" />
-      <path
-        d="M8 12.5l2.5 2.5 5.5-5.5"
-        stroke="var(--green10)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  </View>
-)
-
-const DefaultErrorIcon = () => (
-  <View width={ICON_SIZE} height={ICON_SIZE}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={ICON_SIZE}
-      height={ICON_SIZE}
-      fill="none"
-    >
-      <circle cx="12" cy="12" r="10" fill="var(--red5)" />
-      <path
-        d="M15 9l-6 6M9 9l6 6"
-        stroke="var(--red10)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  </View>
-)
-
-const DefaultWarningIcon = () => (
-  <View width={ICON_SIZE} height={ICON_SIZE}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={ICON_SIZE}
-      height={ICON_SIZE}
-      fill="none"
-    >
-      <path
-        d="M12 3L2 21h20L12 3z"
-        fill="var(--yellow5)"
-        stroke="var(--yellow8)"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      <path d="M12 10v4" stroke="var(--yellow11)" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="12" cy="17" r="1" fill="var(--yellow11)" />
-    </svg>
-  </View>
-)
-
-const DefaultInfoIcon = () => (
-  <View width={ICON_SIZE} height={ICON_SIZE}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={ICON_SIZE}
-      height={ICON_SIZE}
-      fill="none"
-    >
-      <circle cx="12" cy="12" r="10" fill="var(--blue5)" />
-      <path d="M12 11v5" stroke="var(--blue10)" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="12" cy="8" r="1" fill="var(--blue10)" />
-    </svg>
-  </View>
-)
-
-const spinKeyframes = isWeb
-  ? `
-@keyframes toast-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-`
-  : ''
-
-// inject keyframes once on web
-if (isWeb && typeof document !== 'undefined') {
-  const styleId = 'tamagui-toast-spin'
-  if (!document.getElementById(styleId)) {
-    const style = document.createElement('style')
-    style.id = styleId
-    style.textContent = spinKeyframes
-    document.head.appendChild(style)
-  }
-}
-
-const DefaultLoadingIcon = () => (
-  <View
-    width={ICON_SIZE}
-    height={ICON_SIZE}
-    {...(isWeb && {
-      style: {
-        animation: 'toast-spin 1s linear infinite',
-      },
-    })}
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={ICON_SIZE}
-      height={ICON_SIZE}
-      fill="none"
-    >
-      <circle cx="12" cy="12" r="10" stroke="var(--color5)" strokeWidth="2.5" />
-      <path
-        d="M12 2a10 10 0 0 1 10 10"
-        stroke="var(--color11)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  </View>
-)
+/* Icons - users provide their own via icons prop, no built-in defaults */
 
 const DefaultCloseIcon = () => (
   <SizableText size="$1" color="$color11">
@@ -1257,16 +1129,8 @@ function ToastIcon(props: { children?: React.ReactNode }) {
 
   const toastType = toast.type ?? 'default'
 
-  const typeIcons: Record<ToastType, React.ReactNode> = {
-    default: null,
-    success: ctx.icons?.success ?? <DefaultSuccessIcon />,
-    error: ctx.icons?.error ?? <DefaultErrorIcon />,
-    warning: ctx.icons?.warning ?? <DefaultWarningIcon />,
-    info: ctx.icons?.info ?? <DefaultInfoIcon />,
-    loading: ctx.icons?.loading ?? <DefaultLoadingIcon />,
-  }
-
-  const icon = typeIcons[toastType]
+  // only show icons if explicitly provided via icons prop (no built-in defaults)
+  const icon = ctx.icons?.[toastType] ?? null
   if (!icon) return null
 
   return (
