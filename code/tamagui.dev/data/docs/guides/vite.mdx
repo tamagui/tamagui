@@ -26,7 +26,24 @@ yarn add @tamagui/vite-plugin
 
 ### Configuration
 
-Update your `vite.config.ts`:
+Update your `vite.config.ts`. If you have a `tamagui.build.ts` (recommended —
+see [compiler install docs](/docs/intro/compiler-install#configuration-with-tamaguibuildts)),
+no options are needed:
+
+```tsx fileName="vite.config.ts"
+import react from '@vitejs/plugin-react-swc'
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
+
+export default {
+  plugins: [
+    react(),
+    // reads from tamagui.build.ts automatically
+    tamaguiPlugin(),
+  ].filter(Boolean),
+}
+```
+
+Or pass options inline:
 
 ```tsx fileName="vite.config.ts"
 import react from '@vitejs/plugin-react-swc'
@@ -36,13 +53,8 @@ export default {
   plugins: [
     react(),
     tamaguiPlugin({
-      // points to your tamagui config file
       config: 'src/tamagui.config.ts',
-      // points to any linked packages or node_modules
-      // that have tamagui components to optimize
       components: ['tamagui'],
-      // disable optimizing compiler but keep debug helper transforms,
-      // or other options like pre-building CSS
       disableExtraction: true,
     }),
   ].filter(Boolean),

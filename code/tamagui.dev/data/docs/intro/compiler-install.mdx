@@ -27,6 +27,45 @@ The end result is less abstraction - like a `div` on web, or plain React Native
   directory. You'll want to add that directory to your `.gitignore`.
 </Notice>
 
+## Configuration with tamagui.build.ts
+
+We recommend creating a `tamagui.build.ts` file in your project root as the
+single source of truth for your compiler configuration. All bundler plugins and
+the CLI automatically read from this file, so you only need to define your
+options once.
+
+This file lets the Tamagui CLI read your config and perform operations like
+generating CSS, pre-compiling components, and verifying optimizations — while
+also sharing that same configuration with whichever bundler plugin you use.
+Without it, you'd need to duplicate options across your metro, babel, vite,
+or webpack configs.
+
+```ts fileName="tamagui.build.ts"
+import type { TamaguiBuildOptions } from 'tamagui'
+
+export default {
+  config: './tamagui.config.ts',
+  components: ['tamagui'],
+  outputCSS: './public/tamagui.generated.css',
+  // optional:
+  importsWhitelist: ['constants.js', 'colors.js'],
+  disableExtraction: process.env.NODE_ENV === 'development',
+} satisfies TamaguiBuildOptions
+```
+
+With this file in place, your bundler plugins can be configured with no options
+at all — they'll pick up everything from `tamagui.build.ts`:
+
+```tsx
+// vite: tamaguiPlugin()
+// webpack: new TamaguiPlugin()
+// metro: withTamagui(config)
+// all read from tamagui.build.ts automatically
+```
+
+You can still pass options directly to a plugin, and they'll be merged with
+(and override) the options from `tamagui.build.ts`.
+
 ## Install
 
 There are plugins for a variety of bundlers, or you can use the `@tamagui/cli`
@@ -96,7 +135,21 @@ module.exports = {
 }
 ```
 
-Or you can use the TamaguiPlugin which automates some of this setup for you:
+Or you can use the TamaguiPlugin which automates some of this setup for you.
+If you have a `tamagui.build.ts`, you can pass no options:
+
+```tsx
+const { TamaguiPlugin } = require('tamagui-loader')
+
+module.exports = {
+  plugins: [
+    // reads from tamagui.build.ts automatically
+    new TamaguiPlugin(),
+  ],
+}
+```
+
+Or pass options inline to override:
 
 ```tsx
 const { TamaguiPlugin } = require('tamagui-loader')
@@ -127,7 +180,21 @@ Some notes on the options:
 
 See the [Vite guide](/docs/guides/vite) for more complete setup.
 
-Add `@tamagui/vite-plugin` and update your `vite.config.ts`:
+Add `@tamagui/vite-plugin` and update your `vite.config.ts`. If you have a
+`tamagui.build.ts`, no options are needed:
+
+```tsx
+import { tamaguiPlugin } from '@tamagui/vite-plugin'
+
+export default defineConfig({
+  plugins: [
+    // reads from tamagui.build.ts automatically
+    tamaguiPlugin(),
+  ],
+})
+```
+
+Or pass options inline:
 
 ```tsx
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
@@ -135,13 +202,8 @@ import { tamaguiPlugin } from '@tamagui/vite-plugin'
 export default defineConfig({
   plugins: [
     tamaguiPlugin({
-      // points to your tamagui config file
       config: 'src/tamagui.config.ts',
-      // points to any linked packages or node_modules
-      // that have tamagui components to optimize
       components: ['tamagui'],
-      // disable optimizing compiler but keep debug helper transforms,
-      // or other options like pre-building CSS
       disableExtraction: true,
     }),
   ],
@@ -152,55 +214,29 @@ export default defineConfig({
 
 See the [guide](/docs/guides/next-js) for more complete setup.
 
-Add `@tamagui/next-plugin` and configure your `next.config.js`. Here we show a
-fuller scope of the options:
+Next.js with Turbopack (the default) works best with the CLI approach — create a
+`tamagui.build.ts` and use `tamagui build` to optimize production builds. No
+bundler plugin needed.
+
+For older Webpack-based Next.js setups, add `@tamagui/next-plugin` and configure
+your `next.config.js`:
 
 ```js
-// note next-compose-plugins somewhat unmaintained
-// you can use a simple two-liner instead, see:
-// https://github.com/cyrilwanner/next-compose-plugins/issues/59#issuecomment-1192523231
-const withPlugins = require('next-compose-plugins')
 const { withTamagui } = require('@tamagui/next-plugin')
 
-export default withPlugins([
-  withTamagui({
+module.exports = function (name, { defaultConfig }) {
+  const tamaguiPlugin = withTamagui({
+    // reads from tamagui.build.ts automatically, or pass inline:
     config: './tamagui.config.ts',
     components: ['tamagui'],
-
-    // rest are all optional:
-
-    // disable static extraction, faster to iterate in dev mode (default false)
     disableExtraction: process.env.NODE_ENV === 'development',
-
-    // Exclude react-native-web modules to lighten bundle
     excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker'],
-
-    // By default, we configure webpack to pass anything inside your root or design system
-    // to the Tamagui loader. If you are importing files from an external package, use this:
-    shouldExtract: (path: string, projectRoot: string) => {
-      if (path.includes('../packages/myapp')) {
-        return true
-      }
-    },
-
-    // Advanced:
-
-    // Many packages give difficulty to the nextjs server-side (node) runtime when un-bundled.
-    // for example, tamagui configures aliases like react-native => react-native-web.
-    // if you're running into a module that has errors importing react-native, you'll want to
-    // use a custom shouldExcludeFromServer function to include it (or override the default).
-    // this is the exact same return type as webpack.externals.
-    // returning undefined will let tamagui handle it, boolean or other values to override.
-    shouldExcludeFromServer: ({ fullPath, request }) => {
-      if (fullPath.includes('my-module')) {
-        return 'commonjs ' + commonjs
-      }
-      if (request === 'some-hard-to-bundle-package') {
-        return true
-      }
-    },
-  }),
-])
+  })
+  return {
+    ...defaultConfig,
+    ...tamaguiPlugin(defaultConfig),
+  }
+}
 ```
 
 Note: If running into issues, the environment variable `IGNORE_TS_CONFIG_PATHS`
@@ -220,7 +256,19 @@ can try adding it.
 yarn add @tamagui/babel-plugin
 ```
 
-Add to your `babel.config.js`:
+Add to your `babel.config.js`. With a `tamagui.build.ts`, you can pass no
+options:
+
+```js
+module.exports = {
+  plugins: [
+    // reads from tamagui.build.ts automatically
+    '@tamagui/babel-plugin',
+  ],
+}
+```
+
+Or pass options inline:
 
 ```js
 module.exports = {
@@ -268,18 +316,8 @@ For complete CLI documentation including all available commands, see the
 yarn add -D @tamagui/cli
 ```
 
-2. Create a `tamagui.build.ts` config file in your project root:
-
-```ts
-import type { TamaguiBuildOptions } from 'tamagui'
-
-export default {
-  config: './tamagui.config.ts',
-  components: ['tamagui'],
-  importsWhitelist: ['constants.js', 'colors.js'],
-  outputCSS: './public/tamagui.generated.css',
-} satisfies TamaguiBuildOptions
-```
+2. Create a `tamagui.build.ts` if you haven't already (see
+   [above](#configuration-with-tamaguibuildts)).
 
 3. Add a build script to your `package.json`:
 
@@ -414,11 +452,12 @@ All compiler plugins accept the same options:
   data={[
     {
       name: 'config',
-      required: true,
+      required: false,
       type: 'string',
       typeSimple: 'enum',
+      default: "'./tamagui.config.ts'",
       description:
-        'Relative path to your tamagui.config.ts file which should export default the result from createTamagui.',
+        'Relative path to your tamagui.config.ts file which should export default the result from createTamagui. Can be set in tamagui.build.ts instead.',
     },
     {
       name: 'components',

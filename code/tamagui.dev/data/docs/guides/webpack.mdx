@@ -17,7 +17,19 @@ yarn add -D tamagui-loader
 
 ### Configuration
 
-Add the plugin to your `webpack.config.js`:
+Add the plugin to your `webpack.config.js`. If you have a `tamagui.build.ts`
+(recommended — see
+[compiler install docs](/docs/intro/compiler-install#configuration-with-tamaguibuildts)),
+no options are needed:
+
+```tsx fileName="webpack.config.js"
+const { TamaguiPlugin } = require('tamagui-loader')
+
+// reads from tamagui.build.ts automatically
+config.plugins.push(new TamaguiPlugin())
+```
+
+Or pass options inline:
 
 ```tsx fileName="webpack.config.js"
 const { TamaguiPlugin } = require('tamagui-loader')

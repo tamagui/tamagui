@@ -22,6 +22,22 @@ config and watches for changes:
 yarn add @tamagui/metro-plugin
 ```
 
+If you have a `tamagui.build.ts` (recommended — see
+[compiler install docs](/docs/intro/compiler-install#configuration-with-tamaguibuildts)),
+no options are needed:
+
+```tsx fileName="metro.config.js"
+const { getDefaultConfig } = require('expo/metro-config')
+const { withTamagui } = require('@tamagui/metro-plugin')
+
+const config = getDefaultConfig(__dirname)
+
+// reads from tamagui.build.ts automatically
+module.exports = withTamagui(config)
+```
+
+Or pass options inline:
+
 ```tsx fileName="metro.config.js"
 const { getDefaultConfig } = require('expo/metro-config')
 const { withTamagui } = require('@tamagui/metro-plugin')
