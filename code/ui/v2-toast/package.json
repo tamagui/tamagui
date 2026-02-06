@@ -47,13 +47,13 @@
     "@tamagui/create-context": "workspace:*",
     "@tamagui/dismissable": "workspace:*",
     "@tamagui/helpers": "workspace:*",
+    "@tamagui/native": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/portal": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/start-transition": "workspace:*",
     "@tamagui/text": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
-    "@tamagui/native": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*"
   },
   "devDependencies": {
