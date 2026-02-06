@@ -423,7 +423,6 @@
       "version": "2.0.0-rc.6",
       "dependencies": {
         "@tamagui/animations-css": "workspace:*",
-        "@tamagui/animations-moti": "workspace:*",
         "@tamagui/animations-motion": "workspace:*",
         "@tamagui/animations-react-native": "workspace:*",
         "@tamagui/animations-reanimated": "workspace:*",
@@ -439,6 +438,9 @@
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
+      },
+      "optionalDependencies": {
+        "@tamagui/animations-moti": "workspace:*",
       },
     },
     "code/core/config-base": {
