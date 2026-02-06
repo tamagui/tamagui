@@ -20,7 +20,7 @@ module.exports = {
   context: __dirname,
   stats: 'normal', // 'detailed'
   mode: NODE_ENV,
-  entry: ['./src/index.web.tsx'],
+  entry: ['./src/index.tsx'],
   devtool: 'cheap-module-source-map',
   optimization: {
     concatenateModules: false,
