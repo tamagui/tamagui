@@ -13,7 +13,7 @@ import {
   withStaticProperties,
 } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
-import { getFontSize } from '@tamagui/font-size'
+import { useIconSize } from '@tamagui/font-size'
 import { getSize } from '@tamagui/get-token'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -241,10 +241,10 @@ export function createCheckbox<
       let children = childrenProp
 
       if (!unstyled) {
-        const iconSize =
-          (typeof styledContext.size === 'number'
-            ? styledContext.size * 0.65
-            : getFontSize(styledContext.size as any)) * styledContext.scaleIcon
+        const iconSize = useIconSize({
+          sizeToken: styledContext.size,
+          scaleIcon: styledContext.scaleIcon ?? 0.65,
+        })
         const theme = useTheme()
         const getThemedIcon = useGetThemedIcon({ size: iconSize, color: theme.color })
 

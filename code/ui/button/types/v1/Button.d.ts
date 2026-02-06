@@ -1,5 +1,5 @@
 import type { TextContextStyles, TextParentStyles } from '@tamagui/text';
-import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web';
+import type { GetProps, SizeTokens, ThemeableProps } from '@tamagui/web';
 import type { FunctionComponent, JSX } from 'react';
 type ButtonVariant = 'outlined';
 export declare const ButtonContext: import("@tamagui/web").StyledContext<Partial<TextContextStyles & {
@@ -54,7 +54,7 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     bordered?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 declare const ButtonText: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-    size?: FontSizeTokens | undefined;
+    size?: import("@tamagui/web").FontSizeTokens | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 declare const ButtonIcon: (props: {
@@ -279,7 +279,7 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
-        size?: FontSizeTokens | undefined;
+        size?: import("@tamagui/web").FontSizeTokens | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Icon: (props: {

@@ -573,6 +573,8 @@ export type ComponentSetStateShallow = React.Dispatch<
   React.SetStateAction<Partial<TamaguiComponentState>>
 >
 
+export type IconSizing = 'size-scaled' | 'size' | `font-${string}`
+
 export type ComponentContextI = {
   disableSSR?: boolean
   inText: boolean
@@ -582,6 +584,7 @@ export type ComponentContextI = {
   mediaEmit?: (state: UseMediaState) => void
   mediaEmitListeners?: Set<(state: UseMediaState) => void>
   insets?: { top: number; right: number; bottom: number; left: number } | null
+  iconSizing?: IconSizing
 }
 
 export type TamaguiComponentStateRef = {

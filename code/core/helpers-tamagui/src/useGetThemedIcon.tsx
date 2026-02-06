@@ -2,7 +2,7 @@ import React from 'react'
 import type { ColorProp } from './useCurrentColor'
 import { useCurrentColor } from './useCurrentColor'
 
-export const useGetThemedIcon = (props: { color: ColorProp; size: number }) => {
+export const useGetThemedIcon = (props: { color: ColorProp; size?: number }) => {
   const color = useCurrentColor(props.color)
   return (el: any) => {
     if (!el) return el

@@ -1,4 +1,4 @@
-import { getFontSize } from '@tamagui/font-size'
+import { useIconSize } from '@tamagui/font-size'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { getSize, getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -192,7 +192,7 @@ const ListItemIcon = (props: {
   size?: SizeTokens
   scaleIcon?: number
 }) => {
-  const { children, size, scaleIcon = 1 } = props
+  const { children, size, scaleIcon } = props
   const styledContext = context.useStyledContext()
   if (!styledContext) {
     throw new Error('ListItem.Icon must be used within a ListItem')
@@ -200,10 +200,13 @@ const ListItemIcon = (props: {
 
   const sizeToken = size ?? styledContext.size ?? '$true'
 
-  const iconSize = getFontSize(sizeToken as any) * scaleIcon
+  const iconSize = useIconSize({
+    sizeToken,
+    scaleIcon: scaleIcon ?? 1,
+  })
 
   return getIcon(children, {
-    size: iconSize,
+    ...(iconSize != null && { size: iconSize }),
     color: styledContext.color,
   })
 }
@@ -224,15 +227,20 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
 
     const size = propsIn.size || '$true'
     const styledContext = context.useStyledContext()
-    const iconSizeNumber = getFontSize(iconSize || (size as any)) * scaleIcon
+    const iconSizeNumber = useIconSize({
+      sizeToken: iconSize || size,
+      scaleIcon: scaleIcon ?? 1,
+    })
 
     const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon, i) => {
       if (!icon) return null
       const isBefore = i === 0
       return getIcon(icon, {
-        size: iconSizeNumber,
+        ...(iconSizeNumber != null && { size: iconSizeNumber }),
         color: styledContext?.color,
-        [isBefore ? 'marginRight' : 'marginLeft']: `${iconSizeNumber * 0.4}%`,
+        ...(iconSizeNumber != null && {
+          [isBefore ? 'marginRight' : 'marginLeft']: `${iconSizeNumber * 0.4}%`,
+        }),
       })
     })
 

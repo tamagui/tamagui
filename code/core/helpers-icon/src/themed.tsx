@@ -5,6 +5,7 @@ import {
   usePropsAndStyle,
   type ResolveVariableAs,
 } from '@tamagui/core'
+import { useIconSize } from '@tamagui/font-size'
 import { SizableContext } from '@tamagui/sizable-context'
 
 import type { FC } from 'react'
@@ -58,10 +59,17 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
 
     const color = getVariable(colorIn)
 
+    // when size is explicitly passed (e.g. from Button's getIcon), resolve directly
+    // otherwise fall back to context size via useIconSize
+    const contextSize = useIconSize({
+      sizeToken: styledContext.size === '$true' ? undefined : styledContext.size,
+      scaleIcon: 1,
+    })
+
     const size =
       typeof props.size === 'string'
         ? getTokenValue(props.size as any, 'size')
-        : props.size || (styledContext.size === '$true' ? undefined : styledContext.size)
+        : props.size || contextSize
 
     const strokeWidth =
       typeof props.strokeWidth === 'string'

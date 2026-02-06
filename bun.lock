@@ -805,6 +805,7 @@
       "version": "2.0.0-rc.4",
       "dependencies": {
         "@tamagui/core": "workspace:*",
+        "@tamagui/font-size": "workspace:*",
         "@tamagui/sizable-context": "workspace:*",
       },
       "devDependencies": {
