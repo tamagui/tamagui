@@ -116,7 +116,7 @@ export class StepExportStore {
                   {
                     filename: 'tamagui.config.ts',
                     content: `import { themes } from './themes'
-import { defaultConfig } from '@tamagui/config/v4'
+import { defaultConfig } from '@tamagui/config/v5'
 
 export const config = createTamagui({
   ...defaultConfig,
