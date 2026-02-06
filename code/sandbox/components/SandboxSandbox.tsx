@@ -844,12 +844,27 @@ const Drivers = () => {
   return (
     <>
       <Configuration animationDriver={animationsMotion}>
-        <YStack group="card">
+        <YStack group="card" gap={50}>
           <XStack
-            transition="bouncy"
+            transition={[
+              'bouncy',
+              {
+                stiffness: 250,
+                damping: 4,
+                mass: 0.5,
+              },
+            ]}
             width={100}
             height={100}
             bg="red"
+            scale={1}
+            $group-card-hover={{ scale: 1.5 }}
+          />
+          <XStack
+            transition={'bouncy'}
+            width={100}
+            height={100}
+            bg="blue"
             scale={1}
             $group-card-hover={{ scale: 1.5 }}
           />
