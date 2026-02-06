@@ -14,7 +14,7 @@ on:
 # cancel in-progress runs on the same branch (avoids duplicate PR + push runs)
 concurrency:
   group: checks-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   checks:
