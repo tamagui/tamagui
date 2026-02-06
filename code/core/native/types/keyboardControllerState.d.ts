@@ -1,13 +1,5 @@
-export interface KeyboardControllerState {
-	enabled: boolean;
-	KeyboardProvider: any;
-	KeyboardAwareScrollView: any;
-	useKeyboardHandler: any;
-	useReanimatedKeyboardAnimation: any;
-	KeyboardController: any;
-	KeyboardEvents: any;
-	KeyboardStickyView: any;
-}
+import type { KeyboardControllerState } from "./types";
+export type { KeyboardControllerState };
 export declare function isKeyboardControllerEnabled(): boolean;
 export declare function getKeyboardControllerState(): KeyboardControllerState;
 export declare function setKeyboardControllerState(updates: Partial<KeyboardControllerState>): void;
