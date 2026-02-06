@@ -6,8 +6,10 @@
  */
 
 import type { Subprocess } from 'bun'
+import { execSync } from 'node:child_process'
 import {
   METRO_URL,
+  METRO_PORT,
   DEFAULT_METRO_WAIT_ATTEMPTS,
   DEFAULT_METRO_WAIT_INTERVAL_MS,
   type Platform,
@@ -168,6 +170,24 @@ async function isMetroRunning(platform: Platform): Promise<boolean> {
 }
 
 /**
+ * Kill whatever process is listening on the Metro port.
+ * Prevents conflicts with other projects' Metro instances (or anything else on 8081).
+ */
+function killPortProcess(): void {
+  try {
+    const pid = execSync(`lsof -ti tcp:${METRO_PORT} -sTCP:LISTEN`, {
+      encoding: 'utf-8',
+    }).trim()
+    if (pid) {
+      console.info(`Killing process ${pid} on port ${METRO_PORT}...`)
+      process.kill(Number(pid), 'SIGTERM')
+    }
+  } catch {
+    // nothing listening, or lsof not available
+  }
+}
+
+/**
  * Run a function with Metro bundler, ensuring proper cleanup.
  * This is a convenience wrapper that handles starting Metro, waiting for it,
  * pre-warming the bundle, and cleanup.
@@ -185,7 +205,9 @@ export async function withMetro<T>(platform: Platform, fn: () => Promise<T>): Pr
     return await fn()
   }
 
-  // Start Metro ourselves
+  // kill anything on the port before starting (e.g. another project's Metro)
+  killPortProcess()
+
   const metro = startMetro()
   setupSignalHandlers(metro)
 
