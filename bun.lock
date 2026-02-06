@@ -864,7 +864,7 @@
         "react-native-gesture-handler": "~2.28.0",
         "react-native-keyboard-controller": "^1.16.0",
         "react-native-safe-area-context": "~5.6.0",
-        "react-native-teleport": "^0.5.6",
+        "react-native-teleport": "^1.0.0",
         "react-native-worklets-core": "^1.0.0",
         "zeego": "^3.0.0",
       },
@@ -1395,7 +1395,7 @@
         "react-native-safe-area-context": "~5.6.0",
         "react-native-screens": "~4.16.0",
         "react-native-svg": "15.12.1",
-        "react-native-teleport": "^0.5.6",
+        "react-native-teleport": "^1.0.0",
         "react-native-web": "^0.21.0",
         "react-native-worklets": "0.5.1",
         "sf-symbols-typescript": "^2.2.0",
@@ -7854,7 +7854,7 @@
 
     "react-native-svg": ["react-native-svg@15.12.1", "", { "dependencies": { "css-select": "^5.1.0", "css-tree": "^1.1.3", "warn-once": "0.1.1" }, "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-vCuZJDf8a5aNC2dlMovEv4Z0jjEUET53lm/iILFnFewa15b4atjVxU6Wirm6O9y6dEsdjDZVD7Q3QM4T1wlI8g=="],
 
-    "react-native-teleport": ["react-native-teleport@0.5.6", "", { "peerDependencies": { "react": "*", "react-dom": "*", "react-native": "*" } }, "sha512-n/UfNkPpWrBMj3Jlf+oc8vy0acmBB19e3ljFJLsocX6iWLv/KXyMENXsx88YMLEMOjY0s0soP6f0rSv9FFtN2w=="],
+    "react-native-teleport": ["react-native-teleport@1.0.0", "", { "peerDependencies": { "react": "*", "react-dom": "*", "react-native": "*" } }, "sha512-7EoD9BXbm6vlEmppY6MLNfMf82eaJ0naMCBvfUl9f8xe2w+WN/Ro1o+LyP+XUlXSJia0zCsdVkvMWAFWNh+q9A=="],
 
     "react-native-web": ["react-native-web@0.21.2", "", { "dependencies": { "@babel/runtime": "^7.18.6", "@react-native/normalize-colors": "^0.74.1", "fbjs": "^3.0.4", "inline-style-prefixer": "^7.0.1", "memoize-one": "^6.0.0", "nullthrows": "^1.1.1", "postcss-value-parser": "^4.2.0", "styleq": "^0.1.3" }, "peerDependencies": { "react": "^18.0.0 || ^19.0.0", "react-dom": "^18.0.0 || ^19.0.0" } }, "sha512-SO2t9/17zM4iEnFvlu2DA9jqNbzNhoUP+AItkoCOyFmDMOhUnBBznBDCYN92fGdfAkfQlWzPoez6+zLxFNsZEg=="],
 
