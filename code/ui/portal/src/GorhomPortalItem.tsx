@@ -1,4 +1,5 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { TamaguiRoot } from '@tamagui/web'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { allPortalHosts, portalListeners } from './constants'
@@ -55,5 +56,5 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
     return null
   }
 
-  return createPortal(props.children, actualNode)
+  return createPortal(<TamaguiRoot>{props.children}</TamaguiRoot>, actualNode)
 }

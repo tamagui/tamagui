@@ -84,6 +84,7 @@ export * from './hooks/useThemeName'
 export { forceUpdateThemes } from './hooks/useThemeState'
 
 export * from './views/Configuration'
+export * from './views/TamaguiRoot'
 export * from './views/FontLanguage'
 export * from './views/Slot'
 export * from './views/TamaguiProvider'

@@ -1,11 +1,12 @@
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ClientOnly } from '@tamagui/use-did-finish-ssr'
 import React, { useEffect } from 'react'
-import { getConfig, getSetting } from '../config'
+import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { stopAccumulatingRules } from '../helpers/insertStyleRule'
 import { updateMediaListeners } from '../hooks/useMedia'
 import type { AnimationDriver, TamaguiProviderProps } from '../types'
+import { TamaguiRoot } from './TamaguiRoot'
 import { ThemeProvider } from './ThemeProvider'
 
 export function TamaguiProvider({
@@ -43,7 +44,7 @@ export function TamaguiProvider({
   }, [])
 
   let contents = (
-    <UnmountedClassName>
+    <TamaguiRoot trackMount>
       <ComponentContext.Provider
         animationDriver={defaultAnimationDriver}
         insets={memoizedInsets}
@@ -52,7 +53,7 @@ export function TamaguiProvider({
           {children}
         </ThemeProvider>
       </ComponentContext.Provider>
-    </UnmountedClassName>
+    </TamaguiRoot>
   )
 
   if (getSetting('disableSSR')) {
@@ -77,37 +78,6 @@ export function TamaguiProvider({
         </style>
       )}
     </>
-  )
-}
-
-// for CSS animations and default font inheritance
-function UnmountedClassName(props: { children: React.ReactNode }) {
-  const [mounted, setMounted] = React.useState(false)
-
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!isWeb) {
-    return props.children
-  }
-
-  const config = getConfig()
-  const defaultFont = config.defaultFont
-  const fontClass = defaultFont ? `font_${defaultFont}` : ''
-  const className = [mounted ? '' : 't_unmounted', fontClass].filter(Boolean).join(' ')
-
-  return (
-    <span
-      style={{
-        display: 'contents',
-        // set default font so nested text inherits
-        fontFamily: defaultFont ? 'var(--f-family)' : undefined,
-      }}
-      className={className || undefined}
-    >
-      {props.children}
-    </span>
   )
 }
 

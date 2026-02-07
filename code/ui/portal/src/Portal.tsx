@@ -1,6 +1,7 @@
 import '@tamagui/polyfill-dev'
 
 import { isServer } from '@tamagui/constants'
+import { TamaguiRoot } from '@tamagui/web'
 import { useStackedZIndex, ZIndexHardcodedContext } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
@@ -33,7 +34,7 @@ export const Portal = React.memo((propsIn: PortalProps) => {
   )
 
   return createPortal(
-    <span
+    <TamaguiRoot
       style={{
         zIndex,
         position: 'fixed',
@@ -45,7 +46,7 @@ export const Portal = React.memo((propsIn: PortalProps) => {
       }}
     >
       {content}
-    </span>,
+    </TamaguiRoot>,
     body
   )
 })
