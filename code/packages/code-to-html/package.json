@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/code-to-html",
-  "version": "2.0.0-rc.6-1770504312201",
+  "version": "2.0.0-rc.6-1770507840151",
   "source": "src/index.ts",
   "files": [
     "src",
