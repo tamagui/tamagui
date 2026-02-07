@@ -14,6 +14,50 @@ const emptyObject = {}
 const hasOwnProperty = Object.prototype.hasOwnProperty
 const isArray = Array.isArray
 
+// react-native props that should be stripped before reaching the DOM
+const reactNativeOnlyProps: Record<string, boolean> = {
+  collapsable: true,
+  contentContainerStyle: true,
+  contentOffset: true,
+  decelerationRate: true,
+  maintainVisibleContentPosition: true,
+  onLayout: true,
+  onMomentumScrollBegin: true,
+  onMomentumScrollEnd: true,
+  onMoveShouldSetResponder: true,
+  onMoveShouldSetResponderCapture: true,
+  onResponderEnd: true,
+  onResponderGrant: true,
+  onResponderMove: true,
+  onResponderReject: true,
+  onResponderRelease: true,
+  onResponderStart: true,
+  onResponderTerminate: true,
+  onResponderTerminationRequest: true,
+  onScrollBeginDrag: true,
+  onScrollEndDrag: true,
+  onScrollShouldSetResponder: true,
+  onScrollShouldSetResponderCapture: true,
+  onSelectionChangeShouldSetResponder: true,
+  onSelectionChangeShouldSetResponderCapture: true,
+  onStartShouldSetResponder: true,
+  onStartShouldSetResponderCapture: true,
+  refreshControl: true,
+  removeClippedSubviews: true,
+  scrollEnabled: true,
+  scrollEventThrottle: true,
+  scrollIndicatorInsets: true,
+  showsHorizontalScrollIndicator: true,
+  showsVerticalScrollIndicator: true,
+  snapToAlignment: true,
+  snapToEnd: true,
+  snapToInterval: true,
+  snapToOffsets: true,
+  snapToStart: true,
+  stickyHeaderIndices: true,
+  ScrollComponent: true,
+}
+
 const uppercasePattern = /[A-Z]/g
 function toHyphenLower(match) {
   return '-' + match.toLowerCase()
@@ -116,6 +160,13 @@ export const createDOMProps = (elementType, props, options?) => {
     // Rest
     ...domProps
   } = props
+
+  // strip react-native-only props that shouldn't reach the DOM
+  for (const key in domProps) {
+    if (reactNativeOnlyProps[key]) {
+      delete domProps[key]
+    }
+  }
 
   const disabled = accessibilityDisabled
 
