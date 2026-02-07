@@ -789,6 +789,12 @@ export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
   ? X
   : false
 
+export type OnlyShorthandStylePropsSetting = TamaguiConfig['settings'] extends {
+  onlyShorthandStyleProps: infer X
+}
+  ? X
+  : false
+
 export type CreateTamaguiConfig<
   A extends GenericTokens,
   B extends GenericThemes,
@@ -1208,6 +1214,23 @@ export interface GenericTamaguiSettings {
    * @default 16
    */
   remBaseFontSize?: number
+
+  /**
+   * When true, removes the individual longhand style props for border,
+   * outline, and shadow (borderWidth, borderStyle, borderColor,
+   * outlineWidth, outlineStyle, outlineColor, outlineOffset,
+   * shadowColor, shadowOffset, shadowOpacity, shadowRadius) from the
+   * type system, encouraging use of the combined shorthand props instead
+   * (`border`, `outline`, `boxShadow`).
+   *
+   * This avoids specificity issues when mixing shorthand and longhand
+   * props in atomic CSS output.
+   *
+   * Note: this is type-level only - it does not change runtime behavior.
+   *
+   * @default false
+   */
+  onlyShorthandStyleProps?: boolean
 }
 
 export type TamaguiSettings = TamaguiConfig['settings']
@@ -1816,6 +1839,21 @@ export type NarrowShorthands = Narrow<Shorthands>
 export type Longhands = NarrowShorthands[keyof NarrowShorthands]
 
 type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands']
+type OnlyShorthandStyleProps = TamaguiConfig['settings']['onlyShorthandStyleProps']
+
+// longhand style props that overlap with border/outline/shadow shorthands
+type ShorthandLonghandProps =
+  | 'borderWidth'
+  | 'borderStyle'
+  | 'borderColor'
+  | 'outlineWidth'
+  | 'outlineStyle'
+  | 'outlineColor'
+  | 'outlineOffset'
+  | 'shadowColor'
+  | 'shadowOffset'
+  | 'shadowOpacity'
+  | 'shadowRadius'
 
 // adds shorthand props
 export type WithShorthands<StyleProps> = {
@@ -1856,12 +1894,20 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 //
 // add both theme and shorthands
 //
+type MaybeOmitLonghands<A> = OnlyShorthandStyleProps extends true
+  ? Omit<A, ShorthandLonghandProps>
+  : A
+
 export type WithThemeAndShorthands<
   A extends object,
   Variants = {},
 > = OnlyAllowShorthands extends true
-  ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>>
-  : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>
+  ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> &
+      Variants &
+      WithShorthands<WithThemeValues<A>>
+  : WithThemeValues<MaybeOmitLonghands<A>> &
+      Variants &
+      WithShorthands<WithThemeValues<A>>
 
 //
 // combines all of theme, shorthands, pseudos...

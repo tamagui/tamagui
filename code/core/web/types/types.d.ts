@@ -454,6 +454,9 @@ export interface TamaguiConfig extends Omit<GenericTamaguiConfig, keyof TamaguiC
 export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
     onlyAllowShorthands: infer X;
 } ? X : false;
+export type OnlyShorthandStylePropsSetting = TamaguiConfig['settings'] extends {
+    onlyShorthandStyleProps: infer X;
+} ? X : false;
 export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, H extends GenericTamaguiSettings = GenericTamaguiSettings> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
@@ -718,6 +721,22 @@ export interface GenericTamaguiSettings {
      * @default 16
      */
     remBaseFontSize?: number;
+    /**
+     * When true, removes the individual longhand style props for border,
+     * outline, and shadow (borderWidth, borderStyle, borderColor,
+     * outlineWidth, outlineStyle, outlineColor, outlineOffset,
+     * shadowColor, shadowOffset, shadowOpacity, shadowRadius) from the
+     * type system, encouraging use of the combined shorthand props instead
+     * (`border`, `outline`, `boxShadow`).
+     *
+     * This avoids specificity issues when mixing shorthand and longhand
+     * props in atomic CSS output.
+     *
+     * Note: this is type-level only - it does not change runtime behavior.
+     *
+     * @default false
+     */
+    onlyShorthandStyleProps?: boolean;
 }
 export type TamaguiSettings = TamaguiConfig['settings'];
 export type BaseStyleProps = {
@@ -995,6 +1014,8 @@ export type WithThemeValues<T extends object> = {
 export type NarrowShorthands = Narrow<Shorthands>;
 export type Longhands = NarrowShorthands[keyof NarrowShorthands];
 type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands'];
+type OnlyShorthandStyleProps = TamaguiConfig['settings']['onlyShorthandStyleProps'];
+type ShorthandLonghandProps = 'borderWidth' | 'borderStyle' | 'borderColor' | 'outlineWidth' | 'outlineStyle' | 'outlineColor' | 'outlineOffset' | 'shadowColor' | 'shadowOffset' | 'shadowOpacity' | 'shadowRadius';
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
@@ -1020,7 +1041,8 @@ export type PseudoStyles = {
     exitStyle?: ViewStyle;
 };
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
-export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<Omit<A, Longhands>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<A> & Variants & WithShorthands<WithThemeValues<A>>;
+type MaybeOmitLonghands<A> = OnlyShorthandStyleProps extends true ? Omit<A, ShorthandLonghandProps> : A;
+export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<MaybeOmitLonghands<A>> & Variants & WithShorthands<WithThemeValues<A>>;
 export type WithThemeShorthandsAndPseudos<A extends object, Variants = {}> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>;
 export type WithThemeShorthandsPseudosMedia<A extends object, Variants = {}> = WithThemeShorthandsAndPseudos<A, Variants> & WithMediaProps<WithThemeShorthandsAndPseudos<A, Variants>>;
 /**
