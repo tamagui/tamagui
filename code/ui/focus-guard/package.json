@@ -2,6 +2,7 @@
   "name": "@tamagui/focus-guard",
   "version": "2.0.0-rc.6-1770450745210",
   "source": "src/index.ts",
+  "type": "module",
   "files": [
     "src",
     "types",
@@ -11,6 +12,19 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": {
+        "import": "./dist/esm/index.native.js",
+        "require": "./dist/cjs/index.native.js"
+      },
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.native.js"
+    }
+  },
   "publishConfig": {
     "access": "public"
   },
