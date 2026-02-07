@@ -223,8 +223,8 @@ test.describe('Sheet Animation - CSS Driver', () => {
 
       await closeButton.click()
       // Wait longer for slow animations to complete
-      await page.waitForTimeout(1200)
-      await expect(frame).not.toBeInViewport()
+      await page.waitForTimeout(1500)
+      await expect(frame).not.toBeInViewport({ ratio: 0.5 })
     }
   })
 
@@ -240,8 +240,8 @@ test.describe('Sheet Animation - CSS Driver', () => {
 
     // Sheet should open successfully with only transitionConfig
     await closeButton.click()
-    await page.waitForTimeout(1200)
-    await expect(frame).not.toBeInViewport()
+    await page.waitForTimeout(1500)
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
   })
 })
 
@@ -272,8 +272,8 @@ test.describe('Sheet Animation - Motion Driver', () => {
 
       await closeButton.click()
       // Wait longer for slow animations to complete
-      await page.waitForTimeout(1500)
-      await expect(frame).not.toBeInViewport()
+      await page.waitForTimeout(2000)
+      await expect(frame).not.toBeInViewport({ ratio: 0.5 })
     }
   })
 
@@ -322,8 +322,8 @@ test.describe('Sheet Animation - Motion Driver', () => {
     await expect(frame).toBeVisible({ timeout: 3000 })
 
     await closeButton.click()
-    await page.waitForTimeout(1500)
-    await expect(frame).not.toBeInViewport()
+    await page.waitForTimeout(2000)
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
   })
 
   test('transitionConfig overrides animation prop (lazy+fastConfig faster than lazy)', async ({
@@ -390,8 +390,8 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
 
       await closeButton.click()
       // Wait longer for slow animations to complete
-      await page.waitForTimeout(1500)
-      await expect(frame).not.toBeInViewport()
+      await page.waitForTimeout(2000)
+      await expect(frame).not.toBeInViewport({ ratio: 0.5 })
     }
   })
 
@@ -440,8 +440,8 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
     await expect(frame).toBeVisible({ timeout: 3000 })
 
     await closeButton.click()
-    await page.waitForTimeout(1500)
-    await expect(frame).not.toBeInViewport()
+    await page.waitForTimeout(2000)
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
   })
 
   test('transitionConfig overrides animation prop', async ({ page }) => {

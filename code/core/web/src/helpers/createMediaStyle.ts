@@ -73,7 +73,9 @@ export const createMediaStyle = (
   let groupMediaKey: string | undefined
   let containerName: string | undefined
   let nextIdentifier = identifier.replace(ogPrefix, id)
-  let styleInner = rules.map((rule) => rule.replaceAll(identifier, nextIdentifier)).join(';')
+  let styleInner = rules
+    .map((rule) => rule.replaceAll(identifier, nextIdentifier))
+    .join(';')
   let isHover = false
 
   if (isNonWindowMedia) {

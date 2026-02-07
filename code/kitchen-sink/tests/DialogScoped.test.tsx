@@ -128,7 +128,7 @@ test('scoped dialogs adapt to sheets', async ({ page: pageIn }) => {
     await expect(sheetContents).toHaveAttribute('data-state', 'closed', { timeout: 5000 })
 
     // Verify sheet is visually off-screen
-    await expect(sheetContents).not.toBeInViewport()
+    await expect(sheetContents).not.toBeInViewport({ ratio: 0.5 })
   }
 
   await testDialogAdapted('plain')

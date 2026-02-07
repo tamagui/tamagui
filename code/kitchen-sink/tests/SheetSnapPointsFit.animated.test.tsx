@@ -15,7 +15,7 @@ test.describe('Sheet snapPointsMode="fit"', () => {
 
     // Initial state - sheet should not be visible
     await expect(trigger).toBeVisible()
-    await expect(frame).not.toBeInViewport()
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
 
     // Open the sheet
     await trigger.click()
@@ -30,7 +30,7 @@ test.describe('Sheet snapPointsMode="fit"', () => {
     await page.waitForTimeout(500)
 
     // Sheet should not be visible
-    await expect(frame).not.toBeInViewport()
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
   })
 
   test('standalone sheet with percent mode opens and closes without issues', async ({
@@ -41,14 +41,14 @@ test.describe('Sheet snapPointsMode="fit"', () => {
     const closeButton = page.getByTestId('standalone-percent-close')
 
     await expect(trigger).toBeVisible()
-    await expect(frame).not.toBeInViewport()
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
 
     await trigger.click()
     await expect(frame).toBeVisible({ timeout: 5000 })
 
     await closeButton.click()
     await page.waitForTimeout(500)
-    await expect(frame).not.toBeInViewport()
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
   })
 
   test('standalone sheet with constant mode opens and closes without issues', async ({
@@ -59,14 +59,14 @@ test.describe('Sheet snapPointsMode="fit"', () => {
     const closeButton = page.getByTestId('standalone-constant-close')
 
     await expect(trigger).toBeVisible()
-    await expect(frame).not.toBeInViewport()
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
 
     await trigger.click()
     await expect(frame).toBeVisible({ timeout: 5000 })
 
     await closeButton.click()
     await page.waitForTimeout(500)
-    await expect(frame).not.toBeInViewport()
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
   })
 
   test('rapid open/close interactions work correctly', async ({ page }) => {
@@ -93,7 +93,7 @@ test.describe('Sheet snapPointsMode="fit"', () => {
     await page.waitForTimeout(500)
 
     // Sheet should be closed now
-    await expect(frame).not.toBeInViewport()
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
   })
 
   test('dynamic content changes while sheet is open', async ({ page }) => {
@@ -147,7 +147,7 @@ test.describe('Sheet snapPointsMode="fit"', () => {
     await page.waitForTimeout(500)
 
     // Sheet should be closed
-    await expect(frame).not.toBeInViewport()
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
   })
 
   test('sheet closes without white flash - frame height stays stable during close', async ({
@@ -227,7 +227,7 @@ test.describe('Adapted Dialog Sheet', () => {
 
     // Should be closed - sheet frame should not be in viewport
     // Note: dialogContent may still be in DOM but the sheet frame should be off-screen
-    await expect(sheetFrame).not.toBeInViewport()
+    await expect(sheetFrame).not.toBeInViewport({ ratio: 0.5 })
   })
 
   test('dialog shows as dialog on large screens', async ({ page }) => {

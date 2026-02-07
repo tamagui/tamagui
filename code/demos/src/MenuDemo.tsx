@@ -118,7 +118,7 @@ export function MenuDemo() {
                   borderWidth={1}
                   borderColor="$borderColor"
                 >
-                  <Menu.Label pt="$2" pb="$2" color="$color8">
+                  <Menu.Label py="$1" color="$color8">
                     Note settings
                   </Menu.Label>
                   <Menu.Item

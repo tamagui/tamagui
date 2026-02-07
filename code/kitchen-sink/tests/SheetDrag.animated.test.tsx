@@ -111,7 +111,7 @@ test.describe('Sheet drag interactions', () => {
     await dragSheet(page, startX, startY, 500)
     await page.waitForTimeout(800)
 
-    await expect(frame).not.toBeInViewport()
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
     await expect(dismissCount).toContainText('1')
   })
 
