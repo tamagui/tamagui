@@ -55,6 +55,8 @@ type CrossPlatformStyles = {
   boxSizing?: 'border-box' | 'content-box'
   display?: 'flex' | 'none' | 'contents' | ...
   position?: 'absolute' | 'relative' | 'fixed' | 'static' | 'sticky'  // 'fixed' converts to 'absolute' on native
+  border?: BorderValue         // shorthand: "1px solid $borderColor"; expands on native
+  outline?: OutlineValue       // shorthand: "2px solid $outlineColor"; expands on native
   outlineColor?: ColorValue
   outlineOffset?: SpaceValue
   outlineStyle?: 'solid' | 'dotted' | 'dashed'
@@ -277,6 +279,7 @@ Supported shorthand properties with variable resolution:
 - `backgroundImage` - Works on both web and native (see below)
 - `filter` - Works on both web and native
 - `border` - Works on both web and native (expands to borderWidth/Style/Color on native)
+- `outline` - Works on both web and native (expands to outlineWidth/Style/Color on native)
 - `borderTop`, `borderRight`, `borderBottom`, `borderLeft` - Web only
 - `background` - Web only
 
@@ -297,6 +300,19 @@ On web, the CSS shorthand is passed through directly. On native, it expands to i
 - `borderColor` → `borderTopColor`, `borderRightColor`, `borderBottomColor`, `borderLeftColor`
 
 Note: On native, only a single border (all sides) is supported. For per-side borders on native, use individual props.
+
+### outline
+
+The `outline` shorthand works cross-platform, similar to `border`:
+
+```tsx
+// Works on both web and native
+<View outline="2px solid $outlineColor" />
+<View outline="1px dashed red" />
+<View outline="none" />
+```
+
+On web, the CSS shorthand is passed through directly. On native, it expands to `outlineWidth`, `outlineStyle`, and `outlineColor`.
 
 ### backgroundImage
 

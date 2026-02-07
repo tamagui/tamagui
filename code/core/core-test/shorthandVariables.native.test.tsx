@@ -191,6 +191,48 @@ describe('border shorthand - native', () => {
   })
 })
 
+describe('outline shorthand - native', () => {
+  // outline shorthand expands to outlineWidth/outlineStyle/outlineColor on native
+
+  test('outline with width, style and color', () => {
+    const { style } = getSplitStylesFor({
+      outline: '2px solid red',
+    })
+
+    expect(style?.outlineWidth).toBe(2)
+    expect(style?.outlineStyle).toBe('solid')
+    expect(style?.outlineColor).toBe('red')
+  })
+
+  test('outline with $variable color resolves token', () => {
+    const { style } = getSplitStylesFor({
+      outline: '2px dashed $white',
+    })
+
+    expect(style?.outlineWidth).toBe(2)
+    expect(style?.outlineStyle).toBe('dashed')
+    expect(style?.outlineColor).toBe('#fff')
+  })
+
+  test('outline "none" sets outlineWidth to 0', () => {
+    const { style } = getSplitStylesFor({
+      outline: 'none',
+    })
+
+    expect(style?.outlineWidth).toBe(0)
+    expect(style?.outlineStyle).toBe('none')
+  })
+
+  test('outline with just width and style', () => {
+    const { style } = getSplitStylesFor({
+      outline: '1px solid',
+    })
+
+    expect(style?.outlineWidth).toBe(1)
+    expect(style?.outlineStyle).toBe('solid')
+  })
+})
+
 describe('border shorthand with media queries - native', () => {
   test('border in $sm applies when media state sm is true', () => {
     const { style } = getSplitStylesFor({ $sm: { border: '2px solid green' } }, View, {

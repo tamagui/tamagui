@@ -231,6 +231,7 @@ export const stylePropsView = {
   boxSizing: true,
   mixBlendMode: true,
   isolation: true,
+  outline: true,
   outlineColor: true,
   outlineOffset: true,
   outlineStyle: true,

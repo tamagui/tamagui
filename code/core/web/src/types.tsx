@@ -1961,6 +1961,18 @@ type BorderPreset =
 // Note: on native, only supports a single border (all sides)
 export type BorderValue = BorderPreset | (string & {})
 
+// outline shorthand presets - examples for autocomplete hints
+type OutlinePreset =
+  | '1px solid' // width + style
+  | '1px solid $outlineColor' // width + style + color token
+  | '2px dashed $outlineColor' // width + style + color
+  | '1px dotted red' // width + style + color
+  | 'none'
+
+// Outline - CSS shorthand string format (e.g. "2px solid $outlineColor")
+// Expands to outlineWidth, outlineStyle, outlineColor on native
+export type OutlineValue = OutlinePreset | (string & {})
+
 interface ExtraStyleProps {
   /**
    * Controls the curve style of rounded corners.
@@ -1994,6 +2006,12 @@ interface ExtraStyleProps {
    * Outline width. Supported on web and native.
    */
   outlineWidth?: SpaceValue
+  /**
+   * CSS outline shorthand string. Supports tokens: "2px solid $outlineColor"
+   * Expands to outlineWidth, outlineStyle, outlineColor on native.
+   * Works on web and native.
+   */
+  outline?: OutlineValue
   /**
    * On native, maps to the `selectable` prop on Text (userSelect !== 'none')
    */

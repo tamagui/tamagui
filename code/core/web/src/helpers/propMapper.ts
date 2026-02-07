@@ -65,7 +65,8 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
         key === 'textShadow' ||
         key === 'filter' ||
         key === 'backgroundImage' ||
-        key === 'border') &&
+        key === 'border' ||
+        key === 'outline') &&
       typeof value === 'string' &&
       value.includes('$')
     ) {

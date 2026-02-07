@@ -1056,6 +1056,8 @@ type FilterPreset = 'blur(4px)' | 'brightness(1.2)' | 'contrast(1.2)' | 'drop-sh
 export type FilterValue = FilterPreset | (string & {});
 type BorderPreset = '1px solid' | '1px solid $borderColor' | '2px dashed $borderColor' | '1px dotted red' | 'none';
 export type BorderValue = BorderPreset | (string & {});
+type OutlinePreset = '1px solid' | '1px solid $outlineColor' | '2px dashed $outlineColor' | '1px dotted red' | 'none';
+export type OutlineValue = OutlinePreset | (string & {});
 interface ExtraStyleProps {
     /**
      * Controls the curve style of rounded corners.
@@ -1089,6 +1091,12 @@ interface ExtraStyleProps {
      * Outline width. Supported on web and native.
      */
     outlineWidth?: SpaceValue;
+    /**
+     * CSS outline shorthand string. Supports tokens: "2px solid $outlineColor"
+     * Expands to outlineWidth, outlineStyle, outlineColor on native.
+     * Works on web and native.
+     */
+    outline?: OutlineValue;
     /**
      * On native, maps to the `selectable` prop on Text (userSelect !== 'none')
      */

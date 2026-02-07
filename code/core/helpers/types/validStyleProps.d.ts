@@ -170,6 +170,7 @@ export declare const stylePropsView: {
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
+    outline: boolean;
     outlineColor: boolean;
     outlineOffset: boolean;
     outlineStyle: boolean;
@@ -466,6 +467,7 @@ export declare const stylePropsText: {
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
+    outline: boolean;
     outlineColor: boolean;
     outlineOffset: boolean;
     outlineStyle: boolean;
@@ -730,6 +732,7 @@ export declare const stylePropsAll: {
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
+    outline: boolean;
     outlineColor: boolean;
     outlineOffset: boolean;
     outlineStyle: boolean;
@@ -980,6 +983,7 @@ export declare const validStyles: {
     boxSizing: boolean;
     mixBlendMode: boolean;
     isolation: boolean;
+    outline: boolean;
     outlineColor: boolean;
     outlineOffset: boolean;
     outlineStyle: boolean;

@@ -158,6 +158,37 @@ describe('border shorthand - web', () => {
   })
 })
 
+describe('outline shorthand - web', () => {
+  // outline shorthand passed through as CSS string on web
+
+  test('outline with width, style and color', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      outline: '2px solid red',
+    })
+    const value = getStyleValue(styles, 'outline')
+
+    expect(value).toBe('2px solid red')
+  })
+
+  test('outline with $variable color resolves to CSS var', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      outline: '2px solid $white',
+    })
+    const value = getStyleValue(styles, 'outline')
+
+    expect(value).toMatch(/2px solid var\(--.*white.*\)/)
+  })
+
+  test('outline "none" passed through', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      outline: 'none',
+    })
+    const value = getStyleValue(styles, 'outline')
+
+    expect(value).toBe('none')
+  })
+})
+
 describe('border shorthand with media queries - web', () => {
   test('border in $sm generates className with media key', () => {
     const styles = simplifiedGetSplitStyles(View, {

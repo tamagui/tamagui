@@ -8,6 +8,7 @@ import { isAndroid, isWeb } from '@tamagui/constants'
 import { getSetting } from '../config'
 import type { PropMappedValue } from '../types'
 import { parseBorderShorthand } from './parseBorderShorthand'
+import { parseOutlineShorthand } from './parseOutlineShorthand'
 
 const neg1Flex = [
   ['flexGrow', 0],
@@ -73,6 +74,16 @@ export function expandStyle(key: string, value: any): PropMappedValue {
         // on native, only supports a single border (all sides)
         if (typeof value === 'string') {
           const parsed = parseBorderShorthand(value)
+          if (parsed) {
+            return parsed
+          }
+        }
+        return
+      }
+      case 'outline': {
+        // parse outline shorthand string to individual properties
+        if (typeof value === 'string') {
+          const parsed = parseOutlineShorthand(value)
           if (parsed) {
             return parsed
           }
