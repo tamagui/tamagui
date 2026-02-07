@@ -80,21 +80,19 @@ export function expandStyle(key: string, value: any): PropMappedValue {
         }
         return
       }
-      case 'outline': {
-        // parse outline shorthand string to individual properties
-        if (typeof value === 'string') {
-          const parsed = parseOutlineShorthand(value)
-          if (parsed) {
-            return parsed
-          }
-        }
-        return
-      }
     }
 
     // native-only key expansions (logical properties)
     if (key in nativeExpansions) {
       return nativeExpansions[key].map((k) => [k, value])
+    }
+  }
+
+  // outline expands on both web and native (no per-side variants)
+  if (key === 'outline' && typeof value === 'string') {
+    const parsed = parseOutlineShorthand(value)
+    if (parsed) {
+      return parsed
     }
   }
 
