@@ -7,8 +7,13 @@ export function getPragmaOptions({ source, path }: { source: string; path: strin
 
   let pragma = ''
   for (const line of firstLines.split('\n')) {
+    const trimmed = line.trim()
+    // only look at leading comments/empty lines, stop at first real code
+    if (trimmed && !trimmed.startsWith('//') && !trimmed.startsWith('/*')) {
+      break
+    }
     pragma =
-      line
+      trimmed
         .match(/(\/\/|\/\*)\s?!?\s?(tamagui-ignore|debug|debug-verbose)(\n|\s|$).*/)?.[2]
         .trim() || ''
     if (pragma) {

@@ -396,9 +396,8 @@ export function tamaguiPlugin({
           return
         }
 
-        const firstCommentIndex = code.indexOf('// ')
         const { shouldDisable, shouldPrintDebug } = await getPragmaOptions({
-          source: firstCommentIndex >= 0 ? code.slice(firstCommentIndex) : '',
+          source: code,
           path: validId,
         })
 
