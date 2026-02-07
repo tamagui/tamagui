@@ -50,6 +50,34 @@ test(`should turn columnGap into gap-column`, () => {
   expect(out[0][StyleObjectRules].includes(`column-gap:10px`))
 })
 
+test(`longhand border props get doubled selector for specificity`, () => {
+  const out = getCSSStylesAtomic({
+    borderTopWidth: 2,
+  })
+  const rule = out[0][StyleObjectRules][0]
+  // should have .cls.cls (doubled) for higher specificity over shorthand
+  expect(rule).toMatch(/\._[^\s]+\._[^\s]+\{/)
+  expect(rule).toContain('border-top-width:2px')
+})
+
+test(`shorthand border prop gets single selector`, () => {
+  const out = getCSSStylesAtomic({
+    // @ts-ignore
+    border: '1px solid red',
+  })
+  const rule = out[0][StyleObjectRules][0]
+  // should have single .cls selector
+  expect(rule).toMatch(/:root \._[^\s.]+\{/)
+})
+
+test(`outline longhands get doubled selector`, () => {
+  const out = getCSSStylesAtomic({
+    outlineWidth: 2,
+  })
+  const rule = out[0][StyleObjectRules][0]
+  expect(rule).toMatch(/\._[^\s]+\._[^\s]+\{/)
+})
+
 // test(`should be fast`, () => {
 //   // need to compare it in a cpu-insensitive way, so compare to common operations
 

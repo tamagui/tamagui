@@ -160,6 +160,32 @@ const selectorPriority = (() => {
   return res
 })()
 
+// longhands of CSS shorthands - these get doubled selectors for specificity
+// so that e.g. borderWidth always beats border in the cascade
+const cssShorthandLonghands = new Set([
+  // border longhands
+  'borderWidth',
+  'borderStyle',
+  'borderColor',
+  'borderTopWidth',
+  'borderTopStyle',
+  'borderTopColor',
+  'borderRightWidth',
+  'borderRightStyle',
+  'borderRightColor',
+  'borderBottomWidth',
+  'borderBottomStyle',
+  'borderBottomColor',
+  'borderLeftWidth',
+  'borderLeftStyle',
+  'borderLeftColor',
+  // outline longhands
+  'outlineWidth',
+  'outlineStyle',
+  'outlineColor',
+  'outlineOffset',
+])
+
 function createAtomicRules(
   identifier: string,
   property: string,
@@ -173,11 +199,16 @@ function createAtomicRules(
     : ''
   const pseudoSelector = pseudo?.selector
 
+  // longhands get .cls.cls for higher specificity over shorthands
+  const cls = cssShorthandLonghands.has(property)
+    ? `.${identifier}.${identifier}`
+    : `.${identifier}`
+
   let selector = pseudo
     ? pseudoSelector
-      ? `${pseudoSelector} .${identifier}`
-      : `${selectorPriority[pseudo.name]} .${identifier}${pseudoIdPostfix}`
-    : `:root .${identifier}`
+      ? `${pseudoSelector} ${cls}`
+      : `${selectorPriority[pseudo.name]} ${cls}${pseudoIdPostfix}`
+    : `:root ${cls}`
 
   // enter style on css driver needs both:
   //   .t_unmounted .selector
