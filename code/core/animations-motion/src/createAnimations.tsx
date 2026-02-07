@@ -278,7 +278,17 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // NOTE: We check for animatePosition to avoid this fix causing jitter
               // on components like the TAMAGUI logo dot indicator which also use translate-only transforms
 
-              const isRunning = controls.current?.state === 'running'
+              const isRunning =
+                /**
+                 * TypeError: Cannot read properties of undefined (reading 'state')
+                 * at GroupAnimationWithThen.getAll (http://localhost:8081/node_modules/.vite/deps/@tamagui_config_v5-motion.js?v=d717d926:2374:30)
+                 * at get state (http://localhost:8081/node_modules/.vite/deps/@tamagui_config_v5-motion.js?v=d717d926:2403:17)
+                 * at flushAnimation (http://localhost:8081/node_modules/.vite/deps/@tamagui_config_v5-motion.js?v=d717d926:9686:49)
+                 **/
+                // @ts-expect-error it is there, and for some crazy reason in ~/chat pretty often i get errors ^
+                controls.current?.animations?.length === 0
+                  ? false
+                  : controls.current?.state === 'running'
               const targetTransform =
                 typeof diff.transform === 'string' ? diff.transform : null
 
