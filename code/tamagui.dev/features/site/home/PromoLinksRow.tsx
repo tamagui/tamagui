@@ -13,7 +13,7 @@ export const PromoLinksRow = () => {
   return (
     <TooltipGroup delay={tooltipDelay}>
       <Tooltip scope="promo-tooltip" offset={20} placement="bottom">
-        <XGroup position="absolute" self="center" y={-80} rounded="$8">
+        <XGroup position="absolute" self="center" y={-80} rounded="$8" elevation="$2">
           <Tooltip.Trigger
             scope="promo-tooltip"
             asChild
@@ -26,7 +26,7 @@ export const PromoLinksRow = () => {
               href="/takeout"
             >
               <XGroup.Item>
-                <TakeoutButton mr={-1} />
+                <TakeoutButton mr={-1} elevation={0} />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>
@@ -43,7 +43,7 @@ export const PromoLinksRow = () => {
               href="/bento"
             >
               <XGroup.Item>
-                <BentoButton mr={-1} />
+                <BentoButton mr={-1} elevation={0} />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>
@@ -61,7 +61,7 @@ export const PromoLinksRow = () => {
               target="_blank"
             >
               <XGroup.Item>
-                <ConsultingButton />
+                <ConsultingButton elevation={0} />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>
