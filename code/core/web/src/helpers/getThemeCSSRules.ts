@@ -127,11 +127,6 @@ export function getThemeCSSRules(props: {
     cssRuleSets.push(css)
 
     if (getSetting('shouldAddPrefersColorThemes')) {
-      const bgString = theme.background
-        ? `background:${variableToString(theme.background)};`
-        : ''
-      const fgString = theme.color ? `color:${variableToString(theme.color)}` : ''
-      const bodyRules = `body{${bgString}${fgString}}`
       const isDark = themeName.startsWith('dark')
       const baseName = isDark ? 'dark' : 'light'
       const lessSpecificSelectors = selectors
@@ -148,10 +143,20 @@ export function getThemeCSSRules(props: {
         .filter(Boolean)
         .join(', ')
 
+      // only emit body background/color for base themes, not every sub-theme
+      const isBase = !themeName.includes('_')
+      let bodyRulesString = ''
+      if (isBase) {
+        const bgString = theme.background
+          ? `background:${variableToString(theme.background)};`
+          : ''
+        const fgString = theme.color ? `color:${variableToString(theme.color)}` : ''
+        bodyRulesString = bgString || fgString ? `body{${bgString}${fgString}}\n    ` : ''
+      }
+
       const themeRules = `${lessSpecificSelectors} {${vars}}`
       const prefersMediaSelectors = `@media(prefers-color-scheme:${baseName}){
-    ${bodyRules}
-    ${themeRules}
+    ${bodyRulesString}${themeRules}
   }`
       cssRuleSets.push(prefersMediaSelectors)
     }
