@@ -3,6 +3,32 @@ import { webOnlyStylePropsText, webOnlyStylePropsView } from './webOnlyStyleProp
 
 // generally organizing this so we don't duplicate things so its a bit weird
 
+// longhands of CSS shorthands - used for specificity boosting on web
+// so that e.g. borderWidth always beats border in the cascade
+export const cssShorthandLonghands = {
+  // border longhands
+  borderWidth: true,
+  borderStyle: true,
+  borderColor: true,
+  borderTopWidth: true,
+  borderTopStyle: true,
+  borderTopColor: true,
+  borderRightWidth: true,
+  borderRightStyle: true,
+  borderRightColor: true,
+  borderBottomWidth: true,
+  borderBottomStyle: true,
+  borderBottomColor: true,
+  borderLeftWidth: true,
+  borderLeftStyle: true,
+  borderLeftColor: true,
+  // outline longhands
+  outlineWidth: true,
+  outlineStyle: true,
+  outlineColor: true,
+  outlineOffset: true,
+}
+
 const textColors = {
   color: true,
   textDecorationColor: true,

@@ -4,7 +4,7 @@
  */
 
 import type { StyleObject } from '@tamagui/helpers'
-import { simpleHash } from '@tamagui/helpers'
+import { cssShorthandLonghands, simpleHash } from '@tamagui/helpers'
 import { getConfigMaybe } from '../config'
 import { isMediaKey } from '../hooks/useMedia'
 import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
@@ -160,32 +160,6 @@ const selectorPriority = (() => {
   return res
 })()
 
-// longhands of CSS shorthands - these get doubled selectors for specificity
-// so that e.g. borderWidth always beats border in the cascade
-const cssShorthandLonghands = new Set([
-  // border longhands
-  'borderWidth',
-  'borderStyle',
-  'borderColor',
-  'borderTopWidth',
-  'borderTopStyle',
-  'borderTopColor',
-  'borderRightWidth',
-  'borderRightStyle',
-  'borderRightColor',
-  'borderBottomWidth',
-  'borderBottomStyle',
-  'borderBottomColor',
-  'borderLeftWidth',
-  'borderLeftStyle',
-  'borderLeftColor',
-  // outline longhands
-  'outlineWidth',
-  'outlineStyle',
-  'outlineColor',
-  'outlineOffset',
-])
-
 function createAtomicRules(
   identifier: string,
   property: string,
@@ -200,7 +174,7 @@ function createAtomicRules(
   const pseudoSelector = pseudo?.selector
 
   // longhands get .cls.cls for higher specificity over shorthands
-  const cls = cssShorthandLonghands.has(property)
+  const cls = property in cssShorthandLonghands
     ? `.${identifier}.${identifier}`
     : `.${identifier}`
 
