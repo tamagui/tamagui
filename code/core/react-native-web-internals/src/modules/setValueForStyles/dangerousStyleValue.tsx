@@ -11,6 +11,7 @@
  */
 
 import { unitlessNumbers as isUnitlessNumber } from '../unitlessNumbers/index'
+import { normalizeValueWithProperty } from '../../StyleSheet/compiler/normalizeValueWithProperty'
 
 /**
  * Convert a value into the proper css writable value. The style name `name`
@@ -35,6 +36,29 @@ export function dangerousStyleValue(name, value, isCustomProperty) {
   var isEmpty = value == null || typeof value === 'boolean' || value === ''
   if (isEmpty) {
     return ''
+  }
+
+  // handle Animated.Value objects that have __getValue
+  if (typeof value === 'object' && typeof value.__getValue === 'function') {
+    value = value.__getValue()
+  }
+
+  // handle transform arrays: [{ translateY: 10 }, { scale: 2 }]
+  if (name === 'transform' && Array.isArray(value)) {
+    return value
+      .map((t) => {
+        const key = Object.keys(t)[0]
+        let val = t[key]
+        // resolve nested Animated.Value
+        if (typeof val === 'object' && typeof val.__getValue === 'function') {
+          val = val.__getValue()
+        }
+        if (key === 'matrix' || key === 'matrix3d') {
+          return `${key}(${val.join(',')})`
+        }
+        return `${key}(${normalizeValueWithProperty(val, key)})`
+      })
+      .join(' ')
   }
 
   if (

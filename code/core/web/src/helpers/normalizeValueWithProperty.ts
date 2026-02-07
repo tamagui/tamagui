@@ -23,8 +23,15 @@ export function normalizeValueWithProperty(value: any, property = ''): any {
   ) {
     return value
   }
+  if (value && typeof value === 'object') {
+    if (typeof value.__getValue === 'function') {
+      // resolve Animated.Value objects
+      value = value.__getValue()
+    } else {
+      return value
+    }
+  }
   let res = value
-  if (value && typeof value === 'object') return value
   if (typeof value === 'number') {
     res = `${value}px`
   } else if (property) {
