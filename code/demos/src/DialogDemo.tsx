@@ -1,4 +1,5 @@
 import { ChevronDown, X } from '@tamagui/lucide-icons'
+import { useState } from 'react'
 import {
   Adapt,
   Button,
@@ -12,36 +13,77 @@ import {
   TooltipSimple,
   Unspaced,
   View,
+  XGroup,
   XStack,
 } from 'tamagui'
 import { SelectDemoContents } from './SelectDemo'
 
+type DialogMode = 'plain' | 'adapt' | 'keepMounted'
+
 export function DialogDemo() {
+  const [mode, setMode] = useState<DialogMode>('plain')
+
   return (
     <View gap="$4" justify="center" items="center">
-      <DialogInstance />
-      <DialogInstance disableAdapt />
+      <XGroup>
+        <XGroup.Item>
+          <Button
+            size="$3"
+            theme={mode === 'plain' ? 'accent' : undefined}
+            onPress={() => setMode('plain')}
+          >
+            Plain
+          </Button>
+        </XGroup.Item>
+        <XGroup.Item>
+          <Button
+            size="$3"
+            theme={mode === 'adapt' ? 'accent' : undefined}
+            onPress={() => setMode('adapt')}
+          >
+            Adapt to Sheet
+          </Button>
+        </XGroup.Item>
+        <XGroup.Item>
+          <Button
+            size="$3"
+            theme={mode === 'keepMounted' ? 'accent' : undefined}
+            onPress={() => setMode('keepMounted')}
+          >
+            Keep Mounted
+          </Button>
+        </XGroup.Item>
+      </XGroup>
+
+      <DialogInstance mode={mode} />
     </View>
   )
 }
 
-function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
+function DialogInstance({ mode }: { mode: DialogMode }) {
+  const [open, setOpen] = useState(false)
+
   return (
-    <Dialog modal>
+    <Dialog
+      modal
+      keepChildrenMounted={mode === 'keepMounted'}
+      open={open}
+      onOpenChange={setOpen}
+    >
       <Dialog.Trigger asChild>
         <Button>
-          <Button.Text>Show Dialog{disableAdapt ? ` (No Sheet)` : ''}</Button.Text>
+          <Button.Text>Show Dialog</Button.Text>
         </Button>
       </Dialog.Trigger>
 
-      {!disableAdapt && (
+      {mode === 'adapt' && (
         <Adapt when="maxMd" platform="touch">
           <Sheet
             transition="medium"
             zIndex={200000}
             modal
             dismissOnSnapToBottom
-            unmountChildrenWhenHidden // we're nesting infinitely so need this
+            unmountChildrenWhenHidden
           >
             <Sheet.Frame p="$4" gap="$4">
               <Adapt.Contents />
@@ -125,8 +167,6 @@ function DialogInstance({ disableAdapt }: { disableAdapt?: boolean }) {
             </Fieldset>
 
             <XStack self="flex-end" gap="$4">
-              <DialogInstance />
-
               <Dialog.Close displayWhenAdapted asChild>
                 <Button theme="accent" aria-label="Close">
                   Save changes

@@ -2410,6 +2410,7 @@
       "version": "2.0.0-rc.6-1770450745210",
       "dependencies": {
         "@tamagui/adapt": "workspace:*",
+        "@tamagui/animate": "workspace:*",
         "@tamagui/animate-presence": "workspace:*",
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",

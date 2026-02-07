@@ -212,6 +212,12 @@ Contains every component for the dialog. Beyond
       description: `Renders into root of app instead of inline.`,
     },
     {
+      name: 'keepChildrenMounted',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, dialog content stays mounted in the DOM even when closed. Useful for preserving state across open/close cycles or when you need faster re-opening.`,
+    },
+    {
       name: 'disableRemoveScroll',
       type: 'boolean',
       required: false,
