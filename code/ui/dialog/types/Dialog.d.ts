@@ -11,6 +11,12 @@ type DialogProps = ScopedProps<{
     children?: React.ReactNode;
     open?: boolean;
     defaultOpen?: boolean;
+    /**
+     * When true, children never un-mount, otherwise they mount on open.
+     *
+     * @default false
+     */
+    keepChildrenMounted?: boolean;
     onOpenChange?(open: boolean): void;
     modal?: boolean;
     /**
@@ -21,6 +27,7 @@ type DialogProps = ScopedProps<{
 type NonNull<A> = Exclude<A, void | null>;
 type DialogContextValue = {
     forceMount?: boolean;
+    keepChildrenMounted?: boolean;
     disableRemoveScroll?: boolean;
     triggerRef: React.RefObject<TamaguiElement | null>;
     contentRef: React.RefObject<TamaguiElement | null>;
@@ -265,6 +272,12 @@ declare const Dialog: React.ForwardRefExoticComponent<{
     children?: React.ReactNode;
     open?: boolean;
     defaultOpen?: boolean;
+    /**
+     * When true, children never un-mount, otherwise they mount on open.
+     *
+     * @default false
+     */
+    keepChildrenMounted?: boolean;
     onOpenChange?(open: boolean): void;
     modal?: boolean;
     /**

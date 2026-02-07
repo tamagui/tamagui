@@ -6,7 +6,7 @@ import {
   useAdaptContext,
   useAdaptIsActive,
 } from '@tamagui/adapt'
-import { AnimatePresence } from '@tamagui/animate-presence'
+import { Animate } from '@tamagui/animate'
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/core'
@@ -48,6 +48,13 @@ type DialogProps = ScopedProps<{
   children?: React.ReactNode
   open?: boolean
   defaultOpen?: boolean
+
+  /**
+   * When true, children never un-mount, otherwise they mount on open.
+   *
+   * @default false
+   */
+  keepChildrenMounted?: boolean
   onOpenChange?(open: boolean): void
   modal?: boolean
 
@@ -61,6 +68,7 @@ type NonNull<A> = Exclude<A, void | null>
 
 type DialogContextValue = {
   forceMount?: boolean
+  keepChildrenMounted?: boolean
   disableRemoveScroll?: boolean
   triggerRef: React.RefObject<TamaguiElement | null>
   contentRef: React.RefObject<TamaguiElement | null>
@@ -211,14 +219,15 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
     const ref = composeRefs(dialogRef, forwardRef)
 
     const context = useDialogContext(scope)
-    const isMountedOrOpen = forceMount || context.open
-    const [isFullyHidden, setIsFullyHidden] = React.useState(!isMountedOrOpen)
+    const keepMounted = forceMount || context.keepChildrenMounted
     const isAdapted = useAdaptIsActive(context.adaptScope)
-    const isVisible = isMountedOrOpen ? true : !isFullyHidden
+    const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
 
-    if (isMountedOrOpen && isFullyHidden) {
+    if (context.open && isFullyHidden) {
       setIsFullyHidden(false)
     }
+
+    const isVisible = context.open ? true : !isFullyHidden
 
     if (isWeb) {
       useIsomorphicLayoutEffect(() => {
@@ -241,17 +250,20 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
 
     const contents = (
       <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
-        <AnimatePresence passThrough={isAdapted} onExitComplete={handleExitComplete}>
-          {isMountedOrOpen || isAdapted ? children : null}
-        </AnimatePresence>
+        <Animate
+          type="presence"
+          present={Boolean(context.open)}
+          keepChildrenMounted={Boolean(keepMounted)}
+          onExitComplete={handleExitComplete}
+          passThrough={isAdapted}
+        >
+          {children}
+        </Animate>
       </StackZIndexContext>
     )
 
     const framedContents =
-      // NOTE: we remove the inner frame, but not the portal itself
-      // saw a bug when we removed and re-added portals that caused stale inner contents of the portal
-      // seems like a React bug itself but leaving this for now as it fixes
-      isFullyHidden && !isAdapted ? null : (
+      isFullyHidden && !keepMounted && !isAdapted ? null : (
         <LayoutMeasurementController disable={!context.open}>
           <DialogPortalFrame
             ref={ref}
@@ -259,7 +271,6 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
               context.open && {
                 'aria-modal': true,
               })}
-            // passThrough={isAdapted}
             pointerEvents={context.open ? 'auto' : 'none'}
             {...frameProps}
             className={`_no_backdrop ` + (frameProps.className || '')}
@@ -855,6 +866,7 @@ const Dialog = withStaticProperties(
         defaultOpen = false,
         onOpenChange,
         modal = true,
+        keepChildrenMounted,
         disableRemoveScroll = false,
       } = props
 
@@ -891,6 +903,7 @@ const Dialog = withStaticProperties(
         onOpenChange: setOpen,
         onOpenToggle,
         modal,
+        keepChildrenMounted,
         disableRemoveScroll,
       } satisfies DialogContextValue
 
