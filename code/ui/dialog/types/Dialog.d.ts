@@ -50,7 +50,7 @@ type DialogPortalProps = ScopedProps<YStackProps & {
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 }>;
 export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
@@ -65,7 +65,7 @@ declare const DialogPortal: React.ForwardRefExoticComponent<Omit<import("@tamagu
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 } & {
     scope?: DialogScopes;
 } & React.RefAttributes<TamaguiElement>>;
@@ -83,7 +83,7 @@ export type DialogOverlayExtraProps = ScopedProps<{
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 }>;
 type DialogOverlayProps = YStackProps & DialogOverlayExtraProps;
 declare const DialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -96,7 +96,7 @@ declare const DialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<impor
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 } & {
     scope?: DialogScopes;
 }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
@@ -104,7 +104,7 @@ declare const DialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<impor
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 } & {
     scope?: DialogScopes;
 }, import("@tamagui/core").StackStyleBase, {
@@ -130,7 +130,7 @@ type DialogContentExtraProps = ScopedProps<Omit<DialogContentTypeProps, 'context
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 }>;
 type DialogContentProps = DialogContentFrameProps & DialogContentExtraProps;
 declare const DialogContent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -158,7 +158,7 @@ declare const DialogContent: import("@tamagui/core").TamaguiComponent<Omit<impor
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 } & {
     scope?: DialogScopes;
 }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<DialogContentTypeProps, "onPointerDownCapture" | "context"> & {
@@ -166,7 +166,7 @@ declare const DialogContent: import("@tamagui/core").TamaguiComponent<Omit<impor
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 } & {
     scope?: DialogScopes;
 }, import("@tamagui/core").StackStyleBase, {
@@ -289,7 +289,7 @@ declare const Dialog: React.ForwardRefExoticComponent<{
          * Used to force mounting when more control is needed. Useful when
          * controlling animation with React animation libraries.
          */
-        forceMount?: true;
+        forceMount?: boolean;
     } & {
         scope?: DialogScopes;
     } & React.RefAttributes<TamaguiElement>>;
@@ -303,7 +303,7 @@ declare const Dialog: React.ForwardRefExoticComponent<{
          * Used to force mounting when more control is needed. Useful when
          * controlling animation with React animation libraries.
          */
-        forceMount?: true;
+        forceMount?: boolean;
     } & {
         scope?: DialogScopes;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
@@ -311,7 +311,7 @@ declare const Dialog: React.ForwardRefExoticComponent<{
          * Used to force mounting when more control is needed. Useful when
          * controlling animation with React animation libraries.
          */
-        forceMount?: true;
+        forceMount?: boolean;
     } & {
         scope?: DialogScopes;
     }, import("@tamagui/core").StackStyleBase, {
@@ -345,7 +345,7 @@ declare const Dialog: React.ForwardRefExoticComponent<{
          * Used to force mounting when more control is needed. Useful when
          * controlling animation with React animation libraries.
          */
-        forceMount?: true;
+        forceMount?: boolean;
     } & {
         scope?: DialogScopes;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<DialogContentTypeProps, "onPointerDownCapture" | "context"> & {
@@ -353,7 +353,7 @@ declare const Dialog: React.ForwardRefExoticComponent<{
          * Used to force mounting when more control is needed. Useful when
          * controlling animation with React animation libraries.
          */
-        forceMount?: true;
+        forceMount?: boolean;
     } & {
         scope?: DialogScopes;
     }, import("@tamagui/core").StackStyleBase, {

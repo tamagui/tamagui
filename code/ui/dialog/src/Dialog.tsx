@@ -127,7 +127,7 @@ type DialogPortalProps = ScopedProps<
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true
+    forceMount?: boolean
   }
 >
 
@@ -252,15 +252,15 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
       // saw a bug when we removed and re-added portals that caused stale inner contents of the portal
       // seems like a React bug itself but leaving this for now as it fixes
       isFullyHidden && !isAdapted ? null : (
-        <LayoutMeasurementController disable={!isMountedOrOpen}>
+        <LayoutMeasurementController disable={!context.open}>
           <DialogPortalFrame
             ref={ref}
             {...(isWeb &&
-              isMountedOrOpen && {
+              context.open && {
                 'aria-modal': true,
               })}
             // passThrough={isAdapted}
-            pointerEvents={isMountedOrOpen ? 'auto' : 'none'}
+            pointerEvents={context.open ? 'auto' : 'none'}
             {...frameProps}
             className={`_no_backdrop ` + (frameProps.className || '')}
           >
@@ -350,7 +350,7 @@ export type DialogOverlayExtraProps = ScopedProps<{
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
    */
-  forceMount?: true
+  forceMount?: boolean
 }>
 
 type DialogOverlayProps = YStackProps & DialogOverlayExtraProps
@@ -432,7 +432,7 @@ type DialogContentExtraProps = ScopedProps<
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true
+    forceMount?: boolean
   }
 >
 

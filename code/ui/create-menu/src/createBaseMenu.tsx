@@ -105,7 +105,7 @@ interface MenuAnchorProps extends PopperAnchorProps {}
  * MenuPortal
  * -----------------------------------------------------------------------------------------------*/
 
-type PortalContextValue = { forceMount?: true }
+type PortalContextValue = { forceMount?: boolean }
 
 interface MenuPortalProps {
   children?: React.ReactNode
@@ -113,7 +113,7 @@ interface MenuPortalProps {
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
    */
-  forceMount?: true
+  forceMount?: boolean
   zIndex?: number
 }
 
@@ -141,7 +141,7 @@ interface MenuContentProps extends MenuRootContentTypeProps {
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
    */
-  forceMount?: true
+  forceMount?: boolean
 }
 
 /* ---------------------------------------------------------------------------------------------- */
@@ -285,7 +285,7 @@ interface MenuItemIndicatorProps extends PrimitiveSpanProps {
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
    */
-  forceMount?: true
+  forceMount?: boolean
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -346,7 +346,7 @@ export interface MenuSubContentProps extends Omit<
    * Used to force mounting when more control is needed. Useful when
    * controlling animation with React animation libraries.
    */
-  forceMount?: true
+  forceMount?: boolean
 }
 
 type Point = { x: number; y: number }
