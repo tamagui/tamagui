@@ -159,6 +159,7 @@ const COMMAND_MAP = {
       '--help': Boolean,
       '--debug': Boolean,
       '--verbose': Boolean,
+      '--dry-run': Boolean,
       '--target': String,
       '--include': String,
       '--exclude': String,
@@ -180,9 +181,16 @@ const COMMAND_MAP = {
       const { _, ...flags } = arg(this.flags)
       const [_command, dir] = _
 
+      const dryRun = flags['--dry-run'] || false
+      const debug = flags['--debug']
+        ? flags['--verbose']
+          ? ('verbose' as const)
+          : true
+        : false
+
       const { build } = require('./build.cjs')
       const options = await getOptions({
-        debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
+        debug,
       })
       await build({
         ...options,
@@ -192,6 +200,7 @@ const COMMAND_MAP = {
         exclude: flags['--exclude'],
         expectOptimizations: flags['--expect-optimizations'],
         runCommand,
+        dryRun,
       })
     },
   },

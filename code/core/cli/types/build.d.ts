@@ -27,5 +27,6 @@ export declare const build: (options: CLIResolvedOptions & {
     exclude?: string;
     expectOptimizations?: number;
     runCommand?: string[];
+    dryRun?: boolean;
 }) => Promise<BuildResult>;
 //# sourceMappingURL=build.d.ts.map
