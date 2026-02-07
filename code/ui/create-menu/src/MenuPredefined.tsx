@@ -140,7 +140,7 @@ const MenuItem = styled(View, {
         // use focusStyle for highlight since hover triggers focus via onPointerMove
         // this ensures a single unified highlight for both mouse and keyboard
         focusStyle: {
-          backgroundColor: '$backgroundFocus',
+          backgroundColor: '$backgroundHover',
         },
 
         pressStyle: {
