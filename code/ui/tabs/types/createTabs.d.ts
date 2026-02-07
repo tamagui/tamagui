@@ -520,7 +520,7 @@ type TabsContentExtraProps = {
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with Tamagui animations.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 };
 type TabsContentProps = TabsContentFrameProps & TabsContentExtraProps;
 export type { TabLayout, TabsContentProps, TabsListProps, TabsProps, TabsTabProps, TabsTriggerLayout, TabsTriggerProps, };

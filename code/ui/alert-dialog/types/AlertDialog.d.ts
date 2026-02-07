@@ -29,7 +29,7 @@ declare const AlertDialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> | "forceMount"> & Omit<{}, "scope"> & {
     scope?: AlertDialogScopes;
 } & {
-    forceMount?: true;
+    forceMount?: boolean;
 } & {
     scope?: import("@tamagui/dialog").DialogScopes;
 } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -38,7 +38,7 @@ declare const AlertDialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<
 }>, keyof import("@tamagui/stacks").StackVariants> & import("@tamagui/stacks").StackVariants, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
     scope?: AlertDialogScopes;
 } & {
-    forceMount?: true;
+    forceMount?: boolean;
 } & {
     scope?: import("@tamagui/dialog").DialogScopes;
 } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -108,7 +108,7 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> | "forceMount"> & Omit<{}, "scope"> & {
         scope?: AlertDialogScopes;
     } & {
-        forceMount?: true;
+        forceMount?: boolean;
     } & {
         scope?: import("@tamagui/dialog").DialogScopes;
     } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -117,7 +117,7 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
     }>, keyof import("@tamagui/stacks").StackVariants> & import("@tamagui/stacks").StackVariants, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
         scope?: AlertDialogScopes;
     } & {
-        forceMount?: true;
+        forceMount?: boolean;
     } & {
         scope?: import("@tamagui/dialog").DialogScopes;
     } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

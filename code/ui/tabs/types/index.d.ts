@@ -519,13 +519,13 @@ export declare const Tabs: import("react").ForwardRefExoticComponent<Omit<import
         chromeless?: boolean | "all" | undefined;
     }>, keyof {
         value: string;
-        forceMount?: true;
+        forceMount?: boolean;
     }> & {
         value: string;
-        forceMount?: true;
+        forceMount?: boolean;
     }, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
         value: string;
-        forceMount?: true;
+        forceMount?: boolean;
     }, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         transparent?: boolean | undefined;

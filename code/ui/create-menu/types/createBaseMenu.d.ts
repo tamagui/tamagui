@@ -29,7 +29,7 @@ interface MenuPortalProps {
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
     zIndex?: number;
 }
 /**
@@ -42,7 +42,7 @@ interface MenuContentProps extends MenuRootContentTypeProps {
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 }
 interface MenuRootContentTypeProps extends Omit<MenuContentImplProps, keyof MenuContentImplPrivateProps> {
 }
@@ -122,7 +122,7 @@ interface MenuItemIndicatorProps extends PrimitiveSpanProps {
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 }
 interface MenuSeparatorProps extends ViewProps {
 }
@@ -143,7 +143,7 @@ export interface MenuSubContentProps extends Omit<MenuContentImplProps, keyof Me
      * Used to force mounting when more control is needed. Useful when
      * controlling animation with React animation libraries.
      */
-    forceMount?: true;
+    forceMount?: boolean;
 }
 export type CreateBaseMenuProps = {
     Item?: TamaguiComponent;
