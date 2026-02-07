@@ -3,12 +3,16 @@ export declare const cssShorthandLonghands: {
     borderStyle: boolean;
     borderColor: boolean;
     borderTopWidth: boolean;
+    borderTopStyle: boolean;
     borderTopColor: boolean;
     borderRightWidth: boolean;
+    borderRightStyle: boolean;
     borderRightColor: boolean;
     borderBottomWidth: boolean;
+    borderBottomStyle: boolean;
     borderBottomColor: boolean;
     borderLeftWidth: boolean;
+    borderLeftStyle: boolean;
     borderLeftColor: boolean;
     outlineWidth: boolean;
     outlineStyle: boolean;

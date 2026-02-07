@@ -438,13 +438,7 @@ const DialogContentFrame = styled(ThemeableStack, {
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
 
 type DialogContentExtraProps = ScopedProps<
-  Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'> & {
-    /**
-     * Used to force mounting when more control is needed. Useful when
-     * controlling animation with React animation libraries.
-     */
-    forceMount?: boolean
-  }
+  Omit<DialogContentTypeProps, 'context' | 'onPointerDownCapture'>
 >
 
 type DialogContentProps = DialogContentFrameProps & DialogContentExtraProps
@@ -452,14 +446,13 @@ type DialogContentProps = DialogContentFrameProps & DialogContentExtraProps
 const DialogContent = DialogContentFrame.styleable<DialogContentExtraProps>(
   function DialogContent({ scope, ...props }, forwardedRef) {
     const context = useDialogContext(scope)
-    const { forceMount = context.forceMount, ...contentProps } = props
 
     const contents = (
       <>
         {context.modal ? (
-          <DialogContentModal context={context} {...contentProps} ref={forwardedRef} />
+          <DialogContentModal context={context} {...props} ref={forwardedRef} />
         ) : (
-          <DialogContentNonModal context={context} {...contentProps} ref={forwardedRef} />
+          <DialogContentNonModal context={context} {...props} ref={forwardedRef} />
         )}
       </>
     )

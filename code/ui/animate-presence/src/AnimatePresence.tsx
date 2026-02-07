@@ -8,7 +8,21 @@ import type { AnimatePresenceProps } from './types'
 
 type ComponentKey = string | number
 
-const getChildKey = (child: ReactElement<any>): ComponentKey => child.key || ''
+const getChildKey = (child: ReactElement<any>): ComponentKey => {
+  return (
+    child.key ||
+    (() => {
+      // we can help a bit by falling back to tamagui name or component name
+      const ct = child.type
+      const defaultName = ct['displayName'] || ct['name'] || ''
+      if (ct && typeof ct === 'object' && 'staticConfig' in ct) {
+        // @ts-expect-error
+        return ct.staticConfig.componentName || defaultName
+      }
+      return defaultName
+    })()
+  )
+}
 
 function updateChildLookup(
   children: ReactElement<any>[],

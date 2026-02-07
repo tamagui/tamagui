@@ -118,8 +118,8 @@ test('scoped popovers adapt to sheets', async ({ page }) => {
     // Wait for sheet to close by checking data-state attribute
     await expect(sheetContents).toHaveAttribute('data-state', 'closed', { timeout: 5000 })
 
-    // Verify sheet is mostly off-screen (closed sheet may retain partial viewport overlap)
-    await expect(sheetContents).not.toBeInViewport({ ratio: 0.5 })
+    // Verify sheet is visually off-screen
+    await expect(sheetContents).not.toBeInViewport()
   }
 
   await testPopoverAdapted('plain')

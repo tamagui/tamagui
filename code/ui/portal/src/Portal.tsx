@@ -43,6 +43,7 @@ export const Portal = React.memo((propsIn: PortalProps) => {
         pointerEvents: 'none',
         // prevent mobile browser from scrolling/moving this fixed element
         touchAction: 'none',
+        display: 'flex',
       }}
     >
       {content}

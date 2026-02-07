@@ -101,7 +101,6 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
 
       <Dialog.Portal>
         <Dialog.Overlay
-          key="overlay"
           bg="$background"
           opacity={0.5}
           animateOnly={['transform', 'opacity']}
@@ -119,12 +118,6 @@ function DialogInstance({ mode }: { mode: DialogMode }) {
 
         <Dialog.FocusScope focusOnIdle>
           <Dialog.Content
-            py="$4"
-            px="$6"
-            elevate
-            rounded="$6"
-            key="content"
-            animateOnly={['transform', 'opacity']}
             transition={[
               'quicker',
               {

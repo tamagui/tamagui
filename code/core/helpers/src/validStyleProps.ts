@@ -11,20 +11,16 @@ export const cssShorthandLonghands = {
   borderStyle: true,
   borderColor: true,
   borderTopWidth: true,
-  // not supported in RN
-  // borderTopStyle: true,
+  borderTopStyle: true,
   borderTopColor: true,
   borderRightWidth: true,
-  // not supported in RN
-  // borderRightStyle: true,
+  borderRightStyle: true,
   borderRightColor: true,
   borderBottomWidth: true,
-  // not supported in RN
-  // borderBottomStyle: true,
+  borderBottomStyle: true,
   borderBottomColor: true,
   borderLeftWidth: true,
-  // not supported in RN
-  // borderLeftStyle: true,
+  borderLeftStyle: true,
   borderLeftColor: true,
   // outline longhands
   outlineWidth: true,
