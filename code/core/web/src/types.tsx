@@ -1905,9 +1905,7 @@ export type WithThemeAndShorthands<
   ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> &
       Variants &
       WithShorthands<WithThemeValues<A>>
-  : WithThemeValues<MaybeOmitLonghands<A>> &
-      Variants &
-      WithShorthands<WithThemeValues<A>>
+  : WithThemeValues<MaybeOmitLonghands<A>> & Variants & WithShorthands<WithThemeValues<A>>
 
 //
 // combines all of theme, shorthands, pseudos...

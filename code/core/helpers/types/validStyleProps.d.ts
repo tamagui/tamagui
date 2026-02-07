@@ -1,3 +1,20 @@
+export declare const cssShorthandLonghands: {
+    borderWidth: boolean;
+    borderStyle: boolean;
+    borderColor: boolean;
+    borderTopWidth: boolean;
+    borderTopColor: boolean;
+    borderRightWidth: boolean;
+    borderRightColor: boolean;
+    borderBottomWidth: boolean;
+    borderBottomColor: boolean;
+    borderLeftWidth: boolean;
+    borderLeftColor: boolean;
+    outlineWidth: boolean;
+    outlineStyle: boolean;
+    outlineColor: boolean;
+    outlineOffset: boolean;
+};
 export declare const tokenCategories: {
     radius: {
         borderRadius: boolean;

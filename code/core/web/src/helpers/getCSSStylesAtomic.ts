@@ -174,9 +174,8 @@ function createAtomicRules(
   const pseudoSelector = pseudo?.selector
 
   // longhands get .cls.cls for higher specificity over shorthands
-  const cls = property in cssShorthandLonghands
-    ? `.${identifier}.${identifier}`
-    : `.${identifier}`
+  const cls =
+    property in cssShorthandLonghands ? `.${identifier}.${identifier}` : `.${identifier}`
 
   let selector = pseudo
     ? pseudoSelector
