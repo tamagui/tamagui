@@ -484,6 +484,10 @@ export function createExtractor(
             ? path.parent.id.name
             : 'unknown'
 
+        if (shouldPrintDebug) {
+          logger.info(` [styled] Found styled(${variableName})`)
+        }
+
         const parentNode = path.node.arguments[0]
 
         if (!t.isIdentifier(parentNode)) {
@@ -496,7 +500,9 @@ export function createExtractor(
           return
         }
 
-        let Component = getValidImportedComponent(variableName)
+        // look up by parent first (e.g. View in `styled(View, {...})`), then by self
+        let Component =
+          getValidImportedComponent(parentName) || getValidImportedComponent(variableName)
 
         if (!Component) {
           if (enableDynamicEvaluation !== true) {
@@ -667,23 +673,9 @@ export function createExtractor(
           )
         }
 
-        // leave only un-parsed props...
-        // preserve original order
-        definition.properties = definition.properties.map((prop) => {
-          if (
-            skipped.has(prop) ||
-            !t.isObjectProperty(prop) ||
-            !t.isIdentifier(prop.key)
-          ) {
-            return prop
-          }
-          const key = prop.key.name
-          const value = classNames[key]
-          if (value) {
-            return t.objectProperty(t.stringLiteral(key), t.stringLiteral(value))
-          }
-          return prop
-        })
+        // don't replace definition values with class name strings -
+        // the runtime needs real values for animations, context, and group styles.
+        // we only emit the CSS rules so they're available if the runtime uses classNames.
 
         if (out.rulesToInsert) {
           for (const key in out.rulesToInsert) {
