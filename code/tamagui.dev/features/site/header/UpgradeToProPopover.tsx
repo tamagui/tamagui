@@ -49,6 +49,7 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
           cursor="pointer"
           height={36}
           items="center"
+          select="none"
           borderWidth={1}
           borderColor="$black5"
           bg="$black1"

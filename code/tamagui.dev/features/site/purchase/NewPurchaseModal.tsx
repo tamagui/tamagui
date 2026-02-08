@@ -643,13 +643,14 @@ function Tab({
       overflow="hidden"
       py="$1"
       height={60}
-      value=""
+      cursor="pointer"
       borderBottomWidth={1}
       borderBottomColor="transparent"
       {...(!isActive && {
         bg: '$color2',
       })}
       {...props}
+      value={props.value as string}
     >
       <YStack
         fullscreen
@@ -672,7 +673,6 @@ function Tab({
         $gtMd={{ size: '$7' }}
         color={isActive ? '$color12' : '$color10'}
         fontWeight={isActive ? 'bold' : 'normal'}
-        cursor="default"
       >
         {children}
       </Paragraph>

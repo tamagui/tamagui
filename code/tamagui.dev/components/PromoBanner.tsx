@@ -63,7 +63,7 @@ export const PromoBanner = () => {
       width="100%"
       items="center"
       justify="center"
-      z={10000000000000}
+      z={1000}
       position="relative"
     >
       <ContainerLarge px={0} flexDirection="row">
