@@ -61,7 +61,11 @@ export const useThemeState = (
   const parentId = useContext(ThemeStateContext)
 
   if (!parentId && !isRoot) {
-    throw new Error(MISSING_THEME_MESSAGE)
+    throw new Error(
+      `${MISSING_THEME_MESSAGE}
+
+Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? ` (component: ${props.componentName})` : ''}, but no parent theme context was found (parentId: ${JSON.stringify(parentId)}).`
+    )
   }
 
   if (disable) {
@@ -265,7 +269,11 @@ const getNextState = (
     const next = lastState ?? parentState
 
     if (!next) {
-      throw new Error(MISSING_THEME_MESSAGE)
+      throw new Error(
+        `${MISSING_THEME_MESSAGE}
+
+Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? ` (component: ${props.componentName})` : ''}, but no theme state was resolved (parentId: ${JSON.stringify(parentId)}, id: ${JSON.stringify(id)}).`
+      )
     }
 
     if (shouldRerender) {
