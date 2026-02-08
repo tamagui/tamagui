@@ -81,6 +81,8 @@ can be after v2 final
 
 # v3 cleanups
 
+- iconSize => absed on fontSize not sizeToken
+  - needs to somehow work with pure css flattened text + media query tho
 - var(--)
 - may want to align flexShrink = 1 by default to align with web default?
 - styleable shouldnt forwardRef, remove it in general

@@ -1,4 +1,4 @@
-import { getFontSize } from '@tamagui/font-size'
+import { useIconSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getIcon } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext, getElevation, themeableVariants } from '@tamagui/stacks'
@@ -157,7 +157,7 @@ const Icon = (props: {
   scaleIcon?: number
   size?: SizeTokens
 }) => {
-  const { children, scaleIcon = 1, size } = props
+  const { children, scaleIcon, size } = props
   const styledContext = context.useStyledContext()
   if (!styledContext) {
     throw new Error('Button.Icon must be used within a Button')
@@ -165,12 +165,13 @@ const Icon = (props: {
 
   const sizeToken = size ?? styledContext.size
 
-  const iconSize =
-    (typeof sizeToken === 'number' ? sizeToken * 0.5 : getFontSize(sizeToken as Token)) *
-    scaleIcon
+  const iconSize = useIconSize({
+    sizeToken,
+    scaleIcon: scaleIcon ?? 0.5,
+  })
 
   return getIcon(children, {
-    size: iconSize,
+    ...(iconSize != null && { size: iconSize }),
     color: styledContext.color,
   })
 }
@@ -203,22 +204,22 @@ const ButtonComponent = Frame.styleable<ButtonExtraProps>((propsIn, ref) => {
     noExpand: true,
   })
 
-  const { children, iconSize, icon, iconAfter, scaleIcon = 1, ...props } = processedProps
+  const { children, iconSize, icon, iconAfter, scaleIcon, ...props } = processedProps
 
   const size = propsIn.size || (propsIn.unstyled ? undefined : '$true')
 
   const styledContext = context.useStyledContext()
   const finalSize = iconSize ?? size ?? styledContext?.size
-  const iconSizeNumber =
-    (typeof finalSize === 'number' ? finalSize * 0.5 : getFontSize(finalSize as Token)) *
-    scaleIcon
+  const iconSizeNumber = useIconSize({
+    sizeToken: finalSize,
+    scaleIcon: scaleIcon ?? 0.5,
+  })
 
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon) => {
     if (!icon) return null
     return getIcon(icon, {
-      size: iconSizeNumber,
+      ...(iconSizeNumber != null && { size: iconSizeNumber }),
       color: styledContext?.color,
-      // No marginLeft or marginRight needed - spacing is handled by the gap property in Frame's size variants
     })
   })
 

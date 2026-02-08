@@ -810,6 +810,7 @@
       "version": "2.0.0-rc.7",
       "dependencies": {
         "@tamagui/core": "workspace:*",
+        "@tamagui/font-size": "workspace:*",
         "@tamagui/sizable-context": "workspace:*",
       },
       "devDependencies": {

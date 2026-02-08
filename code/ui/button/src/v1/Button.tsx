@@ -1,11 +1,11 @@
-import { getFontSize } from '@tamagui/font-size'
+import { useIconSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
 import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
-import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
+import type { GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
 import { createStyledContext, getVariableValue, styled, useProps } from '@tamagui/web'
 import type { FunctionComponent, JSX } from 'react'
 import { useContext } from 'react'
@@ -170,12 +170,13 @@ const ButtonText = styled(SizableText, {
 })
 
 const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
-  const { children, scaleIcon = 1 } = props
+  const { children, scaleIcon } = props
   const { size, color } = useContext(ButtonContext)
 
-  const iconSize =
-    (typeof size === 'number' ? size * 0.5 : getFontSize(size as FontSizeTokens)) *
-    scaleIcon
+  const iconSize = useIconSize({
+    sizeToken: size,
+    scaleIcon: scaleIcon ?? 0.5,
+  })
 
   const getThemedIcon = useGetThemedIcon({ size: iconSize, color: color as any })
   return getThemedIcon(children)
@@ -236,12 +237,10 @@ function useButton<Props extends ButtonProps>(
 
   const color = propsActive.color as any
 
-  const iconSize =
-    (typeof size === 'number'
-      ? size * 0.5
-      : getFontSize(size as FontSizeTokens, {
-          font: fontFamily?.[0] === '$' ? (fontFamily as any) : undefined,
-        })) * scaleIcon
+  const iconSize = useIconSize({
+    sizeToken: size,
+    scaleIcon: scaleIcon ?? 0.5,
+  })
 
   const getThemedIcon = useGetThemedIcon({
     size: iconSize,
