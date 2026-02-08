@@ -96,14 +96,19 @@ export function requireNativeComponent(name: string) {
   }
 }
 
-// minimal stub for Animated - satisfies imports but does nothing
+import { View as _View } from './View/index'
+import { Text as _Text } from './Text/index'
+import { Image as _Image } from './Image/index'
+import { ScrollView as _ScrollView } from './ScrollView/index'
+
+// minimal stub for Animated - uses real components so props get filtered
 export const Animated = {
-  View: 'div',
-  Text: 'span',
-  Image: 'img',
-  ScrollView: 'div',
-  FlatList: 'div',
-  SectionList: 'div',
+  View: _View,
+  Text: _Text,
+  Image: _Image,
+  ScrollView: _ScrollView,
+  FlatList: _View,
+  SectionList: _View,
   Value: class {
     constructor() {}
   },
