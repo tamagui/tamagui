@@ -4,6 +4,7 @@ import type { SwipeDirection } from './ToastProvider';
 import type { ExternalToast } from './ToastState';
 import type { BurntToastOptions } from './types';
 export type ToasterPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+/** @deprecated Use HeightsMap instead */
 export interface HeightT {
     toastId: string | number;
     height: number;
@@ -96,8 +97,8 @@ export interface ToasterProps {
      */
     containerAriaLabel?: string;
     /**
-     * Disable native toast on mobile (uses burnt package)
-     * @default false
+     * When false, uses burnt native OS toasts on mobile instead of RN views.
+     * @default true
      */
     disableNative?: boolean;
     /**

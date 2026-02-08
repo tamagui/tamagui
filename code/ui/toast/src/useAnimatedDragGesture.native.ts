@@ -16,8 +16,8 @@ export interface UseAnimatedDragGestureOptions {
   onDragMove: (x: number, y: number) => void
   /** called when drag starts */
   onDragStart?: () => void
-  /** called when drag ends with successful dismiss - animate out in this direction */
-  onDismiss: (exitDirection: 'left' | 'right' | 'up' | 'down') => void
+  /** called when drag ends with successful dismiss - includes exit direction and velocity */
+  onDismiss: (exitDirection: 'left' | 'right' | 'up' | 'down', velocity: number) => void
   /** called when drag ends without dismiss - spring back */
   onCancel: () => void
 }
@@ -37,16 +37,22 @@ function resisted(delta: number, maxResist = 25): number {
 }
 
 function shouldGrantGestureMove(dir: SwipeDirection, dx: number, dy: number): boolean {
-  if ((dir === 'horizontal' || dir === 'left') && dx < -GESTURE_GRANT_THRESHOLD) {
+  const absDx = Math.abs(dx)
+  const absDy = Math.abs(dy)
+  // grant gesture for movement along the swipe axis in either direction
+  // (wrong direction gets resistance in onPanResponderMove)
+  if (
+    (dir === 'horizontal' || dir === 'left' || dir === 'right') &&
+    absDx > GESTURE_GRANT_THRESHOLD &&
+    absDx > absDy
+  ) {
     return true
   }
-  if ((dir === 'horizontal' || dir === 'right') && dx > GESTURE_GRANT_THRESHOLD) {
-    return true
-  }
-  if ((dir === 'vertical' || dir === 'up') && dy < -GESTURE_GRANT_THRESHOLD) {
-    return true
-  }
-  if ((dir === 'vertical' || dir === 'down') && dy > GESTURE_GRANT_THRESHOLD) {
+  if (
+    (dir === 'vertical' || dir === 'up' || dir === 'down') &&
+    absDy > GESTURE_GRANT_THRESHOLD &&
+    absDy > absDx
+  ) {
     return true
   }
   return false
@@ -68,6 +74,10 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
 
     return PanResponder.create({
       onMoveShouldSetPanResponder: (_e, gesture) => {
+        return shouldGrantGestureMove(direction, gesture.dx, gesture.dy)
+      },
+      // capture phase: steal gesture from parent ScrollView when swiping in dismiss direction
+      onMoveShouldSetPanResponderCapture: (_e, gesture) => {
         return shouldGrantGestureMove(direction, gesture.dx, gesture.dy)
       },
 
@@ -137,7 +147,7 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
         setIsDragging(false)
 
         if (shouldDismiss && exitDirection) {
-          onDismiss(exitDirection)
+          onDismiss(exitDirection, relevantVelocity)
         } else {
           onCancel()
         }

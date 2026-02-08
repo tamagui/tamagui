@@ -17,6 +17,8 @@ import * as React from 'react'
 import type { SwipeDirection } from './ToastProvider'
 import type { ExternalToast, ToastT, ToastToDismiss, ToastType } from './ToastState'
 import { ToastState } from './ToastState'
+import type { BurntToastOptions } from './types'
+import { createNativeToast } from './createNativeToast'
 import { useAnimatedDragGesture } from './useAnimatedDragGesture'
 import { useToastAnimations } from './useToastAnimations'
 import { useReducedMotion } from './useReducedMotion'
@@ -65,6 +67,8 @@ interface ToastContextValue {
   swipeThreshold: number
   closeButton: boolean
   reducedMotion: boolean
+  disableNative: boolean
+  burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
   icons?: ToastIcons
 }
 
@@ -165,6 +169,15 @@ export interface ToastRootProps {
    */
   reducedMotion?: boolean
   /**
+   * When false, uses burnt native OS toasts on mobile instead of RN views.
+   * @default true
+   */
+  disableNative?: boolean
+  /**
+   * Options for burnt native toasts on mobile
+   */
+  burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
+  /**
    * Custom icons for toast types
    */
   icons?: ToastIcons
@@ -197,6 +210,8 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       closeButton = false,
       theme: themeProp,
       reducedMotion: reducedMotionProp,
+      disableNative = true,
+      burntOptions,
       icons,
     } = props
 
@@ -236,7 +251,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       }
       dismissCooldownTimerRef.current = setTimeout(() => {
         dismissCooldownRef.current = false
-      }, 800) // 800ms cooldown for stack to rebalance after dismiss
+      }, 800)
     }
 
     const isInDismissCooldown = () => dismissCooldownRef.current
@@ -310,6 +325,8 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       swipeThreshold,
       closeButton,
       reducedMotion,
+      disableNative,
+      burntOptions,
       icons,
     }
 
@@ -383,6 +400,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
     const listRef = React.useRef<TamaguiElement>(null)
     const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
     const hoverCooldownRef = React.useRef(false)
+    const deferredCollapseRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
     const [yPosition, xPosition] = ctx.position.split('-') as [
       'top' | 'bottom',
@@ -408,9 +426,13 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
 
       if (xPosition === 'left') styles.left = offsetObj.left ?? defaultOffset
       else if (xPosition === 'right') styles.right = offsetObj.right ?? defaultOffset
-      else {
+      else if (isWeb) {
         styles.left = '50%'
         styles.transform = 'translateX(-50%)'
+      } else {
+        styles.left = offsetObj.left ?? defaultOffset
+        styles.right = offsetObj.right ?? defaultOffset
+        styles.alignItems = 'center'
       }
 
       return styles
@@ -448,30 +470,53 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
         style={offsetStyles}
         data-y-position={yPosition}
         data-x-position={xPosition}
-        onMouseEnter={() => {
-          if (ctx.toasts.length > 1 && !ctx.interacting && !hoverCooldownRef.current) {
-            hoverTimeoutRef.current = setTimeout(() => ctx.setExpanded(true), 50)
-          }
-        }}
-        onMouseLeave={() => {
-          if (hoverTimeoutRef.current) {
-            clearTimeout(hoverTimeoutRef.current)
-            hoverTimeoutRef.current = null
-          }
-          // Don't collapse during dismiss cooldown (stack is rebalancing)
-          if (!ctx.interacting && !ctx.isInDismissCooldown()) {
-            ctx.setExpanded(false)
-          }
-        }}
-        onPointerDown={() => {
-          if (hoverTimeoutRef.current) {
-            clearTimeout(hoverTimeoutRef.current)
-            hoverTimeoutRef.current = null
-          }
-          ctx.setInteracting(true)
-        }}
-        onPointerUp={() => ctx.setInteracting(false)}
-        onPointerCancel={() => ctx.setInteracting(false)}
+        {...(isWeb
+          ? {
+              onMouseEnter: () => {
+                if (deferredCollapseRef.current) {
+                  clearTimeout(deferredCollapseRef.current)
+                  deferredCollapseRef.current = null
+                }
+                if (
+                  ctx.toasts.length > 1 &&
+                  !ctx.interacting &&
+                  !hoverCooldownRef.current
+                ) {
+                  hoverTimeoutRef.current = setTimeout(() => ctx.setExpanded(true), 50)
+                }
+              },
+              onMouseLeave: () => {
+                if (hoverTimeoutRef.current) {
+                  clearTimeout(hoverTimeoutRef.current)
+                  hoverTimeoutRef.current = null
+                }
+                if (!ctx.interacting && !ctx.isInDismissCooldown()) {
+                  ctx.setExpanded(false)
+                } else if (ctx.isInDismissCooldown()) {
+                  // schedule collapse after cooldown expires
+                  deferredCollapseRef.current = setTimeout(() => {
+                    deferredCollapseRef.current = null
+                    ctx.setExpanded(false)
+                  }, 850)
+                }
+              },
+              onPointerDown: () => {
+                if (hoverTimeoutRef.current) {
+                  clearTimeout(hoverTimeoutRef.current)
+                  hoverTimeoutRef.current = null
+                }
+                ctx.setInteracting(true)
+              },
+              onPointerUp: () => ctx.setInteracting(false),
+              onPointerCancel: () => ctx.setInteracting(false),
+            }
+          : {
+              onPress: () => {
+                if (ctx.toasts.length > 1) {
+                  ctx.setExpanded((prev) => !prev)
+                }
+              },
+            })}
         {...rest}
       >
         {children}
@@ -556,7 +601,7 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
 
   return (
     <XStack alignItems="flex-start" gap="$3">
-      {toastType !== 'default' && <ToastIcon />}
+      <ToastIcon />
 
       <YStack flex={1} gap="$1">
         {title && <ToastTitle>{title}</ToastTitle>}
@@ -776,6 +821,27 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       setMounted(true)
     }, [])
 
+    // handle burnt native toast on mobile
+    React.useEffect(() => {
+      if (!ctx.disableNative && !isWeb) {
+        const titleText = typeof toast.title === 'function' ? toast.title() : toast.title
+        const descText =
+          typeof toast.description === 'function'
+            ? toast.description()
+            : toast.description
+
+        if (typeof titleText === 'string') {
+          createNativeToast(titleText, {
+            message: typeof descText === 'string' ? descText : undefined,
+            duration,
+            burntOptions: ctx.burntOptions,
+          })
+        }
+        // remove from state immediately — burnt handles display
+        ctx.removeToast(toast)
+      }
+    }, [])
+
     // handle deletion
     React.useEffect(() => {
       if (toast.delete) {
@@ -810,7 +876,15 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       animatedStyle,
       AnimatedView,
       dragRef,
-    } = useToastAnimations({ reducedMotion: ctx.reducedMotion })
+    } = useToastAnimations({
+      reducedMotion: ctx.reducedMotion,
+      swipeAxis:
+        ctx.swipeDirection === 'up' ||
+        ctx.swipeDirection === 'down' ||
+        ctx.swipeDirection === 'vertical'
+          ? 'vertical'
+          : 'horizontal',
+    })
 
     const { isDragging, gestureHandlers } = useAnimatedDragGesture({
       direction: ctx.swipeDirection,
@@ -878,13 +952,14 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
           ? peekVisible * index
           : -peekVisible * index
 
-    const computedOpacity = removed
-      ? 0
-      : index >= ctx.visibleToasts
+    const computedOpacity =
+      removed && !swipeOut
         ? 0
-        : !ctx.expanded && index === ctx.visibleToasts - 1
-          ? 0.5
-          : 1
+        : index >= ctx.visibleToasts
+          ? 0
+          : !ctx.expanded && index === ctx.visibleToasts - 1
+            ? 0.5
+            : 1
     const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
     const computedHeight = !ctx.expanded && !isFront ? frontToastHeight : undefined
     const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
@@ -908,14 +983,13 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       <ToastPositionWrapper
         ref={ref}
         {...dataAttributes}
-        onLayout={handleLayout}
         transition={isDragging || ctx.reducedMotion ? undefined : '200ms'}
         y={stackY}
         scale={stackScale}
         opacity={computedOpacity}
         zIndex={computedZIndex}
         height={computedHeight}
-        overflow={computedHeight ? 'hidden' : undefined}
+        overflow="visible"
         pointerEvents={computedPointerEvents as any}
         top={isTop ? 0 : undefined}
         bottom={isTop ? undefined : 0}
@@ -948,6 +1022,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             aria-live="polite"
             aria-atomic
             tabIndex={0}
+            onLayout={handleLayout}
             {...(isWeb && {
               onKeyDown: (event: React.KeyboardEvent) => {
                 if (event.key === 'Escape' && dismissible) {

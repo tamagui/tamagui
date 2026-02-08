@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { HeightT, ToasterPosition } from './Toaster';
+import type { ToasterPosition } from './Toaster';
 import type { ToastT } from './ToastState';
 import type { SwipeDirection } from './ToastProvider';
 import type { BurntToastOptions } from './types';
@@ -11,10 +11,12 @@ export interface ToastItemProps {
     position: ToasterPosition;
     visibleToasts: number;
     removeToast: (toast: ToastT) => void;
-    heights: HeightT[];
-    setHeights: React.Dispatch<React.SetStateAction<HeightT[]>>;
-    /** Sum of heights of all toasts before this one (for expanded positioning) */
+    triggerDismissCooldown: () => void;
+    heights: Record<string | number, number>;
+    setToastHeight: (toastId: string | number, height: number) => void;
+    removeToastHeight: (toastId: string | number) => void;
     heightBeforeMe: number;
+    frontToastHeight: number;
     duration: number;
     gap: number;
     swipeDirection: SwipeDirection;

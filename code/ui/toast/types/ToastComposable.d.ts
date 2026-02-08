@@ -2,6 +2,7 @@ import type { GetProps, TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
 import type { SwipeDirection } from './ToastProvider';
 import type { ExternalToast, ToastT } from './ToastState';
+import type { BurntToastOptions } from './types';
 export type ToastPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
 interface ToastItemContextValue {
     toast: ToastT;
@@ -60,6 +61,15 @@ export interface ToastRootProps {
      * Force reduced motion mode
      */
     reducedMotion?: boolean;
+    /**
+     * When false, uses burnt native OS toasts on mobile instead of RN views.
+     * @default true
+     */
+    disableNative?: boolean;
+    /**
+     * Options for burnt native toasts on mobile
+     */
+    burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>;
     /**
      * Custom icons for toast types
      */

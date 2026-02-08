@@ -51,11 +51,15 @@ export type ToasterPosition =
   | 'bottom-center'
   | 'bottom-right'
 
+/** @deprecated Use HeightsMap instead */
 export interface HeightT {
   toastId: string | number
   height: number
   position?: ToasterPosition
 }
+
+// Map of toastId -> height (keyed storage prevents ordering drift)
+type HeightsMap = Record<string | number, number>
 
 const TOAST_WIDTH = 356
 
@@ -69,8 +73,7 @@ const ToasterFrame = styled(View, {
         zIndex: 100000,
         pointerEvents: 'box-none',
         maxWidth: '100%',
-        // need min-height to contain absolutely positioned toasts
-        // toasts will overflow upward/downward from their anchor position
+        width: TOAST_WIDTH,
         minHeight: 1,
       },
     },
@@ -178,8 +181,8 @@ export interface ToasterProps {
   containerAriaLabel?: string
 
   /**
-   * Disable native toast on mobile (uses burnt package)
-   * @default false
+   * When false, uses burnt native OS toasts on mobile instead of RN views.
+   * @default true
    */
   disableNative?: boolean
 
@@ -229,7 +232,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       icons,
       toastOptions,
       containerAriaLabel = 'Notifications',
-      disableNative = false,
+      disableNative = true,
       burntOptions,
       notificationOptions,
       className,
@@ -241,7 +244,23 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     const reducedMotion = useReducedMotion(reducedMotionProp)
 
     const [toasts, setToasts] = React.useState<ToastT[]>([])
-    const [heights, setHeights] = React.useState<HeightT[]>([])
+    const [heights, setHeights] = React.useState<HeightsMap>({})
+
+    const setToastHeight = React.useCallback(
+      (toastId: string | number, height: number) => {
+        setHeights((prev) => ({ ...prev, [toastId]: height }))
+      },
+      []
+    )
+
+    const removeToastHeight = React.useCallback((toastId: string | number) => {
+      setHeights((prev) => {
+        const next = { ...prev }
+        delete next[toastId]
+        return next
+      })
+    }, [])
+
     const [expanded, setExpanded] = React.useState(false)
     const [interacting, setInteracting] = React.useState(false)
 
@@ -249,8 +268,12 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
     const isFocusWithinRef = React.useRef(false)
     const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-    // cooldown ref to ignore hover events during toast repositioning animation
     const hoverCooldownRef = React.useRef(false)
+    const dismissCooldownRef = React.useRef(false)
+    const dismissCooldownTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+      null
+    )
+    const deferredCollapseRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
     // subscribe to toast state changes
     React.useEffect(() => {
@@ -282,9 +305,9 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       })
     }, [])
 
-    // collapse expanded view when only 1 toast remains
+    // collapse expanded view when only 1 toast remains (respect dismiss cooldown)
     React.useEffect(() => {
-      if (toasts.length <= 1) {
+      if (toasts.length <= 1 && !dismissCooldownRef.current) {
         setExpanded(false)
       }
     }, [toasts.length])
@@ -338,13 +361,17 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       }
     }, [])
 
-    const removeToast = React.useCallback((toastToRemove: ToastT) => {
-      // enable cooldown to ignore hover events during repositioning animation
-      hoverCooldownRef.current = true
-      setTimeout(() => {
-        hoverCooldownRef.current = false
-      }, 300) // 300ms cooldown matches the transition duration
+    const triggerDismissCooldown = React.useCallback(() => {
+      dismissCooldownRef.current = true
+      if (dismissCooldownTimerRef.current) {
+        clearTimeout(dismissCooldownTimerRef.current)
+      }
+      dismissCooldownTimerRef.current = setTimeout(() => {
+        dismissCooldownRef.current = false
+      }, 800)
+    }, [])
 
+    const removeToast = React.useCallback((toastToRemove: ToastT) => {
       setToasts((toasts) => {
         if (!toasts.find((toast) => toast.id === toastToRemove.id)?.delete) {
           ToastState.dismiss(toastToRemove.id)
@@ -359,10 +386,10 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       'left' | 'center' | 'right',
     ]
 
-    // calculate offset styles
+    // offset styles — matches composable API pattern exactly
+    // applied via style prop so it overrides styled defaults (e.g. width) on native
     const offsetStyles = React.useMemo(() => {
-      const styles: React.CSSProperties = {}
-
+      const styles: any = {}
       const defaultOffset = typeof offset === 'number' ? offset : VIEWPORT_OFFSET
       const offsetObj =
         typeof offset === 'object'
@@ -374,20 +401,18 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
               left: defaultOffset,
             }
 
-      if (yPosition === 'top') {
-        styles.top = offsetObj.top ?? defaultOffset
-      } else {
-        styles.bottom = offsetObj.bottom ?? defaultOffset
-      }
+      if (yPosition === 'top') styles.top = offsetObj.top ?? defaultOffset
+      else styles.bottom = offsetObj.bottom ?? defaultOffset
 
-      if (xPosition === 'left') {
-        styles.left = offsetObj.left ?? defaultOffset
-      } else if (xPosition === 'right') {
-        styles.right = offsetObj.right ?? defaultOffset
-      } else {
-        // center
+      if (xPosition === 'left') styles.left = offsetObj.left ?? defaultOffset
+      else if (xPosition === 'right') styles.right = offsetObj.right ?? defaultOffset
+      else if (isWeb) {
         styles.left = '50%'
         styles.transform = 'translateX(-50%)'
+      } else {
+        styles.left = offsetObj.left ?? defaultOffset
+        styles.right = offsetObj.right ?? defaultOffset
+        styles.alignItems = 'center'
       }
 
       return styles
@@ -411,61 +436,73 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     const content = (
       <ToasterFrame
         ref={listRef}
-        width={width}
         aria-label={`${containerAriaLabel} ${hotkeyLabel}`}
         tabIndex={-1}
         aria-live="polite"
         aria-relevant="additions text"
         aria-atomic={false}
-        style={{ ...offsetStyles, ...style }}
+        style={style ? { ...offsetStyles, ...style } : offsetStyles}
         className={className}
         data-y-position={yPosition}
         data-x-position={xPosition}
-        onMouseEnter={() => {
-          // only expand on hover if there are multiple toasts
-          // and not currently interacting (dragging) or in cooldown
-          if (toasts.length > 1 && !interacting && !hoverCooldownRef.current) {
-            // small delay to allow pass-through mouse movement
-            hoverTimeoutRef.current = setTimeout(() => {
-              setExpanded(true)
-            }, 50)
-          }
-        }}
-        onMouseMove={() => {
-          // expand on sustained hover, not just entry
-          // skip during cooldown to prevent flicker during repositioning
-          if (
-            toasts.length > 1 &&
-            !interacting &&
-            !expanded &&
-            !hoverCooldownRef.current
-          ) {
-            if (!hoverTimeoutRef.current) {
-              hoverTimeoutRef.current = setTimeout(() => {
-                setExpanded(true)
-              }, 50)
+        {...(isWeb
+          ? {
+              onMouseEnter: () => {
+                if (deferredCollapseRef.current) {
+                  clearTimeout(deferredCollapseRef.current)
+                  deferredCollapseRef.current = null
+                }
+                if (toasts.length > 1 && !interacting && !hoverCooldownRef.current) {
+                  hoverTimeoutRef.current = setTimeout(() => {
+                    setExpanded(true)
+                  }, 50)
+                }
+              },
+              onMouseMove: () => {
+                if (
+                  toasts.length > 1 &&
+                  !interacting &&
+                  !expanded &&
+                  !hoverCooldownRef.current
+                ) {
+                  if (!hoverTimeoutRef.current) {
+                    hoverTimeoutRef.current = setTimeout(() => {
+                      setExpanded(true)
+                    }, 50)
+                  }
+                }
+              },
+              onMouseLeave: () => {
+                if (hoverTimeoutRef.current) {
+                  clearTimeout(hoverTimeoutRef.current)
+                  hoverTimeoutRef.current = null
+                }
+                if (!interacting && !dismissCooldownRef.current) {
+                  setExpanded(false)
+                } else if (dismissCooldownRef.current) {
+                  deferredCollapseRef.current = setTimeout(() => {
+                    deferredCollapseRef.current = null
+                    setExpanded(false)
+                  }, 850)
+                }
+              },
+              onPointerDown: () => {
+                if (hoverTimeoutRef.current) {
+                  clearTimeout(hoverTimeoutRef.current)
+                  hoverTimeoutRef.current = null
+                }
+                setInteracting(true)
+              },
+              onPointerUp: () => setInteracting(false),
+              onPointerCancel: () => setInteracting(false),
             }
-          }
-        }}
-        onMouseLeave={() => {
-          // cancel pending expansion
-          if (hoverTimeoutRef.current) {
-            clearTimeout(hoverTimeoutRef.current)
-            hoverTimeoutRef.current = null
-          }
-          if (!interacting) {
-            setExpanded(false)
-          }
-        }}
-        onPointerDown={() => {
-          // cancel any pending expansion when drag starts
-          if (hoverTimeoutRef.current) {
-            clearTimeout(hoverTimeoutRef.current)
-            hoverTimeoutRef.current = null
-          }
-          setInteracting(true)
-        }}
-        onPointerUp={() => setInteracting(false)}
+          : {
+              onPress: () => {
+                if (toasts.length > 1) {
+                  setExpanded((prev) => !prev)
+                }
+              },
+            })}
         {...(isWeb && {
           onBlur: (event: React.FocusEvent) => {
             if (
@@ -497,8 +534,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
             // calculate sum of heights of all toasts BEFORE this one
             // toasts[0..index-1] are rendered before this toast (visually above it for bottom position)
             const heightBeforeMe = toasts.slice(0, index).reduce((sum, t) => {
-              const h = heights.find((h) => h.toastId === t.id)
-              return sum + (h?.height ?? 55)
+              return sum + (heights[t.id] ?? 55)
             }, 0)
 
             return (
@@ -511,9 +547,12 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
                 position={position}
                 visibleToasts={visibleToasts}
                 removeToast={removeToast}
+                triggerDismissCooldown={triggerDismissCooldown}
                 heights={heights}
-                setHeights={setHeights}
+                setToastHeight={setToastHeight}
+                removeToastHeight={removeToastHeight}
                 heightBeforeMe={heightBeforeMe}
+                frontToastHeight={toasts[0] ? (heights[toasts[0].id] ?? 55) : 55}
                 duration={toast.duration ?? toastOptions?.duration ?? duration}
                 gap={gap}
                 swipeDirection={resolveSwipeDirection(swipeDirection, position)}

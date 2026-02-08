@@ -24,6 +24,11 @@ export interface UseToastAnimationsOptions {
      * When true, animations complete instantly (accessibility)
      */
     reducedMotion?: boolean;
+    /**
+     * Primary swipe axis — determines which animated value is tracked for style updates.
+     * 'horizontal' tracks translateX, 'vertical' tracks translateY.
+     */
+    swipeAxis?: 'horizontal' | 'vertical';
 }
 export interface ToastAnimationValues {
     /** set drag offset directly (no animation, for gesture moves) */

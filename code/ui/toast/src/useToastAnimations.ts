@@ -28,6 +28,11 @@ export interface UseToastAnimationsOptions {
    * When true, animations complete instantly (accessibility)
    */
   reducedMotion?: boolean
+  /**
+   * Primary swipe axis — determines which animated value is tracked for style updates.
+   * 'horizontal' tracks translateX, 'vertical' tracks translateY.
+   */
+  swipeAxis?: 'horizontal' | 'vertical'
 }
 
 export interface ToastAnimationValues {
@@ -152,7 +157,7 @@ function animateSpring(
 export function useToastAnimations(
   options: UseToastAnimationsOptions = {}
 ): ToastAnimationValues {
-  const { onExitComplete, reducedMotion } = options
+  const { onExitComplete, reducedMotion, swipeAxis = 'horizontal' } = options
 
   const { animationDriver } = useConfiguration()
 
@@ -180,14 +185,24 @@ export function useToastAnimations(
   const translateX = useAnimatedNumber(0)
   const translateY = useAnimatedNumber(0)
 
-  // create animated transform style for drag (motion/reanimated only)
-  const animatedStyle = useAnimatedNumberStyle(translateX, (x) => {
+  // create animated transform styles for drag (motion/reanimated only)
+  // useAnimatedNumberStyle only tracks its first arg as a dependency,
+  // so we need both variants and pick based on swipe axis
+  const animatedStyleH = useAnimatedNumberStyle(translateX, (x) => {
     'worklet'
     const y = translateY.getValue()
     return {
       transform: [{ translateX: x }, { translateY: y }],
     }
   })
+  const animatedStyleV = useAnimatedNumberStyle(translateY, (y) => {
+    'worklet'
+    const x = translateX.getValue()
+    return {
+      transform: [{ translateX: x }, { translateY: y }],
+    }
+  })
+  const animatedStyle = swipeAxis === 'vertical' ? animatedStyleV : animatedStyleH
 
   // set drag offset directly (no animation) - used during gesture
   const setDragOffset = useEvent((x: number, y: number) => {
@@ -259,10 +274,19 @@ export function useToastAnimations(
       // cancel any running animation
       cancelAnimationRef.current?.()
 
-      const exitX =
+      const { x: curX, y: curY } = currentOffsetRef.current
+
+      // ensure exit target is always further than current drag position
+      // (user may have dragged past EXIT_DISTANCE already)
+      let exitX =
         direction === 'left' ? -EXIT_DISTANCE : direction === 'right' ? EXIT_DISTANCE : 0
-      const exitY =
+      let exitY =
         direction === 'up' ? -EXIT_DISTANCE : direction === 'down' ? EXIT_DISTANCE : 0
+
+      if (direction === 'left' && curX < exitX) exitX = curX - 50
+      else if (direction === 'right' && curX > exitX) exitX = curX + 50
+      if (direction === 'up' && curY < exitY) exitY = curY - 50
+      else if (direction === 'down' && curY > exitY) exitY = curY + 50
 
       if (reducedMotion) {
         // instant for reduced motion
@@ -311,11 +335,15 @@ export function useToastAnimations(
           }
         )
       } else {
-        // use animation driver for motion/reanimated
-        // note: most animation drivers don't support initialVelocity in spring config
-        // but the spring will still look smooth starting from current drag position
-        translateX.setValue(exitX, { type: 'spring', ...exitConfig })
-        translateY.setValue(exitY, { type: 'spring', ...exitConfig }, () => {
+        // animation driver path (reanimated/RN)
+        const springConfig = {
+          type: 'spring' as const,
+          damping: 25,
+          stiffness: 350,
+          mass: 0.4,
+        }
+        translateX.setValue(exitX, springConfig)
+        translateY.setValue(exitY, springConfig, () => {
           onComplete?.()
           onExitComplete?.()
         })

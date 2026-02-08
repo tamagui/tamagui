@@ -6,7 +6,7 @@ import { SizableText } from '@tamagui/text'
 import * as React from 'react'
 import type { LayoutChangeEvent } from 'react-native'
 
-import type { HeightT, ToasterPosition } from './Toaster'
+import type { ToasterPosition } from './Toaster'
 import type { ToastT, ToastType } from './ToastState'
 import { useAnimatedDragGesture } from './useAnimatedDragGesture'
 import { useToastAnimations } from './useToastAnimations'
@@ -163,7 +163,6 @@ const ToastItemDescription = styled(SizableText, {
       false: {
         color: '$color11',
         size: '$2',
-        marginTop: '$1',
       },
     },
   } as const,
@@ -274,10 +273,12 @@ export interface ToastItemProps {
   position: ToasterPosition
   visibleToasts: number
   removeToast: (toast: ToastT) => void
-  heights: HeightT[]
-  setHeights: React.Dispatch<React.SetStateAction<HeightT[]>>
-  /** Sum of heights of all toasts before this one (for expanded positioning) */
+  triggerDismissCooldown: () => void
+  heights: Record<string | number, number>
+  setToastHeight: (toastId: string | number, height: number) => void
+  removeToastHeight: (toastId: string | number) => void
   heightBeforeMe: number
+  frontToastHeight: number
   duration: number
   gap: number
   swipeDirection: SwipeDirection
@@ -307,9 +308,12 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     position,
     visibleToasts,
     removeToast,
+    triggerDismissCooldown,
     heights,
-    setHeights,
+    setToastHeight,
+    removeToastHeight,
     heightBeforeMe,
+    frontToastHeight,
     duration,
     gap,
     swipeDirection,
@@ -337,21 +341,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   const toastType = toast.type ?? 'default'
   const dismissible = toast.dismissible !== false
 
-  // calculate offset based on heights of previous toasts
-  const heightIndex = React.useMemo(
-    () => heights.findIndex((h) => h.toastId === toast.id) || 0,
-    [heights, toast.id]
-  )
-
-  const toastsHeightBefore = React.useMemo(() => {
-    return heights.reduce((prev, curr, reducerIndex) => {
-      if (reducerIndex >= heightIndex) return prev
-      return prev + curr.height
-    }, 0)
-  }, [heights, heightIndex])
-
-  const offset = heightIndex * gap + toastsHeightBefore
-
   // parse position for animation direction
   const [yPosition] = position.split('-') as ['top' | 'bottom', string]
   const isTop = yPosition === 'top'
@@ -371,6 +360,8 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
           notificationOptions,
         })
       }
+      // remove from state immediately — burnt handles display
+      removeToast(toast)
     }
   }, [])
 
@@ -442,7 +433,15 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
 
   // animation driver for drag gestures
   const { setDragOffset, springBack, animateOut, animatedStyle, AnimatedView, dragRef } =
-    useToastAnimations({ reducedMotion })
+    useToastAnimations({
+      reducedMotion,
+      swipeAxis:
+        swipeDirection === 'up' ||
+        swipeDirection === 'down' ||
+        swipeDirection === 'vertical'
+          ? 'vertical'
+          : 'horizontal',
+    })
 
   // drag gesture with animation driver integration
   const { isDragging, gestureHandlers } = useAnimatedDragGesture({
@@ -453,12 +452,13 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     onDragStart: pauseTimer,
     onDragMove: setDragOffset,
     onDismiss: (exitDirection, velocity) => {
+      // trigger cooldown IMMEDIATELY to prevent collapse during stack rebalance
+      triggerDismissCooldown()
       setSwipeOut(true)
       toast.onDismiss?.(toast)
       setRemoved(true)
       // remove height immediately so remaining toasts can reposition right away
-      // (don't wait for exit animation to complete)
-      setHeights((prev) => prev.filter((h) => h.toastId !== toast.id))
+      removeToastHeight(toast.id)
       // use animateOut for smooth velocity-based exit animation
       // this continues the drag momentum into the exit, then removes the toast
       animateOut(exitDirection, velocity, () => {
@@ -476,24 +476,17 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   const handleLayout = React.useCallback(
     (event: LayoutChangeEvent) => {
       const { height } = event.nativeEvent.layout
-
-      setHeights((prev) => {
-        const exists = prev.find((h) => h.toastId === toast.id)
-        if (exists) {
-          return prev.map((h) => (h.toastId === toast.id ? { ...h, height } : h))
-        }
-        return [{ toastId: toast.id, height, position }, ...prev]
-      })
+      setToastHeight(toast.id, height)
     },
-    [toast.id, position, setHeights]
+    [toast.id, setToastHeight]
   )
 
   // cleanup height on unmount
   React.useEffect(() => {
     return () => {
-      setHeights((prev) => prev.filter((h) => h.toastId !== toast.id))
+      removeToastHeight(toast.id)
     }
-  }, [toast.id, setHeights])
+  }, [toast.id, removeToastHeight])
 
   const handleClose = React.useCallback(() => {
     if (!dismissible) return
@@ -522,8 +515,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   // each toast behind front is scaled down by 5% - this creates visual depth
   const stackScale = !expanded && !isFront ? 1 - index * 0.05 : 1
 
-  // get the height of the front toast for collapsed positioning
-  const frontToastHeight = heights.length > 0 ? (heights[0]?.height ?? 55) : 55
+  // frontToastHeight is passed from parent (looked up by front toast ID)
 
   // y position: expanded shows full offset based on preceding toast heights
   // collapsed mode shows visual stacking with small peek
@@ -552,12 +544,14 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   // opacity: toasts beyond visibleToasts are always hidden (like Sonner)
   // this applies in BOTH collapsed and expanded states
   // in collapsed mode, the last visible toast also fades slightly
-  let computedOpacity = 1
-  if (index >= visibleToasts) {
-    computedOpacity = 0 // completely hidden beyond limit (both states)
-  } else if (!expanded && index === visibleToasts - 1) {
-    computedOpacity = 0.5 // last visible toast fades in collapsed mode only
-  }
+  const computedOpacity =
+    removed && !swipeOut
+      ? 0
+      : index >= visibleToasts
+        ? 0
+        : !expanded && index === visibleToasts - 1
+          ? 0.5
+          : 1
 
   // z-index: front toast should be on top, back toasts below
   // higher z-index = more in front
@@ -598,7 +592,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     <ToastPositionWrapper
       ref={toastRef}
       {...dataAttributes}
-      onLayout={handleLayout}
       // use Tamagui transition for stacking animations (y, scale, opacity)
       // use a fast timing animation (not spring) so exit doesn't take forever
       // disable during drag so stacking doesn't interfere with drag gesture
@@ -610,7 +603,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       opacity={computedOpacity}
       zIndex={computedZIndex}
       height={computedHeight}
-      overflow={computedHeight ? 'hidden' : undefined}
+      overflow="visible"
       pointerEvents={computedPointerEvents as any}
       // anchor position: top positions anchor at top, bottom positions anchor at bottom
       top={isTop ? 0 : undefined}
@@ -637,14 +630,9 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       exitStyle={
         reducedMotion
           ? { opacity: 0 }
-          : {
-              opacity: 0,
-              // for swipe dismissal, drag transform handles position via animateOut
-              // for non-swipe dismissal (close button, timeout), use subtle position shift
-              x: 0,
-              y: swipeOut ? 0 : isTop ? -10 : 10,
-              scale: swipeOut ? 1 : 0.95,
-            }
+          : swipeOut
+            ? { opacity: 0, x: 0, y: 0, scale: 1 }
+            : { opacity: 0, y: stackY, scale: stackScale }
       }
     >
       {/* Drag wrapper - wraps the entire visual toast so drag moves everything */}
@@ -661,6 +649,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
           aria-live="polite"
           aria-atomic
           tabIndex={0}
+          onLayout={handleLayout}
           {...(isWeb && {
             onKeyDown: (event: React.KeyboardEvent) => {
               if (event.key === 'Escape' && dismissible) {
@@ -706,15 +695,18 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
 
           {/* Action buttons */}
           {(toast.action || toast.cancel) && (
-            <XStack marginTop="$3" gap="$2" justifyContent="flex-end">
+            <XStack marginTop="$2" gap="$2">
               {toast.cancel && (
                 <ToastActionButton
+                  backgroundColor="transparent"
                   onPress={(event) => {
                     toast.cancel?.onClick?.(event as any)
                     handleClose()
                   }}
                 >
-                  <SizableText size="$2">{toast.cancel.label}</SizableText>
+                  <SizableText size="$2" color="$color11">
+                    {toast.cancel.label}
+                  </SizableText>
                 </ToastActionButton>
               )}
               {toast.action && (
