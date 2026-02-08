@@ -180,7 +180,7 @@ export default {
   },
 
   ssr: {
-    external: ['@vxrn/mdx', 'ws'],
+    external: ['@vxrn/mdx', 'ws', 'react-native-web'],
     noExternal: true,
   },
 
