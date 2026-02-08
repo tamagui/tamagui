@@ -77,6 +77,11 @@ const ScrollViewBase = React.forwardRef((props: Props, forwardedRef) => {
     showsHorizontalScrollIndicator,
     showsVerticalScrollIndicator,
     style,
+    // strip RN-only props that shouldn't reach the DOM
+    onMomentumScrollBegin,
+    onMomentumScrollEnd,
+    onScrollBeginDrag,
+    onScrollEndDrag,
     ...rest
   } = props
 
