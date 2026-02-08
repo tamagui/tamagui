@@ -11,6 +11,11 @@ before v2 final:
 
 can be after v2 final
 
+<Popover.Content
+onInteractOutside={close}
+not working
+and cant put another View next to Content and have it show
+
 - its beta - motion has a ton of hacks, but also dont forget:
   const animateKey = JSON.stringify(style)
 

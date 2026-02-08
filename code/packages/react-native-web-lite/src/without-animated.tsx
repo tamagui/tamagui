@@ -101,6 +101,134 @@ import { Text as _Text } from './Text/index'
 import { Image as _Image } from './Image/index'
 import { ScrollView as _ScrollView } from './ScrollView/index'
 
+// minimal stub for Animated.Value that holds a number and supports listeners
+class AnimatedValue {
+  _value: number
+  _offset: number
+  _listeners: Record<string, (state: { value: number }) => void>
+  _nextId: number
+
+  constructor(value: number = 0) {
+    this._value = value
+    this._offset = 0
+    this._listeners = {}
+    this._nextId = 0
+  }
+
+  setValue(value: number) {
+    this._value = value
+    this._notifyListeners()
+  }
+
+  setOffset(offset: number) {
+    this._offset = offset
+  }
+
+  flattenOffset() {
+    this._value += this._offset
+    this._offset = 0
+  }
+
+  extractOffset() {
+    this._offset = this._value
+    this._value = 0
+  }
+
+  addListener(callback: (state: { value: number }) => void): string {
+    const id = String(this._nextId++)
+    this._listeners[id] = callback
+    return id
+  }
+
+  removeListener(id: string) {
+    delete this._listeners[id]
+  }
+
+  removeAllListeners() {
+    this._listeners = {}
+  }
+
+  stopAnimation(callback?: (value: number) => void) {
+    callback?.(this._value)
+  }
+
+  resetAnimation(callback?: (value: number) => void) {
+    callback?.(this._value)
+  }
+
+  interpolate(config: any) {
+    return new AnimatedValue(this._value)
+  }
+
+  _notifyListeners() {
+    for (const key in this._listeners) {
+      this._listeners[key]({ value: this._value })
+    }
+  }
+
+  __getValue() {
+    return this._value + this._offset
+  }
+}
+
+class AnimatedValueXY {
+  x: AnimatedValue
+  y: AnimatedValue
+
+  constructor(value?: { x?: number; y?: number }) {
+    this.x = new AnimatedValue(value?.x ?? 0)
+    this.y = new AnimatedValue(value?.y ?? 0)
+  }
+
+  setValue(value: { x: number; y: number }) {
+    this.x.setValue(value.x)
+    this.y.setValue(value.y)
+  }
+
+  setOffset(offset: { x: number; y: number }) {
+    this.x.setOffset(offset.x)
+    this.y.setOffset(offset.y)
+  }
+
+  flattenOffset() {
+    this.x.flattenOffset()
+    this.y.flattenOffset()
+  }
+
+  stopAnimation(callback?: (value: { x: number; y: number }) => void) {
+    callback?.({ x: this.x._value, y: this.y._value })
+  }
+
+  addListener(callback: (value: { x: number; y: number }) => void): string {
+    const xId = this.x.addListener(() => {
+      callback({ x: this.x._value, y: this.y._value })
+    })
+    this.y.addListener(() => {
+      callback({ x: this.x._value, y: this.y._value })
+    })
+    return xId
+  }
+
+  removeAllListeners() {
+    this.x.removeAllListeners()
+    this.y.removeAllListeners()
+  }
+
+  getLayout() {
+    return { left: this.x, top: this.y }
+  }
+
+  getTranslateTransform() {
+    return [{ translateX: this.x }, { translateY: this.y }]
+  }
+}
+
+const noopAnim = {
+  start: (cb?: any) => cb?.({ finished: true }),
+  stop: () => {},
+  reset: () => {},
+}
+
 // minimal stub for Animated - uses real components so props get filtered
 export const Animated = {
   View: _View,
@@ -109,27 +237,23 @@ export const Animated = {
   ScrollView: _ScrollView,
   FlatList: _View,
   SectionList: _View,
-  Value: class {
-    constructor() {}
-  },
-  ValueXY: class {
-    constructor() {}
-  },
-  timing: () => ({ start: () => {} }),
-  spring: () => ({ start: () => {} }),
-  decay: () => ({ start: () => {} }),
-  sequence: () => ({ start: () => {} }),
-  parallel: () => ({ start: () => {} }),
-  stagger: () => ({ start: () => {} }),
-  loop: () => ({ start: () => {} }),
+  Value: AnimatedValue,
+  ValueXY: AnimatedValueXY,
+  timing: () => noopAnim,
+  spring: () => noopAnim,
+  decay: () => noopAnim,
+  sequence: () => noopAnim,
+  parallel: () => noopAnim,
+  stagger: () => noopAnim,
+  loop: () => noopAnim,
   event: () => () => {},
-  add: () => new (class {})(),
-  subtract: () => new (class {})(),
-  multiply: () => new (class {})(),
-  divide: () => new (class {})(),
-  modulo: () => new (class {})(),
-  diffClamp: () => new (class {})(),
-  delay: () => ({ start: () => {} }),
+  add: (a: any, b: any) => new AnimatedValue(0),
+  subtract: (a: any, b: any) => new AnimatedValue(0),
+  multiply: (a: any, b: any) => new AnimatedValue(0),
+  divide: (a: any, b: any) => new AnimatedValue(0),
+  modulo: (a: any, b: any) => new AnimatedValue(0),
+  diffClamp: (a: any, min: number, max: number) => new AnimatedValue(0),
+  delay: () => noopAnim,
   createAnimatedComponent: (c: any) => c,
 }
 
