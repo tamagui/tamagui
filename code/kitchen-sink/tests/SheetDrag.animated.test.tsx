@@ -207,7 +207,7 @@ test.describe('Sheet drag interactions', () => {
     // move in steps like a real drag
     for (let i = 1; i <= 10; i++) {
       await page.mouse.move(startX, startY + 10 * i)
-      await page.waitForTimeout(16)
+      await page.waitForTimeout(40)
     }
 
     // check frame moved during drag
