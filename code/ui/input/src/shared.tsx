@@ -131,6 +131,9 @@ export const styledBody = [
     accept: {
       placeholderTextColor: 'color',
       selectionColor: 'color',
+      cursorColor: 'color',
+      selectionHandleColor: 'color',
+      underlineColorAndroid: 'color',
     } as const,
 
     validStyles: Text.staticConfig.validStyles,

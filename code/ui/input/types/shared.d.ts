@@ -109,6 +109,9 @@ export declare const styledBody: readonly [{
     readonly accept: {
         readonly placeholderTextColor: "color";
         readonly selectionColor: "color";
+        readonly cursorColor: "color";
+        readonly selectionHandleColor: "color";
+        readonly underlineColorAndroid: "color";
     };
     readonly validStyles: {
         [key: string]: boolean;

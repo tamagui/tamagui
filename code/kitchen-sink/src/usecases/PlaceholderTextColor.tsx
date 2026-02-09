@@ -2,11 +2,11 @@ import { Input, Text, YStack } from 'tamagui'
 
 export const PlaceholderTextColor = () => (
   <YStack gap="$3" p="$4">
-    <Text>Raw color "red":</Text>
-    <Input placeholder="should be red" placeholderTextColor="red" />
+    <Text>Token "$red10":</Text>
+    <Input placeholder="should be red" placeholderTextColor="$red10" />
 
-    <Text>Raw hex "#00ff00":</Text>
-    <Input placeholder="should be green" placeholderTextColor="#00ff00" />
+    <Text>Token "$green10":</Text>
+    <Input placeholder="should be green" placeholderTextColor="$green10" />
 
     <Text>Token "$color10":</Text>
     <Input placeholder="should be $color10" placeholderTextColor="$color10" />

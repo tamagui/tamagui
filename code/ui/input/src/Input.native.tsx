@@ -1,6 +1,6 @@
 import React from 'react'
 import { TextInput, type TextInputProps as RNTextInputProps } from 'react-native'
-import { styled, useTheme, getTokenValue } from '@tamagui/core'
+import { styled } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { useNativeInputRef } from '@tamagui/element'
 import { styledBody } from './shared'
@@ -22,13 +22,6 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     rows,
     autoComplete,
     enterKeyHint,
-
-    // Tamagui color props
-    placeholderTextColor,
-    selectionColor,
-    cursorColor,
-    selectionHandleColor,
-    underlineColorAndroid,
 
     // Callbacks
     onChange,
@@ -107,7 +100,6 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
   } = props
 
   const { ref, composedRef } = useNativeInputRef(forwardedRef)
-  const theme = useTheme()
 
   // Convert web type to native props (if not explicitly overridden)
   let secureTextEntry = secureTextEntryProp ?? false
@@ -180,22 +172,6 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
         ? 'none'
         : autoCapitalizeProp
 
-  // Resolve color tokens, falling back to raw color strings
-  const resolveColor = (color: any) => {
-    if (!color) return undefined
-    const themeVal = theme[color as any]?.val
-    if (themeVal) return themeVal
-    const tokenVal = getTokenValue(color, 'color')
-    if (tokenVal != null) return tokenVal
-    return color
-  }
-
-  const resolvedPlaceholderColor = resolveColor(placeholderTextColor)
-  const resolvedSelectionColor = resolveColor(selectionColor)
-  const resolvedCursorColor = resolveColor(cursorColor)
-  const resolvedSelectionHandleColor = resolveColor(selectionHandleColor)
-  const resolvedUnderlineColorAndroid = resolveColor(underlineColorAndroid)
-
   // Register focusable
   React.useEffect(() => {
     if (!id || disabled) return
@@ -254,13 +230,6 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
     selection,
     autoComplete: autoComplete as any,
     autoFocus: autoFocusNative,
-
-    // colors
-    placeholderTextColor: resolvedPlaceholderColor,
-    selectionColor: resolvedSelectionColor,
-    cursorColor: resolvedCursorColor,
-    selectionHandleColor: resolvedSelectionHandleColor,
-    underlineColorAndroid: resolvedUnderlineColorAndroid,
 
     // callbacks
     onChangeText: handleChangeText,
