@@ -69,6 +69,17 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
   const isVertical =
     direction === 'up' || direction === 'down' || direction === 'vertical'
 
+  // Store callbacks in refs so PanResponder doesn't need to be recreated
+  // when callback identities change (which happens every render for inline arrows)
+  const onDragMoveRef = React.useRef(onDragMove)
+  const onDragStartRef = React.useRef(onDragStart)
+  const onDismissRef = React.useRef(onDismiss)
+  const onCancelRef = React.useRef(onCancel)
+  onDragMoveRef.current = onDragMove
+  onDragStartRef.current = onDragStart
+  onDismissRef.current = onDismiss
+  onCancelRef.current = onCancel
+
   const panResponder = React.useMemo(() => {
     if (disabled) return null
 
@@ -83,7 +94,7 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
 
       onPanResponderGrant: () => {
         setIsDragging(true)
-        onDragStart?.()
+        onDragStartRef.current?.()
       },
 
       onPanResponderMove: (_e, gesture: PanResponderGestureState) => {
@@ -114,7 +125,7 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
         }
 
         // directly update animated values (no React state)
-        onDragMove(offsetX, offsetY)
+        onDragMoveRef.current(offsetX, offsetY)
       },
 
       onPanResponderRelease: (_e, gesture: PanResponderGestureState) => {
@@ -147,15 +158,15 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
         setIsDragging(false)
 
         if (shouldDismiss && exitDirection) {
-          onDismiss(exitDirection, relevantVelocity)
+          onDismissRef.current(exitDirection, relevantVelocity)
         } else {
-          onCancel()
+          onCancelRef.current()
         }
       },
 
       onPanResponderTerminate: () => {
         setIsDragging(false)
-        onCancel()
+        onCancelRef.current()
       },
     })
   }, [
@@ -164,10 +175,6 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
     threshold,
     isHorizontal,
     isVertical,
-    onDragMove,
-    onDragStart,
-    onDismiss,
-    onCancel,
   ])
 
   return {
