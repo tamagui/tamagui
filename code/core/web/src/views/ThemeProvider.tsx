@@ -14,7 +14,7 @@ export const ThemeProvider = (props: ThemeProviderProps) => {
       if (addThemeClassName === false) return
       const cn = `${THEME_CLASSNAME_PREFIX}${props.defaultTheme}`
       const target =
-        getSetting('addThemeClassName') === 'body'
+        getSetting('addThemeClassName') === 'html'
           ? document.documentElement
           : document.body
       target.classList.add(cn)

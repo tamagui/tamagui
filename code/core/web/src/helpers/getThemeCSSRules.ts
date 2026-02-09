@@ -113,13 +113,10 @@ export function getThemeCSSRules(props: {
     const selectorsString =
       selectors
         .map((x) => {
-          const rootSep =
-            isBaseTheme(x) &&
-            (getSetting('addThemeClassName') === 'html' ||
-              getSetting('addThemeClassName') === 'body')
-              ? ''
-              : ' '
-          return `:root${rootSep}${x}`
+          const addTo = getSetting('addThemeClassName')
+          const isOnRoot = isBaseTheme(x) && (addTo === 'html' || addTo === 'body')
+          if (!isOnRoot) return `:root ${x}`
+          return `${addTo === 'body' ? 'body' : ':root'}${x}`
         })
         .join(', ') + `, .tm_xxt`
 
