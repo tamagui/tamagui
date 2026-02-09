@@ -17,6 +17,8 @@ export function simplifiedGetSplitStyles(
     render?: string
     mediaState?: Record<string, any>
     mergeDefaultProps?: boolean
+    theme?: any
+    themeName?: string
   } = {}
 ) {
   // optionally merge in default props like createComponent does
@@ -29,8 +31,8 @@ export function simplifiedGetSplitStyles(
   return getSplitStyles(
     mergedProps,
     component.staticConfig,
-    emptyObj,
-    '',
+    options.theme ?? emptyObj,
+    options.themeName ?? '',
     defaultComponentState,
     styleProps,
     emptyObj,

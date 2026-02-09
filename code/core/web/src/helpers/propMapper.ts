@@ -173,7 +173,7 @@ const resolveVariants: StyleResolver = (
   const { variants } = staticConfig
   if (!variants) return
 
-  let variantValue = getVariantDefinition(variants[key], value, conf)
+  let variantValue = getVariantDefinition(variants[key], value, conf, styleState.theme)
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
@@ -410,7 +410,12 @@ const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => (
 }))
 
 // goes through specificity finding best matching variant function
-function getVariantDefinition(variant: any, value: any, conf: TamaguiInternalConfig) {
+function getVariantDefinition(
+  variant: any,
+  value: any,
+  conf: TamaguiInternalConfig,
+  theme?: any
+) {
   if (!variant) return
   if (typeof variant === 'function') {
     return variant
@@ -424,6 +429,17 @@ function getVariantDefinition(variant: any, value: any, conf: TamaguiInternalCon
     for (const { name, spreadName } of tokenCats) {
       if (spreadName in variant && name in tokensParsed && value in tokensParsed[name]) {
         return variant[spreadName]
+      }
+    }
+    // match theme values (e.g. $color, $red10) that aren't in tokensParsed
+    if (theme && typeof value === 'string' && value[0] === '$') {
+      const themeKey = value.slice(1)
+      if (themeKey in theme) {
+        for (const { spreadName } of tokenCats) {
+          if (spreadName in variant) {
+            return variant[spreadName]
+          }
+        }
       }
     }
     const fontSizeVariant = variant['...fontSize']

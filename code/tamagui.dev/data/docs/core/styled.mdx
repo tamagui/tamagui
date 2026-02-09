@@ -273,6 +273,65 @@ const StyledSVG = styled(
 
 Now your StyledSVG will properly type the `fill` property to accept token and theme values and will pass the resolved colors to the SVG component.
 
+### Combining accept with variants
+
+`accept` becomes especially powerful when combined with spread variants. For example, you can create an SVG icon component that accepts `color` and `size` variants using your design tokens, and have the resolved values forwarded as SVG-specific props like `fill`, `width`, and `height`:
+
+```tsx
+const StyledSVG = styled(
+  SVG,
+  {
+    variants: {
+      color: {
+        '...color': (val) => ({ fill: val }),
+      },
+
+      size: {
+        '...size': (val) => ({ width: val, height: val }),
+      },
+    } as const,
+  },
+  {
+    accept: {
+      fill: 'color',
+      width: 'size',
+      height: 'size',
+    } as const,
+  }
+)
+```
+
+Here the `...color` spread variant maps any color token (like `$red10` or a theme value like `$color`) to the `fill` prop. The `accept` config then tells Tamagui that `fill` should be resolved as a color token, and `width`/`height` as size tokens. This means the underlying component receives fully resolved values:
+
+```tsx
+<StyledSVG color="$blue10" size="$4" />
+```
+
+You can also mix exact matches alongside spread variants in the same variant group:
+
+```tsx
+const StyledSVG = styled(
+  SVG,
+  {
+    variants: {
+      color: {
+        red: { fill: 'red' },
+        '...color': (val) => ({ fill: val }),
+      },
+    } as const,
+  },
+  {
+    accept: {
+      fill: 'color',
+    } as const,
+  }
+)
+```
+
+When `color="red"` is passed, the exact variant is used. For any other color token, the spread variant resolves it.
+
+### accept with style objects
+
 You can also use `accept` to take in Tamagui style objects and output React Native style objects. This is useful for things like the `contentContainerStyle` prop on `ScrollView`, which expects a style object:
 
 ```tsx
