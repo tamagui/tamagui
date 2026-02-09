@@ -1,8 +1,7 @@
-import { EnsureFlexed, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
 
 export const HR = () => (
-  <YStack my="$10" mb="$8" mx="auto" maxW="50%">
-    <EnsureFlexed />
+  <YStack my="$10" mb="$8" mx="auto" width="50%">
     <YStack borderBottomColor="$borderColor" borderBottomWidth={1} flex={1} />
   </YStack>
 )
