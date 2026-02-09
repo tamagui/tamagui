@@ -180,10 +180,14 @@ export const Input = StyledInput.styleable<InputProps>((props, forwardedRef) => 
         ? 'none'
         : autoCapitalizeProp
 
-  // Resolve color tokens
+  // Resolve color tokens, falling back to raw color strings
   const resolveColor = (color: any) => {
     if (!color) return undefined
-    return getTokenValue(theme[color as any]?.val ?? color, 'color')
+    const themeVal = theme[color as any]?.val
+    if (themeVal) return themeVal
+    const tokenVal = getTokenValue(color, 'color')
+    if (tokenVal != null) return tokenVal
+    return color
   }
 
   const resolvedPlaceholderColor = resolveColor(placeholderTextColor)
