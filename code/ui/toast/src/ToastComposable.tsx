@@ -251,7 +251,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       null
     )
 
-    const triggerDismissCooldown = () => {
+    const triggerDismissCooldown = React.useCallback(() => {
       dismissCooldownRef.current = true
       if (dismissCooldownTimerRef.current) {
         clearTimeout(dismissCooldownTimerRef.current)
@@ -259,9 +259,9 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       dismissCooldownTimerRef.current = setTimeout(() => {
         dismissCooldownRef.current = false
       }, 800)
-    }
+    }, [])
 
-    const isInDismissCooldown = () => dismissCooldownRef.current
+    const isInDismissCooldown = React.useCallback(() => dismissCooldownRef.current, [])
 
     // subscribe to toast state
     React.useEffect(() => {
@@ -332,7 +332,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       swipeThreshold,
       closeButton,
       reducedMotion,
-      native: native,
+      native,
       burntOptions,
       icons,
     }
@@ -828,10 +828,9 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       setMounted(true)
     }, [])
 
-    // handle burnt native toast on mobile — mount-only, checks config at toast creation time
-    const nativeEnabled = ctx.native
+    // handle burnt native toast on mobile
     React.useEffect(() => {
-      if (nativeEnabled && !isWeb) {
+      if (ctx.native && !isWeb) {
         const titleText = typeof toast.title === 'function' ? toast.title() : toast.title
         const descText =
           typeof toast.description === 'function'
@@ -848,7 +847,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         // remove from state immediately — burnt handles display
         ctx.removeToast(toast)
       }
-    }, [nativeEnabled])
+    }, [ctx.native])
 
     // handle deletion
     React.useEffect(() => {
@@ -1258,5 +1257,7 @@ export const Toast = withStaticProperties(ToastRoot, {
   Action: ToastAction,
   Icon: ToastIcon,
 })
+
+Toast.displayName = 'Toast'
 
 export type { ToastT, ExternalToast }
