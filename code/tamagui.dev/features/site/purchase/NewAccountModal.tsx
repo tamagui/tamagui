@@ -1064,7 +1064,6 @@ const PlanTab = ({
 }) => {
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
   const [showSupportAccess, setShowSupportAccess] = useState(false)
-  const [isResendingInvite, setIsResendingInvite] = useState(false)
 
   // Check for projects
   const {
@@ -1108,10 +1107,10 @@ const PlanTab = ({
     window.open(repoUrl, '_blank', 'noopener,noreferrer')
   }
 
-  const handleResendInvite = async () => {
+  const handleResendInvite = () => {
     if (!subscription) return
 
-    // Get product ID from the user's actual subscription items (works for both V1 and V2)
+    // get product ID from the user's actual subscription items (works for both V1 and V2)
     const subscriptionProduct = subscription.subscription_items?.find(
       (item) => item.price?.product?.id
     )?.price?.product
@@ -1121,32 +1120,17 @@ const PlanTab = ({
       return
     }
 
-    setIsResendingInvite(true)
+    const url = `${window.location.origin}/pop/accept-invite?subscription_id=${encodeURIComponent(subscription.id)}&product_id=${encodeURIComponent(subscriptionProduct.id)}`
+    const width = 500
+    const height = 500
+    const left = window.screenX + (window.innerWidth - width) / 2
+    const top = window.screenY + (window.innerHeight - height) / 2
 
-    try {
-      const res = await authFetch(`/api/resend-github-invite`, {
-        method: 'POST',
-        body: JSON.stringify({
-          subscription_id: subscription.id,
-          product_id: subscriptionProduct.id,
-        }),
-      })
-
-      const data = await res.json()
-      if (!res.ok) {
-        alert(data?.error || `Error: ${res.status} ${res.statusText}`)
-      } else {
-        if (data.message) {
-          alert(data.message)
-        }
-        if (data.url) {
-          // Open URL in new tab
-          window.open(data.url, '_blank', 'noopener,noreferrer')
-        }
-      }
-    } finally {
-      setIsResendingInvite(false)
-    }
+    window.open(
+      url,
+      'GitHub Invite',
+      `width=${width},height=${height},left=${left},top=${top},menubar=no,toolbar=no,location=no,status=no`
+    )
   }
 
   return (
@@ -1176,7 +1160,7 @@ const PlanTab = ({
             thirdAction={
               subscription
                 ? {
-                    label: isResendingInvite ? 'Resending...' : 'Resend Invite',
+                    label: 'Resend Invite',
                     onPress: handleResendInvite,
                   }
                 : null

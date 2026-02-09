@@ -33,7 +33,7 @@ function Modals() {
 
 export default function SiteLayout() {
   const path = usePathname()
-  const isAuthPage = path.startsWith('/login')
+  const isAuthPage = path.startsWith('/login') || path.startsWith('/pop')
   const isAccountPage = path.startsWith('/account')
   const isStudio = path.startsWith('/studio')
   const isTakeout = path.startsWith('/takeout')
