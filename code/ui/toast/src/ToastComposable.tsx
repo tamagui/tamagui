@@ -161,6 +161,11 @@ export interface ToastRootProps {
    */
   closeButton?: boolean
   /**
+   * When true, toasts are always expanded (fanned out) instead of stacked.
+   * @default false
+   */
+  expand?: boolean
+  /**
    * Theme for toasts
    */
   theme?: 'light' | 'dark' | 'system'
@@ -208,6 +213,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       swipeDirection: swipeDirectionProp = 'auto',
       swipeThreshold = 50,
       closeButton = false,
+      expand = false,
       theme: themeProp,
       reducedMotion: reducedMotionProp,
       disableNative = true,
@@ -218,7 +224,8 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
     const reducedMotion = useReducedMotion(reducedMotionProp)
     const [toasts, setToasts] = React.useState<ToastT[]>([])
     const [heights, setHeights] = React.useState<HeightsMap>({})
-    const [expanded, setExpanded] = React.useState(false)
+    const [localExpanded, setExpanded] = React.useState(false)
+    const expanded = expand || localExpanded
     const [interacting, setInteracting] = React.useState(false)
 
     // Helper to set a single toast's height

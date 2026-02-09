@@ -54,6 +54,11 @@ export interface ToastRootProps {
      */
     closeButton?: boolean;
     /**
+     * When true, toasts are always expanded (fanned out) instead of stacked.
+     * @default false
+     */
+    expand?: boolean;
+    /**
      * Theme for toasts
      */
     theme?: 'light' | 'dark' | 'system';

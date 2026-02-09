@@ -261,7 +261,8 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       })
     }, [])
 
-    const [expanded, setExpanded] = React.useState(false)
+    const [localExpanded, setExpanded] = React.useState(false)
+    const expanded = expand || localExpanded
     const [interacting, setInteracting] = React.useState(false)
 
     const listRef = React.useRef<TamaguiElement>(null)
@@ -542,7 +543,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
                 key={toast.id}
                 toast={toast}
                 index={index}
-                expanded={expanded || expand}
+                expanded={expanded}
                 interacting={interacting}
                 position={position}
                 visibleToasts={visibleToasts}

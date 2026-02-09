@@ -3,7 +3,14 @@
  * Uses the new Toast.List API that handles iteration internally.
  */
 
-import { Button, H4, XStack, YStack, Text, Separator, SizableText, View } from 'tamagui'
+import {
+  CircleCheck,
+  CircleX,
+  AlertTriangle,
+  Info,
+  LoaderCircle,
+} from '@tamagui/lucide-icons'
+import { Button, H4, XStack, YStack, Text, Separator, SizableText } from 'tamagui'
 import {
   toast,
   Toast,
@@ -13,138 +20,12 @@ import {
 } from '@tamagui/toast'
 import * as React from 'react'
 
-/* -------------------------------------------------------------------------------------------------
- * Custom Icons - users provide their own icons
- * -----------------------------------------------------------------------------------------------*/
-
-const ICON_SIZE = 20
-
-const SuccessIcon = () => (
-  <View width={ICON_SIZE} height={ICON_SIZE}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={ICON_SIZE}
-      height={ICON_SIZE}
-      fill="none"
-    >
-      <circle cx="12" cy="12" r="10" fill="var(--green5)" />
-      <path
-        d="M8 12.5l2.5 2.5 5.5-5.5"
-        stroke="var(--green10)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  </View>
-)
-
-const ErrorIcon = () => (
-  <View width={ICON_SIZE} height={ICON_SIZE}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={ICON_SIZE}
-      height={ICON_SIZE}
-      fill="none"
-    >
-      <circle cx="12" cy="12" r="10" fill="var(--red5)" />
-      <path
-        d="M15 9l-6 6M9 9l6 6"
-        stroke="var(--red10)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  </View>
-)
-
-const WarningIcon = () => (
-  <View width={ICON_SIZE} height={ICON_SIZE}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={ICON_SIZE}
-      height={ICON_SIZE}
-      fill="none"
-    >
-      <path
-        d="M12 3L2 21h20L12 3z"
-        fill="var(--yellow5)"
-        stroke="var(--yellow8)"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-      <path d="M12 10v4" stroke="var(--yellow11)" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="12" cy="17" r="1" fill="var(--yellow11)" />
-    </svg>
-  </View>
-)
-
-const InfoIcon = () => (
-  <View width={ICON_SIZE} height={ICON_SIZE}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={ICON_SIZE}
-      height={ICON_SIZE}
-      fill="none"
-    >
-      <circle cx="12" cy="12" r="10" fill="var(--blue5)" />
-      <path d="M12 11v5" stroke="var(--blue10)" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="12" cy="8" r="1" fill="var(--blue10)" />
-    </svg>
-  </View>
-)
-
-const LoadingIcon = () => (
-  <View
-    width={ICON_SIZE}
-    height={ICON_SIZE}
-    style={{ animation: 'toast-spin 1s linear infinite' }}
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={ICON_SIZE}
-      height={ICON_SIZE}
-      fill="none"
-    >
-      <circle cx="12" cy="12" r="10" stroke="var(--color5)" strokeWidth="2.5" />
-      <path
-        d="M12 2a10 10 0 0 1 10 10"
-        stroke="var(--color11)"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  </View>
-)
-
-// inject keyframes for loading spinner
-if (typeof document !== 'undefined') {
-  const styleId = 'toast-demo-spin'
-  if (!document.getElementById(styleId)) {
-    const style = document.createElement('style')
-    style.id = styleId
-    style.textContent = `
-      @keyframes toast-spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-    `
-    document.head.appendChild(style)
-  }
-}
-
 const toastIcons = {
-  success: <SuccessIcon />,
-  error: <ErrorIcon />,
-  warning: <WarningIcon />,
-  info: <InfoIcon />,
-  loading: <LoadingIcon />,
+  success: <CircleCheck size={18} color="$green10" />,
+  error: <CircleX size={18} color="$red10" />,
+  warning: <AlertTriangle size={18} color="$yellow10" />,
+  info: <Info size={18} color="$blue10" />,
+  loading: <LoaderCircle size={18} color="$color11" />,
 }
 
 const positions: ToastPosition[] = [
@@ -160,9 +41,18 @@ export function ToastMultipleCase() {
   const [position, setPosition] = React.useState<ToastPosition>('bottom-right')
   const [closeButton, setCloseButton] = React.useState(true)
   const [expand, setExpand] = React.useState(false)
+  const [useNative, setUseNative] = React.useState(false)
 
   return (
-    <Toast position={position} closeButton={closeButton} visibleToasts={4} gap={12} icons={toastIcons}>
+    <Toast
+      position={position}
+      closeButton={closeButton}
+      expand={expand}
+      disableNative={!useNative}
+      visibleToasts={4}
+      gap={12}
+      icons={toastIcons}
+    >
       {/* New API: Toast.Viewport contains Toast.List which handles iteration */}
       <Toast.Viewport>
         <Toast.List
@@ -211,6 +101,13 @@ export function ToastMultipleCase() {
             onPress={() => setExpand(!expand)}
           >
             Always Expand: {expand ? 'On' : 'Off'}
+          </Button>
+          <Button
+            size="$3"
+            backgroundColor={useNative ? '$color8' : undefined}
+            onPress={() => setUseNative(!useNative)}
+          >
+            Native Toast: {useNative ? 'On' : 'Off'}
           </Button>
         </XStack>
 
@@ -489,21 +386,5 @@ function CustomToastContent({ toast: t }: { toast: ToastT }) {
       {/* Toast.Close auto-wires to handleClose from context - no onPress needed! */}
       <Toast.Close />
     </XStack>
-  )
-}
-
-function ToastIcon({ type }: { type: string }) {
-  const iconMap: Record<string, { icon: string; color: string }> = {
-    success: { icon: '✓', color: '$green10' },
-    error: { icon: '✕', color: '$red10' },
-    warning: { icon: '⚠', color: '$yellow10' },
-    info: { icon: 'ℹ', color: '$blue10' },
-    loading: { icon: '◌', color: '$color11' },
-  }
-  const { icon, color } = iconMap[type] || { icon: '', color: '$color' }
-  return (
-    <SizableText size="$4" color={color as any}>
-      {icon}
-    </SizableText>
   )
 }
