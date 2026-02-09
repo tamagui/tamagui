@@ -179,14 +179,14 @@ async function run() {
     let version = curVersion
 
     // ensure we are up to date
-    // ensure we are on main (skip for canary and rc releases)
-    if (!canary && !isRC && !rePublish) {
+    // ensure we are on main (skip branch check for canary releases)
+    if (!canary && !rePublish) {
       if (!isMain) {
         throw new Error(`Not on main`)
       }
-      if (!dirty && !rePublish && !shouldFinish) {
-        await spawnify(`git pull --rebase origin main`)
-      }
+    }
+    if (!dirty && !rePublish && !shouldFinish && !canary) {
+      await spawnify(`git pull --rebase origin main`)
     }
 
     const packagePaths = await getWorkspacePackages()
@@ -322,6 +322,25 @@ async function run() {
 
       version = answer.version
       console.info('Next:', version, '\n')
+    }
+
+    // safety check for major version bumps - always require interactive confirmation
+    const curMajor = Number.parseInt(curVersion.split('.')[0], 10)
+    const nextMajor = Number.parseInt(version.split('.')[0], 10)
+    if (nextMajor > curMajor) {
+      console.info(`\n⚠️  MAJOR VERSION BUMP: ${curVersion} → ${version}\n`)
+
+      for (let i = 1; i <= 3; i++) {
+        const { confirmed } = await prompts({
+          type: 'confirm',
+          name: 'confirmed',
+          message: `Confirm major version bump (${i}/3)?`,
+        })
+        if (!confirmed) {
+          console.info('Major version bump cancelled.')
+          process.exit(0)
+        }
+      }
     }
 
     console.info('install and build')
