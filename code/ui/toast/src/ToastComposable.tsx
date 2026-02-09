@@ -67,7 +67,7 @@ interface ToastContextValue {
   swipeThreshold: number
   closeButton: boolean
   reducedMotion: boolean
-  disableNative: boolean
+  native: boolean
   burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
   icons?: ToastIcons
 }
@@ -174,10 +174,10 @@ export interface ToastRootProps {
    */
   reducedMotion?: boolean
   /**
-   * When false, uses burnt native OS toasts on mobile instead of RN views.
-   * @default true
+   * When true, uses burnt native OS toasts on mobile instead of RN views.
+   * @default false
    */
-  disableNative?: boolean
+  native?: boolean
   /**
    * Options for burnt native toasts on mobile
    */
@@ -216,7 +216,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       expand = false,
       theme: themeProp,
       reducedMotion: reducedMotionProp,
-      disableNative = true,
+      native = false,
       burntOptions,
       icons,
     } = props
@@ -332,7 +332,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       swipeThreshold,
       closeButton,
       reducedMotion,
-      disableNative,
+      native: native,
       burntOptions,
       icons,
     }
@@ -828,9 +828,10 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       setMounted(true)
     }, [])
 
-    // handle burnt native toast on mobile
+    // handle burnt native toast on mobile — mount-only, checks config at toast creation time
+    const nativeEnabled = ctx.native
     React.useEffect(() => {
-      if (!ctx.disableNative && !isWeb) {
+      if (nativeEnabled && !isWeb) {
         const titleText = typeof toast.title === 'function' ? toast.title() : toast.title
         const descText =
           typeof toast.description === 'function'
@@ -847,7 +848,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         // remove from state immediately — burnt handles display
         ctx.removeToast(toast)
       }
-    }, [])
+    }, [nativeEnabled])
 
     // handle deletion
     React.useEffect(() => {

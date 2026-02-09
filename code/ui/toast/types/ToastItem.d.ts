@@ -30,7 +30,7 @@ export interface ToastItemProps {
         loading?: React.ReactNode;
         close?: React.ReactNode;
     };
-    disableNative?: boolean;
+    native?: boolean;
     burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>;
     notificationOptions?: NotificationOptions;
     /** When true, disables animations for accessibility */

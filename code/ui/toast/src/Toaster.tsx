@@ -181,10 +181,10 @@ export interface ToasterProps {
   containerAriaLabel?: string
 
   /**
-   * When false, uses burnt native OS toasts on mobile instead of RN views.
-   * @default true
+   * When true, uses burnt native OS toasts on mobile instead of RN views.
+   * @default false
    */
-  disableNative?: boolean
+  native?: boolean
 
   /**
    * Options for burnt native toasts on mobile
@@ -232,7 +232,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       icons,
       toastOptions,
       containerAriaLabel = 'Notifications',
-      disableNative = true,
+      native = false,
       burntOptions,
       notificationOptions,
       className,
@@ -560,7 +560,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
                 swipeThreshold={swipeThreshold}
                 closeButton={toast.closeButton ?? closeButton}
                 icons={icons}
-                disableNative={disableNative}
+                native={native}
                 burntOptions={burntOptions}
                 notificationOptions={notificationOptions}
                 reducedMotion={reducedMotion}

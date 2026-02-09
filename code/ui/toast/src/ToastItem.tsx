@@ -292,7 +292,7 @@ export interface ToastItemProps {
     loading?: React.ReactNode
     close?: React.ReactNode
   }
-  disableNative?: boolean
+  native?: boolean
   burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
   notificationOptions?: NotificationOptions
   /** When true, disables animations for accessibility */
@@ -320,7 +320,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     swipeThreshold,
     closeButton,
     icons,
-    disableNative,
+    native,
     burntOptions,
     notificationOptions,
     reducedMotion,
@@ -345,9 +345,9 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   const [yPosition] = position.split('-') as ['top' | 'bottom', string]
   const isTop = yPosition === 'top'
 
-  // handle native toast on mobile
+  // handle native toast on mobile — mount-only, checks config at toast creation time
   React.useEffect(() => {
-    if (!disableNative && !isWeb) {
+    if (native && !isWeb) {
       const titleText = typeof toast.title === 'function' ? toast.title() : toast.title
       const descText =
         typeof toast.description === 'function' ? toast.description() : toast.description
@@ -363,7 +363,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       // remove from state immediately — burnt handles display
       removeToast(toast)
     }
-  }, [])
+  }, [native])
 
   // trigger mount animation
   React.useEffect(() => {

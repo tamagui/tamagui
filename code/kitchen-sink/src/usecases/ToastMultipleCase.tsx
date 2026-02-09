@@ -48,7 +48,7 @@ export function ToastMultipleCase() {
       position={position}
       closeButton={closeButton}
       expand={expand}
-      disableNative={!useNative}
+      native={useNative}
       visibleToasts={4}
       gap={12}
       icons={toastIcons}
