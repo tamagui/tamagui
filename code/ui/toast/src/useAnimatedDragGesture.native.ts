@@ -12,6 +12,8 @@ export interface UseAnimatedDragGestureOptions {
   direction: SwipeDirection
   threshold: number
   disabled?: boolean
+  /** when collapsed, allow drag in all directions with resistance except exit direction */
+  expanded?: boolean
   /** called during drag with offset values */
   onDragMove: (x: number, y: number) => void
   /** called when drag starts */

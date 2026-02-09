@@ -29,6 +29,7 @@ const VIEWPORT_OFFSET = 24
 const TOAST_GAP = 14
 const TOAST_LIFETIME = 4000
 const TIME_BEFORE_UNMOUNT = 200
+const DEFAULT_HOTKEY: string[] = ['altKey', 'KeyT']
 
 export type ToastPosition =
   | 'top-left'
@@ -203,7 +204,7 @@ function resolveSwipeDirection(
 }
 
 const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
-  function ToastRoot(props, ref) {
+  function ToastRoot(props, _ref) {
     const {
       children,
       position = 'bottom-right',
@@ -396,7 +397,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
   function ToastViewport(props, ref) {
     const {
       offset = VIEWPORT_OFFSET,
-      hotkey = ['altKey', 'KeyT'],
+      hotkey = DEFAULT_HOTKEY,
       label = 'Notifications',
       portalToRoot = true,
       children,
@@ -1247,6 +1248,8 @@ export function useToastItem() {
  * Export
  * -----------------------------------------------------------------------------------------------*/
 
+ToastRoot.displayName = 'Toast'
+
 export const Toast = withStaticProperties(ToastRoot, {
   Viewport: ToastViewport,
   List: ToastList,
@@ -1257,7 +1260,5 @@ export const Toast = withStaticProperties(ToastRoot, {
   Action: ToastAction,
   Icon: ToastIcon,
 })
-
-Toast.displayName = 'Toast'
 
 export type { ToastT, ExternalToast }

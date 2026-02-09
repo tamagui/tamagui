@@ -18,6 +18,7 @@ export interface ToastT {
   promise?: PromiseT
   action?: ToastAction
   cancel?: ToastAction
+  closeButton?: boolean
   onDismiss?: (toast: ToastT) => void
   onAutoClose?: (toast: ToastT) => void
   // internal
@@ -28,8 +29,8 @@ export interface ToastT {
   // native options
   burntOptions?: CreateNativeToastOptions['burntOptions']
   notificationOptions?: CreateNativeToastOptions['notificationOptions']
-  // custom data users can add
-  [key: string]: any
+  /** Custom user data */
+  data?: Record<string, unknown>
 }
 
 export interface ToastAction {

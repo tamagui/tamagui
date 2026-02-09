@@ -345,7 +345,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   const [yPosition] = position.split('-') as ['top' | 'bottom', string]
   const isTop = yPosition === 'top'
 
-  // handle native toast on mobile — mount-only, checks config at toast creation time
+  // handle native toast on mobile — mount-time gate that dispatches to burnt and
   React.useEffect(() => {
     if (native && !isWeb) {
       const titleText = typeof toast.title === 'function' ? toast.title() : toast.title

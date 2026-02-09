@@ -16,6 +16,7 @@ const VISIBLE_TOASTS_AMOUNT = 4
 const VIEWPORT_OFFSET = 24
 const TOAST_GAP = 14
 const TOAST_LIFETIME = 4000
+const DEFAULT_HOTKEY: string[] = ['altKey', 'KeyT']
 
 /**
  * Resolves 'auto' swipe direction based on toast position.
@@ -224,7 +225,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       gap = TOAST_GAP,
       duration = TOAST_LIFETIME,
       offset = VIEWPORT_OFFSET,
-      hotkey = ['altKey', 'KeyT'],
+      hotkey = DEFAULT_HOTKEY,
       swipeDirection = 'auto',
       swipeThreshold = 50,
       closeButton = false,
