@@ -13,6 +13,7 @@ export interface ToastT {
     promise?: PromiseT;
     action?: ToastAction;
     cancel?: ToastAction;
+    closeButton?: boolean;
     onDismiss?: (toast: ToastT) => void;
     onAutoClose?: (toast: ToastT) => void;
     delete?: boolean;
@@ -20,7 +21,8 @@ export interface ToastT {
     className?: string;
     burntOptions?: CreateNativeToastOptions['burntOptions'];
     notificationOptions?: CreateNativeToastOptions['notificationOptions'];
-    [key: string]: any;
+    /** Custom user data */
+    data?: Record<string, unknown>;
 }
 export interface ToastAction {
     label: string;
