@@ -557,7 +557,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
     )
 
     if (portalToRoot && isWeb) {
-      return <Portal>{content}</Portal>
+      return <Portal zIndex={100000}>{content}</Portal>
     }
 
     return content
