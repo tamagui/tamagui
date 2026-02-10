@@ -124,7 +124,7 @@ jobs:
           MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios")
           BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
           echo "Fetching bundle from: $BUNDLE_URL"
-          curl -s "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed (or timed out)"
+          curl -s --max-time 900 "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed (or timed out)"
           echo "Bundle pre-warm complete"
 
       - name: Verify Maestro Device Connection
