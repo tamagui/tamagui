@@ -6,7 +6,8 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "legacy.js"
   ],
   "type": "module",
   "sideEffects": false,

@@ -5,7 +5,8 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "motion.js"
   ],
   "type": "module",
   "main": "dist/cjs",

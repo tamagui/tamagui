@@ -15,7 +15,9 @@
     "dist",
     "linear-gradient",
     "native.js",
-    "native.d.ts"
+    "native.d.ts",
+    "react-native-web.js",
+    "web.js"
   ],
   "type": "module",
   "sideEffects": [

@@ -5,7 +5,8 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "icon.js"
   ],
   "type": "module",
   "main": "dist/cjs",

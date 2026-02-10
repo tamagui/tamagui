@@ -2,6 +2,16 @@
   "name": "@tamagui/themes",
   "version": "2.0.0-rc.8",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "files": [
+    "src",
+    "types",
+    "dist",
+    "v3.js",
+    "v3-themes.js",
+    "v4.js",
+    "v5.js",
+    "v5-subtle.js"
+  ],
   "type": "module",
   "sideEffects": false,
   "main": "dist/cjs",

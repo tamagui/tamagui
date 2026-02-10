@@ -5,7 +5,15 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "setup-burnt.js",
+    "setup-expo-linear-gradient.js",
+    "setup-gesture-handler.js",
+    "setup-keyboard-controller.js",
+    "setup-safe-area.js",
+    "setup-teleport.js",
+    "setup-worklets.js",
+    "setup-zeego.js"
   ],
   "type": "module",
   "sideEffects": [

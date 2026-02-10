@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "kitchen-sink-go",
+    "slug": "kitchen-sink-go",
+    "version": "1.0.0",
+    "platforms": ["ios", "android"],
+    "ios": {
+      "bundleIdentifier": "dev.tamagui.kitchensinkgo"
+    }
+  }
+}

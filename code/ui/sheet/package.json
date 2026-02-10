@@ -7,7 +7,8 @@
     "src",
     "types",
     "dist",
-    "controller"
+    "controller",
+    "setup-gesture-handler.js"
   ],
   "type": "module",
   "sideEffects": [

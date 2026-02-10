@@ -1,0 +1,20 @@
+{
+  "name": "@tamagui/kitchen-sink-go",
+  "version": "2.0.0-rc.8",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start --port 8082"
+  },
+  "dependencies": {
+    "@tamagui/config": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/metro-plugin": "workspace:*",
+    "@tamagui/web": "workspace:*",
+    "tamagui": "workspace:*",
+    "expo": "^54.0.23",
+    "expo-font": "~14.0.9",
+    "react": ">=19",
+    "react-native": "~0.81.5"
+  }
+}

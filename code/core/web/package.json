@@ -15,7 +15,8 @@
     "types",
     "dist",
     "src",
-    "reset.css"
+    "reset.css",
+    "inject-styles.js"
   ],
   "type": "module",
   "sideEffects": [
