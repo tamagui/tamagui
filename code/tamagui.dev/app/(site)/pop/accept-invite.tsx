@@ -133,8 +133,7 @@ export default function AcceptInvitePage() {
                 {error}
               </Paragraph>
               <Paragraph size="$3" ta="center" color="$color9">
-                Need help?{' '}
-                <Link href="mailto:team@tamagui.dev">team@tamagui.dev</Link>
+                Need help? <Link href="mailto:team@tamagui.dev">team@tamagui.dev</Link>
               </Paragraph>
             </>
           )}

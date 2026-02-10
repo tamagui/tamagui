@@ -164,5 +164,8 @@
       "better-auth",
       "@better-auth/*"
     ]
+  },
+  "dependencies": {
+    "one": "^1.6.8"
   }
 }

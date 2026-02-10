@@ -2,10 +2,11 @@ import Stripe from 'stripe'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { stripe } from '~/features/stripe/stripe'
 
 export default apiRoute(async (req) => {
-  const { supabase } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
   const body = await readBodyJSON(req)
 
   const subId = body['subscription_id']
@@ -31,14 +32,14 @@ export default apiRoute(async (req) => {
     )
   }
 
-  const { error } = await supabase
+  // use supabaseAdmin to bypass RLS - server-side client doesn't have proper session for RLS
+  const { data: subData } = await supabaseAdmin
     .from('subscriptions')
-    .select('id')
+    .select('user_id')
     .eq('id', subId)
     .single()
 
-  if (error) {
-    console.error(error)
+  if (!subData || subData.user_id !== user.id) {
     return Response.json(
       { message: 'no subscription found with the provided id that belongs to you' },
       {
