@@ -46,9 +46,7 @@ const ToastList = () => {
               </Toast.Title>
               {t.description && (
                 <Toast.Description>
-                  {typeof t.description === 'function'
-                    ? t.description()
-                    : t.description}
+                  {typeof t.description === 'function' ? t.description() : t.description}
                 </Toast.Description>
               )}
             </YStack>
