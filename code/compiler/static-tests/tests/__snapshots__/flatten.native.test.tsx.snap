@@ -33,7 +33,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   "6": {}
 });
 const __ReactUseMemo = require('react').useMemo;
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
+import { _withStableStyle as __withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -56,7 +56,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   "1": {}
 });
 const __ReactUseMemo = require('react').useMemo;
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
+import { _withStableStyle as __withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { View } from 'tamagui';
@@ -89,7 +89,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   }
 });
 const __ReactUseMemo = require('react').useMemo;
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
+import { _withStableStyle as __withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';

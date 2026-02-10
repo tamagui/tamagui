@@ -6,11 +6,11 @@
     "src",
     "types",
     "dist",
-    "v3.js",
-    "v3-themes.js",
-    "v4.js",
-    "v5.js",
-    "v5-subtle.js"
+    "v3.cjs",
+    "v3-themes.cjs",
+    "v4.cjs",
+    "v5.cjs",
+    "v5-subtle.cjs"
   ],
   "type": "module",
   "sideEffects": false,

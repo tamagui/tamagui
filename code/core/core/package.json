@@ -21,8 +21,8 @@
     "native.d.ts",
     "native-test.cjs",
     "native-test.d.ts",
-    "inject-styles.js",
-    "reactNativeTypes.js"
+    "inject-styles.cjs",
+    "reactNativeTypes.cjs"
   ],
   "type": "module",
   "sideEffects": [

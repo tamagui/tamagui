@@ -21,7 +21,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   "2": {}
 });
 const __ReactUseMemo = require('react').useMemo;
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
+import { _withStableStyle as __withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -63,7 +63,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   "4": {}
 });
 const __ReactUseMemo = require('react').useMemo;
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
+import { _withStableStyle as __withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -98,7 +98,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   "5": {}
 });
 const __ReactUseMemo = require('react').useMemo;
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
+import { _withStableStyle as __withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -189,7 +189,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   }
 });
 const __ReactUseMemo = require('react').useMemo;
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
+import { _withStableStyle as __withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -259,7 +259,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   "8": {}
 });
 const __ReactUseMemo = require('react').useMemo;
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
+import { _withStableStyle as __withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack, XStack } from 'tamagui';
@@ -305,7 +305,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   }
 });
 const __ReactUseMemo = require('react').useMemo;
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
+import { _withStableStyle as __withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -378,7 +378,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   }
 });
 const __ReactUseMemo = require('react').useMemo;
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
+import { _withStableStyle as __withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { Paragraph } from 'tamagui';

@@ -6,14 +6,14 @@
     "src",
     "types",
     "dist",
-    "setup-burnt.js",
-    "setup-expo-linear-gradient.js",
-    "setup-gesture-handler.js",
-    "setup-keyboard-controller.js",
-    "setup-safe-area.js",
-    "setup-teleport.js",
-    "setup-worklets.js",
-    "setup-zeego.js"
+    "setup-burnt.cjs",
+    "setup-expo-linear-gradient.cjs",
+    "setup-gesture-handler.cjs",
+    "setup-keyboard-controller.cjs",
+    "setup-safe-area.cjs",
+    "setup-teleport.cjs",
+    "setup-worklets.cjs",
+    "setup-zeego.cjs"
   ],
   "type": "module",
   "sideEffects": [

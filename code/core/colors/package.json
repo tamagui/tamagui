@@ -7,7 +7,7 @@
     "src",
     "types",
     "dist",
-    "legacy.js"
+    "legacy.cjs"
   ],
   "type": "module",
   "sideEffects": false,

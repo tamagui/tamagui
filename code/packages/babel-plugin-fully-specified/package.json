@@ -8,7 +8,7 @@
     "src",
     "types",
     "permanent",
-    "commonjs.js"
+    "commonjs.cjs"
   ],
   "main": "permanent/cjs/index.js",
   "module": "permanent/esm/index.mjs",
