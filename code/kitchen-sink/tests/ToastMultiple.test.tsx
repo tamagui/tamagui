@@ -1,11 +1,18 @@
 import { expect, test } from '@playwright/test'
+import { setupPage } from './test-utils'
 
 // single test run with CSS driver (no need to run with all drivers for this test)
 test.describe('Toast v2 API', () => {
   test.beforeEach(async ({ page }) => {
-    // use CSS animation driver for proper exit animation support
-    await page.goto('http://localhost:7979/?test=ToastMultipleCase&animationDriver=css')
-    // wait for app to load
+    await setupPage(page, {
+      name: 'ToastMultipleCase',
+      type: 'useCase',
+      searchParams: { animationDriver: 'css' },
+    })
+    // remove react-refresh overlay iframe that intercepts pointer events in dev mode
+    await page.evaluate(() => {
+      document.getElementById('react-refresh-overlay')?.remove()
+    })
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
