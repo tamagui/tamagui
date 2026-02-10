@@ -49,6 +49,16 @@ type GetVariantAcceptedValues<V> = V extends object
     }
   : undefined
 
+type CompoundVariant<V, StyleProps> = (V extends object
+  ? {
+      [K in keyof V]?: V[K] extends VariantSpreadFunction<any, infer Val>
+        ? Val
+        : GetVariantValues<keyof V[K]>
+    }
+  : {}) & {
+  styles: Partial<StyleProps>
+}
+
 // ---- HTML element support for styledHtml('tagName') ----
 
 // text-like elements use TextStylePropsBase
@@ -225,6 +235,7 @@ function styled<
     name?: string
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
+    compoundVariants?: CompoundVariant<Variants, Partial<InferStyledProps<ParentComponent, StyledConfig>>>[]
     context?: StyledContext
     render?: string | React.ReactElement
   },
@@ -316,7 +327,8 @@ function styled<
   )
 
   const staticConfigProps = (() => {
-    let { variants, name, defaultVariants, context, ...defaultProps } = options || {}
+    let { variants, name, defaultVariants, compoundVariants, context, ...defaultProps } =
+      options || {}
 
     let parentDefaultVariants
     let parentDefaultProps
@@ -346,6 +358,13 @@ function styled<
         if (parentStaticConfig.variants) {
           // @ts-expect-error
           variants = mergeVariants(parentStaticConfig.variants, variants)
+        }
+        if (parentStaticConfig.compoundVariants) {
+          // @ts-expect-error - parent compound variants are loosely typed in StaticConfig
+          compoundVariants = [
+            ...parentStaticConfig.compoundVariants,
+            ...(compoundVariants || []),
+          ]
         }
       }
     }
@@ -386,6 +405,7 @@ function styled<
       variants,
       defaultProps,
       defaultVariants,
+      compoundVariants,
       componentName: name || parentStaticConfig?.componentName,
       isReactNative,
       isText,

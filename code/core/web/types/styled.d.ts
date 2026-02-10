@@ -7,6 +7,11 @@ type AreVariantsUndefined<Variants> = Required<Variants> extends {
 type GetVariantAcceptedValues<V> = V extends object ? {
     [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantValues<keyof V[Key]>;
 } : undefined;
+type CompoundVariant<V, StyleProps> = (V extends object ? {
+    [K in keyof V]?: V[K] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantValues<keyof V[K]>;
+} : {}) & {
+    styles: Partial<StyleProps>;
+};
 type TextLikeElements = 'a' | 'abbr' | 'b' | 'bdi' | 'bdo' | 'cite' | 'code' | 'data' | 'del' | 'dfn' | 'em' | 'i' | 'ins' | 'kbd' | 'label' | 'mark' | 'q' | 's' | 'samp' | 'small' | 'span' | 'strong' | 'sub' | 'sup' | 'time' | 'u' | 'var';
 type ConflictingHTMLProps = 'color' | 'display' | 'height' | 'width' | 'size' | 'left' | 'right' | 'top' | 'bottom' | 'translate' | 'content';
 type HTMLElementSpecificProps<T extends keyof HTMLElementTagNameMap> = T extends 'a' ? Omit<AnchorHTMLAttributes<HTMLAnchorElement>, ConflictingHTMLProps> : T extends 'button' ? Omit<ButtonHTMLAttributes<HTMLButtonElement>, ConflictingHTMLProps> : T extends 'input' ? Omit<InputHTMLAttributes<HTMLInputElement>, ConflictingHTMLProps> : T extends 'select' ? Omit<SelectHTMLAttributes<HTMLSelectElement>, ConflictingHTMLProps> : T extends 'textarea' ? Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, ConflictingHTMLProps> : T extends 'form' ? Omit<FormHTMLAttributes<HTMLFormElement>, ConflictingHTMLProps> : T extends 'label' ? Omit<LabelHTMLAttributes<HTMLLabelElement>, ConflictingHTMLProps> : Omit<HTMLAttributes<HTMLElement>, ConflictingHTMLProps>;
@@ -36,6 +41,7 @@ declare function styled<ParentComponent extends StylableComponent, StyledConfig 
     name?: string;
     variants?: Variants | undefined;
     defaultVariants?: GetVariantAcceptedValues<Variants>;
+    compoundVariants?: CompoundVariant<Variants, Partial<InferStyledProps<ParentComponent, StyledConfig>>>[];
     context?: StyledContext;
     render?: string | React.ReactElement;
 }, config?: StyledConfig): TamaguiComponent<TamaDefer, GetRef<ParentComponent>, GetNonStyledProps<ParentComponent>, StyledConfig["accept"] extends Record<string, any> ? GetBaseStyles<ParentComponent, StyledConfig> & (StyledConfig["accept"] extends Record<string, any> ? { [Key in keyof StyledConfig["accept"]]?: (Key extends keyof GetBaseStyles<ParentComponent, StyledConfig> ? GetBaseStyles<ParentComponent, StyledConfig>[Key] : never) | (StyledConfig["accept"][Key] extends "style" ? Partial<InferStyleProps<ParentComponent, StyledConfig>> : StyledConfig["accept"][Key] extends "textStyle" ? Partial<InferStyleProps<TamaguiComponent<import("./types").TextProps, import("./types").TamaguiTextElement, import("./types").TextNonStyleProps, TextStylePropsBase, {}>, StyledConfig>> : Omit<ThemeValueGet<StyledConfig["accept"][Key]>, "unset">) | undefined; } : {}) : GetBaseStyles<ParentComponent, StyledConfig>, AreVariantsUndefined<Variants> extends true ? GetStyledVariants<ParentComponent> : AreVariantsUndefined<GetStyledVariants<ParentComponent>> extends true ? Omit<AreVariantsUndefined<Variants> extends true ? {} : GetVariantAcceptedValues<Variants>, "_isEmpty"> : { [Key_1 in Exclude<keyof GetStyledVariants<ParentComponent>, "_isEmpty"> | Exclude<keyof (AreVariantsUndefined<Variants> extends true ? {} : GetVariantAcceptedValues<Variants>), "_isEmpty">]?: (Key_1 extends keyof GetStyledVariants<ParentComponent> ? GetStyledVariants<ParentComponent>[Key_1] : undefined) | (Key_1 extends keyof (AreVariantsUndefined<Variants> extends true ? {} : GetVariantAcceptedValues<Variants>) ? (AreVariantsUndefined<Variants> extends true ? {} : GetVariantAcceptedValues<Variants>)[Key_1] : undefined) | undefined; }, GetStaticConfig<ParentComponent, StyledConfig>>;

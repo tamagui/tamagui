@@ -2816,6 +2816,11 @@ type StaticConfigBase = StaticConfigPublic & {
   defaultVariants?: { [key: string]: any }
 
   /**
+   * Compound variants - apply styles when multiple variant conditions match
+   */
+  compoundVariants?: Array<{ [key: string]: any } & { styles: { [key: string]: any } }>
+
+  /**
    * Memoize the component
    */
   memo?: boolean

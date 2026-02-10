@@ -1983,6 +1983,64 @@ export function createExtractor(
             return acc
           }, [])
 
+          // expand compound variants at compile time
+          if (shouldFlatten && staticConfig.compoundVariants) {
+            for (const compound of staticConfig.compoundVariants) {
+              const { styles, ...conditions } = compound
+              let matches = true
+              for (const key in conditions) {
+                if (!variantValues.has(key)) {
+                  matches = false
+                  break
+                }
+                const compoundVal = conditions[key]
+                const propVal = variantValues.get(key)
+                // boolean coercion
+                if (
+                  (compoundVal === true || compoundVal === 'true') &&
+                  (propVal === true || propVal === 'true')
+                ) {
+                  continue
+                }
+                if (
+                  (compoundVal === false || compoundVal === 'false') &&
+                  (propVal === false || propVal === 'false')
+                ) {
+                  continue
+                }
+                if (compoundVal !== propVal) {
+                  matches = false
+                  break
+                }
+              }
+              if (matches && styles) {
+                const styleState = {
+                  ...propMapperStyleState,
+                  props: completeProps,
+                }
+                let out: Record<string, any> = {}
+                for (const skey in styles) {
+                  propMapper(skey, styles[skey], styleState, false, (key, val) => {
+                    out[key] = val
+                  })
+                }
+                for (const key in out) {
+                  const value = out[key]
+                  if (isValidStyleKey(key, staticConfig)) {
+                    attrs.push({
+                      type: 'style',
+                      value: { [key]: value },
+                      name: key,
+                    } as const)
+                  }
+                }
+                if (shouldPrintDebug) {
+                  logger.info([' - expanded compound variant', JSON.stringify(conditions), out].join(' '))
+                }
+              }
+            }
+          }
+
           tm.mark('jsx-element-expanded', !!shouldPrintDebug)
           if (shouldPrintDebug) {
             logger.info(

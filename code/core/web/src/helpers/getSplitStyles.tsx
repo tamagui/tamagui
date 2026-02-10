@@ -1043,6 +1043,28 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop loop
 
+  // compound variants - apply styles when multiple variant conditions match
+  if (staticConfig.compoundVariants) {
+    for (const compound of staticConfig.compoundVariants) {
+      const { styles, ...conditions } = compound
+      let matches = true
+      for (const key in conditions) {
+        if (!compoundValuesMatch(conditions[key], props[key])) {
+          matches = false
+          break
+        }
+      }
+      if (matches) {
+        for (const key in styles) {
+          const resolved = conf.shorthands[key] || key
+          propMapper(resolved, styles[key], styleState, false, (skey, sval) => {
+            mergeStyle(styleState, skey, sval, 2)
+          })
+        }
+      }
+    }
+  }
+
   if (process.env.NODE_ENV === 'development' && debug === 'profile') {
     // @ts-expect-error
     time`split-styles-propsend`
@@ -1655,4 +1677,14 @@ function applyDefaultStyle(pkey: string, styleState: GetStyleState) {
   ) {
     mergeStyle(styleState, pkey, defaultValues, 1)
   }
+}
+
+function compoundValuesMatch(compoundVal: any, propVal: any): boolean {
+  if (compoundVal === true || compoundVal === 'true') {
+    return propVal === true || propVal === 'true'
+  }
+  if (compoundVal === false || compoundVal === 'false') {
+    return propVal === false || propVal === 'false'
+  }
+  return compoundVal === propVal
 }
