@@ -37,8 +37,17 @@ npm install @tamagui/config
 
 - **More color themes**: gray, blue, red, yellow, green, orange, pink, purple,
   teal, neutral (v4 had blue, red, yellow, green, black, white)
-- **`createV5Theme` helper** for easy theme customization
-- **Height-based media queries**: `heightXXXS`, `heightXXS`, `heightXS`, etc.
+- **More theme colors**: `shadow1`-`shadow8`, `highlight1`-`highlight8`,
+  `background01`/`background001` through `background08`, `color01`/`color001`,
+  `white0`/`white02`-`white08`, `black0`/`black02`-`black08`, and more
+- **More animation values**: timing presets from `0ms` to `500ms`, plus named
+  springs like `quick`, `bouncy`, `lazy`, and variants like `quickLessBouncy`
+- **`createV5Theme` helper** for easy theme customization and swapping colors
+- **`getTheme` callback** in `createV5Theme` for computing custom values across
+  every theme automatically based on each theme's palette and scheme
+- **Easier theme swapping**: pass only the `childrenThemes` you want to
+  `createV5Theme` to replace or extend the default color set
+- **Height-based media queries**: `height-xxxs`, `height-xxs`, `height-xs`, etc.
 - **`pointerTouch`** media query for touch device detection
 - **Color utilities**: `adjustPalette`, `adjustPalettes` for transforming
   palettes
@@ -236,8 +245,39 @@ const themes = createV5Theme({
       description:
         'Component themes (defaults to false in v5). We recommend using defaultProps instead.',
     },
+    {
+      name: 'getTheme',
+      type: '(info: { palette: string[], scheme: "light" | "dark" }) => Record<string, string>',
+      description:
+        'Callback that runs for every generated theme, letting you compute custom values based on each theme\'s palette and color scheme. The default uses this to generate opacity variants like color01, background001, etc.',
+    },
   ]}
 />
+
+### Customizing Every Theme with getTheme
+
+The `getTheme` option lets you add computed colors to every generated theme. It
+receives each theme's palette and scheme, so your custom values automatically
+adapt to every color and light/dark variant:
+
+```tsx fileName="tamagui.config.ts"
+import { createV5Theme, opacify } from '@tamagui/config/v5'
+
+const themes = createV5Theme({
+  getTheme: ({ palette, scheme }) => {
+    const bg = palette[7]
+    const fg = palette[palette.length - 2]
+    return {
+      // add your own computed theme values
+      myOverlay: opacify(bg, 0.5),
+      mySubtleText: opacify(fg, 0.6),
+    }
+  },
+})
+```
+
+This is how v5 generates its built-in opacity tokens (`background01`,
+`color001`, etc.) — your custom `getTheme` merges on top of the defaults.
 
 ### Subtle Theme Variant
 
@@ -551,8 +591,76 @@ sizes.
 
 ## Shorthands
 
-V5 uses the same Tailwind-aligned shorthands as v4. See the
-[v4 config docs](/docs/core/config-v4#shorthands) for the full list.
+V5 includes Tailwind-aligned shorthands. With `onlyAllowShorthands: true` (the
+default), only the short forms are available in types.
+
+### Text
+
+<PropsTable
+  data={[
+    { name: 'text', description: 'textAlign' },
+  ]}
+/>
+
+### Layout & Spacing
+
+<PropsTable
+  data={[
+    { name: 'p', description: 'padding' },
+    { name: 'pt', description: 'paddingTop' },
+    { name: 'pb', description: 'paddingBottom' },
+    { name: 'pl', description: 'paddingLeft' },
+    { name: 'pr', description: 'paddingRight' },
+    { name: 'px', description: 'paddingHorizontal' },
+    { name: 'py', description: 'paddingVertical' },
+    { name: 'm', description: 'margin' },
+    { name: 'mt', description: 'marginTop' },
+    { name: 'mb', description: 'marginBottom' },
+    { name: 'ml', description: 'marginLeft' },
+    { name: 'mr', description: 'marginRight' },
+    { name: 'mx', description: 'marginHorizontal' },
+    { name: 'my', description: 'marginVertical' },
+  ]}
+/>
+
+### Position & Size
+
+<PropsTable
+  data={[
+    { name: 't', description: 'top' },
+    { name: 'b', description: 'bottom' },
+    { name: 'l', description: 'left' },
+    { name: 'r', description: 'right' },
+    { name: 'minW', description: 'minWidth' },
+    { name: 'maxW', description: 'maxWidth' },
+    { name: 'minH', description: 'minHeight' },
+    { name: 'maxH', description: 'maxHeight' },
+    { name: 'z', description: 'zIndex' },
+  ]}
+/>
+
+### Flex & Alignment
+
+<PropsTable
+  data={[
+    { name: 'grow', description: 'flexGrow' },
+    { name: 'shrink', description: 'flexShrink' },
+    { name: 'items', description: 'alignItems' },
+    { name: 'self', description: 'alignSelf' },
+    { name: 'content', description: 'alignContent' },
+    { name: 'justify', description: 'justifyContent' },
+  ]}
+/>
+
+### Other
+
+<PropsTable
+  data={[
+    { name: 'bg', description: 'backgroundColor' },
+    { name: 'rounded', description: 'borderRadius' },
+    { name: 'select', description: 'userSelect' },
+  ]}
+/>
 
 ---
 
