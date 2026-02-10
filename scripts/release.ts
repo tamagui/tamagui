@@ -376,6 +376,7 @@ async function run() {
         await spawnify(`bun run test`, {
           env: {
             ...process.env,
+            ...(isCI ? { CI: 'true' } : {}),
             ...(skipNativeTests ? { SKIP_NATIVE_TESTS: 'true' } : {}),
           },
         })
