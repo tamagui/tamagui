@@ -47,6 +47,13 @@ export default apiRoute(async (req) => {
       uuid: user.id,
     })
 
+    if (!stripeCustomerId) {
+      return Response.json(
+        { error: 'Failed to create or retrieve customer' },
+        { status: 500 }
+      )
+    }
+
     // Build items array based on selected options
     const items: Array<{ price: string; quantity?: number }> = []
 

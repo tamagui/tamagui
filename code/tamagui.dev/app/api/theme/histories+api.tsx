@@ -13,7 +13,7 @@ export default apiRoute(async (req) => {
     const { data, error } = await supabaseAdmin
       .from('theme_histories')
       .select('theme_data, search_query')
-      .eq('id', id)
+      .eq('id', Number(id))
 
     if (error) {
       return Response.json({ error: error.message }, { status: 500 })

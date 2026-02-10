@@ -3,7 +3,7 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 type GitHubUser = {
-  id: number
+  id: string
   full_name: string | null
   email: string | null
   avatar_url: string | null

@@ -10,7 +10,7 @@ export default apiRoute(async (req) => {
   const { user } = await ensureAuth({ req })
   const { hasPro, teamId } = await ensureAccess({ user })
 
-  if (!hasPro) {
+  if (!hasPro || !teamId) {
     throw Response.json({ error: 'Must have Pro account' }, { status: 403 })
   }
 

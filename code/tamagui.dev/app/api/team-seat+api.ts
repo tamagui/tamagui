@@ -72,8 +72,7 @@ const getTeamSeats = async (req: Request) => {
       used_seats,
       created_at: teamSubscription.created_at,
       expires_at: teamSubscription.expires_at,
-      status: teamSubscription.status,
-      stripe_subscription_id: teamSubscription.stripe_subscription_id,
+      status: 'active',
     },
     members: membersWithDetails,
   })
