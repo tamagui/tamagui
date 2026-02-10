@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
+import { setupPage } from './test-utils'
 
 /**
  * Toast Tests
@@ -13,7 +14,17 @@ import { expect, test, type Page } from '@playwright/test'
  * - Complex interactions (swipe one toast while others exist)
  */
 
-const TEST_URL = 'http://localhost:7979/?test=ToastMultipleCase&animationDriver=css'
+async function setupToastPage(page: Page) {
+  await setupPage(page, {
+    name: 'ToastMultipleCase',
+    type: 'useCase',
+    searchParams: { animationDriver: 'css' },
+  })
+  // remove react-refresh overlay iframe that intercepts pointer events in dev mode
+  await page.evaluate(() => {
+    document.getElementById('react-refresh-overlay')?.remove()
+  })
+}
 
 // helper to get the drag transform on the toast's DragWrapper
 // structure: ToastPositionWrapper > DragWrapper (cursor:grab) > ToastItemFrame (role=status)
@@ -82,7 +93,7 @@ async function getToastBoundingBox(page: Page) {
 
 test.describe('Toast Gestures', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(TEST_URL)
+    await setupToastPage(page)
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
@@ -194,7 +205,7 @@ test.describe('Toast Gestures', () => {
 
 test.describe('Toast Stacking', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(TEST_URL)
+    await setupToastPage(page)
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
@@ -311,7 +322,7 @@ test.describe('Toast Stacking', () => {
 
 test.describe('Toast Complex Interactions', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(TEST_URL)
+    await setupToastPage(page)
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
@@ -428,7 +439,7 @@ test.describe('Toast Complex Interactions', () => {
 
 test.describe('Toast Edge Cases', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(TEST_URL)
+    await setupToastPage(page)
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
@@ -565,7 +576,7 @@ test.describe('Toast Edge Cases', () => {
 
 test.describe('Toast Auto-dismiss', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(TEST_URL)
+    await setupToastPage(page)
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
@@ -615,7 +626,7 @@ test.describe('Toast Auto-dismiss', () => {
 
 test.describe('Toast Gesture Physics', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(TEST_URL)
+    await setupToastPage(page)
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
@@ -781,7 +792,7 @@ test.describe('Toast Gesture Physics', () => {
 
 test.describe('Toast Stacking Drag Interactions', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(TEST_URL)
+    await setupToastPage(page)
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
@@ -882,7 +893,7 @@ test.describe('Toast Stacking Drag Interactions', () => {
 
 test.describe('Toast Timer Interactions', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(TEST_URL)
+    await setupToastPage(page)
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
@@ -945,7 +956,7 @@ test.describe('Toast Timer Interactions', () => {
 test.describe('Toast Position Swipe Directions', () => {
   test('bottom-right position allows right swipe dismissal', async ({ page }) => {
     // default position is bottom-right
-    await page.goto(TEST_URL)
+    await setupToastPage(page)
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
 
     await createToast(page)
@@ -970,7 +981,7 @@ test.describe('Toast Position Swipe Directions', () => {
     // bottom-left/top-left -> swipe left
     // bottom-center -> swipe down
     // top-center -> swipe up
-    await page.goto(TEST_URL)
+    await setupToastPage(page)
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
 
     const testCases = [
