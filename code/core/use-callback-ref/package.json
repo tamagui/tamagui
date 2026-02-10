@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-callback-ref",
-  "version": "2.0.0-rc.8",
+  "version": "2.0.0-rc.9",
   "files": [
     "src",
     "types",
