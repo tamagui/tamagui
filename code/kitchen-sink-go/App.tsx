@@ -1,7 +1,7 @@
-import { TamaguiProvider, Theme, Text, Button, H1, YStack, XStack, Select, Adapt, Sheet } from 'tamagui'
 import { Check, ChevronDown } from '@tamagui/lucide-icons'
-import config from './tamagui.config'
 import React from 'react'
+import { H1, Select, TamaguiProvider, Text, YStack } from 'tamagui'
+import config from './tamagui.config'
 
 const items = [
   { name: 'Apple' },
@@ -14,23 +14,12 @@ const items = [
 function SelectTest() {
   const [val, setVal] = React.useState('apple')
   return (
-    <YStack gap="$2" ai="center">
+    <YStack gap="$2" items="center">
       <Text>Select Test:</Text>
       <Select value={val} onValueChange={setVal} disablePreventBodyScroll>
         <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Pick a fruit" />
         </Select.Trigger>
-
-        <Adapt when="maxMd" platform="touch">
-          <Sheet modal dismissOnSnapToBottom>
-            <Sheet.Frame>
-              <Sheet.ScrollView>
-                <Adapt.Contents />
-              </Sheet.ScrollView>
-            </Sheet.Frame>
-            <Sheet.Overlay />
-          </Sheet>
-        </Adapt>
 
         <Select.Content>
           <Select.Viewport>
@@ -55,7 +44,7 @@ function SelectTest() {
 export function App() {
   return (
     <TamaguiProvider config={config} defaultTheme="light">
-      <YStack f={1} ai="center" jc="center" bg="$background" gap="$4" p="$4">
+      <YStack flex={1} items="center" justify="center" bg="$background" gap="$4" p="$4">
         <H1>Select Test</H1>
         <SelectTest />
       </YStack>
