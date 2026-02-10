@@ -59,15 +59,15 @@ export default function AcceptInvitePage() {
           maxWidth={420}
           items="center"
           p="$6"
-          br="$6"
-          bw={1}
-          boc="$borderColor"
-          bg="$color2"
+          borderRadius="$6"
+          borderWidth={1}
+          borderColor="$borderColor"
+          backgroundColor="$color2"
         >
           {status === 'loading' && (
             <>
               <Spinner size="large" color="$color10" />
-              <H2 size="$7" ta="center">
+              <H2 size="$7" textAlign="center">
                 Checking invite status...
               </H2>
             </>
@@ -75,10 +75,10 @@ export default function AcceptInvitePage() {
 
           {status === 'active' && (
             <>
-              <H2 size="$7" ta="center">
+              <H2 size="$7" textAlign="center">
                 You already have access
               </H2>
-              <Paragraph ta="center" color="$color11">
+              <Paragraph textAlign="center" color="$color11">
                 Your GitHub account is already a member of the Tamagui team.
               </Paragraph>
               <Button
@@ -99,10 +99,10 @@ export default function AcceptInvitePage() {
 
           {status === 'pending' && (
             <>
-              <H2 size="$7" ta="center">
+              <H2 size="$7" textAlign="center">
                 Invited to Tamagui GitHub
               </H2>
-              <Paragraph ta="center" color="$color11">
+              <Paragraph textAlign="center" color="$color11">
                 The invite should be in your inbox now.
               </Paragraph>
               <Button
@@ -118,7 +118,7 @@ export default function AcceptInvitePage() {
               >
                 Click here to accept
               </Button>
-              <Paragraph size="$3" ta="center" color="$color9">
+              <Paragraph size="$3" textAlign="center" color="$color9">
                 If you don't see it, check your GitHub notifications or spam folder.
               </Paragraph>
             </>
@@ -126,13 +126,13 @@ export default function AcceptInvitePage() {
 
           {status === 'error' && (
             <>
-              <H2 size="$7" ta="center">
+              <H2 size="$7" textAlign="center">
                 Something went wrong
               </H2>
-              <Paragraph ta="center" color="$red10">
+              <Paragraph textAlign="center" color="$red10">
                 {error}
               </Paragraph>
-              <Paragraph size="$3" ta="center" color="$color9">
+              <Paragraph size="$3" textAlign="center" color="$color9">
                 Need help? <Link href="mailto:team@tamagui.dev">team@tamagui.dev</Link>
               </Paragraph>
             </>
