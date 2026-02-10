@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",
+    "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/core": "workspace:*",
     "@tamagui/metro-plugin": "workspace:*",
     "@tamagui/web": "workspace:*",

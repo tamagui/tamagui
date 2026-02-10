@@ -6,7 +6,7 @@ const monorepoRoot = path.resolve(projectRoot, '../..')
 
 const config = getDefaultConfig(projectRoot)
 
-// unstable_enablePackageExports defaults to true in Metro - no need to set it
+config.resolver.unstable_enablePackageExports = true
 
 config.watchFolders = [monorepoRoot]
 config.resolver.nodeModulesPaths = [
