@@ -69,7 +69,7 @@ function parseBackgroundImage(css: string, tokenMap?: TokenMap): any[] | undefin
   }
 
   const gradient: any = {
-    type: 'linearGradient',
+    type: 'linear-gradient',
     colorStops,
   }
   if (direction) {

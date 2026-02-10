@@ -374,7 +374,7 @@ describe('DynamicColorIOS preserved in object format', () => {
     // on native, backgroundImage should be parsed to object and renamed
     expect((result?.style as any)?.experimental_backgroundImage).toEqual([
       {
-        type: 'linearGradient',
+        type: 'linear-gradient',
         direction: 'to bottom',
         colorStops: [{ color: 'red' }, { color: 'blue' }],
       },

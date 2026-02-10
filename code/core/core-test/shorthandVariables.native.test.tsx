@@ -79,7 +79,7 @@ describe('shorthand variables - native', () => {
 
     expect((style as any)?.experimental_backgroundImage).toEqual([
       {
-        type: 'linearGradient',
+        type: 'linear-gradient',
         direction: 'to bottom',
         colorStops: [{ color: '#fff' }, { color: '#000' }],
       },
@@ -93,7 +93,7 @@ describe('shorthand variables - native', () => {
 
     expect((style as any)?.experimental_backgroundImage).toEqual([
       {
-        type: 'linearGradient',
+        type: 'linear-gradient',
         direction: '45deg',
         colorStops: [
           { color: '#000', positions: ['0%'] },
@@ -111,7 +111,7 @@ describe('shorthand variables - native', () => {
 
     expect((style as any)?.experimental_backgroundImage).toEqual([
       {
-        type: 'linearGradient',
+        type: 'linear-gradient',
         direction: 'to bottom',
         colorStops: [{ color: 'red' }, { color: 'blue' }],
       },
@@ -126,7 +126,7 @@ describe('shorthand variables - native', () => {
     // $nonexistent is not a valid direction, so parsed as color stop
     expect((style as any)?.experimental_backgroundImage).toEqual([
       {
-        type: 'linearGradient',
+        type: 'linear-gradient',
         colorStops: [{ color: '$nonexistent' }, { color: '#fff' }],
       },
     ])
