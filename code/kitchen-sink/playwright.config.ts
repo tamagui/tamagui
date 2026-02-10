@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test'
 import { ANIMATION_DRIVERS } from './tests/test-utils'
 
-const port = process.env.PORT || '9000'
+const port = '7979'
 
 // Support both single-driver mode (via env var) and multi-driver parallel mode
 const singleDriver = process.env.TAMAGUI_TEST_ANIMATION_DRIVER
@@ -25,6 +25,8 @@ export default defineConfig({
     baseURL: `http://localhost:${port}`,
     // Larger viewport to prevent popover positioning issues
     viewport: { width: 1920, height: 1080 },
+    // always run headless
+    headless: true,
   },
 
   projects: [
