@@ -1,6 +1,6 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
-import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { stripe } from '~/features/stripe/stripe'
 import type Stripe from 'stripe'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
@@ -18,10 +18,10 @@ export default apiRoute(async (req) => {
 })
 
 const getTeamSeats = async (req: Request) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
   // Get team subscription for the user
-  const { data: teamSubscription, error: subscriptionError } = await supabase
+  const { data: teamSubscription, error: subscriptionError } = await supabaseAdmin
     .from('team_subscriptions')
     .select(`
       *,
@@ -47,7 +47,7 @@ const getTeamSeats = async (req: Request) => {
   // Get member details for each team member
   const memberIds = activeMembers.map((member) => member.member_id)
 
-  const { data: memberDetails, error: memberError } = await supabase
+  const { data: memberDetails, error: memberError } = await supabaseAdmin
     .from('users')
     .select('id, full_name, avatar_url')
     .in('id', memberIds)
@@ -80,11 +80,26 @@ const getTeamSeats = async (req: Request) => {
 }
 
 const inviteTeamMember = async (req: Request) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
   const { user_id, team_subscription_id } = await req.json()
 
-  const { data: teamMember, error: teamMemberError } = await supabase
+  // verify user owns this team subscription
+  const { data: teamSub } = await supabaseAdmin
+    .from('team_subscriptions')
+    .select('id')
+    .eq('id', team_subscription_id)
+    .eq('owner_id', user.id)
+    .single()
+
+  if (!teamSub) {
+    return Response.json(
+      { error: 'Team subscription not found or access denied' },
+      { status: 403 }
+    )
+  }
+
+  const { data: teamMember, error: teamMemberError } = await supabaseAdmin
     .from('team_members')
     .insert({
       member_id: user_id,
@@ -105,11 +120,26 @@ const inviteTeamMember = async (req: Request) => {
 }
 
 const removeTeamMember = async (req: Request) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
   const { team_member_id, team_subscription_id } = await req.json()
 
-  const { data: teamMember, error: teamMemberError } = await supabase
+  // verify user owns this team subscription
+  const { data: teamSub } = await supabaseAdmin
+    .from('team_subscriptions')
+    .select('id')
+    .eq('id', team_subscription_id)
+    .eq('owner_id', user.id)
+    .single()
+
+  if (!teamSub) {
+    return Response.json(
+      { error: 'Team subscription not found or access denied' },
+      { status: 403 }
+    )
+  }
+
+  const { data: teamMember, error: teamMemberError } = await supabaseAdmin
     .from('team_members')
     .delete()
     .eq('member_id', team_member_id)

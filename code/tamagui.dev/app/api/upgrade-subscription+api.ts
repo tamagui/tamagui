@@ -1,31 +1,11 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import { stripe } from '~/features/stripe/stripe'
 
 // V2 support tier type
 type SupportTier = 'chat' | 'direct' | 'sponsor'
-
-// Helper function to get or create a Stripe customer
-const getOrCreateStripeCustomer = async (user: any) => {
-  const { data: customers } = await stripe.customers.list({
-    email: user.email,
-    limit: 1,
-  })
-
-  if (customers.length > 0) {
-    return customers[0].id
-  }
-
-  const newCustomer = await stripe.customers.create({
-    email: user.email,
-    metadata: {
-      supabaseUUID: user.id,
-    },
-  })
-
-  return newCustomer.id
-}
 
 // Get the price ID for a support tier
 const getSupportTierPriceId = (tier: SupportTier | number): string | null => {
@@ -62,7 +42,10 @@ export default apiRoute(async (req) => {
 
   try {
     const { user } = await ensureAuth({ req })
-    const stripeCustomerId = await getOrCreateStripeCustomer(user)
+    const stripeCustomerId = await createOrRetrieveCustomer({
+      email: user.email!,
+      uuid: user.id,
+    })
 
     // Build items array based on selected options
     const items: Array<{ price: string; quantity?: number }> = []

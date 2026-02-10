@@ -1,5 +1,6 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 export default apiRoute(async (req) => {
   if (req.method === 'GET') {
@@ -18,7 +19,7 @@ export default apiRoute(async (req) => {
  * Get team members for a project
  */
 const getProjectTeam = async (req: Request) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
   const url = new URL(req.url)
   const projectId = url.searchParams.get('project_id')
@@ -28,7 +29,7 @@ const getProjectTeam = async (req: Request) => {
   }
 
   // Verify user has access to this project (owner or member)
-  const { data: access, error: accessError } = await supabase
+  const { data: access, error: accessError } = await supabaseAdmin
     .from('projects')
     .select('id, user_id')
     .eq('id', projectId)
@@ -42,7 +43,7 @@ const getProjectTeam = async (req: Request) => {
 
   if (!isOwner) {
     // Check if user is a team member
-    const { data: membership } = await supabase
+    const { data: membership } = await supabaseAdmin
       .from('project_team_members')
       .select('id')
       .eq('project_id', projectId)
@@ -55,7 +56,7 @@ const getProjectTeam = async (req: Request) => {
   }
 
   // Get team members with user details
-  const { data: members, error: membersError } = await supabase
+  const { data: members, error: membersError } = await supabaseAdmin
     .from('project_team_members')
     .select(`
       id,
@@ -72,7 +73,7 @@ const getProjectTeam = async (req: Request) => {
 
   // Get user details for members
   const userIds = members?.map((m) => m.user_id) || []
-  const { data: users } = await supabase
+  const { data: users } = await supabaseAdmin
     .from('users')
     .select('id, full_name, avatar_url')
     .in('id', userIds)
@@ -92,7 +93,7 @@ const getProjectTeam = async (req: Request) => {
  * Add a team member to a project (owner only, unlimited in v2)
  */
 const addTeamMember = async (req: Request) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
   const { project_id, email } = await req.json()
 
@@ -101,7 +102,7 @@ const addTeamMember = async (req: Request) => {
   }
 
   // Verify ownership
-  const { data: project, error: projectError } = await supabase
+  const { data: project, error: projectError } = await supabaseAdmin
     .from('projects')
     .select('id, user_id')
     .eq('id', project_id)
@@ -113,7 +114,7 @@ const addTeamMember = async (req: Request) => {
   }
 
   // Find user by email
-  const { data: invitee, error: inviteeError } = await supabase
+  const { data: invitee, error: inviteeError } = await supabaseAdmin
     .from('users_private')
     .select('id')
     .eq('email', email)
@@ -129,7 +130,7 @@ const addTeamMember = async (req: Request) => {
   }
 
   // Check if already a member
-  const { data: existing } = await supabase
+  const { data: existing } = await supabaseAdmin
     .from('project_team_members')
     .select('id')
     .eq('project_id', project_id)
@@ -141,7 +142,7 @@ const addTeamMember = async (req: Request) => {
   }
 
   // Add team member (no seat limit in v2)
-  const { data: member, error: memberError } = await supabase
+  const { data: member, error: memberError } = await supabaseAdmin
     .from('project_team_members')
     .insert({
       project_id,
@@ -163,7 +164,7 @@ const addTeamMember = async (req: Request) => {
  * Remove a team member from a project (owner only)
  */
 const removeTeamMember = async (req: Request) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
   const { project_id, member_id } = await req.json()
 
@@ -175,7 +176,7 @@ const removeTeamMember = async (req: Request) => {
   }
 
   // Verify ownership
-  const { data: project, error: projectError } = await supabase
+  const { data: project, error: projectError } = await supabaseAdmin
     .from('projects')
     .select('id, user_id')
     .eq('id', project_id)
@@ -191,7 +192,7 @@ const removeTeamMember = async (req: Request) => {
     return Response.json({ error: 'Cannot remove project owner' }, { status: 400 })
   }
 
-  const { error: deleteError } = await supabase
+  const { error: deleteError } = await supabaseAdmin
     .from('project_team_members')
     .delete()
     .eq('project_id', project_id)

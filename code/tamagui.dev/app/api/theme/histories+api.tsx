@@ -1,15 +1,16 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 export default apiRoute(async (req) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
   const url = new URL(req.url)
   const searchQuery = url.searchParams.get('q')
   const userId = url.searchParams.get('uid')
   const id = url.searchParams.get('id')
 
   if (id) {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('theme_histories')
       .select('theme_data, search_query')
       .eq('id', id)
@@ -23,7 +24,7 @@ export default apiRoute(async (req) => {
 
   // Get specific theme
   if (searchQuery && userId) {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('theme_histories')
       .select('theme_data, search_query')
       .eq('user_id', userId)
@@ -37,7 +38,7 @@ export default apiRoute(async (req) => {
     return Response.json(data)
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('theme_histories')
     .select('theme_data, search_query, created_at, id')
     .eq('user_id', user.id)

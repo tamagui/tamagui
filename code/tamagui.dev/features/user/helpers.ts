@@ -1,9 +1,8 @@
-import type { SupabaseClient, User } from '@supabase/supabase-js'
+import type { User } from '@supabase/supabase-js'
 import {
   whitelistBentoUsernames,
   whitelistGithubUsernames,
 } from '~/features/github/helpers'
-import type { Database } from '~/features/supabase/types'
 import { getArray } from '~/helpers/getArray'
 import { getSingle } from '~/helpers/getSingle'
 import { ProductName, ProductSlug, SubscriptionStatus } from '~/shared/types/subscription'
@@ -13,11 +12,12 @@ import { tiersPriority } from '../stripe/tiers'
 import { ThemeSuiteSchema } from '../studio/theme/getTheme'
 import type { ThemeSuiteItemData } from '../studio/theme/types'
 
-export const getUserDetails = async (
-  supabase: SupabaseClient<Database>,
-  userId: string
-) => {
-  const result = await supabase.from('users').select('*').eq('id', userId).maybeSingle()
+export const getUserDetails = async (userId: string) => {
+  const result = await supabaseAdmin
+    .from('users')
+    .select('*')
+    .eq('id', userId)
+    .maybeSingle()
 
   if (result.error) {
     throw new Error(result.error.message)
@@ -40,8 +40,15 @@ export const getUserPrivateInfo = async (userId: string) => {
   return result.data?.[0] || {}
 }
 
-export const getUserTeams = async (supabase: SupabaseClient<Database>) => {
-  const result = await supabase.from('teams').select('*')
+export const getUserTeams = async (userId: string) => {
+  // replicate RLS: only return teams where user has a membership
+  const { data: memberships } = await supabaseAdmin
+    .from('memberships')
+    .select('team_id')
+    .eq('user_id', userId)
+  const teamIds = (memberships || []).map((m) => m.team_id)
+  if (teamIds.length === 0) return []
+  const result = await supabaseAdmin.from('teams').select('*').in('id', teamIds)
   if (result.error) throw new Error(result.error.message)
   return result.data
 }
@@ -120,10 +127,11 @@ export const getSubscriptions = async (uuid?: string) => {
   }))
 }
 
-export const getOwnedProducts = async (supabase: SupabaseClient<Database>) => {
-  const result = await supabase
+export const getOwnedProducts = async (userId: string) => {
+  const result = await supabaseAdmin
     .from('product_ownership')
     .select('*, prices(*, products(*))')
+    .eq('user_id', userId)
 
   if (result.error) {
     throw new Error(result.error.message)
@@ -260,10 +268,7 @@ async function checkBentoAccess(userId: string): Promise<boolean> {
   return hasLifetimeBento
 }
 
-export async function getUserAccessInfo(
-  supabase: SupabaseClient<Database>,
-  user: User | null
-) {
+export async function getUserAccessInfo(user: User | null) {
   if (!user) {
     return {
       hasPro: false,
@@ -272,18 +277,13 @@ export async function getUserAccessInfo(
     }
   }
 
-  const [proAccess, bentoAccess, teamsResult] = await Promise.all([
+  const [proAccess, bentoAccess, teams] = await Promise.all([
     hasProAccess(user.id),
     checkBentoAccess(user.id),
-    supabase.from('teams').select('id, name, is_active'),
+    getUserTeams(user.id),
   ])
 
-  if (teamsResult.error) {
-    throw teamsResult.error
-  }
-
-  const teams = getArray(teamsResult.data)
-  const teamsWithAccess = teams.filter(
+  const teamsWithAccess = (teams || []).filter(
     (team) =>
       team.is_active || whitelistGithubUsernames.some((name) => team.name === name)
   )
@@ -305,17 +305,13 @@ export async function getUserAccessInfo(
 /**
  * Retrieve the theme histories that the user has previously created
  *
- * @param supabase - Supabase client instance
  * @param user - Current user object
  */
-export async function getUserThemeHistories(
-  supabase: SupabaseClient<Database>,
-  user: User | null
-) {
+export async function getUserThemeHistories(user: User | null) {
   try {
     if (!user) return []
     // Get last few theme histories
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('theme_histories')
       .select('theme_data, search_query, created_at, id')
       .eq('user_id', user.id)
@@ -337,13 +333,9 @@ export async function getUserThemeHistories(
 
 /**
  * Get the team eligibility for a user
- * @param supabase - Supabase client instance
  * @param user - Current user object
  */
-export async function getTeamEligibility(
-  supabase: SupabaseClient<Database>,
-  user: User | null
-) {
+export async function getTeamEligibility(user: User | null) {
   if (!user) {
     return {
       isProMember: false,
@@ -352,7 +344,7 @@ export async function getTeamEligibility(
   }
 
   try {
-    const teamMembership = await getActiveTeamMembership(supabase, user.id)
+    const teamMembership = await getActiveTeamMembership(user.id)
     if (!teamMembership.isActive) {
       return {
         isProMember: false,
@@ -382,11 +374,8 @@ export async function getTeamEligibility(
 /**
  * Get active team membership for a user
  */
-async function getActiveTeamMembership(
-  supabase: SupabaseClient<Database>,
-  userId: string
-) {
-  const { data: teamMember, error } = await supabase
+async function getActiveTeamMembership(userId: string) {
+  const { data: teamMember, error } = await supabaseAdmin
     .from('team_members')
     .select(`
       team_subscription_id,

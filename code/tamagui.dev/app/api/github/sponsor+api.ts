@@ -1,49 +1,55 @@
+import crypto from 'crypto'
 import { apiRoute } from '~/features/api/apiRoute'
-import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
-
-console.info(`debug?`, `${process.env.GITHUB_SPONSOR_WEBHOOK_SECRET}`.slice(0, 4))
 
 export default apiRoute(async (req) => {
   if (!process.env.GITHUB_SPONSOR_WEBHOOK_SECRET) {
     throw new Error('GITHUB_SPONSOR_WEBHOOK_SECRET env var is not set')
   }
 
-  if (req.headers.get('x-hub-signature') !== process.env.GITHUB_SPONSOR_WEBHOOK_SECRET) {
-    return Response.json(
-      {
-        error: 'Invalid token.',
-      },
-      {
-        status: 401,
-      }
-    )
+  const signature = req.headers.get('x-hub-signature-256')
+  if (!signature) {
+    return Response.json({ error: 'Missing signature' }, { status: 401 })
   }
 
-  const body = await readBodyJSON(req)
+  const body = await req.text()
+  const hmac = crypto.createHmac('sha256', process.env.GITHUB_SPONSOR_WEBHOOK_SECRET!)
+  hmac.update(body)
+  const expectedSignature = `sha256=${hmac.digest('hex')}`
 
-  switch (body.action) {
+  const sigBuf = Buffer.from(signature)
+  const expectedBuf = Buffer.from(expectedSignature)
+  if (
+    sigBuf.length !== expectedBuf.length ||
+    !crypto.timingSafeEqual(sigBuf, expectedBuf)
+  ) {
+    return Response.json({ error: 'Invalid signature' }, { status: 401 })
+  }
+
+  const parsedBody = JSON.parse(body)
+
+  switch (parsedBody.action) {
     case 'cancelled':
       console.info(
-        `Received cancelled webhook event to cancel the sponsorship for ${body.sponsorship.node_id}`
+        `Received cancelled webhook event to cancel the sponsorship for ${parsedBody.sponsorship.node_id}`
       )
       await supabaseAdmin
         .from('teams')
         .update({
           is_active: false,
         })
-        .eq('github_id', body.sponsorship.node_id)
+        .eq('github_id', parsedBody.sponsorship.node_id)
       break
     case 'tier_changed':
       console.info(
-        `Received cancelled webhook event to change the sponsorship tier for ${body.sponsorship.node_id}. new tier: ${body.sponsorship.tier.node_id}`
+        `Received cancelled webhook event to change the sponsorship tier for ${parsedBody.sponsorship.node_id}. new tier: ${parsedBody.sponsorship.tier.node_id}`
       )
       await supabaseAdmin
         .from('teams')
         .update({
-          tier: body.sponsorship.tier.node_id,
+          tier: parsedBody.sponsorship.tier.node_id,
         })
-        .eq('github_id', body.sponsorship.node_id)
+        .eq('github_id', parsedBody.sponsorship.node_id)
       break
   }
 

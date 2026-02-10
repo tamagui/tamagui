@@ -14,15 +14,15 @@ import {
 } from '~/features/user/helpers'
 
 export default apiRoute(async (req) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
   const [userTeams, userDetails, subscriptions, accessInfo, themeHistories, userPrivate] =
     await Promise.all([
-      getUserTeams(supabase),
-      getUserDetails(supabase, user.id),
+      getUserTeams(user.id),
+      getUserDetails(user.id),
       getSubscriptions(user?.id),
-      getUserAccessInfo(supabase, user),
-      getUserThemeHistories(supabase, user),
+      getUserAccessInfo(user),
+      getUserThemeHistories(user),
       getUserPrivateInfo(user.id),
     ])
 

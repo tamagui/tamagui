@@ -6,6 +6,7 @@ import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import type { ThemeSuiteItemData } from '~/features/studio/theme/types'
 
 const models = {
@@ -58,10 +59,10 @@ function convertToThemeSuiteItemData(
 }
 
 export default apiRoute(async (req) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
   try {
-    const { hasPro } = await ensureAccess({ supabase, user })
+    const { hasPro } = await ensureAccess({ user })
 
     console.info(`[theme/generate] user=${user.email} hasPro=${hasPro}`)
 
@@ -103,7 +104,7 @@ export default apiRoute(async (req) => {
 
   // Handle delete action
   if (action === 'delete' && lastId) {
-    const { data: themeToDelete } = await supabase
+    const { data: themeToDelete } = await supabaseAdmin
       .from('theme_histories')
       .select()
       .eq('id', lastId)
@@ -120,7 +121,7 @@ export default apiRoute(async (req) => {
       )
     }
 
-    await supabase
+    await supabaseAdmin
       .from('theme_histories')
       .delete()
       .eq('id', lastId)
@@ -293,7 +294,7 @@ Don't add headers, backticks, or any labels around the structured data.
 
     // First check if a record already exists
     if (lastId) {
-      const { data: existingData } = await supabase
+      const { data: existingData } = await supabaseAdmin
         .from('theme_histories')
         .select()
         .eq('id', lastId)
@@ -302,7 +303,7 @@ Don't add headers, backticks, or any labels around the structured data.
 
       if (existingData) {
         // Update existing record
-        await supabase
+        await supabaseAdmin
           .from('theme_histories')
           .update({
             theme_data: themeData,
@@ -314,7 +315,7 @@ Don't add headers, backticks, or any labels around the structured data.
         nextId = existingData.id
       } else {
         // If we have a lastId but couldn't find the theme, create a new one
-        const { data, error } = await supabase
+        const { data, error } = await supabaseAdmin
           .from('theme_histories')
           .insert({
             user_id: user.id,
@@ -332,7 +333,7 @@ Don't add headers, backticks, or any labels around the structured data.
         nextId = data?.[0]?.id || ''
       }
     } else {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('theme_histories')
         .insert({
           user_id: user.id,

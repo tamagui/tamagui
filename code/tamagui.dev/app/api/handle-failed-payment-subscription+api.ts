@@ -22,6 +22,17 @@ export default apiRoute(async (req) => {
     // Retrieve the subscription to verify it belongs to the user
     const subscription = await stripe.subscriptions.retrieve(subscriptionId)
 
+    // verify user owns this subscription
+    const { data: subData } = await supabaseAdmin
+      .from('subscriptions')
+      .select('user_id')
+      .eq('id', subscriptionId)
+      .single()
+
+    if (!subData || subData.user_id !== user.id) {
+      return Response.json({ error: 'Subscription not found' }, { status: 404 })
+    }
+
     if (subscription.status === 'canceled') {
       return Response.json({ error: 'Subscription already canceled' }, { status: 400 })
     }

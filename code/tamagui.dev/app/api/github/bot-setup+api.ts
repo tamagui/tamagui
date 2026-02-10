@@ -6,7 +6,7 @@ import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 // is called after bot is installed
 export default apiRoute(async (req) => {
-  const { supabase } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
   const query = getQuery(req)
 
   let state: number
@@ -41,14 +41,24 @@ export default apiRoute(async (req) => {
     return Response.json({ message: 'installation not found' }, { status: 404 })
   }
 
-  // fetch by user's session to see if RLS lets them pass
-  const { error: subscriptionItemError } = await supabase
+  // verify user owns this subscription item via the subscription
+  const { data: subItemData } = await supabaseAdmin
     .from('subscription_items')
-    .select('id')
+    .select('id, subscription_id')
     .eq('id', installation.data?.subscription_item_id || '')
     .single()
 
-  if (subscriptionItemError) {
+  if (!subItemData) {
+    return Response.json({ message: 'subscription item not found' }, { status: 404 })
+  }
+
+  const { data: subData } = await supabaseAdmin
+    .from('subscriptions')
+    .select('user_id')
+    .eq('id', subItemData.subscription_id)
+    .single()
+
+  if (!subData || subData.user_id !== user.id) {
     return Response.json({ message: 'subscription item not found' }, { status: 404 })
   }
 

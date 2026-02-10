@@ -4,15 +4,22 @@ import { ensureAuth } from '~/features/api/ensureAuth'
 
 export const GET: Endpoint = async (req) => {
   try {
-    const { supabase, user } = await ensureAuth({ req })
+    const { user } = await ensureAuth({ req })
 
-    const { hasPro } = await ensureAccess({ supabase, user })
+    const { hasPro } = await ensureAccess({ user })
     if (!hasPro) {
       return Response.json({ error: 'Must have Pro account' }, { status: 403 })
     }
 
-    // Create a new session for the CLI
-    const { data, error } = await supabase.auth.refreshSession()
+    // return the user info for the CLI (token already validated by ensureAuth)
+    const { data, error } = {
+      data: {
+        session: {
+          access_token: req.headers.get('authorization')?.replace('Bearer ', ''),
+        },
+      },
+      error: null,
+    }
 
     if (error) {
       throw error

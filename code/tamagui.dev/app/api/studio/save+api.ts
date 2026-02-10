@@ -2,12 +2,13 @@ import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 export type StoreData = { themeSuites: Record<string, any> }
 
 export default apiRoute(async (req) => {
-  const { supabase, user } = await ensureAuth({ req })
-  const { hasPro, teamId } = await ensureAccess({ supabase, user })
+  const { user } = await ensureAuth({ req })
+  const { hasPro, teamId } = await ensureAccess({ user })
 
   if (!hasPro) {
     throw Response.json({ error: 'Must have Pro account' }, { status: 403 })
@@ -15,7 +16,7 @@ export default apiRoute(async (req) => {
 
   const body: StoreData = await readBodyJSON(req)
 
-  await supabase
+  await supabaseAdmin
     .from('studio_themes')
     .delete()
     .eq('user_id', user.id)
@@ -28,7 +29,7 @@ export default apiRoute(async (req) => {
   }
 
   for (const themeId in body.themeSuites) {
-    await supabase.from('studio_themes').insert({
+    await supabaseAdmin.from('studio_themes').insert({
       id: +`${Math.random()}`.replace('.', ''),
       theme_id: themeId,
       data: body.themeSuites[themeId],

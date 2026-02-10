@@ -1,10 +1,11 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 const handler = apiRoute(async (req) => {
-  const { supabase, user } = await ensureAuth({ req })
-  const { hasPro, teamId } = await ensureAccess({ supabase, user })
+  const { user } = await ensureAuth({ req })
+  const { hasPro, teamId } = await ensureAccess({ user })
 
   if (!hasPro) {
     throw Response.json({ error: 'Must have Pro account' }, { status: 403 })
@@ -15,7 +16,7 @@ const handler = apiRoute(async (req) => {
   }
   console.info(`Studio load ${teamId}`)
 
-  const results = await supabase
+  const results = await supabaseAdmin
     .from('studio_themes')
     .select('*')
     .eq('team_id', teamId)

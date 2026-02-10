@@ -6,9 +6,9 @@ import { readBodyJSON } from '~/features/api/readBodyJSON'
 import * as APIs from '~/features/studio/api'
 
 export default apiRoute(async (req) => {
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
 
-  const { hasPro } = await ensureAccess({ supabase, user })
+  const { hasPro } = await ensureAccess({ user })
   if (!hasPro) {
     return Response.json({ error: 'Must have Pro account' }, { status: 403 })
   }

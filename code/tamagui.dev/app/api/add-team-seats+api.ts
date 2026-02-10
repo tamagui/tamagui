@@ -33,6 +33,16 @@ export default apiRoute(async (req) => {
 
     // Get the subscription to check if it's a subscription or one-time payment
     const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+
+    // verify user owns this subscription via Stripe customer
+    if (
+      typeof subscription.customer === 'string'
+        ? subscription.customer !== stripeCustomerId
+        : subscription.customer.id !== stripeCustomerId
+    ) {
+      return Response.json({ error: 'Subscription not found' }, { status: 404 })
+    }
+
     const isSubscription = subscription.status === 'active'
 
     // Attach the payment method to the customer

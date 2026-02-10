@@ -1,5 +1,6 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 type GitHubUser = {
   id: number
@@ -13,7 +14,7 @@ export default apiRoute(async (req) => {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
   }
 
-  const { supabase, user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req })
   const url = new URL(req.url)
   const query = url.searchParams.get('q')
 
@@ -21,11 +22,13 @@ export default apiRoute(async (req) => {
     return Response.json({ error: 'Query parameter is required' }, { status: 400 })
   }
 
+  const sanitized = query.replace(/[%_\\*()]/g, '')
+
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('users')
       .select('*')
-      .or(`full_name.ilike.%${query}%, email.ilike.%${query}%`)
+      .or(`full_name.ilike.%${sanitized}%, email.ilike.%${sanitized}%`)
       .neq('id', user.id)
       .limit(5)
 
