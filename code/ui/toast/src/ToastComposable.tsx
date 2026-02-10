@@ -970,6 +970,11 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
     }, [dismissible, toast, ctx.removeToast])
 
+    const itemContextValue = React.useMemo<ToastItemContextValue>(
+      () => ({ toast, handleClose }),
+      [toast, handleClose]
+    )
+
     // stacking calculations
     const frontToastId = ctx.toasts[0]?.id
     const frontToastHeight = frontToastId != null ? (ctx.heights[frontToastId] ?? 55) : 55
@@ -1079,7 +1084,9 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
                 {...(isTop ? { top: '100%' } : { bottom: '100%' })}
               />
             )}
-            {children}
+            <ToastItemContext.Provider value={itemContextValue}>
+              {children}
+            </ToastItemContext.Provider>
           </ToastItemFrame>
         </DragWrapper>
       </ToastPositionWrapper>
