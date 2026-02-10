@@ -28,6 +28,8 @@ declare module 'one' {
         | `/(site)/draft`
         | `/(site)/login`
         | `/(site)/payment-finished`
+        | `/(site)/pop`
+        | `/(site)/pop/accept-invite`
         | `/(site)/privacy`
         | `/(site)/pro-license`
         | `/(site)/pro-policy`
@@ -50,6 +52,8 @@ declare module 'one' {
         | `/invoice`
         | `/login`
         | `/payment-finished`
+        | `/pop`
+        | `/pop/accept-invite`
         | `/privacy`
         | `/pro-license`
         | `/pro-policy`
