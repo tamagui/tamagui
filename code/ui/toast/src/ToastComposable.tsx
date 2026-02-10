@@ -970,6 +970,11 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
     }, [dismissible, toast, ctx.removeToast])
 
+    const itemContextValue = React.useMemo<ToastItemContextValue>(
+      () => ({ toast, handleClose }),
+      [toast, handleClose]
+    )
+
     // stacking calculations
     const frontToastId = ctx.toasts[0]?.id
     const frontToastHeight = frontToastId != null ? (ctx.heights[frontToastId] ?? 55) : 55
@@ -1016,73 +1021,75 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     }
 
     return (
-      <ToastPositionWrapper
-        ref={ref}
-        {...dataAttributes}
-        transition={isDragging || ctx.reducedMotion ? undefined : '200ms'}
-        animateOnly={['transform', 'opacity']}
-        y={stackY}
-        scale={stackScale}
-        opacity={computedOpacity}
-        zIndex={computedZIndex}
-        height={computedHeight}
-        overflow="visible"
-        pointerEvents={computedPointerEvents as any}
-        top={isTop ? 0 : undefined}
-        bottom={isTop ? undefined : 0}
-        {...(isWeb &&
-          !isFront && {
-            style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
-          })}
-        enterStyle={
-          ctx.reducedMotion
-            ? { opacity: 0 }
-            : { opacity: 0, y: isTop ? -10 : 10, scale: 0.95 }
-        }
-        exitStyle={
-          ctx.reducedMotion
-            ? { opacity: 0 }
-            : swipeOut
-              ? { opacity: 0, x: 0, y: 0, scale: 1 }
-              : { opacity: 0, y: stackY, scale: stackScale }
-        }
-      >
-        <DragWrapper
-          animatedStyle={animatedStyle}
-          gestureHandlers={gestureHandlers}
-          AnimatedView={AnimatedView}
-          dragRef={dragRef}
-        >
-          <ToastItemFrame
-            role="status"
-            aria-live="polite"
-            aria-atomic
-            tabIndex={0}
-            onLayout={handleLayout}
-            {...(isWeb && {
-              onKeyDown: (event: React.KeyboardEvent) => {
-                if (event.key === 'Escape' && dismissible) {
-                  handleClose()
-                }
-              },
+      <ToastItemContext.Provider value={itemContextValue}>
+        <ToastPositionWrapper
+          ref={ref}
+          {...dataAttributes}
+          transition={isDragging || ctx.reducedMotion ? undefined : '200ms'}
+          animateOnly={['transform', 'opacity']}
+          y={stackY}
+          scale={stackScale}
+          opacity={computedOpacity}
+          zIndex={computedZIndex}
+          height={computedHeight}
+          overflow="visible"
+          pointerEvents={computedPointerEvents as any}
+          top={isTop ? 0 : undefined}
+          bottom={isTop ? undefined : 0}
+          {...(isWeb &&
+            !isFront && {
+              style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
             })}
-            {...rest}
+          enterStyle={
+            ctx.reducedMotion
+              ? { opacity: 0 }
+              : { opacity: 0, y: isTop ? -10 : 10, scale: 0.95 }
+          }
+          exitStyle={
+            ctx.reducedMotion
+              ? { opacity: 0 }
+              : swipeOut
+                ? { opacity: 0, x: 0, y: 0, scale: 1 }
+                : { opacity: 0, y: stackY, scale: stackScale }
+          }
+        >
+          <DragWrapper
+            animatedStyle={animatedStyle}
+            gestureHandlers={gestureHandlers}
+            AnimatedView={AnimatedView}
+            dragRef={dragRef}
           >
-            {/* gap filler to prevent hover flicker */}
-            {ctx.expanded && gapFillerHeight > 0 && (
-              <View
-                position="absolute"
-                left={0}
-                right={0}
-                height={gapFillerHeight}
-                pointerEvents="auto"
-                {...(isTop ? { top: '100%' } : { bottom: '100%' })}
-              />
-            )}
-            {children}
-          </ToastItemFrame>
-        </DragWrapper>
-      </ToastPositionWrapper>
+            <ToastItemFrame
+              role="status"
+              aria-live="polite"
+              aria-atomic
+              tabIndex={0}
+              onLayout={handleLayout}
+              {...(isWeb && {
+                onKeyDown: (event: React.KeyboardEvent) => {
+                  if (event.key === 'Escape' && dismissible) {
+                    handleClose()
+                  }
+                },
+              })}
+              {...rest}
+            >
+              {/* gap filler to prevent hover flicker */}
+              {ctx.expanded && gapFillerHeight > 0 && (
+                <View
+                  position="absolute"
+                  left={0}
+                  right={0}
+                  height={gapFillerHeight}
+                  pointerEvents="auto"
+                  {...(isTop ? { top: '100%' } : { bottom: '100%' })}
+                />
+              )}
+              {children}
+            </ToastItemFrame>
+          </DragWrapper>
+        </ToastPositionWrapper>
+      </ToastItemContext.Provider>
     )
   }
 )
