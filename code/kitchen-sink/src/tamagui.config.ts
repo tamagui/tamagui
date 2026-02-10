@@ -24,6 +24,8 @@ export const animationsCSS = createAnimationsCSS({
   '400ms': '400ms ease-out',
   '500ms': '500ms ease-out',
   '1000ms': '1000ms ease-out',
+  // ultra-slow for testing animation smoothness
+  '5000ms': '5000ms linear',
   bouncy: 'ease-in 200ms',
   lazy: 'ease-in 600ms',
   slow: 'ease-in 500ms',
@@ -64,6 +66,10 @@ export const animationsMotion = createAnimationsMotion({
   },
   '1000ms': {
     duration: 1000,
+  },
+  // ultra-slow for testing animation smoothness
+  '5000ms': {
+    duration: 5000,
   },
   bouncy: {
     type: 'spring',
@@ -153,6 +159,11 @@ export const animationsNative = createAnimationsNative({
     type: 'timing',
     duration: 1000,
   },
+  // ultra-slow for testing animation smoothness
+  '5000ms': {
+    type: 'timing',
+    duration: 5000,
+  },
   bouncy: {
     type: 'spring',
     damping: 9,
@@ -240,6 +251,11 @@ export const animationsReanimated = createAnimationsReanimated({
   '1000ms': {
     type: 'timing',
     duration: 1000,
+  },
+  // ultra-slow for testing animation smoothness
+  '5000ms': {
+    type: 'timing',
+    duration: 5000,
   },
   bouncy: {
     type: 'spring',

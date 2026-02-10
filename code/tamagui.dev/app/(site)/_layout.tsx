@@ -1,4 +1,4 @@
-import { ToastViewport } from '@tamagui/toast'
+import { ToastViewport } from '@tamagui/toast/v1'
 import { lazy, Suspense } from 'react'
 import { LoadProgressBar, Slot, usePathname } from 'one'
 import { Theme, YStack } from 'tamagui'
