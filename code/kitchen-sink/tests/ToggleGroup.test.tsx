@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 test.describe('ToggleGroup', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:6666/?demo=ToggleGroup')
+    await page.goto('http://localhost:9000/?demo=ToggleGroup')
     await page.waitForLoadState('networkidle')
   })
 
