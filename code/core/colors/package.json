@@ -7,7 +7,9 @@
     "src",
     "types",
     "dist",
-    "legacy.cjs"
+    "*.cjs",
+    "*.js",
+    "*.native.js"
   ],
   "type": "module",
   "sideEffects": false,

@@ -14,11 +14,10 @@
     "types",
     "dist",
     "linear-gradient",
-    "native.cjs",
-    "native-test.cjs",
-    "native.d.ts",
-    "react-native-web.cjs",
-    "web.cjs"
+    "*.cjs",
+    "*.d.ts",
+    "*.js",
+    "*.native.js"
   ],
   "type": "module",
   "sideEffects": [

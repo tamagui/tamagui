@@ -17,12 +17,10 @@
     "dist",
     "src",
     "reset.css",
-    "native.cjs",
-    "native.d.ts",
-    "native-test.cjs",
-    "native-test.d.ts",
-    "inject-styles.cjs",
-    "reactNativeTypes.cjs"
+    "*.cjs",
+    "*.d.ts",
+    "*.js",
+    "*.native.js"
   ],
   "type": "module",
   "sideEffects": [

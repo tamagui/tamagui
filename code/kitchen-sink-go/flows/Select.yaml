@@ -1,0 +1,13 @@
+appId: dev.tamagui.kitchensinkgo
+tags:
+  - component
+---
+- runFlow: OpenApp.yaml
+- scrollUntilVisible:
+    element: 'Select'
+    centerElement: true
+- tapOn: 'Select'
+- assertVisible: 'Apple'
+# Test: select opens when tapped
+- tapOn: 'Apple'
+- assertVisible: 'Pear'

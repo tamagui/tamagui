@@ -7,8 +7,9 @@
     "src",
     "types",
     "dist",
-    "v4.cjs",
-    "v5.cjs"
+    "*.cjs",
+    "*.js",
+    "*.native.js"
   ],
   "type": "module",
   "sideEffects": false,

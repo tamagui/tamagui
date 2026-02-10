@@ -8,7 +8,9 @@
     "types",
     "dist",
     "controller",
-    "setup-gesture-handler.cjs"
+    "*.cjs",
+    "*.js",
+    "*.native.js"
   ],
   "type": "module",
   "sideEffects": [

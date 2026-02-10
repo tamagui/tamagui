@@ -1,18 +1,23 @@
 {
   "name": "@tamagui/kitchen-sink-go",
-  "version": "2.0.0-rc.8",
+  "version": "2.0.0-rc.10",
   "private": true,
   "main": "index.js",
   "scripts": {
     "start": "expo start --port 8082",
     "android": "expo run:android",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "test:native:maestro": "bun run ../packages/native-ci/src/cli.ts test maestro --project-root .",
+    "test": "./run-native-tests.sh"
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",
-    "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/demos": "workspace:*",
+    "@tamagui/kitchen-sink-shared": "workspace:*",
+    "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/metro-plugin": "workspace:*",
+    "@tamagui/toast": "workspace:*",
     "@tamagui/web": "workspace:*",
     "tamagui": "workspace:*",
     "expo": "^54.0.23",

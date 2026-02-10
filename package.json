@@ -10,6 +10,8 @@
     "./code/core/**/*",
     "./code/demos",
     "./code/kitchen-sink",
+    "./code/kitchen-sink-go",
+    "./code/kitchen-sink-shared",
     "./code/tests/**/*",
     "./code/sandbox",
     "./code/packages/**/*",

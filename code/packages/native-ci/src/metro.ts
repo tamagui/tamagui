@@ -96,6 +96,26 @@ export async function prewarmBundle(platform: Platform): Promise<void> {
 }
 
 /**
+ * Detect if the current project uses expo-dev-client by checking package.json.
+ */
+function projectUsesDevClient(): boolean {
+  try {
+    const pkg = JSON.parse(require('fs').readFileSync('package.json', 'utf-8'))
+    const deps = { ...pkg.dependencies, ...pkg.devDependencies }
+    // check for expo-dev-client dep, or --dev-client in the start script
+    if (deps['expo-dev-client']) return true
+    if (
+      typeof pkg.scripts?.start === 'string' &&
+      pkg.scripts.start.includes('--dev-client')
+    )
+      return true
+    return false
+  } catch {
+    return false
+  }
+}
+
+/**
  * Start Metro bundler as a background process.
  *
  * @returns MetroProcess with kill function for cleanup
@@ -105,7 +125,12 @@ export function startMetro(): MetroProcess {
 
   // Only clear cache in CI - locally we want fast startup using cached transforms
   const isCI = !!process.env.CI
-  const args = ['bun', 'expo', 'start', '--dev-client', '--offline']
+  const useDevClient = projectUsesDevClient()
+  const args = ['bun', 'expo', 'start', '--offline']
+  if (useDevClient) {
+    args.splice(3, 0, '--dev-client')
+    console.info('Dev client detected')
+  }
   if (isCI) {
     args.push('--clear')
     console.info('CI detected: clearing Metro cache')

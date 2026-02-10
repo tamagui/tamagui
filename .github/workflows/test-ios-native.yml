@@ -18,10 +18,14 @@ jobs:
     secrets: inherit
 
   test:
-    name: Run Maestro Tests
+    name: Run Maestro Tests (exports=${{ matrix.package-exports }})
     needs: build
     runs-on: macos-14
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        package-exports: [true, false]
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -100,7 +104,7 @@ jobs:
       - name: Start Metro Bundler
         if: env.SKIP_MAESTRO_TESTS != 'true'
         run: |
-          EXPO_NO_TELEMETRY=true bunx expo start --dev-client --offline &
+          EXPO_NO_TELEMETRY=true TAMAGUI_PACKAGE_EXPORTS=${{ matrix.package-exports }} bunx expo start --dev-client --offline &
           # Wait for Metro to be ready
           echo "Waiting for Metro to start..."
           for i in {1..30}; do
@@ -173,6 +177,6 @@ jobs:
         if: failure() && env.SKIP_MAESTRO_TESTS != 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: maestro-artifacts
+          name: maestro-artifacts-exports-${{ matrix.package-exports }}
           path: |
             ~/.maestro/tests/**/*

@@ -6,7 +6,8 @@ const monorepoRoot = path.resolve(projectRoot, '../..')
 
 const config = getDefaultConfig(projectRoot)
 
-config.resolver.unstable_enablePackageExports = true
+config.resolver.unstable_enablePackageExports =
+  process.env.TAMAGUI_PACKAGE_EXPORTS !== 'false'
 
 config.watchFolders = [monorepoRoot]
 config.resolver.nodeModulesPaths = [

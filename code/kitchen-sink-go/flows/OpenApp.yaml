@@ -1,0 +1,16 @@
+appId: dev.tamagui.kitchensinkgo
+tag:
+  - util
+---
+- launchApp:
+    clearState: true
+
+# Dismiss any system dialogs (Apple Account Verification, etc.)
+- tapOn:
+    text: 'Not Now'
+    optional: true
+
+# Wait for app to load (60s timeout for CI where bundle download can be slow)
+- extendedWaitUntil:
+    visible: 'Kitchen Sink'
+    timeout: 60000

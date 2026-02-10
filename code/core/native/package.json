@@ -6,14 +6,9 @@
     "src",
     "types",
     "dist",
-    "setup-burnt.cjs",
-    "setup-expo-linear-gradient.cjs",
-    "setup-gesture-handler.cjs",
-    "setup-keyboard-controller.cjs",
-    "setup-safe-area.cjs",
-    "setup-teleport.cjs",
-    "setup-worklets.cjs",
-    "setup-zeego.cjs"
+    "*.cjs",
+    "*.js",
+    "*.native.js"
   ],
   "type": "module",
   "sideEffects": [

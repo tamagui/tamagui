@@ -6,7 +6,9 @@
     "src",
     "types",
     "dist",
-    "icon.cjs"
+    "*.cjs",
+    "*.js",
+    "*.native.js"
   ],
   "type": "module",
   "main": "dist/cjs",

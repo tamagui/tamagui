@@ -1433,6 +1433,40 @@
         "webpack-dev-server": "^4.8.1",
       },
     },
+    "code/kitchen-sink-go": {
+      "name": "@tamagui/kitchen-sink-go",
+      "version": "2.0.0-rc.10",
+      "dependencies": {
+        "@tamagui/config": "workspace:*",
+        "@tamagui/core": "workspace:*",
+        "@tamagui/demos": "workspace:*",
+        "@tamagui/kitchen-sink-shared": "workspace:*",
+        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/metro-plugin": "workspace:*",
+        "@tamagui/toast": "workspace:*",
+        "@tamagui/web": "workspace:*",
+        "expo": "^54.0.23",
+        "expo-font": "~14.0.9",
+        "react": ">=19",
+        "react-native": "~0.81.5",
+        "tamagui": "workspace:*",
+      },
+    },
+    "code/kitchen-sink-shared": {
+      "name": "@tamagui/kitchen-sink-shared",
+      "version": "2.0.0-rc.10",
+      "dependencies": {
+        "@tamagui/config": "workspace:*",
+        "@tamagui/demos": "workspace:*",
+        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/toast": "workspace:*",
+        "tamagui": "workspace:*",
+      },
+      "peerDependencies": {
+        "react": ">=19",
+        "react-native": "*",
+      },
+    },
     "code/packages/babel-plugin-fully-specified": {
       "name": "@tamagui/babel-plugin-fully-specified",
       "version": "2.0.0-rc.10",
@@ -4980,6 +5014,10 @@
     "@tamagui/is-equal-shallow": ["@tamagui/is-equal-shallow@workspace:code/packages/is-equal-shallow"],
 
     "@tamagui/kitchen-sink": ["@tamagui/kitchen-sink@workspace:code/kitchen-sink"],
+
+    "@tamagui/kitchen-sink-go": ["@tamagui/kitchen-sink-go@workspace:code/kitchen-sink-go"],
+
+    "@tamagui/kitchen-sink-shared": ["@tamagui/kitchen-sink-shared@workspace:code/kitchen-sink-shared"],
 
     "@tamagui/label": ["@tamagui/label@workspace:code/ui/label"],
 

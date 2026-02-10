@@ -5,15 +5,9 @@
     "src",
     "types",
     "dist",
-    "reanimated.cjs",
-    "v3.cjs",
-    "v4.cjs",
-    "v5.cjs",
-    "v5-css.cjs",
-    "v5-motion.cjs",
-    "v5-reanimated.cjs",
-    "v5-rn.cjs",
-    "v5-subtle.cjs"
+    "*.cjs",
+    "*.js",
+    "*.native.js"
   ],
   "type": "module",
   "sideEffects": false,

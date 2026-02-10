@@ -6,11 +6,9 @@
     "src",
     "types",
     "dist",
-    "v3.cjs",
-    "v3-themes.cjs",
-    "v4.cjs",
-    "v5.cjs",
-    "v5-subtle.cjs"
+    "*.cjs",
+    "*.js",
+    "*.native.js"
   ],
   "type": "module",
   "sideEffects": false,

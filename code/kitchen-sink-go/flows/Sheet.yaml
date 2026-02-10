@@ -1,0 +1,12 @@
+appId: dev.tamagui.kitchensinkgo
+tags:
+  - component
+---
+- runFlow: OpenApp.yaml
+- scrollUntilVisible:
+    element: 'Sheet'
+    centerElement: true
+- tapOn: 'Sheet'
+- assertVisible: 'Open'
+# Test: sheet opens when button tapped
+- tapOn: 'Open'
