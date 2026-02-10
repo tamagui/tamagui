@@ -486,7 +486,7 @@ export const getTokenForKey = (
 
   const customTokenAccept = staticConfig?.accept?.[key]
   if (customTokenAccept) {
-    const val = themeValue ?? tokensParsed[customTokenAccept][value]
+    const val = themeValue ?? tokensParsed[customTokenAccept]?.[value]
     if (val != null) {
       resolveAs = 'value' // always resolve custom tokens as values
       valOrVar = val
