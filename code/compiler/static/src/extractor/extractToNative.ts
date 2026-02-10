@@ -22,9 +22,9 @@ const importStyleSheet = template(`
 const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 `)
 
-const importWithStyle = template(`
-const __withStableStyle = require('@tamagui/core')._withStableStyle;
-`)
+const importWithStyle = template.ast(
+  `import { _withStableStyle as __withStableStyle } from '@tamagui/core';`
+)
 
 const importReactUseMemo = template(`
 const __ReactUseMemo = require('react').useMemo;
@@ -306,7 +306,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   hasDynamicStyle
                 ) {
                   if (!hasImportedViewWrapper) {
-                    root.unshiftContainer('body', importWithStyle())
+                    root.unshiftContainer('body', importWithStyle)
                     root.unshiftContainer('body', importReactUseMemo())
                     hasImportedViewWrapper = true
                   }

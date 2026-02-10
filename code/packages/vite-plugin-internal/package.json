@@ -8,11 +8,7 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "react-native": {
-        "module": "./dist/esm/vite.config.native.js",
-        "import": "./dist/esm/vite.config.native.js",
-        "require": "./dist/cjs/vite.config.native.js"
-      },
+      "react-native": "./dist/esm/vite.config.native.js",
       "module": "./dist/esm/vite.config.mjs",
       "import": "./dist/esm/vite.config.mjs",
       "require": "./dist/cjs/vite.config.cjs",

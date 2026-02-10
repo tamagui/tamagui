@@ -24,11 +24,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "react-native": {
-        "module": "./dist/esm/index.native.js",
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
+      "react-native": "./dist/esm/index.native.js",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -36,11 +32,7 @@
     },
     "./legacy": {
       "types": "./types/legacy.d.ts",
-      "react-native": {
-        "module": "./dist/esm/legacy.native.js",
-        "import": "./dist/esm/legacy.native.js",
-        "require": "./dist/cjs/legacy.native.js"
-      },
+      "react-native": "./dist/esm/legacy.native.js",
       "module": "./dist/esm/legacy.mjs",
       "import": "./dist/esm/legacy.mjs",
       "require": "./dist/cjs/legacy.cjs",

@@ -15,11 +15,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "react-native": {
-        "module": "./dist/esm/index.native.js",
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
+      "react-native": "./dist/esm/index.native.js",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -27,11 +23,7 @@
     },
     "./icon": {
       "types": "./types/LogoIcon.d.ts",
-      "react-native": {
-        "module": "./dist/esm/LogoIcon.native.js",
-        "import": "./dist/esm/LogoIcon.native.js",
-        "require": "./dist/cjs/LogoIcon.native.js"
-      },
+      "react-native": "./dist/esm/LogoIcon.native.js",
       "module": "./dist/esm/LogoIcon.mjs",
       "import": "./dist/esm/LogoIcon.mjs",
       "require": "./dist/cjs/LogoIcon.cjs",

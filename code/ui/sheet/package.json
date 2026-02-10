@@ -27,11 +27,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "react-native": {
-        "module": "./dist/esm/index.native.js",
-        "import": "./dist/esm/index.native.js",
-        "require": "./dist/cjs/index.native.js"
-      },
+      "react-native": "./dist/esm/index.native.js",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -39,11 +35,7 @@
     },
     "./controller": {
       "types": "./types/controller.d.ts",
-      "react-native": {
-        "module": "./dist/esm/controller.native.js",
-        "import": "./dist/esm/controller.native.js",
-        "require": "./dist/cjs/controller.native.js"
-      },
+      "react-native": "./dist/esm/controller.native.js",
       "module": "./dist/esm/controller.mjs",
       "import": "./dist/esm/controller.mjs",
       "require": "./dist/cjs/controller.cjs",
@@ -51,12 +43,7 @@
     },
     "./setup-gesture-handler": {
       "types": "./types/setupGestureHandler.d.ts",
-      "react-native": {
-        "types": "./types/setupGestureHandler.d.ts",
-        "module": "./dist/esm/setupGestureHandler.native.js",
-        "import": "./dist/esm/setupGestureHandler.native.js",
-        "require": "./dist/cjs/setupGestureHandler.native.js"
-      },
+      "react-native": "./dist/esm/setupGestureHandler.native.js",
       "module": "./dist/esm/setupGestureHandler.mjs",
       "import": "./dist/esm/setupGestureHandler.mjs",
       "require": "./dist/cjs/setupGestureHandler.cjs"
