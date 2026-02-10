@@ -1,121 +1,128 @@
-import { Toast, useToastController, useToastState } from '@tamagui/toast'
-import React from 'react'
-import { Button, Label, Switch, XStack, YStack } from 'tamagui'
+import { Toast, toast, useToasts, type ToastPosition } from '@tamagui/toast'
+import {
+  ArrowDown,
+  ArrowDownLeft,
+  ArrowDownRight,
+  ArrowUp,
+  ArrowUpLeft,
+  ArrowUpRight,
+} from '@tamagui/lucide-icons'
+import { useRef, useState } from 'react'
+import { Button, XStack, YStack } from 'tamagui'
 
-/**
- *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add:
- *    - <ToastProvider> at the root
- *    - <ToastViewport /> where you want to show the toasts
- */
 export const ToastDemo = () => {
-  const [native, setNative] = React.useState(false)
+  const [position, setPosition] = useState<ToastPosition>('bottom-right')
+  const count = useRef(0)
+
+  const showToast = (newPosition: ToastPosition) => {
+    setPosition(newPosition)
+    count.current++
+    toast(`Toast #${count.current}`, {
+      description: 'Swipe to dismiss or wait for auto-close.',
+    })
+  }
 
   return (
-    <YStack gap="$4" items="center">
-      <ToastControl native={native} />
-      <CurrentToast />
+    <Toast position={position}>
+      <Toast.Viewport>
+        <ToastList />
+      </Toast.Viewport>
 
-      <NativeOptions native={native} setNative={setNative} />
-    </YStack>
-  )
-}
-
-const CurrentToast = () => {
-  const currentToast = useToastState()
-
-  if (!currentToast || currentToast.isHandledNatively) return null
-
-  return (
-    <Toast
-      key={currentToast.id}
-      duration={currentToast.duration}
-      viewportName={currentToast.viewportName}
-      enterStyle={{ opacity: 0, scale: 0.95, y: -80 }}
-      exitStyle={{ opacity: 0, scale: 0.95, y: -80 }}
-      opacity={1}
-      scale={1}
-      y={-50}
-      transition="quicker"
-      bg="$color2"
-      boxShadow="0px 2px 4px rgba(0,0,0,0.12), 0px 8px 24px rgba(0,0,0,0.08)"
-    >
-      <XStack gap="$5" items="center" justify="space-between">
-        <YStack gap="$0.5" flex={1}>
-          <Toast.Title>{currentToast.title}</Toast.Title>
-          {!!currentToast.message && (
-            <Toast.Description>{currentToast.message}</Toast.Description>
-          )}
-        </YStack>
-        <Toast.Action asChild altText="Dismiss toast">
-          <Button size="$2">Dismiss</Button>
-        </Toast.Action>
-      </XStack>
+      <YStack gap="$2" self="center">
+        <XStack gap="$2">
+          <PositionButton
+            position="top-left"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowUpLeft}
+          />
+          <PositionButton
+            position="top-center"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowUp}
+          />
+          <PositionButton
+            position="top-right"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowUpRight}
+          />
+        </XStack>
+        <XStack gap="$2">
+          <PositionButton
+            position="bottom-left"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowDownLeft}
+          />
+          <PositionButton
+            position="bottom-center"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowDown}
+          />
+          <PositionButton
+            position="bottom-right"
+            current={position}
+            onPress={showToast}
+            Icon={ArrowDownRight}
+          />
+        </XStack>
+      </YStack>
     </Toast>
   )
 }
 
-const ToastControl = ({ native }: { native: boolean }) => {
-  const toast = useToastController()
+function ToastList() {
+  const { toasts } = useToasts()
 
   return (
-    <XStack gap="$2" justify="center">
-      <Button
-        onPress={() => {
-          toast.show('Successfully saved!', {
-            message: "Don't worry, we've got your data.",
-            native,
-            demo: true,
-          })
-        }}
-      >
-        Show
-      </Button>
-      <Button
-        onPress={() => {
-          toast.hide()
-        }}
-      >
-        Hide
-      </Button>
-    </XStack>
+    <>
+      {toasts.map((t, index) => (
+        <Toast.Item key={t.id} toast={t} index={index}>
+          {({ handleClose }) => (
+            <XStack gap="$3" alignItems="flex-start">
+              <YStack flex={1} gap="$1">
+                <Toast.Title>
+                  {typeof t.title === 'function' ? t.title() : t.title}
+                </Toast.Title>
+                {t.description && (
+                  <Toast.Description>
+                    {typeof t.description === 'function'
+                      ? t.description()
+                      : t.description}
+                  </Toast.Description>
+                )}
+              </YStack>
+              <Toast.Close onPress={handleClose} />
+            </XStack>
+          )}
+        </Toast.Item>
+      ))}
+    </>
   )
 }
 
-const NativeOptions = ({
-  native,
-  setNative,
+function PositionButton({
+  position,
+  current,
+  onPress,
+  Icon,
 }: {
-  native: boolean
-  setNative: (native: boolean) => void
-}) => {
-  return (
-    <XStack gap="$3">
-      <Label size="$1" onPress={() => setNative(false)}>
-        Custom
-      </Label>
-      <Switch
-        theme="surface2"
-        id="native-toggle"
-        size="$1"
-        checked={!!native}
-        onCheckedChange={(val) => setNative(val)}
-      >
-        <Switch.Thumb
-          theme="accent"
-          transition={[
-            'quickest',
-            {
-              transform: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-        />
-      </Switch>
+  position: ToastPosition
+  current: ToastPosition
+  onPress: (p: ToastPosition) => void
+  Icon: any
+}) {
+  const isActive = position === current
 
-      <Label size="$1" onPress={() => setNative(true)}>
-        Native
-      </Label>
-    </XStack>
+  return (
+    <Button
+      icon={Icon}
+      circular
+      backgroundColor={isActive ? '$color8' : undefined}
+      onPress={() => onPress(position)}
+    />
   )
 }
