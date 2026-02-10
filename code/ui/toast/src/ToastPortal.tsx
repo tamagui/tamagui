@@ -1,6 +1,6 @@
+import { isWeb } from '@tamagui/constants'
 import { Portal } from '@tamagui/portal'
 import type { ReactNode } from 'react'
-import { Platform } from 'react-native'
 import { ReprogapateToastProvider, type ToastProviderContextValue } from './ToastProvider'
 
 export function ToastPortal(props: {
@@ -10,7 +10,7 @@ export function ToastPortal(props: {
 }) {
   const { context, children, zIndex } = props
   let content = children
-  if (Platform.OS === 'android' || Platform.OS === 'ios') {
+  if (!isWeb) {
     content = (
       <ReprogapateToastProvider context={context}>{children}</ReprogapateToastProvider>
     )
