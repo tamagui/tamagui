@@ -171,13 +171,7 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
         onCancelRef.current()
       },
     })
-  }, [
-    disabled,
-    direction,
-    threshold,
-    isHorizontal,
-    isVertical,
-  ])
+  }, [disabled, direction, threshold, isHorizontal, isVertical])
 
   return {
     isDragging,
