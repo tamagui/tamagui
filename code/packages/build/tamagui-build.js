@@ -38,6 +38,7 @@ const {
   printEsbuildError,
   printBuildError,
   printTypescriptCompilationError,
+  printOxcErrors,
 } = require('./pretty-print-errors')
 
 const jsOnly = !!process.env.JS_ONLY
@@ -443,12 +444,16 @@ async function buildTsc(allFiles) {
     if (config.options.isolatedDeclarations) {
       const oxc = require('oxc-transform')
 
-      await Promise.all(
+      const results = await Promise.all(
         allFiles.map(async (file) => {
           const source = await FSE.readFile(file, 'utf-8')
-          const { code, map } = oxc.isolatedDeclaration(file, source, {
+          const { code, map, errors } = await oxc.isolatedDeclaration(file, source, {
             sourcemap: true,
           })
+
+          if (errors && errors.length > 0) {
+            return errors
+          }
 
           const dtsPath = path
             .join(`types`, ...file.split('/').slice(1))
@@ -461,8 +466,19 @@ async function buildTsc(allFiles) {
             writeIfUnchanged(dtsPath, output),
             writeIfUnchanged(mapPath, JSON.stringify(map, null, 2)),
           ])
+
+          return []
         })
       )
+
+      const allErrors = results.flat()
+
+      if (allErrors.length > 0) {
+        printOxcErrors(allErrors)
+        if (!shouldWatch) {
+          process.exit(1)
+        }
+      }
 
       return
     }

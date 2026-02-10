@@ -28,7 +28,7 @@
     "fast-glob": "^3.2.11",
     "fs-extra": "^11.2.0",
     "lodash.debounce": "^4.0.8",
-    "oxc-transform": "^0.95.0",
+    "oxc-transform": "^0.112.0",
     "typescript": "~5.9.2"
   },
   "devDependencies": {

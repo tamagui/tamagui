@@ -125,9 +125,42 @@ function printTypescriptCompilationError(err, packageName) {
   console.error('')
 }
 
+/**
+ * Pretty print OXC isolated declaration errors
+ * @param {Array<{ severity: string, message: string, labels: Array<{ message: string | null, start: number, end: number }>, helpMessage: string | null, codeframe: string | null }>} errors
+ */
+function printOxcErrors(errors) {
+  console.error('\n❌ Type declaration generation errors:\n')
+
+  errors.forEach((error) => {
+    const severity = error.severity === 'Error' ? '❌' : '⚠️ '
+    console.error(`  ${severity} ${error.message}`)
+
+    if (error.labels && error.labels.length > 0) {
+      error.labels.forEach((label) => {
+        console.error(`     at ${label.start}-${label.end}`)
+        if (label.message) {
+          console.error(`       ${label.message}`)
+        }
+      })
+    }
+
+    if (error.helpMessage) {
+      console.error(`     help: ${error.helpMessage}`)
+    }
+
+    if (error.codeframe) {
+      console.error(`\n${error.codeframe}`)
+    }
+  })
+
+  console.error('')
+}
+
 module.exports = {
   printTypescriptDiagnostics,
   printEsbuildError,
   printBuildError,
   printTypescriptCompilationError,
+  printOxcErrors,
 }
