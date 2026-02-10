@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/dialog",
-  "version": "2.0.0-rc.9",
+  "version": "2.0.0-rc.10",
   "source": "src/index.ts",
   "files": [
     "src",

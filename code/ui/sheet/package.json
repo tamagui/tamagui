@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "2.0.0-rc.9",
+  "version": "2.0.0-rc.10",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
