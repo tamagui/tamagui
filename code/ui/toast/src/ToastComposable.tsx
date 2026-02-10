@@ -969,7 +969,13 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             ? 0.5
             : 1
     const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
-    const computedHeight = !ctx.expanded && !isFront ? frontToastHeight : undefined
+    // height: collapsed → frontToastHeight (uniform stack), expanded → own measured height
+    const ownMeasuredHeight = ctx.heights[toast.id]
+    const computedHeight = isFront
+      ? undefined
+      : ctx.expanded
+        ? (ownMeasuredHeight ?? frontToastHeight)
+        : frontToastHeight
     const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
 
     // gap filler for hover stability
@@ -1002,8 +1008,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         top={isTop ? 0 : undefined}
         bottom={isTop ? undefined : 0}
         {...(isWeb &&
-          !isFront &&
-          !ctx.expanded && {
+          !isFront && {
             style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
           })}
         enterStyle={

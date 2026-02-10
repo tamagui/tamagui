@@ -557,9 +557,14 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   // higher z-index = more in front
   // exiting toasts (removed=true) get lower z-index so entering toasts appear above them
   const computedZIndex = removed ? 0 : visibleToasts - index + 1
-  // in collapsed mode, set back toasts to front toast height (sonner pattern)
-  // this makes the stack work by having all toasts same height
-  const computedHeight = !expanded && !isFront ? frontToastHeight : undefined
+  // height: collapsed → frontToastHeight (uniform stack), expanded → own measured height
+  // (transitioning from pixel → undefined/auto is impossible in CSS, causing visual snaps)
+  const ownMeasuredHeight = heights[toast.id]
+  const computedHeight = isFront
+    ? undefined
+    : expanded
+      ? (ownMeasuredHeight ?? frontToastHeight)
+      : frontToastHeight
   // hidden toasts should not intercept pointer events (like Sonner)
   const computedPointerEvents = index >= visibleToasts ? 'none' : 'auto'
 
@@ -611,8 +616,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       // transform-origin: scale from bottom for bottom position, top for top position
       // this ensures the stack peek is visible in the correct direction
       {...(isWeb &&
-        !isFront &&
-        !expanded && {
+        !isFront && {
           style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
         })}
       // enter/exit styles for AnimatePresence
