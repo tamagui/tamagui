@@ -89,10 +89,10 @@ export const NextThemeProvider: React.FunctionComponent<ThemeProviderProps> = me
 
     const set = useEvent((newTheme) => {
       if (forcedTheme) {
-        handleChangeTheme(newTheme, true, false)
-      } else {
-        handleChangeTheme(newTheme)
+        // when forcedTheme is active, block all updates to avoid desync
+        return
       }
+      handleChangeTheme(newTheme)
       setThemeState(newTheme)
     })
 
