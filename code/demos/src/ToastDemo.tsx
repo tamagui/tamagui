@@ -67,6 +67,7 @@ export const ToastDemo = () => {
             current={position}
             onPress={showToast}
             Icon={ArrowDownRight}
+            testID="toast-show-button"
           />
         </XStack>
       </YStack>
@@ -80,7 +81,7 @@ const ToastList = () => {
   return (
     <>
       {toasts.map((t, index) => (
-        <Toast.Item key={t.id} toast={t} index={index}>
+        <Toast.Item key={t.id} toast={t} index={index} testID="toast-item">
           <XStack gap="$3" alignItems="flex-start">
             <YStack flex={1} gap="$1">
               <Toast.Title>
@@ -88,13 +89,11 @@ const ToastList = () => {
               </Toast.Title>
               {t.description && (
                 <Toast.Description>
-                  {typeof t.description === 'function'
-                    ? t.description()
-                    : t.description}
+                  {typeof t.description === 'function' ? t.description() : t.description}
                 </Toast.Description>
               )}
             </YStack>
-            <Toast.Close />
+            <Toast.Close testID="toast-close-button" />
           </XStack>
         </Toast.Item>
       ))}
@@ -107,11 +106,13 @@ const PositionButton = ({
   current,
   onPress,
   Icon,
+  testID,
 }: {
   position: ToastPosition
   current: ToastPosition
   onPress: (p: ToastPosition) => void
   Icon: any
+  testID?: string
 }) => {
   const isActive = position === current
 
@@ -121,6 +122,7 @@ const PositionButton = ({
       circular
       backgroundColor={isActive ? '$color8' : undefined}
       onPress={() => onPress(position)}
+      testID={testID}
     />
   )
 }
