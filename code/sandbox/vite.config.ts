@@ -21,11 +21,12 @@ export default {
 
   plugins: [
     one({
-      react: {
-        // not working
-        // scan: true,
+      config: {
+        tsConfigPaths: {
+          root: import.meta.dirname,
+          projectDiscovery: 'eager',
+        },
       },
-
       //  native: {
       //   bundler: 'metro',
       //   bundlerOptions: {
