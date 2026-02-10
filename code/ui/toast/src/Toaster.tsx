@@ -247,9 +247,21 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     const [toasts, setToasts] = React.useState<ToastT[]>([])
     const [heights, setHeights] = React.useState<HeightsMap>({})
 
+    // Lock height updates during expand/collapse CSS transition to prevent
+    // font-loading onLayout corrections from restarting the animation mid-flight.
+    const heightsLockedRef = React.useRef(false)
+
+    // Round + skip small changes to prevent cascading re-renders from
+    // sub-pixel onLayout jitter during font loading or CSS transitions
     const setToastHeight = React.useCallback(
       (toastId: string | number, height: number) => {
-        setHeights((prev) => ({ ...prev, [toastId]: height }))
+        if (heightsLockedRef.current) return
+        const rounded = Math.round(height)
+        setHeights((prev) => {
+          const existing = prev[toastId]
+          if (existing != null && Math.abs(existing - rounded) <= 2) return prev
+          return { ...prev, [toastId]: rounded }
+        })
       },
       []
     )
@@ -265,6 +277,20 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     const [localExpanded, setExpanded] = React.useState(false)
     const expanded = expand || localExpanded
     const [interacting, setInteracting] = React.useState(false)
+
+    // useLayoutEffect fires before paint, so the lock is set before any onLayout callbacks
+    const prevExpandedRef = React.useRef(expanded)
+
+    React.useLayoutEffect(() => {
+      if (prevExpandedRef.current !== expanded) {
+        heightsLockedRef.current = true
+        prevExpandedRef.current = expanded
+      }
+      const timer = setTimeout(() => {
+        heightsLockedRef.current = false
+      }, 350)
+      return () => clearTimeout(timer)
+    }, [expanded])
 
     const listRef = React.useRef<TamaguiElement>(null)
     const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)

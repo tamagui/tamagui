@@ -229,10 +229,35 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
     const expanded = expand || localExpanded
     const [interacting, setInteracting] = React.useState(false)
 
+    // Lock height updates during expand/collapse CSS transition to prevent
+    // font-loading onLayout corrections from restarting the animation mid-flight.
+    // useLayoutEffect fires before paint, so the lock is set before any onLayout callbacks.
+    const heightsLockedRef = React.useRef(false)
+    const prevExpandedRef = React.useRef(expanded)
+
+    React.useLayoutEffect(() => {
+      if (prevExpandedRef.current !== expanded) {
+        heightsLockedRef.current = true
+        prevExpandedRef.current = expanded
+      }
+      const timer = setTimeout(() => {
+        heightsLockedRef.current = false
+      }, 350)
+      return () => clearTimeout(timer)
+    }, [expanded])
+
     // Helper to set a single toast's height
+    // Round + skip small changes to prevent cascading re-renders from
+    // sub-pixel onLayout jitter during font loading or CSS transitions
     const setToastHeight = React.useCallback(
       (toastId: string | number, height: number) => {
-        setHeights((prev) => ({ ...prev, [toastId]: height }))
+        if (heightsLockedRef.current) return
+        const rounded = Math.round(height)
+        setHeights((prev) => {
+          const existing = prev[toastId]
+          if (existing != null && Math.abs(existing - rounded) <= 2) return prev
+          return { ...prev, [toastId]: rounded }
+        })
       },
       []
     )
@@ -920,12 +945,15 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     })
 
     // measure height
+    // Skip when collapsed and not front — onLayout reports scaled dimensions
+    // (e.g. 51 * 0.9 = 45.9) that would corrupt height tracking
     const handleLayout = React.useCallback(
       (event: any) => {
+        if (!ctx.expanded && index !== 0) return
         const { height } = event.nativeEvent.layout
         ctx.setToastHeight(toast.id, height)
       },
-      [toast.id, ctx.setToastHeight]
+      [toast.id, ctx.setToastHeight, index, ctx.expanded]
     )
 
     // Remove height on unmount
@@ -969,13 +997,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             ? 0.5
             : 1
     const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
-    // height: collapsed → frontToastHeight (uniform stack), expanded → own measured height
-    const ownMeasuredHeight = ctx.heights[toast.id]
-    const computedHeight = isFront
-      ? undefined
-      : ctx.expanded
-        ? (ownMeasuredHeight ?? frontToastHeight)
-        : frontToastHeight
+    const computedHeight = !ctx.expanded && !isFront ? frontToastHeight : undefined
     const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
 
     // gap filler for hover stability
@@ -998,6 +1020,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         ref={ref}
         {...dataAttributes}
         transition={isDragging || ctx.reducedMotion ? undefined : '200ms'}
+        animateOnly={['transform', 'opacity']}
         y={stackY}
         scale={stackScale}
         opacity={computedOpacity}

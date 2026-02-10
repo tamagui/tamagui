@@ -473,12 +473,15 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   })
 
   // measure height
+  // Skip when collapsed and not front — onLayout reports scaled dimensions
+  // (e.g. 51 * 0.9 = 45.9) that would corrupt height tracking
   const handleLayout = React.useCallback(
     (event: LayoutChangeEvent) => {
+      if (!expanded && index !== 0) return
       const { height } = event.nativeEvent.layout
       setToastHeight(toast.id, height)
     },
-    [toast.id, setToastHeight]
+    [toast.id, setToastHeight, index, expanded]
   )
 
   // cleanup height on unmount
@@ -557,14 +560,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   // higher z-index = more in front
   // exiting toasts (removed=true) get lower z-index so entering toasts appear above them
   const computedZIndex = removed ? 0 : visibleToasts - index + 1
-  // height: collapsed → frontToastHeight (uniform stack), expanded → own measured height
-  // (transitioning from pixel → undefined/auto is impossible in CSS, causing visual snaps)
-  const ownMeasuredHeight = heights[toast.id]
-  const computedHeight = isFront
-    ? undefined
-    : expanded
-      ? (ownMeasuredHeight ?? frontToastHeight)
-      : frontToastHeight
+  const computedHeight = !expanded && !isFront ? frontToastHeight : undefined
   // hidden toasts should not intercept pointer events (like Sonner)
   const computedPointerEvents = index >= visibleToasts ? 'none' : 'auto'
 
@@ -602,6 +598,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       // disable during drag so stacking doesn't interfere with drag gesture
       // also disable for reduced motion preference
       transition={isDragging || reducedMotion ? undefined : '200ms'}
+      animateOnly={['transform', 'opacity']}
       // stacking animation props (NOT drag - drag is handled by inner DragWrapper)
       y={computedY}
       scale={computedScale}
