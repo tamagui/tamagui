@@ -41,6 +41,9 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
 }, import("@tamagui/web").StackStyleBase & {
     readonly placeholderTextColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
     readonly selectionColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
+    readonly cursorColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
+    readonly selectionHandleColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
+    readonly underlineColorAndroid?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
 }, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -50,6 +53,9 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
     readonly accept: {
         readonly placeholderTextColor: "color";
         readonly selectionColor: "color";
+        readonly cursorColor: "color";
+        readonly selectionHandleColor: "color";
+        readonly underlineColorAndroid: "color";
     };
     readonly validStyles: {
         [key: string]: boolean;
