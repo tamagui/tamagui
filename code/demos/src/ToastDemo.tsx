@@ -74,37 +74,35 @@ export const ToastDemo = () => {
   )
 }
 
-function ToastList() {
+const ToastList = () => {
   const { toasts } = useToasts()
 
   return (
     <>
       {toasts.map((t, index) => (
         <Toast.Item key={t.id} toast={t} index={index}>
-          {({ handleClose }) => (
-            <XStack gap="$3" alignItems="flex-start">
-              <YStack flex={1} gap="$1">
-                <Toast.Title>
-                  {typeof t.title === 'function' ? t.title() : t.title}
-                </Toast.Title>
-                {t.description && (
-                  <Toast.Description>
-                    {typeof t.description === 'function'
-                      ? t.description()
-                      : t.description}
-                  </Toast.Description>
-                )}
-              </YStack>
-              <Toast.Close onPress={handleClose} />
-            </XStack>
-          )}
+          <XStack gap="$3" alignItems="flex-start">
+            <YStack flex={1} gap="$1">
+              <Toast.Title>
+                {typeof t.title === 'function' ? t.title() : t.title}
+              </Toast.Title>
+              {t.description && (
+                <Toast.Description>
+                  {typeof t.description === 'function'
+                    ? t.description()
+                    : t.description}
+                </Toast.Description>
+              )}
+            </YStack>
+            <Toast.Close />
+          </XStack>
         </Toast.Item>
       ))}
     </>
   )
 }
 
-function PositionButton({
+const PositionButton = ({
   position,
   current,
   onPress,
@@ -114,7 +112,7 @@ function PositionButton({
   current: ToastPosition
   onPress: (p: ToastPosition) => void
   Icon: any
-}) {
+}) => {
   const isActive = position === current
 
   return (
