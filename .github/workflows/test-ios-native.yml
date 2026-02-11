@@ -21,7 +21,7 @@ jobs:
     name: Run Maestro Tests
     needs: build
     runs-on: macos-14
-    timeout-minutes: 30
+    timeout-minutes: 45
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
