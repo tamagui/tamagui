@@ -57,4 +57,14 @@ test.describe('compoundVariants', () => {
     // should have opacity from disabled variant
     await expect(el).toHaveCSS('opacity', '0.5')
   })
+
+  test('user hover overrides compound hover', async ({ page }) => {
+    const el = page.getByTestId('user-hover-override')
+    await expect(el).toBeVisible()
+    // Base state should have purple border from compound
+    await expect(el).toHaveCSS('border-color', 'rgb(128, 0, 128)')
+    // On hover, user's blue should win over compound's orange
+    await el.hover()
+    await expect(el).toHaveCSS('border-color', 'rgb(0, 0, 255)')
+  })
 })

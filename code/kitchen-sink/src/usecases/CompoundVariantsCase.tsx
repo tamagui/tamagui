@@ -67,6 +67,10 @@ const Box = styled(View, {
       size: 'small',
       styles: {
         borderColor: 'purple',
+        // test nested pseudo - compound hover should lose to user hover
+        hoverStyle: {
+          borderColor: 'orange',
+        },
       },
     },
   ],
@@ -118,10 +122,7 @@ export function CompoundVariantsCase() {
         <Box data-testid="outline-small" variant="outline" size="small" />
       </TestRow>
 
-      <TestRow
-        label="outline + large (compound match)"
-        expected="border: 4px green"
-      >
+      <TestRow label="outline + large (compound match)" expected="border: 4px green">
         <Box data-testid="outline-large" variant="outline" size="large" />
       </TestRow>
 
@@ -151,6 +152,18 @@ export function CompoundVariantsCase() {
         expected="border: 1px purple + opacity: 0.5 (outline+small matches, disabled+outline has no compound)"
       >
         <Box data-testid="disabled-outline" variant="outline" size="small" disabled />
+      </TestRow>
+
+      <TestRow
+        label="user hover overrides compound hover"
+        expected="border: 1px purple, hover -> blue (user hover beats compound hover)"
+      >
+        <Box
+          data-testid="user-hover-override"
+          variant="outline"
+          size="small"
+          hoverStyle={{ borderColor: 'blue' }}
+        />
       </TestRow>
     </View>
   )

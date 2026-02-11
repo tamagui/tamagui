@@ -1055,11 +1055,112 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
       if (matches) {
-        for (const key in styles) {
-          const resolved = conf.shorthands[key] || key
-          propMapper(resolved, styles[key], styleState, false, (skey, sval) => {
-            mergeStyle(styleState, skey, sval, 2)
-          })
+        // Process compound styles - handle pseudos/media same as main prop loop
+        for (let key in styles) {
+          const val = styles[key]
+          key = conf.shorthands[key] || key
+
+          const isPseudo = key in validPseudoKeys
+          const isMedia = isPseudo ? false : getMediaKey(key)
+
+          if (isPseudo) {
+            if (!val) continue
+            const pseudoStyleObject = getSubStyle(
+              styleState,
+              key,
+              val,
+              styleProps.noClass
+            )
+
+            // Store for static extraction
+            if (!shouldDoClasses || process.env.IS_STATIC === 'is_static') {
+              pseudos ||= {}
+              pseudos[key] ||= {}
+              if (process.env.IS_STATIC === 'is_static') {
+                Object.assign(pseudos[key], pseudoStyleObject)
+                continue
+              }
+            }
+
+            const descriptor = pseudoDescriptors[key as keyof typeof pseudoDescriptors]
+            if (!descriptor) continue
+
+            // Generate CSS classes
+            if (shouldDoClasses) {
+              const pseudoStyles = getStyleAtomic(pseudoStyleObject, descriptor)
+              for (const psuedoStyle of pseudoStyles) {
+                const fullKey = `${psuedoStyle[StyleObjectProperty]}${PROP_SPLIT}${descriptor.name}`
+                // Don't overwrite user-provided pseudo classes - they should win
+                if (!classNames[fullKey]) {
+                  addStyleToInsertRules(rulesToInsert, psuedoStyle)
+                  classNames[fullKey] = psuedoStyle[StyleObjectIdentifier]
+                }
+              }
+            }
+
+            // Runtime: merge based on state with compound importance (1.5)
+            if (!shouldDoClasses) {
+              const importance = 1.5
+              const descriptorKey = descriptor.stateKey || descriptor.name
+              const isDisabled = componentState[descriptorKey] === false
+
+              if (!isDisabled) {
+                for (const pkey in pseudoStyleObject) {
+                  const pval = pseudoStyleObject[pkey]
+                  const curImportance = styleState.usedKeys[pkey] || 0
+                  if (importance >= curImportance) {
+                    mergeStyle(styleState, pkey, pval, importance)
+                  }
+                }
+              }
+            }
+          } else if (isMedia) {
+            if (!val) continue
+            const mediaKeyShort = key.slice(isMedia === 'theme' ? 7 : 1)
+            const isSizeMedia = isMedia !== 'platform' && isMedia !== 'theme'
+
+            // Generate CSS classes
+            if (shouldDoClasses) {
+              const mediaStyle = getSubStyle(styleState, key, val, false)
+              const mediaStyles = getCSSStylesAtomic(mediaStyle)
+
+              for (const style of mediaStyles) {
+                const out = createMediaStyle(
+                  style,
+                  mediaKeyShort,
+                  mediaQueryConfig,
+                  isMedia,
+                  false,
+                  0 // priority - doesn't matter for compounds
+                )
+                const fullKey = `${style[StyleObjectProperty]}${PROP_SPLIT}${mediaKeyShort}`
+                // Don't overwrite user-provided media classes - they should win
+                if (!classNames[fullKey]) {
+                  addStyleToInsertRules(rulesToInsert, out as any)
+                  classNames[fullKey] = out[StyleObjectIdentifier]
+                }
+              }
+            } else {
+              // Runtime: check if media is active and merge with compound importance
+              const isActive = mediaState[mediaKeyShort]
+              if (isActive) {
+                const mediaStyle = getSubStyle(styleState, key, val, true)
+                const importance = 1.5
+
+                for (const subKey in mediaStyle) {
+                  const curImportance = styleState.usedKeys[subKey] || 0
+                  if (importance >= curImportance) {
+                    mergeStyle(styleState, subKey, mediaStyle[subKey], importance)
+                  }
+                }
+              }
+            }
+          } else {
+            // Regular style property
+            propMapper(key, val, styleState, false, (skey, sval) => {
+              mergeStyle(styleState, skey, sval, 1.5)
+            })
+          }
         }
       }
     }

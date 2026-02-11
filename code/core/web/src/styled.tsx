@@ -235,7 +235,10 @@ function styled<
     name?: string
     variants?: Variants | undefined
     defaultVariants?: GetVariantAcceptedValues<Variants>
-    compoundVariants?: CompoundVariant<Variants, Partial<InferStyledProps<ParentComponent, StyledConfig>>>[]
+    compoundVariants?: CompoundVariant<
+      Variants,
+      Partial<InferStyledProps<ParentComponent, StyledConfig>>
+    >[]
     context?: StyledContext
     render?: string | React.ReactElement
   },
