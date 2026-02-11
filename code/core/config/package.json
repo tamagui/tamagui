@@ -6,8 +6,15 @@
     "types",
     "dist",
     "*.cjs",
-    "*.js",
-    "*.native.js"
+    "reanimated",
+    "v3",
+    "v4",
+    "v5",
+    "v5-css",
+    "v5-rn",
+    "v5-reanimated",
+    "v5-motion",
+    "v5-subtle"
   ],
   "type": "module",
   "sideEffects": false,

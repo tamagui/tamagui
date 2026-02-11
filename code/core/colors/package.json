@@ -8,8 +8,7 @@
     "types",
     "dist",
     "*.cjs",
-    "*.js",
-    "*.native.js"
+    "legacy"
   ],
   "type": "module",
   "sideEffects": false,

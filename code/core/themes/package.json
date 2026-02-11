@@ -7,8 +7,11 @@
     "types",
     "dist",
     "*.cjs",
-    "*.js",
-    "*.native.js"
+    "v3",
+    "v3-themes",
+    "v4",
+    "v5",
+    "v5-subtle"
   ],
   "type": "module",
   "sideEffects": false,
