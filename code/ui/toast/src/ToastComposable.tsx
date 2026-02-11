@@ -981,7 +981,6 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     const stackScale = !ctx.expanded && !isFront ? 1 - index * 0.05 : 1
 
     const expandedOffset = toastsHeightBefore + index * ctx.gap
-    const peekVisible = 10
 
     const stackY = ctx.expanded
       ? isTop
@@ -990,8 +989,8 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       : isFront
         ? 0
         : isTop
-          ? peekVisible * index
-          : -peekVisible * index
+          ? ctx.gap * index
+          : -ctx.gap * index
 
     const computedOpacity =
       removed && !swipeOut
@@ -1026,8 +1025,8 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         testID={rest.testID}
         accessibilityLabel={rest.accessibilityLabel}
         {...dataAttributes}
-        transition={isDragging || ctx.reducedMotion ? undefined : '200ms'}
-        animateOnly={['transform', 'opacity']}
+        transition={isDragging || ctx.reducedMotion ? undefined : '400ms'}
+        animateOnly={['transform', 'opacity', 'height']}
         y={stackY}
         scale={stackScale}
         opacity={computedOpacity}
@@ -1044,7 +1043,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         enterStyle={
           ctx.reducedMotion
             ? { opacity: 0 }
-            : { opacity: 0, y: isTop ? -10 : 10, scale: 0.95 }
+            : { opacity: 0, y: isTop ? -80 : 80, scale: 0.95 }
         }
         exitStyle={
           ctx.reducedMotion
