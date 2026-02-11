@@ -108,6 +108,11 @@ export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> 
      * @default true
      */
     portalToRoot?: boolean;
+    /**
+     * z-index for the portal container when portalToRoot is true
+     * @default Number.MAX_SAFE_INTEGER
+     */
+    portalZIndex?: number;
 }
 export interface ToastItemRenderProps {
     toast: ToastT;

@@ -416,6 +416,11 @@ export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> 
    * @default true
    */
   portalToRoot?: boolean
+  /**
+   * z-index for the portal container when portalToRoot is true
+   * @default Number.MAX_SAFE_INTEGER
+   */
+  portalZIndex?: number
 }
 
 const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
@@ -425,6 +430,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
       hotkey = DEFAULT_HOTKEY,
       label = 'Notifications',
       portalToRoot = true,
+      portalZIndex = Number.MAX_SAFE_INTEGER,
       children,
       ...rest
     } = props
@@ -557,7 +563,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
     )
 
     if (portalToRoot && isWeb) {
-      return <Portal zIndex={100000}>{content}</Portal>
+      return <Portal zIndex={portalZIndex}>{content}</Portal>
     }
 
     return content
