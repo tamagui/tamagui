@@ -721,7 +721,7 @@ const ToastPositionWrapper = styled(YStack, {
 const ToastItemFrame = styled(YStack, {
   name: 'ToastItem',
   userSelect: 'none',
-  cursor: 'grab',
+  cursor: 'default',
   focusable: true,
 
   variants: {
@@ -780,7 +780,7 @@ function DragWrapper({
           userSelect: 'none',
           WebkitUserSelect: 'none',
           touchAction: 'none',
-          cursor: 'grab',
+          cursor: 'default',
         }}
         {...gestureHandlers}
       >
@@ -875,6 +875,8 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     })
 
     const resumeTimer = useEvent(() => {
+      // Don't resume if mouse is still hovering (expanded) or interacting
+      if (ctx.expanded || ctx.interacting) return
       startTimer()
     })
 
