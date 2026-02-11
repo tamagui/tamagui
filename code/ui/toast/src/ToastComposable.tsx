@@ -200,7 +200,8 @@ function resolveSwipeDirection(
   ]
   if (xPosition === 'left') return 'left'
   if (xPosition === 'right') return 'right'
-  return yPosition === 'top' ? 'up' : 'down'
+  // center positions: horizontal swipe feels most natural
+  return 'horizontal'
 }
 
 const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
