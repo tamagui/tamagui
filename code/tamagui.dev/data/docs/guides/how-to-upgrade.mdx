@@ -496,15 +496,12 @@ export default {
 
 ### Metro (Expo / React Native)
 
-Enable package exports (required for Tamagui v2 subpath imports):
+No special Metro configuration is needed for Tamagui v2. A standard Expo Metro config works out of the box:
 
 ```js
 // metro.config.js
 const { getDefaultConfig } = require('expo/metro-config')
 const config = getDefaultConfig(__dirname)
-
-config.resolver.unstable_enablePackageExports = true
-config.resolver.unstable_conditionNames = ['require', 'react-native', 'import']
 
 module.exports = config
 ```
