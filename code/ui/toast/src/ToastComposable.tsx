@@ -850,18 +850,24 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       return totalHeight + activeCount * ctx.gap
     }, [ctx.toasts, ctx.heights, index, ctx.gap])
 
-    // timer
+    // Refs for stable access in callbacks — avoids putting expandedOffset/expanded
+    // in deps which would cause timer restarts on every height measurement
+    const expandedOffsetRef = React.useRef(expandedOffset)
+    expandedOffsetRef.current = expandedOffset
+    const isExpandedRef = React.useRef(ctx.expanded)
+    isExpandedRef.current = ctx.expanded
+
+    // timer — no height-zeroing needed here because auto-dismiss only fires
+    // when not expanded/interacting (timer is paused during hover)
     const startTimer = React.useCallback(() => {
       if (duration === Number.POSITIVE_INFINITY || toastType === 'loading') return
       closeTimerStartRef.current = Date.now()
       closeTimerRef.current = setTimeout(() => {
         toast.onAutoClose?.(toast)
         setRemoved(true)
-        setOffsetBeforeRemove(expandedOffset)
-        ctx.setToastHeight(toast.id, 0)
         setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
       }, remainingTimeRef.current)
-    }, [duration, toastType, toast, ctx.removeToast, expandedOffset, ctx.setToastHeight])
+    }, [duration, toastType, toast, ctx.removeToast])
 
     const pauseTimer = useEvent(() => {
       if (closeTimerRef.current) {
@@ -905,17 +911,19 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       }
     }, [ctx.native])
 
-    // handle deletion
+    // handle deletion — only zero height when expanded (Sonner rebalance)
     React.useEffect(() => {
       if (toast.delete) {
         setRemoved(true)
-        setOffsetBeforeRemove(expandedOffset)
-        ctx.setToastHeight(toast.id, 0)
+        if (isExpandedRef.current) {
+          setOffsetBeforeRemove(expandedOffsetRef.current)
+          ctx.setToastHeight(toast.id, 0)
+        }
         setTimeout(() => {
           ctx.removeToast(toast)
         }, TIME_BEFORE_UNMOUNT)
       }
-    }, [toast.delete, toast, ctx.removeToast, expandedOffset, ctx.setToastHeight])
+    }, [toast.delete, toast, ctx.removeToast, ctx.setToastHeight])
 
     React.useEffect(() => {
       if (ctx.expanded || ctx.interacting) {
@@ -1005,10 +1013,12 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       if (!dismissible) return
       toast.onDismiss?.(toast)
       setRemoved(true)
-      setOffsetBeforeRemove(expandedOffset)
-      ctx.setToastHeight(toast.id, 0)
+      if (isExpandedRef.current) {
+        setOffsetBeforeRemove(expandedOffsetRef.current)
+        ctx.setToastHeight(toast.id, 0)
+      }
       setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
-    }, [dismissible, toast, ctx.removeToast, expandedOffset, ctx.setToastHeight])
+    }, [dismissible, toast, ctx.removeToast, ctx.setToastHeight])
 
     const itemContextValue = React.useMemo<ToastItemContextValue>(
       () => ({ toast, handleClose }),
@@ -1019,17 +1029,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     const frontToastId = ctx.toasts[0]?.id
     const frontToastHeight = frontToastId != null ? (ctx.heights[frontToastId] ?? 55) : 55
 
-    // Active index: position among non-dismissed toasts (for collapsed gap calculation)
-    const activeIndex = React.useMemo(() => {
-      let count = 0
-      for (let i = 0; i < index; i++) {
-        const toastId = ctx.toasts[i]?.id
-        if (toastId != null && ctx.heights[toastId] !== 0) count++
-      }
-      return count
-    }, [ctx.toasts, ctx.heights, index])
-
-    const stackScale = !ctx.expanded && !isFront ? 1 - activeIndex * 0.05 : 1
+    const stackScale = !ctx.expanded && !isFront ? 1 - index * 0.05 : 1
 
     // When removed, freeze Y at the saved offset so the exiting toast doesn't jump
     // as other toasts rebalance (Sonner: --offset uses offsetBeforeRemove when removed)
@@ -1042,8 +1042,8 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       : isFront
         ? 0
         : isTop
-          ? ctx.gap * activeIndex
-          : -ctx.gap * activeIndex
+          ? ctx.gap * index
+          : -ctx.gap * index
 
     // Entry offset: drives the slide-in animation through the same transition
     // as stack repositioning, so new toast and existing toasts animate in sync.
