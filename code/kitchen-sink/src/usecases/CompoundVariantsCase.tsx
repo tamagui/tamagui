@@ -73,6 +73,15 @@ const Box = styled(View, {
         },
       },
     },
+    // test shorthand expansion
+    {
+      variant: 'filled',
+      size: 'large',
+      styles: {
+        padding: 16,
+        margin: 8,
+      },
+    },
   ],
 })
 
@@ -164,6 +173,13 @@ export function CompoundVariantsCase() {
           size="small"
           hoverStyle={{ borderColor: 'blue' }}
         />
+      </TestRow>
+
+      <TestRow
+        label="shorthand expansion (padding + margin)"
+        expected="padding: 16px all sides, margin: 8px all sides (shorthands expand)"
+      >
+        <Box data-testid="shorthand-expansion" variant="filled" size="large" />
       </TestRow>
     </View>
   )

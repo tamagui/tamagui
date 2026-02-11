@@ -67,4 +67,19 @@ test.describe('compoundVariants', () => {
     await el.hover()
     await expect(el).toHaveCSS('border-color', 'rgb(0, 0, 255)')
   })
+
+  test('expands shorthands in compound variants', async ({ page }) => {
+    const el = page.getByTestId('shorthand-expansion')
+    await expect(el).toBeVisible()
+    // padding: 16 should expand to all sides
+    await expect(el).toHaveCSS('padding-top', '16px')
+    await expect(el).toHaveCSS('padding-right', '16px')
+    await expect(el).toHaveCSS('padding-bottom', '16px')
+    await expect(el).toHaveCSS('padding-left', '16px')
+    // margin: 8 should expand to all sides
+    await expect(el).toHaveCSS('margin-top', '8px')
+    await expect(el).toHaveCSS('margin-right', '8px')
+    await expect(el).toHaveCSS('margin-bottom', '8px')
+    await expect(el).toHaveCSS('margin-left', '8px')
+  })
 })
