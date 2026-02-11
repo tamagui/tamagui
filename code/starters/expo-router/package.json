@@ -1,26 +1,21 @@
 {
-  "name": "expo-router",
+  "name": "@tamagui/expo-router-starter",
   "version": "1.0.0",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
     "upgrade:tamagui": "bunx npm-check-updates -u '*tamagui*' '@tamagui/*' && bun install",
-    "upgrade:tamagui:canary": "bunx npm-check-updates -u '*tamagui*@canary' '@tamagui/*@canary' && bun install",
-    "check:tamagui": "tamagui check",
-    "generate": "tamagui generate",
     "start": "bunx expo start -c",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "build:web": "expo export --platform web",
-    "build:web:optimized": "tamagui build --target web ./app -- expo export --platform web",
-    "test": "jest --watchAll"
+    "build:web": "expo export --platform web"
   },
   "dependencies": {
-    "@react-navigation/native": "^7.1.6",
-    "@tamagui/config": "^1.144.3",
-    "@tamagui/lucide-icons": "^1.144.3",
-    "@tamagui/toast": "^1.144.3",
+    "@react-navigation/native": "^7.0.14",
+    "@tamagui/config": "workspace:*",
+    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/toast": "workspace:*",
     "babel-preset-expo": "~54.0.0",
     "burnt": "^0.12.2",
     "expo": "^54.0.23",
@@ -32,8 +27,8 @@
     "expo-status-bar": "~3.0.8",
     "expo-system-ui": "~6.0.8",
     "expo-web-browser": "~15.0.9",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react": ">=19",
+    "react-dom": "*",
     "react-native": "0.81.5",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
@@ -41,21 +36,16 @@
     "react-native-svg": "15.12.1",
     "react-native-web": "^0.21.0",
     "react-native-worklets": "0.5.1",
-    "tamagui": "^1.144.3"
+    "tamagui": "workspace:*"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.6",
+    "@babel/core": "^7.25.2",
     "@expo/metro-config": "~54.0.2",
     "@expo/metro-runtime": "~6.1.2",
-    "@tamagui/babel-plugin": "^1.144.3",
-    "@tamagui/cli": "^1.144.3",
-    "@tamagui/metro-plugin": "^1.144.3",
+    "@tamagui/babel-plugin": "workspace:*",
     "@types/react": "~19.1.10",
     "@types/react-native": "^0.73.0",
     "typescript": "~5.9.2"
-  },
-  "jest": {
-    "preset": "jest-expo"
   },
   "packageManager": "bun@1.2.22"
 }

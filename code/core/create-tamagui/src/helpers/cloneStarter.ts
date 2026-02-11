@@ -1,4 +1,5 @@
 import { execSync } from 'node:child_process'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 import chalk from 'chalk'
@@ -42,6 +43,9 @@ export const cloneStarter = async (
   // }
   await copy(starterDir, resolvedProjectPath)
   await rimraf(`${resolvedProjectPath}/.git`)
+
+  // rewrite workspace:* versions to real published versions
+  rewriteWorkspaceVersions(resolvedProjectPath)
 
   console.info(chalk.green(`${projectName} created!`))
   console.info()
@@ -152,6 +156,37 @@ async function setupTamaguiDotDir(template: (typeof templates)[number]) {
       `We removed the old template cache, so re-running may fix. If not, please file an issue: https://github.com/tamagui/tamagui/issues/new?assignees=&labels=&template=bug_report.md&title=`
     )
     process.exit(1)
+  }
+}
+
+function rewriteWorkspaceVersions(projectPath: string) {
+  const pkgPath = join(projectPath, 'package.json')
+  try {
+    const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
+
+    // read create-tamagui's own version as the target
+    const ctPkgPath = join(__dirname, '..', '..', 'package.json')
+    const ctPkg = JSON.parse(readFileSync(ctPkgPath, 'utf-8'))
+    const version = `^${ctPkg.version}`
+
+    let changed = false
+    for (const field of ['dependencies', 'devDependencies'] as const) {
+      const deps = pkg[field]
+      if (!deps) continue
+      for (const [key, val] of Object.entries(deps)) {
+        if (val === 'workspace:*') {
+          deps[key] = version
+          changed = true
+        }
+      }
+    }
+
+    if (changed) {
+      writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
+      console.info(chalk.dim(`  Rewrote workspace:* → ${version}`))
+    }
+  } catch {
+    // non-fatal, user can fix manually
   }
 }
 

@@ -15,6 +15,10 @@ visit your project:
   ${chalk.green('cd')} ${projectName}
 `)
   }
+  console.info(`
+  To start the Remix development server, run:
+    ${chalk.green(runCommand('dev'))}
+`)
 }
 
 export default main

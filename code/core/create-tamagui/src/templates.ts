@@ -2,6 +2,8 @@ import type { ExtraSteps } from './steps/types'
 
 import chalk from 'chalk'
 
+import expoRouterSteps from './steps/expo-router'
+import remixSteps from './steps/remix'
 import starterFree from './steps/starter-free'
 import takeoutSteps from './steps/takeout'
 
@@ -63,6 +65,36 @@ export const templates: Array<{
       branch: 'main',
     },
     extraSteps: takeoutSteps,
+  },
+
+  {
+    title: `Expo Router - Expo with file-based routing`,
+    value: 'expo-router',
+    type: 'free',
+    hidden: false,
+    packageManager: 'bun',
+    repo: {
+      url: `https://github.com/tamagui/tamagui`,
+      sshFallback: `git@github.com:tamagui/tamagui.git`,
+      dir: ['code', 'starters', 'expo-router'],
+      branch: 'master',
+    },
+    extraSteps: expoRouterSteps,
+  },
+
+  {
+    title: `Remix - Remix with Vite`,
+    value: 'remix',
+    type: 'free',
+    hidden: false,
+    packageManager: 'bun',
+    repo: {
+      url: `https://github.com/tamagui/tamagui`,
+      sshFallback: `git@github.com:tamagui/tamagui.git`,
+      dir: ['code', 'starters', 'remix'],
+      branch: 'master',
+    },
+    extraSteps: remixSteps,
   },
 
   {

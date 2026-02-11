@@ -12,6 +12,7 @@
     "./code/kitchen-sink",
     "./code/kitchen-sink-go",
     "./code/kitchen-sink-shared",
+    "./code/starters/*",
     "./code/tests/**/*",
     "./code/sandbox",
     "./code/packages/**/*",
@@ -166,5 +167,8 @@
       "better-auth",
       "@better-auth/*"
     ]
+  },
+  "agent": {
+    "memory": true
   }
 }

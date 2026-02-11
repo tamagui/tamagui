@@ -9,6 +9,7 @@
   "trailingComma": "es5",
   "endOfLine": "lf",
   "ignorePatterns": [
+    "**/build/**",
     "**/dist/**",
     "**/*.d.ts",
     "**/ios/**",
