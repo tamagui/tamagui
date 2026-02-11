@@ -1,1 +1,1 @@
-export * from '../dist/esm/controller.native.js'
+Object.assign(module.exports, require('../dist/cjs/controller.native.js'))

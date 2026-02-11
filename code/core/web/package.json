@@ -17,8 +17,7 @@
     "src",
     "reset.css",
     "*.cjs",
-    "*.js",
-    "*.native.js"
+    "inject-styles"
   ],
   "type": "module",
   "sideEffects": [

@@ -1,1 +1,1 @@
-export * from '../dist/esm/linear-gradient'
+Object.assign(module.exports, require('../dist/cjs/linear-gradient.cjs'))

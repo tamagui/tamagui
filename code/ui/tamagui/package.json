@@ -13,11 +13,13 @@
     "src",
     "types",
     "dist",
-    "linear-gradient",
     "*.cjs",
     "*.d.ts",
-    "*.js",
-    "*.native.js"
+    "linear-gradient",
+    "native",
+    "native-test",
+    "react-native-web",
+    "web"
   ],
   "type": "module",
   "sideEffects": [
