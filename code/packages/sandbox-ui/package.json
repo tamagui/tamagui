@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "2.0.0-rc.10",
+  "version": "2.0.0-rc.11",
   "private": true,
   "files": [
     "types",
