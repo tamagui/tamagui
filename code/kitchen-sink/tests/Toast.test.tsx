@@ -979,8 +979,7 @@ test.describe('Toast Position Swipe Directions', () => {
     // auto swipe direction: swipe toward nearest edge to dismiss
     // bottom-right/top-right -> swipe right
     // bottom-left/top-left -> swipe left
-    // bottom-center -> swipe down
-    // top-center -> swipe up
+    // bottom-center/top-center -> swipe horizontal (left or right)
     await setupToastPage(page)
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
 
@@ -988,8 +987,8 @@ test.describe('Toast Position Swipe Directions', () => {
       { position: 'bottom-left', swipeX: -100, swipeY: 0 },
       { position: 'top-left', swipeX: -100, swipeY: 0 },
       { position: 'top-right', swipeX: 100, swipeY: 0 },
-      { position: 'bottom-center', swipeX: 0, swipeY: 100 },
-      { position: 'top-center', swipeX: 0, swipeY: -100 },
+      { position: 'bottom-center', swipeX: 100, swipeY: 0 },
+      { position: 'top-center', swipeX: -100, swipeY: 0 },
     ]
 
     for (const { position, swipeX, swipeY } of testCases) {
