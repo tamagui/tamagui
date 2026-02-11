@@ -992,14 +992,22 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
           ? ctx.gap * index
           : -ctx.gap * index
 
+    // Entry offset: drives the slide-in animation through the same transition
+    // as stack repositioning, so new toast and existing toasts animate in sync.
+    // Uses mounted state (set in useEffect after first paint) — the 1-frame gap
+    // lets the browser register the initial value before the CSS transition starts.
+    const mountOffset = !mounted && !ctx.reducedMotion ? (isTop ? -80 : 80) : 0
+
     const computedOpacity =
-      removed && !swipeOut
+      !mounted && !ctx.reducedMotion
         ? 0
-        : index >= ctx.visibleToasts
+        : removed && !swipeOut
           ? 0
-          : !ctx.expanded && index === ctx.visibleToasts - 1
-            ? 0.5
-            : 1
+          : index >= ctx.visibleToasts
+            ? 0
+            : !ctx.expanded && index === ctx.visibleToasts - 1
+              ? 0.5
+              : 1
     const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
     const computedHeight = !ctx.expanded && !isFront ? frontToastHeight : undefined
     const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
@@ -1027,7 +1035,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         {...dataAttributes}
         transition={isDragging || ctx.reducedMotion ? undefined : '400ms'}
         animateOnly={['transform', 'opacity', 'height']}
-        y={stackY}
+        y={stackY + mountOffset}
         scale={stackScale}
         opacity={computedOpacity}
         zIndex={computedZIndex}
@@ -1040,11 +1048,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
           !isFront && {
             style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
           })}
-        enterStyle={
-          ctx.reducedMotion
-            ? { opacity: 0 }
-            : { opacity: 0, y: isTop ? -80 : 80, scale: 0.95 }
-        }
+        enterStyle={ctx.reducedMotion ? { opacity: 0 } : undefined}
         exitStyle={
           ctx.reducedMotion
             ? { opacity: 0 }
