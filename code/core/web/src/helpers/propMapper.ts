@@ -18,6 +18,7 @@ import { isObj } from './isObj'
 import { normalizeStyle } from './normalizeStyle'
 import { parseNativeStyle } from './parseNativeStyle'
 import { pseudoDescriptors } from './pseudoDescriptors'
+import { resolveCompoundTokens } from './resolveCompoundTokens'
 import { isRemValue, resolveRem } from './resolveRem'
 // import { resolveSafeAreaValue } from './resolveSafeArea'
 import { skipProps } from './skipProps'
@@ -58,62 +59,13 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   const originalValue = value
 
   if (value != null) {
-    if (typeof value === 'string' && value[0] === '$') {
-      value = getTokenForKey(key, value, styleProps, styleState)
-    } else if (
-      (key === 'boxShadow' ||
-        key === 'textShadow' ||
-        key === 'filter' ||
-        key === 'backgroundImage' ||
-        key === 'border' ||
-        key === 'outline') &&
-      typeof value === 'string' &&
-      value.includes('$')
-    ) {
-      // on native, backgroundImage/boxShadow/textShadow get parsed to RN objects
-      // so we resolve tokens keeping DynamicColorIOS objects intact via a token map
-      if (
-        process.env.TAMAGUI_TARGET === 'native' &&
-        (key === 'backgroundImage' || key === 'boxShadow' || key === 'textShadow')
-      ) {
-        const tokenMap = new Map<string, any>()
-        let placeholderIdx = 0
-        const withPlaceholders = value.replace(/(\$[\w.-]+)/g, (t) => {
-          let r = getTokenForKey('size', t, styleProps, styleState)
-          if (r == null) {
-            r = getTokenForKey('color', t, styleProps, styleState)
-          }
-          if (r == null) return t
-          // if resolved to a non-string (object like DynamicColorIOS), use placeholder
-          if (typeof r !== 'string' && typeof r !== 'number') {
-            const placeholder = `__tk${placeholderIdx++}__`
-            tokenMap.set(placeholder, r)
-            return placeholder
-          }
-          return String(r)
-        })
-        const parsed = parseNativeStyle(key, withPlaceholders, tokenMap)
-        if (parsed) {
-          value = parsed
-        } else {
-          // fallback: resolve all tokens to plain string values
-          value = value.replace(/(\$[\w.-]+)/g, (t) => {
-            let r = getTokenForKey('size', t, styleProps, styleState)
-            if (r == null) {
-              r = getTokenForKey('color', t, styleProps, styleState)
-            }
-            return r != null ? String(r) : t
-          })
-        }
+    if (typeof value === 'string') {
+      if (value[0] === '$') {
+        value = getTokenForKey(key, value, styleProps, styleState)
       } else {
-        // web + filter + border: resolve tokens to string values
-        value = value.replace(/(\$[\w.-]+)/g, (t) => {
-          let r = getTokenForKey('size', t, styleProps, styleState)
-          if (r == null) {
-            r = getTokenForKey('color', t, styleProps, styleState)
-          }
-          return r != null ? String(r) : t
-        })
+        const resolved = resolveCompoundTokens(key, value, styleProps, styleState)
+        value =
+          resolved !== value ? resolved : isRemValue(value) ? resolveRem(value) : value
       }
     } else if (isVariable(value)) {
       value = resolveVariableValue(key, value, styleProps.resolveValues)
@@ -328,7 +280,6 @@ const resolveTokensAndVariants: StyleResolver<object> = (
         // eg: { variants: { flex: { true: { flex: 2 } } } }
         if (parentVariantKey && parentVariantKey === key) {
           res[subKey] =
-            // SYNC WITH *1
             val[0] === '$' ? getTokenForKey(subKey, val, styleProps, styleState) : val
         } else {
           const variantOut = resolveVariants(subKey, val, styleProps, styleState, key)
@@ -360,15 +311,12 @@ const resolveTokensAndVariants: StyleResolver<object> = (
     }
 
     if (typeof val === 'string') {
-      // SYNC WITH *1
       const fVal =
         val[0] === '$'
           ? getTokenForKey(subKey, val, styleProps, styleState)
-          : isRemValue(val)
-            ? resolveRem(val)
-            : val
+          : resolveCompoundTokens(subKey, val, styleProps, styleState)
 
-      res[subKey] = fVal
+      res[subKey] = fVal === val && isRemValue(val) ? resolveRem(val) : fVal
       continue
     }
 

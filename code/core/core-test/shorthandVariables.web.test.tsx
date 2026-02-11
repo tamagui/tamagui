@@ -1,7 +1,13 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { View, createTamagui, StyleObjectValue, StyleObjectRules } from '../web/src'
+import {
+  View,
+  createTamagui,
+  styled,
+  StyleObjectValue,
+  StyleObjectRules,
+} from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -186,6 +192,58 @@ describe('outline shorthand - web', () => {
     const value = getStyleValue(styles, 'outline')
 
     expect(value).toBe('none')
+  })
+})
+
+describe('tokens in variant styles - web', () => {
+  test('boxShadow with embedded $token in variant resolves to CSS var', () => {
+    const Comp = styled(View, {
+      variants: {
+        floating: {
+          true: {
+            boxShadow: '0 20px 40px $white',
+          },
+        },
+      } as const,
+    })
+    const styles = simplifiedGetSplitStyles(Comp, { floating: true })
+    const value = getStyleValue(styles, 'boxShadow')
+
+    // token should resolve, not remain as literal $white
+    expect(value).toMatch(/var\(--.*white/)
+  })
+
+  test('border with embedded $token in variant resolves to CSS var', () => {
+    const Comp = styled(View, {
+      variants: {
+        outlined: {
+          true: {
+            border: '2px solid $white',
+          },
+        },
+      } as const,
+    })
+    const styles = simplifiedGetSplitStyles(Comp, { outlined: true })
+    const value = getStyleValue(styles, 'border')
+
+    expect(value).toMatch(/2px solid var\(--.*white/)
+  })
+
+  test('backgroundImage with embedded $tokens in variant resolves', () => {
+    const Comp = styled(View, {
+      variants: {
+        gradient: {
+          true: {
+            backgroundImage: 'linear-gradient(to bottom, $white, $black)',
+          },
+        },
+      } as const,
+    })
+    const styles = simplifiedGetSplitStyles(Comp, { gradient: true })
+    const value = getStyleValue(styles, 'backgroundImage')
+
+    expect(value).toMatch(/var\(--.*white/)
+    expect(value).toMatch(/var\(--.*black/)
   })
 })
 

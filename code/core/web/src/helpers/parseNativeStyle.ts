@@ -177,18 +177,16 @@ function parseDimension(s: string): number | undefined {
 function splitOutsideParens(s: string): string[] {
   const parts: string[] = []
   let depth = 0
-  let current = ''
+  let start = 0
   for (let i = 0; i < s.length; i++) {
-    const ch = s[i]
-    if (ch === '(') depth++
-    else if (ch === ')') depth--
-    if (ch === ',' && depth === 0) {
-      parts.push(current)
-      current = ''
-    } else {
-      current += ch
+    const ch = s.charCodeAt(i)
+    if (ch === 40 /* ( */) depth++
+    else if (ch === 41 /* ) */) depth--
+    else if (ch === 44 /* , */ && depth === 0) {
+      parts.push(s.slice(start, i))
+      start = i + 1
     }
   }
-  if (current) parts.push(current)
+  parts.push(s.slice(start))
   return parts
 }
