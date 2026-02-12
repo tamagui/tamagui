@@ -1049,7 +1049,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     // as stack repositioning, so new toast and existing toasts animate in sync.
     // Uses mounted state (set in useEffect after first paint) — the 1-frame gap
     // lets the browser register the initial value before the CSS transition starts.
-    const mountOffset = !mounted && !ctx.reducedMotion ? (isTop ? -80 : 80) : 0
+    const mountOffset = !mounted && !ctx.reducedMotion ? (isTop ? -20 : 20) : 0
 
     const computedOpacity =
       !mounted && !ctx.reducedMotion
