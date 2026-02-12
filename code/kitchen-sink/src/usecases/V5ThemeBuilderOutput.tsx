@@ -60,7 +60,7 @@ export function V5ThemeBuilderOutput() {
                   />
                 </XStack>
               </Card>
-              <Text size="$2" color="$color11">
+              <Text fontSize="$2" color="$color11">
                 Base Light
               </Text>
               <YStack
@@ -99,7 +99,7 @@ export function V5ThemeBuilderOutput() {
                   />
                 </XStack>
               </Card>
-              <Text size="$2" color="$color11">
+              <Text fontSize="$2" color="$color11">
                 Base Dark
               </Text>
               <YStack
@@ -115,7 +115,7 @@ export function V5ThemeBuilderOutput() {
 
         {/* Full base palette */}
         <YStack gap="$2" marginTop="$2">
-          <Text size="$2" color="$color11">
+          <Text fontSize="$2" color="$color11">
             Base Palette (color1-12):
           </Text>
           <XStack gap="$1">
@@ -188,7 +188,7 @@ export function V5ThemeBuilderOutput() {
                     />
                   </XStack>
                 </Card>
-                <Text size="$2" color="$color11">
+                <Text fontSize="$2" color="$color11">
                   Accent Light
                 </Text>
                 <YStack
@@ -229,7 +229,7 @@ export function V5ThemeBuilderOutput() {
                     />
                   </XStack>
                 </Card>
-                <Text size="$2" color="$color11">
+                <Text fontSize="$2" color="$color11">
                   Accent Dark
                 </Text>
                 <YStack
@@ -247,7 +247,7 @@ export function V5ThemeBuilderOutput() {
         {/* Full accent palette */}
         <Theme name="accent">
           <YStack gap="$2" marginTop="$2">
-            <Text size="$2" color="$color11">
+            <Text fontSize="$2" color="$color11">
               Accent Palette (color1-12) - Should be purple gradient:
             </Text>
             <XStack gap="$1">
