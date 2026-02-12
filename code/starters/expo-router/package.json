@@ -43,10 +43,10 @@
     "@babel/core": "^7.25.2",
     "@expo/metro-config": "~54.0.2",
     "@expo/metro-runtime": "~6.1.2",
+    "@playwright/test": "^1.49.1",
     "@tamagui/babel-plugin": "workspace:*",
     "@types/react": "~19.1.10",
     "@types/react-native": "^0.73.0",
-    "@playwright/test": "^1.49.1",
     "serve": "^14.2.5",
     "typescript": "~5.9.2"
   },
