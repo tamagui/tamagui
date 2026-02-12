@@ -82,4 +82,4 @@ RUN bun run build:app
 
 EXPOSE 3000
 
-CMD ["bash", "-c", "echo '[debug] container started' && date && bun --version && node --version && echo '[debug] starting serve...' && bun run docker:serve 2>&1; echo '[debug] exited with code: '$?"]
+CMD ["bun", "run", "docker:serve"]
