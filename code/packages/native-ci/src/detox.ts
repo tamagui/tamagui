@@ -21,6 +21,8 @@ export interface DetoxRunnerOptions {
   headless?: boolean
   /** Number of parallel workers (default: 1) */
   workers?: number
+  /** Specific test files to run (passed as positional args to detox) */
+  testFiles?: string[]
 }
 
 /**
@@ -29,7 +31,7 @@ export interface DetoxRunnerOptions {
 export function parseDetoxArgs(platform: Platform) {
   const defaultConfig = platform === 'ios' ? 'ios.sim.debug' : 'android.emu.ci.debug'
 
-  const { values } = parseArgs({
+  const { values, positionals } = parseArgs({
     options: {
       config: { type: 'string', default: defaultConfig },
       'project-root': { type: 'string', default: process.cwd() },
@@ -38,6 +40,7 @@ export function parseDetoxArgs(platform: Platform) {
       retries: { type: 'string', default: '0' },
       workers: { type: 'string', default: '1' },
     },
+    allowPositionals: true,
   })
 
   // Validate and convert retries to number
@@ -61,6 +64,7 @@ export function parseDetoxArgs(platform: Platform) {
     recordLogs: values['record-logs']!,
     retries: retriesNum,
     workers: workersNum,
+    testFiles: positionals.length > 0 ? positionals : undefined,
   }
 }
 
@@ -88,6 +92,11 @@ export function buildDetoxArgs(options: DetoxRunnerOptions): string[] {
   // add parallel workers if specified
   if (options.workers && options.workers > 1) {
     args.push('--workers', String(options.workers))
+  }
+
+  // append specific test files if provided (for CI sharding)
+  if (options.testFiles && options.testFiles.length > 0) {
+    args.push(...options.testFiles)
   }
 
   return args

@@ -31,10 +31,22 @@ jobs:
     secrets: inherit
 
   test-ios:
-    name: iOS Detox Tests
+    name: iOS Detox Tests (shard ${{ matrix.shard_name }})
     needs: build-ios
     runs-on: macos-14
-    timeout-minutes: 60
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - shard_name: '1/4'
+            test_files: 'e2e/check-rngh-status.test.ts e2e/GroupPressNative.test.ts e2e/MediaQueryGtMd.test.ts e2e/NativePortal.test.ts'
+          - shard_name: '2/4'
+            test_files: 'e2e/PointerEvents.test.ts e2e/PressStyleNative.noRngh.test.ts e2e/PressStyleNative.test.ts e2e/SafeArea.test.ts'
+          - shard_name: '3/4'
+            test_files: 'e2e/SelectAndroidOnPress.test.ts e2e/SelectRemount.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts'
+          - shard_name: '4/4'
+            test_files: 'e2e/SheetScrollableDrag.test.ts e2e/ShorthandVariables.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts'
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -143,14 +155,12 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Run iOS Detox Tests
+      - name: Run iOS Detox Tests (shard ${{ matrix.shard_name }})
         if: env.SKIP_IOS_TESTS != 'true'
         env:
-          # Point Detox to the cached app (CI uses different path than local dev)
           DETOX_IOS_APP_PATH: build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
         run: |
-          # Note: parallel workers require multiple simulators, keeping single worker for now
-          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 2
+          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 2 ${{ matrix.test_files }}
 
       - name: Report iOS Test Status
         if: always() && env.SKIP_IOS_TESTS == 'true'
@@ -161,7 +171,7 @@ jobs:
         if: failure() && env.SKIP_IOS_TESTS != 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: detox-artifacts-ios
+          name: detox-artifacts-ios-shard-${{ strategy.job-index }}
           path: ${{ env.test_container_app_path }}/e2e/artifacts/
           retention-days: 7
 
