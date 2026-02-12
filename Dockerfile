@@ -82,4 +82,4 @@ RUN bun run build:app
 
 EXPOSE 3000
 
-CMD ["bun", "run", "docker:serve"]
+CMD ["bash", "-c", "echo 'DEBUG MODE - keeping container alive for SSH' && echo 'bun:' && bun --version && echo 'node:' && node --version && sleep 3600"]
