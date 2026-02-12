@@ -17,6 +17,8 @@ export interface DetoxRunnerOptions {
     headless?: boolean;
     /** Number of parallel workers (default: 1) */
     workers?: number;
+    /** Specific test files to run (passed as positional args to detox) */
+    testFiles?: string[];
 }
 /**
  * Parse common CLI arguments for Detox runners
@@ -28,6 +30,7 @@ export declare function parseDetoxArgs(platform: Platform): {
     recordLogs: string;
     retries: number;
     workers: number;
+    testFiles: string[] | undefined;
 };
 /**
  * Build Detox CLI command arguments

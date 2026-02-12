@@ -1,5 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
-import { Button, Text, View, XStack, YStack, type LayoutEvent } from 'tamagui'
+import { Button, Text, View, XStack, YStack } from 'tamagui'
+
+type LayoutEvent = any
 
 type LayoutData = {
   x: number

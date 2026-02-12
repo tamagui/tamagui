@@ -33,5 +33,6 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "packageManager": "bun@1.2.22"
+  "packageManager": "bun@1.2.22",
+  "version": "2.0.0-rc.11-1770891003710"
 }
