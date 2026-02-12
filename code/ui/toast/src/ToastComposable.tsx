@@ -644,6 +644,7 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
   const ctx = useToastContext()
   const { handleClose } = useToastItemContext()
   const toastType = toast.type ?? 'default'
+  const dismissible = toast.dismissible !== false
 
   const title = typeof toast.title === 'function' ? toast.title() : toast.title
   const description =
@@ -692,6 +693,8 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
           </XStack>
         )}
       </YStack>
+
+      {ctx.closeButton && dismissible && <ToastClose />}
     </XStack>
   )
 }
@@ -1145,11 +1148,6 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             <ToastItemContext.Provider value={itemContextValue}>
               {children}
             </ToastItemContext.Provider>
-            {ctx.closeButton && dismissible && (
-              <View position="absolute" top={-6} left={-6} zIndex={1}>
-                <ToastClose />
-              </View>
-            )}
           </ToastItemFrame>
         </DragWrapper>
       </ToastPositionWrapper>
