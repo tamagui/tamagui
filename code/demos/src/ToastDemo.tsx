@@ -1,4 +1,4 @@
-import { Toast, toast, useToasts, type ToastPosition } from '@tamagui/toast'
+import { Toast, toast, type ToastPosition, type ToastT } from '@tamagui/toast'
 import {
   ArrowDown,
   ArrowDownLeft,
@@ -8,7 +8,7 @@ import {
   ArrowUpRight,
 } from '@tamagui/lucide-icons'
 import { useRef, useState } from 'react'
-import { Button, XStack, YStack } from 'tamagui'
+import { Button, SizableText, XStack, YStack } from 'tamagui'
 
 export const ToastDemo = () => {
   const [position, setPosition] = useState<ToastPosition>('bottom-right')
@@ -23,9 +23,15 @@ export const ToastDemo = () => {
   }
 
   return (
-    <Toast position={position}>
+    <Toast position={position} closeButton>
       <Toast.Viewport>
-        <ToastList />
+        <Toast.List
+          renderItem={({ toast: t, index }) => (
+            <Toast.Item key={t.id} toast={t} index={index} testID="toast-item">
+              <ToastContent toast={t} />
+            </Toast.Item>
+          )}
+        />
       </Toast.Viewport>
 
       <YStack gap="$2" self="center">
@@ -75,45 +81,27 @@ export const ToastDemo = () => {
   )
 }
 
-const ToastList = () => {
-  const { toasts, position } = useToasts()
-  const [, xPosition] = position.split('-')
-  const closeOnLeft = xPosition === 'left'
+function ToastContent({ toast: t }: { toast: ToastT }) {
+  const title = typeof t.title === 'function' ? t.title() : t.title
+  const description =
+    typeof t.description === 'function' ? t.description() : t.description
 
   return (
-    <>
-      {toasts.map((t, index) => (
-        <Toast.Item
-          key={t.id}
-          toast={t}
-          index={index}
-          testID="toast-item"
-          paddingHorizontal="$3"
-          paddingVertical="$2"
-        >
-          <XStack gap="$2">
-            <YStack flex={1} gap="$0.5">
-              <Toast.Title fontWeight="600" size="$3">
-                {typeof t.title === 'function' ? t.title() : t.title}
-              </Toast.Title>
-              {t.description && (
-                <Toast.Description color="$color9" size="$2">
-                  {typeof t.description === 'function' ? t.description() : t.description}
-                </Toast.Description>
-              )}
-            </YStack>
-          </XStack>
-          <Toast.Close
-            testID="toast-close-button"
-            position="absolute"
-            borderWidth={1}
-            borderColor="$color6"
-            y={-15}
-            {...(closeOnLeft ? { left: -8 } : { right: -8 })}
-          />
-        </Toast.Item>
-      ))}
-    </>
+    <XStack gap="$3" alignItems="flex-start">
+      <Toast.Icon />
+      <YStack flex={1} gap="$0.5">
+        {title && (
+          <Toast.Title fontWeight="600" size="$3">
+            {title}
+          </Toast.Title>
+        )}
+        {description && (
+          <Toast.Description color="$color9" size="$2">
+            {description}
+          </Toast.Description>
+        )}
+      </YStack>
+    </XStack>
   )
 }
 
