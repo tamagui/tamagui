@@ -1,11 +1,29 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
-import { createContext, useContext, useId, type ReactNode, type RefObject } from 'react'
+import {
+  createContext,
+  useContext,
+  useId,
+  useRef,
+  type ReactNode,
+  type RefObject,
+} from 'react'
 
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
 const LayoutDisableKey = new WeakMap<HTMLElement, string>()
 const Nodes = new Set<HTMLElement>()
 const IntersectionState = new WeakMap<HTMLElement, boolean>()
+
+let _debugLayout: boolean | undefined
+
+function isDebugLayout() {
+  if (_debugLayout === undefined) {
+    _debugLayout =
+      typeof window !== 'undefined' &&
+      new URLSearchParams(window.location.search).has('__tamaDebugLayout')
+  }
+  return _debugLayout
+}
 
 // separating to avoid all re-rendering
 const DisableLayoutContextValues: Record<string, boolean> = {}
@@ -155,6 +173,17 @@ if (ENABLE) {
 
       const event = getElementLayoutEvent(nodeRect, parentRect)
 
+      if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
+        const el = node as HTMLElement
+        console.log('[useElementLayout] change', {
+          tag: el.tagName,
+          id: el.id || undefined,
+          className: (el.className || '').slice(0, 60) || undefined,
+          layout: event.nativeEvent.layout,
+          first: !cachedRect,
+        })
+      }
+
       if (avoidUpdates) {
         queuedUpdates.set(node, () => onLayout(event))
       } else {
@@ -175,12 +204,22 @@ if (ENABLE) {
       const visibleNodes: HTMLElement[] = []
 
       // do a 1 rather than N IntersectionObservers for performance
+      const ioCreateTime = performance.now()
       const didRun = await new Promise<boolean>((res) => {
         const io = new IntersectionObserver(
           (entries) => {
+            const callbackDelay = Math.round(performance.now() - ioCreateTime)
             io.disconnect()
             for (const entry of entries) {
               BoundingRects.set(entry.target, entry.boundingClientRect)
+            }
+            if (callbackDelay > 50) {
+              console.warn(
+                '[onLayout-io-delay]',
+                callbackDelay + 'ms',
+                entries.length,
+                'entries'
+              )
             }
             res(true)
           },
@@ -192,7 +231,10 @@ if (ENABLE) {
         let didObserve = false
 
         for (const node of Nodes) {
-          if (!(node.parentElement instanceof HTMLElement)) continue
+          if (!(node.parentElement instanceof HTMLElement)) {
+            cleanupNode(node)
+            continue
+          }
           const disableKey = LayoutDisableKey.get(node)
           if (disableKey && DisableLayoutContextValues[disableKey] === true) continue
           if (IntersectionState.get(node) === false) continue
@@ -240,24 +282,79 @@ const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
   return { x, y, width, height, pageX: a.left, pageY: a.top }
 }
 
+function cleanupNode(node: HTMLElement) {
+  Nodes.delete(node)
+  LayoutHandlers.delete(node)
+  LayoutDisableKey.delete(node)
+  NodeRectCache.delete(node)
+  LastChangeTime.delete(node)
+  IntersectionState.delete(node)
+  if (globalIntersectionObserver) {
+    globalIntersectionObserver.unobserve(node)
+  }
+}
+
+// track previous host node per hook instance to detect when it changes
+const PrevHostNode = new WeakMap<object, HTMLElement | undefined>()
+
 export function useElementLayout(
   ref: RefObject<TamaguiComponentStatePartial>,
   onLayout?: ((e: LayoutEvent) => void) | null
 ): void {
   const disableKey = useContext(DisableLayoutContextKey)
+  const hostSwappedRef = useRef(false)
 
-  // ensure always up to date so we can avoid re-running effect
   const node = ensureWebElement(ref.current?.host)
+  const prevNode = PrevHostNode.get(ref)
+
+  // detect when the host DOM node changes between renders
+  if (node !== prevNode) {
+    if (prevNode) {
+      cleanupNode(prevNode)
+    }
+
+    PrevHostNode.set(ref, node)
+
+    // register new node
+    if (node && onLayout) {
+      Nodes.add(node)
+      startGlobalObservers()
+      if (globalIntersectionObserver) {
+        globalIntersectionObserver.observe(node)
+        IntersectionState.set(node, true)
+      }
+      hostSwappedRef.current = true
+    }
+  }
+
   if (node && onLayout) {
     LayoutHandlers.set(node, onLayout)
     LayoutDisableKey.set(node, disableKey)
   }
+
+  // fire immediate sync layout after a host swap (runs after commit, not during render)
+  useIsomorphicLayoutEffect(() => {
+    if (!hostSwappedRef.current) return
+    hostSwappedRef.current = false
+    const node = ensureWebElement(ref.current?.host)
+    if (!node) return
+    const handler = LayoutHandlers.get(node)
+    if (typeof handler !== 'function') return
+    const parentNode = node.parentElement
+    if (!parentNode) return
+    const nodeRect = node.getBoundingClientRect()
+    const parentRect = parentNode.getBoundingClientRect()
+    NodeRectCache.set(node, nodeRect)
+    NodeRectCache.set(parentNode, parentRect)
+    handler(getElementLayoutEvent(nodeRect, parentRect))
+  })
 
   useIsomorphicLayoutEffect(() => {
     if (!onLayout) return
     const node = ref.current?.host
     if (!node) return
 
+    // ensure registered (may already be from the render-time check above)
     Nodes.add(node)
 
     // Add node to intersection observer
@@ -268,28 +365,53 @@ export function useElementLayout(
       IntersectionState.set(node, true)
     }
 
+    if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
+      console.log('[useElementLayout] register', {
+        tag: node.tagName,
+        id: node.id || undefined,
+        className: (node.className || '').slice(0, 60) || undefined,
+        totalNodes: Nodes.size,
+      })
+    }
+
     // always do one immediate sync layout event no matter the strategy for accuracy
     const parentNode = node.parentNode
     if (parentNode) {
-      onLayout(
-        getElementLayoutEvent(
-          node.getBoundingClientRect(),
-          parentNode.getBoundingClientRect()
-        )
+      const event = getElementLayoutEvent(
+        node.getBoundingClientRect(),
+        parentNode.getBoundingClientRect()
       )
+
+      if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
+        console.log('[useElementLayout] initial', {
+          tag: node.tagName,
+          id: node.id || undefined,
+          layout: event.nativeEvent.layout,
+        })
+      }
+
+      onLayout(event)
     }
 
     return () => {
-      Nodes.delete(node)
-      LayoutHandlers.delete(node)
-      NodeRectCache.delete(node)
-      LastChangeTime.delete(node)
-      IntersectionState.delete(node)
-
-      // Remove from intersection observer
-      if (globalIntersectionObserver) {
-        globalIntersectionObserver.unobserve(node)
+      if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
+        console.log('[useElementLayout] unregister', {
+          tag: node.tagName,
+          id: node.id || undefined,
+          remainingNodes: Nodes.size - 1,
+        })
       }
+
+      // clean up the node captured when the effect ran
+      cleanupNode(node)
+
+      // also clean up any node that was swapped in via render-time host detection,
+      // since the effect deps [ref, !!onLayout] don't change on host swap
+      const swappedNode = PrevHostNode.get(ref)
+      if (swappedNode && swappedNode !== node) {
+        cleanupNode(swappedNode)
+      }
+      PrevHostNode.delete(ref)
     }
   }, [ref, !!onLayout])
 }
