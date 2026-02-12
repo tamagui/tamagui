@@ -113,7 +113,7 @@ function normalizeGroupKey(
     (plen === 3 && pseudoPriorities[parts[parts.length - 1]])
   ) {
     const name = parts[1]
-    if (groupContext && !groupContext[name]) {
+    if (name !== 'true' && groupContext && !groupContext[name]) {
       return key.replace('$group-', '$group-true-')
     }
   }

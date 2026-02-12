@@ -19,6 +19,7 @@ export function simplifiedGetSplitStyles(
     mergeDefaultProps?: boolean
     theme?: any
     themeName?: string
+    groupContext?: any
   } = {}
 ) {
   // optionally merge in default props like createComponent does
@@ -42,7 +43,7 @@ export function simplifiedGetSplitStyles(
         state: {},
       },
     } as any,
-    undefined,
+    options.groupContext,
     options.render,
     true
   )!

@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, test } from 'vitest'
+import { beforeAll, describe, expect, test, vi } from 'vitest'
 
 import config from '../config-default'
 import {
@@ -10,6 +10,7 @@ import {
   createTamagui,
   styled,
 } from '../web/src'
+import { getGroupPropParts } from '../web/src/helpers/getGroupPropParts'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -303,6 +304,38 @@ describe('getSplitStyles', () => {
     // should have focus-visible pseudo selector
     expect(rule).toContain(':focus-visible')
     expect(rule).toContain('.t_group_frame')
+  })
+
+  test(`boolean group $group-hover parses correctly as group-true-hover`, () => {
+    // $group-hover normalizes to $group-true-hover internally
+    // getGroupPropParts receives "group-true-hover" and should parse it correctly
+    const result = getGroupPropParts('group-true-hover')
+    expect(result.name).toBe('true')
+    expect(result.pseudo).toBe('hover')
+    expect(result.media).toBeUndefined()
+  })
+
+  test(`boolean group with $group-hover does not warn`, () => {
+    const origNodeEnv = process.env.NODE_ENV
+    process.env.NODE_ENV = 'development'
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    // groupContext exists (from a named group) but doesn't have a "true" key
+    // without the fix this triggers double-normalization
+    const groupContext = {
+      mygroup: {
+        state: { pseudo: {} },
+        subscribe: () => () => {},
+        emit: () => {},
+        listeners: new Set(),
+      },
+    }
+
+    simplifiedGetSplitStyles(Text, { '$group-hover': { color: 'red' } }, { groupContext })
+
+    expect(warnSpy).not.toHaveBeenCalled()
+    warnSpy.mockRestore()
+    process.env.NODE_ENV = origNodeEnv
   })
 
   // const timed = async (fn: Function, opts?: { runs?: number }) => {
