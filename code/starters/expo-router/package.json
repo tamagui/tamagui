@@ -9,7 +9,8 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "build:web": "expo export --platform web"
+    "build:web": "expo export --platform web",
+    "test": "npx playwright test"
   },
   "dependencies": {
     "@react-navigation/native": "^7.0.14",
@@ -45,6 +46,8 @@
     "@tamagui/babel-plugin": "workspace:*",
     "@types/react": "~19.1.10",
     "@types/react-native": "^0.73.0",
+    "@playwright/test": "^1.49.1",
+    "serve": "^14.2.5",
     "typescript": "~5.9.2"
   },
   "packageManager": "bun@1.2.22"
