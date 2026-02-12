@@ -692,7 +692,6 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
           </XStack>
         )}
       </YStack>
-
     </XStack>
   )
 }
