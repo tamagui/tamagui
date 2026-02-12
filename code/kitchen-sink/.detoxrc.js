@@ -1,10 +1,6 @@
-// default to single worker locally - multiple simulators are too taxing on system
-// and macOS doesn't clean them up properly, causing resource exhaustion
-// CI can override via DETOX_MAX_WORKERS env var (lock file issues handled by resetDetoxLockFile)
+// force single worker - multiple workers cause ECOMPROMISED lock file errors
 // see: https://github.com/wix/Detox/issues/4210
-const maxWorkers = process.env.DETOX_MAX_WORKERS
-  ? Number(process.env.DETOX_MAX_WORKERS)
-  : 1
+const maxWorkers = 1
 
 /** @type {Detox.DetoxConfig} */
 module.exports = {
