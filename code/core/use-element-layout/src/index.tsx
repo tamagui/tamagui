@@ -1,13 +1,6 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
-import {
-  createContext,
-  useContext,
-  useId,
-  useRef,
-  type ReactNode,
-  type RefObject,
-} from 'react'
+import { createContext, useContext, useId, type ReactNode, type RefObject } from 'react'
 
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
 const LayoutDisableKey = new WeakMap<HTMLElement, string>()
@@ -294,7 +287,6 @@ function cleanupNode(node: HTMLElement) {
   }
 }
 
-// track previous host node per hook instance to detect when it changes
 const PrevHostNode = new WeakMap<object, HTMLElement | undefined>()
 
 export function useElementLayout(
@@ -302,49 +294,40 @@ export function useElementLayout(
   onLayout?: ((e: LayoutEvent) => void) | null
 ): void {
   const disableKey = useContext(DisableLayoutContextKey)
-  const hostSwappedRef = useRef(false)
 
+  // keep handlers up to date so polling always calls the latest callback
   const node = ensureWebElement(ref.current?.host)
-  const prevNode = PrevHostNode.get(ref)
-
-  // detect when the host DOM node changes between renders
-  if (node !== prevNode) {
-    if (prevNode) {
-      cleanupNode(prevNode)
-    }
-
-    PrevHostNode.set(ref, node)
-
-    // register new node
-    if (node && onLayout) {
-      Nodes.add(node)
-      startGlobalObservers()
-      if (globalIntersectionObserver) {
-        globalIntersectionObserver.observe(node)
-        IntersectionState.set(node, true)
-      }
-      hostSwappedRef.current = true
-    }
-  }
-
   if (node && onLayout) {
     LayoutHandlers.set(node, onLayout)
     LayoutDisableKey.set(node, disableKey)
   }
 
-  // fire immediate sync layout after a host swap (runs after commit, not during render)
+  // detect host swaps after commit and fire immediate sync layout
   useIsomorphicLayoutEffect(() => {
-    if (!hostSwappedRef.current) return
-    hostSwappedRef.current = false
-    const node = ensureWebElement(ref.current?.host)
-    if (!node) return
-    const handler = LayoutHandlers.get(node)
+    if (!onLayout) return
+    const nextNode = ensureWebElement(ref.current?.host)
+    const prevNode = PrevHostNode.get(ref)
+    if (nextNode === prevNode) return
+
+    if (prevNode) cleanupNode(prevNode)
+    PrevHostNode.set(ref, nextNode)
+    if (!nextNode) return
+
+    Nodes.add(nextNode)
+    startGlobalObservers()
+    if (globalIntersectionObserver) {
+      globalIntersectionObserver.observe(nextNode)
+      IntersectionState.set(nextNode, true)
+    }
+
+    const handler = LayoutHandlers.get(nextNode)
     if (typeof handler !== 'function') return
-    const parentNode = node.parentElement
+    const parentNode = nextNode.parentElement
     if (!parentNode) return
-    const nodeRect = node.getBoundingClientRect()
+
+    const nodeRect = nextNode.getBoundingClientRect()
     const parentRect = parentNode.getBoundingClientRect()
-    NodeRectCache.set(node, nodeRect)
+    NodeRectCache.set(nextNode, nodeRect)
     NodeRectCache.set(parentNode, parentRect)
     handler(getElementLayoutEvent(nodeRect, parentRect))
   })
@@ -354,14 +337,11 @@ export function useElementLayout(
     const node = ref.current?.host
     if (!node) return
 
-    // ensure registered (may already be from the render-time check above)
     Nodes.add(node)
 
-    // Add node to intersection observer
     startGlobalObservers()
     if (globalIntersectionObserver) {
       globalIntersectionObserver.observe(node)
-      // Initialize as intersecting by default
       IntersectionState.set(node, true)
     }
 
@@ -374,39 +354,21 @@ export function useElementLayout(
       })
     }
 
-    // always do one immediate sync layout event no matter the strategy for accuracy
+    // always do one immediate sync layout event for accuracy
     const parentNode = node.parentNode
     if (parentNode) {
-      const event = getElementLayoutEvent(
-        node.getBoundingClientRect(),
-        parentNode.getBoundingClientRect()
+      onLayout(
+        getElementLayoutEvent(
+          node.getBoundingClientRect(),
+          parentNode.getBoundingClientRect()
+        )
       )
-
-      if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
-        console.log('[useElementLayout] initial', {
-          tag: node.tagName,
-          id: node.id || undefined,
-          layout: event.nativeEvent.layout,
-        })
-      }
-
-      onLayout(event)
     }
 
     return () => {
-      if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
-        console.log('[useElementLayout] unregister', {
-          tag: node.tagName,
-          id: node.id || undefined,
-          remainingNodes: Nodes.size - 1,
-        })
-      }
-
-      // clean up the node captured when the effect ran
       cleanupNode(node)
 
-      // also clean up any node that was swapped in via render-time host detection,
-      // since the effect deps [ref, !!onLayout] don't change on host swap
+      // also clean up any node from a mid-lifecycle host swap
       const swappedNode = PrevHostNode.get(ref)
       if (swappedNode && swappedNode !== node) {
         cleanupNode(swappedNode)
