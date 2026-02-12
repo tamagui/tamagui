@@ -43,6 +43,7 @@ const exitCode = await withMetro('android', async () => {
     recordLogs: options.recordLogs,
     retries: options.retries,
     headless: options.headless,
+    testFiles: options.testFiles,
   })
 })
 

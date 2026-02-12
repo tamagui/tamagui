@@ -1,6 +1,4 @@
-// force single worker always - multiple simulators are too taxing on system
-// and macOS doesn't clean them up properly, causing resource exhaustion
-// also avoids proper-lockfile ECOMPROMISED errors in CI
+// force single worker - multiple workers cause ECOMPROMISED lock file errors
 // see: https://github.com/wix/Detox/issues/4210
 const maxWorkers = 1
 
