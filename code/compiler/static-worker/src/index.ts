@@ -43,8 +43,9 @@ const RECYCLING_KEY = '__tamagui_piscina_recycling__'
 
 // recycle worker after this many tasks to prevent RSS bloat from V8 memory fragmentation
 // Node.js worker threads don't release memory properly - see https://github.com/nodejs/node/issues/51868
-// Lower threshold to recycle before hitting V8 memory limits
-const MAX_TASKS_BEFORE_RECYCLE = 200
+// set high enough that builds (typically 200-400 files) never trigger a recycle,
+// but long-running dev servers still get memory relief eventually
+const MAX_TASKS_BEFORE_RECYCLE = 1000
 
 function getSharedPool(): Piscina | null {
   return (globalThis as any)[POOL_KEY] ?? null
@@ -90,9 +91,9 @@ function resetTaskCount() {
 function createPool(): Piscina {
   const pool = new Piscina({
     filename: getWorkerPath(),
-    // Single worker for state consistency and simpler caching
-    minThreads: 1,
-    maxThreads: 1,
+    // each worker loads and caches config independently
+    minThreads: 2,
+    maxThreads: 2,
     // Never terminate due to idle - worker stays alive until close() or process exit
     // This prevents "Terminating worker thread" errors from Piscina during idle
     idleTimeout: Number.POSITIVE_INFINITY,
