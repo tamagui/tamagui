@@ -516,7 +516,13 @@ export function createV5Theme<
 
     childrenThemes: childrenWithPalettes,
 
-    grandChildrenThemes,
+    // When a custom accent is provided in childrenThemes, remove accent from grandChildrenThemes
+    // to prevent conflicts. The custom accent colors from childrenThemes will be used instead.
+    grandChildrenThemes: (childrenThemes as any).accent
+      ? Object.fromEntries(
+          Object.entries(grandChildrenThemes).filter(([name]) => name !== 'accent')
+        )
+      : grandChildrenThemes,
 
     // Add computed colors to ALL themes based on each theme's palette
     getTheme: ({ palette, scheme }) => {
