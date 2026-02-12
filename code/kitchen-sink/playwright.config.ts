@@ -56,7 +56,7 @@ export default defineConfig({
   },
 
   fullyParallel: true,
-  workers: process.env.CI ? 2 : '50%', // limit parallelism in CI to avoid server overload
+  workers: process.env.CI ? 4 : '50%',
   retries: 1,
   // Stop on first failure to show the error immediately
   maxFailures: 1,
