@@ -9,6 +9,9 @@ node_modules
 **/*/.turbo
 **/*/.tamagui
 
+# starters pull in heavy deps (expo, react-native) not needed for site
+code/starters
+
 # expo
 **/*/.expo
 **/*/ios
