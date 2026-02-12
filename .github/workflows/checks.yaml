@@ -47,7 +47,7 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Run unit tests
-        run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=4
+        run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=1
 
   integration-tests:
     runs-on: ubuntu-latest
