@@ -693,7 +693,6 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
         )}
       </YStack>
 
-      {ctx.closeButton && <ToastClose />}
     </XStack>
   )
 }
@@ -1147,6 +1146,11 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             <ToastItemContext.Provider value={itemContextValue}>
               {children}
             </ToastItemContext.Provider>
+            {ctx.closeButton && dismissible && (
+              <View position="absolute" top={-6} left={-6} zIndex={1}>
+                <ToastClose />
+              </View>
+            )}
           </ToastItemFrame>
         </DragWrapper>
       </ToastPositionWrapper>
