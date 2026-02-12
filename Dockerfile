@@ -2,8 +2,8 @@
 # see: https://github.com/vitejs/vite/discussions/16030
 FROM node:22
 
-# install bun
-RUN npm install -g bun
+# install bun (pinned to avoid breaking changes from unpinned latest)
+RUN npm install -g bun@1.2.22
 
 ARG CF_API_KEY
 ARG CF_EMAIL
