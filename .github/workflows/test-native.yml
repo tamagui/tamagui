@@ -31,22 +31,10 @@ jobs:
     secrets: inherit
 
   test-ios:
-    name: iOS Detox Tests (shard ${{ matrix.shard_name }})
+    name: iOS Detox Tests
     needs: build-ios
     runs-on: macos-14
-    timeout-minutes: 30
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - shard_name: '1/4'
-            test_files: 'e2e/check-rngh-status.test.ts e2e/GroupPressNative.test.ts e2e/MediaQueryGtMd.test.ts e2e/NativePortal.test.ts'
-          - shard_name: '2/4'
-            test_files: 'e2e/PointerEvents.test.ts e2e/PressStyleNative.noRngh.test.ts e2e/PressStyleNative.test.ts e2e/SafeArea.test.ts'
-          - shard_name: '3/4'
-            test_files: 'e2e/SelectAndroidOnPress.test.ts e2e/SelectRemount.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts'
-          - shard_name: '4/4'
-            test_files: 'e2e/SheetScrollableDrag.test.ts e2e/ShorthandVariables.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts'
+    timeout-minutes: 60
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -70,34 +58,15 @@ jobs:
           echo "::warning::iOS cache not restored (key: ${{ needs.build-ios.outputs.built-app-cache-key }}). This may happen on first run after cache key changes."
           echo "SKIP_IOS_TESTS=true" >> $GITHUB_ENV
 
-      - name: Install Dependencies
-        if: env.SKIP_IOS_TESTS != 'true'
-        uses: ./.github/actions/install
-        with:
-          workspace-focus: '@tamagui/kitchen-sink'
-
-      - name: Install Detox CLI
-        if: env.SKIP_IOS_TESTS != 'true'
-        run: npm install -g detox-cli
-
-      - name: Rebuild Detox Framework Cache
+      - name: Boot iOS Simulator (background)
         if: env.SKIP_IOS_TESTS != 'true'
         working-directory: ${{ github.workspace }}
-        run: npx detox rebuild-framework-cache
-
-      - name: Install applesimutils
-        if: env.SKIP_IOS_TESTS != 'true'
         run: |
-          brew tap wix/brew
-          brew install applesimutils
+          # start simulator boot in background while deps install
+          xcrun simctl shutdown all 2>/dev/null || true
+          sleep 1
 
-      - name: Boot iOS Simulator
-        if: env.SKIP_IOS_TESTS != 'true'
-        id: boot-simulator
-        working-directory: ${{ github.workspace }}
-        timeout-minutes: 10
-        run: |
-          # Find iPhone 15 simulator
+          # find iPhone 15 simulator
           DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '
             .devices | to_entries[]
             | select(.key | contains("iOS"))
@@ -106,7 +75,6 @@ jobs:
             | .udid' | head -1)
 
           if [ -z "$DEVICE_ID" ]; then
-            echo "iPhone 15 not found, using first available iPhone"
             DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '
               .devices | to_entries[]
               | select(.key | contains("iOS"))
@@ -116,32 +84,42 @@ jobs:
           fi
 
           echo "Booting simulator: $DEVICE_ID"
-
-          # Shutdown any existing simulator state first to avoid stale boot issues
-          xcrun simctl shutdown all 2>/dev/null || true
-          sleep 2
-
-          # Boot the simulator
           xcrun simctl boot "$DEVICE_ID" || true
+          echo "SIM_DEVICE_ID=$DEVICE_ID" >> $GITHUB_ENV
 
-          # Wait for boot with timeout (bootstatus can hang indefinitely)
-          echo "Waiting for simulator boot status..."
-          timeout 300 xcrun simctl bootstatus "$DEVICE_ID" -b || {
-            echo "Boot status timed out, checking if simulator is usable..."
-            # Even if bootstatus hangs, the simulator might be ready
+      - name: Install Dependencies
+        if: env.SKIP_IOS_TESTS != 'true'
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: '@tamagui/kitchen-sink'
+
+      - name: Install tooling
+        if: env.SKIP_IOS_TESTS != 'true'
+        run: |
+          npm install -g detox-cli &
+          (brew tap wix/brew && brew install applesimutils) &
+          wait
+
+      - name: Rebuild Detox Framework Cache
+        if: env.SKIP_IOS_TESTS != 'true'
+        working-directory: ${{ github.workspace }}
+        run: npx detox rebuild-framework-cache
+
+      - name: Wait for Simulator Boot
+        if: env.SKIP_IOS_TESTS != 'true'
+        working-directory: ${{ github.workspace }}
+        timeout-minutes: 5
+        run: |
+          echo "Waiting for simulator $SIM_DEVICE_ID to boot..."
+          timeout 300 xcrun simctl bootstatus "$SIM_DEVICE_ID" -b || {
             if xcrun simctl list devices booted | grep -q "Booted"; then
-              echo "Simulator appears to be booted despite timeout"
+              echo "Simulator appears booted despite timeout"
             else
               echo "Simulator failed to boot"
               exit 1
             fi
           }
-
-          # Additional settle time for system services
-          echo "Waiting for simulator to stabilize..."
-          sleep 10
-
-          echo "simulator_udid=$DEVICE_ID" >> $GITHUB_OUTPUT
+          sleep 5
 
       - name: Install App on Simulator
         if: env.SKIP_IOS_TESTS != 'true'
@@ -155,12 +133,13 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Run iOS Detox Tests (shard ${{ matrix.shard_name }})
+      - name: Run iOS Detox Tests
         if: env.SKIP_IOS_TESTS != 'true'
         env:
           DETOX_IOS_APP_PATH: build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
+          DETOX_MAX_WORKERS: '2'
         run: |
-          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 2 ${{ matrix.test_files }}
+          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 1
 
       - name: Report iOS Test Status
         if: always() && env.SKIP_IOS_TESTS == 'true'
@@ -171,7 +150,7 @@ jobs:
         if: failure() && env.SKIP_IOS_TESTS != 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: detox-artifacts-ios-shard-${{ strategy.job-index }}
+          name: detox-artifacts-ios
           path: ${{ env.test_container_app_path }}/e2e/artifacts/
           retention-days: 7
 
