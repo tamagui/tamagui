@@ -76,25 +76,41 @@ export const ToastDemo = () => {
 }
 
 const ToastList = () => {
-  const { toasts } = useToasts()
+  const { toasts, position } = useToasts()
+  const [, xPosition] = position.split('-')
+  const closeOnLeft = xPosition === 'left'
 
   return (
     <>
       {toasts.map((t, index) => (
-        <Toast.Item key={t.id} toast={t} index={index} testID="toast-item">
-          <XStack gap="$3" alignItems="flex-start">
-            <YStack flex={1} gap="$1">
-              <Toast.Title>
+        <Toast.Item
+          key={t.id}
+          toast={t}
+          index={index}
+          testID="toast-item"
+          paddingHorizontal="$3"
+          paddingVertical="$2"
+        >
+          <XStack gap="$2">
+            <YStack flex={1} gap="$0.5">
+              <Toast.Title fontWeight="600" size="$3">
                 {typeof t.title === 'function' ? t.title() : t.title}
               </Toast.Title>
               {t.description && (
-                <Toast.Description>
+                <Toast.Description color="$color9" size="$2">
                   {typeof t.description === 'function' ? t.description() : t.description}
                 </Toast.Description>
               )}
             </YStack>
-            <Toast.Close testID="toast-close-button" />
           </XStack>
+          <Toast.Close
+            testID="toast-close-button"
+            position="absolute"
+            borderWidth={1}
+            borderColor="$color6"
+            y={-15}
+            {...(closeOnLeft ? { left: -8 } : { right: -8 })}
+          />
         </Toast.Item>
       ))}
     </>
