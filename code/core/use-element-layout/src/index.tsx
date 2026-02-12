@@ -7,6 +7,17 @@ const LayoutDisableKey = new WeakMap<HTMLElement, string>()
 const Nodes = new Set<HTMLElement>()
 const IntersectionState = new WeakMap<HTMLElement, boolean>()
 
+let _debugLayout: boolean | undefined
+
+function isDebugLayout() {
+  if (_debugLayout === undefined) {
+    _debugLayout =
+      typeof window !== 'undefined' &&
+      new URLSearchParams(window.location.search).has('__tamaDebugLayout')
+  }
+  return _debugLayout
+}
+
 // separating to avoid all re-rendering
 const DisableLayoutContextValues: Record<string, boolean> = {}
 const DisableLayoutContextKey = createContext<string>('')
@@ -137,7 +148,7 @@ if (ENABLE) {
     if (!nodeRect || !parentRect) {
       return
     }
-
+    Ø
     const cachedRect = NodeRectCache.get(node)
     const cachedParentRect = NodeRectCache.get(parentNode)
 
@@ -154,6 +165,17 @@ if (ENABLE) {
       NodeRectCache.set(parentNode, parentRect)
 
       const event = getElementLayoutEvent(nodeRect, parentRect)
+
+      if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
+        const el = node as HTMLElement
+        console.log('[useElementLayout] change', {
+          tag: el.tagName,
+          id: el.id || undefined,
+          className: (el.className || '').slice(0, 60) || undefined,
+          layout: event.nativeEvent.layout,
+          first: !cachedRect,
+        })
+      }
 
       if (avoidUpdates) {
         queuedUpdates.set(node, () => onLayout(event))
@@ -175,12 +197,22 @@ if (ENABLE) {
       const visibleNodes: HTMLElement[] = []
 
       // do a 1 rather than N IntersectionObservers for performance
+      const ioCreateTime = performance.now()
       const didRun = await new Promise<boolean>((res) => {
         const io = new IntersectionObserver(
           (entries) => {
+            const callbackDelay = Math.round(performance.now() - ioCreateTime)
             io.disconnect()
             for (const entry of entries) {
               BoundingRects.set(entry.target, entry.boundingClientRect)
+            }
+            if (callbackDelay > 50) {
+              console.warn(
+                '[onLayout-io-delay]',
+                callbackDelay + 'ms',
+                entries.length,
+                'entries'
+              )
             }
             res(true)
           },
@@ -268,18 +300,43 @@ export function useElementLayout(
       IntersectionState.set(node, true)
     }
 
+    if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
+      console.log('[useElementLayout] register', {
+        tag: node.tagName,
+        id: node.id || undefined,
+        className: (node.className || '').slice(0, 60) || undefined,
+        totalNodes: Nodes.size,
+      })
+    }
+
     // always do one immediate sync layout event no matter the strategy for accuracy
     const parentNode = node.parentNode
     if (parentNode) {
-      onLayout(
-        getElementLayoutEvent(
-          node.getBoundingClientRect(),
-          parentNode.getBoundingClientRect()
-        )
+      const event = getElementLayoutEvent(
+        node.getBoundingClientRect(),
+        parentNode.getBoundingClientRect()
       )
+
+      if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
+        console.log('[useElementLayout] initial', {
+          tag: node.tagName,
+          id: node.id || undefined,
+          layout: event.nativeEvent.layout,
+        })
+      }
+
+      onLayout(event)
     }
 
     return () => {
+      if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
+        console.log('[useElementLayout] unregister', {
+          tag: node.tagName,
+          id: node.id || undefined,
+          remainingNodes: Nodes.size - 1,
+        })
+      }
+
       Nodes.delete(node)
       LayoutHandlers.delete(node)
       NodeRectCache.delete(node)
