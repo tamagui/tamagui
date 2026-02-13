@@ -144,12 +144,12 @@ export function FlatMode() {
         } as any}
       />
 
-      {/* shorthand flat props */}
+      {/* flat props with full names and valid shorthands */}
       <View
         id="flat-shorthands"
         {...{
-          '$w': 100,
-          '$h': 100,
+          '$width': 100,
+          '$height': 100,
           '$bg': 'rgb(0,255,0)',
           '$opacity': 0.8,
         } as any}
