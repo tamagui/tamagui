@@ -84,11 +84,11 @@ test.describe('Animation Behavior', () => {
     expect(startOpacity, 'Start').toBeCloseTo(START, 1)
 
     await page.getByTestId('scenario-36-trigger').click()
-    // wait 500ms into a 1000ms animation for reliable intermediate capture
-    await page.waitForTimeout(500)
+    // wait 250ms into a 500ms animation for reliable intermediate capture
+    await page.waitForTimeout(250)
     const midOpacity = await getOpacity(page, 'scenario-36-target')
 
-    await page.waitForTimeout(1500)
+    await page.waitForTimeout(800)
     const endOpacity = await getOpacity(page, 'scenario-36-target')
 
     expect(endOpacity, 'End').toBeCloseTo(END, 1)
@@ -108,11 +108,11 @@ test.describe('Animation Behavior', () => {
     expect(startScale, 'Start').toBeCloseTo(START, 1)
 
     await page.getByTestId('scenario-36-trigger').click()
-    // wait 500ms into a 1000ms animation for reliable intermediate capture
-    await page.waitForTimeout(500)
+    // wait 250ms into a 500ms animation for reliable intermediate capture
+    await page.waitForTimeout(250)
     const midScale = await getScale(page, 'scenario-36-target')
 
-    await page.waitForTimeout(1500)
+    await page.waitForTimeout(800)
     const endScale = await getScale(page, 'scenario-36-target')
 
     expect(endScale, 'End').toBeCloseTo(END, 1)
@@ -430,8 +430,8 @@ test.describe('Animation Behavior', () => {
     // click to trigger exit animation
     await page.getByTestId('scenario-48-trigger').click()
 
-    // 1000ms animation - check at 500ms for reliable intermediate capture
-    await page.waitForTimeout(500)
+    // 500ms animation - check at 250ms for reliable intermediate capture
+    await page.waitForTimeout(250)
 
     const exists = await elementExists(page, 'scenario-48-target')
     if (exists) {
@@ -445,7 +445,7 @@ test.describe('Animation Behavior', () => {
     }
 
     // wait for animation to complete
-    await page.waitForTimeout(1500)
+    await page.waitForTimeout(800)
 
     // element should be gone after exit animation completes
     expect(await elementExists(page, 'scenario-48-target'), 'Hidden after exit').toBe(
@@ -468,7 +468,7 @@ test.describe('Animation Behavior', () => {
     )
 
     // wait for enter animation to complete if it's still running
-    await page.waitForTimeout(1200)
+    await page.waitForTimeout(800)
 
     // should be at final state (opacity: 1, scale: 1)
     expect(await getOpacity(page, 'scenario-49-target'), 'Opacity after enter').toBeCloseTo(
@@ -479,8 +479,8 @@ test.describe('Animation Behavior', () => {
     // click to trigger exit animation
     await page.getByTestId('scenario-49-trigger').click()
 
-    // check at midpoint (500ms into 1000ms animation)
-    await page.waitForTimeout(500)
+    // check at midpoint (250ms into 500ms animation)
+    await page.waitForTimeout(250)
 
     const exists = await elementExists(page, 'scenario-49-target')
     if (exists) {
@@ -493,7 +493,7 @@ test.describe('Animation Behavior', () => {
     }
 
     // wait for animation to complete
-    await page.waitForTimeout(1500)
+    await page.waitForTimeout(800)
 
     // element should be gone after exit animation completes
     expect(await elementExists(page, 'scenario-49-target'), 'Hidden after exit').toBe(

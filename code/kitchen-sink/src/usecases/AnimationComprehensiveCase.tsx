@@ -1700,7 +1700,7 @@ function Scenario36_TimingTest() {
       </Button>
       <Square
         ref={ref as any}
-        transition="1000ms"
+        transition="500ms"
         size={40}
         bg="$blue10"
         opacity={active ? 0.2 : 1}
@@ -2287,7 +2287,7 @@ function Scenario48_AnimateOnlyWithExitStyle() {
           <Square
             key="animate-only-exit-48"
             ref={ref as any}
-            transition="1000ms"
+            transition="500ms"
             animateOnly={['opacity', 'transform']}
             size={40}
             bg="$blue10"
@@ -2337,7 +2337,7 @@ function Scenario49_AnimateOnlyWithEnterExitStyle() {
           <Square
             key="animate-only-enter-exit-49"
             ref={ref as any}
-            transition="1000ms"
+            transition="500ms"
             animateOnly={['opacity', 'transform']}
             size={40}
             bg="$green10"
