@@ -233,7 +233,8 @@ function preprocessFlatProps(
         if (flatParsed) {
           const { mediaKey, pseudoKey, platformKey, themeKey, prop } = flatParsed
 
-          // build the style object to inject
+          // build the style object from innermost to outermost
+          // order: prop → pseudo → theme → platform → media
           let styleObj: any = { [prop]: value }
 
           // wrap with pseudo if present
@@ -241,32 +242,45 @@ function preprocessFlatProps(
             styleObj = { [pseudoKey]: styleObj }
           }
 
-          // determine the key to inject into
-          let injectKey: string | null = null
-
+          // wrap with theme if present (inside media)
           if (themeKey) {
-            injectKey = `$theme-${themeKey}`
-          } else if (platformKey) {
-            injectKey = `$platform-${platformKey}`
-          } else if (mediaKey) {
-            injectKey = `$${mediaKey}`
-          } else if (pseudoKey) {
-            // just pseudo, no media wrapper
-            result[pseudoKey] = result[pseudoKey]
-              ? mergeDeep(result[pseudoKey], styleObj[pseudoKey])
-              : styleObj[pseudoKey]
-            continue
-          } else {
-            // just a flat base prop like $bg (shouldn't happen with colon)
-            result[prop] = value
-            continue
+            styleObj = { [`$theme-${themeKey}`]: styleObj }
           }
 
-          // merge into the target key
-          if (injectKey) {
+          // wrap with platform if present
+          if (platformKey) {
+            styleObj = { [`$platform-${platformKey}`]: styleObj }
+          }
+
+          // determine outermost key or merge directly
+          if (mediaKey) {
+            // media is outermost wrapper
+            const injectKey = `$${mediaKey}`
             result[injectKey] = result[injectKey]
               ? mergeDeep(result[injectKey], styleObj)
               : styleObj
+          } else if (platformKey && !themeKey) {
+            // just platform, no media
+            const injectKey = `$platform-${platformKey}`
+            result[injectKey] = result[injectKey]
+              ? mergeDeep(result[injectKey], styleObj[injectKey])
+              : styleObj[injectKey]
+          } else if (themeKey && !mediaKey && !platformKey) {
+            // just theme, no media/platform
+            const injectKey = `$theme-${themeKey}`
+            result[injectKey] = result[injectKey]
+              ? mergeDeep(result[injectKey], styleObj[injectKey])
+              : styleObj[injectKey]
+          } else if (pseudoKey && !mediaKey && !platformKey && !themeKey) {
+            // just pseudo, no other wrappers
+            result[pseudoKey] = result[pseudoKey]
+              ? mergeDeep(result[pseudoKey], styleObj[pseudoKey])
+              : styleObj[pseudoKey]
+          } else {
+            // complex nesting - merge the whole structure into result
+            for (const k in styleObj) {
+              result[k] = result[k] ? mergeDeep(result[k], styleObj[k]) : styleObj[k]
+            }
           }
           continue
         }

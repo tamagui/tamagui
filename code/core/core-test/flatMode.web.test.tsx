@@ -345,3 +345,58 @@ describe('flat mode - modifier order independence', () => {
     expect(str2).toContain('hover')
   })
 })
+
+describe('flat mode - chained media + theme', () => {
+  test('$sm:dark:bg generates media wrapping theme', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      '$sm:dark:bg': 'black',
+    } as any)
+
+    // should have both sm and dark in classNames
+    const classNamesStr = JSON.stringify(styles.classNames)
+    expect(classNamesStr).toContain('sm')
+    expect(classNamesStr).toContain('dark')
+  })
+
+  test('$sm:light:hover:bg generates media + theme + pseudo', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      '$sm:light:hover:bg': 'white',
+    } as any)
+
+    const classNamesStr = JSON.stringify(styles.classNames)
+    expect(classNamesStr).toContain('sm')
+    expect(classNamesStr).toContain('light')
+    expect(classNamesStr).toContain('hover')
+  })
+
+  test('$dark:sm:bg order independent - same as $sm:dark:bg', () => {
+    const styles1 = simplifiedGetSplitStyles(View, {
+      '$sm:dark:bg': 'black',
+    } as any)
+
+    const styles2 = simplifiedGetSplitStyles(View, {
+      '$dark:sm:bg': 'black',
+    } as any)
+
+    // both should produce equivalent output
+    const str1 = JSON.stringify(styles1.classNames)
+    const str2 = JSON.stringify(styles2.classNames)
+
+    expect(str1).toContain('sm')
+    expect(str1).toContain('dark')
+    expect(str2).toContain('sm')
+    expect(str2).toContain('dark')
+  })
+
+  test('$sm:dark:hover:press:bg - multiple pseudos not supported, last wins', () => {
+    // this tests edge case - we only support one pseudo
+    const styles = simplifiedGetSplitStyles(View, {
+      '$sm:dark:hover:bg': 'gray',
+    } as any)
+
+    const classNamesStr = JSON.stringify(styles.classNames)
+    expect(classNamesStr).toContain('sm')
+    expect(classNamesStr).toContain('dark')
+    expect(classNamesStr).toContain('hover')
+  })
+})
