@@ -281,14 +281,24 @@ export function V5ThemeBuilderOutput() {
             </Card>
           </Theme>
           <Theme name="red">
-            <Card padding="$3" backgroundColor="$background" minWidth={140}>
+            <Card
+              testID="card-red"
+              padding="$3"
+              backgroundColor="$background"
+              minWidth={140}
+            >
               <Button testID="button-red" size="$3">
                 Red
               </Button>
             </Card>
           </Theme>
           <Theme name="green">
-            <Card padding="$3" backgroundColor="$background" minWidth={140}>
+            <Card
+              testID="card-green"
+              padding="$3"
+              backgroundColor="$background"
+              minWidth={140}
+            >
               <Button testID="button-green" size="$3">
                 Green
               </Button>
