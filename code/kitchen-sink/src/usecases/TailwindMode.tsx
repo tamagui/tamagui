@@ -3,39 +3,20 @@ import { View, Text, YStack, XStack } from 'tamagui'
 // test tailwind className syntax
 // note: this requires styleMode: 'tailwind' in config
 
-const BasicClass = () => (
-  <View
-    id="tailwind-basic"
-    className="w-100 h-50 bg-red"
-  />
-)
+const BasicClass = () => <View id="tailwind-basic" className="w-100 h-50 bg-red" />
 
 const HoverClass = () => (
-  <View
-    id="tailwind-hover"
-    className="w-100 h-50 bg-green hover:bg-blue"
-  />
+  <View id="tailwind-hover" className="w-100 h-50 bg-green hover:bg-blue" />
 )
 
 const MediaClass = () => (
-  <View
-    id="tailwind-media"
-    className="w-100 h-50 bg-yellow sm:bg-purple"
-  />
+  <View id="tailwind-media" className="w-100 h-50 bg-yellow sm:bg-purple" />
 )
 
-const TokenClass = () => (
-  <View
-    id="tailwind-token"
-    className="w-100 h-50 bg-background"
-  />
-)
+const TokenClass = () => <View id="tailwind-token" className="w-100 h-50 bg-background" />
 
 const CombinedClass = () => (
-  <View
-    id="tailwind-combined"
-    className="w-100 h-50 bg-gray sm:hover:bg-orange"
-  />
+  <View id="tailwind-combined" className="w-100 h-50 bg-gray sm:hover:bg-orange" />
 )
 
 const MixedClasses = () => (
@@ -47,10 +28,7 @@ const MixedClasses = () => (
 
 // visual comparison - tailwind syntax vs regular tamagui syntax (should be identical)
 const TailwindVisualBasic = () => (
-  <View
-    id="tailwind-visual-basic"
-    className="w-100 h-100 bg-red rounded-8 p-10"
-  />
+  <View id="tailwind-visual-basic" className="w-100 h-100 bg-red rounded-8 p-10" />
 )
 
 const RegularVisualBasic = () => (
@@ -65,10 +43,7 @@ const RegularVisualBasic = () => (
 )
 
 const TailwindVisualHover = () => (
-  <View
-    id="tailwind-visual-hover"
-    className="w-100 h-100 bg-green hover:bg-blue"
-  />
+  <View id="tailwind-visual-hover" className="w-100 h-100 bg-green hover:bg-blue" />
 )
 
 const RegularVisualHover = () => (
@@ -83,10 +58,7 @@ const RegularVisualHover = () => (
 
 // token-based visual comparisons - use same literal values
 const TailwindVisualToken = () => (
-  <View
-    id="tailwind-visual-token"
-    className="w-100 h-100 bg-background rounded-8 p-10"
-  />
+  <View id="tailwind-visual-token" className="w-100 h-100 bg-background rounded-8 p-10" />
 )
 
 const RegularVisualToken = () => (
@@ -102,10 +74,7 @@ const RegularVisualToken = () => (
 
 // media query visual comparison
 const TailwindVisualMedia = () => (
-  <View
-    id="tailwind-visual-media"
-    className="w-100 h-100 bg-red sm:bg-green"
-  />
+  <View id="tailwind-visual-media" className="w-100 h-100 bg-red sm:bg-green" />
 )
 
 const RegularVisualMedia = () => (

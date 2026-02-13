@@ -17,13 +17,13 @@ const RegularBase = () => (
 const FlatBase = () => (
   <View
     id="flat-base"
-    {...{
-      '$width': 100,
-      '$height': 100,
-      '$bg': 'rgb(255,0,0)',
-      '$p': 10,
-      '$rounded': 8,
-    } as any}
+    {...({
+      $width: 100,
+      $height: 100,
+      $bg: 'rgb(255,0,0)',
+      $p: 10,
+      $rounded: 8,
+    } as any)}
   />
 )
 
@@ -43,10 +43,10 @@ const FlatHover = () => (
     id="flat-hover"
     width={100}
     height={100}
-    {...{
-      '$bg': 'rgb(0,255,0)',
+    {...({
+      $bg: 'rgb(0,255,0)',
       '$hover:bg': 'rgb(0,0,255)',
-    } as any}
+    } as any)}
   />
 )
 
@@ -66,10 +66,10 @@ const FlatPress = () => (
     id="flat-press"
     width={100}
     height={100}
-    {...{
-      '$bg': 'rgb(0,255,0)',
+    {...({
+      $bg: 'rgb(0,255,0)',
       '$press:bg': 'rgb(255,0,0)',
-    } as any}
+    } as any)}
   />
 )
 
@@ -90,11 +90,11 @@ const FlatMedia = () => (
     id="flat-media"
     width={100}
     height={100}
-    {...{
-      '$bg': 'rgb(255,0,0)',
+    {...({
+      $bg: 'rgb(255,0,0)',
       '$sm:bg': 'rgb(0,255,0)',
       '$md:bg': 'rgb(0,0,255)',
-    } as any}
+    } as any)}
   />
 )
 
@@ -114,10 +114,10 @@ const FlatMediaHover = () => (
     id="flat-media-hover"
     width={100}
     height={100}
-    {...{
-      '$bg': 'rgb(255,0,0)',
+    {...({
+      $bg: 'rgb(255,0,0)',
       '$sm:hover:bg': 'rgb(0,0,255)',
-    } as any}
+    } as any)}
   />
 )
 
@@ -134,12 +134,12 @@ const StyledButton = styled(View, {
 })
 
 const StyledButtonFlat = styled(View, {
-  '$width': 120,
-  '$height': 44,
-  '$bg': 'rgb(100,100,255)',
-  '$rounded': 8,
-  '$ai': 'center',
-  '$jc': 'center',
+  $width: 120,
+  $height: 44,
+  $bg: 'rgb(100,100,255)',
+  $rounded: 8,
+  $ai: 'center',
+  $jc: 'center',
   '$hover:bg': 'rgb(80,80,200)',
   '$press:bg': 'rgb(60,60,180)',
   '$press:scale': 0.98,
@@ -167,18 +167,18 @@ const RegularComplex = () => (
 const FlatComplex = () => (
   <View
     id="flat-complex"
-    {...{
-      '$width': 150,
-      '$height': 150,
-      '$bg': 'rgb(200,200,200)',
-      '$p': 16,
-      '$m': 8,
-      '$rounded': 12,
-      '$borderWidth': 2,
-      '$borderColor': 'rgb(100,100,100)',
+    {...({
+      $width: 150,
+      $height: 150,
+      $bg: 'rgb(200,200,200)',
+      $p: 16,
+      $m: 8,
+      $rounded: 12,
+      $borderWidth: 2,
+      $borderColor: 'rgb(100,100,100)',
       '$hover:bg': 'rgb(180,180,180)',
       '$hover:borderColor': 'rgb(80,80,80)',
-    } as any}
+    } as any)}
   />
 )
 

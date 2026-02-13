@@ -1,12 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import {
-  View,
-  createTamagui,
-  StyleObjectProperty,
-  StyleObjectValue,
-} from '../web/src'
+import { View, createTamagui, StyleObjectProperty, StyleObjectValue } from '../web/src'
 import { StyleObjectPseudo, StyleObjectIdentifier } from '@tamagui/helpers'
 import { simplifiedGetSplitStyles } from './utils'
 
@@ -19,7 +14,11 @@ function findRule(rulesToInsert: any, prop: string, pseudo?: string) {
       // if pseudo is specified, match it; if undefined, match base styles (no pseudo)
       if (pseudo === undefined) {
         // for base styles, ensure no pseudo and no media prefix in identifier
-        if (r[StyleObjectPseudo] === undefined && !r[StyleObjectIdentifier]?.includes('_sm') && !r[StyleObjectIdentifier]?.includes('_md')) {
+        if (
+          r[StyleObjectPseudo] === undefined &&
+          !r[StyleObjectIdentifier]?.includes('_sm') &&
+          !r[StyleObjectIdentifier]?.includes('_md')
+        ) {
           return r
         }
       } else if (r[StyleObjectPseudo] === pseudo) {
@@ -40,7 +39,7 @@ describe('flat mode gating - styleMode not set (default)', () => {
 
   test('$bg prop is passed through as-is, not transformed', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      '$bg': 'red',
+      $bg: 'red',
     } as any)
 
     // without flat mode, $bg should NOT be transformed to backgroundColor
@@ -54,7 +53,7 @@ describe('flat mode gating - styleMode not set (default)', () => {
     } as any)
 
     // without flat mode, $hover:bg should NOT create hover styles
-    const hoverKeys = Object.keys(styles.classNames).filter(k => k.includes('hover'))
+    const hoverKeys = Object.keys(styles.classNames).filter((k) => k.includes('hover'))
     expect(hoverKeys.length).toBe(0)
   })
 
@@ -65,7 +64,9 @@ describe('flat mode gating - styleMode not set (default)', () => {
 
     // without flat mode, $sm:bg should NOT create media styles
     // (the $sm key with colon should be ignored as it's not a valid media prop)
-    const smKeys = Object.keys(styles.classNames).filter(k => k.includes('sm') && k.includes('bg'))
+    const smKeys = Object.keys(styles.classNames).filter(
+      (k) => k.includes('sm') && k.includes('bg')
+    )
     expect(smKeys.length).toBe(0)
   })
 
@@ -73,7 +74,7 @@ describe('flat mode gating - styleMode not set (default)', () => {
     const styles = simplifiedGetSplitStyles(View, {
       backgroundColor: 'red',
       hoverStyle: { backgroundColor: 'blue' },
-      '$sm': { backgroundColor: 'gray' },
+      $sm: { backgroundColor: 'gray' },
     } as any)
 
     // on web, base styles go to classNames/rulesToInsert, not inline style
@@ -83,10 +84,10 @@ describe('flat mode gating - styleMode not set (default)', () => {
     expect(bgRule[StyleObjectValue]).toBe('red')
 
     // pseudo and media styles go to classNames
-    const hoverKeys = Object.keys(styles.classNames).filter(k => k.includes('hover'))
+    const hoverKeys = Object.keys(styles.classNames).filter((k) => k.includes('hover'))
     expect(hoverKeys.length).toBeGreaterThan(0)
 
-    const smKeys = Object.keys(styles.classNames).filter(k => k.includes('sm'))
+    const smKeys = Object.keys(styles.classNames).filter((k) => k.includes('sm'))
     expect(smKeys.length).toBeGreaterThan(0)
   })
 })
@@ -105,7 +106,7 @@ describe('flat mode gating - styleMode: "tamagui" (explicit default)', () => {
 
   test('$bg prop is not transformed when styleMode is tamagui', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      '$bg': 'red',
+      $bg: 'red',
     } as any)
 
     // should NOT be transformed

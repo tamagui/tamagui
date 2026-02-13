@@ -337,11 +337,32 @@ const TAILWIND_BUILTIN_SHORTHANDS: Record<string, string> = {
 
 // props that expect numeric/spacing values
 const SPACING_PROPS = new Set([
-  'width', 'height', 'margin', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft',
-  'marginHorizontal', 'marginVertical', 'padding', 'paddingTop', 'paddingRight',
-  'paddingBottom', 'paddingLeft', 'paddingHorizontal', 'paddingVertical',
-  'borderRadius', 'borderWidth', 'gap', 'rowGap', 'columnGap',
-  'top', 'right', 'bottom', 'left', 'inset',
+  'width',
+  'height',
+  'margin',
+  'marginTop',
+  'marginRight',
+  'marginBottom',
+  'marginLeft',
+  'marginHorizontal',
+  'marginVertical',
+  'padding',
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+  'paddingHorizontal',
+  'paddingVertical',
+  'borderRadius',
+  'borderWidth',
+  'gap',
+  'rowGap',
+  'columnGap',
+  'top',
+  'right',
+  'bottom',
+  'left',
+  'inset',
 ])
 
 /**
@@ -432,10 +453,10 @@ function tailwindClassToFlatProp(
 
   // build the flat prop key - use the expanded prop name for built-in shorthands
   // when user shorthands don't include the abbreviation
-  const finalProp = !isUserShorthand && isBuiltinShorthand
-    ? TAILWIND_BUILTIN_SHORTHANDS[prop]
-    : prop
-  const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${finalProp}` : `$${finalProp}`
+  const finalProp =
+    !isUserShorthand && isBuiltinShorthand ? TAILWIND_BUILTIN_SHORTHANDS[prop] : prop
+  const key =
+    modifiers.length > 0 ? `$${modifiers.join(':')}:${finalProp}` : `$${finalProp}`
 
   return { key, value }
 }
@@ -554,7 +575,11 @@ function preprocessFlatProps(
           const expandedProp = shorthands?.[propName] || propName
 
           // check if it's a valid style prop
-          if (shorthands?.[propName] || isLikelyStyleProp(propName) || isLikelyStyleProp(expandedProp)) {
+          if (
+            shorthands?.[propName] ||
+            isLikelyStyleProp(propName) ||
+            isLikelyStyleProp(expandedProp)
+          ) {
             result[expandedProp] = value
             continue
           }
@@ -584,21 +609,81 @@ function preprocessFlatProps(
 // shorthands must be in user's config to work
 function isLikelyStyleProp(name: string): boolean {
   const styleProps = [
-    'backgroundColor', 'color', 'opacity', 'padding', 'margin', 'width', 'height',
-    'minWidth', 'minHeight', 'maxWidth', 'maxHeight', 'flex', 'flexDirection',
-    'flexWrap', 'flexGrow', 'flexShrink', 'alignItems', 'alignContent', 'alignSelf',
-    'justifyContent', 'position', 'top', 'right', 'bottom', 'left', 'zIndex',
-    'borderWidth', 'borderColor', 'borderStyle', 'borderRadius', 'overflow',
-    'display', 'gap', 'rowGap', 'columnGap', 'cursor', 'pointerEvents', 'userSelect',
-    'fontSize', 'fontWeight', 'fontFamily', 'fontStyle', 'lineHeight', 'letterSpacing',
-    'textAlign', 'textTransform', 'textDecoration', 'transform', 'scale', 'rotate',
-    'translateX', 'translateY', 'boxShadow', 'textShadow', 'outline',
-    'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft',
-    'paddingHorizontal', 'paddingVertical',
-    'marginTop', 'marginRight', 'marginBottom', 'marginLeft',
-    'marginHorizontal', 'marginVertical',
-    'borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth',
-    'borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius', 'borderBottomRightRadius',
+    'backgroundColor',
+    'color',
+    'opacity',
+    'padding',
+    'margin',
+    'width',
+    'height',
+    'minWidth',
+    'minHeight',
+    'maxWidth',
+    'maxHeight',
+    'flex',
+    'flexDirection',
+    'flexWrap',
+    'flexGrow',
+    'flexShrink',
+    'alignItems',
+    'alignContent',
+    'alignSelf',
+    'justifyContent',
+    'position',
+    'top',
+    'right',
+    'bottom',
+    'left',
+    'zIndex',
+    'borderWidth',
+    'borderColor',
+    'borderStyle',
+    'borderRadius',
+    'overflow',
+    'display',
+    'gap',
+    'rowGap',
+    'columnGap',
+    'cursor',
+    'pointerEvents',
+    'userSelect',
+    'fontSize',
+    'fontWeight',
+    'fontFamily',
+    'fontStyle',
+    'lineHeight',
+    'letterSpacing',
+    'textAlign',
+    'textTransform',
+    'textDecoration',
+    'transform',
+    'scale',
+    'rotate',
+    'translateX',
+    'translateY',
+    'boxShadow',
+    'textShadow',
+    'outline',
+    'paddingTop',
+    'paddingRight',
+    'paddingBottom',
+    'paddingLeft',
+    'paddingHorizontal',
+    'paddingVertical',
+    'marginTop',
+    'marginRight',
+    'marginBottom',
+    'marginLeft',
+    'marginHorizontal',
+    'marginVertical',
+    'borderTopWidth',
+    'borderRightWidth',
+    'borderBottomWidth',
+    'borderLeftWidth',
+    'borderTopLeftRadius',
+    'borderTopRightRadius',
+    'borderBottomLeftRadius',
+    'borderBottomRightRadius',
   ]
   return styleProps.includes(name)
 }

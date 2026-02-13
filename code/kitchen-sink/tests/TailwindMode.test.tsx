@@ -25,19 +25,25 @@ test('tailwind hover - hovered state has blue background', async ({ page }) => {
   expect(styles.backgroundColor).toBe('rgb(0, 0, 255)')
 })
 
-test('tailwind token - className="bg-background" auto-resolves token', async ({ page }) => {
+test('tailwind token - className="bg-background" auto-resolves token', async ({
+  page,
+}) => {
   const styles = await getStyles(page.locator('#tailwind-token').first())
   // token should auto-resolve to actual color (no $ prefix needed)
   expect(styles.backgroundColor).toMatch(/^rgb/)
 })
 
-test('tailwind combined - className="sm:hover:bg-orange" renders base state', async ({ page }) => {
+test('tailwind combined - className="sm:hover:bg-orange" renders base state', async ({
+  page,
+}) => {
   const styles = await getStyles(page.locator('#tailwind-combined').first())
   // base color should be gray
   expect(styles.backgroundColor).toBe('rgb(128, 128, 128)')
 })
 
-test('tailwind mixed - preserves regular classes and processes tailwind classes', async ({ page }) => {
+test('tailwind mixed - preserves regular classes and processes tailwind classes', async ({
+  page,
+}) => {
   const el = page.locator('#tailwind-mixed').first()
   const styles = await getStyles(el)
   // tailwind class bg-pink should be processed

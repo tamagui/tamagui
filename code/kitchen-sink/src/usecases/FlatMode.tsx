@@ -2,23 +2,23 @@ import { View, Text, XStack, YStack, styled } from 'tamagui'
 
 // styled component with flat props for testing
 const StyledFlat = styled(View, {
-  '$bg': 'rgb(255,0,0)',
-  '$p': 10,
-  '$rounded': 8,
+  $bg: 'rgb(255,0,0)',
+  $p: 10,
+  $rounded: 8,
 } as any)
 
 const StyledFlatHover = styled(View, {
-  '$bg': 'rgb(0,255,0)',
+  $bg: 'rgb(0,255,0)',
   '$hover:bg': 'rgb(0,0,255)',
 } as any)
 
 const StyledFlatMedia = styled(View, {
-  '$bg': 'rgb(255,0,0)',
+  $bg: 'rgb(255,0,0)',
   '$sm:bg': 'rgb(0,255,0)',
 } as any)
 
 const StyledFlatCombined = styled(View, {
-  '$bg': 'rgb(255,0,0)',
+  $bg: 'rgb(255,0,0)',
   '$sm:hover:bg': 'rgb(0,0,255)',
 } as any)
 
@@ -30,7 +30,7 @@ export function FlatMode() {
         id="flat-base"
         width={100}
         height={100}
-        {...{ '$bg': 'rgb(255,0,0)' } as any}
+        {...({ $bg: 'rgb(255,0,0)' } as any)}
       />
 
       {/* flat with token */}
@@ -38,7 +38,7 @@ export function FlatMode() {
         id="flat-token"
         width={100}
         height={100}
-        {...{ '$bg': '$background' } as any}
+        {...({ $bg: '$background' } as any)}
       />
 
       {/* flat pseudo */}
@@ -46,10 +46,10 @@ export function FlatMode() {
         id="flat-hover"
         width={100}
         height={100}
-        {...{
-          '$bg': 'rgb(0,255,0)',
+        {...({
+          $bg: 'rgb(0,255,0)',
           '$hover:bg': 'rgb(0,0,255)',
-        } as any}
+        } as any)}
       />
 
       {/* flat press */}
@@ -57,10 +57,10 @@ export function FlatMode() {
         id="flat-press"
         width={100}
         height={100}
-        {...{
-          '$bg': 'rgb(0,255,0)',
+        {...({
+          $bg: 'rgb(0,255,0)',
           '$press:bg': 'rgb(255,0,0)',
-        } as any}
+        } as any)}
       />
 
       {/* flat media - will be green on sm+ */}
@@ -68,10 +68,10 @@ export function FlatMode() {
         id="flat-media-sm"
         width={100}
         height={100}
-        {...{
-          '$bg': 'rgb(255,0,0)',
+        {...({
+          $bg: 'rgb(255,0,0)',
           '$sm:bg': 'rgb(0,255,0)',
-        } as any}
+        } as any)}
       />
 
       {/* control: regular syntax for comparison */}
@@ -88,10 +88,10 @@ export function FlatMode() {
         id="flat-sm-hover"
         width={100}
         height={100}
-        {...{
-          '$bg': 'rgb(255,0,0)',
+        {...({
+          $bg: 'rgb(255,0,0)',
           '$sm:hover:bg': 'rgb(0,0,255)',
-        } as any}
+        } as any)}
       />
 
       {/* flat theme */}
@@ -99,10 +99,10 @@ export function FlatMode() {
         id="flat-dark"
         width={100}
         height={100}
-        {...{
-          '$bg': 'rgb(255,0,0)',
+        {...({
+          $bg: 'rgb(255,0,0)',
           '$dark:bg': 'rgb(0,0,0)',
-        } as any}
+        } as any)}
       />
 
       {/* flat platform */}
@@ -111,9 +111,9 @@ export function FlatMode() {
         width={100}
         height={100}
         backgroundColor="rgb(255,0,0)"
-        {...{
+        {...({
           '$web:cursor': 'pointer',
-        } as any}
+        } as any)}
       />
 
       {/* styled component with flat props */}
@@ -126,9 +126,9 @@ export function FlatMode() {
         height={100}
         backgroundColor="rgb(255,0,0)"
         hoverStyle={{ opacity: 0.8 }}
-        {...{
+        {...({
           '$press:bg': 'rgb(0,255,0)',
-        } as any}
+        } as any)}
       />
 
       {/* multiple flat props */}
@@ -136,23 +136,23 @@ export function FlatMode() {
         id="flat-multiple"
         width={100}
         height={100}
-        {...{
-          '$bg': 'rgb(255,0,0)',
-          '$p': 20,
-          '$m': 10,
-          '$rounded': 8,
-        } as any}
+        {...({
+          $bg: 'rgb(255,0,0)',
+          $p: 20,
+          $m: 10,
+          $rounded: 8,
+        } as any)}
       />
 
       {/* flat props with full names and valid shorthands */}
       <View
         id="flat-shorthands"
-        {...{
-          '$width': 100,
-          '$height': 100,
-          '$bg': 'rgb(0,255,0)',
-          '$opacity': 0.8,
-        } as any}
+        {...({
+          $width: 100,
+          $height: 100,
+          $bg: 'rgb(0,255,0)',
+          $opacity: 0.8,
+        } as any)}
       />
     </YStack>
   )

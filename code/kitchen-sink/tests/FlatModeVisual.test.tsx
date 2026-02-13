@@ -25,7 +25,9 @@ test(`base styles - flat vs regular should be identical`, async ({ page }) => {
   expect(flatStyles.borderRadius).toBe(regularStyles.borderRadius)
 })
 
-test(`hover styles - flat vs regular base state should be identical`, async ({ page }) => {
+test(`hover styles - flat vs regular base state should be identical`, async ({
+  page,
+}) => {
   const regular = page.locator('#regular-hover').first()
   const flat = page.locator('#flat-hover').first()
 
@@ -35,7 +37,9 @@ test(`hover styles - flat vs regular base state should be identical`, async ({ p
   expect(flatStyles.backgroundColor).toBe(regularStyles.backgroundColor)
 })
 
-test(`hover styles - flat vs regular hovered state should be identical`, async ({ page }) => {
+test(`hover styles - flat vs regular hovered state should be identical`, async ({
+  page,
+}) => {
   const regular = page.locator('#regular-hover').first()
   const flat = page.locator('#flat-hover').first()
 
@@ -50,7 +54,9 @@ test(`hover styles - flat vs regular hovered state should be identical`, async (
   expect(flatStyles.backgroundColor).toBe(regularStyles.backgroundColor)
 })
 
-test(`press styles - flat vs regular base state should be identical`, async ({ page }) => {
+test(`press styles - flat vs regular base state should be identical`, async ({
+  page,
+}) => {
   const regular = page.locator('#regular-press').first()
   const flat = page.locator('#flat-press').first()
 
@@ -60,7 +66,9 @@ test(`press styles - flat vs regular base state should be identical`, async ({ p
   expect(flatStyles.backgroundColor).toBe(regularStyles.backgroundColor)
 })
 
-test(`press styles - flat vs regular pressed state should be identical`, async ({ page }) => {
+test(`press styles - flat vs regular pressed state should be identical`, async ({
+  page,
+}) => {
   const regular = page.locator('#regular-press').first()
   const flat = page.locator('#flat-press').first()
 
@@ -138,7 +146,9 @@ test(`complex multi-prop - flat vs regular should be identical`, async ({ page }
   expect(flatStyles.borderTopColor).toBe(regularStyles.borderTopColor)
 })
 
-test(`complex multi-prop hover - flat vs regular should be identical`, async ({ page }) => {
+test(`complex multi-prop hover - flat vs regular should be identical`, async ({
+  page,
+}) => {
   const regular = page.locator('#regular-complex').first()
   const flat = page.locator('#flat-complex').first()
 

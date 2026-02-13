@@ -1158,11 +1158,16 @@ export interface GenericTamaguiSettings {
    * - Array: Enable multiple modes ['tamagui', 'flat']
    * - Object: Fine-grained control { tamagui: true, flat: true, tailwind: true }
    */
-  styleMode?: 'flat' | 'tamagui' | 'tailwind' | ('flat' | 'tamagui' | 'tailwind')[] | {
-    flat?: boolean
-    tamagui?: boolean
-    tailwind?: boolean
-  }
+  styleMode?:
+    | 'flat'
+    | 'tamagui'
+    | 'tailwind'
+    | ('flat' | 'tamagui' | 'tailwind')[]
+    | {
+        flat?: boolean
+        tamagui?: boolean
+        tailwind?: boolean
+      }
 
   /**
    * Define a default font, for better types and default font on Text
@@ -1913,7 +1918,15 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 // Full type checking for flat props happens at runtime during preprocessing.
 
 // flat pseudo modifiers (without Style suffix)
-type FlatPseudoKey = 'hover' | 'press' | 'focus' | 'focus-visible' | 'focus-within' | 'disabled' | 'enter' | 'exit'
+type FlatPseudoKey =
+  | 'hover'
+  | 'press'
+  | 'focus'
+  | 'focus-visible'
+  | 'focus-within'
+  | 'disabled'
+  | 'enter'
+  | 'exit'
 
 // flat theme modifiers (common ones, custom themes covered by catch-all)
 type FlatThemeKey = 'dark' | 'light'
@@ -1941,8 +1954,7 @@ export type WithFlatModifierProps = {
 }
 
 // combined flat props (typed base shorthands + loose modifiers)
-export type WithFlatProps<StyleProps> =
-  WithFlatBaseProps<StyleProps> &
+export type WithFlatProps<StyleProps> = WithFlatBaseProps<StyleProps> &
   WithFlatModifierProps
 
 // MUST EXPORT ALL IN BETWEEN or else it expands declarations like crazy

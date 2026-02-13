@@ -85,7 +85,7 @@ Values automatically resolve to tokens when they match a token name:
 
 ## Built-in Shorthands
 
-These shorthands work automatically, even without configuration:
+These shorthands work automatically:
 
 | Shorthand | Property |
 |-----------|----------|
@@ -100,7 +100,8 @@ These shorthands work automatically, even without configuration:
 | `mx`, `my` | marginHorizontal, marginVertical |
 | `rounded` | borderRadius |
 | `border` | borderWidth |
-| `text` | color |
+
+Your configured shorthands are also available.
 
 ## Examples
 
@@ -134,25 +135,48 @@ Tailwind classes work alongside regular Tamagui props:
 />
 ```
 
-Non-Tailwind classes are preserved:
+## Class Preservation
+
+Only recognized Tailwind-style classes are processed. All other classes are preserved:
 
 ```tsx
 <View className="my-custom-class bg-blue5 another-class text-center" />
-// bg-blue5 is processed into styles
-// my-custom-class, another-class, text-center are kept in className
+// Result:
+// - bg-blue5 → converted to backgroundColor style
+// - my-custom-class, another-class, text-center → preserved in className
 ```
+
+### What Gets Processed
+
+A class is processed as Tailwind syntax when:
+1. It has a known prop prefix (e.g., `bg-`, `p-`, `w-`)
+2. The value is valid (numeric, token reference, or simple CSS value)
+
+### What Gets Preserved
+
+These are kept as regular CSS classes:
+- Classes without dashes: `container`, `flex`
+- Classes with unknown props: `my-custom-class`, `foo-bar`
+- Classes with invalid values: `my-theme` (not a valid spacing value)
+- Ambiguous classes: `text-center` (could mean text-align, not color)
 
 ## How It Works
 
-1. className string is parsed into individual classes
-2. Classes are checked against known style properties and shorthands
-3. Only classes with valid prop-value patterns are processed (e.g., `bg-red`, `w-100`)
-4. Classes like `my-custom-class` or `text-center` are preserved
-5. Values are checked against your token config for auto-resolution
-6. Modifiers like `hover:`, `sm:` are converted to Tamagui's style system
+1. className string is split into individual classes
+2. Each class is checked against known shorthands and style props
+3. Classes with valid prop-value patterns are converted to flat props
+4. Unrecognized classes are preserved in the final className
+5. Token values are auto-resolved when they match your config
+6. Modifiers (`hover:`, `sm:`, `dark:`) wrap styles appropriately
 
-## Performance
+## Value Validation
 
-- Zero runtime overhead for static values
-- Same atomic CSS extraction as regular Tamagui
-- Works with Tamagui compiler for optimal output
+For spacing/sizing props (`w`, `h`, `m`, `p`, etc.), values must be:
+- Numeric: `w-100`, `p-4`
+- Token references: `p-$4`, `m-$spacing`
+
+This prevents false matches like `my-custom-class` being parsed as `marginVertical: custom-class`.
+
+For color props (`bg`, `color`), values can also be:
+- CSS color names: `bg-red`, `bg-purple`
+- Color variants: `bg-blue-500`
