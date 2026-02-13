@@ -661,7 +661,6 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       <TamaguiView
         passThrough={passThrough}
         ref={contentRefs}
-        contain="layout style"
         {...(passThrough ? null : floatingProps)}
         {...(!passThrough &&
           animatePos && {
