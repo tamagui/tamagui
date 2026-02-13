@@ -673,7 +673,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 }
 
 // infer type from config shape if not explicitly set, always returns a copy
-function withInferredType(config: AnimationConfig): AnimationConfig {
+function withInferredType(config: AnimationConfig | undefined): AnimationConfig {
+  if (!config) {
+    return { type: 'spring' }
+  }
   const isTimingBased =
     config.duration !== undefined &&
     config.damping === undefined &&
