@@ -164,12 +164,7 @@ export function V5ThemeBuilderOutput() {
               borderRadius="$4"
               minWidth={200}
             >
-              <Button
-                testID="button-accent-light"
-                backgroundColor="$accent7"
-                color="$accent12"
-                size="$4"
-              >
+              <Button testID="button-accent-light" backgroundColor="$accent7" size="$4">
                 Accent Light Button
               </Button>
               <XStack gap="$2" marginTop="$2">
@@ -207,12 +202,7 @@ export function V5ThemeBuilderOutput() {
                 borderRadius="$4"
                 minWidth={200}
               >
-                <Button
-                  testID="button-accent-dark"
-                  backgroundColor="$accent7"
-                  color="$accent12"
-                  size="$4"
-                >
+                <Button testID="button-accent-dark" backgroundColor="$accent7" size="$4">
                   Accent Dark Button
                 </Button>
                 <XStack gap="$2" marginTop="$2">
