@@ -65,10 +65,14 @@ describe('flat mode - pseudo modifiers', () => {
       '$hover:bg': 'blue',
     } as any)
 
-    // check for hover class with proper pattern
+    // find hover key and verify it exists with expected pattern
     const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
-    expect(hoverKey).toBeTruthy()
-    expect(styles.classNames[hoverKey!]).toContain('0hover')
+    expect(hoverKey).toBeDefined()
+    expect(typeof hoverKey).toBe('string')
+    // verify the class name contains hover pseudo pattern
+    const hoverClassName = styles.classNames[hoverKey!]
+    expect(hoverClassName).toMatch(/0hover/)
+    expect(hoverClassName).toMatch(/_bg-/)
   })
 
   test('$press:opacity="0.5" generates active/press style', () => {
@@ -77,8 +81,12 @@ describe('flat mode - pseudo modifiers', () => {
     } as any)
 
     const pressKey = Object.keys(styles.classNames).find(k => k.includes('press') || k.includes('active'))
-    expect(pressKey).toBeTruthy()
-    expect(styles.classNames[pressKey!]).toContain('active')
+    expect(pressKey).toBeDefined()
+    expect(typeof pressKey).toBe('string')
+    // verify the class name contains active pseudo pattern (press maps to :active in CSS)
+    const pressClassName = styles.classNames[pressKey!]
+    expect(pressClassName).toMatch(/active/)
+    expect(pressClassName).toMatch(/_o-/)
   })
 
   test('$focus:borderColor="green" generates focus style', () => {
@@ -87,8 +95,11 @@ describe('flat mode - pseudo modifiers', () => {
     } as any)
 
     const focusKey = Object.keys(styles.classNames).find(k => k.includes('focus'))
-    expect(focusKey).toBeTruthy()
-    expect(styles.classNames[focusKey!]).toContain('focus')
+    expect(focusKey).toBeDefined()
+    expect(typeof focusKey).toBe('string')
+    // verify the class name contains focus pseudo pattern
+    const focusClassName = styles.classNames[focusKey!]
+    expect(focusClassName).toMatch(/focus/)
   })
 
   test('$disabled:opacity="0.3" generates disabled style', () => {
@@ -405,16 +416,20 @@ describe('flat mode - chained media + theme', () => {
     expect(str2).toContain('dark')
   })
 
-  test('$sm:dark:hover:press:bg - multiple pseudos not supported, last wins', () => {
-    // this tests edge case - we only support one pseudo
+  test('$sm:dark:hover:press:bg - multiple pseudos, last pseudo wins', () => {
+    // test actual multiple pseudos case - when multiple pseudos given, last one wins
     const styles = simplifiedGetSplitStyles(View, {
-      '$sm:dark:hover:bg': 'gray',
+      '$sm:dark:hover:press:bg': 'gray',
     } as any)
 
     const classNamesStr = JSON.stringify(styles.classNames)
+    // should have sm media and dark theme
     expect(classNamesStr).toContain('sm')
     expect(classNamesStr).toContain('dark')
-    expect(classNamesStr).toContain('hover')
+    // should have press/pressStyle (last pseudo wins), not hover
+    expect(classNamesStr).toContain('press')
+    // hover should NOT be present since press (last) wins
+    expect(classNamesStr).not.toContain('hover')
   })
 })
 

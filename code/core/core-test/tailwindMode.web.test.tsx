@@ -59,8 +59,11 @@ describe('tailwind mode - modifiers', () => {
 
     // hover goes to classNames as atomic CSS
     const hoverKey = Object.keys(styles.classNames).find((k) => k.includes('hover'))
-    expect(hoverKey).toBeTruthy()
-    expect(styles.classNames[hoverKey!]).toContain('0hover')
+    expect(hoverKey).toBeDefined()
+    expect(typeof hoverKey).toBe('string')
+    const hoverClassName = styles.classNames[hoverKey!]
+    expect(hoverClassName).toMatch(/0hover/)
+    expect(hoverClassName).toMatch(/_bg-/)
   })
 
   test('className="sm:p-20" sets media query padding', () => {
@@ -70,8 +73,12 @@ describe('tailwind mode - modifiers', () => {
 
     // media queries go to classNames
     const smKey = Object.keys(styles.classNames).find((k) => k.includes('sm'))
-    expect(smKey).toBeTruthy()
-    expect(styles.classNames[smKey!]).toContain('_sm')
+    expect(smKey).toBeDefined()
+    expect(typeof smKey).toBe('string')
+    const smClassName = styles.classNames[smKey!]
+    expect(smClassName).toMatch(/_sm/)
+    // should contain padding-related class
+    expect(smClassName).toMatch(/_p/)
   })
 
   test('className="sm:hover:bg-purple" sets combined modifier', () => {
@@ -79,9 +86,16 @@ describe('tailwind mode - modifiers', () => {
       className: 'sm:hover:bg-purple',
     } as any)
 
-    const classNamesStr = JSON.stringify(styles.classNames)
-    expect(classNamesStr).toContain('sm')
-    expect(classNamesStr).toContain('hover')
+    // verify both sm media and hover pseudo are present
+    const smHoverKey = Object.keys(styles.classNames).find(
+      (k) => k.includes('sm') && k.includes('hover')
+    )
+    expect(smHoverKey).toBeDefined()
+    expect(typeof smHoverKey).toBe('string')
+    const className = styles.classNames[smHoverKey!]
+    expect(className).toMatch(/_sm/)
+    expect(className).toMatch(/hover/)
+    expect(className).toMatch(/_bg-/)
   })
 })
 
