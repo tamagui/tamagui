@@ -184,6 +184,18 @@ function mergeDeep(target: any, source: any): any {
 }
 
 /**
+ * Check if flat mode is enabled based on styleMode setting.
+ */
+function isFlatModeEnabled(config: TamaguiInternalConfig): boolean {
+  const styleMode = config.settings?.styleMode
+  if (!styleMode) return false
+  if (styleMode === 'flat') return true
+  if (Array.isArray(styleMode)) return styleMode.includes('flat')
+  if (typeof styleMode === 'object') return styleMode.flat === true
+  return false
+}
+
+/**
  * Preprocess flat mode props before the main loop.
  * Transforms syntax like $hover:bg="red" into hoverStyle: { backgroundColor: 'red' }
  * Also handles base flat props like $bg="red" → backgroundColor: "red"
@@ -194,6 +206,9 @@ function preprocessFlatProps(
   shorthands: Record<string, string>,
   config: TamaguiInternalConfig
 ): Record<string, any> {
+  // only process if flat mode is enabled
+  if (!isFlatModeEnabled(config)) return props
+
   let hasFlat = false
 
   // quick check if any flat props exist
@@ -301,7 +316,17 @@ function preprocessFlatProps(
     }
 
     // not a flat prop, pass through
-    result[key] = value
+    // merge with existing if both are objects (handles $sm + $sm:bg order independence)
+    if (
+      result[key] &&
+      typeof result[key] === 'object' &&
+      typeof value === 'object' &&
+      value !== null
+    ) {
+      result[key] = mergeDeep(result[key], value)
+    } else {
+      result[key] = value
+    }
   }
 
   return result

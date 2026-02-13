@@ -10,7 +10,14 @@ import {
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
-  createTamagui(config.getDefaultTamaguiConfig())
+  const defaultConfig = config.getDefaultTamaguiConfig()
+  createTamagui({
+    ...defaultConfig,
+    settings: {
+      ...defaultConfig.settings,
+      styleMode: 'flat', // enable flat mode for these tests
+    },
+  })
 })
 
 describe('flat mode - base props', () => {
@@ -406,5 +413,39 @@ describe('flat mode - chained media + theme', () => {
     expect(classNamesStr).toContain('sm')
     expect(classNamesStr).toContain('dark')
     expect(classNamesStr).toContain('hover')
+  })
+})
+
+describe('flat mode - order independence with object syntax', () => {
+  test('$sm:bg + $sm object - flat first, object second', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      '$sm:bg': 'red',
+      '$sm': { padding: 10 },
+    } as any)
+
+    // should have both bg and padding in sm styles
+    const smKeys = Object.keys(styles.classNames).filter(k => k.includes('sm'))
+    expect(smKeys.length).toBeGreaterThanOrEqual(2) // bg and padding keys
+  })
+
+  test('$sm object + $sm:bg - object first, flat second', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      '$sm': { padding: 10 },
+      '$sm:bg': 'red',
+    } as any)
+
+    // should have both bg and padding in sm styles (same result as above)
+    const smKeys = Object.keys(styles.classNames).filter(k => k.includes('sm'))
+    expect(smKeys.length).toBeGreaterThanOrEqual(2)
+  })
+
+  test('hoverStyle object + $hover:bg - both should merge', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      hoverStyle: { opacity: 0.8 },
+      '$hover:bg': 'blue',
+    } as any)
+
+    const hoverKeys = Object.keys(styles.classNames).filter(k => k.includes('hover'))
+    expect(hoverKeys.length).toBeGreaterThanOrEqual(2)
   })
 })

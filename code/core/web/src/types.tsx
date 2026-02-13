@@ -1915,6 +1915,12 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 // flat pseudo modifiers (without Style suffix)
 type FlatPseudoKey = 'hover' | 'press' | 'focus' | 'focus-visible' | 'focus-within' | 'disabled' | 'enter' | 'exit'
 
+// flat theme modifiers (common ones, custom themes covered by catch-all)
+type FlatThemeKey = 'dark' | 'light'
+
+// flat platform modifiers
+type FlatPlatformKey = 'web' | 'native' | 'ios' | 'android'
+
 // base flat props: $bg, $backgroundColor, $p, $padding, etc.
 // uses 'any' for values to avoid type complexity explosion while keeping prop names for autocomplete
 export type WithFlatBaseProps<StyleProps> = {
@@ -1924,10 +1930,14 @@ export type WithFlatBaseProps<StyleProps> = {
 }
 
 // simplified type for modifier props - allows any value to avoid complexity explosion
-// precise types: $hover:bg, $press:opacity, $sm:bg, $sm:hover:bg, etc.
+// supports: $hover:bg, $sm:bg, $dark:bg, $web:cursor, and chained variants
 export type WithFlatModifierProps = {
   [key: `$${FlatPseudoKey}:${string}`]: any
   [key: `$${MediaQueryKey}:${string}`]: any
+  [key: `$${FlatThemeKey}:${string}`]: any
+  [key: `$${FlatPlatformKey}:${string}`]: any
+  // catch-all for custom themes and chained modifiers like $sm:dark:hover:bg
+  [key: `$${string}:${string}:${string}`]: any
 }
 
 // combined flat props (typed base shorthands + loose modifiers)
