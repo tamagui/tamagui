@@ -22,8 +22,8 @@ const config = createTamagui({
 
     // Or use object syntax for fine control
     styleMode: {
-      flat: true,      // $hover:bg="red" syntax
-      tailwind: true,  // className="hover:bg-red" syntax
+      flat: true, // $hover:bg="red" syntax
+      tailwind: true, // className="hover:bg-red" syntax
     },
   },
 })
@@ -32,6 +32,7 @@ const config = createTamagui({
 ## Syntax Comparison
 
 ### Before (Object Syntax)
+
 ```tsx
 <View
   backgroundColor="red"
@@ -43,14 +44,9 @@ const config = createTamagui({
 ```
 
 ### After (Flat Syntax)
+
 ```tsx
-<View
-  $bg="red"
-  $p={20}
-  $hover:bg="blue"
-  $sm:p={40}
-  $dark:bg="black"
-/>
+<View $bg="red" $p={20} $hover:bg="blue" $sm:p={40} $dark:bg="black" />
 ```
 
 ## Flat Props
@@ -77,6 +73,7 @@ $p="$4"                // uses space token
 Chain modifiers with colons - they read naturally left-to-right:
 
 ### Pseudo States
+
 ```tsx
 $hover:bg="blue"       // hoverStyle
 $press:scale={0.98}    // pressStyle
@@ -85,6 +82,7 @@ $disabled:opacity={0.5}
 ```
 
 ### Media Queries
+
 ```tsx
 $sm:p={40}             // $sm media query
 $md:flex={1}           // $md media query
@@ -92,25 +90,28 @@ $lg:display="flex"     // $lg media query
 ```
 
 ### Themes
+
 ```tsx
-$dark:bg="black"       // dark theme
-$light:bg="white"      // light theme
+$dark: bg = 'black' // dark theme
+$light: bg = 'white' // light theme
 ```
 
 ### Platform
+
 ```tsx
-$web:cursor="pointer"  // web only
-$native:shadow="$sm"   // native only
+$web: cursor = 'pointer' // web only
+$native: shadow = '$sm' // native only
 ```
 
 ### Combined Modifiers
+
 ```tsx
 // Order doesn't matter - these are equivalent:
-$sm:hover:bg="purple"
-$hover:sm:bg="purple"
+$sm: hover: bg = 'purple'
+$hover: sm: bg = 'purple'
 
 // Full combination
-$sm:dark:hover:bg="gray"
+$sm: dark: hover: bg = 'gray'
 ```
 
 ## Tailwind className Mode
@@ -118,16 +119,30 @@ $sm:dark:hover:bg="gray"
 When `tailwind` mode is enabled, you can use className strings:
 
 ```tsx
-<View className="w-100 h-50 bg-red hover:bg-blue sm:p-4" />
+<View className="w-100 h-50 bg-blue5 hover:bg-blue7 sm:p-4" />
 ```
 
 This parses Tailwind-style class names and converts them to Tamagui styles:
-- `w-100` → width: 100
-- `bg-red` → backgroundColor: 'red'
-- `hover:bg-blue` → hoverStyle: { backgroundColor: 'blue' }
-- `sm:p-4` → $sm: { padding: 4 }
 
-**Note:** Tailwind mode uses YOUR tokens, not Tailwind's default values. It just enables the className syntax.
+- `w-100` → width: 100
+- `bg-blue5` → backgroundColor: '$blue5' (auto-resolves to token)
+- `hover:bg-blue7` → hoverStyle: { backgroundColor: '$blue7' }
+- `sm:p-4` → $sm: { padding: '$4' }
+
+### Token Auto-Resolution
+
+Values automatically resolve to tokens when they match a token name:
+
+```tsx
+// These are equivalent:
+<View className="bg-blue5" />      // auto-resolves to $blue5 token
+<View className="bg-$blue5" />     // explicit token reference
+
+// Raw CSS when no token matches:
+<View className="bg-purple" />     // uses "purple" as raw CSS value
+```
+
+**Note:** Tailwind mode uses YOUR tokens, not Tailwind's default values. Values only become tokens if they match a token name in your config.
 
 ## Styled Components
 
@@ -135,8 +150,8 @@ Flat props work in styled() definitions (keys need quotes due to colons):
 
 ```tsx
 const Button = styled(View, {
-  '$bg': '$blue5',
-  '$p': '$4',
+  $bg: '$blue5',
+  $p: '$4',
   '$hover:bg': '$blue7',
   '$sm:p': '$6',
 })
@@ -145,6 +160,7 @@ const Button = styled(View, {
 ## Examples
 
 ### Interactive Button
+
 ```tsx
 <View
   $bg="$blue5"
@@ -158,22 +174,15 @@ const Button = styled(View, {
 ```
 
 ### Responsive Card
+
 ```tsx
-<View
-  $bg="$background"
-  $p="$4"
-  $rounded="$4"
-  $sm:p="$6"
-  $md:p="$8"
-  $dark:bg="$gray1"
-/>
+<View $bg="$background" $p="$4" $rounded="$4" $sm:p="$6" $md:p="$8" $dark:bg="$gray1" />
 ```
 
 ### Tailwind-style
+
 ```tsx
-<View
-  className="bg-$blue5 p-4 rounded-2 hover:bg-$blue7 sm:p-6"
-/>
+<View className="bg-blue5 p-4 rounded-2 hover:bg-blue7 sm:p-6" />
 ```
 
 ## Migration
@@ -183,16 +192,17 @@ Flat mode is opt-in and works alongside existing syntax. You can gradually migra
 ```tsx
 // These work together in the same component
 <View
-  backgroundColor="red"     // traditional
-  $hover:bg="blue"          // flat
-  $sm={{ padding: 10 }}     // object media
-  $sm:m={20}                // flat media
+  backgroundColor="red" // traditional
+  $hover:bg="blue" // flat
+  $sm={{ padding: 10 }} // object media
+  $sm:m={20} // flat media
 />
 ```
 
 ## Type Safety
 
 Full TypeScript support with autocomplete for:
+
 - All style props with `$` prefix
 - Modifier combinations
 - Token values
@@ -200,9 +210,9 @@ Full TypeScript support with autocomplete for:
 ```tsx
 // TypeScript knows these are valid:
 <View
-  $bg="$blue5"           // ✓ color token
-  $hover:bg="$blue7"     // ✓ pseudo + color
-  $sm:p="$4"             // ✓ media + space token
+  $bg="$blue5" // ✓ color token
+  $hover:bg="$blue7" // ✓ pseudo + color
+  $sm:p="$4" // ✓ media + space token
 />
 ```
 
