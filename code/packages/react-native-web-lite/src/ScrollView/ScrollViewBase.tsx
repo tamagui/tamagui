@@ -144,12 +144,17 @@ const ScrollViewBase = React.forwardRef((props: Props, forwardedRef) => {
     }
   }
 
-  const hideScrollbar =
-    showsHorizontalScrollIndicator === false || showsVerticalScrollIndicator === false
+  const hideHorizontalScrollbar = showsHorizontalScrollIndicator === false
+  const hideVerticalScrollbar = showsVerticalScrollIndicator === false
 
   return (
     <View
       {...rest}
+      className={
+        '_dsp_contents' +
+        (hideHorizontalScrollbar ? ' _hsb-x' : '') +
+        (hideVerticalScrollbar ? ' _hsb-y' : '')
+      }
       onScroll={handleScroll}
       onTouchMove={createPreventableScrollHandler(onTouchMove as any)}
       onWheel={createPreventableScrollHandler(onWheel as any)}
@@ -158,8 +163,6 @@ const ScrollViewBase = React.forwardRef((props: Props, forwardedRef) => {
         style,
         // @ts-ignore
         !scrollEnabled && styles.scrollDisabled,
-        // @ts-ignore
-        hideScrollbar && styles.hideScrollbar,
       ]}
     />
   )
@@ -173,9 +176,6 @@ const styles = {
     overflowX: 'hidden',
     overflowY: 'hidden',
     touchAction: 'none',
-  },
-  hideScrollbar: {
-    scrollbarWidth: 'none',
   },
 }
 

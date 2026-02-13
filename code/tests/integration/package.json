@@ -1,11 +1,12 @@
 {
   "name": "integration",
-  "version": "2.0.0-rc.12",
+  "version": "2.0.0-rc.12-1771007754825",
   "private": true,
   "type": "module",
   "scripts": {
     "web": "bun run dev",
     "test": "node -r esbuild-register ../../../node_modules/.bin/playwright test simple.integration.test.js",
+    "test:web": "bun run test",
     "build:prod": "vite build",
     "preview": "vite preview",
     "dev": "NODE_ENV=development vite --host --clearScreen false",

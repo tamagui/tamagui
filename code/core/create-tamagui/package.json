@@ -1,6 +1,6 @@
 {
   "name": "create-tamagui",
-  "version": "2.0.0-rc.12",
+  "version": "2.0.0-rc.12-1771007754825",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "bin": "./run.js",
   "files": [
@@ -18,6 +18,7 @@
     "test-disabled": "NODE_ENV=test node -r esbuild-register ../../../node_modules/.bin/playwright test integration.test.ts",
     "test:debug": "bun run test --debug",
     "test": "bun run build:test && vitest run",
+    "test:web": "bun run test",
     "build:test": "bun run build",
     "prerelease": "rimraf ./dist/",
     "prepublish": "bun run build",
