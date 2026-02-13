@@ -7,7 +7,14 @@
 import './tamagui.config'
 
 import { describe, test, expectTypeOf } from 'vitest'
-import { View, Text, styled, type ViewProps, type TextProps, type GetProps } from '@tamagui/web'
+import {
+  View,
+  Text,
+  styled,
+  type ViewProps,
+  type TextProps,
+  type GetProps,
+} from '@tamagui/web'
 
 // helper to test prop existence
 type HasKey<T, K> = K extends keyof T ? true : false

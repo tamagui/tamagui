@@ -33,7 +33,11 @@ function findRule(rulesToInsert: any, prop: string, pseudo?: string) {
       // if pseudo is specified, match it; if undefined, match base styles (no pseudo)
       if (pseudo === undefined) {
         // for base styles, ensure no pseudo and no media prefix in identifier
-        if (r[StyleObjectPseudo] === undefined && !r[StyleObjectIdentifier]?.includes('_sm') && !r[StyleObjectIdentifier]?.includes('_md')) {
+        if (
+          r[StyleObjectPseudo] === undefined &&
+          !r[StyleObjectIdentifier]?.includes('_sm') &&
+          !r[StyleObjectIdentifier]?.includes('_md')
+        ) {
           return r
         }
       } else if (r[StyleObjectPseudo] === pseudo) {
@@ -57,7 +61,7 @@ function findAnyRule(rulesToInsert: any, prop: string) {
 describe('flat mode - base props', () => {
   test('$bg="red" sets backgroundColor', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      '$bg': 'red',
+      $bg: 'red',
     } as any)
 
     // on web, base styles go to classNames (atomic CSS), values in rulesToInsert
@@ -69,7 +73,7 @@ describe('flat mode - base props', () => {
 
   test('$p="10" sets padding', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      '$p': 10,
+      $p: 10,
     } as any)
 
     // padding expands to individual sides (numeric values converted to px strings on web)
@@ -84,7 +88,7 @@ describe('flat mode - base props', () => {
 
   test('$color="blue" sets color on Text', () => {
     const styles = simplifiedGetSplitStyles(Text, {
-      '$color': 'blue',
+      $color: 'blue',
     } as any)
 
     expect(styles.classNames.color).toMatch(/_col-/)
@@ -95,7 +99,7 @@ describe('flat mode - base props', () => {
 
   test('$opacity="0.5" sets opacity', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      '$opacity': 0.5,
+      $opacity: 0.5,
     } as any)
 
     expect(styles.classNames.opacity).toMatch(/_o-/)
@@ -112,7 +116,7 @@ describe('flat mode - pseudo modifiers', () => {
     } as any)
 
     // find hover key and verify it exists with expected pattern
-    const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
+    const hoverKey = Object.keys(styles.classNames).find((k) => k.includes('hover'))
     expect(hoverKey).toBeDefined()
     expect(typeof hoverKey).toBe('string')
     // verify the class name contains hover pseudo pattern
@@ -126,7 +130,9 @@ describe('flat mode - pseudo modifiers', () => {
       '$press:opacity': 0.5,
     } as any)
 
-    const pressKey = Object.keys(styles.classNames).find(k => k.includes('press') || k.includes('active'))
+    const pressKey = Object.keys(styles.classNames).find(
+      (k) => k.includes('press') || k.includes('active')
+    )
     expect(pressKey).toBeDefined()
     expect(typeof pressKey).toBe('string')
     // verify the class name contains active pseudo pattern (press maps to :active in CSS)
@@ -140,7 +146,7 @@ describe('flat mode - pseudo modifiers', () => {
       '$focus:borderColor': 'green',
     } as any)
 
-    const focusKey = Object.keys(styles.classNames).find(k => k.includes('focus'))
+    const focusKey = Object.keys(styles.classNames).find((k) => k.includes('focus'))
     expect(focusKey).toBeDefined()
     expect(typeof focusKey).toBe('string')
     // verify the class name contains focus pseudo pattern
@@ -153,7 +159,7 @@ describe('flat mode - pseudo modifiers', () => {
       '$disabled:opacity': 0.3,
     } as any)
 
-    const disabledKey = Object.keys(styles.classNames).find(k => k.includes('disabled'))
+    const disabledKey = Object.keys(styles.classNames).find((k) => k.includes('disabled'))
     expect(disabledKey).toBeTruthy()
     expect(styles.classNames[disabledKey!]).toContain('disabled')
   })
@@ -166,7 +172,9 @@ describe('flat mode - media modifiers', () => {
     } as any)
 
     // media styles should have the media key in the classNames key
-    const smKey = Object.keys(styles.classNames).find(k => k.includes('sm') || k.includes('$sm'))
+    const smKey = Object.keys(styles.classNames).find(
+      (k) => k.includes('sm') || k.includes('$sm')
+    )
     expect(smKey).toBeTruthy()
     expect(styles.classNames[smKey!]).toContain('_sm')
   })
@@ -176,7 +184,9 @@ describe('flat mode - media modifiers', () => {
       '$md:p': 20,
     } as any)
 
-    const mdKey = Object.keys(styles.classNames).find(k => k.includes('md') || k.includes('$md'))
+    const mdKey = Object.keys(styles.classNames).find(
+      (k) => k.includes('md') || k.includes('$md')
+    )
     expect(mdKey).toBeTruthy()
     expect(styles.classNames[mdKey!]).toContain('_md')
   })
@@ -232,7 +242,7 @@ describe('flat mode - platform modifiers', () => {
     } as any)
 
     // on web, this should be processed
-    const hasCursor = Object.keys(styles.classNames).some(k => k.includes('cursor'))
+    const hasCursor = Object.keys(styles.classNames).some((k) => k.includes('cursor'))
     expect(hasCursor).toBe(true)
   })
 })
@@ -240,7 +250,7 @@ describe('flat mode - platform modifiers', () => {
 describe('flat mode - multiple flat props', () => {
   test('multiple flat props work together', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      '$bg': 'white',
+      $bg: 'white',
       '$hover:bg': 'gray',
       '$sm:bg': 'lightgray',
     } as any)
@@ -252,12 +262,12 @@ describe('flat mode - multiple flat props', () => {
     expect(bgRule[StyleObjectValue]).toBe('white')
 
     // hover bg should have hover class pattern in classNames
-    const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
+    const hoverKey = Object.keys(styles.classNames).find((k) => k.includes('hover'))
     expect(hoverKey).toBeTruthy()
     expect(styles.classNames[hoverKey!]).toContain('0hover')
 
     // media bg should have sm class pattern in classNames
-    const smKey = Object.keys(styles.classNames).find(k => k.includes('sm'))
+    const smKey = Object.keys(styles.classNames).find((k) => k.includes('sm'))
     expect(smKey).toBeTruthy()
     expect(styles.classNames[smKey!]).toContain('_sm')
   })
@@ -269,7 +279,7 @@ describe('flat mode - coexists with object syntax', () => {
       // flat syntax
       '$hover:bg': 'blue',
       // object syntax
-      '$sm': { padding: 10 },
+      $sm: { padding: 10 },
       pressStyle: { opacity: 0.8 },
     } as any)
 
@@ -290,7 +300,7 @@ describe('flat mode - token values', () => {
   test('$bg="$white" resolves token', () => {
     // use $white since that's in the default config tokens
     const styles = simplifiedGetSplitStyles(View, {
-      '$bg': '$white',
+      $bg: '$white',
     } as any)
 
     // tokens resolve to CSS variables in rulesToInsert
@@ -306,7 +316,7 @@ describe('flat mode - token values', () => {
     } as any)
 
     // pseudo with token goes to classNames with hover pattern
-    const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
+    const hoverKey = Object.keys(styles.classNames).find((k) => k.includes('hover'))
     expect(hoverKey).toBeTruthy()
     expect(styles.classNames[hoverKey!]).toContain('0hover')
   })
@@ -315,10 +325,10 @@ describe('flat mode - token values', () => {
 describe('flat mode - shorthands', () => {
   test('various shorthands work', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      '$m': 10,
-      '$br': 8, // borderRadius shorthand in default config
-      '$w': 100,
-      '$h': 50,
+      $m: 10,
+      $br: 8, // borderRadius shorthand in default config
+      $w: 100,
+      $h: 50,
     } as any)
 
     // base literal props go to classNames/rulesToInsert on web
@@ -347,7 +357,7 @@ describe('flat mode - shorthands', () => {
     } as any)
 
     // pseudo shorthands go to classNames
-    const hoverKeys = Object.keys(styles.classNames).filter(k => k.includes('hover'))
+    const hoverKeys = Object.keys(styles.classNames).filter((k) => k.includes('hover'))
     expect(hoverKeys.length).toBeGreaterThan(0)
   })
 })
@@ -362,7 +372,7 @@ describe('flat mode - styled components', () => {
       '$hover:bg': 'gray',
     } as any)
 
-    const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
+    const hoverKey = Object.keys(styles.classNames).find((k) => k.includes('hover'))
     expect(hoverKey).toBeTruthy()
     expect(styles.classNames[hoverKey!]).toContain('0hover')
   })
@@ -384,7 +394,7 @@ describe('flat mode - styled components', () => {
     } as any)
 
     // should have hover bg with proper class pattern
-    const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
+    const hoverKey = Object.keys(styles.classNames).find((k) => k.includes('hover'))
     expect(hoverKey).toBeTruthy()
     expect(styles.classNames[hoverKey!]).toContain('0hover')
   })
@@ -398,15 +408,15 @@ describe('flat mode - edge cases', () => {
       '$hover:opacity': 0.9,
     } as any)
 
-    const hoverKeys = Object.keys(styles.classNames).filter(k => k.includes('hover'))
+    const hoverKeys = Object.keys(styles.classNames).filter((k) => k.includes('hover'))
     // should have multiple hover rules
     expect(hoverKeys.length).toBeGreaterThanOrEqual(2)
   })
 
   test('numeric values work', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      '$opacity': 0.5,
-      '$zIndex': 10,
+      $opacity: 0.5,
+      $zIndex: 10,
     } as any)
 
     // base numeric props go to classNames/rulesToInsert on web
@@ -504,22 +514,22 @@ describe('flat mode - order independence with object syntax', () => {
   test('$sm:bg + $sm object - flat first, object second', () => {
     const styles = simplifiedGetSplitStyles(View, {
       '$sm:bg': 'red',
-      '$sm': { padding: 10 },
+      $sm: { padding: 10 },
     } as any)
 
     // should have both bg and padding in sm styles
-    const smKeys = Object.keys(styles.classNames).filter(k => k.includes('sm'))
+    const smKeys = Object.keys(styles.classNames).filter((k) => k.includes('sm'))
     expect(smKeys.length).toBeGreaterThanOrEqual(2) // bg and padding keys
   })
 
   test('$sm object + $sm:bg - object first, flat second', () => {
     const styles = simplifiedGetSplitStyles(View, {
-      '$sm': { padding: 10 },
+      $sm: { padding: 10 },
       '$sm:bg': 'red',
     } as any)
 
     // should have both bg and padding in sm styles (same result as above)
-    const smKeys = Object.keys(styles.classNames).filter(k => k.includes('sm'))
+    const smKeys = Object.keys(styles.classNames).filter((k) => k.includes('sm'))
     expect(smKeys.length).toBeGreaterThanOrEqual(2)
   })
 
@@ -529,7 +539,7 @@ describe('flat mode - order independence with object syntax', () => {
       '$hover:bg': 'blue',
     } as any)
 
-    const hoverKeys = Object.keys(styles.classNames).filter(k => k.includes('hover'))
+    const hoverKeys = Object.keys(styles.classNames).filter((k) => k.includes('hover'))
     expect(hoverKeys.length).toBeGreaterThanOrEqual(2)
   })
 })

@@ -240,12 +240,13 @@ Full TypeScript support with autocomplete for:
 />
 ```
 
-## Performance
+## How It Works
 
-- Zero runtime overhead for static values
-- Same atomic CSS extraction as traditional syntax
-- Modifier parsing is cached
-- Works with Tamagui compiler for optimal output
+1. Props starting with `$` followed by a shorthand or style prop are detected
+2. Colons separate modifiers from the final property name
+3. Modifiers are parsed in any order (media, theme, pseudo, platform)
+4. The prop and value are transformed into Tamagui's internal style system
+5. On web, styles become atomic CSS classes; on native, inline styles
 
 ## Shorthands
 
