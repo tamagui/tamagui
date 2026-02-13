@@ -15,7 +15,7 @@ import type { RovingFocusGroupProps } from '@tamagui/roving-focus'
 import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
-import type { TamaguiComponent, TextProps } from '@tamagui/web'
+import type { TextProps } from '@tamagui/web'
 import {
   type ViewProps,
   composeEventHandlers,
@@ -1946,5 +1946,6 @@ export type {
   MenuRadioGroupProps,
   MenuRadioItemProps,
   MenuSeparatorProps,
-  MenuSubTriggerProps,
+  MenuSubTriggerProps
 }
+
