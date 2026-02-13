@@ -206,6 +206,11 @@ export function AnimationComprehensiveCase() {
       <Scenario45_TransitionEnterExitWithDefault />
       <Scenario46_TransitionEnterExitPerProperty />
       <Scenario47_TransitionEnterExitWithDelay />
+
+      {/* SECTION 14: animateOnly with Exit/Enter Styles */}
+      <SectionHeader>14. animateOnly with Exit/Enter Styles</SectionHeader>
+      <Scenario48_AnimateOnlyWithExitStyle />
+      <Scenario49_AnimateOnlyWithEnterExitStyle />
     </YStack>
   )
 }
@@ -2245,6 +2250,106 @@ function Scenario47_TransitionEnterExitWithDelay() {
       </AnimatePresence>
       <Paragraph size="$1">
         {visible ? 'visible' : 'hidden'} (enter=300ms, exit=100ms, delay=200ms)
+      </Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 48: animateOnly with exitStyle
+// Tests: animateOnly={['opacity', 'transform']} combined with exitStyle
+// Exit animation should work correctly when animateOnly includes the exit properties
+// ============================================================================
+function Scenario48_AnimateOnlyWithExitStyle() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('48-animate-only-exit', ref, [
+    'opacity',
+    'transform',
+  ])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button
+        size="$2"
+        onPress={() => {
+          if (visible) startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-48-trigger"
+        data-testid="scenario-48-trigger"
+      >
+        48: AnimateOnly+Exit
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="animate-only-exit-48"
+            ref={ref as any}
+            transition="1000ms"
+            animateOnly={['opacity', 'transform']}
+            size={40}
+            bg="$blue10"
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-48-target"
+            data-testid="scenario-48-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">
+        {visible ? 'visible' : 'hidden'} (animateOnly=['opacity', 'transform'])
+      </Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 49: animateOnly with enterStyle and exitStyle
+// Tests: animateOnly combined with both enter and exit animations
+// Both should animate smoothly using only the specified properties
+// ============================================================================
+function Scenario49_AnimateOnlyWithEnterExitStyle() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger(
+    '49-animate-only-enter-exit',
+    ref,
+    ['opacity', 'transform']
+  )
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-49-trigger"
+        data-testid="scenario-49-trigger"
+      >
+        49: AnimateOnly+Enter+Exit
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="animate-only-enter-exit-49"
+            ref={ref as any}
+            transition="1000ms"
+            animateOnly={['opacity', 'transform']}
+            size={40}
+            bg="$green10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
+            testID="scenario-49-target"
+            data-testid="scenario-49-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">
+        {visible ? 'visible' : 'hidden'} (enter+exit with animateOnly)
       </Paragraph>
     </XStack>
   )

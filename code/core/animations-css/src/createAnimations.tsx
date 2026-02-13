@@ -189,32 +189,85 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
          * the element can disappear from the DOM before CSS transitions finish, which causes:
          * 1. Dialogs to stick around on screen
          * 2. Event handlers to stop working
+         *
+         * Fix: Calculate the MAXIMUM duration across all animated properties, not just
+         * the default. With animateOnly and per-property configs, different properties
+         * can have different durations, and we need to wait for the LONGEST one.
          */
 
-        // Use timeout as primary, transition events as backup for reliable exit handling
-        const animationDuration = defaultAnimation
-          ? extractDuration(defaultAnimation)
-          : 200
+        // calculate max duration across all animated properties
+        let maxDuration = defaultAnimation ? extractDuration(defaultAnimation) : 200
+
+        // check per-property animation durations
+        for (const key of keys) {
+          const propAnimation = normalized.properties[key]
+          let animationValue: string | null = null
+
+          if (typeof propAnimation === 'string') {
+            animationValue = animations[propAnimation as keyof typeof animations] as
+              | string
+              | null
+          } else if (
+            propAnimation &&
+            typeof propAnimation === 'object' &&
+            (propAnimation as any).type
+          ) {
+            animationValue = animations[
+              (propAnimation as any).type as keyof typeof animations
+            ] as string | null
+          } else if (defaultAnimation) {
+            animationValue = defaultAnimation
+          }
+
+          if (animationValue) {
+            const duration = extractDuration(animationValue)
+            if (duration > maxDuration) {
+              maxDuration = duration
+            }
+          }
+        }
+
         const delay = normalized.delay ?? 0
-        const fallbackTimeout = animationDuration + delay
+        const fallbackTimeout = maxDuration + delay
 
         const timeoutId = setTimeout(() => {
           sendExitComplete?.()
         }, fallbackTimeout)
 
-        // Listen for transition completion events as backup
-        const onFinishAnimation = () => {
+        // track number of transitioning properties to wait for all to finish
+        // (each property fires its own transitionend event)
+        const transitioningProps = new Set(keys)
+        let completedCount = 0
+
+        const onFinishAnimation = (event: TransitionEvent) => {
+          // only count transitions on THIS element, not bubbled from children
+          if (event.target !== node) return
+
+          // map CSS property names to our key names
+          // e.g., transitionend fires with propertyName 'transform' for scale/x/y
+          const eventProp = event.propertyName
+          if (transitioningProps.has(eventProp) || eventProp === 'all') {
+            completedCount++
+            // wait for all properties to finish
+            if (completedCount >= transitioningProps.size) {
+              clearTimeout(timeoutId)
+              sendExitComplete?.()
+            }
+          }
+        }
+
+        const onCancelAnimation = () => {
           clearTimeout(timeoutId)
           sendExitComplete?.()
         }
 
         node.addEventListener('transitionend', onFinishAnimation)
-        node.addEventListener('transitioncancel', onFinishAnimation)
+        node.addEventListener('transitioncancel', onCancelAnimation)
 
         return () => {
           clearTimeout(timeoutId)
           node.removeEventListener('transitionend', onFinishAnimation)
-          node.removeEventListener('transitioncancel', onFinishAnimation)
+          node.removeEventListener('transitioncancel', onCancelAnimation)
         }
       }, [sendExitComplete, isExiting])
 

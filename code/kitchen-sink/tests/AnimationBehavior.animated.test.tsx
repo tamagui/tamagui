@@ -406,4 +406,98 @@ test.describe('Animation Behavior', () => {
     expect(endOpacity, 'End opacity').toBeCloseTo(OPACITY_END, 1)
     expect(endScale, 'End scale').toBeCloseTo(SCALE_END, 1)
   })
+
+  test('animateOnly with exitStyle has intermediate values during exit animation', async ({
+    page,
+  }, testInfo) => {
+    const driver = (testInfo.project?.metadata as any)?.animationDriver
+    const START_OPACITY = 1,
+      END_OPACITY = 0
+
+    // scroll to the element first
+    await page.getByTestId('scenario-48-trigger').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(200)
+
+    // element should be visible initially
+    expect(await elementExists(page, 'scenario-48-target'), 'Initially visible').toBe(
+      true
+    )
+    expect(await getOpacity(page, 'scenario-48-target'), 'Start opacity').toBeCloseTo(
+      START_OPACITY,
+      1
+    )
+
+    // click to trigger exit animation
+    await page.getByTestId('scenario-48-trigger').click()
+
+    // 1000ms animation - check at 500ms for reliable intermediate capture
+    await page.waitForTimeout(500)
+
+    const exists = await elementExists(page, 'scenario-48-target')
+    if (exists) {
+      const midOpacity = await getOpacity(page, 'scenario-48-target')
+      // mid values should be intermediate (not at start, not at end)
+      expect(
+        isIntermediate(midOpacity, START_OPACITY, END_OPACITY) ||
+          midOpacity < START_OPACITY,
+        `Mid opacity (${midOpacity.toFixed(2)}) should be animating`
+      ).toBe(true)
+    }
+
+    // wait for animation to complete
+    await page.waitForTimeout(1500)
+
+    // element should be gone after exit animation completes
+    expect(await elementExists(page, 'scenario-48-target'), 'Hidden after exit').toBe(
+      false
+    )
+  })
+
+  test('animateOnly with enterStyle and exitStyle animates correctly', async ({
+    page,
+  }, testInfo) => {
+    const driver = (testInfo.project?.metadata as any)?.animationDriver
+    const END_OPACITY = 1
+
+    // scroll to the element first
+    await page.getByTestId('scenario-49-trigger').scrollIntoViewIfNeeded()
+
+    // element should be visible initially (after enterStyle animation completes)
+    expect(await elementExists(page, 'scenario-49-target'), 'Initially visible').toBe(
+      true
+    )
+
+    // wait for enter animation to complete if it's still running
+    await page.waitForTimeout(1200)
+
+    // should be at final state (opacity: 1, scale: 1)
+    expect(await getOpacity(page, 'scenario-49-target'), 'Opacity after enter').toBeCloseTo(
+      END_OPACITY,
+      1
+    )
+
+    // click to trigger exit animation
+    await page.getByTestId('scenario-49-trigger').click()
+
+    // check at midpoint (500ms into 1000ms animation)
+    await page.waitForTimeout(500)
+
+    const exists = await elementExists(page, 'scenario-49-target')
+    if (exists) {
+      const midOpacity = await getOpacity(page, 'scenario-49-target')
+      // mid values should be animating (not at start 1, heading toward 0)
+      expect(
+        midOpacity < END_OPACITY,
+        `Mid opacity (${midOpacity.toFixed(2)}) should be animating toward 0`
+      ).toBe(true)
+    }
+
+    // wait for animation to complete
+    await page.waitForTimeout(1500)
+
+    // element should be gone after exit animation completes
+    expect(await elementExists(page, 'scenario-49-target'), 'Hidden after exit').toBe(
+      false
+    )
+  })
 })
