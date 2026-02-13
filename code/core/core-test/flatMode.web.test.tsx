@@ -19,8 +19,8 @@ describe('flat mode - base props', () => {
       '$bg': 'red',
     } as any)
 
-    // on web, base props go to classNames as atomic CSS
-    expect(styles.classNames.backgroundColor).toBeDefined()
+    // atomic CSS class for backgroundColor: red
+    expect(styles.classNames).toEqual({ backgroundColor: '_bg-red' })
   })
 
   test('$p="10" sets padding', () => {
@@ -28,9 +28,11 @@ describe('flat mode - base props', () => {
       '$p': 10,
     } as any)
 
-    // padding expands and goes to classNames
-    const classNamesStr = JSON.stringify(styles.classNames)
-    expect(classNamesStr).toContain('padding')
+    // padding expands to individual sides
+    expect(styles.classNames.paddingTop).toContain('_pt-')
+    expect(styles.classNames.paddingRight).toContain('_pr-')
+    expect(styles.classNames.paddingBottom).toContain('_pb-')
+    expect(styles.classNames.paddingLeft).toContain('_pl-')
   })
 
   test('$color="blue" sets color on Text', () => {
@@ -38,7 +40,7 @@ describe('flat mode - base props', () => {
       '$color': 'blue',
     } as any)
 
-    expect(styles.classNames.color).toBeDefined()
+    expect(styles.classNames).toEqual({ color: '_col-blue' })
   })
 
   test('$opacity="0.5" sets opacity', () => {
@@ -46,7 +48,7 @@ describe('flat mode - base props', () => {
       '$opacity': 0.5,
     } as any)
 
-    expect(styles.classNames.opacity).toBeDefined()
+    expect(styles.classNames.opacity).toContain('_o-')
   })
 })
 
@@ -56,9 +58,9 @@ describe('flat mode - pseudo modifiers', () => {
       '$hover:bg': 'blue',
     } as any)
 
-    // check for hover class
+    // check for hover class with proper pattern
     const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
-    expect(hoverKey).toBeDefined()
+    expect(hoverKey).toBeTruthy()
     expect(styles.classNames[hoverKey!]).toContain('0hover')
   })
 
@@ -68,7 +70,8 @@ describe('flat mode - pseudo modifiers', () => {
     } as any)
 
     const pressKey = Object.keys(styles.classNames).find(k => k.includes('press') || k.includes('active'))
-    expect(pressKey).toBeDefined()
+    expect(pressKey).toBeTruthy()
+    expect(styles.classNames[pressKey!]).toContain('active')
   })
 
   test('$focus:borderColor="green" generates focus style', () => {
@@ -77,7 +80,8 @@ describe('flat mode - pseudo modifiers', () => {
     } as any)
 
     const focusKey = Object.keys(styles.classNames).find(k => k.includes('focus'))
-    expect(focusKey).toBeDefined()
+    expect(focusKey).toBeTruthy()
+    expect(styles.classNames[focusKey!]).toContain('focus')
   })
 
   test('$disabled:opacity="0.3" generates disabled style', () => {
@@ -86,7 +90,8 @@ describe('flat mode - pseudo modifiers', () => {
     } as any)
 
     const disabledKey = Object.keys(styles.classNames).find(k => k.includes('disabled'))
-    expect(disabledKey).toBeDefined()
+    expect(disabledKey).toBeTruthy()
+    expect(styles.classNames[disabledKey!]).toContain('disabled')
   })
 })
 
@@ -98,7 +103,8 @@ describe('flat mode - media modifiers', () => {
 
     // media styles should have the media key in the classNames key
     const smKey = Object.keys(styles.classNames).find(k => k.includes('sm') || k.includes('$sm'))
-    expect(smKey).toBeDefined()
+    expect(smKey).toBeTruthy()
+    expect(styles.classNames[smKey!]).toContain('_sm')
   })
 
   test('$md:p="20" generates media query padding', () => {
@@ -107,7 +113,8 @@ describe('flat mode - media modifiers', () => {
     } as any)
 
     const mdKey = Object.keys(styles.classNames).find(k => k.includes('md') || k.includes('$md'))
-    expect(mdKey).toBeDefined()
+    expect(mdKey).toBeTruthy()
+    expect(styles.classNames[mdKey!]).toContain('_md')
   })
 })
 
@@ -174,16 +181,18 @@ describe('flat mode - multiple flat props', () => {
       '$sm:bg': 'lightgray',
     } as any)
 
-    // should have base bg in classNames (atomic CSS on web)
-    expect(styles.classNames.backgroundColor).toBeDefined()
+    // base bg should have atomic class
+    expect(styles.classNames.backgroundColor).toBe('_bg-white')
 
-    // should have hover bg in classNames
+    // hover bg should have hover class pattern
     const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
-    expect(hoverKey).toBeDefined()
+    expect(hoverKey).toBeTruthy()
+    expect(styles.classNames[hoverKey!]).toContain('0hover')
 
-    // should have media bg in classNames
+    // media bg should have sm class pattern
     const smKey = Object.keys(styles.classNames).find(k => k.includes('sm'))
-    expect(smKey).toBeDefined()
+    expect(smKey).toBeTruthy()
+    expect(styles.classNames[smKey!]).toContain('_sm')
   })
 })
 
@@ -217,8 +226,8 @@ describe('flat mode - token values', () => {
       '$bg': '$white',
     } as any)
 
-    // tokens go to classNames on web
-    expect(styles.classNames.backgroundColor).toBeDefined()
+    // tokens generate CSS variable class names
+    expect(styles.classNames.backgroundColor).toContain('_bg-')
   })
 
   test('$hover:bg="$black" resolves token in pseudo', () => {
@@ -227,9 +236,10 @@ describe('flat mode - token values', () => {
       '$hover:bg': '$black',
     } as any)
 
-    // pseudo with token goes to classNames
+    // pseudo with token goes to classNames with hover pattern
     const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
-    expect(hoverKey).toBeDefined()
+    expect(hoverKey).toBeTruthy()
+    expect(styles.classNames[hoverKey!]).toContain('0hover')
   })
 })
 
@@ -271,7 +281,8 @@ describe('flat mode - styled components', () => {
     } as any)
 
     const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
-    expect(hoverKey).toBeDefined()
+    expect(hoverKey).toBeTruthy()
+    expect(styles.classNames[hoverKey!]).toContain('0hover')
   })
 
   test('styled component variants work with flat props', () => {
@@ -290,9 +301,10 @@ describe('flat mode - styled components', () => {
       '$hover:bg': 'darkblue',
     } as any)
 
-    // should have hover bg
+    // should have hover bg with proper class pattern
     const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
-    expect(hoverKey).toBeDefined()
+    expect(hoverKey).toBeTruthy()
+    expect(styles.classNames[hoverKey!]).toContain('0hover')
   })
 })
 
@@ -316,8 +328,8 @@ describe('flat mode - edge cases', () => {
     } as any)
 
     // base numeric props go to classNames on web
-    expect(styles.classNames.opacity).toBeDefined()
-    expect(styles.classNames.zIndex).toBeDefined()
+    expect(styles.classNames.opacity).toContain('_o-')
+    expect(styles.classNames.zIndex).toContain('_zi-')
   })
 })
 
