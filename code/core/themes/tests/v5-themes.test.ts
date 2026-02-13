@@ -71,9 +71,8 @@ describe('v5 themes', () => {
     // Opacity variants
     expect(defaultThemes.light.color01).toBeDefined()
     expect(defaultThemes.light.background01).toBeDefined()
-
-    // Interpolation colors
-    expect(defaultThemes.light.color1pt5).toMatch(/^rgb|^#|^hsl/)
+    expect(defaultThemes.light.background08).toBeDefined()
+    expect(defaultThemes.light.outlineColor).toBeDefined()
 
     // Works on all theme types
     expect(defaultThemes.light_blue.color01).toBeDefined()
@@ -151,7 +150,7 @@ describe('createV5Theme options', () => {
 
   test('grandChildrenThemes override defaults', () => {
     const themes = createV5Theme({
-      grandChildrenThemes: { custom: { template: 'alt1' } },
+      grandChildrenThemes: { custom: { template: 'surface1' } },
     })
     const keys = Object.keys(themes)
     expect(keys).toContain('light_blue_custom')

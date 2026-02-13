@@ -51,15 +51,13 @@ const accentDark = ${JSON.stringify(paletteToNamedColors('accent', darkAccent), 
 const builtThemes = createV5Theme({
   darkPalette,
   lightPalette,${componentThemesProp}
+  accent: {
+    light: accentLight,
+    dark: accentDark,
+  },
   childrenThemes: {
     // Include default color themes (blue, red, green, yellow, etc.)
     ...defaultChildrenThemes,
-
-    // Your custom accent color
-    accent: {
-      light: accentLight,
-      dark: accentDark,
-    },
 
     // Semantic color themes for warnings, errors, and success states
     warning: {
