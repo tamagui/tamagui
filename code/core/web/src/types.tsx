@@ -1891,6 +1891,52 @@ export type PseudoStyles = {
 
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 
+//
+// Flat mode types (opt-in via styleMode: 'flat')
+//
+
+// flat pseudo modifiers (without Style suffix)
+type FlatPseudoKey = 'hover' | 'press' | 'focus' | 'focus-visible' | 'focus-within' | 'disabled' | 'enter' | 'exit'
+
+// base flat props: $bg, $p, $m, etc.
+export type WithFlatBaseProps<StyleProps> = {
+  [Key in keyof Shorthands as `$${Key}`]?: Shorthands[Key] extends keyof StyleProps
+    ? StyleProps[Shorthands[Key]] | ThemeValueFallback
+    : undefined
+} & {
+  [Key in keyof StyleProps as `$${string & Key}`]?: StyleProps[Key] | ThemeValueFallback
+}
+
+// flat pseudo props: $hover:bg, $press:opacity, etc.
+export type WithFlatPseudoProps<StyleProps> = {
+  [Pseudo in FlatPseudoKey as `$${Pseudo}:${string & keyof Shorthands}`]?: Shorthands[keyof Shorthands] extends keyof StyleProps
+    ? StyleProps[Shorthands[keyof Shorthands]] | ThemeValueFallback
+    : any
+} & {
+  [Pseudo in FlatPseudoKey as `$${Pseudo}:${string & keyof StyleProps}`]?: StyleProps[keyof StyleProps] | ThemeValueFallback
+}
+
+// flat media props: $sm:bg, $md:p, etc.
+export type WithFlatMediaProps<StyleProps> = {
+  [Media in MediaQueryKey as `$${Media}:${string & keyof Shorthands}`]?: Shorthands[keyof Shorthands] extends keyof StyleProps
+    ? StyleProps[Shorthands[keyof Shorthands]] | ThemeValueFallback
+    : any
+} & {
+  [Media in MediaQueryKey as `$${Media}:${string & keyof StyleProps}`]?: StyleProps[keyof StyleProps] | ThemeValueFallback
+}
+
+// combined flat props (base + pseudo + media modifiers)
+// Note: full chained modifiers ($sm:hover:bg, $sm:dark:hover:bg) use 'any' to avoid type explosion
+export type WithFlatProps<StyleProps> =
+  WithFlatBaseProps<StyleProps> &
+  WithFlatPseudoProps<StyleProps> &
+  WithFlatMediaProps<StyleProps> & {
+    // chained modifiers - simplified to any for type performance
+    [key: `$${MediaQueryKey}:${FlatPseudoKey}:${string}`]: any
+    [key: `$${MediaQueryKey}:${string}:${string}`]: any
+    [key: `$${FlatPseudoKey}:${MediaQueryKey}:${string}`]: any
+  }
+
 // MUST EXPORT ALL IN BETWEEN or else it expands declarations like crazy
 
 //
