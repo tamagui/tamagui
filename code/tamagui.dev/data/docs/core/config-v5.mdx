@@ -47,8 +47,8 @@ npm install @tamagui/config
   every theme automatically based on each theme's palette and scheme
 - **Easier theme swapping**: pass only the `childrenThemes` you want to
   `createV5Theme` to replace or extend the default color set
-- **Height-based media queries**: `height-xxxs`, `height-xxs`, `height-xs`, etc.
-- **`pointerTouch`** media query for touch device detection
+- **Height-based media queries**: `height-sm`, `height-md`, `height-lg` and max variants
+- **`touch`** and **`hoverable`** media queries for device capability detection
 - **Color utilities**: `adjustPalette`, `adjustPalettes` for transforming
   palettes
 - **Radix Colors v3** with improved accessibility (v4 used legacy Radix)
@@ -249,7 +249,7 @@ const themes = createV5Theme({
       name: 'getTheme',
       type: '(info: { palette: string[], scheme: "light" | "dark" }) => Record<string, string>',
       description:
-        'Callback that runs for every generated theme, letting you compute custom values based on each theme\'s palette and color scheme. The default uses this to generate opacity variants like color01, background001, etc.',
+        "Callback that runs for every generated theme, letting you compute custom values based on each theme's palette and color scheme. The default uses this to generate opacity variants like color01, background001, etc.",
     },
   ]}
 />
@@ -570,22 +570,59 @@ sizes.
   ]}
 />
 
-### Height-Based
+### Height Min (Mobile-First)
 
 <PropsTable
   data={[
-    { name: 'height-xxxs', description: 'minHeight: 260' },
-    { name: 'height-xxs', description: 'minHeight: 340' },
-    { name: 'height-xs', description: 'minHeight: 460' },
     { name: 'height-sm', description: 'minHeight: 640' },
     { name: 'height-md', description: 'minHeight: 768' },
     { name: 'height-lg', description: 'minHeight: 1024' },
   ]}
 />
 
-### Other
+### Height Max (Desktop-First)
 
-<PropsTable data={[{ name: 'pointerTouch', description: 'pointer: coarse' }]} />
+<PropsTable
+  data={[
+    { name: 'max-height-sm', description: 'maxHeight: 640' },
+    { name: 'max-height-md', description: 'maxHeight: 768' },
+    { name: 'max-height-lg', description: 'maxHeight: 1024' },
+  ]}
+/>
+
+<Notice>
+  Height queries have higher CSS specificity than width queries. When both match, height
+  wins.
+</Notice>
+
+### Device Capability
+
+<PropsTable
+  data={[
+    { name: 'touchable', description: 'pointer: coarse (touch devices)' },
+    { name: 'hoverable', description: 'hover: hover (devices with hover capability)' },
+  ]}
+/>
+
+These names describe intent rather than CSS implementation details — you're thinking
+"is this a touch device?" not "what's the pointer media query name?" They also read
+naturally in code:
+
+```tsx
+<Button
+  $touchable={{ p: '$4', minH: 44 }}
+  $hoverable={{ hoverStyle: { bg: '$color5' } }}
+/>
+```
+
+On web, these aren't exact opposites. A laptop with a touchscreen might have
+`pointer: fine` (trackpad as primary input) but still support touch. Having both
+lets you target exactly what you mean.
+
+<Notice>
+  On native, `touch` is always true and `hoverable` is always false since you
+  can't hover on a touchscreen.
+</Notice>
 
 ---
 
@@ -596,11 +633,7 @@ default), only the short forms are available in types.
 
 ### Text
 
-<PropsTable
-  data={[
-    { name: 'text', description: 'textAlign' },
-  ]}
-/>
+<PropsTable data={[{ name: 'text', description: 'textAlign' }]} />
 
 ### Layout & Spacing
 

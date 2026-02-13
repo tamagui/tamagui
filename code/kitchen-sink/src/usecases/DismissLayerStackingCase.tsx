@@ -23,9 +23,6 @@ export function DismissLayerStackingCase() {
           padding="$4"
           elevate
           bordered
-          enterStyle={{ opacity: 0, y: -10 }}
-          exitStyle={{ opacity: 0, y: -10 }}
-          animation="quick"
         >
           <YStack gap="$3" width={280}>
             <Paragraph>Popover Content</Paragraph>
@@ -40,26 +37,13 @@ export function DismissLayerStackingCase() {
                 <Dialog.Overlay
                   testID="dialog-overlay"
                   key="overlay"
-                  animation="quick"
                   opacity={0.5}
-                  enterStyle={{ opacity: 0 }}
-                  exitStyle={{ opacity: 0 }}
                 />
                 <Dialog.Content
                   testID="dialog-content"
                   bordered
                   elevate
                   key="content"
-                  animation={[
-                    'quick',
-                    {
-                      opacity: {
-                        overshootClamping: true,
-                      },
-                    },
-                  ]}
-                  enterStyle={{ opacity: 0, scale: 0.95 }}
-                  exitStyle={{ opacity: 0, scale: 0.95 }}
                 >
                   <YStack gap="$3" padding="$2">
                     <Dialog.Title>Dialog Title</Dialog.Title>

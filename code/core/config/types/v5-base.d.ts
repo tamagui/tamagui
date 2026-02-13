@@ -9,13 +9,8 @@ export declare const selectionStyles: (theme: any) => {
 } | null;
 export declare const settings: {
     mediaQueryDefaultActive: {
-        pointerTouch: boolean;
-        'height-xxxs': boolean;
-        'height-xxs': boolean;
-        'height-xs': boolean;
-        'height-sm': boolean;
-        'height-md': boolean;
-        'height-lg': boolean;
+        touchable: boolean;
+        hoverable: boolean;
         'max-xxl': boolean;
         'max-xl': boolean;
         'max-lg': boolean;
@@ -32,6 +27,12 @@ export declare const settings: {
         lg: boolean;
         xl: boolean;
         xxl: boolean;
+        'max-height-sm': boolean;
+        'max-height-md': boolean;
+        'max-height-lg': boolean;
+        'height-sm': boolean;
+        'height-md': boolean;
+        'height-lg': boolean;
     };
     defaultFont: string;
     fastSchemeChange: true;
@@ -43,26 +44,11 @@ export declare const settings: {
 };
 export declare const defaultConfig: {
     media: {
-        readonly pointerTouch: {
-            readonly pointer: "coarse";
+        readonly touchable: {
+            pointer: string;
         };
-        readonly 'height-xxxs': {
-            readonly minHeight: number;
-        };
-        readonly 'height-xxs': {
-            readonly minHeight: number;
-        };
-        readonly 'height-xs': {
-            readonly minHeight: number;
-        };
-        readonly 'height-sm': {
-            readonly minHeight: number;
-        };
-        readonly 'height-md': {
-            readonly minHeight: number;
-        };
-        readonly 'height-lg': {
-            readonly minHeight: number;
+        readonly hoverable: {
+            hover: string;
         };
         readonly 'max-xxl': {
             readonly maxWidth: number;
@@ -111,6 +97,24 @@ export declare const defaultConfig: {
         };
         readonly xxl: {
             readonly minWidth: number;
+        };
+        readonly 'max-height-sm': {
+            readonly maxHeight: number;
+        };
+        readonly 'max-height-md': {
+            readonly maxHeight: number;
+        };
+        readonly 'max-height-lg': {
+            readonly maxHeight: number;
+        };
+        readonly 'height-sm': {
+            readonly minHeight: number;
+        };
+        readonly 'height-md': {
+            readonly minHeight: number;
+        };
+        readonly 'height-lg': {
+            readonly minHeight: number;
         };
     };
     shorthands: {
@@ -513,13 +517,8 @@ export declare const defaultConfig: {
     } | null;
     settings: {
         mediaQueryDefaultActive: {
-            pointerTouch: boolean;
-            'height-xxxs': boolean;
-            'height-xxs': boolean;
-            'height-xs': boolean;
-            'height-sm': boolean;
-            'height-md': boolean;
-            'height-lg': boolean;
+            touchable: boolean;
+            hoverable: boolean;
             'max-xxl': boolean;
             'max-xl': boolean;
             'max-lg': boolean;
@@ -536,6 +535,12 @@ export declare const defaultConfig: {
             lg: boolean;
             xl: boolean;
             xxl: boolean;
+            'max-height-sm': boolean;
+            'max-height-md': boolean;
+            'max-height-lg': boolean;
+            'height-sm': boolean;
+            'height-md': boolean;
+            'height-lg': boolean;
         };
         defaultFont: string;
         fastSchemeChange: true;

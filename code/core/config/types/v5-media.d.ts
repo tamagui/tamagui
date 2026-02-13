@@ -9,26 +9,11 @@ export declare const breakpoints: {
     xxl: number;
 };
 export declare const media: {
-    readonly pointerTouch: {
-        readonly pointer: "coarse";
+    readonly touchable: {
+        pointer: string;
     };
-    readonly 'height-xxxs': {
-        readonly minHeight: number;
-    };
-    readonly 'height-xxs': {
-        readonly minHeight: number;
-    };
-    readonly 'height-xs': {
-        readonly minHeight: number;
-    };
-    readonly 'height-sm': {
-        readonly minHeight: number;
-    };
-    readonly 'height-md': {
-        readonly minHeight: number;
-    };
-    readonly 'height-lg': {
-        readonly minHeight: number;
+    readonly hoverable: {
+        hover: string;
     };
     readonly 'max-xxl': {
         readonly maxWidth: number;
@@ -78,15 +63,28 @@ export declare const media: {
     readonly xxl: {
         readonly minWidth: number;
     };
+    readonly 'max-height-sm': {
+        readonly maxHeight: number;
+    };
+    readonly 'max-height-md': {
+        readonly maxHeight: number;
+    };
+    readonly 'max-height-lg': {
+        readonly maxHeight: number;
+    };
+    readonly 'height-sm': {
+        readonly minHeight: number;
+    };
+    readonly 'height-md': {
+        readonly minHeight: number;
+    };
+    readonly 'height-lg': {
+        readonly minHeight: number;
+    };
 };
 export declare const mediaQueryDefaultActive: {
-    pointerTouch: boolean;
-    'height-xxxs': boolean;
-    'height-xxs': boolean;
-    'height-xs': boolean;
-    'height-sm': boolean;
-    'height-md': boolean;
-    'height-lg': boolean;
+    touchable: boolean;
+    hoverable: boolean;
     'max-xxl': boolean;
     'max-xl': boolean;
     'max-lg': boolean;
@@ -103,5 +101,11 @@ export declare const mediaQueryDefaultActive: {
     lg: boolean;
     xl: boolean;
     xxl: boolean;
+    'max-height-sm': boolean;
+    'max-height-md': boolean;
+    'max-height-lg': boolean;
+    'height-sm': boolean;
+    'height-md': boolean;
+    'height-lg': boolean;
 };
 //# sourceMappingURL=v5-media.d.ts.map

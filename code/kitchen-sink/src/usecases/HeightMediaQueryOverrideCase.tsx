@@ -1,4 +1,42 @@
-import { YStack, XStack, Text, Square } from 'tamagui'
+import { YStack, XStack, Text, Square, styled } from 'tamagui'
+
+// styled component with scale in definition - test if this behaves differently
+const StyledBox = styled(YStack, {
+  width: 100,
+  height: 100,
+  bg: '$purple10',
+  scale: 1,
+  transformOrigin: 'left top',
+})
+
+// styled component with scale in definition (for runtime media override test)
+const StyledBoxWithMedia = styled(YStack, {
+  width: 100,
+  height: 100,
+  bg: '$yellow10',
+  scale: 1,
+  transformOrigin: 'left top',
+} as const)
+
+// EXACT match for ContainerLarge from chat app:
+// styled component with WIDTH media queries ($md, $lg) in definition
+// then used with $height-sm at runtime
+const ContainerLarge = styled(YStack, {
+  mx: 'auto',
+  px: '$6',
+  width: '100%',
+  position: 'relative',
+  maxWidth: 1200,
+  bg: '$blue10',
+
+  $md: {
+    px: '$8',
+  },
+
+  $lg: {
+    px: '$10',
+  },
+})
 
 /**
  * Test case for height media query override
@@ -9,7 +47,7 @@ import { YStack, XStack, Text, Square } from 'tamagui'
 
 export function HeightMediaQueryOverrideCase() {
   return (
-    <YStack p="$4" gap="$6" height="100vh">
+    <YStack p="$4" gap="$6" flex={1} minH={0}>
       <Text fontSize="$5" fontWeight="bold">
         Height Media Query Override Test
       </Text>
@@ -30,10 +68,8 @@ export function HeightMediaQueryOverrideCase() {
             bg="$red10"
             scale={1}
             transformOrigin="left top"
-            {...{
-              '$height-sm': {
-                scale: 2,
-              },
+            $height-sm={{
+              scale: 2,
             }}
           />
         </XStack>
@@ -82,22 +118,66 @@ export function HeightMediaQueryOverrideCase() {
         </XStack>
       </YStack>
 
-      {/* Test 3: height query with backgroundColor only (no transforms) */}
+      {/* Test 3: styled component with scale=1 in definition + $height-sm override */}
       <YStack gap="$2">
-        <Text fontWeight="bold">Test 3: Height query with bg only (no transform)</Text>
-        <Text fontSize="$2">Base: red, $height-lg: green</Text>
-        <XStack height={100} bg="$color3" alignItems="center" justifyContent="center">
-          <Square
-            testID="test-height-bg"
-            data-testid="test-height-bg"
-            size={80}
-            bg="$red10"
+        <Text fontWeight="bold">Test 3: Styled component with scale=1 in definition</Text>
+        <Text fontSize="$2">StyledBox has scale=1, runtime $height-sm: scale=2</Text>
+        <XStack height={200} bg="$color3" alignItems="center" justifyContent="center">
+          <StyledBox
+            testID="test-styled-scale"
+            data-testid="test-styled-scale"
             {...{
-              '$height-lg': {
+              '$height-sm': {
+                scale: 2,
                 bg: '$green10',
               },
             }}
           />
+        </XStack>
+      </YStack>
+
+      {/* Test 4: styled component with scale in definition, override at runtime */}
+      <YStack gap="$2">
+        <Text fontWeight="bold">
+          Test 4: Styled with scale in definition + runtime $height-sm override
+        </Text>
+        <Text fontSize="$2">
+          Definition: scale=1. Runtime $height-sm: scale=2
+        </Text>
+        <XStack height={200} bg="$color3" alignItems="center" justifyContent="center">
+          <StyledBoxWithMedia
+            testID="test-styled-media-override"
+            data-testid="test-styled-media-override"
+            {...{
+              '$height-sm': {
+                scale: 2,
+                bg: '$green10',
+              },
+            }}
+          />
+        </XStack>
+      </YStack>
+
+      {/* Test 5: EXACT ContainerLarge scenario from chat app */}
+      <YStack gap="$2">
+        <Text fontWeight="bold">
+          Test 5: ContainerLarge with WIDTH queries + runtime $height-sm scale
+        </Text>
+        <Text fontSize="$2">
+          ContainerLarge has $md/$lg width queries. Runtime: scale=1, $height-sm: scale=2
+        </Text>
+        <XStack height={200} bg="$color3" alignItems="center" justifyContent="center">
+          <ContainerLarge
+            testID="test-container-large"
+            data-testid="test-container-large"
+            transformOrigin="left top"
+            scale={1}
+            $height-sm={{
+              scale: 2,
+            }}
+          >
+            <Square size={50} bg="$red10" />
+          </ContainerLarge>
         </XStack>
       </YStack>
     </YStack>
