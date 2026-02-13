@@ -993,7 +993,7 @@ export type ParseFont<A extends GenericFont> = {
     face: TokenPrefixedIfExists<A['face']>;
 };
 export type TokenPrefixedIfExists<A> = A extends Record<string, any> ? TokenPrefixed<A> : {};
-export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : K extends keyof Tokens ? GetTokenString<keyof Tokens[K]> : never;
+export type ThemeValueByCategory<K extends string | number | symbol> = K extends 'theme' ? ThemeTokens : K extends 'size' ? SizeTokens : K extends 'font' ? FontTokens : K extends 'fontSize' ? FontSizeTokens : K extends 'space' ? SpaceTokens : K extends 'color' ? ColorTokens : K extends 'zIndex' ? ZIndexTokens : K extends 'radius' ? RadiusTokens : K extends 'lineHeight' ? FontLineHeightTokens : K extends 'fontWeight' ? FontWeightTokens : K extends 'letterSpacing' ? FontLetterSpacingTokens : K extends keyof Tokens ? GetTokenString<keyof Tokens[K]> : never;
 export type FontKeys = 'fontFamily';
 export type FontSizeKeys = 'fontSize';
 export type FontWeightKeys = 'fontWeight';

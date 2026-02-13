@@ -1771,16 +1771,18 @@ export type ThemeValueByCategory<K extends string | number | symbol> = K extends
             ? ColorTokens
             : K extends 'zIndex'
               ? ZIndexTokens
-              : K extends 'lineHeight'
-                ? FontLineHeightTokens
-                : K extends 'fontWeight'
-                  ? FontWeightTokens
-                  : K extends 'letterSpacing'
-                    ? FontLetterSpacingTokens
-                    : K extends keyof Tokens
-                      ? // fallback to user-defined tokens
-                        GetTokenString<keyof Tokens[K]>
-                      : never
+              : K extends 'radius'
+                ? RadiusTokens
+                : K extends 'lineHeight'
+                  ? FontLineHeightTokens
+                  : K extends 'fontWeight'
+                    ? FontWeightTokens
+                    : K extends 'letterSpacing'
+                      ? FontLetterSpacingTokens
+                      : K extends keyof Tokens
+                        ? // fallback to user-defined tokens
+                          GetTokenString<keyof Tokens[K]>
+                        : never
 
 export type FontKeys = 'fontFamily'
 export type FontSizeKeys = 'fontSize'

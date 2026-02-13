@@ -31,6 +31,7 @@ import type {
   TamaguiComponentPropsBase,
   TextStyle,
   TextStylePropsBase,
+  ThemeValueByCategory,
   ThemeValueGet,
   VariantDefinitions,
   VariantSpreadFunction,
@@ -262,7 +263,7 @@ function styled<
                 ? Partial<InferStyleProps<ParentComponent, StyledConfig>>
                 : Accepted[Key] extends 'textStyle'
                   ? Partial<InferStyleProps<typeof Text, StyledConfig>>
-                  : Omit<ThemeValueGet<Accepted[Key]>, 'unset'>)
+                  : ThemeValueByCategory<Accepted[Key]>)
         }
       : {}
 

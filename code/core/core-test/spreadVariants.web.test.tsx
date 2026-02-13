@@ -24,6 +24,7 @@ function findRuleValue(rulesToInsert: Record<string, any>, property: string): an
 let lightTheme: any
 
 beforeAll(() => {
+  // @ts-ignore
   createTamagui(config.getDefaultTamaguiConfig())
   lightTheme = getConfig().themes.light
 })
@@ -35,11 +36,11 @@ describe('spread variant: ...color (#3892)', () => {
       name: 'ColorSpread',
       variants: {
         color: {
-          '...color': (val: string) => ({ stroke: val }),
+          '...color': (val) => ({ stroke: val }),
         },
       } as const,
     },
-    { accept: { stroke: 'color' } } as any
+    { accept: { stroke: 'color' } }
   )
 
   test('resolves color token ($white) to stroke', () => {
@@ -70,11 +71,11 @@ describe('spread variant: ...color (#3892)', () => {
         variants: {
           color: {
             red: { stroke: 'red' },
-            '...color': (val: string) => ({ stroke: val }),
+            '...color': (val) => ({ stroke: val }),
           },
         } as const,
       },
-      { accept: { stroke: 'color' } } as any
+      { accept: { stroke: 'color' } }
     )
     const { viewProps } = simplifiedGetSplitStyles(Comp, { color: 'red' })
     expect(viewProps.stroke).toBe('red')
@@ -86,7 +87,7 @@ describe('spread variant: ...fontSize', () => {
     name: 'FontSizeSpread',
     variants: {
       textSize: {
-        '...fontSize': (val: string, { font }) => ({
+        '...fontSize': (val, { font }) => ({
           fontSize: font?.size[val] || val,
         }),
       },
@@ -104,7 +105,7 @@ describe('spread variant: ...fontStyle', () => {
     name: 'FontStyleSpread',
     variants: {
       emphasis: {
-        '...fontStyle': (val: string) => ({
+        '...fontStyle': (val) => ({
           fontStyle: val,
         }),
       },
@@ -122,7 +123,7 @@ describe('spread variant: ...fontTransform', () => {
     name: 'FontTransformSpread',
     variants: {
       casing: {
-        '...fontTransform': (val: string) => ({
+        '...fontTransform': (val) => ({
           textTransform: val,
         }),
       },
@@ -140,7 +141,7 @@ describe('spread variant: ...letterSpacing', () => {
     name: 'LetterSpacingSpread',
     variants: {
       tracking: {
-        '...letterSpacing': (val: string, { font }) => ({
+        '...letterSpacing': (val, { font }) => ({
           letterSpacing: font?.letterSpacing[val] || val,
         }),
       },
@@ -158,7 +159,7 @@ describe('spread variant: ...lineHeight', () => {
     name: 'LineHeightSpread',
     variants: {
       leading: {
-        '...lineHeight': (val: string, { font }) => ({
+        '...lineHeight': (val, { font }) => ({
           lineHeight: font?.lineHeight[val] || val,
         }),
       },
@@ -176,7 +177,7 @@ describe('spread variant: ...radius', () => {
     name: 'RadiusSpread',
     variants: {
       rounding: {
-        '...radius': (val: string) => ({ borderRadius: val }),
+        '...radius': (val) => ({ borderRadius: val }),
       },
     } as const,
   })
@@ -192,7 +193,7 @@ describe('spread variant: ...size', () => {
     name: 'SizeSpread',
     variants: {
       size: {
-        '...size': (val: string) => ({ height: val, width: val }),
+        '...size': (val) => ({ height: val, width: val }),
       },
     } as const,
   })
@@ -215,7 +216,7 @@ describe('spread variant: ...space', () => {
     name: 'SpaceSpread',
     variants: {
       spacing: {
-        '...space': (val: string) => ({ padding: val }),
+        '...space': (val) => ({ padding: val }),
       },
     } as const,
   })
@@ -231,7 +232,7 @@ describe('spread variant: ...theme', () => {
     name: 'ThemeSpread',
     variants: {
       look: {
-        '...theme': (val: string) => ({
+        '...theme': (val) => ({
           backgroundColor: val,
         }),
       },
@@ -253,7 +254,7 @@ describe('spread variant: ...zIndex', () => {
     name: 'ZIndexSpread',
     variants: {
       layer: {
-        '...zIndex': (val: string) => ({ zIndex: val }),
+        '...zIndex': (val) => ({ zIndex: val }),
       },
     } as const,
   })
@@ -271,14 +272,14 @@ describe('spread variants combined', () => {
       name: 'CombinedSpread',
       variants: {
         color: {
-          '...color': (val: string) => ({ stroke: val }),
+          '...color': (val) => ({ stroke: val }),
         },
         size: {
-          '...size': (val: string) => ({ height: val, width: val }),
+          '...size': (val) => ({ height: val, width: val }),
         },
       } as const,
     },
-    { accept: { stroke: 'color', height: 'size', width: 'size' } } as any
+    { accept: { stroke: 'color', height: 'size', width: 'size' } }
   )
 
   test('works together with theme values', () => {
