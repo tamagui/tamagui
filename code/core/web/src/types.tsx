@@ -1150,6 +1150,21 @@ export interface GenericTamaguiSettings {
   onlyAllowShorthands?: boolean | undefined
 
   /**
+   * Enable flat style mode for Tailwind-like syntax.
+   *
+   * - 'flat': Enable $prop and $modifier:prop syntax ($bg, $hover:bg, $sm:bg)
+   * - 'tamagui': Default object syntax (backgroundColor, hoverStyle: {}, $sm: {})
+   * - 'tailwind': Enable className with modifier syntax (future)
+   * - Array: Enable multiple modes ['tamagui', 'flat']
+   * - Object: Fine-grained control { tamagui: true, flat: true, tailwind: true }
+   */
+  styleMode?: 'flat' | 'tamagui' | 'tailwind' | ('flat' | 'tamagui' | 'tailwind')[] | {
+    flat?: boolean
+    tamagui?: boolean
+    tailwind?: boolean
+  }
+
+  /**
    * Define a default font, for better types and default font on Text
    */
   defaultFont?: string
@@ -1894,48 +1909,31 @@ export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 //
 // Flat mode types (opt-in via styleMode: 'flat')
 //
+// Uses simplified index signatures to avoid type complexity explosion.
+// Full type checking for flat props happens at runtime during preprocessing.
 
 // flat pseudo modifiers (without Style suffix)
 type FlatPseudoKey = 'hover' | 'press' | 'focus' | 'focus-visible' | 'focus-within' | 'disabled' | 'enter' | 'exit'
 
-// base flat props: $bg, $p, $m, etc.
+// base flat props: $bg, $backgroundColor, $p, $padding, etc.
+// uses 'any' for values to avoid type complexity explosion while keeping prop names for autocomplete
 export type WithFlatBaseProps<StyleProps> = {
-  [Key in keyof Shorthands as `$${Key}`]?: Shorthands[Key] extends keyof StyleProps
-    ? StyleProps[Shorthands[Key]] | ThemeValueFallback
-    : undefined
+  [Key in keyof Shorthands as `$${Key}`]?: any
 } & {
-  [Key in keyof StyleProps as `$${string & Key}`]?: StyleProps[Key] | ThemeValueFallback
+  [Key in keyof StyleProps as `$${string & Key}`]?: any
 }
 
-// flat pseudo props: $hover:bg, $press:opacity, etc.
-export type WithFlatPseudoProps<StyleProps> = {
-  [Pseudo in FlatPseudoKey as `$${Pseudo}:${string & keyof Shorthands}`]?: Shorthands[keyof Shorthands] extends keyof StyleProps
-    ? StyleProps[Shorthands[keyof Shorthands]] | ThemeValueFallback
-    : any
-} & {
-  [Pseudo in FlatPseudoKey as `$${Pseudo}:${string & keyof StyleProps}`]?: StyleProps[keyof StyleProps] | ThemeValueFallback
+// simplified type for modifier props - allows any value to avoid complexity explosion
+// precise types: $hover:bg, $press:opacity, $sm:bg, $sm:hover:bg, etc.
+export type WithFlatModifierProps = {
+  [key: `$${FlatPseudoKey}:${string}`]: any
+  [key: `$${MediaQueryKey}:${string}`]: any
 }
 
-// flat media props: $sm:bg, $md:p, etc.
-export type WithFlatMediaProps<StyleProps> = {
-  [Media in MediaQueryKey as `$${Media}:${string & keyof Shorthands}`]?: Shorthands[keyof Shorthands] extends keyof StyleProps
-    ? StyleProps[Shorthands[keyof Shorthands]] | ThemeValueFallback
-    : any
-} & {
-  [Media in MediaQueryKey as `$${Media}:${string & keyof StyleProps}`]?: StyleProps[keyof StyleProps] | ThemeValueFallback
-}
-
-// combined flat props (base + pseudo + media modifiers)
-// Note: full chained modifiers ($sm:hover:bg, $sm:dark:hover:bg) use 'any' to avoid type explosion
+// combined flat props (typed base shorthands + loose modifiers)
 export type WithFlatProps<StyleProps> =
   WithFlatBaseProps<StyleProps> &
-  WithFlatPseudoProps<StyleProps> &
-  WithFlatMediaProps<StyleProps> & {
-    // chained modifiers - simplified to any for type performance
-    [key: `$${MediaQueryKey}:${FlatPseudoKey}:${string}`]: any
-    [key: `$${MediaQueryKey}:${string}:${string}`]: any
-    [key: `$${FlatPseudoKey}:${MediaQueryKey}:${string}`]: any
-  }
+  WithFlatModifierProps
 
 // MUST EXPORT ALL IN BETWEEN or else it expands declarations like crazy
 
@@ -2525,7 +2523,8 @@ export interface StackNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>
 }
 
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>
+export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase> &
+  WithFlatProps<StackStyleBase>
 
 //
 // Text props
@@ -2548,7 +2547,8 @@ export interface TextNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>
 }
 
-export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
+export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase> &
+  WithFlatProps<TextStylePropsBase>
 
 export type TextProps = TextNonStyleProps & TextStyle
 
@@ -2595,7 +2595,8 @@ export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   keyof StylePropsBase | keyof Variants
 > &
   (StylePropsBase extends object
-    ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
+    ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> &
+        WithFlatProps<StylePropsBase>
     : {})
 
 export type TamaguiComponent<
