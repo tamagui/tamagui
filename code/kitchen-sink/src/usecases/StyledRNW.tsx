@@ -45,6 +45,7 @@ export const Input = TamaguiInput.styleable(function MyInput({ ...props }, ref) 
   const parentTheme = useThemeName()
 
   return (
+    // @ts-ignore - complex type inference issue with styleable + styled combination
     <TextInput
       unstyled
       keyboardAppearance={parentTheme?.includes('dark') ? 'dark' : 'default'}

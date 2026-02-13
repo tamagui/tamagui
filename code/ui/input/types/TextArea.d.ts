@@ -39,11 +39,11 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
     }) => void;
     textContentType?: import("./types").InputTextContentType;
 }, import("@tamagui/web").StackStyleBase & {
-    readonly placeholderTextColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly selectionColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly cursorColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly selectionHandleColor?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly underlineColorAndroid?: Omit<import("@tamagui/web").ColorTokens | import("@tamagui/web").ThemeValueFallbackColor, "unset"> | undefined;
+    readonly placeholderTextColor?: import("@tamagui/web").ColorTokens | undefined;
+    readonly selectionColor?: import("@tamagui/web").ColorTokens | undefined;
+    readonly cursorColor?: import("@tamagui/web").ColorTokens | undefined;
+    readonly selectionHandleColor?: import("@tamagui/web").ColorTokens | undefined;
+    readonly underlineColorAndroid?: import("@tamagui/web").ColorTokens | undefined;
 }, {
     size?: import("@tamagui/web").SizeTokens | undefined;
     disabled?: boolean | undefined;

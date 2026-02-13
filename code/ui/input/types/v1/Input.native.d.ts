@@ -4,11 +4,11 @@ import { TextInput } from 'react-native';
  * @deprecated Use the new Input from '@tamagui/input' instead
  */
 export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").TextInputProps, import("@tamagui/core").TextStylePropsBase & {
-    readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly cursorColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly selectionHandleColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly underlineColorAndroid?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly selectionColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly cursorColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly selectionHandleColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly underlineColorAndroid?: import("@tamagui/core").ColorTokens | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;
@@ -38,11 +38,11 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     multiline?: boolean;
     numberOfLines?: number;
 }, import("@tamagui/core").TextStylePropsBase & {
-    readonly placeholderTextColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly selectionColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly cursorColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly selectionHandleColor?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
-    readonly underlineColorAndroid?: Omit<import("@tamagui/core").ColorTokens | import("@tamagui/core").ThemeValueFallbackColor, "unset"> | undefined;
+    readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly selectionColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly cursorColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly selectionHandleColor?: import("@tamagui/core").ColorTokens | undefined;
+    readonly underlineColorAndroid?: import("@tamagui/core").ColorTokens | undefined;
 }, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     disabled?: boolean | undefined;

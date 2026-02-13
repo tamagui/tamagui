@@ -3,7 +3,7 @@ import { FocusScope } from '@tamagui/focus-scope';
 import type { PopperContentProps } from '@tamagui/popper';
 import * as PopperPrimitive from '@tamagui/popper';
 import type { RovingFocusGroupProps } from '@tamagui/roving-focus';
-import type { TamaguiComponent, TextProps } from '@tamagui/web';
+import type { TextProps } from '@tamagui/web';
 import { type ViewProps, View } from '@tamagui/web';
 import type { TamaguiElement } from '@tamagui/web/types';
 import * as React from 'react';
@@ -173,12 +173,12 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         Content: React.ForwardRefExoticComponent<MenuContentProps & {
             scope?: string;
         } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
-        Group: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        Group: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
         }>, keyof MenuGroupProps> & MenuGroupProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuGroupProps, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
-        Label: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        Label: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
             unstyled?: boolean | undefined;
             size?: import("@tamagui/web").FontSizeTokens | undefined;
         }>, keyof MenuLabelProps> & MenuLabelProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & MenuLabelProps, import("@tamagui/web").TextStylePropsBase, {
@@ -191,7 +191,7 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         CheckboxItem: React.ForwardRefExoticComponent<MenuCheckboxItemProps & {
             scope?: string;
         } & React.RefAttributes<TamaguiElement>>;
-        RadioGroup: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        RadioGroup: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
         }>, "scope" | keyof MenuRadioGroupProps> & MenuRadioGroupProps & {
             scope?: string;
@@ -203,7 +203,7 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         RadioItem: React.ForwardRefExoticComponent<MenuRadioItemProps & {
             scope?: string;
         } & React.RefAttributes<TamaguiElement>>;
-        ItemIndicator: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        ItemIndicator: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
         }>, "scope" | keyof MenuItemIndicatorProps> & MenuItemIndicatorProps & {
             scope?: string;
@@ -212,7 +212,7 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         }, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
-        Separator: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        Separator: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
         }>, keyof MenuSeparatorProps> & MenuSeparatorProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuSeparatorProps, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
@@ -225,14 +225,14 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         SubContent: React.ForwardRefExoticComponent<MenuSubContentProps & {
             scope?: string;
         } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
-        ItemTitle: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        ItemTitle: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
             unstyled?: boolean | undefined;
             size?: import("@tamagui/web").FontSizeTokens | undefined;
         }>, keyof MenuItemTitleProps> & MenuItemTitleProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & MenuItemTitleProps, import("@tamagui/web").TextStylePropsBase, {
             unstyled?: boolean | undefined;
             size?: import("@tamagui/web").FontSizeTokens | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
-        ItemSubtitle: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
+        ItemSubtitle: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
             unstyled?: boolean | undefined;
             size?: import("@tamagui/web").FontSizeTokens | undefined;
         }>, keyof MenuItemSubTitleProps> & MenuItemSubTitleProps, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps & MenuItemSubTitleProps, import("@tamagui/web").TextStylePropsBase, {
@@ -240,7 +240,7 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
             size?: import("@tamagui/web").FontSizeTokens | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
         ItemImage: React.ForwardRefExoticComponent<ImageProps & React.RefAttributes<Image>>;
-        ItemIcon: TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        ItemIcon: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
         }>, `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, TamaguiElement, import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>>, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
