@@ -139,7 +139,7 @@ jobs:
         if: env.SKIP_IOS_TESTS != 'true'
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
+          bun-version-file: 'package.json'
 
       - name: Run iOS Detox Tests
         if: env.SKIP_IOS_TESTS != 'true'
@@ -491,7 +491,7 @@ jobs:
         if: env.SKIP_ANDROID_TESTS != 'true'
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
+          bun-version-file: 'package.json'
 
       - name: Start Android Emulator and Run Tests
         if: env.SKIP_ANDROID_TESTS != 'true'
