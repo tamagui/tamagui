@@ -81,6 +81,43 @@ const RegularVisualHover = () => (
   />
 )
 
+// token-based visual comparisons - use same literal values
+const TailwindVisualToken = () => (
+  <View
+    id="tailwind-visual-token"
+    className="w-100 h-100 bg-background rounded-8 p-10"
+  />
+)
+
+const RegularVisualToken = () => (
+  <View
+    id="regular-visual-token"
+    width={100}
+    height={100}
+    backgroundColor="$background"
+    borderRadius={8}
+    padding={10}
+  />
+)
+
+// media query visual comparison
+const TailwindVisualMedia = () => (
+  <View
+    id="tailwind-visual-media"
+    className="w-100 h-100 bg-red sm:bg-green"
+  />
+)
+
+const RegularVisualMedia = () => (
+  <View
+    id="regular-visual-media"
+    width={100}
+    height={100}
+    backgroundColor="red"
+    $sm={{ backgroundColor: 'green' }}
+  />
+)
+
 export function TailwindMode() {
   return (
     <YStack padding={20} gap={20}>
@@ -130,6 +167,22 @@ export function TailwindMode() {
         <XStack gap={20} id="tailwind-hover-comparison">
           <TailwindVisualHover />
           <RegularVisualHover />
+        </XStack>
+      </YStack>
+
+      <YStack gap={8}>
+        <Text fontWeight="bold">Visual: Token (tailwind vs regular)</Text>
+        <XStack gap={20} id="tailwind-token-comparison">
+          <TailwindVisualToken />
+          <RegularVisualToken />
+        </XStack>
+      </YStack>
+
+      <YStack gap={8}>
+        <Text fontWeight="bold">Visual: Media Query (tailwind vs regular)</Text>
+        <XStack gap={20} id="tailwind-media-comparison">
+          <TailwindVisualMedia />
+          <RegularVisualMedia />
         </XStack>
       </YStack>
     </YStack>
