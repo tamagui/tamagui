@@ -141,9 +141,7 @@ export function HeightMediaQueryOverrideCase() {
         <Text fontWeight="bold">
           Test 4: Styled with scale in definition + runtime $height-sm override
         </Text>
-        <Text fontSize="$2">
-          Definition: scale=1. Runtime $height-sm: scale=2
-        </Text>
+        <Text fontSize="$2">Definition: scale=1. Runtime $height-sm: scale=2</Text>
         <XStack height={200} bg="$color3" alignItems="center" justifyContent="center">
           <StyledBoxWithMedia
             testID="test-styled-media-override"

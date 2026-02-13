@@ -18,12 +18,7 @@ export function DismissLayerStackingCase() {
           <Button testID="popover-trigger">Open Popover</Button>
         </Popover.Trigger>
 
-        <Popover.Content
-          testID="popover-content"
-          padding="$4"
-          elevate
-          bordered
-        >
+        <Popover.Content testID="popover-content" padding="$4" elevate bordered>
           <YStack gap="$3" width={280}>
             <Paragraph>Popover Content</Paragraph>
             <Input testID="popover-input" placeholder="Popover input" />
@@ -34,17 +29,8 @@ export function DismissLayerStackingCase() {
               </Dialog.Trigger>
 
               <Dialog.Portal>
-                <Dialog.Overlay
-                  testID="dialog-overlay"
-                  key="overlay"
-                  opacity={0.5}
-                />
-                <Dialog.Content
-                  testID="dialog-content"
-                  bordered
-                  elevate
-                  key="content"
-                >
+                <Dialog.Overlay testID="dialog-overlay" key="overlay" opacity={0.5} />
+                <Dialog.Content testID="dialog-content" bordered elevate key="content">
                   <YStack gap="$3" padding="$2">
                     <Dialog.Title>Dialog Title</Dialog.Title>
                     <Dialog.Description>
