@@ -6,6 +6,8 @@ import {
   Text,
   createTamagui,
   styled,
+  StyleObjectProperty,
+  StyleObjectValue,
 } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
@@ -20,14 +22,49 @@ beforeAll(() => {
   })
 })
 
+import { StyleObjectPseudo, StyleObjectIdentifier } from '@tamagui/helpers'
+
+// helper to find a rule by property name in rulesToInsert
+// optionally filter by pseudo state (undefined = base style)
+function findRule(rulesToInsert: any, prop: string, pseudo?: string) {
+  for (const rule of Object.values(rulesToInsert || {})) {
+    const r = rule as any
+    if (r[StyleObjectProperty] === prop) {
+      // if pseudo is specified, match it; if undefined, match base styles (no pseudo)
+      if (pseudo === undefined) {
+        // for base styles, ensure no pseudo and no media prefix in identifier
+        if (r[StyleObjectPseudo] === undefined && !r[StyleObjectIdentifier]?.includes('_sm') && !r[StyleObjectIdentifier]?.includes('_md')) {
+          return r
+        }
+      } else if (r[StyleObjectPseudo] === pseudo) {
+        return r
+      }
+    }
+  }
+  return null
+}
+
+// helper to find ANY rule by property name (for tests that don't care about modifiers)
+function findAnyRule(rulesToInsert: any, prop: string) {
+  for (const rule of Object.values(rulesToInsert || {})) {
+    if ((rule as any)[StyleObjectProperty] === prop) {
+      return rule as any
+    }
+  }
+  return null
+}
+
 describe('flat mode - base props', () => {
   test('$bg="red" sets backgroundColor', () => {
     const styles = simplifiedGetSplitStyles(View, {
       '$bg': 'red',
     } as any)
 
-    // base flat props go to style (classNames is for extracted atomic CSS)
-    expect(styles.style?.backgroundColor).toBe('red')
+    // on web, base styles go to classNames (atomic CSS), values in rulesToInsert
+    expect(styles.classNames.backgroundColor).toMatch(/_bg-/)
+    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toBe('red')
   })
 
   test('$p="10" sets padding', () => {
@@ -36,10 +73,13 @@ describe('flat mode - base props', () => {
     } as any)
 
     // padding expands to individual sides (numeric values converted to px strings on web)
-    expect(styles.style?.paddingTop).toBe('10px')
-    expect(styles.style?.paddingRight).toBe('10px')
-    expect(styles.style?.paddingBottom).toBe('10px')
-    expect(styles.style?.paddingLeft).toBe('10px')
+    const ptRule = findRule(styles.rulesToInsert, 'paddingTop')
+    expect(ptRule).toBeTruthy()
+    expect(ptRule[StyleObjectValue]).toBe('10px')
+
+    const prRule = findRule(styles.rulesToInsert, 'paddingRight')
+    expect(prRule).toBeTruthy()
+    expect(prRule[StyleObjectValue]).toBe('10px')
   })
 
   test('$color="blue" sets color on Text', () => {
@@ -47,7 +87,10 @@ describe('flat mode - base props', () => {
       '$color': 'blue',
     } as any)
 
-    expect(styles.style?.color).toBe('blue')
+    expect(styles.classNames.color).toMatch(/_col-/)
+    const rule = findRule(styles.rulesToInsert, 'color')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toBe('blue')
   })
 
   test('$opacity="0.5" sets opacity', () => {
@@ -55,7 +98,10 @@ describe('flat mode - base props', () => {
       '$opacity': 0.5,
     } as any)
 
-    expect(styles.style?.opacity).toBe(0.5)
+    expect(styles.classNames.opacity).toMatch(/_o-/)
+    const rule = findRule(styles.rulesToInsert, 'opacity')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toBe(0.5)
   })
 })
 
@@ -199,8 +245,11 @@ describe('flat mode - multiple flat props', () => {
       '$sm:bg': 'lightgray',
     } as any)
 
-    // base bg goes to style (literal values)
-    expect(styles.style?.backgroundColor).toBe('white')
+    // base bg goes to classNames (atomic CSS)
+    expect(styles.classNames.backgroundColor).toMatch(/_bg-/)
+    const bgRule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(bgRule).toBeTruthy()
+    expect(bgRule[StyleObjectValue]).toBe('white')
 
     // hover bg should have hover class pattern in classNames
     const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
@@ -244,8 +293,10 @@ describe('flat mode - token values', () => {
       '$bg': '$white',
     } as any)
 
-    // tokens resolve to CSS variables in style (not classNames)
-    expect(styles.style?.backgroundColor).toContain('var(--')
+    // tokens resolve to CSS variables in rulesToInsert
+    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toContain('var(--')
   })
 
   test('$hover:bg="$black" resolves token in pseudo', () => {
@@ -270,12 +321,23 @@ describe('flat mode - shorthands', () => {
       '$h': 50,
     } as any)
 
-    // base literal props go to style on web
-    expect(styles.style?.marginTop).toBe('10px')
+    // base literal props go to classNames/rulesToInsert on web
+    const mtRule = findRule(styles.rulesToInsert, 'marginTop')
+    expect(mtRule).toBeTruthy()
+    expect(mtRule[StyleObjectValue]).toBe('10px')
+
     // borderRadius expands to individual corners
-    expect(styles.style?.borderTopLeftRadius).toBe('8px')
-    expect(styles.style?.width).toBe('100px')
-    expect(styles.style?.height).toBe('50px')
+    const btlrRule = findRule(styles.rulesToInsert, 'borderTopLeftRadius')
+    expect(btlrRule).toBeTruthy()
+    expect(btlrRule[StyleObjectValue]).toBe('8px')
+
+    const wRule = findRule(styles.rulesToInsert, 'width')
+    expect(wRule).toBeTruthy()
+    expect(wRule[StyleObjectValue]).toBe('100px')
+
+    const hRule = findRule(styles.rulesToInsert, 'height')
+    expect(hRule).toBeTruthy()
+    expect(hRule[StyleObjectValue]).toBe('50px')
   })
 
   test('hover with shorthands', () => {
@@ -347,9 +409,14 @@ describe('flat mode - edge cases', () => {
       '$zIndex': 10,
     } as any)
 
-    // base numeric props go to style on web
-    expect(styles.style?.opacity).toBe(0.5)
-    expect(styles.style?.zIndex).toBe(10)
+    // base numeric props go to classNames/rulesToInsert on web
+    const oRule = findRule(styles.rulesToInsert, 'opacity')
+    expect(oRule).toBeTruthy()
+    expect(oRule[StyleObjectValue]).toBe(0.5)
+
+    const zRule = findRule(styles.rulesToInsert, 'zIndex')
+    expect(zRule).toBeTruthy()
+    expect(zRule[StyleObjectValue]).toBe(10)
   })
 })
 
