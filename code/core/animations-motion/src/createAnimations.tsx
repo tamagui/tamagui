@@ -257,7 +257,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               }
               // Sync motion's internal state for moved properties
               if (Object.keys(movedToAnimate).length > 0) {
-                animate(scope.current, { ...movedToAnimate }, { duration: 0 })
+                const fixed = fixTransparentColors({ ...movedToAnimate }, null, doAnimate)
+                animate(scope.current, fixed, { duration: 0 })
               }
             }
 
@@ -365,7 +366,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
               // IMPORTANT: Spread to create mutable copy - style objects may be frozen
               // fix transparent colors to use rgba for motion.dev compatibility
-              const fixedDiff = fixTransparentColors({ ...diff }, lastDoAnimate.current)
+              const fixedDiff = fixTransparentColors(
+                { ...diff },
+                lastDoAnimate.current,
+                doAnimate
+              )
 
               controls.current = animate(scope.current, fixedDiff, animationOptions)
               lastAnimateAt.current = Date.now()
@@ -422,14 +427,20 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 // Tell motion about the initial state by animating instantly to dontAnimate
                 // This syncs motion's internal state with what's actually on the DOM
                 // IMPORTANT: Spread to create mutable copy - React/Tamagui style objects may be frozen
-                animate(scope.current, { ...dontAnimate }, { duration: 0 })
+                const fixedDont = fixTransparentColors(
+                  { ...dontAnimate },
+                  null,
+                  doAnimate
+                )
+                animate(scope.current, fixedDont, { duration: 0 })
               }
 
               // If there are styles to animate, set them up (but animation is disabled on first render)
               if (doAnimate && Object.keys(doAnimate).length > 0) {
                 // IMPORTANT: Spread to create mutable copy - objects may be frozen
                 lastDoAnimate.current = { ...doAnimate }
-                animate(scope.current, { ...doAnimate }, { duration: 0 })
+                const fixedDo = fixTransparentColors({ ...doAnimate }, dontAnimate)
+                animate(scope.current, fixedDo, { duration: 0 })
               } else {
                 // doAnimate is empty, so track dontAnimate as the initial animated state
                 // This way on next render, getDiff will detect the change
@@ -872,22 +883,27 @@ function getDiff<T extends Record<string, unknown>>(
   return diff
 }
 
-// motion.dev can't animate to "transparent" - convert it to rgba based on previous value
-// if previous was rgba, use same rgb with alpha 0, otherwise use rgba(0,0,0,0)
+// motion.dev can't animate to "transparent" - convert it to rgba
+// try to extract RGB from previous or next value for smooth color transitions
 function fixTransparentColors(
   diff: Record<string, unknown>,
-  previous: Record<string, unknown> | null
+  previous: Record<string, unknown> | null,
+  next?: Record<string, unknown> | null
 ): Record<string, unknown> {
   let result = diff
   for (const key in diff) {
     if (diff[key] === 'transparent') {
-      const prev = previous?.[key]
       let fixed = 'rgba(0, 0, 0, 0)'
-      if (typeof prev === 'string') {
-        // match rgba(r, g, b, a) or rgb(r, g, b)
-        const rgbaMatch = prev.match(/^rgba?\(([^,]+),\s*([^,]+),\s*([^,)]+)/)
-        if (rgbaMatch) {
-          fixed = `rgba(${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}, 0)`
+      // try previous value first, then next value
+      const candidates = [previous?.[key], next?.[key]]
+      for (const candidate of candidates) {
+        if (typeof candidate === 'string' && candidate !== 'transparent') {
+          // match rgba(r, g, b, a) or rgb(r, g, b)
+          const rgbaMatch = candidate.match(/^rgba?\(([^,]+),\s*([^,]+),\s*([^,)]+)/)
+          if (rgbaMatch) {
+            fixed = `rgba(${rgbaMatch[1]}, ${rgbaMatch[2]}, ${rgbaMatch[3]}, 0)`
+            break
+          }
         }
       }
       if (result === diff) {

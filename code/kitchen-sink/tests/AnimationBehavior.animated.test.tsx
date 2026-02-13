@@ -471,10 +471,10 @@ test.describe('Animation Behavior', () => {
     await page.waitForTimeout(800)
 
     // should be at final state (opacity: 1, scale: 1)
-    expect(await getOpacity(page, 'scenario-49-target'), 'Opacity after enter').toBeCloseTo(
-      END_OPACITY,
-      1
-    )
+    expect(
+      await getOpacity(page, 'scenario-49-target'),
+      'Opacity after enter'
+    ).toBeCloseTo(END_OPACITY, 1)
 
     // click to trigger exit animation
     await page.getByTestId('scenario-49-trigger').click()
