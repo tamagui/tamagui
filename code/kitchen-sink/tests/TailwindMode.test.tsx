@@ -102,3 +102,40 @@ test('visual screenshot - tailwind hover comparison', async ({ page }) => {
     maxDiffPixelRatio: 0.01,
   })
 })
+
+// token-based visual tests
+test('tailwind visual token - matches regular tamagui syntax', async ({ page }) => {
+  const tailwind = page.locator('#tailwind-visual-token').first()
+  const regular = page.locator('#regular-visual-token').first()
+
+  const tailwindStyles = await getStyles(tailwind)
+  const regularStyles = await getStyles(regular)
+
+  expect(tailwindStyles.backgroundColor).toBe(regularStyles.backgroundColor)
+  expect(tailwindStyles.borderRadius).toBe(regularStyles.borderRadius)
+  expect(tailwindStyles.padding).toBe(regularStyles.padding)
+})
+
+test('tailwind visual media - matches regular tamagui syntax', async ({ page }) => {
+  const tailwind = page.locator('#tailwind-visual-media').first()
+  const regular = page.locator('#regular-visual-media').first()
+
+  const tailwindStyles = await getStyles(tailwind)
+  const regularStyles = await getStyles(regular)
+
+  expect(tailwindStyles.backgroundColor).toBe(regularStyles.backgroundColor)
+})
+
+test('visual screenshot - tailwind token comparison', async ({ page }) => {
+  const comparison = page.locator('#tailwind-token-comparison').first()
+  await expect(comparison).toHaveScreenshot('tailwind-token-comparison.png', {
+    maxDiffPixelRatio: 0.01,
+  })
+})
+
+test('visual screenshot - tailwind media comparison', async ({ page }) => {
+  const comparison = page.locator('#tailwind-media-comparison').first()
+  await expect(comparison).toHaveScreenshot('tailwind-media-comparison.png', {
+    maxDiffPixelRatio: 0.01,
+  })
+})
