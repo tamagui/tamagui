@@ -25,9 +25,9 @@ test('tailwind hover - hovered state has blue background', async ({ page }) => {
   expect(styles.backgroundColor).toBe('rgb(0, 0, 255)')
 })
 
-test('tailwind token - className="bg-$background" resolves token', async ({ page }) => {
+test('tailwind token - className="bg-background" auto-resolves token', async ({ page }) => {
   const styles = await getStyles(page.locator('#tailwind-token').first())
-  // token should resolve to actual color (not undefined)
+  // token should auto-resolve to actual color (no $ prefix needed)
   expect(styles.backgroundColor).toMatch(/^rgb/)
 })
 

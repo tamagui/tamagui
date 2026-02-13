@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { View, createTamagui } from '../web/src'
+import { View, createTamagui, StyleObjectProperty, StyleObjectValue } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -15,13 +15,27 @@ beforeAll(() => {
   })
 })
 
+// helper to find a rule by property name in rulesToInsert
+function findRule(rulesToInsert: any, prop: string) {
+  for (const rule of Object.values(rulesToInsert || {})) {
+    if ((rule as any)[StyleObjectProperty] === prop) {
+      return rule as any
+    }
+  }
+  return null
+}
+
 describe('tailwind mode - basic className', () => {
   test('className="bg-red" sets backgroundColor', () => {
     const styles = simplifiedGetSplitStyles(View, {
       className: 'bg-red',
     } as any)
 
-    expect(styles.style?.backgroundColor).toBe('red')
+    // on web, styles go to classNames (atomic CSS), values in rulesToInsert
+    expect(styles.classNames.backgroundColor).toMatch(/_bg-/)
+    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toBe('red')
   })
 
   test('className="w-100 h-50" sets width and height', () => {
@@ -29,8 +43,13 @@ describe('tailwind mode - basic className', () => {
       className: 'w-100 h-50',
     } as any)
 
-    expect(styles.style?.width).toBe('100px')
-    expect(styles.style?.height).toBe('50px')
+    const wRule = findRule(styles.rulesToInsert, 'width')
+    expect(wRule).toBeTruthy()
+    expect(wRule[StyleObjectValue]).toBe('100px')
+
+    const hRule = findRule(styles.rulesToInsert, 'height')
+    expect(hRule).toBeTruthy()
+    expect(hRule[StyleObjectValue]).toBe('50px')
   })
 
   test('className="opacity-50" sets opacity to 0.5', () => {
@@ -38,7 +57,9 @@ describe('tailwind mode - basic className', () => {
       className: 'opacity-50',
     } as any)
 
-    expect(styles.style?.opacity).toBe(0.5)
+    const rule = findRule(styles.rulesToInsert, 'opacity')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toBe(0.5)
   })
 
   test('className="p-10 m-5" sets padding and margin', () => {
@@ -46,8 +67,13 @@ describe('tailwind mode - basic className', () => {
       className: 'p-10 m-5',
     } as any)
 
-    expect(styles.style?.paddingTop).toBe('10px')
-    expect(styles.style?.marginTop).toBe('5px')
+    const ptRule = findRule(styles.rulesToInsert, 'paddingTop')
+    expect(ptRule).toBeTruthy()
+    expect(ptRule[StyleObjectValue]).toBe('10px')
+
+    const mtRule = findRule(styles.rulesToInsert, 'marginTop')
+    expect(mtRule).toBeTruthy()
+    expect(mtRule[StyleObjectValue]).toBe('5px')
   })
 })
 
@@ -106,8 +132,10 @@ describe('tailwind mode - token values', () => {
       className: 'bg-$white',
     } as any)
 
-    // token values resolve to CSS variables
-    expect(styles.style?.backgroundColor).toContain('var(--')
+    // token values resolve to CSS variables in rulesToInsert
+    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toContain('var(--')
   })
 
   test('className="bg-white" auto-resolves to token (no $ needed)', () => {
@@ -117,7 +145,9 @@ describe('tailwind mode - token values', () => {
     } as any)
 
     // should resolve to CSS variable since $white is a token
-    expect(styles.style?.backgroundColor).toContain('var(--')
+    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toContain('var(--')
   })
 
   test('className="hover:bg-black" uses token in hover (no $ needed)', () => {
@@ -137,20 +167,76 @@ describe('tailwind mode - token values', () => {
     } as any)
 
     // should be raw CSS value, not a variable
-    expect(styles.style?.backgroundColor).toBe('purple')
+    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toBe('purple')
   })
 })
 
-describe('tailwind mode - mixed with regular classes', () => {
-  test('processes tailwind classes and preserves regular', () => {
+describe('tailwind mode - class preservation', () => {
+  test('regular classes are preserved in className', () => {
     const styles = simplifiedGetSplitStyles(View, {
       className: 'my-custom-class bg-red another-class',
     } as any)
 
-    // tailwind class should be processed into style
-    expect(styles.style?.backgroundColor).toBe('red')
-    // note: viewProps.className is only built when TAMAGUI_TARGET=web
-    // in unit tests we verify the style processing works
+    // tailwind class should be processed into rulesToInsert
+    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toBe('red')
+
+    // regular classes should be preserved (not transformed or dropped)
+    const finalClassName = styles.viewProps?.className || ''
+    expect(finalClassName).toContain('my-custom-class')
+    expect(finalClassName).toContain('another-class')
+  })
+
+  test('text-center is preserved (not misinterpreted as color)', () => {
+    // "text-center" should NOT become color: center
+    const styles = simplifiedGetSplitStyles(View, {
+      className: 'text-center bg-red',
+    } as any)
+
+    // bg-red should be processed
+    const bgRule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(bgRule).toBeTruthy()
+
+    // text-center should NOT set color
+    expect(styles.classNames.color).toBeUndefined()
+
+    // text-center should be preserved in className
+    const finalClassName = styles.viewProps?.className || ''
+    expect(finalClassName).toContain('text-center')
+  })
+
+  test('unknown prop-value classes are preserved', () => {
+    // "foo-bar" is not a known tailwind pattern, should be preserved
+    const styles = simplifiedGetSplitStyles(View, {
+      className: 'foo-bar baz-qux bg-blue',
+    } as any)
+
+    // bg-blue should be processed
+    const bgRule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(bgRule).toBeTruthy()
+
+    // unknown classes should be preserved
+    const finalClassName = styles.viewProps?.className || ''
+    expect(finalClassName).toContain('foo-bar')
+    expect(finalClassName).toContain('baz-qux')
+  })
+
+  test('dark: modifier classes without valid prop are preserved', () => {
+    // "dark:my-theme" is not a valid tailwind class, should be preserved
+    const styles = simplifiedGetSplitStyles(View, {
+      className: 'dark:my-theme bg-red',
+    } as any)
+
+    // bg-red should be processed
+    const bgRule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(bgRule).toBeTruthy()
+
+    // dark:my-theme should be preserved (not processed as dark mode style)
+    const finalClassName = styles.viewProps?.className || ''
+    expect(finalClassName).toContain('dark:my-theme')
   })
 })
 

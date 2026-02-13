@@ -137,17 +137,19 @@ Tailwind classes work alongside regular Tamagui props:
 Non-Tailwind classes are preserved:
 
 ```tsx
-<View className="my-custom-class bg-blue5 another-class" />
-// bg-blue5 is processed, others are kept as className
+<View className="my-custom-class bg-blue5 another-class text-center" />
+// bg-blue5 is processed into styles
+// my-custom-class, another-class, text-center are kept in className
 ```
 
 ## How It Works
 
 1. className string is parsed into individual classes
-2. Tailwind-style classes (with `-` separator) are extracted
-3. Values are checked against your token config
-4. Matching tokens are resolved, others used as raw CSS
-5. Modifiers are converted to Tamagui's style system
+2. Classes are checked against known style properties and shorthands
+3. Only classes with valid prop-value patterns are processed (e.g., `bg-red`, `w-100`)
+4. Classes like `my-custom-class` or `text-center` are preserved
+5. Values are checked against your token config for auto-resolution
+6. Modifiers like `hover:`, `sm:` are converted to Tamagui's style system
 
 ## Performance
 

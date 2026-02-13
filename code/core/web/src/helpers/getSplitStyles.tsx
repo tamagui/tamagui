@@ -212,9 +212,35 @@ function isTailwindModeEnabled(config: TamaguiInternalConfig): boolean {
 }
 
 /**
+ * Check if a class looks like a valid tailwind-style class by checking if its
+ * prop prefix is a known shorthand or style property.
+ */
+function looksLikeTailwindClass(
+  cls: string,
+  shorthands: Record<string, string>,
+  config: TamaguiInternalConfig
+): boolean {
+  // classes with colons are always considered tailwind (modifiers)
+  if (cls.includes(':')) return true
+
+  // for prop-value patterns like "bg-red", check if the prop is known
+  const dashIndex = cls.indexOf('-')
+  if (dashIndex === -1) return false
+
+  const prop = cls.slice(0, dashIndex)
+  // only consider it tailwind if the prop is a known shorthand or built-in
+  return !!(
+    shorthands?.[prop] ||
+    TAILWIND_BUILTIN_SHORTHANDS[prop] ||
+    isLikelyStyleProp(prop)
+  )
+}
+
+/**
  * Preprocess Tailwind-style className strings into flat props.
  * Transforms syntax like className="hover:bg-$blue5 sm:p-$4" into flat props.
  * Works with user-defined tokens - does NOT hardcode Tailwind's color/spacing system.
+ * Non-tailwind classes are preserved in className.
  */
 function preprocessTailwindClassName(
   props: Record<string, any>,
@@ -230,39 +256,28 @@ function preprocessTailwindClassName(
     return props
   }
 
-  // check for tailwind-style classes (modifiers with colons or prop-value patterns)
   const classes = className.split(/\s+/).filter(Boolean)
-  const tailwindClasses: string[] = []
   const regularClasses: string[] = []
+  const result: Record<string, any> = { ...props }
 
   for (const cls of classes) {
-    // tailwind patterns: hover:bg-red, sm:p-4, bg-$blue5, w-100
-    if (cls.includes(':') || /^[a-z]+-/.test(cls)) {
-      tailwindClasses.push(cls)
-    } else {
-      regularClasses.push(cls)
+    // only try to convert if it looks like a valid tailwind class
+    if (looksLikeTailwindClass(cls, shorthands, config)) {
+      const flatProp = tailwindClassToFlatProp(cls, shorthands, config)
+      if (flatProp) {
+        result[flatProp.key] = flatProp.value
+        continue // successfully converted, don't add to regularClasses
+      }
     }
+    // preserve all other classes (non-tailwind or failed conversion)
+    regularClasses.push(cls)
   }
-
-  if (tailwindClasses.length === 0) {
-    return props
-  }
-
-  const result: Record<string, any> = { ...props }
 
   // update className to only include regular classes
   if (regularClasses.length > 0) {
     result.className = regularClasses.join(' ')
   } else {
     delete result.className
-  }
-
-  // convert tailwind classes to flat props
-  for (const cls of tailwindClasses) {
-    const flatProp = tailwindClassToFlatProp(cls, shorthands, config)
-    if (flatProp) {
-      result[flatProp.key] = flatProp.value
-    }
   }
 
   return result
@@ -293,6 +308,10 @@ function resolveTokenValue(value: string, config: TamaguiInternalConfig): string
 /**
  * Common Tailwind shorthand mappings that work even when user's shorthands
  * don't include them. These are the most frequently used patterns.
+ *
+ * Note: We intentionally exclude ambiguous shorthands like 'text' which in
+ * Tailwind can mean text-align, text-color, or text-size depending on context.
+ * Users should configure their own shorthands for these or use explicit props.
  */
 const TAILWIND_BUILTIN_SHORTHANDS: Record<string, string> = {
   w: 'width',
@@ -314,7 +333,47 @@ const TAILWIND_BUILTIN_SHORTHANDS: Record<string, string> = {
   my: 'marginVertical',
   rounded: 'borderRadius',
   border: 'borderWidth',
-  text: 'color',
+}
+
+// props that expect numeric/spacing values
+const SPACING_PROPS = new Set([
+  'width', 'height', 'margin', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft',
+  'marginHorizontal', 'marginVertical', 'padding', 'paddingTop', 'paddingRight',
+  'paddingBottom', 'paddingLeft', 'paddingHorizontal', 'paddingVertical',
+  'borderRadius', 'borderWidth', 'gap', 'rowGap', 'columnGap',
+  'top', 'right', 'bottom', 'left', 'inset',
+])
+
+/**
+ * Validate that a value looks like a valid CSS/Tamagui value for tailwind processing.
+ * This prevents "my-custom-class" from being parsed as marginVertical: "custom-class".
+ */
+function isValidTailwindValue(value: string, prop: string): boolean {
+  // explicit token reference is always valid
+  if (value.startsWith('$')) return true
+
+  // numeric values are valid
+  if (/^\d+(\.\d+)?$/.test(value)) return true
+
+  // for spacing/sizing props, values must be numeric or token references
+  // this prevents "my-theme" from being treated as a margin value
+  const expandedProp = TAILWIND_BUILTIN_SHORTHANDS[prop] || prop
+  if (SPACING_PROPS.has(expandedProp)) {
+    // only allow numeric or token values for spacing props
+    return /^\d+(\.\d+)?$/.test(value) || value.startsWith('$')
+  }
+
+  // for other props (color, etc), simple alphanumeric values are valid
+  // e.g., "red", "blue5", "center", "100"
+  if (/^[a-zA-Z0-9]+$/.test(value)) return true
+
+  // values with only one hyphen that looks like a color variant are ok
+  // e.g., "blue-500", "gray-100"
+  if (/^[a-z]+-\d+$/.test(value)) return true
+
+  // anything else with hyphens is likely a custom class name, not a value
+  // e.g., "custom-class", "my-component"
+  return false
 }
 
 /**
@@ -350,6 +409,11 @@ function tailwindClassToFlatProp(
   const isUserShorthand = !!shorthands?.[prop]
   const isBuiltinShorthand = !!TAILWIND_BUILTIN_SHORTHANDS[prop]
   if (!isUserShorthand && !isBuiltinShorthand && !isLikelyStyleProp(prop)) {
+    return null
+  }
+
+  // validate value looks like a CSS value, not a class name fragment
+  if (!isValidTailwindValue(value, prop)) {
     return null
   }
 
