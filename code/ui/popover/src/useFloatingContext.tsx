@@ -2,7 +2,6 @@ import React from 'react'
 import type { UseFloatingOptions } from '@floating-ui/react'
 import {
   safePolygon,
-  useDismiss,
   useFloating,
   useFocus,
   useHover,
@@ -11,6 +10,8 @@ import {
 } from '@floating-ui/react'
 
 // Custom floating context to override the Popper on web
+// Note: dismiss handling (ESC, outside click) is done by Tamagui's Dismissable
+// so it participates in the shared layer system with Dialog
 export const useFloatingContext = ({
   open,
   setOpen,
@@ -52,9 +53,6 @@ export const useFloatingContext = ({
           visibleOnly: true,
         }),
         useRole(floating.context, { role: 'dialog' }),
-        useDismiss(floating.context, {
-          enabled: !disable,
-        }),
       ])
       return {
         ...floating,

@@ -163,6 +163,21 @@ export declare const configWithoutAnimations: {
         gtXl: {
             minWidth: number;
         };
+        'height-xs': {
+            minHeight: number;
+        };
+        'height-sm': {
+            minHeight: number;
+        };
+        'height-md': {
+            minHeight: number;
+        };
+        'height-lg': {
+            minHeight: number;
+        };
+        'height-xl': {
+            minHeight: number;
+        };
     };
     shorthands: {
         readonly ussel: "userSelect";
@@ -942,6 +957,11 @@ export declare const configWithoutAnimations: {
             sm: boolean;
             xs: boolean;
             xxs: boolean;
+            'height-xs': boolean;
+            'height-sm': boolean;
+            'height-md': boolean;
+            'height-lg': boolean;
+            'height-xl': boolean;
         };
     };
 };

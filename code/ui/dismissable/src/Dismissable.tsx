@@ -92,7 +92,15 @@ const Dismissable = React.forwardRef<
     if (!event.defaultPrevented) onDismiss?.()
   })
 
+  // track forceUnmount in a ref so escape handler can check it
+  const forceUnmountRef = React.useRef(forceUnmount)
+  React.useEffect(() => {
+    forceUnmountRef.current = forceUnmount
+  }, [forceUnmount])
+
   useEscapeKeydown((event) => {
+    // skip if this layer is force-unmounted (e.g. dialog closed but still mounted)
+    if (forceUnmountRef.current) return
     // Check layers at callback time, not render time, to avoid stale closures
     const currentLayers = Array.from(context.layers)
     const currentIndex = node ? currentLayers.indexOf(node) : -1
@@ -107,6 +115,8 @@ const Dismissable = React.forwardRef<
 
   React.useEffect(() => {
     if (!node) return
+    // don't add to layers when force-unmounted (dialog closed but still mounted)
+    if (forceUnmount) return
     if (disableOutsidePointerEvents) {
       if (context.layersWithOutsidePointerEventsDisabled.size === 0) {
         originalBodyPointerEvents = document.body.style.pointerEvents
@@ -124,7 +134,7 @@ const Dismissable = React.forwardRef<
         document.body.style.pointerEvents = originalBodyPointerEvents
       }
     }
-  }, [node, disableOutsidePointerEvents, context])
+  }, [node, disableOutsidePointerEvents, forceUnmount, context])
 
   /**
    * We purposefully prevent combining this effect with the `disableOutsidePointerEvents` effect

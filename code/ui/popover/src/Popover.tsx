@@ -24,7 +24,7 @@ import {
   useThemeName,
   View,
 } from '@tamagui/core'
-import type { DismissableProps } from '@tamagui/dismissable'
+import { Dismissable, type DismissableProps } from '@tamagui/dismissable'
 import { FloatingOverrideContext } from '@tamagui/floating'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
@@ -481,39 +481,44 @@ const PopoverContentImpl = React.forwardRef<
     <ResetPresence disable={context.breakpointActive}>{children}</ResetPresence>
   )
 
+  const handleDismiss = React.useCallback(() => {
+    context.onOpenChange(false, 'press')
+  }, [context])
+
   // i want to avoid reparenting but react-remove-scroll makes it hard
   // TODO its removed now so we can probable do it now
   if (!context.breakpointActive) {
     if (process.env.TAMAGUI_TARGET !== 'native') {
       contents = (
-        <RemoveScroll
-          enabled={context.breakpointActive ? false : enableRemoveScroll ? open : false}
+        <Dismissable
+          forceUnmount={!open}
+          onEscapeKeyDown={onEscapeKeyDown}
+          onPointerDownOutside={onPointerDownOutside}
+          onFocusOutside={onFocusOutside}
+          onInteractOutside={onInteractOutside}
+          onDismiss={handleDismiss}
         >
-          <FocusScope
-            loop={trapFocus !== false}
-            enabled={context.breakpointActive ? false : disableFocusScope ? false : open}
-            trapped={context.breakpointActive ? false : trapFocus}
-            onMountAutoFocus={onOpenAutoFocus}
-            onUnmountAutoFocus={onCloseAutoFocus === false ? undefined : onCloseAutoFocus}
+          <RemoveScroll
+            enabled={context.breakpointActive ? false : enableRemoveScroll ? open : false}
           >
-            <div style={dspContentsStyle}>{contents}</div>
-          </FocusScope>
-        </RemoveScroll>
+            <FocusScope
+              loop={trapFocus !== false}
+              enabled={
+                context.breakpointActive ? false : disableFocusScope ? false : open
+              }
+              trapped={context.breakpointActive ? false : trapFocus}
+              onMountAutoFocus={onOpenAutoFocus}
+              onUnmountAutoFocus={
+                onCloseAutoFocus === false ? undefined : onCloseAutoFocus
+              }
+            >
+              <div style={dspContentsStyle}>{contents}</div>
+            </FocusScope>
+          </RemoveScroll>
+        </Dismissable>
       )
     }
   }
-
-  // const handleDismiss = React.useCallback((event: GestureResponderEvent) =>{
-  //   context.onOpenChange(false);
-  // }, [])
-  // <Dismissable
-  //     disableOutsidePointerEvents={disableOutsidePointerEvents}
-  //     // onInteractOutside={onInteractOutside}
-  //     onEscapeKeyDown={onEscapeKeyDown}
-  //     // onPointerDownOutside={onPointerDownOutside}
-  //     // onFocusOutside={onFocusOutside}
-  //     onDismiss={handleDismiss}
-  //   >
 
   // const freeze = Boolean(isFullyHidden && freezeContentsWhenHidden)
 

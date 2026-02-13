@@ -34,6 +34,21 @@ export declare const media: {
     gtXl: {
         minWidth: number;
     };
+    'height-xs': {
+        minHeight: number;
+    };
+    'height-sm': {
+        minHeight: number;
+    };
+    'height-md': {
+        minHeight: number;
+    };
+    'height-lg': {
+        minHeight: number;
+    };
+    'height-xl': {
+        minHeight: number;
+    };
 };
 export declare const mediaQueryDefaultActive: {
     xl: boolean;
@@ -42,5 +57,10 @@ export declare const mediaQueryDefaultActive: {
     sm: boolean;
     xs: boolean;
     xxs: boolean;
+    'height-xs': boolean;
+    'height-sm': boolean;
+    'height-md': boolean;
+    'height-lg': boolean;
+    'height-xl': boolean;
 };
 //# sourceMappingURL=media.d.ts.map

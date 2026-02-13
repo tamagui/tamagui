@@ -221,7 +221,10 @@ export function useFocusScope(
       focusScope.stopped = false
       focusScopesStack.add(focusScope)
       const previouslyFocusedElement = document.activeElement as HTMLElement | null
-      const hasFocusedCandidate = container.contains(previouslyFocusedElement)
+      const hasFocusedCandidate =
+        container.contains(previouslyFocusedElement) &&
+        previouslyFocusedElement !== null &&
+        !isHidden(previouslyFocusedElement, { upTo: container })
 
       if (!hasFocusedCandidate) {
         const mountEvent = new CustomEvent(AUTOFOCUS_ON_MOUNT, EVENT_OPTIONS)
