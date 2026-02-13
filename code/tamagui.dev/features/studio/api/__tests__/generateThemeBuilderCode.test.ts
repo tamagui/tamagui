@@ -34,14 +34,14 @@ describe('generateThemeBuilderCode', () => {
     expect(code).toContain('lightPalette,')
   })
 
-  it('includes custom accent color as childrenTheme', async () => {
+  it('includes custom accent as top-level option', async () => {
     const code = await generateThemeBuilderCode({
       palettes: mockPalettes,
       includeComponentThemes: false,
       includeSizeTokens: false,
     })
 
-    // Accent should be a childrenTheme with named colors
+    // Accent should be a top-level option with named colors
     expect(code).toContain('const accentLight = {')
     expect(code).toContain('const accentDark = {')
     expect(code).toContain('"accent1":')

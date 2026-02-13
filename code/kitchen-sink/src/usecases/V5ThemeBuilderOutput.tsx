@@ -157,118 +157,116 @@ export function V5ThemeBuilderOutput() {
         </Paragraph>
 
         <XStack gap="$4" flexWrap="wrap">
-          <Theme name="light">
-            <Theme name="accent">
-              <YStack gap="$2" alignItems="center">
-                <Card
-                  padding="$4"
-                  backgroundColor="$background"
-                  borderRadius="$4"
-                  minWidth={200}
-                >
-                  <Button
-                    testID="button-accent-light"
-                    backgroundColor="$color7"
-                    size="$4"
-                  >
-                    Accent Light Button
-                  </Button>
-                  <XStack gap="$2" marginTop="$2">
-                    <YStack
-                      flex={1}
-                      height={80}
-                      backgroundColor="$color7"
-                      borderRadius="$2"
-                    />
-                    <YStack
-                      flex={1}
-                      height={80}
-                      backgroundColor="$color9"
-                      borderRadius="$2"
-                    />
-                  </XStack>
-                </Card>
-                <Text fontSize="$2" color="$color11">
-                  Accent Light
-                </Text>
+          <YStack gap="$2" alignItems="center">
+            <Card
+              padding="$4"
+              backgroundColor="$accent3"
+              borderRadius="$4"
+              minWidth={200}
+            >
+              <Button
+                testID="button-accent-light"
+                backgroundColor="$accent7"
+                color="$accent12"
+                size="$4"
+              >
+                Accent Light Button
+              </Button>
+              <XStack gap="$2" marginTop="$2">
                 <YStack
-                  testID="accent-light-swatch"
-                  width={50}
-                  height={50}
-                  backgroundColor="$color7"
+                  flex={1}
+                  height={80}
+                  backgroundColor="$accent5"
                   borderRadius="$2"
                 />
-              </YStack>
-            </Theme>
-          </Theme>
+                <YStack
+                  flex={1}
+                  height={80}
+                  backgroundColor="$accent9"
+                  borderRadius="$2"
+                />
+              </XStack>
+            </Card>
+            <Text fontSize="$2" color="$color11">
+              Accent Light
+            </Text>
+            <YStack
+              testID="accent-light-swatch"
+              width={50}
+              height={50}
+              backgroundColor="$accent7"
+              borderRadius="$2"
+            />
+          </YStack>
 
           <Theme name="dark">
-            <Theme name="accent">
-              <YStack gap="$2" alignItems="center">
-                <Card
-                  padding="$4"
-                  backgroundColor="$background"
-                  borderRadius="$4"
-                  minWidth={200}
+            <YStack gap="$2" alignItems="center">
+              <Card
+                padding="$4"
+                backgroundColor="$accent3"
+                borderRadius="$4"
+                minWidth={200}
+              >
+                <Button
+                  testID="button-accent-dark"
+                  backgroundColor="$accent7"
+                  color="$accent12"
+                  size="$4"
                 >
-                  <Button testID="button-accent-dark" backgroundColor="$color7" size="$4">
-                    Accent Dark Button
-                  </Button>
-                  <XStack gap="$2" marginTop="$2">
-                    <YStack
-                      flex={1}
-                      height={80}
-                      backgroundColor="$color7"
-                      borderRadius="$2"
-                    />
-                    <YStack
-                      flex={1}
-                      height={80}
-                      backgroundColor="$color9"
-                      borderRadius="$2"
-                    />
-                  </XStack>
-                </Card>
-                <Text fontSize="$2" color="$color11">
-                  Accent Dark
-                </Text>
-                <YStack
-                  testID="accent-dark-swatch"
-                  width={50}
-                  height={50}
-                  backgroundColor="$color7"
-                  borderRadius="$2"
-                />
-              </YStack>
-            </Theme>
+                  Accent Dark Button
+                </Button>
+                <XStack gap="$2" marginTop="$2">
+                  <YStack
+                    flex={1}
+                    height={80}
+                    backgroundColor="$accent5"
+                    borderRadius="$2"
+                  />
+                  <YStack
+                    flex={1}
+                    height={80}
+                    backgroundColor="$accent9"
+                    borderRadius="$2"
+                  />
+                </XStack>
+              </Card>
+              <Text fontSize="$2" color="$color11">
+                Accent Dark
+              </Text>
+              <YStack
+                testID="accent-dark-swatch"
+                width={50}
+                height={50}
+                backgroundColor="$accent7"
+                borderRadius="$2"
+              />
+            </YStack>
           </Theme>
         </XStack>
 
-        {/* Full accent palette */}
-        <Theme name="accent">
-          <YStack gap="$2" marginTop="$2">
-            <Text fontSize="$2" color="$color11">
-              Accent Palette (color1-12) - Should be purple gradient:
-            </Text>
-            <XStack gap="$1">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
-                <YStack
-                  key={i}
-                  width={40}
-                  height={40}
-                  backgroundColor={`$color${i}` as any}
-                  borderRadius="$2"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Text fontSize={10} color={i > 6 ? '$color1' : '$color12'}>
-                    {i}
-                  </Text>
-                </YStack>
-              ))}
-            </XStack>
-          </YStack>
-        </Theme>
+        {/* Full accent palette - uses $accent1-12 from base theme (raw palette values) */}
+        <YStack gap="$2" marginTop="$2">
+          <Text fontSize="$2" color="$color11">
+            Accent Palette (accent1-12) - Should be purple gradient:
+          </Text>
+          <XStack gap="$1">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
+              <YStack
+                key={i}
+                width={40}
+                height={40}
+                backgroundColor={`$accent${i}` as any}
+                borderRadius="$2"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Text fontSize={10} color={i > 6 ? '$accent1' : '$accent12'}>
+                  {i}
+                </Text>
+              </YStack>
+            ))}
+          </XStack>
+        </YStack>
       </YStack>
 
       {/* OTHER COLOR THEMES */}
@@ -313,7 +311,9 @@ export function V5ThemeBuilderOutput() {
               backgroundColor="$background"
               minWidth={140}
             >
-              <Text color="$color">Blue</Text>
+              <Button testID="button-blue" size="$3">
+                Blue
+              </Button>
             </Card>
           </Theme>
         </XStack>

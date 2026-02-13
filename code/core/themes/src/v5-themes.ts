@@ -372,6 +372,11 @@ export type CreateV5ThemeOptions<
   /** Override the light base palette (12 colors from lightest to darkest) */
   lightPalette?: string[]
   /**
+   * Custom accent palette. If not provided, accent uses the inverted base palette.
+   * Accepts named color objects: { light: { accent1: '#...', ... }, dark: { accent1: '#...', ... } }
+   */
+  accent?: ChildTheme
+  /**
    * Override children themes (color themes like blue, red, etc.)
    * Accepts radix color objects directly: { blue: { light: blue, dark: blueDark } }
    */
@@ -423,6 +428,7 @@ export function createV5Theme<
   const {
     darkPalette: customDarkPalette = darkPalette,
     lightPalette: customLightPalette = lightPalette,
+    accent: customAccent,
     childrenThemes = defaultChildrenThemes as unknown as Children,
     grandChildrenThemes = v5GrandchildrenThemes as unknown as GrandChildren,
     componentThemes: customComponentThemes = v5ComponentThemes,
@@ -508,21 +514,20 @@ export function createV5Theme<
     },
 
     accent: {
-      palette: {
-        dark: customLightPalette,
-        light: customDarkPalette,
-      },
+      palette: customAccent
+        ? {
+            light: Object.values(customAccent.light),
+            dark: Object.values(customAccent.dark),
+          }
+        : {
+            dark: customLightPalette,
+            light: customDarkPalette,
+          },
     },
 
     childrenThemes: childrenWithPalettes,
 
-    // When a custom accent is provided in childrenThemes, remove accent from grandChildrenThemes
-    // to prevent conflicts. The custom accent colors from childrenThemes will be used instead.
-    grandChildrenThemes: (childrenThemes as any).accent
-      ? Object.fromEntries(
-          Object.entries(grandChildrenThemes).filter(([name]) => name !== 'accent')
-        )
-      : grandChildrenThemes,
+    grandChildrenThemes,
 
     // Add computed colors to ALL themes based on each theme's palette
     getTheme: ({ palette, scheme }) => {
