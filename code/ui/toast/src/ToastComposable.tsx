@@ -644,6 +644,7 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
   const ctx = useToastContext()
   const { handleClose } = useToastItemContext()
   const toastType = toast.type ?? 'default'
+  const dismissible = toast.dismissible !== false
 
   const title = typeof toast.title === 'function' ? toast.title() : toast.title
   const description =
@@ -693,7 +694,7 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
         )}
       </YStack>
 
-      {ctx.closeButton && <ToastClose />}
+      {ctx.closeButton && dismissible && <ToastClose />}
     </XStack>
   )
 }
