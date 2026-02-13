@@ -259,13 +259,35 @@ function preprocessTailwindClassName(
 
   // convert tailwind classes to flat props
   for (const cls of tailwindClasses) {
-    const flatProp = tailwindClassToFlatProp(cls, shorthands)
+    const flatProp = tailwindClassToFlatProp(cls, shorthands, config)
     if (flatProp) {
       result[flatProp.key] = flatProp.value
     }
   }
 
   return result
+}
+
+/**
+ * Check if a value matches a token name (without $ prefix).
+ * Returns the token value prefixed with $ if found, otherwise returns the original value.
+ */
+function resolveTokenValue(value: string, config: TamaguiInternalConfig): string {
+  // already a token reference
+  if (value.startsWith('$')) return value
+
+  // check if value matches a token in any category
+  const tokensParsed = config.tokensParsed
+  if (tokensParsed) {
+    for (const category in tokensParsed) {
+      // tokens are stored with $ prefix internally
+      if (tokensParsed[category]?.[`$${value}`]) {
+        return `$${value}`
+      }
+    }
+  }
+
+  return value
 }
 
 /**
@@ -298,22 +320,23 @@ const TAILWIND_BUILTIN_SHORTHANDS: Record<string, string> = {
 /**
  * Convert a Tailwind-style class to a flat prop.
  * Examples:
- *   "hover:bg-$blue5" → { key: "$hover:bg", value: "$blue5" }
- *   "sm:p-$4" → { key: "$sm:p", value: "$4" }
- *   "bg-red" → { key: "$bg", value: "red" }
- *   "w-100" → { key: "$w", value: "100" }
- *   "opacity-50" → { key: "$opacity", value: "0.5" }
+ *   "hover:bg-blue5" → { key: "$hover:bg", value: "$blue5" } (if blue5 is a token)
+ *   "sm:p-4" → { key: "$sm:p", value: "$4" } (if 4 is a space token)
+ *   "bg-red" → { key: "$bg", value: "red" } (raw CSS value)
+ *   "w-100" → { key: "$width", value: 100 }
+ *   "opacity-50" → { key: "$opacity", value: 0.5 }
  */
 function tailwindClassToFlatProp(
   cls: string,
-  shorthands: Record<string, string>
+  shorthands: Record<string, string>,
+  config: TamaguiInternalConfig
 ): { key: string; value: any } | null {
   // split by colon for modifiers
   const parts = cls.split(':')
   const lastPart = parts.pop()!
   const modifiers = parts
 
-  // parse the prop-value from the last part (e.g., "bg-$blue5" → prop: "bg", value: "$blue5")
+  // parse the prop-value from the last part (e.g., "bg-blue5" → prop: "bg", value: "blue5")
   const dashIndex = lastPart.indexOf('-')
   if (dashIndex === -1) {
     // no value, e.g., "flex" - not supported in this syntax
@@ -337,6 +360,10 @@ function tailwindClassToFlatProp(
   } else if (/^\d+$/.test(value) && !value.startsWith('$')) {
     // numeric values like w-100 → 100 (as number)
     value = Number(value)
+  } else if (typeof value === 'string') {
+    // check if value matches a token name and resolve it
+    // e.g., "blue5" → "$blue5" if $blue5 token exists
+    value = resolveTokenValue(value, config)
   }
 
   // build the flat prop key - use the expanded prop name for built-in shorthands

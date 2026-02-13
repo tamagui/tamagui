@@ -27,7 +27,7 @@ const MediaClass = () => (
 const TokenClass = () => (
   <View
     id="tailwind-token"
-    className="w-100 h-50 bg-$background"
+    className="w-100 h-50 bg-background"
   />
 )
 
@@ -102,7 +102,7 @@ export function TailwindMode() {
       </YStack>
 
       <YStack gap={10}>
-        <Text>Token: bg-$background</Text>
+        <Text>Token: bg-background (auto-resolves to $background)</Text>
         <TokenClass />
       </YStack>
 
