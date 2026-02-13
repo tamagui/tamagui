@@ -369,15 +369,15 @@ const { Provider: MenuRootProvider, useStyledContext: useMenuRootContext } =
 const MENU_CONTEXT = 'MenuContext'
 
 export type CreateBaseMenuProps = {
-  Item?: TamaguiComponent
-  MenuGroup?: TamaguiComponent
-  Title?: TamaguiComponent
-  SubTitle?: TamaguiComponent
+  Item?: typeof MenuPredefined.MenuItem
+  MenuGroup?: typeof MenuPredefined.MenuGroup
+  Title?: typeof MenuPredefined.Title
+  SubTitle?: typeof MenuPredefined.SubTitle
   Image?: React.ElementType
-  Icon?: TamaguiComponent
-  Indicator?: TamaguiComponent
-  Separator?: TamaguiComponent
-  Label?: TamaguiComponent
+  Icon?: typeof MenuPredefined.MenuIcon
+  Indicator?: typeof MenuPredefined.MenuIndicator
+  Separator?: typeof MenuPredefined.MenuSeparator
+  Label?: typeof MenuPredefined.MenuLabel
 }
 
 export function createBaseMenu({

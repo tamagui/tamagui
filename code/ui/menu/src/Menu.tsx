@@ -84,12 +84,12 @@ export function createMenu(params: CreateBaseMenuProps) {
   const RadioGroup = withNativeMenu({
     ...COMMON_PARAMS,
     Component: NonNativeMenu.RadioGroup,
-    NativeComponent: ({ children }) => children,
+    NativeComponent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   })
   const RadioItem = withNativeMenu({
     ...COMMON_PARAMS,
     Component: NonNativeMenu.RadioItem,
-    NativeComponent: ({ children }) => children,
+    NativeComponent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   })
   const ItemIndicator = withNativeMenu({
     ...COMMON_PARAMS,
