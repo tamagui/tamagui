@@ -13,12 +13,16 @@ test('Button renders with type="button" by default', async ({ page }) => {
   expect(type).toBe('button')
 })
 
-test('Form.Trigger renders with type="submit"', async ({ page }) => {
-  const button = page.getByTestId('submit-button')
-  await expect(button).toBeVisible()
+test('Form.Trigger submits the form when clicked', async ({ page }) => {
+  const submitButton = page.getByTestId('submit-button')
+  const submitStatus = page.getByTestId('submit-status')
 
-  const type = await button.getAttribute('type')
-  expect(type).toBe('submit')
+  await expect(submitButton).toBeVisible()
+  await expect(submitStatus).toHaveText('not-submitted')
+
+  await submitButton.click()
+
+  await expect(submitStatus).toHaveText('submitted')
 })
 
 test('pressing Enter in input submits form, not regular button click', async ({
