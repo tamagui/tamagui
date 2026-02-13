@@ -84,8 +84,7 @@ test(`multiple flat props`, async ({ page }) => {
   expect(styles.borderRadius).toBe(`8px`)
 })
 
-// TODO: investigate why this element isn't rendering
-test.skip(`shorthand flat props`, async ({ page }) => {
+test(`shorthand flat props`, async ({ page }) => {
   const styles = await getStyles(page.locator('#flat-shorthands').first())
   expect(styles.width).toBe(`100px`)
   expect(styles.height).toBe(`100px`)

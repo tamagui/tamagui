@@ -76,7 +76,8 @@ export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
-let conf: TamaguiInternalConfig
+// always get fresh config to support runtime config changes (like flat mode)
+const getConf = () => getConfig()
 
 // WeakMap to track original token values for style objects
 // Used to preserve '$8' style tokens instead of resolved 'var(--t-space-8)'
@@ -211,7 +212,9 @@ function preprocessFlatProps(
   config: TamaguiInternalConfig
 ): Record<string, any> {
   // only process if flat mode is enabled
-  if (!isFlatModeEnabled(config)) return props
+  if (!isFlatModeEnabled(config)) {
+    return props
+  }
 
   let hasFlat = false
 
@@ -337,6 +340,8 @@ function preprocessFlatProps(
 }
 
 // quick check if a prop name looks like a style prop
+// check if a prop name is a valid CSS/RN style property (not shorthands)
+// shorthands must be in user's config to work
 function isLikelyStyleProp(name: string): boolean {
   const styleProps = [
     'backgroundColor', 'color', 'opacity', 'padding', 'margin', 'width', 'height',
@@ -348,9 +353,12 @@ function isLikelyStyleProp(name: string): boolean {
     'fontSize', 'fontWeight', 'fontFamily', 'fontStyle', 'lineHeight', 'letterSpacing',
     'textAlign', 'textTransform', 'textDecoration', 'transform', 'scale', 'rotate',
     'translateX', 'translateY', 'boxShadow', 'textShadow', 'outline',
-    // common shorthands
-    'bg', 'p', 'm', 'mt', 'mr', 'mb', 'ml', 'pt', 'pr', 'pb', 'pl',
-    'mx', 'my', 'px', 'py', 'w', 'h', 'rounded', 'z',
+    'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft',
+    'paddingHorizontal', 'paddingVertical',
+    'marginTop', 'marginRight', 'marginBottom', 'marginLeft',
+    'marginHorizontal', 'marginVertical',
+    'borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth',
+    'borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius', 'borderBottomRightRadius',
   ]
   return styleProps.includes(name)
 }

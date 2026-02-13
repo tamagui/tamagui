@@ -26,8 +26,8 @@ describe('flat mode - base props', () => {
       '$bg': 'red',
     } as any)
 
-    // atomic CSS class for backgroundColor: red
-    expect(styles.classNames).toEqual({ backgroundColor: '_bg-red' })
+    // base flat props go to style (classNames is for extracted atomic CSS)
+    expect(styles.style?.backgroundColor).toBe('red')
   })
 
   test('$p="10" sets padding', () => {
@@ -35,11 +35,11 @@ describe('flat mode - base props', () => {
       '$p': 10,
     } as any)
 
-    // padding expands to individual sides
-    expect(styles.classNames.paddingTop).toContain('_pt-')
-    expect(styles.classNames.paddingRight).toContain('_pr-')
-    expect(styles.classNames.paddingBottom).toContain('_pb-')
-    expect(styles.classNames.paddingLeft).toContain('_pl-')
+    // padding expands to individual sides (numeric values converted to px strings on web)
+    expect(styles.style?.paddingTop).toBe('10px')
+    expect(styles.style?.paddingRight).toBe('10px')
+    expect(styles.style?.paddingBottom).toBe('10px')
+    expect(styles.style?.paddingLeft).toBe('10px')
   })
 
   test('$color="blue" sets color on Text', () => {
@@ -47,7 +47,7 @@ describe('flat mode - base props', () => {
       '$color': 'blue',
     } as any)
 
-    expect(styles.classNames).toEqual({ color: '_col-blue' })
+    expect(styles.style?.color).toBe('blue')
   })
 
   test('$opacity="0.5" sets opacity', () => {
@@ -55,7 +55,7 @@ describe('flat mode - base props', () => {
       '$opacity': 0.5,
     } as any)
 
-    expect(styles.classNames.opacity).toContain('_o-')
+    expect(styles.style?.opacity).toBe(0.5)
   })
 })
 
@@ -188,15 +188,15 @@ describe('flat mode - multiple flat props', () => {
       '$sm:bg': 'lightgray',
     } as any)
 
-    // base bg should have atomic class
-    expect(styles.classNames.backgroundColor).toBe('_bg-white')
+    // base bg goes to style (literal values)
+    expect(styles.style?.backgroundColor).toBe('white')
 
-    // hover bg should have hover class pattern
+    // hover bg should have hover class pattern in classNames
     const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
     expect(hoverKey).toBeTruthy()
     expect(styles.classNames[hoverKey!]).toContain('0hover')
 
-    // media bg should have sm class pattern
+    // media bg should have sm class pattern in classNames
     const smKey = Object.keys(styles.classNames).find(k => k.includes('sm'))
     expect(smKey).toBeTruthy()
     expect(styles.classNames[smKey!]).toContain('_sm')
@@ -233,8 +233,8 @@ describe('flat mode - token values', () => {
       '$bg': '$white',
     } as any)
 
-    // tokens generate CSS variable class names
-    expect(styles.classNames.backgroundColor).toContain('_bg-')
+    // tokens resolve to CSS variables in style (not classNames)
+    expect(styles.style?.backgroundColor).toContain('var(--')
   })
 
   test('$hover:bg="$black" resolves token in pseudo', () => {
@@ -254,15 +254,17 @@ describe('flat mode - shorthands', () => {
   test('various shorthands work', () => {
     const styles = simplifiedGetSplitStyles(View, {
       '$m': 10,
-      '$br': 8, // borderRadius shorthand
+      '$br': 8, // borderRadius shorthand in default config
       '$w': 100,
       '$h': 50,
     } as any)
 
-    // base props go to classNames on web
-    const classNamesStr = JSON.stringify(styles.classNames)
-    // should have some of these (margin expands, etc.)
-    expect(classNamesStr.length).toBeGreaterThan(2) // not just "{}"
+    // base literal props go to style on web
+    expect(styles.style?.marginTop).toBe('10px')
+    // borderRadius expands to individual corners
+    expect(styles.style?.borderTopLeftRadius).toBe('8px')
+    expect(styles.style?.width).toBe('100px')
+    expect(styles.style?.height).toBe('50px')
   })
 
   test('hover with shorthands', () => {
@@ -334,9 +336,9 @@ describe('flat mode - edge cases', () => {
       '$zIndex': 10,
     } as any)
 
-    // base numeric props go to classNames on web
-    expect(styles.classNames.opacity).toContain('_o-')
-    expect(styles.classNames.zIndex).toContain('_zi-')
+    // base numeric props go to style on web
+    expect(styles.style?.opacity).toBe(0.5)
+    expect(styles.style?.zIndex).toBe(10)
   })
 })
 
