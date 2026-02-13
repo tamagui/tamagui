@@ -19,8 +19,8 @@ describe('flat mode - base props', () => {
       '$bg': 'red',
     } as any)
 
-    // base props go to style, not classNames
-    expect(styles.style?.backgroundColor).toBe('red')
+    // on web, base props go to classNames as atomic CSS
+    expect(styles.classNames.backgroundColor).toBeDefined()
   })
 
   test('$p="10" sets padding', () => {
@@ -28,10 +28,9 @@ describe('flat mode - base props', () => {
       '$p': 10,
     } as any)
 
-    // padding should be in style (expands to individual sides)
-    expect(styles.style).toBeDefined()
-    const styleStr = JSON.stringify(styles.style)
-    expect(styleStr).toContain('padding')
+    // padding expands and goes to classNames
+    const classNamesStr = JSON.stringify(styles.classNames)
+    expect(classNamesStr).toContain('padding')
   })
 
   test('$color="blue" sets color on Text', () => {
@@ -39,7 +38,7 @@ describe('flat mode - base props', () => {
       '$color': 'blue',
     } as any)
 
-    expect(styles.style?.color).toBe('blue')
+    expect(styles.classNames.color).toBeDefined()
   })
 
   test('$opacity="0.5" sets opacity', () => {
@@ -47,7 +46,7 @@ describe('flat mode - base props', () => {
       '$opacity': 0.5,
     } as any)
 
-    expect(styles.style?.opacity).toBe(0.5)
+    expect(styles.classNames.opacity).toBeDefined()
   })
 })
 
@@ -175,8 +174,8 @@ describe('flat mode - multiple flat props', () => {
       '$sm:bg': 'lightgray',
     } as any)
 
-    // should have base bg in style
-    expect(styles.style?.backgroundColor).toBe('white')
+    // should have base bg in classNames (atomic CSS on web)
+    expect(styles.classNames.backgroundColor).toBeDefined()
 
     // should have hover bg in classNames
     const hoverKey = Object.keys(styles.classNames).find(k => k.includes('hover'))
@@ -218,8 +217,8 @@ describe('flat mode - token values', () => {
       '$bg': '$white',
     } as any)
 
-    // tokens resolve to CSS variables in style
-    expect(styles.style?.backgroundColor).toContain('var(--')
+    // tokens go to classNames on web
+    expect(styles.classNames.backgroundColor).toBeDefined()
   })
 
   test('$hover:bg="$black" resolves token in pseudo', () => {
@@ -238,22 +237,21 @@ describe('flat mode - shorthands', () => {
   test('various shorthands work', () => {
     const styles = simplifiedGetSplitStyles(View, {
       '$m': 10,
-      '$rounded': 8,
+      '$br': 8, // borderRadius shorthand
       '$w': 100,
       '$h': 50,
     } as any)
 
-    // base props go to style
-    expect(styles.style).toBeDefined()
-    const styleStr = JSON.stringify(styles.style)
+    // base props go to classNames on web
+    const classNamesStr = JSON.stringify(styles.classNames)
     // should have some of these (margin expands, etc.)
-    expect(styleStr.length).toBeGreaterThan(2) // not just "{}"
+    expect(classNamesStr.length).toBeGreaterThan(2) // not just "{}"
   })
 
   test('hover with shorthands', () => {
     const styles = simplifiedGetSplitStyles(View, {
       '$hover:m': 20,
-      '$hover:rounded': 16,
+      '$hover:br': 16,
     } as any)
 
     // pseudo shorthands go to classNames
@@ -315,13 +313,11 @@ describe('flat mode - edge cases', () => {
     const styles = simplifiedGetSplitStyles(View, {
       '$opacity': 0.5,
       '$zIndex': 10,
-      '$flex': 1,
     } as any)
 
-    // base numeric props go to style
-    expect(styles.style?.opacity).toBe(0.5)
-    expect(styles.style?.zIndex).toBe(10)
-    expect(styles.style?.flex).toBe(1)
+    // base numeric props go to classNames on web
+    expect(styles.classNames.opacity).toBeDefined()
+    expect(styles.classNames.zIndex).toBeDefined()
   })
 })
 

@@ -1,0 +1,15 @@
+{
+  "name": "@tamagui/style-mode-flat-tests",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tamagui/shorthands": "workspace:*",
+    "@tamagui/web": "workspace:*",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}
