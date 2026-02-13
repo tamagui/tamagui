@@ -15,8 +15,9 @@ test(`flat base prop - $bg="rgb(255,0,0)"`, async ({ page }) => {
 
 test(`flat token prop - $bg="$background"`, async ({ page }) => {
   const styles = await getStyles(page.locator('#flat-token').first())
-  // token resolves to CSS variable
-  expect(styles.backgroundColor).toBeDefined()
+  // token resolves to actual color value (CSS variable resolved by browser)
+  // should be a valid RGB color, not undefined or empty
+  expect(styles.backgroundColor).toMatch(/^rgb/)
 })
 
 test(`flat hover - base state`, async ({ page }) => {
@@ -55,9 +56,10 @@ test(`flat media syntax matches regular syntax`, async ({ page }) => {
 })
 
 test(`flat combined sm:hover - matches expected structure`, async ({ page }) => {
-  // just verify the element renders and has some background color
+  // verify element renders with expected base color (red as per FlatMode.tsx)
   const styles = await getStyles(page.locator('#flat-sm-hover').first())
-  expect(styles.backgroundColor).toBeDefined()
+  // base color should be red (rgb(255, 0, 0))
+  expect(styles.backgroundColor).toBe('rgb(255, 0, 0)')
 })
 
 test(`flat platform - web cursor`, async ({ page }) => {
