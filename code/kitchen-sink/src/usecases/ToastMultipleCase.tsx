@@ -382,9 +382,6 @@ function CustomToastContent({ toast: t }: { toast: ToastT }) {
           </XStack>
         )}
       </YStack>
-
-      {/* Toast.Close auto-wires to handleClose from context - no onPress needed! */}
-      <Toast.Close />
     </XStack>
   )
 }
