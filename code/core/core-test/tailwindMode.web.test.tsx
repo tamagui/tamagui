@@ -100,8 +100,8 @@ describe('tailwind mode - modifiers', () => {
 })
 
 describe('tailwind mode - token values', () => {
-  test('className="bg-$white" uses token value', () => {
-    // use $white since that's in the default config tokens
+  test('className="bg-$white" uses token value (explicit $)', () => {
+    // explicit $ prefix always works
     const styles = simplifiedGetSplitStyles(View, {
       className: 'bg-$white',
     } as any)
@@ -110,14 +110,34 @@ describe('tailwind mode - token values', () => {
     expect(styles.style?.backgroundColor).toContain('var(--')
   })
 
-  test('className="hover:bg-$black" uses token in hover', () => {
-    // use $black since that's in the default config tokens
+  test('className="bg-white" auto-resolves to token (no $ needed)', () => {
+    // without $ prefix, should still resolve if token exists
     const styles = simplifiedGetSplitStyles(View, {
-      className: 'hover:bg-$black',
+      className: 'bg-white',
+    } as any)
+
+    // should resolve to CSS variable since $white is a token
+    expect(styles.style?.backgroundColor).toContain('var(--')
+  })
+
+  test('className="hover:bg-black" uses token in hover (no $ needed)', () => {
+    // use black since that's in the default config tokens
+    const styles = simplifiedGetSplitStyles(View, {
+      className: 'hover:bg-black',
     } as any)
 
     const hoverKey = Object.keys(styles.classNames).find((k) => k.includes('hover'))
     expect(hoverKey).toBeTruthy()
+  })
+
+  test('className="bg-notAToken" uses raw value', () => {
+    // if value doesn't match a token, use it as raw CSS
+    const styles = simplifiedGetSplitStyles(View, {
+      className: 'bg-purple',
+    } as any)
+
+    // should be raw CSS value, not a variable
+    expect(styles.style?.backgroundColor).toBe('purple')
   })
 })
 
