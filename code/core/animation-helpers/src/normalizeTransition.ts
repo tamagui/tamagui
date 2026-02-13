@@ -210,3 +210,46 @@ export function getEffectiveAnimation(
   }
   return normalized.default
 }
+
+/**
+ * Gets the resolved animation config for each key, looking up in animations config.
+ * Useful for calculating max duration across all animated properties.
+ *
+ * @param normalized - The normalized transition object
+ * @param animations - The animations config object (driver-specific format)
+ * @param keys - Property keys to get animations for
+ * @param defaultAnimation - The default animation value to fall back to
+ * @returns Map of key -> resolved animation config (or null if not found)
+ */
+export function getAnimationConfigsForKeys<T>(
+  normalized: NormalizedTransition,
+  animations: Record<string, T>,
+  keys: string[],
+  defaultAnimation: T | null
+): Map<string, T | null> {
+  const result = new Map<string, T | null>()
+
+  for (const key of keys) {
+    const propAnimation = normalized.properties[key]
+    let animationValue: T | null = null
+
+    if (typeof propAnimation === 'string') {
+      animationValue = animations[propAnimation] ?? null
+    } else if (
+      propAnimation &&
+      typeof propAnimation === 'object' &&
+      (propAnimation as any).type
+    ) {
+      animationValue = animations[(propAnimation as any).type] ?? null
+    }
+
+    // fall back to default if no per-property config found
+    if (animationValue === null) {
+      animationValue = defaultAnimation
+    }
+
+    result.set(key, animationValue)
+  }
+
+  return result
+}

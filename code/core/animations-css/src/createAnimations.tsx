@@ -3,6 +3,7 @@ import {
   getAnimatedProperties,
   hasAnimation as hasNormalizedAnimation,
   getEffectiveAnimation,
+  getAnimationConfigsForKeys,
 } from '@tamagui/animation-helpers'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
@@ -198,27 +199,14 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         // calculate max duration across all animated properties
         let maxDuration = defaultAnimation ? extractDuration(defaultAnimation) : 200
 
-        // check per-property animation durations
-        for (const key of keys) {
-          const propAnimation = normalized.properties[key]
-          let animationValue: string | null = null
-
-          if (typeof propAnimation === 'string') {
-            animationValue = animations[propAnimation as keyof typeof animations] as
-              | string
-              | null
-          } else if (
-            propAnimation &&
-            typeof propAnimation === 'object' &&
-            (propAnimation as any).type
-          ) {
-            animationValue = animations[
-              (propAnimation as any).type as keyof typeof animations
-            ] as string | null
-          } else if (defaultAnimation) {
-            animationValue = defaultAnimation
-          }
-
+        // check per-property animation durations using shared helper
+        const animationConfigs = getAnimationConfigsForKeys(
+          normalized,
+          animations as Record<string, string>,
+          keys,
+          defaultAnimation
+        )
+        for (const animationValue of animationConfigs.values()) {
           if (animationValue) {
             const duration = extractDuration(animationValue)
             if (duration > maxDuration) {

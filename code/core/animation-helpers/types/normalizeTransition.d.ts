@@ -39,5 +39,16 @@ export declare function getAnimatedProperties(normalized: NormalizedTransition):
 * @returns The effective animation key or null
 */
 export declare function getEffectiveAnimation(normalized: NormalizedTransition, state: "enter" | "exit" | "default"): string | null;
+/**
+* Gets the resolved animation config for each key, looking up in animations config.
+* Useful for calculating max duration across all animated properties.
+*
+* @param normalized - The normalized transition object
+* @param animations - The animations config object (driver-specific format)
+* @param keys - Property keys to get animations for
+* @param defaultAnimation - The default animation value to fall back to
+* @returns Map of key -> resolved animation config (or null if not found)
+*/
+export declare function getAnimationConfigsForKeys<T>(normalized: NormalizedTransition, animations: Record<string, T>, keys: string[], defaultAnimation: T | null): Map<string, T | null>;
 
 //# sourceMappingURL=normalizeTransition.d.ts.map
