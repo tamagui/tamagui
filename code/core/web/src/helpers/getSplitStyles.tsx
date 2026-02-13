@@ -99,6 +99,219 @@ type StyleSplitter = (
 
 export const PROP_SPLIT = '-'
 
+// flat mode modifier parsing
+const flatPseudoMap: Record<string, string> = {
+  hover: 'hoverStyle',
+  press: 'pressStyle',
+  focus: 'focusStyle',
+  'focus-visible': 'focusVisibleStyle',
+  'focus-within': 'focusWithinStyle',
+  disabled: 'disabledStyle',
+  enter: 'enterStyle',
+  exit: 'exitStyle',
+}
+
+const flatPlatforms = new Set(['web', 'native', 'ios', 'android'])
+
+interface FlatParsedProp {
+  mediaKey?: string
+  pseudoKey?: string
+  platformKey?: string
+  themeKey?: string
+  prop: string
+  value: any
+}
+
+function parseFlatModifierProp(
+  key: string,
+  value: any,
+  shorthands: Record<string, string>,
+  config: TamaguiInternalConfig
+): FlatParsedProp | null {
+  // key is like $hover:bg or $sm:hover:bg or $sm:dark:hover:bg
+  const parts = key.slice(1).split(':') // remove $ and split
+  if (parts.length < 2) return null
+
+  const propShort = parts.pop()! // last part is always the prop
+  const prop = shorthands[propShort] || propShort
+
+  const result: FlatParsedProp = { prop, value }
+
+  // parse modifiers (order doesn't matter)
+  for (const mod of parts) {
+    // check pseudo
+    if (mod in flatPseudoMap) {
+      result.pseudoKey = flatPseudoMap[mod]
+      continue
+    }
+
+    // check media (registered in config)
+    if (config.media && mod in config.media) {
+      result.mediaKey = mod
+      continue
+    }
+
+    // check theme
+    if (config.themes && mod in config.themes) {
+      result.themeKey = mod
+      continue
+    }
+
+    // check platform
+    if (flatPlatforms.has(mod)) {
+      result.platformKey = mod
+      continue
+    }
+
+    // unknown modifier - could be group, handle later
+    // for now skip groups, they're more complex
+    return null
+  }
+
+  return result
+}
+
+function mergeDeep(target: any, source: any): any {
+  const result = { ...target }
+  for (const key in source) {
+    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+      result[key] = mergeDeep(result[key] || {}, source[key])
+    } else {
+      result[key] = source[key]
+    }
+  }
+  return result
+}
+
+/**
+ * Preprocess flat mode props before the main loop.
+ * Transforms syntax like $hover:bg="red" into hoverStyle: { backgroundColor: 'red' }
+ * Also handles base flat props like $bg="red" → backgroundColor: "red"
+ * This allows the existing handlers to process them normally.
+ */
+function preprocessFlatProps(
+  props: Record<string, any>,
+  shorthands: Record<string, string>,
+  config: TamaguiInternalConfig
+): Record<string, any> {
+  let hasFlat = false
+
+  // quick check if any flat props exist
+  for (const key in props) {
+    if (key[0] === '$') {
+      // flat prop with modifiers: $hover:bg
+      if (key.includes(':')) {
+        hasFlat = true
+        break
+      }
+      // flat base prop: $bg (not an object value, which is current media syntax)
+      const value = props[key]
+      if (typeof value !== 'object' || value === null) {
+        // check if it's a shorthand or valid style prop
+        const propName = key.slice(1) // remove $
+        if (shorthands?.[propName] || isLikelyStyleProp(propName)) {
+          hasFlat = true
+          break
+        }
+      }
+    }
+  }
+
+  if (!hasFlat) return props
+
+  // process flat props
+  const result: Record<string, any> = {}
+
+  for (const key in props) {
+    const value = props[key]
+
+    if (key[0] === '$') {
+      // check for flat modifier syntax: $hover:bg, $sm:hover:bg, etc.
+      if (key.includes(':')) {
+        const flatParsed = parseFlatModifierProp(key, value, shorthands, config)
+
+        if (flatParsed) {
+          const { mediaKey, pseudoKey, platformKey, themeKey, prop } = flatParsed
+
+          // build the style object to inject
+          let styleObj: any = { [prop]: value }
+
+          // wrap with pseudo if present
+          if (pseudoKey) {
+            styleObj = { [pseudoKey]: styleObj }
+          }
+
+          // determine the key to inject into
+          let injectKey: string | null = null
+
+          if (themeKey) {
+            injectKey = `$theme-${themeKey}`
+          } else if (platformKey) {
+            injectKey = `$platform-${platformKey}`
+          } else if (mediaKey) {
+            injectKey = `$${mediaKey}`
+          } else if (pseudoKey) {
+            // just pseudo, no media wrapper
+            result[pseudoKey] = result[pseudoKey]
+              ? mergeDeep(result[pseudoKey], styleObj[pseudoKey])
+              : styleObj[pseudoKey]
+            continue
+          } else {
+            // just a flat base prop like $bg (shouldn't happen with colon)
+            result[prop] = value
+            continue
+          }
+
+          // merge into the target key
+          if (injectKey) {
+            result[injectKey] = result[injectKey]
+              ? mergeDeep(result[injectKey], styleObj)
+              : styleObj
+          }
+          continue
+        }
+      } else {
+        // flat base prop without modifiers: $bg, $p, etc.
+        // only if value is not an object (object = current media syntax)
+        if (typeof value !== 'object' || value === null) {
+          const propName = key.slice(1) // remove $
+          const expandedProp = shorthands?.[propName] || propName
+
+          // check if it's a valid style prop
+          if (shorthands?.[propName] || isLikelyStyleProp(propName) || isLikelyStyleProp(expandedProp)) {
+            result[expandedProp] = value
+            continue
+          }
+        }
+      }
+    }
+
+    // not a flat prop, pass through
+    result[key] = value
+  }
+
+  return result
+}
+
+// quick check if a prop name looks like a style prop
+function isLikelyStyleProp(name: string): boolean {
+  const styleProps = [
+    'backgroundColor', 'color', 'opacity', 'padding', 'margin', 'width', 'height',
+    'minWidth', 'minHeight', 'maxWidth', 'maxHeight', 'flex', 'flexDirection',
+    'flexWrap', 'flexGrow', 'flexShrink', 'alignItems', 'alignContent', 'alignSelf',
+    'justifyContent', 'position', 'top', 'right', 'bottom', 'left', 'zIndex',
+    'borderWidth', 'borderColor', 'borderStyle', 'borderRadius', 'overflow',
+    'display', 'gap', 'rowGap', 'columnGap', 'cursor', 'pointerEvents', 'userSelect',
+    'fontSize', 'fontWeight', 'fontFamily', 'fontStyle', 'lineHeight', 'letterSpacing',
+    'textAlign', 'textTransform', 'textDecoration', 'transform', 'scale', 'rotate',
+    'translateX', 'translateY', 'boxShadow', 'textShadow', 'outline',
+    // common shorthands
+    'bg', 'p', 'm', 'mt', 'mr', 'mb', 'ml', 'pt', 'pr', 'pb', 'pl',
+    'mx', 'my', 'px', 'py', 'w', 'h', 'rounded', 'z',
+  ]
+  return styleProps.includes(name)
+}
+
 // Normalize group keys like $group-press to $group-true-press when the group name
 // doesn't exist in context (defaults to the unnamed 'true' group)
 function normalizeGroupKey(
@@ -277,11 +490,16 @@ export const getSplitStyles: StyleSplitter = (
   const { asChild } = props
   const { accept } = staticConfig
   const { noSkip, disableExpandShorthands, noExpand, styledContext } = styleProps
+
+  // preprocess flat mode props before the main loop
+  // transforms $hover:bg="red" → hoverStyle: { backgroundColor: 'red' }
+  // this allows the existing handlers to process them normally
+  const processedProps = preprocessFlatProps(props, shorthands, conf)
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
-  for (const keyOg in props) {
+  for (const keyOg in processedProps) {
     let keyInit = keyOg
-    let valInit = props[keyInit]
+    let valInit = processedProps[keyInit]
 
     if (keyInit === 'children') {
       viewProps[keyInit] = valInit
