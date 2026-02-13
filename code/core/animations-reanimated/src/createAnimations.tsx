@@ -623,29 +623,34 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         if (!isExiting || !sendExitComplete) return
 
         // Use ref to get current config without adding to deps
-        const config = configRef.get().baseConfig
+        const { baseConfig, propertyConfigs } = configRef.get()
+
+        // Calculate max duration across all per-property configs
+        // With animateOnly and per-property configs, different properties can have
+        // different durations, and we need to wait for the LONGEST one
+        let maxDuration = baseConfig.duration ?? 300
+        for (const key in propertyConfigs) {
+          const propConfig = propertyConfigs[key]
+          if (propConfig.duration && propConfig.duration > maxDuration) {
+            maxDuration = propConfig.duration
+          }
+        }
+
+        // Create a timing config with the max duration for exit completion tracking
+        const exitConfig: WithTimingConfig = {
+          duration: maxDuration,
+        }
 
         // Animate exitProgress to 1, which triggers sendExitComplete on completion
         // Using .set() for React Compiler compatibility
-        if (config.type === 'timing') {
-          exitProgress.set(
-            withTiming(1, config as WithTimingConfig, (finished) => {
-              'worklet'
-              if (finished) {
-                runOnJS(sendExitComplete)()
-              }
-            })
-          )
-        } else {
-          exitProgress.set(
-            withSpring(1, config as WithSpringConfig, (finished) => {
-              'worklet'
-              if (finished) {
-                runOnJS(sendExitComplete)()
-              }
-            })
-          )
-        }
+        exitProgress.set(
+          withTiming(1, exitConfig, (finished) => {
+            'worklet'
+            if (finished) {
+              runOnJS(sendExitComplete)()
+            }
+          })
+        )
 
         return () => {
           // Cancel the exit animation if component unmounts early
