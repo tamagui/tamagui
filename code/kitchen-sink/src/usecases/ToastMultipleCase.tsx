@@ -382,6 +382,8 @@ function CustomToastContent({ toast: t }: { toast: ToastT }) {
           </XStack>
         )}
       </YStack>
+
+      <Toast.Close position="absolute" top={-8} left={-8} />
     </XStack>
   )
 }
