@@ -269,6 +269,33 @@ function preprocessTailwindClassName(
 }
 
 /**
+ * Common Tailwind shorthand mappings that work even when user's shorthands
+ * don't include them. These are the most frequently used patterns.
+ */
+const TAILWIND_BUILTIN_SHORTHANDS: Record<string, string> = {
+  w: 'width',
+  h: 'height',
+  bg: 'backgroundColor',
+  p: 'padding',
+  pt: 'paddingTop',
+  pr: 'paddingRight',
+  pb: 'paddingBottom',
+  pl: 'paddingLeft',
+  px: 'paddingHorizontal',
+  py: 'paddingVertical',
+  m: 'margin',
+  mt: 'marginTop',
+  mr: 'marginRight',
+  mb: 'marginBottom',
+  ml: 'marginLeft',
+  mx: 'marginHorizontal',
+  my: 'marginVertical',
+  rounded: 'borderRadius',
+  border: 'borderWidth',
+  text: 'color',
+}
+
+/**
  * Convert a Tailwind-style class to a flat prop.
  * Examples:
  *   "hover:bg-$blue5" → { key: "$hover:bg", value: "$blue5" }
@@ -296,8 +323,10 @@ function tailwindClassToFlatProp(
   const prop = lastPart.slice(0, dashIndex)
   let value: any = lastPart.slice(dashIndex + 1)
 
-  // validate prop is a known shorthand or style prop
-  if (!shorthands?.[prop] && !isLikelyStyleProp(prop)) {
+  // validate prop is a known shorthand (user's or built-in) or style prop
+  const isUserShorthand = !!shorthands?.[prop]
+  const isBuiltinShorthand = !!TAILWIND_BUILTIN_SHORTHANDS[prop]
+  if (!isUserShorthand && !isBuiltinShorthand && !isLikelyStyleProp(prop)) {
     return null
   }
 
@@ -310,8 +339,12 @@ function tailwindClassToFlatProp(
     value = Number(value)
   }
 
-  // build the flat prop key
-  const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
+  // build the flat prop key - use the expanded prop name for built-in shorthands
+  // when user shorthands don't include the abbreviation
+  const finalProp = !isUserShorthand && isBuiltinShorthand
+    ? TAILWIND_BUILTIN_SHORTHANDS[prop]
+    : prop
+  const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${finalProp}` : `$${finalProp}`
 
   return { key, value }
 }

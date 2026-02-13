@@ -45,6 +45,42 @@ const MixedClasses = () => (
   />
 )
 
+// visual comparison - tailwind syntax vs regular tamagui syntax (should be identical)
+const TailwindVisualBasic = () => (
+  <View
+    id="tailwind-visual-basic"
+    className="w-100 h-100 bg-red rounded-8 p-10"
+  />
+)
+
+const RegularVisualBasic = () => (
+  <View
+    id="regular-visual-basic"
+    width={100}
+    height={100}
+    backgroundColor="red"
+    borderRadius={8}
+    padding={10}
+  />
+)
+
+const TailwindVisualHover = () => (
+  <View
+    id="tailwind-visual-hover"
+    className="w-100 h-100 bg-green hover:bg-blue"
+  />
+)
+
+const RegularVisualHover = () => (
+  <View
+    id="regular-visual-hover"
+    width={100}
+    height={100}
+    backgroundColor="green"
+    hoverStyle={{ backgroundColor: 'blue' }}
+  />
+)
+
 export function TailwindMode() {
   return (
     <YStack padding={20} gap={20}>
@@ -78,6 +114,23 @@ export function TailwindMode() {
       <YStack gap={10}>
         <Text>Mixed with regular classes</Text>
         <MixedClasses />
+      </YStack>
+
+      {/* visual comparison rows - tailwind vs regular should be identical */}
+      <YStack gap={8}>
+        <Text fontWeight="bold">Visual: Basic (tailwind vs regular)</Text>
+        <XStack gap={20} id="tailwind-basic-comparison">
+          <TailwindVisualBasic />
+          <RegularVisualBasic />
+        </XStack>
+      </YStack>
+
+      <YStack gap={8}>
+        <Text fontWeight="bold">Visual: Hover (tailwind vs regular)</Text>
+        <XStack gap={20} id="tailwind-hover-comparison">
+          <TailwindVisualHover />
+          <RegularVisualHover />
+        </XStack>
       </YStack>
     </YStack>
   )
