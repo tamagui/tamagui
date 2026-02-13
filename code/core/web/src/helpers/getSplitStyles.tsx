@@ -191,9 +191,129 @@ function isFlatModeEnabled(config: TamaguiInternalConfig): boolean {
   const styleMode = config.settings?.styleMode
   if (!styleMode) return false
   if (styleMode === 'flat') return true
-  if (Array.isArray(styleMode)) return styleMode.includes('flat')
-  if (typeof styleMode === 'object') return styleMode.flat === true
+  // tailwind mode requires flat mode processing for the converted props
+  if (styleMode === 'tailwind') return true
+  if (Array.isArray(styleMode)) {
+    return styleMode.includes('flat') || styleMode.includes('tailwind')
+  }
+  if (typeof styleMode === 'object') {
+    return styleMode.flat === true || styleMode.tailwind === true
+  }
   return false
+}
+
+function isTailwindModeEnabled(config: TamaguiInternalConfig): boolean {
+  const styleMode = config.settings?.styleMode
+  if (!styleMode) return false
+  if (styleMode === 'tailwind') return true
+  if (Array.isArray(styleMode)) return styleMode.includes('tailwind')
+  if (typeof styleMode === 'object') return styleMode.tailwind === true
+  return false
+}
+
+/**
+ * Preprocess Tailwind-style className strings into flat props.
+ * Transforms syntax like className="hover:bg-$blue5 sm:p-$4" into flat props.
+ * Works with user-defined tokens - does NOT hardcode Tailwind's color/spacing system.
+ */
+function preprocessTailwindClassName(
+  props: Record<string, any>,
+  shorthands: Record<string, string>,
+  config: TamaguiInternalConfig
+): Record<string, any> {
+  if (!isTailwindModeEnabled(config)) {
+    return props
+  }
+
+  const className = props.className
+  if (!className || typeof className !== 'string') {
+    return props
+  }
+
+  // check for tailwind-style classes (modifiers with colons or prop-value patterns)
+  const classes = className.split(/\s+/).filter(Boolean)
+  const tailwindClasses: string[] = []
+  const regularClasses: string[] = []
+
+  for (const cls of classes) {
+    // tailwind patterns: hover:bg-red, sm:p-4, bg-$blue5, w-100
+    if (cls.includes(':') || /^[a-z]+-/.test(cls)) {
+      tailwindClasses.push(cls)
+    } else {
+      regularClasses.push(cls)
+    }
+  }
+
+  if (tailwindClasses.length === 0) {
+    return props
+  }
+
+  const result: Record<string, any> = { ...props }
+
+  // update className to only include regular classes
+  if (regularClasses.length > 0) {
+    result.className = regularClasses.join(' ')
+  } else {
+    delete result.className
+  }
+
+  // convert tailwind classes to flat props
+  for (const cls of tailwindClasses) {
+    const flatProp = tailwindClassToFlatProp(cls, shorthands)
+    if (flatProp) {
+      result[flatProp.key] = flatProp.value
+    }
+  }
+
+  return result
+}
+
+/**
+ * Convert a Tailwind-style class to a flat prop.
+ * Examples:
+ *   "hover:bg-$blue5" → { key: "$hover:bg", value: "$blue5" }
+ *   "sm:p-$4" → { key: "$sm:p", value: "$4" }
+ *   "bg-red" → { key: "$bg", value: "red" }
+ *   "w-100" → { key: "$w", value: "100" }
+ *   "opacity-50" → { key: "$opacity", value: "0.5" }
+ */
+function tailwindClassToFlatProp(
+  cls: string,
+  shorthands: Record<string, string>
+): { key: string; value: any } | null {
+  // split by colon for modifiers
+  const parts = cls.split(':')
+  const lastPart = parts.pop()!
+  const modifiers = parts
+
+  // parse the prop-value from the last part (e.g., "bg-$blue5" → prop: "bg", value: "$blue5")
+  const dashIndex = lastPart.indexOf('-')
+  if (dashIndex === -1) {
+    // no value, e.g., "flex" - not supported in this syntax
+    return null
+  }
+
+  const prop = lastPart.slice(0, dashIndex)
+  let value: any = lastPart.slice(dashIndex + 1)
+
+  // validate prop is a known shorthand or style prop
+  if (!shorthands?.[prop] && !isLikelyStyleProp(prop)) {
+    return null
+  }
+
+  // handle special value patterns
+  if (prop === 'opacity' && /^\d+$/.test(value)) {
+    // opacity-50 → 0.5
+    value = Number(value) / 100
+  } else if (/^\d+$/.test(value) && !value.startsWith('$')) {
+    // numeric values like w-100 → 100 (as number)
+    value = Number(value)
+  }
+
+  // build the flat prop key
+  const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
+
+  return { key, value }
 }
 
 /**
@@ -538,10 +658,19 @@ export const getSplitStyles: StyleSplitter = (
   const { accept } = staticConfig
   const { noSkip, disableExpandShorthands, noExpand, styledContext } = styleProps
 
+  // preprocess tailwind className if enabled
+  // transforms className="hover:bg-$blue5" → $hover:bg="$blue5"
+  const propsWithTailwind = preprocessTailwindClassName(props, shorthands, conf)
+
+  // update className if tailwind preprocessing changed it (removed tailwind classes)
+  if (propsWithTailwind.className !== props.className) {
+    className = propsWithTailwind.className || ''
+  }
+
   // preprocess flat mode props before the main loop
   // transforms $hover:bg="red" → hoverStyle: { backgroundColor: 'red' }
   // this allows the existing handlers to process them normally
-  const processedProps = preprocessFlatProps(props, shorthands, conf)
+  const processedProps = preprocessFlatProps(propsWithTailwind, shorthands, conf)
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
   for (const keyOg in processedProps) {
@@ -1529,7 +1658,8 @@ export const getSplitStyles: StyleSplitter = (
         if (fontFamilyClassName) classList.push(fontFamilyClassName)
         if (classNames) classList.push(Object.values(classNames).join(' '))
         if (groupClassName) classList.push(groupClassName)
-        if (props.className) classList.push(props.className)
+        // use className variable which may have been updated by tailwind preprocessing
+        if (className) classList.push(className)
         const finalClassName = classList.join(' ')
 
         if (styleProps.isAnimated && isReactNative) {
