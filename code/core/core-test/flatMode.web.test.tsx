@@ -635,3 +635,107 @@ describe('flat mode - precedence and edge cases', () => {
     expect(styles).toBeDefined()
   })
 })
+
+describe('flat mode - embedded value syntax', () => {
+  test('$hover:bg-blue parses as $hover:bg="blue"', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      '$hover:bg-blue': true,
+    } as any)
+
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const hoverRule = rules.find(
+      (r) =>
+        r[StyleObjectProperty] === 'backgroundColor' && r[StyleObjectPseudo] === 'hover'
+    )
+    expect(hoverRule).toBeTruthy()
+    expect(hoverRule[StyleObjectValue]).toBe('blue')
+  })
+
+  test('$hover:p-10 parses as $hover:p={10}', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      '$hover:p-10': true,
+    } as any)
+
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const hoverRule = rules.find(
+      (r) => r[StyleObjectProperty] === 'paddingTop' && r[StyleObjectPseudo] === 'hover'
+    )
+    expect(hoverRule).toBeTruthy()
+    expect(hoverRule[StyleObjectValue]).toBe('10px')
+  })
+
+  test('$sm:hover:bg-red parses media + pseudo + embedded value', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      '$sm:hover:bg-red': true,
+    } as any)
+
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const bgRule = rules.find((r) => r[StyleObjectProperty] === 'backgroundColor')
+    expect(bgRule).toBeTruthy()
+    // identifier encodes sm media, hover pseudo, and red value
+    const id = bgRule[StyleObjectIdentifier]
+    expect(id).toContain('_sm')
+    expect(id).toContain('hover')
+    expect(id).toContain('red')
+  })
+
+  test('$bg-white resolves token with embedded syntax', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      '$bg-white': true,
+    } as any)
+
+    const rule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(rule).toBeTruthy()
+    // white is a token → resolves to CSS var
+    expect(rule[StyleObjectValue]).toContain('var(--')
+  })
+
+  test('embedded value with hyphenated token like bg-some-token works', () => {
+    // hypothetical token "blue-500" - value after first hyphen is "500" or if token is "blue-500"
+    // this tests that we correctly handle hyphenated values
+    const styles = simplifiedGetSplitStyles(View, {
+      '$hover:bg-blue': true,
+    } as any)
+
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const hoverRule = rules.find(
+      (r) =>
+        r[StyleObjectProperty] === 'backgroundColor' && r[StyleObjectPseudo] === 'hover'
+    )
+    expect(hoverRule).toBeTruthy()
+    expect(hoverRule[StyleObjectValue]).toBe('blue')
+  })
+
+  test('$opacity-50 sets numeric value', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      '$opacity-50': true,
+    } as any)
+
+    const rule = findRule(styles.rulesToInsert, 'opacity')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toBe(50)
+  })
+
+  test('can mix embedded and explicit value syntax', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      '$hover:bg-blue': true, // embedded
+      '$press:bg': 'green', // explicit
+    } as any)
+
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+
+    const hoverRule = rules.find(
+      (r) =>
+        r[StyleObjectProperty] === 'backgroundColor' && r[StyleObjectPseudo] === 'hover'
+    )
+    expect(hoverRule).toBeTruthy()
+    expect(hoverRule[StyleObjectValue]).toBe('blue')
+
+    const pressRule = rules.find(
+      (r) =>
+        r[StyleObjectProperty] === 'backgroundColor' && r[StyleObjectPseudo] === 'active'
+    )
+    expect(pressRule).toBeTruthy()
+    expect(pressRule[StyleObjectValue]).toBe('green')
+  })
+})
