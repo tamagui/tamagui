@@ -228,14 +228,16 @@ function mergeDeep(target: any, source: any): any {
 function isFlatModeEnabled(config: TamaguiInternalConfig): boolean {
   const styleMode = config.settings?.styleMode
   if (!styleMode) return false
-  if (styleMode === 'flat') return true
+  // flat mode is enabled in 'flat' or 'tamagui-and-flat'
+  if (styleMode === 'flat' || styleMode === 'tamagui-and-flat') return true
   // tailwind mode requires flat mode processing for the converted props
-  if (styleMode === 'tailwind') return true
+  if (styleMode === 'tailwind' || styleMode === 'tamagui-and-tailwind') return true
+  // backward compat: support array/object format at runtime
   if (Array.isArray(styleMode)) {
     return styleMode.includes('flat') || styleMode.includes('tailwind')
   }
-  if (typeof styleMode === 'object') {
-    return styleMode.flat === true || styleMode.tailwind === true
+  if (typeof styleMode === 'object' && styleMode !== null) {
+    return (styleMode as any).flat === true || (styleMode as any).tailwind === true
   }
   return false
 }
@@ -243,9 +245,13 @@ function isFlatModeEnabled(config: TamaguiInternalConfig): boolean {
 function isTailwindModeEnabled(config: TamaguiInternalConfig): boolean {
   const styleMode = config.settings?.styleMode
   if (!styleMode) return false
-  if (styleMode === 'tailwind') return true
+  // tailwind mode is enabled in 'tailwind' or 'tamagui-and-tailwind'
+  if (styleMode === 'tailwind' || styleMode === 'tamagui-and-tailwind') return true
+  // backward compat: support array/object format at runtime
   if (Array.isArray(styleMode)) return styleMode.includes('tailwind')
-  if (typeof styleMode === 'object') return styleMode.tailwind === true
+  if (typeof styleMode === 'object' && styleMode !== null) {
+    return (styleMode as any).tailwind === true
+  }
   return false
 }
 

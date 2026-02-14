@@ -457,6 +457,13 @@ export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
 export type OnlyShorthandStylePropsSetting = TamaguiConfig['settings'] extends {
     onlyShorthandStyleProps: infer X;
 } ? X : false;
+export type StyleModeSetting = TamaguiConfig['settings'] extends {
+    styleMode: infer X;
+} ? X : 'tamagui';
+export type StyleMode = 'tamagui' | 'tailwind' | 'flat' | 'tamagui-and-tailwind' | 'tamagui-and-flat';
+export type IncludesClassicMode = StyleModeSetting extends 'tamagui' | 'tamagui-and-tailwind' | 'tamagui-and-flat' ? true : false;
+export type IncludesFlatMode = StyleModeSetting extends 'flat' | 'tamagui-and-flat' ? true : false;
+export type IncludesTailwindMode = StyleModeSetting extends 'tailwind' | 'tamagui-and-tailwind' ? true : false;
 export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, H extends GenericTamaguiSettings = GenericTamaguiSettings> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
@@ -664,19 +671,15 @@ export interface GenericTamaguiSettings {
      */
     onlyAllowShorthands?: boolean | undefined;
     /**
-     * Enable flat style mode for Tailwind-like syntax.
+     * Enable different style modes for prop syntax.
      *
-     * - 'flat': Enable $prop and $modifier:prop syntax ($bg, $hover:bg, $sm:bg)
-     * - 'tamagui': Default object syntax (backgroundColor, hoverStyle: {}, $sm: {})
-     * - 'tailwind': Enable className with modifier syntax (future)
-     * - Array: Enable multiple modes ['tamagui', 'flat']
-     * - Object: Fine-grained control { tamagui: true, flat: true, tailwind: true }
+     * - 'tamagui': Default - classic style props (backgroundColor, hoverStyle: {}, $sm: {})
+     * - 'tailwind': className only, no style props (for Tailwind CSS users)
+     * - 'flat': Flat $props only ($bg, $hover:bg, $sm:bg) - no classic style props
+     * - 'tamagui-and-tailwind': Classic style props + className processing
+     * - 'tamagui-and-flat': Classic style props + flat $props
      */
-    styleMode?: 'flat' | 'tamagui' | 'tailwind' | ('flat' | 'tamagui' | 'tailwind')[] | {
-        flat?: boolean;
-        tamagui?: boolean;
-        tailwind?: boolean;
-    };
+    styleMode?: StyleMode;
     /**
      * Define a default font, for better types and default font on Text
      */
@@ -1495,11 +1498,11 @@ type LooseCombinedObjects<A extends object, B extends object> = A | B | (A & B);
 export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase> & WithFlatProps<StackStyleBase>;
+export type StackStyle = (IncludesClassicMode extends true ? WithThemeShorthandsPseudosMedia<StackStyleBase> : {}) & (IncludesFlatMode extends true ? WithFlatProps<StackStyleBase> : {});
 export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
 }
-export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase> & WithFlatProps<TextStylePropsBase>;
+export type TextStyle = (IncludesClassicMode extends true ? WithThemeShorthandsPseudosMedia<TextStylePropsBase> : {}) & (IncludesFlatMode extends true ? WithFlatProps<TextStylePropsBase> : {});
 export type TextProps = TextNonStyleProps & TextStyle;
 export interface ThemeableProps {
     theme?: ThemeName | null;
@@ -1512,7 +1515,7 @@ export type StyleableOptions = {
     staticConfig?: Partial<StaticConfig>;
 };
 export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties> = <CustomProps extends object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends ForwardRefRenderFunction<Ref, MergedProps> = ForwardRefRenderFunction<Ref, MergedProps>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
-export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> & WithFlatProps<StylePropsBase> : {});
+export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? (IncludesClassicMode extends true ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> : {}) & (IncludesFlatMode extends true ? WithFlatProps<StylePropsBase> : {}) : {});
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends object = {}, Variants = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties];
 };

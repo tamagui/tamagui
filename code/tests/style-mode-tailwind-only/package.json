@@ -1,0 +1,15 @@
+{
+  "name": "@tamagui/style-mode-tailwind-only-tests",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@tamagui/shorthands": "workspace:*",
+    "@tamagui/web": "workspace:*",
+    "typescript": "~5.9.2",
+    "vitest": "4.0.4"
+  }
+}
