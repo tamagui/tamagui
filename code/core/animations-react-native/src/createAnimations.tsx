@@ -202,6 +202,25 @@ export function createAnimations<A extends AnimationsConfig>(
         >()
       )
 
+      // exit cycle guards to prevent stale/duplicate completion
+      const exitCycleIdRef = React.useRef(0)
+      const exitCompletedRef = React.useRef(false)
+      const wasExitingRef = React.useRef(false)
+
+      // detect transition into/out of exiting state
+      const justStartedExiting = isExiting && !wasExitingRef.current
+      const justStoppedExiting = !isExiting && wasExitingRef.current
+
+      // start new exit cycle only on transition INTO exiting
+      if (justStartedExiting) {
+        exitCycleIdRef.current++
+        exitCompletedRef.current = false
+      }
+      // invalidate pending callbacks when exit is canceled/interrupted
+      if (justStoppedExiting) {
+        exitCycleIdRef.current++
+      }
+
       const animateOnly = (props.animateOnly as string[]) || []
       const hasTransitionOnly = !!props.animateOnly
 
@@ -384,7 +403,9 @@ export function createAnimations<A extends AnimationsConfig>(
                 : getAnimation()
 
               animation.start(({ finished }) => {
-                if (finished) {
+                // always resolve during exit (element is leaving anyway)
+                // for non-exit, only resolve on successful completion
+                if (finished || isExiting) {
                   resolve()
                 }
               })
@@ -411,13 +432,37 @@ export function createAnimations<A extends AnimationsConfig>(
         }
       }, args)
 
+      // track previous exiting state
+      React.useEffect(() => {
+        wasExitingRef.current = isExiting
+      })
+
       useIsomorphicLayoutEffect(() => {
         res.runners.forEach((r) => r())
+
+        // capture current cycle id
+        const cycleId = exitCycleIdRef.current
+
+        // handle zero-completion case immediately
+        if (res.completions.length === 0) {
+          onDidAnimate?.()
+          if (isExiting && !exitCompletedRef.current) {
+            exitCompletedRef.current = true
+            sendExitComplete?.()
+          }
+          return
+        }
+
         let cancel = false
         Promise.all(res.completions).then(() => {
           if (cancel) return
+          // guard against stale cycle completion
+          if (isExiting && cycleId !== exitCycleIdRef.current) return
+          if (isExiting && exitCompletedRef.current) return
+
           onDidAnimate?.()
           if (isExiting) {
+            exitCompletedRef.current = true
             sendExitComplete?.()
           }
         })
