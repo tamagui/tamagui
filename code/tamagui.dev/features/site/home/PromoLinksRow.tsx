@@ -69,7 +69,7 @@ export const PromoLinksRow = () => {
 
         <Tooltip.Content
           animatePosition
-          transition="quick"
+          transition="medium"
           bg="$background"
           elevation="$2"
           rounded="$4"
