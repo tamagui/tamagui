@@ -130,13 +130,51 @@ function parseFlatModifierProp(
   config: TamaguiInternalConfig
 ): FlatParsedProp | null {
   // key is like $hover:bg or $sm:hover:bg or $sm:dark:hover:bg
+  // also supports embedded value: $hover:bg-blue or $sm:p-10
   const parts = key.slice(1).split(':') // remove $ and split
   if (parts.length < 2) return null
 
-  const propShort = parts.pop()! // last part is always the prop
+  let propShort = parts.pop()! // last part is the prop (or prop-value)
+  let finalValue = value
+
+  // check for embedded value syntax: bg-blue, p-10, backgroundColor-red, etc.
+  // forward scan: find first segment that's a valid style prop, rest is value
+  // this handles hyphenated values like "some-token" and props like "borderTopLeftRadius"
+  if (propShort.includes('-')) {
+    const segments = propShort.split('-')
+    let foundProp = ''
+    let valueStartIdx = -1
+
+    // try progressively longer prefixes until we find a valid prop
+    for (let i = 1; i <= segments.length; i++) {
+      const candidate = segments.slice(0, i).join('-')
+      if (shorthands[candidate] || candidate in stylePropsAll) {
+        foundProp = candidate
+        valueStartIdx = i
+        break // use first (shortest) valid prop match
+      }
+    }
+
+    if (foundProp && valueStartIdx < segments.length) {
+      const embeddedValue = segments.slice(valueStartIdx).join('-')
+      // validate non-empty value
+      if (!embeddedValue) {
+        return null
+      }
+      propShort = foundProp
+      // resolve the embedded value (numeric, token, etc.)
+      if (/^\d+(\.\d+)?$/.test(embeddedValue)) {
+        finalValue = Number(embeddedValue)
+      } else {
+        // try to resolve as token (handles "blue", "some-token", etc.)
+        finalValue = resolveTokenValue(embeddedValue, config)
+      }
+    }
+  }
+
   const prop = shorthands[propShort] || propShort
 
-  const result: FlatParsedProp = { prop, value }
+  const result: FlatParsedProp = { prop, value: finalValue }
 
   // parse modifiers (order doesn't matter)
   for (const mod of parts) {
@@ -466,11 +504,22 @@ function preprocessFlatProps(
         hasFlat = true
         break
       }
-      // flat base prop: $bg (not an object value, which is current media syntax)
+      // flat base prop: $bg or $bg-red (not an object value, which is current media syntax)
       const value = props[key]
       if (typeof value !== 'object' || value === null) {
         // check if it's a shorthand or valid style prop
-        const propName = key.slice(1) // remove $
+        let propName = key.slice(1) // remove $
+        // handle embedded value: $bg-red → prop is 'bg'
+        if (propName.includes('-')) {
+          const segments = propName.split('-')
+          for (let i = 1; i <= segments.length; i++) {
+            const candidate = segments.slice(0, i).join('-')
+            if (shorthands?.[candidate] || candidate in stylePropsAll) {
+              propName = candidate
+              break
+            }
+          }
+        }
         if (shorthands?.[propName] || propName in stylePropsAll) {
           hasFlat = true
           break
@@ -493,11 +542,18 @@ function preprocessFlatProps(
         const flatParsed = parseFlatModifierProp(key, value, shorthands, config)
 
         if (flatParsed) {
-          const { mediaKey, pseudoKey, platformKey, themeKey, prop } = flatParsed
+          const {
+            mediaKey,
+            pseudoKey,
+            platformKey,
+            themeKey,
+            prop,
+            value: parsedValue,
+          } = flatParsed
 
           // build the style object from innermost to outermost
           // order: prop → pseudo → theme → platform → media
-          let styleObj: any = { [prop]: value }
+          let styleObj: any = { [prop]: parsedValue }
 
           // wrap with pseudo if present
           if (pseudoKey) {
@@ -547,10 +603,32 @@ function preprocessFlatProps(
           continue
         }
       } else {
-        // flat base prop without modifiers: $bg, $p, etc.
+        // flat base prop without modifiers: $bg, $p, $bg-red, etc.
         // only if value is not an object (object = current media syntax)
         if (typeof value !== 'object' || value === null) {
-          const propName = key.slice(1) // remove $
+          let propName = key.slice(1) // remove $
+          let finalValue = value
+
+          // check for embedded value syntax: $bg-red, $p-10, etc.
+          if (propName.includes('-')) {
+            const segments = propName.split('-')
+            for (let i = 1; i <= segments.length; i++) {
+              const candidate = segments.slice(0, i).join('-')
+              if (shorthands?.[candidate] || candidate in stylePropsAll) {
+                const embeddedValue = segments.slice(i).join('-')
+                if (embeddedValue) {
+                  propName = candidate
+                  if (/^\d+(\.\d+)?$/.test(embeddedValue)) {
+                    finalValue = Number(embeddedValue)
+                  } else {
+                    finalValue = resolveTokenValue(embeddedValue, config)
+                  }
+                }
+                break
+              }
+            }
+          }
+
           const expandedProp = shorthands?.[propName] || propName
 
           // check if it's a valid style prop
@@ -559,7 +637,7 @@ function preprocessFlatProps(
             propName in stylePropsAll ||
             expandedProp in stylePropsAll
           ) {
-            result[expandedProp] = value
+            result[expandedProp] = finalValue
             continue
           }
         }
