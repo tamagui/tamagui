@@ -5,6 +5,7 @@ import {
   isWeb,
   Text,
   useComposedRefs,
+  useEvent,
   useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
@@ -90,21 +91,33 @@ const resolveDynamicValue = (value: unknown, isDark: boolean): unknown => {
   return value
 }
 
+/** Animation completion callback type */
+type AnimationCallback = (finished?: boolean) => void
+
 /**
- * Apply animation to a value based on config
+ * Apply animation to a value based on config, with optional completion callback
  */
 const applyAnimation = (
   targetValue: number | string,
-  config: TransitionConfig
+  config: TransitionConfig,
+  callback?: AnimationCallback
 ): number | string => {
   'worklet'
   const delay = config.delay
 
   let animatedValue: any
   if (config.type === 'timing') {
-    animatedValue = withTiming(targetValue as number, config as WithTimingConfig)
+    animatedValue = withTiming(
+      targetValue as number,
+      config as WithTimingConfig,
+      callback
+    )
   } else {
-    animatedValue = withSpring(targetValue as number, config as WithSpringConfig)
+    animatedValue = withSpring(
+      targetValue as number,
+      config as WithSpringConfig,
+      callback
+    )
   }
 
   if (delay && delay > 0) {
@@ -429,8 +442,60 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // Get sendExitComplete callback from presence
       const sendExitComplete = presence?.[1]
 
-      // Track exit animation progress (0 = not started, 1 = complete)
-      const exitProgress = useSharedValue(0)
+      // =========================================================================
+      // Exit cycle state for deterministic per-property completion tracking
+      // =========================================================================
+      const exitCycleIdRef = useRef(0)
+      const pendingExitKeysRef = useRef<Set<string>>(new Set())
+      const exitCompletedRef = useRef(false)
+      const wasExitingRef = useRef(false)
+
+      // detect transition into/out of exiting state
+      const justStartedExiting = isExiting && !wasExitingRef.current
+      const justStoppedExiting = !isExiting && wasExitingRef.current
+
+      // stable callback to mark a property as done (called from worklet via runOnJS)
+      const markExitKeyDone = useEvent((key: string, cycleId: number, finished: boolean) => {
+        // ignore callbacks from stale cycles
+        if (cycleId !== exitCycleIdRef.current) return
+        // ignore if already completed
+        if (exitCompletedRef.current) return
+        // count both finished and canceled animations as "done" during exit
+        // (element is leaving anyway, canceled animations shouldn't block completion)
+
+        pendingExitKeysRef.current.delete(key)
+
+        // check if all exit animations are done
+        if (pendingExitKeysRef.current.size === 0) {
+          exitCompletedRef.current = true
+          sendExitComplete?.()
+        }
+      })
+
+      // SharedValue to pass exit state into worklet
+      const isExitingRef = useSharedValue(isExiting)
+      const exitCycleIdShared = useSharedValue(exitCycleIdRef.current)
+
+      // start new exit cycle only on transition INTO exiting (not every render while exiting)
+      if (justStartedExiting) {
+        exitCycleIdRef.current++
+        exitCompletedRef.current = false
+        pendingExitKeysRef.current.clear()
+      }
+      // invalidate pending callbacks when exit is canceled/interrupted
+      if (justStoppedExiting) {
+        exitCycleIdRef.current++
+        pendingExitKeysRef.current.clear()
+      }
+
+      // update shared values
+      isExitingRef.value = isExiting
+      exitCycleIdShared.value = exitCycleIdRef.current
+
+      // track previous exiting state
+      React.useEffect(() => {
+        wasExitingRef.current = isExiting
+      })
 
       // =========================================================================
       // avoidRerenders: SharedValues for style updates without re-renders
@@ -617,46 +682,54 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
       })
 
-      // Handle exit animation completion using reanimated's native callback
-      // Animate exitProgress from 0 to 1 during exit, call sendExitComplete on completion
-      React.useEffect(() => {
-        if (!isExiting || !sendExitComplete) return
+      // Compute and register exit keys synchronously during render to avoid race conditions
+      // This must happen BEFORE useAnimatedStyle runs so callbacks have a populated set
+      const exitKeysRegistered = useRef(false)
+      if (justStartedExiting && sendExitComplete) {
+        const exitKeys: string[] = []
+        const animateOnly = props.animateOnly as string[] | undefined
 
-        // Use ref to get current config without adding to deps
-        const { baseConfig, propertyConfigs } = configRef.get()
-
-        // Calculate max duration across all per-property configs
-        // With animateOnly and per-property configs, different properties can have
-        // different durations, and we need to wait for the LONGEST one
-        let maxDuration = baseConfig.duration ?? 300
-        for (const key in propertyConfigs) {
-          const propConfig = propertyConfigs[key]
-          if (propConfig.duration && propConfig.duration > maxDuration) {
-            maxDuration = propConfig.duration
+        // regular animated properties
+        for (const key in animatedStyles) {
+          if (key === 'transform') continue
+          if (canAnimateProperty(key, animatedStyles[key], animateOnly)) {
+            exitKeys.push(key)
           }
         }
 
-        // Create a timing config with the max duration for exit completion tracking
-        const exitConfig: WithTimingConfig = {
-          duration: maxDuration,
-        }
-
-        // Animate exitProgress to 1, which triggers sendExitComplete on completion
-        // Using .set() for React Compiler compatibility
-        exitProgress.set(
-          withTiming(1, exitConfig, (finished) => {
-            'worklet'
-            if (finished) {
-              runOnJS(sendExitComplete)()
+        // transform sub-keys (filter by animateOnly if specified)
+        const transforms = animatedStyles.transform
+        if (transforms && Array.isArray(transforms)) {
+          for (const t of transforms) {
+            if (!t) continue
+            const tKey = Object.keys(t)[0]
+            if (tKey) {
+              // check animateOnly filter for transform sub-keys
+              if (animateOnly && !animateOnly.includes(tKey)) {
+                continue
+              }
+              exitKeys.push(`transform:${tKey}`)
             }
-          })
-        )
-
-        return () => {
-          // Cancel the exit animation if component unmounts early
-          cancelAnimation(exitProgress)
+          }
         }
-      }, [isExiting, sendExitComplete])
+
+        // register keys for this cycle
+        pendingExitKeysRef.current = new Set(exitKeys)
+        exitKeysRegistered.current = exitKeys.length > 0
+      }
+
+      // handle zero-animation case in effect (after render commit)
+      React.useEffect(() => {
+        if (!justStartedExiting || !sendExitComplete) return
+
+        // if no keys were registered, complete immediately
+        if (!exitKeysRegistered.current && pendingExitKeysRef.current.size === 0) {
+          if (!exitCompletedRef.current) {
+            exitCompletedRef.current = true
+            sendExitComplete()
+          }
+        }
+      }, [justStartedExiting, sendExitComplete])
 
       // Create animated style
       const animatedStyle = useAnimatedStyle(() => {
@@ -679,6 +752,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         const animatedValues = hasEmitterUpdates ? emitterAnimated! : animatedStyles
         const staticValues = hasEmitterUpdates ? emitterStatic! : {}
 
+        // read exit state from shared values
+        const currentlyExiting = isExitingRef.value
+        const currentCycleId = exitCycleIdShared.value
+
         // Include static values from emitter (for hover/press style changes)
         for (const key in staticValues) {
           result[key] = staticValues[key]
@@ -690,7 +767,19 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
           const targetValue = animatedValues[key]
           const propConfig = config.propertyConfigs[key] ?? config.baseConfig
-          result[key] = applyAnimation(targetValue as number, propConfig)
+
+          // create callback for exit tracking
+          let callback: AnimationCallback | undefined
+          if (currentlyExiting) {
+            const capturedKey = key
+            const capturedCycleId = currentCycleId
+            callback = (finished) => {
+              'worklet'
+              runOnJS(markExitKeyDone)(capturedKey, capturedCycleId, finished ?? false)
+            }
+          }
+
+          result[key] = applyAnimation(targetValue as number, propConfig, callback)
         }
 
         // Handle transforms
@@ -711,8 +800,20 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               const transformKey = Object.keys(t)[0]
               const targetValue = t[transformKey]
               const propConfig = config.propertyConfigs[transformKey] ?? config.baseConfig
+
+              // create callback for exit tracking (transform sub-key)
+              let callback: AnimationCallback | undefined
+              if (currentlyExiting) {
+                const capturedKey = `transform:${transformKey}`
+                const capturedCycleId = currentCycleId
+                callback = (finished) => {
+                  'worklet'
+                  runOnJS(markExitKeyDone)(capturedKey, capturedCycleId, finished ?? false)
+                }
+              }
+
               validTransforms.push({
-                [transformKey]: applyAnimation(targetValue as number, propConfig),
+                [transformKey]: applyAnimation(targetValue as number, propConfig, callback),
               })
             }
           }
@@ -733,6 +834,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         animatedTargetsRef,
         staticTargetsRef,
         transformTargetsRef,
+        isExitingRef,
+        exitCycleIdShared,
+        markExitKeyDone,
       ])
 
       // Debug logging
