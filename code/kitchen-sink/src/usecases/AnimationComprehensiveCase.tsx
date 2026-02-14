@@ -211,6 +211,12 @@ export function AnimationComprehensiveCase() {
       <SectionHeader>14. animateOnly with Exit/Enter Styles</SectionHeader>
       <Scenario48_AnimateOnlyWithExitStyle />
       <Scenario49_AnimateOnlyWithEnterExitStyle />
+
+      {/* SECTION 15: Enter/Exit Timing Verification (Bug fixes) */}
+      <SectionHeader>15. Enter/Exit Timing Verification</SectionHeader>
+      <Scenario50_EnterTimingVerification />
+      <Scenario51_DurationNormalization />
+      <Scenario52_DurationNormalizationInlineConfig />
     </YStack>
   )
 }
@@ -2350,6 +2356,159 @@ function Scenario49_AnimateOnlyWithEnterExitStyle() {
       </AnimatePresence>
       <Paragraph size="$1">
         {visible ? 'visible' : 'hidden'} (enter+exit with animateOnly)
+      </Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 50: Enter Timing Verification
+// Tests: transition={{ enter: '200ms', exit: '1000ms' }}
+// BUG FIX TEST: Verifies that enter ACTUALLY uses 200ms, not exit/default timing
+// The enter animation should complete in ~200ms, not 1000ms
+// ============================================================================
+function Scenario50_EnterTimingVerification() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('50-enter-timing', ref, [
+    'opacity',
+    'transform',
+  ])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-50-trigger"
+        data-testid="scenario-50-trigger"
+      >
+        50: Enter 200ms
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="enter-timing-50"
+            ref={ref as any}
+            // enter should be 200ms (fast), exit should be 1000ms (slow)
+            transition={{ enter: '200ms', exit: '1000ms' } as any}
+            size={40}
+            bg="$red10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-50-target"
+            data-testid="scenario-50-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">
+        {visible ? 'visible' : 'hidden'} (enter=200ms, exit=1000ms)
+      </Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 51: Duration Normalization
+// Tests: transition={{ default: { duration: 1 } }}
+// BUG FIX TEST: duration: 1 should be 1ms, not 1 second
+// The animation should be instant (1ms), not slow (1 second)
+// ============================================================================
+function Scenario51_DurationNormalization() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('51-duration-norm', ref, [
+    'opacity',
+    'transform',
+  ])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-51-trigger"
+        data-testid="scenario-51-trigger"
+      >
+        51: Duration 1
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="duration-norm-51"
+            ref={ref as any}
+            // BUG: duration: 1 should mean 1ms (instant)
+            // but it's being treated as 1 second
+            transition={{ duration: 1 } as any}
+            size={40}
+            bg="$orange10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-51-target"
+            data-testid="scenario-51-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">
+        {visible ? 'visible' : 'hidden'} (duration=1 should be 1ms)
+      </Paragraph>
+    </XStack>
+  )
+}
+
+// ============================================================================
+// SCENARIO 52: Duration Normalization with Inline Config
+// Tests: transition={{ default: '100ms', duration: 50 }}
+// BUG FIX TEST: Inline duration override should also be in milliseconds
+// ============================================================================
+function Scenario52_DurationNormalizationInlineConfig() {
+  const [visible, setVisible] = useState(true)
+  const ref = useRef<HTMLDivElement>(null)
+  const { startLogging, stopLogging } = useAnimationLogger('52-duration-inline', ref, [
+    'opacity',
+    'transform',
+  ])
+
+  return (
+    <XStack gap="$2" alignItems="center" minHeight={50}>
+      <Button
+        size="$2"
+        onPress={() => {
+          startLogging()
+          setVisible(!visible)
+          setTimeout(stopLogging, 2000)
+        }}
+        testID="scenario-52-trigger"
+        data-testid="scenario-52-trigger"
+      >
+        52: Inline Duration
+      </Button>
+      <AnimatePresence>
+        {visible && (
+          <Square
+            key="duration-inline-52"
+            ref={ref as any}
+            // uses '100ms' base but overrides with duration: 50 (should be 50ms)
+            transition={{ default: '100ms', duration: 50 } as any}
+            size={40}
+            bg="$purple10"
+            enterStyle={{ opacity: 0, scale: 0.5 }}
+            exitStyle={{ opacity: 0, scale: 0.5 }}
+            testID="scenario-52-target"
+            data-testid="scenario-52-target"
+          />
+        )}
+      </AnimatePresence>
+      <Paragraph size="$1">
+        {visible ? 'visible' : 'hidden'} (base=100ms, override=50ms)
       </Paragraph>
     </XStack>
   )

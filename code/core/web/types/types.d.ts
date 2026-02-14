@@ -315,6 +315,16 @@ export type TamaguiComponentStateRef = {
     nextState?: TamaguiComponentState;
     nextMedia?: UseMediaState;
     mediaEmitCleanup?: () => void;
+    prevPseudoState?: {
+        hover?: boolean;
+        press?: boolean;
+        focus?: boolean;
+        groups?: Record<string, {
+            hover?: boolean;
+            press?: boolean;
+            focus?: boolean;
+        }>;
+    };
 };
 export type ComponentGroupEmitter = {
     listeners: Set<GroupStateListener>;
@@ -1019,15 +1029,21 @@ type ShorthandLonghandProps = 'borderWidth' | 'borderStyle' | 'borderColor' | 'o
 export type WithShorthands<StyleProps> = {
     [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
 };
+export type PseudoStyleWithTransition<A> = A & {
+    transition?: TransitionProp | null;
+};
 export type WithPseudoProps<A> = {
-    hoverStyle?: A | null;
-    pressStyle?: A | null;
-    focusStyle?: A | null;
-    focusWithinStyle?: A | null;
-    focusVisibleStyle?: A | null;
-    disabledStyle?: A | null;
-    exitStyle?: A | null;
-    enterStyle?: A | null;
+    hoverStyle?: PseudoStyleWithTransition<A> | null;
+    pressStyle?: PseudoStyleWithTransition<A> | null;
+    focusStyle?: PseudoStyleWithTransition<A> | null;
+    focusWithinStyle?: PseudoStyleWithTransition<A> | null;
+    focusVisibleStyle?: PseudoStyleWithTransition<A> | null;
+    disabledStyle?: PseudoStyleWithTransition<A> | null;
+    exitStyle?: PseudoStyleWithTransition<A> | null;
+    enterStyle?: PseudoStyleWithTransition<A> | null;
+};
+export type PseudoTransitions = Partial<Record<keyof WithPseudoProps<any>, TransitionProp | null>> & {
+    [key: `$group-${string}-${'hover' | 'press' | 'focus'}`]: TransitionProp | null | undefined;
 };
 export type PseudoPropKeys = keyof WithPseudoProps<any>;
 export type PseudoStyles = {
@@ -1554,6 +1570,7 @@ export type GetStyleState = {
     flatTransforms?: Record<string, any>;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
+    pseudoTransitions?: PseudoTransitions | null;
 };
 export type StyleResolver<Response = PropMappedValue> = (key: string, value: any, props: SplitStyleProps, state: GetStyleState, parentVariantKey: string) => Response;
 export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any, originalVal?: any) => void) => void;
@@ -1814,7 +1831,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     Text?: any;
 };
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>;
-type UseStyleListener = (nextStyle: Record<string, unknown>) => void;
+type UseStyleListener = (nextStyle: Record<string, unknown>, effectiveTransition?: TransitionProp | null) => void;
 export type UseStyleEmitter = (cb: UseStyleListener) => void;
 export type UseAnimationHook = (props: {
     style: Record<string, any>;
@@ -1852,6 +1869,8 @@ export type GetStyleResult = {
     pseudoGroups?: Set<string>;
     mediaGroups?: Set<string>;
     overriddenContextProps?: Record<string, any>;
+    pseudoTransitions?: PseudoTransitions | null;
+    effectiveTransition?: TransitionProp | null;
 };
 export type ClassNamesObject = Record<string, string>;
 export type ModifyTamaguiComponentStyleProps<Comp extends TamaguiComponent, ChangedProps extends object> = Comp extends TamaguiComponent<infer A, infer B, infer C, infer D, infer E> ? A extends object ? TamaguiComponent<Omit<A, keyof ChangedProps> & ChangedProps, B, C, D, E> : never : never;

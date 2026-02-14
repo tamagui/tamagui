@@ -977,6 +977,13 @@ export const getSplitStyles: StyleSplitter = (
 
           const mediaOriginalValues = styleOriginalValues.get(mediaStyle)
 
+          // extract transition from group pseudo styles (e.g., $group-scenario4-hover.transition)
+          if (isGroupMedia && mediaStyle.transition) {
+            styleState.pseudoTransitions ||= {}
+            styleState.pseudoTransitions[`$${mediaKeyShort}` as keyof typeof styleState.pseudoTransitions] =
+              mediaStyle.transition as any
+          }
+
           function mergeMediaStyle(key: string, val: any, originalVal?: any) {
             styleState.style ||= {}
             const didMerge = mergeMediaByImportance(
@@ -1235,6 +1242,7 @@ export const getSplitStyles: StyleSplitter = (
     pseudoGroups,
     mediaGroups,
     overriddenContextProps: styleState.overriddenContextProps,
+    pseudoTransitions: styleState.pseudoTransitions,
   }
 
   const asChildExceptStyleLike =
@@ -1408,6 +1416,15 @@ export const getSubStyle = (
   for (let key in styleIn) {
     const val = styleIn[key]
     key = conf.shorthands[key] || key
+
+    // extract transition from pseudo-style props (e.g., hoverStyle.transition)
+    // store it separately for animation drivers to use for enter/exit timing
+    if (key === 'transition') {
+      styleState.pseudoTransitions ||= {}
+      styleState.pseudoTransitions[subKey as keyof typeof styleState.pseudoTransitions] =
+        val
+      continue
+    }
 
     const shouldSkip = !staticConfig.isHOC && key in skipProps && !styleProps.noSkip
     if (shouldSkip) {

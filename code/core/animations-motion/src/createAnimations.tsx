@@ -9,7 +9,7 @@ import {
   hooks,
   styleToCSS,
   Text,
-  type TransitionProp,
+  TransitionProp,
   type UniversalAnimatedNumber,
   useComposedRefs,
   useIsomorphicLayoutEffect,
@@ -497,12 +497,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         }
       }
 
-      useStyleEmitter?.((nextStyle) => {
+      useStyleEmitter?.((nextStyle, effectiveTransition) => {
+        // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
         const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
           disableAnimation,
-          animationState
+          animationState,
+          effectiveTransition
         )
 
         flushAnimation(animationProps)
@@ -664,10 +666,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
   }
 
   function getMotionAnimatedProps(
-    props: { transition: TransitionProp | null; animateOnly?: string[] },
+    props: { transition?: TransitionProp | null; animateOnly?: string[] },
     style: Record<string, unknown>,
     disable: boolean,
-    animationState: 'enter' | 'exit' | 'default' = 'default'
+    animationState: 'enter' | 'exit' | 'default' = 'default',
+    transitionOverride?: TransitionProp | null
   ): AnimationProps {
     if (disable) {
       return {
@@ -675,7 +678,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
     }
 
-    const animationOptions = getAnimationOptions(props.transition, animationState)
+    const animationOptions = getAnimationOptions(
+      transitionOverride ?? props.transition ?? null,
+      animationState
+    )
 
     let dontAnimate: Record<string, unknown> | undefined
     let doAnimate: Record<string, unknown> | undefined
@@ -708,8 +714,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     // Get the effective animation key based on enter/exit/default state
     const effectiveKey = getEffectiveAnimation(normalized, animationState)
 
+    // Copy global config overrides (will be converted by convertMsToS at the end)
+    const globalConfigOverride: Record<string, unknown> | undefined = normalized.config
+      ? { ...normalized.config }
+      : undefined
+
     // If no animation defined, return empty config
-    if (!effectiveKey && Object.keys(normalized.properties).length === 0) {
+    // but check for inline config too (e.g., transition={{ duration: 1 }})
+    if (
+      !effectiveKey &&
+      Object.keys(normalized.properties).length === 0 &&
+      !globalConfigOverride
+    ) {
       return {}
     }
 
@@ -717,11 +733,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
     // NOTE: delay and duration are in ms here; convertMsToS will handle conversion at the end
     const delay = normalized.delay
-
-    // Copy global config overrides (will be converted by convertMsToS at the end)
-    const globalConfigOverride: Record<string, unknown> | undefined = normalized.config
-      ? { ...normalized.config }
-      : undefined
 
     // Build the animation options
     // Framer Motion's animate() expects default config at the TOP LEVEL, not nested under 'default'
@@ -734,8 +745,19 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     }
 
     // Apply global spring config overrides at top level
+    // If we only have inline config (no preset), infer the type
     if (globalConfigOverride) {
       Object.assign(result, globalConfigOverride)
+      // infer type if not set and this looks like timing-based (has duration, no spring params)
+      if (
+        result.type === undefined &&
+        result.duration !== undefined &&
+        result.damping === undefined &&
+        result.stiffness === undefined &&
+        result.mass === undefined
+      ) {
+        result.type = 'tween'
+      }
     }
 
     // Apply delay at top level
@@ -800,14 +822,23 @@ function withInferredType(config: AnimationConfig | undefined): AnimationConfig 
 }
 
 // convert timing values from ms to s (motion expects seconds)
-// delay applies to all animation types; duration only applies to tweens
+// delay applies to all animation types; duration applies to tweens
 function convertMsToS(config: ValueTransition | undefined) {
   if (!config) return
   // delay applies to all animation types
   if (typeof config.delay === 'number') config.delay = config.delay / 1000
-  // duration only applies to tweens
-  if (config.type === 'tween' && typeof config.duration === 'number') {
-    config.duration = config.duration / 1000
+  // duration applies to tweens - either explicit type='tween' or implicit
+  // (has duration but no spring params = timing-based animation)
+  if (typeof config.duration === 'number') {
+    const isTimingBased =
+      config.type === 'tween' ||
+      (config.type === undefined &&
+        config.damping === undefined &&
+        config.stiffness === undefined &&
+        config.mass === undefined)
+    if (isTimingBased) {
+      config.duration = config.duration / 1000
+    }
   }
 }
 

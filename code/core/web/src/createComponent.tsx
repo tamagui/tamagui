@@ -13,6 +13,10 @@ import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandlin
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
+import {
+  resolveEffectivePseudoTransition,
+  extractPseudoState,
+} from './helpers/pseudoTransitions'
 import { usePointerEvents } from './helpers/pointerEvents'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
@@ -728,7 +732,18 @@ export function createComponent<
           debugProp
         )
 
-        useStyleListener((nextStyles?.style || {}) as any)
+        // compute effective transition based on entering/exiting pseudo states
+        const effectiveTransition = resolveEffectivePseudoTransition(
+          stateRef.current.prevPseudoState,
+          updatedState,
+          nextStyles?.pseudoTransitions,
+          props.transition
+        )
+
+        // update prev state for next comparison (includes group states)
+        stateRef.current.prevPseudoState = extractPseudoState(updatedState)
+
+        useStyleListener((nextStyles?.style || {}) as any, effectiveTransition)
       }
 
       function updateGroupListeners() {
@@ -935,6 +950,20 @@ export function createComponent<
             stateRef.current.useStyleListener = listener
           }
         : undefined
+
+      // compute effective transition once here (single source of truth)
+      // avoidReRenders path also computes this in updateStyleListener
+      const effectiveTransition = resolveEffectivePseudoTransition(
+        stateRef.current.prevPseudoState,
+        state,
+        splitStyles?.pseudoTransitions,
+        props.transition
+      )
+
+      // add effectiveTransition to splitStyles for drivers to consume
+      if (splitStyles) {
+        splitStyles.effectiveTransition = effectiveTransition
+      }
 
       const animations = useAnimations({
         props: propsWithAnimation,

@@ -612,6 +612,14 @@ export type TamaguiComponentStateRef = {
 
   // cleanup function for media emit listener
   mediaEmitCleanup?: () => void
+
+  // previous pseudo state for detecting enter vs exit transitions
+  prevPseudoState?: {
+    hover?: boolean
+    press?: boolean
+    focus?: boolean
+    groups?: Record<string, { hover?: boolean; press?: boolean; focus?: boolean }>
+  }
 }
 
 export type ComponentGroupEmitter = {
@@ -1865,15 +1873,27 @@ export type WithShorthands<StyleProps> = {
 }
 
 // adds pseudo props
+// PseudoStyleWithTransition allows transition inside pseudo-style props for enter/exit timing
+export type PseudoStyleWithTransition<A> = A & { transition?: TransitionProp | null }
+
 export type WithPseudoProps<A> = {
-  hoverStyle?: A | null
-  pressStyle?: A | null
-  focusStyle?: A | null
-  focusWithinStyle?: A | null
-  focusVisibleStyle?: A | null
-  disabledStyle?: A | null
-  exitStyle?: A | null
-  enterStyle?: A | null
+  hoverStyle?: PseudoStyleWithTransition<A> | null
+  pressStyle?: PseudoStyleWithTransition<A> | null
+  focusStyle?: PseudoStyleWithTransition<A> | null
+  focusWithinStyle?: PseudoStyleWithTransition<A> | null
+  focusVisibleStyle?: PseudoStyleWithTransition<A> | null
+  disabledStyle?: PseudoStyleWithTransition<A> | null
+  exitStyle?: PseudoStyleWithTransition<A> | null
+  enterStyle?: PseudoStyleWithTransition<A> | null
+}
+
+// type for transitions extracted from pseudo-style props (e.g., hoverStyle.transition)
+// includes $group-*-hover, $group-*-press, $group-*-focus patterns
+export type PseudoTransitions = Partial<
+  Record<keyof WithPseudoProps<any>, TransitionProp | null>
+> & {
+  // allow $group-{name}-{pseudo} keys dynamically
+  [key: `$group-${string}-${'hover' | 'press' | 'focus'}`]: TransitionProp | null | undefined
 }
 
 export type PseudoPropKeys = keyof WithPseudoProps<any>
@@ -2706,6 +2726,8 @@ export type GetStyleState = {
   // Track original token values (like '$8') before they get resolved to CSS vars
   // This is used to preserve token strings in overriddenContextProps
   originalContextPropValues?: Record<string, any>
+  // Transitions extracted from pseudo-style props (e.g., hoverStyle.transition)
+  pseudoTransitions?: PseudoTransitions | null
 }
 
 export type StyleResolver<Response = PropMappedValue> = (
@@ -3172,7 +3194,10 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
 
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>
 
-type UseStyleListener = (nextStyle: Record<string, unknown>) => void
+type UseStyleListener = (
+  nextStyle: Record<string, unknown>,
+  effectiveTransition?: TransitionProp | null
+) => void
 export type UseStyleEmitter = (cb: UseStyleListener) => void
 
 export type UseAnimationHook = (props: {
@@ -3216,6 +3241,10 @@ export type GetStyleResult = {
   mediaGroups?: Set<string>
   // Style values that override context props (for issues #3670, #3676)
   overriddenContextProps?: Record<string, any>
+  // Transitions extracted from pseudo-style props (e.g., hoverStyle.transition)
+  pseudoTransitions?: PseudoTransitions | null
+  // Effective transition to use (accounts for entering pseudo states)
+  effectiveTransition?: TransitionProp | null
 }
 
 export type ClassNamesObject = Record<string, string>

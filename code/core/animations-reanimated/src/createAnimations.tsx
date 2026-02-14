@@ -3,6 +3,7 @@ import {
   getSplitStyles,
   hooks,
   isWeb,
+  type PseudoTransitions,
   Text,
   useComposedRefs,
   useEvent,
@@ -268,6 +269,91 @@ const AnimatedView = createWebAnimatedComponent('div')
 const AnimatedText = createWebAnimatedComponent('span')
 
 // =============================================================================
+// Transition Config Builder
+// =============================================================================
+
+type TransitionConfigResult = {
+  baseConfig: TransitionConfig
+  propertyConfigs: Record<string, TransitionConfig>
+}
+
+/**
+ * Builds animation config from a transition prop.
+ * Shared logic used in both initial render and style emitter updates.
+ */
+function buildTransitionConfig<A extends Record<string, TransitionConfig>>(
+  transition: any,
+  animations: A,
+  animationState: 'enter' | 'exit' | 'default',
+  styleKeys: Set<string>
+): TransitionConfigResult {
+  const normalized = normalizeTransition(transition)
+  const effectiveKey = getEffectiveAnimation(normalized, animationState)
+
+  let base = effectiveKey
+    ? (animations[effectiveKey as keyof typeof animations] ??
+      ({ type: 'spring' } as TransitionConfig))
+    : ({ type: 'spring' } as TransitionConfig)
+
+  if (normalized.delay) {
+    base = { ...base, delay: normalized.delay }
+  }
+
+  if (normalized.config) {
+    base = { ...base, ...normalized.config }
+    // infer type: 'timing' if duration is provided without spring params
+    if (
+      base.type !== 'timing' &&
+      normalized.config.duration !== undefined &&
+      normalized.config.damping === undefined &&
+      normalized.config.stiffness === undefined &&
+      normalized.config.mass === undefined
+    ) {
+      base = { ...base, type: 'timing' }
+    }
+  }
+
+  // build per-property configs
+  const propertyConfigs: Record<string, TransitionConfig> = {}
+
+  for (const key of styleKeys) {
+    const propAnimation = normalized.properties[key]
+    if (typeof propAnimation === 'string') {
+      propertyConfigs[key] =
+        animations[propAnimation as keyof typeof animations] ?? base
+    } else if (propAnimation && typeof propAnimation === 'object') {
+      const configType = (propAnimation as any).type
+      const baseForProp = configType
+        ? (animations[configType as keyof typeof animations] ?? base)
+        : base
+      propertyConfigs[key] = {
+        ...baseForProp,
+        ...propAnimation,
+      } as TransitionConfig
+    } else {
+      propertyConfigs[key] = base
+    }
+  }
+
+  return { baseConfig: base, propertyConfigs }
+}
+
+/**
+ * Extracts all style keys including transform sub-properties.
+ */
+function getStyleKeys(style: Record<string, unknown>): Set<string> {
+  const keys = new Set(Object.keys(style))
+  if (style.transform && Array.isArray(style.transform)) {
+    for (const t of style.transform as Record<string, unknown>[]) {
+      if (t && typeof t === 'object') {
+        keys.add(Object.keys(t)[0])
+      }
+    }
+  }
+  return keys
+}
+
+// =============================================================================
 // Animation Driver Factory
 // =============================================================================
 
@@ -405,8 +491,16 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     // useAnimations - Main animation hook for components
     // =========================================================================
     useAnimations(animationProps) {
-      const { props, presence, style, componentState, useStyleEmitter, themeName } =
-        animationProps
+      const {
+        props,
+        presence,
+        style,
+        componentState,
+        useStyleEmitter,
+        themeName,
+        stateRef,
+        styleState,
+      } = animationProps
 
       // State flags
       const isHydrating = componentState.unmounted === true
@@ -423,9 +517,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         wasEnteringRef.current = isEntering
       })
 
-      // Extract animation key from normalized transition using enter/exit state
-      // props.transition can be: string | [string, config] | { default: string, enter: string, exit: string, ... }
-      const normalized = normalizeTransition(props.transition)
+      // Use effectiveTransition computed by createComponent (single source of truth)
+      const effectiveTransition = styleState?.effectiveTransition ?? props.transition
+      const normalized = normalizeTransition(effectiveTransition)
       // Use 'enter' if we're mounting OR if we just finished entering
       const animationState: 'enter' | 'exit' | 'default' = isExiting
         ? 'exit'
@@ -551,65 +645,12 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           }
         }
 
-        // Normalize the transition prop to a consistent format
-        const normalized = normalizeTransition(props.transition)
-
-        // Get base animation config using the effective animation key (enter/exit/default)
-        const effectiveKey = getEffectiveAnimation(normalized, animationState)
-        let base = effectiveKey
-          ? (animations[effectiveKey as keyof typeof animations] ??
-            ({ type: 'spring' } as TransitionConfig))
-          : ({ type: 'spring' } as TransitionConfig)
-
-        // Apply global delay to base config if present
-        if (normalized.delay) {
-          base = { ...base, delay: normalized.delay }
-        }
-
-        // Apply global spring config overrides (from transition={['bouncy', { stiffness: 1000 }]})
-        if (normalized.config) {
-          base = { ...base, ...normalized.config }
-        }
-
-        // Build per-property overrides from normalized properties
-        const overrides: Record<string, TransitionConfig> = {}
-
-        for (const key in normalized.properties) {
-          const animationNameOrConfig = normalized.properties[key]
-          if (typeof animationNameOrConfig === 'string') {
-            // Property override referencing a named animation: { x: 'quick' }
-            overrides[key] =
-              animations[animationNameOrConfig as keyof typeof animations] ?? base
-          } else if (animationNameOrConfig && typeof animationNameOrConfig === 'object') {
-            // Property override with inline config: { x: { type: 'quick', delay: 100 } }
-            const configType = (animationNameOrConfig as any).type
-            const baseForProp = configType
-              ? (animations[configType as keyof typeof animations] ?? base)
-              : base
-            // Cast to TransitionConfig since we're merging compatible animation configs
-            overrides[key] = {
-              ...baseForProp,
-              ...animationNameOrConfig,
-            } as TransitionConfig
-          }
-        }
-
-        // Build per-property config map
-        const configs: Record<string, TransitionConfig> = {}
-
-        // Get all animated property keys including transform sub-properties
-        const allKeys = new Set(Object.keys(animatedStyles))
-        if (animatedStyles.transform && Array.isArray(animatedStyles.transform)) {
-          for (const t of animatedStyles.transform as Record<string, unknown>[]) {
-            allKeys.add(Object.keys(t)[0])
-          }
-        }
-
-        for (const key of allKeys) {
-          configs[key] = overrides[key] ?? base
-        }
-
-        return { baseConfig: base, propertyConfigs: configs }
+        return buildTransitionConfig(
+          props.transition,
+          animations,
+          animationState,
+          getStyleKeys(animatedStyles)
+        )
       }, [isHydrating, props.transition, animatedStyles, animationState])
 
       // Store config in SharedValue for worklet access (concurrent-safe)
@@ -629,11 +670,30 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // avoidRerenders: Register style emitter callback
       // When hover/press/etc state changes, this is called instead of re-rendering
       // =========================================================================
-      useStyleEmitter?.((nextStyle: Record<string, unknown>) => {
+      useStyleEmitter?.((nextStyle: Record<string, unknown>, effectiveTransition) => {
         const animateOnly = props.animateOnly as string[] | undefined
         const animated: Record<string, unknown> = {}
         const statics: Record<string, unknown> = {}
         const transforms: Array<Record<string, unknown>> = []
+
+        // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
+        // rebuild config whenever transition changes (entering OR exiting pseudo states)
+        const transitionToUse = effectiveTransition ?? props.transition
+        const { baseConfig: newBase, propertyConfigs: newPropertyConfigs } =
+          buildTransitionConfig(
+            transitionToUse,
+            animations,
+            animationState,
+            getStyleKeys(nextStyle)
+          )
+
+        // update configRef with the new config
+        configRef.set({
+          baseConfig: newBase,
+          propertyConfigs: newPropertyConfigs,
+          disableAnimation: configRef.get().disableAnimation,
+          isHydrating: configRef.get().isHydrating,
+        })
 
         for (const key in nextStyle) {
           const rawValue = nextStyle[key]

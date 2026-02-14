@@ -217,7 +217,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       return getStyle(val.getValue())
     },
 
-    useAnimations: ({ props, presence, style, componentState, stateRef }) => {
+    useAnimations: ({ props, presence, style, componentState, stateRef, styleState }) => {
       const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
@@ -256,8 +256,11 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         wasExitingRef.current = isExiting
       })
 
+      // use effectiveTransition computed by createComponent (single source of truth)
+      const effectiveTransition = styleState?.effectiveTransition ?? props.transition
+
       // Normalize the transition prop to a consistent format
-      const normalized = normalizeTransition(props.transition)
+      const normalized = normalizeTransition(effectiveTransition)
 
       // Determine animation state and get effective animation
       // Use 'enter' if we're entering OR if we just finished entering (transition is happening)
