@@ -15,6 +15,7 @@ import { themes as generatedV5Themes } from './generatedV5Theme'
 
 export const animationsCSS = createAnimationsCSS({
   '0ms': '0ms linear',
+  '30ms': '30ms linear',
   '50ms': '50ms linear',
   '75ms': '75ms linear',
   '100ms': '100ms ease-out',
@@ -37,6 +38,9 @@ export const animationsCSS = createAnimationsCSS({
 export const animationsMotion = createAnimationsMotion({
   '0ms': {
     duration: 0,
+  },
+  '30ms': {
+    duration: 30,
   },
   '50ms': {
     duration: 50,
@@ -116,6 +120,10 @@ export const animationsNative = createAnimationsNative({
   '0ms': {
     type: 'timing',
     duration: 0,
+  },
+  '30ms': {
+    type: 'timing',
+    duration: 30,
   },
   '50ms': {
     type: 'timing',
@@ -204,6 +212,10 @@ export const animationsReanimated = createAnimationsReanimated({
   '0ms': {
     type: 'timing',
     duration: 0,
+  },
+  '30ms': {
+    type: 'timing',
+    duration: 30,
   },
   '50ms': {
     type: 'timing',
