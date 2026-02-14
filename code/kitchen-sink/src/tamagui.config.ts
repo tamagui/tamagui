@@ -357,6 +357,7 @@ const tamaConf = createTamagui({
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
     fastSchemeChange: true,
+    styleMode: ['flat', 'tailwind'], // enable flat and tailwind modes for testing
   },
   tokens,
   media: {

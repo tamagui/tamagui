@@ -664,6 +664,20 @@ export interface GenericTamaguiSettings {
      */
     onlyAllowShorthands?: boolean | undefined;
     /**
+     * Enable flat style mode for Tailwind-like syntax.
+     *
+     * - 'flat': Enable $prop and $modifier:prop syntax ($bg, $hover:bg, $sm:bg)
+     * - 'tamagui': Default object syntax (backgroundColor, hoverStyle: {}, $sm: {})
+     * - 'tailwind': Enable className with modifier syntax (future)
+     * - Array: Enable multiple modes ['tamagui', 'flat']
+     * - Object: Fine-grained control { tamagui: true, flat: true, tailwind: true }
+     */
+    styleMode?: 'flat' | 'tamagui' | 'tailwind' | ('flat' | 'tamagui' | 'tailwind')[] | {
+        flat?: boolean;
+        tamagui?: boolean;
+        tailwind?: boolean;
+    };
+    /**
      * Define a default font, for better types and default font on Text
      */
     defaultFont?: string;
@@ -1041,6 +1055,21 @@ export type PseudoStyles = {
     exitStyle?: ViewStyle;
 };
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
+type FlatPseudoKey = 'hover' | 'press' | 'focus' | 'focus-visible' | 'focus-within' | 'disabled' | 'enter' | 'exit';
+type FlatThemeKey = 'dark' | 'light';
+export type WithFlatBaseProps<StyleProps> = {
+    [Key in keyof Shorthands as `$${Key}`]?: any;
+} & {
+    [Key in keyof StyleProps as `$${string & Key}`]?: any;
+};
+export type WithFlatModifierProps = {
+    [key: `$${FlatPseudoKey}:${string}`]: any;
+    [key: `$${MediaQueryKey}:${string}`]: any;
+    [key: `$${FlatThemeKey}:${string}`]: any;
+    [key: `$${AllPlatforms}:${string}`]: any;
+    [key: `$${string}:${string}:${string}`]: any;
+};
+export type WithFlatProps<StyleProps> = WithFlatBaseProps<StyleProps> & WithFlatModifierProps;
 type MaybeOmitLonghands<A> = OnlyShorthandStyleProps extends true ? Omit<A, ShorthandLonghandProps> : A;
 export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<MaybeOmitLonghands<A>> & Variants & WithShorthands<WithThemeValues<A>>;
 export type WithThemeShorthandsAndPseudos<A extends object, Variants = {}> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>;
@@ -1466,11 +1495,11 @@ type LooseCombinedObjects<A extends object, B extends object> = A | B | (A & B);
 export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
+export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase> & WithFlatProps<StackStyleBase>;
 export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
 }
-export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
+export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase> & WithFlatProps<TextStylePropsBase>;
 export type TextProps = TextNonStyleProps & TextStyle;
 export interface ThemeableProps {
     theme?: ThemeName | null;
@@ -1483,7 +1512,7 @@ export type StyleableOptions = {
     staticConfig?: Partial<StaticConfig>;
 };
 export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties> = <CustomProps extends object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends ForwardRefRenderFunction<Ref, MergedProps> = ForwardRefRenderFunction<Ref, MergedProps>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
-export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> : {});
+export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> & WithFlatProps<StylePropsBase> : {});
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends object = {}, Variants = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties];
 };

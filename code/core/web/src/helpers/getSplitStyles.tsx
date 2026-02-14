@@ -10,6 +10,7 @@ import {
   StyleObjectProperty,
   StyleObjectPseudo,
   StyleObjectRules,
+  stylePropsAll,
   stylePropsText,
   stylePropsTransform,
   tokenCategories,
@@ -74,7 +75,8 @@ export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
-let conf: TamaguiInternalConfig
+// always get fresh config to support runtime config changes (like flat mode)
+const getConf = () => getConfig()
 
 // WeakMap to track original token values for style objects
 // Used to preserve '$8' style tokens instead of resolved 'var(--t-space-8)'
@@ -98,6 +100,566 @@ type StyleSplitter = (
 ) => null | GetStyleResult
 
 export const PROP_SPLIT = '-'
+
+// derive flat pseudo map from pseudoDescriptors: { hover: 'hoverStyle', press: 'pressStyle', ... }
+// maps both CSS name (focus-visible) and stateKey (press) to the style key
+const flatPseudoMap: Record<string, string> = {}
+for (const styleKey in pseudoDescriptors) {
+  const desc = pseudoDescriptors[styleKey as keyof typeof pseudoDescriptors]
+  flatPseudoMap[desc.name] = styleKey
+  if (desc.stateKey && desc.stateKey !== desc.name) {
+    flatPseudoMap[desc.stateKey] = styleKey
+  }
+}
+
+const flatPlatforms = new Set(['web', 'native', 'ios', 'android'])
+
+interface FlatParsedProp {
+  mediaKey?: string
+  pseudoKey?: string
+  platformKey?: string
+  themeKey?: string
+  prop: string
+  value: any
+}
+
+function parseFlatModifierProp(
+  key: string,
+  value: any,
+  shorthands: Record<string, string>,
+  config: TamaguiInternalConfig
+): FlatParsedProp | null {
+  // key is like $hover:bg or $sm:hover:bg or $sm:dark:hover:bg
+  // also supports embedded value: $hover:bg-blue or $sm:p-10
+  const parts = key.slice(1).split(':') // remove $ and split
+  if (parts.length < 2) return null
+
+  let propShort = parts.pop()! // last part is the prop (or prop-value)
+  let finalValue = value
+
+  // check for embedded value syntax: bg-blue, p-10, backgroundColor-red, etc.
+  // forward scan: find first segment that's a valid style prop, rest is value
+  // this handles hyphenated values like "some-token" and props like "borderTopLeftRadius"
+  if (propShort.includes('-')) {
+    const segments = propShort.split('-')
+    let foundProp = ''
+    let valueStartIdx = -1
+
+    // try progressively longer prefixes until we find a valid prop
+    for (let i = 1; i <= segments.length; i++) {
+      const candidate = segments.slice(0, i).join('-')
+      if (shorthands[candidate] || candidate in stylePropsAll) {
+        foundProp = candidate
+        valueStartIdx = i
+        break // use first (shortest) valid prop match
+      }
+    }
+
+    if (foundProp && valueStartIdx < segments.length) {
+      const embeddedValue = segments.slice(valueStartIdx).join('-')
+      // validate non-empty value
+      if (!embeddedValue) {
+        return null
+      }
+      propShort = foundProp
+      // resolve the embedded value (numeric, token, etc.)
+      if (/^\d+(\.\d+)?$/.test(embeddedValue)) {
+        finalValue = Number(embeddedValue)
+      } else {
+        // try to resolve as token (handles "blue", "some-token", etc.)
+        finalValue = resolveTokenValue(embeddedValue, config)
+      }
+    }
+  }
+
+  const prop = shorthands[propShort] || propShort
+
+  const result: FlatParsedProp = { prop, value: finalValue }
+
+  // parse modifiers (order doesn't matter)
+  for (const mod of parts) {
+    // check pseudo
+    if (mod in flatPseudoMap) {
+      result.pseudoKey = flatPseudoMap[mod]
+      continue
+    }
+
+    // check media (registered in config)
+    if (config.media && mod in config.media) {
+      result.mediaKey = mod
+      continue
+    }
+
+    // check theme
+    if (config.themes && mod in config.themes) {
+      result.themeKey = mod
+      continue
+    }
+
+    // check platform
+    if (flatPlatforms.has(mod)) {
+      result.platformKey = mod
+      continue
+    }
+
+    // unknown modifier - could be group, handle later
+    // for now skip groups, they're more complex
+    return null
+  }
+
+  return result
+}
+
+function mergeDeep(target: any, source: any): any {
+  const result = { ...target }
+  for (const key in source) {
+    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+      result[key] = mergeDeep(result[key] || {}, source[key])
+    } else {
+      result[key] = source[key]
+    }
+  }
+  return result
+}
+
+/**
+ * Check if flat mode is enabled based on styleMode setting.
+ */
+function isFlatModeEnabled(config: TamaguiInternalConfig): boolean {
+  const styleMode = config.settings?.styleMode
+  if (!styleMode) return false
+  if (styleMode === 'flat') return true
+  // tailwind mode requires flat mode processing for the converted props
+  if (styleMode === 'tailwind') return true
+  if (Array.isArray(styleMode)) {
+    return styleMode.includes('flat') || styleMode.includes('tailwind')
+  }
+  if (typeof styleMode === 'object') {
+    return styleMode.flat === true || styleMode.tailwind === true
+  }
+  return false
+}
+
+function isTailwindModeEnabled(config: TamaguiInternalConfig): boolean {
+  const styleMode = config.settings?.styleMode
+  if (!styleMode) return false
+  if (styleMode === 'tailwind') return true
+  if (Array.isArray(styleMode)) return styleMode.includes('tailwind')
+  if (typeof styleMode === 'object') return styleMode.tailwind === true
+  return false
+}
+
+/**
+ * Check if a class looks like a valid tailwind-style class by checking if its
+ * prop prefix is a known shorthand or style property.
+ */
+function looksLikeTailwindClass(
+  cls: string,
+  shorthands: Record<string, string>,
+  config: TamaguiInternalConfig
+): boolean {
+  // classes with colons are always considered tailwind (modifiers)
+  if (cls.includes(':')) return true
+
+  // for prop-value patterns like "bg-red", check if the prop is known
+  const dashIndex = cls.indexOf('-')
+  if (dashIndex === -1) return false
+
+  const prop = cls.slice(0, dashIndex)
+  // only consider it tailwind if the prop is a known shorthand or style prop
+  return !!(shorthands?.[prop] || prop in stylePropsAll)
+}
+
+/**
+ * Preprocess Tailwind-style className strings into flat props.
+ * Transforms syntax like className="hover:bg-$blue5 sm:p-$4" into flat props.
+ * Works with user-defined tokens - does NOT hardcode Tailwind's color/spacing system.
+ * Non-tailwind classes are preserved in className.
+ */
+function preprocessTailwindClassName(
+  props: Record<string, any>,
+  shorthands: Record<string, string>,
+  config: TamaguiInternalConfig
+): Record<string, any> {
+  if (!isTailwindModeEnabled(config)) {
+    return props
+  }
+
+  const className = props.className
+  if (!className || typeof className !== 'string') {
+    return props
+  }
+
+  const classes = className.split(/\s+/).filter(Boolean)
+  const regularClasses: string[] = []
+  const result: Record<string, any> = { ...props }
+
+  for (const cls of classes) {
+    // only try to convert if it looks like a valid tailwind class
+    if (looksLikeTailwindClass(cls, shorthands, config)) {
+      const flatProp = tailwindClassToFlatProp(cls, shorthands, config)
+      if (flatProp) {
+        result[flatProp.key] = flatProp.value
+        continue // successfully converted, don't add to regularClasses
+      }
+    }
+    // preserve all other classes (non-tailwind or failed conversion)
+    regularClasses.push(cls)
+  }
+
+  // update className to only include regular classes
+  if (regularClasses.length > 0) {
+    result.className = regularClasses.join(' ')
+  } else {
+    delete result.className
+  }
+
+  return result
+}
+
+/**
+ * Check if a value matches a token name (without $ prefix).
+ * Returns the token value prefixed with $ if found, otherwise returns the original value.
+ */
+function resolveTokenValue(value: string, config: TamaguiInternalConfig): string {
+  // already a token reference
+  if (value.startsWith('$')) return value
+
+  // check if value matches a token in any category
+  const tokensParsed = config.tokensParsed
+  if (tokensParsed) {
+    for (const category in tokensParsed) {
+      // tokens are stored with $ prefix internally
+      if (tokensParsed[category]?.[`$${value}`]) {
+        return `$${value}`
+      }
+    }
+  }
+
+  return value
+}
+
+// props that expect numeric/spacing values (prevents "my-theme" → margin)
+// built from tokenCategories.size + tokenCategories.radius + space/position props
+const numericOnlyProps: Record<string, boolean> = {
+  ...tokenCategories.size,
+  ...tokenCategories.radius,
+  gap: true,
+  rowGap: true,
+  columnGap: true,
+  top: true,
+  right: true,
+  bottom: true,
+  left: true,
+  inset: true,
+  margin: true,
+  marginTop: true,
+  marginRight: true,
+  marginBottom: true,
+  marginLeft: true,
+  marginHorizontal: true,
+  marginVertical: true,
+  padding: true,
+  paddingTop: true,
+  paddingRight: true,
+  paddingBottom: true,
+  paddingLeft: true,
+  paddingHorizontal: true,
+  paddingVertical: true,
+  borderWidth: true,
+}
+
+function isSpacingProp(prop: string): boolean {
+  return prop in numericOnlyProps
+}
+
+/**
+ * Validate that a value looks like a valid CSS/Tamagui value for tailwind processing.
+ * This prevents "my-custom-class" from being parsed as marginVertical: "custom-class".
+ */
+function isValidTailwindValue(
+  value: string,
+  prop: string,
+  shorthands?: Record<string, string>
+): boolean {
+  // numeric values are valid
+  if (/^\d+(\.\d+)?$/.test(value)) return true
+
+  // for spacing/sizing props, values must be numeric (tokens auto-resolve by name)
+  // this prevents "my-theme" from being treated as a margin value
+  const expandedProp = shorthands?.[prop] || prop
+  if (isSpacingProp(expandedProp)) {
+    return /^\d+(\.\d+)?$/.test(value)
+  }
+
+  // for other props (color, etc), simple alphanumeric values are valid
+  // e.g., "red", "blue5", "center", "100"
+  if (/^[a-zA-Z0-9]+$/.test(value)) return true
+
+  // values with only one hyphen that looks like a color variant are ok
+  // e.g., "blue-500", "gray-100"
+  if (/^[a-z]+-\d+$/.test(value)) return true
+
+  // anything else with hyphens is likely a custom class name, not a value
+  // e.g., "custom-class", "my-component"
+  return false
+}
+
+/**
+ * Convert a class to a flat prop using config shorthands/tokens.
+ * Examples:
+ *   "hover:bg-blue5" → { key: "$hover:backgroundColor", value: "$blue5" } (if blue5 is a token)
+ *   "sm:p-4" → { key: "$sm:padding", value: "$4" } (if 4 is a space token)
+ *   "bg-red" → { key: "$backgroundColor", value: "red" } (raw CSS value)
+ *   "w-100" → { key: "$width", value: 100 }
+ *   "opacity-50" → { key: "$opacity", value: 0.5 }
+ * Note: $ prefix in values (e.g., "m-$spacing") is invalid and will warn.
+ */
+function tailwindClassToFlatProp(
+  cls: string,
+  shorthands: Record<string, string>,
+  config: TamaguiInternalConfig
+): { key: string; value: any } | null {
+  // split by colon for modifiers
+  const parts = cls.split(':')
+  const lastPart = parts.pop()!
+  const modifiers = parts
+
+  // parse the prop-value from the last part (e.g., "bg-blue5" → prop: "bg", value: "blue5")
+  const dashIndex = lastPart.indexOf('-')
+  if (dashIndex === -1) {
+    // no value, e.g., "flex" - not supported in this syntax
+    return null
+  }
+
+  const prop = lastPart.slice(0, dashIndex)
+  let value: any = lastPart.slice(dashIndex + 1)
+
+  // $ prefix is invalid in className values - tokens are auto-resolved by name
+  if (typeof value === 'string' && value.startsWith('$')) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        `[tamagui] Invalid className value "${cls}": don't use $ prefix in class mode. ` +
+          `Use "${cls.replace('-$', '-')}" instead — tokens are auto-resolved by name.`
+      )
+    }
+    return null
+  }
+
+  // validate prop is a known shorthand or style prop
+  const isShorthand = !!shorthands?.[prop]
+  if (!isShorthand && !(prop in stylePropsAll)) {
+    return null
+  }
+
+  // validate value looks like a CSS value, not a class name fragment
+  if (!isValidTailwindValue(value, prop, shorthands)) {
+    return null
+  }
+
+  // handle special value patterns
+  if (prop === 'opacity' && /^\d+$/.test(value)) {
+    // opacity-50 → 0.5
+    value = Number(value) / 100
+  } else if (/^\d+$/.test(value) && !value.startsWith('$')) {
+    // numeric values like w-100 → 100 (as number)
+    value = Number(value)
+  } else if (typeof value === 'string') {
+    // check if value matches a token name and resolve it
+    // e.g., "blue5" → "$blue5" if $blue5 token exists
+    value = resolveTokenValue(value, config)
+  }
+
+  // build the flat prop key - expand shorthands to full prop name
+  const finalProp = isShorthand ? shorthands[prop] : prop
+  const key =
+    modifiers.length > 0 ? `$${modifiers.join(':')}:${finalProp}` : `$${finalProp}`
+
+  return { key, value }
+}
+
+/**
+ * Preprocess flat mode props before the main loop.
+ * Transforms syntax like $hover:bg="red" into hoverStyle: { backgroundColor: 'red' }
+ * Also handles base flat props like $bg="red" → backgroundColor: "red"
+ * This allows the existing handlers to process them normally.
+ */
+function preprocessFlatProps(
+  props: Record<string, any>,
+  shorthands: Record<string, string>,
+  config: TamaguiInternalConfig
+): Record<string, any> {
+  // only process if flat mode is enabled
+  if (!isFlatModeEnabled(config)) {
+    return props
+  }
+
+  let hasFlat = false
+
+  // quick check if any flat props exist
+  for (const key in props) {
+    if (key[0] === '$') {
+      // flat prop with modifiers: $hover:bg
+      if (key.includes(':')) {
+        hasFlat = true
+        break
+      }
+      // flat base prop: $bg or $bg-red (not an object value, which is current media syntax)
+      const value = props[key]
+      if (typeof value !== 'object' || value === null) {
+        // check if it's a shorthand or valid style prop
+        let propName = key.slice(1) // remove $
+        // handle embedded value: $bg-red → prop is 'bg'
+        if (propName.includes('-')) {
+          const segments = propName.split('-')
+          for (let i = 1; i <= segments.length; i++) {
+            const candidate = segments.slice(0, i).join('-')
+            if (shorthands?.[candidate] || candidate in stylePropsAll) {
+              propName = candidate
+              break
+            }
+          }
+        }
+        if (shorthands?.[propName] || propName in stylePropsAll) {
+          hasFlat = true
+          break
+        }
+      }
+    }
+  }
+
+  if (!hasFlat) return props
+
+  // process flat props
+  const result: Record<string, any> = {}
+
+  for (const key in props) {
+    const value = props[key]
+
+    if (key[0] === '$') {
+      // check for flat modifier syntax: $hover:bg, $sm:hover:bg, etc.
+      if (key.includes(':')) {
+        const flatParsed = parseFlatModifierProp(key, value, shorthands, config)
+
+        if (flatParsed) {
+          const {
+            mediaKey,
+            pseudoKey,
+            platformKey,
+            themeKey,
+            prop,
+            value: parsedValue,
+          } = flatParsed
+
+          // build the style object from innermost to outermost
+          // order: prop → pseudo → theme → platform → media
+          let styleObj: any = { [prop]: parsedValue }
+
+          // wrap with pseudo if present
+          if (pseudoKey) {
+            styleObj = { [pseudoKey]: styleObj }
+          }
+
+          // wrap with theme if present (inside media)
+          if (themeKey) {
+            styleObj = { [`$theme-${themeKey}`]: styleObj }
+          }
+
+          // wrap with platform if present
+          if (platformKey) {
+            styleObj = { [`$platform-${platformKey}`]: styleObj }
+          }
+
+          // determine outermost key or merge directly
+          if (mediaKey) {
+            // media is outermost wrapper
+            const injectKey = `$${mediaKey}`
+            result[injectKey] = result[injectKey]
+              ? mergeDeep(result[injectKey], styleObj)
+              : styleObj
+          } else if (platformKey && !themeKey) {
+            // just platform, no media
+            const injectKey = `$platform-${platformKey}`
+            result[injectKey] = result[injectKey]
+              ? mergeDeep(result[injectKey], styleObj[injectKey])
+              : styleObj[injectKey]
+          } else if (themeKey && !mediaKey && !platformKey) {
+            // just theme, no media/platform
+            const injectKey = `$theme-${themeKey}`
+            result[injectKey] = result[injectKey]
+              ? mergeDeep(result[injectKey], styleObj[injectKey])
+              : styleObj[injectKey]
+          } else if (pseudoKey && !mediaKey && !platformKey && !themeKey) {
+            // just pseudo, no other wrappers
+            result[pseudoKey] = result[pseudoKey]
+              ? mergeDeep(result[pseudoKey], styleObj[pseudoKey])
+              : styleObj[pseudoKey]
+          } else {
+            // complex nesting - merge the whole structure into result
+            for (const k in styleObj) {
+              result[k] = result[k] ? mergeDeep(result[k], styleObj[k]) : styleObj[k]
+            }
+          }
+          continue
+        }
+      } else {
+        // flat base prop without modifiers: $bg, $p, $bg-red, etc.
+        // only if value is not an object (object = current media syntax)
+        if (typeof value !== 'object' || value === null) {
+          let propName = key.slice(1) // remove $
+          let finalValue = value
+
+          // check for embedded value syntax: $bg-red, $p-10, etc.
+          if (propName.includes('-')) {
+            const segments = propName.split('-')
+            for (let i = 1; i <= segments.length; i++) {
+              const candidate = segments.slice(0, i).join('-')
+              if (shorthands?.[candidate] || candidate in stylePropsAll) {
+                const embeddedValue = segments.slice(i).join('-')
+                if (embeddedValue) {
+                  propName = candidate
+                  if (/^\d+(\.\d+)?$/.test(embeddedValue)) {
+                    finalValue = Number(embeddedValue)
+                  } else {
+                    finalValue = resolveTokenValue(embeddedValue, config)
+                  }
+                }
+                break
+              }
+            }
+          }
+
+          const expandedProp = shorthands?.[propName] || propName
+
+          // check if it's a valid style prop
+          if (
+            shorthands?.[propName] ||
+            propName in stylePropsAll ||
+            expandedProp in stylePropsAll
+          ) {
+            result[expandedProp] = finalValue
+            continue
+          }
+        }
+      }
+    }
+
+    // not a flat prop, pass through
+    // merge with existing if both are objects (handles $sm + $sm:bg order independence)
+    if (
+      result[key] &&
+      typeof result[key] === 'object' &&
+      typeof value === 'object' &&
+      value !== null
+    ) {
+      result[key] = mergeDeep(result[key], value)
+    } else {
+      result[key] = value
+    }
+  }
+
+  return result
+}
 
 // Normalize group keys like $group-press to $group-true-press when the group name
 // doesn't exist in context (defaults to the unnamed 'true' group)
@@ -163,7 +725,7 @@ export const getSplitStyles: StyleSplitter = (
   startedUnhydrated,
   debug
 ) => {
-  conf = conf || getConfig()
+  const conf = getConf()
   const animationDriver = componentContext?.animationDriver || conf.animations
 
   if (props.passThrough) {
@@ -277,11 +839,25 @@ export const getSplitStyles: StyleSplitter = (
   const { asChild } = props
   const { accept } = staticConfig
   const { noSkip, disableExpandShorthands, noExpand, styledContext } = styleProps
+
+  // preprocess tailwind className if enabled
+  // transforms className="hover:bg-$blue5" → $hover:bg="$blue5"
+  const propsWithTailwind = preprocessTailwindClassName(props, shorthands, conf)
+
+  // update className if tailwind preprocessing changed it (removed tailwind classes)
+  if (propsWithTailwind.className !== props.className) {
+    className = propsWithTailwind.className || ''
+  }
+
+  // preprocess flat mode props before the main loop
+  // transforms $hover:bg="red" → hoverStyle: { backgroundColor: 'red' }
+  // this allows the existing handlers to process them normally
+  const processedProps = preprocessFlatProps(propsWithTailwind, shorthands, conf)
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
-  for (const keyOg in props) {
+  for (const keyOg in processedProps) {
     let keyInit = keyOg
-    let valInit = props[keyInit]
+    let valInit = processedProps[keyInit]
 
     if (keyInit === 'children') {
       viewProps[keyInit] = valInit
@@ -1264,7 +1840,8 @@ export const getSplitStyles: StyleSplitter = (
         if (fontFamilyClassName) classList.push(fontFamilyClassName)
         if (classNames) classList.push(Object.values(classNames).join(' '))
         if (groupClassName) classList.push(groupClassName)
-        if (props.className) classList.push(props.className)
+        // use className variable which may have been updated by tailwind preprocessing
+        if (className) classList.push(className)
         const finalClassName = classList.join(' ')
 
         if (styleProps.isAnimated && isReactNative) {
