@@ -61,10 +61,9 @@ export function DemoScreen() {
       items="center"
       bg="$background"
       gap="$4"
+      p="$4"
     >
-      <YStack minW={200} maxW={600} items="center" p="$10" rounded="$6">
-        <DemoComponent />
-      </YStack>
+      <DemoComponent />
     </YStack>
   )
 }

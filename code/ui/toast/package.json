@@ -23,6 +23,17 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/cjs/index.native.js"
+    },
+    "./v1": {
+      "react-native": {
+        "module": "./dist/esm/v1.native.js",
+        "import": "./dist/esm/v1.native.js",
+        "require": "./dist/cjs/v1.native.js"
+      },
+      "types": "./types/v1.d.ts",
+      "module": "./dist/esm/v1.mjs",
+      "import": "./dist/esm/v1.mjs",
+      "require": "./dist/cjs/v1.cjs"
     }
   },
   "publishConfig": {

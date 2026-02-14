@@ -126,6 +126,16 @@ export function HomeScreen() {
               🔄 Actions Sheet Comparison
             </LinkListItem>
           </YGroup.Item>
+          <YGroup.Item>
+            <LinkListItem
+              bg="$green3"
+              href="/test/ToastMultipleCase"
+              pressStyle={{ backgroundColor: '$orange4' }}
+              size="$5"
+            >
+              🍞 Toast Multiple Case
+            </LinkListItem>
+          </YGroup.Item>
         </YGroup>
 
         <YStack gap="$4" maxW={600}>

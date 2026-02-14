@@ -29,6 +29,9 @@
       "path": "../animate-presence"
     },
     {
+      "path": "../collection"
+    },
+    {
       "path": "../dismissable"
     },
     {

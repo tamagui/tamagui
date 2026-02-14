@@ -24,7 +24,7 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    To open a specific test case in the browser:
 
    ```bash
-   open "http://localhost:9000/?test=YourTestCaseName"
+   open "http://localhost:7979/?test=YourTestCaseName"
    ```
 
    Test case names match the file names in `code/kitchen-sink/src/usecases/` (e.g., `SelectFocusScopeCase`).
@@ -32,7 +32,7 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    To open a component demo:
 
    ```bash
-   open "http://localhost:9000/?demo=Select"
+   open "http://localhost:7979/?demo=Select"
    ```
 
    Demo names match files in `code/demos/src/` without the `Demo` suffix (e.g., `Select` for `SelectDemo.tsx`).
