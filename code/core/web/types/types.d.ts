@@ -280,6 +280,7 @@ export type TamaguiProjectInfo = {
 export type DivAttributes = HTMLAttributes<HTMLDivElement>;
 export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<Props & RefAttributes<Ref>>;
 export type ComponentSetStateShallow = React.Dispatch<React.SetStateAction<Partial<TamaguiComponentState>>>;
+export type IconSizing = 'size-scaled' | 'size' | `font-${string}`;
 export type ComponentContextI = {
     disableSSR?: boolean;
     inText: boolean;
@@ -294,6 +295,7 @@ export type ComponentContextI = {
         bottom: number;
         left: number;
     } | null;
+    iconSizing?: IconSizing;
 };
 export type TamaguiComponentStateRef = {
     startedUnhydrated: boolean;
