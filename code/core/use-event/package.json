@@ -31,9 +31,7 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "@tamagui/constants": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19"
