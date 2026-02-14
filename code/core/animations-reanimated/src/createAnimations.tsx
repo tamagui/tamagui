@@ -319,8 +319,7 @@ function buildTransitionConfig<A extends Record<string, TransitionConfig>>(
   for (const key of styleKeys) {
     const propAnimation = normalized.properties[key]
     if (typeof propAnimation === 'string') {
-      propertyConfigs[key] =
-        animations[propAnimation as keyof typeof animations] ?? base
+      propertyConfigs[key] = animations[propAnimation as keyof typeof animations] ?? base
     } else if (propAnimation && typeof propAnimation === 'object') {
       const configType = (propAnimation as any).type
       const baseForProp = configType

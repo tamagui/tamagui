@@ -328,6 +328,27 @@ exit quickly, or vice versa:
 This works on all four animation drivers. See the
 [animation docs](/docs/core/animations#enterexittransitions) for more details.
 
+#### Pseudo-Style Transitions
+
+Pseudo-style props (`hoverStyle`, `pressStyle`, `focusStyle`) now support their
+own `transition` property. This enables CSS-like semantics where entering a
+state uses that state's transition, and exiting uses the base transition:
+
+```tsx
+<Square
+  transition="1000ms"  // slow exit (back to base)
+  hoverStyle={{
+    transition: '200ms',  // fast enter
+    backgroundColor: 'red',
+  }}
+/>
+```
+
+This pattern creates snappy, responsive interactions where elements react
+quickly to user input but settle back smoothly. Works with group pseudo states
+too (`$group-card-hover`). See the
+[animation docs](/docs/core/animations#pseudo-style-transitions) for details.
+
 #### Popover `transform-origin`
 
 [Popover](/docs/components/popover) and [Tooltip](/docs/components/tooltip) now

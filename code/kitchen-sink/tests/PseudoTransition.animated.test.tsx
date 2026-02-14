@@ -82,9 +82,10 @@ test.describe('Pseudo Transition Tests', () => {
 
     // check that exit is still in progress (color not yet back to initial)
     if (midExitRgb && hoverRgb && initialRgb) {
-      expect(midExitColor, 'At 400ms into 1000ms exit, color should not be fully reset').not.toBe(
-        initialColor
-      )
+      expect(
+        midExitColor,
+        'At 400ms into 1000ms exit, color should not be fully reset'
+      ).not.toBe(initialColor)
     }
 
     // wait for full exit
@@ -166,9 +167,10 @@ test.describe('Pseudo Transition Tests', () => {
     await page.waitForTimeout(300)
     const midExitOpacity = await getOpacity(page, 'scenario-6-target')
 
-    expect(midExitOpacity, 'Opacity at 300ms of 1000ms exit should still be elevated').toBeGreaterThan(
-      0.4
-    )
+    expect(
+      midExitOpacity,
+      'Opacity at 300ms of 1000ms exit should still be elevated'
+    ).toBeGreaterThan(0.4)
 
     // wait for full exit
     await page.waitForTimeout(800)
@@ -240,7 +242,10 @@ test.describe('Pseudo Transition Tests', () => {
     page,
   }) => {
     const driver = (test.info().project?.metadata as any)?.animationDriver
-    test.skip(driver !== 'reanimated', 'Reanimated-specific config cache regression coverage')
+    test.skip(
+      driver !== 'reanimated',
+      'Reanimated-specific config cache regression coverage'
+    )
 
     const target = page.getByTestId('scenario-6-target')
     const initialOpacity = await getOpacity(page, 'scenario-6-target')
@@ -250,7 +255,10 @@ test.describe('Pseudo Transition Tests', () => {
       await target.hover()
       await page.waitForTimeout(350)
       const hoveredOpacity = await getOpacity(page, 'scenario-6-target')
-      expect(hoveredOpacity, 'Enter should move quickly toward hover opacity').toBeGreaterThan(0.7)
+      expect(
+        hoveredOpacity,
+        'Enter should move quickly toward hover opacity'
+      ).toBeGreaterThan(0.7)
 
       await page.mouse.move(0, 0)
       await page.waitForTimeout(300)

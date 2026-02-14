@@ -222,6 +222,68 @@ Or use enter/exit with the array syntax to include delay and per-property animat
 
 This works with all four animation drivers (CSS, React Native, Reanimated, Motion).
 
+### Pseudo-Style Transitions
+
+You can specify different transitions for entering and exiting pseudo states like hover, press, and focus. This follows CSS-like semantics where entering a state uses that state's transition, and exiting uses the base transition:
+
+```tsx
+import { Square } from 'tamagui'
+
+export default () => (
+  <Square
+    size={100}
+    bg="$color5"
+    transition="1000ms"  // slow exit (returning to base)
+    hoverStyle={{
+      transition: '200ms',  // fast enter (going to hover)
+      bg: '$color10',
+    }}
+  />
+)
+```
+
+In this example:
+- **Hover enter**: Uses the 200ms transition (snaps quickly to hover state)
+- **Hover exit**: Uses the 1000ms base transition (fades slowly back)
+
+This works with all pseudo styles:
+
+```tsx
+<View
+  transition="slow"
+  hoverStyle={{
+    transition: 'quick',
+    scale: 1.1,
+  }}
+  pressStyle={{
+    transition: 'bouncy',
+    scale: 0.95,
+  }}
+  focusStyle={{
+    transition: 'quick',
+    borderColor: '$blue10',
+  }}
+/>
+```
+
+And with group pseudo states:
+
+```tsx
+<View group="card">
+  <Square
+    size={50}
+    bg="$color5"
+    transition="1000ms"
+    $group-card-hover={{
+      transition: '200ms',
+      bg: '$color10',
+    }}
+  />
+</View>
+```
+
+Priority follows CSS specificity intuition: press > hover > focus. This works with all animation drivers.
+
 ### animateOnly
 
 The `animateOnly` prop will limit your animation config to certain keys. It

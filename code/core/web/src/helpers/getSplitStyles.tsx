@@ -980,8 +980,9 @@ export const getSplitStyles: StyleSplitter = (
           // extract transition from group pseudo styles (e.g., $group-scenario4-hover.transition)
           if (isGroupMedia && mediaStyle.transition) {
             styleState.pseudoTransitions ||= {}
-            styleState.pseudoTransitions[`$${mediaKeyShort}` as keyof typeof styleState.pseudoTransitions] =
-              mediaStyle.transition as any
+            styleState.pseudoTransitions[
+              `$${mediaKeyShort}` as keyof typeof styleState.pseudoTransitions
+            ] = mediaStyle.transition as any
           }
 
           function mergeMediaStyle(key: string, val: any, originalVal?: any) {

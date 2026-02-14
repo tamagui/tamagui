@@ -1893,7 +1893,10 @@ export type PseudoTransitions = Partial<
   Record<keyof WithPseudoProps<any>, TransitionProp | null>
 > & {
   // allow $group-{name}-{pseudo} keys dynamically
-  [key: `$group-${string}-${'hover' | 'press' | 'focus'}`]: TransitionProp | null | undefined
+  [key: `$group-${string}-${'hover' | 'press' | 'focus'}`]:
+    | TransitionProp
+    | null
+    | undefined
 }
 
 export type PseudoPropKeys = keyof WithPseudoProps<any>
