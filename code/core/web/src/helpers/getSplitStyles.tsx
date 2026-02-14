@@ -10,6 +10,7 @@ import {
   StyleObjectProperty,
   StyleObjectPseudo,
   StyleObjectRules,
+  stylePropsAll,
   stylePropsText,
   stylePropsTransform,
   tokenCategories,
@@ -100,16 +101,15 @@ type StyleSplitter = (
 
 export const PROP_SPLIT = '-'
 
-// flat mode modifier parsing
-const flatPseudoMap: Record<string, string> = {
-  hover: 'hoverStyle',
-  press: 'pressStyle',
-  focus: 'focusStyle',
-  'focus-visible': 'focusVisibleStyle',
-  'focus-within': 'focusWithinStyle',
-  disabled: 'disabledStyle',
-  enter: 'enterStyle',
-  exit: 'exitStyle',
+// derive flat pseudo map from pseudoDescriptors: { hover: 'hoverStyle', press: 'pressStyle', ... }
+// maps both CSS name (focus-visible) and stateKey (press) to the style key
+const flatPseudoMap: Record<string, string> = {}
+for (const styleKey in pseudoDescriptors) {
+  const desc = pseudoDescriptors[styleKey as keyof typeof pseudoDescriptors]
+  flatPseudoMap[desc.name] = styleKey
+  if (desc.stateKey && desc.stateKey !== desc.name) {
+    flatPseudoMap[desc.stateKey] = styleKey
+  }
 }
 
 const flatPlatforms = new Set(['web', 'native', 'ios', 'android'])
@@ -228,12 +228,8 @@ function looksLikeTailwindClass(
   if (dashIndex === -1) return false
 
   const prop = cls.slice(0, dashIndex)
-  // only consider it tailwind if the prop is a known shorthand or built-in
-  return !!(
-    shorthands?.[prop] ||
-    TAILWIND_BUILTIN_SHORTHANDS[prop] ||
-    isLikelyStyleProp(prop)
-  )
+  // only consider it tailwind if the prop is a known shorthand or style prop
+  return !!(shorthands?.[prop] || prop in stylePropsAll)
 }
 
 /**
@@ -305,83 +301,57 @@ function resolveTokenValue(value: string, config: TamaguiInternalConfig): string
   return value
 }
 
-/**
- * Common Tailwind shorthand mappings that work even when user's shorthands
- * don't include them. These are the most frequently used patterns.
- *
- * Note: We intentionally exclude ambiguous shorthands like 'text' which in
- * Tailwind can mean text-align, text-color, or text-size depending on context.
- * Users should configure their own shorthands for these or use explicit props.
- */
-const TAILWIND_BUILTIN_SHORTHANDS: Record<string, string> = {
-  w: 'width',
-  h: 'height',
-  bg: 'backgroundColor',
-  p: 'padding',
-  pt: 'paddingTop',
-  pr: 'paddingRight',
-  pb: 'paddingBottom',
-  pl: 'paddingLeft',
-  px: 'paddingHorizontal',
-  py: 'paddingVertical',
-  m: 'margin',
-  mt: 'marginTop',
-  mr: 'marginRight',
-  mb: 'marginBottom',
-  ml: 'marginLeft',
-  mx: 'marginHorizontal',
-  my: 'marginVertical',
-  rounded: 'borderRadius',
-  border: 'borderWidth',
+// props that expect numeric/spacing values (prevents "my-theme" → margin)
+// built from tokenCategories.size + tokenCategories.radius + space/position props
+const numericOnlyProps: Record<string, boolean> = {
+  ...tokenCategories.size,
+  ...tokenCategories.radius,
+  gap: true,
+  rowGap: true,
+  columnGap: true,
+  top: true,
+  right: true,
+  bottom: true,
+  left: true,
+  inset: true,
+  margin: true,
+  marginTop: true,
+  marginRight: true,
+  marginBottom: true,
+  marginLeft: true,
+  marginHorizontal: true,
+  marginVertical: true,
+  padding: true,
+  paddingTop: true,
+  paddingRight: true,
+  paddingBottom: true,
+  paddingLeft: true,
+  paddingHorizontal: true,
+  paddingVertical: true,
+  borderWidth: true,
 }
 
-// props that expect numeric/spacing values
-const SPACING_PROPS = new Set([
-  'width',
-  'height',
-  'margin',
-  'marginTop',
-  'marginRight',
-  'marginBottom',
-  'marginLeft',
-  'marginHorizontal',
-  'marginVertical',
-  'padding',
-  'paddingTop',
-  'paddingRight',
-  'paddingBottom',
-  'paddingLeft',
-  'paddingHorizontal',
-  'paddingVertical',
-  'borderRadius',
-  'borderWidth',
-  'gap',
-  'rowGap',
-  'columnGap',
-  'top',
-  'right',
-  'bottom',
-  'left',
-  'inset',
-])
+function isSpacingProp(prop: string): boolean {
+  return prop in numericOnlyProps
+}
 
 /**
  * Validate that a value looks like a valid CSS/Tamagui value for tailwind processing.
  * This prevents "my-custom-class" from being parsed as marginVertical: "custom-class".
  */
-function isValidTailwindValue(value: string, prop: string): boolean {
-  // explicit token reference is always valid
-  if (value.startsWith('$')) return true
-
+function isValidTailwindValue(
+  value: string,
+  prop: string,
+  shorthands?: Record<string, string>
+): boolean {
   // numeric values are valid
   if (/^\d+(\.\d+)?$/.test(value)) return true
 
-  // for spacing/sizing props, values must be numeric or token references
+  // for spacing/sizing props, values must be numeric (tokens auto-resolve by name)
   // this prevents "my-theme" from being treated as a margin value
-  const expandedProp = TAILWIND_BUILTIN_SHORTHANDS[prop] || prop
-  if (SPACING_PROPS.has(expandedProp)) {
-    // only allow numeric or token values for spacing props
-    return /^\d+(\.\d+)?$/.test(value) || value.startsWith('$')
+  const expandedProp = shorthands?.[prop] || prop
+  if (isSpacingProp(expandedProp)) {
+    return /^\d+(\.\d+)?$/.test(value)
   }
 
   // for other props (color, etc), simple alphanumeric values are valid
@@ -398,13 +368,14 @@ function isValidTailwindValue(value: string, prop: string): boolean {
 }
 
 /**
- * Convert a Tailwind-style class to a flat prop.
+ * Convert a class to a flat prop using config shorthands/tokens.
  * Examples:
- *   "hover:bg-blue5" → { key: "$hover:bg", value: "$blue5" } (if blue5 is a token)
- *   "sm:p-4" → { key: "$sm:p", value: "$4" } (if 4 is a space token)
- *   "bg-red" → { key: "$bg", value: "red" } (raw CSS value)
+ *   "hover:bg-blue5" → { key: "$hover:backgroundColor", value: "$blue5" } (if blue5 is a token)
+ *   "sm:p-4" → { key: "$sm:padding", value: "$4" } (if 4 is a space token)
+ *   "bg-red" → { key: "$backgroundColor", value: "red" } (raw CSS value)
  *   "w-100" → { key: "$width", value: 100 }
  *   "opacity-50" → { key: "$opacity", value: 0.5 }
+ * Note: $ prefix in values (e.g., "m-$spacing") is invalid and will warn.
  */
 function tailwindClassToFlatProp(
   cls: string,
@@ -426,15 +397,25 @@ function tailwindClassToFlatProp(
   const prop = lastPart.slice(0, dashIndex)
   let value: any = lastPart.slice(dashIndex + 1)
 
-  // validate prop is a known shorthand (user's or built-in) or style prop
-  const isUserShorthand = !!shorthands?.[prop]
-  const isBuiltinShorthand = !!TAILWIND_BUILTIN_SHORTHANDS[prop]
-  if (!isUserShorthand && !isBuiltinShorthand && !isLikelyStyleProp(prop)) {
+  // $ prefix is invalid in className values - tokens are auto-resolved by name
+  if (typeof value === 'string' && value.startsWith('$')) {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(
+        `[tamagui] Invalid className value "${cls}": don't use $ prefix in class mode. ` +
+          `Use "${cls.replace('-$', '-')}" instead — tokens are auto-resolved by name.`
+      )
+    }
+    return null
+  }
+
+  // validate prop is a known shorthand or style prop
+  const isShorthand = !!shorthands?.[prop]
+  if (!isShorthand && !(prop in stylePropsAll)) {
     return null
   }
 
   // validate value looks like a CSS value, not a class name fragment
-  if (!isValidTailwindValue(value, prop)) {
+  if (!isValidTailwindValue(value, prop, shorthands)) {
     return null
   }
 
@@ -451,10 +432,8 @@ function tailwindClassToFlatProp(
     value = resolveTokenValue(value, config)
   }
 
-  // build the flat prop key - use the expanded prop name for built-in shorthands
-  // when user shorthands don't include the abbreviation
-  const finalProp =
-    !isUserShorthand && isBuiltinShorthand ? TAILWIND_BUILTIN_SHORTHANDS[prop] : prop
+  // build the flat prop key - expand shorthands to full prop name
+  const finalProp = isShorthand ? shorthands[prop] : prop
   const key =
     modifiers.length > 0 ? `$${modifiers.join(':')}:${finalProp}` : `$${finalProp}`
 
@@ -492,7 +471,7 @@ function preprocessFlatProps(
       if (typeof value !== 'object' || value === null) {
         // check if it's a shorthand or valid style prop
         const propName = key.slice(1) // remove $
-        if (shorthands?.[propName] || isLikelyStyleProp(propName)) {
+        if (shorthands?.[propName] || propName in stylePropsAll) {
           hasFlat = true
           break
         }
@@ -577,8 +556,8 @@ function preprocessFlatProps(
           // check if it's a valid style prop
           if (
             shorthands?.[propName] ||
-            isLikelyStyleProp(propName) ||
-            isLikelyStyleProp(expandedProp)
+            propName in stylePropsAll ||
+            expandedProp in stylePropsAll
           ) {
             result[expandedProp] = value
             continue
@@ -602,90 +581,6 @@ function preprocessFlatProps(
   }
 
   return result
-}
-
-// quick check if a prop name looks like a style prop
-// check if a prop name is a valid CSS/RN style property (not shorthands)
-// shorthands must be in user's config to work
-function isLikelyStyleProp(name: string): boolean {
-  const styleProps = [
-    'backgroundColor',
-    'color',
-    'opacity',
-    'padding',
-    'margin',
-    'width',
-    'height',
-    'minWidth',
-    'minHeight',
-    'maxWidth',
-    'maxHeight',
-    'flex',
-    'flexDirection',
-    'flexWrap',
-    'flexGrow',
-    'flexShrink',
-    'alignItems',
-    'alignContent',
-    'alignSelf',
-    'justifyContent',
-    'position',
-    'top',
-    'right',
-    'bottom',
-    'left',
-    'zIndex',
-    'borderWidth',
-    'borderColor',
-    'borderStyle',
-    'borderRadius',
-    'overflow',
-    'display',
-    'gap',
-    'rowGap',
-    'columnGap',
-    'cursor',
-    'pointerEvents',
-    'userSelect',
-    'fontSize',
-    'fontWeight',
-    'fontFamily',
-    'fontStyle',
-    'lineHeight',
-    'letterSpacing',
-    'textAlign',
-    'textTransform',
-    'textDecoration',
-    'transform',
-    'scale',
-    'rotate',
-    'translateX',
-    'translateY',
-    'boxShadow',
-    'textShadow',
-    'outline',
-    'paddingTop',
-    'paddingRight',
-    'paddingBottom',
-    'paddingLeft',
-    'paddingHorizontal',
-    'paddingVertical',
-    'marginTop',
-    'marginRight',
-    'marginBottom',
-    'marginLeft',
-    'marginHorizontal',
-    'marginVertical',
-    'borderTopWidth',
-    'borderRightWidth',
-    'borderBottomWidth',
-    'borderLeftWidth',
-    'borderTopLeftRadius',
-    'borderTopRightRadius',
-    'borderBottomLeftRadius',
-    'borderBottomRightRadius',
-  ]
-  return styleProps.includes(name)
 }
 
 // Normalize group keys like $group-press to $group-true-press when the group name

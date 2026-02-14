@@ -1057,7 +1057,6 @@ export type PseudoStyles = {
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
 type FlatPseudoKey = 'hover' | 'press' | 'focus' | 'focus-visible' | 'focus-within' | 'disabled' | 'enter' | 'exit';
 type FlatThemeKey = 'dark' | 'light';
-type FlatPlatformKey = 'web' | 'native' | 'ios' | 'android';
 export type WithFlatBaseProps<StyleProps> = {
     [Key in keyof Shorthands as `$${Key}`]?: any;
 } & {
@@ -1067,7 +1066,7 @@ export type WithFlatModifierProps = {
     [key: `$${FlatPseudoKey}:${string}`]: any;
     [key: `$${MediaQueryKey}:${string}`]: any;
     [key: `$${FlatThemeKey}:${string}`]: any;
-    [key: `$${FlatPlatformKey}:${string}`]: any;
+    [key: `$${AllPlatforms}:${string}`]: any;
     [key: `$${string}:${string}:${string}`]: any;
 };
 export type WithFlatProps<StyleProps> = WithFlatBaseProps<StyleProps> & WithFlatModifierProps;

@@ -1931,9 +1931,6 @@ type FlatPseudoKey =
 // flat theme modifiers (common ones, custom themes covered by catch-all)
 type FlatThemeKey = 'dark' | 'light'
 
-// flat platform modifiers
-type FlatPlatformKey = 'web' | 'native' | 'ios' | 'android'
-
 // base flat props: $bg, $backgroundColor, $p, $padding, etc.
 // uses 'any' for values to avoid type complexity explosion while keeping prop names for autocomplete
 export type WithFlatBaseProps<StyleProps> = {
@@ -1948,7 +1945,7 @@ export type WithFlatModifierProps = {
   [key: `$${FlatPseudoKey}:${string}`]: any
   [key: `$${MediaQueryKey}:${string}`]: any
   [key: `$${FlatThemeKey}:${string}`]: any
-  [key: `$${FlatPlatformKey}:${string}`]: any
+  [key: `$${AllPlatforms}:${string}`]: any
   // catch-all for custom themes and chained modifiers like $sm:dark:hover:bg
   [key: `$${string}:${string}:${string}`]: any
 }
