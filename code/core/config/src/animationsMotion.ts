@@ -25,6 +25,12 @@ export const animationsMotion = createAnimations({
   '300ms': {
     duration: 300,
   },
+  '400ms': {
+    duration: 400,
+  },
+  '500ms': {
+    duration: 500,
+  },
   superBouncy: {
     type: 'spring',
     damping: 3,

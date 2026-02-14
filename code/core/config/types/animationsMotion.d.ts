@@ -23,6 +23,12 @@ export declare const animationsMotion: import("@tamagui/web").AnimationDriver<{
     '300ms': {
         duration: number;
     };
+    '400ms': {
+        duration: number;
+    };
+    '500ms': {
+        duration: number;
+    };
     superBouncy: {
         type: "spring";
         damping: number;

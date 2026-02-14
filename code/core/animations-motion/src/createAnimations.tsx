@@ -136,6 +136,67 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const controls = useRef<AnimationPlaybackControlsWithThen | null>(null)
       const styleKey = JSON.stringify(style)
 
+      // exit cycle guards to prevent stale/duplicate completion
+      const exitCycleIdRef = useRef(0)
+      const pendingExitCountsRef = useRef<Map<string, number>>(new Map())
+      const exitCompletedRef = useRef(false)
+      const wasExitingRef = useRef(false)
+      const completionScheduledRef = useRef(false)
+
+      // detect transition into exiting state
+      const justStartedExiting = isExiting && !wasExitingRef.current
+      const justStoppedExiting = !isExiting && wasExitingRef.current
+
+      // start new exit cycle only on transition INTO exiting
+      if (justStartedExiting) {
+        exitCycleIdRef.current++
+        pendingExitCountsRef.current.clear()
+        exitCompletedRef.current = false
+        completionScheduledRef.current = false
+      }
+      // invalidate pending callbacks when exit is canceled/interrupted
+      if (justStoppedExiting) {
+        exitCycleIdRef.current++
+        pendingExitCountsRef.current.clear()
+        completionScheduledRef.current = false
+      }
+
+      // helper to mark a key as done - uses macrotask deferral for robust timing
+      const markExitKeyDone = (key: string, cycleId: number) => {
+        if (cycleId !== exitCycleIdRef.current) return
+        if (exitCompletedRef.current) return
+
+        const pending = pendingExitCountsRef.current
+        const currentCount = pending.get(key) ?? 0
+        if (currentCount <= 1) {
+          pending.delete(key)
+        } else {
+          pending.set(key, currentCount - 1)
+        }
+
+        // defer completion check by one macrotask to handle async state/effects/scheduler
+        if (pending.size === 0 && !completionScheduledRef.current) {
+          completionScheduledRef.current = true
+          setTimeout(() => {
+            // re-check after macrotask in case new animations were registered
+            if (
+              cycleId === exitCycleIdRef.current &&
+              !exitCompletedRef.current &&
+              pendingExitCountsRef.current.size === 0
+            ) {
+              exitCompletedRef.current = true
+              sendExitComplete?.()
+            }
+            completionScheduledRef.current = false
+          }, 0)
+        }
+      }
+
+      // track previous exiting state
+      useEffect(() => {
+        wasExitingRef.current = isExiting
+      })
+
       // until fully stable allow debugging in prod to help debugging prod issues
       const shouldDebug =
         // process.env.NODE_ENV === 'development' &&
@@ -181,6 +242,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         animationOptions = {},
         dontAnimate,
       }: AnimationProps) => {
+        // track whether THIS flush starts a new animation (vs using stale controls)
+        let startedControls: AnimationPlaybackControlsWithThen | null = null
+
         try {
           const node = stateRef.current.host
 
@@ -351,11 +415,12 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                       ],
                     }
 
-                    controls.current = animate(
+                    startedControls = animate(
                       scope.current,
                       keyframeDiff,
                       animationOptions
                     )
+                    controls.current = startedControls
                     lastAnimateAt.current = Date.now()
                     lastDontAnimate.current = dontAnimate ? { ...dontAnimate } : {}
                     lastDoAnimate.current = doAnimate ? { ...doAnimate } : {}
@@ -372,7 +437,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 doAnimate
               )
 
-              controls.current = animate(scope.current, fixedDiff, animationOptions)
+              startedControls = animate(scope.current, fixedDiff, animationOptions)
+              controls.current = startedControls
               lastAnimateAt.current = Date.now()
             }
           }
@@ -381,13 +447,51 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           lastDontAnimate.current = dontAnimate ? { ...dontAnimate } : {}
           lastDoAnimate.current = doAnimate ? { ...doAnimate } : {}
         } finally {
-          if (isExiting) {
-            if (controls.current) {
-              controls.current.finished.then(() => {
-                sendExitComplete?.()
-              })
-            } else {
-              sendExitComplete?.()
+          if (isExiting && sendExitComplete) {
+            const cycleId = exitCycleIdRef.current
+
+            // only track completion if we actually started an animation in THIS flush
+            if (startedControls) {
+              // register keys for this specific animation
+              const exitKeys = doAnimate ? Object.keys(doAnimate) : []
+              for (const key of exitKeys) {
+                pendingExitCountsRef.current.set(
+                  key,
+                  (pendingExitCountsRef.current.get(key) ?? 0) + 1
+                )
+              }
+
+              // wait on the animation we just started, not a stale reference
+              startedControls.finished
+                .then(() => {
+                  for (const key of exitKeys) {
+                    markExitKeyDone(key, cycleId)
+                  }
+                })
+                .catch(() => {
+                  // animation was canceled, still complete
+                  for (const key of exitKeys) {
+                    markExitKeyDone(key, cycleId)
+                  }
+                })
+            } else if (
+              pendingExitCountsRef.current.size === 0 &&
+              !exitCompletedRef.current &&
+              !completionScheduledRef.current
+            ) {
+              // no animation started and no pending keys - defer by macrotask
+              completionScheduledRef.current = true
+              setTimeout(() => {
+                if (
+                  cycleId === exitCycleIdRef.current &&
+                  !exitCompletedRef.current &&
+                  pendingExitCountsRef.current.size === 0
+                ) {
+                  exitCompletedRef.current = true
+                  sendExitComplete()
+                }
+                completionScheduledRef.current = false
+              }, 0)
             }
           }
         }
@@ -611,18 +715,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
     const defaultConfig = effectiveKey ? withInferredType(animations[effectiveKey]) : null
 
-    // Framer Motion uses seconds, so convert from ms
-    const delay =
-      typeof normalized.delay === 'number' ? normalized.delay / 1000 : undefined
+    // NOTE: delay and duration are in ms here; convertMsToS will handle conversion at the end
+    const delay = normalized.delay
 
-    // Convert global config overrides from ms to seconds where needed
-    let globalConfigOverride: Record<string, unknown> | undefined
-    if (normalized.config) {
-      globalConfigOverride = { ...normalized.config }
-      if (typeof normalized.config.duration === 'number') {
-        globalConfigOverride.duration = normalized.config.duration / 1000
-      }
-    }
+    // Copy global config overrides (will be converted by convertMsToS at the end)
+    const globalConfigOverride: Record<string, unknown> | undefined = normalized.config
+      ? { ...normalized.config }
+      : undefined
 
     // Build the animation options
     // Framer Motion's animate() expects default config at the TOP LEVEL, not nested under 'default'
@@ -673,10 +772,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     }
 
     // we standardize to ms across drivers, motion expects s
-    // apply to default and each per-property config
+    // convert top-level config (what animate() reads directly)
+    convertMsToS(result as ValueTransition)
+    // also convert default and per-property configs
     convertMsToS(result.default)
     for (const key in result) {
-      if (key !== 'default') convertMsToS(result[key])
+      if (key !== 'default' && typeof result[key] === 'object') {
+        convertMsToS(result[key])
+      }
     }
 
     return result
@@ -696,11 +799,16 @@ function withInferredType(config: AnimationConfig | undefined): AnimationConfig 
   return { type: isTimingBased ? 'tween' : 'spring', ...config }
 }
 
-// convert tween duration/delay from ms to s (motion expects seconds)
+// convert timing values from ms to s (motion expects seconds)
+// delay applies to all animation types; duration only applies to tweens
 function convertMsToS(config: ValueTransition | undefined) {
-  if (!config || config.type !== 'tween') return
-  if (typeof config.duration === 'number') config.duration = config.duration / 1000
+  if (!config) return
+  // delay applies to all animation types
   if (typeof config.delay === 'number') config.delay = config.delay / 1000
+  // duration only applies to tweens
+  if (config.type === 'tween' && typeof config.duration === 'number') {
+    config.duration = config.duration / 1000
+  }
 }
 
 function removeRemovedStyles(
