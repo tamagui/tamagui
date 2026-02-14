@@ -9,7 +9,7 @@ import {
   StyleObjectProperty,
   StyleObjectValue,
 } from '../web/src'
-import { simplifiedGetSplitStyles } from './utils'
+import { simplifiedGetSplitStyles, findRule, findAnyRule } from './utils'
 
 beforeAll(() => {
   const defaultConfig = config.getDefaultTamaguiConfig()
@@ -23,40 +23,6 @@ beforeAll(() => {
 })
 
 import { StyleObjectPseudo, StyleObjectIdentifier } from '@tamagui/helpers'
-
-// helper to find a rule by property name in rulesToInsert
-// optionally filter by pseudo state (undefined = base style)
-function findRule(rulesToInsert: any, prop: string, pseudo?: string) {
-  for (const rule of Object.values(rulesToInsert || {})) {
-    const r = rule as any
-    if (r[StyleObjectProperty] === prop) {
-      // if pseudo is specified, match it; if undefined, match base styles (no pseudo)
-      if (pseudo === undefined) {
-        // for base styles, ensure no pseudo and no media prefix in identifier
-        if (
-          r[StyleObjectPseudo] === undefined &&
-          !r[StyleObjectIdentifier]?.includes('_sm') &&
-          !r[StyleObjectIdentifier]?.includes('_md')
-        ) {
-          return r
-        }
-      } else if (r[StyleObjectPseudo] === pseudo) {
-        return r
-      }
-    }
-  }
-  return null
-}
-
-// helper to find ANY rule by property name (for tests that don't care about modifiers)
-function findAnyRule(rulesToInsert: any, prop: string) {
-  for (const rule of Object.values(rulesToInsert || {})) {
-    if ((rule as any)[StyleObjectProperty] === prop) {
-      return rule as any
-    }
-  }
-  return null
-}
 
 describe('flat mode - base props', () => {
   test('$bg="red" sets backgroundColor', () => {
@@ -198,10 +164,15 @@ describe('flat mode - combined modifiers', () => {
       '$sm:hover:bg': 'purple',
     } as any)
 
-    // should have both sm and hover in the key or class
-    const classNamesStr = JSON.stringify(styles.classNames)
-    expect(classNamesStr).toContain('sm')
-    expect(classNamesStr).toContain('hover')
+    // combined modifier rules encode value/media/pseudo in identifier
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const bgRule = rules.find((r) => r[StyleObjectProperty] === 'backgroundColor')
+    expect(bgRule).toBeTruthy()
+    // identifier encodes sm media, hover pseudo, and purple value
+    const id = bgRule[StyleObjectIdentifier]
+    expect(id).toContain('_sm')
+    expect(id).toContain('hover')
+    expect(id).toContain('purple')
   })
 
   test('$hover:sm:bg="purple" (different order) generates same result', () => {
@@ -209,9 +180,13 @@ describe('flat mode - combined modifiers', () => {
       '$hover:sm:bg': 'purple',
     } as any)
 
-    const classNamesStr = JSON.stringify(styles.classNames)
-    expect(classNamesStr).toContain('sm')
-    expect(classNamesStr).toContain('hover')
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const bgRule = rules.find((r) => r[StyleObjectProperty] === 'backgroundColor')
+    expect(bgRule).toBeTruthy()
+    const id = bgRule[StyleObjectIdentifier]
+    expect(id).toContain('_sm')
+    expect(id).toContain('hover')
+    expect(id).toContain('purple')
   })
 })
 
@@ -221,8 +196,13 @@ describe('flat mode - theme modifiers', () => {
       '$dark:bg': 'black',
     } as any)
 
-    const classNamesStr = JSON.stringify(styles.classNames)
-    expect(classNamesStr).toContain('dark')
+    // theme modifier rules encode value in identifier
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const bgRule = rules.find((r) => r[StyleObjectProperty] === 'backgroundColor')
+    expect(bgRule).toBeTruthy()
+    const id = bgRule[StyleObjectIdentifier]
+    expect(id).toContain('dark')
+    expect(id).toContain('black')
   })
 
   test('$light:color="black" generates light theme style', () => {
@@ -230,8 +210,12 @@ describe('flat mode - theme modifiers', () => {
       '$light:color': 'black',
     } as any)
 
-    const classNamesStr = JSON.stringify(styles.classNames)
-    expect(classNamesStr).toContain('light')
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const colorRule = rules.find((r) => r[StyleObjectProperty] === 'color')
+    expect(colorRule).toBeTruthy()
+    const id = colorRule[StyleObjectIdentifier]
+    expect(id).toContain('light')
+    expect(id).toContain('black')
   })
 })
 
@@ -241,9 +225,13 @@ describe('flat mode - platform modifiers', () => {
       '$web:cursor': 'pointer',
     } as any)
 
-    // on web, this should be processed
-    const hasCursor = Object.keys(styles.classNames).some((k) => k.includes('cursor'))
-    expect(hasCursor).toBe(true)
+    // platform modifier rules encode value in identifier
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const cursorRule = rules.find((r: any) => r[StyleObjectProperty] === 'cursor')
+    expect(cursorRule).toBeTruthy()
+    const id = cursorRule[StyleObjectIdentifier]
+    expect(id).toContain('platformweb')
+    expect(id).toContain('pointer')
   })
 })
 
@@ -255,21 +243,32 @@ describe('flat mode - multiple flat props', () => {
       '$sm:bg': 'lightgray',
     } as any)
 
-    // base bg goes to classNames (atomic CSS)
-    expect(styles.classNames.backgroundColor).toMatch(/_bg-/)
+    // base bg - uses StyleObjectValue directly
     const bgRule = findRule(styles.rulesToInsert, 'backgroundColor')
     expect(bgRule).toBeTruthy()
     expect(bgRule[StyleObjectValue]).toBe('white')
 
-    // hover bg should have hover class pattern in classNames
-    const hoverKey = Object.keys(styles.classNames).find((k) => k.includes('hover'))
-    expect(hoverKey).toBeTruthy()
-    expect(styles.classNames[hoverKey!]).toContain('0hover')
+    // hover and media rules encode value in identifier
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
 
-    // media bg should have sm class pattern in classNames
-    const smKey = Object.keys(styles.classNames).find((k) => k.includes('sm'))
-    expect(smKey).toBeTruthy()
-    expect(styles.classNames[smKey!]).toContain('_sm')
+    // hover bg
+    const hoverRule = rules.find(
+      (r: any) =>
+        r[StyleObjectProperty] === 'backgroundColor' &&
+        r[StyleObjectIdentifier]?.includes('hover')
+    )
+    expect(hoverRule).toBeTruthy()
+    expect(hoverRule[StyleObjectIdentifier]).toContain('gray')
+
+    // media bg
+    const smRule = rules.find(
+      (r: any) =>
+        r[StyleObjectProperty] === 'backgroundColor' &&
+        r[StyleObjectIdentifier]?.includes('_sm') &&
+        !r[StyleObjectIdentifier]?.includes('hover')
+    )
+    expect(smRule).toBeTruthy()
+    expect(smRule[StyleObjectIdentifier]).toContain('lightgray')
   })
 })
 
@@ -440,14 +439,25 @@ describe('flat mode - modifier order independence', () => {
       '$hover:sm:bg': 'purple',
     } as any)
 
-    // both should have sm and hover
-    const str1 = JSON.stringify(styles1.classNames)
-    const str2 = JSON.stringify(styles2.classNames)
+    // extract rules and compare structural equivalence
+    const rules1 = Object.values(styles1.rulesToInsert || {}).map((r: any) => ({
+      prop: r[StyleObjectProperty],
+      val: r[StyleObjectValue],
+      pseudo: r[StyleObjectPseudo],
+    }))
+    const rules2 = Object.values(styles2.rulesToInsert || {}).map((r: any) => ({
+      prop: r[StyleObjectProperty],
+      val: r[StyleObjectValue],
+      pseudo: r[StyleObjectPseudo],
+    }))
 
-    expect(str1).toContain('sm')
-    expect(str1).toContain('hover')
-    expect(str2).toContain('sm')
-    expect(str2).toContain('hover')
+    expect(rules1.length).toBeGreaterThan(0)
+    expect(rules1).toEqual(rules2)
+
+    // classNames values should also match
+    const classValues1 = Object.values(styles1.classNames).sort()
+    const classValues2 = Object.values(styles2.classNames).sort()
+    expect(classValues1).toEqual(classValues2)
   })
 })
 
@@ -457,10 +467,15 @@ describe('flat mode - chained media + theme', () => {
       '$sm:dark:bg': 'black',
     } as any)
 
-    // should have both sm and dark in classNames
-    const classNamesStr = JSON.stringify(styles.classNames)
-    expect(classNamesStr).toContain('sm')
-    expect(classNamesStr).toContain('dark')
+    // theme-scoped rules use '$theme-dark' as property
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const themeRule = rules.find((r) => r[StyleObjectProperty] === '$theme-dark')
+    expect(themeRule).toBeTruthy()
+    // identifier encodes the actual CSS prop, media, and value
+    const id = themeRule[StyleObjectIdentifier]
+    expect(id).toContain('_sm')
+    expect(id).toContain('_bg')
+    expect(id).toContain('black')
   })
 
   test('$sm:light:hover:bg generates media + theme + pseudo', () => {
@@ -468,10 +483,13 @@ describe('flat mode - chained media + theme', () => {
       '$sm:light:hover:bg': 'white',
     } as any)
 
-    const classNamesStr = JSON.stringify(styles.classNames)
-    expect(classNamesStr).toContain('sm')
-    expect(classNamesStr).toContain('light')
-    expect(classNamesStr).toContain('hover')
+    // theme+pseudo rules use '$theme-light' as property
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const themeRule = rules.find((r) => r[StyleObjectProperty] === '$theme-light')
+    expect(themeRule).toBeTruthy()
+    const id = themeRule[StyleObjectIdentifier]
+    expect(id).toContain('_sm')
+    expect(id).toContain('hoverStyle')
   })
 
   test('$dark:sm:bg order independent - same as $sm:dark:bg', () => {
@@ -483,14 +501,25 @@ describe('flat mode - chained media + theme', () => {
       '$dark:sm:bg': 'black',
     } as any)
 
-    // both should produce equivalent output
-    const str1 = JSON.stringify(styles1.classNames)
-    const str2 = JSON.stringify(styles2.classNames)
+    // extract rules and compare structural equivalence
+    const rules1 = Object.values(styles1.rulesToInsert || {}).map((r: any) => ({
+      prop: r[StyleObjectProperty],
+      val: r[StyleObjectValue],
+      pseudo: r[StyleObjectPseudo],
+    }))
+    const rules2 = Object.values(styles2.rulesToInsert || {}).map((r: any) => ({
+      prop: r[StyleObjectProperty],
+      val: r[StyleObjectValue],
+      pseudo: r[StyleObjectPseudo],
+    }))
 
-    expect(str1).toContain('sm')
-    expect(str1).toContain('dark')
-    expect(str2).toContain('sm')
-    expect(str2).toContain('dark')
+    expect(rules1.length).toBeGreaterThan(0)
+    expect(rules1).toEqual(rules2)
+
+    // classNames values should also match
+    const classValues1 = Object.values(styles1.classNames).sort()
+    const classValues2 = Object.values(styles2.classNames).sort()
+    expect(classValues1).toEqual(classValues2)
   })
 
   test('$sm:dark:hover:press:bg - multiple pseudos, last pseudo wins', () => {
@@ -499,14 +528,15 @@ describe('flat mode - chained media + theme', () => {
       '$sm:dark:hover:press:bg': 'gray',
     } as any)
 
-    const classNamesStr = JSON.stringify(styles.classNames)
-    // should have sm media and dark theme
-    expect(classNamesStr).toContain('sm')
-    expect(classNamesStr).toContain('dark')
-    // should have press/pressStyle (last pseudo wins), not hover
-    expect(classNamesStr).toContain('press')
-    // hover should NOT be present since press (last) wins
-    expect(classNamesStr).not.toContain('hover')
+    // theme-scoped rule
+    const rules = Object.values(styles.rulesToInsert || {}) as any[]
+    const themeRule = rules.find((r) => r[StyleObjectProperty] === '$theme-dark')
+    expect(themeRule).toBeTruthy()
+    const id = themeRule[StyleObjectIdentifier]
+    expect(id).toContain('_sm')
+    // last pseudo wins: pressStyle, not hoverStyle
+    expect(id).toContain('pressStyle')
+    expect(id).not.toContain('hoverStyle')
   })
 })
 
@@ -541,5 +571,67 @@ describe('flat mode - order independence with object syntax', () => {
 
     const hoverKeys = Object.keys(styles.classNames).filter((k) => k.includes('hover'))
     expect(hoverKeys.length).toBeGreaterThanOrEqual(2)
+  })
+})
+
+describe('flat mode - precedence and edge cases', () => {
+  test('$bg overrides backgroundColor (flat wins over regular)', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      backgroundColor: 'red',
+      $bg: 'blue',
+    } as any)
+
+    // flat prop should override regular prop
+    const bgRule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(bgRule).toBeTruthy()
+    expect(bgRule[StyleObjectValue]).toBe('blue')
+  })
+
+  test('backgroundColor overrides $bg when declared after', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      $bg: 'blue',
+      backgroundColor: 'red',
+    } as any)
+
+    // last-declared wins (regular prop after flat)
+    const bgRule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(bgRule).toBeTruthy()
+    expect(bgRule[StyleObjectValue]).toBe('red')
+  })
+
+  test('empty value $bg="" does not crash', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      $bg: '',
+    } as any)
+
+    // should not produce a rule with empty value
+    expect(styles).toBeDefined()
+  })
+
+  test('undefined value $bg=undefined does not crash', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      $bg: undefined,
+    } as any)
+
+    expect(styles).toBeDefined()
+  })
+
+  test('numeric zero $opacity=0 produces correct value', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      $opacity: 0,
+    } as any)
+
+    const rule = findRule(styles.rulesToInsert, 'opacity')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toBe(0)
+  })
+
+  test('unknown flat prop $foo="bar" is silently ignored', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      $foo: 'bar',
+    } as any)
+
+    // should not crash and should not produce a rule for unknown prop
+    expect(styles).toBeDefined()
   })
 })

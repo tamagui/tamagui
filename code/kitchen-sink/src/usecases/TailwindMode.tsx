@@ -2,33 +2,44 @@ import { View, Text, YStack, XStack } from 'tamagui'
 
 // test tailwind className syntax
 // note: this requires styleMode: 'tailwind' in config
+// uses v4 shorthands: bg, m, p, rounded, etc. (no w/h - use full prop names)
 
-const BasicClass = () => <View id="tailwind-basic" className="w-100 h-50 bg-red" />
+const BasicClass = () => (
+  <View id="tailwind-basic" className="width-100 height-50 bg-red" />
+)
 
 const HoverClass = () => (
-  <View id="tailwind-hover" className="w-100 h-50 bg-green hover:bg-blue" />
+  <View id="tailwind-hover" className="width-100 height-50 bg-green hover:bg-blue" />
 )
 
 const MediaClass = () => (
-  <View id="tailwind-media" className="w-100 h-50 bg-yellow sm:bg-purple" />
+  <View id="tailwind-media" className="width-100 height-50 bg-yellow sm:bg-purple" />
 )
 
-const TokenClass = () => <View id="tailwind-token" className="w-100 h-50 bg-background" />
+const TokenClass = () => (
+  <View id="tailwind-token" className="width-100 height-50 bg-customBlue" />
+)
 
 const CombinedClass = () => (
-  <View id="tailwind-combined" className="w-100 h-50 bg-gray sm:hover:bg-orange" />
+  <View
+    id="tailwind-combined"
+    className="width-100 height-50 bg-gray sm:hover:bg-orange"
+  />
 )
 
 const MixedClasses = () => (
   <View
     id="tailwind-mixed"
-    className="my-custom-class w-100 h-50 bg-pink another-class"
+    className="my-custom-class width-100 height-50 bg-pink another-class"
   />
 )
 
 // visual comparison - tailwind syntax vs regular tamagui syntax (should be identical)
 const TailwindVisualBasic = () => (
-  <View id="tailwind-visual-basic" className="w-100 h-100 bg-red rounded-8 p-10" />
+  <View
+    id="tailwind-visual-basic"
+    className="width-100 height-100 bg-red rounded-8 p-10"
+  />
 )
 
 const RegularVisualBasic = () => (
@@ -43,7 +54,10 @@ const RegularVisualBasic = () => (
 )
 
 const TailwindVisualHover = () => (
-  <View id="tailwind-visual-hover" className="w-100 h-100 bg-green hover:bg-blue" />
+  <View
+    id="tailwind-visual-hover"
+    className="width-100 height-100 bg-green hover:bg-blue"
+  />
 )
 
 const RegularVisualHover = () => (
@@ -56,9 +70,12 @@ const RegularVisualHover = () => (
   />
 )
 
-// token-based visual comparisons - use same literal values
+// token-based visual comparisons - use a distinctive token (not $background which is white-on-white)
 const TailwindVisualToken = () => (
-  <View id="tailwind-visual-token" className="w-100 h-100 bg-background rounded-8 p-10" />
+  <View
+    id="tailwind-visual-token"
+    className="width-100 height-100 bg-customBlue rounded-8 p-10"
+  />
 )
 
 const RegularVisualToken = () => (
@@ -66,7 +83,7 @@ const RegularVisualToken = () => (
     id="regular-visual-token"
     width={100}
     height={100}
-    backgroundColor="$background"
+    backgroundColor="$customBlue"
     borderRadius={8}
     padding={10}
   />
@@ -74,7 +91,7 @@ const RegularVisualToken = () => (
 
 // media query visual comparison
 const TailwindVisualMedia = () => (
-  <View id="tailwind-visual-media" className="w-100 h-100 bg-red sm:bg-green" />
+  <View id="tailwind-visual-media" className="width-100 height-100 bg-red sm:bg-green" />
 )
 
 const RegularVisualMedia = () => (
@@ -93,7 +110,7 @@ export function TailwindMode() {
       <Text>Tailwind className Mode Tests</Text>
 
       <YStack gap={10}>
-        <Text>Basic: w-100 h-50 bg-red</Text>
+        <Text>Basic: width-100 height-50 bg-red</Text>
         <BasicClass />
       </YStack>
 
@@ -108,7 +125,7 @@ export function TailwindMode() {
       </YStack>
 
       <YStack gap={10}>
-        <Text>Token: bg-background (auto-resolves to $background)</Text>
+        <Text>Token: bg-customBlue (auto-resolves to $customBlue)</Text>
         <TokenClass />
       </YStack>
 
@@ -140,7 +157,7 @@ export function TailwindMode() {
       </YStack>
 
       <YStack gap={8}>
-        <Text fontWeight="bold">Visual: Token (tailwind vs regular)</Text>
+        <Text fontWeight="bold">Visual: Token $customBlue (tailwind vs regular)</Text>
         <XStack gap={20} id="tailwind-token-comparison">
           <TailwindVisualToken />
           <RegularVisualToken />

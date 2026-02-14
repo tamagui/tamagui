@@ -1,33 +1,8 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { View, createTamagui, StyleObjectProperty, StyleObjectValue } from '../web/src'
-import { StyleObjectPseudo, StyleObjectIdentifier } from '@tamagui/helpers'
-import { simplifiedGetSplitStyles } from './utils'
-
-// helper to find a rule by property name in rulesToInsert
-// optionally filter by pseudo state (undefined = base style)
-function findRule(rulesToInsert: any, prop: string, pseudo?: string) {
-  for (const rule of Object.values(rulesToInsert || {})) {
-    const r = rule as any
-    if (r[StyleObjectProperty] === prop) {
-      // if pseudo is specified, match it; if undefined, match base styles (no pseudo)
-      if (pseudo === undefined) {
-        // for base styles, ensure no pseudo and no media prefix in identifier
-        if (
-          r[StyleObjectPseudo] === undefined &&
-          !r[StyleObjectIdentifier]?.includes('_sm') &&
-          !r[StyleObjectIdentifier]?.includes('_md')
-        ) {
-          return r
-        }
-      } else if (r[StyleObjectPseudo] === pseudo) {
-        return r
-      }
-    }
-  }
-  return null
-}
+import { View, createTamagui, StyleObjectValue } from '../web/src'
+import { simplifiedGetSplitStyles, findRule } from './utils'
 
 // test that flat mode is properly gated by styleMode setting
 

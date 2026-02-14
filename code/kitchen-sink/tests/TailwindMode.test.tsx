@@ -6,7 +6,9 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'TailwindMode', type: 'useCase' })
 })
 
-test('tailwind basic - className="w-100 h-50 bg-red" sets styles', async ({ page }) => {
+test('tailwind basic - className="width-100 height-50 bg-red" sets styles', async ({
+  page,
+}) => {
   const styles = await getStyles(page.locator('#tailwind-basic').first())
   expect(styles.width).toBe('100px')
   expect(styles.height).toBe('50px')
@@ -25,12 +27,12 @@ test('tailwind hover - hovered state has blue background', async ({ page }) => {
   expect(styles.backgroundColor).toBe('rgb(0, 0, 255)')
 })
 
-test('tailwind token - className="bg-background" auto-resolves token', async ({
+test('tailwind token - className="bg-customBlue" auto-resolves token', async ({
   page,
 }) => {
   const styles = await getStyles(page.locator('#tailwind-token').first())
-  // token should auto-resolve to actual color (no $ prefix needed)
-  expect(styles.backgroundColor).toMatch(/^rgb/)
+  // oracle: $customBlue is #0000ff = rgb(0, 0, 255)
+  expect(styles.backgroundColor).toBe('rgb(0, 0, 255)')
 })
 
 test('tailwind combined - className="sm:hover:bg-orange" renders base state', async ({
@@ -62,6 +64,12 @@ test('tailwind visual basic - matches regular tamagui syntax', async ({ page }) 
   const tailwindStyles = await getStyles(tailwind)
   const regularStyles = await getStyles(regular)
 
+  // oracle: known expected values
+  expect(regularStyles.backgroundColor).toBe('rgb(255, 0, 0)')
+  expect(regularStyles.width).toBe('100px')
+  expect(regularStyles.height).toBe('100px')
+
+  // parity
   expect(tailwindStyles.backgroundColor).toBe(regularStyles.backgroundColor)
   expect(tailwindStyles.width).toBe(regularStyles.width)
   expect(tailwindStyles.height).toBe(regularStyles.height)
@@ -75,6 +83,9 @@ test('tailwind visual hover - base state matches regular syntax', async ({ page 
 
   const tailwindStyles = await getStyles(tailwind)
   const regularStyles = await getStyles(regular)
+
+  // oracle: base state is green
+  expect(regularStyles.backgroundColor).toBe('rgb(0, 128, 0)')
 
   expect(tailwindStyles.backgroundColor).toBe(regularStyles.backgroundColor)
 })
@@ -90,6 +101,9 @@ test('tailwind visual hover - hovered state matches regular syntax', async ({ pa
   // hover on tailwind
   await tailwind.hover()
   const tailwindStyles = await getStyles(tailwind)
+
+  // oracle: hovered state is blue
+  expect(regularStyles.backgroundColor).toBe('rgb(0, 0, 255)')
 
   expect(tailwindStyles.backgroundColor).toBe(regularStyles.backgroundColor)
 })
@@ -117,18 +131,41 @@ test('tailwind visual token - matches regular tamagui syntax', async ({ page }) 
   const tailwindStyles = await getStyles(tailwind)
   const regularStyles = await getStyles(regular)
 
+  // oracle: $customBlue is #0000ff = rgb(0, 0, 255)
+  expect(regularStyles.backgroundColor).toBe('rgb(0, 0, 255)')
+
+  // parity
   expect(tailwindStyles.backgroundColor).toBe(regularStyles.backgroundColor)
   expect(tailwindStyles.borderRadius).toBe(regularStyles.borderRadius)
   expect(tailwindStyles.padding).toBe(regularStyles.padding)
 })
 
-test('tailwind visual media - matches regular tamagui syntax', async ({ page }) => {
+test('tailwind visual media - narrow viewport triggers sm override', async ({ page }) => {
+  // sm: { maxWidth: 800 } → $sm matches at ≤800px
+  await page.setViewportSize({ width: 400, height: 600 })
+  await page.waitForTimeout(200)
   const tailwind = page.locator('#tailwind-visual-media').first()
   const regular = page.locator('#regular-visual-media').first()
 
   const tailwindStyles = await getStyles(tailwind)
   const regularStyles = await getStyles(regular)
 
+  // at ≤800px, sm:bg-green → green
+  expect(tailwindStyles.backgroundColor).toBe('rgb(0, 128, 0)')
+  expect(tailwindStyles.backgroundColor).toBe(regularStyles.backgroundColor)
+})
+
+test('tailwind visual media - wide viewport shows base color', async ({ page }) => {
+  // at >800px, sm doesn't match → base red
+  await page.setViewportSize({ width: 1200, height: 600 })
+  await page.waitForTimeout(200)
+  const tailwind = page.locator('#tailwind-visual-media').first()
+  const regular = page.locator('#regular-visual-media').first()
+
+  const tailwindStyles = await getStyles(tailwind)
+  const regularStyles = await getStyles(regular)
+
+  expect(tailwindStyles.backgroundColor).toBe('rgb(255, 0, 0)')
   expect(tailwindStyles.backgroundColor).toBe(regularStyles.backgroundColor)
 })
 

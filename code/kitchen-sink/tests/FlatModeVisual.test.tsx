@@ -17,7 +17,12 @@ test(`base styles - flat vs regular should be identical`, async ({ page }) => {
   const regularStyles = await getStyles(regular)
   const flatStyles = await getStyles(flat)
 
-  // compare all relevant style properties
+  // oracle: known expected values from the component definition
+  expect(regularStyles.backgroundColor).toBe('rgb(255, 0, 0)')
+  expect(regularStyles.width).toBe('100px')
+  expect(regularStyles.height).toBe('100px')
+
+  // parity: flat matches regular
   expect(flatStyles.backgroundColor).toBe(regularStyles.backgroundColor)
   expect(flatStyles.width).toBe(regularStyles.width)
   expect(flatStyles.height).toBe(regularStyles.height)
@@ -33,6 +38,9 @@ test(`hover styles - flat vs regular base state should be identical`, async ({
 
   const regularStyles = await getStyles(regular)
   const flatStyles = await getStyles(flat)
+
+  // oracle: base state is green
+  expect(regularStyles.backgroundColor).toBe('rgb(0, 255, 0)')
 
   expect(flatStyles.backgroundColor).toBe(regularStyles.backgroundColor)
 })
@@ -51,6 +59,9 @@ test(`hover styles - flat vs regular hovered state should be identical`, async (
   await flat.hover()
   const flatStyles = await getStyles(flat)
 
+  // oracle: hovered state is blue
+  expect(regularStyles.backgroundColor).toBe('rgb(0, 0, 255)')
+
   expect(flatStyles.backgroundColor).toBe(regularStyles.backgroundColor)
 })
 
@@ -62,6 +73,9 @@ test(`press styles - flat vs regular base state should be identical`, async ({
 
   const regularStyles = await getStyles(regular)
   const flatStyles = await getStyles(flat)
+
+  // oracle: press base state is green
+  expect(regularStyles.backgroundColor).toBe('rgb(0, 255, 0)')
 
   expect(flatStyles.backgroundColor).toBe(regularStyles.backgroundColor)
 })
@@ -121,6 +135,11 @@ test(`styled components - flat vs regular should be identical`, async ({ page })
   const regularStyles = await getStyles(regular)
   const flatStyles = await getStyles(flat)
 
+  // oracle: styled button expected values
+  expect(regularStyles.backgroundColor).toBe('rgb(100, 100, 255)')
+  expect(regularStyles.width).toBe('120px')
+  expect(regularStyles.height).toBe('44px')
+
   expect(flatStyles.backgroundColor).toBe(regularStyles.backgroundColor)
   expect(flatStyles.width).toBe(regularStyles.width)
   expect(flatStyles.height).toBe(regularStyles.height)
@@ -134,7 +153,12 @@ test(`complex multi-prop - flat vs regular should be identical`, async ({ page }
   const regularStyles = await getStyles(regular)
   const flatStyles = await getStyles(flat)
 
-  // compare all props
+  // oracle: complex component expected values
+  expect(regularStyles.backgroundColor).toBe('rgb(200, 200, 200)')
+  expect(regularStyles.width).toBe('150px')
+  expect(regularStyles.height).toBe('150px')
+
+  // parity
   expect(flatStyles.backgroundColor).toBe(regularStyles.backgroundColor)
   expect(flatStyles.width).toBe(regularStyles.width)
   expect(flatStyles.height).toBe(regularStyles.height)
@@ -142,7 +166,6 @@ test(`complex multi-prop - flat vs regular should be identical`, async ({ page }
   expect(flatStyles.margin).toBe(regularStyles.margin)
   expect(flatStyles.borderRadius).toBe(regularStyles.borderRadius)
   expect(flatStyles.borderWidth).toBe(regularStyles.borderWidth)
-  // borderColor may expand to individual sides, check top as representative
   expect(flatStyles.borderTopColor).toBe(regularStyles.borderTopColor)
 })
 

@@ -46,19 +46,33 @@ test(`flat press - pressed state`, async ({ page }) => {
   await page.mouse.up()
 })
 
-// media query tests - verify flat mode produces same output as regular syntax
-// (skipping viewport-specific assertions due to complex v3/v4/v5 config mixing in kitchen-sink)
-test(`flat media syntax matches regular syntax`, async ({ page }) => {
+// media query tests with viewport resize
+test(`flat media - narrow viewport triggers $sm override`, async ({ page }) => {
+  // sm: { maxWidth: 800 } means $sm matches at ≤800px
+  await page.setViewportSize({ width: 400, height: 600 })
+  await page.waitForTimeout(200)
   const flatStyles = await getStyles(page.locator('#flat-media-sm').first())
   const regularStyles = await getStyles(page.locator('#control-media-sm').first())
-  // flat mode should produce identical output to regular $sm={{}} syntax
+  // at ≤800px, $sm matches → green
+  expect(flatStyles.backgroundColor).toBe('rgb(0, 255, 0)')
   expect(flatStyles.backgroundColor).toBe(regularStyles.backgroundColor)
 })
 
-test(`flat combined sm:hover - matches expected structure`, async ({ page }) => {
-  // verify element renders with expected base color (red as per FlatMode.tsx)
+test(`flat media - wide viewport shows base color`, async ({ page }) => {
+  // at >800px, $sm does NOT match → base red
+  await page.setViewportSize({ width: 1200, height: 600 })
+  await page.waitForTimeout(200)
+  const flatStyles = await getStyles(page.locator('#flat-media-sm').first())
+  const regularStyles = await getStyles(page.locator('#control-media-sm').first())
+  expect(flatStyles.backgroundColor).toBe('rgb(255, 0, 0)')
+  expect(flatStyles.backgroundColor).toBe(regularStyles.backgroundColor)
+})
+
+test(`flat combined sm:hover - base color at wide viewport`, async ({ page }) => {
+  await page.setViewportSize({ width: 1200, height: 600 })
+  await page.waitForTimeout(200)
   const styles = await getStyles(page.locator('#flat-sm-hover').first())
-  // base color should be red (rgb(255, 0, 0))
+  // base color should be red at wide viewport (sm doesn't match)
   expect(styles.backgroundColor).toBe('rgb(255, 0, 0)')
 })
 
