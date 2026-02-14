@@ -333,7 +333,11 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
                 let animationValue: string | null = null
                 if (typeof propAnimation === 'string') {
                   animationValue = animations[propAnimation]
-                } else if (propAnimation && typeof propAnimation === 'object' && propAnimation.type) {
+                } else if (
+                  propAnimation &&
+                  typeof propAnimation === 'object' &&
+                  propAnimation.type
+                ) {
                   animationValue = animations[propAnimation.type]
                 } else if (defaultAnimation) {
                   animationValue = defaultAnimation

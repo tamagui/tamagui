@@ -455,22 +455,24 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const justStoppedExiting = !isExiting && wasExitingRef.current
 
       // stable callback to mark a property as done (called from worklet via runOnJS)
-      const markExitKeyDone = useEvent((key: string, cycleId: number, finished: boolean) => {
-        // ignore callbacks from stale cycles
-        if (cycleId !== exitCycleIdRef.current) return
-        // ignore if already completed
-        if (exitCompletedRef.current) return
-        // count both finished and canceled animations as "done" during exit
-        // (element is leaving anyway, canceled animations shouldn't block completion)
+      const markExitKeyDone = useEvent(
+        (key: string, cycleId: number, finished: boolean) => {
+          // ignore callbacks from stale cycles
+          if (cycleId !== exitCycleIdRef.current) return
+          // ignore if already completed
+          if (exitCompletedRef.current) return
+          // count both finished and canceled animations as "done" during exit
+          // (element is leaving anyway, canceled animations shouldn't block completion)
 
-        pendingExitKeysRef.current.delete(key)
+          pendingExitKeysRef.current.delete(key)
 
-        // check if all exit animations are done
-        if (pendingExitKeysRef.current.size === 0) {
-          exitCompletedRef.current = true
-          sendExitComplete?.()
+          // check if all exit animations are done
+          if (pendingExitKeysRef.current.size === 0) {
+            exitCompletedRef.current = true
+            sendExitComplete?.()
+          }
         }
-      })
+      )
 
       // SharedValue to pass exit state into worklet
       const isExitingRef = useSharedValue(isExiting)
@@ -808,12 +810,20 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                 const capturedCycleId = currentCycleId
                 callback = (finished) => {
                   'worklet'
-                  runOnJS(markExitKeyDone)(capturedKey, capturedCycleId, finished ?? false)
+                  runOnJS(markExitKeyDone)(
+                    capturedKey,
+                    capturedCycleId,
+                    finished ?? false
+                  )
                 }
               }
 
               validTransforms.push({
-                [transformKey]: applyAnimation(targetValue as number, propConfig, callback),
+                [transformKey]: applyAnimation(
+                  targetValue as number,
+                  propConfig,
+                  callback
+                ),
               })
             }
           }

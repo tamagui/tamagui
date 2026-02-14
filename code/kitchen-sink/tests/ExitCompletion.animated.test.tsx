@@ -80,7 +80,9 @@ test.describe('Basic Exit Completion', () => {
 
     expect(count, 'Exit should complete exactly once').toBe(1)
     await expectStableCompletionCount(page, '01-basic-exit', 1, 400)
-    expect(await elementExists(page, 'exit-01-target'), 'Element should be gone').toBe(false)
+    expect(await elementExists(page, 'exit-01-target'), 'Element should be gone').toBe(
+      false
+    )
   })
 
   test('scenario 02: zero duration exit completes exactly once', async ({ page }) => {
@@ -91,7 +93,9 @@ test.describe('Basic Exit Completion', () => {
 
     expect(count, 'Zero duration exit should complete exactly once').toBe(1)
     await expectStableCompletionCount(page, '02-zero-duration', 1, 200)
-    expect(await elementExists(page, 'exit-02-target'), 'Element should be gone').toBe(false)
+    expect(await elementExists(page, 'exit-02-target'), 'Element should be gone').toBe(
+      false
+    )
   })
 
   test('scenario 03: very short duration (30ms) completes exactly once', async ({
@@ -103,12 +107,16 @@ test.describe('Basic Exit Completion', () => {
 
     expect(count, 'Short duration exit should complete exactly once').toBe(1)
     await expectStableCompletionCount(page, '03-short-duration', 1, 250)
-    expect(await elementExists(page, 'exit-03-target'), 'Element should be gone').toBe(false)
+    expect(await elementExists(page, 'exit-03-target'), 'Element should be gone').toBe(
+      false
+    )
   })
 })
 
 test.describe('Duplicate Completion Guards', () => {
-  test('scenario 04: rapid toggle does not cause duplicate completions', async ({ page }) => {
+  test('scenario 04: rapid toggle does not cause duplicate completions', async ({
+    page,
+  }) => {
     // this test catches finding #4/#5: duplicate completions on re-renders
     await page.getByTestId('exit-04-trigger').click()
 
@@ -120,7 +128,9 @@ test.describe('Duplicate Completion Guards', () => {
 
     // first exit is interrupted; only final exit should complete
     expect(count, 'Rapid toggle should complete exactly once for the final exit').toBe(1)
-    expect(await elementExists(page, 'exit-04-target'), 'Element should be gone').toBe(false)
+    expect(await elementExists(page, 'exit-04-target'), 'Element should be gone').toBe(
+      false
+    )
   })
 
   test('scenario 05: re-renders during exit do not cause duplicate completions', async ({
@@ -136,10 +146,14 @@ test.describe('Duplicate Completion Guards', () => {
     const count = data.counts['05-rerender-during-exit'] || 0
 
     expect(count, 'Re-renders during exit should not cause duplicate completions').toBe(1)
-    expect(await elementExists(page, 'exit-05-target'), 'Element should be gone').toBe(false)
+    expect(await elementExists(page, 'exit-05-target'), 'Element should be gone').toBe(
+      false
+    )
   })
 
-  test('scenario 06: multiple children exiting fires completion once', async ({ page }) => {
+  test('scenario 06: multiple children exiting fires completion once', async ({
+    page,
+  }) => {
     await page.getByTestId('exit-06-trigger').click()
 
     // wait for all 3 children to exit
@@ -150,9 +164,15 @@ test.describe('Duplicate Completion Guards', () => {
 
     // AnimatePresence should fire onExitComplete once after ALL children exit
     expect(count, 'Multiple children should trigger one completion').toBe(1)
-    expect(await elementExists(page, 'exit-06-target-1'), 'Child 1 should be gone').toBe(false)
-    expect(await elementExists(page, 'exit-06-target-2'), 'Child 2 should be gone').toBe(false)
-    expect(await elementExists(page, 'exit-06-target-3'), 'Child 3 should be gone').toBe(false)
+    expect(await elementExists(page, 'exit-06-target-1'), 'Child 1 should be gone').toBe(
+      false
+    )
+    expect(await elementExists(page, 'exit-06-target-2'), 'Child 2 should be gone').toBe(
+      false
+    )
+    expect(await elementExists(page, 'exit-06-target-3'), 'Child 3 should be gone').toBe(
+      false
+    )
   })
 })
 
@@ -171,7 +191,10 @@ test.describe('Timing Validation', () => {
 
     // completion should happen after ~500ms, not immediately
     // allow some tolerance for CI variance
-    expect(completionTime, 'Exit should complete after animation (>350ms)').toBeGreaterThan(350)
+    expect(
+      completionTime,
+      'Exit should complete after animation (>350ms)'
+    ).toBeGreaterThan(350)
     expect(data.counts['07-long-animation'], 'Should complete exactly once').toBe(1)
   })
 
@@ -219,10 +242,9 @@ test.describe('Timing Validation', () => {
 })
 
 test.describe('Per-Property Exit', () => {
-  test('scenario 10: per-property exit waits for longest animation', async (
-    { page },
-    testInfo
-  ) => {
+  test('scenario 10: per-property exit waits for longest animation', async ({
+    page,
+  }, testInfo) => {
     // motion driver can't differentiate transform sub-keys (scale becomes transform)
     // so per-property timing for scale vs opacity doesn't work
     const driver = (testInfo.project?.metadata as any)?.animationDriver
@@ -250,10 +272,9 @@ test.describe('Per-Property Exit', () => {
     await expectStableCompletionCount(page, '10-per-property', 1, 350)
   })
 
-  test('scenario 11: mixed duration exit completes after slowest property', async (
-    { page },
-    testInfo
-  ) => {
+  test('scenario 11: mixed duration exit completes after slowest property', async ({
+    page,
+  }, testInfo) => {
     // motion driver can't differentiate transform sub-keys
     const driver = (testInfo.project?.metadata as any)?.animationDriver
     if (driver === 'motion') {
@@ -308,7 +329,9 @@ test.describe('Element removal timing', () => {
 })
 
 test.describe('AnimateOnly & Transform Sub-Keys', () => {
-  test('scenario 51: animateOnly excludes scale from pending set', async ({ page }, testInfo) => {
+  test('scenario 51: animateOnly excludes scale from pending set', async ({
+    page,
+  }, testInfo) => {
     // this test uses CSS-style duration strings which only CSS driver supports
     const driver = (testInfo.project?.metadata as any)?.animationDriver
     if (driver !== 'css') {
@@ -331,9 +354,13 @@ test.describe('AnimateOnly & Transform Sub-Keys', () => {
       completionTime,
       'AnimateOnly should exclude scale - complete around opacity time (not 400+ms)'
     ).toBeLessThan(400)
-    expect(data.counts['51-animateonly-exclusion'], 'Should complete exactly once').toBe(1)
+    expect(data.counts['51-animateonly-exclusion'], 'Should complete exactly once').toBe(
+      1
+    )
     await expectStableCompletionCount(page, '51-animateonly-exclusion', 1, 350)
-    expect(await elementExists(page, 'exit-51-target'), 'Element should be gone').toBe(false)
+    expect(await elementExists(page, 'exit-51-target'), 'Element should be gone').toBe(
+      false
+    )
   })
 
   test('scenario 53: transform sub-keys with different durations wait for longest', async ({
@@ -361,7 +388,9 @@ test.describe('AnimateOnly & Transform Sub-Keys', () => {
     ).toBeGreaterThan(350)
     expect(data.counts['53-transform-subkeys'], 'Should complete exactly once').toBe(1)
     await expectStableCompletionCount(page, '53-transform-subkeys', 1, 350)
-    expect(await elementExists(page, 'exit-53-target'), 'Element should be gone').toBe(false)
+    expect(await elementExists(page, 'exit-53-target'), 'Element should be gone').toBe(
+      false
+    )
   })
 
   test('scenario 55: zero animatable props completes immediately', async ({ page }) => {
@@ -382,6 +411,8 @@ test.describe('AnimateOnly & Transform Sub-Keys', () => {
     ).toBeLessThan(100)
     expect(data.counts['55-zero-animatable'], 'Should complete exactly once').toBe(1)
     await expectStableCompletionCount(page, '55-zero-animatable', 1, 200)
-    expect(await elementExists(page, 'exit-55-target'), 'Element should be gone').toBe(false)
+    expect(await elementExists(page, 'exit-55-target'), 'Element should be gone').toBe(
+      false
+    )
   })
 })

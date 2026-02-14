@@ -53,7 +53,8 @@ function useExitTracker(scenarioId: string) {
     const elapsed = Date.now() - startTimeRef.current
     if (typeof window !== 'undefined') {
       window.__exitCompletionCounts[scenarioId] = countRef.current
-      window.__exitCompletionTimes[scenarioId] = window.__exitCompletionTimes[scenarioId] || []
+      window.__exitCompletionTimes[scenarioId] =
+        window.__exitCompletionTimes[scenarioId] || []
       window.__exitCompletionTimes[scenarioId].push(elapsed)
     }
     console.log(
@@ -573,9 +574,7 @@ function Scenario11_MixedDurationExit() {
         {visible && (
           <Square
             key="mixed"
-            transition={
-              { opacity: '100ms', scale: '400ms', default: '400ms' } as any
-            }
+            transition={{ opacity: '100ms', scale: '400ms', default: '400ms' } as any}
             size={40}
             bg="$yellow10"
             exitStyle={{ opacity: 0, scale: 0.5, y: 20 }}
