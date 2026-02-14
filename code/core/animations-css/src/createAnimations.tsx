@@ -60,6 +60,100 @@ function applyDurationOverride(animation: string, durationMs: number): string {
   return `${durationMs}ms ${animation}`
 }
 
+// transform keys that need special handling
+const TRANSFORM_KEYS = [
+  'x',
+  'y',
+  'scale',
+  'scaleX',
+  'scaleY',
+  'rotate',
+  'rotateX',
+  'rotateY',
+  'rotateZ',
+  'skewX',
+  'skewY',
+] as const
+
+/**
+ * Build a CSS transform string from a style object containing transform properties
+ */
+function buildTransformString(style: Record<string, unknown> | undefined): string {
+  if (!style) return ''
+
+  const parts: string[] = []
+
+  if (style.x !== undefined || style.y !== undefined) {
+    const x = style.x ?? 0
+    const y = style.y ?? 0
+    parts.push(`translate(${x}px, ${y}px)`)
+  }
+  if (style.scale !== undefined) {
+    parts.push(`scale(${style.scale})`)
+  }
+  if (style.scaleX !== undefined) {
+    parts.push(`scaleX(${style.scaleX})`)
+  }
+  if (style.scaleY !== undefined) {
+    parts.push(`scaleY(${style.scaleY})`)
+  }
+  if (style.rotate !== undefined) {
+    const val = style.rotate
+    const unit = typeof val === 'string' && val.includes('deg') ? '' : 'deg'
+    parts.push(`rotate(${val}${unit})`)
+  }
+  if (style.rotateX !== undefined) {
+    parts.push(`rotateX(${style.rotateX}deg)`)
+  }
+  if (style.rotateY !== undefined) {
+    parts.push(`rotateY(${style.rotateY}deg)`)
+  }
+  if (style.rotateZ !== undefined) {
+    parts.push(`rotateZ(${style.rotateZ}deg)`)
+  }
+  if (style.skewX !== undefined) {
+    parts.push(`skewX(${style.skewX}deg)`)
+  }
+  if (style.skewY !== undefined) {
+    parts.push(`skewY(${style.skewY}deg)`)
+  }
+
+  return parts.join(' ')
+}
+
+/**
+ * Apply a style object to a DOM node, handling transform keys specially
+ */
+function applyStylesToNode(
+  node: HTMLElement,
+  style: Record<string, unknown> | undefined
+): void {
+  if (!style) return
+
+  // collect transform values
+  const transformStr = buildTransformString(style)
+  if (transformStr) {
+    node.style.transform = transformStr
+  }
+
+  // apply non-transform properties
+  for (const [key, value] of Object.entries(style)) {
+    if (TRANSFORM_KEYS.includes(key as any)) continue
+    if (value === undefined) continue
+
+    if (key === 'opacity') {
+      node.style.opacity = String(value)
+    } else if (key === 'backgroundColor') {
+      node.style.backgroundColor = String(value)
+    } else if (key === 'color') {
+      node.style.color = String(value)
+    } else {
+      // generic fallback
+      node.style[key as any] = typeof value === 'number' ? `${value}px` : String(value)
+    }
+  }
+}
+
 export function createAnimations<A extends object>(animations: A): AnimationDriver<A> {
   const reactionListeners = new WeakMap<any, Set<Function>>()
 
@@ -236,12 +330,37 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         const wasInterrupted = exitInterruptedRef.current
         // flag to ignore transitioncancel during reset (we intentionally cancel the old transition)
         let ignoreCancelEvents = wasInterrupted
+        // get enter/exit styles for potential restart
+        const enterStyle = props.enterStyle as Record<string, unknown> | undefined
+        const exitStyle = props.exitStyle as Record<string, unknown> | undefined
+
         if (wasInterrupted) {
           exitInterruptedRef.current = false
           // disable transition, reset to enter state
           node.style.transition = 'none'
-          node.style.opacity = '1'
-          node.style.transform = 'none'
+
+          // reset: apply enter styles (or defaults) for each exit property
+          if (exitStyle) {
+            // build enter state: for each exit key, use enter value or sensible default
+            const resetStyle: Record<string, unknown> = {}
+            for (const key of Object.keys(exitStyle)) {
+              if (enterStyle?.[key] !== undefined) {
+                resetStyle[key] = enterStyle[key]
+              } else if (key === 'opacity') {
+                resetStyle[key] = 1
+              } else if (TRANSFORM_KEYS.includes(key as any)) {
+                // transform defaults: scale=1, others=0
+                resetStyle[key] =
+                  key === 'scale' || key === 'scaleX' || key === 'scaleY' ? 1 : 0
+              }
+            }
+            applyStylesToNode(node, resetStyle)
+          } else {
+            // fallback if no exitStyle defined
+            node.style.opacity = '1'
+            node.style.transform = 'none'
+          }
+
           // force reflow
           void node.offsetHeight
         }
@@ -324,9 +443,9 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         if (wasInterrupted) {
           rafId = requestAnimationFrame(() => {
             if (cycleId !== exitCycleIdRef.current) return
-            // re-enable transition (React's style.transition was cleared by our reset)
-            // we need to rebuild it here
+            // re-enable transition using same logic as normal path
             const delayStr = normalized.delay ? ` ${normalized.delay}ms` : ''
+            const durationOverride = normalized.config?.duration
             node.style.transition = keys
               .map((key) => {
                 const propAnimation = normalized.properties[key]
@@ -342,6 +461,10 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
                 } else if (defaultAnimation) {
                   animationValue = defaultAnimation
                 }
+                // apply duration override if specified (matches normal path)
+                if (animationValue && durationOverride) {
+                  animationValue = applyDurationOverride(animationValue, durationOverride)
+                }
                 return animationValue ? `${key} ${animationValue}${delayStr}` : null
               })
               .filter(Boolean)
@@ -349,16 +472,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
             // force reflow again
             void node.offsetHeight
             // now apply exit styles - this triggers the transition
-            node.style.opacity = '0'
-            // apply transform from exitStyle prop if available
-            const exitStyle = props.exitStyle as Record<string, unknown> | undefined
-            if (exitStyle?.scale !== undefined) {
-              node.style.transform = `scale(${exitStyle.scale})`
-            } else if (exitStyle?.x !== undefined || exitStyle?.y !== undefined) {
-              const x = exitStyle?.x ?? 0
-              const y = exitStyle?.y ?? 0
-              node.style.transform = `translate(${x}px, ${y}px)`
-            }
+            applyStylesToNode(node, exitStyle)
             // re-enable cancel event handling now that reset is complete
             ignoreCancelEvents = false
           })
@@ -370,7 +484,16 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           node.removeEventListener('transitionend', onFinishAnimation)
           node.removeEventListener('transitioncancel', onCancelAnimation)
         }
-      }, [sendExitComplete, isExiting])
+      }, [
+        sendExitComplete,
+        isExiting,
+        stateRef,
+        keys,
+        normalized,
+        defaultAnimation,
+        props.enterStyle,
+        props.exitStyle,
+      ])
 
       // Check if we have any animation to apply
       if (!hasNormalizedAnimation(normalized)) {
