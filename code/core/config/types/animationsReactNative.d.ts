@@ -3,6 +3,14 @@ export declare const animationsReactNative: import("@tamagui/web").AnimationDriv
         type: "timing";
         duration: number;
     };
+    '30ms': {
+        type: "timing";
+        duration: number;
+    };
+    '50ms': {
+        type: "timing";
+        duration: number;
+    };
     '75ms': {
         type: "timing";
         duration: number;
@@ -16,6 +24,18 @@ export declare const animationsReactNative: import("@tamagui/web").AnimationDriv
         duration: number;
     };
     '250ms': {
+        type: "timing";
+        duration: number;
+    };
+    '300ms': {
+        type: "timing";
+        duration: number;
+    };
+    '400ms': {
+        type: "timing";
+        duration: number;
+    };
+    '500ms': {
         type: "timing";
         duration: number;
     };
