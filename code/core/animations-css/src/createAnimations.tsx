@@ -136,6 +136,32 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         wasEnteringRef.current = isEntering
       })
 
+      // exit cycle guards to prevent stale/duplicate completion
+      const exitCycleIdRef = React.useRef(0)
+      const exitCompletedRef = React.useRef(false)
+      const wasExitingRef = React.useRef(false)
+      const exitInterruptedRef = React.useRef(false)
+
+      // detect transition into/out of exiting state
+      const justStartedExiting = isExiting && !wasExitingRef.current
+      const justStoppedExiting = !isExiting && wasExitingRef.current
+
+      // start new exit cycle only on transition INTO exiting
+      if (justStartedExiting) {
+        exitCycleIdRef.current++
+        exitCompletedRef.current = false
+      }
+      // track interruptions so we know to force-restart transitions
+      if (justStoppedExiting) {
+        exitCycleIdRef.current++
+        exitInterruptedRef.current = true
+      }
+
+      // track previous exiting state
+      React.useEffect(() => {
+        wasExitingRef.current = isExiting
+      })
+
       // Normalize the transition prop to a consistent format
       const normalized = normalizeTransition(props.transition)
 
@@ -183,6 +209,43 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         if (!sendExitComplete || !isExiting || !host) return
         const node = host as HTMLElement
 
+        // capture current cycle id for this effect
+        const cycleId = exitCycleIdRef.current
+
+        // helper to complete exit with guards
+        const completeExit = () => {
+          if (cycleId !== exitCycleIdRef.current) return
+          if (exitCompletedRef.current) return
+          exitCompletedRef.current = true
+          sendExitComplete()
+        }
+
+        // if no properties to animate (animateOnly=[]), complete immediately
+        if (keys.length === 0) {
+          completeExit()
+          return
+        }
+
+        // Force transition restart for interrupted exits
+        // When an exit is interrupted and restarted, the element may already be at
+        // the exit style, so no CSS transition fires. We need to:
+        // 1. Reset to non-exit state
+        // 2. Force reflow
+        // 3. Re-apply exit state to trigger transition
+        let rafId: number | undefined
+        const wasInterrupted = exitInterruptedRef.current
+        // flag to ignore transitioncancel during reset (we intentionally cancel the old transition)
+        let ignoreCancelEvents = wasInterrupted
+        if (wasInterrupted) {
+          exitInterruptedRef.current = false
+          // disable transition, reset to enter state
+          node.style.transition = 'none'
+          node.style.opacity = '1'
+          node.style.transform = 'none'
+          // force reflow
+          void node.offsetHeight
+        }
+
         /**
          * Exit animation handling for Dialog/Modal components
          *
@@ -219,7 +282,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         const fallbackTimeout = maxDuration + delay
 
         const timeoutId = setTimeout(() => {
-          sendExitComplete?.()
+          completeExit()
         }, fallbackTimeout)
 
         // track number of transitioning properties to wait for all to finish
@@ -239,21 +302,67 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
             // wait for all properties to finish
             if (completedCount >= transitioningProps.size) {
               clearTimeout(timeoutId)
-              sendExitComplete?.()
+              completeExit()
             }
           }
         }
 
+        // on cancel, still complete (element is exiting and animation was interrupted)
+        // the guards prevent duplicate completion if this is a stale cycle
         const onCancelAnimation = () => {
+          // ignore cancel events during reset phase (we intentionally cancel the old transition)
+          if (ignoreCancelEvents) return
           clearTimeout(timeoutId)
-          sendExitComplete?.()
+          completeExit()
         }
 
         node.addEventListener('transitionend', onFinishAnimation)
         node.addEventListener('transitioncancel', onCancelAnimation)
 
+        // For interrupted exits, re-enable transition and re-apply exit styles
+        // This must happen AFTER listeners are set up so we catch the transitionend
+        if (wasInterrupted) {
+          rafId = requestAnimationFrame(() => {
+            if (cycleId !== exitCycleIdRef.current) return
+            // re-enable transition (React's style.transition was cleared by our reset)
+            // we need to rebuild it here
+            const delayStr = normalized.delay ? ` ${normalized.delay}ms` : ''
+            node.style.transition = keys
+              .map((key) => {
+                const propAnimation = normalized.properties[key]
+                let animationValue: string | null = null
+                if (typeof propAnimation === 'string') {
+                  animationValue = animations[propAnimation]
+                } else if (propAnimation && typeof propAnimation === 'object' && propAnimation.type) {
+                  animationValue = animations[propAnimation.type]
+                } else if (defaultAnimation) {
+                  animationValue = defaultAnimation
+                }
+                return animationValue ? `${key} ${animationValue}${delayStr}` : null
+              })
+              .filter(Boolean)
+              .join(', ')
+            // force reflow again
+            void node.offsetHeight
+            // now apply exit styles - this triggers the transition
+            node.style.opacity = '0'
+            // apply transform from exitStyle prop if available
+            const exitStyle = props.exitStyle as Record<string, unknown> | undefined
+            if (exitStyle?.scale !== undefined) {
+              node.style.transform = `scale(${exitStyle.scale})`
+            } else if (exitStyle?.x !== undefined || exitStyle?.y !== undefined) {
+              const x = exitStyle?.x ?? 0
+              const y = exitStyle?.y ?? 0
+              node.style.transform = `translate(${x}px, ${y}px)`
+            }
+            // re-enable cancel event handling now that reset is complete
+            ignoreCancelEvents = false
+          })
+        }
+
         return () => {
           clearTimeout(timeoutId)
+          if (rafId !== undefined) cancelAnimationFrame(rafId)
           node.removeEventListener('transitionend', onFinishAnimation)
           node.removeEventListener('transitioncancel', onCancelAnimation)
         }
