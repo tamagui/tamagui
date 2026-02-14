@@ -359,7 +359,7 @@ test.describe('Sheet Animation - Motion Driver', () => {
 
     // transitionConfig should override animation prop
     // allow generous margin for measurement noise in CI environments
-    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 2.0)
+    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.5)
   })
 })
 
@@ -474,6 +474,6 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
 
     // transitionConfig should override animation prop
     // allow generous margin for measurement noise in CI environments
-    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 2.0)
+    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.5)
   })
 })

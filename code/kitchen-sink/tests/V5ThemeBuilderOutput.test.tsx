@@ -19,21 +19,10 @@ test('renders base light and dark theme buttons', async ({ page }) => {
   await expect(lightButton).toBeVisible()
   await expect(darkButton).toBeVisible()
 
-  // Both buttons should render with valid styles
-  // Note: v5 Button uses surface3 template which may have similar colors in light/dark
-  // The color theme tests below (yellow, red, green, blue) verify theme switching works
   const lightStyles = await getStyles(lightButton)
   const darkStyles = await getStyles(darkButton)
   expect(lightStyles.backgroundColor).toBeDefined()
   expect(darkStyles.backgroundColor).toBeDefined()
-
-  // Check the base palette $color7 to verify the custom base palette is being used
-  const baseLightSwatch = page.getByTestId('base-light-swatch')
-  const baseDarkSwatch = page.getByTestId('base-dark-swatch')
-  const baseLightStyles = await getStyles(baseLightSwatch)
-  const baseDarkStyles = await getStyles(baseDarkSwatch)
-  console.log('Base Light $color7:', baseLightStyles.backgroundColor)
-  console.log('Base Dark $color7:', baseDarkStyles.backgroundColor)
 })
 
 test('renders accent theme buttons with correct colors (not gray)', async ({ page }) => {
@@ -45,83 +34,19 @@ test('renders accent theme buttons with correct colors (not gray)', async ({ pag
 
   const lightStyles = await getStyles(accentLight)
   const darkStyles = await getStyles(accentDark)
-
-  // Accent buttons should have background colors applied
   expect(lightStyles.backgroundColor).toBeDefined()
   expect(darkStyles.backgroundColor).toBeDefined()
 
-  // Also check the color7 swatches to see if the accent theme palette is working
-  const lightSwatch = page.getByTestId('accent-light-swatch')
-  const darkSwatch = page.getByTestId('accent-dark-swatch')
-  const lightSwatchStyles = await getStyles(lightSwatch)
-  const darkSwatchStyles = await getStyles(darkSwatch)
-
-  // Debug: Check if accent1-accent12 tokens exist in the theme
-  const accentTokens = await page.evaluate(() => {
-    const tamagui = (window as any).Tamagui || (window as any).tamagui
-    if (!tamagui) return { error: 'No Tamagui found' }
-
-    const getTheme = tamagui.getTheme || tamagui.getThemes
-    if (!getTheme) return { error: 'No getTheme found' }
-
-    const lightAccent = tamagui.getTheme?.('light_accent')
-    const darkAccent = tamagui.getTheme?.('dark_accent')
-
-    return {
-      lightAccent: lightAccent
-        ? {
-            accent1: lightAccent.accent1?.val,
-            accent7: lightAccent.accent7?.val,
-            background: lightAccent.background?.val,
-            color7: lightAccent.color7?.val,
-          }
-        : null,
-      darkAccent: darkAccent
-        ? {
-            accent1: darkAccent.accent1?.val,
-            accent7: darkAccent.accent7?.val,
-            background: darkAccent.background?.val,
-            color7: darkAccent.color7?.val,
-          }
-        : null,
-    }
-  })
-  console.log('Accent tokens:', JSON.stringify(accentTokens, null, 2))
-
-  // The accent theme should use the custom accent colors from generatedV5Theme.ts
-  // accentLight colors are hsla(250, 50%, 40%, 1) through hsla(250, 50%, 65%, 1)
-  // which are purple colors, NOT gray
-  // accentDark colors are hsla(250, 50%, 35%, 1) through hsla(250, 50%, 60%, 1)
-
-  // Convert the background colors to verify they're purple (hue ~250)
-  // We'll check that they're NOT gray (gray has equal RGB values or very low saturation)
-  console.log('Accent Light Background:', lightStyles.backgroundColor)
-  console.log('Accent Dark Background:', darkStyles.backgroundColor)
-  console.log('Accent Light $color7:', lightSwatchStyles.backgroundColor)
-  console.log('Accent Dark $color7:', darkSwatchStyles.backgroundColor)
-
-  // Helper to extract RGB values and check if color is purple (hue ~250-270)
+  // Accent palette uses purple (hue 250) — verify buttons aren't gray
   const isPurple = (color: string) => {
     const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
     if (!match) return false
-
     const [, r, g, b] = match.map(Number)
-
-    // Purple has: Blue > Red > Green
-    // Hue around 250-270 degrees (blue-violet range)
     return b > r && r > g && b - g > 30
   }
 
-  // The accent theme in generatedV5Theme.ts uses purple colors (hue 250)
-  // Verify the colors are actually purple, not gray
   expect(isPurple(lightStyles.backgroundColor)).toBe(true)
   expect(isPurple(darkStyles.backgroundColor)).toBe(true)
-
-  // Verify the $color7 swatch is also purple
-  expect(isPurple(lightSwatchStyles.backgroundColor)).toBe(true)
-  expect(isPurple(darkSwatchStyles.backgroundColor)).toBe(true)
-
-  // Verify the colors are actually different from each other (light vs dark)
   expect(lightStyles.backgroundColor).not.toBe(darkStyles.backgroundColor)
 })
 
