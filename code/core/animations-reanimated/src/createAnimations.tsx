@@ -390,6 +390,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
   }
 
   return {
+    needsCustomComponent: true,
     View: isWeb ? AnimatedView : Animated.View,
     Text: isWeb ? AnimatedText : Animated.Text,
     isReactNative: true,

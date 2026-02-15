@@ -172,6 +172,7 @@ export function createAnimations<A extends AnimationsConfig>(
     inputStyle: 'value',
     outputStyle: 'inline',
     animations,
+    needsCustomComponent: true,
     View: AnimatedView,
     Text: AnimatedText,
     useAnimatedNumber,

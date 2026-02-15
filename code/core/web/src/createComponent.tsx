@@ -483,29 +483,26 @@ export function createComponent<
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
     // web-only - string-style not valid for native
+    const renderProp = props.render
     const isRenderString = !Component || typeof Component === 'string'
 
     // default to render prop, fallback to component (when both strings)
     const element = isWeb
       ? isRenderString
-        ? props.render || Component
+        ? renderProp || Component
         : Component
       : Component
 
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
+    const BaseComponent = isText ? BaseTextComponent : BaseViewComponent
 
-    let elementType = isText ? BaseTextComponent : BaseViewComponent
+    let elementType = BaseComponent
 
-    if (
-      animationDriver &&
-      isAnimated &&
-      // this should really be behind another prop as it's not really related to
-      // "needsWebStyles" basically with motion we just animate a plain div, but
-      // we still have animated.View/Text for Sheet which wants to control
-      // things declaratively
-      !animationDriver.needsWebStyles
-    ) {
+    const isAnimatedCustomComponent =
+      animationDriver && isAnimated && animationDriver.needsCustomComponent
+
+    if (isAnimatedCustomComponent) {
       elementType = animationDriver[isText ? 'Text' : 'View'] || elementType
     }
 
@@ -934,10 +931,6 @@ export function createComponent<
       if (typeof passThrough !== 'undefined') {
         viewProps.passThrough = passThrough
       }
-    }
-
-    if (typeof props.render === 'string' && elementType['acceptRenderProp']) {
-      viewProps.render = props.render
     }
 
     // once you set animation prop don't remove it, you can set to undefined/false
@@ -1377,8 +1370,6 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    let content: ReactNode | undefined
-
     if (asChild) {
       elementType = Slot
       // on native this is already merged into viewProps in useEvents
@@ -1405,40 +1396,53 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`spaced-as-child`
 
+    let content: ReactNode | undefined
+
     if (isPassthrough) {
-      content = propsIn.children
-      elementType = BaseViewComponent
-      viewProps = {
-        style: {
-          display: 'contents',
+      // avoid re-parenting but avoid layout changes
+      content = React.createElement(
+        BaseComponent,
+        {
+          style: {
+            display: 'contents',
+          },
         },
-      }
-    }
-
-    let useChildrenResult: ReactNode | undefined
-    if (hooks.useChildren) {
-      useChildrenResult = hooks.useChildren(elementType, content || children, viewProps)
-      if (useChildrenResult) {
-        content = useChildrenResult
-      }
-    }
-
-    if (process.env.NODE_ENV === 'development' && time) time`use-children`
-
-    const customRenderElement = getCustomRenderElement(
-      props.render,
-      content || children,
-      viewProps,
-      componentState
-    )
-
-    if (customRenderElement) {
-      content = customRenderElement
+        propsIn.children
+      )
     } else {
-      // for native-only useChildrenResult is already our properly created ReactNode
-      if (!useChildrenResult) {
+      // here elementType is either the custom animated driver view, or base view
+      if (hooks.useChildren) {
+        // ONLY native:
+        content = hooks.useChildren(elementType, content || children, viewProps)
+      }
+
+      const isRenderPropString = typeof renderProp === 'string'
+
+      // this ONLY handles the case where render is NOT a string
+      // either direct JSX, or a function that returns JSX, we always clone
+      if (renderProp && !isRenderPropString) {
+        const out = getCustomRender(
+          renderProp,
+          content || children,
+          viewProps,
+          componentState
+        )
+        if (out) {
+          viewProps = out.viewProps
+          elementType = out.elementType
+        }
+      }
+
+      if (!content) {
+        // web-only, handle render === string passing to custom animated component
+        if (isRenderPropString) {
+          viewProps.render === renderProp
+        }
+
         content = React.createElement(elementType, viewProps, content || children)
       }
+
+      if (process.env.NODE_ENV === 'development' && time) time`use-children`
     }
 
     // wrap with GestureDetector for RNGH press handling (native only, no-op on web)
@@ -1706,32 +1710,39 @@ const fromPx = (val?: any): number => {
 }
 
 // handles all render logic - returns a new component
-const getCustomRenderElement = (
+const getCustomRender = (
   renderProp: ViewProps['render'],
   content: ReactNode,
   viewProps: Record<string, unknown>,
   state: any
-): ReactNode | undefined => {
+):
+  | undefined
+  | {
+      viewProps: Record<string, any>
+      elementType: any
+    } => {
   // Handle render prop variants: function, JSX element, or string
   if (typeof renderProp === 'function') {
     // Render function: full control with props and state
     const out = renderProp(viewProps, state)
-    const transformed = getRenderElementForPlatform(out)
-    if (!transformed) {
-      return
-    }
-    renderProp = transformed
+    renderProp = getRenderElementForPlatform(out)
   }
 
-  if (renderProp && typeof renderProp === 'object' && React.isValidElement(renderProp)) {
-    // JSX element: clone with merged props
-    const renderElement = getRenderElementForPlatform(renderProp)
-    if (renderElement) {
-      const elementProps = renderProp.props as Record<string, any> | undefined
-      const mergedProps = elementProps
-        ? mergeRenderElementProps(elementProps, viewProps, content)
-        : viewProps
-      return React.cloneElement(renderProp, mergedProps)
+  if (renderProp) {
+    if (typeof renderProp === 'object' && React.isValidElement(renderProp)) {
+      // JSX element: clone with merged props
+      const renderElement = getRenderElementForPlatform(renderProp)
+      if (renderElement) {
+        const elementProps = renderProp.props as Record<string, any> | undefined
+        const mergedProps = elementProps
+          ? mergeRenderElementProps(elementProps, viewProps, content)
+          : viewProps
+
+        return {
+          elementType: renderProp.type,
+          viewProps: mergedProps,
+        }
+      }
     }
   }
 }

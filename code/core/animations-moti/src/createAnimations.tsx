@@ -145,6 +145,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
   animations: A
 ): AnimationDriver<A> {
   return {
+    needsCustomComponent: true,
     View: isWeb ? AnimatedView : Animated.View,
     Text: isWeb ? AnimatedText : Animated.Text,
     // View: Animated.View,

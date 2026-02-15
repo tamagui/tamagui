@@ -82,7 +82,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     supportsCSS: true,
     inputStyle: 'css',
     outputStyle: 'inline',
-    needsWebStyles: true,
     avoidReRenders: true,
     animations,
     usePresence,

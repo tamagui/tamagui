@@ -1810,7 +1810,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     inputStyle?: 'css' | 'value';
     /** How the driver outputs styles: 'css' (className-based) or 'inline' (style object) */
     outputStyle?: 'css' | 'inline';
-    needsWebStyles?: boolean;
+    needsCustomComponent?: boolean;
     avoidReRenders?: boolean;
     onMount?: () => void;
     /** When true, this is a stub driver with no real animation support */
