@@ -13,7 +13,6 @@ export * from '@tamagui/collapsible';
 export * from '@tamagui/compose-refs';
 export * from '@tamagui/create-context';
 export * from '@tamagui/dialog';
-export * from '@tamagui/dismissable';
 export * from '@tamagui/font-size';
 export * from '@tamagui/form';
 export * from '@tamagui/group';
