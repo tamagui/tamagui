@@ -1417,11 +1417,6 @@ type AddWebOnlyStyleProps<A> = {
       : SubKey extends keyof WebOnlyValidStyleValues
         ? WebOnlyValidStyleValues[SubKey]
         : never
-} & CSSCustomProperties
-
-// css custom properties (--var-name) for web
-type CSSCustomProperties = {
-  [key: `--${string}`]: string | number | undefined
 }
 
 export type WebOnlyValidStyleValues = {
