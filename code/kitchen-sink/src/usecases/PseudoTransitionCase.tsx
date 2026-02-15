@@ -105,7 +105,7 @@ export function PseudoTransitionCase() {
         </Text>
         <XStack
           data-testid="scenario-4-container"
-          group="scenario4"
+          group="testy"
           padding="$4"
           backgroundColor="#eee"
           borderRadius="$4"
@@ -117,7 +117,7 @@ export function PseudoTransitionCase() {
             backgroundColor="#06b6d4"
             opacity={0.3}
             transition="1000ms"
-            $group-scenario4-hover={{
+            $group-testy-hover={{
               transition: '200ms',
               opacity: 1,
             }}
@@ -140,7 +140,7 @@ export function PseudoTransitionCase() {
           transition="1000ms"
           focusStyle={{
             transition: '200ms',
-            backgroundColor: '$indigo10',
+            backgroundColor: '$blue10',
             outlineWidth: 2,
             outlineColor: '$blue10',
             outlineStyle: 'solid',

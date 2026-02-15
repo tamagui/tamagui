@@ -217,7 +217,15 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       return getStyle(val.getValue())
     },
 
-    useAnimations: ({ props, presence, style, componentState, stateRef, styleState }) => {
+    // @ts-ignore - styleState is added by createComponent
+    useAnimations: ({
+      props,
+      presence,
+      style,
+      componentState,
+      stateRef,
+      styleState,
+    }: any) => {
       const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]

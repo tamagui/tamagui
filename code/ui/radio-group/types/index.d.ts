@@ -5,11 +5,11 @@ export declare const RadioGroup: import("react").ForwardRefExoticComponent<Omit<
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
-}>, "native" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "orientation" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+}>, "native" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "value" | "orientation" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | "value" | "defaultValue" | "onValueChange" | "required" | "accentColor"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | "defaultValue" | "onValueChange" | "required" | "accentColor"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
@@ -34,11 +34,11 @@ export declare const RadioGroup: import("react").ForwardRefExoticComponent<Omit<
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
-}>, "native" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "orientation" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+}>, "native" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "value" | "orientation" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
-} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | "value" | "defaultValue" | "onValueChange" | "required" | "accentColor"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+} & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | "defaultValue" | "onValueChange" | "required" | "accentColor"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
@@ -89,11 +89,11 @@ export declare const RadioGroup: import("react").ForwardRefExoticComponent<Omit<
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
-    }>, "native" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "orientation" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    }>, "native" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "value" | "orientation" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
-    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | "value" | "defaultValue" | "onValueChange" | "required" | "accentColor"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | "defaultValue" | "onValueChange" | "required" | "accentColor"> & Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/web").StackStyleBase | "fullscreen" | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
