@@ -1187,9 +1187,6 @@
     "code/core/use-event": {
       "name": "@tamagui/use-event",
       "version": "2.0.0-rc.12-1771179565798",
-      "dependencies": {
-        "@tamagui/constants": "workspace:*",
-      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
