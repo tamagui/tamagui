@@ -146,7 +146,13 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
         </YStack>
       </XStack>
 
-      <Toast.Close testID="toast-close-button" position="absolute" top={-6} left={-6} zIndex={1} />
+      <Toast.Close
+        testID="toast-close-button"
+        position="absolute"
+        top={-6}
+        left={-6}
+        zIndex={1}
+      />
     </>
   )
 }
