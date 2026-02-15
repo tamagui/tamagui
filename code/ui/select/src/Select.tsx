@@ -613,6 +613,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
       initialValue={React.useMemo(() => value, [open])}
       size={sizeProp}
       activeIndexSubscribe={activeIndexSubscribe}
+      activeIndexRef={activeIndexRef}
       valueSubscribe={valueSubscribe}
       setOpen={setOpen}
       id={id}

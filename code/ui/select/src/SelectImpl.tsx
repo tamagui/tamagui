@@ -195,6 +195,9 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         }
       },
       scrollItemIntoView: false,
+      // we do this already in SelectContent
+      // focusItemOnOpen: true,
+      // loop: true,
     }),
     useTypeahead(context, {
       listRef: listContentRef,

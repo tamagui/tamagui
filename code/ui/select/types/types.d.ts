@@ -77,6 +77,7 @@ export interface SelectItemParentContextValue {
     onChange: (value: string) => void;
     onActiveChange: (value: string, index: number) => void;
     activeIndexSubscribe: EmitterSubscriber<number>;
+    activeIndexRef?: MutableRefObject<number | null>;
     valueSubscribe: EmitterSubscriber<any>;
     allowSelectRef?: MutableRefObject<boolean>;
     allowMouseUpRef?: MutableRefObject<boolean>;

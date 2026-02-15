@@ -53,6 +53,7 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
       setOpen,
       onChange,
       activeIndexSubscribe,
+      activeIndexRef,
       valueSubscribe,
       allowMouseUpRef,
       allowSelectRef,
@@ -77,17 +78,26 @@ export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
     }, [])
 
     React.useEffect(() => {
-      return activeIndexSubscribe((i) => {
-        const isActive = index === i
-
-        if (isActive) {
+      const handleActiveIndex = (i: number) => {
+        if (index === i) {
           onActiveChange(value, index)
-
           if (isWeb) {
-            listRef?.current[index]?.focus()
+            // use rAF to focus after browser's click handling completes
+            // this prevents the trigger from stealing focus after we set it
+            requestAnimationFrame(() => {
+              listRef?.current[index]?.focus()
+            })
           }
         }
-      })
+      }
+
+      // check initial value (parent effect may have set it before we subscribed)
+      const currentActiveIndex = activeIndexRef?.current
+      if (currentActiveIndex !== null && currentActiveIndex !== undefined) {
+        handleActiveIndex(currentActiveIndex)
+      }
+
+      return activeIndexSubscribe(handleActiveIndex)
     }, [index])
 
     React.useEffect(() => {

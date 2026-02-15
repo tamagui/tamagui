@@ -54,7 +54,11 @@ export function DismissLayerStackingCase() {
                       <Select.Item testID="popover-select-apple" value="apple" index={0}>
                         <Select.ItemText>Apple</Select.ItemText>
                       </Select.Item>
-                      <Select.Item testID="popover-select-banana" value="banana" index={1}>
+                      <Select.Item
+                        testID="popover-select-banana"
+                        value="banana"
+                        index={1}
+                      >
                         <Select.ItemText>Banana</Select.ItemText>
                       </Select.Item>
                     </Select.Viewport>
@@ -68,13 +72,22 @@ export function DismissLayerStackingCase() {
 
                   <Dialog.Portal>
                     <Dialog.Overlay testID="dialog-overlay" key="overlay" opacity={0.5} />
-                    <Dialog.Content testID="dialog-content" bordered elevate key="content">
+                    <Dialog.Content
+                      testID="dialog-content"
+                      bordered
+                      elevate
+                      key="content"
+                    >
                       <YStack gap="$3" padding="$2">
                         <Dialog.Title>Dialog Title</Dialog.Title>
                         <Dialog.Description>
                           Press ESC to close this dialog. The popover should stay open.
                         </Dialog.Description>
-                        <Input testID="dialog-input" placeholder="Dialog input" autoFocus />
+                        <Input
+                          testID="dialog-input"
+                          placeholder="Dialog input"
+                          autoFocus
+                        />
 
                         {/* select inside dialog */}
                         <Select value={selectValue2} onValueChange={setSelectValue2}>

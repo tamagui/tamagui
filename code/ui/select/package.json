@@ -60,7 +60,8 @@
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-debounce": "workspace:*",
     "@tamagui/use-event": "workspace:*",
-    "@tamagui/use-previous": "workspace:*"
+    "@tamagui/use-previous": "workspace:*",
+    "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

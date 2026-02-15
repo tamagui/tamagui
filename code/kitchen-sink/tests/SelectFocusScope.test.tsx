@@ -31,16 +31,15 @@ test.describe('Select Focus Scope', () => {
     const secondItem = page.getByTestId('select-banana')
     await expect(secondItem).toBeFocused()
 
-    // tab closes the select and moves to next element
-    await page.keyboard.press('Tab')
+    // enter selects the item and closes the select
+    await page.keyboard.press('Enter')
     await page.waitForTimeout(100)
 
-    // select should be closed after tab
+    // select should be closed after enter
     await expect(selectViewport).not.toBeVisible()
 
-    // focus should have moved to the next trigger
-    const nextTrigger = page.getByTestId('custom-select-trigger')
-    await expect(nextTrigger).toBeFocused()
+    // focus should return to the trigger that opened it
+    await expect(trigger).toBeFocused()
   })
 
   test('allows selection with Enter key', async ({ page }) => {
@@ -111,7 +110,7 @@ test.describe('Select Focus Scope', () => {
     // Note: Select doesn't automatically restore focus to trigger like Dialog/Popover do
   })
 
-  test('Tab closes select and releases focus', async ({ page }) => {
+  test('Escape closes select and returns focus to trigger', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
     // Open the small select
@@ -123,12 +122,15 @@ test.describe('Select Focus Scope', () => {
     await expect(selectViewport).toBeVisible({ timeout: 5000 })
     await page.waitForTimeout(300)
 
-    // Tab closes the select (consistent with first test)
-    await page.keyboard.press('Tab')
+    // Escape closes the select
+    await page.keyboard.press('Escape')
     await page.waitForTimeout(200)
 
-    // Select should be closed after Tab
+    // Select should be closed after Escape
     await expect(selectViewport).not.toBeVisible()
+
+    // focus should return to the trigger
+    await expect(trigger).toBeFocused()
   })
 
   test('handles arrow key navigation correctly', async ({ page }) => {

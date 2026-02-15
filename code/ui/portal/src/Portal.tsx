@@ -19,7 +19,7 @@ export const Portal = React.memo((propsIn: PortalProps) => {
     return propsIn.children
   }
 
-  const { children, passThrough } = propsIn
+  const { children, passThrough, style, open } = propsIn
   const zIndex = useStackedZIndex(getStackedZIndexProps(propsIn))
 
   if (passThrough) {
@@ -40,10 +40,11 @@ export const Portal = React.memo((propsIn: PortalProps) => {
         position: 'fixed',
         inset: 0,
         contain: 'strict',
-        pointerEvents: 'none',
+        pointerEvents: open ? 'auto' : 'none',
         // prevent mobile browser from scrolling/moving this fixed element
         touchAction: 'none',
         display: 'flex',
+        ...style,
       }}
     >
       {content}

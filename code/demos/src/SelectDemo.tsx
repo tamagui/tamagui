@@ -108,7 +108,7 @@ export function SelectDemoContents(
           borderColor="$borderColor"
         >
           <Select.Group>
-            <Select.Label>Fruits</Select.Label>
+            <Select.Label fontWeight="700">Fruits</Select.Label>
             {/* for longer lists memoizing these is useful */}
             {React.useMemo(
               () =>

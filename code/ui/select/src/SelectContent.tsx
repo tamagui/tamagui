@@ -1,10 +1,11 @@
-import { FloatingOverlay, FloatingPortal } from '@floating-ui/react'
-import { isWeb, Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
+import { isWeb, Theme, useThemeName } from '@tamagui/core'
 import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
 import React from 'react'
 
+import { Portal } from '@tamagui/portal'
+import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useSelectContext, useSelectItemParentContext } from './context'
 import type { SelectContentProps } from './types'
 import { useShowSelectSheet } from './useSelectBreakpointActive'
@@ -30,12 +31,6 @@ export const SelectContent = ({
     </Theme>
   )
 
-  const touch = useIsTouchDevice()
-
-  const overlayStyle = React.useMemo(() => {
-    return { zIndex, pointerEvents: context.open ? 'auto' : 'none' } as const
-  }, [context.open])
-
   if (itemParentContext.shouldRenderWebNative) {
     return <>{children}</>
   }
@@ -48,27 +43,31 @@ export const SelectContent = ({
   }
 
   return (
-    <FloatingPortal>
-      <FloatingOverlay
-        style={overlayStyle}
-        lockScroll={!context.disablePreventBodyScroll && !!context.open && !touch}
-      >
+    <Portal open={context.open} stackZIndex>
+      <RemoveScroll enabled={context.open}>
         <Dismissable asChild forceUnmount={!context.open}>
           <FocusScope
             {...focusScopeProps}
-            loop
             enabled={!!context.open}
             trapped
             onMountAutoFocus={(e) => {
-              // prevent FocusScope from auto-focusing - we handle focus in SelectItem
+              // prevent FocusScope from auto-focusing - floating-ui handles focus in SelectItem
               e.preventDefault()
             }}
+            onUnmountAutoFocus={(e) => {
+              // return focus to trigger on close
+              e.preventDefault()
+              const trigger = context.floatingContext?.refs?.reference?.current
+              if (trigger instanceof HTMLElement) {
+                trigger.focus()
+              }
+            }}
           >
-            {/* wrap in div so FocusScope has a DOM element to attach ref to */}
+            {/* div needed for FocusScope ref, display:contents keeps layout neutral */}
             {isWeb ? <div style={{ display: 'contents' }}>{contents}</div> : contents}
           </FocusScope>
         </Dismissable>
-      </FloatingOverlay>
-    </FloatingPortal>
+      </RemoveScroll>
+    </Portal>
   )
 }
