@@ -1,5 +1,6 @@
 import { FloatingOverlay, FloatingPortal } from '@floating-ui/react'
 import { isWeb, Theme, useIsTouchDevice, useThemeName } from '@tamagui/core'
+import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
 import React from 'react'
@@ -52,19 +53,21 @@ export const SelectContent = ({
         style={overlayStyle}
         lockScroll={!context.disablePreventBodyScroll && !!context.open && !touch}
       >
-        <FocusScope
-          {...focusScopeProps}
-          loop
-          enabled={!!context.open}
-          trapped
-          onMountAutoFocus={(e) => {
-            // prevent FocusScope from auto-focusing - we handle focus in SelectItem
-            e.preventDefault()
-          }}
-        >
-          {/* wrap in div so FocusScope has a DOM element to attach ref to */}
-          {isWeb ? <div style={{ display: 'contents' }}>{contents}</div> : contents}
-        </FocusScope>
+        <Dismissable asChild forceUnmount={!context.open}>
+          <FocusScope
+            {...focusScopeProps}
+            loop
+            enabled={!!context.open}
+            trapped
+            onMountAutoFocus={(e) => {
+              // prevent FocusScope from auto-focusing - we handle focus in SelectItem
+              e.preventDefault()
+            }}
+          >
+            {/* wrap in div so FocusScope has a DOM element to attach ref to */}
+            {isWeb ? <div style={{ display: 'contents' }}>{contents}</div> : contents}
+          </FocusScope>
+        </Dismissable>
       </FloatingOverlay>
     </FloatingPortal>
   )
