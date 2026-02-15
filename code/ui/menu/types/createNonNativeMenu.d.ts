@@ -1,5 +1,5 @@
 import type BaseMenuTypes from '@tamagui/create-menu';
-import { type CreateBaseMenuProps, type MenuContentProps as BaseMenuContentProps, type MenuPortalProps as BaseMenuPortalProps, type MenuGroupProps as BaseMenuGroupProps, type MenuLabelProps as BaseMenuLabelProps, type MenuItemProps as BaseMenuItemProps, type MenuCheckboxItemProps as BaseMenuCheckboxItemProps, type MenuRadioGroupProps as BaseMenuRadioGroupProps, type MenuRadioItemProps as BaseMenuRadioItemProps, type MenuItemIndicatorProps as BaseMenuItemIndicatorProps, type MenuArrowProps as BaseMenuArrowProps, type MenuSubTriggerProps as BaseMenuSubTriggerProps, type MenuSubContentProps as BaseMenuSubContentProps } from '@tamagui/create-menu';
+import { type MenuArrowProps as BaseMenuArrowProps, type MenuCheckboxItemProps as BaseMenuCheckboxItemProps, type MenuContentProps as BaseMenuContentProps, type MenuGroupProps as BaseMenuGroupProps, type MenuItemIndicatorProps as BaseMenuItemIndicatorProps, type MenuItemProps as BaseMenuItemProps, type MenuLabelProps as BaseMenuLabelProps, type MenuPortalProps as BaseMenuPortalProps, type MenuRadioGroupProps as BaseMenuRadioGroupProps, type MenuRadioItemProps as BaseMenuRadioItemProps, type MenuSubContentProps as BaseMenuSubContentProps, type MenuSubTriggerProps as BaseMenuSubTriggerProps, type CreateBaseMenuProps } from '@tamagui/create-menu';
 import { type TamaguiElement, type ViewProps } from '@tamagui/web';
 import * as React from 'react';
 type Direction = 'ltr' | 'rtl';
@@ -75,21 +75,23 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
     CheckboxItem: React.ForwardRefExoticComponent<BaseMenuTypes.MenuCheckboxItemProps & {
         scope?: string;
     } & React.RefAttributes<TamaguiElement>>;
-    RadioGroup: React.ForwardRefExoticComponent<BaseMenuTypes.MenuRadioGroupProps & {
+    RadioGroup: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }>, "scope" | keyof BaseMenuTypes.MenuRadioGroupProps> & BaseMenuTypes.MenuRadioGroupProps & {
         scope?: string;
-    } & React.RefAttributes<TamaguiElement>>;
+    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuTypes.MenuRadioGroupProps & {
+        scope?: string;
+    }, import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }, import("@tamagui/web").StaticConfigPublic>;
     RadioItem: React.ForwardRefExoticComponent<BaseMenuTypes.MenuRadioItemProps & {
         scope?: string;
     } & React.RefAttributes<TamaguiElement>>;
-    ItemIndicator: import("@tamagui/web").TamaguiComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    ItemIndicator: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, "scope" | keyof BaseMenuTypes.MenuItemIndicatorProps> & BaseMenuTypes.MenuItemIndicatorProps & {
         scope?: string;
-    }, "scope" | keyof BaseMenuTypes.MenuItemIndicatorProps> & BaseMenuTypes.MenuItemIndicatorProps & {
-        scope?: string;
     }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuTypes.MenuItemIndicatorProps & {
-        scope?: string;
-    } & {
         scope?: string;
     }, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
@@ -99,18 +101,14 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
     }>, keyof BaseMenuTypes.MenuSeparatorProps> & BaseMenuTypes.MenuSeparatorProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuTypes.MenuSeparatorProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
-    Arrow: React.ForwardRefExoticComponent<BaseMenuTypes.MenuArrowProps & {
-        scope?: string;
-    } & React.RefAttributes<TamaguiElement>>;
+    Arrow: React.ForwardRefExoticComponent<BaseMenuTypes.MenuArrowProps & React.RefAttributes<TamaguiElement>>;
     Sub: {
         (props: ScopedProps<MenuSubProps>): import("react/jsx-runtime").JSX.Element;
         displayName: string;
     };
-    SubTrigger: import("@tamagui/web").TamaguiComponent<Omit<ViewProps, "scope" | keyof BaseMenuTypes.MenuSubTriggerProps> & BaseMenuTypes.MenuSubTriggerProps & {
+    SubTrigger: React.ForwardRefExoticComponent<BaseMenuTypes.MenuSubTriggerProps & {
         scope?: string;
-    }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & BaseMenuTypes.MenuSubTriggerProps & {
-        scope?: string;
-    }, import("@tamagui/web").StackStyleBase, {}, {}>;
+    } & React.RefAttributes<TamaguiElement>>;
     SubContent: React.ForwardRefExoticComponent<BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
     } & React.RefAttributes<TamaguiElement>>;

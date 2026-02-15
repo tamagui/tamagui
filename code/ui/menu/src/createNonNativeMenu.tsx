@@ -1,20 +1,20 @@
 import type BaseMenuTypes from '@tamagui/create-menu'
 import {
-  createBaseMenu,
-  type CreateBaseMenuProps,
-  type MenuContentProps as BaseMenuContentProps,
-  type MenuPortalProps as BaseMenuPortalProps,
-  type MenuGroupProps as BaseMenuGroupProps,
-  type MenuLabelProps as BaseMenuLabelProps,
-  type MenuItemProps as BaseMenuItemProps,
+  type MenuArrowProps as BaseMenuArrowProps,
   type MenuCheckboxItemProps as BaseMenuCheckboxItemProps,
+  type MenuContentProps as BaseMenuContentProps,
+  type MenuGroupProps as BaseMenuGroupProps,
+  type MenuItemIndicatorProps as BaseMenuItemIndicatorProps,
+  type MenuItemProps as BaseMenuItemProps,
+  type MenuLabelProps as BaseMenuLabelProps,
+  type MenuPortalProps as BaseMenuPortalProps,
   type MenuRadioGroupProps as BaseMenuRadioGroupProps,
   type MenuRadioItemProps as BaseMenuRadioItemProps,
-  type MenuItemIndicatorProps as BaseMenuItemIndicatorProps,
   type MenuSeparatorProps as BaseMenuSeparatorProps,
-  type MenuArrowProps as BaseMenuArrowProps,
-  type MenuSubTriggerProps as BaseMenuSubTriggerProps,
   type MenuSubContentProps as BaseMenuSubContentProps,
+  type MenuSubTriggerProps as BaseMenuSubTriggerProps,
+  createBaseMenu,
+  type CreateBaseMenuProps,
 } from '@tamagui/create-menu'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
@@ -180,7 +180,6 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
       <MenuProvider
         scope={scope}
         triggerId={useId()}
-        // TODO
         triggerRef={triggerRef}
         contentId={useId()}
         open={open}
@@ -360,213 +359,11 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
   MenuContent.displayName = CONTENT_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * MenuGroup
-   * -----------------------------------------------------------------------------------------------*/
-
-  const GROUP_NAME = 'MenuGroup'
-
-  const MenuGroup = Menu.Group
-
-  MenuGroup.displayName = GROUP_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuLabel
-   * -----------------------------------------------------------------------------------------------*/
-
-  const LABEL_NAME = 'MenuLabel'
-
-  const MenuLabel = Menu.Label
-
-  MenuLabel.displayName = LABEL_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuItem
-   * -----------------------------------------------------------------------------------------------*/
-
-  const ITEM_NAME = 'MenuItem'
-
-  const MenuItemFrame = Menu.Item
-
-  const MenuItem = React.forwardRef<TamaguiElement, ScopedProps<MenuItemProps>>(
-    (props, forwardedRef) => {
-      const { scope, ...itemProps } = props
-      return (
-        <MenuItemFrame
-          componentName={ITEM_NAME}
-          scope={scope || DROPDOWN_MENU_CONTEXT}
-          {...itemProps}
-          ref={forwardedRef}
-        />
-      )
-    }
-  )
-
-  MenuItem.displayName = ITEM_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuItemTitle
-   * -----------------------------------------------------------------------------------------------*/
-
-  const ITEM_TITLE_NAME = 'MenuItemTitle'
-  const MenuItemTitle = Menu.ItemTitle
-  MenuItemTitle.displayName = ITEM_TITLE_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuItemSubTitle
-   * -----------------------------------------------------------------------------------------------*/
-
-  const ITEM_SUB_TITLE_NAME = 'MenuItemSubTitle'
-  const MenuItemSubTitle = Menu.ItemSubtitle
-  MenuItemSubTitle.displayName = ITEM_SUB_TITLE_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuItemImage
-   * -----------------------------------------------------------------------------------------------*/
-
-  const ITEM_IMAGE_NAME = 'MenuItemImage'
-  const MenuItemImage = Menu.ItemImage
-  MenuItemImage.displayName = ITEM_IMAGE_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuItemIcon
-   * -----------------------------------------------------------------------------------------------*/
-
-  const ITEM_ICON_NAME = 'MenuItemIcon'
-  const MenuItemIcon = Menu.ItemIcon
-  MenuItemIcon.displayName = ITEM_ICON_NAME
-  /* -------------------------------------------------------------------------------------------------
-   * MenuCheckboxItem
-   * -----------------------------------------------------------------------------------------------*/
-
-  const CHECKBOX_ITEM_NAME = 'MenuCheckboxItem'
-
-  const MenuCheckboxItemFrame = Menu.CheckboxItem
-
-  const MenuCheckboxItem = React.forwardRef<
-    TamaguiElement,
-    ScopedProps<MenuCheckboxItemProps>
-  >((props, forwardedRef) => {
-    const { scope, ...checkboxItemProps } = props
-    return (
-      <MenuCheckboxItemFrame
-        componentName={CHECKBOX_ITEM_NAME}
-        scope={scope || DROPDOWN_MENU_CONTEXT}
-        {...checkboxItemProps}
-        ref={forwardedRef}
-      />
-    )
-  })
-
-  MenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuRadioGroup
-   * -----------------------------------------------------------------------------------------------*/
-
-  const RADIO_GROUP_NAME = 'MenuRadioGroup'
-
-  const MenuRadioGroup = React.forwardRef<
-    MenuRadioGroupElement,
-    ScopedProps<MenuRadioGroupProps>
-  >((props, forwardedRef) => {
-    const { scope, ...radioGroupProps } = props
-    return (
-      <Menu.RadioGroup
-        scope={scope || DROPDOWN_MENU_CONTEXT}
-        {...radioGroupProps}
-        ref={forwardedRef}
-      />
-    )
-  })
-
-  MenuRadioGroup.displayName = RADIO_GROUP_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuRadioItem
-   * -----------------------------------------------------------------------------------------------*/
-
-  const RADIO_ITEM_NAME = 'MenuRadioItem'
-
-  const MenuRadioItemFrame = Menu.RadioItem
-
-  const MenuRadioItem = React.forwardRef<TamaguiElement, ScopedProps<MenuRadioItemProps>>(
-    (props, forwardedRef) => {
-      const { scope, ...radioItemProps } = props
-      return (
-        // @ts-ignore explanation: deeply nested types typescript limitation
-        <MenuRadioItemFrame
-          componentName={RADIO_ITEM_NAME}
-          scope={scope || DROPDOWN_MENU_CONTEXT}
-          {...radioItemProps}
-          ref={forwardedRef}
-        />
-      )
-    }
-  )
-
-  MenuRadioItem.displayName = RADIO_ITEM_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuItemIndicator
-   * -----------------------------------------------------------------------------------------------*/
-
-  const INDICATOR_NAME = 'MenuItemIndicator'
-
-  const MenuItemIndicatorFrame = Menu.ItemIndicator
-
-  const MenuItemIndicator = MenuItemIndicatorFrame.styleable<
-    ScopedProps<MenuItemIndicatorProps>
-  >((props, forwardedRef) => {
-    const { scope, ...itemIndicatorProps } = props
-    return (
-      <MenuItemIndicatorFrame
-        componentName={INDICATOR_NAME}
-        scope={scope || DROPDOWN_MENU_CONTEXT}
-        {...itemIndicatorProps}
-        ref={forwardedRef}
-      />
-    )
-  })
-
-  MenuItemIndicator.displayName = INDICATOR_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuSeparator
-   * -----------------------------------------------------------------------------------------------*/
-
-  const SEPARATOR_NAME = 'MenuSeparator'
-
-  const MenuSeparator = Menu.Separator
-
-  MenuSeparator.displayName = SEPARATOR_NAME
-
-  /* -------------------------------------------------------------------------------------------------
-   * MenuArrow
-   * -----------------------------------------------------------------------------------------------*/
-
-  const ARROW_NAME = 'MenuArrow'
-
-  const MenuArrow = React.forwardRef<TamaguiElement, ScopedProps<MenuArrowProps>>(
-    (props, forwardedRef) => {
-      const { scope, ...arrowProps } = props
-      return (
-        <Menu.Arrow
-          componentName={ARROW_NAME}
-          scope={scope || DROPDOWN_MENU_CONTEXT}
-          {...arrowProps}
-          ref={forwardedRef}
-        />
-      )
-    }
-  )
-
-  MenuArrow.displayName = ARROW_NAME
-
-  /* -------------------------------------------------------------------------------------------------
    * MenuSub
    * -----------------------------------------------------------------------------------------------*/
 
   const DROPDOWN_MENU_SUB_NAME = 'MenuSub'
+
   const MenuSub = (props: ScopedProps<MenuSubProps>) => {
     const { scope, children, open: openProp, onOpenChange, defaultOpen, ...rest } = props
     const [open = false, setOpen] = useControllableState({
@@ -590,29 +387,6 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
   MenuSub.displayName = DROPDOWN_MENU_SUB_NAME
 
   /* -------------------------------------------------------------------------------------------------
-   * MenuSubTrigger
-   * -----------------------------------------------------------------------------------------------*/
-
-  const SUB_TRIGGER_NAME = 'MenuSubTrigger'
-
-  const MenuSubTrigger = View.styleable<ScopedProps<MenuSubTriggerProps>>(
-    (props, forwardedRef) => {
-      // TODO: having asChild will create a problem, find a fix for that
-      const { scope, asChild, ...subTriggerProps } = props
-      return (
-        <Menu.SubTrigger
-          componentName={SUB_TRIGGER_NAME}
-          scope={scope || DROPDOWN_MENU_CONTEXT}
-          {...subTriggerProps}
-          ref={forwardedRef}
-        />
-      )
-    }
-  )
-
-  MenuSubTrigger.displayName = SUB_TRIGGER_NAME
-
-  /* -------------------------------------------------------------------------------------------------
    * MenuSubContent
    * -----------------------------------------------------------------------------------------------*/
 
@@ -633,8 +407,6 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
           isWeb
             ? {
                 ...(props.style as object),
-                // re-namespace exposed content custom properties
-                // TODO: find a better way to do this, or maybe not do it at all
                 ...({
                   '--tamagui-menu-content-transform-origin':
                     'var(--tamagui-popper-transform-origin)',
@@ -656,32 +428,27 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   /* -----------------------------------------------------------------------------------------------*/
 
-  const Root = MenuComp
-  const Trigger = MenuTrigger
-  const Portal = MenuPortal
-  const Content = MenuContent
-  const Group = MenuGroup
-  const Label = MenuLabel
-  const Item = MenuItem
-  const CheckboxItem = MenuCheckboxItem
-  const RadioGroup = MenuRadioGroup
-  const RadioItem = MenuRadioItem
-  const ItemIndicator = MenuItemIndicator
-  const Separator = MenuSeparator
-  const Arrow = MenuArrow
-  const Sub = MenuSub
-  const SubTrigger = MenuSubTrigger
-  const SubContent = MenuSubContent
-  const ItemTitle = MenuItemTitle
-  const ItemSubtitle = MenuItemSubTitle
-  const ItemImage = MenuItemImage
-  const ItemIcon = MenuItemIcon
+  // direct pass-through from base menu (preserves styleable)
+  const Group = Menu.Group
+  const Label = Menu.Label
+  const Item = Menu.Item
+  const CheckboxItem = Menu.CheckboxItem
+  const RadioGroup = Menu.RadioGroup
+  const RadioItem = Menu.RadioItem
+  const ItemIndicator = Menu.ItemIndicator
+  const Separator = Menu.Separator
+  const Arrow = Menu.Arrow
+  const SubTrigger = Menu.SubTrigger
+  const ItemTitle = Menu.ItemTitle
+  const ItemSubtitle = Menu.ItemSubtitle
+  const ItemImage = Menu.ItemImage
+  const ItemIcon = Menu.ItemIcon
 
   return withStaticProperties(MenuComp, {
-    Root,
-    Trigger,
-    Portal,
-    Content,
+    Root: MenuComp,
+    Trigger: MenuTrigger,
+    Portal: MenuPortal,
+    Content: MenuContent,
     Group,
     Label,
     Item,
@@ -691,9 +458,9 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
     ItemIndicator,
     Separator,
     Arrow,
-    Sub,
+    Sub: MenuSub,
     SubTrigger,
-    SubContent,
+    SubContent: MenuSubContent,
     ItemTitle,
     ItemSubtitle,
     ItemImage,

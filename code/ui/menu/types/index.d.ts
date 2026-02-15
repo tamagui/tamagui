@@ -39,7 +39,9 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
         onValueChange?: (state: "mixed" | "on" | "off", prevState: "mixed" | "on" | "off") => void;
         key: string;
     }>>;
-    readonly RadioGroup: import("react").FC<import("@tamagui/create-menu").MenuRadioGroupProps & {
+    readonly RadioGroup: import("react").FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }>, "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps> & import("@tamagui/create-menu").MenuRadioGroupProps & {
         scope?: string;
     } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<{
         children: React.ReactNode;
@@ -49,19 +51,15 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
     } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<{
         children: React.ReactNode;
     }>>;
-    readonly ItemIndicator: import("react").FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    readonly ItemIndicator: import("react").FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps> & import("@tamagui/create-menu").MenuItemIndicatorProps & {
-        scope?: string;
-    }, "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps> & import("@tamagui/create-menu").MenuItemIndicatorProps & {
         scope?: string;
     } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemIndicatorProps>>;
     readonly Separator: import("react").FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, keyof import("@tamagui/create-menu").MenuSeparatorProps> & import("@tamagui/create-menu").MenuSeparatorProps & import("react").RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSeparatorProps>>;
-    readonly Arrow: import("react").FC<import("@tamagui/create-menu").MenuArrowProps & {
-        scope?: string;
-    } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuArrowProps>>;
+    readonly Arrow: import("react").FC<import("@tamagui/create-menu").MenuArrowProps & import("react").RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuArrowProps>>;
     readonly Sub: import("react").FC<import("@tamagui/create-menu").MenuSubProps & {
         children?: React.ReactNode;
         open?: boolean;
@@ -70,7 +68,7 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
     } & {
         scope?: string;
     } & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubProps>>;
-    readonly SubTrigger: import("react").FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("@tamagui/create-menu").MenuSubTriggerProps> & import("@tamagui/create-menu").MenuSubTriggerProps & {
+    readonly SubTrigger: import("react").FC<import("@tamagui/create-menu").MenuSubTriggerProps & {
         scope?: string;
     } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<{
         children: React.ReactNode;

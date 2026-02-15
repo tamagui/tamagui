@@ -1091,6 +1091,7 @@ export function createBaseMenu({
           {...itemProps}
         >
           <_Item
+            unstyled={unstyled}
             componentName={ITEM_NAME}
             role="menuitem"
             data-highlighted={isFocused ? '' : undefined}
