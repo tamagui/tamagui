@@ -394,6 +394,9 @@ export function createBaseMenu({
   Label: _Label = MenuPredefined.MenuLabel,
 }: CreateBaseMenuProps) {
   const MenuComp = (props: ScopedProps<MenuBaseProps>) => {
+    const direction = useDirection(props.dir)
+    // default placement: bottom-start for LTR, bottom-end for RTL
+    const defaultPlacement = direction === 'rtl' ? 'bottom-end' : 'bottom-start'
     const {
       scope = MENU_CONTEXT,
       open = false,
@@ -403,12 +406,12 @@ export function createBaseMenu({
       modal = true,
       allowFlip = { padding: 10 },
       stayInFrame = { padding: 10 },
+      placement = defaultPlacement,
       ...rest
     } = props
     const [content, setContent] = React.useState<MenuContentElement | null>(null)
     const isUsingKeyboardRef = React.useRef(false)
     const handleOpenChange = useCallbackRef(onOpenChange)
-    const direction = useDirection(dir)
 
     if (isWeb) {
       React.useEffect(() => {
@@ -439,6 +442,7 @@ export function createBaseMenu({
     return (
       <PopperPrimitive.Popper
         scope={scope}
+        placement={placement}
         allowFlip={allowFlip}
         stayInFrame={stayInFrame}
         {...rest}
@@ -1378,15 +1382,21 @@ export function createBaseMenu({
 
   const MenuSub: React.FC<ScopedProps<MenuSubProps>> = (props) => {
     const isTouchDevice = useIsTouchDevice()
+    const { scope = MENU_CONTEXT } = props
+    const rootContext = useMenuRootContext(scope)
+    // default placement: bottom on touch, right-start/left-start based on RTL on desktop
+    const defaultPlacement = isTouchDevice
+      ? 'bottom'
+      : rootContext.dir === 'rtl'
+        ? 'left-start'
+        : 'right-start'
     const {
-      scope = MENU_CONTEXT,
       children,
       open = false,
       onOpenChange,
       allowFlip = { padding: 10 },
       stayInFrame = { padding: 10 },
-      // default to right-start on desktop, bottom on touch
-      placement = isTouchDevice ? 'bottom' : 'right-start',
+      placement = defaultPlacement,
       ...rest
     } = props
     const parentMenuContext = useMenuContext(scope)
