@@ -28,11 +28,113 @@ const FOCUS_OUTSIDE = 'dismissable.focusOutside'
 
 let originalBodyPointerEvents: string
 
+// global layer tracking
+const globalLayers = new Set<HTMLDivElement>()
+const layerChangeListeners = new Set<() => void>()
+
+function notifyLayerChange() {
+  for (const listener of layerChangeListeners) {
+    listener()
+  }
+}
+
+/**
+ * returns the number of active dismissable layers
+ * useful for non-React contexts (e.g. escape key handlers)
+ */
+export function getDismissableLayerCount(): number {
+  return globalLayers.size
+}
+
+/**
+ * hook that returns true when any dismissable layer is active
+ * re-renders when the state changes
+ * uses module-level globals, not React context, so works anywhere in tree
+ */
+export function useHasDismissableLayers(): boolean {
+  const [count, setCount] = React.useState(() => globalLayers.size)
+
+  React.useEffect(() => {
+    setCount(globalLayers.size)
+    const update = () => setCount(globalLayers.size)
+    layerChangeListeners.add(update)
+    return () => {
+      layerChangeListeners.delete(update)
+    }
+  }, [])
+
+  return count > 0
+}
+
 const DismissableContext = React.createContext({
   layers: new Set<HTMLDivElement>(),
   layersWithOutsidePointerEventsDisabled: new Set<HTMLDivElement>(),
   branches: new Set<HTMLDivElement>(),
 })
+
+/**
+ * hook to check if a DOM element is inside an active dismissable layer
+ * useful for custom escape handling - if inside a dismissable, you may want to defer
+ */
+export function useIsInsideDismissable(ref: React.RefObject<HTMLElement | null>) {
+  const context = React.useContext(DismissableContext)
+  const [isInside, setIsInside] = React.useState(false)
+
+  React.useEffect(() => {
+    const check = () => {
+      const el = ref.current
+      if (!el) {
+        setIsInside(false)
+        return
+      }
+      for (const layer of context.layers) {
+        if (layer.contains(el)) {
+          setIsInside(true)
+          return
+        }
+      }
+      setIsInside(false)
+    }
+
+    check()
+    document.addEventListener(CONTEXT_UPDATE, check)
+    return () => document.removeEventListener(CONTEXT_UPDATE, check)
+  }, [context.layers, ref])
+
+  return isInside
+}
+
+/**
+ * hook to check if there are dismissable layers above a given element
+ * returns the count of layers that are ancestors of the element
+ */
+export function useDismissableLayersAbove(ref: React.RefObject<HTMLElement | null>) {
+  const context = React.useContext(DismissableContext)
+  const [count, setCount] = React.useState(0)
+
+  React.useEffect(() => {
+    const check = () => {
+      const el = ref.current
+      if (!el) {
+        setCount(0)
+        return
+      }
+      let above = 0
+      for (const layer of context.layers) {
+        if (layer.contains(el)) {
+          above++
+        }
+      }
+      setCount(above)
+    }
+
+    check()
+    document.addEventListener(CONTEXT_UPDATE, check)
+    return () => document.removeEventListener(CONTEXT_UPDATE, check)
+  }, [context.layers, ref])
+
+  return count
+}
 
 const Dismissable = React.forwardRef<
   HTMLDivElement,
@@ -50,7 +152,7 @@ const Dismissable = React.forwardRef<
     children,
     ...layerProps
   } = props
-  const Comp = (asChild ? Slot : View) as any
+  const Comp = asChild ? Slot : View
   const context = React.useContext(DismissableContext)
   const [node, setNode] = React.useState<HTMLDivElement | null>(null)
   const [, force] = React.useState({})
@@ -125,7 +227,9 @@ const Dismissable = React.forwardRef<
       context.layersWithOutsidePointerEventsDisabled.add(node)
     }
     context.layers.add(node)
+    globalLayers.add(node)
     dispatchUpdate()
+    notifyLayerChange()
     return () => {
       if (
         disableOutsidePointerEvents &&
@@ -148,7 +252,9 @@ const Dismissable = React.forwardRef<
       if (!node) return
       context.layers.delete(node)
       context.layersWithOutsidePointerEventsDisabled.delete(node)
+      globalLayers.delete(node)
       dispatchUpdate()
+      notifyLayerChange()
     }
   }, [node, context, forceUnmount])
 
@@ -165,7 +271,9 @@ const Dismissable = React.forwardRef<
       {...layerProps}
       // @ts-ignore
       ref={composedRefs}
-      display="contents"
+      {...(!asChild && {
+        display: 'contents',
+      })}
       pointerEvents={
         isBodyPointerEventsDisabled
           ? isPointerEventsEnabled

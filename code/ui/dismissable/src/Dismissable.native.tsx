@@ -2,11 +2,31 @@ import React from 'react'
 
 import type { DismissableBranchProps, DismissableProps } from './DismissableProps'
 
-// stub for native - not used but needed for export compatibility
+// stubs for native - dismissable is a web-only concept
 export function dispatchDiscreteCustomEvent<E extends CustomEvent>(
   _target: E['target'],
   _event: E
 ) {}
+
+export function getDismissableLayerCount(): number {
+  return 0
+}
+
+export function useHasDismissableLayers(): boolean {
+  return false
+}
+
+export function useIsInsideDismissable(
+  _ref: React.RefObject<HTMLElement | null>
+): boolean {
+  return false
+}
+
+export function useDismissableLayersAbove(
+  _ref: React.RefObject<HTMLElement | null>
+): number {
+  return 0
+}
 
 export const Dismissable = React.forwardRef((props: DismissableProps, _ref) => {
   return props.children as any
