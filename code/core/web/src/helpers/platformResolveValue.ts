@@ -1,5 +1,5 @@
 import type { GetStyleState, SplitStyleProps } from '../types'
-import { getTokenForKey } from './propMapper'
+import { getTokenForKey } from './getTokenForKey'
 
 const tokenPattern = /(\$[\w.-]+)/g
 
