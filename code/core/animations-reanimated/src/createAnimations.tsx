@@ -261,7 +261,7 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
       return <Element {...transformedProps} ref={composedRefs} />
     })
   )
-  ;(Component as any).acceptTagProp = true
+  ;(Component as any).acceptRenderProp = true
   return Component
 }
 
@@ -583,9 +583,11 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         pendingExitKeysRef.current.clear()
       }
 
-      // update shared values
-      isExitingRef.value = isExiting
-      exitCycleIdShared.value = exitCycleIdRef.current
+      // update shared values (using effect to avoid writing during render)
+      useIsomorphicLayoutEffect(() => {
+        isExitingRef.value = isExiting
+        exitCycleIdShared.value = exitCycleIdRef.current
+      }, [isExiting, exitCycleIdRef.current])
 
       // track previous exiting state
       React.useEffect(() => {

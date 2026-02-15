@@ -95,7 +95,7 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
       return <Element {...transformedProps} ref={composedRefs} />
     })
   )
-  Component['acceptTagProp'] = true
+  Component['acceptRenderProp'] = true
   return Component
 }
 

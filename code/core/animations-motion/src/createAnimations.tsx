@@ -999,7 +999,7 @@ function createMotionView(defaultTag: string) {
     return <Element {...transformedProps} ref={composedRefs} />
   })
 
-  Component['acceptTagProp'] = true
+  Component['acceptRenderProp'] = true
 
   return Component
 }
