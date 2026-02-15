@@ -26,6 +26,7 @@ import {
   Text,
   Theme,
   useComposedRefs,
+  useIsTouchDevice,
   useThemeName,
   View,
   withStaticProperties,
@@ -1376,6 +1377,7 @@ export function createBaseMenu({
     createStyledContext<MenuSubContextValue>()
 
   const MenuSub: React.FC<ScopedProps<MenuSubProps>> = (props) => {
+    const isTouchDevice = useIsTouchDevice()
     const {
       scope = MENU_CONTEXT,
       children,
@@ -1383,6 +1385,8 @@ export function createBaseMenu({
       onOpenChange,
       allowFlip = { padding: 10 },
       stayInFrame = { padding: 10 },
+      // default to right-start on desktop, bottom on touch
+      placement = isTouchDevice ? 'bottom' : 'right-start',
       ...rest
     } = props
     const parentMenuContext = useMenuContext(scope)
@@ -1398,6 +1402,7 @@ export function createBaseMenu({
 
     return (
       <PopperPrimitive.Popper
+        placement={placement}
         allowFlip={allowFlip}
         stayInFrame={stayInFrame}
         {...rest}
