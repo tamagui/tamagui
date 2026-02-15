@@ -24,4 +24,4 @@ export const Spinner: React.ForwardRefExoticComponent<
       <ActivityIndicator size={size} color={color} />
     </YStack>
   )
-}) as any
+})
