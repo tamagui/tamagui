@@ -1,5 +1,21 @@
 import type BaseMenuTypes from '@tamagui/create-menu'
-import { createBaseMenu, type CreateBaseMenuProps } from '@tamagui/create-menu'
+import {
+  createBaseMenu,
+  type CreateBaseMenuProps,
+  type MenuContentProps as BaseMenuContentProps,
+  type MenuPortalProps as BaseMenuPortalProps,
+  type MenuGroupProps as BaseMenuGroupProps,
+  type MenuLabelProps as BaseMenuLabelProps,
+  type MenuItemProps as BaseMenuItemProps,
+  type MenuCheckboxItemProps as BaseMenuCheckboxItemProps,
+  type MenuRadioGroupProps as BaseMenuRadioGroupProps,
+  type MenuRadioItemProps as BaseMenuRadioItemProps,
+  type MenuItemIndicatorProps as BaseMenuItemIndicatorProps,
+  type MenuSeparatorProps as BaseMenuSeparatorProps,
+  type MenuArrowProps as BaseMenuArrowProps,
+  type MenuSubTriggerProps as BaseMenuSubTriggerProps,
+  type MenuSubContentProps as BaseMenuSubContentProps,
+} from '@tamagui/create-menu'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
   composeEventHandlers,
@@ -46,8 +62,6 @@ interface MenuProps extends BaseMenuTypes.MenuProps {
   modal?: boolean
 }
 
-type BaseMenu = ReturnType<typeof createBaseMenu>['Menu']
-
 /* -------------------------------------------------------------------------------------------------
  * MenuTrigger
  * -----------------------------------------------------------------------------------------------*/
@@ -60,54 +74,51 @@ interface MenuTriggerProps extends ViewProps {
  * MenuPortal
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuPortalProps = React.ComponentPropsWithoutRef<BaseMenu['Portal']>
+type MenuPortalProps = BaseMenuPortalProps
 
 /* -------------------------------------------------------------------------------------------------
  * MenuContent
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuContentElement = React.ElementRef<BaseMenu['Content']>
-interface MenuContentProps extends Omit<
-  React.ComponentPropsWithoutRef<BaseMenu['Content']>,
-  'onEntryFocus'
-> {}
+type MenuContentElement = TamaguiElement
+interface MenuContentProps extends Omit<BaseMenuContentProps, 'onEntryFocus'> {}
 
 /* -------------------------------------------------------------------------------------------------
  * MenuGroup
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuGroupProps = React.ComponentPropsWithoutRef<BaseMenu['Group']>
+type MenuGroupProps = BaseMenuGroupProps
 
 /* -------------------------------------------------------------------------------------------------
  * MenuLabel
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuLabelProps = React.ComponentPropsWithoutRef<BaseMenu['Label']>
+type MenuLabelProps = BaseMenuLabelProps
 
 /* -------------------------------------------------------------------------------------------------
  * MenuItem
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuItemProps = React.ComponentPropsWithoutRef<BaseMenu['Item']>
+type MenuItemProps = BaseMenuItemProps
 
-type MenuCheckboxItemProps = React.ComponentPropsWithoutRef<BaseMenu['CheckboxItem']>
+type MenuCheckboxItemProps = BaseMenuCheckboxItemProps
 
-type MenuRadioGroupElement = React.ElementRef<BaseMenu['RadioGroup']>
-type MenuRadioGroupProps = React.ComponentPropsWithoutRef<BaseMenu['RadioGroup']>
-type MenuRadioItemProps = React.ComponentPropsWithoutRef<BaseMenu['RadioItem']>
-type MenuItemIndicatorProps = React.ComponentPropsWithoutRef<BaseMenu['ItemIndicator']>
+type MenuRadioGroupElement = TamaguiElement
+type MenuRadioGroupProps = BaseMenuRadioGroupProps
+type MenuRadioItemProps = BaseMenuRadioItemProps
+type MenuItemIndicatorProps = BaseMenuItemIndicatorProps
 
 /* -------------------------------------------------------------------------------------------------
  * MenuSeparator
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSeparatorProps = React.ComponentPropsWithoutRef<BaseMenu['Separator']>
+type MenuSeparatorProps = BaseMenuSeparatorProps
 
 /* -------------------------------------------------------------------------------------------------
  * MenuArrow
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuArrowProps = React.ComponentPropsWithoutRef<BaseMenu['Arrow']>
+type MenuArrowProps = BaseMenuArrowProps
 
 /* -------------------------------------------------------------------------------------------------
  * MenuSub
@@ -124,14 +135,14 @@ type MenuSubProps = BaseMenuTypes.MenuSubProps & {
  * MenuSubTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSubTriggerProps = React.ComponentPropsWithoutRef<BaseMenu['SubTrigger']>
+type MenuSubTriggerProps = BaseMenuSubTriggerProps
 
 /* -------------------------------------------------------------------------------------------------
  * MenuSubContent
  * -----------------------------------------------------------------------------------------------*/
 
-type MenuSubContentElement = React.ElementRef<BaseMenu['Content']>
-type MenuSubContentProps = React.ComponentPropsWithoutRef<BaseMenu['SubContent']>
+type MenuSubContentElement = TamaguiElement
+type MenuSubContentProps = BaseMenuSubContentProps
 
 /* -----------------------------------------------------------------------------------------------*/
 

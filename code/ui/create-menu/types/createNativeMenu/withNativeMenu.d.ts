@@ -1,9 +1,9 @@
-type GetProps<T> = T extends React.ComponentType<infer P> ? P : {};
-export declare function withNativeMenu<C extends React.ComponentType<any>, N extends React.ComponentType<any>>({ Component, NativeComponent, }: {
+type GetProps<T> = T extends React.ComponentType<infer P> ? P : never;
+export declare function withNativeMenu<C extends React.ComponentType<any>, N extends React.ComponentType<any>, CP = GetProps<C>, NP = GetProps<N>>({ Component, NativeComponent, }: {
     Component: C;
     NativeComponent: N;
     scope?: string;
     isRoot?: boolean;
-}): React.FC<GetProps<C> & GetProps<N>>;
+}): React.FC<CP & Partial<NP>>;
 export {};
 //# sourceMappingURL=withNativeMenu.d.ts.map

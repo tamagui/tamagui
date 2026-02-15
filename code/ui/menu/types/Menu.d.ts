@@ -2,30 +2,26 @@ import { type CreateBaseMenuProps } from '@tamagui/create-menu';
 import React from 'react';
 export declare function createMenu(params: CreateBaseMenuProps): React.FC<import("./createNonNativeMenu").MenuProps & {
     scope?: string;
-} & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuProps> & {
+} & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuProps>> & {
     readonly Trigger: React.FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("./createNonNativeMenu").MenuTriggerProps> & import("./createNonNativeMenu").MenuTriggerProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuTriggerProps>;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuTriggerProps>>;
     readonly Portal: React.FC<import("@tamagui/create-menu").MenuPortalProps & {
         scope?: string;
-    } & {
-        scope?: string;
-    } & React.FragmentProps>;
+    } & Partial<React.FragmentProps>>;
     readonly Content: React.FC<import("./createNonNativeMenu").MenuContentProps & {
         scope?: string;
-    } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuContentProps>;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuContentProps>>;
     readonly Group: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
-    }>, keyof import("@tamagui/create-menu").MenuGroupProps> & import("@tamagui/create-menu").MenuGroupProps & React.RefAttributes<import("@tamagui/web").TamaguiElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuGroupProps>;
+    }>, keyof import("@tamagui/create-menu").MenuGroupProps> & import("@tamagui/create-menu").MenuGroupProps & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuGroupProps>>;
     readonly Label: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }>, keyof import("@tamagui/create-menu").MenuLabelProps> & import("@tamagui/create-menu").MenuLabelProps & React.RefAttributes<import("@tamagui/web").TamaguiTextElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuLabelProps>;
-    readonly Item: React.FC<Omit<import("@tamagui/create-menu").MenuItemProps & {
+    }>, keyof import("@tamagui/create-menu").MenuLabelProps> & import("@tamagui/create-menu").MenuLabelProps & React.RefAttributes<import("@tamagui/web").TamaguiTextElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuLabelProps>>;
+    readonly Item: React.FC<import("@tamagui/create-menu").MenuItemProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
-        scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & {
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<{
         children: React.ReactNode;
         textValue?: string;
         onSelect?: (event?: Event) => void;
@@ -34,51 +30,39 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
         hidden?: boolean;
         destructive?: boolean;
         key: string;
-    }>;
-    readonly CheckboxItem: React.FC<Omit<import("@tamagui/create-menu").MenuCheckboxItemProps & {
+    }>>;
+    readonly CheckboxItem: React.FC<import("@tamagui/create-menu").MenuCheckboxItemProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
-        scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Omit<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemProps, "onSelect"> & {
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<Omit<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemProps, "onSelect"> & {
         checked?: boolean;
         onCheckedChange?: (checked: boolean) => void;
         value?: "mixed" | "on" | "off" | boolean;
         onValueChange?: (state: "mixed" | "on" | "off", prevState: "mixed" | "on" | "off") => void;
         key: string;
-    }>;
-    readonly RadioGroup: React.FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>, "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps> & import("@tamagui/create-menu").MenuRadioGroupProps & {
+    }>>;
+    readonly RadioGroup: React.FC<import("@tamagui/create-menu").MenuRadioGroupProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
-        scope?: string;
-    } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View> & {
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<{
         children: React.ReactNode;
-    }>;
-    readonly RadioItem: React.FC<Omit<import("@tamagui/create-menu").MenuRadioItemProps & {
+    }>>;
+    readonly RadioItem: React.FC<import("@tamagui/create-menu").MenuRadioItemProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
-        scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & {
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<{
         children: React.ReactNode;
-    }>;
+    }>>;
     readonly ItemIndicator: React.FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps> & import("@tamagui/create-menu").MenuItemIndicatorProps & {
         scope?: string;
-    }, "theme" | "debug" | `$${string}` | `$${number}` | `$group-${string}` | `$group-${number}` | `$group-${string}-hover` | `$group-${string}-press` | `$group-${string}-focus` | `$group-${string}-focusVisible` | `$group-${string}-focusWithin` | `$group-${number}-hover` | `$group-${number}-press` | `$group-${number}-focus` | `$group-${number}-focusVisible` | `$group-${number}-focusWithin` | `$theme-${string}` | `$theme-${number}` | "hitSlop" | "pointerEvents" | "display" | "children" | "target" | "htmlFor" | "asChild" | "dangerouslySetInnerHTML" | "disabled" | "className" | "themeShallow" | "unstyled" | "id" | "render" | "group" | "untilMeasured" | "componentName" | "tabIndex" | "role" | "disableOptimization" | "forceStyle" | "disableClassName" | "animatedBy" | "style" | "onFocus" | "onBlur" | "onPointerCancel" | "onPointerDown" | "onPointerMove" | "onPointerUp" | "needsOffscreenAlphaCompositing" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "collapsableChildren" | "renderToHardwareTextureAndroid" | "focusable" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMoveCapture" | "onPointerCancelCapture" | "onPointerDownCapture" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-modal" | "accessibilityLabelledBy" | "aria-labelledby" | "accessibilityLiveRegion" | "aria-live" | "screenReaderFocusable" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "accessibilityShowsLargeContentViewer" | "accessibilityLargeContentTitle" | "accessibilityRespondsToUserInteraction" | "position" | "x" | "y" | "perspective" | "scale" | "scaleX" | "scaleY" | "skewX" | "skewY" | "matrix" | "rotate" | "rotateY" | "rotateX" | "rotateZ" | "borderCurve" | "contain" | "cursor" | "outlineColor" | "outlineOffset" | "outlineStyle" | "outlineWidth" | "outline" | "userSelect" | "backdropFilter" | "background" | "backgroundImage" | "backgroundOrigin" | "backgroundPosition" | "backgroundRepeat" | "backgroundSize" | "boxShadow" | "border" | "overflowX" | "overflowY" | "transformOrigin" | "filter" | "backgroundClip" | "backgroundBlendMode" | "backgroundAttachment" | "clipPath" | "caretColor" | "transformStyle" | "mask" | "maskImage" | "textEmphasis" | "borderImage" | "float" | "content" | "overflowBlock" | "overflowInline" | "maskBorder" | "maskBorderMode" | "maskBorderOutset" | "maskBorderRepeat" | "maskBorderSlice" | "maskBorderSource" | "maskBorderWidth" | "maskClip" | "maskComposite" | "maskMode" | "maskOrigin" | "maskPosition" | "maskRepeat" | "maskSize" | "maskType" | "gridRow" | "gridRowEnd" | "gridRowGap" | "gridRowStart" | "gridColumn" | "gridColumnEnd" | "gridColumnGap" | "gridColumnStart" | "gridTemplateColumns" | "gridTemplateAreas" | "containerType" | "blockSize" | "inlineSize" | "minBlockSize" | "maxBlockSize" | "objectFit" | "verticalAlign" | "minInlineSize" | "maxInlineSize" | "borderInlineColor" | "borderInlineStartColor" | "borderInlineEndColor" | "borderBlockWidth" | "borderBlockStartWidth" | "borderBlockEndWidth" | "borderInlineWidth" | "borderInlineStartWidth" | "borderInlineEndWidth" | "borderBlockStyle" | "borderBlockStartStyle" | "borderBlockEndStyle" | "borderInlineStyle" | "borderInlineStartStyle" | "borderInlineEndStyle" | "marginBlock" | "marginBlockStart" | "marginBlockEnd" | "marginInline" | "marginInlineStart" | "marginInlineEnd" | "paddingBlock" | "paddingBlockStart" | "paddingBlockEnd" | "paddingInline" | "paddingInlineStart" | "paddingInlineEnd" | "inset" | "insetBlock" | "insetBlockStart" | "insetBlockEnd" | "insetInline" | "insetInlineStart" | "insetInlineEnd" | "transition" | "animateOnly" | "animatePresence" | "passThrough" | "backfaceVisibility" | "backgroundColor" | "borderBlockColor" | "borderBlockEndColor" | "borderBlockStartColor" | "borderBottomColor" | "borderBottomEndRadius" | "borderBottomLeftRadius" | "borderBottomRightRadius" | "borderBottomStartRadius" | "borderColor" | "borderEndColor" | "borderEndEndRadius" | "borderEndStartRadius" | "borderLeftColor" | "borderRadius" | "borderRightColor" | "borderStartColor" | "borderStartEndRadius" | "borderStartStartRadius" | "borderStyle" | "borderTopColor" | "borderTopEndRadius" | "borderTopLeftRadius" | "borderTopRightRadius" | "borderTopStartRadius" | "opacity" | "isolation" | "mixBlendMode" | "experimental_backgroundImage" | "alignContent" | "alignItems" | "alignSelf" | "aspectRatio" | "borderBottomWidth" | "borderEndWidth" | "borderLeftWidth" | "borderRightWidth" | "borderStartWidth" | "borderTopWidth" | "borderWidth" | "bottom" | "boxSizing" | "end" | "flex" | "flexBasis" | "flexDirection" | "rowGap" | "gap" | "columnGap" | "flexGrow" | "flexShrink" | "flexWrap" | "height" | "justifyContent" | "left" | "margin" | "marginBottom" | "marginEnd" | "marginHorizontal" | "marginLeft" | "marginRight" | "marginStart" | "marginTop" | "marginVertical" | "maxHeight" | "maxWidth" | "minHeight" | "minWidth" | "overflow" | "padding" | "paddingBottom" | "paddingEnd" | "paddingHorizontal" | "paddingLeft" | "paddingRight" | "paddingStart" | "paddingTop" | "paddingVertical" | "right" | "start" | "top" | "width" | "zIndex" | "direction" | "shadowColor" | "shadowOffset" | "shadowOpacity" | "shadowRadius" | "transform" | "transformMatrix" | "rotation" | "translateX" | "translateY" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onClick" | "onDoubleClick" | "onContextMenu" | "onWheel" | "onKeyDown" | "onKeyUp" | "onChange" | "onInput" | "onBeforeInput" | "onScroll" | "onCopy" | "onCut" | "onPaste" | "onDrag" | "onDragStart" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDrop" | "hoverStyle" | "pressStyle" | "focusStyle" | "focusWithinStyle" | "focusVisibleStyle" | "disabledStyle" | "exitStyle" | "enterStyle" | "forceMount" | "scope" | "key"> & Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        unstyled?: boolean | undefined;
-    }>, "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps> & import("@tamagui/create-menu").MenuItemIndicatorProps & {
+    }, "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps> & import("@tamagui/create-menu").MenuItemIndicatorProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
-        scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemIndicatorProps>;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemIndicatorProps>>;
     readonly Separator: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
-    }>, keyof import("@tamagui/create-menu").MenuSeparatorProps> & import("@tamagui/create-menu").MenuSeparatorProps & React.RefAttributes<import("@tamagui/web").TamaguiElement>>;
-    readonly Arrow: React.FC<Omit<import("@tamagui/create-menu").MenuArrowProps & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
+    }>, keyof import("@tamagui/create-menu").MenuSeparatorProps> & import("@tamagui/create-menu").MenuSeparatorProps & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSeparatorProps>>;
+    readonly Arrow: React.FC<import("@tamagui/create-menu").MenuArrowProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>>;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuArrowProps>>;
     readonly Sub: React.FC<import("@tamagui/create-menu").MenuSubProps & {
         children?: React.ReactNode;
         open?: boolean;
@@ -86,12 +70,10 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
         onOpenChange?(open: boolean): void;
     } & {
         scope?: string;
-    } & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubProps>;
-    readonly SubTrigger: React.FC<Omit<import("@tamagui/web").ViewProps, "scope" | "key" | keyof import("@tamagui/create-menu").MenuSubTriggerProps> & Omit<import("@tamagui/create-menu").MenuSubTriggerProps & {
+    } & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubProps>>;
+    readonly SubTrigger: React.FC<Omit<import("@tamagui/web").ViewProps, "scope" | keyof import("@tamagui/create-menu").MenuSubTriggerProps> & import("@tamagui/create-menu").MenuSubTriggerProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
-        scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & {
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<{
         children: React.ReactNode;
         textValue?: string;
         onSelect?: (event?: Event) => void;
@@ -102,29 +84,22 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
         key: string;
     } & {
         key: string;
-    }>;
-    readonly SubContent: React.FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        size?: import("@tamagui/web").SizeTokens | undefined;
-        unstyled?: boolean | undefined;
-        elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, keyof import("@tamagui/create-menu").MenuSubContentProps> & import("@tamagui/create-menu").MenuSubContentProps & {
+    }>>;
+    readonly SubContent: React.FC<import("@tamagui/create-menu").MenuSubContentProps & {
         scope?: string;
-    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
-        scope?: string;
-    } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubContentProps>;
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubContentProps>>;
     readonly ItemTitle: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }>, keyof import("@tamagui/create-menu").MenuItemTitleProps> & import("@tamagui/create-menu").MenuItemTitleProps & React.RefAttributes<import("@tamagui/web").TamaguiTextElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemTitleProps>;
+    }>, keyof import("@tamagui/create-menu").MenuItemTitleProps> & import("@tamagui/create-menu").MenuItemTitleProps & React.RefAttributes<import("@tamagui/web").TamaguiTextElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemTitleProps>>;
     readonly ItemSubtitle: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }>, keyof import("@tamagui/create-menu").MenuItemSubTitleProps> & import("@tamagui/create-menu").MenuItemSubTitleProps & React.RefAttributes<import("@tamagui/web").TamaguiTextElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemSubtitleProps>;
+    }>, keyof import("@tamagui/create-menu").MenuItemSubTitleProps> & import("@tamagui/create-menu").MenuItemSubTitleProps & React.RefAttributes<import("@tamagui/web").TamaguiTextElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemSubtitleProps>>;
     readonly ItemIcon: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
-    }>, `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & React.RefAttributes<import("@tamagui/web").TamaguiElement> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps>;
-    readonly ItemImage: React.FC<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
+    }>, `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & React.RefAttributes<import("@tamagui/web").TamaguiElement> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps>>;
+    readonly ItemImage: React.FC<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image> & Partial<import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuItemCommonProps & {
         source: import("react-native").ImageProps["source"];
         ios?: {
             style?: {
@@ -132,6 +107,6 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
             };
             lazy?: boolean;
         };
-    }>;
+    }>>;
 };
 //# sourceMappingURL=Menu.d.ts.map

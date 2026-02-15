@@ -4,12 +4,12 @@ import {
   Check,
   ChevronRight,
   FilePlus,
-  Trash2,
   RefreshCw,
+  Trash2,
 } from '@tamagui/lucide-icons'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, useIsTouchDevice } from 'tamagui'
+import { Button } from 'tamagui'
 
 /**
  * Menu Demo using Tamagui Menu component.
@@ -25,7 +25,6 @@ export function MenuDemo() {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
   const [native, setNative] = React.useState(true)
   const [subMenuOpen, setSubMenuOpen] = React.useState(false)
-  const isTouchDevice = useIsTouchDevice()
 
   // Note: `item` is the Event on web, undefined on native
   const onSelect = (item) => {
@@ -34,7 +33,7 @@ export function MenuDemo() {
 
   return (
     <>
-      <Menu allowFlip placement="bottom-start" offset={8}>
+      <Menu offset={8}>
         <Menu.Trigger asChild>
           <Button size="$4" icon={Backpack}>
             Open
@@ -91,11 +90,7 @@ export function MenuDemo() {
 
             <Menu.Separator />
 
-            <Menu.Sub
-              open={subMenuOpen}
-              placement={isTouchDevice ? 'bottom' : 'right-start'}
-              onOpenChange={setSubMenuOpen}
-            >
+            <Menu.Sub open={subMenuOpen} onOpenChange={setSubMenuOpen}>
               <Menu.SubTrigger
                 justify="space-between"
                 key="actions-trigger"
