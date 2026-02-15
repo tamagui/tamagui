@@ -936,6 +936,10 @@ export function createComponent<
       }
     }
 
+    if (typeof props.render === 'string' && elementType['acceptRenderProp']) {
+      viewProps.render = props.render
+    }
+
     // once you set animation prop don't remove it, you can set to undefined/false
     // reason is animations are heavy - no way around it, and must be run inline here (🙅 loading as a sub-component)
     let animationStyles: any
