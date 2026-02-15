@@ -50,9 +50,10 @@ export const media = {
 
   // Height-based queries LAST so they override width queries when both match
   // (later in object = higher CSS specificity)
-  'max-height-sm': { maxHeight: breakpoints.sm - mediaQueryForceNonOverlap },
-  'max-height-md': { maxHeight: breakpoints.md - mediaQueryForceNonOverlap },
+  // max-height ordered large-to-small so smaller wins (like max-width)
   'max-height-lg': { maxHeight: breakpoints.lg - mediaQueryForceNonOverlap },
+  'max-height-md': { maxHeight: breakpoints.md - mediaQueryForceNonOverlap },
+  'max-height-sm': { maxHeight: breakpoints.sm - mediaQueryForceNonOverlap },
 
   'height-sm': { minHeight: breakpoints.sm },
   'height-md': { minHeight: breakpoints.md },

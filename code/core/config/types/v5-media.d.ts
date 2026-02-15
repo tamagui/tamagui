@@ -63,13 +63,13 @@ export declare const media: {
     readonly xxl: {
         readonly minWidth: number;
     };
-    readonly 'max-height-sm': {
+    readonly 'max-height-lg': {
         readonly maxHeight: number;
     };
     readonly 'max-height-md': {
         readonly maxHeight: number;
     };
-    readonly 'max-height-lg': {
+    readonly 'max-height-sm': {
         readonly maxHeight: number;
     };
     readonly 'height-sm': {
