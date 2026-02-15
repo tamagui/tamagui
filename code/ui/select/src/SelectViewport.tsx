@@ -6,6 +6,8 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
 import { needsPortalRepropagation } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
+import { startTransition } from '@tamagui/start-transition'
+import * as React from 'react'
 import { VIEWPORT_NAME } from './constants'
 import {
   ForwardSelectContext,
@@ -55,6 +57,18 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
     const context = useSelectContext(scope)
     const itemContext = useSelectItemParentContext(scope)
     const isAdapted = useAdaptIsActive(context.adaptScope)
+
+    // lazy mount: defer mounting children until first open using startTransition
+    const [lazyMounted, setLazyMounted] = React.useState(context.lazyMount ? false : true)
+
+    React.useEffect(() => {
+      if (!context.lazyMount) return
+      if (!context.open) return
+      if (lazyMounted) return
+      startTransition(() => {
+        setLazyMounted(true)
+      })
+    }, [context.lazyMount, context.open, lazyMounted])
 
     const composedRefs = useComposedRefs(
       // @ts-ignore TODO react 19 type needs fix
@@ -113,7 +127,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
           />
         )}
         <AnimatePresence>
-          {context.open ? (
+          {context.open && lazyMounted ? (
             <FloatingFocusManager
               context={context.floatingContext!}
               modal={false}
@@ -137,8 +151,11 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
           ) : null}
         </AnimatePresence>
 
-        {/* keep in dom to allow for portal to the trigger... very hacky! we should fix */}
-        {!context.open && <div style={{ display: 'none' }}>{props.children}</div>}
+        {/* keep in dom to allow for portal to the trigger when renderValue isn't provided */}
+        {/* when lazyMount is enabled and renderValue is provided, skip this entirely for performance */}
+        {!context.open && !(context.lazyMount && context.renderValue) && lazyMounted && (
+          <div style={{ display: 'none' }}>{children}</div>
+        )}
       </>
     )
   }

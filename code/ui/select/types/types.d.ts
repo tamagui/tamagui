@@ -53,6 +53,16 @@ export interface SelectProps<Value extends string = string> {
      * ```
      */
     renderValue?(value: Value): ReactNode;
+    /**
+     * When true, defers mounting Select items until opened using startTransition.
+     * This significantly improves initial render performance for pages with many Selects.
+     *
+     * Should be combined with `renderValue` to display the selected value during SSR
+     * and before items are mounted.
+     *
+     * @default false
+     */
+    lazyMount?: boolean;
 }
 type DisposeFn = () => void;
 export type EmitterSubscriber<Val> = (cb: (val: Val) => void) => DisposeFn;
@@ -120,6 +130,8 @@ export interface SelectContextValue {
     update?: () => void;
     /** Render function for the selected value (SSR support) */
     renderValue?: (value: any) => ReactNode;
+    /** When true, defers mounting items until opened */
+    lazyMount?: boolean;
 }
 export type SelectViewportExtraProps = SelectScopedProps<{
     size?: SizeTokens;

@@ -144,6 +144,12 @@ Contains every component for the select:
       type: '(value: string) => ReactNode',
       description: `Render function for the selected value. Useful for SSR when you need custom display text. By default, Select falls back to showing the raw value for SSR compatibility.`,
     },
+    {
+      name: 'lazyMount',
+      type: 'boolean',
+      default: 'false',
+      description: `When true, defers mounting Select items until opened using React's startTransition. Significantly improves initial render performance for pages with many Selects. Should be combined with \`renderValue\` for best results.`,
+    },
   ]}
 />
 
@@ -300,6 +306,47 @@ Provides access to the underlying FocusScope component used by Select for focus 
     },
   ]}
 />
+
+## Performance
+
+For pages with many Select components, you can significantly improve initial render performance by using the `lazyMount` prop combined with `renderValue`:
+
+```tsx
+const labels = {
+  apple: 'Apple',
+  orange: 'Orange',
+  banana: 'Banana',
+}
+
+<Select
+  lazyMount
+  renderValue={(value) => labels[value]}
+  defaultValue="apple"
+>
+  {/* Items are not mounted until the Select is opened */}
+  <Select.Trigger>
+    <Select.Value />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Viewport>
+      {/* These items mount in a startTransition when first opened */}
+      <Select.Item index={0} value="apple">
+        <Select.ItemText>Apple</Select.ItemText>
+      </Select.Item>
+      {/* ... more items */}
+    </Select.Viewport>
+  </Select.Content>
+</Select>
+```
+
+**How it works:**
+
+- `lazyMount` defers mounting all Select items until the dropdown is first opened
+- The mount happens inside React's `startTransition`, keeping the trigger responsive
+- `renderValue` provides the display text synchronously, avoiding the need to mount items just to show the selected value
+- Once mounted, items stay mounted for fast subsequent opens
+
+This is especially useful when rendering many Selects on a single page, as each Select with 20+ items would otherwise mount all those items on initial page load.
 
 ### Select.Sheet
 

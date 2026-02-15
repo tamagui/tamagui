@@ -511,6 +511,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
     dir,
     id,
     renderValue,
+    lazyMount,
   } = props
 
   const isAdapted = useAdaptIsActive(adaptScope)
@@ -650,6 +651,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         open={open}
         native={native}
         renderValue={renderValue}
+        lazyMount={lazyMount}
       >
         <SelectSheetController onOpenChange={setOpen} scope={scope}>
           {shouldRenderWebNative ? (
