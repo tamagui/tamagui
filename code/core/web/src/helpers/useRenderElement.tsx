@@ -31,6 +31,13 @@ export function evaluateRenderProp(
 
   // String tag - swap element type, reuse props from defaultElement
   if (typeof render === 'string') {
+    // on native, ignore lowercase tags (html/jsx elements like "div", "span")
+    if (
+      process.env.TAMAGUI_TARGET === 'native' &&
+      render[0] === render[0].toLowerCase()
+    ) {
+      return defaultElement
+    }
     return createElement(render, props, defaultChildren)
   }
 
