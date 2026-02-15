@@ -15,13 +15,27 @@ export function TestComponent() {
   const [count, setCount] = useState(0)
 
   return (
-    <YStack flex={1} justifyContent="center" alignItems="center" gap="$4" padding="$4" backgroundColor="$background">
-      <Text color="$color12" fontSize="$8" fontWeight="bold">Tamagui + Turbopack</Text>
+    <YStack
+      flex={1}
+      justifyContent="center"
+      alignItems="center"
+      gap="$4"
+      padding="$4"
+      backgroundColor="$background"
+    >
+      <Text color="$color12" fontSize="$8" fontWeight="bold">
+        Tamagui + Turbopack
+      </Text>
       <Text color="$color10">Count: {count}</Text>
-      <Button onPress={() => setCount(c => c + 1)}>
+      <Button onPress={() => setCount((c) => c + 1)}>
         <Text color="white">Increment</Text>
       </Button>
-      <YStack padding="$4" backgroundColor="$blue5" borderRadius="$4" $sm={{ backgroundColor: '$red5' }}>
+      <YStack
+        padding="$4"
+        backgroundColor="$blue5"
+        borderRadius="$4"
+        $sm={{ backgroundColor: '$red5' }}
+      >
         <Text>Media query test (blue on lg, red on sm)</Text>
       </YStack>
     </YStack>
