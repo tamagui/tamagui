@@ -1,10 +1,12 @@
 import { isWeb } from '@tamagui/web'
 
-type GetProps<T> = T extends React.ComponentType<infer P> ? P : {}
+type GetProps<T> = T extends React.ComponentType<infer P> ? P : never
 
 export function withNativeMenu<
   C extends React.ComponentType<any>,
   N extends React.ComponentType<any>,
+  CP = GetProps<C>,
+  NP = GetProps<N>,
 >({
   Component,
   NativeComponent,
@@ -13,8 +15,8 @@ export function withNativeMenu<
   NativeComponent: N
   scope?: string
   isRoot?: boolean
-}): React.FC<GetProps<C> & GetProps<N>> {
-  type Props = GetProps<C> & GetProps<N>
+}): React.FC<CP & Partial<NP>> {
+  type Props = CP & Partial<NP>
 
   if (isWeb) {
     return Component as React.FC<Props>
