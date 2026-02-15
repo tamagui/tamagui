@@ -22,6 +22,7 @@ import {
   composeRefs,
   createStyledContext,
   isWeb,
+  styled,
   Text,
   Theme,
   useComposedRefs,
@@ -587,7 +588,11 @@ export function createBaseMenu({
   const { Provider: MenuContentProvider, useStyledContext: useMenuContentContext } =
     createStyledContext<MenuContentContextValue>()
 
-  const MenuContent = React.forwardRef<MenuContentElement, ScopedProps<MenuContentProps>>(
+  const MenuContentFrame = styled(PopperPrimitive.PopperContentFrame, {
+    name: CONTENT_NAME,
+  })
+
+  const MenuContent = MenuContentFrame.styleable<ScopedProps<MenuContentProps>>(
     (props, forwardedRef) => {
       const scope = props.scope || MENU_CONTEXT
       const portalContext = usePortalContext(scope)
@@ -1673,114 +1678,117 @@ export function createBaseMenu({
 
   const SUB_CONTENT_NAME = 'MenuSubContent'
 
-  const MenuSubContent = React.forwardRef<
-    MenuSubContentElement,
-    ScopedProps<MenuSubContentProps>
-  >((props, forwardedRef) => {
-    const scope = props.scope || MENU_CONTEXT
-    const portalContext = usePortalContext(scope)
-    const { forceMount = portalContext.forceMount, ...subContentProps } = props
-    const context = useMenuContext(scope)
-    const rootContext = useMenuRootContext(scope)
-    const subContext = useMenuSubContext(scope)
-    const popperContext = PopperPrimitive.usePopperContext(scope)
-    const ref = React.useRef<MenuSubContentElement>(null)
-    const composedRefs = useComposedRefs(forwardedRef, ref)
-
-    // determine side from actual placement, not just RTL direction
-    // placement like "left-start" or "right-end" - extract the side
-    const placementSide = popperContext.placement?.split('-')[0] as
-      | 'left'
-      | 'right'
-      | 'top'
-      | 'bottom'
-      | undefined
-    // for submenus, we care about horizontal placement (left/right)
-    // default to 'right' for LTR, 'left' for RTL
-    const dataSide: Side =
-      placementSide === 'left' || placementSide === 'right'
-        ? placementSide
-        : rootContext.dir === 'rtl'
-          ? 'left'
-          : 'right'
-
-    // effective direction for keyboard navigation - if submenu is on left, flip arrow keys
-    const effectiveDir: Direction =
-      placementSide === 'left'
-        ? 'rtl'
-        : placementSide === 'right'
-          ? 'ltr'
-          : rootContext.dir
-
-    return (
-      <Collection.Provider scope={scope}>
-        <Collection.Slot scope={scope}>
-          <MenuContentImpl
-            id={subContext.contentId}
-            aria-labelledby={subContext.triggerId}
-            {...subContentProps}
-            ref={composedRefs}
-            data-side={dataSide}
-            disableOutsidePointerEvents={false}
-            disableOutsideScroll={false}
-            trapFocus={false}
-            onOpenAutoFocus={(event) => {
-              // when opening a submenu, focus content for keyboard users only
-              if (rootContext.isUsingKeyboardRef.current) {
-                // ref.current doesn't reliably point to the focusable DOM element,
-                // so we query for the submenu content directly
-                const content = document.querySelector(
-                  '[data-tamagui-menu-content][data-side]'
-                ) as HTMLElement | null
-                content?.focus()
-              }
-              event.preventDefault()
-            }}
-            // The menu might close because of focusing another menu item in the parent menu. We
-            // don't want it to refocus the trigger in that case so we handle trigger focus ourselves.
-            onCloseAutoFocus={(event) => event.preventDefault()}
-            onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) => {
-              // We prevent closing when the trigger is focused to avoid triggering a re-open animation
-              // on pointer interaction.
-              if (event.target !== subContext.trigger) context.onOpenChange(false)
-            })}
-            onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
-              // close only this submenu, not the root menu
-              context.onOpenChange(false)
-              // return focus to the submenu trigger with focusVisible since this is keyboard navigation
-              // @ts-ignore focusVisible is a newer API
-              subContext.trigger?.focus({ focusVisible: true })
-              // ensure pressing escape in submenu doesn't escape full screen mode
-              event.preventDefault()
-            })}
-            {...(isWeb
-              ? {
-                  onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
-                    // Submenu key events bubble through portals. We only care about keys in this menu.
-                    // @ts-ignore
-                    const isKeyDownInside = event.currentTarget.contains(
-                      event.target as HTMLElement
-                    )
-                    // use effectiveDir so arrow keys match the submenu's actual position
-                    // (e.g., ArrowRight closes a left-side submenu)
-                    const isCloseKey = SUB_CLOSE_KEYS[effectiveDir].includes(event.key)
-                    if (isKeyDownInside && isCloseKey) {
-                      context.onOpenChange(false)
-                      // We focus manually because we prevented it in `onCloseAutoFocus`
-                      // use focusVisible: true since this is keyboard navigation
-                      // @ts-ignore focusVisible is a newer API
-                      subContext.trigger?.focus({ focusVisible: true })
-                      // prevent window from scrolling
-                      event.preventDefault()
-                    }
-                  }),
-                }
-              : null)}
-          />
-        </Collection.Slot>
-      </Collection.Provider>
-    )
+  const MenuSubContentFrame = styled(PopperPrimitive.PopperContentFrame, {
+    name: SUB_CONTENT_NAME,
   })
+
+  const MenuSubContent = MenuSubContentFrame.styleable<ScopedProps<MenuSubContentProps>>(
+    (props, forwardedRef) => {
+      const scope = props.scope || MENU_CONTEXT
+      const portalContext = usePortalContext(scope)
+      const { forceMount = portalContext.forceMount, ...subContentProps } = props
+      const context = useMenuContext(scope)
+      const rootContext = useMenuRootContext(scope)
+      const subContext = useMenuSubContext(scope)
+      const popperContext = PopperPrimitive.usePopperContext(scope)
+      const ref = React.useRef<MenuSubContentElement>(null)
+      const composedRefs = useComposedRefs(forwardedRef, ref)
+
+      // determine side from actual placement, not just RTL direction
+      // placement like "left-start" or "right-end" - extract the side
+      const placementSide = popperContext.placement?.split('-')[0] as
+        | 'left'
+        | 'right'
+        | 'top'
+        | 'bottom'
+        | undefined
+      // for submenus, we care about horizontal placement (left/right)
+      // default to 'right' for LTR, 'left' for RTL
+      const dataSide: Side =
+        placementSide === 'left' || placementSide === 'right'
+          ? placementSide
+          : rootContext.dir === 'rtl'
+            ? 'left'
+            : 'right'
+
+      // effective direction for keyboard navigation - if submenu is on left, flip arrow keys
+      const effectiveDir: Direction =
+        placementSide === 'left'
+          ? 'rtl'
+          : placementSide === 'right'
+            ? 'ltr'
+            : rootContext.dir
+
+      return (
+        <Collection.Provider scope={scope}>
+          <Collection.Slot scope={scope}>
+            <MenuContentImpl
+              id={subContext.contentId}
+              aria-labelledby={subContext.triggerId}
+              {...subContentProps}
+              ref={composedRefs}
+              data-side={dataSide}
+              disableOutsidePointerEvents={false}
+              disableOutsideScroll={false}
+              trapFocus={false}
+              onOpenAutoFocus={(event) => {
+                // when opening a submenu, focus content for keyboard users only
+                if (rootContext.isUsingKeyboardRef.current) {
+                  // ref.current doesn't reliably point to the focusable DOM element,
+                  // so we query for the submenu content directly
+                  const content = document.querySelector(
+                    '[data-tamagui-menu-content][data-side]'
+                  ) as HTMLElement | null
+                  content?.focus()
+                }
+                event.preventDefault()
+              }}
+              // The menu might close because of focusing another menu item in the parent menu. We
+              // don't want it to refocus the trigger in that case so we handle trigger focus ourselves.
+              onCloseAutoFocus={(event) => event.preventDefault()}
+              onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) => {
+                // We prevent closing when the trigger is focused to avoid triggering a re-open animation
+                // on pointer interaction.
+                if (event.target !== subContext.trigger) context.onOpenChange(false)
+              })}
+              onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
+                // close only this submenu, not the root menu
+                context.onOpenChange(false)
+                // return focus to the submenu trigger with focusVisible since this is keyboard navigation
+                // @ts-ignore focusVisible is a newer API
+                subContext.trigger?.focus({ focusVisible: true })
+                // ensure pressing escape in submenu doesn't escape full screen mode
+                event.preventDefault()
+              })}
+              {...(isWeb
+                ? {
+                    onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                      // Submenu key events bubble through portals. We only care about keys in this menu.
+                      // @ts-ignore
+                      const isKeyDownInside = event.currentTarget.contains(
+                        event.target as HTMLElement
+                      )
+                      // use effectiveDir so arrow keys match the submenu's actual position
+                      // (e.g., ArrowRight closes a left-side submenu)
+                      const isCloseKey = SUB_CLOSE_KEYS[effectiveDir].includes(event.key)
+                      if (isKeyDownInside && isCloseKey) {
+                        context.onOpenChange(false)
+                        // We focus manually because we prevented it in `onCloseAutoFocus`
+                        // use focusVisible: true since this is keyboard navigation
+                        // @ts-ignore focusVisible is a newer API
+                        subContext.trigger?.focus({ focusVisible: true })
+                        // prevent window from scrolling
+                        event.preventDefault()
+                      }
+                    }),
+                  }
+                : null)}
+            />
+          </Collection.Slot>
+        </Collection.Provider>
+      )
+    }
+  )
 
   MenuSubContent.displayName = SUB_CONTENT_NAME
 

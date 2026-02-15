@@ -170,9 +170,21 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
             (props: ScopedProps<MenuPortalProps>): import("react/jsx-runtime").JSX.Element;
             displayName: string;
         };
-        Content: React.ForwardRefExoticComponent<MenuContentProps & {
+        Content: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+            size?: import("@tamagui/web").SizeTokens | undefined;
+            unstyled?: boolean | undefined;
+            elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+        }>, keyof MenuContentProps> & MenuContentProps & {
             scope?: string;
-        } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
+        }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuContentProps & {
+            scope?: string;
+        }, import("@tamagui/web").StackStyleBase, {
+            size?: import("@tamagui/web").SizeTokens | undefined;
+            unstyled?: boolean | undefined;
+            elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+        }, import("@tamagui/web").StaticConfigPublic>;
         Group: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
         }>, keyof MenuGroupProps> & MenuGroupProps, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuGroupProps, import("@tamagui/web").StackStyleBase, {
@@ -222,9 +234,21 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         SubTrigger: React.ForwardRefExoticComponent<MenuSubTriggerProps & {
             scope?: string;
         } & React.RefAttributes<TamaguiElement>>;
-        SubContent: React.ForwardRefExoticComponent<MenuSubContentProps & {
+        SubContent: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+            size?: import("@tamagui/web").SizeTokens | undefined;
+            unstyled?: boolean | undefined;
+            elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+        }>, keyof MenuSubContentProps> & MenuSubContentProps & {
             scope?: string;
-        } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
+        }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuSubContentProps & {
+            scope?: string;
+        }, import("@tamagui/web").StackStyleBase, {
+            size?: import("@tamagui/web").SizeTokens | undefined;
+            unstyled?: boolean | undefined;
+            elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+            fullscreen?: boolean | undefined;
+        }, import("@tamagui/web").StaticConfigPublic>;
         ItemTitle: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
             unstyled?: boolean | undefined;
             size?: import("@tamagui/web").FontSizeTokens | undefined;

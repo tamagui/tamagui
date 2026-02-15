@@ -102,9 +102,14 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
     } & {
         key: string;
     }>;
-    readonly SubContent: import("react").FC<Omit<import("@tamagui/create-menu").MenuSubContentProps & {
+    readonly SubContent: import("react").FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        size?: import("@tamagui/web").SizeTokens | undefined;
+        unstyled?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>, keyof import("@tamagui/create-menu").MenuSubContentProps> & import("@tamagui/create-menu").MenuSubContentProps & {
         scope?: string;
-    } & import("react").RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>, "ref"> & {
+    } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
         scope?: string;
     } & import("react").RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubContentProps>;
     readonly ItemTitle: import("react").FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
