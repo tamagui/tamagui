@@ -134,9 +134,14 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
     } & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;
     }, import("@tamagui/web").StackStyleBase, {}, {}>;
-    SubContent: React.ForwardRefExoticComponent<Omit<BaseMenuTypes.MenuSubContentProps & {
+    SubContent: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        size?: import("@tamagui/web").SizeTokens | undefined;
+        unstyled?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>, keyof BaseMenuTypes.MenuSubContentProps> & BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
-    } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>, "ref"> & {
+    } & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;
     } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
     ItemTitle: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {

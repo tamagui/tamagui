@@ -88,9 +88,14 @@ export declare function createContextMenu(param: CreateBaseMenuProps): React.FC<
     } & {
         key: string;
     }>;
-    SubContent: React.FC<Omit<import("@tamagui/create-menu").MenuSubContentProps & {
+    SubContent: React.FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        size?: import("@tamagui/web").SizeTokens | undefined;
+        unstyled?: boolean | undefined;
+        elevation?: number | import("@tamagui/web").SizeTokens | undefined;
+        fullscreen?: boolean | undefined;
+    }>, keyof import("@tamagui/create-menu").MenuSubContentProps> & import("@tamagui/create-menu").MenuSubContentProps & {
         scope?: string;
-    } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>, "ref"> & {
+    } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
         scope?: string;
     } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View> & import("@tamagui/create-menu/types/createNativeMenu/createNativeMenuTypes").MenuSubContentProps>;
     ItemTitle: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
