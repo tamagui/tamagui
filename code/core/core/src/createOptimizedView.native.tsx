@@ -1,4 +1,4 @@
-import React from 'react' // native only, taken from react-native
+import React, { Context } from 'react' // native only, taken from react-native
 
 /**
  * Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -13,7 +13,7 @@ import React from 'react' // native only, taken from react-native
 export function createOptimizedView(
   children: any,
   viewProps: Record<string, any>,
-  baseViews: any
+  baseViews: { TextAncestor: Context<any> }
 ) {
   const TextAncestor = baseViews.TextAncestor
 

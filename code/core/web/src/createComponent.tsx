@@ -2,7 +2,7 @@ import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
-import React, { useMemo } from 'react'
+import React, { ReactElement, ReactNode, useMemo } from 'react'
 import { devConfig, getConfig } from './config'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
@@ -13,14 +13,14 @@ import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandlin
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
-import {
-  resolveEffectivePseudoTransition,
-  extractPseudoState,
-} from './helpers/pseudoTransitions'
-import { usePointerEvents } from './helpers/pointerEvents'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
 import { objectIdentityKey } from './helpers/objectIdentityKey'
+import { usePointerEvents } from './helpers/pointerEvents'
+import {
+  extractPseudoState,
+  resolveEffectivePseudoTransition,
+} from './helpers/pseudoTransitions'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
 import { themeable } from './helpers/themeable'
@@ -50,9 +50,9 @@ import type {
   UseStyleEmitter,
   UseThemeWithStateProps,
 } from './types'
-import type { ViewProps } from './views/View'
 import { Slot } from './views/Slot'
 import { getThemedChildren } from './views/Theme'
+import type { ViewProps } from './views/View'
 
 /**
  * All things that need one-time setup after createTamagui is called
@@ -482,10 +482,15 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`use-state`
 
-    const isTaggable = !Component || typeof Component === 'string'
-    const renderProp = props.render
+    // web-only - string-style not valid for native
+    const isRenderString = !Component || typeof Component === 'string'
+
     // default to render prop, fallback to component (when both strings)
-    const element = isWeb ? (isTaggable ? renderProp || Component : Component) : Component
+    const element = isWeb
+      ? isRenderString
+        ? props.render || Component
+        : Component
+      : Component
 
     const BaseTextComponent = BaseText || element || 'span'
     const BaseViewComponent = BaseView || element || (hasTextAncestor ? 'span' : 'div')
@@ -918,7 +923,7 @@ export function createComponent<
     // so the type is pretty loose
     let viewProps = nonTamaguiProps
 
-    if (!isTaggable && props.forceStyle) {
+    if (props.forceStyle) {
       viewProps.forceStyle = props.forceStyle
     }
 
@@ -929,10 +934,6 @@ export function createComponent<
       if (typeof passThrough !== 'undefined') {
         viewProps.passThrough = passThrough
       }
-    }
-
-    if (renderProp && elementType['acceptTagProp']) {
-      viewProps.render = renderProp
     }
 
     // once you set animation prop don't remove it, you can set to undefined/false
@@ -1372,7 +1373,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    let content = children
+    let content: ReactNode | undefined
 
     if (asChild) {
       elementType = Slot
@@ -1410,32 +1411,29 @@ export function createComponent<
       }
     }
 
-    let useChildrenResult: any
+    let useChildrenResult: ReactNode | undefined
     if (hooks.useChildren) {
-      useChildrenResult = hooks.useChildren(elementType, content, viewProps)
+      useChildrenResult = hooks.useChildren(elementType, content || children, viewProps)
+      if (useChildrenResult) {
+        content = useChildrenResult
+      }
     }
 
     if (process.env.NODE_ENV === 'development' && time) time`use-children`
 
-    if (useChildrenResult) {
-      content = useChildrenResult
+    const customRenderElement = getCustomRenderElement(
+      props.render,
+      content || children,
+      viewProps,
+      componentState
+    )
+
+    if (customRenderElement) {
+      content = customRenderElement
     } else {
-      // Handle render prop variants: function, JSX element, or string
-      if (typeof renderProp === 'function') {
-        // Render function: full control with props and state
-        const renderProps = { ...viewProps, children: content }
-        content = renderProp(renderProps, state)
-      } else if (
-        renderProp &&
-        typeof renderProp === 'object' &&
-        React.isValidElement(renderProp)
-      ) {
-        // JSX element: clone with merged props
-        const elementProps = (renderProp as React.ReactElement).props || {}
-        const mergedProps = mergeRenderElementProps(elementProps, viewProps, content)
-        content = React.cloneElement(renderProp as React.ReactElement, mergedProps)
-      } else {
-        content = React.createElement(elementType, viewProps, content)
+      // for native-only useChildrenResult is already our properly created ReactNode
+      if (!useChildrenResult) {
+        content = React.createElement(elementType, viewProps, content || children)
       }
     }
 
@@ -1701,4 +1699,49 @@ const fromPx = (val?: any): number => {
   if (typeof val === 'number') return val
   if (typeof val === 'string') return +val.replace('px', '')
   return 0
+}
+
+// handles all render logic - returns a new component
+const getCustomRenderElement = (
+  renderProp: ViewProps['render'],
+  content: ReactNode,
+  viewProps: Record<string, unknown>,
+  state: any
+): ReactNode | undefined => {
+  // Handle render prop variants: function, JSX element, or string
+  if (typeof renderProp === 'function') {
+    // Render function: full control with props and state
+    const out = renderProp(viewProps, state)
+    const transformed = getRenderElementForPlatform(out)
+    if (!transformed) {
+      return
+    }
+    renderProp = transformed
+  }
+
+  if (renderProp && typeof renderProp === 'object' && React.isValidElement(renderProp)) {
+    // JSX element: clone with merged props
+    const renderElement = getRenderElementForPlatform(renderProp)
+    if (renderElement) {
+      const elementProps = renderProp.props as Record<string, any> | undefined
+      const mergedProps = elementProps
+        ? mergeRenderElementProps(elementProps, viewProps, content)
+        : viewProps
+      return React.cloneElement(renderProp, mergedProps)
+    }
+  }
+}
+
+// avoid passing web-only elements to native
+function getRenderElementForPlatform(potential: ReactElement) {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    if (isHTMLElement(potential)) {
+      return
+    }
+  }
+  return potential
+}
+
+function isHTMLElement(el: ReactElement) {
+  return typeof el['type'] === 'string' && el['type'][0] === el['type'][0].toLowerCase()
 }
