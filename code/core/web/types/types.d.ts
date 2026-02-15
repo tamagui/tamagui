@@ -877,6 +877,9 @@ export type WithMediaProps<A> = {
 };
 type AddWebOnlyStyleProps<A> = {
     [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties ? CSSProperties[SubKey] : SubKey extends keyof A ? A[SubKey] : SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never;
+} & CSSCustomProperties;
+type CSSCustomProperties = {
+    [key: `--${string}`]: string | number | undefined;
 };
 export type WebOnlyValidStyleValues = {
     position: '-webkit-sticky';
