@@ -417,3 +417,41 @@ Must be nested inside Content. Renders as a plain React Native ScrollView. If
 used alongside `<Adapt />` and Sheet, Tamagui will automatically know to remove
 this ScrollView when swapping into the Sheet, as the Sheet must use its own
 ScrollView that handles special logic for interactions with dragging.
+
+## Utility Functions
+
+These functions allow you to programmatically manage open popovers.
+
+```tsx
+import {
+  closeOpenPopovers,
+  closeLastOpenedPopover,
+  hasOpenPopovers,
+} from '@tamagui/popover'
+```
+
+### closeOpenPopovers
+
+Closes all currently open popovers. Returns `true` if any popovers were closed, `false` if none were open.
+
+```tsx
+const didClose = closeOpenPopovers()
+```
+
+### closeLastOpenedPopover
+
+Closes only the most recently opened popover. Returns `true` if a popover was closed, `false` if none were open.
+
+```tsx
+const didClose = closeLastOpenedPopover()
+```
+
+### hasOpenPopovers
+
+Returns `true` if there are any open popovers, `false` otherwise.
+
+```tsx
+if (hasOpenPopovers()) {
+  // handle open popovers
+}
+```
