@@ -1,6 +1,6 @@
 {
   "name": "next15-plus-cli-optimize",
-  "version": "2.0.0-rc.13",
+  "version": "2.0.0-rc.13-1771253253067",
   "private": true,
   "workspaces": [
     "./packages/*"

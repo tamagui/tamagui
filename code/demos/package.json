@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "2.0.0-rc.13",
+  "version": "2.0.0-rc.13-1771253253067",
   "source": "demos/src/index.tsx",
   "files": [
     "src",
