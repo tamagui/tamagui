@@ -15,9 +15,9 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "require": "./dist/index.cjs",
       "module": "./dist/index.cjs",
-      "import": "./dist/index.cjs"
+      "import": "./dist/index.cjs",
+      "require": "./dist/index.cjs"
     }
   },
   "publishConfig": {

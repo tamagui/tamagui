@@ -59,7 +59,6 @@
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "browser": "./dist/esm/index.mjs",
       "default": "./dist/esm/index.mjs"
     },
     "./setup-teleport": {
@@ -68,7 +67,6 @@
       "module": "./dist/esm/setup-teleport.mjs",
       "import": "./dist/esm/setup-teleport.mjs",
       "require": "./dist/cjs/setup-teleport.cjs",
-      "browser": "./dist/esm/setup-teleport.mjs",
       "default": "./dist/esm/setup-teleport.mjs"
     },
     "./setup-gesture-handler": {
@@ -77,7 +75,6 @@
       "module": "./dist/esm/setup-gesture-handler.mjs",
       "import": "./dist/esm/setup-gesture-handler.mjs",
       "require": "./dist/cjs/setup-gesture-handler.cjs",
-      "browser": "./dist/esm/setup-gesture-handler.mjs",
       "default": "./dist/esm/setup-gesture-handler.mjs"
     },
     "./setup-worklets": {
@@ -86,7 +83,6 @@
       "module": "./dist/esm/setup-worklets.mjs",
       "import": "./dist/esm/setup-worklets.mjs",
       "require": "./dist/cjs/setup-worklets.cjs",
-      "browser": "./dist/esm/setup-worklets.mjs",
       "default": "./dist/esm/setup-worklets.mjs"
     },
     "./setup-safe-area": {
@@ -95,7 +91,6 @@
       "module": "./dist/esm/setup-safe-area.mjs",
       "import": "./dist/esm/setup-safe-area.mjs",
       "require": "./dist/cjs/setup-safe-area.cjs",
-      "browser": "./dist/esm/setup-safe-area.mjs",
       "default": "./dist/esm/setup-safe-area.mjs"
     },
     "./setup-expo-linear-gradient": {
@@ -104,7 +99,6 @@
       "module": "./dist/esm/setup-expo-linear-gradient.mjs",
       "import": "./dist/esm/setup-expo-linear-gradient.mjs",
       "require": "./dist/cjs/setup-expo-linear-gradient.cjs",
-      "browser": "./dist/esm/setup-expo-linear-gradient.mjs",
       "default": "./dist/esm/setup-expo-linear-gradient.mjs"
     },
     "./setup-keyboard-controller": {
@@ -113,7 +107,6 @@
       "module": "./dist/esm/setup-keyboard-controller.mjs",
       "import": "./dist/esm/setup-keyboard-controller.mjs",
       "require": "./dist/cjs/setup-keyboard-controller.cjs",
-      "browser": "./dist/esm/setup-keyboard-controller.mjs",
       "default": "./dist/esm/setup-keyboard-controller.mjs"
     },
     "./setup-zeego": {
@@ -122,7 +115,6 @@
       "module": "./dist/esm/setup-zeego.mjs",
       "import": "./dist/esm/setup-zeego.mjs",
       "require": "./dist/cjs/setup-zeego.cjs",
-      "browser": "./dist/esm/setup-zeego.mjs",
       "default": "./dist/esm/setup-zeego.mjs"
     },
     "./setup-burnt": {
@@ -131,7 +123,6 @@
       "module": "./dist/esm/setup-burnt.mjs",
       "import": "./dist/esm/setup-burnt.mjs",
       "require": "./dist/cjs/setup-burnt.cjs",
-      "browser": "./dist/esm/setup-burnt.mjs",
       "default": "./dist/esm/setup-burnt.mjs"
     }
   },

@@ -18,7 +18,6 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
-      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -30,8 +29,7 @@
       "module": "./dist/esm/LogoIcon.mjs",
       "import": "./dist/esm/LogoIcon.mjs",
       "require": "./dist/cjs/LogoIcon.cjs",
-      "default": "./dist/cjs/LogoIcon.native.js",
-      "browser": "./dist/esm/LogoIcon.mjs"
+      "default": "./dist/cjs/LogoIcon.native.js"
     }
   },
   "publishConfig": {

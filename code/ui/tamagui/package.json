@@ -33,7 +33,6 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
-      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -45,7 +44,6 @@
       "module": "./dist/esm/react-native-web.mjs",
       "import": "./dist/esm/react-native-web.mjs",
       "require": "./dist/cjs/react-native-web.cjs",
-      "browser": "./dist/esm/react-native-web.mjs",
       "default": "./dist/esm/react-native-web.mjs"
     },
     "./web": {
@@ -54,21 +52,18 @@
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "browser": "./dist/esm/index.mjs",
       "default": "./dist/esm/index.mjs"
     },
     "./native": {
       "types": "./types/index.d.ts",
+      "react-native": "./dist/native.cjs",
       "require": "./dist/native.cjs",
-      "browser": "./dist/native.cjs",
-      "default": "./dist/native.cjs",
-      "react-native": "./dist/native.cjs"
+      "default": "./dist/native.cjs"
     },
     "./native-test": {
       "types": "./types/index.d.ts",
-      "require": "./dist/test.cjs",
       "react-native": "./dist/test.native.js",
-      "browser": "./dist/test.cjs",
+      "require": "./dist/test.cjs",
       "default": "./dist/test.cjs"
     },
     "./linear-gradient": {
@@ -77,7 +72,6 @@
       "module": "./dist/esm/linear-gradient.mjs",
       "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.cjs",
-      "browser": "./dist/esm/linear-gradient.mjs",
       "default": "./dist/esm/linear-gradient.mjs"
     }
   },

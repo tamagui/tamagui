@@ -26,7 +26,6 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
-      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -38,7 +37,6 @@
       "module": "./dist/esm/index.reanimated.mjs",
       "import": "./dist/esm/index.reanimated.mjs",
       "require": "./dist/cjs/index.reanimated.cjs",
-      "browser": "./dist/esm/index.reanimated.mjs",
       "default": "./dist/esm/index.reanimated.mjs"
     },
     "./v3": {
@@ -47,7 +45,6 @@
       "module": "./dist/esm/v3.mjs",
       "import": "./dist/esm/v3.mjs",
       "require": "./dist/cjs/v3.cjs",
-      "browser": "./dist/esm/v3.mjs",
       "default": "./dist/esm/v3.mjs"
     },
     "./v4": {
@@ -56,7 +53,6 @@
       "module": "./dist/esm/v4.mjs",
       "import": "./dist/esm/v4.mjs",
       "require": "./dist/cjs/v4.cjs",
-      "browser": "./dist/esm/v4.mjs",
       "default": "./dist/esm/v4.mjs"
     },
     "./v5": {
@@ -65,7 +61,6 @@
       "module": "./dist/esm/v5.mjs",
       "import": "./dist/esm/v5.mjs",
       "require": "./dist/cjs/v5.cjs",
-      "browser": "./dist/esm/v5.mjs",
       "default": "./dist/esm/v5.mjs"
     },
     "./v5-css": {
@@ -74,7 +69,6 @@
       "module": "./dist/esm/v5-css.mjs",
       "import": "./dist/esm/v5-css.mjs",
       "require": "./dist/cjs/v5-css.cjs",
-      "browser": "./dist/esm/v5-css.mjs",
       "default": "./dist/esm/v5-css.mjs"
     },
     "./v5-rn": {
@@ -83,7 +77,6 @@
       "module": "./dist/esm/v5-rn.mjs",
       "import": "./dist/esm/v5-rn.mjs",
       "require": "./dist/cjs/v5-rn.cjs",
-      "browser": "./dist/esm/v5-rn.mjs",
       "default": "./dist/esm/v5-rn.mjs"
     },
     "./v5-reanimated": {
@@ -92,7 +85,6 @@
       "module": "./dist/esm/v5-reanimated.mjs",
       "import": "./dist/esm/v5-reanimated.mjs",
       "require": "./dist/cjs/v5-reanimated.cjs",
-      "browser": "./dist/esm/v5-reanimated.mjs",
       "default": "./dist/esm/v5-reanimated.mjs"
     },
     "./v5-motion": {
@@ -101,7 +93,6 @@
       "module": "./dist/esm/v5-motion.mjs",
       "import": "./dist/esm/v5-motion.mjs",
       "require": "./dist/cjs/v5-motion.cjs",
-      "browser": "./dist/esm/v5-motion.mjs",
       "default": "./dist/esm/v5-motion.mjs"
     },
     "./v5-subtle": {
@@ -110,7 +101,6 @@
       "module": "./dist/esm/v5-subtle.mjs",
       "import": "./dist/esm/v5-subtle.mjs",
       "require": "./dist/cjs/v5-subtle.cjs",
-      "browser": "./dist/esm/v5-subtle.mjs",
       "default": "./dist/esm/v5-subtle.mjs"
     }
   },

@@ -8,6 +8,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "test:native:maestro": "bun run ../packages/native-ci/src/cli.ts test maestro --project-root .",
+    "test:native": "TAMAGUI_PACKAGE_EXPORTS=true bun run test:native:maestro && TAMAGUI_PACKAGE_EXPORTS=false bun run test:native:maestro",
     "test": "./run-native-tests.sh"
   },
   "dependencies": {
