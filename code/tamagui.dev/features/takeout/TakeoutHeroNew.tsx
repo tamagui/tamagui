@@ -131,14 +131,14 @@ export function TakeoutHeroNew({
       {/* Buy buttons */}
       {onBuyPress && (
         <XStack gap="$3" position="absolute" items="center" t={30} r="2%" z={10}>
-          <ButtonLink
+          {/* <ButtonLink
             href="https://github.com/tamagui/takeout-free"
             target="_blank"
             size="$2"
           >
             <SizableText fontFamily="$mono">Free</SizableText>
             <ExternalLink size={12} opacity={0.5} />
-          </ButtonLink>
+          </ButtonLink> */}
           <PurchaseButton onPress={onBuyPress} size="$5" theme="accent">
             Pro
           </PurchaseButton>
