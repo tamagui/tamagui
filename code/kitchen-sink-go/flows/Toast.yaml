@@ -7,8 +7,17 @@ tags:
     element: 'Toast'
     centerElement: true
 - tapOn: 'Toast'
-# Toast v1 demo has Show button
-- assertVisible: 'Show'
-# Test: tap show, native toast appears
-- tapOn: 'Show'
-# Toast should appear (but may dismiss quickly)
+# Toast v2 demo has circular icon buttons for positions
+- waitForAnimationToEnd
+# Tap the bottom-right position button to trigger a toast
+- tapOn:
+    id: 'toast-show-button'
+# Toast should appear (testID on ToastPositionWrapper, outside AnimatedView)
+- assertVisible:
+    id: 'toast-item'
+# Tap close button to dismiss
+- tapOn:
+    id: 'toast-close-button'
+# Toast should be gone
+- assertNotVisible:
+    id: 'toast-item'
