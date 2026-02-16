@@ -65,18 +65,24 @@ const emailStyles = `
   h1 { color: #000; }
   h2 { color: #333; margin-top: 30px; }
   .cta-button { background-color: #000; color: #fff !important; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; margin: 10px 5px; font-weight: 600; }
+  .coupon-box { background: #ffeb3b; color: #000; padding: 20px; border-radius: 12px; text-align: center; margin: 24px 0; }
+  .coupon-code { font-size: 28px; font-weight: bold; letter-spacing: 2px; margin: 4px 0; font-family: monospace; }
+  .coupon-discount { font-size: 18px; margin: 0; }
   ul { padding-left: 20px; }
   li { margin: 8px 0; }
   .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 14px; }
   .cta-container { text-align: center; margin: 30px 0; }
 `
 
+const emailIntro = `
+  <p>I want to thank you so much for supporting our small team. We've been working very hard to not just rethink Tamagui, but One and Takeout and try to put together something genuinely beautiful and groundbreaking. If you take anything from this email, I hope you check out <a href="https://takeout.tamagui.dev">the new Takeout</a>. It's a product of love from our small team, and we could use support now more than ever to continue building dev tools that are simple, joyful, and surprisingly effective.</p>
+`
+
 function buildEmailHtml(name, daysUntilExpiry, isApology) {
   const apologySection = isApology
     ? `
-  <p style="background: #fef3c7; padding: 16px; border-radius: 8px; border-left: 4px solid #f59e0b;">
-    During a recent migration, we didn't properly save your payment method.
-    We're sorry for any inconvenience - please take a moment to update your payment info to keep your access active.
+  <p style="background: #f5f5f5; padding: 16px; border-radius: 8px;">
+    Our new Pro package has changed and so we've disabled auto-renew. For supporting our small team we'd like to thank you.
   </p>
   `
     : ''
@@ -95,26 +101,34 @@ function buildEmailHtml(name, daysUntilExpiry, isApology) {
   <style>${emailStyles}</style>
 </head>
 <body>
-  <h1>Hey ${name}!</h1>
-
-  <p>We want to thank you so much for supporting our small team. We've been working very hard to not just rethink Tamagui, but rethink One and Takeout and try to put together something genuinely beautiful and groundbreaking. If you take anything from this email, we hope you check out <a href="https://takeout.tamagui.dev">the new Takeout</a>. It's a product of love from our small team, and we could use support now more than ever to continue building dev tools that are simple, joyful, and surprisingly effective.</p>
+  ${emailIntro}
 
   <p><strong>${urgencyText}</strong></p>
 
   <div class="cta-container">
-    <a href="https://tamagui.dev/account" class="cta-button">Update Payment Method</a>
+    <a href="https://tamagui.dev/account" class="cta-button">Upgrade</a>
+    <a href="https://takeout.tamagui.dev" class="cta-button" style="background-color: #8b3a3a;">Takeout</a>
+    <a href="https://tamagui.dev/blog/version-two" class="cta-button" style="background-color: #5c4033;">v2</a>
   </div>
 
   ${apologySection}
 
-  <h2>Reborn</h2>
+  <div class="coupon-box">
+    <div class="coupon-discount">30% off for returning</div>
+    <div class="coupon-code">WELCOMEBACK30</div>
+    <p style="margin: 4px 0 0; font-size: 14px;">Stacks with parity pricing!</p>
+  </div>
 
-  <p>We've been shipping a lot of cool stuff lately:</p>
+  <p style="text-align: center; color: #666; border-top: 1px solid #eee; border-bottom: 1px solid #eee; padding: 40px 0; margin: 24px 0;"><strong>We're now available to consult @ <a href="https://addeven.com">Add Even</a></strong></p>
+
+  <h2>... we've been reborn</h2>
+
+  <p>We've been incredibly busy rethinking what a modern stack means, and rebuilding it to a much higher degree of quality:</p>
 
   <ul>
-    <li><strong>Tamagui 2</strong> - Better in every way, new components, re-written docs, easier install and setup, thousands of new tests. <a href="https://tamagui.dev/blog/version-two">More info</a></li>
-    <li><strong>One v1</strong> - One is now stable and works seamlessly with Metro, plus has more features than your favorite web framework. <a href="https://onestack.dev/blog/version-one-rc1">More info</a></li>
-    <li><strong>Takeout 2</strong> - A huge amount of effort went into this new stack. Tamagui 2, One 1, and Zero. 95+ Lighthouse scores, fully shared code, tons of AI skills and documentation. <a href="https://tamagui.dev/takeout">More info</a> | <a href="https://takeout.tamagui.dev">Demo</a></li>
+    <li><strong>Tamagui 2</strong> - Better in every way: new components, re-written docs, easier install and setup, thousands of new tests. <strong><a href="https://tamagui.dev/blog/version-two">Read the announcement &rarr;</a></strong></li>
+    <li><strong>One v1</strong> - One is now stable and works seamlessly with Metro, plus has more features than your favorite web framework. <strong><a href="https://onestack.dev/blog/version-one-rc1">Read about One &rarr;</a></strong></li>
+    <li><strong>Takeout 2</strong> - A huge amount of effort went into this new stack. Tamagui 2, One 1, and Zero. 95+ Lighthouse scores, fully shared code, tons of AI skills and documentation. <strong><a href="https://tamagui.dev/takeout">More info</a></strong> | <strong><a href="https://takeout.tamagui.dev">Demo</a></strong></li>
     <li><strong>Takeout Static</strong> - A new simplified web-only starter with MDX blog/docs and 100 Lighthouse.</li>
     <li><strong>Bento Components</strong> - Rewritten for v2 with new components and more polish, updated libraries.</li>
     <li><strong>Unlimited Team Members</strong> - Share access with your whole team.</li>
@@ -152,9 +166,7 @@ async function confirm(message) {
 }
 
 async function sendEmail(email, name, daysUntilExpiry, isApology) {
-  const subject = isApology
-    ? 'Action Required: Update Your Payment Method for Tamagui Pro'
-    : `Action Required: Your Tamagui Pro subscription ${daysUntilExpiry <= 0 ? 'has expired' : 'renews soon'}`
+  const subject = 'A genuine thank you'
 
   if (isDryRun) {
     return { success: true }
@@ -364,7 +376,7 @@ async function main() {
   let failed = 0
 
   for (const item of dedupedToProcess) {
-    process.stdout.write(`  → ${item.email}... `)
+    process.stdout.write(`  &rarr; ${item.email}... `)
 
     const result = await sendEmail(
       item.email,
