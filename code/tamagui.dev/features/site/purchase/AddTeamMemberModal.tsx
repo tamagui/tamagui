@@ -24,7 +24,12 @@ import {
 import { authFetch } from '~/features/api/authFetch'
 import { useUser } from '~/features/user/useUser'
 
-const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+const isTestMode =
+  process.env.STRIPE_TEST_MODE === 'true' || process.env.NODE_ENV === 'development'
+
+const key = isTestMode
+  ? process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST
+  : process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
 // lazy load stripe only when needed
 let stripePromise: ReturnType<typeof loadStripe> | null = null

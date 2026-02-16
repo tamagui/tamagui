@@ -1,6 +1,13 @@
 import Stripe from 'stripe'
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const isTestMode =
+  process.env.STRIPE_TEST_MODE === 'true' || process.env.NODE_ENV === 'development'
+
+const secretKey = isTestMode
+  ? process.env.STRIPE_SECRET_KEY_TEST
+  : process.env.STRIPE_SECRET_KEY
+
+export const stripe = new Stripe(secretKey!, {
   // https://github.com/stripe/stripe-node#configuration
   apiVersion: '2020-08-27',
   // Register this as an official Stripe plugin.
