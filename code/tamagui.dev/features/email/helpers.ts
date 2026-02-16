@@ -20,11 +20,8 @@ export function sendProductPurchaseEmail(
 
   const client = new postmark.ServerClient(serverToken)
 
-  const htmlBody = `
-<!DOCTYPE html>
-<html>
-<body>
-  <h1>Hello ${args.name}!</h1>
+  const htmlBody = wrapEmail(`
+  <h1>Hey ${args.name}! 👋</h1>
 
   <p>Thank you for your purchase of ${args.product_name}!</p>
 
@@ -39,36 +36,14 @@ export function sendProductPurchaseEmail(
     <li>Clicking the "Re-send GitHub Invite" button</li>
   </ol>
 
-  <h2>What You Get Access To</h2>
+  ${whatYouGetSection}
 
-  <p>Once you accept the invite, you'll have access to:</p>
-  <ul>
-    <li><strong>Bento</strong> - Our premium component library: <a href="https://github.com/tamagui/bento">https://github.com/tamagui/bento</a></li>
-    <li><strong>Takeout Pro</strong>: <a href="https://github.com/tamagui/takeout2">https://github.com/tamagui/takeout2</a></li>
-    <li><strong>Takeout Pro Classic</strong>: <a href="https://github.com/tamagui/takeout">https://github.com/tamagui/takeout</a></li>
-  </ul>
-
-  <p>If you have any questions or need help, feel free to reach out to us at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
-
-  <p>We hope this finds you well,
-    <br>The Tamagui Team</p>
+  <p>If you have any questions or need help, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
 
   <p><strong>P.S.</strong> If you haven't already, be sure to join our Discord community!</p>
 
-  <table class="body-sub">
-    <tr>
-      <td>
-        <p class="sub">If you're having trouble with the links above, copy and paste these URLs into your web browser:</p>
-        <p class="sub">Tamagui: https://tamagui.dev</p>
-        <p class="sub">Bento: https://github.com/tamagui/bento</p>
-        <p class="sub">Takeout Pro: https://github.com/tamagui/takeout2</p>
-        <p class="sub">Takeout Pro Classic: https://github.com/tamagui/takeout</p>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
-  `.trim()
+  ${emailFooter}
+  `)
 
   return client.sendEmail({
     From: 'support@tamagui.dev',
@@ -89,41 +64,23 @@ export function sendProductRenewalEmail(
 
   const client = new postmark.ServerClient(serverToken)
 
-  const htmlBody = `
-<!DOCTYPE html>
-<html>
-<body>
-  <h1>Hello ${args.name}!</h1>
+  const htmlBody = wrapEmail(`
+  <h1>Hey ${args.name}!</h1>
 
   <p>In a week your subscription to ${args.product_name} will renew.</p>
 
-  <p>We really appreciate your support of our small business.</p>
+  <p>We really appreciate your support!</p>
 
-  <p><strong>Use the code TAMAGUI_PRO_RENEWAL to get 25% off your renewal.</strong></p>
+  ${whatYouGetSection}
 
-  <h2>We're happy to announce that the Takeout 2 Beta is now available!</h2>
+  <div class="cta-container">
+    <a href="https://tamagui.dev/account" class="cta-button">Manage Subscription</a>
+  </div>
 
-  <p>It represents a huge upgrade in every way and a glimpse at the future of frontend development. Learn more about it in the private Takeout channel in discord.</p>
+  <p>If you have any questions, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
 
-  <p>Feel free to reach out to us for help at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a> if you have any questions.</p>
-
-  <p>If you wish to cancel, you can do so by logging in, opening your account, and hitting cancel <a href="https://tamagui.dev">on the Tamagui site</a>.</p>
-
-  <p>We hope this finds you well,
-    <br>The Tamagui Team</p>
-
-  <!-- Sub copy -->
-  <table class="body-sub">
-    <tr>
-      <td>
-        <p class="sub">If you're having trouble with the button above, copy and paste the URL below into your web browser and hit "Pro" after logging in.</p>
-        <p class="sub">https://tamagui.dev</p>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>
-  `.trim()
+  ${emailFooter}
+  `)
 
   return client.sendEmail({
     From: 'support@tamagui.dev',
@@ -133,6 +90,7 @@ export function sendProductRenewalEmail(
   })
 }
 
+// shared email styles
 const emailStyles = `
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; }
   h1 { color: #000; }
@@ -147,6 +105,45 @@ const emailStyles = `
   .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #666; font-size: 14px; }
   .cta-container { text-align: center; margin: 30px 0; }
 `
+
+// shared "what you get" content - keep this updated!
+const whatYouGetSection = `
+  <h2>Reborn</h2>
+
+  <p>We've been shipping a lot of cool stuff lately:</p>
+
+  <ul>
+    <li><strong>Tamagui 2</strong> - Better in every way, new components, re-written docs, easier install and setup, thousands of new tests.. <a href="https://tamagui.dev/blog/version-two">Read the announcement →</a></li>
+    <li><strong>One v1</strong> - One is now stable and works seamlessly with Metro, plus has more features than your favorite web framework.. <a href="https://onestack.dev/blog/version-one-rc1">Read about One →</a></li>
+    <li><strong>Takeout 2</strong> - A huge amount of effort went into this new stack. Tamagui 2, One 1, and Zero. 95+ Lighthouse scores, fully shared code, tons of AI skills and documentation. <a href="https://tamagui.dev/takeout">More info</a> | <a href="https://takeout.tamagui.dev">Demo</a></li>
+    <li><strong>Takeout Static</strong> - A new simplified web-only starter with MDX blog/docs and 100 Lighthouse.</li>
+    <li><strong>Bento Components</strong> - Rewritten for v2 with new components and more polish, updated libraries.</li>
+    <li><strong>Unlimited Team Members</strong> - Share access with your whole team.</li>
+    <li><strong>AI Theme Generator</strong> - Opus-powered /theme generation for custom designs.</li>
+  </ul>
+`
+
+// shared footer
+const emailFooter = `
+  <div class="footer">
+    <p>Thanks for being part of Tamagui!<br><strong>- Nate & the Tamagui Team</strong></p>
+  </div>
+`
+
+// email wrapper helper
+function wrapEmail(body: string) {
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>${emailStyles}</style>
+</head>
+<body>
+${body}
+</body>
+</html>
+  `.trim()
+}
 
 /**
  * Send email to V1 subscribers about Takeout 2 with 35% discount
@@ -289,3 +286,66 @@ export function sendV2RenewalEnabledEmail(email: string, args: { name: string })
  * @deprecated Use sendV1UpgradeEmail instead
  */
 export const sendV1ExpirationEmail = sendV1UpgradeEmail
+
+/**
+ * Send payment method reminder to users whose subscriptions are about to renew
+ * but don't have a payment method attached
+ */
+export function sendPaymentMethodReminderEmail(
+  email: string,
+  args: { name: string; daysUntilExpiry: number; isApology?: boolean }
+) {
+  if (process.env.NODE_ENV !== 'production') {
+    console.info(
+      `Not sending payment reminder email to ${email} since we're not on prod.`
+    )
+    return
+  }
+
+  const client = new postmark.ServerClient(serverToken)
+
+  const apologySection = args.isApology
+    ? `
+  <p style="background: #fef3c7; padding: 16px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+    During a recent migration, we didn't save your payment method.
+    We're sorry for any inconvenience - please take a moment to update your payment info to keep your access active.
+  </p>
+  `
+    : ''
+
+  const urgencyText =
+    args.daysUntilExpiry <= 0
+      ? 'Your subscription has expired! But no sweat, we have some amazing new stuff for you to take a look at.'
+      : args.daysUntilExpiry <= 3
+        ? `Your subscription expires in ${args.daysUntilExpiry} day${args.daysUntilExpiry === 1 ? '' : 's'}!`
+        : `Your subscription renews in ${args.daysUntilExpiry} days.`
+
+  const htmlBody = wrapEmail(`
+  <h1>Hey ${args.name}!</h1>
+
+  ${apologySection}
+
+  <p><strong>${urgencyText}</strong></p>
+
+  <p>Click below to update your Tamagui Pro account.</p>
+
+  <div class="cta-container">
+    <a href="https://tamagui.dev/account" class="cta-button">Update Payment Method</a>
+  </div>
+
+  ${whatYouGetSection}
+
+  <p>Questions? Just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
+
+  ${emailFooter}
+  `)
+
+  return client.sendEmail({
+    From: 'support@tamagui.dev',
+    To: email,
+    Subject: args.isApology
+      ? 'Action Required: Update Your Payment Method for Tamagui Pro'
+      : `Action Required: Your Tamagui Pro subscription ${args.daysUntilExpiry <= 0 ? 'has expired' : 'renews soon'}`,
+    HtmlBody: htmlBody,
+  })
+}

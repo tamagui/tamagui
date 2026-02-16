@@ -11,15 +11,8 @@ env:
   test_container_app_path: code/kitchen-sink-go
 
 jobs:
-  build:
-    uses: ./.github/workflows/build-ios-kitchensink-go-app.yml
-    with:
-      configuration: Debug
-    secrets: inherit
-
   test:
     name: Run Maestro Tests (exports=${{ matrix.package-exports }})
-    needs: build
     runs-on: macos-14
     timeout-minutes: 30
     strategy:
@@ -36,41 +29,21 @@ jobs:
       - name: Set Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.2.app
 
-      - name: Restore Built App from Cache
-        id: restore-app-cache
-        uses: actions/cache/restore@v4
-        with:
-          key: ${{ needs.build.outputs.built-app-cache-key }}
-          path: ${{ needs.build.outputs.built-app-path }}
-
-      - name: Check Cache Restore
-        if: steps.restore-app-cache.outputs.cache-hit != 'true'
-        run: |
-          echo "::warning::iOS cache not restored (key: ${{ needs.build.outputs.built-app-cache-key }}). This may happen on first run after cache key changes."
-          echo "SKIP_MAESTRO_TESTS=true" >> $GITHUB_ENV
-
       - name: Install Maestro
-        if: env.SKIP_MAESTRO_TESTS != 'true'
         env:
           MAESTRO_VERSION: cli-2.0.10
         run: |
-          # Pin to specific version via GitHub releases (avoids broken get.maestro.mobile.dev)
           curl -fsSL "https://github.com/mobile-dev-inc/maestro/releases/download/${MAESTRO_VERSION}/maestro.zip" -o maestro.zip
           unzip -q maestro.zip
           mv maestro "$HOME/.maestro"
           echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
-      # Install dependencies BEFORE booting simulator to avoid simulator timeout
-      # during potentially long bun install + build:js steps
       - name: Install Dependencies
-        if: env.SKIP_MAESTRO_TESTS != 'true'
         uses: ./.github/actions/install
 
       - name: Boot iOS Simulator
-        if: env.SKIP_MAESTRO_TESTS != 'true'
         working-directory: ${{ github.workspace }}
         run: |
-          # List available simulators and boot iPhone 15
           DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name == "iPhone 15") | .udid' | head -1)
           if [ -z "$DEVICE_ID" ]; then
             echo "iPhone 15 not found, using first available iPhone"
@@ -78,13 +51,10 @@ jobs:
           fi
           echo "Booting simulator: $DEVICE_ID"
           xcrun simctl boot "$DEVICE_ID" || true
-          # Wait for simulator to be ready
           xcrun simctl bootstatus "$DEVICE_ID" -b
 
-          # Wait for idb_companion to start (Maestro uses this for iOS device detection)
           echo "Waiting for simulator to be fully ready for Maestro..."
           for i in {1..30}; do
-            # Check if Maestro can see the device
             if $HOME/.maestro/bin/maestro --device "$DEVICE_ID" test --help > /dev/null 2>&1; then
               echo "Maestro can communicate with device"
               break
@@ -92,20 +62,19 @@ jobs:
             echo "Waiting for Maestro device detection... ($i/30)"
             sleep 2
           done
-          # Additional settle time for device to be stable
           sleep 5
 
-      - name: Install App on Simulator
-        if: env.SKIP_MAESTRO_TESTS != 'true'
-        working-directory: ${{ github.workspace }}
+      - name: Install Expo Go
         run: |
-          xcrun simctl install booted "${{ needs.build.outputs.built-app-path }}"
+          # Install Expo Go on simulator (no custom build needed)
+          bunx expo start --ios &
+          sleep 30
+          # Kill expo after it installs Expo Go
+          kill %1 || true
 
       - name: Start Metro Bundler
-        if: env.SKIP_MAESTRO_TESTS != 'true'
         run: |
           EXPO_NO_TELEMETRY=true TAMAGUI_PACKAGE_EXPORTS=${{ matrix.package-exports }} bunx expo start --offline &
-          # Wait for Metro to be ready
           echo "Waiting for Metro to start..."
           for i in {1..30}; do
             if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios" > /dev/null 2>&1; then
@@ -117,9 +86,7 @@ jobs:
           done
 
       - name: Pre-warm Bundle
-        if: env.SKIP_MAESTRO_TESTS != 'true'
         run: |
-          # Pre-warm the JS bundle to avoid timeout on first app launch
           echo "Pre-warming bundle..."
           MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios")
           BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
@@ -128,14 +95,11 @@ jobs:
           echo "Bundle pre-warm complete"
 
       - name: Verify Maestro Device Connection
-        if: env.SKIP_MAESTRO_TESTS != 'true'
         run: |
           echo "Checking Maestro device connection..."
           for i in {1..10}; do
-            DEVICES=$(maestro --verbose test --help 2>&1 | grep -c "device" || echo "0")
             if xcrun simctl list devices booted | grep -q "Booted"; then
               echo "Simulator is booted"
-              # Give idb_companion time to connect
               sleep 3
               break
             fi
@@ -144,16 +108,8 @@ jobs:
           done
           xcrun simctl list devices booted
 
-      - name: Warm up App
-        if: env.SKIP_MAESTRO_TESTS != 'true'
-        run: |
-          # Run OpenApp first to warm up the app and ensure bundle loads
-          maestro test ./flows/OpenApp.yaml --no-ansi || true
-
       - name: Run Maestro Tests
-        if: env.SKIP_MAESTRO_TESTS != 'true'
         run: |
-          # Run tests with one retry for flaky simulator detection
           for attempt in 1 2; do
             echo "Test attempt $attempt of 2..."
             if maestro test ./flows --exclude-tags=util --no-ansi; then
@@ -168,13 +124,8 @@ jobs:
           echo "All attempts failed"
           exit 1
 
-      - name: Report Test Status
-        if: always() && env.SKIP_MAESTRO_TESTS == 'true'
-        run: |
-          echo "::warning::Maestro tests skipped - cache was not available (will be available on next run)"
-
       - name: Upload Maestro Artifacts on Failure
-        if: failure() && env.SKIP_MAESTRO_TESTS != 'true'
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: maestro-artifacts-exports-${{ matrix.package-exports }}
