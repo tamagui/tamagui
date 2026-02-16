@@ -18,7 +18,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
           rounded="100"
         >
           <span
-            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
           >
             hello world
           </span>
@@ -46,13 +46,13 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _ox-hidden _oy-hidden who "
+          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _ox-hidden _oy-hidden who"
         />
         <div
-          class="ease-in-out-top _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _pt-2px _pb-2px _bg-fff35 _t--14px "
+          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _bg-fff35 _pt-2px _pb-2px _t--14px ease-in-out-top"
         >
           <span
-            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
           >
             hello world
           </span>
@@ -80,13 +80,13 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _ox-hidden _oy-hidden who "
+          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _ox-hidden _oy-hidden who"
         />
         <div
-          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top "
+          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-row _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top"
         >
           <span
-            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
           >
             hello world
           </span>
@@ -114,10 +114,10 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
+          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue"
         >
           <div
-            class="hello-world _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
+            class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue hello-world"
           />
         </div>
         <div
@@ -143,10 +143,10 @@ exports[`webpack-tests > 6. spread ternary 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue "
+          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-blue"
         >
           <span
-            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
           >
             hello world
           </span>
@@ -174,10 +174,10 @@ exports[`webpack-tests > 6. spread ternary 2`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-red "
+          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _ox-hidden _oy-hidden _bg-red"
         >
           <span
-            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
           >
             hello world
           </span>
@@ -210,7 +210,7 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
           minw="500"
         >
           <div
-            class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _h-10px _w-10px "
+            class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _w-10px _h-10px"
           />
         </div>
         <div
@@ -236,7 +236,7 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pos-relative _inset-0px "
+          class="_dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pos-relative _inset-0px"
         >
           <div
             class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _bg-red"
@@ -269,7 +269,7 @@ exports[`webpack-tests > 9. combines with classname 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pt-15px _pb-15px home-top-dish "
+          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _pt-15px _pb-15px home-top-dish"
         />
         <div
           style="display: contents;"
@@ -294,10 +294,10 @@ exports[`webpack-tests > 10. extracts Text 1`] = `
         style="color: var(--color); display: contents;"
       >
         <span
-          class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos-10px "
+          class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color _fos-10px"
         >
           <span
-            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
+            class="is_Text _ff-inherit _dsp-inline _bxs-border-box _ww-inherit _ws-inherit _mt-0px _mr-0px _mb-0px _ml-0px _col-inherit"
             select="auto"
           >
             <span
@@ -330,7 +330,7 @@ exports[`webpack-tests > 12. ternary multiple on same key 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _tr- _o-1 "
+          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-column _o-1 _tr-"
         />
         <div
           style="display: contents;"
@@ -380,10 +380,10 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
         style="color: var(--color); display: contents;"
       >
         <span
-          class="is_Spacer _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-t-space-tru101 _miw-t-space-tru101 _fs-0 _pe-none _w-t-space-tru101 _h-t-space-tru101 "
+          class="is_Spacer _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-t-space-tru101 _miw-t-space-tru101 _fs-0 _pe-none _w-t-space-tru101 _h-t-space-tru101"
         />
         <span
-          class="is_Spacer _dsp-flex _ai-stretch _fd-column _fb-0px _bxs-border-box _mih-10px _miw-10px _fs-1 _pe-none _fg-1 _w-10px _h-10px "
+          class="is_Spacer _dsp-flex _ai-stretch _fd-column _fb-0px _bxs-border-box _mih-10px _miw-10px _fs-1 _pe-none _fg-1 _w-10px _h-10px"
         />
         <div
           style="display: contents;"
@@ -433,10 +433,10 @@ exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fwr-wrap _fd-row _gap-t-space-2 "
+          class="_pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fwr-wrap _fd-row _gap-t-space-2"
         >
           <span
-            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
           >
             hello world
           </span>
@@ -469,7 +469,7 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 1`] = `
           justify="space-between"
         >
           <span
-            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
           >
             hello world
           </span>
@@ -502,7 +502,7 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
           justify="space-between"
         >
           <span
-            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
           >
             hello world
           </span>
@@ -530,10 +530,10 @@ exports[`webpack-tests > 20. extracts multiple flex properties together 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pos-static _dsp-flex _bxs-border-box _mih-0px _miw-0px _fd-column _fwr-wrap _fg-1 _fs-0 _fb-auto _ai-stretch _jc-flex-start _ac-flex-start "
+          class="_pos-static _dsp-flex _bxs-border-box _mih-0px _miw-0px _fd-column _fwr-wrap _fg-1 _fs-0 _fb-auto _ai-stretch _jc-flex-start _ac-flex-start"
         >
           <span
-            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
           >
             hello world
           </span>
@@ -570,7 +570,7 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
             justify="flex-start"
           >
             <span
-              class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+              class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
             >
               hello world
             </span>
@@ -608,7 +608,7 @@ exports[`webpack-tests > 21. complex real-world case - flexWrap with many condit
             justify="center"
           >
             <span
-              class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+              class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
             >
               hello world
             </span>
@@ -637,10 +637,10 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
         style="color: var(--color); display: contents;"
       >
         <div
-          class="_pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-_sm_nowrap _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fwr-wrap _gap-t-space-2 _fd-row "
+          class="_fwr-_sm_nowrap _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fwr-wrap _fd-row _gap-t-space-2"
         >
           <span
-            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color "
+            class="is_Text font_body _ff-f-family _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _col-color"
           >
             hello world
           </span>
