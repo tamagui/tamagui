@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-guard",
-  "version": "2.0.0-rc.13-1771262617050",
+  "version": "2.0.0-rc.13-1771279885156",
   "source": "src/index.ts",
   "type": "module",
   "files": [
