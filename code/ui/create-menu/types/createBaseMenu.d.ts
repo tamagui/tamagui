@@ -197,12 +197,24 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
             unstyled?: boolean | undefined;
             size?: import("@tamagui/web").FontSizeTokens | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
-        Item: React.ForwardRefExoticComponent<MenuItemProps & {
+        Item: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+            unstyled?: boolean | undefined;
+        }>, "scope" | keyof MenuItemProps> & MenuItemProps & {
             scope?: string;
-        } & React.RefAttributes<TamaguiElement>>;
-        CheckboxItem: React.ForwardRefExoticComponent<MenuCheckboxItemProps & {
+        }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuItemProps & {
             scope?: string;
-        } & React.RefAttributes<TamaguiElement>>;
+        }, import("@tamagui/web").StackStyleBase, {
+            unstyled?: boolean | undefined;
+        }, import("@tamagui/web").StaticConfigPublic>;
+        CheckboxItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+            unstyled?: boolean | undefined;
+        }>, "scope" | keyof MenuCheckboxItemProps> & MenuCheckboxItemProps & {
+            scope?: string;
+        }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuCheckboxItemProps & {
+            scope?: string;
+        }, import("@tamagui/web").StackStyleBase, {
+            unstyled?: boolean | undefined;
+        }, import("@tamagui/web").StaticConfigPublic>;
         RadioGroup: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
         }>, "scope" | keyof MenuRadioGroupProps> & MenuRadioGroupProps & {
@@ -212,9 +224,15 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         }, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
-        RadioItem: React.ForwardRefExoticComponent<MenuRadioItemProps & {
+        RadioItem: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+            unstyled?: boolean | undefined;
+        }>, "scope" | keyof MenuRadioItemProps> & MenuRadioItemProps & {
             scope?: string;
-        } & React.RefAttributes<TamaguiElement>>;
+        }, TamaguiElement, import("@tamagui/web").StackNonStyleProps & MenuRadioItemProps & {
+            scope?: string;
+        }, import("@tamagui/web").StackStyleBase, {
+            unstyled?: boolean | undefined;
+        }, import("@tamagui/web").StaticConfigPublic>;
         ItemIndicator: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
         }>, "scope" | keyof MenuItemIndicatorProps> & MenuItemIndicatorProps & {

@@ -950,106 +950,105 @@ export function createBaseMenu({
   const ITEM_NAME = 'MenuItem'
   const ITEM_SELECT = 'menu.itemSelect'
 
-  const MenuItem = React.forwardRef<TamaguiElement, ScopedProps<MenuItemProps>>(
-    (props, forwardedRef) => {
-      const {
-        disabled = false,
-        onSelect,
-        children,
-        scope = MENU_CONTEXT,
-        // filter out native-only props that shouldn't reach the DOM
-        // @ts-ignore
-        destructive,
-        // @ts-ignore
-        hidden,
-        // @ts-ignore
-        androidIconName,
-        // @ts-ignore
-        iosIconName,
-        ...itemProps
-      } = props
-      const ref = React.useRef<TamaguiElement>(null)
-      const rootContext = useMenuRootContext(scope)
-      const contentContext = useMenuContentContext(scope)
-      const composedRefs = useComposedRefs(forwardedRef, ref)
-      const isPointerDownRef = React.useRef(false)
+  // use styleable so styled(Menu.Item, { focusStyle }) passes pseudo styles through correctly
+  const MenuItem = _Item.styleable<ScopedProps<MenuItemProps>>((props, forwardedRef) => {
+    const {
+      disabled = false,
+      onSelect,
+      children,
+      scope = MENU_CONTEXT,
+      // filter out native-only props that shouldn't reach the DOM
+      // @ts-ignore
+      destructive,
+      // @ts-ignore
+      hidden,
+      // @ts-ignore
+      androidIconName,
+      // @ts-ignore
+      iosIconName,
+      ...itemProps
+    } = props
+    const ref = React.useRef<TamaguiElement>(null)
+    const rootContext = useMenuRootContext(scope)
+    const contentContext = useMenuContentContext(scope)
+    const composedRefs = useComposedRefs(forwardedRef, ref)
+    const isPointerDownRef = React.useRef(false)
 
-      const handleSelect = () => {
-        const menuItem = ref.current
-        if (!disabled && menuItem) {
-          if (isWeb) {
-            const menuItemEl = menuItem as HTMLElement
-            const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
-              bubbles: true,
-              cancelable: true,
-            })
-            menuItemEl.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
-              once: true,
-            })
-            dispatchDiscreteCustomEvent(menuItemEl, itemSelectEvent)
-            if (itemSelectEvent.defaultPrevented) {
-              isPointerDownRef.current = false
-            } else {
-              rootContext.onClose()
-            }
-          } else {
-            // TODO: find a better way to handle this on native
-            onSelect?.({ target: menuItem } as unknown as Event)
+    const handleSelect = () => {
+      const menuItem = ref.current
+      if (!disabled && menuItem) {
+        if (isWeb) {
+          const menuItemEl = menuItem as HTMLElement
+          const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
+            bubbles: true,
+            cancelable: true,
+          })
+          menuItemEl.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
+            once: true,
+          })
+          dispatchDiscreteCustomEvent(menuItemEl, itemSelectEvent)
+          if (itemSelectEvent.defaultPrevented) {
             isPointerDownRef.current = false
+          } else {
             rootContext.onClose()
           }
+        } else {
+          // TODO: find a better way to handle this on native
+          onSelect?.({ target: menuItem } as unknown as Event)
+          isPointerDownRef.current = false
+          rootContext.onClose()
         }
       }
-
-      const content = typeof children === 'string' ? <Text>{children}</Text> : children
-
-      return (
-        <MenuItemImpl
-          outlineStyle="none"
-          {...itemProps}
-          scope={scope}
-          // @ts-ignore
-          ref={composedRefs}
-          disabled={disabled}
-          onPress={composeEventHandlers(props.onPress, handleSelect)}
-          onPointerDown={(event) => {
-            props.onPointerDown?.(event)
-            isPointerDownRef.current = true
-          }}
-          onPointerUp={composeEventHandlers(props.onPointerUp, (event) => {
-            // Pointer down can move to a different menu item which should activate it on pointer up.
-            // We dispatch a click for selection to allow composition with click based triggers and to
-            // prevent Firefox from getting stuck in text selection mode when the menu closes.
-            if (isWeb) {
-              // @ts-ignore
-              if (!isPointerDownRef.current) event.currentTarget?.click()
-            }
-          })}
-          {...(isWeb
-            ? {
-                onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
-                  const isTypingAhead = contentContext.searchRef.current !== ''
-                  if (disabled || (isTypingAhead && event.key === ' ')) return
-                  if (SELECTION_KEYS.includes(event.key)) {
-                    // @ts-ignore
-                    event.currentTarget?.click()
-                    /**
-                     * We prevent default browser behaviour for selection keys as they should trigger
-                     * a selection only:
-                     * - prevents space from scrolling the page.
-                     * - if keydown causes focus to move, prevents keydown from firing on the new target.
-                     */
-                    event.preventDefault()
-                  }
-                }),
-              }
-            : {})}
-        >
-          {content}
-        </MenuItemImpl>
-      )
     }
-  )
+
+    const content = typeof children === 'string' ? <Text>{children}</Text> : children
+
+    return (
+      <MenuItemImpl
+        outlineStyle="none"
+        {...itemProps}
+        scope={scope}
+        // @ts-ignore
+        ref={composedRefs}
+        disabled={disabled}
+        onPress={composeEventHandlers(props.onPress, handleSelect)}
+        onPointerDown={(event) => {
+          props.onPointerDown?.(event)
+          isPointerDownRef.current = true
+        }}
+        onPointerUp={composeEventHandlers(props.onPointerUp, (event) => {
+          // Pointer down can move to a different menu item which should activate it on pointer up.
+          // We dispatch a click for selection to allow composition with click based triggers and to
+          // prevent Firefox from getting stuck in text selection mode when the menu closes.
+          if (isWeb) {
+            // @ts-ignore
+            if (!isPointerDownRef.current) event.currentTarget?.click()
+          }
+        })}
+        {...(isWeb
+          ? {
+              onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                const isTypingAhead = contentContext.searchRef.current !== ''
+                if (disabled || (isTypingAhead && event.key === ' ')) return
+                if (SELECTION_KEYS.includes(event.key)) {
+                  // @ts-ignore
+                  event.currentTarget?.click()
+                  /**
+                   * We prevent default browser behaviour for selection keys as they should trigger
+                   * a selection only:
+                   * - prevents space from scrolling the page.
+                   * - if keydown causes focus to move, prevents keydown from firing on the new target.
+                   */
+                  event.preventDefault()
+                }
+              }),
+            }
+          : {})}
+      >
+        {content}
+      </MenuItemImpl>
+    )
+  })
 
   const MenuItemImpl = React.forwardRef<
     MenuItemImplElement,
@@ -1222,40 +1221,39 @@ export function createBaseMenu({
 
   const CHECKBOX_ITEM_NAME = 'MenuCheckboxItem'
 
-  const MenuCheckboxItem = React.forwardRef<
-    TamaguiElement,
-    ScopedProps<MenuCheckboxItemProps>
-  >((props, forwardedRef) => {
-    const {
-      checked = false,
-      onCheckedChange,
-      scope = MENU_CONTEXT,
-      // filter out native-only props
-      // @ts-ignore - native menu value state
-      value,
-      // @ts-ignore - native menu value change handler
-      onValueChange,
-      ...checkboxItemProps
-    } = props
-    return (
-      <ItemIndicatorProvider scope={scope} checked={checked}>
-        <MenuItem
-          componentName={CHECKBOX_ITEM_NAME}
-          role={(isWeb ? 'menuitemcheckbox' : 'menuitem') as 'menuitem'}
-          aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
-          {...checkboxItemProps}
-          scope={scope}
-          ref={forwardedRef}
-          data-state={getCheckedState(checked)}
-          onSelect={composeEventHandlers(
-            checkboxItemProps.onSelect,
-            () => onCheckedChange?.(isIndeterminate(checked) ? true : !checked),
-            { checkDefaultPrevented: false }
-          )}
-        />
-      </ItemIndicatorProvider>
-    )
-  })
+  const MenuCheckboxItem = _Item.styleable<ScopedProps<MenuCheckboxItemProps>>(
+    (props, forwardedRef) => {
+      const {
+        checked = false,
+        onCheckedChange,
+        scope = MENU_CONTEXT,
+        // filter out native-only props
+        // @ts-ignore - native menu value state
+        value,
+        // @ts-ignore - native menu value change handler
+        onValueChange,
+        ...checkboxItemProps
+      } = props
+      return (
+        <ItemIndicatorProvider scope={scope} checked={checked}>
+          <MenuItem
+            componentName={CHECKBOX_ITEM_NAME}
+            role={(isWeb ? 'menuitemcheckbox' : 'menuitem') as 'menuitem'}
+            aria-checked={isIndeterminate(checked) ? 'mixed' : checked}
+            {...checkboxItemProps}
+            scope={scope}
+            ref={forwardedRef}
+            data-state={getCheckedState(checked)}
+            onSelect={composeEventHandlers(
+              checkboxItemProps.onSelect,
+              () => onCheckedChange?.(isIndeterminate(checked) ? true : !checked),
+              { checkDefaultPrevented: false }
+            )}
+          />
+        </ItemIndicatorProvider>
+      )
+    }
+  )
 
   MenuCheckboxItem.displayName = CHECKBOX_ITEM_NAME
   /* -------------------------------------------------------------------------------------------------
@@ -1290,7 +1288,7 @@ export function createBaseMenu({
 
   const RADIO_ITEM_NAME = 'MenuRadioItem'
 
-  const MenuRadioItem = React.forwardRef<TamaguiElement, ScopedProps<MenuRadioItemProps>>(
+  const MenuRadioItem = _Item.styleable<ScopedProps<MenuRadioItemProps>>(
     (props, forwardedRef) => {
       const { value, scope = MENU_CONTEXT, ...radioItemProps } = props
       const context = useRadioGroupContext(scope)
