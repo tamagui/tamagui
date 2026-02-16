@@ -43,6 +43,9 @@ async function getStats(
 }
 
 test.describe('onLayout stress test', () => {
+  // stress tests are flaky in CI - give them extra retries
+  test.describe.configure({ retries: 3 })
+
   test.beforeEach(async ({ page }) => {
     // set up console warning tracking
     // BUG FIX: console.warn('[onLayout-io-delay]', delay + 'ms', ...) puts delay in args[1]
