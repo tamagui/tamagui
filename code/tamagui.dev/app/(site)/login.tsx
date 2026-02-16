@@ -108,6 +108,13 @@ function SignIn() {
     }
   }
 
+  // auto-trigger GitHub OAuth when opened as a popup (from checkout flow)
+  useEffect(() => {
+    if (supabase && !user && window.opener && window.opener !== window) {
+      handleOAuthSignIn('github')
+    }
+  }, [supabase, user])
+
   if (!user)
     return (
       <YStack

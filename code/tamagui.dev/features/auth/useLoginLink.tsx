@@ -1,9 +1,11 @@
+import { useToastController } from '@tamagui/toast'
 import { useUser } from '../user/useUser'
 import { useSupabaseClient } from './useSupabaseClient'
 
 export const useLoginLink = () => {
   const userSwr = useUser()
   const supabaseClient = useSupabaseClient()
+  const toast = useToastController()
 
   return {
     handleLogin: async (e: any) => {
@@ -23,7 +25,11 @@ export const useLoginLink = () => {
       )
 
       if (!popup) {
-        console.error('Failed to open popup')
+        // popup was blocked, show toast and redirect after delay
+        toast.show('Popup blocked, redirecting to login...')
+        setTimeout(() => {
+          window.location.href = '/login'
+        }, 2000)
         return
       }
 
