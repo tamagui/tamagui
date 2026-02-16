@@ -136,10 +136,15 @@ const ErrorMessage = ({ error }: { error: Error | StripeError }) => {
   )
 }
 
-const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+const isTestMode =
+  process.env.STRIPE_TEST_MODE === 'true' || process.env.NODE_ENV === 'development'
+
+const key = isTestMode
+  ? process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_TEST
+  : process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
 if (!key) {
-  console.warn(`No stripe key!`)
+  console.warn(`No stripe key! isTestMode=${isTestMode}`)
 }
 
 // lazy load stripe only when needed
