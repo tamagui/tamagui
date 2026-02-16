@@ -15,6 +15,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
+      "browser": "./dist/index.cjs",
       "module": "./dist/index.cjs",
       "import": "./dist/index.cjs",
       "require": "./dist/index.cjs"

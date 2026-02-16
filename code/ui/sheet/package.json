@@ -30,6 +30,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -38,6 +39,7 @@
     "./controller": {
       "types": "./types/controller.d.ts",
       "react-native": "./dist/esm/controller.native.js",
+      "browser": "./dist/esm/controller.mjs",
       "module": "./dist/esm/controller.mjs",
       "import": "./dist/esm/controller.mjs",
       "require": "./dist/cjs/controller.cjs",
@@ -46,6 +48,7 @@
     "./setup-gesture-handler": {
       "types": "./types/setupGestureHandler.d.ts",
       "react-native": "./dist/esm/setupGestureHandler.native.js",
+      "browser": "./dist/esm/setupGestureHandler.mjs",
       "module": "./dist/esm/setupGestureHandler.mjs",
       "import": "./dist/esm/setupGestureHandler.mjs",
       "require": "./dist/cjs/setupGestureHandler.cjs",

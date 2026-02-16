@@ -23,6 +23,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -31,6 +32,7 @@
     "./v3": {
       "types": "./types/v3.d.ts",
       "react-native": "./dist/esm/v3.native.js",
+      "browser": "./dist/esm/v3.mjs",
       "module": "./dist/esm/v3.mjs",
       "import": "./dist/esm/v3.mjs",
       "require": "./dist/cjs/v3.cjs",
@@ -39,6 +41,7 @@
     "./v3-themes": {
       "types": "./types/v3-themes.d.ts",
       "react-native": "./dist/esm/v3-themes.native.js",
+      "browser": "./dist/esm/v3-themes.mjs",
       "module": "./dist/esm/v3-themes.mjs",
       "import": "./dist/esm/v3-themes.mjs",
       "require": "./dist/cjs/v3-themes.cjs",
@@ -47,6 +50,7 @@
     "./v4": {
       "types": "./types/v4.d.ts",
       "react-native": "./dist/esm/v4.native.js",
+      "browser": "./dist/esm/v4.mjs",
       "module": "./dist/esm/v4.mjs",
       "import": "./dist/esm/v4.mjs",
       "require": "./dist/cjs/v4.cjs",
@@ -55,6 +59,7 @@
     "./v5": {
       "types": "./types/v5.d.ts",
       "react-native": "./dist/esm/v5.native.js",
+      "browser": "./dist/esm/v5.mjs",
       "module": "./dist/esm/v5.mjs",
       "import": "./dist/esm/v5.mjs",
       "require": "./dist/cjs/v5.cjs",
@@ -63,6 +68,7 @@
     "./v5-subtle": {
       "types": "./types/v5-subtle.d.ts",
       "react-native": "./dist/esm/v5-subtle.native.js",
+      "browser": "./dist/esm/v5-subtle.mjs",
       "module": "./dist/esm/v5-subtle.mjs",
       "import": "./dist/esm/v5-subtle.mjs",
       "require": "./dist/cjs/v5-subtle.cjs",

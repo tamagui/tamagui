@@ -32,6 +32,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -40,6 +41,7 @@
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
       "react-native": "./dist/esm/inject-styles.mjs",
+      "browser": "./dist/esm/inject-styles.mjs",
       "module": "./dist/esm/inject-styles.mjs",
       "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.cjs",

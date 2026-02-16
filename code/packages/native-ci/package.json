@@ -24,6 +24,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
+      "browser": "./dist/index.mjs",
       "module": "./dist/index.mjs",
       "import": "./dist/index.mjs"
     }

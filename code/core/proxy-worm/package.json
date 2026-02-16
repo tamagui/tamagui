@@ -6,6 +6,7 @@
   "main": "index.js",
   "exports": {
     "./empty-react-native-view": {
+      "browser": "./empty-react-native-view.mjs",
       "module": "./empty-react-native-view.mjs",
       "import": "./empty-react-native-view.mjs",
       "require": "./empty-react-native-view.js"

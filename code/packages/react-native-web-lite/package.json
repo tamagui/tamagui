@@ -28,42 +28,50 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
     },
     "./without-animated": {
+      "browser": "./dist/esm/without-animated.mjs",
       "module": "./dist/esm/without-animated.mjs",
       "import": "./dist/esm/without-animated.mjs",
       "require": "./dist/cjs/without-animated.cjs"
     },
     "./Libraries/Utilities/codegenNativeComponent": {
+      "browser": "./dist/esm/codegenNativeComponent.mjs",
       "module": "./dist/esm/codegenNativeComponent.mjs",
       "import": "./dist/esm/codegenNativeComponent.mjs",
       "require": "./dist/cjs/codegenNativeComponent.cjs"
     },
     "./Libraries/Utilities/codegenNativeCommand": {
+      "browser": "./dist/esm/codegenNativeCommand.mjs",
       "module": "./dist/esm/codegenNativeCommand.mjs",
       "import": "./dist/esm/codegenNativeCommand.mjs",
       "require": "./dist/cjs/codegenNativeCommand.cjs"
     },
     "./dist/exports/StyleSheet/compiler/createReactDOMStyle": {
+      "browser": "./dist/esm/createReactDOMStyle.mjs",
       "module": "./dist/esm/createReactDOMStyle.mjs",
       "import": "./dist/esm/createReactDOMStyle.mjs",
       "require": "./dist/cjs/createReactDOMStyle.cjs"
     },
     "./dist/modules/*": {
+      "browser": "./dist/esm/modules/*/index.mjs",
       "module": "./dist/esm/modules/*/index.mjs",
       "import": "./dist/esm/modules/*/index.mjs",
       "require": "./dist/cjs/modules/*/index.cjs"
     },
     "./dist/exports/*": {
+      "browser": "./dist/esm/exports/*/index.mjs",
       "module": "./dist/esm/exports/*/index.mjs",
       "import": "./dist/esm/exports/*/index.mjs",
       "require": "./dist/cjs/exports/*/index.cjs"
     },
     "./dist/*": {
+      "browser": "./dist/esm/*/index.mjs",
       "module": "./dist/esm/*/index.mjs",
       "import": "./dist/esm/*/index.mjs",
       "require": "./dist/cjs/*/index.cjs"

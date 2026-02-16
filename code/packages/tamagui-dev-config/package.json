@@ -16,6 +16,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./src/index.ts",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -23,6 +24,7 @@
     },
     "./motion": {
       "types": "./src/animations.motion.ts",
+      "browser": "./dist/esm/animations.motion.mjs",
       "module": "./dist/esm/animations.motion.mjs",
       "import": "./dist/esm/animations.motion.mjs",
       "require": "./dist/cjs/animations.motion.cjs"

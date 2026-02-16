@@ -33,6 +33,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -41,6 +42,7 @@
     "./react-native-web": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/react-native-web.native.js",
+      "browser": "./dist/esm/react-native-web.mjs",
       "module": "./dist/esm/react-native-web.mjs",
       "import": "./dist/esm/react-native-web.mjs",
       "require": "./dist/cjs/react-native-web.cjs",
@@ -49,6 +51,7 @@
     "./web": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -69,6 +72,7 @@
     "./linear-gradient": {
       "types": "./types/linear-gradient.d.ts",
       "react-native": "./dist/esm/linear-gradient.native.js",
+      "browser": "./dist/esm/linear-gradient.mjs",
       "module": "./dist/esm/linear-gradient.mjs",
       "import": "./dist/esm/linear-gradient.mjs",
       "require": "./dist/cjs/linear-gradient.cjs",

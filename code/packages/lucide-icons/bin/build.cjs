@@ -16,6 +16,7 @@ const shadowsGlobalNames = ['Infinity', 'NaN', 'undefined']
 function createAlignedExport(basePath) {
   return {
     'react-native': basePath.replace('.mjs', '.native.js'),
+    browser: basePath,
     module: basePath,
     import: basePath,
     require: basePath.replace('/esm/', '/cjs/').replace('.mjs', '.cjs'),
