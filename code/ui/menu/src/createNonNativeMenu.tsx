@@ -1,4 +1,4 @@
-import type BaseMenuTypes from '@tamagui/create-menu'
+import type * as BaseMenuTypes from '@tamagui/create-menu'
 import {
   type MenuArrowProps as BaseMenuArrowProps,
   type MenuCheckboxItemProps as BaseMenuCheckboxItemProps,
