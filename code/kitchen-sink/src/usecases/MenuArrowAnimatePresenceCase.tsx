@@ -59,7 +59,12 @@ const MenuWithArrow = () => {
           transition="100ms"
           borderRadius="$4"
         >
-          <Menu.Arrow testID="menu-arrow" size="$4" borderWidth={1} borderColor="$borderColor" />
+          <Menu.Arrow
+            testID="menu-arrow"
+            size="$4"
+            borderWidth={1}
+            borderColor="$borderColor"
+          />
           <Menu.Item key="item1">
             <Menu.ItemTitle>Item 1</Menu.ItemTitle>
           </Menu.Item>

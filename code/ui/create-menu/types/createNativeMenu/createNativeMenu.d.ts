@@ -6,25 +6,25 @@
  */
 import type { FC } from 'react';
 import React from 'react';
-import type { ContextMenuPreviewProps, MenuArrowProps, MenuCheckboxItemProps, MenuContentProps, MenuGroupProps, MenuItemIconProps, MenuItemImageProps, MenuItemIndicatorProps, MenuItemProps, MenuItemSubtitleProps, MenuItemTitleProps, MenuLabelProps, MenuProps, MenuSeparatorProps, MenuSubContentProps, MenuSubProps, MenuSubTriggerProps, MenuTriggerProps } from './createNativeMenuTypes';
+import type { ContextMenuPreviewProps, NativeMenuArrowProps, NativeMenuCheckboxItemProps, NativeMenuContentProps, NativeMenuGroupProps, NativeMenuItemIconProps, NativeMenuItemImageProps, NativeMenuItemIndicatorProps, NativeMenuItemProps, NativeMenuItemSubtitleProps, NativeMenuItemTitleProps, NativeMenuLabelProps, NativeMenuProps, NativeMenuSeparatorProps, NativeMenuSubContentProps, NativeMenuSubProps, NativeMenuSubTriggerProps, MenuTriggerProps } from './createNativeMenuTypes';
 export type NativeMenuComponents = {
-    Menu: FC<MenuProps> & {
+    Menu: FC<NativeMenuProps> & {
         Trigger: FC<MenuTriggerProps>;
-        Content: FC<MenuContentProps>;
-        Item: FC<MenuItemProps>;
-        ItemTitle: FC<MenuItemTitleProps>;
-        ItemSubtitle: FC<MenuItemSubtitleProps>;
-        SubTrigger: FC<MenuSubTriggerProps>;
-        Group: FC<MenuGroupProps>;
-        ItemIcon: FC<MenuItemIconProps>;
-        Separator: FC<MenuSeparatorProps>;
-        CheckboxItem: FC<MenuCheckboxItemProps>;
-        ItemIndicator: FC<MenuItemIndicatorProps>;
-        ItemImage: FC<MenuItemImageProps>;
-        Label: FC<MenuLabelProps>;
-        Arrow: FC<MenuArrowProps>;
-        Sub: FC<MenuSubProps>;
-        SubContent: FC<MenuSubContentProps>;
+        Content: FC<NativeMenuContentProps>;
+        Item: FC<NativeMenuItemProps>;
+        ItemTitle: FC<NativeMenuItemTitleProps>;
+        ItemSubtitle: FC<NativeMenuItemSubtitleProps>;
+        SubTrigger: FC<NativeMenuSubTriggerProps>;
+        Group: FC<NativeMenuGroupProps>;
+        ItemIcon: FC<NativeMenuItemIconProps>;
+        Separator: FC<NativeMenuSeparatorProps>;
+        CheckboxItem: FC<NativeMenuCheckboxItemProps>;
+        ItemIndicator: FC<NativeMenuItemIndicatorProps>;
+        ItemImage: FC<NativeMenuItemImageProps>;
+        Label: FC<NativeMenuLabelProps>;
+        Arrow: FC<NativeMenuArrowProps>;
+        Sub: FC<NativeMenuSubProps>;
+        SubContent: FC<NativeMenuSubContentProps>;
         Preview: FC<ContextMenuPreviewProps>;
         Portal: FC<{
             children: React.ReactNode;

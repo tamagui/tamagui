@@ -17,7 +17,9 @@ test.describe('Menu Arrow with AnimatePresence', () => {
 
     // find the arrow elements
     const arrowOuter = page.locator('[class*="PopperArrowOuter"]').first()
-    const arrowInner = arrowOuter.locator('[class*="PopoverArrow"], [class*="PopperArrow"]').first()
+    const arrowInner = arrowOuter
+      .locator('[class*="PopoverArrow"], [class*="PopperArrow"]')
+      .first()
 
     // verify outer arrow exists and is visible
     await expect(arrowOuter).toBeVisible()
