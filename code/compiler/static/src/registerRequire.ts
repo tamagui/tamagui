@@ -176,13 +176,8 @@ export function registerRequire(
          * We can't fix every problem, so just swap them out with proxyWorm which is a sort of generic object that can be read.
          */
 
-        console.error(
-          `Tamagui failed to require() "${path}"
-  
-  ${err.message}
-  ${err.stack}
-
-  `
+        console.warn(
+          `  [tamagui] skipped "${path}" (set TAMAGUI_IGNORE_BUNDLE_ERRORS="${path}" to silence)`
         )
       }
 
@@ -218,6 +213,10 @@ const knownIgnorableModules = {
   'expo-linear-gradient': true,
   '@expo/vector-icons': true,
   'tamagui/linear-gradient': true,
+  // animation libraries not needed for static extraction
+  '@emotion/is-prop-valid': true,
+  'framer-motion': true,
+  motion: true,
   ...Object.fromEntries(extraIgnores?.map((k) => [k, true]) || []),
 }
 

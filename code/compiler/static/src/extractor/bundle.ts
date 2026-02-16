@@ -136,6 +136,14 @@ function getESBuildConfig(
               external: true,
             }
           })
+
+          // externalize animation libraries - not needed for static extraction
+          build.onResolve({ filter: /^(framer-motion|motion)/ }, (args) => {
+            return {
+              path: args.path,
+              external: true,
+            }
+          })
         },
       },
       esbuildAliasPlugin({
