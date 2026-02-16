@@ -97,15 +97,15 @@ function buildEmailHtml(name, daysUntilExpiry, isApology) {
 <body>
   <h1>Hey ${name}!</h1>
 
-  ${apologySection}
+  <p>We want to thank you so much for supporting our small team. We've been working very hard to not just rethink Tamagui, but rethink One and Takeout and try to put together something genuinely beautiful and groundbreaking. If you take anything from this email, we hope you check out <a href="https://takeout.tamagui.dev">the new Takeout</a>. It's a product of love from our small team, and we could use support now more than ever to continue building dev tools that are simple, joyful, and surprisingly effective.</p>
 
   <p><strong>${urgencyText}</strong></p>
-
-  <p>Click below to update your Tamagui Pro account.</p>
 
   <div class="cta-container">
     <a href="https://tamagui.dev/account" class="cta-button">Update Payment Method</a>
   </div>
+
+  ${apologySection}
 
   <h2>Reborn</h2>
 
