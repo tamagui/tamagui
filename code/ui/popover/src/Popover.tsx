@@ -64,8 +64,24 @@ const needsRepropagation = needsPortalRepropagation()
 
 const openPopovers = new Set<React.Dispatch<React.SetStateAction<boolean>>>()
 
+export const hasOpenPopovers = () => {
+  return openPopovers.size > 0
+}
+
 export const closeOpenPopovers = () => {
+  if (openPopovers.size === 0) return false
   openPopovers.forEach((setOpen) => setOpen(false))
+  return true
+}
+
+export const closeLastOpenedPopover = () => {
+  if (openPopovers.size === 0) return false
+  const last = Array.from(openPopovers).pop()
+  if (last) {
+    last(false)
+    return true
+  }
+  return false
 }
 
 type PopoverVia = 'hover' | 'press'

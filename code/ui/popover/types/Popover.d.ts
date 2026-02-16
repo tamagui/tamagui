@@ -10,7 +10,9 @@ import * as React from 'react';
 type ScopedPopoverProps<P> = Omit<P, 'scope'> & {
     scope?: PopoverScopes;
 };
-export declare const closeOpenPopovers: () => void;
+export declare const hasOpenPopovers: () => boolean;
+export declare const closeOpenPopovers: () => boolean;
+export declare const closeLastOpenedPopover: () => boolean;
 type PopoverVia = 'hover' | 'press';
 export type PopoverProps = ScopedPopoverProps<PopperProps> & {
     open?: boolean;
