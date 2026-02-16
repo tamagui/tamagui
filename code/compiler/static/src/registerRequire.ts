@@ -37,9 +37,36 @@ export function registerRequire(
     }
   }
 
+  // capture original resolve BEFORE esbuild-register patches it
+  // so we can use Node's native exports resolution for @tamagui packages
+  const originalResolveFilename = Module._resolveFilename
+
   const { unregister } = register({
     hookIgnoreNodeModules: false,
+    // don't transform @tamagui packages - they have pre-built dist files
+    hookMatcher: (filename) => {
+      if (
+        filename.includes('@tamagui') ||
+        /\/tamagui\/code\/(core|ui|packages)\//.test(filename)
+      ) {
+        return false
+      }
+      return true
+    },
   })
+
+  // esbuild-register's registerTsconfigPaths replaces Module._resolveFilename
+  // but tsconfig paths resolution bypasses Node's package exports
+  // we need to restore Node's native resolution for @tamagui packages
+  const tsconfigPatchedResolve = Module._resolveFilename
+  Module._resolveFilename = function (request: string, ...args: any[]) {
+    // for @tamagui packages, use Node's native resolution (respects exports)
+    if (request.startsWith('@tamagui/')) {
+      return originalResolveFilename.call(this, request, ...args)
+    }
+    // for everything else, use tsconfig-paths resolution
+    return tsconfigPatchedResolve.call(this, request, ...args)
+  }
 
   if (!og) {
     og = Module.prototype.require // capture esbuild require

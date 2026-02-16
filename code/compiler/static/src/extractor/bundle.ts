@@ -95,21 +95,30 @@ function getESBuildConfig(
       {
         name: 'external',
         setup(build) {
-          build.onResolve({ filter: /@tamagui\/core/ }, (args) => {
+          // externalize @tamagui packages to avoid bundling CJS shim files
+          // that esbuild can't convert (they use Object.assign + require pattern)
+          // but don't externalize entry points (esbuild doesn't allow that)
+          build.onResolve({ filter: /^@tamagui\// }, (args) => {
+            // entry points cannot be external
+            if (args.kind === 'entry-point') {
+              return null
+            }
+            // special case: @tamagui/core and @tamagui/web resolve to /native for native platform
+            if (args.path.match(/^@tamagui\/(core|web)$/)) {
+              return {
+                path: platform === 'native' ? '@tamagui/core/native' : args.path,
+                external: true,
+              }
+            }
             return {
-              path: platform === 'native' ? '@tamagui/core/native' : '@tamagui/core',
+              path: args.path,
               external: true,
             }
           })
+
           build.onResolve({ filter: /react-native\/package.json$/ }, (args) => {
             return {
               path: 'react-native/package.json',
-              external: true,
-            }
-          })
-          build.onResolve({ filter: /@tamagui\/web/ }, (args) => {
-            return {
-              path: platform === 'native' ? '@tamagui/core/native' : '@tamagui/core',
               external: true,
             }
           })
