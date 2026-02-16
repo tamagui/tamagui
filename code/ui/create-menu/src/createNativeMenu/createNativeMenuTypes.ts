@@ -5,7 +5,7 @@ type ImageOptions = {
   tint?: string
 }
 
-export type MenuProps = {
+export type NativeMenuProps = {
   children: React.ReactNode
   native?: boolean
   onOpenChange?: (isOpen: boolean) => void
@@ -21,7 +21,7 @@ export type MenuProps = {
  * Props for the auxiliary view that can be shown alongside a context menu on iOS
  * @platform ios
  */
-export type ContextMenuAuxiliaryProps = {
+export type NativeContextMenuAuxiliaryProps = {
   height?: number
   width?: number
   anchorPosition?: 'top' | 'bottom' | 'automatic'
@@ -42,16 +42,16 @@ export type MenuTriggerProps = {
   action?: 'press' | 'longPress'
 }
 
-export type MenuContentProps = {
+export type NativeMenuContentProps = {
   children: React.ReactNode
 }
-export type ContextMenuContentProps = MenuContentProps
+export type NativeContextMenuContentProps = NativeMenuContentProps
 
-export type MenuGroupProps = {
+export type NativeMenuGroupProps = {
   children: React.ReactNode
 }
 
-export type MenuItemProps = {
+export type NativeMenuItemProps = {
   children: React.ReactNode
   /**
    * If you want to pass a React text node to `<ItemTitle />`, then you need to use this prop. This gets used on iOS and Android.
@@ -68,7 +68,7 @@ export type MenuItemProps = {
   key: string
 }
 
-export interface MenuItemCommonProps {
+export interface NativeMenuItemCommonProps {
   /**
    * React elements to render as fallback icon (typically for web)
    */
@@ -110,9 +110,9 @@ export interface MenuItemCommonProps {
   androidIconName?: string
 }
 
-export type MenuItemIconProps = MenuItemCommonProps
+export type NativeMenuItemIconProps = NativeMenuItemCommonProps
 
-export type MenuItemImageProps = MenuItemCommonProps & {
+export type NativeMenuItemImageProps = NativeMenuItemCommonProps & {
   /**
    * `source={require('path/to/image')}`
    */
@@ -123,29 +123,29 @@ export type MenuItemImageProps = MenuItemCommonProps & {
   }
 }
 
-export type MenuArrowProps = {}
+export type NativeMenuArrowProps = {}
 
-export type MenuSubTriggerProps = MenuItemProps & {
+export type NativeMenuSubTriggerProps = NativeMenuItemProps & {
   key: string
 }
 
-export type MenuSubProps = {
+export type NativeMenuSubProps = {
   children?: React.ReactNode
 }
 
-export type MenuSubContentProps = {
+export type NativeMenuSubContentProps = {
   children: React.ReactNode
 }
-export type ContextMenuSubContentProps = ContextMenuContentProps
+export type NativeContextMenuSubContentProps = NativeContextMenuContentProps
 
-export type MenuItemTitleProps = {
+export type NativeMenuItemTitleProps = {
   children: string | React.ReactNode
 }
-export type MenuItemSubtitleProps = {
+export type NativeMenuItemSubtitleProps = {
   children: string
 }
-export type MenuSeparatorProps = {}
-export type MenuCheckboxItemProps = Omit<MenuItemProps, 'onSelect'> & {
+export type NativeMenuSeparatorProps = {}
+export type NativeMenuCheckboxItemProps = Omit<NativeMenuItemProps, 'onSelect'> & {
   /**
    * The controlled checked state of the checkbox item.
    * Use this with `onCheckedChange` for the web-style API.
@@ -174,11 +174,11 @@ export type MenuCheckboxItemProps = Omit<MenuItemProps, 'onSelect'> & {
   key: string
 }
 
-export type MenuItemIndicatorProps = {
+export type NativeMenuItemIndicatorProps = {
   children?: React.ReactNode
 }
 
-export type MenuLabelProps = {
+export type NativeMenuLabelProps = {
   children: string
   /**
    * If you want to pass a React text node to `<Lable />`, then you need to use this prop. This gets used on iOS and Android.

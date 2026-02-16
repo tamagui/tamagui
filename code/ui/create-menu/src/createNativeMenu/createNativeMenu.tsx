@@ -11,43 +11,43 @@ import type { FC } from 'react'
 import React from 'react'
 import type {
   ContextMenuPreviewProps,
-  MenuArrowProps,
-  MenuCheckboxItemProps,
-  MenuContentProps,
-  MenuGroupProps,
-  MenuItemIconProps,
-  MenuItemImageProps,
-  MenuItemIndicatorProps,
-  MenuItemProps,
-  MenuItemSubtitleProps,
-  MenuItemTitleProps,
-  MenuLabelProps,
-  MenuProps,
-  MenuSeparatorProps,
-  MenuSubContentProps,
-  MenuSubProps,
-  MenuSubTriggerProps,
+  NativeMenuArrowProps,
+  NativeMenuCheckboxItemProps,
+  NativeMenuContentProps,
+  NativeMenuGroupProps,
+  NativeMenuItemIconProps,
+  NativeMenuItemImageProps,
+  NativeMenuItemIndicatorProps,
+  NativeMenuItemProps,
+  NativeMenuItemSubtitleProps,
+  NativeMenuItemTitleProps,
+  NativeMenuLabelProps,
+  NativeMenuProps,
+  NativeMenuSeparatorProps,
+  NativeMenuSubContentProps,
+  NativeMenuSubProps,
+  NativeMenuSubTriggerProps,
   MenuTriggerProps,
 } from './createNativeMenuTypes'
 
 export type NativeMenuComponents = {
-  Menu: FC<MenuProps> & {
+  Menu: FC<NativeMenuProps> & {
     Trigger: FC<MenuTriggerProps>
-    Content: FC<MenuContentProps>
-    Item: FC<MenuItemProps>
-    ItemTitle: FC<MenuItemTitleProps>
-    ItemSubtitle: FC<MenuItemSubtitleProps>
-    SubTrigger: FC<MenuSubTriggerProps>
-    Group: FC<MenuGroupProps>
-    ItemIcon: FC<MenuItemIconProps>
-    Separator: FC<MenuSeparatorProps>
-    CheckboxItem: FC<MenuCheckboxItemProps>
-    ItemIndicator: FC<MenuItemIndicatorProps>
-    ItemImage: FC<MenuItemImageProps>
-    Label: FC<MenuLabelProps>
-    Arrow: FC<MenuArrowProps>
-    Sub: FC<MenuSubProps>
-    SubContent: FC<MenuSubContentProps>
+    Content: FC<NativeMenuContentProps>
+    Item: FC<NativeMenuItemProps>
+    ItemTitle: FC<NativeMenuItemTitleProps>
+    ItemSubtitle: FC<NativeMenuItemSubtitleProps>
+    SubTrigger: FC<NativeMenuSubTriggerProps>
+    Group: FC<NativeMenuGroupProps>
+    ItemIcon: FC<NativeMenuItemIconProps>
+    Separator: FC<NativeMenuSeparatorProps>
+    CheckboxItem: FC<NativeMenuCheckboxItemProps>
+    ItemIndicator: FC<NativeMenuItemIndicatorProps>
+    ItemImage: FC<NativeMenuItemImageProps>
+    Label: FC<NativeMenuLabelProps>
+    Arrow: FC<NativeMenuArrowProps>
+    Sub: FC<NativeMenuSubProps>
+    SubContent: FC<NativeMenuSubContentProps>
     Preview: FC<ContextMenuPreviewProps>
     Portal: FC<{ children: React.ReactNode }>
     RadioGroup: FC<{ children: React.ReactNode }>
@@ -61,24 +61,24 @@ export const createNativeMenu = (
 ): NativeMenuComponents => {
   // On web, return empty stubs - withNativeMenu will use the web components passed to it
   if (isWeb) {
-    const Menu = {} as FC<MenuProps>
+    const Menu = {} as FC<NativeMenuProps>
     const Trigger = {} as FC<MenuTriggerProps>
-    const Content = {} as FC<MenuContentProps>
+    const Content = {} as FC<NativeMenuContentProps>
     const Preview = {} as FC<ContextMenuPreviewProps>
-    const Item = {} as FC<MenuItemProps>
-    const ItemIcon = {} as FC<MenuItemIconProps>
-    const ItemImage = {} as FC<MenuItemImageProps>
-    const SubTrigger = {} as FC<MenuSubTriggerProps>
-    const ItemTitle = {} as FC<MenuItemTitleProps>
-    const ItemSubtitle = {} as FC<MenuItemSubtitleProps>
-    const Group = {} as FC<MenuGroupProps>
-    const Separator = {} as FC<MenuSeparatorProps>
-    const CheckboxItem = {} as FC<MenuCheckboxItemProps>
-    const ItemIndicator = {} as FC<MenuItemIndicatorProps>
-    const Label = {} as FC<MenuLabelProps>
-    const Arrow = {} as FC<MenuArrowProps>
-    const Sub = {} as FC<MenuSubProps>
-    const SubContent = {} as FC<MenuSubContentProps>
+    const Item = {} as FC<NativeMenuItemProps>
+    const ItemIcon = {} as FC<NativeMenuItemIconProps>
+    const ItemImage = {} as FC<NativeMenuItemImageProps>
+    const SubTrigger = {} as FC<NativeMenuSubTriggerProps>
+    const ItemTitle = {} as FC<NativeMenuItemTitleProps>
+    const ItemSubtitle = {} as FC<NativeMenuItemSubtitleProps>
+    const Group = {} as FC<NativeMenuGroupProps>
+    const Separator = {} as FC<NativeMenuSeparatorProps>
+    const CheckboxItem = {} as FC<NativeMenuCheckboxItemProps>
+    const ItemIndicator = {} as FC<NativeMenuItemIndicatorProps>
+    const Label = {} as FC<NativeMenuLabelProps>
+    const Arrow = {} as FC<NativeMenuArrowProps>
+    const Sub = {} as FC<NativeMenuSubProps>
+    const SubContent = {} as FC<NativeMenuSubContentProps>
     const Portal = {} as FC<{ children: React.ReactNode }>
     const RadioGroup = {} as FC<{ children: React.ReactNode }>
     const RadioItem = {} as FC<{ children: React.ReactNode }>
@@ -296,25 +296,25 @@ export const createNativeMenu = (
 
   // Direct Zeego pass-throughs with proper types
   const Trigger: FC<MenuTriggerProps> = ZeegoMenu.Trigger
-  const Content: FC<MenuContentProps> = ZeegoMenu.Content
-  const Item: FC<MenuItemProps> = ZeegoMenu.Item
-  const ItemTitle: FC<MenuItemTitleProps> = ZeegoMenu.ItemTitle
-  const ItemSubtitle: FC<MenuItemSubtitleProps> = ZeegoMenu.ItemSubtitle
-  const ItemIcon: FC<MenuItemIconProps> = ZeegoMenu.ItemIcon
-  const ItemImage: FC<MenuItemImageProps> = ZeegoMenu.ItemImage
-  const ItemIndicator: FC<MenuItemIndicatorProps> = ZeegoMenu.ItemIndicator
-  const Group: FC<MenuGroupProps> = ZeegoMenu.Group
-  const Label: FC<MenuLabelProps> = ZeegoMenu.Label
-  const Separator: FC<MenuSeparatorProps> = ZeegoMenu.Separator
-  const Sub: FC<MenuSubProps> = ZeegoMenu.Sub
-  const SubTrigger: FC<MenuSubTriggerProps> = ZeegoMenu.SubTrigger
-  const SubContent: FC<MenuSubContentProps> = ZeegoMenu.SubContent
+  const Content: FC<NativeMenuContentProps> = ZeegoMenu.Content
+  const Item: FC<NativeMenuItemProps> = ZeegoMenu.Item
+  const ItemTitle: FC<NativeMenuItemTitleProps> = ZeegoMenu.ItemTitle
+  const ItemSubtitle: FC<NativeMenuItemSubtitleProps> = ZeegoMenu.ItemSubtitle
+  const ItemIcon: FC<NativeMenuItemIconProps> = ZeegoMenu.ItemIcon
+  const ItemImage: FC<NativeMenuItemImageProps> = ZeegoMenu.ItemImage
+  const ItemIndicator: FC<NativeMenuItemIndicatorProps> = ZeegoMenu.ItemIndicator
+  const Group: FC<NativeMenuGroupProps> = ZeegoMenu.Group
+  const Label: FC<NativeMenuLabelProps> = ZeegoMenu.Label
+  const Separator: FC<NativeMenuSeparatorProps> = ZeegoMenu.Separator
+  const Sub: FC<NativeMenuSubProps> = ZeegoMenu.Sub
+  const SubTrigger: FC<NativeMenuSubTriggerProps> = ZeegoMenu.SubTrigger
+  const SubContent: FC<NativeMenuSubContentProps> = ZeegoMenu.SubContent
 
   // Custom components
   const Portal: FC<{ children: React.ReactNode }> = ({ children }) => <>{children}</>
   Portal.displayName = 'Portal'
 
-  const Arrow: FC<MenuArrowProps> = () => null
+  const Arrow: FC<NativeMenuArrowProps> = () => null
   Arrow.displayName = 'Arrow'
 
   const RadioGroup: FC<{ children: React.ReactNode }> = ({ children }) => <>{children}</>
@@ -323,7 +323,7 @@ export const createNativeMenu = (
   const RadioItem: FC<{ children: React.ReactNode }> = ({ children }) => <>{children}</>
   RadioItem.displayName = `${MenuType}RadioItem`
   // CheckboxItem wrapper to normalize checked/value props
-  const CheckboxItem: FC<MenuCheckboxItemProps> = (props) => null
+  const CheckboxItem: FC<NativeMenuCheckboxItemProps> = (props) => null
   CheckboxItem.displayName = 'CheckboxItem'
 
   // Context menu specific
@@ -338,7 +338,7 @@ export const createNativeMenu = (
   Auxiliary.displayName = `${MenuType}Auxiliary`
 
   // Main Menu component
-  const Menu: FC<MenuProps> = ({ children, onOpenChange, onOpenWillChange }) => {
+  const Menu: FC<NativeMenuProps> = ({ children, onOpenChange, onOpenWillChange }) => {
     const rootProps: Record<string, unknown> = { onOpenChange }
     if (isContextMenu && onOpenWillChange) {
       rootProps.onOpenWillChange = onOpenWillChange

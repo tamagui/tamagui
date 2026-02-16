@@ -1,7 +1,5 @@
 export * from './createBaseMenu'
-export * from './createNativeMenu/index'
-export type {
-  MenuItemImageProps,
-  MenuItemIconProps,
-} from './createNativeMenu/createNativeMenuTypes'
+export * from './createNativeMenu/createNativeMenu'
+export * from './createNativeMenu/withNativeMenu'
+export type * from './createNativeMenu/createNativeMenuTypes'
 export { MenuPredefined } from './MenuPredefined'
