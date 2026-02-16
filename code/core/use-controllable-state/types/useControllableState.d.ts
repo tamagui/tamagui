@@ -1,5 +1,5 @@
 import * as React from 'react';
-type ChangeCb<T> = ((next: T) => void) | React.Dispatch<React.SetStateAction<T>>;
+type ChangeCb<T> = (next: T) => void;
 export declare function useControllableState<T>({ prop, defaultProp, onChange, strategy, preventUpdate, transition, }: {
     prop?: T | undefined;
     defaultProp: T;

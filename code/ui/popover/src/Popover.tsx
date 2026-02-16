@@ -13,7 +13,7 @@ import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type { SizeTokens, ViewProps, TamaguiElement } from '@tamagui/core'
+import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   createStyledContext,
   styled,
@@ -61,6 +61,12 @@ type ScopedPopoverProps<P> = Omit<P, 'scope'> & {
 }
 
 const needsRepropagation = needsPortalRepropagation()
+
+const openPopovers = new Set<React.Dispatch<React.SetStateAction<boolean>>>()
+
+export const closeOpenPopovers = () => {
+  openPopovers.forEach((setOpen) => setOpen(false))
+}
 
 type PopoverVia = 'hover' | 'press'
 
@@ -696,11 +702,13 @@ const PopoverInner = React.forwardRef<
   const triggerRef = React.useRef<TamaguiElement>(null)
   const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
   const viaRef = React.useRef<PopoverVia>(undefined)
+
   const [keepChildrenMounted] = useControllableState({
     prop: keepChildrenMountedProp,
     defaultProp: false,
     transition: keepChildrenMountedProp === 'lazy',
   })
+
   const [open, setOpen] = useControllableState({
     prop: openProp,
     defaultProp: defaultOpen || false,
@@ -708,6 +716,15 @@ const PopoverInner = React.forwardRef<
       onOpenChange?.(val, viaRef.current)
     },
   })
+
+  // track open popovers for closeOpenPopovers()
+  React.useEffect(() => {
+    if (!open) return
+    openPopovers.add(setOpen)
+    return () => {
+      openPopovers.delete(setOpen)
+    }
+  }, [open, setOpen])
 
   const handleOpenChange = useEvent((val, via) => {
     viaRef.current = via

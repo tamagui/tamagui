@@ -5,7 +5,7 @@ import { startTransition } from '@tamagui/start-transition'
 // can configure to allow most-recent-wins or prop-wins
 // defaults to prop-wins
 
-type ChangeCb<T> = ((next: T) => void) | React.Dispatch<React.SetStateAction<T>>
+type ChangeCb<T> = (next: T) => void
 
 const emptyCallbackFn = (_) => _()
 

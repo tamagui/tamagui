@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev';
 import type { UseHoverProps } from '@floating-ui/react';
-import type { SizeTokens, ViewProps, TamaguiElement } from '@tamagui/core';
+import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core';
 import { type DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import { type PopperArrowExtraProps, type PopperArrowProps, type PopperContentProps, type PopperProps } from '@tamagui/popper';
@@ -10,6 +10,7 @@ import * as React from 'react';
 type ScopedPopoverProps<P> = Omit<P, 'scope'> & {
     scope?: PopoverScopes;
 };
+export declare const closeOpenPopovers: () => void;
 type PopoverVia = 'hover' | 'press';
 export type PopoverProps = ScopedPopoverProps<PopperProps> & {
     open?: boolean;
