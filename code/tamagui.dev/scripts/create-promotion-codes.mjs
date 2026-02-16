@@ -41,19 +41,28 @@ const promoCodes = [
 ]
 
 async function createPromoCode({ code, couponId, maxRedemptions }) {
-  // check if promotion code already exists
+  // check if an active promotion code already exists
   try {
     const existing = await stripe.promotionCodes.list({
       code,
+      active: true,
       limit: 1,
     })
 
     if (existing.data.length > 0) {
       const promo = existing.data[0]
-      console.log(
-        `✓ ${code}: already exists (coupon: ${promo.coupon.id}, active: ${promo.active})`
-      )
-      return promo
+      // also check if it's exhausted
+      if (promo.max_redemptions && promo.times_redeemed >= promo.max_redemptions) {
+        console.log(
+          `⚠ ${code}: exists but exhausted (${promo.times_redeemed}/${promo.max_redemptions}), creating new`
+        )
+        // fall through to create new one
+      } else {
+        console.log(
+          `✓ ${code}: already exists and active (coupon: ${promo.coupon.id}, redeemed: ${promo.times_redeemed || 0})`
+        )
+        return promo
+      }
     }
   } catch (err) {
     // continue to create

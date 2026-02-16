@@ -214,11 +214,12 @@ export const AccountView = () => {
     (sub) =>
       (sub.status === SubscriptionStatus.Canceled ||
         sub.status === SubscriptionStatus.PastDue ||
+        sub.status === SubscriptionStatus.Unpaid ||
         sub.status === SubscriptionStatus.IncompleteExpired) &&
       sub.subscription_items?.some(
         (item) =>
           item.price?.product?.id &&
-          [...CURRENT_PRODUCTS, ...V1_PRODUCTS].includes(item.price.product.id as any)
+          CURRENT_PRODUCTS.includes(item.price.product.id as any)
       )
   )
 
@@ -1180,6 +1181,7 @@ const PlanTab = ({
               size="$3"
               theme="yellow"
               onPress={() => {
+                paymentModal.prefilledCouponCode = 'WELCOMEBACK30'
                 paymentModal.show = true
               }}
             >
