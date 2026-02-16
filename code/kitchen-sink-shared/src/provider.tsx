@@ -1,6 +1,6 @@
 import type { TamaguiProviderProps } from 'tamagui'
 import { TamaguiProvider } from 'tamagui'
-import { ToastProvider } from '@tamagui/toast'
+import { ToastProvider } from '@tamagui/toast/v1'
 import { config as defaultConfig } from './config'
 
 export function Provider({
