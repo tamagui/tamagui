@@ -18,10 +18,11 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
+      "default": "./dist/esm/index.mjs"
     }
   },
   "scripts": {

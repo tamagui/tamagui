@@ -30,10 +30,11 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
+      "default": "./dist/esm/index.mjs"
     },
     "./controller": {
       "types": "./types/controller.d.ts",
@@ -41,14 +42,17 @@
       "module": "./dist/esm/controller.mjs",
       "import": "./dist/esm/controller.mjs",
       "require": "./dist/cjs/controller.cjs",
-      "default": "./dist/cjs/controller.native.js"
+      "default": "./dist/cjs/controller.native.js",
+      "browser": "./dist/esm/controller.mjs"
     },
     "./setup-gesture-handler": {
       "types": "./types/setupGestureHandler.d.ts",
       "react-native": "./dist/esm/setupGestureHandler.native.js",
       "module": "./dist/esm/setupGestureHandler.mjs",
       "import": "./dist/esm/setupGestureHandler.mjs",
-      "require": "./dist/cjs/setupGestureHandler.cjs"
+      "require": "./dist/cjs/setupGestureHandler.cjs",
+      "browser": "./dist/esm/setupGestureHandler.mjs",
+      "default": "./dist/esm/setupGestureHandler.mjs"
     }
   },
   "publishConfig": {

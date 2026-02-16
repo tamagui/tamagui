@@ -10,7 +10,8 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "build:web": "expo export --platform web",
-    "test": "npx playwright test"
+    "test": "npx playwright test",
+    "test:web": "npx playwright test"
   },
   "dependencies": {
     "@react-navigation/native": "^7.0.14",

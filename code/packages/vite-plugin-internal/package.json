@@ -11,8 +11,7 @@
       "react-native": "./dist/esm/vite.config.native.js",
       "module": "./dist/esm/vite.config.mjs",
       "import": "./dist/esm/vite.config.mjs",
-      "require": "./dist/cjs/vite.config.cjs",
-      "default": "./dist/cjs/vite.config.native.js"
+      "require": "./dist/cjs/vite.config.cjs"
     }
   },
   "scripts": {

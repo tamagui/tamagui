@@ -53,6 +53,12 @@
       "inputs": ["../../bun.lockb", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
       "outputs": []
     },
+    "test:native": {
+      "dependsOn": ["^build:js"],
+      "inputs": ["../../bun.lockb", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+      "outputs": [],
+      "cache": false
+    },
     "clean": {
       "outputs": ["dist/**/*"],
       "cache": false

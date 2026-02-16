@@ -31,7 +31,7 @@
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
+      "default": "./dist/esm/index.mjs"
     },
     "./without-animated": {
       "module": "./dist/esm/without-animated.mjs",
