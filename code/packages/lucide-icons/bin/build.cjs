@@ -1,5 +1,5 @@
 const fs = require('fs-extra')
-const glob = require('glob')
+const { globSync } = require('glob')
 const camelcase = require('camelcase')
 const uppercamelcase = require('uppercamelcase')
 const path = require('node:path')
@@ -31,141 +31,140 @@ fs.mkdir(outDir, () => {})
 let iconExports = []
 const packageJsonExports = {}
 
-glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
-  fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), '', 'utf-8')
+const icons = globSync(`${lucideIconsDir}/*.svg`)
+fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), '', 'utf-8')
 
-  console.info(`Processing icons`, icons.length)
+console.info(`Processing icons`, icons.length)
 
-  const backwardsCompat = fs.readdirSync('./backwards-compat')
+const backwardsCompat = fs.readdirSync('./backwards-compat')
 
-  backwardsCompat.forEach((filePath) => {
-    let out = fs.readFileSync('./backwards-compat/' + filePath, 'utf-8').trim()
-    const name = uppercamelcase(path.basename(filePath).replace(/\..*/, ''))
+backwardsCompat.forEach((filePath) => {
+  let out = fs.readFileSync('./backwards-compat/' + filePath, 'utf-8').trim()
+  const name = uppercamelcase(path.basename(filePath).replace(/\..*/, ''))
 
-    if (filePath.endsWith('svg-part')) {
-      //
-    } else {
-      out = out.slice(out.search(/<Svg/g))
-      out = out.slice(0, out.search(/<\/Svg>.*/g)) + '</Svg>'
+  if (filePath.endsWith('svg-part')) {
+    //
+  } else {
+    out = out.slice(out.search(/<Svg/g))
+    out = out.slice(0, out.search(/<\/Svg>.*/g)) + '</Svg>'
+  }
+
+  const outLocation = `./src/icons/${name}.tsx`
+  fs.writeFileSync(outLocation, wrapReact(name, out), 'utf-8')
+
+  iconExports.push(`export { ${name} } from './icons/${name}'`)
+  packageJsonExports[`./icons/${name}`] = createAlignedExport(
+    `./dist/esm/icons/${name + '.mjs'}`
+  )
+})
+
+icons.forEach((originalName) => {
+  const svg = fs.readFileSync(originalName, 'utf-8')
+  const id = path.basename(originalName, '.svg')
+  const $ = cheerio.load(svg, {
+    xmlMode: true,
+  })
+
+  const cname = uppercamelcase(id)
+  const fileName = cname + '.tsx'
+  const location = path.join(outDir, fileName)
+
+  // Because CSS does not exist on Native platforms
+  // We need to duplicate the styles applied to the
+  // SVG to its children
+  const svgAttribs = $('svg')[0].attribs
+  delete svgAttribs['xmlns']
+  const attribsOfInterest = {}
+  Object.keys(svgAttribs).forEach((key) => {
+    if (
+      ![
+        'height',
+        'width',
+        'viewBox',
+        'fill',
+        'stroke-width',
+        'stroke-linecap',
+        'stroke-linejoin',
+      ].includes(key)
+    ) {
+      attribsOfInterest[key] = svgAttribs[key]
+    }
+  })
+
+  $('*').each((index, el) => {
+    Object.keys(el.attribs).forEach((x) => {
+      if (x.includes('-')) {
+        $(el).attr(camelcase(x), el.attribs[x]).removeAttr(x)
+      }
+      if (x === 'stroke') {
+        $(el).attr(x, 'currentColor')
+      }
+    })
+
+    // For every element that is NOT svg ...
+    if (el.name !== 'svg') {
+      Object.keys(attribsOfInterest).forEach((key) => {
+        $(el).attr(camelcase(key), attribsOfInterest[key])
+      })
     }
 
-    const outLocation = `./src/icons/${name}.tsx`
-    fs.writeFileSync(outLocation, wrapReact(name, out), 'utf-8')
-
-    iconExports.push(`export { ${name} } from './icons/${name}'`)
-    packageJsonExports[`./icons/${name}`] = createAlignedExport(
-      `./dist/esm/icons/${name + '.mjs'}`
-    )
+    if (el.name === 'svg') {
+      $(el).attr('otherProps', '...')
+    }
   })
 
-  icons.forEach((originalName) => {
-    const svg = fs.readFileSync(originalName, 'utf-8')
-    const id = path.basename(originalName, '.svg')
-    const $ = cheerio.load(svg, {
-      xmlMode: true,
-    })
+  const out = wrapReact(
+    cname,
+    $('svg')
+      .toString()
+      .replace(/ class="[^"]+"/g, '')
+      .replace(/ version="[^"]+"/g, '')
+      .replace(new RegExp('stroke="currentColor"', 'g'), 'stroke={color}')
+      .replace('width="24"', 'width={size}')
+      .replace('height="24"', 'height={size}')
+      .replace('otherProps="..."', '{...otherProps}')
+      .replace('<svg', '<Svg')
+      .replace('</svg', '</Svg')
+      .replace(new RegExp('<circle', 'g'), '<_Circle')
+      .replace(new RegExp('</circle', 'g'), '</_Circle')
+      .replace(new RegExp('<ellipse', 'g'), '<Ellipse')
+      .replace(new RegExp('</ellipse', 'g'), '</Ellipse')
+      .replace(new RegExp('<g', 'g'), '<G')
+      .replace(new RegExp('</g', 'g'), '</G')
+      .replace(new RegExp('<linear-gradient', 'g'), '<LinearGradient')
+      .replace(new RegExp('</linear-gradient', 'g'), '</LinearGradient')
+      .replace(new RegExp('<radial-gradient', 'g'), '<RadialGradient')
+      .replace(new RegExp('</radial-gradient', 'g'), '</RadialGradient')
+      .replace(new RegExp('<path', 'g'), '<Path')
+      .replace(new RegExp('</path', 'g'), '</Path')
+      .replace(new RegExp('<line', 'g'), '<Line')
+      .replace(new RegExp('</line', 'g'), '</Line')
+      .replace(new RegExp('<polygon', 'g'), '<Polygon')
+      .replace(new RegExp('</polygon', 'g'), '</Polygon')
+      .replace(new RegExp('<polyline', 'g'), '<Polyline')
+      .replace(new RegExp('</polyline', 'g'), '</Polyline')
+      .replace(new RegExp('<rect', 'g'), '<Rect')
+      .replace(new RegExp('</rect', 'g'), '</Rect')
+      .replace(new RegExp('<symbol', 'g'), '<Symbol')
+      .replace(new RegExp('</symbol', 'g'), '</Symbol')
+      .replace(new RegExp('<text', 'g'), '<_Text')
+      .replace(new RegExp('</text', 'g'), '</_Text')
+      .replace(new RegExp('<use', 'g'), '<Use')
+      .replace(new RegExp('</use', 'g'), '</Use')
+      .replace(new RegExp('<defs', 'g'), '<Defs')
+      .replace(new RegExp('</defs', 'g'), '</Defs')
+      .replace(new RegExp('<stop', 'g'), '<Stop')
+      .replace(new RegExp('</stop', 'g'), '</Stop')
+      .replace(new RegExp('px', 'g'), '')
+  )
 
-    const cname = uppercamelcase(id)
-    const fileName = cname + '.tsx'
-    const location = path.join(outDir, fileName)
+  fs.writeFileSync(location, out, 'utf-8')
 
-    // Because CSS does not exist on Native platforms
-    // We need to duplicate the styles applied to the
-    // SVG to its children
-    const svgAttribs = $('svg')[0].attribs
-    delete svgAttribs['xmlns']
-    const attribsOfInterest = {}
-    Object.keys(svgAttribs).forEach((key) => {
-      if (
-        ![
-          'height',
-          'width',
-          'viewBox',
-          'fill',
-          'stroke-width',
-          'stroke-linecap',
-          'stroke-linejoin',
-        ].includes(key)
-      ) {
-        attribsOfInterest[key] = svgAttribs[key]
-      }
-    })
+  iconExports.push(`export { ${cname} } from './icons/${fileName.replace('.tsx', '')}'`)
 
-    $('*').each((index, el) => {
-      Object.keys(el.attribs).forEach((x) => {
-        if (x.includes('-')) {
-          $(el).attr(camelcase(x), el.attribs[x]).removeAttr(x)
-        }
-        if (x === 'stroke') {
-          $(el).attr(x, 'currentColor')
-        }
-      })
-
-      // For every element that is NOT svg ...
-      if (el.name !== 'svg') {
-        Object.keys(attribsOfInterest).forEach((key) => {
-          $(el).attr(camelcase(key), attribsOfInterest[key])
-        })
-      }
-
-      if (el.name === 'svg') {
-        $(el).attr('otherProps', '...')
-      }
-    })
-
-    const out = wrapReact(
-      cname,
-      $('svg')
-        .toString()
-        .replace(/ class="[^"]+"/g, '')
-        .replace(/ version="[^"]+"/g, '')
-        .replace(new RegExp('stroke="currentColor"', 'g'), 'stroke={color}')
-        .replace('width="24"', 'width={size}')
-        .replace('height="24"', 'height={size}')
-        .replace('otherProps="..."', '{...otherProps}')
-        .replace('<svg', '<Svg')
-        .replace('</svg', '</Svg')
-        .replace(new RegExp('<circle', 'g'), '<_Circle')
-        .replace(new RegExp('</circle', 'g'), '</_Circle')
-        .replace(new RegExp('<ellipse', 'g'), '<Ellipse')
-        .replace(new RegExp('</ellipse', 'g'), '</Ellipse')
-        .replace(new RegExp('<g', 'g'), '<G')
-        .replace(new RegExp('</g', 'g'), '</G')
-        .replace(new RegExp('<linear-gradient', 'g'), '<LinearGradient')
-        .replace(new RegExp('</linear-gradient', 'g'), '</LinearGradient')
-        .replace(new RegExp('<radial-gradient', 'g'), '<RadialGradient')
-        .replace(new RegExp('</radial-gradient', 'g'), '</RadialGradient')
-        .replace(new RegExp('<path', 'g'), '<Path')
-        .replace(new RegExp('</path', 'g'), '</Path')
-        .replace(new RegExp('<line', 'g'), '<Line')
-        .replace(new RegExp('</line', 'g'), '</Line')
-        .replace(new RegExp('<polygon', 'g'), '<Polygon')
-        .replace(new RegExp('</polygon', 'g'), '</Polygon')
-        .replace(new RegExp('<polyline', 'g'), '<Polyline')
-        .replace(new RegExp('</polyline', 'g'), '</Polyline')
-        .replace(new RegExp('<rect', 'g'), '<Rect')
-        .replace(new RegExp('</rect', 'g'), '</Rect')
-        .replace(new RegExp('<symbol', 'g'), '<Symbol')
-        .replace(new RegExp('</symbol', 'g'), '</Symbol')
-        .replace(new RegExp('<text', 'g'), '<_Text')
-        .replace(new RegExp('</text', 'g'), '</_Text')
-        .replace(new RegExp('<use', 'g'), '<Use')
-        .replace(new RegExp('</use', 'g'), '</Use')
-        .replace(new RegExp('<defs', 'g'), '<Defs')
-        .replace(new RegExp('</defs', 'g'), '</Defs')
-        .replace(new RegExp('<stop', 'g'), '<Stop')
-        .replace(new RegExp('</stop', 'g'), '</Stop')
-        .replace(new RegExp('px', 'g'), '')
-    )
-
-    fs.writeFileSync(location, out, 'utf-8')
-
-    iconExports.push(`export { ${cname} } from './icons/${fileName.replace('.tsx', '')}'`)
-
-    packageJsonExports[`./icons/${fileName.replace('.tsx', '')}`] = createAlignedExport(
-      `./dist/esm/icons/${fileName.replace('.tsx', '.mjs')}`
-    )
-  })
+  packageJsonExports[`./icons/${fileName.replace('.tsx', '')}`] = createAlignedExport(
+    `./dist/esm/icons/${fileName.replace('.tsx', '.mjs')}`
+  )
 })
 
 setTimeout(() => {

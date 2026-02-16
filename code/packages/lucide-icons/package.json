@@ -14124,7 +14124,7 @@
     "@tamagui/build": "workspace:*",
     "camelcase": "^6.0.0",
     "cheerio": "^1.0.0-rc.5",
-    "glob": "^7.1.6",
+    "glob": "^13.0.3",
     "lucide-static": "^0.508.0",
     "prop-types": "^15.7.2",
     "react": ">=19",
