@@ -20,7 +20,8 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "react-native": "./dist/esm/index.native.js",
-      "default": "./dist/cjs/index.native.js"
+      "browser": "./dist/esm/index.mjs",
+      "default": "./dist/esm/index.mjs"
     }
   },
   "scripts": {

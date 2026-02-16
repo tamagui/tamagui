@@ -10,6 +10,20 @@ const lucideIconsDir = path.join(lucideDir, '..', '..', '..', 'icons')
 const rootDir = path.join(__dirname, '..')
 const outDir = path.join(rootDir, 'src/icons')
 
+// icons that shadow global JS names need eslint-disable
+const shadowsGlobalNames = ['Infinity', 'NaN', 'undefined']
+
+function createAlignedExport(basePath) {
+  return {
+    'react-native': basePath.replace('.mjs', '.native.js'),
+    browser: basePath,
+    module: basePath,
+    import: basePath,
+    require: basePath.replace('/esm/', '/cjs/').replace('.mjs', '.cjs'),
+    default: basePath,
+  }
+}
+
 console.info(`Scanning`, lucideIconsDir)
 
 fs.mkdir(outDir, () => {})
@@ -39,10 +53,9 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
     fs.writeFileSync(outLocation, wrapReact(name, out), 'utf-8')
 
     iconExports.push(`export { ${name} } from './icons/${name}'`)
-    packageJsonExports[`./icons/${name}`] = {
-      import: `./dist/esm/icons/${name + '.mjs'}`,
-      require: `./dist/cjs/icons/${name + '.cjs'}`,
-    }
+    packageJsonExports[`./icons/${name}`] = createAlignedExport(
+      `./dist/esm/icons/${name + '.mjs'}`
+    )
   })
 
   icons.forEach((originalName) => {
@@ -149,10 +162,9 @@ glob(`${lucideIconsDir}/**.svg`, (err, icons) => {
 
     iconExports.push(`export { ${cname} } from './icons/${fileName.replace('.tsx', '')}'`)
 
-    packageJsonExports[`./icons/${fileName.replace('.tsx', '')}`] = {
-      import: `./dist/esm/icons/${fileName.replace('.tsx', '.mjs')}`,
-      require: `./dist/cjs/icons/${fileName.replace('.tsx', '.cjs')}`,
-    }
+    packageJsonExports[`./icons/${fileName.replace('.tsx', '')}`] = createAlignedExport(
+      `./dist/esm/icons/${fileName.replace('.tsx', '.mjs')}`
+    )
   })
 })
 
@@ -176,14 +188,19 @@ setTimeout(() => {
 
   fs.writeFileSync(path.join(rootDir, 'src', 'index.ts'), iconExports.join('\n'), 'utf-8')
 
-  // run biome to format:
-  require('child_process').execSync(`biome lint --write src`)
-  require('child_process').execSync(`biome format --write src`)
+  // keep generated files aligned with repo tooling (OXC)
+  require('child_process').execSync(`bunx oxfmt src`, { stdio: 'inherit' })
+  require('child_process').execSync(`bunx oxlint --fix --fix-suggestions src`, {
+    stdio: 'inherit',
+  })
 }, 1000)
 
 function wrapReact(name, contents) {
+  const eslintDisable = shadowsGlobalNames.includes(name)
+    ? '/* eslint-disable no-shadow-restricted-names */\n'
+    : ''
   return `// @ts-nocheck
-import React, { memo } from 'react'
+${eslintDisable}import React, { memo } from 'react'
     import PropTypes from 'prop-types'
     import type { NamedExoticComponent } from 'react'
     import type { IconProps } from '@tamagui/helpers-icon'

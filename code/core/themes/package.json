@@ -23,45 +23,56 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
+      "default": "./dist/esm/index.mjs"
     },
     "./v3": {
       "types": "./types/v3.d.ts",
       "react-native": "./dist/esm/v3.native.js",
       "module": "./dist/esm/v3.mjs",
       "import": "./dist/esm/v3.mjs",
-      "require": "./dist/cjs/v3.cjs"
+      "require": "./dist/cjs/v3.cjs",
+      "browser": "./dist/esm/v3.mjs",
+      "default": "./dist/esm/v3.mjs"
     },
     "./v3-themes": {
       "types": "./types/v3-themes.d.ts",
       "react-native": "./dist/esm/v3-themes.native.js",
       "module": "./dist/esm/v3-themes.mjs",
       "import": "./dist/esm/v3-themes.mjs",
-      "require": "./dist/cjs/v3-themes.cjs"
+      "require": "./dist/cjs/v3-themes.cjs",
+      "browser": "./dist/esm/v3-themes.mjs",
+      "default": "./dist/esm/v3-themes.mjs"
     },
     "./v4": {
       "types": "./types/v4.d.ts",
       "react-native": "./dist/esm/v4.native.js",
       "module": "./dist/esm/v4.mjs",
       "import": "./dist/esm/v4.mjs",
-      "require": "./dist/cjs/v4.cjs"
+      "require": "./dist/cjs/v4.cjs",
+      "browser": "./dist/esm/v4.mjs",
+      "default": "./dist/esm/v4.mjs"
     },
     "./v5": {
       "types": "./types/v5.d.ts",
       "react-native": "./dist/esm/v5.native.js",
       "module": "./dist/esm/v5.mjs",
       "import": "./dist/esm/v5.mjs",
-      "require": "./dist/cjs/v5.cjs"
+      "require": "./dist/cjs/v5.cjs",
+      "browser": "./dist/esm/v5.mjs",
+      "default": "./dist/esm/v5.mjs"
     },
     "./v5-subtle": {
       "types": "./types/v5-subtle.d.ts",
       "react-native": "./dist/esm/v5-subtle.native.js",
       "module": "./dist/esm/v5-subtle.mjs",
       "import": "./dist/esm/v5-subtle.mjs",
-      "require": "./dist/cjs/v5-subtle.cjs"
+      "require": "./dist/cjs/v5-subtle.cjs",
+      "browser": "./dist/esm/v5-subtle.mjs",
+      "default": "./dist/esm/v5-subtle.mjs"
     }
   },
   "publishConfig": {

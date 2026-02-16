@@ -32,17 +32,20 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
-      "default": "./dist/cjs/index.native.js"
+      "default": "./dist/esm/index.mjs"
     },
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
       "module": "./dist/esm/inject-styles.mjs",
       "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.cjs",
-      "default": "./dist/cjs/inject-styles.cjs"
+      "default": "./dist/cjs/inject-styles.cjs",
+      "browser": "./dist/esm/inject-styles.mjs",
+      "react-native": "./dist/esm/inject-styles.mjs"
     }
   },
   "publishConfig": {
