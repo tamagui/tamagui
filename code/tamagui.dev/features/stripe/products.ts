@@ -1,4 +1,35 @@
-export const STRIPE_PRODUCTS = {
+const isTestMode =
+  process.env.STRIPE_TEST_MODE === 'true' || process.env.NODE_ENV === 'development'
+
+// Test mode products (for local development)
+const TEST_PRODUCTS = {
+  PRO_V2_LICENSE: {
+    productId: 'prod_TzXqrfOfIkbBHW',
+    priceId: 'price_1T1YlQFQGtHoG6xcKy2zoanG', // $350 one-time
+  },
+  PRO_V2_UPGRADE: {
+    productId: 'prod_TzXqrfOfIkbBHW',
+    priceId: 'price_1T1YlZFQGtHoG6xcQrmlViBL', // $100/year
+  },
+  SUPPORT_DIRECT: {
+    productId: 'prod_TzXrJxfpINP8A4',
+    priceId: 'price_1T1YlsFQGtHoG6xctR0JNMhw', // $500/month
+  },
+  SUPPORT_SPONSOR: {
+    productId: 'prod_TzXre5xy4fsDlI',
+    priceId: 'price_1T1YlvFQGtHoG6xcjpn8rd30', // $2000/month
+  },
+  // V1 products not needed in test mode (legacy)
+  PRO_SUBSCRIPTION: { productId: '', priceId: '' },
+  PRO_ONE_TIME: { productId: '', priceId: '' },
+  PRO_TEAM_SEATS: { productId: '', priceId: '' },
+  PRO_TEAM_SEATS_ONE_TIME: { productId: '', priceId: '' },
+  SUPPORT: { productId: '', priceId: '' },
+  CHAT: { productId: '', priceId: '' },
+}
+
+// Live mode products (production)
+const LIVE_PRODUCTS = {
   // ============================================
   // V2 PRODUCTS (per-project licensing)
   // ============================================
@@ -10,7 +41,7 @@ export const STRIPE_PRODUCTS = {
    */
   PRO_V2_LICENSE: {
     productId: 'prod_TneqayKPO32G63',
-    priceId: 'price_1Sv5TSFQGtHoG6xcMB42xb7d',
+    priceId: 'price_1T1YoKFQGtHoG6xcQXOUQeKq', // $350 one-time
   },
 
   /**
@@ -103,17 +134,20 @@ export const STRIPE_PRODUCTS = {
   },
 }
 
-export enum STRIPE_PRODUCTS_ENUM {
+export const STRIPE_PRODUCTS = isTestMode ? TEST_PRODUCTS : LIVE_PRODUCTS
+
+// Product IDs (used for checking subscription status)
+export const STRIPE_PRODUCTS_ENUM = {
   // V2
-  PRO_V2_LICENSE = 'prod_TneqayKPO32G63',
-  SUPPORT_DIRECT = 'prod_TsDjQ6tmdFy7M6',
-  SUPPORT_SPONSOR = 'prod_TsDjG5QpL21tT1',
+  PRO_V2_LICENSE: STRIPE_PRODUCTS.PRO_V2_LICENSE.productId,
+  SUPPORT_DIRECT: STRIPE_PRODUCTS.SUPPORT_DIRECT.productId,
+  SUPPORT_SPONSOR: STRIPE_PRODUCTS.SUPPORT_SPONSOR.productId,
   // V1 (legacy)
-  PRO_SUBSCRIPTION = 'prod_RlRd2DVrG0frHe',
-  PRO_TEAM_SEATS = 'prod_Rxu0x7jR0nWJSv',
-  SUPPORT = 'prod_RlRebXO307MLoH',
-  CHAT = 'prod_RlRdUMAas8elvJ',
-}
+  PRO_SUBSCRIPTION: STRIPE_PRODUCTS.PRO_SUBSCRIPTION.productId,
+  PRO_TEAM_SEATS: STRIPE_PRODUCTS.PRO_TEAM_SEATS.productId,
+  SUPPORT: STRIPE_PRODUCTS.SUPPORT.productId,
+  CHAT: STRIPE_PRODUCTS.CHAT.productId,
+} as const
 
 // V2 products for new purchases
 export const V2_PRODUCTS = [
