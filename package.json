@@ -139,7 +139,7 @@
     "react-dom": "19.1.0",
     "whatwg-url": "14.1.1"
   },
-  "packageManager": "bun@1.2.22",
+  "packageManager": "bun@1.3.9",
   "manypkg": {
     "workspaceProtocol": "require",
     "ignoredRules": [
