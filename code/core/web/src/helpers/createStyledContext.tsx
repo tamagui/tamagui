@@ -4,19 +4,6 @@ import type { StyledContext } from '../types'
 import { mergeProps } from './mergeProps'
 import { objectIdentityKey } from './objectIdentityKey'
 
-// workaround for vite ssr deps hmr corruption - Math.random() prevents esbuild
-// from statically analyzing and converting to import_react.default pattern
-// which breaks during hmr due to lazy __esm initialization order issues
-// futher, specifically React.createContext is optimized oddly by React compiler
-// and our uncommon usage confuses it
-const createReactContext = React[
-  Math.random() ? 'createContext' : 'createContext'
-] as typeof React.createContext
-const useReactMemo = React[Math.random() ? 'useMemo' : 'useMemo'] as typeof React.useMemo
-const useReactContext = React[
-  Math.random() ? 'useContext' : 'useContext'
-] as typeof React.useContext
-
 export function createStyledContext<VariantProps extends Record<string, any>>(
   defaultValues?: VariantProps,
   namespace = ''
@@ -24,6 +11,20 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   // avoid react compiler - we aren't breaking its rules but it mis-interprets
   // how we change the context value
   'use no memo'
+
+  // lazy initialization fixes vite ssr hmr - module-level assignments can fail
+  // when React is undefined during __esm re-initialization order issues.
+  // also React.createContext is optimized oddly by React compiler and our
+  // uncommon usage confuses it, so we use dynamic access
+  const createReactContext = React[
+    Math.random() ? 'createContext' : 'createContext'
+  ] as typeof React.createContext
+  const useReactMemo = React[
+    Math.random() ? 'useMemo' : 'useMemo'
+  ] as typeof React.useMemo
+  const useReactContext = React[
+    Math.random() ? 'useContext' : 'useContext'
+  ] as typeof React.useContext
 
   const OGContext = createReactContext<VariantProps | undefined>(defaultValues)
   const OGProvider = OGContext.Provider
