@@ -1,16 +1,21 @@
 import type { Context, ReactNode } from 'react'
-import React, { useContext } from 'react'
+import React from 'react'
 import type { StyledContext } from '../types'
 import { mergeProps } from './mergeProps'
 import { objectIdentityKey } from './objectIdentityKey'
 
-// test types:
-// const x = createContext({})
-// const y = x.Provider
-// export const ButtonContext = createStyledContext({
-//   size: '$4',
-// })
-// const z = useContext(ButtonContext.context)
+// workaround for vite ssr deps hmr corruption - Math.random() prevents esbuild
+// from statically analyzing and converting to import_react.default pattern
+// which breaks during hmr due to lazy __esm initialization order issues
+// futher, specifically React.createContext is optimized oddly by React compiler
+// and our uncommon usage confuses it
+const createReactContext = React[
+  Math.random() ? 'createContext' : 'createContext'
+] as typeof React.createContext
+const useReactMemo = React[Math.random() ? 'useMemo' : 'useMemo'] as typeof React.useMemo
+const useReactContext = React[
+  Math.random() ? 'useContext' : 'useContext'
+] as typeof React.useContext
 
 export function createStyledContext<VariantProps extends Record<string, any>>(
   defaultValues?: VariantProps,
@@ -20,16 +25,16 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   // how we change the context value
   'use no memo'
 
-  const OGContext = React.createContext<VariantProps | undefined>(defaultValues)
+  const OGContext = createReactContext<VariantProps | undefined>(defaultValues)
   const OGProvider = OGContext.Provider
   const Context = OGContext as any as StyledContext<VariantProps>
   const scopedContexts = new Map<string, Context<VariantProps | undefined>>()
-  const LastScopeInNamespace = React.createContext<string>(namespace)
+  const LastScopeInNamespace = createReactContext<string>(namespace)
 
   function getOrCreateScopedContext(scope: string) {
     let ScopedContext = scopedContexts.get(scope)
     if (!ScopedContext) {
-      ScopedContext = React.createContext<VariantProps | undefined>(defaultValues)
+      ScopedContext = createReactContext<VariantProps | undefined>(defaultValues)
       scopedContexts.set(scope, ScopedContext)
     }
     return ScopedContext!
@@ -47,7 +52,7 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
   }: VariantProps & { children?: ReactNode; scope: string }) => {
     const scope = getNamespacedScope(scopeIn)
 
-    const next = React.useMemo(() => {
+    const next = useReactMemo(() => {
       if (__disableMergeDefaultValues) {
         // we already merged and want to keep ordering
         return values
@@ -68,14 +73,14 @@ export function createStyledContext<VariantProps extends Record<string, any>>(
 
   // use consumerComponent just to give a better error message
   const useStyledContext = (scopeIn = '') => {
-    const lastScopeInNamespace = useContext(LastScopeInNamespace)
+    const lastScopeInNamespace = useReactContext(LastScopeInNamespace)
     const scope = namespace
       ? scopeIn
         ? getNamespacedScope(scopeIn)
         : lastScopeInNamespace
       : scopeIn
     const context = scope ? getOrCreateScopedContext(scope) : OGContext
-    const value = React.useContext(context!) as VariantProps
+    const value = useReactContext(context!) as VariantProps
     return value
   }
 
