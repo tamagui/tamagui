@@ -209,6 +209,22 @@ export const AccountView = () => {
     return acc
   }, [] as Subscription[])
 
+  // check for expired/canceled subscriptions (for renewal prompts)
+  const expiredSubscriptions = subscriptions?.filter(
+    (sub) =>
+      (sub.status === SubscriptionStatus.Canceled ||
+        sub.status === SubscriptionStatus.PastDue ||
+        sub.status === SubscriptionStatus.IncompleteExpired) &&
+      sub.subscription_items?.some(
+        (item) =>
+          item.price?.product?.id &&
+          [...CURRENT_PRODUCTS, ...V1_PRODUCTS].includes(item.price.product.id as any)
+      )
+  )
+
+  const hasExpiredSubscription = (expiredSubscriptions?.length ?? 0) > 0
+  const hasNoActiveSubscription = (activeSubscriptions?.length ?? 0) === 0
+
   const proTeamSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some(
       (item) => item.price?.product?.name === ProductName.TamaguiProTeamSeats
@@ -286,6 +302,8 @@ export const AccountView = () => {
             setCurrentTab={setCurrentTab}
             isTeamMember={!!isTeamMember}
             hasBento={data?.accessInfo?.hasBento ?? false}
+            hasExpiredSubscription={hasExpiredSubscription}
+            hasNoActiveSubscription={hasNoActiveSubscription}
           />
         )
 
@@ -1055,12 +1073,16 @@ const PlanTab = ({
   setCurrentTab,
   isTeamMember,
   hasBento,
+  hasExpiredSubscription,
+  hasNoActiveSubscription,
 }: {
   subscription?: Subscription
   supportSubscription?: Subscription
   setCurrentTab: (value: 'plan' | 'manage' | 'team') => void
   isTeamMember: boolean
   hasBento: boolean
+  hasExpiredSubscription: boolean
+  hasNoActiveSubscription: boolean
 }) => {
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
   const [showSupportAccess, setShowSupportAccess] = useState(false)
@@ -1135,6 +1157,47 @@ const PlanTab = ({
 
   return (
     <YStack gap="$6">
+      {/* expired subscription banner */}
+      {hasExpiredSubscription && hasNoActiveSubscription && (
+        <YStack
+          bg="$yellow3"
+          borderColor="$yellow8"
+          borderWidth={1}
+          borderRadius="$4"
+          p="$4"
+          gap="$3"
+        >
+          <H4 color="$yellow11">Your subscription has expired</H4>
+          <Paragraph color="$yellow11">
+            Renew now to regain access to Takeout, Bento, and all Pro features. Use code{' '}
+            <Paragraph fontFamily="$mono" fontWeight="bold" color="$yellow12">
+              WELCOMEBACK30
+            </Paragraph>{' '}
+            for 30% off!
+          </Paragraph>
+          <XStack gap="$3">
+            <Button
+              size="$3"
+              theme="yellow"
+              onPress={() => {
+                paymentModal.show = true
+              }}
+            >
+              Renew Now
+            </Button>
+            <Button
+              size="$3"
+              chromeless
+              onPress={() => {
+                window.open('https://tamagui.dev/pro', '_blank')
+              }}
+            >
+              Learn More
+            </Button>
+          </XStack>
+        </YStack>
+      )}
+
       <YStack gap="$4">
         <XStack flexWrap="wrap" gap="$3">
           <ServiceCard
