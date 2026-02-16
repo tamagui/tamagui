@@ -28,18 +28,23 @@ type ScopedProps<P> = P & { scope?: string }
 
 type BaseMenu = ReturnType<typeof createBaseMenu>['Menu']
 
+type ContextMenuOpenChangeEvent = {
+  preventDefault(): void
+  defaultPrevented: boolean
+}
+
 type ContextMenuContextValue = {
   triggerId: string
   triggerRef: React.RefObject<TamaguiElement | null>
   contentId: string
   open: boolean
-  onOpenChange(open: boolean): void
+  onOpenChange(open: boolean, event?: ContextMenuOpenChangeEvent): void
   modal: boolean
 }
 
 interface ContextMenuProps extends BaseMenuTypes.MenuProps {
   children?: React.ReactNode
-  onOpenChange?(open: boolean): void
+  onOpenChange?(open: boolean, event?: ContextMenuOpenChangeEvent): void
   dir?: Direction
   modal?: boolean
 }
@@ -103,9 +108,10 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
     const triggerRef = React.useRef<TamaguiElement>(null)
 
     const handleOpenChange = React.useCallback(
-      (open: boolean) => {
+      (open: boolean, event?: ContextMenuOpenChangeEvent) => {
+        onOpenChange?.(open, event)
+        if (event?.defaultPrevented) return
         setOpen(open)
-        onOpenChange?.(open)
       },
       [onOpenChange]
     )
@@ -178,6 +184,18 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
         () => window.clearTimeout(longPressTimerRef.current),
         []
       )
+      const createOpenChangeEvent = (): ContextMenuOpenChangeEvent => {
+        let defaultPrevented = false
+        return {
+          get defaultPrevented() {
+            return defaultPrevented
+          },
+          preventDefault() {
+            defaultPrevented = true
+          },
+        }
+      }
+
       const handleOpen = (event: React.MouseEvent | React.PointerEvent) => {
         if (isWeb && (event instanceof MouseEvent || event instanceof PointerEvent)) {
           pointRef.current = { x: event.clientX, y: event.clientY }
@@ -187,7 +205,9 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
             y: (event as any).nativeEvent.pageY,
           }
         }
-        context.onOpenChange(true)
+        const openChangeEvent = createOpenChangeEvent()
+        context.onOpenChange(true, openChangeEvent)
+        return openChangeEvent
       }
 
       React.useEffect(() => clearLongPress, [clearLongPress])
@@ -215,8 +235,10 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
                 ? props.onContextMenu
                 : composeEventHandlers(props.onContextMenu, (event: any) => {
                     clearLongPress()
-                    handleOpen(event)
-                    event.preventDefault()
+                    const openChangeEvent = handleOpen(event)
+                    if (!openChangeEvent.defaultPrevented) {
+                      event.preventDefault()
+                    }
                   }),
               onPointerDown: disabled
                 ? props.onPointerDown
@@ -252,8 +274,10 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
                 ? props.onLongPress
                 : composeEventHandlers(props.onLongPress, (event: any) => {
                     clearLongPress()
-                    handleOpen(event)
-                    event.preventDefault()
+                    const openChangeEvent = handleOpen(event)
+                    if (!openChangeEvent.defaultPrevented) {
+                      event.preventDefault()
+                    }
                   }),
             })}
           >
@@ -598,6 +622,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 export type {
   ContextMenuArrowProps,
   ContextMenuCheckboxItemProps,
+  ContextMenuOpenChangeEvent,
   ContextMenuContentProps,
   ContextMenuGroupProps,
   ContextMenuItemIconProps,

@@ -8,9 +8,13 @@ type ScopedProps<P> = P & {
     scope?: string;
 };
 type BaseMenu = ReturnType<typeof createBaseMenu>['Menu'];
+type ContextMenuOpenChangeEvent = {
+    preventDefault(): void;
+    defaultPrevented: boolean;
+};
 interface ContextMenuProps extends BaseMenuTypes.MenuProps {
     children?: React.ReactNode;
-    onOpenChange?(open: boolean): void;
+    onOpenChange?(open: boolean, event?: ContextMenuOpenChangeEvent): void;
     dir?: Direction;
     modal?: boolean;
 }
@@ -172,5 +176,5 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
     ItemImage: React.ForwardRefExoticComponent<import("react-native").ImageProps & React.RefAttributes<import("react-native").Image>>;
     Preview: () => null;
 };
-export type { ContextMenuArrowProps, ContextMenuCheckboxItemProps, ContextMenuContentProps, ContextMenuGroupProps, ContextMenuItemIconProps, ContextMenuItemImageProps, ContextMenuItemIndicatorProps, ContextMenuItemProps, ContextMenuPortalProps, ContextMenuProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuSeparatorProps, ContextMenuSubContentProps, ContextMenuSubProps, ContextMenuSubTriggerProps, ContextMenuTriggerProps, };
+export type { ContextMenuArrowProps, ContextMenuCheckboxItemProps, ContextMenuOpenChangeEvent, ContextMenuContentProps, ContextMenuGroupProps, ContextMenuItemIconProps, ContextMenuItemImageProps, ContextMenuItemIndicatorProps, ContextMenuItemProps, ContextMenuPortalProps, ContextMenuProps, ContextMenuRadioGroupProps, ContextMenuRadioItemProps, ContextMenuSeparatorProps, ContextMenuSubContentProps, ContextMenuSubProps, ContextMenuSubTriggerProps, ContextMenuTriggerProps, };
 //# sourceMappingURL=createNonNativeContextMenu.d.ts.map

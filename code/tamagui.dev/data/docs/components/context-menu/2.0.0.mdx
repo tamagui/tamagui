@@ -144,9 +144,9 @@ Contains every component for the ContextMenu.
     },
     {
       name: 'onOpenChange',
-      type: '(open: boolean) => void',
+      type: '(open: boolean, event?: { preventDefault: () => void }) => void',
       required: false,
-      description: 'Called when the menu opens or closes.',
+      description: 'Called when the menu opens or closes. Call event.preventDefault() to cancel and allow the native context menu to show instead.',
     },
     {
       name: 'onOpenWillChange',
@@ -189,6 +189,23 @@ Contains every component for the ContextMenu.
     },
   ]}
 />
+
+#### Allowing Native Context Menu
+
+You can call `event.preventDefault()` in `onOpenChange` to prevent the Tamagui menu from opening and allow the native browser context menu to appear instead:
+
+```tsx
+<ContextMenu
+  onOpenChange={(open, event) => {
+    if (someCondition) {
+      // prevent Tamagui menu, let native context menu show
+      event?.preventDefault()
+    }
+  }}
+>
+  {/* ... */}
+</ContextMenu>
+```
 
 ### ContextMenu.Portal
 
