@@ -739,7 +739,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       },
     }
 
-    // V2: $400 one-time, V1: legacy monthly + yearly
+    // V2: $350 one-time, V1: legacy monthly + yearly
     const baseAmount = isV2
       ? V2_LICENSE_PRICE * 100
       : monthlyTotal * 100 + yearlyTotal * 100

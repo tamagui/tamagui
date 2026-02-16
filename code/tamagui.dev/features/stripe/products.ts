@@ -4,7 +4,7 @@ export const STRIPE_PRODUCTS = {
   // ============================================
 
   /**
-   * V2 Pro License - $400 one-time per project
+   * V2 Pro License - $350 one-time per project
    * Includes: all templates (v1 takeout, v2 takeout, takeout static)
    * Includes: 1 year of updates, basic chat support, unlimited team
    */
