@@ -14,7 +14,14 @@ const ITEM_COUNT = 30
 
 export function MenuOverflowCase() {
   return (
-    <YStack data-testid="container" height="100vh" justifyContent="flex-end" padding="$4">
+    <YStack
+      data-testid="container"
+      $platform-web={{
+        height: '100vh',
+      }}
+      justifyContent="flex-end"
+      padding="$4"
+    >
       {/* position menu trigger near bottom of page to test overflow behavior */}
       <Menu placement="top-start" stayInFrame allowFlip>
         <Menu.Trigger asChild>

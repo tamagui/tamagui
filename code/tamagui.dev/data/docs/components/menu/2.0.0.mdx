@@ -666,28 +666,15 @@ A menu item that opens a submenu on hover or focus. Accepts the same props as
 
 ### Menu.ScrollView
 
-A scrollable container for menu items. Use this inside `Menu.Content` when you have many items that may overflow. Scrollbars are hidden by default.
+A scrollable container for menu items. Use this inside `Menu.Content` when you have many items that may overflow. The menu automatically constrains to available viewport space (via `resize` prop), and ScrollView handles the overflow. Scrollbars are hidden by default.
 
 ```jsx
 <Menu.Content>
-  <Menu.ScrollView maxHeight="var(--tamagui-popper-available-height)">
+  <Menu.ScrollView>
     {/* Many menu items */}
   </Menu.ScrollView>
 </Menu.Content>
 ```
-
-The CSS variable `--tamagui-popper-available-height` is automatically set to the remaining viewport space, allowing the menu to resize dynamically in tight spaces.
-
-<PropsTable
-  data={[
-    {
-      name: 'maxHeight',
-      type: 'number | string',
-      required: false,
-      description: 'Maximum height before scrolling. Use CSS variable for dynamic sizing.',
-    },
-  ]}
-/>
 
 ## Styling
 

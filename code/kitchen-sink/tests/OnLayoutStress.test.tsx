@@ -9,18 +9,26 @@ const INITIAL_SETTLE_TIME = 1000
 const MAX_IO_DELAY_MS = 100 // fail if IO callback takes > 100ms
 const MAX_WARNINGS_PER_TEST = 3 // fail if too many warnings
 
-async function collectConsoleWarnings(page: Page): Promise<{ count: number; avgDelay: number; maxDelay: number }> {
+async function collectConsoleWarnings(
+  page: Page
+): Promise<{ count: number; avgDelay: number; maxDelay: number }> {
   const result = await page.evaluate(() => {
     const warnings = (window as any).__ioDelayWarnings || []
     if (warnings.length === 0) return { count: 0, avgDelay: 0, maxDelay: 0 }
     const sum = warnings.reduce((a: number, b: number) => a + b, 0)
     const max = Math.max(...warnings)
-    return { count: warnings.length, avgDelay: Math.round(sum / warnings.length), maxDelay: max }
+    return {
+      count: warnings.length,
+      avgDelay: Math.round(sum / warnings.length),
+      maxDelay: max,
+    }
   })
   return result
 }
 
-async function getStats(page: Page): Promise<{ total: number; lastBatch: number; lastTime: number; max: number }> {
+async function getStats(
+  page: Page
+): Promise<{ total: number; lastBatch: number; lastTime: number; max: number }> {
   const total = await page.getByTestId('stat-total').innerText()
   const lastBatch = await page.getByTestId('stat-last-batch').innerText()
   const lastTime = await page.getByTestId('stat-last-time').innerText()
@@ -78,7 +86,9 @@ test.describe('onLayout stress test', () => {
 
     // gating assertions
     expect(stats.total, 'should have onLayout callbacks').toBeGreaterThan(50)
-    expect(warnings.maxDelay, `IO delay should be < ${MAX_IO_DELAY_MS}ms`).toBeLessThan(MAX_IO_DELAY_MS)
+    expect(warnings.maxDelay, `IO delay should be < ${MAX_IO_DELAY_MS}ms`).toBeLessThan(
+      MAX_IO_DELAY_MS
+    )
   })
 
   test('resize should trigger batch updates efficiently', async ({ page }) => {
@@ -103,7 +113,10 @@ test.describe('onLayout stress test', () => {
 
     // gating assertions
     expect(stats.total, 'resize should trigger callbacks').toBeGreaterThan(0)
-    expect(warnings.count, `should have fewer than ${MAX_WARNINGS_PER_TEST} warnings`).toBeLessThan(MAX_WARNINGS_PER_TEST)
+    expect(
+      warnings.count,
+      `should have fewer than ${MAX_WARNINGS_PER_TEST} warnings`
+    ).toBeLessThan(MAX_WARNINGS_PER_TEST)
   })
 
   test('grid resize should trigger efficient updates', async ({ page }) => {
@@ -124,7 +137,9 @@ test.describe('onLayout stress test', () => {
 
     // gating assertions - 40 grid items should trigger ~40 callbacks
     expect(stats.total, 'grid resize should trigger callbacks').toBeGreaterThan(20)
-    expect(warnings.maxDelay, `IO delay should be < ${MAX_IO_DELAY_MS}ms`).toBeLessThan(MAX_IO_DELAY_MS)
+    expect(warnings.maxDelay, `IO delay should be < ${MAX_IO_DELAY_MS}ms`).toBeLessThan(
+      MAX_IO_DELAY_MS
+    )
   })
 
   test('list expand should trigger efficient updates', async ({ page }) => {
@@ -145,7 +160,9 @@ test.describe('onLayout stress test', () => {
 
     // gating assertions - 20 list items should trigger ~20 callbacks
     expect(stats.total, 'list expand should trigger callbacks').toBeGreaterThan(10)
-    expect(warnings.maxDelay, `IO delay should be < ${MAX_IO_DELAY_MS}ms`).toBeLessThan(MAX_IO_DELAY_MS)
+    expect(warnings.maxDelay, `IO delay should be < ${MAX_IO_DELAY_MS}ms`).toBeLessThan(
+      MAX_IO_DELAY_MS
+    )
   })
 
   test('container resize affects all children', async ({ page }) => {
@@ -165,7 +182,9 @@ test.describe('onLayout stress test', () => {
     console.log(`IO delay warnings: ${warnings.count}`)
 
     // gating assertion
-    expect(warnings.maxDelay, `IO delay should be < ${MAX_IO_DELAY_MS}ms`).toBeLessThan(MAX_IO_DELAY_MS)
+    expect(warnings.maxDelay, `IO delay should be < ${MAX_IO_DELAY_MS}ms`).toBeLessThan(
+      MAX_IO_DELAY_MS
+    )
   })
 
   test('rapid successive resizes', async ({ page }) => {
@@ -196,7 +215,10 @@ test.describe('onLayout stress test', () => {
     }
 
     // gating assertion - rapid resize is stressful but shouldn't explode
-    expect(warnings.maxDelay, `IO delay should be < ${MAX_IO_DELAY_MS}ms even under stress`).toBeLessThan(MAX_IO_DELAY_MS)
+    expect(
+      warnings.maxDelay,
+      `IO delay should be < ${MAX_IO_DELAY_MS}ms even under stress`
+    ).toBeLessThan(MAX_IO_DELAY_MS)
   })
 
   test('full benchmark suite', async ({ page }) => {
@@ -261,9 +283,14 @@ test.describe('onLayout stress test', () => {
       0
     )
 
-    console.log(`AGGREGATE: ${totalWarnings} total warnings, ${overallMaxDelay}ms max IO delay`)
+    console.log(
+      `AGGREGATE: ${totalWarnings} total warnings, ${overallMaxDelay}ms max IO delay`
+    )
 
     // gating assertions for the full suite
-    expect(overallMaxDelay, `max IO delay across all tests should be < ${MAX_IO_DELAY_MS}ms`).toBeLessThan(MAX_IO_DELAY_MS)
+    expect(
+      overallMaxDelay,
+      `max IO delay across all tests should be < ${MAX_IO_DELAY_MS}ms`
+    ).toBeLessThan(MAX_IO_DELAY_MS)
   })
 })

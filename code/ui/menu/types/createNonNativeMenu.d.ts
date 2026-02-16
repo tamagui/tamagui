@@ -71,12 +71,24 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Item: React.ForwardRefExoticComponent<BaseMenuTypes.MenuItemProps & {
+    Item: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }>, "scope" | keyof BaseMenuTypes.MenuItemProps> & BaseMenuTypes.MenuItemProps & {
         scope?: string;
-    } & React.RefAttributes<TamaguiElement>>;
-    CheckboxItem: React.ForwardRefExoticComponent<BaseMenuTypes.MenuCheckboxItemProps & {
+    }, TamaguiElement, import("@tamagui/core").StackNonStyleProps & BaseMenuTypes.MenuItemProps & {
         scope?: string;
-    } & React.RefAttributes<TamaguiElement>>;
+    }, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
+    CheckboxItem: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }>, "scope" | keyof BaseMenuTypes.MenuCheckboxItemProps> & BaseMenuTypes.MenuCheckboxItemProps & {
+        scope?: string;
+    }, TamaguiElement, import("@tamagui/core").StackNonStyleProps & BaseMenuTypes.MenuCheckboxItemProps & {
+        scope?: string;
+    }, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     RadioGroup: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, "scope" | keyof BaseMenuTypes.MenuRadioGroupProps> & BaseMenuTypes.MenuRadioGroupProps & {
@@ -86,9 +98,15 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
     }, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    RadioItem: React.ForwardRefExoticComponent<BaseMenuTypes.MenuRadioItemProps & {
+    RadioItem: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }>, "scope" | keyof BaseMenuTypes.MenuRadioItemProps> & BaseMenuTypes.MenuRadioItemProps & {
         scope?: string;
-    } & React.RefAttributes<TamaguiElement>>;
+    }, TamaguiElement, import("@tamagui/core").StackNonStyleProps & BaseMenuTypes.MenuRadioItemProps & {
+        scope?: string;
+    }, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     ItemIndicator: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, "scope" | keyof BaseMenuTypes.MenuItemIndicatorProps> & BaseMenuTypes.MenuItemIndicatorProps & {

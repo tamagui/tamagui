@@ -70,12 +70,16 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
         unstyled?: boolean | undefined;
         size?: import("@tamagui/web").FontSizeTokens | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
-    Item: React.ForwardRefExoticComponent<Omit<BaseMenuTypes.MenuItemProps & {
+    Item: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }>, "scope" | keyof BaseMenuTypes.MenuItemProps> & BaseMenuTypes.MenuItemProps & {
         scope?: string;
     } & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;
     } & React.RefAttributes<TamaguiElement>>;
-    CheckboxItem: React.ForwardRefExoticComponent<Omit<BaseMenuTypes.MenuCheckboxItemProps & {
+    CheckboxItem: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }>, "scope" | keyof BaseMenuTypes.MenuCheckboxItemProps> & BaseMenuTypes.MenuCheckboxItemProps & {
         scope?: string;
     } & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;
@@ -87,7 +91,9 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
     } & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;
     } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>;
-    RadioItem: React.ForwardRefExoticComponent<Omit<BaseMenuTypes.MenuRadioItemProps & {
+    RadioItem: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }>, "scope" | keyof BaseMenuTypes.MenuRadioItemProps> & BaseMenuTypes.MenuRadioItemProps & {
         scope?: string;
     } & React.RefAttributes<TamaguiElement>, "ref"> & {
         scope?: string;
