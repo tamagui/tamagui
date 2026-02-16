@@ -969,15 +969,6 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               </Paragraph>
             </YStack>
 
-            <XStack justify="space-between" items="center">
-              <Paragraph size="$3" color="$color9">
-                After 1 year: $100/year for updates
-              </Paragraph>
-              <Paragraph size="$2" color="$color9">
-                (auto-subscribed)
-              </Paragraph>
-            </XStack>
-
             <Separator />
 
             <XStack justify="space-between">
@@ -1056,19 +1047,18 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               )}
             </YStack>
 
-            <Theme name="red">
-              <YStack
-                bg="$color3"
-                p="$3"
-                rounded="$3"
-                borderWidth={1}
-                borderColor="$color6"
-              >
-                <Paragraph size="$2" fontWeight="600" color="$color11">
-                  Sales are final. No refunds.
-                </Paragraph>
-              </YStack>
-            </Theme>
+            <YStack
+              bg="$color3"
+              p="$3"
+              rounded="$3"
+              borderWidth={1}
+              borderColor="$color6"
+            >
+              <Paragraph size="$2" color="$color11">
+                Sales are final. Includes $100/year subscription for updates starting in 1
+                year. Renewal email 2 weeks before, one-click unsubscribe anytime.
+              </Paragraph>
+            </YStack>
           </YStack>
         )
       }
