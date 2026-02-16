@@ -106,5 +106,18 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
             lazy?: boolean;
         };
     }, keyof import("react-native").ImageProps | keyof React.RefAttributes<import("react-native").Image>>>>;
+    readonly ScrollView: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").ScrollView, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/web").StackStyleBase & {
+        readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<typeof import("react-native").ScrollView, {
+            accept: {
+                readonly contentContainerStyle: "style";
+            };
+        }>> | undefined;
+    }, {
+        fullscreen?: boolean | undefined;
+    }, {
+        accept: {
+            readonly contentContainerStyle: "style";
+        };
+    } & import("@tamagui/web").StaticConfigPublic>;
 };
 //# sourceMappingURL=Menu.d.ts.map

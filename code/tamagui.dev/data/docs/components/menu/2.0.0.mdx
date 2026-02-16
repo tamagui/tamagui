@@ -171,8 +171,16 @@ Contains every component for the Menu.
     {
       name: 'offset',
       type: 'OffsetOptions',
+      default: '10',
       required: false,
       description: 'Distance between the menu and its trigger.',
+    },
+    {
+      name: 'resize',
+      type: 'boolean',
+      default: 'true',
+      required: false,
+      description: 'Constrains the menu to fit within available viewport space. When enabled, use Menu.ScrollView inside Content for scrollable overflow.',
     },
     {
       name: 'unstyled',
@@ -655,6 +663,31 @@ Renders the content of a submenu. Same props as `Menu.Content`, excluding `side`
 
 A menu item that opens a submenu on hover or focus. Accepts the same props as
 `Menu.Item`.
+
+### Menu.ScrollView
+
+A scrollable container for menu items. Use this inside `Menu.Content` when you have many items that may overflow. Scrollbars are hidden by default.
+
+```jsx
+<Menu.Content>
+  <Menu.ScrollView maxHeight="var(--tamagui-popper-available-height)">
+    {/* Many menu items */}
+  </Menu.ScrollView>
+</Menu.Content>
+```
+
+The CSS variable `--tamagui-popper-available-height` is automatically set to the remaining viewport space, allowing the menu to resize dynamically in tight spaces.
+
+<PropsTable
+  data={[
+    {
+      name: 'maxHeight',
+      type: 'number | string',
+      required: false,
+      description: 'Maximum height before scrolling. Use CSS variable for dynamic sizing.',
+    },
+  ]}
+/>
 
 ## Styling
 

@@ -105,5 +105,18 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
             lazy?: boolean;
         };
     }, keyof import("react-native").ImageProps | keyof import("react").RefAttributes<import("react-native").Image>>>>;
+    readonly ScrollView: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("react-native").ScrollView, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/web").StackStyleBase & {
+        readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<typeof import("react-native").ScrollView, {
+            accept: {
+                readonly contentContainerStyle: "style";
+            };
+        }>> | undefined;
+    }, {
+        fullscreen?: boolean | undefined;
+    }, {
+        accept: {
+            readonly contentContainerStyle: "style";
+        };
+    } & import("@tamagui/web").StaticConfigPublic>;
 };
 //# sourceMappingURL=index.d.ts.map

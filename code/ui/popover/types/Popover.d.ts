@@ -33,6 +33,11 @@ export type PopoverProps = ScopedPopoverProps<PopperProps> & {
      * Disable focusing behavior on open
      */
     disableFocus?: boolean;
+    /**
+     * Disable the dismissable layer (escape key, outside click handling).
+     * Useful for popovers that stay mounted but are visually hidden.
+     */
+    disableDismissable?: boolean;
 };
 export type PopoverScopes = string;
 type PopoverContextValue = {
@@ -50,6 +55,7 @@ type PopoverContextValue = {
     size?: SizeTokens;
     breakpointActive?: boolean;
     keepChildrenMounted?: boolean | 'lazy';
+    disableDismissable?: boolean;
     anchorTo?: Rect;
 };
 export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
@@ -108,11 +114,6 @@ export type PopoverContentImplProps = PopperContentProps & Omit<DismissableProps
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false;
     enableRemoveScroll?: boolean;
     freezeContentsWhenHidden?: boolean;
-    /**
-     * Disable the dismissable layer (escape key, outside click handling).
-     * Useful for popovers that stay mounted but are visually hidden.
-     */
-    disableDismissable?: boolean;
 };
 export type PopoverCloseProps = ScopedPopoverProps<YStackProps>;
 export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
@@ -165,6 +166,11 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
      * Disable focusing behavior on open
      */
     disableFocus?: boolean;
+    /**
+     * Disable the dismissable layer (escape key, outside click handling).
+     * Useful for popovers that stay mounted but are visually hidden.
+     */
+    disableDismissable?: boolean;
 } & React.RefAttributes<Popover>> & {
     Anchor: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
         scope?: PopoverScopes;
