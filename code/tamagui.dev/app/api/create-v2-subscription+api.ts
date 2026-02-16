@@ -11,7 +11,7 @@ const PRO_V2_LICENSE_PRICE_ID = STRIPE_PRODUCTS.PRO_V2_LICENSE.priceId
 const PRO_V2_UPGRADE_PRICE_ID = STRIPE_PRODUCTS.PRO_V2_UPGRADE.priceId
 
 // base price in cents
-const V2_LICENSE_PRICE_CENTS = 40000
+const V2_LICENSE_PRICE_CENTS = 35000
 
 // V2 support tier type
 type SupportTier = 'chat' | 'direct' | 'sponsor'
@@ -34,7 +34,7 @@ const generateIdempotencyKey = (userId: string, action: string, uniqueData: stri
 
 /**
  * V2 Pro Purchase Flow:
- * 1. Charge $400 one-time for license
+ * 1. Charge $350 one-time for license
  * 2. Create $100/year upgrade subscription (starts in 1 year)
  * 3. If support tier selected (direct/sponsor), create monthly subscription
  * 4. Project is created after successful payment via webhook

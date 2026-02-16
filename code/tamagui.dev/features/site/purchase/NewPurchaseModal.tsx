@@ -150,8 +150,8 @@ export function PurchaseModalContents() {
     }
   }
 
-  // V2 Pricing: $400 one-time per project
-  const V2_PRICE = 400
+  // V2 Pricing: $350 one-time per project
+  const V2_PRICE = 350
 
   // Support tier monthly price
   const supportTierMonthly = SUPPORT_TIERS[supportTier].price
