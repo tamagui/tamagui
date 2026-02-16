@@ -462,6 +462,12 @@ export type PopoverContentImplProps = PopperContentProps &
     enableRemoveScroll?: boolean
 
     freezeContentsWhenHidden?: boolean
+
+    /**
+     * Disable the dismissable layer (escape key, outside click handling).
+     * Useful for popovers that stay mounted but are visually hidden.
+     */
+    disableDismissable?: boolean
   }
 
 type PopoverContentImplInteralProps = PopoverContentImplProps & {
@@ -489,6 +495,8 @@ const PopoverContentImpl = React.forwardRef<
     freezeContentsWhenHidden,
     setIsFullyHidden,
     lazyMount,
+    forceUnmount,
+    disableDismissable,
     context,
     ...contentProps
   } = props
@@ -513,7 +521,7 @@ const PopoverContentImpl = React.forwardRef<
     if (process.env.TAMAGUI_TARGET !== 'native') {
       contents = (
         <Dismissable
-          forceUnmount={!open}
+          forceUnmount={disableDismissable || (forceUnmount ?? !open)}
           onEscapeKeyDown={onEscapeKeyDown}
           onPointerDownOutside={onPointerDownOutside}
           onFocusOutside={onFocusOutside}

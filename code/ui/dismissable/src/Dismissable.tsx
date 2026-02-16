@@ -47,6 +47,15 @@ export function getDismissableLayerCount(): number {
 }
 
 /**
+ * debug helper - logs what elements are registered as dismissable layers
+ */
+export function debugDismissableLayers(): HTMLDivElement[] {
+  const layers = Array.from(globalLayers)
+  console.log('[Dismissable] Active layers:', layers.length, layers)
+  return layers
+}
+
+/**
  * hook that returns true when any dismissable layer is active
  * re-renders when the state changes
  * uses module-level globals, not React context, so works anywhere in tree

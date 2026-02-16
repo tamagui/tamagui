@@ -7,6 +7,10 @@ export declare function dispatchDiscreteCustomEvent<E extends CustomEvent>(targe
  */
 export declare function getDismissableLayerCount(): number;
 /**
+ * debug helper - logs what elements are registered as dismissable layers
+ */
+export declare function debugDismissableLayers(): HTMLDivElement[];
+/**
  * hook that returns true when any dismissable layer is active
  * re-renders when the state changes
  * uses module-level globals, not React context, so works anywhere in tree
