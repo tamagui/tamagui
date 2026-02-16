@@ -108,6 +108,12 @@ export type PopoverProps = ScopedPopoverProps<PopperProps> & {
    * Disable focusing behavior on open
    */
   disableFocus?: boolean
+
+  /**
+   * Disable the dismissable layer (escape key, outside click handling).
+   * Useful for popovers that stay mounted but are visually hidden.
+   */
+  disableDismissable?: boolean
 }
 
 // let users override for type safety
@@ -128,6 +134,7 @@ type PopoverContextValue = {
   size?: SizeTokens
   breakpointActive?: boolean
   keepChildrenMounted?: boolean | 'lazy'
+  disableDismissable?: boolean
   anchorTo?: Rect
 }
 
@@ -462,12 +469,6 @@ export type PopoverContentImplProps = PopperContentProps &
     enableRemoveScroll?: boolean
 
     freezeContentsWhenHidden?: boolean
-
-    /**
-     * Disable the dismissable layer (escape key, outside click handling).
-     * Useful for popovers that stay mounted but are visually hidden.
-     */
-    disableDismissable?: boolean
   }
 
 type PopoverContentImplInteralProps = PopoverContentImplProps & {
@@ -496,12 +497,11 @@ const PopoverContentImpl = React.forwardRef<
     setIsFullyHidden,
     lazyMount,
     forceUnmount,
-    disableDismissable,
     context,
     ...contentProps
   } = props
 
-  const { open, keepChildrenMounted } = context
+  const { open, keepChildrenMounted, disableDismissable } = context
 
   const handleExitComplete = React.useCallback(() => {
     setIsFullyHidden?.(true)
@@ -718,6 +718,7 @@ const PopoverInner = React.forwardRef<
     keepChildrenMounted: keepChildrenMountedProp,
     hoverable,
     disableFocus,
+    disableDismissable,
     id,
     adaptScope,
     ...restProps
@@ -800,6 +801,7 @@ const PopoverInner = React.forwardRef<
     onCustomAnchorAdd: React.useCallback(() => setHasCustomAnchor(true), []),
     onCustomAnchorRemove: React.useCallback(() => setHasCustomAnchor(false), []),
     keepChildrenMounted,
+    disableDismissable,
   } satisfies PopoverContextValue
 
   // // debug if changing too often

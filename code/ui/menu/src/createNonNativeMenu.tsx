@@ -1,3 +1,4 @@
+import { styled } from '@tamagui/core'
 import type * as BaseMenuTypes from '@tamagui/create-menu'
 import {
   type MenuArrowProps as BaseMenuArrowProps,
@@ -16,6 +17,7 @@ import {
   createBaseMenu,
   type CreateBaseMenuProps,
 } from '@tamagui/create-menu'
+import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
   composeEventHandlers,
@@ -143,6 +145,12 @@ type MenuSubTriggerProps = BaseMenuSubTriggerProps
 
 type MenuSubContentElement = TamaguiElement
 type MenuSubContentProps = BaseMenuSubContentProps
+
+/* -------------------------------------------------------------------------------------------------
+ * MenuScrollView
+ * -----------------------------------------------------------------------------------------------*/
+
+type MenuScrollViewProps = ScrollViewProps
 
 /* -----------------------------------------------------------------------------------------------*/
 
@@ -426,6 +434,17 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   MenuSubContent.displayName = SUB_CONTENT_NAME
 
+  /* -------------------------------------------------------------------------------------------------
+   * MenuScrollView
+   * -----------------------------------------------------------------------------------------------*/
+
+  const MenuScrollView = styled(ScrollView, {
+    // flexShrink allows the scroll view to shrink when menu content is constrained
+    flexShrink: 1,
+    showsHorizontalScrollIndicator: false,
+    showsVerticalScrollIndicator: false,
+  })
+
   /* -----------------------------------------------------------------------------------------------*/
 
   // direct pass-through from base menu (preserves styleable)
@@ -465,6 +484,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
     ItemSubtitle,
     ItemImage,
     ItemIcon,
+    ScrollView: MenuScrollView,
   })
 }
 
@@ -480,6 +500,7 @@ export type {
   MenuProps,
   MenuRadioGroupProps,
   MenuRadioItemProps,
+  MenuScrollViewProps,
   MenuSubContentProps,
   MenuSubProps,
   MenuSubTriggerProps,

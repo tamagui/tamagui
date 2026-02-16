@@ -407,6 +407,8 @@ export function createBaseMenu({
       allowFlip = { padding: 10 },
       stayInFrame = { padding: 10 },
       placement = defaultPlacement,
+      resize = true,
+      offset = 10,
       ...rest
     } = props
     const [content, setContent] = React.useState<MenuContentElement | null>(null)
@@ -445,6 +447,8 @@ export function createBaseMenu({
         placement={placement}
         allowFlip={allowFlip}
         stayInFrame={stayInFrame}
+        resize={resize}
+        offset={offset}
         {...rest}
       >
         <MenuProvider

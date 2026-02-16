@@ -122,6 +122,9 @@ export function createMenu(params: CreateBaseMenuProps) {
     NativeComponent: NativeMenuRoot.SubContent,
   })
 
+  // ScrollView is web-only, native menus use native UI that handles overflow automatically
+  const ScrollView = NonNativeMenu.ScrollView
+
   const Menu = withStaticProperties(MenuComp, {
     Trigger,
     Portal,
@@ -142,6 +145,7 @@ export function createMenu(params: CreateBaseMenuProps) {
     ItemSubtitle,
     ItemIcon,
     ItemImage,
+    ScrollView,
   } as const)
   return Menu
 }

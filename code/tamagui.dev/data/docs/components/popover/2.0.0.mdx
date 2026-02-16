@@ -212,6 +212,12 @@ Contains every component for the popover.
       description: `By default, Popover removes children from DOM/rendering when fully hidden. Setting true will keep children mounted even when hidden. This can be beneficial for performance if your popover content is expensive to render. The "lazy" value will only initially mount the children after a React startTransition, and then keep them mounted thereafter.`,
     },
     {
+      name: 'disableDismissable',
+      type: 'boolean',
+      required: false,
+      description: `Disables the dismissable layer (escape key, outside click handling). Useful when using keepChildrenMounted for popovers that stay mounted but are visually hidden - set this to true when the popover is hidden to prevent it from capturing escape key presses.`,
+    },
+    {
       name: 'stayInFrame',
       type: 'ShiftProps | boolean',
       required: false,
