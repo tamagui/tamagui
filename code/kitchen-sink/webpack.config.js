@@ -50,7 +50,7 @@ module.exports = {
       directory: path.join(__dirname, 'public'),
     },
     compress: true,
-    port: process.env.PORT || 9000,
+    port: process.env.PORT || 7979,
   },
   ignoreWarnings: [
     // suppress react-native-worklets critical dependency warning
