@@ -60,3 +60,64 @@ test('pointer events - move fires during drag', async ({ page }) => {
   const count = parseInt(text?.replace('Move: ', '') || '0')
   expect(count).toBeGreaterThan(0)
 })
+
+test('pointer events - box-none allows clicks to pass through parent to element behind', async ({
+  page,
+}) => {
+  const parentCount = page.locator('[data-testid="box-none-parent-count"]')
+  const childCount = page.locator('[data-testid="box-none-child-count"]')
+  const behindCount = page.locator('[data-testid="box-none-behind-count"]')
+  const behind = page.locator('[data-testid="box-none-behind"]')
+
+  // initial state
+  await expect(parentCount).toHaveText('BoxNoneParent: 0')
+  await expect(childCount).toHaveText('BoxNoneChild: 0')
+  await expect(behindCount).toHaveText('BoxNoneBehind: 0')
+
+  // click directly on parent area (where behind element is underneath)
+  // box-none should let the click pass through to the behind element
+  const behindBox = await behind.boundingBox()
+  if (!behindBox) throw new Error('Could not get behind bounding box')
+
+  // get center of the behind element which is covered by the parent
+  const centerX = behindBox.x + behindBox.width / 2
+  const centerY = behindBox.y + behindBox.height / 2
+
+  // clicking at this position should:
+  // 1. NOT trigger the parent's onPress (box-none means parent ignores pointer events)
+  // 2. Trigger the behind element's onPress (click passes through)
+  await page.mouse.click(centerX, centerY)
+
+  // parent should not have received the click
+  await expect(parentCount).toHaveText('BoxNoneParent: 0')
+  // behind element should have received the click
+  await expect(behindCount).toHaveText('BoxNoneBehind: 1')
+})
+
+test('pointer events - box-none child still receives clicks', async ({ page }) => {
+  const childCount = page.locator('[data-testid="box-none-child-count"]')
+  const child = page.locator('[data-testid="box-none-child"]')
+
+  await expect(childCount).toHaveText('BoxNoneChild: 0')
+
+  // clicking on child should work (children can still receive events)
+  await child.click()
+  await expect(childCount).toHaveText('BoxNoneChild: 1')
+})
+
+test('pointer events - box-none applies correct CSS', async ({ page }) => {
+  const parent = page.locator('[data-testid="box-none-parent"]')
+  const child = page.locator('[data-testid="box-none-child"]')
+
+  // parent should have pointer-events: none
+  const parentPointerEvents = await parent.evaluate(
+    (el) => window.getComputedStyle(el).pointerEvents
+  )
+  expect(parentPointerEvents).toBe('none')
+
+  // direct children should have pointer-events: auto (due to box-none polyfill)
+  const childPointerEvents = await child.evaluate(
+    (el) => window.getComputedStyle(el).pointerEvents
+  )
+  expect(childPointerEvents).toBe('auto')
+})
