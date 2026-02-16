@@ -21,7 +21,9 @@ export declare function createContextMenu(param: CreateBaseMenuProps): React.FC<
         unstyled?: boolean | undefined;
         size?: import("@tamagui/web").FontSizeTokens | undefined;
     }>, keyof import("@tamagui/create-menu").MenuLabelProps> & import("@tamagui/create-menu").MenuLabelProps & React.RefAttributes<import("@tamagui/web").TamaguiTextElement> & Partial<Omit<import("@tamagui/create-menu").NativeMenuLabelProps, "elevation" | "fontFamily" | "fontSize" | "color" | "textShadowColor" | "lineHeight" | "fontWeight" | "letterSpacing" | "size" | "allowFontScaling" | "ellipsizeMode" | "lineBreakMode" | "numberOfLines" | "maxFontSizeMultiplier" | "minimumFontScale" | "pressRetentionOffset" | "adjustsFontSizeToFit" | "dynamicTypeRamp" | "suppressHighlighting" | "lineBreakStrategyIOS" | "selectable" | "selectionColor" | "textBreakStrategy" | "dataDetectorType" | "android_hyphenationFrequency" | "fontStyle" | "textAlign" | "textDecorationLine" | "textDecorationStyle" | "textDecorationColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "fontVariant" | "writingDirection" | "textAlignVertical" | "includeFontPadding" | "ellipsis" | "textDecorationDistance" | "textOverflow" | "whiteSpace" | "wordWrap" | "textShadow" | keyof import("@tamagui/create-menu").MenuLabelProps | keyof React.RefAttributes<import("@tamagui/web").TamaguiTextElement>>>>;
-    Item: React.FC<Omit<import("@tamagui/create-menu").MenuItemProps & {
+    Item: React.FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }>, "scope" | keyof import("@tamagui/create-menu").MenuItemProps> & import("@tamagui/create-menu").MenuItemProps & {
         scope?: string;
     } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
         scope?: string;
@@ -35,7 +37,9 @@ export declare function createContextMenu(param: CreateBaseMenuProps): React.FC<
         destructive?: boolean;
         key: string;
     }, "scope" | keyof React.RefAttributes<import("@tamagui/web").TamaguiElement> | keyof import("@tamagui/create-menu").MenuItemProps>>>;
-    CheckboxItem: React.FC<Omit<import("@tamagui/create-menu").MenuCheckboxItemProps & {
+    CheckboxItem: React.FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }>, "scope" | keyof import("@tamagui/create-menu").MenuCheckboxItemProps> & import("@tamagui/create-menu").MenuCheckboxItemProps & {
         scope?: string;
     } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
         scope?: string;
@@ -53,7 +57,9 @@ export declare function createContextMenu(param: CreateBaseMenuProps): React.FC<
     } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
         scope?: string;
     } & React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View> & Partial<Omit<unknown, "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps | keyof React.RefAttributes<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View>>>>;
-    RadioItem: React.FC<Omit<import("@tamagui/create-menu").MenuRadioItemProps & {
+    RadioItem: React.FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+        unstyled?: boolean | undefined;
+    }>, "scope" | keyof import("@tamagui/create-menu").MenuRadioItemProps> & import("@tamagui/create-menu").MenuRadioItemProps & {
         scope?: string;
     } & React.RefAttributes<import("@tamagui/web").TamaguiElement>, "ref"> & {
         scope?: string;

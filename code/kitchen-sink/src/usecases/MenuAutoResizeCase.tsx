@@ -13,7 +13,9 @@ export function MenuAutoResizeCase() {
   return (
     <YStack
       data-testid="container"
-      height="100vh"
+      $platform-web={{
+        height: '100vh',
+      }}
       justifyContent="center"
       alignItems="center"
       padding="$4"
@@ -35,10 +37,7 @@ export function MenuAutoResizeCase() {
             padding={0}
             overflow="hidden"
           >
-            <Menu.ScrollView
-              data-testid="menu-scroll-view"
-              maxHeight="var(--tamagui-popper-available-height)"
-            >
+            <Menu.ScrollView data-testid="menu-scroll-view">
               <YStack padding="$2">
                 {Array.from({ length: ITEM_COUNT }).map((_, i) => (
                   <Menu.Item

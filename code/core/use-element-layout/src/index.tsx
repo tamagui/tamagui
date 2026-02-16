@@ -116,12 +116,7 @@ function startGlobalObservers() {
 
 // optimization: inline rect comparison to avoid function call overhead on hot path
 function rectsEqual(a: DOMRectReadOnly, b: DOMRectReadOnly): boolean {
-  return (
-    a.x === b.x &&
-    a.y === b.y &&
-    a.width === b.width &&
-    a.height === b.height
-  )
+  return a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height
 }
 
 if (ENABLE) {
