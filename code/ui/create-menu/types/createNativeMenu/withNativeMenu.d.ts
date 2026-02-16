@@ -4,6 +4,6 @@ export declare function withNativeMenu<C extends React.ComponentType<any>, N ext
     NativeComponent: N;
     scope?: string;
     isRoot?: boolean;
-}): React.FC<CP & Partial<NP>>;
+}): React.FC<CP & Partial<Omit<NP, keyof CP>>>;
 export {};
 //# sourceMappingURL=withNativeMenu.d.ts.map

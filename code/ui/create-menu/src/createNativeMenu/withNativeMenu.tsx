@@ -15,8 +15,8 @@ export function withNativeMenu<
   NativeComponent: N
   scope?: string
   isRoot?: boolean
-}): React.FC<CP & Partial<NP>> {
-  type Props = CP & Partial<NP>
+}): React.FC<CP & Partial<Omit<NP, keyof CP>>> {
+  type Props = CP & Partial<Omit<NP, keyof CP>>
 
   if (isWeb) {
     return Component as React.FC<Props>
