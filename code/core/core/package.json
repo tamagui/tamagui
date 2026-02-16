@@ -37,6 +37,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -45,6 +46,7 @@
     "./native": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/native.cjs",
+      "browser": "./dist/native.cjs",
       "module": "./dist/native.cjs",
       "import": "./dist/native.cjs",
       "require": "./dist/native.cjs",
@@ -53,6 +55,7 @@
     "./native-test": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/test.native.cjs",
+      "browser": "./dist/test.native.cjs",
       "module": "./dist/test.native.cjs",
       "import": "./dist/test.native.cjs",
       "require": "./dist/test.native.cjs",
@@ -61,6 +64,7 @@
     "./inject-styles": {
       "types": "./types/inject-styles.d.ts",
       "react-native": "./dist/esm/inject-styles.mjs",
+      "browser": "./dist/esm/inject-styles.mjs",
       "module": "./dist/esm/inject-styles.mjs",
       "import": "./dist/esm/inject-styles.mjs",
       "require": "./dist/cjs/inject-styles.cjs",
@@ -69,6 +73,7 @@
     "./reactNativeTypes": {
       "types": "./types/reactNativeTypes.d.ts",
       "react-native": "./dist/esm/reactNativeTypes.native.js",
+      "browser": "./dist/esm/reactNativeTypes.mjs",
       "module": "./dist/esm/reactNativeTypes.mjs",
       "import": "./dist/esm/reactNativeTypes.mjs",
       "require": "./dist/cjs/reactNativeTypes.cjs",

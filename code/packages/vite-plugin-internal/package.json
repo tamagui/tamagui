@@ -9,6 +9,7 @@
     "./package.json": "./package.json",
     ".": {
       "react-native": "./dist/esm/vite.config.native.js",
+      "browser": "./dist/esm/vite.config.mjs",
       "module": "./dist/esm/vite.config.mjs",
       "import": "./dist/esm/vite.config.mjs",
       "require": "./dist/cjs/vite.config.cjs"

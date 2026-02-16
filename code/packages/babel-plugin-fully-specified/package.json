@@ -15,6 +15,7 @@
   "exports": {
     ".": {
       "types": "./types/index.d.ts",
+      "browser": "./permanent/esm/index.mjs",
       "module": "./permanent/esm/index.mjs",
       "import": "./permanent/esm/index.mjs",
       "require": "./permanent/cjs/index.js",
@@ -22,6 +23,7 @@
     },
     "./commonjs": {
       "types": "./types/commonjs.d.ts",
+      "browser": "./permanent/esm/commonjs.mjs",
       "module": "./permanent/esm/commonjs.mjs",
       "import": "./permanent/esm/commonjs.mjs",
       "require": "./permanent/cjs/commonjs.js"

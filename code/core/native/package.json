@@ -56,6 +56,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -64,6 +65,7 @@
     "./setup-teleport": {
       "types": "./types/setup-teleport.d.ts",
       "react-native": "./dist/esm/setup-teleport.native.js",
+      "browser": "./dist/esm/setup-teleport.mjs",
       "module": "./dist/esm/setup-teleport.mjs",
       "import": "./dist/esm/setup-teleport.mjs",
       "require": "./dist/cjs/setup-teleport.cjs",
@@ -72,6 +74,7 @@
     "./setup-gesture-handler": {
       "types": "./types/setup-gesture-handler.d.ts",
       "react-native": "./dist/esm/setup-gesture-handler.native.js",
+      "browser": "./dist/esm/setup-gesture-handler.mjs",
       "module": "./dist/esm/setup-gesture-handler.mjs",
       "import": "./dist/esm/setup-gesture-handler.mjs",
       "require": "./dist/cjs/setup-gesture-handler.cjs",
@@ -80,6 +83,7 @@
     "./setup-worklets": {
       "types": "./types/setup-worklets.d.ts",
       "react-native": "./dist/esm/setup-worklets.native.js",
+      "browser": "./dist/esm/setup-worklets.mjs",
       "module": "./dist/esm/setup-worklets.mjs",
       "import": "./dist/esm/setup-worklets.mjs",
       "require": "./dist/cjs/setup-worklets.cjs",
@@ -88,6 +92,7 @@
     "./setup-safe-area": {
       "types": "./types/setup-safe-area.d.ts",
       "react-native": "./dist/esm/setup-safe-area.native.js",
+      "browser": "./dist/esm/setup-safe-area.mjs",
       "module": "./dist/esm/setup-safe-area.mjs",
       "import": "./dist/esm/setup-safe-area.mjs",
       "require": "./dist/cjs/setup-safe-area.cjs",
@@ -96,6 +101,7 @@
     "./setup-expo-linear-gradient": {
       "types": "./types/setup-expo-linear-gradient.d.ts",
       "react-native": "./dist/esm/setup-expo-linear-gradient.native.js",
+      "browser": "./dist/esm/setup-expo-linear-gradient.mjs",
       "module": "./dist/esm/setup-expo-linear-gradient.mjs",
       "import": "./dist/esm/setup-expo-linear-gradient.mjs",
       "require": "./dist/cjs/setup-expo-linear-gradient.cjs",
@@ -104,6 +110,7 @@
     "./setup-keyboard-controller": {
       "types": "./types/setup-keyboard-controller.d.ts",
       "react-native": "./dist/esm/setup-keyboard-controller.native.js",
+      "browser": "./dist/esm/setup-keyboard-controller.mjs",
       "module": "./dist/esm/setup-keyboard-controller.mjs",
       "import": "./dist/esm/setup-keyboard-controller.mjs",
       "require": "./dist/cjs/setup-keyboard-controller.cjs",
@@ -112,6 +119,7 @@
     "./setup-zeego": {
       "types": "./types/setup-zeego.d.ts",
       "react-native": "./dist/esm/setup-zeego.native.js",
+      "browser": "./dist/esm/setup-zeego.mjs",
       "module": "./dist/esm/setup-zeego.mjs",
       "import": "./dist/esm/setup-zeego.mjs",
       "require": "./dist/cjs/setup-zeego.cjs",
@@ -120,6 +128,7 @@
     "./setup-burnt": {
       "types": "./types/setup-burnt.d.ts",
       "react-native": "./dist/esm/setup-burnt.native.js",
+      "browser": "./dist/esm/setup-burnt.mjs",
       "module": "./dist/esm/setup-burnt.mjs",
       "import": "./dist/esm/setup-burnt.mjs",
       "require": "./dist/cjs/setup-burnt.cjs",

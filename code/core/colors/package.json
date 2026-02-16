@@ -27,6 +27,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -35,6 +36,7 @@
     "./legacy": {
       "types": "./types/legacy.d.ts",
       "react-native": "./dist/esm/legacy.native.js",
+      "browser": "./dist/esm/legacy.mjs",
       "module": "./dist/esm/legacy.mjs",
       "import": "./dist/esm/legacy.mjs",
       "require": "./dist/cjs/legacy.cjs",

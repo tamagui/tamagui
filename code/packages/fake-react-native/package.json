@@ -6,6 +6,7 @@
   "module": "index.mjs",
   "exports": {
     ".": {
+      "browser": "./index.mjs",
       "module": "./index.mjs",
       "import": "./index.mjs",
       "require": "./index.js"
