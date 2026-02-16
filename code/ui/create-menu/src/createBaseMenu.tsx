@@ -778,6 +778,7 @@ export function createBaseMenu({
     const content = (
       <PopperPrimitive.PopperContent
         role="menu"
+        unstyled={unstyled}
         {...(!unstyled && {
           padding: 4,
           backgroundColor: '$background',
@@ -1362,6 +1363,7 @@ export function createBaseMenu({
         <PopperPrimitive.PopperArrow
           scope={scope}
           componentName="PopperArrow"
+          unstyled={unstyled}
           {...(!unstyled && {
             backgroundColor: '$background',
           })}
