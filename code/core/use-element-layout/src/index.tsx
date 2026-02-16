@@ -1,5 +1,4 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import { createContext, useContext, useId, type ReactNode, type RefObject } from 'react'
 
 const LayoutHandlers = new WeakMap<HTMLElement, Function>()
@@ -48,7 +47,7 @@ export const LayoutMeasurementController = ({
   )
 }
 
-// Single persistent IntersectionObserver for all nodes
+// Single persistent IntersectionObserver for visibility tracking
 let globalIntersectionObserver: IntersectionObserver | null = null
 
 type TamaguiComponentStatePartial = {
@@ -81,7 +80,6 @@ export type LayoutEvent = {
 }
 
 const NodeRectCache = new WeakMap<HTMLElement, DOMRect>()
-const LastChangeTime = new WeakMap<HTMLElement, number>()
 
 // prevent thrashing during first hydration (somewhat, streaming gets trickier)
 let avoidUpdates = true
@@ -102,12 +100,13 @@ function startGlobalObservers() {
 
   globalIntersectionObserver = new IntersectionObserver(
     (entries) => {
-      entries.forEach((entry) => {
+      for (let i = 0; i < entries.length; i++) {
+        const entry = entries[i]
         const node = entry.target as HTMLElement
         if (IntersectionState.get(node) !== entry.isIntersecting) {
           IntersectionState.set(node, entry.isIntersecting)
         }
-      })
+      }
     },
     {
       threshold: 0,
@@ -115,8 +114,57 @@ function startGlobalObservers() {
   )
 }
 
+// optimization: inline rect comparison to avoid function call overhead on hot path
+function rectsEqual(a: DOMRectReadOnly, b: DOMRectReadOnly): boolean {
+  return (
+    a.x === b.x &&
+    a.y === b.y &&
+    a.width === b.width &&
+    a.height === b.height
+  )
+}
+
 if (ENABLE) {
-  const BoundingRects = new WeakMap<any, DOMRectReadOnly | undefined>()
+  const BoundingRects = new WeakMap<Element, DOMRectReadOnly>()
+
+  // optimization: persistent IO for rect fetching, reused across cycles
+  let rectFetchObserver: IntersectionObserver | null = null
+  let rectFetchResolve: ((value: boolean) => void) | null = null
+  let rectFetchStartTime = 0
+
+  function ensureRectFetchObserver() {
+    if (rectFetchObserver) return rectFetchObserver
+
+    rectFetchObserver = new IntersectionObserver(
+      (entries) => {
+        const callbackDelay = Math.round(performance.now() - rectFetchStartTime)
+
+        // store all rects
+        for (let i = 0; i < entries.length; i++) {
+          BoundingRects.set(entries[i].target, entries[i].boundingClientRect)
+        }
+
+        if (callbackDelay > 50) {
+          console.warn(
+            '[onLayout-io-delay]',
+            callbackDelay + 'ms',
+            entries.length,
+            'entries'
+          )
+        }
+
+        if (rectFetchResolve) {
+          rectFetchResolve(true)
+          rectFetchResolve = null
+        }
+      },
+      {
+        threshold: 0,
+      }
+    )
+
+    return rectFetchObserver
+  }
 
   async function updateLayoutIfChanged(node: HTMLElement) {
     const onLayout = LayoutHandlers.get(node)
@@ -125,53 +173,40 @@ if (ENABLE) {
     const parentNode = node.parentElement
     if (!parentNode) return
 
-    let nodeRect: DOMRectReadOnly
-    let parentRect: DOMRectReadOnly
+    let nodeRect: DOMRectReadOnly | undefined
+    let parentRect: DOMRectReadOnly | undefined
 
+    // respect the strategy contract
     if (strategy === 'async') {
-      const [nr, pr] = await Promise.all([
-        BoundingRects.get(node),
-        BoundingRects.get(parentNode),
-      ])
+      nodeRect = BoundingRects.get(node)
+      parentRect = BoundingRects.get(parentNode)
 
-      if (!nr || !pr) {
+      if (!nodeRect || !parentRect) {
         return
       }
-
-      nodeRect = nr
-      parentRect = pr
     } else {
       nodeRect = node.getBoundingClientRect()
       parentRect = parentNode.getBoundingClientRect()
     }
 
-    if (!nodeRect || !parentRect) {
-      return
-    }
-
     const cachedRect = NodeRectCache.get(node)
     const cachedParentRect = NodeRectCache.get(parentNode)
 
-    if (
-      !cachedRect ||
-      !cachedParentRect ||
-      // has changed one rect
-      // @ts-expect-error DOMRectReadOnly can go into object
-      !isEqualShallow(cachedRect, nodeRect) ||
-      // @ts-expect-error DOMRectReadOnly can go into object
-      !isEqualShallow(cachedParentRect, parentRect)
-    ) {
-      NodeRectCache.set(node, nodeRect)
-      NodeRectCache.set(parentNode, parentRect)
+    // optimization: inline comparison instead of isEqualShallow
+    const nodeChanged = !cachedRect || !rectsEqual(cachedRect, nodeRect)
+    const parentChanged = !cachedParentRect || !rectsEqual(cachedParentRect, parentRect)
+
+    if (nodeChanged || parentChanged) {
+      NodeRectCache.set(node, nodeRect as DOMRect)
+      NodeRectCache.set(parentNode, parentRect as DOMRect)
 
       const event = getElementLayoutEvent(nodeRect, parentRect)
 
       if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
-        const el = node as HTMLElement
         console.log('[useElementLayout] change', {
-          tag: el.tagName,
-          id: el.id || undefined,
-          className: (el.className || '').slice(0, 60) || undefined,
+          tag: node.tagName,
+          id: node.id || undefined,
+          className: (node.className || '').slice(0, 60) || undefined,
           layout: event.nativeEvent.layout,
           first: !cachedRect,
         })
@@ -185,70 +220,64 @@ if (ENABLE) {
     }
   }
 
-  // note that getBoundingClientRect() does not thrash layout if its after an animation frame
-  // ok new note: *if* it needed recalc then yea, but browsers often skip that, so it does
-  // which is why we use async strategy in general
-
   const userSkipVal = process.env.TAMAGUI_LAYOUT_FRAME_SKIP
   const RUN_EVERY_X_FRAMES = userSkipVal ? +userSkipVal : 14
 
   async function layoutOnAnimationFrame() {
     if (strategy !== 'off') {
       const visibleNodes: HTMLElement[] = []
+      // optimization: deduplicate parent observations
+      const parentsToObserve = new Set<HTMLElement>()
 
-      // do a 1 rather than N IntersectionObservers for performance
-      const ioCreateTime = performance.now()
-      const didRun = await new Promise<boolean>((res) => {
-        const io = new IntersectionObserver(
-          (entries) => {
-            const callbackDelay = Math.round(performance.now() - ioCreateTime)
-            io.disconnect()
-            for (const entry of entries) {
-              BoundingRects.set(entry.target, entry.boundingClientRect)
-            }
-            if (callbackDelay > 50) {
-              console.warn(
-                '[onLayout-io-delay]',
-                callbackDelay + 'ms',
-                entries.length,
-                'entries'
-              )
-            }
-            res(true)
-          },
-          {
-            threshold: 0,
-          }
-        )
+      // collect visible nodes and their unique parents
+      for (const node of Nodes) {
+        const parentElement = node.parentElement
+        if (!(parentElement instanceof HTMLElement)) {
+          cleanupNode(node)
+          continue
+        }
+        const disableKey = LayoutDisableKey.get(node)
+        if (disableKey && DisableLayoutContextValues[disableKey] === true) continue
+        if (IntersectionState.get(node) === false) continue
 
-        let didObserve = false
+        visibleNodes.push(node)
+        parentsToObserve.add(parentElement)
+      }
 
-        for (const node of Nodes) {
-          if (!(node.parentElement instanceof HTMLElement)) {
-            cleanupNode(node)
-            continue
-          }
-          const disableKey = LayoutDisableKey.get(node)
-          if (disableKey && DisableLayoutContextValues[disableKey] === true) continue
-          if (IntersectionState.get(node) === false) continue
-          didObserve = true
-          io.observe(node)
-          io.observe(node.parentElement)
-          visibleNodes.push(node)
+      if (visibleNodes.length > 0) {
+        const io = ensureRectFetchObserver()
+        rectFetchStartTime = performance.now()
+
+        // observe all nodes
+        for (let i = 0; i < visibleNodes.length; i++) {
+          io.observe(visibleNodes[i])
+        }
+        // optimization: observe unique parents only (not N times for N children)
+        for (const parent of parentsToObserve) {
+          io.observe(parent)
         }
 
-        if (!didObserve) {
-          res(false)
-        }
-      })
-
-      if (didRun) {
-        visibleNodes.forEach((node) => {
-          updateLayoutIfChanged(node)
+        // wait for callback
+        await new Promise<boolean>((res) => {
+          rectFetchResolve = res
         })
+
+        // unobserve all to reset for next cycle
+        for (let i = 0; i < visibleNodes.length; i++) {
+          io.unobserve(visibleNodes[i])
+        }
+        for (const parent of parentsToObserve) {
+          io.unobserve(parent)
+        }
+
+        // process updates
+        for (let i = 0; i < visibleNodes.length; i++) {
+          updateLayoutIfChanged(visibleNodes[i])
+        }
       }
     }
 
+    // schedule next poll
     setTimeout(layoutOnAnimationFrame, 16.6667 * RUN_EVERY_X_FRAMES)
   }
 
@@ -280,7 +309,6 @@ function cleanupNode(node: HTMLElement) {
   LayoutHandlers.delete(node)
   LayoutDisableKey.delete(node)
   NodeRectCache.delete(node)
-  LastChangeTime.delete(node)
   IntersectionState.delete(node)
   if (globalIntersectionObserver) {
     globalIntersectionObserver.unobserve(node)
