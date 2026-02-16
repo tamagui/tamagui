@@ -21,7 +21,6 @@
     ".": {
       "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
-      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -33,7 +32,6 @@
       "module": "./dist/esm/v4.mjs",
       "import": "./dist/esm/v4.mjs",
       "require": "./dist/cjs/v4.cjs",
-      "browser": "./dist/esm/v4.mjs",
       "default": "./dist/esm/v4.mjs"
     },
     "./v5": {
@@ -42,7 +40,6 @@
       "module": "./dist/esm/v5.mjs",
       "import": "./dist/esm/v5.mjs",
       "require": "./dist/cjs/v5.cjs",
-      "browser": "./dist/esm/v5.mjs",
       "default": "./dist/esm/v5.mjs"
     }
   },

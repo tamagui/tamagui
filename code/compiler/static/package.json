@@ -16,15 +16,15 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "require": "./dist/index.cjs",
       "module": "./dist/index.cjs",
-      "import": "./dist/index.cjs"
+      "import": "./dist/index.cjs",
+      "require": "./dist/index.cjs"
     },
     "./worker": {
       "types": "./types/worker.d.ts",
-      "require": "./dist/worker.cjs",
       "module": "./dist/worker.cjs",
-      "import": "./dist/worker.cjs"
+      "import": "./dist/worker.cjs",
+      "require": "./dist/worker.cjs"
     }
   },
   "publishConfig": {

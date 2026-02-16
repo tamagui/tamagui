@@ -20,7 +20,6 @@
     ".": {
       "types": "./src/index.tsx",
       "react-native": "./dist/esm/index.native.js",
-      "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
@@ -32,7 +31,6 @@
       "module": "./dist/esm/*.mjs",
       "import": "./dist/esm/*.mjs",
       "require": "./dist/cjs/*.cjs",
-      "browser": "./dist/esm/*.mjs",
       "default": "./dist/esm/*.mjs"
     }
   },
