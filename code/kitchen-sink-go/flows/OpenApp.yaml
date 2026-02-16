@@ -2,6 +2,9 @@ appId: host.exp.Exponent
 tag:
   - util
 ---
+# Stop the app first to ensure clean state
+- stopApp
+
 # Open the project URL directly - this launches Expo Go and connects to Metro
 # disableOnboarding=1 skips the Expo Go developer menu dialog
 - openLink: exp://127.0.0.1:8081?disableOnboarding=1
