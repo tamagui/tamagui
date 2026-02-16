@@ -9,7 +9,7 @@ export const sendEvent = (name: string, props?: object) => {
     return
   }
 
-  if (currentUser) {
+  if (currentUser?.user) {
     oneDollarAnalytics(name, {
       ...props,
       userId: currentUser.user.id,
