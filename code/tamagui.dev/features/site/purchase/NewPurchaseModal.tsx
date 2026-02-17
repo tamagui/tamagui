@@ -387,7 +387,6 @@ export function PurchaseModalContents() {
               <YStack
                 flexShrink={0}
                 p="$4"
-                $gtXs={{ p: '$6' }}
                 gap="$2"
                 borderTopWidth={0.5}
                 borderTopColor={'$color5'}
@@ -406,10 +405,10 @@ export function PurchaseModalContents() {
                     $gtXs={{ flex: 1, flexBasis: 'auto', width: '40%' }}
                   >
                     {/* price breakdown */}
-                    <YStack gap="$1">
+                    <YStack>
                       {/* original price - only show if there's any discount */}
                       {(store.activePromo || parityDeals) && (
-                        <XStack items="center" gap="$2">
+                        <XStack items="center" gap="$2" mb={-5}>
                           <Paragraph
                             size="$3"
                             color="$color8"
@@ -417,15 +416,15 @@ export function PurchaseModalContents() {
                           >
                             ${Intl.NumberFormat('en-US').format(V2_PRICE)}
                           </Paragraph>
-                          <Paragraph size="$2" color="$color9">
+                          <Paragraph size="$2" color="$color8">
                             original
                           </Paragraph>
                         </XStack>
                       )}
 
                       {/* after beta discount */}
-                      {store.activePromo && (
-                        <XStack items="center" gap="$2">
+                      {store.activePromo && parityDeals && (
+                        <XStack items="center" gap="$2" mb={-5}>
                           <Paragraph
                             size="$3"
                             color={parityDeals ? '$color8' : '$color11'}
