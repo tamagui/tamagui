@@ -79,7 +79,10 @@ export function createTokenCSS(
 export function createFontCSS(
   fontsParsed: Record<string, any> | undefined,
   registerFontVariables: (fontParsed: any) => string[]
-): Record<string, { name: string; declarations: string[]; language?: string; fontParsed: any }> {
+): Record<
+  string,
+  { name: string; declarations: string[]; language?: string; fontParsed: any }
+> {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const fontDeclarations: Record<
       string,
@@ -149,7 +152,10 @@ export function buildCSSRuleSets(
     if (fontSelectors.length) {
       const firstFont = fontDeclarations[sortedFontDeclarationKeys[0]]
       if (firstFont?.fontParsed) {
-        const fontProps = getFontPropertyDeclarations(firstFont.fontParsed, defaultFontToken)
+        const fontProps = getFontPropertyDeclarations(
+          firstFont.fontParsed,
+          defaultFontToken
+        )
         const sharedSelectors = [...fontSelectors, '._t_d_font'].join(', ')
         cssRuleSets.push(`${sharedSelectors} {${fontProps.join('; ')}}`)
       }
