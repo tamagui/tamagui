@@ -262,9 +262,9 @@ test.describe('Dialog Focus Scope', () => {
     await page.waitForTimeout(500)
 
     // Get the z-index values of both dialog portal containers
+    // TamaguiRoot wraps portal content in Theme > span, so z-index is on the inner span
     const zIndexInfo = await page.evaluate(() => {
-      // Find the portal containers (spans that wrap the dialogs)
-      const portals = document.querySelectorAll('body > span[style*="z-index"]')
+      const portals = document.querySelectorAll('span[style*="z-index"]')
       const zIndices: number[] = []
 
       portals.forEach((portal) => {
@@ -275,7 +275,6 @@ test.describe('Dialog Focus Scope', () => {
         }
       })
 
-      // Return sorted z-indices (should be at least 2 for parent and nested)
       return zIndices.sort((a, b) => a - b)
     })
 
