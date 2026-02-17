@@ -159,13 +159,16 @@ const Dismissable = React.forwardRef<
     onDismiss,
     asChild,
     children,
+    branches: branchesProp,
     ...layerProps
   } = props
   const Comp = asChild ? Slot : View
   const context = React.useContext(DismissableContext)
   const [node, setNode] = React.useState<HTMLElement | null>(null)
   const [, force] = React.useState({})
-  const composedRefs = useComposedRefs(forwardedRef, (node) => setNode(node))
+  const composedRefs = useComposedRefs(forwardedRef, (node: HTMLElement | null) =>
+    setNode(node)
+  )
   const layers = Array.from(context.layers)
 
   const [highestLayerWithOutsidePointerEventsDisabled] = [
@@ -183,9 +186,9 @@ const Dismissable = React.forwardRef<
 
   const pointerDownOutside = usePointerDownOutside((event) => {
     const target = event.target as HTMLElement
-    const isPointerDownOnBranch = [...context.branches].some((branch) =>
-      branch.contains(target)
-    )
+    // check prop-based branches first (scoped to this dismissable), then global branches
+    const branches = branchesProp || context.branches
+    const isPointerDownOnBranch = [...branches].some((branch) => branch.contains(target))
     if (!isPointerEventsEnabled || isPointerDownOnBranch) return
     onPointerDownOutside?.(event)
     onInteractOutside?.(event)
@@ -194,9 +197,9 @@ const Dismissable = React.forwardRef<
 
   const focusOutside = useFocusOutside((event) => {
     const target = event.target as HTMLElement
-    const isFocusInBranch = [...context.branches].some((branch) =>
-      branch.contains(target)
-    )
+    // check prop-based branches first (scoped to this dismissable), then global branches
+    const branches = branchesProp || context.branches
+    const isFocusInBranch = [...branches].some((branch) => branch.contains(target))
     if (isFocusInBranch) return
     onFocusOutside?.(event)
     onInteractOutside?.(event)
@@ -318,6 +321,7 @@ const BRANCH_NAME = 'DismissableBranch'
 
 const DismissableBranch = React.forwardRef<TamaguiElement, DismissableBranchProps>(
   (props, forwardedRef) => {
+    const { branches: branchesProp, ...rest } = props
     const context = React.useContext(DismissableContext)
     const ref = React.useRef<TamaguiElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
@@ -325,15 +329,17 @@ const DismissableBranch = React.forwardRef<TamaguiElement, DismissableBranchProp
     React.useEffect(() => {
       const node = ref.current
       if (!(node instanceof HTMLElement)) return
-      if (node) {
-        context.branches.add(node)
+      // use prop-based branches if provided, otherwise fall back to global context
+      const branches = branchesProp || context.branches
+      if (node && branches) {
+        branches.add(node)
         return () => {
-          context.branches.delete(node)
+          branches.delete(node)
         }
       }
-    }, [context.branches])
+    }, [branchesProp, context.branches])
 
-    return <View asChild="except-style" {...props} ref={composedRefs} />
+    return <View asChild="except-style" {...rest} ref={composedRefs} />
   }
 )
 

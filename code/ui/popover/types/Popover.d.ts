@@ -57,6 +57,7 @@ type PopoverContextValue = {
     keepChildrenMounted?: boolean | 'lazy';
     disableDismissable?: boolean;
     anchorTo?: Rect;
+    branches: Set<HTMLElement>;
 };
 export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
 export declare const usePopoverContext: (scope?: string) => PopoverContextValue;

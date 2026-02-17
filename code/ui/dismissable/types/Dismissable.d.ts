@@ -1,3 +1,4 @@
+import { TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
 import type { DismissableBranchProps, DismissableProps } from './DismissableProps';
 export declare function dispatchDiscreteCustomEvent<E extends CustomEvent>(target: E['target'], event: E): void;
@@ -9,7 +10,7 @@ export declare function getDismissableLayerCount(): number;
 /**
  * debug helper - logs what elements are registered as dismissable layers
  */
-export declare function debugDismissableLayers(): HTMLDivElement[];
+export declare function debugDismissableLayers(): HTMLElement[];
 /**
  * hook that returns true when any dismissable layer is active
  * re-renders when the state changes
@@ -28,8 +29,8 @@ export declare function useIsInsideDismissable(ref: React.RefObject<HTMLElement 
 export declare function useDismissableLayersAbove(ref: React.RefObject<HTMLElement | null>): number;
 declare const Dismissable: React.ForwardRefExoticComponent<DismissableProps & {
     asChild?: boolean;
-} & React.RefAttributes<HTMLDivElement>>;
-declare const DismissableBranch: React.ForwardRefExoticComponent<DismissableBranchProps & React.RefAttributes<HTMLDivElement>>;
+} & React.RefAttributes<HTMLElement>>;
+declare const DismissableBranch: React.ForwardRefExoticComponent<DismissableBranchProps & React.RefAttributes<TamaguiElement>>;
 export type PointerDownOutsideEvent = CustomEvent<{
     originalEvent: PointerEvent;
 }>;

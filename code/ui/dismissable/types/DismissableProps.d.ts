@@ -8,6 +8,11 @@ export interface DismissableProps {
      */
     disableOutsidePointerEvents?: boolean;
     /**
+     * Optional Set of branch elements that should not trigger dismissal.
+     * Pass the same Set to DismissableBranch components to scope them to this Dismissable.
+     */
+    branches?: Set<HTMLElement>;
+    /**
      * Event handler called when the escape key is down.
      * Can be prevented.
      */
@@ -43,5 +48,10 @@ export interface DismissableProps {
 }
 export interface DismissableBranchProps {
     children?: React.ReactNode;
+    /**
+     * Optional Set to register this branch with.
+     * Pass the same Set to the Dismissable to scope this branch to that specific layer.
+     */
+    branches?: Set<HTMLElement>;
 }
 //# sourceMappingURL=DismissableProps.d.ts.map

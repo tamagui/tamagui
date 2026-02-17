@@ -139,6 +139,8 @@ type PopoverContextValue = {
   keepChildrenMounted?: boolean | 'lazy'
   disableDismissable?: boolean
   anchorTo?: Rect
+  // scoped branches Set for DismissableBranch/Dismissable to share
+  branches: Set<HTMLElement>
 }
 
 export const PopoverContext = createStyledContext<PopoverContextValue>(
@@ -221,7 +223,7 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
     // wrap trigger in DismissableBranch so clicking it doesn't fire pointerDownOutside
     // which would close the popover before onPress can toggle it
     const wrappedTrigger = isWeb ? (
-      <DismissableBranch>{trigger}</DismissableBranch>
+      <DismissableBranch branches={context.branches}>{trigger}</DismissableBranch>
     ) : (
       trigger
     )
@@ -553,6 +555,7 @@ const PopoverContentImpl = React.forwardRef<
     if (process.env.TAMAGUI_TARGET !== 'native') {
       contents = (
         <Dismissable
+          branches={context.branches}
           forceUnmount={disableDismissable || (forceUnmount ?? !open)}
           onEscapeKeyDown={onEscapeKeyDown}
           onPointerDownOutside={onPointerDownOutside}
@@ -812,6 +815,9 @@ const PopoverInner = React.forwardRef<
     setOpen,
   }))
 
+  // scoped branches Set for DismissableBranch/Dismissable to share
+  const [branches] = React.useState(() => new Set<HTMLElement>())
+
   // needs to be entirely memoized!
   const popoverContext = {
     popoverScope: scope,
@@ -834,6 +840,7 @@ const PopoverInner = React.forwardRef<
     onCustomAnchorRemove: React.useCallback(() => setHasCustomAnchor(false), []),
     keepChildrenMounted,
     disableDismissable,
+    branches,
   } satisfies PopoverContextValue
 
   // // debug if changing too often

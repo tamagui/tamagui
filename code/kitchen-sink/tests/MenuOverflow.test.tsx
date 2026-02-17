@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
 
+// Use smaller viewport to ensure menu needs to scroll
+test.use({ viewport: { width: 800, height: 600 } })
+
 test.describe('Menu Overflow', () => {
   test.beforeEach(async ({ page }) => {
     await setupPage(page, { name: 'MenuOverflowCase', type: 'useCase' })
