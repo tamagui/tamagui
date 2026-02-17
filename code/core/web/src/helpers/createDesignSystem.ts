@@ -231,12 +231,13 @@ export function getCSS(
       : ''
 
     // notes:
-    // .is_Text .is_Text - we just override the text default styles here
+    // @scope (.is_Text) to (.is_View) - inherit text styles in nested Text without View boundary
     // display: inline breaks css transform styles
 
     const designSystem = `._ovs-contain {overscroll-behavior:contain;}
 .is_View { display: flex; align-items: stretch; flex-direction: column; flex-basis: auto; box-sizing: border-box; min-height: 0; min-width: 0; flex-shrink: 0; }
 .is_Text { display: inline; box-sizing: border-box; word-wrap: break-word; white-space: pre-wrap; margin: 0; }
+@scope (.is_Text) to (.is_View) { .is_Text { white-space: inherit; word-wrap: inherit; } }
 ._dsp_contents {display:contents;}
 ._no_backdrop::backdrop {display: none;}
 .is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}

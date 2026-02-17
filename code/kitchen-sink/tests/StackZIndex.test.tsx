@@ -10,16 +10,13 @@ test(`dialogs and portals stack their z-index automatically`, async ({ page }) =
   async function getZIndexOf(selector: string) {
     return await page.locator(selector).evaluate((el) => {
       function findEffectiveZIndex(element: Element): number {
-        let current = element
+        let current: Element | null = element
         while (current && current instanceof HTMLElement) {
-          if (current.parentElement?.tagName !== 'BODY') {
-            current = current.parentElement!
-          } else {
-            const zIndex = window.getComputedStyle(current).zIndex
-            if (zIndex !== 'auto' && zIndex !== '') {
-              return Number.parseInt(zIndex, 10)
-            }
+          const zIndex = window.getComputedStyle(current).zIndex
+          if (zIndex !== 'auto' && zIndex !== '') {
+            return Number.parseInt(zIndex, 10)
           }
+          current = current.parentElement
         }
         throw new Error(`none found`)
       }
@@ -42,16 +39,13 @@ test(`harcoded z-index overrides stacking z-index`, async ({ page }) => {
   async function getZIndexOf(selector: string) {
     return await page.locator(selector).evaluate((el) => {
       function findEffectiveZIndex(element: Element): number {
-        let current = element
+        let current: Element | null = element
         while (current && current instanceof HTMLElement) {
-          if (current.parentElement?.tagName !== 'BODY') {
-            current = current.parentElement!
-          } else {
-            const zIndex = window.getComputedStyle(current).zIndex
-            if (zIndex !== 'auto' && zIndex !== '') {
-              return Number.parseInt(zIndex, 10)
-            }
+          const zIndex = window.getComputedStyle(current).zIndex
+          if (zIndex !== 'auto' && zIndex !== '') {
+            return Number.parseInt(zIndex, 10)
           }
+          current = current.parentElement
         }
         throw new Error(`none found`)
       }
