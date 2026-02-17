@@ -55,6 +55,7 @@ const TooltipContent = PopoverContentFrame.styleable<TooltipContentProps>(
         disableFocusScope
         {...(!props.unstyled && {
           pointerEvents: 'none',
+          size: '$true',
         })}
         ref={ref}
         {...props}

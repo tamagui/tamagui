@@ -37,7 +37,6 @@ import {
   PopperArrowFrame,
   type PopperArrowProps,
   PopperContent,
-  PopperContentFrame,
   type PopperContentProps,
   type PopperProps,
   PopperProvider,
@@ -229,8 +228,6 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
  * PopoverContent
  * -----------------------------------------------------------------------------------------------*/
 
-type PopoverContentTypeElement = PopoverContentImplElement
-
 export interface PopoverContentTypeProps extends Omit<
   PopoverContentImplProps,
   'disableOutsidePointerEvents'
@@ -245,7 +242,7 @@ export interface PopoverContentTypeProps extends Omit<
 
 export type PopoverContentProps = PopoverContentTypeProps
 
-export const PopoverContentFrame = styled(PopperContentFrame, {
+export const PopoverContentFrame = styled(YStack, {
   name: 'Popover',
 
   variants: {
@@ -573,8 +570,6 @@ const PopoverContentImpl = React.forwardRef<
     }
   }
 
-  // const freeze = Boolean(isFullyHidden && freezeContentsWhenHidden)
-
   return (
     <Animate
       type="presence"
@@ -591,9 +586,11 @@ const PopoverContentImpl = React.forwardRef<
         id={context.contentId}
         ref={forwardedRef}
         passThrough={context.breakpointActive}
-        {...contentProps}
+        asChild="except-style"
       >
-        <PortalAdaptSafe context={context}>{contents}</PortalAdaptSafe>
+        <PopoverContentFrame {...contentProps}>
+          <PortalAdaptSafe context={context}>{contents}</PortalAdaptSafe>
+        </PopoverContentFrame>
       </PopperContent>
     </Animate>
   )
