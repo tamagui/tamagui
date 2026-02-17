@@ -264,5 +264,5 @@ function createAtomicRules(
   return rules
 }
 
-const boxNone = createDeclarationBlock([['pointerEvents', 'auto']], true)
+const boxNone = createDeclarationBlock([['pointerEvents', 'auto']])
 const boxOnly = createDeclarationBlock([['pointerEvents', 'none']], true)
