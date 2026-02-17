@@ -140,7 +140,11 @@ if (ENABLE) {
           BoundingRects.set(entries[i].target, entries[i].boundingClientRect)
         }
 
-        if (process.env.NODE_ENV === 'development' && isDebugLayout() && lastCallbackDelay > 50) {
+        if (
+          process.env.NODE_ENV === 'development' &&
+          isDebugLayout() &&
+          lastCallbackDelay > 50
+        ) {
           console.warn(
             '[onLayout-io-delay]',
             lastCallbackDelay + 'ms',
