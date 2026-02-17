@@ -12,7 +12,7 @@ import {
 import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   createStyledContext,
@@ -41,6 +41,7 @@ import {
   PopperArrowFrame,
   type PopperArrowProps,
   PopperContent,
+  PopperContentFrame,
   type PopperContentProps,
   type PopperProps,
   PopperProvider,
@@ -256,34 +257,7 @@ export interface PopoverContentTypeProps extends Omit<
 
 export type PopoverContentProps = PopoverContentTypeProps
 
-export const PopoverContentFrame = styled(YStack, {
-  name: 'Popover',
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        backgroundColor: '$background',
-        alignItems: 'center',
-      },
-    },
-
-    size: {
-      '...size': (val, { tokens }) => {
-        return {
-          padding: tokens.space[val],
-          borderRadius: tokens.radius[val],
-        }
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
-})
-
-export const PopoverContent = PopoverContentFrame.styleable<PopoverContentProps>(
+export const PopoverContent = PopperContentFrame.styleable<PopoverContentProps>(
   function PopoverContent(props, forwardedRef) {
     const {
       trapFocus,
@@ -303,7 +277,7 @@ export const PopoverContent = PopoverContentFrame.styleable<PopoverContentProps>
     // there was a hard to isolate bug in tamagui.dev where moving between /ui docs pages quickly
     // caused it to infinite loop, the setState in render (and useLayoutEffect) made it too prone
     // to bug, useEffect maybe fine here because its hidden, ok to be slightly delayed while hidden
-    React.useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (context.open && isFullyHidden) {
         setIsFullyHidden(false)
       }
@@ -507,6 +481,11 @@ export type PopoverContentImplProps = PopperContentProps &
     enableRemoveScroll?: boolean
 
     freezeContentsWhenHidden?: boolean
+
+    /**
+     * Performance - if never going to use feature can permanently disable
+     */
+    alwaysDisable?: Record<'focus' | 'remove-scroll' | 'dismiss', boolean>
   }
 
 type PopoverContentImplInteralProps = PopoverContentImplProps & {
@@ -536,6 +515,7 @@ const PopoverContentImpl = React.forwardRef<
     lazyMount,
     forceUnmount,
     context,
+    alwaysDisable,
     ...contentProps
   } = props
 
@@ -557,35 +537,45 @@ const PopoverContentImpl = React.forwardRef<
   // TODO its removed now so we can probable do it now
   if (!context.breakpointActive) {
     if (process.env.TAMAGUI_TARGET !== 'native') {
-      contents = (
-        <Dismissable
-          branches={context.branches}
-          forceUnmount={disableDismissable || (forceUnmount ?? !open)}
-          onEscapeKeyDown={onEscapeKeyDown}
-          onPointerDownOutside={onPointerDownOutside}
-          onFocusOutside={onFocusOutside}
-          onInteractOutside={onInteractOutside}
-          onDismiss={handleDismiss}
-        >
+      if (!alwaysDisable || !alwaysDisable.focus) {
+        contents = (
+          <FocusScope
+            loop={trapFocus !== false}
+            enabled={context.breakpointActive ? false : disableFocusScope ? false : open}
+            trapped={context.breakpointActive ? false : trapFocus}
+            onMountAutoFocus={onOpenAutoFocus}
+            onUnmountAutoFocus={onCloseAutoFocus === false ? undefined : onCloseAutoFocus}
+          >
+            <div style={dspContentsStyle}>{contents}</div>
+          </FocusScope>
+        )
+      }
+
+      if (!alwaysDisable || !alwaysDisable['remove-scroll']) {
+        contents = (
           <RemoveScroll
             enabled={context.breakpointActive ? false : enableRemoveScroll ? open : false}
           >
-            <FocusScope
-              loop={trapFocus !== false}
-              enabled={
-                context.breakpointActive ? false : disableFocusScope ? false : open
-              }
-              trapped={context.breakpointActive ? false : trapFocus}
-              onMountAutoFocus={onOpenAutoFocus}
-              onUnmountAutoFocus={
-                onCloseAutoFocus === false ? undefined : onCloseAutoFocus
-              }
-            >
-              <div style={dspContentsStyle}>{contents}</div>
-            </FocusScope>
+            {contents}
           </RemoveScroll>
-        </Dismissable>
-      )
+        )
+      }
+
+      if (!alwaysDisable || !alwaysDisable.dismiss) {
+        contents = (
+          <Dismissable
+            branches={context.branches}
+            forceUnmount={disableDismissable || (forceUnmount ?? !open)}
+            onEscapeKeyDown={onEscapeKeyDown}
+            onPointerDownOutside={onPointerDownOutside}
+            onFocusOutside={onFocusOutside}
+            onInteractOutside={onInteractOutside}
+            onDismiss={handleDismiss}
+          >
+            {contents}
+          </Dismissable>
+        )
+      }
     }
   }
 
@@ -605,11 +595,14 @@ const PopoverContentImpl = React.forwardRef<
         id={context.contentId}
         ref={forwardedRef}
         passThrough={context.breakpointActive}
-        asChild="except-style"
+        {...(!contentProps.unstyled && {
+          size: '$true',
+          backgroundColor: '$background',
+          alignItems: 'center',
+        })}
+        {...contentProps}
       >
-        <PopoverContentFrame {...contentProps}>
-          <PortalAdaptSafe context={context}>{contents}</PortalAdaptSafe>
-        </PopoverContentFrame>
+        <PortalAdaptSafe context={context}>{contents}</PortalAdaptSafe>
       </PopperContent>
     </Animate>
   )
