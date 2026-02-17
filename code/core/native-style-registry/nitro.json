@@ -7,5 +7,9 @@
     "androidNamespace": ["tamagui", "styleregistry"],
     "androidCxxLibName": "tamaguistyleregistry"
   },
-  "autolinking": {}
+  "autolinking": {
+    "TamaguiShadowRegistry": {
+      "cpp": "HybridTamaguiShadowRegistry"
+    }
+  }
 }

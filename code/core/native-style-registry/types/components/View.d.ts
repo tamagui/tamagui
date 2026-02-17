@@ -7,11 +7,6 @@
  */
 import { View as RNView, type ViewProps } from 'react-native';
 import type { ThemeStyleMap } from '../types';
-/**
- * Wrapped View that registers with the style registry.
- * When styles have __styles metadata (from compiler), the native module
- * will update this view's styles directly on theme change without re-render.
- */
 declare const WrappedView: import("react").ForwardRefExoticComponent<ViewProps & {
     __styles?: ThemeStyleMap;
 } & import("react").RefAttributes<RNView>>;

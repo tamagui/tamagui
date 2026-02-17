@@ -7,19 +7,16 @@ import {
   getRegistryStats,
   resetRegistry,
   isNativeModuleAvailable,
-  __setFindNodeHandle,
 } from '../index'
 
 describe('TamaguiStyleRegistry', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     resetRegistry()
-    // set up mock findNodeHandle for tests
-    __setFindNodeHandle((ref: any) => ref?._tag ?? null)
   })
 
   describe('link', () => {
-    test('stores view with styles when given a tag', () => {
+    test('returns a cleanup function', () => {
       const ref = { _tag: 1 }
       const styles = {
         dark: { backgroundColor: '#000' },
@@ -27,57 +24,19 @@ describe('TamaguiStyleRegistry', () => {
       }
 
       const unlink = link(ref, styles)
-
       expect(typeof unlink).toBe('function')
-      expect(getRegistryStats().viewCount).toBe(1)
-    })
-
-    test('returns cleanup function that unlinks view', () => {
-      const ref = { _tag: 1 }
-      const styles = { dark: {}, light: {} }
-
-      const unlink = link(ref, styles)
-      expect(getRegistryStats().viewCount).toBe(1)
-
-      unlink()
-      expect(getRegistryStats().viewCount).toBe(0)
-    })
-
-    test('handles deduplicated styles with __themes array', () => {
-      const ref = { _tag: 1 }
-      const styles = {
-        dark: {
-          backgroundColor: '#000',
-          __themes: ['dark', 'dark_alt1', 'dark_alt2'],
-        },
-      }
-
-      const unlink = link(ref, styles as any)
-      expect(getRegistryStats().viewCount).toBe(1)
-      unlink()
     })
 
     test('returns no-op when ref is null', () => {
       const styles = { dark: {}, light: {} }
       const unlink = link(null, styles)
       expect(typeof unlink).toBe('function')
-      expect(getRegistryStats().viewCount).toBe(0)
     })
 
     test('returns no-op when styles is null', () => {
       const ref = { _tag: 1 }
       const unlink = link(ref, null as any)
       expect(typeof unlink).toBe('function')
-      expect(getRegistryStats().viewCount).toBe(0)
-    })
-
-    test('returns no-op when findNodeHandle returns null', () => {
-      __setFindNodeHandle(() => null)
-      const ref = { _tag: 1 }
-      const styles = { dark: {}, light: {} }
-      const unlink = link(ref, styles)
-      expect(typeof unlink).toBe('function')
-      expect(getRegistryStats().viewCount).toBe(0)
     })
   })
 
@@ -94,28 +53,6 @@ describe('TamaguiStyleRegistry', () => {
       setTheme('dark_blue')
       expect(getTheme()).toBe('dark_blue')
     })
-
-    test('does NOT trigger React re-render in JS fallback', () => {
-      // the real zero-re-render happens in the native module
-      // which directly updates the ShadowTree
-      // in JS fallback, we just verify state updates without re-renders
-      const ref = { _tag: 1 }
-      const renderCount = { count: 0 }
-      const styles = {
-        dark: { backgroundColor: '#000' },
-        light: { backgroundColor: '#fff' },
-      }
-
-      link(ref, styles)
-      const initialCount = renderCount.count
-
-      setTheme('light')
-      setTheme('dark')
-      setTheme('light')
-
-      // no re-renders triggered - state just updates
-      expect(renderCount.count).toBe(initialCount)
-    })
   })
 
   describe('getTheme', () => {
@@ -128,35 +65,23 @@ describe('TamaguiStyleRegistry', () => {
   })
 
   describe('setScopedTheme', () => {
-    test('sets theme for a specific scope (JS fallback)', () => {
-      // in JS fallback, this just stores the state
-      // real implementation updates only views with that scopeId
-      const ref = { _tag: 1 }
-      const styles = {
-        dark: { backgroundColor: '#000' },
-        dark_blue: { backgroundColor: '#00f' },
-      }
-
-      link(ref, styles, 'scope-1')
+    test('does not affect global theme', () => {
       setScopedTheme('scope-1', 'dark_blue')
-
-      // verify global theme is unchanged
       expect(getTheme()).toBe('light')
     })
   })
 
   describe('getRegistryStats', () => {
     test('returns current registry state', () => {
-      const ref1 = { _tag: 1 }
-      const ref2 = { _tag: 2 }
-      const styles = { dark: {}, light: {} }
-
-      link(ref1, styles)
-      link(ref2, styles)
-
       const stats = getRegistryStats()
-      expect(stats.viewCount).toBe(2)
+      expect(stats.viewCount).toBe(0)
       expect(stats.currentTheme).toBe('light')
+    })
+
+    test('reflects theme changes', () => {
+      setTheme('dark')
+      const stats = getRegistryStats()
+      expect(stats.currentTheme).toBe('dark')
     })
   })
 
@@ -167,19 +92,11 @@ describe('TamaguiStyleRegistry', () => {
   })
 
   describe('resetRegistry', () => {
-    test('clears all state', () => {
-      const ref = { _tag: 1 }
-      const styles = { dark: {}, light: {} }
-
-      link(ref, styles)
+    test('resets theme to default', () => {
       setTheme('dark')
-
-      expect(getRegistryStats().viewCount).toBe(1)
       expect(getTheme()).toBe('dark')
 
       resetRegistry()
-
-      expect(getRegistryStats().viewCount).toBe(0)
       expect(getTheme()).toBe('light')
     })
   })

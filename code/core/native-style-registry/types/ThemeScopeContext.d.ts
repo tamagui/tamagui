@@ -4,7 +4,7 @@
  * use when registering with the native style registry.
  */
 import type { ReactNode } from 'react';
-export declare function __bindRegistryFunctions(setScopedTheme: (scopeId: string, themeName: string) => void, isNativeModuleAvailable: () => boolean): void;
+export declare function __bindRegistryFunctions(setScopedTheme: (scopeId: string, themeName: string) => void, removeScopedTheme: (scopeId: string) => void, isNativeModuleAvailable: () => boolean): void;
 interface ThemeScopeContextValue {
     scopeId: string;
     parentScopeId?: string;

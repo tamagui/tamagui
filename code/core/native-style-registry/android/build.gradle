@@ -14,10 +14,11 @@ buildscript {
     }
 }
 
-plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-}
+apply plugin: "com.android.library"
+apply plugin: "org.jetbrains.kotlin.android"
+
+// Nitrogen autolinking
+apply from: "${project.projectDir}/../nitrogen/generated/android/TamaguiShadowRegistry+autolinking.gradle"
 
 def safeExtGet(prop, fallback) {
     rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
@@ -30,10 +31,24 @@ android {
     defaultConfig {
         minSdkVersion safeExtGet('minSdkVersion', 23)
         targetSdkVersion safeExtGet('targetSdkVersion', 34)
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-O2 -frtti -fexceptions -Wall -fstack-protector-all"
+                abiFilters "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
     }
 
     buildFeatures {
         buildConfig true
+        prefab true
     }
 
     buildTypes {
@@ -46,6 +61,25 @@ android {
         main {
             java.srcDirs += 'src/main/java'
         }
+    }
+
+    packagingOptions {
+        excludes = [
+            "META-INF/**",
+            "**/libc++_shared.so",
+            "**/libfbjni.so",
+            "**/libjsi.so",
+            "**/libfolly_json.so",
+            "**/libfolly_runtime.so",
+            "**/libglog.so",
+            "**/libhermes.so",
+            "**/libhermes-executor-debug.so",
+            "**/libhermes_executor.so",
+            "**/libreactnativejni.so",
+            "**/libturbomodulejsijni.so",
+            "**/libreact_nativemodule_core.so",
+            "**/libjscexecutor.so"
+        ]
     }
 
     compileOptions {
@@ -65,5 +99,6 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-android"
+    implementation "com.margelo.nitro:react-native-nitro-modules"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:${safeExtGet('kotlinVersion', '1.9.0')}"
 }

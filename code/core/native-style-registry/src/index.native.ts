@@ -1,24 +1,14 @@
 /**
- * React Native specific implementation using TurboModule.
- * Uses findNodeHandle to get native tags for view registration.
+ * React Native implementation using Nitro HybridObject.
+ * The native module manipulates the ShadowTree directly from C++.
  */
-import {
-  findNodeHandle,
-  TurboModuleRegistry,
-  NativeModules,
-  processColor,
-} from 'react-native'
+import { processColor } from 'react-native'
+import { NitroModules } from 'react-native-nitro-modules'
+import type { TamaguiShadowRegistry } from './specs/ShadowRegistry.nitro'
+import type { ThemeStyleMap, RegistryStats } from './types'
 
-import type {
-  ThemeStyleMap,
-  ViewRef,
-  RegistryStats,
-  NativeStyleRegistryModule,
-} from './types'
+export type { ThemeStyleMap, RegistryStats } from './types'
 
-export type { ThemeStyleMap, ViewRef, RegistryStats } from './types'
-
-// re-export context components
 export {
   ThemeScopeContext,
   ThemeScopeProvider,
@@ -26,390 +16,188 @@ export {
 } from './ThemeScopeContext'
 import { __bindRegistryFunctions } from './ThemeScopeContext'
 
-// re-export initial theme name hook
 export { useInitialThemeName } from './useInitialThemeName'
 
-// get the native module - try TurboModuleRegistry first (new arch), fallback to NativeModules (bridge)
-const turboModule =
-  TurboModuleRegistry.get<NativeStyleRegistryModule>('TamaguiStyleRegistry')
-const bridgeModule = NativeModules.TamaguiStyleRegistry as
-  | NativeStyleRegistryModule
-  | undefined
+export { View } from './components/View'
+export { Text } from './components/Text'
 
-const NativeRegistry: NativeStyleRegistryModule | undefined = turboModule ?? bridgeModule
-
-// install JSI bindings early to get __tamaguiLinkView
-let jsiBindingsInstalled = false
-function ensureJSIBindings(): boolean {
-  if (jsiBindingsInstalled) {
-    return true
-  }
-  if (!NativeRegistry) {
-    return false
-  }
-  try {
-    // synchronous call - blocks until bindings are installed
-    const result = NativeRegistry.installBindings()
-    jsiBindingsInstalled = result
-    if (__DEV__) {
-      console.log(
-        '[TamaguiStyleRegistry] JSI bindings installed:',
-        result,
-        ', __tamaguiLinkView:',
-        typeof global.__tamaguiLinkView
-      )
-    }
-    return result
-  } catch (e) {
-    if (__DEV__) {
-      console.warn('[TamaguiStyleRegistry] Failed to install JSI bindings:', e)
-    }
-    return false
-  }
+/**
+ * Full native interface — Nitro typed methods + raw JSI methods.
+ * link/unlink are registered as raw JSI because they accept opaque ShadowNode pointers.
+ */
+interface ShadowRegistry extends TamaguiShadowRegistry {
+  link(shadowNode: unknown, styles: object, scopeId: string): void
+  unlink(shadowNode: unknown): void
 }
 
-// debug logging
-if (__DEV__) {
-  console.log('[TamaguiStyleRegistry] TurboModule:', turboModule ? 'found' : 'not found')
-  console.log(
-    '[TamaguiStyleRegistry] BridgeModule:',
-    bridgeModule ? 'found' : 'not found'
+let Registry: ShadowRegistry | null = null
+let registryInitError: unknown = null
+try {
+  Registry = NitroModules.createHybridObject<TamaguiShadowRegistry>(
+    'TamaguiShadowRegistry'
+  ) as ShadowRegistry
+} catch (error) {
+  registryInitError = error
+}
+
+function getRegistryOrThrow(): ShadowRegistry {
+  if (Registry) return Registry
+  const details =
+    registryInitError instanceof Error && registryInitError.message
+      ? ` ${registryInitError.message}`
+      : ''
+  throw new Error(
+    `[native-style-registry] TamaguiShadowRegistry Nitro module is required on native but failed to initialize.${details}`
   )
 }
 
-// map from tag -> { ref, styles } for setNativeProps calls
-const tagToView = new Map<number, { ref: any; styles: ThemeStyleMap; scopeId?: string }>()
+/**
+ * Extract the ShadowNode wrapper from a React Native ref.
+ * This is the opaque JSI object that C++ uses to find the ShadowNodeFamily.
+ */
+function getShadowNode(ref: unknown): unknown | null {
+  const handle = (ref as Record<string, unknown>)?.__internalInstanceHandle as
+    | { stateNode?: { node?: unknown } }
+    | undefined
+  const node = handle?.stateNode?.node ?? null
+  return node
+}
 
-// color property names that need to be processed
-const colorProps = new Set([
+/**
+ * Props that contain color values and must be converted to ARGB integers.
+ * Fabric's C++ color parser does NOT handle hex strings or CSS named colors —
+ * they must be pre-processed to integers, same as Reanimated does.
+ */
+const COLOR_PROPS = new Set([
   'color',
   'backgroundColor',
   'borderColor',
   'borderTopColor',
-  'borderRightColor',
   'borderBottomColor',
   'borderLeftColor',
+  'borderRightColor',
+  'borderStartColor',
+  'borderEndColor',
+  'borderBlockColor',
+  'borderBlockStartColor',
+  'borderBlockEndColor',
   'shadowColor',
-  'textDecorationColor',
   'textShadowColor',
+  'textDecorationColor',
   'tintColor',
   'overlayColor',
 ])
 
-/**
- * Process colors in a style object to native integer format.
- * React Native's Fabric renderer expects colors as integers, not strings.
- */
-function processColorsInStyle(style: Record<string, any>): Record<string, any> {
-  const processed: Record<string, any> = {}
-  for (const [key, value] of Object.entries(style)) {
-    if (colorProps.has(key) && typeof value === 'string') {
-      const processedColor = processColor(value)
-      if (__DEV__) {
-        // log color conversion for debugging
-        console.log(
-          `[TamaguiStyleRegistry] processColor: ${key} "${value}" -> ${String(processedColor)} (type: ${typeof processedColor})`
-        )
-      }
-      processed[key] = processedColor ?? value
-    } else {
-      processed[key] = value
-    }
-  }
-  return processed
-}
+const processedColorsCache = new WeakMap<
+  ThemeStyleMap,
+  Record<string, Record<string, any>>
+>()
 
-/**
- * Process colors in all theme styles.
- */
-function processColorsInThemeStyles(styles: ThemeStyleMap): ThemeStyleMap {
-  const processed: ThemeStyleMap = {}
-  for (const [themeName, style] of Object.entries(styles)) {
-    if (style && typeof style === 'object') {
-      processed[themeName] = processColorsInStyle(style)
-    } else {
-      processed[themeName] = style
-    }
-  }
-  return processed
-}
-
-/**
- * Find style for a theme from deduplicated styles map.
- * Handles both direct keys and __themes arrays.
- */
-function findStyleForTheme(
-  styles: ThemeStyleMap,
-  themeName: string
-): Record<string, any> | undefined {
-  // direct lookup
-  if (styles[themeName]) {
-    return styles[themeName]
-  }
-
-  // search through __themes arrays for deduplication
-  for (const [_key, style] of Object.entries(styles)) {
-    if (style && typeof style === 'object' && '__themes' in style) {
-      const themes = (style as any).__themes
-      if (Array.isArray(themes) && themes.includes(themeName)) {
-        return style
-      }
-    }
-  }
-
-  // fallback to base theme (dark_blue -> dark)
-  const underscorePos = themeName.indexOf('_')
-  if (underscorePos !== -1) {
-    const baseTheme = themeName.substring(0, underscorePos)
-    return findStyleForTheme(styles, baseTheme)
-  }
-
-  return undefined
-}
-
-/**
- * Apply style updates to all registered views for a given theme.
- * Uses setNativeProps for zero-re-render updates.
- */
-function applyThemeUpdates(themeName: string, scopeId?: string) {
-  console.log(
-    `[TamaguiStyleRegistry] applyThemeUpdates called, theme: ${themeName}, views: ${tagToView.size}`
-  )
-
-  for (const [tag, view] of tagToView) {
-    // if scopeId specified, only update views in that scope
-    if (scopeId !== undefined && view.scopeId !== scopeId) {
-      continue
-    }
-
-    const style = findStyleForTheme(view.styles, themeName)
-
-    // debug: log ref structure
-    const refKeys = view.ref ? Object.keys(view.ref) : []
-    const protoKeys = view.ref
-      ? Object.getOwnPropertyNames(Object.getPrototypeOf(view.ref) || {})
-      : []
-    console.log(
-      `[TamaguiStyleRegistry] tag ${tag}: ref keys: ${refKeys.slice(0, 5).join(',')}, proto: ${protoKeys.slice(0, 5).join(',')}`
-    )
-    console.log(
-      `[TamaguiStyleRegistry] tag ${tag}: style found: ${!!style}, hasSetNativeProps: ${!!(view.ref && view.ref.setNativeProps)}`
-    )
-
-    if (style && view.ref) {
-      // remove __themes metadata if present
-      const cleanStyle = { ...style }
-      delete (cleanStyle as any).__themes
-
-      if (view.ref.setNativeProps) {
-        console.log(
-          `[TamaguiStyleRegistry] calling setNativeProps on tag ${tag}:`,
-          JSON.stringify(cleanStyle)
-        )
-        try {
-          view.ref.setNativeProps({ style: cleanStyle })
-          console.log(`[TamaguiStyleRegistry] setNativeProps SUCCESS on tag ${tag}`)
-        } catch (e) {
-          console.error(`[TamaguiStyleRegistry] setNativeProps FAILED on tag ${tag}:`, e)
-        }
+function processColorsInStyles(
+  styles: ThemeStyleMap
+): Record<string, Record<string, any>> {
+  const cached = processedColorsCache.get(styles)
+  if (cached) return cached
+  const result: Record<string, Record<string, any>> = {}
+  for (const themeName in styles) {
+    const props = styles[themeName] as Record<string, any>
+    const processed: Record<string, any> = {}
+    for (const key in props) {
+      const value = props[key]
+      if (COLOR_PROPS.has(key) && typeof value === 'string') {
+        const color = processColor(value)
+        processed[key] = color != null ? color : value
       } else {
-        // setNativeProps not available - log available methods
-        console.warn(`[TamaguiStyleRegistry] setNativeProps NOT available on tag ${tag}`)
-        console.warn(
-          `[TamaguiStyleRegistry] ref methods:`,
-          Object.getOwnPropertyNames(Object.getPrototypeOf(view.ref) || {}).join(', ')
-        )
+        processed[key] = value
       }
     }
+    result[themeName] = processed
   }
+  processedColorsCache.set(styles, result)
+  return result
 }
 
 /**
- * Get the native tag from a React ref.
- * Uses React Native's findNodeHandle which is the official API.
+ * Link a view with its pre-computed theme styles.
+ * The C++ side stores the ShadowNodeFamily and styles,
+ * then applies the correct theme's styles directly on the ShadowTree.
  */
-export function getTagFromRef(ref: any): number | null {
-  try {
-    return findNodeHandle(ref)
-  } catch {
-    return null
-  }
-}
+export function link(ref: unknown, styles: ThemeStyleMap, scopeId?: string): () => void {
+  if (!ref || !styles) return () => {}
 
-// fallback for when native module is not available (JS-only mode)
-let jsViewRegistry = new Map<number, { styles: ThemeStyleMap; scopeId?: string }>()
-let jsCurrentTheme = 'light'
+  const node = getShadowNode(ref)
+  if (!node) return () => {}
+  const registry = getRegistryOrThrow()
+  const processed = processColorsInStyles(styles)
+  registry.link(node, processed, scopeId ?? '')
 
-/**
- * Link a view ref directly with its styles.
- * Uses JSI function (__tamaguiLinkView) when available for ShadowNodeFamily persistence,
- * falls back to tag-based registration.
- *
- * @param ref - The actual ref instance (not the ref object)
- * @param styles - Pre-computed styles for each theme
- * @param scopeId - Optional scope ID for nested themes (from ThemeScopeContext)
- * @returns cleanup function to unlink on unmount
- */
-export function link(ref: any, styles: ThemeStyleMap, scopeId?: string): () => void {
-  if (!ref || !styles) {
-    return () => {}
-  }
-
-  // ensure JSI bindings are installed
-  ensureJSIBindings()
-
-  const tag = getTagFromRef(ref)
-
-  // process colors in styles to integer format for native
-  const processedStyles = processColorsInThemeStyles(styles)
-  const stylesJson = JSON.stringify(processedStyles)
-
-  if (__DEV__ && tag !== null) {
-    const firstTheme = Object.keys(processedStyles)[0]
-    if (firstTheme && tagToView.size < 3) {
-      console.log(
-        `[TamaguiStyleRegistry] link tag ${tag} processed style:`,
-        JSON.stringify(processedStyles[firstTheme])
-      )
-    }
-  }
-
-  // try JSI function first (provides ShadowNodeFamily persistence)
-  if (global.__tamaguiLinkView) {
+  return () => {
     try {
-      // pass ref directly to native - it will extract ShadowNodeFamily
-      global.__tamaguiLinkView(ref, stylesJson, scopeId)
-      if (__DEV__) {
-        console.log(`[TamaguiStyleRegistry] linked via JSI, tag=${tag}`)
+      const unlinkNode = getShadowNode(ref)
+      if (unlinkNode) {
+        registry.unlink(unlinkNode)
       }
-
-      // store ref for setNativeProps fallback
-      if (tag !== null) {
-        tagToView.set(tag, { ref, styles: processedStyles, scopeId })
-      }
-
-      return () => {
-        if (tag !== null) {
-          tagToView.delete(tag)
-          NativeRegistry?.unlink(tag)
-        }
-      }
-    } catch (e) {
-      if (__DEV__) {
-        console.warn(
-          '[TamaguiStyleRegistry] JSI link failed, falling back to tag-based:',
-          e
-        )
-      }
-    }
+    } catch {}
   }
-
-  // fallback to tag-based registration (won't persist through reconciliation)
-  if (NativeRegistry && tag !== null) {
-    tagToView.set(tag, { ref, styles: processedStyles, scopeId })
-    NativeRegistry.link(tag, stylesJson, scopeId ?? null)
-    return () => {
-      tagToView.delete(tag)
-      const unlinkTag = getTagFromRef(ref) ?? tag
-      NativeRegistry.unlink(unlinkTag)
-    }
-  }
-
-  // JS fallback - store by tag
-  if (tag !== null) {
-    jsViewRegistry.set(tag, { styles: processedStyles, scopeId })
-    return () => {
-      jsViewRegistry.delete(tag)
-    }
-  }
-
-  return () => {}
 }
 
 /**
  * Set the current theme globally.
- * This triggers an update on all linked views WITHOUT causing React re-renders.
- *
- * @param themeName - The theme name (e.g., 'light', 'dark', 'dark_blue')
+ * Updates all linked views via ShadowTree — zero React re-renders.
  */
 export function setTheme(themeName: string): void {
-  console.log('[TamaguiStyleRegistry] JS setTheme called:', themeName)
-  if (NativeRegistry) {
-    // native registry updates theme state
-    NativeRegistry.setTheme(themeName)
-    // DISABLED: applyThemeUpdates causes crash when refs become stale after React re-render
-    // the refs we registered become invalid after React reconciliation
-    // TODO: need to validate refs are still valid before calling setNativeProps
-    // setTimeout(() => {
-    //   console.log('[TamaguiStyleRegistry] delayed applyThemeUpdates starting')
-    //   applyThemeUpdates(themeName)
-    // }, 100)
-  } else {
-    jsCurrentTheme = themeName
-    // JS fallback - use setNativeProps if we have refs
-    // ALSO DISABLED for same reason - refs may be stale
-    // applyThemeUpdates(themeName)
-  }
+  getRegistryOrThrow().setTheme(themeName)
 }
 
 /**
  * Get the current theme name.
  */
 export function getTheme(): string {
-  if (NativeRegistry) {
-    return NativeRegistry.getTheme()
-  }
-  return jsCurrentTheme
+  return getRegistryOrThrow().getTheme()
 }
 
 /**
  * Set the theme for a specific scope.
  * Only views linked with this scopeId will be updated.
- *
- * @param scopeId - The scope ID
- * @param themeName - The theme name
  */
 export function setScopedTheme(scopeId: string, themeName: string): void {
-  if (NativeRegistry) {
-    // native registry handles everything via UIManager.updateShadowTree()
-    NativeRegistry.setScopedTheme(scopeId, themeName)
-  } else {
-    // JS fallback
-    applyThemeUpdates(themeName, scopeId)
-  }
+  getRegistryOrThrow().setScopedTheme(scopeId, themeName)
 }
 
 /**
- * Get current registry statistics.
- * Useful for debugging and monitoring.
+ * Remove a scope entry (cleanup on <Theme> unmount).
  */
-export function getRegistryStats(): RegistryStats {
-  if (NativeRegistry) {
-    return NativeRegistry.getStats()
-  } else {
-    return {
-      viewCount: jsViewRegistry.size,
-      scopeCount: 0,
-      currentTheme: jsCurrentTheme,
-    }
-  }
+export function removeScopedTheme(scopeId: string): void {
+  getRegistryOrThrow().removeScopedTheme(scopeId)
 }
 
 /**
  * Check if native module is available.
- * When false, the registry operates in JS-only mode (with re-renders).
  */
 export function isNativeModuleAvailable(): boolean {
-  return !!NativeRegistry
+  return !!Registry
 }
 
 /**
- * Reset the registry (for testing purposes).
+ * Get current registry statistics.
  */
-export function resetRegistry(): void {
-  jsViewRegistry = new Map()
-  jsCurrentTheme = 'light'
+export function getRegistryStats(): RegistryStats {
+  if (!Registry) {
+    return { viewCount: 0, scopeCount: 0, currentTheme: 'unavailable' }
+  }
+  return {
+    viewCount: Registry.getViewCount(),
+    scopeCount: Registry.getScopeCount(),
+    currentTheme: Registry.getTheme(),
+  }
 }
 
-// bind functions to ThemeScopeContext to avoid circular imports
-__bindRegistryFunctions(setScopedTheme, isNativeModuleAvailable)
+/**
+ * Reset the registry (for testing).
+ */
+export function resetRegistry(): void {
+  // no-op (registry owns state)
+}
+
+// bind to ThemeScopeContext to avoid circular imports
+__bindRegistryFunctions(setScopedTheme, removeScopedTheme, isNativeModuleAvailable)

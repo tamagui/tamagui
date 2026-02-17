@@ -12,7 +12,7 @@
     "types",
     "dist",
     "babel",
-    "ios",
+    "nitrogen",
     "android",
     "cpp"
   ],
@@ -80,15 +80,7 @@
     "directory": "code/core/native-style-registry"
   },
   "license": "MIT",
-  "react-native": "src/index.ts",
-  "codegenConfig": {
-    "name": "rnstyleregistry",
-    "type": "modules",
-    "jsSrcsDir": "src",
-    "android": {
-      "javaPackageName": "com.tamagui.styleregistry"
-    }
-  },
+  "react-native": "src/index.native.ts",
   "publishConfig": {
     "access": "public"
   }
