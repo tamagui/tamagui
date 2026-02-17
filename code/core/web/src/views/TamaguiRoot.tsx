@@ -40,16 +40,25 @@ export function TamaguiRoot({
     }
   }
 
+  const contents = (
+    <span
+      style={style}
+      // font_body (or default font) sets all font properties via shared CSS rule
+      className={`_dsp_contents ${mounted ? '' : 't_unmounted'} ${defaultFontClass}`}
+    >
+      {children}
+    </span>
+  )
+
+  // at root, ThemeProvider already applied theme - skip re-wrapping
+  // for portals/modals, we re-thread the theme so each root gets the right className setup
+  if (isRootRoot) {
+    return contents
+  }
+
   return (
-    // we re-thread the theme so each root gets the right className setup
     <Theme passThrough={passThrough} contain forceClassName name={theme}>
-      <span
-        style={style}
-        // font_body (or default font) sets all font properties via shared CSS rule
-        className={`_dsp_contents ${mounted ? '' : 't_unmounted'} ${defaultFontClass}`}
-      >
-        {children}
-      </span>
+      {contents}
     </Theme>
   )
 }
