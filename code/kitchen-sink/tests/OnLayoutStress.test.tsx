@@ -2,9 +2,9 @@ import { expect, test, type Page } from '@playwright/test'
 import { setupPage } from './test-utils'
 
 // layout poll interval is ~233ms (14 frames)
-const POLL_WAIT = 350
+const POLL_WAIT = 500
 // CI environments are slower - give more time for layouts to settle
-const INITIAL_SETTLE_TIME = process.env.CI ? 2000 : 1000
+const INITIAL_SETTLE_TIME = process.env.CI ? 3000 : 1500
 
 // gating thresholds - fail if exceeded
 const MAX_IO_DELAY_MS = 100 // fail if IO callback takes > 100ms

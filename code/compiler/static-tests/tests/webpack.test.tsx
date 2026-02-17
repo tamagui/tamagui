@@ -171,8 +171,8 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexProperties')
     const { container } = renderTrue()
 
-    // Select the div element which is the actual component (inside theme wrapper spans)
-    const element = container.querySelector('span.is_Theme > div') as HTMLElement
+    // Select the div element which is the actual component (inside theme/font wrapper spans)
+    const element = container.querySelector('span.is_Theme div') as HTMLElement
     expect(element).toBeTruthy()
 
     const computedStyle = window.getComputedStyle(element!)
@@ -212,8 +212,8 @@ describe('webpack-tests', () => {
     const { renderTrue } = getTest('TestFlexWrapWithMediaQuery')
     const { container } = renderTrue()
 
-    // Select the div element which is the actual component (inside theme wrapper spans)
-    const element = container.querySelector('span.is_Theme > div') as HTMLElement
+    // Select the div element which is the actual component (inside theme/font wrapper spans)
+    const element = container.querySelector('span.is_Theme div') as HTMLElement
     expect(element).toBeTruthy()
 
     const computedStyle = window.getComputedStyle(element!)
