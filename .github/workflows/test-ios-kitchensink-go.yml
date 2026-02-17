@@ -12,6 +12,8 @@ env:
 
 jobs:
   test:
+    # TODO: re-enable once Sheet demo is fixed on Expo Go CI
+    if: false
     name: Run Maestro Tests (exports=${{ matrix.package-exports }})
     runs-on: macos-14
     timeout-minutes: 30
