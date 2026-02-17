@@ -3,7 +3,7 @@ import {
   createNativeMenu,
   withNativeMenu,
 } from '@tamagui/create-menu'
-import { withStaticProperties } from '@tamagui/web'
+import { isWeb, withStaticProperties } from '@tamagui/web'
 import React from 'react'
 import { DROPDOWN_MENU_CONTEXT, createNonNativeMenu } from './createNonNativeMenu'
 
@@ -122,8 +122,10 @@ export function createMenu(params: CreateBaseMenuProps) {
     NativeComponent: NativeMenuRoot.SubContent,
   })
 
-  // ScrollView is web-only, native menus use native UI that handles overflow automatically
-  const ScrollView = NonNativeMenu.ScrollView
+  // on native, ScrollView is just a passthrough since native menus handle overflow
+  const ScrollView = isWeb
+    ? NonNativeMenu.ScrollView
+    : ({ children }: { children: React.ReactNode }) => <>{children}</>
 
   const Menu = withStaticProperties(MenuComp, {
     Trigger,

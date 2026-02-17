@@ -17,7 +17,7 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
     readonly Label: import("react").FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/web").FontSizeTokens | undefined;
-    }>, keyof import("@tamagui/create-menu").MenuLabelProps> & import("@tamagui/create-menu").MenuLabelProps & import("react").RefAttributes<import("@tamagui/web").TamaguiTextElement> & Partial<Omit<import("@tamagui/create-menu").NativeMenuLabelProps, "elevation" | "fontFamily" | "fontSize" | "color" | "textShadowColor" | "lineHeight" | "fontWeight" | "letterSpacing" | "size" | "allowFontScaling" | "ellipsizeMode" | "lineBreakMode" | "numberOfLines" | "maxFontSizeMultiplier" | "minimumFontScale" | "pressRetentionOffset" | "adjustsFontSizeToFit" | "dynamicTypeRamp" | "suppressHighlighting" | "lineBreakStrategyIOS" | "selectable" | "selectionColor" | "textBreakStrategy" | "dataDetectorType" | "android_hyphenationFrequency" | "fontStyle" | "textAlign" | "textDecorationLine" | "textDecorationStyle" | "textDecorationColor" | "textShadowOffset" | "textShadowRadius" | "textTransform" | "fontVariant" | "writingDirection" | "textAlignVertical" | "includeFontPadding" | "ellipsis" | "textDecorationDistance" | "textOverflow" | "whiteSpace" | "wordWrap" | "textShadow" | keyof import("@tamagui/create-menu").MenuLabelProps | keyof import("react").RefAttributes<import("@tamagui/web").TamaguiTextElement>>>>;
+    }>, keyof import("@tamagui/create-menu").MenuLabelProps> & import("@tamagui/create-menu").MenuLabelProps & import("react").RefAttributes<import("@tamagui/web").TamaguiTextElement> & Partial<Omit<import("@tamagui/create-menu").NativeMenuLabelProps, "elevation" | "fontFamily" | "fontSize" | "color" | "textShadowColor" | "lineHeight" | "fontWeight" | "letterSpacing" | "size" | "fontStyle" | "fontVariant" | "textAlign" | "textDecorationColor" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textTransform" | "whiteSpace" | "wordWrap" | "allowFontScaling" | "ellipsizeMode" | "lineBreakMode" | "numberOfLines" | "maxFontSizeMultiplier" | "minimumFontScale" | "pressRetentionOffset" | "adjustsFontSizeToFit" | "dynamicTypeRamp" | "suppressHighlighting" | "lineBreakStrategyIOS" | "selectable" | "selectionColor" | "textBreakStrategy" | "dataDetectorType" | "android_hyphenationFrequency" | "textShadowOffset" | "textShadowRadius" | "writingDirection" | "textAlignVertical" | "includeFontPadding" | "ellipsis" | "textDecorationDistance" | keyof import("@tamagui/create-menu").MenuLabelProps | keyof import("react").RefAttributes<import("@tamagui/web").TamaguiTextElement>>>>;
     readonly Item: import("react").FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, "scope" | keyof import("@tamagui/create-menu").MenuItemProps> & import("@tamagui/create-menu").MenuItemProps & {
@@ -123,6 +123,8 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
         accept: {
             readonly contentContainerStyle: "style";
         };
-    } & import("@tamagui/web").StaticConfigPublic>;
+    } & import("@tamagui/web").StaticConfigPublic> | (({ children }: {
+        children: React.ReactNode;
+    }) => import("react/jsx-runtime").JSX.Element);
 };
 //# sourceMappingURL=index.d.ts.map

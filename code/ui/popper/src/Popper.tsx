@@ -284,15 +284,18 @@ export function Popper(props: PopperProps) {
           }
         : platform,
     middleware: [
-      stayInFrame
-        ? shift(typeof stayInFrame === 'boolean' ? {} : stayInFrame)
-        : (null as any),
-      allowFlip ? flip(typeof allowFlip === 'boolean' ? {} : allowFlip) : (null as any),
-      arrowEl ? arrow({ element: arrowEl }) : (null as any),
+      // order matters: offset first, then flip, then shift, then arrow
       typeof offsetOptions !== 'undefined' ? offsetFn(offsetOptions) : (null as any),
+      allowFlip ? flip(typeof allowFlip === 'boolean' ? {} : allowFlip) : (null as any),
+      // shift middleware disabled: floating-ui shift was moving elements vertically even with
+      // mainAxis: false (see https://github.com/floating-ui/floating-ui/issues for similar issues)
+      // vertical constraints handled by sizeMiddleware which sets maxHeight based on available space
+      (null as any),
+      arrowEl ? arrow({ element: arrowEl }) : (null as any),
       checkFloating,
       process.env.TAMAGUI_TARGET !== 'native' && resize
         ? sizeMiddleware({
+            padding: typeof stayInFrame === 'object' ? stayInFrame.padding : 10,
             apply({ availableHeight, availableWidth }) {
               if (passThrough) {
                 return

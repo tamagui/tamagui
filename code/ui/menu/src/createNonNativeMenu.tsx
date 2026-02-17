@@ -1,4 +1,3 @@
-import { styled } from '@tamagui/core'
 import type * as BaseMenuTypes from '@tamagui/create-menu'
 import {
   type MenuArrowProps as BaseMenuArrowProps,
@@ -26,6 +25,7 @@ import {
   isAndroid,
   isWeb,
   Slot,
+  styled,
   type TamaguiElement,
   useIsTouchDevice,
   View,
@@ -358,7 +358,24 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             const isRightClick = originalEvent.button === 2 || ctrlLeftClick
             if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
           })}
-          {...(props.style as object)}
+          style={
+            isWeb
+              ? {
+                  ...(props.style as object),
+                  ...({
+                    '--tamagui-menu-content-transform-origin':
+                      'var(--tamagui-popper-transform-origin)',
+                    '--tamagui-menu-content-available-width':
+                      'var(--tamagui-popper-available-width)',
+                    '--tamagui-menu-content-available-height':
+                      'var(--tamagui-popper-available-height)',
+                    '--tamagui-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
+                    '--tamagui-menu-trigger-height':
+                      'var(--tamagui-popper-anchor-height)',
+                  } as React.CSSProperties),
+                }
+              : props.style
+          }
         />
       )
     }
@@ -439,10 +456,14 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
    * -----------------------------------------------------------------------------------------------*/
 
   const MenuScrollView = styled(ScrollView, {
-    // flexShrink allows the scroll view to shrink when menu content is constrained
     flexShrink: 1,
+    alignSelf: 'stretch',
     showsHorizontalScrollIndicator: false,
     showsVerticalScrollIndicator: false,
+
+    '$platform-web': {
+      maxHeight: 'var(--tamagui-menu-content-available-height)',
+    },
   })
 
   /* -----------------------------------------------------------------------------------------------*/

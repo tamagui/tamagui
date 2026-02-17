@@ -754,10 +754,13 @@ export function createBaseMenu({
       return () => clearTimeout(timerRef.current)
     }, [])
 
-    // dismiss on scroll (web only)
+    // dismiss on scroll (web only) - but not when scrolling inside the menu
     React.useEffect(() => {
       if (!isWeb || disableDismissOnScroll || !context.open) return
-      const handleScroll = () => {
+      const handleScroll = (event: Event) => {
+        // don't dismiss if scrolling inside the menu content
+        const target = event.target as HTMLElement
+        if ((contentRef.current as unknown as HTMLElement)?.contains(target)) return
         onDismiss?.()
       }
       window.addEventListener('scroll', handleScroll, { capture: true, passive: true })

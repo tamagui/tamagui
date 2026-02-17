@@ -34,23 +34,20 @@ export function MenuAutoResizeCase() {
             borderWidth={1}
             borderColor="$borderColor"
             elevation="$3"
-            padding={0}
-            overflow="hidden"
+            padding="$2"
           >
             <Menu.ScrollView data-testid="menu-scroll-view">
-              <YStack padding="$2">
-                {Array.from({ length: ITEM_COUNT }).map((_, i) => (
-                  <Menu.Item
-                    data-testid={`menu-item-${i + 1}`}
-                    key={`item-${i}`}
-                    textValue={`Item ${i + 1}`}
-                    style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
-                    focusStyle={{ backgroundColor: '$backgroundHover' }}
-                  >
-                    <Menu.ItemTitle>Item {i + 1}</Menu.ItemTitle>
-                  </Menu.Item>
-                ))}
-              </YStack>
+              {Array.from({ length: ITEM_COUNT }).map((_, i) => (
+                <Menu.Item
+                  data-testid={`menu-item-${i + 1}`}
+                  key={`item-${i}`}
+                  textValue={`Item ${i + 1}`}
+                  style={{ paddingHorizontal: 8, paddingVertical: 6, borderRadius: 4 }}
+                  focusStyle={{ backgroundColor: '$backgroundHover' }}
+                >
+                  <Menu.ItemTitle>Item {i + 1}</Menu.ItemTitle>
+                </Menu.Item>
+              ))}
             </Menu.ScrollView>
           </Menu.Content>
         </Menu.Portal>

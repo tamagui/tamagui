@@ -2,31 +2,26 @@ import { Menu } from '@tamagui/menu'
 import { Button, YStack } from 'tamagui'
 
 /**
- * Menu overflow test case
- * Tests:
- * - Menu content becomes scrollable when items exceed max height
- * - Menu does not overflow the page
- * - Scrollbars are hidden
- * - Menu items remain keyboard navigable while scrolling
+ * Menu bottom placement test - menu opens below trigger and stays there
  */
 
-const ITEM_COUNT = 30
+const ITEM_COUNT = 20
 
-export function MenuOverflowCase() {
+export function MenuBottomCase() {
   return (
     <YStack
       data-testid="container"
       $platform-web={{
         height: '100vh',
       }}
-      justifyContent="flex-end"
-      padding="$4"
+      justifyContent="flex-start"
+      alignItems="center"
+      paddingTop="$8"
     >
-      {/* position menu trigger near bottom of page to test overflow behavior */}
-      <Menu placement="top-start" stayInFrame allowFlip>
+      <Menu placement="bottom-start" stayInFrame allowFlip={false}>
         <Menu.Trigger asChild>
           <Button data-testid="menu-trigger" size="$4">
-            Open Long Menu
+            Open Menu Below
           </Button>
         </Menu.Trigger>
 
