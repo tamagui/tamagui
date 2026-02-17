@@ -147,7 +147,7 @@ export function buildCSSRuleSets(
       cssRuleSets.push(specificRuleSet)
     }
 
-    // shared rule: all font_* classes + _t_d_font apply font properties
+    // shared rule: all font_* classes + is_View apply font properties
     // this resets fonts on Views like React Native does
     if (fontSelectors.length) {
       const firstFont = fontDeclarations[sortedFontDeclarationKeys[0]]
@@ -156,7 +156,7 @@ export function buildCSSRuleSets(
           firstFont.fontParsed,
           defaultFontToken
         )
-        const sharedSelectors = [...fontSelectors, '._t_d_font'].join(', ')
+        const sharedSelectors = [...fontSelectors, '.is_View'].join(', ')
         cssRuleSets.push(`${sharedSelectors} {${fontProps.join('; ')}}`)
       }
     }
@@ -232,9 +232,11 @@ export function getCSS(
 
     // notes:
     // .is_Text .is_Text - we just override the text default styles here
+    // display: inline breaks css transform styles
 
     const designSystem = `._ovs-contain {overscroll-behavior:contain;}
-.is_Text .is_Text {display:inline-flex; font-family: inherit; font-weight: inherit; font-style: inherit; line-height: inherit; color: inherit; white-space: inherit; word-wrap: inherit;}
+.is_View { display: flex; align-items: stretch; flex-direction: column; flex-basis: auto; box-sizing: border-box; min-height: 0; min-width: 0; flex-shrink: 0; }
+.is_Text { display: inline; box-sizing: border-box; word-wrap: break-word; white-space: pre-wrap; margin: 0; }
 ._dsp_contents {display:contents;}
 ._no_backdrop::backdrop {display: none;}
 .is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}

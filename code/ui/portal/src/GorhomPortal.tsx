@@ -2,7 +2,7 @@
 // MIT License Copyright (c) 2020 Mo Gorhom
 // fixing SSR issue
 
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { getPortal, NativePortalHost, NativePortalProvider } from '@tamagui/native'
 import { startTransition } from '@tamagui/start-transition'
 import type { ReactNode } from 'react'
@@ -286,18 +286,18 @@ export interface PortalHostProps {
 const defaultRenderer = (children) => <>{children}</>
 
 export const PortalHost = memo(function PortalHost(props: PortalHostProps) {
-  if (isWeb) {
+  if (process.env.TAMAGUI_TARGET === 'web') {
     return <PortalHostWeb {...props} />
+  } else {
+    const portalState = getPortal().state
+
+    // use teleport's PortalHost when available
+    if (portalState.type === 'teleport') {
+      return <NativePortalHost name={props.name} />
+    }
+
+    return <PortalHostNonNative {...props} />
   }
-
-  const portalState = getPortal().state
-
-  // use teleport's PortalHost when available
-  if (portalState.type === 'teleport') {
-    return <NativePortalHost name={props.name} />
-  }
-
-  return <PortalHostNonNative {...props} />
 })
 
 function PortalHostWeb(props: PortalHostProps) {

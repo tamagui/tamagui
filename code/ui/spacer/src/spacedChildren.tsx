@@ -1,4 +1,4 @@
-import { createComponent, viewDefaultStyles } from '@tamagui/web'
+import { createComponent } from '@tamagui/web'
 import React from 'react'
 import { Spacer } from './Spacer'
 import { isUnspaced } from './Unspaced'
@@ -122,7 +122,7 @@ function createSpacer({ key, direction, space, spaceFlex }: CreateSpacerProps) {
 
 const AbsoluteFill: any = createComponent({
   defaultProps: {
-    ...viewDefaultStyles,
+    display: 'flex',
     flexDirection: 'column',
     position: 'absolute',
     top: 0,

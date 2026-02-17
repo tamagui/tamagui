@@ -19,7 +19,9 @@ export const getDefaultProps = (
 
   if (userDefaultProps) {
     // component's staticConfig.defaultProps wins over global config defaults
-    defaultProps = { ...userDefaultProps, ...defaultProps }
+    defaultProps = defaultProps
+      ? { ...userDefaultProps, ...defaultProps }
+      : userDefaultProps
   }
 
   return defaultProps

@@ -343,16 +343,18 @@ export async function extractToClassNames({
         baseClassNameStr = `font_${baseFontFamily}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
       }
 
-      // Views (non-Text) get _t_d_font to reset font inheritance like React Native
-      if (!staticConfig.isText) {
-        baseClassNameStr = `_t_d_font${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
-      }
+      // add is_View or is_Text base class matching runtime behavior
+      const baseTypeClass = staticConfig.isText ? 'is_Text' : 'is_View'
+      baseClassNameStr = `${baseTypeClass}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
 
-      let base = staticConfig.componentName
-        ? t.stringLiteral(
-            `is_${staticConfig.componentName}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
-          )
-        : t.stringLiteral(baseClassNameStr || '')
+      // add component name class (skip 'Text' since is_Text already covers it)
+      const componentNameFinal = staticConfig.componentName
+      let base =
+        componentNameFinal && componentNameFinal !== 'Text'
+          ? t.stringLiteral(
+              `is_${componentNameFinal}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
+            )
+          : t.stringLiteral(baseClassNameStr || '')
 
       attrClassName = attrClassName as t.Expression | null // actual typescript bug, flatMap doesn't update from never
 

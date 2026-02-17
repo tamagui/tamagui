@@ -7,14 +7,25 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'TextNestedInheritance', type: 'useCase' })
 })
 
-test(`nested text inherits color from parent`, async ({ page }) => {
+test(`nested tamagui Text does NOT inherit color (sets own theme color)`, async ({ page }) => {
   const parentStyles = await getStyles(page.getByTestId('parent-color').first())
   const nestedStyles = await getStyles(page.getByTestId('nested-color').first())
 
-  // Parent should have blue color
+  // parent should have blue color
   expect(parentStyles.color).toBe('rgb(0, 0, 255)')
 
-  // Nested text should inherit the blue color
+  // nested tamagui Text sets color: '$color' so should NOT be blue
+  expect(nestedStyles.color).not.toBe(parentStyles.color)
+})
+
+test(`nested core Text inherits color from parent via CSS`, async ({ page }) => {
+  const parentStyles = await getStyles(page.getByTestId('parent-core-color').first())
+  const nestedStyles = await getStyles(page.getByTestId('nested-core-color').first())
+
+  // parent should have blue
+  expect(parentStyles.color).toBe('rgb(0, 0, 255)')
+
+  // core Text does not set color, so it inherits blue via CSS
   expect(nestedStyles.color).toBe(parentStyles.color)
 })
 
@@ -26,24 +37,21 @@ test(`nested text inherits whiteSpace from parent (for numberOfLines)`, async ({
     page.getByTestId('nested-in-number-of-lines').first()
   )
 
-  // Parent with numberOfLines=1 should have nowrap
+  // parent with numberOfLines=1 should have nowrap
   expect(parentStyles.whiteSpace).toBe('nowrap')
 
-  // Nested text should inherit nowrap (not override with pre-wrap)
+  // nested text should inherit nowrap via CSS
   expect(nestedStyles.whiteSpace).toBe('nowrap')
-
-  // Nested text should also inherit color
-  expect(nestedStyles.color).toBe(parentStyles.color)
 })
 
 test(`nested text inherits explicit whiteSpace from parent`, async ({ page }) => {
   const parentStyles = await getStyles(page.getByTestId('parent-whitespace').first())
   const nestedStyles = await getStyles(page.getByTestId('nested-whitespace').first())
 
-  // Parent should have nowrap
+  // parent should have nowrap
   expect(parentStyles.whiteSpace).toBe('nowrap')
 
-  // Nested text should inherit nowrap
+  // nested text should inherit nowrap
   expect(nestedStyles.whiteSpace).toBe('nowrap')
 })
 
@@ -51,31 +59,33 @@ test(`nested text inherits letterSpacing from parent`, async ({ page }) => {
   const parentStyles = await getStyles(page.getByTestId('parent-letter-spacing').first())
   const nestedStyles = await getStyles(page.getByTestId('nested-letter-spacing').first())
 
-  // Parent should have letter-spacing of 5px
+  // parent should have letter-spacing of 5px
   expect(parentStyles.letterSpacing).toBe('5px')
 
-  // Nested text should inherit letter-spacing
+  // nested text should inherit letter-spacing
   expect(nestedStyles.letterSpacing).toBe('5px')
 })
 
-test(`styled nested text inherits color from parent`, async ({ page }) => {
+test(`styled nested text does NOT inherit color (sets own theme color)`, async ({
+  page,
+}) => {
   const parentStyles = await getStyles(page.getByTestId('parent-styled').first())
   const nestedStyles = await getStyles(page.getByTestId('nested-styled').first())
 
-  // Parent should have green color
+  // parent should have green color
   expect(parentStyles.color).toBe('rgb(0, 128, 0)')
 
-  // Styled nested text should inherit the green color
-  expect(nestedStyles.color).toBe(parentStyles.color)
+  // styled Text (BoldText) also sets color: '$color', should NOT be green
+  expect(nestedStyles.color).not.toBe(parentStyles.color)
 })
 
 test(`explicit color override on nested text still works`, async ({ page }) => {
   const parentStyles = await getStyles(page.getByTestId('parent-override').first())
   const nestedStyles = await getStyles(page.getByTestId('nested-override').first())
 
-  // Parent should have purple color
+  // parent should have purple color
   expect(parentStyles.color).toBe('rgb(128, 0, 128)')
 
-  // Nested text with explicit color should NOT inherit - should be orange
+  // nested text with explicit color should be orange
   expect(nestedStyles.color).toBe('rgb(255, 165, 0)')
 })

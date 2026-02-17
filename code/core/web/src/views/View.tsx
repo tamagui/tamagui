@@ -1,6 +1,5 @@
 import { validStyles } from '@tamagui/helpers'
 
-import { viewDefaultStyles } from '../constants/constants'
 import { createComponent } from '../createComponent'
 import type {
   StackNonStyleProps,
@@ -22,6 +21,5 @@ export const View = createComponent<
   ViewStylePropsBase
 >({
   acceptsClassName: true,
-  defaultProps: viewDefaultStyles,
   validStyles,
 })

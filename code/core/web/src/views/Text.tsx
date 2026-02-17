@@ -35,13 +35,7 @@ export const Text = createComponent<
 
   defaultProps:
     process.env.TAMAGUI_TARGET === 'web'
-      ? {
-          display: 'inline', // display: inline breaks css transform styles
-          boxSizing: 'border-box',
-          wordWrap: 'break-word',
-          whiteSpace: 'pre-wrap',
-          margin: 0,
-        }
+      ? undefined
       : {
           suppressHighlighting: true,
         },
@@ -75,5 +69,3 @@ export const Text = createComponent<
     ...stylePropsTextOnly,
   },
 })
-
-Text['displayName'] = 'Text'

@@ -71,7 +71,6 @@ export type AdaptParentContextI = {
   setPlatform: (when: AdaptPlatform) => any
   when: AdaptWhen
   setWhen: (when: AdaptWhen) => any
-  setChildren: (children: any) => any
   portalName?: string
   lastScope?: string
 }
@@ -94,7 +93,6 @@ export const AdaptContext = createStyledContext<AdaptParentContextI>({
   platform: null as any,
   setPlatform: (x: AdaptPlatform) => {},
   when: null as any,
-  setChildren: null as any,
   setWhen: () => {},
 })
 
@@ -152,7 +150,8 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
     childrenStoreRef.current = createAdaptChildrenStore()
   }
 
-  const isTeleport = !isWeb && getPortal().state.type === 'teleport'
+  const isTeleport =
+    process.env.TAMAGUI_TARGET === 'native' && getPortal().state.type === 'teleport'
 
   const FinalContents = useMemo(() => {
     if (Contents) {
@@ -169,6 +168,7 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
     if (AdaptPortals.has(portalName)) {
       return AdaptPortals.get(portalName)
     }
+
     const element = () => {
       return (
         <PortalHost
@@ -178,7 +178,9 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
         />
       )
     }
+
     AdaptPortals.set(portalName, element)
+
     return element
   }, [portalName, Contents, isTeleport])
 
@@ -194,9 +196,6 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
   const [when, setWhen] = React.useState<AdaptWhen>(null)
   const [platform, setPlatform] = React.useState<AdaptPlatform>(null)
 
-  // TODO for inline adapt
-  const [children2, setChildren] = React.useState(null)
-
   return (
     <AdaptChildrenStoreContext.Provider value={childrenStoreRef.current}>
       <LastAdaptContextScope.Provider value={scope}>
@@ -206,7 +205,6 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
           platform={platform}
           setPlatform={setPlatform}
           setWhen={setWhen}
-          setChildren={setChildren}
           portalName={portalName}
           scopeName={scope}
         >
@@ -264,14 +262,6 @@ export const Adapt = withStaticProperties(
     } else {
       output = children
     }
-
-    // TODO this isn't ideal using an effect to set children, will cause double-renders
-    // on every change
-    useIsomorphicLayoutEffect(() => {
-      if (typeof children === 'function' && output !== undefined) {
-        context?.setChildren(output)
-      }
-    }, [output])
 
     return <StackZIndexContext>{!enabled ? null : output}</StackZIndexContext>
   },

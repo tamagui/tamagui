@@ -1,4 +1,5 @@
-import { Text, styled } from 'tamagui'
+import { Text as CoreText } from '@tamagui/core'
+import { H1, Text, styled } from 'tamagui'
 
 // Test case for GitHub issue #3789: Nested Text breaks inheritance of some styles/props
 
@@ -9,6 +10,8 @@ const BoldText = styled(Text, {
 export function TextNestedInheritance() {
   return (
     <>
+      <H1>text inheritence</H1>
+
       {/* Test 1: numberOfLines should apply to nested text */}
       <Text testID="parent-number-of-lines" numberOfLines={1} width={200} color="red">
         This is a very long text that should be truncated with an ellipsis and
@@ -19,22 +22,22 @@ export function TextNestedInheritance() {
         should also be truncated
       </Text>
 
-      {/* Test 2: color should inherit to nested text */}
+      {/* Test 2: tamagui Text sets color: '$color', so nested Text should NOT inherit */}
       <Text testID="parent-color" color="blue">
         Parent blue text with
         <Text testID="nested-color" fontWeight="bold">
           {' '}
-          nested bold text that should also be blue
+          nested bold text (should be theme color, not blue)
         </Text>
       </Text>
 
-      {/* Test 3: fontFamily should inherit to nested text */}
-      <Text testID="parent-font-family" fontFamily="$body">
-        Parent with body font and
-        <Text testID="nested-font-family" fontWeight="bold">
+      {/* Test 3: core Text does NOT set color, so it should inherit via CSS */}
+      <Text testID="parent-core-color" color="blue">
+        Parent blue text with
+        <CoreText testID="nested-core-color" fontWeight="bold">
           {' '}
-          nested text should inherit font
-        </Text>
+          nested core text (should inherit blue)
+        </CoreText>
       </Text>
 
       {/* Test 4: whiteSpace should inherit (important for numberOfLines) */}
@@ -55,10 +58,13 @@ export function TextNestedInheritance() {
         </Text>
       </Text>
 
-      {/* Test 6: Using styled component for nested text */}
+      {/* Test 6: Using styled component for nested text - also sets color */}
       <Text testID="parent-styled" color="green">
         Parent green with
-        <BoldText testID="nested-styled"> styled bold child</BoldText>
+        <BoldText testID="nested-styled">
+          {' '}
+          styled bold child (theme color, not green)
+        </BoldText>
       </Text>
 
       {/* Test 7: Explicit override should still work */}

@@ -181,9 +181,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const defaultPositionSetting = configIn.settings?.defaultPosition || 'static'
 
   const defaultProps = configIn.defaultProps || {}
-  // Apply defaultPosition to viewDefaultStyles directly
-  // This avoids the deprecated defaultProps pattern in createComponent
-  if (process.env.TAMAGUI_TARGET === 'web') {
+  // apply defaultPosition via defaultProps when not static
+  if (process.env.TAMAGUI_TARGET === 'web' && defaultPositionSetting !== 'static') {
     defaultProps.View = {
       ...defaultProps.View,
       position: defaultPositionSetting,
