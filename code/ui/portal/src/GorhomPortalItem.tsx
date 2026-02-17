@@ -1,11 +1,13 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { TamaguiRoot } from '@tamagui/web'
+import { TamaguiRoot, useThemeName } from '@tamagui/web'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
 import { allPortalHosts, portalListeners } from './constants'
 import type { PortalItemProps } from './types'
 
 export const GorhomPortalItem = (props: PortalItemProps) => {
+  const theme = useThemeName()
+
   if (process.env.NODE_ENV === 'development') {
     if (!props.hostName && !props.passThrough) {
       console.warn(`No hostName`)
@@ -56,5 +58,8 @@ export const GorhomPortalItem = (props: PortalItemProps) => {
     return null
   }
 
-  return createPortal(<TamaguiRoot>{props.children}</TamaguiRoot>, actualNode)
+  return createPortal(
+    <TamaguiRoot theme={theme}>{props.children}</TamaguiRoot>,
+    actualNode
+  )
 }

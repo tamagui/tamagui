@@ -77,7 +77,6 @@
     "check:references": "bun ./scripts/check-references.ts",
     "check:references:fix": "bun ./scripts/check-references.ts --fix",
     "repair": "bun ./scripts/repair.ts",
-    "compiler:check": "bun ./scripts/react-compiler-check.ts",
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\"",
     "sandbox": "./scripts/bun-run.sh sandbox dev",
     "scripts:format": "node -r esbuild-register ./scripts/format.ts",
