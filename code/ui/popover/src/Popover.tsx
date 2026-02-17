@@ -410,6 +410,8 @@ const PortalAdaptSafe = ({
   children?: React.ReactNode
   context: PopoverContextValue
 }) => {
+  'use no memo'
+
   if (needsRepropagation) {
     const parentContexts = useParentContexts(context.popoverScope)
     return (
@@ -433,6 +435,8 @@ function PopoverPortal({
 }: Pick<PopoverContentProps, 'zIndex' | 'passThrough' | 'children' | 'onPress'> & {
   context: PopoverContextValue
 }) {
+  'use no memo'
+
   const themeName = useThemeName()
 
   let content = children

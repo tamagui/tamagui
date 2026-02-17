@@ -1516,6 +1516,8 @@ const useInsertEffectCompat = isWeb
 
 // perf: ...args a bit expensive on native
 export const useSplitStyles: StyleSplitter = (a, b, c, d, e, f, g, h, i, j, k, l) => {
+  'use no memo'
+
   const res = getSplitStyles(a, b, c, d, e, f, g, h, i, j, k, l)
 
   if (process.env.TAMAGUI_TARGET !== 'native') {

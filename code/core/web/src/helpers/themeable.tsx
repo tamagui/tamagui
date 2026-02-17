@@ -13,6 +13,8 @@ export function themeable<ComponentType extends (props: any) => any>(
     props: ThemeableProps,
     ref
   ) {
+    'use no memo'
+
     const userDefaults = getDefaultProps(staticConfig, props.componentName)
     const defaultTheme = userDefaults?.theme
     const defaultResetTheme = userDefaults?.themeReset
@@ -24,7 +26,7 @@ export function themeable<ComponentType extends (props: any) => any>(
       for (const key in context.props) {
         const val = props[key]
         if (val !== undefined) {
-          overriddenContextProps ||= {}
+          overriddenContextProps = overriddenContextProps || {}
           overriddenContextProps[key] = val
         }
       }
@@ -48,19 +50,19 @@ export function themeable<ComponentType extends (props: any) => any>(
 
     const compName = componentName || staticConfig?.componentName
     if (compName) {
-      filteredProps ||= {}
+      filteredProps = filteredProps || {}
       filteredProps.componentName = compName
     }
     if ('debug' in props) {
-      filteredProps ||= {}
+      filteredProps = filteredProps || {}
       filteredProps.debug = props.debug
     }
     if ('theme' in props || defaultTheme) {
-      filteredProps ||= {}
+      filteredProps = filteredProps || {}
       filteredProps.name = 'theme' in props ? props.theme : defaultTheme
     }
     if ('themeReset' in props || defaultResetTheme) {
-      filteredProps ||= {}
+      filteredProps = filteredProps || {}
       filteredProps.reset = 'themeReset' in props ? themeReset : defaultResetTheme
     }
 

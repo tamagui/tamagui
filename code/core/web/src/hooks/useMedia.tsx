@@ -163,6 +163,8 @@ export function useMedia(
   componentContext?: ComponentContextI,
   debug?: DebugProp
 ): UseMediaState {
+  'use no memo'
+
   const componentState = componentContext ? States.get(componentContext) : null
 
   const internalRef = useRef<{

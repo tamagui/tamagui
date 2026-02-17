@@ -57,6 +57,8 @@ export const useThemeState = (
   keys: MutableRefObject<Set<string> | null>,
   schemeKeys?: MutableRefObject<Set<string> | null>
 ): ThemeState => {
+  'use no memo'
+
   const { disable } = props
   const parentId = useContext(ThemeStateContext)
 
@@ -84,7 +86,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   const id = useId()
   const subscribe = useCallback(
     (cb: Function) => {
-      listenersByParent[parentId] ||= new Set()
+      listenersByParent[parentId] = listenersByParent[parentId] || new Set()
       listenersByParent[parentId].add(id)
       allListeners.set(id, () => {
         PendingUpdate.set(id, shouldForce ? 'force' : true)

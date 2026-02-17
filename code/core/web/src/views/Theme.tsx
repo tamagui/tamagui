@@ -15,6 +15,8 @@ import { ThemeDebug } from './ThemeDebug'
 type ThemeComponentPropsOnly = ThemeProps & { passThrough?: boolean; contain?: boolean }
 
 export const Theme = forwardRef(function Theme(props: ThemeComponentPropsOnly, ref) {
+  'use no memo'
+
   // @ts-expect-error only for internal views
   if (props.disable) {
     return props.children

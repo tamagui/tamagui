@@ -233,7 +233,9 @@ export function createComponent<
   const { Component, isText, isHOC } = staticConfig
 
   const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
-    config ||= getConfig()
+    'use no memo'
+
+    config = config || getConfig()
 
     const internalID = process.env.NODE_ENV === 'development' ? React.useId() : ''
 
@@ -259,7 +261,7 @@ export function createComponent<
     // test only
     if (process.env.NODE_ENV === 'test') {
       if (propsIn['data-test-renders']) {
-        propsIn['data-test-renders']['current'] ??= 0
+        propsIn['data-test-renders']['current'] = propsIn['data-test-renders']['current'] ?? 0
         propsIn['data-test-renders']['current'] += 1
       }
     }
@@ -365,7 +367,7 @@ export function createComponent<
           }
         }
 
-        debugKeyListeners ||= new Set()
+        debugKeyListeners = debugKeyListeners || new Set()
         debugKeyListeners.add(debugVisualizerHandler)
 
         return () => {
@@ -662,7 +664,7 @@ export function createComponent<
         staticConfig.context || staticConfig.parentStaticConfig?.context
       if (contextForProps) {
         for (const key in splitStyles.overriddenContextProps) {
-          overriddenContextProps ||= {}
+          overriddenContextProps = overriddenContextProps || {}
           overriddenContextProps[key] = splitStyles.overriddenContextProps[key]
         }
         // Use parent's context if this component doesn't have its own
@@ -768,7 +770,7 @@ export function createComponent<
 
       // don't change this ever or else you break ComponentContext and cause re-rendering
       // use a Set of listeners so multiple components can register
-      componentContext.mediaEmitListeners ||= new Set()
+      componentContext.mediaEmitListeners = componentContext.mediaEmitListeners || new Set()
 
       // only register once per component instance
       if (!stateRef.current.mediaEmitCleanup) {
@@ -782,12 +784,12 @@ export function createComponent<
         }
       }
 
-      componentContext.mediaEmit ||= (next) => {
+      componentContext.mediaEmit = componentContext.mediaEmit || ((next) => {
         // notify all registered components
         for (const listener of componentContext.mediaEmitListeners!) {
           listener(next)
         }
-      }
+      })
 
       stateRef.current.setStateShallow = (nextOrGetNext) => {
         const prev = stateRef.current.nextState || state
@@ -852,7 +854,7 @@ export function createComponent<
         props.untilMeasured === 'hide' &&
         !stateRef.current.hasMeasured
       ) {
-        splitStyles.style ||= {}
+        splitStyles.style = splitStyles.style || {}
         splitStyles.style.opacity = 0
       }
 

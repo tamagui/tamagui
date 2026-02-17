@@ -21,6 +21,8 @@ export type UseFloatingReturn = Floating.UseFloatingReturn & {
 export const FloatingOverrideContext = React.createContext<UseFloatingFn | null>(null)
 
 export const useFloating = (props: UseFloatingProps): UseFloatingReturn => {
+  'use no memo'
+
   const context = React.useContext(FloatingOverrideContext)
   return (context || Floating.useFloating)?.({
     ...props,

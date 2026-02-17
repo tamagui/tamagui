@@ -148,6 +148,9 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   // no real ref here but React complaining need to see why see SandboxCustomStyledAnimatedTooltip.ts
   ref
 ) {
+  // hooks inside useFloatingFn confuse the React Compiler
+  'use no memo'
+
   const {
     children,
     delay: delayProp,

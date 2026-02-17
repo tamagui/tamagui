@@ -6,6 +6,8 @@ import { useThemeState } from './useThemeState'
 const EMPTY = {}
 
 export const useTheme = () => {
+  'use no memo'
+
   const [theme] = useThemeWithState(EMPTY)
   const res = theme
   return res as ThemeProxied
@@ -20,6 +22,8 @@ export const useThemeWithState = (
   props: UseThemeWithStateProps,
   isRoot = false
 ): ThemeWithState => {
+  'use no memo'
+
   const keys = useRef<Set<string> | null>(null)
   const schemeKeys = useRef<Set<string> | null>(null)
   const themeState = useThemeState(props, isRoot, keys, schemeKeys)

@@ -6,6 +6,8 @@ import type { ThemeProviderProps } from '../types'
 import { Theme } from './Theme'
 
 export const ThemeProvider = (props: ThemeProviderProps) => {
+  'use no memo'
+
   const addThemeClassName = getSetting('addThemeClassName')
 
   // ensure theme is attached to root body node as well to work with modals by default

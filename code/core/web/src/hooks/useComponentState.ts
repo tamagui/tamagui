@@ -27,6 +27,8 @@ export const useComponentState = (
   staticConfig: StaticConfig,
   config: TamaguiInternalConfig
 ) => {
+  'use no memo'
+
   const isHydrated = useDidFinishSSR()
   const needsHydration = !useIsClientOnly()
 

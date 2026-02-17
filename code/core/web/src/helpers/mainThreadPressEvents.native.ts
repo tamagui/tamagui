@@ -20,8 +20,8 @@ const emptyConfig = {}
 let usePressability: any = null
 
 export function useMainThreadPressEvents(events: any, viewProps: any, enabled = true) {
-  usePressability ||=
-    require('react-native/Libraries/Pressability/usePressability').default
+  usePressability =
+    usePressability || require('react-native/Libraries/Pressability/usePressability').default
 
   // always call the hook to maintain consistent hook order
   const pressability = usePressability(enabled ? events : emptyConfig)

@@ -15,6 +15,8 @@ export type TooltipSimpleProps = TooltipProps & {
 
 export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
   ({ label, children, contentProps, disabled, ...tooltipProps }, ref) => {
+    'use no memo'
+
     const child = React.Children.only(children)
 
     if (!label) {

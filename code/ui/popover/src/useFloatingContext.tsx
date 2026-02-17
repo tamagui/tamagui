@@ -19,6 +19,8 @@ export const useFloatingContext = ({
   disableFocus,
   hoverable,
 }) => {
+  'use no memo'
+
   return React.useCallback(
     (props: UseFloatingOptions) => {
       const floating = useFloating({
