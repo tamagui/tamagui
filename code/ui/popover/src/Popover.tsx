@@ -24,7 +24,11 @@ import {
   useThemeName,
   View,
 } from '@tamagui/core'
-import { Dismissable, type DismissableProps } from '@tamagui/dismissable'
+import {
+  Dismissable,
+  DismissableBranch,
+  type DismissableProps,
+} from '@tamagui/dismissable'
 import { FloatingOverrideContext } from '@tamagui/floating'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope, FocusScopeController } from '@tamagui/focus-scope'
@@ -214,11 +218,19 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
       }
     }, [context.anchorTo, anchorTo?.x, anchorTo?.y, anchorTo?.height, anchorTo?.width])
 
-    return context.hasCustomAnchor ? (
+    // wrap trigger in DismissableBranch so clicking it doesn't fire pointerDownOutside
+    // which would close the popover before onPress can toggle it
+    const wrappedTrigger = isWeb ? (
+      <DismissableBranch>{trigger}</DismissableBranch>
+    ) : (
       trigger
+    )
+
+    return context.hasCustomAnchor ? (
+      wrappedTrigger
     ) : (
       <PopperAnchor {...(virtualRef && { virtualRef })} scope={scope} asChild>
-        {trigger}
+        {wrappedTrigger}
       </PopperAnchor>
     )
   }

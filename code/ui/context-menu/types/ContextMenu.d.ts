@@ -99,8 +99,6 @@ export declare function createContextMenu(param: CreateBaseMenuProps): React.FC<
         key: string;
     }>;
     SubContent: React.FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        size?: import("@tamagui/web").SizeTokens | undefined;
-        unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }>, keyof import("@tamagui/create-menu").MenuSubContentProps> & import("@tamagui/create-menu").MenuSubContentProps & {

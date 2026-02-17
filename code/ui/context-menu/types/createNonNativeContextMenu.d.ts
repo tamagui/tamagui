@@ -145,8 +145,6 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
         scope?: string;
     }, import("@tamagui/web").StackStyleBase, {}, {}>;
     SubContent: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        size?: import("@tamagui/web").SizeTokens | undefined;
-        unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }>, keyof BaseMenuTypes.MenuSubContentProps> & BaseMenuTypes.MenuSubContentProps & {

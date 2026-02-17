@@ -2,7 +2,7 @@
 // https://github.com/radix-ui/primitives/blob/cfd8dcba5fa6a0e751486af418d05a7b88a7f541/packages/react/dismissable-layer/src/DismissableLayer.tsx#L324
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { Slot, View, composeEventHandlers } from '@tamagui/core'
+import { Slot, TamaguiElement, View, composeEventHandlers } from '@tamagui/core'
 import { useEscapeKeydown } from '@tamagui/use-escape-keydown'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
@@ -29,7 +29,7 @@ const FOCUS_OUTSIDE = 'dismissable.focusOutside'
 let originalBodyPointerEvents: string
 
 // global layer tracking
-const globalLayers = new Set<HTMLDivElement>()
+const globalLayers = new Set<HTMLElement>()
 const layerChangeListeners = new Set<() => void>()
 
 function notifyLayerChange() {
@@ -49,7 +49,7 @@ export function getDismissableLayerCount(): number {
 /**
  * debug helper - logs what elements are registered as dismissable layers
  */
-export function debugDismissableLayers(): HTMLDivElement[] {
+export function debugDismissableLayers(): HTMLElement[] {
   const layers = Array.from(globalLayers)
   console.log('[Dismissable] Active layers:', layers.length, layers)
   return layers
@@ -76,9 +76,9 @@ export function useHasDismissableLayers(): boolean {
 }
 
 const DismissableContext = React.createContext({
-  layers: new Set<HTMLDivElement>(),
-  layersWithOutsidePointerEventsDisabled: new Set<HTMLDivElement>(),
-  branches: new Set<HTMLDivElement>(),
+  layers: new Set<HTMLElement>(),
+  layersWithOutsidePointerEventsDisabled: new Set<HTMLElement>(),
+  branches: new Set<HTMLElement>(),
 })
 
 /**
@@ -146,7 +146,7 @@ export function useDismissableLayersAbove(ref: React.RefObject<HTMLElement | nul
 }
 
 const Dismissable = React.forwardRef<
-  HTMLDivElement,
+  HTMLElement,
   DismissableProps & { asChild?: boolean }
 >((props, forwardedRef) => {
   const {
@@ -163,7 +163,7 @@ const Dismissable = React.forwardRef<
   } = props
   const Comp = asChild ? Slot : View
   const context = React.useContext(DismissableContext)
-  const [node, setNode] = React.useState<HTMLDivElement | null>(null)
+  const [node, setNode] = React.useState<HTMLElement | null>(null)
   const [, force] = React.useState({})
   const composedRefs = useComposedRefs(forwardedRef, (node) => setNode(node))
   const layers = Array.from(context.layers)
@@ -182,7 +182,7 @@ const Dismissable = React.forwardRef<
     index >= highestLayerWithOutsidePointerEventsDisabledIndex
 
   const pointerDownOutside = usePointerDownOutside((event) => {
-    const target = event.target as HTMLDivElement
+    const target = event.target as HTMLElement
     const isPointerDownOnBranch = [...context.branches].some((branch) =>
       branch.contains(target)
     )
@@ -193,7 +193,7 @@ const Dismissable = React.forwardRef<
   })
 
   const focusOutside = useFocusOutside((event) => {
-    const target = event.target as HTMLDivElement
+    const target = event.target as HTMLElement
     const isFocusInBranch = [...context.branches].some((branch) =>
       branch.contains(target)
     )
@@ -316,14 +316,15 @@ Dismissable.displayName = DISMISSABLE_LAYER_NAME
 
 const BRANCH_NAME = 'DismissableBranch'
 
-const DismissableBranch = React.forwardRef<HTMLDivElement, DismissableBranchProps>(
+const DismissableBranch = React.forwardRef<TamaguiElement, DismissableBranchProps>(
   (props, forwardedRef) => {
     const context = React.useContext(DismissableContext)
-    const ref = React.useRef<HTMLDivElement>(null)
+    const ref = React.useRef<TamaguiElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref)
 
     React.useEffect(() => {
       const node = ref.current
+      if (!(node instanceof HTMLElement)) return
       if (node) {
         context.branches.add(node)
         return () => {
@@ -332,7 +333,7 @@ const DismissableBranch = React.forwardRef<HTMLDivElement, DismissableBranchProp
       }
     }, [context.branches])
 
-    return <div style={{ display: 'contents' }} {...props} ref={composedRefs} />
+    return <View asChild="except-style" {...props} ref={composedRefs} />
   }
 )
 

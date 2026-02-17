@@ -171,8 +171,6 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
             displayName: string;
         };
         Content: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-            size?: import("@tamagui/web").SizeTokens | undefined;
-            unstyled?: boolean | undefined;
             elevation?: number | import("@tamagui/web").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
         }>, keyof MenuContentProps> & MenuContentProps & {
@@ -180,8 +178,6 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuContentProps & {
             scope?: string;
         }, import("@tamagui/web").StackStyleBase, {
-            size?: import("@tamagui/web").SizeTokens | undefined;
-            unstyled?: boolean | undefined;
             elevation?: number | import("@tamagui/web").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
@@ -253,8 +249,6 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
             scope?: string;
         } & React.RefAttributes<TamaguiElement>>;
         SubContent: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-            size?: import("@tamagui/web").SizeTokens | undefined;
-            unstyled?: boolean | undefined;
             elevation?: number | import("@tamagui/web").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
         }>, keyof MenuSubContentProps> & MenuSubContentProps & {
@@ -262,8 +256,6 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
         }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuSubContentProps & {
             scope?: string;
         }, import("@tamagui/web").StackStyleBase, {
-            size?: import("@tamagui/web").SizeTokens | undefined;
-            unstyled?: boolean | undefined;
             elevation?: number | import("@tamagui/web").SizeTokens | undefined;
             fullscreen?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
