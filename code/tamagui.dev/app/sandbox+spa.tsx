@@ -20,6 +20,7 @@ import {
   ThemeNameEffect,
   ThemeNameEffectNoTheme,
 } from '~/features/site/theme/ThemeNameEffect'
+import { PromoLinksRow } from '../features/site/home/PromoLinksRow'
 
 export async function loader() {
   const { getCompilationExamples } = await import('~/features/mdx/getMDXBySlug')
@@ -36,6 +37,12 @@ export default function TamaguiHomePage() {
   if (!compilationExamples) {
     return null
   }
+
+  return (
+    <YStack position="relative" top="$20" items="center" height={500}>
+      <PromoLinksRow />
+    </YStack>
+  )
 
   return (
     <Button transition={'100ms'} pressStyle={{ scale: 2 }}>

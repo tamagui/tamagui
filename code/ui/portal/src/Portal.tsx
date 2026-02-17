@@ -1,7 +1,7 @@
 import '@tamagui/polyfill-dev'
 
 import { isServer } from '@tamagui/constants'
-import { TamaguiRoot } from '@tamagui/web'
+import { TamaguiRoot, useThemeName } from '@tamagui/web'
 import { useStackedZIndex, ZIndexHardcodedContext } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { createPortal } from 'react-dom'
@@ -9,6 +9,8 @@ import { getStackedZIndexProps } from './helpers'
 import type { PortalProps } from './PortalProps'
 
 export const Portal = React.memo((propsIn: PortalProps) => {
+  const themeName = useThemeName()
+
   if (isServer) {
     return null
   }
@@ -26,15 +28,10 @@ export const Portal = React.memo((propsIn: PortalProps) => {
     return children
   }
 
-  // provide computed z-index to children so nested portals can stack above
-  const content = (
-    <ZIndexHardcodedContext.Provider value={zIndex}>
-      {children}
-    </ZIndexHardcodedContext.Provider>
-  )
-
   return createPortal(
     <TamaguiRoot
+      theme={themeName}
+      passThrough={passThrough}
       style={{
         zIndex,
         position: 'fixed',
@@ -47,7 +44,10 @@ export const Portal = React.memo((propsIn: PortalProps) => {
         ...style,
       }}
     >
-      {content}
+      {/* provide computed z-index to children so nested portals can stack above */}
+      <ZIndexHardcodedContext.Provider value={zIndex}>
+        {children}
+      </ZIndexHardcodedContext.Provider>
     </TamaguiRoot>,
     body
   )

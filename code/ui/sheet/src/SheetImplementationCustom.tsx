@@ -5,7 +5,6 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   LayoutMeasurementController,
   View as TamaguiView,
-  Theme,
   useConfiguration,
   useDidFinishSSR,
   useEvent,
@@ -763,13 +762,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     if (modal) {
       const modalContents = (
         <Portal stackZIndex={zIndex} {...portalProps}>
-          {shouldMountChildren && (
-            <ContainerComponent>
-              <Theme contain forceClassName name={themeName}>
-                {contents}
-              </Theme>
-            </ContainerComponent>
-          )}
+          {shouldMountChildren && <ContainerComponent>{contents}</ContainerComponent>}
         </Portal>
       )
 

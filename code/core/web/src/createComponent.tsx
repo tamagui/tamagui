@@ -261,7 +261,8 @@ export function createComponent<
     // test only
     if (process.env.NODE_ENV === 'test') {
       if (propsIn['data-test-renders']) {
-        propsIn['data-test-renders']['current'] = propsIn['data-test-renders']['current'] ?? 0
+        propsIn['data-test-renders']['current'] =
+          propsIn['data-test-renders']['current'] ?? 0
         propsIn['data-test-renders']['current'] += 1
       }
     }
@@ -298,11 +299,7 @@ export function createComponent<
     const componentName = props.componentName || staticConfig.componentName
 
     // merge both default props and styled context props - ensure order is preserved
-    const defaultProps = getDefaultProps(
-      staticConfig,
-      props.componentName,
-      isText && hasTextAncestor
-    )
+    const defaultProps = getDefaultProps(staticConfig, props.componentName)
 
     // merge styled context props over defaults, ensure order is preserved
     const [nextProps, overrides] = mergeComponentProps(
@@ -770,7 +767,8 @@ export function createComponent<
 
       // don't change this ever or else you break ComponentContext and cause re-rendering
       // use a Set of listeners so multiple components can register
-      componentContext.mediaEmitListeners = componentContext.mediaEmitListeners || new Set()
+      componentContext.mediaEmitListeners =
+        componentContext.mediaEmitListeners || new Set()
 
       // only register once per component instance
       if (!stateRef.current.mediaEmitCleanup) {
@@ -784,12 +782,14 @@ export function createComponent<
         }
       }
 
-      componentContext.mediaEmit = componentContext.mediaEmit || ((next) => {
-        // notify all registered components
-        for (const listener of componentContext.mediaEmitListeners!) {
-          listener(next)
-        }
-      })
+      componentContext.mediaEmit =
+        componentContext.mediaEmit ||
+        ((next) => {
+          // notify all registered components
+          for (const listener of componentContext.mediaEmitListeners!) {
+            listener(next)
+          }
+        })
 
       stateRef.current.setStateShallow = (nextOrGetNext) => {
         const prev = stateRef.current.nextState || state

@@ -411,35 +411,29 @@ function PopoverPortal({
 }) {
   'use no memo'
 
-  const themeName = useThemeName()
-
   let content = children
 
-  // native doesnt support portals
+  // native without teleport
   if (needsRepropagation) {
     const parentContexts = useParentContexts(context.popoverScope)
-
     content = (
       <RepropagateParentContexts {...parentContexts}>{content}</RepropagateParentContexts>
     )
   }
 
   return (
-    <Portal passThrough={passThrough} stackZIndex zIndex={zIndex as any}>
+    <Portal passThrough={passThrough} stackZIndex zIndex={zIndex}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
-      <Theme passThrough={passThrough} contain forceClassName name={themeName}>
-        {!!context.open && !context.breakpointActive && (
-          <YStack
-            fullscreen
-            onPress={composeEventHandlers(onPress as any, context.onOpenToggle)}
-          />
-        )}
+      {!!context.open && !context.breakpointActive && (
+        <YStack
+          fullscreen
+          onPress={composeEventHandlers(onPress as any, context.onOpenToggle)}
+        />
+      )}
 
-        <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
-          {content}
-        </StackZIndexContext>
-      </Theme>
+      {/* i removed a hardcoded StackZIndex because Portal has it internally now with useStackedZIndex + ZIndexHardcoded */}
+      {content}
     </Portal>
   )
 }
@@ -485,7 +479,11 @@ export type PopoverContentImplProps = PopperContentProps &
     /**
      * Performance - if never going to use feature can permanently disable
      */
-    alwaysDisable?: Record<'focus' | 'remove-scroll' | 'dismiss', boolean>
+    alwaysDisable?: {
+      focus?: boolean
+      'remove-scroll'?: boolean
+      dismiss?: boolean
+    }
   }
 
 type PopoverContentImplInteralProps = PopoverContentImplProps & {

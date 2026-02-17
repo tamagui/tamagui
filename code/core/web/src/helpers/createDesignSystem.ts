@@ -176,8 +176,11 @@ export function getCSS(
       ? `:root{${autoVariables.map((v) => `--${v.name}:${v.val}`).join(';')}}`
       : ''
 
+    // notes:
+    // .is_Text .is_Text - we just override the text default styles here
+
     const designSystem = `._ovs-contain {overscroll-behavior:contain;}
-.is_Text .is_Text {display:inline-flex;font-family:inherit;}
+.is_Text .is_Text {display:inline-flex; font-family: inherit; font-weight: inherit; font-style: inherit; line-height: inherit;}
 ._dsp_contents {display:contents;}
 ._no_backdrop::backdrop {display: none;}
 .is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}

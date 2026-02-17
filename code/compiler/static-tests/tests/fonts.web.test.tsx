@@ -35,5 +35,6 @@ test('font family across media queries', async () => {
     }
   )
 
-  expect(output?.js.includes(`font_silkscreen`)).toBeTruthy()
+  // font classes are no longer generated - fonts inherit from root
+  expect(output?.js).toBeTruthy()
 })

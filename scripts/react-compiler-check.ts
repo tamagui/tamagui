@@ -68,7 +68,9 @@ async function main() {
 
   // report
   if (problemFiles.length === 0) {
-    console.info('✅ All files are React Compiler compatible (or already have "use no memo")\n')
+    console.info(
+      '✅ All files are React Compiler compatible (or already have "use no memo")\n'
+    )
     return
   }
 
@@ -99,11 +101,15 @@ async function main() {
   }
 
   console.info('\n📊 Summary by error type:\n')
-  for (const [type, files] of [...byErrorType.entries()].sort((a, b) => b[1].length - a[1].length)) {
+  for (const [type, files] of [...byErrorType.entries()].sort(
+    (a, b) => b[1].length - a[1].length
+  )) {
     console.info(`  ${files.length}x ${type}`)
   }
 
-  console.info('\n💡 Add "\'use no memo\'" inside each affected function to skip compilation\n')
+  console.info(
+    '\n💡 Add "\'use no memo\'" inside each affected function to skip compilation\n'
+  )
 }
 
 async function getPackages(): Promise<{ name: string; location: string }[]> {
@@ -149,7 +155,8 @@ async function getSourceFiles(dir: string): Promise<string[]> {
 
 async function checkFile(filePath: string): Promise<ScanResult> {
   const source = await readFile(filePath, 'utf-8')
-  const hasUseNoMemo = source.includes("'use no memo'") || source.includes('"use no memo"')
+  const hasUseNoMemo =
+    source.includes("'use no memo'") || source.includes('"use no memo"')
 
   // skip files that already have the directive
   if (hasUseNoMemo) {
@@ -199,7 +206,9 @@ async function checkFile(filePath: string): Promise<ScanResult> {
 
     if (verbose && (compiled || errors.length > 0)) {
       const relPath = relative(process.cwd(), filePath)
-      console.info(`  ${compiled ? '✓' : '⏭️'} ${relPath}${errors.length ? ` (${errors.length} issues)` : ''}`)
+      console.info(
+        `  ${compiled ? '✓' : '⏭️'} ${relPath}${errors.length ? ` (${errors.length} issues)` : ''}`
+      )
     }
 
     return { file: filePath, compiled, errors, hasUseNoMemo: false }

@@ -78,20 +78,10 @@ export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, '
     enableAnimationForPositionChange?: boolean;
 }
 export type PopoverContentProps = PopoverContentTypeProps;
-export declare const PopoverContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    size?: SizeTokens | undefined;
-    unstyled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
 export declare const PopoverContent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    size?: SizeTokens | undefined;
-    unstyled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }>, keyof PopoverContentTypeProps> & PopoverContentTypeProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopoverContentTypeProps, import("@tamagui/core").StackStyleBase, {
-    size?: SizeTokens | undefined;
-    unstyled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
@@ -121,6 +111,14 @@ export type PopoverContentImplProps = PopperContentProps & Omit<DismissableProps
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false;
     enableRemoveScroll?: boolean;
     freezeContentsWhenHidden?: boolean;
+    /**
+     * Performance - if never going to use feature can permanently disable
+     */
+    alwaysDisable?: {
+        focus?: boolean;
+        'remove-scroll'?: boolean;
+        dismiss?: boolean;
+    };
 };
 export type PopoverCloseProps = ScopedPopoverProps<YStackProps>;
 export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
@@ -195,13 +193,9 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
         scope?: PopoverScopes;
     } & React.RefAttributes<TamaguiElement>>;
     Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        size?: SizeTokens | undefined;
-        unstyled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }>, keyof PopoverContentTypeProps> & PopoverContentTypeProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopoverContentTypeProps, import("@tamagui/core").StackStyleBase, {
-        size?: SizeTokens | undefined;
-        unstyled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;

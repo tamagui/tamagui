@@ -90,7 +90,7 @@ export function getVariableName(v: Variable | any) {
   return v
 }
 
-export function getVariableVariable(v: Variable | any) {
+export function getVariableVariable(v: Variable | string | undefined) {
   if (isVariable(v)) return v.variable
   return v
 }

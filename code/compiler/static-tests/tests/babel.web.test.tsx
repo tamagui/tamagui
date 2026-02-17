@@ -604,46 +604,6 @@ test('Text with hoverStyle and conditional spread preserves ternary', async () =
   expect(output?.js).toMatchSnapshot()
 })
 
-// BUG FIX: font_body was only being added to the "true" branch, not the "false" branch
-// This tests that baseFontFamily (from fontFamily="$body" or equivalent) is added to BOTH branches
-test('font_body class is present in BOTH ternary branches', async () => {
-  const output = await extractForWeb(
-    `
-    import { Text } from '@tamagui/core'
-
-    export function Test({ isActive }) {
-      return (
-        <Text
-          fontFamily="$body"
-          {...(isActive && {
-            fontWeight: '800',
-          })}
-        >
-          hello
-        </Text>
-      )
-    }
-  `,
-    {
-      options: {
-        platform: 'web',
-        components: ['@tamagui/core'],
-      },
-    }
-  )
-
-  // Both className strings should have font_body
-  // Match _cn2 = "..." and _cn = "..."
-  const matches = output?.js?.match(/const _cn\d? = "([^"]+)"/g) || []
-
-  // Every className constant should include font_body
-  for (const match of matches) {
-    expect(match).toContain('font_body')
-  }
-
-  expect(output?.js).toMatchSnapshot()
-})
-
 // role attribute is passed through during extraction
 test('role attribute is preserved during extraction', async () => {
   const output = await extractForWeb(

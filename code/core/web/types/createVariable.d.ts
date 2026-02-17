@@ -8,7 +8,7 @@ export declare const setDidGetVariableValue: (val: boolean) => boolean;
 export declare const didGetVariableValue: () => boolean;
 export declare function getVariableValue(v: Variable | any, group?: TokenCategories): any;
 export declare function getVariableName(v: Variable | any): any;
-export declare function getVariableVariable(v: Variable | any): any;
+export declare function getVariableVariable(v: Variable | string | undefined): string | undefined;
 export declare const createCSSVariable: (nameProp: string, includeVar?: boolean) => string;
 /**
  * Helper function to mark a token value as needing px units.

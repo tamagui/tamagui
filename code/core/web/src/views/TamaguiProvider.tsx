@@ -44,16 +44,16 @@ export function TamaguiProvider({
   }, [])
 
   let contents = (
-    <TamaguiRoot trackMount>
-      <ComponentContext.Provider
-        animationDriver={defaultAnimationDriver}
-        insets={memoizedInsets}
-      >
-        <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>
+    <ComponentContext.Provider
+      animationDriver={defaultAnimationDriver}
+      insets={memoizedInsets}
+    >
+      <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>
+        <TamaguiRoot theme={defaultTheme} isRootRoot>
           {children}
-        </ThemeProvider>
-      </ComponentContext.Provider>
-    </TamaguiRoot>
+        </TamaguiRoot>
+      </ThemeProvider>
+    </ComponentContext.Provider>
   )
 
   if (getSetting('disableSSR')) {
@@ -80,5 +80,3 @@ export function TamaguiProvider({
     </>
   )
 }
-
-TamaguiProvider['displayName'] = 'TamaguiProvider'

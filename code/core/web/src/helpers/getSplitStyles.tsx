@@ -1255,10 +1255,8 @@ export const getSplitStyles: StyleSplitter = (
 
       if (process.env.TAMAGUI_TARGET === 'web') {
         // merge className and style back into viewProps:
-        let fontFamily =
-          isText || isInput
-            ? styleState.fontFamily || staticConfig.defaultProps?.fontFamily
-            : null
+        // only emit font class if fontFamily was explicitly in props (not from defaults)
+        let fontFamily = isText || isInput ? styleState.fontFamily : null
         if (fontFamily && fontFamily[0] === '$') {
           fontFamily = fontFamily.slice(1)
         }

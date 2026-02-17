@@ -48,6 +48,7 @@ function Demo({ Icon, ...props }: TooltipProps & { Icon?: any }) {
         y={0}
         opacity={1}
         py="$2"
+        px="$3"
         transition={[
           'quick',
           {

@@ -1,8 +1,7 @@
-import { isWeb, Theme, useThemeName } from '@tamagui/core'
+import { isWeb, useThemeName } from '@tamagui/core'
 import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
-import React from 'react'
 
 import { Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
@@ -22,14 +21,9 @@ export const SelectContent = ({
 }: SelectContentProps & FocusScopeProps) => {
   const context = useSelectContext(scope)
   const itemParentContext = useSelectItemParentContext(scope)
-  const themeName = useThemeName()
   const showSheet = useShowSelectSheet(context)
 
-  const contents = (
-    <Theme forceClassName name={themeName}>
-      {children}
-    </Theme>
-  )
+  const contents = children
 
   if (itemParentContext.shouldRenderWebNative) {
     return <>{children}</>
