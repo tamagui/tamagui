@@ -7,7 +7,9 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'TextNestedInheritance', type: 'useCase' })
 })
 
-test(`nested tamagui Text does NOT inherit color (sets own theme color)`, async ({ page }) => {
+test(`nested tamagui Text does NOT inherit color (sets own theme color)`, async ({
+  page,
+}) => {
   const parentStyles = await getStyles(page.getByTestId('parent-color').first())
   const nestedStyles = await getStyles(page.getByTestId('nested-color').first())
 

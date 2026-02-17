@@ -12,7 +12,6 @@ export type AdaptParentContextI = {
     setPlatform: (when: AdaptPlatform) => any;
     when: AdaptWhen;
     setWhen: (when: AdaptWhen) => any;
-    setChildren: (children: any) => any;
     portalName?: string;
     lastScope?: string;
 };

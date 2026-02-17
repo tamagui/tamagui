@@ -1,22 +1,11 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`styled() tests > extracts to className at call-site 1`] = `
-"const _cn = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-green ";
+"const _cn = "is_View _bg-green ";
 import { MyStack } from '@tamagui/test-design-system';
 export function Test() {
   return <div className={_cn} />;
 }"
 `;
 
-exports[`styled() tests > extracts to className at call-site 2`] = `
-":root ._pos-static{position:static;}
-:root ._dsp-flex{display:flex;}
-:root ._ai-stretch{align-items:stretch;}
-:root ._fd-column{flex-direction:column;}
-:root ._fb-auto{flex-basis:auto;}
-:root ._bxs-border-box{box-sizing:border-box;}
-:root ._mih-0px{min-height:0px;}
-:root ._miw-0px{min-width:0px;}
-:root ._fs-0{flex-shrink:0;}
-:root ._bg-green{background-color:green;}"
-`;
+exports[`styled() tests > extracts to className at call-site 2`] = `":root ._bg-green{background-color:green;}"`;

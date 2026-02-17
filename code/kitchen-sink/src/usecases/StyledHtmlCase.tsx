@@ -49,7 +49,7 @@ const StyledNav = styled.nav({
 })
 
 const StyledMain = styled.main({
-  flex: 1,
+  padding: '$2',
 })
 
 const StyledSection = styled.section({

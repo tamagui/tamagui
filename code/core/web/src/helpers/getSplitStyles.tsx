@@ -1270,7 +1270,7 @@ export const getSplitStyles: StyleSplitter = (
 
         let classList: string[] = []
         if (componentNameClassName) classList.push(componentNameClassName)
-        // Views get _t_d_font to reset font inheritance like React Native
+        // is_View gets base flex styles + font reset, is_Text gets base text styles
         if (!isText) classList.push('is_View')
         else classList.push('is_Text')
         if (fontFamilyClassName) classList.push(fontFamilyClassName)

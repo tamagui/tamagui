@@ -1,8 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Text with hoverStyle and conditional spread preserves ternary 1`] = `
-"const _cn2 = "is_Text _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _cur-pointer _col-0hover-color12 ";
-const _cn = "is_Text _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _cur-pointer _fow-800 _col-color12 ";
+"const _cn2 = "is_Text _cur-pointer _col-0hover-color12 ";
+const _cn = "is_Text _cur-pointer _fow-800 _col-color12 ";
 // debug
 import { Text } from '@tamagui/core';
 export function Test({
@@ -17,25 +17,16 @@ export function Test({
 exports[`bails from non-deterministic values 1`] = `undefined`;
 
 exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn2 = "_pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _w-10px _bg-red ";
-const _cn = "_pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _w-10px _bg-blue ";
+"const _cn2 = "_w-10px _bg-red ";
+const _cn = "_w-10px _bg-blue ";
 import { View } from '@tamagui/core';
 export function Test(props) {
-  return <div className={!props.green ? _cn : props.green ? _cn2 : props.className + " " + "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _w-10px"} />;
+  return <div className={!props.green ? _cn : props.green ? _cn2 : props.className + " " + "is_View _w-10px"} />;
 }"
 `;
 
 exports[`className + conditional styles get full base styles merged onto + shorthand 2`] = `
-":root ._pos-static{position:static;}
-:root ._dsp-flex{display:flex;}
-:root ._ai-stretch{align-items:stretch;}
-:root ._fd-column{flex-direction:column;}
-:root ._fb-auto{flex-basis:auto;}
-:root ._bxs-border-box{box-sizing:border-box;}
-:root ._mih-0px{min-height:0px;}
-:root ._miw-0px{min-width:0px;}
-:root ._fs-0{flex-shrink:0;}
-:root ._w-10px{width:10px;}
+":root ._w-10px{width:10px;}
 :root ._bg-red{background-color:red;}
 :root ._bg-blue{background-color:blue;}"
 `;
@@ -43,24 +34,24 @@ exports[`className + conditional styles get full base styles merged onto + short
 exports[`conditional classname keeps base and concats properly 1`] = `
 "import { View } from '@tamagui/core';
 export function Test(props) {
-  return <div className={(isEnabled ? '' : 'disable-all-pointer-events') + " " + "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-0px _bxs-border-box _mih-0px _miw-0px _fs-1 _fg-1"}>
+  return <div className={(isEnabled ? '' : 'disable-all-pointer-events') + " " + "is_View _fg-1 _fs-1 _fb-0px"}>
           {props.child}
         </div>;
 }"
 `;
 
 exports[`conditional specific after generic style overrides 1`] = `
-"const _cn1 = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px ";
-const _cn0 = "_t_d_font _btlr-5px _bbrr-5px _bblr-5px _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pl-t-space-2 _btrr-10px _pb-18px ";
-const _cn9 = "_t_d_font _btlr-2px _bbrr-2px _bblr-2px _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pl-t-space-2 _btrr-10px _pb-15px ";
-const _cn8 = "_t_d_font _bbrr-5px _bblr-5px _btlr-7px _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
-const _cn7 = "_t_d_font _btlr-7px _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
-const _cn6 = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
-const _cn5 = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
-const _cn4 = "_t_d_font _bbrr-2px _bblr-2px _btlr-7px _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
-const _cn3 = "_t_d_font _btlr-7px _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
-const _cn2 = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
-const _cn = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
+"const _cn1 = "is_View _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px ";
+const _cn0 = "is_View _btlr-5px _bbrr-5px _bblr-5px _pt-t-space-2 _pr-t-space-2 _pl-t-space-2 _btrr-10px _pb-18px ";
+const _cn9 = "is_View _btlr-2px _bbrr-2px _bblr-2px _pt-t-space-2 _pr-t-space-2 _pl-t-space-2 _btrr-10px _pb-15px ";
+const _cn8 = "is_View _bbrr-5px _bblr-5px _btlr-7px _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
+const _cn7 = "is_View _btlr-7px _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
+const _cn6 = "is_View _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
+const _cn5 = "is_View _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
+const _cn4 = "is_View _bbrr-2px _bblr-2px _btlr-7px _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
+const _cn3 = "is_View _btlr-7px _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px ";
+const _cn2 = "is_View _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
+const _cn = "is_View _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px ";
 import { View } from '@tamagui/core';
 export function Test(props) {
   return <div className={!!floating && floating2 ? _cn : !floating && !floating2 ? _cn2 : !!floating && floating2 ? _cn3 : !floating && floating2 ? _cn4 : !floating && floating2 ? _cn5 : floating && !floating2 ? _cn6 : !floating && floating2 ? _cn7 : floating && floating2 ? _cn8 : !floating ? _cn9 : floating ? _cn0 : _cn1} />;
@@ -68,16 +59,7 @@ export function Test(props) {
 `;
 
 exports[`conditional specific after generic style overrides 2`] = `
-":root ._pos-static{position:static;}
-:root ._dsp-flex{display:flex;}
-:root ._ai-stretch{align-items:stretch;}
-:root ._fd-column{flex-direction:column;}
-:root ._fb-auto{flex-basis:auto;}
-:root ._bxs-border-box{box-sizing:border-box;}
-:root ._mih-0px{min-height:0px;}
-:root ._miw-0px{min-width:0px;}
-:root ._fs-0{flex-shrink:0;}
-:root ._pt-t-space-2{padding-top:var(--t-space-2);}
+":root ._pt-t-space-2{padding-top:var(--t-space-2);}
 :root ._pr-t-space-2{padding-right:var(--t-space-2);}
 :root ._pb-t-space-2{padding-bottom:var(--t-space-2);}
 :root ._pl-t-space-2{padding-left:var(--t-space-2);}
@@ -96,8 +78,8 @@ exports[`conditional specific after generic style overrides 2`] = `
 `;
 
 exports[`conditional spread with hoverStyle preserves ternary 1`] = `
-"const _cn2 = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-red _cur-pointer _bg-0hover-green ";
-const _cn = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _cur-pointer _bg-blue ";
+"const _cn2 = "is_View _bg-red _cur-pointer _bg-0hover-green ";
+const _cn = "is_View _cur-pointer _bg-blue ";
 import { View } from '@tamagui/core';
 export function Test({
   isActive
@@ -107,8 +89,8 @@ export function Test({
 `;
 
 exports[`conditional spread with local variable preserves ternary 1`] = `
-"const _cn2 = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-red ";
-const _cn = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-blue ";
+"const _cn2 = "is_View _bg-red ";
+const _cn = "is_View _bg-blue ";
 import { View } from '@tamagui/core';
 export function Test({
   isActive
@@ -118,8 +100,8 @@ export function Test({
 `;
 
 exports[`conditional spread with runtime variable preserves ternary 1`] = `
-"const _cn2 = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-red ";
-const _cn = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-blue ";
+"const _cn2 = "is_View _bg-red ";
+const _cn = "is_View _bg-blue ";
 import { View } from '@tamagui/core';
 function usePathname() {
   return '/blog';
@@ -140,9 +122,9 @@ export function Header() {
 `;
 
 exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn3 = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _w-10px ";
-const _cn2 = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _w-10px _bg-red ";
-const _cn = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _w-10px _bg-blue ";
+"const _cn3 = "is_View _w-10px ";
+const _cn2 = "is_View _w-10px _bg-red ";
+const _cn = "is_View _w-10px _bg-blue ";
 import { View } from '@tamagui/core';
 export function Test(props) {
   return <div className={!props.green ? _cn : props.green ? _cn2 : _cn3} />;
@@ -150,28 +132,19 @@ export function Test(props) {
 `;
 
 exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
-":root ._pos-static{position:static;}
-:root ._dsp-flex{display:flex;}
-:root ._ai-stretch{align-items:stretch;}
-:root ._fd-column{flex-direction:column;}
-:root ._fb-auto{flex-basis:auto;}
-:root ._bxs-border-box{box-sizing:border-box;}
-:root ._mih-0px{min-height:0px;}
-:root ._miw-0px{min-width:0px;}
-:root ._fs-0{flex-shrink:0;}
-:root ._w-10px{width:10px;}
+":root ._w-10px{width:10px;}
 :root ._bg-red{background-color:red;}
 :root ._bg-blue{background-color:blue;}"
 `;
 
 exports[`double ternary + spread 1`] = `
-"const _cn7 = "_t_d_font _pos-static _dsp-flex _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _ai-center ";
-const _cn6 = "_t_d_font _pos-static _dsp-flex _fd-column _bxs-border-box _mih-0px _miw-0px _ai-center _fg-unset _fs-1 _fb-0px ";
-const _cn5 = "_t_d_font _pos-static _dsp-flex _fd-column _bxs-border-box _mih-0px _miw-0px _ai-center _fg-5 _fs-1 _fb-0px ";
-const _cn4 = "_t_d_font _fg-unset _pos-static _dsp-flex _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _ai-flex-start _fd-column ";
-const _cn3 = "_t_d_font _pos-static _dsp-flex _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _ai-flex-start _fd-column ";
-const _cn2 = "_t_d_font _fg-5 _pos-static _dsp-flex _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _ai-flex-start _fd-column ";
-const _cn = "_t_d_font _pos-static _dsp-flex _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _ai-flex-start _fd-column ";
+"const _cn7 = "is_View _ai-center ";
+const _cn6 = "is_View _ai-center _fg-unset _fs-1 _fb-0px ";
+const _cn5 = "is_View _ai-center _fg-5 _fs-1 _fb-0px ";
+const _cn4 = "is_View _fg-unset _fs-1 _fb-0px _ai-flex-start _fd-column ";
+const _cn3 = "is_View _ai-flex-start _fd-column ";
+const _cn2 = "is_View _fg-5 _fs-1 _fb-0px _ai-flex-start _fd-column ";
+const _cn = "is_View _ai-flex-start _fd-column ";
 import { View } from '@tamagui/core';
 export function Test({
   isSettings,
@@ -185,7 +158,7 @@ export function Test({
 `;
 
 exports[`flexBasis: 0 with responsive style extracts correctly 1`] = `
-"const _cn = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _bxs-border-box _mih-0px _miw-0px _fs-0 _fb-1px _fb-_gtXs_0px ";
+"const _cn = "is_View _fb-1px _fb-_gtXs_0px ";
 import { View } from '@tamagui/core';
 export function Test() {
   return <div className={_cn} />;
@@ -193,15 +166,7 @@ export function Test() {
 `;
 
 exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `
-":root ._pos-static{position:static;}
-:root ._dsp-flex{display:flex;}
-:root ._ai-stretch{align-items:stretch;}
-:root ._fd-column{flex-direction:column;}
-:root ._bxs-border-box{box-sizing:border-box;}
-:root ._mih-0px{min-height:0px;}
-:root ._miw-0px{min-width:0px;}
-:root ._fs-0{flex-shrink:0;}
-:root ._fb-1px{flex-basis:1px;}
+":root ._fb-1px{flex-basis:1px;}
 @media (min-width: 661px){:root:root:root:root:root:root:root:root ._fb-_gtXs_0px{flex-basis:0px;}}"
 `;
 
@@ -237,8 +202,8 @@ export function Test(props) {
 exports[`specific className + ternary 1`] = `undefined`;
 
 exports[`spread + className 1`] = `
-"const _cn2 = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top ";
-const _cn = "_t_d_font ease-in-out-top _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _pt-2px _pb-2px _bg-fff35 _t--14px ";
+"const _cn2 = "is_View _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top ";
+const _cn = "is_View ease-in-out-top _pt-2px _pb-2px _bg-fff35 _t--14px ";
 import { View } from '@tamagui/core';
 export function Test(props) {
   return <div className={props.conditional ? _cn : _cn2}>
@@ -248,30 +213,20 @@ export function Test(props) {
 `;
 
 exports[`ternaries + font families works 1`] = `
-"const _cn3 = "is_Text _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px ";
-const _cn2 = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
-const _cn = "is_Text font_heading _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
+"const _cn3 = "is_Text ";
+const _cn2 = "is_Text font_body _ff-f-family ";
+const _cn = "is_Text font_heading _ff-f-family ";
 import { Text } from '@tamagui/core';
 export function Test(props) {
   return <span className={!window ? _cn : window ? _cn2 : _cn3} />;
 }"
 `;
 
-exports[`ternaries + font families works 2`] = `
-":root ._dsp-inline{display:inline;}
-:root ._bxs-border-box{box-sizing:border-box;}
-:root ._ww-break-word{word-wrap:break-word;}
-:root ._ws-pre-wrap{white-space:pre-wrap;}
-:root ._mt-0px{margin-top:0px;}
-:root ._mr-0px{margin-right:0px;}
-:root ._mb-0px{margin-bottom:0px;}
-:root ._ml-0px{margin-left:0px;}
-:root ._ff-f-family{font-family:var(--f-family);}"
-`;
+exports[`ternaries + font families works 2`] = `":root ._ff-f-family{font-family:var(--f-family);}"`;
 
 exports[`theme + media queries + conditionals extract 1`] = `
-"const _cn2 = "_t_d_font _pos-static _dsp-flex _ai-stretch _fd-column _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-_sm_column ";
-const _cn = "_t_d_font _pos-static _dsp-flex _ai-stretch _fb-auto _bxs-border-box _mih-0px _miw-0px _fs-0 _fd-_sm_column _fd-column ";
+"const _cn2 = "is_View _fd-_sm_column ";
+const _cn = "is_View _fd-_sm_column _fd-column ";
 import { View } from '@tamagui/core';
 export function Test(props) {
   return <_TamaguiTheme name="surface1"><div className={onlyDemo ? _cn : _cn2} /></_TamaguiTheme>;
@@ -280,14 +235,6 @@ import { Theme as _TamaguiTheme } from "@tamagui/web";"
 `;
 
 exports[`theme + media queries + conditionals extract 2`] = `
-":root ._pos-static{position:static;}
-:root ._dsp-flex{display:flex;}
-:root ._ai-stretch{align-items:stretch;}
-:root ._fd-column{flex-direction:column;}
-:root ._fb-auto{flex-basis:auto;}
-:root ._bxs-border-box{box-sizing:border-box;}
-:root ._mih-0px{min-height:0px;}
-:root ._miw-0px{min-width:0px;}
-:root ._fs-0{flex-shrink:0;}
-@media (max-width: 800px){:root:root:root:root:root ._fd-_sm_column{flex-direction:column;}}"
+"@media (max-width: 800px){:root:root:root:root:root ._fd-_sm_column{flex-direction:column;}}
+:root ._fd-column{flex-direction:column;}"
 `;
