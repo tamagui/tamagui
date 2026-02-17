@@ -545,6 +545,17 @@ export type PopperContentProps = SizableStackProps & {
 
 export const PopperContentFrame = styled(YStack, {
   name: 'PopperContent',
+
+  variants: {
+    size: {
+      '...size': (val, { tokens }) => {
+        return {
+          padding: tokens.space[val],
+          borderRadius: tokens.radius[val],
+        }
+      },
+    },
+  } as const,
 })
 
 export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
@@ -749,6 +760,8 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
     const { offset, size: sizeProp, borderWidth = 0, ...arrowProps } = props
 
     const context = usePopperContext(scope)
+
+    // TODO: get rid! at the very least move up to Popover and simplify
     const sizeVal =
       typeof sizeProp === 'number'
         ? sizeProp

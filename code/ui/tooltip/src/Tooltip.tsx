@@ -26,12 +26,11 @@ import {
   PopoverAnchor,
   PopoverArrow,
   PopoverContent,
-  PopoverContentFrame,
   PopoverContext,
   PopoverTrigger,
 } from '@tamagui/popover'
 import type { PopperArrowProps, PopperProps } from '@tamagui/popper'
-import { Popper } from '@tamagui/popper'
+import { Popper, PopperContentFrame } from '@tamagui/popper'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
@@ -45,15 +44,25 @@ export type TooltipContentProps = ScopedProps<PopoverContentProps>
 
 // warning: setting to stylebale causes issues with themeInverse across portal root
 
-const TooltipContent = PopoverContentFrame.styleable<TooltipContentProps>(
+// performance: avoid 2 components we never use
+const ALWAYS_DISABLE_TOOLTIP = {
+  focus: true,
+  'remove-scroll': true,
+  // it's nice to hit escape to hide a tooltip
+  // dismiss: true
+} as const
+
+const TooltipContent = PopperContentFrame.styleable<TooltipContentProps>(
   (props, ref) => {
     const preventAnimation = React.useContext(PreventTooltipAnimationContext)
 
     return (
       <PopoverContent
         scope={props.scope || TOOLTIP_SCOPE}
-        disableFocusScope
+        alwaysDisable={ALWAYS_DISABLE_TOOLTIP}
         {...(!props.unstyled && {
+          backgroundColor: '$background',
+          alignItems: 'center',
           pointerEvents: 'none',
           size: '$true',
         })}

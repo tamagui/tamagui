@@ -55,8 +55,6 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
             shift: -4,
           })}
           animateOnly={['transform', 'opacity']}
-          // not working how i expect at least
-          // animatePosition
           transition={[
             'quicker',
             {
