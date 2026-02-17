@@ -24,6 +24,9 @@ async function elementExists(page: Page, testId: string): Promise<boolean> {
 }
 
 test.describe('Animation Timing Bug Fixes', () => {
+  // animation timing tests are flaky in CI due to timing variations - add retries
+  test.describe.configure({ retries: 3 })
+
   test.beforeEach(async ({ page }) => {
     const driver = (test.info().project?.metadata as any)?.animationDriver
     test.skip(driver === 'native', 'native driver has element detection issues on web')

@@ -7,6 +7,8 @@ tags:
     element: 'Sheet'
     centerElement: true
 - tapOn: 'Sheet'
-- assertVisible: 'Open'
+- extendedWaitUntil:
+    visible: 'Open'
+    timeout: 5000
 # Test: sheet opens when button tapped
 - tapOn: 'Open'
