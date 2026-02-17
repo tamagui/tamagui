@@ -75,8 +75,8 @@ describe('Platform-specific file optimization', () => {
       // Native imports in file
       expect(nativeContent).toContain('__ReactNativeView')
 
-      // v2: View is now flattened and wrapped in styled component on native
-      expect(nativeContent).toContain('_ReactNativeViewStyled')
+      // v2: View with theme tokens uses optimized path via __TamaguiView
+      expect(nativeContent).toContain('__TamaguiView')
       expect(nativeContent).not.toContain('.css')
       expect(nativeContent).not.toContain('className')
     })
