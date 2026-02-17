@@ -160,7 +160,8 @@ Contains every component for the Menu.
       name: 'stayInFrame',
       type: 'ShiftProps | boolean',
       required: false,
-      description: 'Shifts the menu to stay within viewport bounds.',
+      default: '{ padding: 10 }',
+      description: 'Shifts the menu horizontally to stay within viewport bounds. Pass an object to customize shift behavior (mainAxis, crossAxis, padding).',
     },
     {
       name: 'allowFlip',

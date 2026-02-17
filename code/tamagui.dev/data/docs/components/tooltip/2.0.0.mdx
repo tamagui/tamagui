@@ -156,9 +156,10 @@ Contains every component for the tooltip.
     },
     {
       name: 'stayInFrame',
-      type: 'ShiftProps',
+      type: 'ShiftProps | boolean',
       required: false,
-      description: `See floating-ui shift().`,
+      default: '{ padding: 10 }',
+      description: `Shifts the tooltip horizontally to stay within viewport bounds. Pass an object to customize shift behavior (mainAxis, crossAxis, padding).`,
     },
     {
       name: 'allowFlip',

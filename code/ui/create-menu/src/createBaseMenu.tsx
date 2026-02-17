@@ -787,7 +787,6 @@ export function createBaseMenu({
         role="menu"
         unstyled={unstyled}
         {...(!unstyled && {
-          padding: 4,
           backgroundColor: '$background',
           borderWidth: 1,
           borderColor: '$borderColor',

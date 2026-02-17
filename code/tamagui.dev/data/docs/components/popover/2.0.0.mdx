@@ -221,7 +221,8 @@ Contains every component for the popover.
       name: 'stayInFrame',
       type: 'ShiftProps | boolean',
       required: false,
-      description: `Keeps the Popover inside the frame, see floating-ui shift().`,
+      default: '{ padding: 10 }',
+      description: `Shifts the popover horizontally to stay within viewport bounds. Pass an object to customize shift behavior (mainAxis, crossAxis, padding).`,
     },
     {
       name: 'allowFlip',

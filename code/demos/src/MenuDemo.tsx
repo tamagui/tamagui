@@ -46,11 +46,11 @@ export function MenuDemo() {
             borderRadius="$4"
             enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
             exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
-            elevation="$4"
+            boxShadow="0 4px 5px $shadowColor"
           >
             <Menu.Arrow size="$4" borderWidth={1} borderColor="$borderColor" />
 
-            <Menu.ScrollView>
+            <Menu.ScrollView padding={5}>
               <Menu.Item onSelect={onSelect} key="about-notes">
                 <Menu.ItemTitle>About Notes</Menu.ItemTitle>
               </Menu.Item>
@@ -103,17 +103,14 @@ export function MenuDemo() {
 
                 <Menu.Portal zIndex={200}>
                   <Menu.SubContent
-                    enterStyle={{ scale: 0.9, opacity: 0, x: -5 }}
-                    exitStyle={{ scale: 0.95, opacity: 0, x: -3 }}
                     transition="100ms"
-                    transformOrigin="left top"
-                    elevation="$3"
-                    minW={160}
-                    bg="$background"
-                    borderWidth={1}
-                    borderColor="$borderColor"
+                    borderRadius="$4"
+                    enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
+                    exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
+                    boxShadow="0 4px 5px $shadowColor"
+                    padding={5}
                   >
-                    <Menu.Label py="$1" color="$color8">
+                    <Menu.Label padding={5} color="$color9" size="$3" select="none">
                       Note settings
                     </Menu.Label>
                     <Menu.Item

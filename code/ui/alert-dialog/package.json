@@ -46,7 +46,6 @@
     "@tamagui/focus-scope": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/polyfill-dev": "workspace:*",
-    "@tamagui/popper": "workspace:*",
     "@tamagui/portal": "workspace:*",
     "@tamagui/remove-scroll": "workspace:*",
     "@tamagui/stacks": "workspace:*",

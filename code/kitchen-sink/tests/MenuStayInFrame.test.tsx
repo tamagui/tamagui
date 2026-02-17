@@ -25,7 +25,9 @@ test.describe('Menu stayInFrame', () => {
     expect(menuBox!.y).toBeGreaterThanOrEqual(triggerBox!.y + triggerBox!.height - 5)
 
     // Menu should fit within viewport with padding
-    expect(menuBox!.y + menuBox!.height).toBeLessThanOrEqual(viewport.height - padding + 2)
+    expect(menuBox!.y + menuBox!.height).toBeLessThanOrEqual(
+      viewport.height - padding + 2
+    )
   })
 
   test('menu should not overflow viewport when near bottom edge', async ({ page }) => {

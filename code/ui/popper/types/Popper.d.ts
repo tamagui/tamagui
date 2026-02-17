@@ -55,7 +55,9 @@ export type PopperProps = {
      */
     placement?: Placement;
     /**
-     * Attempts to shift the content to stay within the windiw
+     * Shifts content horizontally to stay within viewport.
+     * Pass an object to override shift options (mainAxis, crossAxis, padding, etc).
+     * Defaults: { mainAxis: true, crossAxis: false, padding: 10 }
      * @see https://floating-ui.com/docs/shift
      */
     stayInFrame?: ShiftProps | boolean;

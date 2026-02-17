@@ -26,11 +26,12 @@ import {
   PopoverAnchor,
   PopoverArrow,
   PopoverContent,
+  PopoverContentFrame,
   PopoverContext,
   PopoverTrigger,
 } from '@tamagui/popover'
 import type { PopperArrowProps, PopperProps } from '@tamagui/popper'
-import { Popper, PopperContentFrame } from '@tamagui/popper'
+import { Popper } from '@tamagui/popper'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 
@@ -44,7 +45,7 @@ export type TooltipContentProps = ScopedProps<PopoverContentProps>
 
 // warning: setting to stylebale causes issues with themeInverse across portal root
 
-const TooltipContent = PopperContentFrame.styleable<TooltipContentProps>(
+const TooltipContent = PopoverContentFrame.styleable<TooltipContentProps>(
   (props, ref) => {
     const preventAnimation = React.useContext(PreventTooltipAnimationContext)
 

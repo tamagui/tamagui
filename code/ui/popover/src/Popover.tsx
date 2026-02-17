@@ -245,8 +245,31 @@ export interface PopoverContentTypeProps extends Omit<
 
 export type PopoverContentProps = PopoverContentTypeProps
 
-const PopoverContentFrame = styled(PopperContentFrame, {
+export const PopoverContentFrame = styled(PopperContentFrame, {
   name: 'Popover',
+
+  variants: {
+    unstyled: {
+      false: {
+        size: '$true',
+        backgroundColor: '$background',
+        alignItems: 'center',
+      },
+    },
+
+    size: {
+      '...size': (val, { tokens }) => {
+        return {
+          padding: tokens.space[val],
+          borderRadius: tokens.radius[val],
+        }
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
 })
 
 export const PopoverContent = PopoverContentFrame.styleable<PopoverContentProps>(

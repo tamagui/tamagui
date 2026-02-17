@@ -1,7 +1,7 @@
 // adapted from radix-ui popper
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { SizeTokens, ViewProps, TamaguiElement } from '@tamagui/core'
+import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   LayoutMeasurementController,
   View as TamaguiView,
@@ -35,7 +35,7 @@ import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
-import { Keyboard, type View, useWindowDimensions } from 'react-native'
+import { Keyboard, useWindowDimensions } from 'react-native'
 
 type ShiftProps = typeof shift extends (options: infer Opts) => void ? Opts : never
 type FlipProps = typeof flip extends (options: infer Opts) => void ? Opts : never
@@ -141,7 +141,9 @@ export type PopperProps = {
   placement?: Placement
 
   /**
-   * Attempts to shift the content to stay within the windiw
+   * Shifts content horizontally to stay within viewport.
+   * Pass an object to override shift options (mainAxis, crossAxis, padding, etc).
+   * Defaults: { mainAxis: true, crossAxis: false, padding: 10 }
    * @see https://floating-ui.com/docs/shift
    */
   stayInFrame?: ShiftProps | boolean
@@ -287,10 +289,18 @@ export function Popper(props: PopperProps) {
       // order matters: offset first, then flip, then shift, then arrow
       typeof offsetOptions !== 'undefined' ? offsetFn(offsetOptions) : (null as any),
       allowFlip ? flip(typeof allowFlip === 'boolean' ? {} : allowFlip) : (null as any),
-      // shift middleware disabled: floating-ui shift was moving elements vertically even with
-      // mainAxis: false (see https://github.com/floating-ui/floating-ui/issues for similar issues)
-      // vertical constraints handled by sizeMiddleware which sets maxHeight based on available space
-      (null as any),
+      // NOTE: shift's axis terminology is reversed vs flip/offset:
+      // for top/bottom placements: mainAxis = horizontal, crossAxis = vertical
+      // for left/right placements: mainAxis = vertical, crossAxis = horizontal
+      // default to horizontal shift only (mainAxis: true, crossAxis: false)
+      stayInFrame
+        ? shift({
+            padding: 10,
+            mainAxis: true,
+            crossAxis: false,
+            ...(typeof stayInFrame === 'object' ? stayInFrame : null),
+          })
+        : (null as any),
       arrowEl ? arrow({ element: arrowEl }) : (null as any),
       checkFloating,
       process.env.TAMAGUI_TARGET !== 'native' && resize
@@ -535,29 +545,6 @@ export type PopperContentProps = SizableStackProps & {
 
 export const PopperContentFrame = styled(YStack, {
   name: 'PopperContent',
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$true',
-        backgroundColor: '$background',
-        alignItems: 'center',
-      },
-    },
-
-    size: {
-      '...size': (val, { tokens }) => {
-        return {
-          padding: tokens.space[val],
-          borderRadius: tokens.radius[val],
-        }
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
