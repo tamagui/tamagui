@@ -126,23 +126,24 @@ if (ENABLE) {
   let rectFetchObserver: IntersectionObserver | null = null
   let rectFetchResolve: ((value: boolean) => void) | null = null
   let rectFetchStartTime = 0
+  let lastCallbackDelay = 0
 
   function ensureRectFetchObserver() {
     if (rectFetchObserver) return rectFetchObserver
 
     rectFetchObserver = new IntersectionObserver(
       (entries) => {
-        const callbackDelay = Math.round(performance.now() - rectFetchStartTime)
+        lastCallbackDelay = Math.round(performance.now() - rectFetchStartTime)
 
         // store all rects
         for (let i = 0; i < entries.length; i++) {
           BoundingRects.set(entries[i].target, entries[i].boundingClientRect)
         }
 
-        if (callbackDelay > 50) {
+        if (process.env.NODE_ENV === 'development' && isDebugLayout() && lastCallbackDelay > 50) {
           console.warn(
             '[onLayout-io-delay]',
-            callbackDelay + 'ms',
+            lastCallbackDelay + 'ms',
             entries.length,
             'entries'
           )
@@ -215,10 +216,28 @@ if (ENABLE) {
     }
   }
 
+  const rAF =
+    typeof requestAnimationFrame !== 'undefined' ? requestAnimationFrame : undefined
+
+  // adaptive frame skipping with backoff
   const userSkipVal = process.env.TAMAGUI_LAYOUT_FRAME_SKIP
-  const RUN_EVERY_X_FRAMES = userSkipVal ? +userSkipVal : 14
+  const BASE_SKIP_FRAMES = userSkipVal ? +userSkipVal : 6
+  const MAX_SKIP_FRAMES = 20
+  let skipFrames = BASE_SKIP_FRAMES
+  let frameCount = 0
 
   async function layoutOnAnimationFrame() {
+    // skip frames based on adaptive rate
+    if (frameCount++ % skipFrames !== 0) {
+      rAF ? rAF(layoutOnAnimationFrame) : setTimeout(layoutOnAnimationFrame, 16)
+      return
+    }
+
+    // reset frame count to avoid overflow
+    if (frameCount >= Number.MAX_SAFE_INTEGER) {
+      frameCount = 0
+    }
+
     if (strategy !== 'off') {
       const visibleNodes: HTMLElement[] = []
       // optimization: deduplicate parent observations
@@ -265,6 +284,14 @@ if (ENABLE) {
           io.unobserve(parent)
         }
 
+        // adaptive backoff: if IO was slow, skip more frames next cycle
+        if (lastCallbackDelay > 50) {
+          skipFrames = Math.min(skipFrames + 2, MAX_SKIP_FRAMES)
+        } else if (lastCallbackDelay < 20) {
+          // recover back to base rate when things are fast
+          skipFrames = Math.max(skipFrames - 1, BASE_SKIP_FRAMES)
+        }
+
         // process updates
         for (let i = 0; i < visibleNodes.length; i++) {
           updateLayoutIfChanged(visibleNodes[i])
@@ -272,8 +299,8 @@ if (ENABLE) {
       }
     }
 
-    // schedule next poll
-    setTimeout(layoutOnAnimationFrame, 16.6667 * RUN_EVERY_X_FRAMES)
+    // schedule next frame
+    rAF ? rAF(layoutOnAnimationFrame) : setTimeout(layoutOnAnimationFrame, 16)
   }
 
   layoutOnAnimationFrame()
