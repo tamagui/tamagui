@@ -56,7 +56,7 @@ export default defineConfig({
   },
 
   fullyParallel: true,
-  workers: process.env.CI ? 4 : '50%',
+  workers: process.env.CI ? 4 : '75%',
   retries: 1,
   // Stop on first failure to show the error immediately
   maxFailures: 1,
