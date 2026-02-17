@@ -98,13 +98,17 @@ test.describe('onLayout stress test', () => {
   test('resize should trigger batch updates efficiently', async ({ page }) => {
     await page.waitForTimeout(INITIAL_SETTLE_TIME)
 
+    // scroll sibling section into view — onLayout only fires for visible elements
+    await page.getByTestId('section-siblings').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(POLL_WAIT)
+
     // reset stats after initial render
     await page.getByTestId('btn-reset-stats').click()
-    await page.waitForTimeout(100)
+    await page.waitForTimeout(200)
 
     // trigger width resize
     await page.getByTestId('btn-resize-width').click()
-    await page.waitForTimeout(POLL_WAIT * 2)
+    await page.waitForTimeout(POLL_WAIT * 3)
 
     const stats = await getStats(page)
     const warnings = await collectConsoleWarnings(page)
@@ -129,7 +133,7 @@ test.describe('onLayout stress test', () => {
     await page.waitForTimeout(100)
 
     await page.getByTestId('btn-resize-grid').click()
-    await page.waitForTimeout(POLL_WAIT * 2)
+    await page.waitForTimeout(POLL_WAIT * 3)
 
     const stats = await getStats(page)
     const warnings = await collectConsoleWarnings(page)
@@ -152,7 +156,7 @@ test.describe('onLayout stress test', () => {
     await page.waitForTimeout(100)
 
     await page.getByTestId('btn-toggle-expand').click()
-    await page.waitForTimeout(POLL_WAIT * 2)
+    await page.waitForTimeout(POLL_WAIT * 3)
 
     const stats = await getStats(page)
     const warnings = await collectConsoleWarnings(page)
@@ -175,7 +179,7 @@ test.describe('onLayout stress test', () => {
     await page.waitForTimeout(100)
 
     await page.getByTestId('btn-resize-container').click()
-    await page.waitForTimeout(POLL_WAIT * 2)
+    await page.waitForTimeout(POLL_WAIT * 3)
 
     const stats = await getStats(page)
     const warnings = await collectConsoleWarnings(page)
@@ -239,7 +243,7 @@ test.describe('onLayout stress test', () => {
     await page.getByTestId('btn-reset-stats').click()
     await page.waitForTimeout(100)
     await page.getByTestId('btn-resize-width').click()
-    await page.waitForTimeout(POLL_WAIT * 2)
+    await page.waitForTimeout(POLL_WAIT * 3)
     results.widthResize = {
       ...(await getStats(page)),
       warnings: await collectConsoleWarnings(page),
@@ -249,7 +253,7 @@ test.describe('onLayout stress test', () => {
     await page.getByTestId('btn-reset-stats').click()
     await page.waitForTimeout(100)
     await page.getByTestId('btn-resize-grid').click()
-    await page.waitForTimeout(POLL_WAIT * 2)
+    await page.waitForTimeout(POLL_WAIT * 3)
     results.gridResize = {
       ...(await getStats(page)),
       warnings: await collectConsoleWarnings(page),
@@ -259,7 +263,7 @@ test.describe('onLayout stress test', () => {
     await page.getByTestId('btn-reset-stats').click()
     await page.waitForTimeout(100)
     await page.getByTestId('btn-toggle-expand').click()
-    await page.waitForTimeout(POLL_WAIT * 2)
+    await page.waitForTimeout(POLL_WAIT * 3)
     results.listExpand = {
       ...(await getStats(page)),
       warnings: await collectConsoleWarnings(page),
@@ -269,7 +273,7 @@ test.describe('onLayout stress test', () => {
     await page.getByTestId('btn-reset-stats').click()
     await page.waitForTimeout(100)
     await page.getByTestId('btn-resize-container').click()
-    await page.waitForTimeout(POLL_WAIT * 2)
+    await page.waitForTimeout(POLL_WAIT * 3)
     results.containerResize = {
       ...(await getStats(page)),
       warnings: await collectConsoleWarnings(page),

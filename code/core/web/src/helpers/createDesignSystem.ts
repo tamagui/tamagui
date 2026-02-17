@@ -234,7 +234,7 @@ export function getCSS(
     // .is_Text .is_Text - we just override the text default styles here
 
     const designSystem = `._ovs-contain {overscroll-behavior:contain;}
-.is_Text .is_Text {display:inline-flex; font-family: inherit; font-weight: inherit; font-style: inherit; line-height: inherit;}
+.is_Text .is_Text {display:inline-flex; font-family: inherit; font-weight: inherit; font-style: inherit; line-height: inherit; color: inherit; white-space: inherit; word-wrap: inherit;}
 ._dsp_contents {display:contents;}
 ._no_backdrop::backdrop {display: none;}
 .is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}

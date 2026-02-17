@@ -34,30 +34,6 @@ Dialog is already installed in `tamagui`, or you can install it independently:
 npm install @tamagui/dialog
 ```
 
-If you aren't using `tamagui` and instead using the `@tamagui/dialog` package
-separately, you'll first need to install the `@tamagui/portal` package:
-
-```bash
-npm install @tamagui/portal
-```
-
-Then add `PortalProvider` to the root of your app:
-
-```tsx fileName="App.tsx"
-import { PortalProvider } from '@tamagui/portal'
-import YourApp from './components/YourApp'
-
-function App() {
-  return (
-    <PortalProvider shouldAddRootHost>
-      <YourApp />
-    </PortalProvider>
-  )
-}
-
-export default App
-```
-
 <Notice theme="blue">
   For native apps, we recommend [setting up native
   portals](/docs/components/portal#native-portal-setup-recommended) to preserve React
@@ -414,35 +390,3 @@ export default () => (
   transitions between Sheet and Portal. In the future, we can do this on the web using
   react-reparenting.
 </Notice>
-
-### PortalProvider
-
-<PropsTable
-  data={[
-    {
-      name: 'shouldAddRootHost',
-      type: 'boolean',
-      required: false,
-      description: `Defines whether to add a default root host or not.`,
-    },
-  ]}
-/>
-
-## Examples
-
-### Inside native modals
-
-If you're using native modals (maybe from react-navigation), you'll notice the
-Dialogs won't show up inside the modal. To get around this, you should wrap your
-screen inside `PortalProvider`, like so:
-
-```tsx
-import { PortalProvider } from 'tamagui'
-
-// this component used in react-navigation/expo-router with `presentation: "modal"`
-export function Page() {
-  return (
-    <PortalProvider>{/* rest of your page, including the Dialog... */}</PortalProvider>
-  )
-}
-```
