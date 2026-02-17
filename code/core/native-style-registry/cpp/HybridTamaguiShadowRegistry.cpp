@@ -160,20 +160,28 @@ jsi::Value HybridTamaguiShadowRegistry::unlink(
 // ── Nitro typed: setTheme / setScopedTheme / getTheme ──
 
 void HybridTamaguiShadowRegistry::setTheme(const std::string& themeName) {
-  std::lock_guard<std::mutex> lock(mutex_);
-  if (currentTheme_ == themeName) return;
-  currentTheme_ = themeName;
-  if (runtime_ && !linkedViews_.empty()) {
-    applyUpdates(*runtime_, nullptr);
+  jsi::Runtime* rt = nullptr;
+  {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (currentTheme_ == themeName) return;
+    currentTheme_ = themeName;
+    rt = runtime_;
+  }
+  if (rt) {
+    applyUpdates(*rt, nullptr);
   }
 }
 
 void HybridTamaguiShadowRegistry::setScopedTheme(
     const std::string& scopeId, const std::string& themeName) {
-  std::lock_guard<std::mutex> lock(mutex_);
-  scopeThemes_[scopeId] = themeName;
-  if (runtime_ && !linkedViews_.empty()) {
-    applyUpdates(*runtime_, &scopeId);
+  jsi::Runtime* rt = nullptr;
+  {
+    std::lock_guard<std::mutex> lock(mutex_);
+    scopeThemes_[scopeId] = themeName;
+    rt = runtime_;
+  }
+  if (rt) {
+    applyUpdates(*rt, &scopeId);
   }
 }
 
@@ -252,7 +260,7 @@ void HybridTamaguiShadowRegistry::applyUpdates(
               return std::static_pointer_cast<RootShadowNode>(
                   cloneSubtree(oldRoot, updates, affected));
             },
-            {.enableStateReconciliation = true,
+            {.enableStateReconciliation = false,
              .mountSynchronously = true});
         stop = true;
       });

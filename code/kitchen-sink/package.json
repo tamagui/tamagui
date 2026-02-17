@@ -24,7 +24,6 @@
     "test:native:ios": "bun run ../packages/native-ci/src/cli.ts test ios --project-root .",
     "test:native:android": "bun run ../packages/native-ci/src/cli.ts test android --project-root .",
     "test:native:maestro": "bun run ../packages/native-ci/src/cli.ts test maestro --project-root .",
-    "test:compiler:native": "vitest run tests/nativeCompilerPipeline.test.ts",
     "test:web": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:driver": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test",
     "test:web:debug": "NODE_ENV=test node -r esbuild-register ../../node_modules/.bin/playwright test --debug",
