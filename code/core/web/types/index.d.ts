@@ -19,6 +19,7 @@ export * from './helpers/isTamaguiComponent';
 export * from './helpers/isTamaguiElement';
 export * from './helpers/matchMedia';
 export * from './helpers/mergeProps';
+export * from './helpers/mergeSlotStyleProps';
 export * from './helpers/normalizeColor';
 export * from './helpers/normalizeStyle';
 export * from './helpers/normalizeValueWithProperty';
@@ -54,7 +55,7 @@ export { _disableMediaTouch, configureMedia, getMedia, mediaKeyMatch, mediaObjec
 export * from './hooks/useProps';
 export * from './hooks/useTheme';
 export * from './hooks/useThemeName';
-export { forceUpdateThemes } from './hooks/useThemeState';
+export { forceUpdateThemes, getRootThemeState } from './hooks/useThemeState';
 export * from './views/Configuration';
 export * from './views/FontLanguage';
 export * from './views/Slot';

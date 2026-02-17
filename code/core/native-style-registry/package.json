@@ -12,7 +12,7 @@
     "types",
     "dist",
     "babel",
-    "ios",
+    "nitrogen",
     "android",
     "cpp"
   ],
@@ -56,13 +56,13 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.26.0",
-    "@babel/preset-react": "^7.26.3",
+    "@babel/core": "^7.25.2",
+    "@babel/preset-react": "^7.24.7",
     "@tamagui/build": "workspace:*",
-    "react": "*",
+    "react": ">=19",
     "react-native": "0.81.5",
-    "react-native-nitro-modules": "^0.33.0",
-    "vitest": "^3.0.0"
+    "react-native-nitro-modules": "^0.33.9",
+    "vitest": "4.0.4"
   },
   "peerDependencies": {
     "react": "*",
@@ -80,15 +80,7 @@
     "directory": "code/core/native-style-registry"
   },
   "license": "MIT",
-  "react-native": "src/index.ts",
-  "codegenConfig": {
-    "name": "rnstyleregistry",
-    "type": "modules",
-    "jsSrcsDir": "src",
-    "android": {
-      "javaPackageName": "com.tamagui.styleregistry"
-    }
-  },
+  "react-native": "src/index.native.ts",
   "publishConfig": {
     "access": "public"
   }

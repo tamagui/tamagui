@@ -86,6 +86,7 @@
     "react-native-ios-utilities": "^5.2.0",
     "react-native-keyboard-controller": "^1.16.0",
     "react-native-launch-arguments": "^4.1.1",
+    "react-native-nitro-modules": "^0.33.9",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",

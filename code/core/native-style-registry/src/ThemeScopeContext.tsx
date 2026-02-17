@@ -4,18 +4,21 @@
  * use when registering with the native style registry.
  */
 
-import { createContext, useContext, useId, useLayoutEffect, useMemo, useRef } from 'react'
+import { createContext, useContext, useId, useLayoutEffect, useMemo } from 'react'
 import type { ReactNode } from 'react'
 
 // late-bind to avoid circular imports
 let _setScopedTheme: ((scopeId: string, themeName: string) => void) | null = null
+let _removeScopedTheme: ((scopeId: string) => void) | null = null
 let _isNativeModuleAvailable: (() => boolean) | null = null
 
 export function __bindRegistryFunctions(
   setScopedTheme: (scopeId: string, themeName: string) => void,
+  removeScopedTheme: (scopeId: string) => void,
   isNativeModuleAvailable: () => boolean
 ) {
   _setScopedTheme = setScopedTheme
+  _removeScopedTheme = removeScopedTheme
   _isNativeModuleAvailable = isNativeModuleAvailable
 }
 
@@ -52,6 +55,7 @@ export function ThemeScopeProvider({
   useLayoutEffect(() => {
     if (_isNativeModuleAvailable?.()) {
       _setScopedTheme?.(scopeId, themeName)
+      return () => _removeScopedTheme?.(scopeId)
     }
   }, [scopeId, themeName])
 

@@ -16,9 +16,8 @@ import { useRef } from 'react'
 let getRootThemeState: (() => { name: string } | null) | null = null
 
 try {
-  // @ts-ignore - accessing internal tamagui exports
-  const themeState = require('@tamagui/core/hooks/useThemeState')
-  getRootThemeState = themeState.getRootThemeState
+  const core = require('@tamagui/core')
+  getRootThemeState = core.getRootThemeState
 } catch {
   // @tamagui/core not available, will fall back to 'light'
 }

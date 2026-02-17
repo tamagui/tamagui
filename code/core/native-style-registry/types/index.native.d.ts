@@ -1,28 +1,18 @@
 import type { ThemeStyleMap, RegistryStats } from './types';
-export type { ThemeStyleMap, ViewRef, RegistryStats } from './types';
+export type { ThemeStyleMap, RegistryStats } from './types';
 export { ThemeScopeContext, ThemeScopeProvider, useThemeScopeId, } from './ThemeScopeContext';
 export { useInitialThemeName } from './useInitialThemeName';
+export { View } from './components/View';
+export { Text } from './components/Text';
 /**
- * Get the native tag from a React ref.
- * Uses React Native's findNodeHandle which is the official API.
+ * Link a view with its pre-computed theme styles.
+ * The C++ side stores the ShadowNodeFamily and styles,
+ * then applies the correct theme's styles directly on the ShadowTree.
  */
-export declare function getTagFromRef(ref: any): number | null;
-/**
- * Link a view ref directly with its styles.
- * Uses JSI function (__tamaguiLinkView) when available for ShadowNodeFamily persistence,
- * falls back to tag-based registration.
- *
- * @param ref - The actual ref instance (not the ref object)
- * @param styles - Pre-computed styles for each theme
- * @param scopeId - Optional scope ID for nested themes (from ThemeScopeContext)
- * @returns cleanup function to unlink on unmount
- */
-export declare function link(ref: any, styles: ThemeStyleMap, scopeId?: string): () => void;
+export declare function link(ref: unknown, styles: ThemeStyleMap, scopeId?: string): () => void;
 /**
  * Set the current theme globally.
- * This triggers an update on all linked views WITHOUT causing React re-renders.
- *
- * @param themeName - The theme name (e.g., 'light', 'dark', 'dark_blue')
+ * Updates all linked views via ShadowTree — zero React re-renders.
  */
 export declare function setTheme(themeName: string): void;
 /**
@@ -32,23 +22,22 @@ export declare function getTheme(): string;
 /**
  * Set the theme for a specific scope.
  * Only views linked with this scopeId will be updated.
- *
- * @param scopeId - The scope ID
- * @param themeName - The theme name
  */
 export declare function setScopedTheme(scopeId: string, themeName: string): void;
 /**
- * Get current registry statistics.
- * Useful for debugging and monitoring.
+ * Remove a scope entry (cleanup on <Theme> unmount).
  */
-export declare function getRegistryStats(): RegistryStats;
+export declare function removeScopedTheme(scopeId: string): void;
 /**
  * Check if native module is available.
- * When false, the registry operates in JS-only mode (with re-renders).
  */
 export declare function isNativeModuleAvailable(): boolean;
 /**
- * Reset the registry (for testing purposes).
+ * Get current registry statistics.
+ */
+export declare function getRegistryStats(): RegistryStats;
+/**
+ * Reset the registry (for testing).
  */
 export declare function resetRegistry(): void;
 //# sourceMappingURL=index.native.d.ts.map

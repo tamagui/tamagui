@@ -1401,6 +1401,7 @@
         "react-native-ios-utilities": "^5.2.0",
         "react-native-keyboard-controller": "^1.16.0",
         "react-native-launch-arguments": "^4.1.1",
+        "react-native-nitro-modules": "^0.33.9",
         "react-native-reanimated": "~4.1.1",
         "react-native-safe-area-context": "~5.6.0",
         "react-native-screens": "~4.16.0",
@@ -7887,7 +7888,7 @@
 
     "react-native-launch-arguments": ["react-native-launch-arguments@4.1.1", "", { "peerDependencies": { "react": ">=16.8.1", "react-native": ">=0.60.0-rc.0 <1.0.x" } }, "sha512-7tkJNHKhn37eXmGKz4UJ+47AywEqb3fknUsJ1GjCLNL0cpxDddKr43JbLrPGpASIxUSu36oYV/a0o0T6IWyKMg=="],
 
-    "react-native-nitro-modules": ["react-native-nitro-modules@0.33.2", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-ZlfOe6abODeHv/eZf8PxeSkrxIUhEKha6jaAAA9oXy7I6VPr7Ff4dUsAq3cyF3kX0L6qt2Dh9nzD2NdSsDwGpA=="],
+    "react-native-nitro-modules": ["react-native-nitro-modules@0.33.9", "", { "peerDependencies": { "react": "*", "react-native": "*" } }, "sha512-BM9C5mCGYYjrc8CDWZZ0anLWU/knH2xaEuFzvzogKTOW6fzgS6mmsCdM3ty+AhImJNSYwK19DLrHaqwnrrwEzw=="],
 
     "react-native-reanimated": ["react-native-reanimated@4.1.6", "", { "dependencies": { "react-native-is-edge-to-edge": "^1.2.1", "semver": "7.7.2" }, "peerDependencies": { "@babel/core": "^7.0.0-0", "react": "*", "react-native": "*", "react-native-worklets": ">=0.5.0" } }, "sha512-F+ZJBYiok/6Jzp1re75F/9aLzkgoQCOh4yxrnwATa8392RvM3kx+fiXXFvwcgE59v48lMwd9q0nzF1oJLXpfxQ=="],
 

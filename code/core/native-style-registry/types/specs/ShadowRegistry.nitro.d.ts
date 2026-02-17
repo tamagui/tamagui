@@ -1,44 +1,42 @@
 import type { HybridObject } from 'react-native-nitro-modules';
-import type { ShadowNode, Unistyle } from '../types';
 /**
- * Native interface for the Tamagui Style Registry.
- * Provides zero-re-render theme switching via ShadowTree manipulation.
+ * Native interface for the Tamagui Shadow Registry.
+ *
+ * Provides zero-re-render theme switching by updating
+ * the ShadowTree directly from C++ — bypassing React reconciliation.
+ *
+ * Note: link() and unlink() are registered as raw JSI methods (not here)
+ * because they receive opaque ShadowNode pointers that can't be typed
+ * through Nitro's type system. See HybridTamaguiShadowRegistry.cpp.
  */
 export interface TamaguiShadowRegistry extends HybridObject<{
     ios: 'c++';
     android: 'c++';
 }> {
     /**
-     * Link a ShadowNode to the registry with its styles.
-     * Called when a component mounts.
-     */
-    link(node: ShadowNode, styles: Unistyle): void;
-    /**
-     * Unlink a ShadowNode from the registry.
-     * Called when a component unmounts.
-     */
-    unlink(node: ShadowNode): void;
-    /**
-     * Set the current theme.
-     * All linked views will be updated via ShadowTree.
+     * Set the global theme. Updates all linked views via ShadowTree.
      */
     setTheme(themeName: string): void;
     /**
-     * Get the current theme name.
+     * Set theme for a specific scope (nested <Theme> component).
+     * Only views linked with this scopeId will be updated.
      */
-    getTheme(): string | undefined;
+    setScopedTheme(scopeId: string, themeName: string): void;
     /**
-     * Set theme for a specific scope (nested Theme component).
+     * Get the current global theme name.
      */
-    setScopedTheme(scopeId: number, themeName: string): void;
+    getTheme(): string;
     /**
-     * Get theme for a specific scope.
+     * Remove a scope entry (cleanup on <Theme> unmount).
      */
-    getScopedTheme(scopeId: number): string | undefined;
+    removeScopedTheme(scopeId: string): void;
     /**
-     * Flush pending updates to ShadowTree.
-     * Batches all style updates for performance.
+     * Debug: number of linked views.
      */
-    flush(): void;
+    getViewCount(): number;
+    /**
+     * Debug: number of active scopes.
+     */
+    getScopeCount(): number;
 }
 //# sourceMappingURL=ShadowRegistry.nitro.d.ts.map

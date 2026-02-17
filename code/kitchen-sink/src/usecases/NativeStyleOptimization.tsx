@@ -142,10 +142,10 @@ export function NativeStyleOptimization() {
   return (
     <Theme name={currentTheme}>
       <ScrollView>
-        <YStack flex={1} bg="$background" p="$4" gap="$3">
+        <YStack flex={1} backgroundColor="$background" padding="$4" gap="$3">
           <H3>Native Style Optimization</H3>
 
-          <XStack gap="$2" ai="center" flexWrap="wrap">
+          <XStack gap="$2" alignItems="center" flexWrap="wrap">
             <Button size="$3" onPress={toggleTheme} testID="toggle-theme-btn">
               Toggle ({currentTheme})
             </Button>
@@ -160,7 +160,7 @@ export function NativeStyleOptimization() {
             <Text fontSize={12}>Toggles: {toggleCount.current}</Text>
           </XStack>
 
-          <YStack gap="$1" p="$2" borderRadius="$2" bg="$color3">
+          <YStack gap="$1" padding="$2" borderRadius="$2" backgroundColor="$color3">
             <Text fontWeight="bold" fontSize={12}>
               Registry: {isNative ? '✅ Native' : '⚠️ JS Fallback'}
             </Text>
@@ -196,7 +196,7 @@ export function NativeStyleOptimization() {
 
           <Separator />
 
-          <YStack gap="$2" p="$3" bg="$color2" borderRadius="$3">
+          <YStack gap="$2" padding="$3" backgroundColor="$color2" borderRadius="$3">
             <Text fontWeight="bold" fontSize={13}>
               Expected Behavior:
             </Text>
