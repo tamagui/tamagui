@@ -1,4 +1,3 @@
-import { isWeb } from '@tamagui/constants'
 import { getConfigMaybe, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
@@ -194,12 +193,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // ensure prefixed with $
   const defaultFontToken = defaultFont ? `$${defaultFont}` : ''
 
-  if (defaultFont) {
-    defaultProps.Text = {
-      ...defaultProps.Text,
-      fontFamily: defaultFontToken,
-    }
-  }
+  // Text inherits font from root via CSS, no need for default fontFamily
+  // only explicit fontFamily prop should add font_* class
 
   const config: TamaguiInternalConfig = {
     fonts: {},

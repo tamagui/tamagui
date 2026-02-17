@@ -343,6 +343,11 @@ export async function extractToClassNames({
         baseClassNameStr = `font_${baseFontFamily}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
       }
 
+      // Views (non-Text) get _t_d_font to reset font inheritance like React Native
+      if (!staticConfig.isText) {
+        baseClassNameStr = `_t_d_font${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
+      }
+
       let base = staticConfig.componentName
         ? t.stringLiteral(
             `is_${staticConfig.componentName}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`

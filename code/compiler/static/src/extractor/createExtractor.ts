@@ -824,13 +824,6 @@ export function createExtractor(
           const isTextView = staticConfig.isText || false
           const validStyles = staticConfig?.validStyles ?? {}
 
-          if (process.env.NODE_ENV === 'production') {
-            if (isTextView) {
-              // temporarily disabled - need to fix css nesting dix
-              return
-            }
-          }
-
           // find render="a" render="main" etc dom indicators
           let tagName = defaultProps.render ?? (isTextView ? 'span' : 'div')
           traversePath

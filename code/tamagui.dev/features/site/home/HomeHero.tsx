@@ -95,26 +95,7 @@ const HeroContents = memo(function HeroContents() {
         <PromoLinksRow />
 
         <YStack items="center" gap="$4">
-          <H1
-            text="center"
-            size="$11"
-            lineHeight={52}
-            maxW={500}
-            maxH={400}
-            position="relative"
-            $gtSm={{
-              scale: 1.5,
-              m: '5%',
-            }}
-            $gtMd={{
-              scale: 1.6,
-              m: '7%',
-            }}
-            $gtLg={{
-              scale: 2,
-              my: '8%',
-            }}
-          >
+          <HeroH1>
             <Span position="relative" color="$accent1">
               {/* <View
                 position="absolute"
@@ -147,7 +128,7 @@ const HeroContents = memo(function HeroContents() {
             <span style={{ position: 'relative', display: 'inline-block' }}>
               <TextWithEffects text="runs&nbsp;faster" />
             </span>
-          </H1>
+          </HeroH1>
 
           {/* halloween SVG - always rendered, CSS controls visibility */}
           <YStack
@@ -344,7 +325,28 @@ const Tag = styled(Text, {
   } as const,
 })
 
-const HeroText = styled(Text, {
+const HeroH1 = styled(H1, {
+  text: 'center',
+  size: '$11',
+  lineHeight: 52,
+  maxW: 500,
+  maxH: 400,
+  position: 'relative',
+  $gtSm: {
+    scale: 1.5,
+    m: '5%',
+  },
+  $gtMd: {
+    scale: 1.6,
+    m: '7%',
+  },
+  $gtLg: {
+    scale: 2,
+    my: '8%',
+  },
+})
+
+const HeroText = styled(HeroH1, {
   position: 'absolute',
   text: 'center',
 

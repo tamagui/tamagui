@@ -1,5 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 import type { CreateTamaguiProps, Variable } from '../types'
+import { getVariableVariable, isVariable } from '../createVariable'
 import { autoVariables, registerCSSVariable, variableToCSS } from './registerCSSVariable'
 import { getThemeCSSRules } from './getThemeCSSRules'
 import { getAllRules } from './insertStyleRule'
@@ -8,6 +9,38 @@ type ThemeConfig = {
   cssRuleSets: string[]
   getThemeRulesSets: () => string[]
 }
+
+// helper to get font property CSS declarations
+function getFontPropertyDeclarations(
+  fontParsed: any,
+  tokenKey: string = '$true'
+): string[] {
+  const props: string[] = ['font-family: var(--f-family)']
+
+  const getVarRef = (obj: any) => {
+    const val = obj?.[tokenKey]
+    if (isVariable(val)) {
+      return getVariableVariable(val)
+    }
+    return undefined
+  }
+
+  const letterSpacing = getVarRef(fontParsed.letterSpacing)
+  if (letterSpacing) props.push(`letter-spacing: ${letterSpacing}`)
+
+  const lineHeight = getVarRef(fontParsed.lineHeight)
+  if (lineHeight) props.push(`line-height: ${lineHeight}`)
+
+  const fontStyle = getVarRef(fontParsed.style)
+  if (fontStyle) props.push(`font-style: ${fontStyle}`)
+
+  const fontWeight = getVarRef(fontParsed.weight)
+  if (fontWeight) props.push(`font-weight: ${fontWeight}`)
+
+  return props
+}
+
+export { getFontPropertyDeclarations }
 
 /**
  * Generates CSS for tokens - registers CSS variables and builds declaration strings
@@ -46,11 +79,11 @@ export function createTokenCSS(
 export function createFontCSS(
   fontsParsed: Record<string, any> | undefined,
   registerFontVariables: (fontParsed: any) => string[]
-): Record<string, { name: string; declarations: string[]; language?: string }> {
+): Record<string, { name: string; declarations: string[]; language?: string; fontParsed: any }> {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const fontDeclarations: Record<
       string,
-      { name: string; declarations: string[]; language?: string }
+      { name: string; declarations: string[]; language?: string; fontParsed: any }
     > = {}
 
     if (!fontsParsed) return fontDeclarations
@@ -64,6 +97,7 @@ export function createFontCSS(
         name: name.slice(1),
         declarations: fontVars,
         language,
+        fontParsed,
       }
     }
 
@@ -79,8 +113,9 @@ export function buildCSSRuleSets(
   declarations: string[],
   fontDeclarations: Record<
     string,
-    { name: string; declarations: string[]; language?: string }
-  >
+    { name: string; declarations: string[]; language?: string; fontParsed: any }
+  >,
+  defaultFontToken: string = '$true'
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const cssRuleSets: string[] = []
@@ -95,16 +130,29 @@ export function buildCSSRuleSets(
       cssRuleSets.push(declarationsToRuleSet(declarations))
     }
 
-    // fonts
+    // fonts - each font_* sets CSS variables
+    const fontSelectors: string[] = []
     const sortedFontDeclarationKeys = Object.keys(fontDeclarations).sort()
     for (const key of sortedFontDeclarationKeys) {
       const { name, declarations, language = 'default' } = fontDeclarations[key]
       const fontSelector = `.font_${name}`
+      fontSelectors.push(fontSelector)
       const langSelector = `:root .t_lang-${name}-${language} ${fontSelector}`
       const selectors =
         language === 'default' ? ` ${fontSelector}, ${langSelector}` : langSelector
       const specificRuleSet = declarationsToRuleSet(declarations, selectors)
       cssRuleSets.push(specificRuleSet)
+    }
+
+    // shared rule: all font_* classes + _t_d_font apply font properties
+    // this resets fonts on Views like React Native does
+    if (fontSelectors.length) {
+      const firstFont = fontDeclarations[sortedFontDeclarationKeys[0]]
+      if (firstFont?.fontParsed) {
+        const fontProps = getFontPropertyDeclarations(firstFont.fontParsed, defaultFontToken)
+        const sharedSelectors = [...fontSelectors, '._t_d_font'].join(', ')
+        cssRuleSets.push(`${sharedSelectors} {${fontProps.join('; ')}}`)
+      }
     }
 
     return cssRuleSets
