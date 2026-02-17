@@ -89,6 +89,7 @@ export const PromoBanner = () => {
                     color="$color11"
                     hoverStyle={{ color: '$color12' }}
                     cursor="pointer"
+                    ellipsis
                   >
                     Version 2 is here 🎉
                   </Paragraph>
@@ -104,6 +105,7 @@ export const PromoBanner = () => {
                     color="$color10"
                     hoverStyle={{ color: '$color11' }}
                     cursor="pointer"
+                    ellipsis
                   >
                     Takeout 2 is here, too!
                   </Paragraph>
