@@ -1,4 +1,4 @@
-import { defineConfig } from '@playwright/test'
+import { defineConfig, devices } from '@playwright/test'
 import { ANIMATION_DRIVERS } from './tests/test-utils'
 
 const port = process.env.PORT || '9000'
@@ -32,6 +32,13 @@ export default defineConfig({
     {
       name: 'default',
       testIgnore: '**/*.animated.test.{ts,tsx}',
+      metadata: { animationDriver: 'native' },
+    },
+    // WebKit project scoped to RemoveScroll tests (scroll restoration)
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+      testMatch: '**/RemoveScroll.test.{ts,tsx}',
       metadata: { animationDriver: 'native' },
     },
     // Animated tests run with all animation drivers
