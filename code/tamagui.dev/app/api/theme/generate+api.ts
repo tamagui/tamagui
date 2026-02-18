@@ -1,4 +1,5 @@
 import { anthropic } from '@ai-sdk/anthropic'
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 import slugify from '@sindresorhus/slugify'
 import { generateText } from 'ai'
 import { z } from 'zod'
@@ -9,13 +10,14 @@ import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import type { ThemeSuiteItemData } from '~/features/studio/theme/types'
 
-const models = {
-  'claude-sonnet-4': () => anthropic('claude-sonnet-4-20250514'),
-} as const
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+})
 
-type ModelName = keyof typeof models
-
-const DEFAULT_MODEL: ModelName = 'claude-sonnet-4'
+const modelChain = [
+  { name: 'claude-sonnet-4-6', create: () => anthropic('claude-sonnet-4-6') },
+  { name: 'qwen/qwen3-max', create: () => openrouter('qwen/qwen3-max') },
+]
 
 const lightDarkVal = z.object({
   light: z.number(),
@@ -99,7 +101,6 @@ export default apiRoute(async (req) => {
   const lastReply = body.lastReply?.trim() || ''
   const lastPrompt = body.lastPrompt?.trim() || ''
   const scheme = body.scheme?.trim() || 'unknown'
-  const model = body.model?.trim()
   const action = body.action
 
   // Handle delete action
@@ -155,9 +156,7 @@ export default apiRoute(async (req) => {
     )
   }
 
-  const modelName: ModelName = model in models ? model : DEFAULT_MODEL
-
-  console.info(`Generating (scheme: ${scheme}, model: ${modelName}): ${prompt}...`)
+  console.info(`Generating (scheme: ${scheme}): ${prompt}...`)
 
   const fullPrompt = `
 Help generate themes that contain two light + dark color palettes. The new
@@ -268,17 +267,27 @@ When you respond, start with a <thinking /> first to plan, then end output just 
 Don't add headers, backticks, or any labels around the structured data.
 `
 
-  console.info(`prompt`, modelName, fullPrompt)
+  let text = ''
 
-  const { text } = await generateText({
-    model: models[modelName](),
-    maxTokens: 4_000,
-    onStepFinish(event) {
-      console.info(event.text)
-    },
+  for (const { name, create } of modelChain) {
+    try {
+      console.info(`[theme/generate] trying model=${name}`)
+      const result = await generateText({
+        model: create(),
+        maxTokens: 4_000,
+        prompt: fullPrompt,
+      })
+      text = result.text
+      console.info(`[theme/generate] success model=${name}`)
+      break
+    } catch (err) {
+      console.error(`[theme/generate] model=${name} failed:`, err)
+    }
+  }
 
-    prompt: fullPrompt,
-  })
+  if (!text) {
+    throw Response.json({ error: 'All models failed to generate' }, { status: 502 })
+  }
 
   try {
     console.info(`Generated: ${text}`)
