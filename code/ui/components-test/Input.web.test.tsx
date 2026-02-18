@@ -100,3 +100,11 @@ describe('Input web default behavior', () => {
     expect(input).toBeDisabled()
   })
 })
+
+describe('Input autoFocus', () => {
+  it('should focus the input element on mount when autoFocus is set', () => {
+    const { container } = render(<InputTest autoFocus />)
+    const input = container.querySelector('input')
+    expect(input).toHaveFocus()
+  })
+})
