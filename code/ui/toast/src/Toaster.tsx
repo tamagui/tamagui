@@ -4,6 +4,7 @@ import type { TamaguiElement } from '@tamagui/core'
 import { Theme, View, styled, useThemeName } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
 import * as React from 'react'
+import { createNativeToast } from './createNativeToast'
 import { ToastItem } from './ToastItem'
 import type { SwipeDirection } from './ToastProvider'
 import type { ExternalToast, ToastT, ToastToDismiss } from './ToastState'
@@ -303,6 +304,16 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     )
     const deferredCollapseRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
+    // Refs so the stable subscriber closure can read latest prop values
+    const nativeRef = React.useRef(native)
+    nativeRef.current = native
+    const burntOptionsRef = React.useRef(burntOptions)
+    burntOptionsRef.current = burntOptions
+    const notificationOptionsRef = React.useRef(notificationOptions)
+    notificationOptionsRef.current = notificationOptions
+    const toastsRef = React.useRef(toasts)
+    toastsRef.current = toasts
+
     // subscribe to toast state changes
     React.useEffect(() => {
       return ToastState.subscribe((toast) => {
@@ -312,6 +323,27 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
             toasts.map((t) => (t.id === toast.id ? { ...t, delete: true } : t))
           )
           return
+        }
+
+        // Native dispatch: intercept NEW toasts before they enter React state
+        const isNew = !toastsRef.current.some((t) => t.id === toast.id)
+        if (isNew && nativeRef.current) {
+          const t = toast as ToastT
+          const titleText = typeof t.title === 'function' ? t.title() : t.title
+          const descText =
+            typeof t.description === 'function' ? t.description() : t.description
+          if (typeof titleText === 'string') {
+            const result = createNativeToast(titleText, {
+              message: typeof descText === 'string' ? descText : undefined,
+              duration: t.duration,
+              burntOptions: t.burntOptions ?? burntOptionsRef.current,
+              notificationOptions:
+                t.notificationOptions ?? notificationOptionsRef.current,
+            })
+            if (result !== false) {
+              return // native handled — skip in-app
+            }
+          }
         }
 
         // add or update toast
@@ -587,9 +619,6 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
                 swipeThreshold={swipeThreshold}
                 closeButton={toast.closeButton ?? closeButton}
                 icons={icons}
-                native={native}
-                burntOptions={burntOptions}
-                notificationOptions={notificationOptions}
                 reducedMotion={reducedMotion}
               />
             )

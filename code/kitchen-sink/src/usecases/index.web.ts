@@ -116,6 +116,7 @@ export { ThemeShallowCase } from './ThemeShallowCase'
 // ToastCase removed - uses legacy v1 API
 export { ToastAboveDialogCase } from './ToastAboveDialogCase'
 export { ToastMultipleCase } from './ToastMultipleCase'
+export { ToastNativeNotificationCase } from './ToastNativeNotificationCase'
 export { ToggleGroupActiveProps } from './ToggleGroupActiveProps'
 export { ToggleGroupXGroupCase } from './ToggleGroupXGroupCase'
 export { TooltipAnimationCase } from './TooltipAnimationCase'
