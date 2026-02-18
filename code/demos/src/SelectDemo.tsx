@@ -22,13 +22,6 @@ export function SelectDemo() {
           </Label>
           <SelectDemoContents id="select-demo-2" native />
         </XStack>
-
-        <XStack width="100%" items="center" gap="$4">
-          <Label htmlFor="select-demo-3" flex={1} minW={80}>
-            Lazy
-          </Label>
-          <SelectDemoContents id="select-demo-3" lazyMount />
-        </XStack>
       </YStack>
     </Theme>
   )
