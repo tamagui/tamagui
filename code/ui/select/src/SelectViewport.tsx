@@ -82,6 +82,14 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
       }
     }, [isAdapted])
 
+    // after lazy children mount, force floating-ui to recompute so inner middleware
+    // can position using the now-present list items
+    useIsomorphicLayoutEffect(() => {
+      if (context.lazyMount && lazyMounted && context.open && context.update) {
+        context.update()
+      }
+    }, [lazyMounted])
+
     if (itemContext.shouldRenderWebNative) {
       return <YStack position="relative">{children}</YStack>
     }
@@ -127,7 +135,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
           />
         )}
         <AnimatePresence>
-          {context.open && lazyMounted ? (
+          {context.open ? (
             <FloatingFocusManager
               context={context.floatingContext!}
               modal={false}
@@ -145,7 +153,7 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
                 })}
                 ref={composedRefs}
               >
-                {children}
+                {lazyMounted ? children : null}
               </SelectViewportFrame>
             </FloatingFocusManager>
           ) : null}
