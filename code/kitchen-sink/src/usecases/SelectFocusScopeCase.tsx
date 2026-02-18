@@ -29,6 +29,7 @@ export function SelectFocusScopeCase() {
   const [value3, setValue3] = React.useState('')
   // default value scenario - like the demo page
   const [value4, setValue4] = React.useState('banana')
+  const [value5, setValue5] = React.useState('')
 
   return (
     <YStack padding="$4" gap="$4">
@@ -215,6 +216,44 @@ export function SelectFocusScopeCase() {
                   index={4}
                 >
                   <Select.ItemText>Broccoli</Select.ItemText>
+                  <Select.ItemIndicator />
+                </Select.Item>
+              </Select.Group>
+            </Select.Viewport>
+            <Select.ScrollDownButton />
+          </Select.Content>
+        </Select>
+      </YStack>
+
+      {/* Select with lazyMount - tests positioning with deferred rendering */}
+      <YStack gap="$2">
+        <Label htmlFor="lazy-select">Lazy Mount Select</Label>
+        <Select
+          id="lazy-select"
+          value={value5}
+          onValueChange={setValue5}
+          lazyMount
+          renderValue={(v) => fruitsAndVeggiesLabels[v]}
+        >
+          <Select.Trigger data-testid="lazy-select-trigger" iconAfter={ChevronDown}>
+            <Select.Value placeholder="Select an option" />
+          </Select.Trigger>
+
+          <Select.Content data-testid="lazy-select-content">
+            <Select.ScrollUpButton />
+            <Select.Viewport data-testid="lazy-select-viewport">
+              <Select.Group>
+                <Select.Label>Fruits</Select.Label>
+                <Select.Item data-testid="lazy-select-apple" value="apple" index={0}>
+                  <Select.ItemText>Apple</Select.ItemText>
+                  <Select.ItemIndicator />
+                </Select.Item>
+                <Select.Item data-testid="lazy-select-banana" value="banana" index={1}>
+                  <Select.ItemText>Banana</Select.ItemText>
+                  <Select.ItemIndicator />
+                </Select.Item>
+                <Select.Item data-testid="lazy-select-orange" value="orange" index={2}>
+                  <Select.ItemText>Orange</Select.ItemText>
                   <Select.ItemIndicator />
                 </Select.Item>
               </Select.Group>
