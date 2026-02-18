@@ -281,7 +281,19 @@ export function useFocusScope(
         container.addEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
         container.dispatchEvent(unmountEvent)
         if (!unmountEvent.defaultPrevented) {
-          focus(previouslyFocusedElement ?? document.body, { select: true })
+          // check if focus has already moved to a valid element outside this scope
+          // (e.g. another component's autoFocus ran during the same commit)
+          // if so, respect that focus rather than stealing it back
+          const currentFocus = document.activeElement as HTMLElement | null
+          const focusHasMovedOutside =
+            currentFocus &&
+            currentFocus !== document.body &&
+            currentFocus !== container &&
+            !container.contains(currentFocus)
+
+          if (!focusHasMovedOutside) {
+            focus(previouslyFocusedElement ?? document.body, { select: true })
+          }
         }
         // we need to remove the listener after we `dispatchEvent`
         container.removeEventListener(AUTOFOCUS_ON_UNMOUNT, onUnmountAutoFocus)
