@@ -10,12 +10,12 @@ import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import type { ThemeSuiteItemData } from '~/features/studio/theme/types'
 
 const models = {
-  'claude-opus-4-5': () => anthropic('claude-opus-4-5-20251101'),
+  'claude-sonnet-4': () => anthropic('claude-sonnet-4-20250514'),
 } as const
 
 type ModelName = keyof typeof models
 
-const DEFAULT_MODEL: ModelName = 'claude-opus-4-5'
+const DEFAULT_MODEL: ModelName = 'claude-sonnet-4'
 
 const lightDarkVal = z.object({
   light: z.number(),
