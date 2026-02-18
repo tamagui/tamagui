@@ -68,7 +68,7 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Install playwright
-        run: bunx playwright install
+        run: bunx playwright install --with-deps
 
       - uses: nick-fields/retry@v3
         name: 'Run integration tests (shard ${{ matrix.shard }})'
