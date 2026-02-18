@@ -70,6 +70,7 @@ interface ToastContextValue {
   reducedMotion: boolean
   native: boolean
   burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
+  notificationOptions?: NotificationOptions
   icons?: ToastIcons
 }
 
@@ -184,6 +185,10 @@ export interface ToastRootProps {
    */
   burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
   /**
+   * Options for web Notification API when native is true on web
+   */
+  notificationOptions?: NotificationOptions
+  /**
    * Custom icons for toast types
    */
   icons?: ToastIcons
@@ -220,6 +225,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       reducedMotion: reducedMotionProp,
       native = false,
       burntOptions,
+      notificationOptions,
       icons,
     } = props
 
@@ -290,6 +296,16 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
 
     const isInDismissCooldown = React.useCallback(() => dismissCooldownRef.current, [])
 
+    // Refs so the stable subscriber closure can read latest prop values
+    const nativeRef = React.useRef(native)
+    nativeRef.current = native
+    const burntOptionsRef = React.useRef(burntOptions)
+    burntOptionsRef.current = burntOptions
+    const notificationOptionsRef = React.useRef(notificationOptions)
+    notificationOptionsRef.current = notificationOptions
+    const toastsRef = React.useRef(toasts)
+    toastsRef.current = toasts
+
     // subscribe to toast state
     React.useEffect(() => {
       return ToastState.subscribe((toast) => {
@@ -299,6 +315,29 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
           )
           return
         }
+
+        // Native dispatch: intercept NEW toasts before they enter React state
+        // so the in-app toast never renders. On failure, falls through to in-app.
+        const isNew = !toastsRef.current.some((t) => t.id === toast.id)
+        if (isNew && nativeRef.current) {
+          const t = toast as ToastT
+          const titleText = typeof t.title === 'function' ? t.title() : t.title
+          const descText =
+            typeof t.description === 'function' ? t.description() : t.description
+          if (typeof titleText === 'string') {
+            const result = createNativeToast(titleText, {
+              message: typeof descText === 'string' ? descText : undefined,
+              duration: t.duration,
+              burntOptions: t.burntOptions ?? burntOptionsRef.current,
+              notificationOptions:
+                t.notificationOptions ?? notificationOptionsRef.current,
+            })
+            if (result !== false) {
+              return // native handled — skip in-app
+            }
+          }
+        }
+
         setToasts((toasts) => {
           const idx = toasts.findIndex((t) => t.id === toast.id)
           if (idx !== -1) {
@@ -361,6 +400,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       reducedMotion,
       native,
       burntOptions,
+      notificationOptions,
       icons,
     }
 
@@ -890,27 +930,6 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     React.useEffect(() => {
       setMounted(true)
     }, [])
-
-    // handle burnt native toast on mobile
-    React.useEffect(() => {
-      if (ctx.native && !isWeb) {
-        const titleText = typeof toast.title === 'function' ? toast.title() : toast.title
-        const descText =
-          typeof toast.description === 'function'
-            ? toast.description()
-            : toast.description
-
-        if (typeof titleText === 'string') {
-          createNativeToast(titleText, {
-            message: typeof descText === 'string' ? descText : undefined,
-            duration,
-            burntOptions: ctx.burntOptions,
-          })
-        }
-        // remove from state immediately — burnt handles display
-        ctx.removeToast(toast)
-      }
-    }, [ctx.native])
 
     // handle deletion — only zero height when expanded (Sonner rebalance)
     React.useEffect(() => {

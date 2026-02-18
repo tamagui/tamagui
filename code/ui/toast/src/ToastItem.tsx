@@ -11,8 +11,6 @@ import type { ToastT, ToastType } from './ToastState'
 import { useAnimatedDragGesture } from './useAnimatedDragGesture'
 import { useToastAnimations } from './useToastAnimations'
 import type { SwipeDirection } from './ToastProvider'
-import type { BurntToastOptions } from './types'
-import { createNativeToast } from './createNativeToast'
 
 // time before unmount after deletion
 const TIME_BEFORE_UNMOUNT = 200
@@ -292,9 +290,6 @@ export interface ToastItemProps {
     loading?: React.ReactNode
     close?: React.ReactNode
   }
-  native?: boolean
-  burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
-  notificationOptions?: NotificationOptions
   /** When true, disables animations for accessibility */
   reducedMotion?: boolean
 }
@@ -320,9 +315,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     swipeThreshold,
     closeButton,
     icons,
-    native,
-    burntOptions,
-    notificationOptions,
     reducedMotion,
   } = props
 
@@ -344,26 +336,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   // parse position for animation direction
   const [yPosition] = position.split('-') as ['top' | 'bottom', string]
   const isTop = yPosition === 'top'
-
-  // handle native toast on mobile — mount-time gate that dispatches to burnt and
-  React.useEffect(() => {
-    if (native && !isWeb) {
-      const titleText = typeof toast.title === 'function' ? toast.title() : toast.title
-      const descText =
-        typeof toast.description === 'function' ? toast.description() : toast.description
-
-      if (typeof titleText === 'string') {
-        createNativeToast(titleText, {
-          message: typeof descText === 'string' ? descText : undefined,
-          duration,
-          burntOptions,
-          notificationOptions,
-        })
-      }
-      // remove from state immediately — burnt handles display
-      removeToast(toast)
-    }
-  }, [native])
 
   // trigger mount animation
   React.useEffect(() => {

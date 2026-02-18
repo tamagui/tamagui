@@ -5,44 +5,38 @@ export const createNativeToast: CreateNativeToastsFn = (
   { message, notificationOptions }
 ) => {
   if (!('Notification' in window)) {
-    console.error('This browser does not support notifications')
     return false
   }
 
-  if (Notification.permission === 'denied') return false
-  const showNotification = () => {
-    const notification = new Notification(title, {
-      body: message,
-      ...notificationOptions,
-    })
+  if (Notification.permission !== 'granted') return false
 
-    return notification
-  }
-
-  if (Notification.permission === 'granted') {
-    const notification = showNotification()
-    return {
-      nativeToastRef: notification,
-    }
-  }
-  Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      const notification = showNotification()
-      return {
-        nativeToastRef: notification,
-      }
-    }
+  const notification = new Notification(title, {
+    body: message,
+    ...notificationOptions,
   })
-  return true
+
+  return {
+    nativeToastRef: notification,
+  }
 }
 
 export const hideNativeToast: HideNativeToastsFn = (ref) => {
   if (!('Notification' in window)) {
-    console.error('This browser does not support notifications')
     return
   }
 
   if (ref) {
     ref.close()
   }
+}
+
+/**
+ * Request notification permission from the browser.
+ * Must be called from a user gesture (click/tap handler).
+ */
+export async function requestNotificationPermission(): Promise<NotificationPermission | null> {
+  if (!('Notification' in window)) return null
+  if (Notification.permission === 'granted') return 'granted'
+  if (Notification.permission === 'denied') return 'denied'
+  return Notification.requestPermission()
 }
