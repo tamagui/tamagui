@@ -43,6 +43,24 @@ function SignIn() {
 
   useForwardToDashboard()
 
+  // auto-trigger GitHub OAuth when opened as a popup (from checkout flow)
+  // must be before any early returns to avoid hooks ordering violation (react error 310)
+  useEffect(() => {
+    if (supabase && !user && window.opener && window.opener !== window) {
+      const redirectTo = `${window.location.origin}/api/auth/callback`
+      supabase.auth
+        .signInWithOAuth({
+          provider: 'github',
+          options: { redirectTo },
+        })
+        .then(({ data, error }) => {
+          if (!error && data?.url) {
+            window.location.href = data.url
+          }
+        })
+    }
+  }, [supabase, user])
+
   if (!supabase) {
     return (
       <YStack flex={1} flexBasis="auto" items="center" justify="center">
@@ -107,13 +125,6 @@ function SignIn() {
       window.location.href = data.url
     }
   }
-
-  // auto-trigger GitHub OAuth when opened as a popup (from checkout flow)
-  useEffect(() => {
-    if (supabase && !user && window.opener && window.opener !== window) {
-      handleOAuthSignIn('github')
-    }
-  }, [supabase, user])
 
   if (!user)
     return (
