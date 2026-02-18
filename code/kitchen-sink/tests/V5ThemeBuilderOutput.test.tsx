@@ -19,16 +19,13 @@ test('renders base light and dark theme buttons', async ({ page }) => {
   await expect(lightButton).toBeVisible()
   await expect(darkButton).toBeVisible()
 
-  // Both buttons should render with valid styles
-  // Note: v5 Button uses surface3 template which may have similar colors in light/dark
-  // The color theme tests below (yellow, red, green, blue) verify theme switching works
   const lightStyles = await getStyles(lightButton)
   const darkStyles = await getStyles(darkButton)
   expect(lightStyles.backgroundColor).toBeDefined()
   expect(darkStyles.backgroundColor).toBeDefined()
 })
 
-test('renders accent theme buttons', async ({ page }) => {
+test('renders accent theme buttons with correct colors (not gray)', async ({ page }) => {
   const accentLight = page.getByTestId('button-accent-light')
   const accentDark = page.getByTestId('button-accent-dark')
 
@@ -37,10 +34,20 @@ test('renders accent theme buttons', async ({ page }) => {
 
   const lightStyles = await getStyles(accentLight)
   const darkStyles = await getStyles(accentDark)
-
-  // Accent buttons should have background colors applied
   expect(lightStyles.backgroundColor).toBeDefined()
   expect(darkStyles.backgroundColor).toBeDefined()
+
+  // Accent palette uses purple (hue 250) — verify buttons aren't gray
+  const isPurple = (color: string) => {
+    const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/)
+    if (!match) return false
+    const [, r, g, b] = match.map(Number)
+    return b > r && r > g && b - g > 30
+  }
+
+  expect(isPurple(lightStyles.backgroundColor)).toBe(true)
+  expect(isPurple(darkStyles.backgroundColor)).toBe(true)
+  expect(lightStyles.backgroundColor).not.toBe(darkStyles.backgroundColor)
 })
 
 test('renders semantic color theme buttons (yellow, red, green)', async ({ page }) => {

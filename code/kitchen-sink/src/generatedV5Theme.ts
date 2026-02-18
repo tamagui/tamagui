@@ -12,61 +12,61 @@ import { v5ComponentThemes } from '@tamagui/themes/v5'
 import { yellow, yellowDark, red, redDark, green, greenDark } from '@tamagui/colors'
 
 const darkPalette = [
-  'hsla(228, 53%, 1%, 1)',
-  'hsla(228, 53%, 6%, 1)',
-  'hsla(228, 53%, 12%, 1)',
-  'hsla(228, 53%, 17%, 1)',
-  'hsla(228, 53%, 23%, 1)',
-  'hsla(228, 53%, 28%, 1)',
-  'hsla(228, 53%, 34%, 1)',
-  'hsla(228, 53%, 39%, 1)',
-  'hsla(228, 53%, 45%, 1)',
-  'hsla(228, 53%, 50%, 1)',
+  'hsla(0, 15%, 1%, 1)',
+  'hsla(0, 15%, 6%, 1)',
+  'hsla(0, 15%, 12%, 1)',
+  'hsla(0, 15%, 17%, 1)',
+  'hsla(0, 15%, 23%, 1)',
+  'hsla(0, 15%, 28%, 1)',
+  'hsla(0, 15%, 34%, 1)',
+  'hsla(0, 15%, 39%, 1)',
+  'hsla(0, 15%, 45%, 1)',
+  'hsla(0, 15%, 50%, 1)',
   'hsla(0, 15%, 93%, 1)',
   'hsla(0, 15%, 99%, 1)',
 ]
 const lightPalette = [
-  'hsla(228, 53%, 25%, 1)',
-  'hsla(228, 53%, 28%, 1)',
-  'hsla(228, 53%, 31%, 1)',
-  'hsla(228, 53%, 33%, 1)',
-  'hsla(228, 53%, 36%, 1)',
-  'hsla(228, 53%, 39%, 1)',
-  'hsla(228, 53%, 42%, 1)',
-  'hsla(228, 53%, 44%, 1)',
-  'hsla(228, 53%, 47%, 1)',
-  'hsla(228, 53%, 50%, 1)',
+  'hsla(0, 15%, 99%, 1)',
+  'hsla(0, 15%, 94%, 1)',
+  'hsla(0, 15%, 88%, 1)',
+  'hsla(0, 15%, 83%, 1)',
+  'hsla(0, 15%, 77%, 1)',
+  'hsla(0, 15%, 72%, 1)',
+  'hsla(0, 15%, 66%, 1)',
+  'hsla(0, 15%, 61%, 1)',
+  'hsla(0, 15%, 55%, 1)',
+  'hsla(0, 15%, 50%, 1)',
   'hsla(0, 15%, 15%, 1)',
   'hsla(0, 15%, 1%, 1)',
 ]
 
 // Your custom accent color theme
 const accentLight = {
-  accent1: 'hsla(46, 67%, 45%, 1)',
-  accent2: 'hsla(46, 67%, 47%, 1)',
-  accent3: 'hsla(46, 67%, 49%, 1)',
-  accent4: 'hsla(46, 67%, 52%, 1)',
-  accent5: 'hsla(46, 67%, 54%, 1)',
-  accent6: 'hsla(46, 67%, 56%, 1)',
-  accent7: 'hsla(46, 67%, 58%, 1)',
-  accent8: 'hsla(46, 67%, 61%, 1)',
-  accent9: 'hsla(46, 67%, 63%, 1)',
-  accent10: 'hsla(46, 67%, 65%, 1)',
+  accent1: 'hsla(250, 50%, 40%, 1)',
+  accent2: 'hsla(250, 50%, 43%, 1)',
+  accent3: 'hsla(250, 50%, 46%, 1)',
+  accent4: 'hsla(250, 50%, 48%, 1)',
+  accent5: 'hsla(250, 50%, 51%, 1)',
+  accent6: 'hsla(250, 50%, 54%, 1)',
+  accent7: 'hsla(250, 50%, 57%, 1)',
+  accent8: 'hsla(250, 50%, 59%, 1)',
+  accent9: 'hsla(250, 50%, 62%, 1)',
+  accent10: 'hsla(250, 50%, 65%, 1)',
   accent11: 'hsla(250, 50%, 95%, 1)',
   accent12: 'hsla(250, 50%, 95%, 1)',
 }
 
 const accentDark = {
-  accent1: 'hsla(46, 67%, 35%, 1)',
-  accent2: 'hsla(46, 67%, 38%, 1)',
-  accent3: 'hsla(46, 67%, 41%, 1)',
-  accent4: 'hsla(46, 67%, 43%, 1)',
-  accent5: 'hsla(46, 67%, 46%, 1)',
-  accent6: 'hsla(46, 67%, 49%, 1)',
-  accent7: 'hsla(46, 67%, 52%, 1)',
-  accent8: 'hsla(46, 67%, 54%, 1)',
-  accent9: 'hsla(46, 67%, 57%, 1)',
-  accent10: 'hsla(46, 67%, 60%, 1)',
+  accent1: 'hsla(250, 50%, 35%, 1)',
+  accent2: 'hsla(250, 50%, 38%, 1)',
+  accent3: 'hsla(250, 50%, 41%, 1)',
+  accent4: 'hsla(250, 50%, 43%, 1)',
+  accent5: 'hsla(250, 50%, 46%, 1)',
+  accent6: 'hsla(250, 50%, 49%, 1)',
+  accent7: 'hsla(250, 50%, 52%, 1)',
+  accent8: 'hsla(250, 50%, 54%, 1)',
+  accent9: 'hsla(250, 50%, 57%, 1)',
+  accent10: 'hsla(250, 50%, 60%, 1)',
   accent11: 'hsla(250, 50%, 90%, 1)',
   accent12: 'hsla(250, 50%, 95%, 1)',
 }
@@ -75,15 +75,13 @@ const builtThemes = createV5Theme({
   darkPalette,
   lightPalette,
   componentThemes: v5ComponentThemes,
+  accent: {
+    light: accentLight,
+    dark: accentDark,
+  },
   childrenThemes: {
     // Include default color themes (blue, red, green, yellow, etc.)
     ...defaultChildrenThemes,
-
-    // Your custom accent color
-    accent: {
-      light: accentLight,
-      dark: accentDark,
-    },
 
     // Semantic color themes for warnings, errors, and success states
     warning: {

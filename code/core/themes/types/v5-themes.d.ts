@@ -452,6 +452,11 @@ export type CreateV5ThemeOptions<Children extends Record<string, ChildTheme> = t
     /** Override the light base palette (12 colors from lightest to darkest) */
     lightPalette?: string[];
     /**
+     * Custom accent palette. If not provided, accent uses the inverted base palette.
+     * Accepts named color objects: { light: { accent1: '#...', ... }, dark: { accent1: '#...', ... } }
+     */
+    accent?: ChildTheme;
+    /**
      * Override children themes (color themes like blue, red, etc.)
      * Accepts radix color objects directly: { blue: { light: blue, dark: blueDark } }
      */
