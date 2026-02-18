@@ -87,8 +87,8 @@ export const useDisableBodyScroll = (enabled: boolean): void => {
         body.style.overflow = previousStyles.bodyOverflow
         body.style.overscrollBehavior = previousStyles.bodyOverscrollBehavior
 
-        // restore scroll position if we used position:fixed
-        if (isIOSSafari() && savedScrollY > 0) {
+        // restore scroll position (browsers reset to 0 when overflow:hidden is removed)
+        if (savedScrollY > 0) {
           window.scrollTo(0, savedScrollY)
         }
 
@@ -115,7 +115,7 @@ export const useDisableBodyScroll = (enabled: boolean): void => {
           body.style.overflow = previousStyles.bodyOverflow
           body.style.overscrollBehavior = previousStyles.bodyOverscrollBehavior
 
-          if (isIOSSafari() && savedScrollY > 0) {
+          if (savedScrollY > 0) {
             window.scrollTo(0, savedScrollY)
           }
 
