@@ -5,10 +5,8 @@
 import { composeEventHandlers } from '@tamagui/helpers'
 import { getGestureHandler } from '@tamagui/native'
 import React, { useRef } from 'react'
-import type { StaticConfig, TamaguiComponentStateRef } from './types'
-
-// TODO conditional improt - the way we bundle core test.native.js breaks if inline require need to fix
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
+import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
 // web events not used on native
 export function getWebEvents() {
@@ -32,39 +30,6 @@ export function useEvents(
     }
   }
 
-  // input special case - TextInput needs press events attached directly (not via RNGH)
-  if (staticConfig.isInput && events) {
-    const { onPressIn, onPressOut, onPress } = events
-    const inputEvents: any = {
-      onPressIn,
-      onPressOut: onPressOut || onPress,
-    }
-    if (onPressOut && onPress) {
-      // only supports onPressIn and onPressOut so combine them
-      inputEvents.onPressOut = composeEventHandlers(onPress, onPressOut)
-    }
-    Object.assign(viewProps, inputEvents)
-    // inputs don't use gesture handler
-    return null
-  }
-
-  // HOC special case - pass press events to the inner component instead of wrapping
-  // HOC components may return null which crashes GestureDetector (it tries to access
-  // _internalInstanceHandle on a null native view). By passing events down, the inner
-  // component handles gesture detection at its own level.
-  if (isHOC && events) {
-    const { onPressIn, onPressOut, onPress, onLongPress, delayLongPress } = events
-    Object.assign(viewProps, {
-      onPressIn,
-      onPressOut,
-      onPress,
-      onLongPress,
-      delayLongPress,
-    })
-    // HOCs don't use gesture handler at this level
-    return null
-  }
-
   const hasPressEvents =
     // its stable and always on if you have in/out/regular
     events?.onPress
@@ -78,11 +43,53 @@ export function useEvents(
 
   // avoid hooks/reparenting
   const everEnabled = Boolean(hasPressEvents || stateRef.current.hasHadEvents)
+  const isUsingRNGH = gh.isEnabled
 
-  // rngh
-  // gh.isEnabled - set once before app load - never changes
-  if (gh.isEnabled) {
-    const callbacksRef = useRef<any>({})
+  // NOW handle early returns (after all hooks are called)
+  // THESE BRANCHES ARE NEVER CHANGING RENDER-TO-RENDER
+
+  // input special case - TextInput needs press events attached directly (not via RNGH)
+  if (staticConfig.isInput) {
+    if (events) {
+      const { onPressIn, onPressOut, onPress } = events
+      const inputEvents: any = {
+        onPressIn,
+        onPressOut: onPressOut || onPress,
+      }
+      if (onPressOut && onPress) {
+        // only supports onPressIn and onPressOut so combine them
+        inputEvents.onPressOut = composeEventHandlers(onPress, onPressOut)
+      }
+      Object.assign(viewProps, inputEvents)
+    }
+
+    // inputs don't use gesture handler
+    return null
+  }
+
+  // HOC special case - pass press events to the inner component instead of wrapping
+  // HOC components may return null which crashes GestureDetector (it tries to access
+  // _internalInstanceHandle on a null native view). By passing events down, the inner
+  // component handles gesture detection at its own level.
+  if (isHOC) {
+    if (events) {
+      const { onPressIn, onPressOut, onPress, onLongPress, delayLongPress } = events
+      Object.assign(viewProps, {
+        onPressIn,
+        onPressOut,
+        onPress,
+        onLongPress,
+        delayLongPress,
+      })
+    }
+    // HOCs don't use gesture handler at this level
+    return null
+  }
+
+  // rngh path - logic (hooks already called above)
+  if (isUsingRNGH) {
+    // rngh path - hooks
+    const callbacksRef = useRef<any>(isUsingRNGH ? {} : null)
     const gestureRef = useRef<any>(null)
 
     if (everEnabled) {
@@ -103,7 +110,7 @@ export function useEvents(
           onPressOut: (e: any) => callbacksRef.current.onPressOut?.(e),
           onPress: (e: any) => callbacksRef.current.onPress?.(e),
           onLongPress: (e: any) => callbacksRef.current.onLongPress?.(e),
-          delayLongPress: events.delayLongPress,
+          delayLongPress: events?.delayLongPress,
           hitSlop: viewProps.hitSlop,
         })
       }
@@ -112,7 +119,6 @@ export function useEvents(
       return gestureRef.current
     }
 
-    // don't fall through to useMainThreadPressEvents
     return null
   }
 
