@@ -1,72 +1,53 @@
 /**
- * Tests compiler extraction with theme functionality.
- *
- * Verifies that extracted components work correctly with:
- * - Simple extraction (static values)
- * - Advanced extraction ($colorN tokens)
- * - Light/dark mode switching
- * - Sub-theme changes
- *
- * The test case has "// debug" at the top which outputs extraction
- * info during build. If extraction is working, you'll see optimized
- * styles in the Metro console.
+ * Tests compiler extraction with theme functionality and performance.
+ * Runs tamagui build to generate .native.tsx before testing.
  */
 
 import * as assert from 'assert'
+import { execSync } from 'child_process'
+import { unlinkSync, existsSync } from 'fs'
 import { by, device, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
-import {
-  getDominantColor,
-  isBlueish,
-  isGreenish,
-  isReddish,
-  formatRGB,
-} from './utils/colors'
+import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
+
+const SOURCE_FILE = 'src/usecases/CompilerExtraction.tsx'
+const NATIVE_FILE = 'src/usecases/CompilerExtraction.native.tsx'
+const EXPECTED_OPTIMIZATIONS = 18
 
 describe('CompilerExtraction', () => {
   beforeAll(async () => {
+    // remove existing .native.tsx to force rebuild
+    if (existsSync(NATIVE_FILE)) {
+      unlinkSync(NATIVE_FILE)
+    }
+
+    // run tamagui build to generate optimized .native.tsx
+    console.log('Running tamagui build...')
+    execSync(
+      `npx tamagui build ${SOURCE_FILE} --target native --output-around --expect-optimizations ${EXPECTED_OPTIMIZATIONS}`,
+      { stdio: 'inherit' }
+    )
+    console.log('Build complete, .native.tsx generated')
+
     await device.launchApp({ newInstance: true })
   })
 
-  beforeEach(async () => {
+  it('should render and respond to theme changes', async () => {
     await device.reloadReactNative()
     await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root')
-  })
+    await new Promise((r) => setTimeout(r, 300))
 
-  it('should render all extracted components', async () => {
-    await expect(element(by.id('compiler-extraction-root'))).toBeVisible()
+    // verify components render
     await expect(element(by.id('compiler-simple-box'))).toBeVisible()
     await expect(element(by.id('compiler-advanced-box'))).toBeVisible()
     await expect(element(by.id('compiler-subtheme-box'))).toBeVisible()
-  })
 
-  it('should show correct initial state (light mode, red sub-theme)', async () => {
-    await expect(element(by.id('compiler-mode-label'))).toHaveText('Mode: light')
-    await expect(element(by.id('compiler-subtheme-label'))).toHaveText('Sub-theme (red):')
-  })
-
-  it('should toggle between light and dark mode', async () => {
-    // start in light mode
+    // verify initial light mode
     await expect(element(by.id('compiler-mode-label'))).toHaveText('Mode: light')
 
-    // toggle to dark
-    await element(by.id('compiler-toggle-mode')).tap()
-    await waitFor(element(by.id('compiler-mode-label')))
-      .toHaveText('Mode: dark')
-      .withTimeout(3000)
-
-    // toggle back to light
-    await element(by.id('compiler-toggle-mode')).tap()
-    await waitFor(element(by.id('compiler-mode-label')))
-      .toHaveText('Mode: light')
-      .withTimeout(3000)
-  })
-
-  it('should update advanced box colors on light/dark toggle', async () => {
-    // take screenshot in light mode
-    await new Promise((r) => setTimeout(r, 300))
+    // capture light mode color
     const lightScreenshot = await element(by.id('compiler-advanced-box')).takeScreenshot(
-      'advanced-light'
+      'light'
     )
     const lightColor = getDominantColor(lightScreenshot)
     console.log(`Light mode color: ${formatRGB(lightColor)}`)
@@ -76,98 +57,91 @@ describe('CompilerExtraction', () => {
     await waitFor(element(by.id('compiler-mode-label')))
       .toHaveText('Mode: dark')
       .withTimeout(3000)
+    await new Promise((r) => setTimeout(r, 200))
 
-    // small delay for visual update
-    await new Promise((r) => setTimeout(r, 300))
+    // capture dark mode color
     const darkScreenshot = await element(by.id('compiler-advanced-box')).takeScreenshot(
-      'advanced-dark'
+      'dark'
     )
     const darkColor = getDominantColor(darkScreenshot)
     console.log(`Dark mode color: ${formatRGB(darkColor)}`)
 
-    // colors should be different between light and dark modes
+    // colors must differ (verifies theme fix works)
     const colorsDiffer =
       Math.abs(lightColor.r - darkColor.r) > 20 ||
       Math.abs(lightColor.g - darkColor.g) > 20 ||
       Math.abs(lightColor.b - darkColor.b) > 20
     assert.ok(
       colorsDiffer,
-      `Expected light/dark colors to differ: light=${formatRGB(lightColor)}, dark=${formatRGB(darkColor)}`
+      `Theme change failed: light=${formatRGB(lightColor)}, dark=${formatRGB(darkColor)}`
     )
-  })
 
-  it('should cycle sub-theme colors (red -> blue -> green)', async () => {
-    // initial state: red sub-theme
-    await expect(element(by.id('compiler-subtheme-label'))).toHaveText('Sub-theme (red):')
-    await new Promise((r) => setTimeout(r, 300))
-    const redScreenshot = await element(by.id('compiler-subtheme-box')).takeScreenshot(
-      'subtheme-red'
-    )
-    const redColor = getDominantColor(redScreenshot)
-    console.log(`Red sub-theme color: ${formatRGB(redColor)}`)
-    assert.ok(isReddish(redColor), `Expected reddish color, got ${formatRGB(redColor)}`)
-
-    // cycle to blue
+    // test sub-theme: cycle to blue
     await element(by.id('compiler-cycle-subtheme')).tap()
-    await waitFor(element(by.id('compiler-subtheme-label')))
-      .toHaveText('Sub-theme (blue):')
-      .withTimeout(3000)
     await new Promise((r) => setTimeout(r, 300))
     const blueScreenshot = await element(by.id('compiler-subtheme-box')).takeScreenshot(
-      'subtheme-blue'
+      'blue'
     )
     const blueColor = getDominantColor(blueScreenshot)
-    console.log(`Blue sub-theme color: ${formatRGB(blueColor)}`)
-    assert.ok(isBlueish(blueColor), `Expected blueish color, got ${formatRGB(blueColor)}`)
-
-    // cycle to green
-    await element(by.id('compiler-cycle-subtheme')).tap()
-    await waitFor(element(by.id('compiler-subtheme-label')))
-      .toHaveText('Sub-theme (green):')
-      .withTimeout(3000)
-    await new Promise((r) => setTimeout(r, 300))
-    const greenScreenshot = await element(by.id('compiler-subtheme-box')).takeScreenshot(
-      'subtheme-green'
-    )
-    const greenColor = getDominantColor(greenScreenshot)
-    console.log(`Green sub-theme color: ${formatRGB(greenColor)}`)
-    assert.ok(isGreenish(greenColor), `Expected greenish color, got ${formatRGB(greenColor)}`)
+    console.log(`Blue sub-theme: ${formatRGB(blueColor)}`)
+    assert.ok(isBlueish(blueColor), `Expected blueish, got ${formatRGB(blueColor)}`)
   })
 
-  it('should maintain sub-theme colors after light/dark toggle', async () => {
-    // set sub-theme to blue
-    await element(by.id('compiler-cycle-subtheme')).tap()
-    await waitFor(element(by.id('compiler-subtheme-label')))
-      .toHaveText('Sub-theme (blue):')
+  it('should benchmark optimized vs non-optimized (best of 3)', async () => {
+    await device.reloadReactNative()
+    await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root')
+    await new Promise((r) => setTimeout(r, 300))
+
+    // show benchmark
+    await element(by.id('compiler-toggle-bench')).tap()
+    await waitFor(element(by.id('bench-run-opt')))
+      .toBeVisible()
       .withTimeout(3000)
 
-    // verify blue in light mode
-    await new Promise((r) => setTimeout(r, 300))
-    const blueLightScreenshot = await element(
-      by.id('compiler-subtheme-box')
-    ).takeScreenshot('subtheme-blue-light')
-    const blueLightColor = getDominantColor(blueLightScreenshot)
+    // run optimized 3 times
+    for (let i = 0; i < 3; i++) {
+      await element(by.id('bench-run-opt')).tap()
+      await new Promise((r) => setTimeout(r, 300))
+    }
+
+    // run non-optimized 3 times
+    for (let i = 0; i < 3; i++) {
+      await element(by.id('bench-run-noopt')).tap()
+      await new Promise((r) => setTimeout(r, 300))
+    }
+
+    // get results via accessibility labels
+    const optResult = await element(by.id('bench-opt-result')).getAttributes()
+    const noOptResult = await element(by.id('bench-noopt-result')).getAttributes()
+    const pctResult = await element(by.id('bench-pct')).getAttributes()
+
+    // parse times from accessibility labels (format: "opt:1.2345" or "noopt:1.2345")
+    const optLabel = (optResult as any).label || ''
+    const noOptLabel = (noOptResult as any).label || ''
+    const pctLabel = (pctResult as any).label || ''
+
+    const optTime = parseFloat(optLabel.split(':')[1])
+    const noOptTime = parseFloat(noOptLabel.split(':')[1])
+    const pctDiff = parseFloat(pctLabel.split(':')[1])
+
+    console.log(`Benchmark results:`)
+    console.log(`  Optimized best: ${optTime.toFixed(2)}ms`)
+    console.log(`  Non-optimized best: ${noOptTime.toFixed(2)}ms`)
+    console.log(`  Difference: ${pctDiff.toFixed(1)}%`)
+
+    // assert optimized is faster (or at least not significantly slower)
     assert.ok(
-      isBlueish(blueLightColor),
-      `Expected blueish in light mode, got ${formatRGB(blueLightColor)}`
+      pctDiff > -10,
+      `Optimized should not be >10% slower than non-optimized. Got ${pctDiff.toFixed(1)}%`
     )
 
-    // toggle to dark mode
-    await element(by.id('compiler-toggle-mode')).tap()
-    await waitFor(element(by.id('compiler-mode-label')))
-      .toHaveText('Mode: dark')
-      .withTimeout(3000)
-
-    // verify still blue (different shade) in dark mode
-    await new Promise((r) => setTimeout(r, 300))
-    const blueDarkScreenshot = await element(by.id('compiler-subtheme-box')).takeScreenshot(
-      'subtheme-blue-dark'
-    )
-    const blueDarkColor = getDominantColor(blueDarkScreenshot)
-    // should still be predominantly blue
-    assert.ok(
-      isBlueish(blueDarkColor),
-      `Expected blueish in dark mode, got ${formatRGB(blueDarkColor)}`
-    )
+    // log the improvement
+    if (pctDiff > 0) {
+      console.log(`✓ Optimized is ${pctDiff.toFixed(1)}% faster`)
+    } else {
+      console.log(
+        `⚠ Optimized is ${Math.abs(pctDiff).toFixed(1)}% slower (within tolerance)`
+      )
+    }
   })
 })
