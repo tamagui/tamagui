@@ -64,7 +64,8 @@ export async function setupPage(
   }
 
   const url = `/?${params.toString()}`
-  await page.goto(url, { waitUntil: 'domcontentloaded' })
+  await page.goto(url, { waitUntil: 'networkidle' })
+  await new Promise((res) => setTimeout(res, waitExtra ? 3000 : 300))
 
   return page
 }
