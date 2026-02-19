@@ -9,7 +9,8 @@ export function MenuAboveDialogCase() {
   return (
     <YStack padding="$4" gap="$4">
       <Paragraph>
-        Test: Open dialog, then open menu from inside. Menu should appear above dialog overlay.
+        Test: Open dialog, then open menu from inside. Menu should appear above dialog
+        overlay.
       </Paragraph>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

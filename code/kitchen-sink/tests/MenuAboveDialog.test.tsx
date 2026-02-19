@@ -27,22 +27,40 @@ test('menu renders above dialog overlay', async ({ page }) => {
   const menuItem = page.getByTestId('menu-item-1')
   await expect(menuItem).toBeVisible()
 
-  // get z-index values to verify stacking
-  const dialogZIndex = await dialogContent.evaluate((el) => {
-    return window.getComputedStyle(el).zIndex
+  // get z-index of portal containers (the fixed positioned wrappers)
+  const dialogPortalZIndex = await page.evaluate(() => {
+    const dialogContent = document.querySelector('[data-testid="dialog-content"]')
+    // find the portal container (fixed position ancestor with z-index)
+    let el = dialogContent?.parentElement
+    while (el) {
+      const style = window.getComputedStyle(el)
+      if (style.position === 'fixed' && style.zIndex !== 'auto') {
+        return parseInt(style.zIndex)
+      }
+      el = el.parentElement
+    }
+    return 0
   })
-  const menuZIndex = await menuContent.evaluate((el) => {
-    return window.getComputedStyle(el).zIndex
+
+  const menuPortalZIndex = await page.evaluate(() => {
+    const menuContent = document.querySelector('[data-testid="menu-content"]')
+    // find the portal container (fixed position ancestor with z-index)
+    let el = menuContent?.parentElement
+    while (el) {
+      const style = window.getComputedStyle(el)
+      if (style.position === 'fixed' && style.zIndex !== 'auto') {
+        return parseInt(style.zIndex)
+      }
+      el = el.parentElement
+    }
+    return 0
   })
 
-  // menu should have higher z-index than dialog
-  const dialogZ = parseInt(dialogZIndex) || 0
-  const menuZ = parseInt(menuZIndex) || 0
-
-  // log for debugging
-  console.log(`Dialog z-index: ${dialogZ}, Menu z-index: ${menuZ}`)
-
-  expect(menuZ).toBeGreaterThan(dialogZ)
+  // menu portal should have higher z-index than dialog portal
+  console.log(
+    `Dialog portal z-index: ${dialogPortalZIndex}, Menu portal z-index: ${menuPortalZIndex}`
+  )
+  expect(menuPortalZIndex).toBeGreaterThan(dialogPortalZIndex)
 })
 
 test('menu closes on ESC, dialog stays open', async ({ page }) => {
