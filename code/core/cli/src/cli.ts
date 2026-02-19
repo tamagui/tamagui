@@ -164,6 +164,7 @@ const COMMAND_MAP = {
       '--include': String,
       '--exclude': String,
       '--output': String,
+      '--output-around': Boolean,
       '--expect-optimizations': Number,
     },
     async run() {
@@ -200,6 +201,7 @@ const COMMAND_MAP = {
         target: (flags['--target'] as 'web' | 'native' | 'both' | undefined) || 'both',
         exclude: flags['--exclude'],
         output: flags['--output'],
+        outputAround: flags['--output-around'],
         expectOptimizations: flags['--expect-optimizations'],
         runCommand,
         dryRun,

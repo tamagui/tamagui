@@ -43,6 +43,15 @@ npx tamagui build ./src/components/MyComponent.tsx
 
 # Include/exclude patterns
 npx tamagui build --include "components/**" --exclude "**/*.test.tsx" ./src
+
+# Output to a separate directory (source files unchanged)
+npx tamagui build --output ./dist ./src
+
+# Create platform-specific files next to source files (.web.tsx or .native.tsx)
+npx tamagui build --target native --output-around ./src
+
+# Preview changes without writing files
+npx tamagui build --dry-run ./src
 ```
 
 **Flags:**
@@ -51,8 +60,13 @@ npx tamagui build --include "components/**" --exclude "**/*.test.tsx" ./src
   `both`)
 - `--include <pattern>` - Glob pattern to include files
 - `--exclude <pattern>` - Glob pattern to exclude files
+- `--output <path>` - Output directory for optimized files (preserves directory
+  structure). When specified, source files are not modified
+- `--output-around` - Create platform-specific files (`.web.tsx` or `.native.tsx`)
+  next to source files instead of modifying them. Errors if the file already exists
 - `--expect-optimizations <number>` - Fail if fewer than this many components
   are optimized (useful for CI)
+- `--dry-run` - Preview what would be optimized without writing any files
 - `--debug` - Enable debug output
 - `--verbose` - Enable verbose debug output
 
@@ -112,6 +126,18 @@ Alternatively, run `tamagui build` separately (files will remain modified):
 **Important:** Without the `--` wrapper, files are modified in-place and not
 restored. Only use this approach if you're building in a CI environment where
 the files are discarded anyway.
+
+Alternatively, use `--output` to write optimized files to a separate directory:
+
+```json
+{
+  "scripts": {
+    "build": "tamagui build --target web --output ./dist ./src && next build"
+  }
+}
+```
+
+With `--output`, source files are never modified and no restoration is needed.
 
 For more details, see the
 [Compiler Installation guide](/docs/intro/compiler-install#cli-based-in-place-compilation).

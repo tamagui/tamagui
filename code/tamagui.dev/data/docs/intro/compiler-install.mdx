@@ -347,6 +347,15 @@ npx tamagui build ./src/components/MyComponent.tsx
 # Include/exclude patterns
 npx tamagui build --include "components/**" --exclude "**/*.test.tsx" ./src
 
+# Output to a separate directory (source files unchanged)
+npx tamagui build --output ./dist ./src
+
+# Create platform-specific files next to source files (.web.tsx or .native.tsx)
+npx tamagui build --target native --output-around ./src
+
+# Preview changes without writing files
+npx tamagui build --dry-run ./src
+
 # Verify minimum optimizations (useful in CI)
 npx tamagui build --target web --expect-optimizations 10 ./src
 ```
@@ -438,8 +447,42 @@ command. Here are some examples:
 }
 ```
 
-The Tamagui CLI optimizes your components in-place, then your bundler processes
-the already-optimized files.
+**Using --output (no file restoration needed):**
+
+If you prefer to output optimized files to a separate directory instead of modifying
+source files in-place, use `--output`:
+
+```json
+{
+  "scripts": {
+    "build": "tamagui build --target web --output ./dist ./src && next build"
+  }
+}
+```
+
+With `--output`, your source files are never modified. The optimized files are
+written to the output directory with their directory structure preserved.
+
+**Using --output-around (platform-specific files):**
+
+The `--output-around` flag creates optimized platform-specific files (`.web.tsx` or
+`.native.tsx`) next to your source files instead of modifying them. Bundlers
+automatically pick up these files via platform-specific resolution:
+
+```json
+{
+  "scripts": {
+    "prebuild:native": "tamagui build --target native --output-around ./src",
+    "prebuild:web": "tamagui build --target web --output-around ./src"
+  }
+}
+```
+
+This transforms `Button.tsx` → creates `Button.native.tsx` or `Button.web.tsx`
+alongside it. Metro/Expo uses `.native.tsx` on native, and web bundlers use `.web.tsx`.
+
+The Tamagui CLI optimizes your components in-place (or to an output directory),
+then your bundler processes the already-optimized files.
 
 **Learn more:** See the [CLI Guide](/docs/guides/cli) for documentation on all
 CLI commands including `check`, `generate`, `add`, and more.

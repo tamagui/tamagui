@@ -9,7 +9,7 @@ import type { CLIResolvedOptions, TamaguiOptions } from '@tamagui/types'
 import chokidar from 'chokidar'
 import { copyFile, mkdir, readFile, rm, stat, writeFile } from 'fs-extra'
 import MicroMatch from 'micromatch'
-import { basename, dirname, extname, join, resolve } from 'node:path'
+import { basename, dirname, extname, join, relative, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 import { execSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
@@ -57,6 +57,7 @@ export const build = async (
     include?: string
     exclude?: string
     output?: string
+    outputAround?: boolean
     expectOptimizations?: number
     runCommand?: string[]
     dryRun?: boolean
@@ -64,6 +65,7 @@ export const build = async (
 ): Promise<BuildResult> => {
   const sourceDir = options.dir ?? '.'
   const outputDir = options.output
+  const outputAround = options.outputAround || false
   const promises: Promise<void>[] = []
   const isDryRun = options.dryRun || false
 
@@ -255,18 +257,28 @@ export const build = async (
               }
               console.info(`\njs:\n${jsContent}`)
             } else {
+              // compute relative path to preserve directory structure in output
+              const relPath = outputDir
+                ? relative(resolve(sourceDir), sourcePath)
+                : basename(sourcePath)
               const cssName = '_' + basename(sourcePath, extname(sourcePath))
-              const outputBase = outputDir || dirname(sourcePath)
+              const outputBase = outputDir
+                ? join(outputDir, dirname(relPath))
+                : dirname(sourcePath)
+
+              // ensure output subdirectory exists
+              if (outputDir) {
+                await mkdir(outputBase, { recursive: true })
+              }
+
               const stylePath = join(outputBase, cssName + '.css')
               const cssImport = `import "./${cssName}.css"`
               const jsContent =
                 typeof out.js === 'string' ? out.js : out.js.toString('utf-8')
               const code = insertCssImport(jsContent, cssImport)
 
-              // Determine output path for JS
-              const webOutputPath = outputDir
-                ? join(outputDir, basename(sourcePath))
-                : sourcePath
+              // Determine output path for JS (preserve directory structure)
+              const webOutputPath = outputDir ? join(outputDir, relPath) : sourcePath
 
               // Track original file before modifying (skip if using output dir)
               if (!outputDir) {
@@ -318,7 +330,8 @@ export const build = async (
             }
           } else {
             // Determine output path:
-            // - If --output specified, write to output dir with same basename
+            // - If --output-around, write .native.tsx next to source
+            // - If --output specified, preserve directory structure
             // - If this IS a .native.tsx file, overwrite it
             // - If building both targets from base file, create .native.tsx
             // - If single native target, overwrite source
@@ -326,43 +339,77 @@ export const build = async (
             const isPlatformSpecific = /\.(web|native|ios|android)\.(tsx|jsx)$/.test(
               sourcePath
             )
-            if (outputDir) {
-              // Write to output directory with same filename
-              nativeOutputPath = join(outputDir, basename(sourcePath))
-            } else if (!isPlatformSpecific && filePlatforms.length > 1) {
+            const needsNativeSuffix =
+              !isPlatformSpecific && (filePlatforms.length > 1 || outputAround)
+
+            if (outputAround) {
+              // Output .native.tsx next to source file
+              nativeOutputPath = sourcePath.replace(/\.(tsx|jsx)$/, '.native.$1')
+              // Check if file exists - error if so
+              const exists = await stat(nativeOutputPath).catch(() => null)
+              if (exists) {
+                throw new Error(
+                  `--output-around: ${nativeOutputPath} already exists. Remove it first or use --output instead.`
+                )
+              }
+            } else if (outputDir) {
+              // preserve directory structure in output
+              const relPath = relative(resolve(sourceDir), sourcePath)
+              // add .native suffix when building both targets to avoid overwriting web output
+              const outputRelPath = needsNativeSuffix
+                ? relPath.replace(/\.(tsx|jsx)$/, '.native.$1')
+                : relPath
+              nativeOutputPath = join(outputDir, outputRelPath)
+              // ensure output subdirectory exists
+              await mkdir(dirname(nativeOutputPath), { recursive: true })
+            } else if (needsNativeSuffix) {
               // Base file building both targets - create separate .native.tsx
               nativeOutputPath = sourcePath.replace(/\.(tsx|jsx)$/, '.native.$1')
             }
 
             if (nativeOut.code) {
               // check if extraction actually happened by looking for our markers
-              const hasExtraction = nativeOut.code.includes('__ReactNativeStyleSheet') ||
-                nativeOut.code.includes('__withStableStyle')
+              const hasExtraction =
+                nativeOut.code.includes('__ReactNativeStyleSheet') ||
+                nativeOut.code.includes('_withStableStyle')
               if (hasExtraction) {
                 stats.filesProcessed++
                 // count styled wrappers as flattened (native extraction flattens styles)
-                const wrapperMatches = nativeOut.code.match(/__withStableStyle/g)
+                const wrapperMatches = nativeOut.code.match(/_withStableStyle/g)
                 if (wrapperMatches) {
                   stats.flattened += wrapperMatches.length
                 }
               }
 
-              // Track original if overwriting existing file (skip if using output dir)
-              if (!outputDir && (nativeOutputPath === sourcePath || filePlatforms.length === 1)) {
+              // Track original if overwriting existing file (skip if using output dir or outputAround)
+              if (
+                !outputDir &&
+                !outputAround &&
+                (nativeOutputPath === sourcePath || filePlatforms.length === 1)
+              ) {
                 await trackFile(nativeOutputPath)
               }
               await writeFile(nativeOutputPath, nativeOut.code, 'utf-8')
-              if (!outputDir) {
+              if (!outputDir && !outputAround) {
                 await recordMtime(nativeOutputPath)
               }
 
-              // If creating new .native.tsx, track for deletion (skip if using output dir)
-              if (!outputDir && nativeOutputPath !== sourcePath && filePlatforms.length > 1) {
+              // If creating new .native.tsx, track for deletion (skip if using output dir or outputAround)
+              if (
+                !outputDir &&
+                !outputAround &&
+                nativeOutputPath !== sourcePath &&
+                filePlatforms.length > 1
+              ) {
                 trackedFiles.push({
                   path: nativeOutputPath,
                   hardlinkPath: '', // Empty = delete on restore
                   mtimeAfterWrite: (await stat(nativeOutputPath)).mtimeMs,
                 })
+              }
+
+              if (outputAround) {
+                console.info(`  → ${nativeOutputPath}`)
               }
             }
           }
