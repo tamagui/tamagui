@@ -15,6 +15,15 @@ type ButtonExtraProps = {
     iconAfter?: IconProp;
     scaleIcon?: number;
     iconSize?: SizeTokens;
+    type?: 'submit' | 'reset' | 'button';
+    form?: string;
+    formAction?: string;
+    formEncType?: string;
+    formMethod?: string;
+    formNoValidate?: boolean;
+    formTarget?: string;
+    name?: string;
+    value?: string | readonly string[] | number;
 };
 declare const ButtonComponent: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;

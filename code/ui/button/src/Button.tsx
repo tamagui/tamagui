@@ -192,6 +192,17 @@ type ButtonExtraProps = {
   iconAfter?: IconProp
   scaleIcon?: number
   iconSize?: SizeTokens
+
+  // native button html props
+  type?: 'submit' | 'reset' | 'button'
+  form?: string
+  formAction?: string
+  formEncType?: string
+  formMethod?: string
+  formNoValidate?: boolean
+  formTarget?: string
+  name?: string
+  value?: string | readonly string[] | number
 }
 
 const ButtonComponent = Frame.styleable<ButtonExtraProps>((propsIn, ref) => {
