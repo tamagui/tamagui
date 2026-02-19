@@ -16,6 +16,7 @@ import {
   createTeamInvoice,
 } from '~/features/auth/supabaseAdmin'
 import { sendProductRenewalEmail, sendV1ExpirationEmail } from '~/features/email/helpers'
+import { captureServerError } from '~/features/posthog'
 import { stripe } from '~/features/stripe/stripe'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
@@ -183,6 +184,10 @@ export default apiRoute(async (req) => {
   } catch (err) {
     console.error(`Error occurred in stripe webook endpoint: ${event?.type}`)
     console.error(`Event object: ${JSON.stringify(event?.data.object || null)}`)
+    captureServerError(err as Error, {
+      endpoint: '/api/stripe/webhook',
+      eventType: event?.type,
+    })
     throw err
   }
 })

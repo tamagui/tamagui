@@ -1,6 +1,7 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
+import { captureServerError } from '~/features/posthog'
 import { stripe } from '~/features/stripe/stripe'
 import type Stripe from 'stripe'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
@@ -113,6 +114,7 @@ export default apiRoute(async (req) => {
     }
   } catch (error) {
     console.error('Error creating subscription:', error)
+    captureServerError(error as Error, { endpoint: '/api/create-subscription' })
     return Response.json({ error: 'Failed to create subscription' }, { status: 500 })
   }
 })

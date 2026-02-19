@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import { processError } from '~/features/posthog/errorHandling'
 
 export class ErrorBoundary extends Component<any> {
   constructor(props) {
@@ -11,7 +12,17 @@ export class ErrorBoundary extends Component<any> {
     return { hasError: true }
   }
 
-  componentDidCatch(error, errorInfo) {}
+  componentDidCatch(error, errorInfo) {
+    processError({
+      error,
+      context: {
+        url: typeof window !== 'undefined' ? window.location.href : undefined,
+        additional: { componentStack: errorInfo?.componentStack },
+      },
+      severity: 'high',
+      tags: { source: 'error_boundary' },
+    })
+  }
 
   render() {
     if (this.state.hasError) {
