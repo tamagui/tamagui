@@ -1,6 +1,6 @@
 import { defaultConfig } from '@tamagui/config/v5'
+import { animationsMotion } from '@tamagui/config/v5-motion'
 import { createTamagui } from 'tamagui'
-import { animationsMotion } from './animationMotion'
 
 const customColors = {
   testColor: '#00ff00',

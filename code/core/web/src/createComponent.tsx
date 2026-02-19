@@ -415,7 +415,8 @@ export function createComponent<
       noClass,
       state,
       stateRef,
-      supportsCSS,
+      inputStyle,
+      outputStyle,
       willBeAnimated,
       willBeAnimatedClient,
       startedUnhydrated,
@@ -568,7 +569,7 @@ export function createComponent<
         if (isWeb) {
           console.info(`%c ${banner}`, 'background: green; color: white;')
           if (isServer) {
-            log({ noClass, isAnimated, isWeb, supportsCSS })
+            log({ noClass, isAnimated, isWeb, inputStyle })
           } else {
             // if strict mode or something messes with our nesting this fixes:
             console.groupEnd()
@@ -591,7 +592,7 @@ export function createComponent<
           )
           log(`children:`, props.children)
           log({ overriddenContextProps, styledContextValue })
-          log({ noClass, isAnimated, isWeb, supportsCSS })
+          log({ noClass, isAnimated, isWeb, inputStyle })
         }
       }
     }
@@ -613,7 +614,7 @@ export function createComponent<
 
     const resolveValues =
       // if HOC + mounted + has animation prop, resolve as value so it passes non-variable to child
-      (isAnimated && !supportsCSS) ||
+      (isAnimated && inputStyle !== 'css') ||
       (isHOC && state.unmounted == false && hasAnimationProp)
         ? 'value'
         : 'auto'
@@ -940,7 +941,9 @@ export function createComponent<
     let animationStyles: any
     const shouldUseAnimation =
       // if it supports css vars we run it on server too to get matching initial style
-      (supportsCSS ? willBeAnimatedClient : willBeAnimated) && useAnimations && !isHOC
+      (inputStyle === 'css' ? willBeAnimatedClient : willBeAnimated) &&
+      useAnimations &&
+      !isHOC
 
     let animatedRef
 
@@ -1116,7 +1119,7 @@ export function createComponent<
         // For CSS transitions, we need browser to paint enterStyle before removing it.
         // Double RAF guarantees paint: first RAF schedules after current frame,
         // second RAF schedules after that frame completes (including paint).
-        if (supportsCSS) {
+        if (inputStyle === 'css') {
           let cancelled = false
           requestAnimationFrame(() => {
             if (cancelled) return
@@ -1137,7 +1140,7 @@ export function createComponent<
         componentSetStates.delete(setState)
         stateRef.current.mediaEmitCleanup?.()
       }
-    }, [state.unmounted, supportsCSS])
+    }, [state.unmounted, inputStyle])
 
     useIsomorphicLayoutEffect(() => {
       if (disabled) return

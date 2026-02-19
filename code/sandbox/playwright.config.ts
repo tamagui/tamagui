@@ -51,8 +51,6 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [['html', { outputFolder: '.playwright-report' }]],
   outputDir: '.playwright-results',
-  // skip in CI - sandbox tests are for local dev only
-  testIgnore: process.env.CI ? ['**/*'] : [],
   use: {
     trace: 'on-first-retry',
   },

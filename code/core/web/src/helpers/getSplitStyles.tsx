@@ -1066,7 +1066,7 @@ export const getSplitStyles: StyleSplitter = (
 
       if (!styleProps.noExpand && !styleProps.noMergeStyle) {
         // shouldn't this be better? but breaks some tests weirdly, need to check
-        if (isWeb && (isReactNative ? !animationDriver.supportsCSS : true)) {
+        if (isWeb && (isReactNative ? animationDriver.inputStyle !== 'css' : true)) {
           styleToCSS(styleState.style)
         }
       }
@@ -1117,7 +1117,7 @@ export const getSplitStyles: StyleSplitter = (
       !styleProps.noNormalize &&
       !staticConfig.isReactNative &&
       !staticConfig.isHOC &&
-      (!styleProps.isAnimated || animationDriver.supportsCSS)
+      (!styleProps.isAnimated || animationDriver.inputStyle === 'css')
 
     if (shouldStringifyTransforms && Array.isArray(styleState.style?.transform)) {
       styleState.style.transform = transformsToString(styleState.style!.transform) as any
@@ -1143,9 +1143,12 @@ export const getSplitStyles: StyleSplitter = (
 
           // or not animated but you have animateOnly
           // (moves it to style={}, nice to avoid generating lots of classnames)
+          // only apply this optimization when outputStyle is 'css' (always className)
+          // for 'inline' drivers, we need className during SSR for hydration consistency
           const nonAnimatedTransitionOnly =
             !isAnimatedAndTransitionOnly &&
             !styleProps.isAnimated &&
+            animationDriver?.outputStyle === 'css' &&
             props.animateOnly?.includes(key)
 
           if (isAnimatedAndTransitionOnly) {
@@ -1283,7 +1286,7 @@ export const getSplitStyles: StyleSplitter = (
           if (style) {
             viewProps.style = style as any
           }
-          if (animationDriver?.supportsCSS) {
+          if (animationDriver?.inputStyle === 'css') {
             viewProps.className = finalClassName
           }
         } else if (isReactNative) {

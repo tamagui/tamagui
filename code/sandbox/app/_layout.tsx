@@ -1,3 +1,4 @@
+import { animationsMotion } from '@tamagui/config/v5-motion'
 import { Image } from '@tamagui/image'
 import './_layout.css'
 import './tamagui.generated.css'
@@ -9,7 +10,6 @@ import { Configuration, isWeb, TamaguiProvider, XStack, YStack } from 'tamagui'
 import { ToggleThemeButton } from '~/components/ToggleThemeButton'
 import config from '~/config/tamagui/tamagui.config'
 import oneBall from '~/public/app-icon.png'
-import { animationsMotion } from '../config/tamagui/animationMotion'
 
 export default function Layout() {
   return (

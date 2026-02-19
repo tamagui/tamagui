@@ -55,10 +55,8 @@ export const useComponentState = (
     (props.style && hasAnimatedStyleValue(props.style))
   )
 
-  // for backwards compat, derive from supportsCSS if new props not set
-  const inputStyle =
-    animationDriver?.inputStyle ?? (animationDriver?.supportsCSS ? 'css' : 'inline')
-  const supportsCSS = inputStyle === 'css'
+  const inputStyle = animationDriver?.inputStyle ?? 'css'
+  const outputStyle = animationDriver?.outputStyle ?? 'css'
   const curStateRef = stateRef.current
 
   if (!needsHydration && hasAnimationProp) {
@@ -94,7 +92,9 @@ export const useComponentState = (
   const hasEnterStyle = !!props.enterStyle
 
   const hasAnimationThatNeedsHydrate =
-    hasAnimationProp && !isHydrated && (animationDriver?.isReactNative || !supportsCSS)
+    hasAnimationProp &&
+    !isHydrated &&
+    (animationDriver?.isReactNative || inputStyle !== 'css')
 
   const canImmediatelyEnter = hasEnterStyle || isEntering
 
@@ -208,8 +208,8 @@ export const useComponentState = (
       const isDisabledManually = disableClassName && !state.unmounted
 
       if (
-        // Only disable className for animation drivers that need inline styles
-        (isAnimatedAndHydrated && !animationDriver?.classNameAnimation) ||
+        // Only disable className for animation drivers that output inline styles (not css)
+        (isAnimatedAndHydrated && outputStyle !== 'css') ||
         isDisabledManually ||
         isClassNameDisabled
       ) {
@@ -243,7 +243,8 @@ export const useComponentState = (
     noClass,
     state,
     stateRef,
-    supportsCSS,
+    inputStyle,
+    outputStyle,
     willBeAnimated,
     willBeAnimatedClient,
   }

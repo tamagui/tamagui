@@ -9,6 +9,8 @@ declare module 'one' {
       StaticRoutes: 
         | `/`
         | `/_sitemap`
+        | `/hydration-css`
+        | `/hydration-motion`
         | `/motion-hydration-test`
         | `/sandbox`
         | `/sandbox-ssr`

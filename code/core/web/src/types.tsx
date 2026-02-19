@@ -3169,7 +3169,6 @@ export type UseAnimatedNumber<
 
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   isReactNative?: boolean
-  supportsCSS?: boolean
   /** What style format the driver expects as input: 'css' (CSS variables) or 'value' (resolved values) */
   inputStyle?: 'css' | 'value'
   /** How the driver outputs styles: 'css' (className-based) or 'inline' (style object) */
@@ -3179,8 +3178,6 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   onMount?: () => void
   /** When true, this is a stub driver with no real animation support */
   isStub?: boolean
-  /** When true, the driver uses CSS classes for animations (doesn't need inline styles) */
-  classNameAnimation?: boolean
   useAnimations: UseAnimationHook
   usePresence: () => UsePresenceResult
   ResetPresence: (props: {

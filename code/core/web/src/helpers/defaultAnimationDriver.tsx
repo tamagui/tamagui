@@ -8,10 +8,8 @@ const noAnimationDriver = (method: string): any => {
 
 const createEmptyAnimationDriver = (): AnimationDriver => ({
   isReactNative: false,
-  supportsCSS: true,
   inputStyle: 'css',
   outputStyle: 'css',
-  classNameAnimation: true,
   isStub: true,
   animations: {},
   useAnimations: () => noAnimationDriver('animations'),
