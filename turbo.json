@@ -22,8 +22,14 @@
       "outputs": []
     },
     "typecheck": {
-      "cache": false,
-      "outputs": []
+      "dependsOn": ["^build"],
+      "inputs": ["src/**/*.ts", "src/**/*.tsx", "tsconfig.json", "tsconfig.*.json", "../../tsconfig.json", "../../tsconfig.build.json"],
+      "outputs": ["types/**"]
+    },
+    "typecheck:root": {
+      "dependsOn": ["^build"],
+      "inputs": ["code/**/src/**/*.ts", "code/**/src/**/*.tsx", "**/tsconfig.json", "tsconfig.build.json"],
+      "outputs": ["code/**/types/**"]
     },
     "start": {
       "dependsOn": ["^build"],
@@ -31,27 +37,41 @@
     },
     "test": {
       "dependsOn": ["^build:js"],
-      "inputs": ["../../bun.lockb", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+      "inputs": ["../../bun.lockb", "src/**", "tests/**", "__tests__/**", "*.config.*"],
       "outputs": [],
       "env": [
         "TAMAGUI_TARGET",
+        "TAMAGUI_TEST_ANIMATION_DRIVER",
         "TEST_NATIVE_PLATFORM",
         "DISABLE_NATIVE_TEST",
         "DISABLE_REACT_NATIVE",
-        "SKIP_NATIVE_TESTS"
+        "SKIP_NATIVE_TESTS",
+        "NODE_ENV"
       ],
       "passThroughEnv": [
         "TAMAGUI_TARGET",
+        "TAMAGUI_TEST_ANIMATION_DRIVER",
         "TEST_NATIVE_PLATFORM",
         "DISABLE_NATIVE_TEST",
         "DISABLE_REACT_NATIVE",
-        "SKIP_NATIVE_TESTS"
+        "SKIP_NATIVE_TESTS",
+        "NODE_ENV"
       ]
     },
     "test:web": {
       "dependsOn": ["^build:js"],
-      "inputs": ["../../bun.lockb", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
-      "outputs": []
+      "inputs": ["../../bun.lockb", "src/**", "tests/**", "__tests__/**", "*.config.*"],
+      "outputs": [],
+      "env": [
+        "TAMAGUI_TARGET",
+        "TAMAGUI_TEST_ANIMATION_DRIVER",
+        "NODE_ENV"
+      ],
+      "passThroughEnv": [
+        "TAMAGUI_TARGET",
+        "TAMAGUI_TEST_ANIMATION_DRIVER",
+        "NODE_ENV"
+      ]
     },
     "test:native": {
       "dependsOn": ["^build:js"],
