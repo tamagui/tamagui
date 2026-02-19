@@ -22,13 +22,7 @@ const importStyleSheet = template(`
 const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 `)
 
-const importWithStyle = template.ast(
-  `import { _withStableStyle as __withStableStyle } from '@tamagui/core';`
-)
-
-const importReactUseMemo = template(`
-const __ReactUseMemo = require('react').useMemo;
-`)
+const importWithStyle = template.ast(`import { _withStableStyle } from '@tamagui/core';`)
 
 const extractor = createExtractor({ platform: 'native' })
 
@@ -334,7 +328,6 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                 ) {
                   if (!hasImportedViewWrapper) {
                     root.unshiftContainer('body', importWithStyle)
-                    root.unshiftContainer('body', importReactUseMemo())
                     hasImportedViewWrapper = true
                   }
 
@@ -350,25 +343,12 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                     t.variableDeclaration('const', [
                       t.variableDeclarator(
                         WrapperIdentifier,
-                        t.callExpression(t.identifier('__withStableStyle'), [
+                        t.callExpression(t.identifier('_withStableStyle'), [
                           t.identifier(name),
                           t.arrowFunctionExpression(
                             [t.identifier('theme'), t.identifier('_expressions')],
-                            t.blockStatement([
-                              t.returnStatement(
-                                t.callExpression(t.identifier('__ReactUseMemo'), [
-                                  t.arrowFunctionExpression(
-                                    [],
-                                    t.blockStatement([
-                                      t.returnStatement(
-                                        t.arrayExpression([...hocStylesExpr.elements])
-                                      ),
-                                    ])
-                                  ),
-                                  t.identifier('_expressions'),
-                                ])
-                              ),
-                            ])
+                            // return styles directly - no useMemo, theme changes must trigger style recalc
+                            t.arrayExpression([...hocStylesExpr.elements])
                           ),
                         ])
                       ),

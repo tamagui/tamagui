@@ -20,19 +20,14 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "2": {}
 });
-const __ReactUseMemo = require('react').useMemo;
-import { _withStableStyle as __withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test() {
   return <_ReactNativeViewStyled0 _expressions={["gtMd"]} />;
 }
-const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return __ReactUseMemo(() => {
-    return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
-  }, _expressions);
-});"
+const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]]);"
 `;
 
 exports[`$md and $gtMd media queries should respect breakpoint boundaries 1`] = `
@@ -62,19 +57,14 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "4": {}
 });
-const __ReactUseMemo = require('react').useMemo;
-import { _withStableStyle as __withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test() {
   return <_ReactNativeViewStyled0 _expressions={["md", "gtMd"]} />;
 }
-const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return __ReactUseMemo(() => {
-    return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"], _expressions[1] ? _sheet["3"] : _sheet["4"]];
-  }, _expressions);
-});"
+const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"], _expressions[1] ? _sheet["3"] : _sheet["4"]]);"
 `;
 
 exports[`basic conditional extraction 1`] = `
@@ -97,8 +87,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "5": {}
 });
-const __ReactUseMemo = require('react').useMemo;
-import { _withStableStyle as __withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -109,16 +98,8 @@ export function Test() {
           <_ReactNativeViewStyled1 _expressions={[x]} />
         </>;
 }
-const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return __ReactUseMemo(() => {
-    return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
-  }, _expressions);
-});
-const _ReactNativeViewStyled1 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return __ReactUseMemo(() => {
-    return [_sheet["3"], _expressions[0] ? _sheet["4"] : _sheet["5"]];
-  }, _expressions);
-});"
+const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]]);
+const _ReactNativeViewStyled1 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["3"], _expressions[0] ? _sheet["4"] : _sheet["5"]]);"
 `;
 
 exports[`basic extraction 1`] = `
@@ -188,19 +169,14 @@ const _sheet = __ReactNativeStyleSheet.create({
     }]
   }
 });
-const __ReactUseMemo = require('react').useMemo;
-import { _withStableStyle as __withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test(isLoading) {
   return <_ReactNativeViewStyled0 _expressions={[isLoading]} />;
 }
-const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return __ReactUseMemo(() => {
-    return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
-  }, _expressions);
-});"
+const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]]);"
 `;
 
 exports[`handles style order merge properly 1`] = `
@@ -258,8 +234,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "8": {}
 });
-const __ReactUseMemo = require('react').useMemo;
-import { _withStableStyle as __withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack, XStack } from 'tamagui';
@@ -270,21 +245,9 @@ export function Test() {
           <_ReactNativeViewStyled2 _expressions={["sm"]} />
         </>;
 }
-const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return __ReactUseMemo(() => {
-    return [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]];
-  }, _expressions);
-});
-const _ReactNativeViewStyled1 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return __ReactUseMemo(() => {
-    return [_sheet["3"], _expressions[0] ? _sheet["4"] : _sheet["5"]];
-  }, _expressions);
-});
-const _ReactNativeViewStyled2 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return __ReactUseMemo(() => {
-    return [_sheet["6"], _expressions[0] ? _sheet["7"] : _sheet["8"]];
-  }, _expressions);
-});"
+const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"]]);
+const _ReactNativeViewStyled1 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["3"], _expressions[0] ? _sheet["4"] : _sheet["5"]]);
+const _ReactNativeViewStyled2 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["6"], _expressions[0] ? _sheet["7"] : _sheet["8"]]);"
 `;
 
 exports[`normalize dynamic values with no theme access 1`] = `
@@ -304,21 +267,16 @@ const _sheet = __ReactNativeStyleSheet.create({
     "flexDirection": "column"
   }
 });
-const __ReactUseMemo = require('react').useMemo;
-import { _withStableStyle as __withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test(props) {
   return <_ReactNativeViewStyled0 />;
 }
-const _ReactNativeViewStyled0 = __withStableStyle(__ReactNativeView, (theme, _expressions) => {
-  return __ReactUseMemo(() => {
-    return [_sheet["0"], {
-      "backgroundColor": theme.color.get()
-    }];
-  }, _expressions);
-});"
+const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], {
+  "backgroundColor": theme.color.get()
+}]);"
 `;
 
 exports[`normalize ternaries flips the conditional properly 1`] = `
@@ -377,19 +335,14 @@ const _sheet = __ReactNativeStyleSheet.create({
     "lineHeight": 23
   }
 });
-const __ReactUseMemo = require('react').useMemo;
-import { _withStableStyle as __withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { Paragraph } from 'tamagui';
 export function Test() {
   return <_ReactNativeTextStyled0>hello world</_ReactNativeTextStyled0>;
 }
-const _ReactNativeTextStyled0 = __withStableStyle(__ReactNativeText, (theme, _expressions) => {
-  return __ReactUseMemo(() => {
-    return [_sheet["0"], {
-      "color": theme.color.get()
-    }];
-  }, _expressions);
-});"
+const _ReactNativeTextStyled0 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["0"], {
+  "color": theme.color.get()
+}]);"
 `;
