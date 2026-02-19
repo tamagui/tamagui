@@ -107,7 +107,7 @@ export async function extractToClassNames({
     sourcePath,
     extractStyledDefinitions: true,
     onStyledDefinitionRule(identifier, rules) {
-      const css = rules.join(';')
+      const css = rules.join('\n')
       if (shouldPrintDebug) {
         console.info(`adding styled() rule: .${identifier} ${css}`)
       }
