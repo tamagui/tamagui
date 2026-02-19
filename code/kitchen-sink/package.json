@@ -112,7 +112,7 @@
     "html-webpack-plugin": "^5.5.0",
     "jest": "^29",
     "mini-css-extract-plugin": "^2.9.1",
-    "one": "1.9.0",
+    "one": "1.9.5",
     "pngjs": "^7.0.0",
     "pod-install": "^0.3.2",
     "tilg": "0.1.1",

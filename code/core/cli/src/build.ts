@@ -340,10 +340,9 @@ export const build = async (
                 nativeOut.code.includes('__withStableStyle')
               if (hasExtraction) {
                 stats.filesProcessed++
-                // count styled wrappers as optimizations
+                // count styled wrappers as flattened (native extraction flattens styles)
                 const wrapperMatches = nativeOut.code.match(/__withStableStyle/g)
                 if (wrapperMatches) {
-                  stats.optimized += wrapperMatches.length
                   stats.flattened += wrapperMatches.length
                 }
               }
