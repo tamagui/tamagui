@@ -51,6 +51,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: [['html', { outputFolder: '.playwright-report' }]],
   outputDir: '.playwright-results',
+  timeout: 30000, // 30s per test for debugging
   use: {
     trace: 'on-first-retry',
   },

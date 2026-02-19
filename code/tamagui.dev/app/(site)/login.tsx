@@ -219,9 +219,7 @@ function SignIn() {
                         disabled={emailAuthDisabledFlag}
                       />
                       <Button
-                        // @ts-ignore
                         type="submit"
-                        loading={loading}
                         disabled={
                           !password.length || !email.length || emailAuthDisabledFlag
                         }

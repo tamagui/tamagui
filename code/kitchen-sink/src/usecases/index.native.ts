@@ -1,5 +1,6 @@
 export { ActionsSheetComparison } from './ActionsSheetComparison'
 export { AnimatedByProp } from './AnimatedByProp'
+export { AnimatePresenceExitTest } from './AnimatePresenceExitTest'
 export { AnimationComprehensiveCase } from './AnimationComprehensiveCase'
 export { Benchmark } from './Benchmark'
 export { ButtonCircular } from './ButtonCircular'

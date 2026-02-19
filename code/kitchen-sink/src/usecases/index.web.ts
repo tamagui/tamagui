@@ -4,6 +4,7 @@
 // - react-native-teleport
 
 export { AnimatedByProp } from './AnimatedByProp'
+export { AnimatePresenceExitTest } from './AnimatePresenceExitTest'
 export { AnimationComprehensiveCase } from './AnimationComprehensiveCase'
 export { RawAnimatedValueCase } from './RawAnimatedValueCase'
 export { AnimationsWithMediaQueriesCase } from './AnimationsWithMediaQueriesCase'
