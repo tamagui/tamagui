@@ -1,11 +1,12 @@
 import { ClientOnly } from '@tamagui/use-did-finish-ssr'
 import React from 'react'
 import { ComponentContext } from '../contexts/ComponentContext'
-import type { AnimationDriver } from '../types'
+import type { AnimationDriver, IconSizing } from '../types'
 
 interface ConfigurationProps {
   animationDriver?: AnimationDriver | null
   disableSSR?: boolean
+  iconSizing?: IconSizing
   children: React.ReactNode
 }
 

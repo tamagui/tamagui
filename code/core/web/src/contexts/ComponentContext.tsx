@@ -9,6 +9,7 @@ export const ComponentContext = createStyledContext<ComponentContextI>({
   animationDriver: null,
   setParentFocusState: null,
   insets: null,
+  iconSizing: undefined,
 })
 
 export const useConfiguration = () => {
