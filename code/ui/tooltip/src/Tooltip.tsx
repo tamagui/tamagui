@@ -4,7 +4,6 @@ import {
   FloatingDelayGroup,
   useDelayGroup,
   useDelayGroupContext,
-  useDismiss,
   useFloating,
   useFocus,
   useHover,
@@ -231,7 +230,6 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       }),
       useFocus(floating.context, focus),
       useRole(floating.context, { role: 'tooltip' }),
-      useDismiss(floating.context),
     ])
     return {
       ...floating,
