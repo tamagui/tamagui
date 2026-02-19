@@ -566,7 +566,7 @@ export function createBaseMenu({
 
     return (
       <Animate type="presence" present={isPresent}>
-        <PortalPrimitive>
+        <PortalPrimitive stackZIndex>
           <>
             <PortalProvider scope={scope} forceMount={forceMount}>
               <View zIndex={zIndex || 100} inset={0} position="absolute">
