@@ -2,7 +2,7 @@ import { getFontSize } from '@tamagui/font-size'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { getSize, getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
-import { getIcon, useCurrentColor } from '@tamagui/helpers-tamagui'
+import { getIcon } from '@tamagui/helpers-tamagui'
 import { YStack } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
@@ -199,13 +199,12 @@ const ListItemIcon = (props: {
   }
 
   const sizeToken = size ?? styledContext.size ?? '$true'
-  const iconColor = useCurrentColor(styledContext.color)
 
   const iconSize = getFontSize(sizeToken as any) * scaleIcon
 
   return getIcon(children, {
     size: iconSize,
-    color: iconColor,
+    color: styledContext.color,
   })
 }
 
@@ -225,7 +224,6 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
 
     const size = propsIn.size || '$true'
     const styledContext = context.useStyledContext()
-    const iconColor = useCurrentColor(styledContext?.color)
     const iconSizeNumber = getFontSize(iconSize || (size as any)) * scaleIcon
 
     const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon, i) => {
@@ -233,7 +231,7 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
       const isBefore = i === 0
       return getIcon(icon, {
         size: iconSizeNumber,
-        color: iconColor,
+        color: styledContext?.color,
         [isBefore ? 'marginRight' : 'marginLeft']: `${iconSizeNumber * 0.4}%`,
       })
     })
