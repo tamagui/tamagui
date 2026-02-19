@@ -56,17 +56,24 @@ export const build = async (
     dir?: string
     include?: string
     exclude?: string
+    output?: string
     expectOptimizations?: number
     runCommand?: string[]
     dryRun?: boolean
   }
 ): Promise<BuildResult> => {
   const sourceDir = options.dir ?? '.'
+  const outputDir = options.output
   const promises: Promise<void>[] = []
   const isDryRun = options.dryRun || false
 
   if (isDryRun) {
     console.info('[dry-run] no files will be written\n')
+  }
+
+  // create output directory if specified
+  if (outputDir) {
+    await mkdir(outputDir, { recursive: true })
   }
 
   const buildOptions = loadTamaguiBuildConfigSync(options.tamaguiOptions)
@@ -249,27 +256,39 @@ export const build = async (
               console.info(`\njs:\n${jsContent}`)
             } else {
               const cssName = '_' + basename(sourcePath, extname(sourcePath))
-              const stylePath = join(dirname(sourcePath), cssName + '.css')
+              const outputBase = outputDir || dirname(sourcePath)
+              const stylePath = join(outputBase, cssName + '.css')
               const cssImport = `import "./${cssName}.css"`
               const jsContent =
                 typeof out.js === 'string' ? out.js : out.js.toString('utf-8')
               const code = insertCssImport(jsContent, cssImport)
 
-              // Track original file before modifying
-              await trackFile(sourcePath)
+              // Determine output path for JS
+              const webOutputPath = outputDir
+                ? join(outputDir, basename(sourcePath))
+                : sourcePath
+
+              // Track original file before modifying (skip if using output dir)
+              if (!outputDir) {
+                await trackFile(sourcePath)
+              }
 
               // Write web output
-              await writeFile(sourcePath, code, 'utf-8')
-              await recordMtime(sourcePath)
+              await writeFile(webOutputPath, code, 'utf-8')
+              if (!outputDir) {
+                await recordMtime(sourcePath)
+              }
 
-              // CSS file is new, track for cleanup
+              // CSS file is new, track for cleanup (skip if using output dir)
               await writeFile(stylePath, out.styles, 'utf-8')
-              // Note: CSS files are new (generated), we'll delete them on restore
-              trackedFiles.push({
-                path: stylePath,
-                hardlinkPath: '', // Empty means delete on restore
-                mtimeAfterWrite: (await stat(stylePath)).mtimeMs,
-              })
+              if (!outputDir) {
+                // Note: CSS files are new (generated), we'll delete them on restore
+                trackedFiles.push({
+                  path: stylePath,
+                  hardlinkPath: '', // Empty means delete on restore
+                  mtimeAfterWrite: (await stat(stylePath)).mtimeMs,
+                })
+              }
             }
           } else if (isDryRun) {
             console.info(`  web: no output`)
@@ -299,6 +318,7 @@ export const build = async (
             }
           } else {
             // Determine output path:
+            // - If --output specified, write to output dir with same basename
             // - If this IS a .native.tsx file, overwrite it
             // - If building both targets from base file, create .native.tsx
             // - If single native target, overwrite source
@@ -306,21 +326,39 @@ export const build = async (
             const isPlatformSpecific = /\.(web|native|ios|android)\.(tsx|jsx)$/.test(
               sourcePath
             )
-            if (!isPlatformSpecific && filePlatforms.length > 1) {
+            if (outputDir) {
+              // Write to output directory with same filename
+              nativeOutputPath = join(outputDir, basename(sourcePath))
+            } else if (!isPlatformSpecific && filePlatforms.length > 1) {
               // Base file building both targets - create separate .native.tsx
               nativeOutputPath = sourcePath.replace(/\.(tsx|jsx)$/, '.native.$1')
             }
 
             if (nativeOut.code) {
-              // Track original if overwriting existing file
-              if (nativeOutputPath === sourcePath || filePlatforms.length === 1) {
+              // check if extraction actually happened by looking for our markers
+              const hasExtraction = nativeOut.code.includes('__ReactNativeStyleSheet') ||
+                nativeOut.code.includes('__withStableStyle')
+              if (hasExtraction) {
+                stats.filesProcessed++
+                // count styled wrappers as optimizations
+                const wrapperMatches = nativeOut.code.match(/__withStableStyle/g)
+                if (wrapperMatches) {
+                  stats.optimized += wrapperMatches.length
+                  stats.flattened += wrapperMatches.length
+                }
+              }
+
+              // Track original if overwriting existing file (skip if using output dir)
+              if (!outputDir && (nativeOutputPath === sourcePath || filePlatforms.length === 1)) {
                 await trackFile(nativeOutputPath)
               }
               await writeFile(nativeOutputPath, nativeOut.code, 'utf-8')
-              await recordMtime(nativeOutputPath)
+              if (!outputDir) {
+                await recordMtime(nativeOutputPath)
+              }
 
-              // If creating new .native.tsx, track for deletion
-              if (nativeOutputPath !== sourcePath && filePlatforms.length > 1) {
+              // If creating new .native.tsx, track for deletion (skip if using output dir)
+              if (!outputDir && nativeOutputPath !== sourcePath && filePlatforms.length > 1) {
                 trackedFiles.push({
                   path: nativeOutputPath,
                   hardlinkPath: '', // Empty = delete on restore

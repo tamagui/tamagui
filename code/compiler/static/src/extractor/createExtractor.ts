@@ -85,6 +85,29 @@ export function createExtractor(
       onPressIn: 'onMouseDown',
       onPressOut: 'onMouseUp',
     }),
+    ...(platform === 'native' && {
+      // native view props that should pass through without preventing flattening
+      testID: 'testID',
+      nativeID: 'nativeID',
+      accessibilityLabel: 'accessibilityLabel',
+      accessibilityHint: 'accessibilityHint',
+      accessibilityRole: 'accessibilityRole',
+      accessibilityState: 'accessibilityState',
+      accessibilityValue: 'accessibilityValue',
+      accessibilityActions: 'accessibilityActions',
+      accessibilityLabelledBy: 'accessibilityLabelledBy',
+      accessibilityLiveRegion: 'accessibilityLiveRegion',
+      accessibilityElementsHidden: 'accessibilityElementsHidden',
+      accessibilityViewIsModal: 'accessibilityViewIsModal',
+      importantForAccessibility: 'importantForAccessibility',
+      collapsable: 'collapsable',
+      needsOffscreenAlphaCompositing: 'needsOffscreenAlphaCompositing',
+      removeClippedSubviews: 'removeClippedSubviews',
+      renderToHardwareTextureAndroid: 'renderToHardwareTextureAndroid',
+      shouldRasterizeIOS: 'shouldRasterizeIOS',
+      hitSlop: 'hitSlop',
+      pointerEvents: 'pointerEvents',
+    }),
   }
 
   const componentState: TamaguiComponentState = {

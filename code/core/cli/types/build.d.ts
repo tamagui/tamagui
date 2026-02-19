@@ -25,6 +25,7 @@ export declare const build: (options: CLIResolvedOptions & {
     dir?: string;
     include?: string;
     exclude?: string;
+    output?: string;
     expectOptimizations?: number;
     runCommand?: string[];
     dryRun?: boolean;
