@@ -201,15 +201,23 @@ export function useFocusScope(
   )
   const composedRefs = useComposedRefs(forwardedRef, setContainerRef)
 
-  // Clean up trap on unmount only - trap setup is handled in ref callback
+  // Clean up trap when trapped becomes false or on unmount
   useIsomorphicLayoutEffect(() => {
+    if (!trapped) {
+      // immediately invalidate any pending rAFs
+      focusScope.stopped = true
+      if (trapCleanupRef.current) {
+        trapCleanupRef.current()
+        trapCleanupRef.current = null
+      }
+    }
     return () => {
       if (trapCleanupRef.current) {
         trapCleanupRef.current()
         trapCleanupRef.current = null
       }
     }
-  }, [])
+  }, [trapped, focusScope])
 
   useAsyncEffect(
     async (signal) => {
@@ -217,8 +225,12 @@ export function useFocusScope(
       if (!container) return
       if (forceUnmount) return
 
-      // reset stopped flag when effect starts
-      focusScope.stopped = false
+      // only reset stopped flag when trap is actually active
+      // otherwise a prop change (trapped: true -> false) would reset it
+      // and allow a pending rAF to steal focus
+      if (trapped) {
+        focusScope.stopped = false
+      }
       focusScopesStack.add(focusScope)
       const previouslyFocusedElement = document.activeElement as HTMLElement | null
       const hasFocusedCandidate =

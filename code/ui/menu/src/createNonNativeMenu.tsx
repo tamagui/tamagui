@@ -347,11 +347,13 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
           ref={forwardedRef}
           onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
             if (!hasInteractedOutsideRef.current) {
-              // check if something else already has focus
-              const activeEl = document.activeElement
-              if (!activeEl || activeEl === document.body) {
-                context.triggerRef.current?.focus()
-              }
+              // delay to let React render new components and run their autoFocus effects
+              requestAnimationFrame(() => {
+                const activeEl = document.activeElement
+                if (!activeEl || activeEl === document.body) {
+                  context.triggerRef.current?.focus()
+                }
+              })
             }
             hasInteractedOutsideRef.current = false
             // Always prevent auto focus because we either focus manually or want user agent focus
