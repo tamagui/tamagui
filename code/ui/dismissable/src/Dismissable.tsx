@@ -244,7 +244,10 @@ const Dismissable = React.forwardRef<
     }
     context.layers.add(node)
     globalLayers.add(node)
-    dispatchUpdate()
+    // only dispatch position update when pointer-events tracking is active
+    if (disableOutsidePointerEvents || layersWithPointerEventsDisabledCount > 0) {
+      dispatchUpdate()
+    }
     notifyLayerChange()
     return () => {
       if (disableOutsidePointerEvents) {
@@ -271,7 +274,10 @@ const Dismissable = React.forwardRef<
       context.layers.delete(node)
       context.layersWithOutsidePointerEventsDisabled.delete(node)
       globalLayers.delete(node)
-      dispatchUpdate()
+      // only dispatch position update when pointer-events tracking is active
+      if (layersWithPointerEventsDisabledCount > 0) {
+        dispatchUpdate()
+      }
       notifyLayerChange()
       // decrement count AFTER dispatch so other layers see count > 0 and re-render
       if (hadPointerEventsDisabled) {
