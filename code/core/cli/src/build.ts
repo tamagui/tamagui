@@ -78,7 +78,20 @@ export const build = async (
     await mkdir(outputDir, { recursive: true })
   }
 
-  const buildOptions = loadTamaguiBuildConfigSync(options.tamaguiOptions)
+  const loadedOptions = loadTamaguiBuildConfigSync(options.tamaguiOptions)
+
+  // when running CLI build directly, ignore disable since user explicitly wants to build
+  if (loadedOptions.disable) {
+    console.warn(
+      `[tamagui] Note: "disable" option in tamagui.build.ts is being ignored for CLI build command`
+    )
+  }
+  const buildOptions = {
+    ...loadedOptions,
+    disable: false,
+    disableExtraction: false,
+  }
+
   const targets =
     options.target === 'both' || !options.target
       ? (['web', 'native'] as const)
