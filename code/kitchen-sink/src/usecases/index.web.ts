@@ -10,6 +10,7 @@ export { AnimationsWithMediaQueriesCase } from './AnimationsWithMediaQueriesCase
 export { Benchmark } from './Benchmark'
 export { ButtonCircular } from './ButtonCircular'
 export { ButtonCustom } from './ButtonCustom'
+export { ButtonIconColor } from './ButtonIconColor'
 export { ButtonInverse } from './ButtonInverse'
 export { ButtonUnstyled } from './ButtonUnstyled'
 export { CheckboxDisabledOnPress } from './CheckboxDisabledOnPress'

@@ -1,6 +1,6 @@
 import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
-import { getIcon } from '@tamagui/helpers-tamagui'
+import { getIcon, useCurrentColor } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext, getElevation, themeableVariants } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { ColorTokens, GetProps, SizeTokens, Token } from '@tamagui/web'
@@ -164,6 +164,7 @@ const Icon = (props: {
   }
 
   const sizeToken = size ?? styledContext.size
+  const iconColor = useCurrentColor(styledContext.color)
 
   const iconSize =
     (typeof sizeToken === 'number' ? sizeToken * 0.5 : getFontSize(sizeToken as Token)) *
@@ -171,7 +172,7 @@ const Icon = (props: {
 
   return getIcon(children, {
     size: iconSize,
-    color: styledContext.color,
+    color: iconColor,
   })
 }
 
@@ -208,6 +209,7 @@ const ButtonComponent = Frame.styleable<ButtonExtraProps>((propsIn, ref) => {
   const size = propsIn.size || (propsIn.unstyled ? undefined : '$true')
 
   const styledContext = context.useStyledContext()
+  const iconColor = useCurrentColor(styledContext?.color)
   const finalSize = iconSize ?? size ?? styledContext?.size
   const iconSizeNumber =
     (typeof finalSize === 'number' ? finalSize * 0.5 : getFontSize(finalSize as Token)) *
@@ -217,7 +219,7 @@ const ButtonComponent = Frame.styleable<ButtonExtraProps>((propsIn, ref) => {
     if (!icon) return null
     return getIcon(icon, {
       size: iconSizeNumber,
-      color: styledContext?.color,
+      color: iconColor,
       // No marginLeft or marginRight needed - spacing is handled by the gap property in Frame's size variants
     })
   })
