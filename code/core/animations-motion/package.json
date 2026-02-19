@@ -41,7 +41,7 @@
     "@tamagui/animation-helpers": "workspace:*",
     "@tamagui/use-presence": "workspace:*",
     "@tamagui/web": "workspace:*",
-    "motion": "^12.29.0"
+    "motion": "^12.34.2"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
