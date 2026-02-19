@@ -94,23 +94,28 @@ export type PopoverContextProviderProps = {
     onOpenChange(open: boolean, via?: 'hover' | 'press'): void;
     onOpenToggle(): void;
     triggerRef: React.RefObject<any>;
+    id?: string;
     contentId?: string;
     hasCustomAnchor?: boolean;
     onCustomAnchorAdd?: () => void;
     onCustomAnchorRemove?: () => void;
     anchorTo?: Rect;
+    adaptScope?: string;
+    breakpointActive?: boolean;
+    keepChildrenMounted?: boolean | 'lazy';
+    disableDismissable?: boolean;
 };
 /**
  * Provider that sets up both PopoverContext and PopoverTriggerContext.
  * Use this in Tooltip or other components that need popover trigger behavior.
  */
-export declare function PopoverContextProvider({ scope, children, open, onOpenChange, onOpenToggle, triggerRef, contentId, hasCustomAnchor, onCustomAnchorAdd, onCustomAnchorRemove, anchorTo, }: PopoverContextProviderProps): import("react/jsx-runtime").JSX.Element;
+export declare const PopoverContextProvider: React.MemoExoticComponent<({ scope, children, open, onOpenChange, onOpenToggle, triggerRef, id, contentId, hasCustomAnchor, onCustomAnchorAdd, onCustomAnchorRemove, anchorTo, adaptScope, breakpointActive, keepChildrenMounted, disableDismissable, }: PopoverContextProviderProps) => import("react/jsx-runtime").JSX.Element>;
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
-export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
+export declare const PopoverAnchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
 export type PopoverTriggerProps = ScopedPopoverProps<ViewProps>;
-export declare const PopoverTrigger: React.ForwardRefExoticComponent<Omit<ViewProps, "scope"> & {
+export declare const PopoverTrigger: React.NamedExoticComponent<Omit<ViewProps, "scope"> & {
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
@@ -223,7 +228,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
      */
     disableDismissable?: boolean;
 } & React.RefAttributes<Popover>> & {
-    Anchor: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
+    Anchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
         scope?: PopoverScopes;
     } & React.RefAttributes<TamaguiElement>>;
     Arrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
@@ -235,7 +240,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Trigger: React.ForwardRefExoticComponent<Omit<ViewProps, "scope"> & {
+    Trigger: React.NamedExoticComponent<Omit<ViewProps, "scope"> & {
         scope?: PopoverScopes;
     } & React.RefAttributes<TamaguiElement>>;
     Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

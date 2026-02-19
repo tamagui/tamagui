@@ -232,66 +232,83 @@ export type PopoverContextProviderProps = {
   onOpenChange(open: boolean, via?: 'hover' | 'press'): void
   onOpenToggle(): void
   triggerRef: React.RefObject<any>
+  id?: string
   contentId?: string
   hasCustomAnchor?: boolean
   onCustomAnchorAdd?: () => void
   onCustomAnchorRemove?: () => void
   anchorTo?: Rect
+  // extra props for Popover (optional for Tooltip)
+  adaptScope?: string
+  breakpointActive?: boolean
+  keepChildrenMounted?: boolean | 'lazy'
+  disableDismissable?: boolean
 }
 
 /**
  * Provider that sets up both PopoverContext and PopoverTriggerContext.
  * Use this in Tooltip or other components that need popover trigger behavior.
  */
-export function PopoverContextProvider({
-  scope,
-  children,
-  open,
-  onOpenChange,
-  onOpenToggle,
-  triggerRef,
-  contentId,
-  hasCustomAnchor = false,
-  onCustomAnchorAdd = voidFn,
-  onCustomAnchorRemove = voidFn,
-  anchorTo,
-}: PopoverContextProviderProps) {
-  const [branches] = React.useState(() => new Set<HTMLElement>())
-  const { setActiveTrigger, registerTrigger, unregisterTrigger } =
-    usePopoverTriggerSetup(open)
+export const PopoverContextProvider = React.memo(
+  ({
+    scope,
+    children,
+    open,
+    onOpenChange,
+    onOpenToggle,
+    triggerRef,
+    id = '',
+    contentId,
+    hasCustomAnchor = false,
+    onCustomAnchorAdd = voidFn,
+    onCustomAnchorRemove = voidFn,
+    anchorTo,
+    adaptScope,
+    breakpointActive,
+    keepChildrenMounted,
+    disableDismissable,
+  }: PopoverContextProviderProps) => {
+    const [branches] = React.useState(() => new Set<HTMLElement>())
+    const { setActiveTrigger, registerTrigger, unregisterTrigger } =
+      usePopoverTriggerSetup(open)
 
-  return (
-    <PopoverContext.Provider
-      scope={scope}
-      popoverScope={scope}
-      id=""
-      contentId={contentId}
-      triggerRef={triggerRef}
-      open={open}
-      onOpenChange={onOpenChange}
-      onOpenToggle={onOpenToggle}
-      hasCustomAnchor={hasCustomAnchor}
-      onCustomAnchorAdd={onCustomAnchorAdd}
-      onCustomAnchorRemove={onCustomAnchorRemove}
-      anchorTo={anchorTo}
-      branches={branches}
-    >
-      <PopoverTriggerContext.Provider
+    return (
+      <PopoverContext.Provider
         scope={scope}
+        popoverScope={scope}
+        adaptScope={adaptScope}
+        id={id}
+        contentId={contentId}
         triggerRef={triggerRef}
+        open={open}
+        onOpenChange={onOpenChange}
+        onOpenToggle={onOpenToggle}
         hasCustomAnchor={hasCustomAnchor}
+        onCustomAnchorAdd={onCustomAnchorAdd}
+        onCustomAnchorRemove={onCustomAnchorRemove}
         anchorTo={anchorTo}
         branches={branches}
-        onOpenToggle={onOpenToggle}
-        setActiveTrigger={setActiveTrigger}
-        registerTrigger={registerTrigger}
-        unregisterTrigger={unregisterTrigger}
+        breakpointActive={breakpointActive}
+        keepChildrenMounted={keepChildrenMounted}
+        disableDismissable={disableDismissable}
       >
-        {children}
-      </PopoverTriggerContext.Provider>
-    </PopoverContext.Provider>
-  )
-}
+        <PopoverTriggerContext.Provider
+          scope={scope}
+          triggerRef={triggerRef}
+          hasCustomAnchor={hasCustomAnchor}
+          anchorTo={anchorTo}
+          branches={branches}
+          onOpenToggle={onOpenToggle}
+          setActiveTrigger={setActiveTrigger}
+          registerTrigger={registerTrigger}
+          unregisterTrigger={unregisterTrigger}
+        >
+          {children}
+        </PopoverTriggerContext.Provider>
+      </PopoverContext.Provider>
+    )
+  }
+)
 
 const voidFn = () => {}
 
@@ -301,19 +318,21 @@ const voidFn = () => {}
 
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>
 
-export const PopoverAnchor = React.forwardRef<TamaguiElement, PopoverAnchorProps>(
-  function PopoverAnchor(props, forwardedRef) {
-    const { scope, ...rest } = props
-    const context = usePopoverContext(scope)
-    const { onCustomAnchorAdd, onCustomAnchorRemove } = context || {}
+export const PopoverAnchor = React.memo(
+  React.forwardRef<TamaguiElement, PopoverAnchorProps>(
+    function PopoverAnchor(props, forwardedRef) {
+      const { scope, ...rest } = props
+      const context = usePopoverContext(scope)
+      const { onCustomAnchorAdd, onCustomAnchorRemove } = context || {}
 
-    React.useEffect(() => {
-      onCustomAnchorAdd()
-      return () => onCustomAnchorRemove()
-    }, [onCustomAnchorAdd, onCustomAnchorRemove])
+      React.useEffect(() => {
+        onCustomAnchorAdd()
+        return () => onCustomAnchorRemove()
+      }, [onCustomAnchorAdd, onCustomAnchorRemove])
 
-    return <PopperAnchor scope={scope} {...rest} ref={forwardedRef} />
-  }
+      return <PopperAnchor scope={scope} {...rest} ref={forwardedRef} />
+    }
+  )
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -322,88 +341,92 @@ export const PopoverAnchor = React.forwardRef<TamaguiElement, PopoverAnchorProps
 
 export type PopoverTriggerProps = ScopedPopoverProps<ViewProps>
 
-export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerProps>(
-  function PopoverTrigger(props, forwardedRef) {
-    const { scope, ...rest } = props
-    const triggerContext = usePopoverTriggerContext(scope)
-    const triggerId = React.useId()
-    const [open, setOpen] = React.useState(false)
-    const anchorTo = triggerContext.anchorTo
-    const composedTriggerRef = useComposedRefs(forwardedRef, triggerContext.triggerRef)
+export const PopoverTrigger = React.memo(
+  React.forwardRef<TamaguiElement, PopoverTriggerProps>(
+    function PopoverTrigger(props, forwardedRef) {
+      const { scope, ...rest } = props
+      const triggerContext = usePopoverTriggerContext(scope)
+      const triggerId = React.useId()
+      const [open, setOpen] = React.useState(false)
+      const anchorTo = triggerContext.anchorTo
+      const composedTriggerRef = useComposedRefs(forwardedRef, triggerContext.triggerRef)
 
-    React.useEffect(() => {
-      triggerContext.registerTrigger(triggerId, setOpen)
-      return () => {
-        triggerContext.unregisterTrigger(triggerId)
-      }
-    }, [triggerContext, triggerId])
+      React.useEffect(() => {
+        triggerContext.registerTrigger(triggerId, setOpen)
+        return () => {
+          triggerContext.unregisterTrigger(triggerId)
+        }
+      }, [triggerContext, triggerId])
 
-    if (!rest.children) {
-      return null
-    }
-
-    const activateSelf = () => {
-      triggerContext.setActiveTrigger(triggerId)
-    }
-
-    const trigger = (
-      <View
-        aria-expanded={open}
-        // TODO not matching
-        // aria-controls={context.contentId}
-        data-state={getState(open)}
-        {...rest}
-        // @ts-ignore
-        ref={composedTriggerRef}
-        onPress={composeEventHandlers(rest.onPress as any, () => {
-          triggerContext.setActiveTrigger(open ? null : triggerId)
-          triggerContext.onOpenToggle()
-        })}
-        onMouseEnter={composeEventHandlers(rest.onMouseEnter as any, activateSelf)}
-        onPressIn={composeEventHandlers(rest.onPressIn as any, activateSelf)}
-        onFocus={composeEventHandlers(rest.onFocus as any, activateSelf)}
-      />
-    )
-
-    const virtualRef = React.useMemo(() => {
-      if (!anchorTo) {
+      if (!rest.children) {
         return null
       }
-      return {
-        current: {
-          getBoundingClientRect: () => (isWeb ? DOMRect.fromRect(anchorTo) : anchorTo),
-          ...(!isWeb && {
-            measure: (c) =>
-              c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
-            measureInWindow: (c) =>
-              c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
-          }),
-        },
+
+      const activateSelf = () => {
+        triggerContext.setActiveTrigger(triggerId)
       }
-    }, [
-      triggerContext.anchorTo,
-      anchorTo?.x,
-      anchorTo?.y,
-      anchorTo?.height,
-      anchorTo?.width,
-    ])
 
-    // wrap trigger in DismissableBranch so clicking it doesn't fire pointerDownOutside
-    // which would close the popover before onPress can toggle it
-    const wrappedTrigger = isWeb ? (
-      <DismissableBranch branches={triggerContext.branches}>{trigger}</DismissableBranch>
-    ) : (
-      trigger
-    )
+      const trigger = (
+        <View
+          aria-expanded={open}
+          // TODO not matching
+          // aria-controls={context.contentId}
+          data-state={getState(open)}
+          {...rest}
+          // @ts-ignore
+          ref={composedTriggerRef}
+          onPress={composeEventHandlers(rest.onPress as any, () => {
+            triggerContext.setActiveTrigger(open ? null : triggerId)
+            triggerContext.onOpenToggle()
+          })}
+          onMouseEnter={composeEventHandlers(rest.onMouseEnter as any, activateSelf)}
+          onPressIn={composeEventHandlers(rest.onPressIn as any, activateSelf)}
+          onFocus={composeEventHandlers(rest.onFocus as any, activateSelf)}
+        />
+      )
 
-    return triggerContext.hasCustomAnchor ? (
-      wrappedTrigger
-    ) : (
-      <PopperAnchor {...(virtualRef && { virtualRef })} scope={scope} asChild>
-        {wrappedTrigger}
-      </PopperAnchor>
-    )
-  }
+      const virtualRef = React.useMemo(() => {
+        if (!anchorTo) {
+          return null
+        }
+        return {
+          current: {
+            getBoundingClientRect: () => (isWeb ? DOMRect.fromRect(anchorTo) : anchorTo),
+            ...(!isWeb && {
+              measure: (c) =>
+                c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
+              measureInWindow: (c) =>
+                c(anchorTo?.x, anchorTo?.y, anchorTo?.width, anchorTo?.height),
+            }),
+          },
+        }
+      }, [
+        triggerContext.anchorTo,
+        anchorTo?.x,
+        anchorTo?.y,
+        anchorTo?.height,
+        anchorTo?.width,
+      ])
+
+      // wrap trigger in DismissableBranch so clicking it doesn't fire pointerDownOutside
+      // which would close the popover before onPress can toggle it
+      const wrappedTrigger = isWeb ? (
+        <DismissableBranch branches={triggerContext.branches}>
+          {trigger}
+        </DismissableBranch>
+      ) : (
+        trigger
+      )
+
+      return triggerContext.hasCustomAnchor ? (
+        wrappedTrigger
+      ) : (
+        <PopperAnchor {...(virtualRef && { virtualRef })} scope={scope} asChild>
+          {wrappedTrigger}
+        </PopperAnchor>
+      )
+    }
+  )
 )
 
 /* -------------------------------------------------------------------------------------------------
@@ -987,9 +1010,6 @@ const PopoverInner = React.forwardRef<
     setOpen,
   }))
 
-  // scoped branches Set for DismissableBranch/Dismissable to share
-  const [branches] = React.useState(() => new Set<HTMLElement>())
-
   const contentId = React.useId()
 
   const onOpenToggle = useEvent(() => {
@@ -1002,58 +1022,29 @@ const PopoverInner = React.forwardRef<
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
 
-  const { setActiveTrigger, registerTrigger, unregisterTrigger } =
-    usePopoverTriggerSetup(open)
-
-  const popoverContext = {
-    popoverScope: scope,
-    adaptScope,
-    id,
-    contentId,
-    triggerRef,
-    open,
-    breakpointActive: isAdapted,
-    onOpenChange: handleOpenChange,
-    onOpenToggle,
-    hasCustomAnchor,
-    anchorTo,
-    onCustomAnchorAdd,
-    onCustomAnchorRemove,
-    keepChildrenMounted,
-    disableDismissable,
-    branches,
-  } satisfies PopoverContextValue
-
-  const popoverTriggerContext = {
-    triggerRef,
-    hasCustomAnchor,
-    anchorTo,
-    branches,
-    onOpenToggle,
-    setActiveTrigger,
-    registerTrigger,
-    unregisterTrigger,
-  } satisfies PopoverTriggerContextValue
-
-  const memoizedChildren = React.useMemo(() => {
-    return (
-      <PopoverContext.Provider scope={scope} {...popoverContext}>
-        <PopoverTriggerContext.Provider scope={scope} {...popoverTriggerContext}>
-          <PopoverSheetController
-            context={popoverContext}
-            open={open}
-            onOpenChange={setOpen}
-          >
-            {children}
-          </PopoverSheetController>
-        </PopoverTriggerContext.Provider>
-      </PopoverContext.Provider>
-    )
-  }, [scope, popoverContext, popoverTriggerContext, open, setOpen, children])
-
   const contents = (
     <Popper open={open} passThrough={isAdapted} scope={scope} stayInFrame {...restProps}>
-      {memoizedChildren}
+      <PopoverContextProvider
+        scope={scope}
+        open={open}
+        onOpenChange={handleOpenChange}
+        onOpenToggle={onOpenToggle}
+        triggerRef={triggerRef}
+        id={id}
+        contentId={contentId}
+        hasCustomAnchor={hasCustomAnchor}
+        onCustomAnchorAdd={onCustomAnchorAdd}
+        onCustomAnchorRemove={onCustomAnchorRemove}
+        anchorTo={anchorTo}
+        adaptScope={adaptScope}
+        breakpointActive={isAdapted}
+        keepChildrenMounted={keepChildrenMounted}
+        disableDismissable={disableDismissable}
+      >
+        <PopoverSheetController onOpenChange={setOpen} open={open} scope={scope}>
+          {children}
+        </PopoverSheetController>
+      </PopoverContextProvider>
     </Popper>
   )
 
@@ -1077,22 +1068,23 @@ function getState(open: boolean) {
 }
 
 const PopoverSheetController = ({
-  context,
   open,
+  scope,
   ...props
 }: {
-  context: PopoverContextValue
   open: boolean
+  scope?: string
   children: React.ReactNode
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
+  const context = usePopoverContext(scope)
   const showSheet = useShowPopoverSheet(context, open)
-  const breakpointActive = context.breakpointActive
+  const breakpointActive = context?.breakpointActive
   const getShowSheet = useGet(showSheet)
 
   return (
     <SheetController
-      onOpenChange={(val) => {
+      onOpenChange={(val: boolean) => {
         if (getShowSheet()) {
           props.onOpenChange?.(val)
         }
