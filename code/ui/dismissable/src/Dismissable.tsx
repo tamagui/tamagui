@@ -248,10 +248,10 @@ const Dismissable = React.forwardRef<
     notifyLayerChange()
     return () => {
       if (disableOutsidePointerEvents) {
-        layersWithPointerEventsDisabledCount--
         if (context.layersWithOutsidePointerEventsDisabled.size === 1) {
           document.body.style.pointerEvents = originalBodyPointerEvents
         }
+        // decrement AFTER dispatch so other layers still re-render
       }
     }
   }, [node, disableOutsidePointerEvents, forceUnmount, context])
@@ -266,11 +266,17 @@ const Dismissable = React.forwardRef<
     if (forceUnmount) return
     return () => {
       if (!node) return
+      const hadPointerEventsDisabled =
+        context.layersWithOutsidePointerEventsDisabled.has(node)
       context.layers.delete(node)
       context.layersWithOutsidePointerEventsDisabled.delete(node)
       globalLayers.delete(node)
       dispatchUpdate()
       notifyLayerChange()
+      // decrement count AFTER dispatch so other layers see count > 0 and re-render
+      if (hadPointerEventsDisabled) {
+        layersWithPointerEventsDisabledCount--
+      }
     }
   }, [node, context, forceUnmount])
 
