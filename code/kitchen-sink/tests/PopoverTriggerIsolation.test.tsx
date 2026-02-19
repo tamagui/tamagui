@@ -13,13 +13,11 @@ test.describe('Popover Trigger Render Isolation', () => {
     await setupPage(page, { name: 'PopoverTriggerIsolationCase', type: 'useCase' })
   })
 
-  test('triggers with disableTriggerOpenSync do not re-render when popover opens', async ({
-    page,
-  }) => {
+  test('only the active trigger re-renders when popover opens', async ({ page }) => {
     await page.waitForLoadState('networkidle')
 
-    // get initial render counts for isolated triggers
-    const getIsolatedRenderCounts = async () => {
+    // get initial render counts
+    const getRenderCounts = async () => {
       return {
         trigger1: parseRenderCount(
           await page.getByTestId('isolated-trigger-1-render-count').textContent()
@@ -33,9 +31,9 @@ test.describe('Popover Trigger Render Isolation', () => {
       }
     }
 
-    const initialCounts = await getIsolatedRenderCounts()
+    const initialCounts = await getRenderCounts()
 
-    // click first trigger to open popover
+    // click trigger1 to open popover
     await page.getByTestId('isolated-trigger-1').click()
 
     // wait for popover to open
@@ -43,11 +41,10 @@ test.describe('Popover Trigger Render Isolation', () => {
     await expect(content).toBeVisible({ timeout: 5000 })
 
     // check render counts after opening
-    const afterOpenCounts = await getIsolatedRenderCounts()
+    const afterOpenCounts = await getRenderCounts()
 
-    // with disableTriggerOpenSync, triggers should NOT have re-rendered
-    // (render counts should stay the same)
-    expect(afterOpenCounts.trigger1).toBe(initialCounts.trigger1)
+    // trigger1 (active) may re-render to update aria-expanded
+    // but trigger2 and trigger3 (inactive) should NOT re-render
     expect(afterOpenCounts.trigger2).toBe(initialCounts.trigger2)
     expect(afterOpenCounts.trigger3).toBe(initialCounts.trigger3)
 
@@ -56,50 +53,10 @@ test.describe('Popover Trigger Render Isolation', () => {
     await expect(content).not.toBeVisible({ timeout: 5000 })
 
     // check render counts after closing
-    const afterCloseCounts = await getIsolatedRenderCounts()
+    const afterCloseCounts = await getRenderCounts()
 
-    // triggers should still not have re-rendered
-    expect(afterCloseCounts.trigger1).toBe(initialCounts.trigger1)
+    // inactive triggers should still not have re-rendered
     expect(afterCloseCounts.trigger2).toBe(initialCounts.trigger2)
     expect(afterCloseCounts.trigger3).toBe(initialCounts.trigger3)
-  })
-
-  test('triggers without disableTriggerOpenSync DO re-render when popover opens', async ({
-    page,
-  }) => {
-    await page.waitForLoadState('networkidle')
-
-    // get initial render counts for normal triggers
-    const getNormalRenderCounts = async () => {
-      return {
-        trigger1: parseRenderCount(
-          await page.getByTestId('normal-trigger-1-render-count').textContent()
-        ),
-        trigger2: parseRenderCount(
-          await page.getByTestId('normal-trigger-2-render-count').textContent()
-        ),
-        trigger3: parseRenderCount(
-          await page.getByTestId('normal-trigger-3-render-count').textContent()
-        ),
-      }
-    }
-
-    const initialCounts = await getNormalRenderCounts()
-
-    // click first trigger to open popover
-    await page.getByTestId('normal-trigger-1').click()
-
-    // wait for popover to open
-    const content = page.getByTestId('normal-popover-content')
-    await expect(content).toBeVisible({ timeout: 5000 })
-
-    // check render counts after opening
-    const afterOpenCounts = await getNormalRenderCounts()
-
-    // without disableTriggerOpenSync, ALL triggers should have re-rendered
-    // (render counts should have increased)
-    expect(afterOpenCounts.trigger1).toBeGreaterThan(initialCounts.trigger1)
-    expect(afterOpenCounts.trigger2).toBeGreaterThan(initialCounts.trigger2)
-    expect(afterOpenCounts.trigger3).toBeGreaterThan(initialCounts.trigger3)
   })
 })

@@ -1,15 +1,15 @@
-import { useRef, useState } from 'react'
+import { memo, useRef, useState } from 'react'
 import { Button, Paragraph, Popover, XStack, YStack, Text, View } from 'tamagui'
 
 /**
- * Test case for Popover trigger render isolation with disableTriggerOpenSync
+ * Test case for Popover trigger render isolation
  *
- * When disableTriggerOpenSync is true, triggers sharing the same scope
- * should NOT re-render when the open state changes.
+ * With push-based registration, only the ACTIVE trigger re-renders when
+ * the popover opens - other triggers stay untouched.
  */
 
-// component that tracks its render count
-function RenderCountingTrigger({
+// component that tracks its render count - must be memoized to isolate from parent re-renders
+const RenderCountingTrigger = memo(function RenderCountingTrigger({
   testId,
   label,
   scope,
@@ -31,25 +31,16 @@ function RenderCountingTrigger({
       </Text>
     </View>
   )
-}
+})
 
 export function PopoverTriggerIsolationCase() {
-  const [isolatedOpen, setIsolatedOpen] = useState(false)
-  const [normalOpen, setNormalOpen] = useState(false)
+  const [open, setOpen] = useState(false)
 
   return (
     <YStack flex={1} gap="$6" p="$4" bg="$background">
-      <Text fontWeight="bold">
-        With disableTriggerOpenSync (triggers should NOT re-render):
-      </Text>
+      <Text fontWeight="bold">Trigger isolation: only active trigger re-renders</Text>
 
-      {/* Popover with disableTriggerOpenSync - triggers won't re-render on open change */}
-      <Popover
-        scope="isolated"
-        disableTriggerOpenSync
-        open={isolatedOpen}
-        onOpenChange={setIsolatedOpen}
-      >
+      <Popover scope="isolated" open={open} onOpenChange={setOpen}>
         <XStack gap="$4" justifyContent="center">
           <RenderCountingTrigger
             testId="isolated-trigger-1"
@@ -79,47 +70,6 @@ export function PopoverTriggerIsolationCase() {
           <Paragraph>Shared popover content</Paragraph>
           <Popover.Close scope="isolated" asChild>
             <Button data-testid="isolated-close" size="$2" mt="$2">
-              Close
-            </Button>
-          </Popover.Close>
-        </Popover.Content>
-      </Popover>
-
-      <Text fontWeight="bold" mt="$4">
-        Without disableTriggerOpenSync (all triggers re-render):
-      </Text>
-
-      {/* Popover without disableTriggerOpenSync - triggers WILL re-render */}
-      <Popover scope="normal" open={normalOpen} onOpenChange={setNormalOpen}>
-        <XStack gap="$4" justifyContent="center">
-          <RenderCountingTrigger
-            testId="normal-trigger-1"
-            label="Trigger 1"
-            scope="normal"
-          />
-          <RenderCountingTrigger
-            testId="normal-trigger-2"
-            label="Trigger 2"
-            scope="normal"
-          />
-          <RenderCountingTrigger
-            testId="normal-trigger-3"
-            label="Trigger 3"
-            scope="normal"
-          />
-        </XStack>
-
-        <Popover.Content
-          scope="normal"
-          data-testid="normal-popover-content"
-          enterStyle={{ y: -10, opacity: 0 }}
-          exitStyle={{ y: -10, opacity: 0 }}
-          p="$4"
-        >
-          <Popover.Arrow scope="normal" />
-          <Paragraph>Shared popover content (normal)</Paragraph>
-          <Popover.Close scope="normal" asChild>
-            <Button data-testid="normal-close" size="$2" mt="$2">
               Close
             </Button>
           </Popover.Close>

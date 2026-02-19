@@ -78,6 +78,33 @@ export declare const usePopoverTriggerContext: (scope?: string) => PopoverTrigge
  * Read reactive popover open state from the popover context.
  */
 export declare function usePopoverOpen(scope?: string): boolean;
+/**
+ * Hook to set up trigger registration/isolation logic.
+ * Used internally by Popover and can be used by Tooltip.
+ */
+export declare function usePopoverTriggerSetup(open: boolean): {
+    setActiveTrigger: (id: string | null) => void;
+    registerTrigger: (id: string, setOpenState: PopoverTriggerStateSetter) => void;
+    unregisterTrigger: (id: string) => void;
+};
+export type PopoverContextProviderProps = {
+    scope: string;
+    children: React.ReactNode;
+    open: boolean;
+    onOpenChange(open: boolean, via?: 'hover' | 'press'): void;
+    onOpenToggle(): void;
+    triggerRef: React.RefObject<any>;
+    contentId?: string;
+    hasCustomAnchor?: boolean;
+    onCustomAnchorAdd?: () => void;
+    onCustomAnchorRemove?: () => void;
+    anchorTo?: Rect;
+};
+/**
+ * Provider that sets up both PopoverContext and PopoverTriggerContext.
+ * Use this in Tooltip or other components that need popover trigger behavior.
+ */
+export declare function PopoverContextProvider({ scope, children, open, onOpenChange, onOpenToggle, triggerRef, contentId, hasCustomAnchor, onCustomAnchorAdd, onCustomAnchorRemove, anchorTo, }: PopoverContextProviderProps): import("react/jsx-runtime").JSX.Element;
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
 export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
     scope?: PopoverScopes;

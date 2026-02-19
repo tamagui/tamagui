@@ -16,12 +16,9 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   createStyledContext,
-  styled,
-  Theme,
   useCreateShallowSetState,
   useEvent,
   useGet,
-  useThemeName,
   View,
 } from '@tamagui/core'
 import {
@@ -47,14 +44,13 @@ import {
   PopperProvider,
   usePopperContext,
 } from '@tamagui/popper'
-import { needsPortalRepropagation, Portal, resolveViewZIndex } from '@tamagui/portal'
+import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
 import { SheetController } from '@tamagui/sheet/controller'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
-import { StackZIndexContext } from '@tamagui/z-index-stack'
 import * as React from 'react'
 import { useFloatingContext } from './useFloatingContext'
 
@@ -177,6 +173,127 @@ export const usePopoverTriggerContext = PopoverTriggerContext.useStyledContext
 export function usePopoverOpen(scope?: string): boolean {
   return usePopoverContext(scope).open
 }
+
+/**
+ * Hook to set up trigger registration/isolation logic.
+ * Used internally by Popover and can be used by Tooltip.
+ */
+export function usePopoverTriggerSetup(open: boolean) {
+  const triggerStateSettersRef = React.useRef(
+    new Map<string, PopoverTriggerStateSetter>()
+  )
+  const activeTriggerIdRef = React.useRef<string | null>(null)
+
+  const setActiveTrigger = useEvent((id: string | null) => {
+    const prevId = activeTriggerIdRef.current
+    if (prevId === id) return
+    if (prevId) {
+      triggerStateSettersRef.current.get(prevId)?.(false)
+    }
+    activeTriggerIdRef.current = id
+    if (id && open) {
+      triggerStateSettersRef.current.get(id)?.(true)
+    }
+  })
+
+  const registerTrigger = useEvent(
+    (id: string, setOpenState: PopoverTriggerStateSetter) => {
+      triggerStateSettersRef.current.set(id, setOpenState)
+      setOpenState(activeTriggerIdRef.current === id && open)
+    }
+  )
+
+  const unregisterTrigger = useEvent((id: string) => {
+    triggerStateSettersRef.current.delete(id)
+    if (activeTriggerIdRef.current === id) {
+      activeTriggerIdRef.current = null
+    }
+  })
+
+  React.useEffect(() => {
+    if (!open) {
+      setActiveTrigger(null)
+      return
+    }
+    const activeId = activeTriggerIdRef.current
+    if (activeId) {
+      triggerStateSettersRef.current.get(activeId)?.(true)
+    }
+  }, [open, setActiveTrigger])
+
+  return { setActiveTrigger, registerTrigger, unregisterTrigger }
+}
+
+export type PopoverContextProviderProps = {
+  scope: string
+  children: React.ReactNode
+  // PopoverContext values
+  open: boolean
+  onOpenChange(open: boolean, via?: 'hover' | 'press'): void
+  onOpenToggle(): void
+  triggerRef: React.RefObject<any>
+  contentId?: string
+  hasCustomAnchor?: boolean
+  onCustomAnchorAdd?: () => void
+  onCustomAnchorRemove?: () => void
+  anchorTo?: Rect
+}
+
+/**
+ * Provider that sets up both PopoverContext and PopoverTriggerContext.
+ * Use this in Tooltip or other components that need popover trigger behavior.
+ */
+export function PopoverContextProvider({
+  scope,
+  children,
+  open,
+  onOpenChange,
+  onOpenToggle,
+  triggerRef,
+  contentId,
+  hasCustomAnchor = false,
+  onCustomAnchorAdd = voidFn,
+  onCustomAnchorRemove = voidFn,
+  anchorTo,
+}: PopoverContextProviderProps) {
+  const [branches] = React.useState(() => new Set<HTMLElement>())
+  const { setActiveTrigger, registerTrigger, unregisterTrigger } =
+    usePopoverTriggerSetup(open)
+
+  return (
+    <PopoverContext.Provider
+      scope={scope}
+      popoverScope={scope}
+      id=""
+      contentId={contentId}
+      triggerRef={triggerRef}
+      open={open}
+      onOpenChange={onOpenChange}
+      onOpenToggle={onOpenToggle}
+      hasCustomAnchor={hasCustomAnchor}
+      onCustomAnchorAdd={onCustomAnchorAdd}
+      onCustomAnchorRemove={onCustomAnchorRemove}
+      anchorTo={anchorTo}
+      branches={branches}
+    >
+      <PopoverTriggerContext.Provider
+        scope={scope}
+        triggerRef={triggerRef}
+        hasCustomAnchor={hasCustomAnchor}
+        anchorTo={anchorTo}
+        branches={branches}
+        onOpenToggle={onOpenToggle}
+        setActiveTrigger={setActiveTrigger}
+        registerTrigger={registerTrigger}
+        unregisterTrigger={unregisterTrigger}
+      >
+        {children}
+      </PopoverTriggerContext.Provider>
+    </PopoverContext.Provider>
+  )
+}
+
+const voidFn = () => {}
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverAnchor
@@ -885,47 +1002,8 @@ const PopoverInner = React.forwardRef<
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
 
-  const triggerStateSettersRef = React.useRef(
-    new Map<string, PopoverTriggerStateSetter>()
-  )
-  const activeTriggerIdRef = React.useRef<string | null>(null)
-
-  const setActiveTrigger = useEvent((id: string | null) => {
-    const prevId = activeTriggerIdRef.current
-    if (prevId === id) return
-    if (prevId) {
-      triggerStateSettersRef.current.get(prevId)?.(false)
-    }
-    activeTriggerIdRef.current = id
-    if (id && open) {
-      triggerStateSettersRef.current.get(id)?.(true)
-    }
-  })
-
-  const registerTrigger = useEvent(
-    (id: string, setOpenState: PopoverTriggerStateSetter) => {
-      triggerStateSettersRef.current.set(id, setOpenState)
-      setOpenState(activeTriggerIdRef.current === id && open)
-    }
-  )
-
-  const unregisterTrigger = useEvent((id: string) => {
-    triggerStateSettersRef.current.delete(id)
-    if (activeTriggerIdRef.current === id) {
-      activeTriggerIdRef.current = null
-    }
-  })
-
-  React.useEffect(() => {
-    if (!open) {
-      setActiveTrigger(null)
-      return
-    }
-    const activeId = activeTriggerIdRef.current
-    if (activeId) {
-      triggerStateSettersRef.current.get(activeId)?.(true)
-    }
-  }, [open, setActiveTrigger])
+  const { setActiveTrigger, registerTrigger, unregisterTrigger } =
+    usePopoverTriggerSetup(open)
 
   const popoverContext = {
     popoverScope: scope,

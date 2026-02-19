@@ -25,7 +25,7 @@ import {
   PopoverAnchor,
   PopoverArrow,
   PopoverContent,
-  PopoverContext,
+  PopoverContextProvider,
   PopoverTrigger,
 } from '@tamagui/popover'
 import type { PopperArrowProps, PopperProps } from '@tamagui/popper'
@@ -268,8 +268,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
         open={open}
         {...restProps}
       >
-        <PopoverContext.Provider
-          popoverScope={scope}
+        <PopoverContextProvider
           scope={scope}
           contentId={contentId}
           triggerRef={triggerRef}
@@ -281,7 +280,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
           onCustomAnchorRemove={onCustomAnchorRemove}
         >
           {children}
-        </PopoverContext.Provider>
+        </PopoverContextProvider>
       </Popper>
     </FloatingOverrideContext.Provider>
   )
