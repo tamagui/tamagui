@@ -27,11 +27,11 @@ const undocumented = process.argv.includes('--undocumented')
 
 const canary = process.argv.includes('--canary')
 const isRC = process.argv.includes('--rc')
-const skipStarters =
-  canary || skipAll || process.argv.includes('--skip-starters')
+const skipStarters = canary || skipAll || process.argv.includes('--skip-starters')
 const skipVersion = shouldFinish || rePublish || process.argv.includes('--skip-version')
 const shouldPatch = process.argv.includes('--patch')
-const dirty = shouldFinish || rePublish || undocumented || process.argv.includes('--dirty')
+const dirty =
+  shouldFinish || rePublish || undocumented || process.argv.includes('--dirty')
 const skipPublish = process.argv.includes('--skip-publish')
 const skipTest =
   shouldFinish ||
@@ -43,12 +43,14 @@ const skipNativeTests =
   process.argv.includes('--skip-native-test') ||
   process.argv.includes('--skip-native-tests')
 const skipChecks = rePublish || skipAll || process.argv.includes('--skip-checks')
-const skipBuild = shouldFinish || rePublish || skipAll || process.argv.includes('--skip-build')
+const skipBuild =
+  shouldFinish || rePublish || skipAll || process.argv.includes('--skip-build')
 const buildFast = process.argv.includes('--build-fast')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = shouldFinish || rePublish || undocumented || process.argv.includes('--ci')
-const skipFinish = rePublish || skipAll || undocumented || process.argv.includes('--skip-finish')
+const skipFinish =
+  rePublish || skipAll || undocumented || process.argv.includes('--skip-finish')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
