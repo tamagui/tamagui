@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-internal",
-  "version": "2.0.0-rc.15",
+  "version": "2.0.0-rc.16",
   "private": true,
   "type": "module",
   "main": "./dist/cjs/vite.config.js",

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/is-equal-shallow",
-  "version": "2.0.0-rc.15",
+  "version": "2.0.0-rc.16",
   "files": [
     "src",
     "types",

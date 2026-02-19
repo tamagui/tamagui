@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/colors",
-  "version": "2.0.0-rc.15",
+  "version": "2.0.0-rc.16",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.ts",
   "files": [
