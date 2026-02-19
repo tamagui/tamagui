@@ -75,8 +75,9 @@ describe('Package.json exports support', () => {
     expect(nativeOptimized).toContain('__ReactNativeView')
     expect(nativeOptimized).toContain('__ReactNativeText')
 
-    // Should still use YStack (not flattened on native)
-    expect(nativeOptimized).toContain('<YStack')
+    // Native extraction flattens components and creates styled wrappers
+    expect(nativeOptimized).toContain('_withStableStyle')
+    expect(nativeOptimized).toContain('StyleSheet.create')
     expect(nativeOptimized).not.toContain('.css')
     expect(nativeOptimized).not.toContain('className')
   })
