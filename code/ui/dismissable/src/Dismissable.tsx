@@ -32,6 +32,9 @@ let originalBodyPointerEvents: string
 const globalLayers = new Set<HTMLElement>()
 const layerChangeListeners = new Set<() => void>()
 
+// track if any layer has disableOutsidePointerEvents - only then do we need position updates
+let layersWithPointerEventsDisabledCount = 0
+
 function notifyLayerChange() {
   for (const listener of layerChangeListeners) {
     listener()
@@ -237,17 +240,18 @@ const Dismissable = React.forwardRef<
         document.body.style.pointerEvents = 'none'
       }
       context.layersWithOutsidePointerEventsDisabled.add(node)
+      layersWithPointerEventsDisabledCount++
     }
     context.layers.add(node)
     globalLayers.add(node)
     dispatchUpdate()
     notifyLayerChange()
     return () => {
-      if (
-        disableOutsidePointerEvents &&
-        context.layersWithOutsidePointerEventsDisabled.size === 1
-      ) {
-        document.body.style.pointerEvents = originalBodyPointerEvents
+      if (disableOutsidePointerEvents) {
+        layersWithPointerEventsDisabledCount--
+        if (context.layersWithOutsidePointerEventsDisabled.size === 1) {
+          document.body.style.pointerEvents = originalBodyPointerEvents
+        }
       }
     }
   }, [node, disableOutsidePointerEvents, forceUnmount, context])
@@ -272,7 +276,11 @@ const Dismissable = React.forwardRef<
 
   React.useEffect(() => {
     const handleUpdate = () => {
-      force({})
+      // only force re-render if we need to track layer positions for pointer-events
+      // this avoids N^2 re-renders when multiple dismissables mount/unmount
+      if (layersWithPointerEventsDisabledCount > 0) {
+        force({})
+      }
     }
     document.addEventListener(CONTEXT_UPDATE, handleUpdate)
     return () => document.removeEventListener(CONTEXT_UPDATE, handleUpdate)
