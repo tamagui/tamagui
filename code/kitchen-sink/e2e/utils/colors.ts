@@ -60,6 +60,14 @@ export function isReddish(color: RGB): boolean {
 }
 
 /**
+ * Check if a color is predominantly green (for $green10)
+ */
+export function isGreenish(color: RGB): boolean {
+  // green should have high G, low R, and low B
+  return color.g > 100 && color.g > color.r && color.g > color.b
+}
+
+/**
  * Format RGB color for error messages
  */
 export function formatRGB(color: RGB): string {

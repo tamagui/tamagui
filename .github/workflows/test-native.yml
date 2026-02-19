@@ -42,7 +42,7 @@ jobs:
           - shard_name: '1/2'
             test_files: 'e2e/check-rngh-status.test.ts e2e/GroupPressNative.test.ts e2e/MediaQueryGtMd.test.ts e2e/NativePortal.test.ts e2e/PointerEvents.test.ts e2e/PressStyleNative.noRngh.test.ts e2e/PressStyleNative.test.ts e2e/SafeArea.test.ts'
           - shard_name: '2/2'
-            test_files: 'e2e/SelectAndroidOnPress.test.ts e2e/SelectRemount.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetScrollableDrag.test.ts e2e/ShorthandVariables.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts'
+            test_files: 'e2e/CompilerExtraction.test.ts e2e/SelectAndroidOnPress.test.ts e2e/SelectRemount.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetScrollableDrag.test.ts e2e/ShorthandVariables.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts'
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
