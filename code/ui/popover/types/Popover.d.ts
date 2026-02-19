@@ -59,8 +59,25 @@ type PopoverContextValue = {
     anchorTo?: Rect;
     branches: Set<HTMLElement>;
 };
+type PopoverTriggerStateSetter = React.Dispatch<React.SetStateAction<boolean>>;
+type PopoverTriggerContextValue = {
+    triggerRef: React.RefObject<any>;
+    hasCustomAnchor: boolean;
+    anchorTo?: Rect;
+    branches: Set<HTMLElement>;
+    onOpenToggle(): void;
+    setActiveTrigger(id: string | null): void;
+    registerTrigger(id: string, setOpen: PopoverTriggerStateSetter): void;
+    unregisterTrigger(id: string): void;
+};
 export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
+export declare const PopoverTriggerContext: import("@tamagui/core").StyledContext<PopoverTriggerContextValue>;
 export declare const usePopoverContext: (scope?: string) => PopoverContextValue;
+export declare const usePopoverTriggerContext: (scope?: string) => PopoverTriggerContextValue;
+/**
+ * Read reactive popover open state from the popover context.
+ */
+export declare function usePopoverOpen(scope?: string): boolean;
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
 export declare const PopoverAnchor: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
     scope?: PopoverScopes;

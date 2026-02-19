@@ -144,13 +144,39 @@ type PopoverContextValue = {
   branches: Set<HTMLElement>
 }
 
+type PopoverTriggerStateSetter = React.Dispatch<React.SetStateAction<boolean>>
+
+type PopoverTriggerContextValue = {
+  triggerRef: React.RefObject<any>
+  hasCustomAnchor: boolean
+  anchorTo?: Rect
+  branches: Set<HTMLElement>
+  onOpenToggle(): void
+  setActiveTrigger(id: string | null): void
+  registerTrigger(id: string, setOpen: PopoverTriggerStateSetter): void
+  unregisterTrigger(id: string): void
+}
+
 export const PopoverContext = createStyledContext<PopoverContextValue>(
   // since we always provide this we can avoid setting here
   {} as PopoverContextValue,
   'Popover__'
 )
 
+export const PopoverTriggerContext = createStyledContext<PopoverTriggerContextValue>(
+  {} as PopoverTriggerContextValue,
+  'PopoverTrigger__'
+)
+
 export const usePopoverContext = PopoverContext.useStyledContext
+export const usePopoverTriggerContext = PopoverTriggerContext.useStyledContext
+
+/**
+ * Read reactive popover open state from the popover context.
+ */
+export function usePopoverOpen(scope?: string): boolean {
+  return usePopoverContext(scope).open
+}
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverAnchor
@@ -182,25 +208,43 @@ export type PopoverTriggerProps = ScopedPopoverProps<ViewProps>
 export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerProps>(
   function PopoverTrigger(props, forwardedRef) {
     const { scope, ...rest } = props
-    const context = usePopoverContext(scope)
+    const triggerContext = usePopoverTriggerContext(scope)
+    const triggerId = React.useId()
+    const [open, setOpen] = React.useState(false)
+    const anchorTo = triggerContext.anchorTo
+    const composedTriggerRef = useComposedRefs(forwardedRef, triggerContext.triggerRef)
 
-    const anchorTo = context.anchorTo
-    const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
+    React.useEffect(() => {
+      triggerContext.registerTrigger(triggerId, setOpen)
+      return () => {
+        triggerContext.unregisterTrigger(triggerId)
+      }
+    }, [triggerContext, triggerId])
 
-    if (!props.children) {
+    if (!rest.children) {
       return null
+    }
+
+    const activateSelf = () => {
+      triggerContext.setActiveTrigger(triggerId)
     }
 
     const trigger = (
       <View
-        aria-expanded={context.open}
+        aria-expanded={open}
         // TODO not matching
         // aria-controls={context.contentId}
-        data-state={getState(context.open)}
+        data-state={getState(open)}
         {...rest}
         // @ts-ignore
         ref={composedTriggerRef}
-        onPress={composeEventHandlers(props.onPress as any, context.onOpenToggle)}
+        onPress={composeEventHandlers(rest.onPress as any, () => {
+          triggerContext.setActiveTrigger(open ? null : triggerId)
+          triggerContext.onOpenToggle()
+        })}
+        onMouseEnter={composeEventHandlers(rest.onMouseEnter as any, activateSelf)}
+        onPressIn={composeEventHandlers(rest.onPressIn as any, activateSelf)}
+        onFocus={composeEventHandlers(rest.onFocus as any, activateSelf)}
       />
     )
 
@@ -219,17 +263,23 @@ export const PopoverTrigger = React.forwardRef<TamaguiElement, PopoverTriggerPro
           }),
         },
       }
-    }, [context.anchorTo, anchorTo?.x, anchorTo?.y, anchorTo?.height, anchorTo?.width])
+    }, [
+      triggerContext.anchorTo,
+      anchorTo?.x,
+      anchorTo?.y,
+      anchorTo?.height,
+      anchorTo?.width,
+    ])
 
     // wrap trigger in DismissableBranch so clicking it doesn't fire pointerDownOutside
     // which would close the popover before onPress can toggle it
     const wrappedTrigger = isWeb ? (
-      <DismissableBranch branches={context.branches}>{trigger}</DismissableBranch>
+      <DismissableBranch branches={triggerContext.branches}>{trigger}</DismissableBranch>
     ) : (
       trigger
     )
 
-    return context.hasCustomAnchor ? (
+    return triggerContext.hasCustomAnchor ? (
       wrappedTrigger
     ) : (
       <PopperAnchor {...(virtualRef && { virtualRef })} scope={scope} asChild>
@@ -268,23 +318,24 @@ export const PopoverContent = PopperContentFrame.styleable<PopoverContentProps>(
     } = props
 
     const context = usePopoverContext(scope)
+    const open = usePopoverOpen(scope)
     const contentRef = React.useRef<any>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
     const isRightClickOutsideRef = React.useRef(false)
-    const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
+    const [isFullyHidden, setIsFullyHidden] = React.useState(!open)
 
     // Reset isFullyHidden when popover opens (useEffect avoids render-phase timing issues)
     // there was a hard to isolate bug in tamagui.dev where moving between /ui docs pages quickly
     // caused it to infinite loop, the setState in render (and useLayoutEffect) made it too prone
     // to bug, useEffect maybe fine here because its hidden, ok to be slightly delayed while hidden
     useIsomorphicLayoutEffect(() => {
-      if (context.open && isFullyHidden) {
+      if (open && isFullyHidden) {
         setIsFullyHidden(false)
       }
-    }, [context.open, isFullyHidden])
+    }, [open, isFullyHidden])
 
     if (!context.keepChildrenMounted) {
-      if (isFullyHidden && !context.open) {
+      if (isFullyHidden && !open) {
         return null
       }
     }
@@ -293,24 +344,24 @@ export const PopoverContent = PopperContentFrame.styleable<PopoverContentProps>(
       <PopoverPortal
         passThrough={context.breakpointActive}
         context={context}
+        open={open}
         zIndex={zIndex}
       >
         <View
           passThrough={context.breakpointActive}
-          pointerEvents={
-            context.open ? (contentImplProps.pointerEvents ?? 'auto') : 'none'
-          }
+          pointerEvents={open ? (contentImplProps.pointerEvents ?? 'auto') : 'none'}
         >
           <PopoverContentImpl
             {...contentImplProps}
             context={context}
+            open={open}
             enableRemoveScroll={enableRemoveScroll}
             ref={composedRefs}
             setIsFullyHidden={setIsFullyHidden}
             scope={scope}
             // we make sure we're not trapping once it's been closed
             // (closed !== unmounted when animating out)
-            trapFocus={trapFocus ?? context.open}
+            trapFocus={trapFocus ?? open}
             disableOutsidePointerEvents
             onCloseAutoFocus={
               props.onCloseAutoFocus === false
@@ -349,12 +400,14 @@ export const PopoverContent = PopperContentFrame.styleable<PopoverContentProps>(
 
 const useParentContexts = (scope: string) => {
   const context = usePopoverContext(scope)
+  const triggerContext = usePopoverTriggerContext(scope)
   const popperContext = usePopperContext(scope)
   const adaptContext = useAdaptContext(context.adaptScope)
   return {
     popperContext,
     adaptContext,
     context,
+    triggerContext,
   }
 }
 
@@ -364,14 +417,17 @@ function RepropagateParentContexts({
   adaptContext,
   children,
   context,
+  triggerContext,
   popperContext,
 }: ParentContexts & {
   children: React.ReactNode
 }) {
   return (
     <PopperProvider scope={context.popoverScope} {...popperContext}>
-      <PopoverContext.Provider {...context}>
-        <ProvideAdaptContext {...adaptContext}>{children}</ProvideAdaptContext>
+      <PopoverContext.Provider scope={context.popoverScope} {...context}>
+        <PopoverTriggerContext.Provider scope={context.popoverScope} {...triggerContext}>
+          <ProvideAdaptContext {...adaptContext}>{children}</ProvideAdaptContext>
+        </PopoverTriggerContext.Provider>
       </PopoverContext.Provider>
     </PopperProvider>
   )
@@ -402,12 +458,14 @@ const PortalAdaptSafe = ({
 
 function PopoverPortal({
   context,
+  open,
   zIndex,
   passThrough,
   children,
   onPress,
 }: Pick<PopoverContentProps, 'zIndex' | 'passThrough' | 'children' | 'onPress'> & {
   context: PopoverContextValue
+  open: boolean
 }) {
   'use no memo'
 
@@ -425,7 +483,7 @@ function PopoverPortal({
     <Portal passThrough={passThrough} stackZIndex zIndex={zIndex}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
-      {!!context.open && !context.breakpointActive && (
+      {!!open && !context.breakpointActive && (
         <YStack
           fullscreen
           onPress={composeEventHandlers(onPress as any, context.onOpenToggle)}
@@ -488,6 +546,7 @@ export type PopoverContentImplProps = PopperContentProps &
 
 type PopoverContentImplInteralProps = PopoverContentImplProps & {
   context: PopoverContextValue
+  open: boolean
   setIsFullyHidden: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -513,11 +572,12 @@ const PopoverContentImpl = React.forwardRef<
     lazyMount,
     forceUnmount,
     context,
+    open,
     alwaysDisable,
     ...contentProps
   } = props
 
-  const { open, keepChildrenMounted, disableDismissable } = context
+  const { keepChildrenMounted, disableDismissable } = context
 
   const handleExitComplete = React.useCallback(() => {
     setIsFullyHidden?.(true)
@@ -813,50 +873,105 @@ const PopoverInner = React.forwardRef<
   // scoped branches Set for DismissableBranch/Dismissable to share
   const [branches] = React.useState(() => new Set<HTMLElement>())
 
-  // needs to be entirely memoized!
+  const contentId = React.useId()
+
+  const onOpenToggle = useEvent(() => {
+    if (open && isAdapted) {
+      return
+    }
+    setOpen(!open)
+  })
+
+  const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
+  const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
+
+  const triggerStateSettersRef = React.useRef(
+    new Map<string, PopoverTriggerStateSetter>()
+  )
+  const activeTriggerIdRef = React.useRef<string | null>(null)
+
+  const setActiveTrigger = useEvent((id: string | null) => {
+    const prevId = activeTriggerIdRef.current
+    if (prevId === id) return
+    if (prevId) {
+      triggerStateSettersRef.current.get(prevId)?.(false)
+    }
+    activeTriggerIdRef.current = id
+    if (id && open) {
+      triggerStateSettersRef.current.get(id)?.(true)
+    }
+  })
+
+  const registerTrigger = useEvent(
+    (id: string, setOpenState: PopoverTriggerStateSetter) => {
+      triggerStateSettersRef.current.set(id, setOpenState)
+      setOpenState(activeTriggerIdRef.current === id && open)
+    }
+  )
+
+  const unregisterTrigger = useEvent((id: string) => {
+    triggerStateSettersRef.current.delete(id)
+    if (activeTriggerIdRef.current === id) {
+      activeTriggerIdRef.current = null
+    }
+  })
+
+  React.useEffect(() => {
+    if (!open) {
+      setActiveTrigger(null)
+      return
+    }
+    const activeId = activeTriggerIdRef.current
+    if (activeId) {
+      triggerStateSettersRef.current.get(activeId)?.(true)
+    }
+  }, [open, setActiveTrigger])
+
   const popoverContext = {
     popoverScope: scope,
     adaptScope,
     id,
-    contentId: React.useId(),
+    contentId,
     triggerRef,
     open,
     breakpointActive: isAdapted,
     onOpenChange: handleOpenChange,
-    onOpenToggle: useEvent(() => {
-      if (open && isAdapted) {
-        return
-      }
-      setOpen(!open)
-    }),
+    onOpenToggle,
     hasCustomAnchor,
     anchorTo,
-    onCustomAnchorAdd: React.useCallback(() => setHasCustomAnchor(true), []),
-    onCustomAnchorRemove: React.useCallback(() => setHasCustomAnchor(false), []),
+    onCustomAnchorAdd,
+    onCustomAnchorRemove,
     keepChildrenMounted,
     disableDismissable,
     branches,
   } satisfies PopoverContextValue
 
-  // // debug if changing too often
-  // if (process.env.NODE_ENV === 'development') {
-  //   Object.keys(popoverContext).forEach((key) => {
-  //     React.useEffect(
-  //       () => console.log(`changed`, key, popoverContext[key]),
-  //       [popoverContext[key]]
-  //     )
-  //   })
-  // }
+  const popoverTriggerContext = {
+    triggerRef,
+    hasCustomAnchor,
+    anchorTo,
+    branches,
+    onOpenToggle,
+    setActiveTrigger,
+    registerTrigger,
+    unregisterTrigger,
+  } satisfies PopoverTriggerContextValue
 
   const memoizedChildren = React.useMemo(() => {
     return (
       <PopoverContext.Provider scope={scope} {...popoverContext}>
-        <PopoverSheetController context={popoverContext} onOpenChange={setOpen}>
-          {children}
-        </PopoverSheetController>
+        <PopoverTriggerContext.Provider scope={scope} {...popoverTriggerContext}>
+          <PopoverSheetController
+            context={popoverContext}
+            open={open}
+            onOpenChange={setOpen}
+          >
+            {children}
+          </PopoverSheetController>
+        </PopoverTriggerContext.Provider>
       </PopoverContext.Provider>
     )
-  }, [scope, setOpen, children, ...Object.values(popoverContext)])
+  }, [scope, popoverContext, popoverTriggerContext, open, setOpen, children])
 
   const contents = (
     <Popper open={open} passThrough={isAdapted} scope={scope} stayInFrame {...restProps}>
@@ -885,13 +1000,15 @@ function getState(open: boolean) {
 
 const PopoverSheetController = ({
   context,
+  open,
   ...props
 }: {
   context: PopoverContextValue
+  open: boolean
   children: React.ReactNode
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
 }) => {
-  const showSheet = useShowPopoverSheet(context)
+  const showSheet = useShowPopoverSheet(context, open)
   const breakpointActive = context.breakpointActive
   const getShowSheet = useGet(showSheet)
 
@@ -902,7 +1019,7 @@ const PopoverSheetController = ({
           props.onOpenChange?.(val)
         }
       }}
-      open={context.open}
+      open={open}
       hidden={!breakpointActive}
     >
       {props.children}
@@ -910,7 +1027,7 @@ const PopoverSheetController = ({
   )
 }
 
-const useShowPopoverSheet = (context: PopoverContextValue) => {
+const useShowPopoverSheet = (context: PopoverContextValue, open: boolean) => {
   const isAdapted = useAdaptIsActive(context.adaptScope)
-  return context.open === false ? false : isAdapted
+  return open === false ? false : isAdapted
 }
