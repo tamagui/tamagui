@@ -1,4 +1,4 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { useInsertionEffect } from 'react'
 import { useConstant } from '@tamagui/use-constant'
 import { useForceUpdate } from '@tamagui/use-force-update'
 import type { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from 'react'
@@ -99,7 +99,11 @@ export const AnimatePresence: FunctionComponent<
     return <>{children}</>
   }
 
-  useIsomorphicLayoutEffect(() => {
+  // useInsertionEffect runs before ALL useLayoutEffects (including children's)
+  // this ensures pendingPresentChildren and exitComplete are set before
+  // animation drivers call sendExitComplete() in their layout effects
+  // (critical for immediate completions like animateOnly=[])
+  useInsertionEffect(() => {
     isInitialRender.current = false
     pendingPresentChildren.current = presentChildren
 
