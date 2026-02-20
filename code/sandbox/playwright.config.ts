@@ -56,9 +56,5 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   projects,
-  webServer: process.env.CI
-    ? undefined
-    : webServers.length === 1
-      ? webServers[0]
-      : webServers,
+  webServer: webServers.length === 1 ? webServers[0] : webServers,
 })
