@@ -30,15 +30,15 @@ type InputTextStyleProps = Pick<
 type OverlappingNativeProps = 'autoCorrect' | 'autoCapitalize' | 'spellCheck'
 
 export type InputExtraProps = Omit<
-    HTMLInputProps,
-    | 'size'
-    | 'color'
-    | 'style'
-    | 'children'
-    | 'className'
-    | keyof InputTextStyleProps
-    | OverlappingNativeProps
-  > &
+  HTMLInputProps,
+  | 'size'
+  | 'color'
+  | 'style'
+  | 'children'
+  | 'className'
+  | keyof InputTextStyleProps
+  | OverlappingNativeProps
+> &
   InputTextStyleProps &
   Omit<InputNativeProps, OverlappingNativeProps> & {
     /**

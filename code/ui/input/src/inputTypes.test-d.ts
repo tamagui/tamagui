@@ -14,7 +14,13 @@
 import { expectTypeOf, describe, test } from 'vitest'
 import type { GetProps } from '@tamagui/web'
 import type { TextInput } from 'react-native'
-import { Input, type InputProps, type InputRef, TextArea, type TextAreaProps } from './index'
+import {
+  Input,
+  type InputProps,
+  type InputRef,
+  TextArea,
+  type TextAreaProps,
+} from './index'
 
 // helper: extract event param type
 type EventParam<T> = T extends (event: infer E) => any ? E : never

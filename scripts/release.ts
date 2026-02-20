@@ -506,7 +506,7 @@ async function run() {
       // restore package.json files for undocumented releases
       if (undocumented) {
         console.info('Restoring package.json files...')
-        await spawnify(`git checkout -- '**/package.json'`)
+        await spawnify(`git checkout -- **/package.json`)
         console.info(`✅ Restored package.json files (undocumented release)\n`)
       }
     }
