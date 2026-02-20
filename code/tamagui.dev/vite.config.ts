@@ -98,11 +98,6 @@ export default {
 
   build: {
     cssCodeSplit: false,
-    rollupOptions: {
-      output: {
-        experimentalMinChunkSize: 100_000, // merge chunks smaller than 100KB
-      },
-    },
   },
 
   resolve: {
