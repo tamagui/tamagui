@@ -1,13 +1,17 @@
-import type { ColorTokens, ViewProps, TextStyle } from '@tamagui/web';
+import type { ColorTokens, TextStyle, TamaguiElementMethods } from '@tamagui/web';
+import type { TextInput } from 'react-native';
 import type { InputNativeProps } from './InputNativeProps';
 /**
- * Web-aligned Input props
- * Follows standard HTML input API as primary, with RN compatibility for native
+ * Extra props that Input adds on top of the base styled component.
+ * Used with .styleable<InputExtraProps>() - the Styleable merge
+ * (`Omit<BaseProps, keyof CustomProps> & CustomProps`) automatically overrides
+ * base event handlers (HTMLDivElement) with these (HTMLInputElement).
+ * Consumer-facing InputProps is derived via GetProps<typeof Input>.
  */
 type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 type InputTextStyleProps = Pick<TextStyle, 'color' | 'fontFamily' | 'fontSize' | 'fontStyle' | 'fontWeight' | 'letterSpacing' | 'textAlign' | 'textTransform'>;
 type OverlappingNativeProps = 'autoCorrect' | 'autoCapitalize' | 'spellCheck';
-export type InputProps = ViewProps & Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps | OverlappingNativeProps> & InputTextStyleProps & Omit<InputNativeProps, OverlappingNativeProps> & {
+export type InputExtraProps = Omit<HTMLInputProps, 'size' | 'color' | 'style' | 'children' | 'className' | keyof InputTextStyleProps | OverlappingNativeProps> & InputTextStyleProps & Omit<InputNativeProps, OverlappingNativeProps> & {
     /**
      * Controls automatic spelling correction.
      *
@@ -96,6 +100,12 @@ export type InputProps = ViewProps & Omit<HTMLInputProps, 'size' | 'color' | 'st
      */
     textContentType?: InputTextContentType;
 };
+/**
+ * Cross-platform ref type for Input.
+ * On web: HTMLInputElement with Tamagui methods (measure, focus, blur).
+ * On native: TextInput.
+ */
+export type InputRef = (HTMLInputElement & TamaguiElementMethods) | TextInput;
 /**
  * iOS text content types for autofill
  */

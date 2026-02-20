@@ -55,7 +55,8 @@
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
-    "clean:build": "tamagui-build clean:build"
+    "clean:build": "tamagui-build clean:build",
+    "test:web": "vitest --typecheck --run"
   },
   "dependencies": {
     "@tamagui/compose-refs": "workspace:*",

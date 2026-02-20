@@ -15,7 +15,7 @@ import type { TamaguiElement } from './types'
  * ```
  */
 export function useWebRef<T extends TamaguiElement | HTMLElement>(
-  forwardedRef?: React.ForwardedRef<TamaguiElement>
+  forwardedRef?: React.ForwardedRef<any>
 ) {
   const ref = React.useRef<T>(null)
   const composedRef = useComposedRefs(ref, forwardedRef as any)

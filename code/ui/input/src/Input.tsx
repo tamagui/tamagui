@@ -1,9 +1,9 @@
-import { View, styled, useTheme } from '@tamagui/core'
+import { type GetProps, View, styled, useTheme } from '@tamagui/core'
 import { registerFocusable } from '@tamagui/focusable'
 import { useWebRef } from '@tamagui/element'
 import React from 'react'
 import { styledBody } from './shared'
-import type { InputProps } from './types'
+import type { InputExtraProps } from './types'
 
 const StyledInput = styled(View, styledBody[0], styledBody[1])
 
@@ -11,7 +11,7 @@ const StyledInput = styled(View, styledBody[0], styledBody[1])
  * A web-aligned input component.
  * @see — Docs https://tamagui.dev/ui/inputs#input
  */
-export const Input = StyledInput.styleable<InputProps>((props, _forwardedRef) => {
+export const Input = StyledInput.styleable<InputExtraProps>((props, _forwardedRef) => {
   const {
     disabled,
     id,
@@ -169,3 +169,5 @@ export const Input = StyledInput.styleable<InputProps>((props, _forwardedRef) =>
 
   return <StyledInput ref={composedRef} {...finalProps} />
 })
+
+export type InputProps = GetProps<typeof Input>

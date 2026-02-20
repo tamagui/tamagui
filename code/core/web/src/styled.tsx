@@ -234,7 +234,6 @@ function styled<
   // do type stuff at top for easier readability
 
   // get parent props without pseudos and medias so we can rebuild both with new variants
-  // get parent props without pseudos and medias so we can rebuild both with new variants
   type ParentNonStyledProps = GetNonStyledProps<ParentComponent>
   type ParentStylesBase = GetBaseStyles<ParentComponent, StyledConfig>
   type ParentVariants = GetStyledVariants<ParentComponent>

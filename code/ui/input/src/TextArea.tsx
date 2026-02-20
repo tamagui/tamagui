@@ -1,8 +1,6 @@
-import { styled } from '@tamagui/web'
+import { type GetProps, styled } from '@tamagui/web'
 import { Input } from './Input'
 import { defaultStyles, textAreaSizeVariant } from './shared'
-
-export type { InputProps as TextAreaProps } from './types'
 
 /**
  * A web-aligned textarea component (multi-line input).
@@ -34,3 +32,5 @@ export const TextArea = styled(Input, {
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
+
+export type TextAreaProps = GetProps<typeof TextArea>
