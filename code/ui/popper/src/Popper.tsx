@@ -485,7 +485,8 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
           refs.setReference(node)
         })
       },
-      [refs.setReference]
+      // it was refs.setRefernce but its stable and refs is undefined on server
+      [refs]
     )
 
     const shouldHandleInHover = isWeb && scope
