@@ -60,7 +60,7 @@
     "node_modules"
   ],
   "typeAcquisition": {
-    "enable": true
+    "enable": false
   },
   "references": [
     {
