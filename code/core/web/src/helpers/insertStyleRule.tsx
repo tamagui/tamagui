@@ -81,7 +81,7 @@ function trackInsertedStyle(id: string) {
 }
 
 const bailAfterEnv = process.env.TAMAGUI_BAIL_AFTER_SCANNING_X_CSS_RULES
-const bailAfter = bailAfterEnv ? +bailAfterEnv : 400
+const bailAfter = bailAfterEnv ? +bailAfterEnv : 8000
 
 function updateSheetStyles(
   sheet: CSSStyleSheet,
