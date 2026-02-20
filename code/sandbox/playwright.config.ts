@@ -1,10 +1,10 @@
 import { defineConfig, devices } from '@playwright/test'
-import { findAvailablePort } from './scripts/find-port'
-
-const devPort = await findAvailablePort()
-const prodPort = await findAvailablePort(devPort + 1)
 
 const mode = process.env.TEST_MODE || 'dev' // 'dev' | 'prod' | 'both'
+
+// use fixed ports to avoid race conditions with playwright workers
+const devPort = process.env.DEV_PORT || '8085'
+const prodPort = process.env.PROD_PORT || '8086'
 
 const devProject = {
   name: 'dev',

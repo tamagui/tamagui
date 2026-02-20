@@ -47,60 +47,54 @@ test.describe('Animation Timing Bug Fixes', () => {
       true
     )
 
-    // trigger exit
+    // trigger exit and measure how long it takes
+    const exitStart = Date.now()
     await page.getByTestId('scenario-50-trigger').click()
 
-    // exit should take ~1000ms - at 300ms it should still be animating
-    await page.waitForTimeout(300)
-    const midExitExists = await elementExists(page, 'scenario-50-target')
-    if (midExitExists) {
-      const midExitOpacity = await getOpacity(page, 'scenario-50-target')
-      // at 300ms into 1000ms exit, opacity should still be > 0.3
-      expect(
-        midExitOpacity,
-        `Mid-exit opacity at 300ms should be > 0.3 for 1000ms animation (got ${midExitOpacity})`
-      ).toBeGreaterThan(0.3)
-    }
-
-    // wait for exit to complete
-    await page.waitForTimeout(900)
-    expect(await elementExists(page, 'scenario-50-target'), 'Hidden after exit').toBe(
-      false
+    // wait for exit to complete (element disappears)
+    await page.waitForFunction(
+      (testId) => !document.querySelector(`[data-testid="${testId}"]`),
+      'scenario-50-target',
+      { timeout: 3000 }
     )
+    const exitDuration = Date.now() - exitStart
 
-    // trigger enter
+    // exit animation is 1000ms - should take at least 800ms (allowing some tolerance)
+    // this verifies it's using the slow exit timing, not fast enter timing
+    expect(
+      exitDuration,
+      `Exit should take ~1000ms (got ${exitDuration}ms)`
+    ).toBeGreaterThan(700)
+
+    // trigger enter and measure how long it takes
     const enterStart = Date.now()
     await page.getByTestId('scenario-50-trigger').click()
 
-    // wait for element to appear
+    // wait for element to appear and reach full opacity
     await page.waitForFunction(
-      (testId) => !!document.querySelector(`[data-testid="${testId}"]`),
+      (testId) => {
+        const el = document.querySelector(`[data-testid="${testId}"]`)
+        if (!el) return false
+        const opacity = Number.parseFloat(getComputedStyle(el).opacity)
+        return opacity > 0.9
+      },
       'scenario-50-target',
-      { timeout: 1000 }
+      { timeout: 2000 }
     )
+    const enterDuration = Date.now() - enterStart
 
-    // enter is 200ms - at 150ms check if already nearly complete (it should be fast!)
-    await page.waitForTimeout(150)
-    const earlyEnterOpacity = await getOpacity(page, 'scenario-50-target')
-
-    // BUG CHECK: if enter is actually 200ms, opacity should be > 0.5 at 150ms
-    // if it's using 1000ms timing instead, opacity would still be < 0.2
+    // enter animation is 200ms - should complete in under 500ms (with overhead)
+    // more importantly, it should be significantly faster than exit
     expect(
-      earlyEnterOpacity,
-      `Enter opacity at 150ms should be > 0.4 if using 200ms timing (got ${earlyEnterOpacity})`
-    ).toBeGreaterThan(0.4)
-
-    // wait a bit more - enter should complete quickly
-    await page.waitForTimeout(200)
-    const finalOpacity = await getOpacity(page, 'scenario-50-target')
-    expect(finalOpacity, 'Enter should complete quickly').toBeGreaterThan(0.9)
-
-    const totalEnterTime = Date.now() - enterStart
-    // enter animation (200ms) + overhead should complete in under 500ms
-    expect(
-      totalEnterTime,
-      `Enter animation should complete in ~350ms (got ${totalEnterTime}ms)`
+      enterDuration,
+      `Enter should complete quickly (~200ms), got ${enterDuration}ms`
     ).toBeLessThan(600)
+
+    // the key assertion: enter should be significantly faster than exit
+    expect(
+      enterDuration,
+      `Enter (${enterDuration}ms) should be faster than exit (${exitDuration}ms)`
+    ).toBeLessThan(exitDuration * 0.8)
   })
 
   test('scenario 51: duration: 1 should be 1ms (instant), not 1 second', async ({
