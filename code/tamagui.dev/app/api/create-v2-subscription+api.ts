@@ -68,8 +68,15 @@ export default apiRoute(async (req) => {
 
   try {
     const { user } = await ensureAuth({ req })
-    // use timestamp for idempotency since we no longer have project domain at purchase time
-    const idempotencyBase = `${user.id}_${Date.now()}`
+    // Deterministic idempotency base so request retries reuse Stripe operations.
+    // paymentMethodId is unique per submit attempt, so a new checkout attempt still works.
+    const idempotencyBase = [
+      user.id,
+      paymentMethodId,
+      couponId || 'no_coupon',
+      supportTier || 'chat',
+      countryCode || 'XX',
+    ].join('_')
 
     const stripeCustomerId = await createOrRetrieveCustomer({
       email: user.email!,

@@ -114,6 +114,8 @@ export function PurchaseModalContents() {
 
   const handlePaymentSuccess = async () => {
     sendEvent('Pro: Payment Success')
+    // Allow analytics beacon time to flush before navigation.
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     window.location.href = '/payment-finished'
   }
 

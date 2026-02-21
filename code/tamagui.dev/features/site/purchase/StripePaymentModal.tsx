@@ -270,6 +270,53 @@ const PaymentForm = ({
 
       let data: any = null
 
+      // Support-tier-only checkout from account modal: do not create V2 license again.
+      if (isSupportUpgradeOnly) {
+        const upgradeResponse = await authFetch('/api/upgrade-subscription', {
+          method: 'POST',
+          body: JSON.stringify({
+            paymentMethodId: paymentMethod.id,
+            chatSupport: selectedPrices.chatSupport,
+            supportTier: selectedPrices.supportTier,
+            couponId: finalCoupon?.id,
+          }),
+        })
+
+        const upgradeData = await upgradeResponse.json()
+        if (!upgradeResponse.ok) {
+          const upgradeError = new Error(
+            upgradeData.error || 'Failed to update support tier'
+          )
+          setError(upgradeError)
+          onError(upgradeError)
+          return
+        }
+
+        if (
+          upgradeData.amount_due &&
+          upgradeData.amount_due > 0 &&
+          upgradeData.clientSecret
+        ) {
+          const monthlyResult = await stripe.confirmPayment({
+            elements,
+            redirect: 'if_required',
+            confirmParams: {
+              payment_method: paymentMethod.id,
+            },
+            clientSecret: upgradeData.clientSecret,
+          })
+
+          if (monthlyResult.error) {
+            setError(monthlyResult.error)
+            onError(monthlyResult.error)
+            return
+          }
+        }
+
+        onSuccess(upgradeData.id || 'support tier updated')
+        return
+      }
+
       // V2 purchase flow - V1 users can buy V2 (different product), V2 users can't buy again
       if (isV2 && !subscriptionStatus.proV2) {
         console.log('[Payment] Creating V2 subscription...')
@@ -745,9 +792,11 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     }
 
     // V2: $350 one-time, V1: legacy monthly + yearly
-    const baseAmount = isV2
-      ? V2_LICENSE_PRICE * 100
-      : monthlyTotal * 100 + yearlyTotal * 100
+    const baseAmount = isSupportUpgradeOnly
+      ? SUPPORT_TIERS[supportTier].price * 100
+      : isV2
+        ? V2_LICENSE_PRICE * 100
+        : monthlyTotal * 100 + yearlyTotal * 100
     const amount = Math.ceil(
       calculateDiscountedAmount(baseAmount / 100, finalCoupon) * 100
     )
