@@ -59,7 +59,12 @@ test('ListItem with accent theme renders correctly in light theme', async ({ pag
 
   // Accent theme inverts colors - light + accent = dark background
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(23, 23, 23)')
+  const match = styles.backgroundColor.match(/rgb\((\d+), (\d+), (\d+)\)/)
+  expect(match).toBeTruthy()
+  const [, r, g, b] = match!.map(Number)
+  expect(r).toBeLessThan(50)
+  expect(g).toBeLessThan(50)
+  expect(b).toBeLessThan(50)
 })
 
 test('ListItem with accent theme renders correctly in dark theme', async ({ page }) => {
@@ -75,7 +80,12 @@ test('ListItem with accent theme renders correctly in dark theme', async ({ page
 
   // Accent theme inverts colors - dark + accent = light background
   const styles = await getStyles(listItem)
-  expect(styles.backgroundColor).toBe('rgb(255, 255, 255)')
+  const match = styles.backgroundColor.match(/rgb\((\d+), (\d+), (\d+)\)/)
+  expect(match).toBeTruthy()
+  const [, r, g, b] = match!.map(Number)
+  expect(r).toBeGreaterThan(200)
+  expect(g).toBeGreaterThan(200)
+  expect(b).toBeGreaterThan(200)
 })
 
 test('ListItem renders correctly with outlined variant', async ({ page }) => {

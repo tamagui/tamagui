@@ -262,6 +262,12 @@ export class ThemeBuilder<
             return null as never
           }
 
+          // Don't overwrite existing themes (e.g., a grandchild "accent" template
+          // should not overwrite a dedicated "accent" child theme with its own palette)
+          if (fullName in currentThemes) {
+            return null as never
+          }
+
           return [fullName, definition] as const
         })
         .filter(Boolean)

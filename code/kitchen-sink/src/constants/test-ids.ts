@@ -41,4 +41,12 @@ export const TEST_IDS = {
   themeShallowEnabled: 'theme-shallow-enabled',
   themeShallowContainer: 'theme-shallow-container',
   themeShallowInner: 'theme-shallow-inner',
+  // V5 Theme Builder Accent test IDs
+  accentThemeBackground: 'accent-theme-background',
+  accentThemeColor: 'accent-theme-color',
+  accentThemeButton: 'accent-theme-button',
+  accentPropButton: 'accent-prop-button',
+  accentBgToken: 'accent-bg-token',
+  baseBackground: 'base-background',
+  baseButton: 'base-button',
 } as const
