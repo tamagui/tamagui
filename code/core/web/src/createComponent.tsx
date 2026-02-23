@@ -697,10 +697,21 @@ export function createComponent<
 
     // avoids re-rendering if animation driver supports it
     // TODO believe we need to set some sort of "pendingState" in case it re-renders
+    // CRITICAL: Skip avoidReRenders for components with enter/exit transitions
+    // The exit state comes from AnimatePresence context, not local state, so
+    // updateStyleListener can fire before the component re-renders with the new
+    // presence value, causing wrong animation timing (e.g., using enter timing for exit)
+    const hasEnterExitTransition =
+      props.transition &&
+      typeof props.transition === 'object' &&
+      !Array.isArray(props.transition) &&
+      ('enter' in props.transition || 'exit' in props.transition)
+
     if (
       !isPassthrough &&
       (hasAnimationProp || groupName) &&
-      animationDriver?.avoidReRenders
+      animationDriver?.avoidReRenders &&
+      !hasEnterExitTransition
     ) {
       const ogSetStateShallow = setStateShallow
 
