@@ -2402,6 +2402,7 @@ function Scenario50_EnterTimingVerification() {
             exitStyle={{ opacity: 0, scale: 0.5 }}
             testID="scenario-50-target"
             data-testid="scenario-50-target"
+            debug="verbose"
           />
         )}
       </AnimatePresence>

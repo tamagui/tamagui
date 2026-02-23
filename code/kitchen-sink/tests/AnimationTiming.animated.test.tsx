@@ -42,6 +42,15 @@ test.describe('Animation Timing Bug Fixes', () => {
   test('scenario 50: enter timing (200ms) should be faster than exit timing (1000ms)', async ({
     page,
   }) => {
+    // capture console messages for debugging
+    const consoleLogs: string[] = []
+    page.on('console', (msg) => {
+      const text = msg.text()
+      if (text.includes('ANIM_') || text.includes('[motion]')) {
+        consoleLogs.push(text)
+      }
+    })
+
     // first hide element (exit with 1000ms)
     expect(await elementExists(page, 'scenario-50-target'), 'Initially visible').toBe(
       true
@@ -58,6 +67,11 @@ test.describe('Animation Timing Bug Fixes', () => {
       { timeout: 3000 }
     )
     const exitDuration = Date.now() - exitStart
+
+    // log console output for debugging
+    if (consoleLogs.length > 0) {
+      console.log('Console logs during animation:', consoleLogs.slice(0, 20))
+    }
 
     // exit animation is 1000ms - should take at least 800ms (allowing some tolerance)
     // this verifies it's using the slow exit timing, not fast enter timing
