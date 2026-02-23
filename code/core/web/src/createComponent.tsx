@@ -20,6 +20,7 @@ import { usePointerEvents } from './helpers/pointerEvents'
 import {
   extractPseudoState,
   resolveEffectivePseudoTransition,
+  resolveEnterExitTransition,
 } from './helpers/pseudoTransitions'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
@@ -737,12 +738,20 @@ export function createComponent<
           animationDriver
         )
 
-        // compute effective transition based on entering/exiting pseudo states
+        // first resolve enter/exit transitions from AnimatePresence
+        // this converts { enter: '200ms', exit: '1000ms' } to just the specific animation
+        const enterExitResolved = resolveEnterExitTransition(
+          props.transition,
+          isExiting,
+          updatedState.unmounted === 'should-enter'
+        )
+
+        // then compute effective transition based on entering/exiting pseudo states
         const effectiveTransition = resolveEffectivePseudoTransition(
           stateRef.current.prevPseudoState,
           updatedState,
           nextStyles?.pseudoTransitions,
-          props.transition
+          enterExitResolved
         )
 
         // update prev state for next comparison (includes group states)
@@ -957,13 +966,20 @@ export function createComponent<
           }
         : undefined
 
+      // first resolve enter/exit transitions from AnimatePresence
+      const enterExitResolved = resolveEnterExitTransition(
+        props.transition,
+        isExiting,
+        state.unmounted === 'should-enter'
+      )
+
       // compute effective transition once here (single source of truth)
       // avoidReRenders path also computes this in updateStyleListener
       const effectiveTransition = resolveEffectivePseudoTransition(
         stateRef.current.prevPseudoState,
         state,
         splitStyles?.pseudoTransitions,
-        props.transition
+        enterExitResolved
       )
 
       // add effectiveTransition to splitStyles for drivers to consume
