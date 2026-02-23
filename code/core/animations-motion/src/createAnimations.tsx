@@ -246,8 +246,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const flushAnimation = ({
         doAnimate = {},
-        // passedOptions might be stale from closure - we recompute using refs below
-        animationOptions: _passedOptions,
+        animationOptions: passedOptions = {},
         dontAnimate,
       }: AnimationProps) => {
         // track whether THIS flush starts a new animation (vs using stale controls)
@@ -256,15 +255,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // Read current state from refs (closure variables can be stale)
         const isCurrentlyExiting = isExitingRef.current
         const currentSendExitComplete = sendExitCompleteRef.current
-        const currentAnimationState = animationStateRef.current
 
-        // ALWAYS recompute animation options using the ref-based animation state.
-        // The passedOptions may have been computed with stale animationState from closure.
-        // This ensures exit animations use the correct 'exit' timing.
-        const animationOptions = getAnimationOptions(
-          props.transition ?? null,
-          currentAnimationState
-        )
+        // Only recompute animation options for exit animations to avoid stale state.
+        // For non-exit animations (hover, press, etc.), use the passed options which
+        // already have the correct effective transition from createComponent.
+        const animationOptions =
+          isCurrentlyExiting && currentSendExitComplete
+            ? getAnimationOptions(props.transition ?? null, 'exit')
+            : passedOptions
 
         try {
           const node = stateRef.current.host
@@ -737,20 +735,24 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     // Get the effective animation key based on enter/exit/default state
     let effectiveKey = getEffectiveAnimation(normalized, animationState)
 
-    // DEBUG: log animation options resolution
+    // DEBUG: log animation options resolution for enter/exit transitions
     if (
-      process.env.NODE_ENV === 'test' &&
       transitionProp &&
       typeof transitionProp === 'object' &&
       'exit' in transitionProp
     ) {
-      console.log('[ANIM_OPTIONS]', {
-        animationState,
-        effectiveKey,
-        normalized,
-        hasPreset: effectiveKey ? !!animations[effectiveKey] : false,
-        presetConfig: effectiveKey ? animations[effectiveKey] : null,
-      })
+      console.log(
+        '[ANIM_OPTIONS]',
+        JSON.stringify({
+          animationState,
+          effectiveKey,
+          hasPreset: effectiveKey ? !!animations[effectiveKey] : false,
+          presetDuration:
+            effectiveKey && animations[effectiveKey]
+              ? (animations[effectiveKey] as any).duration
+              : null,
+        })
+      )
     }
 
     // Fallback: if we have enter/exit defined but state is 'default' and no default key,
