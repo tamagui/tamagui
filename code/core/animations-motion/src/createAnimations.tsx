@@ -411,6 +411,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
             const diff = getDiff(lastDoAnimate.current, doAnimate)
             if (diff) {
+              // FIX: For exit animations, we must stop any running animation first.
+              // Without this, motion continues the previous animation (e.g., enter) and
+              // immediately resolves the new animation's promise, causing exit to complete
+              // in milliseconds instead of the expected duration.
+              if (isCurrentlyExiting && controls.current) {
+                const controlsState = controls.current.state
+                console.log(
+                  `[EXIT_STOP] stopping existing animation, state=${controlsState}`
+                )
+                controls.current.stop()
+              }
+
               // FIX: Handle animation interruption for position-only animations
               // Only apply this fix when:
               // 1. There's a running animation
@@ -541,6 +553,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               )
 
               startedControls = animate(scope.current, fixedDiff, animationOptions)
+              if (isCurrentlyExiting) {
+                console.log(
+                  `[EXIT_ANIMATE] started new animation, state=${startedControls.state}, duration=${animationOptions?.duration}s`
+                )
+              }
               controls.current = startedControls
               lastAnimateAt.current = Date.now()
             }
