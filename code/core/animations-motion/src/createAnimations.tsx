@@ -140,6 +140,10 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const exitCompletedRef = useRef(false)
       const wasExitingRef = useRef(false)
       const completionScheduledRef = useRef(false)
+      // track current exit state in a ref for reliable access from callbacks
+      // (closure variables can be stale when callbacks fire)
+      const isExitingRef = useRef(isExiting)
+      isExitingRef.current = isExiting
 
       // detect transition into exiting state
       const justStartedExiting = isExiting && !wasExitingRef.current
@@ -243,10 +247,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // track whether THIS flush starts a new animation (vs using stale controls)
         let startedControls: AnimationPlaybackControlsWithThen | null = null
 
-        // For exit animations, recompute options fresh to avoid stale memoized values
-        // This fixes race conditions in CI where the memoized animationState might be stale
+        // IMPORTANT: Don't rely on isExiting from closure - it can be stale!
+        // Use isExitingRef.current which is updated synchronously during render.
+        // The useStyleEmitter callback captures closure variables that may be outdated,
+        // so we need to recompute animation options fresh for exits.
+        const isCurrentlyExiting = isExitingRef.current
         const animationOptions =
-          isExiting && sendExitComplete
+          isCurrentlyExiting && sendExitComplete
             ? getAnimationOptions(props.transition ?? null, 'exit')
             : passedOptions
 
@@ -452,7 +459,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           lastDontAnimate.current = dontAnimate ? { ...dontAnimate } : {}
           lastDoAnimate.current = doAnimate ? { ...doAnimate } : {}
         } finally {
-          if (isExiting && sendExitComplete) {
+          if (isCurrentlyExiting && sendExitComplete) {
             const cycleId = exitCycleIdRef.current
 
             // only track completion if we actually started an animation in THIS flush
