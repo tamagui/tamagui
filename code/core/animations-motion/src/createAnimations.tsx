@@ -515,21 +515,20 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               )
 
               // DEBUG: Log EVERY animate call to detect interruptions
-              if (
-                props.transition &&
-                typeof props.transition === 'object' &&
-                'exit' in props.transition
-              ) {
-                console.log(
-                  '[ANIM_CALL]',
-                  JSON.stringify({
-                    isExiting: isCurrentlyExiting,
-                    duration: animationOptions?.duration,
-                    keys: Object.keys(fixedDiff),
-                    time: Date.now(),
-                  })
-                )
-              }
+              console.log(
+                '[ANIM_CALL]',
+                JSON.stringify({
+                  isExiting: isCurrentlyExiting,
+                  duration: animationOptions?.duration,
+                  keys: Object.keys(fixedDiff),
+                  time: Date.now(),
+                  hasExitTransition: !!(
+                    props.transition &&
+                    typeof props.transition === 'object' &&
+                    'exit' in props.transition
+                  ),
+                })
+              )
 
               startedControls = animate(scope.current, fixedDiff, animationOptions)
               controls.current = startedControls
@@ -583,6 +582,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               !completionScheduledRef.current
             ) {
               // no animation started and no pending keys - defer by macrotask
+              console.log('[EXIT_FALLBACK] no animation started, using setTimeout(0)')
               completionScheduledRef.current = true
               setTimeout(() => {
                 if (
@@ -591,6 +591,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                   pendingExitCountsRef.current.size === 0
                 ) {
                   exitCompletedRef.current = true
+                  console.log('[SEND_EXIT_COMPLETE] from setTimeout(0) fallback')
                   // use ref to avoid stale closure
                   sendExitCompleteRef.current?.()
                 }
