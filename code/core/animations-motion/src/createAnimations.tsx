@@ -237,18 +237,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const flushAnimation = ({
         doAnimate = {},
-        animationOptions: passedOptions = {},
+        animationOptions = {},
         dontAnimate,
       }: AnimationProps) => {
         // track whether THIS flush starts a new animation (vs using stale controls)
         let startedControls: AnimationPlaybackControlsWithThen | null = null
-
-        // For exit animations, recompute options fresh to avoid stale memoized values
-        // This fixes race conditions in CI where the memoized animationState might be stale
-        const animationOptions =
-          isExiting && sendExitComplete
-            ? getAnimationOptions(props.transition ?? null, 'exit')
-            : passedOptions
 
         try {
           const node = stateRef.current.host
@@ -503,13 +496,16 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       }
 
       useStyleEmitter?.((nextStyle, effectiveTransition) => {
-        // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
+        // effectiveTransition is computed in createComponent based on entering/exiting pseudo states.
+        // During exit, ignore effectiveTransition (which may come from a pseudo-state change
+        // like hover/press) and recompute fresh exit options from props.transition.
+        // This prevents stale or wrong transition overrides from affecting exit timing.
         const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
           disableAnimation,
-          animationState,
-          effectiveTransition
+          isExiting ? 'exit' : animationState,
+          isExiting ? null : effectiveTransition
         )
 
         flushAnimation(animationProps)
