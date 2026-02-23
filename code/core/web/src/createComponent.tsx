@@ -707,6 +707,20 @@ export function createComponent<
       !Array.isArray(props.transition) &&
       ('enter' in props.transition || 'exit' in props.transition)
     const canAvoidReRenders = !hasEnterExitTransition
+
+    // DEBUG: log enter/exit transition detection
+    if (
+      process.env.NODE_ENV === 'test' &&
+      props['data-testid']?.includes('scenario-50')
+    ) {
+      console.log('[DEBUG] scenario-50 avoidReRenders check:', {
+        hasEnterExitTransition,
+        canAvoidReRenders,
+        transition: props.transition,
+        isExiting,
+        presence: presence?.[0],
+      })
+    }
     if (
       !isPassthrough &&
       (hasAnimationProp || groupName) &&
