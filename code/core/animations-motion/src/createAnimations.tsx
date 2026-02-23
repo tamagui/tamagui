@@ -521,6 +521,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                   isExiting: isCurrentlyExiting,
                   duration: animationOptions?.duration,
                   keys: Object.keys(fixedDiff),
+                  values: fixedDiff,
+                  lastDoAnimate: lastDoAnimate.current,
                   time: Date.now(),
                   hasExitTransition: !!(
                     props.transition &&
