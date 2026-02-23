@@ -538,6 +538,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
         passThrough={passThrough}
         ref={contentRefs}
         contain="layout style"
+        direction={rest.direction}
         {...(passThrough ? null : floatingProps)}
       >
         <PopperContentFrame
