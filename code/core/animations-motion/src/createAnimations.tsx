@@ -246,7 +246,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const flushAnimation = ({
         doAnimate = {},
-        animationOptions: passedOptions = {},
+        // passedOptions might be stale from closure - we recompute using refs below
+        animationOptions: _passedOptions,
         dontAnimate,
       }: AnimationProps) => {
         // track whether THIS flush starts a new animation (vs using stale controls)
@@ -255,8 +256,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // Read current state from refs (closure variables can be stale)
         const isCurrentlyExiting = isExitingRef.current
         const currentSendExitComplete = sendExitCompleteRef.current
-        // Trust passedOptions since it's now computed with animationStateRef.current
-        const animationOptions = passedOptions
+        const currentAnimationState = animationStateRef.current
+
+        // ALWAYS recompute animation options using the ref-based animation state.
+        // The passedOptions may have been computed with stale animationState from closure.
+        // This ensures exit animations use the correct 'exit' timing.
+        const animationOptions = getAnimationOptions(
+          props.transition ?? null,
+          currentAnimationState
+        )
 
         try {
           const node = stateRef.current.host
@@ -727,7 +735,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     const normalized = normalizeTransition(transitionProp)
 
     // Get the effective animation key based on enter/exit/default state
-    const effectiveKey = getEffectiveAnimation(normalized, animationState)
+    let effectiveKey = getEffectiveAnimation(normalized, animationState)
+
+    // Fallback: if we have enter/exit defined but state is 'default' and no default key,
+    // use enter timing as fallback to avoid empty animation options
+    if (!effectiveKey && animationState === 'default') {
+      effectiveKey = normalized.enter || normalized.exit || null
+    }
 
     // Copy global config overrides (will be converted by convertMsToS at the end)
     const globalConfigOverride: Record<string, unknown> | undefined = normalized.config
