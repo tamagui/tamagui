@@ -264,6 +264,23 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             ? getAnimationOptions(props.transition ?? null, 'exit')
             : passedOptions
 
+        // DEBUG: log animation options for exit transitions
+        if (
+          props.transition &&
+          typeof props.transition === 'object' &&
+          'exit' in props.transition
+        ) {
+          console.log(
+            '[ANIM_FLUSH]',
+            JSON.stringify({
+              isCurrentlyExiting,
+              hasSendExitComplete: !!currentSendExitComplete,
+              usedExitPath: isCurrentlyExiting && !!currentSendExitComplete,
+              options: animationOptions,
+            })
+          )
+        }
+
         try {
           const node = stateRef.current.host
 
