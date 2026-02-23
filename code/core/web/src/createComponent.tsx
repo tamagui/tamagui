@@ -698,16 +698,23 @@ export function createComponent<
 
     // avoids re-rendering if animation driver supports it
     // TODO believe we need to set some sort of "pendingState" in case it re-renders
+    // NOTE: Skip avoidReRenders for AnimatePresence children (presence !== undefined)
+    // because the style emitter may be called before the component re-renders with
+    // updated exit state, causing wrong animation timing for enter/exit transitions
+    const canAvoidReRendersForPresence = !presence
     if (
       !isPassthrough &&
       (hasAnimationProp || groupName) &&
-      animationDriver?.avoidReRenders
+      animationDriver?.avoidReRenders &&
+      canAvoidReRendersForPresence
     ) {
       const ogSetStateShallow = setStateShallow
 
-      // Store isExiting in stateRef so updateStyleListener can read current value
+      // Store presenceState in stateRef so updateStyleListener can read current value
       // (closure-captured isExiting can be stale when listener is called before re-render)
+      // The presenceState.isPresent is the source of truth from AnimatePresence context
       stateRef.current.isExiting = isExiting
+      stateRef.current.presenceState = presenceState
 
       stateRef.current.updateStyleListener = () => {
         const useStyleListener = stateRef.current.useStyleListener
@@ -744,9 +751,12 @@ export function createComponent<
 
         // first resolve enter/exit transitions from AnimatePresence
         // this converts { enter: '200ms', exit: '1000ms' } to just the specific animation
-        // Use stateRef.current.isExiting instead of closure-captured isExiting
-        // because this listener can be called before the component re-renders with new state
-        const currentIsExiting = stateRef.current.isExiting ?? isExiting
+        // Check presenceState.isPresent directly as source of truth for exit state
+        // (closure-captured isExiting can be stale when listener is called before re-render)
+        const currentPresenceState = stateRef.current.presenceState
+        const currentIsExiting = currentPresenceState
+          ? currentPresenceState.isPresent === false
+          : (stateRef.current.isExiting ?? isExiting)
         const enterExitResolved = resolveEnterExitTransition(
           props.transition,
           currentIsExiting,
