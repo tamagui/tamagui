@@ -54,26 +54,6 @@ type TransitionAnimationOptions = AnimationOptions & {
 
 const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
 
-// regex to detect timing strings like '200ms', '1s', '0.5s'
-const timingStringRegex = /^(\d+(?:\.\d+)?)\s*(ms|s)$/
-
-/**
- * Parse a timing string like '200ms' or '1s' into a tween config.
- * Returns null if not a valid timing string.
- */
-function parseTimingString(str: string): ValueTransition | null {
-  const match = str.match(timingStringRegex)
-  if (!match) return null
-  const value = parseFloat(match[1])
-  const unit = match[2]
-  // convert to milliseconds
-  const durationMs = unit === 's' ? value * 1000 : value
-  return {
-    type: 'tween',
-    duration: durationMs,
-  }
-}
-
 // regex to detect non-position transform operations (scale, rotate, skew, matrix, perspective)
 // used to identify position-only transforms for the popper animation fix
 const nonPositionTransformRe = /scale|rotate|skew|matrix|perspective/
@@ -778,18 +758,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       return {}
     }
 
-    // Handle timing strings like '200ms' or '1s' that aren't preset keys
-    let defaultConfig: ValueTransition | null = null
-    if (effectiveKey) {
-      // First try to parse as timing string (e.g., '200ms', '1s')
-      const timingConfig = parseTimingString(effectiveKey)
-      if (timingConfig) {
-        defaultConfig = timingConfig
-      } else {
-        // Otherwise look up as animation preset (e.g., 'bouncy', 'quick')
-        defaultConfig = withInferredType(animations[effectiveKey])
-      }
-    }
+    const defaultConfig = effectiveKey ? withInferredType(animations[effectiveKey]) : null
 
     // NOTE: delay and duration are in ms here; convertMsToS will handle conversion at the end
     const delay = normalized.delay
