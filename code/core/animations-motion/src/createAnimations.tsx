@@ -515,6 +515,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               )
 
               // DEBUG: Log EVERY animate call to detect interruptions
+              const computedStyles =
+                scope.current instanceof HTMLElement
+                  ? {
+                      opacity: getComputedStyle(scope.current).opacity,
+                      transform: getComputedStyle(scope.current).transform,
+                    }
+                  : null
               console.log(
                 '[ANIM_CALL]',
                 JSON.stringify({
@@ -522,6 +529,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                   duration: animationOptions?.duration,
                   keys: Object.keys(fixedDiff),
                   values: fixedDiff,
+                  computedBefore: computedStyles,
                   lastDoAnimate: lastDoAnimate.current,
                   time: Date.now(),
                   hasExitTransition: !!(
@@ -558,11 +566,17 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
               // wait on the animation we just started, not a stale reference
               const exitStartTime = Date.now()
+              const animElement = scope.current
               startedControls.finished
                 .then(() => {
                   const actualDuration = Date.now() - exitStartTime
+                  const isInDom = animElement?.isConnected
+                  const currentOpacity =
+                    animElement instanceof HTMLElement
+                      ? getComputedStyle(animElement).opacity
+                      : 'N/A'
                   console.log(
-                    `[EXIT_COMPLETE] then path, duration=${actualDuration}ms, expected=${(animationOptions?.duration || 0) * 1000}ms`
+                    `[EXIT_COMPLETE] then path, duration=${actualDuration}ms, expected=${(animationOptions?.duration || 0) * 1000}ms, inDom=${isInDom}, opacity=${currentOpacity}`
                   )
                   for (const key of exitKeys) {
                     markExitKeyDone(key, cycleId)
