@@ -169,24 +169,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       // helper to mark a key as done - uses macrotask deferral for robust timing
       const markExitKeyDone = (key: string, cycleId: number) => {
-        // DEBUG: log when markExitKeyDone is called
-        if (
-          props.transition &&
-          typeof props.transition === 'object' &&
-          'exit' in props.transition
-        ) {
-          console.log(
-            '[EXIT_KEY_DONE]',
-            JSON.stringify({
-              key,
-              cycleId,
-              currentCycleId: exitCycleIdRef.current,
-              exitCompleted: exitCompletedRef.current,
-              pendingBefore: Array.from(pendingExitCountsRef.current.entries()),
-            })
-          )
-        }
-
         if (cycleId !== exitCycleIdRef.current) return
         if (exitCompletedRef.current) return
 
@@ -209,14 +191,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               pendingExitCountsRef.current.size === 0
             ) {
               exitCompletedRef.current = true
-              // DEBUG: log when sendExitComplete is called
-              if (
-                props.transition &&
-                typeof props.transition === 'object' &&
-                'exit' in props.transition
-              ) {
-                console.log('[SEND_EXIT_COMPLETE] from markExitKeyDone timeout')
-              }
               // use ref to avoid stale closure
               sendExitCompleteRef.current?.()
             }
@@ -282,21 +256,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const isCurrentlyExiting = isExitingRef.current
         const currentSendExitComplete = sendExitCompleteRef.current
 
-        // DEBUG: Log every flush call
-        console.log(
-          '[FLUSH_START]',
-          JSON.stringify({
-            isExiting: isCurrentlyExiting,
-            hasExitCb: !!currentSendExitComplete,
-            hasTransition: !!props.transition,
-            transitionType: typeof props.transition,
-            transitionKeys:
-              props.transition && typeof props.transition === 'object'
-                ? Object.keys(props.transition)
-                : null,
-          })
-        )
-
         // Only recompute animation options for exit animations to avoid stale state.
         // For non-exit animations (hover, press, etc.), use the passed options which
         // already have the correct effective transition from createComponent.
@@ -304,23 +263,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           isCurrentlyExiting && currentSendExitComplete
             ? getAnimationOptions(props.transition ?? null, 'exit')
             : passedOptions
-
-        // DEBUG: log animation options for exit transitions
-        if (
-          props.transition &&
-          typeof props.transition === 'object' &&
-          'exit' in props.transition
-        ) {
-          console.log(
-            '[ANIM_FLUSH]',
-            JSON.stringify({
-              isCurrentlyExiting,
-              hasSendExitComplete: !!currentSendExitComplete,
-              usedExitPath: isCurrentlyExiting && !!currentSendExitComplete,
-              options: animationOptions,
-            })
-          )
-        }
 
         try {
           const node = stateRef.current.host
@@ -415,16 +357,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // Without this, motion continues the previous animation (e.g., enter) and
               // immediately resolves the new animation's promise, causing exit to complete
               // in milliseconds instead of the expected duration.
-              if (isCurrentlyExiting) {
-                console.log(
-                  `[EXIT_CHECK] hasControls=${!!controls.current}, state=${controls.current?.state}`
-                )
-              }
               if (isCurrentlyExiting && controls.current) {
-                const controlsState = controls.current.state
-                console.log(
-                  `[EXIT_STOP] stopping existing animation, state=${controlsState}`
-                )
                 controls.current.stop()
               }
 
@@ -531,38 +464,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 doAnimate
               )
 
-              // DEBUG: Log EVERY animate call to detect interruptions
-              const computedStyles =
-                scope.current instanceof HTMLElement
-                  ? {
-                      opacity: getComputedStyle(scope.current).opacity,
-                      transform: getComputedStyle(scope.current).transform,
-                    }
-                  : null
-              console.log(
-                '[ANIM_CALL]',
-                JSON.stringify({
-                  isExiting: isCurrentlyExiting,
-                  duration: animationOptions?.duration,
-                  keys: Object.keys(fixedDiff),
-                  values: fixedDiff,
-                  computedBefore: computedStyles,
-                  lastDoAnimate: lastDoAnimate.current,
-                  time: Date.now(),
-                  hasExitTransition: !!(
-                    props.transition &&
-                    typeof props.transition === 'object' &&
-                    'exit' in props.transition
-                  ),
-                })
-              )
-
               startedControls = animate(scope.current, fixedDiff, animationOptions)
-              if (isCurrentlyExiting) {
-                console.log(
-                  `[EXIT_ANIMATE] started new animation, state=${startedControls.state}, duration=${animationOptions?.duration}s`
-                )
-              }
               controls.current = startedControls
               lastAnimateAt.current = Date.now()
             }
@@ -587,28 +489,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               }
 
               // wait on the animation we just started, not a stale reference
-              const exitStartTime = Date.now()
-              const animElement = scope.current
               startedControls.finished
                 .then(() => {
-                  const actualDuration = Date.now() - exitStartTime
-                  const isInDom = animElement?.isConnected
-                  const currentOpacity =
-                    animElement instanceof HTMLElement
-                      ? getComputedStyle(animElement).opacity
-                      : 'N/A'
-                  console.log(
-                    `[EXIT_COMPLETE] then path, duration=${actualDuration}ms, expected=${(animationOptions?.duration || 0) * 1000}ms, inDom=${isInDom}, opacity=${currentOpacity}`
-                  )
                   for (const key of exitKeys) {
                     markExitKeyDone(key, cycleId)
                   }
                 })
                 .catch(() => {
-                  const actualDuration = Date.now() - exitStartTime
-                  console.log(
-                    `[EXIT_COMPLETE] catch path (canceled), duration=${actualDuration}ms, expected=${(animationOptions?.duration || 0) * 1000}ms`
-                  )
                   // animation was canceled, still complete
                   for (const key of exitKeys) {
                     markExitKeyDone(key, cycleId)
@@ -620,7 +507,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               !completionScheduledRef.current
             ) {
               // no animation started and no pending keys - defer by macrotask
-              console.log('[EXIT_FALLBACK] no animation started, using setTimeout(0)')
               completionScheduledRef.current = true
               setTimeout(() => {
                 if (
@@ -629,7 +515,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                   pendingExitCountsRef.current.size === 0
                 ) {
                   exitCompletedRef.current = true
-                  console.log('[SEND_EXIT_COMPLETE] from setTimeout(0) fallback')
                   // use ref to avoid stale closure
                   sendExitCompleteRef.current?.()
                 }
@@ -857,26 +742,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
     // Get the effective animation key based on enter/exit/default state
     let effectiveKey = getEffectiveAnimation(normalized, animationState)
-
-    // DEBUG: log animation options resolution for enter/exit transitions
-    if (
-      transitionProp &&
-      typeof transitionProp === 'object' &&
-      'exit' in transitionProp
-    ) {
-      console.log(
-        '[ANIM_OPTIONS]',
-        JSON.stringify({
-          animationState,
-          effectiveKey,
-          hasPreset: effectiveKey ? !!animations[effectiveKey] : false,
-          presetDuration:
-            effectiveKey && animations[effectiveKey]
-              ? (animations[effectiveKey] as any).duration
-              : null,
-        })
-      )
-    }
 
     // Fallback: if we have enter/exit defined but state is 'default' and no default key,
     // use enter timing as fallback to avoid empty animation options
