@@ -415,6 +415,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // Without this, motion continues the previous animation (e.g., enter) and
               // immediately resolves the new animation's promise, causing exit to complete
               // in milliseconds instead of the expected duration.
+              if (isCurrentlyExiting) {
+                console.log(
+                  `[EXIT_CHECK] hasControls=${!!controls.current}, state=${controls.current?.state}`
+                )
+              }
               if (isCurrentlyExiting && controls.current) {
                 const controlsState = controls.current.state
                 console.log(
