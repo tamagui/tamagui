@@ -311,10 +311,6 @@ export type TamaguiComponentStateRef = {
     setStateShallow?: ComponentSetStateShallow;
     useStyleListener?: UseStyleListener;
     updateStyleListener?: () => void;
-    isExiting?: boolean;
-    presenceState?: {
-        isPresent: boolean;
-    } | null;
     group?: ComponentGroupEmitter;
     nextState?: TamaguiComponentState;
     nextMedia?: UseMediaState;

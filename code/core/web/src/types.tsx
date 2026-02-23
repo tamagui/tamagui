@@ -601,11 +601,6 @@ export type TamaguiComponentStateRef = {
   setStateShallow?: ComponentSetStateShallow
   useStyleListener?: UseStyleListener
   updateStyleListener?: () => void
-  // track current exit state for use in updateStyleListener
-  // (closure-captured isExiting can be stale)
-  isExiting?: boolean
-  // presenceState from AnimatePresence context - source of truth for exit
-  presenceState?: { isPresent: boolean } | null
 
   // this is only used by group="" components
   // sets up a context object to track current state + emit

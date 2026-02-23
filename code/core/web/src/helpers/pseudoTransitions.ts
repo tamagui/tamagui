@@ -1,4 +1,3 @@
-import { normalizeTransition, getEffectiveAnimation } from '@tamagui/animation-helpers'
 import type { TransitionProp, PseudoTransitions, TamaguiComponentState } from '../types'
 
 /**
@@ -68,44 +67,6 @@ export function resolveEffectivePseudoTransition(
 
   // exiting uses base transition
   return baseTransition
-}
-
-/**
- * Resolves enter/exit transitions from AnimatePresence.
- * If transition has enter/exit keys and we're entering/exiting, returns the specific animation.
- * Otherwise returns the base transition unchanged.
- *
- * @param transition - The base transition prop (may have enter/exit keys)
- * @param isExiting - Whether the component is exiting (presence[0] === false)
- * @param isMounting - Whether the component is mounting (unmounted === 'should-enter')
- * @returns The resolved transition for the current state
- */
-export function resolveEnterExitTransition(
-  transition: TransitionProp | undefined | null,
-  isExiting: boolean,
-  isMounting: boolean
-): TransitionProp | undefined | null {
-  if (!transition) return transition
-
-  const normalized = normalizeTransition(transition)
-
-  // Determine animation state
-  const animationState: 'enter' | 'exit' | 'default' = isExiting
-    ? 'exit'
-    : isMounting
-      ? 'enter'
-      : 'default'
-
-  // Get the effective animation key
-  const effectiveKey = getEffectiveAnimation(normalized, animationState)
-
-  // If we got a different key than the raw transition, return just that key
-  // This resolves { enter: '200ms', exit: '1000ms' } to just '1000ms' when exiting
-  if (effectiveKey && typeof transition !== 'string') {
-    return effectiveKey
-  }
-
-  return transition
 }
 
 /**

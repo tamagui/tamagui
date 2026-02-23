@@ -20,7 +20,6 @@ import { usePointerEvents } from './helpers/pointerEvents'
 import {
   extractPseudoState,
   resolveEffectivePseudoTransition,
-  resolveEnterExitTransition,
 } from './helpers/pseudoTransitions'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
@@ -698,42 +697,12 @@ export function createComponent<
 
     // avoids re-rendering if animation driver supports it
     // TODO believe we need to set some sort of "pendingState" in case it re-renders
-    // NOTE: Skip avoidReRenders when component has enter/exit-specific transition timing
-    // because the style emitter may be called before the component re-renders with
-    // updated exit state, causing wrong animation timing
-    const hasEnterExitTransition =
-      props.transition &&
-      typeof props.transition === 'object' &&
-      !Array.isArray(props.transition) &&
-      ('enter' in props.transition || 'exit' in props.transition)
-    const canAvoidReRenders = !hasEnterExitTransition
-
-    // DEBUG: log enter/exit transition detection
-    if (
-      process.env.NODE_ENV === 'test' &&
-      props['data-testid']?.includes('scenario-50')
-    ) {
-      console.log('[DEBUG] scenario-50 avoidReRenders check:', {
-        hasEnterExitTransition,
-        canAvoidReRenders,
-        transition: props.transition,
-        isExiting,
-        presence: presence?.[0],
-      })
-    }
     if (
       !isPassthrough &&
       (hasAnimationProp || groupName) &&
-      animationDriver?.avoidReRenders &&
-      canAvoidReRenders
+      animationDriver?.avoidReRenders
     ) {
       const ogSetStateShallow = setStateShallow
-
-      // Store presenceState in stateRef so updateStyleListener can read current value
-      // (closure-captured isExiting can be stale when listener is called before re-render)
-      // The presenceState.isPresent is the source of truth from AnimatePresence context
-      stateRef.current.isExiting = isExiting
-      stateRef.current.presenceState = presenceState
 
       stateRef.current.updateStyleListener = () => {
         const useStyleListener = stateRef.current.useStyleListener
@@ -768,26 +737,12 @@ export function createComponent<
           animationDriver
         )
 
-        // first resolve enter/exit transitions from AnimatePresence
-        // this converts { enter: '200ms', exit: '1000ms' } to just the specific animation
-        // Check presenceState.isPresent directly as source of truth for exit state
-        // (closure-captured isExiting can be stale when listener is called before re-render)
-        const currentPresenceState = stateRef.current.presenceState
-        const currentIsExiting = currentPresenceState
-          ? currentPresenceState.isPresent === false
-          : (stateRef.current.isExiting ?? isExiting)
-        const enterExitResolved = resolveEnterExitTransition(
-          props.transition,
-          currentIsExiting,
-          updatedState.unmounted === 'should-enter'
-        )
-
-        // then compute effective transition based on entering/exiting pseudo states
+        // compute effective transition based on entering/exiting pseudo states
         const effectiveTransition = resolveEffectivePseudoTransition(
           stateRef.current.prevPseudoState,
           updatedState,
           nextStyles?.pseudoTransitions,
-          enterExitResolved
+          props.transition
         )
 
         // update prev state for next comparison (includes group states)
@@ -1002,20 +957,13 @@ export function createComponent<
           }
         : undefined
 
-      // first resolve enter/exit transitions from AnimatePresence
-      const enterExitResolved = resolveEnterExitTransition(
-        props.transition,
-        isExiting,
-        state.unmounted === 'should-enter'
-      )
-
       // compute effective transition once here (single source of truth)
       // avoidReRenders path also computes this in updateStyleListener
       const effectiveTransition = resolveEffectivePseudoTransition(
         stateRef.current.prevPseudoState,
         state,
         splitStyles?.pseudoTransitions,
-        enterExitResolved
+        props.transition
       )
 
       // add effectiveTransition to splitStyles for drivers to consume
