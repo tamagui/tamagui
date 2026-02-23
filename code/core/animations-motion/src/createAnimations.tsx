@@ -237,11 +237,20 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       const flushAnimation = ({
         doAnimate = {},
-        animationOptions = {},
+        animationOptions: passedOptions = {},
         dontAnimate,
       }: AnimationProps) => {
         // track whether THIS flush starts a new animation (vs using stale controls)
         let startedControls: AnimationPlaybackControlsWithThen | null = null
+
+        // When exiting, if passedOptions are empty it means animationState was stale
+        // ('default' instead of 'exit') - recompute with correct exit state.
+        // Empty options happen because transition like {enter:'200ms', exit:'1000ms'}
+        // has no 'default' key, so getAnimationOptions('default') returns {}.
+        const animationOptions =
+          isExiting && sendExitComplete && Object.keys(passedOptions).length === 0
+            ? getAnimationOptions(props.transition ?? null, 'exit')
+            : passedOptions
 
         try {
           const node = stateRef.current.host
