@@ -243,10 +243,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // track whether THIS flush starts a new animation (vs using stale controls)
         let startedControls: AnimationPlaybackControlsWithThen | null = null
 
-        // For exit animations, recompute options fresh to avoid stale memoized values
-        // This fixes race conditions in CI where the memoized animationState might be stale
+        // For exit animations, recompute options fresh ONLY when passedOptions are empty
+        // (stale memoization fallback). When passedOptions are populated, they were
+        // correctly computed by getMotionAnimatedProps (possibly with effectiveTransition
+        // from createComponent) and should be used as-is.
         const animationOptions =
-          isExiting && sendExitComplete
+          isExiting &&
+          sendExitComplete &&
+          (!passedOptions || Object.keys(passedOptions).length === 0)
             ? getAnimationOptions(props.transition ?? null, 'exit')
             : passedOptions
 
