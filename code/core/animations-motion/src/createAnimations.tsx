@@ -140,12 +140,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const exitCompletedRef = useRef(false)
       const wasExitingRef = useRef(false)
       const completionScheduledRef = useRef(false)
-      // track current exit state and sendExitComplete in refs for reliable access from callbacks
+      // track current state in refs for reliable access from callbacks
       // (closure variables can be stale when callbacks fire)
       const isExitingRef = useRef(isExiting)
       isExitingRef.current = isExiting
       const sendExitCompleteRef = useRef(sendExitComplete)
       sendExitCompleteRef.current = sendExitComplete
+      const animationStateRef = useRef(animationState)
+      animationStateRef.current = animationState
 
       // detect transition into exiting state
       const justStartedExiting = isExiting && !wasExitingRef.current
@@ -250,16 +252,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // track whether THIS flush starts a new animation (vs using stale controls)
         let startedControls: AnimationPlaybackControlsWithThen | null = null
 
-        // IMPORTANT: Don't rely on closure variables - they can be stale!
-        // Use refs which are updated synchronously during render.
-        // The useStyleEmitter callback captures closure variables that may be outdated,
-        // so we need to recompute animation options fresh for exits.
+        // Read current state from refs (closure variables can be stale)
         const isCurrentlyExiting = isExitingRef.current
         const currentSendExitComplete = sendExitCompleteRef.current
-        const animationOptions =
-          isCurrentlyExiting && currentSendExitComplete
-            ? getAnimationOptions(props.transition ?? null, 'exit')
-            : passedOptions
+        // Trust passedOptions since it's now computed with animationStateRef.current
+        const animationOptions = passedOptions
 
         try {
           const node = stateRef.current.host
@@ -516,11 +513,12 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
       useStyleEmitter?.((nextStyle, effectiveTransition) => {
         // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
+        // Use refs for state values to avoid stale closures
         const animationProps = getMotionAnimatedProps(
           props as any,
           nextStyle,
           disableAnimation,
-          animationState,
+          animationStateRef.current, // use ref to get current state
           effectiveTransition
         )
 
