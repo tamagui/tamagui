@@ -737,6 +737,22 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
     // Get the effective animation key based on enter/exit/default state
     let effectiveKey = getEffectiveAnimation(normalized, animationState)
 
+    // DEBUG: log animation options resolution
+    if (
+      process.env.NODE_ENV === 'test' &&
+      transitionProp &&
+      typeof transitionProp === 'object' &&
+      'exit' in transitionProp
+    ) {
+      console.log('[ANIM_OPTIONS]', {
+        animationState,
+        effectiveKey,
+        normalized,
+        hasPreset: effectiveKey ? !!animations[effectiveKey] : false,
+        presetConfig: effectiveKey ? animations[effectiveKey] : null,
+      })
+    }
+
     // Fallback: if we have enter/exit defined but state is 'default' and no default key,
     // use enter timing as fallback to avoid empty animation options
     if (!effectiveKey && animationState === 'default') {
