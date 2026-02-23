@@ -1,5 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { NativeMenuContext } from '@tamagui/native'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import React, { ReactElement, ReactNode, useMemo } from 'react'
@@ -279,6 +280,14 @@ export function createComponent<
 
     const componentContext = React.useContext(ComponentContext)
     const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
+
+    // On Android, skip RNGH GestureDetector inside native menus (zeego) and use
+    // direct press events instead — GestureDetector consumes touches before they
+    // reach MenuView's native handler, preventing the menu from opening
+    const isInsideNativeMenu =
+      process.env.TAMAGUI_TARGET === 'native'
+        ? React.useContext(NativeMenuContext)
+        : false
 
     if (
       !process.env.TAMAGUI_IS_CORE_NODE &&
@@ -1377,7 +1386,7 @@ export function createComponent<
     // Skip gesture setup for HOC components - they may return null which crashes GestureDetector
     const pressGesture =
       process.env.TAMAGUI_TARGET === 'native'
-        ? useEvents(events, viewProps, stateRef, staticConfig, isHOC)
+        ? useEvents(events, viewProps, stateRef, staticConfig, isHOC, isInsideNativeMenu)
         : null
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`

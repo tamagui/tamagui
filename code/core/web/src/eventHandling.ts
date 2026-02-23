@@ -37,7 +37,8 @@ export function useEvents(
   _viewProps: any,
   _stateRef: { current: any },
   _staticConfig: any,
-  _isHOC?: boolean
+  _isHOC?: boolean,
+  _isInsideNativeMenu?: boolean
 ) {
   return null
 }

@@ -33,6 +33,7 @@ export { isKeyboardControllerEnabled, getKeyboardControllerState, setKeyboardCon
 export type { KeyboardControllerState } from "./keyboardControllerState";
 export { getZeego } from "./zeegoState";
 export type { ZeegoAccessor } from "./zeegoState";
+export { NativeMenuContext } from "./nativeMenuContext";
 export { getBurnt } from "./burntState";
 export type { BurntAccessor } from "./burntState";
 export { NativePortal, NativePortalHost, NativePortalProvider } from "./components";

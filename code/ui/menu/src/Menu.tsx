@@ -123,9 +123,11 @@ export function createMenu(params: CreateBaseMenuProps) {
   })
 
   // on native, ScrollView is just a passthrough since native menus handle overflow
-  const ScrollView = isWeb
-    ? NonNativeMenu.ScrollView
-    : ({ children }: { children: React.ReactNode }) => <>{children}</>
+  const NativeScrollView = ({ children }: { children: React.ReactNode }) => (
+    <>{children}</>
+  )
+  NativeScrollView.displayName = 'MenuScrollView'
+  const ScrollView = isWeb ? NonNativeMenu.ScrollView : NativeScrollView
 
   const Menu = withStaticProperties(MenuComp, {
     Trigger,

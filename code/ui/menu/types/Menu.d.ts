@@ -124,8 +124,11 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
         accept: {
             readonly contentContainerStyle: "style";
         };
-    } & import("@tamagui/web").StaticConfigPublic> | (({ children }: {
-        children: React.ReactNode;
-    }) => import("react/jsx-runtime").JSX.Element);
+    } & import("@tamagui/web").StaticConfigPublic> | {
+        ({ children }: {
+            children: React.ReactNode;
+        }): import("react/jsx-runtime").JSX.Element;
+        displayName: string;
+    };
 };
 //# sourceMappingURL=Menu.d.ts.map

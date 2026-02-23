@@ -67,6 +67,7 @@ export type { KeyboardControllerState } from './keyboardControllerState'
 // zeego (native menus)
 export { getZeego } from './zeegoState'
 export type { ZeegoAccessor } from './zeegoState'
+export { NativeMenuContext } from './nativeMenuContext'
 
 // burnt (native toasts)
 export { getBurnt } from './burntState'

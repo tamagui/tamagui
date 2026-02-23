@@ -5,7 +5,7 @@
  * On Native: Uses Zeego for native menus (Credit to nandorojo/Zeego)
  */
 
-import { getZeego } from '@tamagui/native'
+import { getZeego, NativeMenuContext } from '@tamagui/native'
 import { isWeb, withStaticProperties, isIos } from '@tamagui/web'
 import type { FC } from 'react'
 import React from 'react'
@@ -207,6 +207,13 @@ export const createNativeMenu = (
         return
       }
 
+      // Flatten ScrollView (native passthrough - its children need to be visible to zeego)
+      if (displayName.includes('ScrollView')) {
+        const scrollChildren = transformForZeego(props.children, false)
+        React.Children.forEach(scrollChildren, (c) => result.push(c))
+        return
+      }
+
       // Handle known component types (containers, SubTrigger, CheckboxItem)
       const componentType = getComponentType(displayName)
 
@@ -338,13 +345,26 @@ export const createNativeMenu = (
   Auxiliary.displayName = `${MenuType}Auxiliary`
 
   // Main Menu component
+  // On Android, provide NativeMenuContext so components use Gesture.Manual()
+  // (which never goes ACTIVE) instead of Gesture.Tap() (which sends ACTION_CANCEL to MenuView)
+  const isAndroid = !isIos && !isWeb
   const Menu: FC<NativeMenuProps> = ({ children, onOpenChange, onOpenWillChange }) => {
     const rootProps: Record<string, unknown> = { onOpenChange }
     if (isContextMenu && onOpenWillChange) {
       rootProps.onOpenWillChange = onOpenWillChange
     }
 
-    return <ZeegoMenu.Root {...rootProps}>{transformForZeego(children)}</ZeegoMenu.Root>
+    const content = (
+      <ZeegoMenu.Root {...rootProps}>{transformForZeego(children)}</ZeegoMenu.Root>
+    )
+
+    if (isAndroid) {
+      return (
+        <NativeMenuContext.Provider value={true}>{content}</NativeMenuContext.Provider>
+      )
+    }
+
+    return content
   }
   Menu.displayName = MenuType
 

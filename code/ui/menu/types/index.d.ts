@@ -123,8 +123,11 @@ export declare const Menu: import("react").FC<import("./createNonNativeMenu").Me
         accept: {
             readonly contentContainerStyle: "style";
         };
-    } & import("@tamagui/web").StaticConfigPublic> | (({ children }: {
-        children: React.ReactNode;
-    }) => import("react/jsx-runtime").JSX.Element);
+    } & import("@tamagui/web").StaticConfigPublic> | {
+        ({ children }: {
+            children: React.ReactNode;
+        }): import("react/jsx-runtime").JSX.Element;
+        displayName: string;
+    };
 };
 //# sourceMappingURL=index.d.ts.map

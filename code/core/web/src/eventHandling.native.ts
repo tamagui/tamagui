@@ -18,7 +18,8 @@ export function useEvents(
   viewProps: any,
   stateRef: { current: TamaguiComponentStateRef },
   staticConfig: StaticConfig,
-  isHOC?: boolean
+  isHOC?: boolean,
+  isInsideNativeMenu?: boolean
 ) {
   // focus/blur events always attached directly
   if (events) {
@@ -105,14 +106,35 @@ export function useEvents(
 
       // only create gesture once, callbacks are read from ref
       if (!gestureRef.current) {
-        gestureRef.current = gh.createPressGesture({
-          onPressIn: (e: any) => callbacksRef.current.onPressIn?.(e),
-          onPressOut: (e: any) => callbacksRef.current.onPressOut?.(e),
-          onPress: (e: any) => callbacksRef.current.onPress?.(e),
-          onLongPress: (e: any) => callbacksRef.current.onLongPress?.(e),
-          delayLongPress: events?.delayLongPress,
-          hitSlop: viewProps.hitSlop,
-        })
+        if (isInsideNativeMenu) {
+          // Inside native menus on Android: use Manual gesture with manualActivation
+          // so it never goes ACTIVE (which would send ACTION_CANCEL to MenuView).
+          // Press callbacks fire via onTouchesDown/Up instead.
+          const { Gesture } = gh.state
+          const manual = Gesture.Manual()
+            .runOnJS(true)
+            .manualActivation(true)
+            .onTouchesDown(() => {
+              callbacksRef.current.onPressIn?.({})
+            })
+            .onTouchesUp(() => {
+              callbacksRef.current.onPress?.({})
+              callbacksRef.current.onPressOut?.({})
+            })
+            .onTouchesCancelled(() => {
+              callbacksRef.current.onPressOut?.({})
+            })
+          gestureRef.current = manual
+        } else {
+          gestureRef.current = gh.createPressGesture({
+            onPressIn: (e: any) => callbacksRef.current.onPressIn?.(e),
+            onPressOut: (e: any) => callbacksRef.current.onPressOut?.(e),
+            onPress: (e: any) => callbacksRef.current.onPress?.(e),
+            onLongPress: (e: any) => callbacksRef.current.onLongPress?.(e),
+            delayLongPress: events?.delayLongPress,
+            hitSlop: viewProps.hitSlop,
+          })
+        }
       }
       // TODO update viewProps.hitSlop / events.delayLongPress!
 
