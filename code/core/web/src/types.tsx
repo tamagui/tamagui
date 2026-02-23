@@ -601,6 +601,9 @@ export type TamaguiComponentStateRef = {
   setStateShallow?: ComponentSetStateShallow
   useStyleListener?: UseStyleListener
   updateStyleListener?: () => void
+  // track current exit state for use in updateStyleListener
+  // (closure-captured isExiting can be stale)
+  isExiting?: boolean
 
   // this is only used by group="" components
   // sets up a context object to track current state + emit

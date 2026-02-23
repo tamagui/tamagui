@@ -705,6 +705,10 @@ export function createComponent<
     ) {
       const ogSetStateShallow = setStateShallow
 
+      // Store isExiting in stateRef so updateStyleListener can read current value
+      // (closure-captured isExiting can be stale when listener is called before re-render)
+      stateRef.current.isExiting = isExiting
+
       stateRef.current.updateStyleListener = () => {
         const useStyleListener = stateRef.current.useStyleListener
 
@@ -740,9 +744,12 @@ export function createComponent<
 
         // first resolve enter/exit transitions from AnimatePresence
         // this converts { enter: '200ms', exit: '1000ms' } to just the specific animation
+        // Use stateRef.current.isExiting instead of closure-captured isExiting
+        // because this listener can be called before the component re-renders with new state
+        const currentIsExiting = stateRef.current.isExiting ?? isExiting
         const enterExitResolved = resolveEnterExitTransition(
           props.transition,
-          isExiting,
+          currentIsExiting,
           updatedState.unmounted === 'should-enter'
         )
 
