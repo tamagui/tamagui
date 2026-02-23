@@ -46,7 +46,12 @@ test.describe('Animation Timing Bug Fixes', () => {
     const consoleLogs: string[] = []
     page.on('console', (msg) => {
       const text = msg.text()
-      if (text.includes('ANIM_') || text.includes('[motion]')) {
+      if (
+        text.includes('ANIM_') ||
+        text.includes('[motion]') ||
+        text.includes('EXIT_') ||
+        text.includes('FLUSH_')
+      ) {
         consoleLogs.push(text)
       }
     })
@@ -71,6 +76,17 @@ test.describe('Animation Timing Bug Fixes', () => {
     // log console output for debugging
     if (consoleLogs.length > 0) {
       console.log('Console logs during animation:', consoleLogs.slice(0, 20))
+      // Also log exit-related logs
+      const exitLogs = consoleLogs.filter(
+        (log) =>
+          log.includes('EXIT_') ||
+          log.includes('ANIM_CALL') ||
+          log.includes('ANIM_FLUSH') ||
+          log.includes('FLUSH_')
+      )
+      if (exitLogs.length > 0) {
+        console.log('Exit-related logs:', exitLogs)
+      }
     }
 
     // exit animation is 1000ms - should take at least 800ms (allowing some tolerance)
