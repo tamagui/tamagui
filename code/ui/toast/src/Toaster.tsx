@@ -304,16 +304,6 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     )
     const deferredCollapseRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
-    // Refs so the stable subscriber closure can read latest prop values
-    const nativeRef = React.useRef(native)
-    nativeRef.current = native
-    const burntOptionsRef = React.useRef(burntOptions)
-    burntOptionsRef.current = burntOptions
-    const notificationOptionsRef = React.useRef(notificationOptions)
-    notificationOptionsRef.current = notificationOptions
-    const toastsRef = React.useRef(toasts)
-    toastsRef.current = toasts
-
     // subscribe to toast state changes
     React.useEffect(() => {
       return ToastState.subscribe((toast) => {
@@ -325,20 +315,30 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
           return
         }
 
-        // Native dispatch: intercept NEW toasts before they enter React state
-        const isNew = !toastsRef.current.some((t) => t.id === toast.id)
-        if (isNew && nativeRef.current) {
+        // Native dispatch: intercept before entering state so no in-app toast renders.
+        // On failure (e.g. permission denied), falls through to in-app.
+        if (native) {
           const t = toast as ToastT
           const titleText = typeof t.title === 'function' ? t.title() : t.title
           const descText =
             typeof t.description === 'function' ? t.description() : t.description
           if (typeof titleText === 'string') {
+            const toastType = t.type ?? 'default'
+            const preset =
+              toastType === 'error' ? 'error' : toastType === 'success' ? 'done' : 'none'
+            const haptic =
+              toastType === 'error'
+                ? 'error'
+                : toastType === 'success'
+                  ? 'success'
+                  : toastType === 'warning'
+                    ? 'warning'
+                    : 'none'
             const result = createNativeToast(titleText, {
               message: typeof descText === 'string' ? descText : undefined,
-              duration: t.duration,
-              burntOptions: t.burntOptions ?? burntOptionsRef.current,
-              notificationOptions:
-                t.notificationOptions ?? notificationOptionsRef.current,
+              duration: t.duration ?? duration,
+              burntOptions: { preset, haptic, ...burntOptions },
+              notificationOptions,
             })
             if (result !== false) {
               return // native handled — skip in-app
@@ -363,7 +363,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
           return [toast as ToastT, ...toasts]
         })
       })
-    }, [])
+    }, [native, duration, burntOptions, notificationOptions])
 
     // collapse expanded view when only 1 toast remains (respect dismiss cooldown)
     React.useEffect(() => {
