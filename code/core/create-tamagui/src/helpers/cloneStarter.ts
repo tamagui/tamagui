@@ -165,7 +165,7 @@ function rewriteWorkspaceVersions(projectPath: string) {
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
 
     // read create-tamagui's own version as the target
-    const ctPkgPath = join(__dirname, '..', '..', 'package.json')
+    const ctPkgPath = require.resolve('create-tamagui/package.json')
     const ctPkg = JSON.parse(readFileSync(ctPkgPath, 'utf-8'))
     const version = `^${ctPkg.version}`
 
