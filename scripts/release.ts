@@ -106,7 +106,9 @@ if (!skipVersion) {
   console.info(`Re-releasing ${curVersion}`)
 }
 
-const isMain = (await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() === 'main'
+const currentBranch = (await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim()
+const isMain = currentBranch === 'main'
+const isV1Branch = currentBranch === 'v1' && curVersion.startsWith('1.')
 
 async function run() {
   try {
@@ -115,11 +117,11 @@ async function run() {
     // ensure we are up to date
     // ensure we are on main
     if (!canary) {
-      if (!isMain) {
+      if (!isMain && !isV1Branch) {
         throw new Error(`Not on main`)
       }
       if (!dirty && !rePublish && !shouldFinish) {
-        await spawnify(`git pull --rebase origin main`)
+        await spawnify(`git pull --rebase origin ${currentBranch}`)
       }
     }
 
