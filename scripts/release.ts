@@ -120,7 +120,7 @@ async function run() {
       if (!isMain && !isV1Branch) {
         throw new Error(`Not on main`)
       }
-      if (!dirty && !rePublish && !shouldFinish) {
+      if (!dirty && !rePublish && !shouldFinish && !isV1Branch) {
         await spawnify(`git pull --rebase origin ${currentBranch}`)
       }
     }
@@ -422,7 +422,7 @@ async function run() {
             await spawnify(`git tag ${gitTag}`, { cwd })
           }
 
-          if (!dirty) {
+          if (!dirty && !isV1Branch) {
             // pull once more before pushing so if there was a push in interim we get it
             await spawnify(`git pull --rebase origin HEAD`, { cwd })
           }
