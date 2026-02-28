@@ -2,7 +2,6 @@ import * as React from 'react';
 import type { ToasterPosition } from './Toaster';
 import type { ToastT } from './ToastState';
 import type { SwipeDirection } from './ToastProvider';
-import type { BurntToastOptions } from './types';
 export interface ToastItemProps {
     toast: ToastT;
     index: number;
@@ -30,9 +29,6 @@ export interface ToastItemProps {
         loading?: React.ReactNode;
         close?: React.ReactNode;
     };
-    native?: boolean;
-    burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>;
-    notificationOptions?: NotificationOptions;
     /** When true, disables animations for accessibility */
     reducedMotion?: boolean;
 }

@@ -27,3 +27,7 @@ export const hideNativeToast: HideNativeToastsFn = () => {
   if (!burnt.isEnabled) return
   burnt.state.dismissAllAlerts!()
 }
+
+export async function requestNotificationPermission(): Promise<null> {
+  return null
+}

@@ -28,5 +28,6 @@ export type { ToasterProps, ToasterPosition, HeightT } from './Toaster'
 
 export type { SwipeDirection } from './ToastProvider'
 export type { BurntToastOptions, CreateNativeToastOptions, NativeToastRef } from './types'
+export { requestNotificationPermission } from './createNativeToast'
 
 // legacy v1 API - import from '@tamagui/toast/v1' for the declarative API

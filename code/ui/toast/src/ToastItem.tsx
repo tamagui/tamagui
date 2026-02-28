@@ -11,8 +11,6 @@ import type { ToastT, ToastType } from './ToastState'
 import { useAnimatedDragGesture } from './useAnimatedDragGesture'
 import { useToastAnimations } from './useToastAnimations'
 import type { SwipeDirection } from './ToastProvider'
-import type { BurntToastOptions } from './types'
-import { createNativeToast } from './createNativeToast'
 
 // time before unmount after deletion
 const TIME_BEFORE_UNMOUNT = 200
@@ -292,9 +290,6 @@ export interface ToastItemProps {
     loading?: React.ReactNode
     close?: React.ReactNode
   }
-  native?: boolean
-  burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
-  notificationOptions?: NotificationOptions
   /** When true, disables animations for accessibility */
   reducedMotion?: boolean
 }
@@ -320,9 +315,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     swipeThreshold,
     closeButton,
     icons,
-    native,
-    burntOptions,
-    notificationOptions,
     reducedMotion,
   } = props
 
@@ -344,26 +336,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   // parse position for animation direction
   const [yPosition] = position.split('-') as ['top' | 'bottom', string]
   const isTop = yPosition === 'top'
-
-  // handle native toast on mobile — mount-time gate that dispatches to burnt and
-  React.useEffect(() => {
-    if (native && !isWeb) {
-      const titleText = typeof toast.title === 'function' ? toast.title() : toast.title
-      const descText =
-        typeof toast.description === 'function' ? toast.description() : toast.description
-
-      if (typeof titleText === 'string') {
-        createNativeToast(titleText, {
-          message: typeof descText === 'string' ? descText : undefined,
-          duration,
-          burntOptions,
-          notificationOptions,
-        })
-      }
-      // remove from state immediately — burnt handles display
-      removeToast(toast)
-    }
-  }, [native])
 
   // trigger mount animation
   React.useEffect(() => {
@@ -535,10 +507,10 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       ? expandedOffset
       : -expandedOffset
     : isFront
-      ? 0
-      : isTop
-        ? liftPerToast * index // for top position, toasts stack downward
-        : -liftPerToast * index // for bottom position, toasts stack upward
+    ? 0
+    : isTop
+    ? liftPerToast * index // for top position, toasts stack downward
+    : -liftPerToast * index // for bottom position, toasts stack upward
 
   // stacking position (drag offset handled separately by AnimatedView)
   const computedY = stackY
@@ -551,10 +523,10 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     removed && !swipeOut
       ? 0
       : index >= visibleToasts
-        ? 0
-        : !expanded && index === visibleToasts - 1
-          ? 0.5
-          : 1
+      ? 0
+      : !expanded && index === visibleToasts - 1
+      ? 0.5
+      : 1
 
   // z-index: front toast should be on top, back toasts below
   // higher z-index = more in front
@@ -632,8 +604,8 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         reducedMotion
           ? { opacity: 0 }
           : swipeOut
-            ? { opacity: 0, x: 0, y: 0, scale: 1 }
-            : { opacity: 0, y: stackY, scale: stackScale }
+          ? { opacity: 0, x: 0, y: 0, scale: 1 }
+          : { opacity: 0, y: stackY, scale: stackScale }
       }
     >
       {/* Drag wrapper - wraps the entire visual toast so drag moves everything */}

@@ -76,6 +76,10 @@ export interface ToastRootProps {
      */
     burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>;
     /**
+     * Options for web Notification API when native is true on web
+     */
+    notificationOptions?: NotificationOptions;
+    /**
      * Custom icons for toast types
      */
     icons?: ToastIcons;

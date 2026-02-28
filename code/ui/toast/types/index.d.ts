@@ -6,4 +6,5 @@ export { Toaster } from './Toaster';
 export type { ToasterProps, ToasterPosition, HeightT } from './Toaster';
 export type { SwipeDirection } from './ToastProvider';
 export type { BurntToastOptions, CreateNativeToastOptions, NativeToastRef } from './types';
+export { requestNotificationPermission } from './createNativeToast';
 //# sourceMappingURL=index.d.ts.map
