@@ -507,10 +507,10 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       ? expandedOffset
       : -expandedOffset
     : isFront
-    ? 0
-    : isTop
-    ? liftPerToast * index // for top position, toasts stack downward
-    : -liftPerToast * index // for bottom position, toasts stack upward
+      ? 0
+      : isTop
+        ? liftPerToast * index // for top position, toasts stack downward
+        : -liftPerToast * index // for bottom position, toasts stack upward
 
   // stacking position (drag offset handled separately by AnimatedView)
   const computedY = stackY
@@ -523,10 +523,10 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     removed && !swipeOut
       ? 0
       : index >= visibleToasts
-      ? 0
-      : !expanded && index === visibleToasts - 1
-      ? 0.5
-      : 1
+        ? 0
+        : !expanded && index === visibleToasts - 1
+          ? 0.5
+          : 1
 
   // z-index: front toast should be on top, back toasts below
   // higher z-index = more in front
@@ -604,8 +604,8 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         reducedMotion
           ? { opacity: 0 }
           : swipeOut
-          ? { opacity: 0, x: 0, y: 0, scale: 1 }
-          : { opacity: 0, y: stackY, scale: stackScale }
+            ? { opacity: 0, x: 0, y: 0, scale: 1 }
+            : { opacity: 0, y: stackY, scale: stackScale }
       }
     >
       {/* Drag wrapper - wraps the entire visual toast so drag moves everything */}

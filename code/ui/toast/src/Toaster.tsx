@@ -34,7 +34,7 @@ function resolveSwipeDirection(
   // parse position to determine edges
   const [yPosition, xPosition] = position.split('-') as [
     'top' | 'bottom',
-    'left' | 'center' | 'right'
+    'left' | 'center' | 'right',
   ]
 
   // for left/right positions, swipe horizontally toward that edge
@@ -216,415 +216,419 @@ export interface ToasterProps {
   reducedMotion?: boolean
 }
 
-export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(function Toaster(
-  props,
-  _ref
-) {
-  const {
-    position = 'bottom-right',
-    width = TOAST_WIDTH,
-    expand = false,
-    visibleToasts = VISIBLE_TOASTS_AMOUNT,
-    gap = TOAST_GAP,
-    duration = TOAST_LIFETIME,
-    offset = VIEWPORT_OFFSET,
-    hotkey = DEFAULT_HOTKEY,
-    swipeDirection = 'auto',
-    swipeThreshold = 50,
-    closeButton = false,
-    theme: themeProp,
-    icons,
-    toastOptions,
-    containerAriaLabel = 'Notifications',
-    native = false,
-    burntOptions,
-    notificationOptions,
-    className,
-    style,
-    reducedMotion: reducedMotionProp,
-  } = props
+export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
+  function Toaster(props, _ref) {
+    const {
+      position = 'bottom-right',
+      width = TOAST_WIDTH,
+      expand = false,
+      visibleToasts = VISIBLE_TOASTS_AMOUNT,
+      gap = TOAST_GAP,
+      duration = TOAST_LIFETIME,
+      offset = VIEWPORT_OFFSET,
+      hotkey = DEFAULT_HOTKEY,
+      swipeDirection = 'auto',
+      swipeThreshold = 50,
+      closeButton = false,
+      theme: themeProp,
+      icons,
+      toastOptions,
+      containerAriaLabel = 'Notifications',
+      native = false,
+      burntOptions,
+      notificationOptions,
+      className,
+      style,
+      reducedMotion: reducedMotionProp,
+    } = props
 
-  // detect reduced motion preference
-  const reducedMotion = useReducedMotion(reducedMotionProp)
+    // detect reduced motion preference
+    const reducedMotion = useReducedMotion(reducedMotionProp)
 
-  const [toasts, setToasts] = React.useState<ToastT[]>([])
-  const [heights, setHeights] = React.useState<HeightsMap>({})
+    const [toasts, setToasts] = React.useState<ToastT[]>([])
+    const [heights, setHeights] = React.useState<HeightsMap>({})
 
-  // Lock height updates during expand/collapse CSS transition to prevent
-  // font-loading onLayout corrections from restarting the animation mid-flight.
-  const heightsLockedRef = React.useRef(false)
+    // Lock height updates during expand/collapse CSS transition to prevent
+    // font-loading onLayout corrections from restarting the animation mid-flight.
+    const heightsLockedRef = React.useRef(false)
 
-  // Round + skip small changes to prevent cascading re-renders from
-  // sub-pixel onLayout jitter during font loading or CSS transitions
-  const setToastHeight = React.useCallback((toastId: string | number, height: number) => {
-    if (heightsLockedRef.current) return
-    const rounded = Math.round(height)
-    setHeights((prev) => {
-      const existing = prev[toastId]
-      if (existing != null && Math.abs(existing - rounded) <= 2) return prev
-      return { ...prev, [toastId]: rounded }
-    })
-  }, [])
-
-  const removeToastHeight = React.useCallback((toastId: string | number) => {
-    setHeights((prev) => {
-      const next = { ...prev }
-      delete next[toastId]
-      return next
-    })
-  }, [])
-
-  const [localExpanded, setExpanded] = React.useState(false)
-  const expanded = expand || localExpanded
-  const [interacting, setInteracting] = React.useState(false)
-
-  // useLayoutEffect fires before paint, so the lock is set before any onLayout callbacks
-  const prevExpandedRef = React.useRef(expanded)
-
-  React.useLayoutEffect(() => {
-    if (prevExpandedRef.current !== expanded) {
-      heightsLockedRef.current = true
-      prevExpandedRef.current = expanded
-    }
-    const timer = setTimeout(() => {
-      heightsLockedRef.current = false
-    }, 350)
-    return () => clearTimeout(timer)
-  }, [expanded])
-
-  const listRef = React.useRef<TamaguiElement>(null)
-  const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
-  const isFocusWithinRef = React.useRef(false)
-  const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-  const hoverCooldownRef = React.useRef(false)
-  const dismissCooldownRef = React.useRef(false)
-  const dismissCooldownTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-  const deferredCollapseRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  // Store object props in refs so the subscription effect doesn't
-  // re-subscribe on every render when consumers pass inline objects.
-  const burntOptionsRef = React.useRef(burntOptions)
-  const notificationOptionsRef = React.useRef(notificationOptions)
-  React.useEffect(() => {
-    burntOptionsRef.current = burntOptions
-  }, [burntOptions])
-  React.useEffect(() => {
-    notificationOptionsRef.current = notificationOptions
-  }, [notificationOptions])
-
-  // subscribe to toast state changes
-  React.useEffect(() => {
-    return ToastState.subscribe((toast) => {
-      if ((toast as ToastToDismiss).dismiss) {
-        // mark toast for deletion animation
-        setToasts((toasts) =>
-          toasts.map((t) => (t.id === toast.id ? { ...t, delete: true } : t))
-        )
-        return
-      }
-
-      // Native dispatch: intercept before entering state so no in-app toast renders.
-      // On failure (e.g. permission denied), falls through to in-app.
-      if (native) {
-        const handled = dispatchNativeToast(toast as ToastT, {
-          duration,
-          burntOptions: burntOptionsRef.current,
-          notificationOptions: notificationOptionsRef.current,
+    // Round + skip small changes to prevent cascading re-renders from
+    // sub-pixel onLayout jitter during font loading or CSS transitions
+    const setToastHeight = React.useCallback(
+      (toastId: string | number, height: number) => {
+        if (heightsLockedRef.current) return
+        const rounded = Math.round(height)
+        setHeights((prev) => {
+          const existing = prev[toastId]
+          if (existing != null && Math.abs(existing - rounded) <= 2) return prev
+          return { ...prev, [toastId]: rounded }
         })
-        if (handled) return
+      },
+      []
+    )
+
+    const removeToastHeight = React.useCallback((toastId: string | number) => {
+      setHeights((prev) => {
+        const next = { ...prev }
+        delete next[toastId]
+        return next
+      })
+    }, [])
+
+    const [localExpanded, setExpanded] = React.useState(false)
+    const expanded = expand || localExpanded
+    const [interacting, setInteracting] = React.useState(false)
+
+    // useLayoutEffect fires before paint, so the lock is set before any onLayout callbacks
+    const prevExpandedRef = React.useRef(expanded)
+
+    React.useLayoutEffect(() => {
+      if (prevExpandedRef.current !== expanded) {
+        heightsLockedRef.current = true
+        prevExpandedRef.current = expanded
       }
+      const timer = setTimeout(() => {
+        heightsLockedRef.current = false
+      }, 350)
+      return () => clearTimeout(timer)
+    }, [expanded])
 
-      // add or update toast
-      setToasts((toasts) => {
-        const indexOfExistingToast = toasts.findIndex((t) => t.id === toast.id)
+    const listRef = React.useRef<TamaguiElement>(null)
+    const lastFocusedElementRef = React.useRef<HTMLElement | null>(null)
+    const isFocusWithinRef = React.useRef(false)
+    const hoverTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+    const hoverCooldownRef = React.useRef(false)
+    const dismissCooldownRef = React.useRef(false)
+    const dismissCooldownTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+      null
+    )
+    const deferredCollapseRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
-        if (indexOfExistingToast !== -1) {
-          // update existing
-          return [
-            ...toasts.slice(0, indexOfExistingToast),
-            { ...toasts[indexOfExistingToast], ...toast },
-            ...toasts.slice(indexOfExistingToast + 1),
-          ]
+    // Store object props in refs so the subscription effect doesn't
+    // re-subscribe on every render when consumers pass inline objects.
+    const burntOptionsRef = React.useRef(burntOptions)
+    const notificationOptionsRef = React.useRef(notificationOptions)
+    React.useEffect(() => {
+      burntOptionsRef.current = burntOptions
+    }, [burntOptions])
+    React.useEffect(() => {
+      notificationOptionsRef.current = notificationOptions
+    }, [notificationOptions])
+
+    // subscribe to toast state changes
+    React.useEffect(() => {
+      return ToastState.subscribe((toast) => {
+        if ((toast as ToastToDismiss).dismiss) {
+          // mark toast for deletion animation
+          setToasts((toasts) =>
+            toasts.map((t) => (t.id === toast.id ? { ...t, delete: true } : t))
+          )
+          return
         }
 
-        // add new toast at the beginning
-        return [toast as ToastT, ...toasts]
-      })
-    })
-  }, [native, duration])
+        // Native dispatch: intercept before entering state so no in-app toast renders.
+        // On failure (e.g. permission denied), falls through to in-app.
+        if (native) {
+          const handled = dispatchNativeToast(toast as ToastT, {
+            duration,
+            burntOptions: burntOptionsRef.current,
+            notificationOptions: notificationOptionsRef.current,
+          })
+          if (handled) return
+        }
 
-  // collapse expanded view when only 1 toast remains (respect dismiss cooldown)
-  React.useEffect(() => {
-    if (toasts.length <= 1 && !dismissCooldownRef.current) {
-      setExpanded(false)
-    }
-  }, [toasts.length])
+        // add or update toast
+        setToasts((toasts) => {
+          const indexOfExistingToast = toasts.findIndex((t) => t.id === toast.id)
 
-  // keyboard hotkey handler
-  React.useEffect(() => {
-    if (!isWeb) return
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const isHotkeyPressed =
-        hotkey.length > 0 &&
-        hotkey.every((key) => (event as any)[key] || event.code === key)
-
-      if (isHotkeyPressed) {
-        setExpanded(true)
-        ;(listRef.current as HTMLElement)?.focus()
-      }
-
-      if (
-        event.code === 'Escape' &&
-        (document.activeElement === listRef.current ||
-          (listRef.current as HTMLElement)?.contains(document.activeElement))
-      ) {
-        setExpanded(false)
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [hotkey])
-
-  // restore focus when toaster unmounts
-  React.useEffect(() => {
-    if (!isWeb || !listRef.current) return
-
-    return () => {
-      if (lastFocusedElementRef.current) {
-        lastFocusedElementRef.current.focus({ preventScroll: true })
-        lastFocusedElementRef.current = null
-        isFocusWithinRef.current = false
-      }
-    }
-  }, [])
-
-  // cleanup hover timeout on unmount
-  React.useEffect(() => {
-    return () => {
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current)
-      }
-    }
-  }, [])
-
-  const triggerDismissCooldown = React.useCallback(() => {
-    dismissCooldownRef.current = true
-    if (dismissCooldownTimerRef.current) {
-      clearTimeout(dismissCooldownTimerRef.current)
-    }
-    dismissCooldownTimerRef.current = setTimeout(() => {
-      dismissCooldownRef.current = false
-    }, 800)
-  }, [])
-
-  const removeToast = React.useCallback((toastToRemove: ToastT) => {
-    setToasts((toasts) => {
-      if (!toasts.find((toast) => toast.id === toastToRemove.id)?.delete) {
-        ToastState.dismiss(toastToRemove.id)
-      }
-      return toasts.filter(({ id }) => id !== toastToRemove.id)
-    })
-  }, [])
-
-  // parse position
-  const [yPosition, xPosition] = position.split('-') as [
-    'top' | 'bottom',
-    'left' | 'center' | 'right'
-  ]
-
-  // offset styles — matches composable API pattern exactly
-  // applied via style prop so it overrides styled defaults (e.g. width) on native
-  const offsetStyles = React.useMemo(() => {
-    const styles: any = {}
-    const defaultOffset = typeof offset === 'number' ? offset : VIEWPORT_OFFSET
-    const offsetObj =
-      typeof offset === 'object'
-        ? offset
-        : {
-            top: defaultOffset,
-            right: defaultOffset,
-            bottom: defaultOffset,
-            left: defaultOffset,
+          if (indexOfExistingToast !== -1) {
+            // update existing
+            return [
+              ...toasts.slice(0, indexOfExistingToast),
+              { ...toasts[indexOfExistingToast], ...toast },
+              ...toasts.slice(indexOfExistingToast + 1),
+            ]
           }
 
-    if (yPosition === 'top') styles.top = offsetObj.top ?? defaultOffset
-    else styles.bottom = offsetObj.bottom ?? defaultOffset
+          // add new toast at the beginning
+          return [toast as ToastT, ...toasts]
+        })
+      })
+    }, [native, duration])
 
-    if (xPosition === 'left') styles.left = offsetObj.left ?? defaultOffset
-    else if (xPosition === 'right') styles.right = offsetObj.right ?? defaultOffset
-    else if (isWeb) {
-      styles.left = '50%'
-      styles.transform = 'translateX(-50%)'
-    } else {
-      styles.left = offsetObj.left ?? defaultOffset
-      styles.right = offsetObj.right ?? defaultOffset
-      styles.alignItems = 'center'
+    // collapse expanded view when only 1 toast remains (respect dismiss cooldown)
+    React.useEffect(() => {
+      if (toasts.length <= 1 && !dismissCooldownRef.current) {
+        setExpanded(false)
+      }
+    }, [toasts.length])
+
+    // keyboard hotkey handler
+    React.useEffect(() => {
+      if (!isWeb) return
+
+      const handleKeyDown = (event: KeyboardEvent) => {
+        const isHotkeyPressed =
+          hotkey.length > 0 &&
+          hotkey.every((key) => (event as any)[key] || event.code === key)
+
+        if (isHotkeyPressed) {
+          setExpanded(true)
+          ;(listRef.current as HTMLElement)?.focus()
+        }
+
+        if (
+          event.code === 'Escape' &&
+          (document.activeElement === listRef.current ||
+            (listRef.current as HTMLElement)?.contains(document.activeElement))
+        ) {
+          setExpanded(false)
+        }
+      }
+
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }, [hotkey])
+
+    // restore focus when toaster unmounts
+    React.useEffect(() => {
+      if (!isWeb || !listRef.current) return
+
+      return () => {
+        if (lastFocusedElementRef.current) {
+          lastFocusedElementRef.current.focus({ preventScroll: true })
+          lastFocusedElementRef.current = null
+          isFocusWithinRef.current = false
+        }
+      }
+    }, [])
+
+    // cleanup hover timeout on unmount
+    React.useEffect(() => {
+      return () => {
+        if (hoverTimeoutRef.current) {
+          clearTimeout(hoverTimeoutRef.current)
+        }
+      }
+    }, [])
+
+    const triggerDismissCooldown = React.useCallback(() => {
+      dismissCooldownRef.current = true
+      if (dismissCooldownTimerRef.current) {
+        clearTimeout(dismissCooldownTimerRef.current)
+      }
+      dismissCooldownTimerRef.current = setTimeout(() => {
+        dismissCooldownRef.current = false
+      }, 800)
+    }, [])
+
+    const removeToast = React.useCallback((toastToRemove: ToastT) => {
+      setToasts((toasts) => {
+        if (!toasts.find((toast) => toast.id === toastToRemove.id)?.delete) {
+          ToastState.dismiss(toastToRemove.id)
+        }
+        return toasts.filter(({ id }) => id !== toastToRemove.id)
+      })
+    }, [])
+
+    // parse position
+    const [yPosition, xPosition] = position.split('-') as [
+      'top' | 'bottom',
+      'left' | 'center' | 'right',
+    ]
+
+    // offset styles — matches composable API pattern exactly
+    // applied via style prop so it overrides styled defaults (e.g. width) on native
+    const offsetStyles = React.useMemo(() => {
+      const styles: any = {}
+      const defaultOffset = typeof offset === 'number' ? offset : VIEWPORT_OFFSET
+      const offsetObj =
+        typeof offset === 'object'
+          ? offset
+          : {
+              top: defaultOffset,
+              right: defaultOffset,
+              bottom: defaultOffset,
+              left: defaultOffset,
+            }
+
+      if (yPosition === 'top') styles.top = offsetObj.top ?? defaultOffset
+      else styles.bottom = offsetObj.bottom ?? defaultOffset
+
+      if (xPosition === 'left') styles.left = offsetObj.left ?? defaultOffset
+      else if (xPosition === 'right') styles.right = offsetObj.right ?? defaultOffset
+      else if (isWeb) {
+        styles.left = '50%'
+        styles.transform = 'translateX(-50%)'
+      } else {
+        styles.left = offsetObj.left ?? defaultOffset
+        styles.right = offsetObj.right ?? defaultOffset
+        styles.alignItems = 'center'
+      }
+
+      return styles
+    }, [offset, yPosition, xPosition])
+
+    // get current theme
+    const currentTheme = useThemeName()
+    const resolvedTheme =
+      themeProp === 'system' || !themeProp
+        ? currentTheme?.includes('dark')
+          ? 'dark'
+          : 'light'
+        : themeProp
+
+    const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
+
+    if (toasts.length === 0) {
+      return null
     }
 
-    return styles
-  }, [offset, yPosition, xPosition])
-
-  // get current theme
-  const currentTheme = useThemeName()
-  const resolvedTheme =
-    themeProp === 'system' || !themeProp
-      ? currentTheme?.includes('dark')
-        ? 'dark'
-        : 'light'
-      : themeProp
-
-  const hotkeyLabel = hotkey.join('+').replace(/Key/g, '').replace(/Digit/g, '')
-
-  if (toasts.length === 0) {
-    return null
-  }
-
-  const content = (
-    <ToasterFrame
-      ref={listRef}
-      aria-label={`${containerAriaLabel} ${hotkeyLabel}`}
-      tabIndex={-1}
-      aria-live="polite"
-      aria-relevant="additions text"
-      aria-atomic={false}
-      style={style ? { ...offsetStyles, ...style } : offsetStyles}
-      className={className}
-      data-y-position={yPosition}
-      data-x-position={xPosition}
-      {...(isWeb
-        ? {
-            onMouseEnter: () => {
-              if (deferredCollapseRef.current) {
-                clearTimeout(deferredCollapseRef.current)
-                deferredCollapseRef.current = null
-              }
-              if (toasts.length > 1 && !interacting && !hoverCooldownRef.current) {
-                hoverTimeoutRef.current = setTimeout(() => {
-                  setExpanded(true)
-                }, 50)
-              }
-            },
-            onMouseMove: () => {
-              if (
-                toasts.length > 1 &&
-                !interacting &&
-                !expanded &&
-                !hoverCooldownRef.current
-              ) {
-                if (!hoverTimeoutRef.current) {
+    const content = (
+      <ToasterFrame
+        ref={listRef}
+        aria-label={`${containerAriaLabel} ${hotkeyLabel}`}
+        tabIndex={-1}
+        aria-live="polite"
+        aria-relevant="additions text"
+        aria-atomic={false}
+        style={style ? { ...offsetStyles, ...style } : offsetStyles}
+        className={className}
+        data-y-position={yPosition}
+        data-x-position={xPosition}
+        {...(isWeb
+          ? {
+              onMouseEnter: () => {
+                if (deferredCollapseRef.current) {
+                  clearTimeout(deferredCollapseRef.current)
+                  deferredCollapseRef.current = null
+                }
+                if (toasts.length > 1 && !interacting && !hoverCooldownRef.current) {
                   hoverTimeoutRef.current = setTimeout(() => {
                     setExpanded(true)
                   }, 50)
                 }
-              }
-            },
-            onMouseLeave: () => {
-              if (hoverTimeoutRef.current) {
-                clearTimeout(hoverTimeoutRef.current)
-                hoverTimeoutRef.current = null
-              }
-              if (!interacting && !dismissCooldownRef.current) {
-                setExpanded(false)
-              } else if (dismissCooldownRef.current) {
-                deferredCollapseRef.current = setTimeout(() => {
-                  deferredCollapseRef.current = null
+              },
+              onMouseMove: () => {
+                if (
+                  toasts.length > 1 &&
+                  !interacting &&
+                  !expanded &&
+                  !hoverCooldownRef.current
+                ) {
+                  if (!hoverTimeoutRef.current) {
+                    hoverTimeoutRef.current = setTimeout(() => {
+                      setExpanded(true)
+                    }, 50)
+                  }
+                }
+              },
+              onMouseLeave: () => {
+                if (hoverTimeoutRef.current) {
+                  clearTimeout(hoverTimeoutRef.current)
+                  hoverTimeoutRef.current = null
+                }
+                if (!interacting && !dismissCooldownRef.current) {
                   setExpanded(false)
-                }, 850)
-              }
-            },
-            onPointerDown: () => {
-              if (hoverTimeoutRef.current) {
-                clearTimeout(hoverTimeoutRef.current)
-                hoverTimeoutRef.current = null
-              }
-              setInteracting(true)
-            },
-            onPointerUp: () => setInteracting(false),
-            onPointerCancel: () => setInteracting(false),
-          }
-        : {
-            onPress: () => {
-              if (toasts.length > 1) {
-                setExpanded((prev) => !prev)
-              }
-            },
-          })}
-      {...(isWeb && {
-        onBlur: (event: React.FocusEvent) => {
-          if (
-            isFocusWithinRef.current &&
-            !(event.currentTarget as HTMLElement).contains(
-              event.relatedTarget as HTMLElement
-            )
-          ) {
-            isFocusWithinRef.current = false
-            if (lastFocusedElementRef.current) {
-              lastFocusedElementRef.current.focus({ preventScroll: true })
-              lastFocusedElementRef.current = null
+                } else if (dismissCooldownRef.current) {
+                  deferredCollapseRef.current = setTimeout(() => {
+                    deferredCollapseRef.current = null
+                    setExpanded(false)
+                  }, 850)
+                }
+              },
+              onPointerDown: () => {
+                if (hoverTimeoutRef.current) {
+                  clearTimeout(hoverTimeoutRef.current)
+                  hoverTimeoutRef.current = null
+                }
+                setInteracting(true)
+              },
+              onPointerUp: () => setInteracting(false),
+              onPointerCancel: () => setInteracting(false),
             }
-          }
-        },
-        onFocus: (event: React.FocusEvent) => {
-          if (!isFocusWithinRef.current) {
-            isFocusWithinRef.current = true
-            lastFocusedElementRef.current = event.relatedTarget as HTMLElement
-          }
-        },
-      })}
-    >
-      <AnimatePresence>
-        {toasts.map((toast, index) => {
-          const isVisible = index < visibleToasts
-          const isFront = index === 0
-
-          // calculate sum of heights of all toasts BEFORE this one
-          // toasts[0..index-1] are rendered before this toast (visually above it for bottom position)
-          const heightBeforeMe = toasts.slice(0, index).reduce((sum, t) => {
-            return sum + (heights[t.id] ?? 55)
-          }, 0)
-
-          return (
-            <ToastItem
-              key={toast.id}
-              toast={toast}
-              index={index}
-              expanded={expanded}
-              interacting={interacting}
-              position={position}
-              visibleToasts={visibleToasts}
-              removeToast={removeToast}
-              triggerDismissCooldown={triggerDismissCooldown}
-              heights={heights}
-              setToastHeight={setToastHeight}
-              removeToastHeight={removeToastHeight}
-              heightBeforeMe={heightBeforeMe}
-              frontToastHeight={toasts[0] ? heights[toasts[0].id] ?? 55 : 55}
-              duration={toast.duration ?? toastOptions?.duration ?? duration}
-              gap={gap}
-              swipeDirection={resolveSwipeDirection(swipeDirection, position)}
-              swipeThreshold={swipeThreshold}
-              closeButton={toast.closeButton ?? closeButton}
-              icons={icons}
-              reducedMotion={reducedMotion}
-            />
-          )
+          : {
+              onPress: () => {
+                if (toasts.length > 1) {
+                  setExpanded((prev) => !prev)
+                }
+              },
+            })}
+        {...(isWeb && {
+          onBlur: (event: React.FocusEvent) => {
+            if (
+              isFocusWithinRef.current &&
+              !(event.currentTarget as HTMLElement).contains(
+                event.relatedTarget as HTMLElement
+              )
+            ) {
+              isFocusWithinRef.current = false
+              if (lastFocusedElementRef.current) {
+                lastFocusedElementRef.current.focus({ preventScroll: true })
+                lastFocusedElementRef.current = null
+              }
+            }
+          },
+          onFocus: (event: React.FocusEvent) => {
+            if (!isFocusWithinRef.current) {
+              isFocusWithinRef.current = true
+              lastFocusedElementRef.current = event.relatedTarget as HTMLElement
+            }
+          },
         })}
-      </AnimatePresence>
-    </ToasterFrame>
-  )
+      >
+        <AnimatePresence>
+          {toasts.map((toast, index) => {
+            const isVisible = index < visibleToasts
+            const isFront = index === 0
 
-  // on web, render in a portal
-  if (isWeb) {
-    return (
-      <Portal>
-        <Theme name={resolvedTheme as any}>{content}</Theme>
-      </Portal>
+            // calculate sum of heights of all toasts BEFORE this one
+            // toasts[0..index-1] are rendered before this toast (visually above it for bottom position)
+            const heightBeforeMe = toasts.slice(0, index).reduce((sum, t) => {
+              return sum + (heights[t.id] ?? 55)
+            }, 0)
+
+            return (
+              <ToastItem
+                key={toast.id}
+                toast={toast}
+                index={index}
+                expanded={expanded}
+                interacting={interacting}
+                position={position}
+                visibleToasts={visibleToasts}
+                removeToast={removeToast}
+                triggerDismissCooldown={triggerDismissCooldown}
+                heights={heights}
+                setToastHeight={setToastHeight}
+                removeToastHeight={removeToastHeight}
+                heightBeforeMe={heightBeforeMe}
+                frontToastHeight={toasts[0] ? (heights[toasts[0].id] ?? 55) : 55}
+                duration={toast.duration ?? toastOptions?.duration ?? duration}
+                gap={gap}
+                swipeDirection={resolveSwipeDirection(swipeDirection, position)}
+                swipeThreshold={swipeThreshold}
+                closeButton={toast.closeButton ?? closeButton}
+                icons={icons}
+                reducedMotion={reducedMotion}
+              />
+            )
+          })}
+        </AnimatePresence>
+      </ToasterFrame>
     )
-  }
 
-  return <Theme name={resolvedTheme as any}>{content}</Theme>
-})
+    // on web, render in a portal
+    if (isWeb) {
+      return (
+        <Portal>
+          <Theme name={resolvedTheme as any}>{content}</Theme>
+        </Portal>
+      )
+    }
+
+    return <Theme name={resolvedTheme as any}>{content}</Theme>
+  }
+)
 
 Toaster.displayName = 'Toaster'

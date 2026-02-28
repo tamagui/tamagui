@@ -201,7 +201,7 @@ function resolveSwipeDirection(
   if (direction !== 'auto') return direction
   const [yPosition, xPosition] = position.split('-') as [
     'top' | 'bottom',
-    'left' | 'center' | 'right'
+    'left' | 'center' | 'right',
   ]
   if (xPosition === 'left') return 'left'
   if (xPosition === 'right') return 'right'
@@ -209,194 +209,198 @@ function resolveSwipeDirection(
   return 'horizontal'
 }
 
-const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(function ToastRoot(
-  props,
-  _ref
-) {
-  const {
-    children,
-    position = 'bottom-right',
-    duration = TOAST_LIFETIME,
-    gap = TOAST_GAP,
-    visibleToasts = VISIBLE_TOASTS_AMOUNT,
-    swipeDirection: swipeDirectionProp = 'auto',
-    swipeThreshold = 50,
-    closeButton = false,
-    expand = false,
-    theme: themeProp,
-    reducedMotion: reducedMotionProp,
-    native = false,
-    burntOptions,
-    notificationOptions,
-    icons,
-  } = props
+const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
+  function ToastRoot(props, _ref) {
+    const {
+      children,
+      position = 'bottom-right',
+      duration = TOAST_LIFETIME,
+      gap = TOAST_GAP,
+      visibleToasts = VISIBLE_TOASTS_AMOUNT,
+      swipeDirection: swipeDirectionProp = 'auto',
+      swipeThreshold = 50,
+      closeButton = false,
+      expand = false,
+      theme: themeProp,
+      reducedMotion: reducedMotionProp,
+      native = false,
+      burntOptions,
+      notificationOptions,
+      icons,
+    } = props
 
-  const reducedMotion = useReducedMotion(reducedMotionProp)
-  const [toasts, setToasts] = React.useState<ToastT[]>([])
-  const [heights, setHeights] = React.useState<HeightsMap>({})
-  const [localExpanded, setExpanded] = React.useState(false)
-  const expanded = expand || localExpanded
-  const [interacting, setInteracting] = React.useState(false)
+    const reducedMotion = useReducedMotion(reducedMotionProp)
+    const [toasts, setToasts] = React.useState<ToastT[]>([])
+    const [heights, setHeights] = React.useState<HeightsMap>({})
+    const [localExpanded, setExpanded] = React.useState(false)
+    const expanded = expand || localExpanded
+    const [interacting, setInteracting] = React.useState(false)
 
-  // Lock height updates during expand/collapse CSS transition to prevent
-  // font-loading onLayout corrections from restarting the animation mid-flight.
-  // useLayoutEffect fires before paint, so the lock is set before any onLayout callbacks.
-  const heightsLockedRef = React.useRef(false)
-  const prevExpandedRef = React.useRef(expanded)
+    // Lock height updates during expand/collapse CSS transition to prevent
+    // font-loading onLayout corrections from restarting the animation mid-flight.
+    // useLayoutEffect fires before paint, so the lock is set before any onLayout callbacks.
+    const heightsLockedRef = React.useRef(false)
+    const prevExpandedRef = React.useRef(expanded)
 
-  React.useLayoutEffect(() => {
-    if (prevExpandedRef.current !== expanded) {
-      heightsLockedRef.current = true
-      prevExpandedRef.current = expanded
-    }
-    const timer = setTimeout(() => {
-      heightsLockedRef.current = false
-    }, 350)
-    return () => clearTimeout(timer)
-  }, [expanded])
-
-  // Helper to set a single toast's height
-  // Round + skip small changes to prevent cascading re-renders from
-  // sub-pixel onLayout jitter during font loading or CSS transitions
-  const setToastHeight = React.useCallback((toastId: string | number, height: number) => {
-    if (heightsLockedRef.current) return
-    const rounded = Math.round(height)
-    setHeights((prev) => {
-      const existing = prev[toastId]
-      if (existing != null && Math.abs(existing - rounded) <= 2) return prev
-      return { ...prev, [toastId]: rounded }
-    })
-  }, [])
-
-  // Helper to remove a toast's height
-  const removeToastHeight = React.useCallback((toastId: string | number) => {
-    setHeights((prev) => {
-      const next = { ...prev }
-      delete next[toastId]
-      return next
-    })
-  }, [])
-
-  // Cooldown after dismiss - prevents collapse while stack rebalances
-  const dismissCooldownRef = React.useRef(false)
-  const dismissCooldownTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const triggerDismissCooldown = React.useCallback(() => {
-    dismissCooldownRef.current = true
-    if (dismissCooldownTimerRef.current) {
-      clearTimeout(dismissCooldownTimerRef.current)
-    }
-    dismissCooldownTimerRef.current = setTimeout(() => {
-      dismissCooldownRef.current = false
-    }, 800)
-  }, [])
-
-  const isInDismissCooldown = React.useCallback(() => dismissCooldownRef.current, [])
-
-  // Store object props in refs so the subscription effect doesn't
-  // re-subscribe on every render when consumers pass inline objects.
-  const burntOptionsRef = React.useRef(burntOptions)
-  const notificationOptionsRef = React.useRef(notificationOptions)
-  React.useEffect(() => {
-    burntOptionsRef.current = burntOptions
-  }, [burntOptions])
-  React.useEffect(() => {
-    notificationOptionsRef.current = notificationOptions
-  }, [notificationOptions])
-
-  // subscribe to toast state
-  React.useEffect(() => {
-    return ToastState.subscribe((toast) => {
-      if ((toast as ToastToDismiss).dismiss) {
-        setToasts((toasts) =>
-          toasts.map((t) => (t.id === toast.id ? { ...t, delete: true } : t))
-        )
-        return
+    React.useLayoutEffect(() => {
+      if (prevExpandedRef.current !== expanded) {
+        heightsLockedRef.current = true
+        prevExpandedRef.current = expanded
       }
+      const timer = setTimeout(() => {
+        heightsLockedRef.current = false
+      }, 350)
+      return () => clearTimeout(timer)
+    }, [expanded])
 
-      // Native dispatch: intercept before entering state so no in-app toast renders.
-      // On failure (e.g. permission denied), falls through to in-app.
-      if (native) {
-        const handled = dispatchNativeToast(toast as ToastT, {
-          duration,
-          burntOptions: burntOptionsRef.current,
-          notificationOptions: notificationOptionsRef.current,
+    // Helper to set a single toast's height
+    // Round + skip small changes to prevent cascading re-renders from
+    // sub-pixel onLayout jitter during font loading or CSS transitions
+    const setToastHeight = React.useCallback(
+      (toastId: string | number, height: number) => {
+        if (heightsLockedRef.current) return
+        const rounded = Math.round(height)
+        setHeights((prev) => {
+          const existing = prev[toastId]
+          if (existing != null && Math.abs(existing - rounded) <= 2) return prev
+          return { ...prev, [toastId]: rounded }
         })
-        if (handled) return
-      }
+      },
+      []
+    )
 
-      setToasts((toasts) => {
-        const idx = toasts.findIndex((t) => t.id === toast.id)
-        if (idx !== -1) {
-          return [
-            ...toasts.slice(0, idx),
-            { ...toasts[idx], ...toast },
-            ...toasts.slice(idx + 1),
-          ]
-        }
-        return [toast as ToastT, ...toasts]
+    // Helper to remove a toast's height
+    const removeToastHeight = React.useCallback((toastId: string | number) => {
+      setHeights((prev) => {
+        const next = { ...prev }
+        delete next[toastId]
+        return next
       })
-    })
-  }, [native, duration])
+    }, [])
 
-  // collapse when 1 toast (but respect dismiss cooldown for smooth animation)
-  React.useEffect(() => {
-    if (toasts.length <= 1 && !dismissCooldownRef.current) {
-      setExpanded(false)
-    }
-  }, [toasts.length])
+    // Cooldown after dismiss - prevents collapse while stack rebalances
+    const dismissCooldownRef = React.useRef(false)
+    const dismissCooldownTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
+      null
+    )
 
-  const removeToast = React.useCallback((toastToRemove: ToastT) => {
-    setToasts((toasts) => {
-      if (!toasts.find((t) => t.id === toastToRemove.id)?.delete) {
-        ToastState.dismiss(toastToRemove.id)
+    const triggerDismissCooldown = React.useCallback(() => {
+      dismissCooldownRef.current = true
+      if (dismissCooldownTimerRef.current) {
+        clearTimeout(dismissCooldownTimerRef.current)
       }
-      return toasts.filter(({ id }) => id !== toastToRemove.id)
-    })
-  }, [])
+      dismissCooldownTimerRef.current = setTimeout(() => {
+        dismissCooldownRef.current = false
+      }, 800)
+    }, [])
 
-  const swipeDirection = resolveSwipeDirection(swipeDirectionProp, position)
+    const isInDismissCooldown = React.useCallback(() => dismissCooldownRef.current, [])
 
-  const currentTheme = useThemeName()
-  const resolvedTheme =
-    themeProp === 'system' || !themeProp
-      ? currentTheme?.includes('dark')
-        ? 'dark'
-        : 'light'
-      : themeProp
+    // Store object props in refs so the subscription effect doesn't
+    // re-subscribe on every render when consumers pass inline objects.
+    const burntOptionsRef = React.useRef(burntOptions)
+    const notificationOptionsRef = React.useRef(notificationOptions)
+    React.useEffect(() => {
+      burntOptionsRef.current = burntOptions
+    }, [burntOptions])
+    React.useEffect(() => {
+      notificationOptionsRef.current = notificationOptions
+    }, [notificationOptions])
 
-  const contextValue: ToastContextValue = {
-    toasts,
-    heights,
-    setToastHeight,
-    removeToastHeight,
-    expanded,
-    setExpanded,
-    interacting,
-    setInteracting,
-    triggerDismissCooldown,
-    isInDismissCooldown,
-    removeToast,
-    position,
-    duration,
-    gap,
-    visibleToasts,
-    swipeDirection,
-    swipeThreshold,
-    closeButton,
-    reducedMotion,
-    native,
-    burntOptions,
-    notificationOptions,
-    icons,
+    // subscribe to toast state
+    React.useEffect(() => {
+      return ToastState.subscribe((toast) => {
+        if ((toast as ToastToDismiss).dismiss) {
+          setToasts((toasts) =>
+            toasts.map((t) => (t.id === toast.id ? { ...t, delete: true } : t))
+          )
+          return
+        }
+
+        // Native dispatch: intercept before entering state so no in-app toast renders.
+        // On failure (e.g. permission denied), falls through to in-app.
+        if (native) {
+          const handled = dispatchNativeToast(toast as ToastT, {
+            duration,
+            burntOptions: burntOptionsRef.current,
+            notificationOptions: notificationOptionsRef.current,
+          })
+          if (handled) return
+        }
+
+        setToasts((toasts) => {
+          const idx = toasts.findIndex((t) => t.id === toast.id)
+          if (idx !== -1) {
+            return [
+              ...toasts.slice(0, idx),
+              { ...toasts[idx], ...toast },
+              ...toasts.slice(idx + 1),
+            ]
+          }
+          return [toast as ToastT, ...toasts]
+        })
+      })
+    }, [native, duration])
+
+    // collapse when 1 toast (but respect dismiss cooldown for smooth animation)
+    React.useEffect(() => {
+      if (toasts.length <= 1 && !dismissCooldownRef.current) {
+        setExpanded(false)
+      }
+    }, [toasts.length])
+
+    const removeToast = React.useCallback((toastToRemove: ToastT) => {
+      setToasts((toasts) => {
+        if (!toasts.find((t) => t.id === toastToRemove.id)?.delete) {
+          ToastState.dismiss(toastToRemove.id)
+        }
+        return toasts.filter(({ id }) => id !== toastToRemove.id)
+      })
+    }, [])
+
+    const swipeDirection = resolveSwipeDirection(swipeDirectionProp, position)
+
+    const currentTheme = useThemeName()
+    const resolvedTheme =
+      themeProp === 'system' || !themeProp
+        ? currentTheme?.includes('dark')
+          ? 'dark'
+          : 'light'
+        : themeProp
+
+    const contextValue: ToastContextValue = {
+      toasts,
+      heights,
+      setToastHeight,
+      removeToastHeight,
+      expanded,
+      setExpanded,
+      interacting,
+      setInteracting,
+      triggerDismissCooldown,
+      isInDismissCooldown,
+      removeToast,
+      position,
+      duration,
+      gap,
+      visibleToasts,
+      swipeDirection,
+      swipeThreshold,
+      closeButton,
+      reducedMotion,
+      native,
+      burntOptions,
+      notificationOptions,
+      icons,
+    }
+
+    return (
+      <ToastContext.Provider {...contextValue}>
+        <Theme name={resolvedTheme as any}>{children}</Theme>
+      </ToastContext.Provider>
+    )
   }
-
-  return (
-    <ToastContext.Provider {...contextValue}>
-      <Theme name={resolvedTheme as any}>{children}</Theme>
-    </ToastContext.Provider>
-  )
-})
+)
 
 /* -------------------------------------------------------------------------------------------------
  * ToastViewport
@@ -471,7 +475,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
 
     const [yPosition, xPosition] = ctx.position.split('-') as [
       'top' | 'bottom',
-      'left' | 'center' | 'right'
+      'left' | 'center' | 'right',
     ]
 
     // offset styles
@@ -833,125 +837,129 @@ export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
   children: React.ReactNode
 }
 
-const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(function ToastItem(
-  props,
-  ref
-) {
-  const { toast, index, children, ...rest } = props
-  const ctx = useToastContext()
+const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
+  function ToastItem(props, ref) {
+    const { toast, index, children, ...rest } = props
+    const ctx = useToastContext()
 
-  const [mounted, setMounted] = React.useState(false)
-  const [removed, setRemoved] = React.useState(false)
-  const [swipeOut, setSwipeOut] = React.useState(false)
-  // Freeze the Y offset when dismiss starts so the exiting toast doesn't jump
-  // as other toasts rebalance
-  const [offsetBeforeRemove, setOffsetBeforeRemove] = React.useState(0)
+    const [mounted, setMounted] = React.useState(false)
+    const [removed, setRemoved] = React.useState(false)
+    const [swipeOut, setSwipeOut] = React.useState(false)
+    // Freeze the Y offset when dismiss starts so the exiting toast doesn't jump
+    // as other toasts rebalance
+    const [offsetBeforeRemove, setOffsetBeforeRemove] = React.useState(0)
 
-  const closeTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
-  const closeTimerStartRef = React.useRef(0)
-  const lastPauseTimeRef = React.useRef(0)
-  const remainingTimeRef = React.useRef(toast.duration ?? ctx.duration)
+    const closeTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+    const closeTimerStartRef = React.useRef(0)
+    const lastPauseTimeRef = React.useRef(0)
+    const remainingTimeRef = React.useRef(toast.duration ?? ctx.duration)
 
-  const isFront = index === 0
-  const isVisible = index < ctx.visibleToasts
-  const toastType = toast.type ?? 'default'
-  const dismissible = toast.dismissible !== false
-  const duration = toast.duration ?? ctx.duration
+    const isFront = index === 0
+    const isVisible = index < ctx.visibleToasts
+    const toastType = toast.type ?? 'default'
+    const dismissible = toast.dismissible !== false
+    const duration = toast.duration ?? ctx.duration
 
-  const [yPosition] = ctx.position.split('-') as ['top' | 'bottom', string]
-  const isTop = yPosition === 'top'
+    const [yPosition] = ctx.position.split('-') as ['top' | 'bottom', string]
+    const isTop = yPosition === 'top'
 
-  // Expanded offset: sum of heights + gaps for ACTIVE toasts before this one.
-  // Skips dismissed toasts (height=0) so remaining toasts rebalance immediately
-  // when a toast is dismissed — same pattern as Sonner's heightIndex approach.
-  const expandedOffset = React.useMemo(() => {
-    let totalHeight = 0
-    let activeCount = 0
-    for (let i = 0; i < index; i++) {
-      const toastId = ctx.toasts[i]?.id
-      if (toastId == null) continue
-      const h = ctx.heights[toastId]
-      // height=0 means dismissed (skip), undefined means not yet measured (use fallback)
-      if (h === 0) continue
-      totalHeight += h ?? 55
-      activeCount++
-    }
-    return totalHeight + activeCount * ctx.gap
-  }, [ctx.toasts, ctx.heights, index, ctx.gap])
-
-  // Refs for stable access in callbacks — avoids putting expandedOffset/expanded
-  // in deps which would cause timer restarts on every height measurement
-  const expandedOffsetRef = React.useRef(expandedOffset)
-  expandedOffsetRef.current = expandedOffset
-  const isExpandedRef = React.useRef(ctx.expanded)
-  isExpandedRef.current = ctx.expanded
-
-  // timer — no height-zeroing needed here because auto-dismiss only fires
-  // when not expanded/interacting (timer is paused during hover)
-  const startTimer = React.useCallback(() => {
-    if (duration === Number.POSITIVE_INFINITY || toastType === 'loading') return
-    closeTimerStartRef.current = Date.now()
-    closeTimerRef.current = setTimeout(() => {
-      toast.onAutoClose?.(toast)
-      setRemoved(true)
-      setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
-    }, remainingTimeRef.current)
-  }, [duration, toastType, toast, ctx.removeToast])
-
-  const pauseTimer = useEvent(() => {
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current)
-    }
-    if (lastPauseTimeRef.current < closeTimerStartRef.current) {
-      const elapsed = Date.now() - closeTimerStartRef.current
-      remainingTimeRef.current = Math.max(0, remainingTimeRef.current - elapsed)
-    }
-    lastPauseTimeRef.current = Date.now()
-  })
-
-  const resumeTimer = useEvent(() => {
-    // Don't resume if mouse is still hovering (expanded) or interacting
-    if (ctx.expanded || ctx.interacting) return
-    startTimer()
-  })
-
-  React.useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  // handle deletion — only zero height when expanded (Sonner rebalance)
-  React.useEffect(() => {
-    if (toast.delete) {
-      setRemoved(true)
-      if (isExpandedRef.current) {
-        setOffsetBeforeRemove(expandedOffsetRef.current)
-        ctx.setToastHeight(toast.id, 0)
+    // Expanded offset: sum of heights + gaps for ACTIVE toasts before this one.
+    // Skips dismissed toasts (height=0) so remaining toasts rebalance immediately
+    // when a toast is dismissed — same pattern as Sonner's heightIndex approach.
+    const expandedOffset = React.useMemo(() => {
+      let totalHeight = 0
+      let activeCount = 0
+      for (let i = 0; i < index; i++) {
+        const toastId = ctx.toasts[i]?.id
+        if (toastId == null) continue
+        const h = ctx.heights[toastId]
+        // height=0 means dismissed (skip), undefined means not yet measured (use fallback)
+        if (h === 0) continue
+        totalHeight += h ?? 55
+        activeCount++
       }
-      setTimeout(() => {
-        ctx.removeToast(toast)
-      }, TIME_BEFORE_UNMOUNT)
-    }
-  }, [toast.delete, toast, ctx.removeToast, ctx.setToastHeight])
+      return totalHeight + activeCount * ctx.gap
+    }, [ctx.toasts, ctx.heights, index, ctx.gap])
 
-  React.useEffect(() => {
-    if (ctx.expanded || ctx.interacting) {
-      pauseTimer()
-    } else {
+    // Refs for stable access in callbacks — avoids putting expandedOffset/expanded
+    // in deps which would cause timer restarts on every height measurement
+    const expandedOffsetRef = React.useRef(expandedOffset)
+    expandedOffsetRef.current = expandedOffset
+    const isExpandedRef = React.useRef(ctx.expanded)
+    isExpandedRef.current = ctx.expanded
+
+    // timer — no height-zeroing needed here because auto-dismiss only fires
+    // when not expanded/interacting (timer is paused during hover)
+    const startTimer = React.useCallback(() => {
+      if (duration === Number.POSITIVE_INFINITY || toastType === 'loading') return
+      closeTimerStartRef.current = Date.now()
+      closeTimerRef.current = setTimeout(() => {
+        toast.onAutoClose?.(toast)
+        setRemoved(true)
+        setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
+      }, remainingTimeRef.current)
+    }, [duration, toastType, toast, ctx.removeToast])
+
+    const pauseTimer = useEvent(() => {
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current)
+      }
+      if (lastPauseTimeRef.current < closeTimerStartRef.current) {
+        const elapsed = Date.now() - closeTimerStartRef.current
+        remainingTimeRef.current = Math.max(0, remainingTimeRef.current - elapsed)
+      }
+      lastPauseTimeRef.current = Date.now()
+    })
+
+    const resumeTimer = useEvent(() => {
+      // Don't resume if mouse is still hovering (expanded) or interacting
+      if (ctx.expanded || ctx.interacting) return
       startTimer()
-    }
-    return () => {
-      if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
-    }
-  }, [ctx.expanded, ctx.interacting, startTimer])
+    })
 
-  // reset remaining time when duration changes
-  React.useEffect(() => {
-    remainingTimeRef.current = duration
-  }, [duration])
+    React.useEffect(() => {
+      setMounted(true)
+    }, [])
 
-  // animations
-  const { setDragOffset, springBack, animateOut, animatedStyle, AnimatedView, dragRef } =
-    useToastAnimations({
+    // handle deletion — only zero height when expanded (Sonner rebalance)
+    React.useEffect(() => {
+      if (toast.delete) {
+        setRemoved(true)
+        if (isExpandedRef.current) {
+          setOffsetBeforeRemove(expandedOffsetRef.current)
+          ctx.setToastHeight(toast.id, 0)
+        }
+        setTimeout(() => {
+          ctx.removeToast(toast)
+        }, TIME_BEFORE_UNMOUNT)
+      }
+    }, [toast.delete, toast, ctx.removeToast, ctx.setToastHeight])
+
+    React.useEffect(() => {
+      if (ctx.expanded || ctx.interacting) {
+        pauseTimer()
+      } else {
+        startTimer()
+      }
+      return () => {
+        if (closeTimerRef.current) clearTimeout(closeTimerRef.current)
+      }
+    }, [ctx.expanded, ctx.interacting, startTimer])
+
+    // reset remaining time when duration changes
+    React.useEffect(() => {
+      remainingTimeRef.current = duration
+    }, [duration])
+
+    // animations
+    const {
+      setDragOffset,
+      springBack,
+      animateOut,
+      animatedStyle,
+      AnimatedView,
+      dragRef,
+    } = useToastAnimations({
       reducedMotion: ctx.reducedMotion,
       swipeAxis:
         ctx.swipeDirection === 'up' ||
@@ -961,199 +969,200 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(function ToastIt
           : 'horizontal',
     })
 
-  const { isDragging, gestureHandlers } = useAnimatedDragGesture({
-    direction: ctx.swipeDirection,
-    threshold: ctx.swipeThreshold,
-    disabled: !dismissible || toastType === 'loading',
-    expanded: ctx.expanded,
-    onDragStart: pauseTimer,
-    onDragMove: setDragOffset,
-    onDismiss: (exitDirection, velocity) => {
-      // Trigger cooldown to prevent collapse while stack rebalances
-      ctx.triggerDismissCooldown()
-      setSwipeOut(true)
+    const { isDragging, gestureHandlers } = useAnimatedDragGesture({
+      direction: ctx.swipeDirection,
+      threshold: ctx.swipeThreshold,
+      disabled: !dismissible || toastType === 'loading',
+      expanded: ctx.expanded,
+      onDragStart: pauseTimer,
+      onDragMove: setDragOffset,
+      onDismiss: (exitDirection, velocity) => {
+        // Trigger cooldown to prevent collapse while stack rebalances
+        ctx.triggerDismissCooldown()
+        setSwipeOut(true)
+        toast.onDismiss?.(toast)
+        setRemoved(true)
+        // Sonner pattern: freeze offset and zero height immediately
+        // so remaining toasts rebalance instantly while this one animates out
+        setOffsetBeforeRemove(expandedOffset)
+        ctx.setToastHeight(toast.id, 0)
+        animateOut(exitDirection, velocity, () => {
+          ctx.removeToast(toast)
+        })
+      },
+      onCancel: () => {
+        springBack(() => {
+          resumeTimer()
+        })
+      },
+    })
+
+    // measure height
+    // Skip when collapsed and not front — onLayout reports scaled dimensions
+    // (e.g. 51 * 0.9 = 45.9) that would corrupt height tracking
+    // Skip when removed — the height was intentionally zeroed for immediate
+    // rebalance; re-measuring would restore it and cause a bounce.
+    const handleLayout = React.useCallback(
+      (event: any) => {
+        if (removed) return
+        if (!ctx.expanded && index !== 0) return
+        const { height } = event.nativeEvent.layout
+        ctx.setToastHeight(toast.id, height)
+      },
+      [toast.id, ctx.setToastHeight, index, ctx.expanded, removed]
+    )
+
+    // Remove height on unmount
+    React.useEffect(() => {
+      return () => {
+        ctx.removeToastHeight(toast.id)
+      }
+    }, [toast.id, ctx.removeToastHeight])
+
+    const handleClose = React.useCallback(() => {
+      if (!dismissible) return
       toast.onDismiss?.(toast)
       setRemoved(true)
-      // Sonner pattern: freeze offset and zero height immediately
-      // so remaining toasts rebalance instantly while this one animates out
-      setOffsetBeforeRemove(expandedOffset)
-      ctx.setToastHeight(toast.id, 0)
-      animateOut(exitDirection, velocity, () => {
-        ctx.removeToast(toast)
-      })
-    },
-    onCancel: () => {
-      springBack(() => {
-        resumeTimer()
-      })
-    },
-  })
-
-  // measure height
-  // Skip when collapsed and not front — onLayout reports scaled dimensions
-  // (e.g. 51 * 0.9 = 45.9) that would corrupt height tracking
-  // Skip when removed — the height was intentionally zeroed for immediate
-  // rebalance; re-measuring would restore it and cause a bounce.
-  const handleLayout = React.useCallback(
-    (event: any) => {
-      if (removed) return
-      if (!ctx.expanded && index !== 0) return
-      const { height } = event.nativeEvent.layout
-      ctx.setToastHeight(toast.id, height)
-    },
-    [toast.id, ctx.setToastHeight, index, ctx.expanded, removed]
-  )
-
-  // Remove height on unmount
-  React.useEffect(() => {
-    return () => {
-      ctx.removeToastHeight(toast.id)
-    }
-  }, [toast.id, ctx.removeToastHeight])
-
-  const handleClose = React.useCallback(() => {
-    if (!dismissible) return
-    toast.onDismiss?.(toast)
-    setRemoved(true)
-    if (isExpandedRef.current) {
-      setOffsetBeforeRemove(expandedOffsetRef.current)
-      ctx.setToastHeight(toast.id, 0)
-    }
-    setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
-  }, [dismissible, toast, ctx.removeToast, ctx.setToastHeight])
-
-  const itemContextValue = React.useMemo<ToastItemContextValue>(
-    () => ({ toast, handleClose }),
-    [toast, handleClose]
-  )
-
-  // stacking calculations — skip dismissed toasts (height=0) for correct positions
-  const frontToastId = ctx.toasts[0]?.id
-  const frontToastHeight = frontToastId != null ? ctx.heights[frontToastId] ?? 55 : 55
-
-  const stackScale = !ctx.expanded && !isFront ? 1 - index * 0.05 : 1
-
-  // When removed, freeze Y at the saved offset so the exiting toast doesn't jump
-  // as other toasts rebalance (Sonner: --offset uses offsetBeforeRemove when removed)
-  const activeExpandedOffset = removed ? offsetBeforeRemove : expandedOffset
-
-  const stackY = ctx.expanded
-    ? isTop
-      ? activeExpandedOffset
-      : -activeExpandedOffset
-    : isFront
-    ? 0
-    : isTop
-    ? ctx.gap * index
-    : -ctx.gap * index
-
-  // Entry offset: drives the slide-in animation through the same transition
-  // as stack repositioning, so new toast and existing toasts animate in sync.
-  // Uses mounted state (set in useEffect after first paint) — the 1-frame gap
-  // lets the browser register the initial value before the CSS transition starts.
-  const mountOffset = !mounted && !ctx.reducedMotion ? (isTop ? -80 : 80) : 0
-
-  const computedOpacity =
-    !mounted && !ctx.reducedMotion
-      ? 0
-      : removed && !swipeOut
-      ? 0
-      : index >= ctx.visibleToasts
-      ? 0
-      : !ctx.expanded && index === ctx.visibleToasts - 1
-      ? 0.5
-      : 1
-  const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
-  const computedHeight = !ctx.expanded && !isFront ? frontToastHeight : undefined
-  const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
-
-  // gap filler for hover stability
-  const gapFillerHeight = ctx.expanded ? ctx.gap + 1 : 0
-
-  // data attributes
-  const dataAttributes = {
-    'data-mounted': mounted ? 'true' : 'false',
-    'data-removed': removed ? 'true' : 'false',
-    'data-swipe-out': swipeOut ? 'true' : 'false',
-    'data-visible': isVisible ? 'true' : 'false',
-    'data-front': isFront ? 'true' : 'false',
-    'data-index': String(index),
-    'data-type': toastType,
-    'data-expanded': ctx.expanded ? 'true' : 'false',
-  }
-
-  return (
-    <ToastPositionWrapper
-      ref={ref}
-      testID={rest.testID}
-      accessibilityLabel={rest.accessibilityLabel}
-      {...dataAttributes}
-      transition={
-        isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'
+      if (isExpandedRef.current) {
+        setOffsetBeforeRemove(expandedOffsetRef.current)
+        ctx.setToastHeight(toast.id, 0)
       }
-      animateOnly={['transform', 'opacity', 'height']}
-      y={stackY + mountOffset}
-      scale={stackScale}
-      opacity={computedOpacity}
-      zIndex={computedZIndex}
-      height={computedHeight}
-      overflow="visible"
-      pointerEvents={computedPointerEvents as any}
-      top={isTop ? 0 : undefined}
-      bottom={isTop ? undefined : 0}
-      {...(isWeb &&
-        !isFront && {
-          style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
-        })}
-      enterStyle={ctx.reducedMotion ? { opacity: 0 } : undefined}
-      exitStyle={
-        ctx.reducedMotion
-          ? { opacity: 0 }
-          : swipeOut
-          ? { opacity: 0, x: 0, y: 0, scale: 1 }
-          : { opacity: 0, y: stackY, scale: stackScale }
-      }
-    >
-      <DragWrapper
-        animatedStyle={animatedStyle}
-        gestureHandlers={gestureHandlers}
-        AnimatedView={AnimatedView}
-        dragRef={dragRef}
-      >
-        <ToastItemFrame
-          role="status"
-          aria-live="polite"
-          aria-atomic
-          tabIndex={0}
-          onLayout={handleLayout}
-          {...(isWeb && {
-            onKeyDown: (event: React.KeyboardEvent) => {
-              if (event.key === 'Escape' && dismissible) {
-                handleClose()
-              }
-            },
+      setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
+    }, [dismissible, toast, ctx.removeToast, ctx.setToastHeight])
+
+    const itemContextValue = React.useMemo<ToastItemContextValue>(
+      () => ({ toast, handleClose }),
+      [toast, handleClose]
+    )
+
+    // stacking calculations — skip dismissed toasts (height=0) for correct positions
+    const frontToastId = ctx.toasts[0]?.id
+    const frontToastHeight = frontToastId != null ? (ctx.heights[frontToastId] ?? 55) : 55
+
+    const stackScale = !ctx.expanded && !isFront ? 1 - index * 0.05 : 1
+
+    // When removed, freeze Y at the saved offset so the exiting toast doesn't jump
+    // as other toasts rebalance (Sonner: --offset uses offsetBeforeRemove when removed)
+    const activeExpandedOffset = removed ? offsetBeforeRemove : expandedOffset
+
+    const stackY = ctx.expanded
+      ? isTop
+        ? activeExpandedOffset
+        : -activeExpandedOffset
+      : isFront
+        ? 0
+        : isTop
+          ? ctx.gap * index
+          : -ctx.gap * index
+
+    // Entry offset: drives the slide-in animation through the same transition
+    // as stack repositioning, so new toast and existing toasts animate in sync.
+    // Uses mounted state (set in useEffect after first paint) — the 1-frame gap
+    // lets the browser register the initial value before the CSS transition starts.
+    const mountOffset = !mounted && !ctx.reducedMotion ? (isTop ? -80 : 80) : 0
+
+    const computedOpacity =
+      !mounted && !ctx.reducedMotion
+        ? 0
+        : removed && !swipeOut
+          ? 0
+          : index >= ctx.visibleToasts
+            ? 0
+            : !ctx.expanded && index === ctx.visibleToasts - 1
+              ? 0.5
+              : 1
+    const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
+    const computedHeight = !ctx.expanded && !isFront ? frontToastHeight : undefined
+    const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
+
+    // gap filler for hover stability
+    const gapFillerHeight = ctx.expanded ? ctx.gap + 1 : 0
+
+    // data attributes
+    const dataAttributes = {
+      'data-mounted': mounted ? 'true' : 'false',
+      'data-removed': removed ? 'true' : 'false',
+      'data-swipe-out': swipeOut ? 'true' : 'false',
+      'data-visible': isVisible ? 'true' : 'false',
+      'data-front': isFront ? 'true' : 'false',
+      'data-index': String(index),
+      'data-type': toastType,
+      'data-expanded': ctx.expanded ? 'true' : 'false',
+    }
+
+    return (
+      <ToastPositionWrapper
+        ref={ref}
+        testID={rest.testID}
+        accessibilityLabel={rest.accessibilityLabel}
+        {...dataAttributes}
+        transition={
+          isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'
+        }
+        animateOnly={['transform', 'opacity', 'height']}
+        y={stackY + mountOffset}
+        scale={stackScale}
+        opacity={computedOpacity}
+        zIndex={computedZIndex}
+        height={computedHeight}
+        overflow="visible"
+        pointerEvents={computedPointerEvents as any}
+        top={isTop ? 0 : undefined}
+        bottom={isTop ? undefined : 0}
+        {...(isWeb &&
+          !isFront && {
+            style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
           })}
-          {...rest}
+        enterStyle={ctx.reducedMotion ? { opacity: 0 } : undefined}
+        exitStyle={
+          ctx.reducedMotion
+            ? { opacity: 0 }
+            : swipeOut
+              ? { opacity: 0, x: 0, y: 0, scale: 1 }
+              : { opacity: 0, y: stackY, scale: stackScale }
+        }
+      >
+        <DragWrapper
+          animatedStyle={animatedStyle}
+          gestureHandlers={gestureHandlers}
+          AnimatedView={AnimatedView}
+          dragRef={dragRef}
         >
-          {/* gap filler to prevent hover flicker */}
-          {ctx.expanded && gapFillerHeight > 0 && (
-            <View
-              position="absolute"
-              left={0}
-              right={0}
-              height={gapFillerHeight}
-              pointerEvents="auto"
-              {...(isTop ? { top: '100%' } : { bottom: '100%' })}
-            />
-          )}
-          <ToastItemContext.Provider value={itemContextValue}>
-            {children}
-          </ToastItemContext.Provider>
-        </ToastItemFrame>
-      </DragWrapper>
-    </ToastPositionWrapper>
-  )
-})
+          <ToastItemFrame
+            role="status"
+            aria-live="polite"
+            aria-atomic
+            tabIndex={0}
+            onLayout={handleLayout}
+            {...(isWeb && {
+              onKeyDown: (event: React.KeyboardEvent) => {
+                if (event.key === 'Escape' && dismissible) {
+                  handleClose()
+                }
+              },
+            })}
+            {...rest}
+          >
+            {/* gap filler to prevent hover flicker */}
+            {ctx.expanded && gapFillerHeight > 0 && (
+              <View
+                position="absolute"
+                left={0}
+                right={0}
+                height={gapFillerHeight}
+                pointerEvents="auto"
+                {...(isTop ? { top: '100%' } : { bottom: '100%' })}
+              />
+            )}
+            <ToastItemContext.Provider value={itemContextValue}>
+              {children}
+            </ToastItemContext.Provider>
+          </ToastItemFrame>
+        </DragWrapper>
+      </ToastPositionWrapper>
+    )
+  }
+)
 
 /* -------------------------------------------------------------------------------------------------
  * ToastTitle
