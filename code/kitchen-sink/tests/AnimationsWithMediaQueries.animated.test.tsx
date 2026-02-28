@@ -30,7 +30,7 @@ async function waitForScale(
   testId: string,
   expected: number,
   tolerance = 0.05,
-  timeoutMs = 2000
+  timeoutMs = process.env.CI ? 5000 : 2000
 ): Promise<number> {
   const start = Date.now()
   let last = -1

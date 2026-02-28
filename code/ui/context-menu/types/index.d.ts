@@ -99,6 +99,7 @@ export declare const ContextMenu: import("react").FC<import("./createNonNativeCo
     }>;
     SubContent: import("react").FC<Omit<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: import("@tamagui/web").SizeTokens | undefined;
+        unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }>, keyof import("@tamagui/create-menu").MenuSubContentProps> & import("@tamagui/create-menu").MenuSubContentProps & {
