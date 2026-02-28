@@ -234,7 +234,9 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
       return getIcon(icon, {
         size: iconSizeNumber,
         color: iconColor,
-        [isBefore ? 'marginRight' : 'marginLeft']: `${iconSizeNumber * 0.4}%`,
+        style: {
+          [isBefore ? 'marginRight' : 'marginLeft']: `${iconSizeNumber * 0.4}%`,
+        },
       })
     })
 

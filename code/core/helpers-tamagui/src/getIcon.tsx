@@ -5,6 +5,7 @@ export const getIcon = (
   props: {
     size?: number
     color?: string
+    style?: Record<string, any>
   }
 ) => {
   if (!el) return el

@@ -554,6 +554,10 @@ export const PopperContentFrame = styled(YStack, {
   name: 'PopperContent',
 
   variants: {
+    unstyled: {
+      true: {},
+    },
+
     size: {
       '...size': (val, { tokens }) => {
         return {
