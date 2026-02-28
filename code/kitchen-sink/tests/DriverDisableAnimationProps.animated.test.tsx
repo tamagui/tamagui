@@ -68,16 +68,16 @@ test.describe('Driver disableAnimationProps className optimization', () => {
     expect(result, 'element should exist').toBeTruthy()
 
     // element should have classNames (atomic CSS)
-    expect(result.hasClassName, 'should have className').toBe(true)
+    expect(result?.hasClassName, 'should have className').toBe(true)
     expect(
-      result.classNameLength,
+      result?.classNameLength,
       'should have multiple atomic CSS classes'
     ).toBeGreaterThan(1)
 
     // non-animatable props should NOT be in inline style
     for (const prop of NON_ANIMATABLE) {
       expect(
-        result.inlineNonAnimatable[prop],
+        result?.inlineNonAnimatable[prop],
         `${prop} should not be in inline style (should be className)`
       ).toBeFalsy()
     }
@@ -104,9 +104,10 @@ test.describe('Driver disableAnimationProps className optimization', () => {
     expect(result, 'element should exist').toBeTruthy()
 
     // opacity should be animating (not at the start value of 1)
-    expect(result.hasNonDefaultOpacity, 'opacity should be animating after trigger').toBe(
-      true
-    )
+    expect(
+      result?.hasNonDefaultOpacity,
+      'opacity should be animating after trigger'
+    ).toBe(true)
   })
 
   test('animation still works correctly with className optimization', async ({
