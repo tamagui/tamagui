@@ -36,6 +36,7 @@ export const unitlessNumbers = {
   gridColumnEnd: true,
   gridColumnGap: true,
   gridColumnStart: true,
+  lineHeight: true,
   lineClamp: true,
   opacity: true,
   order: true,

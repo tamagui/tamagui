@@ -119,6 +119,7 @@ export const stylePropsUnitless = {
   gridColumnStart: true,
   gridTemplateColumns: true,
   gridTemplateAreas: true,
+  lineHeight: true,
   lineClamp: true,
   opacity: true,
   order: true,

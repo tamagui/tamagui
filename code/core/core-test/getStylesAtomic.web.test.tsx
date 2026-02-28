@@ -78,6 +78,49 @@ test(`outline longhands get doubled selector`, () => {
   expect(rule).toMatch(/\._[^\s]+\._[^\s]+\{/)
 })
 
+test(`numeric lineHeight should not get px appended`, () => {
+  const out = getCSSStylesAtomic({
+    lineHeight: 1.15,
+  })
+  const rule = out[0][StyleObjectRules][0]
+  expect(rule).toContain('line-height:1.15')
+  expect(rule).not.toContain('line-height:1.15px')
+})
+
+test(`integer lineHeight should not get px appended`, () => {
+  const out = getCSSStylesAtomic({
+    lineHeight: 2,
+  })
+  const rule = out[0][StyleObjectRules][0]
+  expect(rule).toContain('line-height:2')
+  expect(rule).not.toContain('line-height:2px')
+})
+
+test(`string percentage lineHeight passes through unchanged`, () => {
+  const out = getCSSStylesAtomic({
+    lineHeight: '150%',
+  })
+  const rule = out[0][StyleObjectRules][0]
+  expect(rule).toContain('line-height:150%')
+})
+
+test(`opacity remains unitless (regression guard)`, () => {
+  const out = getCSSStylesAtomic({
+    opacity: 0.5,
+  })
+  const rule = out[0][StyleObjectRules][0]
+  expect(rule).toContain('opacity:0.5')
+  expect(rule).not.toContain('opacity:0.5px')
+})
+
+test(`fontSize still gets px appended (regression guard)`, () => {
+  const out = getCSSStylesAtomic({
+    fontSize: 16,
+  })
+  const rule = out[0][StyleObjectRules][0]
+  expect(rule).toContain('font-size:16px')
+})
+
 // test(`should be fast`, () => {
 //   // need to compare it in a cpu-insensitive way, so compare to common operations
 
