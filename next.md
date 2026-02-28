@@ -179,6 +179,13 @@ animations improvements:
   - https://discord.com/channels/909986013848412191/974145843919716412/1356379335132446740
   - https://share.cleanshot.com/4rKTYFkl
 
+v6 config:
+
+- flex shorthand is wrong in v5 config - it maps flex => flexGrow, but flex is really more like a variant (flex: 1 sets flexGrow/flexShrink/flexBasis)
+  - change flexGrow shorthand to `grow`
+  - need globalVariants concept to handle flex properly
+  - breaking change, so v6 config
+
 v3:
 
 - aim for fast follow
