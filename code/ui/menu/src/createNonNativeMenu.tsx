@@ -487,6 +487,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
   const Separator = Menu.Separator
   const Arrow = Menu.Arrow
   const SubTrigger = Menu.SubTrigger
+
   const ItemTitle = Menu.ItemTitle
   const ItemSubtitle = Menu.ItemSubtitle
   const ItemImage = Menu.ItemImage

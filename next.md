@@ -3,6 +3,7 @@ before v2 final:
 - // import '@tamagui/native/setup-safe-area'
 
 - activeStyle / accept not taking shorthands
+
   - wait on Switch.Thumb is is oppsoite
 
 - accept type not looking right?
@@ -20,9 +21,11 @@ and cant put another View next to Content and have it show
   const animateKey = JSON.stringify(style)
 
 - /Users/n8/tamagui/code/core/web/src/helpers/defaultAnimationDriver.tsx
+
   - should just be native on native, css on web? use platfomr extensions
 
 - split input/textinput into SizableTextInput / SizableInput or not?
+
   - otherwise its annoying af if you want your OWN size
 
 - fullscreen prop deprecated, use `inset: 0, position: 'absolute'` instead
@@ -34,9 +37,11 @@ and cant put another View next to Content and have it show
 - reanimated on native - no transitino can still avoidReRenders just set duration: 0 timing, should be faster
 
 - css driver can avoidReRenders
+
   - reanimated too but requires testing native + worklets
 
 - Text weirdness fixes (explore)
+
   - remove suppressHighlighting / margin 0 default from Text
   - fix display: inline issue
   - see what react-strict-dom is doing
@@ -49,6 +54,7 @@ and cant put another View next to Content and have it show
       </div>
 
 - smaller bugfixes/things to check work:
+
   - ensure onlyAllowShorthands changes types properly
   - tooltip: expects zIndex but shorthand overrides and doesn't work
   - small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
@@ -56,6 +62,7 @@ and cant put another View next to Content and have it show
   - seems <Switch checked defaultChecked> isnt showing in the checked position
 
 - option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
+
   - useTheme().x.val may have bug on light/dark switch
   - react native 78 dialogs not working
     - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
@@ -69,14 +76,17 @@ and cant put another View next to Content and have it show
 - if Popover can not be portaled that would be useful for some use cases
 
 - RadioGroup.Indicator can't use AnimatePresence i think because .styleable()
+
   - styleable shouldn't probably do anything with presence because the child should expect to handle that, at least need to double check taht
 
 - bug: if you name a file `polyfill-native.ts` tamagui-build doesnt output the .native files properly
 
 - When using <Adapt.Contents /> inside an Adapt when="maxMd" it seems to hide the children before fully closed
+
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
 
 - When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
+
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723475036176189
 
 - AnimatePresence leaving things in DOM
@@ -106,6 +116,7 @@ and cant put another View next to Content and have it show
 - MCP works w your local tamagui config?
 
 - perf: could avoid even creating style rules, easy / big win:
+
   - note that in addStyleToInsertRules it checks if shouldInsert
   - note that we create all the style rules before we actually check if should insert
   - refactor: not _super_ simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
@@ -131,9 +142,11 @@ const padding = !props.unstyled
 animations improvements:
 
 - make tamagui package work in some simple way
+
   - probably making tamagui + tamagui/ui both work is fine
 
 - react-native-web-lite
+
   - tree shakeable, smaller, fixes things like data- attributes not passing
   - shares core style logic with tamagui for smaller bundles used together
   - outstanding bug? https://discord.com/channels/909986013848412191/1354817119233118288/1354839267771285546
@@ -141,6 +154,7 @@ animations improvements:
 - docs on reprop context on ios new arch
 
 - in SheetImplCustom bad logic for pulling up when scroll view inside
+
   - if scrollview isn't able to scroll we shouldn't disable that behavior:
     `if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {`
     - we can: pass in scrollable node selector
@@ -149,6 +163,7 @@ animations improvements:
 - apply visibility hidden to fully hidden popover for perf gains
 
 - refresh site hero:
+
   - 100% features work the same cross-platform
   - optionally compile-time optimized, but 100% runtime feature-set
   - 0-dependency: no / faster than react-native-web
@@ -157,19 +172,18 @@ animations improvements:
   - headless component kit
   - super-powerful: themes, animations
 
-- sync AnimatePresence with latest changes from framer-motion
-  - BUT needs careful checking - the aniamted gallery thing for example is realyl fussy and i saw regressions before when i tried syncing it
-
 ---
 
 - popover bring back dismissable - document dismissable etc
 
 - escape on tamagui sheet doesn't close in general keyboard accessibility
+
   - check radix sheet and compare and improve
 
 - announcement
 
 - group props require the prop key to be stable like animations
+
   - saves 2 hooks in every component
   - in dev mode add a extra component around every component
     - make it so it automatically handles animation/group changes without breaking
@@ -193,15 +207,18 @@ v3:
 - remove `name` from styled()
 - remove inverse in favor of sub-themes that can inverse already ssr safe
 - naming:
+
   - themes => variables, control any property
   - remove tokens in favor of variables
 
 - RSD - no View + Text (just Element and we can extend it later)
+
   - compiler can optimize
   - mimic text inhertance on native (or remove it on web)
   - https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
 - todo:
+
   - remove $true tokens and concept
   - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
@@ -270,10 +287,12 @@ createCore<CustomTypes>({
 ```
 
 - can we remove the need for separate Text/View?
+
   - seems like we could scan just the direct descendents?
     https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
 - light-dark()
+
   - this is an official css thing so would be easy-ish to implement
 
 - run over components and review for removing some assumptions about `size`
@@ -288,6 +307,7 @@ createCore<CustomTypes>({
 - Sheet.overlay is memoized incorrectly props dont update it
 
 - popover trigger should send an event to close tooltips automatically on open
+
   - closeTooltips() helper
   - tooltip prop `closeOnGlobalPress`
 
@@ -320,20 +340,24 @@ $gtSm: false,
 - small win: `useTheme()` could take a theme name to use a diff theme than the current one
 
 - bug in useMedia + compiler
+
   - https://app.graphite.dev/github/pr/Uniswap/universe/10626/fix-web-toast-alignment
 
 - AnimatePresence refactor:
+
   - https://x.com/mattgperry/status/1816842995758498017?s=46&t=5wFlU_OsfjJ0sQPMFbtG0A
 
 - className merging in variants!
   - `positionSticky: { true: { className: 'position-sticky' } }`
 - opacity `/50`
 - AnimateList
+
   - like AnimatePresence but for >1 items
   - AnimatePresence keepMounted={} prop?
   - can handle direction + let you control mount behavior
 
 - remove scroll not working when Dialog adapted to Sheet on mobile
+
   - we may want Sheet to have its own removeScroll in this case
 
 - AnimatePresence should just work if you change the enterStyle exitStyle dynamically in the render, no need for custom we can capture the props
@@ -364,6 +388,7 @@ $gtSm: false,
 - settings page in takeout SSR hydration issue due to useThemeSetting
 
 - animatedStyle showing up in animated component snapshot on native
+
   - add some native snapshots in ci tests
 
 - addTheme updateTheme regression needs a test
@@ -389,6 +414,7 @@ $gtSm: false,
 - get takeout users studio access
 
 - studio color scales first class:
+
   - adding a color/scale really adds a theme
   - but also adds $colorName1 => $colorNameX to base theme
 
