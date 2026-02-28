@@ -5,6 +5,7 @@ import { createAnimations as createAnimationsReanimated } from '@tamagui/animati
 import { config } from '@tamagui/config/v3'
 import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
 import { defaultConfig } from '@tamagui/config/v5'
+import { isWeb } from '@tamagui/constants'
 import { tamaguiThemes } from '@tamagui/themes/v4'
 import { createTamagui, type CreateTamaguiProps } from 'tamagui'
 // TODO just move this into this folder
@@ -402,10 +403,12 @@ declare module 'tamagui' {
   }
 }
 
-export default tamav5Config
-  ? createTamagui(tamaguiDevConfig)
-  : generatedV5
-    ? createTamagui({ ...defaultConfig, themes: generatedV5Themes, animations })
-    : v5config
-      ? createTamagui({ ...defaultConfig, animations })
-      : tamaConf
+export default !isWeb
+  ? createTamagui({ ...defaultConfig, animations: animationsReanimated })
+  : tamav5Config
+    ? createTamagui(tamaguiDevConfig)
+    : generatedV5
+      ? createTamagui({ ...defaultConfig, themes: generatedV5Themes, animations })
+      : v5config
+        ? createTamagui({ ...defaultConfig, animations })
+        : tamaConf
