@@ -23,11 +23,12 @@ test.describe('Driver disableAnimationProps className optimization', () => {
 
   test.beforeEach(async ({ page }) => {
     const driver = (test.info().project?.metadata as any)?.animationDriver
-    // this optimization only applies to inline animation drivers on web
-    // css driver already uses classNames, native driver is not web
+    // this optimization only applies to inline animation drivers that don't use RNW
+    // css driver already uses classNames, native/reanimated use RNW's Animated.View
+    // which doesn't forward className prop
     test.skip(
-      driver === 'css' || driver === 'native',
-      'only inline animation drivers benefit from this optimization'
+      driver === 'css' || driver === 'native' || driver === 'reanimated',
+      'only motion driver benefits from this optimization on web'
     )
 
     await setupPage(page, {

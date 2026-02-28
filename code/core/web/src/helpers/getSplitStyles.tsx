@@ -1192,11 +1192,13 @@ export const getSplitStyles: StyleSplitter = (
 
     // when noClass is true (inline animation driver) extract non-animatable
     // base styles to atomic CSS classNames so the driver doesn't manage them
+    // skip for RNW animation drivers since their AnimatedView doesn't forward classNames
     if (
       !styleProps.noMergeStyle &&
       styleState.style &&
       !shouldDoClasses &&
-      styleProps.isAnimated
+      styleProps.isAnimated &&
+      !driver?.isReactNative
     ) {
       if (!styleState.style['$$css']) {
         const toConvert: Record<string, any> = {}
@@ -1323,14 +1325,18 @@ export const getSplitStyles: StyleSplitter = (
         if (props.className) classList.push(props.className)
         const finalClassName = classList.join(' ')
 
-        if (styleProps.isAnimated && isReactNative) {
+        // use $$css for RNW components OR when animated with RNW driver
+        // (driver's AnimatedView doesn't forward className)
+        const needsCssStyles = isReactNative || (styleProps.isAnimated && driver?.isReactNative)
+
+        if (styleProps.isAnimated && driver?.inputStyle === 'css') {
+          // CSS animation driver uses className directly
+          viewProps.className = finalClassName
           if (style) {
             viewProps.style = style as any
           }
-          if (driver?.inputStyle === 'css') {
-            viewProps.className = finalClassName
-          }
-        } else if (isReactNative) {
+        } else if (needsCssStyles) {
+          // RNW or RNW-animated: apply classNames via $$css
           let cnStyles: Record<string, unknown> | undefined
           for (const name of finalClassName.split(' ')) {
             cnStyles ||= { $$css: true }
@@ -1340,6 +1346,7 @@ export const getSplitStyles: StyleSplitter = (
             ? [...(Array.isArray(style) ? style : [style]), cnStyles]
             : [style]
         } else {
+          // regular web: use className directly
           if (finalClassName) {
             viewProps.className = finalClassName
           }
