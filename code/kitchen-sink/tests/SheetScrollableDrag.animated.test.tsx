@@ -182,6 +182,7 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
   test('STRESS: multiple handoffs starting from scroll', async ({ page }) => {
     // stress test: scroll → drag → scroll → drag (4x)
     // each handoff should work cleanly without jitter
+    if (process.env.CI) test.slow() // triple timeout for CI runners
 
     await page.getByTestId('sheet-scrollable-drag-trigger').click()
     await page.waitForTimeout(800)

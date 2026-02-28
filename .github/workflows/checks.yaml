@@ -66,9 +66,6 @@ jobs:
       - name: Install playwright
         run: bunx playwright install --with-deps
 
-      - uses: nick-fields/retry@v3
-        name: Run integration tests
-        with:
-          timeout_minutes: 30
-          max_attempts: 2
-          command: cd code/kitchen-sink && bun run test:web
+      - name: Run integration tests
+        run: cd code/kitchen-sink && bun run test:web
+        timeout-minutes: 30
