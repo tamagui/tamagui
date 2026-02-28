@@ -10,6 +10,7 @@ import {
   StyleObjectProperty,
   StyleObjectPseudo,
   StyleObjectRules,
+  nonAnimatableStyleProps,
   stylePropsText,
   stylePropsTransform,
   tokenCategories,
@@ -1146,6 +1147,7 @@ export const getSplitStyles: StyleSplitter = (
 
         for (const atomicStyle of atomic) {
           const [key, value, identifier] = atomicStyle
+
           const isAnimatedAndTransitionOnly =
             styleProps.isAnimated &&
             styleProps.noClass &&
@@ -1184,6 +1186,35 @@ export const getSplitStyles: StyleSplitter = (
 
         if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
           styleState.style = retainedStyles || {}
+        }
+      }
+    }
+
+    // when noClass is true (inline animation driver) extract non-animatable
+    // base styles to atomic CSS classNames so the driver doesn't manage them
+    if (
+      !styleProps.noMergeStyle &&
+      styleState.style &&
+      !shouldDoClasses &&
+      styleProps.isAnimated
+    ) {
+      if (!styleState.style['$$css']) {
+        const toConvert: Record<string, any> = {}
+        let hasProps = false
+        for (const key in styleState.style) {
+          if (key in nonAnimatableStyleProps) {
+            toConvert[key] = styleState.style[key]
+            delete styleState.style[key]
+            hasProps = true
+          }
+        }
+        if (hasProps) {
+          const atomic = getCSSStylesAtomic(toConvert)
+          for (const atomicStyle of atomic) {
+            addStyleToInsertRules(rulesToInsert, atomicStyle)
+            classNames[atomicStyle[StyleObjectProperty]] =
+              atomicStyle[StyleObjectIdentifier]
+          }
         }
       }
     }

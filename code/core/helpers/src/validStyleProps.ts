@@ -1,5 +1,10 @@
 import { isAndroid } from '@tamagui/constants'
-import { webOnlyStylePropsText, webOnlyStylePropsView } from './webOnlyStyleProps'
+import {
+  nonAnimatableWebTextProps,
+  nonAnimatableWebViewProps,
+  webOnlyStylePropsText,
+  webOnlyStylePropsView,
+} from './webOnlyStyleProps'
 
 // generally organizing this so we don't duplicate things so its a bit weird
 
@@ -94,8 +99,75 @@ export const tokenCategories = {
   },
 }
 
-export const stylePropsUnitless = {
+// discrete (non-animatable) view style properties - keyword-based, no interpolation
+// defined above stylePropsView so it can be spread in without duplication
+const nonAnimatableViewProps = {
+  alignContent: true,
+  alignItems: true,
+  alignSelf: true,
+  backfaceVisibility: true,
+  borderCurve: true,
+  borderStyle: true,
+  borderBlockStyle: true,
+  borderBlockEndStyle: true,
+  borderBlockStartStyle: true,
+  borderInlineStyle: true,
+  borderInlineEndStyle: true,
+  borderInlineStartStyle: true,
+  boxSizing: true,
+  cursor: true,
+  direction: true,
+  display: true,
+  flexDirection: true,
+  flexWrap: true,
+  isolation: true,
+  justifyContent: true,
+  mixBlendMode: true,
+  outlineStyle: true,
+  overflow: true,
+  position: true,
+}
+
+// discrete (non-animatable) font properties
+const nonAnimatableFontProps = {
+  fontFamily: true,
+  fontStyle: true,
+  fontVariant: true,
+  textTransform: true,
+}
+
+// discrete (non-animatable) text-only properties
+const nonAnimatableTextOnlyProps = {
+  textAlign: true,
+  textDecorationLine: true,
+  textDecorationStyle: true,
+  userSelect: true,
+}
+
+// discrete (non-animatable) unitless properties
+const nonAnimatableUnitlessProps = {
   WebkitLineClamp: true,
+  lineClamp: true,
+  gridTemplateColumns: true,
+  gridTemplateAreas: true,
+}
+
+// all non-animatable style props combined, used by getSplitStyles to keep
+// these as atomic CSS classNames even for components with animation drivers
+export const nonAnimatableStyleProps = {
+  ...nonAnimatableViewProps,
+  ...nonAnimatableFontProps,
+  ...nonAnimatableTextOnlyProps,
+  ...nonAnimatableUnitlessProps,
+  // web-only discrete properties (defined in webOnlyStyleProps.ts)
+  ...(process.env.TAMAGUI_TARGET === 'web' && {
+    ...nonAnimatableWebViewProps,
+    ...nonAnimatableWebTextProps,
+  }),
+}
+
+export const stylePropsUnitless = {
+  ...nonAnimatableUnitlessProps,
   animationIterationCount: true,
   aspectRatio: true,
   borderImageOutset: true,
@@ -117,9 +189,6 @@ export const stylePropsUnitless = {
   gridColumnEnd: true,
   gridColumnGap: true,
   gridColumnStart: true,
-  gridTemplateColumns: true,
-  gridTemplateAreas: true,
-  lineClamp: true,
   opacity: true,
   order: true,
   orphans: true,
@@ -151,9 +220,7 @@ export const stylePropsTransform = {
 }
 
 export const stylePropsView = {
-  backfaceVisibility: true,
-  borderCurve: true,
-  cursor: true,
+  ...nonAnimatableViewProps,
   borderBottomEndRadius: true,
   borderBottomStartRadius: true,
   borderBottomWidth: true,
@@ -165,34 +232,20 @@ export const stylePropsView = {
   borderInlineWidth: true,
   borderInlineEndWidth: true,
   borderInlineStartWidth: true,
-  borderStyle: true,
-  borderBlockStyle: true,
-  borderBlockEndStyle: true,
-  borderBlockStartStyle: true,
-  borderInlineStyle: true,
-  borderInlineEndStyle: true,
-  borderInlineStartStyle: true,
   borderTopEndRadius: true,
   borderTopStartRadius: true,
   borderTopWidth: true,
   borderWidth: true,
   transform: true,
   transformOrigin: true,
-  alignContent: true,
-  alignItems: true,
-  alignSelf: true,
   borderEndWidth: true,
   borderStartWidth: true,
   bottom: true,
-  display: true,
   end: true,
   flexBasis: true,
-  flexDirection: true,
-  flexWrap: true,
   gap: true,
   columnGap: true,
   rowGap: true,
-  justifyContent: true,
   left: true,
   margin: true,
   marginBlock: true,
@@ -209,7 +262,6 @@ export const stylePropsView = {
   marginStart: true,
   marginTop: true,
   marginVertical: true,
-  overflow: true,
   padding: true,
   paddingBottom: true,
   paddingInline: true,
@@ -224,7 +276,6 @@ export const stylePropsView = {
   paddingStart: true,
   paddingTop: true,
   paddingVertical: true,
-  position: true,
   right: true,
   start: true,
   top: true,
@@ -235,13 +286,11 @@ export const stylePropsView = {
   insetInline: true,
   insetInlineEnd: true,
   insetInlineStart: true,
-  direction: true,
   shadowOffset: true,
   shadowRadius: true,
   ...tokenCategories.color,
   ...tokenCategories.radius,
   ...tokenCategories.size,
-  ...tokenCategories.radius,
   ...stylePropsTransform,
   ...stylePropsUnitless,
   ...(isAndroid ? { elevationAndroid: true } : {}),
@@ -254,13 +303,9 @@ export const stylePropsView = {
   // the actual RN 0.76+ prop name (backgroundImage expands to this on native)
   experimental_backgroundImage: true,
   // RN 0.76/0.77+ style props (New Architecture)
-  boxSizing: true,
-  mixBlendMode: true,
-  isolation: true,
   outline: true,
   outlineColor: true,
   outlineOffset: true,
-  outlineStyle: true,
   outlineWidth: true,
 
   // web-only for convenience - tree-shaken on native
@@ -268,26 +313,20 @@ export const stylePropsView = {
 }
 
 const stylePropsFont = {
-  fontFamily: true,
+  ...nonAnimatableFontProps,
   fontSize: true,
-  fontStyle: true,
   fontWeight: true,
-  fontVariant: true,
   letterSpacing: true,
   lineHeight: true,
-  textTransform: true,
 }
 
 export const stylePropsTextOnly = {
   ...stylePropsFont,
-  textAlign: true,
-  textDecorationLine: true,
-  textDecorationStyle: true,
+  ...nonAnimatableTextOnlyProps,
   ...textColors,
   textShadow: true,
   textShadowOffset: true,
   textShadowRadius: true,
-  userSelect: true,
   verticalAlign: true,
 
   // web-only text props - tree-shaken on native
