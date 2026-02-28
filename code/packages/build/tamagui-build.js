@@ -442,7 +442,7 @@ async function buildTsc(allFiles) {
     const compilerOptions = createCompilerOptions(config.options, targetDir)
 
     if (config.options.isolatedDeclarations) {
-      const oxc = require('oxc-transform')
+      const oxc = await import('oxc-transform')
 
       const results = await Promise.all(
         allFiles.map(async (file) => {
