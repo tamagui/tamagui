@@ -15,8 +15,7 @@ export function MenuSubNestedPositionCase() {
   const [nestedOpen, setNestedOpen] = React.useState(false)
 
   return (
-    // @ts-ignore
-    <YStack padding="$4" height="100vh">
+    <YStack padding="$4" minHeight={600}>
       <YStack alignItems="flex-end" paddingRight={100}>
         <Menu placement="bottom-start" offset={4}>
           <Menu.Trigger asChild>
