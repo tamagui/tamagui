@@ -18,7 +18,7 @@ import type { SwipeDirection } from './ToastProvider'
 import type { ExternalToast, ToastT, ToastToDismiss, ToastType } from './ToastState'
 import { ToastState } from './ToastState'
 import type { BurntToastOptions } from './types'
-import { createNativeToast } from './createNativeToast'
+import { dispatchNativeToast } from './dispatchNativeToast'
 import { useAnimatedDragGesture } from './useAnimatedDragGesture'
 import { useToastAnimations } from './useToastAnimations'
 import { useReducedMotion } from './useReducedMotion'
@@ -296,6 +296,17 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
 
     const isInDismissCooldown = React.useCallback(() => dismissCooldownRef.current, [])
 
+    // Store object props in refs so the subscription effect doesn't
+    // re-subscribe on every render when consumers pass inline objects.
+    const burntOptionsRef = React.useRef(burntOptions)
+    const notificationOptionsRef = React.useRef(notificationOptions)
+    React.useEffect(() => {
+      burntOptionsRef.current = burntOptions
+    }, [burntOptions])
+    React.useEffect(() => {
+      notificationOptionsRef.current = notificationOptions
+    }, [notificationOptions])
+
     // subscribe to toast state
     React.useEffect(() => {
       return ToastState.subscribe((toast) => {
@@ -309,32 +320,12 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
         // Native dispatch: intercept before entering state so no in-app toast renders.
         // On failure (e.g. permission denied), falls through to in-app.
         if (native) {
-          const t = toast as ToastT
-          const titleText = typeof t.title === 'function' ? t.title() : t.title
-          const descText =
-            typeof t.description === 'function' ? t.description() : t.description
-          if (typeof titleText === 'string') {
-            const toastType = t.type ?? 'default'
-            const preset =
-              toastType === 'error' ? 'error' : toastType === 'success' ? 'done' : 'none'
-            const haptic =
-              toastType === 'error'
-                ? 'error'
-                : toastType === 'success'
-                  ? 'success'
-                  : toastType === 'warning'
-                    ? 'warning'
-                    : 'none'
-            const result = createNativeToast(titleText, {
-              message: typeof descText === 'string' ? descText : undefined,
-              duration: t.duration ?? duration,
-              burntOptions: { preset, haptic, ...burntOptions },
-              notificationOptions,
-            })
-            if (result !== false) {
-              return // native handled — skip in-app
-            }
-          }
+          const handled = dispatchNativeToast(toast as ToastT, {
+            duration,
+            burntOptions: burntOptionsRef.current,
+            notificationOptions: notificationOptionsRef.current,
+          })
+          if (handled) return
         }
 
         setToasts((toasts) => {
@@ -349,7 +340,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
           return [toast as ToastT, ...toasts]
         })
       })
-    }, [native, duration, burntOptions, notificationOptions])
+    }, [native, duration])
 
     // collapse when 1 toast (but respect dismiss cooldown for smooth animation)
     React.useEffect(() => {

@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { Button, YStack, Text } from 'tamagui'
-import { toast, Toast, useToastItem, type ToastT } from '@tamagui/toast'
+import { toast, Toast, type ToastT } from '@tamagui/toast'
 import { XStack } from 'tamagui'
 
 export function ToastNativeBurntCase() {
@@ -75,7 +75,6 @@ export function ToastNativeBurntCase() {
 }
 
 function ToastContent({ toast: t }: { toast: ToastT }) {
-  const { handleClose } = useToastItem()
   const title = typeof t.title === 'function' ? t.title() : t.title
   const description =
     typeof t.description === 'function' ? t.description() : t.description

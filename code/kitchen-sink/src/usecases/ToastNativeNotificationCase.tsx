@@ -1,13 +1,6 @@
 import { useRef, useState } from 'react'
 import { Button, SizableText, XStack, YStack, Text } from 'tamagui'
-import {
-  toast,
-  Toast,
-  useToastItem,
-  requestNotificationPermission,
-  type ToastPosition,
-  type ToastT,
-} from '@tamagui/toast'
+import { toast, Toast, requestNotificationPermission, type ToastT } from '@tamagui/toast'
 
 export function ToastNativeNotificationCase() {
   const [permission, setPermission] = useState<string>(
@@ -103,7 +96,6 @@ export function ToastNativeNotificationCase() {
 }
 
 function ToastContent({ toast: t }: { toast: ToastT }) {
-  const { handleClose } = useToastItem()
   const title = typeof t.title === 'function' ? t.title() : t.title
   const description =
     typeof t.description === 'function' ? t.description() : t.description
