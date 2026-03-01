@@ -327,24 +327,21 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 refs.current.controls.stop()
               }
 
-              // WAAPI mid-flight transform interruption workaround
+              // WAAPI mid-flight transform interruption fix
               //
-              // motion's useAnimate() uses DOMKeyframesResolver (always async), creating
-              // a one-frame gap between cancelling old WAAPI and starting new one.
-              // motion's updateMotionValue() tries to sample mid-flight via renderless
-              // JSAnimation but doesn't reliably capture CSS transform strings.
-              //
-              // fix: commitStyles() bakes current WAAPI value into inline style, cancel
-              // removes the old animation, committed value becomes first keyframe.
-              // after completion, persist final transform to inline style to prevent
-              // flash-back when WAAPI removes the finished animation layer.
+              // motion's useAnimate() uses DOMKeyframesResolver (always async),
+              // creating a one-frame gap on mid-flight interruption. motion's
+              // internal updateMotionValue() can't reliably sample CSS transform
+              // strings, so we capture the mid-flight value ourselves via WAAPI
+              // commitStyles(), then use flushKeyframeResolvers() (public API)
+              // to force sync resolution — eliminating the async frame gap.
               //
               // tested by:
               //   - TabHoverPositionSmooth.animated.test.tsx (smooth interpolation)
               //   - TooltipPositionJump.animated.test.tsx (rapid trigger switching)
               //   - PopoverHoverable.test.tsx (scoped multi-trigger switching)
 
-              // guard against GroupAnimationWithThen.getAll crashing on undefined animations
+              // guard against GroupAnimationWithThen.getAll crashing on empty animations
               const isRunning =
                 (refs.current.controls as any)?.animations?.length === 0
                   ? false
@@ -359,7 +356,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 doAnimate
               )
 
-              // capture mid-flight transform via WAAPI commitStyles before cancelling
+              // capture mid-flight transform via WAAPI commitStyles, then cancel
+              // and use committed value as explicit first keyframe [from, to]
               if (
                 isRunning &&
                 refs.current.controls &&
@@ -386,7 +384,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               refs.current.controls = startedControls
               refs.current.lastAnimateAt = Date.now()
 
-              // persist final transform to inline style on completion
+              // persist final transform to inline style on completion —
+              // prevents flash-back when WAAPI removes the finished animation
               if (isPopperElement && !isCurrentlyExiting && fixedDiff.transform) {
                 const target =
                   typeof fixedDiff.transform === 'string'
