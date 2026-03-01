@@ -684,43 +684,24 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       setDisableAnimation(disableAnimationProp)
     }, [disableAnimationProp])
 
-    // apply positioning via raw CSS style to avoid tamagui animation driver complexity.
-    // when animatePosition=true and animateOnly is set, the driver would intercept x/y props
-    // and could fail to apply the transform. using a direct style prop bypasses this entirely.
-    const positionStyle = isWeb && !passThrough
-      ? ({
-          position: strategy,
-          top: 0,
-          left: 0,
-          ...(hide
-            ? { opacity: 0 }
-            : {
-                transform: `translate(${effectiveX || 0}px, ${effectiveY || 0}px)`,
-                opacity: 1,
-                // animate position changes via CSS transition (not tamagui animation driver).
-                // only apply if transition is a direct CSS time value (e.g. '500ms', '0.3s').
-                // named animation keys (e.g. 'medium', 'quick') would be invalid CSS here.
-                ...(animatePos && !disableAnimation && typeof rest.transition === 'string' &&
-                  /\d+(ms|s)/.test(rest.transition) && {
-                    transition: `transform ${rest.transition}`,
-                  }),
-              }),
-        } as React.CSSProperties)
-      : undefined
+    const positionProps = hide
+      ? {} // omit x/y when hiding - prevents motion driver from animating from origin
+      : { x: effectiveX || 0, y: effectiveY || 0 }
 
     const frameProps = {
       ref: contentRefs,
-      // non-web: use tamagui x/y props for native positioning
-      ...(isWeb
-        ? undefined
-        : {
-            x: effectiveX || 0,
-            y: effectiveY || 0,
-            top: 0,
-            left: 0,
-            position: strategy,
-            opacity: hide ? 0 : 1,
-          }),
+      ...positionProps,
+      top: 0,
+      left: 0,
+      position: strategy,
+      opacity: hide ? 0 : 1,
+      ...(animatePos && {
+        transition: rest.transition,
+        // animateOnly: [] turns off transitions while keeping styles applied,
+        // letting the element move to its position silently before animations start
+        animateOnly: disableAnimation ? [] : rest.animateOnly,
+        animatePresence: false,
+      }),
     }
 
     // outer frame because we explicitly don't want animation to apply to this
@@ -740,7 +721,6 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
         passThrough={passThrough}
         ref={contentRefs}
         direction={rest.direction}
-        style={positionStyle}
         {...(passThrough ? null : floatingProps)}
         {...(!passThrough && animatePos && {
           'data-popper-animate-position': 'true',

@@ -155,9 +155,14 @@ test.describe('Popover hoverable exit animation', () => {
 })
 
 // Bug: scoped multi-trigger hoverable - mimics WebsiteHeader.tsx pattern
+// uses CSS driver since animatePosition needs a driver that supports classNames
 test.describe('Popover hoverable scoped multi-trigger', () => {
   test.beforeEach(async ({ page }) => {
-    await setupPage(page, { name: 'PopoverHoverableScopedCase', type: 'useCase' })
+    await setupPage(page, {
+      name: 'PopoverHoverableScopedCase',
+      type: 'useCase',
+      searchParams: { animationDriver: 'css' },
+    })
     await page.waitForLoadState('networkidle')
   })
 
