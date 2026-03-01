@@ -1327,7 +1327,8 @@ export const getSplitStyles: StyleSplitter = (
 
         // use $$css for RNW components OR when animated with RNW driver
         // (driver's AnimatedView doesn't forward className)
-        const needsCssStyles = isReactNative || (styleProps.isAnimated && driver?.isReactNative)
+        const needsCssStyles =
+          isReactNative || (styleProps.isAnimated && driver?.isReactNative)
 
         if (styleProps.isAnimated && driver?.inputStyle === 'css') {
           // CSS animation driver uses className directly

@@ -31,5 +31,10 @@
       "Bash(true)"
     ],
     "deny": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "XcodeBuildMCP",
+    "native-devtools"
+  ],
+  "enableAllProjectMcpServers": true
 }
