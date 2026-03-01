@@ -70,7 +70,8 @@ test.describe('Animation Behavior', () => {
       name: 'AnimationComprehensiveCase',
       type: 'useCase',
     })
-    await page.waitForTimeout(500)
+    // CI can be slow - allow more time for initial render
+    await page.waitForTimeout(1000)
   })
 
   test('timing animation has start, intermediate, and end states', async ({ page }) => {

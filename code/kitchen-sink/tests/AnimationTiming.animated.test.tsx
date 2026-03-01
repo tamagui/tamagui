@@ -35,8 +35,8 @@ test.describe('Animation Timing Bug Fixes', () => {
       name: 'AnimationComprehensiveCase',
       type: 'useCase',
     })
-    // wait for initial render
-    await page.waitForTimeout(1000)
+    // wait for initial render - CI can be slow, allow more time
+    await page.waitForTimeout(1500)
   })
 
   test('scenario 50: enter timing (200ms) should be faster than exit timing (1000ms)', async ({

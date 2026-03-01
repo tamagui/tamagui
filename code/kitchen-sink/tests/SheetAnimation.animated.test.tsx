@@ -363,6 +363,10 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
   })
 
   test('transitionConfig prop works', async ({ page }) => {
+    // transitionConfig only works with JS animation drivers, not CSS
+    const driver = (test.info().project?.metadata as any)?.animationDriver
+    test.skip(driver === 'css', 'transitionConfig not supported by CSS animation driver')
+
     // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
     const frame = page.getByTestId('transitionConfig-only-frame').first()
     const trigger = page.getByTestId('transitionConfig-only-trigger')
@@ -377,6 +381,9 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
   })
 
   test('transitionConfig overrides transition prop', async ({ page }) => {
+    // transitionConfig only works with JS animation drivers, not CSS
+    const driver = (test.info().project?.metadata as any)?.animationDriver
+    test.skip(driver === 'css', 'transitionConfig not supported by CSS animation driver')
     // transition="quick" (fast) + transitionConfig={type:'timing',duration:1000} (slow)
     // if override works, the 1000ms config should make it measurably slower than the 100ms baseline
     const baselineDuration = await measureSheetAnimationDuration(
