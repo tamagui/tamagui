@@ -72,6 +72,7 @@ type MotionRefs = {
   sendExitComplete: (() => void) | null | undefined
   animationState: 'enter' | 'exit' | 'default'
   frozenExitTarget: Record<string, unknown> | null
+  exitCompleteScheduled: boolean
   wasEntering: boolean
   styleVersion: number
 }
@@ -131,6 +132,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           sendExitComplete: undefined,
           animationState: 'default',
           frozenExitTarget: null,
+          exitCompleteScheduled: false,
           wasEntering: false,
           styleVersion: 0,
         }
@@ -174,6 +176,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       // freeze exit animation target so direction changes don't reverse mid-exit
       if (justStartedExiting || justStoppedExiting) {
         refs.current.frozenExitTarget = null
+        refs.current.exitCompleteScheduled = false
       }
 
       // track previous exiting state
@@ -324,48 +327,28 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 refs.current.controls.stop()
               }
 
+              // WAAPI mid-flight transform interruption workaround
+              //
+              // motion's useAnimate() uses DOMKeyframesResolver (always async), creating
+              // a one-frame gap between cancelling old WAAPI and starting new one.
+              // motion's updateMotionValue() tries to sample mid-flight via renderless
+              // JSAnimation but doesn't reliably capture CSS transform strings.
+              //
+              // fix: commitStyles() bakes current WAAPI value into inline style, cancel
+              // removes the old animation, committed value becomes first keyframe.
+              // after completion, persist final transform to inline style to prevent
+              // flash-back when WAAPI removes the finished animation layer.
+              //
+              // tested by:
+              //   - TabHoverPositionSmooth.animated.test.tsx (smooth interpolation)
+              //   - TooltipPositionJump.animated.test.tsx (rapid trigger switching)
+              //   - PopoverHoverable.test.tsx (scoped multi-trigger switching)
+
               // guard against GroupAnimationWithThen.getAll crashing on undefined animations
               const isRunning =
                 (refs.current.controls as any)?.animations?.length === 0
                   ? false
                   : refs.current.controls?.state === 'running'
-
-              // WAAPI mid-flight transform interruption workaround
-              //
-              // bug: motion.dev's animate() uses WAAPI under the hood. when you call
-              // animate() while a previous animation is still running, WAAPI starts the
-              // new animation from the element's *base inline style* — NOT its current
-              // animated position. this causes a visible jump back to origin (0,0) before
-              // animating to the new target.
-              //
-              // this is a fundamental WAAPI behavior: the Web Animations API composites
-              // animations on top of the base style. when you cancel one animation and
-              // start another, the base style (which has no transform, or an old one)
-              // becomes the starting point.
-              //
-              // the fix has two parts:
-              //   1. before starting a new animation, call commitStyles() on WAAPI
-              //      animations to bake the current mid-flight values into inline style,
-              //      then cancel() the old animation and use the committed value as the
-              //      first keyframe: [committedTransform, newTarget]
-              //   2. after animation completes, persist the final transform to inline
-              //      style so it doesn't flash back to the pre-animation base style
-              //      when WAAPI removes the finished animation layer
-              //
-              // this should ideally be fixed upstream in motion.dev — their animate()
-              // could handle interruption by reading getComputedStyle() or commitStyles()
-              // before starting a new animation on the same property. filed as a motion
-              // issue but keeping this workaround until it's resolved.
-              //
-              // applies to: elements with data-popper-animate-position (set by Popper.tsx
-              // when animatePosition is enabled) and entering presence children (which
-              // can also get interrupted mid-enter by new style targets).
-              //
-              // tested by:
-              //   - TabHoverPositionSmooth.animated.test.tsx (smooth interpolation, no jumps)
-              //   - TooltipPositionJump.animated.test.tsx (rapid trigger switching)
-              //   - PopoverAnimatePosition.animated.test.tsx (re-open position)
-              //   - PopoverHoverable.test.tsx (scoped multi-trigger switching)
 
               const isPopperElement = node.hasAttribute('data-popper-animate-position')
               const isEnteringPresenceChild = presence && justFinishedEntering
@@ -376,15 +359,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 doAnimate
               )
 
-              // part 1: mid-flight interruption — commit current position, cancel, use as keyframe
+              // capture mid-flight transform via WAAPI commitStyles before cancelling
               if (
                 isRunning &&
                 refs.current.controls &&
                 fixedDiff.transform &&
                 (isPopperElement || isEnteringPresenceChild)
               ) {
-                // reach into WAAPI animations to commitStyles() — this writes the
-                // current animated values into the element's inline style
                 const anims = (refs.current.controls as any).animations
                 if (anims) {
                   for (const anim of anims) {
@@ -394,10 +375,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                     } catch {}
                   }
                 }
-                // cancel the old animation so it doesn't fight with the new one
                 refs.current.controls.cancel()
-                // read back the committed transform and use it as the start keyframe
-                // so motion animates FROM current position TO new target
                 const committedTransform = node.style.transform
                 if (committedTransform) {
                   fixedDiff.transform = [committedTransform, fixedDiff.transform]
@@ -408,10 +386,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               refs.current.controls = startedControls
               refs.current.lastAnimateAt = Date.now()
 
-              // part 2: persist final transform after animation completes
-              // without this, WAAPI removes the animation layer on completion and
-              // the element snaps back to its base inline style (often transform: none)
-              // for one frame before react re-renders with the correct value
+              // persist final transform to inline style on completion
               if (isPopperElement && !isCurrentlyExiting && fixedDiff.transform) {
                 const target =
                   typeof fixedDiff.transform === 'string'
@@ -438,12 +413,19 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           // exit completion: notify AnimatePresence when exit animation finishes
           if (isCurrentlyExiting && currentSendExitComplete) {
             if (startedControls) {
+              // new animation started — attach completion handler
+              refs.current.exitCompleteScheduled = true
               startedControls.finished
                 .then(() => currentSendExitComplete())
                 .catch(() => currentSendExitComplete())
-            } else {
+            } else if (!refs.current.exitCompleteScheduled) {
+              // no animation started AND none previously scheduled (e.g. diff=null
+              // on re-render mid-exit because frozenExitTarget matches lastDoAnimate)
+              // — complete immediately only if we've never started an exit animation
               currentSendExitComplete()
             }
+            // else: exit animation already scheduled via a previous flush,
+            // its .finished promise will call sendExitComplete when done
           }
         }
       }
