@@ -77,6 +77,12 @@ export { ParagraphSpanFontInheritance } from './ParagraphSpanFontInheritance'
 export { PlaceholderTextColor } from './PlaceholderTextColor'
 export { PointerEventsCase } from './PointerEventsCase'
 export { PopoverCase, PopoverAnimatePositionCase } from './PopoverCase'
+export {
+  PopoverHoverableDelayCase,
+  PopoverHoverableRestMsCase,
+  PopoverHoverableExitAnimCase,
+} from './PopoverHoverableCase'
+export { PopoverHoverableScopedCase } from './PopoverHoverableScopedCase'
 export { PopoverContentStyledPlusAnimations } from './PopoverContentStyledPlusAnimations'
 export { PopoverFocusScopeCase } from './PopoverFocusScopeCase'
 export { PopoverScopedCase } from './PopoverScopedCase'
