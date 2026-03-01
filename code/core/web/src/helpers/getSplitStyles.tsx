@@ -1190,10 +1190,8 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    // when noClass is true (inline animation driver) extract styles to atomic
-    // CSS classNames so the driver doesn't manage them. extracts:
-    // - non-animatable props (position, display, etc.)
-    // - props excluded by animateOnly (when animateOnly: [], everything is excluded)
+    // when noClass is true (inline animation driver) extract non-animatable
+    // base styles to atomic CSS classNames so the driver doesn't manage them
     // skip for RNW animation drivers since their AnimatedView doesn't forward classNames
     if (
       !styleProps.noMergeStyle &&
@@ -1205,16 +1203,9 @@ export const getSplitStyles: StyleSplitter = (
       if (!styleState.style['$$css']) {
         const toConvert: Record<string, any> = {}
         let hasProps = false
-        const animateOnly = props.animateOnly as string[] | undefined
         for (const key in styleState.style) {
-          const excludedByAnimateOnly = animateOnly && !animateOnly.includes(key)
-          if (key in nonAnimatableStyleProps || excludedByAnimateOnly) {
-            let val = styleState.style[key]
-            // stringify transform arrays for atomic CSS
-            if (key === 'transform' && Array.isArray(val)) {
-              val = transformsToString(val)
-            }
-            toConvert[key] = val
+          if (key in nonAnimatableStyleProps) {
+            toConvert[key] = styleState.style[key]
             delete styleState.style[key]
             hasProps = true
           }
