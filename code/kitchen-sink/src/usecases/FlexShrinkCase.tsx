@@ -9,11 +9,11 @@ import { YStack, Text } from 'tamagui'
  */
 export function FlexShrinkCase() {
   return (
-    <YStack height={400} backgroundColor="$color3" testID="flex-container">
-      <YStack flex={1} backgroundColor="$blue5" testID="flex-child">
+    <YStack height={400} backgroundColor="$color3" testID="flex-container" data-testid="flex-container">
+      <YStack flex={1} backgroundColor="$blue5" testID="flex-child" data-testid="flex-child">
         <Text>Child 1 (flex=1)</Text>
       </YStack>
-      <YStack flex={1} backgroundColor="$green5" testID="flex-child">
+      <YStack flex={1} backgroundColor="$green5" testID="flex-child" data-testid="flex-child">
         <Text>Child 2 (flex=1)</Text>
       </YStack>
     </YStack>
