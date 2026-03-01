@@ -56,6 +56,7 @@ type PopoverContextValue = {
     breakpointActive?: boolean;
     keepChildrenMounted?: boolean | 'lazy';
     disableDismissable?: boolean;
+    hoverable?: boolean | object;
     anchorTo?: Rect;
     branches: Set<HTMLElement>;
 };
@@ -104,12 +105,13 @@ export type PopoverContextProviderProps = {
     breakpointActive?: boolean;
     keepChildrenMounted?: boolean | 'lazy';
     disableDismissable?: boolean;
+    hoverable?: boolean | object;
 };
 /**
  * Provider that sets up both PopoverContext and PopoverTriggerContext.
  * Use this in Tooltip or other components that need popover trigger behavior.
  */
-export declare const PopoverContextProvider: React.MemoExoticComponent<({ scope, children, open, onOpenChange, onOpenToggle, triggerRef, id, contentId, hasCustomAnchor, onCustomAnchorAdd, onCustomAnchorRemove, anchorTo, adaptScope, breakpointActive, keepChildrenMounted, disableDismissable, }: PopoverContextProviderProps) => import("react/jsx-runtime").JSX.Element>;
+export declare const PopoverContextProvider: React.MemoExoticComponent<({ scope, children, open, onOpenChange, onOpenToggle, triggerRef, id, contentId, hasCustomAnchor, onCustomAnchorAdd, onCustomAnchorRemove, anchorTo, adaptScope, breakpointActive, keepChildrenMounted, disableDismissable, hoverable, }: PopoverContextProviderProps) => import("react/jsx-runtime").JSX.Element>;
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
 export declare const PopoverAnchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
     scope?: PopoverScopes;

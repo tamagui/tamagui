@@ -135,6 +135,7 @@ type PopoverContextValue = {
   breakpointActive?: boolean
   keepChildrenMounted?: boolean | 'lazy'
   disableDismissable?: boolean
+  hoverable?: boolean | object
   anchorTo?: Rect
   // scoped branches Set for DismissableBranch/Dismissable to share
   branches: Set<HTMLElement>
@@ -243,6 +244,7 @@ export type PopoverContextProviderProps = {
   breakpointActive?: boolean
   keepChildrenMounted?: boolean | 'lazy'
   disableDismissable?: boolean
+  hoverable?: boolean | object
 }
 
 /**
@@ -267,6 +269,7 @@ export const PopoverContextProvider = React.memo(
     breakpointActive,
     keepChildrenMounted,
     disableDismissable,
+    hoverable,
   }: PopoverContextProviderProps) => {
     const [branches] = React.useState(() => new Set<HTMLElement>())
     const { setActiveTrigger, registerTrigger, unregisterTrigger } =
@@ -291,6 +294,7 @@ export const PopoverContextProvider = React.memo(
         breakpointActive={breakpointActive}
         keepChildrenMounted={keepChildrenMounted}
         disableDismissable={disableDismissable}
+        hoverable={hoverable}
       >
         <PopoverTriggerContext.Provider
           scope={scope}
@@ -623,7 +627,7 @@ function PopoverPortal({
     <Portal passThrough={passThrough} stackZIndex zIndex={zIndex}>
       {/* forceClassName avoids forced re-mount renders for some reason... see the HeadMenu as you change tints a few times */}
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
-      {!!open && !context.breakpointActive && (
+      {!!open && !context.breakpointActive && !context.hoverable && (
         <YStack
           fullscreen
           onPress={composeEventHandlers(onPress as any, context.onOpenToggle)}
@@ -1040,6 +1044,7 @@ const PopoverInner = React.forwardRef<
         breakpointActive={isAdapted}
         keepChildrenMounted={keepChildrenMounted}
         disableDismissable={disableDismissable}
+        hoverable={hoverable}
       >
         <PopoverSheetController onOpenChange={setOpen} open={open} scope={scope}>
           {children}

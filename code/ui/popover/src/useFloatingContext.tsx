@@ -24,6 +24,18 @@ export const useFloatingContext = ({
 }) => {
   'use no memo'
 
+  // use refs so the factory callback doesn't need these as deps.
+  // without this, open changing (false→true) recreates the factory every time
+  // the popover opens, causing downstream hook confusion.
+  const openRef = React.useRef(open)
+  openRef.current = open
+  const hoverableRef = React.useRef(hoverable)
+  hoverableRef.current = hoverable
+  const disableRef = React.useRef(disable)
+  disableRef.current = disable
+  const disableFocusRef = React.useRef(disableFocus)
+  disableFocusRef.current = disableFocus
+
   return React.useCallback(
     (props: UseFloatingOptions) => {
       // tracks whether pointer is currently over any trigger element.
@@ -39,7 +51,7 @@ export const useFloatingContext = ({
 
       const floating = useFloating({
         ...props,
-        open,
+        open: openRef.current,
         onOpenChange: (val, event) => {
           if (
             !val &&
@@ -58,45 +70,47 @@ export const useFloatingContext = ({
         },
       }) as any
 
+      const currentHoverable = hoverableRef.current
+
       const { getReferenceProps, getFloatingProps } = useInteractions([
-        hoverable
+        currentHoverable
           ? useHover(floating.context, {
-              enabled: !disable && hoverable,
+              enabled: !disableRef.current && currentHoverable,
               handleClose: safePolygon({
                 requireIntent: true,
                 blockPointerEvents: false,
                 buffer: 1,
               }),
-              ...(hoverable && typeof hoverable === 'object' && hoverable),
+              ...(typeof currentHoverable === 'object' && currentHoverable),
             })
           : useHover(floating.context, {
               enabled: false,
             }),
         useFocus(floating.context, {
-          enabled: !disable && !disableFocus,
+          enabled: !disableRef.current && !disableFocusRef.current,
           visibleOnly: true,
         }),
         useRole(floating.context, { role: 'dialog' }),
       ])
 
       // parse hoverable config
-      const delay = hoverable && typeof hoverable === 'object' ? hoverable.delay : 0
-      const restMs = hoverable && typeof hoverable === 'object' ? hoverable.restMs : 0
+      const delay = currentHoverable && typeof currentHoverable === 'object' ? currentHoverable.delay : 0
+      const restMs = currentHoverable && typeof currentHoverable === 'object' ? currentHoverable.restMs : 0
       const openDelay = typeof delay === 'number' ? delay : ((delay as any)?.open ?? 0)
 
       return {
         ...floating,
-        open,
+        open: openRef.current,
         getReferenceProps,
         getFloatingProps,
 
         // multi-trigger open: useHover attaches listeners via useEffect, so they
         // miss the initial mouseenter when PopperAnchor switches reference mid-hover.
         // we handle open ourselves here; useHover + safePolygon handle close.
-        onHoverReference: hoverable
+        onHoverReference: currentHoverable
           ? (_event: any) => {
               onTriggerRef.current = true
-              if (open) return
+              if (openRef.current) return
               if (restMs && !openDelay) {
                 clearTimeout(restTimerRef.current)
                 restTimerRef.current = setTimeout(() => {
@@ -113,7 +127,7 @@ export const useFloatingContext = ({
             }
           : undefined,
 
-        onLeaveReference: hoverable
+        onLeaveReference: currentHoverable
           ? () => {
               onTriggerRef.current = false
               clearTimeout(restTimerRef.current)
@@ -121,6 +135,7 @@ export const useFloatingContext = ({
           : undefined,
       }
     },
-    [open, setOpen, disable, disableFocus, hoverable]
+    // factory is stable - open/hoverable/disable/disableFocus accessed via refs
+    [setOpen]
   )
 }
