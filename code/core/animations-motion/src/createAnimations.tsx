@@ -328,13 +328,13 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               }
 
               // WAAPI mid-flight transform interruption fix
+              // see WAAPI_RESEARCH.md for full investigation
               //
               // motion's useAnimate() uses DOMKeyframesResolver (always async),
               // creating a one-frame gap on mid-flight interruption. motion's
               // internal updateMotionValue() can't reliably sample CSS transform
               // strings, so we capture the mid-flight value ourselves via WAAPI
-              // commitStyles(), then use flushKeyframeResolvers() (public API)
-              // to force sync resolution — eliminating the async frame gap.
+              // commitStyles().
               //
               // tested by:
               //   - TabHoverPositionSmooth.animated.test.tsx (smooth interpolation)
