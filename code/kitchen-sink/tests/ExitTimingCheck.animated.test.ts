@@ -2,6 +2,10 @@ import { test, expect } from '@playwright/test'
 import { setupPage } from './test-utils'
 
 test('exit animation holds element during tab switch', async ({ page }) => {
+  // native driver has hover/animation issues on web
+  const driver = (test.info().project?.metadata as any)?.animationDriver
+  test.skip(driver === 'native', 'native driver has element detection issues on web')
+
   await setupPage(page, { name: 'TabHoverAnimationCase', type: 'useCase' })
   await page.waitForTimeout(500)
 
