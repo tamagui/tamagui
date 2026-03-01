@@ -722,9 +722,10 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
         ref={contentRefs}
         direction={rest.direction}
         {...(passThrough ? null : floatingProps)}
-        {...(!passThrough && animatePos && {
-          'data-popper-animate-position': 'true',
-        })}
+        {...(!passThrough &&
+          animatePos && {
+            'data-popper-animate-position': 'true',
+          })}
       >
         <PopperContentFrame
           key="popper-content-frame"

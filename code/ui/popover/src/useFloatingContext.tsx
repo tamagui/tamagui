@@ -94,8 +94,14 @@ export const useFloatingContext = ({
       ])
 
       // parse hoverable config
-      const delay = currentHoverable && typeof currentHoverable === 'object' ? currentHoverable.delay : 0
-      const restMs = currentHoverable && typeof currentHoverable === 'object' ? currentHoverable.restMs : 0
+      const delay =
+        currentHoverable && typeof currentHoverable === 'object'
+          ? currentHoverable.delay
+          : 0
+      const restMs =
+        currentHoverable && typeof currentHoverable === 'object'
+          ? currentHoverable.restMs
+          : 0
       const openDelay = typeof delay === 'number' ? delay : ((delay as any)?.open ?? 0)
 
       return {

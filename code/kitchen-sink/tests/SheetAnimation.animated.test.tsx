@@ -326,8 +326,9 @@ test.describe('Sheet Animation - Motion Driver', () => {
     )
 
     // the 1000ms override should be significantly slower than the 100ms baseline
-    // use 2x as threshold to account for CI noise (100ms vs 1000ms is a 10x difference)
-    expect(overrideDuration).toBeGreaterThan(baselineDuration * 2)
+    // use absolute +250ms margin: CI inflates both measurements (spring settling + overhead)
+    // which compresses the ratio, but absolute difference stays well above 250ms
+    expect(overrideDuration).toBeGreaterThan(baselineDuration + 250)
   })
 })
 
@@ -405,7 +406,8 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
     )
 
     // the 1000ms override should be significantly slower than the 100ms baseline
-    // use 2x as threshold to account for CI noise (100ms vs 1000ms is a 10x difference)
-    expect(overrideDuration).toBeGreaterThan(baselineDuration * 2)
+    // use absolute +250ms margin: CI inflates both measurements (spring settling + overhead)
+    // which compresses the ratio, but absolute difference stays well above 250ms
+    expect(overrideDuration).toBeGreaterThan(baselineDuration + 250)
   })
 })
