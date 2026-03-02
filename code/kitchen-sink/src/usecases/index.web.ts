@@ -86,7 +86,6 @@ export {
 } from './PopoverHoverableCase'
 export { PopoverHoverableScopedCase } from './PopoverHoverableScopedCase'
 export { PopoverHoverableRapidCase } from './PopoverHoverableRapidCase'
-export { PopoverAnchorToCase } from './PopoverAnchorToCase'
 export { PopoverContentStyledPlusAnimations } from './PopoverContentStyledPlusAnimations'
 export { PopoverFocusScopeCase } from './PopoverFocusScopeCase'
 export { PopoverScopedCase } from './PopoverScopedCase'

@@ -150,6 +150,11 @@ Contains every component for the select:
       default: 'false',
       description: `When true, defers mounting Select items until opened using React's startTransition. Significantly improves initial render performance for pages with many Selects. Should be combined with \`renderValue\` for best results.`,
     },
+    {
+      name: 'zIndex',
+      type: 'number',
+      description: `z-index for the select portal. Use when select dropdowns need to appear above other portaled content like dialogs or fixed headers. Defaults to automatic stacking (~100000).`,
+    },
   ]}
 />
 

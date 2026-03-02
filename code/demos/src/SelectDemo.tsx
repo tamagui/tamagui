@@ -74,7 +74,7 @@ export function SelectDemoContents(
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton
           items="center"
           justify="center"

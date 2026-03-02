@@ -317,9 +317,7 @@ test.describe('Popover hoverable content-to-trigger reposition', () => {
     await page.waitForLoadState('networkidle')
   })
 
-  test('trigger → content → different trigger: popover repositions', async ({
-    page,
-  }) => {
+  test('trigger → content → different trigger: popover repositions', async ({ page }) => {
     const content = page.locator('#rapid-content')
 
     // hover trigger A to open

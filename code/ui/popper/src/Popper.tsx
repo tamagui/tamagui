@@ -666,7 +666,8 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
     // position instead of 0,0 to prevent the animation driver from animating
     // from origin or jumping. only use cached position when floating-ui
     // returns 0,0 (not yet positioned), not when it has actual values.
-    const useLastPosition = !isPositioned && hasBeenPositioned.current && x === 0 && y === 0
+    const useLastPosition =
+      !isPositioned && hasBeenPositioned.current && x === 0 && y === 0
     const effectiveX = useLastPosition ? lastGoodPosition.current.x : x
     const effectiveY = useLastPosition ? lastGoodPosition.current.y : y
 

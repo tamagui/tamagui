@@ -63,6 +63,11 @@ export interface SelectProps<Value extends string = string> {
      * @default false
      */
     lazyMount?: boolean;
+    /**
+     * z-index for the select portal. Use this when select dropdowns need to appear
+     * above other portaled content like dialogs or fixed headers.
+     */
+    zIndex?: number;
 }
 type DisposeFn = () => void;
 export type EmitterSubscriber<Val> = (cb: (val: Val) => void) => DisposeFn;
@@ -142,7 +147,6 @@ export type SelectViewportExtraProps = SelectScopedProps<{
 export type SelectViewportProps = YStackProps & SelectViewportExtraProps;
 export type SelectContentProps = SelectScopedProps<{
     children?: React.ReactNode;
-    zIndex?: number;
 }>;
 export type SelectScrollButtonImplProps = YStackProps & SelectScopedProps<{
     dir: 'up' | 'down';

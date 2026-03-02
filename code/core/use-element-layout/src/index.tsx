@@ -338,7 +338,9 @@ export const getElementLayoutEvent = (
  *
  * see: https://github.com/tamagui/tamagui/pull/2329
  */
-const getPreTransformDimensions = (node: HTMLElement): { width: number; height: number } => {
+const getPreTransformDimensions = (
+  node: HTMLElement
+): { width: number; height: number } => {
   return {
     width: node.offsetWidth,
     height: node.offsetHeight,

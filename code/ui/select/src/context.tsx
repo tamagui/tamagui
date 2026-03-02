@@ -1,6 +1,10 @@
 import { createStyledContext } from '@tamagui/core'
 import { getPortal } from '@tamagui/native'
+import { createContext } from 'react'
 import type { SelectContextValue, SelectItemParentContextValue } from './types'
+
+// zIndex flows from root Select prop to SelectContent portal
+export const SelectZIndexContext = createContext<number | undefined>(undefined)
 
 export const { Provider: SelectProvider, useStyledContext: useSelectContext } =
   createStyledContext<SelectContextValue>(null as any, 'Select')

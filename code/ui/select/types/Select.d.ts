@@ -41,7 +41,7 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
             shouldForwardSpace: boolean;
         };
     };
-    Content: ({ children, scope, zIndex, ...focusScopeProps }: import("./types").SelectContentProps & import("@tamagui/focus-scope").FocusScopeProps) => import("react/jsx-runtime").JSX.Element | null;
+    Content: ({ children, scope, ...focusScopeProps }: import("./types").SelectContentProps & import("@tamagui/focus-scope").FocusScopeProps) => import("react/jsx-runtime").JSX.Element | null;
     Group: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "fullscreen"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
