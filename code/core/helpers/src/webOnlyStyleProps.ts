@@ -2,53 +2,31 @@
 // NOTE: backgroundColor is NOT web-only - it works on React Native too!
 // NOTE: RN 0.76+ added: boxShadow, filter (cross-platform, with some Android 12+ only filters)
 // NOTE: RN 0.77+ added: boxSizing, mixBlendMode, isolation, outline* props
-export const webOnlyStylePropsView = {
-  transition: true,
-  textWrap: true,
-  backdropFilter: true,
-  WebkitBackdropFilter: true,
-  background: true,
-  borderTop: true,
-  borderRight: true,
-  borderBottom: true,
-  borderLeft: true,
+
+// web-only discrete (non-animatable) view props
+export const nonAnimatableWebViewProps = {
   backgroundAttachment: true,
   backgroundBlendMode: true,
   backgroundClip: true,
   backgroundOrigin: true,
-  backgroundPosition: true,
   backgroundRepeat: true,
-  backgroundSize: true,
   borderBottomStyle: true,
-  borderImage: true,
   borderLeftStyle: true,
   borderRightStyle: true,
   borderTopStyle: true,
-  caretColor: true,
-  clipPath: true,
   contain: true,
   containerType: true,
   content: true,
   float: true,
-  mask: true,
-  maskBorder: true,
   maskBorderMode: true,
-  maskBorderOutset: true,
   maskBorderRepeat: true,
-  maskBorderSlice: true,
-  maskBorderSource: true,
-  maskBorderWidth: true,
   maskClip: true,
   maskComposite: true,
-  maskImage: true,
   maskMode: true,
   maskOrigin: true,
-  maskPosition: true,
   maskRepeat: true,
-  maskSize: true,
   maskType: true,
   objectFit: true,
-  objectPosition: true,
   overflowBlock: true,
   overflowInline: true,
   overflowX: true,
@@ -56,19 +34,52 @@ export const webOnlyStylePropsView = {
   // NOTE: pointerEvents is NOT web-only - it's a core React Native View prop (not a style)
   pointerEvents: true,
   scrollbarWidth: true,
-  textEmphasis: true,
+  textWrap: true,
   touchAction: true,
   transformStyle: true,
-  userSelect: true,
   willChange: true,
 }
 
-export const webOnlyStylePropsText = {
+// web-only discrete (non-animatable) text props
+export const nonAnimatableWebTextProps = {
   whiteSpace: true,
   wordWrap: true,
   textOverflow: true,
+  WebkitBoxOrient: true,
+}
+
+export const webOnlyStylePropsView = {
+  ...nonAnimatableWebViewProps,
+  transition: true,
+  backdropFilter: true,
+  WebkitBackdropFilter: true,
+  background: true,
+  borderTop: true,
+  borderRight: true,
+  borderBottom: true,
+  borderLeft: true,
+  backgroundPosition: true,
+  backgroundSize: true,
+  borderImage: true,
+  caretColor: true,
+  clipPath: true,
+  mask: true,
+  maskBorder: true,
+  maskBorderOutset: true,
+  maskBorderSlice: true,
+  maskBorderSource: true,
+  maskBorderWidth: true,
+  maskImage: true,
+  maskPosition: true,
+  maskSize: true,
+  objectPosition: true,
+  textEmphasis: true,
+  userSelect: true,
+}
+
+export const webOnlyStylePropsText = {
+  ...nonAnimatableWebTextProps,
   textDecorationDistance: true,
   // cursor: now cross-platform - in stylePropsView
   WebkitLineClamp: true,
-  WebkitBoxOrient: true,
 }

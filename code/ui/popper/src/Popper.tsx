@@ -593,18 +593,51 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       size,
       isPositioned,
       transformOrigin,
+      update,
     } = context
 
-    // Wrap setFloating in startTransition to avoid React #185 (setState during render)
-    // This can happen during rapid navigation when refs are set during render phase
+    // keep update() accessible inside safeSetFloating without adding it as a dep
+    const updateRef = React.useRef(update)
+    updateRef.current = update
+
+    // ref callback: call refs.setFloating directly (no startTransition) so floating-ui's
+    // state update runs synchronously and position is computed on mount.
+    // note: ref callbacks fire during the commit phase, not render, so calling setState
+    // here is safe - React batches it for the next commit.
+    //
+    // when animatePosition=true, disableAnimation state changes cycle the DOM node
+    // (null then re-mount). we block all null calls here to prevent floating-ui from
+    // losing its reference mid-cycle; genuine unmount is handled by the useEffect below.
+    // for same-node cycling (animateOnly prop change without remount), refs.setFloating
+    // is a no-op in floating-ui (same-node guard), so we call update() to force recompute.
+    const lastNodeRef = React.useRef<any>(null)
     const safeSetFloating = React.useCallback(
       (node: any) => {
-        startTransition(() => {
+        const isNewNode = node !== lastNodeRef.current
+        if (node) {
+          lastNodeRef.current = node
           refs.setFloating(node)
-        })
+          if (!isNewNode) {
+            // same node re-appeared (prop cycling without remount):
+            // refs.setFloating is a no-op, so force position recompute
+            updateRef.current?.()
+          }
+        }
+        // null calls are blocked: cycling nulls are transient, genuine unmount
+        // is handled by the useEffect cleanup below
       },
       [refs.setFloating]
     )
+
+    // clear floating-ui's reference when the component genuinely unmounts
+    // (this runs AFTER the exit animation completes, since AnimatePresence keeps
+    // the component mounted during the exit animation)
+    React.useEffect(() => {
+      return () => {
+        refs.setFloating(null)
+        lastNodeRef.current = null
+      }
+    }, [])
 
     const contentRefs = useComposedRefs<any>(safeSetFloating, forwardedRef)
 
@@ -626,7 +659,6 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       hasBeenPositioned.current = true
       lastGoodPosition.current = { x, y }
     }
-
     // when floating-ui resets (close/reopen cycle), use the last known good
     // position instead of 0,0 to prevent the animation driver from animating
     // from origin or jumping
@@ -646,13 +678,14 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
 
     const [disableAnimation, setDisableAnimation] = React.useState(disableAnimationProp)
 
-    // we set this delayed because we need to pass to the animation driver the value and then update it
+    // set in an effect so we apply the css transition only after the element is positioned,
+    // not on the first render (which would animate from y=0 to the actual position)
     React.useEffect(() => {
       setDisableAnimation(disableAnimationProp)
     }, [disableAnimationProp])
 
     const positionProps = hide
-      ? {} // omit x/y when hiding - prevents motion from animating from origin
+      ? {} // omit x/y when hiding - prevents motion driver from animating from origin
       : { x: effectiveX || 0, y: effectiveY || 0 }
 
     const frameProps = {
@@ -661,16 +694,13 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       top: 0,
       left: 0,
       position: strategy,
-      opacity: 1,
+      opacity: hide ? 0 : 1,
       ...(animatePos && {
         transition: rest.transition,
+        // animateOnly: [] turns off transitions while keeping styles applied,
+        // letting the element move to its position silently before animations start
         animateOnly: disableAnimation ? [] : rest.animateOnly,
-        // apply animation but disable it on initial render to avoid animating from 0 to the first position
         animatePresence: false,
-      }),
-      ...(hide && {
-        opacity: 0,
-        animateOnly: [],
       }),
     }
 
@@ -694,8 +724,6 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
         {...(passThrough ? null : floatingProps)}
         {...(!passThrough &&
           animatePos && {
-            // marker for animation driver to know this is a popper element
-            // that needs special handling for position animation interruption
             'data-popper-animate-position': 'true',
           })}
       >

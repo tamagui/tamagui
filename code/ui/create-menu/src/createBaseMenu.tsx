@@ -1416,21 +1416,55 @@ export function createBaseMenu({
     const isTouchDevice = useIsTouchDevice()
     const { scope = MENU_CONTEXT } = props
     const rootContext = useMenuRootContext(scope)
-    // default placement: bottom on touch, right-start/left-start based on RTL on desktop
+
+    // detect if this sub is nested inside another sub that opened to a side
+    const parentPopperContext = PopperPrimitive.usePopperContext(scope)
+    const parentSide = parentPopperContext.placement?.split('-')[0]
+    const isNestedSubmenu = parentSide === 'left' || parentSide === 'right'
+
+    // nested submenus inherit the parent's direction so they cascade
+    // rather than flipping back on top of the grandparent
     const defaultPlacement = isTouchDevice
       ? 'bottom'
-      : rootContext.dir === 'rtl'
-        ? 'left-start'
-        : 'right-start'
+      : isNestedSubmenu
+        ? (`${parentSide}-start` as any)
+        : rootContext.dir === 'rtl'
+          ? 'left-start'
+          : 'right-start'
     const {
       children,
       open = false,
       onOpenChange,
-      allowFlip = { padding: 10 },
+      allowFlip: allowFlipProp = { padding: 10 },
       stayInFrame = { padding: 10 },
       placement = defaultPlacement,
       ...rest
     } = props
+
+    // for nested submenus, flip to opposite side (never top/bottom which overlap parent)
+    const allowFlip = React.useMemo(() => {
+      if (!isNestedSubmenu || typeof allowFlipProp === 'boolean') return allowFlipProp
+      if ((allowFlipProp as any).fallbackPlacements) return allowFlipProp
+
+      const side = placement.split('-')[0]
+      const align = placement.split('-')[1] || 'start'
+      const otherAlign = align === 'start' ? 'end' : 'start'
+
+      if (side === 'left' || side === 'right') {
+        const oppositeSide = side === 'right' ? 'left' : 'right'
+        return {
+          ...(typeof allowFlipProp === 'object' ? allowFlipProp : {}),
+          fallbackPlacements: [
+            `${side}-${otherAlign}`,
+            `${oppositeSide}-${align}`,
+            `${oppositeSide}-${otherAlign}`,
+          ] as any,
+        }
+      }
+
+      return allowFlipProp
+    }, [isNestedSubmenu, allowFlipProp, placement])
+
     const parentMenuContext = useMenuContext(scope)
     const [trigger, setTrigger] = React.useState<MenuSubTriggerElement | null>(null)
     const [content, setContent] = React.useState<MenuContentElement | null>(null)
@@ -1491,15 +1525,9 @@ export function createBaseMenu({
     const openTimerRef = React.useRef<number | null>(null)
     const { pointerGraceTimerRef, onPointerGraceIntentChange } = contentContext
 
-    // determine effective direction for keyboard navigation based on placement
-    // if submenu opens to the left, arrow keys should be flipped
-    const placementSide = popperContext.placement?.split('-')[0]
-    const effectiveDir: Direction =
-      placementSide === 'left'
-        ? 'rtl'
-        : placementSide === 'right'
-          ? 'ltr'
-          : rootContext.dir
+    // keyboard navigation follows text direction, not placement side
+    // ArrowRight always opens, ArrowLeft always closes (flipped only for RTL)
+    const effectiveDir: Direction = rootContext.dir
 
     const clearOpenTimer = React.useCallback(() => {
       if (openTimerRef.current) window.clearTimeout(openTimerRef.current)
@@ -1758,13 +1786,8 @@ export function createBaseMenu({
             ? 'left'
             : 'right'
 
-      // effective direction for keyboard navigation - if submenu is on left, flip arrow keys
-      const effectiveDir: Direction =
-        placementSide === 'left'
-          ? 'rtl'
-          : placementSide === 'right'
-            ? 'ltr'
-            : rootContext.dir
+      // keyboard navigation follows text direction, not placement side
+      const effectiveDir: Direction = rootContext.dir
 
       return (
         <Collection.Provider scope={scope}>
@@ -1781,12 +1804,13 @@ export function createBaseMenu({
               onOpenAutoFocus={(event) => {
                 // when opening a submenu, focus content for keyboard users only
                 if (rootContext.isUsingKeyboardRef.current) {
-                  // ref.current doesn't reliably point to the focusable DOM element,
-                  // so we query for the submenu content directly
-                  const content = document.querySelector(
-                    '[data-tamagui-menu-content][data-side]'
+                  // scope query to this submenu's subtree so nested submenus
+                  // don't accidentally focus a sibling/parent submenu content
+                  const root = ref.current as unknown as HTMLElement
+                  const content = root?.querySelector?.(
+                    '[data-tamagui-menu-content]'
                   ) as HTMLElement | null
-                  content?.focus()
+                  ;(content || root)?.focus()
                 }
                 event.preventDefault()
               }}

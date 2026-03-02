@@ -17,38 +17,35 @@ export function SheetAnimationCase() {
       {/* Test 3: animation prop only - "slow" */}
       <SheetTest testId="animation-slow" transition="slow" label='transition="slow"' />
 
-      {/* Test 4: transitionConfig prop only */}
+      {/* Test 4: transitionConfig prop only - fast timing */}
       <SheetTest
         testId="transitionConfig-only"
         transitionConfig={{
-          type: 'spring',
-          damping: 30,
-          stiffness: 400,
+          type: 'timing',
+          duration: 100,
         }}
-        label="transitionConfig only (fast spring)"
+        label="transitionConfig only (100ms)"
       />
 
-      {/* Test 5: transitionConfig prop only - slow */}
+      {/* Test 5: transitionConfig prop only - slow timing */}
       <SheetTest
         testId="transitionConfig-slow"
         transitionConfig={{
-          type: 'spring',
-          damping: 20,
-          stiffness: 30,
+          type: 'timing',
+          duration: 1000,
         }}
-        label="transitionConfig only (slow spring)"
+        label="transitionConfig only (1000ms)"
       />
 
-      {/* Test 6: animation + transitionConfig together */}
+      {/* Test 6: transition + transitionConfig override (config should win) */}
       <SheetTest
         testId="animation-plus-config"
-        transition="lazy"
+        transition="quick"
         transitionConfig={{
-          type: 'spring',
-          damping: 30,
-          stiffness: 500,
+          type: 'timing',
+          duration: 1000,
         }}
-        label='transition="lazy" + transitionConfig (override to fast)'
+        label='transition="quick" + transitionConfig (override to 1000ms)'
       />
     </YStack>
   )

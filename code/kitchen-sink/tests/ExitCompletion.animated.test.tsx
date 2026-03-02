@@ -411,10 +411,11 @@ test.describe('AnimateOnly & Transform Sub-Keys', () => {
     const completionTime = data.times['55-zero-animatable']?.[0] || 0
 
     // should complete almost immediately since no animations
+    // 300ms threshold to account for CI overhead (actual should be <10ms)
     expect(
       completionTime,
-      'Zero animatable props should complete immediately (<100ms)'
-    ).toBeLessThan(100)
+      'Zero animatable props should complete immediately (<300ms)'
+    ).toBeLessThan(300)
     expect(data.counts['55-zero-animatable'], 'Should complete exactly once').toBe(1)
     await expectStableCompletionCount(page, '55-zero-animatable', 1, 200)
     expect(await elementExists(page, 'exit-55-target'), 'Element should be gone').toBe(

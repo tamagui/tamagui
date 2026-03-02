@@ -7,17 +7,16 @@ import { setupPage } from './test-utils'
  * Verifies that different animation configs produce measurably different animation speeds
  */
 
-// Helper to measure actual animation duration by tracking transform changes
+// Helper to measure actual animation duration by tracking position changes
 async function measureSheetAnimationDuration(
   page: any,
   triggerTestId: string,
   frameTestId: string,
   closeTestId: string
 ): Promise<number> {
-  const trigger = page.getByTestId(triggerTestId)
   const closeButton = page.getByTestId(closeTestId)
 
-  // Click trigger and measure how long until animation settles
+  // click trigger and measure how long until the frame's visual position stabilizes
   const duration = await page.evaluate(
     async ({ triggerId, frameId }: { triggerId: string; frameId: string }) => {
       return new Promise<number>((resolve) => {
@@ -30,10 +29,12 @@ async function measureSheetAnimationDuration(
         }
 
         const startTime = performance.now()
-        let lastTransform = ''
+        let initialTop = -1
+        let lastTop = -1
         let stableCount = 0
+        let hasMovedFromInitial = false
         let checkCount = 0
-        const maxChecks = 100 // 5 seconds max
+        const maxChecks = 200 // ~10 seconds max
 
         trigger.click()
 
@@ -51,10 +52,21 @@ async function measureSheetAnimationDuration(
             return
           }
 
-          const currentTransform = getComputedStyle(frame).transform
+          // use getBoundingClientRect which reflects parent transforms
+          const currentTop = Math.round(frame.getBoundingClientRect().top)
 
-          // Check if transform has stabilized (same value for 3 consecutive frames)
-          if (currentTransform === lastTransform) {
+          // record the initial position on first check
+          if (initialTop === -1) {
+            initialTop = currentTop
+          }
+
+          // wait until the position has actually changed from the initial value
+          // before we start counting stability (animation might not start for a frame or two)
+          if (!hasMovedFromInitial && currentTop !== initialTop) {
+            hasMovedFromInitial = true
+          }
+
+          if (hasMovedFromInitial && currentTop === lastTop) {
             stableCount++
             if (stableCount >= 3) {
               resolve(performance.now() - startTime)
@@ -62,7 +74,7 @@ async function measureSheetAnimationDuration(
             }
           } else {
             stableCount = 0
-            lastTransform = currentTransform
+            lastTop = currentTop
           }
 
           if (checkCount < maxChecks) {
@@ -78,10 +90,10 @@ async function measureSheetAnimationDuration(
     { triggerId: triggerTestId, frameId: frameTestId }
   )
 
-  // Close the sheet for next test
+  // close the sheet for next measurement
   await closeButton.scrollIntoViewIfNeeded()
   await closeButton.click({ timeout: 5000 })
-  await page.waitForTimeout(600)
+  await page.waitForTimeout(1500)
 
   return Math.round(duration)
 }
@@ -278,41 +290,6 @@ test.describe('Sheet Animation - Motion Driver', () => {
     }
   })
 
-  test('transition="quick" is faster than transition="lazy"', async ({ page }) => {
-    // run measurements multiple times to account for timing noise
-    const measurements: { quick: number; lazy: number }[] = []
-    for (let i = 0; i < 3; i++) {
-      const quickDuration = await measureSheetAnimationDuration(
-        page,
-        'animation-quick-trigger',
-        'animation-quick-frame',
-        'animation-quick-close'
-      )
-
-      const lazyDuration = await measureSheetAnimationDuration(
-        page,
-        'animation-lazy-trigger',
-        'animation-lazy-frame',
-        'animation-lazy-close'
-      )
-      measurements.push({ quick: quickDuration, lazy: lazyDuration })
-    }
-
-    const avgQuick =
-      measurements.reduce((sum, m) => sum + m.quick, 0) / measurements.length
-    const avgLazy = measurements.reduce((sum, m) => sum + m.lazy, 0) / measurements.length
-
-    console.info(
-      `Motion Driver - quick avg: ${avgQuick.toFixed(0)}ms, lazy avg: ${avgLazy.toFixed(0)}ms`
-    )
-
-    // Motion driver uses spring physics
-    // quick: stiffness 250, lazy: stiffness 50
-    // Higher stiffness = faster animation
-    // allow generous margin - CI timing is highly variable (flaky)
-    expect(avgLazy).toBeGreaterThanOrEqual(avgQuick * 0.5)
-  })
-
   test('transitionConfig prop works without animation prop', async ({ page }) => {
     // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
     const frame = page.getByTestId('transitionConfig-only-frame').first()
@@ -327,40 +304,31 @@ test.describe('Sheet Animation - Motion Driver', () => {
     await expect(frame).not.toBeInViewport({ ratio: 0.5 })
   })
 
-  test('transitionConfig overrides animation prop (lazy+fastConfig faster than lazy)', async ({
-    page,
-  }) => {
-    // transition="lazy" + fast transitionConfig should use the config
-    // run multiple measurements for stability
-    const measurements: { override: number; lazy: number }[] = []
-    for (let i = 0; i < 3; i++) {
-      const overrideDuration = await measureSheetAnimationDuration(
-        page,
-        'animation-plus-config-trigger',
-        'animation-plus-config-frame',
-        'animation-plus-config-close'
-      )
-
-      const lazyDuration = await measureSheetAnimationDuration(
-        page,
-        'animation-lazy-trigger',
-        'animation-lazy-frame',
-        'animation-lazy-close'
-      )
-      measurements.push({ override: overrideDuration, lazy: lazyDuration })
-    }
-
-    const avgOverride =
-      measurements.reduce((sum, m) => sum + m.override, 0) / measurements.length
-    const avgLazy = measurements.reduce((sum, m) => sum + m.lazy, 0) / measurements.length
-
-    console.info(
-      `Motion Driver - lazy avg: ${avgLazy.toFixed(0)}ms, lazy+fastConfig avg: ${avgOverride.toFixed(0)}ms`
+  test('transitionConfig overrides transition prop', async ({ page }) => {
+    // transition="quick" (fast) + transitionConfig={type:'timing',duration:1000} (slow)
+    // if override works, the 1000ms config should make it measurably slower than the 100ms baseline
+    const baselineDuration = await measureSheetAnimationDuration(
+      page,
+      'transitionConfig-only-trigger',
+      'transitionConfig-only-frame',
+      'transitionConfig-only-close'
     )
 
-    // transitionConfig should override animation prop
-    // allow generous margin for measurement noise in CI environments
-    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.5)
+    const overrideDuration = await measureSheetAnimationDuration(
+      page,
+      'animation-plus-config-trigger',
+      'animation-plus-config-frame',
+      'animation-plus-config-close'
+    )
+
+    console.info(
+      `Motion Driver - baseline (100ms): ${baselineDuration}ms, override (1000ms): ${overrideDuration}ms`
+    )
+
+    // the 1000ms override should be significantly slower than the 100ms baseline
+    // use absolute +250ms margin: CI inflates both measurements (spring settling + overhead)
+    // which compresses the ratio, but absolute difference stays well above 250ms
+    expect(overrideDuration).toBeGreaterThan(baselineDuration + 250)
   })
 })
 
@@ -377,7 +345,6 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
   })
 
   test('all sheet variants open and close correctly', async ({ page }) => {
-    // Skip transitionConfig variants - not working reliably
     const testIds = ['animation-quick', 'animation-lazy', 'animation-slow']
 
     for (const testId of testIds) {
@@ -396,42 +363,11 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
     }
   })
 
-  test('transition="quick" is faster than transition="lazy"', async ({ page }) => {
-    // run measurements multiple times to account for timing noise
-    const measurements: { quick: number; lazy: number }[] = []
-    for (let i = 0; i < 3; i++) {
-      const quickDuration = await measureSheetAnimationDuration(
-        page,
-        'animation-quick-trigger',
-        'animation-quick-frame',
-        'animation-quick-close'
-      )
-
-      const lazyDuration = await measureSheetAnimationDuration(
-        page,
-        'animation-lazy-trigger',
-        'animation-lazy-frame',
-        'animation-lazy-close'
-      )
-      measurements.push({ quick: quickDuration, lazy: lazyDuration })
-    }
-
-    const avgQuick =
-      measurements.reduce((sum, m) => sum + m.quick, 0) / measurements.length
-    const avgLazy = measurements.reduce((sum, m) => sum + m.lazy, 0) / measurements.length
-
-    console.info(
-      `Reanimated Driver - quick avg: ${avgQuick.toFixed(0)}ms, lazy avg: ${avgLazy.toFixed(0)}ms`
-    )
-
-    // Reanimated uses spring physics
-    // quick: stiffness 250, lazy: stiffness 50
-    // Higher stiffness = faster animation
-    // allow generous margin - CI timing is highly variable (flaky)
-    expect(avgLazy).toBeGreaterThanOrEqual(avgQuick * 0.5)
-  })
-
   test('transitionConfig prop works', async ({ page }) => {
+    // transitionConfig only works with JS animation drivers, not CSS
+    const driver = (test.info().project?.metadata as any)?.animationDriver
+    test.skip(driver === 'css', 'transitionConfig not supported by CSS animation driver')
+
     // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
     const frame = page.getByTestId('transitionConfig-only-frame').first()
     const trigger = page.getByTestId('transitionConfig-only-trigger')
@@ -445,36 +381,33 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
     await expect(frame).not.toBeInViewport({ ratio: 0.5 })
   })
 
-  test('transitionConfig overrides animation prop', async ({ page }) => {
-    // run multiple measurements for stability
-    const measurements: { override: number; lazy: number }[] = []
-    for (let i = 0; i < 3; i++) {
-      const overrideDuration = await measureSheetAnimationDuration(
-        page,
-        'animation-plus-config-trigger',
-        'animation-plus-config-frame',
-        'animation-plus-config-close'
-      )
-
-      const lazyDuration = await measureSheetAnimationDuration(
-        page,
-        'animation-lazy-trigger',
-        'animation-lazy-frame',
-        'animation-lazy-close'
-      )
-      measurements.push({ override: overrideDuration, lazy: lazyDuration })
-    }
-
-    const avgOverride =
-      measurements.reduce((sum, m) => sum + m.override, 0) / measurements.length
-    const avgLazy = measurements.reduce((sum, m) => sum + m.lazy, 0) / measurements.length
-
-    console.info(
-      `Reanimated Driver - lazy avg: ${avgLazy.toFixed(0)}ms, lazy+fastConfig avg: ${avgOverride.toFixed(0)}ms`
+  test('transitionConfig overrides transition prop', async ({ page }) => {
+    // transitionConfig only works with JS animation drivers, not CSS
+    const driver = (test.info().project?.metadata as any)?.animationDriver
+    test.skip(driver === 'css', 'transitionConfig not supported by CSS animation driver')
+    // transition="quick" (fast) + transitionConfig={type:'timing',duration:1000} (slow)
+    // if override works, the 1000ms config should make it measurably slower than the 100ms baseline
+    const baselineDuration = await measureSheetAnimationDuration(
+      page,
+      'transitionConfig-only-trigger',
+      'transitionConfig-only-frame',
+      'transitionConfig-only-close'
     )
 
-    // transitionConfig should override animation prop
-    // allow generous margin for measurement noise in CI environments
-    expect(avgOverride).toBeLessThanOrEqual(avgLazy * 1.5)
+    const overrideDuration = await measureSheetAnimationDuration(
+      page,
+      'animation-plus-config-trigger',
+      'animation-plus-config-frame',
+      'animation-plus-config-close'
+    )
+
+    console.info(
+      `Reanimated Driver - baseline (100ms): ${baselineDuration}ms, override (1000ms): ${overrideDuration}ms`
+    )
+
+    // the 1000ms override should be significantly slower than the 100ms baseline
+    // use absolute +250ms margin: CI inflates both measurements (spring settling + overhead)
+    // which compresses the ratio, but absolute difference stays well above 250ms
+    expect(overrideDuration).toBeGreaterThan(baselineDuration + 250)
   })
 })

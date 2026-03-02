@@ -28,7 +28,10 @@ export default function TakeoutBox3DCanvas(props: any) {
       shadows
     >
       <Suspense fallback={null}>
-        <Stage intensity={1.5} environment={null} shadows={false} adjustCamera={false}>
+        <ambientLight intensity={3} />
+        <directionalLight position={[5, 5, 5]} intensity={4} />
+        <directionalLight position={[-5, 3, -5]} intensity={2} />
+        <Stage intensity={4} environment={null} shadows={false} adjustCamera={false}>
           <TakeoutBox3D {...props} />
         </Stage>
       </Suspense>
