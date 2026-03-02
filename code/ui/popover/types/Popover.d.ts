@@ -38,6 +38,17 @@ export type PopoverProps = ScopedPopoverProps<PopperProps> & {
      * Useful for popovers that stay mounted but are visually hidden.
      */
     disableDismissable?: boolean;
+    /**
+     * z-index for the popover portal. Use this when popovers need to appear
+     * above other portaled content like dialogs or fixed headers.
+     *
+     * By default, Tamagui automatically stacks overlays - later-opened content
+     * appears above earlier content, and nested content appears above its parent.
+     * Only set this if you need to override the automatic stacking behavior.
+     *
+     * @see https://tamagui.dev/ui/z-index
+     */
+    zIndex?: number;
 };
 export type PopoverScopes = string;
 type PopoverContextValue = {
@@ -72,6 +83,7 @@ type PopoverTriggerContextValue = {
     unregisterTrigger(id: string): void;
 };
 export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
+export declare const PopoverZIndexContext: React.Context<number | undefined>;
 export declare const PopoverTriggerContext: import("@tamagui/core").StyledContext<PopoverTriggerContextValue>;
 export declare const usePopoverContext: (scope?: string) => PopoverContextValue;
 export declare const usePopoverTriggerContext: (scope?: string) => PopoverTriggerContextValue;
@@ -231,6 +243,17 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
      * Useful for popovers that stay mounted but are visually hidden.
      */
     disableDismissable?: boolean;
+    /**
+     * z-index for the popover portal. Use this when popovers need to appear
+     * above other portaled content like dialogs or fixed headers.
+     *
+     * By default, Tamagui automatically stacks overlays - later-opened content
+     * appears above earlier content, and nested content appears above its parent.
+     * Only set this if you need to override the automatic stacking behavior.
+     *
+     * @see https://tamagui.dev/ui/z-index
+     */
+    zIndex?: number;
 } & React.RefAttributes<Popover>> & {
     Anchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
         scope?: PopoverScopes;

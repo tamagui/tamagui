@@ -114,6 +114,18 @@ export type PopoverProps = ScopedPopoverProps<PopperProps> & {
    * Useful for popovers that stay mounted but are visually hidden.
    */
   disableDismissable?: boolean
+
+  /**
+   * z-index for the popover portal. Use this when popovers need to appear
+   * above other portaled content like dialogs or fixed headers.
+   *
+   * By default, Tamagui automatically stacks overlays - later-opened content
+   * appears above earlier content, and nested content appears above its parent.
+   * Only set this if you need to override the automatic stacking behavior.
+   *
+   * @see https://tamagui.dev/ui/z-index
+   */
+  zIndex?: number
 }
 
 // let users override for type safety
@@ -159,6 +171,9 @@ export const PopoverContext = createStyledContext<PopoverContextValue>(
   {} as PopoverContextValue,
   'Popover__'
 )
+
+// zIndex flows from root Popover prop to PopoverContent portal
+export const PopoverZIndexContext = React.createContext<number | undefined>(undefined)
 
 export const PopoverTriggerContext = createStyledContext<PopoverTriggerContextValue>(
   {} as PopoverTriggerContextValue,
@@ -456,12 +471,15 @@ export const PopoverContent = PopperContentFrame.styleable<PopoverContentProps>(
     const {
       trapFocus,
       enableRemoveScroll = false,
-      zIndex,
+      zIndex: zIndexProp,
       scope,
       ...contentImplProps
     } = props
 
     const context = usePopoverContext(scope)
+    const zIndexFromContext = React.useContext(PopoverZIndexContext)
+    // prop on Content takes precedence for backwards compatibility, then context from root
+    const zIndex = zIndexProp ?? zIndexFromContext
     const open = usePopoverOpen(scope)
     const contentRef = React.useRef<any>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
@@ -953,6 +971,7 @@ const PopoverInner = React.forwardRef<
     hoverable,
     disableFocus,
     disableDismissable,
+    zIndex,
     id,
     adaptScope,
     ...restProps
@@ -1053,7 +1072,7 @@ const PopoverInner = React.forwardRef<
     </Popper>
   )
 
-  return (
+  let result = (
     <>
       {isWeb ? (
         <FloatingOverrideContext.Provider value={floatingContext}>
@@ -1064,6 +1083,16 @@ const PopoverInner = React.forwardRef<
       )}
     </>
   )
+
+  if (zIndex !== undefined) {
+    return (
+      <PopoverZIndexContext.Provider value={zIndex}>
+        {result}
+      </PopoverZIndexContext.Provider>
+    )
+  }
+
+  return result
 })
 
 /* -----------------------------------------------------------------------------------------------*/
