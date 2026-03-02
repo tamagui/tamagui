@@ -49,6 +49,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Set Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.2.app
@@ -188,6 +190,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Calculate Pre-Fingerprint Hash
         id: calculate-pre-fingerprint
@@ -450,6 +454,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Enable KVM
         run: |
