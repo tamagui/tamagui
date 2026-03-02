@@ -49,12 +49,12 @@ const SelectComponent = (
     renderValue,
   } as SelectProps
   return (
-    <TamaguiSelect {...selectProps}>
+    <TamaguiSelect {...selectProps} zIndex={1_000_000}>
       <TamaguiSelect.Trigger iconAfter={ChevronDown} {...selectTriggerProps}>
         <TamaguiSelect.Value placeholder={placeholder} />
       </TamaguiSelect.Trigger>
 
-      <TamaguiSelect.Content zIndex={1_000_000}>
+      <TamaguiSelect.Content>
         <TamaguiSelect.ScrollUpButton
           items="center"
           justify="center"

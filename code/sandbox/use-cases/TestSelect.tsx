@@ -41,6 +41,7 @@ export function SelectDemoContents(
       value={val}
       onValueChange={setVal}
       disablePreventBodyScroll
+      zIndex={200000}
       {...props}
       // renderValue enables SSR support by providing the label synchronously
       renderValue={getItemLabel}
@@ -74,7 +75,7 @@ export function SelectDemoContents(
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton
           items="center"
           justify="center"

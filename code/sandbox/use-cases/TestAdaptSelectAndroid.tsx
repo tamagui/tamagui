@@ -16,6 +16,7 @@ export default function TestSelectAdapt(props: SelectProps) {
       onValueChange={setVal}
       disablePreventBodyScroll
       renderValue={getItemLabel}
+      zIndex={200000}
       {...props}
     >
       <Select.Trigger width={220} iconAfter={ChevronDown}>
@@ -47,7 +48,7 @@ export default function TestSelectAdapt(props: SelectProps) {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton
           items="center"
           justify="center"

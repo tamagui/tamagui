@@ -28,6 +28,7 @@ function SelectComponent({ id }: { id: string }) {
       onValueChange={setVal}
       disablePreventBodyScroll
       renderValue={getItemLabel}
+      zIndex={200000}
     >
       <Select.Trigger
         testID={`${id}-trigger`}
@@ -54,7 +55,7 @@ function SelectComponent({ id }: { id: string }) {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.Viewport minW={200}>
           <Select.Group>
             <Select.Label>Fruits</Select.Label>

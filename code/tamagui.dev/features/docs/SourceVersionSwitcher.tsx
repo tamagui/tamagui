@@ -38,7 +38,7 @@ export function SourceVersionSwitcher({
   }
 
   return (
-    <Select value={currentVersion} onValueChange={switchVersion} disablePreventBodyScroll>
+    <Select value={currentVersion} onValueChange={switchVersion} disablePreventBodyScroll zIndex={200000}>
       <Select.Trigger size="$2" iconAfter={ChevronDown} borderRadius={8}>
         <Select.Value placeholder={versions[0]} fontFamily="$mono" />
       </Select.Trigger>
@@ -59,7 +59,7 @@ export function SourceVersionSwitcher({
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton
           items="center"
           justify="center"

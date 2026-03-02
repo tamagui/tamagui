@@ -48,6 +48,7 @@ export function SelectAndroidOnPress() {
         onValueChange={handleValueChange}
         disablePreventBodyScroll
         renderValue={getItemLabel}
+        zIndex={200000}
       >
         <Select.Trigger
           testID="select-android-trigger"
@@ -73,7 +74,7 @@ export function SelectAndroidOnPress() {
           </Sheet>
         </Adapt>
 
-        <Select.Content zIndex={200000}>
+        <Select.Content>
           <Select.Viewport minWidth={200}>
             <Select.Group>
               <Select.Label>Fruits</Select.Label>

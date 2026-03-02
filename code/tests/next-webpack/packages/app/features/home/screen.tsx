@@ -47,7 +47,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
   const [val, setVal] = React.useState('apple')
 
   return (
-    <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
+    <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000} {...props}>
       {props?.trigger || (
         <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Something" />
@@ -70,7 +70,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton
           items="center"
           justify="center"

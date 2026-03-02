@@ -200,7 +200,7 @@ export function SelectDemoItem(props: SelectProps & {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
           <__ReactNativeView style={_sheet["3"]}>
             <ChevronUp size={20} />
@@ -532,7 +532,7 @@ export function SelectDemoItem(props: SelectProps & {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
           <div className={_cn4}>
             <ChevronUp size={20} />
@@ -901,7 +901,7 @@ export function SelectDemoItem(props: SelectProps & {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
           <__ReactNativeView style={_sheet["3"]}>
             <ChevronUp size={20} />
@@ -1166,7 +1166,7 @@ export function SelectDemoItem(props: SelectProps & {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
           <div className={_cn4}>
             <ChevronUp size={20} />
