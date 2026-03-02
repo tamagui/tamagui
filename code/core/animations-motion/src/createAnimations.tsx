@@ -757,6 +757,7 @@ export const disableAnimationProps: Set<string> = new Set<string>([
   'contain',
   'containerType',
   'display',
+  'flexBasis',
   'flexDirection',
   'fontFamily',
   'justifyContent',
@@ -795,10 +796,16 @@ function createMotionView(defaultTag: string) {
     const styles = Array.isArray(style) ? style : [style]
 
     const [animatedStyle, nonAnimatedStyles] = (() => {
-      return [
-        styles.find((x) => x.getStyle) as MotionAnimatedNumberStyle | undefined,
-        styles.filter((x) => !x.getStyle),
-      ] as const
+      let animatedStyle: MotionAnimatedNumberStyle | undefined
+      const nonAnimatedStyles: typeof styles = []
+      for (const style of styles) {
+        if (style.getStyle) {
+          animatedStyle = style as MotionAnimatedNumberStyle
+        } else {
+          nonAnimatedStyles.push(style)
+        }
+      }
+      return [animatedStyle, nonAnimatedStyles] as const
     })()
 
     function getProps(props: any) {
