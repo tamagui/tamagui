@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/card",
-  "version": "2.0.0-rc.22",
+  "version": "2.0.0-rc.22-1772434229132",
   "source": "src/index.ts",
   "files": [
     "src",
