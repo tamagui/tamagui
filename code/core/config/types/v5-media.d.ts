@@ -1,4 +1,6 @@
 export declare const breakpoints: {
+    100: number;
+    200: number;
     xxxs: number;
     xxs: number;
     xs: number;
@@ -39,6 +41,12 @@ export declare const media: {
     readonly 'max-xxxs': {
         readonly maxWidth: number;
     };
+    readonly 'max-200': {
+        readonly maxWidth: number;
+    };
+    readonly 'max-100': {
+        readonly maxWidth: number;
+    };
     readonly xxxs: {
         readonly minWidth: number;
     };
@@ -70,6 +78,21 @@ export declare const media: {
         readonly maxHeight: number;
     };
     readonly 'max-height-sm': {
+        readonly maxHeight: number;
+    };
+    readonly 'max-height-xs': {
+        readonly maxHeight: number;
+    };
+    readonly 'max-height-xxs': {
+        readonly maxHeight: number;
+    };
+    readonly 'max-height-xxxs': {
+        readonly maxHeight: number;
+    };
+    readonly 'max-height-200': {
+        readonly maxHeight: number;
+    };
+    readonly 'max-height-100': {
         readonly maxHeight: number;
     };
     readonly 'height-sm': {
