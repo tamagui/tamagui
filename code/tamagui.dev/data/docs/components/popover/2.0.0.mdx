@@ -24,8 +24,7 @@ demoName: Popover
 />
 
 Popovers are a great way to show content that's only visible when trigger is
-pressed, floating above the current content. Be sure to open the code example
-above for a copy-paste implementation.
+pressed, floating above the current content. They [automatically stack](/ui/z-index) above other content. Be sure to open the code example above for a copy-paste implementation.
 
 <Notice>
   Note: Popovers are not a recommended pattern for mobile apps. Instead you can use Adapt
@@ -210,6 +209,12 @@ Contains every component for the popover.
       type: 'SizeProps | boolean',
       required: false,
       description: `Will set maxWidth and maxHeight of Content to fit inside outer window when it won't fit, see floating-ui size().`,
+    },
+    {
+      name: 'zIndex',
+      type: 'number',
+      required: false,
+      description: `Override the automatic z-index stacking. By default, Tamagui automatically stacks overlays so later-opened content appears above earlier content. Only set this if you need to override the automatic behavior.`,
     },
   ]}
 />

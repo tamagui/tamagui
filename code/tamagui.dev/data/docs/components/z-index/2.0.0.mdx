@@ -1,0 +1,119 @@
+---
+title: Z-Index & Stacking
+description: How Tamagui automatically stacks overlays and floating content
+name: z-index
+---
+
+Tamagui includes an automatic stacking system that ensures overlays like dialogs, popovers, sheets, and tooltips layer correctly without manual z-index management.
+
+## How It Works
+
+When you open overlay components, Tamagui automatically assigns z-index values so that:
+
+- **Later-opened content appears above earlier content** - Open two dialogs? The second one stacks above the first.
+- **Nested content appears above its parent** - A tooltip inside a dialog automatically renders above the dialog.
+- **Closing restores order** - When content closes, z-index values are reclaimed.
+
+This means you typically don't need to think about z-index at all.
+
+## When to Set zIndex
+
+Only set `zIndex` when you need to override the automatic stacking. Common cases:
+
+- **Fixed headers/footers** - If you have a sticky header at `z-index: 100`, overlays need to appear above it (they do by default).
+- **Third-party libraries** - If integrating with libraries that use high z-index values.
+- **Custom stacking requirements** - When you need specific layering that differs from open-order.
+
+```tsx
+// Only if you need to override automatic stacking
+<Dialog zIndex={200000}>
+  ...
+</Dialog>
+```
+
+## Component Defaults
+
+All overlay components use the automatic stacking system. Here's where to set `zIndex` if needed:
+
+| Component | Where to set zIndex |
+|-----------|---------------------|
+| [Dialog](/ui/dialog) | `<Dialog zIndex={...}>` |
+| [AlertDialog](/ui/alert-dialog) | `<AlertDialog zIndex={...}>` |
+| [Sheet](/ui/sheet) | `<Sheet zIndex={...}>` |
+| [Select](/ui/select) | `<Select zIndex={...}>` |
+| [Popover](/ui/popover) | `<Popover zIndex={...}>` |
+| [Tooltip](/ui/tooltip) | `<Tooltip zIndex={...}>` |
+| [Menu](/ui/menu) | `<Menu.Portal zIndex={...}>` |
+| [ContextMenu](/ui/context-menu) | `<ContextMenu.Portal zIndex={...}>` |
+| [Toast](/ui/toast) | Via `ToastViewport` |
+
+## Stacking Hierarchy
+
+By default, components stack in this order (lowest to highest):
+
+1. **Popover, Tooltip, Menu** - Pure auto-stacking, starts around z-index 5001
+2. **Dialog, AlertDialog, Select, Sheet** - Use a higher base (100000+) to ensure they appear above most UI
+
+Within each category, **mount order determines stacking** - open a popover, then another, the second is on top.
+
+## Nested Stacking
+
+Nested floating elements automatically stack above their parent:
+
+```tsx
+<Dialog>
+  <Dialog.Content>
+    {/* This tooltip will appear above the dialog */}
+    <Tooltip>
+      <Tooltip.Trigger>
+        <Button>Hover me</Button>
+      </Tooltip.Trigger>
+      <Tooltip.Content>
+        I appear above the dialog!
+      </Tooltip.Content>
+    </Tooltip>
+  </Dialog.Content>
+</Dialog>
+```
+
+The system tracks parent-child relationships through React context, so nested portals always stack correctly.
+
+## Technical Details
+
+The stacking system uses two mechanisms:
+
+### Horizontal Stacking (Siblings)
+
+When multiple overlays open at the same level, each gets an incrementing z-index:
+- First dialog: 105001
+- Second dialog: 105002
+- Third dialog: 105003
+
+### Vertical Stacking (Nested)
+
+When content opens inside another portal, it reads the parent's z-index from context and adds 1:
+- Dialog opens at 105001
+- Popover inside dialog: 105002
+- Tooltip inside that popover: 105003
+
+This ensures nested content is always visible above its parent, but sibling content opened later can still stack above.
+
+## Portal Component
+
+The [Portal](/ui/portal) component powers this stacking system. If building custom overlay components, you can use Portal's `stackZIndex` prop:
+
+```tsx
+import { Portal } from 'tamagui'
+
+// Enable automatic stacking
+<Portal stackZIndex>
+  {/* content */}
+</Portal>
+
+// Or use a high base value (like Dialog does)
+<Portal stackZIndex={100000}>
+  {/* content */}
+</Portal>
+```
+
+See the [Portal documentation](/ui/portal) for more details.
