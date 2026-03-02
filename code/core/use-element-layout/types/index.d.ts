@@ -24,7 +24,7 @@ export type LayoutEvent = {
 	timeStamp: number;
 };
 export declare function enable(): void;
-export declare const getElementLayoutEvent: (nodeRect: DOMRectReadOnly, parentRect: DOMRectReadOnly) => LayoutEvent;
+export declare const getElementLayoutEvent: (nodeRect: DOMRectReadOnly, parentRect: DOMRectReadOnly, node?: HTMLElement) => LayoutEvent;
 export declare function useElementLayout(ref: RefObject<TamaguiComponentStatePartial>, onLayout?: ((e: LayoutEvent) => void) | null): void;
 export declare const getBoundingClientRectAsync: (node: HTMLElement | null) => Promise<DOMRectReadOnly | false>;
 export declare const measureNode: (node: HTMLElement, relativeTo?: HTMLElement | null) => Promise<null | LayoutValue>;
