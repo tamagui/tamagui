@@ -38,7 +38,12 @@ export function SourceVersionSwitcher({
   }
 
   return (
-    <Select value={currentVersion} onValueChange={switchVersion} disablePreventBodyScroll zIndex={200000}>
+    <Select
+      value={currentVersion}
+      onValueChange={switchVersion}
+      disablePreventBodyScroll
+      zIndex={200000}
+    >
       <Select.Trigger size="$2" iconAfter={ChevronDown} borderRadius={8}>
         <Select.Value placeholder={versions[0]} fontFamily="$mono" />
       </Select.Trigger>

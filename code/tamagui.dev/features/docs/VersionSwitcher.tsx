@@ -34,7 +34,12 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
   }
 
   return (
-    <Select value={val} onValueChange={switchVersion} disablePreventBodyScroll zIndex={200000}>
+    <Select
+      value={val}
+      onValueChange={switchVersion}
+      disablePreventBodyScroll
+      zIndex={200000}
+    >
       <Select.Trigger maxWidth={220} iconAfter={ChevronDown} borderRadius={8}>
         <Select.Value placeholder="2.0.0" />
       </Select.Trigger>
