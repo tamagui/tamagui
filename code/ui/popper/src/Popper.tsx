@@ -473,6 +473,8 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
     React.useEffect(() => {
       if (virtualRef) {
         refs.setReference(virtualRef.current)
+        // recompute position after setting virtual reference
+        update()
       }
     }, [virtualRef])
 
@@ -512,14 +514,15 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
           // otherwise floating ui gets confused by having >1 reference
           onMouseEnter: (e) => {
             if (ref.current instanceof HTMLElement) {
-              refs.setReference(ref.current)
+              const el = ref.current
+              refs.setReference(el)
+              update()
 
               if (!refProps) {
                 return
               }
 
               refProps.onPointerEnter?.(e)
-              update()
               context.onHoverReference?.(e.nativeEvent)
             }
           },
@@ -661,11 +664,11 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
     }
     // when floating-ui resets (close/reopen cycle), use the last known good
     // position instead of 0,0 to prevent the animation driver from animating
-    // from origin or jumping
-    const effectiveX =
-      !isPositioned && hasBeenPositioned.current ? lastGoodPosition.current.x : x
-    const effectiveY =
-      !isPositioned && hasBeenPositioned.current ? lastGoodPosition.current.y : y
+    // from origin or jumping. only use cached position when floating-ui
+    // returns 0,0 (not yet positioned), not when it has actual values.
+    const useLastPosition = !isPositioned && hasBeenPositioned.current && x === 0 && y === 0
+    const effectiveX = useLastPosition ? lastGoodPosition.current.x : x
+    const effectiveY = useLastPosition ? lastGoodPosition.current.y : y
 
     // only hide before the very first positioning
     const hide = !hasBeenPositioned.current && effectiveX === 0 && effectiveY === 0

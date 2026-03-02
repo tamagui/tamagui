@@ -305,3 +305,63 @@ test.describe('Popover hoverable scoped multi-trigger', () => {
     await expect(content).toBeVisible()
   })
 })
+
+// Bug: hovering trigger → content → different trigger should reposition popover
+test.describe('Popover hoverable content-to-trigger reposition', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupPage(page, {
+      name: 'PopoverHoverableRapidCase',
+      type: 'useCase',
+      searchParams: { animationDriver: 'css' },
+    })
+    await page.waitForLoadState('networkidle')
+  })
+
+  test('trigger → content → different trigger: popover repositions', async ({
+    page,
+  }) => {
+    const content = page.locator('#rapid-content')
+
+    // hover trigger A to open
+    const triggerA = page.locator('#rapid-trigger-a')
+    await triggerA.hover()
+    await page.waitForTimeout(150)
+    await expect(content).toBeVisible({ timeout: 2000 })
+
+    // get position when at trigger A
+    const triggerARect = await getBoundingRect(page, '#rapid-trigger-a')
+    const contentRectAtA = await getBoundingRect(page, '#rapid-content')
+
+    // move into the content
+    await content.hover()
+    await page.waitForTimeout(50)
+    await expect(content).toBeVisible()
+
+    // move directly to trigger F (far right) to avoid passing through B
+    const triggerF = page.locator('#rapid-trigger-f')
+    const triggerFRect = await getBoundingRect(page, '#rapid-trigger-f')
+
+    // move directly to trigger F
+    await page.mouse.move(
+      triggerFRect!.x + triggerFRect!.width / 2,
+      triggerFRect!.y + triggerFRect!.height / 2,
+      { steps: 2 }
+    )
+    await page.waitForTimeout(300)
+
+    // popover should have repositioned toward trigger F
+    const contentRectAtF = await getBoundingRect(page, '#rapid-content')
+
+    // F is to the right of A, so content x should be greater
+    expect(contentRectAtF!.x).toBeGreaterThan(contentRectAtA!.x + 50)
+
+    // content should be closer to F than to A
+    const distToF = Math.abs(contentRectAtF!.x - triggerFRect!.x)
+    const distToA = Math.abs(contentRectAtF!.x - triggerARect!.x)
+    expect(distToF).toBeLessThan(distToA)
+
+    // verify label updated
+    const label = page.locator('#rapid-panel-label')
+    await expect(label).toHaveText('Panel F')
+  })
+})
