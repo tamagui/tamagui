@@ -296,6 +296,7 @@ export const LocationNotification = BentoComponentStub
       },
 
       web: {
+        skewProtection: 'proactive',
         experimental_scriptLoading: 'after-lcp-aggressive',
         redirects: [
           // llms.txt, llms-full.txt, docs.txt are handled by middleware directly

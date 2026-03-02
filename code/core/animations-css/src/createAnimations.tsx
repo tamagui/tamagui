@@ -375,19 +375,18 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           // disable transition, reset to enter state
           node.style.transition = 'none'
 
-          // reset: apply enter styles (or defaults) for each exit property
+          // reset: apply active/open state for each exit property (not enterStyle,
+          // which may equal exitStyle — see comment in the normal exit path below)
           if (exitStyle) {
-            // build enter state: for each exit key, use enter value or sensible default
             const resetStyle: Record<string, unknown> = {}
             for (const key of Object.keys(exitStyle)) {
-              if (enterStyle?.[key] !== undefined) {
-                resetStyle[key] = enterStyle[key]
-              } else if (key === 'opacity') {
+              if (key === 'opacity') {
                 resetStyle[key] = 1
               } else if (TRANSFORM_KEYS.includes(key as any)) {
-                // transform defaults: scale=1, others=0
                 resetStyle[key] =
                   key === 'scale' || key === 'scaleX' || key === 'scaleY' ? 1 : 0
+              } else if (enterStyle?.[key] !== undefined) {
+                resetStyle[key] = enterStyle[key]
               }
             }
             applyStylesToNode(node, resetStyle)
@@ -411,16 +410,19 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           ignoreCancelEvents = true
           node.style.transition = 'none'
 
-          // Reset to non-exit state
+          // Reset to the active/open state (not enterStyle, which may equal exitStyle).
+          // enterStyle is the "unmounted" initial state and can share values with exitStyle
+          // (e.g., both have opacity: 0). resetting to enterStyle would mean no value change
+          // when exitStyle is applied, so the CSS transition wouldn't fire.
           const resetStyle: Record<string, unknown> = {}
           for (const key of Object.keys(exitStyle)) {
-            if (enterStyle?.[key] !== undefined) {
-              resetStyle[key] = enterStyle[key]
-            } else if (key === 'opacity') {
+            if (key === 'opacity') {
               resetStyle[key] = 1
             } else if (TRANSFORM_KEYS.includes(key as any)) {
               resetStyle[key] =
                 key === 'scale' || key === 'scaleX' || key === 'scaleY' ? 1 : 0
+            } else if (enterStyle?.[key] !== undefined) {
+              resetStyle[key] = enterStyle[key]
             }
           }
           applyStylesToNode(node, resetStyle)

@@ -81,8 +81,10 @@ export {
   PopoverHoverableDelayCase,
   PopoverHoverableRestMsCase,
   PopoverHoverableExitAnimCase,
+  PopoverHoverableSafePolygonCase,
 } from './PopoverHoverableCase'
 export { PopoverHoverableScopedCase } from './PopoverHoverableScopedCase'
+export { PopoverHoverableRapidCase } from './PopoverHoverableRapidCase'
 export { PopoverContentStyledPlusAnimations } from './PopoverContentStyledPlusAnimations'
 export { PopoverFocusScopeCase } from './PopoverFocusScopeCase'
 export { PopoverScopedCase } from './PopoverScopedCase'
