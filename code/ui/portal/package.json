@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/portal",
-  "version": "2.0.0-rc.22-1772488529965",
+  "version": "2.0.0-rc.22-1772525450095",
   "source": "src/index.ts",
   "files": [
     "src",
