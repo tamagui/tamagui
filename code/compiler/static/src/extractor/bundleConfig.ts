@@ -56,7 +56,7 @@ const esbuildExtraOptions = {
 }
 
 export const esbuildOptions = {
-  target: 'es2018',
+  target: 'es2022',
   format: 'cjs',
   jsx: 'automatic',
   platform: 'node',
