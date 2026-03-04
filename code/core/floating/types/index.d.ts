@@ -3,6 +3,7 @@ export { arrow, autoPlacement, autoUpdate, detectOverflow, flip, hide, inline, l
 export { useFloating, FloatingOverrideContext, type UseFloatingReturn, type UseFloatingProps, type UseFloatingFn, } from './useFloating';
 export { useFloating as useFloatingRaw } from './Floating';
 export { createFloatingEvents } from './interactions/createFloatingEvents';
+export { PopupTriggerMap } from './interactions/PopupTriggerMap';
 export { useInteractions } from './interactions/useInteractions';
 export { useHover } from './interactions/useHover';
 export { safePolygon } from './interactions/safePolygon';

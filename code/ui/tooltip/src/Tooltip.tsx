@@ -2,12 +2,14 @@ import '@tamagui/polyfill-dev'
 
 import {
   FloatingDelayGroup,
+  createFloatingEvents,
   useDelayGroup,
   useDelayGroupContext,
   useFocus,
   useHover,
   useInteractions,
   useRole,
+  PopupTriggerMap,
   type Delay,
   type FloatingInteractionContext,
 } from '@tamagui/floating'
@@ -210,6 +212,14 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     }
   }, [open, disableAutoCloseOnScroll])
 
+  const events = React.useMemo(() => createFloatingEvents(), [])
+  const triggerElements = React.useMemo(() => new PopupTriggerMap(), [])
+
+  // emit openchange events so useHover can clean up timers
+  React.useEffect(() => {
+    events.emit('openchange', { open })
+  }, [open, events])
+
   const useFloatingFn: UseFloatingFn = (props: any) => {
     const floating = useFloatingRaw(props) as any
 
@@ -231,6 +241,8 @@ const TooltipComponent = React.forwardRef(function Tooltip(
         domReference: floating.refs?.reference?.current || null,
       },
       dataRef,
+      events,
+      triggerElements,
     }
 
     // get coordinated delay from the delay group
@@ -252,6 +264,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       open,
       getReferenceProps,
       getFloatingProps,
+      triggerElements,
     } as any
   }
 

@@ -31,6 +31,10 @@ export declare const usePopperContext: (scope?: string) => PopperContextValue, P
 export type PopperContextSlowValue = PopperContextShared & Pick<UseFloatingReturn, 'context' | 'getReferenceProps' | 'getFloatingProps' | 'strategy' | 'update' | 'refs'> & {
     onHoverReference?: (event: any) => void;
     onLeaveReference?: () => void;
+    triggerElements?: {
+        add(id: string, el: Element): void;
+        delete(id: string): void;
+    };
 };
 export declare const PopperContextSlow: import("@tamagui/core").StyledContext<PopperContextSlowValue>;
 export declare const usePopperContextSlow: (scope?: string) => PopperContextSlowValue, PopperProviderSlow: React.Provider<PopperContextSlowValue> & React.ProviderExoticComponent<Partial<PopperContextSlowValue> & {

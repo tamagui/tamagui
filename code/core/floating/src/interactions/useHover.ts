@@ -178,6 +178,11 @@ export function useHover(
         return
       }
 
+      // moving to a sibling trigger in a multi-trigger pattern — suppress close
+      if (context.triggerElements?.hasElement(event.relatedTarget as Element)) {
+        return
+      }
+
       unbindMouseMoveRef.current()
 
       const doc = getDocument(elements.floating)
@@ -241,6 +246,11 @@ export function useHover(
     // did not move.
     function onScrollMouseLeave(event: MouseEvent) {
       if (isClickLikeOpenEvent()) return
+
+      // moving to a sibling trigger in a multi-trigger pattern — suppress close
+      if (context.triggerElements?.hasElement(event.relatedTarget as Element)) {
+        return
+      }
 
       const placement = dataRef.current.placement || 'bottom'
       const reference = elements.domReference

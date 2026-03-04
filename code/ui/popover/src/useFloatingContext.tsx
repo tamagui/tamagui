@@ -1,12 +1,14 @@
 import React from 'react'
 import type { UseFloatingOptions } from '@tamagui/floating'
 import {
+  createFloatingEvents,
   safePolygon,
   useFloatingRaw,
   useFocus,
   useHover,
   useInteractions,
   useRole,
+  PopupTriggerMap,
   type FloatingInteractionContext,
 } from '@tamagui/floating'
 
@@ -43,6 +45,13 @@ export const useFloatingContext = ({
   disableRef.current = disable
   const disableFocusRef = React.useRef(disableFocus)
   disableFocusRef.current = disableFocus
+
+  const events = React.useMemo(() => createFloatingEvents(), [])
+  const triggerElements = React.useMemo(() => new PopupTriggerMap(), [])
+
+  React.useEffect(() => {
+    events.emit('openchange', { open })
+  }, [open, events])
 
   return React.useCallback(
     (props: UseFloatingOptions) => {
@@ -103,6 +112,8 @@ export const useFloatingContext = ({
           domReference: floating.refs?.reference?.current || null,
         },
         dataRef,
+        events,
+        triggerElements,
       }
 
       const { getReferenceProps, getFloatingProps } = useInteractions([
@@ -158,6 +169,7 @@ export const useFloatingContext = ({
       return {
         ...floating,
         open: openRef.current,
+        triggerElements,
         getReferenceProps,
         getFloatingProps: currentHoverable
           ? (props: any) => {

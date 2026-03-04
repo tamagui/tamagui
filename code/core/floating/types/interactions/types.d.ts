@@ -1,5 +1,6 @@
 import type { HTMLProps, RefObject } from 'react';
 import type { FloatingEvents } from './createFloatingEvents';
+import type { PopupTriggerMap } from './PopupTriggerMap';
 export type { FloatingEvents };
 export type ElementProps = {
     reference?: HTMLProps<Element>;
@@ -29,6 +30,7 @@ export interface FloatingInteractionContext {
         typing?: boolean;
     }>;
     events?: FloatingEvents;
+    triggerElements?: PopupTriggerMap;
 }
 export type Delay = number | Partial<{
     open: number;

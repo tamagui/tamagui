@@ -76,6 +76,7 @@ export type PopperContextSlowValue = PopperContextShared &
   > & {
     onHoverReference?: (event: any) => void
     onLeaveReference?: () => void
+    triggerElements?: { add(id: string, el: Element): void; delete(id: string): void }
   }
 
 export const PopperContextSlow = createStyledContext<PopperContextSlowValue>(
@@ -121,6 +122,7 @@ function getContextSlow(context: PopperContextValue): PopperContextSlowValue {
     open: context.open,
     onHoverReference: (context as any).onHoverReference,
     onLeaveReference: (context as any).onLeaveReference,
+    triggerElements: (context as any).triggerElements,
   }
 }
 
@@ -469,6 +471,19 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
     const context = usePopperContextSlow(scope)
     const { getReferenceProps, refs, update } = context
     const ref = React.useRef<PopperAnchorRef>(null)
+    const triggerId = React.useId()
+
+    // register this trigger element with the shared trigger map
+    // so useHover can detect cursor moves between sibling triggers
+    React.useEffect(() => {
+      if (!scope || !context.triggerElements || !ref.current) return
+      if (!(ref.current instanceof Element)) return
+      const el = ref.current as Element
+      context.triggerElements.add(triggerId, el)
+      return () => {
+        context.triggerElements?.delete(triggerId)
+      }
+    }, [scope, triggerId, context.triggerElements])
 
     React.useEffect(() => {
       if (virtualRef) {
@@ -664,6 +679,43 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       }
     }
 
+    // track reference element changes (scoped tooltip/popover switching targets).
+    // when the reference changes while already positioned, disable position
+    // animation so content snaps to the new position instead of sliding across.
+    const referenceElement = refs.reference?.current
+    const prevReferenceRef = React.useRef<unknown>(null)
+    const [referenceChanging, setReferenceChanging] = React.useState(false)
+
+    if (referenceElement !== prevReferenceRef.current) {
+      if (
+        animatePos &&
+        animatePos !== 'even-when-repositioning' &&
+        prevReferenceRef.current !== null &&
+        referenceElement !== null &&
+        hasBeenPositioned.current
+      ) {
+        setReferenceChanging(true)
+      }
+      prevReferenceRef.current = referenceElement
+    }
+
+    // re-enable position animation after the snap settles
+    React.useEffect(() => {
+      if (referenceChanging) {
+        let raf1: number
+        let raf2: number
+        raf1 = requestAnimationFrame(() => {
+          raf2 = requestAnimationFrame(() => {
+            setReferenceChanging(false)
+          })
+        })
+        return () => {
+          cancelAnimationFrame(raf1)
+          cancelAnimationFrame(raf2)
+        }
+      }
+    }, [referenceChanging])
+
     // when floating-ui resets (close/reopen cycle), use the last known good
     // position instead of 0,0 to prevent the animation driver from animating
     // from origin or jumping. only use cached position when floating-ui
@@ -706,8 +758,10 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       ...(animatePos && {
         transition: rest.transition,
         // animateOnly: [] turns off transitions while keeping styles applied,
-        // letting the element move to its position silently before animations start
-        animateOnly: disableAnimation ? [] : rest.animateOnly,
+        // letting the element move to its position silently before animations start.
+        // referenceChanging is checked directly (not via disableAnimation state) to
+        // ensure it takes effect on the same render cycle as the reference change.
+        animateOnly: disableAnimation || referenceChanging ? [] : rest.animateOnly,
         animatePresence: false,
       }),
     }
