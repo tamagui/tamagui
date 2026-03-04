@@ -11,19 +11,20 @@ import {
 } from '@tamagui/floating'
 
 // custom floating context for hoverable popovers.
-// uses our own useHover + safePolygon for close handling (geometric safe
-// zone between trigger and content), but handles multi-trigger open/restMs
-// ourselves via onHoverReference since useHover's listeners aren't attached
-// when PopperAnchor switches the reference element mid-hover.
 //
-// multi-trigger gap handling: when the mouse leaves one trigger heading toward
-// another, safePolygon may detect the mouse outside its safe zone and fire a
-// close. we block this close during a short grace period (onTriggerRef), but
-// remember it as a pending close. if the mouse reaches the next trigger,
-// onHoverReference clears the pending close. if not (mouse went nowhere),
-// the grace timer fires the pending close. this avoids safePolygon's one-shot
-// problem (handler removes itself after firing) while keeping zero close events
-// during trigger switching.
+// why we can't just use useHover alone:
+//   useHover attaches mouseenter/mouseleave via useEffect on the current
+//   reference element. in multi-trigger mode, PopperAnchor switches the
+//   reference when the cursor enters a new trigger — but useEffect hasn't
+//   re-run yet, so the new trigger's mouseenter is missed by useHover.
+//   we handle opens ourselves via onHoverReference; useHover + safePolygon
+//   handle close detection.
+//
+// multi-trigger gap handling:
+//   when sweeping between triggers, the cursor exits safePolygon's triangle
+//   (which points toward content, not sideways). we use a short grace period
+//   to block safePolygon's close during the gap. if a new trigger is entered,
+//   we cancel the pending close. if not, the grace timer fires it.
 
 export const useFloatingContext = ({
   open,
@@ -34,9 +35,6 @@ export const useFloatingContext = ({
 }) => {
   'use no memo'
 
-  // use refs so the factory callback doesn't need these as deps.
-  // without this, open changing (false→true) recreates the factory every time
-  // the popover opens, causing downstream hook confusion.
   const openRef = React.useRef(open)
   openRef.current = open
   const hoverableRef = React.useRef(hoverable)
@@ -48,30 +46,24 @@ export const useFloatingContext = ({
 
   return React.useCallback(
     (props: UseFloatingOptions) => {
-      // true while pointer is over a trigger element (with grace period on leave)
       const onTriggerRef = React.useRef(false)
       const restTimerRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
-      const triggerGraceRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
-      // when safePolygon fires close during the grace period, we block it but
-      // store it here. the grace timer checks this and fires the close if the
-      // mouse didn't reach another trigger.
+      const graceRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
       const pendingCloseRef = React.useRef(false)
 
       React.useEffect(() => {
         return () => {
           clearTimeout(restTimerRef.current)
-          clearTimeout(triggerGraceRef.current)
+          clearTimeout(graceRef.current)
         }
       }, [])
 
       const onOpenChange = (val: boolean, event?: Event) => {
-        // block hover-based opens on mouseenter — we handle open timing
-        // ourselves via onHoverReference/setOpenWithDelay
+        // block useHover's mouseenter opens — we handle open timing via onHoverReference
         if (val && event?.type === 'mouseenter') {
           return
         }
-        // during the trigger grace period, block hover-based closes but
-        // remember them
+        // during trigger grace period, block safePolygon closes but remember them
         if (
           !val &&
           onTriggerRef.current &&
@@ -90,10 +82,8 @@ export const useFloatingContext = ({
       }
 
       const floating = useFloatingRaw(props) as any
-
       const currentHoverable = hoverableRef.current
 
-      // construct interaction context from floating return + open/onOpenChange
       const dataRef = React.useRef<{ openEvent?: Event; placement?: string }>({})
       dataRef.current.placement = floating.placement
 
@@ -120,6 +110,10 @@ export const useFloatingContext = ({
               handleClose: safePolygon({
                 requireIntent: true,
                 buffer: 1,
+                __debug:
+                  typeof window !== 'undefined' &&
+                  new URLSearchParams(window.location.search).get('debug') ===
+                    'safePolygon',
               }),
               ...(typeof currentHoverable === 'object' && currentHoverable),
             })
@@ -165,12 +159,9 @@ export const useFloatingContext = ({
         getReferenceProps,
         getFloatingProps,
 
-        // multi-trigger open: useHover attaches listeners via useEffect, so they
-        // miss the initial mouseenter when PopperAnchor switches reference mid-hover.
-        // we handle open ourselves here; useHover + safePolygon handle close.
         onHoverReference: currentHoverable
           ? (_event: any) => {
-              clearTimeout(triggerGraceRef.current)
+              clearTimeout(graceRef.current)
               onTriggerRef.current = true
               pendingCloseRef.current = false
               clearTimeout(restTimerRef.current)
@@ -183,12 +174,8 @@ export const useFloatingContext = ({
         onLeaveReference: currentHoverable
           ? () => {
               clearTimeout(restTimerRef.current)
-              // grace period: keep onTriggerRef true briefly so safePolygon's
-              // close is blocked during the gap between adjacent triggers.
-              // if no trigger is entered before grace expires, fire any
-              // pending close that safePolygon requested.
-              clearTimeout(triggerGraceRef.current)
-              triggerGraceRef.current = setTimeout(() => {
+              clearTimeout(graceRef.current)
+              graceRef.current = setTimeout(() => {
                 onTriggerRef.current = false
                 if (pendingCloseRef.current) {
                   pendingCloseRef.current = false
@@ -199,7 +186,6 @@ export const useFloatingContext = ({
           : undefined,
       }
     },
-    // factory is stable - open/hoverable/disable/disableFocus accessed via refs
     [setOpen]
   )
 }

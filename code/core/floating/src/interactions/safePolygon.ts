@@ -43,8 +43,75 @@ export type { SafePolygonOptions }
 //
 // unlike @floating-ui/react, we do NOT add a documentElement mouseleave
 // listener, which fixes the window-blur-closing-popover bug.
+// debug overlay — renders polygon + trough as SVG on top of everything
+let debugSvg: SVGSVGElement | null = null
+function debugDrawPolygon(polygon: Point[], trough: Point[], cursor: Point, anchor: Point) {
+  if (!debugSvg) {
+    debugSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    debugSvg.id = '__safe-polygon-debug'
+    Object.assign(debugSvg.style, {
+      position: 'fixed',
+      inset: '0',
+      width: '100vw',
+      height: '100vh',
+      pointerEvents: 'none',
+      zIndex: '999999',
+    })
+    document.body.appendChild(debugSvg)
+  }
+  debugSvg.innerHTML = ''
+
+  // trough rectangle (blue)
+  if (trough.length) {
+    const troughEl = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+    troughEl.setAttribute('points', trough.map((p) => p.join(',')).join(' '))
+    troughEl.setAttribute('fill', 'rgba(0,100,255,0.15)')
+    troughEl.setAttribute('stroke', 'rgba(0,100,255,0.6)')
+    troughEl.setAttribute('stroke-width', '1')
+    debugSvg.appendChild(troughEl)
+  }
+
+  // safe polygon (red)
+  if (polygon.length) {
+    const polyEl = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
+    polyEl.setAttribute('points', polygon.map((p) => p.join(',')).join(' '))
+    polyEl.setAttribute('fill', 'rgba(255,50,50,0.2)')
+    polyEl.setAttribute('stroke', 'rgba(255,50,50,0.8)')
+    polyEl.setAttribute('stroke-width', '1.5')
+    debugSvg.appendChild(polyEl)
+  }
+
+  // anchor point (green circle)
+  const anchorCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  anchorCircle.setAttribute('cx', String(anchor[0]))
+  anchorCircle.setAttribute('cy', String(anchor[1]))
+  anchorCircle.setAttribute('r', '5')
+  anchorCircle.setAttribute('fill', 'lime')
+  anchorCircle.setAttribute('stroke', 'darkgreen')
+  anchorCircle.setAttribute('stroke-width', '1.5')
+  debugSvg.appendChild(anchorCircle)
+
+  // cursor point (yellow circle)
+  const cursorCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+  cursorCircle.setAttribute('cx', String(cursor[0]))
+  cursorCircle.setAttribute('cy', String(cursor[1]))
+  cursorCircle.setAttribute('r', '4')
+  cursorCircle.setAttribute('fill', 'yellow')
+  cursorCircle.setAttribute('stroke', 'orange')
+  cursorCircle.setAttribute('stroke-width', '1.5')
+  debugSvg.appendChild(cursorCircle)
+}
+
+function debugClear() {
+  if (debugSvg) {
+    debugSvg.remove()
+    debugSvg = null
+  }
+}
+
 export function safePolygon(options: SafePolygonOptions = {}): HandleCloseFn {
-  const { buffer = 0.5, blockPointerEvents = false, requireIntent = true } = options
+  const { buffer = 0.5, blockPointerEvents = false, requireIntent = true, __debug = false } =
+    options
 
   const timeoutRef = { current: -1 }
 
@@ -80,6 +147,11 @@ export function safePolygon(options: SafePolygonOptions = {}): HandleCloseFn {
   // returns the mousemove handler that checks each subsequent position
   // against the polygon anchored at (x, y).
   const fn: HandleCloseFn = ({ x, y, placement, elements, onClose }) => {
+    // reset on each new handler creation — each leave starts a fresh session
+    hasLanded = false
+    lastX = null
+    lastY = null
+
     return function onMouseMove(event: MouseEvent) {
       function close() {
         clearTimeoutIfSet(timeoutRef)
@@ -365,11 +437,18 @@ export function safePolygon(options: SafePolygonOptions = {}): HandleCloseFn {
         }
       }
 
+      const poly = getPolygon([x, y])
+
+      if (__debug) {
+        debugDrawPolygon(poly, rectPoly, clientPoint, [x, y])
+      }
+
       if (isPointInPolygon([clientX, clientY], rectPoly)) {
         return
       }
 
       if (hasLanded && !isOverReferenceRect) {
+        if (__debug) debugClear()
         return close()
       }
 
@@ -377,14 +456,19 @@ export function safePolygon(options: SafePolygonOptions = {}): HandleCloseFn {
         const cursorSpeed = getCursorSpeed(clientX, clientY)
         const cursorSpeedThreshold = 0.1
         if (cursorSpeed !== null && cursorSpeed < cursorSpeedThreshold) {
+          if (__debug) debugClear()
           return close()
         }
       }
 
-      if (!isPointInPolygon([clientX, clientY], getPolygon([x, y]))) {
+      if (!isPointInPolygon([clientX, clientY], poly)) {
+        if (__debug) debugClear()
         close()
       } else if (!hasLanded && requireIntent) {
-        timeoutRef.current = window.setTimeout(close, 40) as unknown as number
+        timeoutRef.current = window.setTimeout(() => {
+          if (__debug) debugClear()
+          close()
+        }, 40) as unknown as number
       }
     }
   }

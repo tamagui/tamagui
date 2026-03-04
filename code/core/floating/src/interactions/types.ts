@@ -85,6 +85,8 @@ export interface SafePolygonOptions {
   requireIntent?: boolean
   buffer?: number
   blockPointerEvents?: boolean
+  /** render the safe polygon on screen for debugging */
+  __debug?: boolean
 }
 
 export interface UseFocusProps {
