@@ -11,6 +11,8 @@ import {
   styled,
 } from '../web/src'
 import { getGroupPropParts } from '../web/src/helpers/getGroupPropParts'
+import { getSplitStyles } from '../web/src'
+import { defaultComponentState } from '../web/src/defaultComponentState'
 import { simplifiedGetSplitStyles } from './utils'
 
 beforeAll(() => {
@@ -211,6 +213,122 @@ describe('getSplitStyles', () => {
     expect(nestedThemeString).toContain('backgroundColor')
     expect(nestedThemeString).toContain('darkblue')
     expect(nestedThemeString).toContain('dark_blue')
+  })
+
+  test(`$theme-dark de-opts to inline style with noClass animation driver`, () => {
+    // when using an inline animation driver (noClass: true), $theme-dark should
+    // de-opt to inline styles rather than CSS classes, so the animation driver
+    // manages the theme-appropriate value directly
+    const darkResult = getSplitStyles(
+      {
+        backgroundColor: 'red',
+        '$theme-dark': {
+          backgroundColor: 'blue',
+        },
+      },
+      View.staticConfig,
+      {} as any,
+      'dark',
+      defaultComponentState,
+      {
+        mediaState: undefined,
+        isAnimated: true,
+        noClass: true,
+        resolveValues: 'auto',
+      },
+      {} as any,
+      {
+        animationDriver: { isReactNative: false },
+        groups: { state: {} },
+      } as any,
+      undefined,
+      undefined,
+      true
+    )!
+
+    // in dark theme, $theme-dark override should be applied inline
+    expect(darkResult.style?.backgroundColor).toBe('blue')
+
+    // no theme media CSS classes should be generated (de-opted to inline)
+    const themeMediaKey = Object.keys(darkResult.classNames || {}).find(
+      (k) => k.includes('dark')
+    )
+    expect(themeMediaKey).toBeUndefined()
+
+    // in light theme, $theme-dark should not apply
+    const lightResult = getSplitStyles(
+      {
+        backgroundColor: 'red',
+        '$theme-dark': {
+          backgroundColor: 'blue',
+        },
+      },
+      View.staticConfig,
+      {} as any,
+      'light',
+      defaultComponentState,
+      {
+        mediaState: undefined,
+        isAnimated: true,
+        noClass: true,
+        resolveValues: 'auto',
+      },
+      {} as any,
+      {
+        animationDriver: { isReactNative: false },
+        groups: { state: {} },
+      } as any,
+      undefined,
+      undefined,
+      true
+    )!
+
+    // in light theme, base value should remain
+    expect(lightResult.style?.backgroundColor).toBe('red')
+  })
+
+  test(`$theme-dark keeps CSS classes when animateOnly is set and property is not animated`, () => {
+    // when animateOnly is set, non-animated properties (like bg) should stay as
+    // CSS classes so theme media overrides work via specificity
+    const result = getSplitStyles(
+      {
+        backgroundColor: 'red',
+        animateOnly: ['transform'],
+        '$theme-dark': {
+          backgroundColor: 'blue',
+        },
+      },
+      View.staticConfig,
+      {} as any,
+      'dark',
+      defaultComponentState,
+      {
+        mediaState: undefined,
+        isAnimated: true,
+        noClass: true,
+        resolveValues: 'auto',
+      },
+      {} as any,
+      {
+        animationDriver: { isReactNative: false },
+        groups: { state: {} },
+      } as any,
+      undefined,
+      undefined,
+      true
+    )!
+
+    // backgroundColor should NOT be inline (it's not in animateOnly)
+    expect(result.style?.backgroundColor).toBeUndefined()
+
+    // backgroundColor should be promoted to CSS class
+    expect(result.classNames?.backgroundColor).toBeDefined()
+
+    // theme media CSS class should also exist
+    const themeMediaKey = Object.keys(result.classNames || {}).find(
+      (k) => k.includes('dark')
+    )
+    expect(themeMediaKey).toBeDefined()
   })
 
   test(`perspective transform`, () => {
