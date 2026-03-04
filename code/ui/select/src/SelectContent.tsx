@@ -44,7 +44,17 @@ export const SelectContent = ({
   return (
     <Portal open={context.open} zIndex={zIndex} stackZIndex={100_000}>
       <RemoveScroll enabled={context.open}>
-        <Dismissable asChild forceUnmount={!context.open}>
+        <Dismissable
+          asChild
+          forceUnmount={!context.open}
+          onDismiss={() => itemParentContext.setOpen(false)}
+          // prevent focus-outside and pointer-outside from triggering dismiss:
+          // SelectImpl has its own document pointerdown listener for outside clicks,
+          // and focus changes during open (e.g. FocusScope trapping) shouldn't dismiss.
+          // only escape key should trigger onDismiss here.
+          onFocusOutside={(e) => e.preventDefault()}
+          onPointerDownOutside={(e) => e.preventDefault()}
+        >
           <FocusScope
             {...focusScopeProps}
             enabled={!!context.open}

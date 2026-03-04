@@ -1,5 +1,5 @@
 import '@tamagui/polyfill-dev';
-import type { UseHoverProps } from '@floating-ui/react';
+import type { UseHoverProps } from '@tamagui/floating';
 import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core';
 import { type DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';

@@ -1,16 +1,17 @@
 import React from 'react'
-import type { UseFloatingOptions } from '@floating-ui/react'
+import type { UseFloatingOptions } from '@tamagui/floating'
 import {
   safePolygon,
-  useFloating,
+  useFloatingRaw,
   useFocus,
   useHover,
   useInteractions,
   useRole,
-} from '@floating-ui/react'
+  type FloatingInteractionContext,
+} from '@tamagui/floating'
 
 // custom floating context for hoverable popovers.
-// uses floating-ui's useHover + safePolygon for close handling (geometric safe
+// uses our own useHover + safePolygon for close handling (geometric safe
 // zone between trigger and content), but handles multi-trigger open/restMs
 // ourselves via onHoverReference since useHover's listeners aren't attached
 // when PopperAnchor switches the reference element mid-hover.
@@ -63,61 +64,73 @@ export const useFloatingContext = ({
         }
       }, [])
 
-      const floating = useFloating({
-        ...props,
-        open: openRef.current,
-        onOpenChange: (val, event) => {
-          // block floating-ui's useHover from opening on mouseenter — we
-          // handle open timing ourselves via onHoverReference/setOpenWithDelay
-          // to ensure restMs/delay work correctly across re-hovers and
-          // multi-trigger switching.
-          if (val && event?.type === 'mouseenter') {
-            return
-          }
-          // during the trigger grace period, block hover-based closes but
-          // remember them. safePolygon's handler removes itself after firing,
-          // so we can't just "let it through later". instead we store the
-          // pending close and fire it when the grace expires (if the mouse
-          // didn't reach another trigger).
-          if (
-            !val &&
-            onTriggerRef.current &&
-            (event?.type === 'mousemove' || event?.type === 'mouseleave')
-          ) {
-            pendingCloseRef.current = true
-            return
-          }
-          const type =
-            event?.type === 'mousemove' ||
-            event?.type === 'mouseenter' ||
-            event?.type === 'mouseleave'
-              ? 'hover'
-              : 'press'
-          setOpen(val, type)
-        },
-      }) as any
+      const onOpenChange = (val: boolean, event?: Event) => {
+        // block hover-based opens on mouseenter — we handle open timing
+        // ourselves via onHoverReference/setOpenWithDelay
+        if (val && event?.type === 'mouseenter') {
+          return
+        }
+        // during the trigger grace period, block hover-based closes but
+        // remember them
+        if (
+          !val &&
+          onTriggerRef.current &&
+          (event?.type === 'mousemove' || event?.type === 'mouseleave')
+        ) {
+          pendingCloseRef.current = true
+          return
+        }
+        const type =
+          event?.type === 'mousemove' ||
+          event?.type === 'mouseenter' ||
+          event?.type === 'mouseleave'
+            ? 'hover'
+            : 'press'
+        setOpen(val, type)
+      }
+
+      const floating = useFloatingRaw(props) as any
 
       const currentHoverable = hoverableRef.current
 
+      // construct interaction context from floating return + open/onOpenChange
+      const dataRef = React.useRef<{ openEvent?: Event; placement?: string }>({})
+      dataRef.current.placement = floating.placement
+
+      const interactionContext: FloatingInteractionContext = {
+        open: openRef.current,
+        onOpenChange,
+        refs: {
+          reference: floating.refs?.reference || { current: null },
+          floating: floating.refs?.floating || { current: null },
+          domReference: floating.refs?.reference || { current: null },
+        },
+        elements: {
+          reference: floating.refs?.reference?.current || null,
+          floating: floating.refs?.floating?.current || null,
+          domReference: floating.refs?.reference?.current || null,
+        },
+        dataRef,
+      }
+
       const { getReferenceProps, getFloatingProps } = useInteractions([
         currentHoverable
-          ? useHover(floating.context, {
+          ? useHover(interactionContext, {
               enabled: !disableRef.current && !!currentHoverable,
               handleClose: safePolygon({
                 requireIntent: true,
-                blockPointerEvents: false,
                 buffer: 1,
               }),
               ...(typeof currentHoverable === 'object' && currentHoverable),
             })
-          : useHover(floating.context, {
+          : useHover(interactionContext, {
               enabled: false,
             }),
-        useFocus(floating.context, {
+        useFocus(interactionContext, {
           enabled: !disableRef.current && !disableFocusRef.current,
           visibleOnly: true,
         }),
-        useRole(floating.context, { role: 'dialog' }),
+        useRole(interactionContext, { role: 'dialog' }),
       ])
 
       // parse hoverable config

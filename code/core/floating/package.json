@@ -35,7 +35,8 @@
   },
   "dependencies": {
     "@floating-ui/react-dom": "^2.1.6",
-    "@floating-ui/react-native": "^0.10.7"
+    "@floating-ui/react-native": "^0.10.7",
+    "@tamagui/use-event": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

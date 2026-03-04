@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev'
 
-import type { UseHoverProps } from '@floating-ui/react'
+import type { UseHoverProps } from '@tamagui/floating'
 import {
   Adapt,
   AdaptParent,

@@ -1,4 +1,4 @@
-import { autoUpdate, offset, useFloating } from '@floating-ui/react'
+import { autoUpdate, offset, useFloatingRaw as useFloating } from '@tamagui/floating'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import type { TamaguiElement } from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'

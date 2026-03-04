@@ -1,4 +1,5 @@
 import '@tamagui/polyfill-dev';
+import { type Delay } from '@tamagui/floating';
 import type { SizeTokens, TamaguiElement } from '@tamagui/core';
 import type { PopoverAnchorProps, PopoverContentProps, PopoverTriggerProps } from '@tamagui/popover';
 import type { PopperProps } from '@tamagui/popper';
@@ -29,10 +30,6 @@ export type TooltipProps = ScopedProps<PopperProps & {
      * above other portaled content like dialogs.
      */
     zIndex?: number;
-}>;
-type Delay = number | Partial<{
-    open: number;
-    close: number;
 }>;
 export declare const TooltipGroup: ({ children, delay, preventAnimation, timeoutMs, }: {
     children?: any;

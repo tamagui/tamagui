@@ -1,7 +1,28 @@
-import type { ContextData, FloatingContext, ReferenceType } from '@floating-ui/react'
 import type { NativeValue, SizeTokens } from '@tamagui/core'
-import type { ThemeableStackProps, YStackProps } from '@tamagui/stacks'
-import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react'
+import type { YStackProps } from '@tamagui/stacks'
+import type {
+  DispatchWithoutAction,
+  HTMLProps,
+  MutableRefObject,
+  ReactNode,
+  RefObject,
+} from 'react'
+
+// minimal types replacing @floating-ui/react imports
+type ContextData = Record<string, any>
+type ReferenceType = Element
+type FloatingContext<RT = ReferenceType> = {
+  refs: {
+    reference: RefObject<RT | null>
+    floating: RefObject<HTMLElement | null>
+    setFloating: (el: HTMLElement | null) => void
+    setReference: (el: RT | null) => void
+    [key: string]: any
+  }
+  dataRef: RefObject<ContextData>
+  update?: () => void
+  [key: string]: any
+}
 
 export type SelectDirection = 'ltr' | 'rtl'
 

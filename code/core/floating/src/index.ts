@@ -65,3 +65,47 @@ export {
   type UseFloatingProps,
   type UseFloatingFn,
 } from './useFloating'
+
+// raw useFloating without FloatingOverrideContext — use when building
+// override context factories to avoid infinite recursion
+export { useFloating as useFloatingRaw } from './Floating'
+
+// event emitter for hook coordination
+export { createFloatingEvents } from './interactions/createFloatingEvents'
+
+// interaction hooks
+export { useInteractions } from './interactions/useInteractions'
+export { useHover } from './interactions/useHover'
+export { safePolygon } from './interactions/safePolygon'
+export { useFocus } from './interactions/useFocus'
+export { useRole } from './interactions/useRole'
+export { useClick } from './interactions/useClick'
+export { useListNavigation } from './interactions/useListNavigation'
+export { useTypeahead } from './interactions/useTypeahead'
+export { useInnerOffset } from './interactions/useInnerOffset'
+export {
+  FloatingDelayGroup,
+  useDelayGroup,
+  useDelayGroupContext,
+} from './interactions/useDelayGroup'
+
+// middleware
+export { inner } from './middleware/inner'
+
+// types
+export type {
+  ElementProps,
+  FloatingEvents,
+  FloatingInteractionContext,
+  OpenChangeReason,
+  UseHoverProps,
+  HandleCloseFn,
+  SafePolygonOptions,
+  UseFocusProps,
+  UseRoleProps,
+  UseClickProps,
+  UseListNavigationProps,
+  UseTypeaheadProps,
+  UseInnerOffsetProps,
+  Delay,
+} from './interactions/types'

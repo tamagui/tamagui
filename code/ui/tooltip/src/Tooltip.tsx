@@ -4,16 +4,17 @@ import {
   FloatingDelayGroup,
   useDelayGroup,
   useDelayGroupContext,
-  useFloating,
   useFocus,
   useHover,
   useInteractions,
   useRole,
-} from '@floating-ui/react'
+  type Delay,
+  type FloatingInteractionContext,
+} from '@tamagui/floating'
 import type { SizeTokens, TamaguiElement } from '@tamagui/core'
 import { useEvent } from '@tamagui/core'
 import type { UseFloatingFn } from '@tamagui/floating'
-import { FloatingOverrideContext } from '@tamagui/floating'
+import { FloatingOverrideContext, useFloatingRaw } from '@tamagui/floating'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import type {
@@ -121,12 +122,6 @@ export type TooltipProps = ScopedProps<
   }
 >
 
-type Delay =
-  | number
-  | Partial<{
-      open: number
-      close: number
-    }>
 
 const PreventTooltipAnimationContext = React.createContext(false)
 const TooltipZIndexContext = React.createContext<number | undefined>(undefined)
@@ -216,30 +211,42 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     }
   }, [open, disableAutoCloseOnScroll])
 
-  const useFloatingFn: UseFloatingFn = (props) => {
-    // @ts-ignore
-    const floating = useFloating({
-      ...props,
+  const useFloatingFn: UseFloatingFn = (props: any) => {
+    const floating = useFloatingRaw(props) as any
+
+    // construct interaction context
+    const dataRef = React.useRef<{ openEvent?: Event; placement?: string }>({})
+    dataRef.current.placement = floating.placement
+
+    const interactionContext: FloatingInteractionContext = {
       open,
       onOpenChange,
-    })
-    // useDelayGroup returns the coordinated delay from FloatingDelayGroup
-    // When another tooltip in the group is open, it returns { open: 1, close: ... }
-    // to enable instant opening when moving between grouped tooltips
-    const { delay: delayContext, currentId } = useDelayGroup(floating.context, { id })
-    // Use coordinated delay only when actively in a group with another tooltip showing
-    // (currentId is set and delayContext is the coordinated { open: 1, ... } object)
-    // Otherwise fall back to local delay
+      refs: {
+        reference: floating.refs?.reference || { current: null },
+        floating: floating.refs?.floating || { current: null },
+        domReference: floating.refs?.reference || { current: null },
+      },
+      elements: {
+        reference: floating.refs?.reference?.current || null,
+        floating: floating.refs?.floating?.current || null,
+        domReference: floating.refs?.reference?.current || null,
+      },
+      dataRef,
+    }
+
+    // get coordinated delay from the delay group
+    const { delay: delayContext, currentId } = useDelayGroup(interactionContext, { id })
+    // use coordinated delay only when actively in a group with another tooltip showing
     const isInActiveGroup = currentId != null && typeof delayContext === 'object'
     const delayOut = isInActiveGroup ? delayContext : delay
 
     const { getReferenceProps, getFloatingProps } = useInteractions([
-      useHover(floating.context, {
+      useHover(interactionContext, {
         delay: delayOut,
         restMs,
       }),
-      useFocus(floating.context, focus),
-      useRole(floating.context, { role: 'tooltip' }),
+      useFocus(interactionContext, focus),
+      useRole(interactionContext, { role: 'tooltip' }),
     ])
     return {
       ...floating,

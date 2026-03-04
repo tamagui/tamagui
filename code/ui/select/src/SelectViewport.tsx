@@ -1,4 +1,3 @@
-import { FloatingFocusManager } from '@floating-ui/react'
 import { AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -125,6 +124,8 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
       ...floatingProps
     } = itemContext.interactions.getFloatingProps()
 
+    // FloatingFocusManager removed — SelectContent already wraps with FocusScope
+    // that handles focus trapping and auto-focus
     return (
       <>
         {!disableScroll && !props.unstyled && (
@@ -136,26 +137,20 @@ export const SelectViewport = SelectViewportFrame.styleable<SelectViewportExtraP
         )}
         <AnimatePresence>
           {context.open ? (
-            <FloatingFocusManager
-              context={context.floatingContext!}
-              modal={false}
-              initialFocus={-1}
+            <SelectViewportFrame
+              key="select-viewport"
+              size={itemContext.size}
+              role="presentation"
+              {...viewportProps}
+              {...style}
+              {...floatingProps}
+              {...(!props.unstyled && {
+                overflowY: disableScroll ? undefined : (style.overflow ?? 'auto'),
+              })}
+              ref={composedRefs}
             >
-              <SelectViewportFrame
-                key="select-viewport"
-                size={itemContext.size}
-                role="presentation"
-                {...viewportProps}
-                {...style}
-                {...floatingProps}
-                {...(!props.unstyled && {
-                  overflowY: disableScroll ? undefined : (style.overflow ?? 'auto'),
-                })}
-                ref={composedRefs}
-              >
-                {lazyMounted ? children : null}
-              </SelectViewportFrame>
-            </FloatingFocusManager>
+              {lazyMounted ? children : null}
+            </SelectViewportFrame>
           ) : null}
         </AnimatePresence>
 

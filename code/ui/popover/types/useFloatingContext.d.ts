@@ -1,4 +1,4 @@
-import type { UseFloatingOptions } from '@floating-ui/react';
+import type { UseFloatingOptions } from '@tamagui/floating';
 export declare const useFloatingContext: ({ open, setOpen, disable, disableFocus, hoverable, }: {
     open: any;
     setOpen: any;

@@ -107,7 +107,7 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
     }, import("@tamagui/core").StaticConfigPublic>;
     ScrollDownButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
     ScrollUpButton: React.ForwardRefExoticComponent<import("./types").SelectScrollButtonProps & React.RefAttributes<TamaguiElement>>;
-    Trigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps, "disabled" | "size" | "unstyled" | keyof import("@tamagui/core").StackStyleBase | "active" | "variant"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    Trigger: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps, "disabled" | "size" | "unstyled" | keyof import("@tamagui/core").StackStyleBase | "variant" | "active"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         size?: SizeTokens | undefined;
         variant?: "outlined" | undefined;
         disabled?: boolean | undefined;
