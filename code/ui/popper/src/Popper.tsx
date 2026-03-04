@@ -652,15 +652,16 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       }
     }, [needsMeasure, animatePos, x, y])
 
-    // track whether we've ever been positioned. floating-ui resets isPositioned
-    // to false when open changes to false (e.g. hoverable safePolygon briefly
-    // closing). without this, the brief close disables animation and causes
-    // position jumps when the popover reopens at the new trigger.
+    // track whether floating-ui has positioned us since mount. resets on
+    // remount (fresh ref) but persists across close/reopen when component
+    // stays mounted (e.g. keepChildrenMounted, AnimatePresence exit).
     const hasBeenPositioned = React.useRef(false)
     const lastGoodPosition = React.useRef({ x: 0, y: 0 })
-    if (isPositioned && (x !== 0 || y !== 0)) {
+    if (isPositioned) {
       hasBeenPositioned.current = true
-      lastGoodPosition.current = { x, y }
+      if (x !== 0 || y !== 0) {
+        lastGoodPosition.current = { x, y }
+      }
     }
 
     // when floating-ui resets (close/reopen cycle), use the last known good
@@ -672,14 +673,16 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
     const effectiveX = useLastPosition ? lastGoodPosition.current.x : x
     const effectiveY = useLastPosition ? lastGoodPosition.current.y : y
 
-    // only hide before the very first positioning
-    const hide = !hasBeenPositioned.current && effectiveX === 0 && effectiveY === 0
+    // hide until first positioning after mount. on remount hasBeenPositioned
+    // is false so we hide even if x/y are stale from the previous open cycle
+    // (floating-ui doesn't reset x/y on close, only isPositioned).
+    const hide = !hasBeenPositioned.current
 
     const disableAnimationProp =
       // if they want to animate also when re-positioning allow it
       animatePos === 'even-when-repositioning'
         ? needsMeasure
-        : (!hasBeenPositioned.current && !isPositioned) || needsMeasure
+        : (!hasBeenPositioned.current || !isPositioned) || needsMeasure
 
     const [disableAnimation, setDisableAnimation] = React.useState(disableAnimationProp)
 

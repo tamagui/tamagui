@@ -16,10 +16,9 @@ body {
   scrollbar-color: #b1b1b1 transparent;
 }
 
+/* font flickering all the time on media query changes */
 * {
-  transition-property:
-    transform, opacity, background-color, border-color, color, box-shadow, width, height,
-    margin, padding;
+  transition: none;
 }
 
 body {
