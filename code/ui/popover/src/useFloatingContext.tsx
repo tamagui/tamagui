@@ -81,7 +81,9 @@ export const useFloatingContext = ({
         setOpen(val, type)
       }
 
-      const floating = useFloatingRaw(props) as any
+      // pass open so floating-ui resets isPositioned on close — without this,
+      // isPositioned stays true and the animation driver slides from old position
+      const floating = useFloatingRaw({ ...props, open: openRef.current }) as any
       const currentHoverable = hoverableRef.current
 
       const dataRef = React.useRef<{ openEvent?: Event; placement?: string }>({})

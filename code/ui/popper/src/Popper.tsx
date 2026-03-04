@@ -662,6 +662,7 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       hasBeenPositioned.current = true
       lastGoodPosition.current = { x, y }
     }
+
     // when floating-ui resets (close/reopen cycle), use the last known good
     // position instead of 0,0 to prevent the animation driver from animating
     // from origin or jumping. only use cached position when floating-ui
