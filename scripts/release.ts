@@ -602,4 +602,68 @@ async function run() {
   }
 }
 
-run()
+// --into <dir>: quick local release, packs each package and unpacks into target node_modules
+const intoIdx = process.argv.indexOf('--into')
+if (intoIdx !== -1) {
+  const targetArg = process.argv[intoIdx + 1]
+  if (!targetArg) {
+    console.error('Missing directory argument for --into')
+    process.exit(1)
+  }
+  const targetDir = path.resolve(targetArg.replace(/^~/, process.env.HOME!))
+
+  ;(async () => {
+    const packages = await getWorkspacePackages()
+    const tmpDir = `/tmp/tamagui-release-into`
+    await ensureDir(tmpDir)
+
+    let released = 0
+
+    await pMap(
+      packages,
+      async ({ name, location }) => {
+        const destDir = join(targetDir, 'node_modules', name)
+        if (!(await fs.pathExists(destDir))) return
+
+        const cwd = path.resolve(location)
+
+        try {
+          await spawnify(`npm pack --pack-destination ${tmpDir}`, {
+            cwd,
+            avoidLog: true,
+          })
+
+          // npm pack names files based on version in package.json, find the actual file
+          const files = await fs.readdir(tmpDir)
+          const prefix = name.replace('@', '').replace('/', '-')
+          const packed = files.find((f) => f.startsWith(prefix) && f.endsWith('.tgz'))
+
+          if (!packed) {
+            console.warn(`  skip ${name}: pack produced no tgz`)
+            return
+          }
+
+          const actualTgz = join(tmpDir, packed)
+
+          // clear destination and extract
+          await spawnify(
+            `tar -xzf ${actualTgz} -C ${destDir} --strip-components=1`,
+            { avoidLog: true }
+          )
+
+          await fs.remove(actualTgz)
+          released++
+          console.info(`  ✓ ${name}`)
+        } catch (err) {
+          console.warn(`  ✗ ${name}: ${err}`)
+        }
+      },
+      { concurrency: 10 }
+    )
+
+    console.info(`\n✅ Released ${released} packages into ${targetDir}`)
+    process.exit(0)
+  })()
+} else {
+  run()
+}
