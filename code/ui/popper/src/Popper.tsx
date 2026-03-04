@@ -9,6 +9,7 @@ import {
   getVariableValue,
   styled,
 } from '@tamagui/core'
+import type { PopupTriggerMap } from '@tamagui/floating'
 import type {
   Coords,
   Middleware,
@@ -76,7 +77,7 @@ export type PopperContextSlowValue = PopperContextShared &
   > & {
     onHoverReference?: (event: any) => void
     onLeaveReference?: () => void
-    triggerElements?: { add(id: string, el: Element): void; delete(id: string): void }
+    triggerElements?: PopupTriggerMap
   }
 
 export const PopperContextSlow = createStyledContext<PopperContextSlowValue>(
@@ -673,9 +674,14 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
     // position jumps when the popover reopens at the new trigger.
     const hasBeenPositioned = React.useRef(false)
     const lastGoodPosition = React.useRef({ x: 0, y: 0 })
-    if (isPositioned && (x !== 0 || y !== 0)) {
-      hasBeenPositioned.current = true
+    if (x !== 0 || y !== 0) {
+      // always track the latest computed position so that when a new reference
+      // is set while closed (e.g. content → gap → different trigger), the
+      // effectiveX/Y fallback uses the fresh position, not the stale one
       lastGoodPosition.current = { x, y }
+      if (isPositioned) {
+        hasBeenPositioned.current = true
+      }
     }
 
     // when floating-ui resets (close/reopen cycle), use the last known good

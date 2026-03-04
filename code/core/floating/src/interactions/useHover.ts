@@ -283,9 +283,14 @@ export function useHover(
     }
 
     function onFloatingMouseLeave(event: MouseEvent) {
-      if (!isClickLikeOpenEvent()) {
-        closeWithDelay(event, false)
+      if (isClickLikeOpenEvent()) return
+
+      // moving to a sibling trigger in a multi-trigger pattern — suppress close
+      if (context.triggerElements?.hasElement(event.relatedTarget as Element)) {
+        return
       }
+
+      closeWithDelay(event, false)
     }
 
     if (isElement(elements.domReference)) {

@@ -24,7 +24,11 @@ export function createFloatingEvents(): FloatingEvents {
       set.add(handler)
     },
     off(event, handler) {
-      listeners.get(event)?.delete(handler)
+      const set = listeners.get(event)
+      if (set) {
+        set.delete(handler)
+        if (set.size === 0) listeners.delete(event)
+      }
     },
   }
 }
