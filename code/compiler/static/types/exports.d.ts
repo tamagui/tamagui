@@ -11,5 +11,6 @@ export * from './extractor/loadTamagui';
 export * from './extractor/watchTamaguiConfig';
 export * from './extractor/createLogger';
 export * from './registerRequire';
+export { detectModuleFormat, clearFormatCache } from './extractor/detectModuleFormat';
 export * from './getPragmaOptions';
 //# sourceMappingURL=exports.d.ts.map

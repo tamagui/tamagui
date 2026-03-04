@@ -15,7 +15,7 @@ import {
   getBundledConfig,
   getLoadedConfig,
   hasBundledConfigChanged,
-  loadComponents,
+  loadComponentsSync,
   writeTamaguiCSS,
 } from './bundleConfig'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
@@ -288,7 +288,7 @@ export function loadTamaguiSync({
       }
 
       // components
-      const components = loadComponents(props, forceExports)
+      const components = loadComponentsSync(props, forceExports)
       if (!components) {
         throw new Error(`No components loaded`)
       }

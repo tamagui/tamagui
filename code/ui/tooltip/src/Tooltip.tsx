@@ -122,7 +122,6 @@ export type TooltipProps = ScopedProps<
   }
 >
 
-
 const PreventTooltipAnimationContext = React.createContext(false)
 const TooltipZIndexContext = React.createContext<number | undefined>(undefined)
 

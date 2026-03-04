@@ -30,7 +30,13 @@ export function useRole(
   )
 
   const ariaRole = (componentRoleToAriaRoleMap.get(role) ?? role) as
-    | 'tooltip' | 'dialog' | 'alertdialog' | 'menu' | 'listbox' | 'grid' | 'tree'
+    | 'tooltip'
+    | 'dialog'
+    | 'alertdialog'
+    | 'menu'
+    | 'listbox'
+    | 'grid'
+    | 'tree'
     | false
 
   const reference: ElementProps['reference'] = React.useMemo(() => {

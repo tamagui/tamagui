@@ -13,8 +13,7 @@ function isPointInPolygon(point: Point, polygon: Polygon) {
   for (let i = 0, j = length - 1; i < length; j = i++) {
     const [xi, yi] = polygon[i] || [0, 0]
     const [xj, yj] = polygon[j] || [0, 0]
-    const intersect =
-      yi >= y !== yj >= y && x <= ((xj - xi) * (y - yi)) / (yj - yi) + xi
+    const intersect = yi >= y !== yj >= y && x <= ((xj - xi) * (y - yi)) / (yj - yi) + xi
     if (intersect) {
       isInside = !isInside
     }
@@ -45,19 +44,14 @@ export type { SafePolygonOptions }
 // unlike @floating-ui/react, we do NOT add a documentElement mouseleave
 // listener, which fixes the window-blur-closing-popover bug.
 export function safePolygon(options: SafePolygonOptions = {}): HandleCloseFn {
-  const {
-    buffer = 0.5,
-    blockPointerEvents = false,
-    requireIntent = true,
-  } = options
+  const { buffer = 0.5, blockPointerEvents = false, requireIntent = true } = options
 
   const timeoutRef = { current: -1 }
 
   let hasLanded = false
   let lastX: number | null = null
   let lastY: number | null = null
-  let lastCursorTime =
-    typeof performance !== 'undefined' ? performance.now() : 0
+  let lastCursorTime = typeof performance !== 'undefined' ? performance.now() : 0
 
   function getCursorSpeed(x: number, y: number): number | null {
     const currentTime = performance.now()

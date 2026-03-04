@@ -28,9 +28,7 @@ test.describe('Select Inner Positioning', () => {
     const bananaCenter = bananaBox!.y + bananaBox!.height / 2
 
     // allow some tolerance for borders/padding
-    expect(Math.abs(triggerCenter - bananaCenter)).toBeLessThan(
-      triggerBox!.height
-    )
+    expect(Math.abs(triggerCenter - bananaCenter)).toBeLessThan(triggerBox!.height)
   })
 
   test('dropdown has constrained max-height', async ({ page }) => {

@@ -17,10 +17,7 @@ export interface InnerProps {
   scrollRef?: React.RefObject<HTMLElement | null>
 }
 
-function getArgsWithCustomFloatingHeight(
-  state: MiddlewareState,
-  height: number
-) {
+function getArgsWithCustomFloatingHeight(state: MiddlewareState, height: number) {
   return {
     ...state,
     rects: {
@@ -120,8 +117,7 @@ export const inner = (props: InnerProps): Middleware => ({
     if (onFallbackChange) {
       const shouldFallback =
         scrollEl.offsetHeight <
-          item.offsetHeight *
-            Math.min(minItemsVisible, listRef.current?.length ?? 0) -
+          item.offsetHeight * Math.min(minItemsVisible, listRef.current?.length ?? 0) -
             1 ||
         refOverflow.top >= -referenceOverflowThreshold ||
         refOverflow.bottom >= -referenceOverflowThreshold

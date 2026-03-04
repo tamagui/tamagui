@@ -1,7 +1,11 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { useEvent } from '@tamagui/use-event'
-import type { ElementProps, FloatingInteractionContext, UseInnerOffsetProps } from './types'
+import type {
+  ElementProps,
+  FloatingInteractionContext,
+  UseInnerOffsetProps,
+} from './types'
 
 // ported from floating-ui/react/_deprecated-inner.ts useInnerOffset
 // changes the inner middleware's offset upon wheel events to expand the
@@ -11,12 +15,7 @@ export function useInnerOffset(
   props: UseInnerOffsetProps
 ): ElementProps {
   const { open, elements } = context
-  const {
-    enabled = true,
-    overflowRef,
-    scrollRef,
-    onChange: unstable_onChange,
-  } = props
+  const { enabled = true, overflowRef, scrollRef, onChange: unstable_onChange } = props
 
   const onChange = useEvent(unstable_onChange)
   const controlledScrollingRef = React.useRef(false)

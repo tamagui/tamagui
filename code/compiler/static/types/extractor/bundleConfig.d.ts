@@ -30,7 +30,9 @@ export declare const getLoadedConfig: () => TamaguiInternalConfig | null;
 export declare function getBundledConfig(props: TamaguiOptions, rebuild?: boolean): Promise<any>;
 export declare function bundleConfig(props: TamaguiOptions): Promise<any>;
 export declare function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig): Promise<void>;
-export declare function loadComponents(props: TamaguiOptions, forceExports?: boolean): LoadedComponents[];
-export declare function loadComponentsInner(props: TamaguiOptions, forceExports?: boolean): null | LoadedComponents[];
+export declare function loadComponents(props: TamaguiOptions, forceExports?: boolean): Promise<LoadedComponents[]>;
+export declare function loadComponentsSync(props: TamaguiOptions, forceExports?: boolean): LoadedComponents[];
+export declare function loadComponentsInner(props: TamaguiOptions, forceExports?: boolean): Promise<null | LoadedComponents[]>;
+export declare function loadComponentsInnerSync(props: TamaguiOptions, forceExports?: boolean): null | LoadedComponents[];
 export {};
 //# sourceMappingURL=bundleConfig.d.ts.map

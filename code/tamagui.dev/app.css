@@ -16,6 +16,12 @@ body {
   scrollbar-color: #b1b1b1 transparent;
 }
 
+* {
+  transition-property:
+    transform, opacity, background-color, border-color, color, box-shadow, width, height,
+    margin, padding;
+}
+
 body {
   /* fallback to ThemeNameEffect */
   background: var(--color1);

@@ -322,15 +322,7 @@ export function useHover(
         }
       }
     }
-  }, [
-    elements,
-    enabled,
-    context,
-    mouseOnly,
-    move,
-    open,
-    dataRef,
-  ])
+  }, [elements, enabled, context, mouseOnly, move, open, dataRef])
 
   // block pointer-events of every element other than the reference and floating
   // while the floating element is open and has a handleClose handler with
