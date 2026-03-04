@@ -210,7 +210,6 @@ export function useHover(
           },
           onClose() {
             clearPointerEvents()
-            cleanupMouseMoveHandler()
             if (!isClickLikeOpenEvent()) {
               closeWithDelay(event, true, 'safe-polygon')
             }
@@ -262,7 +261,6 @@ export function useHover(
         },
         onClose() {
           clearPointerEvents()
-          cleanupMouseMoveHandler()
           if (!isClickLikeOpenEvent()) {
             closeWithDelay(event)
           }

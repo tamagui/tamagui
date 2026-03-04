@@ -159,7 +159,18 @@ export const useFloatingContext = ({
         ...floating,
         open: openRef.current,
         getReferenceProps,
-        getFloatingProps,
+        getFloatingProps: currentHoverable
+          ? (props: any) => {
+              const floatingProps = getFloatingProps(props)
+              return {
+                ...floatingProps,
+                onMouseEnter: (e: any) => {
+                  pendingCloseRef.current = false
+                  floatingProps?.onMouseEnter?.(e)
+                },
+              }
+            }
+          : getFloatingProps,
 
         onHoverReference: currentHoverable
           ? (_event: any) => {

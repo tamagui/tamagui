@@ -212,6 +212,11 @@ export function safePolygon(options: SafePolygonOptions = {}): HandleCloseFn {
         return
       }
 
+      // cursor in reference bounding box but outside DOM element (rounded corners)
+      if (!isOverReferenceEl && isOverReferenceRect && !isLeave) {
+        return
+      }
+
       // prevent overlapping floating element from being stuck in an open-close
       // loop: https://github.com/floating-ui/floating-ui/issues/1910
       if (
@@ -452,6 +457,18 @@ export function safePolygon(options: SafePolygonOptions = {}): HandleCloseFn {
         return close()
       }
 
+      // polygon check first — inside polygon = safe
+      if (isPointInPolygon([clientX, clientY], poly)) {
+        if (!hasLanded && requireIntent) {
+          timeoutRef.current = window.setTimeout(() => {
+            if (__debug) debugClear()
+            close()
+          }, 40) as unknown as number
+        }
+        return
+      }
+
+      // speed check only applies outside polygon
       if (!isLeave && requireIntent) {
         const cursorSpeed = getCursorSpeed(clientX, clientY)
         const cursorSpeedThreshold = 0.1
@@ -461,15 +478,9 @@ export function safePolygon(options: SafePolygonOptions = {}): HandleCloseFn {
         }
       }
 
-      if (!isPointInPolygon([clientX, clientY], poly)) {
-        if (__debug) debugClear()
-        close()
-      } else if (!hasLanded && requireIntent) {
-        timeoutRef.current = window.setTimeout(() => {
-          if (__debug) debugClear()
-          close()
-        }, 40) as unknown as number
-      }
+      // outside polygon — close
+      if (__debug) debugClear()
+      close()
     }
   }
 
