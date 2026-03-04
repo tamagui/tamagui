@@ -3,8 +3,10 @@ import { setupPage } from './test-utils'
 
 /**
  * Global tooltip pattern: single scoped tooltip with triggers in opposite corners.
- * When switching triggers, the tooltip should snap to the new position,
- * NOT slide across the screen.
+ *
+ * Two behaviors to verify:
+ * 1. While open, switching triggers → smooth position animation
+ * 2. Close at A, reopen at B → snap position (animateOnly: []), then animate in
  */
 
 test.describe('Tooltip Global Pattern', () => {
@@ -19,11 +21,12 @@ test.describe('Tooltip Global Pattern', () => {
     await page.waitForTimeout(500)
   })
 
-  test('scoped tooltip should not slide across screen when switching far-apart triggers', async ({
+  test('while open: smoothly animates position when switching triggers', async ({
     page,
   }) => {
     const triggerTL = page.locator('[data-testid="trigger-tl"]')
     const triggerBR = page.locator('[data-testid="trigger-br"]')
+    const content = page.locator('[data-testid="global-tip-content"]')
 
     const tlBox = await triggerTL.boundingBox()
     const brBox = await triggerBR.boundingBox()
@@ -39,36 +42,113 @@ test.describe('Tooltip Global Pattern', () => {
       y: brBox!.y + brBox!.height / 2,
     }
 
-    // hover top-left trigger: move then nudge to ensure useHover picks it up
+    // hover top-left trigger to open
     await page.mouse.move(tlCenter.x, tlCenter.y)
     await page.waitForTimeout(100)
     await page.mouse.move(tlCenter.x + 1, tlCenter.y + 1)
     await page.waitForTimeout(800)
+    await expect(content).toBeVisible({ timeout: 3000 })
+    await page.waitForTimeout(300)
 
-    // verify tooltip opened
-    const tooltipWrapper = page.locator('[data-popper-animate-position]')
-    const isVisible = await tooltipWrapper.isVisible().catch(() => false)
-
-    if (!isVisible) {
-      // fallback: try content testid
-      const content = page.locator('[data-testid="global-tip-content"]')
-      await expect(content).toBeVisible({ timeout: 2000 })
-    }
-
-    // get stable tooltip position near top-left
-    const posA = await page.evaluate(() => {
-      const el = document.querySelector('[data-popper-animate-position]') as HTMLElement
-      if (!el) return null
+    const posA = await content.evaluate((el) => {
       const rect = el.getBoundingClientRect()
       return { x: rect.left, y: rect.top }
     })
-    expect(posA, 'Tooltip should be visible at trigger A position').toBeTruthy()
 
-    // start tracking positions at 60fps
+    // track positions
     await page.evaluate(() => {
       ;(window as any).__positions = []
       const track = () => {
-        const el = document.querySelector('[data-popper-animate-position]') as HTMLElement
+        const el = document.querySelector('[data-testid="global-tip-content"]')
+        if (el) {
+          const rect = el.getBoundingClientRect()
+          ;(window as any).__positions.push({ x: rect.left, y: rect.top, time: Date.now() })
+        }
+        ;(window as any).__rafId = requestAnimationFrame(track)
+      }
+      ;(window as any).__rafId = requestAnimationFrame(track)
+    })
+
+    // switch to bottom-right (tooltip stays open via triggerElements)
+    await page.mouse.move(brCenter.x, brCenter.y)
+    await page.waitForTimeout(100)
+    await page.mouse.move(brCenter.x + 1, brCenter.y + 1)
+    await page.waitForTimeout(400)
+
+    await page.evaluate(() => cancelAnimationFrame((window as any).__rafId))
+
+    const posB = await content.evaluate((el) => {
+      const rect = el.getBoundingClientRect()
+      return { x: rect.left, y: rect.top }
+    })
+
+    const positions: { x: number; y: number }[] = await page.evaluate(
+      () => (window as any).__positions
+    )
+
+    const xDiff = Math.abs(posB.x - posA.x)
+    expect(xDiff).toBeGreaterThan(100)
+
+    const minX = Math.min(posA.x, posB.x)
+    const maxX = Math.max(posA.x, posB.x)
+    const margin = xDiff * 0.15
+
+    const intermediatePositions = positions.filter(
+      (p) => p.x > minX + margin && p.x < maxX - margin
+    )
+
+    expect(
+      intermediatePositions.length,
+      `Should smoothly animate while open. ` +
+        `posA.x=${posA.x.toFixed(1)}, posB.x=${posB.x.toFixed(1)}, ` +
+        `intermediate=${intermediatePositions.length}/${positions.length}`
+    ).toBeGreaterThan(2)
+  })
+
+  test('close then reopen: snaps position, does not slide from old position', async ({
+    page,
+  }) => {
+    const triggerTL = page.locator('[data-testid="trigger-tl"]')
+    const triggerBR = page.locator('[data-testid="trigger-br"]')
+    const content = page.locator('[data-testid="global-tip-content"]')
+
+    const tlBox = await triggerTL.boundingBox()
+    const brBox = await triggerBR.boundingBox()
+    expect(tlBox).toBeTruthy()
+    expect(brBox).toBeTruthy()
+
+    const tlCenter = {
+      x: tlBox!.x + tlBox!.width / 2,
+      y: tlBox!.y + tlBox!.height / 2,
+    }
+    const brCenter = {
+      x: brBox!.x + brBox!.width / 2,
+      y: brBox!.y + brBox!.height / 2,
+    }
+
+    // open at top-left
+    await page.mouse.move(tlCenter.x, tlCenter.y)
+    await page.waitForTimeout(100)
+    await page.mouse.move(tlCenter.x + 1, tlCenter.y + 1)
+    await page.waitForTimeout(800)
+    await expect(content).toBeVisible({ timeout: 3000 })
+    await page.waitForTimeout(300)
+
+    const posA = await content.evaluate((el) => {
+      const rect = el.getBoundingClientRect()
+      return { x: rect.left, y: rect.top }
+    })
+
+    // close: move mouse far away
+    await page.mouse.move(400, 300)
+    await page.waitForTimeout(800)
+    await expect(content).not.toBeVisible({ timeout: 3000 })
+
+    // start tracking
+    await page.evaluate(() => {
+      ;(window as any).__positions = []
+      const track = () => {
+        const el = document.querySelector('[data-testid="global-tip-content"]')
         if (el) {
           const rect = el.getBoundingClientRect()
           const style = getComputedStyle(el)
@@ -84,51 +164,40 @@ test.describe('Tooltip Global Pattern', () => {
       ;(window as any).__rafId = requestAnimationFrame(track)
     })
 
-    // switch to bottom-right trigger
+    // reopen at bottom-right
     await page.mouse.move(brCenter.x, brCenter.y)
     await page.waitForTimeout(100)
     await page.mouse.move(brCenter.x + 1, brCenter.y + 1)
-    await page.waitForTimeout(600)
+    await page.waitForTimeout(800)
+    await expect(content).toBeVisible({ timeout: 3000 })
 
-    // stop tracking
     await page.evaluate(() => cancelAnimationFrame((window as any).__rafId))
 
-    // get stable tooltip position near bottom-right
-    const posB = await page.evaluate(() => {
-      const el = document.querySelector('[data-popper-animate-position]') as HTMLElement
-      if (!el) return null
+    const posB = await content.evaluate((el) => {
       const rect = el.getBoundingClientRect()
       return { x: rect.left, y: rect.top }
     })
-    expect(posB, 'Tooltip should be visible at trigger B position').toBeTruthy()
 
-    const positions: { x: number; y: number; opacity: number; time: number }[] =
-      await page.evaluate(() => (window as any).__positions)
+    const positions: { x: number; y: number; opacity: number }[] = await page.evaluate(
+      () => (window as any).__positions
+    )
 
-    // the two trigger positions should be far apart (>200px diagonal)
-    const totalDistance = Math.sqrt((posB!.x - posA!.x) ** 2 + (posB!.y - posA!.y) ** 2)
+    const totalDistance = Math.sqrt((posB.x - posA.x) ** 2 + (posB.y - posA.y) ** 2)
     expect(totalDistance).toBeGreaterThan(200)
 
-    // check: no VISIBLE position should be far from both A and B
-    // if tooltip slides, we'll see positions in the "middle zone" between A and B
+    // no VISIBLE frame should be in the "middle zone" between A and B
+    // the tooltip should snap to B's position, not slide from A
     const threshold = totalDistance * 0.25
     const middlePositions = positions.filter((p) => {
       if (p.opacity < 0.1) return false
-      const distFromA = Math.sqrt((p.x - posA!.x) ** 2 + (p.y - posA!.y) ** 2)
-      const distFromB = Math.sqrt((p.x - posB!.x) ** 2 + (p.y - posB!.y) ** 2)
+      const distFromA = Math.sqrt((p.x - posA.x) ** 2 + (p.y - posA.y) ** 2)
+      const distFromB = Math.sqrt((p.x - posB.x) ** 2 + (p.y - posB.y) ** 2)
       return distFromA > threshold && distFromB > threshold
     })
 
-    if (middlePositions.length > 0) {
-      console.log(
-        `Found ${middlePositions.length} middle positions (sliding detected)`,
-        middlePositions.slice(0, 5)
-      )
-    }
-
     expect(
       middlePositions.length,
-      `Tooltip slid across screen: ${middlePositions.length} frames in middle zone`
+      `Close→reopen should snap, not slide. Found ${middlePositions.length} frames in middle zone`
     ).toBeLessThanOrEqual(2)
   })
 })

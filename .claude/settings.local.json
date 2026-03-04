@@ -32,9 +32,9 @@
     ],
     "deny": []
   },
+  "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "XcodeBuildMCP",
     "native-devtools"
-  ],
-  "enableAllProjectMcpServers": true
+  ]
 }

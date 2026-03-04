@@ -667,74 +667,33 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       }
     }, [needsMeasure, animatePos, x, y])
 
-    // track whether floating-ui has positioned us since mount. resets on
-    // remount (fresh ref) but persists across close/reopen when component
-    // stays mounted (e.g. keepChildrenMounted, AnimatePresence exit).
+    // track whether we've ever been positioned. floating-ui resets isPositioned
+    // to false when open changes to false (e.g. hoverable safePolygon briefly
+    // closing). without this, the brief close disables animation and causes
+    // position jumps when the popover reopens at the new trigger.
     const hasBeenPositioned = React.useRef(false)
     const lastGoodPosition = React.useRef({ x: 0, y: 0 })
-    if (isPositioned) {
+    if (isPositioned && (x !== 0 || y !== 0)) {
       hasBeenPositioned.current = true
-      if (x !== 0 || y !== 0) {
-        lastGoodPosition.current = { x, y }
-      }
+      lastGoodPosition.current = { x, y }
     }
-
-    // track reference element changes (scoped tooltip/popover switching targets).
-    // when the reference changes while already positioned, disable position
-    // animation so content snaps to the new position instead of sliding across.
-    const referenceElement = refs.reference?.current
-    const prevReferenceRef = React.useRef<unknown>(null)
-    const [referenceChanging, setReferenceChanging] = React.useState(false)
-
-    if (referenceElement !== prevReferenceRef.current) {
-      if (
-        animatePos &&
-        animatePos !== 'even-when-repositioning' &&
-        prevReferenceRef.current !== null &&
-        referenceElement !== null &&
-        hasBeenPositioned.current
-      ) {
-        setReferenceChanging(true)
-      }
-      prevReferenceRef.current = referenceElement
-    }
-
-    // re-enable position animation after the snap settles
-    React.useEffect(() => {
-      if (referenceChanging) {
-        let raf1: number
-        let raf2: number
-        raf1 = requestAnimationFrame(() => {
-          raf2 = requestAnimationFrame(() => {
-            setReferenceChanging(false)
-          })
-        })
-        return () => {
-          cancelAnimationFrame(raf1)
-          cancelAnimationFrame(raf2)
-        }
-      }
-    }, [referenceChanging])
 
     // when floating-ui resets (close/reopen cycle), use the last known good
     // position instead of 0,0 to prevent the animation driver from animating
-    // from origin or jumping. only use cached position when floating-ui
-    // returns 0,0 (not yet positioned), not when it has actual values.
-    const useLastPosition =
-      !isPositioned && hasBeenPositioned.current && x === 0 && y === 0
-    const effectiveX = useLastPosition ? lastGoodPosition.current.x : x
-    const effectiveY = useLastPosition ? lastGoodPosition.current.y : y
+    // from origin or jumping
+    const effectiveX =
+      !isPositioned && hasBeenPositioned.current ? lastGoodPosition.current.x : x
+    const effectiveY =
+      !isPositioned && hasBeenPositioned.current ? lastGoodPosition.current.y : y
 
-    // hide until first positioning after mount. on remount hasBeenPositioned
-    // is false so we hide even if x/y are stale from the previous open cycle
-    // (floating-ui doesn't reset x/y on close, only isPositioned).
-    const hide = !hasBeenPositioned.current
+    // only hide before the very first positioning
+    const hide = !hasBeenPositioned.current && effectiveX === 0 && effectiveY === 0
 
     const disableAnimationProp =
       // if they want to animate also when re-positioning allow it
       animatePos === 'even-when-repositioning'
         ? needsMeasure
-        : (!hasBeenPositioned.current || !isPositioned) || needsMeasure
+        : (!hasBeenPositioned.current && !isPositioned) || needsMeasure
 
     const [disableAnimation, setDisableAnimation] = React.useState(disableAnimationProp)
 
@@ -758,10 +717,8 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       ...(animatePos && {
         transition: rest.transition,
         // animateOnly: [] turns off transitions while keeping styles applied,
-        // letting the element move to its position silently before animations start.
-        // referenceChanging is checked directly (not via disableAnimation state) to
-        // ensure it takes effect on the same render cycle as the reference change.
-        animateOnly: disableAnimation || referenceChanging ? [] : rest.animateOnly,
+        // letting the element move to its position silently before animations start
+        animateOnly: disableAnimation ? [] : rest.animateOnly,
         animatePresence: false,
       }),
     }

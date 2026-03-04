@@ -221,7 +221,9 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   }, [open, events])
 
   const useFloatingFn: UseFloatingFn = (props: any) => {
-    const floating = useFloatingRaw(props) as any
+    // pass open so floating-ui resets isPositioned on close — without this,
+    // isPositioned stays true and the animation driver slides from old position
+    const floating = useFloatingRaw({ ...props, open }) as any
 
     // construct interaction context
     const dataRef = React.useRef<{ openEvent?: Event; placement?: string }>({})
