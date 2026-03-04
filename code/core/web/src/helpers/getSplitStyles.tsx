@@ -775,13 +775,7 @@ export const getSplitStyles: StyleSplitter = (
 
         // for theme media ($theme-light, $theme-dark), generate CSS classes for proper SSR
         // when noClass is set (inline animation drivers), de-opt to inline styles so the
-        // animation driver manages the theme-appropriate value directly - but if animateOnly
-        // is set, non-animated properties can stay as CSS classes for proper theme switching
-        const shouldDoClassesForThisMedia =
-          shouldDoClasses ||
-          (isWeb && isMedia === 'theme' && (!styleProps.noClass || !!props.animateOnly))
-
-        if (shouldDoClassesForThisMedia) {
+        if (shouldDoClasses) {
           const mediaStyle = getSubStyle(styleState, key, val, false)
           const mediaStyles = getCSSStylesAtomic(mediaStyle)
 
@@ -1208,10 +1202,7 @@ export const getSplitStyles: StyleSplitter = (
         let hasProps = false
         const animateOnly = props.animateOnly as string[] | undefined
         for (const key in styleState.style) {
-          if (
-            key in nonAnimatableStyleProps ||
-            (animateOnly && !animateOnly.includes(key))
-          ) {
+          if (key in nonAnimatableStyleProps) {
             toConvert[key] = styleState.style[key]
             delete styleState.style[key]
             hasProps = true
