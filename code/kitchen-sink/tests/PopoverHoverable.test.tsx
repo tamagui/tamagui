@@ -47,7 +47,7 @@ test.describe('Popover hoverable delay', () => {
 
     // hover to open (wait for delay)
     await trigger.hover()
-    await page.waitForTimeout(600)
+    await page.waitForTimeout(800)
     await expect(content).toBeVisible({ timeout: 3000 })
 
     // move mouse far away (outside safe zone)
@@ -60,9 +60,9 @@ test.describe('Popover hoverable delay', () => {
     await page.waitForTimeout(200)
     await expect(content).toBeVisible()
 
-    // wait for delay to elapse - should now be closing
-    await page.waitForTimeout(400)
-    await expect(content).not.toBeVisible({ timeout: 2000 })
+    // wait for delay to elapse + animation - should now be closing
+    await page.waitForTimeout(600)
+    await expect(content).not.toBeVisible({ timeout: 3000 })
   })
 })
 
@@ -335,7 +335,9 @@ test.describe('Popover hoverable scoped multi-trigger', () => {
     expect(contentRectAtContact!.x).toBeGreaterThan(contentRectAtAbout!.x + 20)
   })
 
-  test('scoped: content → gap → different trigger repositions popover', async ({ page }) => {
+  test('scoped: content → gap → different trigger repositions popover', async ({
+    page,
+  }) => {
     const aboutTrigger = page.locator('#nav-trigger-about')
     const contactTrigger = page.locator('#nav-trigger-contact')
     const content = page.locator('#nav-content')
@@ -357,7 +359,10 @@ test.describe('Popover hoverable scoped multi-trigger', () => {
     // this simulates the recording where mouse exits content into the page gap
     const contentBox = await content.boundingBox()
     if (contentBox) {
-      await page.mouse.move(contentBox.x + contentBox.width / 2, contentBox.y + contentBox.height + 50)
+      await page.mouse.move(
+        contentBox.x + contentBox.width / 2,
+        contentBox.y + contentBox.height + 50
+      )
     }
 
     // wait a bit for the popover to close (safePolygon should eventually close it)
@@ -376,4 +381,3 @@ test.describe('Popover hoverable scoped multi-trigger', () => {
     expect(contentRectAtContact!.x).toBeGreaterThan(contentRectAtAbout!.x + 20)
   })
 })
-

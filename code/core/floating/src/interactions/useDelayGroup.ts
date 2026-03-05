@@ -88,11 +88,7 @@ export function useDelayGroup(
   // when another tooltip in the group opens (currentId changed to someone else),
   // close this one so only one tooltip is visible at a time
   React.useEffect(() => {
-    if (
-      groupContext.currentId != null &&
-      groupContext.currentId !== id &&
-      context.open
-    ) {
+    if (groupContext.currentId != null && groupContext.currentId !== id && context.open) {
       context.onOpenChange(false)
     }
   }, [groupContext.currentId, id, context.open])

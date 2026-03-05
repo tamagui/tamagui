@@ -62,7 +62,11 @@ test.describe('Tooltip Global Pattern', () => {
         const el = document.querySelector('[data-testid="global-tip-content"]')
         if (el) {
           const rect = el.getBoundingClientRect()
-          ;(window as any).__positions.push({ x: rect.left, y: rect.top, time: Date.now() })
+          ;(window as any).__positions.push({
+            x: rect.left,
+            y: rect.top,
+            time: Date.now(),
+          })
         }
         ;(window as any).__rafId = requestAnimationFrame(track)
       }

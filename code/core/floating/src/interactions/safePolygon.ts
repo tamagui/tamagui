@@ -45,7 +45,12 @@ export type { SafePolygonOptions }
 // listener, which fixes the window-blur-closing-popover bug.
 // debug overlay — renders polygon + trough as SVG on top of everything
 let debugSvg: SVGSVGElement | null = null
-function debugDrawPolygon(polygon: Point[], trough: Point[], cursor: Point, anchor: Point) {
+function debugDrawPolygon(
+  polygon: Point[],
+  trough: Point[],
+  cursor: Point,
+  anchor: Point
+) {
   if (!debugSvg) {
     debugSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     debugSvg.id = '__safe-polygon-debug'
@@ -110,8 +115,12 @@ function debugClear() {
 }
 
 export function safePolygon(options: SafePolygonOptions = {}): HandleCloseFn {
-  const { buffer = 0.5, blockPointerEvents = false, requireIntent = true, __debug = false } =
-    options
+  const {
+    buffer = 0.5,
+    blockPointerEvents = false,
+    requireIntent = true,
+    __debug = false,
+  } = options
 
   const timeoutRef = { current: -1 }
 

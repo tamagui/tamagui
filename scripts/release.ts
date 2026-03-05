@@ -646,10 +646,9 @@ if (intoIdx !== -1) {
           const actualTgz = join(tmpDir, packed)
 
           // clear destination and extract
-          await spawnify(
-            `tar -xzf ${actualTgz} -C ${destDir} --strip-components=1`,
-            { avoidLog: true }
-          )
+          await spawnify(`tar -xzf ${actualTgz} -C ${destDir} --strip-components=1`, {
+            avoidLog: true,
+          })
 
           await fs.remove(actualTgz)
           released++

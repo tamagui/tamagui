@@ -250,8 +250,8 @@ describe('getSplitStyles', () => {
     expect(darkResult.style?.backgroundColor).toBe('blue')
 
     // no theme media CSS classes should be generated (de-opted to inline)
-    const themeMediaKey = Object.keys(darkResult.classNames || {}).find(
-      (k) => k.includes('dark')
+    const themeMediaKey = Object.keys(darkResult.classNames || {}).find((k) =>
+      k.includes('dark')
     )
     expect(themeMediaKey).toBeUndefined()
 
@@ -325,8 +325,8 @@ describe('getSplitStyles', () => {
     expect(result.classNames?.backgroundColor).toBeDefined()
 
     // theme media CSS class should also exist
-    const themeMediaKey = Object.keys(result.classNames || {}).find(
-      (k) => k.includes('dark')
+    const themeMediaKey = Object.keys(result.classNames || {}).find((k) =>
+      k.includes('dark')
     )
     expect(themeMediaKey).toBeDefined()
   })

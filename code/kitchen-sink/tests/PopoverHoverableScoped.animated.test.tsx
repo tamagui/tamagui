@@ -23,9 +23,7 @@ test.describe('Popover hoverable scoped position animation', () => {
     await page.waitForLoadState('networkidle')
   })
 
-  test('position smoothly animates when switching between triggers', async ({
-    page,
-  }) => {
+  test('position smoothly animates when switching between triggers', async ({ page }) => {
     const aboutTrigger = page.locator('#nav-trigger-about')
     const contactTrigger = page.locator('#nav-trigger-contact')
     const content = page.locator('#nav-content')
