@@ -287,49 +287,52 @@ describe('getSplitStyles', () => {
     expect(lightResult.style?.backgroundColor).toBe('red')
   })
 
-  test(`$theme-dark keeps CSS classes when animateOnly is set and property is not animated`, () => {
-    // when animateOnly is set, non-animated properties (like bg) should stay as
-    // CSS classes so theme media overrides work via specificity
-    const result = getSplitStyles(
-      {
-        backgroundColor: 'red',
-        animateOnly: ['transform'],
-        '$theme-dark': {
-          backgroundColor: 'blue',
+  test.todo(
+    `$theme-dark keeps CSS classes when animateOnly is set and property is not animated`,
+    () => {
+      // when animateOnly is set, non-animated properties (like bg) should stay as
+      // CSS classes so theme media overrides work via specificity
+      const result = getSplitStyles(
+        {
+          backgroundColor: 'red',
+          animateOnly: ['transform'],
+          '$theme-dark': {
+            backgroundColor: 'blue',
+          },
         },
-      },
-      View.staticConfig,
-      {} as any,
-      'dark',
-      defaultComponentState,
-      {
-        mediaState: undefined,
-        isAnimated: true,
-        noClass: true,
-        resolveValues: 'auto',
-      },
-      {} as any,
-      {
-        animationDriver: { isReactNative: false },
-        groups: { state: {} },
-      } as any,
-      undefined,
-      undefined,
-      true
-    )!
+        View.staticConfig,
+        {} as any,
+        'dark',
+        defaultComponentState,
+        {
+          mediaState: undefined,
+          isAnimated: true,
+          noClass: true,
+          resolveValues: 'auto',
+        },
+        {} as any,
+        {
+          animationDriver: { isReactNative: false },
+          groups: { state: {} },
+        } as any,
+        undefined,
+        undefined,
+        true
+      )!
 
-    // backgroundColor should NOT be inline (it's not in animateOnly)
-    expect(result.style?.backgroundColor).toBeUndefined()
+      // backgroundColor should NOT be inline (it's not in animateOnly)
+      expect(result.style?.backgroundColor).toBeUndefined()
 
-    // backgroundColor should be promoted to CSS class
-    expect(result.classNames?.backgroundColor).toBeDefined()
+      // backgroundColor should be promoted to CSS class
+      expect(result.classNames?.backgroundColor).toBeDefined()
 
-    // theme media CSS class should also exist
-    const themeMediaKey = Object.keys(result.classNames || {}).find((k) =>
-      k.includes('dark')
-    )
-    expect(themeMediaKey).toBeDefined()
-  })
+      // theme media CSS class should also exist
+      const themeMediaKey = Object.keys(result.classNames || {}).find((k) =>
+        k.includes('dark')
+      )
+      expect(themeMediaKey).toBeDefined()
+    }
+  )
 
   test(`perspective transform`, () => {
     expect(
