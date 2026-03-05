@@ -415,8 +415,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // new animation started — attach completion handler
               refs.current.exitCompleteScheduled = true
               startedControls.finished
-                .then(() => currentSendExitComplete())
-                .catch(() => currentSendExitComplete())
+                .then(() => {
+                  // guard: only complete if still exiting (prevents stale promise
+                  // from calling sendExitComplete after a re-entry cancels the exit)
+                  if (refs.current.isExiting) {
+                    currentSendExitComplete()
+                  }
+                })
+                .catch(() => {
+                  if (refs.current.isExiting) {
+                    currentSendExitComplete()
+                  }
+                })
             } else if (!refs.current.exitCompleteScheduled) {
               // no animation started AND none previously scheduled (e.g. diff=null
               // on re-render mid-exit because frozenExitTarget matches lastDoAnimate)

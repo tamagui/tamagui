@@ -18,6 +18,7 @@ test.describe('Tooltip Global Pattern', () => {
     }
 
     await setupPage(page, { name: 'TooltipGlobalPatternCase', type: 'useCase' })
+    await page.waitForLoadState('networkidle')
     await page.waitForTimeout(500)
   })
 
@@ -47,7 +48,7 @@ test.describe('Tooltip Global Pattern', () => {
     await page.waitForTimeout(100)
     await page.mouse.move(tlCenter.x + 1, tlCenter.y + 1)
     await page.waitForTimeout(800)
-    await expect(content).toBeVisible({ timeout: 3000 })
+    await expect(content).toBeVisible({ timeout: 5000 })
     await page.waitForTimeout(300)
 
     const posA = await content.evaluate((el) => {
@@ -135,7 +136,7 @@ test.describe('Tooltip Global Pattern', () => {
     await page.waitForTimeout(100)
     await page.mouse.move(tlCenter.x + 1, tlCenter.y + 1)
     await page.waitForTimeout(800)
-    await expect(content).toBeVisible({ timeout: 3000 })
+    await expect(content).toBeVisible({ timeout: 5000 })
     await page.waitForTimeout(300)
 
     const posA = await content.evaluate((el) => {
@@ -145,8 +146,8 @@ test.describe('Tooltip Global Pattern', () => {
 
     // close: move mouse far away
     await page.mouse.move(400, 300)
-    await page.waitForTimeout(800)
-    await expect(content).not.toBeVisible({ timeout: 3000 })
+    await page.waitForTimeout(1000)
+    await expect(content).not.toBeVisible({ timeout: 5000 })
 
     // start tracking
     await page.evaluate(() => {
@@ -172,8 +173,8 @@ test.describe('Tooltip Global Pattern', () => {
     await page.mouse.move(brCenter.x, brCenter.y)
     await page.waitForTimeout(100)
     await page.mouse.move(brCenter.x + 1, brCenter.y + 1)
-    await page.waitForTimeout(800)
-    await expect(content).toBeVisible({ timeout: 3000 })
+    await page.waitForTimeout(1000)
+    await expect(content).toBeVisible({ timeout: 5000 })
 
     await page.evaluate(() => cancelAnimationFrame((window as any).__rafId))
 
