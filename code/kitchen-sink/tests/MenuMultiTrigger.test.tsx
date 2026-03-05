@@ -3,7 +3,11 @@ import { getBoundingRect, setupPage } from './test-utils'
 
 test.describe('Menu Multi-Trigger', () => {
   test.beforeEach(async ({ page }) => {
-    await setupPage(page, { name: 'MenuMultiTriggerCase', type: 'useCase', waitExtra: true })
+    await setupPage(page, {
+      name: 'MenuMultiTriggerCase',
+      type: 'useCase',
+      waitExtra: true,
+    })
   })
 
   test('clicking trigger A opens content near trigger A', async ({ page }) => {

@@ -63,9 +63,7 @@ type MenuContextValue = {
 }
 
 function useMenuTriggerSetup(open: boolean) {
-  const triggerStateSettersRef = React.useRef(
-    new Map<string, MenuTriggerStateSetter>()
-  )
+  const triggerStateSettersRef = React.useRef(new Map<string, MenuTriggerStateSetter>())
   const activeTriggerIdRef = React.useRef<string | null>(null)
 
   const setActiveTrigger = useEvent((id: string | null) => {
@@ -80,12 +78,10 @@ function useMenuTriggerSetup(open: boolean) {
     }
   })
 
-  const registerTrigger = useEvent(
-    (id: string, setOpenState: MenuTriggerStateSetter) => {
-      triggerStateSettersRef.current.set(id, setOpenState)
-      setOpenState(activeTriggerIdRef.current === id && open)
-    }
-  )
+  const registerTrigger = useEvent((id: string, setOpenState: MenuTriggerStateSetter) => {
+    triggerStateSettersRef.current.set(id, setOpenState)
+    setOpenState(activeTriggerIdRef.current === id && open)
+  })
 
   const unregisterTrigger = useEvent((id: string) => {
     triggerStateSettersRef.current.delete(id)

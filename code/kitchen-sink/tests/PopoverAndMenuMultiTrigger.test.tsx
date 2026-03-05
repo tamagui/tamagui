@@ -116,9 +116,15 @@ function multiTriggerSuite(h: MultiTriggerHarness) {
     await h.open(page, 2)
     await expect(page.getByTestId(h.contentTestId)).toBeVisible()
 
-    await expect(page.getByTestId(triggerTestId(1))).toHaveAttribute('data-state', 'closed')
+    await expect(page.getByTestId(triggerTestId(1))).toHaveAttribute(
+      'data-state',
+      'closed'
+    )
     await expect(page.getByTestId(triggerTestId(2))).toHaveAttribute('data-state', 'open')
-    await expect(page.getByTestId(triggerTestId(3))).toHaveAttribute('data-state', 'closed')
+    await expect(page.getByTestId(triggerTestId(3))).toHaveAttribute(
+      'data-state',
+      'closed'
+    )
   })
 
   test(`[${h.prefix}] close returns focus to active trigger`, async ({ page }) => {
@@ -151,10 +157,7 @@ function multiTriggerSuite(h: MultiTriggerHarness) {
         page,
         `[data-testid="${triggerTestId(idx)}"]`
       )
-      const contentBox = await getBoundingRect(
-        page,
-        `[data-testid="${h.contentTestId}"]`
-      )
+      const contentBox = await getBoundingRect(page, `[data-testid="${h.contentTestId}"]`)
       expect(Math.abs(contentBox!.x - triggerBox!.x)).toBeLessThan(50)
 
       await h.close(page)

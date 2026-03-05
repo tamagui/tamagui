@@ -1,6 +1,15 @@
 import { Menu } from '@tamagui/menu'
 import { memo, useRef } from 'react'
-import { Button, Paragraph, Popover, SizableText, Text, View, XStack, YStack } from 'tamagui'
+import {
+  Button,
+  Paragraph,
+  Popover,
+  SizableText,
+  Text,
+  View,
+  XStack,
+  YStack,
+} from 'tamagui'
 
 // tracks render count — must be memoized to isolate from parent re-renders
 const RenderCountingPopoverTrigger = memo(function RenderCountingPopoverTrigger({

@@ -3,7 +3,11 @@ import { getBoundingRect, setupPage } from './test-utils'
 
 test.describe('Menu animatePosition', () => {
   test.beforeEach(async ({ page }) => {
-    await setupPage(page, { name: 'MenuAnimatePositionCase', type: 'useCase', waitExtra: true })
+    await setupPage(page, {
+      name: 'MenuAnimatePositionCase',
+      type: 'useCase',
+      waitExtra: true,
+    })
   })
 
   test('content appears near the trigger that opened it', async ({ page }) => {
@@ -36,7 +40,11 @@ test.describe('Menu animatePosition', () => {
       let node: Element | null = el
       while (node) {
         const style = getComputedStyle(node)
-        if (style.transition && style.transition !== 'none' && style.transition !== 'all 0s ease 0s') {
+        if (
+          style.transition &&
+          style.transition !== 'none' &&
+          style.transition !== 'all 0s ease 0s'
+        ) {
           return true
         }
         node = node.parentElement
