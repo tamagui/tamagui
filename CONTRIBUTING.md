@@ -35,7 +35,7 @@ There's a few ways to run code in the repo, generally for native, there's two wa
 bun run sandbox
 ```
 
-Is a bit easier but runs on One, it should work with Expo Go.
+Is a bit easier but runs on One (the One framework, `one dev`).
 
 If you are ok to build the native apps, then:
 
@@ -43,10 +43,7 @@ If you are ok to build the native apps, then:
 bun run kitchen-sink
 ```
 
-Note that kitchen-sink needs react 18 so you do this profile switch first.
-But if you're working on the sandbox you'll want to run `bun install` again to clear it.
-
-But that requires building the native apps:
+That requires building the native apps:
 
 ```bash
 # Android
@@ -62,13 +59,28 @@ You can run `bun run sandbox` or `bun run dev` (the tamagui website).
 
 ### Fixing libraries
 
-All compiler and CSS generation tests live in `code/static/static-tests`.
+All compiler and CSS generation tests live in `code/compiler/static-tests`.
 
 There are many native tests in `code/kitchen-sink/tests`.
 
 A variety of core tests live in `code/core/core-test`.
 
 Before submitting a PR, please check everything works across every combination of environments.
+
+### Linting & Formatting
+
+The project uses [oxfmt](https://oxc.rs) + [oxlint](https://oxc.rs) (Rust-based, fast):
+
+```bash
+# check formatting + lint
+bun run lint
+
+# auto-fix
+bun run lint:fix
+
+# format only
+bun run format
+```
 
 ## Other ways to Contribute
 

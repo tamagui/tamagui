@@ -43,19 +43,16 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    bun run test:web
    ```
 
-   This runs tests with CSS, React Native, and Reanimated animation drivers.
+   This uses `run-tests-parallel.ts` which first runs `default` + `webkit` projects sequentially, then runs all four animated driver projects (`css`, `native`, `reanimated`, `motion`) in parallel against a single shared dev server.
 
 3. **Run tests with a specific animation driver**:
 
    ```bash
-   # CSS animations driver
-   bun run test:web:driver-css
+   # Using env var + playwright --project flag
+   cd code/kitchen-sink
+   NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test --project=animated-css
 
-   # React Native animations driver
-   bun run test:web:driver-rn
-
-   # Reanimated animations driver
-   bun run test:web:driver-reanimated
+   # Available projects: animated-css, animated-native, animated-reanimated, animated-motion
    ```
 
 4. **Run a specific test file**:
@@ -66,7 +63,7 @@ The kitchen-sink package contains the main integration tests for Tamagui compone
    npx playwright test tests/PopoverFocusScope.test.tsx
 
    # Or with a specific driver
-   NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test tests/YourTest.test.tsx
+   NODE_ENV=test TAMAGUI_TEST_ANIMATION_DRIVER=css npx playwright test tests/YourTest.animated.test.tsx --project=animated-css
    ```
 
 5. **Debug tests**:
