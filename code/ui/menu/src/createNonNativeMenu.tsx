@@ -16,6 +16,7 @@ import {
   createBaseMenu,
   type CreateBaseMenuProps,
 } from '@tamagui/create-menu'
+import { usePopperContext } from '@tamagui/popper'
 import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
@@ -27,6 +28,7 @@ import {
   Slot,
   styled,
   type TamaguiElement,
+  useEvent,
   useIsTouchDevice,
   View,
   type ViewProps,
@@ -45,6 +47,8 @@ export const DROPDOWN_MENU_CONTEXT = 'MenuContext'
 
 type ScopedProps<P> = P & { scope?: string }
 
+type MenuTriggerStateSetter = React.Dispatch<React.SetStateAction<boolean>>
+
 type MenuContextValue = {
   triggerId: string
   triggerRef: React.RefObject<TamaguiElement | null>
@@ -53,6 +57,55 @@ type MenuContextValue = {
   onOpenChange(open: boolean): void
   onOpenToggle(): void
   modal: boolean
+  setActiveTrigger(id: string | null): void
+  registerTrigger(id: string, setOpen: MenuTriggerStateSetter): void
+  unregisterTrigger(id: string): void
+}
+
+function useMenuTriggerSetup(open: boolean) {
+  const triggerStateSettersRef = React.useRef(
+    new Map<string, MenuTriggerStateSetter>()
+  )
+  const activeTriggerIdRef = React.useRef<string | null>(null)
+
+  const setActiveTrigger = useEvent((id: string | null) => {
+    const prevId = activeTriggerIdRef.current
+    if (prevId === id) return
+    if (prevId) {
+      triggerStateSettersRef.current.get(prevId)?.(false)
+    }
+    activeTriggerIdRef.current = id
+    if (id && open) {
+      triggerStateSettersRef.current.get(id)?.(true)
+    }
+  })
+
+  const registerTrigger = useEvent(
+    (id: string, setOpenState: MenuTriggerStateSetter) => {
+      triggerStateSettersRef.current.set(id, setOpenState)
+      setOpenState(activeTriggerIdRef.current === id && open)
+    }
+  )
+
+  const unregisterTrigger = useEvent((id: string) => {
+    triggerStateSettersRef.current.delete(id)
+    if (activeTriggerIdRef.current === id) {
+      activeTriggerIdRef.current = null
+    }
+  })
+
+  React.useEffect(() => {
+    if (!open) {
+      setActiveTrigger(null)
+      return
+    }
+    const activeId = activeTriggerIdRef.current
+    if (activeId) {
+      triggerStateSettersRef.current.get(activeId)?.(true)
+    }
+  }, [open, setActiveTrigger])
+
+  return { setActiveTrigger, registerTrigger, unregisterTrigger }
 }
 
 interface MenuProps extends BaseMenuTypes.MenuProps {
@@ -183,6 +236,8 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
       defaultProp: defaultOpen!,
       onChange: onOpenChange,
     })
+    const { setActiveTrigger, registerTrigger, unregisterTrigger } =
+      useMenuTriggerSetup(open)
 
     return (
       <MenuProvider
@@ -197,6 +252,9 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
           [setOpen]
         )}
         modal={modal}
+        setActiveTrigger={setActiveTrigger}
+        registerTrigger={registerTrigger}
+        unregisterTrigger={unregisterTrigger}
       >
         <Menu
           scope={scope || DROPDOWN_MENU_CONTEXT}
@@ -233,8 +291,35 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
         ...triggerProps
       } = props
       const context = useMenuContext(scope)
+      const popperCtx = usePopperContext(scope || DROPDOWN_MENU_CONTEXT)
       const Comp = asChild ? Slot : View
       const isTouchDevice = useIsTouchDevice()
+      const triggerElRef = React.useRef<TamaguiElement>(null)
+
+      // multi-trigger: per-trigger open state
+      const triggerId = React.useId()
+      const [triggerOpen, setTriggerOpen] = React.useState(false)
+
+      // extract stable refs so re-registration doesn't happen when context object changes
+      const { registerTrigger, unregisterTrigger } = context
+      React.useEffect(() => {
+        registerTrigger(triggerId, setTriggerOpen)
+        return () => unregisterTrigger(triggerId)
+      }, [registerTrigger, unregisterTrigger, triggerId])
+
+      // activate this trigger: set popper reference and update shared triggerRef for close-auto-focus
+      const activateSelf = React.useCallback(() => {
+        context.setActiveTrigger(triggerId)
+        const el = triggerElRef.current
+        if (el) {
+          // update shared ref so close-auto-focus returns to the active trigger
+          context.triggerRef.current = el
+          if (el instanceof HTMLElement) {
+            popperCtx.refs?.setReference(el)
+            requestAnimationFrame(() => popperCtx.update?.())
+          }
+        }
+      }, [context, triggerId, popperCtx])
 
       // Use onClick for touch devices to avoid race condition with Dismissable
       // Use onPointerDown for mouse for faster feedback
@@ -250,12 +335,12 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             role="button"
             id={context.triggerId}
             aria-haspopup="menu"
-            aria-expanded={context.open}
-            aria-controls={context.open ? context.contentId : undefined}
-            data-state={context.open ? 'open' : 'closed'}
+            aria-expanded={triggerOpen}
+            aria-controls={triggerOpen ? context.contentId : undefined}
+            data-state={triggerOpen ? 'open' : 'closed'}
             data-disabled={disabled ? '' : undefined}
             aria-disabled={disabled || undefined}
-            ref={composeRefs(forwardedRef, context.triggerRef)}
+            ref={composeRefs(forwardedRef, context.triggerRef, triggerElRef)}
             {...{
               [pressEvent]: composeEventHandlers(
                 //@ts-ignore
@@ -271,6 +356,11 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
                       event.ctrlKey === true
                     )
                       return
+                    if (context.open) {
+                      context.setActiveTrigger(null)
+                    } else {
+                      activateSelf()
+                    }
                     context.onOpenToggle()
                     // prevent trigger focusing when opening
                     // this allows the content to be given focus without competition
@@ -282,8 +372,18 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
             {...(isWeb && {
               onKeyDown: composeEventHandlers(onKeydown, (event) => {
                 if (disabled) return
-                if (['Enter', ' '].includes(event.key)) context.onOpenToggle()
-                if (event.key === 'ArrowDown') context.onOpenChange(true)
+                if (['Enter', ' '].includes(event.key)) {
+                  if (context.open) {
+                    context.setActiveTrigger(null)
+                  } else {
+                    activateSelf()
+                  }
+                  context.onOpenToggle()
+                }
+                if (event.key === 'ArrowDown') {
+                  activateSelf()
+                  context.onOpenChange(true)
+                }
                 // prevent keydown from scrolling window / first focused item to execute
                 // that keydown (inadvertently closing the menu)
                 if (['Enter', ' ', 'ArrowDown'].includes(event.key))

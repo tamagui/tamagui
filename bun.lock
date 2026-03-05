@@ -2774,6 +2774,7 @@
         "@tamagui/create-menu": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/popover": "workspace:*",
+        "@tamagui/popper": "workspace:*",
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
