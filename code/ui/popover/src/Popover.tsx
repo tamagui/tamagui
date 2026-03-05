@@ -368,14 +368,16 @@ export const PopoverTrigger = React.memo(
       const triggerId = React.useId()
       const [open, setOpen] = React.useState(false)
       const anchorTo = triggerContext.anchorTo
-      const composedTriggerRef = useComposedRefs(forwardedRef, triggerContext.triggerRef)
+      const triggerElRef = React.useRef<TamaguiElement>(null)
+      const composedTriggerRef = useComposedRefs(forwardedRef, triggerElRef)
 
+      const { registerTrigger, unregisterTrigger } = triggerContext
       React.useEffect(() => {
-        triggerContext.registerTrigger(triggerId, setOpen)
+        registerTrigger(triggerId, setOpen)
         return () => {
-          triggerContext.unregisterTrigger(triggerId)
+          unregisterTrigger(triggerId)
         }
-      }, [triggerContext, triggerId])
+      }, [registerTrigger, unregisterTrigger, triggerId])
 
       if (!rest.children) {
         return null
@@ -383,6 +385,10 @@ export const PopoverTrigger = React.memo(
 
       const activateSelf = () => {
         triggerContext.setActiveTrigger(triggerId)
+        const el = triggerElRef.current
+        if (el) {
+          triggerContext.triggerRef.current = el
+        }
       }
 
       const trigger = (
