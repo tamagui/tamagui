@@ -1,6 +1,9 @@
 import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
 
+// $theme-dark + animateOnly fix was intentionally reverted (80d70ce595)
+test.skip()
+
 test.describe('Theme Media + Animation', () => {
   test('$theme-dark bg applies when animated with motion driver', async ({ page }) => {
     await setupPage(page, {
