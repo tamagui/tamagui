@@ -268,7 +268,18 @@ function tamaguiAutoUpdate(
   // initial position
   update()
 
-  const cleanups: (() => void)[] = []
+  // schedule a second update after layout/scroll events settle (e.g. focus-
+  // triggered scrolls that cause flip corrections)
+  let rafId = requestAnimationFrame(() => {
+    update()
+    rafId = 0
+  })
+
+  const cleanups: (() => void)[] = [
+    () => {
+      if (rafId) cancelAnimationFrame(rafId)
+    },
+  ]
 
   // watch reference element via tamagui's IO measurement loop
   // only watch reference, NOT floating — watching floating causes loops
