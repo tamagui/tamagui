@@ -13,7 +13,10 @@ export function resolveAnimationDriver(
     return driver as AnimationDriver
   }
   // multi-driver object - extract default
-  if ('default' in driver && typeof (driver as any).default?.useAnimations === 'function') {
+  if (
+    'default' in driver &&
+    typeof (driver as any).default?.useAnimations === 'function'
+  ) {
     return (driver as any).default
   }
   return null

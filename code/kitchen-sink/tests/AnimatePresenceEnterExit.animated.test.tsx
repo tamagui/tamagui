@@ -30,7 +30,9 @@ test.beforeEach(async ({ page }) => {
   await page.waitForTimeout(500)
 })
 
-test('scenario 01: enter animation should animate opacity from 0 to 1', async ({ page }) => {
+test('scenario 01: enter animation should animate opacity from 0 to 1', async ({
+  page,
+}) => {
   // element should not exist initially
   expect(await elementExists(page, 'enter-exit-01-target')).toBe(false)
 
@@ -54,7 +56,9 @@ test('scenario 01: enter animation should animate opacity from 0 to 1', async ({
   expect(finalOpacity).toBe(1)
 })
 
-test('scenario 01: exit animation should animate opacity from 1 to 0', async ({ page }) => {
+test('scenario 01: exit animation should animate opacity from 1 to 0', async ({
+  page,
+}) => {
   // show the element first
   await page.getByTestId('enter-exit-01-trigger').click()
   await page.waitForTimeout(600) // wait for enter animation

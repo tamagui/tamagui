@@ -202,8 +202,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   const inputAnimations = configIn.animations
   const resolvedDriver = resolveAnimationDriver(inputAnimations)
   // multi-driver when resolveAnimationDriver extracted .default (returned different ref)
-  const isMultiDriver =
-    resolvedDriver !== null && resolvedDriver !== inputAnimations
+  const isMultiDriver = resolvedDriver !== null && resolvedDriver !== inputAnimations
   const resolvedAnimations = resolvedDriver ?? inputAnimations
   const animationDrivers = isMultiDriver
     ? (inputAnimations as Record<string, any>)
