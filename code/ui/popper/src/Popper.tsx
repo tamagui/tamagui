@@ -321,22 +321,13 @@ export function Popper(props: PopperProps) {
   const floatingStyle = React.useRef({})
   const isOpen = passThrough ? false : (open ?? true)
 
-  let floating = useFloating({
-    open: isOpen,
-    strategy,
-    placement,
-    sameScrollView: false, // this only takes effect on native
-    whileElementsMounted: !isOpen ? undefined : tamaguiAutoUpdate,
-    platform:
-      (disableRTL ?? setupOptions.disableRTL)
-        ? {
-            ...platform,
-            isRTL(element) {
-              return false
-            },
-          }
-        : platform,
-    middleware: [
+  // freeze middleware reference when closed so floating-ui's deepEqual trivially
+  // passes (same object) and skips computePosition on re-renders while closed.
+  // unlike swapping to [], this retains the last good middleware so cached
+  // position data (offset, arrow, transformOrigin) stays correct for reopen.
+  const middlewareRef = React.useRef<any[]>([])
+  if (isOpen) {
+    middlewareRef.current = [
       // order matters: offset first, then flip, then shift, then arrow
       typeof offsetOptions !== 'undefined' ? offsetFn(offsetOptions) : (null as any),
       allowFlip ? flip(typeof allowFlip === 'boolean' ? {} : allowFlip) : (null as any),
@@ -407,7 +398,25 @@ export function Popper(props: PopperProps) {
             arrowWidth: arrowSize,
           })
         : (null as any),
-    ].filter(Boolean),
+    ].filter(Boolean)
+  }
+
+  let floating = useFloating({
+    open: isOpen,
+    strategy,
+    placement,
+    sameScrollView: false, // this only takes effect on native
+    whileElementsMounted: !isOpen ? undefined : tamaguiAutoUpdate,
+    platform:
+      (disableRTL ?? setupOptions.disableRTL)
+        ? {
+            ...platform,
+            isRTL(element) {
+              return false
+            },
+          }
+        : platform,
+    middleware: middlewareRef.current,
   })
 
   if (process.env.TAMAGUI_TARGET !== 'native') {
