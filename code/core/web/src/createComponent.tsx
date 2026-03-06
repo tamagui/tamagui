@@ -12,6 +12,7 @@ import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
+import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
@@ -399,7 +400,12 @@ export function createComponent<
         return props.animatedBy === 'default' ? config.animations : null
       }
       // fall back to context driver, then config.animations
-      return componentContext.animationDriver ?? config?.animations ?? null
+      // resolveAnimationDriver validates it's a real driver (not a raw multi-driver object)
+      return (
+        resolveAnimationDriver(componentContext.animationDriver) ??
+        resolveAnimationDriver(config?.animations) ??
+        null
+      )
     })()
 
     const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined

@@ -2,6 +2,7 @@ import { getConfigMaybe, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
+import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
 import {
   buildCSSRuleSets,
   createFontCSS,
@@ -199,16 +200,14 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   // supports format: { default: motionDriver, css: cssDriver }
   // stores full config in animationDrivers for component-level selection via animatedBy
   const inputAnimations = configIn.animations
-  // check if multi-driver: has 'default' key that is itself an animation driver (has useAnimations)
+  const resolvedDriver = resolveAnimationDriver(inputAnimations)
+  // multi-driver when resolveAnimationDriver extracted .default (returned different ref)
   const isMultiDriver =
-    inputAnimations &&
-    typeof inputAnimations === 'object' &&
-    'default' in inputAnimations &&
-    typeof (inputAnimations as any).default?.useAnimations === 'function'
-  const resolvedAnimations = isMultiDriver
-    ? (inputAnimations as any).default
-    : inputAnimations
-  const animationDrivers = isMultiDriver ? inputAnimations : undefined
+    resolvedDriver !== null && resolvedDriver !== inputAnimations
+  const resolvedAnimations = resolvedDriver ?? inputAnimations
+  const animationDrivers = isMultiDriver
+    ? (inputAnimations as Record<string, any>)
+    : undefined
 
   const config: TamaguiInternalConfig = {
     fonts: {},

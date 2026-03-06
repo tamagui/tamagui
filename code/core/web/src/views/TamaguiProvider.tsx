@@ -5,6 +5,7 @@ import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { stopAccumulatingRules } from '../helpers/insertStyleRule'
 import { updateMediaListeners } from '../hooks/useMedia'
+import { resolveAnimationDriver } from '../helpers/resolveAnimationDriver'
 import type { AnimationDriver, TamaguiProviderProps } from '../types'
 import { TamaguiRoot } from './TamaguiRoot'
 import { ThemeProvider } from './ThemeProvider'
@@ -30,18 +31,11 @@ export function TamaguiProvider({
 
   // Get the default animation driver from config
   // config.animations is already normalized to the default driver in createTamagui
-  const defaultAnimationDriver: AnimationDriver | null = React.useMemo(() => {
-    const animations = config?.animations
-    if (!animations) return null
-    // safety check for runtime: animations could still be multi-driver object if not using createTamagui
-    if (
-      'default' in animations &&
-      typeof (animations as any).default?.useAnimations === 'function'
-    ) {
-      return (animations as { default: AnimationDriver }).default
-    }
-    return animations as AnimationDriver
-  }, [config?.animations])
+  // resolveAnimationDriver handles edge cases where raw multi-driver object leaks through
+  const defaultAnimationDriver: AnimationDriver | null = React.useMemo(
+    () => resolveAnimationDriver(config?.animations),
+    [config?.animations]
+  )
 
   useEffect(() => {
     defaultAnimationDriver?.onMount?.()
