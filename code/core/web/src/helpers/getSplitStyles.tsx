@@ -428,7 +428,16 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (keyInit === 'testID') {
-          viewProps[isReactNative ? keyInit : 'data-testid'] = valInit
+          if (isReactNative) {
+            viewProps.testID = valInit
+          } else {
+            viewProps['data-testid'] = valInit
+            // also keep testID when using RN animation driver (Animated.View
+            // from react-native-web only forwards testID, not data-testid)
+            if (styleProps.isAnimated && driver?.isReactNative) {
+              viewProps.testID = valInit
+            }
+          }
           continue
         }
 
