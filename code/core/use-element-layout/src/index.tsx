@@ -232,7 +232,7 @@ if (ENABLE) {
 
   // adaptive frame skipping with backoff
   const userSkipVal = process.env.TAMAGUI_LAYOUT_FRAME_SKIP
-  const BASE_SKIP_FRAMES = userSkipVal ? +userSkipVal : 6
+  const BASE_SKIP_FRAMES = userSkipVal ? +userSkipVal : 10
   const MAX_SKIP_FRAMES = 20
   let skipFrames = BASE_SKIP_FRAMES
   let frameCount = 0
