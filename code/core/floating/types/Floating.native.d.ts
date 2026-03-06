@@ -1,6 +1,7 @@
 import type { ComputePositionReturn } from '@floating-ui/react-native';
 import type { RefObject } from 'react';
 export declare const autoUpdate: () => void;
+export declare const getOverflowAncestors: () => never[];
 export * from '@floating-ui/react-native';
 export declare const platform: null;
 export declare type UseFloatingReturn = Data & {
