@@ -594,11 +594,8 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
           onMouseEnter: (e) => {
             if (ref.current instanceof HTMLElement) {
               const el = ref.current
-              // refs.setReference triggers async state update; floating-ui's
-              // useLayoutEffect will recompute position when it flushes.
-              // do NOT call update() here — it would run computePosition
-              // against the stale (previous) reference, causing arrow displacement.
               refs.setReference(el)
+              update()
 
               if (!refProps) {
                 return
