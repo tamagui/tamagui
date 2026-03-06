@@ -6,6 +6,8 @@
 ._no_backdrop::backdrop {display: none;}
 .is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}
 .is_Input::placeholder, .is_TextArea::placeholder {color: var(--placeholderColor);}
+:root ._pe-boxonly>* {pointer-events:none;}
+:root ._pe-boxnone>* {pointer-events:auto;}
 ._hsb-x::-webkit-scrollbar:horizontal { display: none !important; }
 ._hsb-y::-webkit-scrollbar:vertical { display: none !important; }
 ._hsb-x { scrollbar-width: none !important; }
