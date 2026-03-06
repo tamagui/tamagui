@@ -300,6 +300,10 @@ export function createComponent<
       time = timer.start()
       globalThis['time'] = time
     }
+    // pick up globalThis.time if set externally (e.g. by a profiling harness)
+    if (process.env.NODE_ENV === 'development' && !time && (globalThis as any).time) {
+      time = (globalThis as any).time
+    }
     if (process.env.NODE_ENV === 'development' && time) time`non-tamagui time (ignore)`
 
     // React inserts default props after your props for some reason...
