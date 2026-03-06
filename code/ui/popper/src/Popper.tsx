@@ -275,7 +275,7 @@ export function Popper(props: PopperProps) {
   const [arrowSize, setArrowSize] = React.useState(0)
   const offsetOptions = offset ?? arrowSize
   const floatingStyle = React.useRef({})
-  const isOpen = passThrough ? false : open || true
+  const isOpen = passThrough ? false : open ?? true
 
   let floating = useFloating({
     open: isOpen,
