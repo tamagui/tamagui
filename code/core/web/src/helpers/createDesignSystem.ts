@@ -239,6 +239,8 @@ export function getCSS(
 ._hsb-y::-webkit-scrollbar:vertical { display: none !important; }
 ._hsb-x { scrollbar-width: none !important; }
 ._hsb-y { scrollbar-width: none !important; }`
+    const pointerEventsCSS = `:root ._pe-boxonly>* {pointer-events:none;}
+:root ._pe-boxnone>* {pointer-events:auto;}`
 
     const designSystem = `._ovs-contain {overscroll-behavior:contain;}
 .is_View { display: flex; align-items: stretch; flex-direction: column; flex-basis: auto; box-sizing: border-box; min-height: 0; min-width: 0; flex-shrink: 0; }
@@ -248,6 +250,7 @@ export function getCSS(
 ._no_backdrop::backdrop {display: none;}
 .is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}
 .is_Input::placeholder, .is_TextArea::placeholder {color: var(--placeholderColor);}
+${pointerEventsCSS}
 ${hideScrollBarsCSS}
 ${autoVarCSS}
 ${themeConfig.cssRuleSets.join(separator)}`
