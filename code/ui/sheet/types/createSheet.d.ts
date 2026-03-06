@@ -37,6 +37,9 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     portalProps?: import("@tamagui/portal").PortalProps;
     moveOnKeyboardChange?: boolean;
     containerComponent?: React.ComponentType<any>;
+    onAnimationComplete?: (info: {
+        open: boolean;
+    }) => void;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & RefAttributes<RNView>> & {

@@ -60,6 +60,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       unmountChildrenWhenHidden = false,
       portalProps,
       containerComponent: ContainerComponent = React.Fragment,
+      onAnimationComplete,
     } = props
 
     const state = useSheetOpenState(props)
@@ -302,10 +303,21 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       at.current = toValue
       stopSpring()
 
+      const isOpenAnimation = position !== -1 && !isHidden
+      const animationCompleteCallback = onAnimationComplete
+        ? () => {
+            onAnimationComplete({ open: isOpenAnimation })
+          }
+        : undefined
+
       // skip animation when adapting from dialog to sheet
       if (skipAdaptAnimation.current) {
         skipAdaptAnimation.current = false
-        animatedNumber.setValue(toValue, { type: 'timing', duration: 0 })
+        animatedNumber.setValue(
+          toValue,
+          { type: 'timing', duration: 0 },
+          animationCompleteCallback
+        )
         return
       }
 
@@ -314,7 +326,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         animationOverride || {
           type: 'spring',
           ...transitionConfig,
-        }
+        },
+        animationCompleteCallback
       )
     })
 
