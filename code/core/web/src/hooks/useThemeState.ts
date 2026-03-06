@@ -40,8 +40,11 @@ export const forceUpdateThemes = () => {
 
 export const getThemeState = (id: ID) => states.get(id)
 
-// const cache = new Map<string, ThemeState>()
 let cacheVersion = 0
+
+// cache for getNewThemeName - invalidated on cacheVersion change
+const themeNameCache = new Map<string, string | null>()
+let themeNameCacheVer = -1
 
 let themes: Record<string, ThemeParsed> | null = null
 
@@ -109,6 +112,17 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     let local = localStates.get(id)
     const parentState = states.get(parentId)
 
+    // fast path: nothing changed since last snapshot
+    if (local && !PendingUpdate.has(id)) {
+      if (
+        parentState &&
+        (local as any)._parentName === parentState.name &&
+        (local as any)._propsKey === propsKey
+      ) {
+        return local
+      }
+    }
+
     // check if this is a scheme-only change (light↔dark) where DynamicColorIOS handles it
     const isSchemeOnlyChange =
       process.env.TAMAGUI_TARGET === 'native' &&
@@ -137,13 +151,6 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
             : keys?.current?.size
               ? true
               : props.needsUpdate?.()
-
-    // const cacheKey = `${cacheVersion}${id}${propsKey}${parentState?.name || ''}${isRoot}`
-    // if (!needsUpdate) {
-    //   if (cache.has(cacheKey)) {
-    //     return cache.get(cacheKey)!
-    //   }
-    // }
 
     const [rerender, next] = getNextState(
       local,
@@ -184,8 +191,12 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
       console.groupEnd()
     }
 
-    Object.assign(local, next)
-    local.id = id
+    if (next !== local) {
+      Object.assign(local, next)
+      local.id = id
+    }
+    ;(local as any)._parentName = parentState?.name
+    ;(local as any)._propsKey = propsKey
     states.set(id, next)
 
     return local
@@ -266,6 +277,9 @@ const getNextState = (
   }
 
   if (isSameAsParent) {
+    if (!shouldRerender && lastState) {
+      return [false, lastState]
+    }
     return [shouldRerender, { ...parentState, isNew: false }]
   }
 
@@ -386,6 +400,16 @@ function getNewThemeName(
     )
   }
 
+  // check cache
+  const cacheKey = `${parentName}|${name || ''}|${componentName || ''}|${reset ? 1 : 0}|${forceUpdate ? 1 : 0}`
+  if (themeNameCacheVer !== cacheVersion) {
+    themeNameCache.clear()
+    themeNameCacheVer = cacheVersion
+  } else {
+    const cached = themeNameCache.get(cacheKey)
+    if (cached !== undefined) return cached
+  }
+
   const { themes } = getConfig()
 
   if (reset) {
@@ -395,7 +419,9 @@ function getNewThemeName(
     const isSchemeOnly = parentName === 'light' || parentName === 'dark'
     if (isSchemeOnly) {
       // If parent is just a scheme, go to the opposite scheme
-      return parentName === 'light' ? 'dark' : 'light'
+      const result = parentName === 'light' ? 'dark' : 'light'
+      themeNameCache.set(cacheKey, result)
+      return result
     }
 
     // For compound themes like "dark_blue", extract the scheme
@@ -404,6 +430,7 @@ function getNewThemeName(
     const name = lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)
     const scheme = parentName.slice(0, lastPartIndex)
     const result = themes[name] ? name : scheme
+    themeNameCache.set(cacheKey, result)
     return result
   }
 
@@ -516,9 +543,11 @@ function getNewThemeName(
     // and we want to avoid reparenting
     !validSchemes[found]
   ) {
+    themeNameCache.set(cacheKey, null)
     return null
   }
 
+  themeNameCache.set(cacheKey, found)
   return found
 }
 
