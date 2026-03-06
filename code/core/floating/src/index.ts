@@ -65,6 +65,7 @@ export {
   type UseFloatingReturn,
   type UseFloatingProps,
   type UseFloatingFn,
+  type UseFloatingOverrideFn,
 } from './useFloating'
 
 // raw useFloating without FloatingOverrideContext — use when building

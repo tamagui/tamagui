@@ -1023,7 +1023,7 @@ const PopoverInner = React.forwardRef<
     disable: isAdapted,
     hoverable,
     disableFocus: disableFocus,
-  }) as any
+  })
 
   const [anchorTo, setAnchorToRaw] = React.useState<Rect>()
 

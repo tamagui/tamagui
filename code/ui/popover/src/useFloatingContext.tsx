@@ -88,7 +88,7 @@ export const useFloatingContext = ({
   }, [open, events])
 
   return React.useCallback(
-    (props: UseFloatingOptions) => {
+    (props?: UseFloatingOptions) => {
       const onTriggerRef = React.useRef(false)
       const restTimerRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
       const graceRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)

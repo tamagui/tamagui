@@ -11,5 +11,5 @@ export type UseFloatingContextOptions = {
     delay?: Delay;
     restMs?: number;
 };
-export declare const useFloatingContext: ({ open, setOpen, disable, disableFocus, hoverable, role: roleProp, focus: focusProp, groupId, delay: delayProp, restMs: restMsProp, }: UseFloatingContextOptions) => (props: UseFloatingOptions) => any;
+export declare const useFloatingContext: ({ open, setOpen, disable, disableFocus, hoverable, role: roleProp, focus: focusProp, groupId, delay: delayProp, restMs: restMsProp, }: UseFloatingContextOptions) => (props?: UseFloatingOptions) => any;
 //# sourceMappingURL=useFloatingContext.d.ts.map

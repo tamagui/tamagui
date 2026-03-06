@@ -123,9 +123,9 @@ function getContextSlow(context: PopperContextValue): PopperContextSlowValue {
     getFloatingProps: context.getFloatingProps,
     getReferenceProps: context.getReferenceProps,
     open: context.open,
-    onHoverReference: (context as any).onHoverReference,
-    onLeaveReference: (context as any).onLeaveReference,
-    triggerElements: (context as any).triggerElements,
+    onHoverReference: context.onHoverReference,
+    onLeaveReference: context.onLeaveReference,
+    triggerElements: context.triggerElements,
   }
 }
 

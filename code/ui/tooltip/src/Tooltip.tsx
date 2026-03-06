@@ -228,7 +228,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
 
   const content = (
     // TODO: FloatingOverrideContext might also need to be scoped
-    <FloatingOverrideContext.Provider value={floatingContext as any}>
+    <FloatingOverrideContext.Provider value={floatingContext}>
       {/* default tooltip to a smaller size */}
       <Popper
         scope={scope}
