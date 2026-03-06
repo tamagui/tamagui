@@ -449,6 +449,7 @@ export function createBaseMenu({
     return (
       <PopperPrimitive.Popper
         scope={scope}
+        open={open}
         placement={placement}
         allowFlip={allowFlip}
         stayInFrame={stayInFrame}
@@ -1478,6 +1479,7 @@ export function createBaseMenu({
 
     return (
       <PopperPrimitive.Popper
+        open={open}
         placement={placement}
         allowFlip={allowFlip}
         stayInFrame={stayInFrame}
