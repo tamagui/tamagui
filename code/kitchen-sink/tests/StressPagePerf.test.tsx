@@ -53,8 +53,7 @@ test('StressPage render profiling', async ({ page }) => {
   if (lastBreakdown) {
     console.log(`\n  --- Internal Breakdown (last run) ---`)
     let propTotal = 0
-    const entries = Object.entries(lastBreakdown)
-      .filter(([k]) => !k.endsWith('(ignore)'))
+    const entries = Object.entries(lastBreakdown).filter(([k]) => !k.endsWith('(ignore)'))
     const phases: [string, number][] = []
     for (const [label, totalMs] of entries) {
       if (label.startsWith('before-prop-')) {

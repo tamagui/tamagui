@@ -224,7 +224,10 @@ export const getSplitStyles: StyleSplitter = (
     staticConfig.validStyles ||
     (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
 
-  if (process.env.NODE_ENV === 'development' && (debug === 'profile' || (globalThis as any).time)) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (debug === 'profile' || (globalThis as any).time)
+  ) {
     // @ts-expect-error
     time`split-styles-setup`
   }
@@ -264,7 +267,10 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && (debug === 'profile' || (globalThis as any).time)) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (debug === 'profile' || (globalThis as any).time)
+  ) {
     // @ts-expect-error
     time`style-state`
   }
@@ -299,7 +305,10 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    if (process.env.NODE_ENV === 'development' && (debug === 'profile' || (globalThis as any).time)) {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      (debug === 'profile' || (globalThis as any).time)
+    ) {
       // @ts-expect-error
       time`before-prop-${keyInit}`
     }
@@ -1059,7 +1068,10 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop loop
 
-  if (process.env.NODE_ENV === 'development' && (debug === 'profile' || (globalThis as any).time)) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (debug === 'profile' || (globalThis as any).time)
+  ) {
     // @ts-expect-error
     time`split-styles-propsend`
   }
@@ -1270,7 +1282,10 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && (debug === 'profile' || (globalThis as any).time)) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (debug === 'profile' || (globalThis as any).time)
+  ) {
     // @ts-expect-error
     time`split-styles-pre-result`
   }
@@ -1388,7 +1403,10 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && (debug === 'profile' || (globalThis as any).time)) {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (debug === 'profile' || (globalThis as any).time)
+  ) {
     // @ts-expect-error
     time`split-styles-done`
   }
