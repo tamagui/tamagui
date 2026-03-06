@@ -1,8 +1,9 @@
 import React from 'react'
-import type { UseFloatingOptions } from '@tamagui/floating'
+import type { Delay, UseFloatingOptions } from '@tamagui/floating'
 import {
   createFloatingEvents,
   safePolygon,
+  useDelayGroup,
   useFloatingRaw,
   useFocus,
   useHover,
@@ -12,7 +13,7 @@ import {
   type FloatingInteractionContext,
 } from '@tamagui/floating'
 
-// custom floating context for hoverable popovers.
+// custom floating context for hoverable popovers and tooltips.
 //
 // why we can't just use useHover alone:
 //   useHover attaches mouseenter/mouseleave via useEffect on the current
@@ -28,13 +29,36 @@ import {
 //   to block safePolygon's close during the gap. if a new trigger is entered,
 //   we cancel the pending close. if not, the grace timer fires it.
 
+export type UseFloatingContextOptions = {
+  open: boolean
+  setOpen: (val: boolean, type?: string) => void
+  disable?: boolean
+  disableFocus?: boolean
+  hoverable?: boolean | Record<string, any>
+  // defaults to 'dialog', tooltips pass 'tooltip'
+  role?: 'dialog' | 'tooltip'
+  // custom focus config (tooltip passes { enabled, visibleOnly })
+  focus?: Record<string, any>
+  // delay group coordination for tooltips
+  groupId?: string
+  // explicit delay override (tooltip computes this from delay group context)
+  delay?: Delay
+  // explicit restMs override
+  restMs?: number
+}
+
 export const useFloatingContext = ({
   open,
   setOpen,
   disable,
   disableFocus,
   hoverable,
-}) => {
+  role: roleProp = 'dialog',
+  focus: focusProp,
+  groupId,
+  delay: delayProp,
+  restMs: restMsProp,
+}: UseFloatingContextOptions) => {
   'use no memo'
 
   const openRef = React.useRef(open)
@@ -45,6 +69,16 @@ export const useFloatingContext = ({
   disableRef.current = disable
   const disableFocusRef = React.useRef(disableFocus)
   disableFocusRef.current = disableFocus
+  const roleRef = React.useRef(roleProp)
+  roleRef.current = roleProp
+  const focusRef = React.useRef(focusProp)
+  focusRef.current = focusProp
+  const groupIdRef = React.useRef(groupId)
+  groupIdRef.current = groupId
+  const delayRef = React.useRef(delayProp)
+  delayRef.current = delayProp
+  const restMsRef = React.useRef(restMsProp)
+  restMsRef.current = restMsProp
 
   const events = React.useMemo(() => createFloatingEvents(), [])
   const triggerElements = React.useMemo(() => new PopupTriggerMap(), [])
@@ -116,10 +150,46 @@ export const useFloatingContext = ({
         triggerElements,
       }
 
+      // delay group coordination — no-op when no FloatingDelayGroup provider exists
+      const { delay: groupDelay, currentId: groupCurrentId } = useDelayGroup(
+        interactionContext,
+        { id: groupIdRef.current }
+      )
+
+      // compute effective delay:
+      // 1. if in an active delay group with another tooltip showing, use group's coordinated delay
+      // 2. else use explicit delay prop if provided
+      // 3. else parse from hoverable config
+      const isInActiveGroup =
+        groupIdRef.current && groupCurrentId != null && typeof groupDelay === 'object'
+      let delay: Delay
+      let restMs: number
+      if (isInActiveGroup) {
+        delay = groupDelay
+        restMs = 0
+      } else if (delayRef.current !== undefined) {
+        delay = delayRef.current
+        restMs = restMsRef.current ?? 0
+      } else {
+        delay =
+          currentHoverable && typeof currentHoverable === 'object'
+            ? (currentHoverable.delay ?? 0)
+            : 0
+        restMs =
+          currentHoverable && typeof currentHoverable === 'object'
+            ? (currentHoverable.restMs ?? 0)
+            : 0
+      }
+
+      const currentRole = roleRef.current
+      const currentFocus = focusRef.current
+
       const { getReferenceProps, getFloatingProps } = useInteractions([
         currentHoverable
           ? useHover(interactionContext, {
               enabled: !disableRef.current && !!currentHoverable,
+              delay,
+              restMs,
               handleClose: safePolygon({
                 requireIntent: true,
                 buffer: 1,
@@ -136,19 +206,11 @@ export const useFloatingContext = ({
         useFocus(interactionContext, {
           enabled: !disableRef.current && !disableFocusRef.current,
           visibleOnly: true,
+          ...currentFocus,
         }),
-        useRole(interactionContext, { role: 'dialog' }),
+        useRole(interactionContext, { role: currentRole }),
       ])
 
-      // parse hoverable config
-      const delay =
-        currentHoverable && typeof currentHoverable === 'object'
-          ? currentHoverable.delay
-          : 0
-      const restMs =
-        currentHoverable && typeof currentHoverable === 'object'
-          ? currentHoverable.restMs
-          : 0
       const openDelay = typeof delay === 'number' ? delay : ((delay as any)?.open ?? 0)
 
       const setOpenWithDelay = () => {
