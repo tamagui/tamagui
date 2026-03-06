@@ -278,8 +278,7 @@ function tamaguiAutoUpdate(
   }
 
   // scroll listeners for immediate response (only for real DOM elements)
-  const refAncestors =
-    reference instanceof Element ? getOverflowAncestors(reference) : []
+  const refAncestors = reference instanceof Element ? getOverflowAncestors(reference) : []
   const ancestors = [...refAncestors, ...getOverflowAncestors(floating)]
   const uniqueAncestors = [...new Set(ancestors)]
   for (const ancestor of uniqueAncestors) {

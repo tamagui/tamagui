@@ -149,7 +149,7 @@ test.describe('Popover scoped position glitch detection', () => {
 
     // check: no sudden large jumps between consecutive visible frames
     const jumpThreshold = 150 // px
-    const jumps: { from: typeof visibleFrames[0]; to: typeof visibleFrames[0] }[] = []
+    const jumps: { from: (typeof visibleFrames)[0]; to: (typeof visibleFrames)[0] }[] = []
     for (let i = 1; i < visibleFrames.length; i++) {
       const dx = Math.abs(visibleFrames[i].x - visibleFrames[i - 1].x)
       const dy = Math.abs(visibleFrames[i].y - visibleFrames[i - 1].y)
