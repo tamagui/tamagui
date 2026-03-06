@@ -7,6 +7,7 @@ import {
   View as TamaguiView,
   createStyledContext,
   getVariableValue,
+  registerLayoutNode,
   styled,
 } from '@tamagui/core'
 import type { PopupTriggerMap } from '@tamagui/floating'
@@ -15,6 +16,7 @@ import type {
   Middleware,
   OffsetOptions,
   Placement,
+  ReferenceType,
   Side,
   SizeOptions,
   Strategy,
@@ -22,8 +24,8 @@ import type {
 } from '@tamagui/floating'
 import {
   arrow,
-  autoUpdate,
   flip,
+  getOverflowAncestors,
   offset as offsetFn,
   platform,
   shift,
@@ -255,6 +257,48 @@ const transformOriginMiddleware = (options: {
   },
 })
 
+// replaces floating-ui's autoUpdate with tamagui's batched IO measurement loop
+// keeps scroll/resize listeners for immediate response, but replaces per-element
+// ResizeObserver + IntersectionObserver with the shared layoutOnAnimationFrame loop
+function tamaguiAutoUpdate(
+  reference: ReferenceType,
+  floating: HTMLElement,
+  update: () => void
+): () => void {
+  // initial position
+  update()
+
+  const cleanups: (() => void)[] = []
+
+  // watch reference element via tamagui's IO measurement loop
+  // only watch reference, NOT floating — watching floating causes loops
+  // (computePosition sets position → rect changes → update → repeat)
+  if (reference instanceof HTMLElement) {
+    cleanups.push(registerLayoutNode(reference, update))
+  }
+
+  // scroll listeners for immediate response (only for real DOM elements)
+  const refAncestors =
+    reference instanceof Element ? getOverflowAncestors(reference) : []
+  const ancestors = [...refAncestors, ...getOverflowAncestors(floating)]
+  const uniqueAncestors = [...new Set(ancestors)]
+  for (const ancestor of uniqueAncestors) {
+    ancestor.addEventListener('scroll', update, { passive: true })
+  }
+
+  // window resize
+  window.addEventListener('resize', update)
+
+  cleanups.push(() => {
+    for (const ancestor of uniqueAncestors) {
+      ancestor.removeEventListener('scroll', update)
+    }
+    window.removeEventListener('resize', update)
+  })
+
+  return () => cleanups.forEach((fn) => fn())
+}
+
 export function Popper(props: PopperProps) {
   const {
     children,
@@ -282,7 +326,7 @@ export function Popper(props: PopperProps) {
     strategy,
     placement,
     sameScrollView: false, // this only takes effect on native
-    whileElementsMounted: !isOpen ? undefined : autoUpdate,
+    whileElementsMounted: !isOpen ? undefined : tamaguiAutoUpdate,
     platform:
       (disableRTL ?? setupOptions.disableRTL)
         ? {

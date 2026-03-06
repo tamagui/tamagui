@@ -49,6 +49,7 @@ export {
   autoUpdate,
   detectOverflow,
   flip,
+  getOverflowAncestors,
   hide,
   inline,
   limitShift,

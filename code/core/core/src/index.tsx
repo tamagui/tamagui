@@ -36,6 +36,7 @@ import type { RNTextProps, RNViewProps } from './reactNativeTypes'
 // helpful for usage outside of tamagui
 export {
   LayoutMeasurementController,
+  registerLayoutNode,
   setOnLayoutStrategy,
   type LayoutEvent,
 } from '@tamagui/use-element-layout'

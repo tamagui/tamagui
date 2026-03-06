@@ -365,6 +365,23 @@ const getRelativeDimensions = (
   return { x, y, width, height, pageX: a.left, pageY: a.top }
 }
 
+// register an arbitrary DOM element into the measurement loop without React lifecycle
+export function registerLayoutNode(
+  node: HTMLElement,
+  onChange: () => void,
+  disableKey?: string
+): () => void {
+  Nodes.add(node)
+  LayoutHandlers.set(node, onChange)
+  if (disableKey) LayoutDisableKey.set(node, disableKey)
+  startGlobalObservers()
+  if (globalIntersectionObserver) {
+    globalIntersectionObserver.observe(node)
+    IntersectionState.set(node, true)
+  }
+  return () => cleanupNode(node)
+}
+
 function cleanupNode(node: HTMLElement) {
   Nodes.delete(node)
   LayoutHandlers.delete(node)
