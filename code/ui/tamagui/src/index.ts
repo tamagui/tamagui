@@ -182,6 +182,7 @@ export {
   styled,
   themeable,
   // hooks
+  useClientValue,
   useDidFinishSSR,
   useEvent,
   useGet,
