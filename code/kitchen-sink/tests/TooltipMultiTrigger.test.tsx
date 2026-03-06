@@ -45,39 +45,58 @@ test.describe('Tooltip multi-trigger rapid hover', () => {
     await expect(content).toBeVisible({ timeout: 2000 })
 
     const label = page.locator('#tip-label')
-    await expect(label).toContainText('Third', { timeout: 2000 })
+    await expect(label).toContainText('Expert', { timeout: 2000 })
   })
 
-  test('arrow stays centered on tooltip content', async ({ page }) => {
+  test('arrow stays aligned with hovered trigger after switch', async ({ page }) => {
     const content = page.locator('#tip-content')
 
-    // hover first trigger
+    // hover first trigger to open
     await page.locator('#tip-trigger-a').hover()
     await page.waitForTimeout(200)
     await expect(content).toBeVisible({ timeout: 3000 })
 
-    // quickly jump to last trigger
+    // verify arrow is near trigger A
+    const arrowA = await getBoundingRect(page, '#tip-arrow')
+    const triggerARect = await getBoundingRect(page, '#tip-trigger-a')
+    expect(arrowA).toBeTruthy()
+    const arrowACX = arrowA!.x + arrowA!.width / 2
+    const triggerACX = triggerARect!.x + triggerARect!.width / 2
+    // arrow should be within 30px of trigger center
+    expect(Math.abs(arrowACX - triggerACX)).toBeLessThan(30)
+
+    // quickly jump to trigger C (2 steps = very fast mouse move)
     const triggerC = page.locator('#tip-trigger-c')
-    const box = await triggerC.boundingBox()
-    if (box) {
-      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, {
-        steps: 3,
-      })
-    }
-    await page.waitForTimeout(300)
+    const cBox = await triggerC.boundingBox()
+    await page.mouse.move(cBox!.x + cBox!.width / 2, cBox!.y + cBox!.height / 2, {
+      steps: 2,
+    })
+
+    // wait for position to settle (animatePosition transition)
+    await page.waitForTimeout(500)
     await expect(content).toBeVisible({ timeout: 2000 })
 
-    // arrow should be within the horizontal bounds of the content
-    const arrowRect = await getBoundingRect(page, '#tip-arrow')
+    // arrow should now be near trigger C, not still near trigger A
+    const arrowC = await getBoundingRect(page, '#tip-arrow')
+    const triggerCRect = await getBoundingRect(page, '#tip-trigger-c')
     const contentRect = await getBoundingRect(page, '#tip-content')
-
-    expect(arrowRect).toBeTruthy()
+    expect(arrowC).toBeTruthy()
     expect(contentRect).toBeTruthy()
 
-    // arrow center should be within content bounds (not displaced far left/right)
-    const arrowCenterX = arrowRect!.x + arrowRect!.width / 2
-    expect(arrowCenterX).toBeGreaterThanOrEqual(contentRect!.x)
-    expect(arrowCenterX).toBeLessThanOrEqual(contentRect!.x + contentRect!.width)
+    const arrowCCX = arrowC!.x + arrowC!.width / 2
+    const triggerCCX = triggerCRect!.x + triggerCRect!.width / 2
+    const contentCCX = contentRect!.x + contentRect!.width / 2
+
+    // arrow center should be within content bounds
+    expect(arrowCCX).toBeGreaterThanOrEqual(contentRect!.x)
+    expect(arrowCCX).toBeLessThanOrEqual(contentRect!.x + contentRect!.width)
+
+    // arrow should be reasonably near trigger C (not still at A)
+    // with offset=20 and animatePosition, arrow should track the trigger
+    expect(
+      Math.abs(arrowCCX - triggerCCX),
+      `arrow center (${arrowCCX}) should be near trigger C center (${triggerCCX}), content center at ${contentCCX}`
+    ).toBeLessThan(40)
   })
 
   test('tooltip closes when cursor leaves all triggers', async ({ page }) => {
