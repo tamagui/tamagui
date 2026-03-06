@@ -336,6 +336,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // strings, so we capture the mid-flight value ourselves via WAAPI
               // commitStyles().
               //
+              // TODO(upstream): removable once motion ships the fix from
+              // https://github.com/motiondivision/motion/pull/3588
+              // (merged 2026-03-05, not yet released as of 12.35.0).
+              // when removing, also drop the manual controls.cancel() below
+              // so motion's internal updateMotionValue() can run its new
+              // getComputedStyle+setStyle logic. the post-completion style
+              // persistence block (lines below) may still be needed separately.
+              //
               // tested by:
               //   - TabHoverPositionSmooth.animated.test.tsx (smooth interpolation)
               //   - TooltipPositionJump.animated.test.tsx (rapid trigger switching)
