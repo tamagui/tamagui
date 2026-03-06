@@ -304,11 +304,12 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       stopSpring()
 
       const isOpenAnimation = position !== -1 && !isHidden
-      const animationCompleteCallback = onAnimationComplete
-        ? () => {
-            onAnimationComplete({ open: isOpenAnimation })
-          }
-        : undefined
+      const animationCompleteCallback = () => {
+        if (!isOpenAnimation) {
+          setOpacity(0)
+        }
+        onAnimationComplete?.({ open: isOpenAnimation })
+      }
 
       // skip animation when adapting from dialog to sheet
       if (skipAdaptAnimation.current) {
@@ -654,17 +655,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     if (open && opacity === 0) {
       setOpacity(1)
     }
-    React.useEffect(() => {
-      if (!open) {
-        // need to wait for animation complete, for now lets just do it naively
-        const tm = setTimeout(() => {
-          setOpacity(0)
-        }, 400)
-        return () => {
-          clearTimeout(tm)
-        }
-      }
-    }, [open])
 
     const forcedContentHeight = hasFit
       ? undefined
