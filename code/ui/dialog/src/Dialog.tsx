@@ -62,6 +62,11 @@ type DialogProps = ScopedProps<{
    * Used to disable the remove scroll functionality when open
    */
   disableRemoveScroll?: boolean
+
+  /**
+   * Called when the dialog open/close animation completes.
+   */
+  onAnimationComplete?: (info: { open: boolean }) => void
 }>
 
 type NonNull<A> = Exclude<A, void | null>
@@ -81,6 +86,7 @@ type DialogContextValue = {
   modal: NonNull<DialogProps['modal']>
   dialogScope: DialogScopes
   adaptScope: string
+  onAnimationComplete?: DialogProps['onAnimationComplete']
 }
 
 export const DialogContext = createStyledContext<DialogContextValue>(
@@ -242,9 +248,22 @@ const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
       }, [isVisible])
     }
 
+    const onAnimationCompleteRef = React.useRef(context.onAnimationComplete)
+    onAnimationCompleteRef.current = context.onAnimationComplete
+
     const handleExitComplete = React.useCallback(() => {
       setIsFullyHidden(true)
+      onAnimationCompleteRef.current?.({ open: false })
     }, [])
+
+    React.useEffect(() => {
+      if (context.open && !isAdapted && onAnimationCompleteRef.current) {
+        const tm = setTimeout(() => {
+          onAnimationCompleteRef.current?.({ open: true })
+        }, 350)
+        return () => clearTimeout(tm)
+      }
+    }, [context.open, isAdapted])
 
     const zIndex = getExpandedShorthand('zIndex', props)
 
@@ -861,6 +880,7 @@ const Dialog = withStaticProperties(
         modal = true,
         keepChildrenMounted,
         disableRemoveScroll = false,
+        onAnimationComplete,
       } = props
 
       const baseId = React.useId()
@@ -898,6 +918,7 @@ const Dialog = withStaticProperties(
         modal,
         keepChildrenMounted,
         disableRemoveScroll,
+        onAnimationComplete,
       } satisfies DialogContextValue
 
       React.useImperativeHandle(
