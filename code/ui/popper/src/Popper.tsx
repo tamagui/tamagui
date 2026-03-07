@@ -510,11 +510,9 @@ export function Popper(props: PopperProps) {
   ])
 
   return (
-    <LayoutMeasurementController disable={!isOpen}>
-      <PopperProvider scope={scope} {...popperContext}>
-        {children}
-      </PopperProvider>
-    </LayoutMeasurementController>
+    <PopperProvider scope={scope} {...popperContext}>
+      {children}
+    </PopperProvider>
   )
 }
 
@@ -813,32 +811,34 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
         : undefined
 
     return (
-      <TamaguiView
-        passThrough={passThrough}
-        ref={contentRefs}
-        direction={rest.direction}
-        {...(passThrough ? null : floatingProps)}
-        {...(!passThrough &&
-          animatePos && {
-            'data-popper-animate-position': 'true',
-          })}
-      >
-        <PopperContentFrame
-          key="popper-content-frame"
+      <LayoutMeasurementController disable={!context.open}>
+        <TamaguiView
           passThrough={passThrough}
-          unstyled={unstyled}
-          {...(!passThrough && {
-            'data-placement': placement,
-            'data-strategy': strategy,
-            size,
-            ...style,
-            ...transformOriginStyle,
-            ...rest,
-          })}
+          ref={contentRefs}
+          direction={rest.direction}
+          {...(passThrough ? null : floatingProps)}
+          {...(!passThrough &&
+            animatePos && {
+              'data-popper-animate-position': 'true',
+            })}
         >
-          {children}
-        </PopperContentFrame>
-      </TamaguiView>
+          <PopperContentFrame
+            key="popper-content-frame"
+            passThrough={passThrough}
+            unstyled={unstyled}
+            {...(!passThrough && {
+              'data-placement': placement,
+              'data-strategy': strategy,
+              size,
+              ...style,
+              ...transformOriginStyle,
+              ...rest,
+            })}
+          >
+            {children}
+          </PopperContentFrame>
+        </TamaguiView>
+      </LayoutMeasurementController>
     )
   }
 )
