@@ -52,7 +52,31 @@ jobs:
       - name: Run unit tests
         run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=1
 
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      integration-relevant: ${{ steps.filter.outputs.integration-relevant }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            integration-relevant:
+              - 'code/core/**'
+              - 'code/ui/**'
+              - 'code/packages/**'
+              - 'code/kitchen-sink/**'
+              - 'code/compiler/babel-plugin/**'
+              - 'code/compiler/loader/**'
+              - 'code/compiler/metro-plugin/**'
+              - 'code/demos/**'
+              - 'package.json'
+              - 'bun.lock'
+
   integration-tests:
+    needs: changes
+    if: needs.changes.outputs.integration-relevant == 'true'
     runs-on: ubuntu-latest
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
