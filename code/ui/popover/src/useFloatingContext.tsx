@@ -93,6 +93,7 @@ export const useFloatingContext = ({
       const restTimerRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
       const graceRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
       const pendingCloseRef = React.useRef(false)
+      const isOverFloatingRef = React.useRef(false)
 
       React.useEffect(() => {
         return () => {
@@ -132,18 +133,32 @@ export const useFloatingContext = ({
       const dataRef = React.useRef<{ openEvent?: Event; placement?: string }>({})
       dataRef.current.placement = floating.placement
 
+      // use getters so useHover's event handlers read live ref values
+      // instead of stale snapshots. without this, elements.floating is null
+      // in onReferenceMouseLeave's closure (the floating portal hasn't
+      // mounted yet when the effect first runs), causing safePolygon to
+      // silently bail and never install its document mousemove listener.
+      const floatingRefs = floating.refs
+      const nullRef = { current: null }
+
       const interactionContext: FloatingInteractionContext = {
         open: openRef.current,
         onOpenChange,
         refs: {
-          reference: floating.refs?.reference || { current: null },
-          floating: floating.refs?.floating || { current: null },
-          domReference: floating.refs?.reference || { current: null },
+          reference: floatingRefs?.reference || nullRef,
+          floating: floatingRefs?.floating || nullRef,
+          domReference: floatingRefs?.reference || nullRef,
         },
         elements: {
-          reference: floating.refs?.reference?.current || null,
-          floating: floating.refs?.floating?.current || null,
-          domReference: floating.refs?.reference?.current || null,
+          get reference() {
+            return floatingRefs?.reference?.current || null
+          },
+          get floating() {
+            return floatingRefs?.floating?.current || null
+          },
+          get domReference() {
+            return floatingRefs?.reference?.current || null
+          },
         },
         dataRef,
         events,
@@ -184,7 +199,7 @@ export const useFloatingContext = ({
       const currentRole = roleRef.current
       const currentFocus = focusRef.current
 
-      const { getReferenceProps, getFloatingProps } = useInteractions([
+      const { getReferenceProps, getFloatingProps: getFloatingPropsInner } = useInteractions([
         currentHoverable
           ? useHover(interactionContext, {
               enabled: !disableRef.current && !!currentHoverable,
@@ -211,6 +226,30 @@ export const useFloatingContext = ({
         useRole(interactionContext, { role: currentRole }),
       ])
 
+      // wrap getFloatingProps to track cursor over floating content.
+      // when flushSync switches the reference element, useEffect (which
+      // attaches useHover's DOM listeners) hasn't run yet, so safePolygon
+      // may not be installed. this tracking lets the grace timer know if
+      // the cursor is on floating content vs empty space.
+      const getFloatingProps = currentHoverable
+        ? (userProps?: Record<string, any>) => {
+            const merged = getFloatingPropsInner(userProps)
+            const origEnter = merged.onMouseEnter
+            const origLeave = merged.onMouseLeave
+            return {
+              ...merged,
+              onMouseEnter: (e: any) => {
+                isOverFloatingRef.current = true
+                origEnter?.(e)
+              },
+              onMouseLeave: (e: any) => {
+                isOverFloatingRef.current = false
+                origLeave?.(e)
+              },
+            }
+          }
+        : getFloatingPropsInner
+
       const openDelay = typeof delay === 'number' ? delay : ((delay as any)?.open ?? 0)
 
       const setOpenWithDelay = () => {
@@ -233,18 +272,7 @@ export const useFloatingContext = ({
         open: openRef.current,
         triggerElements,
         getReferenceProps,
-        getFloatingProps: currentHoverable
-          ? (props: any) => {
-              const floatingProps = getFloatingProps(props)
-              return {
-                ...floatingProps,
-                onMouseEnter: (e: any) => {
-                  pendingCloseRef.current = false
-                  floatingProps?.onMouseEnter?.(e)
-                },
-              }
-            }
-          : getFloatingProps,
+        getFloatingProps,
 
         onHoverReference: currentHoverable
           ? (_event: any) => {
@@ -267,6 +295,19 @@ export const useFloatingContext = ({
                 if (pendingCloseRef.current) {
                   pendingCloseRef.current = false
                   setOpen(false, 'hover')
+                  return
+                }
+                // if still open but no pending close, safePolygon may not
+                // have installed its DOM listeners yet (flushSync/useEffect
+                // timing gap — exacerbated by heavy animation work on the
+                // main thread). schedule a delayed fallback that closes
+                // unless cursor reaches floating content.
+                if (openRef.current) {
+                  graceRef.current = setTimeout(() => {
+                    if (openRef.current && !isOverFloatingRef.current) {
+                      setOpen(false, 'hover')
+                    }
+                  }, 250)
                 }
               }, 40)
             }

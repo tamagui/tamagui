@@ -1,4 +1,5 @@
 // adapted from radix-ui popper
+import { flushSync } from 'react-dom'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
@@ -594,7 +595,7 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
           onMouseEnter: (e) => {
             if (ref.current instanceof HTMLElement) {
               const el = ref.current
-              refs.setReference(el)
+              flushSync(() => refs.setReference(el))
               update()
 
               if (!refProps) {
@@ -927,6 +928,10 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
     const x = (context.arrowStyle?.x as number) || 0
     const y = (context.arrowStyle?.y as number) || 0
 
+    // hide arrow until floating-ui has computed its position to prevent
+    // flash at x=0 during initial render or trigger switches in hydration
+    const arrowPositioned = context.arrowStyle != null
+
     const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
 
     const arrowStyle: ViewProps = { x, y, width: size, height: size }
@@ -960,6 +965,7 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
       <PopperArrowOuterFrame
         ref={refs}
         {...arrowStyle}
+        {...(!arrowPositioned && { opacity: 0 })}
         {...(animatePosition && {
           transition,
           animateOnly: ['transform'],

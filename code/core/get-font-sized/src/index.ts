@@ -76,7 +76,11 @@ function getDefaultSizeToken(font: GenericFont) {
   }
 
   // use either font.size if it has true set, or fallback to tokens.size mapping to the same
-  const sizeTokens = '$true' in font.size ? font.size : getTokens().size
+  const tokens = getTokens()
+  const sizeTokens = '$true' in font.size ? font.size : tokens?.size
+  if (!sizeTokens) {
+    return Object.keys(font.size)[3]
+  }
   const sizeDefault = sizeTokens['$true']
   const sizeDefaultSpecific = sizeDefault
     ? Object.keys(sizeTokens).find(
