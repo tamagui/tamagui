@@ -62,6 +62,10 @@ const include = [
   '@stripe/stripe-js',
   'swr/mutation',
   'mdx-bundler/client',
+  // core tamagui packages must be pre-bundled together to avoid duplicate instances
+  'tamagui',
+  '@tamagui/core',
+  '@tamagui/web',
   // existing
   '@ai-sdk/deepseek',
   'secure-json-parse',
@@ -85,6 +89,20 @@ const include = [
   'glob',
   'reading-time',
   'unified',
+  '@tamagui/get-font-sized',
+  '@tamagui/linear-gradient',
+  '@tamagui/lucide-icons',
+  '@rehookify/datepicker',
+  '@tamagui/get-token',
+  '@tamagui/roving-focus',
+  'react-native-safe-area-context',
+  '@hookform/resolvers/zod',
+  'react-native-reanimated',
+  '@tamagui/react-native-svg',
+  'react-native-gesture-handler',
+  '@tanstack/react-table',
+  '@tamagui/focus-scope',
+  'react-dropzone',
 ]
 
 export default {
@@ -167,7 +185,6 @@ export default {
       },
     ],
 
-    // todo automate, probably can just dedupe all package.json deps?
     dedupe: [
       'react',
       'react-dom',
