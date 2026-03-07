@@ -49,7 +49,9 @@ code/studio/types/**
 
 .expo
 .vite-inspect
-.claude/
+# Claude Code - allow shared config (settings.json, skills/) but ignore user-local settings
+# See https://docs.anthropic.com/en/docs/claude-code/settings
+.claude/settings.local.json
 
 # Playwright
 .playwright-report/
