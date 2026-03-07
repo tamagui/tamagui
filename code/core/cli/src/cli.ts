@@ -15,7 +15,7 @@ import { loadTamagui, checkDeps } from '@tamagui/static'
 
 const COMMAND_MAP = {
   check: {
-    description: `Checks your dependencies for inconsistent versions.`,
+    description: `Checks for inconsistent versions, duplicate installs, lockfile issues, and missing config.`,
     shorthands: [],
     flags: {
       '--help': Boolean,
