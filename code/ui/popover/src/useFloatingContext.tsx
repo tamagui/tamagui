@@ -199,38 +199,51 @@ export const useFloatingContext = ({
       const currentRole = roleRef.current
       const currentFocus = focusRef.current
 
-      const { getReferenceProps, getFloatingProps: getFloatingPropsInner } = useInteractions([
-        currentHoverable
-          ? useHover(interactionContext, {
-              enabled: !disableRef.current && !!currentHoverable,
-              delay,
-              restMs,
-              handleClose: safePolygon({
-                requireIntent: true,
-                buffer: 1,
-                __debug:
-                  typeof window !== 'undefined' &&
-                  new URLSearchParams(window.location.search).get('debug') ===
-                    'safePolygon',
+      const { getReferenceProps, getFloatingProps: getFloatingPropsInner } =
+        useInteractions([
+          currentHoverable
+            ? useHover(interactionContext, {
+                enabled: !disableRef.current && !!currentHoverable,
+                delay,
+                restMs,
+                handleClose: safePolygon({
+                  requireIntent: true,
+                  buffer: 1,
+                  __debug:
+                    typeof window !== 'undefined' &&
+                    new URLSearchParams(window.location.search).get('debug') ===
+                      'safePolygon',
+                }),
+                ...(typeof currentHoverable === 'object' && currentHoverable),
+              })
+            : useHover(interactionContext, {
+                enabled: false,
               }),
-              ...(typeof currentHoverable === 'object' && currentHoverable),
-            })
-          : useHover(interactionContext, {
-              enabled: false,
-            }),
-        useFocus(interactionContext, {
-          enabled: !disableRef.current && !disableFocusRef.current,
-          visibleOnly: true,
-          ...currentFocus,
-        }),
-        useRole(interactionContext, { role: currentRole }),
-      ])
+          useFocus(interactionContext, {
+            enabled: !disableRef.current && !disableFocusRef.current,
+            visibleOnly: true,
+            ...currentFocus,
+          }),
+          useRole(interactionContext, { role: currentRole }),
+        ])
 
-      // wrap getFloatingProps to track cursor over floating content.
-      // when flushSync switches the reference element, useEffect (which
-      // attaches useHover's DOM listeners) hasn't run yet, so safePolygon
-      // may not be installed. this tracking lets the grace timer know if
-      // the cursor is on floating content vs empty space.
+      // track whether cursor is over the floating content element.
+      //
+      // why: when flushSync switches the reference element, useHover's
+      // useEffect (which attaches DOM mouseleave listeners) hasn't run
+      // yet, so safePolygon may not be installed. our fallback close
+      // timer in onLeaveReference needs to know if the cursor reached
+      // the floating content — if it did, we shouldn't close.
+      //
+      // why React handlers work here: unlike useHover's DOM listeners
+      // (attached via useEffect, subject to timing gaps), these React
+      // synthetic event handlers are attached via JSX props and work
+      // immediately after render, regardless of useEffect scheduling.
+      //
+      // no memoization concern: this entire block runs inside the
+      // useCallback factory which already produces fresh closures each
+      // call ('use no memo'), and getFloatingPropsInner from
+      // useInteractions is already a new reference each render.
       const getFloatingProps = currentHoverable
         ? (userProps?: Record<string, any>) => {
             const merged = getFloatingPropsInner(userProps)
@@ -304,11 +317,14 @@ export const useFloatingContext = ({
                 // main thread). schedule a delayed fallback that closes
                 // unless cursor reaches floating content.
                 if (openRef.current) {
-                  graceRef.current = setTimeout(() => {
-                    if (openRef.current && !isOverFloatingRef.current) {
-                      setOpen(false, 'hover')
-                    }
-                  }, Math.max(250, closeDelay))
+                  graceRef.current = setTimeout(
+                    () => {
+                      if (openRef.current && !isOverFloatingRef.current) {
+                        setOpen(false, 'hover')
+                      }
+                    },
+                    Math.max(250, closeDelay)
+                  )
                 }
               }, 40)
             }

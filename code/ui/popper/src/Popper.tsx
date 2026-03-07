@@ -589,9 +589,16 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
         {...refProps}
         ref={composedRefs}
         {...(shouldHandleInHover && {
-          // this helps us with handling scoped poppers with many different targets
-          // basically we wait for mouseEnter to ever set a reference and remove it on leave
-          // otherwise floating ui gets confused by having >1 reference
+          // scoped poppers with multiple triggers: set the reference on
+          // mouseEnter so floating-ui positions relative to the hovered
+          // trigger, not the last one rendered.
+          //
+          // flushSync is critical here: without it, setReference batches
+          // with React's async state updates and the arrow/content position
+          // computes against the OLD reference element. this causes the
+          // arrow to flash at x=0 (top-left) during trigger switches.
+          // flushSync forces synchronous commit so update() below reads
+          // the correct reference element immediately.
           onMouseEnter: (e) => {
             if (ref.current instanceof HTMLElement) {
               const el = ref.current

@@ -163,12 +163,12 @@ function checkDuplicateInstalls(root: string): string {
     lines.push('')
   }
 
-  lines.push('Fix: run your package manager\'s dedupe command:')
+  lines.push("Fix: run your package manager's dedupe command:")
   lines.push('  bun install  (bun auto-dedupes)')
   lines.push('  npx yarn-deduplicate && yarn install')
   lines.push('  npm dedupe')
   lines.push('')
-  lines.push('If that doesn\'t help, delete node_modules and lockfile, then reinstall.')
+  lines.push("If that doesn't help, delete node_modules and lockfile, then reinstall.")
 
   return lines.join('\n')
 }
@@ -332,17 +332,16 @@ function formatLockfileDuplicates(
 
   if (multiVersion.size === 0) return ''
 
-  const lines: string[] = [
-    `Found multiple resolved versions in ${lockfileName}:`,
-    '',
-  ]
+  const lines: string[] = [`Found multiple resolved versions in ${lockfileName}:`, '']
 
   for (const [name, versions] of multiVersion) {
     lines.push(`  ${name}: ${versions.join(', ')}`)
   }
 
   lines.push('')
-  lines.push('Multiple versions cause duplicate runtime instances, breaking config/theme detection.')
+  lines.push(
+    'Multiple versions cause duplicate runtime instances, breaking config/theme detection.'
+  )
   lines.push('Fix: ensure all tamagui packages use the same version range, then dedupe.')
 
   return lines.join('\n')
@@ -360,12 +359,7 @@ function checkConfigExists(root: string): string {
     'tamagui.config.cjs',
   ]
 
-  const searchDirs = [
-    root,
-    join(root, 'src'),
-    join(root, 'app'),
-    join(root, 'config'),
-  ]
+  const searchDirs = [root, join(root, 'src'), join(root, 'app'), join(root, 'config')]
 
   for (const dir of searchDirs) {
     for (const name of configNames) {

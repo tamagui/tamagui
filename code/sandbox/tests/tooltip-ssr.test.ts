@@ -1,15 +1,12 @@
 import { expect, test, type Page } from '@playwright/test'
 
 async function getRect(page: Page, selector: string) {
-  return page.evaluate(
-    (sel) => {
-      const el = document.querySelector(sel)
-      if (!el) return null
-      const r = el.getBoundingClientRect()
-      return { x: r.x, y: r.y, width: r.width, height: r.height }
-    },
-    selector
-  )
+  return page.evaluate((sel) => {
+    const el = document.querySelector(sel)
+    if (!el) return null
+    const r = el.getBoundingClientRect()
+    return { x: r.x, y: r.y, width: r.width, height: r.height }
+  }, selector)
 }
 
 test.describe('Tooltip SSR hydration', () => {
@@ -25,7 +22,9 @@ test.describe('Tooltip SSR hydration', () => {
     // mechanism), matching the real bug where onLeaveReference fires
     // but useHover's DOM close handler doesn't.
     await page.goto('/tooltip-ssr')
-    await page.waitForSelector('#tooltip-ssr-root[data-hydrated="true"]', { timeout: 15000 })
+    await page.waitForSelector('#tooltip-ssr-root[data-hydrated="true"]', {
+      timeout: 15000,
+    })
 
     const triggerA = page.locator('#tip-trigger-a')
     const triggerC = page.locator('#tip-trigger-c')
@@ -40,7 +39,9 @@ test.describe('Tooltip SSR hydration', () => {
     await expect(content).toBeVisible({ timeout: 5000 })
 
     // sweep to trigger C
-    await page.mouse.move(cBox!.x + cBox!.width / 2, cBox!.y + cBox!.height / 2, { steps: 1 })
+    await page.mouse.move(cBox!.x + cBox!.width / 2, cBox!.y + cBox!.height / 2, {
+      steps: 1,
+    })
     await page.waitForTimeout(100)
 
     // block DOM-level mouseleave and mousemove events from reaching
@@ -69,7 +70,9 @@ test.describe('Tooltip SSR hydration', () => {
     await page.goto('/tooltip-ssr')
 
     // wait for hydration to complete (event handlers attached)
-    await page.waitForSelector('#tooltip-ssr-root[data-hydrated="true"]', { timeout: 15000 })
+    await page.waitForSelector('#tooltip-ssr-root[data-hydrated="true"]', {
+      timeout: 15000,
+    })
 
     const triggerA = page.locator('#tip-trigger-a')
     const box = await triggerA.boundingBox()
@@ -115,9 +118,15 @@ test.describe('Tooltip SSR hydration', () => {
     expect(cBox).toBeTruthy()
 
     // rapid sweep across all triggers
-    await page.mouse.move(aBox!.x + aBox!.width / 2, aBox!.y + aBox!.height / 2, { steps: 1 })
-    await page.mouse.move(bBox!.x + bBox!.width / 2, bBox!.y + bBox!.height / 2, { steps: 1 })
-    await page.mouse.move(cBox!.x + cBox!.width / 2, cBox!.y + cBox!.height / 2, { steps: 1 })
+    await page.mouse.move(aBox!.x + aBox!.width / 2, aBox!.y + aBox!.height / 2, {
+      steps: 1,
+    })
+    await page.mouse.move(bBox!.x + bBox!.width / 2, bBox!.y + bBox!.height / 2, {
+      steps: 1,
+    })
+    await page.mouse.move(cBox!.x + cBox!.width / 2, cBox!.y + cBox!.height / 2, {
+      steps: 1,
+    })
 
     await page.waitForTimeout(500)
 
@@ -133,10 +142,9 @@ test.describe('Tooltip SSR hydration', () => {
         const arrowCX = arrowRect.x + arrowRect.width / 2
         const contentCX = contentRect.x + contentRect.width / 2
         const displacement = Math.abs(arrowCX - contentCX)
-        expect(
-          displacement,
-          `arrow displaced ${displacement.toFixed(0)}px`
-        ).toBeLessThan(contentRect.width * 0.4)
+        expect(displacement, `arrow displaced ${displacement.toFixed(0)}px`).toBeLessThan(
+          contentRect.width * 0.4
+        )
       }
 
       // must close when leaving
