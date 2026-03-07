@@ -1,11 +1,11 @@
-import type { ToastProps } from '@tamagui/toast'
 import {
   Toast,
   ToastProvider as ToastProviderOG,
   ToastViewport,
   useToastController,
   useToastState,
-} from '@tamagui/toast'
+  type ToastProps,
+} from '@tamagui/toast/v1'
 import { Theme, YStack } from 'tamagui'
 
 export let toastController: ReturnType<typeof useToastController>
@@ -58,6 +58,6 @@ const ToastHandler = () => {
   )
 }
 
-declare module '@tamagui/toast' {
+declare module '@tamagui/toast/v1' {
   interface CustomData extends ToastProps {}
 }

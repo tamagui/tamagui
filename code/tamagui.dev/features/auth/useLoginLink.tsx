@@ -1,4 +1,4 @@
-import { useToastController } from '@tamagui/toast'
+import { useToastController } from '@tamagui/toast/v1'
 import { useUser } from '../user/useUser'
 import { useSupabaseClient } from './useSupabaseClient'
 
