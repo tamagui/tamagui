@@ -1,4 +1,4 @@
-import { beforeAll, expect, test } from 'vitest'
+import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
 import {
@@ -7,6 +7,7 @@ import {
   createTamagui,
   getCSSStylesAtomic,
 } from '../core/src'
+import { expandStyle } from '../web/src/helpers/expandStyle'
 
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig())
@@ -76,6 +77,66 @@ test(`outline longhands get doubled selector`, () => {
   })
   const rule = out[0][StyleObjectRules][0]
   expect(rule).toMatch(/\._[^\s]+\._[^\s]+\{/)
+})
+
+describe('flex expansion', () => {
+  const toMap = (result: ReturnType<typeof expandStyle>) =>
+    Object.fromEntries(result as [string, any][])
+
+  describe('default config (no styleCompat)', () => {
+    beforeAll(() => {
+      createTamagui(config.getDefaultTamaguiConfig())
+    })
+
+    test('flex: 1 expands with flexShrink: 0, flexGrow: 1, flexBasis: 0', () => {
+      const map = toMap(expandStyle('flex', 1))
+      expect(map.flexShrink).toBe(0)
+      expect(map.flexGrow).toBe(1)
+      expect(map.flexBasis).toBe(0)
+    })
+  })
+
+  describe('styleCompat: react-native', () => {
+    beforeAll(() => {
+      createTamagui({
+        ...config.getDefaultTamaguiConfig(),
+        settings: { styleCompat: 'react-native' },
+      })
+    })
+
+    test('flex: 1 expands with flexShrink: 0', () => {
+      const map = toMap(expandStyle('flex', 1))
+      expect(map.flexShrink).toBe(0)
+    })
+  })
+
+  describe('styleCompat: legacy', () => {
+    beforeAll(() => {
+      createTamagui({
+        ...config.getDefaultTamaguiConfig(),
+        settings: { styleCompat: 'legacy' },
+      })
+    })
+
+    test('flex: 1 expands with flexShrink: 1 and flexBasis: auto', () => {
+      const map = toMap(expandStyle('flex', 1))
+      expect(map.flexShrink).toBe(1)
+      expect(map.flexBasis).toBe('auto')
+    })
+  })
+
+  describe('flex: -1 special case', () => {
+    beforeAll(() => {
+      createTamagui(config.getDefaultTamaguiConfig())
+    })
+
+    test('flex: -1 always expands to flexShrink: 1, flexGrow: 0, flexBasis: auto', () => {
+      const map = toMap(expandStyle('flex', -1))
+      expect(map.flexShrink).toBe(1)
+      expect(map.flexGrow).toBe(0)
+      expect(map.flexBasis).toBe('auto')
+    })
+  })
 })
 
 // test(`should be fast`, () => {
