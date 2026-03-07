@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "2.0.0-rc.22-1772836362872",
+  "version": "2.0.0-rc.22-1772903013031",
   "bin": {
     "tama": "./dist/index.cjs",
     "tamagui": "./dist/index.cjs"
