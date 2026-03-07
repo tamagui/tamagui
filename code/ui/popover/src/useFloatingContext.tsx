@@ -251,6 +251,7 @@ export const useFloatingContext = ({
         : getFloatingPropsInner
 
       const openDelay = typeof delay === 'number' ? delay : ((delay as any)?.open ?? 0)
+      const closeDelay = typeof delay === 'number' ? delay : ((delay as any)?.close ?? 0)
 
       const setOpenWithDelay = () => {
         clearTimeout(restTimerRef.current)
@@ -307,7 +308,7 @@ export const useFloatingContext = ({
                     if (openRef.current && !isOverFloatingRef.current) {
                       setOpen(false, 'hover')
                     }
-                  }, 250)
+                  }, Math.max(250, closeDelay))
                 }
               }, 40)
             }
