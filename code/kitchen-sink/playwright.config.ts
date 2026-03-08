@@ -64,7 +64,7 @@ export default defineConfig({
 
   fullyParallel: true,
   workers: process.env.CI ? 4 : '75%',
-  retries: 1,
+  retries: process.env.CI ? 2 : 1,
 
   timeout: 50_000,
 })

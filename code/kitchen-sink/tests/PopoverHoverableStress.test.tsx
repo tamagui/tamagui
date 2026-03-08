@@ -157,7 +157,6 @@ test.describe('Popover hoverable stress', () => {
     await expect(page.locator('#rapid-panel-label')).toHaveText('Panel F')
 
     // move into content from F
-    const fBox = await page.locator('#rapid-trigger-f').boundingBox()
     const cBox = await content.boundingBox()
     await page.mouse.move(cBox!.x + cBox!.width / 2, cBox!.y + cBox!.height / 2, {
       steps: 5,
