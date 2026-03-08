@@ -125,6 +125,9 @@ export function useHover(
   const cleanupMouseMoveHandler = useEvent(() => {
     unbindMouseMoveRef.current()
     handlerRef.current = undefined
+    if (context.handleCloseActiveRef) {
+      context.handleCloseActiveRef.current = false
+    }
   })
 
   const clearPointerEvents = useEvent(() => {
@@ -214,6 +217,9 @@ export function useHover(
             domReference: reference as Element,
           },
           onClose() {
+            if (context.handleCloseActiveRef) {
+              context.handleCloseActiveRef.current = false
+            }
             clearPointerEvents()
             cleanupMouseMoveHandler()
             if (!isClickLikeOpenEvent()) {
@@ -221,6 +227,10 @@ export function useHover(
             }
           },
         })
+
+        if (context.handleCloseActiveRef) {
+          context.handleCloseActiveRef.current = true
+        }
 
         const handler = handlerRef.current
 

@@ -94,6 +94,7 @@ export const useFloatingContext = ({
       const graceRef = React.useRef<ReturnType<typeof setTimeout>>(undefined)
       const pendingCloseRef = React.useRef(false)
       const isOverFloatingRef = React.useRef(false)
+      const handleCloseActiveRef = React.useRef(false)
 
       React.useEffect(() => {
         return () => {
@@ -163,6 +164,7 @@ export const useFloatingContext = ({
         dataRef,
         events,
         triggerElements,
+        handleCloseActiveRef,
       }
 
       // delay group coordination — no-op when no FloatingDelayGroup provider exists
@@ -319,7 +321,15 @@ export const useFloatingContext = ({
                 if (openRef.current) {
                   graceRef.current = setTimeout(
                     () => {
-                      if (openRef.current && !isOverFloatingRef.current) {
+                      // don't force-close if safePolygon is actively tracking
+                      // the cursor — it will close when the cursor exits the
+                      // polygon. this prevents the fallback from racing
+                      // safePolygon during slow diagonal movement.
+                      if (
+                        openRef.current &&
+                        !isOverFloatingRef.current &&
+                        !handleCloseActiveRef.current
+                      ) {
                         setOpen(false, 'hover')
                       }
                     },

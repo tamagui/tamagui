@@ -31,6 +31,7 @@ export interface FloatingInteractionContext {
     }>;
     events?: FloatingEvents;
     triggerElements?: PopupTriggerMap;
+    handleCloseActiveRef?: RefObject<boolean>;
 }
 export type Delay = number | Partial<{
     open: number;

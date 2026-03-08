@@ -44,6 +44,9 @@ export interface FloatingInteractionContext {
   }>
   events?: FloatingEvents
   triggerElements?: PopupTriggerMap
+  // set by useHover when safePolygon's document mousemove handler is active.
+  // checked by onLeaveReference fallback timer to avoid racing safePolygon.
+  handleCloseActiveRef?: RefObject<boolean>
 }
 
 export type Delay =
