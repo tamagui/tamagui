@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/normalize-css-color",
-  "version": "2.0.0-rc.22-1772903013031",
+  "version": "2.0.0-rc.22-1772961823387",
   "source": "src/index.ts",
   "files": [
     "src",
