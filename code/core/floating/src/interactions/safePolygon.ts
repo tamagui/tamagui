@@ -466,14 +466,13 @@ export function safePolygon(options: SafePolygonOptions = {}): HandleCloseFn {
         return close()
       }
 
-      // polygon check first — inside polygon = safe
+      // polygon check first — inside polygon = safe.
+      // the polygon geometry itself limits the safe zone to valid cursor
+      // paths toward the floating element, so no timeout is needed here.
+      // a previous 40ms requireIntent timeout caused premature closures
+      // during natural mouse pauses (humans routinely pause >40ms while
+      // moving diagonally from trigger to content).
       if (isPointInPolygon([clientX, clientY], poly)) {
-        if (!hasLanded && requireIntent) {
-          timeoutRef.current = window.setTimeout(() => {
-            if (__debug) debugClear()
-            close()
-          }, 40) as unknown as number
-        }
         return
       }
 
