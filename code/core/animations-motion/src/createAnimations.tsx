@@ -321,14 +321,17 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 refs.current.frozenExitTarget = { ...doAnimate }
               }
 
-              // capture mid-flight values and persist to inline so the
-              // 1-frame gap (while motion resolves keyframes) shows the
-              // correct position instead of stale inline styles.
+              // capture mid-flight values so we can provide explicit [from, to]
+              // keyframes to WAAPI, ensuring smooth interpolation from the
+              // current visual state.
               //
               // only stop() during exit — for non-exit cases, WAAPI
               // naturally replaces only conflicting property animations,
               // letting non-conflicting ones (like an in-flight enter
               // opacity animation) continue to completion.
+              const isPopperPosition = node.hasAttribute(
+                'data-popper-animate-position'
+              )
               let midFlightValues: Record<string, string> | null = null
               if (refs.current.controls) {
                 try {
@@ -348,9 +351,24 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                   refs.current.controls.stop()
                 }
 
+                // write mid-flight values to inline so the 1-frame gap
+                // (while motion resolves keyframes) shows the correct
+                // position instead of stale inline styles
                 if (midFlightValues) {
                   for (const key in midFlightValues) {
                     ;(node.style as any)[key] = midFlightValues[key]
+                  }
+                }
+
+                // for popper position elements, cancel WAAPI animations
+                // directly so motion.dev's internal stop() sees "idle" state
+                // and skips commitStyles. without this, commitStyles writes
+                // a mid-flight transform that's visible for 1 frame before
+                // the new animation starts, causing a flash toward (0,0).
+                if (isPopperPosition) {
+                  const anims = node.getAnimations()
+                  for (const anim of anims) {
+                    anim.cancel()
                   }
                 }
               }
@@ -370,27 +388,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               startedControls = animate(scope.current, fixedDiff, animationOptions)
               refs.current.controls = startedControls
               refs.current.lastAnimateAt = Date.now()
-
-              // persist final transform to inline style on completion —
-              // prevents flash to 0,0 when WAAPI removes the finished animation
-              if (
-                fixedDiff.transform &&
-                !isCurrentlyExiting &&
-                node.hasAttribute('data-popper-animate-position')
-              ) {
-                const target = Array.isArray(fixedDiff.transform)
-                  ? fixedDiff.transform[fixedDiff.transform.length - 1]
-                  : fixedDiff.transform
-                if (typeof target === 'string') {
-                  startedControls.finished
-                    .then(() => {
-                      if (node.isConnected) {
-                        node.style.transform = target
-                      }
-                    })
-                    .catch(() => {})
-                }
-              }
             }
           }
 

@@ -501,12 +501,9 @@ export function Popper(props: PopperProps) {
   }, [
     open,
     size,
-    floating.x,
-    floating.y,
-    floating.placement,
+    floating,
     JSON.stringify(middlewareData.arrow || null),
     JSON.stringify(middlewareData.transformOrigin || null),
-    floating.isPositioned,
   ])
 
   return (
@@ -598,14 +595,12 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
           // flushSync forces synchronous commit so update() below reads
           // the correct reference element immediately.
           onMouseEnter: (e) => {
-            if (ref.current instanceof HTMLElement) {
-              const el = ref.current
+            const el = (e.currentTarget ?? ref.current) as HTMLElement | null
+            if (el instanceof HTMLElement) {
               flushSync(() => refs.setReference(el))
               update()
 
-              if (!refProps) {
-                return
-              }
+              if (!refProps) return
 
               refProps.onPointerEnter?.(e)
               context.onHoverReference?.(e.nativeEvent)
@@ -717,12 +712,20 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       [refs.setFloating]
     )
 
-    // clear floating-ui's reference when the component genuinely unmounts
-    // (this runs AFTER the exit animation completes, since AnimatePresence keeps
-    // the component mounted during the exit animation)
+    // clear floating-ui's reference when the component genuinely unmounts.
+    // IMPORTANT: useEffect cleanup is deferred — when PopperContent remounts
+    // (e.g. animation prop cycling), the new instance's ref callback fires
+    // BEFORE this cleanup runs. without the guard, we'd null out the ref that
+    // the new instance just set, causing all subsequent update() calls to
+    // early-return (the "stuck tooltip" bug).
     React.useEffect(() => {
       return () => {
-        refs.setFloating(null)
+        const ourNode = lastNodeRef.current
+        // only clear if floating-ui still points to OUR node — if a new
+        // instance already set a different node, don't touch it
+        if (ourNode && refs.floating.current === ourNode) {
+          refs.setFloating(null)
+        }
         lastNodeRef.current = null
       }
     }, [])
@@ -753,13 +756,15 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       }
     }
 
-    // when floating-ui resets (close/reopen cycle), use the last known good
-    // position instead of 0,0 to prevent the animation driver from animating
-    // from origin or jumping
-    const effectiveX =
-      !isPositioned && hasBeenPositioned.current ? lastGoodPosition.current.x : x
-    const effectiveY =
-      !isPositioned && hasBeenPositioned.current ? lastGoodPosition.current.y : y
+    // use the last known good position when floating-ui provides 0,0.
+    // this happens in two cases:
+    // 1. close/reopen cycle: isPositioned resets to false
+    // 2. trigger switch: reference element changes, floating-ui briefly
+    //    provides x=0,y=0 while isPositioned is still true, causing the
+    //    animation driver to animate toward (0,0) for 2-3 frames
+    const brieflyZero = hasBeenPositioned.current && x === 0 && y === 0
+    const effectiveX = brieflyZero ? lastGoodPosition.current.x : x
+    const effectiveY = brieflyZero ? lastGoodPosition.current.y : y
 
     // only hide before the very first positioning
     const hide = !hasBeenPositioned.current && effectiveX === 0 && effectiveY === 0
