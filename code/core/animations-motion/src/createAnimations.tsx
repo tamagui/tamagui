@@ -321,11 +321,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 refs.current.frozenExitTarget = { ...doAnimate }
               }
 
-              // capture mid-flight computed values BEFORE stopping — once
-              // stop() cancels WAAPI animations the element reverts to its
-              // pre-animation inline styles, losing all interpolated values.
-              // always stop + persist to inline so there's no gap frame
-              // between old animation and new animation start.
+              // capture mid-flight values and persist to inline so the
+              // 1-frame gap (while motion resolves keyframes) shows the
+              // correct position instead of stale inline styles.
+              //
+              // only stop() during exit — for non-exit cases, WAAPI
+              // naturally replaces only conflicting property animations,
+              // letting non-conflicting ones (like an in-flight enter
+              // opacity animation) continue to completion.
               let midFlightValues: Record<string, string> | null = null
               if (refs.current.controls) {
                 try {
@@ -341,7 +344,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                   // getComputedStyle can fail on detached nodes
                 }
 
-                refs.current.controls.stop()
+                if (isCurrentlyExiting) {
+                  refs.current.controls.stop()
+                }
 
                 if (midFlightValues) {
                   for (const key in midFlightValues) {
