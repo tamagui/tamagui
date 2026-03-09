@@ -321,10 +321,35 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 refs.current.frozenExitTarget = { ...doAnimate }
               }
 
-              // stop running animation before exit to prevent motion from
-              // immediately resolving the new animation's promise
-              if (isCurrentlyExiting && refs.current.controls) {
-                refs.current.controls.stop()
+              // capture mid-flight computed values BEFORE stopping — once
+              // stop() cancels WAAPI animations the element reverts to its
+              // pre-animation inline styles, losing all interpolated values
+              let midFlightValues: Record<string, string> | null = null
+              if (refs.current.controls) {
+                try {
+                  const computed = getComputedStyle(node)
+                  midFlightValues = {}
+                  for (const key in diff) {
+                    const val = (computed as any)[key]
+                    if (val !== undefined && val !== '') {
+                      midFlightValues[key] = val
+                    }
+                  }
+                } catch {
+                  // getComputedStyle can fail on detached nodes
+                }
+
+                if (isCurrentlyExiting) {
+                  // during exit: stop all running animations and write
+                  // captured values to inline styles to prevent flash
+                  refs.current.controls.stop()
+
+                  if (midFlightValues) {
+                    for (const key in midFlightValues) {
+                      ;(node.style as any)[key] = midFlightValues[key]
+                    }
+                  }
+                }
               }
 
               const fixedDiff = fixTransparentColors(
@@ -336,16 +361,34 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // provide explicit [from, to] keyframe for transforms during
               // mid-flight interruption — motion's JSAnimation estimation
               // isn't accurate for CSS transform strings, getComputedStyle is
-              if (fixedDiff.transform && refs.current.controls?.state === 'running') {
-                const current = getComputedStyle(node).transform
-                if (current && current !== 'none') {
-                  fixedDiff.transform = [current, fixedDiff.transform]
-                }
+              if (midFlightValues?.transform && fixedDiff.transform) {
+                fixedDiff.transform = [midFlightValues.transform, fixedDiff.transform]
               }
 
               startedControls = animate(scope.current, fixedDiff, animationOptions)
               refs.current.controls = startedControls
               refs.current.lastAnimateAt = Date.now()
+
+              // persist final transform to inline style on completion —
+              // prevents flash to 0,0 when WAAPI removes the finished animation
+              if (
+                fixedDiff.transform &&
+                !isCurrentlyExiting &&
+                node.hasAttribute('data-popper-animate-position')
+              ) {
+                const target = Array.isArray(fixedDiff.transform)
+                  ? fixedDiff.transform[fixedDiff.transform.length - 1]
+                  : fixedDiff.transform
+                if (typeof target === 'string') {
+                  startedControls.finished
+                    .then(() => {
+                      if (node.isConnected) {
+                        node.style.transform = target
+                      }
+                    })
+                    .catch(() => {})
+                }
+              }
             }
           }
 

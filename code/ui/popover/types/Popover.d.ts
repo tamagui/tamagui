@@ -128,8 +128,22 @@ export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
 export declare const PopoverAnchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
-export type PopoverTriggerProps = ScopedPopoverProps<ViewProps>;
-export declare const PopoverTrigger: React.NamedExoticComponent<Omit<ViewProps, "scope"> & {
+export type PopoverTriggerProps = ScopedPopoverProps<ViewProps & {
+    /**
+     * When true, disables the built-in click-to-toggle behavior on the trigger.
+     * Useful for hoverable popovers where you want to control open/close
+     * entirely through hover or your own handlers.
+     */
+    disablePressTrigger?: boolean;
+}>;
+export declare const PopoverTrigger: React.NamedExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+    /**
+     * When true, disables the built-in click-to-toggle behavior on the trigger.
+     * Useful for hoverable popovers where you want to control open/close
+     * entirely through hover or your own handlers.
+     */
+    disablePressTrigger?: boolean;
+}, "scope"> & {
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
@@ -267,7 +281,14 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Trigger: React.NamedExoticComponent<Omit<ViewProps, "scope"> & {
+    Trigger: React.NamedExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+        /**
+         * When true, disables the built-in click-to-toggle behavior on the trigger.
+         * Useful for hoverable popovers where you want to control open/close
+         * entirely through hover or your own handlers.
+         */
+        disablePressTrigger?: boolean;
+    }, "scope"> & {
         scope?: PopoverScopes;
     } & React.RefAttributes<TamaguiElement>>;
     Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

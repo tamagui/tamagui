@@ -17,6 +17,7 @@ export { ButtonIconColor } from './ButtonIconColor'
 export { ButtonInverse } from './ButtonInverse'
 export { ButtonUnstyled } from './ButtonUnstyled'
 export { CheckboxDisabledOnPress } from './CheckboxDisabledOnPress'
+export { ClickDuringEnterCase } from './ClickDuringEnterCase'
 export { CodeExamplesInput } from './CodeExamplesInput'
 export { ColorTokenFallback } from './ColorTokenFallback'
 export { CompilerExtraction } from './CompilerExtraction'
@@ -89,6 +90,7 @@ export {
   PopoverHoverableExitAnimCase,
   PopoverHoverableSafePolygonCase,
 } from './PopoverHoverableCase'
+export { PopoverHoverableDisableClickCase } from './PopoverHoverableDisableClickCase'
 export { PopoverHoverableScopedCase } from './PopoverHoverableScopedCase'
 export { PopoverHoverableRapidCase } from './PopoverHoverableRapidCase'
 export { PopoverContentStyledPlusAnimations } from './PopoverContentStyledPlusAnimations'

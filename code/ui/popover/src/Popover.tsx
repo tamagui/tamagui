@@ -358,12 +358,21 @@ export const PopoverAnchor = React.memo(
  * PopoverTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-export type PopoverTriggerProps = ScopedPopoverProps<ViewProps>
+export type PopoverTriggerProps = ScopedPopoverProps<
+  ViewProps & {
+    /**
+     * When true, disables the built-in click-to-toggle behavior on the trigger.
+     * Useful for hoverable popovers where you want to control open/close
+     * entirely through hover or your own handlers.
+     */
+    disablePressTrigger?: boolean
+  }
+>
 
 export const PopoverTrigger = React.memo(
   React.forwardRef<TamaguiElement, PopoverTriggerProps>(
     function PopoverTrigger(props, forwardedRef) {
-      const { scope, ...rest } = props
+      const { scope, disablePressTrigger, ...rest } = props
       const triggerContext = usePopoverTriggerContext(scope)
       const triggerId = React.useId()
       const [open, setOpen] = React.useState(false)
@@ -401,6 +410,7 @@ export const PopoverTrigger = React.memo(
           // @ts-ignore
           ref={composedTriggerRef}
           onPress={composeEventHandlers(rest.onPress as any, () => {
+            if (disablePressTrigger) return
             triggerContext.setActiveTrigger(open ? null : triggerId)
             triggerContext.onOpenToggle()
           })}
