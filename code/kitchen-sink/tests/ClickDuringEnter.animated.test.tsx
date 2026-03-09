@@ -11,7 +11,11 @@ import { setupPage } from './test-utils'
  * its pre-animation inline styles for one frame.
  */
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page }, testInfo) => {
+  test.skip(
+    testInfo.project.name === 'animated-css',
+    'CSS transitions handle mid-flight interruption differently — this tests WAAPI behavior'
+  )
   await setupPage(page, { name: 'ClickDuringEnterCase', type: 'useCase' })
   await page.waitForTimeout(500)
 })
