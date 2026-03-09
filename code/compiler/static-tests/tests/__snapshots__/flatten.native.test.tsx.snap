@@ -32,7 +32,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "6": {}
 });
-import { _withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from 'tamagui';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -50,7 +50,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   "0": {},
   "1": {}
 });
-import { _withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from 'tamagui';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { View } from 'tamagui';
@@ -78,7 +78,7 @@ const _sheet = __ReactNativeStyleSheet.create({
     }]
   }
 });
-import { _withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from 'tamagui';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
