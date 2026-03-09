@@ -327,90 +327,25 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 refs.current.controls.stop()
               }
 
-              // WAAPI mid-flight transform interruption fix
-              // see WAAPI_RESEARCH.md for full investigation
-              //
-              // motion's useAnimate() uses DOMKeyframesResolver (always async),
-              // creating a one-frame gap on mid-flight interruption. motion's
-              // internal updateMotionValue() can't reliably sample CSS transform
-              // strings, so we capture the mid-flight value ourselves via WAAPI
-              // commitStyles().
-              //
-              // TODO(upstream): removable once motion ships the fix from
-              // https://github.com/motiondivision/motion/pull/3588
-              // (merged 2026-03-05, not yet released as of 12.35.0).
-              // when removing, also drop the manual controls.cancel() below
-              // so motion's internal updateMotionValue() can run its new
-              // getComputedStyle+setStyle logic. the post-completion style
-              // persistence block (lines below) may still be needed separately.
-              //
-              // tested by:
-              //   - TabHoverPositionSmooth.animated.test.tsx (smooth interpolation)
-              //   - TooltipPositionJump.animated.test.tsx (rapid trigger switching)
-              //   - PopoverHoverable.test.tsx (scoped multi-trigger switching)
-
-              // guard against GroupAnimationWithThen.getAll crashing on empty animations
-              const isRunning =
-                (refs.current.controls as any)?.animations?.length === 0
-                  ? false
-                  : refs.current.controls?.state === 'running'
-
-              const isPopperElement = node.hasAttribute('data-popper-animate-position')
-              const isEnteringPresenceChild = presence && justFinishedEntering
-
               const fixedDiff = fixTransparentColors(
                 diff,
                 refs.current.lastDoAnimate,
                 doAnimate
               )
 
-              // capture mid-flight transform via WAAPI commitStyles, then cancel
-              // and use committed value as explicit first keyframe [from, to]
-              if (
-                isRunning &&
-                refs.current.controls &&
-                fixedDiff.transform &&
-                (isPopperElement || isEnteringPresenceChild)
-              ) {
-                const anims = (refs.current.controls as any).animations
-                if (anims) {
-                  for (const anim of anims) {
-                    try {
-                      const raw = anim?.animation ?? anim
-                      raw?.commitStyles?.()
-                    } catch {}
-                  }
-                }
-                refs.current.controls.cancel()
-                const committedTransform = node.style.transform
-                if (committedTransform) {
-                  fixedDiff.transform = [committedTransform, fixedDiff.transform]
+              // provide explicit [from, to] keyframe for transforms during
+              // mid-flight interruption — motion's JSAnimation estimation
+              // isn't accurate for CSS transform strings, getComputedStyle is
+              if (fixedDiff.transform && refs.current.controls?.state === 'running') {
+                const current = getComputedStyle(node).transform
+                if (current && current !== 'none') {
+                  fixedDiff.transform = [current, fixedDiff.transform]
                 }
               }
 
               startedControls = animate(scope.current, fixedDiff, animationOptions)
               refs.current.controls = startedControls
               refs.current.lastAnimateAt = Date.now()
-
-              // persist final transform to inline style on completion —
-              // prevents flash-back when WAAPI removes the finished animation
-              if (isPopperElement && !isCurrentlyExiting && fixedDiff.transform) {
-                const target =
-                  typeof fixedDiff.transform === 'string'
-                    ? fixedDiff.transform
-                    : Array.isArray(fixedDiff.transform)
-                      ? fixedDiff.transform[fixedDiff.transform.length - 1]
-                      : null
-                if (typeof target === 'string') {
-                  startedControls.finished
-                    .then(() => {
-                      if (node.isConnected) {
-                        node.style.transform = target
-                      }
-                    })
-                    .catch(() => {})
-                }
-              }
             }
           }
 
