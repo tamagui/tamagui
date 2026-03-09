@@ -22,7 +22,15 @@ const importStyleSheet = template(`
 const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 `)
 
-const importWithStyle = template.ast(`import { _withStableStyle } from '@tamagui/core';`)
+// Known Tamagui packages that re-export _withStableStyle.
+// We match the import source to the file's existing imports to avoid module
+// duplication in monorepos (different physical copies → different React contexts).
+const TAMAGUI_IMPORT_SOURCES = new Set(['tamagui', '@tamagui/core', '@tamagui/web'])
+const DEFAULT_IMPORT_SOURCE = '@tamagui/core'
+
+function makeImportWithStyle(source: string) {
+  return template.ast(`import { _withStableStyle } from '${source}';`)
+}
 
 const extractor = createExtractor({ platform: 'native' })
 
@@ -88,6 +96,22 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
           let wrapperCount = 0
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
+
+          // Detect which Tamagui package the file already imports from so we
+          // can import _withStableStyle from the same source. This prevents
+          // module duplication in monorepos (pnpm, etc.) where @tamagui/core
+          // and tamagui might resolve to different physical copies with
+          // separate React context instances, causing "Missing theme" crashes.
+          let detectedImportSource = DEFAULT_IMPORT_SOURCE
+          for (const node of root.node.body) {
+            if (
+              node.type === 'ImportDeclaration' &&
+              TAMAGUI_IMPORT_SOURCES.has(node.source.value)
+            ) {
+              detectedImportSource = node.source.value
+              break
+            }
+          }
 
           // babel doesnt append the `//` so we need to
           const firstCommentContents = // join because you can join together multiple pragmas
@@ -327,7 +351,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   hasDynamicStyle
                 ) {
                   if (!hasImportedViewWrapper) {
-                    root.unshiftContainer('body', importWithStyle)
+                    root.unshiftContainer('body', makeImportWithStyle(detectedImportSource))
                     hasImportedViewWrapper = true
                   }
 
