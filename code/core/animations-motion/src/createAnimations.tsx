@@ -438,24 +438,16 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if (refs.current.isFirstRender) {
           refs.current.isFirstRender = false
 
-          // during hydration, apply styles directly without WAAPI to prevent
-          // font/layout flicker — WAAPI duration:0 animations still trigger
-          // style recalc which can cause visible flashes when many components
-          // hydrate simultaneously (e.g. hovering tooltip during page load)
+          // during hydration, skip inline style writes entirely — SSR CSS
+          // already has the correct values. writing them again as inline
+          // styles triggers browser style recalc that causes visible font
+          // flashes (fontWeight, fontSize, letterSpacing, lineHeight).
+          // we only need to track refs for future animation diffing.
           if (isHydrating) {
-            const node = stateRef.current.host
-
-            if (node instanceof HTMLElement) {
-              if (dontAnimate) {
-                Object.assign(node.style, dontAnimate as any)
-              }
-
-              if (doAnimate && Object.keys(doAnimate).length > 0) {
-                Object.assign(node.style, doAnimate as any)
-                refs.current.lastDoAnimate = { ...doAnimate }
-              } else {
-                refs.current.lastDoAnimate = dontAnimate ? { ...dontAnimate } : {}
-              }
+            if (doAnimate && Object.keys(doAnimate).length > 0) {
+              refs.current.lastDoAnimate = { ...doAnimate }
+            } else {
+              refs.current.lastDoAnimate = dontAnimate ? { ...dontAnimate } : {}
             }
 
             refs.current.lastDontAnimate = dontAnimate ? { ...dontAnimate } : {}
