@@ -345,6 +345,11 @@ export function useHover(
           floating.removeEventListener('mouseenter', onFloatingMouseEnter)
           floating.removeEventListener('mouseleave', onFloatingMouseLeave)
         }
+
+        // clean up safePolygon's document mousemove handler when reference
+        // changes — without this, handleCloseActiveRef stays true
+        // indefinitely after rapid trigger switching
+        cleanupMouseMoveHandler()
       }
     }
   }, [elements, enabled, context, mouseOnly, move, open, dataRef])

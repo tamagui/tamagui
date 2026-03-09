@@ -360,8 +360,12 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
               // provide explicit [from, to] keyframe for transforms during
               // mid-flight interruption — motion's JSAnimation estimation
-              // isn't accurate for CSS transform strings, getComputedStyle is
+              // isn't accurate for CSS transform strings, getComputedStyle is.
+              // also write mid-flight transform to inline style so the element
+              // doesn't flash to a stale position during the 1-2 frame gap
+              // between old animation cancellation and new animation start.
               if (midFlightValues?.transform && fixedDiff.transform) {
+                node.style.transform = midFlightValues.transform
                 fixedDiff.transform = [midFlightValues.transform, fixedDiff.transform]
               }
 
@@ -441,21 +445,21 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if (refs.current.isFirstRender) {
           refs.current.isFirstRender = false
 
-          // during hydration, use full sync logic to prevent flash
+          // during hydration, apply styles directly without WAAPI to prevent
+          // font/layout flicker — WAAPI duration:0 animations still trigger
+          // style recalc which can cause visible flashes when many components
+          // hydrate simultaneously (e.g. hovering tooltip during page load)
           if (isHydrating) {
             const node = stateRef.current.host
 
             if (node instanceof HTMLElement) {
               if (dontAnimate) {
                 Object.assign(node.style, dontAnimate as any)
-                const fixedDont = fixTransparentColors(dontAnimate, null, doAnimate)
-                animate(scope.current, fixedDont, { duration: 0 })
               }
 
               if (doAnimate && Object.keys(doAnimate).length > 0) {
+                Object.assign(node.style, doAnimate as any)
                 refs.current.lastDoAnimate = { ...doAnimate }
-                const fixedDo = fixTransparentColors(doAnimate, dontAnimate)
-                animate(scope.current, fixedDo, { duration: 0 })
               } else {
                 refs.current.lastDoAnimate = dontAnimate ? { ...dontAnimate } : {}
               }
