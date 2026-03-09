@@ -19,7 +19,7 @@ try {
   const demosPackagePath = requireFn.resolve('@tamagui/demos')
   demosPath = path.join(demosPackagePath, '..', '..', '..')
 } catch {
-  // may fail in SSG worker context
+  // may fail in SSG worker context where node_modules aren't fully accessible
 }
 
 // Simple tree visitor that doesn't depend on unist-util-visit
