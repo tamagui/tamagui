@@ -323,7 +323,9 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
 
               // capture mid-flight computed values BEFORE stopping — once
               // stop() cancels WAAPI animations the element reverts to its
-              // pre-animation inline styles, losing all interpolated values
+              // pre-animation inline styles, losing all interpolated values.
+              // always stop + persist to inline so there's no gap frame
+              // between old animation and new animation start.
               let midFlightValues: Record<string, string> | null = null
               if (refs.current.controls) {
                 try {
@@ -339,15 +341,11 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                   // getComputedStyle can fail on detached nodes
                 }
 
-                if (isCurrentlyExiting) {
-                  // during exit: stop all running animations and write
-                  // captured values to inline styles to prevent flash
-                  refs.current.controls.stop()
+                refs.current.controls.stop()
 
-                  if (midFlightValues) {
-                    for (const key in midFlightValues) {
-                      ;(node.style as any)[key] = midFlightValues[key]
-                    }
+                if (midFlightValues) {
+                  for (const key in midFlightValues) {
+                    ;(node.style as any)[key] = midFlightValues[key]
                   }
                 }
               }
@@ -359,13 +357,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               )
 
               // provide explicit [from, to] keyframe for transforms during
-              // mid-flight interruption — motion's JSAnimation estimation
-              // isn't accurate for CSS transform strings, getComputedStyle is.
-              // also write mid-flight transform to inline style so the element
-              // doesn't flash to a stale position during the 1-2 frame gap
-              // between old animation cancellation and new animation start.
+              // mid-flight interruption so motion starts from the right place
               if (midFlightValues?.transform && fixedDiff.transform) {
-                node.style.transform = midFlightValues.transform
                 fixedDiff.transform = [midFlightValues.transform, fixedDiff.transform]
               }
 
