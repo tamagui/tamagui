@@ -83,7 +83,11 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
     return (
       <YStack fullscreen zIndex={1}>
         <Image
-          fullscreen
+          position="absolute"
+          top={0}
+          left={0}
+          right={0}
+          bottom={0}
           objectFit="cover"
           {...(typeof shapeSize === 'number' &&
             !Number.isNaN(shapeSize) && {
