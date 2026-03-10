@@ -266,7 +266,9 @@ test('multiple media query components should not conflict', async () => {
 
 // #3918 - import source matching to prevent module duplication in monorepos
 
-test('_withStableStyle import should match tamagui source when file imports from tamagui', async () => {
+test('_withStableStyle import falls back to @tamagui/core when file imports from tamagui', async () => {
+  // `tamagui` doesn't re-export _withStableStyle directly (uses named imports
+  // from @tamagui/core), so we fall back to @tamagui/core which does export it.
   const output = await extractForNative(`
     import { YStack } from 'tamagui'
     export function Test() {
@@ -274,9 +276,8 @@ test('_withStableStyle import should match tamagui source when file imports from
     }
   `)
   const code = output?.code ?? ''
-  expect(code).toContain(`from 'tamagui'`)
+  expect(code).toContain(`from '@tamagui/core'`)
   expect(code).toContain('_withStableStyle')
-  expect(code).not.toContain(`from '@tamagui/core'`)
 })
 
 test('_withStableStyle import should match @tamagui/core source when file imports from @tamagui/core', async () => {

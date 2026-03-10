@@ -22,10 +22,11 @@ const importStyleSheet = template(`
 const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 `)
 
-// Known Tamagui packages that re-export _withStableStyle.
-// We match the import source to the file's existing imports to avoid module
-// duplication in monorepos (different physical copies → different React contexts).
-const TAMAGUI_IMPORT_SOURCES = new Set(['tamagui', '@tamagui/core', '@tamagui/web'])
+// Packages that directly export _withStableStyle (via `export *`).
+// `tamagui` re-exports named symbols from @tamagui/core but does NOT
+// re-export _withStableStyle, so we map it to @tamagui/core instead.
+const TAMAGUI_IMPORT_SOURCES = new Set(['@tamagui/core', '@tamagui/web'])
+const TAMAGUI_DETECT_SOURCES = new Set(['tamagui', '@tamagui/core', '@tamagui/web'])
 const DEFAULT_IMPORT_SOURCE = '@tamagui/core'
 
 function makeImportWithStyle(source: string) {
@@ -98,17 +99,21 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
 
           // Detect which Tamagui package the file already imports from so we
-          // can import _withStableStyle from the same source. This prevents
+          // can import _withStableStyle from a compatible source. This prevents
           // module duplication in monorepos (pnpm, etc.) where @tamagui/core
-          // and tamagui might resolve to different physical copies with
+          // and @tamagui/web might resolve to different physical copies with
           // separate React context instances, causing "Missing theme" crashes.
+          // If the file imports from `tamagui` we fall back to @tamagui/core
+          // since `tamagui` doesn't re-export _withStableStyle directly.
           let detectedImportSource = DEFAULT_IMPORT_SOURCE
           for (const node of root.node.body) {
             if (
               node.type === 'ImportDeclaration' &&
-              TAMAGUI_IMPORT_SOURCES.has(node.source.value)
+              TAMAGUI_DETECT_SOURCES.has(node.source.value)
             ) {
-              detectedImportSource = node.source.value
+              detectedImportSource = TAMAGUI_IMPORT_SOURCES.has(node.source.value)
+                ? node.source.value
+                : DEFAULT_IMPORT_SOURCE
               break
             }
           }
