@@ -22,7 +22,7 @@ const groupPseudoToPseudoCSSMap = {
   focusWithin: 'focus-within',
 }
 
-const specificities = new Array(5)
+const specificities = new Array(12)
   .fill(0)
   .map((_, i) => new Array(i).fill(':root').join(''))
 
