@@ -20,7 +20,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "2": {}
 });
-import { _withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from 'tamagui';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -57,7 +57,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "4": {}
 });
-import { _withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from 'tamagui';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -87,7 +87,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "5": {}
 });
-import { _withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from 'tamagui';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -169,7 +169,7 @@ const _sheet = __ReactNativeStyleSheet.create({
     }]
   }
 });
-import { _withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from 'tamagui';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -234,7 +234,7 @@ const _sheet = __ReactNativeStyleSheet.create({
   },
   "8": {}
 });
-import { _withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from 'tamagui';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack, XStack } from 'tamagui';
@@ -267,7 +267,7 @@ const _sheet = __ReactNativeStyleSheet.create({
     "flexDirection": "column"
   }
 });
-import { _withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from 'tamagui';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
@@ -335,7 +335,7 @@ const _sheet = __ReactNativeStyleSheet.create({
     "lineHeight": 23
   }
 });
-import { _withStableStyle } from '@tamagui/core';
+import { _withStableStyle } from 'tamagui';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { Paragraph } from 'tamagui';

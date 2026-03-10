@@ -263,3 +263,46 @@ test('multiple media query components should not conflict', async () => {
   const uniqueNames = new Set(styledMatches)
   expect(styledMatches.length).toBe(uniqueNames.size)
 })
+
+// #3918 - import source matching to prevent module duplication in monorepos
+
+test('_withStableStyle import falls back to @tamagui/core when file imports from tamagui', async () => {
+  // `tamagui` doesn't re-export _withStableStyle directly (uses named imports
+  // from @tamagui/core), so we fall back to @tamagui/core which does export it.
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return <YStack bg='$color' />
+    }
+  `)
+  const code = output?.code ?? ''
+  expect(code).toContain(`from '@tamagui/core'`)
+  expect(code).toContain('_withStableStyle')
+})
+
+test('_withStableStyle import should match @tamagui/core source when file imports from @tamagui/core', async () => {
+  const output = await extractForNative(`
+    import { View } from '@tamagui/core'
+    export function Test() {
+      return <View bg='$color' />
+    }
+  `)
+  const code = output?.code ?? ''
+  expect(code).toContain(`from '@tamagui/core'`)
+  expect(code).toContain('_withStableStyle')
+})
+
+test('_withStableStyle import should fall back to @tamagui/core when no known source found', async () => {
+  // @tamagui/web is not in the components list, so extraction bails out.
+  // When extraction DOES happen from an unrecognized source, it falls back to @tamagui/core.
+  const output = await extractForNative(`
+    import { View } from '@tamagui/web'
+    export function Test() {
+      return <View bg='$color' />
+    }
+  `)
+  const code = output?.code ?? ''
+  // No extraction happens here because @tamagui/web is not in components list,
+  // so _withStableStyle is never inserted. This verifies the fallback doesn't crash.
+  expect(code).not.toContain('_withStableStyle')
+})

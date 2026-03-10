@@ -22,7 +22,16 @@ const importStyleSheet = template(`
 const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 `)
 
-const importWithStyle = template.ast(`import { _withStableStyle } from '@tamagui/core';`)
+// Packages that directly export _withStableStyle (via `export *`).
+// `tamagui` re-exports named symbols from @tamagui/core but does NOT
+// re-export _withStableStyle, so we map it to @tamagui/core instead.
+const TAMAGUI_IMPORT_SOURCES = new Set(['@tamagui/core', '@tamagui/web'])
+const TAMAGUI_DETECT_SOURCES = new Set(['tamagui', '@tamagui/core', '@tamagui/web'])
+const DEFAULT_IMPORT_SOURCE = '@tamagui/core'
+
+function makeImportWithStyle(source: string) {
+  return template.ast(`import { _withStableStyle } from '${source}';`)
+}
 
 const extractor = createExtractor({ platform: 'native' })
 
@@ -88,6 +97,26 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
           let wrapperCount = 0
           const sheetStyles = {}
           const sheetIdentifier = root.scope.generateUidIdentifier('sheet')
+
+          // Detect which Tamagui package the file already imports from so we
+          // can import _withStableStyle from a compatible source. This prevents
+          // module duplication in monorepos (pnpm, etc.) where @tamagui/core
+          // and @tamagui/web might resolve to different physical copies with
+          // separate React context instances, causing "Missing theme" crashes.
+          // If the file imports from `tamagui` we fall back to @tamagui/core
+          // since `tamagui` doesn't re-export _withStableStyle directly.
+          let detectedImportSource = DEFAULT_IMPORT_SOURCE
+          for (const node of root.node.body) {
+            if (
+              node.type === 'ImportDeclaration' &&
+              TAMAGUI_DETECT_SOURCES.has(node.source.value)
+            ) {
+              detectedImportSource = TAMAGUI_IMPORT_SOURCES.has(node.source.value)
+                ? node.source.value
+                : DEFAULT_IMPORT_SOURCE
+              break
+            }
+          }
 
           // babel doesnt append the `//` so we need to
           const firstCommentContents = // join because you can join together multiple pragmas
@@ -327,7 +356,10 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   hasDynamicStyle
                 ) {
                   if (!hasImportedViewWrapper) {
-                    root.unshiftContainer('body', importWithStyle)
+                    root.unshiftContainer(
+                      'body',
+                      makeImportWithStyle(detectedImportSource)
+                    )
                     hasImportedViewWrapper = true
                   }
 
