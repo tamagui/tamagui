@@ -1,0 +1,99 @@
+process.env.TAMAGUI_TARGET = 'native'
+
+import { getDefaultTamaguiConfig } from '@tamagui/config-default'
+import {
+  TamaguiProvider,
+  Theme,
+  _withStableStyle,
+  createTamagui,
+} from '@tamagui/core'
+import { render } from '@testing-library/react-native'
+import { View } from 'react-native'
+import { describe, expect, test, vi } from 'vitest'
+
+const defaultConfig = getDefaultTamaguiConfig('native')
+const config = createTamagui(defaultConfig)
+
+describe('_withStableStyle', () => {
+  test('renders correctly with TamaguiProvider', () => {
+    const Wrapped = _withStableStyle(View, (theme) => [
+      { width: 100, height: 100, backgroundColor: theme.background?.get?.() ?? 'red' },
+    ])
+
+    const tree = render(
+      <TamaguiProvider defaultTheme="light" config={config}>
+        <Wrapped />
+      </TamaguiProvider>
+    )
+
+    expect(tree.toJSON()).toBeTruthy()
+  })
+
+  test('does not crash without TamaguiProvider (graceful fallback)', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    const Wrapped = _withStableStyle(View, (theme) => [
+      { width: 50, height: 50 },
+    ])
+
+    // Should NOT throw "Missing theme" — should render with fallback
+    expect(() => {
+      render(<Wrapped />)
+    }).not.toThrow()
+
+    warnSpy.mockRestore()
+  })
+
+  test('fallback path provides a theme object to createStyle', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    let receivedTheme: any = null
+
+    const Wrapped = _withStableStyle(View, (theme) => {
+      receivedTheme = theme
+      return [{ width: 50 }]
+    })
+
+    render(<Wrapped />)
+
+    // Theme should be a non-null object (the fallback from config)
+    expect(receivedTheme).toBeTruthy()
+    expect(typeof receivedTheme).toBe('object')
+
+    warnSpy.mockRestore()
+  })
+
+  test('theme values resolve correctly under TamaguiProvider', () => {
+    let resolvedBg: any = null
+
+    const Wrapped = _withStableStyle(View, (theme) => {
+      resolvedBg = theme.background?.get?.()
+      return [{ backgroundColor: resolvedBg }]
+    })
+
+    render(
+      <TamaguiProvider defaultTheme="light" config={config}>
+        <Wrapped />
+      </TamaguiProvider>
+    )
+
+    // Should have resolved a real theme value, not undefined
+    expect(resolvedBg).toBeTruthy()
+  })
+
+  test('expressions are passed through correctly', () => {
+    let receivedExpressions: any[] = []
+
+    const Wrapped = _withStableStyle(View, (_theme, expressions) => {
+      receivedExpressions = expressions
+      return [expressions[0] ? { backgroundColor: 'red' } : { backgroundColor: 'blue' }]
+    })
+
+    render(
+      <TamaguiProvider defaultTheme="light" config={config}>
+        <Wrapped _expressions={[true, false, 42]} />
+      </TamaguiProvider>
+    )
+
+    expect(receivedExpressions).toEqual([true, false, 42])
+  })
+})
