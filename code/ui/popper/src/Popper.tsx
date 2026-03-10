@@ -107,11 +107,21 @@ export const PopperProvider = ({
   // createStyledContext produces the same key across renders — prevents
   // slow-context consumers (PopperAnchor) from re-rendering on position updates
   const [stable] = React.useState(() => ({
-    update(...a: []) { fns.current.update(...a) },
-    getReferenceProps(p?: any) { return fns.current.getReferenceProps?.(p) },
-    getFloatingProps(p?: any) { return fns.current.getFloatingProps?.(p) },
-    onHoverReference(e?: any) { (fns.current as any).onHoverReference?.(e) },
-    onLeaveReference() { (fns.current as any).onLeaveReference?.() },
+    update(...a: []) {
+      fns.current.update(...a)
+    },
+    getReferenceProps(p?: any) {
+      return fns.current.getReferenceProps?.(p)
+    },
+    getFloatingProps(p?: any) {
+      return fns.current.getFloatingProps?.(p)
+    },
+    onHoverReference(e?: any) {
+      ;(fns.current as any).onHoverReference?.(e)
+    },
+    onLeaveReference() {
+      ;(fns.current as any).onLeaveReference?.()
+    },
   }))
 
   const slowContext = React.useMemo(

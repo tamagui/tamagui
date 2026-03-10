@@ -34,7 +34,10 @@ test.describe('Tooltip enter animation interrupted by trigger switch', () => {
     const opacity = await content.evaluate((el) => {
       return parseFloat(getComputedStyle(el).opacity)
     })
-    expect(opacity, 'tooltip should be fully opaque after enter completes').toBeGreaterThan(0.9)
+    expect(
+      opacity,
+      'tooltip should be fully opaque after enter completes'
+    ).toBeGreaterThan(0.9)
   })
 
   test('enter animation completes after rapid multi-trigger sweep', async ({ page }) => {
@@ -50,9 +53,13 @@ test.describe('Tooltip enter animation interrupted by trigger switch', () => {
     const bBox = await triggerB.boundingBox()
     const cBox = await triggerC.boundingBox()
 
-    await page.mouse.move(bBox!.x + bBox!.width / 2, bBox!.y + bBox!.height / 2, { steps: 2 })
+    await page.mouse.move(bBox!.x + bBox!.width / 2, bBox!.y + bBox!.height / 2, {
+      steps: 2,
+    })
     await page.waitForTimeout(30)
-    await page.mouse.move(cBox!.x + cBox!.width / 2, cBox!.y + cBox!.height / 2, { steps: 2 })
+    await page.mouse.move(cBox!.x + cBox!.width / 2, cBox!.y + cBox!.height / 2, {
+      steps: 2,
+    })
 
     // wait for animations to settle
     await page.waitForTimeout(600)
@@ -62,6 +69,8 @@ test.describe('Tooltip enter animation interrupted by trigger switch', () => {
     const opacity = await content.evaluate((el) => {
       return parseFloat(getComputedStyle(el).opacity)
     })
-    expect(opacity, 'tooltip should be fully opaque after rapid sweep').toBeGreaterThan(0.9)
+    expect(opacity, 'tooltip should be fully opaque after rapid sweep').toBeGreaterThan(
+      0.9
+    )
   })
 })

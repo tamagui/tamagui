@@ -329,9 +329,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // naturally replaces only conflicting property animations,
               // letting non-conflicting ones (like an in-flight enter
               // opacity animation) continue to completion.
-              const isPopperPosition = node.hasAttribute(
-                'data-popper-animate-position'
-              )
+              const isPopperPosition = node.hasAttribute('data-popper-animate-position')
               let midFlightValues: Record<string, string> | null = null
               if (refs.current.controls) {
                 try {
