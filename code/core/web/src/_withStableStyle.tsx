@@ -34,7 +34,9 @@ export const _withStableStyle = (
               'Falling back to default theme from config.'
           )
         }
-        return <Component ref={ref} style={createStyle(fallback, _expressions)} {...rest} />
+        return (
+          <Component ref={ref} style={createStyle(fallback, _expressions)} {...rest} />
+        )
       }
 
       const theme = useTheme()

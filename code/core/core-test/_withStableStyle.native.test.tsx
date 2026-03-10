@@ -1,12 +1,7 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import {
-  TamaguiProvider,
-  Theme,
-  _withStableStyle,
-  createTamagui,
-} from '@tamagui/core'
+import { TamaguiProvider, Theme, _withStableStyle, createTamagui } from '@tamagui/core'
 import { render } from '@testing-library/react-native'
 import { View } from 'react-native'
 import { describe, expect, test, vi } from 'vitest'
@@ -32,9 +27,7 @@ describe('_withStableStyle', () => {
   test('does not crash without TamaguiProvider (graceful fallback)', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
 
-    const Wrapped = _withStableStyle(View, (theme) => [
-      { width: 50, height: 50 },
-    ])
+    const Wrapped = _withStableStyle(View, (theme) => [{ width: 50, height: 50 }])
 
     // Should NOT throw "Missing theme" — should render with fallback
     expect(() => {

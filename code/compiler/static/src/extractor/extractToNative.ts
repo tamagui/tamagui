@@ -351,7 +351,10 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   hasDynamicStyle
                 ) {
                   if (!hasImportedViewWrapper) {
-                    root.unshiftContainer('body', makeImportWithStyle(detectedImportSource))
+                    root.unshiftContainer(
+                      'body',
+                      makeImportWithStyle(detectedImportSource)
+                    )
                     hasImportedViewWrapper = true
                   }
 
