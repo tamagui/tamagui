@@ -98,7 +98,46 @@ export const PopperProvider = ({
   children,
   ...context
 }: PopperContextValue & { scope?: string; children?: React.ReactNode }) => {
-  const slowContext = getContextSlow(context)
+  // single ref holds all unstable functions — updated every render so the
+  // stable wrappers below always forward to the latest version
+  const fns = React.useRef(context)
+  fns.current = context
+
+  // stable wrappers that never change identity, so objectIdentityKey in
+  // createStyledContext produces the same key across renders — prevents
+  // slow-context consumers (PopperAnchor) from re-rendering on position updates
+  const [stable] = React.useState(() => ({
+    update(...a: []) { fns.current.update(...a) },
+    getReferenceProps(p?: any) { return fns.current.getReferenceProps?.(p) },
+    getFloatingProps(p?: any) { return fns.current.getFloatingProps?.(p) },
+    onHoverReference(e?: any) { (fns.current as any).onHoverReference?.(e) },
+    onLeaveReference() { (fns.current as any).onLeaveReference?.() },
+  }))
+
+  const slowContext = React.useMemo(
+    (): PopperContextSlowValue => ({
+      refs: context.refs,
+      size: context.size,
+      arrowRef: context.arrowRef,
+      arrowStyle: context.arrowStyle,
+      onArrowSize: context.onArrowSize,
+      hasFloating: context.hasFloating,
+      strategy: context.strategy,
+      context: context.context,
+      open: context.open,
+      triggerElements: context.triggerElements,
+      placement: context.placement,
+      transformOrigin: context.transformOrigin,
+      update: stable.update,
+      getReferenceProps: stable.getReferenceProps,
+      getFloatingProps: stable.getFloatingProps,
+      onHoverReference: stable.onHoverReference,
+      onLeaveReference: stable.onLeaveReference,
+    }),
+    // only primitive deps that slow-context consumers care about —
+    // position-dependent values are stale here but no slow consumer reads them
+    [context.open, context.size, context.strategy]
+  )
 
   return (
     <PopperProviderFast scope={scope} {...context}>
@@ -107,27 +146,6 @@ export const PopperProvider = ({
       </PopperProviderSlow>
     </PopperProviderFast>
   )
-}
-
-// avoid position based re-rendering
-function getContextSlow(context: PopperContextValue): PopperContextSlowValue {
-  return {
-    refs: context.refs,
-    size: context.size,
-    arrowRef: context.arrowRef,
-    arrowStyle: context.arrowStyle,
-    onArrowSize: context.onArrowSize,
-    hasFloating: context.hasFloating,
-    strategy: context.strategy,
-    update: context.update,
-    context: context.context,
-    getFloatingProps: context.getFloatingProps,
-    getReferenceProps: context.getReferenceProps,
-    open: context.open,
-    onHoverReference: context.onHoverReference,
-    onLeaveReference: context.onLeaveReference,
-    triggerElements: context.triggerElements,
-  }
 }
 
 export type PopperProps = {
@@ -483,8 +501,6 @@ export function Popper(props: PopperProps) {
     }, [passThrough, dimensions, keyboardOpen])
   }
 
-  // memoize since we round x/y, floating-ui doesn't by default which can cause tons of updates
-  // if the floating element is inside something animating with a spring
   const popperContext = React.useMemo(() => {
     return {
       size,
