@@ -29,7 +29,7 @@ export declare const usePopperContext: (scope?: string) => PopperContextValue, P
     children?: React.ReactNode;
     scope?: string;
 }>;
-export type PopperContextSlowValue = PopperContextShared & Pick<UseFloatingReturn, 'context' | 'getReferenceProps' | 'getFloatingProps' | 'strategy' | 'update' | 'refs'> & {
+export type PopperContextSlowValue = Pick<UseFloatingReturn, 'getReferenceProps' | 'update' | 'refs'> & {
     onHoverReference?: (event: any) => void;
     onLeaveReference?: () => void;
     triggerElements?: PopupTriggerMap;
