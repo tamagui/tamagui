@@ -12,6 +12,7 @@ import {
   styled,
 } from '@tamagui/core'
 import type { PopupTriggerMap } from '@tamagui/floating'
+import { FloatingOverrideContext } from '@tamagui/floating'
 import type {
   Coords,
   Middleware,
@@ -509,7 +510,12 @@ export function Popper(props: PopperProps) {
 
   return (
     <PopperProvider scope={scope} {...popperContext}>
-      {children}
+      {/* reset FloatingOverrideContext so it doesn't leak into nested Poppers —
+          each Popper consumes the override for its own useFloating, children
+          should not inherit it (e.g. a Menu inside a Tooltip's tree) */}
+      <FloatingOverrideContext.Provider value={null}>
+        {children}
+      </FloatingOverrideContext.Provider>
     </PopperProvider>
   )
 }
