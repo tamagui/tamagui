@@ -241,6 +241,7 @@ export function createAnimations<A extends AnimationsConfig>(
         !!onDidAnimate,
         isDark,
         justFinishedEntering,
+        hasTransitionOnly,
       ]
 
       // check if there is any style that is not supported by native driver
@@ -312,6 +313,18 @@ export function createAnimations<A extends AnimationsConfig>(
           }
         }
 
+        const animatedTransformStyle =
+          animatedTranforms.current.length > 0
+            ? {
+                transform: animatedTranforms.current.map((r) => {
+                  const key = Object.keys(r)[0]
+                  const val =
+                    animationsState.current!.get(r[key])?.interpolation || r[key]
+                  return { [key]: val }
+                }),
+              }
+            : {}
+
         const animatedStyle = {
           ...Object.fromEntries(
             Object.entries(animateStyles.current).map(([k, v]) => [
@@ -319,11 +332,7 @@ export function createAnimations<A extends AnimationsConfig>(
               animationsState.current!.get(v)?.interpolation || v,
             ])
           ),
-          transform: animatedTranforms.current.map((r) => {
-            const key = Object.keys(r)[0]
-            const val = animationsState.current!.get(r[key])?.interpolation || r[key]
-            return { [key]: val }
-          }),
+          ...animatedTransformStyle,
         }
 
         return {
