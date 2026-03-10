@@ -124,30 +124,28 @@ export const PopperProvider = ({
     },
   }))
 
-  const slowContext = React.useMemo(
-    (): PopperContextSlowValue => ({
-      refs: context.refs,
-      size: context.size,
-      arrowRef: context.arrowRef,
-      arrowStyle: context.arrowStyle,
-      onArrowSize: context.onArrowSize,
-      hasFloating: context.hasFloating,
-      strategy: context.strategy,
-      context: context.context,
-      open: context.open,
-      triggerElements: context.triggerElements,
-      placement: context.placement,
-      transformOrigin: context.transformOrigin,
-      update: stable.update,
-      getReferenceProps: stable.getReferenceProps,
-      getFloatingProps: stable.getFloatingProps,
-      onHoverReference: stable.onHoverReference,
-      onLeaveReference: stable.onLeaveReference,
-    }),
-    // only primitive deps that slow-context consumers care about —
-    // position-dependent values are stale here but no slow consumer reads them
-    [context.open, context.size, context.strategy]
-  )
+  // build slow context with stable function wrappers — objectIdentityKey in
+  // createStyledContext handles memoization: stable functions prevent identity
+  // key changes on every render, other values pass through naturally
+  const slowContext: PopperContextSlowValue = {
+    refs: context.refs,
+    size: context.size,
+    arrowRef: context.arrowRef,
+    arrowStyle: context.arrowStyle,
+    onArrowSize: context.onArrowSize,
+    hasFloating: context.hasFloating,
+    strategy: context.strategy,
+    context: context.context,
+    open: context.open,
+    triggerElements: context.triggerElements,
+    placement: context.placement,
+    transformOrigin: context.transformOrigin,
+    update: stable.update,
+    getReferenceProps: stable.getReferenceProps,
+    getFloatingProps: stable.getFloatingProps,
+    onHoverReference: stable.onHoverReference,
+    onLeaveReference: stable.onLeaveReference,
+  }
 
   return (
     <PopperProviderFast scope={scope} {...context}>
