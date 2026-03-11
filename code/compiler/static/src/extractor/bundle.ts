@@ -97,7 +97,8 @@ function getESBuildConfig(
         name: 'handle-esm-features',
         setup(build) {
           // only apply transforms for CJS output - ESM supports these natively
-          const isCjs = build.initialOptions.format === 'cjs' || !build.initialOptions.format
+          const isCjs =
+            build.initialOptions.format === 'cjs' || !build.initialOptions.format
 
           build.onLoad({ filter: /\.(ts|tsx|js|jsx|mjs)$/ }, (args) => {
             // skip if ESM output - import.meta and top-level await work natively

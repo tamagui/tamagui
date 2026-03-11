@@ -57,6 +57,37 @@ const esbuildExtraOptions = {
   },
 }
 
+// transform ESM-only features for CJS compatibility (used by sync builds that can't use plugins)
+function transformForCjs(contents: string, filePath?: string): string {
+  // transform import.meta.env -> process.env (Vite-style env vars)
+  if (contents.includes('import.meta.env')) {
+    contents = contents.replace(/import\.meta\.env/g, 'process.env')
+  }
+
+  // transform import.meta.url -> "" (not needed for static extraction)
+  if (contents.includes('import.meta.url')) {
+    contents = contents.replace(/import\.meta\.url/g, '""')
+  }
+
+  // transform import.meta.main -> false
+  if (contents.includes('import.meta.main')) {
+    contents = contents.replace(/import\.meta\.main/g, 'false')
+  }
+
+  // stub files with top-level await - they're typically runtime-only
+  if (
+    /^\s*(?:const|let|var|export)\s+[^=]*=\s*await\b/m.test(contents) ||
+    /^await\s/m.test(contents)
+  ) {
+    if (process.env.DEBUG?.startsWith('tamagui') && filePath) {
+      console.info(`[tamagui] stubbing file with top-level await: ${filePath}`)
+    }
+    return `// stubbed - contains top-level await\nmodule.exports = {}`
+  }
+
+  return contents
+}
+
 // sync plugin to handle ESM-only features when bundling to CJS
 const handleEsmFeaturesPlugin: esbuild.Plugin = {
   name: 'handle-esm-features',
@@ -137,8 +168,13 @@ const esbuildTransformOptions = {
   ...esbuildExtraOptions,
 } satisfies esbuild.TransformOptions
 
-// options for buildSync (with plugins)
+// options for buildSync - NO plugins (buildSync doesn't support plugins)
 export const esbuildOptions = {
+  ...esbuildTransformOptions,
+} satisfies esbuild.BuildOptions
+
+// options for async build (with plugins)
+export const esbuildOptionsWithPlugins = {
   ...esbuildTransformOptions,
   plugins: [handleEsmFeaturesPlugin],
 } satisfies esbuild.BuildOptions
@@ -518,8 +554,8 @@ export async function loadComponentsInner(
 
           FS.writeFileSync(loadModule, writtenContents)
 
-          esbuild.buildSync({
-            ...esbuildOptions,
+          await esbuild.build({
+            ...esbuildOptionsWithPlugins,
             format,
             entryPoints: [loadModule],
             outfile: loadModule,

@@ -17,6 +17,15 @@ export type TamaguiProjectInfo = {
     cached?: boolean;
 };
 export declare const esbuildOptions: {
+    define: {
+        __DEV__: string;
+    };
+    target: string;
+    format: "cjs";
+    jsx: "automatic";
+    platform: "node";
+};
+export declare const esbuildOptionsWithPlugins: {
     plugins: esbuild.Plugin[];
     define: {
         __DEV__: string;
