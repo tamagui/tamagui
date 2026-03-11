@@ -14,6 +14,7 @@ import {
 } from '@tamagui/web'
 import { existsSync, readFileSync } from 'node:fs'
 import { basename, dirname, resolve, relative } from 'node:path'
+import { nodeModuleNameResolver, sys } from 'typescript'
 import type { ViewStyle } from 'react-native'
 
 import { FAILED_EVAL } from '../constants'
@@ -50,6 +51,7 @@ import { setPropsToFontFamily } from './propsToFontFamilyCache'
 import { timer } from './timer'
 import { validHTMLAttributes } from './validHTMLAttributes'
 import { BailOptimizationError } from './errors'
+import { loadCompilerOptionsFromTsconfig } from './esbuildTsconfigPaths'
 
 const UNTOUCHED_PROPS = {
   key: true,
@@ -142,19 +144,59 @@ export function createExtractor(
   const dynamicComponentCache = new Map<string, LoadedComponents>()
   const dynamicLoadingInProgress = new Set<string>()
 
+  // lazily loaded tsconfig compiler options for path alias resolution
+  let _compilerOptions: any = null
+  function getCompilerOptions() {
+    if (!_compilerOptions) {
+      try {
+        _compilerOptions = loadCompilerOptionsFromTsconfig()
+      } catch {
+        _compilerOptions = {}
+      }
+    }
+    return _compilerOptions
+  }
+
   function resolveImportPath(fromFile: string, importPath: string): string | null {
-    const dir = dirname(fromFile)
-    const base = resolve(dir, importPath)
-    const extensions = ['.tsx', '.ts', '.jsx', '.js']
-    for (const ext of extensions) {
-      const full = base + ext
-      if (existsSync(full)) return full
+    if (importPath.startsWith('.')) {
+      // relative path resolution
+      const dir = dirname(fromFile)
+      const base = resolve(dir, importPath)
+      const extensions = ['.tsx', '.ts', '.jsx', '.js']
+      for (const ext of extensions) {
+        const full = base + ext
+        if (existsSync(full)) return full
+      }
+      // try index files
+      for (const ext of extensions) {
+        const full = resolve(base, `index${ext}`)
+        if (existsSync(full)) return full
+      }
+      return null
     }
-    // try index files
-    for (const ext of extensions) {
-      const full = resolve(base, `index${ext}`)
-      if (existsSync(full)) return full
+
+    // tsconfig path alias resolution (e.g. ~/foo, @/bar)
+    const compilerOptions = getCompilerOptions()
+    if (compilerOptions.paths) {
+      try {
+        const { resolvedModule } = nodeModuleNameResolver(
+          importPath,
+          fromFile,
+          compilerOptions,
+          sys
+        )
+        if (
+          resolvedModule &&
+          !resolvedModule.resolvedFileName.endsWith('.d.ts') &&
+          !resolvedModule.isExternalLibraryImport
+        ) {
+          return resolvedModule.resolvedFileName
+        }
+      } catch {
+        // fallback - tsconfig resolution failed
+      }
     }
+
     return null
   }
 
@@ -484,14 +526,13 @@ export function createExtractor(
       enableDynamicEvaluation &&
       sourcePath
     ) {
-      // check if any relative import is in the dynamic cache or has styled components
+      // check if any local import is in the dynamic cache or has styled components
       for (const bodyPath of body) {
         if (bodyPath.type !== 'ImportDeclaration') continue
         const node = (
           'node' in bodyPath ? bodyPath.node : bodyPath
         ) as t.ImportDeclaration
         const moduleName = node.source.value
-        if (!moduleName.startsWith('.')) continue
 
         const resolved = resolveImportPath(sourcePath, moduleName)
         if (!resolved) continue
@@ -840,8 +881,8 @@ export function createExtractor(
           if (t.isImportDeclaration(binding.path.parent)) {
             moduleName = binding.path.parent.source.value
             if (!isValidImport(propsWithFileInfo, moduleName, binding.identifier.name)) {
-              // fallback: try dynamic component cache for relative imports
-              if (enableDynamicEvaluation && moduleName.startsWith('.') && sourcePath) {
+              // fallback: try dynamic component cache for local imports (relative or tsconfig alias)
+              if (enableDynamicEvaluation && sourcePath) {
                 const resolved = resolveImportPath(sourcePath, moduleName)
                 if (resolved) {
                   // check cache first

@@ -64,7 +64,7 @@ export function TsconfigPathsPlugin(): Plugin {
   }
 }
 
-function loadCompilerOptionsFromTsconfig(tsconfig?: Tsconfig | string) {
+export function loadCompilerOptionsFromTsconfig(tsconfig?: Tsconfig | string) {
   if (!tsconfig) {
     const configPath =
       findConfigFile(process.cwd(), sys.fileExists, 'tsconfig.json') ||
