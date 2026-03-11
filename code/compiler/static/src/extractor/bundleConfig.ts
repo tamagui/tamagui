@@ -1,16 +1,12 @@
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, unlinkSync } from 'node:fs'
 import { basename, dirname, extname, join, relative, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 // @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
-import {
-  createTamagui,
-  type StaticConfig,
-  type TamaguiInternalConfig,
-} from '@tamagui/web'
+import { type StaticConfig, type TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
 import { readFile } from 'node:fs/promises'
@@ -21,6 +17,28 @@ import { esbuildLoaderConfig, esbundleTamaguiConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import { detectModuleFormat } from './detectModuleFormat'
+
+// track temp files for cleanup on exit
+const activeTempFiles = new Set<string>()
+
+function cleanupTempFiles() {
+  for (const f of activeTempFiles) {
+    try {
+      unlinkSync(f)
+    } catch {}
+  }
+  activeTempFiles.clear()
+}
+
+process.on('exit', cleanupTempFiles)
+process.on('SIGINT', () => {
+  cleanupTempFiles()
+  process.exit()
+})
+process.on('SIGTERM', () => {
+  cleanupTempFiles()
+  process.exit()
+})
 
 type NameToPaths = {
   [key: string]: Set<string>
@@ -57,38 +75,7 @@ const esbuildExtraOptions = {
   },
 }
 
-// transform ESM-only features for CJS compatibility (used by sync builds that can't use plugins)
-function transformForCjs(contents: string, filePath?: string): string {
-  // transform import.meta.env -> process.env (Vite-style env vars)
-  if (contents.includes('import.meta.env')) {
-    contents = contents.replace(/import\.meta\.env/g, 'process.env')
-  }
-
-  // transform import.meta.url -> "" (not needed for static extraction)
-  if (contents.includes('import.meta.url')) {
-    contents = contents.replace(/import\.meta\.url/g, '""')
-  }
-
-  // transform import.meta.main -> false
-  if (contents.includes('import.meta.main')) {
-    contents = contents.replace(/import\.meta\.main/g, 'false')
-  }
-
-  // stub files with top-level await - they're typically runtime-only
-  if (
-    /^\s*(?:const|let|var|export)\s+[^=]*=\s*await\b/m.test(contents) ||
-    /^await\s/m.test(contents)
-  ) {
-    if (process.env.DEBUG?.startsWith('tamagui') && filePath) {
-      console.info(`[tamagui] stubbing file with top-level await: ${filePath}`)
-    }
-    return `// stubbed - contains top-level await\nmodule.exports = {}`
-  }
-
-  return contents
-}
-
-// sync plugin to handle ESM-only features when bundling to CJS
+// plugin to handle ESM-only features when bundling to CJS
 const handleEsmFeaturesPlugin: esbuild.Plugin = {
   name: 'handle-esm-features',
   setup(build) {
@@ -243,17 +230,16 @@ export async function bundleConfig(props: TamaguiOptions) {
     const configExt = configFormat === 'esm' ? '.mjs' : '.cjs'
     const configOutPath = join(tmpDir, `tamagui.config${configExt}`)
     const baseComponents = (props.components || []).filter((x) => x !== '@tamagui/core')
-    const componentOutPaths = baseComponents.map((componentModule) => {
-      const compFormat = detectModuleFormat(componentModule)
-      const compExt = compFormat === 'esm' ? '.mjs' : '.cjs'
-      return join(
+    // components always CJS (.cjs) - they bundle CJS deps like react-native-web
+    const componentOutPaths = baseComponents.map((componentModule) =>
+      join(
         tmpDir,
         `${componentModule
           .split(sep)
           .join('-')
-          .replace(/[^a-z0-9]+/gi, '')}-components.config${compExt}`
+          .replace(/[^a-z0-9]+/gi, '')}-components.config.cjs`
       )
-    })
+    )
 
     if (
       process.env.NODE_ENV === 'development' &&
@@ -309,7 +295,6 @@ export async function bundleConfig(props: TamaguiOptions) {
             )
           : null,
         ...baseComponents.map((componentModule, i) => {
-          const compFormat = detectModuleFormat(componentModule)
           return esbundleTamaguiConfig(
             {
               entryPoints: [componentModule],
@@ -317,7 +302,6 @@ export async function bundleConfig(props: TamaguiOptions) {
               external,
               outfile: componentOutPaths[i],
               target: 'node20',
-              format: compFormat,
               ...esbuildExtraOptions,
             },
             props.platform || 'web'
@@ -537,7 +521,7 @@ export async function loadComponentsInner(
       const isLocal = Boolean(extension)
       const isDynamic = isLocal && forceExports
       const format = isDynamic ? detectModuleFormat(name) : ('cjs' as const)
-      const outExt = format === 'esm' ? '.mjs' : '.tsx'
+      const outExt = format === 'esm' ? '.mjs' : '.cjs'
 
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
       const loadModule = isDynamic
@@ -553,6 +537,7 @@ export async function loadComponentsInner(
             : fileContents
 
           FS.writeFileSync(loadModule, writtenContents)
+          activeTempFiles.add(loadModule)
 
           await esbuild.build({
             ...esbuildOptionsWithPlugins,
@@ -598,7 +583,10 @@ export async function loadComponentsInner(
       }
 
       const dispose = () => {
-        isDynamic && FS.removeSync(loadModule)
+        if (isDynamic) {
+          FS.removeSync(loadModule)
+          activeTempFiles.delete(loadModule)
+        }
       }
 
       let loaded: LoadedComponents | LoadedComponents[] | undefined
@@ -653,7 +641,7 @@ export async function loadComponentsInner(
   }
 }
 
-// sync version always uses cjs format - used by loadTamaguiSync
+// sync version - uses cjs format for buildSync (no plugin support)
 export function loadComponentsInnerSync(
   props: TamaguiOptions,
   forceExports = false
@@ -677,8 +665,9 @@ export function loadComponentsInnerSync(
       const isDynamic = isLocal && forceExports
 
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
+      // use .cjs extension so Node doesn't treat it as ESM in "type":"module" projects
       const loadModule = isDynamic
-        ? join(dirname(name), `.tamagui-dynamic-eval-${basename(name)}.tsx`)
+        ? join(dirname(name), `.tamagui-dynamic-eval-${basename(name)}.cjs`)
         : name
       let writtenContents = fileContents
       let didBabel = false
@@ -690,6 +679,7 @@ export function loadComponentsInnerSync(
             : fileContents
 
           FS.writeFileSync(loadModule, writtenContents)
+          activeTempFiles.add(loadModule)
 
           esbuild.buildSync({
             ...esbuildOptions,
@@ -728,7 +718,10 @@ export function loadComponentsInnerSync(
       }
 
       const dispose = () => {
-        isDynamic && FS.removeSync(loadModule)
+        if (isDynamic) {
+          FS.removeSync(loadModule)
+          activeTempFiles.delete(loadModule)
+        }
       }
 
       try {
