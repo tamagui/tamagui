@@ -1,4 +1,3 @@
-import { join } from 'node:path'
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
 import type { TamaguiPlatform } from '../types'
@@ -72,6 +71,12 @@ function getESBuildConfig(
     jsxFactory: 'react',
     allowOverwrite: true,
     keepNames: true,
+    // handle import.meta.env.* -> process.env.* for Vite-style env vars
+    define: {
+      'import.meta.env': 'process.env',
+      'import.meta.url': '""',
+      'import.meta.main': 'false',
+    },
     resolveExtensions: [
       ...(process.env.TAMAGUI_TARGET === 'web'
         ? ['.web.tsx', '.web.ts', '.web.jsx', '.web.js']
@@ -91,6 +96,38 @@ function getESBuildConfig(
     logLevel: 'warning',
     plugins: [
       TsconfigPathsPlugin(),
+
+      // stub out files with top-level await - they're typically runtime-only
+      // and not needed for static extraction
+      {
+        name: 'handle-top-level-await',
+        setup(build) {
+          build.onLoad({ filter: /\.(ts|tsx|js|jsx|mjs)$/ }, async (args) => {
+            // skip node_modules except for specific cases
+            if (args.path.includes('node_modules') && !args.path.includes('@tamagui')) {
+              return null
+            }
+
+            const fs = await import('node:fs')
+            const contents = await fs.promises.readFile(args.path, 'utf8')
+
+            // detect top-level await - look for await outside of async function/arrow
+            // this is a simplified check that looks for common patterns
+            if (/^\s*(?:const|let|var|export)\s+[^=]*=\s*await\b/m.test(contents) ||
+                /^await\s/m.test(contents)) {
+              if (process.env.DEBUG?.startsWith('tamagui')) {
+                console.info(`[tamagui] stubbing file with top-level await: ${args.path}`)
+              }
+              return {
+                contents: `// stubbed - contains top-level await\nmodule.exports = {}`,
+                loader: 'js',
+              }
+            }
+
+            return null
+          })
+        },
+      },
 
       {
         name: 'external',
