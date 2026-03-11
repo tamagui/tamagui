@@ -68,7 +68,6 @@ export const ToggleFrame = styled(
           },
           focusStyle: {
             backgroundColor: '$backgroundActive',
-            borderColor: '$borderColorActive',
           },
         },
       },
