@@ -71,12 +71,6 @@ function getESBuildConfig(
     jsxFactory: 'react',
     allowOverwrite: true,
     keepNames: true,
-    // handle import.meta.env.* -> process.env.* for Vite-style env vars
-    define: {
-      'import.meta.env': 'process.env',
-      'import.meta.url': '""',
-      'import.meta.main': 'false',
-    },
     resolveExtensions: [
       ...(process.env.TAMAGUI_TARGET === 'web'
         ? ['.web.tsx', '.web.ts', '.web.jsx', '.web.js']
@@ -97,30 +91,62 @@ function getESBuildConfig(
     plugins: [
       TsconfigPathsPlugin(),
 
-      // stub out files with top-level await - they're typically runtime-only
-      // and not needed for static extraction
+      // handle ESM-only features that can't be used with CJS output
       {
-        name: 'handle-top-level-await',
+        name: 'handle-esm-features',
         setup(build) {
           build.onLoad({ filter: /\.(ts|tsx|js|jsx|mjs)$/ }, async (args) => {
-            // skip node_modules except for specific cases
+            // skip most node_modules
             if (args.path.includes('node_modules') && !args.path.includes('@tamagui')) {
               return null
             }
 
             const fs = await import('node:fs')
-            const contents = await fs.promises.readFile(args.path, 'utf8')
+            let contents = await fs.promises.readFile(args.path, 'utf8')
+            let modified = false
 
-            // detect top-level await - look for await outside of async function/arrow
-            // this is a simplified check that looks for common patterns
-            if (/^\s*(?:const|let|var|export)\s+[^=]*=\s*await\b/m.test(contents) ||
-                /^await\s/m.test(contents)) {
+            // transform import.meta.env -> process.env (Vite-style env vars)
+            if (contents.includes('import.meta.env')) {
+              contents = contents.replace(/import\.meta\.env/g, 'process.env')
+              modified = true
+            }
+
+            // transform import.meta.url -> "" (not needed for static extraction)
+            if (contents.includes('import.meta.url')) {
+              contents = contents.replace(/import\.meta\.url/g, '""')
+              modified = true
+            }
+
+            // transform import.meta.main -> false
+            if (contents.includes('import.meta.main')) {
+              contents = contents.replace(/import\.meta\.main/g, 'false')
+              modified = true
+            }
+
+            // stub files with top-level await - they're typically runtime-only
+            if (
+              /^\s*(?:const|let|var|export)\s+[^=]*=\s*await\b/m.test(contents) ||
+              /^await\s/m.test(contents)
+            ) {
               if (process.env.DEBUG?.startsWith('tamagui')) {
                 console.info(`[tamagui] stubbing file with top-level await: ${args.path}`)
               }
               return {
                 contents: `// stubbed - contains top-level await\nmodule.exports = {}`,
                 loader: 'js',
+              }
+            }
+
+            if (modified) {
+              return {
+                contents,
+                loader: args.path.endsWith('.tsx')
+                  ? 'tsx'
+                  : args.path.endsWith('.ts')
+                    ? 'ts'
+                    : args.path.endsWith('.jsx')
+                      ? 'jsx'
+                      : 'js',
               }
             }
 

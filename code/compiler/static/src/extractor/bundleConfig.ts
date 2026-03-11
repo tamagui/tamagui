@@ -57,12 +57,82 @@ const esbuildExtraOptions = {
   },
 }
 
-export const esbuildOptions = {
+// sync plugin to handle ESM-only features when bundling to CJS
+const handleEsmFeaturesPlugin: esbuild.Plugin = {
+  name: 'handle-esm-features',
+  setup(build) {
+    build.onLoad({ filter: /\.(ts|tsx|js|jsx|mjs)$/ }, (args) => {
+      // skip most node_modules
+      if (args.path.includes('node_modules') && !args.path.includes('@tamagui')) {
+        return null
+      }
+
+      let contents = readFileSync(args.path, 'utf8')
+      let modified = false
+
+      // transform import.meta.env -> process.env (Vite-style env vars)
+      if (contents.includes('import.meta.env')) {
+        contents = contents.replace(/import\.meta\.env/g, 'process.env')
+        modified = true
+      }
+
+      // transform import.meta.url -> "" (not needed for static extraction)
+      if (contents.includes('import.meta.url')) {
+        contents = contents.replace(/import\.meta\.url/g, '""')
+        modified = true
+      }
+
+      // transform import.meta.main -> false
+      if (contents.includes('import.meta.main')) {
+        contents = contents.replace(/import\.meta\.main/g, 'false')
+        modified = true
+      }
+
+      // stub files with top-level await - they're typically runtime-only
+      if (
+        /^\s*(?:const|let|var|export)\s+[^=]*=\s*await\b/m.test(contents) ||
+        /^await\s/m.test(contents)
+      ) {
+        if (process.env.DEBUG?.startsWith('tamagui')) {
+          console.info(`[tamagui] stubbing file with top-level await: ${args.path}`)
+        }
+        return {
+          contents: `// stubbed - contains top-level await\nmodule.exports = {}`,
+          loader: 'js',
+        }
+      }
+
+      if (modified) {
+        return {
+          contents,
+          loader: args.path.endsWith('.tsx')
+            ? 'tsx'
+            : args.path.endsWith('.ts')
+              ? 'ts'
+              : args.path.endsWith('.jsx')
+                ? 'jsx'
+                : 'js',
+        }
+      }
+
+      return null
+    })
+  },
+}
+
+// base options for transformSync (no plugins)
+const esbuildTransformOptions = {
   target: 'es2022',
   format: 'cjs',
   jsx: 'automatic',
   platform: 'node',
   ...esbuildExtraOptions,
+} satisfies esbuild.TransformOptions
+
+// options for buildSync (with plugins)
+export const esbuildOptions = {
+  ...esbuildTransformOptions,
+  plugins: [handleEsmFeaturesPlugin],
 } satisfies esbuild.BuildOptions
 
 export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>
@@ -652,7 +722,7 @@ export function loadComponentsInnerSync(
 
 const esbuildit = (src: string, target?: 'modern') => {
   return esbuild.transformSync(src, {
-    ...esbuildOptions,
+    ...esbuildTransformOptions,
     ...(target === 'modern' && {
       target: 'es2022',
       jsx: 'automatic',
