@@ -17,6 +17,7 @@ export const demos: DemoItem[] = [
   { title: 'Popover', key: 'Popover' },
   { title: 'Sheet', key: 'Sheet' },
   { title: 'Toast', key: 'Toast' },
+  { title: 'BoxShadow Token', key: 'BoxShadowToken' },
   { title: 'Button', key: 'Button' },
   { title: 'Checkbox', key: 'Checkbox' },
   { title: 'Form', key: 'Forms' },

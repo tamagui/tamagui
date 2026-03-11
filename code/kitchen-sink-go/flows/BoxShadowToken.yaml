@@ -1,0 +1,14 @@
+appId: host.exp.Exponent
+tags:
+  - component
+---
+- runFlow: OpenApp.yaml
+- scrollUntilVisible:
+    element: 'BoxShadow Token'
+    centerElement: true
+- tapOn: 'BoxShadow Token'
+# if web imports leak to native, boxShadow with $token in styled() crashes
+# with: [ReanimatedError: Invalid color "var(--shadowColor)"]
+- extendedWaitUntil:
+    visible: 'OK'
+    timeout: 5000
