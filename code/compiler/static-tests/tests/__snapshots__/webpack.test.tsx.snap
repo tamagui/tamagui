@@ -13,7 +13,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _tr-0hover-scale21281 _fd-column _fg-1 _fs-1 _fb-0px _bg-red _bxsh-0px0px10px0946673987 test1"
+          class="is_View _tr-0hover-scale21281 _fd-column _fg-1 _fs-0 _fb-0px _bg-red _bxsh-0px0px10px0946673987 test1"
           rounded="100"
         >
           <span
@@ -370,7 +370,7 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
           class="is_Spacer is_View _pe-none _w-t-space-tru101 _h-t-space-tru101 _miw-t-space-tru101 _mih-t-space-tru101 "
         />
         <span
-          class="is_Spacer is_View _pe-none _fg-1 _fs-1 _fb-0px _w-10px _h-10px _miw-10px _mih-10px "
+          class="is_Spacer is_View _pe-none _fg-1 _fs-0 _fb-0px _w-10px _h-10px _miw-10px _mih-10px "
         />
         <div
           style="display: contents;"
@@ -394,7 +394,7 @@ exports[`webpack-tests > 16. deopt when spreading multiple 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _fg-1 _fs-1 _fb-0px _bg-red"
+          class="is_View _fd-column _fg-1 _fs-0 _fb-0px _bg-red"
         />
         <div
           style="display: contents;"

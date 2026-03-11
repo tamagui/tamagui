@@ -24,7 +24,7 @@ export function expandStyle(key: string, value: any): PropMappedValue {
       }
       return [
         ['flexGrow', value],
-        ['flexShrink', 1],
+        ['flexShrink', getSetting('styleCompat') === 'legacy' ? 1 : 0],
         ['flexBasis', getSetting('styleCompat') === 'legacy' ? 'auto' : 0],
       ]
     }

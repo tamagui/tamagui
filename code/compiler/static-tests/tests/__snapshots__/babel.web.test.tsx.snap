@@ -34,7 +34,7 @@ exports[`className + conditional styles get full base styles merged onto + short
 exports[`conditional classname keeps base and concats properly 1`] = `
 "import { View } from '@tamagui/core';
 export function Test(props) {
-  return <div className={(isEnabled ? '' : 'disable-all-pointer-events') + " " + "is_View _fg-1 _fs-1 _fb-0px"}>
+  return <div className={(isEnabled ? '' : 'disable-all-pointer-events') + " " + "is_View _fg-1 _fs-0 _fb-0px"}>
           {props.child}
         </div>;
 }"
@@ -139,11 +139,11 @@ exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
 
 exports[`double ternary + spread 1`] = `
 "const _cn7 = "is_View _ai-center ";
-const _cn6 = "is_View _ai-center _fg-unset _fs-1 _fb-0px ";
-const _cn5 = "is_View _ai-center _fg-5 _fs-1 _fb-0px ";
-const _cn4 = "is_View _fg-unset _fs-1 _fb-0px _ai-flex-start _fd-column ";
+const _cn6 = "is_View _ai-center _fg-unset _fs-0 _fb-0px ";
+const _cn5 = "is_View _ai-center _fg-5 _fs-0 _fb-0px ";
+const _cn4 = "is_View _fg-unset _fs-0 _fb-0px _ai-flex-start _fd-column ";
 const _cn3 = "is_View _ai-flex-start _fd-column ";
-const _cn2 = "is_View _fg-5 _fs-1 _fb-0px _ai-flex-start _fd-column ";
+const _cn2 = "is_View _fg-5 _fs-0 _fb-0px _ai-flex-start _fd-column ";
 const _cn = "is_View _ai-flex-start _fd-column ";
 import { View } from '@tamagui/core';
 export function Test({
