@@ -163,6 +163,7 @@ export {
   insertFont,
   setConfig,
   setupDev,
+  _withStableStyle,
   // constants
   isBrowser,
   isChrome,
