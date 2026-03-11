@@ -1,4 +1,5 @@
 import { type StaticConfig, type TamaguiInternalConfig } from '@tamagui/web';
+import esbuild from 'esbuild';
 import type { TamaguiOptions } from '../types';
 type NameToPaths = {
     [key: string]: Set<string>;
@@ -16,6 +17,7 @@ export type TamaguiProjectInfo = {
     cached?: boolean;
 };
 export declare const esbuildOptions: {
+    plugins: esbuild.Plugin[];
     define: {
         __DEV__: string;
     };

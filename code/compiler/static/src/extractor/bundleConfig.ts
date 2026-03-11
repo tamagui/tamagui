@@ -61,7 +61,15 @@ const esbuildExtraOptions = {
 const handleEsmFeaturesPlugin: esbuild.Plugin = {
   name: 'handle-esm-features',
   setup(build) {
+    // only apply transforms for CJS output - ESM supports these natively
+    const isCjs = build.initialOptions.format === 'cjs' || !build.initialOptions.format
+
     build.onLoad({ filter: /\.(ts|tsx|js|jsx|mjs)$/ }, (args) => {
+      // skip if ESM output - import.meta and top-level await work natively
+      if (!isCjs) {
+        return null
+      }
+
       // skip most node_modules
       if (args.path.includes('node_modules') && !args.path.includes('@tamagui')) {
         return null
@@ -194,17 +202,22 @@ export async function bundleConfig(props: TamaguiOptions) {
       ? getTamaguiConfigPathFromOptionsConfig(props.config)
       : ''
     const tmpDir = join(process.cwd(), '.tamagui')
-    const configOutPath = join(tmpDir, `tamagui.config.cjs`)
+    // detect module format from config entry point
+    const configFormat = configEntry ? detectModuleFormat(configEntry) : 'cjs'
+    const configExt = configFormat === 'esm' ? '.mjs' : '.cjs'
+    const configOutPath = join(tmpDir, `tamagui.config${configExt}`)
     const baseComponents = (props.components || []).filter((x) => x !== '@tamagui/core')
-    const componentOutPaths = baseComponents.map((componentModule) =>
-      join(
+    const componentOutPaths = baseComponents.map((componentModule) => {
+      const compFormat = detectModuleFormat(componentModule)
+      const compExt = compFormat === 'esm' ? '.mjs' : '.cjs'
+      return join(
         tmpDir,
         `${componentModule
           .split(sep)
           .join('-')
-          .replace(/[^a-z0-9]+/gi, '')}-components.config.cjs`
+          .replace(/[^a-z0-9]+/gi, '')}-components.config${compExt}`
       )
-    )
+    })
 
     if (
       process.env.NODE_ENV === 'development' &&
@@ -253,12 +266,14 @@ export async function bundleConfig(props: TamaguiOptions) {
                 external,
                 outfile: configOutPath,
                 target: 'node20',
+                format: configFormat,
                 ...esbuildExtraOptions,
               },
               props.platform || 'web'
             )
           : null,
         ...baseComponents.map((componentModule, i) => {
+          const compFormat = detectModuleFormat(componentModule)
           return esbundleTamaguiConfig(
             {
               entryPoints: [componentModule],
@@ -266,6 +281,7 @@ export async function bundleConfig(props: TamaguiOptions) {
               external,
               outfile: componentOutPaths[i],
               target: 'node20',
+              format: compFormat,
               ...esbuildExtraOptions,
             },
             props.platform || 'web'
@@ -315,8 +331,13 @@ export async function bundleConfig(props: TamaguiOptions) {
       hasBundledOnce = true
     }
 
-    let out
-    out = require(configOutPath)
+    let out: any
+    if (configFormat === 'esm') {
+      // use file:// URL for proper ESM resolution
+      out = await import(pathToFileURL(configOutPath).href)
+    } else {
+      out = require(configOutPath)
+    }
 
     // try and find .config, even if on .default
     let config = out.default || out || out.config

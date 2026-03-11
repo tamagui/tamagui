@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
 import type { TamaguiPlatform } from '../types'
@@ -95,14 +96,21 @@ function getESBuildConfig(
       {
         name: 'handle-esm-features',
         setup(build) {
-          build.onLoad({ filter: /\.(ts|tsx|js|jsx|mjs)$/ }, async (args) => {
+          // only apply transforms for CJS output - ESM supports these natively
+          const isCjs = build.initialOptions.format === 'cjs' || !build.initialOptions.format
+
+          build.onLoad({ filter: /\.(ts|tsx|js|jsx|mjs)$/ }, (args) => {
+            // skip if ESM output - import.meta and top-level await work natively
+            if (!isCjs) {
+              return null
+            }
+
             // skip most node_modules
             if (args.path.includes('node_modules') && !args.path.includes('@tamagui')) {
               return null
             }
 
-            const fs = await import('node:fs')
-            let contents = await fs.promises.readFile(args.path, 'utf8')
+            let contents = readFileSync(args.path, 'utf8')
             let modified = false
 
             // transform import.meta.env -> process.env (Vite-style env vars)
