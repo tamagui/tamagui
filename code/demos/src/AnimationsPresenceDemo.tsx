@@ -11,7 +11,9 @@ import photo2 from '../../public/photo2.jpg'
 // @ts-ignore
 import photo3 from '../../public/photo3.jpg'
 
-export const images = [photo1, photo2, photo3].map((x) => x.src || x)
+export const images = [photo1, photo2, photo3].map((x) =>
+  typeof x === 'string' ? x : x.src
+)
 
 const GalleryItem = styled(YStack, {
   z: 1,
