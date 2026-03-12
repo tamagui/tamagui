@@ -156,6 +156,19 @@ describe('createV5Theme options', () => {
     expect(keys).toContain('light_blue_custom')
     expect(keys).not.toContain('light_blue_accent')
   })
+
+  test('custom getTheme merges on top of built-in computed values', () => {
+    const themes = createV5Theme({
+      getTheme: ({ palette }) => ({
+        myOverlay: opacify(palette![7]!, 0.5),
+        outlineColor: '#123456',
+      }),
+    })
+
+    expect(themes.light.color01).toBeDefined()
+    expect(themes.light.myOverlay).toBeDefined()
+    expect(themes.light.outlineColor).toBe('#123456')
+  })
 })
 
 describe('defaultChildrenThemes', () => {
@@ -185,5 +198,18 @@ describe('type safety', () => {
     })
     // brand colors should be typed
     assertType<string | number>(themes.light.brand1)
+  })
+
+  test('custom getTheme values infer types correctly', () => {
+    const themes = createV5Theme({
+      getTheme: ({ palette }) => ({
+        myOverlay: opacify(palette![7]!, 0.5),
+      }),
+    })
+
+    assertType<string | number>(themes.light.myOverlay)
+    assertType<string | number>(themes.dark.outlineColor)
+    // @ts-expect-error
+    themes.light.nonValidCustomKey
   })
 })
