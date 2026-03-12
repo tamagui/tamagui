@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sizable-context",
-  "version": "2.0.0-rc.25-1773293116667",
+  "version": "2.0.0-rc.25-1773314599635",
   "description": "Sizable context for Tamagui components",
   "license": "MIT",
   "source": "src/index.ts",
