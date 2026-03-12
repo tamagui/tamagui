@@ -16,7 +16,7 @@ import {
   createBaseMenu,
   type CreateBaseMenuProps,
 } from '@tamagui/create-menu'
-import { usePopperContext } from '@tamagui/popper'
+import { usePopperContextSlow } from '@tamagui/popper'
 import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
@@ -53,7 +53,7 @@ type MenuContextValue = {
   triggerId: string
   triggerRef: React.RefObject<TamaguiElement | null>
   contentId: string
-  open: boolean
+  openRef: React.RefObject<boolean>
   onOpenChange(open: boolean): void
   onOpenToggle(): void
   modal: boolean
@@ -232,6 +232,8 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
       defaultProp: defaultOpen!,
       onChange: onOpenChange,
     })
+    const openRef = React.useRef(open)
+    openRef.current = open
     const { setActiveTrigger, registerTrigger, unregisterTrigger } =
       useMenuTriggerSetup(open)
 
@@ -241,8 +243,11 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
         triggerId={useId()}
         triggerRef={triggerRef}
         contentId={useId()}
-        open={open}
-        onOpenChange={setOpen}
+        openRef={openRef}
+        onOpenChange={React.useCallback(
+          (nextOpen: boolean) => setOpen(nextOpen),
+          [setOpen]
+        )}
         onOpenToggle={React.useCallback(
           () => setOpen((prevOpen) => !prevOpen),
           [setOpen]
@@ -287,7 +292,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
         ...triggerProps
       } = props
       const context = useMenuContext(scope)
-      const popperCtx = usePopperContext(scope || DROPDOWN_MENU_CONTEXT)
+      const popperCtx = usePopperContextSlow(scope || DROPDOWN_MENU_CONTEXT)
       const Comp = asChild ? Slot : View
       const isTouchDevice = useIsTouchDevice()
       const triggerElRef = React.useRef<TamaguiElement>(null)
@@ -352,7 +357,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
                       event.ctrlKey === true
                     )
                       return
-                    if (context.open) {
+                    if (context.openRef.current) {
                       context.setActiveTrigger(null)
                     } else {
                       activateSelf()
@@ -360,7 +365,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
                     context.onOpenToggle()
                     // prevent trigger focusing when opening
                     // this allows the content to be given focus without competition
-                    if (!context.open) event.preventDefault()
+                    if (!context.openRef.current) event.preventDefault()
                   }
                 }
               ),
@@ -369,7 +374,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
               onKeyDown: composeEventHandlers(onKeydown, (event) => {
                 if (disabled) return
                 if (['Enter', ' '].includes(event.key)) {
-                  if (context.open) {
+                  if (context.openRef.current) {
                     context.setActiveTrigger(null)
                   } else {
                     activateSelf()
