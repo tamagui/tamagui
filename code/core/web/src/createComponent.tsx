@@ -1351,6 +1351,7 @@ export function createComponent<
             onFocus: (e) => {
               const next: Partial<typeof state> = {}
               if (componentContext.setParentFocusState) {
+                componentContext.setParentFocusState({ focusWithin: true })
                 next.focusWithin = true
               }
               if (pseudos?.focusVisibleStyle) {
