@@ -2,6 +2,8 @@ import { expect, test } from '@playwright/test'
 
 const drivers = ['motion', 'css'] as const
 
+test.describe.configure({ mode: 'serial' })
+
 for (const driver of drivers) {
   test.describe(`Hydration - ${driver} driver`, () => {
     test('no errors at all (includes hydration errors)', async ({ page }) => {

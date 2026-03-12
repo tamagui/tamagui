@@ -16,7 +16,7 @@ export function ContextMenuDemo() {
   }
 
   return (
-    <ContextMenu allowFlip native={native} placement="bottom-start" offset={14}>
+    <ContextMenu native={native}>
       <ContextMenu.Trigger asChild>
         <View
           p="$4"
@@ -101,7 +101,7 @@ export function ContextMenuDemo() {
           </ContextMenu.Item>
           <ContextMenu.Separator />
           {/* Submenu */}
-          <ContextMenu.Sub placement="right-start">
+          <ContextMenu.Sub>
             <ContextMenu.SubTrigger
               key="actions-trigger"
               justify="space-between"

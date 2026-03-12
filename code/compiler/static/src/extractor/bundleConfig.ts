@@ -22,9 +22,16 @@ import { detectModuleFormat } from './detectModuleFormat'
 // track temp files for cleanup on exit
 const activeTempFiles = new Set<string>()
 
-function getDynamicEvalOutfile(name: string, format: 'esm' | 'cjs') {
+function getDynamicEvalOutfile(name: string, format: 'esm' | 'cjs', contents: string) {
   const ext = format === 'esm' ? 'mjs' : 'cjs'
-  const hash = createHash('sha1').update(name).digest('hex').slice(0, 10)
+  const hash = createHash('sha1')
+    .update(name)
+    .update('\0')
+    .update(format)
+    .update('\0')
+    .update(contents)
+    .digest('hex')
+    .slice(0, 10)
   return join(process.cwd(), '.tamagui', `dynamic-eval-${hash}-${basename(name)}.${ext}`)
 }
 
@@ -571,7 +578,7 @@ export async function loadComponentsInner(
       const format = isLocal ? detectModuleFormat(name) : ('cjs' as const)
 
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
-      const loadModule = isDynamic ? getDynamicEvalOutfile(name, format) : name
+      let loadModule = name
       let writtenContents = fileContents
       let didBabel = false
 
@@ -580,6 +587,7 @@ export async function loadComponentsInner(
           writtenContents = forceExports
             ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
             : fileContents
+          loadModule = getDynamicEvalOutfile(name, format, writtenContents)
 
           FS.ensureDirSync(dirname(loadModule))
           activeTempFiles.add(loadModule)
@@ -726,7 +734,7 @@ export function loadComponentsInnerSync(
       const isDynamic = isLocal && forceExports
 
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
-      const loadModule = isDynamic ? getDynamicEvalOutfile(name, 'cjs') : name
+      let loadModule = name
       let writtenContents = fileContents
       let didBabel = false
 
@@ -735,6 +743,7 @@ export function loadComponentsInnerSync(
           writtenContents = forceExports
             ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
             : fileContents
+          loadModule = getDynamicEvalOutfile(name, 'cjs', writtenContents)
 
           FS.ensureDirSync(dirname(loadModule))
           activeTempFiles.add(loadModule)
