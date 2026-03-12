@@ -1521,7 +1521,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
-    if ('focusWithinStyle' in propsIn) {
+    if ('focusWithinStyle' in propsIn || pseudos?.focusWithinStyle) {
       content = (
         <ComponentContext.Provider
           {...componentContext}
