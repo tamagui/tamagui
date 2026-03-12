@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
 import type { TamaguiPlatform } from '../types'
+import { detectModuleFormat } from './detectModuleFormat'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 import { TsconfigPathsPlugin } from './esbuildTsconfigPaths'
@@ -63,11 +64,23 @@ function getESBuildConfig(
     ? entryPoints
     : entryPoints.map(resolveWebOrNativeSpecificEntry)
 
+  // detect format from entry points if not explicitly provided by caller
+  const detectedFormat = options.format || detectEntryFormat(resolvedEntryPoints[0])
+
   const res: esbuild.BuildOptions = {
     bundle: true,
     entryPoints: resolvedEntryPoints,
-    format: 'cjs',
-    target: 'node20',
+    format: detectedFormat,
+    // for ESM: prefer "module" field for resolution, add require() shim for bundled CJS deps
+    ...(detectedFormat === 'esm'
+      ? {
+          mainFields: ['module', 'main'],
+          banner: {
+            js: 'import { createRequire as __cr } from "module"; const require = __cr(import.meta.url);',
+          },
+        }
+      : {}),
+    target: 'node24',
     jsx: 'transform',
     jsxFactory: 'react',
     allowOverwrite: true,
@@ -218,6 +231,21 @@ function getESBuildConfig(
   }
 
   return res
+}
+
+function detectEntryFormat(entryPoint: string): esbuild.BuildOptions['format'] {
+  // file path - detect from file/package.json
+  if (entryPoint.startsWith('/') || entryPoint.startsWith('.')) {
+    return detectModuleFormat(entryPoint)
+  }
+  // bare module specifier - check package.json type field
+  try {
+    const pkgJsonPath = require.resolve(entryPoint + '/package.json')
+    const pkg = JSON.parse(readFileSync(pkgJsonPath, 'utf-8'))
+    return pkg.type === 'module' ? 'esm' : 'cjs'
+  } catch {
+    return 'cjs'
+  }
 }
 
 export async function esbundleTamaguiConfig(

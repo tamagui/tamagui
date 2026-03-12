@@ -1,6 +1,7 @@
 import generate from '@babel/generator'
 import traverse from '@babel/traverse'
 import * as t from '@babel/types'
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, unlinkSync } from 'node:fs'
 import { basename, dirname, extname, join, relative, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -20,6 +21,42 @@ import { detectModuleFormat } from './detectModuleFormat'
 
 // track temp files for cleanup on exit
 const activeTempFiles = new Set<string>()
+
+function getDynamicEvalOutfile(name: string, format: 'esm' | 'cjs') {
+  const ext = format === 'esm' ? 'mjs' : 'cjs'
+  const hash = createHash('sha1').update(name).digest('hex').slice(0, 10)
+  return join(process.cwd(), '.tamagui', `dynamic-eval-${hash}-${basename(name)}.${ext}`)
+}
+
+function getEsbuildStdinLoader(filePath: string): esbuild.Loader {
+  if (filePath.endsWith('.tsx')) return 'tsx'
+  if (filePath.endsWith('.ts')) return 'ts'
+  if (filePath.endsWith('.jsx')) return 'jsx'
+  return 'js'
+}
+
+function resolvePackageEntry(packageName: string, format: 'esm' | 'cjs') {
+  if (format === 'cjs') {
+    return require.resolve(packageName)
+  }
+
+  const packageJsonPath = require.resolve(`${packageName}/package.json`)
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
+  const packageRoot = dirname(packageJsonPath)
+  const exportEntry = packageJson.exports?.['.']
+
+  const esmEntry =
+    exportEntry?.import ||
+    exportEntry?.module ||
+    exportEntry?.browser ||
+    packageJson.module
+
+  if (typeof esmEntry === 'string') {
+    return join(packageRoot, esmEntry)
+  }
+
+  return require.resolve(packageName)
+}
 
 function cleanupTempFiles() {
   for (const f of activeTempFiles) {
@@ -230,16 +267,26 @@ export async function bundleConfig(props: TamaguiOptions) {
     const configExt = configFormat === 'esm' ? '.mjs' : '.cjs'
     const configOutPath = join(tmpDir, `tamagui.config${configExt}`)
     const baseComponents = (props.components || []).filter((x) => x !== '@tamagui/core')
-    // components always CJS (.cjs) - they bundle CJS deps like react-native-web
-    const componentOutPaths = baseComponents.map((componentModule) =>
-      join(
+    // detect format per component module
+    const componentFormats: Array<'esm' | 'cjs'> = baseComponents.map((mod) => {
+      try {
+        const pkgJson = require.resolve(mod + '/package.json')
+        const pkg = JSON.parse(readFileSync(pkgJson, 'utf-8'))
+        return pkg.type === 'module' ? 'esm' : 'cjs'
+      } catch {
+        return 'cjs'
+      }
+    })
+    const componentOutPaths = baseComponents.map((componentModule, i) => {
+      const ext = componentFormats[i] === 'esm' ? '.mjs' : '.cjs'
+      return join(
         tmpDir,
         `${componentModule
           .split(sep)
           .join('-')
-          .replace(/[^a-z0-9]+/gi, '')}-components.config.cjs`
+          .replace(/[^a-z0-9]+/gi, '')}-components.config${ext}`
       )
-    )
+    })
 
     if (
       process.env.NODE_ENV === 'development' &&
@@ -287,7 +334,7 @@ export async function bundleConfig(props: TamaguiOptions) {
                 entryPoints: [configEntry],
                 external,
                 outfile: configOutPath,
-                target: 'node20',
+                target: 'node24',
                 format: configFormat,
                 ...esbuildExtraOptions,
               },
@@ -301,7 +348,8 @@ export async function bundleConfig(props: TamaguiOptions) {
               resolvePlatformSpecificEntries: true,
               external,
               outfile: componentOutPaths[i],
-              target: 'node20',
+              target: 'node24',
+              format: componentFormats[i],
               ...esbuildExtraOptions,
             },
             props.platform || 'web'
@@ -520,13 +568,10 @@ export async function loadComponentsInner(
       const extension = extname(name)
       const isLocal = Boolean(extension)
       const isDynamic = isLocal && forceExports
-      const format = isDynamic ? detectModuleFormat(name) : ('cjs' as const)
-      const outExt = format === 'esm' ? '.mjs' : '.cjs'
+      const format = isLocal ? detectModuleFormat(name) : ('cjs' as const)
 
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
-      const loadModule = isDynamic
-        ? join(dirname(name), `.tamagui-dynamic-eval-${basename(name)}${outExt}`)
-        : name
+      const loadModule = isDynamic ? getDynamicEvalOutfile(name, format) : name
       let writtenContents = fileContents
       let didBabel = false
 
@@ -536,16 +581,32 @@ export async function loadComponentsInner(
             ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
             : fileContents
 
-          FS.writeFileSync(loadModule, writtenContents)
+          FS.ensureDirSync(dirname(loadModule))
           activeTempFiles.add(loadModule)
 
           await esbuild.build({
             ...esbuildOptionsWithPlugins,
             format,
-            entryPoints: [loadModule],
             outfile: loadModule,
+            stdin: {
+              contents: writtenContents,
+              resolveDir: dirname(name),
+              sourcefile: name,
+              loader: getEsbuildStdinLoader(name),
+            },
             alias: {
-              'react-native': require.resolve('@tamagui/react-native-web-lite'),
+              'react-native': resolvePackageEntry(
+                '@tamagui/react-native-web-lite',
+                format
+              ),
+              '@tamagui/react-native-web-lite': resolvePackageEntry(
+                '@tamagui/react-native-web-lite',
+                format
+              ),
+              '@tamagui/react-native-web-internals': resolvePackageEntry(
+                '@tamagui/react-native-web-internals',
+                format
+              ),
             },
             bundle: true,
             packages: 'external',
@@ -665,10 +726,7 @@ export function loadComponentsInnerSync(
       const isDynamic = isLocal && forceExports
 
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
-      // use .cjs extension so Node doesn't treat it as ESM in "type":"module" projects
-      const loadModule = isDynamic
-        ? join(dirname(name), `.tamagui-dynamic-eval-${basename(name)}.cjs`)
-        : name
+      const loadModule = isDynamic ? getDynamicEvalOutfile(name, 'cjs') : name
       let writtenContents = fileContents
       let didBabel = false
 
@@ -678,15 +736,31 @@ export function loadComponentsInnerSync(
             ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
             : fileContents
 
-          FS.writeFileSync(loadModule, writtenContents)
+          FS.ensureDirSync(dirname(loadModule))
           activeTempFiles.add(loadModule)
 
           esbuild.buildSync({
             ...esbuildOptions,
-            entryPoints: [loadModule],
             outfile: loadModule,
+            stdin: {
+              contents: writtenContents,
+              resolveDir: dirname(name),
+              sourcefile: name,
+              loader: getEsbuildStdinLoader(name),
+            },
             alias: {
-              'react-native': require.resolve('@tamagui/react-native-web-lite'),
+              'react-native': resolvePackageEntry(
+                '@tamagui/react-native-web-lite',
+                'esm'
+              ),
+              '@tamagui/react-native-web-lite': resolvePackageEntry(
+                '@tamagui/react-native-web-lite',
+                'esm'
+              ),
+              '@tamagui/react-native-web-internals': resolvePackageEntry(
+                '@tamagui/react-native-web-internals',
+                'esm'
+              ),
             },
             bundle: true,
             packages: 'external',

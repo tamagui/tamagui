@@ -11,7 +11,7 @@
     "dist"
   ],
   "type": "module",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs",
   "module": "dist/esm/index.mjs",
   "types": "./types/index.d.ts",
   "exports": {

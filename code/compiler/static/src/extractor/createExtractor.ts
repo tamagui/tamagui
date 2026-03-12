@@ -727,6 +727,7 @@ export function createExtractor(
         // for now dont parse variants, spreads, etc
         const skipped = new Set<t.ObjectProperty | t.SpreadElement | t.ObjectMethod>()
         const styles = {}
+        const staticDefaultProps = {}
 
         // Generate scope object at this level
         const staticNamespace = getStaticBindingsForScope(
@@ -748,6 +749,19 @@ export function createExtractor(
         const attemptEvalSafe = createSafeEvaluator(attemptEval)
 
         for (const property of definition.properties) {
+          if (
+            t.isObjectProperty(property) &&
+            (t.isIdentifier(property.key) || t.isStringLiteral(property.key))
+          ) {
+            const key = t.isIdentifier(property.key)
+              ? property.key.name
+              : property.key.value
+            const defaultPropValue = attemptEvalSafe(property.value)
+            if (defaultPropValue !== FAILED_EVAL) {
+              staticDefaultProps[key] = defaultPropValue
+            }
+          }
+
           if (
             !t.isObjectProperty(property) ||
             !t.isIdentifier(property.key) ||
@@ -829,11 +843,19 @@ export function createExtractor(
 
         // register so JSX handler can find this component (same-file and cross-file)
         if (extractStyledDefinitions && enableDynamicEvaluation && Component) {
+          const dynamicStaticConfig = {
+            ...Component.staticConfig,
+            defaultProps: {
+              ...Component.staticConfig.defaultProps,
+              ...staticDefaultProps,
+            },
+          }
+
           // add to allLoadedComponents with '' so getValidComponent matches when moduleName is ''
           // (same-file styled components have '' as moduleName in JSX handler)
           propsWithFileInfo.allLoadedComponents.push({
             moduleName: '',
-            nameToInfo: { [variableName]: { staticConfig: Component.staticConfig } },
+            nameToInfo: { [variableName]: { staticConfig: dynamicStaticConfig } },
           })
 
           // also cache by file path so other files importing from this path can find it
@@ -843,7 +865,7 @@ export function createExtractor(
               existing = { moduleName: sourcePath, nameToInfo: {} }
               dynamicComponentCache.set(sourcePath, existing)
             }
-            existing.nameToInfo[variableName] = { staticConfig: Component.staticConfig }
+            existing.nameToInfo[variableName] = { staticConfig: dynamicStaticConfig }
           }
         }
 
