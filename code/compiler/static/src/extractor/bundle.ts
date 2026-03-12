@@ -209,8 +209,7 @@ function getESBuildConfig(
 
           build.onResolve({ filter: /react-native-reanimated/ }, () => {
             return {
-              path: 'react-native-reanimated',
-              external: true,
+              path: require.resolve('@tamagui/proxy-worm'),
             }
           })
 
