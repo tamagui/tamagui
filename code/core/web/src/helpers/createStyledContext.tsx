@@ -4,10 +4,13 @@ import type { StyledContext } from '../types'
 import { mergeProps } from './mergeProps'
 import { objectIdentityKey } from './objectIdentityKey'
 
-export function createStyledContext<VariantProps extends Record<string, any>>(
+// use const (not function declaration) to prevent esbuild from hoisting
+// above __esm lazy init - function declarations get hoisted before
+// import_react is initialized, causing undefined.default errors in SSR
+export const createStyledContext = <VariantProps extends Record<string, any>>(
   defaultValues?: VariantProps,
   namespace = ''
-): StyledContext<VariantProps> {
+): StyledContext<VariantProps> => {
   // avoid react compiler - we aren't breaking its rules but it mis-interprets
   // how we change the context value
   'use no memo'
