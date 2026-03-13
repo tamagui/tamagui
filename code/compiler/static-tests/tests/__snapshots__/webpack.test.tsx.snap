@@ -47,7 +47,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
           class="is_View _fd-row _ox-hidden _oy-hidden who"
         />
         <div
-          class="is_View _fd-row _bg-fff35 _pt-2px _pb-2px _t--14px ease-in-out-top"
+          class="is_View ease-in-out-top _fd-row _pt-2px _pb-2px _bg-fff35 _t--14px"
         >
           <span
             class="is_Text _col-color"
@@ -113,7 +113,7 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
           class="is_View _fd-column _ox-hidden _oy-hidden _bg-blue"
         >
           <div
-            class="is_View _fd-column _ox-hidden _oy-hidden _bg-blue hello-world"
+            class="is_View hello-world _fd-column _ox-hidden _oy-hidden _bg-blue"
           />
         </div>
         <div
@@ -203,7 +203,7 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
           minw="500"
         >
           <div
-            class="is_View _fd-column _w-10px _h-10px"
+            class="is_View _fd-column _h-10px _w-10px"
           />
         </div>
         <div
@@ -319,7 +319,7 @@ exports[`webpack-tests > 12. ternary multiple on same key 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _o-1 _tr-"
+          class="is_View _fd-column _tr- _o-1"
         />
         <div
           style="display: contents;"
@@ -616,7 +616,7 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fwr-_sm_nowrap _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-wrap _fd-row _gap-t-space-2"
+          class="is_View _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-_sm_nowrap _fwr-wrap _gap-t-space-2 _fd-row"
         >
           <span
             class="is_Text _col-color"
