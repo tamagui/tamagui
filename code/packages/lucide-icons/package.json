@@ -6,7 +6,6 @@
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
-    "src",
     "types",
     "dist"
   ],
@@ -14110,8 +14109,8 @@
     "access": "public"
   },
   "scripts": {
-    "build": "TAMAGUI_BUILD_CLEANUP_JS_FILES=1 tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-sourcemaps",
+    "watch": "bun run build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "generate": "node ./bin/build.cjs"

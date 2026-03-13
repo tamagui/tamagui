@@ -1758,5 +1758,3 @@ export { ZapOff } from "./icons/ZapOff";
 export { Zap } from "./icons/Zap";
 export { ZoomIn } from "./icons/ZoomIn";
 export { ZoomOut } from "./icons/ZoomOut";
-
-//# sourceMappingURL=index.d.ts.map
