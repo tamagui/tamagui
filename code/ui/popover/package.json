@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/popover",
-  "version": "2.0.0-rc.25-1773314599635",
+  "version": "2.0.0-rc.26",
   "source": "src/index.ts",
   "files": [
     "src",
