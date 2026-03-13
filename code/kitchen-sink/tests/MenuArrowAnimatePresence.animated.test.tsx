@@ -7,7 +7,7 @@ import { expect, test } from '@playwright/test'
  */
 test.describe('Menu Arrow with AnimatePresence', () => {
   test('popover arrow is visible when wrapped in AnimatePresence', async ({ page }) => {
-    await page.goto('http://localhost:9000/?test=MenuArrowAnimatePresenceCase')
+    await page.goto('/?test=MenuArrowAnimatePresenceCase')
     await page.waitForTimeout(500)
 
     // open the popover
@@ -49,7 +49,7 @@ test.describe('Menu Arrow with AnimatePresence', () => {
   })
 
   test('menu arrow is visible without AnimatePresence', async ({ page }) => {
-    await page.goto('http://localhost:9000/?test=MenuArrowAnimatePresenceCase')
+    await page.goto('/?test=MenuArrowAnimatePresenceCase')
     await page.waitForTimeout(500)
 
     // open the menu

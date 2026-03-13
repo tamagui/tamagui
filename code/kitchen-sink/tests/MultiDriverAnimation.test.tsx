@@ -12,12 +12,10 @@ import { expect, test } from '@playwright/test'
  * 3. no animatedBy defaults to motion driver
  */
 
-const BASE_URL = 'http://localhost:9000'
-
 test.describe('Multi-driver animation config', () => {
   test.beforeEach(async ({ page }) => {
     // specifically load with multi-driver config
-    await page.goto(`${BASE_URL}/?test=MultiDriverAnimation&animationDriver=multi`)
+    await page.goto('/?test=MultiDriverAnimation&animationDriver=multi')
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(300)
   })
@@ -156,7 +154,7 @@ test.describe('Multi-driver animation config', () => {
 
 test.describe('Multi-driver group hover transitions', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`${BASE_URL}/?test=MultiDriverAnimation&animationDriver=multi`)
+    await page.goto('/?test=MultiDriverAnimation&animationDriver=multi')
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(300)
   })

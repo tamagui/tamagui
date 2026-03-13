@@ -180,6 +180,8 @@ function getESBuildConfig(
       {
         name: 'external',
         setup(build) {
+          const proxyWormPath = require.resolve('@tamagui/proxy-worm')
+
           // only externalize @tamagui/core and @tamagui/web - these are provided at runtime
           // other @tamagui/* packages (like @tamagui/config/v3) must be bundled in to avoid
           // ESM race conditions when multiple threads require() them concurrently
@@ -207,10 +209,15 @@ function getESBuildConfig(
             }
           })
 
-          build.onResolve({ filter: /react-native-reanimated/ }, () => {
+          build.onResolve({ filter: /^react-native-reanimated(?:\/.*)?$/ }, () => {
             return {
-              path: 'react-native-reanimated',
-              external: true,
+              path: proxyWormPath,
+            }
+          })
+
+          build.onResolve({ filter: /^react-native-worklets(?:\/.*)?$/ }, () => {
+            return {
+              path: proxyWormPath,
             }
           })
 

@@ -127,19 +127,19 @@ function evaluateTargetModule({
   esExtensionDefault,
   ensureFileExists,
 }) {
-  if (currentModuleExtension && !esExtensions.includes(currentModuleExtension)) return !1
   const targetFile = resolve(filenameDirectory, moduleSpecifier)
   if (ensureFileExists) {
     for (const extension of tryExtensions)
       if (existsSync(targetFile + extension)) return moduleSpecifier + esExtensionDefault
-    isDirectory &&
-      !existsSync(
-        resolve(
-          filenameDirectory,
-          currentModuleExtension ? moduleSpecifier : moduleSpecifier + esExtensionDefault
-        )
-      ) &&
-      (moduleSpecifier = `${moduleSpecifier}/index`)
+    if (currentModuleExtension && !esExtensions.includes(currentModuleExtension))
+      return !1
+    if (isDirectory) {
+      const indexModuleSpecifier = `${moduleSpecifier.replace(/\/$/, '')}/index`,
+        indexTargetFile = resolve(filenameDirectory, indexModuleSpecifier)
+      for (const extension of tryExtensions)
+        if (existsSync(indexTargetFile + extension))
+          return indexModuleSpecifier + esExtensionDefault
+    }
   } else
     return (
       esExtensions.includes(filenameExtension), moduleSpecifier + esExtensionDefault

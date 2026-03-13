@@ -58,12 +58,12 @@ export default defineConfig({
   webServer: {
     command: `PORT=${port} bun run start:web`,
     url: `http://localhost:${port}`,
-    reuseExistingServer: true,
+    reuseExistingServer: false,
     timeout: 120_000, // give webpack more time to start
   },
 
   fullyParallel: true,
-  workers: process.env.CI ? 4 : '75%',
+  workers: process.env.CI ? 2 : 4,
   retries: process.env.CI ? 2 : 1,
 
   timeout: 50_000,

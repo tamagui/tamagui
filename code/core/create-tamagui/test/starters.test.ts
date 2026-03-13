@@ -4,6 +4,7 @@ import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 const startersDir = path.join(__dirname, '../../../starters')
+const tamaguiCliPath = require.resolve('@tamagui/cli/dist/index.cjs')
 
 describe('expo-router starter', () => {
   const dir = path.join(startersDir, 'expo-router')
@@ -34,7 +35,13 @@ describe('expo-router starter', () => {
 
   it('builds for web', () => {
     // generate css first, then export
-    execSync('npx tamagui generate', { cwd: dir, stdio: 'pipe' })
+    execSync(
+      `${JSON.stringify(process.execPath)} ${JSON.stringify(tamaguiCliPath)} generate`,
+      {
+        cwd: dir,
+        stdio: 'pipe',
+      }
+    )
     execSync('npx expo export --platform web --clear', {
       cwd: dir,
       stdio: 'pipe',

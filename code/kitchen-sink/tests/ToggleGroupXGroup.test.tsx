@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 test.describe('ToggleGroup + XGroup integration', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:9000/?test=ToggleGroupXGroupCase')
+    await page.goto('/?test=ToggleGroupXGroupCase')
     await page.waitForLoadState('networkidle')
   })
 

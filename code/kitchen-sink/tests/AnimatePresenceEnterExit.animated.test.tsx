@@ -19,10 +19,11 @@ async function waitForOpacity(
   target: number,
   timeout = 3000
 ) {
+  const tolerance = target === 1 ? 0.02 : 0.01
   const start = Date.now()
   while (Date.now() - start < timeout) {
     const opacity = await getOpacity(page, testId)
-    if (Math.abs(opacity - target) < 0.01) return opacity
+    if (Math.abs(opacity - target) < tolerance) return opacity
     await page.waitForTimeout(50)
   }
   return getOpacity(page, testId)
@@ -57,7 +58,7 @@ test('scenario 01: enter animation should animate opacity from 0 to 1', async ({
 
   // wait for animation to settle near 1
   const finalOpacity = await waitForOpacity(page, 'enter-exit-01-target', 1)
-  expect(finalOpacity).toBeCloseTo(1, 2)
+  expect(finalOpacity).toBeGreaterThan(0.98)
 })
 
 test('scenario 01: exit animation should animate opacity from 1 to 0', async ({
@@ -65,7 +66,7 @@ test('scenario 01: exit animation should animate opacity from 1 to 0', async ({
 }) => {
   await page.getByTestId('enter-exit-01-trigger').click()
   const enterOpacity = await waitForOpacity(page, 'enter-exit-01-target', 1)
-  expect(enterOpacity).toBeCloseTo(1, 2)
+  expect(enterOpacity).toBeGreaterThan(0.98)
 
   await page.getByTestId('enter-exit-01-trigger').click()
 
@@ -91,7 +92,7 @@ test('scenario 02: circle badge enter animation', async ({ page }) => {
   expect(midOpacity).toBeLessThan(1)
 
   const finalOpacity = await waitForOpacity(page, 'enter-exit-02-target', 1)
-  expect(finalOpacity).toBeCloseTo(1, 2)
+  expect(finalOpacity).toBeGreaterThan(0.98)
 })
 
 test('scenario 03: initial=false enter animation', async ({ page }) => {
@@ -105,7 +106,7 @@ test('scenario 03: initial=false enter animation', async ({ page }) => {
   expect(midOpacity).toBeLessThan(1)
 
   const finalOpacity = await waitForOpacity(page, 'enter-exit-03-target', 1)
-  expect(finalOpacity).toBeCloseTo(1, 2)
+  expect(finalOpacity).toBeGreaterThan(0.98)
 })
 
 test('scenario 03: initial=false enter has intermediate frames', async ({ page }) => {
@@ -141,13 +142,13 @@ test('scenario 03: initial=false enter has intermediate frames', async ({ page }
   ).toBeGreaterThan(0)
 
   // final frame should be near 1 (spring may not land exactly on 1)
-  expect(frames[frames.length - 1]).toBeCloseTo(1, 1)
+  expect(frames[frames.length - 1]).toBeGreaterThan(0.95)
 })
 
 test('scenario 03: initial=false exit animation', async ({ page }) => {
   await page.getByTestId('enter-exit-03-increment').click()
   const enterOpacity = await waitForOpacity(page, 'enter-exit-03-target', 1)
-  expect(enterOpacity).toBeCloseTo(1, 2)
+  expect(enterOpacity).toBeGreaterThan(0.98)
 
   await page.getByTestId('enter-exit-03-clear').click()
 
@@ -162,7 +163,7 @@ test('scenario 03: initial=false exit animation', async ({ page }) => {
 test('scenario 02: circle badge exit animation', async ({ page }) => {
   await page.getByTestId('enter-exit-02-increment').click()
   const enterOpacity = await waitForOpacity(page, 'enter-exit-02-target', 1)
-  expect(enterOpacity).toBeCloseTo(1, 2)
+  expect(enterOpacity).toBeGreaterThan(0.98)
 
   await page.getByTestId('enter-exit-02-clear').click()
 

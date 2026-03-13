@@ -112,4 +112,16 @@ describe('transforming actual files', () => {
 
     expect(code).toMatchSnapshot()
   })
+
+  test('dotted basename gets the output extension appended', () => {
+    const { code } =
+      transformFileSync(
+        path.join(__dirname, 'fixtures', 'dotted-basename', 'test.mjs'),
+        getTransformOptions({
+          pluginOptions: { ensureFileExists: true },
+        })
+      ) || {}
+
+    expect(code).toBe('export * from "./modules/tamagui.dev.config.mjs";')
+  })
 })

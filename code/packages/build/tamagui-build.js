@@ -9,6 +9,7 @@
  *   tamagui-build --watch             # watch mode
  *   tamagui-build --skip-types        # js only
  *   tamagui-build --skip-native       # skip native builds
+ *   tamagui-build --skip-sourcemaps   # disable js + d.ts sourcemaps
  *   tamagui-build clean               # remove dist/types/node_modules
  *   tamagui-build clean:build         # remove dist/types only
  *
@@ -46,10 +47,32 @@ const skipJS = !!(process.env.SKIP_JS || false)
 
 // write file only if contents changed to avoid triggering watchers
 async function writeIfUnchanged(filePath, contents) {
+  const isExecutableScript = typeof contents === 'string' && contents.startsWith('#!')
   const existing = await FSE.readFile(filePath, 'utf8').catch(() => null)
-  if (existing === contents) return false
-  await FSE.outputFile(filePath, contents, 'utf8')
+  if (existing === contents) {
+    if (isExecutableScript) {
+      await FSE.chmod(filePath, 0o755).catch(() => {})
+    }
+    return false
+  }
+  await FSE.outputFile(filePath, contents, {
+    encoding: 'utf8',
+    mode: isExecutableScript ? 0o755 : 0o666,
+  })
+  if (isExecutableScript) {
+    await FSE.chmod(filePath, 0o755).catch(() => {})
+  }
   return true
+}
+
+function hasFlag(flag) {
+  return process.argv.includes(flag)
+}
+
+function getEnvFlag(name) {
+  const value = process.env[name]
+  if (!value) return false
+  return !['0', 'false', 'no', 'off'].includes(String(value).toLowerCase())
 }
 
 /**
@@ -106,32 +129,34 @@ const reactCompilerPlugin = {
   },
 }
 
-const shouldSwapExports = process.argv.includes('--swap-exports')
+const shouldSwapExports = hasFlag('--swap-exports')
 
 // when swapping exports for publish, we MUST build types (ignore --skip-types)
 const shouldSkipTypes = shouldSwapExports
   ? false
-  : !!(process.argv.includes('--skip-types') || process.env.SKIP_TYPES)
+  : !!(hasFlag('--skip-types') || process.env.SKIP_TYPES)
 
-const shouldSkipNative = !!process.argv.includes('--skip-native')
-const shouldSkipMJS = !!process.argv.includes('--skip-mjs')
+const shouldSkipNative = hasFlag('--skip-native')
+const shouldSkipMJS = hasFlag('--skip-mjs')
+const shouldSkipSourceMaps =
+  hasFlag('--skip-sourcemaps') || getEnvFlag('TAMAGUI_BUILD_SKIP_SOURCEMAPS')
 // React Compiler is disabled by default - use --react-compiler to enable
 const shouldEnableCompiler = !!(
-  process.argv.includes('--react-compiler') || process.env.REACT_COMPILER
+  hasFlag('--react-compiler') || process.env.REACT_COMPILER
 )
-const shouldBundleFlag = !!process.argv.includes('--bundle')
-const shouldBundleNodeModules = !!process.argv.includes('--bundle-modules')
+const shouldBundleFlag = hasFlag('--bundle')
+const shouldBundleNodeModules = hasFlag('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
 const shouldCleanBuildOnly = !!process.argv.includes('clean:build')
-const shouldWatch = process.argv.includes('--watch')
+const shouldWatch = hasFlag('--watch')
 
 // get command after "--" to run with swapped exports
 const dashDashIndex = process.argv.indexOf('--')
 const runCommandAfterSwap =
   dashDashIndex > -1 ? process.argv.slice(dashDashIndex + 1) : null
 
-const declarationToRoot = !!process.argv.includes('--declaration-root')
-const ignoreBaseUrl = process.argv.includes('--ignore-base-url')
+const declarationToRoot = hasFlag('--declaration-root')
+const ignoreBaseUrl = hasFlag('--ignore-base-url')
 const baseUrlIndex = process.argv.indexOf('--base-url')
 const tsProjectIndex = process.argv.indexOf('--ts-project')
 const exludeIndex = process.argv.indexOf('--exclude')
@@ -167,6 +192,20 @@ const bundleExternal = buildConfig.bundleExternal || null
 const flatOut = [pkgMain, pkgModule, pkgModuleJSX].filter(Boolean).length === 1
 
 const avoidCJS = pkgMain?.endsWith('.js')
+const getJsEntryAliasPath = (entry) => {
+  if (!entry) return null
+  if (!path.extname(entry)) {
+    return path.join(entry, 'index.js').replace(/\\/g, '/')
+  }
+  if (entry.endsWith('.js')) {
+    return entry.replace(/\\/g, '/')
+  }
+  return null
+}
+const cjsMainAliasPath = getJsEntryAliasPath(pkgMain)
+const esmAliasPaths = [getJsEntryAliasPath(pkgModule), getJsEntryAliasPath(pkgModuleJSX)].filter(
+  Boolean
+)
 
 const replaceRNWeb = {
   esm: (content) =>
@@ -237,13 +276,14 @@ if (shouldClean || shouldCleanBuildOnly) {
   if (shouldWatch) {
     process.env.IS_WATCHING = true
     process.env.DISABLE_AUTORUN = true
-    const rebuild = debounce(build, 100)
+    const rebuild = debounce(() => build({ cleanOutput: false }), 100)
     const chokidar = require('chokidar')
 
     if (!process.env.SKIP_INITIAL_BUILD) {
       // do one js build but not types
       build({
         skipTypes: true,
+        cleanOutput: true,
       })
     }
 
@@ -366,10 +406,18 @@ function swapExportsTypes(pkg, direction) {
   return swapped
 }
 
-async function build({ skipTypes } = {}) {
+async function build({ skipTypes, cleanOutput = !shouldWatch } = {}) {
   if (process.env.DEBUG) console.info('🔹', pkg.name)
   try {
     const start = Date.now()
+    const isSkippingTypesForBuild = Boolean(skipTypes || shouldSkipTypes || !pkgTypes)
+
+    if (cleanOutput) {
+      await Promise.allSettled([
+        FSE.remove('dist'),
+        isSkippingTypesForBuild ? null : FSE.remove('types'),
+      ])
+    }
 
     const allFiles = (await fastGlob(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
       (x) => !x.includes('.d.ts') && (exclude ? !x.match(exclude) : true)
@@ -448,7 +496,7 @@ async function buildTsc(allFiles) {
         allFiles.map(async (file) => {
           const source = await FSE.readFile(file, 'utf-8')
           const { code, map, errors } = await oxc.isolatedDeclaration(file, source, {
-            sourcemap: true,
+            sourcemap: !shouldSkipSourceMaps,
           })
 
           if (errors && errors.length > 0) {
@@ -460,12 +508,16 @@ async function buildTsc(allFiles) {
             .replace(/\.tsx?$/, '.d.ts')
           const mapPath = `${dtsPath}.map`
 
-          const output = `${code}\n//# sourceMappingURL=${path.basename(mapPath)}`
+          const output = shouldSkipSourceMaps
+            ? code
+            : `${code}\n//# sourceMappingURL=${path.basename(mapPath)}`
           await FSE.ensureDir(dirname(dtsPath))
-          await Promise.all([
-            writeIfUnchanged(dtsPath, output),
-            writeIfUnchanged(mapPath, JSON.stringify(map, null, 2)),
-          ])
+          await writeIfUnchanged(dtsPath, output)
+          if (!shouldSkipSourceMaps && map) {
+            await writeIfUnchanged(mapPath, JSON.stringify(map, null, 2))
+          } else {
+            await FSE.remove(mapPath)
+          }
 
           return []
         })
@@ -556,7 +608,7 @@ function createCompilerOptions(baseOptions, targetDir) {
     ...baseOptions,
     declaration: true,
     emitDeclarationOnly: true,
-    declarationMap: true,
+    declarationMap: !shouldSkipSourceMaps,
     outDir: targetDir,
     rootDir: 'src',
     incremental: true,
@@ -717,6 +769,8 @@ async function buildJs(allFiles) {
           platform: 'web',
           bundle: shouldBundleFlag,
           specifyCJS: !avoidCJS,
+          keepJsOutput: avoidCJS,
+          preserveJsPaths: [cjsMainAliasPath],
         })
       : null,
 
@@ -732,6 +786,7 @@ async function buildJs(allFiles) {
       ? esbuildWriteIfChanged(esmConfig, {
           platform: 'web',
           bundle: shouldBundleFlag,
+          preserveJsPaths: esmAliasPaths,
         })
       : null,
 
@@ -759,6 +814,7 @@ async function buildJs(allFiles) {
           },
           {
             platform: 'web',
+            preserveJsPaths: esmAliasPaths,
           }
         )
       : null,
@@ -800,9 +856,11 @@ async function buildJs(allFiles) {
 async function esbuildWriteIfChanged(
   /** @type { import('esbuild').BuildOptions } */
   opts,
-  { platform, env, specifyCJS } = {
+  { platform, env, specifyCJS, keepJsOutput, preserveJsPaths } = {
     platform: '',
     specifyCJS: false,
+    keepJsOutput: false,
+    preserveJsPaths: [],
     env: '',
   }
 ) {
@@ -811,6 +869,10 @@ async function esbuildWriteIfChanged(
   }
 
   const isESM = opts.target === 'esm' || opts.target === 'esnext'
+  const preserveJsPathSet = new Set((preserveJsPaths || []).filter(Boolean))
+  const preserveJsPathAbsoluteSet = new Set(
+    [...preserveJsPathSet].map((preserveJsPath) => path.resolve(preserveJsPath))
+  )
 
   const buildSettings = (() => {
     // compat with jsx and hermes back a few versions generally:
@@ -868,7 +930,7 @@ async function esbuildWriteIfChanged(
       color: true,
       allowOverwrite: true,
       keepNames: false,
-      sourcemap: true,
+      sourcemap: !shouldSkipSourceMaps,
       sourcesContent: false,
       logLevel: 'error',
       ...(platform === 'native' && nativeEsbuildSettings),
@@ -1034,7 +1096,7 @@ async function esbuildWriteIfChanged(
           : transform(contents, {
               filename: path,
               configFile: false,
-              sourceMap: true,
+              sourceMap: !shouldSkipSourceMaps,
               plugins: [
                 [
                   require.resolve('@tamagui/babel-plugin-fully-specified/commonjs'),
@@ -1045,11 +1107,28 @@ async function esbuildWriteIfChanged(
               ].filter(Boolean),
             })
 
-        cleanupNonCjsFiles.push(path)
+        const shouldPreserveJsAlias =
+          preserveJsPathSet.has(path) || preserveJsPathAbsoluteSet.has(path)
+
+        if (!shouldPreserveJsAlias) {
+          cleanupNonCjsFiles.push(path)
+          cleanupNonCjsFiles.push(path + '.map')
+        }
 
         await flush(path.replace(/\.js$/, '.cjs'), result.code)
+
+        if (shouldPreserveJsAlias) {
+          await flush(path, result.code)
+        }
       })
     )
+    if (cleanupNonCjsFiles.length) {
+      await Promise.all(cleanupNonCjsFiles.map(async (file) => FSE.remove(file)))
+    }
+    return
+  }
+
+  if (keepJsOutput) {
     return
   }
 
@@ -1076,7 +1155,7 @@ async function esbuildWriteIfChanged(
         : transform(contents, {
             filename: newOutPath,
             configFile: false,
-            sourceMap: true,
+            sourceMap: !shouldSkipSourceMaps,
             plugins: [
               [
                 isESM
@@ -1090,7 +1169,10 @@ async function esbuildWriteIfChanged(
             ].filter(Boolean),
           })
 
-      if (!path.includes('.native.')) {
+      const shouldPreserveJsAlias =
+        preserveJsPathSet.has(path) || preserveJsPathAbsoluteSet.has(path)
+
+      if (!path.includes('.native.') && !shouldPreserveJsAlias) {
         cleanupNonMjsFiles.push(path)
         cleanupNonMjsFiles.push(path + '.map')
       }
@@ -1099,25 +1181,39 @@ async function esbuildWriteIfChanged(
       await flush(
         newOutPath,
         result.code +
-          (result.map ? `\n//# sourceMappingURL=${basename(newOutPath)}.map\n` : '')
+          (result.map && !shouldSkipSourceMaps
+            ? `\n//# sourceMappingURL=${basename(newOutPath)}.map\n`
+            : '')
       )
-      if (result.map) {
+      if (result.map && !shouldSkipSourceMaps) {
         await flush(newOutPath + '.map', JSON.stringify(result.map))
+      } else {
+        await FSE.remove(newOutPath + '.map')
+      }
+
+      if (shouldPreserveJsAlias) {
+        await flush(
+          path,
+          result.code +
+            (result.map && !shouldSkipSourceMaps
+              ? `\n//# sourceMappingURL=${basename(path)}.map\n`
+              : '')
+        )
+        if (result.map && !shouldSkipSourceMaps) {
+          await flush(path + '.map', JSON.stringify(result.map))
+        } else {
+          await FSE.remove(path + '.map')
+        }
       }
     })
   )
 
-  // if we do mjs we should remove js after to avoid bloat
-  if (
-    process.env.TAMAGUI_BUILD_REMOVE_ESM_JS_FILES ||
-    process.env.TAMAGUI_BUILD_CLEANUP_JS_FILES
-  ) {
-    if (cleanupNonMjsFiles.length) {
-      await Promise.all(
-        [...cleanupNonMjsFiles, ...cleanupNonCjsFiles].map(async (file) => {
-          await FSE.remove(file)
-        })
-      )
-    }
+  // remove intermediary .js files once the final .mjs/.cjs outputs exist
+  if (cleanupNonMjsFiles.length || cleanupNonCjsFiles.length) {
+    await Promise.all(
+      [...cleanupNonMjsFiles, ...cleanupNonCjsFiles].map(async (file) => {
+        await FSE.remove(file)
+      })
+    )
   }
 }

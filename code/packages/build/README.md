@@ -69,12 +69,15 @@ It assumes your package.json looks something like this:
 ### Use
 
 - `tamagui-build` - builds `src` folder to `dist` and `types` folders
+  - normal builds clear `dist` and `types` first, so stale transformed files don't hang around
+  - intermediary `.js` files are removed after `.mjs` / `.cjs` postprocessing, so published output stays lean
   - `tamagui build .` second argument sets baseUrl to tsc
   - `--bundle-modules` - inline node_modules
   - `--declaration-root` - sets tsc flag `--declarationDir ./`
   - `--ignore-base-url` - if not set, tsc is passed `--baseUrl .`
   - `--skip-mjs` - don't output mjs files
   - `--skip-native` - don't output native files
+  - `--skip-sourcemaps` - don't output js or declaration sourcemaps
   - `--swap-exports` - swaps `exports.types` from `./src/*.ts` to `./types/*.d.ts` for publishing. if a command is given after `--`, runs it then swaps back. exit code is preserved.
     - `tamagui-build --swap-exports` - build and swap, stays swapped (for manual publish)
     - `tamagui-build --swap-exports -- npm publish` - build, swap, publish, swap back

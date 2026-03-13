@@ -1,8 +1,14 @@
 #!/usr/bin/env bun
-import { spawn, type Subprocess } from 'bun'
+import { spawn } from 'bun'
 
 const DRIVERS = ['css', 'native', 'reanimated', 'motion'] as const
 const PORT = process.env.PORT || '9000'
+const DRIVER_PORTS = {
+  css: '9001',
+  native: '9002',
+  reanimated: '9003',
+  motion: '9004',
+} as const
 const COLORS = {
   css: '\x1b[36m', // cyan
   native: '\x1b[33m', // yellow
@@ -12,28 +18,6 @@ const COLORS = {
   red: '\x1b[31m',
   green: '\x1b[32m',
   dim: '\x1b[2m',
-}
-
-async function waitForServer(url: string, timeoutMs = 120_000) {
-  const start = Date.now()
-  while (Date.now() - start < timeoutMs) {
-    try {
-      const res = await fetch(url)
-      if (res.ok) return
-    } catch {}
-    await Bun.sleep(500)
-  }
-  throw new Error(`server not ready after ${timeoutMs}ms`)
-}
-
-function startWebServer(): Subprocess {
-  return spawn({
-    cmd: ['bun', 'run', 'start:web'],
-    cwd: import.meta.dir,
-    env: { ...process.env, PORT },
-    stdout: 'ignore',
-    stderr: 'ignore',
-  })
 }
 
 async function runPlaywright(args: string[], env?: Record<string, string>) {
@@ -59,6 +43,7 @@ async function runDriver(
 ): Promise<{ driver: string; code: number; output: string[] }> {
   const output: string[] = []
   const color = COLORS[driver as keyof typeof COLORS] || ''
+  const port = DRIVER_PORTS[driver as keyof typeof DRIVER_PORTS]
 
   const proc = spawn({
     cmd: [
@@ -70,7 +55,12 @@ async function runDriver(
       `--project=animated-${driver}`,
     ],
     cwd: import.meta.dir,
-    env: { ...process.env, NODE_ENV: 'test', TAMAGUI_TEST_ANIMATION_DRIVER: driver },
+    env: {
+      ...process.env,
+      NODE_ENV: 'test',
+      PORT: port,
+      TAMAGUI_TEST_ANIMATION_DRIVER: driver,
+    },
     stdout: 'pipe',
     stderr: 'pipe',
   })
@@ -127,21 +117,11 @@ async function main() {
     process.exit(1)
   }
 
-  // start web server once before parallel drivers so they all reuse it
-  console.log(
-    `\n${COLORS.dim}Starting web server for parallel animated tests...${COLORS.reset}`
-  )
-  const server = startWebServer()
-  await waitForServer(`http://localhost:${PORT}`)
-
   console.log(
     `\n${COLORS.dim}Running animated tests in parallel (${DRIVERS.join(', ')})...${COLORS.reset}\n`
   )
 
-  // run all animated drivers in parallel — they reuse the running server
   const results = await Promise.all(DRIVERS.map(runDriver))
-
-  server.kill()
 
   // summary
   console.log(`\n${COLORS.dim}${'─'.repeat(60)}${COLORS.reset}`)
