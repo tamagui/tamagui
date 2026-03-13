@@ -1540,6 +1540,14 @@
         "vitest": "4.0.4",
       },
     },
+    "code/packages/build/__tests__/fixtures/js-main-package": {
+      "name": "tamagui-build-test-js-main-package",
+      "version": "2.0.0-rc.0-1769885482630",
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "typescript": "~5.9.2",
+      },
+    },
     "code/packages/build/__tests__/fixtures/simple-package": {
       "name": "tamagui-build-test-simple-tpackage",
       "version": "2.0.0-rc.0-1769885482630",
@@ -8662,6 +8670,8 @@
     "tailwindcss": ["tailwindcss@3.4.19", "", { "dependencies": { "@alloc/quick-lru": "^5.2.0", "arg": "^5.0.2", "chokidar": "^3.6.0", "didyoumean": "^1.2.2", "dlv": "^1.1.3", "fast-glob": "^3.3.2", "glob-parent": "^6.0.2", "is-glob": "^4.0.3", "jiti": "^1.21.7", "lilconfig": "^3.1.3", "micromatch": "^4.0.8", "normalize-path": "^3.0.0", "object-hash": "^3.0.0", "picocolors": "^1.1.1", "postcss": "^8.4.47", "postcss-import": "^15.1.0", "postcss-js": "^4.0.1", "postcss-load-config": "^4.0.2 || ^5.0 || ^6.0", "postcss-nested": "^6.2.0", "postcss-selector-parser": "^6.1.2", "resolve": "^1.22.8", "sucrase": "^3.35.0" }, "bin": { "tailwind": "lib/cli.js", "tailwindcss": "lib/cli.js" } }, "sha512-3ofp+LL8E+pK/JuPLPggVAIaEuhvIz4qNcf3nA1Xn2o/7fb7s/TYpHhwGDv1ZU3PkBluUVaF8PyCHcm48cKLWQ=="],
 
     "tamagui": ["tamagui@workspace:code/ui/tamagui"],
+
+    "tamagui-build-test-js-main-package": ["tamagui-build-test-js-main-package@workspace:code/packages/build/__tests__/fixtures/js-main-package"],
 
     "tamagui-build-test-simple-tpackage": ["tamagui-build-test-simple-tpackage@workspace:code/packages/build/__tests__/fixtures/simple-package"],
 
