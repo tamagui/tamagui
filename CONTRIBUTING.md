@@ -57,6 +57,47 @@ bun run kitchen-sink:build:ios
 
 You can run `bun run sandbox` or `bun run dev` (the tamagui website).
 
+### Local Testing Setup
+
+#### Playwright (web integration tests)
+
+Install browser binaries before first run:
+
+```bash
+cd code/kitchen-sink
+bun run test:web:setup   # installs chromium
+bun run start:web        # start dev server (background)
+bun run test:web         # run all web tests
+```
+
+#### Detox (iOS E2E tests)
+
+Install dependencies:
+
+```bash
+npm install -g detox-cli
+brew tap wix/brew && brew install applesimutils
+```
+
+The `run-detox.sh` script will automatically:
+- Run `expo prebuild` if the `ios/` directory doesn't exist
+- Build the Detox framework cache if missing (needed after Xcode updates)
+- Start Metro if not already running
+- Build the app if the binary is missing or outdated
+
+```bash
+cd code/kitchen-sink
+bun run detox:run:ios                              # run all iOS tests
+bun run detox:run:ios "Sheet"                      # filter by test name
+DETOX_DEVICE="iPhone 16 Pro" bun run detox:run:ios # override simulator device
+```
+
+If the Detox framework cache gets corrupted after an Xcode update:
+
+```bash
+npx detox clean-framework-cache && npx detox build-framework-cache
+```
+
 ### Fixing libraries
 
 All compiler and CSS generation tests live in `code/compiler/static-tests`.

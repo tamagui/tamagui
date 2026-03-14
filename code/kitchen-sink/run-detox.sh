@@ -20,9 +20,45 @@
 #   FORCE_BUILD=1       - Force rebuild even if app exists
 #   SKIP_BUILD=1        - Skip build check entirely
 #   SKIP_METRO=1        - Don't start Metro (assume it's running)
+#   DETOX_DEVICE=name   - iOS simulator device type (default: iPhone 15)
 #
 
 set -e
+
+# --- Prerequisites check ---
+check_prerequisites() {
+  local missing=false
+
+  if ! command -v detox &> /dev/null; then
+    echo "detox-cli not found. Install with: npm install -g detox-cli"
+    missing=true
+  fi
+
+  if [ "$PLATFORM" = "ios" ] && ! command -v applesimutils &> /dev/null; then
+    echo "applesimutils not found. Install with: brew tap wix/brew && brew install applesimutils"
+    missing=true
+  fi
+
+  if [ "$missing" = true ]; then
+    echo ""
+    echo "Install missing dependencies and try again."
+    exit 1
+  fi
+
+  # Detox framework cache (needed after Xcode updates)
+  if [ "$PLATFORM" = "ios" ] && [ ! -d "$HOME/Library/Detox/ios/framework" ]; then
+    echo "Detox framework cache not found. Building..."
+    npx detox clean-framework-cache && npx detox build-framework-cache
+    echo ""
+  fi
+
+  # iOS directory (expo prebuild)
+  if [ "$PLATFORM" = "ios" ] && [ ! -d "ios" ]; then
+    echo "No ios/ directory found. Running expo prebuild..."
+    npx expo prebuild --platform ios
+    echo ""
+  fi
+}
 
 PLATFORM="${1:-ios}"  # ios or android
 TEST_FILTER="${2:-}"  # optional test name filter
@@ -104,7 +140,13 @@ echo "  Detox Test Runner"
 echo "========================================"
 echo "Platform:    $PLATFORM"
 echo "Config:      $CONFIG"
+echo "Device:      ${DETOX_DEVICE:-iPhone 15}"
 echo "Test filter: ${TEST_FILTER:-<all tests>}"
+echo ""
+
+# step 0: check prerequisites
+echo "=== Step 0: Checking prerequisites ==="
+check_prerequisites
 echo ""
 
 # step 1: check if build needed
