@@ -9,7 +9,6 @@
  */
 
 import type { TamaguiOptions } from '@tamagui/types'
-import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import Piscina from 'piscina'
 
