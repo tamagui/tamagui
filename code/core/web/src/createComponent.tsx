@@ -1351,6 +1351,7 @@ export function createComponent<
             onFocus: (e) => {
               const next: Partial<typeof state> = {}
               if (componentContext.setParentFocusState) {
+                componentContext.setParentFocusState({ focusWithin: true })
                 next.focusWithin = true
               }
               if (pseudos?.focusVisibleStyle) {
@@ -1520,7 +1521,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
-    if ('focusWithinStyle' in propsIn) {
+    if ('focusWithinStyle' in propsIn || pseudos?.focusWithinStyle) {
       content = (
         <ComponentContext.Provider
           {...componentContext}
