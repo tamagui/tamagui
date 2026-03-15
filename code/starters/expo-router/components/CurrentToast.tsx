@@ -1,4 +1,4 @@
-import { Toast, useToastController, useToastState } from '@tamagui/toast'
+import { Toast, useToastController, useToastState } from '@tamagui/toast/v1'
 import { Button, H4, XStack, YStack, isWeb } from 'tamagui'
 
 export function CurrentToast() {

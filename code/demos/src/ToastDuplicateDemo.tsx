@@ -1,47 +1,58 @@
+import { Toast, toast, useToasts } from '@tamagui/toast'
 import { CheckCircle2 } from '@tamagui/lucide-icons'
-import { Toast } from '@tamagui/toast'
 import React from 'react'
 import { Button, XStack, YStack } from 'tamagui'
 
 /**
- *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add the ToastProvider and ToastViewport as well.
+ *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add the Toast wrapper as well.
  */
 export const ToastDuplicateDemo = () => {
-  const [savedCount, setSavedCount] = React.useState(0)
+  return (
+    <Toast>
+      <Toast.Viewport>
+        <ToastList />
+      </Toast.Viewport>
+
+      <YStack items="center">
+        <Button
+          onPress={() => {
+            toast('Successfully saved!', {
+              description: "Don't worry... We've got your data.",
+            })
+          }}
+        >
+          Show toast
+        </Button>
+      </YStack>
+    </Toast>
+  )
+}
+
+const ToastList = () => {
+  const { toasts } = useToasts()
 
   return (
-    <YStack items="center">
-      <Button
-        onPress={() => {
-          setSavedCount((old) => old + 1)
-        }}
-      >
-        Show toast
-      </Button>
-      {[...Array(savedCount)].map((_, index) => (
-        <Toast
-          viewportName="viewport-multiple" // Sends to a viewport that supports multiple toasts with the `multipleToasts` prop
-          key={index}
-          duration={4000}
-          enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
-          exitStyle={{ opacity: 0, scale: 1, y: -20 }}
-          y={0}
-          opacity={1}
-          scale={1}
-          transition="100ms"
-        >
+    <>
+      {toasts.map((t, index) => (
+        <Toast.Item key={t.id} toast={t} index={index}>
           <XStack gap="$4" items="center">
             <YStack>
               <CheckCircle2 />
             </YStack>
 
             <YStack>
-              <Toast.Title>Successfully saved!</Toast.Title>
-              <Toast.Description>Don't worry... We've got your data.</Toast.Description>
+              <Toast.Title>
+                {typeof t.title === 'function' ? t.title() : t.title}
+              </Toast.Title>
+              {t.description && (
+                <Toast.Description>
+                  {typeof t.description === 'function' ? t.description() : t.description}
+                </Toast.Description>
+              )}
             </YStack>
           </XStack>
-        </Toast>
+        </Toast.Item>
       ))}
-    </YStack>
+    </>
   )
 }
