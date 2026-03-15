@@ -23,6 +23,12 @@ type DialogProps = ScopedProps<{
      * Used to disable the remove scroll functionality when open
      */
     disableRemoveScroll?: boolean;
+    /**
+     * Called when the dialog open/close animation completes.
+     */
+    onAnimationComplete?: (info: {
+        open: boolean;
+    }) => void;
 }>;
 type NonNull<A> = Exclude<A, void | null>;
 type DialogContextValue = {
@@ -40,6 +46,7 @@ type DialogContextValue = {
     modal: NonNull<DialogProps['modal']>;
     dialogScope: DialogScopes;
     adaptScope: string;
+    onAnimationComplete?: DialogProps['onAnimationComplete'];
 };
 export declare const DialogContext: import("@tamagui/core").StyledContext<DialogContextValue>;
 export declare const useDialogContext: (scope?: string) => DialogContextValue, DialogProvider: React.Provider<DialogContextValue> & React.ProviderExoticComponent<Partial<DialogContextValue> & {
@@ -266,6 +273,12 @@ declare const Dialog: React.ForwardRefExoticComponent<{
      * Used to disable the remove scroll functionality when open
      */
     disableRemoveScroll?: boolean;
+    /**
+     * Called when the dialog open/close animation completes.
+     */
+    onAnimationComplete?: (info: {
+        open: boolean;
+    }) => void;
 } & {
     scope?: DialogScopes;
 } & React.RefAttributes<{

@@ -60,6 +60,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       unmountChildrenWhenHidden = false,
       portalProps,
       containerComponent: ContainerComponent = React.Fragment,
+      onAnimationComplete,
     } = props
 
     const state = useSheetOpenState(props)
@@ -302,10 +303,22 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       at.current = toValue
       stopSpring()
 
+      const isOpenAnimation = position !== -1 && !isHidden
+      const animationCompleteCallback = () => {
+        if (!isOpenAnimation) {
+          setOpacity(0)
+        }
+        onAnimationComplete?.({ open: isOpenAnimation })
+      }
+
       // skip animation when adapting from dialog to sheet
       if (skipAdaptAnimation.current) {
         skipAdaptAnimation.current = false
-        animatedNumber.setValue(toValue, { type: 'timing', duration: 0 })
+        animatedNumber.setValue(
+          toValue,
+          { type: 'timing', duration: 0 },
+          animationCompleteCallback
+        )
         return
       }
 
@@ -314,7 +327,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         animationOverride || {
           type: 'spring',
           ...transitionConfig,
-        }
+        },
+        animationCompleteCallback
       )
     })
 
@@ -641,17 +655,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     if (open && opacity === 0) {
       setOpacity(1)
     }
-    React.useEffect(() => {
-      if (!open) {
-        // need to wait for animation complete, for now lets just do it naively
-        const tm = setTimeout(() => {
-          setOpacity(0)
-        }, 400)
-        return () => {
-          clearTimeout(tm)
-        }
-      }
-    }, [open])
 
     const forcedContentHeight = hasFit
       ? undefined
