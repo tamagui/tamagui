@@ -20,6 +20,7 @@
 #   FORCE_BUILD=1       - Force rebuild even if app exists
 #   SKIP_BUILD=1        - Skip build check entirely
 #   SKIP_METRO=1        - Don't start Metro (assume it's running)
+#   DETOX_DEVICE=name   - iOS simulator device type (default: iPhone 15)
 #
 
 set -e
@@ -104,6 +105,7 @@ echo "  Detox Test Runner"
 echo "========================================"
 echo "Platform:    $PLATFORM"
 echo "Config:      $CONFIG"
+echo "Device:      ${DETOX_DEVICE:-iPhone 15}"
 echo "Test filter: ${TEST_FILTER:-<all tests>}"
 echo ""
 
