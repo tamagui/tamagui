@@ -166,14 +166,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<Function> {
       const [val, setVal] = React.useState(initial)
-      const [onFinish, setOnFinish] = useState<Function | undefined>()
-
-      useIsomorphicLayoutEffect(() => {
-        if (onFinish) {
-          onFinish?.()
-          setOnFinish(undefined)
-        }
-      }, [onFinish])
+      const finishTimerRef = React.useRef<ReturnType<typeof setTimeout>>()
 
       return {
         getInstance() {
@@ -184,14 +177,36 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         },
         setValue(next, config, onFinish) {
           setVal(next)
-          setOnFinish(onFinish)
+
+          // clear any pending finish callback from a previous setValue
+          if (finishTimerRef.current) {
+            clearTimeout(finishTimerRef.current)
+            finishTimerRef.current = undefined
+          }
+
+          if (onFinish) {
+            if (!config || config.type === 'direct' || (config.type === 'timing' && config.duration === 0)) {
+              onFinish()
+            } else {
+              // estimate duration: use explicit duration, or fall back to
+              // default CSS transition duration for spring-type configs
+              const duration = config.type === 'timing' ? config.duration : 300
+              finishTimerRef.current = setTimeout(onFinish, duration)
+            }
+          }
+
           // call reaction listeners with the new value
           const listeners = reactionListeners.get(setVal)
           if (listeners) {
             listeners.forEach((listener) => listener(next))
           }
         },
-        stop() {},
+        stop() {
+          if (finishTimerRef.current) {
+            clearTimeout(finishTimerRef.current)
+            finishTimerRef.current = undefined
+          }
+        },
       }
     },
 
