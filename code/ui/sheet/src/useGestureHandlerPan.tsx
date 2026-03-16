@@ -253,9 +253,12 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
 
         if (panHandles) {
           // pan handles - disable scroll and move sheet
-          // when not at top: lock scroll to 0 (sheet is being dragged)
-          // when at top: lock at current position (handoff from scroll to pan)
-          const lockTo = isCurrentlyAtTop ? undefined : 0
+          // when swiping down at top after scroll was engaged: lock at current scroll position
+          //   (handoff from scroll to pan — preserve scroll offset)
+          // otherwise: always lock scroll to 0 (prevents scroll from firing during sheet drag)
+          const lockTo = isCurrentlyAtTop && isSwipingDown && gs.scrollEngaged
+            ? undefined
+            : 0
           scrollBridge.setScrollEnabled?.(false, lockTo)
 
           // accumulate the delta for position calculation
