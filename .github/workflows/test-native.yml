@@ -34,7 +34,7 @@ jobs:
   test-ios:
     name: iOS Detox Tests (${{ matrix.shard_name }})
     needs: build-ios
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 35
     strategy:
       fail-fast: false
@@ -54,7 +54,7 @@ jobs:
           fetch-depth: 1
 
       - name: Set Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+        run: sudo xcode-select -s /Applications/Xcode_16.3.app
 
       - name: Restore Built App from Cache
         id: restore-ios-cache

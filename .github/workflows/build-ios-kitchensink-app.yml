@@ -36,7 +36,7 @@ on:
 jobs:
   build-ios:
     name: Build
-    runs-on: macos-14
+    runs-on: macos-15
     permissions:
       contents: read
       pull-requests: read
@@ -55,7 +55,7 @@ jobs:
           fetch-depth: 1
 
       - name: Set Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+        run: sudo xcode-select -s /Applications/Xcode_16.3.app
 
       - name: Get Built App Path
         id: get-built-app-path
@@ -116,6 +116,47 @@ jobs:
       - name: Prebuild
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
         run: ${{ env.prebuild_command }}
+
+      - name: Patch Podfile for ExpoModulesCore Swift 6
+        if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
+        run: |
+          # workaround: expo-modules-core 55.x uses @MainActor in class inheritance
+          # clauses which requires Swift 6 mode. SWIFT_STRICT_CONCURRENCY=minimal
+          # suppresses concurrency warnings in swift 6 mode.
+          PODFILE="ios/Podfile"
+          if grep -q "workaround: expo-modules-core 55.x" "$PODFILE" 2>/dev/null; then
+            echo "Podfile already patched, skipping"
+          elif [ -f "$PODFILE" ]; then
+            node -e "
+              const fs = require('fs');
+              const podfile = fs.readFileSync('$PODFILE', 'utf8');
+              const workaround = \`
+            # workaround: expo-modules-core 55.x requires Swift 6 mode for @MainActor
+            # conformance isolation syntax. SWIFT_STRICT_CONCURRENCY=minimal suppresses
+            # concurrency warnings that come with swift 6 strict mode.
+            installer.pods_project.targets.each do |target|
+              if target.name == 'ExpoModulesCore'
+                target.build_configurations.each do |build_config|
+                  build_config.build_settings['SWIFT_VERSION'] = '6'
+                  build_config.build_settings['SWIFT_STRICT_CONCURRENCY'] = 'minimal'
+                end
+              end
+            end
+          \`;
+              const updated = podfile.replace(
+                /(post_install do \|installer\|.*?)(^\s+end\s*\nend)/ms,
+                '\$1' + workaround + '\$2'
+              );
+              if (updated === podfile) {
+                console.error('ERROR: could not find post_install block in Podfile');
+                process.exit(1);
+              }
+              fs.writeFileSync('$PODFILE', updated);
+              console.log('Patched Podfile with ExpoModulesCore Swift 6 workaround');
+            "
+          else
+            echo "WARNING: Podfile not found at $PODFILE"
+          fi
 
       - name: Cache Pods
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
