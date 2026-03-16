@@ -23,8 +23,8 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/lucide-icons": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "expo-constants": "~18.0.10",
-    "expo-image": "~3.0.10",
+    "expo-constants": "~55.0.7",
+    "expo-image": "~55.0.6",
     "solito": "^4.3.0",
     "tamagui": "workspace:*"
   },

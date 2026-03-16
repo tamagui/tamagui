@@ -1,11 +1,9 @@
 {
   "expo": {
-    "newArchEnabled": true,
     "name": "tamagui-kitchen-sink",
     "slug": "tamagui-kitchen-sink",
     "scheme": "tamagui-kitchen-sink",
     "version": "1.0.0",
-    "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
