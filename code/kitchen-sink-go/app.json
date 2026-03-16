@@ -6,6 +6,7 @@
     "platforms": ["ios", "android"],
     "ios": {
       "bundleIdentifier": "dev.tamagui.kitchensinkgo"
-    }
+    },
+    "plugins": ["./plugins/expo-modules-core-swift5"]
   }
 }
