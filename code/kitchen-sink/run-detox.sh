@@ -25,6 +25,8 @@
 
 set -e
 
+PLATFORM="${1:-ios}"  # ios or android
+
 # --- Prerequisites check ---
 check_prerequisites() {
   local missing=false
@@ -59,8 +61,6 @@ check_prerequisites() {
     echo ""
   fi
 }
-
-PLATFORM="${1:-ios}"  # ios or android
 TEST_FILTER="${2:-}"  # optional test name filter
 
 CONFIG=""
