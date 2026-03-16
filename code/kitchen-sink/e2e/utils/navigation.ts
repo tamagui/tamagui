@@ -30,17 +30,13 @@ export async function navigateToTestCase(
   // tap toggle button to expand the quick-nav section
   await element(by.id('toggle-test-cases')).tap()
 
-  // wait for the quick-nav container to appear (expansion animation)
-  await waitFor(element(by.id('detox-quick-nav')))
-    .toBeVisible()
-    .withTimeout(5000)
-
-  // scroll the home scrollview until the target nav button is visible
-  // (elements near the bottom of the grid may be off-screen)
+  // wait for the quick-nav element to appear - 15s to allow for:
+  // - grid rendering (123 items with useLink hooks)
+  // - native layout calculation
+  // - any pending main-thread work from previous test
   await waitFor(element(by.id(`detox-nav-${testCaseName}`)))
     .toBeVisible()
-    .whileElement(by.id('home-scroll-view'))
-    .scroll(200, 'down')
+    .withTimeout(15000)
 
   // tap the quick-nav element for this test case
   await element(by.id(`detox-nav-${testCaseName}`)).tap()
