@@ -6,6 +6,7 @@ on:
       - main
       - 'native-*'
       - 'v*'
+      - rn82
   workflow_dispatch:
 
 # cancel in-progress runs on feature branches, but let main finish for full history
