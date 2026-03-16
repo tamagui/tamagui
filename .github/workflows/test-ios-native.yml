@@ -9,6 +9,8 @@ on:
 
 env:
   test_container_app_path: code/kitchen-sink
+  # Maestro XCTest driver startup takes longer on Xcode 26 / iOS 26 simulators
+  MAESTRO_DRIVER_STARTUP_TIMEOUT: 300000
 
 jobs:
   build:
