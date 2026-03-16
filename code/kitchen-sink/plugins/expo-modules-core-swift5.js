@@ -25,14 +25,18 @@ module.exports = function withExpoModulesCoreSwift6(config) {
       }
 
       const workaround = `
-    # workaround: expo-modules-core 55.x requires Swift 6 mode for @MainActor
-    # conformance isolation syntax. SWIFT_STRICT_CONCURRENCY=minimal suppresses
-    # the concurrency warnings that come with swift 6 strict mode.
+    # workaround: expo-modules-core 55.x requires Swift 6 mode with isolated
+    # conformances (SE-0470) for @MainActor in protocol conformance syntax.
+    # SWIFT_STRICT_CONCURRENCY=minimal suppresses concurrency warnings/errors.
     installer.pods_project.targets.each do |target|
       if target.name == 'ExpoModulesCore'
         target.build_configurations.each do |build_config|
           build_config.build_settings['SWIFT_VERSION'] = '6'
           build_config.build_settings['SWIFT_STRICT_CONCURRENCY'] = 'minimal'
+          flags = build_config.build_settings['OTHER_SWIFT_FLAGS'] || '$(inherited)'
+          unless flags.include?('IsolatedConformances')
+            build_config.build_settings['OTHER_SWIFT_FLAGS'] = "#{flags} -enable-upcoming-feature IsolatedConformances"
+          end
         end
       end
     end
