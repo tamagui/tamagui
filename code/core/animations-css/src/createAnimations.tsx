@@ -185,7 +185,11 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           }
 
           if (onFinish) {
-            if (!config || config.type === 'direct' || (config.type === 'timing' && config.duration === 0)) {
+            if (
+              !config ||
+              config.type === 'direct' ||
+              (config.type === 'timing' && config.duration === 0)
+            ) {
               onFinish()
             } else {
               // estimate duration: use explicit duration, or fall back to
