@@ -43,11 +43,7 @@ export function OpacityModifierCase() {
 
       {/* text color with opacity */}
       <View data-testid="opacity-text-container">
-        <Text
-          data-testid="opacity-text"
-          color={'$customRed/50' as any}
-          fontSize="$6"
-        >
+        <Text data-testid="opacity-text" color={'$customRed/50' as any} fontSize="$6">
           50% red text
         </Text>
       </View>
@@ -95,18 +91,11 @@ export function OpacityModifierCase() {
       <View
         data-testid="opacity-animated"
         animation="500ms"
-        backgroundColor={
-          toggled
-            ? ('$customBlue/75' as any)
-            : ('$customRed/50' as any)
-        }
+        backgroundColor={toggled ? ('$customBlue/75' as any) : ('$customRed/50' as any)}
         width={100}
         height={100}
       />
-      <Button
-        data-testid="opacity-toggle"
-        onPress={() => setToggled((v) => !v)}
-      >
+      <Button data-testid="opacity-toggle" onPress={() => setToggled((v) => !v)}>
         Toggle
       </Button>
 
