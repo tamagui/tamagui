@@ -115,9 +115,7 @@ describe('flat mode - media modifiers', () => {
       '$sm:bg': 'red',
     } as any)
 
-    const smKey = Object.keys(styles.classNames).find(
-      (k) => k.includes('sm')
-    )
+    const smKey = Object.keys(styles.classNames).find((k) => k.includes('sm'))
     expect(smKey).toBeTruthy()
     expect(styles.classNames[smKey!]).toContain('_sm')
   })
@@ -127,9 +125,7 @@ describe('flat mode - media modifiers', () => {
       '$md:p': 20,
     } as any)
 
-    const mdKey = Object.keys(styles.classNames).find(
-      (k) => k.includes('md')
-    )
+    const mdKey = Object.keys(styles.classNames).find((k) => k.includes('md'))
     expect(mdKey).toBeTruthy()
     expect(styles.classNames[mdKey!]).toContain('_md')
   })
