@@ -30,10 +30,17 @@ export async function navigateToTestCase(
   // tap toggle button to expand the quick-nav section
   await element(by.id('toggle-test-cases')).tap()
 
-  // wait for the quick-nav element to appear (expansion animation)
-  await waitFor(element(by.id(`detox-nav-${testCaseName}`)))
+  // wait for the quick-nav container to appear (expansion animation)
+  await waitFor(element(by.id('detox-quick-nav')))
     .toBeVisible()
     .withTimeout(5000)
+
+  // scroll the home scrollview until the target nav button is visible
+  // (elements near the bottom of the grid may be off-screen)
+  await waitFor(element(by.id(`detox-nav-${testCaseName}`)))
+    .toBeVisible()
+    .whileElement(by.id('home-scroll-view'))
+    .scroll(200, 'down')
 
   // tap the quick-nav element for this test case
   await element(by.id(`detox-nav-${testCaseName}`)).tap()
