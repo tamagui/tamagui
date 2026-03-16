@@ -241,7 +241,10 @@ jobs:
             -configuration ${{ inputs.configuration }} \
             -sdk 'iphonesimulator' \
             -destination 'generic/platform=iOS Simulator' \
-            -derivedDataPath build | tee xcodebuild.log | xcpretty
+            -derivedDataPath build \
+            OTHER_SWIFT_FLAGS='$(inherited) -enable-upcoming-feature IsolatedConformances' \
+            SWIFT_STRICT_CONCURRENCY=minimal \
+            | tee xcodebuild.log | xcpretty
 
       - name: Upload Built App to Cache
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
