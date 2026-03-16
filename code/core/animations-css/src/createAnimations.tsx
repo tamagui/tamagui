@@ -166,7 +166,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<Function> {
       const [val, setVal] = React.useState(initial)
-      const finishTimerRef = React.useRef<ReturnType<typeof setTimeout>>()
+      const finishTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
       return {
         getInstance() {
@@ -181,7 +181,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           // clear any pending finish callback from a previous setValue
           if (finishTimerRef.current) {
             clearTimeout(finishTimerRef.current)
-            finishTimerRef.current = undefined
+            finishTimerRef.current = null
           }
 
           if (onFinish) {
@@ -208,7 +208,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         stop() {
           if (finishTimerRef.current) {
             clearTimeout(finishTimerRef.current)
-            finishTimerRef.current = undefined
+            finishTimerRef.current = null
           }
         },
       }
