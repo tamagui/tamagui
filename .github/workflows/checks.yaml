@@ -64,7 +64,7 @@ jobs:
         run: bunx playwright install
 
       - name: Run unit tests
-        run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=2
+        run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=1
 
   changes:
     runs-on: ubuntu-latest
