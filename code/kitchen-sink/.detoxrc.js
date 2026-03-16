@@ -68,7 +68,7 @@ module.exports = {
     simulator: {
       type: 'ios.simulator',
       device: {
-        type: process.env.DETOX_DEVICE || 'iPhone 15',
+        type: process.env.DETOX_DEVICE || 'iPhone 16',
       },
     },
     attached: {
