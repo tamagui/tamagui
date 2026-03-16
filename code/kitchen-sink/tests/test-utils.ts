@@ -65,7 +65,15 @@ export async function setupPage(
 
   const url = `/?${params.toString()}`
   await page.goto(url, { waitUntil: 'networkidle' })
-  await new Promise((res) => setTimeout(res, waitExtra ? 3000 : 300))
+
+  // poll for app readiness instead of a fixed sleep
+  await page.waitForFunction(
+    () => {
+      const root = document.getElementById('root')
+      return root && root.children.length > 0
+    },
+    { timeout: waitExtra ? 10_000 : 5_000, polling: 50 }
+  )
 
   return page
 }
