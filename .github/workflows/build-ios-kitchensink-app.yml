@@ -119,15 +119,17 @@ jobs:
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
         run: ${{ env.prebuild_command }}
 
-      - name: Patch Podfile for ExpoModulesCore Swift 6
+      - name: Patch Podfile for ExpoModulesCore Swift 6 and ContextMenuAuxiliaryPreview
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
         run: |
           # workaround: expo-modules-core 55.x uses @MainActor in class inheritance
           # clauses which requires Swift 6 mode. SWIFT_STRICT_CONCURRENCY=minimal
           # suppresses concurrency warnings in swift 6 mode.
+          # workaround 2: ContextMenuAuxiliaryPreview uses deprecated transform: .default
+          # which is an error in Xcode 26 / Swift 6.2 - disable warnings-as-errors for it.
           PODFILE="ios/Podfile"
-          if grep -q "workaround: expo-modules-core 55.x" "$PODFILE" 2>/dev/null; then
-            echo "Podfile already patched, skipping"
+          if grep -q "ContextMenuAuxiliaryPreview" "$PODFILE" 2>/dev/null; then
+            echo "Podfile already patched (both ExpoModulesCore + ContextMenuAuxiliaryPreview), skipping"
           elif [ -f "$PODFILE" ]; then
             node -e "
               const fs = require('fs');
@@ -146,6 +148,14 @@ jobs:
                   end
                 end
               end
+              # workaround: ContextMenuAuxiliaryPreview uses deprecated transform: .default
+              # which becomes a build error in Xcode 26 / Swift 6.2 strict mode.
+              if target.name == 'ContextMenuAuxiliaryPreview'
+                target.build_configurations.each do |build_config|
+                  build_config.build_settings['SWIFT_TREAT_WARNINGS_AS_ERRORS'] = 'NO'
+                  build_config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'NO'
+                end
+              end
             end
           \`;
               const updated = podfile.replace(
@@ -157,7 +167,7 @@ jobs:
                 process.exit(1);
               }
               fs.writeFileSync('$PODFILE', updated);
-              console.log('Patched Podfile with ExpoModulesCore Swift 6 workaround');
+              console.log('Patched Podfile with ExpoModulesCore Swift 6 and ContextMenuAuxiliaryPreview workarounds');
             "
           else
             echo "WARNING: Podfile not found at $PODFILE"
