@@ -1,5 +1,6 @@
-// web-only: use color-mix for opacity, no parsing needed
-// browsers handle named colors, hex, rgb, hsl natively
+// web: use color-mix for CSS variables, rgba for concrete colors
+
+import { normalizeCSSColor, rgba } from '@tamagui/normalize-css-color'
 
 export const normalizeColor = (color?: string | null, opacity?: number) => {
   if (!color) return
@@ -11,15 +12,29 @@ export const normalizeColor = (color?: string | null, opacity?: number) => {
     return 'rgba(0, 0, 0, 0)'
   }
 
-  // apply opacity via color-mix (widely supported: Chrome 111+, Safari 16.2+, Firefox 113+)
   if (typeof opacity === 'number' && opacity < 1) {
+    // CSS variables can't be parsed — use color-mix (Chrome 111+, Safari 16.2+, Firefox 113+)
+    if (color.startsWith('var(')) {
+      return `color-mix(in srgb, ${color} ${Math.round(opacity * 100)}%, transparent)`
+    }
+    // concrete colors: parse to rgba so JS animation drivers can interpolate
+    const parsed = getRgba(color)
+    if (parsed) {
+      return `rgba(${parsed.r},${parsed.g},${parsed.b},${opacity})`
+    }
+    // fallback to color-mix if parsing fails
     return `color-mix(in srgb, ${color} ${Math.round(opacity * 100)}%, transparent)`
   }
 
   return color
 }
 
-// stub for native compat - native uses normalizeColor.native.ts which has real impl
 export const getRgba = (
-  _color: string
-): { r: number; g: number; b: number; a: number } | undefined => undefined
+  color: string
+): { r: number; g: number; b: number; a: number } | undefined => {
+  if (typeof color !== 'string') return
+  const colorNum = normalizeCSSColor(color)
+  if (colorNum != null) {
+    return rgba(colorNum)
+  }
+}

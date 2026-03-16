@@ -8,6 +8,7 @@ import type {
   Variable,
 } from '../types'
 import { getFontsForLanguage } from './getVariantExtras'
+import { normalizeColor } from './normalizeColor'
 
 const fontShorthand = {
   fontSize: 'size',
@@ -37,6 +38,20 @@ export const getTokenForKey = (
 
   if (resolveAs === 'none') {
     return value
+  }
+
+  // parse opacity modifier: $token/50 → base token + 50% opacity
+  // only for color-related style properties
+  let opacityModifier: number | undefined
+  if (key in (tokenCategories.color || {})) {
+    const slashIdx = value.indexOf('/')
+    if (slashIdx > 0) {
+      const num = Number(value.slice(slashIdx + 1))
+      if (!Number.isNaN(num)) {
+        opacityModifier = num / 100
+        value = value.slice(0, slashIdx)
+      }
+    }
   }
 
   const { theme, conf = getConfig(), context, fontFamily, staticConfig } = styleState
@@ -151,7 +166,13 @@ export const getTokenForKey = (
   }
 
   if (hasSet) {
-    const out = resolveVariableValue(key, valOrVar, resolveAs)
+    let out = resolveVariableValue(key, valOrVar, resolveAs)
+
+    // apply opacity modifier via color-mix (web) or rgba (native)
+    if (opacityModifier !== undefined && opacityModifier < 1) {
+      out = normalizeColor(String(out), opacityModifier) ?? out
+    }
+
     if (process.env.NODE_ENV === 'development' && styleState.debug === 'verbose') {
       globalThis.tamaguiAvoidTracking = true
       console.info(`resolved`, resolveAs, valOrVar, out)
