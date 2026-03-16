@@ -44,9 +44,13 @@ module.exports = function withExpoModulesCoreSwift6(config) {
       )
 
       if (updated === podfile) {
-        console.warn('[expo-modules-core-swift6] WARNING: could not find post_install block in Podfile - workaround not applied')
+        console.warn(
+          '[expo-modules-core-swift6] WARNING: could not find post_install block in Podfile - workaround not applied'
+        )
       } else {
-        console.log('[expo-modules-core-swift6] applied ExpoModulesCore Swift 6 workaround to Podfile')
+        console.log(
+          '[expo-modules-core-swift6] applied ExpoModulesCore Swift 6 workaround to Podfile'
+        )
       }
 
       fs.writeFileSync(podfilePath, updated)
