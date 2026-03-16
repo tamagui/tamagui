@@ -70,8 +70,8 @@ test.describe('Animation Behavior', () => {
       name: 'AnimationComprehensiveCase',
       type: 'useCase',
     })
-    // wait for a known test element to be present
-    await page.waitForSelector('[data-testid="scenario-36-target"]', { timeout: 5000 })
+    // CI can be slow - allow more time for initial render
+    await page.waitForTimeout(1000)
   })
 
   test('timing animation has start, intermediate, and end states', async ({ page }) => {
@@ -170,15 +170,7 @@ test.describe('Animation Behavior', () => {
     expect(startOpacity, 'Start').toBeCloseTo(START, 1)
 
     await page.getByTestId('scenario-20-trigger').click()
-    await page.waitForFunction(
-      ({ id, target }) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        return Math.abs(Number.parseFloat(getComputedStyle(el).opacity) - target) < 0.15
-      },
-      { id: 'scenario-20-target', target: END },
-      { timeout: 5000, polling: 100 }
-    )
+    await page.waitForTimeout(2500)
     const endOpacity = await getOpacity(page, 'scenario-20-target')
 
     expect(endOpacity, 'End').toBeCloseTo(END, 1)
@@ -189,20 +181,7 @@ test.describe('Animation Behavior', () => {
       SCALE_END = 1.3
 
     await page.getByTestId('scenario-28-trigger').click()
-    await page.waitForFunction(
-      ({ id, oTarget, sTarget }) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        const s = getComputedStyle(el)
-        const opacity = Number.parseFloat(s.opacity)
-        const transform = s.transform
-        const match = transform.match(/matrix\(([^,]+),/)
-        const scale = match ? Number.parseFloat(match[1]) : 1
-        return Math.abs(opacity - oTarget) < 0.15 && Math.abs(scale - sTarget) < 0.15
-      },
-      { id: 'scenario-28-target', oTarget: OPACITY_END, sTarget: SCALE_END },
-      { timeout: 5000, polling: 100 }
-    )
+    await page.waitForTimeout(3000)
 
     const endOpacity = await getOpacity(page, 'scenario-28-target')
     const endScale = await getScale(page, 'scenario-28-target')
@@ -216,20 +195,7 @@ test.describe('Animation Behavior', () => {
       SCALE_END = 1.5
 
     await page.getByTestId('scenario-31-trigger').click()
-    await page.waitForFunction(
-      ({ id, oTarget, sTarget }) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        const s = getComputedStyle(el)
-        const opacity = Number.parseFloat(s.opacity)
-        const transform = s.transform
-        const match = transform.match(/matrix\(([^,]+),/)
-        const scale = match ? Number.parseFloat(match[1]) : 1
-        return Math.abs(opacity - oTarget) < 0.15 && Math.abs(scale - sTarget) < 0.15
-      },
-      { id: 'scenario-31-target', oTarget: OPACITY_END, sTarget: SCALE_END },
-      { timeout: 5000, polling: 100 }
-    )
+    await page.waitForTimeout(3000)
 
     const endOpacity = await getOpacity(page, 'scenario-31-target')
     const endScale = await getScale(page, 'scenario-31-target')
@@ -241,29 +207,12 @@ test.describe('Animation Behavior', () => {
   test('enterStyle animates on mount', async ({ page }) => {
     const trigger = page.getByTestId('scenario-21-trigger')
     await trigger.click() // Hide
-    await page.waitForFunction(
-      (id) => !document.querySelector(`[data-testid="${id}"]`),
-      'scenario-21-target',
-      { timeout: 5000, polling: 100 }
-    )
+    await page.waitForTimeout(1000)
 
     expect(await elementExists(page, 'scenario-21-target'), 'Hidden').toBe(false)
 
     await trigger.click() // Show
-    await page.waitForFunction(
-      (id) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        const s = getComputedStyle(el)
-        const opacity = Number.parseFloat(s.opacity)
-        const transform = s.transform
-        const match = transform.match(/matrix\(([^,]+),/)
-        const scale = match ? Number.parseFloat(match[1]) : 1
-        return opacity > 0.85 && Math.abs(scale - 1) < 0.15
-      },
-      'scenario-21-target',
-      { timeout: 5000, polling: 100 }
-    )
+    await page.waitForTimeout(2000)
 
     expect(await elementExists(page, 'scenario-21-target'), 'Shown').toBe(true)
     expect(await getOpacity(page, 'scenario-21-target'), 'End opacity').toBeCloseTo(1, 0)
@@ -305,12 +254,8 @@ test.describe('Animation Behavior', () => {
       ).toBe(true)
     }
 
-    // poll for element removal instead of fixed sleep
-    await page.waitForFunction(
-      (id) => !document.querySelector(`[data-testid="${id}"]`),
-      'scenario-22-target',
-      { timeout: 5000, polling: 100 }
-    )
+    // Wait for animation to complete (spring animations can be slow)
+    await page.waitForTimeout(2500)
 
     // Element should be gone after exit animation completes
     expect(await elementExists(page, 'scenario-22-target'), 'Hidden after exit').toBe(
@@ -325,19 +270,7 @@ test.describe('Animation Behavior', () => {
     expect(await getTranslateX(page, 'scenario-25-target'), 'Start').toBeCloseTo(START, 0)
 
     await page.getByTestId('scenario-25-trigger').click()
-    await page.waitForFunction(
-      ({ id, target }) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        const transform = getComputedStyle(el).transform
-        if (transform === 'none') return false
-        const match = transform.match(/matrix\([^,]+,[^,]+,[^,]+,[^,]+,([^,]+),/)
-        const tx = match ? Number.parseFloat(match[1]) : 0
-        return Math.abs(tx - target) < 5
-      },
-      { id: 'scenario-25-target', target: FINAL },
-      { timeout: 5000, polling: 100 }
-    )
+    await page.waitForTimeout(3000)
 
     expect(await getTranslateX(page, 'scenario-25-target'), 'End').toBeCloseTo(FINAL, 0)
   })
@@ -347,20 +280,7 @@ test.describe('Animation Behavior', () => {
       SCALE_END = 1.2
 
     await page.getByTestId('scenario-34-trigger').click()
-    await page.waitForFunction(
-      ({ id, oTarget, sTarget }) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        const s = getComputedStyle(el)
-        const opacity = Number.parseFloat(s.opacity)
-        const transform = s.transform
-        const match = transform.match(/matrix\(([^,]+),/)
-        const scale = match ? Number.parseFloat(match[1]) : 1
-        return Math.abs(opacity - oTarget) < 0.15 && Math.abs(scale - sTarget) < 0.15
-      },
-      { id: 'scenario-34-target', oTarget: OPACITY_END, sTarget: SCALE_END },
-      { timeout: 6000, polling: 100 }
-    )
+    await page.waitForTimeout(4000)
 
     const endOpacity = await getOpacity(page, 'scenario-34-target')
     const endScale = await getScale(page, 'scenario-34-target')
@@ -381,8 +301,8 @@ test.describe('Animation Behavior', () => {
     // Click to show element
     await page.getByTestId('scenario-37-trigger').click()
 
-    // poll for the element to appear
-    await page.waitForSelector('[data-testid="scenario-37-target"]', { timeout: 5000 })
+    // Wait a moment for the element to appear and start animating
+    await page.waitForTimeout(100)
 
     // Element should exist now
     expect(
@@ -403,21 +323,8 @@ test.describe('Animation Behavior', () => {
       })
     }
 
-    // poll for animation to reach end state
-    await page.waitForFunction(
-      (id) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        const s = getComputedStyle(el)
-        const opacity = Number.parseFloat(s.opacity)
-        const transform = s.transform
-        const match = transform.match(/matrix\(([^,]+),/)
-        const scaleX = match ? Number.parseFloat(match[1]) : 1
-        return opacity > 0.85 && Math.abs(scaleX - 1) < 0.15
-      },
-      'scenario-37-target',
-      { timeout: 5000, polling: 100 }
-    )
+    // Wait for animation to complete (lazy animation takes a while)
+    await page.waitForTimeout(2000)
 
     const endScaleX = await getScaleX()
     const endOpacity = await getOpacity(page, 'scenario-37-target')
@@ -446,20 +353,7 @@ test.describe('Animation Behavior', () => {
 
     // trigger animation
     await page.getByTestId('scenario-38-trigger').click()
-    await page.waitForFunction(
-      ({ id, oTarget, sTarget }) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        const s = getComputedStyle(el)
-        const opacity = Number.parseFloat(s.opacity)
-        const transform = s.transform
-        const match = transform.match(/matrix\(([^,]+),/)
-        const scale = match ? Number.parseFloat(match[1]) : 1
-        return Math.abs(opacity - oTarget) < 0.15 && Math.abs(scale - sTarget) < 0.15
-      },
-      { id: 'scenario-38-target', oTarget: OPACITY_END, sTarget: SCALE_END },
-      { timeout: 5000, polling: 100 }
-    )
+    await page.waitForTimeout(1500)
 
     // both should reach end state - the key test is that scale animates
     // even though it wasn't listed in the per-property config
@@ -481,20 +375,7 @@ test.describe('Animation Behavior', () => {
     expect(initialScale, 'Initial scale').toBeCloseTo(1, 1)
 
     await page.getByTestId('scenario-39-trigger').click()
-    await page.waitForFunction(
-      ({ id, oTarget, sTarget }) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        const s = getComputedStyle(el)
-        const opacity = Number.parseFloat(s.opacity)
-        const transform = s.transform
-        const match = transform.match(/matrix\(([^,]+),/)
-        const scale = match ? Number.parseFloat(match[1]) : 1
-        return Math.abs(opacity - oTarget) < 0.15 && Math.abs(scale - sTarget) < 0.15
-      },
-      { id: 'scenario-39-target', oTarget: OPACITY_END, sTarget: SCALE_END },
-      { timeout: 5000, polling: 100 }
-    )
+    await page.waitForTimeout(2500)
 
     const endOpacity = await getOpacity(page, 'scenario-39-target')
     const endScale = await getScale(page, 'scenario-39-target')
@@ -528,16 +409,8 @@ test.describe('Animation Behavior', () => {
     const immediateScale = await getScale(page, 'scenario-40-target')
     expect(immediateScale, 'Scale should snap immediately').toBeCloseTo(SCALE_END, 1)
 
-    // poll for opacity animation to complete
-    await page.waitForFunction(
-      ({ id, target }) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        return Math.abs(Number.parseFloat(getComputedStyle(el).opacity) - target) < 0.15
-      },
-      { id: 'scenario-40-target', target: OPACITY_END },
-      { timeout: 3000, polling: 50 }
-    )
+    // wait for opacity animation to complete (500ms animation + buffer)
+    await page.waitForTimeout(800)
     const endOpacity = await getOpacity(page, 'scenario-40-target')
     expect(endOpacity, 'Opacity should animate to end').toBeCloseTo(OPACITY_END, 1)
   })
@@ -564,21 +437,8 @@ test.describe('Animation Behavior', () => {
       0
     )
 
-    // poll for delay + animations to complete
-    await page.waitForFunction(
-      ({ id, oTarget, sTarget }) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        const s = getComputedStyle(el)
-        const opacity = Number.parseFloat(s.opacity)
-        const transform = s.transform
-        const match = transform.match(/matrix\(([^,]+),/)
-        const scale = match ? Number.parseFloat(match[1]) : 1
-        return Math.abs(opacity - oTarget) < 0.15 && Math.abs(scale - sTarget) < 0.15
-      },
-      { id: 'scenario-41-target', oTarget: OPACITY_END, sTarget: SCALE_END },
-      { timeout: 5000, polling: 100 }
-    )
+    // wait for delay + animations to complete (300ms delay + 500ms opacity + buffer)
+    await page.waitForTimeout(1000)
 
     const endOpacity = await getOpacity(page, 'scenario-41-target')
     const endScale = await getScale(page, 'scenario-41-target')
@@ -596,6 +456,7 @@ test.describe('Animation Behavior', () => {
 
     // scroll to the element first
     await page.getByTestId('scenario-48-trigger').scrollIntoViewIfNeeded()
+    await page.waitForTimeout(200)
 
     // element should be visible initially
     expect(await elementExists(page, 'scenario-48-target'), 'Initially visible').toBe(
@@ -623,12 +484,8 @@ test.describe('Animation Behavior', () => {
       ).toBe(true)
     }
 
-    // poll for element removal
-    await page.waitForFunction(
-      (id) => !document.querySelector(`[data-testid="${id}"]`),
-      'scenario-48-target',
-      { timeout: 5000, polling: 100 }
-    )
+    // wait for animation to complete
+    await page.waitForTimeout(800)
 
     // element should be gone after exit animation completes
     expect(await elementExists(page, 'scenario-48-target'), 'Hidden after exit').toBe(
@@ -650,16 +507,8 @@ test.describe('Animation Behavior', () => {
       true
     )
 
-    // poll for enter animation to complete
-    await page.waitForFunction(
-      (id) => {
-        const el = document.querySelector(`[data-testid="${id}"]`)
-        if (!el) return false
-        return Number.parseFloat(getComputedStyle(el).opacity) > 0.85
-      },
-      'scenario-49-target',
-      { timeout: 5000, polling: 100 }
-    )
+    // wait for enter animation to complete if it's still running
+    await page.waitForTimeout(800)
 
     // should be at final state (opacity: 1, scale: 1)
     expect(
@@ -683,12 +532,8 @@ test.describe('Animation Behavior', () => {
       ).toBe(true)
     }
 
-    // poll for element removal
-    await page.waitForFunction(
-      (id) => !document.querySelector(`[data-testid="${id}"]`),
-      'scenario-49-target',
-      { timeout: 5000, polling: 100 }
-    )
+    // wait for animation to complete
+    await page.waitForTimeout(800)
 
     // element should be gone after exit animation completes
     expect(await elementExists(page, 'scenario-49-target'), 'Hidden after exit').toBe(
