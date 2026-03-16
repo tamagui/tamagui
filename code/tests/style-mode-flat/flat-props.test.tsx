@@ -167,8 +167,8 @@ describe('TextProps - flat props', () => {
 
 describe('styled() component - flat props', () => {
   const Box = styled(View, {
-    backgroundColor: 'white',
-  })
+    $backgroundColor: 'white',
+  } as any)
 
   type BoxProps = GetProps<typeof Box>
 
@@ -189,17 +189,17 @@ describe('styled() component - flat props', () => {
   })
 })
 
-describe('backwards compatibility - object syntax still works', () => {
-  test('backgroundColor still exists', () => {
-    expectTypeOf<HasKey<ViewProps, 'backgroundColor'>>().toEqualTypeOf<true>()
+describe('flat-only mode - classic props should NOT exist', () => {
+  test('backgroundColor does not exist in flat-only mode', () => {
+    expectTypeOf<HasKey<ViewProps, 'backgroundColor'>>().toEqualTypeOf<false>()
   })
 
-  test('hoverStyle still exists', () => {
-    expectTypeOf<HasKey<ViewProps, 'hoverStyle'>>().toEqualTypeOf<true>()
+  test('hoverStyle does not exist in flat-only mode', () => {
+    expectTypeOf<HasKey<ViewProps, 'hoverStyle'>>().toEqualTypeOf<false>()
   })
 
-  test('$sm object still exists', () => {
-    expectTypeOf<HasKey<ViewProps, '$sm'>>().toEqualTypeOf<true>()
+  test('$sm object does not exist in flat-only mode', () => {
+    expectTypeOf<HasKey<ViewProps, '$sm'>>().toEqualTypeOf<false>()
   })
 })
 

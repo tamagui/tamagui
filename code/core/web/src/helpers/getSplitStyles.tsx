@@ -77,8 +77,9 @@ export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
-// always get fresh config to support runtime config changes (like flat mode)
-const getConf = () => getConfig()
+// note: we intentionally don't cache conf at module level here
+// because createTamagui may be called multiple times (HMR, tests)
+// and getConfig() already has its own caching
 
 // WeakMap to track original token values for style objects
 // Used to preserve '$8' style tokens instead of resolved 'var(--t-space-8)'
@@ -736,7 +737,7 @@ export const getSplitStyles: StyleSplitter = (
   debug,
   animationDriver
 ) => {
-  conf = conf || getConfig()
+  const conf = getConfig()
   // use passed animationDriver or fall back to context/config
   const driver =
     animationDriver ||
