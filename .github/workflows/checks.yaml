@@ -50,11 +50,21 @@ jobs:
       - name: Install
         uses: ./.github/actions/install
 
+      - name: Get Playwright version
+        id: pw-version
+        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
+
       - name: Install playwright
         run: bunx playwright install
 
       - name: Run unit tests
-        run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=1
+        run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=2
 
   changes:
     runs-on: ubuntu-latest
@@ -92,6 +102,16 @@ jobs:
 
       - name: Install
         uses: ./.github/actions/install
+
+      - name: Get Playwright version
+        id: pw-version
+        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
 
       - name: Install playwright
         run: bunx playwright install --with-deps
