@@ -50,9 +50,7 @@ export function DOMNodeAPIs() {
       r['childA-nextSibling-exists'] = String(!!childA.nextSibling)
       r['childB-previousSibling-exists'] = String(!!childB.previousSibling)
       r['childA-nextElementSibling-exists'] = String(!!childA.nextElementSibling)
-      r['childB-previousElementSibling-exists'] = String(
-        !!childB.previousElementSibling
-      )
+      r['childB-previousElementSibling-exists'] = String(!!childB.previousElementSibling)
 
       // getBoundingClientRect
       const rect = parent.getBoundingClientRect()
@@ -119,9 +117,23 @@ export function DOMNodeAPIs() {
   return (
     <YStack padding="$4" gap="$2">
       <View ref={parentRef} id="dom-node-parent" gap="$2">
-        <View ref={childARef} id="dom-node-childA" width={100} height={50} backgroundColor="$blue5" />
-        <View ref={childBRef} id="dom-node-childB" width={100} height={50} backgroundColor="$red5" />
-        <Text ref={textRef} id="dom-node-text">hello dom</Text>
+        <View
+          ref={childARef}
+          id="dom-node-childA"
+          width={100}
+          height={50}
+          backgroundColor="$blue5"
+        />
+        <View
+          ref={childBRef}
+          id="dom-node-childB"
+          width={100}
+          height={50}
+          backgroundColor="$red5"
+        />
+        <Text ref={textRef} id="dom-node-text">
+          hello dom
+        </Text>
         <ScrollView ref={scrollRef} id="dom-node-scroll" height={60}>
           <View height={200} />
         </ScrollView>

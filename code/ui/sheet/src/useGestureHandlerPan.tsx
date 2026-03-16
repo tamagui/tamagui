@@ -256,9 +256,8 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
           // when swiping down at top after scroll was engaged: lock at current scroll position
           //   (handoff from scroll to pan — preserve scroll offset)
           // otherwise: always lock scroll to 0 (prevents scroll from firing during sheet drag)
-          const lockTo = isCurrentlyAtTop && isSwipingDown && gs.scrollEngaged
-            ? undefined
-            : 0
+          const lockTo =
+            isCurrentlyAtTop && isSwipingDown && gs.scrollEngaged ? undefined : 0
           scrollBridge.setScrollEnabled?.(false, lockTo)
 
           // accumulate the delta for position calculation
