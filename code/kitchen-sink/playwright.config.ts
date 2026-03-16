@@ -55,10 +55,11 @@ export default defineConfig({
   ],
 
   // Run your local dev server before starting the tests.
+  // When run-tests-parallel.ts manages the server, REUSE_SERVER is set to skip launching another.
   webServer: {
     command: `PORT=${port} bun run start:web`,
     url: `http://localhost:${port}`,
-    reuseExistingServer: false,
+    reuseExistingServer: !!process.env.REUSE_SERVER,
     timeout: 120_000, // give webpack more time to start
   },
 
