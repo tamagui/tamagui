@@ -55,7 +55,9 @@ jobs:
           fetch-depth: 1
 
       - name: Set Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.3.app
+        # Xcode 26 (Swift 6.2) is required for expo-modules-core 55.x which uses
+        # conformance isolation syntax (@MainActor in protocol inheritance clause, SE-0434)
+        run: sudo xcode-select -s /Applications/Xcode_26.0.1.app
 
       - name: Get Built App Path
         id: get-built-app-path
