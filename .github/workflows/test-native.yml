@@ -122,7 +122,8 @@ jobs:
         timeout-minutes: 5
         run: |
           echo "Waiting for simulator $SIM_DEVICE_ID to boot..."
-          timeout 300 xcrun simctl bootstatus "$SIM_DEVICE_ID" -b || {
+          # macOS doesn't have `timeout` — use perl one-liner as fallback
+          perl -e 'alarm 300; exec @ARGV' xcrun simctl bootstatus "$SIM_DEVICE_ID" -b || {
             if xcrun simctl list devices booted | grep -q "Booted"; then
               echo "Simulator appears booted despite timeout"
             else
