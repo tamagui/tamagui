@@ -132,8 +132,8 @@ export function startMetro(): MetroProcess {
     console.info('Dev client detected')
   }
   if (isCI) {
-    args.push('--no-dev', '--clear')
-    console.info('CI detected: using production bundle, clearing Metro cache')
+    args.push('--clear')
+    console.info('CI detected: clearing Metro cache')
   }
 
   const proc = Bun.spawn(args, {

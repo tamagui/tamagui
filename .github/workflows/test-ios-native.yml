@@ -108,7 +108,7 @@ jobs:
       - name: Start Metro Bundler
         if: env.SKIP_MAESTRO_TESTS != 'true'
         run: |
-          EXPO_NO_TELEMETRY=true TAMAGUI_PACKAGE_EXPORTS=${{ matrix.package-exports }} bunx expo start --dev-client --no-dev --offline &
+          EXPO_NO_TELEMETRY=true TAMAGUI_PACKAGE_EXPORTS=${{ matrix.package-exports }} bunx expo start --dev-client --offline &
           # Wait for Metro to be ready
           echo "Waiting for Metro to start..."
           for i in {1..30}; do
