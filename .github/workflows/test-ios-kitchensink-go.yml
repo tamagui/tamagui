@@ -35,7 +35,7 @@ jobs:
 
       - name: Install Maestro
         env:
-          MAESTRO_VERSION: cli-2.0.10
+          MAESTRO_VERSION: cli-2.3.0
         run: |
           curl -fsSL "https://github.com/mobile-dev-inc/maestro/releases/download/${MAESTRO_VERSION}/maestro.zip" -o maestro.zip
           unzip -q maestro.zip

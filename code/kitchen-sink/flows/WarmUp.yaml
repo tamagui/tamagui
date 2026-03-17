@@ -2,24 +2,23 @@ appId: com.tamagui.tamaguikitchensink
 tag:
   - util
 ---
-- launchApp
+# cold start with clearState to prime Hermes bytecode cache
+# subsequent test launches skip clearState so bytecode cache persists = fast restarts
+- launchApp:
+    clearState: true
 
-# Dismiss any system dialogs (Apple Account Verification, etc.)
 - tapOn:
     text: 'Not Now'
     optional: true
 
-# if on dev builds - tap the dev server URL
 - tapOn:
     text: http://.*
     optional: true
 
-# Wait for app to load (60s timeout for CI where bundle download can be slow)
 - extendedWaitUntil:
     visible: 'Kitchen Sink'
     timeout: 60000
 
-# dismiss expo's first time bottom sheet if present
 - tapOn:
     text: 'Home'
     optional: true
