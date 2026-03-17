@@ -15,10 +15,13 @@ export function TamaguiProvider({
   disableInjectCSS,
   config,
   className,
-  defaultTheme,
+  defaultTheme: defaultThemeProp,
   reset,
   insets,
 }: TamaguiProviderProps) {
+  // fall back to first theme when defaultTheme is null/undefined
+  // (e.g. useColorScheme() returns null on first render in RN 0.83+)
+  const defaultTheme = defaultThemeProp || (config ? Object.keys(config.themes)[0] : 'light')
   useIsomorphicLayoutEffect(() => {
     stopAccumulatingRules()
     updateMediaListeners()

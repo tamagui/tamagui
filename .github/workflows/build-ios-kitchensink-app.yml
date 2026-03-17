@@ -256,6 +256,7 @@ jobs:
             -derivedDataPath build \
             OTHER_SWIFT_FLAGS='$(inherited) -enable-upcoming-feature IsolatedConformances' \
             SWIFT_STRICT_CONCURRENCY=minimal \
+            RCT_REMOVE_LEGACY_ARCH=1 \
             | tee xcodebuild.log | xcpretty
 
       - name: Upload Built App to Cache
