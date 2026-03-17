@@ -106,7 +106,19 @@ export const createMediaStyle = (
       // add back in the { we used to split
       styleRule = styleInner.replace(selector, nextSelector)
     } else {
-      styleRule = `${specificities[specificity]}${styleInner}`
+      const specificityPrefix = specificities[specificity]
+      if (specificityPrefix && styleInner.startsWith('@media')) {
+        // When styleInner is wrapped in @media (e.g. @media (hover) {...}),
+        // we need to inject the specificity prefix inside the @media block,
+        // not before it, as `:root@media ...` is invalid CSS
+        const openBrace = styleInner.indexOf('{')
+        styleRule =
+          styleInner.slice(0, openBrace + 1) +
+          specificityPrefix +
+          styleInner.slice(openBrace + 1)
+      } else {
+        styleRule = `${specificityPrefix}${styleInner}`
+      }
     }
   }
 
