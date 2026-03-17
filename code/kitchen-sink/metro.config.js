@@ -18,17 +18,6 @@ config.resolver.blockList = [
   /code\/.*\/\.maestro\//,
 ]
 
-// in CI, disable HMR to avoid "Cannot read property 'protocol' of undefined"
-// crash in metro-runtime's hmr.ts (window.location is undefined in RN)
-if (process.env.CI) {
-  config.server = {
-    ...config.server,
-    rewriteRequestUrl: (url) => {
-      return url.replace(/([?&])hot=true/g, '$1hot=false')
-    },
-  }
-}
-
 // 1. Watch all files within the monorepo
 config.watchFolders = [monorepoRoot]
 // 2. Let Metro know where to resolve packages and in what order
