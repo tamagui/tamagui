@@ -1010,7 +1010,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 - All templates (v1 Takeout, v2 Takeout, Takeout Static)
               </Paragraph>
               <Paragraph size="$2" color="$color9">
-                - Bento pro components
+                - Bento pro components + source repo
               </Paragraph>
               <Paragraph size="$2" color="$color9">
                 - Opus-powered AI /theme generation

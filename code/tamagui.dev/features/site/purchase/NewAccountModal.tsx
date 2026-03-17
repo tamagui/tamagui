@@ -2426,7 +2426,7 @@ const BentoCard = ({
   return (
     <ServiceCard
       title="Bento"
-      description="Download the entire suite of Bento components."
+      description="Download Bento components or browse the source repo."
       actionLabel={hasAccess ? 'Download' : 'Purchase'}
       onAction={
         hasAccess
