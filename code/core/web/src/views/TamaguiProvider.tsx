@@ -17,7 +17,7 @@ let _cachedConfig: any
 function firstThemeKey(config: any): string | undefined {
   if (config !== _cachedConfig) {
     _cachedConfig = config
-    _cachedFirstKey = config ? Object.keys(config.themes)[0] : undefined
+    _cachedFirstKey = config?.themes ? Object.keys(config.themes)[0] : undefined
   }
   return _cachedFirstKey
 }

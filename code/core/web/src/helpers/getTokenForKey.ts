@@ -47,10 +47,14 @@ export const getTokenForKey = (
   if (key in colorKeys) {
     const slashIdx = value.indexOf('/')
     if (slashIdx > 0) {
-      const num = Number(value.slice(slashIdx + 1))
-      if (!Number.isNaN(num)) {
-        opacityModifier = num / 100
-        value = value.slice(0, slashIdx)
+      const raw = value.slice(slashIdx + 1)
+      // reject empty string after slash ($color/) to avoid Number("") === 0
+      if (raw.length > 0) {
+        const num = Number(raw)
+        if (!Number.isNaN(num)) {
+          opacityModifier = Math.max(0, Math.min(1, num / 100))
+          value = value.slice(0, slashIdx)
+        }
       }
     }
   }

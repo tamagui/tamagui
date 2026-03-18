@@ -67,7 +67,9 @@ module.exports = function withExpoModulesCoreSwift6(config) {
         )
       }
 
-      fs.writeFileSync(podfilePath, updated)
+      if (updated !== podfile) {
+        fs.writeFileSync(podfilePath, updated)
+      }
       return config
     },
   ])
