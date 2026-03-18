@@ -23,7 +23,7 @@
     "expo": "~55.0.6",
     "expo-font": "~55.0.4",
     "react": ">=19",
-    "react-native": "0.83.2",
+    "react-native": "0.81.5",
     "tamagui": "workspace:*"
   }
 }
