@@ -36,10 +36,15 @@ describe('PressStyleNative (no RNGH)', () => {
   })
 
   beforeEach(async () => {
-    // reload but keep the launch args
-    await device.reloadReactNative()
-    // wait for app to stabilize after reload
-    await new Promise((resolve) => setTimeout(resolve, 800))
+    // use launchApp instead of reloadReactNative — on RN 0.83, reloadReactNative
+    // doesn't work reliably when RNGH is disabled (JS run loop stays busy)
+    await device.launchApp({
+      newInstance: true,
+      launchArgs: { disableGestureHandler: true },
+    })
+    await device.disableSynchronization()
+    // wait for app to stabilize after launch
+    await new Promise((resolve) => setTimeout(resolve, 1500))
     await navigateToPressStyleNative()
   })
 

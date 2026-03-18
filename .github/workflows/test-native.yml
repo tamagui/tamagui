@@ -133,6 +133,12 @@ jobs:
           }
           sleep 5
 
+      - name: Set Simulator to Light Mode
+        if: env.SKIP_IOS_TESTS != 'true'
+        working-directory: ${{ github.workspace }}
+        run: |
+          xcrun simctl ui booted appearance light
+
       - name: Install App on Simulator
         if: env.SKIP_IOS_TESTS != 'true'
         working-directory: ${{ github.workspace }}
