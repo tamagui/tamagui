@@ -1,17 +1,16 @@
 #!/usr/bin/env node
 // inspired by https://github.com/vercel/next.js/blob/0355e5f63f87db489f36db8d814958cb4c2b828b/packages/create-next-app/helpers/examples.ts#L71
 
-import { execSync } from 'node:child_process'
-import fs from 'node:fs'
-import path from 'node:path'
-import { cwd } from 'node:process'
 import chalk from 'chalk'
 import Commander from 'commander'
 import { detect } from 'detect-package-manager'
 import { existsSync, readFileSync, writeFileSync } from 'fs-extra'
+import { execSync } from 'node:child_process'
+import fs from 'node:fs'
+import path from 'node:path'
+import { cwd } from 'node:process'
 import open from 'opener'
 import prompts from 'prompts'
-import { $, cd } from 'zx'
 import packageJson from '../package.json'
 import { IS_TEST } from './create-tamagui-constants'
 import { tamaguiDuckAsciiArt, tamaguiRainbowAsciiArt } from './helpers/asciiArts'
@@ -159,7 +158,7 @@ ${chalk.bold(chalk.red(`Please pick a different project name 🥸`))}`
 
     try {
       await cloneStarter(template, resolvedProjectPath, projectName)
-      cd(resolvedProjectPath)
+      process.chdir(resolvedProjectPath)
       // space
       console.info()
     } catch (e) {
