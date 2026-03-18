@@ -39,6 +39,14 @@ module.exports = function withExpoModulesCoreSwift6(config) {
           end
         end
       end
+      # workaround: ContextMenuAuxiliaryPreview uses deprecated transform: .default
+      # which is an error in Xcode 26 / Swift 6.2 strict mode.
+      if target.name == 'ContextMenuAuxiliaryPreview'
+        target.build_configurations.each do |build_config|
+          build_config.build_settings['SWIFT_TREAT_WARNINGS_AS_ERRORS'] = 'NO'
+          build_config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'NO'
+        end
+      end
     end
 `
       // insert before the closing `end` of post_install block

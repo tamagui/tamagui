@@ -10,6 +10,18 @@ import type { AnimationDriver, TamaguiProviderProps } from '../types'
 import { TamaguiRoot } from './TamaguiRoot'
 import { ThemeProvider } from './ThemeProvider'
 
+// cache first theme key per config to avoid Object.keys allocation on every render
+let _cachedFirstKey: string | undefined
+let _cachedConfig: any
+
+function firstThemeKey(config: any): string | undefined {
+  if (config !== _cachedConfig) {
+    _cachedConfig = config
+    _cachedFirstKey = config ? Object.keys(config.themes)[0] : undefined
+  }
+  return _cachedFirstKey
+}
+
 export function TamaguiProvider({
   children,
   disableInjectCSS,
@@ -21,7 +33,7 @@ export function TamaguiProvider({
 }: TamaguiProviderProps) {
   // fall back to first theme when defaultTheme is null/undefined
   // (e.g. useColorScheme() returns null on first render in RN 0.83+)
-  const defaultTheme = defaultThemeProp || (config ? Object.keys(config.themes)[0] : 'light')
+  const defaultTheme = defaultThemeProp || firstThemeKey(config) || 'light'
   useIsomorphicLayoutEffect(() => {
     stopAccumulatingRules()
     updateMediaListeners()

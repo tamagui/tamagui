@@ -16,6 +16,7 @@ const fontShorthand = {
 }
 
 let didLogMissingToken = false
+const colorKeys = tokenCategories.color
 
 // mutable state for font family tracking across propMapper
 let _lastFontFamilyToken: any = null
@@ -43,7 +44,7 @@ export const getTokenForKey = (
   // parse opacity modifier: $token/50 → base token + 50% opacity
   // only for color-related style properties
   let opacityModifier: number | undefined
-  if (key in (tokenCategories.color || {})) {
+  if (key in colorKeys) {
     const slashIdx = value.indexOf('/')
     if (slashIdx > 0) {
       const num = Number(value.slice(slashIdx + 1))
