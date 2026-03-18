@@ -117,16 +117,13 @@ describe('SelectRemount', () => {
       // Select an option to close the Select instead of pressing back
       await element(by.id('select-remount-test-option-apple')).tap()
 
-      // Wait for sheet to close - give spring animation time to settle
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      // Test second Select - wait for it to be visible after first sheet closes
+      // wait for first sheet to fully close before interacting with second select
       await waitFor(element(by.id('select-remount-test-2-trigger')))
         .toBeVisible()
-        .withTimeout(8000)
+        .withTimeout(15000)
 
-      // Small delay to ensure element is interactive
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      // ensure element is interactive after sheet animation settles
+      await new Promise((resolve) => setTimeout(resolve, 1000))
 
       await element(by.id('select-remount-test-2-trigger')).tap()
       await waitFor(element(by.id('select-remount-test-2-option-apple')))
