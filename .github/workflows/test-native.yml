@@ -178,7 +178,7 @@ jobs:
   build-android:
     name: Build Android App
     # Only run on main/v* branches (not PRs)
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v')
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v') || github.ref == 'refs/heads/rn82'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     outputs:
@@ -445,7 +445,7 @@ jobs:
     name: Android Detox Tests
     needs: build-android
     # Only run on main/v* branches (not PRs)
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v')
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v') || github.ref == 'refs/heads/rn82'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     # Android emulator in CI is flaky with window focus issues - don't block on failures
