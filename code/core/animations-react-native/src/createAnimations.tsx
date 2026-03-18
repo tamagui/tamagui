@@ -1,4 +1,4 @@
-import { normalizeTransition, getEffectiveAnimation } from '@tamagui/animation-helpers'
+import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
@@ -171,6 +171,7 @@ export function createAnimations<A extends AnimationsConfig>(
     isReactNative: true,
     inputStyle: 'value',
     outputStyle: 'inline',
+    avoidReRenders: true,
     animations,
     needsCustomComponent: true,
     View: AnimatedView,
@@ -180,7 +181,14 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumberStyle,
     usePresence,
     ResetPresence,
-    useAnimations: ({ props, onDidAnimate, style, componentState, presence }) => {
+    useAnimations: ({
+      props,
+      onDidAnimate,
+      style,
+      componentState,
+      presence,
+      useStyleEmitter,
+    }) => {
       const isDisabled = isWeb && componentState.unmounted === true
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
@@ -469,6 +477,94 @@ export function createAnimations<A extends AnimationsConfig>(
           cancel = true
         }
       }, args)
+
+      // avoidReRenders: receive style changes imperatively from tamagui
+      // and update Animated.Values directly without React re-renders
+      // reuses the same update() + runner pattern as the useMemo path
+      useStyleEmitter?.((nextStyle) => {
+        for (const key in nextStyle) {
+          const rawVal = nextStyle[key]
+          const val = resolveDynamicValue(rawVal, isDark)
+          if (val === undefined) continue
+
+          if (key === 'transform' && Array.isArray(val)) {
+            for (const [index, transform] of val.entries()) {
+              if (!transform) continue
+              const tkey = Object.keys(transform)[0]
+              const currentTransform = animatedTranforms.current[index]?.[tkey]
+              animatedTranforms.current[index] = {
+                [tkey]: update(tkey, currentTransform, transform[tkey]),
+              }
+            }
+          } else if (animatedStyleKey[key] != null || costlyToAnimateStyleKey[key]) {
+            animateStyles.current[key] = update(key, animateStyles.current[key], val)
+          }
+        }
+
+        // run the queued animations immediately
+        res.runners.forEach((r) => r())
+
+        function update(
+          key: string,
+          animated: Animated.Value | undefined,
+          valIn: string | number
+        ) {
+          const isColor = colorStyleKey[key]
+          const [numVal, type] = isColor ? [0, undefined] : getValue(valIn)
+          let animateToValue = numVal
+          const value = animated || new Animated.Value(numVal)
+          const curInterpolation = animationsState.current.get(value)
+
+          if (type) {
+            animationsState.current.set(value, {
+              interpolation: value.interpolate(
+                getInterpolated(
+                  curInterpolation?.current ?? value['_value'],
+                  numVal,
+                  type
+                )
+              ),
+              current: numVal,
+            })
+          }
+
+          if (isColor) {
+            animateToValue = curInterpolation?.animateToValue ? 0 : 1
+            animationsState.current.set(value, {
+              current: valIn,
+              interpolation: value.interpolate(
+                getColorInterpolated(
+                  curInterpolation?.current as string,
+                  valIn as string,
+                  animateToValue
+                )
+              ),
+              animateToValue: curInterpolation?.animateToValue ? 0 : 1,
+            })
+          }
+
+          const animationConfig = getAnimationConfig(
+            key,
+            animations,
+            props.transition,
+            'default'
+          )
+          res.runners.push(() => {
+            value.stopAnimation()
+            const anim = Animated[animationConfig.type || 'spring'](value, {
+              toValue: animateToValue,
+              useNativeDriver: !isWeb,
+              ...animationConfig,
+            })
+            ;(animationConfig.delay
+              ? Animated.sequence([Animated.delay(animationConfig.delay), anim])
+              : anim
+            ).start()
+          })
+
+          return value
+        }
+      })
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {
