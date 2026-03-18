@@ -244,17 +244,6 @@ export function createAnimations<A extends AnimationsConfig>(
         hasTransitionOnly,
       ]
 
-      // check if there is any style that is not supported by native driver
-      const isThereNoNativeStyleKeys = React.useMemo(() => {
-        if (isWeb) return true
-        return Object.keys(style).some((key) => {
-          if (animateOnly) {
-            return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
-          }
-          return !animatedStyleKey[key]
-        })
-      }, args)
-
       const res = React.useMemo(() => {
         const runners: Function[] = []
         const completions: Promise<void>[] = []
@@ -400,7 +389,7 @@ export function createAnimations<A extends AnimationsConfig>(
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
                   toValue: animateToValue,
-                  useNativeDriver: !isWeb && !isThereNoNativeStyleKeys,
+                  useNativeDriver: !isWeb,
                   ...animationConfig,
                 })
               }
