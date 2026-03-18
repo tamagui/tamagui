@@ -68,9 +68,7 @@ async function getLastReleaseRef(): Promise<string | null> {
   } catch {}
 
   try {
-    const { stdout } = await exec(
-      `git log --grep='^canary' --format='%H %ct' -1`
-    )
+    const { stdout } = await exec(`git log --grep='^canary' --format='%H %ct' -1`)
     const [hash, dateStr] = stdout.trim().split(' ')
     if (hash) {
       canaryRef = { ref: hash, date: Number(dateStr) }
