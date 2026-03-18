@@ -26,7 +26,12 @@ import {
 } from './deps'
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
-import { ensureIOSFolder, ensureIOSApp, ensureBootedSimulator } from './ios'
+import {
+  ensureIOSFolder,
+  ensureIOSApp,
+  ensureBootedSimulator,
+  getBootedSimulatorUDID,
+} from './ios'
 import { setupAndroidDevice, ensureAndroidFolder } from './android'
 import type { Platform } from './constants'
 
@@ -263,8 +268,11 @@ try {
           const { $ } = await import('bun')
           // Flows are at ./flows/ in kitchen-sink, not .maestro/flows/
           const flowArg = flow ? `./flows/${flow}` : './flows'
+          // pass --udid to bypass maestro's broken devicectl auto-detection (xcode 26+)
+          const udid = getBootedSimulatorUDID()
+          const udidArgs = udid ? ['--udid', udid] : []
           const result =
-            await $`maestro test ${flowArg} --exclude-tags=util --no-ansi`.nothrow()
+            await $`maestro test ${flowArg} --exclude-tags=util --no-ansi ${udidArgs}`.nothrow()
           return result.exitCode
         })
         process.exit(exitCode)

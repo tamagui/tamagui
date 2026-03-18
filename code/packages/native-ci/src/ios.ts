@@ -14,15 +14,22 @@ import { generateFingerprint } from './fingerprint'
  * Returns true if at least one simulator is booted.
  */
 export function hasBootedSimulator(): boolean {
+  return !!getBootedSimulatorUDID()
+}
+
+/**
+ * Get the UDID of the first booted iOS simulator, or null if none.
+ */
+export function getBootedSimulatorUDID(): string | null {
   try {
     const output = execSync('xcrun simctl list devices booted', {
       encoding: 'utf-8',
       stdio: ['pipe', 'pipe', 'pipe'],
     })
-    // look for a line with a device UUID (booted devices show as "iPhone ... (UUID) (Booted)")
-    return /\([A-F0-9-]{36}\)/i.test(output)
+    const match = output.match(/\(([A-F0-9-]{36})\)/i)
+    return match ? match[1] : null
   } catch {
-    return false
+    return null
   }
 }
 
