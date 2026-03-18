@@ -265,18 +265,19 @@ try {
 
         process.chdir(options.projectRoot)
 
-        // ensure the app is built and installed on the simulator
+        // resolve the target simulator UDID once and use it consistently
+        const udid = getBootedSimulatorUDID()!
+
+        // ensure the app is built and installed on the target simulator
         const bundleId = getMaestroBundleId(options.projectRoot)
-        await ensureAppInstalled({ projectRoot: options.projectRoot, bundleId })
+        await ensureAppInstalled({ projectRoot: options.projectRoot, bundleId, udid })
 
         // Run Maestro with Metro for development builds
         const exitCode = await withMetro('ios', async () => {
           const { $ } = await import('bun')
           // Flows are at ./flows/ in kitchen-sink, not .maestro/flows/
           const flowArg = flow ? `./flows/${flow}` : './flows'
-          // pass --udid to bypass maestro's broken devicectl auto-detection (xcode 26+)
-          const udid = getBootedSimulatorUDID()
-          const udidArgs = udid ? ['--udid', udid] : []
+          const udidArgs = ['--udid', udid]
           const debugDir = `${options.projectRoot}/.maestro-debug`
           const result =
             await $`maestro test ${flowArg} --exclude-tags=util --no-ansi --debug-output=${debugDir} ${udidArgs}`.nothrow()

@@ -64,9 +64,9 @@ export function ensureBootedSimulator(): void {
 /**
  * Check if an app is installed on the booted simulator.
  */
-function isAppInstalled(bundleId: string): boolean {
+function isAppInstalled(bundleId: string, udid: string): boolean {
   try {
-    execSync(`xcrun simctl get_app_container booted "${bundleId}"`, {
+    execSync(`xcrun simctl get_app_container "${udid}" "${bundleId}"`, {
       stdio: ['pipe', 'pipe', 'pipe'],
     })
     return true
@@ -76,24 +76,26 @@ function isAppInstalled(bundleId: string): boolean {
 }
 
 /**
- * Ensure the app is installed on the booted simulator.
+ * Ensure the app is installed on a specific simulator.
  * For dev client apps, builds if needed then installs.
  * For Expo Go apps, ensures Expo Go is present.
  */
 export async function ensureAppInstalled(opts: {
   projectRoot: string
   bundleId: string
+  udid?: string
 }): Promise<void> {
   const { projectRoot, bundleId } = opts
+  const udid = opts.udid || getBootedSimulatorUDID() || 'booted'
 
   // check if app is already installed
-  if (isAppInstalled(bundleId)) {
-    console.info(`App ${bundleId} already installed on simulator`)
+  if (isAppInstalled(bundleId, udid)) {
+    console.info(`App ${bundleId} already installed on simulator ${udid}`)
     return
   }
 
   if (bundleId === 'host.exp.Exponent') {
-    await installExpoGo()
+    await installExpoGo(udid)
     return
   }
 
@@ -110,8 +112,8 @@ export async function ensureAppInstalled(opts: {
     await ensureIOSApp('ios.sim.debug')
   }
 
-  console.info(`Installing app on simulator...`)
-  execSync(`xcrun simctl install booted "${fullAppPath}"`, { stdio: 'inherit' })
+  console.info(`Installing app on simulator ${udid}...`)
+  execSync(`xcrun simctl install "${udid}" "${fullAppPath}"`, { stdio: 'inherit' })
   console.info('App installed.')
 }
 
@@ -146,14 +148,14 @@ export function getMaestroBundleId(projectRoot: string): string {
 /**
  * Download and install Expo Go on the booted simulator.
  */
-async function installExpoGo(): Promise<void> {
+async function installExpoGo(udid: string): Promise<void> {
   const tmpDir = join(require('os').tmpdir(), 'expo-go-install')
   const appPath = join(tmpDir, 'Expo Go.app')
 
   // skip download if already cached
   if (existsSync(appPath)) {
-    console.info('Installing cached Expo Go on simulator...')
-    execSync(`xcrun simctl install booted "${appPath}"`, { stdio: 'inherit' })
+    console.info(`Installing cached Expo Go on simulator ${udid}...`)
+    execSync(`xcrun simctl install "${udid}" "${appPath}"`, { stdio: 'inherit' })
     console.info('Expo Go installed.')
     return
   }
@@ -181,7 +183,7 @@ async function installExpoGo(): Promise<void> {
   mkdirSync(appPath, { recursive: true })
   execSync(`tar -xzf "${tmpDir}/ExpoGo.tar.gz" -C "${appPath}"`, { stdio: 'inherit' })
 
-  execSync(`xcrun simctl install booted "${appPath}"`, { stdio: 'inherit' })
+  execSync(`xcrun simctl install "${udid}" "${appPath}"`, { stdio: 'inherit' })
   console.info('Expo Go installed.')
 }
 
