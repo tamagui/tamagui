@@ -69,7 +69,7 @@
     "csstype": "^3.0.10",
     "react": ">=19",
     "react-dom": "*",
-    "react-native": "0.81.5",
+    "react-native": "0.83.2",
     "typescript": "~5.9.2",
     "vitest": "4.0.4"
   },

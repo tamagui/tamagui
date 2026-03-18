@@ -78,8 +78,8 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native": "0.81.5",
-    "react-native-gesture-handler": "~2.28.0"
+    "react-native": "0.83.2",
+    "react-native-gesture-handler": "~2.30.0"
   },
   "peerDependencies": {
     "react": ">=19",

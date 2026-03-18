@@ -16,9 +16,9 @@
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
     "burnt": "^0.12.2",
-    "expo-constants": "~18.0.10",
-    "expo-linking": "~8.0.8",
-    "react-native-safe-area-context": "~5.6.0",
+    "expo-constants": "~55.0.7",
+    "expo-linking": "~55.0.7",
+    "react-native-safe-area-context": "~5.7.0",
     "solito": "^4.3.0"
   },
   "devDependencies": {
