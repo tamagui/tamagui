@@ -66,13 +66,10 @@ export function ensureBootedSimulator(): void {
  */
 function isAppInstalled(bundleId: string): boolean {
   try {
-    // spawn the app briefly to check if it exists — this is more reliable
-    // than get_app_container which can fail in sandboxed environments
-    const result = execSync(
-      `xcrun simctl get_app_container booted "${bundleId}" 2>/dev/null || xcrun simctl spawn booted launchctl print "system/${bundleId}" 2>/dev/null`,
-      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
-    )
-    return result.trim().length > 0
+    execSync(`xcrun simctl get_app_container booted "${bundleId}"`, {
+      stdio: ['pipe', 'pipe', 'pipe'],
+    })
+    return true
   } catch {
     return false
   }

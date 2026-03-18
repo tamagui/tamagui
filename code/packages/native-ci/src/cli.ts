@@ -277,8 +277,9 @@ try {
           // pass --udid to bypass maestro's broken devicectl auto-detection (xcode 26+)
           const udid = getBootedSimulatorUDID()
           const udidArgs = udid ? ['--udid', udid] : []
+          const debugDir = `${options.projectRoot}/.maestro-debug`
           const result =
-            await $`maestro test ${flowArg} --exclude-tags=util --no-ansi ${udidArgs}`.nothrow()
+            await $`maestro test ${flowArg} --exclude-tags=util --no-ansi --debug-output=${debugDir} ${udidArgs}`.nothrow()
           return result.exitCode
         })
         process.exit(exitCode)
