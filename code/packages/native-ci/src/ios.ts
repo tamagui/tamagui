@@ -62,6 +62,122 @@ export function ensureBootedSimulator(): void {
 }
 
 /**
+ * Ensure the app is installed on the booted simulator.
+ * For dev client apps, builds if needed then installs.
+ * For Expo Go apps, ensures Expo Go is present.
+ */
+export async function ensureAppInstalled(opts: {
+  projectRoot: string
+  bundleId: string
+}): Promise<void> {
+  const { projectRoot, bundleId } = opts
+
+  // check if app is already installed
+  try {
+    execSync(`xcrun simctl get_app_container booted ${bundleId}`, {
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    })
+    console.info(`App ${bundleId} already installed on simulator`)
+    return
+  } catch {
+    // not installed
+  }
+
+  if (bundleId === 'host.exp.Exponent') {
+    await installExpoGo()
+    return
+  }
+
+  // custom dev client - build and install
+  console.info(`App ${bundleId} not installed, building...`)
+  await ensureIOSFolder()
+
+  const appPath =
+    process.env.DETOX_IOS_APP_PATH ||
+    'ios/build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app'
+  const fullAppPath = join(projectRoot, appPath)
+
+  if (!existsSync(fullAppPath)) {
+    await ensureIOSApp('ios.sim.debug')
+  }
+
+  console.info(`Installing app on simulator...`)
+  execSync(`xcrun simctl install booted "${fullAppPath}"`, { stdio: 'inherit' })
+  console.info('App installed.')
+}
+
+/**
+ * Get the bundle ID needed for maestro tests.
+ * Checks flow files first (they declare appId), falls back to app.json.
+ */
+export function getMaestroBundleId(projectRoot: string): string {
+  // check flow files for appId
+  const flowsDir = join(projectRoot, 'flows')
+  if (existsSync(flowsDir)) {
+    try {
+      const files = require('fs').readdirSync(flowsDir) as string[]
+      for (const f of files) {
+        if (!f.endsWith('.yaml')) continue
+        const content = readFileSync(join(flowsDir, f), 'utf-8')
+        const match = content.match(/^appId:\s*(.+)$/m)
+        if (match) return match[1].trim()
+      }
+    } catch {}
+  }
+
+  // fall back to app.json
+  try {
+    const appJson = JSON.parse(readFileSync(join(projectRoot, 'app.json'), 'utf-8'))
+    return appJson.expo?.ios?.bundleIdentifier || 'host.exp.Exponent'
+  } catch {
+    return 'host.exp.Exponent'
+  }
+}
+
+/**
+ * Download and install Expo Go on the booted simulator.
+ */
+async function installExpoGo(): Promise<void> {
+  console.info('Installing Expo Go on simulator...')
+  const tmpDir = join(require('os').tmpdir(), 'expo-go-install')
+  const { mkdirSync: mk, existsSync: exists } = require('fs')
+  if (!exists(tmpDir)) mk(tmpDir, { recursive: true })
+
+  // get the download URL from expo's version API
+  const { getVersionsAsync } = require(
+    '@expo/cli/build/src/api/getVersions'
+  ) as typeof import('@expo/cli/build/src/api/getVersions')
+  const versions = await getVersionsAsync()
+
+  // find the latest SDK version that has an iOS client URL
+  const sdkVersions = Object.entries(versions.sdkVersions || {})
+    .filter(([, v]: [string, any]) => v.iosClientUrl)
+    .sort(([a], [b]) => b.localeCompare(a, undefined, { numeric: true }))
+  const clientUrl = (sdkVersions[0]?.[1] as any)?.iosClientUrl
+
+  if (!clientUrl) {
+    throw new Error('Could not find Expo Go download URL')
+  }
+
+  console.info(`Downloading Expo Go...`)
+  execSync(`curl -fsSL "${clientUrl}" -o "${tmpDir}/ExpoGo.tar.gz"`, { stdio: 'inherit' })
+  execSync(`tar -xzf "${tmpDir}/ExpoGo.tar.gz" -C "${tmpDir}"`, { stdio: 'inherit' })
+
+  // find the .app in the extracted directory
+  const appPath = execSync(`find "${tmpDir}" -name "*.app" -maxdepth 2 -type d`, {
+    encoding: 'utf-8',
+  }).trim().split('\n')[0]
+
+  if (!appPath) {
+    throw new Error('Could not find Expo Go .app in downloaded archive')
+  }
+
+  execSync(`xcrun simctl install booted "${appPath}"`, { stdio: 'inherit' })
+  console.info('Expo Go installed.')
+}
+
+/**
  * Shutdown all simulators and clean up zombie simulator processes.
  * macOS doesn't properly clean up simulators between test runs, leading to
  * resource exhaustion (40+ simulators can accumulate).

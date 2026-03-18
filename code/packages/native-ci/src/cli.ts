@@ -30,7 +30,9 @@ import {
   ensureIOSFolder,
   ensureIOSApp,
   ensureBootedSimulator,
+  ensureAppInstalled,
   getBootedSimulatorUDID,
+  getMaestroBundleId,
 } from './ios'
 import { setupAndroidDevice, ensureAndroidFolder } from './android'
 import type { Platform } from './constants'
@@ -262,6 +264,10 @@ try {
         console.info(`Project root: ${options.projectRoot}`)
 
         process.chdir(options.projectRoot)
+
+        // ensure the app is built and installed on the simulator
+        const bundleId = getMaestroBundleId(options.projectRoot)
+        await ensureAppInstalled({ projectRoot: options.projectRoot, bundleId })
 
         // Run Maestro with Metro for development builds
         const exitCode = await withMetro('ios', async () => {
