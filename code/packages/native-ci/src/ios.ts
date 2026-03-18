@@ -165,7 +165,10 @@ async function installExpoGo(udid: string): Promise<void> {
 
   // get the download URL from expo's version API
   const { getVersionsAsync } =
-    require('@expo/cli/build/src/api/getVersions') as typeof import('@expo/cli/build/src/api/getVersions')
+    // @ts-ignore - no type declarations for internal expo module
+    require('@expo/cli/build/src/api/getVersions') as {
+      getVersionsAsync: () => Promise<any>
+    }
   const versions = await getVersionsAsync()
 
   // find the latest SDK version that has an iOS client URL
