@@ -1,4 +1,4 @@
-import { getTokenValue, styled } from '@tamagui/web'
+import { getTokenValue, styled, usePropsAndStyle } from '@tamagui/web'
 import type { ComponentType } from 'react'
 import type { ImageResizeMode } from 'react-native'
 import type { ImageProps, ImageType } from './types'
@@ -139,11 +139,10 @@ export function createImage<C extends ComponentType<any>>(
   type CombinedProps = ImageProps & Omit<GetProps<C>, keyof ImageProps>
 
   const ImageComponent = StyledImage.styleable<CombinedProps>((incomingProps, ref) => {
-    const props = incomingProps as any
+    const [props, style] = usePropsAndStyle(incomingProps as any)
     const {
       src,
-      width,
-      height,
+      source,
       objectFit,
       objectPosition,
       // web only props - filter out on native
@@ -160,25 +159,31 @@ export function createImage<C extends ComponentType<any>>(
     } = props
 
     const resolvedWidth =
-      typeof width === 'string' && width[0] === '$' ? getTokenValue(width as any) : width
+      typeof style?.width === 'string' && style.width[0] === '$'
+        ? getTokenValue(style.width as any, 'size')
+        : style?.width
     const resolvedHeight =
-      typeof height === 'string' && height[0] === '$'
-        ? getTokenValue(height as any)
-        : height
+      typeof style?.height === 'string' && style.height[0] === '$'
+        ? getTokenValue(style.height as any, 'size')
+        : style?.height
 
     const finalSource = transformSource({
       src,
+      source,
       width: resolvedWidth,
       height: resolvedHeight,
     })
 
+    const finalStyle = {
+      ...style,
+      width: resolvedWidth,
+      height: resolvedHeight,
+    }
+
     const finalProps: any = {
       ...rest,
       source: finalSource,
-      style: {
-        width: resolvedWidth,
-        height: resolvedHeight,
-      },
+      style: finalStyle,
     }
 
     // Set resize mode / content fit
