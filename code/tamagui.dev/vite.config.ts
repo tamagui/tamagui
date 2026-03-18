@@ -258,22 +258,7 @@ export const LocationNotification = BentoComponentStub
         },
       },
 
-      deps: {
-        ws: true,
-        url: false,
-        '@supabase/postgrest-js': true,
-        '@supabase/node-fetch': true,
-        postmark: true,
-        stripe: true,
-        jsonwebtoken: true,
-        bottleneck: true,
-        octokit: true,
-        'node-fetch': true,
-        'fetch-blob': true,
-        'discord-api-types/v10': true,
-        'magic-bytes.js': true,
-        '@ngneat/falso': true,
-        seedrandom: true,
+      patches: {
         '@react-navigation/core': {
           version: '^7',
           'lib/module/useOnGetState.js': (contents) => {

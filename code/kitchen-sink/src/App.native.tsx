@@ -46,7 +46,7 @@ export default function App() {
   // Update Appearance when mode changes (for native components)
   React.useEffect(() => {
     if (mode === 'system') {
-      Appearance.setColorScheme(null) // Follow system
+      Appearance.setColorScheme(null as any) // Follow system
     } else {
       Appearance.setColorScheme(mode)
     }

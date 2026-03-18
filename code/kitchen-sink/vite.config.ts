@@ -1,4 +1,5 @@
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
+// @ts-ignore vite types require moduleResolution bundler
 import { defineConfig } from 'vite'
 
 export default defineConfig({

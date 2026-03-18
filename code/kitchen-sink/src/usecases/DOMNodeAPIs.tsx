@@ -116,28 +116,28 @@ export function DOMNodeAPIs() {
 
   return (
     <YStack padding="$4" gap="$2">
-      <View ref={parentRef} id="dom-node-parent" gap="$2">
+      <View ref={parentRef as any} id="dom-node-parent" gap="$2">
         <View
-          ref={childARef}
+          ref={childARef as any}
           id="dom-node-childA"
           width={100}
           height={50}
           backgroundColor="$blue5"
         />
         <View
-          ref={childBRef}
+          ref={childBRef as any}
           id="dom-node-childB"
           width={100}
           height={50}
           backgroundColor="$red5"
         />
-        <Text ref={textRef} id="dom-node-text">
+        <Text ref={textRef as any} id="dom-node-text">
           hello dom
         </Text>
-        <ScrollView ref={scrollRef} id="dom-node-scroll" height={60}>
+        <ScrollView ref={scrollRef as any} id="dom-node-scroll" height={60}>
           <View height={200} />
         </ScrollView>
-        <Input ref={inputRef} id="dom-node-input" placeholder="focusable" />
+        <Input ref={inputRef as any} id="dom-node-input" placeholder="focusable" />
       </View>
 
       <YStack id="dom-node-results" gap="$1" paddingTop="$4">

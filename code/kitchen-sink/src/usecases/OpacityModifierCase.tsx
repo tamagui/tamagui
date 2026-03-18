@@ -8,7 +8,7 @@ const TransparentBox = styled(View, {
   variants: {
     faded: {
       true: {
-        backgroundColor: '$customRed/50',
+        backgroundColor: '$customRed/50' as any,
       },
     },
   } as const,
@@ -74,7 +74,7 @@ export function OpacityModifierCase() {
       />
 
       {/* variant with opacity modifier */}
-      <TransparentBox data-testid="opacity-variant" faded />
+      <TransparentBox data-testid="opacity-variant" faded={true as any} />
 
       {/* hover state with opacity modifier */}
       <View
@@ -89,11 +89,13 @@ export function OpacityModifierCase() {
 
       {/* animated color with opacity modifier */}
       <View
-        data-testid="opacity-animated"
-        animation="500ms"
-        backgroundColor={toggled ? ('$customBlue/75' as any) : ('$customRed/50' as any)}
-        width={100}
-        height={100}
+        {...({
+          'data-testid': 'opacity-animated',
+          animation: '500ms',
+          backgroundColor: toggled ? '$customBlue/75' : '$customRed/50',
+          width: 100,
+          height: 100,
+        } as any)}
       />
       <Button data-testid="opacity-toggle" onPress={() => setToggled((v) => !v)}>
         Toggle

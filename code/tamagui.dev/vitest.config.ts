@@ -8,5 +8,5 @@ export default defineConfig({
     exclude: ['**/node_modules/**', '**/dist/**'],
     root: __dirname,
   },
-  plugins: [tsconfigPaths()],
+  plugins: [tsconfigPaths() as any],
 })
