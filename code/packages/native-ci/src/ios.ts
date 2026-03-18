@@ -62,6 +62,23 @@ export function ensureBootedSimulator(): void {
 }
 
 /**
+ * Check if an app is installed on the booted simulator.
+ */
+function isAppInstalled(bundleId: string): boolean {
+  try {
+    // spawn the app briefly to check if it exists — this is more reliable
+    // than get_app_container which can fail in sandboxed environments
+    const result = execSync(
+      `xcrun simctl get_app_container booted "${bundleId}" 2>/dev/null || xcrun simctl spawn booted launchctl print "system/${bundleId}" 2>/dev/null`,
+      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
+    )
+    return result.trim().length > 0
+  } catch {
+    return false
+  }
+}
+
+/**
  * Ensure the app is installed on the booted simulator.
  * For dev client apps, builds if needed then installs.
  * For Expo Go apps, ensures Expo Go is present.
@@ -73,15 +90,9 @@ export async function ensureAppInstalled(opts: {
   const { projectRoot, bundleId } = opts
 
   // check if app is already installed
-  try {
-    execSync(`xcrun simctl get_app_container booted ${bundleId}`, {
-      encoding: 'utf-8',
-      stdio: ['pipe', 'pipe', 'pipe'],
-    })
+  if (isAppInstalled(bundleId)) {
     console.info(`App ${bundleId} already installed on simulator`)
     return
-  } catch {
-    // not installed
   }
 
   if (bundleId === 'host.exp.Exponent') {
@@ -139,10 +150,19 @@ export function getMaestroBundleId(projectRoot: string): string {
  * Download and install Expo Go on the booted simulator.
  */
 async function installExpoGo(): Promise<void> {
-  console.info('Installing Expo Go on simulator...')
   const tmpDir = join(require('os').tmpdir(), 'expo-go-install')
-  const { mkdirSync: mk, existsSync: exists } = require('fs')
-  if (!exists(tmpDir)) mk(tmpDir, { recursive: true })
+  const appPath = join(tmpDir, 'Expo Go.app')
+
+  // skip download if already cached
+  if (existsSync(appPath)) {
+    console.info('Installing cached Expo Go on simulator...')
+    execSync(`xcrun simctl install booted "${appPath}"`, { stdio: 'inherit' })
+    console.info('Expo Go installed.')
+    return
+  }
+
+  console.info('Downloading Expo Go...')
+  mkdirSync(tmpDir, { recursive: true })
 
   // get the download URL from expo's version API
   const { getVersionsAsync } = require(
@@ -160,18 +180,10 @@ async function installExpoGo(): Promise<void> {
     throw new Error('Could not find Expo Go download URL')
   }
 
-  console.info(`Downloading Expo Go...`)
   execSync(`curl -fsSL "${clientUrl}" -o "${tmpDir}/ExpoGo.tar.gz"`, { stdio: 'inherit' })
-  execSync(`tar -xzf "${tmpDir}/ExpoGo.tar.gz" -C "${tmpDir}"`, { stdio: 'inherit' })
-
-  // find the .app in the extracted directory
-  const appPath = execSync(`find "${tmpDir}" -name "*.app" -maxdepth 2 -type d`, {
-    encoding: 'utf-8',
-  }).trim().split('\n')[0]
-
-  if (!appPath) {
-    throw new Error('Could not find Expo Go .app in downloaded archive')
-  }
+  // archive contains .app contents directly, extract into .app bundle
+  mkdirSync(appPath, { recursive: true })
+  execSync(`tar -xzf "${tmpDir}/ExpoGo.tar.gz" -C "${appPath}"`, { stdio: 'inherit' })
 
   execSync(`xcrun simctl install booted "${appPath}"`, { stdio: 'inherit' })
   console.info('Expo Go installed.')
