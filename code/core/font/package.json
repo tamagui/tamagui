@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font",
-  "version": "2.0.0-rc.26-1773683384816",
+  "version": "2.0.0-rc.26-1773869882100",
   "source": "src/index.ts",
   "files": [
     "src",
@@ -33,15 +33,13 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "@tamagui/constants": "workspace:*",
-    "@tamagui/web": "workspace:*"
-  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19"
   },
   "peerDependencies": {
+    "@tamagui/constants": "*",
+    "@tamagui/web": "*",
     "react": ">=19"
   }
 }

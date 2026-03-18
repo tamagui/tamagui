@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-cherry-bomb",
-  "version": "2.0.0-rc.26-1773683384816",
+  "version": "2.0.0-rc.26-1773869882100",
   "files": [
     "types",
     "dist",
@@ -35,12 +35,12 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "@tamagui/constants": "workspace:*",
-    "@tamagui/core": "workspace:*"
-  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "subset-font": "^2.1.0"
+  },
+  "peerDependencies": {
+    "@tamagui/constants": "*",
+    "@tamagui/core": "*"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toggle-group",
-  "version": "2.0.0-rc.26-1773683384816",
+  "version": "2.0.0-rc.26-1773869882100",
   "source": "src/index.ts",
   "files": [
     "src",
@@ -39,7 +39,6 @@
     "@tamagui/constants": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/focusable": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
@@ -55,6 +54,7 @@
     "react": ">=19"
   },
   "peerDependencies": {
+    "@tamagui/font-size": "*",
     "react": ">=19"
   },
   "module:jsx": "dist/jsx"

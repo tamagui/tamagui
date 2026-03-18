@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/helpers-icon",
-  "version": "2.0.0-rc.26-1773683384816",
+  "version": "2.0.0-rc.26-1773869882100",
   "description": "Utilities for icon packages",
   "license": "MIT",
   "source": "src/index.ts",
@@ -32,16 +32,14 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
-  "dependencies": {
-    "@tamagui/core": "workspace:*",
-    "@tamagui/sizable-context": "workspace:*"
-  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
     "react-native-svg": "15.15.3"
   },
   "peerDependencies": {
+    "@tamagui/core": "*",
+    "@tamagui/sizable-context": "*",
     "react": ">=19",
     "react-native-svg": ">=12"
   }

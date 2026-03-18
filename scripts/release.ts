@@ -51,8 +51,28 @@ const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = shouldFinish || rePublish || undocumented || process.argv.includes('--ci')
 const skipFinish =
   rePublish || skipAll || undocumented || process.argv.includes('--skip-finish')
+const forcePublishAll = process.argv.includes('--force-publish-all')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
+
+async function getLastReleaseTag(): Promise<string | null> {
+  try {
+    const { stdout } = await exec(`git describe --tags --match 'v*' --abbrev=0`)
+    return stdout.trim()
+  } catch {
+    return null
+  }
+}
+
+async function hasSourceChanges(dir: string, tag: string): Promise<boolean> {
+  try {
+    await exec(`git diff --quiet ${tag} HEAD -- ${dir}/src/`)
+    return false
+  } catch {
+    // non-zero exit = there are changes
+    return true
+  }
+}
 
 // Check if current version is an RC (e.g., 1.143.0-rc.1 or 1.143.0-rc.1-1234567890)
 // Strip any canary timestamp suffix first
@@ -410,6 +430,68 @@ async function run() {
       )
     }
 
+    // detect leaf packages: no @tamagui/* in dependencies AND not depended on
+    // by any other published package's dependencies (only peerDeps). these are
+    // safe to skip when their source hasn't changed since the last release.
+    const dependedOnBy = new Set<string>()
+    for (const pkg of packageJsons) {
+      for (const dep of Object.keys(pkg.json.dependencies || {})) {
+        if (dep.startsWith('@tamagui/')) {
+          dependedOnBy.add(dep)
+        }
+      }
+    }
+
+    function isLeafPackage(pkg: (typeof packageJsons)[0]) {
+      const internalDeps = Object.keys(pkg.json.dependencies || {}).filter((d) =>
+        d.startsWith('@tamagui/')
+      )
+      if (internalDeps.length > 0) return false
+      if (dependedOnBy.has(pkg.name)) return false
+      return true
+    }
+
+    const lastTag = await getLastReleaseTag()
+    const skippedPackages: typeof packageJsons = []
+    let packagesToPublish = packageJsons
+
+    if (lastTag && !forcePublishAll) {
+      const lastTagVersion = lastTag.replace(/^v/, '')
+      const lastMajor = Number.parseInt(lastTagVersion.split('.')[0], 10)
+      const nextMajor = Number.parseInt(version.split('.')[0], 10)
+      const isMajorBump = nextMajor > lastMajor
+
+      if (!isMajorBump) {
+        const changed: typeof packageJsons = []
+        const unchanged: typeof packageJsons = []
+
+        for (const pkg of packageJsons) {
+          if (!isLeafPackage(pkg)) {
+            changed.push(pkg)
+            continue
+          }
+          const hasChanges = await hasSourceChanges(pkg.directory, lastTag)
+          if (hasChanges) {
+            changed.push(pkg)
+          } else {
+            unchanged.push(pkg)
+          }
+        }
+
+        if (unchanged.length > 0) {
+          console.info(
+            `\nSkipping ${unchanged.length} unchanged leaf packages:\n${unchanged.map((p) => `  - ${p.name}`).join('\n')}\n`
+          )
+          skippedPackages.push(...unchanged)
+          packagesToPublish = changed
+        }
+      } else {
+        console.info(`Major version bump detected, publishing all packages`)
+      }
+    } else if (forcePublishAll) {
+      console.info(`--force-publish-all: publishing all packages`)
+    }
+
     if (!shouldFinish && dryRun) {
       console.info(`Dry run, exiting before publish`)
       return
@@ -437,7 +519,7 @@ async function run() {
 
       // pack and publish
       await pMap(
-        packageJsons,
+        packagesToPublish,
         async ({ name, cwd }) => {
           const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
           const publishTag = canary || isCanaryVersion ? 'canary' : undefined
@@ -502,6 +584,33 @@ async function run() {
       )
 
       console.info(`✅ Published\n`)
+
+      // for canary releases, point the canary dist-tag to the latest version for skipped packages
+      // so `npm install @tamagui/lucide-icons@canary` still resolves
+      const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
+      if ((canary || isCanaryVersion) && skippedPackages.length > 0) {
+        console.info(
+          `Updating canary dist-tags for ${skippedPackages.length} skipped packages...`
+        )
+        await pMap(
+          skippedPackages,
+          async ({ name }) => {
+            try {
+              const { stdout } = await exec(`npm view ${name} dist-tags.latest`)
+              const latestVersion = stdout.trim()
+              if (latestVersion) {
+                await spawnify(`npm dist-tag add ${name}@${latestVersion} canary`, {
+                  avoidLog: true,
+                })
+                console.info(`  ✓ ${name}@${latestVersion} tagged as canary`)
+              }
+            } catch (err) {
+              console.warn(`  ✗ ${name}: could not update canary tag`, err)
+            }
+          },
+          { concurrency: 10 }
+        )
+      }
 
       // restore package.json files for undocumented releases
       if (undocumented) {
