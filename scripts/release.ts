@@ -55,13 +55,33 @@ const forcePublishAll = process.argv.includes('--force-publish-all')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
-async function getLastReleaseTag(): Promise<string | null> {
+async function getLastReleaseRef(): Promise<string | null> {
+  // find the most recent baseline: either a v* tag or a canary commit
+  let tagRef: { ref: string; date: number } | null = null
+  let canaryRef: { ref: string; date: number } | null = null
+
   try {
     const { stdout } = await exec(`git describe --tags --match 'v*' --abbrev=0`)
-    return stdout.trim()
-  } catch {
-    return null
-  }
+    const tag = stdout.trim()
+    const { stdout: dateStr } = await exec(`git log -1 --format=%ct ${tag}`)
+    tagRef = { ref: tag, date: Number(dateStr.trim()) }
+  } catch {}
+
+  try {
+    const { stdout } = await exec(
+      `git log --grep='^canary' --format='%H %ct' -1`
+    )
+    const [hash, dateStr] = stdout.trim().split(' ')
+    if (hash) {
+      canaryRef = { ref: hash, date: Number(dateStr) }
+    }
+  } catch {}
+
+  if (!tagRef && !canaryRef) return null
+  if (!tagRef) return canaryRef!.ref
+  if (!canaryRef) return tagRef.ref
+  // use whichever is more recent
+  return canaryRef.date > tagRef.date ? canaryRef.ref : tagRef.ref
 }
 
 async function hasSourceChanges(dir: string, tag: string): Promise<boolean> {
@@ -451,7 +471,7 @@ async function run() {
       return true
     }
 
-    const lastTag = await getLastReleaseTag()
+    const lastTag = await getLastReleaseRef()
     const skippedPackages: typeof packageJsons = []
     let packagesToPublish = packageJsons
 
