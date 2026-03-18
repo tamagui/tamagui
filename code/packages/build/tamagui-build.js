@@ -769,7 +769,7 @@ async function buildJs(allFiles) {
           bundle: shouldBundleFlag,
           specifyCJS: !avoidCJS,
           keepJsOutput: avoidCJS,
-          preserveJsPaths: [],
+          preserveJsPaths: [cjsMainAliasPath].filter(Boolean),
         })
       : null,
 
