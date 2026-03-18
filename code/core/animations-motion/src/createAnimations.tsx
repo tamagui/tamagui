@@ -74,7 +74,6 @@ type MotionRefs = {
   frozenExitTarget: Record<string, unknown> | null
   exitCompleteScheduled: boolean
   wasEntering: boolean
-  styleVersion: number
 }
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
@@ -134,7 +133,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           frozenExitTarget: null,
           exitCompleteScheduled: false,
           wasEntering: false,
-          styleVersion: 0,
         }
       }
 
@@ -155,14 +153,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       const disableAnimation = isComponentHydrating || isMounting || !animationKey
 
       const [scope, animate] = useAnimate()
-
-      // increment version when style object identity changes
-      const lastStyleRef = useRef(style)
-      if (lastStyleRef.current !== style) {
-        lastStyleRef.current = style
-        refs.current.styleVersion++
-      }
-      const styleVersion = refs.current.styleVersion
 
       // sync ref values for reliable access from callbacks
       refs.current.isExiting = isExiting
@@ -188,14 +178,12 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         dontAnimate = {},
         doAnimate,
         animationOptions,
-      } = useMemo(() => {
-        return getMotionAnimatedProps(
-          props as any,
-          style,
-          disableAnimation,
-          animationState
-        )
-      }, [isExiting, animationKey, styleVersion, animationState, disableAnimation])
+      } = getMotionAnimatedProps(
+        props as any,
+        style,
+        disableAnimation,
+        animationState
+      )
 
       const [firstRenderStyle] = useState(style)
 
@@ -466,7 +454,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           dontAnimate,
           animationOptions,
         })
-      }, [styleVersion, isExiting, disableAnimation])
+      }, [style, isExiting, disableAnimation])
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] && props['debug'] !== 'profile') {
@@ -475,7 +463,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             style,
             doAnimate,
             dontAnimate,
-            styleVersion,
             scope,
             animationOptions,
             isExiting,
