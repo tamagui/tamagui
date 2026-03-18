@@ -3154,6 +3154,23 @@
         "react-native": "*",
       },
     },
+    "code/ui/spinner": {
+      "name": "@tamagui/spinner",
+      "version": "2.0.0-rc.26-1773871134131",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+        "@tamagui/stacks": "workspace:*",
+      },
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "react": ">=19",
+        "react-native": "0.83.2",
+      },
+      "peerDependencies": {
+        "react": ">=19",
+        "react-native": "*",
+      },
+    },
     "code/ui/stacks": {
       "name": "@tamagui/stacks",
       "version": "2.0.0-rc.26-1773871134131",
@@ -3312,6 +3329,7 @@
         "@tamagui/sheet": "workspace:*",
         "@tamagui/slider": "workspace:*",
         "@tamagui/spacer": "workspace:*",
+        "@tamagui/spinner": "workspace:*",
         "@tamagui/stacks": "workspace:*",
         "@tamagui/switch": "workspace:*",
         "@tamagui/tabs": "workspace:*",
@@ -5278,6 +5296,8 @@
     "@tamagui/slider": ["@tamagui/slider@workspace:code/ui/slider"],
 
     "@tamagui/spacer": ["@tamagui/spacer@workspace:code/ui/spacer"],
+
+    "@tamagui/spinner": ["@tamagui/spinner@workspace:code/ui/spinner"],
 
     "@tamagui/stacks": ["@tamagui/stacks@workspace:code/ui/stacks"],
 
