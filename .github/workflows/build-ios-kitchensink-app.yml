@@ -119,6 +119,8 @@ jobs:
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
         run: ${{ env.prebuild_command }}
 
+      # workaround for https://github.com/expo/expo/issues/42525
+      # remove once expo-modules-core ships a fix or expo SDK 56+ resolves it
       - name: Patch Podfile for ExpoModulesCore Swift 6 and ContextMenuAuxiliaryPreview
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
         run: |

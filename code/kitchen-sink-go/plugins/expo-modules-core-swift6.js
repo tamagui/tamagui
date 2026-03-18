@@ -2,6 +2,8 @@
 // which requires SWIFT_VERSION=6 to compile (uses @MainActor in conformance clauses).
 // SWIFT_STRICT_CONCURRENCY=minimal suppresses the resulting concurrency warnings
 // that would otherwise become errors in swift 6 mode.
+// tracking issue: https://github.com/expo/expo/issues/42525
+// remove this plugin once expo-modules-core ships a fix or expo SDK 56+ resolves it.
 const { withDangerousMod } = require('@expo/config-plugins')
 const fs = require('fs')
 const path = require('path')
