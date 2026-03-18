@@ -20,6 +20,8 @@ and cant put another View next to Content and have it show
 - its beta - motion has a ton of hacks, but also dont forget:
   const animateKey = JSON.stringify(style)
 
+- RN animation driver perf: remove useMemo, diff style in layout effect only (not render) for concurrent mode safety. compute diff in render (pure, read-only), apply + update refs in effect. only create/update Animated.Values for changed keys instead of re-processing all keys every render.
+
 - /Users/n8/tamagui/code/core/web/src/helpers/defaultAnimationDriver.tsx
 
   - should just be native on native, css on web? use platfomr extensions

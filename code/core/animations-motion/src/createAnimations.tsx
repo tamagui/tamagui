@@ -178,12 +178,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         dontAnimate = {},
         doAnimate,
         animationOptions,
-      } = getMotionAnimatedProps(
-        props as any,
-        style,
-        disableAnimation,
-        animationState
-      )
+      } = getMotionAnimatedProps(props as any, style, disableAnimation, animationState)
 
       const [firstRenderStyle] = useState(style)
 
