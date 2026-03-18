@@ -40,6 +40,18 @@
       "import": "./dist/esm/without-animated.mjs",
       "require": "./dist/cjs/without-animated.cjs"
     },
+    "./Libraries/Pressability/Pressability": {
+      "browser": "./dist/esm/Libraries/Pressability/Pressability.mjs",
+      "module": "./dist/esm/Libraries/Pressability/Pressability.mjs",
+      "import": "./dist/esm/Libraries/Pressability/Pressability.mjs",
+      "require": "./dist/cjs/Libraries/Pressability/Pressability.cjs"
+    },
+    "./Libraries/Pressability/usePressability": {
+      "browser": "./dist/esm/Libraries/Pressability/usePressability.mjs",
+      "module": "./dist/esm/Libraries/Pressability/usePressability.mjs",
+      "import": "./dist/esm/Libraries/Pressability/usePressability.mjs",
+      "require": "./dist/cjs/Libraries/Pressability/usePressability.cjs"
+    },
     "./Libraries/Utilities/codegenNativeComponent": {
       "browser": "./dist/esm/codegenNativeComponent.mjs",
       "module": "./dist/esm/codegenNativeComponent.mjs",
