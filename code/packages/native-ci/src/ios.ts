@@ -10,6 +10,51 @@ import { isCI } from './runner'
 import { generateFingerprint } from './fingerprint'
 
 /**
+ * Check if any iOS simulator is booted and available for testing.
+ * Returns true if at least one simulator is booted.
+ */
+export function hasBootedSimulator(): boolean {
+  try {
+    const output = execSync('xcrun simctl list devices booted', {
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    })
+    // look for a line with a device UUID (booted devices show as "iPhone ... (UUID) (Booted)")
+    return /\([A-F0-9-]{36}\)/i.test(output)
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Boot an iOS simulator. Picks the first available iPhone device.
+ */
+export function ensureBootedSimulator(): void {
+  if (hasBootedSimulator()) return
+
+  console.info('No booted iOS simulator found, booting one...')
+  try {
+    const output = execSync('xcrun simctl list devices available', {
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    })
+    // find first available iPhone
+    const match = output.match(/iPhone[^\n]*\(([A-F0-9-]{36})\)/i)
+    if (!match) {
+      throw new Error('No available iPhone simulator found. Install one via Xcode.')
+    }
+    const udid = match[1]
+    console.info(`Booting simulator ${udid}...`)
+    execSync(`xcrun simctl boot ${udid}`, { stdio: 'inherit' })
+    console.info('Simulator booted.')
+  } catch (err) {
+    throw new Error(
+      `Failed to boot iOS simulator: ${err instanceof Error ? err.message : err}`
+    )
+  }
+}
+
+/**
  * Shutdown all simulators and clean up zombie simulator processes.
  * macOS doesn't properly clean up simulators between test runs, leading to
  * resource exhaustion (40+ simulators can accumulate).

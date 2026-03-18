@@ -26,7 +26,7 @@ import {
 } from './deps'
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
-import { ensureIOSFolder, ensureIOSApp } from './ios'
+import { ensureIOSFolder, ensureIOSApp, ensureBootedSimulator } from './ios'
 import { setupAndroidDevice, ensureAndroidFolder } from './android'
 import type { Platform } from './constants'
 
@@ -196,6 +196,8 @@ try {
       const platform = subcommand || 'ios'
 
       if (platform === 'ios') {
+        ensureBootedSimulator()
+
         // Ensure iOS dependencies
         await ensureIosDeps()
 
@@ -244,6 +246,8 @@ try {
         })
         process.exit(exitCode)
       } else if (platform === 'maestro') {
+        ensureBootedSimulator()
+
         // Ensure Maestro is installed
         await ensureMaestro()
 
@@ -265,6 +269,8 @@ try {
         })
         process.exit(exitCode)
       } else if (platform === 'all') {
+        ensureBootedSimulator()
+
         console.info('=== Running All Native Tests ===\n')
 
         // Run iOS tests

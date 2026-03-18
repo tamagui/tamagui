@@ -1,7 +1,9 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "module": "Preserve",
+    "moduleResolution": "Bundler"
   },
   "references": [
     {

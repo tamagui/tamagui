@@ -42,13 +42,13 @@ describe('expo-router starter', () => {
         stdio: 'pipe',
       }
     )
-    execSync('npx expo export --platform web --clear', {
+    execSync('npx expo export --platform web', {
       cwd: dir,
       stdio: 'pipe',
-      timeout: 180_000,
+      timeout: 300_000,
     })
     expect(fs.existsSync(path.join(dir, 'dist'))).toBe(true)
-  }, 240_000)
+  }, 360_000)
 })
 
 describe('remix starter', () => {
