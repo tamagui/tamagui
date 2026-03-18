@@ -21,89 +21,6 @@ export type Options = {
   ignorePathPattern?: readonly string[]
 }
 
-type PackageJson = {
-  dependencies?: Record<string, string>
-  devDependencies?: Record<string, string>
-  optionalDependencies?: Record<string, string>
-}
-
-/**
- * Checks if @tamagui/* packages within a single package.json have mismatched versions.
- * Returns a summary of mismatches or empty string if all versions match.
- */
-function checkTamaguiPackageVersions(root: string): string {
-  const packageJsonPath = join(root, 'package.json')
-  if (!existsSync(packageJsonPath)) {
-    return ''
-  }
-
-  const packageJson: PackageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'))
-
-  // Collect all @tamagui/* dependencies and their versions
-  const tamaguiDeps: { name: string; version: string }[] = []
-
-  const allDeps = {
-    ...packageJson.dependencies,
-    ...packageJson.devDependencies,
-    ...packageJson.optionalDependencies,
-  }
-
-  for (const [name, version] of Object.entries(allDeps)) {
-    if (name === 'tamagui' || name.startsWith('@tamagui/')) {
-      tamaguiDeps.push({ name, version })
-    }
-  }
-
-  if (tamaguiDeps.length <= 1) {
-    return ''
-  }
-
-  // Normalize versions by removing prefixes like ^, ~, >=, etc.
-  const normalizeVersion = (v: string): string => {
-    // Handle workspace: protocol
-    if (v.startsWith('workspace:')) {
-      return v
-    }
-    return v.replace(/^[\^~>=<]+/, '')
-  }
-
-  // Group by normalized version
-  const versionGroups = new Map<string, string[]>()
-  for (const dep of tamaguiDeps) {
-    const normalized = normalizeVersion(dep.version)
-    if (!versionGroups.has(normalized)) {
-      versionGroups.set(normalized, [])
-    }
-    versionGroups.get(normalized)!.push(`${dep.name}@${dep.version}`)
-  }
-
-  // If all packages have the same normalized version, no mismatch
-  if (versionGroups.size <= 1) {
-    return ''
-  }
-
-  // Build mismatch summary
-  const lines: string[] = [
-    'Found mismatched @tamagui/* package versions in package.json:',
-    '',
-  ]
-
-  for (const [version, packages] of versionGroups) {
-    lines.push(`  ${version}:`)
-    for (const pkg of packages.sort()) {
-      lines.push(`    - ${pkg}`)
-    }
-  }
-
-  lines.push('')
-  lines.push(
-    'All @tamagui/* packages should use the same version to avoid runtime issues.'
-  )
-  lines.push('Run `npx tamagui upgrade` to sync all packages to the latest version.')
-
-  return lines.join('\n')
-}
-
 // critical packages that must not be duplicated at runtime
 const CRITICAL_PACKAGES = ['@tamagui/web', '@tamagui/core', 'tamagui']
 
@@ -240,9 +157,8 @@ function checkLockfileDuplicates(root: string): string {
 function checkBunLockDuplicates(lockPath: string): string {
   try {
     const content = readFileSync(lockPath, 'utf8')
-    // bun.lock is jsonc with a packages map
-    // look for multiple resolved versions of the same @tamagui/* package
     const duplicates = new Map<string, Set<string>>()
+    const criticalSet = new Set(CRITICAL_PACKAGES)
 
     // match patterns like "@tamagui/web@version" or "tamagui@version" in resolved entries
     // bun.lock format: "package@version": ["resolved-url", ...]
@@ -251,8 +167,9 @@ function checkBunLockDuplicates(lockPath: string): string {
     while ((match = packagePattern.exec(content)) !== null) {
       const name = match[1]
       const version = match[2]
-      // skip workspace references
       if (version.startsWith('workspace:')) continue
+      // only flag critical packages — leaf packages can safely differ
+      if (!criticalSet.has(name)) continue
       if (!duplicates.has(name)) duplicates.set(name, new Set())
       duplicates.get(name)!.add(version)
     }
@@ -267,6 +184,7 @@ function checkYarnLockDuplicates(lockPath: string): string {
   try {
     const content = readFileSync(lockPath, 'utf8')
     const duplicates = new Map<string, Set<string>>()
+    const criticalSet = new Set(CRITICAL_PACKAGES)
 
     // yarn.lock format:
     //   "@tamagui/web@^1.0.0":
@@ -277,7 +195,7 @@ function checkYarnLockDuplicates(lockPath: string): string {
     let entryMatch: RegExpExecArray | null
     while ((entryMatch = entryPattern.exec(content)) !== null) {
       const name = entryMatch[1]
-      // find the next version line after this entry
+      if (!criticalSet.has(name)) continue
       versionPattern.lastIndex = entryMatch.index
       const verMatch = versionPattern.exec(content)
       if (verMatch) {
@@ -296,6 +214,7 @@ function checkNpmLockDuplicates(lockPath: string): string {
   try {
     const lock = JSON.parse(readFileSync(lockPath, 'utf8'))
     const duplicates = new Map<string, Set<string>>()
+    const criticalSet = new Set(CRITICAL_PACKAGES)
 
     // package-lock.json v2/v3 uses "packages" map with path keys
     const packages = lock.packages || {}
@@ -303,12 +222,11 @@ function checkNpmLockDuplicates(lockPath: string): string {
       if (!path) continue // skip root
       const name = info.name || path.split('node_modules/').pop()
       if (!name) continue
-      if (name === 'tamagui' || name.startsWith('@tamagui/')) {
-        const version = info.version
-        if (version) {
-          if (!duplicates.has(name)) duplicates.set(name, new Set())
-          duplicates.get(name)!.add(version)
-        }
+      if (!criticalSet.has(name)) continue
+      const version = info.version
+      if (version) {
+        if (!duplicates.has(name)) duplicates.set(name, new Set())
+        duplicates.get(name)!.add(version)
       }
     }
 
@@ -402,23 +320,19 @@ function checkConfigExists(root: string): string {
 export async function checkDeps(root: string) {
   const issues: string[] = []
 
-  // 1. check for @tamagui/* version mismatches within the same package.json
-  const tamaguiMismatchSummary = checkTamaguiPackageVersions(root)
-  if (tamaguiMismatchSummary) issues.push(tamaguiMismatchSummary)
-
-  // 2. check for dependency version mismatches across workspace packages
+  // 1. check for dependency version mismatches across workspace packages
   const workspaceMismatchSummary = new CDVC(root).toMismatchSummary()
   if (workspaceMismatchSummary) issues.push(workspaceMismatchSummary)
 
-  // 3. check lockfile for multiple resolved versions
+  // 2. check lockfile for duplicate resolved versions of critical packages
   const lockfileSummary = checkLockfileDuplicates(root)
   if (lockfileSummary) issues.push(lockfileSummary)
 
-  // 4. check for duplicate physical installations in node_modules
+  // 3. check for duplicate physical installations in node_modules
   const duplicatesSummary = checkDuplicateInstalls(root)
   if (duplicatesSummary) issues.push(duplicatesSummary)
 
-  // 5. check that a config file exists
+  // 4. check that a config file exists
   const configSummary = checkConfigExists(root)
   if (configSummary) issues.push(configSummary)
 
