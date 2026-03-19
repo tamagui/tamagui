@@ -8,7 +8,8 @@ Tamagui now has two plugins for Vite: one that sets up everything you need to ge
 ## Install
 
 <Notice theme="yellow">
-  `@tamagui/vite-plugin` is ESM-only. Your project must have `"type": "module"` in its `package.json` (or use `.mjs`/`.mts` config files). CJS (`require()`) is not supported.
+  `@tamagui/vite-plugin` is ESM-only. Your project must have `"type": "module"` in its
+  `package.json` (or use `.mjs`/`.mts` config files). CJS (`require()`) is not supported.
 </Notice>
 
 <Notice theme="green">
@@ -35,12 +36,10 @@ see [compiler install docs](/docs/intro/compiler-install#configuration-with-tama
 no options are needed:
 
 ```tsx fileName="vite.config.ts"
-import react from '@vitejs/plugin-react-swc'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 
 export default {
   plugins: [
-    react(),
     // reads from tamagui.build.ts automatically
     tamaguiPlugin(),
   ].filter(Boolean),
@@ -50,12 +49,10 @@ export default {
 Or pass options inline:
 
 ```tsx fileName="vite.config.ts"
-import react from '@vitejs/plugin-react-swc'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 
 export default {
   plugins: [
-    react(),
     tamaguiPlugin({
       config: 'src/tamagui.config.ts',
       components: ['tamagui'],
