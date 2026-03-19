@@ -2,24 +2,33 @@ import { spawn, execSync } from 'node:child_process'
 import { expect, test } from '@playwright/test'
 import waitPort from 'wait-port'
 
-const port = 5008
-const domain = `http://localhost:${port}`
+const devPort = 5008
+const prodPort = 5009
 
 function spawnServer(command, args) {
   const proc = spawn(command, args, {
     cwd: process.cwd(),
     stdio: 'pipe',
-    shell: true,
+    detached: true,
   })
   proc.stderr.on('data', (d) => console.log(d.toString()))
   return proc
 }
 
+function killServer(proc) {
+  try {
+    // kill the entire process group so child processes are cleaned up
+    process.kill(-proc.pid, 'SIGTERM')
+  } catch {
+    // process may have already exited
+  }
+}
+
 test(`loads dev mode no error or warning logs`, async ({ page }) => {
-  const server = spawnServer('bun', ['run', 'dev'])
+  const server = spawnServer('bun', ['run', 'dev', '--port', String(devPort)])
   try {
     await waitPort({
-      port: port,
+      port: devPort,
       host: 'localhost',
     })
 
@@ -35,8 +44,8 @@ test(`loads dev mode no error or warning logs`, async ({ page }) => {
       logs[message.type()].push(message.text())
     })
 
-    await page.goto(domain, {
-      waitUntil: 'domcontentloaded',
+    await page.goto(`http://localhost:${devPort}`, {
+      waitUntil: 'load',
     })
 
     if (logs.error.length) {
@@ -49,21 +58,19 @@ test(`loads dev mode no error or warning logs`, async ({ page }) => {
 
     expect(logs.error.length).toBe(0)
     expect(logs.warn.length).toBe(0)
-    await expect(page.getByText('Hello world').first()).toBeVisible()
-  } catch (err) {
-    console.error(err)
+    await expect(page.getByText('Hello world').first()).toBeVisible({ timeout: 15000 })
   } finally {
-    server.kill()
+    killServer(server)
   }
 })
 
 test(`builds to prod same thing`, async ({ page }) => {
   execSync('bun run build:prod', { stdio: 'pipe' })
-  const server = spawnServer('bun', ['run', 'preview', '--port', String(port)])
+  const server = spawnServer('bun', ['run', 'preview', '--port', String(prodPort)])
 
   try {
     await waitPort({
-      port: port,
+      port: prodPort,
       host: 'localhost',
     })
 
@@ -79,8 +86,8 @@ test(`builds to prod same thing`, async ({ page }) => {
       logs[message.type()].push(message.text())
     })
 
-    await page.goto(domain, {
-      waitUntil: 'domcontentloaded',
+    await page.goto(`http://localhost:${prodPort}`, {
+      waitUntil: 'load',
     })
 
     if (logs.error.length) {
@@ -93,8 +100,8 @@ test(`builds to prod same thing`, async ({ page }) => {
 
     expect(logs.error.length).toBe(0)
     expect(logs.warn.length).toBe(0)
-    await expect(page.getByText('Hello world').first()).toBeVisible()
+    await expect(page.getByText('Hello world').first()).toBeVisible({ timeout: 15000 })
   } finally {
-    server.kill()
+    killServer(server)
   }
 })
