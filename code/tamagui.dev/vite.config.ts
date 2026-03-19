@@ -253,6 +253,7 @@ export const LocationNotification = BentoComponentStub
       },
 
       ssr: {
+        dedupeSymlinkedModules: true,
         autoDepsOptimization: {
           include: /.*/,
         },

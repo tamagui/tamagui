@@ -20,6 +20,11 @@ export default {
       optimization: {
         autoOptimizeDeps: false,
       },
+
+      ssr: {
+        dedupeSymlinkedModules: true,
+      },
+
       //  native: {
       //   bundler: 'metro',
       //   bundlerOptions: {

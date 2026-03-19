@@ -580,6 +580,7 @@ export function tamaguiPlugin({
           dedupe: tamaguiPkgs,
         },
         ssr: {
+          noExternal: tamaguiPkgs,
           optimizeDeps: {
             include: tamaguiPkgs,
           },
@@ -587,17 +588,17 @@ export function tamaguiPlugin({
       }
     },
 
+    // fix subpath imports (@tamagui/themes/v5) to use package.json exports
+    // instead of filesystem resolution which hits CJS metro-compat shims
     resolveId(source, importer, options) {
       if (!tamaguiOptionsIn.fixVite8SymlinkExportResolutions) return
-      // only handle @tamagui subpath imports like @tamagui/themes/v5
       if (!source.startsWith('@tamagui/')) return
       const parts = source.split('/')
-      // need at least @tamagui/<pkg>/<subpath>
+      // only handle subpath imports, not bare imports
       if (parts.length < 3) return
       const pkgName = `${parts[0]}/${parts[1]}`
       const subpath = `./${parts.slice(2).join('/')}`
 
-      // find the package directory via import.meta.resolve
       let pkgDir: string
       try {
         const pkgJsonPath = fileURLToPath(import.meta.resolve(`${pkgName}/package.json`))
@@ -606,7 +607,6 @@ export function tamaguiPlugin({
         return
       }
 
-      // read exports
       let pkg: any
       try {
         pkg = JSON.parse(readFileSync(path.join(pkgDir, 'package.json'), 'utf8'))
@@ -617,14 +617,11 @@ export function tamaguiPlugin({
       const exportEntry = pkg.exports?.[subpath]
       if (!exportEntry || typeof exportEntry !== 'object') return
 
-      // pick the right condition
       const resolved = exportEntry.import || exportEntry.module || exportEntry.default
       if (!resolved) return
 
       const fullPath = path.resolve(pkgDir, resolved)
-      if (existsSync(fullPath)) {
-        return fullPath
-      }
+      if (existsSync(fullPath)) return fullPath
     },
   }
 
