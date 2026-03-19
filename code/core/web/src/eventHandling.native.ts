@@ -1,10 +1,15 @@
 /**
- * Native event handling - uses RNGH when available, falls back to usePressability
+ * Native event handling - uses RNGH when available, falls back to usePressability.
+ * On TV platforms (Apple TV / Android TV), RNGH gestures are bypassed because TV
+ * remote button presses don't go through the touch event system. Instead, the native
+ * responder system (usePressability) is used, and RN 0.84+ TV-specific events
+ * (onPressEnter / onPressLeave) are mapped to Tamagui's press callbacks.
  */
 
 import { composeEventHandlers } from '@tamagui/helpers'
 import { getGestureHandler } from '@tamagui/native'
 import React, { useRef } from 'react'
+import { Platform } from 'react-native'
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
@@ -88,7 +93,10 @@ export function useEvents(
   }
 
   // rngh path - logic (hooks already called above)
-  if (isUsingRNGH) {
+  // TV remote button presses (Apple TV / Android TV) do not go through RNGH's
+  // gesture system. Fall back to usePressability (responder system) on TV so
+  // that remote "select" button events reach the press handlers.
+  if (isUsingRNGH && !Platform.isTV) {
     // rngh path - hooks
     const callbacksRef = useRef<any>(isUsingRNGH ? {} : null)
     const gestureRef = useRef<any>(null)
@@ -144,9 +152,25 @@ export function useEvents(
     return null
   }
 
-  // fallback - use usePressability when RNGH not enabled
+  // fallback - use usePressability when RNGH not enabled, or on TV where RNGH
+  // gestures do not respond to remote control "select" button events.
   // split into separate file to avoid deep import warnings
   useMainThreadPressEvents(events, viewProps, hasPressEvents)
+
+  // RN 0.84+ added TV-specific events for the remote select button.
+  // Map them to Tamagui's press callbacks so the pressed state and handlers
+  // work correctly on TV with both RN 0.83 (responder system above handles it)
+  // and RN 0.84+ (onPressEnter / onPressLeave props on the native View).
+  if (Platform.isTV && hasPressEvents) {
+    const { onPressIn, onPressOut, onPress } = events
+    // onPressEnter fires when the TV remote select button is pressed down
+    viewProps.onPressEnter = onPressIn
+    // onPressLeave fires when the TV remote select button is released
+    viewProps.onPressLeave = (e: any) => {
+      onPress?.(e)
+      onPressOut?.(e)
+    }
+  }
 
   return null
 }
@@ -160,6 +184,12 @@ export function wrapWithGestureDetector(
   // Skip wrapping for HOC components - they may return null which crashes GestureDetector
   // (GestureDetector tries to access _internalInstanceHandle on a null native view)
   if (isHOC) {
+    return content
+  }
+
+  // Skip wrapping on TV: GestureDetector only handles touch events and can interfere
+  // with TV remote button events which are routed through the native responder system.
+  if (Platform.isTV) {
     return content
   }
 
