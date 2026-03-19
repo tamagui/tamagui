@@ -287,6 +287,27 @@ function checkConfigExists(root: string): string {
     }
   }
 
+  // check if tamagui.build.ts references a config path
+  const buildConfigNames = [
+    'tamagui.build.ts',
+    'tamagui.build.js',
+    'tamagui.build.mjs',
+    'tamagui.build.cjs',
+  ]
+  for (const name of buildConfigNames) {
+    const buildPath = join(root, name)
+    if (existsSync(buildPath)) {
+      try {
+        const content = readFileSync(buildPath, 'utf8')
+        const match = content.match(/config\s*:\s*['"`]([^'"`]+)['"`]/)
+        if (match) {
+          const configPath = join(root, match[1])
+          if (existsSync(configPath)) return ''
+        }
+      } catch {}
+    }
+  }
+
   // also check if there's a tamagui config referenced in package.json
   const pkgJsonPath = join(root, 'package.json')
   if (existsSync(pkgJsonPath)) {
