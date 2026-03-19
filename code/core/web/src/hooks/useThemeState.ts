@@ -277,7 +277,7 @@ const getNextState = (
   }
 
   if (isSameAsParent) {
-    if (!shouldRerender && lastState) {
+    if (!shouldRerender && lastState && lastState.name === parentState!.name) {
       return [false, lastState]
     }
     return [shouldRerender, { ...parentState, isNew: false }]
