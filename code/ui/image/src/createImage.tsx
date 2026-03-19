@@ -176,8 +176,8 @@ export function createImage<C extends ComponentType<any>>(
       ...rest,
       source: finalSource,
       style: {
-        width: resolvedWidth,
-        height: resolvedHeight,
+        ...(resolvedWidth !== undefined && { width: resolvedWidth }),
+        ...(resolvedHeight !== undefined && { height: resolvedHeight }),
       },
     }
 
