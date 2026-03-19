@@ -7,6 +7,8 @@ const useRNWLite = !!process.env.USE_RNW_LITE
 // TODO this optimizeDeps/one.deps conf should be automatically done by one
 
 export default {
+  clearScreen: false,
+
   ...(useRNWLite && {
     resolve: {
       alias: tamaguiAliases({ rnwLite: true }),
@@ -16,7 +18,7 @@ export default {
   plugins: [
     one({
       optimization: {
-        autoEntriesScanning: false,
+        autoOptimizeDeps: false,
       },
       //  native: {
       //   bundler: 'metro',
@@ -53,8 +55,8 @@ export default {
       // },
     }),
 
-    tamaguiPlugin(
-      // see tamagui.build.ts
-    ),
+    tamaguiPlugin({
+      fixVite8SymlinkExportResolutions: true,
+    }),
   ],
 } satisfies UserConfig

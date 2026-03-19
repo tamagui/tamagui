@@ -1,3 +1,13 @@
+vite 8 monorepo fix:
+- added `tamagui-monorepo-exports-fix` plugin to `@tamagui/vite-plugin`
+- vite 8 (rolldown) resolves workspace subpath imports to filesystem dirs instead of package.json exports
+- see https://github.com/vitejs/vite/issues/11676 and https://github.com/vitejs/vite/issues/20390
+- also adds ssr.optimizeDeps.include for @tamagui/web, @tamagui/core, tamagui to avoid duplicate instances
+- only active in monorepos (detected via workspace: protocol in deps)
+- can be removed once vite fixes upstream
+
+---
+
 before v2 final:
 
 - // import '@tamagui/native/setup-safe-area'

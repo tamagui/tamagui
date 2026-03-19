@@ -17,6 +17,8 @@ type AliasEntry = {
 export declare function tamaguiAliases(options?: AliasOptions): AliasEntry[];
 export declare function tamaguiPlugin({ disableResolveConfig, ...tamaguiOptionsIn }?: TamaguiOptions & {
     disableResolveConfig?: boolean;
+    /** enable workaround for vite 8 resolving workspace symlinked subpath imports to filesystem dirs instead of package.json exports */
+    fixVite8SymlinkExportResolutions?: boolean;
 }): PluginOption;
 export {};
 //# sourceMappingURL=plugin.d.ts.map
