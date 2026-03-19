@@ -31,7 +31,7 @@
     "typescript": "~5.9.2"
   },
   "peerDependencies": {
-    "babel-plugin-react-compiler": ">=1",
+    "babel-plugin-react-compiler": ">=1"
   },
   "peerDependenciesMeta": {
     "babel-plugin-react-compiler": {
