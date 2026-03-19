@@ -1514,11 +1514,9 @@
         "@swc/core": "^1.14.0",
         "@tamagui/babel-plugin-fully-specified": "workspace:*",
         "@types/fs-extra": "^9.0.13",
-        "babel-plugin-react-compiler": "^1.0.0",
         "baseline-browser-mapping": "^2.9.15",
         "chokidar": "^3.5.2",
         "esbuild": "^0.27.2",
-        "esbuild-plugin-es5": "^2.1.1",
         "esbuild-register": "^3.6.0",
         "execa": "^5.0.0",
         "fast-glob": "^3.2.11",
@@ -1530,6 +1528,12 @@
       "devDependencies": {
         "vitest": "4.0.4",
       },
+      "peerDependencies": {
+        "babel-plugin-react-compiler": ">=1",
+      },
+      "optionalPeers": [
+        "babel-plugin-react-compiler",
+      ],
     },
     "code/packages/build/__tests__/fixtures/js-main-package": {
       "name": "tamagui-build-test-js-main-package",
@@ -2045,8 +2049,8 @@
         "@tamagui/create-theme": "workspace:*",
         "@tamagui/linear-gradient": "workspace:*",
         "@tamagui/react-native-svg": "workspace:*",
+        "@tamagui/react-native-web-lite": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
-        "react-native-web": "^0.21.0",
         "tamagui": "workspace:*",
       },
       "devDependencies": {
@@ -6542,8 +6546,6 @@
     "esbuild": ["esbuild@0.27.4", "", { "optionalDependencies": { "@esbuild/aix-ppc64": "0.27.4", "@esbuild/android-arm": "0.27.4", "@esbuild/android-arm64": "0.27.4", "@esbuild/android-x64": "0.27.4", "@esbuild/darwin-arm64": "0.27.4", "@esbuild/darwin-x64": "0.27.4", "@esbuild/freebsd-arm64": "0.27.4", "@esbuild/freebsd-x64": "0.27.4", "@esbuild/linux-arm": "0.27.4", "@esbuild/linux-arm64": "0.27.4", "@esbuild/linux-ia32": "0.27.4", "@esbuild/linux-loong64": "0.27.4", "@esbuild/linux-mips64el": "0.27.4", "@esbuild/linux-ppc64": "0.27.4", "@esbuild/linux-riscv64": "0.27.4", "@esbuild/linux-s390x": "0.27.4", "@esbuild/linux-x64": "0.27.4", "@esbuild/netbsd-arm64": "0.27.4", "@esbuild/netbsd-x64": "0.27.4", "@esbuild/openbsd-arm64": "0.27.4", "@esbuild/openbsd-x64": "0.27.4", "@esbuild/openharmony-arm64": "0.27.4", "@esbuild/sunos-x64": "0.27.4", "@esbuild/win32-arm64": "0.27.4", "@esbuild/win32-ia32": "0.27.4", "@esbuild/win32-x64": "0.27.4" }, "bin": { "esbuild": "bin/esbuild" } }, "sha512-Rq4vbHnYkK5fws5NF7MYTU68FPRE1ajX7heQ/8QXXWqNgqqJ/GkmmyxIzUnf2Sr/bakf8l54716CcMGHYhMrrQ=="],
 
     "esbuild-loader": ["esbuild-loader@4.4.2", "", { "dependencies": { "esbuild": "^0.27.1", "get-tsconfig": "^4.10.1", "loader-utils": "^2.0.4", "webpack-sources": "^1.4.3" }, "peerDependencies": { "webpack": "^4.40.0 || ^5.0.0" } }, "sha512-8LdoT9sC7fzfvhxhsIAiWhzLJr9yT3ggmckXxsgvM07wgrRxhuT98XhLn3E7VczU5W5AFsPKv9DdWcZIubbWkQ=="],
-
-    "esbuild-plugin-es5": ["esbuild-plugin-es5@2.1.1", "", { "dependencies": { "@swc/core": "^1.5.25", "@swc/helpers": "^0.5.11", "deepmerge": "^4.3.1" }, "peerDependencies": { "esbuild": "*" } }, "sha512-GRcHLUwjmrjxz9bN24ooTedrBrAVx7+F8M1aD7FFB+7RTHkt7FY8tHAQ9znyzsV16+95ojbTyJLY+HPO0OI7zA=="],
 
     "esbuild-plugins-node-modules-polyfill": ["esbuild-plugins-node-modules-polyfill@1.8.1", "", { "dependencies": { "@jspm/core": "^2.1.0", "local-pkg": "^1.1.2", "resolve.exports": "^2.0.3" }, "peerDependencies": { "esbuild": ">=0.14.0 <=0.27.x" } }, "sha512-7vxzmyTFDhYUNhjlciMPmp32eUafNIHiXvo8ZD22PzccnxMoGpPnsYn17gSBoFZgpRYNdCJcAWsQ60YVKgKg3A=="],
 
