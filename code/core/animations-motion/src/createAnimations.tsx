@@ -34,6 +34,18 @@ import React, {
   useState,
 } from 'react'
 
+const isServer = typeof window === 'undefined'
+
+// SSR-safe wrapper: framer-motion's useAnimate imports its own React copy in
+// Vite SSR bundles which causes "Invalid hook call" errors. during SSR we
+// don't need animations so we return a no-op scope/animate pair.
+function useAnimateSSRSafe() {
+  if (isServer) {
+    return [useRef(null), (() => {}) as any] as ReturnType<typeof useAnimate>
+  }
+  return useAnimate()
+}
+
 type MotionAnimatedNumber = MotionValue<number>
 type AnimationConfig = ValueTransition
 
@@ -152,7 +164,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       // disable animation during hydration and mounting (prevents "flying across the page")
       const disableAnimation = isComponentHydrating || isMounting || !animationKey
 
-      const [scope, animate] = useAnimate()
+      const [scope, animate] = useAnimateSSRSafe()
 
       // sync ref values for reliable access from callbacks
       refs.current.isExiting = isExiting
@@ -745,7 +757,7 @@ function createMotionView(defaultTag: string) {
 
   const Component = forwardRef((propsIn: any, ref) => {
     const { forwardedRef, animation, render = defaultTag, style, ...propsRest } = propsIn
-    const [scope, animate] = useAnimate()
+    const [scope, animate] = useAnimateSSRSafe()
     const hostRef = useRef<HTMLElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref, hostRef, scope)
 
