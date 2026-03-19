@@ -20,13 +20,12 @@
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/react-native-svg": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
-    "react-native-web": "^0.21.0",
+    "@tamagui/react-native-web-lite": "workspace:*",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.1",
     "@tamagui/vite-plugin": "workspace:*",
-    "@vitejs/plugin-react-swc": "^4.2.0",
     "async-retry": "1.3.1",
     "react-dom": "*",
     "vite": "^8.0.0",

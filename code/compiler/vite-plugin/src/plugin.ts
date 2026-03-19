@@ -318,11 +318,17 @@ export function tamaguiPlugin({
 
     async config(userConf) {
       // wait for config to load to know if we should extract
-      await ensureLoaded()
-      if (!shouldExtract) return
+      const options = await ensureLoaded()
 
       userConf.optimizeDeps ||= {}
       userConf.optimizeDeps.include ||= []
+
+      // inline-style-prefixer is CJS with __esModule and breaks without pre-bundling
+      // (ReferenceError: exports is not defined). always include it.
+      userConf.optimizeDeps.include.push('inline-style-prefixer')
+
+      if (!shouldExtract) return
+
       userConf.optimizeDeps.include.push('@tamagui/core/inject-styles')
     },
 
