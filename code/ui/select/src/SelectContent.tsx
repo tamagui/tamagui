@@ -43,7 +43,7 @@ export const SelectContent = ({
 
   return (
     <Portal open={context.open} zIndex={zIndex} stackZIndex={100_000}>
-      <RemoveScroll enabled={context.open}>
+      <RemoveScroll enabled={context.open && !context.disablePreventBodyScroll}>
         <Dismissable
           asChild
           forceUnmount={!context.open}
