@@ -4,7 +4,7 @@ import { getPragmaOptions } from '@tamagui/static-worker'
 import { createHash } from 'node:crypto'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
+import type { Plugin, PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath, transformWithEsbuild, type Environment } from 'vite'
 import {
   loadTamaguiBuildConfig,
@@ -118,7 +118,7 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
 export function tamaguiPlugin({
   disableResolveConfig,
   ...tamaguiOptionsIn
-}: TamaguiOptions & { disableResolveConfig?: boolean } = {}): Plugin | Plugin[] {
+}: TamaguiOptions & { disableResolveConfig?: boolean } = {}): PluginOption {
   // extraction ON by default, set disableExtraction: true to opt out
   let shouldExtract = !tamaguiOptionsIn.disableExtraction
   let watcher: Promise<{ dispose: () => void } | void | undefined> | undefined

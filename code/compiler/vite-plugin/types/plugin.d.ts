@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static-worker';
-import type { Plugin } from 'vite';
+import type { PluginOption } from 'vite';
 type AliasOptions = {
     /** use @tamagui/react-native-web-lite, 'without-animated' for smaller bundle */
     rnwLite?: boolean | 'without-animated';
@@ -17,6 +17,6 @@ type AliasEntry = {
 export declare function tamaguiAliases(options?: AliasOptions): AliasEntry[];
 export declare function tamaguiPlugin({ disableResolveConfig, ...tamaguiOptionsIn }?: TamaguiOptions & {
     disableResolveConfig?: boolean;
-}): Plugin | Plugin[];
+}): PluginOption;
 export {};
 //# sourceMappingURL=plugin.d.ts.map
