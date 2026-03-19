@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/alert-dialog",
-  "version": "2.0.0-rc.26-1773877899807",
+  "version": "2.0.0-rc.26-1773894550979",
   "source": "src/index.ts",
   "files": [
     "src",

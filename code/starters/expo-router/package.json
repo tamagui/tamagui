@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/expo-router-starter",
-  "version": "2.0.0-rc.26-1773877899807",
+  "version": "2.0.0-rc.26-1773894550979",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
