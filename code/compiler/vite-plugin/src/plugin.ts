@@ -323,11 +323,9 @@ export function tamaguiPlugin({
       userConf.optimizeDeps ||= {}
       userConf.optimizeDeps.include ||= []
 
-      // when using standard react-native-web (not lite), ensure it's pre-bundled
-      // so vite handles inline-style-prefixer CJS/ESM interop correctly
-      if (options && options.platform !== 'native' && !options.useReactNativeWebLite) {
-        userConf.optimizeDeps.include.push('react-native-web')
-      }
+      // inline-style-prefixer is CJS with __esModule and breaks without pre-bundling
+      // (ReferenceError: exports is not defined). always include it.
+      userConf.optimizeDeps.include.push('inline-style-prefixer')
 
       if (!shouldExtract) return
 
