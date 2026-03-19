@@ -243,9 +243,10 @@ export const LocationNotification = BentoComponentStub
         }
       },
     },
-    tamaguiPlugin(
+    tamaguiPlugin({
       // see tamagui.build.ts
-    ),
+      disable: process.env.NODE_ENV !== 'production',
+    }),
 
     one({
       react: {

@@ -61,7 +61,7 @@ export default {
     }),
 
     tamaguiPlugin({
-      fixVite8SymlinkExportResolutions: true,
+      // see tamagui.build.ts for options
     }),
   ],
 } satisfies UserConfig

@@ -2,7 +2,7 @@ import type { TamaguiOptions, ExtractedResponse } from '@tamagui/static-worker'
 import * as Static from '@tamagui/static-worker'
 import { getPragmaOptions } from '@tamagui/static-worker'
 import { createHash } from 'node:crypto'
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { Plugin, PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
@@ -121,8 +121,6 @@ export function tamaguiPlugin({
   ...tamaguiOptionsIn
 }: TamaguiOptions & {
   disableResolveConfig?: boolean
-  /** enable workaround for vite 8 resolving workspace symlinked subpath imports to filesystem dirs instead of package.json exports */
-  fixVite8SymlinkExportResolutions?: boolean
 } = {}): PluginOption {
   // extraction ON by default, set disableExtraction: true to opt out
   let shouldExtract = !tamaguiOptionsIn.disableExtraction
@@ -552,78 +550,5 @@ export function tamaguiPlugin({
     },
   }
 
-  // workaround for vite 8 (rolldown) resolving workspace symlinked subpath
-  // imports to the filesystem directory (e.g. themes/v5/index.js) instead of
-  // the package.json "exports" field. those directories contain CJS metro-compat
-  // shims which break in an ESM context.
-  // see: https://github.com/vitejs/vite/issues/11676
-  //      https://github.com/vitejs/vite/issues/20390
-  const monorepoExportsFixPlugin: Plugin = {
-    name: 'tamagui-monorepo-exports-fix',
-    enforce: 'pre',
-
-    config() {
-      if (!tamaguiOptionsIn.fixVite8SymlinkExportResolutions) return
-
-      // collect all @tamagui/* packages from node_modules for SSR deduplication
-      const tamaguiPkgs: string[] = ['tamagui']
-      try {
-        const scopeDir = path.join(process.cwd(), 'node_modules', '@tamagui')
-        const { readdirSync } = require('node:fs') as typeof import('node:fs')
-        for (const name of readdirSync(scopeDir)) {
-          tamaguiPkgs.push(`@tamagui/${name}`)
-        }
-      } catch {}
-
-      return {
-        resolve: {
-          dedupe: tamaguiPkgs,
-        },
-        ssr: {
-          noExternal: tamaguiPkgs,
-          optimizeDeps: {
-            include: tamaguiPkgs,
-          },
-        },
-      }
-    },
-
-    // fix subpath imports (@tamagui/themes/v5) to use package.json exports
-    // instead of filesystem resolution which hits CJS metro-compat shims
-    resolveId(source, importer, options) {
-      if (!tamaguiOptionsIn.fixVite8SymlinkExportResolutions) return
-      if (!source.startsWith('@tamagui/')) return
-      const parts = source.split('/')
-      // only handle subpath imports, not bare imports
-      if (parts.length < 3) return
-      const pkgName = `${parts[0]}/${parts[1]}`
-      const subpath = `./${parts.slice(2).join('/')}`
-
-      let pkgDir: string
-      try {
-        const pkgJsonPath = fileURLToPath(import.meta.resolve(`${pkgName}/package.json`))
-        pkgDir = path.dirname(pkgJsonPath)
-      } catch {
-        return
-      }
-
-      let pkg: any
-      try {
-        pkg = JSON.parse(readFileSync(path.join(pkgDir, 'package.json'), 'utf8'))
-      } catch {
-        return
-      }
-
-      const exportEntry = pkg.exports?.[subpath]
-      if (!exportEntry || typeof exportEntry !== 'object') return
-
-      const resolved = exportEntry.import || exportEntry.module || exportEntry.default
-      if (!resolved) return
-
-      const fullPath = path.resolve(pkgDir, resolved)
-      if (existsSync(fullPath)) return fullPath
-    },
-  }
-
-  return [monorepoExportsFixPlugin, basePlugin, rnwLitePlugin, extractPlugin]
+  return [basePlugin, rnwLitePlugin, extractPlugin]
 }
