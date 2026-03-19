@@ -148,7 +148,8 @@
   "manypkg": {
     "workspaceProtocol": "require",
     "ignoredRules": [
-      "INVALID_DEV_AND_PEER_DEPENDENCY_RELATIONSHIP"
+      "INVALID_DEV_AND_PEER_DEPENDENCY_RELATIONSHIP",
+      "UNSORTED_DEPENDENCIES"
     ]
   },
   "upgradeSets": {
