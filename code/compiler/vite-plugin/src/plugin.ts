@@ -242,18 +242,7 @@ export function tamaguiPlugin({
         })
       }
 
-      // when using standard react-native-web (not lite), ensure it's pre-bundled
-      // so vite handles inline-style-prefixer CJS/ESM interop correctly
-      const includeRNW =
-        options.platform !== 'native' && !options.useReactNativeWebLite
-
       return {
-        ...(includeRNW && {
-          optimizeDeps: {
-            include: ['react-native-web'],
-          },
-        }),
-
         envPrefix: ['TAMAGUI_'],
 
         environments: {
@@ -329,11 +318,19 @@ export function tamaguiPlugin({
 
     async config(userConf) {
       // wait for config to load to know if we should extract
-      await ensureLoaded()
-      if (!shouldExtract) return
+      const options = await ensureLoaded()
 
       userConf.optimizeDeps ||= {}
       userConf.optimizeDeps.include ||= []
+
+      // when using standard react-native-web (not lite), ensure it's pre-bundled
+      // so vite handles inline-style-prefixer CJS/ESM interop correctly
+      if (options && options.platform !== 'native' && !options.useReactNativeWebLite) {
+        userConf.optimizeDeps.include.push('react-native-web')
+      }
+
+      if (!shouldExtract) return
+
       userConf.optimizeDeps.include.push('@tamagui/core/inject-styles')
     },
 
