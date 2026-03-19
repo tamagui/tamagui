@@ -1,13 +1,22 @@
+import { spawn, execSync } from 'node:child_process'
 import { expect, test } from '@playwright/test'
 import waitPort from 'wait-port'
-import 'zx/globals'
 
 const port = 5008
 const domain = `http://localhost:${port}`
 
+function spawnServer(command, args) {
+  const proc = spawn(command, args, {
+    cwd: process.cwd(),
+    stdio: 'pipe',
+    shell: true,
+  })
+  proc.stderr.on('data', (d) => console.log(d.toString()))
+  return proc
+}
+
 test(`loads dev mode no error or warning logs`, async ({ page }) => {
-  const server = $`bun run dev`
-  server.catch(console.log)
+  const server = spawnServer('bun', ['run', 'dev'])
   try {
     await waitPort({
       port: port,
@@ -44,14 +53,13 @@ test(`loads dev mode no error or warning logs`, async ({ page }) => {
   } catch (err) {
     console.error(err)
   } finally {
-    await server.kill()
+    server.kill()
   }
 })
 
 test(`builds to prod same thing`, async ({ page }) => {
-  await $`bun run build:prod`
-  const server = $`bun run vite preview --port ${port}`
-  server.catch(console.log)
+  execSync('bun run build:prod', { stdio: 'pipe' })
+  const server = spawnServer('bun', ['run', 'vite', 'preview', '--port', String(port)])
 
   try {
     await waitPort({
@@ -87,6 +95,6 @@ test(`builds to prod same thing`, async ({ page }) => {
     expect(logs.warn.length).toBe(0)
     await expect(page.getByText('Hello world').first()).toBeVisible()
   } finally {
-    await server.kill()
+    server.kill()
   }
 })
