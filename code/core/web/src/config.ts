@@ -44,7 +44,11 @@ const getConfigFromGlobalOrLocal = (): TamaguiInternalConfig | null => {
         ) {
           globalThis.__tamaguiHasWarnedGlobalFallback = true
           console.warn(
-            `Tamagui: Using global config fallback. This may indicate duplicate tamagui instances (e.g., from Vite SSR bundling). This is handled automatically, but may cause issues.`
+            `⚠️⚠️⚠️⚠️⚠️
+
+Tamagui: Using global config fallback. This may indicate duplicate tamagui instances (e.g., from Vite SSR bundling). This is handled automatically, but likely causes issues!
+
+⚠️⚠️⚠️⚠️⚠️`
           )
         }
         globalThis.__tamaguiPendingCheck = false
