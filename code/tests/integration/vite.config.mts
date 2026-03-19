@@ -6,6 +6,9 @@ export default defineConfig({
     port: 5008,
   },
   clearScreen: false,
+  optimizeDeps: {
+    include: ['inline-style-prefixer'],
+  },
   plugins: [
     tamaguiPlugin({
       components: ['tamagui'],
