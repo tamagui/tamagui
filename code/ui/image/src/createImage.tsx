@@ -172,10 +172,15 @@ export function createImage<C extends ComponentType<any>>(
       height: resolvedHeight,
     })
 
+    const incomingStyle = Array.isArray(rest.style)
+      ? Object.assign({}, ...rest.style.flat())
+      : rest.style
+
     const finalProps: any = {
       ...rest,
       source: finalSource,
       style: {
+        ...incomingStyle,
         ...(resolvedWidth !== undefined && { width: resolvedWidth }),
         ...(resolvedHeight !== undefined && { height: resolvedHeight }),
       },
