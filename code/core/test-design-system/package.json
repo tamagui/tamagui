@@ -6,7 +6,7 @@
   "sideEffects": [
     "*.css"
   ],
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs",
   "types": "./types/index.d.ts",
   "publishConfig": {
