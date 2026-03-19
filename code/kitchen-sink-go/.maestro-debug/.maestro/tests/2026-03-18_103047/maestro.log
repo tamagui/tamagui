@@ -1,0 +1,139 @@
+10:30:47.581 [ INFO] maestro.cli.report.TestDebugReporter.logSystemInfo: Debug output path: /Users/n8/tamagui/code/kitchen-sink-go/./.maestro-debug/.maestro/tests/2026-03-18_103047
+10:30:47.583 [ INFO] MAESTRO.logSystemInfo: ---- System Info ----
+10:30:47.584 [ INFO] MAESTRO.logSystemInfo: Maestro Version: 2.3.0
+10:30:47.584 [ INFO] MAESTRO.logSystemInfo: CI: Undefined
+10:30:47.585 [ INFO] MAESTRO.logSystemInfo: OS Name: Mac OS X
+10:30:47.585 [ INFO] MAESTRO.logSystemInfo: OS Version: 26.2
+10:30:47.585 [ INFO] MAESTRO.logSystemInfo: Architecture: aarch64
+10:30:47.585 [ INFO] MAESTRO.logSystemInfo: Java Version: 25
+10:30:47.640 [ INFO] MAESTRO.logSystemInfo: Xcode Version: 26.2
+10:30:47.645 [ INFO] MAESTRO.logSystemInfo: Flutter Version: Undefined
+10:30:47.650 [ INFO] MAESTRO.logSystemInfo: Flutter Channel: Undefined
+10:30:47.651 [ INFO] MAESTRO.logSystemInfo: ---------------------
+10:30:47.913 [ INFO] maestro.orchestra.workspace.WorkspaceExecutionPlanner.plan: Created execution plan: ExecutionPlan(flowsToRun=[/Users/n8/tamagui/code/kitchen-sink-go/./flows/Sheet.yaml, /Users/n8/tamagui/code/kitchen-sink-go/./flows/BoxShadowToken.yaml, /Users/n8/tamagui/code/kitchen-sink-go/./flows/OpenApp.yaml], sequence=FlowSequence(flows=[], continueOnFailure=null), workspaceConfig=WorkspaceConfig(flows=null, includeTags=null, excludeTags=null, executionOrder=null, baselineBranch=null, notifications=null, disableRetries=false, platform=PlatformConfiguration(android=AndroidConfiguration(disableAnimations=false), ios=IOSConfiguration(disableAnimations=false, snapshotKeyHonorModalViews=null)), testOutputDir=null))
+10:30:48.364 [ INFO] maestro.cli.command.TestCommand.runShardSuite: [shard 1] Selected device 0B818936-F866-4EDA-A3FB-33E0674661AC using port 7001 with execution plan ExecutionPlan(flowsToRun=[/Users/n8/tamagui/code/kitchen-sink-go/./flows/Sheet.yaml, /Users/n8/tamagui/code/kitchen-sink-go/./flows/BoxShadowToken.yaml, /Users/n8/tamagui/code/kitchen-sink-go/./flows/OpenApp.yaml], sequence=FlowSequence(flows=[], continueOnFailure=null), workspaceConfig=WorkspaceConfig(flows=null, includeTags=null, excludeTags=null, executionOrder=null, baselineBranch=null, notifications=null, disableRetries=false, platform=PlatformConfiguration(android=AndroidConfiguration(disableAnimations=false), ios=IOSConfiguration(disableAnimations=false, snapshotKeyHonorModalViews=null)), testOutputDir=null))
+10:30:48.448 [DEBUG] io.micrometer.common.util.internal.logging.InternalLoggerFactory.newDefaultFactory: Using SLF4J as the default logging framework
+10:30:48.550 [TRACE] ios.xctest.XCTestIOSDevice.open: Opening a connection
+10:30:48.550 [TRACE] xcuitest.XCTestDriverClient.restartXCTestRunner: Restarting XCTest Runner (uninstalling, installing and starting)
+10:30:48.550 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Start] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:48.552 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Failed] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC, exception: java.net.ConnectException: Failed to connect to /127.0.0.1:7001
+10:30:48.552 [TRACE] xcuitest.XCTestDriverClient.restartXCTestRunner: XCTest Runner uninstalled, will install and start it
+10:30:48.552 [ INFO] xcuitest.installer.LocalXCTestInstaller.start$lambda$3: start()
+10:30:48.552 [ INFO] xcuitest.installer.LocalXCTestInstaller.start$lambda$3: [Start] Install XCUITest runner on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:48.552 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Start] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:48.553 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Failed] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC, exception: java.net.ConnectException: Failed to connect to /127.0.0.1:7001
+10:30:48.553 [ INFO] xcuitest.installer.IOSBuildProductsExtractor.extract: [Start] Writing build products
+10:30:48.592 [ INFO] xcuitest.installer.IOSBuildProductsExtractor.extract: [Done] Writing build products
+10:30:48.592 [ INFO] xcuitest.installer.IOSBuildProductsExtractor.extract: [Start] Writing maestro-driver-iosUITests-Runner app
+10:30:48.772 [ INFO] xcuitest.installer.IOSBuildProductsExtractor.extract: [Done] Writing maestro-driver-iosUITests-Runner app
+10:30:48.773 [ INFO] xcuitest.installer.IOSBuildProductsExtractor.extract: [Start] Writing maestro-driver-ios app
+10:30:48.778 [ INFO] xcuitest.installer.IOSBuildProductsExtractor.extract: [Done] Writing maestro-driver-ios app
+10:30:48.779 [ INFO] xcuitest.installer.LocalXCTestInstaller.startXCTestRunner: Installing driver with xcodebuild
+10:30:48.780 [ INFO] xcuitest.installer.LocalXCTestInstaller.startXCTestRunner: [Start] Running XcUITest with `xcodebuild test-without-building` with 7001 and config: IOSDriverConfig(prebuiltRunner=false, sourceDirectory=driver-iPhoneSimulator, context=CLI, snapshotKeyHonorModalViews=null)
+10:30:48.781 [ INFO] util.CommandLineUtils.runCommand: Running command line operation: [xcodebuild, test-without-building, -xctestrun, /var/folders/w3/nl3nl7ks6s36641hzl_gls9m0000gn/T/0B818936-F866-4EDA-A3FB-33E0674661AC4315643239107106454/maestro-driver-ios-config.xctestrun, -destination, id=0B818936-F866-4EDA-A3FB-33E0674661AC, -derivedDataPath, /var/folders/w3/nl3nl7ks6s36641hzl_gls9m0000gn/T/maestro_xctestrunner_xcodebuild_output15180957663349813024] with {TEST_RUNNER_PORT=7001}
+10:30:48.785 [ INFO] xcuitest.installer.LocalXCTestInstaller.startXCTestRunner: [Done] Running XcUITest with `xcodebuild test-without-building`
+10:30:48.785 [ INFO] xcuitest.installer.LocalXCTestInstaller.start$lambda$3: [Done] Install XCUITest runner on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:48.786 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Start] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:48.786 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Failed] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC, exception: java.net.ConnectException: Failed to connect to /127.0.0.1:7001
+10:30:49.290 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Start] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:49.291 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Failed] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC, exception: java.net.ConnectException: Failed to connect to /127.0.0.1:7001
+10:30:49.791 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Start] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:49.792 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Failed] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC, exception: java.net.ConnectException: Failed to connect to /127.0.0.1:7001
+10:30:50.297 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Start] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:50.297 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Failed] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC, exception: java.net.ConnectException: Failed to connect to /127.0.0.1:7001
+10:30:50.799 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Start] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:50.800 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Failed] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC, exception: java.net.ConnectException: Failed to connect to /127.0.0.1:7001
+10:30:51.300 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Start] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:51.301 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Failed] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC, exception: java.net.ConnectException: Failed to connect to /127.0.0.1:7001
+10:30:51.807 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Start] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:51.809 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Failed] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC, exception: java.net.ConnectException: Failed to connect to /127.0.0.1:7001
+10:30:52.313 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Start] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:52.314 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Failed] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC, exception: java.net.ConnectException: Failed to connect to /127.0.0.1:7001
+10:30:52.819 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Start] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:52.828 [ INFO] xcuitest.installer.LocalXCTestInstaller.xcTestDriverStatusCheck: [Done] Perform XCUITest driver status check on 0B818936-F866-4EDA-A3FB-33E0674661AC
+10:30:52.835 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow:  Running flow Sheet
+10:30:52.840 [ INFO] maestro.Maestro.cachedDeviceInfo_delegate$lambda$0: Getting device info
+10:30:52.887 [ INFO] maestro.Maestro.cachedDeviceInfo_delegate$lambda$0: Got device info: DeviceInfo(platform=IOS, widthPixels=1206, heightPixels=2622, widthGrid=402, heightGrid=874)
+10:30:52.920 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Define variables RUNNING
+10:30:52.921 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$7: Define variables COMPLETED
+10:30:52.922 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Apply configuration RUNNING
+10:30:52.922 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$7: Apply configuration COMPLETED
+10:30:52.922 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Run OpenApp.yaml RUNNING
+10:30:52.922 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Apply configuration RUNNING
+10:30:52.922 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$7: Apply configuration COMPLETED
+10:30:52.922 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Stop host.exp.Exponent RUNNING
+10:30:52.922 [ INFO] maestro.Maestro.stopApp: Stopping app host.exp.Exponent
+10:30:52.929 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$7: Stop host.exp.Exponent COMPLETED
+10:30:52.930 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Open exp://127.0.0.1:8081?disableOnboarding=1 RUNNING
+10:30:52.930 [ INFO] maestro.Maestro.openLink: Opening link exp://127.0.0.1:8081?disableOnboarding=1 for app: host.exp.Exponent with autoVerify config as false
+10:30:52.931 [ INFO] util.CommandLineUtils.runCommand: Running command line operation: [xcrun, simctl, openurl, 0B818936-F866-4EDA-A3FB-33E0674661AC, exp://127.0.0.1:8081?disableOnboarding=1] with {}
+10:30:53.040 [ERROR] util.CommandLineUtils.runCommand: Process failed with exit code 194
+10:30:53.041 [ERROR] util.CommandLineUtils.runCommand: Error output An error was encountered processing the command (domain=NSOSStatusErrorDomain, code=-10814):
+Simulator device failed to open exp://127.0.0.1:8081?disableOnboarding=1.
+Underlying error (domain=NSOSStatusErrorDomain, code=-10814):
+	The operation couldn’t be completed. (OSStatus error -10814.)
+
+10:30:53.041 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$9: Open exp://127.0.0.1:8081?disableOnboarding=1 FAILED
+10:30:53.042 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+10:30:53.043 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+10:30:53.105 [ERROR] maestro.orchestra.Orchestra.executeCommands: [Command execution] CommandFailed: kotlin.Unit java.lang.IllegalStateException: An error was encountered processing the command (domain=NSOSStatusErrorDomain, code=-10814):
+Simulator device failed to open exp://127.0.0.1:8081?disableOnboarding=1.
+Underlying error (domain=NSOSStatusErrorDomain, code=-10814):
+	The operation couldn’t be completed. (OSStatus error -10814.)
+
+10:30:53.105 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$9: Run OpenApp.yaml FAILED
+10:30:53.334 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow:  Running flow BoxShadowToken
+10:30:53.335 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Define variables RUNNING
+10:30:53.336 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$7: Define variables COMPLETED
+10:30:53.336 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Apply configuration RUNNING
+10:30:53.336 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$7: Apply configuration COMPLETED
+10:30:53.336 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Run OpenApp.yaml RUNNING
+10:30:53.336 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Apply configuration RUNNING
+10:30:53.336 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$7: Apply configuration COMPLETED
+10:30:53.336 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Stop host.exp.Exponent RUNNING
+10:30:53.336 [ INFO] maestro.Maestro.stopApp: Stopping app host.exp.Exponent
+10:30:53.341 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$7: Stop host.exp.Exponent COMPLETED
+10:30:53.342 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Open exp://127.0.0.1:8081?disableOnboarding=1 RUNNING
+10:30:53.342 [ INFO] maestro.Maestro.openLink: Opening link exp://127.0.0.1:8081?disableOnboarding=1 for app: host.exp.Exponent with autoVerify config as false
+10:30:53.342 [ INFO] util.CommandLineUtils.runCommand: Running command line operation: [xcrun, simctl, openurl, 0B818936-F866-4EDA-A3FB-33E0674661AC, exp://127.0.0.1:8081?disableOnboarding=1] with {}
+10:30:53.482 [ERROR] util.CommandLineUtils.runCommand: Process failed with exit code 194
+10:30:53.482 [ERROR] util.CommandLineUtils.runCommand: Error output An error was encountered processing the command (domain=NSOSStatusErrorDomain, code=-10814):
+Simulator device failed to open exp://127.0.0.1:8081?disableOnboarding=1.
+Underlying error (domain=NSOSStatusErrorDomain, code=-10814):
+	The operation couldn’t be completed. (OSStatus error -10814.)
+
+10:30:53.482 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$9: Open exp://127.0.0.1:8081?disableOnboarding=1 FAILED
+10:30:53.482 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+10:30:53.482 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+10:30:53.557 [ERROR] maestro.orchestra.Orchestra.executeCommands: [Command execution] CommandFailed: kotlin.Unit java.lang.IllegalStateException: An error was encountered processing the command (domain=NSOSStatusErrorDomain, code=-10814):
+Simulator device failed to open exp://127.0.0.1:8081?disableOnboarding=1.
+Underlying error (domain=NSOSStatusErrorDomain, code=-10814):
+	The operation couldn’t be completed. (OSStatus error -10814.)
+
+10:30:53.557 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$9: Run OpenApp.yaml FAILED
+10:30:53.564 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow:  Running flow OpenApp
+10:30:53.566 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Define variables RUNNING
+10:30:53.566 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$7: Define variables COMPLETED
+10:30:53.566 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Apply configuration RUNNING
+10:30:53.566 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$7: Apply configuration COMPLETED
+10:30:53.566 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Stop host.exp.Exponent RUNNING
+10:30:53.566 [ INFO] maestro.Maestro.stopApp: Stopping app host.exp.Exponent
+10:30:53.569 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$7: Stop host.exp.Exponent COMPLETED
+10:30:53.570 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$5: Open exp://127.0.0.1:8081?disableOnboarding=1 RUNNING
+10:30:53.570 [ INFO] maestro.Maestro.openLink: Opening link exp://127.0.0.1:8081?disableOnboarding=1 for app: host.exp.Exponent with autoVerify config as false
+10:30:53.570 [ INFO] util.CommandLineUtils.runCommand: Running command line operation: [xcrun, simctl, openurl, 0B818936-F866-4EDA-A3FB-33E0674661AC, exp://127.0.0.1:8081?disableOnboarding=1] with {}
+10:30:53.708 [ERROR] util.CommandLineUtils.runCommand: Process failed with exit code 194
+10:30:53.708 [ERROR] util.CommandLineUtils.runCommand: Error output An error was encountered processing the command (domain=NSOSStatusErrorDomain, code=-10814):
+Simulator device failed to open exp://127.0.0.1:8081?disableOnboarding=1.
+Underlying error (domain=NSOSStatusErrorDomain, code=-10814):
+	The operation couldn’t be completed. (OSStatus error -10814.)
+
+10:30:53.708 [ERROR] maestro.orchestra.Orchestra.executeCommands: [Command execution] CommandFailed: kotlin.Unit java.lang.IllegalStateException: An error was encountered processing the command (domain=NSOSStatusErrorDomain, code=-10814):
+Simulator device failed to open exp://127.0.0.1:8081?disableOnboarding=1.
+Underlying error (domain=NSOSStatusErrorDomain, code=-10814):
+	The operation couldn’t be completed. (OSStatus error -10814.)
+
+10:30:53.708 [ INFO] maestro.cli.runner.TestSuiteInteractor.runFlow$lambda$17$lambda$9: Open exp://127.0.0.1:8081?disableOnboarding=1 FAILED
+10:30:53.708 [ INFO] maestro.Maestro.takeScreenshot: Taking screenshot
+10:30:53.709 [TRACE] maestro.utils.ScreenshotUtils.takeScreenshot: Taking screenshot to output sink
+10:30:53.798 [ INFO] maestro.cli.report.TestDebugReporter.deleteOldFiles: Performing purge of logs older than 14 days from /Users/n8/tamagui/code/kitchen-sink-go/./.maestro-debug/.maestro/tests

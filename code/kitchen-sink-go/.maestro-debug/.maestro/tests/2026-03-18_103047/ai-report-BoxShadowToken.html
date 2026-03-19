@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maestro Test Report</title>
+    <script src="https://cdn.tailwindcss.com/3.4.5"></script>
+    <script>tailwind.config = {
+    darkMode: "media",
+    theme: {
+        extend: {
+            colors: {
+                "gray-dark": "#110c22", // text-gray-dark
+                "gray-medium": "#4f4b5c", // text-gray-medium
+                "gray-1": "#f8f8f8", // surface-gray-1
+                "gray-0": "#110C22", // surface-gray-0
+                "orange-2": "#ff9254", // surface-orange-2
+            },
+        },
+    },
+};
+</script>
+    <style type="text/tailwindcss">@layer components {
+    body {
+        @apply dark:bg-gray-dark dark:text-gray-1 text-gray-dark;
+    }
+
+    .screenshot-image {
+        @apply w-64 rounded-lg border-2 border-gray-medium dark:border-gray-1 pb-1;
+    }
+
+    .screen-card {
+        @apply flex items-start gap-4;
+    }
+
+    .defect-card {
+        @apply flex flex-col items-start gap-2 rounded-lg bg-[#f8f8f8] p-2 text-gray-dark dark:bg-gray-medium dark:text-gray-1;
+    }
+
+    .badge {
+        @apply dark:text-red-500 rounded-lg bg-[#ececec] dark:bg-gray-dark p-1 font-semibold text-gray-medium dark:text-gray-1;
+    }
+
+    .toggle-link {
+        @apply block border-2 border-gray-medium bg-[#ececec] px-3 py-4 text-gray-medium hover:bg-gray-medium hover:text-[#ececec];
+    }
+
+    .toggle-link-selected {
+        @apply border-orange-2;
+    }
+
+    .divider {
+        @apply h-0.5 rounded-sm bg-gray-medium dark:bg-gray-1 my-2;
+    }
+
+    .btn {
+        @apply hover:text-gray-medium dark:hover:text-gray-medium;
+    }
+}
+</style>
+  </head>
+  <body>
+    <div class="flex min-h-screen flex-col">
+      <div class="container mx-auto py-6 space-y-2">
+        <h1 class="text-3xl">AI suggestions for flow <span class="text-gray-medium">BoxShadowToken</span></h1>
+        <div class="group relative inline-block self-start"><button class="btn">→ Open other report</button>
+          <div class="absolute z-10 hidden min-w-32 group-hover:block"><a class="toggle-link" href="./ai-report-Sheet.html">(1) Sheet</a><a class="toggle-link toggle-link-selected" href="./ai-report-BoxShadowToken.html">(2) BoxShadowToken</a><a class="toggle-link" href="./ai-report-OpenApp.html">(3) OpenApp</a></div>
+        </div>
+        <p><a href="/Users/n8/tamagui/code/kitchen-sink-go/./flows/BoxShadowToken.yaml" class="btn">→ Open flow file ( BoxShadowToken.yaml )</a></p>
+      </div>
+      <main class="container mx-auto flex flex-col gap-4">
+        <p class="text-lg">0 possible defects found</p>
+      </main>
+    </div>
+  </body>
+</html>

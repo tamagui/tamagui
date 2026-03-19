@@ -1,0 +1,14 @@
+14:24:21.094 [ INFO] maestro.cli.report.TestDebugReporter.logSystemInfo: Debug output path: /Users/n8/tamagui/code/kitchen-sink-go/./.maestro-debug/.maestro/tests/2026-03-18_142421
+14:24:21.096 [ INFO] MAESTRO.logSystemInfo: ---- System Info ----
+14:24:21.096 [ INFO] MAESTRO.logSystemInfo: Maestro Version: 2.3.0
+14:24:21.096 [ INFO] MAESTRO.logSystemInfo: CI: Undefined
+14:24:21.096 [ INFO] MAESTRO.logSystemInfo: OS Name: Mac OS X
+14:24:21.097 [ INFO] MAESTRO.logSystemInfo: OS Version: 26.2
+14:24:21.097 [ INFO] MAESTRO.logSystemInfo: Architecture: aarch64
+14:24:21.097 [ INFO] MAESTRO.logSystemInfo: Java Version: 25
+14:24:21.145 [ INFO] MAESTRO.logSystemInfo: Xcode Version: 26.2
+14:24:21.150 [ INFO] MAESTRO.logSystemInfo: Flutter Version: Undefined
+14:24:21.154 [ INFO] MAESTRO.logSystemInfo: Flutter Channel: Undefined
+14:24:21.154 [ INFO] MAESTRO.logSystemInfo: ---------------------
+14:24:21.349 [ INFO] maestro.orchestra.workspace.WorkspaceExecutionPlanner.plan: Created execution plan: ExecutionPlan(flowsToRun=[/Users/n8/tamagui/code/kitchen-sink-go/./flows/Sheet.yaml, /Users/n8/tamagui/code/kitchen-sink-go/./flows/BoxShadowToken.yaml, /Users/n8/tamagui/code/kitchen-sink-go/./flows/OpenApp.yaml], sequence=FlowSequence(flows=[], continueOnFailure=null), workspaceConfig=WorkspaceConfig(flows=null, includeTags=null, excludeTags=null, executionOrder=null, baselineBranch=null, notifications=null, disableRetries=false, platform=PlatformConfiguration(android=AndroidConfiguration(disableAnimations=false), ios=IOSConfiguration(disableAnimations=false, snapshotKeyHonorModalViews=null)), testOutputDir=null))
+14:24:21.646 [DEBUG] io.micrometer.common.util.internal.logging.InternalLoggerFactory.newDefaultFactory: Using SLF4J as the default logging framework
