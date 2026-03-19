@@ -59,7 +59,7 @@ test(`loads dev mode no error or warning logs`, async ({ page }) => {
 
 test(`builds to prod same thing`, async ({ page }) => {
   execSync('bun run build:prod', { stdio: 'pipe' })
-  const server = spawnServer('bun', ['run', 'vite', 'preview', '--port', String(port)])
+  const server = spawnServer('bun', ['run', 'preview', '--port', String(port)])
 
   try {
     await waitPort({

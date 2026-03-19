@@ -7,6 +7,18 @@ export default defineConfig({
     port: 5008,
   },
   clearScreen: false,
+  resolve: {
+    alias: [
+      {
+        find: /^inline-style-prefixer\/lib\/(.*)$/,
+        replacement: 'inline-style-prefixer/es/$1',
+      },
+      {
+        find: /^css-in-js-utils\/lib\/(.*)$/,
+        replacement: 'css-in-js-utils/es/$1',
+      },
+    ],
+  },
   plugins: [
     react(),
     tamaguiPlugin({
