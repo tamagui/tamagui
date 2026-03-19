@@ -1,7 +1,6 @@
-import type { UserConfig } from 'vite'
-// TODO why is this not typing
-import { one } from 'one/vite'
 import { tamaguiAliases, tamaguiPlugin } from '@tamagui/vite-plugin'
+import { one } from 'one/vite'
+import type { UserConfig } from 'vite'
 
 const useRNWLite = !!process.env.USE_RNW_LITE
 
@@ -13,26 +12,11 @@ export default {
       alias: tamaguiAliases({ rnwLite: true }),
     },
   }),
-  ssr: {
-    optimizeDeps: {
-      include: [
-        '@tamagui/toast',
-        '@tamagui/web',
-        '@tamagui/core',
-        '@tamagui/animations-motion',
-        'framer-motion',
-        'motion/react',
-      ],
-    },
-  },
 
   plugins: [
     one({
-      config: {
-        tsConfigPaths: {
-          root: import.meta.dirname,
-          projectDiscovery: 'eager',
-        },
+      optimization: {
+        autoEntriesScanning: false,
       },
       //  native: {
       //   bundler: 'metro',
@@ -69,6 +53,8 @@ export default {
       // },
     }),
 
-    tamaguiPlugin(),
+    tamaguiPlugin(
+      // see tamagui.build.ts
+    ),
   ],
 } satisfies UserConfig

@@ -17,8 +17,7 @@
     "serve": "one serve",
     "ios": "one run:ios",
     "ios:prod": "one prebuild",
-    "android": "one run:android",
-    "upgrade:tamagui": "$npm_execpath up '*tamagui*' '@tamagui/*'"
+    "android": "one run:android"
   },
   "dependencies": {
     "@react-native-masked-view/masked-view": "^0.3.1",

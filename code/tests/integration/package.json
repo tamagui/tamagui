@@ -11,8 +11,7 @@
     "preview": "vite preview",
     "dev": "NODE_ENV=development vite --host --clearScreen false",
     "dev:extract": "EXTRACT=1 bun run dev",
-    "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json",
-    "upgrade:tamagui": "bunx npm-check-updates -u '*tamagui*' '@tamagui/*' && bun install"
+    "prod": "NODE_ENV=production webpack --json=dist/compilation-stats.json"
   },
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",
