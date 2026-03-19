@@ -242,7 +242,18 @@ export function tamaguiPlugin({
         })
       }
 
+      // when using standard react-native-web (not lite), ensure it's pre-bundled
+      // so vite handles inline-style-prefixer CJS/ESM interop correctly
+      const includeRNW =
+        options.platform !== 'native' && !options.useReactNativeWebLite
+
       return {
+        ...(includeRNW && {
+          optimizeDeps: {
+            include: ['react-native-web'],
+          },
+        }),
+
         envPrefix: ['TAMAGUI_'],
 
         environments: {
