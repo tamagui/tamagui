@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/radio-group",
-  "version": "2.0.0-rc.27",
+  "version": "2.0.0-rc.28",
   "source": "src/index.ts",
   "files": [
     "src",
