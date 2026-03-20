@@ -675,20 +675,21 @@ async function run() {
         await sleep(10 * 1000)
       }
 
-      if (!canary && !skipStarters) {
-        const starterFreeDir = join(process.cwd(), '../starter-free')
-        if (!dirty) {
-          await spawnify(`git pull --rebase origin HEAD`, { cwd: starterFreeDir })
-        }
+      // shell issues
+      // if (!canary && !skipStarters) {
+      //   const starterFreeDir = join(process.cwd(), '../starter-free')
+      //   if (!dirty) {
+      //     await spawnify(`git pull --rebase origin HEAD`, { cwd: starterFreeDir })
+      //   }
 
-        await spawnify(`bun run upgrade:starters`)
+      //   await spawnify(`bun run upgrade:starters`)
 
-        if (!shouldFinish) {
-          // Run bun test in starter-free directory
-          await spawnify(`bun run test`, { cwd: starterFreeDir })
-          await finishAndCommit(starterFreeDir)
-        }
-      }
+      //   if (!shouldFinish) {
+      //     // Run bun test in starter-free directory
+      //     await spawnify(`bun run test`, { cwd: starterFreeDir })
+      //     await finishAndCommit(starterFreeDir)
+      //   }
+      // }
 
       await finishAndCommit()
 
