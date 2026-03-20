@@ -10,7 +10,7 @@ import {
   YStack,
 } from 'tamagui'
 import { useState, useRef, useEffect } from 'react'
-import { ChevronDown } from '@tamagui/lucide-icons'
+import { ChevronDown } from '@tamagui/lucide-icons-2'
 import {
   useHasDismissableLayers,
   useIsInsideDismissable,

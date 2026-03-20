@@ -8,7 +8,7 @@ import {
   Trash2,
   Users,
   X,
-} from '@tamagui/lucide-icons'
+} from '@tamagui/lucide-icons-2'
 import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,

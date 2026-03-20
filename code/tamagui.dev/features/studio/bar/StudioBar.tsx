@@ -1,5 +1,5 @@
 import { LogoIcon } from '@tamagui/logo'
-import { Moon, Sun, X } from '@tamagui/lucide-icons'
+import { Moon, Sun, X } from '@tamagui/lucide-icons-2'
 import { memo } from 'react'
 import {
   Button,

@@ -6,7 +6,7 @@
   "dependencies": {
     "@tamagui/config": "workspace:*",
     "@tamagui/demos": "workspace:*",
-    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "tamagui": "workspace:*"
   },

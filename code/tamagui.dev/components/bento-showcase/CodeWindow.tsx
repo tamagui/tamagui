@@ -1,4 +1,4 @@
-import { AlertCircle, Copy, File } from '@tamagui/lucide-icons'
+import { AlertCircle, Copy, File } from '@tamagui/lucide-icons-2'
 import { lazy, useEffect, useMemo, useState } from 'react'
 import {
   Button,

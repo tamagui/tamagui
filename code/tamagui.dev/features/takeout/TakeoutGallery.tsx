@@ -1,5 +1,5 @@
 import { Image, type ImageProps } from '@tamagui/image'
-import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons'
+import { ArrowLeft, ArrowRight, X } from '@tamagui/lucide-icons-2'
 import { createUseStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
 import type { ViewProps } from 'tamagui'

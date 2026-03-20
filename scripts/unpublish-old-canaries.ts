@@ -12,7 +12,7 @@
  *   bun scripts/unpublish-old-canaries.ts --dry-run --max-age=30
  *   bun scripts/unpublish-old-canaries.ts --yes
  *   bun scripts/unpublish-old-canaries.ts --yes --max-age=60
- *   bun scripts/unpublish-old-canaries.ts --yes --package=@tamagui/lucide-icons
+ *   bun scripts/unpublish-old-canaries.ts --yes --package=@tamagui/lucide-icons-2
  */
 
 import { execSync } from 'node:child_process'

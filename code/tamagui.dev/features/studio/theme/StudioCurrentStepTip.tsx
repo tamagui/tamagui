@@ -1,4 +1,4 @@
-import { Lightbulb, X } from '@tamagui/lucide-icons'
+import { Lightbulb, X } from '@tamagui/lucide-icons-2'
 import { useEffect, useState } from 'react'
 import { Button, Popover, Theme } from 'tamagui'
 

@@ -3,7 +3,7 @@
  * https://github.com/tamagui/tamagui/issues/1859
  */
 
-import { Check, ChevronDown } from '@tamagui/lucide-icons'
+import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
 import React from 'react'
 import { Adapt, Button, Select, Sheet, Text, XStack, YStack } from 'tamagui'
 

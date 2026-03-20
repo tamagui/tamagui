@@ -1313,7 +1313,7 @@
         "@tamagui/linear-gradient": "workspace:*",
         "@tamagui/list-item": "workspace:*",
         "@tamagui/logo": "workspace:*",
-        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/menu": "workspace:*",
         "@tamagui/popover": "workspace:*",
         "@tamagui/progress": "workspace:*",
@@ -1365,7 +1365,7 @@
         "@tamagui/font-inter": "workspace:*",
         "@tamagui/get-token": "workspace:*",
         "@tamagui/input": "workspace:*",
-        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/menu": "workspace:*",
         "@tamagui/native": "workspace:*",
         "@tamagui/portal": "workspace:*",
@@ -1440,7 +1440,7 @@
         "@tamagui/core": "workspace:*",
         "@tamagui/demos": "workspace:*",
         "@tamagui/kitchen-sink-shared": "workspace:*",
-        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/metro-plugin": "workspace:*",
         "@tamagui/toast": "workspace:*",
         "@tamagui/web": "workspace:*",
@@ -1457,7 +1457,7 @@
       "dependencies": {
         "@tamagui/config": "workspace:*",
         "@tamagui/demos": "workspace:*",
-        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/toast": "workspace:*",
         "tamagui": "workspace:*",
       },
@@ -1652,7 +1652,7 @@
       },
     },
     "code/packages/lucide-icons": {
-      "name": "@tamagui/lucide-icons",
+      "name": "@tamagui/lucide-icons-2",
       "version": "2.0.0-rc.27",
       "dependencies": {
         "@tamagui/core": "workspace:*",
@@ -1756,7 +1756,7 @@
       "dependencies": {
         "@tamagui/animations-react-native": "workspace:*",
         "@tamagui/core": "workspace:*",
-        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/toast": "workspace:*",
         "expo-constants": "~55.0.7",
         "expo-image": "~55.0.6",
@@ -1860,7 +1860,7 @@
         "@tamagui/animations-motion": "workspace:*",
         "@tamagui/colors": "workspace:*",
         "@tamagui/demos": "workspace:*",
-        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/react-native-media-driver": "workspace:*",
         "@tamagui/toast": "workspace:*",
         "@vxrn/color-scheme": "^1.12.3",
@@ -1891,7 +1891,7 @@
       "dependencies": {
         "@react-navigation/native": "^7.0.14",
         "@tamagui/config": "workspace:*",
-        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/toast": "workspace:*",
         "babel-preset-expo": "~55.0.0",
         "burnt": "^0.12.2",
@@ -1979,7 +1979,7 @@
         "@tamagui/demos": "workspace:*",
         "@tamagui/get-token": "workspace:*",
         "@tamagui/logo": "workspace:*",
-        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/tamagui-dev-config": "workspace:*",
         "@tamagui/use-store": "workspace:*",
         "@tanstack/react-table": "^8.11.2",
@@ -2133,7 +2133,7 @@
         "@tamagui/animations-react-native": "workspace:*",
         "@tamagui/colors": "workspace:*",
         "@tamagui/font-inter": "workspace:*",
-        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
         "@tamagui/themes": "workspace:*",
         "burnt": "^0.12.2",
@@ -5227,7 +5227,7 @@
 
     "@tamagui/logo": ["@tamagui/logo@workspace:code/packages/logo"],
 
-    "@tamagui/lucide-icons": ["@tamagui/lucide-icons@workspace:code/packages/lucide-icons"],
+    "@tamagui/lucide-icons-2": ["@tamagui/lucide-icons-2@workspace:code/packages/lucide-icons"],
 
     "@tamagui/menu": ["@tamagui/menu@workspace:code/ui/menu"],
 

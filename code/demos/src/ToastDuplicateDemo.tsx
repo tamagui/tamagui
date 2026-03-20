@@ -1,4 +1,4 @@
-import { CheckCircle2 } from '@tamagui/lucide-icons'
+import { CheckCircle2 } from '@tamagui/lucide-icons-2'
 import { Toast } from '@tamagui/toast'
 import React from 'react'
 import { Button, XStack, YStack } from 'tamagui'

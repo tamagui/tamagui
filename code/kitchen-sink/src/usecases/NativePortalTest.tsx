@@ -3,7 +3,7 @@
  * Tests that Portal/Sheet/Popover work correctly when using teleport
  */
 
-import { Check, ChevronDown } from '@tamagui/lucide-icons'
+import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
 import React from 'react'
 import { Adapt, Button, Popover, Select, Sheet, Text, XStack, YStack } from 'tamagui'
 import { getPortal } from '@tamagui/native'

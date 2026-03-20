@@ -70,5 +70,5 @@
     "@tamagui/build": "workspace:*",
     "subset-font": "^2.1.0"
   },
-  "skipPublishIfUnchanged": true
+  "skipPublishIfUnchanged": false
 }

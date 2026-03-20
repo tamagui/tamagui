@@ -1,5 +1,5 @@
 import { getSize, getSpace } from '@tamagui/get-token'
-import { Moon } from '@tamagui/lucide-icons'
+import { Moon } from '@tamagui/lucide-icons-2'
 import type { GetProps, SizeTokens } from '@tamagui/web'
 import {
   View,

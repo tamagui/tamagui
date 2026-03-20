@@ -6,7 +6,7 @@ import {
   FilePlus,
   Trash2,
   RefreshCw,
-} from '@tamagui/lucide-icons'
+} from '@tamagui/lucide-icons-2'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
 import { Button, View } from 'tamagui'

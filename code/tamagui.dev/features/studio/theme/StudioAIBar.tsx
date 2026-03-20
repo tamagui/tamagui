@@ -1,6 +1,6 @@
 import slugify from '@sindresorhus/slugify'
 import { Input } from '@tamagui/input'
-import { History, Moon, Plus, Sun, X } from '@tamagui/lucide-icons'
+import { History, Moon, Plus, Sun, X } from '@tamagui/lucide-icons-2'
 import { animations } from '@tamagui/tamagui-dev-config'
 import { useStore } from '@tamagui/use-store'
 import { useUserScheme } from '@vxrn/color-scheme'

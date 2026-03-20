@@ -1,4 +1,4 @@
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import React from 'react'
 
 import type { FontSizeTokens, SelectProps } from 'tamagui'

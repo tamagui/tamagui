@@ -1,6 +1,6 @@
 import { H2, Paragraph, styled, XStack, YStack } from 'tamagui'
 import { ThemeTintAlt } from '@tamagui/logo'
-import { ArrowRight } from '@tamagui/lucide-icons'
+import { ArrowRight } from '@tamagui/lucide-icons-2'
 
 import { Link } from '~/components/Link'
 import { GithubIcon } from '~/features/icons/GithubIcon'

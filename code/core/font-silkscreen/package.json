@@ -41,5 +41,5 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*"
   },
-  "skipPublishIfUnchanged": true
+  "skipPublishIfUnchanged": false
 }

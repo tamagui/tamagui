@@ -1,4 +1,4 @@
-import { Minus, Plus } from '@tamagui/lucide-icons'
+import { Minus, Plus } from '@tamagui/lucide-icons-2'
 import {
   Button,
   Input,

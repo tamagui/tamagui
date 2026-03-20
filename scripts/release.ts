@@ -450,7 +450,6 @@ async function run() {
 
     // packages with "skipPublishIfUnchanged": true in package.json can be
     // skipped when their source hasn't changed since the last release.
-    // this is an explicit opt-in per-package, replacing the old heuristic.
     function isSkippablePackage(pkg: (typeof packageJsons)[0]) {
       return !!pkg.json.skipPublishIfUnchanged
     }
@@ -484,7 +483,7 @@ async function run() {
 
         if (unchanged.length > 0) {
           console.info(
-            `\nSkipping ${unchanged.length} unchanged leaf packages:\n${unchanged.map((p) => `  - ${p.name}`).join('\n')}\n`
+            `\nSkipping ${unchanged.length} unchanged packages:\n${unchanged.map((p) => `  - ${p.name}`).join('\n')}\n`
           )
           skippedPackages.push(...unchanged)
           packagesToPublish = changed
@@ -494,6 +493,37 @@ async function run() {
       }
     } else if (forcePublishAll) {
       console.info(`--force-publish-all: publishing all packages`)
+    }
+
+    // for skipped packages, resolve their last published version so deps point
+    // to a version that actually exists on the registry
+    const skippedVersions = new Map<string, string>()
+
+    if (skippedPackages.length > 0) {
+      const distTag = canary ? 'canary' : 'latest'
+      console.info(
+        `Resolving last published versions for skipped packages (tag: ${distTag})...`
+      )
+      await pMap(
+        skippedPackages,
+        async ({ name }) => {
+          try {
+            const { stdout } = await exec(`npm view ${name} dist-tags.${distTag}`)
+            const lastVersion = stdout.trim()
+            if (lastVersion) {
+              skippedVersions.set(name, lastVersion)
+              console.info(`  ${name}: ${lastVersion}`)
+            } else {
+              // no published version, will use new version (force publish)
+              skippedVersions.set(name, version)
+            }
+          } catch {
+            // never published, use new version
+            skippedVersions.set(name, version)
+          }
+        },
+        { concurrency: 10 }
+      )
     }
 
     if (!shouldFinish && dryRun) {
@@ -552,7 +582,8 @@ async function run() {
             if (!pkgJson[field]) continue
             for (const depName in pkgJson[field]) {
               if (pkgJson[field][depName].startsWith('workspace:')) {
-                pkgJson[field][depName] = version
+                // use the skipped package's last published version if it won't be published
+                pkgJson[field][depName] = skippedVersions.get(depName) || version
               }
             }
           }
@@ -578,8 +609,14 @@ async function run() {
           await spawnify(publishCommand, {
             cwd: tmpDir,
           }).catch((err) => {
-            console.error(err)
-            process.exit(1)
+            if (rePublish) {
+              console.warn(
+                `⚠️  ${name}: publish failed (likely already published), continuing`
+              )
+            } else {
+              console.error(err)
+              process.exit(1)
+            }
           })
         },
         {
@@ -590,7 +627,7 @@ async function run() {
       console.info(`✅ Published\n`)
 
       // for canary releases, point the canary dist-tag to the latest version for skipped packages
-      // so `npm install @tamagui/lucide-icons@canary` still resolves
+      // so `npm install @tamagui/lucide-icons-2@canary` still resolves
       const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
       if ((canary || isCanaryVersion) && skippedPackages.length > 0) {
         console.info(

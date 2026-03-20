@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { Button, XStack, YStack, SizableText } from 'tamagui'
-import { Trash2 } from '@tamagui/lucide-icons'
+import { Trash2 } from '@tamagui/lucide-icons-2'
 import type { BuildTheme } from '../../types'
 
 type BuildThemeItemProps = {

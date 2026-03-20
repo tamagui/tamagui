@@ -1,4 +1,4 @@
-import { Heading } from '@tamagui/lucide-icons'
+import { Heading } from '@tamagui/lucide-icons-2'
 import { memo, useState } from 'react'
 import {
   Label,

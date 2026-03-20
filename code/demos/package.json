@@ -61,7 +61,7 @@
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/list-item": "workspace:*",
     "@tamagui/logo": "workspace:*",
-    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/menu": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/progress": "workspace:*",

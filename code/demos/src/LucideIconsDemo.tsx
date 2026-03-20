@@ -1,5 +1,5 @@
 import React from 'react'
-import * as LucideIcons from '@tamagui/lucide-icons'
+import * as LucideIcons from '@tamagui/lucide-icons-2'
 
 import { ScrollView } from 'react-native'
 import { Input, Paragraph, Spacer, YStack, useDebounceValue } from 'tamagui'

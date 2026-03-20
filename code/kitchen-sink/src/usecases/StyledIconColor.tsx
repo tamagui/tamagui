@@ -1,4 +1,4 @@
-import { Check } from '@tamagui/lucide-icons'
+import { Check } from '@tamagui/lucide-icons-2'
 import { styled, YStack } from 'tamagui'
 
 const RedCheck = styled(Check, {

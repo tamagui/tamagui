@@ -1,4 +1,4 @@
-import { X } from '@tamagui/lucide-icons'
+import { X } from '@tamagui/lucide-icons-2'
 import { memo } from 'react'
 import { useWindowDimensions } from 'react-native'
 import type { DialogCloseProps } from 'tamagui'

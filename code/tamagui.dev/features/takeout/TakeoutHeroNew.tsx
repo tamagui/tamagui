@@ -1,5 +1,5 @@
 import { ThemeTintAlt } from '@tamagui/logo'
-import { Check, Copy, ExternalLink } from '@tamagui/lucide-icons'
+import { Check, Copy, ExternalLink } from '@tamagui/lucide-icons-2'
 import { Suspense, lazy } from 'react'
 import {
   Button,

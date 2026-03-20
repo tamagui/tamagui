@@ -16,7 +16,7 @@
   "dependencies": {
     "@react-navigation/native": "^7.0.14",
     "@tamagui/config": "workspace:*",
-    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "babel-preset-expo": "~55.0.0",
     "burnt": "^0.12.2",

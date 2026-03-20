@@ -2,7 +2,7 @@ import { throttle } from '@github/mini-throttle'
 import { Image } from '@tamagui/image'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { useTint } from '@tamagui/logo'
-import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons'
+import { ChevronLeft, ChevronRight, Lock, MapPin, Star } from '@tamagui/lucide-icons-2'
 import { demoMedia } from '@tamagui/tamagui-dev-config'
 import {
   memo,

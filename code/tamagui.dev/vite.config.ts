@@ -91,7 +91,7 @@ const include = [
   'unified',
   '@tamagui/get-font-sized',
   '@tamagui/linear-gradient',
-  '@tamagui/lucide-icons',
+  '@tamagui/lucide-icons-2',
   '@rehookify/datepicker',
   '@tamagui/get-token',
   '@tamagui/roving-focus',

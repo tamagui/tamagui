@@ -1,5 +1,5 @@
 import { Anchor, Button, Paragraph, Sheet, XStack } from 'tamagui'
-import { ChevronDown } from '@tamagui/lucide-icons'
+import { ChevronDown } from '@tamagui/lucide-icons-2'
 import { useState } from 'react'
 // import { toast } from '@tamagui/toast'
 

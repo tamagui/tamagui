@@ -12,7 +12,7 @@
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
-    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/themes": "workspace:*",
     "burnt": "^0.12.2",

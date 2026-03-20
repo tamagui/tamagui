@@ -1,4 +1,4 @@
-import { Check, LogOut, Menu } from '@tamagui/lucide-icons'
+import { Check, LogOut, Menu } from '@tamagui/lucide-icons-2'
 import {
   Button,
   Checkbox,

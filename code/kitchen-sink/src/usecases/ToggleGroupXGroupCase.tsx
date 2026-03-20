@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, ToggleGroup, XGroup, YStack, Text } from 'tamagui'
-import { AlignLeft, AlignCenter, AlignRight } from '@tamagui/lucide-icons'
+import { AlignLeft, AlignCenter, AlignRight } from '@tamagui/lucide-icons-2'
 
 /**
  * Tests two patterns of combining ToggleGroup + XGroup:

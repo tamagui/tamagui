@@ -25,7 +25,7 @@
     "@tamagui/animations-motion": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/demos": "workspace:*",
-    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "@vxrn/color-scheme": "^1.12.3",

@@ -16,7 +16,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/demos": "workspace:*",
     "@tamagui/kitchen-sink-shared": "workspace:*",
-    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/metro-plugin": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "@tamagui/web": "workspace:*",

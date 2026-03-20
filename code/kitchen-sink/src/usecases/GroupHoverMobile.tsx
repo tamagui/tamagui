@@ -1,5 +1,5 @@
 import { View, Text, XStack, styled } from 'tamagui'
-import { Star } from '@tamagui/lucide-icons'
+import { Star } from '@tamagui/lucide-icons-2'
 
 const GroupContainer = styled(View, {
   group: 'testy',

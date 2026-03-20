@@ -21,7 +21,7 @@
   "dependencies": {
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/toast": "workspace:*",
     "expo-constants": "~55.0.7",
     "expo-image": "~55.0.6",

@@ -45,5 +45,5 @@
     "react": ">=19",
     "react-native-svg": ">=12"
   },
-  "skipPublishIfUnchanged": true
+  "skipPublishIfUnchanged": false
 }
