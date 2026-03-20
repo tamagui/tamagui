@@ -109,9 +109,10 @@ export const createMediaStyle = (
       const prefix = specificities[specificity]
       // when styleInner is wrapped in @media (eg hover), inject specificity
       // inside the block — `:root@media ...` is invalid CSS
-      styleRule = prefix && styleInner[0] === '@'
-        ? styleInner.replace('{', `{${prefix}`)
-        : `${prefix}${styleInner}`
+      styleRule =
+        prefix && styleInner[0] === '@'
+          ? styleInner.replace('{', `{${prefix}`)
+          : `${prefix}${styleInner}`
     }
   }
 
