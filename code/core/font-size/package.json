@@ -32,12 +32,15 @@
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean"
   },
+  "dependencies": {
+    "@tamagui/core": "workspace:*"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19"
   },
   "peerDependencies": {
-    "@tamagui/core": "*",
     "react": ">=19"
-  }
+  },
+  "skipPublishIfUnchanged": true
 }

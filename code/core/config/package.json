@@ -115,6 +115,8 @@
     "@tamagui/animations-reanimated": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/font-inter": "workspace:*",
+    "@tamagui/font-silkscreen": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/theme-builder": "workspace:*",
@@ -125,9 +127,7 @@
     "@tamagui/build": "workspace:*"
   },
   "peerDependencies": {
-    "@tamagui/animations-moti": "*",
-    "@tamagui/font-inter": "*",
-    "@tamagui/font-silkscreen": "*"
+    "@tamagui/animations-moti": "*"
   },
   "peerDependenciesMeta": {
     "@tamagui/animations-moti": {

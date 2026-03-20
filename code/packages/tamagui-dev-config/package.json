@@ -47,6 +47,9 @@
     "@tamagui/colors": "workspace:*",
     "@tamagui/config": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/font-cherry-bomb": "workspace:*",
+    "@tamagui/font-inter": "workspace:*",
+    "@tamagui/font-silkscreen": "workspace:*",
     "@tamagui/shorthands": "workspace:*",
     "@tamagui/theme-builder": "workspace:*",
     "@tamagui/themes": "workspace:*",
@@ -57,9 +60,6 @@
     "react": ">=19"
   },
   "peerDependencies": {
-    "@tamagui/font-cherry-bomb": "*",
-    "@tamagui/font-inter": "*",
-    "@tamagui/font-silkscreen": "*",
     "react": ">=19"
   }
 }

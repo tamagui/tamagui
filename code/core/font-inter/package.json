@@ -63,11 +63,12 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "dependencies": {
+    "@tamagui/core": "workspace:*"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "subset-font": "^2.1.0"
   },
-  "peerDependencies": {
-    "@tamagui/core": "*"
-  }
+  "skipPublishIfUnchanged": true
 }

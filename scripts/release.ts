@@ -448,25 +448,11 @@ async function run() {
       )
     }
 
-    // detect leaf packages: no @tamagui/* in dependencies AND not depended on
-    // by any other published package's dependencies (only peerDeps). these are
-    // safe to skip when their source hasn't changed since the last release.
-    const dependedOnBy = new Set<string>()
-    for (const pkg of packageJsons) {
-      for (const dep of Object.keys(pkg.json.dependencies || {})) {
-        if (dep.startsWith('@tamagui/')) {
-          dependedOnBy.add(dep)
-        }
-      }
-    }
-
-    function isLeafPackage(pkg: (typeof packageJsons)[0]) {
-      const internalDeps = Object.keys(pkg.json.dependencies || {}).filter((d) =>
-        d.startsWith('@tamagui/')
-      )
-      if (internalDeps.length > 0) return false
-      if (dependedOnBy.has(pkg.name)) return false
-      return true
+    // packages with "skipPublishIfUnchanged": true in package.json can be
+    // skipped when their source hasn't changed since the last release.
+    // this is an explicit opt-in per-package, replacing the old heuristic.
+    function isSkippablePackage(pkg: (typeof packageJsons)[0]) {
+      return !!pkg.json.skipPublishIfUnchanged
     }
 
     const lastTag = await getLastReleaseRef()
@@ -484,7 +470,7 @@ async function run() {
         const unchanged: typeof packageJsons = []
 
         for (const pkg of packageJsons) {
-          if (!isLeafPackage(pkg)) {
+          if (!isSkippablePackage(pkg)) {
             changed.push(pkg)
             continue
           }

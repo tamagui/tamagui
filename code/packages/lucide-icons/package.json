@@ -14126,10 +14126,13 @@
     "react-native-svg": "15.15.3",
     "uppercamelcase": "^3.0.0"
   },
+  "dependencies": {
+    "@tamagui/core": "workspace:*",
+    "@tamagui/helpers-icon": "workspace:*"
+  },
   "peerDependencies": {
-    "@tamagui/core": "*",
-    "@tamagui/helpers-icon": "*",
     "react": ">=19",
     "react-native-svg": ">=12"
-  }
+  },
+  "skipPublishIfUnchanged": true
 }

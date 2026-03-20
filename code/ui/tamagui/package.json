@@ -139,6 +139,7 @@
     "@tamagui/use-window-dimensions": "workspace:*",
     "@tamagui/v2-toast": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
@@ -148,7 +149,6 @@
     "react-native-web": "^0.21.0"
   },
   "peerDependencies": {
-    "@tamagui/font-size": "*",
     "react": ">=19",
     "react-native": "*"
   },

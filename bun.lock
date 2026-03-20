@@ -430,6 +430,8 @@
         "@tamagui/animations-reanimated": "workspace:*",
         "@tamagui/colors": "workspace:*",
         "@tamagui/core": "workspace:*",
+        "@tamagui/font-inter": "workspace:*",
+        "@tamagui/font-silkscreen": "workspace:*",
         "@tamagui/react-native-media-driver": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
         "@tamagui/theme-builder": "workspace:*",
@@ -441,8 +443,6 @@
       },
       "peerDependencies": {
         "@tamagui/animations-moti": "*",
-        "@tamagui/font-inter": "*",
-        "@tamagui/font-silkscreen": "*",
       },
       "optionalPeers": [
         "@tamagui/animations-moti",
@@ -612,121 +612,125 @@
     "code/core/font": {
       "name": "@tamagui/font",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/constants": "workspace:*",
+        "@tamagui/web": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
       },
       "peerDependencies": {
-        "@tamagui/constants": "*",
-        "@tamagui/web": "*",
         "react": ">=19",
       },
     },
     "code/core/font-cherry-bomb": {
       "name": "@tamagui/font-cherry-bomb",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/constants": "workspace:*",
+        "@tamagui/core": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "subset-font": "^2.1.0",
-      },
-      "peerDependencies": {
-        "@tamagui/constants": "*",
-        "@tamagui/core": "*",
       },
     },
     "code/core/font-dm-sans": {
       "name": "@tamagui/font-dm-sans",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "subset-font": "^2.1.0",
-      },
-      "peerDependencies": {
-        "@tamagui/core": "*",
       },
     },
     "code/core/font-dm-serif-display": {
       "name": "@tamagui/font-dm-serif-display",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "subset-font": "^2.1.0",
-      },
-      "peerDependencies": {
-        "@tamagui/core": "*",
       },
     },
     "code/core/font-fira-mono": {
       "name": "@tamagui/font-fira-mono",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
-      },
-      "peerDependencies": {
-        "@tamagui/core": "*",
       },
     },
     "code/core/font-glusp": {
       "name": "@tamagui/font-glusp",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/web": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
-      },
-      "peerDependencies": {
-        "@tamagui/web": "*",
       },
     },
     "code/core/font-inter": {
       "name": "@tamagui/font-inter",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "subset-font": "^2.1.0",
-      },
-      "peerDependencies": {
-        "@tamagui/core": "*",
       },
     },
     "code/core/font-munro": {
       "name": "@tamagui/font-munro",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
-      },
-      "peerDependencies": {
-        "@tamagui/core": "*",
       },
     },
     "code/core/font-nohemi": {
       "name": "@tamagui/font-nohemi",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "subset-font": "^2.1.0",
-      },
-      "peerDependencies": {
-        "@tamagui/core": "*",
       },
     },
     "code/core/font-silkscreen": {
       "name": "@tamagui/font-silkscreen",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
-      },
-      "peerDependencies": {
-        "@tamagui/core": "*",
       },
     },
     "code/core/font-size": {
       "name": "@tamagui/font-size",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
       },
       "peerDependencies": {
-        "@tamagui/core": "*",
         "react": ">=19",
       },
     },
@@ -806,14 +810,16 @@
     "code/core/helpers-icon": {
       "name": "@tamagui/helpers-icon",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+        "@tamagui/sizable-context": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
         "react-native-svg": "15.15.3",
       },
       "peerDependencies": {
-        "@tamagui/core": "*",
-        "@tamagui/sizable-context": "*",
         "react": ">=19",
         "react-native-svg": ">=12",
       },
@@ -1291,47 +1297,49 @@
     "code/demos": {
       "name": "@tamagui/demos",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/animate-presence": "workspace:*",
+        "@tamagui/avatar": "workspace:*",
+        "@tamagui/button": "workspace:*",
+        "@tamagui/checkbox": "workspace:*",
+        "@tamagui/checkbox-headless": "workspace:*",
+        "@tamagui/colors": "workspace:*",
+        "@tamagui/config": "workspace:*",
+        "@tamagui/context-menu": "workspace:*",
+        "@tamagui/core": "workspace:*",
+        "@tamagui/get-button-sized": "workspace:*",
+        "@tamagui/image": "workspace:*",
+        "@tamagui/input": "workspace:*",
+        "@tamagui/linear-gradient": "workspace:*",
+        "@tamagui/list-item": "workspace:*",
+        "@tamagui/logo": "workspace:*",
+        "@tamagui/lucide-icons": "workspace:*",
+        "@tamagui/menu": "workspace:*",
+        "@tamagui/popover": "workspace:*",
+        "@tamagui/progress": "workspace:*",
+        "@tamagui/radio-group": "workspace:*",
+        "@tamagui/radio-headless": "workspace:*",
+        "@tamagui/roving-focus": "workspace:*",
+        "@tamagui/select": "workspace:*",
+        "@tamagui/sheet": "workspace:*",
+        "@tamagui/slider": "workspace:*",
+        "@tamagui/stacks": "workspace:*",
+        "@tamagui/switch": "workspace:*",
+        "@tamagui/switch-headless": "workspace:*",
+        "@tamagui/tabs": "workspace:*",
+        "@tamagui/tamagui-dev-config": "workspace:*",
+        "@tamagui/theme": "workspace:*",
+        "@tamagui/toast": "workspace:*",
+        "tamagui": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
         "react-native": "0.83.2",
       },
       "peerDependencies": {
-        "@tamagui/animate-presence": "*",
-        "@tamagui/avatar": "*",
-        "@tamagui/button": "*",
-        "@tamagui/checkbox": "*",
-        "@tamagui/checkbox-headless": "*",
-        "@tamagui/colors": "*",
-        "@tamagui/config": "*",
-        "@tamagui/context-menu": "*",
-        "@tamagui/core": "*",
-        "@tamagui/get-button-sized": "*",
-        "@tamagui/image": "*",
-        "@tamagui/input": "*",
-        "@tamagui/linear-gradient": "*",
-        "@tamagui/list-item": "*",
-        "@tamagui/logo": "*",
-        "@tamagui/lucide-icons": "*",
-        "@tamagui/menu": "*",
-        "@tamagui/popover": "*",
-        "@tamagui/progress": "*",
-        "@tamagui/radio-group": "*",
-        "@tamagui/radio-headless": "*",
-        "@tamagui/roving-focus": "*",
-        "@tamagui/select": "*",
-        "@tamagui/sheet": "*",
-        "@tamagui/slider": "*",
-        "@tamagui/stacks": "*",
-        "@tamagui/switch": "*",
-        "@tamagui/switch-headless": "*",
-        "@tamagui/tabs": "*",
-        "@tamagui/tamagui-dev-config": "*",
-        "@tamagui/theme": "*",
-        "@tamagui/toast": "*",
         "react": ">=19",
         "react-native": "*",
-        "tamagui": "*",
       },
     },
     "code/kitchen-sink": {
@@ -1646,6 +1654,10 @@
     "code/packages/lucide-icons": {
       "name": "@tamagui/lucide-icons",
       "version": "2.0.0-rc.26-1773894550979",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+        "@tamagui/helpers-icon": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "camelcase": "^6.0.0",
@@ -1658,8 +1670,6 @@
         "uppercamelcase": "^3.0.0",
       },
       "peerDependencies": {
-        "@tamagui/core": "*",
-        "@tamagui/helpers-icon": "*",
         "react": ">=19",
         "react-native-svg": ">=12",
       },
@@ -1772,6 +1782,9 @@
         "@tamagui/colors": "workspace:*",
         "@tamagui/config": "workspace:*",
         "@tamagui/core": "workspace:*",
+        "@tamagui/font-cherry-bomb": "workspace:*",
+        "@tamagui/font-inter": "workspace:*",
+        "@tamagui/font-silkscreen": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
         "@tamagui/theme-builder": "workspace:*",
         "@tamagui/themes": "workspace:*",
@@ -1782,9 +1795,6 @@
         "react": ">=19",
       },
       "peerDependencies": {
-        "@tamagui/font-cherry-bomb": "*",
-        "@tamagui/font-inter": "*",
-        "@tamagui/font-silkscreen": "*",
         "react": ">=19",
       },
     },
@@ -2304,6 +2314,7 @@
       "dependencies": {
         "@tamagui/config-default": "workspace:*",
         "@tamagui/core": "workspace:*",
+        "@tamagui/font-size": "workspace:*",
         "@tamagui/get-button-sized": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/helpers-tamagui": "workspace:*",
@@ -2318,7 +2329,6 @@
         "vitest": "4.0.4",
       },
       "peerDependencies": {
-        "@tamagui/font-size": "*",
         "react": ">=19",
       },
     },
@@ -2351,6 +2361,7 @@
         "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/focusable": "workspace:*",
+        "@tamagui/font-size": "workspace:*",
         "@tamagui/get-token": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/helpers-tamagui": "workspace:*",
@@ -2364,7 +2375,6 @@
         "react": ">=19",
       },
       "peerDependencies": {
-        "@tamagui/font-size": "*",
         "react": ">=19",
       },
     },
@@ -2680,6 +2690,7 @@
         "@tamagui/core": "workspace:*",
         "@tamagui/element": "workspace:*",
         "@tamagui/focusable": "workspace:*",
+        "@tamagui/font-size": "workspace:*",
         "@tamagui/get-button-sized": "workspace:*",
         "@tamagui/get-font-sized": "workspace:*",
         "@tamagui/get-token": "workspace:*",
@@ -2696,7 +2707,6 @@
         "vitest": "4.0.4",
       },
       "peerDependencies": {
-        "@tamagui/font-size": "*",
         "react": ">=19",
         "react-native": "*",
       },
@@ -2747,6 +2757,7 @@
       "name": "@tamagui/list-item",
       "version": "2.0.0-rc.26-1773894550979",
       "dependencies": {
+        "@tamagui/font-size": "workspace:*",
         "@tamagui/get-font-sized": "workspace:*",
         "@tamagui/get-token": "workspace:*",
         "@tamagui/helpers": "workspace:*",
@@ -2760,7 +2771,6 @@
         "react": ">=19",
       },
       "peerDependencies": {
-        "@tamagui/font-size": "*",
         "react": ">=19",
       },
     },
@@ -3303,6 +3313,7 @@
         "@tamagui/elements": "workspace:*",
         "@tamagui/fake-react-native": "workspace:*",
         "@tamagui/focusable": "workspace:*",
+        "@tamagui/font-size": "workspace:*",
         "@tamagui/form": "workspace:*",
         "@tamagui/get-button-sized": "workspace:*",
         "@tamagui/get-font-sized": "workspace:*",
@@ -3353,7 +3364,6 @@
         "react-native-web": "^0.21.0",
       },
       "peerDependencies": {
-        "@tamagui/font-size": "*",
         "react": ">=19",
         "react-native": "*",
       },
@@ -3420,6 +3430,7 @@
         "@tamagui/constants": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/focusable": "workspace:*",
+        "@tamagui/font-size": "workspace:*",
         "@tamagui/get-token": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/helpers-tamagui": "workspace:*",
@@ -3435,7 +3446,6 @@
         "react": ">=19",
       },
       "peerDependencies": {
-        "@tamagui/font-size": "*",
         "react": ">=19",
       },
     },

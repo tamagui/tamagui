@@ -35,10 +35,11 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "dependencies": {
+    "@tamagui/core": "workspace:*"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*"
   },
-  "peerDependencies": {
-    "@tamagui/core": "*"
-  }
+  "skipPublishIfUnchanged": true
 }

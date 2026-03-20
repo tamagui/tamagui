@@ -43,6 +43,7 @@
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
@@ -50,7 +51,6 @@
     "react": ">=19"
   },
   "peerDependencies": {
-    "@tamagui/font-size": "*",
     "react": ">=19"
   },
   "module:jsx": "dist/jsx"

@@ -32,15 +32,18 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "dependencies": {
+    "@tamagui/core": "workspace:*",
+    "@tamagui/sizable-context": "workspace:*"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
     "react-native-svg": "15.15.3"
   },
   "peerDependencies": {
-    "@tamagui/core": "*",
-    "@tamagui/sizable-context": "*",
     "react": ">=19",
     "react-native-svg": ">=12"
-  }
+  },
+  "skipPublishIfUnchanged": true
 }
