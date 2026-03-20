@@ -526,7 +526,7 @@ async function run() {
         packagesToPublish,
         async ({ name, cwd }) => {
           const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
-          const publishTag = canary || isCanaryVersion ? 'canary' : undefined
+          const publishTag = canary || isCanaryVersion ? 'canary' : 'latest'
           const publishOptions = [publishTag && `--tag ${publishTag}`]
             .filter(Boolean)
             .join(' ')
