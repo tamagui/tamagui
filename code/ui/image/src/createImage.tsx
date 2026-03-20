@@ -33,7 +33,7 @@ export type CreateImageOptions<C extends ComponentType<any>> = {
    * Useful for expo-image which has a different source format.
    */
   transformSource?: (props: {
-    src?: string
+    src?: string | number
     source?: any
     width?: any
     height?: any
@@ -56,7 +56,7 @@ const defaultObjectFitMap = (objectFit: string): ImageResizeMode => {
 }
 
 const defaultTransformSource = (props: {
-  src?: string
+  src?: string | number
   source?: any
   width?: any
   height?: any

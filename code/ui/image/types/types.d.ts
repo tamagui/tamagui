@@ -7,7 +7,7 @@ export type ImageProps = ViewProps & Omit<RNImageProps, KeyofViewProps | 'source
      * The image source URL or require() result.
      * Preferred over `source` for better web alignment.
      */
-    src?: string;
+    src?: string | number;
     /**
      * @deprecated
      * use src instead
