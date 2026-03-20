@@ -254,6 +254,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     const hasScrollView = React.useRef(false)
 
+    // safety fallback timer for sheet close opacity
+    const opacityFallbackTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+
     useAnimatedNumberReaction(
       {
         value: animatedNumber,
@@ -310,11 +313,30 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       stopSpring()
 
       const isOpenAnimation = position !== -1 && !isHidden
+
+      // clear any pending fallback timer
+      if (opacityFallbackTimer.current) {
+        clearTimeout(opacityFallbackTimer.current)
+        opacityFallbackTimer.current = null
+      }
+
       const animationCompleteCallback = () => {
-        if (!isOpenAnimation) {
+        if (opacityFallbackTimer.current) {
+          clearTimeout(opacityFallbackTimer.current)
+          opacityFallbackTimer.current = null
+        }
+        if (!isOpenAnimation && !open) {
           setOpacity(0)
         }
         onAnimationComplete?.({ open: isOpenAnimation })
+      }
+
+      // safety fallback: if animation callback never fires, still hide the sheet
+      if (!isOpenAnimation) {
+        opacityFallbackTimer.current = setTimeout(() => {
+          opacityFallbackTimer.current = null
+          setOpacity(0)
+        }, 1000)
       }
 
       // skip animation when adapting from dialog to sheet
@@ -660,6 +682,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const [opacity, setOpacity] = React.useState(open ? 1 : 0)
     if (open && opacity === 0) {
       setOpacity(1)
+      // cancel any pending close fallback — sheet is reopening
+      if (opacityFallbackTimer.current) {
+        clearTimeout(opacityFallbackTimer.current)
+        opacityFallbackTimer.current = null
+      }
     }
 
     const forcedContentHeight = hasFit

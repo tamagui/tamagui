@@ -14,7 +14,8 @@ import React from 'react'
 import { Animated, type Text, type View } from 'react-native'
 
 // detect Fabric (New Architecture) — Paper doesn't support native driver for all style keys
-const isFabric = !isWeb && typeof global !== 'undefined' && !!global.__nativeFabricUIManager
+const isFabric =
+  !isWeb && typeof global !== 'undefined' && !!global.__nativeFabricUIManager
 
 // Helper to resolve dynamic theme values like {dynamic: {dark: "value", light: undefined}}
 const resolveDynamicValue = (value: any, isDark: boolean): any => {
