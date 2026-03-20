@@ -13,6 +13,9 @@ import { useEvent, useThemeWithState } from '@tamagui/web'
 import React from 'react'
 import { Animated, type Text, type View } from 'react-native'
 
+// detect Fabric (New Architecture) — Paper doesn't support native driver for all style keys
+const isFabric = !isWeb && typeof global !== 'undefined' && !!global.__nativeFabricUIManager
+
 // Helper to resolve dynamic theme values like {dynamic: {dark: "value", light: undefined}}
 const resolveDynamicValue = (value: any, isDark: boolean): any => {
   if (value && typeof value === 'object' && 'dynamic' in value) {
@@ -59,7 +62,7 @@ const colorStyleKey = {
   borderBottomColor: true,
 }
 
-// these are the styles that are costly to animate because they don't support useNativeDriver and some of them are changing layout
+// these style keys are costly to animate and only work with native driver on Fabric
 const costlyToAnimateStyleKey = {
   borderRadius: true,
   borderTopLeftRadius: true,
@@ -72,7 +75,11 @@ const costlyToAnimateStyleKey = {
   borderTopWidth: true,
   borderBottomWidth: true,
   ...colorStyleKey,
-  // TODO for other keys like height or width, it's better to not add them here till layout animations are ready
+}
+
+type CreateAnimationsOptions = {
+  // override native driver detection (default: auto-detect Fabric)
+  useNativeDriver?: boolean
 }
 
 export const AnimatedView: Animated.AnimatedComponent<typeof View> = Animated.View
@@ -121,7 +128,7 @@ export function useAnimatedNumber(
         const composite = Animated.spring(val, {
           ...config,
           toValue: next,
-          useNativeDriver: !isWeb,
+          useNativeDriver: nativeDriver,
         })
         composite.start(handleFinish)
         state.current.composite = composite
@@ -130,7 +137,7 @@ export function useAnimatedNumber(
         const composite = Animated.timing(val, {
           ...config,
           toValue: next,
-          useNativeDriver: !isWeb,
+          useNativeDriver: nativeDriver,
         })
         composite.start(handleFinish)
         state.current.composite = composite
@@ -165,8 +172,11 @@ export const useAnimatedNumberStyle: UseAnimatedNumberStyle<RNAnimatedNum> = (
 }
 
 export function createAnimations<A extends AnimationsConfig>(
-  animations: A
+  animations: A,
+  options?: CreateAnimationsOptions
 ): AnimationDriver<A> {
+  const nativeDriver = options?.useNativeDriver ?? isFabric
+
   return {
     isReactNative: true,
     inputStyle: 'value',
@@ -397,7 +407,7 @@ export function createAnimations<A extends AnimationsConfig>(
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
                   toValue: animateToValue,
-                  useNativeDriver: !isWeb,
+                  useNativeDriver: nativeDriver,
                   ...animationConfig,
                 })
               }
@@ -553,7 +563,7 @@ export function createAnimations<A extends AnimationsConfig>(
             value.stopAnimation()
             const anim = Animated[animationConfig.type || 'spring'](value, {
               toValue: animateToValue,
-              useNativeDriver: !isWeb,
+              useNativeDriver: nativeDriver,
               ...animationConfig,
             })
             ;(animationConfig.delay
