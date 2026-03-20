@@ -75,7 +75,7 @@ jobs:
         run: |
           # start Metro in background while simulator boots
           cd "${{ env.test_container_app_path }}"
-          EXPO_NO_TELEMETRY=true TAMAGUI_PACKAGE_EXPORTS=${{ matrix.package-exports }} bunx expo start --dev-client --offline &
+          EXPO_NO_TELEMETRY=true TAMAGUI_PACKAGE_EXPORTS=${{ matrix.package-exports }} bunx expo start --dev-client --offline --reset-cache &
           cd "${{ github.workspace }}"
 
           # boot simulator
