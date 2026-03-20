@@ -21,6 +21,14 @@
     "./worker": {
       "types": "./types/worker.d.ts",
       "default": "./dist/worker.cjs"
+    },
+    "./checkDeps": {
+      "types": "./types/checkDeps.d.ts",
+      "default": "./dist/checkDeps.cjs"
+    },
+    "./loadTamagui": {
+      "types": "./types/extractor/loadTamagui.d.ts",
+      "default": "./dist/extractor/loadTamagui.cjs"
     }
   },
   "publishConfig": {
