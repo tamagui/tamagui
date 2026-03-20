@@ -83,6 +83,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       maxSnapPoint,
     } = providerProps
     const { open, controller, isHidden } = state
+    const openRef = React.useRef(open)
+    openRef.current = open
 
     const sheetRef = React.useRef<View>(undefined as unknown as View)
     const ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef as any)
@@ -335,7 +337,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       if (!isOpenAnimation) {
         opacityFallbackTimer.current = setTimeout(() => {
           opacityFallbackTimer.current = null
-          setOpacity(0)
+          // check live open state via ref — sheet may have reopened (e.g. adapt handoff)
+          if (!openRef.current) {
+            setOpacity(0)
+          }
         }, 1000)
       }
 

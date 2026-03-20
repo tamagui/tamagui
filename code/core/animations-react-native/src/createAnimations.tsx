@@ -129,7 +129,7 @@ export function useAnimatedNumber(
         const composite = Animated.spring(val, {
           ...config,
           toValue: next,
-          useNativeDriver: nativeDriver,
+          useNativeDriver: isFabric,
         })
         composite.start(handleFinish)
         state.current.composite = composite
@@ -138,7 +138,7 @@ export function useAnimatedNumber(
         const composite = Animated.timing(val, {
           ...config,
           toValue: next,
-          useNativeDriver: nativeDriver,
+          useNativeDriver: isFabric,
         })
         composite.start(handleFinish)
         state.current.composite = composite
