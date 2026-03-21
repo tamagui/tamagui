@@ -94,6 +94,19 @@ export function useEvents(
         delayLongPress,
       })
     }
+
+    // On TV platforms, HOC viewProps are passed directly to the inner component.
+    // Ensure the inner component receives the TV focus props so that d-pad
+    // navigation can reach it even when the HOC exits before the TV block below.
+    if (Platform.isTV && events) {
+      if (viewProps.focusable === undefined) {
+        viewProps.focusable = true
+      }
+      if (Platform.OS === 'android' && viewProps.collapsable === undefined) {
+        viewProps.collapsable = false
+      }
+    }
+
     // HOCs don't use gesture handler at this level
     return null
   }
