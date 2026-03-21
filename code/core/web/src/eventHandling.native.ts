@@ -197,6 +197,30 @@ export function useEvents(
       viewProps.collapsable = false
     }
 
+    // Remove the legacy responder-system handlers that usePressability adds.
+    // On Android TV (Fabric / New Architecture) these props do NOT have native
+    // Fabric setters — the TV Fabric view only supports the props declared in
+    // TVViewConfig (onPressIn, onPressOut, onFocus, onBlur, onClick, focusable …).
+    // Passing unknown props causes Fabric to call an undefined setter via
+    // setter.apply(node, [val]) → "TypeError: undefined is not a function".
+    // TV remote button events are handled by tvPressEventHandlers (onPressIn /
+    // onPressOut) and onClick, so the responder system is not needed on TV.
+    if (Platform.OS === 'android') {
+      delete viewProps.onStartShouldSetResponder
+      delete viewProps.onStartShouldSetResponderCapture
+      delete viewProps.onMoveShouldSetResponder
+      delete viewProps.onMoveShouldSetResponderCapture
+      delete viewProps.onResponderGrant
+      delete viewProps.onResponderReject
+      delete viewProps.onResponderStart
+      delete viewProps.onResponderEnd
+      delete viewProps.onResponderMove
+      delete viewProps.onResponderRelease
+      delete viewProps.onResponderTerminate
+      delete viewProps.onResponderTerminationRequest
+      delete viewProps.onShouldBlockNativeResponder
+    }
+
     // RN 0.84+ added TV-specific props (onPressEnter / onPressLeave) for the
     // remote select button. However these do NOT exist in the Fabric native spec
     // for Android TV views; setting them causes Fabric to call an undefined setter
