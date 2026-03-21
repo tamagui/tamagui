@@ -5,8 +5,12 @@
  * responder system (usePressability) is used, and RN 0.84+ TV-specific events
  * (onPressEnter / onPressLeave) are mapped to Tamagui's press callbacks.
  * TV focus navigation (onFocus/onBlur) is enabled by explicitly setting
- * focusable={true} (required by tvOS and Android TV) and collapsable={false}
- * (prevents Android from flattening views out of the native hierarchy).
+ * focusable={true} (required by both tvOS and Android TV) and, for Android TV only,
+ * collapsable={false} (prevents Android from flattening views out of the native
+ * hierarchy). collapsable is intentionally NOT set on tvOS because it is an
+ * Android-only prop at the native Fabric level — setting it on iOS/tvOS causes
+ * the Fabric setter to be undefined, crashing with "TypeError: undefined is not
+ * a function" at app launch.
  */
 
 import { composeEventHandlers } from '@tamagui/helpers'
@@ -170,11 +174,14 @@ export function useEvents(
       viewProps.focusable = true
     }
 
-    // Prevent Android (and Android TV) from collapsing/flattening this View
-    // out of the native view hierarchy. RNGH's GestureDetector previously
-    // forced collapsable={false} via its Wrap component; without it the View
-    // can be flattened and will no longer receive onFocus/onBlur events.
-    if (viewProps.collapsable === undefined) {
+    // Prevent Android TV from collapsing/flattening this View out of the native
+    // view hierarchy. RNGH's GestureDetector previously forced collapsable={false}
+    // via its Wrap component; without it the View can be flattened and will no
+    // longer receive onFocus/onBlur events.
+    // NOTE: collapsable is Android-only at the native Fabric level. Setting it on
+    // tvOS (iOS) causes the Fabric prop-setter for 'collapsable' to be undefined,
+    // which throws "TypeError: undefined is not a function" at app launch.
+    if (Platform.OS === 'android' && viewProps.collapsable === undefined) {
       viewProps.collapsable = false
     }
 
