@@ -5,8 +5,12 @@
  * responder system (usePressability) is used, and RN 0.84+ TV-specific events
  * (onPressEnter / onPressLeave) are mapped to Tamagui's press callbacks.
  * TV focus navigation (onFocus/onBlur) is enabled by explicitly setting
- * focusable={true} (required by tvOS and Android TV) and collapsable={false}
- * (prevents Android from flattening views out of the native hierarchy).
+ * focusable={true} (required by both tvOS and Android TV) and, for Android TV only,
+ * collapsable={false} (prevents Android from flattening views out of the native
+ * hierarchy). collapsable is intentionally NOT set on tvOS because it is an
+ * Android-only prop at the native Fabric level — setting it on iOS/tvOS causes
+ * the Fabric setter to be undefined, crashing with "TypeError: undefined is not
+ * a function" at app launch.
  */
 import type { StaticConfig, TamaguiComponentStateRef } from './types';
 export declare function getWebEvents(): {};
