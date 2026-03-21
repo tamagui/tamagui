@@ -4,6 +4,9 @@
  * remote button presses don't go through the touch event system. Instead, the native
  * responder system (usePressability) is used, and RN 0.84+ TV-specific events
  * (onPressEnter / onPressLeave) are mapped to Tamagui's press callbacks.
+ * TV focus navigation (onFocus/onBlur) is enabled by explicitly setting
+ * focusable={true} (required by tvOS and Android TV) and collapsable={false}
+ * (prevents Android from flattening views out of the native hierarchy).
  */
 
 import { composeEventHandlers } from '@tamagui/helpers'
@@ -157,18 +160,37 @@ export function useEvents(
   // split into separate file to avoid deep import warnings
   useMainThreadPressEvents(events, viewProps, hasPressEvents)
 
-  // RN 0.84+ added TV-specific events for the remote select button.
-  // Map them to Tamagui's press callbacks so the pressed state and handlers
-  // work correctly on TV with both RN 0.83 (responder system above handles it)
-  // and RN 0.84+ (onPressEnter / onPressLeave props on the native View).
-  if (Platform.isTV && hasPressEvents) {
-    const { onPressIn, onPressOut, onPress } = events
-    // onPressEnter fires when the TV remote select button is pressed down
-    viewProps.onPressEnter = onPressIn
-    // onPressLeave fires when the TV remote select button is released
-    viewProps.onPressLeave = (e: any) => {
-      onPress?.(e)
-      onPressOut?.(e)
+  if (Platform.isTV && events) {
+    // Make the component a participant in the TV focus navigation system.
+    // On tvOS, a View without explicit focusable={true} is not part of the TV
+    // focus engine (RNGH's gesture recognizer attachment was implicitly making
+    // views focusable). On Android TV, focusable={true} is required so the
+    // remote's directional pad can navigate to this element.
+    if (viewProps.focusable === undefined) {
+      viewProps.focusable = true
+    }
+
+    // Prevent Android (and Android TV) from collapsing/flattening this View
+    // out of the native view hierarchy. RNGH's GestureDetector previously
+    // forced collapsable={false} via its Wrap component; without it the View
+    // can be flattened and will no longer receive onFocus/onBlur events.
+    if (viewProps.collapsable === undefined) {
+      viewProps.collapsable = false
+    }
+
+    // RN 0.84+ added TV-specific events for the remote select button.
+    // Map them to Tamagui's press callbacks so the pressed state and handlers
+    // work correctly on TV with both RN 0.83 (responder system above handles it)
+    // and RN 0.84+ (onPressEnter / onPressLeave props on the native View).
+    if (hasPressEvents) {
+      const { onPressIn, onPressOut, onPress } = events
+      // onPressEnter fires when the TV remote select button is pressed down
+      viewProps.onPressEnter = onPressIn
+      // onPressLeave fires when the TV remote select button is released
+      viewProps.onPressLeave = (e: any) => {
+        onPress?.(e)
+        onPressOut?.(e)
+      }
     }
   }
 
@@ -187,8 +209,9 @@ export function wrapWithGestureDetector(
     return content
   }
 
-  // Skip wrapping on TV: GestureDetector only handles touch events and can interfere
-  // with TV remote button events which are routed through the native responder system.
+  // Skip wrapping on TV: TV remote events go through the native responder system,
+  // not RNGH gestures. The focusable/collapsable props that GestureDetector's Wrap
+  // component previously provided are now set directly on viewProps in useEvents.
   if (Platform.isTV) {
     return content
   }
