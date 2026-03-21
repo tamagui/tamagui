@@ -4,6 +4,9 @@
  * remote button presses don't go through the touch event system. Instead, the native
  * responder system (usePressability) is used, and RN 0.84+ TV-specific events
  * (onPressEnter / onPressLeave) are mapped to Tamagui's press callbacks.
+ * TV focus navigation (onFocus/onBlur) is enabled by explicitly setting
+ * focusable={true} (required by tvOS and Android TV) and collapsable={false}
+ * (prevents Android from flattening views out of the native hierarchy).
  */
 import type { StaticConfig, TamaguiComponentStateRef } from './types';
 export declare function getWebEvents(): {};
