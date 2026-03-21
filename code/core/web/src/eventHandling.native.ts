@@ -2,8 +2,7 @@
  * Native event handling - uses RNGH when available, falls back to usePressability.
  * On TV platforms (Apple TV / Android TV), RNGH gestures are bypassed because TV
  * remote button presses don't go through the touch event system. Instead, the native
- * responder system (usePressability) is used, and RN 0.84+ TV-specific events
- * (onPressEnter / onPressLeave) are mapped to Tamagui's press callbacks.
+ * responder system (usePressability) handles all press events on TV.
  * TV focus navigation (onFocus/onBlur) is enabled by explicitly setting
  * focusable={true} (required by both tvOS and Android TV) and, for Android TV only,
  * collapsable={false} (prevents Android from flattening views out of the native
@@ -185,20 +184,12 @@ export function useEvents(
       viewProps.collapsable = false
     }
 
-    // RN 0.84+ added TV-specific events for the remote select button.
-    // Map them to Tamagui's press callbacks so the pressed state and handlers
-    // work correctly on TV with both RN 0.83 (responder system above handles it)
-    // and RN 0.84+ (onPressEnter / onPressLeave props on the native View).
-    if (hasPressEvents) {
-      const { onPressIn, onPressOut, onPress } = events
-      // onPressEnter fires when the TV remote select button is pressed down
-      viewProps.onPressEnter = onPressIn
-      // onPressLeave fires when the TV remote select button is released
-      viewProps.onPressLeave = (e: any) => {
-        onPress?.(e)
-        onPressOut?.(e)
-      }
-    }
+    // RN 0.84+ added TV-specific props (onPressEnter / onPressLeave) for the
+    // remote select button. However these do NOT exist in the Fabric native spec
+    // for Android TV views; setting them causes Fabric to call an undefined setter
+    // via setter.apply() → "TypeError: undefined is not a function" at app launch.
+    // The usePressability responder system above already handles TV remote presses
+    // on all RN versions, so no additional mapping is needed here.
   }
 
   return null

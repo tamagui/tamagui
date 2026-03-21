@@ -2,8 +2,7 @@
  * Native event handling - uses RNGH when available, falls back to usePressability.
  * On TV platforms (Apple TV / Android TV), RNGH gestures are bypassed because TV
  * remote button presses don't go through the touch event system. Instead, the native
- * responder system (usePressability) is used, and RN 0.84+ TV-specific events
- * (onPressEnter / onPressLeave) are mapped to Tamagui's press callbacks.
+ * responder system (usePressability) handles all press events on TV.
  * TV focus navigation (onFocus/onBlur) is enabled by explicitly setting
  * focusable={true} (required by both tvOS and Android TV) and, for Android TV only,
  * collapsable={false} (prevents Android from flattening views out of the native
