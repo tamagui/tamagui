@@ -127,7 +127,8 @@ export function useEvents(
   }
 
   // TV special case - RNGH doesn't handle TV remote presses; use usePressability instead.
-  // Platform.isTV is stable (never changes), so it's safe to use as a hook branch guard.
+  // Platform.isTV is determined at app launch and remains constant during execution,
+  // so it's safe to use as a hook branch guard (hook count never changes between renders).
   if (Platform.isTV) {
     // TV remote navigation requires focusable=true
     viewProps.focusable = true

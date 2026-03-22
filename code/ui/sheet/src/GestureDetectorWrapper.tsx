@@ -1,5 +1,5 @@
 import type React from 'react'
-import { View, type ViewStyle } from 'react-native'
+import { Platform, View, type ViewStyle } from 'react-native'
 import { getGestureHandlerState, isGestureHandlerEnabled } from './gestureState'
 
 interface GestureDetectorWrapperProps {
@@ -21,6 +21,14 @@ export function GestureDetectorWrapper({
   const enabled = isGestureHandlerEnabled()
 
   // console.warn('[RNGH-Wrapper] enabled:', enabled, 'hasDetector:', !!GestureDetector, 'hasGesture:', !!gesture)
+
+  // On TV, skip RNGH wrapping entirely — RNGH's GestureDetector Wrap sets
+  // collapsable={false} which is NOT in the tvOS Fabric spec and causes:
+  // "TypeError: undefined is not a function" (setter.apply crash) at runtime.
+  // TV pan/gesture events aren't needed (remote navigation handles TV interaction).
+  if (Platform.isTV) {
+    return <View style={style}>{children}</View>
+  }
 
   // only wrap if we have RNGH available AND a gesture to attach
   if (enabled && GestureDetector && gesture) {
