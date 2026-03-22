@@ -19,6 +19,21 @@ import { Platform } from 'react-native'
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
+// Responder handler keys that usePressability adds but are NOT in Android TV's
+// Fabric codegen spec. Fabric calls setter.apply(node, [val]) for each prop, so
+// an undefined setter → "TypeError: undefined is not a function" crash.
+const androidTVFabricIncompatibleHandlers = [
+  'onStartShouldSetResponder',
+  'onMoveShouldSetResponder',
+  'onStartShouldSetResponderCapture',
+  'onMoveShouldSetResponderCapture',
+  'onResponderGrant',
+  'onResponderMove',
+  'onResponderRelease',
+  'onResponderTerminate',
+  'onResponderTerminationRequest',
+] as const
+
 // web events not used on native
 export function getWebEvents() {
   return {}
@@ -108,6 +123,34 @@ export function useEvents(
     }
 
     // HOCs don't use gesture handler at this level
+    return null
+  }
+
+  // TV special case - RNGH doesn't handle TV remote presses; use usePressability instead.
+  // Platform.isTV is stable (never changes), so it's safe to use as a hook branch guard.
+  if (Platform.isTV) {
+    // TV remote navigation requires focusable=true
+    viewProps.focusable = true
+
+    // collapsable=false is required by Android TV (Fabric) for focus to work, but
+    // collapsable is NOT in the tvOS Fabric native spec — setting it there causes:
+    // "TypeError: undefined is not a function" (setter.apply crash) at app launch.
+    if (Platform.OS === 'android') {
+      viewProps.collapsable = false
+    }
+
+    // usePressability handles all TV remote button presses
+    useMainThreadPressEvents(events, viewProps, Boolean(hasPressEvents))
+
+    // On Android TV with Fabric, usePressability adds responder handlers that are NOT
+    // in the Android TV Fabric codegen spec. Each unrecognised prop causes Fabric to call
+    // setter.apply(node, [val]) where setter is undefined → crash.
+    if (Platform.OS === 'android') {
+      for (const key of androidTVFabricIncompatibleHandlers) {
+        delete viewProps[key]
+      }
+    }
+
     return null
   }
 
@@ -258,9 +301,9 @@ export function wrapWithGestureDetector(
     return content
   }
 
-  // Skip wrapping on TV: TV remote events go through the native responder system,
-  // not RNGH gestures. The focusable/collapsable props that GestureDetector's Wrap
-  // component previously provided are now set directly on viewProps in useEvents.
+  // Skip RNGH wrapping on TV - RNGH's GestureDetector Wrap sets collapsable={false}
+  // which is not in the tvOS Fabric native spec → "TypeError: undefined is not a function"
+  // TV press events are handled by usePressability in the useEvents TV path instead.
   if (Platform.isTV) {
     return content
   }

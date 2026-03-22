@@ -30,9 +30,10 @@ export const isIos: boolean =
 export const isTV: boolean =
   process.env.TEST_NATIVE_PLATFORM === 'androidtv' ||
   process.env.TEST_NATIVE_PLATFORM === 'tvos'
-// currentPlatform reflects Platform.OS - TV platforms are intentionally NOT separate values here:
-// - Android TV has Platform.OS === 'android' (react-native-tvos behavior)
-// - tvOS has Platform.OS === 'ios' (react-native-tvos behavior)
-// Use isTV combined with isAndroid/isIos to detect specific TV platforms.
-/** @note TV platforms ('androidtv', 'tvos') are not included here because react-native-tvos reports Platform.OS as 'android'/'ios'. Use isTV + isAndroid/isIos to detect TV. */
+/**
+ * Reflects Platform.OS. TV platforms are intentionally NOT separate values:
+ * - Android TV has Platform.OS === 'android' (react-native-tvos behavior)
+ * - tvOS has Platform.OS === 'ios' (react-native-tvos behavior)
+ * Use `isTV` combined with `isAndroid`/`isIos` to detect specific TV platforms.
+ */
 export const currentPlatform: 'web' | 'ios' | 'native' | 'android' = 'web'
