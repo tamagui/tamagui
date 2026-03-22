@@ -46,7 +46,9 @@ export default function App() {
   // Update Appearance when mode changes (for native components)
   React.useEffect(() => {
     if (mode === 'system') {
-      Appearance.setColorScheme(null as any) // Follow system
+      // RN 0.83+ Kotlin conversion makes setColorScheme non-null on Android
+      // pass 'unspecified' to follow system
+      Appearance.setColorScheme('unspecified' as any)
     } else {
       Appearance.setColorScheme(mode)
     }
