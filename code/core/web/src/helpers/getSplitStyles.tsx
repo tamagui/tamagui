@@ -370,7 +370,17 @@ export const getSplitStyles: StyleSplitter = (
           addStyleToInsertRules(rulesToInsert, containerCSS)
         }
       }
-      continue
+      // transition prop is skipped when it's a named animation (e.g. 'quick')
+      // but raw CSS values (from $platform-web) should pass through as style
+      if (
+        keyInit === 'transition' &&
+        typeof valInit === 'string' &&
+        !driver?.animations?.[valInit]
+      ) {
+        // not a known animation name, treat as raw CSS
+      } else {
+        continue
+      }
     }
 
     let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
@@ -543,7 +553,14 @@ export const getSplitStyles: StyleSplitter = (
 
     // after shouldPassThrough
     if (!noSkip) {
-      if (keyInit in skipProps) {
+      if (
+        keyInit in skipProps &&
+        !(
+          keyInit === 'transition' &&
+          typeof valInit === 'string' &&
+          !driver?.animations?.[valInit]
+        )
+      ) {
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           console.groupEnd()
         }
@@ -1513,6 +1530,14 @@ export const getSubStyle = (
           const important = subKey[0] === '$' ? ' !important' : ''
           styleOut['transition'] = `all ${animationConfig}${important}`
         }
+      }
+      // not a known animation name, pass through as raw CSS
+      if (
+        !styleOut['transition'] &&
+        typeof val === 'string' &&
+        !driver?.animations?.[val]
+      ) {
+        styleOut['transition'] = val
       }
       continue
     }
