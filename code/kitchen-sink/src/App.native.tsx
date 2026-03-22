@@ -40,8 +40,10 @@ export default function App() {
 
   const systemColorScheme = useColorScheme()
 
-  // Resolved theme based on mode (useColorScheme can return null on RN 0.83+)
-  const resolvedTheme = (mode === 'system' ? systemColorScheme : mode) || 'light'
+  // Resolved theme based on mode
+  // useColorScheme can return null (RN 0.83+) or 'unspecified' (after setColorScheme('unspecified'))
+  const scheme = mode === 'system' ? systemColorScheme : mode
+  const resolvedTheme = (scheme && scheme !== 'unspecified' ? scheme : null) || 'light'
 
   // Update Appearance when mode changes (for native components)
   React.useEffect(() => {

@@ -1,5 +1,5 @@
 // ensure tamagui config is created before any component imports
-import './src/tamagui.config'
+require('./src/tamagui.config')
 
 // setup native features - just import, no function calls needed
 import '@tamagui/native/setup-zeego'
