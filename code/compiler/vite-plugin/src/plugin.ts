@@ -306,6 +306,10 @@ export function tamaguiPlugin({
         resolve: {
           alias: tamaguiAliases({ rnwLite: options.useReactNativeWebLite }),
         },
+        optimizeDeps: {
+          // upstream react-native-web must not be pre-bundled when aliased to lite
+          exclude: ['react-native-web'],
+        },
       }
     },
   }
