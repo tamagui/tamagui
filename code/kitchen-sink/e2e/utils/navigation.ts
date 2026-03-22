@@ -14,7 +14,8 @@ import { by, device, element, waitFor } from 'detox'
  */
 export async function navigateToTestCase(
   testCaseName: string,
-  waitForElementId?: string
+  waitForElementId?: string,
+  options?: { skipEnableSync?: boolean }
 ) {
   // disable sync to avoid animation driver blocking
   await device.disableSynchronization()
@@ -48,6 +49,8 @@ export async function navigateToTestCase(
       .withTimeout(10000)
   }
 
-  // re-enable sync
-  await device.enableSynchronization()
+  // re-enable sync (unless caller needs it disabled, e.g. no-RNGH tests)
+  if (!options?.skipEnableSync) {
+    await device.enableSynchronization()
+  }
 }

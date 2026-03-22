@@ -50,8 +50,9 @@ function getDominantColor(screenshotPath: string): { r: number; g: number; b: nu
 
 // check if a color is predominantly blue (for $blue10)
 function isBlueish(color: { r: number; g: number; b: number }): boolean {
-  // blue should have high B, low R, and low-medium G
-  return color.b > 100 && color.b > color.r && color.b > color.g
+  // blue should have B as the dominant channel
+  // in dark themes $color4 can be a darker blue (e.g. RGB(0, 50, 97))
+  return color.b > 60 && color.b > color.r && color.b > color.g
 }
 
 // TODO: These tests are flaky on iOS simulator - press events don't fire reliably
