@@ -1512,7 +1512,7 @@ export function createExtractor(
                     return attr
                   }
 
-                  // $platform-web, $platform-native, $platform-ios, $platform-android
+                  // $platform-web, $platform-native, $platform-ios, $platform-android, $platform-tv, $platform-androidtv, $platform-tvos
                   if (name.startsWith('$platform-')) {
                     const platformName = name.slice(10) // remove '$platform-'
                     const isMatchingPlatform =
@@ -1534,6 +1534,24 @@ export function createExtractor(
                         attr: path.node,
                       }))
                     } else {
+                      // On native builds, sub-platform variants (android, ios, tv, androidtv, tvos)
+                      // can't be resolved at compile time - leave for runtime evaluation
+                      const nativeOnlyPlatforms = new Set([
+                        'android',
+                        'ios',
+                        'tv',
+                        'androidtv',
+                        'tvos',
+                      ])
+                      if (platform === 'native' && nativeOnlyPlatforms.has(platformName)) {
+                        if (shouldPrintDebug) {
+                          logger.info(
+                            `  ! leaving runtime-only platform style: ${name}`
+                          )
+                        }
+                        inlined.set(name, true)
+                        return attr
+                      }
                       // Platform doesn't match, skip these styles entirely
                       if (shouldPrintDebug) {
                         logger.info(`  ! skipping non-matching platform style: ${name}`)

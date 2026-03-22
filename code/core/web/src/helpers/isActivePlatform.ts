@@ -1,4 +1,4 @@
-import { currentPlatform } from '@tamagui/constants'
+import { currentPlatform, isAndroid, isIos, isTV } from '@tamagui/constants'
 
 export function isActivePlatform(key: string) {
   if (!key.startsWith('$platform')) {
@@ -6,9 +6,17 @@ export function isActivePlatform(key: string) {
   }
   const platform = key.slice(10)
   return (
-    // web, ios, android
+    // exact platform match (web, ios, android)
     platform === currentPlatform ||
-    // web, native
-    platform === process.env.TAMAGUI_TARGET
+    // native matches all non-web platforms (iOS, Android, tvOS, Android TV)
+    (platform === 'native' && currentPlatform !== 'web') ||
+    // TAMAGUI_TARGET fallback (web or native build target)
+    platform === process.env.TAMAGUI_TARGET ||
+    // tv matches both Android TV and tvOS
+    (platform === 'tv' && isTV) ||
+    // androidtv matches Android TV specifically
+    (platform === 'androidtv' && isAndroid && isTV) ||
+    // tvos matches tvOS specifically
+    (platform === 'tvos' && isIos && isTV)
   )
 }
