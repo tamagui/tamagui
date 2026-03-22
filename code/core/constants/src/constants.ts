@@ -19,7 +19,20 @@ export const isWebTouchable: boolean =
 
 export const isTouchable: boolean = !isWeb || isWebTouchable
 // set :boolean to avoid inferring type to false
-export const isAndroid: boolean = false
-export const isIos: boolean = process.env.TEST_NATIVE_PLATFORM === 'ios'
-export const isTV: boolean = false
+export const isAndroid: boolean =
+  process.env.TEST_NATIVE_PLATFORM === 'android' ||
+  // Android TV has Platform.OS === 'android' per react-native-tvos
+  process.env.TEST_NATIVE_PLATFORM === 'androidtv'
+export const isIos: boolean =
+  process.env.TEST_NATIVE_PLATFORM === 'ios' ||
+  // tvOS has Platform.OS === 'ios' per react-native-tvos
+  process.env.TEST_NATIVE_PLATFORM === 'tvos'
+export const isTV: boolean =
+  process.env.TEST_NATIVE_PLATFORM === 'androidtv' ||
+  process.env.TEST_NATIVE_PLATFORM === 'tvos'
+// currentPlatform reflects Platform.OS - TV platforms are intentionally NOT separate values here:
+// - Android TV has Platform.OS === 'android' (react-native-tvos behavior)
+// - tvOS has Platform.OS === 'ios' (react-native-tvos behavior)
+// Use isTV combined with isAndroid/isIos to detect specific TV platforms.
+/** @note TV platforms ('androidtv', 'tvos') are not included here because react-native-tvos reports Platform.OS as 'android'/'ios'. Use isTV + isAndroid/isIos to detect TV. */
 export const currentPlatform: 'web' | 'ios' | 'native' | 'android' = 'web'

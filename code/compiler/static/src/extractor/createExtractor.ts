@@ -59,6 +59,11 @@ const UNTOUCHED_PROPS = {
   className: true,
 }
 
+// Platform variants that can't be resolved at compile time on native builds.
+// Defined at module level (not inside the loop) to avoid repeated Set allocations during compilation.
+// (requires runtime Platform.OS + Platform.isTV checks via react-native-tvos)
+const nativeOnlyPlatforms = new Set(['android', 'ios', 'tv', 'androidtv', 'tvos'])
+
 const createTernary = (x: Ternary) => x
 
 export type Extractor = ReturnType<typeof createExtractor>
@@ -1536,13 +1541,6 @@ export function createExtractor(
                     } else {
                       // On native builds, sub-platform variants (android, ios, tv, androidtv, tvos)
                       // can't be resolved at compile time - leave for runtime evaluation
-                      const nativeOnlyPlatforms = new Set([
-                        'android',
-                        'ios',
-                        'tv',
-                        'androidtv',
-                        'tvos',
-                      ])
                       if (platform === 'native' && nativeOnlyPlatforms.has(platformName)) {
                         if (shouldPrintDebug) {
                           logger.info(
