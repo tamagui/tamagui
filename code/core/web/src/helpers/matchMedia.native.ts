@@ -30,6 +30,4 @@ export function setupMatchMedia(_: MatchMedia) {
   }
 
   matchMediaImpl = _
-  // @ts-ignore
-  globalThis['matchMedia'] = _
 }
