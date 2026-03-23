@@ -202,9 +202,9 @@ describe('Nested media + platform queries', () => {
         View,
         { xs: true }
       )
-      // Both nesting directions have their conditions met
-      // The platform query ($platform-android) has a specificity bump,
-      // so $platform-android's nested $xs wins
+      // Both nesting directions have their conditions met and produce
+      // identical importance (symmetric). Since $platform-android is declared
+      // last in the props object, its nested $xs wins by declaration order.
       expect(result.style?.backgroundColor).toBe('red')
     })
 
@@ -229,8 +229,9 @@ describe('Nested media + platform queries', () => {
       )
       // All conditions met — all properties should apply
       expect(result.style?.opacity).toBe(0.5)
-      // zIndex: 5 from $xs.$platform-android and zIndex: 10 from $platform-android
-      // nested $xs.$platform-android (importance = 110) beats non-nested $platform-android (importance = 9)
+      // zIndex is set in both nested contexts: $xs.$platform-android (5) and
+      // $platform-android non-nested (10). The nested value (5) has higher
+      // importance than the non-nested outer value, so 5 wins.
       expect(result.style?.zIndex).toBe(5)
       expect(result.style?.flex).toBe(1)
     })
