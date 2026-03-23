@@ -123,12 +123,21 @@ describe('tvOS - $platform-* style props', () => {
     expect(result.style?.backgroundColor).toBeUndefined()
   })
 
-  test('$platform-tvos overrides $platform-ios on tvOS', () => {
+  test('$platform-tvos overrides $platform-ios on tvOS (tvos declared after)', () => {
     const result = getSplitStylesFor({
       '$platform-ios': { backgroundColor: 'red' },
       '$platform-tvos': { backgroundColor: 'purple' },
     })
-    // Both apply; tvos wins due to order of application
+    // tvos is more specific → always wins regardless of declaration order
+    expect(result.style?.backgroundColor).toBe('purple')
+  })
+
+  test('$platform-tvos overrides $platform-ios on tvOS (tvos declared first)', () => {
+    const result = getSplitStylesFor({
+      '$platform-tvos': { backgroundColor: 'purple' },
+      '$platform-ios': { backgroundColor: 'red' },
+    })
+    // tvos is more specific → wins even when declared first
     expect(result.style?.backgroundColor).toBe('purple')
   })
 
@@ -139,5 +148,35 @@ describe('tvOS - $platform-* style props', () => {
     })
     expect(result.style?.marginTop).toBe(10)
     expect(result.style?.marginBottom).toBe(20)
+  })
+
+  test('platform specificity cascade: native → tv → tvos (each overrides previous for same key, retains others)', () => {
+    const result = getSplitStylesFor({
+      '$platform-native': { backgroundColor: 'green', opacity: 1, borderRadius: 2 },
+      '$platform-tv': { backgroundColor: 'blue', padding: 8 },
+      '$platform-tvos': { backgroundColor: 'purple' },
+    })
+    // tvos wins for backgroundColor (most specific)
+    expect(result.style?.backgroundColor).toBe('purple')
+    // tv-only prop padding is retained (not overridden by tvos)
+    expect(result.style?.padding).toBe(8)
+    // native-only props are retained (not overridden by tv or tvos)
+    expect(result.style?.opacity).toBe(1)
+    expect(result.style?.borderRadius).toBe(2)
+  })
+
+  test('platform specificity cascade is order-independent (most specific declared first, retains other props)', () => {
+    const result = getSplitStylesFor({
+      '$platform-tvos': { backgroundColor: 'purple' },
+      '$platform-tv': { backgroundColor: 'blue', padding: 8 },
+      '$platform-native': { backgroundColor: 'green', opacity: 1, borderRadius: 2 },
+    })
+    // tvos wins for backgroundColor even though it was declared first
+    expect(result.style?.backgroundColor).toBe('purple')
+    // tv-only prop padding is retained even though tv was not the winner for backgroundColor
+    expect(result.style?.padding).toBe(8)
+    // native-only props are retained even though native was not the winner for backgroundColor
+    expect(result.style?.opacity).toBe(1)
+    expect(result.style?.borderRadius).toBe(2)
   })
 })
