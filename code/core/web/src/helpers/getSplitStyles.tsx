@@ -23,6 +23,7 @@ import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
   getMediaKey,
+  getMediaKeyImportance,
   mediaKeyMatch,
 } from '../hooks/useMedia'
 import { mediaState as globalMediaState, mediaQueryConfig } from './mediaState'
@@ -1057,17 +1058,58 @@ export const getSplitStyles: StyleSplitter = (
               continue
             }
             if (subKey[0] === '$') {
-              if (!isActivePlatform(subKey)) continue
-              if (!isActiveTheme(subKey, themeName)) continue
-              const subOriginalValues = styleOriginalValues.get(
-                mediaStyle[subKey] as object
-              )
-              for (const subSubKey in mediaStyle[subKey]) {
-                mergeMediaStyle(
-                  subSubKey,
-                  mediaStyle[subKey][subSubKey],
+              const subMediaType = getMediaKey(subKey)
+              if (subMediaType === 'platform') {
+                if (!isActivePlatform(subKey)) continue
+              } else if (subMediaType === 'theme') {
+                if (!isActiveTheme(subKey, themeName)) continue
+              } else if (subMediaType === true) {
+                // regular media query nested inside platform/theme/media
+                const subKeyShort = subKey.slice(1)
+                if (!mediaState[subKeyShort]) continue
+              }
+
+              const nestedVal = mediaStyle[subKey] as Record<string, any>
+              const subOriginalValues = styleOriginalValues.get(nestedVal)
+
+              // Nested styles are more specific than their outer context because
+              // they require both conditions to be true. Calculate an importance
+              // that is guaranteed to win over the outer style's importance.
+              //
+              // Base the nested importance on the outer key's actual importance
+              // (not defaultMediaImportance, which is too low for size-media keys
+              // like $xs/$sm that start at 100+).
+              const isSizeMediaKey = !!mediaState[mediaKeyShort]
+              const outerImportance = isSizeMediaKey
+                ? getMediaKeyImportance(mediaKeyShort)
+                : defaultMediaImportance
+              // +1 ensures nested always beats its parent; platform bump adds
+              // additional specificity so $platform-androidtv > $platform-android
+              let nestedImportance = outerImportance + importanceBump + 1
+              if (subMediaType === 'platform') {
+                nestedImportance += getPlatformSpecificityBump(subKey.slice(1))
+              }
+
+              for (const subSubKey in nestedVal) {
+                // expand shorthands — getSubStyle doesn't expand keys
+                // inside nested $ objects (they pass through propMapper as-is)
+                const expandedKey = shorthands[subSubKey] || subSubKey
+                const { usedKeys } = styleState
+                if (usedKeys[expandedKey] && usedKeys[expandedKey] >= nestedImportance) {
+                  continue
+                }
+                styleState.style ||= {}
+                mergeStyle(
+                  styleState,
+                  expandedKey,
+                  nestedVal[subSubKey],
+                  nestedImportance,
+                  false,
                   subOriginalValues?.[subSubKey]
                 )
+                if (expandedKey === 'fontFamily') {
+                  styleState.fontFamily = nestedVal[subSubKey] as string
+                }
               }
             } else {
               mergeMediaStyle(subKey, mediaStyle[subKey], mediaOriginalValues?.[subKey])

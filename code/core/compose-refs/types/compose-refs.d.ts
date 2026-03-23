@@ -14,6 +14,6 @@ export declare function composeRefs<T>(...refs: PossibleRef<T>[]): (node: T) => 
  * A custom hook that composes multiple refs
  * Accepts callback refs and RefObject(s)
  */
-export declare function useComposedRefs<T>(...refs: PossibleRef<T>[]): (node: T) => void;
+export declare function useComposedRefs<T>(...refs: PossibleRef<T>[]): any;
 export {};
 //# sourceMappingURL=compose-refs.d.ts.map
