@@ -58,7 +58,7 @@ import {
 } from './getDynamicVal'
 import { getGroupPropParts } from './getGroupPropParts'
 import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
-import { isActivePlatform } from './isActivePlatform'
+import { isActivePlatform, getPlatformSpecificityBump } from './isActivePlatform'
 import { isActiveTheme } from './isActiveTheme'
 import { log } from './log'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
@@ -67,6 +67,7 @@ import {
   type PseudoDescriptorKey,
   pseudoDescriptors,
   pseudoPriorities,
+  defaultMediaImportance,
 } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 import { sortString } from './sortString'
@@ -1016,6 +1017,12 @@ export const getSplitStyles: StyleSplitter = (
               }
               importanceBump = priority
             }
+          } else if (isPlatformMedia) {
+            // Platform styles use specificity-based importance bumps so that more
+            // specific platform selectors reliably win over broader ones regardless
+            // of prop declaration order (e.g. $platform-tv always overrides
+            // $platform-native for the same property, even if tv is listed first).
+            importanceBump = getPlatformSpecificityBump(mediaKeyShort)
           }
 
           const mediaOriginalValues = styleOriginalValues.get(mediaStyle)
@@ -1728,7 +1735,19 @@ function mergeMediaByImportance(
     isSizeMedia
   )
   if (importanceBump) {
-    importance = (importance || 0) + importanceBump
+    // With a specificity bump, the effective importance is always
+    // defaultMediaImportance + bump. This lets higher-specificity styles
+    // (e.g. $platform-tv > $platform-native) override lower-specificity ones
+    // regardless of prop declaration order, even when getMediaImportanceIfMoreImportant
+    // returns null (meaning the same base importance was already applied).
+    //
+    // We must re-check `usedKeys[key]` here (rather than relying on the null
+    // returned by getMediaImportanceIfMoreImportant) because that function only
+    // compares against `defaultMediaImportance`, which equals our base before
+    // the bump. We need to compare against the *bumped* value to correctly
+    // allow a more-specific style to win.
+    const bumpedImportance = defaultMediaImportance + importanceBump
+    importance = !usedKeys[key] || bumpedImportance > usedKeys[key] ? bumpedImportance : null
   }
   if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
     log(

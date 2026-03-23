@@ -19,6 +19,25 @@ import { Platform } from 'react-native'
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
+// Responder handler keys that usePressability adds but are NOT in Android TV's
+// Fabric codegen spec. Fabric calls setter.apply(node, [val]) for each prop, so
+// an undefined setter → "TypeError: undefined is not a function" crash.
+const androidTVFabricIncompatibleHandlers = [
+  'onStartShouldSetResponder',
+  'onMoveShouldSetResponder',
+  'onStartShouldSetResponderCapture',
+  'onMoveShouldSetResponderCapture',
+  'onResponderGrant',
+  'onResponderReject',
+  'onResponderStart',
+  'onResponderEnd',
+  'onResponderMove',
+  'onResponderRelease',
+  'onResponderTerminate',
+  'onResponderTerminationRequest',
+  'onShouldBlockNativeResponder',
+] as const
+
 // web events not used on native
 export function getWebEvents() {
   return {}
@@ -108,6 +127,50 @@ export function useEvents(
     }
 
     // HOCs don't use gesture handler at this level
+    return null
+  }
+
+  // TV special case - RNGH doesn't handle TV remote presses; use usePressability instead.
+  // Platform.isTV is determined at app launch and remains constant during execution,
+  // so it's safe to use as a hook branch guard (hook count never changes between renders).
+  if (Platform.isTV) {
+    if (events) {
+      // Make the component a participant in the TV focus navigation system.
+      // Only set when events is truthy (i.e. there are interaction handlers) so that
+      // purely decorative / disabled components are not unnecessarily put in the focus
+      // chain. Use === undefined guards to preserve any user-supplied focusable={false}.
+      if (viewProps.focusable === undefined) {
+        viewProps.focusable = true
+      }
+
+      // Prevent Android TV from collapsing/flattening this View out of the native
+      // view hierarchy. collapsable is Android-only at the Fabric level; setting it on
+      // tvOS (iOS) causes an undefined Fabric setter → "TypeError: undefined is not a
+      // function" at app launch.
+      if (Platform.OS === 'android' && viewProps.collapsable === undefined) {
+        viewProps.collapsable = false
+      }
+    }
+
+    // usePressability handles all TV remote button presses and wires up focus events.
+    // Pass `hasPressEvents` directly (not Boolean(hasPressEvents)) so that when events
+    // exists but has no onPress (hasPressEvents=undefined), the default `enabled = true`
+    // parameter inside useMainThreadPressEvents triggers usePressability(events) — which
+    // wires up onFocus/onBlur for buttons that have focusStyle but no press handler.
+    // When events is null (disabled components, purely decorative views), pass false
+    // explicitly so usePressability receives emptyConfig rather than null.
+    const tvPressEnabled = events != null ? hasPressEvents : false
+    useMainThreadPressEvents(events, viewProps, tvPressEnabled)
+
+    // On Android TV with Fabric, usePressability adds responder handlers that are NOT
+    // in the Android TV Fabric codegen spec. Each unrecognised prop causes Fabric to call
+    // setter.apply(node, [val]) where setter is undefined → crash.
+    if (Platform.OS === 'android') {
+      for (const key of androidTVFabricIncompatibleHandlers) {
+        delete viewProps[key]
+      }
+    }
+
     return null
   }
 
@@ -258,9 +321,9 @@ export function wrapWithGestureDetector(
     return content
   }
 
-  // Skip wrapping on TV: TV remote events go through the native responder system,
-  // not RNGH gestures. The focusable/collapsable props that GestureDetector's Wrap
-  // component previously provided are now set directly on viewProps in useEvents.
+  // Skip RNGH wrapping on TV - RNGH's GestureDetector Wrap sets collapsable={false}
+  // which is not in the tvOS Fabric native spec → "TypeError: undefined is not a function"
+  // TV press events are handled by usePressability in the useEvents TV path instead.
   if (Platform.isTV) {
     return content
   }

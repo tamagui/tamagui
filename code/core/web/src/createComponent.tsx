@@ -84,7 +84,11 @@ const avoidReRenderKeys = new Set([
   'group',
 ])
 
-if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
+if (
+  process.env.TAMAGUI_TARGET !== 'native' &&
+  typeof window !== 'undefined' &&
+  typeof window.addEventListener === 'function'
+) {
   const cancelPresses = () => {
     // clear all press downs
     componentSetStates.forEach((setState) =>
