@@ -134,24 +134,33 @@ export function useEvents(
   // Platform.isTV is determined at app launch and remains constant during execution,
   // so it's safe to use as a hook branch guard (hook count never changes between renders).
   if (Platform.isTV) {
-    // TV remote navigation requires focusable=true
-    viewProps.focusable = true
+    if (events) {
+      // Make the component a participant in the TV focus navigation system.
+      // Only set when events is truthy (i.e. there are interaction handlers) so that
+      // purely decorative / disabled components are not unnecessarily put in the focus
+      // chain. Use === undefined guards to preserve any user-supplied focusable={false}.
+      if (viewProps.focusable === undefined) {
+        viewProps.focusable = true
+      }
 
-    // collapsable=false is required by Android TV (Fabric) for focus to work, but
-    // collapsable is NOT in the tvOS Fabric native spec — setting it there causes:
-    // "TypeError: undefined is not a function" (setter.apply crash) at app launch.
-    if (Platform.OS === 'android') {
-      viewProps.collapsable = false
+      // Prevent Android TV from collapsing/flattening this View out of the native
+      // view hierarchy. collapsable is Android-only at the Fabric level; setting it on
+      // tvOS (iOS) causes an undefined Fabric setter → "TypeError: undefined is not a
+      // function" at app launch.
+      if (Platform.OS === 'android' && viewProps.collapsable === undefined) {
+        viewProps.collapsable = false
+      }
     }
 
-    // usePressability handles all TV remote button presses.
-    // Pass hasPressEvents directly rather than Boolean(hasPressEvents): when there
-    // is no onPress, hasPressEvents is undefined, which triggers the default
-    // parameter `enabled = true` inside useMainThreadPressEvents so that
-    // usePressability is called with the full events config (including onFocus/onBlur)
-    // rather than emptyConfig. Without this, focus events would not be wired up for
-    // buttons that have onFocus/focusStyle but no onPress.
-    useMainThreadPressEvents(events, viewProps, hasPressEvents)
+    // usePressability handles all TV remote button presses and wires up focus events.
+    // Pass `hasPressEvents` directly (not Boolean(hasPressEvents)) so that when events
+    // exists but has no onPress (hasPressEvents=undefined), the default `enabled = true`
+    // parameter inside useMainThreadPressEvents triggers usePressability(events) — which
+    // wires up onFocus/onBlur for buttons that have focusStyle but no press handler.
+    // When events is null (disabled components, purely decorative views), pass false
+    // explicitly so usePressability receives emptyConfig rather than null.
+    const tvPressEnabled = events != null ? hasPressEvents : false
+    useMainThreadPressEvents(events, viewProps, tvPressEnabled)
 
     // On Android TV with Fabric, usePressability adds responder handlers that are NOT
     // in the Android TV Fabric codegen spec. Each unrecognised prop causes Fabric to call
