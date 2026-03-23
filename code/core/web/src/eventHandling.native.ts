@@ -198,13 +198,27 @@ export function useEvents(
     }
 
     // Remove the legacy responder-system handlers that usePressability adds.
-    // On Android TV (Fabric / New Architecture) these props do NOT have native
-    // Fabric setters — the TV Fabric view only supports the props declared in
-    // TVViewConfig (onPressIn, onPressOut, onFocus, onBlur, onClick, focusable …).
-    // Passing unknown props causes Fabric to call an undefined setter via
-    // setter.apply(node, [val]) → "TypeError: undefined is not a function".
-    // TV remote button events are handled by tvPressEventHandlers (onPressIn /
-    // onPressOut) and onClick, so the responder system is not needed on TV.
+    //
+    // On Android TV with the New Architecture (Fabric) these props do NOT have
+    // native Fabric setters — the TV Fabric view only exposes the props declared
+    // in TVViewConfig (onPressIn, onPressOut, onFocus, onBlur, onClick, focusable,
+    // collapsable …). Passing any prop whose Fabric setter is absent causes the
+    // renderer to call setter.apply(node, [val]) with an undefined function →
+    // "TypeError: undefined is not a function" at app launch.
+    //
+    // TV remote button events are fully handled by tvPressEventHandlers
+    // (onPressIn / onPressOut) and onClick, which ARE preserved, so removing
+    // the responder handlers does not affect TV remote functionality.
+    //
+    // ⚠️  Backward-compatibility note (Old Architecture / non-Fabric):
+    // In the legacy bridge architecture React's ResponderEventPlugin reads
+    // handlers such as onStartShouldSetResponder directly from the component's
+    // stored props (instanceProps). Deleting them here means touch-screen press
+    // events will NOT work on Android TV devices running the Old Architecture.
+    // TV remote presses are unaffected because they go through onPressIn /
+    // onPressOut. Since the vast majority of Android TV devices have no touch
+    // screen this is an acceptable trade-off, and migration to the New
+    // Architecture (Fabric) is expected for all TV targets going forward.
     if (Platform.OS === 'android') {
       delete viewProps.onStartShouldSetResponder
       delete viewProps.onStartShouldSetResponderCapture
