@@ -214,13 +214,13 @@ describe('Nested media + platform queries', () => {
           $xs: {
             opacity: 0.5,
             '$platform-android': {
-              borderRadius: 10,
+              zIndex: 5,
             },
           },
           '$platform-android': {
-            padding: 8,
+            zIndex: 10,
             $xs: {
-              margin: 4,
+              flex: 1,
             },
           },
         },
@@ -229,9 +229,10 @@ describe('Nested media + platform queries', () => {
       )
       // All conditions met — all properties should apply
       expect(result.style?.opacity).toBe(0.5)
-      expect(result.style?.borderRadius).toBe(10)
-      expect(result.style?.padding).toBe(8)
-      expect(result.style?.margin).toBe(4)
+      // zIndex: 5 from $xs.$platform-android and zIndex: 10 from $platform-android
+      // nested $xs.$platform-android (importance = 110) beats non-nested $platform-android (importance = 9)
+      expect(result.style?.zIndex).toBe(5)
+      expect(result.style?.flex).toBe(1)
     })
   })
 

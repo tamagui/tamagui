@@ -1074,28 +1074,34 @@ export const getSplitStyles: StyleSplitter = (
 
               // Nested styles are more specific than their outer context because
               // they require both conditions to be true. Calculate an importance
-              // that is guaranteed to win over the outer style's importance.
-              //
-              // Base the nested importance on the outer key's actual importance
-              // (not defaultMediaImportance, which is too low for size-media keys
-              // like $xs/$sm that start at 100+).
+              // that is the sum of both the outer and inner importances so that:
+              //   1) nested always beats non-nested
+              //   2) $xs={{ $platform-android: ... }} and
+              //      $platform-android={{ $xs: ... }} produce identical importance
+              //      (last-declared wins for the same property)
               const isSizeMediaKey = !!mediaState[mediaKeyShort]
-              const outerImportance = isSizeMediaKey
+              const outerBase = isSizeMediaKey
                 ? getMediaKeyImportance(mediaKeyShort)
                 : defaultMediaImportance
-              // +1 ensures nested always beats its parent; platform bump adds
-              // additional specificity so $platform-androidtv > $platform-android
-              let nestedImportance = outerImportance + importanceBump + 1
+
+              let innerBase: number
               if (subMediaType === 'platform') {
-                nestedImportance += getPlatformSpecificityBump(subKey.slice(1))
+                innerBase =
+                  defaultMediaImportance + getPlatformSpecificityBump(subKey.slice(1))
+              } else if (subMediaType === true) {
+                innerBase = getMediaKeyImportance(subKey.slice(1))
+              } else {
+                innerBase = defaultMediaImportance
               }
+
+              const nestedImportance = outerBase + importanceBump + innerBase + 1
 
               for (const subSubKey in nestedVal) {
                 // expand shorthands — getSubStyle doesn't expand keys
                 // inside nested $ objects (they pass through propMapper as-is)
                 const expandedKey = shorthands[subSubKey] || subSubKey
                 const { usedKeys } = styleState
-                if (usedKeys[expandedKey] && usedKeys[expandedKey] >= nestedImportance) {
+                if (usedKeys[expandedKey] && usedKeys[expandedKey] > nestedImportance) {
                   continue
                 }
                 styleState.style ||= {}
