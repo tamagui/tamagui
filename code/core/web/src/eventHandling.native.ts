@@ -28,10 +28,14 @@ const androidTVFabricIncompatibleHandlers = [
   'onStartShouldSetResponderCapture',
   'onMoveShouldSetResponderCapture',
   'onResponderGrant',
+  'onResponderReject',
+  'onResponderStart',
+  'onResponderEnd',
   'onResponderMove',
   'onResponderRelease',
   'onResponderTerminate',
   'onResponderTerminationRequest',
+  'onShouldBlockNativeResponder',
 ] as const
 
 // web events not used on native
@@ -140,8 +144,14 @@ export function useEvents(
       viewProps.collapsable = false
     }
 
-    // usePressability handles all TV remote button presses
-    useMainThreadPressEvents(events, viewProps, Boolean(hasPressEvents))
+    // usePressability handles all TV remote button presses.
+    // Pass hasPressEvents directly rather than Boolean(hasPressEvents): when there
+    // is no onPress, hasPressEvents is undefined, which triggers the default
+    // parameter `enabled = true` inside useMainThreadPressEvents so that
+    // usePressability is called with the full events config (including onFocus/onBlur)
+    // rather than emptyConfig. Without this, focus events would not be wired up for
+    // buttons that have onFocus/focusStyle but no onPress.
+    useMainThreadPressEvents(events, viewProps, hasPressEvents)
 
     // On Android TV with Fabric, usePressability adds responder handlers that are NOT
     // in the Android TV Fabric codegen spec. Each unrecognised prop causes Fabric to call
