@@ -18,13 +18,11 @@ function matchMediaFallback(query: string): MediaQueryList {
 
 export function setupMatchMedia(_: MatchMedia) {
   if (typeof _ !== 'function') {
-    if (process.env.NODE_ENV === 'development') {
-      if (!process.env.IS_STATIC) {
-        console.trace(
-          `setupMatchMedia was called without a function, this can cause issues on native`,
-          _
-        )
-      }
+    if (process.env.NODE_ENV === 'development' && !process.env.IS_STATIC) {
+      console.trace(
+        `setupMatchMedia was called without a function, this can cause issues on native`,
+        _
+      )
     }
     return
   }
