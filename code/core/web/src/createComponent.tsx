@@ -1,5 +1,11 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import {
+  isClient,
+  isServer,
+  isTV,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import { NativeMenuContext } from '@tamagui/native'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
@@ -1355,8 +1361,21 @@ export function createComponent<
                 next.focusWithin = true
               }
               if (pseudos?.focusVisibleStyle) {
-                if (lastInteractionWasKeyboard.value) {
+                // On native TV platforms (Android TV / tvOS), all focus comes from the
+                // d-pad / remote which is keyboard-like, so treat it the same as keyboard
+                // focus. `lastInteractionWasKeyboard` is web-only so it is always false
+                // on native; without this special-case focusVisibleStyle (e.g. the default
+                // Button outline) would never apply on TV.
+                const isKeyboardLike =
+                  lastInteractionWasKeyboard.value ||
+                  (process.env.TAMAGUI_TARGET === 'native' && isTV)
+                if (isKeyboardLike) {
                   next.focusVisible = true
+                  // Also set focus so that components with both focusStyle and
+                  // focusVisibleStyle get the full focus treatment on TV.
+                  if (process.env.TAMAGUI_TARGET === 'native' && isTV) {
+                    next.focus = true
+                  }
                 } else {
                   next.focus = true
                 }

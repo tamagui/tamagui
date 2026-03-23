@@ -1,10 +1,21 @@
 /**
- * Native event handling - uses RNGH when available, falls back to usePressability
+ * Native event handling - uses RNGH when available, falls back to usePressability.
+ * On TV platforms (Apple TV / Android TV), RNGH gestures are bypassed because TV
+ * remote button presses don't go through the touch event system. Instead, the native
+ * responder system (usePressability) handles all press events on TV.
+ * TV focus navigation (onFocus/onBlur) is enabled by explicitly setting
+ * focusable={true} (required by both tvOS and Android TV) and, for Android TV only,
+ * collapsable={false} (prevents Android from flattening views out of the native
+ * hierarchy). collapsable is intentionally NOT set on tvOS because it is an
+ * Android-only prop at the native Fabric level — setting it on iOS/tvOS causes
+ * the Fabric setter to be undefined, crashing with "TypeError: undefined is not
+ * a function" at app launch.
  */
 
 import { composeEventHandlers } from '@tamagui/helpers'
 import { getGestureHandler } from '@tamagui/native'
 import React, { useRef } from 'react'
+import { Platform } from 'react-native'
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
@@ -83,12 +94,28 @@ export function useEvents(
         delayLongPress,
       })
     }
+
+    // On TV platforms, HOC viewProps are passed directly to the inner component.
+    // Ensure the inner component receives the TV focus props so that d-pad
+    // navigation can reach it even when the HOC exits before the TV block below.
+    if (Platform.isTV && events) {
+      if (viewProps.focusable === undefined) {
+        viewProps.focusable = true
+      }
+      if (Platform.OS === 'android' && viewProps.collapsable === undefined) {
+        viewProps.collapsable = false
+      }
+    }
+
     // HOCs don't use gesture handler at this level
     return null
   }
 
   // rngh path - logic (hooks already called above)
-  if (isUsingRNGH) {
+  // TV remote button presses (Apple TV / Android TV) do not go through RNGH's
+  // gesture system. Fall back to usePressability (responder system) on TV so
+  // that remote "select" button events reach the press handlers.
+  if (isUsingRNGH && !Platform.isTV) {
     // rngh path - hooks
     const callbacksRef = useRef<any>(isUsingRNGH ? {} : null)
     const gestureRef = useRef<any>(null)
@@ -144,9 +171,77 @@ export function useEvents(
     return null
   }
 
-  // fallback - use usePressability when RNGH not enabled
+  // fallback - use usePressability when RNGH not enabled, or on TV where RNGH
+  // gestures do not respond to remote control "select" button events.
   // split into separate file to avoid deep import warnings
   useMainThreadPressEvents(events, viewProps, hasPressEvents)
+
+  if (Platform.isTV && events) {
+    // Make the component a participant in the TV focus navigation system.
+    // On tvOS, a View without explicit focusable={true} is not part of the TV
+    // focus engine (RNGH's gesture recognizer attachment was implicitly making
+    // views focusable). On Android TV, focusable={true} is required so the
+    // remote's directional pad can navigate to this element.
+    if (viewProps.focusable === undefined) {
+      viewProps.focusable = true
+    }
+
+    // Prevent Android TV from collapsing/flattening this View out of the native
+    // view hierarchy. RNGH's GestureDetector previously forced collapsable={false}
+    // via its Wrap component; without it the View can be flattened and will no
+    // longer receive onFocus/onBlur events.
+    // NOTE: collapsable is Android-only at the native Fabric level. Setting it on
+    // tvOS (iOS) causes the Fabric prop-setter for 'collapsable' to be undefined,
+    // which throws "TypeError: undefined is not a function" at app launch.
+    if (Platform.OS === 'android' && viewProps.collapsable === undefined) {
+      viewProps.collapsable = false
+    }
+
+    // Remove the legacy responder-system handlers that usePressability adds.
+    //
+    // On Android TV with the New Architecture (Fabric) these props do NOT have
+    // native Fabric setters — the TV Fabric view only exposes the props declared
+    // in TVViewConfig (onPressIn, onPressOut, onFocus, onBlur, onClick, focusable,
+    // collapsable …). Passing any prop whose Fabric setter is absent causes the
+    // renderer to call setter.apply(node, [val]) with an undefined function →
+    // "TypeError: undefined is not a function" at app launch.
+    //
+    // TV remote button events are fully handled by tvPressEventHandlers
+    // (onPressIn / onPressOut) and onClick, which ARE preserved, so removing
+    // the responder handlers does not affect TV remote functionality.
+    //
+    // ⚠️  Backward-compatibility note (Old Architecture / non-Fabric):
+    // In the legacy bridge architecture React's ResponderEventPlugin reads
+    // handlers such as onStartShouldSetResponder directly from the component's
+    // stored props (instanceProps). Deleting them here means touch-screen press
+    // events will NOT work on Android TV devices running the Old Architecture.
+    // TV remote presses are unaffected because they go through onPressIn /
+    // onPressOut. Since the vast majority of Android TV devices have no touch
+    // screen this is an acceptable trade-off, and migration to the New
+    // Architecture (Fabric) is expected for all TV targets going forward.
+    if (Platform.OS === 'android') {
+      delete viewProps.onStartShouldSetResponder
+      delete viewProps.onStartShouldSetResponderCapture
+      delete viewProps.onMoveShouldSetResponder
+      delete viewProps.onMoveShouldSetResponderCapture
+      delete viewProps.onResponderGrant
+      delete viewProps.onResponderReject
+      delete viewProps.onResponderStart
+      delete viewProps.onResponderEnd
+      delete viewProps.onResponderMove
+      delete viewProps.onResponderRelease
+      delete viewProps.onResponderTerminate
+      delete viewProps.onResponderTerminationRequest
+      delete viewProps.onShouldBlockNativeResponder
+    }
+
+    // RN 0.84+ added TV-specific props (onPressEnter / onPressLeave) for the
+    // remote select button. However these do NOT exist in the Fabric native spec
+    // for Android TV views; setting them causes Fabric to call an undefined setter
+    // via setter.apply() → "TypeError: undefined is not a function" at app launch.
+    // The usePressability responder system above already handles TV remote presses
+    // on all RN versions, so no additional mapping is needed here.
+  }
 
   return null
 }
@@ -160,6 +255,13 @@ export function wrapWithGestureDetector(
   // Skip wrapping for HOC components - they may return null which crashes GestureDetector
   // (GestureDetector tries to access _internalInstanceHandle on a null native view)
   if (isHOC) {
+    return content
+  }
+
+  // Skip wrapping on TV: TV remote events go through the native responder system,
+  // not RNGH gestures. The focusable/collapsable props that GestureDetector's Wrap
+  // component previously provided are now set directly on viewProps in useEvents.
+  if (Platform.isTV) {
     return content
   }
 
