@@ -136,3 +136,131 @@ export default () => (
 ```
 
 These render to their corresponding HTML elements (`<strong>`, `<em>`, `<span>`) on web while remaining compatible with React Native.
+
+## Text Truncation
+
+Tamagui provides two props for truncating text with ellipsis: `ellipsis` for single-line truncation and `numberOfLines` for multi-line clamping.
+
+### Single-line Ellipsis
+
+Use the `ellipsis` prop to truncate text to a single line with an ellipsis:
+
+```tsx
+import { Text, SizableText, Paragraph } from 'tamagui'
+
+export default () => (
+  <Paragraph ellipsis maxWidth={200}>
+    This is a very long text that will be truncated with an ellipsis when it overflows.
+  </Paragraph>
+)
+```
+
+On web, this applies `text-overflow: ellipsis`, `white-space: nowrap`, and `overflow: hidden`. On native, it sets `numberOfLines={1}`.
+
+### Multi-line Clamping
+
+Use the `numberOfLines` prop to clamp text to a specific number of lines:
+
+```tsx
+import { Paragraph } from 'tamagui'
+
+export default () => (
+  <>
+    <Paragraph numberOfLines={1} maxWidth={200}>
+      Single line truncation, same as ellipsis.
+    </Paragraph>
+
+    <Paragraph numberOfLines={3} maxWidth={200}>
+      This text will be clamped to three lines. Any overflow beyond the third
+      line will be hidden. This is useful for card descriptions or preview text
+      where you want to show a limited amount of content.
+    </Paragraph>
+  </>
+)
+```
+
+On web, multi-line clamping uses `-webkit-line-clamp` with `-webkit-box` display. On native, it passes `numberOfLines` directly to the React Native Text component.
+
+<Notice>
+  The `numberOfLines` prop is supported on the base `Text` component from `@tamagui/core`
+  as well as `SizableText` and `Paragraph`. The `ellipsis` prop is a shorthand for
+  `numberOfLines={1}`.
+</Notice>
+
+## API Reference
+
+### Text
+
+The base text component from `@tamagui/core`. Accepts all [Tamagui style props](/docs/intro/props) for text elements.
+
+<PropsTable
+  data={[
+    {
+      name: 'ellipsis',
+      required: false,
+      type: 'boolean',
+      description: `When true, truncates text to a single line with an ellipsis. Equivalent to numberOfLines={1}.`,
+    },
+    {
+      name: 'numberOfLines',
+      required: false,
+      type: 'number',
+      description: `Clamps text to the specified number of lines. Overflow is hidden. On web uses -webkit-line-clamp; on native uses the React Native numberOfLines prop.`,
+    },
+  ]}
+/>
+
+### SizableText
+
+Extends Text with the `size` prop for theme-aware font sizing.
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      required: false,
+      type: 'SizeTokens',
+      description: `Sets font size, line height, letter spacing, and font weight from your theme's font configuration. Accepts any size token (e.g., "$4", "$true").`,
+    },
+    {
+      name: 'ellipsis',
+      required: false,
+      type: 'boolean',
+      description: `When true, truncates text to a single line with an ellipsis.`,
+    },
+    {
+      name: 'numberOfLines',
+      required: false,
+      type: 'number',
+      description: `Clamps text to the specified number of lines.`,
+    },
+  ]}
+/>
+
+### Paragraph
+
+Extends SizableText with semantic defaults. Renders as `<p>` on web, uses theme color, and sets `userSelect: 'auto'` and `whiteSpace: 'normal'`.
+
+<PropsTable
+  data={[
+    {
+      name: 'size',
+      required: false,
+      type: 'SizeTokens',
+      default: "'$true'",
+      description: `Sets font size from your theme. Defaults to the theme's base size.`,
+    },
+    {
+      name: 'ellipsis',
+      required: false,
+      type: 'boolean',
+      description: `When true, truncates text to a single line with an ellipsis.`,
+    },
+    {
+      name: 'numberOfLines',
+      required: false,
+      type: 'number',
+      description: `Clamps text to the specified number of lines.`,
+    },
+  ]}
+/>
