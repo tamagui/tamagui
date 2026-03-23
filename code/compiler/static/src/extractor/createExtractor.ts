@@ -79,10 +79,6 @@ function isFullyDisabled(props: TamaguiOptions) {
 export function createExtractor(
   { logger = console, platform = 'web' }: ExtractorOptions = { logger: console }
 ) {
-  if (!process.env.TAMAGUI_TARGET) {
-    throw new Error('Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
-  }
-
   const INLINE_EXTRACTABLE = {
     ref: 'ref',
     key: 'key',
@@ -130,7 +126,7 @@ export function createExtractor(
   } as const
 
   const styleProps: SplitStyleProps = {
-    resolveValues: process.env.TAMAGUI_TARGET === 'native' ? 'value' : 'variable',
+    resolveValues: platform === 'native' ? 'value' : 'variable',
     noClass: false,
     isAnimated: false,
   }
@@ -138,7 +134,7 @@ export function createExtractor(
   const shouldAddDebugProp =
     // really basic disable this for next.js because it messes with ssr
     !process.env.npm_package_dependencies_next &&
-    process.env.TAMAGUI_TARGET !== 'native' &&
+    platform !== 'native' &&
     process.env.IDENTIFY_TAGS !== 'false' &&
     (process.env.NODE_ENV === 'development' || process.env.IDENTIFY_TAGS)
 
@@ -1544,7 +1540,7 @@ export function createExtractor(
                       if (platform === 'native' && nativeOnlyPlatforms.has(platformName)) {
                         if (shouldPrintDebug) {
                           logger.info(
-                            `  ! leaving runtime-only platform style: ${name}`
+                            `  ! keeping platform-specific style for runtime evaluation: ${name}`
                           )
                         }
                         inlined.set(name, true)
