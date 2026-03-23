@@ -109,7 +109,7 @@ export function ComponentItem({
 
 const Null = () => null
 
-const BASE_PATH = ' /bento'
+const BASE_PATH = '/bento'
 
 export const BENTO_COMPONENT_ICONS = {
   Inputs: TextCursorInput,
