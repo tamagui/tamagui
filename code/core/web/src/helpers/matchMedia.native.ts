@@ -28,4 +28,10 @@ export function setupMatchMedia(_: MatchMedia) {
   }
 
   matchMediaImpl = _
+  // Note: the previous `globalThis['matchMedia'] = _` assignment was removed.
+  // On Android TV / tvOS, globalThis === window. Assigning to globalThis['matchMedia']
+  // polluted window.matchMedia on those platforms, which caused issues.
+  // The web matchMedia.ts uses `(typeof window !== 'undefined' && window.matchMedia)`
+  // directly — that's correct on web. On native, this .native.ts file is used and
+  // matchMediaImpl holds the native implementation; no globalThis assignment is needed.
 }
