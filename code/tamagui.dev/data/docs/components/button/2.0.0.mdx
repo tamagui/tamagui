@@ -89,9 +89,9 @@ accepts a `SizeTokens` value (e.g., `"$2"`). The `scaleIcon` prop can be used to
 further adjust the size relative to the determined or explicitly set icon size.
 
 When an icon is present, Tamagui automatically adds spacing between the icon and
-the button's text. This space is calculated as 40% of the icon's final computed
-size (after considering `size`, `iconSize`, and `scaleIcon`). This margin is
-applied to the right of an `icon` and to the left of an `iconAfter`.
+the button's text using the CSS `gap` property on the Button frame. The gap is
+derived from the Button's `size` token value, keeping spacing consistent with
+the overall button dimensions.
 
 ```tsx
 import { Button, Star } from 'tamagui'
@@ -127,7 +127,7 @@ export default () => (
     <Button.Apply size="$2" variant="outlined">
       <Button>Small Outlined 1</Button>
       <Button>Small Outlined 2</Button>
-      <Button icon={ButtonDemo}>With Icon</Button>
+      <Button icon={Star}>With Icon</Button>
     </Button.Apply>
 
     <Button.Apply size="$5">
@@ -167,9 +167,30 @@ export default () => (
 
 ## Text Styling
 
-Button does not support a `color` prop directly. Instead, use `Button.Text`
-for full control over text styling. Combine it with the `group` prop on
-Button to coordinate interactive styles between the frame and its children:
+**Changed from v1:** In v1, you could pass text style props like `color`,
+`fontSize`, `fontWeight`, `fontFamily`, and `letterSpacing` directly to
+`<Button>` and they would be forwarded to the button's text via context. In v2,
+this is no longer supported — Button's frame is a `View` and text style props
+passed to it are ignored.
+
+To customize text appearance, use `Button.Text` explicitly:
+
+```tsx
+import { Button } from 'tamagui'
+
+export default () => (
+  <Button>
+    <Button.Text color="blue" fontSize="$5" fontWeight="bold">
+      Styled text
+    </Button.Text>
+  </Button>
+)
+```
+
+### Interactive Text Styles
+
+Combine `Button.Text` with the `group` prop on Button to coordinate text
+styles across hover, press, and focus states:
 
 ```tsx
 import { Button } from 'tamagui'
@@ -211,6 +232,12 @@ Buttons extend Stack views inheriting all the
       required: false,
       type: '"outlined" | undefined',
       description: 'Applies the "outlined" button style.',
+    },
+    {
+      name: 'elevation',
+      required: false,
+      type: 'SizeTokens | number',
+      description: `Adds a shadow/elevation effect to the button. Accepts a size token or number.`,
     },
     {
       name: 'disabled',
@@ -281,6 +308,12 @@ Buttons extend Stack views inheriting all the
       type: '"button" | "submit" | "reset"',
       description:
         'Web-only. The button type. Defaults to "button" to prevent unintended form submissions.',
+    },
+    {
+      name: 'form',
+      required: false,
+      type: 'string',
+      description: 'Web-only. The ID of the form element the button is associated with.',
     },
     {
       name: 'formAction',

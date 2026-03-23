@@ -250,6 +250,12 @@ The `useTabs` hook accepts these options and returns props/helpers:
       description: `Whether a tab is activated automatically (on focus) or manually (on click/enter).`,
     },
     {
+      name: 'size',
+      type: 'SizeTokens',
+      default: "'$true'",
+      description: `Sets the size of the tab triggers. Passed down via context to all Tabs.Tab children.`,
+    },
+    {
       name: 'loop',
       type: 'boolean',
       default: 'true',
