@@ -12,6 +12,7 @@ import { didGetVariableValue, setDidGetVariableValue } from './createVariable'
 import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
+import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
 import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
@@ -299,6 +300,10 @@ export function createComponent<
       time = timer.start()
       globalThis['time'] = time
     }
+    // pick up globalThis.time if set externally (e.g. by a profiling harness)
+    if (process.env.NODE_ENV === 'development' && !time && (globalThis as any).time) {
+      time = (globalThis as any).time
+    }
     if (process.env.NODE_ENV === 'development' && time) time`non-tamagui time (ignore)`
 
     // React inserts default props after your props for some reason...
@@ -399,7 +404,12 @@ export function createComponent<
         return props.animatedBy === 'default' ? config.animations : null
       }
       // fall back to context driver, then config.animations
-      return componentContext.animationDriver ?? config?.animations ?? null
+      // resolveAnimationDriver validates it's a real driver (not a raw multi-driver object)
+      return (
+        resolveAnimationDriver(componentContext.animationDriver) ??
+        resolveAnimationDriver(config?.animations) ??
+        null
+      )
     })()
 
     const useAnimations = animationDriver?.useAnimations as UseAnimationHook | undefined
@@ -1341,6 +1351,7 @@ export function createComponent<
             onFocus: (e) => {
               const next: Partial<typeof state> = {}
               if (componentContext.setParentFocusState) {
+                componentContext.setParentFocusState({ focusWithin: true })
                 next.focusWithin = true
               }
               if (pseudos?.focusVisibleStyle) {
@@ -1510,7 +1521,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
-    if ('focusWithinStyle' in propsIn) {
+    if ('focusWithinStyle' in propsIn || pseudos?.focusWithinStyle) {
       content = (
         <ComponentContext.Provider
           {...componentContext}

@@ -1,4 +1,4 @@
-import { ChevronLeft } from '@tamagui/lucide-icons'
+import { ChevronLeft } from '@tamagui/lucide-icons-2'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
 import { Button, H1, Paragraph, Text, XStack, YStack } from 'tamagui'

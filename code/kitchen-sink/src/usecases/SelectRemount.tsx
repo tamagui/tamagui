@@ -3,7 +3,7 @@
  * https://github.com/tamagui/tamagui/issues/1859
  */
 
-import { Check, ChevronDown } from '@tamagui/lucide-icons'
+import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
 import React from 'react'
 import { Adapt, Button, Select, Sheet, Text, XStack, YStack } from 'tamagui'
 
@@ -28,6 +28,7 @@ function SelectComponent({ id }: { id: string }) {
       onValueChange={setVal}
       disablePreventBodyScroll
       renderValue={getItemLabel}
+      zIndex={200000}
     >
       <Select.Trigger
         testID={`${id}-trigger`}
@@ -54,7 +55,7 @@ function SelectComponent({ id }: { id: string }) {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.Viewport minW={200}>
           <Select.Group>
             <Select.Label>Fruits</Select.Label>

@@ -54,4 +54,4 @@ The compiler optimizes most and ultimately flattens a majority of styled compone
 
 To contribute to Tamagui reference the [contributing guide](https://github.com/tamagui/tamagui/blob/main/CONTRIBUTING.md).
 
-To contribute to documentation reference the [writing guide](https://github.com/tamagui/tamagui/blob/main/code/tamagui.dev/WRITING-GUIDE.md).
+To contribute to documentation, see the docs source in `code/tamagui.dev/data/docs/`.

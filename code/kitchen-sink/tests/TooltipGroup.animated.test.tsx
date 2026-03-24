@@ -8,7 +8,7 @@ import { setupPage } from './test-utils'
  * - First tooltip in group: waits for full delay
  * - Subsequent tooltips: show immediately while within the group's timeout window
  *
- * This is implemented via FloatingDelayGroup from @floating-ui/react.
+ * This is implemented via FloatingDelayGroup from @tamagui/floating.
  */
 
 async function tooltipVisible(page: Page, testId: string): Promise<boolean> {

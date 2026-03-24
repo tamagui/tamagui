@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
+import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2'
 import type React from 'react'
 import { Button, H4, SizableText, XStack, YStack } from 'tamagui'
 import { useDemoProps } from '../hooks/useDemoProps'

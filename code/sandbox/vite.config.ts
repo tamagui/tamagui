@@ -1,39 +1,30 @@
-import type { UserConfig } from 'vite'
-// TODO why is this not typing
-import { one } from 'one/vite'
 import { tamaguiAliases, tamaguiPlugin } from '@tamagui/vite-plugin'
+import { one } from 'one/vite'
+import type { UserConfig } from 'vite'
 
 const useRNWLite = !!process.env.USE_RNW_LITE
 
 // TODO this optimizeDeps/one.deps conf should be automatically done by one
 
 export default {
+  clearScreen: false,
+
   ...(useRNWLite && {
     resolve: {
       alias: tamaguiAliases({ rnwLite: true }),
     },
   }),
-  ssr: {
-    optimizeDeps: {
-      include: [
-        '@tamagui/toast',
-        '@tamagui/web',
-        '@tamagui/core',
-        '@tamagui/animations-motion',
-        'framer-motion',
-        'motion/react',
-      ],
-    },
-  },
 
   plugins: [
     one({
-      config: {
-        tsConfigPaths: {
-          root: import.meta.dirname,
-          projectDiscovery: 'eager',
-        },
+      optimization: {
+        autoOptimizeDeps: false,
       },
+
+      ssr: {
+        dedupeSymlinkedModules: true,
+      },
+
       //  native: {
       //   bundler: 'metro',
       //   bundlerOptions: {
@@ -69,6 +60,9 @@ export default {
       // },
     }),
 
-    tamaguiPlugin(),
+    tamaguiPlugin({
+      // see tamagui.build.ts for options
+      fixVite8SymlinkExportResolutions: true,
+    }),
   ],
 } satisfies UserConfig

@@ -2,7 +2,7 @@
 
 //  ‼️🚨
 
-import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons'
+import { Moon, Sun, SunMoon } from '@tamagui/lucide-icons-2'
 import { useSystemScheme, useUserScheme } from '@vxrn/color-scheme'
 import { useState } from 'react'
 import { Appearance } from 'react-native'

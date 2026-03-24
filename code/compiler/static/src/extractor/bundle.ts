@@ -1,7 +1,8 @@
-import { join } from 'node:path'
+import { readFileSync } from 'node:fs'
 import esbuild from 'esbuild'
 import * as FS from 'fs-extra'
 import type { TamaguiPlatform } from '../types'
+import { detectModuleFormat } from './detectModuleFormat'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 import { TsconfigPathsPlugin } from './esbuildTsconfigPaths'
@@ -63,11 +64,23 @@ function getESBuildConfig(
     ? entryPoints
     : entryPoints.map(resolveWebOrNativeSpecificEntry)
 
+  // detect format from entry points if not explicitly provided by caller
+  const detectedFormat = options.format || detectEntryFormat(resolvedEntryPoints[0])
+
   const res: esbuild.BuildOptions = {
     bundle: true,
     entryPoints: resolvedEntryPoints,
-    format: 'cjs',
-    target: 'node20',
+    format: detectedFormat,
+    // for ESM: prefer "module" field for resolution, add require() shim for bundled CJS deps
+    ...(detectedFormat === 'esm'
+      ? {
+          mainFields: ['module', 'main'],
+          banner: {
+            js: 'import { createRequire as __cr } from "module"; const require = __cr(import.meta.url);',
+          },
+        }
+      : {}),
+    target: 'node24',
     jsx: 'transform',
     jsxFactory: 'react',
     allowOverwrite: true,
@@ -92,9 +105,83 @@ function getESBuildConfig(
     plugins: [
       TsconfigPathsPlugin(),
 
+      // handle ESM-only features that can't be used with CJS output
+      {
+        name: 'handle-esm-features',
+        setup(build) {
+          // only apply transforms for CJS output - ESM supports these natively
+          const isCjs =
+            build.initialOptions.format === 'cjs' || !build.initialOptions.format
+
+          build.onLoad({ filter: /\.(ts|tsx|js|jsx|mjs)$/ }, (args) => {
+            // skip if ESM output - import.meta and top-level await work natively
+            if (!isCjs) {
+              return null
+            }
+
+            // skip most node_modules
+            if (args.path.includes('node_modules') && !args.path.includes('@tamagui')) {
+              return null
+            }
+
+            let contents = readFileSync(args.path, 'utf8')
+            let modified = false
+
+            // transform import.meta.env -> process.env (Vite-style env vars)
+            if (contents.includes('import.meta.env')) {
+              contents = contents.replace(/import\.meta\.env/g, 'process.env')
+              modified = true
+            }
+
+            // transform import.meta.url -> "" (not needed for static extraction)
+            if (contents.includes('import.meta.url')) {
+              contents = contents.replace(/import\.meta\.url/g, '""')
+              modified = true
+            }
+
+            // transform import.meta.main -> false
+            if (contents.includes('import.meta.main')) {
+              contents = contents.replace(/import\.meta\.main/g, 'false')
+              modified = true
+            }
+
+            // stub files with top-level await - they're typically runtime-only
+            if (
+              /^\s*(?:const|let|var|export)\s+[^=]*=\s*await\b/m.test(contents) ||
+              /^await\s/m.test(contents)
+            ) {
+              if (process.env.DEBUG?.startsWith('tamagui')) {
+                console.info(`[tamagui] stubbing file with top-level await: ${args.path}`)
+              }
+              return {
+                contents: `// stubbed - contains top-level await\nmodule.exports = {}`,
+                loader: 'js',
+              }
+            }
+
+            if (modified) {
+              return {
+                contents,
+                loader: args.path.endsWith('.tsx')
+                  ? 'tsx'
+                  : args.path.endsWith('.ts')
+                    ? 'ts'
+                    : args.path.endsWith('.jsx')
+                      ? 'jsx'
+                      : 'js',
+              }
+            }
+
+            return null
+          })
+        },
+      },
+
       {
         name: 'external',
         setup(build) {
+          const proxyWormPath = require.resolve('@tamagui/proxy-worm')
+
           // only externalize @tamagui/core and @tamagui/web - these are provided at runtime
           // other @tamagui/* packages (like @tamagui/config/v3) must be bundled in to avoid
           // ESM race conditions when multiple threads require() them concurrently
@@ -122,10 +209,15 @@ function getESBuildConfig(
             }
           })
 
-          build.onResolve({ filter: /react-native-reanimated/ }, () => {
+          build.onResolve({ filter: /^react-native-reanimated(?:\/.*)?$/ }, () => {
             return {
-              path: 'react-native-reanimated',
-              external: true,
+              path: proxyWormPath,
+            }
+          })
+
+          build.onResolve({ filter: /^react-native-worklets(?:\/.*)?$/ }, () => {
+            return {
+              path: proxyWormPath,
             }
           })
 
@@ -146,6 +238,21 @@ function getESBuildConfig(
   }
 
   return res
+}
+
+function detectEntryFormat(entryPoint: string): esbuild.BuildOptions['format'] {
+  // file path - detect from file/package.json
+  if (entryPoint.startsWith('/') || entryPoint.startsWith('.')) {
+    return detectModuleFormat(entryPoint)
+  }
+  // bare module specifier - check package.json type field
+  try {
+    const pkgJsonPath = require.resolve(entryPoint + '/package.json')
+    const pkg = JSON.parse(readFileSync(pkgJsonPath, 'utf-8'))
+    return pkg.type === 'module' ? 'esm' : 'cjs'
+  } catch {
+    return 'cjs'
+  }
 }
 
 export async function esbundleTamaguiConfig(

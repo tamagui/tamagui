@@ -1,6 +1,6 @@
 {
   "name": "create-tamagui",
-  "version": "2.0.0-rc.22",
+  "version": "2.0.0-rc.30",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "bin": "./run.js",
   "files": [
@@ -36,8 +36,7 @@
     "opener": "^1.5.2",
     "prompts": "2.1.0",
     "rimraf": "^5.0.1",
-    "validate-npm-package-name": "3.0.0",
-    "zx": "^8.5.5"
+    "validate-npm-package-name": "3.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.1",

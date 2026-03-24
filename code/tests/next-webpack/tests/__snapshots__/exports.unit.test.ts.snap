@@ -155,7 +155,7 @@ import { Adapt, Anchor, Button, type FontSizeTokens, getFontSize, H1, Label, Par
 import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton';
 import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton';
 import { LinearGradient } from '@tamagui/linear-gradient';
-import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
+import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2';
 import React, { useState } from 'react';
 import { Platform } from 'react-native';
 import { useLink } from 'solito/navigation';
@@ -180,7 +180,7 @@ export function SelectDemoItem(props: SelectProps & {
   trigger?: React.ReactNode;
 }) {
   const [val, setVal] = React.useState('apple');
-  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
+  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000} {...props}>
       {props?.trigger || <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Something" />
         </Select.Trigger>}
@@ -200,7 +200,7 @@ export function SelectDemoItem(props: SelectProps & {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
           <__ReactNativeView style={_sheet["3"]}>
             <ChevronUp size={20} />
@@ -466,28 +466,28 @@ exports[`Package.json exports support > should build app package for both web an
 
 exports[`Package.json exports support > should build app package for both web and native targets > web-optimized 1`] = `
 "import "./_screen.css"
-const _cn15 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center ";
-const _cn14 = "is_View _pos-relative _fd-row _gap-c-space-2 ";
-const _cn13 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894 ";
-const _cn12 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center ";
-const _cn11 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894 ";
-const _cn10 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color10 _select-auto _ws-normal _text-center ";
-const _cn1 = "is_H1 is_Text font_heading _select-auto _ws-normal _tt-f-transform1451 _ff-f-family _fw-f-weight-10 _ls-f-letterSpa779312653 _fs-f-size-10 _lh-f-lineHeigh3500568 _col-color12 _mt-0px _mr-0px _mb-0px _ml-0px _text-center ";
-const _cn0 = "is_View _pos-relative _fd-column _gap-c-space-4 ";
-const _cn9 = "is_View _pos-relative _fd-row _gap-c-space-2 ";
-const _cn8 = "is_View _fd-row _pos-absolute _width-10037 _t-c-space-6 _gap-c-space-6 _justify-center _fwr-wrap _t-_sm_0px _pos-_sm_relative ";
-const _cn7 = "is_View _pos-relative _fd-column _grow-1 _shrink-1 _fb-auto _justify-center _items-center _gap-c-space-8 _pt-c-space-4 _pr-c-space-4 _pb-c-space-4 _pl-c-space-4 _bg-background ";
-const _cn6 = "is_View _pos-relative _fd-column _z-10 ";
-const _cn5 = "is_View _fd-column _pos-absolute _r-0px _t-0px _b-0px _items-center _justify-center _width-c-size-4 _pe-none ";
-const _cn4 = "is_View _pos-relative _fd-column _z-10 ";
-const _cn3 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4 ";
-const _cn2 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4 ";
-const _cn = "is_View _pos-relative _fd-column _gap-c-space-4 ";
+const _cn15 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center";
+const _cn14 = "is_View _pos-relative _fd-row _gap-c-space-2";
+const _cn13 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894";
+const _cn12 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center";
+const _cn11 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894";
+const _cn10 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color10 _select-auto _ws-normal _text-center";
+const _cn1 = "is_H1 is_Text font_heading _select-auto _ws-normal _tt-f-transform1451 _ff-f-family _fw-f-weight-10 _ls-f-letterSpa779312653 _fs-f-size-10 _lh-f-lineHeigh3500568 _col-color12 _mt-0px _mr-0px _mb-0px _ml-0px _text-center";
+const _cn0 = "is_View _pos-relative _fd-column _gap-c-space-4";
+const _cn9 = "is_View _pos-relative _fd-row _gap-c-space-2";
+const _cn8 = "is_View _fd-row _pos-absolute _width-10037 _t-c-space-6 _gap-c-space-6 _justify-center _fwr-wrap _t-_sm_0px _pos-_sm_relative";
+const _cn7 = "is_View _pos-relative _fd-column _grow-1 _shrink-1 _fb-auto _justify-center _items-center _gap-c-space-8 _pt-c-space-4 _pr-c-space-4 _pb-c-space-4 _pl-c-space-4 _bg-background";
+const _cn6 = "is_View _pos-relative _fd-column _z-10";
+const _cn5 = "is_View _fd-column _pos-absolute _r-0px _t-0px _b-0px _items-center _justify-center _width-c-size-4 _pe-none";
+const _cn4 = "is_View _pos-relative _fd-column _z-10";
+const _cn3 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4";
+const _cn2 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4";
+const _cn = "is_View _pos-relative _fd-column _gap-c-space-4";
 import { Adapt, Anchor, Button, type FontSizeTokens, getFontSize, H1, Label, Paragraph, Select, type SelectProps, Separator, Sheet, toast, XStack, YStack } from '@my/ui';
 import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton';
 import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton';
 import { LinearGradient } from '@tamagui/linear-gradient';
-import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
+import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2';
 import React, { useState } from 'react';
 import { Platform } from 'react-native';
 import { useLink } from 'solito/navigation';
@@ -512,7 +512,7 @@ export function SelectDemoItem(props: SelectProps & {
   trigger?: React.ReactNode;
 }) {
   const [val, setVal] = React.useState('apple');
-  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
+  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000} {...props}>
       {props?.trigger || <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Something" />
         </Select.Trigger>}
@@ -532,7 +532,7 @@ export function SelectDemoItem(props: SelectProps & {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
           <div className={_cn4}>
             <ChevronUp size={20} />
@@ -856,7 +856,7 @@ import { Adapt, Anchor, Button, type FontSizeTokens, getFontSize, H1, Label, Par
 import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton';
 import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton';
 import { LinearGradient } from '@tamagui/linear-gradient';
-import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
+import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2';
 import React, { useState } from 'react';
 import { Platform } from 'react-native';
 import { useLink } from 'solito/navigation';
@@ -881,7 +881,7 @@ export function SelectDemoItem(props: SelectProps & {
   trigger?: React.ReactNode;
 }) {
   const [val, setVal] = React.useState('apple');
-  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
+  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000} {...props}>
       {props?.trigger || <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Something" />
         </Select.Trigger>}
@@ -901,7 +901,7 @@ export function SelectDemoItem(props: SelectProps & {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
           <__ReactNativeView style={_sheet["3"]}>
             <ChevronUp size={20} />
@@ -1100,28 +1100,28 @@ const _ReactNativeTextStyled7 = _withStableStyle(__ReactNativeText, (theme, _exp
 
 exports[`Package.json exports support > should recognize imports from path-specific exports during optimization > web-optimized-single 1`] = `
 "import "./_screen.css"
-const _cn15 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center ";
-const _cn14 = "is_View _pos-relative _fd-row _gap-c-space-2 ";
-const _cn13 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894 ";
-const _cn12 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center ";
-const _cn11 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894 ";
-const _cn10 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color10 _select-auto _ws-normal _text-center ";
-const _cn1 = "is_H1 is_Text font_heading _select-auto _ws-normal _tt-f-transform1451 _ff-f-family _fw-f-weight-10 _ls-f-letterSpa779312653 _fs-f-size-10 _lh-f-lineHeigh3500568 _col-color12 _mt-0px _mr-0px _mb-0px _ml-0px _text-center ";
-const _cn0 = "is_View _pos-relative _fd-column _gap-c-space-4 ";
-const _cn9 = "is_View _pos-relative _fd-row _gap-c-space-2 ";
-const _cn8 = "is_View _fd-row _pos-absolute _width-10037 _t-c-space-6 _gap-c-space-6 _justify-center _fwr-wrap _t-_sm_0px _pos-_sm_relative ";
-const _cn7 = "is_View _pos-relative _fd-column _grow-1 _shrink-1 _fb-auto _justify-center _items-center _gap-c-space-8 _pt-c-space-4 _pr-c-space-4 _pb-c-space-4 _pl-c-space-4 _bg-background ";
-const _cn6 = "is_View _pos-relative _fd-column _z-10 ";
-const _cn5 = "is_View _fd-column _pos-absolute _r-0px _t-0px _b-0px _items-center _justify-center _width-c-size-4 _pe-none ";
-const _cn4 = "is_View _pos-relative _fd-column _z-10 ";
-const _cn3 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4 ";
-const _cn2 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4 ";
-const _cn = "is_View _pos-relative _fd-column _gap-c-space-4 ";
+const _cn15 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center";
+const _cn14 = "is_View _pos-relative _fd-row _gap-c-space-2";
+const _cn13 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894";
+const _cn12 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color _select-auto _ws-normal _text-center";
+const _cn11 = "is_Separator is_View _btc-backgroundF3405682 _brc-backgroundF3405682 _borderBottomColor-backgroundF3405682 _borderLeftColor-backgroundF3405682 _shrink-1 _btw-0px _brw-0px _borderBottomWidth-1px _borderLeftWidth-0px _grow-1 _fb-auto _height-0px _maxH-0px _bbs-solid _bts-solid _bls-solid _brs-solid _tr-translateY-1736186894";
+const _cn10 = "is_Paragraph is_Text font_body _ff-f-family _fw-f-weight-4 _ls-f-letterSpa1360334202 _fs-f-size-4 _lh-f-lineHeigh112923 _col-color10 _select-auto _ws-normal _text-center";
+const _cn1 = "is_H1 is_Text font_heading _select-auto _ws-normal _tt-f-transform1451 _ff-f-family _fw-f-weight-10 _ls-f-letterSpa779312653 _fs-f-size-10 _lh-f-lineHeigh3500568 _col-color12 _mt-0px _mr-0px _mb-0px _ml-0px _text-center";
+const _cn0 = "is_View _pos-relative _fd-column _gap-c-space-4";
+const _cn9 = "is_View _pos-relative _fd-row _gap-c-space-2";
+const _cn8 = "is_View _fd-row _pos-absolute _width-10037 _t-c-space-6 _gap-c-space-6 _justify-center _fwr-wrap _t-_sm_0px _pos-_sm_relative";
+const _cn7 = "is_View _pos-relative _fd-column _grow-1 _shrink-1 _fb-auto _justify-center _items-center _gap-c-space-8 _pt-c-space-4 _pr-c-space-4 _pb-c-space-4 _pl-c-space-4 _bg-background";
+const _cn6 = "is_View _pos-relative _fd-column _z-10";
+const _cn5 = "is_View _fd-column _pos-absolute _r-0px _t-0px _b-0px _items-center _justify-center _width-c-size-4 _pe-none";
+const _cn4 = "is_View _pos-relative _fd-column _z-10";
+const _cn3 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4";
+const _cn2 = "is_View _pos-relative _fd-row _width-10037 _items-center _gap-c-space-4";
+const _cn = "is_View _pos-relative _fd-column _gap-c-space-4";
 import { Adapt, Anchor, Button, type FontSizeTokens, getFontSize, H1, Label, Paragraph, Select, type SelectProps, Separator, Sheet, toast, XStack, YStack } from '@my/ui';
 import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton';
 import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton';
 import { LinearGradient } from '@tamagui/linear-gradient';
-import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons';
+import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2';
 import React, { useState } from 'react';
 import { Platform } from 'react-native';
 import { useLink } from 'solito/navigation';
@@ -1146,7 +1146,7 @@ export function SelectDemoItem(props: SelectProps & {
   trigger?: React.ReactNode;
 }) {
   const [val, setVal] = React.useState('apple');
-  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
+  return <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000} {...props}>
       {props?.trigger || <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Something" />
         </Select.Trigger>}
@@ -1166,7 +1166,7 @@ export function SelectDemoItem(props: SelectProps & {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton items="center" justify="center" position="relative" width="100%" height="$3">
           <div className={_cn4}>
             <ChevronUp size={20} />

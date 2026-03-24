@@ -1,4 +1,4 @@
-import { ChevronRight } from '@tamagui/lucide-icons'
+import { ChevronRight } from '@tamagui/lucide-icons-2'
 import type { Href } from 'one'
 import { ScrollView } from 'react-native'
 import {

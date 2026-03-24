@@ -59,5 +59,17 @@ target 'kitchensinkgo' do
       :mac_catalyst_enabled => false,
       :ccache_enabled => ccache_enabled?(podfile_properties),
     )
+
+    # workaround: expo-modules-core 55.x requires Swift 6 strict concurrency
+    # which is incompatible with current Xcode versions in CI
+    installer.pods_project.targets.each do |target|
+      if target.name == 'ExpoModulesCore'
+        target.build_configurations.each do |build_config|
+          build_config.build_settings['SWIFT_VERSION'] = '5.10'
+          build_config.build_settings['SWIFT_STRICT_CONCURRENCY'] = 'minimal'
+          build_config.build_settings['SWIFT_COMPILATION_MODE'] = 'singlefile'
+        end
+      end
+    end
   end
 end

@@ -47,24 +47,27 @@ export function getDominantColor(screenshotPath: string): RGB {
  * Check if a color is predominantly blue (for $blue10)
  */
 export function isBlueish(color: RGB): boolean {
-  // blue should have high B, low R, and low-medium G
-  return color.b > 100 && color.b > color.r && color.b > color.g
+  // blue should have B as the dominant channel
+  // in dark themes $color4 can be a darker blue (e.g. RGB(0, 50, 97))
+  return color.b > 60 && color.b > color.r && color.b > color.g
 }
 
 /**
  * Check if a color is predominantly red (for $red10)
  */
 export function isReddish(color: RGB): boolean {
-  // red should have high R, low B, and low G
-  return color.r > 100 && color.r > color.b && color.r > color.g
+  // red should have R as the dominant channel
+  // in dark themes colors can be darker
+  return color.r > 60 && color.r > color.b && color.r > color.g
 }
 
 /**
  * Check if a color is predominantly green (for $green10)
  */
 export function isGreenish(color: RGB): boolean {
-  // green should have high G, low R, and low B
-  return color.g > 100 && color.g > color.r && color.g > color.b
+  // green should have G as the dominant channel
+  // in dark themes colors can be darker
+  return color.g > 60 && color.g > color.r && color.g > color.b
 }
 
 /**

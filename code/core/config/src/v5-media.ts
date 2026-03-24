@@ -2,6 +2,10 @@
 // earlier defined = less important
 
 export const breakpoints = {
+  // for container queries its really helpful to have small sizes
+  100: 100,
+  200: 200,
+
   xxxs: 260,
   xxs: 340,
   xs: 460,
@@ -37,6 +41,10 @@ export const media = {
   'max-xxs': { maxWidth: breakpoints.xxs - mediaQueryForceNonOverlap },
   'max-xxxs': { maxWidth: breakpoints.xxxs - mediaQueryForceNonOverlap },
 
+  // for container queries its really helpful to have small sizes
+  'max-200': { maxWidth: breakpoints['200'] - mediaQueryForceNonOverlap },
+  'max-100': { maxWidth: breakpoints['100'] - mediaQueryForceNonOverlap },
+
   // Min-width queries (mobile-first)
   // non-max wins over max though tbh it could go either way
   xxxs: { minWidth: breakpoints.xxxs },
@@ -54,6 +62,12 @@ export const media = {
   'max-height-lg': { maxHeight: breakpoints.lg - mediaQueryForceNonOverlap },
   'max-height-md': { maxHeight: breakpoints.md - mediaQueryForceNonOverlap },
   'max-height-sm': { maxHeight: breakpoints.sm - mediaQueryForceNonOverlap },
+  'max-height-xs': { maxHeight: breakpoints.xs - mediaQueryForceNonOverlap },
+  'max-height-xxs': { maxHeight: breakpoints.xxs - mediaQueryForceNonOverlap },
+  'max-height-xxxs': { maxHeight: breakpoints.xxxs - mediaQueryForceNonOverlap },
+
+  'max-height-200': { maxHeight: breakpoints['200'] - mediaQueryForceNonOverlap },
+  'max-height-100': { maxHeight: breakpoints['100'] - mediaQueryForceNonOverlap },
 
   'height-sm': { minHeight: breakpoints.sm },
   'height-md': { minHeight: breakpoints.md },

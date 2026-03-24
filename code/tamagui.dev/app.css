@@ -16,6 +16,11 @@ body {
   scrollbar-color: #b1b1b1 transparent;
 }
 
+/* font flickering all the time on media query changes */
+* {
+  transition: none;
+}
+
 body {
   /* fallback to ThemeNameEffect */
   background: var(--color1);

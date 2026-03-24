@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Install
         uses: ./.github/actions/install
@@ -42,9 +44,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Install
         uses: ./.github/actions/install
+
+      - name: Get Playwright version
+        id: pw-version
+        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
 
       - name: Install playwright
         run: bunx playwright install
@@ -52,20 +66,60 @@ jobs:
       - name: Run unit tests
         run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=1
 
-  integration-tests:
+  changes:
     runs-on: ubuntu-latest
+    outputs:
+      integration-relevant: ${{ steps.filter.outputs.integration-relevant }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            integration-relevant:
+              - 'code/core/**'
+              - 'code/ui/**'
+              - 'code/packages/**'
+              - 'code/kitchen-sink/**'
+              - 'code/compiler/babel-plugin/**'
+              - 'code/compiler/loader/**'
+              - 'code/compiler/metro-plugin/**'
+              - 'code/demos/**'
+              - 'package.json'
+              - 'bun.lock'
+
+  integration-tests:
+    needs: changes
+    if: needs.changes.outputs.integration-relevant == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1/3, 2/3, 3/3]
     env:
       NODE_OPTIONS: '--max-old-space-size=6144'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Install
         uses: ./.github/actions/install
 
+      - name: Get Playwright version
+        id: pw-version
+        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
+
       - name: Install playwright
         run: bunx playwright install --with-deps
 
-      - name: Run integration tests
-        run: cd code/kitchen-sink && bun run test:web
-        timeout-minutes: 30
+      - name: Run integration tests (shard ${{ matrix.shard }})
+        run: cd code/kitchen-sink && NODE_ENV=test npx playwright test --shard=${{ matrix.shard }}
+        timeout-minutes: 20

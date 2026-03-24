@@ -1,0 +1,14 @@
+{
+  "name": "tamagui-build-test-js-main-package",
+  "version": "2.0.0-rc.0-1769885482630",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.mjs",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "build": "node ../../../tamagui-build.js"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "typescript": "~5.9.2"
+  }
+}

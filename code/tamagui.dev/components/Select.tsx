@@ -1,5 +1,5 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import type { SelectItemProps, SelectProps, SelectTriggerProps } from 'tamagui'
 import { Select as TamaguiSelect, YStack, useProps, withStaticProperties } from 'tamagui'
 
@@ -49,12 +49,12 @@ const SelectComponent = (
     renderValue,
   } as SelectProps
   return (
-    <TamaguiSelect {...selectProps}>
+    <TamaguiSelect {...selectProps} zIndex={1_000_000}>
       <TamaguiSelect.Trigger iconAfter={ChevronDown} {...selectTriggerProps}>
         <TamaguiSelect.Value placeholder={placeholder} />
       </TamaguiSelect.Trigger>
 
-      <TamaguiSelect.Content zIndex={1_000_000}>
+      <TamaguiSelect.Content>
         <TamaguiSelect.ScrollUpButton
           items="center"
           justify="center"

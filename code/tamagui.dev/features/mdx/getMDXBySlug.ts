@@ -14,8 +14,13 @@ export { getCompilationExamples } from './getCompilationExamples'
 // require.resolve gives us dist/cjs/index.js, so go up 3 levels to get package root
 const requireFn =
   typeof require === 'undefined' ? createRequire(import.meta.url) : require
-const demosPackagePath = requireFn.resolve('@tamagui/demos')
-const demosPath = path.join(demosPackagePath, '..', '..', '..')
+let demosPath = ''
+try {
+  const demosPackagePath = requireFn.resolve('@tamagui/demos')
+  demosPath = path.join(demosPackagePath, '..', '..', '..')
+} catch {
+  // may fail in SSG worker context where node_modules aren't fully accessible
+}
 
 // Simple tree visitor that doesn't depend on unist-util-visit
 // (Vite has issues with unist-util-visit ESM exports)

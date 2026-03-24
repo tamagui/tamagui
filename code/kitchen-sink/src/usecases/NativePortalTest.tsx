@@ -3,7 +3,7 @@
  * Tests that Portal/Sheet/Popover work correctly when using teleport
  */
 
-import { Check, ChevronDown } from '@tamagui/lucide-icons'
+import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
 import React from 'react'
 import { Adapt, Button, Popover, Select, Sheet, Text, XStack, YStack } from 'tamagui'
 import { getPortal } from '@tamagui/native'
@@ -14,7 +14,7 @@ function SelectWithSheet({ id }: { id: string }) {
   const [val, setVal] = React.useState('apple')
 
   return (
-    <Select value={val} onValueChange={setVal} disablePreventBodyScroll>
+    <Select value={val} onValueChange={setVal} disablePreventBodyScroll zIndex={200000}>
       <Select.Trigger testID={`${id}-trigger`} maxWidth={220} iconAfter={ChevronDown}>
         <Select.Value placeholder="Select a fruit" />
       </Select.Trigger>
@@ -35,7 +35,7 @@ function SelectWithSheet({ id }: { id: string }) {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.Viewport minW={200}>
           <Select.Group>
             <Select.Label>Fruits</Select.Label>

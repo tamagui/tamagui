@@ -1,6 +1,6 @@
 import '@tamagui/polyfill-dev'
 
-import type { UseHoverProps } from '@floating-ui/react'
+import type { UseHoverProps } from '@tamagui/floating'
 import {
   Adapt,
   AdaptParent,
@@ -114,6 +114,18 @@ export type PopoverProps = ScopedPopoverProps<PopperProps> & {
    * Useful for popovers that stay mounted but are visually hidden.
    */
   disableDismissable?: boolean
+
+  /**
+   * z-index for the popover portal. Use this when popovers need to appear
+   * above other portaled content like dialogs or fixed headers.
+   *
+   * By default, Tamagui automatically stacks overlays - later-opened content
+   * appears above earlier content, and nested content appears above its parent.
+   * Only set this if you need to override the automatic stacking behavior.
+   *
+   * @see https://tamagui.dev/ui/z-index
+   */
+  zIndex?: number
 }
 
 // let users override for type safety
@@ -159,6 +171,9 @@ export const PopoverContext = createStyledContext<PopoverContextValue>(
   {} as PopoverContextValue,
   'Popover__'
 )
+
+// zIndex flows from root Popover prop to PopoverContent portal
+export const PopoverZIndexContext = React.createContext<number | undefined>(undefined)
 
 export const PopoverTriggerContext = createStyledContext<PopoverTriggerContextValue>(
   {} as PopoverTriggerContextValue,
@@ -343,24 +358,35 @@ export const PopoverAnchor = React.memo(
  * PopoverTrigger
  * -----------------------------------------------------------------------------------------------*/
 
-export type PopoverTriggerProps = ScopedPopoverProps<ViewProps>
+export type PopoverTriggerProps = ScopedPopoverProps<
+  ViewProps & {
+    /**
+     * When true, disables the built-in click-to-toggle behavior on the trigger.
+     * Useful for hoverable popovers where you want to control open/close
+     * entirely through hover or your own handlers.
+     */
+    disablePressTrigger?: boolean
+  }
+>
 
 export const PopoverTrigger = React.memo(
   React.forwardRef<TamaguiElement, PopoverTriggerProps>(
     function PopoverTrigger(props, forwardedRef) {
-      const { scope, ...rest } = props
+      const { scope, disablePressTrigger, ...rest } = props
       const triggerContext = usePopoverTriggerContext(scope)
       const triggerId = React.useId()
       const [open, setOpen] = React.useState(false)
       const anchorTo = triggerContext.anchorTo
-      const composedTriggerRef = useComposedRefs(forwardedRef, triggerContext.triggerRef)
+      const triggerElRef = React.useRef<TamaguiElement>(null)
+      const composedTriggerRef = useComposedRefs(forwardedRef, triggerElRef)
 
+      const { registerTrigger, unregisterTrigger } = triggerContext
       React.useEffect(() => {
-        triggerContext.registerTrigger(triggerId, setOpen)
+        registerTrigger(triggerId, setOpen)
         return () => {
-          triggerContext.unregisterTrigger(triggerId)
+          unregisterTrigger(triggerId)
         }
-      }, [triggerContext, triggerId])
+      }, [registerTrigger, unregisterTrigger, triggerId])
 
       if (!rest.children) {
         return null
@@ -368,6 +394,10 @@ export const PopoverTrigger = React.memo(
 
       const activateSelf = () => {
         triggerContext.setActiveTrigger(triggerId)
+        const el = triggerElRef.current
+        if (el) {
+          triggerContext.triggerRef.current = el
+        }
       }
 
       const trigger = (
@@ -380,6 +410,7 @@ export const PopoverTrigger = React.memo(
           // @ts-ignore
           ref={composedTriggerRef}
           onPress={composeEventHandlers(rest.onPress as any, () => {
+            if (disablePressTrigger) return
             triggerContext.setActiveTrigger(open ? null : triggerId)
             triggerContext.onOpenToggle()
           })}
@@ -456,12 +487,15 @@ export const PopoverContent = PopperContentFrame.styleable<PopoverContentProps>(
     const {
       trapFocus,
       enableRemoveScroll = false,
-      zIndex,
+      zIndex: zIndexProp,
       scope,
       ...contentImplProps
     } = props
 
     const context = usePopoverContext(scope)
+    const zIndexFromContext = React.useContext(PopoverZIndexContext)
+    // prop on Content takes precedence for backwards compatibility, then context from root
+    const zIndex = zIndexProp ?? zIndexFromContext
     const open = usePopoverOpen(scope)
     const contentRef = React.useRef<any>(null)
     const composedRefs = useComposedRefs(forwardedRef, contentRef)
@@ -953,6 +987,7 @@ const PopoverInner = React.forwardRef<
     hoverable,
     disableFocus,
     disableDismissable,
+    zIndex,
     id,
     adaptScope,
     ...restProps
@@ -998,7 +1033,7 @@ const PopoverInner = React.forwardRef<
     disable: isAdapted,
     hoverable,
     disableFocus: disableFocus,
-  }) as any
+  })
 
   const [anchorTo, setAnchorToRaw] = React.useState<Rect>()
 
@@ -1053,7 +1088,7 @@ const PopoverInner = React.forwardRef<
     </Popper>
   )
 
-  return (
+  let result = (
     <>
       {isWeb ? (
         <FloatingOverrideContext.Provider value={floatingContext}>
@@ -1064,6 +1099,16 @@ const PopoverInner = React.forwardRef<
       )}
     </>
   )
+
+  if (zIndex !== undefined) {
+    return (
+      <PopoverZIndexContext.Provider value={zIndex}>
+        {result}
+      </PopoverZIndexContext.Provider>
+    )
+  }
+
+  return result
 })
 
 /* -----------------------------------------------------------------------------------------------*/

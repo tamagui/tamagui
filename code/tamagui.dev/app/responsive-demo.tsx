@@ -3,7 +3,7 @@ import img1 from '@tamagui/demos/photo/photo1'
 import img2 from '@tamagui/demos/photo/photo2'
 import img3 from '@tamagui/demos/photo/photo3'
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { MapPin, Star } from '@tamagui/lucide-icons'
+import { MapPin, Star } from '@tamagui/lucide-icons-2'
 import { H3, H4, H5, Image, Paragraph, Spacer, Theme, XStack, YStack } from 'tamagui'
 
 export default function ResponsiveDemo() {

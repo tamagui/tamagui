@@ -1,12 +1,12 @@
 /**
- * createNativeMenu - provides native menu implementation for React Native
+ * createNativeMenu - native menu implementation for React Native
  *
- * On Web: Returns empty stub components (withNativeMenu will use the web components instead)
- * On Native: Uses Zeego for native menus (Credit to nandorojo/Zeego)
+ * Web: returns empty stub components (withNativeMenu uses the web components instead)
+ * Native: lazily resolves Zeego at render time so importing the package doesn't warn/error
  */
 import type { FC } from 'react';
 import React from 'react';
-import type { ContextMenuPreviewProps, NativeMenuArrowProps, NativeMenuCheckboxItemProps, NativeMenuContentProps, NativeMenuGroupProps, NativeMenuItemIconProps, NativeMenuItemImageProps, NativeMenuItemIndicatorProps, NativeMenuItemProps, NativeMenuItemSubtitleProps, NativeMenuItemTitleProps, NativeMenuLabelProps, NativeMenuProps, NativeMenuSeparatorProps, NativeMenuSubContentProps, NativeMenuSubProps, NativeMenuSubTriggerProps, MenuTriggerProps } from './createNativeMenuTypes';
+import type { ContextMenuPreviewProps, NativeContextMenuAuxiliaryProps, NativeMenuArrowProps, NativeMenuCheckboxItemProps, NativeMenuContentProps, NativeMenuGroupProps, NativeMenuItemIconProps, NativeMenuItemImageProps, NativeMenuItemIndicatorProps, NativeMenuItemProps, NativeMenuItemSubtitleProps, NativeMenuItemTitleProps, NativeMenuLabelProps, NativeMenuProps, NativeMenuSeparatorProps, NativeMenuSubContentProps, NativeMenuSubProps, NativeMenuSubTriggerProps, MenuTriggerProps } from './createNativeMenuTypes';
 export type NativeMenuComponents = {
     Menu: FC<NativeMenuProps> & {
         Trigger: FC<MenuTriggerProps>;
@@ -35,7 +35,7 @@ export type NativeMenuComponents = {
         RadioItem: FC<{
             children: React.ReactNode;
         }>;
-        Auxiliary: FC<any>;
+        Auxiliary: FC<NativeContextMenuAuxiliaryProps>;
     };
 };
 export declare const createNativeMenu: (MenuType: "ContextMenu" | "Menu") => NativeMenuComponents;

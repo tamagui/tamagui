@@ -1,5 +1,5 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import { type Href, router, useParams, usePathname } from 'one'
 import React from 'react'
 import { Adapt, Select, Sheet, YStack } from 'tamagui'
@@ -38,7 +38,12 @@ export function SourceVersionSwitcher({
   }
 
   return (
-    <Select value={currentVersion} onValueChange={switchVersion} disablePreventBodyScroll>
+    <Select
+      value={currentVersion}
+      onValueChange={switchVersion}
+      disablePreventBodyScroll
+      zIndex={200000}
+    >
       <Select.Trigger size="$2" iconAfter={ChevronDown} borderRadius={8}>
         <Select.Value placeholder={versions[0]} fontFamily="$mono" />
       </Select.Trigger>
@@ -59,7 +64,7 @@ export function SourceVersionSwitcher({
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton
           items="center"
           justify="center"

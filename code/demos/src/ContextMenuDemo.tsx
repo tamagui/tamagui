@@ -1,5 +1,5 @@
 import { ContextMenu } from '@tamagui/context-menu'
-import { Calendar, Check, ChevronRight } from '@tamagui/lucide-icons'
+import { Calendar, Check, ChevronRight } from '@tamagui/lucide-icons-2'
 import React from 'react'
 import { Text, View, YStack } from 'tamagui'
 
@@ -16,7 +16,7 @@ export function ContextMenuDemo() {
   }
 
   return (
-    <ContextMenu allowFlip native={native} placement="bottom-start" offset={14}>
+    <ContextMenu native={native}>
       <ContextMenu.Trigger asChild>
         <View
           p="$4"
@@ -101,7 +101,7 @@ export function ContextMenuDemo() {
           </ContextMenu.Item>
           <ContextMenu.Separator />
           {/* Submenu */}
-          <ContextMenu.Sub placement="right-start">
+          <ContextMenu.Sub>
             <ContextMenu.SubTrigger
               key="actions-trigger"
               justify="space-between"

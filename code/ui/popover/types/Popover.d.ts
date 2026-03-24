@@ -1,5 +1,5 @@
 import '@tamagui/polyfill-dev';
-import type { UseHoverProps } from '@floating-ui/react';
+import type { UseHoverProps } from '@tamagui/floating';
 import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core';
 import { type DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
@@ -38,6 +38,17 @@ export type PopoverProps = ScopedPopoverProps<PopperProps> & {
      * Useful for popovers that stay mounted but are visually hidden.
      */
     disableDismissable?: boolean;
+    /**
+     * z-index for the popover portal. Use this when popovers need to appear
+     * above other portaled content like dialogs or fixed headers.
+     *
+     * By default, Tamagui automatically stacks overlays - later-opened content
+     * appears above earlier content, and nested content appears above its parent.
+     * Only set this if you need to override the automatic stacking behavior.
+     *
+     * @see https://tamagui.dev/ui/z-index
+     */
+    zIndex?: number;
 };
 export type PopoverScopes = string;
 type PopoverContextValue = {
@@ -72,6 +83,7 @@ type PopoverTriggerContextValue = {
     unregisterTrigger(id: string): void;
 };
 export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
+export declare const PopoverZIndexContext: React.Context<number | undefined>;
 export declare const PopoverTriggerContext: import("@tamagui/core").StyledContext<PopoverTriggerContextValue>;
 export declare const usePopoverContext: (scope?: string) => PopoverContextValue;
 export declare const usePopoverTriggerContext: (scope?: string) => PopoverTriggerContextValue;
@@ -116,8 +128,22 @@ export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
 export declare const PopoverAnchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
-export type PopoverTriggerProps = ScopedPopoverProps<ViewProps>;
-export declare const PopoverTrigger: React.NamedExoticComponent<Omit<ViewProps, "scope"> & {
+export type PopoverTriggerProps = ScopedPopoverProps<ViewProps & {
+    /**
+     * When true, disables the built-in click-to-toggle behavior on the trigger.
+     * Useful for hoverable popovers where you want to control open/close
+     * entirely through hover or your own handlers.
+     */
+    disablePressTrigger?: boolean;
+}>;
+export declare const PopoverTrigger: React.NamedExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+    /**
+     * When true, disables the built-in click-to-toggle behavior on the trigger.
+     * Useful for hoverable popovers where you want to control open/close
+     * entirely through hover or your own handlers.
+     */
+    disablePressTrigger?: boolean;
+}, "scope"> & {
     scope?: PopoverScopes;
 } & React.RefAttributes<TamaguiElement>>;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
@@ -231,6 +257,17 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
      * Useful for popovers that stay mounted but are visually hidden.
      */
     disableDismissable?: boolean;
+    /**
+     * z-index for the popover portal. Use this when popovers need to appear
+     * above other portaled content like dialogs or fixed headers.
+     *
+     * By default, Tamagui automatically stacks overlays - later-opened content
+     * appears above earlier content, and nested content appears above its parent.
+     * Only set this if you need to override the automatic stacking behavior.
+     *
+     * @see https://tamagui.dev/ui/z-index
+     */
+    zIndex?: number;
 } & React.RefAttributes<Popover>> & {
     Anchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
         scope?: PopoverScopes;
@@ -244,7 +281,14 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Trigger: React.NamedExoticComponent<Omit<ViewProps, "scope"> & {
+    Trigger: React.NamedExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
+        /**
+         * When true, disables the built-in click-to-toggle behavior on the trigger.
+         * Useful for hoverable popovers where you want to control open/close
+         * entirely through hover or your own handlers.
+         */
+        disablePressTrigger?: boolean;
+    }, "scope"> & {
         scope?: PopoverScopes;
     } & React.RefAttributes<TamaguiElement>>;
     Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

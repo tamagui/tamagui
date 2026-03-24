@@ -1,4 +1,4 @@
-import { X } from '@tamagui/lucide-icons'
+import { X } from '@tamagui/lucide-icons-2'
 import { Button, Dialog, Paragraph, ScrollView, Sheet, Unspaced, YStack } from 'tamagui'
 import { Link } from '~/components/Link'
 import { ProLicense } from '../../pro/ProLicense'

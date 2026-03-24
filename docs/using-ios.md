@@ -8,7 +8,7 @@ Run Metro separately for faster iteration:
 
 ```bash
 cd code/kitchen-sink
-yarn start > /tmp/metro.log 2>&1 &
+bun run start > /tmp/metro.log 2>&1 &
 ```
 
 Then run detox with `--reuse` to use existing Metro:

@@ -47,7 +47,7 @@ test.describe('Popover hoverable delay', () => {
 
     // hover to open (wait for delay)
     await trigger.hover()
-    await page.waitForTimeout(600)
+    await page.waitForTimeout(800)
     await expect(content).toBeVisible({ timeout: 3000 })
 
     // move mouse far away (outside safe zone)
@@ -60,9 +60,9 @@ test.describe('Popover hoverable delay', () => {
     await page.waitForTimeout(200)
     await expect(content).toBeVisible()
 
-    // wait for delay to elapse - should now be closing
-    await page.waitForTimeout(400)
-    await expect(content).not.toBeVisible({ timeout: 2000 })
+    // wait for delay to elapse + animation - should now be closing
+    await page.waitForTimeout(600)
+    await expect(content).not.toBeVisible({ timeout: 3000 })
   })
 })
 
@@ -154,6 +154,79 @@ test.describe('Popover hoverable exit animation', () => {
   })
 })
 
+// Bug: safePolygon should allow hovering from trigger to content through the gap
+test.describe('Popover hoverable safePolygon', () => {
+  test.beforeEach(async ({ page }) => {
+    await setupPage(page, { name: 'PopoverHoverableSafePolygonCase', type: 'useCase' })
+    await page.waitForLoadState('networkidle')
+  })
+
+  test('can hover from trigger to content through the gap', async ({ page }) => {
+    const trigger = page.locator('#safepoly-trigger')
+    const content = page.locator('#safepoly-content')
+
+    // hover trigger to open (restMs is 260ms)
+    await trigger.hover()
+    await page.waitForTimeout(350)
+    await expect(content).toBeVisible({ timeout: 200 })
+    // wait for enter animation to settle
+    await page.waitForTimeout(100)
+
+    // slowly move from trigger down to content (through the 80px offset gap)
+    const triggerBox = await trigger.boundingBox()
+    const contentBox = await content.boundingBox()
+    if (triggerBox && contentBox) {
+      const startY = triggerBox.y + triggerBox.height
+      const endY = contentBox.y + 10
+      const x = triggerBox.x + triggerBox.width / 2
+      for (let y = startY; y <= endY; y += 4) {
+        await page.mouse.move(x, y)
+        await page.waitForTimeout(10)
+      }
+    }
+
+    // wait well past any grace period or animation - if the popover closed
+    // during the gap crossing, it won't be visible after this
+    await page.waitForTimeout(500)
+    await expect(content).toBeVisible({ timeout: 1000 })
+
+    // verify content is fully opaque (not mid-exit-animation)
+    const opacity = await content.evaluate((el) =>
+      parseFloat(getComputedStyle(el).opacity)
+    )
+    expect(opacity).toBeGreaterThan(0.9)
+  })
+
+  test('restMs applies on re-hover (not just first hover)', async ({ page }) => {
+    const trigger = page.locator('#safepoly-trigger')
+    const content = page.locator('#safepoly-content')
+
+    // first hover: should respect restMs (260ms)
+    await trigger.hover()
+    // should NOT be open before restMs elapses
+    await page.waitForTimeout(100)
+    await expect(content).not.toBeVisible()
+    // wait for restMs
+    await page.waitForTimeout(250)
+    await expect(content).toBeVisible({ timeout: 2000 })
+
+    // move far away to close
+    await page.mouse.move(10, 10)
+    await page.waitForTimeout(500)
+    await expect(content).not.toBeVisible({ timeout: 2000 })
+
+    // re-hover: restMs should still apply (not open instantly)
+    await trigger.hover()
+    // check after 100ms - should NOT be open yet (restMs is 260ms)
+    await page.waitForTimeout(100)
+    await expect(content).not.toBeVisible()
+
+    // wait for restMs to elapse
+    await page.waitForTimeout(250)
+    await expect(content).toBeVisible({ timeout: 2000 })
+  })
+})
+
 // Bug: scoped multi-trigger hoverable - mimics WebsiteHeader.tsx pattern
 // uses CSS driver since animatePosition needs a driver that supports classNames
 test.describe('Popover hoverable scoped multi-trigger', () => {
@@ -230,5 +303,81 @@ test.describe('Popover hoverable scoped multi-trigger', () => {
     await blogTrigger.hover()
     await page.waitForTimeout(100)
     await expect(content).toBeVisible()
+  })
+
+  test('scoped: content → different trigger repositions popover', async ({ page }) => {
+    const aboutTrigger = page.locator('#nav-trigger-about')
+    const contactTrigger = page.locator('#nav-trigger-contact')
+    const content = page.locator('#nav-content')
+
+    // open at about
+    await aboutTrigger.hover()
+    await page.waitForTimeout(450)
+    await expect(content).toBeVisible({ timeout: 2000 })
+    await page.waitForTimeout(300)
+
+    const contentRectAtAbout = await getBoundingRect(page, '#nav-content')
+
+    // move into the popover content
+    await content.hover()
+    await page.waitForTimeout(100)
+    await expect(content).toBeVisible()
+
+    // move from content to "contact" trigger (rightmost)
+    await contactTrigger.hover()
+    await page.waitForTimeout(600)
+
+    // popover should still be visible and repositioned
+    await expect(content).toBeVisible()
+    const contentRectAtContact = await getBoundingRect(page, '#nav-content')
+
+    // contact is to the right of about, so content x should shift right
+    expect(contentRectAtContact!.x).toBeGreaterThan(contentRectAtAbout!.x + 20)
+  })
+
+  test('scoped: content → gap → different trigger repositions popover', async ({
+    page,
+  }) => {
+    const aboutTrigger = page.locator('#nav-trigger-about')
+    const contactTrigger = page.locator('#nav-trigger-contact')
+    const content = page.locator('#nav-content')
+
+    // open at about
+    await aboutTrigger.hover()
+    await page.waitForTimeout(450)
+    await expect(content).toBeVisible({ timeout: 2000 })
+    await page.waitForTimeout(300)
+
+    const contentRectAtAbout = await getBoundingRect(page, '#nav-content')
+
+    // move into the popover content
+    await content.hover()
+    await page.waitForTimeout(100)
+    await expect(content).toBeVisible()
+
+    // move mouse to empty space BELOW the content (not to a trigger)
+    // this simulates the recording where mouse exits content into the page gap
+    const contentBox = await content.boundingBox()
+    if (contentBox) {
+      await page.mouse.move(
+        contentBox.x + contentBox.width / 2,
+        contentBox.y + contentBox.height + 50
+      )
+    }
+
+    // wait a bit for the popover to close (safePolygon should eventually close it)
+    await page.waitForTimeout(300)
+
+    // now move to a different trigger (contact)
+    await contactTrigger.hover()
+    // wait for restMs (300ms) + buffer
+    await page.waitForTimeout(500)
+
+    // popover should be visible and repositioned at the new trigger
+    await expect(content).toBeVisible({ timeout: 2000 })
+    const contentRectAtContact = await getBoundingRect(page, '#nav-content')
+
+    // contact is to the right of about, so content x should shift right
+    expect(contentRectAtContact!.x).toBeGreaterThan(contentRectAtAbout!.x + 20)
   })
 })

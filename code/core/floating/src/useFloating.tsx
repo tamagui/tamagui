@@ -1,6 +1,7 @@
 import React from 'react'
 
 import * as Floating from './Floating'
+import type { PopupTriggerMap } from './interactions/PopupTriggerMap'
 
 export type UseFloatingFn = typeof Floating.useFloating
 
@@ -16,9 +17,18 @@ export type UseFloatingReturn = Floating.UseFloatingReturn & {
   context?: any
   getFloatingProps?: (props: { ref: any; [key: string]: any }) => any
   getReferenceProps?: (props: { ref: any; [key: string]: any }) => any
+  // extended by useFloatingContext for hoverable popovers/tooltips
+  open?: boolean
+  onHoverReference?: (event: any) => void
+  onLeaveReference?: () => void
+  triggerElements?: PopupTriggerMap
 }
 
-export const FloatingOverrideContext = React.createContext<UseFloatingFn | null>(null)
+export type UseFloatingOverrideFn = (props?: UseFloatingProps) => UseFloatingReturn
+
+export const FloatingOverrideContext = React.createContext<UseFloatingOverrideFn | null>(
+  null
+)
 
 export const useFloating = (props: UseFloatingProps): UseFloatingReturn => {
   'use no memo'

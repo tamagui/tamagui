@@ -1,5 +1,5 @@
 import React, { ElementType } from 'react'
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 
 import type { FontSizeTokens, SelectProps } from 'tamagui'
 import { Adapt, Label, Select, Sheet, XStack, YStack, getFontSize } from 'tamagui'
@@ -34,7 +34,12 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
   }
 
   return (
-    <Select value={val} onValueChange={switchVersion} disablePreventBodyScroll>
+    <Select
+      value={val}
+      onValueChange={switchVersion}
+      disablePreventBodyScroll
+      zIndex={200000}
+    >
       <Select.Trigger maxWidth={220} iconAfter={ChevronDown} borderRadius={8}>
         <Select.Value placeholder="2.0.0" />
       </Select.Trigger>
@@ -55,7 +60,7 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton
           items="center"
           justify="center"

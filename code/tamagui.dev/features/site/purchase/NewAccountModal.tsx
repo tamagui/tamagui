@@ -8,7 +8,7 @@ import {
   Trash2,
   Users,
   X,
-} from '@tamagui/lucide-icons'
+} from '@tamagui/lucide-icons-2'
 import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
@@ -718,7 +718,14 @@ const DiscordPanel = ({
     subscription?.id
       ? `/api/discord/${apiType}?${new URLSearchParams({ subscription_id: subscription.id })}`
       : null,
-    (url) => authFetch(url).then((res) => res.json()),
+    async (url) => {
+      const res = await authFetch(url)
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({ error: 'Request failed' }))
+        throw new Error(data.error || data.message || 'Request failed')
+      }
+      return res.json()
+    },
     { revalidateOnFocus: false, revalidateOnReconnect: false, errorRetryCount: 0 }
   )
   const [draftQuery, setDraftQuery] = useState('')
@@ -778,81 +785,122 @@ const DiscordPanel = ({
     setQuery(draftQuery)
   }
 
-  const SearchForm = () => (
-    <>
-      <Form onSubmit={handleSearch} gap="$2" flexDirection="row" items="flex-end">
-        <Fieldset>
-          <Label size="$3" color="$color10" htmlFor="discord-username">
-            Username / Nickname
-          </Label>
-          <Input
-            minW={200}
-            placeholder="Your username..."
-            id="discord-username"
-            value={draftQuery}
-            onChange={(e) => setDraftQuery(e.target.value)}
-          />
-        </Fieldset>
+  // header derived values
+  const supportAccess = hasSupportAccess()
+  const showSeats =
+    apiType === 'channel' || (apiType === 'support' && supportAccess.hasAccess)
+  const showResetButton =
+    !isTeamMember && groupInfoData?.currentlyOccupiedSeats > 0 && showSeats
+  const headerTitle = apiType === 'channel' ? 'Discord Access' : 'Private Support Access'
 
-        <Form.Trigger>
-          <Button icon={Search}>
-            <Button.Text>Search</Button.Text>
-          </Button>
-        </Form.Trigger>
-      </Form>
+  const renderDiscordAccessContent = () => {
+    if (isLoading) {
+      return (
+        <XStack items="center" justify="center" p="$4">
+          <Spinner size="small" />
+        </XStack>
+      )
+    }
 
-      <XStack render="article">
-        <Paragraph size="$3" color="$color10">
-          Note: You must{' '}
-          <Link target="_blank" href="https://discord.gg/4qh6tdcVDa">
-            join the Discord server
-          </Link>{' '}
-          first so we can find your username.
-        </Paragraph>
-      </XStack>
-
-      {searchSwr.error ? (
+    if (groupInfoError) {
+      return (
         <Paragraph size="$3" color="$red10">
-          {searchSwr.error.message || 'Failed to search'}
+          {groupInfoError.message || 'Failed to load Discord access info'}
         </Paragraph>
-      ) : Array.isArray(searchSwr.data) && searchSwr.data.length === 0 ? (
+      )
+    }
+
+    if (isTeamMember) {
+      return (
         <Paragraph size="$3" color="$color10">
-          No users found
+          Only the team owner can manage Discord access.
         </Paragraph>
-      ) : Array.isArray(searchSwr.data) ? (
-        searchSwr.data.map((member) => (
-          <DiscordMember
-            key={member.user?.id}
-            member={member}
-            subscriptionId={subscription?.id || ''}
-            apiType={apiType}
-          />
-        ))
-      ) : null}
-    </>
-  )
+      )
+    }
 
-  const DiscordAccessHeader = () => {
-    // Show seats count when:
-    // - User is in General Channel (always show)
-    // - User is in Support Channel AND has any support access
-    const supportAccess = hasSupportAccess()
-    const showSeats =
-      apiType === 'channel' || (apiType === 'support' && supportAccess.hasAccess)
+    // For support channels, check if user has any support access
+    if (apiType === 'support') {
+      if (!supportAccess.hasAccess) {
+        return (
+          <YStack gap="$4" p="$4" bg="$color2" rounded="$4">
+            <Paragraph color="$color9" text="center">
+              You need a Chat Support or Support tier subscription to access private
+              support channels.
+            </Paragraph>
+          </YStack>
+        )
+      }
+    }
 
-    // Show reset button when:
-    // - User is not a team member (only team owner or normal PRO user can reset)
-    // - There are occupied seats to reset
-    // - The seats are visible (using same logic as showSeats)
-    const showResetButton =
-      !isTeamMember && groupInfoData?.currentlyOccupiedSeats > 0 && showSeats
+    if (groupInfoData?.currentlyOccupiedSeats < groupInfoData?.discordSeats) {
+      return (
+        <>
+          <Form onSubmit={handleSearch} gap="$2" flexDirection="row" items="flex-end">
+            <Fieldset>
+              <Label size="$3" color="$color10" htmlFor="discord-username">
+                Username / Nickname
+              </Label>
+              <Input
+                minW={200}
+                placeholder="Your username..."
+                id="discord-username"
+                value={draftQuery}
+                onChange={(e) => setDraftQuery(e.target.value)}
+              />
+            </Fieldset>
 
-    const title = apiType === 'channel' ? 'Discord Access' : 'Private Support Access'
+            <Form.Trigger>
+              <Button icon={Search}>
+                <Button.Text>Search</Button.Text>
+              </Button>
+            </Form.Trigger>
+          </Form>
+
+          <XStack render="article">
+            <Paragraph size="$3" color="$color10">
+              Note: You must{' '}
+              <Link target="_blank" href="https://discord.gg/4qh6tdcVDa">
+                join the Discord server
+              </Link>{' '}
+              first so we can find your username.
+            </Paragraph>
+          </XStack>
+
+          {searchSwr.error ? (
+            <Paragraph size="$3" color="$red10">
+              {searchSwr.error.message || 'Failed to search'}
+            </Paragraph>
+          ) : Array.isArray(searchSwr.data) && searchSwr.data.length === 0 ? (
+            <Paragraph size="$3" color="$color10">
+              No users found
+            </Paragraph>
+          ) : Array.isArray(searchSwr.data) ? (
+            searchSwr.data.map((member) => (
+              <DiscordMember
+                key={member.user?.id}
+                member={member}
+                subscriptionId={subscription?.id || ''}
+                apiType={apiType}
+              />
+            ))
+          ) : null}
+        </>
+      )
+    }
 
     return (
+      <Paragraph size="$3" color="$color10">
+        You've reached the maximum number of Discord members for your plan. Please reset
+        if you want to add new members.
+      </Paragraph>
+    )
+  }
+
+  return (
+    <YStack gap="$3">
       <XStack justify="space-between" gap="$2" items="center">
         <H4>
-          {title}{' '}
+          {headerTitle}{' '}
           {showSeats &&
             !!groupInfoData &&
             `(${groupInfoData?.currentlyOccupiedSeats}/${groupInfoData?.discordSeats})`}
@@ -870,56 +918,6 @@ const DiscordPanel = ({
           </Button>
         )}
       </XStack>
-    )
-  }
-
-  const renderDiscordAccessContent = () => {
-    if (isLoading) {
-      return (
-        <XStack items="center" justify="center" p="$4">
-          <Spinner size="small" />
-        </XStack>
-      )
-    }
-
-    if (isTeamMember) {
-      return (
-        <Paragraph size="$3" color="$color10">
-          Only the team owner can manage Discord access.
-        </Paragraph>
-      )
-    }
-
-    // For support channels, check if user has any support access
-    if (apiType === 'support') {
-      const supportAccess = hasSupportAccess()
-      if (!supportAccess.hasAccess) {
-        return (
-          <YStack gap="$4" p="$4" bg="$color2" rounded="$4">
-            <Paragraph color="$color9" text="center">
-              You need a Chat Support or Support tier subscription to access private
-              support channels.
-            </Paragraph>
-          </YStack>
-        )
-      }
-    }
-
-    if (groupInfoData.currentlyOccupiedSeats < groupInfoData.discordSeats) {
-      return <SearchForm />
-    }
-
-    return (
-      <Paragraph size="$3" color="$color10">
-        You've reached the maximum number of Discord members for your plan. Please reset
-        if you want to add new members.
-      </Paragraph>
-    )
-  }
-
-  return (
-    <YStack gap="$3">
-      <DiscordAccessHeader />
 
       {apiType === 'channel' ? (
         <Paragraph color="$color9">
@@ -2428,7 +2426,7 @@ const BentoCard = ({
   return (
     <ServiceCard
       title="Bento"
-      description="Download the entire suite of Bento components."
+      description="Download Bento components or browse the source repo."
       actionLabel={hasAccess ? 'Download' : 'Purchase'}
       onAction={
         hasAccess

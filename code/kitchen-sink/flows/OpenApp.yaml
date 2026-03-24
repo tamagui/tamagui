@@ -2,8 +2,7 @@ appId: com.tamagui.tamaguikitchensink
 tag:
   - util
 ---
-- launchApp:
-    clearState: true
+- launchApp
 
 # Dismiss any system dialogs (Apple Account Verification, etc.)
 - tapOn:

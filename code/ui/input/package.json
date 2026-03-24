@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/input",
-  "version": "2.0.0-rc.22",
+  "version": "2.0.0-rc.30",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.ts",
   "files": [
@@ -41,7 +41,6 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/element": "workspace:*",
     "@tamagui/focusable": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/get-font-sized": "workspace:*",
     "@tamagui/get-token": "workspace:*",
@@ -49,12 +48,13 @@
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native": "0.81.5",
+    "react-native": "0.83.2",
     "vitest": "4.0.4"
   },
   "peerDependencies": {

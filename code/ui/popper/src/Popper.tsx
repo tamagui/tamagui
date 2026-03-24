@@ -1,4 +1,5 @@
 // adapted from radix-ui popper
+import { flushSync } from 'react-dom'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
@@ -7,13 +8,17 @@ import {
   View as TamaguiView,
   createStyledContext,
   getVariableValue,
+  registerLayoutNode,
   styled,
 } from '@tamagui/core'
+import type { PopupTriggerMap } from '@tamagui/floating'
+import { FloatingOverrideContext } from '@tamagui/floating'
 import type {
   Coords,
   Middleware,
   OffsetOptions,
   Placement,
+  ReferenceType,
   Side,
   SizeOptions,
   Strategy,
@@ -21,8 +26,8 @@ import type {
 } from '@tamagui/floating'
 import {
   arrow,
-  autoUpdate,
   flip,
+  getOverflowAncestors,
   offset as offsetFn,
   platform,
   shift,
@@ -69,18 +74,18 @@ export const PopperPositionContext = createStyledContext
 export const { useStyledContext: usePopperContext, Provider: PopperProviderFast } =
   PopperContextFast
 
-export type PopperContextSlowValue = PopperContextShared &
-  Pick<
-    UseFloatingReturn,
-    'context' | 'getReferenceProps' | 'getFloatingProps' | 'strategy' | 'update' | 'refs'
-  > & {
-    onHoverReference?: (event: any) => void
-    onLeaveReference?: () => void
-  }
+export type PopperContextSlowValue = Pick<
+  UseFloatingReturn,
+  'getReferenceProps' | 'update' | 'refs'
+> & {
+  onHoverReference?: (event: any) => void
+  onLeaveReference?: () => void
+  triggerElements?: PopupTriggerMap
+}
 
 export const PopperContextSlow = createStyledContext<PopperContextSlowValue>(
   // since we always provide this we can avoid setting here
-  {} as PopperContextValue,
+  {} as PopperContextSlowValue,
   'PopperSlow__'
 )
 
@@ -93,7 +98,32 @@ export const PopperProvider = ({
   children,
   ...context
 }: PopperContextValue & { scope?: string; children?: React.ReactNode }) => {
-  const slowContext = getContextSlow(context)
+  // single ref holds all unstable functions — updated every render so the
+  // stable wrappers below always forward to the latest version
+  const fns = React.useRef(context)
+  fns.current = context
+
+  // stable wrappers that never change identity — objectIdentityKey in
+  // createStyledContext produces the same key across renders, so PopperAnchor
+  // instances never re-render from context changes (only from parent re-renders)
+  const [slowContext] = React.useState(
+    (): PopperContextSlowValue => ({
+      refs: context.refs,
+      triggerElements: context.triggerElements,
+      update(...a: []) {
+        fns.current.update(...a)
+      },
+      getReferenceProps(p?: any) {
+        return fns.current.getReferenceProps?.(p)
+      },
+      onHoverReference(e?: any) {
+        ;(fns.current as any).onHoverReference?.(e)
+      },
+      onLeaveReference() {
+        ;(fns.current as any).onLeaveReference?.()
+      },
+    })
+  )
 
   return (
     <PopperProviderFast scope={scope} {...context}>
@@ -102,26 +132,6 @@ export const PopperProvider = ({
       </PopperProviderSlow>
     </PopperProviderFast>
   )
-}
-
-// avoid position based re-rendering
-function getContextSlow(context: PopperContextValue): PopperContextSlowValue {
-  return {
-    refs: context.refs,
-    size: context.size,
-    arrowRef: context.arrowRef,
-    arrowStyle: context.arrowStyle,
-    onArrowSize: context.onArrowSize,
-    hasFloating: context.hasFloating,
-    strategy: context.strategy,
-    update: context.update,
-    context: context.context,
-    getFloatingProps: context.getFloatingProps,
-    getReferenceProps: context.getReferenceProps,
-    open: context.open,
-    onHoverReference: (context as any).onHoverReference,
-    onLeaveReference: (context as any).onLeaveReference,
-  }
 }
 
 export type PopperProps = {
@@ -252,6 +262,58 @@ const transformOriginMiddleware = (options: {
   },
 })
 
+// replaces floating-ui's autoUpdate with tamagui's batched IO measurement loop
+// keeps scroll/resize listeners for immediate response, but replaces per-element
+// ResizeObserver + IntersectionObserver with the shared layoutOnAnimationFrame loop
+function tamaguiAutoUpdate(
+  reference: ReferenceType,
+  floating: HTMLElement,
+  update: () => void
+): () => void {
+  // initial position
+  update()
+
+  // schedule a second update after layout/scroll events settle (e.g. focus-
+  // triggered scrolls that cause flip corrections)
+  let rafId = requestAnimationFrame(() => {
+    update()
+    rafId = 0
+  })
+
+  const cleanups: (() => void)[] = [
+    () => {
+      if (rafId) cancelAnimationFrame(rafId)
+    },
+  ]
+
+  // watch reference element via tamagui's IO measurement loop
+  // only watch reference, NOT floating — watching floating causes loops
+  // (computePosition sets position → rect changes → update → repeat)
+  if (reference instanceof HTMLElement) {
+    cleanups.push(registerLayoutNode(reference, update))
+  }
+
+  // scroll listeners for immediate response (only for real DOM elements)
+  const refAncestors = reference instanceof Element ? getOverflowAncestors(reference) : []
+  const ancestors = [...refAncestors, ...getOverflowAncestors(floating)]
+  const uniqueAncestors = [...new Set(ancestors)]
+  for (const ancestor of uniqueAncestors) {
+    ancestor.addEventListener('scroll', update, { passive: true })
+  }
+
+  // window resize
+  window.addEventListener('resize', update)
+
+  cleanups.push(() => {
+    for (const ancestor of uniqueAncestors) {
+      ancestor.removeEventListener('scroll', update)
+    }
+    window.removeEventListener('resize', update)
+  })
+
+  return () => cleanups.forEach((fn) => fn())
+}
+
 export function Popper(props: PopperProps) {
   const {
     children,
@@ -272,24 +334,15 @@ export function Popper(props: PopperProps) {
   const [arrowSize, setArrowSize] = React.useState(0)
   const offsetOptions = offset ?? arrowSize
   const floatingStyle = React.useRef({})
-  const isOpen = passThrough ? false : open || true
+  const isOpen = passThrough ? false : (open ?? true)
 
-  let floating = useFloating({
-    open: isOpen,
-    strategy,
-    placement,
-    sameScrollView: false, // this only takes effect on native
-    whileElementsMounted: !isOpen ? undefined : autoUpdate,
-    platform:
-      (disableRTL ?? setupOptions.disableRTL)
-        ? {
-            ...platform,
-            isRTL(element) {
-              return false
-            },
-          }
-        : platform,
-    middleware: [
+  // freeze middleware reference when closed so floating-ui's deepEqual trivially
+  // passes (same object) and skips computePosition on re-renders while closed.
+  // unlike swapping to [], this retains the last good middleware so cached
+  // position data (offset, arrow, transformOrigin) stays correct for reopen.
+  const middlewareRef = React.useRef<any[]>([])
+  if (isOpen) {
+    middlewareRef.current = [
       // order matters: offset first, then flip, then shift, then arrow
       typeof offsetOptions !== 'undefined' ? offsetFn(offsetOptions) : (null as any),
       allowFlip ? flip(typeof allowFlip === 'boolean' ? {} : allowFlip) : (null as any),
@@ -360,7 +413,25 @@ export function Popper(props: PopperProps) {
             arrowWidth: arrowSize,
           })
         : (null as any),
-    ].filter(Boolean),
+    ].filter(Boolean)
+  }
+
+  let floating = useFloating({
+    open: isOpen,
+    strategy,
+    placement,
+    sameScrollView: false, // this only takes effect on native
+    whileElementsMounted: !isOpen ? undefined : tamaguiAutoUpdate,
+    platform:
+      (disableRTL ?? setupOptions.disableRTL)
+        ? {
+            ...platform,
+            isRTL(element) {
+              return false
+            },
+          }
+        : platform,
+    middleware: middlewareRef.current,
   })
 
   if (process.env.TAMAGUI_TARGET !== 'native') {
@@ -416,8 +487,6 @@ export function Popper(props: PopperProps) {
     }, [passThrough, dimensions, keyboardOpen])
   }
 
-  // memoize since we round x/y, floating-ui doesn't by default which can cause tons of updates
-  // if the floating element is inside something animating with a spring
   const popperContext = React.useMemo(() => {
     return {
       size,
@@ -434,20 +503,20 @@ export function Popper(props: PopperProps) {
   }, [
     open,
     size,
-    floating.x,
-    floating.y,
-    floating.placement,
+    floating,
     JSON.stringify(middlewareData.arrow || null),
     JSON.stringify(middlewareData.transformOrigin || null),
-    floating.isPositioned,
   ])
 
   return (
-    <LayoutMeasurementController disable={!isOpen}>
-      <PopperProvider scope={scope} {...popperContext}>
+    <PopperProvider scope={scope} {...popperContext}>
+      {/* reset FloatingOverrideContext so it doesn't leak into nested Poppers —
+          each Popper consumes the override for its own useFloating, children
+          should not inherit it (e.g. a Menu inside a Tooltip's tree) */}
+      <FloatingOverrideContext.Provider value={null}>
         {children}
-      </PopperProvider>
-    </LayoutMeasurementController>
+      </FloatingOverrideContext.Provider>
+    </PopperProvider>
   )
 }
 
@@ -469,10 +538,25 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
     const context = usePopperContextSlow(scope)
     const { getReferenceProps, refs, update } = context
     const ref = React.useRef<PopperAnchorRef>(null)
+    const triggerId = React.useId()
+
+    // register this trigger element with the shared trigger map
+    // so useHover can detect cursor moves between sibling triggers
+    React.useEffect(() => {
+      if (!scope || !context.triggerElements || !ref.current) return
+      if (!(ref.current instanceof Element)) return
+      const el = ref.current as Element
+      context.triggerElements.add(triggerId, el)
+      return () => {
+        context.triggerElements?.delete(triggerId)
+      }
+    }, [scope, triggerId, context.triggerElements])
 
     React.useEffect(() => {
       if (virtualRef) {
         refs.setReference(virtualRef.current)
+        // recompute position after setting virtual reference
+        update()
       }
     }, [virtualRef])
 
@@ -507,19 +591,25 @@ export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
         {...refProps}
         ref={composedRefs}
         {...(shouldHandleInHover && {
-          // this helps us with handling scoped poppers with many different targets
-          // basically we wait for mouseEnter to ever set a reference and remove it on leave
-          // otherwise floating ui gets confused by having >1 reference
+          // scoped poppers with multiple triggers: set the reference on
+          // mouseEnter so floating-ui positions relative to the hovered
+          // trigger, not the last one rendered.
+          //
+          // flushSync is critical here: without it, setReference batches
+          // with React's async state updates and the arrow/content position
+          // computes against the OLD reference element. this causes the
+          // arrow to flash at x=0 (top-left) during trigger switches.
+          // flushSync forces synchronous commit so update() below reads
+          // the correct reference element immediately.
           onMouseEnter: (e) => {
-            if (ref.current instanceof HTMLElement) {
-              refs.setReference(ref.current)
+            const el = (e.currentTarget ?? ref.current) as HTMLElement | null
+            if (el instanceof HTMLElement) {
+              flushSync(() => refs.setReference(el))
+              update()
 
-              if (!refProps) {
-                return
-              }
+              if (!refProps) return
 
               refProps.onPointerEnter?.(e)
-              update()
               context.onHoverReference?.(e.nativeEvent)
             }
           },
@@ -629,12 +719,20 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       [refs.setFloating]
     )
 
-    // clear floating-ui's reference when the component genuinely unmounts
-    // (this runs AFTER the exit animation completes, since AnimatePresence keeps
-    // the component mounted during the exit animation)
+    // clear floating-ui's reference when the component genuinely unmounts.
+    // IMPORTANT: useEffect cleanup is deferred — when PopperContent remounts
+    // (e.g. animation prop cycling), the new instance's ref callback fires
+    // BEFORE this cleanup runs. without the guard, we'd null out the ref that
+    // the new instance just set, causing all subsequent update() calls to
+    // early-return (the "stuck tooltip" bug).
     React.useEffect(() => {
       return () => {
-        refs.setFloating(null)
+        const ourNode = lastNodeRef.current
+        // only clear if floating-ui still points to OUR node — if a new
+        // instance already set a different node, don't touch it
+        if (ourNode && refs.floating.current === ourNode) {
+          refs.setFloating(null)
+        }
         lastNodeRef.current = null
       }
     }, [])
@@ -655,17 +753,25 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
     // position jumps when the popover reopens at the new trigger.
     const hasBeenPositioned = React.useRef(false)
     const lastGoodPosition = React.useRef({ x: 0, y: 0 })
-    if (isPositioned && (x !== 0 || y !== 0)) {
-      hasBeenPositioned.current = true
+    if (x !== 0 || y !== 0) {
+      // always track the latest computed position so that when a new reference
+      // is set while closed (e.g. content → gap → different trigger), the
+      // effectiveX/Y fallback uses the fresh position, not the stale one
       lastGoodPosition.current = { x, y }
+      if (isPositioned) {
+        hasBeenPositioned.current = true
+      }
     }
-    // when floating-ui resets (close/reopen cycle), use the last known good
-    // position instead of 0,0 to prevent the animation driver from animating
-    // from origin or jumping
-    const effectiveX =
-      !isPositioned && hasBeenPositioned.current ? lastGoodPosition.current.x : x
-    const effectiveY =
-      !isPositioned && hasBeenPositioned.current ? lastGoodPosition.current.y : y
+
+    // use the last known good position when floating-ui provides 0,0.
+    // this happens in two cases:
+    // 1. close/reopen cycle: isPositioned resets to false
+    // 2. trigger switch: reference element changes, floating-ui briefly
+    //    provides x=0,y=0 while isPositioned is still true, causing the
+    //    animation driver to animate toward (0,0) for 2-3 frames
+    const brieflyZero = hasBeenPositioned.current && x === 0 && y === 0
+    const effectiveX = brieflyZero ? lastGoodPosition.current.x : x
+    const effectiveY = brieflyZero ? lastGoodPosition.current.y : y
 
     // only hide before the very first positioning
     const hide = !hasBeenPositioned.current && effectiveX === 0 && effectiveY === 0
@@ -717,32 +823,34 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
         : undefined
 
     return (
-      <TamaguiView
-        passThrough={passThrough}
-        ref={contentRefs}
-        direction={rest.direction}
-        {...(passThrough ? null : floatingProps)}
-        {...(!passThrough &&
-          animatePos && {
-            'data-popper-animate-position': 'true',
-          })}
-      >
-        <PopperContentFrame
-          key="popper-content-frame"
+      <LayoutMeasurementController disable={!context.open}>
+        <TamaguiView
           passThrough={passThrough}
-          unstyled={unstyled}
-          {...(!passThrough && {
-            'data-placement': placement,
-            'data-strategy': strategy,
-            size,
-            ...style,
-            ...transformOriginStyle,
-            ...rest,
-          })}
+          ref={contentRefs}
+          direction={rest.direction}
+          {...(passThrough ? null : floatingProps)}
+          {...(!passThrough &&
+            animatePos && {
+              'data-popper-animate-position': 'true',
+            })}
         >
-          {children}
-        </PopperContentFrame>
-      </TamaguiView>
+          <PopperContentFrame
+            key="popper-content-frame"
+            passThrough={passThrough}
+            unstyled={unstyled}
+            {...(!passThrough && {
+              'data-placement': placement,
+              'data-strategy': strategy,
+              size,
+              ...style,
+              ...transformOriginStyle,
+              ...rest,
+            })}
+          >
+            {children}
+          </PopperContentFrame>
+        </TamaguiView>
+      </LayoutMeasurementController>
     )
   }
 )
@@ -839,6 +947,10 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
     const x = (context.arrowStyle?.x as number) || 0
     const y = (context.arrowStyle?.y as number) || 0
 
+    // hide arrow until floating-ui has computed its position to prevent
+    // flash at x=0 during initial render or trigger switches in hydration
+    const arrowPositioned = context.arrowStyle != null
+
     const primaryPlacement = (placement ? placement.split('-')[0] : 'top') as Sides
 
     const arrowStyle: ViewProps = { x, y, width: size, height: size }
@@ -872,6 +984,7 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
       <PopperArrowOuterFrame
         ref={refs}
         {...arrowStyle}
+        {...(!arrowPositioned && { opacity: 0 })}
         {...(animatePosition && {
           transition,
           animateOnly: ['transform'],

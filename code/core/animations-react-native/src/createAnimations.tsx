@@ -1,4 +1,4 @@
-import { normalizeTransition, getEffectiveAnimation } from '@tamagui/animation-helpers'
+import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type {
@@ -12,6 +12,10 @@ import type {
 import { useEvent, useThemeWithState } from '@tamagui/web'
 import React from 'react'
 import { Animated, type Text, type View } from 'react-native'
+
+// detect Fabric (New Architecture) — Paper doesn't support native driver for all style keys
+const isFabric =
+  !isWeb && typeof global !== 'undefined' && !!global.__nativeFabricUIManager
 
 // Helper to resolve dynamic theme values like {dynamic: {dark: "value", light: undefined}}
 const resolveDynamicValue = (value: any, isDark: boolean): any => {
@@ -59,7 +63,7 @@ const colorStyleKey = {
   borderBottomColor: true,
 }
 
-// these are the styles that are costly to animate because they don't support useNativeDriver and some of them are changing layout
+// these style keys are costly to animate and only work with native driver on Fabric
 const costlyToAnimateStyleKey = {
   borderRadius: true,
   borderTopLeftRadius: true,
@@ -72,7 +76,11 @@ const costlyToAnimateStyleKey = {
   borderTopWidth: true,
   borderBottomWidth: true,
   ...colorStyleKey,
-  // TODO for other keys like height or width, it's better to not add them here till layout animations are ready
+}
+
+type CreateAnimationsOptions = {
+  // override native driver detection (default: auto-detect Fabric)
+  useNativeDriver?: boolean
 }
 
 export const AnimatedView: Animated.AnimatedComponent<typeof View> = Animated.View
@@ -121,7 +129,7 @@ export function useAnimatedNumber(
         const composite = Animated.spring(val, {
           ...config,
           toValue: next,
-          useNativeDriver: !isWeb,
+          useNativeDriver: isFabric,
         })
         composite.start(handleFinish)
         state.current.composite = composite
@@ -130,7 +138,7 @@ export function useAnimatedNumber(
         const composite = Animated.timing(val, {
           ...config,
           toValue: next,
-          useNativeDriver: !isWeb,
+          useNativeDriver: isFabric,
         })
         composite.start(handleFinish)
         state.current.composite = composite
@@ -165,12 +173,16 @@ export const useAnimatedNumberStyle: UseAnimatedNumberStyle<RNAnimatedNum> = (
 }
 
 export function createAnimations<A extends AnimationsConfig>(
-  animations: A
+  animations: A,
+  options?: CreateAnimationsOptions
 ): AnimationDriver<A> {
+  const nativeDriver = options?.useNativeDriver ?? isFabric
+
   return {
     isReactNative: true,
     inputStyle: 'value',
     outputStyle: 'inline',
+    avoidReRenders: true,
     animations,
     needsCustomComponent: true,
     View: AnimatedView,
@@ -180,7 +192,14 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumberStyle,
     usePresence,
     ResetPresence,
-    useAnimations: ({ props, onDidAnimate, style, componentState, presence }) => {
+    useAnimations: ({
+      props,
+      onDidAnimate,
+      style,
+      componentState,
+      presence,
+      useStyleEmitter,
+    }) => {
       const isDisabled = isWeb && componentState.unmounted === true
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
@@ -241,18 +260,8 @@ export function createAnimations<A extends AnimationsConfig>(
         !!onDidAnimate,
         isDark,
         justFinishedEntering,
+        hasTransitionOnly,
       ]
-
-      // check if there is any style that is not supported by native driver
-      const isThereNoNativeStyleKeys = React.useMemo(() => {
-        if (isWeb) return true
-        return Object.keys(style).some((key) => {
-          if (animateOnly) {
-            return !animatedStyleKey[key] && animateOnly.indexOf(key) === -1
-          }
-          return !animatedStyleKey[key]
-        })
-      }, args)
 
       const res = React.useMemo(() => {
         const runners: Function[] = []
@@ -312,6 +321,18 @@ export function createAnimations<A extends AnimationsConfig>(
           }
         }
 
+        const animatedTransformStyle =
+          animatedTranforms.current.length > 0
+            ? {
+                transform: animatedTranforms.current.map((r) => {
+                  const key = Object.keys(r)[0]
+                  const val =
+                    animationsState.current!.get(r[key])?.interpolation || r[key]
+                  return { [key]: val }
+                }),
+              }
+            : {}
+
         const animatedStyle = {
           ...Object.fromEntries(
             Object.entries(animateStyles.current).map(([k, v]) => [
@@ -319,11 +340,7 @@ export function createAnimations<A extends AnimationsConfig>(
               animationsState.current!.get(v)?.interpolation || v,
             ])
           ),
-          transform: animatedTranforms.current.map((r) => {
-            const key = Object.keys(r)[0]
-            const val = animationsState.current!.get(r[key])?.interpolation || r[key]
-            return { [key]: val }
-          }),
+          ...animatedTransformStyle,
         }
 
         return {
@@ -391,7 +408,7 @@ export function createAnimations<A extends AnimationsConfig>(
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
                   toValue: animateToValue,
-                  useNativeDriver: !isWeb && !isThereNoNativeStyleKeys,
+                  useNativeDriver: nativeDriver,
                   ...animationConfig,
                 })
               }
@@ -471,6 +488,94 @@ export function createAnimations<A extends AnimationsConfig>(
           cancel = true
         }
       }, args)
+
+      // avoidReRenders: receive style changes imperatively from tamagui
+      // and update Animated.Values directly without React re-renders
+      // reuses the same update() + runner pattern as the useMemo path
+      useStyleEmitter?.((nextStyle) => {
+        for (const key in nextStyle) {
+          const rawVal = nextStyle[key]
+          const val = resolveDynamicValue(rawVal, isDark)
+          if (val === undefined) continue
+
+          if (key === 'transform' && Array.isArray(val)) {
+            for (const [index, transform] of val.entries()) {
+              if (!transform) continue
+              const tkey = Object.keys(transform)[0]
+              const currentTransform = animatedTranforms.current[index]?.[tkey]
+              animatedTranforms.current[index] = {
+                [tkey]: update(tkey, currentTransform, transform[tkey]),
+              }
+            }
+          } else if (animatedStyleKey[key] != null || costlyToAnimateStyleKey[key]) {
+            animateStyles.current[key] = update(key, animateStyles.current[key], val)
+          }
+        }
+
+        // run the queued animations immediately
+        res.runners.forEach((r) => r())
+
+        function update(
+          key: string,
+          animated: Animated.Value | undefined,
+          valIn: string | number
+        ) {
+          const isColor = colorStyleKey[key]
+          const [numVal, type] = isColor ? [0, undefined] : getValue(valIn)
+          let animateToValue = numVal
+          const value = animated || new Animated.Value(numVal)
+          const curInterpolation = animationsState.current.get(value)
+
+          if (type) {
+            animationsState.current.set(value, {
+              interpolation: value.interpolate(
+                getInterpolated(
+                  curInterpolation?.current ?? value['_value'],
+                  numVal,
+                  type
+                )
+              ),
+              current: numVal,
+            })
+          }
+
+          if (isColor) {
+            animateToValue = curInterpolation?.animateToValue ? 0 : 1
+            animationsState.current.set(value, {
+              current: valIn,
+              interpolation: value.interpolate(
+                getColorInterpolated(
+                  curInterpolation?.current as string,
+                  valIn as string,
+                  animateToValue
+                )
+              ),
+              animateToValue: curInterpolation?.animateToValue ? 0 : 1,
+            })
+          }
+
+          const animationConfig = getAnimationConfig(
+            key,
+            animations,
+            props.transition,
+            'default'
+          )
+          res.runners.push(() => {
+            value.stopAnimation()
+            const anim = Animated[animationConfig.type || 'spring'](value, {
+              toValue: animateToValue,
+              useNativeDriver: nativeDriver,
+              ...animationConfig,
+            })
+            ;(animationConfig.delay
+              ? Animated.sequence([Animated.delay(animationConfig.delay), anim])
+              : anim
+            ).start()
+          })
+
+          return value
+        }
+      })
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] === 'verbose') {

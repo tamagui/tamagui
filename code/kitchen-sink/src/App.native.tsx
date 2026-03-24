@@ -39,12 +39,16 @@ export default function App() {
   const systemColorScheme = useColorScheme()
 
   // Resolved theme based on mode
-  const resolvedTheme = mode === 'system' ? systemColorScheme : mode
+  // useColorScheme can return null (RN 0.83+) or 'unspecified' (after setColorScheme('unspecified'))
+  const scheme = mode === 'system' ? systemColorScheme : mode
+  const resolvedTheme = (scheme && scheme !== 'unspecified' ? scheme : null) || 'light'
 
   // Update Appearance when mode changes (for native components)
   React.useEffect(() => {
     if (mode === 'system') {
-      Appearance.setColorScheme(null) // Follow system
+      // RN 0.83+ Kotlin conversion makes setColorScheme non-null on Android
+      // pass 'unspecified' to follow system
+      Appearance.setColorScheme('unspecified' as any)
     } else {
       Appearance.setColorScheme(mode)
     }

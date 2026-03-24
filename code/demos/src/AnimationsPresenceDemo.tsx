@@ -1,6 +1,6 @@
 import React from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
+import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons-2'
 
 import { Button, Image, XStack, YStack, styled } from 'tamagui'
 
@@ -11,7 +11,7 @@ import photo2 from '../../public/photo2.jpg'
 // @ts-ignore
 import photo3 from '../../public/photo3.jpg'
 
-export const images = [photo1, photo2, photo3].map((x) => x.src || x)
+export const images = [photo1, photo2, photo3].map((x) => (x as any).src || x)
 
 const GalleryItem = styled(YStack, {
   z: 1,

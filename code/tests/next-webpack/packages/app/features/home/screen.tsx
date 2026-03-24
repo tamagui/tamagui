@@ -18,7 +18,7 @@ import {
 import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton'
 import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton'
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import React, { useState } from 'react'
 import { Platform } from 'react-native'
 import { useLink } from 'solito/navigation'
@@ -47,7 +47,13 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
   const [val, setVal] = React.useState('apple')
 
   return (
-    <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
+    <Select
+      value={val}
+      onValueChange={setVal}
+      disablePreventBodyScroll
+      zIndex={200000}
+      {...props}
+    >
       {props?.trigger || (
         <Select.Trigger maxWidth={220} iconAfter={ChevronDown}>
           <Select.Value placeholder="Something" />
@@ -70,7 +76,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton
           items="center"
           justify="center"

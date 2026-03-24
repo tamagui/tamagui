@@ -1,5 +1,5 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
-import { FastForward } from '@tamagui/lucide-icons'
+import { FastForward } from '@tamagui/lucide-icons-2'
 import { memo, useState } from 'react'
 import { Button, Heading, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
 

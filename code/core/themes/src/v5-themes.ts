@@ -18,7 +18,7 @@ import {
   yellow,
   yellowDark,
 } from '@tamagui/colors'
-import { createThemes } from '@tamagui/theme-builder'
+import { createThemes, type CreateThemesProps } from '@tamagui/theme-builder'
 import { opacify } from './opacify'
 import { v5Templates } from './v5-templates'
 
@@ -362,10 +362,80 @@ type BaseExtraDark = BaseExtraCommon &
   typeof darkShadows &
   typeof darkHighlights & { shadowColor: string }
 
+type PaletteEntry = { palette: { light: string[]; dark: string[] } }
+type ChildrenWithPalettes<Children extends Record<string, ChildTheme>> = {
+  [K in keyof Children | 'black' | 'white']: PaletteEntry
+}
+type V5ExtraByScheme<Children extends Record<string, ChildTheme>> = {
+  light: BaseExtraLight & MergedChildrenColors<Children, 'light'>
+  dark: BaseExtraDark & MergedChildrenColors<Children, 'dark'>
+}
+type V5GetThemeProps = Parameters<
+  NonNullable<
+    CreateThemesProps<any, any, any, any, any, typeof v5Templates, any>['getTheme']
+  >
+>[0]
+type Merge<A, B> = Omit<A, keyof B> & B
+
+type DefaultV5ThemeValues = {
+  color01: string
+  color0075: string
+  color005: string
+  color0025: string
+  color002: string
+  color001: string
+  background01: string
+  background0075: string
+  background005: string
+  background0025: string
+  background002: string
+  background001: string
+  background02: string
+  background04: string
+  background06: string
+  background08: string
+  outlineColor: string
+}
+
+type ComponentThemeOption = Exclude<
+  Parameters<typeof createThemes>[0]['componentThemes'],
+  undefined
+>
+
+function getDefaultV5ThemeValues({ palette }: V5GetThemeProps): DefaultV5ThemeValues {
+  if (!palette || palette.length < 3) {
+    throw new Error(`invalid palette: ${JSON.stringify(palette)}`)
+  }
+
+  const bgColor = palette[V5_BG_OFFSET]!
+  const fgColor = palette[palette.length - 2]!
+
+  return {
+    color01: opacify(fgColor, 0.1),
+    color0075: opacify(fgColor, 0.075),
+    color005: opacify(fgColor, 0.05),
+    color0025: opacify(fgColor, 0.025),
+    color002: opacify(fgColor, 0.02),
+    color001: opacify(fgColor, 0.01),
+    background01: opacify(bgColor, 0.1),
+    background0075: opacify(bgColor, 0.075),
+    background005: opacify(bgColor, 0.05),
+    background0025: opacify(bgColor, 0.025),
+    background002: opacify(bgColor, 0.02),
+    background001: opacify(bgColor, 0.01),
+    background02: opacify(bgColor, 0.2),
+    background04: opacify(bgColor, 0.4),
+    background06: opacify(bgColor, 0.6),
+    background08: opacify(bgColor, 0.8),
+    outlineColor: opacify(palette[V5_BG_OFFSET + 4], 0.6),
+  }
+}
+
 export type CreateV5ThemeOptions<
   Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
   GrandChildren extends Record<string, GrandChildrenThemeDefinition> =
     typeof v5GrandchildrenThemes,
+  GetThemeReturn extends Record<string, string | number> = {},
 > = {
   /** Override the dark base palette (12 colors from darkest to lightest) */
   darkPalette?: string[]
@@ -390,7 +460,12 @@ export type CreateV5ThemeOptions<
    * @deprecated component themes are no longer recommended -
    * configure component styles directly via themes or component defaultProps instead
    */
-  componentThemes?: false | Parameters<typeof createThemes>[0]['componentThemes']
+  componentThemes?: false | ComponentThemeOption
+  /**
+   * Add computed values to every generated theme.
+   * These values merge on top of the built-in v5 computed tokens.
+   */
+  getTheme?: (props: V5GetThemeProps) => GetThemeReturn
 }
 
 /**
@@ -419,11 +494,13 @@ export function createV5Theme<
   Children extends Record<string, ChildTheme> = typeof defaultChildrenThemes,
   GrandChildren extends Record<string, GrandChildrenThemeDefinition> =
     typeof v5GrandchildrenThemes,
+  GetThemeReturn extends Record<string, string | number> = {},
 >(
-  options: CreateV5ThemeOptions<Children, GrandChildren> = {} as CreateV5ThemeOptions<
+  options: CreateV5ThemeOptions<
     Children,
-    GrandChildren
-  >
+    GrandChildren,
+    GetThemeReturn
+  > = {} as CreateV5ThemeOptions<Children, GrandChildren, GetThemeReturn>
 ) {
   const {
     darkPalette: customDarkPalette = darkPalette,
@@ -432,6 +509,7 @@ export function createV5Theme<
     childrenThemes = defaultChildrenThemes as unknown as Children,
     grandChildrenThemes = v5GrandchildrenThemes as unknown as GrandChildren,
     componentThemes: customComponentThemes = v5ComponentThemes,
+    getTheme: userGetTheme,
   } = options
 
   // Generate black/white named colors from palettes
@@ -471,9 +549,6 @@ export function createV5Theme<
   }
 
   // Convert children to palette format for createThemes, adding black/white internally
-  type PaletteEntry = { palette: { light: string[]; dark: string[] } }
-  type ChildrenWithPalettes = { [K in keyof Children | 'black' | 'white']: PaletteEntry }
-
   const childrenWithPalettes = {
     // Always include black/white for theme generation
     black: {
@@ -493,7 +568,7 @@ export function createV5Theme<
         },
       ])
     ) as { [K in keyof Children]: PaletteEntry }),
-  } as ChildrenWithPalettes
+  } as ChildrenWithPalettes<Children>
 
   return createThemes({
     // componentThemes: false disables them, undefined/truthy values enable them
@@ -529,41 +604,12 @@ export function createV5Theme<
 
     grandChildrenThemes,
 
-    // Add computed colors to ALL themes based on each theme's palette
-    getTheme: ({ palette, scheme }) => {
-      if (!palette || palette.length < 3) {
-        throw new Error(`invalid palette: ${JSON.stringify(palette)}`)
-      }
-
-      // TODO this should just be aligned with the offsets we use in templates
-      // and all really simplified down
-      const bgColor = palette[V5_BG_OFFSET]!
-      const fgColor = palette[palette.length - 2]!
-
-      return {
-        // Opacity variants of foreground color
-        color01: opacify(fgColor, 0.1),
-        color0075: opacify(fgColor, 0.075),
-        color005: opacify(fgColor, 0.05),
-        color0025: opacify(fgColor, 0.025),
-        color002: opacify(fgColor, 0.02),
-        color001: opacify(fgColor, 0.01),
-
-        // Opacity variants of background color
-        background01: opacify(bgColor, 0.1),
-        background0075: opacify(bgColor, 0.075),
-        background005: opacify(bgColor, 0.05),
-        background0025: opacify(bgColor, 0.025),
-        background002: opacify(bgColor, 0.02),
-        background001: opacify(bgColor, 0.01),
-        background02: opacify(bgColor, 0.2),
-        background04: opacify(bgColor, 0.4),
-        background06: opacify(bgColor, 0.6),
-        background08: opacify(bgColor, 0.8),
-
-        // a slightly stronger but translucent color
-        outlineColor: opacify(palette[V5_BG_OFFSET + 4], 0.6),
-      }
+    getTheme: (props): Merge<DefaultV5ThemeValues, GetThemeReturn> => {
+      const builtInTheme = getDefaultV5ThemeValues(props)
+      const customTheme = userGetTheme?.(props)
+      return (
+        customTheme ? { ...builtInTheme, ...customTheme } : (builtInTheme as unknown)
+      ) as Merge<DefaultV5ThemeValues, GetThemeReturn>
     },
   })
 }

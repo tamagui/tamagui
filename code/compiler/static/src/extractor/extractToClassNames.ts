@@ -623,10 +623,9 @@ function hoistClassName(path: NodePath<t.JSXElement>, str: string) {
 function cleanupClassName(inStr: string) {
   const out = new Set<string>()
   for (const part of inStr.split(' ')) {
-    if (part === ' ') continue
+    if (!part || part === ' ') continue
     if (part === 'font_') continue
     out.add(part)
   }
-  // always a space after for joining
-  return [...out].join(' ') + ' '
+  return [...out].join(' ')
 }

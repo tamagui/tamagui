@@ -1,4 +1,4 @@
-import { Check as CheckIcon } from '@tamagui/lucide-icons'
+import { Check as CheckIcon } from '@tamagui/lucide-icons-2'
 import { memo, useState } from 'react'
 import {
   Button,

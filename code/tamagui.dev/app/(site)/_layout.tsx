@@ -4,7 +4,6 @@ import { LoadProgressBar, Slot, usePathname } from 'one'
 import { Theme, YStack } from 'tamagui'
 import { PromoBanner } from '~/components/PromoBanner'
 import { Footer } from '~/features/site/Footer'
-import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 import { Header } from '~/features/site/header/Header'
 import { useSiteTheme } from '~/features/site/theme/useSiteTheme'
 import { ThemeNameEffect } from '~/features/site/theme/ThemeNameEffect'
@@ -63,7 +62,6 @@ export default function SiteLayout() {
 
       {!hidePromoBanner && <PromoBanner />}
       {!hideHeader && <Header showAuth={showAuth} disableNew={disableNew} />}
-      <LoadCherryBomb prefetch />
       <Modals />
       <LoadProgressBar />
       <Theme name={customThemeName}>

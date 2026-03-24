@@ -1,6 +1,6 @@
 {
   "name": "sandbox",
-  "version": "2.0.0-rc.22",
+  "version": "2.0.0-rc.30",
   "private": true,
   "type": "module",
   "scripts": {
@@ -17,8 +17,7 @@
     "serve": "one serve",
     "ios": "one run:ios",
     "ios:prod": "one prebuild",
-    "android": "one run:android",
-    "upgrade:tamagui": "$npm_execpath up '*tamagui*' '@tamagui/*'"
+    "android": "one run:android"
   },
   "dependencies": {
     "@react-native-masked-view/masked-view": "^0.3.1",
@@ -26,18 +25,18 @@
     "@tamagui/animations-motion": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/demos": "workspace:*",
-    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "@vxrn/color-scheme": "^1.9.11",
-    "expo": "^54.0.23",
-    "one": "1.9.11",
+    "@vxrn/color-scheme": "^1.12.7",
+    "expo": "~55.0.6",
+    "one": "1.12.7",
     "react": ">=19",
-    "react-native": "0.81.5",
-    "react-native-reanimated": "~4.1.1",
-    "react-native-safe-area-context": "~5.6.0",
-    "react-native-screens": "~4.16.0",
-    "react-native-svg": "15.12.1",
+    "react-native": "0.83.2",
+    "react-native-reanimated": "~4.2.2",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "~4.23.0",
+    "react-native-svg": "15.15.3",
     "react-native-web": "^0.21.0",
     "tamagui": "workspace:*"
   },
@@ -46,7 +45,7 @@
     "@react-native-community/cli": "15.1.3",
     "@tamagui/vite-plugin": "workspace:*",
     "@types/react": "~19.1.10",
-    "vite": "^7.1.12",
+    "vite": "^8.0.0",
     "wait-port": "^0.3.0",
     "ws": "^8.18.0"
   }

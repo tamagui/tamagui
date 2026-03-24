@@ -12,12 +12,10 @@ import { expect, test } from '@playwright/test'
  * 3. no animatedBy defaults to motion driver
  */
 
-const BASE_URL = 'http://localhost:9000'
-
 test.describe('Multi-driver animation config', () => {
   test.beforeEach(async ({ page }) => {
     // specifically load with multi-driver config
-    await page.goto(`${BASE_URL}/?test=MultiDriverAnimation&animationDriver=multi`)
+    await page.goto('/?test=MultiDriverAnimation&animationDriver=multi')
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(300)
   })
@@ -32,29 +30,36 @@ test.describe('Multi-driver animation config', () => {
     )
     expect(initialOpacity).toBeCloseTo(0.3, 1)
 
-    // trigger animation
-    await page.getByTestId('toggle-multi').click()
+    // use in-browser rAF polling to reliably capture mid-animation frames
+    // (Playwright waitForTimeout is too slow on CI to catch intermediate values)
+    const samples: number[] = await page.evaluate(() => {
+      return new Promise<number[]>((resolve) => {
+        const el = document.querySelector('[data-testid="driver-default"]')!
+        const vals: number[] = []
+        const start = performance.now()
+        function tick() {
+          vals.push(Number(getComputedStyle(el).opacity))
+          if (performance.now() - start < 500) requestAnimationFrame(tick)
+          else resolve(vals)
+        }
+        ;(document.querySelector('[data-testid="toggle-multi"]') as HTMLElement).click()
+        requestAnimationFrame(tick)
+      })
+    })
 
-    // motion driver animates over time - check mid-animation (200ms total)
-    await page.waitForTimeout(50)
-    const midOpacity = await element.evaluate((el) =>
-      Number(getComputedStyle(el).opacity)
-    )
-
-    // wait for completion
-    await page.waitForTimeout(300)
-    const finalOpacity = await element.evaluate((el) =>
-      Number(getComputedStyle(el).opacity)
-    )
-
+    const finalOpacity = samples[samples.length - 1]
     expect(finalOpacity).toBeGreaterThan(0.9)
 
     // motion driver should show intermediate values (not jump instantly)
-    const didAnimate = midOpacity < 0.95 && midOpacity > 0.3
+    const intermediates = samples.filter((v) => v > 0.35 && v < 0.95)
     expect(
-      didAnimate,
-      `Motion driver should animate (mid=${midOpacity.toFixed(2)})`
-    ).toBe(true)
+      intermediates.length,
+      `Motion driver should animate with interpolation (got ${intermediates.length} intermediate frames). ` +
+        `Samples: [${samples
+          .slice(0, 8)
+          .map((s) => s.toFixed(2))
+          .join(', ')}...]`
+    ).toBeGreaterThanOrEqual(2)
   })
 
   test('animatedBy="css" uses CSS driver (CSS transitions)', async ({ page }) => {
@@ -149,7 +154,7 @@ test.describe('Multi-driver animation config', () => {
 
 test.describe('Multi-driver group hover transitions', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(`${BASE_URL}/?test=MultiDriverAnimation&animationDriver=multi`)
+    await page.goto('/?test=MultiDriverAnimation&animationDriver=multi')
     await page.waitForLoadState('networkidle')
     await page.waitForTimeout(300)
   })

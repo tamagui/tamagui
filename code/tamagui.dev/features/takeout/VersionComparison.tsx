@@ -1,5 +1,5 @@
 import { ThemeTintAlt } from '@tamagui/logo'
-import { Check, X } from '@tamagui/lucide-icons'
+import { Check, X } from '@tamagui/lucide-icons-2'
 import {
   Button,
   H3,

@@ -449,6 +449,7 @@ export function createBaseMenu({
     return (
       <PopperPrimitive.Popper
         scope={scope}
+        open={open}
         placement={placement}
         allowFlip={allowFlip}
         stayInFrame={stayInFrame}
@@ -931,7 +932,7 @@ export function createBaseMenu({
               const content = document.querySelector(
                 '[data-tamagui-menu-content]'
               ) as HTMLElement | null
-              content?.focus()
+              content?.focus({ preventScroll: true })
             })}
             onUnmountAutoFocus={onCloseAutoFocus}
           >
@@ -1478,6 +1479,7 @@ export function createBaseMenu({
 
     return (
       <PopperPrimitive.Popper
+        open={open}
         placement={placement}
         allowFlip={allowFlip}
         stayInFrame={stayInFrame}
@@ -1810,7 +1812,7 @@ export function createBaseMenu({
                   const content = root?.querySelector?.(
                     '[data-tamagui-menu-content]'
                   ) as HTMLElement | null
-                  ;(content || root)?.focus()
+                  ;(content || root)?.focus({ preventScroll: true })
                 }
                 event.preventDefault()
               }}
@@ -1939,7 +1941,7 @@ function focusFirst(candidates: HTMLElement[], options?: { focusVisible?: boolea
     // if focus is already where we want to go, we don't want to keep going through the candidates
     if (candidate === PREVIOUSLY_FOCUSED_ELEMENT) return
     // @ts-ignore focusVisible is a newer API not yet in all TS libs
-    candidate.focus({ focusVisible: options?.focusVisible })
+    candidate.focus({ preventScroll: true, focusVisible: options?.focusVisible })
     if (document.activeElement !== PREVIOUSLY_FOCUSED_ELEMENT) return
   }
 }

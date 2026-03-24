@@ -1,4 +1,4 @@
-import { Box, Brush, MessageCircle } from '@tamagui/lucide-icons'
+import { Box, Brush, MessageCircle } from '@tamagui/lucide-icons-2'
 import { styled, YStack } from 'tamagui'
 import { BentoIcon } from '../../icons/BentoIcon'
 import { TakeoutIcon } from '../../icons/TakeoutIcon'

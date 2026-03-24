@@ -6,6 +6,13 @@ const LayoutDisableKey = new WeakMap<HTMLElement, string>()
 const Nodes = new Set<HTMLElement>()
 const IntersectionState = new WeakMap<HTMLElement, boolean>()
 
+// feature flag to enable pre-transform dimension reporting (matches RN behavior)
+// can be set via env var at build time or runtime global for testing
+// see: https://github.com/tamagui/tamagui/pull/2329
+const usePretransformDimensions = () =>
+  (globalThis as any).__TAMAGUI_ONLAYOUT_PRETRANSFORM === true ||
+  process.env.TAMAGUI_ONLAYOUT_PRETRANSFORM === '1'
+
 let _debugLayout: boolean | undefined
 
 function isDebugLayout() {
@@ -200,7 +207,7 @@ if (ENABLE) {
       NodeRectCache.set(node, nodeRect as DOMRect)
       NodeRectCache.set(parentNode, parentRect as DOMRect)
 
-      const event = getElementLayoutEvent(nodeRect, parentRect)
+      const event = getElementLayoutEvent(nodeRect, parentRect, node)
 
       if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
         console.log('[useElementLayout] change', {
@@ -225,7 +232,7 @@ if (ENABLE) {
 
   // adaptive frame skipping with backoff
   const userSkipVal = process.env.TAMAGUI_LAYOUT_FRAME_SKIP
-  const BASE_SKIP_FRAMES = userSkipVal ? +userSkipVal : 6
+  const BASE_SKIP_FRAMES = userSkipVal ? +userSkipVal : 10
   const MAX_SKIP_FRAMES = 20
   let skipFrames = BASE_SKIP_FRAMES
   let frameCount = 0
@@ -312,22 +319,67 @@ if (ENABLE) {
 
 export const getElementLayoutEvent = (
   nodeRect: DOMRectReadOnly,
-  parentRect: DOMRectReadOnly
+  parentRect: DOMRectReadOnly,
+  node?: HTMLElement
 ): LayoutEvent => {
   return {
     nativeEvent: {
-      layout: getRelativeDimensions(nodeRect, parentRect),
+      layout: getRelativeDimensions(nodeRect, parentRect, node),
       target: nodeRect,
     },
     timeStamp: Date.now(),
   }
 }
 
-const getRelativeDimensions = (a: DOMRectReadOnly, b: DOMRectReadOnly) => {
-  const { height, left, top, width } = a
+/**
+ * get pre-transform dimensions for a node.
+ * uses offsetWidth/offsetHeight which report CSS layout dimensions
+ * unaffected by transforms - this matches React Native's onLayout behavior.
+ *
+ * see: https://github.com/tamagui/tamagui/pull/2329
+ */
+const getPreTransformDimensions = (
+  node: HTMLElement
+): { width: number; height: number } => {
+  return {
+    width: node.offsetWidth,
+    height: node.offsetHeight,
+  }
+}
+
+const getRelativeDimensions = (
+  a: DOMRectReadOnly,
+  b: DOMRectReadOnly,
+  aNode?: HTMLElement
+) => {
+  const { left, top } = a
   const x = left - b.left
   const y = top - b.top
+
+  // get pre-transform dimensions when flag is enabled and node is available
+  const { width, height } =
+    usePretransformDimensions() && aNode
+      ? getPreTransformDimensions(aNode)
+      : { width: a.width, height: a.height }
+
   return { x, y, width, height, pageX: a.left, pageY: a.top }
+}
+
+// register an arbitrary DOM element into the measurement loop without React lifecycle
+export function registerLayoutNode(
+  node: HTMLElement,
+  onChange: () => void,
+  disableKey?: string
+): () => void {
+  Nodes.add(node)
+  LayoutHandlers.set(node, onChange)
+  if (disableKey) LayoutDisableKey.set(node, disableKey)
+  startGlobalObservers()
+  if (globalIntersectionObserver) {
+    globalIntersectionObserver.observe(node)
+    IntersectionState.set(node, true)
+  }
+  return () => cleanupNode(node)
 }
 
 function cleanupNode(node: HTMLElement) {
@@ -383,7 +435,7 @@ export function useElementLayout(
     const parentRect = parentNode.getBoundingClientRect()
     NodeRectCache.set(nextNode, nodeRect)
     NodeRectCache.set(parentNode, parentRect)
-    handler(getElementLayoutEvent(nodeRect, parentRect))
+    handler(getElementLayoutEvent(nodeRect, parentRect, nextNode))
   })
 
   useIsomorphicLayoutEffect(() => {
@@ -409,12 +461,13 @@ export function useElementLayout(
     }
 
     // always do one immediate sync layout event for accuracy
-    const parentNode = node.parentNode
+    const parentNode = node.parentNode as HTMLElement | null
     if (parentNode) {
       onLayout(
         getElementLayoutEvent(
           node.getBoundingClientRect(),
-          parentNode.getBoundingClientRect()
+          parentNode.getBoundingClientRect(),
+          node
         )
       )
     }
@@ -469,7 +522,7 @@ export const measureNode = async (
       getBoundingClientRectAsync(relativeNode),
     ])
     if (relativeNodeDim && nodeDim) {
-      return getRelativeDimensions(nodeDim, relativeNodeDim)
+      return getRelativeDimensions(nodeDim, relativeNodeDim, node)
     }
   }
   return null

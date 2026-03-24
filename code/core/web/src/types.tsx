@@ -426,7 +426,7 @@ export type FontLanguageProps = LanguageContextType & {
 
 export type ThemeProviderProps = {
   className?: string
-  defaultTheme: string
+  defaultTheme: string | null | undefined
   /** @deprecated moved to createTamagui({ settings: { disableRootThemeClass } }) */
   disableRootThemeClass?: boolean
   /** @deprecated moved to createTamagui({ settings: { themeClassNameOnRoot } }) */
@@ -1697,11 +1697,13 @@ export type ColorTokens =
 export type ZIndexTokens =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['zIndex']>
+  | ThemeValueFallbackZIndex
   | number
 
 export type RadiusTokens =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['radius']>
+  | ThemeValueFallbackRadius
   | number
   | RemString
 
@@ -1825,21 +1827,21 @@ export type OpacityKeys = 'opacity'
 export type ThemeValueGet<K extends string | number | symbol> = K extends 'theme'
   ? ThemeTokens
   : K extends SizeKeys
-    ? SizeTokens | ThemeValueFallbackSize
+    ? SizeTokens
     : K extends FontKeys
       ? FontTokens
       : K extends FontSizeKeys
         ? FontSizeTokens
         : K extends `${`border${string | ''}Radius`}`
-          ? RadiusTokens | ThemeValueFallbackRadius
+          ? RadiusTokens
           : K extends SpaceKeys
             ? K extends 'shadowOffset'
               ? { width: SpaceTokens; height: SpaceTokens }
-              : SpaceTokens | ThemeValueFallbackSpace
+              : SpaceTokens
             : K extends ColorKeys
               ? ColorTokens | ThemeValueFallbackColor
               : K extends ZIndexKeys
-                ? ZIndexTokens | ThemeValueFallbackZIndex
+                ? ZIndexTokens
                 : K extends LineHeightKeys
                   ? FontLineHeightTokens
                   : K extends FontWeightKeys

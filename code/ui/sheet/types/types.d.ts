@@ -66,6 +66,12 @@ export type SheetProps = ScopedProps<{
      */
     moveOnKeyboardChange?: boolean;
     containerComponent?: React.ComponentType<any>;
+    /**
+     * Called when the sheet open/close animation completes.
+     */
+    onAnimationComplete?: (info: {
+        open: boolean;
+    }) => void;
 }, 'Sheet'>;
 export type PositionChangeHandler = (position: number) => void;
 type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;

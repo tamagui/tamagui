@@ -27,7 +27,7 @@ const webServers: any[] = []
 
 if (mode === 'dev' || mode === 'both') {
   webServers.push({
-    command: `bun run dev --port ${devPort}`,
+    command: `bun run dev --port ${devPort} --clean`,
     url: `http://localhost:${devPort}`,
     reuseExistingServer: true,
     timeout: 120000,
@@ -36,7 +36,7 @@ if (mode === 'dev' || mode === 'both') {
 
 if (mode === 'prod' || mode === 'both') {
   webServers.push({
-    command: `bun run build:web && bun run serve --port ${prodPort}`,
+    command: `bun run build:web && bun run serve --port ${prodPort} --clean`,
     url: `http://localhost:${prodPort}`,
     reuseExistingServer: true,
     timeout: 180000,
@@ -45,10 +45,12 @@ if (mode === 'prod' || mode === 'both') {
 
 export default defineConfig({
   testDir: './tests',
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // One's dev SSR server can leak route state across concurrent requests in this app.
+  // Keep sandbox browser tests single-worker so hydration assertions stay deterministic.
+  workers: 1,
   reporter: [['html', { outputFolder: '.playwright-report' }]],
   outputDir: '.playwright-results',
   timeout: 30000, // 30s per test for debugging

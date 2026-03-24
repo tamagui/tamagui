@@ -234,7 +234,16 @@ export function getCSS(
     // @scope (.is_Text) to (.is_View) - inherit text styles in nested Text without View boundary
     // display: inline breaks css transform styles
 
+    // !important or else random css easily overrides, the prop is absolute (local-first styling)
+    const hideScrollBarsCSS = `._hsb-x::-webkit-scrollbar:horizontal { display: none !important; }
+._hsb-y::-webkit-scrollbar:vertical { display: none !important; }
+._hsb-x { scrollbar-width: none !important; }
+._hsb-y { scrollbar-width: none !important; }`
+    const pointerEventsCSS = `:root ._pe-boxonly>* {pointer-events:none;}
+:root ._pe-boxnone>* {pointer-events:auto;}`
+
     const designSystem = `._ovs-contain {overscroll-behavior:contain;}
+.t_unmounted .is_View, .t_unmounted .is_Text { transition: none !important; }
 .is_View { display: flex; align-items: stretch; flex-direction: column; flex-basis: auto; box-sizing: border-box; min-height: 0; min-width: 0; flex-shrink: 0; }
 .is_Text { display: inline; box-sizing: border-box; word-wrap: break-word; white-space: pre-wrap; margin: 0; }
 @scope (.is_Text) to (.is_View) { .is_Text { white-space: inherit; word-wrap: inherit; } }
@@ -242,10 +251,8 @@ export function getCSS(
 ._no_backdrop::backdrop {display: none;}
 .is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}
 .is_Input::placeholder, .is_TextArea::placeholder {color: var(--placeholderColor);}
-._hsb-x::-webkit-scrollbar:horizontal { display: none; }
-._hsb-y::-webkit-scrollbar:vertical { display: none; }
-._hsb-x { scrollbar-width: none; }
-._hsb-y { scrollbar-width: none; }
+${pointerEventsCSS}
+${hideScrollBarsCSS}
 ${autoVarCSS}
 ${themeConfig.cssRuleSets.join(separator)}`
 

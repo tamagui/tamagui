@@ -224,7 +224,10 @@ export const getSplitStyles: StyleSplitter = (
     staticConfig.validStyles ||
     (staticConfig.isText || staticConfig.isInput ? stylePropsText : validStylesView)
 
-  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (debug === 'profile' || (globalThis as any).time)
+  ) {
     // @ts-expect-error
     time`split-styles-setup`
   }
@@ -264,7 +267,10 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (debug === 'profile' || (globalThis as any).time)
+  ) {
     // @ts-expect-error
     time`style-state`
   }
@@ -299,7 +305,10 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
-    if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+    if (
+      process.env.NODE_ENV === 'development' &&
+      (debug === 'profile' || (globalThis as any).time)
+    ) {
       // @ts-expect-error
       time`before-prop-${keyInit}`
     }
@@ -361,7 +370,17 @@ export const getSplitStyles: StyleSplitter = (
           addStyleToInsertRules(rulesToInsert, containerCSS)
         }
       }
-      continue
+      // transition prop is skipped when it's a named animation (e.g. 'quick')
+      // but raw CSS values (from $platform-web) should pass through as style
+      if (
+        keyInit === 'transition' &&
+        typeof valInit === 'string' &&
+        !driver?.animations?.[valInit]
+      ) {
+        // not a known animation name, treat as raw CSS
+      } else {
+        continue
+      }
     }
 
     let isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
@@ -419,7 +438,16 @@ export const getSplitStyles: StyleSplitter = (
         }
 
         if (keyInit === 'testID') {
-          viewProps[isReactNative ? keyInit : 'data-testid'] = valInit
+          if (isReactNative) {
+            viewProps.testID = valInit
+          } else {
+            viewProps['data-testid'] = valInit
+            // also keep testID when using RN animation driver (Animated.View
+            // from react-native-web only forwards testID, not data-testid)
+            if (styleProps.isAnimated && driver?.isReactNative) {
+              viewProps.testID = valInit
+            }
+          }
           continue
         }
 
@@ -525,7 +553,14 @@ export const getSplitStyles: StyleSplitter = (
 
     // after shouldPassThrough
     if (!noSkip) {
-      if (keyInit in skipProps) {
+      if (
+        keyInit in skipProps &&
+        !(
+          keyInit === 'transition' &&
+          typeof valInit === 'string' &&
+          !driver?.animations?.[valInit]
+        )
+      ) {
         if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
           console.groupEnd()
         }
@@ -773,12 +808,9 @@ export const getSplitStyles: StyleSplitter = (
         const priority = mediaStylesSeen
         mediaStylesSeen += 1
 
-        // for theme media ($theme-light, $theme-dark), always generate CSS classes for proper SSR
-        // even when noClass is set (animation drivers with inline output still need theme CSS)
-        const shouldDoClassesForThisMedia =
-          shouldDoClasses || (isWeb && isMedia === 'theme')
-
-        if (shouldDoClassesForThisMedia) {
+        // for theme media ($theme-light, $theme-dark), generate CSS classes for proper SSR
+        // when noClass is set (inline animation drivers), de-opt to inline styles so the
+        if (shouldDoClasses) {
           const mediaStyle = getSubStyle(styleState, key, val, false)
           const mediaStyles = getCSSStylesAtomic(mediaStyle)
 
@@ -1062,7 +1094,10 @@ export const getSplitStyles: StyleSplitter = (
     }
   } // end prop loop
 
-  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (debug === 'profile' || (globalThis as any).time)
+  ) {
     // @ts-expect-error
     time`split-styles-propsend`
   }
@@ -1203,6 +1238,7 @@ export const getSplitStyles: StyleSplitter = (
       if (!styleState.style['$$css']) {
         const toConvert: Record<string, any> = {}
         let hasProps = false
+        const animateOnly = props.animateOnly as string[] | undefined
         for (const key in styleState.style) {
           if (key in nonAnimatableStyleProps) {
             toConvert[key] = styleState.style[key]
@@ -1272,7 +1308,10 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (debug === 'profile' || (globalThis as any).time)
+  ) {
     // @ts-expect-error
     time`split-styles-pre-result`
   }
@@ -1390,7 +1429,10 @@ export const getSplitStyles: StyleSplitter = (
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && debug === 'profile') {
+  if (
+    process.env.NODE_ENV === 'development' &&
+    (debug === 'profile' || (globalThis as any).time)
+  ) {
     // @ts-expect-error
     time`split-styles-done`
   }
@@ -1488,6 +1530,14 @@ export const getSubStyle = (
           const important = subKey[0] === '$' ? ' !important' : ''
           styleOut['transition'] = `all ${animationConfig}${important}`
         }
+      }
+      // not a known animation name, pass through as raw CSS
+      if (
+        !styleOut['transition'] &&
+        typeof val === 'string' &&
+        !driver?.animations?.[val]
+      ) {
+        styleOut['transition'] = val
       }
       continue
     }

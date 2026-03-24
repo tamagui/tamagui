@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/button",
-  "version": "2.0.0-rc.22",
+  "version": "2.0.0-rc.30",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.ts",
   "files": [
@@ -39,13 +39,13 @@
   "dependencies": {
     "@tamagui/config-default": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/helpers-tamagui": "workspace:*",
     "@tamagui/spacer": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/text": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {

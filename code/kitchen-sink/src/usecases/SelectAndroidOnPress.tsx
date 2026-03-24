@@ -6,7 +6,7 @@
  * This causes Select items to not trigger onValueChange.
  */
 
-import { Check, ChevronDown } from '@tamagui/lucide-icons'
+import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
 import React from 'react'
 import { Adapt, Select, Sheet, Text, YStack } from 'tamagui'
 
@@ -48,6 +48,7 @@ export function SelectAndroidOnPress() {
         onValueChange={handleValueChange}
         disablePreventBodyScroll
         renderValue={getItemLabel}
+        zIndex={200000}
       >
         <Select.Trigger
           testID="select-android-trigger"
@@ -73,7 +74,7 @@ export function SelectAndroidOnPress() {
           </Sheet>
         </Adapt>
 
-        <Select.Content zIndex={200000}>
+        <Select.Content>
           <Select.Viewport minWidth={200}>
             <Select.Group>
               <Select.Label>Fruits</Select.Label>

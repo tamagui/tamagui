@@ -80,6 +80,46 @@ export function PopoverHoverableRestMsCase() {
   )
 }
 
+// tests restMs re-hover and safePolygon (hovering content via the gap)
+export function PopoverHoverableSafePolygonCase() {
+  return (
+    <YStack padding="$10" alignItems="center" gap="$4">
+      <SizableText size="$3" color="$color9">
+        restMs: 60, offset: 20 - should be able to hover content through gap
+      </SizableText>
+      <Popover placement="bottom" hoverable={{ restMs: 260, delay: 0 }} offset={80}>
+        <Popover.Trigger asChild>
+          <XStack
+            id="safepoly-trigger"
+            px="$4"
+            py="$2"
+            bg="$color3"
+            rounded="$4"
+            cursor="pointer"
+          >
+            <SizableText>Hover me (safePolygon test)</SizableText>
+          </XStack>
+        </Popover.Trigger>
+        <Popover.Content
+          id="safepoly-content"
+          disableFocusScope
+          unstyled
+          transition="200ms"
+          animateOnly={['opacity', 'transform']}
+          enterStyle={{ opacity: 0, y: -4 }}
+          exitStyle={{ opacity: 0, y: -4 }}
+          bg="$color4"
+          rounded="$4"
+          px="$4"
+          py="$3"
+        >
+          <SizableText id="safepoly-text">Popover content (safePolygon)</SizableText>
+        </Popover.Content>
+      </Popover>
+    </YStack>
+  )
+}
+
 export function PopoverHoverableExitAnimCase() {
   return (
     <YStack padding="$10" alignItems="center" gap="$4">

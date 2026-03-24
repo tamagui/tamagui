@@ -14,23 +14,29 @@ const COLORS = {
   dim: '\x1b[2m',
 }
 
-async function waitForServer(url: string, timeoutMs = 120_000) {
+async function waitForServer(port: string, timeoutMs = 120_000) {
   const start = Date.now()
+  const url = `http://localhost:${port}`
   while (Date.now() - start < timeoutMs) {
     try {
       const res = await fetch(url)
       if (res.ok) return
     } catch {}
-    await Bun.sleep(500)
+    await new Promise((r) => setTimeout(r, 500))
   }
-  throw new Error(`server not ready after ${timeoutMs}ms`)
+  throw new Error(`Server on port ${port} did not start within ${timeoutMs}ms`)
 }
 
-function startWebServer(): Subprocess {
+function startServer(port: string): Subprocess {
   return spawn({
     cmd: ['bun', 'run', 'start:web'],
     cwd: import.meta.dir,
-    env: { ...process.env, PORT },
+    env: {
+      ...process.env,
+      PORT: port,
+      NODE_ENV: 'development',
+      DISABLE_EXTRACTION: 'true',
+    },
     stdout: 'ignore',
     stderr: 'ignore',
   })
@@ -47,7 +53,13 @@ async function runPlaywright(args: string[], env?: Record<string, string>) {
       ...args,
     ],
     cwd: import.meta.dir,
-    env: { ...process.env, NODE_ENV: 'test', ...env },
+    env: {
+      ...process.env,
+      NODE_ENV: 'test',
+      PORT,
+      REUSE_SERVER: 'true',
+      ...env,
+    },
     stdout: 'inherit',
     stderr: 'inherit',
   })
@@ -70,7 +82,13 @@ async function runDriver(
       `--project=animated-${driver}`,
     ],
     cwd: import.meta.dir,
-    env: { ...process.env, NODE_ENV: 'test', TAMAGUI_TEST_ANIMATION_DRIVER: driver },
+    env: {
+      ...process.env,
+      NODE_ENV: 'test',
+      PORT,
+      REUSE_SERVER: 'true',
+      TAMAGUI_TEST_ANIMATION_DRIVER: driver,
+    },
     stdout: 'pipe',
     stderr: 'pipe',
   })
@@ -118,52 +136,57 @@ async function runDriver(
 }
 
 async function main() {
-  console.log(`${COLORS.dim}Running default + webkit tests...${COLORS.reset}\n`)
-
-  // run default and webkit first (playwright starts its own server)
-  const defaultCode = await runPlaywright(['--project=default', '--project=webkit'])
-  if (defaultCode !== 0) {
-    console.error(`\n${COLORS.red}Default/webkit tests failed${COLORS.reset}`)
-    process.exit(1)
-  }
-
-  // start web server once before parallel drivers so they all reuse it
+  // start a single shared webpack dev server
   console.log(
-    `\n${COLORS.dim}Starting web server for parallel animated tests...${COLORS.reset}`
+    `${COLORS.dim}Starting shared webpack dev server on port ${PORT}...${COLORS.reset}`
   )
-  const server = startWebServer()
-  await waitForServer(`http://localhost:${PORT}`)
+  const server = startServer(PORT)
 
-  console.log(
-    `\n${COLORS.dim}Running animated tests in parallel (${DRIVERS.join(', ')})...${COLORS.reset}\n`
-  )
+  try {
+    await waitForServer(PORT)
+    console.log(`${COLORS.green}Server ready on port ${PORT}${COLORS.reset}\n`)
 
-  // run all animated drivers in parallel — they reuse the running server
-  const results = await Promise.all(DRIVERS.map(runDriver))
+    console.log(`${COLORS.dim}Running default + webkit tests...${COLORS.reset}\n`)
 
-  server.kill()
+    // run default and webkit first, reusing the shared server
+    const defaultCode = await runPlaywright(['--project=default', '--project=webkit'])
+    if (defaultCode !== 0) {
+      console.error(`\n${COLORS.red}Default/webkit tests failed${COLORS.reset}`)
+      process.exit(1)
+    }
 
-  // summary
-  console.log(`\n${COLORS.dim}${'─'.repeat(60)}${COLORS.reset}`)
-  console.log('Summary:')
+    console.log(
+      `\n${COLORS.dim}Running animated tests in parallel (${DRIVERS.join(', ')})...${COLORS.reset}\n`
+    )
 
-  let failed = false
-  for (const { driver, code } of results) {
-    const color = COLORS[driver as keyof typeof COLORS] || ''
-    const status =
-      code === 0
-        ? `${COLORS.green}✓ passed${COLORS.reset}`
-        : `${COLORS.red}✗ failed (exit ${code})${COLORS.reset}`
-    console.log(`  ${color}${driver}${COLORS.reset}: ${status}`)
-    if (code !== 0) failed = true
+    // run all animated driver tests in parallel, all sharing the same server
+    const results = await Promise.all(DRIVERS.map(runDriver))
+
+    // summary
+    console.log(`\n${COLORS.dim}${'─'.repeat(60)}${COLORS.reset}`)
+    console.log('Summary:')
+
+    let failed = false
+    for (const { driver, code } of results) {
+      const color = COLORS[driver as keyof typeof COLORS] || ''
+      const status =
+        code === 0
+          ? `${COLORS.green}✓ passed${COLORS.reset}`
+          : `${COLORS.red}✗ failed (exit ${code})${COLORS.reset}`
+      console.log(`  ${color}${driver}${COLORS.reset}: ${status}`)
+      if (code !== 0) failed = true
+    }
+
+    if (failed) {
+      console.error(`\n${COLORS.red}Some tests failed${COLORS.reset}`)
+      process.exit(1)
+    }
+
+    console.log(`\n${COLORS.green}All tests passed${COLORS.reset}`)
+  } finally {
+    // always clean up the server
+    server.kill()
   }
-
-  if (failed) {
-    console.error(`\n${COLORS.red}Some tests failed${COLORS.reset}`)
-    process.exit(1)
-  }
-
-  console.log(`\n${COLORS.green}All tests passed${COLORS.reset}`)
 }
 
 main().catch((err) => {

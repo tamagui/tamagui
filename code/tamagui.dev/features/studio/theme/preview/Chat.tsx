@@ -1,4 +1,4 @@
-import { Info, Send } from '@tamagui/lucide-icons'
+import { Info, Send } from '@tamagui/lucide-icons-2'
 import React, { memo, useState } from 'react'
 import {
   Avatar,

@@ -121,7 +121,13 @@ export function registerRequire(
 
     if (!whitelisted[path]) {
       if (proxyWormImports && !path.includes('.tamagui-dynamic-eval')) {
-        if (path === 'tamagui') {
+        // allow tamagui and its sub-packages through - they re-export components
+        // with staticConfig needed for dynamic eval optimization.
+        // also allow requires FROM within tamagui packages (relative imports like ./Separator.cjs)
+        const callerFile = this?.filename || this?.id || ''
+        const isFromTamaguiPkg =
+          callerFile.includes('@tamagui') || callerFile.includes('node_modules/tamagui/')
+        if (path === 'tamagui' || path.startsWith('@tamagui/') || isFromTamaguiPkg) {
           return og.apply(this, [path])
         }
         return proxyWorm

@@ -1,5 +1,5 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { Copy, Download } from '@tamagui/lucide-icons'
+import { Copy, Download } from '@tamagui/lucide-icons-2'
 import { useStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
 import {

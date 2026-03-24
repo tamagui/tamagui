@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config",
-  "version": "2.0.0-rc.22",
+  "version": "2.0.0-rc.30",
   "type": "module",
   "sideEffects": false,
   "main": "dist/cjs",
@@ -127,7 +127,7 @@
     "@tamagui/build": "workspace:*"
   },
   "peerDependencies": {
-    "@tamagui/animations-moti": "workspace:*"
+    "@tamagui/animations-moti": "*"
   },
   "peerDependenciesMeta": {
     "@tamagui/animations-moti": {

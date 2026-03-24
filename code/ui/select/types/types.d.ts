@@ -1,7 +1,20 @@
-import type { ContextData, FloatingContext, ReferenceType } from '@floating-ui/react';
 import type { NativeValue, SizeTokens } from '@tamagui/core';
 import type { YStackProps } from '@tamagui/stacks';
-import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode } from 'react';
+import type { DispatchWithoutAction, HTMLProps, MutableRefObject, ReactNode, RefObject } from 'react';
+type ContextData = Record<string, any>;
+type ReferenceType = Element;
+type FloatingContext<RT = ReferenceType> = {
+    refs: {
+        reference: RefObject<RT | null>;
+        floating: RefObject<HTMLElement | null>;
+        setFloating: (el: HTMLElement | null) => void;
+        setReference: (el: RT | null) => void;
+        [key: string]: any;
+    };
+    dataRef: RefObject<ContextData>;
+    update?: () => void;
+    [key: string]: any;
+};
 export type SelectDirection = 'ltr' | 'rtl';
 export type SelectScopes = string;
 export type SelectScopedProps<P> = P & {
@@ -63,6 +76,11 @@ export interface SelectProps<Value extends string = string> {
      * @default false
      */
     lazyMount?: boolean;
+    /**
+     * z-index for the select portal. Use this when select dropdowns need to appear
+     * above other portaled content like dialogs or fixed headers.
+     */
+    zIndex?: number;
 }
 type DisposeFn = () => void;
 export type EmitterSubscriber<Val> = (cb: (val: Val) => void) => DisposeFn;
@@ -142,7 +160,6 @@ export type SelectViewportExtraProps = SelectScopedProps<{
 export type SelectViewportProps = YStackProps & SelectViewportExtraProps;
 export type SelectContentProps = SelectScopedProps<{
     children?: React.ReactNode;
-    zIndex?: number;
 }>;
 export type SelectScrollButtonImplProps = YStackProps & SelectScopedProps<{
     dir: 'up' | 'down';

@@ -1,4 +1,4 @@
-import { Dices } from '@tamagui/lucide-icons'
+import { Dices } from '@tamagui/lucide-icons-2'
 import { Button, TooltipSimple } from 'tamagui'
 import { themeBuilderStore } from './store/ThemeBuilderStore'
 

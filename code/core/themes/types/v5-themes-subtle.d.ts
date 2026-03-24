@@ -228,7 +228,7 @@ export declare const themes: Record<"light_blue" | "light_gray" | "light_green" 
     accent10: string;
     accent6: string;
     accent11: string;
-} & {
+} & Omit<{
     color01: string;
     color0075: string;
     color005: string;
@@ -246,5 +246,5 @@ export declare const themes: Record<"light_blue" | "light_gray" | "light_green" 
     background06: string;
     background08: string;
     outlineColor: string;
-}>;
+}, never>>;
 //# sourceMappingURL=v5-themes-subtle.d.ts.map

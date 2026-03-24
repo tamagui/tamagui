@@ -27,7 +27,7 @@ export function sendProductPurchaseEmail(
 
   <h2>Important: Accept Your GitHub Team Invite</h2>
 
-  <p>To access the private repositories, you need to <strong>accept the team invite</strong> that should be in your inbox from GitHub.</p>
+  <p>To access the private repositories (Takeout, Takeout Static, Bento, and more), you need to <strong>accept the team invite</strong> that should be in your inbox from GitHub.</p>
 
   <p>If you don't see the invite email, you can re-send it by:</p>
   <ol>
@@ -117,7 +117,7 @@ const whatYouGetSection = `
     <li><strong>One v1</strong> - One is now stable and works seamlessly with Metro, plus has more features than your favorite web framework. <strong><a href="https://onestack.dev/blog/version-one-rc1">Read about One &rarr;</a></strong></li>
     <li><strong>Takeout 2</strong> - A huge amount of effort went into this new stack. Tamagui 2, One 1, and Zero. 95+ Lighthouse scores, fully shared code, tons of AI skills and documentation. <strong><a href="https://tamagui.dev/takeout">More info</a></strong> | <strong><a href="https://takeout.tamagui.dev">Demo</a></strong></li>
     <li><strong>Takeout Static</strong> - A new simplified web-only starter with MDX blog/docs and 100 Lighthouse.</li>
-    <li><strong>Bento Components</strong> - Rewritten for v2 with new components and more polish, updated libraries.</li>
+    <li><strong>Bento Components</strong> - Rewritten for v2 with new components and more polish, updated libraries. Includes access to the private <a href="https://github.com/tamagui/bento">Bento source repo</a>.</li>
     <li><strong>Unlimited Team Members</strong> - Share access with your whole team.</li>
     <li><strong>AI Theme Generator</strong> - Opus-powered /theme generation for custom designs.</li>
   </ul>
@@ -278,6 +278,7 @@ export function sendV2RenewalEnabledEmail(email: string, args: { name: string })
   <ul>
     <li><strong>Takeout 2</strong> - The complete React Native + Web starter with Tamagui 2, One 1, and Zero</li>
     <li><strong>Takeout Static</strong> - Web-only starter with 100 Lighthouse score</li>
+    <li><strong>Bento Components</strong> - Full source repo access</li>
     <li><strong>Unlimited Team Members</strong> - No per-seat pricing</li>
     <li><strong>1 Year of Updates</strong> - Included with your purchase</li>
   </ul>

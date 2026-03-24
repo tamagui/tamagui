@@ -1,17 +1,16 @@
 {
-  "name": "@tamagui/lucide-icons",
-  "version": "2.0.0-rc.22",
+  "name": "@tamagui/lucide-icons-2",
+  "version": "2.0.0-rc.30",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "description": "React Native components for Lucide icons - native and web",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
-    "src",
     "types",
     "dist"
   ],
   "type": "module",
-  "main": "dist/cjs/index.cjs",
+  "main": "dist/cjs",
   "module": "dist/esm/index.mjs",
   "types": "./types/index.d.ts",
   "exports": {
@@ -14110,15 +14109,11 @@
     "access": "public"
   },
   "scripts": {
-    "build": "TAMAGUI_BUILD_CLEANUP_JS_FILES=1 tamagui-build",
-    "watch": "tamagui-build --watch",
+    "build": "tamagui-build --skip-sourcemaps",
+    "watch": "bun run build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
     "generate": "node ./bin/build.cjs"
-  },
-  "dependencies": {
-    "@tamagui/core": "workspace:*",
-    "@tamagui/helpers-icon": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
@@ -14128,11 +14123,16 @@
     "lucide-static": "^0.508.0",
     "prop-types": "^15.7.2",
     "react": ">=19",
-    "react-native-svg": "15.12.1",
+    "react-native-svg": "15.15.3",
     "uppercamelcase": "^3.0.0"
+  },
+  "dependencies": {
+    "@tamagui/core": "workspace:*",
+    "@tamagui/helpers-icon": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=19",
     "react-native-svg": ">=12"
-  }
+  },
+  "skipPublishIfUnchanged": false
 }

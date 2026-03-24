@@ -1,3 +1,6 @@
+// ensure tamagui config is created before any component imports
+require('./src/tamagui.config')
+
 // setup native features - just import, no function calls needed
 import '@tamagui/native/setup-zeego'
 import '@tamagui/native/setup-teleport'

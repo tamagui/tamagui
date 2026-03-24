@@ -1,11 +1,9 @@
 {
   "expo": {
-    "newArchEnabled": true,
     "name": "tamagui-kitchen-sink",
     "slug": "tamagui-kitchen-sink",
     "scheme": "tamagui-kitchen-sink",
     "version": "1.0.0",
-    "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -37,7 +35,7 @@
         "projectId": "5c027280-f9c1-4bba-9c75-762ba6efcecc"
       }
     },
-    "plugins": ["expo-font"],
+    "plugins": ["expo-font", "./plugins/expo-modules-core-swift6"],
     "experiments": {
       "reactCanary": true
     }

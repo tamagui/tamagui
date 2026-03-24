@@ -18,6 +18,7 @@ export const spawnify = async (
     const child = spawn(head, rest, {
       stdio: avoidLog ? undefined : ['inherit', 'pipe', 'pipe'],
       cwd,
+      shell: true,
       ...spawnOpts,
     })
     const outStr = []

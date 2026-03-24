@@ -30,6 +30,7 @@ export { FocusVisibleButtonWithFocusStyle } from './FocusVisibleButtonWithFocusS
 export { FontTokensInVariants } from './FontTokensInVariants'
 export { GroupHoverMobile } from './GroupHoverMobile'
 export { GroupPressInVariant } from './GroupPressInVariant'
+export { GroupPseudoVariantOverride } from './GroupPseudoVariantOverride'
 export { GroupPressNative } from './GroupPressNative'
 export { GroupProp } from './GroupProp'
 export { MediaQueryGtMd } from './MediaQueryGtMd'

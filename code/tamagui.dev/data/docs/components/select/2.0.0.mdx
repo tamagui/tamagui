@@ -23,6 +23,8 @@ demoName: Select
   ]}
 />
 
+Select provides a dropdown menu for choosing from a list of options. It's fully accessible with keyboard navigation, supports typeahead search, and [automatically stacks](/ui/z-index) above other content.
+
 ## Installation
 
 Select is already installed in `tamagui`, or you can install it independently:
@@ -149,6 +151,11 @@ Contains every component for the select:
       type: 'boolean',
       default: 'false',
       description: `When true, defers mounting Select items until opened using React's startTransition. Significantly improves initial render performance for pages with many Selects. Should be combined with \`renderValue\` for best results.`,
+    },
+    {
+      name: 'zIndex',
+      type: 'number',
+      description: `z-index for the select portal. Use when select dropdowns need to appear above other portaled content like dialogs or fixed headers. Defaults to automatic stacking (~100000).`,
     },
   ]}
 />
@@ -367,7 +374,7 @@ export default () => (
       <Select.Value placeholder="Search..." />
     </Select.Trigger>
 
-    <Adapt when="maxMd" platform="touch">
+    <Adapt when="max-md" platform="touch">
       {/* or <Select.Sheet> */}
       <Sheet>
         <Sheet.Frame>

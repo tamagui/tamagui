@@ -1,18 +1,8 @@
 import '@tamagui/polyfill-dev'
 
-import {
-  FloatingDelayGroup,
-  useDelayGroup,
-  useDelayGroupContext,
-  useFloating,
-  useFocus,
-  useHover,
-  useInteractions,
-  useRole,
-} from '@floating-ui/react'
+import { FloatingDelayGroup, useDelayGroupContext, type Delay } from '@tamagui/floating'
 import type { SizeTokens, TamaguiElement } from '@tamagui/core'
 import { useEvent } from '@tamagui/core'
-import type { UseFloatingFn } from '@tamagui/floating'
 import { FloatingOverrideContext } from '@tamagui/floating'
 import { getSize } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -27,6 +17,7 @@ import {
   PopoverContent,
   PopoverContextProvider,
   PopoverTrigger,
+  useFloatingContext,
 } from '@tamagui/popover'
 import type { PopperArrowProps, PopperProps } from '@tamagui/popper'
 import { Popper, PopperContentFrame } from '@tamagui/popper'
@@ -121,13 +112,6 @@ export type TooltipProps = ScopedProps<
   }
 >
 
-type Delay =
-  | number
-  | Partial<{
-      open: number
-      close: number
-    }>
-
 const PreventTooltipAnimationContext = React.createContext(false)
 const TooltipZIndexContext = React.createContext<number | undefined>(undefined)
 
@@ -193,7 +177,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   })
   const id = props.groupId
 
-  const onOpenChange = useEvent((open) => {
+  const onOpenChange = useEvent((open: boolean) => {
     if (open) {
       setCurrentId(id)
     }
@@ -216,46 +200,22 @@ const TooltipComponent = React.forwardRef(function Tooltip(
     }
   }, [open, disableAutoCloseOnScroll])
 
-  const useFloatingFn: UseFloatingFn = (props) => {
-    // @ts-ignore
-    const floating = useFloating({
-      ...props,
-      open,
-      onOpenChange,
-    })
-    // useDelayGroup returns the coordinated delay from FloatingDelayGroup
-    // When another tooltip in the group is open, it returns { open: 1, close: ... }
-    // to enable instant opening when moving between grouped tooltips
-    const { delay: delayContext, currentId } = useDelayGroup(floating.context, { id })
-    // Use coordinated delay only when actively in a group with another tooltip showing
-    // (currentId is set and delayContext is the coordinated { open: 1, ... } object)
-    // Otherwise fall back to local delay
-    const isInActiveGroup = currentId != null && typeof delayContext === 'object'
-    const delayOut = isInActiveGroup ? delayContext : delay
-
-    const { getReferenceProps, getFloatingProps } = useInteractions([
-      useHover(floating.context, {
-        delay: delayOut,
-        restMs,
-      }),
-      useFocus(floating.context, focus),
-      useRole(floating.context, { role: 'tooltip' }),
-    ])
-    return {
-      ...floating,
-      open,
-      getReferenceProps,
-      getFloatingProps,
-    } as any
-  }
-
-  const useFloatingContext = React.useCallback(useFloatingFn, [
-    id,
-    delay,
+  // use the shared floating context from popover — gives us multi-trigger
+  // hover coordination (onHoverReference/onLeaveReference + grace period)
+  // and safePolygon for free
+  const floatingContext = useFloatingContext({
     open,
+    setOpen: onOpenChange,
+    disable: false,
+    disableFocus: false,
+    hoverable: true,
+    role: 'tooltip',
+    focus,
+    groupId: id,
+    delay,
     restMs,
-    focus ? JSON.stringify(focus) : 0,
-  ])
+  })
+
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()
@@ -267,8 +227,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
       })
 
   const content = (
-    // TODO: FloatingOverrideContext might also need to be scoped
-    <FloatingOverrideContext.Provider value={useFloatingContext}>
+    <FloatingOverrideContext.Provider value={floatingContext}>
       {/* default tooltip to a smaller size */}
       <Popper
         scope={scope}

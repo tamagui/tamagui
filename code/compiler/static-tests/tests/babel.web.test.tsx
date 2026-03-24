@@ -459,6 +459,30 @@ test('$platform-web styles are flattened on web', async () => {
   expect(output?.styles).toContain('background-color')
 })
 
+test('$platform-web transition property is preserved', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View
+          width={100}
+          $platform-web={{
+            transition: 'clip-path 400ms ease, transform 400ms ease',
+            clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+          }}
+        />
+      )
+    }
+  `
+  )
+
+  // transition inside $platform-web should be preserved as a CSS property
+  expect(output?.styles).toContain('transition')
+  expect(output?.styles).toContain('clip-path')
+})
+
 // Verifies that conditional spread with runtime variable from hook inside map is correctly extracted
 test('conditional spread with runtime variable preserves ternary', async () => {
   const output = await extractForWeb(

@@ -21,23 +21,6 @@ export default apiRoute(async (req) => {
   const { supabase, user } = await ensureAuth({ req })
   const body = await readBodyJSON(req)
 
-  const userPrivate = await supabaseAdmin
-    .from('users_private')
-    .select('github_token')
-    .eq('id', user.id)
-    .single()
-
-  if (userPrivate.error) {
-    return Response.json(
-      {
-        message: 'no github connection found for you account. login using github first',
-      },
-      {
-        status: 401,
-      }
-    )
-  }
-
   const url = new URL(req.url)
   const subscriptionId =
     req.method === 'GET' ? url.searchParams.get('subscription_id') : body.subscription_id
@@ -166,7 +149,7 @@ export default apiRoute(async (req) => {
     return Response.json(
       { message: 'no discord_id is provided' },
       {
-        status: 401,
+        status: 400,
       }
     )
   }
@@ -178,7 +161,7 @@ export default apiRoute(async (req) => {
           message: `you've maxed out the members of your channel ${currentlyOccupiedSeats}/${discordSeats}`,
         },
         {
-          status: 401,
+          status: 403,
         }
       )
     }

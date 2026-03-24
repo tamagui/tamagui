@@ -144,6 +144,7 @@ const reducer = (state: Record<string, Array<PortalType>>, action: ActionTypes) 
 
 const PortalStateContext = createContext<Record<string, Array<PortalType>> | null>(null)
 const PortalDispatchContext = createContext<React.Dispatch<ActionTypes> | null>(null)
+const PortalProviderActiveContext = createContext(false)
 
 const usePortalState = (hostName: string) => {
   const state = useContext(PortalStateContext)
@@ -233,6 +234,18 @@ const PortalProviderComponent = ({
   shouldAddRootHost = true,
   children,
 }: PortalProviderProps) => {
+  const isAlreadyInProvider = useContext(PortalProviderActiveContext)
+
+  if (process.env.NODE_ENV === 'development') {
+    if (isAlreadyInProvider && shouldAddRootHost) {
+      console.warn(
+        `[tamagui] Nested PortalProvider with shouldAddRootHost detected. ` +
+          `This causes hydration mismatches. TamaguiProvider from 'tamagui' already includes PortalProvider - ` +
+          `remove the explicit PortalProvider wrapper or set shouldAddRootHost={false}.`
+      )
+    }
+  }
+
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
   const transitionDispatch = useMemo(() => {
     const next = (value: any) => {
@@ -248,12 +261,14 @@ const PortalProviderComponent = ({
   // when teleport is enabled, use NativePortalProvider as the wrapper
   // the Gorhom context is still needed for fallback cases
   const content = (
-    <PortalDispatchContext.Provider value={transitionDispatch}>
-      <PortalStateContext.Provider value={state}>
-        {children}
-        {shouldAddRootHost && <PortalHost name={rootHostName} />}
-      </PortalStateContext.Provider>
-    </PortalDispatchContext.Provider>
+    <PortalProviderActiveContext.Provider value={true}>
+      <PortalDispatchContext.Provider value={transitionDispatch}>
+        <PortalStateContext.Provider value={state}>
+          {children}
+          {shouldAddRootHost && <PortalHost name={rootHostName} />}
+        </PortalStateContext.Provider>
+      </PortalDispatchContext.Provider>
+    </PortalProviderActiveContext.Provider>
   )
 
   // wrap with NativePortalProvider if teleport is available

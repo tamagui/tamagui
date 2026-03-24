@@ -26,7 +26,14 @@ import {
 } from './deps'
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
-import { ensureIOSFolder, ensureIOSApp } from './ios'
+import {
+  ensureIOSFolder,
+  ensureIOSApp,
+  ensureBootedSimulator,
+  ensureAppInstalled,
+  getBootedSimulatorUDID,
+  getMaestroBundleId,
+} from './ios'
 import { setupAndroidDevice, ensureAndroidFolder } from './android'
 import type { Platform } from './constants'
 
@@ -196,6 +203,8 @@ try {
       const platform = subcommand || 'ios'
 
       if (platform === 'ios') {
+        ensureBootedSimulator()
+
         // Ensure iOS dependencies
         await ensureIosDeps()
 
@@ -244,6 +253,8 @@ try {
         })
         process.exit(exitCode)
       } else if (platform === 'maestro') {
+        ensureBootedSimulator()
+
         // Ensure Maestro is installed
         await ensureMaestro()
 
@@ -254,17 +265,28 @@ try {
 
         process.chdir(options.projectRoot)
 
+        // resolve the target simulator UDID once and use it consistently
+        const udid = getBootedSimulatorUDID()!
+
+        // ensure the app is built and installed on the target simulator
+        const bundleId = getMaestroBundleId(options.projectRoot)
+        await ensureAppInstalled({ projectRoot: options.projectRoot, bundleId, udid })
+
         // Run Maestro with Metro for development builds
         const exitCode = await withMetro('ios', async () => {
           const { $ } = await import('bun')
           // Flows are at ./flows/ in kitchen-sink, not .maestro/flows/
           const flowArg = flow ? `./flows/${flow}` : './flows'
+          const udidArgs = ['--udid', udid]
+          const debugDir = `${options.projectRoot}/.maestro-debug`
           const result =
-            await $`maestro test ${flowArg} --exclude-tags=util --no-ansi`.nothrow()
+            await $`maestro test ${flowArg} --exclude-tags=util --no-ansi --debug-output=${debugDir} ${udidArgs}`.nothrow()
           return result.exitCode
         })
         process.exit(exitCode)
       } else if (platform === 'all') {
+        ensureBootedSimulator()
+
         console.info('=== Running All Native Tests ===\n')
 
         // Run iOS tests

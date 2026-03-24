@@ -79,7 +79,11 @@ const getStyleObject = (
   const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
   conf ||= getConfigMaybe()
   const shortProp = conf?.inverseShorthands[key] || key
-  const identifier = `_${shortProp}-${pseudoPrefix}${hash}`
+  let identifier = `_${shortProp}-${pseudoPrefix}${hash}`
+  if (key === 'pointerEvents' && !pseudo) {
+    if (value === 'box-none') identifier = '_pe-boxnone'
+    else if (value === 'box-only') identifier = '_pe-boxonly'
+  }
   const rules = createAtomicRules(identifier, key, value, pseudo)
   return [
     // array for performance
@@ -231,14 +235,8 @@ function createAtomicRules(
       let finalValue = value
       if (value === 'auto' || value === 'box-only') {
         finalValue = 'auto'
-        if (value === 'box-only') {
-          rules.push(`${selector}>*${boxOnly}`)
-        }
       } else if (value === 'none' || value === 'box-none') {
         finalValue = 'none'
-        if (value === 'box-none') {
-          rules.push(`${selector}>*${boxNone}`)
-        }
       }
       const block = createDeclarationBlock([['pointerEvents', finalValue]], true)
       rules.push(`${selector}${block}`)
@@ -263,6 +261,3 @@ function createAtomicRules(
 
   return rules
 }
-
-const boxNone = createDeclarationBlock([['pointerEvents', 'auto']])
-const boxOnly = createDeclarationBlock([['pointerEvents', 'none']], true)

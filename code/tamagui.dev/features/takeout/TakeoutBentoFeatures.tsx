@@ -8,7 +8,7 @@ import {
   Smartphone,
   Terminal,
   Zap,
-} from '@tamagui/lucide-icons'
+} from '@tamagui/lucide-icons-2'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { H2, H3, Paragraph, styled, useThemeName, XStack, YStack } from 'tamagui'
 import { useHoverGlow } from '~/components/HoverGlow'

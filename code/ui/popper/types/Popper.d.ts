@@ -1,5 +1,5 @@
 import type { SizeTokens, TamaguiElement } from '@tamagui/core';
-import { createStyledContext } from '@tamagui/core';
+import type { PopupTriggerMap } from '@tamagui/floating';
 import type { Coords, OffsetOptions, Placement, SizeOptions, Strategy, UseFloatingReturn } from '@tamagui/floating';
 import { flip, shift } from '@tamagui/floating';
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks';
@@ -23,14 +23,15 @@ export type PopperContextShared = {
 };
 export type PopperContextValue = UseFloatingReturn & PopperContextShared;
 export declare const PopperContextFast: import("@tamagui/core").StyledContext<PopperContextValue>;
-export declare const PopperPositionContext: typeof createStyledContext;
+export declare const PopperPositionContext: <VariantProps extends Record<string, any>>(defaultValues?: VariantProps, namespace?: string) => import("@tamagui/core").StyledContext<VariantProps>;
 export declare const usePopperContext: (scope?: string) => PopperContextValue, PopperProviderFast: React.Provider<PopperContextValue> & React.ProviderExoticComponent<Partial<PopperContextValue> & {
     children?: React.ReactNode;
     scope?: string;
 }>;
-export type PopperContextSlowValue = PopperContextShared & Pick<UseFloatingReturn, 'context' | 'getReferenceProps' | 'getFloatingProps' | 'strategy' | 'update' | 'refs'> & {
+export type PopperContextSlowValue = Pick<UseFloatingReturn, 'getReferenceProps' | 'update' | 'refs'> & {
     onHoverReference?: (event: any) => void;
     onLeaveReference?: () => void;
+    triggerElements?: PopupTriggerMap;
 };
 export declare const PopperContextSlow: import("@tamagui/core").StyledContext<PopperContextSlowValue>;
 export declare const usePopperContextSlow: (scope?: string) => PopperContextSlowValue, PopperProviderSlow: React.Provider<PopperContextSlowValue> & React.ProviderExoticComponent<Partial<PopperContextSlowValue> & {

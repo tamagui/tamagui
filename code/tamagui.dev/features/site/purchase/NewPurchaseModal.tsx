@@ -1,5 +1,5 @@
 import type { StripeError } from '@stripe/stripe-js'
-import { X } from '@tamagui/lucide-icons'
+import { X } from '@tamagui/lucide-icons-2'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import type { TabsProps } from 'tamagui'
 import {

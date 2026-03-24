@@ -226,10 +226,6 @@ function evaluateTargetModule({
   esExtensionDefault,
   ensureFileExists,
 }: any): string | false {
-  if (currentModuleExtension && !esExtensions.includes(currentModuleExtension)) {
-    return false
-  }
-
   const targetFile = resolve(filenameDirectory, moduleSpecifier)
 
   if (ensureFileExists) {
@@ -239,17 +235,19 @@ function evaluateTargetModule({
       }
     }
 
-    // fallback to directory, so we find the non-dir first
-    if (
-      isDirectory &&
-      !existsSync(
-        resolve(
-          filenameDirectory,
-          currentModuleExtension ? moduleSpecifier : moduleSpecifier + esExtensionDefault
-        )
-      )
-    ) {
-      moduleSpecifier = `${moduleSpecifier}/index`
+    if (currentModuleExtension && !esExtensions.includes(currentModuleExtension)) {
+      return false
+    }
+
+    if (isDirectory) {
+      const indexModuleSpecifier = `${moduleSpecifier.replace(/\/$/, '')}/index`
+      const indexTargetFile = resolve(filenameDirectory, indexModuleSpecifier)
+
+      for (const extension of tryExtensions) {
+        if (existsSync(indexTargetFile + extension)) {
+          return indexModuleSpecifier + esExtensionDefault
+        }
+      }
     }
   } else if (esExtensions.includes(filenameExtension)) {
     return moduleSpecifier + esExtensionDefault

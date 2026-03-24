@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/linear-gradient",
-  "version": "2.0.0-rc.22",
+  "version": "2.0.0-rc.30",
   "source": "src/index.ts",
   "files": [
     "src",
@@ -42,9 +42,9 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "expo-linear-gradient": "~15.0.7",
+    "expo-linear-gradient": "~55.0.8",
     "react": ">=19",
-    "react-native": "0.81.5"
+    "react-native": "0.83.2"
   },
   "peerDependencies": {
     "react": ">=19",

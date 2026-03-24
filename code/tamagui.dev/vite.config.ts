@@ -62,6 +62,10 @@ const include = [
   '@stripe/stripe-js',
   'swr/mutation',
   'mdx-bundler/client',
+  // core tamagui packages must be pre-bundled together to avoid duplicate instances
+  'tamagui',
+  '@tamagui/core',
+  '@tamagui/web',
   // existing
   '@ai-sdk/deepseek',
   'secure-json-parse',
@@ -85,6 +89,20 @@ const include = [
   'glob',
   'reading-time',
   'unified',
+  '@tamagui/get-font-sized',
+  '@tamagui/linear-gradient',
+  '@tamagui/lucide-icons-2',
+  '@rehookify/datepicker',
+  '@tamagui/get-token',
+  '@tamagui/roving-focus',
+  'react-native-safe-area-context',
+  '@hookform/resolvers/zod',
+  'react-native-reanimated',
+  '@tamagui/react-native-svg',
+  'react-native-gesture-handler',
+  '@tanstack/react-table',
+  '@tamagui/focus-scope',
+  'react-dropzone',
 ]
 
 export default {
@@ -167,7 +185,6 @@ export default {
       },
     ],
 
-    // todo automate, probably can just dedupe all package.json deps?
     dedupe: [
       'react',
       'react-dom',
@@ -226,9 +243,10 @@ export const LocationNotification = BentoComponentStub
         }
       },
     },
-    tamaguiPlugin(
+    tamaguiPlugin({
       // see tamagui.build.ts
-    ),
+      disable: process.env.NODE_ENV !== 'production',
+    }),
 
     one({
       react: {
@@ -236,27 +254,13 @@ export const LocationNotification = BentoComponentStub
       },
 
       ssr: {
+        dedupeSymlinkedModules: true,
         autoDepsOptimization: {
           include: /.*/,
         },
       },
 
-      deps: {
-        ws: true,
-        url: false,
-        '@supabase/postgrest-js': true,
-        '@supabase/node-fetch': true,
-        postmark: true,
-        stripe: true,
-        jsonwebtoken: true,
-        bottleneck: true,
-        octokit: true,
-        'node-fetch': true,
-        'fetch-blob': true,
-        'discord-api-types/v10': true,
-        'magic-bytes.js': true,
-        '@ngneat/falso': true,
-        seedrandom: true,
+      patches: {
         '@react-navigation/core': {
           version: '^7',
           'lib/module/useOnGetState.js': (contents) => {
@@ -296,6 +300,7 @@ export const LocationNotification = BentoComponentStub
       },
 
       web: {
+        skewProtection: 'proactive',
         experimental_scriptLoading: 'after-lcp-aggressive',
         redirects: [
           // llms.txt, llms-full.txt, docs.txt are handled by middleware directly

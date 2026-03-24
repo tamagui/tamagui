@@ -22,7 +22,7 @@ const groupPseudoToPseudoCSSMap = {
   focusWithin: 'focus-within',
 }
 
-const specificities = new Array(5)
+const specificities = new Array(12)
   .fill(0)
   .map((_, i) => new Array(i).fill(':root').join(''))
 
@@ -106,7 +106,13 @@ export const createMediaStyle = (
       // add back in the { we used to split
       styleRule = styleInner.replace(selector, nextSelector)
     } else {
-      styleRule = `${specificities[specificity]}${styleInner}`
+      const prefix = specificities[specificity]
+      // when styleInner is wrapped in @media (eg hover), inject specificity
+      // inside the block — `:root@media ...` is invalid CSS
+      styleRule =
+        prefix && styleInner[0] === '@'
+          ? styleInner.replace('{', `{${prefix}`)
+          : `${prefix}${styleInner}`
     }
   }
 

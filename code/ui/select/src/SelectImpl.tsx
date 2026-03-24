@@ -1,4 +1,3 @@
-import type { SideObject } from '@floating-ui/react'
 import {
   autoUpdate,
   flip,
@@ -7,14 +6,15 @@ import {
   shift,
   size,
   useClick,
-  useDismiss,
-  useFloating,
-  useInnerOffset,
+  useFloatingRaw as useFloatingDom,
   useInteractions,
+  useInnerOffset,
   useListNavigation,
   useRole,
   useTypeahead,
-} from '@floating-ui/react'
+  type FloatingInteractionContext,
+  type SideObject,
+} from '@tamagui/floating'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent, useIsTouchDevice } from '@tamagui/core'
 import * as React from 'react'
@@ -60,13 +60,10 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const floatingStyle = React.useRef({})
 
   // sync activeIndex on open/close
-  // use useEffect (not layout effect) so this runs AFTER SelectItem children have subscribed
   React.useEffect(() => {
     if (open) {
-      // use fast setter for initial focus - doesn't trigger re-render
       setActiveIndexFast(selectedIndex ?? 0)
     } else {
-      // reset state when closed
       setScrollTop(0)
       setFallback(false)
       setActiveIndexFast(null)
@@ -90,9 +87,15 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }, [open])
   }
 
-  const { x, y, strategy, context, refs, update } = useFloating({
+  const {
+    x,
+    y,
+    strategy,
+    refs,
+    update,
+    placement: computedPlacement,
+  } = useFloatingDom({
     open,
-    onOpenChange: setOpen,
     placement: 'bottom-start',
     whileElementsMounted: autoUpdate,
     // eslint-disable-next-line no-constant-condition
@@ -145,7 +148,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
           }),
           offset({ crossAxis: -5 }),
         ],
-  })
+  } as any)
 
   const floatingRef = refs.floating
 
@@ -174,32 +177,47 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     return fn(index)
   })
 
+  // construct interaction context for our custom hooks
+  const dataRef = React.useRef<{ openEvent?: Event; placement?: string }>({})
+  dataRef.current.placement = computedPlacement
+  const interactionContext: FloatingInteractionContext = {
+    open,
+    onOpenChange: (val) => setOpen(val),
+    refs: {
+      reference: refs.reference as any,
+      floating: refs.floating,
+      domReference: refs.reference as any,
+    },
+    elements: {
+      reference: (refs.reference?.current as Element) || null,
+      floating: refs.floating?.current || null,
+      domReference: (refs.reference?.current as Element) || null,
+    },
+    dataRef,
+  }
+
   const interactionsProps = [
-    useClick(context, { event: 'mousedown', keyboardHandlers: false }),
-    useDismiss(context, { outsidePress: false }),
-    useRole(context, { role: 'listbox' }),
-    useInnerOffset(context, {
+    useClick(interactionContext, { event: 'mousedown', keyboardHandlers: false }),
+    // useDismiss removed - already handled by Dismissable in SelectContent
+    useRole(interactionContext, { role: 'listbox' }),
+    useInnerOffset(interactionContext, {
       enabled: !fallback && isScrollable,
       onChange: setInnerOffset,
       overflowRef,
       scrollRef: refs.floating,
     }),
-    useListNavigation(context, {
+    useListNavigation(interactionContext, {
       listRef: listItemsRef,
       activeIndex: selectContext.activeIndex ?? 0,
       selectedIndex,
-      // wrap onNavigate to prevent floating-ui from resetting activeIndex to null on focus loss
       onNavigate: (index) => {
         if (index !== null) {
           setActiveIndex(index)
         }
       },
       scrollItemIntoView: false,
-      // we do this already in SelectContent
-      // focusItemOnOpen: true,
-      // loop: true,
     }),
-    useTypeahead(context, {
+    useTypeahead(interactionContext, {
       listRef: listContentRef,
       onMatch,
       selectedIndex,
@@ -211,7 +229,6 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   ]
 
   const interactions = useInteractions(
-    // unfortunately these memos will just always break due to floating-ui context always changing :/
     React.useMemo(() => {
       return interactionsProps
     }, interactionsProps)
@@ -281,13 +298,10 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
 
   useIsomorphicLayoutEffect(() => {
     if (open) {
-      // Prevent the initial mouseup from selecting an item
-      // (the mouseup from the click that opened the menu)
       allowMouseUpRef.current = false
 
       selectTimeoutRef.current = setTimeout(() => {
         allowSelectRef.current = true
-        // Re-enable mouseup after delay for click-and-hold-to-select behavior
         allowMouseUpRef.current = true
       }, 300)
 
@@ -308,8 +322,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }
   }, [open])
 
-  // Replacement for `useDismiss` as the arrows are outside of the floating
-  // element DOM tree.
+  // dismiss on outside pointer down (arrows are outside the floating DOM tree)
   useIsomorphicLayoutEffect(() => {
     function onPointerDown(e: PointerEvent) {
       const target = e.target as Node
@@ -333,8 +346,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }
   }, [open, refs, setOpen])
 
-  // Scroll the `activeIndex` item into view only in "controlledScrolling"
-  // (keyboard nav) mode. Use subscription to avoid re-renders on every activeIndex change.
+  // scroll activeIndex into view during keyboard nav
   React.useEffect(() => {
     if (!open) return
 
@@ -345,14 +357,11 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       setScrollTop(refs.floating.current?.scrollTop ?? 0)
     }
 
-    // initial scroll
     scrollActiveIntoView(activeIndexRef.current)
 
-    // subscribe to future changes
     return selectItemParentContext.activeIndexSubscribe(scrollActiveIntoView)
   }, [open, refs, controlledScrolling, selectItemParentContext.activeIndexSubscribe])
 
-  // Scroll the `selectedIndex` into view upon opening the floating element.
   React.useEffect(() => {
     if (open && fallback) {
       if (selectedIndex != null) {
@@ -361,18 +370,20 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     }
   }, [open, fallback, selectedIndex])
 
-  // Unset the height limiting for fallback mode. This gets executed prior to
-  // the positioning call.
   useIsomorphicLayoutEffect(() => {
     if (refs.floating.current && fallback) {
       refs.floating.current.style.maxHeight = ''
     }
   }, [refs, fallback])
 
-  // We set this to true by default so that events bubble to forms without JS (SSR)
-  // const isFormControl = trigger ? Boolean(trigger.closest('form')) : true
-  // const [bubbleSelect, setBubbleSelect] = React.useState<HTMLSelectElement | null>(null)
-  // const triggerPointerDownPosRef = React.useRef<{ x: number; y: number } | null>(null)
+  // build a minimal floating context for SelectViewport/SelectScrollButton
+  const floatingContext = React.useMemo(
+    () => ({
+      refs,
+      dataRef,
+    }),
+    [refs]
+  )
 
   return (
     <SelectProvider
@@ -381,7 +392,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
       setScrollTop={setScrollTop}
       setInnerOffset={setInnerOffset}
       fallback={fallback}
-      floatingContext={context}
+      floatingContext={floatingContext as any}
       canScrollDown={!!showDownArrow}
       canScrollUp={!!showUpArrow}
       controlledScrolling={controlledScrolling}
@@ -395,25 +406,13 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
         {...selectItemParentContext}
         allowMouseUpRef={allowMouseUpRef}
         allowSelectRef={allowSelectRef}
-        dataRef={context.dataRef}
+        dataRef={dataRef as any}
         interactions={interactionsContext}
         listRef={listItemsRef}
         selectTimeoutRef={selectTimeoutRef}
       >
         {children}
       </SelectItemParentProvider>
-      {/* {isFormControl ? (
-            <BubbleSelect
-              ref={setBubbleSelect}
-              aria-hidden
-              tabIndex={-1}
-              name={name}
-              autoComplete={autoComplete}
-              value={value}
-              // enable form autofill
-              onChange={(event) => setValue(event.target.value)}
-            />
-          ) : null} */}
     </SelectProvider>
   )
 }

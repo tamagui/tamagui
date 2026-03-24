@@ -1,4 +1,4 @@
-import { Check, CheckCircle } from '@tamagui/lucide-icons'
+import { Check, CheckCircle } from '@tamagui/lucide-icons-2'
 import type { CheckboxProps, RadioGroupItemProps } from 'tamagui'
 import {
   Button,

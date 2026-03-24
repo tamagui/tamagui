@@ -61,7 +61,7 @@ export * from './views/Anchor'
 export * from './views/EnsureFlexed'
 export * from './views/Fieldset'
 export * from '@tamagui/input'
-export * from './views/Spinner'
+export * from '@tamagui/spinner'
 export * from './views/Text'
 
 // since we overlap with ViewProps and potentially others
@@ -163,6 +163,7 @@ export {
   insertFont,
   setConfig,
   setupDev,
+  _withStableStyle,
   // constants
   isBrowser,
   isChrome,
@@ -182,6 +183,7 @@ export {
   styled,
   themeable,
   // hooks
+  useClientValue,
   useDidFinishSSR,
   useEvent,
   useGet,

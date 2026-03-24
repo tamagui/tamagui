@@ -1,4 +1,5 @@
 import { type StaticConfig, type TamaguiInternalConfig } from '@tamagui/web';
+import esbuild from 'esbuild';
 import type { TamaguiOptions } from '../types';
 type NameToPaths = {
     [key: string]: Set<string>;
@@ -24,13 +25,25 @@ export declare const esbuildOptions: {
     jsx: "automatic";
     platform: "node";
 };
+export declare const esbuildOptionsWithPlugins: {
+    plugins: esbuild.Plugin[];
+    define: {
+        __DEV__: string;
+    };
+    target: string;
+    format: "cjs";
+    jsx: "automatic";
+    platform: "node";
+};
 export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, undefined>;
 export declare function hasBundledConfigChanged(): boolean;
 export declare const getLoadedConfig: () => TamaguiInternalConfig | null;
 export declare function getBundledConfig(props: TamaguiOptions, rebuild?: boolean): Promise<any>;
 export declare function bundleConfig(props: TamaguiOptions): Promise<any>;
 export declare function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig): Promise<void>;
-export declare function loadComponents(props: TamaguiOptions, forceExports?: boolean): LoadedComponents[];
-export declare function loadComponentsInner(props: TamaguiOptions, forceExports?: boolean): null | LoadedComponents[];
+export declare function loadComponents(props: TamaguiOptions, forceExports?: boolean): Promise<LoadedComponents[]>;
+export declare function loadComponentsSync(props: TamaguiOptions, forceExports?: boolean): LoadedComponents[];
+export declare function loadComponentsInner(props: TamaguiOptions, forceExports?: boolean): Promise<null | LoadedComponents[]>;
+export declare function loadComponentsInnerSync(props: TamaguiOptions, forceExports?: boolean): null | LoadedComponents[];
 export {};
 //# sourceMappingURL=bundleConfig.d.ts.map

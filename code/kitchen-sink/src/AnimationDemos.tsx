@@ -42,7 +42,7 @@ function Demo2() {
 
 //
 
-import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
+import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons-2'
 import { Image, XStack, YStack } from 'tamagui'
 
 const GalleryItem = styled(YStack, {

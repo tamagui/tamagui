@@ -1,4 +1,4 @@
-import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons'
+import { AlignCenter, AlignLeft, AlignRight } from '@tamagui/lucide-icons-2'
 import { Label, ToggleGroup, XGroup, YGroup, XStack, YStack } from 'tamagui'
 
 export function ToggleGroupDemo() {

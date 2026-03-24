@@ -24,7 +24,7 @@ demoName: Dialog
 />
 
 Dialog is a great way to show content inside a new floating window above
-content. Be sure to open the code example above for a copy-paste implementation.
+content. Dialogs [automatically stack](/ui/z-index) above other overlays. Be sure to open the code example above for a copy-paste implementation.
 
 ## Installation
 
@@ -373,7 +373,7 @@ export default () => (
     </Dialog.Portal>
 
     {/* optionally change to sheet when small screen */}
-    <Dialog.Adapt when="maxMd">
+    <Dialog.Adapt when="max-md">
       <Dialog.Sheet>
         <Dialog.Sheet.Frame>
           <Dialog.Adapt.Contents />

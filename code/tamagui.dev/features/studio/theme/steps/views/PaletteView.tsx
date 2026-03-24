@@ -4,7 +4,7 @@ import {
   ArrowLeftRight,
   ArrowRight,
   ArrowUpDown,
-} from '@tamagui/lucide-icons'
+} from '@tamagui/lucide-icons-2'
 import {
   type BuildPalette,
   type BuildThemeAnchor,

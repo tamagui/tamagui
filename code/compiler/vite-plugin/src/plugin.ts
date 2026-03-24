@@ -2,9 +2,10 @@ import type { TamaguiOptions, ExtractedResponse } from '@tamagui/static-worker'
 import * as Static from '@tamagui/static-worker'
 import { getPragmaOptions } from '@tamagui/static-worker'
 import { createHash } from 'node:crypto'
+import { existsSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { Plugin, ResolvedConfig, ViteDevServer } from 'vite'
+import type { Plugin, PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
 import { normalizePath, transformWithEsbuild, type Environment } from 'vite'
 import {
   loadTamaguiBuildConfig,
@@ -118,7 +119,9 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
 export function tamaguiPlugin({
   disableResolveConfig,
   ...tamaguiOptionsIn
-}: TamaguiOptions & { disableResolveConfig?: boolean } = {}): Plugin | Plugin[] {
+}: TamaguiOptions & {
+  disableResolveConfig?: boolean
+} = {}): PluginOption {
   // extraction ON by default, set disableExtraction: true to opt out
   let shouldExtract = !tamaguiOptionsIn.disableExtraction
   let watcher: Promise<{ dispose: () => void } | void | undefined> | undefined
@@ -303,6 +306,10 @@ export function tamaguiPlugin({
         resolve: {
           alias: tamaguiAliases({ rnwLite: options.useReactNativeWebLite }),
         },
+        optimizeDeps: {
+          // upstream react-native-web must not be pre-bundled when aliased to lite
+          exclude: ['react-native-web'],
+        },
       }
     },
   }
@@ -315,11 +322,17 @@ export function tamaguiPlugin({
 
     async config(userConf) {
       // wait for config to load to know if we should extract
-      await ensureLoaded()
-      if (!shouldExtract) return
+      const options = await ensureLoaded()
 
       userConf.optimizeDeps ||= {}
       userConf.optimizeDeps.include ||= []
+
+      // inline-style-prefixer is CJS with __esModule and breaks without pre-bundling
+      // (ReferenceError: exports is not defined). always include it.
+      userConf.optimizeDeps.include.push('inline-style-prefixer')
+
+      if (!shouldExtract) return
+
       userConf.optimizeDeps.include.push('@tamagui/core/inject-styles')
     },
 

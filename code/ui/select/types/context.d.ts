@@ -1,4 +1,5 @@
 import type { SelectContextValue, SelectItemParentContextValue } from './types';
+export declare const SelectZIndexContext: import("react").Context<number | undefined>;
 export declare const SelectProvider: import("react").Provider<SelectContextValue> & import("react").ProviderExoticComponent<Partial<SelectContextValue> & {
     children?: import("react").ReactNode;
     scope?: string;

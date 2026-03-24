@@ -1,4 +1,4 @@
-import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import React from 'react'
 import type { FontSizeTokens, SelectProps } from 'tamagui'
 import { Adapt, Select, Sheet, YStack, getFontSize } from 'tamagui'
@@ -16,6 +16,7 @@ export default function TestSelectAdapt(props: SelectProps) {
       onValueChange={setVal}
       disablePreventBodyScroll
       renderValue={getItemLabel}
+      zIndex={200000}
       {...props}
     >
       <Select.Trigger width={220} iconAfter={ChevronDown}>
@@ -47,7 +48,7 @@ export default function TestSelectAdapt(props: SelectProps) {
         </Sheet>
       </Adapt>
 
-      <Select.Content zIndex={200000}>
+      <Select.Content>
         <Select.ScrollUpButton
           items="center"
           justify="center"

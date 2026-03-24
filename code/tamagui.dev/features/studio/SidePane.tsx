@@ -1,4 +1,4 @@
-import { ArrowLeft, X } from '@tamagui/lucide-icons'
+import { ArrowLeft, X } from '@tamagui/lucide-icons-2'
 import { useStore } from '@tamagui/use-store'
 import type React from 'react'
 import { memo, useEffect } from 'react'

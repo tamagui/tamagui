@@ -2,6 +2,7 @@ import type { ComputePositionReturn } from '@floating-ui/react-native'
 import type { RefObject } from 'react'
 
 export const autoUpdate = () => {}
+export const getOverflowAncestors = () => []
 
 export * from '@floating-ui/react-native'
 

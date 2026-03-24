@@ -166,14 +166,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<Function> {
       const [val, setVal] = React.useState(initial)
-      const [onFinish, setOnFinish] = useState<Function | undefined>()
-
-      useIsomorphicLayoutEffect(() => {
-        if (onFinish) {
-          onFinish?.()
-          setOnFinish(undefined)
-        }
-      }, [onFinish])
+      const finishTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
       return {
         getInstance() {
@@ -184,14 +177,40 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         },
         setValue(next, config, onFinish) {
           setVal(next)
-          setOnFinish(onFinish)
+
+          // clear any pending finish callback from a previous setValue
+          if (finishTimerRef.current) {
+            clearTimeout(finishTimerRef.current)
+            finishTimerRef.current = null
+          }
+
+          if (onFinish) {
+            if (
+              !config ||
+              config.type === 'direct' ||
+              (config.type === 'timing' && config.duration === 0)
+            ) {
+              onFinish()
+            } else {
+              // estimate duration: use explicit duration, or fall back to
+              // default CSS transition duration for spring-type configs
+              const duration = config.type === 'timing' ? config.duration : 300
+              finishTimerRef.current = setTimeout(onFinish, duration)
+            }
+          }
+
           // call reaction listeners with the new value
           const listeners = reactionListeners.get(setVal)
           if (listeners) {
             listeners.forEach((listener) => listener(next))
           }
         },
-        stop() {},
+        stop() {
+          if (finishTimerRef.current) {
+            clearTimeout(finishTimerRef.current)
+            finishTimerRef.current = null
+          }
+        },
       }
     },
 
@@ -375,19 +394,18 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           // disable transition, reset to enter state
           node.style.transition = 'none'
 
-          // reset: apply enter styles (or defaults) for each exit property
+          // reset: apply active/open state for each exit property (not enterStyle,
+          // which may equal exitStyle — see comment in the normal exit path below)
           if (exitStyle) {
-            // build enter state: for each exit key, use enter value or sensible default
             const resetStyle: Record<string, unknown> = {}
             for (const key of Object.keys(exitStyle)) {
-              if (enterStyle?.[key] !== undefined) {
-                resetStyle[key] = enterStyle[key]
-              } else if (key === 'opacity') {
+              if (key === 'opacity') {
                 resetStyle[key] = 1
               } else if (TRANSFORM_KEYS.includes(key as any)) {
-                // transform defaults: scale=1, others=0
                 resetStyle[key] =
                   key === 'scale' || key === 'scaleX' || key === 'scaleY' ? 1 : 0
+              } else if (enterStyle?.[key] !== undefined) {
+                resetStyle[key] = enterStyle[key]
               }
             }
             applyStylesToNode(node, resetStyle)
@@ -411,16 +429,19 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           ignoreCancelEvents = true
           node.style.transition = 'none'
 
-          // Reset to non-exit state
+          // Reset to the active/open state (not enterStyle, which may equal exitStyle).
+          // enterStyle is the "unmounted" initial state and can share values with exitStyle
+          // (e.g., both have opacity: 0). resetting to enterStyle would mean no value change
+          // when exitStyle is applied, so the CSS transition wouldn't fire.
           const resetStyle: Record<string, unknown> = {}
           for (const key of Object.keys(exitStyle)) {
-            if (enterStyle?.[key] !== undefined) {
-              resetStyle[key] = enterStyle[key]
-            } else if (key === 'opacity') {
+            if (key === 'opacity') {
               resetStyle[key] = 1
             } else if (TRANSFORM_KEYS.includes(key as any)) {
               resetStyle[key] =
                 key === 'scale' || key === 'scaleX' || key === 'scaleY' ? 1 : 0
+            } else if (enterStyle?.[key] !== undefined) {
+              resetStyle[key] = enterStyle[key]
             }
           }
           applyStylesToNode(node, resetStyle)

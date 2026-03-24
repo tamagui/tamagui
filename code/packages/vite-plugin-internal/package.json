@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-internal",
-  "version": "2.0.0-rc.22",
+  "version": "2.0.0-rc.30",
   "private": true,
   "type": "module",
   "main": "./dist/cjs/vite.config.js",
@@ -27,7 +27,6 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "@tamagui/config-default": "workspace:*",
-    "@vitejs/plugin-react": "^5.1.0",
     "happy-dom": "^10.11.2",
     "react": ">=19",
     "vitest": "4.0.4",

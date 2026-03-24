@@ -1,6 +1,6 @@
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ThemeTint } from '@tamagui/logo'
-import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons'
+import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2'
 import * as React from 'react'
 import { ScrollView } from 'react-native'
 import { EnsureFlexed, Paragraph, View, XStack, YStack } from 'tamagui'

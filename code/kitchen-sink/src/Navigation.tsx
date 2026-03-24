@@ -1,12 +1,12 @@
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { useColorScheme } from 'react-native'
 import { Sandbox } from './Sandbox'
 import { DemoScreen } from './features/demos/demo-screen'
 import { ColorSchemeToggle } from './features/home/ColorSchemeListItem'
 import { HomeScreen } from './features/home/screen'
 import { TestCasesScreen } from './features/testcases/screen'
 import { TestScreen } from './features/testcases/test-screen'
+import { useThemeControl } from './useKitchenSinkTheme'
 
 const Stack = createNativeStackNavigator<{
   home: undefined
@@ -34,12 +34,12 @@ const linking = {
 }
 
 export function Navigation() {
-  const colorScheme = useColorScheme()
+  const { resolvedTheme } = useThemeControl()
 
   return (
     <NavigationContainer
       linking={linking}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+      theme={resolvedTheme === 'dark' ? DarkTheme : DefaultTheme}
     >
       <Stack.Navigator initialRouteName="home">
         <Stack.Screen

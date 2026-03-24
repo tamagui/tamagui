@@ -58,7 +58,12 @@ export const getActiveSubscriptions = async (
   subscriptionId?: string
 ) => {
   const subscriptions = await getSubscriptions(userId)
-  return subscriptions.find((s) => s.id && s.id === subscriptionId)
+  return subscriptions.find(
+    (s) =>
+      s.id &&
+      s.id === subscriptionId &&
+      (s.status === SubscriptionStatus.Active || s.status === SubscriptionStatus.Trialing)
+  )
 }
 
 export const getAllActiveSubscriptions = async (userId: string) => {

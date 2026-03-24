@@ -1,5 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
-import { Check, Copy } from '@tamagui/lucide-icons'
+import { Check, Copy } from '@tamagui/lucide-icons-2'
 import { memo } from 'react'
 import { Button, Paragraph, Spacer, TooltipSimple, XStack, YStack } from 'tamagui'
 

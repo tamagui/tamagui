@@ -1,6 +1,6 @@
 import { createCheckbox } from '@tamagui/checkbox'
 import { View, styled } from '@tamagui/core'
-import { Check } from '@tamagui/lucide-icons'
+import { Check } from '@tamagui/lucide-icons-2'
 import { Label, XStack, YStack } from 'tamagui'
 
 const Frame = styled(View, {

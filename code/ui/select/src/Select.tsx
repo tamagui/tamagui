@@ -22,6 +22,7 @@ import * as React from 'react'
 import {
   SelectItemParentProvider,
   SelectProvider,
+  SelectZIndexContext,
   useSelectContext,
   useSelectItemParentContext,
 } from './context'
@@ -512,6 +513,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
     id,
     renderValue,
     lazyMount,
+    zIndex,
   } = props
 
   const isAdapted = useAdaptIsActive(adaptScope)
@@ -605,7 +607,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
     [setActiveIndexFast]
   )
 
-  return (
+  const content = (
     <SelectItemParentProvider
       scopeName={scope}
       scope={scope}
@@ -674,4 +676,14 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
       </SelectProvider>
     </SelectItemParentProvider>
   )
+
+  if (zIndex !== undefined) {
+    return (
+      <SelectZIndexContext.Provider value={zIndex}>
+        {content}
+      </SelectZIndexContext.Provider>
+    )
+  }
+
+  return content
 }

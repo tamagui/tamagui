@@ -72,7 +72,7 @@ export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps
                   }
                 : {
                     onMouseDown() {
-                      context.floatingContext?.update()
+                      context.floatingContext?.update?.()
                       itemParentContext.setOpen(!context.open)
                     },
                   }),

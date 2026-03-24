@@ -27,6 +27,9 @@ export declare const SheetImplementationCustom: React.ForwardRefExoticComponent<
     portalProps?: import("@tamagui/portal").PortalProps;
     moveOnKeyboardChange?: boolean;
     containerComponent?: React.ComponentType<any>;
+    onAnimationComplete?: (info: {
+        open: boolean;
+    }) => void;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
 } & React.RefAttributes<View>>;

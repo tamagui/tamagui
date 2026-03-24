@@ -34,6 +34,18 @@ import React, {
   useState,
 } from 'react'
 
+const isServer = typeof window === 'undefined'
+
+// SSR-safe wrapper: framer-motion's useAnimate imports its own React copy in
+// Vite SSR bundles which causes "Invalid hook call" errors. during SSR we
+// don't need animations so we return a no-op scope/animate pair.
+function useAnimateSSRSafe() {
+  if (isServer) {
+    return [useRef(null), (() => {}) as any] as ReturnType<typeof useAnimate>
+  }
+  return useAnimate()
+}
+
 type MotionAnimatedNumber = MotionValue<number>
 type AnimationConfig = ValueTransition
 
@@ -74,7 +86,6 @@ type MotionRefs = {
   frozenExitTarget: Record<string, unknown> | null
   exitCompleteScheduled: boolean
   wasEntering: boolean
-  styleVersion: number
 }
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
@@ -134,7 +145,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           frozenExitTarget: null,
           exitCompleteScheduled: false,
           wasEntering: false,
-          styleVersion: 0,
         }
       }
 
@@ -154,15 +164,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       // disable animation during hydration and mounting (prevents "flying across the page")
       const disableAnimation = isComponentHydrating || isMounting || !animationKey
 
-      const [scope, animate] = useAnimate()
-
-      // increment version when style object identity changes
-      const lastStyleRef = useRef(style)
-      if (lastStyleRef.current !== style) {
-        lastStyleRef.current = style
-        refs.current.styleVersion++
-      }
-      const styleVersion = refs.current.styleVersion
+      const [scope, animate] = useAnimateSSRSafe()
 
       // sync ref values for reliable access from callbacks
       refs.current.isExiting = isExiting
@@ -188,14 +190,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         dontAnimate = {},
         doAnimate,
         animationOptions,
-      } = useMemo(() => {
-        return getMotionAnimatedProps(
-          props as any,
-          style,
-          disableAnimation,
-          animationState
-        )
-      }, [isExiting, animationKey, styleVersion, animationState, disableAnimation])
+      } = getMotionAnimatedProps(props as any, style, disableAnimation, animationState)
 
       const [firstRenderStyle] = useState(style)
 
@@ -321,34 +316,55 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 refs.current.frozenExitTarget = { ...doAnimate }
               }
 
-              // stop running animation before exit to prevent motion from
-              // immediately resolving the new animation's promise
-              if (isCurrentlyExiting && refs.current.controls) {
-                refs.current.controls.stop()
+              // capture mid-flight values so we can provide explicit [from, to]
+              // keyframes to WAAPI, ensuring smooth interpolation from the
+              // current visual state.
+              //
+              // only stop() during exit — for non-exit cases, WAAPI
+              // naturally replaces only conflicting property animations,
+              // letting non-conflicting ones (like an in-flight enter
+              // opacity animation) continue to completion.
+              const isPopperPosition = node.hasAttribute('data-popper-animate-position')
+              let midFlightValues: Record<string, string> | null = null
+              if (refs.current.controls) {
+                try {
+                  const computed = getComputedStyle(node)
+                  midFlightValues = {}
+                  for (const key in diff) {
+                    const val = (computed as any)[key]
+                    if (val !== undefined && val !== '') {
+                      midFlightValues[key] = val
+                    }
+                  }
+                } catch {
+                  // getComputedStyle can fail on detached nodes
+                }
+
+                if (isCurrentlyExiting) {
+                  refs.current.controls.stop()
+                }
+
+                // write mid-flight values to inline so the 1-frame gap
+                // (while motion resolves keyframes) shows the correct
+                // position instead of stale inline styles
+                if (midFlightValues) {
+                  for (const key in midFlightValues) {
+                    ;(node.style as any)[key] = midFlightValues[key]
+                  }
+                }
+
+                // for popper position elements, cancel WAAPI animations
+                // directly so motion.dev's internal stop() sees "idle" state
+                // and skips commitStyles. without this, commitStyles writes
+                // a mid-flight transform that's visible for 1 frame before
+                // the new animation starts, causing a flash toward (0,0).
+                if (isPopperPosition) {
+                  const anims = node.getAnimations()
+                  for (const anim of anims) {
+                    anim.cancel()
+                  }
+                }
               }
-
-              // WAAPI mid-flight transform interruption fix
-              // see WAAPI_RESEARCH.md for full investigation
-              //
-              // motion's useAnimate() uses DOMKeyframesResolver (always async),
-              // creating a one-frame gap on mid-flight interruption. motion's
-              // internal updateMotionValue() can't reliably sample CSS transform
-              // strings, so we capture the mid-flight value ourselves via WAAPI
-              // commitStyles().
-              //
-              // tested by:
-              //   - TabHoverPositionSmooth.animated.test.tsx (smooth interpolation)
-              //   - TooltipPositionJump.animated.test.tsx (rapid trigger switching)
-              //   - PopoverHoverable.test.tsx (scoped multi-trigger switching)
-
-              // guard against GroupAnimationWithThen.getAll crashing on empty animations
-              const isRunning =
-                (refs.current.controls as any)?.animations?.length === 0
-                  ? false
-                  : refs.current.controls?.state === 'running'
-
-              const isPopperElement = node.hasAttribute('data-popper-animate-position')
-              const isEnteringPresenceChild = presence && justFinishedEntering
 
               const fixedDiff = fixTransparentColors(
                 diff,
@@ -356,53 +372,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                 doAnimate
               )
 
-              // capture mid-flight transform via WAAPI commitStyles, then cancel
-              // and use committed value as explicit first keyframe [from, to]
-              if (
-                isRunning &&
-                refs.current.controls &&
-                fixedDiff.transform &&
-                (isPopperElement || isEnteringPresenceChild)
-              ) {
-                const anims = (refs.current.controls as any).animations
-                if (anims) {
-                  for (const anim of anims) {
-                    try {
-                      const raw = anim?.animation ?? anim
-                      raw?.commitStyles?.()
-                    } catch {}
-                  }
-                }
-                refs.current.controls.cancel()
-                const committedTransform = node.style.transform
-                if (committedTransform) {
-                  fixedDiff.transform = [committedTransform, fixedDiff.transform]
-                }
+              // provide explicit [from, to] keyframe for transforms during
+              // mid-flight interruption so motion starts from the right place
+              if (midFlightValues?.transform && fixedDiff.transform) {
+                fixedDiff.transform = [midFlightValues.transform, fixedDiff.transform]
               }
 
               startedControls = animate(scope.current, fixedDiff, animationOptions)
               refs.current.controls = startedControls
               refs.current.lastAnimateAt = Date.now()
-
-              // persist final transform to inline style on completion —
-              // prevents flash-back when WAAPI removes the finished animation
-              if (isPopperElement && !isCurrentlyExiting && fixedDiff.transform) {
-                const target =
-                  typeof fixedDiff.transform === 'string'
-                    ? fixedDiff.transform
-                    : Array.isArray(fixedDiff.transform)
-                      ? fixedDiff.transform[fixedDiff.transform.length - 1]
-                      : null
-                if (typeof target === 'string') {
-                  startedControls.finished
-                    .then(() => {
-                      if (node.isConnected) {
-                        node.style.transform = target
-                      }
-                    })
-                    .catch(() => {})
-                }
-              }
             }
           }
 
@@ -415,8 +393,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // new animation started — attach completion handler
               refs.current.exitCompleteScheduled = true
               startedControls.finished
-                .then(() => currentSendExitComplete())
-                .catch(() => currentSendExitComplete())
+                .then(() => {
+                  // guard: only complete if still exiting (prevents stale promise
+                  // from calling sendExitComplete after a re-entry cancels the exit)
+                  if (refs.current.isExiting) {
+                    currentSendExitComplete()
+                  }
+                })
+                .catch(() => {
+                  if (refs.current.isExiting) {
+                    currentSendExitComplete()
+                  }
+                })
             } else if (!refs.current.exitCompleteScheduled) {
               // no animation started AND none previously scheduled (e.g. diff=null
               // on re-render mid-exit because frozenExitTarget matches lastDoAnimate)
@@ -445,24 +433,16 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         if (refs.current.isFirstRender) {
           refs.current.isFirstRender = false
 
-          // during hydration, use full sync logic to prevent flash
+          // during hydration, skip inline style writes entirely — SSR CSS
+          // already has the correct values. writing them again as inline
+          // styles triggers browser style recalc that causes visible font
+          // flashes (fontWeight, fontSize, letterSpacing, lineHeight).
+          // we only need to track refs for future animation diffing.
           if (isHydrating) {
-            const node = stateRef.current.host
-
-            if (node instanceof HTMLElement) {
-              if (dontAnimate) {
-                Object.assign(node.style, dontAnimate as any)
-                const fixedDont = fixTransparentColors(dontAnimate, null, doAnimate)
-                animate(scope.current, fixedDont, { duration: 0 })
-              }
-
-              if (doAnimate && Object.keys(doAnimate).length > 0) {
-                refs.current.lastDoAnimate = { ...doAnimate }
-                const fixedDo = fixTransparentColors(doAnimate, dontAnimate)
-                animate(scope.current, fixedDo, { duration: 0 })
-              } else {
-                refs.current.lastDoAnimate = dontAnimate ? { ...dontAnimate } : {}
-              }
+            if (doAnimate && Object.keys(doAnimate).length > 0) {
+              refs.current.lastDoAnimate = { ...doAnimate }
+            } else {
+              refs.current.lastDoAnimate = dontAnimate ? { ...dontAnimate } : {}
             }
 
             refs.current.lastDontAnimate = dontAnimate ? { ...dontAnimate } : {}
@@ -481,7 +461,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           dontAnimate,
           animationOptions,
         })
-      }, [styleVersion, isExiting, disableAnimation])
+      }, [style, isExiting, disableAnimation])
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] && props['debug'] !== 'profile') {
@@ -490,7 +470,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             style,
             doAnimate,
             dontAnimate,
-            styleVersion,
             scope,
             animationOptions,
             isExiting,
@@ -757,6 +736,7 @@ export const disableAnimationProps: Set<string> = new Set<string>([
   'contain',
   'containerType',
   'display',
+  'flexBasis',
   'flexDirection',
   'fontFamily',
   'justifyContent',
@@ -777,7 +757,7 @@ function createMotionView(defaultTag: string) {
 
   const Component = forwardRef((propsIn: any, ref) => {
     const { forwardedRef, animation, render = defaultTag, style, ...propsRest } = propsIn
-    const [scope, animate] = useAnimate()
+    const [scope, animate] = useAnimateSSRSafe()
     const hostRef = useRef<HTMLElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref, hostRef, scope)
 
@@ -795,10 +775,16 @@ function createMotionView(defaultTag: string) {
     const styles = Array.isArray(style) ? style : [style]
 
     const [animatedStyle, nonAnimatedStyles] = (() => {
-      return [
-        styles.find((x) => x.getStyle) as MotionAnimatedNumberStyle | undefined,
-        styles.filter((x) => !x.getStyle),
-      ] as const
+      let animatedStyle: MotionAnimatedNumberStyle | undefined
+      const nonAnimatedStyles: typeof styles = []
+      for (const style of styles) {
+        if (style.getStyle) {
+          animatedStyle = style as MotionAnimatedNumberStyle
+        } else {
+          nonAnimatedStyles.push(style)
+        }
+      }
+      return [animatedStyle, nonAnimatedStyles] as const
     })()
 
     function getProps(props: any) {

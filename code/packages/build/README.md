@@ -14,7 +14,7 @@ Some details on how it works:
   - in `.mjs`, adds path-specific imports to non-specific imports
 - outputs both `.js` and `.cjs` files in `dist/cjs`:
   - in `.cjs`, adds path-specific imports to non-specific imports
-- removes hanging imports that esbuild leaves (see `pkgRemoveSideEffects`)
+- strips bare imports that esbuild leaves behind, respecting the `sideEffects` field in package.json
 - outputs `.native.js` and regular `.js` files for all output files, so React Native always loads separate files from web. In the `native` specific files,
   - swc is sued to transform to es5
   - `process.env.TAMAGUI_TARGET` is defined `native` (otherwise `web`)
@@ -30,7 +30,6 @@ It assumes your package.json looks something like this:
   "main": "dist/cjs",
   "module": "dist/esm",
   "type": "module",
-  "removeSideEffects": "true",
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",
@@ -69,12 +68,15 @@ It assumes your package.json looks something like this:
 ### Use
 
 - `tamagui-build` - builds `src` folder to `dist` and `types` folders
+  - normal builds clear `dist` and `types` first, so stale transformed files don't hang around
+  - intermediary `.js` files are removed after `.mjs` / `.cjs` postprocessing, so published output stays lean
   - `tamagui build .` second argument sets baseUrl to tsc
   - `--bundle-modules` - inline node_modules
   - `--declaration-root` - sets tsc flag `--declarationDir ./`
   - `--ignore-base-url` - if not set, tsc is passed `--baseUrl .`
   - `--skip-mjs` - don't output mjs files
   - `--skip-native` - don't output native files
+  - `--skip-sourcemaps` - don't output js or declaration sourcemaps
   - `--swap-exports` - swaps `exports.types` from `./src/*.ts` to `./types/*.d.ts` for publishing. if a command is given after `--`, runs it then swaps back. exit code is preserved.
     - `tamagui-build --swap-exports` - build and swap, stays swapped (for manual publish)
     - `tamagui-build --swap-exports -- npm publish` - build, swap, publish, swap back

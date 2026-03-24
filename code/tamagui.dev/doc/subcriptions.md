@@ -12,7 +12,7 @@ This document provides a comprehensive guide to the Tamagui subscription system,
 
 - **🔄 Recurring Subscription** (Annual): $240/year
   - 🔐 Access to private Takeout GitHub repository
-  - 🍱 Bento components download
+  - 🍱 Bento components download + private Bento source repo access
   - 💬 Private community Discord chat room (#takeout-general)
   - ♾️ Lifetime rights to all code and assets (even after subscription expires)
   - 👥 Supports team seats addition

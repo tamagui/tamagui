@@ -154,6 +154,16 @@ export default apiRoute(async (req) => {
             : updatedSub.customer.id
         )
         await createTeamSubscription(updatedSub)
+
+        // revoke discord/github access when subscription is definitively over
+        // note: past_due is excluded since stripe is still retrying payment
+        const revokeStatuses = ['canceled', 'unpaid', 'incomplete_expired']
+        if (revokeStatuses.includes(updatedSub.status)) {
+          console.info(
+            `Subscription ${updatedSub.id} status changed to ${updatedSub.status}, revoking Discord access`
+          )
+          await unclaimSubscription(updatedSub)
+        }
         break
       }
       case 'customer.subscription.deleted': {

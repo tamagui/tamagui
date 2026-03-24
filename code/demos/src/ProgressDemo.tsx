@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Paragraph, Progress, Slider, Theme, XStack, YStack } from 'tamagui'
-import { Play, RotateCcw } from '@tamagui/lucide-icons'
+import { Play, RotateCcw } from '@tamagui/lucide-icons-2'
 
 export function ProgressDemo() {
   const [key, setKey] = React.useState(0)
