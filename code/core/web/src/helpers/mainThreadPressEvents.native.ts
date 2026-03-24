@@ -28,7 +28,13 @@ const DEFAULT_MIN_PRESS_DURATION = 130
 export function useMainThreadPressEvents(events: any, viewProps: any, enabled = true) {
   const ref = useRef<PressRef>(null as any)
   if (!ref.current) {
-    ref.current = { state: 'idle', pressInTimer: null, pressOutTimer: null, longPressTimer: null, activateTime: 0 }
+    ref.current = {
+      state: 'idle',
+      pressInTimer: null,
+      pressOutTimer: null,
+      longPressTimer: null,
+      activateTime: 0,
+    }
   }
 
   if (!enabled || !events) return
@@ -36,7 +42,10 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
   const delayPressIn = Math.max(0, events.delayPressIn ?? 0)
   const delayPressOut = Math.max(0, events.delayPressOut ?? 0)
   const delayLongPress = Math.max(0, events.delayLongPress ?? DEFAULT_LONG_PRESS_DELAY)
-  const minPressDuration = Math.max(0, events.minPressDuration ?? DEFAULT_MIN_PRESS_DURATION)
+  const minPressDuration = Math.max(
+    0,
+    events.minPressDuration ?? DEFAULT_MIN_PRESS_DURATION
+  )
 
   function activate(e: any) {
     ref.current.state = 'active'
