@@ -1,5 +1,5 @@
 import { Toast, toast, useToasts } from '@tamagui/toast'
-import { CheckCircle2 } from '@tamagui/lucide-icons'
+import { CheckCircle2 } from '@tamagui/lucide-icons-2'
 import React from 'react'
 import { Button, XStack, YStack } from 'tamagui'
 
