@@ -1217,12 +1217,17 @@ const ToastCloseFrame = styled(XStack, {
   variants: {
     unstyled: {
       false: {
-        width: 20,
-        height: 20,
+        width: 18,
+        height: 18,
         borderRadius: '$10',
-        backgroundColor: '$color5',
-        hoverStyle: { backgroundColor: '$color6' },
-        pressStyle: { backgroundColor: '$color7' },
+        backgroundColor: '$background',
+        borderWidth: 1,
+        borderColor: '$borderColor',
+        shadowColor: 'rgba(0, 0, 0, 0.08)',
+        shadowOffset: { width: 0, height: 1 },
+        shadowRadius: 3,
+        hoverStyle: { backgroundColor: '$color3' },
+        pressStyle: { backgroundColor: '$color4' },
       },
     },
   } as const,
