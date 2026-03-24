@@ -1,8 +1,13 @@
 /**
- * Native press style tests WITHOUT gesture handler (usePressability fallback)
+ * Native press style tests WITHOUT gesture handler (responder fallback)
  *
  * This test runs with RNGH disabled via launch args to verify that press handling
- * works correctly when falling back to RN's usePressability.
+ * works correctly when falling back to the responder system.
+ *
+ * IMPORTANT: Detox sync must be enabled for tap/gesture actions on RN 0.83 Fabric.
+ * With sync disabled, Detox doesn't properly deliver touch events through the
+ * responder system. We keep sync disabled for navigation (animation driver blocks
+ * it) but enable it briefly around each interaction.
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
@@ -12,6 +17,16 @@ import { PNG } from 'pngjs'
 import { navigateToTestCase } from './utils/navigation'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
 
+// enable sync briefly for an interaction, then disable again
+async function withSync<T>(fn: () => Promise<T>): Promise<T> {
+  await device.enableSynchronization()
+  try {
+    return await fn()
+  } finally {
+    await device.disableSynchronization()
+  }
+}
+
 async function navigateToPressStyleNative() {
   await navigateToTestCase('PressStyleNative', 'color-test-pressable', {
     skipEnableSync: true,
@@ -20,13 +35,10 @@ async function navigateToPressStyleNative() {
 
 describe('PressStyleNative (no RNGH)', () => {
   beforeAll(async () => {
-    // launch with RNGH disabled
     await device.launchApp({
       newInstance: true,
       launchArgs: { disableGestureHandler: true },
     })
-    // disable synchronization for the entire suite - without RNGH, there's a
-    // RNManualRecognizer gesture that stays in "Possible" state which blocks Detox
     await device.disableSynchronization()
   })
 
@@ -35,14 +47,11 @@ describe('PressStyleNative (no RNGH)', () => {
   })
 
   beforeEach(async () => {
-    // use launchApp instead of reloadReactNative — on RN 0.83, reloadReactNative
-    // doesn't work reliably when RNGH is disabled (JS run loop stays busy)
     await device.launchApp({
       newInstance: true,
       launchArgs: { disableGestureHandler: true },
     })
     await device.disableSynchronization()
-    // wait for app to stabilize after launch
     await new Promise((resolve) => setTimeout(resolve, 1500))
     await navigateToPressStyleNative()
   })
@@ -65,8 +74,8 @@ describe('PressStyleNative (no RNGH)', () => {
         .toHaveText('Out: 0')
         .withTimeout(5000)
 
-      await element(by.id('color-test-pressable')).tap()
-      await new Promise((resolve) => setTimeout(resolve, 300))
+      await withSync(() => element(by.id('color-test-pressable')).tap())
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
       await waitFor(element(by.id('simple-press-in-count')))
         .toHaveText('In: 1')
@@ -77,8 +86,8 @@ describe('PressStyleNative (no RNGH)', () => {
     })
 
     it('should not be stuck in pressed state after tap', async () => {
-      await element(by.id('color-test-pressable')).tap()
-      await new Promise((resolve) => setTimeout(resolve, 300))
+      await withSync(() => element(by.id('color-test-pressable')).tap())
+      await new Promise((resolve) => setTimeout(resolve, 500))
       await waitFor(element(by.id('simple-is-pressed')))
         .toHaveText('Pressed: NO')
         .withTimeout(5000)
@@ -101,18 +110,20 @@ describe('PressStyleNative (no RNGH)', () => {
         .toHaveText('Out: 0')
         .withTimeout(5000)
 
-      await element(by.id('color-test-pressable')).longPressAndDrag(
-        500,
-        0.5,
-        0.5,
-        element(by.id('press-style-native-root')),
-        0.5,
-        0.1,
-        'slow',
-        100
+      await withSync(() =>
+        element(by.id('color-test-pressable')).longPressAndDrag(
+          500,
+          0.5,
+          0.5,
+          element(by.id('press-style-native-root')),
+          0.5,
+          0.1,
+          'slow',
+          100
+        )
       )
 
-      await new Promise((resolve) => setTimeout(resolve, 400))
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
       await waitFor(element(by.id('simple-press-in-count')))
         .toHaveText('In: 1')
@@ -126,18 +137,20 @@ describe('PressStyleNative (no RNGH)', () => {
     })
 
     it('should return to blue after drag off', async () => {
-      await element(by.id('color-test-pressable')).longPressAndDrag(
-        500,
-        0.5,
-        0.5,
-        element(by.id('press-style-native-root')),
-        0.5,
-        0.1,
-        'slow',
-        100
+      await withSync(() =>
+        element(by.id('color-test-pressable')).longPressAndDrag(
+          500,
+          0.5,
+          0.5,
+          element(by.id('press-style-native-root')),
+          0.5,
+          0.1,
+          'slow',
+          100
+        )
       )
 
-      await new Promise((resolve) => setTimeout(resolve, 400))
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
       const afterScreenshot = await element(by.id('color-test-pressable')).takeScreenshot(
         'color-test-after-drag-norngh'
@@ -156,8 +169,8 @@ describe('PressStyleNative (no RNGH)', () => {
         .toHaveText('Out: 0')
         .withTimeout(5000)
 
-      await element(by.id('animated-color-test-pressable')).tap()
-      await new Promise((resolve) => setTimeout(resolve, 300))
+      await withSync(() => element(by.id('animated-color-test-pressable')).tap())
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
       await waitFor(element(by.id('animated-press-in-count')))
         .toHaveText('In: 1')
@@ -168,8 +181,8 @@ describe('PressStyleNative (no RNGH)', () => {
     })
 
     it('should not be stuck in pressed state after tap (animated)', async () => {
-      await element(by.id('animated-color-test-pressable')).tap()
-      await new Promise((resolve) => setTimeout(resolve, 300))
+      await withSync(() => element(by.id('animated-color-test-pressable')).tap())
+      await new Promise((resolve) => setTimeout(resolve, 500))
       await waitFor(element(by.id('animated-is-pressed')))
         .toHaveText('Pressed: NO')
         .withTimeout(5000)
