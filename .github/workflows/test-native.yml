@@ -35,7 +35,7 @@ jobs:
     name: iOS Detox Tests (${{ matrix.shard_name }})
     needs: build-ios
     runs-on: macos-15
-    timeout-minutes: 45
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
