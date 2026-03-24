@@ -66,11 +66,33 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
   const isVertical =
     direction === 'up' || direction === 'down' || direction === 'vertical'
 
+  // block native text selection during drag — works in Safari where
+  // userSelect style alone doesn't prevent fast-swipe selection
+  const preventSelectRef = React.useRef<((e: Event) => void) | null>(null)
+
+  function startPreventingSelection() {
+    if (typeof document === 'undefined') return
+    // clear any selection that already started
+    window.getSelection()?.removeAllRanges()
+    // block future selection attempts at the event level
+    const handler = (e: Event) => e.preventDefault()
+    preventSelectRef.current = handler
+    document.addEventListener('selectstart', handler, true)
+  }
+
+  function stopPreventingSelection() {
+    if (preventSelectRef.current) {
+      document.removeEventListener('selectstart', preventSelectRef.current, true)
+      preventSelectRef.current = null
+    }
+  }
+
   // Cleanup function to reset all drag state
   const cleanup = React.useCallback(() => {
     dragStartRef.current = null
     lockedDirectionRef.current = null
     setIsDragging(false)
+    stopPreventingSelection()
   }, [])
 
   // Defensive cleanup on unmount - if toast unmounts while dragging
@@ -119,6 +141,9 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
         startTime: Date.now(),
         pointerId: event.pointerId,
       }
+
+      // prevent text selection on the page during drag
+      startPreventingSelection()
 
       setIsDragging(true)
       onDragStart?.()
