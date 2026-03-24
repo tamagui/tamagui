@@ -569,7 +569,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
       // use a fast timing animation (not spring) so exit doesn't take forever
       // disable during drag so stacking doesn't interfere with drag gesture
       // also disable for reduced motion preference
-      transition={isDragging || reducedMotion ? undefined : '200ms'}
+      transition={isDragging || reducedMotion ? undefined : removed ? '200ms' : '400ms'}
       animateOnly={['transform', 'opacity']}
       // stacking animation props (NOT drag - drag is handled by inner DragWrapper)
       y={computedY}
@@ -588,17 +588,10 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         !isFront && {
           style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
         })}
-      // enter/exit styles for AnimatePresence
-      // subtle animations - small y shift + opacity fade
-      // when reducedMotion, only fade opacity (no transform)
       enterStyle={
         reducedMotion
           ? { opacity: 0 }
-          : {
-              opacity: 0,
-              y: isTop ? -10 : 10,
-              scale: 0.95,
-            }
+          : { opacity: 0, y: isTop ? -80 : 80 }
       }
       exitStyle={
         reducedMotion

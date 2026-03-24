@@ -1055,22 +1055,14 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
           ? ctx.gap * index
           : -ctx.gap * index
 
-    // Entry offset: drives the slide-in animation through the same transition
-    // as stack repositioning, so new toast and existing toasts animate in sync.
-    // Uses mounted state (set in useEffect after first paint) — the 1-frame gap
-    // lets the browser register the initial value before the CSS transition starts.
-    const mountOffset = !mounted && !ctx.reducedMotion ? (isTop ? -80 : 80) : 0
-
     const computedOpacity =
-      !mounted && !ctx.reducedMotion
+      removed && !swipeOut
         ? 0
-        : removed && !swipeOut
+        : index >= ctx.visibleToasts
           ? 0
-          : index >= ctx.visibleToasts
-            ? 0
-            : !ctx.expanded && index === ctx.visibleToasts - 1
-              ? 0.5
-              : 1
+          : !ctx.expanded && index === ctx.visibleToasts - 1
+            ? 0.5
+            : 1
     const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
     const computedHeight = !ctx.expanded && !isFront ? frontToastHeight : undefined
     const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
@@ -1100,7 +1092,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
           isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'
         }
         animateOnly={['transform', 'opacity', 'height']}
-        y={stackY + mountOffset}
+        y={stackY}
         scale={stackScale}
         opacity={computedOpacity}
         zIndex={computedZIndex}
@@ -1113,7 +1105,11 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
           !isFront && {
             style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
           })}
-        enterStyle={ctx.reducedMotion ? { opacity: 0 } : undefined}
+        enterStyle={
+          ctx.reducedMotion
+            ? { opacity: 0 }
+            : { opacity: 0, y: isTop ? -80 : 80 }
+        }
         exitStyle={
           ctx.reducedMotion
             ? { opacity: 0 }
