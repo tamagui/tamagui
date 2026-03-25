@@ -28,7 +28,7 @@ export const ToastDemo = () => {
   return (
     <Toast
       position={position}
-      gap={gap}
+      gap={Math.round(gap)}
       visibleToasts={visibleToasts}
       duration={duration}
     >
@@ -89,13 +89,13 @@ export const ToastDemo = () => {
         </YStack>
 
         {/* Controls */}
-        <YStack gap="$2" paddingTop="$2">
+        <YStack gap="$1" paddingTop="$1">
           <DemoSlider
             label="Gap"
             value={gap}
             min={0}
             max={30}
-            step={2}
+            step={0.1}
             onChange={setGap}
           />
           <DemoSlider
@@ -111,7 +111,7 @@ export const ToastDemo = () => {
             value={duration}
             min={1000}
             max={10000}
-            step={500}
+            step={100}
             onChange={setDuration}
             format={(v) => `${(v / 1000).toFixed(1)}s`}
           />
@@ -170,13 +170,13 @@ function DemoSlider({
   value: number
   min: number
   max: number
-  step: number
+  step?: number
   onChange: (v: number) => void
   format?: (v: number) => string
 }) {
   return (
-    <XStack gap="$3" alignItems="center">
-      <Label size="$2" width={60}>
+    <XStack gap="$2" alignItems="center">
+      <Label size="$2" width={55}>
         {label}
       </Label>
       <Slider
@@ -192,8 +192,8 @@ function DemoSlider({
         </Slider.Track>
         <Slider.Thumb theme="accent" size={16} borderRadius={100} index={0} />
       </Slider>
-      <SizableText size="$2" width={40} textAlign="right">
-        {format ? format(value) : value}
+      <SizableText userSelect='none' size="$2" width={35} textAlign="right">
+        {format ? format(value) : Math.round(value)}
       </SizableText>
     </XStack>
   )
