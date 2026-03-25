@@ -63,34 +63,75 @@ jobs:
       - name: Install playwright
         run: bunx playwright install
 
+      - name: Restore Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
+
       - name: Run unit tests
         run: bun turbo run test:web --filter='!@tamagui/kitchen-sink' --concurrency=1
 
   changes:
     runs-on: ubuntu-latest
     outputs:
-      integration-relevant: ${{ steps.filter.outputs.integration-relevant }}
+      integration-relevant: ${{ steps.turbo-check.outputs.relevant }}
     steps:
       - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
         with:
-          filters: |
-            integration-relevant:
-              - 'code/core/**'
-              - 'code/ui/**'
-              - 'code/packages/**'
-              - 'code/kitchen-sink/**'
-              - 'code/compiler/babel-plugin/**'
-              - 'code/compiler/loader/**'
-              - 'code/compiler/metro-plugin/**'
-              - 'code/demos/**'
-              - 'package.json'
-              - 'bun.lock'
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: 'package.json'
+
+      # turbo reads workspace graph from package.json files — no bun install needed
+      # TODO: turbo ls --affected is broken in <=2.8.20 (ignores git refs, false positives
+      # on root config changes — vercel/turborepo#11144, #10869). fix landed in 2.8.21
+      # canaries (PR #12424). once stable, simplify this to: turbo ls --affected
+      - name: Install turbo
+        run: npm install -g turbo@2
+
+      - name: Check if kitchen-sink dependency tree changed
+        id: turbo-check
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+          else
+            BASE="HEAD~1"
+          fi
+
+          # get all package directories in kitchen-sink's transitive dependency tree
+          # turbo ls resolves the real workspace dependency graph — no manual list needed
+          DEP_DIRS=$(turbo ls --filter='@tamagui/kitchen-sink...' 2>/dev/null | awk 'NR>1 && NF>0 {print $2}' | grep '/')
+
+          if [ -z "$DEP_DIRS" ]; then
+            echo "relevant=true" >> $GITHUB_OUTPUT
+            echo "::warning::Could not resolve dependency tree, running tests as fallback"
+            exit 0
+          fi
+
+          # build a single regex from all dependency directories + root config files
+          PATTERN=$(echo "$DEP_DIRS" | paste -sd'|' -)
+          FULL_PATTERN="^($PATTERN)/|^(package\.json|bun\.lock|turbo\.json)$"
+
+          CHANGED=$(git diff --name-only "$BASE" HEAD)
+
+          if echo "$CHANGED" | grep -qE "$FULL_PATTERN"; then
+            MATCHED=$(echo "$CHANGED" | grep -E "$FULL_PATTERN" | head -5)
+            echo "relevant=true" >> $GITHUB_OUTPUT
+            echo "::notice::Integration tests needed. Changed dependency files: $(echo "$MATCHED" | tr '\n' ', ')"
+          else
+            echo "relevant=false" >> $GITHUB_OUTPUT
+            echo "::notice::Integration tests skipped — no changes in kitchen-sink dependency tree"
+          fi
 
   integration-tests:
     needs: changes
     if: needs.changes.outputs.integration-relevant == 'true'
+    # gate is turbo's actual workspace dependency graph — no manual path list to maintain
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -119,6 +160,14 @@ jobs:
 
       - name: Install playwright
         run: bunx playwright install --with-deps
+
+      - name: Restore Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
 
       - name: Run integration tests (shard ${{ matrix.shard }})
         run: cd code/kitchen-sink && NODE_ENV=test npx playwright test --shard=${{ matrix.shard }}
