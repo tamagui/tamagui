@@ -219,7 +219,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     animationDrivers,
     defaultProps,
     settings: {
-      webContainerType: 'inline-size',
+      webContainerType: 'normal',
       ...configIn.settings,
     },
     tokens: tokens as any,

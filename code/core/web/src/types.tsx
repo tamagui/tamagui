@@ -300,12 +300,11 @@ export type TamaguiComponentPropsBaseBase = {
    * Marks this component as a group for use in styling children based on parents named group.
    * See: https://tamagui.dev/docs/intro/props
    *
-   * Note: on web this applies `container-type: inline-size` to the element (CSS Container
-   * Queries). That property suppresses content-based inline sizing, so a grouped element
-   * inside a horizontal flex container (e.g. XStack/HStack) that relies on its children to
-   * determine its width will collapse to 0 px and cause text to wrap on every character.
-   * Fix: give the grouped element an explicit inline size — e.g. `flex={1}`, `width="100%"`,
-   * or a fixed `width` value.
+   * On web, by default this sets `container-type: normal` on the element, which supports
+   * pseudo-state group selectors (`$group-name-hover`, `$group-name-press`, etc.) without
+   * any layout side-effects. To use size-based container queries (`$group-name-xs`, etc.),
+   * set `webContainerType: 'inline-size'` in your `createTamagui` settings and give the
+   * grouped element an explicit inline size (e.g. `flex={1}` or `width="100%"`).
    */
   group?: GroupNames | boolean
 
@@ -1162,8 +1161,16 @@ export interface GenericTamaguiSettings {
   fastSchemeChange?: boolean
 
   /**
-   * On Web, this allows changing the behavior of container groups which by
-   * default uses `container-type: inline-size`.
+   * On Web, controls the CSS `container-type` applied to elements that have the `group` prop.
+   *
+   * Defaults to `'normal'`, which establishes a named container context for style queries and
+   * powers pseudo-state group selectors (`$group-name-hover`, `$group-name-press`, etc.) without
+   * any layout side-effects.
+   *
+   * Set to `'inline-size'` (or `'size'`) to opt into CSS size-based container queries
+   * (`$group-name-xs`, `$group-name-md`, etc.). Note that `inline-size` containment suppresses
+   * content-based inline sizing: grouped elements inside a horizontal flex container will collapse
+   * to 0 px unless given an explicit inline size (e.g. `flex={1}` or `width="100%"`).
    */
   webContainerType?:
     | 'normal'
