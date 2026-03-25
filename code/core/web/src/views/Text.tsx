@@ -50,6 +50,7 @@ export const Text = createComponent<
         ':number': (numberOfLines) =>
           numberOfLines >= 1
             ? {
+                maxWidth: '100%',
                 WebkitLineClamp: numberOfLines,
                 WebkitBoxOrient: 'vertical',
                 display: '-webkit-box',
