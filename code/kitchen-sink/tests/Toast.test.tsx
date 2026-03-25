@@ -630,9 +630,7 @@ test.describe('Toast Gesture Physics', () => {
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
-  test('collapsed mode locks cross-axis movement to zero', async ({
-    page,
-  }) => {
+  test('collapsed mode locks cross-axis movement to zero', async ({ page }) => {
     await createToast(page)
     const box = await getToastBoundingBox(page)
     expect(box).toBeTruthy()
