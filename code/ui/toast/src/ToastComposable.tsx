@@ -1015,13 +1015,11 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         setSwipeOut(true)
         toast.onDismiss?.(toast)
         setRemoved(true)
-        // Sonner pattern: freeze offset and zero height immediately
-        // so remaining toasts rebalance instantly while this one animates out
-        setOffsetBeforeRemove(expandedOffset)
-        ctx.setToastHeight(toast.id, 0)
-        animateOut(exitDirection, velocity, () => {
-          ctx.removeToast(toast)
-        })
+        // remove height and toast immediately so remaining toasts reposition right away
+        // AnimatePresence handles the exit animation independently
+        ctx.removeToastHeight(toast.id)
+        ctx.removeToast(toast)
+        animateOut(exitDirection, velocity)
       },
       onCancel: () => {
         springBack(() => {
