@@ -630,7 +630,7 @@ test.describe('Toast Gesture Physics', () => {
     await page.waitForSelector('[data-testid="toast-default"]', { timeout: 10000 })
   })
 
-  test('collapsed mode allows all-direction drag with resistance except exit direction', async ({
+  test('collapsed mode locks cross-axis movement to zero', async ({
     page,
   }) => {
     await createToast(page)
@@ -640,19 +640,16 @@ test.describe('Toast Gesture Physics', () => {
     const startX = box!.x + box!.width / 2
     const startY = box!.y + box!.height / 2
 
-    // in collapsed mode, dragging vertically should have resisted movement
-    // (swipeDirection is 'right' by default, so vertical gets resistance)
+    // swipeDirection is 'right' by default (horizontal),
+    // so vertical (cross-axis) movement should be locked to 0
     await page.mouse.move(startX, startY)
     await page.mouse.down()
     await page.mouse.move(startX, startY + 50, { steps: 5 }) // drag down 50px
 
-    // vertical movement should be resisted (sqrt curve caps at ~25px)
     const { x, y } = await getDragTransform(page)
-    // x should be near 0 since we only moved vertically
-    expect(Math.abs(x)).toBeLessThan(5)
-    // y should show resistance - less than 50px input, capped around 15px for sqrt(50)*2
-    expect(Math.abs(y)).toBeLessThan(20)
-    expect(Math.abs(y)).toBeGreaterThan(5) // but there should be SOME movement
+    // both axes should be 0 — vertical drag doesn't move a horizontal-swipe toast
+    expect(Math.abs(x)).toBe(0)
+    expect(Math.abs(y)).toBe(0)
 
     await page.mouse.up()
     await page.waitForTimeout(500)
