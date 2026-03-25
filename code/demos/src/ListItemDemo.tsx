@@ -33,13 +33,19 @@ function ListItemDemo1() {
         />
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem gap="$3" icon={Moon}>Moon</ListItem>
+        <ListItem gap="$3" icon={Moon}>
+          Moon
+        </ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem gap="$3" icon={Sun}>Sun</ListItem>
+        <ListItem gap="$3" icon={Sun}>
+          Sun
+        </ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem gap="$3" icon={Cloud}>Cloud</ListItem>
+        <ListItem gap="$3" icon={Cloud}>
+          Cloud
+        </ListItem>
       </YGroup.Item>
     </YGroup>
   )
@@ -57,11 +63,23 @@ function ListItemDemo2() {
       size="$5"
     >
       <YGroup.Item>
-        <ListItem gap="$3" title="Star" subTitle="Subtitle" icon={Star} iconAfter={ChevronRight} />
+        <ListItem
+          gap="$3"
+          title="Star"
+          subTitle="Subtitle"
+          icon={Star}
+          iconAfter={ChevronRight}
+        />
       </YGroup.Item>
       <Separator />
       <YGroup.Item>
-        <ListItem gap="$3" title="Moon" subTitle="Subtitle" icon={Moon} iconAfter={ChevronRight} />
+        <ListItem
+          gap="$3"
+          title="Moon"
+          subTitle="Subtitle"
+          icon={Moon}
+          iconAfter={ChevronRight}
+        />
       </YGroup.Item>
     </YGroup>
   )
