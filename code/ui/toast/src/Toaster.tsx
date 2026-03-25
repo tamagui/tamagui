@@ -37,6 +37,12 @@ function resolveSwipeDirection(
     'left' | 'center' | 'right',
   ]
 
+  if (!isWeb) {
+    // on native, always use vertical swipe to avoid conflicting with
+    // iOS/Android navigation back gesture (horizontal edge swipe)
+    return yPosition === 'top' ? 'up' : 'down'
+  }
+
   // for left/right positions, swipe horizontally toward that edge
   if (xPosition === 'left') return 'left'
   if (xPosition === 'right') return 'right'
@@ -609,7 +615,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
                 setToastHeight={setToastHeight}
                 removeToastHeight={removeToastHeight}
                 heightBeforeMe={heightBeforeMe}
-                frontToastHeight={toasts[0] ? (heights[toasts[0].id] ?? 55) : 55}
+                frontToastHeight={toasts[0] ? (heights[toasts[0].id] ?? -1) : -1}
                 duration={toast.duration ?? toastOptions?.duration ?? duration}
                 gap={gap}
                 swipeDirection={resolveSwipeDirection(swipeDirection, position)}

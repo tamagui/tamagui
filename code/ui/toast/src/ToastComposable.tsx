@@ -203,6 +203,11 @@ function resolveSwipeDirection(
     'top' | 'bottom',
     'left' | 'center' | 'right',
   ]
+  if (!isWeb) {
+    // on native, always use vertical swipe to avoid conflicting with
+    // iOS/Android navigation back gesture (horizontal edge swipe)
+    return yPosition === 'top' ? 'up' : 'down'
+  }
   if (xPosition === 'left') return 'left'
   if (xPosition === 'right') return 'right'
   // center positions: horizontal swipe feels most natural
@@ -1070,9 +1075,16 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       [toast, handleClose]
     )
 
-    // stacking calculations — skip dismissed toasts (height=0) for correct positions
-    const frontToastId = ctx.toasts[0]?.id
-    const frontToastHeight = frontToastId != null ? (ctx.heights[frontToastId] ?? 55) : 55
+    // stacking calculations — find the first non-dismissed toast's height for collapsed stacking
+    // (dismissed toasts have height=0, skip them to avoid layout jumps)
+    let frontToastHeight = -1
+    for (const t of ctx.toasts) {
+      const h = ctx.heights[t.id]
+      if (h != null && h > 0) {
+        frontToastHeight = h
+        break
+      }
+    }
 
     const stackScale = !ctx.expanded && !isFront ? 1 - index * 0.05 : 1
 
@@ -1099,7 +1111,10 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             ? 0.5
             : 1
     const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
-    const computedHeight = !ctx.expanded && !isFront ? frontToastHeight : undefined
+    // only constrain height to front toast when it's been actually measured
+    // (not the 55px fallback) — prevents visual jump when a new toast enters
+    const computedHeight =
+      !ctx.expanded && !isFront && frontToastHeight > 0 ? frontToastHeight : undefined
     const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
 
     // gap filler for hover stability
@@ -1141,7 +1156,9 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
           })}
         enterStyle={
-          ctx.reducedMotion ? { opacity: 0 } : { opacity: 0, y: isTop ? -80 : 80 }
+          ctx.reducedMotion
+            ? { opacity: 0 }
+            : { opacity: 0, y: isTop ? -80 : 80 }
         }
         exitStyle={
           ctx.reducedMotion

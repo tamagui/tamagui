@@ -538,7 +538,10 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
   // higher z-index = more in front
   // exiting toasts (removed=true) get lower z-index so entering toasts appear above them
   const computedZIndex = removed ? 0 : visibleToasts - index + 1
-  const computedHeight = !expanded && !isFront ? frontToastHeight : undefined
+  // only constrain height to front toast when it's been actually measured
+  // (frontToastHeight=-1 means unmeasured) — prevents visual jump when a new toast enters
+  const computedHeight =
+    !expanded && !isFront && frontToastHeight > 0 ? frontToastHeight : undefined
   // hidden toasts should not intercept pointer events (like Sonner)
   const computedPointerEvents = index >= visibleToasts ? 'none' : 'auto'
 
@@ -594,7 +597,11 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         !isFront && {
           style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
         })}
-      enterStyle={reducedMotion ? { opacity: 0 } : { opacity: 0, y: isTop ? -80 : 80 }}
+      enterStyle={
+        reducedMotion
+          ? { opacity: 0 }
+          : { opacity: 0, y: isTop ? -80 : 80 }
+      }
       exitStyle={
         reducedMotion
           ? { opacity: 0 }
