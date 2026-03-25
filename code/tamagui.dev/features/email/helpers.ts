@@ -55,7 +55,7 @@ export function sendProductPurchaseEmail(
 
 export function sendProductRenewalEmail(
   email: string,
-  args: { name: string; product_name: string }
+  args: { name: string; product_name: string; amount_due?: number }
 ) {
   if (process.env.NODE_ENV !== 'production') {
     console.info(`Not sending email to ${email} since we're not on prod.`)
@@ -64,18 +64,24 @@ export function sendProductRenewalEmail(
 
   const client = new postmark.ServerClient(serverToken)
 
+  const amountText = args.amount_due
+    ? `<strong>$${(args.amount_due / 100).toFixed(2)}</strong>`
+    : 'the renewal amount'
+
   const htmlBody = wrapEmail(`
   <h1>Hey ${args.name}!</h1>
 
-  ${emailIntro}
+  <p><strong>Your subscription to ${args.product_name} will renew in approximately 7 days for ${amountText}.</strong></p>
 
-  <p><strong>In a week your subscription to ${args.product_name} will renew.</strong></p>
+  <p>If you'd like to continue, no action is needed — your subscription will renew automatically.</p>
 
-  ${whatYouGetSection}
+  <p>If you'd like to cancel before the renewal, you can do so from your account page:</p>
 
   <div class="cta-container">
     <a href="https://tamagui.dev/account" class="cta-button">Manage Subscription</a>
   </div>
+
+  ${whatYouGetSection}
 
   <p>If you have any questions, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
 
@@ -85,7 +91,7 @@ export function sendProductRenewalEmail(
   return client.sendEmail({
     From: 'support@tamagui.dev',
     To: email,
-    Subject: `Your ${args.product_name} subscription will renew soon`,
+    Subject: `Your ${args.product_name} subscription renews in ~7 days`,
     HtmlBody: htmlBody,
   })
 }
@@ -170,7 +176,7 @@ ${body}
  */
 export function sendV1UpgradeEmail(
   email: string,
-  args: { name: string; subscriptionId: string }
+  args: { name: string; subscriptionId: string; amount_due?: number }
 ) {
   if (process.env.NODE_ENV !== 'production') {
     console.info(`Not sending V1 upgrade email to ${email} since we're not on prod.`)
@@ -181,6 +187,10 @@ export function sendV1UpgradeEmail(
   const couponCode = 'V1_UPGRADE_35'
   const enableV2Url = `https://tamagui.dev/pro/enable-v2-renewal?sub_id=${args.subscriptionId}`
 
+  const amountText = args.amount_due
+    ? `<strong>$${(args.amount_due / 100).toFixed(2)}</strong>`
+    : 'the renewal amount'
+
   const htmlBody = `
 <!DOCTYPE html>
 <html>
@@ -188,46 +198,44 @@ export function sendV1UpgradeEmail(
   <style>${emailStyles}</style>
 </head>
 <body>
-  <h1>Hey ${args.name}! 👋</h1>
+  <h1>Hey ${args.name}!</h1>
 
-  <p>Thank you for being a Tamagui Pro subscriber - we really appreciate your support!</p>
+  <p><strong>Your Tamagui Pro subscription will renew in approximately 7 days for ${amountText}.</strong></p>
 
-  <p>We're excited to announce <strong>Takeout 2</strong> is here, and it's the realization of years of effort to make a more realtime, responsive and Rails-like starter for React Native + Web.</p>
-
-  <h2>What's New in Takeout 2</h2>
-
-  <ul>
-    <li><strong>Takeout 2</strong> - Featuring Tamagui 2, One 1, and Zero, it's a stack we poured effort into for years with way more refinement, great deployment / IaC options, and tons of scripts, helpers, hooks and UI in the box. Gets a >95 Lighthouse on a beautiful landing page that seamlessly transitions into a fully-loaded app experience.</li>
-    <li><strong>Takeout Static</strong> - A nice simplified web-only starter with Vercel deploy, MDX blog and docs, and 100 Lighthouse.</li>
-    <li><strong>Unlimited Team Members</strong> - No more per-seat pricing, instead per-project with friendly pricing.</li>
-  </ul>
-
-  <h2>New Pricing</h2>
-
-  <p>The new plan is <strong>$250 per project</strong> (one web domain + iOS + Android), with an optional <strong>$100/year</strong> to continue receiving updates after the first year.</p>
-
-  <h2>Automatic Upgrade Available</h2>
-
-  <p>Want to upgrade to Takeout 2 when your current subscription renews? Enable automatic V2 renewal and you'll get <strong>35% off</strong> applied automatically - no coupon code needed!</p>
+  <p>If you'd like to continue with your current plan, no action is needed. If you'd like to cancel, you can do so from your account page:</p>
 
   <div class="cta-container">
-    <a href="${enableV2Url}" class="cta-button">Enable V2 Renewal</a>
-    <a href="https://tamagui.dev/account" class="cta-button cta-button-secondary">Learn More</a>
+    <a href="https://tamagui.dev/account" class="cta-button">Manage Subscription</a>
   </div>
 
-  <p>Or if you'd prefer to purchase manually, use this coupon at checkout:</p>
+  <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
+
+  <h2>Consider upgrading to Takeout 2</h2>
+
+  <p>We've been working hard on the next generation. <strong>Takeout 2</strong> features Tamagui 2, One 1, and Zero — a more realtime, responsive and Rails-like starter for React Native + Web.</p>
+
+  <ul>
+    <li><strong>Takeout 2</strong> - >95 Lighthouse, tons of scripts, helpers, hooks and UI in the box.</li>
+    <li><strong>Takeout Static</strong> - Simplified web-only starter with 100 Lighthouse.</li>
+    <li><strong>Unlimited Team Members</strong> - No more per-seat pricing.</li>
+  </ul>
+
+  <p>Enable automatic V2 renewal and get <strong>35% off</strong> applied automatically:</p>
+
+  <div class="cta-container">
+    <a href="${enableV2Url}" class="cta-button">Enable V2 Renewal (35% off)</a>
+  </div>
+
+  <p>Or purchase manually with coupon:</p>
 
   <div class="coupon-box">
     <div class="coupon-discount">35% off</div>
     <div class="coupon-code">${couponCode}</div>
   </div>
 
-  <p>Check out the dedicated demo/landing for Takeout 2:</p>
-  <ul>
-    <li><a href="https://takeout.tamagui.dev">https://takeout.tamagui.dev</a></li>
-  </ul>
+  <p>Check out the demo: <a href="https://takeout.tamagui.dev">takeout.tamagui.dev</a></p>
 
-  <p>If you have any questions or need help, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
+  <p>If you have any questions, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
 
   <div class="footer">
     <p>Thanks for being part of the Tamagui family!<br><strong>- Nate & the Tamagui Team</strong></p>
@@ -239,7 +247,7 @@ export function sendV1UpgradeEmail(
   return client.sendEmail({
     From: 'support@tamagui.dev',
     To: email,
-    Subject: 'Introducing Takeout 2 + 35% Off for V1 Customers 🎉',
+    Subject: 'Your Tamagui Pro subscription renews in ~7 days',
     HtmlBody: htmlBody,
   })
 }
@@ -367,6 +375,94 @@ export function sendPaymentMethodReminderEmail(
     From: 'support@tamagui.dev',
     To: email,
     Subject: 'A genuine thank you',
+    HtmlBody: htmlBody,
+  })
+}
+
+/**
+ * Send confirmation email when a user cancels their subscription
+ */
+export function sendCancellationEmail(
+  email: string,
+  args: { name: string; periodEnd: string }
+) {
+  if (process.env.NODE_ENV !== 'production') {
+    console.info(`Not sending cancellation email to ${email} since we're not on prod.`)
+    return
+  }
+
+  const client = new postmark.ServerClient(serverToken)
+
+  const endDate = new Date(args.periodEnd).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  })
+
+  const htmlBody = wrapEmail(`
+  <h1>Your subscription has been cancelled</h1>
+
+  <p>Hey ${args.name},</p>
+
+  <p>Your Tamagui Pro subscription has been cancelled. You'll retain full access until <strong>${endDate}</strong>.</p>
+
+  <p>If this was a mistake, you can re-subscribe anytime from your account page:</p>
+
+  <div class="cta-container">
+    <a href="https://tamagui.dev/account" class="cta-button">Go to Account</a>
+  </div>
+
+  <p>We'd love to have you back. If there's anything we could have done better, just reply to this email — we read every response.</p>
+
+  ${emailFooter}
+  `)
+
+  return client.sendEmail({
+    From: 'support@tamagui.dev',
+    To: email,
+    Subject: 'Your Tamagui Pro subscription has been cancelled',
+    HtmlBody: htmlBody,
+  })
+}
+
+/**
+ * Send email when a payment fails
+ */
+export function sendPaymentFailedEmail(
+  email: string,
+  args: { name: string; amount?: number }
+) {
+  if (process.env.NODE_ENV !== 'production') {
+    console.info(`Not sending payment failed email to ${email} since we're not on prod.`)
+    return
+  }
+
+  const client = new postmark.ServerClient(serverToken)
+
+  const amountText = args.amount ? ` of $${(args.amount / 100).toFixed(2)}` : ''
+
+  const htmlBody = wrapEmail(`
+  <h1>Payment failed</h1>
+
+  <p>Hey ${args.name},</p>
+
+  <p>We weren't able to process your payment${amountText} for your Tamagui Pro subscription. Stripe will retry the payment automatically, but if it continues to fail your subscription may be interrupted.</p>
+
+  <p>Please update your payment method from your account page:</p>
+
+  <div class="cta-container">
+    <a href="https://tamagui.dev/account" class="cta-button">Update Payment Method</a>
+  </div>
+
+  <p>If you have any questions, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
+
+  ${emailFooter}
+  `)
+
+  return client.sendEmail({
+    From: 'support@tamagui.dev',
+    To: email,
+    Subject: 'Action needed: payment failed for your Tamagui Pro subscription',
     HtmlBody: htmlBody,
   })
 }
