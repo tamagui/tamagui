@@ -1,5 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { isWeb } from '@tamagui/constants'
+import { getGestureHandler } from '@tamagui/native' // used for RNGH gesture on native
 import type { GetProps, TamaguiElement } from '@tamagui/core'
 import {
   createStyledContext,
@@ -821,6 +822,7 @@ const ToastItemFrame = styled(YStack, {
 interface DragWrapperProps {
   animatedStyle: any
   gestureHandlers: any
+  gesture: any
   AnimatedView: any
   dragRef: React.RefObject<HTMLDivElement | null>
   children: React.ReactNode
@@ -829,6 +831,7 @@ interface DragWrapperProps {
 function DragWrapper({
   animatedStyle,
   gestureHandlers,
+  gesture,
   AnimatedView,
   dragRef,
   children,
@@ -853,6 +856,21 @@ function DragWrapper({
     )
   }
 
+  // when RNGH gesture is available, wrap with GestureDetector
+  if (gesture) {
+    const { GestureDetector } = getGestureHandler().state
+    if (GestureDetector) {
+      return (
+        <GestureDetector gesture={gesture}>
+          <AnimatedView style={[{ flex: 1 }, animatedStyle]}>
+            {children}
+          </AnimatedView>
+        </GestureDetector>
+      )
+    }
+  }
+
+  // fallback: PanResponder handlers
   return (
     <AnimatedView style={[{ flex: 1 }, animatedStyle]} {...gestureHandlers}>
       {children}
@@ -1002,7 +1020,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
           : 'horizontal',
     })
 
-    const { isDragging, gestureHandlers } = useAnimatedDragGesture({
+    const { isDragging, gestureHandlers, gesture } = useAnimatedDragGesture({
       direction: ctx.swipeDirection,
       threshold: ctx.swipeThreshold,
       disabled: !dismissible || toastType === 'loading',
@@ -1167,6 +1185,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         <DragWrapper
           animatedStyle={animatedStyle}
           gestureHandlers={gestureHandlers}
+          gesture={gesture}
           AnimatedView={AnimatedView}
           dragRef={dragRef}
         >

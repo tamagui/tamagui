@@ -1,8 +1,10 @@
 /**
- * Native implementation of drag gesture handling with animation driver integration.
- * Uses PanResponder for gesture tracking, animation driver for transforms.
+ * Native implementation of drag gesture handling.
+ * Uses react-native-gesture-handler (RNGH) when available for proper gesture
+ * coordination with ScrollView and navigation. Falls back to PanResponder.
  */
 
+import { getGestureHandler } from '@tamagui/native'
 import * as React from 'react'
 import type { PanResponderGestureState } from 'react-native'
 import { PanResponder } from 'react-native'
@@ -12,25 +14,15 @@ export interface UseAnimatedDragGestureOptions {
   direction: SwipeDirection
   threshold: number
   disabled?: boolean
-  /** when collapsed, allow drag in all directions with resistance except exit direction */
   expanded?: boolean
-  /** called during drag with offset values */
   onDragMove: (x: number, y: number) => void
-  /** called when drag starts */
   onDragStart?: () => void
-  /** called when drag ends with successful dismiss - includes exit direction and velocity */
   onDismiss: (exitDirection: 'left' | 'right' | 'up' | 'down', velocity: number) => void
-  /** called when drag ends without dismiss - spring back */
   onCancel: () => void
 }
 
-const GESTURE_GRANT_THRESHOLD = 10
 const VELOCITY_THRESHOLD = 0.11
 
-/**
- * Apply resistance when dragging past a boundary.
- * Uses a square root curve for natural-feeling resistance (same as Sheet).
- */
 function resisted(delta: number, maxResist = 25): number {
   if (delta >= 0) return delta
   const pastBoundary = Math.abs(delta)
@@ -38,11 +30,159 @@ function resisted(delta: number, maxResist = 25): number {
   return -Math.min(resistedDistance, maxResist)
 }
 
+const EXIT_DRAG_CAP = 80
+
+function cappedExit(delta: number): number {
+  if (Math.abs(delta) <= EXIT_DRAG_CAP) return delta
+  const sign = delta > 0 ? 1 : -1
+  const overshoot = Math.abs(delta) - EXIT_DRAG_CAP
+  return sign * (EXIT_DRAG_CAP + Math.sqrt(overshoot) * 2)
+}
+
+function computeOffset(
+  direction: SwipeDirection,
+  dx: number,
+  dy: number
+): { offsetX: number; offsetY: number } {
+  let offsetX = 0
+  let offsetY = 0
+
+  if (direction === 'right') {
+    offsetX = dx > 0 ? cappedExit(dx) : resisted(dx)
+  } else if (direction === 'left') {
+    offsetX = dx < 0 ? cappedExit(dx) : -resisted(-dx)
+  } else if (direction === 'down') {
+    offsetY = dy > 0 ? cappedExit(dy) : resisted(dy)
+  } else if (direction === 'up') {
+    offsetY = dy < 0 ? cappedExit(dy) : -resisted(-dy)
+  } else if (direction === 'horizontal') {
+    offsetX = cappedExit(dx)
+  } else if (direction === 'vertical') {
+    offsetY = cappedExit(dy)
+  }
+
+  return { offsetX, offsetY }
+}
+
+function computeExitDirection(
+  direction: SwipeDirection,
+  dx: number,
+  dy: number
+): 'left' | 'right' | 'up' | 'down' | null {
+  if (direction === 'right' && dx > 0) return 'right'
+  if (direction === 'left' && dx < 0) return 'left'
+  if (direction === 'horizontal') {
+    if (Math.abs(dx) > Math.abs(dy)) return dx > 0 ? 'right' : 'left'
+  }
+  if (direction === 'down' && dy > 0) return 'down'
+  if (direction === 'up' && dy < 0) return 'up'
+  if (direction === 'vertical') {
+    if (Math.abs(dy) > Math.abs(dx)) return dy > 0 ? 'down' : 'up'
+  }
+  return null
+}
+
+// ---------------------------------------------------------------------------
+// RNGH-based gesture (preferred — proper native gesture coordination)
+// ---------------------------------------------------------------------------
+
+function useGestureHandlerDrag(options: UseAnimatedDragGestureOptions) {
+  const { direction, threshold, disabled } = options
+
+  const [isDragging, setIsDragging] = React.useState(false)
+  const gestureRef = React.useRef<any>(null)
+
+  const isHorizontal =
+    direction === 'left' || direction === 'right' || direction === 'horizontal'
+
+  // store callbacks in refs for stable gesture closure
+  const onDragMoveRef = React.useRef(options.onDragMove)
+  const onDragStartRef = React.useRef(options.onDragStart)
+  const onDismissRef = React.useRef(options.onDismiss)
+  const onCancelRef = React.useRef(options.onCancel)
+  onDragMoveRef.current = options.onDragMove
+  onDragStartRef.current = options.onDragStart
+  onDismissRef.current = options.onDismiss
+  onCancelRef.current = options.onCancel
+
+  const gesture = React.useMemo(() => {
+    const gh = getGestureHandler()
+    if (!gh.isEnabled || disabled) return null
+
+    const { Gesture } = gh.state
+    if (!Gesture) return null
+
+    const pan = Gesture.Pan().withRef(gestureRef).shouldCancelWhenOutside(false)
+
+    // activeOffset: activate when movement exceeds threshold on the swipe axis
+    // failOffset: cancel if movement exceeds threshold on the wrong axis
+    // this prevents ScrollView from scrolling when user is swiping the toast
+    if (isHorizontal) {
+      pan.activeOffsetX([-10, 10])
+      pan.failOffsetY([-20, 20])
+    } else {
+      pan.activeOffsetY([-10, 10])
+      pan.failOffsetX([-20, 20])
+    }
+
+    pan
+      .onStart(() => {
+        setIsDragging(true)
+        onDragStartRef.current?.()
+      })
+      .onChange((event: any) => {
+        const { offsetX, offsetY } = computeOffset(
+          direction,
+          event.translationX,
+          event.translationY
+        )
+        onDragMoveRef.current(offsetX, offsetY)
+      })
+      .onEnd((event: any) => {
+        const dx = event.translationX
+        const dy = event.translationY
+        const relevantDelta = isHorizontal ? dx : dy
+        const relevantVelocity = isHorizontal
+          ? Math.abs(event.velocityX / 1000)
+          : Math.abs(event.velocityY / 1000)
+
+        const passedThreshold = Math.abs(relevantDelta) >= threshold
+        const hasVelocity = relevantVelocity > VELOCITY_THRESHOLD
+        const exitDirection = computeExitDirection(direction, dx, dy)
+        const shouldDismiss = exitDirection && (passedThreshold || hasVelocity)
+
+        setIsDragging(false)
+
+        if (shouldDismiss && exitDirection) {
+          onDismissRef.current(exitDirection, relevantVelocity)
+        } else {
+          onCancelRef.current()
+        }
+      })
+      .onFinalize(() => {
+        setIsDragging(false)
+      })
+
+    return pan
+  }, [disabled, direction, threshold, isHorizontal])
+
+  return {
+    isDragging,
+    gestureHandlers: {},
+    gesture,
+    gestureRef,
+  }
+}
+
+// ---------------------------------------------------------------------------
+// PanResponder fallback (when RNGH is not available)
+// ---------------------------------------------------------------------------
+
+const GESTURE_GRANT_THRESHOLD = 10
+
 function shouldGrantGestureMove(dir: SwipeDirection, dx: number, dy: number): boolean {
   const absDx = Math.abs(dx)
   const absDy = Math.abs(dy)
-  // grant gesture for movement along the swipe axis in either direction
-  // (wrong direction gets resistance in onPanResponderMove)
   if (
     (dir === 'horizontal' || dir === 'left' || dir === 'right') &&
     absDx > GESTURE_GRANT_THRESHOLD &&
@@ -60,27 +200,22 @@ function shouldGrantGestureMove(dir: SwipeDirection, dx: number, dy: number): bo
   return false
 }
 
-export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
-  const { direction, threshold, disabled, onDragMove, onDragStart, onDismiss, onCancel } =
-    options
+function usePanResponderDrag(options: UseAnimatedDragGestureOptions) {
+  const { direction, threshold, disabled } = options
 
   const [isDragging, setIsDragging] = React.useState(false)
 
   const isHorizontal =
     direction === 'left' || direction === 'right' || direction === 'horizontal'
-  const isVertical =
-    direction === 'up' || direction === 'down' || direction === 'vertical'
 
-  // Store callbacks in refs so PanResponder doesn't need to be recreated
-  // when callback identities change (which happens every render for inline arrows)
-  const onDragMoveRef = React.useRef(onDragMove)
-  const onDragStartRef = React.useRef(onDragStart)
-  const onDismissRef = React.useRef(onDismiss)
-  const onCancelRef = React.useRef(onCancel)
-  onDragMoveRef.current = onDragMove
-  onDragStartRef.current = onDragStart
-  onDismissRef.current = onDismiss
-  onCancelRef.current = onCancel
+  const onDragMoveRef = React.useRef(options.onDragMove)
+  const onDragStartRef = React.useRef(options.onDragStart)
+  const onDismissRef = React.useRef(options.onDismiss)
+  const onCancelRef = React.useRef(options.onCancel)
+  onDragMoveRef.current = options.onDragMove
+  onDragStartRef.current = options.onDragStart
+  onDismissRef.current = options.onDismiss
+  onCancelRef.current = options.onCancel
 
   const panResponder = React.useMemo(() => {
     if (disabled) return null
@@ -89,10 +224,10 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
       onMoveShouldSetPanResponder: (_e, gesture) => {
         return shouldGrantGestureMove(direction, gesture.dx, gesture.dy)
       },
-      // capture phase: steal gesture from parent ScrollView when swiping in dismiss direction
       onMoveShouldSetPanResponderCapture: (_e, gesture) => {
         return shouldGrantGestureMove(direction, gesture.dx, gesture.dy)
       },
+      onPanResponderTerminationRequest: () => false,
 
       onPanResponderGrant: () => {
         setIsDragging(true)
@@ -100,61 +235,18 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
       },
 
       onPanResponderMove: (_e, gesture: PanResponderGestureState) => {
-        const { dx, dy } = gesture
-
-        let offsetX = 0
-        let offsetY = 0
-
-        // apply direction-aware movement with resistance for wrong direction
-        if (isHorizontal) {
-          if (direction === 'right') {
-            offsetX = dx > 0 ? dx : resisted(dx)
-          } else if (direction === 'left') {
-            offsetX = dx < 0 ? dx : -resisted(-dx)
-          } else {
-            offsetX = dx
-          }
-        }
-
-        if (isVertical) {
-          if (direction === 'down') {
-            offsetY = dy > 0 ? dy : resisted(dy)
-          } else if (direction === 'up') {
-            offsetY = dy < 0 ? dy : -resisted(-dy)
-          } else {
-            offsetY = dy
-          }
-        }
-
-        // directly update animated values (no React state)
+        const { offsetX, offsetY } = computeOffset(direction, gesture.dx, gesture.dy)
         onDragMoveRef.current(offsetX, offsetY)
       },
 
       onPanResponderRelease: (_e, gesture: PanResponderGestureState) => {
         const { dx, dy, vx, vy } = gesture
-
         const relevantDelta = isHorizontal ? dx : dy
         const relevantVelocity = isHorizontal ? Math.abs(vx) : Math.abs(vy)
 
         const passedThreshold = Math.abs(relevantDelta) >= threshold
         const hasVelocity = relevantVelocity > VELOCITY_THRESHOLD
-
-        // determine exit direction
-        let exitDirection: 'left' | 'right' | 'up' | 'down' | null = null
-        if (direction === 'right' && dx > 0) exitDirection = 'right'
-        else if (direction === 'left' && dx < 0) exitDirection = 'left'
-        else if (direction === 'horizontal') {
-          if (Math.abs(dx) > Math.abs(dy)) {
-            exitDirection = dx > 0 ? 'right' : 'left'
-          }
-        } else if (direction === 'down' && dy > 0) exitDirection = 'down'
-        else if (direction === 'up' && dy < 0) exitDirection = 'up'
-        else if (direction === 'vertical') {
-          if (Math.abs(dy) > Math.abs(dx)) {
-            exitDirection = dy > 0 ? 'down' : 'up'
-          }
-        }
-
+        const exitDirection = computeExitDirection(direction, dx, dy)
         const shouldDismiss = exitDirection && (passedThreshold || hasVelocity)
 
         setIsDragging(false)
@@ -171,10 +263,24 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
         onCancelRef.current()
       },
     })
-  }, [disabled, direction, threshold, isHorizontal, isVertical])
+  }, [disabled, direction, threshold, isHorizontal])
 
   return {
     isDragging,
     gestureHandlers: panResponder?.panHandlers ?? {},
+    gesture: null,
+    gestureRef: React.useRef(null),
   }
+}
+
+// ---------------------------------------------------------------------------
+// Public hook — picks RNGH or PanResponder
+// ---------------------------------------------------------------------------
+
+export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
+  const gh = getGestureHandler()
+  if (gh.isEnabled) {
+    return useGestureHandlerDrag(options)
+  }
+  return usePanResponderDrag(options)
 }

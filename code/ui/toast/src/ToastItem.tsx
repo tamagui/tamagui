@@ -1,6 +1,7 @@
 import { isWeb } from '@tamagui/constants'
 import type { TamaguiElement } from '@tamagui/core'
 import { styled, useEvent, View } from '@tamagui/core'
+import { getGestureHandler } from '@tamagui/native'
 import { XStack, YStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
 import * as React from 'react'
@@ -24,6 +25,7 @@ interface DragWrapperProps {
   isWeb: boolean
   animatedStyle: any
   gestureHandlers: any
+  gesture: any
   AnimatedView: any
   dragRef: React.RefObject<HTMLDivElement | null>
   children: React.ReactNode
@@ -33,13 +35,12 @@ function DragWrapper({
   isWeb: isWebProp,
   animatedStyle,
   gestureHandlers,
+  gesture,
   AnimatedView,
   dragRef,
   children,
 }: DragWrapperProps) {
   if (isWebProp) {
-    // on web, use a raw div with ref for direct DOM manipulation (CSS driver)
-    // the dragRef is used by useToastAnimations to directly set transform
     return (
       <div
         ref={dragRef}
@@ -47,12 +48,9 @@ function DragWrapper({
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          // prevent text selection during drag
           userSelect: 'none',
           WebkitUserSelect: 'none',
-          // prevent touch scrolling interference
           touchAction: 'none',
-          // visual feedback that this is draggable
           cursor: 'grab',
         }}
         {...gestureHandlers}
@@ -62,7 +60,19 @@ function DragWrapper({
     )
   }
 
-  // on native, use AnimatedView with animatedStyle
+  // when RNGH gesture is available, wrap with GestureDetector
+  if (gesture) {
+    const { GestureDetector } = getGestureHandler().state
+    if (GestureDetector) {
+      return (
+        <GestureDetector gesture={gesture}>
+          <AnimatedView style={[{ flex: 1 }, animatedStyle]}>{children}</AnimatedView>
+        </GestureDetector>
+      )
+    }
+  }
+
+  // fallback: PanResponder handlers
   return (
     <AnimatedView style={[{ flex: 1 }, animatedStyle]} {...gestureHandlers}>
       {children}
@@ -421,7 +431,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
     })
 
   // drag gesture with animation driver integration
-  const { isDragging, gestureHandlers } = useAnimatedDragGesture({
+  const { isDragging, gestureHandlers, gesture } = useAnimatedDragGesture({
     direction: swipeDirection,
     threshold: swipeThreshold,
     disabled: !dismissible || toastType === 'loading',
@@ -611,6 +621,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         isWeb={isWeb}
         animatedStyle={animatedStyle}
         gestureHandlers={gestureHandlers}
+        gesture={gesture}
         AnimatedView={AnimatedView}
         dragRef={dragRef}
       >
