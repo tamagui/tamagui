@@ -314,5 +314,6 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
   return {
     isDragging,
     gestureHandlers,
+    gesture: null as any,
   }
 }

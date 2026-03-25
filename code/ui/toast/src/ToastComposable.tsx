@@ -862,9 +862,7 @@ function DragWrapper({
     if (GestureDetector) {
       return (
         <GestureDetector gesture={gesture}>
-          <AnimatedView style={[{ flex: 1 }, animatedStyle]}>
-            {children}
-          </AnimatedView>
+          <AnimatedView style={[{ flex: 1 }, animatedStyle]}>{children}</AnimatedView>
         </GestureDetector>
       )
     }
