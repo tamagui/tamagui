@@ -1427,8 +1427,8 @@ export type WithMediaProps<A> = {
         [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>
       }
     : Key extends `$platform-web`
-      ? AddWebOnlyStyleProps<A>
-      : A
+      ? AddWebOnlyStyleProps<A> & { [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A> }
+      : A & { [Key in MediaPropKeys]?: A }
 }
 
 type AddWebOnlyStyleProps<A> = {
