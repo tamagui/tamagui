@@ -470,12 +470,13 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
 
   const handleClose = React.useCallback(() => {
     if (!dismissible) return
+    triggerDismissCooldown()
     toast.onDismiss?.(toast)
     setRemoved(true)
     setTimeout(() => {
       removeToast(toast)
     }, TIME_BEFORE_UNMOUNT)
-  }, [dismissible, toast, removeToast])
+  }, [dismissible, toast, removeToast, triggerDismissCooldown])
 
   // get icon - only show if explicitly provided via toast.icon or icons prop
   const getIcon = () => {
@@ -615,7 +616,6 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         dragRef={dragRef}
       >
         <ToastItemFrame
-          // biome-ignore lint/a11y/useSemanticElements: we can't use <output> element as this is a styled Tamagui component
           role="status"
           aria-live="polite"
           aria-atomic
@@ -624,6 +624,16 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
           {...(isWeb && {
             onKeyDown: (event: React.KeyboardEvent) => {
               if (event.key === 'Escape' && dismissible) {
+                // move focus to the next toast before dismissing
+                const current = event.currentTarget as HTMLElement
+                const container = current.closest('[aria-label]') as HTMLElement
+                if (container) {
+                  const focusables = container.querySelectorAll('[tabindex="0"]')
+                  const arr = Array.from(focusables)
+                  const idx = arr.indexOf(current)
+                  const next = arr[idx + 1] || arr[idx - 1]
+                  ;(next as HTMLElement)?.focus()
+                }
                 handleClose()
               }
             },

@@ -343,6 +343,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
     }, [native, duration])
 
     // collapse when 1 toast (but respect dismiss cooldown for smooth animation)
+    // keyboard dismiss is handled by onBlur when focus leaves after last toast
     React.useEffect(() => {
       if (toasts.length <= 1 && !dismissCooldownRef.current) {
         setExpanded(false)
@@ -520,9 +521,8 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
           ctx.setExpanded(true)
           ;(listRef.current as HTMLElement)?.focus()
         }
-        if (event.code === 'Escape') {
-          ctx.setExpanded(false)
-        }
+        // Escape is handled by individual toast items via onKeyDown
+        // which dismisses the focused toast with cooldown (keeps stack expanded)
       }
       document.addEventListener('keydown', handleKeyDown)
       return () => document.removeEventListener('keydown', handleKeyDown)
@@ -597,6 +597,34 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
                 }
               },
             })}
+        {...(isWeb && {
+          onFocus: (event: React.FocusEvent) => {
+            // keyboard focus entered — expand stack and pause timers
+            if (
+              !(event.currentTarget as HTMLElement).contains(
+                event.relatedTarget as HTMLElement
+              )
+            ) {
+              if (ctx.toasts.length > 1) {
+                ctx.setExpanded(true)
+              }
+              ctx.setInteracting(true)
+            }
+          },
+          onBlur: (event: React.FocusEvent) => {
+            // focus left the toaster — collapse and resume timers
+            if (
+              !(event.currentTarget as HTMLElement).contains(
+                event.relatedTarget as HTMLElement
+              )
+            ) {
+              ctx.setInteracting(false)
+              if (!ctx.isInDismissCooldown()) {
+                ctx.setExpanded(false)
+              }
+            }
+          },
+        })}
         {...rest}
       >
         {children}
@@ -1021,6 +1049,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
 
     const handleClose = React.useCallback(() => {
       if (!dismissible) return
+      ctx.triggerDismissCooldown()
       toast.onDismiss?.(toast)
       setRemoved(true)
       if (isExpandedRef.current) {
@@ -1028,7 +1057,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         ctx.setToastHeight(toast.id, 0)
       }
       setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
-    }, [dismissible, toast, ctx.removeToast, ctx.setToastHeight])
+    }, [dismissible, toast, ctx.removeToast, ctx.setToastHeight, ctx.triggerDismissCooldown])
 
     const itemContextValue = React.useMemo<ToastItemContextValue>(
       () => ({ toast, handleClose }),
@@ -1133,6 +1162,16 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             {...(isWeb && {
               onKeyDown: (event: React.KeyboardEvent) => {
                 if (event.key === 'Escape' && dismissible) {
+                  // move focus to the next toast before dismissing
+                  const current = event.currentTarget as HTMLElement
+                  const container = current.closest('[aria-label]') as HTMLElement
+                  if (container) {
+                    const focusables = container.querySelectorAll('[tabindex="0"]')
+                    const arr = Array.from(focusables)
+                    const idx = arr.indexOf(current)
+                    const next = arr[idx + 1] || arr[idx - 1]
+                    ;(next as HTMLElement)?.focus()
+                  }
                   handleClose()
                 }
               },

@@ -357,6 +357,7 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
     }, [native, duration])
 
     // collapse expanded view when only 1 toast remains (respect dismiss cooldown)
+    // keyboard dismiss is handled by onBlur when focus leaves after last toast
     React.useEffect(() => {
       if (toasts.length <= 1 && !dismissCooldownRef.current) {
         setExpanded(false)
@@ -377,13 +378,8 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
           ;(listRef.current as HTMLElement)?.focus()
         }
 
-        if (
-          event.code === 'Escape' &&
-          (document.activeElement === listRef.current ||
-            (listRef.current as HTMLElement)?.contains(document.activeElement))
-        ) {
-          setExpanded(false)
-        }
+        // Escape is handled by individual toast items via onKeyDown
+        // which dismisses the focused toast with cooldown (keeps stack expanded)
       }
 
       document.addEventListener('keydown', handleKeyDown)
@@ -563,6 +559,11 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
               )
             ) {
               isFocusWithinRef.current = false
+              // focus left the toaster — collapse and resume timers
+              setInteracting(false)
+              if (!dismissCooldownRef.current) {
+                setExpanded(false)
+              }
               if (lastFocusedElementRef.current) {
                 lastFocusedElementRef.current.focus({ preventScroll: true })
                 lastFocusedElementRef.current = null
@@ -573,6 +574,11 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
             if (!isFocusWithinRef.current) {
               isFocusWithinRef.current = true
               lastFocusedElementRef.current = event.relatedTarget as HTMLElement
+              // keyboard focus entered — expand stack and pause timers
+              if (toasts.length > 1) {
+                setExpanded(true)
+              }
+              setInteracting(true)
             }
           },
         })}
