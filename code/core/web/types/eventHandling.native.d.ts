@@ -1,5 +1,5 @@
 /**
- * Native event handling - uses RNGH when available, falls back to usePressability
+ * Native event handling - uses RNGH when available, falls back to responder system
  */
 import type { StaticConfig, TamaguiComponentStateRef } from './types';
 export declare function getWebEvents(): {};

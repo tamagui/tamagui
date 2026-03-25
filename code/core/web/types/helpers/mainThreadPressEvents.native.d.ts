@@ -1,10 +1,9 @@
 /**
- * Fallback press handling using React Native's usePressability
- * Split into separate file to avoid deep import warnings when RNGH is enabled
+ * Fallback press handling when RNGH is not available.
  *
- * NOTE: This hook must be called unconditionally in the parent to avoid
- * rules of hooks violations when disabled toggles. The `enabled` param
- * controls whether the pressability events are actually applied.
+ * Implements the responder-based press detection that usePressability provides,
+ * without the deep RN internal import. Supports pressIn/pressOut delays,
+ * long press, cancellation, and min press duration.
  */
 export declare function useMainThreadPressEvents(events: any, viewProps: any, enabled?: boolean): void;
 //# sourceMappingURL=mainThreadPressEvents.native.d.ts.map

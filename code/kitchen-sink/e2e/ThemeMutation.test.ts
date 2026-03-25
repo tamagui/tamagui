@@ -7,6 +7,10 @@
  *
  * The fix ensures forceUpdateThemes() properly forces re-renders
  * regardless of whether theme keys were tracked.
+ *
+ * NOTE: Uses launchApp({ newInstance: true }) instead of reloadReactNative() to
+ * avoid transient Metro module resolution errors during reload (the addTheme/
+ * updateTheme runtime mutations can confuse Metro's module cache on reload).
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
@@ -18,7 +22,8 @@ describe('ThemeMutation', () => {
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
+    // use launchApp instead of reloadReactNative to avoid transient Metro errors
+    await device.launchApp({ newInstance: true })
     await navigateToTestCase('ThemeMutation', 'theme-mutation-button')
   })
 
@@ -27,29 +32,29 @@ describe('ThemeMutation', () => {
   })
 
   it('should show initial red color', async () => {
-    // Verify the initial color text shows red
+    // verify the initial color text shows red
     await expect(element(by.id('theme-mutation-color-text'))).toHaveText(
       'Expected color: red'
     )
-    // Verify the square is visible
+    // verify the square is visible
     await expect(element(by.id('theme-mutation-square'))).toBeVisible()
   })
 
   it('should update theme color when button is pressed', async () => {
-    // Initial state should be red
+    // initial state should be red
     await expect(element(by.id('theme-mutation-color-text'))).toHaveText(
       'Expected color: red'
     )
 
-    // Tap the button to change theme color
+    // tap the button to change theme color
     await element(by.id('theme-mutation-button')).tap()
 
-    // Wait for the color to update to blue
+    // wait for the color to update to blue
     await waitFor(element(by.id('theme-mutation-color-text')))
       .toHaveText('Expected color: blue')
       .withTimeout(5000)
 
-    // Verify the square is still visible (component re-rendered)
+    // verify the square is still visible (component re-rendered)
     await expect(element(by.id('theme-mutation-square'))).toBeVisible()
   })
 
@@ -62,7 +67,7 @@ describe('ThemeMutation', () => {
         `Expected color: ${expectedColor}`
       )
 
-      // Tap to cycle to next color (except on last iteration)
+      // tap to cycle to next color (except on last iteration)
       if (i < colors.length - 1) {
         await element(by.id('theme-mutation-button')).tap()
         await waitFor(element(by.id('theme-mutation-color-text')))
@@ -71,7 +76,7 @@ describe('ThemeMutation', () => {
       }
     }
 
-    // Verify it cycles back to red after orange
+    // verify it cycles back to red after orange
     await element(by.id('theme-mutation-button')).tap()
     await waitFor(element(by.id('theme-mutation-color-text')))
       .toHaveText('Expected color: red')
