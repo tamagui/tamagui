@@ -597,11 +597,7 @@ export const ToastItem = React.memo(function ToastItem(props: ToastItemProps) {
         !isFront && {
           style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
         })}
-      enterStyle={
-        reducedMotion
-          ? { opacity: 0 }
-          : { opacity: 0, y: isTop ? -80 : 80 }
-      }
+      enterStyle={reducedMotion ? { opacity: 0 } : { opacity: 0, y: isTop ? -80 : 80 }}
       exitStyle={
         reducedMotion
           ? { opacity: 0 }

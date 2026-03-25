@@ -1154,9 +1154,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
           })}
         enterStyle={
-          ctx.reducedMotion
-            ? { opacity: 0 }
-            : { opacity: 0, y: isTop ? -80 : 80 }
+          ctx.reducedMotion ? { opacity: 0 } : { opacity: 0, y: isTop ? -80 : 80 }
         }
         exitStyle={
           ctx.reducedMotion
