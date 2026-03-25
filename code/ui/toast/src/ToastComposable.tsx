@@ -1057,7 +1057,13 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         ctx.setToastHeight(toast.id, 0)
       }
       setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
-    }, [dismissible, toast, ctx.removeToast, ctx.setToastHeight, ctx.triggerDismissCooldown])
+    }, [
+      dismissible,
+      toast,
+      ctx.removeToast,
+      ctx.setToastHeight,
+      ctx.triggerDismissCooldown,
+    ])
 
     const itemContextValue = React.useMemo<ToastItemContextValue>(
       () => ({ toast, handleClose }),
@@ -1135,9 +1141,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             style: { transformOrigin: isTop ? 'top center' : 'bottom center' },
           })}
         enterStyle={
-          ctx.reducedMotion
-            ? { opacity: 0 }
-            : { opacity: 0, y: isTop ? -80 : 80 }
+          ctx.reducedMotion ? { opacity: 0 } : { opacity: 0, y: isTop ? -80 : 80 }
         }
         exitStyle={
           ctx.reducedMotion
