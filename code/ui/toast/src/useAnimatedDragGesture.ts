@@ -42,6 +42,19 @@ function resisted(delta: number, maxResist = 25): number {
   return -Math.min(resistedDistance, maxResist)
 }
 
+/**
+ * Cap the exit-direction drag distance so the toast doesn't fly across the screen.
+ * Allows free movement up to the limit, then applies gentle resistance beyond it.
+ */
+const EXIT_DRAG_CAP = 80
+
+function cappedExit(delta: number): number {
+  if (Math.abs(delta) <= EXIT_DRAG_CAP) return delta
+  const sign = delta > 0 ? 1 : -1
+  const overshoot = Math.abs(delta) - EXIT_DRAG_CAP
+  return sign * (EXIT_DRAG_CAP + Math.sqrt(overshoot) * 2)
+}
+
 export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
   const {
     direction,
@@ -166,28 +179,21 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
       let offsetX = 0
       let offsetY = 0
 
-      // when collapsed, allow drag in all directions with resistance except exit direction
-      // this feels more interactive like Sonner
+      // when collapsed, only allow movement along the exit axis
+      // cross-axis is locked to zero for clean horizontal/vertical swipes
       if (!expanded) {
-        // exit direction gets free movement, all others get resistance
         if (direction === 'right') {
-          offsetX = deltaX > 0 ? deltaX : resisted(deltaX)
-          offsetY = deltaY > 0 ? -resisted(-deltaY) : resisted(deltaY)
+          offsetX = deltaX > 0 ? cappedExit(deltaX) : resisted(deltaX)
         } else if (direction === 'left') {
-          offsetX = deltaX < 0 ? deltaX : -resisted(-deltaX)
-          offsetY = deltaY > 0 ? -resisted(-deltaY) : resisted(deltaY)
+          offsetX = deltaX < 0 ? cappedExit(deltaX) : -resisted(-deltaX)
         } else if (direction === 'down') {
-          offsetY = deltaY > 0 ? deltaY : resisted(deltaY)
-          offsetX = deltaX > 0 ? -resisted(-deltaX) : resisted(deltaX)
+          offsetY = deltaY > 0 ? cappedExit(deltaY) : resisted(deltaY)
         } else if (direction === 'up') {
-          offsetY = deltaY < 0 ? deltaY : -resisted(-deltaY)
-          offsetX = deltaX > 0 ? -resisted(-deltaX) : resisted(deltaX)
+          offsetY = deltaY < 0 ? cappedExit(deltaY) : -resisted(-deltaY)
         } else if (direction === 'horizontal') {
-          offsetX = deltaX
-          offsetY = deltaY > 0 ? -resisted(-deltaY) : resisted(deltaY)
+          offsetX = cappedExit(deltaX)
         } else if (direction === 'vertical') {
-          offsetY = deltaY
-          offsetX = deltaX > 0 ? -resisted(-deltaX) : resisted(deltaX)
+          offsetY = cappedExit(deltaY)
         }
       } else {
         // when expanded, only allow movement in the configured swipe direction
