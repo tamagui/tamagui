@@ -6,7 +6,7 @@ import {
   ArrowUp,
   ArrowUpLeft,
   ArrowUpRight,
-} from '@tamagui/lucide-icons'
+} from '@tamagui/lucide-icons-2'
 import { useRef, useState } from 'react'
 import { Button, Label, SizableText, Slider, XStack, YStack } from 'tamagui'
 

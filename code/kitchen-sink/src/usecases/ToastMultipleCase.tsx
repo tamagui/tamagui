@@ -9,7 +9,7 @@ import {
   AlertTriangle,
   Info,
   LoaderCircle,
-} from '@tamagui/lucide-icons'
+} from '@tamagui/lucide-icons-2'
 import { Button, H4, XStack, YStack, Text, Separator, SizableText } from 'tamagui'
 import {
   toast,
