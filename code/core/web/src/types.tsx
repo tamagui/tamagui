@@ -297,8 +297,15 @@ export type TamaguiComponentPropsBaseBase = {
   theme?: ThemeName | null
 
   /**
-   * Marks this component as a group for use in styling children based on parents named group
+   * Marks this component as a group for use in styling children based on parents named group.
    * See: https://tamagui.dev/docs/intro/props
+   *
+   * Note: on web this applies `container-type: inline-size` to the element (CSS Container
+   * Queries). That property suppresses content-based inline sizing, so a grouped element
+   * inside a horizontal flex container (e.g. XStack/HStack) that relies on its children to
+   * determine its width will collapse to 0 px and cause text to wrap on every character.
+   * Fix: give the grouped element an explicit inline size — e.g. `flex={1}`, `width="100%"`,
+   * or a fixed `width` value.
    */
   group?: GroupNames | boolean
 
@@ -1402,7 +1409,7 @@ export interface TypeOverride {
 
 export type GroupNames =
   ReturnType<TypeOverride['groupNames']> extends 1
-    ? never
+    ? string
     : ReturnType<TypeOverride['groupNames']>
 
 type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin'
