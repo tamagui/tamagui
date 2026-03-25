@@ -31,18 +31,20 @@ describe('SelectRemount', () => {
   beforeEach(async () => {
     // use launchApp instead of reloadReactNative to avoid transient Metro errors
     await device.launchApp({ newInstance: true })
-    await navigateToTestCase('SelectRemount', 'remount-button')
+    // skipEnableSync: tests manage sync themselves via withSync helper
+    // re-enabling sync after navigation can hang if animations are still settling
+    await navigateToTestCase('SelectRemount', 'remount-button', { skipEnableSync: true })
   })
 
   it('should navigate to SelectRemount test case', async () => {
     // verify we're on the right screen by checking for the remount button
-    await expect(element(by.id('remount-button'))).toBeVisible()
+    await waitFor(element(by.id('remount-button')))
+      .toBeVisible()
+      .withTimeout(5000)
   })
 
   it('should open Select on first mount', async () => {
-    // disable sync during sheet animations - spring animations can be slow to settle
-    await device.disableSynchronization()
-
+    // sync already disabled from beforeEach (skipEnableSync)
     try {
       // tap the select trigger (needs sync for touch delivery)
       await withSync(() => element(by.id('select-remount-test-trigger')).tap())
