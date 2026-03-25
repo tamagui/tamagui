@@ -179,41 +179,20 @@ export function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions) {
       let offsetX = 0
       let offsetY = 0
 
-      // when collapsed, only allow movement along the exit axis
-      // cross-axis is locked to zero for clean horizontal/vertical swipes
-      if (!expanded) {
-        if (direction === 'right') {
-          offsetX = deltaX > 0 ? cappedExit(deltaX) : resisted(deltaX)
-        } else if (direction === 'left') {
-          offsetX = deltaX < 0 ? cappedExit(deltaX) : -resisted(-deltaX)
-        } else if (direction === 'down') {
-          offsetY = deltaY > 0 ? cappedExit(deltaY) : resisted(deltaY)
-        } else if (direction === 'up') {
-          offsetY = deltaY < 0 ? cappedExit(deltaY) : -resisted(-deltaY)
-        } else if (direction === 'horizontal') {
-          offsetX = cappedExit(deltaX)
-        } else if (direction === 'vertical') {
-          offsetY = cappedExit(deltaY)
-        }
-      } else {
-        // when expanded, only allow movement in the configured swipe direction
-        if (lockedDirectionRef.current === 'x' && isHorizontal) {
-          if (direction === 'right') {
-            offsetX = deltaX > 0 ? deltaX : resisted(deltaX)
-          } else if (direction === 'left') {
-            offsetX = deltaX < 0 ? deltaX : -resisted(-deltaX)
-          } else {
-            offsetX = deltaX
-          }
-        } else if (lockedDirectionRef.current === 'y' && isVertical) {
-          if (direction === 'down') {
-            offsetY = deltaY > 0 ? deltaY : resisted(deltaY)
-          } else if (direction === 'up') {
-            offsetY = deltaY < 0 ? deltaY : -resisted(-deltaY)
-          } else {
-            offsetY = deltaY
-          }
-        }
+      // only allow movement along the exit axis with capped distance
+      // cross-axis is locked to zero for clean swipes
+      if (direction === 'right') {
+        offsetX = deltaX > 0 ? cappedExit(deltaX) : resisted(deltaX)
+      } else if (direction === 'left') {
+        offsetX = deltaX < 0 ? cappedExit(deltaX) : -resisted(-deltaX)
+      } else if (direction === 'down') {
+        offsetY = deltaY > 0 ? cappedExit(deltaY) : resisted(deltaY)
+      } else if (direction === 'up') {
+        offsetY = deltaY < 0 ? cappedExit(deltaY) : -resisted(-deltaY)
+      } else if (direction === 'horizontal') {
+        offsetX = cappedExit(deltaX)
+      } else if (direction === 'vertical') {
+        offsetY = cappedExit(deltaY)
       }
 
       // directly update animated values (no React state update during drag)
