@@ -81,12 +81,12 @@ export function HomeScreen() {
   return (
     <ScrollView testID="home-scroll-view">
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
-        <Paragraph
-          testID="home-title"
-          size="$2"
-          color={gestureHandlerEnabled ? '$green10' : '$red10'}
-        >
-          Kitchen Sink — RNGH: {gestureHandlerEnabled ? '✓' : '✗'}
+        <Paragraph testID="home-title" size="$1">
+          Kitchen Sink
+        </Paragraph>
+
+        <Paragraph size="$1" color={gestureHandlerEnabled ? '$green10' : '$red10'}>
+          RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
         </Paragraph>
 
         {/* Collapsible quick access to test cases for Detox */}
