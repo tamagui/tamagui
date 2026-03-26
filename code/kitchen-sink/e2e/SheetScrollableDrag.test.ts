@@ -41,11 +41,11 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
 
   beforeEach(async () => {
     if (isAndroid()) return
-    // use launchApp instead of reloadReactNative to avoid Metro/Fabric hangs
-    await device.launchApp({ newInstance: true })
-    await navigateToSheetScrollableDrag()
-    // disable sync after navigation - sheet spring animations block sync
-    await device.disableSynchronization()
+    await device.reloadReactNative()
+    // skipEnableSync: navigation re-enabling sync hangs if animations are settling
+    await navigateToTestCase('SheetScrollableDrag', 'sheet-scrollable-drag-trigger', {
+      skipEnableSync: true,
+    })
   })
 
   it('should show RNGH enabled', async () => {
@@ -539,7 +539,3 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     )
   })
 })
-
-async function navigateToSheetScrollableDrag() {
-  await navigateToTestCase('SheetScrollableDrag', 'sheet-scrollable-drag-trigger')
-}
