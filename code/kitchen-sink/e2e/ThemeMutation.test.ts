@@ -24,27 +24,39 @@ describe('ThemeMutation', () => {
   beforeEach(async () => {
     // use launchApp instead of reloadReactNative to avoid transient Metro errors
     await device.launchApp({ newInstance: true })
-    await navigateToTestCase('ThemeMutation', 'theme-mutation-button')
+    // skipEnableSync: addTheme/updateTheme runtime mutations keep the main run
+    // loop busy, which causes Detox sync to hang waiting for idle
+    await navigateToTestCase('ThemeMutation', 'theme-mutation-button', {
+      skipEnableSync: true,
+    })
+  })
+
+  afterEach(async () => {
+    await device.enableSynchronization()
   })
 
   it('should navigate to ThemeMutation test case', async () => {
-    await expect(element(by.id('theme-mutation-button'))).toBeVisible()
+    await waitFor(element(by.id('theme-mutation-button')))
+      .toBeVisible()
+      .withTimeout(5000)
   })
 
   it('should show initial red color', async () => {
     // verify the initial color text shows red
-    await expect(element(by.id('theme-mutation-color-text'))).toHaveText(
-      'Expected color: red'
-    )
+    await waitFor(element(by.id('theme-mutation-color-text')))
+      .toHaveText('Expected color: red')
+      .withTimeout(5000)
     // verify the square is visible
-    await expect(element(by.id('theme-mutation-square'))).toBeVisible()
+    await waitFor(element(by.id('theme-mutation-square')))
+      .toBeVisible()
+      .withTimeout(5000)
   })
 
   it('should update theme color when button is pressed', async () => {
     // initial state should be red
-    await expect(element(by.id('theme-mutation-color-text'))).toHaveText(
-      'Expected color: red'
-    )
+    await waitFor(element(by.id('theme-mutation-color-text')))
+      .toHaveText('Expected color: red')
+      .withTimeout(5000)
 
     // tap the button to change theme color
     await element(by.id('theme-mutation-button')).tap()
@@ -55,7 +67,9 @@ describe('ThemeMutation', () => {
       .withTimeout(5000)
 
     // verify the square is still visible (component re-rendered)
-    await expect(element(by.id('theme-mutation-square'))).toBeVisible()
+    await waitFor(element(by.id('theme-mutation-square')))
+      .toBeVisible()
+      .withTimeout(5000)
   })
 
   it('should cycle through multiple theme colors', async () => {
@@ -63,9 +77,9 @@ describe('ThemeMutation', () => {
 
     for (let i = 0; i < colors.length; i++) {
       const expectedColor = colors[i]
-      await expect(element(by.id('theme-mutation-color-text'))).toHaveText(
-        `Expected color: ${expectedColor}`
-      )
+      await waitFor(element(by.id('theme-mutation-color-text')))
+        .toHaveText(`Expected color: ${expectedColor}`)
+        .withTimeout(5000)
 
       // tap to cycle to next color (except on last iteration)
       if (i < colors.length - 1) {

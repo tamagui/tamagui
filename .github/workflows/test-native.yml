@@ -49,7 +49,7 @@ jobs:
           - shard_name: '2/3'
             test_files: 'e2e/SheetScrollableDrag.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts e2e/NativePortal.test.ts e2e/MediaQueryGtMd.test.ts'
           - shard_name: '3/3'
-            test_files: 'e2e/SelectRemount.test.ts e2e/CompilerExtraction.test.ts e2e/SelectAndroidOnPress.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts e2e/ShorthandVariables.test.ts'
+            test_files: 'e2e/SelectRemount.test.ts e2e/CompilerExtraction.test.ts e2e/CompilerTernaryActive.test.ts e2e/SelectAndroidOnPress.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts e2e/ShorthandVariables.test.ts'
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
