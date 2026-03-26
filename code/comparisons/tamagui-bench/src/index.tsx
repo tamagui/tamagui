@@ -1,24 +1,22 @@
 import { createRoot } from 'react-dom/client'
-import { TamaguiProvider, View, styled } from 'tamagui'
+import { TamaguiProvider, View } from 'tamagui'
 import config from './tamagui.config'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
 import { ITEM_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
 
-// ── scenario 1: simple ───────────────────────────────
+// ── scenario 1: simple (fully static — compiler CAN flatten) ──
 
-// tamagui className syntax
 function SimpleItems({ seed }: { seed: number }) {
   return useMemo(() => {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const hue = (i * 7 + seed) % 360
+      // all props are static literals — compiler should flatten to div
       arr.push(
         <View
-          key={i}
-          // debug
+          key={i + seed * ITEM_COUNT}
           width={20}
           height={20}
-          backgroundColor={`hsl(${hue}, 70%, 60%)`}
+          backgroundColor="rgb(99,102,241)"
           borderRadius={3}
           margin={1}
         />
@@ -28,26 +26,23 @@ function SimpleItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-// ── scenario 2: rich ─────────────────────────────────
+// ── scenario 2: rich (static props + pseudo states) ──
 
 function RichItems({ seed }: { seed: number }) {
-  const colors = ['rgb(99,102,241)', 'rgb(34,197,94)', 'rgb(236,72,153)']
   return useMemo(() => {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const color = colors[(i + seed) % 3]
       arr.push(
         <View
-          key={i}
+          key={i + seed * ITEM_COUNT}
           width={60}
           height={40}
           borderRadius={6}
           padding={4}
           borderWidth={1}
           borderColor="rgba(0,0,0,0.1)"
-          backgroundColor={color}
+          backgroundColor="rgb(99,102,241)"
           margin={1}
-          opacity={0.7 + (i % 4) * 0.1}
           hoverStyle={{ scale: 1.02, borderColor: 'rgba(0,0,0,0.3)' }}
           pressStyle={{ scale: 0.98, opacity: 0.8 }}
         />
@@ -57,21 +52,20 @@ function RichItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-// ── scenario 3: animated ─────────────────────────────
+// ── scenario 3: animated (always deopts — animation prop) ──
 
 function AnimatedItems({ seed }: { seed: number }) {
   return useMemo(() => {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const hue = (i * 7 + seed) % 360
       arr.push(
         <View
-          key={i}
+          key={i + seed * ITEM_COUNT}
           animation="bouncy"
           width={24}
           height={24}
           borderRadius={4}
-          backgroundColor={`hsl(${hue}, 70%, 60%)`}
+          backgroundColor="rgb(59,130,246)"
           margin={1}
           enterStyle={{ opacity: 0, scale: 0.5 }}
           hoverStyle={{ scale: 1.1 }}
@@ -156,7 +150,6 @@ function App() {
       const scenarioId = scenarios[currentIdx].id
       setResults((prev) => {
         const next = { ...prev, [scenarioId]: result }
-        // render results when all done
         if (currentIdx + 1 >= scenarios.length && resultsRef.current) {
           renderResults(resultsRef.current, 'Tamagui (compiled)', next)
         }
@@ -178,7 +171,6 @@ function App() {
       <h1 style={{ fontSize: 24, margin: '0 0 8px' }}>Tamagui Benchmark</h1>
       <p style={{ color: '#888', margin: '0 0 20px', fontSize: 14 }}>
         {ITEM_COUNT} components × {scenarios.length} scenarios
-        {' · '}compiler {process.env.EXTRACT === '1' ? 'ON' : 'OFF'}
       </p>
 
       <button
