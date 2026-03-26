@@ -17,7 +17,8 @@
     "./code/sandbox",
     "./code/packages/**/*",
     "./code/tamagui.dev",
-    "./code/ui/**/*"
+    "./code/ui/**/*",
+    "./code/comparisons/*-bench"
   ],
   "scripts": {
     "postinstall": "bun ./scripts/postinstall.ts",
