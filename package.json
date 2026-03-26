@@ -18,7 +18,10 @@
     "./code/packages/**/*",
     "./code/tamagui.dev",
     "./code/ui/**/*",
-    "./code/comparisons/*-bench"
+    "./code/comparisons/tamagui-bench",
+    "./code/comparisons/tailwind-bench",
+    "./code/comparisons/inline-bench",
+    "./code/comparisons/nativewind-bench"
   ],
   "scripts": {
     "postinstall": "bun ./scripts/postinstall.ts",

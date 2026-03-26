@@ -57,14 +57,12 @@ const benchmarks: BenchConfig[] = [
     port: 9104,
     startCmd: 'npx vite --port 9104',
   },
-  // uniwind requires tailwindcss v4, conflicts with v3 in workspace
-  // TODO: set up in isolated environment
-  // {
-  //   name: 'Uniwind',
-  //   dir: 'uniwind-bench',
-  //   port: 9105,
-  //   startCmd: 'npx vite --port 9105',
-  // },
+  {
+    name: 'Uniwind',
+    dir: 'uniwind-bench',
+    port: 9105,
+    startCmd: 'npx vite --port 9105',
+  },
 ]
 
 type Results = Record<string, Record<string, { mount: number; rerender: number }>>
