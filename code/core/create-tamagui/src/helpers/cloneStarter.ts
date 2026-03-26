@@ -5,7 +5,6 @@ import { join } from 'node:path'
 import chalk from 'chalk'
 import { copy, ensureDir, pathExists, remove } from 'fs-extra'
 import { rimraf } from 'rimraf'
-import { $, cd } from 'zx'
 import type { templates } from '../templates'
 
 const open = require('opener')
@@ -56,7 +55,10 @@ async function setupTamaguiDotDir(template: (typeof templates)[number]) {
 
   if (process.env.GITHUB_HEAD_REF) {
     try {
-      await $`cd ${targetGitDir} && git switch -c ${process.env.GITHUB_HEAD_REF}`
+      execSync(`git switch -c ${process.env.GITHUB_HEAD_REF}`, {
+        cwd: targetGitDir,
+        stdio: 'ignore',
+      })
     } catch {
       // re-tries branch already exists
     }
@@ -65,7 +67,6 @@ async function setupTamaguiDotDir(template: (typeof templates)[number]) {
   const branch = template.repo.branch
 
   await ensureDir(tamaguiDir)
-  cd(tamaguiDir)
 
   const isInSubDir = template.repo.dir.length > 0
   const sourceGitRepo = template.repo.url

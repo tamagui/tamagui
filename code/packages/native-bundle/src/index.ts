@@ -71,7 +71,17 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
     }
   }
 
+  const resolvePackageDir = (name: string) => {
+    try {
+      const pkgJson = fileURLToPath(import.meta.resolve(`${name}/package.json`))
+      return dirname(pkgJson)
+    } catch {
+      return name
+    }
+  }
+
   const rnwl = resolvePath('@tamagui/react-native-web-lite')
+  const rnwlDir = resolvePackageDir('@tamagui/react-native-web-lite')
   const fakeRN = resolvePath('@tamagui/fake-react-native')
   const entryPath = resolve(cwd, entry)
 
@@ -96,7 +106,7 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
         },
         {
           find: /^react-native\/(.+)$/,
-          replacement: `${rnwl}/$1`,
+          replacement: `${rnwlDir}/src/$1`,
         },
       ]
 

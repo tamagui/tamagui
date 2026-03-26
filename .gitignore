@@ -1,4 +1,5 @@
 **/test-results/*
+**/.maestro-debug
 
 # keep types in repo to track them
 # **/types/**/*.d.ts

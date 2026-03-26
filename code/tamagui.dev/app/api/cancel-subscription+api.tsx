@@ -3,6 +3,7 @@ import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
+import { sendCancellationEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
 
 export default apiRoute(async (req) => {
@@ -53,6 +54,18 @@ export default apiRoute(async (req) => {
       cancel_at_period_end: true,
     })
     if (data) {
+      // send cancellation confirmation email
+      const customer =
+        typeof data.customer === 'string'
+          ? await stripe.customers.retrieve(data.customer)
+          : data.customer
+      if (customer && !customer.deleted && customer.email) {
+        const periodEnd = new Date(data.current_period_end * 1000).toISOString()
+        sendCancellationEmail(customer.email, {
+          name: 'friend',
+          periodEnd,
+        })
+      }
       return Response.json({ message: 'The subscription is cancelled.' })
     }
   } catch (error) {

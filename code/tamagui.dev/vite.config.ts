@@ -91,7 +91,7 @@ const include = [
   'unified',
   '@tamagui/get-font-sized',
   '@tamagui/linear-gradient',
-  '@tamagui/lucide-icons',
+  '@tamagui/lucide-icons-2',
   '@rehookify/datepicker',
   '@tamagui/get-token',
   '@tamagui/roving-focus',
@@ -243,9 +243,10 @@ export const LocationNotification = BentoComponentStub
         }
       },
     },
-    tamaguiPlugin(
+    tamaguiPlugin({
       // see tamagui.build.ts
-    ),
+      disable: process.env.NODE_ENV !== 'production',
+    }),
 
     one({
       react: {
@@ -253,27 +254,13 @@ export const LocationNotification = BentoComponentStub
       },
 
       ssr: {
+        dedupeSymlinkedModules: true,
         autoDepsOptimization: {
           include: /.*/,
         },
       },
 
-      deps: {
-        ws: true,
-        url: false,
-        '@supabase/postgrest-js': true,
-        '@supabase/node-fetch': true,
-        postmark: true,
-        stripe: true,
-        jsonwebtoken: true,
-        bottleneck: true,
-        octokit: true,
-        'node-fetch': true,
-        'fetch-blob': true,
-        'discord-api-types/v10': true,
-        'magic-bytes.js': true,
-        '@ngneat/falso': true,
-        seedrandom: true,
+      patches: {
         '@react-navigation/core': {
           version: '^7',
           'lib/module/useOnGetState.js': (contents) => {

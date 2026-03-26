@@ -38,6 +38,10 @@ module.exports = {
         'ios/build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app',
       build:
         'xcodebuild -workspace ios/tamaguikitchensink.xcworkspace -scheme tamaguikitchensink -configuration Debug -sdk iphonesimulator SYMROOT="$(pwd)/ios/build/Build/Products" OBJROOT="$(pwd)/ios/build/Build/Intermediates.noindex"',
+      // tell RCTBundleURLProvider where metro is (auto-detection fails with dev-client)
+      launchArgs: {
+        RCT_jsLocation: 'localhost',
+      },
     },
     'ios.release': {
       type: 'ios.app',
@@ -68,7 +72,7 @@ module.exports = {
     simulator: {
       type: 'ios.simulator',
       device: {
-        type: process.env.DETOX_DEVICE || 'iPhone 15',
+        type: process.env.DETOX_DEVICE || 'iPhone 16',
       },
     },
     attached: {

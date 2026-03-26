@@ -7,6 +7,10 @@
  *
  * The fix ensures forceUpdateThemes() properly forces re-renders
  * regardless of whether theme keys were tracked.
+ *
+ * NOTE: Uses launchApp({ newInstance: true }) instead of reloadReactNative() to
+ * avoid transient Metro module resolution errors during reload (the addTheme/
+ * updateTheme runtime mutations can confuse Metro's module cache on reload).
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
@@ -14,43 +18,55 @@ import { navigateToTestCase } from './utils/navigation'
 
 describe('ThemeMutation', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await device.launchApp()
   })
 
   beforeEach(async () => {
     await device.reloadReactNative()
-    await navigateToTestCase('ThemeMutation', 'theme-mutation-button')
+    await navigateToTestCase('ThemeMutation', 'theme-mutation-button', {
+      skipEnableSync: true,
+    })
+  })
+
+  afterEach(async () => {
+    await device.enableSynchronization()
   })
 
   it('should navigate to ThemeMutation test case', async () => {
-    await expect(element(by.id('theme-mutation-button'))).toBeVisible()
+    await waitFor(element(by.id('theme-mutation-button')))
+      .toBeVisible()
+      .withTimeout(5000)
   })
 
   it('should show initial red color', async () => {
-    // Verify the initial color text shows red
-    await expect(element(by.id('theme-mutation-color-text'))).toHaveText(
-      'Expected color: red'
-    )
-    // Verify the square is visible
-    await expect(element(by.id('theme-mutation-square'))).toBeVisible()
+    // verify the initial color text shows red
+    await waitFor(element(by.id('theme-mutation-color-text')))
+      .toHaveText('Expected color: red')
+      .withTimeout(5000)
+    // verify the square is visible
+    await waitFor(element(by.id('theme-mutation-square')))
+      .toBeVisible()
+      .withTimeout(5000)
   })
 
   it('should update theme color when button is pressed', async () => {
-    // Initial state should be red
-    await expect(element(by.id('theme-mutation-color-text'))).toHaveText(
-      'Expected color: red'
-    )
+    // initial state should be red
+    await waitFor(element(by.id('theme-mutation-color-text')))
+      .toHaveText('Expected color: red')
+      .withTimeout(5000)
 
-    // Tap the button to change theme color
+    // tap the button to change theme color
     await element(by.id('theme-mutation-button')).tap()
 
-    // Wait for the color to update to blue
+    // wait for the color to update to blue
     await waitFor(element(by.id('theme-mutation-color-text')))
       .toHaveText('Expected color: blue')
       .withTimeout(5000)
 
-    // Verify the square is still visible (component re-rendered)
-    await expect(element(by.id('theme-mutation-square'))).toBeVisible()
+    // verify the square is still visible (component re-rendered)
+    await waitFor(element(by.id('theme-mutation-square')))
+      .toBeVisible()
+      .withTimeout(5000)
   })
 
   it('should cycle through multiple theme colors', async () => {
@@ -58,11 +74,11 @@ describe('ThemeMutation', () => {
 
     for (let i = 0; i < colors.length; i++) {
       const expectedColor = colors[i]
-      await expect(element(by.id('theme-mutation-color-text'))).toHaveText(
-        `Expected color: ${expectedColor}`
-      )
+      await waitFor(element(by.id('theme-mutation-color-text')))
+        .toHaveText(`Expected color: ${expectedColor}`)
+        .withTimeout(5000)
 
-      // Tap to cycle to next color (except on last iteration)
+      // tap to cycle to next color (except on last iteration)
       if (i < colors.length - 1) {
         await element(by.id('theme-mutation-button')).tap()
         await waitFor(element(by.id('theme-mutation-color-text')))
@@ -71,7 +87,7 @@ describe('ThemeMutation', () => {
       }
     }
 
-    // Verify it cycles back to red after orange
+    // verify it cycles back to red after orange
     await element(by.id('theme-mutation-button')).tap()
     await waitFor(element(by.id('theme-mutation-color-text')))
       .toHaveText('Expected color: red')

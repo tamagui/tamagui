@@ -179,7 +179,6 @@ const pkgSource = pkg.source
 const pkgModule = pkg.module
 const pkgModuleJSX = pkg['module:jsx']
 const pkgTypes = Boolean(pkg.types || pkg.typings)
-const pkgRemoveSideEffects = pkg.removeSideEffects || false
 
 // build config from package.json
 const buildConfig = pkg['tamagui-build'] || {}
@@ -770,7 +769,7 @@ async function buildJs(allFiles) {
           bundle: shouldBundleFlag,
           specifyCJS: !avoidCJS,
           keepJsOutput: avoidCJS,
-          preserveJsPaths: [cjsMainAliasPath],
+          preserveJsPaths: [],
         })
       : null,
 
@@ -1040,23 +1039,35 @@ async function esbuildWriteIfChanged(
           }
         }
 
-        if (pkgRemoveSideEffects && isESM) {
-          const allowedSideEffects = pkg.sideEffects || []
+        if (isESM && pkg.sideEffects !== true && pkg.sideEffects !== undefined) {
+          const sideEffects = pkg.sideEffects
+          // sideEffects: false means nothing has side effects, strip all bare imports
+          // sideEffects: ["*.css", ...] means only matching files have side effects
+          const picomatch = require('picomatch')
+          const matchers = sideEffects === false
+            ? null // strip everything
+            : (Array.isArray(sideEffects) ? sideEffects : []).map((p) => picomatch(p))
 
           const result = []
           const lines = contents.split('\n')
           for (const line of lines) {
-            if (
-              !line.startsWith('import ') ||
-              allowedSideEffects.some((allowed) => line.includes(allowed))
-            ) {
+            // only process bare imports: import "...";
+            const match = line.match(/^import\s+["']([^"']+)["'];?$/)
+            if (!match) {
               result.push(line)
               continue
             }
-            result.push(line.replace(/import "[^"]+";/g, ''))
+            const specifier = match[1].replace(/^\.\//, '')
+            // sideEffects: false → strip all bare imports
+            if (matchers === null) {
+              result.push('')
+              continue
+            }
+            // sideEffects: [...] → keep if specifier matches any pattern
+            const hasSideEffect = matchers.some((m) => m(specifier))
+            result.push(hasSideEffect ? line : '')
           }
 
-          // match whitespace to preserve sourcemaps
           contents = result.join('\n')
         }
 

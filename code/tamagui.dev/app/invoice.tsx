@@ -128,7 +128,7 @@ export default function InvoicePage() {
   )
 }
 
-// import { Check, Container } from '@tamagui/lucide-icons'
+// import { Check, Container } from '@tamagui/lucide-icons-2'
 // import { memo, useState } from 'react'
 // import {
 //   Checkbox,

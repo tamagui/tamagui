@@ -1,5 +1,5 @@
 /**
- * Native event handling - uses RNGH when available, falls back to usePressability
+ * Native event handling - uses RNGH when available, falls back to responder system
  */
 
 import { composeEventHandlers } from '@tamagui/helpers'
@@ -144,8 +144,7 @@ export function useEvents(
     return null
   }
 
-  // fallback - use usePressability when RNGH not enabled
-  // split into separate file to avoid deep import warnings
+  // fallback - direct responder system when RNGH not enabled
   useMainThreadPressEvents(events, viewProps, hasPressEvents)
 
   return null

@@ -18,7 +18,7 @@ import {
 import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton'
 import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton'
 import { LinearGradient } from '@tamagui/linear-gradient'
-import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import { Activity, Check, ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import React, { useState } from 'react'
 import { Platform } from 'react-native'
 import { useLink } from 'solito/navigation'

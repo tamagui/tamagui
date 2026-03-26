@@ -36,6 +36,7 @@ export const forceUpdateThemes = () => {
   cacheVersion++
   shouldForce = true
   allListeners.forEach((cb) => cb())
+  shouldForce = false
 }
 
 export const getThemeState = (id: ID) => states.get(id)
@@ -277,7 +278,7 @@ const getNextState = (
   }
 
   if (isSameAsParent) {
-    if (!shouldRerender && lastState) {
+    if (!shouldRerender && lastState && lastState.name === parentState!.name) {
       return [false, lastState]
     }
     return [shouldRerender, { ...parentState, isNew: false }]

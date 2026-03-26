@@ -1,0 +1,24 @@
+appId: com.tamagui.tamaguikitchensink
+tag:
+  - util
+---
+# cold start with clearState to prime Hermes bytecode cache
+# subsequent test launches skip clearState so bytecode cache persists = fast restarts
+- launchApp:
+    clearState: true
+
+- tapOn:
+    text: 'Not Now'
+    optional: true
+
+- tapOn:
+    text: http://.*
+    optional: true
+
+- extendedWaitUntil:
+    visible: 'Kitchen Sink'
+    timeout: 60000
+
+- tapOn:
+    text: 'Home'
+    optional: true

@@ -1,5 +1,5 @@
 import { Button } from '@tamagui/button'
-import { Activity, Airplay } from '@tamagui/lucide-icons'
+import { Activity, Airplay } from '@tamagui/lucide-icons-2'
 import { Theme, XGroup, XStack, YStack } from 'tamagui'
 
 export function ButtonDemo() {

@@ -21,7 +21,7 @@ import {
   Table,
   TextCursorInput,
   ToggleRight,
-} from '@tamagui/lucide-icons'
+} from '@tamagui/lucide-icons-2'
 import { H4, H5, Image, YStack } from 'tamagui'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { Link } from '~/components/Link'
@@ -109,7 +109,7 @@ export function ComponentItem({
 
 const Null = () => null
 
-const BASE_PATH = ' /bento'
+const BASE_PATH = '/bento'
 
 export const BENTO_COMPONENT_ICONS = {
   Inputs: TextCursorInput,

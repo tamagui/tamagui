@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/native-ci",
-  "version": "2.0.0-rc.26-1773452370596",
+  "version": "2.0.0-rc.31",
   "description": "Native CI/CD helpers for React Native apps with Expo - fingerprinting, caching, and build optimization",
   "license": "MIT",
   "repository": {
@@ -39,7 +39,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@expo/fingerprint": "^0.15.3"
+    "@expo/fingerprint": "~0.16.6"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",

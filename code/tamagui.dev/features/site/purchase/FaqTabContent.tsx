@@ -28,8 +28,8 @@ export const FaqTabContent = () => {
       <Question>What's included with Pro?</Question>
       <Answer>
         Two starter kits (v1 with Next.js + Expo, v2 with One framework), Bento copy-paste
-        components, Theme AI generator, private Discord support, and all future updates
-        during your license period. See our{' '}
+        components with full source repo access, Theme AI generator, private Discord
+        support, and all future updates during your license period. See our{' '}
         <Link href="/pro-license">full license terms</Link> for details.
       </Answer>
 

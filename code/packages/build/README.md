@@ -14,7 +14,7 @@ Some details on how it works:
   - in `.mjs`, adds path-specific imports to non-specific imports
 - outputs both `.js` and `.cjs` files in `dist/cjs`:
   - in `.cjs`, adds path-specific imports to non-specific imports
-- removes hanging imports that esbuild leaves (see `pkgRemoveSideEffects`)
+- strips bare imports that esbuild leaves behind, respecting the `sideEffects` field in package.json
 - outputs `.native.js` and regular `.js` files for all output files, so React Native always loads separate files from web. In the `native` specific files,
   - swc is sued to transform to es5
   - `process.env.TAMAGUI_TARGET` is defined `native` (otherwise `web`)
@@ -30,7 +30,6 @@ It assumes your package.json looks something like this:
   "main": "dist/cjs",
   "module": "dist/esm",
   "type": "module",
-  "removeSideEffects": "true",
   "scripts": {
     "build": "tamagui-build",
     "watch": "tamagui-build --watch",

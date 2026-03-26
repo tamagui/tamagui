@@ -1,4 +1,4 @@
-import { Plus } from '@tamagui/lucide-icons'
+import { Plus } from '@tamagui/lucide-icons-2'
 import type { ListItemProps, PopoverProps } from 'tamagui'
 import {
   Button,

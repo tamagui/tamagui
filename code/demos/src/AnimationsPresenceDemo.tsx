@@ -1,6 +1,6 @@
 import React from 'react'
 import { AnimatePresence } from '@tamagui/animate-presence'
-import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons'
+import { ArrowLeft, ArrowRight } from '@tamagui/lucide-icons-2'
 
 import { Button, Image, XStack, YStack, styled } from 'tamagui'
 

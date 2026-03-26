@@ -10,6 +10,187 @@ import { isCI } from './runner'
 import { generateFingerprint } from './fingerprint'
 
 /**
+ * Check if any iOS simulator is booted and available for testing.
+ * Returns true if at least one simulator is booted.
+ */
+export function hasBootedSimulator(): boolean {
+  return !!getBootedSimulatorUDID()
+}
+
+/**
+ * Get the UDID of the first booted iOS simulator, or null if none.
+ */
+export function getBootedSimulatorUDID(): string | null {
+  try {
+    const output = execSync('xcrun simctl list devices booted', {
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    })
+    const match = output.match(/\(([A-F0-9-]{36})\)/i)
+    return match ? match[1] : null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Boot an iOS simulator. Picks the first available iPhone device.
+ */
+export function ensureBootedSimulator(): void {
+  if (hasBootedSimulator()) return
+
+  console.info('No booted iOS simulator found, booting one...')
+  try {
+    const output = execSync('xcrun simctl list devices available', {
+      encoding: 'utf-8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    })
+    // find first available iPhone
+    const match = output.match(/iPhone[^\n]*\(([A-F0-9-]{36})\)/i)
+    if (!match) {
+      throw new Error('No available iPhone simulator found. Install one via Xcode.')
+    }
+    const udid = match[1]
+    console.info(`Booting simulator ${udid}...`)
+    execSync(`xcrun simctl boot ${udid}`, { stdio: 'inherit' })
+    console.info('Simulator booted.')
+  } catch (err) {
+    throw new Error(
+      `Failed to boot iOS simulator: ${err instanceof Error ? err.message : err}`
+    )
+  }
+}
+
+/**
+ * Check if an app is installed on the booted simulator.
+ */
+function isAppInstalled(bundleId: string, udid: string): boolean {
+  try {
+    execSync(`xcrun simctl get_app_container "${udid}" "${bundleId}"`, {
+      stdio: ['pipe', 'pipe', 'pipe'],
+    })
+    return true
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Ensure the app is installed on a specific simulator.
+ * For dev client apps, builds if needed then installs.
+ * For Expo Go apps, ensures Expo Go is present.
+ */
+export async function ensureAppInstalled(opts: {
+  projectRoot: string
+  bundleId: string
+  udid?: string
+}): Promise<void> {
+  const { projectRoot, bundleId } = opts
+  const udid = opts.udid || getBootedSimulatorUDID() || 'booted'
+
+  // check if app is already installed
+  if (isAppInstalled(bundleId, udid)) {
+    console.info(`App ${bundleId} already installed on simulator ${udid}`)
+    return
+  }
+
+  if (bundleId === 'host.exp.Exponent') {
+    await installExpoGo(udid)
+    return
+  }
+
+  // custom dev client - build and install
+  console.info(`App ${bundleId} not installed, building...`)
+  await ensureIOSFolder()
+
+  const appPath =
+    process.env.DETOX_IOS_APP_PATH ||
+    'ios/build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app'
+  const fullAppPath = join(projectRoot, appPath)
+
+  if (!existsSync(fullAppPath)) {
+    await ensureIOSApp('ios.sim.debug')
+  }
+
+  console.info(`Installing app on simulator ${udid}...`)
+  execSync(`xcrun simctl install "${udid}" "${fullAppPath}"`, { stdio: 'inherit' })
+  console.info('App installed.')
+}
+
+/**
+ * Get the bundle ID needed for maestro tests.
+ * Checks flow files first (they declare appId), falls back to app.json.
+ */
+export function getMaestroBundleId(projectRoot: string): string {
+  // check flow files for appId
+  const flowsDir = join(projectRoot, 'flows')
+  if (existsSync(flowsDir)) {
+    try {
+      const files = require('fs').readdirSync(flowsDir) as string[]
+      for (const f of files) {
+        if (!f.endsWith('.yaml')) continue
+        const content = readFileSync(join(flowsDir, f), 'utf-8')
+        const match = content.match(/^appId:\s*(.+)$/m)
+        if (match) return match[1].trim()
+      }
+    } catch {}
+  }
+
+  // fall back to app.json
+  try {
+    const appJson = JSON.parse(readFileSync(join(projectRoot, 'app.json'), 'utf-8'))
+    return appJson.expo?.ios?.bundleIdentifier || 'host.exp.Exponent'
+  } catch {
+    return 'host.exp.Exponent'
+  }
+}
+
+/**
+ * Download and install Expo Go on the booted simulator.
+ */
+async function installExpoGo(udid: string): Promise<void> {
+  const tmpDir = join(require('os').tmpdir(), 'expo-go-install')
+  const appPath = join(tmpDir, 'Expo Go.app')
+
+  // skip download if already cached
+  if (existsSync(appPath)) {
+    console.info(`Installing cached Expo Go on simulator ${udid}...`)
+    execSync(`xcrun simctl install "${udid}" "${appPath}"`, { stdio: 'inherit' })
+    console.info('Expo Go installed.')
+    return
+  }
+
+  console.info('Downloading Expo Go...')
+  mkdirSync(tmpDir, { recursive: true })
+
+  // get the download URL from expo's version API
+  const { getVersionsAsync } =
+    // @ts-ignore - no type declarations for internal expo module
+    require('@expo/cli/build/src/api/getVersions') as {
+      getVersionsAsync: () => Promise<any>
+    }
+  const versions = await getVersionsAsync()
+
+  // find the latest SDK version that has an iOS client URL
+  const sdkVersions = Object.entries(versions.sdkVersions || {})
+    .filter(([, v]: [string, any]) => v.iosClientUrl)
+    .sort(([a], [b]) => b.localeCompare(a, undefined, { numeric: true }))
+  const clientUrl = (sdkVersions[0]?.[1] as any)?.iosClientUrl
+
+  if (!clientUrl) {
+    throw new Error('Could not find Expo Go download URL')
+  }
+
+  execSync(`curl -fsSL "${clientUrl}" -o "${tmpDir}/ExpoGo.tar.gz"`, { stdio: 'inherit' })
+  // archive contains .app contents directly, extract into .app bundle
+  mkdirSync(appPath, { recursive: true })
+  execSync(`tar -xzf "${tmpDir}/ExpoGo.tar.gz" -C "${appPath}"`, { stdio: 'inherit' })
+
+  execSync(`xcrun simctl install "${udid}" "${appPath}"`, { stdio: 'inherit' })
+  console.info('Expo Go installed.')
+}
+
+/**
  * Shutdown all simulators and clean up zombie simulator processes.
  * macOS doesn't properly clean up simulators between test runs, leading to
  * resource exhaustion (40+ simulators can accumulate).

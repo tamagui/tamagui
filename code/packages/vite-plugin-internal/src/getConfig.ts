@@ -1,11 +1,8 @@
 /// <reference types="vitest" />
 
-// @ts-ignore
-// import react from '@vitejs/plugin-react'
-// import react from '@vitejs/plugin-react-swc'
+import { createRequire } from 'node:module'
 import { join } from 'node:path'
 import { type Plugin, defineConfig } from 'vite'
-import { createRequire } from 'node:module'
 
 export const requireResolve =
   'url' in import.meta ? createRequire(import.meta.url).resolve : require.resolve

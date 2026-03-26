@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-dm-sans",
-  "version": "2.0.0-rc.26-1773452370596",
+  "version": "2.0.0-rc.31",
   "files": [
     "types",
     "dist",
@@ -36,5 +36,6 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "subset-font": "^2.1.0"
-  }
+  },
+  "skipPublishIfUnchanged": false
 }

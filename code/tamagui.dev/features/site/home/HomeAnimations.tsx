@@ -1,5 +1,5 @@
 import { LogoIcon, useTint } from '@tamagui/logo'
-import { ArrowDown, Play } from '@tamagui/lucide-icons'
+import { ArrowDown, Play } from '@tamagui/lucide-icons-2'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import {
   Button,

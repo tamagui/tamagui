@@ -1,4 +1,4 @@
-import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/lucide-icons'
+import { ChevronRight, Cloud, Moon, Star, Sun } from '@tamagui/lucide-icons-2'
 import { ListItem, Separator, Theme, XStack, YGroup } from 'tamagui'
 
 export function ListItemDemo() {
@@ -19,11 +19,13 @@ function ListItemDemo1() {
       borderWidth={1}
       borderColor="$borderColor"
       rounded="$4"
+      overflow="hidden"
       width={240}
       size="$4"
     >
       <YGroup.Item>
         <ListItem
+          gap="$3"
           icon={Star}
           title="Star"
           subTitle={<ListItem.Subtitle>Twinkles</ListItem.Subtitle>}
@@ -31,13 +33,19 @@ function ListItemDemo1() {
         />
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem icon={Moon}>Moon</ListItem>
+        <ListItem gap="$3" icon={Moon}>
+          Moon
+        </ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem icon={Sun}>Sun</ListItem>
+        <ListItem gap="$3" icon={Sun}>
+          Sun
+        </ListItem>
       </YGroup.Item>
       <YGroup.Item>
-        <ListItem icon={Cloud}>Cloud</ListItem>
+        <ListItem gap="$3" icon={Cloud}>
+          Cloud
+        </ListItem>
       </YGroup.Item>
     </YGroup>
   )
@@ -50,15 +58,28 @@ function ListItemDemo2() {
       borderWidth={1}
       borderColor="$borderColor"
       rounded="$4"
+      overflow="hidden"
       width={240}
       size="$5"
     >
       <YGroup.Item>
-        <ListItem title="Star" subTitle="Subtitle" icon={Star} iconAfter={ChevronRight} />
+        <ListItem
+          gap="$3"
+          title="Star"
+          subTitle="Subtitle"
+          icon={Star}
+          iconAfter={ChevronRight}
+        />
       </YGroup.Item>
       <Separator />
       <YGroup.Item>
-        <ListItem title="Moon" subTitle="Subtitle" icon={Moon} iconAfter={ChevronRight} />
+        <ListItem
+          gap="$3"
+          title="Moon"
+          subTitle="Subtitle"
+          icon={Moon}
+          iconAfter={ChevronRight}
+        />
       </YGroup.Item>
     </YGroup>
   )

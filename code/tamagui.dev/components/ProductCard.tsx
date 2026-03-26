@@ -1,5 +1,5 @@
 import { ThemeTintAlt } from '@tamagui/logo'
-import { ChevronRight } from '@tamagui/lucide-icons'
+import { ChevronRight } from '@tamagui/lucide-icons-2'
 import { Card, H3, Paragraph, View, YStack } from 'tamagui'
 import type { Href } from 'one'
 import { BentoIcon } from '~/features/icons/BentoIcon'

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Accordion, Button, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
-import { ChevronDown, ChevronsDownUp, ChevronsUpDown } from '@tamagui/lucide-icons'
+import { ChevronDown, ChevronsDownUp, ChevronsUpDown } from '@tamagui/lucide-icons-2'
 import { DocsRouteNavItem } from './DocsRouteNavItem'
 import { docsRoutes } from './docsRoutes'
 import { useDocsMenu } from './useDocsMenu'

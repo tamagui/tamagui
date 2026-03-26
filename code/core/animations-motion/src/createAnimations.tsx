@@ -34,6 +34,18 @@ import React, {
   useState,
 } from 'react'
 
+const isServer = typeof window === 'undefined'
+
+// SSR-safe wrapper: framer-motion's useAnimate imports its own React copy in
+// Vite SSR bundles which causes "Invalid hook call" errors. during SSR we
+// don't need animations so we return a no-op scope/animate pair.
+function useAnimateSSRSafe() {
+  if (isServer) {
+    return [useRef(null), (() => {}) as any] as ReturnType<typeof useAnimate>
+  }
+  return useAnimate()
+}
+
 type MotionAnimatedNumber = MotionValue<number>
 type AnimationConfig = ValueTransition
 
@@ -74,7 +86,6 @@ type MotionRefs = {
   frozenExitTarget: Record<string, unknown> | null
   exitCompleteScheduled: boolean
   wasEntering: boolean
-  styleVersion: number
 }
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
@@ -134,7 +145,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           frozenExitTarget: null,
           exitCompleteScheduled: false,
           wasEntering: false,
-          styleVersion: 0,
         }
       }
 
@@ -154,15 +164,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       // disable animation during hydration and mounting (prevents "flying across the page")
       const disableAnimation = isComponentHydrating || isMounting || !animationKey
 
-      const [scope, animate] = useAnimate()
-
-      // increment version when style object identity changes
-      const lastStyleRef = useRef(style)
-      if (lastStyleRef.current !== style) {
-        lastStyleRef.current = style
-        refs.current.styleVersion++
-      }
-      const styleVersion = refs.current.styleVersion
+      const [scope, animate] = useAnimateSSRSafe()
 
       // sync ref values for reliable access from callbacks
       refs.current.isExiting = isExiting
@@ -188,14 +190,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         dontAnimate = {},
         doAnimate,
         animationOptions,
-      } = useMemo(() => {
-        return getMotionAnimatedProps(
-          props as any,
-          style,
-          disableAnimation,
-          animationState
-        )
-      }, [isExiting, animationKey, styleVersion, animationState, disableAnimation])
+      } = getMotionAnimatedProps(props as any, style, disableAnimation, animationState)
 
       const [firstRenderStyle] = useState(style)
 
@@ -466,7 +461,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           dontAnimate,
           animationOptions,
         })
-      }, [styleVersion, isExiting, disableAnimation])
+      }, [style, isExiting, disableAnimation])
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] && props['debug'] !== 'profile') {
@@ -475,7 +470,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             style,
             doAnimate,
             dontAnimate,
-            styleVersion,
             scope,
             animationOptions,
             isExiting,
@@ -763,7 +757,7 @@ function createMotionView(defaultTag: string) {
 
   const Component = forwardRef((propsIn: any, ref) => {
     const { forwardedRef, animation, render = defaultTag, style, ...propsRest } = propsIn
-    const [scope, animate] = useAnimate()
+    const [scope, animate] = useAnimateSSRSafe()
     const hostRef = useRef<HTMLElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, ref, hostRef, scope)
 

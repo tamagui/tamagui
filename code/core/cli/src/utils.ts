@@ -1,8 +1,4 @@
 import type { TamaguiOptions, TamaguiProjectInfo } from '@tamagui/static'
-import {
-  loadTamaguiBuildConfigSync,
-  loadTamagui as loadTamaguiStatic,
-} from '@tamagui/static'
 import type { CLIResolvedOptions, CLIUserOptions } from '@tamagui/types'
 import chalk from 'chalk'
 import fs, { pathExists, readJSON } from 'fs-extra'
@@ -23,7 +19,13 @@ export async function getOptions({
     config = await getDefaultTamaguiConfigPath()
     pkgJson = await readJSON(join(root, 'package.json'))
   } catch {
-    // ok
+    if (loadTamaguiOptions) {
+      console.warn(
+        chalk.yellow(
+          `Warning: no tamagui.config.ts found in ${root}. Commands that need a config may fail.`
+        )
+      )
+    }
   }
 
   const filledOptions = {
@@ -33,9 +35,11 @@ export async function getOptions({
     ...tamaguiOptions,
   } satisfies TamaguiOptions
 
-  const finalOptions = loadTamaguiOptions
-    ? loadTamaguiBuildConfigSync(filledOptions)
-    : filledOptions
+  let finalOptions: TamaguiOptions = filledOptions
+  if (loadTamaguiOptions) {
+    const { loadTamaguiBuildConfigSync } = require('@tamagui/static/loadTamagui')
+    finalOptions = loadTamaguiBuildConfigSync(filledOptions)
+  }
 
   return {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -79,6 +83,7 @@ async function getDefaultTamaguiConfigPath() {
 export const loadTamagui = async (
   opts: Partial<TamaguiOptions>
 ): Promise<TamaguiProjectInfo | null> => {
+  const { loadTamagui: loadTamaguiStatic } = require('@tamagui/static/loadTamagui')
   const loaded = await loadTamaguiStatic({
     components: ['tamagui'],
     ...opts,

@@ -17,7 +17,7 @@ export type WithTamaguiProps = LoaderPluginOptions & {
         fullPath: string;
     }) => boolean | string | undefined;
     disableThemesBundleOptimize?: boolean;
-    /** By default we add a Next.js modularizeImports option to tree shake @tamagui/lucide-icons, this disables it */
+    /** By default we add a Next.js modularizeImports option to tree shake @tamagui/lucide-icons-2, this disables it */
     disableOptimizeLucideIcons?: boolean;
 };
 export declare const withTamagui: (tamaguiOptionsIn?: WithTamaguiProps) => (nextConfig?: any) => any;

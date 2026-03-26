@@ -46,8 +46,11 @@ describe('PointerEvents', () => {
   })
 
   it('should fire pointerMove during drag', async () => {
+    // disable sync during drag to prevent Detox from blocking gesture events
+    await device.disableSynchronization()
+
     await element(by.id('pointer-target')).longPressAndDrag(
-      300, // duration ms
+      800, // duration ms (longer for CI reliability)
       0.2, // start x (normalized)
       0.5, // start y (normalized)
       element(by.id('pointer-target')),
@@ -56,6 +59,10 @@ describe('PointerEvents', () => {
       'slow',
       0
     )
+
+    // wait for state update from move events
+    await new Promise((r) => setTimeout(r, 300))
+    await device.enableSynchronization()
 
     // should have fired at least one move event (not still 0)
     const moveEl = element(by.id('move-count'))

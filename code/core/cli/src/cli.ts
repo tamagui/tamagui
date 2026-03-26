@@ -1,9 +1,7 @@
 import arg from 'arg'
 import chalk from 'chalk'
 
-import { generatedPackageTypes } from './add'
 import { disposeAll, getOptions } from './utils'
-import { loadTamagui, checkDeps } from '@tamagui/static'
 
 // exit handlers
 ;['exit', 'SIGINT'].forEach((_) => {
@@ -26,9 +24,8 @@ const COMMAND_MAP = {
       const { _, ...flags } = arg(this.flags)
       const options = await getOptions({
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-        loadTamaguiOptions: true,
       })
-
+      const { checkDeps } = require('@tamagui/static/checkDeps')
       await checkDeps(options.paths.root)
     },
   },
@@ -47,13 +44,14 @@ const COMMAND_MAP = {
         debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
         loadTamaguiOptions: true,
       })
+      const { loadTamagui } = require('@tamagui/static/loadTamagui')
       process.env.TAMAGUI_KEEP_THEMES = '1'
       await loadTamagui({
         ...options.tamaguiOptions,
         platform: 'web',
       })
 
-      // Also generate prompt to .tamagui/prompt.md
+      // also generate prompt to .tamagui/prompt.md
       const { generatePrompt } = require('./generate-prompt')
       const { join } = require('node:path')
       await generatePrompt({
@@ -82,6 +80,7 @@ const COMMAND_MAP = {
       const outputPath =
         flags['--output'] || options.tamaguiOptions.outputCSS || './tamagui.generated.css'
 
+      const { loadTamagui } = require('@tamagui/static/loadTamagui')
       process.env.TAMAGUI_KEEP_THEMES = '1'
       await loadTamagui({
         ...options.tamaguiOptions,
@@ -133,9 +132,7 @@ const COMMAND_MAP = {
 
   add: {
     shorthands: [],
-    description: `Use to add fonts and icons to your monorepo. Supported types: ${generatedPackageTypes.join(
-      ', '
-    )}`,
+    description: `Use to add fonts and icons to your monorepo.`,
     flags: {
       '--help': Boolean,
       '--debug': Boolean,
@@ -145,9 +142,6 @@ const COMMAND_MAP = {
       const { _, ...flags } = arg(this.flags)
       const { installGeneratedPackage } = require('./add')
       const [cmd, type, path] = _
-      // const options = await getOptions({
-      //   debug: flags['--debug'] ? (flags['--verbose'] ? 'verbose' : true) : false,
-      // })
       await installGeneratedPackage(type, path)
     },
   },
@@ -364,63 +358,3 @@ async function main() {
 
   process.exit(0)
 }
-
-function showHelp(definition: CommandDefinition, flags: { '--help'?: boolean }) {
-  if (flags['--help']) {
-    console.info(`$ ${definition}`)
-  }
-}
-
-// async function main() {
-//   const options = await getOptions({
-//     host: flags['--host'],
-//   })
-
-//   switch (command) {
-//     // build
-//     case 'b':
-//     case 'build': {
-//       const { build } = await import('./build')
-//       break
-//     }
-
-//     // generate
-//     case 'generate':
-//     case 'gen': {
-//       const { generateTamaguiConfig: generateTamgauiConfig } = await import(
-//         './tamaguiConfigUtils.js'
-//       )
-//       const { generateTypes } = await import('./generate')
-
-//       if (props[0] === 'types') {
-//         await generateTypes(options)
-//         return
-//       }
-//       if (props[0] === 'config') {
-//         await generateTamgauiConfig(options)
-//         return
-//       }
-
-//       await Promise.all([
-//         // all
-//         generateTypes(options),
-//         generateTamgauiConfig(options),
-//       ])
-//       break
-//     }
-
-//     // for now, dev === serve, eventually serve can be just prod mode
-//     case 'dev': {
-//       const { dev } = await import('./dev')
-//       await dev(options)
-//       break
-//     }
-
-//     default: {
-//       if (!command || flags['--help']) {
-//       }
-//       console.warn(chalk.yellow(`No command found ${command}`))
-//       process.exit(1)
-//     }
-//   }
-// }

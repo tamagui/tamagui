@@ -1,4 +1,4 @@
-import { Check as CheckIcon } from '@tamagui/lucide-icons'
+import { Check as CheckIcon } from '@tamagui/lucide-icons-2'
 import { useState } from 'react'
 import { Checkbox, Label, Paragraph, XStack, YStack } from 'tamagui'
 

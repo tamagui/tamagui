@@ -426,7 +426,7 @@ export type FontLanguageProps = LanguageContextType & {
 
 export type ThemeProviderProps = {
   className?: string
-  defaultTheme: string
+  defaultTheme: string | null | undefined
   /** @deprecated moved to createTamagui({ settings: { disableRootThemeClass } }) */
   disableRootThemeClass?: boolean
   /** @deprecated moved to createTamagui({ settings: { themeClassNameOnRoot } }) */

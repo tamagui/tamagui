@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/tooltip",
-  "version": "2.0.0-rc.26-1773452370596",
+  "version": "2.0.0-rc.31",
   "source": "src/index.tsx",
   "files": [
     "src",
@@ -52,7 +52,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native": "0.81.5"
+    "react-native": "0.83.2"
   },
   "peerDependencies": {
     "react": ">=19",

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web-lite",
-  "version": "2.0.0-rc.26-1773452370596",
+  "version": "2.0.0-rc.31",
   "description": "React Native for Web",
   "keywords": [
     "react",
@@ -39,6 +39,18 @@
       "module": "./dist/esm/without-animated.mjs",
       "import": "./dist/esm/without-animated.mjs",
       "require": "./dist/cjs/without-animated.cjs"
+    },
+    "./Libraries/Pressability/Pressability": {
+      "browser": "./dist/esm/Libraries/Pressability/Pressability.mjs",
+      "module": "./dist/esm/Libraries/Pressability/Pressability.mjs",
+      "import": "./dist/esm/Libraries/Pressability/Pressability.mjs",
+      "require": "./dist/cjs/Libraries/Pressability/Pressability.cjs"
+    },
+    "./Libraries/Pressability/usePressability": {
+      "browser": "./dist/esm/Libraries/Pressability/usePressability.mjs",
+      "module": "./dist/esm/Libraries/Pressability/usePressability.mjs",
+      "import": "./dist/esm/Libraries/Pressability/usePressability.mjs",
+      "require": "./dist/cjs/Libraries/Pressability/usePressability.cjs"
     },
     "./Libraries/Utilities/codegenNativeComponent": {
       "browser": "./dist/esm/codegenNativeComponent.mjs",

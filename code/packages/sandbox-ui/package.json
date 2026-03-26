@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sandbox-ui",
-  "version": "2.0.0-rc.26-1773452370596",
+  "version": "2.0.0-rc.31",
   "private": true,
   "files": [
     "types",
@@ -9,7 +9,7 @@
   "sideEffects": [
     "*.css"
   ],
-  "main": "dist/cjs",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs",
   "types": "./types/index",
   "scripts": {
@@ -21,10 +21,10 @@
   "dependencies": {
     "@tamagui/animations-react-native": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/toast": "workspace:*",
-    "expo-constants": "~18.0.10",
-    "expo-image": "~3.0.10",
+    "expo-constants": "~55.0.7",
+    "expo-image": "~55.0.6",
     "solito": "^4.3.0",
     "tamagui": "workspace:*"
   },

@@ -24,7 +24,7 @@ export default () => {
         pos="absolute"
         b={20}
         l={20}
-        icon={require('@tamagui/lucide-icons').Play}
+        icon={require('@tamagui/lucide-icons-2').Play}
         size="$6"
         circular
         onPress={() => setPositionI(i => (i + 1) % positions.length)}

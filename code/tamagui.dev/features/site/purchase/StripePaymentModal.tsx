@@ -36,7 +36,7 @@
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import type { Appearance, StripeError } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import { Info, X } from '@tamagui/lucide-icons'
+import { Info, X } from '@tamagui/lucide-icons-2'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { useEffect, useMemo, useState } from 'react'
 import {
@@ -1010,7 +1010,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 - All templates (v1 Takeout, v2 Takeout, Takeout Static)
               </Paragraph>
               <Paragraph size="$2" color="$color9">
-                - Bento pro components
+                - Bento pro components + source repo
               </Paragraph>
               <Paragraph size="$2" color="$color9">
                 - Opus-powered AI /theme generation

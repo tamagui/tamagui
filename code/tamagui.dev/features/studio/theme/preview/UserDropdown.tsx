@@ -1,4 +1,4 @@
-import { Bell, Boxes, ChevronRight, Cog, Workflow } from '@tamagui/lucide-icons'
+import { Bell, Boxes, ChevronRight, Cog, Workflow } from '@tamagui/lucide-icons-2'
 import { Avatar, H4, ListItem, Paragraph, XStack, YStack } from 'tamagui'
 import { useDemoProps } from '~/features/studio/theme/hooks/useDemoProps'
 

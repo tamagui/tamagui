@@ -1,4 +1,4 @@
-import { Check } from '@tamagui/lucide-icons'
+import { Check } from '@tamagui/lucide-icons-2'
 import { Checkbox, H4, Label, Paragraph, Spacer, XStack, YStack } from 'tamagui'
 
 import { useRootStore } from '../../../state/useGlobalState'

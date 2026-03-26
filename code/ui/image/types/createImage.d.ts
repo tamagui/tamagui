@@ -30,7 +30,7 @@ export type CreateImageOptions<C extends ComponentType<any>> = {
      * Useful for expo-image which has a different source format.
      */
     transformSource?: (props: {
-        src?: string;
+        src?: string | number;
         source?: any;
         width?: any;
         height?: any;
@@ -67,7 +67,7 @@ export declare function createImage<C extends ComponentType<any>>(options: Creat
     abortPrefetch: typeof import("react-native").Image.abortPrefetch | undefined;
     queryCache: typeof import("react-native").Image.queryCache | undefined;
 } & import("react").FC<import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & Omit<import("react-native").ImageProps, `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | `$theme-${string}` | `$theme-${number}` | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | "source" | "resizeMode"> & {
-    src?: string;
+    src?: string | number;
     source?: import("react-native").ImageSourcePropType;
     resizeMode?: ImageResizeMode;
     objectFit?: React.CSSProperties["objectFit"];

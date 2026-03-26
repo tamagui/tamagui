@@ -1,4 +1,9 @@
-import { ArrowLeft, ArrowLeftRight, ArrowRight, ArrowUpDown } from '@tamagui/lucide-icons'
+import {
+  ArrowLeft,
+  ArrowLeftRight,
+  ArrowRight,
+  ArrowUpDown,
+} from '@tamagui/lucide-icons-2'
 import type { BuildPalette, BuildThemeAnchor } from '@tamagui/theme-builder'
 import { getThemeSuitePalettes, PALETTE_BACKGROUND_OFFSET } from '@tamagui/theme-builder'
 import { getStore, Store, useStore } from '@tamagui/use-store'

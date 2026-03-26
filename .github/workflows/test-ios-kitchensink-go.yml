@@ -35,7 +35,7 @@ jobs:
 
       - name: Install Maestro
         env:
-          MAESTRO_VERSION: cli-2.0.10
+          MAESTRO_VERSION: cli-2.3.0
         run: |
           curl -fsSL "https://github.com/mobile-dev-inc/maestro/releases/download/${MAESTRO_VERSION}/maestro.zip" -o maestro.zip
           unzip -q maestro.zip
@@ -48,9 +48,9 @@ jobs:
       - name: Boot iOS Simulator
         working-directory: ${{ github.workspace }}
         run: |
-          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name == "iPhone 15") | .udid' | head -1)
+          DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name == "iPhone 16") | .udid' | head -1)
           if [ -z "$DEVICE_ID" ]; then
-            echo "iPhone 15 not found, using first available iPhone"
+            echo "iPhone 16 not found, using first available iPhone"
             DEVICE_ID=$(xcrun simctl list devices available -j | jq -r '.devices | to_entries[] | select(.key | contains("iOS")) | .value[] | select(.name | contains("iPhone")) | .udid' | head -1)
           fi
           echo "Booting simulator: $DEVICE_ID"

@@ -51,8 +51,46 @@ const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = shouldFinish || rePublish || undocumented || process.argv.includes('--ci')
 const skipFinish =
   rePublish || skipAll || undocumented || process.argv.includes('--skip-finish')
+const forcePublishAll = process.argv.includes('--force-publish-all')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
+
+async function getLastReleaseRef(): Promise<string | null> {
+  // find the most recent baseline: either a v* tag or a canary commit
+  let tagRef: { ref: string; date: number } | null = null
+  let canaryRef: { ref: string; date: number } | null = null
+
+  try {
+    const { stdout } = await exec(`git describe --tags --match 'v*' --abbrev=0`)
+    const tag = stdout.trim()
+    const { stdout: dateStr } = await exec(`git log -1 --format=%ct ${tag}`)
+    tagRef = { ref: tag, date: Number(dateStr.trim()) }
+  } catch {}
+
+  try {
+    const { stdout } = await exec(`git log --grep='^canary' --format='%H %ct' -1`)
+    const [hash, dateStr] = stdout.trim().split(' ')
+    if (hash) {
+      canaryRef = { ref: hash, date: Number(dateStr) }
+    }
+  } catch {}
+
+  if (!tagRef && !canaryRef) return null
+  if (!tagRef) return canaryRef!.ref
+  if (!canaryRef) return tagRef.ref
+  // use whichever is more recent
+  return canaryRef.date > tagRef.date ? canaryRef.ref : tagRef.ref
+}
+
+async function hasSourceChanges(dir: string, tag: string): Promise<boolean> {
+  try {
+    await exec(`git diff --quiet ${tag} HEAD -- ${dir}/src/`)
+    return false
+  } catch {
+    // non-zero exit = there are changes
+    return true
+  }
+}
 
 // Check if current version is an RC (e.g., 1.143.0-rc.1 or 1.143.0-rc.1-1234567890)
 // Strip any canary timestamp suffix first
@@ -410,6 +448,84 @@ async function run() {
       )
     }
 
+    // packages with "skipPublishIfUnchanged": true in package.json can be
+    // skipped when their source hasn't changed since the last release.
+    function isSkippablePackage(pkg: (typeof packageJsons)[0]) {
+      return !!pkg.json.skipPublishIfUnchanged
+    }
+
+    const lastTag = await getLastReleaseRef()
+    const skippedPackages: typeof packageJsons = []
+    let packagesToPublish = packageJsons
+
+    if (lastTag && !forcePublishAll) {
+      const lastTagVersion = lastTag.replace(/^v/, '')
+      const lastMajor = Number.parseInt(lastTagVersion.split('.')[0], 10)
+      const nextMajor = Number.parseInt(version.split('.')[0], 10)
+      const isMajorBump = nextMajor > lastMajor
+
+      if (!isMajorBump) {
+        const changed: typeof packageJsons = []
+        const unchanged: typeof packageJsons = []
+
+        for (const pkg of packageJsons) {
+          if (!isSkippablePackage(pkg)) {
+            changed.push(pkg)
+            continue
+          }
+          const hasChanges = await hasSourceChanges(pkg.directory, lastTag)
+          if (hasChanges) {
+            changed.push(pkg)
+          } else {
+            unchanged.push(pkg)
+          }
+        }
+
+        if (unchanged.length > 0) {
+          console.info(
+            `\nSkipping ${unchanged.length} unchanged packages:\n${unchanged.map((p) => `  - ${p.name}`).join('\n')}\n`
+          )
+          skippedPackages.push(...unchanged)
+          packagesToPublish = changed
+        }
+      } else {
+        console.info(`Major version bump detected, publishing all packages`)
+      }
+    } else if (forcePublishAll) {
+      console.info(`--force-publish-all: publishing all packages`)
+    }
+
+    // for skipped packages, resolve their last published version so deps point
+    // to a version that actually exists on the registry
+    const skippedVersions = new Map<string, string>()
+
+    if (skippedPackages.length > 0) {
+      const distTag = canary ? 'canary' : 'latest'
+      console.info(
+        `Resolving last published versions for skipped packages (tag: ${distTag})...`
+      )
+      await pMap(
+        skippedPackages,
+        async ({ name }) => {
+          try {
+            const { stdout } = await exec(`npm view ${name} dist-tags.${distTag}`)
+            const lastVersion = stdout.trim()
+            if (lastVersion) {
+              skippedVersions.set(name, lastVersion)
+              console.info(`  ${name}: ${lastVersion}`)
+            } else {
+              // no published version, will use new version (force publish)
+              skippedVersions.set(name, version)
+            }
+          } catch {
+            // never published, use new version
+            skippedVersions.set(name, version)
+          }
+        },
+        { concurrency: 10 }
+      )
+    }
+
     if (!shouldFinish && dryRun) {
       console.info(`Dry run, exiting before publish`)
       return
@@ -437,10 +553,10 @@ async function run() {
 
       // pack and publish
       await pMap(
-        packageJsons,
+        packagesToPublish,
         async ({ name, cwd }) => {
           const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
-          const publishTag = canary || isCanaryVersion ? 'canary' : undefined
+          const publishTag = canary || isCanaryVersion ? 'canary' : 'latest'
           const publishOptions = [publishTag && `--tag ${publishTag}`]
             .filter(Boolean)
             .join(' ')
@@ -466,7 +582,8 @@ async function run() {
             if (!pkgJson[field]) continue
             for (const depName in pkgJson[field]) {
               if (pkgJson[field][depName].startsWith('workspace:')) {
-                pkgJson[field][depName] = version
+                // use the skipped package's last published version if it won't be published
+                pkgJson[field][depName] = skippedVersions.get(depName) || version
               }
             }
           }
@@ -492,8 +609,14 @@ async function run() {
           await spawnify(publishCommand, {
             cwd: tmpDir,
           }).catch((err) => {
-            console.error(err)
-            process.exit(1)
+            if (rePublish) {
+              console.warn(
+                `⚠️  ${name}: publish failed (likely already published), continuing`
+              )
+            } else {
+              console.error(err)
+              process.exit(1)
+            }
           })
         },
         {
@@ -502,6 +625,33 @@ async function run() {
       )
 
       console.info(`✅ Published\n`)
+
+      // for canary releases, point the canary dist-tag to the latest version for skipped packages
+      // so `npm install @tamagui/lucide-icons-2@canary` still resolves
+      const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
+      if ((canary || isCanaryVersion) && skippedPackages.length > 0) {
+        console.info(
+          `Updating canary dist-tags for ${skippedPackages.length} skipped packages...`
+        )
+        await pMap(
+          skippedPackages,
+          async ({ name }) => {
+            try {
+              const { stdout } = await exec(`npm view ${name} dist-tags.latest`)
+              const latestVersion = stdout.trim()
+              if (latestVersion) {
+                await spawnify(`npm dist-tag add ${name}@${latestVersion} canary`, {
+                  avoidLog: true,
+                })
+                console.info(`  ✓ ${name}@${latestVersion} tagged as canary`)
+              }
+            } catch (err) {
+              console.warn(`  ✗ ${name}: could not update canary tag`, err)
+            }
+          },
+          { concurrency: 10 }
+        )
+      }
 
       // restore package.json files for undocumented releases
       if (undocumented) {
@@ -525,20 +675,21 @@ async function run() {
         await sleep(10 * 1000)
       }
 
-      if (!canary && !skipStarters) {
-        const starterFreeDir = join(process.cwd(), '../starter-free')
-        if (!dirty) {
-          await spawnify(`git pull --rebase origin HEAD`, { cwd: starterFreeDir })
-        }
+      // shell issues
+      // if (!canary && !skipStarters) {
+      //   const starterFreeDir = join(process.cwd(), '../starter-free')
+      //   if (!dirty) {
+      //     await spawnify(`git pull --rebase origin HEAD`, { cwd: starterFreeDir })
+      //   }
 
-        await spawnify(`bun run upgrade:starters`)
+      //   await spawnify(`bun run upgrade:starters`)
 
-        if (!shouldFinish) {
-          // Run bun test in starter-free directory
-          await spawnify(`bun run test`, { cwd: starterFreeDir })
-          await finishAndCommit(starterFreeDir)
-        }
-      }
+      //   if (!shouldFinish) {
+      //     // Run bun test in starter-free directory
+      //     await spawnify(`bun run test`, { cwd: starterFreeDir })
+      //     await finishAndCommit(starterFreeDir)
+      //   }
+      // }
 
       await finishAndCommit()
 

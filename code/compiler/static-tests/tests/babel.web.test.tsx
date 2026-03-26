@@ -459,6 +459,30 @@ test('$platform-web styles are flattened on web', async () => {
   expect(output?.styles).toContain('background-color')
 })
 
+test('$platform-web transition property is preserved', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View
+          width={100}
+          $platform-web={{
+            transition: 'clip-path 400ms ease, transform 400ms ease',
+            clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+          }}
+        />
+      )
+    }
+  `
+  )
+
+  // transition inside $platform-web should be preserved as a CSS property
+  expect(output?.styles).toContain('transition')
+  expect(output?.styles).toContain('clip-path')
+})
+
 // Verifies that conditional spread with runtime variable from hook inside map is correctly extracted
 test('conditional spread with runtime variable preserves ternary', async () => {
   const output = await extractForWeb(
@@ -625,6 +649,41 @@ test('role attribute is preserved during extraction', async () => {
   // The output should have role="button" on the div
   expect(output?.js).toContain('role=')
   expect(output?.js).toContain('button')
+})
+
+// fontWeight ternary is dropped when combined with theme-token color ternary
+test('ternary with mixed theme-token and non-token values preserves all props', async () => {
+  const output = await extractForWeb(
+    `
+    import { Text } from '@tamagui/core'
+    export function Test({ isActive, label }) {
+      return (
+        <Text
+          fontSize="$3"
+          fontWeight={isActive ? '600' : '400'}
+          color={isActive ? '$color12' : '$color11'}
+        >
+          {label}
+        </Text>
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // both ternary branches should include fontWeight
+  expect(output?.styles).toContain('font-weight:600')
+  expect(output?.styles).toContain('font-weight:400')
+  // both color values should also be present (as CSS variables for theme tokens)
+  expect(output?.styles).toContain('color:var(--color12')
+  expect(output?.styles).toContain('color:var(--color11')
+  expect(output?.js).toMatchSnapshot()
+  expect(output?.styles).toMatchSnapshot()
 })
 
 // CSS shorthand properties with embedded $variables

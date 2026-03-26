@@ -1,4 +1,4 @@
-import { Moon } from '@tamagui/lucide-icons'
+import { Moon } from '@tamagui/lucide-icons-2'
 import { Button, ListItem, Theme, YStack } from 'tamagui'
 
 export function ButtonIconColor() {

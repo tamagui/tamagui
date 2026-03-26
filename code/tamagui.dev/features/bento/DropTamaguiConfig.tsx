@@ -1,4 +1,4 @@
-import { Paintbrush, X } from '@tamagui/lucide-icons'
+import { Paintbrush, X } from '@tamagui/lucide-icons-2'
 import React, { useEffect, useState } from 'react'
 import {
   Button,

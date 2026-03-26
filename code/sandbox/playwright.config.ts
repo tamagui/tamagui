@@ -27,7 +27,7 @@ const webServers: any[] = []
 
 if (mode === 'dev' || mode === 'both') {
   webServers.push({
-    command: `bun run dev --port ${devPort}`,
+    command: `bun run dev --port ${devPort} --clean`,
     url: `http://localhost:${devPort}`,
     reuseExistingServer: true,
     timeout: 120000,
@@ -36,7 +36,7 @@ if (mode === 'dev' || mode === 'both') {
 
 if (mode === 'prod' || mode === 'both') {
   webServers.push({
-    command: `bun run build:web && bun run serve --port ${prodPort}`,
+    command: `bun run build:web && bun run serve --port ${prodPort} --clean`,
     url: `http://localhost:${prodPort}`,
     reuseExistingServer: true,
     timeout: 180000,

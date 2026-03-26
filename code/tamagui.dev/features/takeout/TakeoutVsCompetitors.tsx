@@ -1,5 +1,5 @@
 import { ThemeTintAlt } from '@tamagui/logo'
-import { Check, X } from '@tamagui/lucide-icons'
+import { Check, X } from '@tamagui/lucide-icons-2'
 import { H3, Paragraph, SizableText, XStack, YStack, styled, useThemeName } from 'tamagui'
 
 const FeatureLabel = styled(SizableText, {

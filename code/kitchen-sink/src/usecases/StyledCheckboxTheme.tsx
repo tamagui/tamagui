@@ -1,4 +1,4 @@
-import { Check } from '@tamagui/lucide-icons'
+import { Check } from '@tamagui/lucide-icons-2'
 import { Checkbox as TamaguiCheckbox, styled, withStaticProperties } from 'tamagui'
 
 export const Checkbox = withStaticProperties(

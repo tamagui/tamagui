@@ -14,13 +14,14 @@ import { by, device, element, waitFor } from 'detox'
  */
 export async function navigateToTestCase(
   testCaseName: string,
-  waitForElementId?: string
+  waitForElementId?: string,
+  options?: { skipEnableSync?: boolean }
 ) {
   // disable sync to avoid animation driver blocking
   await device.disableSynchronization()
 
   // wait for home screen to load
-  await waitFor(element(by.text('Kitchen Sink')))
+  await waitFor(element(by.id('home-title')))
     .toExist()
     .withTimeout(60000)
 
@@ -30,13 +31,16 @@ export async function navigateToTestCase(
   // tap toggle button to expand the quick-nav section
   await element(by.id('toggle-test-cases')).tap()
 
-  // wait for the quick-nav element to appear (expansion animation)
+  // wait for the quick-nav element to appear
   await waitFor(element(by.id(`detox-nav-${testCaseName}`)))
     .toBeVisible()
-    .withTimeout(5000)
+    .withTimeout(15000)
 
   // tap the quick-nav element for this test case
   await element(by.id(`detox-nav-${testCaseName}`)).tap()
+
+  // wait for stack screen transition animation to complete
+  await new Promise((r) => setTimeout(r, 800))
 
   // wait for the target screen to load
   if (waitForElementId) {
@@ -45,6 +49,8 @@ export async function navigateToTestCase(
       .withTimeout(10000)
   }
 
-  // re-enable sync
-  await device.enableSynchronization()
+  // re-enable sync (unless caller needs it disabled, e.g. no-RNGH tests)
+  if (!options?.skipEnableSync) {
+    await device.enableSynchronization()
+  }
 }

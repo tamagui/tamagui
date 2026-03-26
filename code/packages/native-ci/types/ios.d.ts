@@ -2,6 +2,34 @@
  * iOS-specific utilities for Detox test runners
  */
 /**
+ * Check if any iOS simulator is booted and available for testing.
+ * Returns true if at least one simulator is booted.
+ */
+export declare function hasBootedSimulator(): boolean;
+/**
+ * Get the UDID of the first booted iOS simulator, or null if none.
+ */
+export declare function getBootedSimulatorUDID(): string | null;
+/**
+ * Boot an iOS simulator. Picks the first available iPhone device.
+ */
+export declare function ensureBootedSimulator(): void;
+/**
+ * Ensure the app is installed on a specific simulator.
+ * For dev client apps, builds if needed then installs.
+ * For Expo Go apps, ensures Expo Go is present.
+ */
+export declare function ensureAppInstalled(opts: {
+    projectRoot: string;
+    bundleId: string;
+    udid?: string;
+}): Promise<void>;
+/**
+ * Get the bundle ID needed for maestro tests.
+ * Checks flow files first (they declare appId), falls back to app.json.
+ */
+export declare function getMaestroBundleId(projectRoot: string): string;
+/**
  * Shutdown all simulators and clean up zombie simulator processes.
  * macOS doesn't properly clean up simulators between test runs, leading to
  * resource exhaustion (40+ simulators can accumulate).

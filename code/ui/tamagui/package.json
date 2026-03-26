@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "2.0.0-rc.26-1773452370596",
+  "version": "2.0.0-rc.31",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "repository": {
@@ -98,7 +98,6 @@
     "@tamagui/elements": "workspace:*",
     "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/focusable": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
     "@tamagui/form": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/get-font-sized": "workspace:*",
@@ -125,6 +124,7 @@
     "@tamagui/sheet": "workspace:*",
     "@tamagui/slider": "workspace:*",
     "@tamagui/spacer": "workspace:*",
+    "@tamagui/spinner": "workspace:*",
     "@tamagui/stacks": "workspace:*",
     "@tamagui/switch": "workspace:*",
     "@tamagui/tabs": "workspace:*",
@@ -139,12 +139,13 @@
     "@tamagui/use-window-dimensions": "workspace:*",
     "@tamagui/v2-toast": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native": "0.81.5",
+    "react-native": "0.83.2",
     "react-native-web": "^0.21.0"
   },
   "peerDependencies": {

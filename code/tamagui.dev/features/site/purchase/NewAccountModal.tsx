@@ -8,7 +8,7 @@ import {
   Trash2,
   Users,
   X,
-} from '@tamagui/lucide-icons'
+} from '@tamagui/lucide-icons-2'
 import type {
   APIGuildMember,
   RESTGetAPIGuildMembersSearchResult,
@@ -1366,6 +1366,67 @@ const PlanTab = ({
           apiType="support"
         />
       )}
+
+      {/* Cancel subscription - always visible for non-team-members with active recurring sub */}
+      {!isTeamMember && subscription && !isOneTimePlan && (
+        <CancelSubscriptionSection subscription={subscription} />
+      )}
+    </YStack>
+  )
+}
+
+const CancelSubscriptionSection = ({ subscription }: { subscription: Subscription }) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const { refresh } = useUser()
+
+  const handleCancel = async () => {
+    const confirmed = window.confirm(
+      'Are you sure you want to cancel this subscription? You will retain access until the end of your billing period.'
+    )
+    if (!confirmed) return
+
+    setIsLoading(true)
+    try {
+      const res = await authFetch('/api/cancel-subscription', {
+        method: 'POST',
+        body: JSON.stringify({ subscription_id: subscription.id }),
+      })
+      const data = await res.json()
+      if (data.message) {
+        alert(data.message)
+        refresh()
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  if (subscription.cancel_at_period_end) {
+    return (
+      <YStack gap="$3" pt="$4">
+        <Separator />
+        <YStack bg="$yellow2" p="$3" rounded="$4">
+          <Paragraph color="$yellow11">
+            Your subscription will end on{' '}
+            {new Date(subscription.current_period_end).toLocaleDateString()}
+          </Paragraph>
+        </YStack>
+      </YStack>
+    )
+  }
+
+  return (
+    <YStack gap="$3" pt="$4">
+      <Separator />
+      <Button
+        theme="red"
+        disabled={isLoading}
+        onPress={handleCancel}
+        alignSelf="flex-start"
+        size="$3"
+      >
+        <Button.Text>Cancel Subscription</Button.Text>
+      </Button>
     </YStack>
   )
 }
@@ -2426,7 +2487,7 @@ const BentoCard = ({
   return (
     <ServiceCard
       title="Bento"
-      description="Download the entire suite of Bento components."
+      description="Download Bento components or browse the source repo."
       actionLabel={hasAccess ? 'Download' : 'Purchase'}
       onAction={
         hasAccess

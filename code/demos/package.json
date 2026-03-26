@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/demos",
-  "version": "2.0.0-rc.26-1773452370596",
+  "version": "2.0.0-rc.31",
   "source": "demos/src/index.tsx",
   "files": [
     "src",
@@ -61,7 +61,7 @@
     "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/list-item": "workspace:*",
     "@tamagui/logo": "workspace:*",
-    "@tamagui/lucide-icons": "workspace:*",
+    "@tamagui/lucide-icons-2": "workspace:*",
     "@tamagui/menu": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/progress": "workspace:*",
@@ -83,7 +83,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "react-native": "0.81.5"
+    "react-native": "0.83.2"
   },
   "peerDependencies": {
     "react": ">=19",

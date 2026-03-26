@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "2.0.0-rc.26-1773452370596",
+  "version": "2.0.0-rc.31",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "bin": {
     "tamagui-build": "tamagui-build.js",
@@ -19,11 +19,9 @@
     "@swc/core": "^1.14.0",
     "@tamagui/babel-plugin-fully-specified": "workspace:*",
     "@types/fs-extra": "^9.0.13",
-    "babel-plugin-react-compiler": "^1.0.0",
     "baseline-browser-mapping": "^2.9.15",
     "chokidar": "^3.5.2",
     "esbuild": "^0.27.2",
-    "esbuild-plugin-es5": "^2.1.1",
     "esbuild-register": "^3.6.0",
     "execa": "^5.0.0",
     "fast-glob": "^3.2.11",
@@ -31,6 +29,14 @@
     "lodash.debounce": "^4.0.8",
     "oxc-transform": "^0.112.0",
     "typescript": "~5.9.2"
+  },
+  "peerDependencies": {
+    "babel-plugin-react-compiler": ">=1"
+  },
+  "peerDependenciesMeta": {
+    "babel-plugin-react-compiler": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "vitest": "4.0.4"

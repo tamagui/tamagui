@@ -1,6 +1,6 @@
 import { Paragraph, XStack, YStack } from 'tamagui'
 
-import { Pencil } from '@tamagui/lucide-icons'
+import { Pencil } from '@tamagui/lucide-icons-2'
 import { CheckCircle } from './CheckCircle'
 
 export const Features = ({ items, size, large, soon, ...props }: any) => {

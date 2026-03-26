@@ -1,4 +1,4 @@
-import { ExternalLink } from '@tamagui/lucide-icons'
+import { ExternalLink } from '@tamagui/lucide-icons-2'
 import { Anchor, H2, Paragraph, XStack, YStack } from 'tamagui'
 import { ToastControl } from 'components/CurrentToast'
 

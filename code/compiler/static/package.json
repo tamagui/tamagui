@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static",
-  "version": "2.0.0-rc.26-1773452370596",
+  "version": "2.0.0-rc.31",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "license": "MIT",
   "source": "src/index.ts",
@@ -21,6 +21,14 @@
     "./worker": {
       "types": "./types/worker.d.ts",
       "default": "./dist/worker.cjs"
+    },
+    "./checkDeps": {
+      "types": "./types/checkDeps.d.ts",
+      "default": "./dist/checkDeps.cjs"
+    },
+    "./loadTamagui": {
+      "types": "./types/extractor/loadTamagui.d.ts",
+      "default": "./dist/extractor/loadTamagui.cjs"
     }
   },
   "publishConfig": {
@@ -80,7 +88,7 @@
     "esbuild-loader": "^4.2.2",
     "null-loader": "^4.0.1",
     "react": ">=19",
-    "react-native": "0.81.5",
+    "react-native": "0.83.2",
     "typescript": "~5.9.2"
   },
   "peerDependencies": {

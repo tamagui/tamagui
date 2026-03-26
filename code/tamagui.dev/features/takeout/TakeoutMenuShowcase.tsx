@@ -15,7 +15,7 @@ import {
   Sun,
   Trash2,
   Zap,
-} from '@tamagui/lucide-icons'
+} from '@tamagui/lucide-icons-2'
 import { Menu } from '@tamagui/menu'
 import { useUserScheme } from '@vxrn/color-scheme'
 import { useEffect, useState } from 'react'

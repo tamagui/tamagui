@@ -1,6 +1,5 @@
 import { join } from 'node:path'
 import * as FS from 'fs-extra'
-import { loadTamagui } from '@tamagui/static'
 import type { CLIResolvedOptions } from '@tamagui/types'
 
 interface GeneratePromptOptions extends CLIResolvedOptions {
@@ -11,6 +10,7 @@ export async function generatePrompt(options: GeneratePromptOptions) {
   const { paths, output } = options
 
   // Regenerate the config first
+  const { loadTamagui } = require('@tamagui/static/loadTamagui')
   process.env.TAMAGUI_KEEP_THEMES = '1'
   await loadTamagui({
     ...options.tamaguiOptions,

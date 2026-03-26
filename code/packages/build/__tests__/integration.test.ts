@@ -47,7 +47,7 @@ describe('tamagui-build integration test', () => {
     expect(cjsOutput).toContain('Hello,')
     expect(esmOutput).toContain('Hello,')
     expect(esmOutput).toContain("./nested/index.mjs")
-    expect(existsSync(join(distPath, 'cjs', 'index.js'))).toBe(true)
+    expect(existsSync(join(distPath, 'cjs', 'index.cjs'))).toBe(true)
     expect(existsSync(join(distPath, 'esm', 'index.js'))).toBe(true)
     expect(existsSync(join(distPath, 'jsx', 'index.js'))).toBe(true)
   })
@@ -64,7 +64,7 @@ describe('tamagui-build integration test', () => {
     const esmOutput = readFileSync(distEsmFilePath, 'utf-8')
     expect(cjsOutput).toContain('Hello,')
     expect(esmOutput).toContain('Hello,')
-    expect(existsSync(join(distPath, 'cjs', 'index.js'))).toBe(true)
+    expect(existsSync(join(distPath, 'cjs', 'index.cjs'))).toBe(true)
     expect(existsSync(join(distPath, 'esm', 'index.js'))).toBe(true)
     expect(existsSync(join(distPath, 'jsx', 'index.js'))).toBe(true)
   })
@@ -76,7 +76,7 @@ describe('tamagui-build integration test', () => {
     // Check if the output files exist
     expect(existsSync(distCjsFilePath)).toBe(true)
     expect(existsSync(distEsmFilePath)).toBe(false)
-    expect(existsSync(join(distPath, 'cjs', 'index.js'))).toBe(true)
+    expect(existsSync(join(distPath, 'cjs', 'index.cjs'))).toBe(true)
   })
 
   it('should skip sourcemaps when --skip-sourcemaps is used', () => {
@@ -247,7 +247,7 @@ describe('tamagui-build integration test', () => {
       .split('\n')
       .map((file) => file.replace(/^dist\//, ''))
 
-    expect(distFiles).toContain('cjs/index.js')
+    expect(distFiles).toContain('cjs/index.cjs')
     expect(distFiles).toContain('esm/index.js')
     expect(distFiles).toContain('esm/index.js.map')
     expect(distFiles).toContain('jsx/index.js')
