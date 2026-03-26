@@ -210,7 +210,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                 const finalAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
                 const themeKeysUsed = new Set<string>()
 
-                function getStyleExpression(style: object | null) {
+                function getStyleExpression(style: object | null, forTernary = false) {
                   if (!style) return
 
                   // split theme properties and leave them as props since RN has no concept of theme
@@ -226,13 +226,24 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                     // make a sub-array
                     themeExpr = getThemedStyleExpression(themed)
                   }
-                  const ident = addSheetStyle(plain, props.node)
+                  const hasPlainKeys = Object.keys(plain).length > 0
+                  const ident = hasPlainKeys ? addSheetStyle(plain, props.node) : null
                   if (themeExpr) {
-                    addStyleExpression(ident)
-                    addStyleExpression(ident, true)
+                    if (forTernary) {
+                      // for ternary branches, return combined expression
+                      // without adding plain styles unconditionally
+                      if (ident) {
+                        return t.arrayExpression([ident, themeExpr])
+                      }
+                      return themeExpr
+                    }
+                    // for base styles, add unconditionally
+                    if (ident) {
+                      addStyleExpression(ident)
+                      addStyleExpression(ident, true)
+                    }
                     return themeExpr
                   }
-                  // since we only do flattened disabling this path
                   return ident
                 }
 
@@ -280,8 +291,8 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
 
                     case 'ternary': {
                       const { consequent, alternate } = attr.value
-                      const consExpr = getStyleExpression(consequent)
-                      const altExpr = getStyleExpression(alternate)
+                      const consExpr = getStyleExpression(consequent, true)
+                      const altExpr = getStyleExpression(alternate, true)
 
                       expressions.push(attr.value.test)
                       addStyleExpression(
