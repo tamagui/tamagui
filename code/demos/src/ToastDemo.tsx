@@ -70,6 +70,7 @@ export const ToastDemo = () => {
               current={position}
               onPress={showToast}
               Icon={ArrowUpRight}
+              testID="toast-top-right-button"
             />
           </XStack>
           <XStack gap="$2">

@@ -57,7 +57,7 @@ export function ToastMultipleCase() {
       <Toast.Viewport>
         <Toast.List
           renderItem={({ toast, index }) => (
-            <Toast.Item toast={toast} index={index}>
+            <Toast.Item toast={toast} index={index} testID={`toast-item-${index}`}>
               <CustomToastContent toast={toast} />
             </Toast.Item>
           )}
@@ -383,7 +383,7 @@ function CustomToastContent({ toast: t }: { toast: ToastT }) {
         )}
       </YStack>
 
-      <Toast.Close position="absolute" top={-8} left={-8} />
+      <Toast.Close testID="toast-close" position="absolute" top={-8} left={-8} />
     </XStack>
   )
 }
