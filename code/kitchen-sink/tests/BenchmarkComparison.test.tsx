@@ -6,22 +6,18 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'BenchmarkComparison', type: 'useCase' })
 })
 
-// run all benchmarks automatically and collect results
 test('auto benchmark - all scenarios complete', async ({ page }) => {
-  // click the auto-run button
   const startBtn = page.locator('#bench-auto-start')
   await startBtn.click()
 
-  // wait for results table to appear (all benchmarks done)
   const resultsTable = page.locator('#bench-results-table')
   await resultsTable.waitFor({ state: 'visible', timeout: 60000 })
 
-  // collect all results
   const scenarios = ['simple', 'rich', 'animated']
   const renderers = {
-    simple: ['flat', 'regular', 'inline'],
-    rich: ['flat', 'styled', 'inline'],
-    animated: ['flat', 'styled', 'inline'],
+    simple: ['classname', 'regular', 'styled', 'inline'],
+    rich: ['classname', 'regular', 'styled', 'inline'],
+    animated: ['classname', 'regular', 'styled', 'inline'],
   }
 
   const results: Record<string, Record<string, { mount: string; rerender: string }>> = {}
@@ -43,20 +39,18 @@ test('auto benchmark - all scenarios complete', async ({ page }) => {
     }
   }
 
-  // log results in a readable table
-  console.log('\n══════════════════════════════════════════════')
+  console.log('\n══════════════════════════════════════════════════════════')
   console.log('  BENCHMARK RESULTS (500 components)')
-  console.log('══════════════════════════════════════════════\n')
+  console.log('══════════════════════════════════════════════════════════\n')
 
   for (const scenario of scenarios) {
     console.log(`  ${scenario.toUpperCase()}:`)
     for (const [renderer, data] of Object.entries(results[scenario])) {
-      console.log(`    ${renderer.padEnd(10)} mount: ${data.mount.padStart(8)}ms  rerender: ${data.rerender.padStart(8)}ms`)
+      console.log(`    ${renderer.padEnd(12)} mount: ${data.mount.padStart(8)}ms  rerender: ${data.rerender.padStart(8)}ms`)
     }
     console.log('')
   }
 
-  // basic sanity: all results should be numeric and > 0
   for (const scenario of scenarios) {
     for (const [renderer, data] of Object.entries(results[scenario])) {
       const mount = parseFloat(data.mount)
@@ -66,8 +60,7 @@ test('auto benchmark - all scenarios complete', async ({ page }) => {
     }
   }
 
-  // screenshot the results
   await expect(resultsTable).toHaveScreenshot('benchmark-results.png', {
-    maxDiffPixelRatio: 0.3, // numbers will vary between runs
+    maxDiffPixelRatio: 0.3,
   })
 })

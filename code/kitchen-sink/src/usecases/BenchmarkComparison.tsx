@@ -2,14 +2,17 @@ import React, { useState, useLayoutEffect, useCallback, useMemo } from 'react'
 import { View, Text, XStack, YStack, styled, Button } from 'tamagui'
 
 /**
- * three benchmark scenarios comparing tamagui flat-style performance:
+ * three benchmark scenarios comparing tamagui className (tailwind) performance:
  *
- * 1. simple: all flat-style props, fully compilable, no pseudo states
- * 2. rich: mix of compiled + dynamic, pseudo states, media queries
- * 3. animated: SSR-safe with animation="bouncy" + enterStyle/exitStyle
+ * 1. simple: basic layout props, fully compilable
+ * 2. rich: pseudo states, variants, dynamic values
+ * 3. animated: animation="bouncy" + enterStyle/exitStyle
  *
- * each scenario renders N components and measures mount + re-render time.
- * uses className="" output for all — this is what tamagui compiles to.
+ * four renderers per scenario:
+ *   - className: tailwind-style className="bg-red w-20 h-20"
+ *   - regular: standard tamagui props
+ *   - styled: styled() component
+ *   - inline: raw div + style={}
  */
 
 const ITEM_COUNT = 500
@@ -60,7 +63,6 @@ function useBenchmark() {
   return { mountTime, rerenderTime, startMount, startRerender, onLayout }
 }
 
-// wrapper that measures layout timing
 function TimedContainer({
   onLayout,
   children,
@@ -79,9 +81,9 @@ function TimedContainer({
   )
 }
 
-// ── benchmark 1: simple flat-style (fully compiled) ──
+// ── benchmark 1: simple ──────────────────────────────
 
-function SimpleItems({ seed }: { seed: number }) {
+function SimpleClassNameItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
@@ -89,13 +91,7 @@ function SimpleItems({ seed }: { seed: number }) {
       arr.push(
         <View
           key={i}
-          {...({
-            $width: 20,
-            $height: 20,
-            $bg: `hsl(${hue}, 70%, 60%)`,
-            $rounded: 3,
-            $m: 1,
-          } as any)}
+          className={`w-20 h-20 bg-hsl(${hue},70%,60%) rounded-3 m-1`}
         />
       )
     }
@@ -117,6 +113,30 @@ function SimpleRegularItems({ seed }: { seed: number }) {
           backgroundColor={`hsl(${hue}, 70%, 60%)`}
           borderRadius={3}
           margin={1}
+        />
+      )
+    }
+    return arr
+  }, [seed])
+  return <>{items}</>
+}
+
+const SimpleStyledBox = styled(View, {
+  width: 20,
+  height: 20,
+  borderRadius: 3,
+  margin: 1,
+})
+
+function SimpleStyledItems({ seed }: { seed: number }) {
+  const items = useMemo(() => {
+    const arr = []
+    for (let i = 0; i < ITEM_COUNT; i++) {
+      const hue = ((i * 7 + seed) % 360)
+      arr.push(
+        <SimpleStyledBox
+          key={i}
+          backgroundColor={`hsl(${hue}, 70%, 60%)`}
         />
       )
     }
@@ -148,7 +168,7 @@ function SimpleInlineItems({ seed }: { seed: number }) {
   return <>{items}</>
 }
 
-// ── benchmark 2: rich (mixed compiled + dynamic) ──
+// ── benchmark 2: rich (pseudo states + dynamic) ──────
 
 const RichCard = styled(View, {
   width: 60,
@@ -183,18 +203,18 @@ const RichCard = styled(View, {
   } as const,
 })
 
-const variants = ['primary', 'secondary', 'accent'] as const
+const variantList = ['primary', 'secondary', 'accent'] as const
 
-function RichItems({ seed }: { seed: number }) {
+function RichClassNameItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
     const arr = []
+    const colors = ['rgb(99,102,241)', 'rgb(34,197,94)', 'rgb(236,72,153)']
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const v = variants[(i + seed) % 3]
+      const color = colors[(i + seed) % 3]
       arr.push(
-        <RichCard
+        <View
           key={i}
-          variant={v}
-          margin={1}
+          className={`w-60 h-40 rounded-6 p-4 bw-1 bc-rgba(0,0,0,0.1) bg-${color} m-1 hover:scale-1.02 hover:bc-rgba(0,0,0,0.3) press:scale-0.98 press:o-0.8`}
           opacity={0.7 + (i % 4) * 0.1}
         />
       )
@@ -204,7 +224,7 @@ function RichItems({ seed }: { seed: number }) {
   return <>{items}</>
 }
 
-function RichFlatItems({ seed }: { seed: number }) {
+function RichRegularItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
     const arr = []
     const colors = ['rgb(99,102,241)', 'rgb(34,197,94)', 'rgb(236,72,153)']
@@ -213,21 +233,36 @@ function RichFlatItems({ seed }: { seed: number }) {
       arr.push(
         <View
           key={i}
-          {...({
-            $width: 60,
-            $height: 40,
-            $rounded: 6,
-            $p: 4,
-            $borderWidth: 1,
-            $borderColor: 'rgba(0,0,0,0.1)',
-            $bg: color,
-            $m: 1,
-            $o: 0.7 + (i % 4) * 0.1,
-            '$hover:scale': 1.02,
-            '$hover:borderColor': 'rgba(0,0,0,0.3)',
-            '$press:scale': 0.98,
-            '$press:o': 0.8,
-          } as any)}
+          width={60}
+          height={40}
+          borderRadius={6}
+          padding={4}
+          borderWidth={1}
+          borderColor="rgba(0,0,0,0.1)"
+          backgroundColor={color}
+          margin={1}
+          opacity={0.7 + (i % 4) * 0.1}
+          hoverStyle={{ scale: 1.02, borderColor: 'rgba(0,0,0,0.3)' }}
+          pressStyle={{ scale: 0.98, opacity: 0.8 }}
+        />
+      )
+    }
+    return arr
+  }, [seed])
+  return <>{items}</>
+}
+
+function RichStyledItems({ seed }: { seed: number }) {
+  const items = useMemo(() => {
+    const arr = []
+    for (let i = 0; i < ITEM_COUNT; i++) {
+      const v = variantList[(i + seed) % 3]
+      arr.push(
+        <RichCard
+          key={i}
+          variant={v}
+          margin={1}
+          opacity={0.7 + (i % 4) * 0.1}
         />
       )
     }
@@ -263,7 +298,7 @@ function RichInlineItems({ seed }: { seed: number }) {
   return <>{items}</>
 }
 
-// ── benchmark 3: animated with transitions ──
+// ── benchmark 3: animated ────────────────────────────
 
 const AnimatedBox = styled(View, {
   width: 24,
@@ -287,7 +322,53 @@ const AnimatedBox = styled(View, {
   },
 })
 
-function AnimatedItems({ seed }: { seed: number }) {
+function AnimatedClassNameItems({ seed }: { seed: number }) {
+  const items = useMemo(() => {
+    const arr = []
+    for (let i = 0; i < ITEM_COUNT; i++) {
+      const hue = ((i * 7 + seed) % 360)
+      arr.push(
+        <View
+          key={i}
+          animation="bouncy"
+          className={`w-24 h-24 rounded-4 bg-hsl(${hue},70%,60%) m-1`}
+          enterStyle={{ opacity: 0, scale: 0.5 }}
+          hoverStyle={{ scale: 1.1 }}
+          pressStyle={{ scale: 0.95 }}
+        />
+      )
+    }
+    return arr
+  }, [seed])
+  return <>{items}</>
+}
+
+function AnimatedRegularItems({ seed }: { seed: number }) {
+  const items = useMemo(() => {
+    const arr = []
+    for (let i = 0; i < ITEM_COUNT; i++) {
+      const hue = ((i * 7 + seed) % 360)
+      arr.push(
+        <View
+          key={i}
+          animation="bouncy"
+          width={24}
+          height={24}
+          borderRadius={4}
+          backgroundColor={`hsl(${hue}, 70%, 60%)`}
+          margin={1}
+          enterStyle={{ opacity: 0, scale: 0.5 }}
+          hoverStyle={{ scale: 1.1 }}
+          pressStyle={{ scale: 0.95 }}
+        />
+      )
+    }
+    return arr
+  }, [seed])
+  return <>{items}</>
+}
+
+function AnimatedStyledItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
@@ -297,35 +378,6 @@ function AnimatedItems({ seed }: { seed: number }) {
           key={i}
           margin={1}
           backgroundColor={`hsl(${hue}, 70%, 60%)`}
-        />
-      )
-    }
-    return arr
-  }, [seed])
-  return <>{items}</>
-}
-
-function AnimatedFlatItems({ seed }: { seed: number }) {
-  const items = useMemo(() => {
-    const arr = []
-    for (let i = 0; i < ITEM_COUNT; i++) {
-      const hue = ((i * 7 + seed) % 360)
-      arr.push(
-        <View
-          key={i}
-          animation="bouncy"
-          {...({
-            $width: 24,
-            $height: 24,
-            $rounded: 4,
-            $bg: `hsl(${hue}, 70%, 60%)`,
-            $m: 1,
-            '$enter:o': 0,
-            '$enter:scale': 0.5,
-            '$hover:bg': `hsl(${hue}, 80%, 50%)`,
-            '$hover:scale': 1.1,
-            '$press:scale': 0.95,
-          } as any)}
         />
       )
     }
@@ -372,20 +424,22 @@ type BenchScenario = {
 
 const scenarios: BenchScenario[] = [
   {
-    name: '1. Simple (fully compiled)',
+    name: '1. Simple (fully compilable)',
     id: 'simple',
     renderers: [
-      { label: 'Flat', id: 'flat', component: SimpleItems },
+      { label: 'className', id: 'classname', component: SimpleClassNameItems },
       { label: 'Regular', id: 'regular', component: SimpleRegularItems },
+      { label: 'Styled', id: 'styled', component: SimpleStyledItems },
       { label: 'Inline', id: 'inline', component: SimpleInlineItems },
     ],
   },
   {
-    name: '2. Rich (variants + pseudo states)',
+    name: '2. Rich (pseudo states + dynamic)',
     id: 'rich',
     renderers: [
-      { label: 'Flat', id: 'flat', component: RichFlatItems },
-      { label: 'Styled', id: 'styled', component: RichItems },
+      { label: 'className', id: 'classname', component: RichClassNameItems },
+      { label: 'Regular', id: 'regular', component: RichRegularItems },
+      { label: 'Styled', id: 'styled', component: RichStyledItems },
       { label: 'Inline', id: 'inline', component: RichInlineItems },
     ],
   },
@@ -393,90 +447,13 @@ const scenarios: BenchScenario[] = [
     name: '3. Animated (transitions + enter)',
     id: 'animated',
     renderers: [
-      { label: 'Flat', id: 'flat', component: AnimatedFlatItems },
-      { label: 'Styled', id: 'styled', component: AnimatedItems },
+      { label: 'className', id: 'classname', component: AnimatedClassNameItems },
+      { label: 'Regular', id: 'regular', component: AnimatedRegularItems },
+      { label: 'Styled', id: 'styled', component: AnimatedStyledItems },
       { label: 'Inline', id: 'inline', component: AnimatedInlineItems },
     ],
   },
 ]
-
-function BenchmarkRunner({
-  scenario,
-  renderer,
-}: {
-  scenario: BenchScenario
-  renderer: BenchScenario['renderers'][0]
-}) {
-  const [mounted, setMounted] = useState(false)
-  const [seed, setSeed] = useState(0)
-  const bench = useBenchmark()
-  const Component = renderer.component
-  const testId = `bench-${scenario.id}-${renderer.id}`
-
-  const handleMount = useCallback(() => {
-    bench.startMount()
-    setMounted(true)
-    setSeed(1)
-  }, [bench])
-
-  const handleRerender = useCallback(() => {
-    bench.startRerender()
-    setSeed((s) => s + 1)
-  }, [bench])
-
-  const handleReset = useCallback(() => {
-    setMounted(false)
-    setSeed(0)
-  }, [])
-
-  return (
-    <YStack
-      gap={8}
-      padding={12}
-      backgroundColor="$background"
-      borderRadius={8}
-      borderWidth={1}
-      borderColor="$borderColor"
-      id={testId}
-    >
-      <Text fontSize={13} fontWeight="600" color="$color">
-        {renderer.label}
-      </Text>
-
-      <XStack gap={8}>
-        {!mounted ? (
-          <Button size="$2" onPress={handleMount} id={`${testId}-mount`}>
-            Mount {ITEM_COUNT}
-          </Button>
-        ) : (
-          <>
-            <Button size="$2" onPress={handleRerender} id={`${testId}-rerender`}>
-              Re-render
-            </Button>
-            <Button size="$2" theme="alt2" onPress={handleReset} id={`${testId}-reset`}>
-              Reset
-            </Button>
-          </>
-        )}
-      </XStack>
-
-      <YStack gap={4} id={`${testId}-results`}>
-        {bench.mountTime !== null && (
-          <BenchResult label="mount" ms={bench.mountTime} />
-        )}
-        {bench.rerenderTime !== null && (
-          <BenchResult label="re-render" ms={bench.rerenderTime} />
-        )}
-      </YStack>
-
-      {mounted && (
-        <TimedContainer onLayout={bench.onLayout}>
-          <Component seed={seed} />
-        </TimedContainer>
-      )}
-    </YStack>
-  )
-}
 
 function AutoBenchmarkRunner({
   scenario,
@@ -498,7 +475,6 @@ function AutoBenchmarkRunner({
       mountTimeRef.current = performance.now() - startRef.current
       setPhase('mounted')
     } else if (phase === 'mounted') {
-      // trigger rerender after a tick
       requestAnimationFrame(() => {
         startRef.current = performance.now()
         setPhase('rerendering')
@@ -512,7 +488,6 @@ function AutoBenchmarkRunner({
   }, [phase])
 
   React.useEffect(() => {
-    // auto-start after a small delay
     const t = setTimeout(() => {
       startRef.current = performance.now()
       setPhase('mounting')
@@ -530,8 +505,6 @@ function AutoBenchmarkRunner({
   )
 }
 
-// ── auto-run all benchmarks ──────────────────────────
-
 type AllResults = Record<string, Record<string, { mount: number; rerender: number }>>
 
 function AutoBenchAll() {
@@ -539,7 +512,6 @@ function AutoBenchAll() {
   const [currentIdx, setCurrentIdx] = useState(0)
   const [running, setRunning] = useState(false)
 
-  // flatten all scenario/renderer combos
   const allCombos = useMemo(() => {
     const combos: { scenario: BenchScenario; renderer: BenchScenario['renderers'][0] }[] = []
     for (const s of scenarios) {
@@ -567,7 +539,6 @@ function AutoBenchAll() {
         },
       }))
       if (currentIdx + 1 < allCombos.length) {
-        // small delay between benchmarks for GC
         setTimeout(() => setCurrentIdx((i) => i + 1), 200)
       } else {
         setRunning(false)
@@ -605,7 +576,6 @@ function AutoBenchAll() {
         </YStack>
       )}
 
-      {/* results table */}
       {Object.keys(results).length > 0 && (
         <YStack
           gap={12}
@@ -670,11 +640,7 @@ function AutoBenchAll() {
   )
 }
 
-// ── main export ──────────────────────────────────────
-
 export function BenchmarkComparison() {
-  const [mode, setMode] = useState<'auto' | 'manual'>('auto')
-
   return (
     <YStack padding={24} gap={24} backgroundColor="$background" minHeight="100vh">
       <YStack gap={4}>
@@ -682,49 +648,11 @@ export function BenchmarkComparison() {
           Benchmark Comparison
         </Text>
         <Text fontSize={14} color="$color8">
-          {ITEM_COUNT} components × 3 scenarios × 3 renderers
+          {ITEM_COUNT} components × 3 scenarios × 4 renderers (className / regular / styled / inline)
         </Text>
       </YStack>
 
-      <XStack gap={8}>
-        <Button
-          size="$2"
-          theme={mode === 'auto' ? 'blue' : undefined}
-          onPress={() => setMode('auto')}
-        >
-          Auto
-        </Button>
-        <Button
-          size="$2"
-          theme={mode === 'manual' ? 'blue' : undefined}
-          onPress={() => setMode('manual')}
-        >
-          Manual
-        </Button>
-      </XStack>
-
-      {mode === 'auto' ? (
-        <AutoBenchAll />
-      ) : (
-        <YStack gap={24}>
-          {scenarios.map((scenario) => (
-            <YStack key={scenario.id} gap={12}>
-              <Text fontSize={18} fontWeight="bold" color="$color">
-                {scenario.name}
-              </Text>
-              <XStack gap={12} flexWrap="wrap">
-                {scenario.renderers.map((renderer) => (
-                  <BenchmarkRunner
-                    key={renderer.id}
-                    scenario={scenario}
-                    renderer={renderer}
-                  />
-                ))}
-              </XStack>
-            </YStack>
-          ))}
-        </YStack>
-      )}
+      <AutoBenchAll />
     </YStack>
   )
 }

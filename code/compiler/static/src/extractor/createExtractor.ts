@@ -56,7 +56,6 @@ import { loadCompilerOptionsFromTsconfig } from './esbuildTsconfigPaths'
 const UNTOUCHED_PROPS = {
   key: true,
   style: true,
-  className: true,
 }
 
 const createTernary = (x: Ternary) => x
@@ -1310,8 +1309,13 @@ export function createExtractor(
               return attr
             }
 
-            // pass className, key, and style props through untouched
+            // pass key and style props through untouched
             if (UNTOUCHED_PROPS[name]) {
+              return attr
+            }
+
+            // className passes through as attr — getSplitStyles handles expansion
+            if (name === 'className') {
               return attr
             }
 
@@ -2440,8 +2444,8 @@ export function createExtractor(
                     // also awkward to be doing it using jsxAttributes...
                     const key = attr.value.name.name as string
 
-                    // dont process style/className can just stay attrs
-                    if (key === 'style' || key === 'className' || key === 'render') {
+                    // dont process style can just stay attrs
+                    if (key === 'style' || key === 'render') {
                       continue
                     }
 
