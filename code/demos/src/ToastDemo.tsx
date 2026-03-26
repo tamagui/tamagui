@@ -1,4 +1,11 @@
-import { Toast, toast, useToastItem, type ToastPosition, type ToastT } from 'tamagui'
+import {
+  isWeb,
+  Toast,
+  toast,
+  useToastItem,
+  type ToastPosition,
+  type ToastT,
+} from 'tamagui'
 import {
   ArrowDown,
   ArrowDownLeft,
@@ -146,13 +153,15 @@ function ToastContent({ toast: t }: { toast: ToastT }) {
         </YStack>
       </XStack>
 
-      <Toast.Close
-        testID="toast-close-button"
-        position="absolute"
-        top={-6}
-        left={-6}
-        zIndex={1}
-      />
+      {isWeb && (
+        <Toast.Close
+          testID="toast-close-button"
+          position="absolute"
+          top={-6}
+          left={-6}
+          zIndex={1}
+        />
+      )}
     </>
   )
 }

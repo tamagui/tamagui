@@ -1,11 +1,12 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { isWeb } from '@tamagui/constants'
-import { getGestureHandler } from '@tamagui/native' // used for RNGH gesture on native
+import { getGestureHandler } from '@tamagui/native'
 import type { GetProps, TamaguiElement } from '@tamagui/core'
 import {
   createStyledContext,
   styled,
   Theme,
+  useConfiguration,
   useEvent,
   useThemeName,
   View,
@@ -486,6 +487,11 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
     ]
 
     // offset styles
+    // on native, get safe area insets to avoid status bar / Dynamic Island / home indicator
+    // use insets from TamaguiProvider (passed via useConfiguration)
+    // same pattern as Slider — works on native when TamaguiProvider has insets prop
+    const { insets: safeInsets } = useConfiguration()
+
     const offsetStyles = React.useMemo(() => {
       const styles: any = {}
       const defaultOffset = typeof offset === 'number' ? offset : VIEWPORT_OFFSET
@@ -499,8 +505,11 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
               left: defaultOffset,
             }
 
-      if (yPosition === 'top') styles.top = offsetObj.top ?? defaultOffset
-      else styles.bottom = offsetObj.bottom ?? defaultOffset
+      const safeTop = safeInsets?.top ?? 0
+      const safeBottom = safeInsets?.bottom ?? 0
+
+      if (yPosition === 'top') styles.top = (offsetObj.top ?? defaultOffset) + safeTop
+      else styles.bottom = (offsetObj.bottom ?? defaultOffset) + safeBottom
 
       if (xPosition === 'left') styles.left = offsetObj.left ?? defaultOffset
       else if (xPosition === 'right') styles.right = offsetObj.right ?? defaultOffset
@@ -637,7 +646,7 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
       </ToastViewportFrame>
     )
 
-    if (portalToRoot && isWeb) {
+    if (portalToRoot) {
       return <Portal zIndex={portalZIndex}>{content}</Portal>
     }
 

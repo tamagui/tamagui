@@ -1,7 +1,7 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { isWeb } from '@tamagui/constants'
 import type { TamaguiElement } from '@tamagui/core'
-import { Theme, View, styled, useThemeName } from '@tamagui/core'
+import { Theme, View, styled, useConfiguration, useThemeName } from '@tamagui/core'
 import { Portal } from '@tamagui/portal'
 import * as React from 'react'
 import { dispatchNativeToast } from './dispatchNativeToast'
@@ -441,6 +441,9 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
 
     // offset styles — matches composable API pattern exactly
     // applied via style prop so it overrides styled defaults (e.g. width) on native
+    // on native, get safe area insets to avoid status bar / Dynamic Island / home indicator
+    const { insets: safeInsets } = useConfiguration()
+
     const offsetStyles = React.useMemo(() => {
       const styles: any = {}
       const defaultOffset = typeof offset === 'number' ? offset : VIEWPORT_OFFSET
@@ -454,8 +457,11 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
               left: defaultOffset,
             }
 
-      if (yPosition === 'top') styles.top = offsetObj.top ?? defaultOffset
-      else styles.bottom = offsetObj.bottom ?? defaultOffset
+      const safeTop = safeInsets?.top ?? 0
+      const safeBottom = safeInsets?.bottom ?? 0
+
+      if (yPosition === 'top') styles.top = (offsetObj.top ?? defaultOffset) + safeTop
+      else styles.bottom = (offsetObj.bottom ?? defaultOffset) + safeBottom
 
       if (xPosition === 'left') styles.left = offsetObj.left ?? defaultOffset
       else if (xPosition === 'right') styles.right = offsetObj.right ?? defaultOffset
@@ -630,16 +636,12 @@ export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
       </ToasterFrame>
     )
 
-    // on web, render in a portal
-    if (isWeb) {
-      return (
-        <Portal>
-          <Theme name={resolvedTheme as any}>{content}</Theme>
-        </Portal>
-      )
-    }
-
-    return <Theme name={resolvedTheme as any}>{content}</Theme>
+    // render in a portal so toast appears above navigation headers and other content
+    return (
+      <Portal>
+        <Theme name={resolvedTheme as any}>{content}</Theme>
+      </Portal>
+    )
   }
 )
 

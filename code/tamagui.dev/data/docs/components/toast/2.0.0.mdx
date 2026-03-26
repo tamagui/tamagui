@@ -260,8 +260,39 @@ Multiple toasts stack visually. Hover over the stack to expand and see all toast
 ### Swipe to Dismiss
 
 Toasts can be swiped away. The direction is auto-detected based on position:
-- Left/right positioned toasts swipe toward their edge
-- Center positioned toasts swipe up/down
+- **Web:** Left/right positioned toasts swipe toward their edge, center toasts swipe horizontally
+- **Native:** All positions swipe vertically (up/down) to avoid conflicting with iOS/Android navigation back gesture
+
+When `react-native-gesture-handler` is set up via `@tamagui/native/setup-gesture-handler`, the toast uses native gesture coordination (`activeOffsetY`, `failOffsetX`) to prevent ScrollView from scrolling while swiping.
+
+### Native Safe Area
+
+On native, toasts portal to root and automatically respect safe area insets (status bar, Dynamic Island, home indicator) when configured:
+
+```tsx
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { TamaguiProvider } from 'tamagui'
+
+function App() {
+  return (
+    <SafeAreaProvider>
+      <AppInner />
+    </SafeAreaProvider>
+  )
+}
+
+function AppInner() {
+  const insets = useSafeAreaInsets()
+  return (
+    <TamaguiProvider config={config} insets={insets}>
+      {/* toasts will automatically avoid status bar and home indicator */}
+    </TamaguiProvider>
+  )
+}
+```
+
+The toast reads insets from `TamaguiProvider` via `useConfiguration().insets` — the same mechanism used by other Tamagui components like Slider.
 
 ### Custom Styling
 
