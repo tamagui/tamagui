@@ -18,14 +18,11 @@ import { navigateToTestCase } from './utils/navigation'
 
 describe('ThemeMutation', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await device.launchApp()
   })
 
   beforeEach(async () => {
-    // use launchApp instead of reloadReactNative to avoid transient Metro errors
-    await device.launchApp({ newInstance: true })
-    // skipEnableSync: addTheme/updateTheme runtime mutations keep the main run
-    // loop busy, which causes Detox sync to hang waiting for idle
+    await device.reloadReactNative()
     await navigateToTestCase('ThemeMutation', 'theme-mutation-button', {
       skipEnableSync: true,
     })

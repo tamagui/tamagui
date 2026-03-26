@@ -12,28 +12,45 @@ import { Button, Text, YStack } from 'tamagui'
 
 function ActiveText({ isActive, label }: { isActive: boolean; label: string }) {
   return (
-    <Text
-      testID="active-text"
-      fontSize="$3"
-      fontWeight={isActive ? '700' : '400'}
-      color={isActive ? '$color12' : '$color11'}
+    <YStack
+      testID="opt-color-box"
+      backgroundColor={isActive ? '$color12' : '$color11'}
+      height={60}
+      justifyContent="center"
+      alignItems="center"
     >
-      {label}
-    </Text>
+      <Text
+        testID="active-text"
+        fontSize="$3"
+        fontWeight={isActive ? '700' : '400'}
+        color={isActive ? '$color12' : '$color11'}
+      >
+        {label}
+      </Text>
+    </YStack>
   )
 }
 
 function ActiveTextNoOpt({ isActive, label }: { isActive: boolean; label: string }) {
   return (
-    <Text
+    <YStack
       disableOptimization
-      testID="active-text-noopt"
-      fontSize="$3"
-      fontWeight={isActive ? '700' : '400'}
-      color={isActive ? '$color12' : '$color11'}
+      testID="noopt-color-box"
+      backgroundColor={isActive ? '$color12' : '$color11'}
+      height={60}
+      justifyContent="center"
+      alignItems="center"
     >
-      {label}
-    </Text>
+      <Text
+        disableOptimization
+        testID="active-text-noopt"
+        fontSize="$3"
+        fontWeight={isActive ? '700' : '400'}
+        color={isActive ? '$color12' : '$color11'}
+      >
+        {label}
+      </Text>
+    </YStack>
   )
 }
 
@@ -58,16 +75,12 @@ export function CompilerTernaryActive() {
 
       <YStack gap="$2">
         <Text fontSize="$2">Optimized:</Text>
-        <YStack testID="opt-text-container" backgroundColor="$background" padding="$2">
-          <ActiveText isActive={isActive} label="Hello World" />
-        </YStack>
+        <ActiveText isActive={isActive} label="Hello World" />
       </YStack>
 
       <YStack gap="$2">
         <Text fontSize="$2">Non-optimized:</Text>
-        <YStack testID="noopt-text-container" backgroundColor="$background" padding="$2">
-          <ActiveTextNoOpt isActive={isActive} label="Hello World" />
-        </YStack>
+        <ActiveTextNoOpt isActive={isActive} label="Hello World" />
       </YStack>
     </YStack>
   )

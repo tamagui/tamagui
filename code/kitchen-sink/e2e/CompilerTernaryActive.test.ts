@@ -40,11 +40,11 @@ describe('CompilerTernaryActive', () => {
     // verify initial state is inactive
     await expect(element(by.id('active-state-label'))).toHaveText('Active: NO')
 
-    // screenshot both text containers in inactive state
-    const optInactive = await element(by.id('opt-text-container')).takeScreenshot(
+    // screenshot color boxes in inactive state (backgroundColor changes with ternary)
+    const optInactive = await element(by.id('opt-color-box')).takeScreenshot(
       'opt-inactive'
     )
-    const noOptInactive = await element(by.id('noopt-text-container')).takeScreenshot(
+    const noOptInactive = await element(by.id('noopt-color-box')).takeScreenshot(
       'noopt-inactive'
     )
 
@@ -70,11 +70,9 @@ describe('CompilerTernaryActive', () => {
       .withTimeout(3000)
     await new Promise((r) => setTimeout(r, 200))
 
-    // screenshot both in active state
-    const optActive = await element(by.id('opt-text-container')).takeScreenshot(
-      'opt-active'
-    )
-    const noOptActive = await element(by.id('noopt-text-container')).takeScreenshot(
+    // screenshot color boxes in active state
+    const optActive = await element(by.id('opt-color-box')).takeScreenshot('opt-active')
+    const noOptActive = await element(by.id('noopt-color-box')).takeScreenshot(
       'noopt-active'
     )
 
