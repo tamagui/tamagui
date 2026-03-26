@@ -856,13 +856,17 @@ function DragWrapper({
     )
   }
 
-  // when RNGH gesture is available, wrap with GestureDetector
+  // when RNGH gesture is available, wrap with GestureDetector + plain View
+  // (GestureDetector needs a native View to attach handlers to)
   if (gesture) {
-    const { GestureDetector } = getGestureHandler().state
+    const gh = getGestureHandler()
+    const GestureDetector = gh.state.GestureDetector
     if (GestureDetector) {
       return (
         <GestureDetector gesture={gesture}>
-          <AnimatedView style={[{ flex: 1 }, animatedStyle]}>{children}</AnimatedView>
+          <View style={{ flex: 1 }} {...({ collapsable: false } as any)}>
+            <AnimatedView style={[{ flex: 1 }, animatedStyle]}>{children}</AnimatedView>
+          </View>
         </GestureDetector>
       )
     }
