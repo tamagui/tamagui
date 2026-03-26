@@ -6,14 +6,14 @@ const IMG_SRC = 'https://placecats.com/300/300'
 const cases = [
   {
     label: 'br="$12"',
-    props: { width: 120, height: 120, borderRadius: '$12' },
+    props: { width: 120, height: 120, borderRadius: '$12' as any },
   },
-  { label: 'br="$4"', props: { width: 120, height: 120, borderRadius: '$4' } },
+  { label: 'br="$4"', props: { width: 120, height: 120, borderRadius: '$4' as any } },
   { label: 'br={20}', props: { width: 120, height: 120, borderRadius: 20 } },
   { label: 'no br', props: { width: 120, height: 120 } },
   {
     label: 'w/h="$10" br="$2"',
-    props: { width: '$10', height: '$10', borderRadius: '$2' },
+    props: { width: '$10' as any, height: '$10' as any, borderRadius: '$2' as any },
   },
 ]
 
