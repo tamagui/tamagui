@@ -35,6 +35,7 @@ import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilder
 import { useLoginLink } from '../../auth/useLoginLink'
 import { useBentoStore } from '../../bento/BentoStore'
 import { useBentoTheme } from '../../bento/useBentoTheme'
+import { useCodeMode, setCodeMode } from '../../docs/docsCodeMode'
 import { DocsMenuContents } from '../../docs/DocsMenuContents'
 import { useDocsMenu } from '../../docs/useDocsMenu'
 import { AddEvenBrandIcon } from '../../icons/AddEvenBrandIcon'
@@ -171,6 +172,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       z={50000}
     >
       <XStack items="center" gap="$4">
+        <CodeModeToggle />
+
         <TooltipGroup delay={tooltipDelay}>
           <XGroup maxH={32} bg="transparent" items="center" size="$4">
             <XGroup.Item>
@@ -1104,4 +1107,45 @@ const Frame = styled(YStack, {
       }),
     },
   } as const,
+})
+
+// ── code mode toggle ─────────────────────────────────
+
+const CodeModeToggle = React.memo(() => {
+  const mode = useCodeMode()
+
+  return (
+    <XGroup maxH={28} size="$2" bg="$color2" borderRadius="$3" borderWidth={1} borderColor="$borderColor">
+      <XGroup.Item>
+        <Button
+          size="$2"
+          px="$2"
+          bg={mode === 'tamagui' ? '$color5' : 'transparent'}
+          color={mode === 'tamagui' ? '$color12' : '$color8'}
+          fontWeight={mode === 'tamagui' ? '600' : '400'}
+          fontSize={11}
+          onPress={() => setCodeMode('tamagui')}
+          borderWidth={0}
+          borderRadius={0}
+        >
+          Tamagui
+        </Button>
+      </XGroup.Item>
+      <XGroup.Item>
+        <Button
+          size="$2"
+          px="$2"
+          bg={mode === 'tailwind' ? '$color5' : 'transparent'}
+          color={mode === 'tailwind' ? '$color12' : '$color8'}
+          fontWeight={mode === 'tailwind' ? '600' : '400'}
+          fontSize={11}
+          onPress={() => setCodeMode('tailwind')}
+          borderWidth={0}
+          borderRadius={0}
+        >
+          Tailwind
+        </Button>
+      </XGroup.Item>
+    </XGroup>
+  )
 })

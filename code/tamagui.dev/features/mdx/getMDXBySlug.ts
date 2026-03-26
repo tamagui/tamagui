@@ -83,6 +83,67 @@ const rehypeHeroTemplate = () => {
   }
 }
 
+// transform code blocks to tailwind syntax and store as data attribute
+// runs after rehypeHeroTemplate so template-loaded code is also transformed
+let tamaguiToTailwindFn: ((source: string) => string) | null = null
+
+function getTamaguiToTailwind() {
+  if (!tamaguiToTailwindFn) {
+    try {
+      const { tamaguiToTailwind } = requireFn('@tamagui/to-tailwind')
+      tamaguiToTailwindFn = tamaguiToTailwind
+    } catch {
+      // package not available, skip transforms
+      tamaguiToTailwindFn = () => ''
+    }
+  }
+  return tamaguiToTailwindFn
+}
+
+const rehypeTailwindTransform = () => {
+  return (tree: any) => {
+    visitNodes(tree, (node: any) => {
+      if (node.type !== 'element' || node.tagName !== 'code') return
+
+      // only transform tsx/jsx code blocks
+      const className = node.properties?.className
+      if (!className) return
+      const classes = Array.isArray(className) ? className : [className]
+      const isJsx = classes.some(
+        (c: string) =>
+          c === 'language-tsx' ||
+          c === 'language-jsx' ||
+          c === 'language-ts' ||
+          c === 'language-js'
+      )
+      if (!isJsx) return
+
+      // get the raw source text
+      const textNode = node.children?.[0]
+      if (!textNode || textNode.type !== 'text' || !textNode.value) return
+      const source = textNode.value
+
+      // skip if it doesn't look like it has tamagui JSX
+      if (!source.includes('<') || !source.includes('>')) return
+
+      try {
+        const transform = getTamaguiToTailwind()
+        const tailwindCode = transform(source)
+        if (tailwindCode && tailwindCode !== source) {
+          node.properties = node.properties || {}
+          node.properties['data-tailwind'] = tailwindCode
+        }
+      } catch {
+        // transform failed, skip silently
+      }
+    })
+  }
+}
+
 export const getMDXBySlug: typeof getMDXBySlugBase = (basePath, slug, extraPlugins) => {
-  return getMDXBySlugBase(basePath, slug, [rehypeHeroTemplate, ...(extraPlugins || [])])
+  return getMDXBySlugBase(basePath, slug, [
+    rehypeHeroTemplate,
+    rehypeTailwindTransform,
+    ...(extraPlugins || []),
+  ])
 }

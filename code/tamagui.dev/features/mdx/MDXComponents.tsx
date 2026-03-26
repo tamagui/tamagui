@@ -10,7 +10,7 @@ import {
   Link as LinkIcon,
 } from '@tamagui/lucide-icons-2'
 import type { Href } from 'one'
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { ScrollView } from 'react-native'
 import type { ImageProps, XStackProps } from 'tamagui'
 import {
@@ -64,6 +64,7 @@ import { unwrapText } from '~/helpers/unwrapText'
 import { PACKAGE_MANAGERS, pkgCommands, useBashCommand } from '~/hooks/useBashCommand'
 import { useClipboard } from '~/hooks/useClipboard'
 import { DocCodeBlock } from '../docs/DocsCodeBlock'
+import { useCodeMode } from '../docs/docsCodeMode'
 import { HeroContainer } from '../docs/HeroContainer'
 import { Highlights } from '../docs/Highlights'
 import { InlineTabs } from '../docs/InlineTabs'
@@ -131,6 +132,7 @@ const code = (props) => {
     id,
     showLineNumbers,
     collapsible,
+    'data-tailwind': tailwindCode,
     ...rest
   } = props
   if (!className) {
@@ -138,7 +140,8 @@ const code = (props) => {
   }
   return (
     <YStack mt="$3">
-      <DocCodeBlock
+      <CodeBlockWithMode
+        tailwindCode={tailwindCode}
         isHighlightingLines={line !== undefined}
         className={className}
         isHero={hero !== undefined}
@@ -147,8 +150,35 @@ const code = (props) => {
         {...rest}
       >
         {children}
-      </DocCodeBlock>
+      </CodeBlockWithMode>
     </YStack>
+  )
+}
+
+// wrapper that swaps between tamagui and tailwind code based on mode
+const CodeBlockWithMode = ({
+  tailwindCode,
+  children,
+  ...rest
+}: {
+  tailwindCode?: string
+  children: React.ReactNode
+  [key: string]: any
+}) => {
+  const mode = useCodeMode()
+
+  if (mode === 'tailwind' && tailwindCode) {
+    return (
+      <DocCodeBlock {...rest}>
+        {tailwindCode}
+      </DocCodeBlock>
+    )
+  }
+
+  return (
+    <DocCodeBlock {...rest}>
+      {children}
+    </DocCodeBlock>
   )
 }
 
