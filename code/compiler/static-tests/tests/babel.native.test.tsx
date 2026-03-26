@@ -263,3 +263,32 @@ test('multiple media query components should not conflict', async () => {
   const uniqueNames = new Set(styledMatches)
   expect(styledMatches.length).toBe(uniqueNames.size)
 })
+
+test('ternary with mixed theme-token and non-token values preserves all props', async () => {
+  const output = await extractForNative(`
+    import { Text } from 'tamagui'
+    export function Test({ isActive, label }) {
+      return (
+        <Text
+          fontSize="$3"
+          fontWeight={isActive ? '600' : '400'}
+          color={isActive ? '$color12' : '$color11'}
+        >
+          {label}
+        </Text>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // fontWeight must be conditional, not unconditional
+  // the bug was that plain styles (fontWeight) were added unconditionally
+  // when a ternary branch also had theme tokens (color), causing the last
+  // branch's value (400) to always win
+  expect(code).toContain('fontWeight')
+  // both fontWeight values should appear in the sheet styles
+  expect(code).toContain('600')
+  expect(code).toContain('400')
+  // the fontWeight values should be in different sheet entries, wrapped in a ternary
+  // NOT both applied unconditionally
+  expect(code).toMatchSnapshot()
+})
