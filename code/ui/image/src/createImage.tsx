@@ -160,10 +160,12 @@ export function createImage<C extends ComponentType<any>>(
     } = props
 
     const resolvedWidth =
-      typeof width === 'string' && width[0] === '$' ? getTokenValue(width as any) : width
+      typeof width === 'string' && width[0] === '$'
+        ? getTokenValue(width as any, 'size')
+        : width
     const resolvedHeight =
       typeof height === 'string' && height[0] === '$'
-        ? getTokenValue(height as any)
+        ? getTokenValue(height as any, 'size')
         : height
 
     const finalSource = transformSource({
