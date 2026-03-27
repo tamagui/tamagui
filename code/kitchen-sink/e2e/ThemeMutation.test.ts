@@ -18,10 +18,12 @@ import { navigateToTestCase } from './utils/navigation'
 
 describe('ThemeMutation', () => {
   beforeAll(async () => {
+    await device.disableSynchronization()
     await device.launchApp()
   })
 
   beforeEach(async () => {
+    await device.disableSynchronization()
     await device.reloadReactNative()
     await navigateToTestCase('ThemeMutation', 'theme-mutation-button', {
       skipEnableSync: true,

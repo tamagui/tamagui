@@ -35,11 +35,11 @@ async function navigateToPressStyleNative() {
 
 describe('PressStyleNative (no RNGH)', () => {
   beforeAll(async () => {
+    await device.disableSynchronization()
     await device.launchApp({
       newInstance: true,
       launchArgs: { disableGestureHandler: true },
     })
-    await device.disableSynchronization()
   })
 
   afterAll(async () => {
@@ -47,11 +47,11 @@ describe('PressStyleNative (no RNGH)', () => {
   })
 
   beforeEach(async () => {
+    await device.disableSynchronization()
     await device.launchApp({
       newInstance: true,
       launchArgs: { disableGestureHandler: true },
     })
-    await device.disableSynchronization()
     await new Promise((resolve) => setTimeout(resolve, 1500))
     await navigateToPressStyleNative()
   })

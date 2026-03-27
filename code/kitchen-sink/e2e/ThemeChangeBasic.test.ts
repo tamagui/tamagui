@@ -13,10 +13,12 @@ import { getDominantColor, isBlueish, isReddish, formatRGB } from './utils/color
 
 describe('ThemeChangeBasic', () => {
   beforeAll(async () => {
+    await device.disableSynchronization()
     await device.launchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
+    await device.disableSynchronization()
     await device.reloadReactNative()
     await navigateToTestCase('ThemeChangeBasic', 'theme-change-basic-root')
   })

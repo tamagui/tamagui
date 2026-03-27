@@ -29,12 +29,19 @@ describe('CompilerExtraction', () => {
     )
     console.log('Build complete, .native.tsx generated')
 
+    await device.disableSynchronization()
     await device.launchApp({ newInstance: true })
+  })
+
+  afterAll(async () => {
+    await device.enableSynchronization()
   })
 
   it('should render and respond to theme changes', async () => {
     await device.reloadReactNative()
-    await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root')
+    await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root', {
+      skipEnableSync: true,
+    })
     await new Promise((r) => setTimeout(r, 300))
 
     // verify components render
@@ -89,7 +96,9 @@ describe('CompilerExtraction', () => {
 
   it('should benchmark optimized vs non-optimized (best of 3)', async () => {
     await device.reloadReactNative()
-    await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root')
+    await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root', {
+      skipEnableSync: true,
+    })
     await new Promise((r) => setTimeout(r, 300))
 
     // show benchmark

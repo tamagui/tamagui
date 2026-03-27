@@ -12,10 +12,12 @@ async function navigateToPointerEvents() {
 
 describe('PointerEvents', () => {
   beforeAll(async () => {
+    await device.disableSynchronization()
     await device.launchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
+    await device.disableSynchronization()
     await device.reloadReactNative()
     await navigateToPointerEvents()
   })

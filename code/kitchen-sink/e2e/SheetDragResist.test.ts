@@ -21,12 +21,14 @@ const isAndroid = () => device.getPlatform() === 'android'
 describe('SheetDragResist', () => {
   beforeAll(async () => {
     if (isAndroid()) return
+    await device.disableSynchronization()
     await device.launchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
     if (isAndroid()) return
     // reload between tests for clean state
+    await device.disableSynchronization()
     await device.reloadReactNative()
     await navigateToSheetDragResistCase()
     // disable sync AFTER navigation to avoid hang on spring animations during tests
