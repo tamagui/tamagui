@@ -35,7 +35,6 @@ import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilder
 import { useLoginLink } from '../../auth/useLoginLink'
 import { useBentoStore } from '../../bento/BentoStore'
 import { useBentoTheme } from '../../bento/useBentoTheme'
-import { useCodeMode, setCodeMode } from '../../docs/docsCodeMode'
 import { DocsMenuContents } from '../../docs/DocsMenuContents'
 import { useDocsMenu } from '../../docs/useDocsMenu'
 import { AddEvenBrandIcon } from '../../icons/AddEvenBrandIcon'
@@ -1112,7 +1111,17 @@ const Frame = styled(YStack, {
 // ── code mode toggle ─────────────────────────────────
 
 const CodeModeToggle = React.memo(() => {
-  const mode = useCodeMode()
+  const pathname = usePathname()
+  const router = useRouter()
+  const isTailwind = typeof window !== 'undefined' && window.location.search.includes('syntax=tailwind')
+
+  const setMode = React.useCallback((mode: 'tamagui' | 'tailwind') => {
+    if (mode === 'tailwind') {
+      router.push(`${pathname}?syntax=tailwind` as any)
+    } else {
+      router.push(pathname as any)
+    }
+  }, [pathname, router])
 
   return (
     <XGroup maxH={28} size="$2" bg="$color2" borderRadius="$3" borderWidth={1} borderColor="$borderColor">
@@ -1120,11 +1129,11 @@ const CodeModeToggle = React.memo(() => {
         <Button
           size="$2"
           px="$2"
-          bg={mode === 'tamagui' ? '$color5' : 'transparent'}
-          color={mode === 'tamagui' ? '$color12' : '$color8'}
-          fontWeight={mode === 'tamagui' ? '600' : '400'}
+          bg={!isTailwind ? '$color5' : 'transparent'}
+          color={!isTailwind ? '$color12' : '$color8'}
+          fontWeight={!isTailwind ? '600' : '400'}
           fontSize={11}
-          onPress={() => setCodeMode('tamagui')}
+          onPress={() => setMode('tamagui')}
           borderWidth={0}
           borderRadius={0}
         >
@@ -1135,11 +1144,11 @@ const CodeModeToggle = React.memo(() => {
         <Button
           size="$2"
           px="$2"
-          bg={mode === 'tailwind' ? '$color5' : 'transparent'}
-          color={mode === 'tailwind' ? '$color12' : '$color8'}
-          fontWeight={mode === 'tailwind' ? '600' : '400'}
+          bg={isTailwind ? '$color5' : 'transparent'}
+          color={isTailwind ? '$color12' : '$color8'}
+          fontWeight={isTailwind ? '600' : '400'}
           fontSize={11}
-          onPress={() => setCodeMode('tailwind')}
+          onPress={() => setMode('tailwind')}
           borderWidth={0}
           borderRadius={0}
         >

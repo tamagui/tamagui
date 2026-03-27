@@ -11,7 +11,6 @@ export { getAllFrontmatter, getAllVersionsFromPath }
 export { getCompilationExamples } from './getCompilationExamples'
 
 // Resolve @tamagui/demos package location
-// require.resolve gives us dist/cjs/index.js, so go up 3 levels to get package root
 const requireFn =
   typeof require === 'undefined' ? createRequire(import.meta.url) : require
 let demosPath = ''
@@ -23,7 +22,6 @@ try {
 }
 
 // Simple tree visitor that doesn't depend on unist-util-visit
-// (Vite has issues with unist-util-visit ESM exports)
 function visitNodes(node: any, callback: (node: any) => void) {
   callback(node)
   if (node.children && Array.isArray(node.children)) {
@@ -34,7 +32,6 @@ function visitNodes(node: any, callback: (node: any) => void) {
 }
 
 // Custom rehypeHeroTemplate that parses meta attribute directly
-// This is needed because extraPlugins run before rehypeMetaAttribute
 const metaRe = /\b([-\w]+)(?:=(?:"([^"]*)"|'([^']*)'|([^"'\s]+)))?/g
 
 const rehypeHeroTemplate = () => {
@@ -42,7 +39,6 @@ const rehypeHeroTemplate = () => {
     visitNodes(tree, (node: any) => {
       if (node.type !== 'element' || node.tagName !== 'code') return
 
-      // Parse meta to get template property (before rehypeMetaAttribute runs)
       let templateName: string | undefined
       if (node.data?.meta) {
         metaRe.lastIndex = 0
@@ -55,7 +51,6 @@ const rehypeHeroTemplate = () => {
         }
       }
 
-      // Also check properties in case rehypeMetaAttribute already ran
       if (!templateName && node.properties?.template) {
         templateName = node.properties.template
       }
@@ -67,7 +62,6 @@ const rehypeHeroTemplate = () => {
       try {
         const source = fs.readFileSync(templatePath, 'utf8')
 
-        // Handle case where code block has no children
         if (!node.children || node.children.length === 0) {
           node.children = [{ type: 'text', value: source }]
         } else if (node.children[0]) {
@@ -83,21 +77,22 @@ const rehypeHeroTemplate = () => {
   }
 }
 
-// transform code blocks to tailwind syntax and store as data attribute
-// runs after rehypeHeroTemplate so template-loaded code is also transformed
+// ── tailwind transform ───────────────────────────────
+// transforms JSX code blocks from tamagui syntax to tailwind className syntax
+// applied as a rehype plugin when ?syntax=tailwind is in the URL
+
 let tamaguiToTailwindFn: ((source: string) => string) | null = null
 
-function getTamaguiToTailwind() {
-  if (!tamaguiToTailwindFn) {
-    try {
-      const { tamaguiToTailwind } = requireFn('@tamagui/to-tailwind')
-      tamaguiToTailwindFn = tamaguiToTailwind
-    } catch {
-      // package not available, skip transforms
-      tamaguiToTailwindFn = () => ''
-    }
+function loadTransform() {
+  if (tamaguiToTailwindFn) return tamaguiToTailwindFn
+  try {
+    const mod = requireFn('@tamagui/to-tailwind')
+    tamaguiToTailwindFn = mod.tamaguiToTailwind
+  } catch (err) {
+    console.warn('[tailwind] failed to load @tamagui/to-tailwind:', (err as Error).message)
+    tamaguiToTailwindFn = (s: string) => s
   }
-  return tamaguiToTailwindFn
+  return tamaguiToTailwindFn!
 }
 
 const rehypeTailwindTransform = () => {
@@ -105,7 +100,6 @@ const rehypeTailwindTransform = () => {
     visitNodes(tree, (node: any) => {
       if (node.type !== 'element' || node.tagName !== 'code') return
 
-      // only transform tsx/jsx code blocks
       const className = node.properties?.className
       if (!className) return
       const classes = Array.isArray(className) ? className : [className]
@@ -118,32 +112,43 @@ const rehypeTailwindTransform = () => {
       )
       if (!isJsx) return
 
-      // get the raw source text
       const textNode = node.children?.[0]
       if (!textNode || textNode.type !== 'text' || !textNode.value) return
       const source = textNode.value
 
-      // skip if it doesn't look like it has tamagui JSX
       if (!source.includes('<') || !source.includes('>')) return
 
       try {
-        const transform = getTamaguiToTailwind()
+        const transform = loadTransform()
         const tailwindCode = transform(source)
         if (tailwindCode && tailwindCode !== source) {
-          node.properties = node.properties || {}
-          node.properties['data-tailwind'] = tailwindCode
+          textNode.value = tailwindCode
         }
       } catch {
-        // transform failed, skip silently
+        // transform failed, keep original
       }
     })
   }
 }
 
-export const getMDXBySlug: typeof getMDXBySlugBase = (basePath, slug, extraPlugins) => {
-  return getMDXBySlugBase(basePath, slug, [
-    rehypeHeroTemplate,
-    rehypeTailwindTransform,
-    ...(extraPlugins || []),
-  ])
+// ── exports ──────────────────────────────────────────
+
+export interface GetMDXOptions {
+  tailwind?: boolean
+}
+
+export const getMDXBySlug = (
+  basePath: string,
+  slug: string,
+  options?: GetMDXOptions
+) => {
+  const plugins = [rehypeHeroTemplate]
+
+  // when tailwind mode is requested, add the transform plugin
+  // this replaces JSX code block content with tailwind className syntax
+  if (options?.tailwind) {
+    plugins.push(rehypeTailwindTransform)
+  }
+
+  return getMDXBySlugBase(basePath, slug, plugins)
 }

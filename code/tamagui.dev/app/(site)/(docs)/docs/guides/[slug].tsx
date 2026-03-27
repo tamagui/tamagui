@@ -19,9 +19,10 @@ export async function generateStaticParams() {
   return paths
 }
 
-export async function loader({ params }) {
+export async function loader({ params, search }) {
   const { getMDXBySlug } = await import('~/features/mdx/getMDXBySlug')
-  const { frontmatter, code } = await getMDXBySlug('data/docs/guides', params.slug)
+  const tailwind = search?.includes('syntax=tailwind')
+  const { frontmatter, code } = await getMDXBySlug('data/docs/guides', params.slug, { tailwind })
   return {
     frontmatter,
     code,
