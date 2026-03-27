@@ -803,6 +803,44 @@ export type OnlyShorthandStylePropsSetting = TamaguiConfig['settings'] extends {
   ? X
   : false
 
+// StyleMode setting extraction
+export type StyleModeSetting = TamaguiConfig['settings'] extends {
+  styleMode: infer X
+}
+  ? X
+  : 'tamagui' // default is tamagui (classic only)
+
+// StyleMode: available modes for different prop styles
+// - 'tamagui': Classic style props only (default)
+// - 'tailwind': className only, no style props
+// - 'flat': Flat $props only ($bg, $hover:bg)
+// - 'tamagui-and-tailwind': Classic style props + className processing
+// - 'tamagui-and-flat': Classic style props + flat $props
+export type StyleMode =
+  | 'tamagui'
+  | 'tailwind'
+  | 'flat'
+  | 'tamagui-and-tailwind'
+  | 'tamagui-and-flat'
+
+// Helper types to check which modes are enabled
+export type IncludesClassicMode = StyleModeSetting extends
+  | 'tamagui'
+  | 'tamagui-and-tailwind'
+  | 'tamagui-and-flat'
+  ? true
+  : false
+
+export type IncludesFlatMode = StyleModeSetting extends 'flat' | 'tamagui-and-flat'
+  ? true
+  : false
+
+export type IncludesTailwindMode = StyleModeSetting extends
+  | 'tailwind'
+  | 'tamagui-and-tailwind'
+  ? true
+  : false
+
 export type CreateTamaguiConfig<
   A extends GenericTokens,
   B extends GenericThemes,
@@ -1172,6 +1210,17 @@ export interface GenericTamaguiSettings {
    * two ways to style the same property.
    */
   onlyAllowShorthands?: boolean | undefined
+
+  /**
+   * Enable different style modes for prop syntax.
+   *
+   * - 'tamagui': Default - classic style props (backgroundColor, hoverStyle: {}, $sm: {})
+   * - 'tailwind': className only, no style props (for Tailwind CSS users)
+   * - 'flat': Flat $props only ($bg, $hover:bg, $sm:bg) - no classic style props
+   * - 'tamagui-and-tailwind': Classic style props + className processing
+   * - 'tamagui-and-flat': Classic style props + flat $props
+   */
+  styleMode?: StyleMode
 
   /**
    * Define a default font, for better types and default font on Text
@@ -1938,6 +1987,49 @@ export type PseudoStyles = {
 
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 
+//
+// Flat mode types (opt-in via styleMode: 'flat')
+//
+// Uses simplified index signatures to avoid type complexity explosion.
+// Full type checking for flat props happens at runtime during preprocessing.
+
+// flat pseudo modifiers (without Style suffix)
+type FlatPseudoKey =
+  | 'hover'
+  | 'press'
+  | 'focus'
+  | 'focus-visible'
+  | 'focus-within'
+  | 'disabled'
+  | 'enter'
+  | 'exit'
+
+// flat theme modifiers (common ones, custom themes covered by catch-all)
+type FlatThemeKey = 'dark' | 'light'
+
+// base flat props: $bg, $backgroundColor, $p, $padding, etc.
+// uses 'any' for values to avoid type complexity explosion while keeping prop names for autocomplete
+export type WithFlatBaseProps<StyleProps> = {
+  [Key in keyof Shorthands as `$${Key}`]?: any
+} & {
+  [Key in keyof StyleProps as `$${string & Key}`]?: any
+}
+
+// simplified type for modifier props - allows any value to avoid complexity explosion
+// supports: $hover:bg, $sm:bg, $dark:bg, $web:cursor, and chained variants
+export type WithFlatModifierProps = {
+  [key: `$${FlatPseudoKey}:${string}`]: any
+  [key: `$${MediaQueryKey}:${string}`]: any
+  [key: `$${FlatThemeKey}:${string}`]: any
+  [key: `$${AllPlatforms}:${string}`]: any
+  // catch-all for custom themes and chained modifiers like $sm:dark:hover:bg
+  [key: `$${string}:${string}:${string}`]: any
+}
+
+// combined flat props (typed base shorthands + loose modifiers)
+export type WithFlatProps<StyleProps> = WithFlatBaseProps<StyleProps> &
+  WithFlatModifierProps
+
 // MUST EXPORT ALL IN BETWEEN or else it expands declarations like crazy
 
 //
@@ -2526,7 +2618,11 @@ export interface StackNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>
 }
 
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>
+// Conditionally include style props based on styleMode setting
+export type StackStyle = (IncludesClassicMode extends true
+  ? WithThemeShorthandsPseudosMedia<StackStyleBase>
+  : {}) &
+  (IncludesFlatMode extends true ? WithFlatProps<StackStyleBase> : {})
 
 //
 // Text props
@@ -2549,7 +2645,11 @@ export interface TextNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>
 }
 
-export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
+// Conditionally include style props based on styleMode setting
+export type TextStyle = (IncludesClassicMode extends true
+  ? WithThemeShorthandsPseudosMedia<TextStylePropsBase>
+  : {}) &
+  (IncludesFlatMode extends true ? WithFlatProps<TextStylePropsBase> : {})
 
 export type TextProps = TextNonStyleProps & TextStyle
 
@@ -2596,7 +2696,10 @@ export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   keyof StylePropsBase | keyof Variants
 > &
   (StylePropsBase extends object
-    ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
+    ? (IncludesClassicMode extends true
+        ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
+        : {}) &
+        (IncludesFlatMode extends true ? WithFlatProps<StylePropsBase> : {})
     : {})
 
 export type TamaguiComponent<

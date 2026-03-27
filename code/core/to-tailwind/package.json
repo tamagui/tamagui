@@ -1,0 +1,24 @@
+{
+  "name": "@tamagui/to-tailwind",
+  "version": "2.0.0-rc.31",
+  "private": false,
+  "main": "dist/index.cjs",
+  "module": "dist/index.native.js",
+  "source": "src/index.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tamagui-build",
+    "test": "vitest --run"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.26.0",
+    "@babel/traverse": "^7.26.0",
+    "@babel/generator": "^7.26.0",
+    "@babel/types": "^7.26.0",
+    "@tamagui/helpers": "workspace:*",
+    "@tamagui/shorthands": "workspace:*"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0"
+  }
+}

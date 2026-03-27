@@ -1,0 +1,22 @@
+{
+  "name": "@tamagui/comparison-tamagui-bench",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "EXTRACT=1 vite --port 9101",
+    "dev:nocompile": "vite --port 9101",
+    "build": "EXTRACT=1 vite build"
+  },
+  "dependencies": {
+    "@tamagui/config": "workspace:*",
+    "@tamagui/vite-plugin": "workspace:*",
+    "tamagui": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
+    "vite": "^6.0.0"
+  }
+}

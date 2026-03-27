@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Benchmark Comparison</title>
+<style>
+  body { font-family: system-ui; background: #0a0a0a; color: #eee; padding: 40px; max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 28px; margin-bottom: 4px; }
+  .sub { color: #888; font-size: 14px; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { padding: 10px 14px; text-align: right; border-bottom: 1px solid #222; }
+  th:first-child, td:first-child { text-align: left; }
+  th { background: #141414; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+  tr:hover td { background: #141414; }
+  .section-header td { font-weight: 600; background: #1a1a1a; border-top: 2px solid #333; }
+  .ratio { font-size: 11px; color: #888; }
+  .value { font-weight: 600; font-family: monospace; }
+</style>
+</head>
+<body>
+<h1>Benchmark Comparison</h1>
+<p class="sub">500 components · 3 run(s) (min/max dropped)</p>
+<table>
+<thead>
+<tr><th>Scenario</th><th>Tamagui (compiled)</th><th>Tailwind CSS</th><th>Inline (baseline)</th><th>NativeWind v4</th><th>Uniwind</th></tr>
+</thead>
+<tbody>
+<tr class="section-header"><td colspan="6">Mount (ms)</td></tr>
+<tr><td>Simple (static props)</td><td><span class="value" style="color:#22c55e">6.9</span> <span class="ratio">0.9x</span></td><td><span class="value" style="color:#22c55e">7.5</span> <span class="ratio">1.0x</span></td><td><span class="value" style="color:#22c55e">7.7</span> <span class="ratio">1.0x</span></td><td><span class="value" style="color:#ef4444">24.3</span> <span class="ratio">3.2x</span></td><td><span class="value" style="color:#ef4444">23.4</span> <span class="ratio">3.0x</span></td></tr>
+<tr><td>Rich (pseudo states)</td><td><span class="value" style="color:#22c55e">5.3</span> <span class="ratio">0.8x</span></td><td><span class="value" style="color:#22c55e">6.0</span> <span class="ratio">1.0x</span></td><td><span class="value" style="color:#22c55e">6.3</span> <span class="ratio">1.0x</span></td><td><span class="value" style="color:#ef4444">17.3</span> <span class="ratio">2.7x</span></td><td><span class="value" style="color:#ef4444">22.3</span> <span class="ratio">3.5x</span></td></tr>
+<tr><td>Animated (spring)</td><td><span class="value" style="color:#ef4444">41.8</span> <span class="ratio">6.6x</span></td><td><span class="value" style="color:#22c55e">5.3</span> <span class="ratio">0.8x</span></td><td><span class="value" style="color:#22c55e">6.3</span> <span class="ratio">1.0x</span></td><td><span class="value" style="color:#ef4444">21.5</span> <span class="ratio">3.4x</span></td><td><span class="value" style="color:#ef4444">18.7</span> <span class="ratio">3.0x</span></td></tr>
+<tr class="section-header"><td colspan="6">Re-render (ms)</td></tr>
+<tr><td>Simple (static props)</td><td><span class="value" style="color:#22c55e">9.0</span> <span class="ratio">1.1x</span></td><td><span class="value" style="color:#22c55e">8.0</span> <span class="ratio">1.0x</span></td><td><span class="value" style="color:#22c55e">8.2</span> <span class="ratio">1.0x</span></td><td><span class="value" style="color:#ef4444">21.6</span> <span class="ratio">2.6x</span></td><td><span class="value" style="color:#ef4444">22.0</span> <span class="ratio">2.7x</span></td></tr>
+<tr><td>Rich (pseudo states)</td><td><span class="value" style="color:#f59e0b">10.2</span> <span class="ratio">1.3x</span></td><td><span class="value" style="color:#22c55e">6.6</span> <span class="ratio">0.8x</span></td><td><span class="value" style="color:#22c55e">8.0</span> <span class="ratio">1.0x</span></td><td><span class="value" style="color:#ef4444">22.0</span> <span class="ratio">2.8x</span></td><td><span class="value" style="color:#ef4444">24.2</span> <span class="ratio">3.0x</span></td></tr>
+<tr><td>Animated (spring)</td><td><span class="value" style="color:#ef4444">32.4</span> <span class="ratio">4.4x</span></td><td><span class="value" style="color:#22c55e">6.3</span> <span class="ratio">0.9x</span></td><td><span class="value" style="color:#22c55e">7.3</span> <span class="ratio">1.0x</span></td><td><span class="value" style="color:#ef4444">20.1</span> <span class="ratio">2.8x</span></td><td><span class="value" style="color:#ef4444">20.1</span> <span class="ratio">2.8x</span></td></tr>
+</tbody>
+</table>
+</body>
+</html>

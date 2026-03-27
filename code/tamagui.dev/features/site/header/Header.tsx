@@ -171,6 +171,8 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
       z={50000}
     >
       <XStack items="center" gap="$4">
+        <CodeModeToggle />
+
         <TooltipGroup delay={tooltipDelay}>
           <XGroup maxH={32} bg="transparent" items="center" size="$4">
             <XGroup.Item>
@@ -1104,4 +1106,55 @@ const Frame = styled(YStack, {
       }),
     },
   } as const,
+})
+
+// ── code mode toggle ─────────────────────────────────
+
+const CodeModeToggle = React.memo(() => {
+  const pathname = usePathname()
+  const router = useRouter()
+  const isTailwind = typeof window !== 'undefined' && window.location.search.includes('syntax=tailwind')
+
+  const setMode = React.useCallback((mode: 'tamagui' | 'tailwind') => {
+    if (mode === 'tailwind') {
+      router.push(`${pathname}?syntax=tailwind` as any)
+    } else {
+      router.push(pathname as any)
+    }
+  }, [pathname, router])
+
+  return (
+    <XGroup maxH={28} size="$2" bg="$color2" borderRadius="$3" borderWidth={1} borderColor="$borderColor">
+      <XGroup.Item>
+        <Button
+          size="$2"
+          px="$2"
+          bg={!isTailwind ? '$color5' : 'transparent'}
+          color={!isTailwind ? '$color12' : '$color8'}
+          fontWeight={!isTailwind ? '600' : '400'}
+          fontSize={11}
+          onPress={() => setMode('tamagui')}
+          borderWidth={0}
+          borderRadius={0}
+        >
+          Tamagui
+        </Button>
+      </XGroup.Item>
+      <XGroup.Item>
+        <Button
+          size="$2"
+          px="$2"
+          bg={isTailwind ? '$color5' : 'transparent'}
+          color={isTailwind ? '$color12' : '$color8'}
+          fontWeight={isTailwind ? '600' : '400'}
+          fontSize={11}
+          onPress={() => setMode('tailwind')}
+          borderWidth={0}
+          borderRadius={0}
+        >
+          Tailwind
+        </Button>
+      </XGroup.Item>
+    </XGroup>
+  )
 })
