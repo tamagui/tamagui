@@ -14,6 +14,7 @@
 
 import { by, device, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 // only run on iOS - RNGH gesture handling differs on Android
 const isAndroid = () => device.getPlatform() === 'android'
@@ -21,13 +22,13 @@ const isAndroid = () => device.getPlatform() === 'android'
 describe('SheetDragResist', () => {
   beforeAll(async () => {
     if (isAndroid()) return
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
     if (isAndroid()) return
     // reload between tests for clean state
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToSheetDragResistCase()
     // disable sync AFTER navigation to avoid hang on spring animations during tests
     await device.disableSynchronization()

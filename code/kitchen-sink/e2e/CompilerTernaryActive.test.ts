@@ -13,6 +13,7 @@ import { unlinkSync, existsSync } from 'fs'
 import { by, device, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
 import { getDominantColor, formatRGB } from './utils/colors'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 const SOURCE_FILE = 'src/usecases/CompilerTernaryActive.tsx'
 const NATIVE_FILE = 'src/usecases/CompilerTernaryActive.native.tsx'
@@ -29,11 +30,11 @@ describe('CompilerTernaryActive', () => {
     })
     console.log('Build complete, .native.tsx generated')
 
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   it('optimized and non-optimized text should match colors in both states', async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToTestCase('CompilerTernaryActive', 'compiler-ternary-active-root')
     await new Promise((r) => setTimeout(r, 300))
 

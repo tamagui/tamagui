@@ -12,25 +12,16 @@
 
 import { by, device, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
-
-// enable sync briefly for an interaction, then disable again
-async function withSync<T>(fn: () => Promise<T>): Promise<T> {
-  await device.enableSynchronization()
-  try {
-    return await fn()
-  } finally {
-    await device.disableSynchronization()
-  }
-}
+import { safeLaunchApp, withSync } from './utils/detox'
 
 describe('SelectRemount', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
     // use launchApp instead of reloadReactNative to avoid transient Metro errors
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
     // skipEnableSync: tests manage sync themselves via withSync helper
     // re-enabling sync after navigation can hang if animations are still settling
     await navigateToTestCase('SelectRemount', 'remount-button', { skipEnableSync: true })

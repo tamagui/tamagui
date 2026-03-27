@@ -5,6 +5,7 @@
 
 import { by, device, element, expect } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 async function navigateToPointerEvents() {
   await navigateToTestCase('PointerEventsCase', 'pointer-events-root')
@@ -12,11 +13,11 @@ async function navigateToPointerEvents() {
 
 describe('PointerEvents', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToPointerEvents()
   })
 

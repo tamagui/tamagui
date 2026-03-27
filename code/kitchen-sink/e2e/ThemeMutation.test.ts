@@ -15,14 +15,15 @@
 
 import { by, device, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 describe('ThemeMutation', () => {
   beforeAll(async () => {
-    await device.launchApp()
+    await safeLaunchApp()
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToTestCase('ThemeMutation', 'theme-mutation-button', {
       skipEnableSync: true,
     })

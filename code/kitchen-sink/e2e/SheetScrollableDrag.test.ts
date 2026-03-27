@@ -17,31 +17,20 @@
 
 import { by, device, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
+import { safeLaunchApp, safeReloadApp, withSync } from './utils/detox'
 
 // only run on iOS - Android behavior is different
 const isAndroid = () => device.getPlatform() === 'android'
 
-// enable sync briefly for a tap interaction, then disable again
-// RN 0.83 Fabric requires sync enabled for tap delivery
-// swipes work without sync and don't need this wrapper
-async function withSync<T>(fn: () => Promise<T>): Promise<T> {
-  await device.enableSynchronization()
-  try {
-    return await fn()
-  } finally {
-    await device.disableSynchronization()
-  }
-}
-
 describe('SheetScrollableDrag - RNGH Integration', () => {
   beforeAll(async () => {
     if (isAndroid()) return
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
     if (isAndroid()) return
-    await device.reloadReactNative()
+    await safeReloadApp()
     // skipEnableSync: navigation re-enabling sync hangs if animations are settling
     await navigateToTestCase('SheetScrollableDrag', 'sheet-scrollable-drag-trigger', {
       skipEnableSync: true,

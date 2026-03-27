@@ -16,16 +16,7 @@ import * as assert from 'assert'
 import { PNG } from 'pngjs'
 import { navigateToTestCase } from './utils/navigation'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
-
-// enable sync briefly for an interaction, then disable again
-async function withSync<T>(fn: () => Promise<T>): Promise<T> {
-  await device.enableSynchronization()
-  try {
-    return await fn()
-  } finally {
-    await device.disableSynchronization()
-  }
-}
+import { safeLaunchApp, withSync } from './utils/detox'
 
 async function navigateToPressStyleNative() {
   await navigateToTestCase('PressStyleNative', 'color-test-pressable', {
@@ -35,11 +26,10 @@ async function navigateToPressStyleNative() {
 
 describe('PressStyleNative (no RNGH)', () => {
   beforeAll(async () => {
-    await device.launchApp({
+    await safeLaunchApp({
       newInstance: true,
       launchArgs: { disableGestureHandler: true },
     })
-    await device.disableSynchronization()
   })
 
   afterAll(async () => {
@@ -47,11 +37,10 @@ describe('PressStyleNative (no RNGH)', () => {
   })
 
   beforeEach(async () => {
-    await device.launchApp({
+    await safeLaunchApp({
       newInstance: true,
       launchArgs: { disableGestureHandler: true },
     })
-    await device.disableSynchronization()
     await new Promise((resolve) => setTimeout(resolve, 1500))
     await navigateToPressStyleNative()
   })
