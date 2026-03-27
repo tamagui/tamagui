@@ -8,12 +8,10 @@ import { navigateToTestCase } from './utils/navigation'
 
 describe('NativePortal', () => {
   beforeAll(async () => {
-    await device.disableSynchronization()
     await device.launchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
-    await device.disableSynchronization()
     await device.reloadReactNative()
     await navigateToTestCase('NativePortalTest', 'portal-status')
   })

@@ -36,13 +36,11 @@ async function withSync<T>(fn: () => Promise<T>): Promise<T> {
 describe('SheetScrollableDrag - RNGH Integration', () => {
   beforeAll(async () => {
     if (isAndroid()) return
-    await device.disableSynchronization()
     await device.launchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
     if (isAndroid()) return
-    await device.disableSynchronization()
     await device.reloadReactNative()
     // skipEnableSync: navigation re-enabling sync hangs if animations are settling
     await navigateToTestCase('SheetScrollableDrag', 'sheet-scrollable-drag-trigger', {

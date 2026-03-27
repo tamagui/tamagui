@@ -29,19 +29,12 @@ describe('CompilerTernaryActive', () => {
     })
     console.log('Build complete, .native.tsx generated')
 
-    await device.disableSynchronization()
     await device.launchApp({ newInstance: true })
-  })
-
-  afterAll(async () => {
-    await device.enableSynchronization()
   })
 
   it('optimized and non-optimized text should match colors in both states', async () => {
     await device.reloadReactNative()
-    await navigateToTestCase('CompilerTernaryActive', 'compiler-ternary-active-root', {
-      skipEnableSync: true,
-    })
+    await navigateToTestCase('CompilerTernaryActive', 'compiler-ternary-active-root')
     await new Promise((r) => setTimeout(r, 300))
 
     // verify initial state is inactive

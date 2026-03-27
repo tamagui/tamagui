@@ -25,13 +25,11 @@ async function withSync<T>(fn: () => Promise<T>): Promise<T> {
 
 describe('SelectRemount', () => {
   beforeAll(async () => {
-    await device.disableSynchronization()
     await device.launchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
     // use launchApp instead of reloadReactNative to avoid transient Metro errors
-    await device.disableSynchronization()
     await device.launchApp({ newInstance: true })
     // skipEnableSync: tests manage sync themselves via withSync helper
     // re-enabling sync after navigation can hang if animations are still settling
