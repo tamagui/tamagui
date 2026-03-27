@@ -37,6 +37,11 @@ import { ToastItemFrame } from './ToastItemFrame'
 const DISMISS_THRESHOLD = 50
 const VELOCITY_THRESHOLD = 500 // px/s
 const RUBBER_MAX = 40
+// snap-back spring — tuned to match web (damping: 30, stiffness: 400, mass: 0.5)
+const SNAP_SPRING = { damping: 30, stiffness: 400, mass: 0.5 }
+// hoisted animation configs — avoids allocating new objects on every worklet evaluation
+const HEIGHT_SPRING = { damping: 100, stiffness: 1200, mass: 3 }
+const STACK_TIMING = { duration: 300 }
 
 const AnimatedView = createAnimatedComponent(View)
 
@@ -202,7 +207,7 @@ export const NativeToastItem = React.memo(
               Math.abs(translationX) > DISMISS_THRESHOLD ||
               Math.abs(velocityX) > VELOCITY_THRESHOLD
             if (shouldDismiss) {
-              gestureTranslateX.set(withDecay({ velocity: velocityX * 1.5 }))
+              gestureTranslateX.set(withDecay({ velocity: velocityX }))
               isDragging.set(false)
               runOnJS(hide)(String(toast.id))
               return
@@ -216,7 +221,7 @@ export const NativeToastItem = React.memo(
               Math.abs(velocityY) > VELOCITY_THRESHOLD
             if (shouldDismiss) {
               gestureTranslateY.set(
-                withDecay({ velocity: velocityY * 1.5, clamp: [-Infinity, 0] })
+                withDecay({ velocity: velocityY, clamp: [-Infinity, 0] })
               )
               isDragging.set(false)
               runOnJS(hide)(String(toast.id))
@@ -228,7 +233,7 @@ export const NativeToastItem = React.memo(
               Math.abs(velocityY) > VELOCITY_THRESHOLD
             if (shouldDismiss) {
               gestureTranslateY.set(
-                withDecay({ velocity: velocityY * 1.5, clamp: [0, Infinity] })
+                withDecay({ velocity: velocityY, clamp: [0, Infinity] })
               )
               isDragging.set(false)
               runOnJS(hide)(String(toast.id))
@@ -236,9 +241,9 @@ export const NativeToastItem = React.memo(
             }
           }
 
-          // snap back
-          gestureTranslateY.set(withSpring(0))
-          gestureTranslateX.set(withSpring(0))
+          // snap back — tuned to match web spring feel
+          gestureTranslateY.set(withSpring(0, SNAP_SPRING))
+          gestureTranslateX.set(withSpring(0, SNAP_SPRING))
           isDragging.set(false)
         })
     }, [toast.id, isTop, screenHeight, toast.dismissible, toast.type])
@@ -317,10 +322,11 @@ export const NativeToastItem = React.memo(
         }
 
         // height: constrain back toasts to front toast height for uniform stacking
-        const heightKeys = Object.keys(heightsMap)
-        const lastKey = heightKeys[heightKeys.length - 1]
-        const lastHeight = lastKey ? heightsMap[lastKey] : undefined
-        constrainedHeight = index > 0 && lastHeight ? lastHeight : undefined
+        // use toastOrder[0] explicitly — Object.keys insertion order is non-deterministic
+        // when multiple toasts mount simultaneously
+        const frontId = toastOrder.get()[0]
+        const frontHeight = frontId ? heightsMap[frontId] : undefined
+        constrainedHeight = index > 0 && frontHeight ? frontHeight : undefined
       }
 
       // in collapsed mode: gesture replaces stack position (toast is at bottom:0)
@@ -341,21 +347,21 @@ export const NativeToastItem = React.memo(
       return {
         zIndex,
         height: constrainedHeight
-          ? withSpring(constrainedHeight, { damping: 100, stiffness: 1200, mass: 3 })
+          ? withSpring(constrainedHeight, HEIGHT_SPRING)
           : undefined,
         pointerEvents: opacity === 0 ? ('none' as const) : ('auto' as const),
-        opacity: withTiming(opacity, { duration: 300 }),
+        opacity: withTiming(opacity, STACK_TIMING),
         transform: [
           { translateX: gestureTranslateX.get() },
           {
             translateY: isDragging.get()
               ? translateY
-              : withTiming(translateY, { duration: 300 }),
+              : withTiming(translateY, STACK_TIMING),
           },
           {
             scale: isDragging.get()
               ? withSpring(scale)
-              : withTiming(scale, { duration: 300 }),
+              : withTiming(scale, STACK_TIMING),
           },
         ],
       }
