@@ -38,7 +38,7 @@ export function Test(isLoading) {
   const media = useMedia();
   return <_ReactNativeViewStyled0 _expressions={[media.sm, media.sm && isLoading, media.sm && !isLoading]} />;
 }
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : null, _expressions[1] ? _sheet["2"] : null, _expressions[2] ? _sheet["3"] : null]);"
+const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : null, _expressions[1] ? _sheet["2"] : null, _expressions[2] ? _sheet["3"] : null], false, false);"
 `;
 
 exports[`flatten-tests > work with experimentalFlattenThemesOnNative + ternary 1`] = `
@@ -53,7 +53,7 @@ const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _exp
   "backgroundColor": theme.color1.get()
 } : {
   "backgroundColor": theme.color2.get()
-}]);"
+}], true, false);"
 `;
 
 exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
@@ -79,5 +79,5 @@ export function Test(isLoading) {
 }
 const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], {
   "backgroundColor": theme.background.get()
-}]);"
+}], true, false);"
 `;

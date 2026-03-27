@@ -122,7 +122,9 @@ const _ReactNativeViewStyled0 = _withStableStyle(
       : {
           backgroundColor: theme.color11.get(),
         },
-  ]
+  ],
+  true,
+  false
 )
 const _ReactNativeTextStyled1 = _withStableStyle(
   __ReactNativeText,
@@ -144,7 +146,9 @@ const _ReactNativeTextStyled1 = _withStableStyle(
             color: theme.color11.get(),
           },
         ],
-  ]
+  ],
+  true,
+  false
 )
 const _ReactNativeViewStyled2 = _withStableStyle(
   __ReactNativeView,
@@ -153,7 +157,9 @@ const _ReactNativeViewStyled2 = _withStableStyle(
     {
       backgroundColor: theme.background.get(),
     },
-  ]
+  ],
+  true,
+  false
 )
 const _ReactNativeTextStyled3 = _withStableStyle(
   __ReactNativeText,
@@ -162,7 +168,9 @@ const _ReactNativeTextStyled3 = _withStableStyle(
     {
       color: theme.color.get(),
     },
-  ]
+  ],
+  true,
+  false
 )
 const _ReactNativeTextStyled4 = _withStableStyle(
   __ReactNativeText,
@@ -171,7 +179,9 @@ const _ReactNativeTextStyled4 = _withStableStyle(
     {
       color: theme.color.get(),
     },
-  ]
+  ],
+  true,
+  false
 )
 const _ReactNativeTextStyled5 = _withStableStyle(
   __ReactNativeText,
@@ -180,5 +190,7 @@ const _ReactNativeTextStyled5 = _withStableStyle(
     {
       color: theme.color.get(),
     },
-  ]
+  ],
+  true,
+  false
 )

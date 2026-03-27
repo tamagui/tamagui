@@ -6,25 +6,42 @@ import { ThemeStateContext } from './hooks/useThemeState'
 
 /** internal: this is for tamagui babel plugin usage only */
 
+const EMPTY_EXPRESSIONS: any[] = []
+const EMPTY_THEME = {}
+
 export const _withStableStyle = (
   Component: any,
-  createStyle: (theme: any, expressions: any[]) => object
+  createStyle: (theme: any, expressions: any[]) => object,
+  hasThemeKeys?: boolean,
+  hasMediaKeys?: boolean
 ) =>
   React.memo(
     React.forwardRef((props: any, ref) => {
-      const { _expressions = [], ...rest } = props
+      const { _expressions = EMPTY_EXPRESSIONS, ...rest } = props
 
-      // in monorepo setups (pnpm, etc.) module duplication can cause the
-      // ThemeStateContext here to be a different instance than the one in
-      // TamaguiProvider, making the provider invisible. fall back to config
-      // themes instead of crashing with "Missing theme".
       const parentId = useContext(ThemeStateContext)
-      if (!parentId) {
+
+      // compile-time constants per wrapper, so conditional hooks are stable
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const theme = hasThemeKeys && parentId ? useTheme() : null
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const media = hasMediaKeys ? useMedia() : null
+
+      const resolvedExpressions = media
+        ? _expressions.map((expr: any) => (typeof expr === 'string' ? media[expr] : expr))
+        : _expressions
+
+      let resolvedTheme: any = theme || EMPTY_THEME
+      if (hasThemeKeys && !parentId) {
+        // monorepo edge case: ThemeStateContext is from a different instance
         const config = getConfigMaybe()
         const themes = config?.themes
-        const fallback = themes
-          ? themes.light || themes.dark || Object.values(themes)[0]
-          : {}
+        if (themes) {
+          for (const k in themes) {
+            resolvedTheme = themes.light || themes.dark || themes[k]
+            break
+          }
+        }
         if (process.env.NODE_ENV === 'development') {
           console.warn(
             '[@tamagui] _withStableStyle: no ThemeStateContext found. ' +
@@ -32,24 +49,14 @@ export const _withStableStyle = (
               'Falling back to default theme from config.'
           )
         }
-        return (
-          <Component ref={ref} style={createStyle(fallback, _expressions)} {...rest} />
-        )
       }
 
-      const theme = useTheme()
-
-      // Only call useMedia if there are string media keys to resolve
-      // This is safe because expressions are compile-time stable
-      const hasMediaKeys = _expressions.some((expr: any) => typeof expr === 'string')
-      const media = hasMediaKeys ? useMedia() : null
-
-      const resolvedExpressions = media
-        ? _expressions.map((expr: any) => (typeof expr === 'string' ? media[expr] : expr))
-        : _expressions
-
       return (
-        <Component ref={ref} style={createStyle(theme, resolvedExpressions)} {...rest} />
+        <Component
+          ref={ref}
+          style={createStyle(resolvedTheme, resolvedExpressions)}
+          {...rest}
+        />
       )
     })
   )

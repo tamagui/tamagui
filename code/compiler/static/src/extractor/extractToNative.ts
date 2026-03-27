@@ -279,6 +279,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                 }
 
                 let hasDynamicStyle = false
+                let hasMediaKeys = false
 
                 for (const attr of props.attrs) {
                   switch (attr.type) {
@@ -293,6 +294,10 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                       const { consequent, alternate } = attr.value
                       const consExpr = getStyleExpression(consequent, true)
                       const altExpr = getStyleExpression(alternate, true)
+
+                      if (attr.value.inlineMediaQuery) {
+                        hasMediaKeys = true
+                      }
 
                       expressions.push(attr.value.test)
                       addStyleExpression(
@@ -349,6 +354,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   const WrapperIdentifier = t.identifier(wrapperName)
                   const WrapperJSXIdentifier = t.jsxIdentifier(wrapperName)
 
+                  const hasThemeKeysFlag = themeKeysUsed.size > 0
                   root.pushContainer(
                     'body',
                     t.variableDeclaration('const', [
@@ -361,6 +367,8 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                             // return styles directly - no useMemo, theme changes must trigger style recalc
                             t.arrayExpression([...hocStylesExpr.elements])
                           ),
+                          t.booleanLiteral(hasThemeKeysFlag),
+                          t.booleanLiteral(hasMediaKeys),
                         ])
                       ),
                     ])

@@ -368,32 +368,32 @@ function SheetDemo() {
 }
 const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["6"], {
   "backgroundColor": theme.background.get()
-}]);
-const _ReactNativeViewStyled1 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["7"], _expressions[0] ? _sheet["8"] : null]);
+}], true, false);
+const _ReactNativeViewStyled1 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["7"], _expressions[0] ? _sheet["8"] : null], false, true);
 const _ReactNativeTextStyled2 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["11"], {
   "color": theme.color12.get()
-}]);
+}], true, false);
 const _ReactNativeTextStyled3 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["12"], {
   "color": theme.color10.get()
-}]);
+}], true, false);
 const _ReactNativeViewStyled4 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["13"], {
   "borderTopColor": theme.backgroundFocus.get(),
   "borderRightColor": theme.backgroundFocus.get(),
   "borderBottomColor": theme.backgroundFocus.get(),
   "borderLeftColor": theme.backgroundFocus.get()
-}]);
+}], true, false);
 const _ReactNativeTextStyled5 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["14"], {
   "color": theme.color.get()
-}]);
+}], true, false);
 const _ReactNativeViewStyled6 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["15"], {
   "borderTopColor": theme.backgroundFocus.get(),
   "borderRightColor": theme.backgroundFocus.get(),
   "borderBottomColor": theme.backgroundFocus.get(),
   "borderLeftColor": theme.backgroundFocus.get()
-}]);
+}], true, false);
 const _ReactNativeTextStyled7 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["17"], {
   "color": theme.color.get()
-}]);"
+}], true, false);"
 `;
 
 exports[`Package.json exports support > should build app package for both web and native targets > web-css 1`] = `
@@ -1068,32 +1068,32 @@ function SheetDemo() {
 }
 const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["6"], {
   "backgroundColor": theme.background.get()
-}]);
-const _ReactNativeViewStyled1 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["7"], _expressions[0] ? _sheet["8"] : null]);
+}], true, false);
+const _ReactNativeViewStyled1 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["7"], _expressions[0] ? _sheet["8"] : null], false, true);
 const _ReactNativeTextStyled2 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["11"], {
   "color": theme.color12.get()
-}]);
+}], true, false);
 const _ReactNativeTextStyled3 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["12"], {
   "color": theme.color10.get()
-}]);
+}], true, false);
 const _ReactNativeViewStyled4 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["13"], {
   "borderTopColor": theme.backgroundFocus.get(),
   "borderRightColor": theme.backgroundFocus.get(),
   "borderBottomColor": theme.backgroundFocus.get(),
   "borderLeftColor": theme.backgroundFocus.get()
-}]);
+}], true, false);
 const _ReactNativeTextStyled5 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["14"], {
   "color": theme.color.get()
-}]);
+}], true, false);
 const _ReactNativeViewStyled6 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["15"], {
   "borderTopColor": theme.backgroundFocus.get(),
   "borderRightColor": theme.backgroundFocus.get(),
   "borderBottomColor": theme.backgroundFocus.get(),
   "borderLeftColor": theme.backgroundFocus.get()
-}]);
+}], true, false);
 const _ReactNativeTextStyled7 = _withStableStyle(__ReactNativeText, (theme, _expressions) => [_sheet["17"], {
   "color": theme.color.get()
-}]);"
+}], true, false);"
 `;
 
 exports[`Package.json exports support > should recognize imports from path-specific exports during optimization > web-optimized-single 1`] = `

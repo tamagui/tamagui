@@ -11,9 +11,13 @@ const config = createTamagui(defaultConfig)
 
 describe('_withStableStyle', () => {
   test('renders correctly with TamaguiProvider', () => {
-    const Wrapped = _withStableStyle(View, (theme) => [
-      { width: 100, height: 100, backgroundColor: theme.background?.get?.() ?? 'red' },
-    ])
+    const Wrapped = _withStableStyle(
+      View,
+      (theme) => [
+        { width: 100, height: 100, backgroundColor: theme.background?.get?.() ?? 'red' },
+      ],
+      true
+    )
 
     const tree = render(
       <TamaguiProvider defaultTheme="light" config={config}>
@@ -27,7 +31,7 @@ describe('_withStableStyle', () => {
   test('does not crash without TamaguiProvider (graceful fallback)', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
 
-    const Wrapped = _withStableStyle(View, () => [{ width: 50, height: 50 }])
+    const Wrapped = _withStableStyle(View, () => [{ width: 50, height: 50 }], true)
 
     expect(() => {
       render(<Wrapped />)
@@ -39,10 +43,14 @@ describe('_withStableStyle', () => {
   test('theme values resolve correctly under TamaguiProvider', () => {
     let resolvedBg: any = null
 
-    const Wrapped = _withStableStyle(View, (theme) => {
-      resolvedBg = theme.background?.get?.()
-      return [{ backgroundColor: resolvedBg }]
-    })
+    const Wrapped = _withStableStyle(
+      View,
+      (theme) => {
+        resolvedBg = theme.background?.get?.()
+        return [{ backgroundColor: resolvedBg }]
+      },
+      true
+    )
 
     render(
       <TamaguiProvider defaultTheme="light" config={config}>
