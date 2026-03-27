@@ -1,5 +1,9 @@
 /**
- * Native implementation of drag gesture handling.
+ * Native implementation of drag gesture handling for the OLD toast path (ToastItem/Toaster).
+ * The NEW native toast path (NativeToastItem.native.tsx) has its own worklet-based
+ * gesture handling and does NOT use this file. This file is only loaded because
+ * ToastItemInner calls useAnimatedDragGesture unconditionally (React hooks rule).
+ *
  * Uses react-native-gesture-handler (RNGH) when available for proper gesture
  * coordination with ScrollView and navigation. Falls back to PanResponder.
  *

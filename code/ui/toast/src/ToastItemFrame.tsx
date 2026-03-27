@@ -1,6 +1,6 @@
 /**
  * Shared visual styled components for toast items.
- * Used by both web (ToastComposable) and native (ToastItemInner.native) implementations.
+ * Shared across web and native — imported by ToastComposable.
  */
 
 import { styled } from '@tamagui/core'
@@ -40,9 +40,9 @@ export const ToastItemFrame = styled(YStack, {
     unstyled: {
       false: {
         backgroundColor: '$background',
-        borderRadius: '$5',
-        paddingHorizontal: '$3',
-        paddingVertical: '$2.5',
+        borderRadius: '$4',
+        paddingHorizontal: '$4',
+        paddingVertical: '$3',
         borderWidth: 1,
         borderColor: '$borderColor',
         shadowColor: 'rgba(0, 0, 0, 0.15)',
@@ -63,10 +63,10 @@ export const ToastItemFrame = styled(YStack, {
 })
 
 /* -------------------------------------------------------------------------------------------------
- * ToastCloseButton
+ * ToastCloseFrame
  * -----------------------------------------------------------------------------------------------*/
 
-export const ToastCloseButton = styled(XStack, {
+export const ToastCloseFrame = styled(XStack, {
   name: 'ToastClose',
   render: 'button',
   alignItems: 'center',
@@ -97,11 +97,11 @@ export const ToastCloseButton = styled(XStack, {
 })
 
 /* -------------------------------------------------------------------------------------------------
- * ToastActionButton - for action/cancel buttons with text
+ * ToastActionFrame - for action/cancel buttons with text
  * -----------------------------------------------------------------------------------------------*/
 
 export const ToastActionFrame = styled(XStack, {
-  name: 'ToastActionButton',
+  name: 'ToastAction',
   render: 'button',
   alignItems: 'center',
   justifyContent: 'center',

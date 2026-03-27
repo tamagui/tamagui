@@ -22,9 +22,9 @@ export type {
   ToastAction,
 } from './ToastState'
 
-// Toaster - all-in-one component (uses composable API internally)
+// Toaster - all-in-one component (thin wrapper over composable API)
 export { Toaster } from './Toaster'
-export type { ToasterProps, ToasterPosition, HeightT } from './Toaster'
+export type { ToasterProps, ToasterPosition } from './Toaster'
 
 export type { SwipeDirection } from './ToastProvider'
 export type { BurntToastOptions, CreateNativeToastOptions, NativeToastRef } from './types'

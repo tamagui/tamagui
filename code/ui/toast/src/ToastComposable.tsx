@@ -19,12 +19,18 @@ import * as React from 'react'
 import type { SwipeDirection } from './ToastProvider'
 import type { ExternalToast, ToastT, ToastToDismiss, ToastType } from './ToastState'
 import { ToastState } from './ToastState'
-import { useNativeToastList } from './useNativeToastList'
 import type { BurntToastOptions } from './types'
 import { dispatchNativeToast } from './dispatchNativeToast'
 import { useAnimatedDragGesture } from './useAnimatedDragGesture'
 import { useToastAnimations } from './useToastAnimations'
 import { useReducedMotion } from './useReducedMotion'
+import {
+  DefaultCloseIcon,
+  ToastActionFrame,
+  ToastCloseFrame,
+  ToastItemFrame,
+  ToastPositionWrapper,
+} from './ToastItemFrame'
 
 // defaults
 const VISIBLE_TOASTS_AMOUNT = 4
@@ -117,12 +123,6 @@ export interface ToastIcons {
 }
 
 /* Icons - users provide their own via icons prop, no built-in defaults */
-
-const DefaultCloseIcon = () => (
-  <SizableText size="$1" color="$color11">
-    ✕
-  </SizableText>
-)
 
 /* -------------------------------------------------------------------------------------------------
  * Toast (Root)
@@ -680,104 +680,6 @@ export interface ToastListProps {
 function ToastList({ renderItem }: ToastListProps) {
   const ctx = useToastContext()
 
-  // on native, use Reanimated-based rendering for 60fps performance
-  // renderNativeToasts is a flat render function — no extra component layers
-  const renderNativeToasts = useNativeToastList()
-
-  if (renderNativeToasts && !isWeb) {
-    return (
-      <>
-        {renderNativeToasts({
-          toasts: ctx.toasts,
-          expanded: ctx.expanded,
-          position: ctx.position,
-          visibleToasts: ctx.visibleToasts,
-          gap: ctx.gap,
-          duration: ctx.duration,
-          reducedMotion: ctx.reducedMotion,
-          removeToast: ctx.removeToast,
-          triggerDismissCooldown: ctx.triggerDismissCooldown,
-          onTap: () => {
-            if (ctx.toasts.length > 1) {
-              ctx.setExpanded((prev: boolean) => !prev)
-            }
-          },
-          renderContent: (toast: ToastT, _index: number, handleClose?: () => void) => {
-            const title = typeof toast.title === 'function' ? toast.title() : toast.title
-            const description =
-              typeof toast.description === 'function' ? toast.description() : toast.description
-            const toastType = toast.type ?? 'default'
-            const dismissible = toast.dismissible !== false
-
-            // icon: per-toast override > type-based from ctx.icons
-            const icon = toast.icon !== undefined
-              ? toast.icon
-              : ctx.icons?.[toastType] ?? null
-
-            return (
-              <XStack alignItems="flex-start" gap="$3">
-                {icon ? (
-                  <View flexShrink={0} marginTop="$0.5">
-                    {icon}
-                  </View>
-                ) : null}
-
-                <YStack flex={1} gap="$1">
-                  {title ? <ToastTitle>{title}</ToastTitle> : null}
-                  {description ? <ToastDescription>{description}</ToastDescription> : null}
-
-                  {(toast.action || toast.cancel) && handleClose ? (
-                    <XStack gap="$2" marginTop="$2">
-                      {toast.cancel ? (
-                        <ToastActionFrame
-                          backgroundColor="transparent"
-                          onPress={(e: any) => {
-                            toast.cancel?.onClick?.(e)
-                            handleClose()
-                          }}
-                        >
-                          <SizableText size="$2" color="$color11">
-                            {toast.cancel.label}
-                          </SizableText>
-                        </ToastActionFrame>
-                      ) : null}
-                      {toast.action ? (
-                        <ToastActionFrame
-                          backgroundColor="$color12"
-                          pressStyle={{ backgroundColor: '$color10' }}
-                          onPress={(e: any) => {
-                            toast.action?.onClick?.(e)
-                            if (!(e as any).defaultPrevented) {
-                              handleClose()
-                            }
-                          }}
-                        >
-                          <SizableText size="$2" fontWeight="600" color="$background">
-                            {toast.action.label}
-                          </SizableText>
-                        </ToastActionFrame>
-                      ) : null}
-                    </XStack>
-                  ) : null}
-                </YStack>
-
-                {ctx.closeButton && dismissible && handleClose ? (
-                  <ToastCloseFrame
-                    aria-label="Close toast"
-                    onPress={handleClose}
-                  >
-                    {ctx.icons?.close ?? <DefaultCloseIcon />}
-                  </ToastCloseFrame>
-                ) : null}
-              </XStack>
-            )
-          },
-        })}
-      </>
-    )
-  }
-
-  // web: use AnimatePresence + Tamagui styled components
   const maxRender = ctx.expanded
     ? ctx.toasts.length
     : Math.min(ctx.toasts.length, ctx.visibleToasts + 1)
@@ -879,57 +781,7 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
   )
 }
 
-/* -------------------------------------------------------------------------------------------------
- * ToastPositionWrapper - handles absolute positioning and stacking animations
- * -----------------------------------------------------------------------------------------------*/
-
-const ToastPositionWrapper = styled(YStack, {
-  name: 'ToastPositionWrapper',
-  pointerEvents: 'auto',
-  position: 'absolute',
-  left: 0,
-  right: 0,
-  opacity: 1,
-  scale: 1,
-  y: 0,
-  x: 0,
-})
-
-/* -------------------------------------------------------------------------------------------------
- * ToastItemFrame - visual styling for the toast
- * -----------------------------------------------------------------------------------------------*/
-
-const ToastItemFrame = styled(YStack, {
-  name: 'ToastItem',
-  userSelect: 'none',
-  cursor: 'default',
-  focusable: true,
-
-  variants: {
-    unstyled: {
-      false: {
-        backgroundColor: '$background',
-        borderRadius: '$4',
-        paddingHorizontal: '$4',
-        paddingVertical: '$3',
-        borderWidth: 1,
-        borderColor: '$borderColor',
-        shadowColor: 'rgba(0, 0, 0, 0.15)',
-        shadowOffset: { width: 0, height: 4 },
-        shadowRadius: 12,
-        focusVisibleStyle: {
-          outlineWidth: 2,
-          outlineColor: '$color8',
-          outlineStyle: 'solid',
-        },
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
-})
+/* ToastPositionWrapper, ToastItemFrame imported from ./ToastItemFrame */
 
 /* -------------------------------------------------------------------------------------------------
  * DragWrapper - handles drag gestures with proper event handling
@@ -1403,36 +1255,6 @@ const ToastDescription = styled(SizableText, {
  * ToastClose - auto-wired to dismiss current toast
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastCloseFrame = styled(XStack, {
-  name: 'ToastClose',
-  render: 'button',
-  alignItems: 'center',
-  justifyContent: 'center',
-  cursor: 'pointer',
-
-  variants: {
-    unstyled: {
-      false: {
-        width: 18,
-        height: 18,
-        borderRadius: '$10',
-        backgroundColor: '$background',
-        borderWidth: 1,
-        borderColor: '$borderColor',
-        shadowColor: 'rgba(0, 0, 0, 0.08)',
-        shadowOffset: { width: 0, height: 1 },
-        shadowRadius: 3,
-        hoverStyle: { backgroundColor: '$color3' },
-        pressStyle: { backgroundColor: '$color4' },
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
-})
-
 const ToastClose = ToastCloseFrame.styleable(function ToastClose(props, ref) {
   // try to get handleClose from context, but allow manual override
   let handleClose: (() => void) | undefined
@@ -1455,31 +1277,6 @@ const ToastClose = ToastCloseFrame.styleable(function ToastClose(props, ref) {
 /* -------------------------------------------------------------------------------------------------
  * ToastAction
  * -----------------------------------------------------------------------------------------------*/
-
-const ToastActionFrame = styled(XStack, {
-  name: 'ToastAction',
-  render: 'button',
-  alignItems: 'center',
-  justifyContent: 'center',
-  cursor: 'pointer',
-
-  variants: {
-    unstyled: {
-      false: {
-        borderRadius: '$2',
-        paddingHorizontal: '$2',
-        height: 24,
-        backgroundColor: '$color5',
-        hoverStyle: { backgroundColor: '$color6' },
-        pressStyle: { backgroundColor: '$color7' },
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
-})
 
 const ToastAction = ToastActionFrame.styleable(function ToastAction(props, ref) {
   return <ToastActionFrame ref={ref} {...props} />

@@ -3,6 +3,7 @@ import * as React from 'react';
 import type { SwipeDirection } from './ToastProvider';
 import type { ExternalToast, ToastT } from './ToastState';
 import type { BurntToastOptions } from './types';
+import { ToastItemFrame } from './ToastItemFrame';
 export type ToastPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
 interface ToastItemContextValue {
     toast: ToastT;
@@ -130,11 +131,6 @@ export interface ToastListProps {
     renderItem?: (props: ToastItemRenderProps) => React.ReactNode;
 }
 declare function ToastList({ renderItem }: ToastListProps): import("react/jsx-runtime").JSX.Element;
-declare const ToastItemFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    unstyled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
 export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
     toast: ToastT;
     index: number;

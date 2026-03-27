@@ -1,26 +1,20 @@
+/**
+ * Toaster — drop-in all-in-one toast component.
+ * Thin wrapper around Toast + Toast.Viewport + Toast.List (composable API).
+ */
 import type { TamaguiElement } from '@tamagui/core';
 import * as React from 'react';
+import type { ToastPosition } from './ToastComposable';
 import type { SwipeDirection } from './ToastProvider';
 import type { ExternalToast } from './ToastState';
 import type { BurntToastOptions } from './types';
-export type ToasterPosition = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
-/** @deprecated Use HeightsMap instead */
-export interface HeightT {
-    toastId: string | number;
-    height: number;
-    position?: ToasterPosition;
-}
+export type ToasterPosition = ToastPosition;
 export interface ToasterProps {
     /**
      * Position of the toasts on screen
      * @default 'bottom-right'
      */
     position?: ToasterPosition;
-    /**
-     * Width of toast container in pixels
-     * @default 356
-     */
-    width?: number;
     /**
      * Expand toasts on hover to show all
      * @default false
@@ -110,17 +104,7 @@ export interface ToasterProps {
      */
     notificationOptions?: NotificationOptions;
     /**
-     * Custom className for the container
-     */
-    className?: string;
-    /**
-     * Custom style for the container
-     */
-    style?: React.CSSProperties;
-    /**
      * Force reduced motion mode (disables animations)
-     * When true, animations are disabled. When false, animations are enabled.
-     * When undefined, respects system preference (prefers-reduced-motion).
      */
     reducedMotion?: boolean;
 }
