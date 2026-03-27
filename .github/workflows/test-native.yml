@@ -490,6 +490,15 @@ jobs:
           echo "::warning::Android cache not restored (key: ${{ needs.build-android.outputs.android-cache-key }}). This may happen on first run after cache key changes."
           echo "SKIP_ANDROID_TESTS=true" >> $GITHUB_ENV
 
+      - name: Free Disk Space
+        if: env.SKIP_ANDROID_TESTS != 'true'
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android/sdk/ndk
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          df -h /
+
       - name: Install Dependencies
         if: env.SKIP_ANDROID_TESTS != 'true'
         uses: ./.github/actions/install
@@ -516,7 +525,7 @@ jobs:
       - name: Start Android Emulator and Run Tests
         if: env.SKIP_ANDROID_TESTS != 'true'
         id: android-tests
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2.37.0
         with:
           api-level: 31
           target: google_apis
@@ -525,11 +534,11 @@ jobs:
           avd-name: test
           ram-size: 2048M
           heap-size: 512M
-          disk-size: 4G
+          disk-size: 2G
           force-avd-creation: false
           emulator-boot-timeout: 600
           disable-animations: true
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none -memory 2048
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           working-directory: code/kitchen-sink
           script: |
             # Free up memory before tests
