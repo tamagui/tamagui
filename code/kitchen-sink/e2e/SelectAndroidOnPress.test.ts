@@ -27,11 +27,13 @@ const skipOnIOS = () => {
 describe('SelectAndroidOnPress (#3436)', () => {
   beforeAll(async () => {
     if (skipOnIOS()) return
+    await device.disableSynchronization()
     await device.launchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
     if (skipOnIOS()) return
+    await device.disableSynchronization()
     await device.reloadReactNative()
     await navigateToTestCase('SelectAndroidOnPress', 'select-android-trigger')
   })

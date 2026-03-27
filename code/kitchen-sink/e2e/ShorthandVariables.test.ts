@@ -15,10 +15,12 @@ import { navigateToTestCase } from './utils/navigation'
 
 describe('ShorthandVariables', () => {
   beforeAll(async () => {
+    await device.disableSynchronization()
     await device.launchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
+    await device.disableSynchronization()
     await device.reloadReactNative()
     await navigateToTestCase('ShorthandVariables', 'boxshadow-var')
   })
