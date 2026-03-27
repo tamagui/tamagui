@@ -36,7 +36,7 @@ import { YStack } from 'tamagui';
 import { useMedia } from 'tamagui';
 export function Test(isLoading) {
   const media = useMedia();
-  return <_ReactNativeViewStyled0 _expressions={[media.sm, media.sm && isLoading, media.sm && !isLoading]} />;
+  return <_ReactNativeViewStyled0 _expressions={[!!media.sm, !!(media.sm && isLoading), !!(media.sm && !isLoading)]} />;
 }
 const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : null, _expressions[1] ? _sheet["2"] : null, _expressions[2] ? _sheet["3"] : null], false, false);"
 `;
@@ -47,7 +47,7 @@ const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { View } from 'tamagui';
 export function Test() {
-  return <_ReactNativeViewStyled0 _expressions={[showBackground]} />;
+  return <_ReactNativeViewStyled0 _expressions={[!!showBackground]} />;
 }
 const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_expressions[0] ? {
   "backgroundColor": theme.color1.get()

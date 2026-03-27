@@ -384,10 +384,17 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   }
 
                   if (expressions.length) {
+                    // coerce runtime expressions to boolean so they can't be
+                    // confused with string media keys at runtime
+                    const safeExpressions = expressions.map((expr) =>
+                      t.isStringLiteral(expr)
+                        ? expr
+                        : t.unaryExpression('!', t.unaryExpression('!', expr))
+                    )
                     props.node.attributes.push(
                       t.jsxAttribute(
                         t.jsxIdentifier('_expressions'),
-                        t.jsxExpressionContainer(t.arrayExpression(expressions))
+                        t.jsxExpressionContainer(t.arrayExpression(safeExpressions))
                       )
                     )
                   }

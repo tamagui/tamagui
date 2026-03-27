@@ -264,6 +264,31 @@ test('multiple media query components should not conflict', async () => {
   expect(styledMatches.length).toBe(uniqueNames.size)
 })
 
+test('string ternary test should not be confused with media key', async () => {
+  // Regression: <View width={someString ? 24 : 66} xs={{ height: 30 }} />
+  // someString evaluates to a string at runtime, and _withStableStyle's
+  // resolvedExpressions check `typeof expr === 'string' ? media[expr] : expr`
+  // would incorrectly treat it as a media key lookup.
+  // The fix: compiler wraps non-string-literal expressions with !! to coerce to boolean.
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test({ someString }) {
+      return (
+        <YStack
+          width={someString ? 24 : 66}
+          $sm={{ height: 30 }}
+        />
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // the ternary test expression must be coerced to boolean
+  expect(code).toContain('!!someString')
+  // the media key should remain a plain string literal
+  expect(code).toContain('"sm"')
+  expect(code).toMatchSnapshot()
+})
+
 test('ternary with mixed theme-token and non-token values preserves all props', async () => {
   const output = await extractForNative(`
     import { Text } from 'tamagui'
