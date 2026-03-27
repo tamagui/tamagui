@@ -17,6 +17,7 @@ const createEmptyAnimationDriver = (): AnimationDriver => ({
   ResetPresence: () => noAnimationDriver('ResetPresence'),
   useAnimatedNumber: () => noAnimationDriver('useAnimatedNumber'),
   useAnimatedNumberStyle: () => noAnimationDriver('useAnimatedNumberStyle'),
+  useAnimatedNumbersStyle: () => noAnimationDriver('useAnimatedNumbersStyle'),
   useAnimatedNumberReaction: () => noAnimationDriver('useAnimatedNumberReaction'),
 })
 

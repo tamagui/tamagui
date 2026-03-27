@@ -165,7 +165,8 @@ export function useToastAnimations(
     throw new Error('Toast requires an animation driver to be set in TamaguiProvider')
   }
 
-  const { useAnimatedNumber, useAnimatedNumberStyle } = animationDriver
+  const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumbersStyle } =
+    animationDriver
   const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
 
   // ref for direct DOM manipulation (CSS driver fallback)
@@ -173,36 +174,36 @@ export function useToastAnimations(
   const cancelAnimationRef = React.useRef<(() => void) | null>(null)
   const currentOffsetRef = React.useRef({ x: 0, y: 0 })
 
-  // On web, always use direct DOM manipulation for drag gestures.
-  // This is because:
-  // 1. CSS driver doesn't provide reactive animated style updates
-  // 2. Reanimated driver's AnimatedView doesn't work well with raw div on web
-  // 3. Direct DOM manipulation provides the most consistent and performant behavior
-  // On native, we use the animation driver's AnimatedView + animatedStyle
+  // on web, use direct DOM for drag (CSS driver has no reactive style updates)
+  // on native, use the animation driver's AnimatedView + animatedStyle
   const useDirectDom = isWeb
 
-  // animated values for drag translation (used by motion/reanimated drivers)
+  // animated values for drag translation
   const translateX = useAnimatedNumber(0)
   const translateY = useAnimatedNumber(0)
 
-  // create animated transform styles for drag (motion/reanimated only)
-  // useAnimatedNumberStyle only tracks its first arg as a dependency,
-  // so we need both variants and pick based on swipe axis
-  const animatedStyleH = useAnimatedNumberStyle(translateX, (x) => {
-    'worklet'
-    const y = translateY.getValue()
-    return {
-      transform: [{ translateX: x }, { translateY: y }],
+  // multi-value: both axes reactive in one animated style (off-thread on Reanimated)
+  const animatedStyleMulti = useAnimatedNumbersStyle
+    ? useAnimatedNumbersStyle([translateX, translateY], (x: number, y: number) => {
+        'worklet'
+        return { transform: [{ translateX: x }, { translateY: y }] }
+      })
+    : null
+
+  // single-value fallback for drivers without useAnimatedNumbersStyle
+  const animatedStyleFallback = useAnimatedNumberStyle(
+    swipeAxis === 'vertical' ? translateY : translateX,
+    (primary) => {
+      'worklet'
+      const secondary =
+        swipeAxis === 'vertical' ? translateX.getValue() : translateY.getValue()
+      return swipeAxis === 'vertical'
+        ? { transform: [{ translateX: secondary }, { translateY: primary }] }
+        : { transform: [{ translateX: primary }, { translateY: secondary }] }
     }
-  })
-  const animatedStyleV = useAnimatedNumberStyle(translateY, (y) => {
-    'worklet'
-    const x = translateX.getValue()
-    return {
-      transform: [{ translateX: x }, { translateY: y }],
-    }
-  })
-  const animatedStyle = swipeAxis === 'vertical' ? animatedStyleV : animatedStyleH
+  )
+
+  const animatedStyle = animatedStyleMulti ?? animatedStyleFallback
 
   // set drag offset directly (no animation) - used during gesture
   const setDragOffset = useEvent((x: number, y: number) => {

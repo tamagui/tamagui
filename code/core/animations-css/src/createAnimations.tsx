@@ -234,6 +234,10 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       return getStyle(val.getValue())
     },
 
+    useAnimatedNumbersStyle(vals, getStyle) {
+      return getStyle(...vals.map((v) => v.getValue()))
+    },
+
     // @ts-ignore - styleState is added by createComponent
     useAnimations: ({
       props,
