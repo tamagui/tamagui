@@ -19,6 +19,7 @@ import * as React from 'react'
 import type { SwipeDirection } from './ToastProvider'
 import type { ExternalToast, ToastT, ToastToDismiss, ToastType } from './ToastState'
 import { ToastState } from './ToastState'
+import { useNativeToastList } from './useNativeToastList'
 import type { BurntToastOptions } from './types'
 import { dispatchNativeToast } from './dispatchNativeToast'
 import { useAnimatedDragGesture } from './useAnimatedDragGesture'
@@ -84,7 +85,7 @@ const ToastContext = createStyledContext<ToastContextValue>(
 const useToastContext = ToastContext.useStyledContext
 
 /* -------------------------------------------------------------------------------------------------
- * ToastItemContext - for auto-wiring Toast.Close
+ * ToastItemContext - for auto-wiring Toast.Close (web only)
  * -----------------------------------------------------------------------------------------------*/
 
 interface ToastItemContextValue {
@@ -260,7 +261,6 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       return () => clearTimeout(timer)
     }, [expanded])
 
-    // Helper to set a single toast's height
     // Round + skip small changes to prevent cascading re-renders from
     // sub-pixel onLayout jitter during font loading or CSS transitions
     const setToastHeight = React.useCallback(
@@ -276,9 +276,9 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       []
     )
 
-    // Helper to remove a toast's height
     const removeToastHeight = React.useCallback((toastId: string | number) => {
       setHeights((prev) => {
+        if (!(toastId in prev)) return prev
         const next = { ...prev }
         delete next[toastId]
         return next
@@ -349,13 +349,19 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       })
     }, [native, duration])
 
-    // collapse when 1 toast (but respect dismiss cooldown for smooth animation)
-    // keyboard dismiss is handled by onBlur when focus leaves after last toast
+    // collapse when 1 toast left, or when a new toast is added while expanded
+    const prevToastCountRef = React.useRef(toasts.length)
     React.useEffect(() => {
+      const prevCount = prevToastCountRef.current
+      prevToastCountRef.current = toasts.length
+
       if (toasts.length <= 1 && !dismissCooldownRef.current) {
         setExpanded(false)
+      } else if (toasts.length > prevCount && expanded) {
+        // new toast added while expanded — collapse to show the new front toast
+        setExpanded(false)
       }
-    }, [toasts.length])
+    }, [toasts.length, expanded])
 
     const removeToast = React.useCallback((toastToRemove: ToastT) => {
       setToasts((toasts) => {
@@ -674,9 +680,111 @@ export interface ToastListProps {
 function ToastList({ renderItem }: ToastListProps) {
   const ctx = useToastContext()
 
+  // on native, use Reanimated-based rendering for 60fps performance
+  // renderNativeToasts is a flat render function — no extra component layers
+  const renderNativeToasts = useNativeToastList()
+
+  if (renderNativeToasts && !isWeb) {
+    return (
+      <>
+        {renderNativeToasts({
+          toasts: ctx.toasts,
+          expanded: ctx.expanded,
+          position: ctx.position,
+          visibleToasts: ctx.visibleToasts,
+          gap: ctx.gap,
+          duration: ctx.duration,
+          reducedMotion: ctx.reducedMotion,
+          removeToast: ctx.removeToast,
+          triggerDismissCooldown: ctx.triggerDismissCooldown,
+          onTap: () => {
+            if (ctx.toasts.length > 1) {
+              ctx.setExpanded((prev: boolean) => !prev)
+            }
+          },
+          renderContent: (toast: ToastT, _index: number, handleClose?: () => void) => {
+            const title = typeof toast.title === 'function' ? toast.title() : toast.title
+            const description =
+              typeof toast.description === 'function' ? toast.description() : toast.description
+            const toastType = toast.type ?? 'default'
+            const dismissible = toast.dismissible !== false
+
+            // icon: per-toast override > type-based from ctx.icons
+            const icon = toast.icon !== undefined
+              ? toast.icon
+              : ctx.icons?.[toastType] ?? null
+
+            return (
+              <XStack alignItems="flex-start" gap="$3">
+                {icon ? (
+                  <View flexShrink={0} marginTop="$0.5">
+                    {icon}
+                  </View>
+                ) : null}
+
+                <YStack flex={1} gap="$1">
+                  {title ? <ToastTitle>{title}</ToastTitle> : null}
+                  {description ? <ToastDescription>{description}</ToastDescription> : null}
+
+                  {(toast.action || toast.cancel) && handleClose ? (
+                    <XStack gap="$2" marginTop="$2">
+                      {toast.cancel ? (
+                        <ToastActionFrame
+                          backgroundColor="transparent"
+                          onPress={(e: any) => {
+                            toast.cancel?.onClick?.(e)
+                            handleClose()
+                          }}
+                        >
+                          <SizableText size="$2" color="$color11">
+                            {toast.cancel.label}
+                          </SizableText>
+                        </ToastActionFrame>
+                      ) : null}
+                      {toast.action ? (
+                        <ToastActionFrame
+                          backgroundColor="$color12"
+                          pressStyle={{ backgroundColor: '$color10' }}
+                          onPress={(e: any) => {
+                            toast.action?.onClick?.(e)
+                            if (!(e as any).defaultPrevented) {
+                              handleClose()
+                            }
+                          }}
+                        >
+                          <SizableText size="$2" fontWeight="600" color="$background">
+                            {toast.action.label}
+                          </SizableText>
+                        </ToastActionFrame>
+                      ) : null}
+                    </XStack>
+                  ) : null}
+                </YStack>
+
+                {ctx.closeButton && dismissible && handleClose ? (
+                  <ToastCloseFrame
+                    aria-label="Close toast"
+                    onPress={handleClose}
+                  >
+                    {ctx.icons?.close ?? <DefaultCloseIcon />}
+                  </ToastCloseFrame>
+                ) : null}
+              </XStack>
+            )
+          },
+        })}
+      </>
+    )
+  }
+
+  // web: use AnimatePresence + Tamagui styled components
+  const maxRender = ctx.expanded
+    ? ctx.toasts.length
+    : Math.min(ctx.toasts.length, ctx.visibleToasts + 1)
+
   return (
     <AnimatePresence>
-      {ctx.toasts.map((toast, index) => {
+      {ctx.toasts.slice(0, maxRender).map((toast, index) => {
         const handleClose = () => {
           if (toast.dismissible === false) return
           toast.onDismiss?.(toast)
@@ -688,7 +796,6 @@ function ToastList({ renderItem }: ToastListProps) {
           handleClose,
         }
 
-        // use default render if no custom renderItem
         if (!renderItem) {
           return (
             <ToastItemContext.Provider key={toast.id} value={itemContextValue}>
@@ -1138,10 +1245,13 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             ? 0.5
             : 1
     const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
-    // only constrain height to front toast when it's been actually measured
-    // (not the 55px fallback) — prevents visual jump when a new toast enters
-    const computedHeight =
-      !ctx.expanded && !isFront && frontToastHeight > 0 ? frontToastHeight : undefined
+    // collapsed: constrain back toasts to front toast height for uniform stacking
+    // expanded: use own measured height so CSS transition can animate from
+    // constrained height to natural height (transition to 'auto' doesn't animate)
+    const myHeight = ctx.heights[toast.id]
+    const computedHeight = ctx.expanded
+      ? myHeight && myHeight > 0 ? myHeight : undefined
+      : !isFront && frontToastHeight > 0 ? frontToastHeight : undefined
     const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
 
     // gap filler for hover stability

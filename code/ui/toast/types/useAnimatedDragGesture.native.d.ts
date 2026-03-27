@@ -1,25 +1,32 @@
 /**
- * Native implementation of drag gesture handling with animation driver integration.
- * Uses PanResponder for gesture tracking, animation driver for transforms.
+ * Native implementation of drag gesture handling.
+ * Uses react-native-gesture-handler (RNGH) when available for proper gesture
+ * coordination with ScrollView and navigation. Falls back to PanResponder.
+ *
+ * Pattern: same as Sheet — RNGH is accessed through @tamagui/native global
+ * registry, never imported directly. The gesture is created in useMemo and
+ * returns null when RNGH is not set up.
  */
 import type { SwipeDirection } from './ToastProvider';
 export interface UseAnimatedDragGestureOptions {
     direction: SwipeDirection;
     threshold: number;
     disabled?: boolean;
-    /** when collapsed, allow drag in all directions with resistance except exit direction */
     expanded?: boolean;
-    /** called during drag with offset values */
     onDragMove: (x: number, y: number) => void;
-    /** called when drag starts */
     onDragStart?: () => void;
-    /** called when drag ends with successful dismiss - includes exit direction and velocity */
     onDismiss: (exitDirection: 'left' | 'right' | 'up' | 'down', velocity: number) => void;
-    /** called when drag ends without dismiss - spring back */
     onCancel: () => void;
 }
+/**
+ * Single hook — always calls the same hooks in the same order.
+ * Creates RNGH gesture in useMemo (returns null if unavailable).
+ * Creates PanResponder in useMemo (returns null if RNGH is used).
+ * Consumer checks `gesture` to decide whether to wrap with GestureDetector.
+ */
 export declare function useAnimatedDragGesture(options: UseAnimatedDragGestureOptions): {
     isDragging: boolean;
     gestureHandlers: import("react-native").GestureResponderHandlers;
+    gesture: any;
 };
 //# sourceMappingURL=useAnimatedDragGesture.native.d.ts.map

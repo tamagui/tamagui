@@ -28,5 +28,6 @@ export declare function useAnimatedDragGesture(options: UseAnimatedDragGestureOp
         onPointerCancel: (event: React.PointerEvent) => void;
         onLostPointerCapture: () => void;
     };
+    gesture: any;
 };
 //# sourceMappingURL=useAnimatedDragGesture.d.ts.map
