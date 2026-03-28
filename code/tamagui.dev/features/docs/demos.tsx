@@ -128,6 +128,9 @@ export const DialogDemo = lazyDemo(() =>
 export const ToastDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/ToastDemo').then((x) => x.ToastDemo)
 )
+export const ToastV1Demo = lazyDemo(() =>
+  import('@tamagui/demos/demo/ToastV1Demo').then((x) => x.ToastV1Demo)
+)
 export const ToastDuplicateDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/ToastDuplicateDemo').then((x) => x.ToastDuplicateDemo)
 )

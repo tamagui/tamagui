@@ -201,7 +201,7 @@ export default {
   },
 
   ssr: {
-    external: ['@vxrn/mdx', 'ws'],
+    external: ['@vxrn/mdx', 'ws', 'postmark'],
     noExternal: true,
   },
 
