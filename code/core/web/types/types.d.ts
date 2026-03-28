@@ -1807,6 +1807,7 @@ export type UseAnimatedNumberReaction<V extends UniversalAnimatedNumber<any> = U
     hostRef: RefObject<TamaguiElement>;
 }, onValue: (current: number) => void) => void;
 export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (val: V, getStyle: (current: any) => any) => any;
+export type UseAnimatedNumbersStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (vals: V[], getStyle: (...currentValues: any[]) => any) => any;
 export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (initial: number) => N;
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
@@ -1827,6 +1828,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     }) => React.ReactNode;
     useAnimatedNumber: UseAnimatedNumber;
     useAnimatedNumberStyle: UseAnimatedNumberStyle;
+    useAnimatedNumbersStyle?: UseAnimatedNumbersStyle;
     useAnimatedNumberReaction: UseAnimatedNumberReaction;
     animations: A;
     View?: any;

@@ -50,6 +50,12 @@ export interface ToastRootProps {
      */
     swipeThreshold?: number;
     /**
+     * Fixed toast height in pixels for native stacking calculations.
+     * On web, heights are measured dynamically.
+     * @default 56
+     */
+    toastHeight?: number;
+    /**
      * Show close button on toasts
      * @default false
      */

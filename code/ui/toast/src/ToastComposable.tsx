@@ -78,6 +78,7 @@ interface ToastContextValue {
   swipeThreshold: number
   closeButton: boolean
   reducedMotion: boolean
+  toastHeight: number
   native: boolean
   burntOptions?: Omit<BurntToastOptions, 'title' | 'message' | 'duration'>
   notificationOptions?: NotificationOptions
@@ -162,6 +163,12 @@ export interface ToastRootProps {
    */
   swipeThreshold?: number
   /**
+   * Fixed toast height in pixels for native stacking calculations.
+   * On web, heights are measured dynamically.
+   * @default 56
+   */
+  toastHeight?: number
+  /**
    * Show close button on toasts
    * @default false
    */
@@ -228,6 +235,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       visibleToasts = VISIBLE_TOASTS_AMOUNT,
       swipeDirection: swipeDirectionProp = 'auto',
       swipeThreshold = 50,
+      toastHeight = FIXED_TOAST_HEIGHT,
       closeButton = false,
       expand = false,
       theme: themeProp,
@@ -401,6 +409,7 @@ const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
       visibleToasts,
       swipeDirection,
       swipeThreshold,
+      toastHeight,
       closeButton,
       reducedMotion,
       native,
@@ -682,7 +691,9 @@ function ToastList({ renderItem }: ToastListProps) {
   const ctx = useToastContext()
 
   // cap rendered toasts — even expanded, only render visibleToasts count
-  const maxRender = Math.min(ctx.toasts.length, ctx.visibleToasts)
+  const maxRender = ctx.expanded
+    ? ctx.toasts.length
+    : Math.min(ctx.toasts.length, ctx.visibleToasts + 1)
 
   return (
     <AnimatePresence>
@@ -895,12 +906,12 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             if (toastId == null) continue
             const h = ctx.heights[toastId]
             if (h === 0) continue
-            totalHeight += h ?? FIXED_TOAST_HEIGHT
+            totalHeight += h ?? ctx.toastHeight
             activeCount++
           }
           return totalHeight + activeCount * ctx.gap
         })()
-      : index * (FIXED_TOAST_HEIGHT + ctx.gap)
+      : index * (ctx.toastHeight + ctx.gap)
 
     // Refs for stable access in callbacks — avoids putting expandedOffset/expanded
     // in deps which would cause timer restarts on every height measurement
