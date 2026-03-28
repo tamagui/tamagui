@@ -524,8 +524,13 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
       const safeTop = safeInsets?.top ?? 0
       const safeBottom = safeInsets?.bottom ?? 0
 
-      if (yPosition === 'top') styles.top = (offsetObj.top ?? defaultOffset) + safeTop
-      else styles.bottom = (offsetObj.bottom ?? defaultOffset) + safeBottom
+      // if safe area already provides spacing, skip the offset to avoid double padding
+      const topOffset = safeTop > 0 ? safeTop : (offsetObj.top ?? defaultOffset)
+      const bottomOffset =
+        safeBottom > 0 ? safeBottom : (offsetObj.bottom ?? defaultOffset)
+
+      if (yPosition === 'top') styles.top = topOffset
+      else styles.bottom = bottomOffset
 
       if (isWeb) {
         if (xPosition === 'left') styles.left = offsetObj.left ?? defaultOffset
