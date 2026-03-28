@@ -1,5 +1,5 @@
 import { Code, Eye, Info, Link, Lock, Minus, Plus } from '@tamagui/lucide-icons-2'
-import { useToastController } from '@tamagui/toast/v1'
+import { useToastController } from '@tamagui/toast'
 import React, { forwardRef, useEffect, useRef, useState } from 'react'
 import type { SizeTokens, ThemeName } from 'tamagui'
 

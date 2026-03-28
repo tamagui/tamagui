@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useToastController } from '@tamagui/toast/v1'
+import { useToastController } from '@tamagui/toast'
 
 export const copyToClipboard = (text: string) => {
   return navigator.clipboard.writeText(text)

@@ -14,7 +14,7 @@ import type {
   RESTGetAPIGuildMembersSearchResult,
 } from 'discord-api-types/v10'
 import { router } from 'one'
-import { useToastController } from '@tamagui/toast/v1'
+import { useToastController } from '@tamagui/toast'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { processError } from '~/features/posthog/errorHandling'
 import useSWR, { mutate } from 'swr'
