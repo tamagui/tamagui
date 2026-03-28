@@ -1,4 +1,4 @@
-import { Toast, useToasts } from '@tamagui/toast'
+import { Toast, useToasts } from '@tamagui/toast/v2'
 import { XStack, YStack } from 'tamagui'
 
 export const NativeToast = () => {

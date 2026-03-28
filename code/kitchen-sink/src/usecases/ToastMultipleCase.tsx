@@ -17,7 +17,7 @@ import {
   useToastItem,
   type ToastPosition,
   type ToastT,
-} from '@tamagui/toast'
+} from '@tamagui/toast/v2'
 import * as React from 'react'
 
 const toastIcons = {

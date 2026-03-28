@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { Button, SizableText, XStack, YStack, Text } from 'tamagui'
-import { toast, Toast, requestNotificationPermission, type ToastT } from '@tamagui/toast'
+import { toast, Toast, requestNotificationPermission, type ToastT } from '@tamagui/toast/v2'
 
 export function ToastNativeNotificationCase() {
   const [permission, setPermission] = useState<string>(
