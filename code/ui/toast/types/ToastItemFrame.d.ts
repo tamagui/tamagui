@@ -1,6 +1,6 @@
 /**
  * Shared visual styled components for toast items.
- * Used by both web (ToastComposable) and native (NativeToastItem.native) implementations.
+ * Shared across web and native — imported by ToastComposable.
  */
 export declare const ToastPositionWrapper: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
