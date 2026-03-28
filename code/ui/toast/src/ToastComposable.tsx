@@ -527,15 +527,18 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
       if (yPosition === 'top') styles.top = (offsetObj.top ?? defaultOffset) + safeTop
       else styles.bottom = (offsetObj.bottom ?? defaultOffset) + safeBottom
 
-      if (xPosition === 'left') styles.left = offsetObj.left ?? defaultOffset
-      else if (xPosition === 'right') styles.right = offsetObj.right ?? defaultOffset
-      else if (isWeb) {
-        styles.left = '50%'
-        styles.transform = 'translateX(-50%)'
+      if (isWeb) {
+        if (xPosition === 'left') styles.left = offsetObj.left ?? defaultOffset
+        else if (xPosition === 'right') styles.right = offsetObj.right ?? defaultOffset
+        else {
+          styles.left = '50%'
+          styles.transform = 'translateX(-50%)'
+        }
       } else {
+        // native: always set both left + right so viewport fills screen
+        // (no fixed width on native — left/right offsets define the width)
         styles.left = offsetObj.left ?? defaultOffset
         styles.right = offsetObj.right ?? defaultOffset
-        styles.alignItems = 'center'
       }
 
       return styles
