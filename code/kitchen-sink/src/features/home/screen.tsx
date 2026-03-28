@@ -5,15 +5,15 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import { Button, H1, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
+import { Button, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
 import * as TestCases from '../../usecases'
 
 const testCaseNames = Object.keys(TestCases)
 
 // grid of test case buttons for fast detox navigation
-// uses 44x44 buttons (iOS recommended min tap target) for reliable tap detection
-const BUTTON_SIZE = 44
-const BUTTONS_PER_ROW = 8
+// compact grid to fit all items on screen without scrolling
+const BUTTON_SIZE = 32
+const BUTTONS_PER_ROW = 11
 
 function QuickNavItem({ name, index }: { name: string; index: number }) {
   const linkProps = useLink({ href: `/test/${name}` })
@@ -36,7 +36,7 @@ function QuickNavItem({ name, index }: { name: string; index: number }) {
       onPress={linkProps.onPress}
       activeOpacity={0.7}
     >
-      <Text style={{ fontSize: 16, fontWeight: '700', color: '#333' }}>{index + 1}</Text>
+      <Text style={{ fontSize: 13, fontWeight: '700', color: '#333' }}>{index + 1}</Text>
     </TouchableOpacity>
   )
 }
@@ -81,11 +81,11 @@ export function HomeScreen() {
   return (
     <ScrollView testID="home-scroll-view">
       <YStack bg="$color2" p="$3" pt="$6" pb="$8" flex={1} gap="$4">
-        <H1 fontFamily="$heading" size="$9">
+        <Paragraph testID="home-title" size="$1">
           Kitchen Sink
-        </H1>
+        </Paragraph>
 
-        <Paragraph size="$2" color={gestureHandlerEnabled ? '$green10' : '$red10'}>
+        <Paragraph size="$1" color={gestureHandlerEnabled ? '$green10' : '$red10'}>
           RNGH: {gestureHandlerEnabled ? '✓ enabled' : '✗ disabled'}
         </Paragraph>
 

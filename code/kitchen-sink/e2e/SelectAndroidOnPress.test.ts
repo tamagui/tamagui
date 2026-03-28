@@ -14,6 +14,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 import { navigateToTestCase } from './utils/navigation'
 
 // helper to skip tests on iOS
@@ -27,12 +28,12 @@ const skipOnIOS = () => {
 describe('SelectAndroidOnPress (#3436)', () => {
   beforeAll(async () => {
     if (skipOnIOS()) return
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
     if (skipOnIOS()) return
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToTestCase('SelectAndroidOnPress', 'select-android-trigger')
   })
 

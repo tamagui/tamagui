@@ -11,15 +11,16 @@
  */
 
 import { by, device, element, expect } from 'detox'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 import { navigateToTestCase } from './utils/navigation'
 
 describe('ShorthandVariables', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToTestCase('ShorthandVariables', 'boxshadow-var')
   })
 

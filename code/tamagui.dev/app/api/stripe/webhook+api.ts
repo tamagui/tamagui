@@ -15,7 +15,11 @@ import {
   upsertProductRecord,
   createTeamInvoice,
 } from '~/features/auth/supabaseAdmin'
-import { sendProductRenewalEmail, sendV1ExpirationEmail } from '~/features/email/helpers'
+import {
+  sendProductRenewalEmail,
+  sendV1ExpirationEmail,
+  sendPaymentFailedEmail,
+} from '~/features/email/helpers'
 import { captureServerError } from '~/features/posthog'
 import { stripe } from '~/features/stripe/stripe'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
@@ -93,7 +97,7 @@ export default apiRoute(async (req) => {
         )
 
         if (isV1Subscription) {
-          // Send V1 expiration email with upgrade info
+          // send V1 renewal warning with upgrade info
           const subscriptionId =
             typeof info.subscription === 'string'
               ? info.subscription
@@ -102,13 +106,26 @@ export default apiRoute(async (req) => {
             await sendV1ExpirationEmail(info.customer_email, {
               name: 'friend',
               subscriptionId,
+              amount_due: info.amount_due,
             })
           }
         } else {
-          // Regular renewal email for V2 upgrades
+          // renewal warning for V2 subscriptions
           await sendProductRenewalEmail(info.customer_email, {
             name: 'friend',
-            product_name: 'Takeout',
+            product_name: 'Tamagui Pro',
+            amount_due: info.amount_due,
+          })
+        }
+        break
+      }
+
+      case 'invoice.payment_failed': {
+        const failedInvoice = event.data.object as Stripe.Invoice
+        if (failedInvoice.customer_email) {
+          await sendPaymentFailedEmail(failedInvoice.customer_email, {
+            name: 'friend',
+            amount: failedInvoice.amount_due,
           })
         }
         break

@@ -40,10 +40,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - shard_name: '1/2'
-            test_files: 'e2e/check-rngh-status.test.ts e2e/GroupPressNative.test.ts e2e/MediaQueryGtMd.test.ts e2e/NativePortal.test.ts e2e/PointerEvents.test.ts e2e/PressStyleNative.noRngh.test.ts e2e/PressStyleNative.test.ts e2e/SafeArea.test.ts'
-          - shard_name: '2/2'
-            test_files: 'e2e/CompilerExtraction.test.ts e2e/SelectAndroidOnPress.test.ts e2e/SelectRemount.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetScrollableDrag.test.ts e2e/ShorthandVariables.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts'
+          # shard balance based on CI timings (seconds):
+          # shard 1 (~1200s): PressStyleNative.noRngh(804) + PointerEvents(378)
+          # shard 2 (~1100s): SheetScrollableDrag(874) + SheetDragResist(142) + SheetKeyboardDrag(22)
+          # shard 3 (~1100s): SelectRemount(353) + ThemeMutation(213) + ShorthandVariables(169) + CompilerExtraction(160) + ThemeChangeBasic(111) + rest
+          - shard_name: '1/3'
+            test_files: 'e2e/check-rngh-status.test.ts e2e/GroupPressNative.test.ts e2e/PressStyleNative.test.ts e2e/PressStyleNative.noRngh.test.ts e2e/PointerEvents.test.ts e2e/SafeArea.test.ts'
+          - shard_name: '2/3'
+            test_files: 'e2e/SheetScrollableDrag.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts e2e/NativePortal.test.ts e2e/MediaQueryGtMd.test.ts'
+          - shard_name: '3/3'
+            test_files: 'e2e/SelectRemount.test.ts e2e/CompilerExtraction.test.ts e2e/CompilerTernaryActive.test.ts e2e/SelectAndroidOnPress.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts e2e/ShorthandVariables.test.ts'
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -484,6 +490,15 @@ jobs:
           echo "::warning::Android cache not restored (key: ${{ needs.build-android.outputs.android-cache-key }}). This may happen on first run after cache key changes."
           echo "SKIP_ANDROID_TESTS=true" >> $GITHUB_ENV
 
+      - name: Free Disk Space
+        if: env.SKIP_ANDROID_TESTS != 'true'
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android/sdk/ndk
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          df -h /
+
       - name: Install Dependencies
         if: env.SKIP_ANDROID_TESTS != 'true'
         uses: ./.github/actions/install
@@ -510,7 +525,7 @@ jobs:
       - name: Start Android Emulator and Run Tests
         if: env.SKIP_ANDROID_TESTS != 'true'
         id: android-tests
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@v2.37.0
         with:
           api-level: 31
           target: google_apis
@@ -519,11 +534,11 @@ jobs:
           avd-name: test
           ram-size: 2048M
           heap-size: 512M
-          disk-size: 4G
+          disk-size: 2G
           force-avd-creation: false
           emulator-boot-timeout: 600
           disable-animations: true
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none -memory 2048
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           working-directory: code/kitchen-sink
           script: |
             # Free up memory before tests

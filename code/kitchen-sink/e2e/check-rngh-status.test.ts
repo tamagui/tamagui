@@ -1,8 +1,9 @@
 import { by, device, element, expect, waitFor } from 'detox'
+import { safeLaunchApp } from './utils/detox'
 
 describe('RNGH Status Check', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   it('should show RNGH status on home screen', async () => {

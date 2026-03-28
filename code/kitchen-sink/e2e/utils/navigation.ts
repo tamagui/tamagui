@@ -21,7 +21,7 @@ export async function navigateToTestCase(
   await device.disableSynchronization()
 
   // wait for home screen to load
-  await waitFor(element(by.text('Kitchen Sink')))
+  await waitFor(element(by.id('home-title')))
     .toExist()
     .withTimeout(60000)
 
@@ -31,16 +31,16 @@ export async function navigateToTestCase(
   // tap toggle button to expand the quick-nav section
   await element(by.id('toggle-test-cases')).tap()
 
-  // wait for the quick-nav element to appear - 15s to allow for:
-  // - grid rendering (123 items with useLink hooks)
-  // - native layout calculation
-  // - any pending main-thread work from previous test
+  // wait for the quick-nav element to appear
   await waitFor(element(by.id(`detox-nav-${testCaseName}`)))
     .toBeVisible()
     .withTimeout(15000)
 
   // tap the quick-nav element for this test case
   await element(by.id(`detox-nav-${testCaseName}`)).tap()
+
+  // wait for stack screen transition animation to complete
+  await new Promise((r) => setTimeout(r, 800))
 
   // wait for the target screen to load
   if (waitForElementId) {

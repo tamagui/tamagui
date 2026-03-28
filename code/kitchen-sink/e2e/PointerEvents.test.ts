@@ -5,6 +5,7 @@
 
 import { by, device, element, expect } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 async function navigateToPointerEvents() {
   await navigateToTestCase('PointerEventsCase', 'pointer-events-root')
@@ -12,11 +13,11 @@ async function navigateToPointerEvents() {
 
 describe('PointerEvents', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToPointerEvents()
   })
 
@@ -46,8 +47,11 @@ describe('PointerEvents', () => {
   })
 
   it('should fire pointerMove during drag', async () => {
+    // disable sync during drag to prevent Detox from blocking gesture events
+    await device.disableSynchronization()
+
     await element(by.id('pointer-target')).longPressAndDrag(
-      300, // duration ms
+      800, // duration ms (longer for CI reliability)
       0.2, // start x (normalized)
       0.5, // start y (normalized)
       element(by.id('pointer-target')),
@@ -56,6 +60,10 @@ describe('PointerEvents', () => {
       'slow',
       0
     )
+
+    // wait for state update from move events
+    await new Promise((r) => setTimeout(r, 300))
+    await device.enableSynchronization()
 
     // should have fired at least one move event (not still 0)
     const moveEl = element(by.id('move-count'))

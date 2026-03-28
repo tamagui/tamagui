@@ -651,6 +651,41 @@ test('role attribute is preserved during extraction', async () => {
   expect(output?.js).toContain('button')
 })
 
+// fontWeight ternary is dropped when combined with theme-token color ternary
+test('ternary with mixed theme-token and non-token values preserves all props', async () => {
+  const output = await extractForWeb(
+    `
+    import { Text } from '@tamagui/core'
+    export function Test({ isActive, label }) {
+      return (
+        <Text
+          fontSize="$3"
+          fontWeight={isActive ? '600' : '400'}
+          color={isActive ? '$color12' : '$color11'}
+        >
+          {label}
+        </Text>
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // both ternary branches should include fontWeight
+  expect(output?.styles).toContain('font-weight:600')
+  expect(output?.styles).toContain('font-weight:400')
+  // both color values should also be present (as CSS variables for theme tokens)
+  expect(output?.styles).toContain('color:var(--color12')
+  expect(output?.styles).toContain('color:var(--color11')
+  expect(output?.js).toMatchSnapshot()
+  expect(output?.styles).toMatchSnapshot()
+})
+
 // CSS shorthand properties with embedded $variables
 test('boxShadow with $variable extracts correctly', async () => {
   const output = await extractForWeb(

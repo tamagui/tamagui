@@ -22,15 +22,12 @@ const _sheet = __ReactNativeStyleSheet.create({
       "scale": 2
     }]
   },
-  "2": {},
-  "3": {
+  "2": {
     "backgroundColor": "red"
   },
-  "4": {},
-  "5": {
+  "3": {
     "backgroundColor": "blue"
-  },
-  "6": {}
+  }
 });
 import { _withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
@@ -39,29 +36,24 @@ import { YStack } from 'tamagui';
 import { useMedia } from 'tamagui';
 export function Test(isLoading) {
   const media = useMedia();
-  return <_ReactNativeViewStyled0 _expressions={[media.sm, media.sm && isLoading, media.sm && !isLoading]} />;
+  return <_ReactNativeViewStyled0 _expressions={[!!media.sm, !!(media.sm && isLoading), !!(media.sm && !isLoading)]} />;
 }
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : _sheet["2"], _expressions[1] ? _sheet["3"] : _sheet["4"], _expressions[2] ? _sheet["5"] : _sheet["6"]]);"
+const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : null, _expressions[1] ? _sheet["2"] : null, _expressions[2] ? _sheet["3"] : null], false, false);"
 `;
 
 exports[`flatten-tests > work with experimentalFlattenThemesOnNative + ternary 1`] = `
-"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
-const _sheet = __ReactNativeStyleSheet.create({
-  "0": {},
-  "1": {}
-});
-import { _withStableStyle } from '@tamagui/core';
+"import { _withStableStyle } from '@tamagui/core';
 const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { View } from 'tamagui';
 export function Test() {
-  return <_ReactNativeViewStyled0 _expressions={[showBackground]} />;
+  return <_ReactNativeViewStyled0 _expressions={[!!showBackground]} />;
 }
-const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _sheet["1"], _expressions[0] ? {
+const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_expressions[0] ? {
   "backgroundColor": theme.color1.get()
 } : {
   "backgroundColor": theme.color2.get()
-}]);"
+}], true, false);"
 `;
 
 exports[`flatten-tests > work with experimentalFlattenThemesOnNative 1`] = `
@@ -87,5 +79,5 @@ export function Test(isLoading) {
 }
 const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], {
   "backgroundColor": theme.background.get()
-}]);"
+}], true, false);"
 `;

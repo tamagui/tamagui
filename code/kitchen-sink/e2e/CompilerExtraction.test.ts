@@ -9,6 +9,7 @@ import { unlinkSync, existsSync } from 'fs'
 import { by, device, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 const SOURCE_FILE = 'src/usecases/CompilerExtraction.tsx'
 const NATIVE_FILE = 'src/usecases/CompilerExtraction.native.tsx'
@@ -29,11 +30,11 @@ describe('CompilerExtraction', () => {
     )
     console.log('Build complete, .native.tsx generated')
 
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   it('should render and respond to theme changes', async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root')
     await new Promise((r) => setTimeout(r, 300))
 
@@ -88,7 +89,7 @@ describe('CompilerExtraction', () => {
   })
 
   it('should benchmark optimized vs non-optimized (best of 3)', async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root')
     await new Promise((r) => setTimeout(r, 300))
 

@@ -263,3 +263,57 @@ test('multiple media query components should not conflict', async () => {
   const uniqueNames = new Set(styledMatches)
   expect(styledMatches.length).toBe(uniqueNames.size)
 })
+
+test('string ternary test should not be confused with media key', async () => {
+  // Regression: <View width={someString ? 24 : 66} xs={{ height: 30 }} />
+  // someString evaluates to a string at runtime, and _withStableStyle's
+  // resolvedExpressions check `typeof expr === 'string' ? media[expr] : expr`
+  // would incorrectly treat it as a media key lookup.
+  // The fix: compiler wraps non-string-literal expressions with !! to coerce to boolean.
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test({ someString }) {
+      return (
+        <YStack
+          width={someString ? 24 : 66}
+          $sm={{ height: 30 }}
+        />
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // the ternary test expression must be coerced to boolean
+  expect(code).toContain('!!someString')
+  // the media key should remain a plain string literal
+  expect(code).toContain('"sm"')
+  expect(code).toMatchSnapshot()
+})
+
+test('ternary with mixed theme-token and non-token values preserves all props', async () => {
+  const output = await extractForNative(`
+    import { Text } from 'tamagui'
+    export function Test({ isActive, label }) {
+      return (
+        <Text
+          fontSize="$3"
+          fontWeight={isActive ? '600' : '400'}
+          color={isActive ? '$color12' : '$color11'}
+        >
+          {label}
+        </Text>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // fontWeight must be conditional, not unconditional
+  // the bug was that plain styles (fontWeight) were added unconditionally
+  // when a ternary branch also had theme tokens (color), causing the last
+  // branch's value (400) to always win
+  expect(code).toContain('fontWeight')
+  // both fontWeight values should appear in the sheet styles
+  expect(code).toContain('600')
+  expect(code).toContain('400')
+  // the fontWeight values should be in different sheet entries, wrapped in a ternary
+  // NOT both applied unconditionally
+  expect(code).toMatchSnapshot()
+})

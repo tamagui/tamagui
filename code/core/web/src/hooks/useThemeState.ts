@@ -36,6 +36,7 @@ export const forceUpdateThemes = () => {
   cacheVersion++
   shouldForce = true
   allListeners.forEach((cb) => cb())
+  shouldForce = false
 }
 
 export const getThemeState = (id: ID) => states.get(id)

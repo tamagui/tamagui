@@ -224,6 +224,29 @@ export function Test(props) {
 
 exports[`ternaries + font families works 2`] = `":root ._ff-f-family{font-family:var(--f-family);}"`;
 
+exports[`ternary with mixed theme-token and non-token values preserves all props 1`] = `
+"const _cn3 = "is_Text _fos-f-size-3";
+const _cn2 = "is_Text _fos-f-size-3 _col-color12 _fow-600";
+const _cn = "is_Text _fos-f-size-3 _col-color11 _fow-400";
+import { Text } from '@tamagui/core';
+export function Test({
+  isActive,
+  label
+}) {
+  return <span className={!isActive ? _cn : isActive ? _cn2 : _cn3}>
+          {label}
+        </span>;
+}"
+`;
+
+exports[`ternary with mixed theme-token and non-token values preserves all props 2`] = `
+":root ._fos-f-size-3{font-size:var(--f-size-3);}
+:root ._col-color12{color:var(--color12);}
+:root ._fow-600{font-weight:600;}
+:root ._col-color11{color:var(--color11);}
+:root ._fow-400{font-weight:400;}"
+`;
+
 exports[`theme + media queries + conditionals extract 1`] = `
 "const _cn2 = "is_View _fd-_sm_column";
 const _cn = "is_View _fd-_sm_column _fd-column";

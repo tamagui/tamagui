@@ -17,15 +17,16 @@
  */
 
 import { by, device, element, expect } from 'detox'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 import { navigateToTestCase } from './utils/navigation'
 
 describe('MediaQueryGtMd', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToTestCase('MediaQueryGtMd', 'media-test-both')
   })
 

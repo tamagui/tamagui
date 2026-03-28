@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-presence",
-  "version": "2.0.0-rc.31",
+  "version": "2.0.0-rc.33",
   "files": [
     "src",
     "types",

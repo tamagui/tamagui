@@ -2,7 +2,6 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build:js": {
-      "cache": false,
       "inputs": ["package.json", "src/**", "tamagui-build.js"],
       "outputs": ["dist/**"]
     },
