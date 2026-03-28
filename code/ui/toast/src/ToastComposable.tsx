@@ -37,7 +37,7 @@ const VISIBLE_TOASTS_AMOUNT = 4
 const VIEWPORT_OFFSET = 24
 const TOAST_GAP = 14
 const TOAST_LIFETIME = 4000
-const FIXED_TOAST_HEIGHT = 56
+const FIXED_TOAST_HEIGHT = 72
 const TIME_BEFORE_UNMOUNT = 200
 const DEFAULT_HOTKEY: string[] = ['altKey', 'KeyT']
 
@@ -690,10 +690,9 @@ export interface ToastListProps {
 function ToastList({ renderItem }: ToastListProps) {
   const ctx = useToastContext()
 
-  // cap rendered toasts — even expanded, only render visibleToasts count
-  const maxRender = ctx.expanded
-    ? ctx.toasts.length
-    : Math.min(ctx.toasts.length, ctx.visibleToasts + 1)
+  // render all toasts — hidden ones have opacity 0 but stay mounted
+  // so they smoothly transition when visible toasts are dismissed
+  const maxRender = ctx.toasts.length
 
   return (
     <AnimatePresence>
@@ -947,8 +946,8 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     })
 
     const resumeTimer = useEvent(() => {
-      // Don't resume if mouse is still hovering (expanded) or interacting
       if (ctx.expanded || ctx.interacting) return
+      remainingTimeRef.current = duration
       startTimer()
     })
 
@@ -963,13 +962,13 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         if (isExpandedRef.current) {
           setOffsetBeforeRemove(expandedOffsetRef.current)
         }
-        setTimeout(() => {
-          ctx.removeToast(toast)
-        }, TIME_BEFORE_UNMOUNT)
+        setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
       }
     }, [toast.delete, toast, ctx.removeToast])
 
     React.useEffect(() => {
+      // all toasts have independent timers (same as Sonner)
+      // stagger comes from creation time differences
       if (ctx.expanded || ctx.interacting) {
         pauseTimer()
       } else {
