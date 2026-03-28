@@ -1017,8 +1017,14 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         // freeze stackY at swipe time — after removeToast, context re-renders
         // recalculate expandedOffset with the wrong toast array
         swipeExitYRef.current = isExpandedRef.current
-          ? isTop ? expandedOffsetRef.current : -expandedOffsetRef.current
-          : isFront ? 0 : isTop ? ctx.gap * index : -ctx.gap * index
+          ? isTop
+            ? expandedOffsetRef.current
+            : -expandedOffsetRef.current
+          : isFront
+            ? 0
+            : isTop
+              ? ctx.gap * index
+              : -ctx.gap * index
         setRemoved(true)
         ctx.removeToast(toast)
         animateOut(exitDirection, velocity)
@@ -1094,14 +1100,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
           ? ctx.gap * index
           : -ctx.gap * index
 
-    const computedOpacity =
-      removed && !swipeOut
-        ? 0
-        : index >= ctx.visibleToasts
-          ? 0
-          : !ctx.expanded && index === ctx.visibleToasts - 1
-            ? 0.5
-            : 1
+    const computedOpacity = removed && !swipeOut ? 0 : index >= ctx.visibleToasts ? 0 : 1
     const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
     // web: use measured height for smooth expand/collapse transitions
     // native: fixed height, no constraint needed
