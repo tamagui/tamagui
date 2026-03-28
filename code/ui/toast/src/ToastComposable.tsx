@@ -34,7 +34,7 @@ import {
 
 // defaults
 const VISIBLE_TOASTS_AMOUNT = 4
-const VIEWPORT_OFFSET = 24
+const VIEWPORT_OFFSET = 16
 const TOAST_GAP = 14
 const TOAST_LIFETIME = 4000
 const FIXED_TOAST_HEIGHT = 72
@@ -440,7 +440,7 @@ const ToastViewportFrame = styled(View, {
         zIndex: 100000,
         pointerEvents: 'box-none',
         maxWidth: '100%',
-        width: 356,
+        ...(isWeb && { width: 356 }),
         minHeight: 1,
       },
     },

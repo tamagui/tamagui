@@ -40,7 +40,7 @@ export const ToastItemFrame = styled(YStack, {
     unstyled: {
       false: {
         backgroundColor: '$background',
-        borderRadius: '$4',
+        borderRadius: '$6',
         paddingHorizontal: '$4',
         paddingVertical: '$3',
         borderWidth: 1,
