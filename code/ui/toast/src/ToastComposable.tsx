@@ -880,6 +880,9 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     // Freeze the Y offset when dismiss starts so the exiting toast doesn't jump
     // as other toasts rebalance
     const [offsetBeforeRemove, setOffsetBeforeRemove] = React.useState(0)
+    // Freeze stackY at swipe time — context re-renders recalculate stackY
+    // but the exiting toast should stay at its pre-removal position
+    const swipeExitYRef = React.useRef<number | null>(null)
 
     const closeTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
     const closeTimerStartRef = React.useRef(0)
@@ -1012,6 +1015,11 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         ctx.triggerDismissCooldown()
         setSwipeOut(true)
         toast.onDismiss?.(toast)
+        // freeze stackY at swipe time — after removeToast, context re-renders
+        // recalculate expandedOffset with the wrong toast array
+        swipeExitYRef.current = isExpandedRef.current
+          ? isTop ? expandedOffsetRef.current : -expandedOffsetRef.current
+          : isFront ? 0 : isTop ? ctx.gap * index : -ctx.gap * index
         setRemoved(true)
         ctx.removeToast(toast)
         animateOut(exitDirection, velocity)
@@ -1154,7 +1162,7 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
           ctx.reducedMotion
             ? { opacity: 0 }
             : swipeOut
-              ? { opacity: 0, x: 0, y: 0, scale: 1 }
+              ? { opacity: 0, y: swipeExitYRef.current ?? stackY, scale: stackScale }
               : { opacity: 0, y: stackY, scale: stackScale }
         }
       >
