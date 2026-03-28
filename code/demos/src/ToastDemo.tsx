@@ -1,11 +1,11 @@
+import { isWeb } from 'tamagui'
 import {
-  isWeb,
   Toast,
   toast,
   useToastItem,
   type ToastPosition,
   type ToastT,
-} from 'tamagui'
+} from '@tamagui/toast/v2'
 import {
   ArrowDown,
   ArrowDownLeft,

@@ -11,10 +11,10 @@ import {
   type SelectProps,
   Separator,
   Sheet,
-  toast,
   XStack,
   YStack,
 } from '@my/ui'
+import { toast } from '@tamagui/toast/v2'
 import { SwitchRouterButton } from '@my/ui/components/SwitchRouterButton'
 import { SwitchThemeButton } from '@my/ui/components/SwitchThemeButton'
 import { LinearGradient } from '@tamagui/linear-gradient'

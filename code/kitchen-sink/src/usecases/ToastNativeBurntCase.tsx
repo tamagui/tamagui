@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { Button, YStack, Text } from 'tamagui'
-import { toast, Toast, type ToastT } from '@tamagui/toast'
+import { toast, Toast, type ToastT } from '@tamagui/toast/v2'
 import { XStack } from 'tamagui'
 
 export function ToastNativeBurntCase() {
