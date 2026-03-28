@@ -39,7 +39,7 @@ export const ToastDemo = () => {
       visibleToasts={visibleToasts}
       duration={duration}
     >
-      <Toast.Viewport>
+      <Toast.Viewport offset={16}>
         <Toast.List
           renderItem={({ toast: t, index }) => (
             <Toast.Item key={t.id} toast={t} index={index} testID="toast-item">
