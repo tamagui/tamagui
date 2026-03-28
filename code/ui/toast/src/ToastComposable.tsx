@@ -37,6 +37,7 @@ const VISIBLE_TOASTS_AMOUNT = 4
 const VIEWPORT_OFFSET = 24
 const TOAST_GAP = 14
 const TOAST_LIFETIME = 4000
+const FIXED_TOAST_HEIGHT = 56
 const TIME_BEFORE_UNMOUNT = 200
 const DEFAULT_HOTKEY: string[] = ['altKey', 'KeyT']
 
@@ -680,9 +681,8 @@ export interface ToastListProps {
 function ToastList({ renderItem }: ToastListProps) {
   const ctx = useToastContext()
 
-  const maxRender = ctx.expanded
-    ? ctx.toasts.length
-    : Math.min(ctx.toasts.length, ctx.visibleToasts + 1)
+  // cap rendered toasts — even expanded, only render visibleToasts count
+  const maxRender = Math.min(ctx.toasts.length, ctx.visibleToasts)
 
   return (
     <AnimatePresence>
@@ -884,23 +884,23 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
     const [yPosition] = ctx.position.split('-') as ['top' | 'bottom', string]
     const isTop = yPosition === 'top'
 
-    // Expanded offset: sum of heights + gaps for ACTIVE toasts before this one.
-    // Skips dismissed toasts (height=0) so remaining toasts rebalance immediately
-    // when a toast is dismissed — same pattern as Sonner's heightIndex approach.
-    const expandedOffset = React.useMemo(() => {
-      let totalHeight = 0
-      let activeCount = 0
-      for (let i = 0; i < index; i++) {
-        const toastId = ctx.toasts[i]?.id
-        if (toastId == null) continue
-        const h = ctx.heights[toastId]
-        // height=0 means dismissed (skip), undefined means not yet measured (use fallback)
-        if (h === 0) continue
-        totalHeight += h ?? 55
-        activeCount++
-      }
-      return totalHeight + activeCount * ctx.gap
-    }, [ctx.toasts, ctx.heights, index, ctx.gap])
+    // web: dynamic heights (CSS transitions run off main thread, no FPS concern)
+    // native: fixed height (avoids React state re-render cascade on JS thread)
+    const expandedOffset = isWeb
+      ? (() => {
+          let totalHeight = 0
+          let activeCount = 0
+          for (let i = 0; i < index; i++) {
+            const toastId = ctx.toasts[i]?.id
+            if (toastId == null) continue
+            const h = ctx.heights[toastId]
+            if (h === 0) continue
+            totalHeight += h ?? FIXED_TOAST_HEIGHT
+            activeCount++
+          }
+          return totalHeight + activeCount * ctx.gap
+        })()
+      : index * (FIXED_TOAST_HEIGHT + ctx.gap)
 
     // Refs for stable access in callbacks — avoids putting expandedOffset/expanded
     // in deps which would cause timer restarts on every height measurement
@@ -948,13 +948,12 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         setRemoved(true)
         if (isExpandedRef.current) {
           setOffsetBeforeRemove(expandedOffsetRef.current)
-          ctx.setToastHeight(toast.id, 0)
         }
         setTimeout(() => {
           ctx.removeToast(toast)
         }, TIME_BEFORE_UNMOUNT)
       }
-    }, [toast.delete, toast, ctx.removeToast, ctx.setToastHeight])
+    }, [toast.delete, toast, ctx.removeToast])
 
     React.useEffect(() => {
       if (ctx.expanded || ctx.interacting) {
@@ -1003,9 +1002,6 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         setSwipeOut(true)
         toast.onDismiss?.(toast)
         setRemoved(true)
-        // remove height and toast immediately so remaining toasts reposition right away
-        // AnimatePresence handles the exit animation independently
-        ctx.removeToastHeight(toast.id)
         ctx.removeToast(toast)
         animateOut(exitDirection, velocity)
       },
@@ -1016,13 +1012,10 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       },
     })
 
-    // measure height
-    // Skip when collapsed and not front — onLayout reports scaled dimensions
-    // (e.g. 51 * 0.9 = 45.9) that would corrupt height tracking
-    // Skip when removed — the height was intentionally zeroed for immediate
-    // rebalance; re-measuring would restore it and cause a bounce.
+    // measure height (web only — native uses fixed height)
     const handleLayout = React.useCallback(
       (event: any) => {
+        if (!isWeb) return
         if (removed) return
         if (!ctx.expanded && index !== 0) return
         const { height } = event.nativeEvent.layout
@@ -1031,8 +1024,9 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       [toast.id, ctx.setToastHeight, index, ctx.expanded, removed]
     )
 
-    // Remove height on unmount
+    // remove height on unmount (web only)
     React.useEffect(() => {
+      if (!isWeb) return
       return () => {
         ctx.removeToastHeight(toast.id)
       }
@@ -1045,30 +1039,24 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
       setRemoved(true)
       if (isExpandedRef.current) {
         setOffsetBeforeRemove(expandedOffsetRef.current)
-        ctx.setToastHeight(toast.id, 0)
       }
       setTimeout(() => ctx.removeToast(toast), TIME_BEFORE_UNMOUNT)
-    }, [
-      dismissible,
-      toast,
-      ctx.removeToast,
-      ctx.setToastHeight,
-      ctx.triggerDismissCooldown,
-    ])
+    }, [dismissible, toast, ctx.removeToast, ctx.triggerDismissCooldown])
 
     const itemContextValue = React.useMemo<ToastItemContextValue>(
       () => ({ toast, handleClose }),
       [toast, handleClose]
     )
 
-    // stacking calculations — find the first non-dismissed toast's height for collapsed stacking
-    // (dismissed toasts have height=0, skip them to avoid layout jumps)
+    // front toast height for collapsed stacking (web only)
     let frontToastHeight = -1
-    for (const t of ctx.toasts) {
-      const h = ctx.heights[t.id]
-      if (h != null && h > 0) {
-        frontToastHeight = h
-        break
+    if (isWeb) {
+      for (const t of ctx.toasts) {
+        const h = ctx.heights[t.id]
+        if (h != null && h > 0) {
+          frontToastHeight = h
+          break
+        }
       }
     }
 
@@ -1097,13 +1085,15 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
             ? 0.5
             : 1
     const computedZIndex = removed ? 0 : ctx.visibleToasts - index + 1
-    // collapsed: constrain back toasts to front toast height for uniform stacking
-    // expanded: use own measured height so CSS transition can animate from
-    // constrained height to natural height (transition to 'auto' doesn't animate)
-    const myHeight = ctx.heights[toast.id]
-    const computedHeight = ctx.expanded
-      ? myHeight && myHeight > 0 ? myHeight : undefined
-      : !isFront && frontToastHeight > 0 ? frontToastHeight : undefined
+    // web: use measured height for smooth expand/collapse transitions
+    // native: fixed height, no constraint needed
+    const computedHeight = isWeb
+      ? ctx.expanded
+        ? ctx.heights[toast.id] || undefined
+        : !isFront && frontToastHeight > 0
+          ? frontToastHeight
+          : undefined
+      : undefined
     const computedPointerEvents = index >= ctx.visibleToasts ? 'none' : 'auto'
 
     // gap filler for hover stability
@@ -1130,7 +1120,9 @@ const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
         transition={
           isDragging || ctx.reducedMotion ? undefined : removed ? '200ms' : '400ms'
         }
-        animateOnly={['transform', 'opacity', 'height']}
+        animateOnly={
+          isWeb ? ['transform', 'opacity', 'height'] : ['transform', 'opacity']
+        }
         y={stackY}
         scale={stackScale}
         opacity={computedOpacity}
