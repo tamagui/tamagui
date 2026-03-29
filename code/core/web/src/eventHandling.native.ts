@@ -7,6 +7,7 @@ import { getGestureHandler } from '@tamagui/native'
 import React, { useRef } from 'react'
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
+import { Platform } from 'react-native'
 
 // web events not used on native
 export function getWebEvents() {
@@ -44,7 +45,7 @@ export function useEvents(
 
   // avoid hooks/reparenting
   const everEnabled = Boolean(hasPressEvents || stateRef.current.hasHadEvents)
-  const isUsingRNGH = gh.isEnabled
+  const isUsingRNGH = gh.isEnabled && !Platform.isTV
 
   // NOW handle early returns (after all hooks are called)
   // THESE BRANCHES ARE NEVER CHANGING RENDER-TO-RENDER
@@ -90,7 +91,7 @@ export function useEvents(
   // rngh path - logic (hooks already called above)
   if (isUsingRNGH) {
     // rngh path - hooks
-    const callbacksRef = useRef<any>(isUsingRNGH ? {} : null)
+    const callbacksRef = useRef<any>({})
     const gestureRef = useRef<any>(null)
 
     if (everEnabled) {
@@ -145,7 +146,8 @@ export function useEvents(
   }
 
   // fallback - direct responder system when RNGH not enabled
-  useMainThreadPressEvents(events, viewProps, hasPressEvents)
+  const isPressEnabled = events != null ? hasPressEvents : false
+  useMainThreadPressEvents(events, viewProps, isPressEnabled)
 
   return null
 }

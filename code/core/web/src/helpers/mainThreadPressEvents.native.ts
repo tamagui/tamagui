@@ -6,6 +6,7 @@
  * long press, cancellation, and min press duration.
  */
 
+import { Platform } from 'react-native'
 import { useRef } from 'react'
 
 type PressState =
@@ -129,5 +130,26 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
 
   viewProps.onResponderMove = (e: any) => {
     events.onPressMove?.(e)
+  }
+
+  // On TV (Android TV / tvOS) the remote "select" button bypasses the touch
+  // responder chain entirely and fires directly on the focused view.
+  // On Android TV Fabric the select-button action is exposed as `onClick`
+  // (not `onPress`) in the TVViewConfig codegen spec. `onPress` is not a
+  // recognised Fabric setter on Android TV views, so it silently does nothing.
+  // On tvOS (iOS) the responder `onPress` prop is fine.
+  if (Platform.isTV) {
+    viewProps.onPressIn = events.onPressIn
+    viewProps.onPressOut = events.onPressOut
+    if (Platform.OS === 'android') {
+      // Android TV Fabric: map press/longPress → onClick/onLongClick so the
+      // remote select button fires them. `onPress` and `onLongPress` are not
+      // recognised Fabric setters in the Android TV TVViewConfig spec.
+      viewProps.onClick = events.onPress
+      viewProps.onLongClick = events.onLongPress
+    } else {
+      viewProps.onPress = events.onPress
+      viewProps.onLongPress = events.onLongPress
+    }
   }
 }

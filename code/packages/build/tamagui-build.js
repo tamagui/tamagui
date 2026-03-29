@@ -1175,6 +1175,7 @@ async function esbuildWriteIfChanged(
                 {
                   esExtensionDefault: platform === 'native' ? '.native.js' : '.mjs',
                   esExtensions: platform === 'native' ? ['.js'] : ['.mjs'],
+                  tryExtensions: platform === 'native' ? ['.native.js', '.js'] : ['.js'],
                 },
               ],
             ].filter(Boolean),
