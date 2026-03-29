@@ -71,5 +71,12 @@
     "react": ">=19",
     "react-native": "*"
   },
-  "module:jsx": "dist/jsx"
+  "module:jsx": "dist/jsx",
+  "typesVersions": {
+    "*": {
+      "v2": [
+        "./types/v2.d.ts"
+      ]
+    }
+  }
 }
