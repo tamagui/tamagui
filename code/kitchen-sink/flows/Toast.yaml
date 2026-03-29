@@ -7,8 +7,69 @@ tags:
     element: 'Toast'
     centerElement: true
 - tapOn: 'Toast'
-# Toast v1 demo has Show button
-- assertVisible: 'Show'
-# Test: tap show, native toast appears
-- tapOn: 'Show'
-# Toast should appear (but may dismiss quickly)
+- waitForAnimationToEnd
+
+# === Test 1: Bottom position — show toast ===
+- tapOn:
+    id: 'toast-show-button'
+- extendedWaitUntil:
+    visible:
+      id: 'toast-item'
+    timeout: 3000
+- assertVisible:
+    id: 'toast-item'
+
+# === Test 2: Swipe DOWN to dismiss bottom toast ===
+- swipe:
+    from:
+      id: 'toast-item'
+    direction: DOWN
+    duration: 200
+- extendedWaitUntil:
+    notVisible:
+      id: 'toast-item'
+    timeout: 5000
+
+# === Test 3: Top position — show toast ===
+- extendedWaitUntil:
+    notVisible:
+      id: 'toast-item'
+    timeout: 5000
+- tapOn:
+    id: 'toast-top-right-button'
+- extendedWaitUntil:
+    visible:
+      id: 'toast-item'
+    timeout: 3000
+- assertVisible:
+    id: 'toast-item'
+
+# === Test 4: Swipe UP to dismiss top toast (wide swipe using screen coordinates) ===
+- swipe:
+    start: 50%, 15%
+    end: 50%, 1%
+    duration: 200
+- extendedWaitUntil:
+    notVisible:
+      id: 'toast-item'
+    timeout: 5000
+
+# === Test 5: Multiple toasts stack ===
+- tapOn:
+    id: 'toast-show-button'
+- tapOn:
+    id: 'toast-show-button'
+- tapOn:
+    id: 'toast-show-button'
+- extendedWaitUntil:
+    visible:
+      id: 'toast-item'
+    timeout: 3000
+- assertVisible:
+    id: 'toast-item'
+
+# === Test 6: Auto-dismiss ===
+- extendedWaitUntil:
+    notVisible:
+      id: 'toast-item'
+    timeout: 15000

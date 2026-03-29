@@ -1,0 +1,25 @@
+appId: com.tamagui.tamaguikitchensink
+---
+# Test that Toast v2 composable API renders toasts correctly on native
+- launchApp
+# tap Toast Multiple Case on the home screen
+- tapOn:
+    text: '🍞 Toast Multiple Case'
+# tap the default toast button and verify toast appears
+- tapOn:
+    id: 'toast-default'
+- assertVisible:
+    id: 'toast-item-0'
+# scroll down to multiple toasts section
+- scrollUntilVisible:
+    element:
+      id: 'toast-multiple'
+    direction: DOWN
+# show 4 toasts at once
+- tapOn:
+    id: 'toast-multiple'
+# wait for staggered toasts to appear
+- extendedWaitUntil:
+    visible:
+      id: 'toast-item-0'
+    timeout: 3000

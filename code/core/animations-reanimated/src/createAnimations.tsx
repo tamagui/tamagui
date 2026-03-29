@@ -486,6 +486,16 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       )
     },
 
+    useAnimatedNumbersStyle(vals, getStyle) {
+      const instances = vals.map((v) => v.getInstance())
+
+      return useAnimatedStyle(() => {
+        'worklet'
+        const currentValues = instances.map((inst) => inst.value)
+        return getStyle(...currentValues)
+      }, [getStyle, ...instances])
+    },
+
     // =========================================================================
     // useAnimations - Main animation hook for components
     // =========================================================================

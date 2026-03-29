@@ -1,0 +1,327 @@
+---
+title: Toast v2
+description: Beautiful, accessible toasts with smooth animations and gesture support.
+name: toast-2
+component: Toast
+package: toast
+demoName: Toast
+---
+
+<HeroContainer showAnimationDriverControl>
+  <ToastDemo />
+</HeroContainer>
+
+```tsx hero template=Toast
+
+```
+
+<Highlights
+  features={[
+    `Composable component API`,
+    `Smooth stacking with hover-to-expand`,
+    `Swipe to dismiss with spring physics`,
+    `Promise toasts for async operations`,
+    `Works with all Tamagui animation drivers`,
+  ]}
+/>
+
+## Installation
+
+```bash
+yarn add @tamagui/toast
+```
+
+Optionally install [Burnt](https://github.com/nandorojo/burnt) for native OS-level toasts on iOS/Android. Without it, toasts render as in-app UI on all platforms.
+
+## Quick Start
+
+```tsx
+import { Toast, toast, useToasts } from '@tamagui/toast/v2'
+
+function App() {
+  return (
+    <Toast position="bottom-right">
+      <Toast.Viewport>
+        <ToastList />
+      </Toast.Viewport>
+
+      <Button onPress={() => toast('Hello!')}>Show Toast</Button>
+    </Toast>
+  )
+}
+
+function ToastList() {
+  const { toasts } = useToasts()
+
+  return (
+    <>
+      {toasts.map((t, index) => (
+        <Toast.Item key={t.id} toast={t} index={index}>
+          <Toast.Title>{t.title}</Toast.Title>
+          <Toast.Description>{t.description}</Toast.Description>
+          <Toast.Close />
+        </Toast.Item>
+      ))}
+    </>
+  )
+}
+```
+
+## Anatomy
+
+```tsx
+<Toast>             {/* Root - context and position */}
+  <Toast.Viewport>  {/* Container with portal */}
+    <Toast.Item>    {/* Individual toast with stacking/drag */}
+      <Toast.Title />
+      <Toast.Description />
+      <Toast.Close />
+      <Toast.Action />
+    </Toast.Item>
+  </Toast.Viewport>
+</Toast>
+```
+
+## API
+
+### toast()
+
+The imperative toast function:
+
+```tsx
+// Basic
+toast('Hello world')
+
+// With types
+toast.success('Saved!')
+toast.error('Failed')
+toast.warning('Careful')
+toast.info('FYI')
+toast.loading('Processing...')
+
+// With options
+toast('Message', {
+  description: 'More details here',
+  duration: 5000,
+})
+
+// Dismiss
+const id = toast('Hello')
+toast.dismiss(id) // dismiss specific
+toast.dismiss()   // dismiss all
+```
+
+### toast.promise()
+
+For async operations:
+
+```tsx
+toast.promise(saveData(), {
+  loading: 'Saving...',
+  success: 'Saved!',
+  error: 'Failed to save',
+})
+```
+
+### Toast (Root)
+
+<PropsTable
+  data={[
+    {
+      name: 'position',
+      type: "'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'",
+      default: "'bottom-right'",
+      description: 'Position of the toast viewport.',
+    },
+    {
+      name: 'duration',
+      type: 'number',
+      default: '4000',
+      description: 'Default toast duration in milliseconds.',
+    },
+    {
+      name: 'gap',
+      type: 'number',
+      default: '14',
+      description: 'Gap between toasts when expanded.',
+    },
+    {
+      name: 'visibleToasts',
+      type: 'number',
+      default: '4',
+      description: 'Maximum number of visible toasts.',
+    },
+    {
+      name: 'swipeDirection',
+      type: "'auto' | 'left' | 'right' | 'up' | 'down'",
+      default: "'auto'",
+      description: "Swipe direction to dismiss. 'auto' detects based on position.",
+    },
+    {
+      name: 'closeButton',
+      type: 'boolean',
+      default: 'false',
+      description: 'Show close button on toasts.',
+    },
+  ]}
+/>
+
+### Toast.Viewport
+
+The portal container for toasts. Extends Stack.
+
+<PropsTable
+  data={[
+    {
+      name: 'offset',
+      type: 'number | { top?: number, right?: number, bottom?: number, left?: number }',
+      default: '24',
+      description: 'Offset from screen edge.',
+    },
+    {
+      name: 'hotkey',
+      type: 'string[]',
+      default: "['altKey', 'KeyT']",
+      description: 'Hotkey to focus viewport.',
+    },
+    {
+      name: 'label',
+      type: 'string',
+      default: "'Notifications'",
+      description: 'Aria label for the viewport.',
+    },
+  ]}
+/>
+
+### Toast.Item
+
+Individual toast wrapper with stacking and drag support. Extends Stack.
+
+<PropsTable
+  data={[
+    {
+      name: 'toast',
+      type: 'ToastT',
+      required: true,
+      description: 'The toast data object.',
+    },
+    {
+      name: 'index',
+      type: 'number',
+      required: true,
+      description: 'Index in the toast list (for stacking).',
+    },
+  ]}
+/>
+
+Supports render prop for custom content:
+
+```tsx
+<Toast.Item toast={t} index={i}>
+  {({ toast, handleClose }) => (
+    <YStack>
+      <Toast.Title>{toast.title}</Toast.Title>
+      <Button onPress={handleClose}>Close</Button>
+    </YStack>
+  )}
+</Toast.Item>
+```
+
+### Toast.Title
+
+Styled text for the toast title. Extends SizableText.
+
+### Toast.Description
+
+Styled text for the toast description. Extends SizableText.
+
+### Toast.Close
+
+Close button. Extends Stack.
+
+### Toast.Action
+
+Action button. Extends Stack.
+
+### useToasts
+
+Hook to access toast state inside `<Toast>`:
+
+```tsx
+const { toasts, expanded, position } = useToasts()
+```
+
+## Features
+
+### Stacking
+
+Multiple toasts stack visually. Hover over the stack to expand and see all toasts.
+
+### Swipe to Dismiss
+
+Toasts can be swiped away. The direction is auto-detected based on position:
+- **Web:** Left/right positioned toasts swipe toward their edge, center toasts swipe horizontally
+- **Native:** All positions swipe vertically (up/down) to avoid conflicting with iOS/Android navigation back gesture
+
+When `react-native-gesture-handler` is set up via `@tamagui/native/setup-gesture-handler`, the toast uses native gesture coordination (`activeOffsetY`, `failOffsetX`) to prevent ScrollView from scrolling while swiping.
+
+### Native Safe Area
+
+On native, toasts portal to root and automatically respect safe area insets (status bar, Dynamic Island, home indicator) when configured:
+
+```tsx
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { TamaguiProvider } from 'tamagui'
+
+function App() {
+  return (
+    <SafeAreaProvider>
+      <AppInner />
+    </SafeAreaProvider>
+  )
+}
+
+function AppInner() {
+  const insets = useSafeAreaInsets()
+  return (
+    <TamaguiProvider config={config} insets={insets}>
+      {/* toasts will automatically avoid status bar and home indicator */}
+    </TamaguiProvider>
+  )
+}
+```
+
+The toast reads insets from `TamaguiProvider` via `useConfiguration().insets` — the same mechanism used by other Tamagui components like Slider.
+
+### Custom Styling
+
+Each part can be styled independently:
+
+```tsx
+<Toast.Item toast={t} index={i} backgroundColor="$blue5" borderRadius="$6">
+  <Toast.Title color="$blue12" fontWeight="bold">
+    {t.title}
+  </Toast.Title>
+  <Toast.Description color="$blue11">
+    {t.description}
+  </Toast.Description>
+</Toast.Item>
+```
+
+## Toaster (All-in-One)
+
+For simpler use cases, use the `Toaster` component which handles rendering internally:
+
+```tsx
+import { toast, Toaster } from '@tamagui/toast/v2'
+
+function App() {
+  return (
+    <>
+      <Toaster position="bottom-right" />
+      <Button onPress={() => toast('Hello!')}>Show Toast</Button>
+    </>
+  )
+}
+```

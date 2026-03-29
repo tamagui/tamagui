@@ -12,7 +12,7 @@ import type { BurntToastOptions } from './types'
 
 // defaults
 const VISIBLE_TOASTS_AMOUNT = 4
-const VIEWPORT_OFFSET = 24
+const VIEWPORT_OFFSET = 16
 const TOAST_GAP = 14
 const TOAST_LIFETIME = 4000
 

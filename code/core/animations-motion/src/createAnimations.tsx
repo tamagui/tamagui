@@ -50,8 +50,9 @@ type MotionAnimatedNumber = MotionValue<number>
 type AnimationConfig = ValueTransition
 
 type MotionAnimatedNumberStyle = {
-  getStyle: (cur: number) => Record<string, unknown>
-  motionValue: MotionValue<number>
+  getStyle: (...args: any[]) => Record<string, unknown>
+  motionValue?: MotionValue<number>
+  motionValues?: MotionValue<number>[]
 }
 
 /**
@@ -549,6 +550,19 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         } satisfies MotionAnimatedNumberStyle
       }, [])
     },
+
+    useAnimatedNumbersStyle(vals, getStyleProp) {
+      const motionValues = vals.map((v) => v.getInstance() as MotionValue<number>)
+      const getStyleRef = useRef<typeof getStyleProp>(getStyleProp)
+      getStyleRef.current = getStyleProp
+
+      return useMemo(() => {
+        return {
+          getStyle: (...currentValues: number[]) => getStyleRef.current(...currentValues),
+          motionValues,
+        } satisfies MotionAnimatedNumberStyle
+      }, [])
+    },
   }
 
   function getMotionAnimatedProps(
@@ -822,9 +836,39 @@ function createMotionView(defaultTag: string) {
     useEffect(() => {
       if (!animatedStyle) return
 
+      // multi-value path: subscribe to all motion values
+      if (animatedStyle.motionValues) {
+        const mvs = animatedStyle.motionValues
+        const unsubs = mvs.map((mv) =>
+          mv.on('change', () => {
+            const currentValues = mvs.map((v) => v.get())
+            const nextStyle = animatedStyle.getStyle(...currentValues)
+            const animationConfig = MotionValueStrategy.get(mv)
+            const node = hostRef.current
+
+            const webStyle = getProps({ style: nextStyle }).style
+
+            if (webStyle && node instanceof HTMLElement) {
+              const motionAnimationConfig =
+                animationConfig?.type === 'timing'
+                  ? { type: 'tween', duration: (animationConfig?.duration || 0) / 1000 }
+                  : animationConfig?.type === 'direct'
+                    ? { type: 'tween', duration: 0 }
+                    : { type: 'spring', ...(animationConfig as any) }
+
+              animate(node, webStyle as any, motionAnimationConfig)
+            }
+          })
+        )
+        return () => unsubs.forEach((fn) => fn())
+      }
+
+      // single-value path
+      if (!animatedStyle.motionValue) return
+
       return animatedStyle.motionValue.on('change', (value) => {
         const nextStyle = animatedStyle.getStyle(value)
-        const animationConfig = MotionValueStrategy.get(animatedStyle.motionValue)
+        const animationConfig = MotionValueStrategy.get(animatedStyle.motionValue!)
         const node = hostRef.current
 
         const webStyle = getProps({ style: nextStyle }).style
