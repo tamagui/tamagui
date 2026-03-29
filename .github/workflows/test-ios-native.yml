@@ -9,7 +9,7 @@ on:
 
 env:
   test_container_app_path: code/kitchen-sink
-  MAESTRO_DRIVER_STARTUP_TIMEOUT: 120000
+  MAESTRO_DRIVER_STARTUP_TIMEOUT: 240000
 
 jobs:
   build:
@@ -73,9 +73,11 @@ jobs:
         if: env.SKIP_MAESTRO_TESTS != 'true'
         working-directory: ${{ github.workspace }}
         run: |
-          # start Metro in background while simulator boots
+          # start Metro in background, capture output for debugging
           cd "${{ env.test_container_app_path }}"
-          EXPO_NO_TELEMETRY=true TAMAGUI_PACKAGE_EXPORTS=${{ matrix.package-exports }} bunx expo start --dev-client --offline --reset-cache &
+          EXPO_NO_TELEMETRY=true TAMAGUI_PACKAGE_EXPORTS=${{ matrix.package-exports }} bunx expo start --dev-client --offline --reset-cache > /tmp/metro.log 2>&1 &
+          METRO_PID=$!
+          echo "$METRO_PID" > /tmp/metro-pid
           cd "${{ github.workspace }}"
 
           # boot simulator
@@ -91,15 +93,30 @@ jobs:
           # install app while waiting for Metro
           xcrun simctl install booted "${{ needs.build.outputs.built-app-path }}"
 
-          # wait for Metro to be ready
+          # wait for Metro to be ready, fail if it never responds
           echo "Waiting for Metro..."
-          for i in {1..60}; do
+          METRO_READY=false
+          for i in {1..90}; do
+            # check Metro process is still alive
+            if ! kill -0 "$METRO_PID" 2>/dev/null; then
+              echo "::error::Metro process died unexpectedly"
+              echo "=== Metro output ==="
+              cat /tmp/metro.log
+              exit 1
+            fi
             if curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios" > /dev/null 2>&1; then
-              echo "Metro is responding!"
+              echo "Metro is responding after ~$((i*2))s"
+              METRO_READY=true
               break
             fi
             sleep 2
           done
+          if [ "$METRO_READY" != "true" ]; then
+            echo "::error::Metro failed to respond within 180s"
+            echo "=== Metro output ==="
+            cat /tmp/metro.log
+            exit 1
+          fi
 
       - name: Pre-warm Bundle
         if: env.SKIP_MAESTRO_TESTS != 'true'
@@ -107,9 +124,18 @@ jobs:
           echo "Pre-warming JS bundle (Metro build + cache)..."
           MANIFEST=$(curl -s "http://127.0.0.1:8081/" -H "Expo-Platform: ios")
           BUNDLE_URL=$(echo "$MANIFEST" | jq -r '.launchAsset.url')
+          if [ -z "$BUNDLE_URL" ] || [ "$BUNDLE_URL" = "null" ]; then
+            echo "::error::Failed to get bundle URL from manifest"
+            echo "Manifest response: $MANIFEST"
+            exit 1
+          fi
           echo "Fetching bundle from: $BUNDLE_URL"
-          curl -s --max-time 900 "$BUNDLE_URL" > /dev/null 2>&1 || echo "Bundle fetch completed (or timed out)"
-          echo "Bundle pre-warm complete"
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 900 "$BUNDLE_URL")
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "::error::Bundle fetch failed with HTTP $HTTP_CODE"
+            exit 1
+          fi
+          echo "Bundle pre-warm complete (HTTP $HTTP_CODE)"
 
       - name: Start Simulator Log Collection
         if: env.SKIP_MAESTRO_TESTS != 'true'
@@ -127,7 +153,23 @@ jobs:
           # WarmUp.yaml does clearState:true for a clean first launch.
           # Subsequent test flows use OpenApp.yaml (no clearState) so Hermes
           # bytecode cache persists across launches = much faster restarts.
-          maestro test ./flows/WarmUp.yaml --no-ansi || true
+          if ! maestro test ./flows/WarmUp.yaml --no-ansi; then
+            echo "::warning::WarmUp failed — checking if app crashes on launch"
+            # give the app a moment to crash if it's going to
+            sleep 3
+            # try to launch and check if process stays alive
+            xcrun simctl launch booted com.tamagui.tamaguikitchensink 2>/dev/null || true
+            sleep 5
+            if ! xcrun simctl spawn booted launchctl list 2>/dev/null | grep -q tamaguikitchensink; then
+              echo "::error::App is not running after launch — likely crashing on startup"
+              echo "=== Recent app logs ==="
+              tail -50 /tmp/simulator-app.log 2>/dev/null || echo "No app logs"
+              echo "=== Metro output ==="
+              tail -50 /tmp/metro.log 2>/dev/null || echo "No metro logs"
+              exit 1
+            fi
+            echo "App appears to be running, proceeding with tests despite WarmUp failure"
+          fi
 
       - name: Run Maestro Tests
         if: env.SKIP_MAESTRO_TESTS != 'true'
@@ -147,7 +189,7 @@ jobs:
           echo "All attempts failed"
           exit 1
 
-      - name: Dump App Logs on Failure
+      - name: Dump Logs on Failure
         if: failure() && env.SKIP_MAESTRO_TESTS != 'true'
         run: |
           # stop log collection
@@ -159,9 +201,8 @@ jobs:
           echo "::group::Simulator Error Logs (last 100 lines)"
           tail -100 /tmp/simulator-errors.log 2>/dev/null || echo "No error logs captured"
           echo "::endgroup::"
-          echo "::group::Metro Bundler Output"
-          # show any metro errors from the background process
-          ps aux | grep -i metro | grep -v grep || echo "Metro process not found"
+          echo "::group::Metro Bundler Output (last 100 lines)"
+          tail -100 /tmp/metro.log 2>/dev/null || echo "No metro logs captured"
           echo "::endgroup::"
           echo "::group::Crash Reports"
           find ~/Library/Logs/DiagnosticReports -name "*tamaguikitchensink*" -newer /tmp/simulator-app.log 2>/dev/null | while read f; do
@@ -184,3 +225,4 @@ jobs:
             ~/.maestro/tests/**/*
             /tmp/simulator-app.log
             /tmp/simulator-errors.log
+            /tmp/metro.log
