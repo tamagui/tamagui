@@ -156,5 +156,5 @@ declare module 'one' {
  */
 type RouteInfo<Params = Record<string, never>> = {
   Params: Params
-  LoaderProps: { path: string; params: Params; request?: Request }
+  LoaderProps: { path: string; search?: string; subdomain?: string; params: Params; request?: Request }
 }
