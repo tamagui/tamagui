@@ -13,7 +13,9 @@
     "test:web": "TAMAGUI_TARGET=web vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.web.test.tsx",
     "test:ios": "TEST_NATIVE_PLATFORM=ios TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.ios.test.tsx",
     "test:native": "TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.native.test.tsx",
-    "test": "bun run test:native && bun run test:web && bun run test:ios",
+    "test:androidtv": "TEST_NATIVE_PLATFORM=androidtv TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.androidtv.test.tsx",
+    "test:tvos": "TEST_NATIVE_PLATFORM=tvos TAMAGUI_TARGET=native vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts *.tvos.test.tsx",
+    "test": "bun run test:native && bun run test:web && bun run test:ios && bun run test:androidtv && bun run test:tvos",
     "test:update": "bun run test:native --update && bun run test:web --update"
   },
   "devDependencies": {
