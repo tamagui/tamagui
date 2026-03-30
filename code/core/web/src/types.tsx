@@ -2469,6 +2469,7 @@ export interface StackStyleBase
 export interface TextStylePropsBase
   extends Omit<RNTextStyle, keyof ExtendedBaseProps>, ExtendedBaseProps {
   ellipsis?: boolean
+  numberOfLines?: number
   textDecorationDistance?: number
   textOverflow?: Properties['textOverflow']
   whiteSpace?: Properties['whiteSpace']
