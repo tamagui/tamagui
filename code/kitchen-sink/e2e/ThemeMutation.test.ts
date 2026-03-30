@@ -13,7 +13,7 @@
  * updateTheme runtime mutations can confuse Metro's module cache on reload).
  */
 
-import { by, device, element, expect, waitFor } from 'detox'
+import { by, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
 import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
@@ -27,10 +27,6 @@ describe('ThemeMutation', () => {
     await navigateToTestCase('ThemeMutation', 'theme-mutation-button', {
       skipEnableSync: true,
     })
-  })
-
-  afterEach(async () => {
-    await device.enableSynchronization()
   })
 
   it('should navigate to ThemeMutation test case', async () => {
