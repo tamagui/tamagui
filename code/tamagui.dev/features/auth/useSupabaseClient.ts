@@ -30,6 +30,7 @@ function createClient(): SupabaseAuthOnlyClient | null {
     storage: window.localStorage,
     flowType: 'pkce',
     detectSessionInUrl: false, // We handle OAuth callback manually in /auth
+    lockAcquireTimeout: 30000, // 30s to avoid lock steal/broken errors from tab throttling
   })
 
   return { auth: authClient }

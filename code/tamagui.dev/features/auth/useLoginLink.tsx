@@ -35,7 +35,7 @@ export const useLoginLink = () => {
 
       const handleMessage = async (event: MessageEvent) => {
         if (event.origin !== window.location.origin) return
-        if (event.data.type === 'SUPABASE_AUTH_SUCCESS') {
+        if (event.data?.type === 'SUPABASE_AUTH_SUCCESS') {
           window.removeEventListener('message', handleMessage)
           await supabaseClient.auth.refreshSession()
           userSwr.refresh()
