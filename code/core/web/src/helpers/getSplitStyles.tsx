@@ -1029,6 +1029,14 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           function mergeMediaStyle(key: string, val: any, originalVal?: any) {
+            // on native, non-style keys from media queries (like numberOfLines)
+            // need to go to viewProps, not style
+            if (process.env.TAMAGUI_TARGET === 'native') {
+              if (!isValidStyleKey(key, validStyles, accept)) {
+                viewProps[key] = val
+                return
+              }
+            }
             styleState.style ||= {}
             const didMerge = mergeMediaByImportance(
               styleState,
