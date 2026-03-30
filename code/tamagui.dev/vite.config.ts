@@ -142,11 +142,11 @@ export default {
       //   find: 'react-native-web',
       //   replacement: resolve('@tamagui/react-native-web-lite'),
       // },
-      // bugfix docsearch/react, weird
-      {
-        find: '@docsearch/react',
-        replacement: resolve('@docsearch/react'),
-      },
+      // v3 bugfix no longer needed with @docsearch/react v4
+      // {
+      //   find: '@docsearch/react',
+      //   replacement: resolve('@docsearch/react'),
+      // },
       {
         find: 'react-native/Libraries/Core/ReactNativeVersion',
         replacement: resolve('@tamagui/proxy-worm'),
