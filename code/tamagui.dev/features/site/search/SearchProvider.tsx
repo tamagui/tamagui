@@ -6,7 +6,6 @@ import DocSearchModal from './DocSearch'
 
 import { SearchContext } from './SearchContext'
 
-
 // const ACTION_KEY_DEFAULT = ['Ctrl ', 'Control']
 // const ACTION_KEY_APPLE = ['⌘', 'Command']
 const API_KEY = '10e7bbeb85d3909346e1519bfcdf82dc'
