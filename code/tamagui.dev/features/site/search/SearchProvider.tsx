@@ -60,6 +60,7 @@ export const SearchProvider = memo(({ children }: any) => {
             initialQuery={initialQuery || ''}
             initialScrollY={window.scrollY}
             onClose={onClose}
+            onAskAiToggle={() => {}}
             appId={APP_ID}
             apiKey={API_KEY}
             indexName={INDEX}
