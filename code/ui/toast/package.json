@@ -5,7 +5,8 @@
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "v2"
   ],
   "type": "module",
   "sideEffects": [
