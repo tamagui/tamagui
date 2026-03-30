@@ -170,6 +170,13 @@ export function createTabs<
             disabled={disabled ?? groupItemProps.disabled}
             {...triggerProps}
             ref={composeRefs(forwardedRef, triggerRef)}
+            {...(!isWeb && {
+              onLayout: (e: { nativeEvent: { layout: TabLayout } }) => {
+                const { x, y, width, height } = e.nativeEvent.layout
+                setLayout({ x, y, width, height })
+                ;(triggerProps as any).onLayout?.(e)
+              },
+            })}
             onPress={composeEventHandlers(props.onPress ?? undefined, (event) => {
               // only call handler if it's the left button (mousedown gets triggered by all mouse buttons)
               // but not when the control key is pressed (avoiding MacOS right click)
