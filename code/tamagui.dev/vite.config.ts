@@ -249,6 +249,16 @@ export const LocationNotification = BentoComponentStub
     }),
 
     one({
+      server: {
+        cacheControl: {
+          'fonts/**': 'public, max-age=604800, stale-while-revalidate=86400',
+          '*.svg': 'public, max-age=86400',
+          '*.png': 'public, max-age=86400',
+          '*.jpg': 'public, max-age=86400',
+          '*.woff2': 'public, max-age=604800',
+        },
+      },
+
       react: {
         compiler: process.env.NODE_ENV === 'production',
       },
