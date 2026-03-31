@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs'
 import { execSync } from 'node:child_process'
 import { createRequire } from 'node:module'
 import { resolve as pathResolve } from 'node:path'
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin, tamaguiAliases } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 import type { UserConfig } from 'vite'
@@ -91,7 +91,6 @@ const include = [
   'unified',
   '@tamagui/get-font-sized',
   '@tamagui/linear-gradient',
-  '@tamagui/lucide-icons-2',
   '@rehookify/datepicker',
   '@tamagui/get-token',
   '@tamagui/roving-focus',
@@ -183,6 +182,13 @@ export default {
         find: '@tamagui/bento',
         replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
       },
+
+      ...(process.env.RNW_LITE
+        ? tamaguiAliases({
+            rnwLite: true,
+            svg: true,
+          })
+        : []),
     ],
 
     dedupe: [
