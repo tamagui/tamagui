@@ -349,7 +349,106 @@ export const LocationNotification = BentoComponentStub
       },
     }),
 
-    // removeReactNativeWebAnimatedPlugin(),
+    // rolldown __esm init ordering fix: when a chunk does top-level
+    // styled(X) but X comes from a lazy-init chunk, X is undefined
+    // because the init hasn't run yet. this plugin reads all output
+    // chunks and patches consumers to call the init first.
+    {
+      name: 'fix-esm-init-order',
+      generateBundle(_options: any, bundle: any) {
+        // pass 1: find chunks that have __esm lazy inits and map their exports
+        const lazyChunks = new Map<string, Set<string>>()
+        for (const [fileName, chunk] of Object.entries(bundle)) {
+          if ((chunk as any).type !== 'chunk') continue
+          const code = (chunk as any).code as string
+          // detect __esm pattern: var ...,X=INIT_FN(()=>{...})
+          if (/=\w\(\(\)=>\{/.test(code)) {
+            // this chunk has lazy inits — all its exports may need init
+            lazyChunks.set(`./${fileName}`, new Set())
+          }
+        }
+
+        if (!lazyChunks.size) return
+
+        // pass 2: for each non-lazy chunk, check if it imports from lazy chunks
+        // and uses those imports in top-level styled() calls
+        for (const [fileName, chunk] of Object.entries(bundle)) {
+          if ((chunk as any).type !== 'chunk') continue
+          let code = (chunk as any).code as string
+
+          // skip chunks that already have their own lazy init
+          if (/=\w\(\(\)=>\{/.test(code)) continue
+
+          // check if this chunk has top-level styled() usage (name:` pattern)
+          if (!code.includes('name:`')) continue
+
+          // find imports from lazy chunks
+          const importRe = /import\{([^}]+)\}from"(\.\/[^"]+\.js)"/g
+          let match
+          let patched = false
+
+          while ((match = importRe.exec(code))) {
+            const [full, bindings, path] = match
+            if (!lazyChunks.has(path)) continue
+
+            // get the source chunk to find its init exports
+            const srcFileName = path.slice(2) // remove ./
+            const srcChunk = bundle[srcFileName]
+            if (!srcChunk || srcChunk.type !== 'chunk') continue
+            const srcCode = srcChunk.code as string
+
+            // find the init function export names
+            // pattern: export{... f as n, ...} where f=INIT(()=>{...})
+            const exportMatch = srcCode.match(/export\{([^}]+)\}/)
+            if (!exportMatch) continue
+
+            // find which var names are init functions (assigned via =INIT(()=>{
+            const initVars = new Set<string>()
+            const initRe = /(\w)=\w\(\(\)=>\{/g
+            let im
+            while ((im = initRe.exec(srcCode))) {
+              initVars.add(im[1])
+            }
+
+            // map export aliases: "localVar as exportedName"
+            const inits: string[] = []
+            for (const part of exportMatch[1].split(',')) {
+              const [local, exported] = part.trim().split(' as ')
+              if (initVars.has(local.trim())) {
+                inits.push(exported?.trim() || local.trim())
+              }
+            }
+
+            if (!inits.length) continue
+
+            // check which inits we already import
+            const currentBindings = bindings.split(',').map((b) => {
+              const parts = b.trim().split(' as ')
+              return parts[0].trim()
+            })
+
+            const missingInits = inits.filter((i) => !currentBindings.includes(i))
+            if (!missingInits.length) continue
+
+            // add the init imports and call them
+            const initAliases = missingInits.map((i, idx) => `${i} as _i${idx}`)
+            const initCalls = missingInits.map((_, idx) => `_i${idx}()`).join(';')
+
+            const newImport = full.replace(
+              `{${bindings}}`,
+              `{${bindings},${initAliases.join(',')}}`
+            )
+
+            code = code.replace(full, `${newImport};${initCalls};`)
+            patched = true
+          }
+
+          if (patched) {
+            ;(chunk as any).code = code
+          }
+        }
+      },
+    } as any,
 
     ...(process.env.ANALYZE
       ? [
