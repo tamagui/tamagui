@@ -1490,9 +1490,16 @@ export function createComponent<
     }
 
     // wrap with GestureDetector for RNGH press handling (native only, no-op on web)
-    // Skip for HOC components - they pass press events to inner component instead
+    // Skip for HOC and composite components - they pass press events to inner component instead
     if (process.env.TAMAGUI_TARGET === 'native') {
-      content = wrapWithGestureDetector(content, pressGesture, stateRef, isHOC)
+      const isCompositeComponent = !isHOC && Component && typeof Component !== 'string'
+      content = wrapWithGestureDetector(
+        content,
+        pressGesture,
+        stateRef,
+        isHOC,
+        isCompositeComponent
+      )
     }
 
     // needs to reset the presence state for nested children

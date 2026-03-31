@@ -26,7 +26,8 @@ export function wrapWithGestureDetector(
   content: any,
   _gesture: any,
   _stateRef: { current: any },
-  _isHOC?: boolean
+  _isHOC?: boolean,
+  _isCompositeComponent?: boolean
 ) {
   return content
 }

@@ -8,5 +8,5 @@ export declare function useEvents(events: any, viewProps: any, stateRef: {
 }, staticConfig: StaticConfig, isHOC?: boolean, isInsideNativeMenu?: boolean): any;
 export declare function wrapWithGestureDetector(content: any, gesture: any, stateRef: {
     current: TamaguiComponentStateRef;
-}, isHOC?: boolean): any;
+}, isHOC?: boolean, isCompositeComponent?: boolean): any;
 //# sourceMappingURL=eventHandling.native.d.ts.map
