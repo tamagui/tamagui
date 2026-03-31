@@ -359,7 +359,7 @@ export const getSplitStyles: StyleSplitter = (
           const identifier = `t_group_${valInit}`
           const containerType = webContainerType || 'inline-size'
           const containerCSS = [
-            'continer',
+            'container',
             undefined,
             identifier,
             undefined,
