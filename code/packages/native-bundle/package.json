@@ -21,7 +21,7 @@
     "watch": "node build.mjs --watch"
   },
   "dependencies": {
-    "vite": "^8.0.0"
+    "vite": "^8.0.3"
   },
   "devDependencies": {
     "esbuild": "^0.27.2"
