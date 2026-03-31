@@ -140,6 +140,11 @@ export function createTabs<
           active={isSelected}
         >
           <TabFrame
+            {...(!isWeb && {
+              onLayout: (event) => {
+                setLayout(event.nativeEvent.layout)
+              },
+            })}
             onMouseEnter={composeEventHandlers(props.onMouseEnter, () => {
               if (layout) {
                 onInteraction?.('hover', layout)

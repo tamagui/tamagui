@@ -310,7 +310,7 @@ const HeaderMenuButton = () => {
         <Button
           size="$5"
           circular
-          my={2}
+          my={-1}
           bg="transparent"
           borderWidth={0}
           onPress={(e) => {
