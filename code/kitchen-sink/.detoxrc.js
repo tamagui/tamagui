@@ -12,7 +12,7 @@ module.exports = {
     },
     jest: {
       setupTimeout: 180000, // 3 minutes for CI environments
-      retries: 2, // Retry flaky tests up to 2 times
+      retries: 1, // Retry flaky tests once
     },
   },
   artifacts: {
