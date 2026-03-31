@@ -14,12 +14,15 @@ import { by, device, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
 import { safeLaunchApp, safeReloadApp, withSync } from './utils/detox'
 
-/** close any open select sheet */
+/** close any open select sheet by tapping an option */
 async function closeSelect() {
   if (device.getPlatform() === 'android') {
     await device.pressBack()
   } else {
-    await withSync(() => device.tap({ x: 200, y: 100 }))
+    // tap an option to dismiss the sheet instead of device.tap({ x, y })
+    // device.tap() uses XCUITest runner (spawns xcodebuild) which leaves
+    // orphaned DTServiceHub processes that crash subsequent xcodebuild calls
+    await withSync(() => element(by.id('select-remount-test-option-apple')).tap())
   }
   // wait for sheet close animation to finish (trigger becomes visible again)
   await waitFor(element(by.id('remount-button')))
