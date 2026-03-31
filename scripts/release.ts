@@ -126,6 +126,11 @@ const nextVersion = (() => {
     return null
   }
 
+  // promoting an RC to stable: just use the base version (e.g. 2.0.0-rc.34 -> 2.0.0)
+  if (isCurrentRC && currentRCBase) {
+    return currentRCBase
+  }
+
   let plusVersion = skipVersion ? 0 : 1
   const patchAndCanary = curVersion.split('.')[2]
   const [patch, lastCanary] = patchAndCanary.split('-')
@@ -133,10 +138,11 @@ const nextVersion = (() => {
   if (lastCanary && canary) {
     plusVersion = 0
   }
+  const curMajor = +curVersion.split('.')[0] || 1
   const patchVersion = shouldPatch ? +patch + plusVersion : 0
   const curMinor = +curVersion.split('.')[1] || 0
   const minorVersion = curMinor + (shouldPatch ? 0 : plusVersion)
-  const next = `1.${minorVersion}.${patchVersion}`
+  const next = `${curMajor}.${minorVersion}.${patchVersion}`
 
   return next
 })()
