@@ -133,12 +133,13 @@
     "ultra-runner": "^3.10.5"
   },
   "overrides": {
-    "@react-navigation/core": "7.9.2",
-    "@react-navigation/elements": "2.8.1",
-    "@react-navigation/native": "7.1.9",
-    "@react-navigation/native-stack": "7.6.2",
-    "@react-navigation/routers": "7.4.0",
+    "@react-navigation/core": "7.17.2",
+    "@react-navigation/elements": "2.9.14",
+    "@react-navigation/native": "7.2.2",
+    "@react-navigation/native-stack": "7.14.10",
+    "@react-navigation/routers": "7.5.3",
     "@swc/core": "1.14.0",
+    "rolldown": "1.0.0-rc.12",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.83.2",

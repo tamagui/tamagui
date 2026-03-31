@@ -45,10 +45,10 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "vite": "^8.0.0"
+    "vite": "^8.0.3"
   },
   "peerDependencies": {
-    "vite": "*"
+    "vite": "*8.0.3"
   },
   "tamagui": {
     "build": {
