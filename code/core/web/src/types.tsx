@@ -1431,15 +1431,10 @@ export type WithMediaProps<A> = {
       : A
 }
 
-type AddWebOnlyStyleProps<A> = {
-  [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties
-    ? CSSProperties[SubKey]
-    : SubKey extends keyof A
-      ? A[SubKey]
-      : SubKey extends keyof WebOnlyValidStyleValues
-        ? WebOnlyValidStyleValues[SubKey]
-        : never
-}
+export type AddWebOnlyStyleProps<A> = Partial<CSSProperties> &
+  Partial<WebOnlyValidStyleValues> & {
+    [K in Exclude<keyof A, keyof CSSProperties>]?: A[K]
+  }
 
 export type WebOnlyValidStyleValues = {
   position: '-webkit-sticky'
