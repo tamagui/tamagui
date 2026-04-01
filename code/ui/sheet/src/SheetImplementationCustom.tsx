@@ -327,7 +327,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           clearTimeout(opacityFallbackTimer.current)
           opacityFallbackTimer.current = null
         }
-        if (!isOpenAnimation && !open) {
+        // use openRef (live) not open (stale closure) — if the sheet
+        // was reopened before this callback fires (e.g. cancelled close
+        // animation), we must not hide it
+        if (!isOpenAnimation && !openRef.current) {
           setOpacity(0)
         }
         onAnimationComplete?.({ open: isOpenAnimation })
@@ -673,14 +676,19 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       setMaxContentSize(next)
     }, [])
 
-    const animatedStyle = useAnimatedNumberStyle(animatedNumber, (val) => {
-      'worklet'
-      const translateY = frameSize === 0 ? hiddenSize : val
+    const getAnimatedNumberStyle = React.useCallback(
+      (val: number) => {
+        'worklet'
+        const translateY = frameSize === 0 ? hiddenSize : val
 
-      return {
-        transform: [{ translateY }],
-      }
-    })
+        return {
+          transform: [{ translateY }],
+        }
+      },
+      [frameSize]
+    )
+
+    const animatedStyle = useAnimatedNumberStyle(animatedNumber, getAnimatedNumberStyle)
 
     // we need to set this *after* fully closed to 0, to avoid it overlapping
     // the page when resizing quickly on web for example
