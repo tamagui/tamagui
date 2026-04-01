@@ -4,8 +4,3 @@ exports[`transforming actual files > multiple extensions exists 1`] = `
 "// Expected to be transformed to use the \`.mjs\` extension, which is same as this file.
 import { foo, bar } from "./modules/module.mjs";"
 `;
-
-exports[`transforming actual files multiple extensions exists 1`] = `
-"// Expected to be transformed to use the \`.mjs\` extension, which is same as this file.
-import { foo, bar } from "./modules/module.mjs";"
-`;
