@@ -22,9 +22,7 @@ test('numberOfLines=2 in $platform-web applies line clamping', async ({ page }) 
 })
 
 test('numberOfLines in $platform-web matches top-level behavior', async ({ page }) => {
-  const platformStyles = await getStyles(
-    page.getByTestId('platform-web-nol').first()
-  )
+  const platformStyles = await getStyles(page.getByTestId('platform-web-nol').first())
   const topLevelStyles = await getStyles(page.getByTestId('top-level-nol').first())
 
   // both should have overflow hidden

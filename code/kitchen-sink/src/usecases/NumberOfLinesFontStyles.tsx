@@ -18,16 +18,19 @@ export function NumberOfLinesFontStyles() {
 
       {/* Test 3: SizableText with size="$4" and numberOfLines={2} */}
       <SizableText testID="sized-two-lines" size="$4" numberOfLines={2} width={200}>
-        Text with numberOfLines=2 that is long enough to wrap and test multi-line
-        clamping behavior while maintaining font styling consistency
+        Text with numberOfLines=2 that is long enough to wrap and test multi-line clamping
+        behavior while maintaining font styling consistency
       </SizableText>
 
       {/* Test 4: Paragraph with no numberOfLines */}
-      <Paragraph testID="para-no-lines">Reference paragraph without numberOfLines</Paragraph>
+      <Paragraph testID="para-no-lines">
+        Reference paragraph without numberOfLines
+      </Paragraph>
 
       {/* Test 5: Paragraph with numberOfLines={1} */}
       <Paragraph testID="para-one-line" numberOfLines={1} width={200}>
-        Paragraph with numberOfLines=1 should have same font styling as reference paragraph
+        Paragraph with numberOfLines=1 should have same font styling as reference
+        paragraph
       </Paragraph>
 
       {/* Test 6: Paragraph with numberOfLines={2} */}
