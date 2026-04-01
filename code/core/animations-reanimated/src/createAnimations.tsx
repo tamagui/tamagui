@@ -19,6 +19,7 @@ import type { SharedValue } from 'react-native-reanimated'
 import Animated_, {
   cancelAnimation,
   runOnJS,
+  runOnUI,
   useAnimatedReaction,
   useAnimatedStyle,
   useDerivedValue,
@@ -420,34 +421,39 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           },
 
           setValue(next, config = { type: 'spring' }, onFinish) {
-            'worklet'
-            const handleFinish = onFinish
-              ? () => {
-                  'worklet'
-                  runOnJS(onFinish)()
-                }
-              : undefined
-
             if (config.type === 'direct') {
               sharedValue.value = next
               onFinish?.()
-            } else if (config.type === 'spring') {
-              sharedValue.value = withSpring(
-                next,
-                config as WithSpringConfig,
-                handleFinish
-              )
             } else {
-              sharedValue.value = withTiming(
-                next,
-                config as WithTimingConfig,
-                handleFinish
-              )
+              // animations must start on the UI thread in Reanimated 4.x —
+              // withSpring/withTiming return animation descriptors that only
+              // work when assigned to a SharedValue inside the UI runtime
+              const cb = onFinish
+                ? () => {
+                    'worklet'
+                    runOnJS(onFinish)()
+                  }
+                : undefined
+
+              if (isWeb) {
+                // on web there's no UI thread — set directly
+                sharedValue.value =
+                  config.type === 'spring'
+                    ? withSpring(next, config as WithSpringConfig, cb)
+                    : withTiming(next, config as WithTimingConfig, cb)
+              } else {
+                runOnUI(() => {
+                  'worklet'
+                  sharedValue.value =
+                    config.type === 'spring'
+                      ? withSpring(next, config as WithSpringConfig, cb)
+                      : withTiming(next, config as WithTimingConfig, cb)
+                })()
+              }
             }
           },
 
           stop() {
-            'worklet'
             cancelAnimation(sharedValue)
           },
         }),
@@ -478,22 +484,50 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     useAnimatedNumberStyle(val, getStyle) {
       const instance = val.getInstance()
 
-      const derivedValue = useDerivedValue(() => instance.value, [instance, getStyle])
+      if (isWeb) {
+        // web: must pass explicit deps (no babel plugin)
+        return useAnimatedStyle(() => {
+          'worklet'
+          return getStyle(instance.value)
+        }, [instance, getStyle])
+      }
 
-      return useAnimatedStyle(
-        () => getStyle(derivedValue.value),
-        [val, getStyle, derivedValue, instance]
+      // native: use useAnimatedReaction to watch instance changes and
+      // write computed style to a dedicated SharedValue. useAnimatedStyle
+      // then reads only that SharedValue — pure closure, no non-SV items
+      // to confuse startMapper's dependency tracking.
+      const styleVal = useSharedValue(getStyle(instance.value))
+
+      useAnimatedReaction(
+        () => {
+          'worklet'
+          return instance.value
+        },
+        (current, previous) => {
+          'worklet'
+          if (current !== previous) {
+            styleVal.value = getStyle(current)
+          }
+        }
       )
+
+      return useAnimatedStyle(() => {
+        'worklet'
+        return styleVal.value
+      })
     },
 
     useAnimatedNumbersStyle(vals, getStyle) {
       const instances = vals.map((v) => v.getInstance())
 
-      return useAnimatedStyle(() => {
-        'worklet'
-        const currentValues = instances.map((inst) => inst.value)
-        return getStyle(...currentValues)
-      }, [getStyle, ...instances])
+      return useAnimatedStyle(
+        () => {
+          'worklet'
+          const currentValues = instances.map((inst) => inst.value)
+          return getStyle(...currentValues)
+        },
+        isWeb ? [getStyle, ...instances] : undefined
+      )
     },
 
     // =========================================================================
@@ -805,120 +839,126 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       }, [justStartedExiting, sendExitComplete])
 
       // Create animated style
-      const animatedStyle = useAnimatedStyle(() => {
-        'worklet'
+      const animatedStyle = useAnimatedStyle(
+        () => {
+          'worklet'
 
-        if (disableAnimation || isHydrating) {
-          return {}
-        }
-
-        const result: Record<string, any> = {}
-        const config = configRef.get()
-
-        // Check if we have avoidRerenders updates from useStyleEmitter
-        const emitterAnimated = animatedTargetsRef.value
-        const emitterStatic = staticTargetsRef.value
-        const emitterTransforms = transformTargetsRef.value
-        const hasEmitterUpdates = emitterAnimated !== null
-
-        // Use emitter values if available, otherwise use React state values
-        const animatedValues = hasEmitterUpdates ? emitterAnimated! : animatedStyles
-        const staticValues = hasEmitterUpdates ? emitterStatic! : {}
-
-        // read exit state from shared values
-        const currentlyExiting = isExitingRef.value
-        const currentCycleId = exitCycleIdShared.value
-
-        // Include static values from emitter (for hover/press style changes)
-        for (const key in staticValues) {
-          result[key] = staticValues[key]
-        }
-
-        // Animate regular properties
-        for (const key in animatedValues) {
-          if (key === 'transform') continue
-
-          const targetValue = animatedValues[key]
-          const propConfig = config.propertyConfigs[key] ?? config.baseConfig
-
-          // create callback for exit tracking
-          let callback: AnimationCallback | undefined
-          if (currentlyExiting) {
-            const capturedKey = key
-            const capturedCycleId = currentCycleId
-            callback = (finished) => {
-              'worklet'
-              runOnJS(markExitKeyDone)(capturedKey, capturedCycleId, finished ?? false)
-            }
+          if (disableAnimation || isHydrating) {
+            return {}
           }
 
-          result[key] = applyAnimation(targetValue as number, propConfig, callback)
-        }
+          const result: Record<string, any> = {}
+          const config = configRef.get()
 
-        // Handle transforms
-        const transforms = hasEmitterUpdates
-          ? emitterTransforms
-          : animatedStyles.transform
+          // Check if we have avoidRerenders updates from useStyleEmitter
+          const emitterAnimated = animatedTargetsRef.value
+          const emitterStatic = staticTargetsRef.value
+          const emitterTransforms = transformTargetsRef.value
+          const hasEmitterUpdates = emitterAnimated !== null
 
-        // Animate transform properties with validation
-        if (transforms && Array.isArray(transforms)) {
-          const validTransforms: Record<string, unknown>[] = []
+          // Use emitter values if available, otherwise use React state values
+          const animatedValues = hasEmitterUpdates ? emitterAnimated! : animatedStyles
+          const staticValues = hasEmitterUpdates ? emitterStatic! : {}
 
-          for (const t of transforms) {
-            if (!t) continue
-            const keys = Object.keys(t)
-            if (keys.length === 0) continue
-            const value = t[keys[0]]
-            if (typeof value === 'number' || typeof value === 'string') {
-              const transformKey = Object.keys(t)[0]
-              const targetValue = t[transformKey]
-              const propConfig = config.propertyConfigs[transformKey] ?? config.baseConfig
+          // read exit state from shared values
+          const currentlyExiting = isExitingRef.value
+          const currentCycleId = exitCycleIdShared.value
 
-              // create callback for exit tracking (transform sub-key)
-              let callback: AnimationCallback | undefined
-              if (currentlyExiting) {
-                const capturedKey = `transform:${transformKey}`
-                const capturedCycleId = currentCycleId
-                callback = (finished) => {
-                  'worklet'
-                  runOnJS(markExitKeyDone)(
-                    capturedKey,
-                    capturedCycleId,
-                    finished ?? false
-                  )
-                }
+          // Include static values from emitter (for hover/press style changes)
+          for (const key in staticValues) {
+            result[key] = staticValues[key]
+          }
+
+          // Animate regular properties
+          for (const key in animatedValues) {
+            if (key === 'transform') continue
+
+            const targetValue = animatedValues[key]
+            const propConfig = config.propertyConfigs[key] ?? config.baseConfig
+
+            // create callback for exit tracking
+            let callback: AnimationCallback | undefined
+            if (currentlyExiting) {
+              const capturedKey = key
+              const capturedCycleId = currentCycleId
+              callback = (finished) => {
+                'worklet'
+                runOnJS(markExitKeyDone)(capturedKey, capturedCycleId, finished ?? false)
               }
+            }
 
-              validTransforms.push({
-                [transformKey]: applyAnimation(
-                  targetValue as number,
-                  propConfig,
-                  callback
-                ),
-              })
+            result[key] = applyAnimation(targetValue as number, propConfig, callback)
+          }
+
+          // Handle transforms
+          const transforms = hasEmitterUpdates
+            ? emitterTransforms
+            : animatedStyles.transform
+
+          // Animate transform properties with validation
+          if (transforms && Array.isArray(transforms)) {
+            const validTransforms: Record<string, unknown>[] = []
+
+            for (const t of transforms) {
+              if (!t) continue
+              const keys = Object.keys(t)
+              if (keys.length === 0) continue
+              const value = t[keys[0]]
+              if (typeof value === 'number' || typeof value === 'string') {
+                const transformKey = Object.keys(t)[0]
+                const targetValue = t[transformKey]
+                const propConfig =
+                  config.propertyConfigs[transformKey] ?? config.baseConfig
+
+                // create callback for exit tracking (transform sub-key)
+                let callback: AnimationCallback | undefined
+                if (currentlyExiting) {
+                  const capturedKey = `transform:${transformKey}`
+                  const capturedCycleId = currentCycleId
+                  callback = (finished) => {
+                    'worklet'
+                    runOnJS(markExitKeyDone)(
+                      capturedKey,
+                      capturedCycleId,
+                      finished ?? false
+                    )
+                  }
+                }
+
+                validTransforms.push({
+                  [transformKey]: applyAnimation(
+                    targetValue as number,
+                    propConfig,
+                    callback
+                  ),
+                })
+              }
+            }
+
+            if (validTransforms.length > 0) {
+              result.transform = validTransforms
             }
           }
 
-          if (validTransforms.length > 0) {
-            result.transform = validTransforms
-          }
-        }
-
-        return result
-      }, [
-        animatedStyles,
-        baseConfig,
-        propertyConfigs,
-        disableAnimation,
-        isHydrating,
-        // Pass SharedValues so the mapper watches them on web (see useAnimatedStyle.ts line 470-472)
-        animatedTargetsRef,
-        staticTargetsRef,
-        transformTargetsRef,
-        isExitingRef,
-        exitCycleIdShared,
-        markExitKeyDone,
-      ])
+          return result
+        },
+        isWeb
+          ? [
+              animatedStyles,
+              baseConfig,
+              propertyConfigs,
+              disableAnimation,
+              isHydrating,
+              // pass SharedValues so the mapper watches them on web (no babel plugin)
+              animatedTargetsRef,
+              staticTargetsRef,
+              transformTargetsRef,
+              isExitingRef,
+              exitCycleIdShared,
+              markExitKeyDone,
+            ]
+          : undefined
+      )
 
       // Debug logging
       if (
