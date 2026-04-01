@@ -9,7 +9,7 @@ export function NumberOfLinesMediaQuery() {
         testID="platform-web-nol"
         size="$4"
         width={200}
-        $platform-web={{ numberOfLines: 1 } as any}
+        $platform-web={{ numberOfLines: 1 }}
       >
         This text should be truncated to one line on web via platform prop. It needs to be
         long enough to actually trigger truncation behavior.
@@ -20,7 +20,7 @@ export function NumberOfLinesMediaQuery() {
         testID="platform-web-nol-2"
         size="$4"
         width={200}
-        $platform-web={{ numberOfLines: 2 } as any}
+        $platform-web={{ numberOfLines: 2 }}
       >
         This text should be clamped to two lines on web via platform prop. It needs to be
         long enough to actually trigger multi-line truncation behavior and overflow.
@@ -33,7 +33,7 @@ export function NumberOfLinesMediaQuery() {
       </SizableText>
 
       {/* Test 4: numberOfLines in a media query (xs = small viewport) */}
-      <Text testID="media-nol" width={200} $xs={{ numberOfLines: 1 } as any}>
+      <Text testID="media-nol" width={200} $xs={{ numberOfLines: 1 }}>
         This text should be truncated to one line at xs breakpoint. It needs to be long
         enough to actually trigger truncation behavior.
       </Text>
