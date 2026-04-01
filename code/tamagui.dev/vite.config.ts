@@ -126,6 +126,7 @@ export default {
 
   resolve: {
     preserveSymlinks: false,
+
     alias: [
       // Regex-based alias for bento components when not available
       ...(!hasBento
@@ -139,20 +140,13 @@ export default {
             },
           ]
         : []),
+
       // Standard string-based aliases
       {
         find: 'react-native-svg',
         replacement: '@tamagui/react-native-svg',
       },
-      // {
-      //   find: 'react-native-web',
-      //   replacement: resolve('@tamagui/react-native-web-lite'),
-      // },
-      // v3 bugfix no longer needed with @docsearch/react v4
-      // {
-      //   find: '@docsearch/react',
-      //   replacement: resolve('@docsearch/react'),
-      // },
+
       {
         find: 'react-native/Libraries/Core/ReactNativeVersion',
         replacement: resolve('@tamagui/proxy-worm'),
