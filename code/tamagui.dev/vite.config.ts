@@ -115,6 +115,13 @@ export default {
 
   build: {
     cssCodeSplit: false,
+    rolldownOptions: {
+      output: {
+        // fix non-deterministic __esm init ordering bug
+        // https://github.com/rolldown/rolldown/issues/3143
+        strictExecutionOrder: true,
+      },
+    },
   },
 
   resolve: {
