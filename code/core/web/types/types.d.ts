@@ -877,7 +877,11 @@ export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${Pa
 export type WithMediaProps<A> = {
     [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends MediaPropKeys ? A & {
         [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>;
-    } : Key extends `$platform-web` ? AddWebOnlyStyleProps<A> : A;
+    } : Key extends `$platform-web` ? AddWebOnlyStyleProps<A> & {
+        [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A>;
+    } : A & {
+        [Key in MediaPropKeys]?: A;
+    };
 };
 export type AddWebOnlyStyleProps<A> = Partial<CSSProperties> & Partial<WebOnlyValidStyleValues> & {
     [K in Exclude<keyof A, keyof CSSProperties>]?: A[K];
@@ -1060,7 +1064,7 @@ export type PseudoStyles = {
     enterStyle?: ViewStyle;
     exitStyle?: ViewStyle;
 };
-export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
+export type AllPlatforms = 'web' | 'native' | 'android' | 'ios' | 'tv' | 'androidtv' | 'tvos';
 type MaybeOmitLonghands<A> = OnlyShorthandStyleProps extends true ? Omit<A, ShorthandLonghandProps> : A;
 export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<MaybeOmitLonghands<A>> & Variants & WithShorthands<WithThemeValues<A>>;
 export type WithThemeShorthandsAndPseudos<A extends object, Variants = {}> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>;
