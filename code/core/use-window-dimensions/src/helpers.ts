@@ -34,7 +34,12 @@ export function getWindowSize(): WindowSize {
 const cbs = new Set<WindowSizeListener>()
 
 // only attach resize listener on client (not during SSR)
-if (isClient) {
+// also guard window.addEventListener since isClient=true on native but window.addEventListener is undefined
+if (
+  isClient &&
+  typeof window !== 'undefined' &&
+  typeof window.addEventListener === 'function'
+) {
   let lastUpdate = Date.now()
   let tm: ReturnType<typeof setTimeout> | undefined
   const USER_MAX_MS = process.env.TAMAGUI_USE_WINDOW_DIMENSIONS_MAX_UPDATE_MS

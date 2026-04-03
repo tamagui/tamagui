@@ -14,7 +14,8 @@ import { currentPlatform, isAndroid, isIos, isTV } from '@tamagui/constants'
  * @param mediaKeyShort - Platform media key without the leading '$' (e.g. 'platform-tv', 'platform-androidtv')
  */
 export function getPlatformSpecificityBump(mediaKeyShort: string): number {
-  if (mediaKeyShort === 'platform-androidtv' || mediaKeyShort === 'platform-tvos') return 3
+  if (mediaKeyShort === 'platform-androidtv' || mediaKeyShort === 'platform-tvos')
+    return 3
   if (mediaKeyShort === 'platform-tv') return 2
   if (mediaKeyShort === 'platform-android' || mediaKeyShort === 'platform-ios') return 1
   return 0

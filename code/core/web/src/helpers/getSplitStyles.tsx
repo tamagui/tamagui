@@ -1803,7 +1803,8 @@ function mergeMediaByImportance(
     // the bump. We need to compare against the *bumped* value to correctly
     // allow a more-specific style to win.
     const bumpedImportance = defaultMediaImportance + importanceBump
-    importance = !usedKeys[key] || bumpedImportance > usedKeys[key] ? bumpedImportance : null
+    importance =
+      !usedKeys[key] || bumpedImportance > usedKeys[key] ? bumpedImportance : null
   }
   if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
     log(
