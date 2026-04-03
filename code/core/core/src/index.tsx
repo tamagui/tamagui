@@ -2,6 +2,7 @@
 export * from '@tamagui/web'
 
 import { createMedia } from '@tamagui/react-native-media-driver'
+import { isWeb } from '@tamagui/constants'
 import {
   createMeasure,
   createMeasureInWindow,
@@ -82,7 +83,7 @@ export const TamaguiProvider = (props: TamaguiProviderProps) => {
 
 // automate using the react native media driver
 export const createTamagui: typeof createTamaguiWeb = (conf) => {
-  if (process.env.TAMAGUI_TARGET === 'native') {
+  if (!isWeb) {
     if (conf.media) {
       conf.media = createMedia(conf.media)
     }
