@@ -1427,8 +1427,8 @@ export type WithMediaProps<A> = {
         [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>
       }
     : Key extends `$platform-web`
-      ? AddWebOnlyStyleProps<A> & { [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A> }
-      : A & { [Key in MediaPropKeys]?: A }
+      ? AddWebOnlyStyleProps<A>
+      : A
 }
 
 export type AddWebOnlyStyleProps<A> = Partial<CSSProperties> &
@@ -1931,7 +1931,7 @@ export type PseudoStyles = {
   exitStyle?: ViewStyle
 }
 
-export type AllPlatforms = 'web' | 'native' | 'android' | 'ios' | 'tv' | 'androidtv' | 'tvos'
+export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
 
 // MUST EXPORT ALL IN BETWEEN or else it expands declarations like crazy
 
