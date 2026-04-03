@@ -923,7 +923,7 @@ async function esbuildWriteIfChanged(
       format: isESM ? 'esm' : 'cjs',
 
       treeShaking: true,
-      minifySyntax: true,
+      minifySyntax: false,
       write: false,
 
       color: true,
