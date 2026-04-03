@@ -28,7 +28,10 @@ import { SpringAnimation } from './animations/SpringAnimation'
 import { TimingAnimation } from './animations/TimingAnimation'
 
 import { createAnimatedComponent } from './createAnimatedComponent'
+import { AnimationConfig, EndCallback, EndResult } from './animations/Animation'
 import { AnimatedColor } from './nodes/AnimatedColor'
+
+// CompositeAnimation interface removed
 
 const add = function (a, b) {
   return new AnimatedAddition(a, b)
