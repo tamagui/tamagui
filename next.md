@@ -111,6 +111,15 @@ and cant put another View next to Content and have it show
 - var(--)
 - may want to align flexShrink = 1 by default to align with web default?
 - styleable shouldnt forwardRef, remove it in general
+- Sheet API cleanup: stop pretending all subcomponents render where authored when `Sheet.Overlay` is actually hoisted out of the animated container
+  - target shape:
+    `Sheet`
+    `  Sheet.Handle`
+    `  Sheet.Container`
+    `    Sheet.Background`
+    `  Sheet.Overlay`
+  - rationale: `Sheet` owns the actual animated wrapper; `Handle`/`Frame` currently render inline but `Overlay` is special-cased through context for legacy child ordering
+  - likely major / breaking since current JSX implies a flatter child model
 - remove inlineWhenUnflattened i think
 - basically we need a style() helper because:
   - then we can pre-compile styles like text defaults, view default, text-nested default
