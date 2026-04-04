@@ -923,7 +923,8 @@ async function esbuildWriteIfChanged(
       format: isESM ? 'esm' : 'cjs',
 
       treeShaking: true,
-      minifySyntax: false,
+      // Required for platform-specific DCE after inlining TAMAGUI_TARGET.
+      minifySyntax: true,
       write: false,
 
       color: true,
