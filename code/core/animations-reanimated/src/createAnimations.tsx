@@ -1,9 +1,8 @@
-import { normalizeTransition, getEffectiveAnimation } from '@tamagui/animation-helpers'
+import { getEffectiveAnimation, normalizeTransition } from '@tamagui/animation-helpers'
 import {
   getSplitStyles,
   hooks,
   isWeb,
-  type PseudoTransitions,
   Text,
   useComposedRefs,
   useEvent,
@@ -22,7 +21,6 @@ import Animated_, {
   runOnUI,
   useAnimatedReaction,
   useAnimatedStyle,
-  useDerivedValue,
   useSharedValue,
   withDelay,
   withSpring,
