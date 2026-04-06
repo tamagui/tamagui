@@ -122,7 +122,7 @@ export function createTabs<
         observer.observe(el)
 
         return () => {
-          observer.unobserve(el)
+          observer.disconnect()
         }
       }, [context.triggersCount])
 
