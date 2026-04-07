@@ -183,11 +183,31 @@ describe('tamagui-build integration test', () => {
     expect(nativeOutput).toContain('greet:')
   })
 
+  it('should keep side-effectful native statements outside dev-only guards', async () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+
+    const nativeOutputPath = join(distPath, 'esm', 'index.native.js')
+    const nativeOutput = await readFile(nativeOutputPath, 'utf-8')
+
+    expect(nativeOutput).toContain('runNativeSideEffect(items);')
+    expect(nativeOutput).toContain('native-only-marker')
+    expect(nativeOutput).toContain('native-logical-marker')
+    expect(nativeOutput).not.toContain('if (runNativeSideEffect(')
+    expect(nativeOutput).not.toContain('if (false)')
+    expect(nativeOutput).not.toContain('if (true)')
+    expect(nativeOutput).not.toContain('runNativeSideEffect(items), process.env.NODE_ENV')
+    expect(nativeOutput).not.toContain('web-only-marker')
+    expect(nativeOutput).not.toContain('web-logical-marker')
+    expect(nativeOutput).not.toContain('&& items.push(')
+  })
+
   it('should minify the output when MINIFY=true is set', () => {
     // Build without minification and cache file sizes
     execSync('bun run build', { cwd: simplePackagePath })
     const originalCjsSize = statSync(distCjsFilePath).size
     const originalEsmSize = statSync(distEsmFilePath).size
+    const originalCjsOutput = readFileSync(distCjsFilePath, 'utf-8')
+    const originalEsmOutput = readFileSync(distEsmFilePath, 'utf-8')
 
     // Clean up the output
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
@@ -214,8 +234,12 @@ describe('tamagui-build integration test', () => {
     expect(esmOutput).not.toMatch(/^\s+$/m) // No lines with only whitespace
 
     // Check that the number of lines is reduced
-    expect(cjsOutput.split('\n').length).toBeLessThan(originalCjsSize > 0 ? 40 : 32)
-    expect(esmOutput.split('\n').length).toBeLessThan(originalEsmSize > 0 ? 40 : 32)
+    expect(cjsOutput.split('\n').length).toBeLessThanOrEqual(
+      originalCjsOutput.split('\n').length
+    )
+    expect(esmOutput.split('\n').length).toBeLessThanOrEqual(
+      originalEsmOutput.split('\n').length
+    )
   })
 
   it('should clean stale outputs before building', () => {

@@ -31,6 +31,7 @@ const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
 const { basename, dirname } = require('node:path')
 const { es5Plugin } = require('./esbuild-es5')
+const { transformSync: oxcTransformSync } = require('oxc-transform')
 const ts = require('typescript')
 const path = require('node:path')
 const childProcess = require('node:child_process')
@@ -63,6 +64,31 @@ async function writeIfUnchanged(filePath, contents) {
     await FSE.chmod(filePath, 0o755).catch(() => {})
   }
   return true
+}
+
+function dceTamaguiTarget(contents, { format, jsx, platform }) {
+  if (!contents.includes('process.env.TAMAGUI_TARGET')) {
+    return contents
+  }
+
+  const result = oxcTransformSync(`tamagui-target.${jsx === 'preserve' ? 'jsx' : 'js'}`, contents, {
+    lang: jsx === 'preserve' ? 'jsx' : 'js',
+    jsx: jsx === 'preserve' ? 'preserve' : undefined,
+    sourceType: format === 'cjs' ? 'commonjs' : 'module',
+    define: {
+      'process.env.TAMAGUI_TARGET': JSON.stringify(platform),
+    },
+  })
+
+  if (result.errors?.length) {
+    throw new Error(
+      `Failed to DCE TAMAGUI_TARGET for ${platform}: ${result.errors
+        .map((error) => error.message)
+        .join('\n')}`
+    )
+  }
+
+  return result.code || contents
 }
 
 function hasFlag(flag) {
@@ -923,8 +949,9 @@ async function esbuildWriteIfChanged(
       format: isESM ? 'esm' : 'cjs',
 
       treeShaking: true,
-      // Required for platform-specific DCE after inlining TAMAGUI_TARGET.
-      minifySyntax: true,
+      // We only want TAMAGUI_TARGET dead-code elimination during normal builds.
+      // Syntax minification can legally rewrite statements into comma expressions.
+      minifySyntax: false,
       write: false,
 
       color: true,
@@ -936,9 +963,6 @@ async function esbuildWriteIfChanged(
       ...(platform === 'native' && nativeEsbuildSettings),
       ...(platform === 'web' && webEsbuildSettings),
       define: {
-        ...(platform && {
-          'process.env.TAMAGUI_TARGET': `"${platform}"`,
-        }),
         ...(env && {
           'process.env.NODE_ENV': `"${env}"`,
         }),
@@ -1038,6 +1062,14 @@ async function esbuildWriteIfChanged(
           if (rnWebReplacer) {
             contents = rnWebReplacer(contents)
           }
+        }
+
+        if (!isMap && path.endsWith('.js')) {
+          contents = dceTamaguiTarget(contents, {
+            format: opts.format,
+            jsx: opts.jsx,
+            platform,
+          })
         }
 
         if (isESM && pkg.sideEffects !== true && pkg.sideEffects !== undefined) {
