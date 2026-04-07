@@ -1199,7 +1199,7 @@ const PlanTab = ({
           <Paragraph color="$yellow11">
             Renew now to regain access to Takeout, Bento, and all Pro features. Use code{' '}
             <Paragraph fontFamily="$mono" fontWeight="bold" color="$yellow12">
-              WELCOMEBACK30
+              RENEWAL30
             </Paragraph>{' '}
             for 30% off!
           </Paragraph>
@@ -1208,7 +1208,7 @@ const PlanTab = ({
               size="$3"
               theme="yellow"
               onPress={() => {
-                paymentModal.prefilledCouponCode = 'WELCOMEBACK30'
+                paymentModal.prefilledCouponCode = 'RENEWAL30'
                 paymentModal.show = true
               }}
             >
@@ -1547,136 +1547,50 @@ const SupportTabContent = ({
   )
 }
 
-// card for V1 users to enable automatic V2 renewal
-const V2RenewalCard = ({ subscription }: { subscription: Subscription }) => {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
-  const [error, setError] = useState<string | null>(null)
-
-  // check if already enabled from metadata
-  const metadata = subscription.metadata as Record<string, any> | null
-  const isEnabled = metadata?.v2_renewal_enabled === 'true'
-
-  if (isEnabled) {
-    return (
-      <YStack
-        gap="$3"
-        p="$4"
-        borderWidth={1}
-        borderColor="$green6"
-        bg="$green2"
-        rounded="$4"
-      >
-        <XStack gap="$3" alignItems="center">
-          <Gift y={5} size={24} color="$green10" />
-          <YStack flex={1}>
-            <H4 fontFamily="$mono" color="$green11">
-              New Pro Plan Enabled ✓
-            </H4>
-            <Paragraph color="$green10">
-              When your subscription renews, you'll automatically get the new Pro plan
-              with 35% off.
-            </Paragraph>
-          </YStack>
-        </XStack>
-      </YStack>
-    )
-  }
-
-  const handleEnable = async () => {
-    setStatus('loading')
-    setError(null)
-
-    try {
-      const response = await authFetch('/api/enable-v2-renewal', {
-        method: 'POST',
-        body: JSON.stringify({ subscription_id: subscription.id }),
-      })
-
-      const data = await response.json()
-
-      if (!response.ok) {
-        setStatus('error')
-        setError(data.error || 'Failed to enable V2 renewal')
-        return
-      }
-
-      setStatus('success')
-    } catch (err) {
-      setStatus('error')
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred')
-    }
-  }
-
-  if (status === 'success') {
-    return (
-      <YStack
-        gap="$3"
-        p="$4"
-        borderWidth={1}
-        borderColor="$green6"
-        bg="$green2"
-        rounded="$4"
-      >
-        <XStack gap="$3" alignItems="center">
-          <Gift size={24} color="$green10" />
-          <YStack flex={1}>
-            <H4 fontFamily="$mono" color="$green11">
-              New Pro Plan Enabled! 🎉
-            </H4>
-            <Paragraph color="$green10">
-              When your subscription renews, you'll automatically get the new Pro plan
-              with 35% off.
-            </Paragraph>
-          </YStack>
-        </XStack>
-      </YStack>
-    )
-  }
+// info card for legacy subscribers whose renewals get the discount automatically
+const V2RenewalCard = () => {
+  const couponCode = 'RENEWAL30'
 
   return (
     <YStack
       gap="$4"
       p="$4"
       borderWidth={1}
-      borderColor="$purple6"
-      bg="$purple2"
+      borderColor="$yellow6"
+      bg="$yellow2"
       rounded="$4"
     >
       <XStack gap="$3" alignItems="flex-start">
-        <Gift y={5} size={24} color="$purple10" />
+        <Gift y={5} size={24} color="$yellow10" />
         <YStack flex={1} gap="$1">
-          <H4 fontFamily="$mono" color="$purple11">
-            Upgrade to New Pro Plan
+          <H4 fontFamily="$mono" color="$yellow11">
+            30% Off Applied To Renewal
           </H4>
-          <Paragraph color="$purple10">
-            Enable automatic upgrade and get <strong>35% off</strong> when your
-            subscription renews. You'll get access to:
+          <Paragraph color="$yellow10">
+            Your pre-v2 renewal includes <strong>30% off</strong>. No action is needed.
           </Paragraph>
-          <YStack gap="$1" pl="$2">
-            <Paragraph color="$purple10">
-              • Takeout 2 - Tamagui 2, One 1, and Zero stack
-            </Paragraph>
-            <Paragraph color="$purple10">
-              • Takeout Static - Web-only starter with 100 Lighthouse
-            </Paragraph>
-            <Paragraph color="$purple10">
-              • Unlimited team members - No per-seat pricing
-            </Paragraph>
-          </YStack>
+          <Paragraph color="$yellow10">
+            When this subscription renews, it stays on the current Pro package with
+            Takeout 2, Takeout Static, and unlimited team members.
+          </Paragraph>
+          <Paragraph color="$yellow10">
+            If you want to buy another project or share the discount with a friend, use{' '}
+            <strong>{couponCode}</strong>.
+          </Paragraph>
         </YStack>
       </XStack>
 
-      {error && <Paragraph color="$red10">{error}</Paragraph>}
-
       <Button
-        theme="purple"
-        disabled={status === 'loading'}
-        onPress={handleEnable}
+        size="$3"
+        theme="yellow"
         alignSelf="flex-start"
+        onPress={() => {
+          paymentModal.isV2 = true
+          paymentModal.prefilledCouponCode = couponCode
+          paymentModal.show = true
+        }}
       >
-        <Button.Text>
-          {status === 'loading' ? 'Enabling...' : 'Enable New Pro Plan (35% off)'}
-        </Button.Text>
+        <Button.Text>Use 30% Code</Button.Text>
       </Button>
     </YStack>
   )
@@ -1817,7 +1731,7 @@ const ManageTab = ({
           })
           .map((v1Sub) => (
             <YStack key={`v2-renewal-${v1Sub.id}`} gap="$4">
-              <V2RenewalCard subscription={v1Sub} />
+              <V2RenewalCard />
             </YStack>
           ))}
 

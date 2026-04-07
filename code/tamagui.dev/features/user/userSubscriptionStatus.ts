@@ -119,7 +119,7 @@ export const userSubscriptionStatus = (
       chat: false,
       supportTier: 0,
       teamSeats: 0,
-      couponCodes: { previouslySubscribed: 'TAMAGUI_PRO_RENEWAL' },
+      couponCodes: { previouslySubscribed: 'RENEWAL30' },
       isDeveloper: false,
     }
 
@@ -156,7 +156,7 @@ export const userSubscriptionStatus = (
     supportTier,
     teamSeats: calculateTeamSeats(userData.subscriptions),
     couponCodes: {
-      previouslySubscribed: 'RENEWAL04',
+      previouslySubscribed: 'RENEWAL30',
     },
     isDeveloper: isDeveloperUser(userData),
   }

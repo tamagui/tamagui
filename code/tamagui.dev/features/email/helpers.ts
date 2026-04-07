@@ -171,8 +171,8 @@ ${body}
 }
 
 /**
- * Send email to V1 subscribers about Takeout 2 with 35% discount
- * Includes link to enable automatic V2 renewal
+ * Send renewal email to legacy subscribers before the V2 rollout.
+ * Their renewal gets 30% off, and they also get a shareable coupon code for manual purchases.
  */
 export function sendV1UpgradeEmail(
   email: string,
@@ -184,25 +184,20 @@ export function sendV1UpgradeEmail(
   }
 
   const client = new postmark.ServerClient(serverToken)
-  const couponCode = 'V1_UPGRADE_35'
-  const enableV2Url = `https://tamagui.dev/pro/enable-v2-renewal?sub_id=${args.subscriptionId}`
+  const couponCode = 'RENEWAL30'
 
   const amountText = args.amount_due
     ? `<strong>$${(args.amount_due / 100).toFixed(2)}</strong>`
     : 'the renewal amount'
 
-  const htmlBody = `
-<!DOCTYPE html>
-<html>
-<head>
-  <style>${emailStyles}</style>
-</head>
-<body>
+  const htmlBody = wrapEmail(`
   <h1>Hey ${args.name}!</h1>
 
   <p><strong>Your Tamagui Pro subscription will renew in approximately 7 days for ${amountText}.</strong></p>
 
-  <p>If you'd like to continue with your current plan, no action is needed. If you'd like to cancel, you can do so from your account page:</p>
+  <p>We've applied <strong>30% off</strong> to your upcoming renewal.</p>
+
+  <p>If you'd like to continue, no action is needed. If you'd like to cancel before renewal, you can do so from your account page:</p>
 
   <div class="cta-container">
     <a href="https://tamagui.dev/account" class="cta-button">Manage Subscription</a>
@@ -220,16 +215,10 @@ export function sendV1UpgradeEmail(
     <li><strong>Unlimited Team Members</strong> - No more per-seat pricing.</li>
   </ul>
 
-  <p>Enable automatic V2 renewal and get <strong>35% off</strong> applied automatically:</p>
-
-  <div class="cta-container">
-    <a href="${enableV2Url}" class="cta-button">Enable V2 Renewal (35% off)</a>
-  </div>
-
-  <p>Or purchase manually with coupon:</p>
+  <p>If you want to buy another project or share the discount with a friend, use this code at checkout:</p>
 
   <div class="coupon-box">
-    <div class="coupon-discount">35% off</div>
+    <div class="coupon-discount">30% off</div>
     <div class="coupon-code">${couponCode}</div>
   </div>
 
@@ -237,12 +226,8 @@ export function sendV1UpgradeEmail(
 
   <p>If you have any questions, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
 
-  <div class="footer">
-    <p>Thanks for being part of the Tamagui family!<br><strong>- Nate & the Tamagui Team</strong></p>
-  </div>
-</body>
-</html>
-  `.trim()
+  ${emailFooter}
+  `)
 
   return client.sendEmail({
     From: 'support@tamagui.dev',
@@ -253,7 +238,7 @@ export function sendV1UpgradeEmail(
 }
 
 /**
- * Confirmation email sent after V2 renewal is enabled
+ * Legacy confirmation email kept for backwards compatibility with old V2-renewal links.
  */
 export function sendV2RenewalEnabledEmail(email: string, args: { name: string }) {
   if (process.env.NODE_ENV !== 'production') {
@@ -264,23 +249,25 @@ export function sendV2RenewalEnabledEmail(email: string, args: { name: string })
   }
 
   const client = new postmark.ServerClient(serverToken)
+  const couponCode = 'RENEWAL30'
 
-  const htmlBody = `
-<!DOCTYPE html>
-<html>
-<head>
-  <style>${emailStyles}</style>
-</head>
-<body>
-  <h1>V2 Renewal Enabled! 🎉</h1>
+  const htmlBody = wrapEmail(`
+  <h1>Your Renewal Discount Is Set</h1>
 
   <p>Hey ${args.name},</p>
 
-  <p>You've successfully enabled automatic V2 renewal for your Tamagui Pro subscription.</p>
+  <p>We've applied <strong>30% off</strong> to your renewal.</p>
+
+  <p>If you want to buy another project or share the discount with a friend, use this code at checkout:</p>
+
+  <div class="coupon-box">
+    <div class="coupon-discount">30% off</div>
+    <div class="coupon-code">${couponCode}</div>
+  </div>
 
   <h2>What happens next?</h2>
 
-  <p>When your current V1 subscription renews, you'll automatically be upgraded to <strong>Takeout 2</strong> with <strong>35% off</strong> applied.</p>
+  <p>Your current subscription will renew automatically with the discount applied unless you cancel it first.</p>
 
   <p>You'll get access to:</p>
   <ul>
@@ -295,17 +282,13 @@ export function sendV2RenewalEnabledEmail(email: string, args: { name: string })
 
   <p>If you have any questions, just reply to this email or reach out at <a href="mailto:support@tamagui.dev">support@tamagui.dev</a>.</p>
 
-  <div class="footer">
-    <p>Thanks for your continued support!<br><strong>- Nate & the Tamagui Team</strong></p>
-  </div>
-</body>
-</html>
-  `.trim()
+  ${emailFooter}
+  `)
 
   return client.sendEmail({
     From: 'support@tamagui.dev',
     To: email,
-    Subject: 'V2 Renewal Enabled - Takeout 2 Upgrade Confirmed ✓',
+    Subject: 'Your Tamagui renewal discount is set',
     HtmlBody: htmlBody,
   })
 }
@@ -358,7 +341,7 @@ export function sendPaymentMethodReminderEmail(
 
   <div class="coupon-box">
     <div class="coupon-discount">30% off for returning</div>
-    <div class="coupon-code">WELCOMEBACK30</div>
+    <div class="coupon-code">RENEWAL30</div>
     <p style="margin: 4px 0 0; font-size: 14px;">Stacks with parity pricing!</p>
   </div>
 
