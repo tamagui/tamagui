@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focus-scope",
-  "version": "2.0.0-rc.37-1775622863169",
+  "version": "2.0.0-rc.37-1775637030219",
   "source": "src/index.ts",
   "files": [
     "src",
