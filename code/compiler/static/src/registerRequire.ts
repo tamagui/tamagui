@@ -23,6 +23,36 @@ export function setRequireResult(name: string, result: any) {
   compiled[name] = result
 }
 
+function getStaticExtractionStub(path: string) {
+  switch (path) {
+    case 'expo-constants':
+      return {
+        __esModule: true,
+        default: {
+          executionEnvironment: null,
+        },
+        ExecutionEnvironment: {
+          Bare: 'bare',
+          Standalone: 'standalone',
+          StoreClient: 'storeClient',
+        },
+      }
+    case 'expo-updates':
+      return {
+        __esModule: true,
+        default: {
+          isEnabled: false,
+          isUsingEmbeddedAssets: true,
+        },
+        checkForUpdateAsync: async () => ({ isAvailable: false }),
+        fetchUpdateAsync: async () => ({ isNew: false }),
+        reloadAsync: async () => {},
+      }
+    default:
+      return null
+  }
+}
+
 export function registerRequire(
   platform: TamaguiPlatform,
   { proxyWormImports } = {
@@ -77,6 +107,11 @@ export function registerRequire(
   Module.prototype.require = tamaguiRequire
 
   function tamaguiRequire(this: any, path: string) {
+    const staticExtractionStub = getStaticExtractionStub(path)
+    if (staticExtractionStub) {
+      return staticExtractionStub
+    }
+
     if (path === 'tamagui' && platform === 'native') {
       return og.apply(this, ['tamagui/native'])
     }
@@ -127,7 +162,20 @@ export function registerRequire(
         const callerFile = this?.filename || this?.id || ''
         const isFromTamaguiPkg =
           callerFile.includes('@tamagui') || callerFile.includes('node_modules/tamagui/')
-        if (path === 'tamagui' || path.startsWith('@tamagui/') || isFromTamaguiPkg) {
+        const isFromStaticLoader =
+          !callerFile ||
+          callerFile === '.' ||
+          callerFile === '[eval]' ||
+          callerFile.endsWith('/[eval]') ||
+          callerFile.includes('/code/compiler/static/') ||
+          callerFile.includes('/.tamagui/')
+
+        if (
+          path === 'tamagui' ||
+          path.startsWith('@tamagui/') ||
+          isFromTamaguiPkg ||
+          isFromStaticLoader
+        ) {
           return og.apply(this, [path])
         }
         return proxyWorm

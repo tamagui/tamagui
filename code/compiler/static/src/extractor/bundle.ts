@@ -4,6 +4,7 @@ import * as FS from 'fs-extra'
 import type { TamaguiPlatform } from '../types'
 import { detectModuleFormat } from './detectModuleFormat'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
+import { hasTopLevelAwait } from './hasTopLevelAwait'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 import { TsconfigPathsPlugin } from './esbuildTsconfigPaths'
 
@@ -146,15 +147,14 @@ function getESBuildConfig(
             }
 
             // stub files with top-level await - they're typically runtime-only
-            if (
-              /^\s*(?:const|let|var|export)\s+[^=]*=\s*await\b/m.test(contents) ||
-              /^await\s/m.test(contents)
-            ) {
+            if (hasTopLevelAwait(contents, args.path)) {
               if (process.env.DEBUG?.startsWith('tamagui')) {
                 console.info(`[tamagui] stubbing file with top-level await: ${args.path}`)
               }
               return {
-                contents: `// stubbed - contains top-level await\nmodule.exports = {}`,
+                // Keep this as an ESM-shaped stub so esbuild doesn't inline a
+                // top-level `module.exports = {}` into the parent bundle.
+                contents: `// stubbed - contains top-level await\nexport default {}`,
                 loader: 'js',
               }
             }
