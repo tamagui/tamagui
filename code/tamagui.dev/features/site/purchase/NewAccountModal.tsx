@@ -1391,11 +1391,19 @@ const CancelSubscriptionSection = ({ subscription }: { subscription: Subscriptio
         method: 'POST',
         body: JSON.stringify({ subscription_id: subscription.id }),
       })
-      const data = await res.json()
-      if (data.message) {
-        alert(data.message)
-        refresh()
+      const data = await res.json().catch(() => ({}) as any)
+      if (!res.ok) {
+        alert(
+          `Couldn't cancel: ${data.error || data.message || `server returned ${res.status}`}. Please email support@tamagui.dev and we'll cancel it for you.`
+        )
+        return
       }
+      alert(data.message || 'Your subscription has been cancelled.')
+      refresh()
+    } catch (err) {
+      alert(
+        `Couldn't cancel: ${err instanceof Error ? err.message : 'unknown error'}. Please email support@tamagui.dev and we'll cancel it for you.`
+      )
     } finally {
       setIsLoading(false)
     }
@@ -1680,11 +1688,19 @@ const ManageTab = ({
         }),
       })
 
-      const data = await res.json()
-      if (data.message) {
-        alert(data.message)
-        refresh()
+      const data = await res.json().catch(() => ({}) as any)
+      if (!res.ok) {
+        alert(
+          `Couldn't cancel: ${data.error || data.message || `server returned ${res.status}`}. Please email support@tamagui.dev and we'll cancel it for you.`
+        )
+        return
       }
+      alert(data.message || 'Your subscription has been cancelled.')
+      refresh()
+    } catch (err) {
+      alert(
+        `Couldn't cancel: ${err instanceof Error ? err.message : 'unknown error'}. Please email support@tamagui.dev and we'll cancel it for you.`
+      )
     } finally {
       setIsLoading(false)
     }

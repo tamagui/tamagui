@@ -36,7 +36,6 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
   })
 
   test('marker stays mounted while the sheet slides out', async ({ page }) => {
-
     const marker = page.getByTestId('dialog-content-marker')
     const sheetFrame = page.locator('.is_Sheet[data-state]')
 
@@ -48,15 +47,15 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
     // leave the sheet positioned just outside the viewport during/after the
     // enter animation in this layout — the question this test is about is
     // *DOM lifecycle* (mount/unmount), not pixel position.
-    await expect.poll(
-      async () =>
-        page.evaluate(() =>
-          document
-            .querySelector('.is_Sheet[data-state]')
-            ?.getAttribute('data-state')
-        ),
-      { timeout: 5000 }
-    ).toBe('open')
+    await expect
+      .poll(
+        async () =>
+          page.evaluate(() =>
+            document.querySelector('.is_Sheet[data-state]')?.getAttribute('data-state')
+          ),
+        { timeout: 5000 }
+      )
+      .toBe('open')
 
     await expect(marker).toBeAttached({ timeout: 5000 })
 
@@ -75,15 +74,15 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
     // SANITY: the close call must actually have flipped the sheet's data-state.
     // if it didn't, the persistence assertions below are meaningless (every
     // sample would trivially pass).
-    await expect.poll(
-      async () =>
-        page.evaluate(() =>
-          document
-            .querySelector('.is_Sheet[data-state]')
-            ?.getAttribute('data-state')
-        ),
-      { timeout: 1000 }
-    ).toBe('closed')
+    await expect
+      .poll(
+        async () =>
+          page.evaluate(() =>
+            document.querySelector('.is_Sheet[data-state]')?.getAttribute('data-state')
+          ),
+        { timeout: 1000 }
+      )
+      .toBe('closed')
 
     // sample at several points during the exit animation. `medium` for the
     // css driver is `ease-in 400ms`, so anything <250ms is solidly mid-slide.
@@ -99,8 +98,7 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
       await page.waitForTimeout(t - prev)
       prev = t
       const exists = await page.evaluate(
-        () =>
-          !!document.querySelector('[data-testid="dialog-content-marker"]')
+        () => !!document.querySelector('[data-testid="dialog-content-marker"]')
       )
       samples.push({ t: Date.now() - closeStart, exists })
     }
@@ -112,35 +110,40 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
     // torn down on the very first frame after `dialog.open` flips false,
     // because the teardown is driven by Dialog.open and not by Sheet.open.
     for (const s of samples) {
-      expect.soft(
-        s.exists,
-        `marker should still be in DOM at +${s.t}ms (mid-animation, before sheet finishes sliding)`
-      ).toBe(true)
+      expect
+        .soft(
+          s.exists,
+          `marker should still be in DOM at +${s.t}ms (mid-animation, before sheet finishes sliding)`
+        )
+        .toBe(true)
     }
 
     // sanity: eventually the sheet should be fully closed
-    await expect.poll(
-      async () =>
-        page.evaluate(
-          () =>
-            document
-              .querySelector('.is_Sheet[data-state]')
-              ?.getAttribute('data-state') ?? 'gone'
-        ),
-      { timeout: 3000 }
-    ).toBe('closed')
+    await expect
+      .poll(
+        async () =>
+          page.evaluate(
+            () =>
+              document
+                .querySelector('.is_Sheet[data-state]')
+                ?.getAttribute('data-state') ?? 'gone'
+          ),
+        { timeout: 3000 }
+      )
+      .toBe('closed')
 
     // and after the slide-out completes, the marker SHOULD unmount —
     // this is the other half of the fix (no permanent mount / memory leak).
     // SheetController.onAnimationComplete flips DialogAdaptHiddenContext to
     // true, DialogContent then returns null, the portal slot empties.
-    await expect.poll(
-      async () =>
-        page.evaluate(
-          () =>
-            !!document.querySelector('[data-testid="dialog-content-marker"]')
-        ),
-      { timeout: 3000 }
-    ).toBe(false)
+    await expect
+      .poll(
+        async () =>
+          page.evaluate(
+            () => !!document.querySelector('[data-testid="dialog-content-marker"]')
+          ),
+        { timeout: 3000 }
+      )
+      .toBe(false)
   })
 })

@@ -148,9 +148,7 @@ export function DialogSheetAdaptUnmountCase() {
           <TamaguiDialog.Description>
             This body should remain visible while the sheet slides out.
           </TamaguiDialog.Description>
-          <Paragraph testID="dialog-content-marker">
-            unique-content-marker-3pc
-          </Paragraph>
+          <Paragraph testID="dialog-content-marker">unique-content-marker-3pc</Paragraph>
           <XStack gap="$3" justify="flex-end">
             <TamaguiDialog.Close asChild displayWhenAdapted>
               <Button testID="close-dialog">Close</Button>
