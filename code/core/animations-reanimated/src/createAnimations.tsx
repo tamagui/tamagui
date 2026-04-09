@@ -21,6 +21,7 @@ import Animated_, {
   runOnUI,
   useAnimatedReaction,
   useAnimatedStyle,
+  useDerivedValue,
   useSharedValue,
   withDelay,
   withSpring,
@@ -490,24 +491,16 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }, [instance, getStyle])
       }
 
-      // native: use useAnimatedReaction to watch instance changes and
-      // write computed style to a dedicated SharedValue. useAnimatedStyle
-      // then reads only that SharedValue — pure closure, no non-SV items
-      // to confuse startMapper's dependency tracking.
-      const styleVal = useSharedValue(getStyle(instance.value))
-
-      useAnimatedReaction(
-        () => {
-          'worklet'
-          return instance.value
-        },
-        (current, previous) => {
-          'worklet'
-          if (current !== previous) {
-            styleVal.value = getStyle(current)
-          }
-        }
-      )
+      // native: use useDerivedValue to compute the style on the UI thread.
+      // this avoids reading instance.value during render (which triggers
+      // reanimated's "Reading from `value` during component render" warning)
+      // while keeping the indirection that gives useAnimatedStyle a pure
+      // SharedValue closure — no non-SV items to confuse startMapper's
+      // dependency tracking.
+      const styleVal = useDerivedValue(() => {
+        'worklet'
+        return getStyle(instance.value)
+      })
 
       return useAnimatedStyle(() => {
         'worklet'
