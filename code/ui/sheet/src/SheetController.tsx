@@ -8,11 +8,13 @@ import { SheetControllerContext } from './useSheetController'
 export const SheetController = ({
   children,
   onOpenChange: onOpenChangeProp,
+  onAnimationComplete: onAnimationCompleteProp,
   open,
   hidden,
   disableDrag,
 }: Partial<SheetControllerContextValue> & { children?: ReactNode }) => {
   const onOpenChange = useEvent(onOpenChangeProp)
+  const onAnimationComplete = useEvent(onAnimationCompleteProp)
   const id = useId()
 
   // track hidden transitions to signal adapt handoff
@@ -31,9 +33,10 @@ export const SheetController = ({
       hidden,
       disableDrag,
       onOpenChange,
+      onAnimationComplete,
       skipNextAnimation,
     }),
-    [id, onOpenChange, open, hidden, disableDrag, skipNextAnimation]
+    [id, onOpenChange, onAnimationComplete, open, hidden, disableDrag, skipNextAnimation]
   )
 
   return (
