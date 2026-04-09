@@ -165,6 +165,14 @@ function rewriteWorkspaceVersions(projectPath: string) {
   try {
     const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
 
+    // if the copied project is itself a workspace root (e.g. takeout-pro copies
+    // the whole monorepo, packages/* included), leave `workspace:*` alone —
+    // bun/yarn/pnpm resolve it natively against the local packages. rewriting
+    // would point at versions that don't exist on npm.
+    if (pkg.workspaces) {
+      return
+    }
+
     // read create-tamagui's own version as the target
     const ctPkgPath = require.resolve('create-tamagui/package.json')
     const ctPkg = JSON.parse(readFileSync(ctPkgPath, 'utf-8'))
