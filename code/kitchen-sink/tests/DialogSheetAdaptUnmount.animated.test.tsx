@@ -35,21 +35,7 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
     })
   })
 
-  test('marker stays mounted while the sheet slides out', async ({
-    page,
-  }, testInfo) => {
-    // motion driver fires its setValue onFinish callback near-instantly for
-    // the sheet's spring animation (the framer-motion change-event proxy in
-    // animations-motion/src/createAnimations.tsx resolves before the visual
-    // transition has actually played). that's an existing driver-side timing
-    // issue independent of this Dialog fix — the SheetController.onAnimationComplete
-    // signal we rely on is firing essentially synchronously. tracking that
-    // separately. skip here so this test stays a clean fix-regression check.
-    const driver = (testInfo.project?.metadata as any)?.animationDriver
-    if (driver === 'motion') {
-      test.skip()
-      return
-    }
+  test('marker stays mounted while the sheet slides out', async ({ page }) => {
 
     const marker = page.getByTestId('dialog-content-marker')
     const sheetFrame = page.locator('.is_Sheet[data-state]')

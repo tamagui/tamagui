@@ -17,6 +17,7 @@ import {
   View,
 } from '@tamagui/web'
 import {
+  animate as motionAnimate,
   type AnimationOptions,
   type AnimationPlaybackControlsWithThen,
   type MotionValue,
@@ -501,24 +502,51 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           },
           setValue(next, config = { type: 'spring' }, onFinish) {
             if (config.type === 'direct') {
-              MotionValueStrategy.set(motionValue, {
-                type: 'direct',
-              })
+              MotionValueStrategy.set(motionValue, { type: 'direct' })
               motionValue.set(next)
               onFinish?.()
-            } else {
-              MotionValueStrategy.set(motionValue, config)
+              return
+            }
+            MotionValueStrategy.set(motionValue, config)
 
-              if (onFinish) {
-                const unsubscribe = motionValue.on('change', (value) => {
-                  if (Math.abs(value - next) < 0.01) {
-                    unsubscribe()
-                    onFinish()
+            // drive the animation through the motion value itself so the JS
+            // value changes over time and `onFinish` resolves when the
+            // animation actually completes — not synchronously after the
+            // first `change` event. previously this used motionValue.set(next)
+            // (which jumps the value instantly) and a 'change' subscription
+            // that resolved on the first event, so onFinish fired before any
+            // visual transition had played. that broke any consumer that
+            // relied on completion timing (e.g. Sheet.onAnimationComplete
+            // and Dialog adapt holding children mounted during slide-out).
+            const motionAnimationConfig: ValueTransition =
+              config.type === 'timing'
+                ? { type: 'tween', duration: config.duration / 1000 }
+                : {
+                    type: 'spring',
+                    stiffness: config.stiffness,
+                    damping: config.damping,
+                    mass: config.mass,
                   }
-                })
-              }
 
-              motionValue.set(next)
+            const controls = motionAnimate(motionValue, next, motionAnimationConfig)
+
+            if (onFinish) {
+              // settle onFinish on either resolve or reject — a rejection
+              // here means the animation was cancelled (e.g. by a follow-up
+              // setValue or stop()), and the consumer still needs to be told
+              // we're done with this run. warn on unexpected rejections so
+              // they don't go silent.
+              //
+              // note: framer-motion's `.then(onResolve, onReject)` is typed
+              // with `VoidFunction` for both callbacks (no error arg), so we
+              // chain `.then().catch()` on the returned real Promise<void>
+              // to get the actual error in the catch handler.
+              controls
+                .then(() => onFinish())
+                .catch((err) => {
+                  console.warn('[tamagui motion driver] animate() rejected', err)
+                  onFinish()
+                })
             }
           },
           stop() {

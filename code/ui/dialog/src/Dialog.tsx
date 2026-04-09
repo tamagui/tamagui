@@ -98,18 +98,6 @@ export const DialogContext = createStyledContext<DialogContextValue>(
 export const { useStyledContext: useDialogContext, Provider: DialogProvider } =
   DialogContext
 
-/**
- * Tracks whether the Sheet adapted from a Dialog has finished its slide-out
- * animation. DialogSheetController owns the state; DialogContent reads it so
- * it can hold adapted children mounted until the sheet is fully off-screen,
- * instead of tearing them down the moment Dialog.open flips false.
- *
- * Default true so the value is "safe to unmount" if no provider is mounted
- * (matches the historical behavior where adapted children unmount immediately
- * on close in native).
- */
-const DialogAdaptHiddenContext = React.createContext(true)
-
 /* -------------------------------------------------------------------------------------------------
  * DialogTrigger
  * -----------------------------------------------------------------------------------------------*/
@@ -648,24 +636,8 @@ const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProp
 
     // TODO this will re-parent, ideally we would not change tree structure
 
-    // when adapted, the dialog's content is portaled into the Sheet via
-    // Adapt.Contents. previously native immediately returned null when the
-    // dialog closed, tearing the children out before the sheet had finished
-    // its slide-out animation (visible as the body vanishing mid-slide), and
-    // web kept children mounted forever (memory leak across open/close).
-    //
-    // both paths now share the same rule: hold children mounted until the
-    // sheet's slide-out animation is fully complete (DialogAdaptHiddenContext
-    // is flipped by DialogSheetController via SheetController.onAnimationComplete),
-    // then unmount. opt out with `keepChildrenMounted` if you need the old
-    // permanent-mount behavior (preserves dialog state across open/close).
-    const isAdaptFullyHidden = React.useContext(DialogAdaptHiddenContext)
     if (isAdapted) {
-      if (
-        !context.open &&
-        !context.keepChildrenMounted &&
-        isAdaptFullyHidden
-      ) {
+      if (!isWeb && !context.open) {
         return null
       }
 
@@ -997,30 +969,6 @@ const DialogSheetController = (
   const context = useDialogContext(props.scope)
   const isAdapted = useAdaptIsActive(context.adaptScope)
 
-  // tracks whether the adapted Sheet has finished its slide-out animation.
-  // starts true (= safe to unmount) when the dialog is closed; flips to
-  // false the moment the dialog opens; flips back to true when the sheet
-  // signals onAnimationComplete with open=false (i.e. slide-out finished).
-  const [isAdaptFullyHidden, setIsAdaptFullyHidden] = React.useState(
-    !context.open
-  )
-  // mirror context.open into the hidden flag during render — this is the
-  // same idiom DialogPortal uses for its own isFullyHidden state. an opening
-  // dialog must immediately mark its children as not-hidden so they render
-  // for the enter animation.
-  if (context.open && isAdaptFullyHidden) {
-    setIsAdaptFullyHidden(false)
-  }
-
-  const handleSheetAnimationComplete = React.useCallback(
-    ({ open }: { open: boolean }) => {
-      if (!open) {
-        setIsAdaptFullyHidden(true)
-      }
-    },
-    []
-  )
-
   return (
     <SheetController
       onOpenChange={(val) => {
@@ -1028,13 +976,10 @@ const DialogSheetController = (
           props.onOpenChange?.(val)
         }
       }}
-      onAnimationComplete={handleSheetAnimationComplete}
       open={context.open}
       hidden={!isAdapted}
     >
-      <DialogAdaptHiddenContext.Provider value={isAdaptFullyHidden}>
-        {props.children}
-      </DialogAdaptHiddenContext.Provider>
+      {props.children}
     </SheetController>
   )
 }

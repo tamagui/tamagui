@@ -58,10 +58,10 @@ function ThreePunchDialog({
             testID="sheet-frame"
             padding="$4"
             gap="$4"
-            br="$6"
+            borderRadius="$6"
             borderBottomRightRadius={0}
             borderBottomLeftRadius={0}
-            bg="$backgroundSurface"
+            bg="$background"
           >
             <Sheet.ScrollView>
               <TamaguiDialog.Adapt.Contents />
@@ -84,7 +84,7 @@ function ThreePunchDialog({
           key="content"
           minHeight={400}
           minWidth={400}
-          br={CONTENT_RADIUS}
+          borderRadius={CONTENT_RADIUS}
           overflow="hidden"
           padding="$4"
         >
@@ -97,7 +97,7 @@ function ThreePunchDialog({
 
 const DialogOverlay = styled(TamaguiDialog.Overlay, {
   unstyled: true,
-  transition: 'fast',
+  transition: 'quick',
   position: 'absolute',
   inset: 0 as any,
   opacity: 1,
@@ -108,9 +108,9 @@ const DialogOverlay = styled(TamaguiDialog.Overlay, {
 
 const DialogContent = styled(TamaguiDialog.Content, {
   unstyled: true,
-  transition: 'fast',
+  transition: 'quick',
   zIndex: 1_000_000,
-  bg: '$backgroundSurface',
+  bg: '$background',
   borderWidth: 0.5,
   borderColor: '$color5',
   position: 'relative',
