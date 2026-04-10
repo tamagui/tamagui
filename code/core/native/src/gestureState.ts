@@ -8,6 +8,16 @@ const state = createGlobalState<GestureState>(`gesture`, {
   ScrollView: null,
 })
 
+/**
+ * Global press coordination - ensures only innermost pressable fires press events,
+ * matching RN Pressable/responder system semantics where deepest component wins.
+ * First gesture to fire onBegin claims ownership of the entire press sequence.
+ */
+const pressState = {
+  owner: null as object | null,
+  timestamp: 0,
+}
+
 export interface Insets {
   top?: number
   left?: number
@@ -54,19 +64,53 @@ export function getGestureHandler(): GestureHandlerAccessor {
 
       const longPressDuration = config.delayLongPress ?? 500
 
+      // unique token for this gesture instance - used to track ownership
+      const myToken = {}
+
+      // helper to check/claim ownership
+      const tryClaimOwnership = () => {
+        const now = Date.now()
+        // reset if stale (component may have unmounted mid-press)
+        if (now - pressState.timestamp > 2000) {
+          pressState.owner = null
+        }
+        if (pressState.owner === null) {
+          pressState.owner = myToken
+          pressState.timestamp = now
+        }
+        return pressState.owner === myToken
+      }
+
+      const isOwner = () => pressState.owner === myToken
+
+      const releaseOwnership = () => {
+        if (pressState.owner === myToken) {
+          pressState.owner = null
+        }
+      }
+
       // Tap gesture for regular presses
       // Use long maxDuration to not cancel during long presses
       const tap = Gesture.Tap()
         .runOnJS(true)
         .maxDuration(10000) // allow very long presses
         .onBegin((e: any) => {
-          config.onPressIn?.(e)
+          // first gesture to fire onBegin claims ownership of the press sequence
+          // this matches RN Pressable/responder semantics (deepest wins)
+          if (tryClaimOwnership()) {
+            config.onPressIn?.(e)
+          }
         })
         .onEnd((e: any) => {
-          config.onPress?.(e)
+          if (isOwner()) {
+            config.onPress?.(e)
+          }
         })
         .onFinalize((e: any) => {
-          config.onPressOut?.(e)
+          if (isOwner()) {
+            config.onPressOut?.(e)
+            releaseOwnership()
+          }
         })
 
       if (config.hitSlop) tap.hitSlop(config.hitSlop)
@@ -78,9 +122,22 @@ export function getGestureHandler(): GestureHandlerAccessor {
       const longPress = Gesture.LongPress()
         .runOnJS(true)
         .minDuration(longPressDuration)
-        .onBegin((e: any) => config.onPressIn?.(e))
-        .onStart((e: any) => config.onLongPress?.(e))
-        .onFinalize((e: any) => config.onPressOut?.(e))
+        .onBegin((e: any) => {
+          if (tryClaimOwnership()) {
+            config.onPressIn?.(e)
+          }
+        })
+        .onStart((e: any) => {
+          if (isOwner()) {
+            config.onLongPress?.(e)
+          }
+        })
+        .onFinalize((e: any) => {
+          if (isOwner()) {
+            config.onPressOut?.(e)
+            releaseOwnership()
+          }
+        })
 
       if (config.hitSlop) longPress.hitSlop(config.hitSlop)
 

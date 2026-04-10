@@ -98,7 +98,6 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
   }
 
   viewProps.onResponderRelease = (e: any) => {
-    const wasActive = ref.current.state === 'active'
     const wasLongPressed = ref.current.state === 'longPressed'
     cleanup()
 
