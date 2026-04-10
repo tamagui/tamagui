@@ -334,6 +334,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           setOpacity(0)
         }
         onAnimationComplete?.({ open: isOpenAnimation })
+        // also notify the SheetController so a parent (e.g. Dialog adapt)
+        // can hold the sheet's children mounted until the slide-out is done
+        controller?.onAnimationComplete?.({ open: isOpenAnimation })
       }
 
       // safety fallback: if animation callback never fires, still hide the sheet

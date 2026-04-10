@@ -17,7 +17,6 @@ import {
   View,
 } from '@tamagui/web'
 import {
-  animate as motionAnimate,
   type AnimationOptions,
   type AnimationPlaybackControlsWithThen,
   type MotionValue,
@@ -66,6 +65,27 @@ type TransitionAnimationOptions = AnimationOptions & {
 }
 
 const MotionValueStrategy = new WeakMap<MotionValue, AnimatedNumberStrategy>()
+
+// pending setValue onFinish callbacks, keyed by motion value. setValue stores
+// the callback here; the change handler in the animated component's useEffect
+// consumes it by chaining to the DOM-level animate() controls so onFinish
+// fires when the *visible* animation actually completes.
+const PendingMotionOnFinish = new WeakMap<MotionValue, () => void>()
+
+function settlePendingMotionOnFinish(
+  mv: MotionValue,
+  controls: AnimationPlaybackControlsWithThen
+) {
+  const onFinish = PendingMotionOnFinish.get(mv)
+  if (!onFinish) return
+  PendingMotionOnFinish.delete(mv)
+  // chain to the DOM animation's completion. settle on both resolve and
+  // reject — a rejection means the animation was cancelled by a later
+  // setValue, and the caller still needs a completion signal. use the
+  // real Promise interface (.then().catch()) because framer-motion types
+  // the .then() callbacks as VoidFunction with no error arg.
+  controls.then(() => onFinish()).catch(() => onFinish())
+}
 
 type AnimationProps = {
   doAnimate?: Record<string, unknown>
@@ -507,47 +527,39 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               onFinish?.()
               return
             }
+
             MotionValueStrategy.set(motionValue, config)
 
-            // drive the animation through the motion value itself so the JS
-            // value changes over time and `onFinish` resolves when the
-            // animation actually completes — not synchronously after the
-            // first `change` event. previously this used motionValue.set(next)
-            // (which jumps the value instantly) and a 'change' subscription
-            // that resolved on the first event, so onFinish fired before any
-            // visual transition had played. that broke any consumer that
-            // relied on completion timing (e.g. Sheet.onAnimationComplete
-            // and Dialog adapt holding children mounted during slide-out).
-            const motionAnimationConfig: ValueTransition =
-              config.type === 'timing'
-                ? { type: 'tween', duration: config.duration / 1000 }
-                : {
-                    type: 'spring',
-                    stiffness: config.stiffness,
-                    damping: config.damping,
-                    mass: config.mass,
-                  }
-
-            const controls = motionAnimate(motionValue, next, motionAnimationConfig)
-
+            // we intentionally DO NOT animate the motion value itself here
+            // (via framer-motion's imperative animate(motionValue, next)).
+            // doing so drives the JS value over time, which fires a 'change'
+            // event per frame, and each change event kicks off a new DOM
+            // animate(node, ...) that cancels the previous one — the DOM
+            // never reaches the target (double-animation stall).
+            //
+            // instead we jump the motion value to `next` synchronously. the
+            // animated component's change handler receives a single change
+            // event, computes the final webStyle, and drives the visible
+            // animation via DOM animate(node, webStyle, springConfig). that
+            // DOM animation is the real timing source.
+            //
+            // to make `onFinish` resolve when the VISIBLE animation finishes
+            // (not synchronously on the change event), we stash it in
+            // PendingMotionOnFinish here and the change handler chains it to
+            // the DOM animate() controls.
             if (onFinish) {
-              // settle onFinish on either resolve or reject — a rejection
-              // here means the animation was cancelled (e.g. by a follow-up
-              // setValue or stop()), and the consumer still needs to be told
-              // we're done with this run. warn on unexpected rejections so
-              // they don't go silent.
-              //
-              // note: framer-motion's `.then(onResolve, onReject)` is typed
-              // with `VoidFunction` for both callbacks (no error arg), so we
-              // chain `.then().catch()` on the returned real Promise<void>
-              // to get the actual error in the catch handler.
-              controls
-                .then(() => onFinish())
-                .catch((err) => {
-                  console.warn('[tamagui motion driver] animate() rejected', err)
-                  onFinish()
-                })
+              // if a previous setValue is still pending on this motion value,
+              // fire it now — the new setValue will cancel the prior DOM
+              // animation, and the caller is still owed a completion signal.
+              const prior = PendingMotionOnFinish.get(motionValue)
+              if (prior) {
+                PendingMotionOnFinish.delete(motionValue)
+                prior()
+              }
+              PendingMotionOnFinish.set(motionValue, onFinish)
             }
+
+            motionValue.set(next)
           },
           stop() {
             motionValue.stop()
@@ -884,7 +896,8 @@ function createMotionView(defaultTag: string) {
                     ? { type: 'tween', duration: 0 }
                     : { type: 'spring', ...(animationConfig as any) }
 
-              animate(node, webStyle as any, motionAnimationConfig)
+              const controls = animate(node, webStyle as any, motionAnimationConfig)
+              settlePendingMotionOnFinish(mv, controls)
             }
           })
         )
@@ -915,7 +928,8 @@ function createMotionView(defaultTag: string) {
                     ...(animationConfig as any),
                   }
 
-          animate(node, webStyle as any, motionAnimationConfig)
+          const controls = animate(node, webStyle as any, motionAnimationConfig)
+          settlePendingMotionOnFinish(animatedStyle.motionValue!, controls)
         }
       })
     }, [animatedStyle])
