@@ -148,6 +148,14 @@ export function useEvents(
       }
       // TODO update viewProps.hitSlop / events.delayLongPress!
 
+      // Claim responder to block parent RN Pressable/TouchableOpacity from firing.
+      // RNGH handles the actual press, but we need to tell the responder system
+      // that we're handling this touch to prevent it bubbling to parent pressables.
+      if (hasPressEvents) {
+        viewProps.onStartShouldSetResponder = () => true
+        viewProps.onResponderTerminationRequest = () => false
+      }
+
       return gestureRef.current
     }
 
