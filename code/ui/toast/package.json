@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toast",
-  "version": "2.0.0-rc.38-1775845464754",
+  "version": "2.0.0-rc.38-1775848301302",
   "source": "src/index.ts",
   "files": [
     "src",
