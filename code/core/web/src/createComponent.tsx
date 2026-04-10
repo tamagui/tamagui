@@ -1210,6 +1210,7 @@ export function createComponent<
     const runtimePressStyle = !disabled && noClass && pseudos?.pressStyle
     const runtimeFocusStyle = !disabled && noClass && pseudos?.focusStyle
     const runtimeFocusVisibleStyle = !disabled && noClass && pseudos?.focusVisibleStyle
+
     const attachFocus = Boolean(
       runtimePressStyle ||
       runtimeFocusStyle ||

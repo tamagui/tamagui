@@ -11,7 +11,8 @@ const state = createGlobalState<GestureState>(`gesture`, {
 /**
  * Global press coordination - ensures only innermost pressable fires press events,
  * matching RN Pressable/responder system semantics where deepest component wins.
- * First gesture to fire onBegin claims ownership of the entire press sequence.
+ * Uses a grace period to allow child gestures to steal ownership from parent,
+ * since RNGH fires parent gestures before child gestures.
  */
 const pressState = {
   owner: null as object | null,
@@ -67,14 +68,24 @@ export function getGestureHandler(): GestureHandlerAccessor {
       // unique token for this gesture instance - used to track ownership
       const myToken = {}
 
-      // helper to check/claim ownership
+      // Grace period for child gestures to steal ownership from parent.
+      // RNGH fires parent before child, but we want innermost to win.
+      // Claims typically span 2-3ms, 6ms gives buffer for slower devices.
+      const GRACE_PERIOD_MS = process.env.TAMAGUI_RNGH_PRESS_DELAY
+        ? +process.env.TAMAGUI_RNGH_PRESS_DELAY
+        : 6
+
       const tryClaimOwnership = () => {
         const now = Date.now()
         // reset if stale (component may have unmounted mid-press)
         if (now - pressState.timestamp > 2000) {
           pressState.owner = null
+          pressState.timestamp = 0
         }
-        if (pressState.owner === null) {
+
+        // within grace period, last claimer wins (child fires after parent)
+        const withinGrace = now - pressState.timestamp < GRACE_PERIOD_MS
+        if (pressState.owner === null || withinGrace) {
           pressState.owner = myToken
           pressState.timestamp = now
         }
@@ -95,11 +106,13 @@ export function getGestureHandler(): GestureHandlerAccessor {
         .runOnJS(true)
         .maxDuration(10000) // allow very long presses
         .onBegin((e: any) => {
-          // first gesture to fire onBegin claims ownership of the press sequence
-          // this matches RN Pressable/responder semantics (deepest wins)
-          if (tryClaimOwnership()) {
-            config.onPressIn?.(e)
-          }
+          tryClaimOwnership()
+          // defer onPressIn until after grace period to ensure we're the final owner
+          setTimeout(() => {
+            if (isOwner()) {
+              config.onPressIn?.(e)
+            }
+          }, GRACE_PERIOD_MS + 1)
         })
         .onEnd((e: any) => {
           if (isOwner()) {
@@ -123,9 +136,12 @@ export function getGestureHandler(): GestureHandlerAccessor {
         .runOnJS(true)
         .minDuration(longPressDuration)
         .onBegin((e: any) => {
-          if (tryClaimOwnership()) {
-            config.onPressIn?.(e)
-          }
+          tryClaimOwnership()
+          setTimeout(() => {
+            if (isOwner()) {
+              config.onPressIn?.(e)
+            }
+          }, GRACE_PERIOD_MS + 1)
         })
         .onStart((e: any) => {
           if (isOwner()) {
