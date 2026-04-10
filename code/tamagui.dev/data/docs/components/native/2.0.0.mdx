@@ -40,11 +40,16 @@ import '@tamagui/native/setup-teleport'
 
 See [Portal docs](/docs/components/portal) for full details.
 
-## Sheet Gestures
+## Gesture Handler
 
-**Native gesture coordination** - makes sheets feel smoother and not get
-confused with scrollable content during drags. Without this, scroll and pan
-gestures can occasionally conflict on iOS.
+**Native gesture handling** - powers two features:
+
+1. **Press events** - `onPress` uses RNGH for more reliable press detection with
+   proper gesture coordination. Matches RN Pressable semantics where only the
+   innermost pressable fires (no double-firing with nested buttons).
+
+2. **Sheet gestures** - makes sheets feel smoother and not get confused with
+   scrollable content during drags.
 
 ### Setup
 
@@ -63,6 +68,30 @@ export default function App() {
   )
 }
 ```
+
+### Selective Features
+
+If you only want RNGH for specific features, use the configurable setup:
+
+```tsx
+import { setupGestureHandler } from '@tamagui/native'
+
+// only use RNGH for sheets, not press events
+setupGestureHandler({ pressEvents: false, sheet: true })
+
+// only use RNGH for press events, not sheets
+setupGestureHandler({ pressEvents: true, sheet: false })
+```
+
+### Press Event Behavior
+
+With RNGH enabled, `onPress` follows RN Pressable semantics:
+
+- **Nested pressables** - only the innermost fires (no event bubbling)
+- **Web parity** - `onPress` calls `stopPropagation()` automatically
+- **Use `onClick` on web** if you need standard DOM event bubbling
+
+This aligns to the React Native default behavior of Pressable.
 
 See [Sheet docs](/docs/components/sheet) for full details.
 
