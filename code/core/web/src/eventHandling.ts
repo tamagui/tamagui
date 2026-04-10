@@ -8,10 +8,19 @@ type EventKeys = keyof TamaguiComponentEvents
 type EventLikeObject = { [key in EventKeys]?: any }
 
 export function getWebEvents<E extends EventLikeObject>(events: E, webStyle = true) {
+  // wrap onPress to stopPropagation - matches RN Pressable semantics where
+  // only innermost pressable fires. use onClick directly for bubbling behavior.
+  const onPressHandler = events.onPress
+    ? (e: any) => {
+        e.stopPropagation()
+        events.onPress!(e)
+      }
+    : undefined
+
   return {
     onMouseEnter: events.onMouseEnter,
     onMouseLeave: events.onMouseLeave,
-    [webStyle ? 'onClick' : 'onPress']: events.onPress,
+    [webStyle ? 'onClick' : 'onPress']: onPressHandler,
     onMouseDown: events.onPressIn,
     onMouseUp: events.onPressOut,
     onTouchStart: events.onPressIn,
