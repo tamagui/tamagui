@@ -1328,11 +1328,16 @@ export function createComponent<
                 }
               }
             : undefined,
+
           onPress: attachPress
             ? (e) => {
                 unPress()
-                // @ts-ignore
-                isWeb && onClick?.(e)
+                if (process.env.TAMAGUI_TARGET === 'web') {
+                  // @ts-ignore
+                  onClick?.(e)
+                  // matches RN pressable behavior
+                  e.stopPropagation()
+                }
                 onPress?.(e)
                 if (process.env.TAMAGUI_TARGET === 'web') {
                   onLongPress?.(e)
