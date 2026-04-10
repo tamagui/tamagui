@@ -43,7 +43,8 @@ export type { PortalAccessor } from './portalState'
 // gesture handler
 export { getGestureHandler } from './gestureState'
 export type { GestureHandlerAccessor, PressGestureConfig } from './gestureState'
-export { setupGestureHandler, getGestureHandlerConfig } from './setup-gesture-handler'
+// NOTE: setupGestureHandler is exported from setup-gesture-handler.ts entry point,
+// not here, to avoid bundler pulling in RNGH require during tree-shaking
 export type { GestureHandlerConfig } from './setup-gesture-handler'
 
 // worklets
