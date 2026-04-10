@@ -23,6 +23,8 @@ export { getPortal } from "./portalState";
 export type { PortalAccessor } from "./portalState";
 export { getGestureHandler } from "./gestureState";
 export type { GestureHandlerAccessor, PressGestureConfig } from "./gestureState";
+export { setupGestureHandler, getGestureHandlerConfig } from "./setup-gesture-handler";
+export type { GestureHandlerConfig } from "./setup-gesture-handler";
 export { getWorklets } from "./workletsState";
 export type { WorkletsAccessor } from "./workletsState";
 export { getSafeArea } from "./safeAreaState";
