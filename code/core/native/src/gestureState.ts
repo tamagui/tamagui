@@ -82,15 +82,6 @@ export function claimExternalPressOwnership(
   pressState.ownerSource = 'external'
   pressState.timestamp = now
 
-  debugPress('external-claim', {
-    id: ownerId,
-    name: debugName ?? null,
-    previousOwnerId,
-    previousOwnerSource,
-    ownerSource: pressState.ownerSource,
-    now,
-  })
-
   return token
 }
 
@@ -101,12 +92,6 @@ export function releaseExternalPressOwnership(
   if (!token || pressState.owner !== token) {
     return
   }
-
-  debugPress('external-release', {
-    name: debugName ?? null,
-    ownerId: pressState.ownerId,
-    ownerSource: pressState.ownerSource,
-  })
 
   resetPressOwner()
 }
@@ -144,15 +129,6 @@ export function getGestureHandler(): GestureHandlerAccessor {
       const GRACE_PERIOD_MS = process.env.TAMAGUI_RNGH_PRESS_DELAY
         ? +process.env.TAMAGUI_RNGH_PRESS_DELAY
         : 24
-
-      debugPress('createPressGesture', {
-        id: myDebugId,
-        name: config.debugName ?? null,
-        graceMs: GRACE_PERIOD_MS,
-        hasLongPress: !!config.onLongPress,
-        longPressDuration,
-        hitSlop: config.hitSlop ?? null,
-      })
 
       const tryClaimOwnership = () => {
         const now = Date.now()
