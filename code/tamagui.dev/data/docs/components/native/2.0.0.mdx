@@ -93,6 +93,36 @@ With RNGH enabled, `onPress` follows RN Pressable semantics:
 
 This aligns to the React Native default behavior of Pressable.
 
+### PressBoundary
+
+If you need a non-Tamagui native wrapper to block a parent Tamagui pressable,
+use `PressBoundary` from `@tamagui/native/gesture-handler`.
+
+This is useful when mixing Tamagui pressables with React Native `Pressable`,
+custom native wrappers, or other components that don't use Tamagui's native
+press ownership automatically.
+
+```tsx
+import { PressBoundary } from '@tamagui/native/gesture-handler'
+import { Pressable } from 'react-native'
+
+export function AvatarLink() {
+  return (
+    <PressBoundary debugName="AvatarLink">
+      <Pressable onPress={() => {}}>
+        {/* your content */}
+      </Pressable>
+    </PressBoundary>
+  )
+}
+```
+
+`PressBoundary` only coordinates with Tamagui's native press ownership. It does
+not monkey-patch React Native bubbling semantics in general.
+
+Native `Menu.Trigger` and `ContextMenu.Trigger` already do this automatically,
+so you should not need extra wrappers or empty `onPress` handlers around them.
+
 See [Sheet docs](/docs/components/sheet) for full details.
 
 ## Menu & ContextMenu
