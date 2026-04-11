@@ -22,6 +22,6 @@ export declare function wrapWithGestureDetector(content: any, _gesture: any, _st
 }, _isHOC?: boolean, _isCompositeComponent?: boolean): any;
 export declare function useEvents(_events: any, _viewProps: any, _stateRef: {
     current: any;
-}, _staticConfig: any, _isHOC?: boolean, _isInsideNativeMenu?: boolean): null;
+}, _staticConfig: any, _isHOC?: boolean, _isInsideNativeMenu?: boolean, _debugName?: string | null): null;
 export {};
 //# sourceMappingURL=eventHandling.d.ts.map

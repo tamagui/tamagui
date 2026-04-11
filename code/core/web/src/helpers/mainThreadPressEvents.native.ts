@@ -25,7 +25,22 @@ interface PressRef {
 const DEFAULT_LONG_PRESS_DELAY = 500
 const DEFAULT_MIN_PRESS_DURATION = 130
 
-export function useMainThreadPressEvents(events: any, viewProps: any, enabled = true) {
+const shouldDebugPress =
+  process.env.TAMAGUI_DEBUG_PRESS === '1' ||
+  process.env.TAMAGUI_DEBUG_PRESS === 'true' ||
+  process.env.NODE_ENV === 'development'
+
+function debugPress(message: string, payload?: Record<string, unknown>) {
+  if (!shouldDebugPress) return
+  console.info('[tamagui press]', message, payload ?? '')
+}
+
+export function useMainThreadPressEvents(
+  events: any,
+  viewProps: any,
+  enabled = true,
+  debugName?: string | null
+) {
   const ref = useRef<PressRef>(null as any)
   if (!ref.current) {
     ref.current = {
@@ -50,6 +65,9 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
   function activate(e: any) {
     ref.current.state = 'active'
     ref.current.activateTime = Date.now()
+    debugPress('responder-activate', {
+      name: debugName ?? null,
+    })
     events.onPressIn?.(e)
   }
 
@@ -57,11 +75,26 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
     const pressDuration = Date.now() - ref.current.activateTime
     const remaining = Math.max(minPressDuration - pressDuration, delayPressOut)
 
+    debugPress('responder-deactivate', {
+      name: debugName ?? null,
+      state: ref.current.state,
+      pressDuration,
+      remaining,
+    })
+
     if (remaining > 0) {
       ref.current.pressOutTimer = setTimeout(() => {
+        debugPress('responder-press-out', {
+          name: debugName ?? null,
+          deferred: true,
+        })
         events.onPressOut?.(e)
       }, remaining)
     } else {
+      debugPress('responder-press-out', {
+        name: debugName ?? null,
+        deferred: false,
+      })
       events.onPressOut?.(e)
     }
   }
@@ -80,6 +113,12 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
   viewProps.onResponderGrant = (e: any) => {
     cleanup()
     ref.current.state = 'pressing'
+    debugPress('responder-grant', {
+      name: debugName ?? null,
+      delayPressIn,
+      delayLongPress,
+      minPressDuration,
+    })
 
     if (delayPressIn > 0) {
       ref.current.pressInTimer = setTimeout(() => activate(e), delayPressIn)
@@ -91,6 +130,9 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
       ref.current.longPressTimer = setTimeout(() => {
         if (ref.current.state === 'active') {
           ref.current.state = 'longPressed'
+          debugPress('responder-long-press', {
+            name: debugName ?? null,
+          })
           events.onLongPress?.(e)
         }
       }, delayLongPress + delayPressIn)
@@ -100,6 +142,11 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
   viewProps.onResponderRelease = (e: any) => {
     const wasLongPressed = ref.current.state === 'longPressed'
     cleanup()
+    debugPress('responder-release', {
+      name: debugName ?? null,
+      wasLongPressed,
+      state: ref.current.state,
+    })
 
     // if pressIn hasn't fired yet (was in delay), fire it now then immediately deactivate
     if (ref.current.state === 'pressing') {
@@ -107,6 +154,9 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
     }
 
     if (!wasLongPressed) {
+      debugPress('responder-press', {
+        name: debugName ?? null,
+      })
       events.onPress?.(e)
     }
 
@@ -116,6 +166,10 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
 
   viewProps.onResponderTerminate = (e: any) => {
     cleanup()
+    debugPress('responder-terminate', {
+      name: debugName ?? null,
+      state: ref.current.state,
+    })
     if (ref.current.state === 'active' || ref.current.state === 'longPressed') {
       deactivate(e)
     }

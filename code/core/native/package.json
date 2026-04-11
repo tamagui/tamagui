@@ -4,7 +4,8 @@
   "description": "Native setup modules for Tamagui - portals, gesture handler, worklets, and more",
   "type": "module",
   "sideEffects": [
-    "**/setup-*"
+    "**/setup-*",
+    "**/gesture-handler*"
   ],
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -16,6 +17,9 @@
       ],
       "setup-gesture-handler": [
         "./types/setup-gesture-handler.d.ts"
+      ],
+      "gesture-handler": [
+        "./types/gesture-handler.d.ts"
       ],
       "setup-worklets": [
         "./types/setup-worklets.d.ts"
@@ -65,6 +69,15 @@
       "import": "./dist/esm/setup-gesture-handler.mjs",
       "require": "./dist/cjs/setup-gesture-handler.cjs",
       "default": "./dist/esm/setup-gesture-handler.mjs"
+    },
+    "./gesture-handler": {
+      "types": "./types/gesture-handler.d.ts",
+      "react-native": "./dist/esm/gesture-handler.native.js",
+      "browser": "./dist/esm/gesture-handler.mjs",
+      "module": "./dist/esm/gesture-handler.mjs",
+      "import": "./dist/esm/gesture-handler.mjs",
+      "require": "./dist/cjs/gesture-handler.cjs",
+      "default": "./dist/esm/gesture-handler.mjs"
     },
     "./setup-worklets": {
       "types": "./types/setup-worklets.d.ts",

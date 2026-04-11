@@ -1411,11 +1411,33 @@ export function createComponent<
       log(`events`, { events, attachHover, attachPress })
     }
 
+    const propsWithHref = props as typeof props & { href?: unknown }
+    const propsInWithHref = propsIn as typeof propsIn & { href?: unknown }
+
+    const pressDebugDetail =
+      props.testID ??
+      propsIn.testID ??
+      props.accessibilityLabel ??
+      propsIn.accessibilityLabel ??
+      (typeof propsWithHref.href === 'string' ? propsWithHref.href : null) ??
+      (typeof propsInWithHref.href === 'string' ? propsInWithHref.href : null)
+
+    const pressDebugName =
+      [componentName, pressDebugDetail].filter(Boolean).join(':') || null
+
     // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
     // Skip gesture setup for HOC components - they may return null which crashes GestureDetector
     const pressGesture =
       process.env.TAMAGUI_TARGET === 'native'
-        ? useEvents(events, viewProps, stateRef, staticConfig, isHOC, isInsideNativeMenu)
+        ? useEvents(
+            events,
+            viewProps,
+            stateRef,
+            staticConfig,
+            isHOC,
+            isInsideNativeMenu,
+            pressDebugName
+          )
         : null
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`

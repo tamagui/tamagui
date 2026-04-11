@@ -39,7 +39,8 @@ export function useEvents(
   _stateRef: { current: any },
   _staticConfig: any,
   _isHOC?: boolean,
-  _isInsideNativeMenu?: boolean
+  _isInsideNativeMenu?: boolean,
+  _debugName?: string | null
 ) {
   return null
 }
