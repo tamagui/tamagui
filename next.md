@@ -22,6 +22,8 @@ before v2 final:
 
 can be after v2 final
 
+- Dialog API cleanup: modal={false} + Overlay should just work without forceMount, and exit animations should work without Portal. Users shouldn't need Portal/forceMount for basic non-modal dialogs with overlays. Currently without Portal there's no AnimatePresence lifecycle so enterStyle/exitStyle don't animate - content just stays mounted. Dialog.Content/Overlay should handle their own presence animation when not inside Portal.
+
 <Popover.Content
 onInteractOutside={close}
 not working
