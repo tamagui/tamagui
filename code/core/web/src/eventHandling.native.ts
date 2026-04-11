@@ -8,16 +8,6 @@ import React, { useRef } from 'react'
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
-const shouldDebugPress =
-  process.env.TAMAGUI_DEBUG_PRESS === '1' ||
-  process.env.TAMAGUI_DEBUG_PRESS === 'true' ||
-  process.env.NODE_ENV === 'development'
-
-function debugPress(message: string, payload?: Record<string, unknown>) {
-  if (!shouldDebugPress) return
-  console.info('[tamagui press]', message, payload ?? '')
-}
-
 // web events not used on native
 export function getWebEvents() {
   return {}
@@ -60,21 +50,6 @@ export function useEvents(
   const everEnabled = Boolean(hasPressEvents || stateRef.current.hasHadEvents)
   const isUsingRNGH = gh.isEnabled
 
-  if (hasAnyPressCallbacks) {
-    debugPress('useEvents', {
-      componentName: staticConfig.componentName || null,
-      debugName,
-      hasPressEvents,
-      hasPressIn: !!events?.onPressIn,
-      hasPressOut: !!events?.onPressOut,
-      hasLongPress: !!events?.onLongPress,
-      everEnabled,
-      isUsingRNGH,
-      isHOC: !!isHOC,
-      isInsideNativeMenu: !!isInsideNativeMenu,
-    })
-  }
-
   // NOW handle early returns (after all hooks are called)
   // THESE BRANCHES ARE NEVER CHANGING RENDER-TO-RENDER
 
@@ -112,14 +87,6 @@ export function useEvents(
     !isHOC && staticConfig.Component && typeof staticConfig.Component !== 'string'
 
   if (isHOC || isCompositeComponent) {
-    if (hasAnyPressCallbacks) {
-      debugPress('route-composite-direct-props', {
-        componentName: staticConfig.componentName || null,
-        debugName,
-        isHOC: !!isHOC,
-        isCompositeComponent,
-      })
-    }
     if (events) {
       const { onPressIn, onPressOut, onPress, onLongPress, delayLongPress } = events
       Object.assign(viewProps, {
@@ -141,14 +108,6 @@ export function useEvents(
     const gestureRef = useRef<any>(null)
 
     if (everEnabled) {
-      debugPress('route-rngh', {
-        componentName: staticConfig.componentName || null,
-        debugName,
-        hasPressEvents,
-        hasHadEvents: stateRef.current.hasHadEvents,
-        isInsideNativeMenu: !!isInsideNativeMenu,
-      })
-
       // store callbacks in refs so gesture doesn't need to be recreated on every render
       callbacksRef.current = hasPressEvents
         ? {
@@ -205,27 +164,9 @@ export function useEvents(
       return gestureRef.current
     }
 
-    if (hasAnyPressCallbacks) {
-      debugPress('rngh-no-gesture-created', {
-        componentName: staticConfig.componentName || null,
-        debugName,
-        hasPressEvents,
-        hasHadEvents: stateRef.current.hasHadEvents,
-      })
-    }
-
     return null
   }
 
-  // fallback - direct responder system when RNGH not enabled
-  if (hasAnyPressCallbacks) {
-    debugPress('route-responder-fallback', {
-      componentName: staticConfig.componentName || null,
-      debugName,
-      hasPressEvents,
-      hasHadEvents: stateRef.current.hasHadEvents,
-    })
-  }
   useMainThreadPressEvents(events, viewProps, hasPressEvents, debugName)
 
   return null

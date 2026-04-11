@@ -8,20 +8,10 @@ const state = createGlobalState<GestureState>(`gesture`, {
   ScrollView: null,
 })
 
-const shouldDebugPress =
-  process.env.TAMAGUI_DEBUG_PRESS === '1' ||
-  process.env.TAMAGUI_DEBUG_PRESS === 'true' ||
-  process.env.NODE_ENV === 'development'
-
 let pressGestureDebugId = 0
 let externalPressDebugId = 0
 
 type PressOwnerSource = 'internal' | 'external' | null
-
-function debugPress(message: string, payload?: Record<string, unknown>) {
-  if (!shouldDebugPress) return
-  console.info('[tamagui press]', message, payload ?? '')
-}
 
 /**
  * Global press coordination - ensures only innermost pressable fires press events,
@@ -72,12 +62,6 @@ function resetPressOwner() {
 
 function resetStaleOwner(now: number, debugName?: string | null) {
   if (now - pressState.timestamp > 2000) {
-    debugPress('reset-stale-owner', {
-      name: debugName ?? null,
-      previousOwnerId: pressState.ownerId,
-      previousOwnerSource: pressState.ownerSource,
-      ageMs: now - pressState.timestamp,
-    })
     resetPressOwner()
   }
 }
@@ -187,16 +171,6 @@ export function getGestureHandler(): GestureHandlerAccessor {
           pressState.ownerSource = 'internal'
           pressState.timestamp = now
         }
-        debugPress('claim', {
-          id: myDebugId,
-          name: config.debugName ?? null,
-          previousOwnerId,
-          previousOwnerSource,
-          ownerId: pressState.ownerId,
-          ownerSource: pressState.ownerSource,
-          withinGrace,
-          now,
-        })
         return pressState.owner === myToken
       }
 
@@ -204,12 +178,6 @@ export function getGestureHandler(): GestureHandlerAccessor {
 
       const releaseOwnership = () => {
         if (pressState.owner === myToken) {
-          debugPress('release', {
-            id: myDebugId,
-            name: config.debugName ?? null,
-            ownerId: pressState.ownerId,
-            ownerSource: pressState.ownerSource,
-          })
           resetPressOwner()
         }
       }
@@ -221,57 +189,22 @@ export function getGestureHandler(): GestureHandlerAccessor {
         .maxDuration(10000) // allow very long presses
         .onBegin((e: any) => {
           tryClaimOwnership()
-          debugPress('tap-begin', {
-            id: myDebugId,
-            name: config.debugName ?? null,
-            ownerId: pressState.ownerId,
-          })
           // defer onPressIn until after grace period to ensure we're the final owner
           setTimeout(() => {
             if (isOwner()) {
-              debugPress('tap-press-in', {
-                id: myDebugId,
-                name: config.debugName ?? null,
-              })
               config.onPressIn?.(e)
-            } else {
-              debugPress('tap-press-in-skipped', {
-                id: myDebugId,
-                name: config.debugName ?? null,
-                ownerId: pressState.ownerId,
-              })
             }
           }, GRACE_PERIOD_MS + 1)
         })
         .onEnd((e: any) => {
           if (isOwner()) {
-            debugPress('tap-press', {
-              id: myDebugId,
-              name: config.debugName ?? null,
-            })
             config.onPress?.(e)
-          } else {
-            debugPress('tap-press-skipped', {
-              id: myDebugId,
-              name: config.debugName ?? null,
-              ownerId: pressState.ownerId,
-            })
           }
         })
         .onFinalize((e: any) => {
           if (isOwner()) {
-            debugPress('tap-finalize', {
-              id: myDebugId,
-              name: config.debugName ?? null,
-            })
             config.onPressOut?.(e)
             releaseOwnership()
-          } else {
-            debugPress('tap-finalize-skipped', {
-              id: myDebugId,
-              name: config.debugName ?? null,
-              ownerId: pressState.ownerId,
-            })
           }
         })
 
@@ -286,56 +219,21 @@ export function getGestureHandler(): GestureHandlerAccessor {
         .minDuration(longPressDuration)
         .onBegin((e: any) => {
           tryClaimOwnership()
-          debugPress('long-press-begin', {
-            id: myDebugId,
-            name: config.debugName ?? null,
-            ownerId: pressState.ownerId,
-          })
           setTimeout(() => {
             if (isOwner()) {
-              debugPress('long-press-in', {
-                id: myDebugId,
-                name: config.debugName ?? null,
-              })
               config.onPressIn?.(e)
-            } else {
-              debugPress('long-press-in-skipped', {
-                id: myDebugId,
-                name: config.debugName ?? null,
-                ownerId: pressState.ownerId,
-              })
             }
           }, GRACE_PERIOD_MS + 1)
         })
         .onStart((e: any) => {
           if (isOwner()) {
-            debugPress('long-press', {
-              id: myDebugId,
-              name: config.debugName ?? null,
-            })
             config.onLongPress?.(e)
-          } else {
-            debugPress('long-press-skipped', {
-              id: myDebugId,
-              name: config.debugName ?? null,
-              ownerId: pressState.ownerId,
-            })
           }
         })
         .onFinalize((e: any) => {
           if (isOwner()) {
-            debugPress('long-press-finalize', {
-              id: myDebugId,
-              name: config.debugName ?? null,
-            })
             config.onPressOut?.(e)
             releaseOwnership()
-          } else {
-            debugPress('long-press-finalize-skipped', {
-              id: myDebugId,
-              name: config.debugName ?? null,
-              ownerId: pressState.ownerId,
-            })
           }
         })
 
