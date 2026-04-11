@@ -3,9 +3,58 @@
  * Verifies that Portal/Sheet/Popover work correctly when using teleport
  */
 
-import { by, device, element, expect, waitFor } from 'detox'
+import { by, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { safeLaunchApp, safeReloadApp, withSync } from './utils/detox'
+
+async function navigateToNativePortal() {
+  await navigateToTestCase('NativePortalTest', 'portal-status', {
+    // Re-enabling sync after navigation is brittle on iOS once portal animations settle.
+    skipEnableSync: true,
+  })
+}
+
+async function openSelect() {
+  await withSync(() => element(by.id('native-portal-select-trigger')).tap())
+  await waitFor(element(by.id('native-portal-select-option-apple')))
+    .toBeVisible()
+    .withTimeout(10000)
+}
+
+async function closeSelect() {
+  await withSync(() => element(by.id('native-portal-select-option-apple')).tap())
+  await waitFor(element(by.id('native-portal-select-trigger')))
+    .toBeVisible()
+    .withTimeout(10000)
+}
+
+async function openPopover() {
+  await withSync(() => element(by.id('native-portal-popover-trigger')).tap())
+  await waitFor(element(by.id('native-portal-popover-content')))
+    .toBeVisible()
+    .withTimeout(5000)
+}
+
+async function closePopover() {
+  await withSync(() => element(by.id('native-portal-popover-close')).tap())
+  await waitFor(element(by.id('native-portal-popover-content')))
+    .not.toBeVisible()
+    .withTimeout(3000)
+}
+
+async function openSheet() {
+  await withSync(() => element(by.id('native-portal-sheet-trigger')).tap())
+  await waitFor(element(by.id('native-portal-sheet-frame')))
+    .toBeVisible()
+    .withTimeout(5000)
+}
+
+async function closeSheet() {
+  await withSync(() => element(by.id('native-portal-sheet-close')).tap())
+  await waitFor(element(by.id('native-portal-sheet-text')))
+    .not.toBeVisible()
+    .withTimeout(5000)
+}
 
 describe('NativePortal', () => {
   beforeAll(async () => {
@@ -14,7 +63,7 @@ describe('NativePortal', () => {
 
   beforeEach(async () => {
     await safeReloadApp()
-    await navigateToTestCase('NativePortalTest', 'portal-status')
+    await navigateToNativePortal()
   })
 
   it('should navigate to NativePortalTest test case', async () => {
@@ -31,84 +80,19 @@ describe('NativePortal', () => {
   })
 
   it('should open Select with Sheet', async () => {
-    await device.disableSynchronization()
-
-    try {
-      // tap the select trigger
-      await element(by.id('native-portal-select-trigger')).tap()
-
-      // wait for select options to appear
-      await waitFor(element(by.id('native-portal-select-option-apple')))
-        .toBeVisible()
-        .withTimeout(10000)
-
-      // close by selecting an option
-      await element(by.id('native-portal-select-option-apple')).tap()
-
-      // wait for sheet to close
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-    } finally {
-      await device.enableSynchronization()
-    }
+    await openSelect()
+    await closeSelect()
   })
 
   it('should open and close Popover', async () => {
-    await device.disableSynchronization()
-
-    try {
-      // tap popover trigger
-      await element(by.id('native-portal-popover-trigger')).tap()
-
-      // wait for popover content to appear
-      await waitFor(element(by.id('native-portal-popover-content')))
-        .toBeVisible()
-        .withTimeout(5000)
-
-      // verify text is visible inside popover
-      await expect(element(by.id('native-portal-popover-text'))).toBeVisible()
-
-      // close popover
-      await element(by.id('native-portal-popover-close')).tap()
-
-      // wait for popover to close
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
-      // popover content should no longer be visible
-      await waitFor(element(by.id('native-portal-popover-content')))
-        .not.toBeVisible()
-        .withTimeout(3000)
-    } finally {
-      await device.enableSynchronization()
-    }
+    await openPopover()
+    await expect(element(by.id('native-portal-popover-text'))).toBeVisible()
+    await closePopover()
   })
 
   it('should open and close Sheet', async () => {
-    await device.disableSynchronization()
-
-    try {
-      // tap sheet trigger
-      await element(by.id('native-portal-sheet-trigger')).tap()
-
-      // wait for sheet frame to appear
-      await waitFor(element(by.id('native-portal-sheet-frame')))
-        .toBeVisible()
-        .withTimeout(5000)
-
-      // verify text is visible inside sheet
-      await expect(element(by.id('native-portal-sheet-text'))).toBeVisible()
-
-      // close sheet by swiping down (dismissOnSnapToBottom)
-      await element(by.id('native-portal-sheet-frame')).swipe('down', 'fast')
-
-      // wait for sheet close animation
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      // sheet text should no longer be visible
-      await waitFor(element(by.id('native-portal-sheet-text')))
-        .not.toBeVisible()
-        .withTimeout(5000)
-    } finally {
-      await device.enableSynchronization()
-    }
+    await openSheet()
+    await expect(element(by.id('native-portal-sheet-text'))).toBeVisible()
+    await closeSheet()
   })
 })
