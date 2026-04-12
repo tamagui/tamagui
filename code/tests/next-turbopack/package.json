@@ -1,6 +1,6 @@
 {
   "name": "test-next-turbopack",
-  "version": "2.0.0-rc.38-1775913850640",
+  "version": "2.0.0-rc.39",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack --port 3456",
