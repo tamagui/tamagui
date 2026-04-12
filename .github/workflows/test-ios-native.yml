@@ -90,8 +90,24 @@ jobs:
           xcrun simctl boot "$DEVICE_ID" || true
           xcrun simctl bootstatus "$DEVICE_ID" -b
 
-          # install app while waiting for Metro
-          xcrun simctl install booted "${{ needs.build.outputs.built-app-path }}"
+          # install app and verify FrontBoard registration
+          APP_PATH="${{ needs.build.outputs.built-app-path }}"
+          BUNDLE_ID="com.tamagui.tamaguikitchensink"
+          for attempt in 1 2 3; do
+            xcrun simctl install booted "$APP_PATH"
+            sleep 3
+            if xcrun simctl get_app_container booted "$BUNDLE_ID" 2>/dev/null; then
+              echo "App installed and registered (attempt $attempt)"
+              break
+            fi
+            echo "::warning::App not registered after install (attempt $attempt)"
+            xcrun simctl uninstall booted "$BUNDLE_ID" 2>/dev/null || true
+            sleep 3
+            if [ $attempt -eq 3 ]; then
+              echo "::error::App failed to register after 3 attempts"
+              exit 1
+            fi
+          done
 
           # wait for Metro to be ready, fail if it never responds
           echo "Waiting for Metro..."
@@ -174,18 +190,40 @@ jobs:
       - name: Run Maestro Tests
         if: env.SKIP_MAESTRO_TESTS != 'true'
         run: |
-          # Run tests with one retry for flaky simulator detection
+          BUNDLE_ID="com.tamagui.tamaguikitchensink"
+          APP_PATH="${{ needs.build.outputs.built-app-path }}"
+
           for attempt in 1 2; do
             echo "Test attempt $attempt of 2..."
             if maestro test ./flows --exclude-tags=util --no-ansi; then
-              echo "Tests passed!"
+              echo "Tests passed on attempt $attempt"
               exit 0
             fi
+
             if [ $attempt -lt 2 ]; then
-              echo "Attempt $attempt failed, retrying..."
-              sleep 10
+              echo "Attempt $attempt failed — recovering simulator state..."
+
+              # terminate stale app, reinstall, verify registration
+              xcrun simctl terminate booted "$BUNDLE_ID" 2>/dev/null || true
+              sleep 2
+              xcrun simctl uninstall booted "$BUNDLE_ID" 2>/dev/null || true
+              xcrun simctl install booted "$APP_PATH"
+              sleep 3
+
+              if ! xcrun simctl get_app_container booted "$BUNDLE_ID" 2>/dev/null; then
+                echo "::warning::App not registered after reinstall, retrying anyway"
+              fi
+
+              # verify Metro is still alive
+              METRO_PID=$(cat /tmp/metro-pid 2>/dev/null)
+              if [ -n "$METRO_PID" ] && ! kill -0 "$METRO_PID" 2>/dev/null; then
+                echo "::error::Metro died during test run"
+                cat /tmp/metro.log | tail -50
+                exit 1
+              fi
             fi
           done
+
           echo "All attempts failed"
           exit 1
 

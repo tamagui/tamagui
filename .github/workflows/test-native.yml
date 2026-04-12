@@ -145,11 +145,48 @@ jobs:
         run: |
           xcrun simctl ui booted appearance light
 
+          # wait for SpringBoard to be fully ready (FrontBoard app registration depends on it)
+          echo "Waiting for SpringBoard readiness..."
+          for i in {1..30}; do
+            if xcrun simctl spawn booted launchctl list 2>/dev/null | grep -q SpringBoard; then
+              echo "SpringBoard ready after ~${i}s"
+              break
+            fi
+            sleep 1
+          done
+
       - name: Install App on Simulator
         if: env.SKIP_IOS_TESTS != 'true'
         working-directory: ${{ github.workspace }}
         run: |
-          xcrun simctl install booted "${{ needs.build-ios.outputs.built-app-path }}"
+          APP_PATH="${{ needs.build-ios.outputs.built-app-path }}"
+          BUNDLE_ID="com.tamagui.tamaguikitchensink"
+
+          for attempt in 1 2 3; do
+            echo "Install attempt $attempt/3..."
+            xcrun simctl install booted "$APP_PATH"
+            sleep 3
+
+            # verify FrontBoard registered the app
+            if xcrun simctl get_app_container booted "$BUNDLE_ID" 2>/dev/null; then
+              echo "App installed and registered on attempt $attempt"
+
+              # launch once to prime FrontBoard, then terminate
+              xcrun simctl launch booted "$BUNDLE_ID" 2>/dev/null || true
+              sleep 2
+              xcrun simctl terminate booted "$BUNDLE_ID" 2>/dev/null || true
+              break
+            fi
+
+            echo "::warning::App not registered with FrontBoard after install (attempt $attempt)"
+            if [ $attempt -lt 3 ]; then
+              xcrun simctl uninstall booted "$BUNDLE_ID" 2>/dev/null || true
+              sleep 5
+            else
+              echo "::error::App failed to register after 3 install attempts"
+              exit 1
+            fi
+          done
 
       - name: Setup Bun
         if: env.SKIP_IOS_TESTS != 'true'
