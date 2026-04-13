@@ -5,8 +5,7 @@ import * as React from 'react'
 // consumer's useLayoutEffect could fire before this ref update, causing stale
 // values. Falls back to useLayoutEffect for React < 18.3. No SSR branch: SSR
 // doesn't run layout effects, so the non-SSR path is correct everywhere.
-const useIsomorphicInsertionEffect =
-  React.useInsertionEffect || React.useLayoutEffect
+const useIsomorphicInsertionEffect = React.useInsertionEffect || React.useLayoutEffect
 
 // keeps a reference to the current value easily
 
