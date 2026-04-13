@@ -26,9 +26,11 @@ import type {
 
 // Lazy load PanResponder only on native to avoid SSR issues
 const getPanResponder = (): typeof PanResponderType | null => {
-  if (isWeb) return null
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  return require('react-native').PanResponder
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    return require('react-native').PanResponder
+  }
+  return null
 }
 import { TOAST_CONTEXT, TOAST_NAME } from './constants'
 import { ToastAnnounce } from './ToastAnnounce'
