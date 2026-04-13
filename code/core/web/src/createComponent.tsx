@@ -1336,8 +1336,11 @@ export function createComponent<
                 if (process.env.TAMAGUI_TARGET === 'web') {
                   // @ts-ignore
                   onClick?.(e)
-                  // matches RN pressable behavior
-                  e.stopPropagation()
+                  // matches RN pressable behavior - only when an explicit press
+                  // handler is set, so pressStyle alone doesn't swallow clicks
+                  if (onPress || onClick) {
+                    e.stopPropagation()
+                  }
                 }
                 onPress?.(e)
                 if (process.env.TAMAGUI_TARGET === 'web') {
