@@ -256,6 +256,10 @@ export const LocationNotification = BentoComponentStub
     }),
 
     one({
+      setupFile: {
+        server: './setup.server.ts',
+      },
+
       server: {
         cacheControl: {
           'fonts/**': 'public, max-age=604800, stale-while-revalidate=86400',
