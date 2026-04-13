@@ -11,7 +11,7 @@ Let's take a quick look through some of the useful other exports in
 [Constants are re-exported from @tamagui/constants](https://github.com/tamagui/tamagui/blob/main/code/core/constants/src/constants.ts):
 
 - `isWeb` - True if targeting the web. Will be true both for SSR and client.
-- `isBrowser` - `typeof window !== 'undefined'`
+- `isBrowser` - `typeof document !== 'undefined'`
 - `isServer` - `isWeb && !isBrowser`.
 - `isClient` - `isWeb && isBrowser`.
 - `useIsomorphicLayoutEffect` - `isServer ? useEffect : useLayoutEffect`. Helper
