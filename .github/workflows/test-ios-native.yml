@@ -9,7 +9,7 @@ on:
 
 env:
   test_container_app_path: code/kitchen-sink
-  MAESTRO_DRIVER_STARTUP_TIMEOUT: 240000
+  MAESTRO_DRIVER_STARTUP_TIMEOUT: 360000
 
 jobs:
   build:
@@ -169,22 +169,16 @@ jobs:
           # WarmUp.yaml does clearState:true for a clean first launch.
           # Subsequent test flows use OpenApp.yaml (no clearState) so Hermes
           # bytecode cache persists across launches = much faster restarts.
+          # if WarmUp fails, the Maestro xcuitest driver (port 7001) is usually
+          # dead — every subsequent flow will fail with "Failed to connect to
+          # /127.0.0.1:7001", so fail fast rather than burn 15+ min on doomed retries.
           if ! maestro test ./flows/WarmUp.yaml --no-ansi; then
-            echo "::warning::WarmUp failed — checking if app crashes on launch"
-            # give the app a moment to crash if it's going to
-            sleep 3
-            # try to launch and check if process stays alive
-            xcrun simctl launch booted com.tamagui.tamaguikitchensink 2>/dev/null || true
-            sleep 5
-            if ! xcrun simctl spawn booted launchctl list 2>/dev/null | grep -q tamaguikitchensink; then
-              echo "::error::App is not running after launch — likely crashing on startup"
-              echo "=== Recent app logs ==="
-              tail -50 /tmp/simulator-app.log 2>/dev/null || echo "No app logs"
-              echo "=== Metro output ==="
-              tail -50 /tmp/metro.log 2>/dev/null || echo "No metro logs"
-              exit 1
-            fi
-            echo "App appears to be running, proceeding with tests despite WarmUp failure"
+            echo "::error::WarmUp failed — Maestro driver is likely dead, aborting"
+            echo "=== Recent app logs ==="
+            tail -50 /tmp/simulator-app.log 2>/dev/null || echo "No app logs"
+            echo "=== Metro output ==="
+            tail -50 /tmp/metro.log 2>/dev/null || echo "No metro logs"
+            exit 1
           fi
 
       - name: Run Maestro Tests
