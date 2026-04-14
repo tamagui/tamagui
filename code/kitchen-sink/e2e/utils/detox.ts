@@ -18,7 +18,13 @@ import { device } from 'detox'
 export async function safeLaunchApp(
   params?: Parameters<typeof device.launchApp>[0]
 ): Promise<void> {
-  await device.launchApp(params as any)
+  await device.launchApp({
+    ...params,
+    launchArgs: {
+      ...params?.launchArgs,
+      detoxEnableSynchronization: 0,
+    },
+  } as any)
   await device.disableSynchronization()
 }
 

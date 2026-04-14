@@ -4,6 +4,7 @@
  */
 
 import { by, device, element, waitFor } from 'detox'
+import { withSync } from './detox'
 
 /**
  * Fast navigation to any test case using the quick-nav grid
@@ -29,7 +30,7 @@ export async function navigateToTestCase(
   await new Promise((r) => setTimeout(r, 500))
 
   // tap toggle button to expand the quick-nav section
-  await element(by.id('toggle-test-cases')).tap()
+  await withSync(() => element(by.id('toggle-test-cases')).tap())
 
   // wait for the quick-nav element to appear
   await waitFor(element(by.id(`detox-nav-${testCaseName}`)))
@@ -37,7 +38,7 @@ export async function navigateToTestCase(
     .withTimeout(15000)
 
   // tap the quick-nav element for this test case
-  await element(by.id(`detox-nav-${testCaseName}`)).tap()
+  await withSync(() => element(by.id(`detox-nav-${testCaseName}`)).tap())
 
   // wait for stack screen transition animation to complete
   await new Promise((r) => setTimeout(r, 800))

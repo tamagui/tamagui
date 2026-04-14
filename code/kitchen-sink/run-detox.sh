@@ -21,15 +21,43 @@
 #   SKIP_BUILD=1        - Skip build check entirely
 #   SKIP_METRO=1        - Don't start Metro (assume it's running)
 #   DETOX_DEVICE=name   - iOS simulator device type (default: iPhone 15)
+#   DETOX_METRO_PORT=n  - Metro port reserved for Detox (default: 8082 on iOS, 8081 on Android)
 #
 
 set -e
 
 PLATFORM="${1:-ios}"  # ios or android
+DEFAULT_DETOX_METRO_PORT=8082
+if [ "$PLATFORM" = "android" ]; then
+  # Expo dev-client on Android expects the default Metro port unless the app is explicitly told otherwise.
+  DEFAULT_DETOX_METRO_PORT=8081
+fi
+export DETOX_METRO_PORT="${DETOX_METRO_PORT:-$DEFAULT_DETOX_METRO_PORT}"
+
+detect_android_sdk() {
+  if [ -n "$ANDROID_SDK_ROOT" ] && [ -d "$ANDROID_SDK_ROOT" ]; then
+    return
+  fi
+
+  for candidate in \
+    "$HOME/Library/Android/sdk" \
+    "$HOME/Android/Sdk"
+  do
+    if [ -d "$candidate" ]; then
+      export ANDROID_SDK_ROOT="$candidate"
+      export ANDROID_HOME="$candidate"
+      return
+    fi
+  done
+}
 
 # --- Prerequisites check ---
 check_prerequisites() {
   local missing=false
+
+  if [ "$PLATFORM" = "android" ]; then
+    detect_android_sdk
+  fi
 
   if ! command -v detox &> /dev/null; then
     echo "detox-cli not found. Install with: npm install -g detox-cli"
@@ -38,6 +66,11 @@ check_prerequisites() {
 
   if [ "$PLATFORM" = "ios" ] && ! command -v applesimutils &> /dev/null; then
     echo "applesimutils not found. Install with: brew tap wix/brew && brew install applesimutils"
+    missing=true
+  fi
+
+  if [ "$PLATFORM" = "android" ] && [ -z "$ANDROID_SDK_ROOT" ]; then
+    echo "ANDROID_SDK_ROOT is not set and no local Android SDK was found"
     missing=true
   fi
 
@@ -100,7 +133,7 @@ cleanup() {
 trap cleanup EXIT
 
 is_metro_running() {
-  curl -s http://localhost:8081/status > /dev/null 2>&1
+  curl -s "http://localhost:${DETOX_METRO_PORT}/status" > /dev/null 2>&1
 }
 
 DID_BUILD=false
@@ -141,6 +174,10 @@ echo "========================================"
 echo "Platform:    $PLATFORM"
 echo "Config:      $CONFIG"
 echo "Device:      ${DETOX_DEVICE:-iPhone 15}"
+echo "Metro port:  $DETOX_METRO_PORT"
+if [ "$PLATFORM" = "android" ]; then
+  echo "Android SDK: ${ANDROID_SDK_ROOT:-<unset>}"
+fi
 echo "Test filter: ${TEST_FILTER:-<all tests>}"
 echo ""
 
@@ -166,10 +203,10 @@ fi
 if [ "$SKIP_METRO" != "1" ]; then
   echo "=== Step 2: Metro bundler ==="
   if is_metro_running; then
-    echo "Metro already running on port 8081"
+    echo "Metro already running on port $DETOX_METRO_PORT"
   else
-    echo "Starting Metro..."
-    bun run start > /tmp/metro-detox.log 2>&1 &
+    echo "Starting Metro on port $DETOX_METRO_PORT..."
+    EXPO_NO_TELEMETRY=true npx expo start --dev-client --offline --port "$DETOX_METRO_PORT" > /tmp/metro-detox.log 2>&1 &
     METRO_PID=$!
     STARTED_METRO=true
 

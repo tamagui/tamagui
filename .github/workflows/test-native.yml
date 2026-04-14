@@ -24,6 +24,18 @@ jobs:
   # iOS Build & Test
   # ─────────────────────────────────────────────────────────────────────────────
 
+  validate-ios-detox-shards:
+    name: Validate iOS Detox Shards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Validate shard coverage
+        run: node .github/scripts/check-ios-detox-shards.mjs
+
   build-ios:
     name: Build iOS App
     uses: ./.github/workflows/build-ios-kitchensink-app.yml
@@ -33,7 +45,9 @@ jobs:
 
   test-ios:
     name: iOS Detox Tests (${{ matrix.shard_name }})
-    needs: build-ios
+    needs:
+      - build-ios
+      - validate-ios-detox-shards
     runs-on: macos-15
     timeout-minutes: 60
     strategy:
@@ -49,7 +63,7 @@ jobs:
           - shard_name: '2/3'
             test_files: 'e2e/SheetScrollableDrag.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts e2e/NativePortal.test.ts e2e/MediaQueryGtMd.test.ts'
           - shard_name: '3/3'
-            test_files: 'e2e/SelectRemount.test.ts e2e/CompilerExtraction.test.ts e2e/CompilerTernaryActive.test.ts e2e/SelectAndroidOnPress.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts e2e/ShorthandVariables.test.ts'
+            test_files: 'e2e/SelectRemount.test.ts e2e/CompilerExtraction.test.ts e2e/CompilerTernaryActive.test.ts e2e/MenuRadioGroup.test.ts e2e/SelectAndroidOnPress.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts e2e/ShorthandVariables.test.ts'
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}

@@ -241,13 +241,19 @@ export const createNativeMenu = (
     return resolved
   }
 
+  type RadioContext = {
+    value?: string
+    onValueChange?: (value: string) => void
+  }
+
   // transform children tree for zeego compatibility
   function transformChildren(
     menu: ZeegoMenuModule,
     map: ComponentMap,
     children: React.ReactNode,
     shouldReverseOnIos = false,
-    triggerBoundaryHandlers?: TriggerPressBoundaryHandlers
+    triggerBoundaryHandlers?: TriggerPressBoundaryHandlers,
+    radioContext?: RadioContext
   ): React.ReactNode {
     const result: React.ReactNode[] = []
 
@@ -267,7 +273,8 @@ export const createNativeMenu = (
           map,
           props.children as React.ReactNode,
           false,
-          triggerBoundaryHandlers
+          triggerBoundaryHandlers,
+          radioContext
         )
         React.Children.forEach(inner, (c) => result.push(c))
         return
@@ -280,7 +287,8 @@ export const createNativeMenu = (
           map,
           props.children as React.ReactNode,
           false,
-          triggerBoundaryHandlers
+          triggerBoundaryHandlers,
+          radioContext
         )
         React.Children.forEach(inner, (c) => result.push(c))
         return
@@ -302,6 +310,64 @@ export const createNativeMenu = (
             onPressIn: composeHandlers(claim, props.onPressIn),
             onPressOut: composeHandlers(props.onPressOut, release),
           } as any)
+        )
+        return
+      }
+
+      // RadioGroup: render as a zeego Group and pipe value/onValueChange
+      // down to any RadioItem descendants via radioContext
+      if (displayName.includes('RadioGroup')) {
+        const {
+          value: rgValue,
+          onValueChange: rgOnValueChange,
+          children: rgChildren,
+          ...rest
+        } = props as Record<string, any>
+
+        result.push(
+          React.createElement(
+            menu.Group,
+            { ...rest, key: child.key } as any,
+            transformChildren(
+              menu,
+              map,
+              rgChildren as React.ReactNode,
+              false,
+              triggerBoundaryHandlers,
+              { value: rgValue, onValueChange: rgOnValueChange }
+            )
+          )
+        )
+        return
+      }
+
+      // RadioItem: zeego has no radio primitive, so emit a CheckboxItem whose
+      // 'on'/'off' state is derived from the enclosing RadioGroup's value.
+      if (displayName.includes('RadioItem') && radioContext) {
+        const {
+          value: itemValue,
+          children: rChildren,
+          ...rest
+        } = props as Record<string, any>
+
+        const cleanChildren = React.Children.map(rChildren, (c) => {
+          if (!React.isValidElement(c)) return c
+          const dn = (c.type as { displayName?: string })?.displayName || ''
+          if (dn.includes('ItemIndicator')) return null
+          return c
+        })
+
+        result.push(
+          React.createElement(
+            menu.CheckboxItem,
+            {
+              ...rest,
+              key: child.key,
+              value: itemValue === radioContext.value ? 'on' : 'off',
+              onValueChange: () => radioContext.onValueChange?.(itemValue),
+            } as any,
+            cleanChildren
+          )
         )
         return
       }
@@ -361,7 +427,8 @@ export const createNativeMenu = (
                   map,
                   childChildren as React.ReactNode,
                   shouldReverse,
-                  triggerBoundaryHandlers
+                  triggerBoundaryHandlers,
+                  radioContext
                 )
               : childChildren
           )

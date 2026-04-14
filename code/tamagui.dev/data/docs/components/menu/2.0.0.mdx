@@ -564,6 +564,105 @@ A menu item with a checkbox that can be toggled on and off.
   ]}
 />
 
+### Menu.RadioGroup
+
+Groups a set of `Menu.RadioItem` and manages the selected value. Works on web
+and native — on native the group is rendered as a native menu group and each
+`RadioItem` is mapped onto the OS checkmark state so exactly one item shows as
+selected at a time.
+
+```tsx
+const [color, setColor] = React.useState('blue')
+
+<Menu.RadioGroup value={color} onValueChange={setColor}>
+  <Menu.RadioItem key="red" value="red">
+    <Menu.ItemIndicator>
+      <Check size={16} />
+    </Menu.ItemIndicator>
+    <Menu.ItemTitle>Red</Menu.ItemTitle>
+  </Menu.RadioItem>
+  <Menu.RadioItem key="blue" value="blue">
+    <Menu.ItemIndicator>
+      <Check size={16} />
+    </Menu.ItemIndicator>
+    <Menu.ItemTitle>Blue</Menu.ItemTitle>
+  </Menu.RadioItem>
+</Menu.RadioGroup>
+```
+
+<PropsTable
+  data={[
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'One or more Menu.RadioItem components.',
+    },
+    {
+      name: 'value',
+      type: 'string',
+      required: false,
+      description: 'The controlled value of the currently selected item.',
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string) => void',
+      required: false,
+      description: 'Called when the selected value changes.',
+    },
+  ]}
+/>
+
+### Menu.RadioItem
+
+An item that can be selected inside a `Menu.RadioGroup`. Render a
+`Menu.ItemIndicator` inside to show a checkmark for the active value on web;
+on native the OS draws its own checkmark and the `ItemIndicator` child is
+dropped automatically.
+
+<PropsTable
+  data={[
+    {
+      name: 'key',
+      type: 'string',
+      required: true,
+      description: 'Unique identifier for the radio item.',
+    },
+    {
+      name: 'value',
+      type: 'string',
+      required: true,
+      description:
+        'The value of this item. When it matches the parent RadioGroup value, the item is selected.',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Prevents interaction and dims the item.',
+    },
+    {
+      name: 'hidden',
+      type: 'boolean',
+      required: false,
+      description: 'Hides the item from the menu.',
+    },
+    {
+      name: 'onFocus',
+      type: '() => void',
+      required: false,
+      description: 'Called when the item receives focus.',
+    },
+    {
+      name: 'onBlur',
+      type: '() => void',
+      required: false,
+      description: 'Called when the item loses focus.',
+    },
+  ]}
+/>
+
 ### Menu.ItemIndicator
 
 Use inside `Menu.CheckboxItem` or `Menu.RadioItem` to indicate when an item is checked.

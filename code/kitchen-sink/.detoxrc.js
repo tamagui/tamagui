@@ -1,6 +1,53 @@
 // force single worker - multiple workers cause ECOMPROMISED lock file errors
 // see: https://github.com/wix/Detox/issues/4210
+const { execFileSync } = require('node:child_process')
+const { existsSync } = require('node:fs')
+const { join } = require('node:path')
+
 const maxWorkers = 1
+// Android dev-client launches assume the default Metro port unless overridden explicitly.
+const detoxMetroPort = process.env.DETOX_METRO_PORT || '8081'
+const defaultAndroidSdkRoot =
+  process.env.ANDROID_SDK_ROOT ||
+  process.env.ANDROID_HOME ||
+  join(process.env.HOME || '', 'Library/Android/sdk')
+const simulatorDevice = process.env.DETOX_DEVICE_UDID
+  ? { id: process.env.DETOX_DEVICE_UDID }
+  : { type: process.env.DETOX_DEVICE || 'iPhone 16' }
+
+function detectLocalAvdName() {
+  if (process.env.DETOX_AVD_NAME) {
+    return process.env.DETOX_AVD_NAME
+  }
+
+  const sdkRoot =
+    process.env.ANDROID_SDK_ROOT ||
+    process.env.ANDROID_HOME ||
+    join(process.env.HOME || '', 'Library/Android/sdk')
+  const emulatorPath = join(sdkRoot, 'emulator', 'emulator')
+
+  if (!existsSync(emulatorPath)) {
+    return 'Pixel_6_API_33_8GB'
+  }
+
+  try {
+    const avds = execFileSync(emulatorPath, ['-list-avds'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    })
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+
+    const preferred = ['Pixel_6_API_33_8GB', 'Pixel_6_API_31', 'Medium_Phone_API_36.1']
+
+    return preferred.find((name) => avds.includes(name)) || avds[0] || 'Pixel_6_API_33_8GB'
+  } catch {
+    return 'Pixel_6_API_33_8GB'
+  }
+}
+
+const localAndroidAvdName = detectLocalAvdName()
 
 /** @type {Detox.DetoxConfig} */
 module.exports = {
@@ -40,7 +87,7 @@ module.exports = {
         'xcodebuild -workspace ios/tamaguikitchensink.xcworkspace -scheme tamaguikitchensink -configuration Debug -sdk iphonesimulator SYMROOT="$(pwd)/ios/build/Build/Products" OBJROOT="$(pwd)/ios/build/Build/Intermediates.noindex"',
       // tell RCTBundleURLProvider where metro is (auto-detection fails with dev-client)
       launchArgs: {
-        RCT_jsLocation: 'localhost',
+        RCT_jsLocation: `localhost:${detoxMetroPort}`,
       },
     },
     'ios.release': {
@@ -57,23 +104,21 @@ module.exports = {
       testBinaryPath:
         'android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk',
       build:
-        'cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle',
-      // Port 8081 for Metro, port 8099 for Detox server (fixed in native-ci scripts)
-      reversePorts: [8081, 8099],
+        `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle`,
+      // Dedicated Metro port for Detox plus the Detox server port.
+      reversePorts: [Number(detoxMetroPort), 8099],
     },
     'android.release': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
       build:
-        'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release',
+        `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release`,
     },
   },
   devices: {
     simulator: {
       type: 'ios.simulator',
-      device: {
-        type: process.env.DETOX_DEVICE || 'iPhone 16',
-      },
+      device: simulatorDevice,
     },
     attached: {
       type: 'android.attached',
@@ -85,7 +130,7 @@ module.exports = {
       type: 'android.emulator',
       device: {
         // Local development - use your own AVD name (default matches what native-ci expects)
-        avdName: process.env.DETOX_AVD_NAME || 'Pixel_6_API_33_8GB',
+        avdName: localAndroidAvdName,
       },
     },
     // CI emulator - created by reactivecircus/android-emulator-runner

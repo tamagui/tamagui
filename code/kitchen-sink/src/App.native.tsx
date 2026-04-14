@@ -4,6 +4,7 @@ import { getGestureHandler } from '@tamagui/native'
 
 interface TestLaunchArgs {
   disableGestureHandler?: boolean
+  initialTestCase?: string
 }
 
 const launchArgs = LaunchArguments.value<TestLaunchArgs>()
@@ -73,7 +74,7 @@ export default function App() {
           <SafeAreaProvider>
             <ThemeContext.Provider value={themeContext}>
               <Provider defaultTheme={resolvedTheme as any}>
-                <Navigation />
+                <Navigation initialTestCase={launchArgs.initialTestCase} />
               </Provider>
             </ThemeContext.Provider>
           </SafeAreaProvider>
