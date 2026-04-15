@@ -248,7 +248,11 @@ if [ "$HEADLESS" = "1" ]; then
 fi
 
 if [ -n "$TEST_FILTER" ]; then
-  DETOX_ARGS="$DETOX_ARGS -t \"$TEST_FILTER\""
+  if [ -f "$TEST_FILTER" ] || [[ "$TEST_FILTER" == *".test."* ]] || [[ "$TEST_FILTER" == e2e/* ]]; then
+    DETOX_ARGS="$DETOX_ARGS \"$TEST_FILTER\""
+  else
+    DETOX_ARGS="$DETOX_ARGS -t \"$TEST_FILTER\""
+  fi
 fi
 
 # run with eval to handle quoted test filter

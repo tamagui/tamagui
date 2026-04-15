@@ -5,6 +5,7 @@
 import { composeEventHandlers } from '@tamagui/helpers'
 import { getGestureHandler } from '@tamagui/native'
 import React, { useRef } from 'react'
+import { Platform } from 'react-native'
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
 

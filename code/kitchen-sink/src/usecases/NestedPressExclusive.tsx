@@ -15,7 +15,23 @@ import { Button, Text, YStack, XStack } from 'tamagui'
 export function NestedPressExclusive() {
   const [parentPressCount, setParentPressCount] = useState(0)
   const [childPressCount, setChildPressCount] = useState(0)
+  const [childPressInCount, setChildPressInCount] = useState(0)
+  const [childPressOutCount, setChildPressOutCount] = useState(0)
+  const [soloPressCount, setSoloPressCount] = useState(0)
+  const [soloPressInCount, setSoloPressInCount] = useState(0)
+  const [soloPressOutCount, setSoloPressOutCount] = useState(0)
   const [lastPressed, setLastPressed] = useState<'none' | 'parent' | 'child'>('none')
+
+  const resetCounts = () => {
+    setParentPressCount(0)
+    setChildPressCount(0)
+    setChildPressInCount(0)
+    setChildPressOutCount(0)
+    setSoloPressCount(0)
+    setSoloPressInCount(0)
+    setSoloPressOutCount(0)
+    setLastPressed('none')
+  }
 
   return (
     <YStack gap="$4" padding="$4" testID="nested-press-root">
@@ -25,6 +41,25 @@ export function NestedPressExclusive() {
       <Text fontSize="$3" color="$gray11">
         Tapping the button should only fire child onPress, not parent.
       </Text>
+
+      <YStack gap="$2">
+        <Text fontSize="$4" fontWeight="bold">
+          Standalone Tamagui Button
+        </Text>
+        <Button
+          testID="tamagui-button-solo"
+          onPressIn={() => setSoloPressInCount((c) => c + 1)}
+          onPressOut={() => setSoloPressOutCount((c) => c + 1)}
+          onPress={() => setSoloPressCount((c) => c + 1)}
+        >
+          Tamagui Button (solo)
+        </Button>
+        <XStack gap="$4">
+          <Text testID="solo-press-count">Solo: {soloPressCount}</Text>
+          <Text testID="solo-press-in-count">Solo in: {soloPressInCount}</Text>
+          <Text testID="solo-press-out-count">Solo out: {soloPressOutCount}</Text>
+        </XStack>
+      </YStack>
 
       {/* RN Pressable parent with Tamagui Button child */}
       <Pressable
@@ -44,6 +79,8 @@ export function NestedPressExclusive() {
         </Text>
         <Button
           testID="tamagui-button-child"
+          onPressIn={() => setChildPressInCount((c) => c + 1)}
+          onPressOut={() => setChildPressOutCount((c) => c + 1)}
           onPress={() => {
             setChildPressCount((c) => c + 1)
             setLastPressed('child')
@@ -59,7 +96,14 @@ export function NestedPressExclusive() {
           <Text testID="parent-press-count">Parent: {parentPressCount}</Text>
           <Text testID="child-press-count">Child: {childPressCount}</Text>
         </XStack>
+        <XStack gap="$4">
+          <Text testID="child-press-in-count">Child in: {childPressInCount}</Text>
+          <Text testID="child-press-out-count">Child out: {childPressOutCount}</Text>
+        </XStack>
         <Text testID="last-pressed">Last pressed: {lastPressed}</Text>
+        <Button testID="nested-press-reset" size="$3" onPress={resetCounts}>
+          Reset counts
+        </Button>
       </YStack>
 
       {/* also test nested Tamagui components (should also be exclusive) */}

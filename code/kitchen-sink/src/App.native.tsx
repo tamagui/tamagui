@@ -5,6 +5,7 @@ import { getGestureHandler } from '@tamagui/native'
 interface TestLaunchArgs {
   disableGestureHandler?: boolean
   initialTestCase?: string
+  directUseCase?: string
 }
 
 const launchArgs = LaunchArguments.value<TestLaunchArgs>()
@@ -19,6 +20,7 @@ import React from 'react'
 import { Appearance, LogBox, useColorScheme } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { PortalProvider } from 'react-native-teleport'
+import { H1 } from 'tamagui'
 import { Navigation } from './Navigation'
 import { Provider } from './provider'
 import { ThemeContext, type ThemeMode } from './useKitchenSinkTheme'
@@ -67,6 +69,8 @@ export default function App() {
     return null
   }
 
+  const DirectUseCase = getDirectUseCaseComponent(launchArgs.directUseCase)
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <KeyboardProvider>
@@ -74,7 +78,11 @@ export default function App() {
           <SafeAreaProvider>
             <ThemeContext.Provider value={themeContext}>
               <Provider defaultTheme={resolvedTheme as any}>
-                <Navigation initialTestCase={launchArgs.initialTestCase} />
+                {DirectUseCase ? (
+                  <DirectUseCase />
+                ) : (
+                  <Navigation initialTestCase={launchArgs.initialTestCase} />
+                )}
               </Provider>
             </ThemeContext.Provider>
           </SafeAreaProvider>
@@ -82,4 +90,14 @@ export default function App() {
       </KeyboardProvider>
     </GestureHandlerRootView>
   )
+}
+
+function getDirectUseCaseComponent(name?: string): React.ComponentType | null {
+  if (!name) {
+    return null
+  }
+
+  const useCases = require('./usecases') as Record<string, React.ComponentType | undefined>
+
+  return useCases[name] || (() => <H1 testID="direct-usecase-not-found">Not found: {name}</H1>)
 }

@@ -1,3 +1,4 @@
+import { useRoute } from '@react-navigation/native'
 import { ScrollView } from 'react-native'
 import { createParam } from 'solito'
 import { H1, YStack } from 'tamagui'
@@ -11,13 +12,16 @@ const nameMap = {
 }
 
 export function TestScreen() {
+  const route = useRoute<any>()
   const [id] = useParam('id')
+  const routeId = route?.params?.id
+  const resolvedId = id || routeId
 
-  if (!id) {
+  if (!resolvedId) {
     return null
   }
 
-  const name = id
+  const name = resolvedId
     .split('-')
     .map((segment) => {
       return segment[0].toUpperCase() + segment.slice(1)
