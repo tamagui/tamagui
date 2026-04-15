@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/use-escape-keydown",
-  "version": "2.0.0-rc.40-1776290502350",
+  "version": "2.0.0-rc.41",
   "files": [
     "src",
     "types",
