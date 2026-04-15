@@ -13,6 +13,21 @@ let externalPressDebugId = 0
 
 type PressOwnerSource = 'internal' | 'external' | null
 
+function getEventPointerId(e: any): number | null {
+  const pointerId =
+    e?.pointerId ??
+    e?.pointer?.id ??
+    e?.event?.pointerId ??
+    e?.event?.pointer?.id ??
+    e?.nativeEvent?.pointerId ??
+    e?.nativeEvent?.id ??
+    e?.event?.nativeEvent?.pointerId ??
+    e?.event?.nativeEvent?.id ??
+    null
+
+  return pointerId == null || Number.isNaN(pointerId) ? null : Number(pointerId)
+}
+
 /**
  * Global press coordination - ensures only innermost pressable fires press events,
  * matching RN Pressable/responder system semantics where deepest component wins.
@@ -23,6 +38,7 @@ const pressState = {
   owner: null as object | null,
   ownerId: null as number | null,
   ownerSource: null as PressOwnerSource,
+  ownerPointerId: null as number | null,
   timestamp: 0,
 }
 
@@ -57,6 +73,7 @@ function resetPressOwner() {
   pressState.owner = null
   pressState.ownerId = null
   pressState.ownerSource = null
+  pressState.ownerPointerId = null
   pressState.timestamp = 0
 }
 
@@ -130,19 +147,24 @@ export function getGestureHandler(): GestureHandlerAccessor {
         ? +process.env.TAMAGUI_RNGH_PRESS_DELAY
         : 24
 
-      const tryClaimOwnership = () => {
+      const tryClaimOwnership = (e: any) => {
         const now = Date.now()
         resetStaleOwner(now, config.debugName)
 
-        // within grace period, last claimer wins (child fires after parent)
-        const withinGrace = now - pressState.timestamp < GRACE_PERIOD_MS
+        const currentPointerId = getEventPointerId(e)
+        const isSameTouchPointer =
+          currentPointerId == null ||
+          pressState.ownerPointerId == null ||
+          pressState.ownerPointerId === currentPointerId
+
         if (
           pressState.owner === null ||
-          (withinGrace && pressState.ownerSource !== 'external')
+          (pressState.ownerSource === 'internal' && isSameTouchPointer)
         ) {
           pressState.owner = myToken
           pressState.ownerId = myDebugId
           pressState.ownerSource = 'internal'
+          pressState.ownerPointerId = currentPointerId
           pressState.timestamp = now
         }
         return pressState.owner === myToken
@@ -187,7 +209,7 @@ export function getGestureHandler(): GestureHandlerAccessor {
         .onBegin((e: any) => {
           didLongPress = false
           didPressIn = false
-          tryClaimOwnership()
+          tryClaimOwnership(e)
           // Defer onPressIn until after the grace window so child pressables
           // can steal ownership, but flush it on tap end for very fast taps.
           schedulePressIn(e)
