@@ -41,7 +41,9 @@ function detectLocalAvdName() {
 
     const preferred = ['Pixel_6_API_33_8GB', 'Pixel_6_API_31', 'Medium_Phone_API_36.1']
 
-    return preferred.find((name) => avds.includes(name)) || avds[0] || 'Pixel_6_API_33_8GB'
+    return (
+      preferred.find((name) => avds.includes(name)) || avds[0] || 'Pixel_6_API_33_8GB'
+    )
   } catch {
     return 'Pixel_6_API_33_8GB'
   }
@@ -103,16 +105,14 @@ module.exports = {
       binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
       testBinaryPath:
         'android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk',
-      build:
-        `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle`,
+      build: `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle`,
       // Dedicated Metro port for Detox plus the Detox server port.
       reversePorts: [Number(detoxMetroPort), 8099],
     },
     'android.release': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
-      build:
-        `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release`,
+      build: `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release`,
     },
   },
   devices: {

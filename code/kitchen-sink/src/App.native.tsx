@@ -97,7 +97,12 @@ function getDirectUseCaseComponent(name?: string): React.ComponentType | null {
     return null
   }
 
-  const useCases = require('./usecases') as Record<string, React.ComponentType | undefined>
+  const useCases = require('./usecases') as Record<
+    string,
+    React.ComponentType | undefined
+  >
 
-  return useCases[name] || (() => <H1 testID="direct-usecase-not-found">Not found: {name}</H1>)
+  return (
+    useCases[name] || (() => <H1 testID="direct-usecase-not-found">Not found: {name}</H1>)
+  )
 }
