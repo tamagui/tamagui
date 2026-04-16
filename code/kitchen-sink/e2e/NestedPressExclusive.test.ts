@@ -30,8 +30,11 @@ describe('NestedPressExclusive', () => {
         directUseCase: 'NestedPressExclusive',
       },
     })
+    // use toExist (not toBeVisible) — the root YStack's intrinsic height
+    // can exceed the viewport so <75% is on screen, which breaks
+    // toBeVisible even though the screen rendered fine.
     await waitFor(element(by.id('nested-press-root')))
-      .toBeVisible()
+      .toExist()
       .withTimeout(60000)
   })
 

@@ -5,7 +5,7 @@
 import { composeEventHandlers } from '@tamagui/helpers'
 import { getGestureHandler } from '@tamagui/native'
 import React, { useRef } from 'react'
-import { Platform } from 'react-native'
+import { Platform, View } from 'react-native'
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
@@ -195,5 +195,33 @@ export function wrapWithGestureDetector(
     return content
   }
 
-  return React.createElement(GestureDetector, { gesture: gestureToUse }, content)
+  const detector = React.createElement(
+    GestureDetector,
+    { gesture: gestureToUse },
+    content
+  )
+
+  // wrap in a responder-claiming View OUTSIDE the GestureDetector.
+  // this blocks parent RN Pressable/TouchableOpacity from firing when
+  // a press lands on this component, without causing the RNGH deadlock
+  // that happens when responder claims are applied to a view inside
+  // the gesture-managed subtree (RNGH intercepts UIManager.setJSResponder
+  // globally — when the claimant is one of its own gesture targets it
+  // creates a coordination conflict, especially at scale on first mount).
+  return React.createElement(
+    View,
+    {
+      collapsable: false,
+      // display: contents keeps the wrapper transparent to layout (new arch /
+      // Fabric) so it doesn't become an extra flex child and shift siblings.
+      style: responderWrapperStyle,
+      onStartShouldSetResponder: responderClaim,
+      onResponderTerminationRequest: responderDeny,
+    },
+    detector
+  )
 }
+
+const responderClaim = () => true
+const responderDeny = () => false
+const responderWrapperStyle = { display: 'contents' } as const
