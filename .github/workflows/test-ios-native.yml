@@ -185,7 +185,7 @@ jobs:
         if: env.SKIP_MAESTRO_TESTS != 'true'
         run: |
           BUNDLE_ID="com.tamagui.tamaguikitchensink"
-          APP_PATH="${{ needs.build.outputs.built-app-path }}"
+          APP_PATH="${{ github.workspace }}/${{ needs.build.outputs.built-app-path }}"
 
           for attempt in 1 2; do
             echo "Test attempt $attempt of 2..."
