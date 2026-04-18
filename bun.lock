@@ -3353,7 +3353,6 @@
         "@tamagui/use-debounce": "workspace:*",
         "@tamagui/use-force-update": "workspace:*",
         "@tamagui/use-window-dimensions": "workspace:*",
-        "@tamagui/v2-toast": "workspace:*",
         "@tamagui/visually-hidden": "workspace:*",
         "@tamagui/z-index-stack": "workspace:*",
       },
@@ -3473,37 +3472,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
-      },
-    },
-    "code/ui/v2-toast": {
-      "name": "@tamagui/v2-toast",
-      "version": "2.0.0-rc.41-1776298929157",
-      "dependencies": {
-        "@tamagui/animate-presence": "workspace:*",
-        "@tamagui/collection": "workspace:*",
-        "@tamagui/compose-refs": "workspace:*",
-        "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
-        "@tamagui/create-context": "workspace:*",
-        "@tamagui/dismissable": "workspace:*",
-        "@tamagui/helpers": "workspace:*",
-        "@tamagui/native": "workspace:*",
-        "@tamagui/polyfill-dev": "workspace:*",
-        "@tamagui/portal": "workspace:*",
-        "@tamagui/stacks": "workspace:*",
-        "@tamagui/start-transition": "workspace:*",
-        "@tamagui/text": "workspace:*",
-        "@tamagui/use-controllable-state": "workspace:*",
-        "@tamagui/visually-hidden": "workspace:*",
-      },
-      "devDependencies": {
-        "@tamagui/build": "workspace:*",
-        "react": ">=19",
-        "react-native": "0.83.2",
-      },
-      "peerDependencies": {
-        "react": "*",
         "react-native": "*",
       },
     },
@@ -5380,8 +5348,6 @@
     "@tamagui/use-store": ["@tamagui/use-store@workspace:code/packages/use-store"],
 
     "@tamagui/use-window-dimensions": ["@tamagui/use-window-dimensions@workspace:code/core/use-window-dimensions"],
-
-    "@tamagui/v2-toast": ["@tamagui/v2-toast@workspace:code/ui/v2-toast"],
 
     "@tamagui/visually-hidden": ["@tamagui/visually-hidden@workspace:code/ui/visually-hidden"],
 

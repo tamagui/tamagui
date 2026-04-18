@@ -137,7 +137,6 @@
     "@tamagui/use-debounce": "workspace:*",
     "@tamagui/use-force-update": "workspace:*",
     "@tamagui/use-window-dimensions": "workspace:*",
-    "@tamagui/v2-toast": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*",
     "@tamagui/font-size": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
