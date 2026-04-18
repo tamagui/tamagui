@@ -206,7 +206,7 @@ export function getGestureHandler(): GestureHandlerAccessor {
       const tap = Gesture.Tap()
         .runOnJS(true)
         .maxDuration(10000) // allow very long presses
-        .onBegin((e: any) => {
+        .onBegin((e: unknown) => {
           didLongPress = false
           didPressIn = false
           tryClaimOwnership(e)
@@ -214,16 +214,23 @@ export function getGestureHandler(): GestureHandlerAccessor {
           // can steal ownership, but flush it on tap end for very fast taps.
           schedulePressIn(e)
         })
-        .onEnd((e: any) => {
+        .onEnd((e: unknown) => {
           if (isOwner() && !didLongPress) {
             firePressIn(e)
             config.onPress?.(e)
           }
         })
-        .onFinalize((e: any) => {
+        .onFinalize((e: unknown) => {
           if (isOwner()) {
             config.onPressOut?.(e)
             releaseOwnership()
+          } else if (didPressIn) {
+            // we already fired onPressIn but lost ownership before finalize
+            // (e.g. finger dragged onto a sibling pressable and that one
+            // claimed ownership). fire onPressOut so callers can clear their
+            // press state — otherwise pressStyle stays stuck on this view.
+            didPressIn = false
+            config.onPressOut?.(e)
           }
         })
 
