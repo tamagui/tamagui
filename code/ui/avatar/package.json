@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/avatar",
-  "version": "2.0.0-rc.41-1776470906478",
+  "version": "2.0.0-rc.41-1776501875026",
   "source": "src/index.ts",
   "files": [
     "src",
