@@ -48,6 +48,7 @@ const PILLS = [
 export function PressStyleScrollStuck() {
   const [log, setLog] = useState<string[]>([])
   const [pressed, setPressed] = useState<Record<string, number>>({})
+  const [pressedOut, setPressedOut] = useState<Record<string, number>>({})
 
   const append = (line: string) => setLog((prev) => [line, ...prev].slice(0, 20))
 
@@ -77,6 +78,7 @@ export function PressStyleScrollStuck() {
             }}
             onPressOut={() => {
               append(`out ${name}`)
+              setPressedOut((p) => ({ ...p, [name]: (p[name] ?? 0) + 1 }))
             }}
             onPress={() => append(`press ${name}`)}
           >
@@ -90,6 +92,19 @@ export function PressStyleScrollStuck() {
         {PILLS.map((name) => (
           <Text key={name} testID={`pill-count-${name}`} fontSize="$2" color="$gray11">
             {name}: {pressed[name] ?? 0}
+          </Text>
+        ))}
+      </XStack>
+
+      <XStack gap="$2" flexWrap="wrap">
+        {PILLS.map((name) => (
+          <Text
+            key={name}
+            testID={`pill-out-count-${name}`}
+            fontSize="$2"
+            color="$gray11"
+          >
+            {name} out: {pressedOut[name] ?? 0}
           </Text>
         ))}
       </XStack>

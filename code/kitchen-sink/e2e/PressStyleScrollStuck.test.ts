@@ -45,42 +45,34 @@ describe('PressStyleScrollStuck', () => {
     await expect(element(by.id('pill-count-Bellator'))).toHaveText('Bellator: 1')
   })
 
-  // repeatedly press-and-drag across the scroll axis — after every gesture the
-  // release should leave the pill in its rest color. a stuck pressStyle will
-  // show up as a failed pressOut cycle at the log, or as a background that
-  // never animates back to transparent.
-  it('does not leave pressStyle stuck after press+scroll', async () => {
+  // regression: pressStyle gets stuck when RNGH scroll takes ownership mid-press.
+  // the gestureState fix fires an orphan onPressOut in onFinalize when didPressIn
+  // is true but ownership has been lost — so pressOut count should equal pressIn
+  // count even when the drag was stolen by the ScrollView.
+  it('fires pressOut when scroll takes ownership mid-press', async () => {
     const scroll = element(by.id('pill-scroll'))
 
-    for (let i = 0; i < 5; i++) {
-      // press on Bellator then swipe left to scroll. if pressStyle gets stuck,
-      // subsequent iterations will still show up in the log as an asymmetric
-      // in/out count.
-      await element(by.id('pill-Bellator')).longPressAndDrag(
-        400,
-        0.5,
-        0.5,
-        scroll,
-        0.1,
-        0.5,
-        'slow',
-        120
-      )
-      await new Promise((r) => setTimeout(r, 300))
-    }
+    await expect(element(by.id('pill-count-Bellator'))).toHaveText('Bellator: 0')
+    await expect(element(by.id('pill-out-count-Bellator'))).toHaveText('Bellator out: 0')
 
-    // scroll back so Bellator is visible again for measurement
-    await scroll.swipe('right', 'slow', 0.9)
-    await new Promise((r) => setTimeout(r, 400))
+    // press on Bellator (hold long enough for the 24ms grace-period pressIn to
+    // schedule), then drag sideways so the ScrollView's PanGestureHandler steals
+    // ownership. 'fast' + no tail hold reduces the synthetic touch frames that
+    // can drift RN Fabric's _activeTouches registry out of sync with UIKit.
+    await element(by.id('pill-Bellator')).longPressAndDrag(
+      300,
+      0.5,
+      0.5,
+      scroll,
+      0.1,
+      0.5,
+      'fast',
+      0
+    )
+    await new Promise((r) => setTimeout(r, 500))
 
-    // if the log is symmetrical (every "in" has a matching "out") we are not
-    // stuck. the log component renders latest-first, so we only need to check
-    // that each "in" line is immediately followed by an "out" line.
-    const log = await element(by.id('press-log')).getAttributes()
-    // Detox doesn't expose child text reliably across platforms — instead,
-    // verify via the per-pill counter that the number of presses matches the
-    // number of releases (pressed record only counts onPressIn).
-    // We can't read out the matching pressOut count directly, but if the
-    // backdrop's bg has animated back we consider it released.
+    await expect(element(by.id('pill-count-Bellator'))).toHaveText('Bellator: 1')
+    // the regression signal: without the orphan-pressOut fix this stays at 0
+    await expect(element(by.id('pill-out-count-Bellator'))).toHaveText('Bellator out: 1')
   })
 })

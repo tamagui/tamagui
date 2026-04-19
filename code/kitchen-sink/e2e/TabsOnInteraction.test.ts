@@ -4,9 +4,9 @@
  * since commit 525e303 which replaced onLayout with web-only ResizeObserver.
  */
 
-import { by, device, element, expect, waitFor } from 'detox'
+import { by, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { safeLaunchApp, safeReloadApp, withSync } from './utils/detox'
 
 describe('TabsOnInteraction', () => {
   beforeAll(async () => {
@@ -15,7 +15,11 @@ describe('TabsOnInteraction', () => {
 
   beforeEach(async () => {
     await safeReloadApp()
-    await navigateToTestCase('TabsOnInteraction', 'tabs-root')
+    // skipEnableSync: the Tabs screen keeps the main thread busy via
+    // onLayout callbacks, so leaving sync enabled hangs the hook.
+    await navigateToTestCase('TabsOnInteraction', 'tabs-root', {
+      skipEnableSync: true,
+    })
   })
 
   it('should fire onInteraction with layout for the default selected tab', async () => {
@@ -51,8 +55,8 @@ describe('TabsOnInteraction', () => {
       .toHaveText('hasLayout: true')
       .withTimeout(5000)
 
-    // tap tab2
-    await element(by.id('tabs-tab2')).tap()
+    // tap tab2 — requires sync briefly for reliable tap delivery
+    await withSync(() => element(by.id('tabs-tab2')).tap())
 
     // content should switch
     await waitFor(element(by.id('tabs-content-tab2')))

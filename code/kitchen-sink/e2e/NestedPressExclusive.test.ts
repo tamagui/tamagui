@@ -7,6 +7,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
+import { navigateToTestCase } from './utils/navigation'
 import { safeLaunchApp, withSync } from './utils/detox'
 
 async function tapForCurrentPlatform(testID: string, point?: { x: number; y: number }) {
@@ -24,18 +25,8 @@ async function tapForCurrentPlatform(testID: string, point?: { x: number; y: num
 
 describe('NestedPressExclusive', () => {
   beforeAll(async () => {
-    await safeLaunchApp({
-      newInstance: true,
-      launchArgs: {
-        directUseCase: 'NestedPressExclusive',
-      },
-    })
-    // use toExist (not toBeVisible) — the root YStack's intrinsic height
-    // can exceed the viewport so <75% is on screen, which breaks
-    // toBeVisible even though the screen rendered fine.
-    await waitFor(element(by.id('nested-press-root')))
-      .toExist()
-      .withTimeout(60000)
+    await safeLaunchApp({ newInstance: true })
+    await navigateToTestCase('NestedPressExclusive', 'nested-press-root')
   })
 
   it('should render the test case screen', async () => {
