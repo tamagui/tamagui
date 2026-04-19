@@ -5,16 +5,7 @@ const repoRoot = process.cwd()
 const workflowPath = join(repoRoot, '.github/workflows/test-native.yml')
 const e2eDir = join(repoRoot, 'code/kitchen-sink/e2e')
 
-const explicitlyExcludedTests = new Map([
-  [
-    'NestedPressExclusive.test.ts',
-    'Known excluded from iOS Detox CI shard matrix pending stabilization.',
-  ],
-  [
-    'TabsOnInteraction.test.ts',
-    'Known excluded from iOS Detox CI shard matrix pending stabilization.',
-  ],
-])
+const explicitlyExcludedTests = new Map()
 
 const workflow = readFileSync(workflowPath, 'utf8')
 const shardMatches = [...workflow.matchAll(/test_files:\s*'([^']*)'/g)]
