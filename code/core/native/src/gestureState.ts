@@ -135,9 +135,17 @@ export function getGestureHandler(): GestureHandlerAccessor {
       // unique token for this gesture instance - used to track ownership
       const myToken = {}
       const myDebugId = ++pressGestureDebugId
-      let didLongPress = false
-      let didPressIn = false
-      let pressInTimer: ReturnType<typeof setTimeout> | null = null
+      // mutable gesture state kept on an object so handler bodies that get
+      // workletized by react-native-worklets (>=0.7.4) see live values.
+      // primitive `let`s get frozen into the worklet's serialized __closure
+      // at factory time, so reassignments from workletized handlers never
+      // propagate out. object property mutation goes through the captured
+      // reference and is always observed.
+      const flags = {
+        didLongPress: false,
+        didPressIn: false,
+        pressInTimer: null as ReturnType<typeof setTimeout> | null,
+      }
 
       // Grace period for child gestures to steal ownership from parent.
       // RNGH fires parent before child, but we want innermost to win.
@@ -173,9 +181,9 @@ export function getGestureHandler(): GestureHandlerAccessor {
       const isOwner = () => pressState.owner === myToken
 
       const releaseOwnership = () => {
-        if (pressInTimer) {
-          clearTimeout(pressInTimer)
-          pressInTimer = null
+        if (flags.pressInTimer) {
+          clearTimeout(flags.pressInTimer)
+          flags.pressInTimer = null
         }
         if (pressState.owner === myToken) {
           resetPressOwner()
@@ -183,18 +191,18 @@ export function getGestureHandler(): GestureHandlerAccessor {
       }
 
       const firePressIn = (e: any) => {
-        if (!didPressIn && isOwner()) {
-          didPressIn = true
+        if (!flags.didPressIn && isOwner()) {
+          flags.didPressIn = true
           config.onPressIn?.(e)
         }
       }
 
       const schedulePressIn = (e: any) => {
-        if (pressInTimer) {
-          clearTimeout(pressInTimer)
+        if (flags.pressInTimer) {
+          clearTimeout(flags.pressInTimer)
         }
-        pressInTimer = setTimeout(() => {
-          pressInTimer = null
+        flags.pressInTimer = setTimeout(() => {
+          flags.pressInTimer = null
           if (isOwner()) {
             firePressIn(e)
           }
@@ -207,15 +215,15 @@ export function getGestureHandler(): GestureHandlerAccessor {
         .runOnJS(true)
         .maxDuration(10000) // allow very long presses
         .onBegin((e: unknown) => {
-          didLongPress = false
-          didPressIn = false
+          flags.didLongPress = false
+          flags.didPressIn = false
           tryClaimOwnership(e)
           // Defer onPressIn until after the grace window so child pressables
           // can steal ownership, but flush it on tap end for very fast taps.
           schedulePressIn(e)
         })
         .onEnd((e: unknown) => {
-          if (isOwner() && !didLongPress) {
+          if (isOwner() && !flags.didLongPress) {
             firePressIn(e)
             config.onPress?.(e)
           }
@@ -224,12 +232,12 @@ export function getGestureHandler(): GestureHandlerAccessor {
           if (isOwner()) {
             config.onPressOut?.(e)
             releaseOwnership()
-          } else if (didPressIn) {
+          } else if (flags.didPressIn) {
             // we already fired onPressIn but lost ownership before finalize
             // (e.g. finger dragged onto a sibling pressable and that one
             // claimed ownership). fire onPressOut so callers can clear their
             // press state — otherwise pressStyle stays stuck on this view.
-            didPressIn = false
+            flags.didPressIn = false
             config.onPressOut?.(e)
           }
         })
@@ -244,7 +252,7 @@ export function getGestureHandler(): GestureHandlerAccessor {
         .runOnJS(true)
         .minDuration(longPressDuration)
         .onStart((e: any) => {
-          didLongPress = true
+          flags.didLongPress = true
           if (isOwner()) {
             firePressIn(e)
             config.onLongPress?.(e)
