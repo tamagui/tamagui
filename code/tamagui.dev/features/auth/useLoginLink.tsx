@@ -39,6 +39,11 @@ export const useLoginLink = () => {
           window.removeEventListener('message', handleMessage)
           await supabaseClient.auth.refreshSession()
           userSwr.refresh()
+        } else if (event.data?.type === 'SUPABASE_AUTH_ERROR') {
+          window.removeEventListener('message', handleMessage)
+          toast.show('Login failed', {
+            message: event.data.error || 'Please try again.',
+          })
         }
       }
 
