@@ -442,11 +442,19 @@ export function createComponent<
       startedUnhydrated,
     } = componentState
 
-    if (hasAnimationProp && animationDriver?.avoidReRenders) {
+    if (animationDriver?.avoidReRenders) {
+      // post-commit reconciliation of `nextState` with the committed React state.
+      // `nextState` is the source of truth for the fast `setStateShallow` path; it
+      // must stay populated until React actually commits the corresponding update,
+      // otherwise a follow-up update in the same JS task would read a stale closure
+      // `state` and bail on a false shallow-equal. once committed state matches
+      // `nextState`, clear it. if they diverge (animated components' fast path never
+      // calls into React), flush via componentState.setStateShallow here.
       useIsomorphicLayoutEffect(() => {
         const pendingState = stateRef.current.nextState
-        if (pendingState) {
-          stateRef.current.nextState = undefined
+        if (!pendingState) return
+        stateRef.current.nextState = undefined
+        if (!isEqualShallow(state, pendingState)) {
           componentState.setStateShallow(pendingState)
         }
       })
@@ -738,11 +746,15 @@ export function createComponent<
         const useStyleListener = stateRef.current.useStyleListener
 
         // if no animation driver is listening for style updates, fall back to normal re-render
-        // this happens when a component has group prop but no transition/animation prop
+        // this happens when a component has group prop but no transition/animation prop.
+        // keep nextState populated until React actually commits the update — clearing it
+        // here lets a subsequent setStateShallow in the same JS task (e.g. press-out
+        // right after press-in) compare against a stale closure `state` and bail out,
+        // losing the update. the post-commit layoutEffect below clears nextState once
+        // React state has caught up.
         if (!useStyleListener) {
           const pendingState = stateRef.current.nextState
           if (pendingState) {
-            stateRef.current.nextState = undefined
             ogSetStateShallow(pendingState)
           }
           return
