@@ -41,10 +41,7 @@ module.exports = {
       // (kitchen-sink/node_modules + tamagui/node_modules + root) which each
       // initialize the responder system with their own state, breaking
       // PanResponder when a different instance owns the document listeners.
-      'react-native-web': path.resolve(
-        __dirname,
-        '../../node_modules/react-native-web'
-      ),
+      'react-native-web': path.resolve(__dirname, '../../node_modules/react-native-web'),
       'react-native-svg': '@tamagui/react-native-svg',
     },
   },
