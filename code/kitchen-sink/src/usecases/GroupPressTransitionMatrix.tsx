@@ -16,7 +16,6 @@ const FramePlain = styled(View, {
   height: 80,
   backgroundColor: '$gray2', // ensures 100% visibility for detox
   alignItems: 'stretch',
-  justifyContent: 'stretch',
 })
 
 const FrameAnim = styled(View, {
@@ -25,7 +24,6 @@ const FrameAnim = styled(View, {
   height: 80,
   backgroundColor: '$gray2',
   alignItems: 'stretch',
-  justifyContent: 'stretch',
   transition: 'quick',
   pressStyle: { opacity: 0.95 },
 })
