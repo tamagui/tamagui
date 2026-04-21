@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/assert",
-  "version": "2.0.0-rc.41-1776739748773",
+  "version": "2.0.0-rc.41-1776811998898",
   "source": "src/index.ts",
   "files": [
     "src",
