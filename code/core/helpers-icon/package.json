@@ -42,8 +42,7 @@
     "react-native-svg": "15.15.3"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-native-svg": ">=12"
+    "react": ">=19"
   },
   "skipPublishIfUnchanged": false
 }

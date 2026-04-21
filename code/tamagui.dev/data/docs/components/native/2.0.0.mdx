@@ -20,6 +20,14 @@ Import the setup modules at your app's entry point, before any Tamagui imports.
 npm install @tamagui/native
 ```
 
+<Notice>
+  `@tamagui/native` is a light setup package. When you use one of its optional
+  integrations, make sure the matching native dependency is installed in your
+  app as well, such as `react-native-gesture-handler`, `react-native-teleport`,
+  `zeego`, or `burnt`. In a monorepo, install those native packages in the
+  parent app or workspace root rather than a leaf package.
+</Notice>
+
 ## Portal
 
 **Native portals preserve React context** - the default implementation on native

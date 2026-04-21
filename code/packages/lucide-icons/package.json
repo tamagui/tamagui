@@ -14132,8 +14132,7 @@
     "@tamagui/helpers-icon": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-native-svg": ">=12"
+    "react": ">=19"
   },
   "skipPublishIfUnchanged": false
 }

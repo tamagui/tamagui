@@ -82,13 +82,7 @@
     "react-native-gesture-handler": "~2.30.0"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-native-gesture-handler": ">=2.0.0"
-  },
-  "peerDependenciesMeta": {
-    "react-native-gesture-handler": {
-      "optional": true
-    }
+    "react": ">=19"
   },
   "module:jsx": "dist/jsx",
   "removeSideEffects": true

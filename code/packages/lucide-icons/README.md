@@ -14,6 +14,9 @@ The main difference between them is that this project outputs React Native SVG c
 
 You will also need to ensure you have installed [React Native SVG](https://github.com/react-native-community/react-native-svg) into your project.
 
+If you are using a monorepo, install `react-native-svg` in the parent app or
+workspace root rather than a leaf package.
+
 #### Usage
 
 ```javascript
