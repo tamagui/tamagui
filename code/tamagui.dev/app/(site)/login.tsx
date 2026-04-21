@@ -41,6 +41,14 @@ function SignIn() {
     emailRef.current?.focus()
   }, [])
 
+  // surface error passed back from /auth after a failed code exchange
+  useEffect(() => {
+    const err = new URLSearchParams(window.location.search).get('error')
+    if (err) {
+      setMessage({ type: 'error', content: err })
+    }
+  }, [])
+
   useForwardToDashboard()
 
   // auto-trigger GitHub OAuth when opened as a popup (from checkout flow)
