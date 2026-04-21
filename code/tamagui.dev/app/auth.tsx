@@ -1,20 +1,20 @@
-import { useSupabase } from '~/features/auth/useSupabaseClient'
+import { AuthClient } from '@supabase/auth-js'
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { YStack, Text, Spinner, Button, Paragraph } from 'tamagui'
 
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
 export default function Auth() {
-  const { supabase } = useSupabase()
   const [slow, setSlow] = useState(false)
 
   useLayoutEffect(() => {
-    if (supabase) {
-      exchangeSession(supabase)
-    }
-  }, [supabase])
+    exchangeSession()
+  }, [])
 
-  // surface a fallback after 8s so users are never stuck silently
+  // surface a fallback after 6s so users are never stuck silently
   useEffect(() => {
-    const id = setTimeout(() => setSlow(true), 8000)
+    const id = setTimeout(() => setSlow(true), 6000)
     return () => clearTimeout(id)
   }, [])
 
@@ -57,6 +57,39 @@ const clearPkceState = () => {
   } catch {}
 }
 
+// steal any held navigator.lock on sb-auth-token so a prior hung tab can't block us
+const stealAuthLock = async () => {
+  try {
+    if (typeof navigator !== 'undefined' && navigator.locks) {
+      await navigator.locks.request(
+        'lock:sb-auth-token',
+        { steal: true },
+        async () => {}
+      )
+    }
+  } catch {}
+}
+
+// dedicated client for the code exchange: no navigator.lock coordination, no auto-refresh.
+// /auth does exactly one thing — exchange the PKCE code — so we don't need the shared lock,
+// and using a no-op lock avoids hanging behind other tabs' auth ops.
+const createExchangeClient = () => {
+  return new AuthClient({
+    url: `${SUPABASE_URL}/auth/v1`,
+    headers: {
+      apikey: SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+    },
+    storageKey: 'sb-auth-token',
+    storage: window.localStorage,
+    flowType: 'pkce',
+    detectSessionInUrl: false,
+    autoRefreshToken: false,
+    persistSession: true,
+    lock: async (_name, _acquireTimeout, fn) => fn(),
+  })
+}
+
 const finishPopupOrRedirect = (target: string, message: any) => {
   if (window.opener && window.opener !== window) {
     try {
@@ -72,25 +105,19 @@ const finishPopupOrRedirect = (target: string, message: any) => {
   window.location.href = target
 }
 
-const exchangeSession = async (supabase: ReturnType<typeof useSupabase>['supabase']) => {
+const exchangeSession = async () => {
   const url = new URL(window.location.href)
   const code = url.searchParams.get('code')
-
-  if (!supabase) {
-    console.error(`no supabase?`)
-    finishPopupOrRedirect('/login?error=client_unavailable', {
-      type: 'SUPABASE_AUTH_ERROR',
-      error: 'client_unavailable',
-    })
-    return
-  }
 
   if (!code) {
     finishPopupOrRedirect('/account', { type: 'SUPABASE_AUTH_SUCCESS' })
     return
   }
 
-  const { error } = await supabase.auth.exchangeCodeForSession(code)
+  await stealAuthLock()
+
+  const authClient = createExchangeClient()
+  const { error } = await authClient.exchangeCodeForSession(code)
 
   if (error) {
     console.error('Error exchanging code for session:', error)
