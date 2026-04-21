@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/generate-themes",
-  "version": "2.0.0-rc.41-1776811998898",
+  "version": "2.0.0-rc.41-1776813063972",
   "source": "src/index.ts",
   "files": [
     "src",
