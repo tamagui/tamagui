@@ -37,6 +37,26 @@ yarn add tamagui
 The `tamagui` package is a superset of core, so anywhere the docs reference
 `@tamagui/core`, you can replace it with `tamagui`.
 
+<Notice>
+  This applies to web-only apps. If you're building a native or universal app,
+  you already have `react-native` installed. For web-only apps, you still need
+  `react-native` types in the parent project for proper prop typing and
+  autocomplete. You can either install `react-native` directly:
+
+  ```bash
+  yarn add react-native
+  ```
+
+  Or, if you only want the types:
+
+  ```bash
+  yarn add react-native@0.0.0 @types/react-native
+  ```
+
+  Tamagui's web runtime is self-contained. In a monorepo, install either option
+  in the parent app or workspace root rather than a leaf package.
+</Notice>
+
 Next, you'll want to set up your [configuration](/docs/core/configuration) and
 provide it with `TamaguiProvider`:
 

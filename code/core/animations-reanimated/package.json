@@ -46,7 +46,6 @@
   },
   "peerDependencies": {
     "react": ">=19",
-    "react-native": "*",
     "react-native-reanimated": ">=3.0.0"
   }
 }

@@ -63,8 +63,7 @@
     "react-native": "0.83.2"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-native": "*"
+    "react": ">=19"
   },
   "module:jsx": "dist/jsx"
 }

@@ -61,11 +61,7 @@ const clearPkceState = () => {
 const stealAuthLock = async () => {
   try {
     if (typeof navigator !== 'undefined' && navigator.locks) {
-      await navigator.locks.request(
-        'lock:sb-auth-token',
-        { steal: true },
-        async () => {}
-      )
+      await navigator.locks.request('lock:sb-auth-token', { steal: true }, async () => {})
     }
   } catch {}
 }

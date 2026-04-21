@@ -156,7 +156,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/compiler/static-sync": {
@@ -289,7 +288,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/core/animations-motion": {
@@ -325,7 +323,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/core/animations-reanimated": {
@@ -344,7 +341,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
         "react-native-reanimated": ">=3.0.0",
       },
     },
@@ -479,7 +475,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/core/core": {
@@ -506,7 +501,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/core/core-test": {
@@ -606,7 +600,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/core/font": {
@@ -850,7 +843,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/core/monorepo-test": {
@@ -879,7 +871,6 @@
         "@react-native-menu/menu": ">=2.0.0",
         "burnt": ">=0.12.0",
         "react": "*",
-        "react-native": "*",
         "react-native-gesture-handler": ">=2.0.0",
         "react-native-ios-context-menu": ">=3.0.0",
         "react-native-ios-utilities": ">=5.0.0",
@@ -931,9 +922,6 @@
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react-native": "0.83.2",
-      },
-      "peerDependencies": {
-        "react-native": "*",
       },
     },
     "code/core/react-native-use-pressable": {
@@ -1218,7 +1206,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/core/use-presence": {
@@ -1259,7 +1246,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/core/web": {
@@ -1291,7 +1277,6 @@
       "peerDependencies": {
         "react": ">=19",
         "react-dom": "*",
-        "react-native": "*",
       },
     },
     "code/demos": {
@@ -1339,7 +1324,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/kitchen-sink": {
@@ -1463,7 +1447,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/packages/babel-plugin-fully-specified": {
@@ -1617,7 +1600,6 @@
       },
       "peerDependencies": {
         "react": "*",
-        "react-native": "*",
       },
     },
     "code/packages/fake-react-native": {
@@ -2250,7 +2232,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/animate": {
@@ -2305,7 +2286,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/button": {
@@ -2348,7 +2328,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/checkbox": {
@@ -2399,7 +2378,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/collapsible": {
@@ -2510,7 +2488,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/dialog": {
@@ -2543,7 +2520,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/dismissable": {
@@ -2662,7 +2638,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/image": {
@@ -2680,7 +2655,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/input": {
@@ -2708,7 +2682,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/label": {
@@ -2731,7 +2704,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/linear-gradient": {
@@ -2750,7 +2722,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/list-item": {
@@ -2826,7 +2797,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/popper": {
@@ -2849,7 +2819,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/portal": {
@@ -2873,7 +2842,6 @@
       "peerDependencies": {
         "react": ">=19",
         "react-dom": "*",
-        "react-native": "*",
       },
     },
     "code/ui/progress": {
@@ -2894,7 +2862,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/radio-group": {
@@ -2944,7 +2911,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/react-native-web": {
@@ -3010,7 +2976,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/select": {
@@ -3052,7 +3017,6 @@
       "peerDependencies": {
         "react": ">=19",
         "react-dom": "*",
-        "react-native": "*",
       },
     },
     "code/ui/separator": {
@@ -3116,7 +3080,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
         "react-native-gesture-handler": ">=2.0.0",
       },
       "optionalPeers": [
@@ -3145,7 +3108,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/spacer": {
@@ -3161,7 +3123,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/spinner": {
@@ -3178,7 +3139,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/stacks": {
@@ -3220,7 +3180,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/switch-headless": {
@@ -3240,7 +3199,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/tabs": {
@@ -3269,7 +3227,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/tabs-headless": {
@@ -3364,7 +3321,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/text": {
@@ -3419,7 +3375,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/toggle-group": {
@@ -3472,7 +3427,6 @@
       },
       "peerDependencies": {
         "react": ">=19",
-        "react-native": "*",
       },
     },
     "code/ui/visually-hidden": {

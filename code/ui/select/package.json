@@ -70,8 +70,7 @@
   },
   "peerDependencies": {
     "react": ">=19",
-    "react-dom": "*",
-    "react-native": "*"
+    "react-dom": "*"
   },
   "module:jsx": "dist/jsx",
   "removeSideEffects": "true"

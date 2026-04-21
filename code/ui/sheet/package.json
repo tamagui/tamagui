@@ -83,7 +83,6 @@
   },
   "peerDependencies": {
     "react": ">=19",
-    "react-native": "*",
     "react-native-gesture-handler": ">=2.0.0"
   },
   "peerDependenciesMeta": {

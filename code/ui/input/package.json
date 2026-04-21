@@ -58,8 +58,7 @@
     "vitest": "4.0.4"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-native": "*"
+    "react": ">=19"
   },
   "module:jsx": "dist/jsx"
 }

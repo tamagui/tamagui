@@ -148,8 +148,7 @@
     "react-native-web": "^0.21.0"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-native": "*"
+    "react": ">=19"
   },
   "alsoPublishAs_disabled": [
     "@tamagui/ui"
