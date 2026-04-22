@@ -3,6 +3,7 @@ import * as Static from '@tamagui/static-worker'
 import { getPragmaOptions } from '@tamagui/static-worker'
 import { createHash } from 'node:crypto'
 import { existsSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { Plugin, PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
@@ -45,6 +46,34 @@ function setSharedCacheSize(size: number) {
 function clearSharedCache() {
   ;(globalThis as any)[CACHE_KEY] = {}
   ;(globalThis as any)[CACHE_SIZE_KEY] = 0
+}
+
+// resolves package ids against the user's project root (not the plugin's
+// install location). returns true if the id is resolvable, false if the
+// dep isn't installed — safe to call for optional deps.
+function isInstalled(projectRoot: string, id: string): boolean {
+  try {
+    const req = createRequire(path.join(projectRoot, 'package.json'))
+    req.resolve(id)
+    return true
+  } catch {
+    return false
+  }
+}
+
+function addIfInstalled(
+  userConf: { optimizeDeps?: { include?: string[] } },
+  projectRoot: string | undefined,
+  ids: string[]
+): void {
+  const root = projectRoot || process.cwd()
+  userConf.optimizeDeps ||= {}
+  userConf.optimizeDeps.include ||= []
+  for (const id of ids) {
+    if (!userConf.optimizeDeps.include.includes(id) && isInstalled(root, id)) {
+      userConf.optimizeDeps.include.push(id)
+    }
+  }
 }
 
 // pending extractions map - dedupes concurrent requests for same file
@@ -321,6 +350,31 @@ export function tamaguiPlugin({
       // inline-style-prefixer is CJS with __esModule and breaks without pre-bundling
       // (ReferenceError: exports is not defined). always include it.
       userConf.optimizeDeps.include.push('inline-style-prefixer')
+
+      // pre-bundle tamagui packages that use internal hooks (useThemeName, etc.)
+      // from sub-entries — vite's dep crawler can otherwise split them into a
+      // separate chunk with its own tamagui copy, producing two ThemeStateContext
+      // instances and "Missing theme" errors at runtime.
+      addIfInstalled(userConf, userConf.root, [
+        '@tamagui/toast',
+        '@tamagui/toast/v2',
+      ])
+
+      // dedupe tamagui packages so nested resolutions collapse to a single
+      // instance. pairs with the include above: include pre-bundles, dedupe
+      // prevents duplicate bundling when sub-deps re-resolve them.
+      userConf.resolve ||= {}
+      userConf.resolve.dedupe ||= []
+      for (const id of [
+        'tamagui',
+        '@tamagui/core',
+        '@tamagui/web',
+        '@tamagui/toast',
+      ]) {
+        if (!userConf.resolve.dedupe.includes(id) && isInstalled(userConf.root || process.cwd(), id)) {
+          userConf.resolve.dedupe.push(id)
+        }
+      }
 
       if (!shouldExtract) return
 
