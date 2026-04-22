@@ -85,6 +85,12 @@ const ButtonFrame = styled(ThemeableStack, {
 
   variants: {
     unstyled: {
+      true: {
+        // reset browser <button> defaults
+        outlineWidth: 0,
+        borderWidth: 0,
+        backgroundColor: 'transparent',
+      },
       false: {
         size: '$true',
         justifyContent: 'center',
