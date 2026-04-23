@@ -76,7 +76,7 @@
     "expo-image-picker": "~55.0.12",
     "expo-linear-gradient": "~55.0.8",
     "expo-linking": "~55.0.7",
-    "expo-splash-screen": "~55.0.8",
+    "expo-splash-screen": "~55.0.10",
     "react": ">=19",
     "react-dom": "*",
     "react-native": "0.83.2",
