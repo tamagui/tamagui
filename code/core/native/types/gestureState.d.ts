@@ -1,4 +1,5 @@
 import type { GestureState } from "./types";
+export declare function canChangeGestureHandlerEnabled(nextEnabled: boolean, source: string): boolean;
 export interface Insets {
 	top?: number;
 	left?: number;

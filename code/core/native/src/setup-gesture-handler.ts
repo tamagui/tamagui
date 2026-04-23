@@ -17,7 +17,7 @@
  * for use with Sheet and other gesture-aware components.
  */
 
-import { getGestureHandler } from './gestureState'
+import { canChangeGestureHandlerEnabled, getGestureHandler } from './gestureState'
 
 export interface GestureHandlerConfig {
   /** use RNGH for press events on Tamagui components (default: true) */
@@ -41,6 +41,19 @@ export function setupGestureHandler(config?: GestureHandlerConfig): void {
   // override config if provided
   if (config) {
     currentConfig = config
+
+    if (
+      config.pressEvents !== undefined &&
+      !canChangeGestureHandlerEnabled(
+        config.pressEvents !== false,
+        'setupGestureHandler()'
+      )
+    ) {
+      currentConfig = {
+        ...currentConfig,
+        pressEvents: getGestureHandler().isEnabled,
+      }
+    }
   }
 
   // allow re-running setup to change config

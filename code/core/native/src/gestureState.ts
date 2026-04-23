@@ -8,6 +8,60 @@ const state = createGlobalState<GestureState>(`gesture`, {
   ScrollView: null,
 })
 
+type GestureEnabledFreezeState = {
+  frozen: boolean
+  enabled: boolean
+  warned: boolean
+}
+
+const GESTURE_ENABLED_FREEZE_KEY = '__tamagui_gesture_enabled_freeze__'
+
+function getGestureEnabledFreezeState(): GestureEnabledFreezeState {
+  const g = globalThis as typeof globalThis & {
+    [GESTURE_ENABLED_FREEZE_KEY]?: GestureEnabledFreezeState
+  }
+
+  if (!g[GESTURE_ENABLED_FREEZE_KEY]) {
+    g[GESTURE_ENABLED_FREEZE_KEY] = {
+      frozen: false,
+      enabled: false,
+      warned: false,
+    }
+  }
+
+  return g[GESTURE_ENABLED_FREEZE_KEY]!
+}
+
+function warnGestureEnabledMutationIgnored(source: string) {
+  const freezeState = getGestureEnabledFreezeState()
+
+  if (freezeState.warned || process.env.NODE_ENV === 'production') {
+    return
+  }
+
+  freezeState.warned = true
+
+  console.warn(
+    `[Tamagui] Ignored ${source} because gesture handler press events were already ` +
+      `${freezeState.enabled ? 'enabled' : 'disabled'} when TamaguiProvider mounted. ` +
+      `Configure gesture handler mode before the first render.`
+  )
+}
+
+export function canChangeGestureHandlerEnabled(
+  nextEnabled: boolean,
+  source: string
+): boolean {
+  const freezeState = getGestureEnabledFreezeState()
+
+  if (!freezeState.frozen || freezeState.enabled === nextEnabled) {
+    return true
+  }
+
+  warnGestureEnabledMutationIgnored(source)
+  return false
+}
+
 let pressGestureDebugId = 0
 let externalPressDebugId = 0
 
@@ -119,10 +173,21 @@ export function getGestureHandler(): GestureHandlerAccessor {
       return state.get()
     },
     set(updates: Partial<GestureState>): void {
+      if (
+        updates.enabled !== undefined &&
+        !canChangeGestureHandlerEnabled(updates.enabled, 'getGestureHandler().set()')
+      ) {
+        return
+      }
+
       Object.assign(state.get(), updates)
     },
 
     disable(): void {
+      if (!canChangeGestureHandlerEnabled(false, 'getGestureHandler().disable()')) {
+        return
+      }
+
       state.get().enabled = false
     },
 

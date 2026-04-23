@@ -355,23 +355,18 @@ export function tamaguiPlugin({
       // from sub-entries — vite's dep crawler can otherwise split them into a
       // separate chunk with its own tamagui copy, producing two ThemeStateContext
       // instances and "Missing theme" errors at runtime.
-      addIfInstalled(userConf, userConf.root, [
-        '@tamagui/toast',
-        '@tamagui/toast/v2',
-      ])
+      addIfInstalled(userConf, userConf.root, ['@tamagui/toast', '@tamagui/toast/v2'])
 
       // dedupe tamagui packages so nested resolutions collapse to a single
       // instance. pairs with the include above: include pre-bundles, dedupe
       // prevents duplicate bundling when sub-deps re-resolve them.
       userConf.resolve ||= {}
       userConf.resolve.dedupe ||= []
-      for (const id of [
-        'tamagui',
-        '@tamagui/core',
-        '@tamagui/web',
-        '@tamagui/toast',
-      ]) {
-        if (!userConf.resolve.dedupe.includes(id) && isInstalled(userConf.root || process.cwd(), id)) {
+      for (const id of ['tamagui', '@tamagui/core', '@tamagui/web', '@tamagui/toast']) {
+        if (
+          !userConf.resolve.dedupe.includes(id) &&
+          isInstalled(userConf.root || process.cwd(), id)
+        ) {
           userConf.resolve.dedupe.push(id)
         }
       }
