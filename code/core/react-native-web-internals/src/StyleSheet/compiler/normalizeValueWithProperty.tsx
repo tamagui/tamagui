@@ -9,6 +9,7 @@
 
 import { unitlessNumbers } from '../../modules/unitlessNumbers/index'
 import { normalizeColor } from './normalizeColor'
+import { getStyleCompat } from '@tamagui/web'
 
 const colorProps = {
   backgroundColor: true,
@@ -25,7 +26,12 @@ const colorProps = {
 
 export function normalizeValueWithProperty(value: any, property?: string | null): any {
   let returnValue = value
-  if ((property == null || !unitlessNumbers[property]) && typeof value === 'number') {
+  if (
+    (property == null ||
+      (!unitlessNumbers[property] &&
+        !(property === 'lineHeight' && getStyleCompat() === 'web'))) &&
+    typeof value === 'number'
+  ) {
     returnValue = `${value}px`
   } else if (property != null && colorProps[property]) {
     returnValue = normalizeColor(value)

@@ -113,14 +113,16 @@ createTamagui({
 - `themeClassNameOnRoot` -- handled by `addThemeClassName`
 - `disableRootThemeClass` -- now part of `settings`
 
-### Flex and position defaults
+### Style compatibility, line height, and position
 
-v5 changes two important defaults:
+v5 changes a few style defaults:
 
-- `flexBasis` changes from `auto` to `0` (React Native standard)
+- `styleCompat` now defaults to `'web'`
+- raw numeric `lineHeight` follows CSS unitless semantics on web
+- `flex` follows CSS shorthand behavior in `'web'` mode
 - `position` changes from `relative` to `static` (browser default)
 
-If your layout relies on the old behavior, restore it:
+If your layout relies on the old v4 behavior, restore it:
 
 ```tsx
 settings: {
@@ -130,7 +132,32 @@ settings: {
 }
 ```
 
-Otherwise, you may need to add `position="relative"` explicitly on containers that have absolutely-positioned children, and add `flexBasis="auto"` where needed.
+If you want React Native-style raw numeric `lineHeight` and Yoga flex behavior,
+use:
+
+```tsx
+settings: {
+  ...defaultConfig.settings,
+  styleCompat: 'react-native',
+}
+```
+
+In the default `'web'` mode, use strings for absolute line heights:
+
+```tsx
+<Text lineHeight="24px" />
+```
+
+Raw numbers stay useful for CSS multipliers:
+
+```tsx
+<Text fontSize={20} lineHeight={1.2} />
+```
+
+Font tokens are unchanged. `lineHeight="$4"` still resolves to the absolute
+token value. You may also need to add `position="relative"` explicitly on
+containers that have absolutely-positioned children, and add
+`flexBasis="auto"` where needed.
 
 ### Media query renames
 

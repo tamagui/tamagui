@@ -80,7 +80,11 @@ export async function extractToClassNames({
 
   if (!options.disableExtraction && !options['_disableLoadTamagui']) {
     // dont include loading in timing of parsing (one time cost)
-    await extractor.loadTamagui(options)
+    const projectInfo = await extractor.loadTamagui(options)
+    if (projectInfo?.tamaguiConfig) {
+      const { setConfig } = requireTamaguiCore('web')
+      setConfig(projectInfo.tamaguiConfig)
+    }
   }
 
   const printLog = createLogger(sourcePath, options)
@@ -187,7 +191,10 @@ export async function extractToClassNames({
       }
 
       function addStyles(style: object) {
-        const cssStyles = getCSSStylesAtomic(style as any)
+        const cssStyles = getCSSStylesAtomic(
+          style as any,
+          tamaguiConfig.settings.styleCompat || 'web'
+        )
         const classNames: string[] = []
 
         for (const style of cssStyles) {

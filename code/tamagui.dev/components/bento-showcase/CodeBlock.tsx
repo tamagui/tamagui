@@ -183,7 +183,7 @@ const Code = styled(Paragraph, {
   render: 'code',
   fontFamily: '$mono',
   size: '$3',
-  lineHeight: 18,
+  lineHeight: '18px',
   cursor: 'inherit',
   whiteSpace: 'pre',
   p: '$1',

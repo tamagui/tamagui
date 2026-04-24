@@ -98,7 +98,7 @@ const theme = {
     },
     body: {
       fontSize: 16,
-      lineHeight: 24,
+      lineHeight: '24px',
     },
     defaults: {
       // We can define a default text variant here.

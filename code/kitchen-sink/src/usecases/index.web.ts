@@ -152,6 +152,7 @@ export { StyledStyledStyleableInputOnFocus } from './StyledStyledStyleableInputO
 export { StyledVariantTextColor } from './StyledVariantTextColor'
 export { StyledViewOnFocus } from './StyledViewOnFocus'
 export { StressPage } from './StressPage'
+export { StyleCompatCase } from './StyleCompatCase'
 export { StylePlatform } from './StylePlatform'
 export { StyleProp } from './StyleProp'
 export { TabsOnInteraction } from './TabsOnInteraction'

@@ -26,8 +26,11 @@ npm install @tamagui/config
   [Choosing an Animation Driver](#choosing-an-animation-driver).
 - **Media query naming** - `2xl`/`2xs` → `xxl`/`xxs`/`xxxs`. Max queries use
   kebab-case: `max2Xl` → `max-xxl`.
-- **`styleCompat: 'react-native'`** - `flex` now uses `flexBasis: 0` by default
-  (v4 used `'legacy'` with `flexBasis: auto`).
+- **`styleCompat: 'web'`** - `flex` follows CSS shorthand semantics and raw
+  numeric `lineHeight` on web is unitless. v4 used `'legacy'` with
+  `flexBasis: auto`.
+- **React Native compatibility mode** - Set `styleCompat: 'react-native'` if you
+  want `flex` to match Yoga and raw numeric `lineHeight` to stay absolute.
 - **`defaultPosition` not set** - Defaults to browser `static` instead of v4's
   `'relative'`. You can still set it in your config.
 
@@ -73,6 +76,43 @@ export const config = createTamagui({
 
 Update media query names in your code: `$2xl` → `$xxl`, `$2xs` → `$xxs`,
 `$max2Xl` → `$max-xxl`.
+
+---
+
+## Style Compatibility
+
+V5 defaults to `styleCompat: 'web'`, which is the recommended v2 setting.
+
+<PropsTable
+  data={[
+    {
+      name: 'web',
+      description:
+        'Default. flex follows CSS shorthand behavior, and raw numeric lineHeight on web is emitted as a unitless CSS number.',
+    },
+    {
+      name: 'react-native',
+      description:
+        'Matches Yoga for flex expansion and keeps raw numeric lineHeight as an absolute React Native value.',
+    },
+    {
+      name: 'legacy',
+      description:
+        'Preserves the v4 flex behavior where flexBasis defaults to auto.',
+    },
+  ]}
+/>
+
+In `web` mode, `lineHeight={1.2}` means `line-height: 1.2`, so the browser
+multiplies it by the element's font size. To keep an absolute line height, use a
+length string:
+
+```tsx
+<Text lineHeight="24px" />
+```
+
+Font tokens are unchanged. `lineHeight="$4"` still resolves to the absolute
+font token value on both web and native.
 
 ---
 
@@ -520,7 +560,7 @@ V5 config includes these default settings:
     {
       name: 'styleCompat',
       description:
-        '"react-native" - Aligns flex defaults to React Native (flexBasis: 0).',
+        '"web" - Uses CSS flex and unitless lineHeight semantics. Use "react-native" for Yoga flex and absolute numeric lineHeight, or "legacy" for v4 flexBasis: auto behavior.',
     },
   ]}
 />
@@ -732,8 +772,10 @@ export const config = createTamagui({
    ```
 2. **Update media query names** - `2xl` → `xxl`, `2xs` → `xxs`, `max2Xl` →
    `max-xxl`
-3. **Review flex behavior** - v5 uses `flexBasis: 0` by default (React Native
-   style)
-4. **Review position** - v5 doesn't set `defaultPosition` (defaults to `static`)
-5. **Review theme colors** - v5 uses Radix Colors v3 with slightly different
+3. **Review `styleCompat`** - v5 defaults to `web`; use `react-native` for Yoga
+   flex and absolute numeric line heights, or `legacy` for v4 flex behavior
+4. **Review raw numeric `lineHeight`** - use `"24px"` strings for absolute
+   lengths in web mode
+5. **Review position** - v5 doesn't set `defaultPosition` (defaults to `static`)
+6. **Review theme colors** - v5 uses Radix Colors v3 with slightly different
    values

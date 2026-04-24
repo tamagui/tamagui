@@ -388,6 +388,26 @@ test('flexBasis: 0 with responsive style extracts correctly', async () => {
   expect(output?.styles).toMatchSnapshot()
 })
 
+test('web styleCompat extracts unitless numeric lineHeight', async () => {
+  const output = await extractForWeb(
+    `
+    import { Text, View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View flex={1}>
+          <Text fontSize={20} lineHeight={1.2}>hello</Text>
+        </View>
+      )
+    }
+  `
+  )
+
+  expect(output?.styles).toContain('flex-shrink:1')
+  expect(output?.styles).toContain('line-height:1.2')
+  expect(output?.styles).not.toContain('line-height:1.2px')
+})
+
 test('$group- styles are not flattened', async () => {
   const output = await extractForWeb(
     `

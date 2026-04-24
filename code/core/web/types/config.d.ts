@@ -1,5 +1,7 @@
 import type { AnimationDriver, GenericTamaguiSettings, TamaguiInternalConfig, Token, Tokens, TokensMerged } from './types';
+export type StyleCompat = 'legacy' | 'react-native' | 'web';
 export declare const getSetting: <Key extends keyof GenericTamaguiSettings>(key: Key) => GenericTamaguiSettings[Key];
+export declare function getStyleCompat(): StyleCompat;
 export declare const setConfig: (next: TamaguiInternalConfig) => void;
 export declare const setConfigFont: (name: string, font: any, fontParsed: any) => void;
 export declare const getConfig: () => TamaguiInternalConfig;

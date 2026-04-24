@@ -576,6 +576,7 @@ export type ComponentSetStateShallow = React.Dispatch<
 export type ComponentContextI = {
   disableSSR?: boolean
   inText: boolean
+  parentFontSize?: number
   language: LanguageContextType | null
   animationDriver: AnimationDriver | null
   setParentFocusState: ComponentSetStateShallow | null
@@ -1074,10 +1075,15 @@ type AutocompleteSpecificTokensSetting = boolean | 'except-special'
 
 export interface GenericTamaguiSettings {
   /**
-   * When true, flexBasis will be set to 0 when flex is positive. This will be
-   * the default in v2 of Tamagui alongside an alternative mode for web compat.
+   * controls style semantics where React Native/Yoga and CSS differ.
+   *
+   * - "legacy": preserves Tamagui v1 flex expansion.
+   * - "react-native": follows React Native/Yoga flex and raw numeric lineHeight semantics.
+   * - "web": follows CSS flex and unitless numeric lineHeight semantics.
+   *
+   * @default "web"
    */
-  styleCompat?: 'react-native' | 'legacy'
+  styleCompat?: 'legacy' | 'react-native' | 'web'
 
   // TODO
   /**
@@ -1747,6 +1753,7 @@ export type FontSizeTokens =
 export type FontLineHeightTokens =
   | `$${GetTokenFontKeysFor<'lineHeight'>}`
   | number
+  | Px
   | RemString
 export type FontWeightValues =
   | `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00`
@@ -2733,7 +2740,7 @@ export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
   insets?: { top: number; right: number; bottom: number; left: number }
 }
 
-export type PropMappedValue = [string, any][] | undefined
+export type PropMappedValue = [string, any, any?][] | undefined
 
 export type GetStyleState = {
   style: TextStyle | null
@@ -2751,6 +2758,7 @@ export type GetStyleState = {
   fontFamily?: string
   debug?: DebugProp
   flatTransforms?: Record<string, any>
+  originalLineHeight?: any
   // Track style values that override context props (for issues #3670, #3676)
   overriddenContextProps?: Record<string, any>
   // Track original token values (like '$8') before they get resolved to CSS vars

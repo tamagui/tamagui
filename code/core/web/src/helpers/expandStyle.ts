@@ -5,7 +5,7 @@
 
 import { isAndroid, isWeb } from '@tamagui/constants'
 
-import { getSetting } from '../config'
+import { getStyleCompat, type StyleCompat } from '../config'
 import type { PropMappedValue } from '../types'
 import { parseBorderShorthand } from './parseBorderShorthand'
 import { parseOutlineShorthand } from './parseOutlineShorthand'
@@ -16,17 +16,66 @@ const neg1Flex = [
   ['flexBasis', 'auto'],
 ] satisfies PropMappedValue
 
-export function expandStyle(key: string, value: any): PropMappedValue {
-  if (process.env.TAMAGUI_TARGET === 'web') {
-    if (key === 'flex') {
-      if (value === -1) {
-        return neg1Flex
+function expandFlex(value: unknown, compat: StyleCompat): PropMappedValue {
+  if (typeof value === 'string') {
+    return [['flex', value]]
+  }
+
+  if (typeof value !== 'number') {
+    return
+  }
+
+  if (value === -1) {
+    return neg1Flex
+  }
+
+  switch (compat) {
+    case 'legacy':
+      return [
+        ['flexGrow', value],
+        ['flexShrink', 1],
+        ['flexBasis', 'auto'],
+      ]
+    case 'react-native':
+      if (value > 0) {
+        return [
+          ['flexGrow', value],
+          ['flexShrink', 0],
+          ['flexBasis', 0],
+        ]
+      }
+      if (value === 0) {
+        return [
+          ['flexGrow', 0],
+          ['flexShrink', 0],
+          ['flexBasis', 'auto'],
+        ]
+      }
+      return [
+        ['flexGrow', 0],
+        ['flexShrink', -value],
+        ['flexBasis', 'auto'],
+      ]
+    case 'web':
+      if (value < 0) {
+        return [['flex', value]]
       }
       return [
         ['flexGrow', value],
         ['flexShrink', 1],
-        ['flexBasis', getSetting('styleCompat') === 'legacy' ? 'auto' : 0],
+        ['flexBasis', 0],
       ]
+  }
+}
+
+export function expandStyle(
+  key: string,
+  value: any,
+  styleCompat: StyleCompat = getStyleCompat()
+): PropMappedValue {
+  if (process.env.TAMAGUI_TARGET === 'web') {
+    if (key === 'flex') {
+      return expandFlex(value, styleCompat)
     }
 
     switch (key) {

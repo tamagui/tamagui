@@ -779,6 +779,14 @@ You can pass a `settings` object to `createTamagui`:
       description: `On iOS, this enables a mode where Tamagui returns color values using DynamicColorIOS significantly speeding up dark/light re-renders. Note: When enabled you must make sure the defaultTheme you set on TamaguiProvider matches the current system color scheme.`,
     },
     {
+      name: 'styleCompat',
+      required: false,
+      type: "'web' | 'react-native' | 'legacy'",
+      default: "'web'",
+      description:
+        'Controls style differences between CSS, Yoga, and the v4 compatibility behavior. In web mode, raw numeric lineHeight is unitless; use "24px" strings for absolute lengths.',
+    },
+    {
       name: 'webContainerType',
       required: false,
       type: 'string',

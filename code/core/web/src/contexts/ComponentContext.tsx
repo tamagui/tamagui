@@ -5,6 +5,7 @@ import type { ComponentContextI } from '../types'
 export const ComponentContext = createStyledContext<ComponentContextI>({
   disableSSR: undefined,
   inText: false,
+  parentFontSize: undefined,
   language: null,
   animationDriver: null,
   setParentFocusState: null,

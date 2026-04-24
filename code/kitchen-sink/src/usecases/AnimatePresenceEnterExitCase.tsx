@@ -169,7 +169,7 @@ function Scenario03_InitialFalse() {
                 y: -3,
               }}
             >
-              <Text color="$color1" fontFamily="$mono" fontSize={10} lineHeight={10}>
+              <Text color="$color1" fontFamily="$mono" fontSize={10} lineHeight="10px">
                 {countString}
               </Text>
             </Circle>
