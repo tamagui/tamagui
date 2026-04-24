@@ -51,7 +51,10 @@ export function extractMediaStyle(
   // this should be done using the same logic as createMediaStyle
 
   for (const { styleObj, negate } of styleOpts) {
-    const styles = getCSSStylesAtomic(styleObj as any)
+    const styles = getCSSStylesAtomic(
+      styleObj as any,
+      tamaguiConfig.settings.styleCompat || 'web'
+    )
 
     const singleMediaStyles = styles.map((style) => {
       const mediaStyle = core.createMediaStyle(

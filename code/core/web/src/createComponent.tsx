@@ -4,7 +4,7 @@ import { NativeMenuContext } from '@tamagui/native'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import React, { ReactElement, ReactNode, useMemo } from 'react'
-import { devConfig, getConfig } from './config'
+import { devConfig, getConfig, getStyleCompat } from './config'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { GroupContext } from './contexts/GroupContext'
@@ -1571,11 +1571,32 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`create-element`
 
+    const shouldCarryNativeTextFontSize =
+      process.env.TAMAGUI_TARGET === 'native' && isText && getStyleCompat() === 'web'
+    const splitStyleFontSize = (splitStylesStyle as any)?.fontSize
+    const nextParentFontSize = shouldCarryNativeTextFontSize
+      ? typeof splitStyleFontSize === 'number'
+        ? splitStyleFontSize
+        : componentContext.parentFontSize
+      : undefined
+    const shouldProvideTextContext =
+      !asChild &&
+      isText &&
+      (process.env.TAMAGUI_TARGET === 'web'
+        ? !hasTextAncestor
+        : shouldCarryNativeTextFontSize)
+
     if ('focusWithinStyle' in propsIn || pseudos?.focusWithinStyle) {
       content = (
         <ComponentContext.Provider
           {...componentContext}
           setParentFocusState={setStateShallow}
+          inText={shouldProvideTextContext || componentContext.inText}
+          parentFontSize={
+            shouldProvideTextContext
+              ? nextParentFontSize
+              : componentContext.parentFontSize
+          }
         >
           {content}
         </ComponentContext.Provider>
@@ -1589,9 +1610,13 @@ export function createComponent<
     }
 
     // Text components set inText context for children so nested Text can inherit styles
-    if (process.env.TAMAGUI_TARGET === 'web' && !asChild && isText && !hasTextAncestor) {
+    if (shouldProvideTextContext) {
       content = (
-        <ComponentContext.Provider {...componentContext} inText={true}>
+        <ComponentContext.Provider
+          {...componentContext}
+          inText={true}
+          parentFontSize={nextParentFontSize}
+        >
           {content}
         </ComponentContext.Provider>
       )

@@ -283,6 +283,7 @@ export type ComponentSetStateShallow = React.Dispatch<React.SetStateAction<Parti
 export type ComponentContextI = {
     disableSSR?: boolean;
     inText: boolean;
+    parentFontSize?: number;
     language: LanguageContextType | null;
     animationDriver: AnimationDriver | null;
     setParentFocusState: ComponentSetStateShallow | null;
@@ -593,10 +594,15 @@ type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSet
 type AutocompleteSpecificTokensSetting = boolean | 'except-special';
 export interface GenericTamaguiSettings {
     /**
-     * When true, flexBasis will be set to 0 when flex is positive. This will be
-     * the default in v2 of Tamagui alongside an alternative mode for web compat.
+     * controls style semantics where React Native/Yoga and CSS differ.
+     *
+     * - "legacy": preserves Tamagui v1 flex expansion.
+     * - "react-native": follows React Native/Yoga flex and raw numeric lineHeight semantics.
+     * - "web": follows CSS flex and unitless numeric lineHeight semantics.
+     *
+     * @default "web"
      */
-    styleCompat?: 'react-native' | 'legacy';
+    styleCompat?: 'legacy' | 'react-native' | 'web';
     /**
      * When true, Tamagui will always prefer a more specific style prop over a
      * less specific one.
@@ -992,7 +998,7 @@ export type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
 export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>;
 export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number | RemString;
-export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number | RemString;
+export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number | Px | RemString;
 export type FontWeightValues = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00` | 'bold' | 'normal';
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues;
 export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number;
@@ -1560,7 +1566,7 @@ export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
         left: number;
     };
 };
-export type PropMappedValue = [string, any][] | undefined;
+export type PropMappedValue = [string, any, any?][] | undefined;
 export type GetStyleState = {
     style: TextStyle | null;
     usedKeys: Record<string, number>;
@@ -1577,6 +1583,7 @@ export type GetStyleState = {
     fontFamily?: string;
     debug?: DebugProp;
     flatTransforms?: Record<string, any>;
+    originalLineHeight?: any;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
     pseudoTransitions?: PseudoTransitions | null;

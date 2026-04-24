@@ -5,6 +5,7 @@
 
 import { isWeb } from '@tamagui/constants'
 import { stylePropsAll, stylePropsUnitless } from '@tamagui/helpers'
+import { getStyleCompat, type StyleCompat } from '../config'
 
 // only doing this on web on native it accepts pixel values
 
@@ -14,10 +15,15 @@ const stylePropsAllPlusTransforms = {
   translateY: true,
 }
 
-export function normalizeValueWithProperty(value: any, property = ''): any {
+export function normalizeValueWithProperty(
+  value: any,
+  property = '',
+  styleCompat: StyleCompat = getStyleCompat()
+): any {
   if (!isWeb) return value
   if (
     stylePropsUnitless[property] ||
+    (property === 'lineHeight' && styleCompat === 'web') ||
     (property && !stylePropsAllPlusTransforms[property]) ||
     typeof value === 'boolean'
   ) {

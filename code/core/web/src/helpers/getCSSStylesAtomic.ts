@@ -5,7 +5,7 @@
 
 import type { StyleObject } from '@tamagui/helpers'
 import { cssShorthandLonghands, simpleHash } from '@tamagui/helpers'
-import { getConfigMaybe } from '../config'
+import { getConfigMaybe, type StyleCompat } from '../config'
 import { isMediaKey } from '../hooks/useMedia'
 import type { TamaguiInternalConfig, ViewStyleWithPseudos } from '../types'
 import { defaultOffset } from './defaultOffset'
@@ -17,26 +17,29 @@ import { transformsToString } from './transformsToString'
 
 // refactor this file away next...
 
-export function getCSSStylesAtomic(style: ViewStyleWithPseudos) {
-  styleToCSS(style)
+export function getCSSStylesAtomic(
+  style: ViewStyleWithPseudos,
+  styleCompat: StyleCompat = getConfigMaybe()?.settings.styleCompat || 'web'
+) {
+  styleToCSS(style, styleCompat)
   const out: StyleObject[] = []
   for (const key in style) {
     if (key === '$$css') continue
     const val = style[key]
     if (key in pseudoDescriptors) {
       if (val) {
-        out.push(...getStyleAtomic(val, pseudoDescriptors[key]))
+        out.push(...getStyleAtomic(val, pseudoDescriptors[key], styleCompat))
       }
     } else if (isMediaKey(key)) {
       for (const subKey in val) {
-        const so = getStyleObject(val, subKey)
+        const so = getStyleObject(val, subKey, undefined, styleCompat)
         if (so) {
           so[0] = key // set the property to be eg $platform-web so we can use it above
           out.push(so)
         }
       }
     } else {
-      const so = getStyleObject(style, key)
+      const so = getStyleObject(style, key, undefined, styleCompat)
       if (so) {
         out.push(so)
       }
@@ -47,12 +50,13 @@ export function getCSSStylesAtomic(style: ViewStyleWithPseudos) {
 
 export const getStyleAtomic = (
   style: ViewStyleWithPseudos,
-  pseudo?: PseudoDescriptor
+  pseudo?: PseudoDescriptor,
+  styleCompat: StyleCompat = getConfigMaybe()?.settings.styleCompat || 'web'
 ): StyleObject[] => {
-  styleToCSS(style)
+  styleToCSS(style, styleCompat)
   const out: StyleObject[] = []
   for (const key in style) {
-    const so = getStyleObject(style, key, pseudo)
+    const so = getStyleObject(style, key, pseudo, styleCompat)
     if (so) {
       out.push(so)
     }
@@ -66,7 +70,8 @@ let conf: TamaguiInternalConfig | null = null
 const getStyleObject = (
   style: ViewStyleWithPseudos,
   key: string,
-  pseudo?: PseudoDescriptor
+  pseudo?: PseudoDescriptor,
+  styleCompat: StyleCompat = getConfigMaybe()?.settings.styleCompat || 'web'
 ): StyleObject | undefined => {
   let val = style[key]
   if (val == null) return
@@ -74,7 +79,7 @@ const getStyleObject = (
   if (key === 'transform' && Array.isArray(style.transform)) {
     val = transformsToString(val)
   }
-  const value = normalizeValueWithProperty(val, key)
+  const value = normalizeValueWithProperty(val, key, styleCompat)
   const hash = simpleHash(typeof value === 'string' ? value : `${value}`)
   const pseudoPrefix = pseudo ? `0${pseudo.name}-` : ''
   conf ||= getConfigMaybe()
@@ -95,7 +100,10 @@ const getStyleObject = (
   ]
 }
 
-export function styleToCSS(style: Record<string, any>) {
+export function styleToCSS(
+  style: Record<string, any>,
+  styleCompat: StyleCompat = getConfigMaybe()?.settings.styleCompat || 'web'
+) {
   // box-shadow
   const { shadowOffset, shadowRadius, shadowColor, shadowOpacity } = style
   if (
@@ -105,9 +113,9 @@ export function styleToCSS(style: Record<string, any>) {
     shadowOpacity != null
   ) {
     const offset = shadowOffset || defaultOffset
-    const width = normalizeValueWithProperty(offset.width)
-    const height = normalizeValueWithProperty(offset.height)
-    const radius = normalizeValueWithProperty(shadowRadius)
+    const width = normalizeValueWithProperty(offset.width, '', styleCompat)
+    const height = normalizeValueWithProperty(offset.height, '', styleCompat)
+    const radius = normalizeValueWithProperty(shadowRadius, '', styleCompat)
     const color = normalizeColor(shadowColor, shadowOpacity)
     if (color) {
       const shadow = `${width} ${height} ${radius} ${color}`
@@ -124,11 +132,15 @@ export function styleToCSS(style: Record<string, any>) {
   if (textShadowColor || textShadowOffset || textShadowRadius) {
     const { height, width } = textShadowOffset || defaultOffset
     const radius = textShadowRadius || 0
-    const color = normalizeValueWithProperty(textShadowColor, 'textShadowColor')
+    const color = normalizeValueWithProperty(
+      textShadowColor,
+      'textShadowColor',
+      styleCompat
+    )
     if (color && (height !== 0 || width !== 0 || radius !== 0)) {
-      const blurRadius = normalizeValueWithProperty(radius)
-      const offsetX = normalizeValueWithProperty(width)
-      const offsetY = normalizeValueWithProperty(height)
+      const blurRadius = normalizeValueWithProperty(radius, '', styleCompat)
+      const offsetX = normalizeValueWithProperty(width, '', styleCompat)
+      const offsetY = normalizeValueWithProperty(height, '', styleCompat)
       style.textShadow = `${offsetX} ${offsetY} ${blurRadius} ${color}`
     }
     delete style.textShadowColor

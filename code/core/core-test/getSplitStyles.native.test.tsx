@@ -1,11 +1,25 @@
-import { View, Text, createTamagui, getSplitStyles, styled } from '@tamagui/core'
+import { View, Text, createTamagui, styled } from '../web/src'
+import { getSplitStyles } from '../web/src/helpers/getSplitStyles'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
 
+type StyleCompat = 'legacy' | 'react-native' | 'web'
+
 beforeAll(() => {
   createTamagui(config.getDefaultTamaguiConfig('native'))
 })
+
+function setStyleCompat(styleCompat: StyleCompat) {
+  const next = config.getDefaultTamaguiConfig('native')
+  createTamagui({
+    ...next,
+    settings: {
+      ...next.settings,
+      styleCompat,
+    },
+  })
+}
 
 describe('getSplitStyles', () => {
   test(`styled with variants`, () => {
@@ -250,7 +264,197 @@ describe.skip('getSplitStyles - pseudo prop merging', () => {
   })
 })
 
-function getSplitStylesFor(props: Record<string, any>, Component = View) {
+describe('native web-mode lineHeight finalization', () => {
+  test('multiplies raw numeric Text lineHeight by local fontSize in web mode', () => {
+    setStyleCompat('web')
+
+    const { style } = getSplitStylesFor(
+      {
+        fontSize: 20,
+        lineHeight: 1.2,
+      },
+      Text
+    )
+
+    expect(style?.lineHeight).toBe(24)
+  })
+
+  test('does not depend on prop order', () => {
+    setStyleCompat('web')
+
+    const { style } = getSplitStylesFor(
+      {
+        lineHeight: 1.2,
+        fontSize: 20,
+      },
+      Text
+    )
+
+    expect(style?.lineHeight).toBe(24)
+  })
+
+  test('leaves raw numeric Text lineHeight alone without a resolvable fontSize', () => {
+    setStyleCompat('web')
+
+    const { style } = getSplitStylesFor(
+      {
+        lineHeight: 1.2,
+      },
+      Text
+    )
+
+    expect(style?.lineHeight).toBe(1.2)
+  })
+
+  test('uses Text ancestor fontSize from ComponentContext', () => {
+    setStyleCompat('web')
+
+    const { style } = getSplitStylesFor(
+      {
+        lineHeight: 1.2,
+      },
+      Text,
+      {
+        context: {
+          parentFontSize: 20,
+        },
+      }
+    )
+
+    expect(style?.lineHeight).toBe(24)
+  })
+
+  test('does not multiply token lineHeight values', () => {
+    setStyleCompat('web')
+
+    const { style } = getSplitStylesFor(
+      {
+        fontSize: 20,
+        lineHeight: '$1',
+      },
+      Text
+    )
+
+    expect(style?.lineHeight).toBe(15)
+  })
+
+  test('keeps px string lineHeight values absolute on native', () => {
+    setStyleCompat('web')
+
+    const { style } = getSplitStylesFor(
+      {
+        fontSize: 20,
+        lineHeight: '24px',
+      },
+      Text
+    )
+
+    expect(style?.lineHeight).toBe(24)
+  })
+
+  test('does not run in react-native mode', () => {
+    setStyleCompat('react-native')
+
+    const { style } = getSplitStylesFor(
+      {
+        fontSize: 20,
+        lineHeight: 1.2,
+      },
+      Text
+    )
+
+    expect(style?.lineHeight).toBe(1.2)
+  })
+
+  test('finalizes raw numeric variant lineHeight and preserves token variant lineHeight', () => {
+    setStyleCompat('web')
+
+    const VariantText = styled(Text, {
+      variants: {
+        raw: {
+          true: {
+            fontSize: 20,
+            lineHeight: 1.2,
+          },
+        },
+        token: {
+          true: {
+            fontSize: 20,
+            lineHeight: '$1',
+          },
+        },
+      },
+    })
+
+    expect(getSplitStylesFor({ raw: true }, VariantText).style?.lineHeight).toBe(24)
+    expect(getSplitStylesFor({ token: true }, VariantText).style?.lineHeight).toBe(15)
+  })
+
+  test('finalizes active pseudo and media lineHeight exactly once', () => {
+    setStyleCompat('web')
+
+    const pressResult = getSplitStylesFor(
+      {
+        pressStyle: {
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+      },
+      Text,
+      {
+        state: {
+          press: true,
+          pressIn: true,
+        },
+      }
+    )
+
+    expect(pressResult.style?.lineHeight).toBe(24)
+
+    const mediaResult = getSplitStylesFor(
+      {
+        $gtSm: {
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+      },
+      Text,
+      {
+        mediaState: {
+          gtSm: true,
+        },
+      }
+    )
+
+    expect(mediaResult.style?.lineHeight).toBe(24)
+  })
+
+  test('finalizes raw numeric lineHeight from the style prop', () => {
+    setStyleCompat('web')
+
+    const { style } = getSplitStylesFor(
+      {
+        style: {
+          fontSize: 20,
+          lineHeight: 1.2,
+        },
+      },
+      Text
+    )
+
+    expect(style?.lineHeight).toBe(24)
+  })
+})
+
+function getSplitStylesFor(
+  props: Record<string, any>,
+  Component = View,
+  options: {
+    context?: Record<string, any>
+    mediaState?: Record<string, any>
+    state?: Record<string, any>
+  } = {}
+) {
   return getSplitStyles(
     props,
     Component.staticConfig,
@@ -264,12 +468,25 @@ function getSplitStylesFor(props: Record<string, any>, Component = View) {
       unmounted: true,
       disabled: false,
       focusVisible: false,
+      ...options.state,
     },
     {
       isAnimated: false,
+      mediaState: options.mediaState,
+      resolveValues: 'auto',
     },
     undefined,
-    undefined,
+    {
+      animationDriver: {},
+      groups: {
+        state: {},
+      },
+      inText: false,
+      language: null,
+      setParentFocusState: null,
+      insets: null,
+      ...options.context,
+    } as any,
     undefined,
     undefined
   )!

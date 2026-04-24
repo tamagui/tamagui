@@ -113,6 +113,12 @@ designed for container queries where you need finer control below 640px.
 **Easy customization** - The new `createV5Theme` helper lets you add or override
 color themes with minimal boilerplate, working directly with `@tamagui/colors`.
 
+**Style compatibility** - V5 defaults to `styleCompat: 'web'`, so flex shorthand
+behavior and raw numeric `lineHeight` match CSS on web. Set
+`styleCompat: 'react-native'` for Yoga flex behavior and absolute numeric
+`lineHeight`, or use `lineHeight="24px"` when you want an absolute line height in
+web mode. Font line-height tokens stay absolute.
+
 **Subtle variant** - Import from `@tamagui/config/v5-subtle` for a more muted,
 desaturated color palette. Or use `adjustPalette` and `adjustPalettes` to create
 your own custom color transformations.
@@ -582,14 +588,19 @@ code.
   (`onPointerDown`, `onPointerMove`, `onPointerUp`) or touch events. On native,
   use React Native's built-in responder system.
 - **Config v5 changes from v4.** Media query names change (`2xl` → `xxl`, `2xs`
-  → `xxs`), style defaults align with React Native. See
+  → `xxs`), `styleCompat` defaults to web semantics, and raw numeric
+  `lineHeight` is unitless on web. See
   [Config v5 docs](/docs/core/config-v5).
+- **Absolute numeric line heights should move to strings.** In web mode,
+  `lineHeight={24}` means a CSS multiplier of `24`. Use `lineHeight="24px"` for
+  an absolute 24px line height, or keep font line-height tokens like
+  `lineHeight="$4"`.
 - **React Native 0.81+, React 19+, and TypeScript 5+ required.** Tamagui 2
   targets React Native 0.81, React 19, and TypeScript 5 and above with New
   Architecture support. This enables significant new style features, improved
   type inference, and simplified internals.
-- Default flex and position styles align with the latest React Native versions,
-  (you can change settings to keep the legacy behavior).
+- Default flex and position styles align with browser defaults, while
+  `styleCompat: 'react-native'` is available for Yoga flex behavior.
 - Button and ListItem lose direct text style props for better performance and
   consistency.
 - useTheme no longer takes props; use the Theme component instead.

@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     marginBottom: 16,
-    lineHeight: 20,
+    lineHeight: '20px',
   },
   spacer: {
     flex: 1,

@@ -288,7 +288,7 @@ const Subtitle = styled(Paragraph, {
 
   $gtLg: {
     fontSize: 25,
-    lineHeight: 48,
+    lineHeight: '48px',
     letterSpacing: -1,
   },
 })
@@ -328,7 +328,7 @@ const Tag = styled(Text, {
 const HeroH1 = styled(H1, {
   text: 'center',
   size: '$11',
-  lineHeight: 52,
+  lineHeight: '52px',
   maxW: 500,
   maxH: 400,
   position: 'relative',

@@ -18,7 +18,7 @@ import {
   validStyles as validStylesView,
 } from '@tamagui/helpers'
 import React from 'react'
-import { getConfig, getFont, getSetting } from '../config'
+import { getConfig, getFont, getSetting, getStyleCompat } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
@@ -72,18 +72,16 @@ import {
 } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 import { sortString } from './sortString'
+import { styleOriginalValues } from './styleOriginalValues'
 import { transformsToString } from './transformsToString'
+
+export { styleOriginalValues }
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
 let conf: TamaguiInternalConfig
-
-// WeakMap to track original token values for style objects
-// Used to preserve '$8' style tokens instead of resolved 'var(--t-space-8)'
-// for context prop propagation to children (issues #3670, #3676)
-export const styleOriginalValues = new WeakMap<object, Record<string, any>>()
 
 type StyleSplitter = (
   props: { [key: string]: any },
@@ -1337,6 +1335,9 @@ export const getSplitStyles: StyleSplitter = (
             Object.assign(styleState.classNames, style)
           } else {
             styleState.style ||= {}
+            if ('lineHeight' in style) {
+              styleState.originalLineHeight = style.lineHeight
+            }
             Object.assign(styleState.style, normalizeStyle(style))
           }
         }
@@ -1352,6 +1353,10 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     const style = styleState.style
+    if (finalizeNativeTextLineHeight(styleState, style, styleState.originalLineHeight)) {
+      styleState.originalLineHeight = undefined
+    }
+
     if (style?.fontFamily) {
       const faceInfo = getFont(style.fontFamily as string)?.face
       if (faceInfo) {
@@ -1511,6 +1516,54 @@ function mergeFlatTransforms(target: TextStyle, flatTransforms: Record<string, a
     })
 }
 
+function resolveTextFontSize(
+  styleState: GetStyleState,
+  style: TextStyle
+): number | undefined {
+  if (typeof style.fontSize === 'number') {
+    return style.fontSize
+  }
+
+  if (typeof styleState.style?.fontSize === 'number') {
+    return styleState.style.fontSize
+  }
+
+  const parentFontSize = styleState.context?.parentFontSize
+  if (typeof parentFontSize === 'number') {
+    return parentFontSize
+  }
+}
+
+function finalizeNativeTextLineHeight(
+  styleState: GetStyleState,
+  style: TextStyle | null | undefined,
+  originalLineHeight?: any
+): boolean {
+  if (process.env.TAMAGUI_TARGET !== 'native') {
+    return false
+  }
+
+  if (getStyleCompat() !== 'web') {
+    return false
+  }
+
+  if (!style || (!styleState.staticConfig.isText && !styleState.staticConfig.isInput)) {
+    return false
+  }
+
+  if (typeof originalLineHeight !== 'number') {
+    return false
+  }
+
+  const fontSize = resolveTextFontSize(styleState, style)
+  if (typeof fontSize !== 'number') {
+    return false
+  }
+
+  style.lineHeight = fontSize * originalLineHeight
+  return true
+}
+
 function mergeStyle(
   styleState: GetStyleState,
   key: string,
@@ -1524,6 +1577,10 @@ function mergeStyle(
   const existingImportance = usedKeys[key] || 0
   if (existingImportance > importance) {
     return
+  }
+
+  if (key === 'lineHeight' && originalVal !== undefined) {
+    styleState.originalLineHeight = originalVal
   }
 
   // Track context overrides for pseudo/media styles (issues #3670, #3676)
@@ -1573,6 +1630,7 @@ export const getSubStyle = (
   const { staticConfig, conf, styleProps } = styleState
   const styleOut: TextStyle = {}
   let originalValues: Record<string, any> | undefined
+  const styleInOriginalValues = styleOriginalValues.get(styleIn)
 
   for (let key in styleIn) {
     const val = styleIn[key]
@@ -1612,9 +1670,10 @@ export const getSubStyle = (
 
     propMapper(key, val, styleState, false, (skey, sval, originalVal) => {
       // Track original values for context prop propagation
-      if (originalVal !== undefined) {
+      const trackedOriginalVal = styleInOriginalValues?.[skey] ?? originalVal
+      if (trackedOriginalVal !== undefined) {
         originalValues ||= {}
-        originalValues[skey] = originalVal
+        originalValues[skey] = trackedOriginalVal
       }
       // pseudo inside media
       if (skey in validPseudoKeys) {
@@ -1679,8 +1738,15 @@ export const getSubStyle = (
     fixStyles(styleOut)
   }
 
+  if (
+    finalizeNativeTextLineHeight(styleState, styleOut, originalValues?.lineHeight) &&
+    originalValues
+  ) {
+    delete originalValues.lineHeight
+  }
+
   // Store original values in WeakMap instead of on the object itself
-  if (originalValues) {
+  if (originalValues && Object.keys(originalValues).length) {
     styleOriginalValues.set(styleOut, originalValues)
   }
 
