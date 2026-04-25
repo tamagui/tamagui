@@ -507,12 +507,6 @@ jobs:
     timeout-minutes: 45
     # Android emulator in CI is flaky with window focus issues - don't block on failures
     continue-on-error: true
-    # Retry matrix - run up to 2 attempts sequentially to handle flakiness
-    strategy:
-      fail-fast: false
-      max-parallel: 1
-      matrix:
-        attempt: [1, 2]
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -617,7 +611,8 @@ jobs:
 
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
             # Android emulator is flaky - capture exit code but don't fail the job
-            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 2 || echo "ANDROID_TESTS_FAILED=true" >> $GITHUB_ENV
+            # --retries 1 retries individual failing test files once (no full-suite retry — that's done at workflow level if at all)
+            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 1 || echo "ANDROID_TESTS_FAILED=true" >> $GITHUB_ENV
 
       - name: Report Android Test Status
         if: always()
@@ -634,6 +629,6 @@ jobs:
         if: env.ANDROID_TESTS_FAILED == 'true' && env.SKIP_ANDROID_TESTS != 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: detox-artifacts-android-attempt-${{ matrix.attempt }}
+          name: detox-artifacts-android
           path: ${{ env.test_container_app_path }}/e2e/artifacts/
           retention-days: 7
