@@ -13,6 +13,7 @@ import * as fs from 'fs'
 import * as assert from 'assert'
 import { PNG } from 'pngjs'
 import { navigateToTestCase } from './utils/navigation'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 // helper to get the dominant color from a PNG screenshot
 // samples pixels from the center region to avoid edges/text
@@ -59,11 +60,11 @@ function isBlueish(color: { r: number; g: number; b: number }): boolean {
 // Need to investigate press event handling in simulator environment
 describe.skip('PressStyleNative', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToPressStyleNative()
   })
 

@@ -8,6 +8,7 @@ import { by, device, element, expect } from 'detox'
 import * as assert from 'assert'
 import { navigateToTestCase } from './utils/navigation'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 async function navigateToGroupPressNative() {
   await navigateToTestCase('GroupPressNative', 'group-press-native-root')
@@ -17,11 +18,11 @@ async function navigateToGroupPressNative() {
 // Need to investigate press event handling in simulator environment
 describe.skip('GroupPressNative', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToGroupPressNative()
   })
 

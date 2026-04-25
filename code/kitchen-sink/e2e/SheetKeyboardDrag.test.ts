@@ -15,21 +15,28 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 // only run on iOS - keyboard behavior differs on Android
 const isAndroid = () => device.getPlatform() === 'android'
 
-// skip until we fix keyboard-controller sync issues with Detox
+// All other tests boot with disableKeyboardController: true so the main thread
+// stays idle (KeyboardProvider's continuous keyboard polling otherwise causes
+// Detox launch/reload to hang). This file needs the keyboard so it opts in
+// explicitly. Currently still skipped pending separate keyboard-sync work.
 describe.skip('SheetKeyboardDrag - Keyboard + Sheet Integration', () => {
   beforeAll(async () => {
     if (isAndroid()) return
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { disableKeyboardController: false },
+    })
     await navigateToSheetKeyboardDrag()
   })
 
   beforeEach(async () => {
     if (isAndroid()) return
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToSheetKeyboardDrag()
   })
 

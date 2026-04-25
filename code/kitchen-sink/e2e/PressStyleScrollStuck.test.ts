@@ -9,6 +9,7 @@
 
 import { by, device, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 const PILLS = [
   'General',
@@ -25,11 +26,11 @@ const PILLS = [
 
 describe('PressStyleScrollStuck', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToTestCase('PressStyleScrollStuck', 'press-scroll-stuck-root')
   })
 

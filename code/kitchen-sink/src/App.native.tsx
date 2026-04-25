@@ -4,11 +4,26 @@ import { getGestureHandler } from '@tamagui/native'
 
 interface TestLaunchArgs {
   disableGestureHandler?: boolean
+  disableKeyboardController?: boolean
   initialTestCase?: string
   directUseCase?: string
 }
 
-const launchArgs = LaunchArguments.value<TestLaunchArgs>()
+const rawLaunchArgs = LaunchArguments.value<TestLaunchArgs>()
+
+// Detox forwards launch args as `-key value` strings, so a JS `true` boolean
+// arrives as the string "true" and `false` arrives as "false" — which is
+// truthy in JS. Coerce known boolean flags so explicit `false` keeps
+// KeyboardProvider/RNGH mounted.
+const isTrueArg = (value: unknown) =>
+  value === true || value === 'true' || value === 1 || value === '1'
+
+const launchArgs = {
+  ...rawLaunchArgs,
+  disableGestureHandler: isTrueArg(rawLaunchArgs.disableGestureHandler),
+  disableKeyboardController: isTrueArg(rawLaunchArgs.disableKeyboardController),
+}
+
 if (launchArgs.disableGestureHandler) {
   getGestureHandler().disable()
 }
@@ -71,23 +86,28 @@ export default function App() {
 
   const DirectUseCase = getDirectUseCaseComponent(launchArgs.directUseCase)
 
+  // KeyboardProvider keeps the main thread busy via continuous keyboard-state
+  // monitoring, which prevents Detox's RCTContentDidAppearNotification from
+  // firing promptly after RN reload, hanging tests. Allow tests to opt out.
+  const Inner = (
+    <PortalProvider>
+      <SafeAreaProvider>
+        <ThemeContext.Provider value={themeContext}>
+          <Provider defaultTheme={resolvedTheme as any}>
+            {DirectUseCase ? (
+              <DirectUseCase />
+            ) : (
+              <Navigation initialTestCase={launchArgs.initialTestCase} />
+            )}
+          </Provider>
+        </ThemeContext.Provider>
+      </SafeAreaProvider>
+    </PortalProvider>
+  )
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <KeyboardProvider>
-        <PortalProvider>
-          <SafeAreaProvider>
-            <ThemeContext.Provider value={themeContext}>
-              <Provider defaultTheme={resolvedTheme as any}>
-                {DirectUseCase ? (
-                  <DirectUseCase />
-                ) : (
-                  <Navigation initialTestCase={launchArgs.initialTestCase} />
-                )}
-              </Provider>
-            </ThemeContext.Provider>
-          </SafeAreaProvider>
-        </PortalProvider>
-      </KeyboardProvider>
+      {launchArgs.disableKeyboardController ? Inner : <KeyboardProvider>{Inner}</KeyboardProvider>}
     </GestureHandlerRootView>
   )
 }

@@ -18,6 +18,7 @@ import { by, device, element, expect as detoxExpect } from 'detox'
 import * as assert from 'assert'
 import { navigateToTestCase } from './utils/navigation'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 const CELLS = ['pp-cp', 'pa-cp', 'pp-ca', 'pa-ca'] as const
 
@@ -53,11 +54,11 @@ async function assertChildReturnedToDefault(cellId: string) {
 
 describe('GroupPressTransitionMatrix', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToTestCase(
       'GroupPressTransitionMatrix',
       'group-press-transition-matrix-root'
