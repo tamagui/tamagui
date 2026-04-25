@@ -5,8 +5,10 @@ const { existsSync } = require('node:fs')
 const { join } = require('node:path')
 
 const maxWorkers = 1
-// Android dev-client launches assume the default Metro port unless overridden explicitly.
-const detoxMetroPort = process.env.DETOX_METRO_PORT || '8081'
+// dedicated detox metro port - both platforms route through it.
+// Android: app reads from android/app/src/main/res/values/integers.xml
+// iOS: launchArgs.RCT_jsLocation tells RCTBundleURLProvider where metro is
+const detoxMetroPort = process.env.DETOX_METRO_PORT || '9034'
 const defaultAndroidSdkRoot =
   process.env.ANDROID_SDK_ROOT ||
   process.env.ANDROID_HOME ||

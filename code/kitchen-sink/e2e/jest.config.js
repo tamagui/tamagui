@@ -13,6 +13,9 @@ module.exports = {
   reporters: ['detox/runners/jest/reporter'],
   testEnvironment: 'detox/runners/jest/testEnvironment',
   verbose: true,
+  // watchman daemon disabled - jest must use node fallback watcher
+  watchman: false,
+  haste: { forceNodeFilesystemAPI: true },
   transform: {
     '^.+\\.tsx?$': ['ts-jest', { isolatedModules: true }],
   },

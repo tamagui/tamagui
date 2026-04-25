@@ -11,6 +11,9 @@ const config = getDefaultConfig(projectRoot)
 config.resolver.unstable_enablePackageExports =
   process.env.TAMAGUI_PACKAGE_EXPORTS !== 'false'
 
+// watchman is flaky locally and adds nothing for ci - disable
+config.resolver.useWatchman = false
+
 // block unnecessary directories from metro file crawling
 config.resolver.blockList = [
   /code\/tamagui\.dev\//,

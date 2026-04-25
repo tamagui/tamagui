@@ -27,11 +27,9 @@
 set -e
 
 PLATFORM="${1:-ios}"  # ios or android
-DEFAULT_DETOX_METRO_PORT=8082
-if [ "$PLATFORM" = "android" ]; then
-  # Expo dev-client on Android expects the default Metro port unless the app is explicitly told otherwise.
-  DEFAULT_DETOX_METRO_PORT=8081
-fi
+# dedicated detox metro port - non-default to avoid colliding with other dev servers.
+# Android side: see android/app/src/main/res/values/integers.xml (react_native_dev_server_port)
+DEFAULT_DETOX_METRO_PORT=9034
 export DETOX_METRO_PORT="${DETOX_METRO_PORT:-$DEFAULT_DETOX_METRO_PORT}"
 
 detect_android_sdk() {
