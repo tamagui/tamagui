@@ -107,7 +107,11 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {launchArgs.disableKeyboardController ? Inner : <KeyboardProvider>{Inner}</KeyboardProvider>}
+      {launchArgs.disableKeyboardController ? (
+        Inner
+      ) : (
+        <KeyboardProvider>{Inner}</KeyboardProvider>
+      )}
     </GestureHandlerRootView>
   )
 }

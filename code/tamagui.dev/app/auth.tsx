@@ -21,10 +21,10 @@ export default function Auth() {
       if (completedRef.current) return
       completedRef.current = true
       clearPkceState()
-      finishPopupOrRedirect(
-        `/login?error=${encodeURIComponent(TIMEOUT_MESSAGE)}`,
-        { type: 'SUPABASE_AUTH_ERROR', error: TIMEOUT_MESSAGE }
-      )
+      finishPopupOrRedirect(`/login?error=${encodeURIComponent(TIMEOUT_MESSAGE)}`, {
+        type: 'SUPABASE_AUTH_ERROR',
+        error: TIMEOUT_MESSAGE,
+      })
     }, EXCHANGE_TIMEOUT_MS)
 
     return () => clearTimeout(timeoutId)
