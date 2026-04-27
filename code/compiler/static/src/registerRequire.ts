@@ -145,7 +145,9 @@ export function registerRequire(
     if (
       path === '@tamagui/react-native-web-lite' ||
       path === 'react-native' ||
-      path.startsWith('react-native/')
+      path.startsWith('react-native/') ||
+      path === 'react-native-web' ||
+      path.startsWith('react-native-web/')
     ) {
       try {
         return og.apply('react-native')
@@ -161,7 +163,9 @@ export function registerRequire(
         // also allow requires FROM within tamagui packages (relative imports like ./Separator.cjs)
         const callerFile = this?.filename || this?.id || ''
         const isFromTamaguiPkg =
-          callerFile.includes('@tamagui') || callerFile.includes('node_modules/tamagui/')
+          callerFile.includes('@tamagui') ||
+          callerFile.includes('node_modules/tamagui/') ||
+          /\/tamagui\/code\/(core|ui|packages)\//.test(callerFile)
         const isFromStaticLoader =
           !callerFile ||
           callerFile === '.' ||
@@ -169,10 +173,19 @@ export function registerRequire(
           callerFile.endsWith('/[eval]') ||
           callerFile.includes('/code/compiler/static/') ||
           callerFile.includes('/.tamagui/')
+        // relative requires from within a whitelisted package's own files
+        // (e.g. react/index.js does require('./cjs/react.development.js')).
+        // proxy-worming these breaks the package's own internals.
+        const isRelativeFromWhitelisted =
+          path.startsWith('.') &&
+          Object.keys(whitelisted).some((pkg) =>
+            callerFile.includes(`/node_modules/${pkg}/`)
+          )
 
         if (
           path === 'tamagui' ||
           path.startsWith('@tamagui/') ||
+          isRelativeFromWhitelisted ||
           isFromTamaguiPkg ||
           isFromStaticLoader
         ) {
