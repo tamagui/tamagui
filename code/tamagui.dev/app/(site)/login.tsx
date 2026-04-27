@@ -54,19 +54,24 @@ function SignIn() {
   // auto-trigger GitHub OAuth when opened as a popup (from checkout flow)
   // must be before any early returns to avoid hooks ordering violation (react error 310)
   useEffect(() => {
-    if (supabase && !user && window.opener && window.opener !== window) {
-      const redirectTo = `${window.location.origin}/api/auth/callback`
-      supabase.auth
-        .signInWithOAuth({
-          provider: 'github',
-          options: { redirectTo },
-        })
-        .then(({ data, error }) => {
-          if (!error && data?.url) {
-            window.location.href = data.url
-          }
-        })
-    }
+    if (!supabase || user) return
+    if (!(window.opener && window.opener !== window)) return
+    // if we landed here from a failed /auth (timeout or exchange error),
+    // don't auto-retry - that creates a loop when /auth keeps timing out
+    // on a slow connection. show the error and let the user click manually.
+    if (new URLSearchParams(window.location.search).has('error')) return
+
+    const redirectTo = `${window.location.origin}/api/auth/callback`
+    supabase.auth
+      .signInWithOAuth({
+        provider: 'github',
+        options: { redirectTo },
+      })
+      .then(({ data, error }) => {
+        if (!error && data?.url) {
+          window.location.href = data.url
+        }
+      })
   }, [supabase, user])
 
   if (!supabase) {

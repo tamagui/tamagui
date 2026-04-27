@@ -1,21 +1,33 @@
 import { AuthClient } from '@supabase/auth-js'
-import { useEffect, useLayoutEffect, useState } from 'react'
-import { YStack, Text, Spinner, Button, Paragraph } from 'tamagui'
+import { useLayoutEffect, useRef } from 'react'
+import { Spinner, Text, YStack } from 'tamagui'
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
+// if the code exchange hasn't finished by this point, give up and bounce back
+// to /login (popup posts an error toast to the opener instead). previous UX
+// showed a "Back to login" button after 6s, which read as a dead-end to users.
+const EXCHANGE_TIMEOUT_MS = 3000
+const TIMEOUT_MESSAGE = 'Login took too long, please try again'
+
 export default function Auth() {
-  const [slow, setSlow] = useState(false)
+  const completedRef = useRef(false)
 
   useLayoutEffect(() => {
-    exchangeSession()
-  }, [])
+    exchangeSession(completedRef)
 
-  // surface a fallback after 6s so users are never stuck silently
-  useEffect(() => {
-    const id = setTimeout(() => setSlow(true), 6000)
-    return () => clearTimeout(id)
+    const timeoutId = setTimeout(() => {
+      if (completedRef.current) return
+      completedRef.current = true
+      clearPkceState()
+      finishPopupOrRedirect(
+        `/login?error=${encodeURIComponent(TIMEOUT_MESSAGE)}`,
+        { type: 'SUPABASE_AUTH_ERROR', error: TIMEOUT_MESSAGE }
+      )
+    }, EXCHANGE_TIMEOUT_MS)
+
+    return () => clearTimeout(timeoutId)
   }, [])
 
   return (
@@ -28,24 +40,8 @@ export default function Auth() {
       height="100%"
       minH={400}
     >
-      <Text>Authenticating...</Text>
+      <Text>Signing you in...</Text>
       <Spinner size="large" />
-      {slow ? (
-        <YStack gap="$2" items="center" maxW={360} px="$4">
-          <Paragraph size="$2" color="$color10" text="center">
-            Taking longer than expected?
-          </Paragraph>
-          <Button
-            size="$3"
-            onPress={() => {
-              clearPkceState()
-              window.location.href = '/login'
-            }}
-          >
-            Back to login
-          </Button>
-        </YStack>
-      ) : null}
     </YStack>
   )
 }
@@ -101,19 +97,25 @@ const finishPopupOrRedirect = (target: string, message: any) => {
   window.location.href = target
 }
 
-const exchangeSession = async () => {
+const exchangeSession = async (completedRef: { current: boolean }) => {
   const url = new URL(window.location.href)
   const code = url.searchParams.get('code')
 
   if (!code) {
+    if (completedRef.current) return
+    completedRef.current = true
     finishPopupOrRedirect('/account', { type: 'SUPABASE_AUTH_SUCCESS' })
     return
   }
 
   await stealAuthLock()
+  if (completedRef.current) return
 
   const authClient = createExchangeClient()
   const { error } = await authClient.exchangeCodeForSession(code)
+
+  if (completedRef.current) return
+  completedRef.current = true
 
   if (error) {
     console.error('Error exchanging code for session:', error)
