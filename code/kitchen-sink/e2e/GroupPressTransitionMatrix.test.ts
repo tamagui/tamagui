@@ -19,7 +19,6 @@ import * as assert from 'assert'
 import { navigateToTestCase } from './utils/navigation'
 import { safeLaunchApp, safeReloadApp } from './utils/detox'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 const CELLS = ['pp-cp', 'pa-cp', 'pp-ca', 'pa-ca'] as const
 
