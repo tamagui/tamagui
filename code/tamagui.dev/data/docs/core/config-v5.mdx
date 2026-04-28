@@ -95,13 +95,10 @@ V5 defaults to `styleCompat: 'web'`, which is the recommended v2 setting.
       description:
         'Matches Yoga for flex expansion and keeps raw numeric lineHeight as an absolute React Native value.',
     },
-    {
-      name: 'legacy',
-      description:
-        'Preserves the v4 flex behavior where flexBasis defaults to auto.',
-    },
   ]}
 />
+
+A `legacy` mode preserves the v4 flex behavior (`flexBasis: auto`). It's deprecated and only intended as a short-term escape hatch during v4 to v5 upgrades.
 
 In `web` mode, `lineHeight={1.2}` means `line-height: 1.2`, so the browser
 multiplies it by the element's font size. To keep an absolute line height, use a
@@ -113,6 +110,15 @@ length string:
 
 Font tokens are unchanged. `lineHeight="$4"` still resolves to the absolute
 font token value on both web and native.
+
+V2 is a large step toward web alignment, but because the Tamagui ecosystem
+grew up around React Native flex semantics, the base `View` keeps
+`flex-shrink: 0` until v3. It's the only style default not aligned to CSS in
+`web` mode. The `flex` shorthand still emits `flex-shrink: 1`, so
+`<View flex={1} />` shrinks as CSS expects; only plain `<View />` keeps the
+RN-style default. See
+[styleCompat in configuration](/docs/core/configuration#stylecompat) for the
+full reference.
 
 ---
 

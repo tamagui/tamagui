@@ -796,6 +796,49 @@ You can pass a `settings` object to `createTamagui`:
   ]}
 />
 
+#### `styleCompat`
+
+V2 was designed to move meaningfully closer to full web compatibility, and we expect v3 to close that loop. `styleCompat` is the lever that picks which side of the CSS / Yoga divergences your app gets today. Two modes:
+
+- **`web`** _(default)_ - `flex` follows the CSS shorthand and raw numeric `lineHeight` is unitless on web (CSS multiplier semantics). On native, Text and Input multiply numeric `lineHeight` by the resolved font size so the rendered line matches the web layout.
+- **`react-native`** - `flex` matches Yoga, raw numeric `lineHeight` stays absolute on both platforms.
+
+Common cases:
+
+| Input                                              | `web`              | `react-native`       |
+| -------------------------------------------------- | ------------------ | -------------------- |
+| `<View flex={1} />`                                | `flex: 1 1 0`      | `flex: 1 0 0`        |
+| `<Text lineHeight={1.2} />` (web)                  | `line-height: 1.2` | `line-height: 1.2px` |
+| `<Text fontSize={20} lineHeight={1.2} />` (native) | `lineHeight: 24`   | `lineHeight: 1.2`    |
+
+Tokens are unaffected. `lineHeight="$4"` resolves to the absolute font-token value in every mode on both platforms; only raw numeric props change semantics.
+
+For an absolute pixel line height in `web` mode, pass a string:
+
+```tsx
+<Text lineHeight="24px" />
+```
+
+The native multiplication only runs on Text and Input, and only when a `fontSize` is resolvable (locally, on the same node, or from a `Text` ancestor). If no `fontSize` is in scope, the raw value is left unchanged so the discrepancy surfaces visibly rather than silently rendering a different line height than the web build.
+
+A third `legacy` mode is kept around for v4 to v5 migrations and is deprecated; new apps should use `web` or `react-native`.
+
+##### View base `flexShrink`
+
+V2 brought a large step toward web alignment, but because the Tamagui ecosystem grew up around React Native flex semantics, we're holding the base `View` `flex-shrink: 0` until v3. It's the only style property whose default isn't aligned to CSS in `web` mode. The `flex` shorthand still emits `flex-shrink: 1`, so `<View flex={1} />` shrinks the way CSS expects; only plain `<View />` without an explicit `flex` prop keeps the RN-style default.
+
+If you want CSS-default shrink behavior across your app today, the easiest path is to define your own base `View`:
+
+```tsx
+import { View as TamaguiView, styled } from 'tamagui'
+
+export const View = styled(TamaguiView, {
+  flexShrink: 1,
+})
+```
+
+Use that import everywhere instead of the bare upstream component, and you get web-default shrinking without changing the library defaults.
+
 #### Type strictness
 
 #### `allowedStyleValues`
