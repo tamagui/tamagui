@@ -388,12 +388,13 @@ export async function getOptions({
   }
 }
 
-export function resolveWebOrNativeSpecificEntry(entry: string) {
+export function resolveWebOrNativeSpecificEntry(entry: string, platform?: string) {
   const workspaceRoot = resolve()
   const resolved = require.resolve(entry, { paths: [workspaceRoot] })
   const ext = extname(resolved)
   const fileName = basename(resolved).replace(ext, '')
-  const specificExt = process.env.TAMAGUI_TARGET === 'web' ? 'web' : 'native'
+  const target = platform || process.env.TAMAGUI_TARGET || 'web'
+  const specificExt = target === 'web' ? 'web' : 'native'
   const specificFile = join(dirname(resolved), fileName + '.' + specificExt + ext)
   if (fsExtra.existsSync(specificFile)) {
     return specificFile
