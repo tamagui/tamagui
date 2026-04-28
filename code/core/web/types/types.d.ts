@@ -839,7 +839,7 @@ export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
     };
     family?: string | Variable;
     lineHeight?: Partial<{
-        [key in Key]: number | Variable;
+        [key in Key]: number | string | Variable;
     }> | undefined;
     letterSpacing?: Partial<{
         [key in Key]: number | Variable;
