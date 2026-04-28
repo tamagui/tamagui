@@ -308,11 +308,26 @@ function AdaptPortalTeleport({
   store: AdaptChildrenStore
   children: React.ReactNode
 }) {
+  // The previous implementation had no dependency array on this effect, so
+  // the cleanup `store.set(null)` ran before each subsequent effect run —
+  // forcing the teleported subtree (e.g. a Sheet's portal target when used
+  // via Adapt + Dialog/Popover) to unmount and remount on every parent
+  // re-render. For dialogs whose `open` prop toggles caused parent renders,
+  // this discarded mount continuity even when the teleported children were
+  // logically unchanged. Splitting into two effects: one keeps the store in
+  // sync with the latest children (no cleanup, so React reconciles new vs
+  // old children without an intermediate `null`), and one clears the store
+  // only when the component truly unmounts or `isActive` flips false.
   useIsomorphicLayoutEffect(() => {
-    if (!isActive) return
-    store.set(children)
-    return () => store.set(null)
+    if (isActive) {
+      store.set(children)
+    } else {
+      store.set(null)
+    }
   })
+  useIsomorphicLayoutEffect(() => {
+    return () => store.set(null)
+  }, [store])
 
   return isActive ? null : <>{children}</>
 }
