@@ -754,3 +754,33 @@ test('boxShadow with multiple $variables extracts correctly', async () => {
   const varMatches = output?.styles?.match(/var\(--/g)
   expect(varMatches?.length).toBeGreaterThanOrEqual(2)
 })
+
+// Regression: createDOMProps unconditionally emits a (possibly empty) style
+// key. Without removing it after the call, Object.keys(out) iterates twice
+// for what was a single non-style prop, and the same JSXAttribute is emitted
+// twice in the output JSX. Separately, the later attribute-rename pass that
+// converts testID -> data-testid only runs when the value is statically
+// evaluable, so dynamic testIDs were emitted as raw `<div testID={...}>`
+// and silently dropped by React.
+test('non-static testID with template literal is rewritten to data-testid', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test({ x }: { x: string }) {
+      return <View testID={\`a-\${x}\`} />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // Should be rewritten to data-testid (not raw testID) and only emitted once.
+  expect(output?.js).toContain('data-testid={`a-${x}`}')
+  expect(output?.js?.match(/data-testid=/g)?.length).toBe(1)
+  expect(output?.js?.match(/\btestID=/g) ?? []).toHaveLength(0)
+})

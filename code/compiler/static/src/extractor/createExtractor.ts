@@ -1444,6 +1444,12 @@ export function createExtractor(
                   )
                   // remove className - we dont use rnw styling
                   delete out.className
+                  // remove style - rnw createDOMProps unconditionally emits a
+                  // (possibly empty) style key, but we passed it a single
+                  // non-style prop. Leaving it in causes Object.keys(out) to
+                  // iterate twice and emit the original JSXAttribute twice
+                  // (e.g. duplicate testID), breaking the DOM output.
+                  delete out.style
                 }
               }
 
@@ -1467,6 +1473,26 @@ export function createExtractor(
                   key === '__source' ||
                   key === '__self'
                 ) {
+                  if (
+                    styleValue === FAILED_EVAL &&
+                    key !== name &&
+                    t.isJSXAttribute(attr.value)
+                  ) {
+                    // createDOMProps renamed the prop (e.g. testID -> data-testid).
+                    // Preserve the original expression value but use the new
+                    // attribute name. Restricted to FAILED_EVAL because the
+                    // later `case 'attr'` rename pass only runs on
+                    // statically-evaluable values; for static values that pass
+                    // intentionally preserves some prop names (e.g. focusable
+                    // in v2) instead of doing the createDOMProps rename.
+                    return {
+                      type: 'attr',
+                      value: t.jsxAttribute(
+                        t.jsxIdentifier(key),
+                        attr.value.value
+                      ),
+                    } as const
+                  }
                   return attr
                 }
                 if (shouldPrintDebug) {
@@ -2155,6 +2181,10 @@ export function createExtractor(
                       )
                       // remove rnw className use ours
                       out.className = cn
+                      // see note in single-prop branch above; createDOMProps
+                      // also emits a stray style key here that would duplicate
+                      // emitted JSXAttributes downstream.
+                      delete out.style
                     }
                     if (shouldPrintDebug) {
                       logger.info([' - expanded variant', name, out].join(' '))
