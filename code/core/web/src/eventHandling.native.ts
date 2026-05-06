@@ -40,33 +40,25 @@ export function useEvents(
     }
   }
 
-  const hasPressEvents =
-    // its stable and always on if you have in/out/regular
-    events?.onPress
-  const hasAnyPressCallbacks = Boolean(
-    events?.onPress || events?.onPressIn || events?.onPressOut || events?.onLongPress
-  )
+  // hasPressEvents includes events.onPress synthesized just for pressStyle
+  // visuals; hasRealPressEvents is true only when the caller passed a real
+  // handler. the distinction matters for arbitration: pressStyle-only gestures
+  // must not steal ownership from a real-handler ancestor (e.g. Link asChild's
+  // navigate handler merged onto a child View by Slot).
+  const hasPressEvents = events?.onPress
 
   const gh = getGestureHandler()
 
-  // track if we ever had press events to avoid re-parenting / hooks issues
+  // track whether this component has ever had press events to keep hooks
+  // ordering stable across renders (gesture is created once per mount).
   if (hasPressEvents) {
     stateRef.current.hasHadEvents = true
   }
-  // separately track whether the user actually passed press handlers (vs. having
-  // events.onPress synthesized just for pressStyle visual tracking). only real
-  // user handlers should create a gesture / wrap with GestureDetector — otherwise
-  // nested Tamagui components (e.g. a Button inside a Link asChild View) each
-  // create their own RNGH gesture, the inner one wins arbitration, and the outer
-  // user-onPress (Link's navigate) never fires.
   if (hasRealPressEvents) {
     stateRef.current.hasRealPressEvents = true
   }
 
-  // avoid hooks/reparenting
-  const everEnabled = Boolean(
-    hasRealPressEvents || stateRef.current.hasRealPressEvents
-  )
+  const everEnabled = Boolean(hasPressEvents || stateRef.current.hasHadEvents)
   const isUsingRNGH = gh.isEnabled
 
   // NOW handle early returns (after all hooks are called)
@@ -139,11 +131,12 @@ export function useEvents(
 
       // only create gesture once, callbacks are read from ref
       if (!gestureRef.current) {
+        const { Gesture } = gh.state
+
         if (isInsideNativeMenu) {
           // Inside native menus on Android: use Manual gesture with manualActivation
           // so it never goes ACTIVE (which would send ACTION_CANCEL to MenuView).
           // Press callbacks fire via onTouchesDown/Up instead.
-          const { Gesture } = gh.state
           const manual = Gesture.Manual()
             .runOnJS(true)
             .manualActivation(true)
@@ -158,7 +151,10 @@ export function useEvents(
               callbacksRef.current.onPressOut?.({})
             })
           gestureRef.current = manual
-        } else {
+        } else if (hasRealPressEvents || stateRef.current.hasRealPressEvents) {
+          // real user handler: full PressGesture, participates in the press
+          // ownership token system so nested real-handler children win
+          // arbitration (NestedPressExclusive semantics).
           gestureRef.current = gh.createPressGesture({
             debugName,
             onPressIn: (e: any) => callbacksRef.current.onPressIn?.(e),
@@ -168,6 +164,24 @@ export function useEvents(
             delayLongPress: events?.delayLongPress,
             hitSlop: viewProps.hitSlop,
           })
+        } else {
+          // pressStyle-only (events.onPress was synthesized to drive pressStyle
+          // visuals, no user handler): use Manual + manualActivation. Touch
+          // observation runs on the UI thread for fast pressStyle feedback,
+          // but the gesture never activates → never claims responder/ownership,
+          // so a real-handler ancestor still wins arbitration. This is the fix
+          // for nested press scenarios like <Link asChild><View><Button/></View></Link>
+          // where the View carries the merged navigate onPress and the inner
+          // pressStyled Button must not steal the press.
+          gestureRef.current = Gesture.Manual()
+            .runOnJS(true)
+            .manualActivation(true)
+            .onTouchesDown((e: any) => callbacksRef.current.onPressIn?.(e))
+            .onTouchesUp((e: any) => {
+              callbacksRef.current.onPress?.(e)
+              callbacksRef.current.onPressOut?.(e)
+            })
+            .onTouchesCancelled((e: any) => callbacksRef.current.onPressOut?.(e))
         }
       }
       // TODO update viewProps.hitSlop / events.delayLongPress!
@@ -199,11 +213,10 @@ export function wrapWithGestureDetector(
   const gh = getGestureHandler()
   const { GestureDetector, Gesture } = gh.state
 
-  // only wrap when the user passed real press handlers. components with only
-  // pressStyle (no onPress) skip the gesture wrap entirely — otherwise the
-  // inner gesture wins arbitration over a parent Link/Pressable that's the
-  // actual tap consumer.
-  const shouldWrap = stateRef.current.hasRealPressEvents
+  // wrap whenever any press gesture was attached (real handler OR
+  // synthesized pressStyle observer). only the real-handler path claims
+  // the responder on Paper — observers must not preempt parents.
+  const shouldWrap = stateRef.current.hasHadEvents
 
   if (!GestureDetector || !shouldWrap) {
     return content
@@ -216,12 +229,29 @@ export function wrapWithGestureDetector(
     return content
   }
 
-  if (isFabric) {
-    // no responder claim on Fabric: RNGH's PressGesture coordinates tap
-    // arbitration through nativeFabricUIManager.setIsJSResponder. claiming
-    // via JS onStartShouldSetResponder preempts the gesture and blocks
-    // onPress from firing.
+  // pressStyle-only observers (Manual + manualActivation gesture) must never
+  // claim the responder — otherwise a nested pressStyle Tamagui child would
+  // preempt a real-handler ancestor (e.g. <Link asChild><View><Button/></View></Link>
+  // where the View carries the merged navigate handler and the inner Button
+  // has only pressStyle). The Manual gesture observes touches on the UI thread
+  // for fast pressStyle visuals without participating in arbitration.
+  if (!stateRef.current.hasRealPressEvents) {
     return React.createElement(GestureDetector, { gesture: gestureToUse }, content)
+  }
+
+  if (isFabric) {
+    // attach responder claim directly to the gesture target. on Fabric this
+    // does not conflict with RNGH because the responder path goes through
+    // nativeFabricUIManager.setIsJSResponder, not UIManager.setJSResponder
+    // (which RNGH intercepts on Paper). avoids a wrapper view, so layout is
+    // unchanged and we don't trip Fabric's display:contents -> ForceFlattenView.
+    // The claim is what blocks a parent RN Pressable from firing when a press
+    // lands on this Tamagui component (NestedPressExclusive).
+    const claimed = React.cloneElement(content, {
+      onStartShouldSetResponder: responderClaim,
+      onResponderTerminationRequest: responderDeny,
+    })
+    return React.createElement(GestureDetector, { gesture: gestureToUse }, claimed)
   }
 
   // Paper: keep the hoisted display:contents wrapper. claiming on the gesture
