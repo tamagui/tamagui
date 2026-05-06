@@ -5,9 +5,20 @@
 import { composeEventHandlers } from '@tamagui/helpers'
 import { getGestureHandler } from '@tamagui/native'
 import React, { useRef } from 'react'
-import { Platform, View } from 'react-native'
+import { View } from 'react-native'
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
+
+// Fabric uses nativeFabricUIManager.setIsJSResponder directly, bypassing
+// RNGH's UIManager.setJSResponder monkey-patch (createHandler.tsx:99). So on
+// Fabric the freeze-on-many-mounts coordination conflict that drove
+// c345b5fc28 (claim hoisted to a wrapper) does not apply, and we can attach
+// the responder claim directly to the gesture target.
+const isFabric = !!(globalThis as any).nativeFabricUIManager
+
+const responderClaim = () => true
+const responderDeny = () => false
+const responderWrapperStyle = { display: 'contents' } as const
 
 // web events not used on native
 export function getWebEvents() {
@@ -195,33 +206,30 @@ export function wrapWithGestureDetector(
     return content
   }
 
-  const detector = React.createElement(
-    GestureDetector,
-    { gesture: gestureToUse },
-    content
-  )
+  if (isFabric) {
+    // attach responder claim directly to the gesture target. on Fabric this
+    // does not conflict with RNGH because the responder path goes through
+    // nativeFabricUIManager.setIsJSResponder, not UIManager.setJSResponder
+    // (which RNGH intercepts on Paper). avoids a wrapper view, so layout
+    // is unchanged and we don't trip Fabric's display:contents -> ForceFlattenView.
+    const claimed = React.cloneElement(content, {
+      onStartShouldSetResponder: responderClaim,
+      onResponderTerminationRequest: responderDeny,
+    })
+    return React.createElement(GestureDetector, { gesture: gestureToUse }, claimed)
+  }
 
-  // wrap in a responder-claiming View OUTSIDE the GestureDetector.
-  // this blocks parent RN Pressable/TouchableOpacity from firing when
-  // a press lands on this component, without causing the RNGH deadlock
-  // that happens when responder claims are applied to a view inside
-  // the gesture-managed subtree (RNGH intercepts UIManager.setJSResponder
-  // globally — when the claimant is one of its own gesture targets it
-  // creates a coordination conflict, especially at scale on first mount).
+  // Paper: keep the hoisted display:contents wrapper. claiming on the gesture
+  // target itself triggers RNGH's setJSResponder coordination conflict and
+  // freezes long lists (c345b5fc28).
   return React.createElement(
     View,
     {
       collapsable: false,
-      // display: contents keeps the wrapper transparent to layout (new arch /
-      // Fabric) so it doesn't become an extra flex child and shift siblings.
       style: responderWrapperStyle,
       onStartShouldSetResponder: responderClaim,
       onResponderTerminationRequest: responderDeny,
     },
-    detector
+    React.createElement(GestureDetector, { gesture: gestureToUse }, content)
   )
 }
-
-const responderClaim = () => true
-const responderDeny = () => false
-const responderWrapperStyle = { display: 'contents' } as const
