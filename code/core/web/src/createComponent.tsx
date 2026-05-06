@@ -1442,6 +1442,9 @@ export function createComponent<
 
     // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
     // Skip gesture setup for HOC components - they may return null which crashes GestureDetector
+    // hasRealPressEvents distinguishes user-provided handlers from events.onPress
+    // synthesized for pressStyle alone — only the former should claim the responder.
+    const hasRealPressEvents = !!(onPress || onPressIn || onPressOut || onLongPress)
     const pressGesture =
       process.env.TAMAGUI_TARGET === 'native'
         ? useEvents(
@@ -1451,7 +1454,8 @@ export function createComponent<
             staticConfig,
             isHOC,
             isInsideNativeMenu,
-            pressDebugName
+            pressDebugName,
+            hasRealPressEvents
           )
         : null
 

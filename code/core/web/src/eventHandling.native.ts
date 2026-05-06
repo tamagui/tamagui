@@ -9,11 +9,6 @@ import { View } from 'react-native'
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
-// Fabric uses nativeFabricUIManager.setIsJSResponder directly, bypassing
-// RNGH's UIManager.setJSResponder monkey-patch (createHandler.tsx:99). So on
-// Fabric the freeze-on-many-mounts coordination conflict that drove
-// c345b5fc28 (claim hoisted to a wrapper) does not apply, and we can attach
-// the responder claim directly to the gesture target.
 const isFabric = !!(globalThis as any).nativeFabricUIManager
 
 const responderClaim = () => true
@@ -32,7 +27,8 @@ export function useEvents(
   staticConfig: StaticConfig,
   isHOC?: boolean,
   isInsideNativeMenu?: boolean,
-  debugName?: string | null
+  debugName?: string | null,
+  hasRealPressEvents?: boolean
 ) {
   // focus/blur events always attached directly
   if (events) {
@@ -57,9 +53,20 @@ export function useEvents(
   if (hasPressEvents) {
     stateRef.current.hasHadEvents = true
   }
+  // separately track whether the user actually passed press handlers (vs. having
+  // events.onPress synthesized just for pressStyle visual tracking). only real
+  // user handlers should create a gesture / wrap with GestureDetector — otherwise
+  // nested Tamagui components (e.g. a Button inside a Link asChild View) each
+  // create their own RNGH gesture, the inner one wins arbitration, and the outer
+  // user-onPress (Link's navigate) never fires.
+  if (hasRealPressEvents) {
+    stateRef.current.hasRealPressEvents = true
+  }
 
   // avoid hooks/reparenting
-  const everEnabled = Boolean(hasPressEvents || stateRef.current.hasHadEvents)
+  const everEnabled = Boolean(
+    hasRealPressEvents || stateRef.current.hasRealPressEvents
+  )
   const isUsingRNGH = gh.isEnabled
 
   // NOW handle early returns (after all hooks are called)
@@ -192,8 +199,11 @@ export function wrapWithGestureDetector(
   const gh = getGestureHandler()
   const { GestureDetector, Gesture } = gh.state
 
-  // avoid re-parenting: only wrap if we ever had press events
-  const shouldWrap = stateRef.current.hasHadEvents
+  // only wrap when the user passed real press handlers. components with only
+  // pressStyle (no onPress) skip the gesture wrap entirely — otherwise the
+  // inner gesture wins arbitration over a parent Link/Pressable that's the
+  // actual tap consumer.
+  const shouldWrap = stateRef.current.hasRealPressEvents
 
   if (!GestureDetector || !shouldWrap) {
     return content
@@ -207,16 +217,11 @@ export function wrapWithGestureDetector(
   }
 
   if (isFabric) {
-    // attach responder claim directly to the gesture target. on Fabric this
-    // does not conflict with RNGH because the responder path goes through
-    // nativeFabricUIManager.setIsJSResponder, not UIManager.setJSResponder
-    // (which RNGH intercepts on Paper). avoids a wrapper view, so layout
-    // is unchanged and we don't trip Fabric's display:contents -> ForceFlattenView.
-    const claimed = React.cloneElement(content, {
-      onStartShouldSetResponder: responderClaim,
-      onResponderTerminationRequest: responderDeny,
-    })
-    return React.createElement(GestureDetector, { gesture: gestureToUse }, claimed)
+    // no responder claim on Fabric: RNGH's PressGesture coordinates tap
+    // arbitration through nativeFabricUIManager.setIsJSResponder. claiming
+    // via JS onStartShouldSetResponder preempts the gesture and blocks
+    // onPress from firing.
+    return React.createElement(GestureDetector, { gesture: gestureToUse }, content)
   }
 
   // Paper: keep the hoisted display:contents wrapper. claiming on the gesture

@@ -40,7 +40,8 @@ export function useEvents(
   _staticConfig: any,
   _isHOC?: boolean,
   _isInsideNativeMenu?: boolean,
-  _debugName?: string | null
+  _debugName?: string | null,
+  _hasRealPressEvents?: boolean
 ) {
   return null
 }
