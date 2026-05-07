@@ -21,10 +21,11 @@ export async function navigateToTestCase(
   // disable sync to avoid animation driver blocking
   await device.disableSynchronization()
 
-  // wait for home screen to load
+  // wait for home screen to load - generous because safeReloadApp triggers a
+  // metro re-bundle that can exceed 60s on slow CI runners
   await waitFor(element(by.id('home-title')))
     .toExist()
-    .withTimeout(60000)
+    .withTimeout(180000)
 
   // small delay for UI to settle before tapping
   await new Promise((r) => setTimeout(r, 500))

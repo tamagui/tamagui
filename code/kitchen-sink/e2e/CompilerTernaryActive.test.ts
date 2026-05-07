@@ -31,7 +31,7 @@ describe('CompilerTernaryActive', () => {
     console.log('Build complete, .native.tsx generated')
 
     await safeLaunchApp({ newInstance: true })
-  })
+  }, 600_000) // tamagui build can occasionally take 5-12 min on slow CI runners
 
   it('optimized and non-optimized text should match colors in both states', async () => {
     await safeReloadApp()
