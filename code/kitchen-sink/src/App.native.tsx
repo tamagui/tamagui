@@ -32,7 +32,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { KeyboardProvider } from 'react-native-keyboard-controller'
 import { useFonts } from 'expo-font'
 import React from 'react'
-import { Appearance, LogBox, useColorScheme } from 'react-native'
+import { Appearance, LogBox, Platform, useColorScheme } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { PortalProvider } from 'react-native-teleport'
 import { H1 } from 'tamagui'
@@ -47,7 +47,24 @@ LogBox.ignoreAllLogs()
 
 SplashScreen.hideAsync()
 
+// Detox launches the activity through AndroidX MonitoringInstrumentation, which
+// waits up to 45s for the main looper to go idle. Mounting the full Navigation
+// tree synchronously on first commit (with all the test cases statically
+// imported into the bundle) keeps main busy long enough on the CI emulator
+// (software graphics, 2GB RAM) to blow that timeout. Deferring the heavy mount
+// by one tick gives the looper a chance to idle so the launch handshake can
+// finish before we start doing real work.
+const isAndroid = Platform.OS === 'android'
+
 export default function App() {
+  const [ready, setReady] = React.useState(!isAndroid)
+
+  React.useEffect(() => {
+    if (ready) return
+    const id = setTimeout(() => setReady(true), 0)
+    return () => clearTimeout(id)
+  }, [ready])
+
   const [mode, setMode] = React.useState<ThemeMode>('system')
   const [loaded] = useFonts({
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
@@ -80,7 +97,7 @@ export default function App() {
     }
   }, [mode, resolvedTheme])
 
-  if (!loaded) {
+  if (!loaded || !ready) {
     return null
   }
 

@@ -31,7 +31,7 @@ describe('CompilerExtraction', () => {
     console.log('Build complete, .native.tsx generated')
 
     await safeLaunchApp({ newInstance: true })
-  })
+  }, 300_000) // tamagui build can take 60-120s on slow CI runners; default jest hook timeout is 5s, package-level setupTimeout is 180s
 
   it('should render and respond to theme changes', async () => {
     await safeReloadApp()
