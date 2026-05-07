@@ -244,6 +244,7 @@ export function SheetScrollableDrag() {
           </Sheet.ScrollView>
         </Sheet.Frame>
       </Sheet>
+
     </YStack>
   )
 }
