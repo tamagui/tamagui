@@ -62,7 +62,7 @@ module.exports = {
       maxWorkers,
     },
     jest: {
-      setupTimeout: 180000, // 3 minutes for CI environments
+      setupTimeout: 300000, // 5 minutes - slow CI runners + retries can exceed 180s, especially for tests that compile in beforeAll
       retries: 1, // Retry flaky tests once
     },
   },

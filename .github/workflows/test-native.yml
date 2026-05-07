@@ -583,9 +583,12 @@ jobs:
           arch: x86_64
           profile: pixel_4
           avd-name: test
-          ram-size: 2048M
-          heap-size: 512M
-          disk-size: 2G
+          # 4G ram + 1G heap (was 2G/512M) - the kitchen-sink JS bundle eagerly imports
+          # all 192 test cases, so first launch under software graphics needs more headroom
+          # to let the main looper idle within AndroidX's 45s startActivitySync timeout.
+          ram-size: 4096M
+          heap-size: 1024M
+          disk-size: 4G
           force-avd-creation: false
           emulator-boot-timeout: 600
           disable-animations: true
