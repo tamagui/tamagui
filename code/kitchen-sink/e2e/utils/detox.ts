@@ -32,7 +32,26 @@ const DEFAULT_LAUNCH_ARGS = {
 const POST_LAUNCH_SETTLE_MS = 1500
 const PRE_RELOAD_SETTLE_MS = 250
 
+// xcrun simctl launch occasionally returns FBSOpenApplicationServiceErrorDomain
+// (code=1 / code=4) on iOS simulators after a few prior tests in the same
+// session - the simulator's frontboard service gets into a transient bad state
+// where it refuses to open the app even though it's installed. Sleeping briefly
+// and re-launching nearly always recovers. Without this retry, ThemeMutation /
+// any test that runs late in a shard intermittently fails with all 4 cases
+// reporting the same FBSOpenApplicationService error in <100ms.
+const LAUNCH_RETRY_DELAY_MS = 3000
+const LAUNCH_MAX_ATTEMPTS = 3
+const RETRYABLE_LAUNCH_PATTERNS = [
+  'FBSOpenApplicationServiceErrorDomain',
+  'FBSOpenApplicationErrorDomain',
+]
+
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
+
+const isRetryableLaunchError = (err: unknown): boolean => {
+  const msg = err instanceof Error ? err.message : String(err)
+  return RETRYABLE_LAUNCH_PATTERNS.some((p) => msg.includes(p))
+}
 
 /**
  * Launch app then disable sync. Must launch first so Detox can connect,
@@ -41,15 +60,32 @@ const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 export async function safeLaunchApp(
   params?: Parameters<typeof device.launchApp>[0]
 ): Promise<void> {
-  await device.launchApp({
-    ...params,
-    launchArgs: {
-      ...DEFAULT_LAUNCH_ARGS,
-      ...params?.launchArgs,
-    },
-  } as any)
-  await device.disableSynchronization()
-  await sleep(POST_LAUNCH_SETTLE_MS)
+  let lastError: unknown
+  for (let attempt = 1; attempt <= LAUNCH_MAX_ATTEMPTS; attempt++) {
+    try {
+      await device.launchApp({
+        ...params,
+        launchArgs: {
+          ...DEFAULT_LAUNCH_ARGS,
+          ...params?.launchArgs,
+        },
+      } as any)
+      await device.disableSynchronization()
+      await sleep(POST_LAUNCH_SETTLE_MS)
+      return
+    } catch (err) {
+      lastError = err
+      if (attempt === LAUNCH_MAX_ATTEMPTS || !isRetryableLaunchError(err)) {
+        throw err
+      }
+      console.warn(
+        `safeLaunchApp: attempt ${attempt}/${LAUNCH_MAX_ATTEMPTS} failed with retryable simulator error, retrying after ${LAUNCH_RETRY_DELAY_MS}ms`,
+        err instanceof Error ? err.message : err
+      )
+      await sleep(LAUNCH_RETRY_DELAY_MS)
+    }
+  }
+  throw lastError
 }
 
 /**
