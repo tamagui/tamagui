@@ -38,7 +38,8 @@
     "plugins": [
       "expo-font",
       "./plugins/expo-modules-core-swift6",
-      "./plugins/detox-metro-port"
+      "./plugins/detox-metro-port",
+      "./plugins/detox-skip-splash"
     ],
     "experiments": {
       "reactCanary": true
