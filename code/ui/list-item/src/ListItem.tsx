@@ -228,17 +228,17 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
     const iconColor = useCurrentColor(styledContext?.color)
     const iconSizeNumber = getFontSize(iconSize || (size as any)) * scaleIcon
 
-    const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon, i) => {
-      if (!icon) return null
-      const isBefore = i === 0
-      return getIcon(icon, {
-        size: iconSizeNumber,
-        color: iconColor,
-        style: {
-          [isBefore ? 'marginRight' : 'marginLeft']: `${iconSizeNumber * 0.4}%`,
-        },
-      })
-    })
+    const iconSpacing = iconSizeNumber * 0.4
+    const themedIcon = icon ? (
+      <View marginRight={iconSpacing}>
+        {getIcon(icon, { size: iconSizeNumber, color: iconColor })}
+      </View>
+    ) : null
+    const themedIconAfter = iconAfter ? (
+      <View marginLeft={iconSpacing}>
+        {getIcon(iconAfter, { size: iconSizeNumber, color: iconColor })}
+      </View>
+    ) : null
 
     const wrappedChildren = wrapChildrenInText(
       ListItemText,
