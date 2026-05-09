@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "sideEffects": false,
-  "main": "index.jsx",
   "scripts": {
     "postinstall": "node scripts/generate-bento-proxy.mjs",
     "dev": "one dev",
