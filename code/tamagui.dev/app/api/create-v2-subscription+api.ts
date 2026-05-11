@@ -317,6 +317,11 @@ export default apiRoute(async (req) => {
       }
     }
 
+    // V2 purchase succeeded - clean up any lingering V1 Pro subscriptions so the
+    // customer doesn't keep getting renewal/failed-payment emails for the old plan.
+    // non-blocking: V1 cleanup must not fail the V2 purchase.
+    await cancelV1ProSubscriptionsOnV2Migration(stripeCustomerId)
+
     return Response.json({
       success: true,
       invoiceId: invoice.id,
@@ -343,6 +348,79 @@ export default apiRoute(async (req) => {
     return Response.json({ error: message }, { status: 500 })
   }
 })
+
+/**
+ * After a successful V2 purchase, cancel any V1 Pro subscriptions for the same customer.
+ * - past_due/unpaid/incomplete: cancel immediately and void any open invoices (stops the
+ *   stripe retry loop and the "Payment failed" email it generates).
+ * - active/trialing: set cancel_at_period_end so the customer keeps the period they paid for
+ *   but doesn't get charged again.
+ *
+ * Wrapped in try/catch - failure here must not affect the V2 purchase response.
+ */
+async function cancelV1ProSubscriptionsOnV2Migration(stripeCustomerId: string) {
+  try {
+    const subs = await stripe.subscriptions.list({
+      customer: stripeCustomerId,
+      status: 'all',
+      limit: 20,
+    })
+
+    const v1ProProductId = STRIPE_PRODUCTS.PRO_SUBSCRIPTION.productId
+    const v1ProSubs = subs.data.filter((sub) => {
+      const product = sub.items.data[0]?.price.product
+      return (
+        product === v1ProProductId &&
+        (sub.status === 'active' ||
+          sub.status === 'trialing' ||
+          sub.status === 'past_due' ||
+          sub.status === 'unpaid' ||
+          sub.status === 'incomplete')
+      )
+    })
+
+    for (const sub of v1ProSubs) {
+      const isFailing =
+        sub.status === 'past_due' ||
+        sub.status === 'unpaid' ||
+        sub.status === 'incomplete'
+
+      if (isFailing) {
+        const openInvoices = await stripe.invoices.list({
+          customer: stripeCustomerId,
+          subscription: sub.id,
+          status: 'open',
+          limit: 10,
+        })
+        for (const inv of openInvoices.data) {
+          try {
+            await stripe.invoices.voidInvoice(inv.id)
+            console.info(`Voided open V1 invoice ${inv.id} on V2 migration`)
+          } catch (e) {
+            console.error(`Failed to void V1 invoice ${inv.id}:`, e)
+          }
+        }
+        await stripe.subscriptions.cancel(sub.id)
+        console.info(
+          `Canceled failing V1 Pro subscription ${sub.id} (was ${sub.status}) on V2 migration`
+        )
+      } else {
+        await stripe.subscriptions.update(sub.id, {
+          cancel_at_period_end: true,
+          metadata: {
+            ...sub.metadata,
+            canceled_reason: 'v2_purchase_migration',
+          },
+        })
+        console.info(
+          `Set V1 Pro subscription ${sub.id} to cancel at period end on V2 migration`
+        )
+      }
+    }
+  } catch (err) {
+    console.error('cancelV1ProSubscriptionsOnV2Migration failed:', err)
+  }
+}
 
 /**
  * Rollback payment and subscriptions on failure
