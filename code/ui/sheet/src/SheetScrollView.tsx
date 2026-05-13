@@ -29,7 +29,15 @@ export const SheetScrollView = React.forwardRef<
   ) => {
     const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const gestureContext = useGestureSheetContext()
-    const { scrollBridge, setHasScrollView } = context
+    const { scrollBridge, setHasScrollView, hasFit, screenSize } = context
+
+    // with snapPointsMode="fit", Frame is content-sized (flex: 0, flex-basis: auto, height: undefined).
+    // a flex: 1 child can't grow inside a content-sized parent, so the ScrollView (and the Frame
+    // around it) collapse to 0 height. instead, let the ScrollView size to its content and cap it
+    // at the available viewport (screenSize / maxContentSize) so scrolling kicks in for tall content.
+    const fitSizingStyle = hasFit
+      ? { flex: undefined as undefined, maxHeight: screenSize || undefined }
+      : { flex: 1 }
     const [scrollEnabled] = useControllableState({
       prop: scrollEnabledProp,
       defaultProp: true,
@@ -117,7 +125,7 @@ export const SheetScrollView = React.forwardRef<
       return (
         <RNGHComponent
           ref={composeRefs(scrollRef as any, ref)}
-          style={{ flex: 1 }}
+          style={fitSizingStyle}
           scrollEventThrottle={1}
           scrollEnabled={scrollEnabled}
           simultaneousHandlers={[panGestureRef]}
@@ -174,7 +182,7 @@ export const SheetScrollView = React.forwardRef<
           updateScrollable()
         }}
         ref={composeRefs(scrollRef as any, ref)}
-        flex={1}
+        {...fitSizingStyle}
         scrollEventThrottle={1}
         className="_ovs-contain"
         scrollEnabled={scrollEnabled}
