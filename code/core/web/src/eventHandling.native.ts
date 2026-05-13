@@ -19,7 +19,17 @@ const isFabric = !!(globalThis as any).nativeFabricUIManager
 // have killed. iOS Fabric absorbs the cost; Android Fabric doesn't.
 // Skip the observer + wrap on Android — pressStyle visuals fall through to
 // the standard responder path via the synthesized event handlers.
-const isAndroid = Platform.OS === 'android'
+// computed lazily: the native core bundle is also loaded by the compiler for
+// static extraction, where Platform's init runs after this module's. A
+// top-level read of Platform.OS sees Platform === undefined and crashes the
+// loader. Reading on first call defers until after all module inits complete.
+let isAndroidCache: boolean | undefined
+const getIsAndroid = () => {
+  if (isAndroidCache === undefined) {
+    isAndroidCache = Platform?.OS === 'android'
+  }
+  return isAndroidCache
+}
 
 const responderClaim = () => true
 const responderDeny = () => false
@@ -134,7 +144,7 @@ export function useEvents(
     // unconditionally here for stable hooks order; useMainThreadPressEvents
     // no-ops when enabled is false.
     const useResponderFallback =
-      isAndroid &&
+      getIsAndroid() &&
       !(hasRealPressEvents || stateRef.current.hasRealPressEvents) &&
       Boolean(hasPressEvents)
     useMainThreadPressEvents(events, viewProps, useResponderFallback, debugName)
@@ -185,7 +195,7 @@ export function useEvents(
             delayLongPress: events?.delayLongPress,
             hitSlop: viewProps.hitSlop,
           })
-        } else if (!isAndroid) {
+        } else if (!getIsAndroid()) {
           // pressStyle-only (events.onPress was synthesized to drive pressStyle
           // visuals, no user handler): use Manual + manualActivation. Touch
           // observation runs on the UI thread for fast pressStyle feedback,
@@ -242,7 +252,7 @@ export function wrapWithGestureDetector(
   // the responder on Paper — observers must not preempt parents.
   // On Android we skip the observer gesture entirely (see top-of-file
   // isAndroid comment), so the wrap is real-handlers-only there.
-  const shouldWrap = isAndroid
+  const shouldWrap = getIsAndroid()
     ? stateRef.current.hasRealPressEvents
     : stateRef.current.hasHadEvents
 
