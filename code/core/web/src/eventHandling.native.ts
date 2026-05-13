@@ -5,11 +5,21 @@
 import { composeEventHandlers } from '@tamagui/helpers'
 import { getGestureHandler } from '@tamagui/native'
 import React, { useRef } from 'react'
-import { View } from 'react-native'
+import { Platform, View } from 'react-native'
 import { useMainThreadPressEvents } from './helpers/mainThreadPressEvents'
 import type { StaticConfig, TamaguiComponentStateRef } from './types'
 
 const isFabric = !!(globalThis as any).nativeFabricUIManager
+
+// Android (new arch + RNGH 2.30) freezes the JS thread when many pressStyle
+// components each attach a Gesture.Manual()...onTouchesDown observer (e.g. a
+// sheet with several buttons / inputs). Each handler opts into RNGH's
+// pointer-data pipeline (needsPointerData), and the combined coordination
+// cost recreates the same setJSResponder freeze c345b5fc28 was supposed to
+// have killed. iOS Fabric absorbs the cost; Android Fabric doesn't.
+// Skip the observer + wrap on Android — pressStyle visuals fall through to
+// the standard responder path via the synthesized event handlers.
+const isAndroid = Platform.OS === 'android'
 
 const responderClaim = () => true
 const responderDeny = () => false
@@ -118,6 +128,17 @@ export function useEvents(
     const callbacksRef = useRef<any>(isUsingRNGH ? {} : null)
     const gestureRef = useRef<any>(null)
 
+    // Android pressStyle-only fallback: wire synthesized press handlers to the
+    // responder system on viewProps instead of an RNGH Manual observer (which
+    // freezes Android — see top-of-file isAndroid comment). Hook is called
+    // unconditionally here for stable hooks order; useMainThreadPressEvents
+    // no-ops when enabled is false.
+    const useResponderFallback =
+      isAndroid &&
+      !(hasRealPressEvents || stateRef.current.hasRealPressEvents) &&
+      Boolean(hasPressEvents)
+    useMainThreadPressEvents(events, viewProps, useResponderFallback, debugName)
+
     if (everEnabled) {
       // store callbacks in refs so gesture doesn't need to be recreated on every render
       callbacksRef.current = hasPressEvents
@@ -164,7 +185,7 @@ export function useEvents(
             delayLongPress: events?.delayLongPress,
             hitSlop: viewProps.hitSlop,
           })
-        } else {
+        } else if (!isAndroid) {
           // pressStyle-only (events.onPress was synthesized to drive pressStyle
           // visuals, no user handler): use Manual + manualActivation. Touch
           // observation runs on the UI thread for fast pressStyle feedback,
@@ -173,6 +194,9 @@ export function useEvents(
           // for nested press scenarios like <Link asChild><View><Button/></View></Link>
           // where the View carries the merged navigate onPress and the inner
           // pressStyled Button must not steal the press.
+          //
+          // Android: skipped — see isAndroid comment at top. Synthesized
+          // pressStyle handlers fall through to viewProps responder events.
           gestureRef.current = Gesture.Manual()
             .runOnJS(true)
             .manualActivation(true)
@@ -216,7 +240,11 @@ export function wrapWithGestureDetector(
   // wrap whenever any press gesture was attached (real handler OR
   // synthesized pressStyle observer). only the real-handler path claims
   // the responder on Paper — observers must not preempt parents.
-  const shouldWrap = stateRef.current.hasHadEvents
+  // On Android we skip the observer gesture entirely (see top-of-file
+  // isAndroid comment), so the wrap is real-handlers-only there.
+  const shouldWrap = isAndroid
+    ? stateRef.current.hasRealPressEvents
+    : stateRef.current.hasHadEvents
 
   if (!GestureDetector || !shouldWrap) {
     return content
