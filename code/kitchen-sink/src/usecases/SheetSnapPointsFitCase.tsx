@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Adapt, Button, Dialog, Paragraph, Sheet, YStack } from 'tamagui'
+import { Adapt, Button, Dialog, Paragraph, Sheet, View, YStack } from 'tamagui'
 
 /**
  * Test case for Sheet with snapPointsMode="fit" adapted from Dialog
@@ -14,6 +14,8 @@ export function SheetSnapPointsFitCase() {
       <StandaloneSheetConstant />
       <RapidOpenCloseSheet />
       <DynamicContentSheet />
+      <ScrollViewInFitSheet />
+      <TallScrollViewInFitSheet />
     </YStack>
   )
 }
@@ -286,6 +288,128 @@ function RapidOpenCloseSheet() {
           <Button data-testid="rapid-close" onPress={() => setOpen(false)}>
             Close
           </Button>
+        </Sheet.Frame>
+      </Sheet>
+    </>
+  )
+}
+
+/**
+ * Sheet.ScrollView inside snapPointsMode="fit"
+ * regression test for: ScrollView hardcoded flex:1 collapsed inside a hasFit Frame
+ * (Frame has flex:0/flex-basis:auto/height:undefined), so both ScrollView and Frame
+ * measured to 0 — overlay rendered, sheet did not.
+ *
+ * with the fix, in fit mode the ScrollView sizes to content and caps at screenSize.
+ */
+function ScrollViewInFitSheet() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <Button data-testid="scrollview-fit-trigger" onPress={() => setOpen(true)}>
+        Open Sheet (fit + ScrollView, short content)
+      </Button>
+      <Sheet
+        modal
+        open={open}
+        onOpenChange={setOpen}
+        snapPointsMode="fit"
+        dismissOnSnapToBottom
+        zIndex={100000}
+        transition="medium"
+      >
+        <Sheet.Overlay
+          data-testid="scrollview-fit-overlay"
+          transition="lazy"
+          bg="$color"
+          opacity={0.5}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+        <Sheet.Handle data-testid="scrollview-fit-handle" />
+        <Sheet.Frame data-testid="scrollview-fit-frame" padding="$4">
+          <Sheet.ScrollView data-testid="scrollview-fit-scrollview">
+            <YStack gap="$3" padding="$2">
+              <Paragraph fontWeight="bold">Fit mode + Sheet.ScrollView (short)</Paragraph>
+              <Paragraph>
+                The sheet frame must size to content (this YStack), not collapse to 0.
+              </Paragraph>
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Paragraph key={i} data-testid={`scrollview-fit-item-${i}`}>
+                  Item {i + 1}
+                </Paragraph>
+              ))}
+              <Button data-testid="scrollview-fit-close" onPress={() => setOpen(false)}>
+                Close
+              </Button>
+            </YStack>
+          </Sheet.ScrollView>
+        </Sheet.Frame>
+      </Sheet>
+    </>
+  )
+}
+
+/**
+ * Sheet.ScrollView inside snapPointsMode="fit" with content TALLER than viewport.
+ * verifies maxHeight: screenSize cap kicks in and content becomes scrollable.
+ */
+function TallScrollViewInFitSheet() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <Button data-testid="scrollview-fit-tall-trigger" onPress={() => setOpen(true)}>
+        Open Sheet (fit + ScrollView, tall content)
+      </Button>
+      <Sheet
+        modal
+        open={open}
+        onOpenChange={setOpen}
+        snapPointsMode="fit"
+        dismissOnSnapToBottom
+        zIndex={100000}
+        transition="medium"
+      >
+        <Sheet.Overlay
+          data-testid="scrollview-fit-tall-overlay"
+          transition="lazy"
+          bg="$color"
+          opacity={0.5}
+          enterStyle={{ opacity: 0 }}
+          exitStyle={{ opacity: 0 }}
+        />
+        <Sheet.Handle data-testid="scrollview-fit-tall-handle" />
+        <Sheet.Frame data-testid="scrollview-fit-tall-frame" padding="$4">
+          <Sheet.ScrollView data-testid="scrollview-fit-tall-scrollview">
+            <YStack gap="$2" padding="$2">
+              <Paragraph fontWeight="bold">
+                Fit mode + Sheet.ScrollView (tall, scrollable)
+              </Paragraph>
+              <Paragraph>
+                Content here is taller than the screen — scrollview should scroll inside
+                the capped sheet height.
+              </Paragraph>
+              {Array.from({ length: 40 }).map((_, i) => (
+                <View
+                  key={i}
+                  data-testid={`scrollview-fit-tall-item-${i}`}
+                  padding="$2"
+                  borderRadius="$2"
+                  bg="$background"
+                >
+                  <Paragraph>Row {i + 1} — Lorem ipsum dolor sit amet.</Paragraph>
+                </View>
+              ))}
+              <Button
+                data-testid="scrollview-fit-tall-close"
+                onPress={() => setOpen(false)}
+              >
+                Close
+              </Button>
+            </YStack>
+          </Sheet.ScrollView>
         </Sheet.Frame>
       </Sheet>
     </>
