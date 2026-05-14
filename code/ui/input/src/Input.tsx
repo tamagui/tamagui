@@ -158,11 +158,11 @@ export const Input = StyledInput.styleable<InputExtraProps>((props, _forwardedRe
     style: {
       ...(rest.style as any),
       ...(placeholderTextColor && {
-        '--placeholderColor':
+        '--t_placeholderColor':
           theme[placeholderTextColor]?.variable || placeholderTextColor,
       }),
       ...(selectionColor && {
-        '--selectionColor': theme[selectionColor]?.variable || selectionColor,
+        '--t_selectionColor': theme[selectionColor]?.variable || selectionColor,
       }),
     },
   } as any

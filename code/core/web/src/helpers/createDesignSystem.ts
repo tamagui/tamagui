@@ -249,8 +249,8 @@ export function getCSS(
 @scope (.is_Text) to (.is_View) { .is_Text { white-space: inherit; word-wrap: inherit; } }
 ._dsp_contents {display:contents;}
 ._no_backdrop::backdrop {display: none;}
-.is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}
-.is_Input::placeholder, .is_TextArea::placeholder {color: var(--placeholderColor);}
+.is_Input::selection, .is_TextArea::selection {background-color: var(--t_selectionColor);}
+.is_Input::placeholder, .is_TextArea::placeholder {color: var(--t_placeholderColor);}
 ${pointerEventsCSS}
 ${hideScrollBarsCSS}
 ${autoVarCSS}
