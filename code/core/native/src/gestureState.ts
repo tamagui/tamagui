@@ -275,10 +275,16 @@ export function getGestureHandler(): GestureHandlerAccessor {
       }
 
       // Tap gesture for regular presses
-      // Use long maxDuration to not cancel during long presses
+      // Use long maxDuration to not cancel during long presses.
+      // maxDistance(10) cancels the tap if the finger moves more than ~10dp,
+      // matching RN Pressable's slop. Without it, iOS RNGH defaults maxDist
+      // to NaN and the Tap never fails on movement — combined with a parent
+      // ScrollView scroll, the Tap stays armed during the entire drag and
+      // fires onPress on release.
       const tap = Gesture.Tap()
         .runOnJS(true)
         .maxDuration(10000) // allow very long presses
+        .maxDistance(10)
         .onBegin((e: unknown) => {
           flags.didLongPress = false
           flags.didPressIn = false

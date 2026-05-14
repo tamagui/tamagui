@@ -32,7 +32,6 @@ const getIsAndroid = () => {
 }
 
 const responderClaim = () => true
-const responderDeny = () => false
 const responderWrapperStyle = { display: 'contents' } as const
 
 // web events not used on native
@@ -285,23 +284,30 @@ export function wrapWithGestureDetector(
     // unchanged and we don't trip Fabric's display:contents -> ForceFlattenView.
     // The claim is what blocks a parent RN Pressable from firing when a press
     // lands on this Tamagui component (NestedPressExclusive).
+    //
+    // Do NOT also set onResponderTerminationRequest: false here — that would
+    // refuse to release the responder when a parent ScrollView's pan tries to
+    // take over, leaving the press stuck "down" for the whole scroll and
+    // firing onPress on release. The default (allow termination) lets the
+    // ScrollView scroll naturally while the start-claim still blocks parent
+    // Pressables from receiving the touch.
     const claimed = React.cloneElement(content, {
       onStartShouldSetResponder: responderClaim,
-      onResponderTerminationRequest: responderDeny,
     })
     return React.createElement(GestureDetector, { gesture: gestureToUse }, claimed)
   }
 
   // Paper: keep the hoisted display:contents wrapper. claiming on the gesture
   // target itself triggers RNGH's setJSResponder coordination conflict and
-  // freezes long lists (c345b5fc28).
+  // freezes long lists (c345b5fc28). Same as Fabric, only claim on start —
+  // don't deny termination, or parent ScrollViews can't take the responder
+  // back when the user starts scrolling.
   return React.createElement(
     View,
     {
       collapsable: false,
       style: responderWrapperStyle,
       onStartShouldSetResponder: responderClaim,
-      onResponderTerminationRequest: responderDeny,
     },
     React.createElement(GestureDetector, { gesture: gestureToUse }, content)
   )
