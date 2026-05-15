@@ -1,9 +1,11 @@
 import { vitePlugin as remix } from '@remix-run/dev'
 import { defineConfig } from 'vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
 
 export default defineConfig({
+  resolve: {
+    tsconfigPaths: true,
+  },
   plugins: [
     remix({
       future: {
@@ -12,7 +14,6 @@ export default defineConfig({
         v3_throwAbortReason: true,
       },
     }),
-    tsconfigPaths(),
     tamaguiPlugin(),
   ],
 })

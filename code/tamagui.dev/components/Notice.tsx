@@ -41,6 +41,7 @@ export const Notice = ({
             </H3>
           )}
           <Paragraph
+            render="div"
             py="$2"
             color="$color11"
             mt={-3}

@@ -51,7 +51,7 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react": ">=19",
-    "vitest": "4.0.4"
+    "vitest": "4.1.6"
   },
   "peerDependencies": {
     "react": ">=19"

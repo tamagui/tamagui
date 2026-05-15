@@ -34,8 +34,11 @@ const key = isTestMode
 // lazy load stripe only when needed
 let stripePromise: ReturnType<typeof loadStripe> | null = null
 const getStripe = () => {
+  if (!key) {
+    return null
+  }
   if (!stripePromise) {
-    stripePromise = loadStripe(key || '')
+    stripePromise = loadStripe(key)
   }
   return stripePromise
 }

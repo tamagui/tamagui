@@ -139,7 +139,7 @@
     "@react-navigation/native-stack": "7.14.10",
     "@react-navigation/routers": "7.5.3",
     "@swc/core": "1.14.0",
-    "rolldown": "1.0.0-rc.12",
+    "rolldown": "1.0.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.83.2",

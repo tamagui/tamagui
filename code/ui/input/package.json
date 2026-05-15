@@ -55,7 +55,7 @@
     "@tamagui/build": "workspace:*",
     "react": ">=19",
     "react-native": "0.83.2",
-    "vitest": "4.0.4"
+    "vitest": "4.1.6"
   },
   "peerDependencies": {
     "react": ">=19"

@@ -71,7 +71,7 @@
     "react-dom": "*",
     "react-native": "0.83.2",
     "typescript": "~5.9.2",
-    "vitest": "4.0.4"
+    "vitest": "4.1.6"
   },
   "peerDependencies": {
     "react": ">=19",
