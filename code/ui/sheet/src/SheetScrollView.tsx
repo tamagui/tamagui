@@ -30,19 +30,34 @@ export const SheetScrollView = React.forwardRef<
     const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
     const gestureContext = useGestureSheetContext()
     const { scrollBridge, setHasScrollView, hasFit, screenSize } = context
-
-    // with snapPointsMode="fit", Frame is content-sized (flex: 0, flex-basis: auto, height: undefined).
-    // a flex: 1 child can't grow inside a content-sized parent, so the ScrollView (and the Frame
-    // around it) collapse to 0 height. instead, let the ScrollView size to its content and cap it
-    // at the available viewport (screenSize / maxContentSize) so scrolling kicks in for tall content.
-    const fitSizingStyle = hasFit
-      ? { flex: undefined as undefined, maxHeight: screenSize || undefined }
-      : { flex: 1 }
+    const keyboardOccludedHeight = Math.max(0, context.keyboardOccludedHeight || 0)
     const [scrollEnabled] = useControllableState({
       prop: scrollEnabledProp,
       defaultProp: true,
     })
     const scrollRef = React.useRef<RNScrollView | null>(null)
+
+    const [hasScrollableContent, setHasScrollableContent] = useState(true)
+    const parentHeight = useRef(0)
+    const contentHeight = useRef(0)
+
+    // with snapPointsMode="fit", Frame is content-sized (flex: 0, flex-basis: auto, height: undefined).
+    // a flex: 1 child can't grow inside a content-sized parent, so the ScrollView (and the Frame
+    // around it) collapse to 0 height. instead, let the ScrollView size to its content and cap it
+    // at the available viewport (screenSize / maxContentSize) so scrolling kicks in for tall content.
+    // when the keyboard forces the sheet against the top safe area, preserve the measured viewport
+    // height while adding scrollable tail padding so content can move above the keyboard.
+    const keyboardFrozenHeight =
+      hasFit && keyboardOccludedHeight > 0 && parentHeight.current
+        ? parentHeight.current
+        : undefined
+    const fitSizingStyle = hasFit
+      ? {
+          flex: undefined as undefined,
+          height: keyboardFrozenHeight,
+          maxHeight: screenSize || undefined,
+        }
+      : { flex: 1 }
 
     const panGestureRef = gestureContext?.panGestureRef
     const { ScrollView: RNGHScrollView } = getGestureHandlerState()
@@ -81,10 +96,6 @@ export const SheetScrollView = React.forwardRef<
       }
     }, [])
 
-    const [hasScrollableContent, setHasScrollableContent] = useState(true)
-    const parentHeight = useRef(0)
-    const contentHeight = useRef(0)
-
     const updateScrollable = () => {
       if (parentHeight.current && contentHeight.current) {
         setHasScrollableContent(contentHeight.current > parentHeight.current)
@@ -116,6 +127,13 @@ export const SheetScrollView = React.forwardRef<
         }}
       >
         {children}
+        {keyboardOccludedHeight > 0 && (
+          <View
+            data-sheet-keyboard-scroll-pad
+            height={keyboardOccludedHeight}
+            width="100%"
+          />
+        )}
       </View>
     )
 
