@@ -24,6 +24,7 @@ import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { GestureDetectorWrapper } from './GestureDetectorWrapper'
 import { GestureSheetProvider } from './GestureSheetContext'
 import { resisted } from './helpers'
+import { getKeyboardOccludedHeight } from './keyboardAvoidance'
 import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
 import { useGestureHandlerPan } from './useGestureHandlerPan'
@@ -221,6 +222,14 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       activePositionsRef.current = result
       return result
     }, [positions, isKeyboardVisible, keyboardHeight, screenSize, isDragging])
+
+    const keyboardOccludedHeight = getKeyboardOccludedHeight({
+      frameSize,
+      isKeyboardVisible: !isWeb && isKeyboardVisible,
+      keyboardHeight,
+      screenSize,
+      sheetY: position >= 0 ? activePositions[position] : undefined,
+    })
 
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       animationDriver
@@ -724,7 +733,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     let contents = (
       <LayoutMeasurementController disable={!open}>
         <ParentSheetContext.Provider value={nextParentContext}>
-          <SheetProvider {...providerProps} setHasScrollView={setHasScrollView}>
+          <SheetProvider
+            {...providerProps}
+            keyboardOccludedHeight={keyboardOccludedHeight}
+            setHasScrollView={setHasScrollView}
+          >
             <GestureSheetProvider
               isDragging={isDragging}
               blockPan={blockPan}

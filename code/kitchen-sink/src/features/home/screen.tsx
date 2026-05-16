@@ -118,6 +118,17 @@ export function HomeScreen() {
           </YGroup.Item>
           <YGroup.Item>
             <LinkListItem
+              bg="$green3"
+              href="/test/SheetKeyboardFitContentCase"
+              pressStyle={{ backgroundColor: '$green4' }}
+              size="$5"
+              testID="home-sheet-keyboard-fit-test"
+            >
+              ⌨️ Sheet Keyboard Fit Test
+            </LinkListItem>
+          </YGroup.Item>
+          <YGroup.Item>
+            <LinkListItem
               bg="$purple3"
               href="/test/ActionsSheetComparison"
               pressStyle={{ backgroundColor: '$purple4' }}

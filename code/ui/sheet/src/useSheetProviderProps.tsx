@@ -8,6 +8,7 @@ import type { ScrollBridge, SheetProps } from './types'
 import type { SheetOpenState } from './useSheetOpenState'
 
 export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
+  keyboardOccludedHeight: number
   setHasScrollView: (val: boolean) => void
 }
 

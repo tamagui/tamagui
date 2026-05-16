@@ -59,7 +59,12 @@ export function setupNativeSheet(
 
       return (
         <>
-          <SheetProvider setHasScrollView={emptyFn} {...providerProps} onlyShowFrame>
+          <SheetProvider
+            setHasScrollView={emptyFn}
+            keyboardOccludedHeight={0}
+            {...providerProps}
+            onlyShowFrame
+          >
             <ModalSheetView ref={ref} onModalDidDismiss={() => setOpenInternal(false)}>
               <ModalSheetViewMainContent>
                 <View style={{ flex: 1 }}>{props.children}</View>
