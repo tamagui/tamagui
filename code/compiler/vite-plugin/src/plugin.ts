@@ -2,7 +2,6 @@ import type { TamaguiOptions, ExtractedResponse } from '@tamagui/static-worker'
 import * as Static from '@tamagui/static-worker'
 import { getPragmaOptions } from '@tamagui/static-worker'
 import { createHash } from 'node:crypto'
-import { existsSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -15,7 +14,11 @@ import {
   ensureFullConfigLoaded,
 } from './loadTamagui'
 
-const resolve = (name: string) => fileURLToPath(import.meta.resolve(name))
+// handle ESM/CJS duality for plugin dependencies - resolve from plugin's location, not user's project
+const _pluginRequire = createRequire(
+  typeof __filename === 'string' ? __filename : fileURLToPath(import.meta.url)
+)
+const resolve = (name: string) => _pluginRequire.resolve(name)
 
 // shared cache across all plugin instances/environments via globalThis
 type CacheEntry = {
