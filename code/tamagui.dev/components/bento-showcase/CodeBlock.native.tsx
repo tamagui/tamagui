@@ -7,7 +7,7 @@ const Code = styled(Paragraph, {
   render: 'code',
   fontFamily: '$mono',
   size: '$3',
-  lineHeight: '18px',
+  lineHeight: 18,
   cursor: 'inherit',
   whiteSpace: 'pre',
   p: '$1',

@@ -20,7 +20,7 @@ const Item = ({ children, ...props }: ListItemProps) => (
 const Title = styled(H6, {
   size: '$1',
   text: 'left',
-  lineHeight: '10px',
+  lineHeight: 10,
   pt: '$4',
   pb: '$2',
   px: '$3',

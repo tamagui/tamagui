@@ -23,7 +23,7 @@ export function StudioPaletteBar({
               opacity={0.7}
               size="$1"
               fontSize={11}
-              lineHeight="18px"
+              lineHeight={18}
               letterSpacing={-1}
               flex={1}
               flexBasis={0}
@@ -72,7 +72,7 @@ export function StudioPaletteBar({
               opacity={0.7}
               size="$1"
               fontSize={11}
-              lineHeight="18px"
+              lineHeight={18}
               letterSpacing={-1}
               flex={1}
               flexBasis={0}

@@ -67,13 +67,13 @@ export const BentoHero = () => {
                   fontFamily="$mono"
                   fontSize={22}
                   text="center"
-                  lineHeight="40px"
+                  lineHeight={40}
                   color="$color11"
                   maxH={120}
                   $md={{
                     mt: '$6',
                     fontSize: 22,
-                    lineHeight: '38px',
+                    lineHeight: 38,
                   }}
                 >
                   Copy-paste UI for React&nbsp;Native and&nbsp;React web, free and paid.
