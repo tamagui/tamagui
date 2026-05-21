@@ -52,6 +52,22 @@ const isCI = shouldFinish || rePublish || undocumented || process.argv.includes(
 const skipFinish =
   rePublish || skipAll || undocumented || process.argv.includes('--skip-finish')
 const forcePublishAll = process.argv.includes('--force-publish-all')
+const initialOtp = (() => {
+  const inlineOtpArg = process.argv.find((arg) => arg.startsWith('--otp='))
+  if (inlineOtpArg) {
+    return inlineOtpArg.slice('--otp='.length).trim()
+  }
+
+  const otpArgIndex = process.argv.indexOf('--otp')
+  if (otpArgIndex !== -1) {
+    const value = process.argv[otpArgIndex + 1]
+    if (value && !value.startsWith('--')) {
+      return value.trim()
+    }
+  }
+
+  return (process.env.NPM_CONFIG_OTP || process.env.NPM_OTP || '').trim()
+})()
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
 
@@ -89,6 +105,23 @@ async function hasSourceChanges(dir: string, tag: string): Promise<boolean> {
   } catch {
     // non-zero exit = there are changes
     return true
+  }
+}
+
+async function checkNpmAuth() {
+  try {
+    const { stdout } = await exec(`npm whoami`)
+    const user = stdout.trim()
+    if (user) {
+      console.info(`npm user: ${user}`)
+    }
+  } catch (err) {
+    const detail =
+      (err && typeof err === 'object' && 'stderr' in err && String(err.stderr)) ||
+      String(err)
+    throw new Error(
+      `npm auth check failed before publish. Run npm login or configure a valid npm publish token, then retry.\n\n${detail}`
+    )
   }
 }
 
@@ -556,79 +589,156 @@ async function run() {
     if (!shouldFinish && !skipPublish) {
       const tmpDir = `/tmp/tamagui-publish`
       await ensureDir(tmpDir)
+      await checkNpmAuth()
+      const failedPublishes: string[] = []
 
-      // pack and publish
-      await pMap(
-        packagesToPublish,
-        async ({ name, cwd }) => {
-          const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
-          const publishTag = canary || isCanaryVersion ? 'canary' : 'latest'
-          const publishOptions = [publishTag && `--tag ${publishTag}`]
-            .filter(Boolean)
-            .join(' ')
+      // shared otp state: prompt once, reuse for parallel publishes, and
+      // re-prompt when npm reports an expired or missing 2fa code.
+      let cachedOtp = initialOtp || undefined
+      let otpPromptInFlight: Promise<string> | undefined
 
-          // Copy to temp directory and replace workspace:* with versions
-          const tmpPackageDir = join(tmpDir, name.replace('/', '_'))
-          await fs.copy(cwd, tmpPackageDir, {
-            filter: (src) => {
-              // exclude node_modules to avoid symlink issues
-              return !src.includes('node_modules')
-            },
+      const getOtp = (reason: string): Promise<string> => {
+        if (otpPromptInFlight) return otpPromptInFlight
+        otpPromptInFlight = (async () => {
+          if (!process.stdin.isTTY || !process.stdout.isTTY) {
+            throw new Error(`${reason}. Re-run with --otp <code> or set NPM_CONFIG_OTP.`)
+          }
+
+          console.info(`\n${reason}`)
+          const { code } = await prompts({
+            type: 'text',
+            name: 'code',
+            message: 'npm 2FA code (6 digits)',
+            validate: (v: string) =>
+              /^\d{6}$/.test((v ?? '').trim()) || 'Enter a 6-digit code',
           })
+          if (!code) throw new Error('No OTP provided, aborting publish')
+          cachedOtp = String(code).trim()
+          return cachedOtp
+        })().finally(() => {
+          otpPromptInFlight = undefined
+        })
+        return otpPromptInFlight
+      }
 
-          // replace workspace:* with version in temp copy
-          const pkgJsonPath = join(tmpPackageDir, 'package.json')
-          const pkgJson = await fs.readJSON(pkgJsonPath)
-          for (const field of [
-            'dependencies',
-            'devDependencies',
-            'optionalDependencies',
-            'peerDependencies',
-          ]) {
-            if (!pkgJson[field]) continue
-            for (const depName in pkgJson[field]) {
-              if (pkgJson[field][depName].startsWith('workspace:')) {
-                // use the skipped package's last published version if it won't be published
-                pkgJson[field][depName] = skippedVersions.get(depName) || version
-              }
+      const isOtpPublishError = (msg: string) => {
+        return /EOTP|one-time password|one time password|two-factor|2fa/i.test(msg)
+      }
+
+      const isAmbiguousNpmAuth404 = (msg: string) => {
+        return /E404/.test(msg) && /PUT https:\/\/registry\.npmjs\.org\/@/.test(msg)
+      }
+
+      const publishOne = async ({ name, cwd }: { name: string; cwd: string }) => {
+        const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
+        const publishTag = canary || isCanaryVersion ? 'canary' : 'latest'
+        const publishOptions = [publishTag && `--tag ${publishTag}`]
+          .filter(Boolean)
+          .join(' ')
+
+        // Copy to temp directory and replace workspace:* with versions
+        const tmpPackageDir = join(tmpDir, name.replace('/', '_'))
+        await fs.copy(cwd, tmpPackageDir, {
+          filter: (src) => {
+            // exclude node_modules to avoid symlink issues
+            return !src.includes('node_modules')
+          },
+        })
+
+        // replace workspace:* with version in temp copy
+        const pkgJsonPath = join(tmpPackageDir, 'package.json')
+        const pkgJson = await fs.readJSON(pkgJsonPath)
+        for (const field of [
+          'dependencies',
+          'devDependencies',
+          'optionalDependencies',
+          'peerDependencies',
+        ]) {
+          if (!pkgJson[field]) continue
+          for (const depName in pkgJson[field]) {
+            if (pkgJson[field][depName].startsWith('workspace:')) {
+              // use the skipped package's last published version if it won't be published
+              pkgJson[field][depName] = skippedVersions.get(depName) || version
             }
           }
-          await writeJSON(pkgJsonPath, pkgJson, { spaces: 2 })
+        }
+        await writeJSON(pkgJsonPath, pkgJson, { spaces: 2 })
 
-          const filename = `${name.replace('/', '_')}-package.tmp.tgz`
-          const absolutePath = `${tmpDir}/${filename}`
-          await spawnify(`npm pack --pack-destination ${tmpDir}`, {
-            cwd: tmpPackageDir,
-            avoidLog: true,
-          })
+        const filename = `${name.replace('/', '_')}-package.tmp.tgz`
+        const absolutePath = `${tmpDir}/${filename}`
+        await spawnify(`npm pack --pack-destination ${tmpDir}`, {
+          cwd: tmpPackageDir,
+          avoidLog: true,
+        })
 
-          // npm pack creates a file with the package name, rename it to our expected name
-          const npmFilename = `${name.replace('@', '').replace('/', '-')}-${version}.tgz`
-          await fs.rename(join(tmpDir, npmFilename), absolutePath)
+        // npm pack creates a file with the package name, rename it to our expected name
+        const npmFilename = `${name.replace('@', '').replace('/', '-')}-${version}.tgz`
+        await fs.rename(join(tmpDir, npmFilename), absolutePath)
 
-          const publishCommand = ['npm publish', absolutePath, publishOptions]
-            .filter(Boolean)
-            .join(' ')
+        const publishCommand = ['npm publish', absolutePath, publishOptions]
+          .filter(Boolean)
+          .join(' ')
 
-          console.info(`Publishing ${name}: ${publishCommand}`)
+        console.info(`Publishing ${name}: ${publishCommand}`)
 
-          await spawnify(publishCommand, {
-            cwd: tmpDir,
-          }).catch((err) => {
+        let attempt = 0
+        let otp = cachedOtp
+        while (true) {
+          attempt++
+          try {
+            await spawnify(publishCommand, {
+              cwd: tmpDir,
+              env: otp
+                ? {
+                    ...process.env,
+                    NPM_CONFIG_OTP: otp,
+                  }
+                : process.env,
+            })
+            return
+          } catch (err) {
             if (rePublish) {
               console.warn(
                 `⚠️  ${name}: publish failed (likely already published), continuing`
               )
-            } else {
-              console.error(err)
-              process.exit(1)
+              return
             }
-          })
-        },
-        {
-          concurrency: 15,
+
+            const msg = String(err)
+            const needsOtp = isOtpPublishError(msg) || isAmbiguousNpmAuth404(msg)
+
+            if (!needsOtp || attempt >= 3) {
+              console.error(`Failed to publish ${name}:`, err)
+              failedPublishes.push(name)
+              return
+            }
+
+            if (otp && cachedOtp === otp) {
+              cachedOtp = undefined
+            }
+
+            otp = await getOtp(
+              attempt === 1
+                ? `npm may require a 2FA code to publish ${name}`
+                : `npm 2FA code may have expired, need a fresh one for ${name}`
+            )
+          }
         }
-      )
+      }
+
+      // probe with the first package serially so npm 2fa triggers one prompt
+      // before we fan out the rest in parallel.
+      const [firstPkg, ...restPkgs] = packagesToPublish
+      if (firstPkg) {
+        await publishOne(firstPkg)
+      }
+      await pMap(restPkgs, publishOne, { concurrency: 15 })
+
+      if (failedPublishes.length > 0) {
+        throw new Error(
+          `Failed to publish ${failedPublishes.length} packages:\n${failedPublishes.join('\n')}\n\nRe-run with --republish to retry.`
+        )
+      }
 
       console.info(`✅ Published\n`)
 
