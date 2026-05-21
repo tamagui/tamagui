@@ -47,9 +47,6 @@
     "@tamagui/build": "workspace:*",
     "vite": "^8.0.13"
   },
-  "peerDependencies": {
-    "vite": "^8.0.13"
-  },
   "tamagui": {
     "build": {
       "skipEnvToMeta": true

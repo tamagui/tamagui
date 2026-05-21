@@ -235,9 +235,6 @@
         "@tamagui/build": "workspace:*",
         "vite": "^8.0.13",
       },
-      "peerDependencies": {
-        "vite": "^8.0.13",
-      },
     },
     "code/compiler/vite-plugin-cjs": {
       "name": "@tamagui/vite-plugin-cjs",

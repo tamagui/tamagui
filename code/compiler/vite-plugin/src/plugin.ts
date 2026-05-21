@@ -6,7 +6,7 @@ import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { Plugin, PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
-import { normalizePath, transformWithEsbuild, type Environment } from 'vite'
+import type { Environment } from 'vite'
 import {
   loadTamaguiBuildConfig,
   getLoadPromise,
@@ -19,6 +19,7 @@ const _pluginRequire = createRequire(
   typeof __filename === 'string' ? __filename : fileURLToPath(import.meta.url)
 )
 const resolve = (name: string) => _pluginRequire.resolve(name)
+const normalizePath = (value: string) => value.replace(/\\/g, '/')
 
 // shared cache across all plugin instances/environments via globalThis
 type CacheEntry = {
@@ -53,7 +54,7 @@ function clearSharedCache() {
 
 // resolves package ids against the user's project root (not the plugin's
 // install location). returns true if the id is resolvable, false if the
-// dep isn't installed — safe to call for optional deps.
+// dep isn't installed, safe to call for optional deps.
 function isInstalled(projectRoot: string, id: string): boolean {
   try {
     const req = createRequire(path.join(projectRoot, 'package.json'))
@@ -158,7 +159,7 @@ export function tamaguiPlugin({
   let shouldExtract = !tamaguiOptionsIn.disableExtraction
   let watcher: Promise<{ dispose: () => void } | void | undefined> | undefined
 
-  // TODO temporary fix
+  // temporary vxrn native env bridge
   const enableNativeEnv = !!globalThis.__vxrnEnableNativeEnv
 
   const extensions = [
@@ -351,11 +352,11 @@ export function tamaguiPlugin({
       userConf.optimizeDeps.include ||= []
 
       // inline-style-prefixer is CJS with __esModule and breaks without pre-bundling
-      // (ReferenceError: exports is not defined). always include it.
+      // (reference error: exports is not defined). always include it.
       userConf.optimizeDeps.include.push('inline-style-prefixer')
 
       // pre-bundle tamagui packages that use internal hooks (useThemeName, etc.)
-      // from sub-entries — vite's dep crawler can otherwise split them into a
+      // from sub-entries, vite's dep crawler can otherwise split them into a
       // separate chunk with its own tamagui copy, producing two ThemeStateContext
       // instances and "Missing theme" errors at runtime.
       addIfInstalled(userConf, userConf.root, ['@tamagui/toast', '@tamagui/toast/v2'])
