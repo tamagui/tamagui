@@ -65,9 +65,7 @@ describe('SelectAndroidOnPress (#3436)', () => {
     await expect(testElement('select-android-selected-value')).toHaveText(
       'Selected value: (none)'
     )
-    await expect(testElement('select-android-change-count')).toHaveText(
-      'Change count: 0'
-    )
+    await expect(testElement('select-android-change-count')).toHaveText('Change count: 0')
 
     // open the select
     await testElement('select-android-trigger').tap()
@@ -92,9 +90,7 @@ describe('SelectAndroidOnPress (#3436)', () => {
       'Selected value: pear'
     )
     // the change count should have incremented (proving onValueChange was called)
-    await expect(testElement('select-android-change-count')).toHaveText(
-      'Change count: 1'
-    )
+    await expect(testElement('select-android-change-count')).toHaveText('Change count: 1')
   })
 
   it('should allow multiple selections', async () => {
@@ -112,9 +108,7 @@ describe('SelectAndroidOnPress (#3436)', () => {
     await expect(testElement('select-android-selected-value')).toHaveText(
       'Selected value: apple'
     )
-    await expect(testElement('select-android-change-count')).toHaveText(
-      'Change count: 1'
-    )
+    await expect(testElement('select-android-change-count')).toHaveText('Change count: 1')
 
     // second selection - change to blackberry
     await testElement('select-android-trigger').tap()
@@ -129,8 +123,6 @@ describe('SelectAndroidOnPress (#3436)', () => {
     await expect(testElement('select-android-selected-value')).toHaveText(
       'Selected value: blackberry'
     )
-    await expect(testElement('select-android-change-count')).toHaveText(
-      'Change count: 2'
-    )
+    await expect(testElement('select-android-change-count')).toHaveText('Change count: 2')
   })
 })

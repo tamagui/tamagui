@@ -46,9 +46,7 @@ async function closePopover() {
 
 async function openSheet() {
   await withSync(() => testElement('native-portal-sheet-trigger').tap())
-  await waitFor(testElement('native-portal-sheet-frame'))
-    .toBeVisible()
-    .withTimeout(5000)
+  await waitFor(testElement('native-portal-sheet-frame')).toBeVisible().withTimeout(5000)
 }
 
 async function closeSheet() {

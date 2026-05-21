@@ -174,9 +174,7 @@ export function SheetPressRegressionCase() {
         <Text testID="sheet-press-scroll-button-count">
           scrollButton: {scrollBtnCount}
         </Text>
-        <Text testID="sheet-press-nested-view-count">
-          nestedView: {nestedViewCount}
-        </Text>
+        <Text testID="sheet-press-nested-view-count">nestedView: {nestedViewCount}</Text>
         <Text testID="sheet-press-media-card-count">mediaCard: {mediaCardCount}</Text>
       </YStack>
     </YStack>

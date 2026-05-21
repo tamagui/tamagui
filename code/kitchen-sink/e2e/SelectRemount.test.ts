@@ -20,9 +20,7 @@ const testElement = (id: string) => element(by.id(id)).atIndex(0)
 async function closeSelect() {
   await withSync(() => testElement('select-remount-test-option-apple').tap())
   // wait for sheet close animation to finish (trigger becomes visible again)
-  await waitFor(testElement('remount-button'))
-    .toBeVisible()
-    .withTimeout(10000)
+  await waitFor(testElement('remount-button')).toBeVisible().withTimeout(10000)
 }
 
 /** tap remount button and wait for fresh component state */
@@ -46,9 +44,7 @@ describe('SelectRemount', () => {
   })
 
   it('should navigate to SelectRemount test case', async () => {
-    await waitFor(testElement('remount-button'))
-      .toBeVisible()
-      .withTimeout(5000)
+    await waitFor(testElement('remount-button')).toBeVisible().withTimeout(5000)
   })
 
   it('should open Select on first mount', async () => {

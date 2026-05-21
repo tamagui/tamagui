@@ -74,10 +74,7 @@ const tryRecoverLateLaunch = async (): Promise<boolean> => {
   await sleep(LATE_LAUNCH_READY_DELAY_MS)
 
   try {
-    await withTimeout(
-      device.disableSynchronization(),
-      LATE_LAUNCH_ACTION_TIMEOUT_MS
-    )
+    await withTimeout(device.disableSynchronization(), LATE_LAUNCH_ACTION_TIMEOUT_MS)
     await sleep(POST_LAUNCH_SETTLE_MS)
     return true
   } catch {
@@ -89,9 +86,7 @@ const tryRecoverLateLaunch = async (): Promise<boolean> => {
  * Launch app then disable sync. Must launch first so Detox can connect,
  * then disable sync before any main-thread-busy state can cause a hang.
  */
-export async function safeLaunchApp(
-  params?: LaunchAppParams
-): Promise<void> {
+export async function safeLaunchApp(params?: LaunchAppParams): Promise<void> {
   let lastError: unknown
   for (let attempt = 1; attempt <= LAUNCH_MAX_ATTEMPTS; attempt++) {
     try {
