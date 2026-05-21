@@ -63,7 +63,7 @@ export function setupGestureHandler(config?: GestureHandlerConfig): void {
   try {
     // dynamically require RNGH - it should already be imported by the app
     const rngh = require('react-native-gesture-handler')
-    const { Gesture, GestureDetector, ScrollView } = rngh
+    const { Gesture, GestureDetector, ScrollView, GestureHandlerRootView } = rngh
 
     if (Gesture && GestureDetector) {
       // only enable if pressEvents is true
@@ -72,6 +72,7 @@ export function setupGestureHandler(config?: GestureHandlerConfig): void {
         Gesture,
         GestureDetector,
         ScrollView: ScrollView || null,
+        RootView: GestureHandlerRootView || null,
       })
 
       // sheet state - only enable if sheet is true
@@ -80,6 +81,7 @@ export function setupGestureHandler(config?: GestureHandlerConfig): void {
         Gesture,
         GestureDetector,
         ScrollView: ScrollView || null,
+        RootView: GestureHandlerRootView || null,
       }
     }
   } catch {

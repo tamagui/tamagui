@@ -51,6 +51,7 @@
   "exclude": [
     "types",
     "dist",
+    "test",
     "**/__tests__"
   ]
 }

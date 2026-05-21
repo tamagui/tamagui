@@ -1,9 +1,12 @@
 import { useEffect, useLayoutEffect } from 'react'
 
 export const isWeb: boolean = true
-// check document not window — RN polyfills global.window but not document,
-// so this is the only reliable "is DOM environment" check.
-export const isBrowser: boolean = typeof document !== 'undefined'
+
+// RN adds fake window and document so its not simple to get this right
+// check both navigator and location
+export const isBrowser: boolean =
+  typeof navigator !== 'undefined' && typeof location !== 'undefined'
+
 export const isServer: boolean = isWeb && !isBrowser
 export const isClient: boolean = isWeb && isBrowser
 /** @deprecated use isBrowser instead */
