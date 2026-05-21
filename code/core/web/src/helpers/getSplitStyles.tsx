@@ -1105,7 +1105,7 @@ export const getSplitStyles: StyleSplitter = (
               const nestedImportance = outerBase + importanceBump + innerBase + 1
 
               for (const subSubKey in nestedVal) {
-                // expand shorthands — getSubStyle doesn't expand keys
+                // expand shorthands, getSubStyle doesn't expand keys
                 // inside nested $ objects (they pass through propMapper as-is)
                 const expandedKey = shorthands[subSubKey] || subSubKey
                 const { usedKeys } = styleState
@@ -1526,9 +1526,9 @@ function mergeStyle(
     return
   }
 
-  // Track context overrides for pseudo/media styles (issues #3670, #3676)
-  // When a style sets a key that's in context props, update overriddenContextProps
-  // so it propagates to children. Use the original token value (like '$8')
+  // track context overrides for pseudo/media styles (issues #3670, #3676)
+  // when a style sets a key that's in context props, update overriddenContextProps
+  // so it propagates to children. use the original token value (like '$8')
   // instead of the resolved CSS variable (like 'var(--t-space-8)')
   // so children's functional variants can look up token values.
   const contextProps =
@@ -1573,61 +1573,68 @@ export const getSubStyle = (
   const { staticConfig, conf, styleProps } = styleState
   const styleOut: TextStyle = {}
   let originalValues: Record<string, any> | undefined
+  const parentProps = styleState.props
+  styleState.props = Object.assign(Object.create(parentProps), styleIn)
 
-  for (let key in styleIn) {
-    const val = styleIn[key]
-    key = conf.shorthands[key] || key
+  try {
+    for (let key in styleIn) {
+      const val = styleIn[key]
+      key = conf.shorthands[key] || key
 
-    // extract transition from pseudo-style props (e.g., hoverStyle.transition)
-    // store it separately for animation drivers to use for enter/exit timing
-    if (key === 'transition') {
-      styleState.pseudoTransitions ||= {}
-      styleState.pseudoTransitions[subKey as keyof typeof styleState.pseudoTransitions] =
-        val
-      // for CSS driver, also add transition to CSS output so native CSS transitions work
-      // group styles ($group-*) need !important to override inline base transition
-      const driver = styleState.animationDriver
-      if (driver?.outputStyle === 'css') {
-        const animationConfig = driver.animations?.[val as string]
-        if (animationConfig) {
-          const important = subKey[0] === '$' ? ' !important' : ''
-          styleOut['transition'] = `all ${animationConfig}${important}`
+      // extract transition from pseudo-style props (e.g., hoverStyle.transition)
+      // store it separately for animation drivers to use for enter/exit timing
+      if (key === 'transition') {
+        styleState.pseudoTransitions ||= {}
+        styleState.pseudoTransitions[
+          subKey as keyof typeof styleState.pseudoTransitions
+        ] = val
+        // for CSS driver, also add transition to CSS output so native CSS transitions work
+        // group styles ($group-*) need !important to override inline base transition
+        const driver = styleState.animationDriver
+        if (driver?.outputStyle === 'css') {
+          const animationConfig = driver.animations?.[val as string]
+          if (animationConfig) {
+            const important = subKey[0] === '$' ? ' !important' : ''
+            styleOut['transition'] = `all ${animationConfig}${important}`
+          }
         }
+        // not a known animation name, pass through as raw CSS
+        if (
+          !styleOut['transition'] &&
+          typeof val === 'string' &&
+          !driver?.animations?.[val]
+        ) {
+          styleOut['transition'] = val
+        }
+        continue
       }
-      // not a known animation name, pass through as raw CSS
-      if (
-        !styleOut['transition'] &&
-        typeof val === 'string' &&
-        !driver?.animations?.[val]
-      ) {
-        styleOut['transition'] = val
-      }
-      continue
-    }
 
-    const shouldSkip = !staticConfig.isHOC && key in skipProps && !styleProps.noSkip
-    if (shouldSkip) {
-      continue
-    }
+      const shouldSkip = !staticConfig.isHOC && key in skipProps && !styleProps.noSkip
+      if (shouldSkip) {
+        continue
+      }
 
-    propMapper(key, val, styleState, false, (skey, sval, originalVal) => {
-      // Track original values for context prop propagation
-      if (originalVal !== undefined) {
-        originalValues ||= {}
-        originalValues[skey] = originalVal
-      }
-      // pseudo inside media
-      if (skey in validPseudoKeys) {
-        sval = getSubStyle(styleState, skey, sval, avoidMergeTransform)
-      }
-      if (!avoidMergeTransform && skey in stylePropsTransform) {
-        mergeTransform(styleOut, skey, sval)
-      } else {
-        styleOut[skey] = styleProps.noNormalize
-          ? sval
-          : normalizeValueWithProperty(sval, key)
-      }
-    })
+      propMapper(key, val, styleState, false, (skey, sval, originalVal) => {
+        // track original values for context prop propagation
+        if (originalVal !== undefined) {
+          originalValues ||= {}
+          originalValues[skey] = originalVal
+        }
+        // pseudo inside media
+        if (skey in validPseudoKeys) {
+          sval = getSubStyle(styleState, skey, sval, avoidMergeTransform)
+        }
+        if (!avoidMergeTransform && skey in stylePropsTransform) {
+          mergeTransform(styleOut, skey, sval)
+        } else {
+          styleOut[skey] = styleProps.noNormalize
+            ? sval
+            : normalizeValueWithProperty(sval, key)
+        }
+      })
+    }
+  } finally {
+    styleState.props = parentProps
   }
 
   if (!avoidMergeTransform) {

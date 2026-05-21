@@ -41,6 +41,40 @@ describe('getSplitStyles', () => {
     expect(style?.rowGap).toBe(10)
   })
 
+  test('functional variants see media-resolved sibling variant props', () => {
+    const MediaVariantView = styled(View, {
+      variants: {
+        kind: {
+          info: {},
+          danger: {},
+        },
+        tone: {
+          true: (_val, { props }) => ({
+            backgroundColor: props.kind === 'danger' ? 'red' : 'blue',
+          }),
+        },
+      } as const,
+    })
+
+    const { style } = getSplitStylesFor(
+      {
+        kind: 'info',
+        $sm: {
+          kind: 'danger',
+          tone: true,
+        },
+      },
+      MediaVariantView,
+      {
+        mediaState: {
+          sm: true,
+        },
+      }
+    )
+
+    expect(style?.backgroundColor).toBe('red')
+  })
+
   test(`transform properties are correctly applied`, () => {
     const { style } = getSplitStylesFor({
       scale: 1.5,
@@ -250,7 +284,11 @@ describe.skip('getSplitStyles - pseudo prop merging', () => {
   })
 })
 
-function getSplitStylesFor(props: Record<string, any>, Component = View) {
+function getSplitStylesFor(
+  props: Record<string, any>,
+  Component = View,
+  options: { mediaState?: Record<string, any> } = {}
+) {
   return getSplitStyles(
     props,
     Component.staticConfig,
@@ -267,6 +305,7 @@ function getSplitStylesFor(props: Record<string, any>, Component = View) {
     },
     {
       isAnimated: false,
+      mediaState: options.mediaState,
     },
     undefined,
     undefined,
