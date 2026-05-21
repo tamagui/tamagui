@@ -183,27 +183,22 @@ export function useToastAnimations(
   const translateY = useAnimatedNumber(0)
 
   // multi-value: both axes reactive in one animated style (off-thread on Reanimated)
-  const animatedStyleMulti = useAnimatedNumbersStyle
+  const animatedStyle = useAnimatedNumbersStyle
     ? useAnimatedNumbersStyle([translateX, translateY], (x: number, y: number) => {
         'worklet'
         return { transform: [{ translateX: x }, { translateY: y }] }
       })
-    : null
-
-  // single-value fallback for drivers without useAnimatedNumbersStyle
-  const animatedStyleFallback = useAnimatedNumberStyle(
-    swipeAxis === 'vertical' ? translateY : translateX,
-    (primary) => {
-      'worklet'
-      const secondary =
-        swipeAxis === 'vertical' ? translateX.getValue() : translateY.getValue()
-      return swipeAxis === 'vertical'
-        ? { transform: [{ translateX: secondary }, { translateY: primary }] }
-        : { transform: [{ translateX: primary }, { translateY: secondary }] }
-    }
-  )
-
-  const animatedStyle = animatedStyleMulti ?? animatedStyleFallback
+    : useAnimatedNumberStyle(
+        swipeAxis === 'vertical' ? translateY : translateX,
+        (primary) => {
+          'worklet'
+          const secondary =
+            swipeAxis === 'vertical' ? translateX.getValue() : translateY.getValue()
+          return swipeAxis === 'vertical'
+            ? { transform: [{ translateX: secondary }, { translateY: primary }] }
+            : { transform: [{ translateX: primary }, { translateY: secondary }] }
+        }
+      )
 
   // set drag offset directly (no animation) - used during gesture
   const setDragOffset = useEvent((x: number, y: number) => {

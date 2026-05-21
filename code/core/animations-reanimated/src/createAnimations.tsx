@@ -48,6 +48,25 @@ const getDefaultExport = <T,>(module: T | { default: T }): T => {
 
 const Animated = getDefaultExport(Animated_)
 
+const silenceAnimatedComponentDevCheck = (style: unknown) => {
+  if (
+    process.env.NODE_ENV !== 'development' ||
+    isWeb ||
+    !style ||
+    typeof style !== 'object'
+  ) {
+    return
+  }
+
+  // react fabric's dev performance logger diffs component props and reads the
+  // reanimated guard getter even when the style is on an animated component.
+  Object.defineProperty(style, '_requiresAnimatedComponent', {
+    configurable: true,
+    enumerable: false,
+    value: true,
+  })
+}
+
 // =============================================================================
 // Types
 // =============================================================================
@@ -95,6 +114,42 @@ const resolveDynamicValue = (value: unknown, isDark: boolean): unknown => {
 /** Animation completion callback type */
 type AnimationCallback = (finished?: boolean) => void
 
+const cloneAnimationValue = (value: unknown): unknown => {
+  if (Array.isArray(value)) {
+    return value.map(cloneAnimationValue)
+  }
+
+  if (value && typeof value === 'object') {
+    const next: Record<string, unknown> = {}
+    for (const key in value as Record<string, unknown>) {
+      next[key] = cloneAnimationValue((value as Record<string, unknown>)[key])
+    }
+    return next
+  }
+
+  return value
+}
+
+const cloneTransitionConfig = (config: TransitionConfig): TransitionConfig => {
+  return cloneAnimationValue(config) as TransitionConfig
+}
+
+const createReanimatedConfig = (config: TransitionConfig): Record<string, unknown> => {
+  'worklet'
+  const next: Record<string, unknown> = {}
+  const source = config as Record<string, unknown>
+
+  for (const key in source) {
+    if (key === 'type' || key === 'delay') continue
+    const value = source[key]
+    if (value !== undefined) {
+      next[key] = value
+    }
+  }
+
+  return next
+}
+
 /**
  * Apply animation to a value based on config, with optional completion callback
  */
@@ -105,18 +160,19 @@ const applyAnimation = (
 ): number | string => {
   'worklet'
   const delay = config.delay
+  const reanimatedConfig = createReanimatedConfig(config)
 
   let animatedValue: any
   if (config.type === 'timing') {
     animatedValue = withTiming(
       targetValue as number,
-      config as WithTimingConfig,
+      reanimatedConfig as WithTimingConfig,
       callback
     )
   } else {
     animatedValue = withSpring(
       targetValue as number,
-      config as WithSpringConfig,
+      reanimatedConfig as WithSpringConfig,
       callback
     )
   }
@@ -290,17 +346,19 @@ function buildTransitionConfig<A extends Record<string, TransitionConfig>>(
   const normalized = normalizeTransition(transition)
   const effectiveKey = getEffectiveAnimation(normalized, animationState)
 
-  let base = effectiveKey
-    ? (animations[effectiveKey as keyof typeof animations] ??
-      ({ type: 'spring' } as TransitionConfig))
-    : ({ type: 'spring' } as TransitionConfig)
+  let base = cloneTransitionConfig(
+    effectiveKey
+      ? (animations[effectiveKey as keyof typeof animations] ??
+          ({ type: 'spring' } as TransitionConfig))
+      : ({ type: 'spring' } as TransitionConfig)
+  )
 
   if (normalized.delay) {
-    base = { ...base, delay: normalized.delay }
+    base = cloneTransitionConfig({ ...base, delay: normalized.delay })
   }
 
   if (normalized.config) {
-    base = { ...base, ...normalized.config }
+    base = cloneTransitionConfig({ ...base, ...normalized.config })
     // infer type: 'timing' if duration is provided without spring params
     if (
       base.type !== 'timing' &&
@@ -309,7 +367,7 @@ function buildTransitionConfig<A extends Record<string, TransitionConfig>>(
       normalized.config.stiffness === undefined &&
       normalized.config.mass === undefined
     ) {
-      base = { ...base, type: 'timing' }
+      base = cloneTransitionConfig({ ...base, type: 'timing' })
     }
   }
 
@@ -319,18 +377,20 @@ function buildTransitionConfig<A extends Record<string, TransitionConfig>>(
   for (const key of styleKeys) {
     const propAnimation = normalized.properties[key]
     if (typeof propAnimation === 'string') {
-      propertyConfigs[key] = animations[propAnimation as keyof typeof animations] ?? base
+      propertyConfigs[key] = cloneTransitionConfig(
+        animations[propAnimation as keyof typeof animations] ?? base
+      )
     } else if (propAnimation && typeof propAnimation === 'object') {
       const configType = (propAnimation as any).type
       const baseForProp = configType
         ? (animations[configType as keyof typeof animations] ?? base)
         : base
-      propertyConfigs[key] = {
+      propertyConfigs[key] = cloneTransitionConfig({
         ...baseForProp,
         ...propAnimation,
-      } as TransitionConfig
+      } as TransitionConfig)
     } else {
-      propertyConfigs[key] = base
+      propertyConfigs[key] = cloneTransitionConfig(base)
     }
   }
 
@@ -383,10 +443,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
   // This matches behavior of moti and motion drivers
   const animations = {} as A
   for (const key in animationsConfig) {
-    animations[key] = {
+    animations[key] = cloneTransitionConfig({
       type: 'spring',
       ...animationsConfig[key],
-    } as A[typeof key]
+    }) as A[typeof key]
   }
 
   return {
@@ -424,7 +484,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               sharedValue.value = next
               onFinish?.()
             } else {
-              // animations must start on the UI thread in Reanimated 4.x —
+              // animations must start on the ui thread in reanimated 4.x -
               // withSpring/withTiming return animation descriptors that only
               // work when assigned to a SharedValue inside the UI runtime
               const cb = onFinish
@@ -434,20 +494,16 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                   }
                 : undefined
 
+              const animationConfig = cloneTransitionConfig(config)
+
               if (isWeb) {
-                // on web there's no UI thread — set directly
-                sharedValue.value =
-                  config.type === 'spring'
-                    ? withSpring(next, config as WithSpringConfig, cb)
-                    : withTiming(next, config as WithTimingConfig, cb)
+                // on web there's no UI thread - set directly
+                sharedValue.value = applyAnimation(next, animationConfig, cb)
               } else {
-                runOnUI(() => {
+                runOnUI((targetValue: number, animationConfig: TransitionConfig) => {
                   'worklet'
-                  sharedValue.value =
-                    config.type === 'spring'
-                      ? withSpring(next, config as WithSpringConfig, cb)
-                      : withTiming(next, config as WithTimingConfig, cb)
-                })()
+                  sharedValue.value = applyAnimation(targetValue, animationConfig, cb)
+                })(next, animationConfig)
               }
             }
           },
@@ -491,27 +547,25 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }, [instance, getStyle])
       }
 
-      // native: use useDerivedValue to compute the style on the UI thread.
-      // this avoids reading instance.value during render (which triggers
-      // reanimated's "Reading from `value` during component render" warning)
-      // while keeping the indirection that gives useAnimatedStyle a pure
-      // SharedValue closure — no non-SV items to confuse startMapper's
-      // dependency tracking.
       const styleVal = useDerivedValue(() => {
         'worklet'
         return getStyle(instance.value)
       })
 
-      return useAnimatedStyle(() => {
+      const animatedStyle = useAnimatedStyle(() => {
         'worklet'
         return styleVal.value
       })
+
+      silenceAnimatedComponentDevCheck(animatedStyle)
+
+      return animatedStyle
     },
 
     useAnimatedNumbersStyle(vals, getStyle) {
       const instances = vals.map((v) => v.getInstance())
 
-      return useAnimatedStyle(
+      const animatedStyle = useAnimatedStyle(
         () => {
           'worklet'
           const currentValues = instances.map((inst) => inst.value)
@@ -519,6 +573,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         },
         isWeb ? [getStyle, ...instances] : undefined
       )
+
+      silenceAnimatedComponentDevCheck(animatedStyle)
+
+      return animatedStyle
     },
 
     // =========================================================================
@@ -651,14 +709,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           if (value === undefined) continue
 
           if (disableAnimation) {
-            staticStyles[key] = value
+            staticStyles[key] = cloneAnimationValue(value)
             continue
           }
 
           if (canAnimateProperty(key, value, animateOnly)) {
-            animated[key] = value
+            animated[key] = cloneAnimationValue(value)
           } else {
-            staticStyles[key] = value
+            staticStyles[key] = cloneAnimationValue(value)
           }
         }
 
@@ -699,12 +757,17 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       })
 
       useIsomorphicLayoutEffect(() => {
-        configRef.set({ baseConfig, propertyConfigs, disableAnimation, isHydrating })
+        configRef.value = {
+          baseConfig,
+          propertyConfigs,
+          disableAnimation,
+          isHydrating,
+        }
       }, [baseConfig, propertyConfigs, disableAnimation, isHydrating])
 
       // =========================================================================
-      // avoidRerenders: Register style emitter callback
-      // When hover/press/etc state changes, this is called instead of re-rendering
+      // avoidRerenders: register style emitter callback
+      // when hover/press/etc state changes, this is called instead of re-rendering
       // =========================================================================
       useStyleEmitter?.((nextStyle: Record<string, unknown>, effectiveTransition) => {
         const animateOnly = props.animateOnly as string[] | undefined
@@ -724,12 +787,12 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           )
 
         // update configRef with the new config
-        configRef.set({
+        configRef.value = {
           baseConfig: newBase,
           propertyConfigs: newPropertyConfigs,
-          disableAnimation: configRef.get().disableAnimation,
-          isHydrating: configRef.get().isHydrating,
-        })
+          disableAnimation: configRef.value.disableAnimation,
+          isHydrating: configRef.value.isHydrating,
+        }
 
         for (const key in nextStyle) {
           const rawValue = nextStyle[key]
@@ -737,8 +800,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
           if (value == undefined) continue
 
-          if (configRef.get().disableAnimation) {
-            statics[key] = value
+          if (configRef.value.disableAnimation) {
+            statics[key] = cloneAnimationValue(value)
             continue
           }
 
@@ -748,7 +811,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                 const tKey = Object.keys(t)[0]
                 const tVal = t[tKey]
                 if (typeof tVal === 'number' || typeof tVal === 'string') {
-                  transforms.push(t)
+                  transforms.push(cloneAnimationValue(t) as Record<string, unknown>)
                 }
               }
             }
@@ -756,16 +819,16 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           }
 
           if (canAnimateProperty(key, value, animateOnly)) {
-            animated[key] = value
+            animated[key] = cloneAnimationValue(value)
           } else {
-            statics[key] = value
+            statics[key] = cloneAnimationValue(value)
           }
         }
 
-        // Update SharedValues - on web, the mapper watches these if passed in dependencies
-        animatedTargetsRef.set(animated)
-        staticTargetsRef.set(statics)
-        transformTargetsRef.set(transforms)
+        // update shared values - on web, the mapper watches these if passed in dependencies
+        animatedTargetsRef.value = animated
+        staticTargetsRef.value = statics
+        transformTargetsRef.value = transforms
 
         if (
           process.env.NODE_ENV === 'development' &&
@@ -839,7 +902,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           }
 
           const result: Record<string, any> = {}
-          const config = configRef.get()
+          const config = configRef.value
 
           // Check if we have avoidRerenders updates from useStyleEmitter
           const emitterAnimated = animatedTargetsRef.value
@@ -950,6 +1013,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             ]
           : undefined
       )
+
+      silenceAnimatedComponentDevCheck(animatedStyle)
 
       // Debug logging
       if (
