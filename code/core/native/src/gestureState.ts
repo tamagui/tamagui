@@ -6,6 +6,7 @@ const state = createGlobalState<GestureState>(`gesture`, {
   Gesture: null,
   GestureDetector: null,
   ScrollView: null,
+  RootView: null,
 })
 
 type GestureEnabledFreezeState = {
@@ -64,6 +65,32 @@ export function canChangeGestureHandlerEnabled(
 
 let pressGestureDebugId = 0
 let externalPressDebugId = 0
+
+// distance in dp the finger may travel before a press is treated as a
+// scroll/drag and cancelled. tracked in absolute (screen) coordinates by the
+// Tap's onTouchesMove (see createPressGesture) so a view translating under a
+// stationary finger - a sheet sliding on keyboard open/close, a sheet open
+// animation - does not cancel the press; only genuine finger travel does.
+// this also makes scroll-cancels-press work for any scroll container (a plain
+// RN ScrollView/FlatList or an RNGH one), since the press cancels itself
+// rather than relying on a parent RNGH gesture to steal it.
+const PRESS_MOVE_CANCEL_DISTANCE = 12
+const PRESS_MOVE_CANCEL_DISTANCE_SQ =
+  PRESS_MOVE_CANCEL_DISTANCE * PRESS_MOVE_CANCEL_DISTANCE
+
+// minimal shapes of the RNGH gesture events createPressGesture reads. RNGH is
+// injected at runtime (GestureState.Gesture is untyped), so this module keeps
+// no type dependency on react-native-gesture-handler - these name just the
+// fields the press gesture touches.
+type GesturePoint = {
+  absoluteX: number
+  absoluteY: number
+}
+type GestureBeginEvent = Partial<GesturePoint>
+type GestureTouchEvent = {
+  changedTouches?: GesturePoint[]
+  allTouches?: GesturePoint[]
+}
 
 type PressOwnerSource = 'internal' | 'external' | null
 
@@ -210,6 +237,11 @@ export function getGestureHandler(): GestureHandlerAccessor {
         didLongPress: false,
         didPressIn: false,
         pressInTimer: null as ReturnType<typeof setTimeout> | null,
+        // absolute (screen) coords of the press start, and whether the finger
+        // has since travelled far enough to be treated as a scroll/drag.
+        moveStartX: null as number | null,
+        moveStartY: 0,
+        cancelledByMove: false,
       }
 
       // Grace period for child gestures to steal ownership from parent.
@@ -274,27 +306,55 @@ export function getGestureHandler(): GestureHandlerAccessor {
         }, GRACE_PERIOD_MS + 1)
       }
 
-      // Tap gesture for regular presses
-      // Use long maxDuration to not cancel during long presses.
-      // maxDistance(10) cancels the tap if the finger moves more than ~10dp,
-      // matching RN Pressable's slop. Without it, iOS RNGH defaults maxDist
-      // to NaN and the Tap never fails on movement — combined with a parent
-      // ScrollView scroll, the Tap stays armed during the entire drag and
-      // fires onPress on release.
+      // Tap gesture for regular presses.
+      //
+      // maxDuration is long so long-presses aren't cut off. We deliberately do
+      // not use RNGH's .maxDistance(): it measures finger travel in the gesture
+      // view's own coordinate space, so a view that translates under a
+      // stationary finger (a sheet sliding on keyboard open/close, a sheet open
+      // animation) reads as finger movement and silently cancels the press -
+      // onPress never fires. Instead onTouchesMove tracks the finger in
+      // absolute (screen) coordinates and cancels only on genuine finger
+      // travel. That also makes scroll-cancels-press work for any scroll
+      // container, since the press cancels itself instead of depending on a
+      // parent RNGH gesture to steal the touch.
       const tap = Gesture.Tap()
         .runOnJS(true)
         .maxDuration(10000) // allow very long presses
-        .maxDistance(10)
-        .onBegin((e: unknown) => {
+        .onBegin((e: GestureBeginEvent) => {
           flags.didLongPress = false
           flags.didPressIn = false
+          flags.cancelledByMove = false
+          flags.moveStartX = typeof e.absoluteX === 'number' ? e.absoluteX : null
+          flags.moveStartY = typeof e.absoluteY === 'number' ? e.absoluteY : 0
           tryClaimOwnership(e)
           // Defer onPressIn until after the grace window so child pressables
           // can steal ownership, but flush it on tap end for very fast taps.
           schedulePressIn(e)
         })
+        .onTouchesMove((e: GestureTouchEvent) => {
+          if (flags.cancelledByMove || flags.moveStartX === null) return
+          const touch = e.changedTouches?.[0] ?? e.allTouches?.[0]
+          if (!touch) return
+          const dx = touch.absoluteX - flags.moveStartX
+          const dy = touch.absoluteY - flags.moveStartY
+          if (dx * dx + dy * dy <= PRESS_MOVE_CANCEL_DISTANCE_SQ) return
+          // finger has travelled far enough to be a scroll/drag, not a tap.
+          // release the pressStyle now (mid-scroll, so it doesn't stay stuck)
+          // and make onEnd skip onPress on finger lift.
+          flags.cancelledByMove = true
+          if (flags.pressInTimer) {
+            clearTimeout(flags.pressInTimer)
+            flags.pressInTimer = null
+          }
+          if (flags.didPressIn) {
+            flags.didPressIn = false
+            config.onPressOut?.(e)
+          }
+          releaseOwnership()
+        })
         .onEnd((e: unknown) => {
-          if (isOwner() && !flags.didLongPress) {
+          if (isOwner() && !flags.didLongPress && !flags.cancelledByMove) {
             firePressIn(e)
             config.onPress?.(e)
           }
@@ -307,7 +367,7 @@ export function getGestureHandler(): GestureHandlerAccessor {
             // we already fired onPressIn but lost ownership before finalize
             // (e.g. finger dragged onto a sibling pressable and that one
             // claimed ownership). fire onPressOut so callers can clear their
-            // press state — otherwise pressStyle stays stuck on this view.
+            // press state - otherwise pressStyle stays stuck on this view.
             flags.didPressIn = false
             config.onPressOut?.(e)
           }

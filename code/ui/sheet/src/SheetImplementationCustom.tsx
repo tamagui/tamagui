@@ -22,6 +22,7 @@ import type {
 import { Dimensions, PanResponder, View } from 'react-native'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
 import { GestureDetectorWrapper } from './GestureDetectorWrapper'
+import { getGestureHandlerState } from './gestureState'
 import { GestureSheetProvider } from './GestureSheetContext'
 import { resisted } from './helpers'
 import { SheetProvider } from './SheetContext'
@@ -32,6 +33,14 @@ import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
 const hiddenSize = 10_000.1
+
+// the re-established rngh root for a modal sheet (see modal branch below).
+// GestureHandlerRootView does its own native touch interception and ignores
+// pointerEvents, so it would block the whole app while the sheet sits closed
+// but mounted. instead it stays full-width for correct child layout/measurement
+// and collapses to 0 height when closed so it has no hit area.
+const rnghRootStyleOpen = { width: '100%', height: '100%' } as const
+const rnghRootStyleClosed = { width: '100%', height: 0 } as const
 
 // safe area top inset, cached per-session (device-constant value)
 let _cachedSafeAreaTop: number | undefined
@@ -809,9 +818,31 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const shouldMountChildren = unmountChildrenWhenHidden ? !!opacity : true
 
     if (modal) {
+      // a modal sheet is teleported through <Portal> to the root portal host.
+      // that host is mounted by TamaguiProvider, which may sit ABOVE the app's
+      // GestureHandlerRootView - so the teleported content lands outside any
+      // rngh root and every gesture inside the sheet (the drag pan, pressables
+      // on the rngh press path) silently goes dead. re-establish an rngh root
+      // around the teleported content so it works regardless of where the app
+      // mounts GestureHandlerRootView.
+      //
+      // the root stays mounted and full-width whenever the sheet content is
+      // (so child layout/measurement/close-animation are unaffected) and only
+      // collapses to 0 height while closed so it occupies no hit area - see
+      // rnghRootStyleOpen/Closed above for why pointerEvents can't be used.
+      const RNGHRoot = getGestureHandlerState().RootView
+      const mountedContents = shouldMountChildren ? (
+        <ContainerComponent>{contents}</ContainerComponent>
+      ) : null
       const modalContents = (
         <Portal stackZIndex={zIndex} {...portalProps}>
-          {shouldMountChildren && <ContainerComponent>{contents}</ContainerComponent>}
+          {mountedContents && RNGHRoot ? (
+            <RNGHRoot style={open ? rnghRootStyleOpen : rnghRootStyleClosed}>
+              {mountedContents}
+            </RNGHRoot>
+          ) : (
+            mountedContents
+          )}
         </Portal>
       )
 
