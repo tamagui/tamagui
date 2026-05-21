@@ -53,7 +53,7 @@ export const settings = {
   allowedStyleValues: 'somewhat-strict-web',
   addThemeClassName: 'html',
   onlyAllowShorthands: true,
-  styleCompat: 'react-native',
+  styleCompat: 'web',
 } satisfies CreateTamaguiProps['settings']
 
 export type V5Settings = typeof settings

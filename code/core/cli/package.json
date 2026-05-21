@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cli",
-  "version": "2.0.0-rc.42-1778799071943",
+  "version": "2.0.0-rc.41-1777345848979",
   "bin": {
     "tama": "./dist/index.cjs",
     "tamagui": "./dist/index.cjs"
@@ -52,6 +52,6 @@
     "@tamagui/build": "workspace:*",
     "@types/chokidar": "^2.1.3",
     "@types/marked": "^5.0.0",
-    "vitest": "4.1.6"
+    "vitest": "4.0.4"
   }
 }

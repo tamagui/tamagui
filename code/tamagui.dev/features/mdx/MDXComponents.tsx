@@ -610,7 +610,7 @@ const componentsIn = {
       >
         <Image maxW="100%" {...props} />
         {!!children && (
-          <Text render="figcaption" lineHeight={23} color="$colorPress" mt="$2">
+          <Text render="figcaption" lineHeight="23px" color="$colorPress" mt="$2">
             {children}
           </Text>
         )}
@@ -651,7 +651,7 @@ const componentsIn = {
           style={{ width: '100%', display: 'block' }}
         ></video>
       </OffsetBox>
-      <Text render="figcaption" lineHeight={23} mt="$2" color="$colorPress">
+      <Text render="figcaption" lineHeight="23px" mt="$2" color="$colorPress">
         {children}
       </Text>
     </YStack>

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/theme-builder",
-  "version": "2.0.0-rc.42-1778799071943",
+  "version": "2.0.0-rc.41-1777345848979",
   "source": "src/index.ts",
   "files": [
     "src",
@@ -43,6 +43,6 @@
   },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
-    "vitest": "4.1.6"
+    "vitest": "4.0.4"
   }
 }

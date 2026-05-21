@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/build",
-  "version": "2.0.0-rc.42-1778799071943",
+  "version": "2.0.0-rc.41-1777345848979",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "bin": {
     "tamagui-build": "tamagui-build.js",
@@ -39,6 +39,6 @@
     }
   },
   "devDependencies": {
-    "vitest": "4.1.6"
+    "vitest": "4.0.4"
   }
 }

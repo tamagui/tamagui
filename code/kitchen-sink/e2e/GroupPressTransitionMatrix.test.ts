@@ -17,8 +17,8 @@
 import { by, device, element, expect as detoxExpect } from 'detox'
 import * as assert from 'assert'
 import { navigateToTestCase } from './utils/navigation'
-import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
 import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
 
 const CELLS = ['pp-cp', 'pa-cp', 'pp-ca', 'pa-ca'] as const
 

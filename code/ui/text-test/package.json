@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/text-test",
-  "version": "2.0.0-rc.42-1778799071943",
+  "version": "2.0.0-rc.41-1777345848979",
   "private": true,
   "type": "module",
   "sideEffects": [
@@ -13,6 +13,6 @@
   },
   "devDependencies": {
     "@tamagui/text": "workspace:*",
-    "vitest": "4.1.6"
+    "vitest": "4.0.4"
   }
 }

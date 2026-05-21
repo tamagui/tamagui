@@ -72,18 +72,16 @@ import {
 } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 import { sortString } from './sortString'
+import { styleOriginalValues } from './styleOriginalValues'
 import { transformsToString } from './transformsToString'
+
+export { styleOriginalValues }
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
 let conf: TamaguiInternalConfig
-
-// WeakMap to track original token values for style objects
-// Used to preserve '$8' style tokens instead of resolved 'var(--t-space-8)'
-// for context prop propagation to children (issues #3670, #3676)
-export const styleOriginalValues = new WeakMap<object, Record<string, any>>()
 
 type StyleSplitter = (
   props: { [key: string]: any },
@@ -1573,6 +1571,7 @@ export const getSubStyle = (
   const { staticConfig, conf, styleProps } = styleState
   const styleOut: TextStyle = {}
   let originalValues: Record<string, any> | undefined
+  const styleInOriginalValues = styleOriginalValues.get(styleIn)
   const parentProps = styleState.props
   styleState.props = { ...parentProps, ...styleIn }
 
@@ -1616,9 +1615,10 @@ export const getSubStyle = (
 
       propMapper(key, val, styleState, false, (skey, sval, originalVal) => {
         // track original values for context prop propagation
-        if (originalVal !== undefined) {
+        const trackedOriginalVal = styleInOriginalValues?.[skey] ?? originalVal
+        if (trackedOriginalVal !== undefined) {
           originalValues ||= {}
-          originalValues[skey] = originalVal
+          originalValues[skey] = trackedOriginalVal
         }
         // pseudo inside media
         if (skey in validPseudoKeys) {
@@ -1687,7 +1687,7 @@ export const getSubStyle = (
   }
 
   // Store original values in WeakMap instead of on the object itself
-  if (originalValues) {
+  if (originalValues && Object.keys(originalValues).length) {
     styleOriginalValues.set(styleOut, originalValues)
   }
 

@@ -214,6 +214,7 @@ export type BundledConfig = Exclude<Awaited<ReturnType<typeof bundleConfig>>, un
 
 // will use cached one if watching
 let currentBundle: BundledConfig | null = null
+let currentBundleKey = ''
 let isBundling = false
 let lastBundle: BundledConfig | null = null
 const waitForBundle = new Set<Function>()
@@ -230,22 +231,35 @@ let loadedConfig: TamaguiInternalConfig | null = null
 
 export const getLoadedConfig = () => loadedConfig
 
+function getBundleKey(props: TamaguiOptions) {
+  return JSON.stringify({
+    components: props.components,
+    config: props.config,
+    platform: props.platform,
+  })
+}
+
 export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
+  const bundleKey = getBundleKey(props)
   if (isBundling) {
     await new Promise((res) => {
       waitForBundle.add(res)
     })
-  } else if (!currentBundle || rebuild) {
+  }
+
+  if (!currentBundle || currentBundleKey !== bundleKey || rebuild) {
     return await bundleConfig(props)
   }
+
   return currentBundle
 }
 
 global.tamaguiLastLoaded ||= 0
 
-function updateLastLoaded(config: any) {
+function updateLastLoaded(config: any, bundleKey: string) {
   global.tamaguiLastLoaded = Date.now()
   global.tamaguiLastBundledConfig = config
+  global.tamaguiLastBundledConfigKey = bundleKey
 }
 
 let hasBundledOnce = false
@@ -256,8 +270,13 @@ let hasBundledOnce = false
 let hasLoggedBuild = false
 
 export async function bundleConfig(props: TamaguiOptions) {
+  const bundleKey = getBundleKey(props)
   // webpack is calling this a ton for no reason
-  if (global.tamaguiLastBundledConfig && Date.now() - global.tamaguiLastLoaded < 3000) {
+  if (
+    global.tamaguiLastBundledConfig &&
+    global.tamaguiLastBundledConfigKey === bundleKey &&
+    Date.now() - global.tamaguiLastLoaded < 3000
+  ) {
     // just loaded recently
     return global.tamaguiLastBundledConfig
   }
@@ -483,7 +502,8 @@ export async function bundleConfig(props: TamaguiOptions) {
     }
 
     currentBundle = res
-    updateLastLoaded(res)
+    currentBundleKey = bundleKey
+    updateLastLoaded(res, bundleKey)
 
     return res
   } catch (err: any) {

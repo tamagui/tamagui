@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/components-test",
-  "version": "2.0.0-rc.42-1778799071943",
+  "version": "2.0.0-rc.41-1777345848979",
   "private": true,
   "license": "MIT",
   "type": "module",
@@ -19,9 +19,8 @@
     "csstype": "^3.0.10",
     "jsdom": "^28.1.0",
     "react": ">=19",
-    "react-test-renderer": "^19.0.0",
     "typescript": "~5.9.2",
-    "vitest": "4.1.6",
+    "vitest": "4.0.4",
     "vitest-axe": "^0.1.0"
   },
   "peerDependencies": {

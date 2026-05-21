@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/vite-plugin-internal",
-  "version": "2.0.0-rc.42-1778799071943",
+  "version": "2.0.0-rc.41-1777345848979",
   "private": true,
   "type": "module",
   "main": "./dist/cjs/vite.config.js",
@@ -29,7 +29,7 @@
     "@tamagui/config-default": "workspace:*",
     "happy-dom": "^10.11.2",
     "react": ">=19",
-    "vitest": "4.1.6",
+    "vitest": "4.0.4",
     "vitest-axe": "^0.1.0",
     "vitest-react-native": "^0.1.5"
   },

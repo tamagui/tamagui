@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/web",
-  "version": "2.0.0-rc.42-1778799071943",
+  "version": "2.0.0-rc.41-1777345848979",
   "license": "MIT",
   "author": {
     "name": "Nate Wienert"
@@ -71,7 +71,7 @@
     "react-dom": "*",
     "react-native": "0.83.2",
     "typescript": "~5.9.2",
-    "vitest": "4.1.6"
+    "vitest": "4.0.4"
   },
   "peerDependencies": {
     "react": ">=19",

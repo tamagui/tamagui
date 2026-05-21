@@ -1075,10 +1075,15 @@ type AutocompleteSpecificTokensSetting = boolean | 'except-special'
 
 export interface GenericTamaguiSettings {
   /**
-   * When true, flexBasis will be set to 0 when flex is positive. This will be
-   * the default in v2 of Tamagui alongside an alternative mode for web compat.
+   * controls style semantics where React Native/Yoga and CSS differ.
+   *
+   * - "legacy": preserves Tamagui v1 flex expansion.
+   * - "react-native": follows React Native/Yoga flex and raw numeric lineHeight semantics.
+   * - "web": follows CSS flex and unitless numeric lineHeight semantics.
+   *
+   * @default "web"
    */
-  styleCompat?: 'react-native' | 'legacy'
+  styleCompat?: 'legacy' | 'react-native' | 'web'
 
   // TODO
   /**
@@ -2734,7 +2739,7 @@ export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
   insets?: { top: number; right: number; bottom: number; left: number }
 }
 
-export type PropMappedValue = [string, any][] | undefined
+export type PropMappedValue = [string, any, any?][] | undefined
 
 export type GetStyleState = {
   style: TextStyle | null
