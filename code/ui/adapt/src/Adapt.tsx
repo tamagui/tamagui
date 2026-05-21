@@ -158,7 +158,7 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
       return Contents
     }
 
-    // When teleport is enabled, use store-based children passing to avoid
+    // when teleport is enabled, use store-based children passing to avoid
     // nested teleport (inner PortalItem inside already-teleported Sheet)
     // which breaks touch coordinate mapping on iOS.
     if (isTeleport) {
@@ -280,9 +280,9 @@ export const AdaptPortalContents = (props: {
   const childrenStore = useContext(AdaptChildrenStoreContext)
   const isTeleport = !isWeb && getPortal().state.type === 'teleport'
 
-  // When teleport is enabled, bypass PortalItem to avoid nested teleport
+  // when teleport is enabled, bypass PortalItem to avoid nested teleport
   // (inner portal inside already-teleported Sheet) which breaks touch
-  // coordinate mapping on iOS. Children are passed via external store
+  // coordinate mapping on iOS. children are passed via external store
   // to TeleportAdaptContents rendered at Adapt.Contents.
   if (isTeleport && childrenStore) {
     return (
@@ -308,16 +308,9 @@ function AdaptPortalTeleport({
   store: AdaptChildrenStore
   children: React.ReactNode
 }) {
-  // The previous implementation had no dependency array on this effect, so
-  // the cleanup `store.set(null)` ran before each subsequent effect run —
-  // forcing the teleported subtree (e.g. a Sheet's portal target when used
-  // via Adapt + Dialog/Popover) to unmount and remount on every parent
-  // re-render. For dialogs whose `open` prop toggles caused parent renders,
-  // this discarded mount continuity even when the teleported children were
-  // logically unchanged. Splitting into two effects: one keeps the store in
-  // sync with the latest children (no cleanup, so React reconciles new vs
-  // old children without an intermediate `null`), and one clears the store
-  // only when the component truly unmounts or `isActive` flips false.
+  // keep the teleport store in sync without clearing it between parent
+  // renders. clearing only on real unmount or inactive lets React reconcile
+  // sheet/dialog/popover contents instead of remounting the subtree.
   useIsomorphicLayoutEffect(() => {
     if (isActive) {
       store.set(children)
