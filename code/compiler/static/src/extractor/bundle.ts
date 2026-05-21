@@ -99,7 +99,7 @@ function getESBuildConfig(
     format: detectedFormat,
     define: {
       ...platformDefines,
-      ...(callerDefine || {}),
+      ...callerDefine,
     },
     // for ESM: prefer "module" field for resolution, add require() shim for bundled CJS deps
     ...(detectedFormat === 'esm'
