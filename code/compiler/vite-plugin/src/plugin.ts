@@ -112,20 +112,23 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
   }
 
   if (options.rnwLite) {
-    // entry point for main import (may be without-animated variant)
-    const rnwl = resolve(
-      options.rnwLite === 'without-animated'
-        ? '@tamagui/react-native-web-lite/without-animated'
-        : '@tamagui/react-native-web-lite'
-    )
     // base package path for subpath imports (package directory, not entry file)
     const rnwlBase = path.dirname(resolve('@tamagui/react-native-web-lite/package.json'))
+    // vite aliases need the esm entry; require.resolve points at cjs.
+    const rnwl = normalizePath(
+      path.join(
+        rnwlBase,
+        options.rnwLite === 'without-animated'
+          ? 'dist/esm/without-animated.mjs'
+          : 'dist/esm/index.mjs'
+      )
+    )
     aliases.push(
       {
         // map deep RNW paths like dist/exports/StyleSheet/preprocess to rnw-lite's flat structure
         // extracts the final path segment (e.g. "preprocess" or "createReactDOMStyle")
         find: /^react-native(?:-web)?\/dist\/(?:exports|modules)\/.*\/([^/]+)$/,
-        replacement: `${rnwlBase}/dist/esm/$1.mjs`,
+        replacement: `${normalizePath(rnwlBase)}/dist/esm/$1.mjs`,
       },
       {
         find: /^react-native$/,
