@@ -1479,18 +1479,15 @@ export function createExtractor(
                     t.isJSXAttribute(attr.value)
                   ) {
                     // createDOMProps renamed the prop (e.g. testID -> data-testid).
-                    // Preserve the original expression value but use the new
-                    // attribute name. Restricted to FAILED_EVAL because the
+                    // preserve the original expression value but use the new
+                    // attribute name. restricted to FAILED_EVAL because the
                     // later `case 'attr'` rename pass only runs on
                     // statically-evaluable values; for static values that pass
                     // intentionally preserves some prop names (e.g. focusable
                     // in v2) instead of doing the createDOMProps rename.
                     return {
                       type: 'attr',
-                      value: t.jsxAttribute(
-                        t.jsxIdentifier(key),
-                        attr.value.value
-                      ),
+                      value: t.jsxAttribute(t.jsxIdentifier(key), attr.value.value),
                     } as const
                   }
                   return attr
