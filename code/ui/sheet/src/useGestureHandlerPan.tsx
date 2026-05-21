@@ -122,7 +122,6 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
 
     // simultaneousHandlers pattern from react-native-actions-sheet
     // both gestures run simultaneously, we use blockPan to decide who handles
-    // console.warn('[RNGH-Pan] CREATING gesture, minY:', minY, 'frameSize:', frameSize)
     const gesture = Gesture.Pan()
       .withRef(panGestureRef)
       // NO manualActivation - let both gestures run via simultaneousHandlers
@@ -148,7 +147,6 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         const pos = getCurrentPosition()
         const atTop = pos <= minY + AT_TOP_THRESHOLD
         const currentScrollY = scrollBridge.y
-        // console.warn('[RNGH-Pan] onBegin', { pos, minY, atTop, currentScrollY })
         gs.startY = pos
         gs.lastPanTranslationY = 0
         gs.accumulatedOffset = 0
@@ -171,7 +169,6 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         gs.panStarted = true
         setIsDragging(true)
 
-        // console.warn('[RNGH-Pan] onStart', { startY: gs.startY, minY })
         scrollBridge.initialPosition = gs.startY
         onStart()
       })
@@ -194,8 +191,6 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         const currentPos = gs.startY + gs.accumulatedOffset
         const isCurrentlyAtTop = currentPos <= minY + AT_TOP_THRESHOLD
         const nodeIsScrolling = scrollY > 0
-
-        // console.warn('[RNGH-Pan] onChange', { translationY: translationY.toFixed(1), deltaY: deltaY.toFixed(1), currentPos: currentPos.toFixed(1), minY, isCurrentlyAtTop, isSwipingDown, scrollY, scrollEngaged: gs.scrollEngaged })
 
         // decision matrix (from react-native-actions-sheet pattern)
         // each frame, decide who handles the movement based on current state
@@ -229,7 +224,6 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
             } else if (gs.scrollEngaged && hasScrollableContent) {
               // scroll WAS > 0 but now is 0 -> handoff from scroll to pan
               // pan takes over to drag sheet down
-              // console.warn('[RNGH-Pan] *** HANDOFF FROM SCROLL TO PAN ***')
               panHandles = true
             } else {
               // scroll never engaged OR content not scrollable, just drag sheet down
@@ -248,8 +242,6 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
             }
           }
         }
-
-        // console.warn('[RNGH-Pan] decision', { panHandles, isCurrentlyAtTop, isSwipingDown, nodeIsScrolling, scrollEngaged: gs.scrollEngaged, hasScrollableContent, currentPos: currentPos.toFixed(1), minY })
 
         if (panHandles) {
           // pan handles - disable scroll and move sheet
@@ -277,8 +269,6 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
       .onEnd((event: { velocityY: number }) => {
         const { velocityY } = event
         const currentPos = gs.startY + gs.accumulatedOffset
-
-        // console.warn('[RNGH-Pan] onEnd', { velocityY, currentPos, accumulatedOffset: gs.accumulatedOffset, scrollY: scrollBridge.y })
 
         // clear scroll lock
         scrollBridge.scrollLockY = undefined
@@ -317,7 +307,6 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         onEnd(closestPoint)
       })
       .onFinalize(() => {
-        // console.warn('[RNGH-Pan] onFinalize', { panStarted: gs.panStarted })
         // clear scroll lock on finalize too (safety)
         scrollBridge.scrollLockY = undefined
         if (gs.panStarted) {
@@ -336,7 +325,6 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
     // if we have a scroll gesture ref, make pan simultaneous with it
     // this allows both gestures to run and we decide in onChange who handles it
     if (scrollGestureRef?.current) {
-      // console.warn('[RNGH-Pan] adding simultaneousWithExternalGesture for scroll')
       return gesture.simultaneousWithExternalGesture(scrollGestureRef.current)
     }
 
