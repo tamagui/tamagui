@@ -1,8 +1,11 @@
 import { defineConfig } from 'vitest/config'
-import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
-  plugins: [tsconfigPaths()],
+  resolve: {
+    alias: {
+      '~': __dirname,
+    },
+  },
   test: {
     environment: 'jsdom',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
