@@ -41,6 +41,7 @@ export const Text = createComponent<
         },
 
   inlineWhenUnflattened: new Set(['fontFamily']),
+  inlineProps: new Set(['maxFontSizeMultiplier']),
 
   variants: {
     ...(process.env.TAMAGUI_TARGET === 'web' && {

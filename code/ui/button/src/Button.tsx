@@ -2,8 +2,9 @@ import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getIcon, useCurrentColor } from '@tamagui/helpers-tamagui'
 import { ButtonNestingContext, getElevation, themeableVariants } from '@tamagui/stacks'
+import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
-import type { ColorTokens, GetProps, SizeTokens, Token } from '@tamagui/web'
+import type { GetProps, SizeTokens, Token } from '@tamagui/web'
 import {
   createStyledContext,
   getTokenValue,
@@ -17,16 +18,25 @@ import { useContext } from 'react'
 
 type ButtonVariant = 'outlined'
 
-const context = createStyledContext<{
+type ButtonContextStyles = TextContextStyles & {
   size?: SizeTokens
   variant?: ButtonVariant
-  color?: ColorTokens | string
   elevation?: SizeTokens | number
-}>({
+}
+
+const context = createStyledContext<ButtonContextStyles>({
   size: undefined,
   variant: undefined,
   color: undefined,
   elevation: undefined,
+  ellipsis: undefined,
+  fontFamily: undefined,
+  fontSize: undefined,
+  fontStyle: undefined,
+  fontWeight: undefined,
+  letterSpacing: undefined,
+  maxFontSizeMultiplier: undefined,
+  textAlign: undefined,
 })
 
 const Frame = styled(View, {
@@ -50,10 +60,13 @@ const Frame = styled(View, {
         alignItems: 'center',
         flexWrap: 'nowrap',
         flexDirection: 'row',
-        cursor: 'pointer',
         backgroundColor: '$background',
         borderWidth: 1,
         borderColor: 'transparent',
+
+        '$platform-web': {
+          cursor: 'pointer',
+        },
 
         hoverStyle: {
           backgroundColor: '$backgroundHover',
@@ -143,12 +156,15 @@ const Text = styled(SizableText, {
     unstyled: {
       false: {
         userSelect: 'none',
-        cursor: 'pointer',
         // flexGrow 1 leads to inconsistent native style where text pushes to start of view
         flexGrow: 0,
         flexShrink: 1,
         ellipsis: true,
         color: '$color',
+
+        '$platform-web': {
+          cursor: 'pointer',
+        },
       },
     },
   } as const,
@@ -170,7 +186,11 @@ const Icon = (props: {
   }
 
   const sizeToken = size ?? styledContext.size
-  const iconColor = useCurrentColor(styledContext.color)
+  const iconColorProp =
+    styledContext.color === 'unset' || typeof styledContext.color === 'number'
+      ? undefined
+      : styledContext.color
+  const iconColor = useCurrentColor(iconColorProp)
 
   const iconSize =
     (typeof sizeToken === 'number' ? sizeToken * 0.5 : getFontSize(sizeToken as Token)) *
@@ -185,7 +205,7 @@ const Icon = (props: {
 export const ButtonContext = createStyledContext<{
   size?: SizeTokens
   variant?: ButtonVariant
-  color?: ColorTokens | string
+  color?: ButtonContextStyles['color']
 }>({
   size: undefined,
   variant: undefined,
@@ -194,7 +214,7 @@ export const ButtonContext = createStyledContext<{
 
 type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
 
-type ButtonExtraProps = {
+type ButtonExtraProps = TextParentStyles & {
   icon?: IconProp
   iconAfter?: IconProp
   scaleIcon?: number
@@ -221,12 +241,35 @@ const ButtonComponent = Frame.styleable<ButtonExtraProps>((propsIn, ref) => {
     noExpand: true,
   })
 
-  const { children, iconSize, icon, iconAfter, scaleIcon = 1, ...props } = processedProps
+  const {
+    children,
+    iconSize,
+    icon,
+    iconAfter,
+    scaleIcon = 1,
+    noTextWrap,
+    textProps,
+    color,
+    ellipsis,
+    fontFamily,
+    fontSize,
+    fontStyle,
+    fontWeight,
+    letterSpacing,
+    maxFontSizeMultiplier,
+    textAlign,
+    ...props
+  } = processedProps
 
   const size = propsIn.size || (propsIn.unstyled ? undefined : '$true')
 
   const styledContext = context.useStyledContext()
-  const iconColor = useCurrentColor(styledContext?.color)
+  const contextColor = color ?? propsIn.color ?? styledContext?.color
+  const iconColorProp =
+    contextColor === 'unset' || typeof contextColor === 'number'
+      ? undefined
+      : contextColor
+  const iconColor = useCurrentColor(iconColorProp)
   const finalSize = iconSize ?? size ?? styledContext?.size
   const iconSizeNumber =
     (typeof finalSize === 'number' ? finalSize * 0.5 : getFontSize(finalSize as Token)) *
@@ -243,27 +286,69 @@ const ButtonComponent = Frame.styleable<ButtonExtraProps>((propsIn, ref) => {
 
   const wrappedChildren = wrapChildrenInText(
     Text,
-    { children },
+    {
+      children,
+      color: contextColor,
+      ellipsis: ellipsis ?? propsIn.ellipsis ?? styledContext?.ellipsis,
+      fontFamily: fontFamily ?? propsIn.fontFamily ?? styledContext?.fontFamily,
+      fontSize: fontSize ?? propsIn.fontSize ?? styledContext?.fontSize,
+      fontStyle: fontStyle ?? propsIn.fontStyle ?? styledContext?.fontStyle,
+      fontWeight: fontWeight ?? propsIn.fontWeight ?? styledContext?.fontWeight,
+      letterSpacing:
+        letterSpacing ?? propsIn.letterSpacing ?? styledContext?.letterSpacing,
+      maxFontSizeMultiplier:
+        maxFontSizeMultiplier ??
+        propsIn.maxFontSizeMultiplier ??
+        styledContext?.maxFontSizeMultiplier,
+      noTextWrap: noTextWrap ?? propsIn.noTextWrap,
+      textAlign: textAlign ?? propsIn.textAlign ?? styledContext?.textAlign,
+      textProps: textProps ?? propsIn.textProps,
+    },
     {
       unstyled: process.env.TAMAGUI_HEADLESS === '1',
       size: finalSize ?? styledContext?.size,
     }
   )
 
+  const textContext: TextContextStyles = {
+    color: contextColor,
+    ellipsis: ellipsis ?? propsIn.ellipsis ?? styledContext?.ellipsis,
+    fontFamily: fontFamily ?? propsIn.fontFamily ?? styledContext?.fontFamily,
+    fontSize: fontSize ?? propsIn.fontSize ?? styledContext?.fontSize,
+    fontStyle: fontStyle ?? propsIn.fontStyle ?? styledContext?.fontStyle,
+    fontWeight: fontWeight ?? propsIn.fontWeight ?? styledContext?.fontWeight,
+    letterSpacing: letterSpacing ?? propsIn.letterSpacing ?? styledContext?.letterSpacing,
+    maxFontSizeMultiplier:
+      maxFontSizeMultiplier ??
+      propsIn.maxFontSizeMultiplier ??
+      styledContext?.maxFontSizeMultiplier,
+    textAlign: textAlign ?? propsIn.textAlign ?? styledContext?.textAlign,
+  }
+
+  const buttonContext: ButtonContextStyles = {
+    ...styledContext,
+    ...textContext,
+    size: props.size ?? propsIn.size ?? styledContext?.size,
+    variant: props.variant ?? propsIn.variant ?? styledContext?.variant,
+    elevation: props.elevation ?? propsIn.elevation ?? styledContext?.elevation,
+  }
+
   return (
     <ButtonNestingContext.Provider value={true}>
-      <Frame
-        ref={ref}
-        {...props}
-        {...(isNested && { render: 'span' })}
-        // Pass resolved size to circular variant when no explicit size provided
-        {...(props.circular && !propsIn.size && { size })}
-        tabIndex={0}
-      >
-        {themedIcon}
-        {wrappedChildren}
-        {themedIconAfter}
-      </Frame>
+      <context.Provider {...buttonContext}>
+        <Frame
+          ref={ref}
+          {...props}
+          {...(isNested && { render: 'span' })}
+          // pass resolved size to circular variant when no explicit size provided
+          {...(props.circular && !propsIn.size && { size })}
+          tabIndex={0}
+        >
+          {themedIcon}
+          {wrappedChildren}
+          {themedIconAfter}
+        </Frame>
+      </context.Provider>
     </ButtonNestingContext.Provider>
   )
 })
