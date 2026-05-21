@@ -75,6 +75,22 @@ describe('getSplitStyles', () => {
     expect(style?.backgroundColor).toBe('red')
   })
 
+  test('pseudo styles can override read-only parent props', () => {
+    const props = {
+      hoverStyle: {
+        boxShadow: '0 1px 2px black',
+      },
+    }
+
+    Object.defineProperty(props, 'boxShadow', {
+      value: '0 0 1px black',
+      enumerable: true,
+      writable: false,
+    })
+
+    expect(() => getSplitStylesFor(props)).not.toThrow()
+  })
+
   test(`transform properties are correctly applied`, () => {
     const { style } = getSplitStylesFor({
       scale: 1.5,

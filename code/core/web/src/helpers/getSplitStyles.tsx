@@ -1574,7 +1574,7 @@ export const getSubStyle = (
   const styleOut: TextStyle = {}
   let originalValues: Record<string, any> | undefined
   const parentProps = styleState.props
-  styleState.props = Object.assign(Object.create(parentProps), styleIn)
+  styleState.props = { ...parentProps, ...styleIn }
 
   try {
     for (let key in styleIn) {

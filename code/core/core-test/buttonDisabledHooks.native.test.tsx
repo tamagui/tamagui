@@ -44,6 +44,7 @@ function createGestureStub() {
     'onEnd',
     'onFinalize',
     'onTouchesDown',
+    'onTouchesMove',
     'onTouchesUp',
     'onTouchesCancelled',
   ]) {
