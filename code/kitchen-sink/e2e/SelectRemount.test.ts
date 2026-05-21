@@ -14,26 +14,19 @@ import { by, device, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
 import { safeLaunchApp, safeReloadApp, withSync } from './utils/detox'
 
+const testElement = (id: string) => element(by.id(id)).atIndex(0)
+
 /** close any open select sheet by tapping an option */
 async function closeSelect() {
-  if (device.getPlatform() === 'android') {
-    await device.pressBack()
-  } else {
-    // tap an option to dismiss the sheet instead of device.tap({ x, y })
-    // device.tap() uses XCUITest runner (spawns xcodebuild) which leaves
-    // orphaned DTServiceHub processes that crash subsequent xcodebuild calls
-    await withSync(() => element(by.id('select-remount-test-option-apple')).tap())
-  }
+  await withSync(() => testElement('select-remount-test-option-apple').tap())
   // wait for sheet close animation to finish (trigger becomes visible again)
-  await waitFor(element(by.id('remount-button')))
-    .toBeVisible()
-    .withTimeout(5000)
+  await waitFor(testElement('remount-button')).toBeVisible().withTimeout(10000)
 }
 
 /** tap remount button and wait for fresh component state */
 async function remountAndWait() {
-  await withSync(() => element(by.id('remount-button')).tap())
-  await waitFor(element(by.id('select-remount-test-trigger')))
+  await withSync(() => testElement('remount-button').tap())
+  await waitFor(testElement('select-remount-test-trigger'))
     .toBeVisible()
     .withTimeout(8000)
 }
@@ -51,17 +44,15 @@ describe('SelectRemount', () => {
   })
 
   it('should navigate to SelectRemount test case', async () => {
-    await waitFor(element(by.id('remount-button')))
-      .toBeVisible()
-      .withTimeout(5000)
+    await waitFor(testElement('remount-button')).toBeVisible().withTimeout(5000)
   })
 
   it('should open Select on first mount', async () => {
     // sync already disabled from beforeEach (skipEnableSync)
     try {
-      await withSync(() => element(by.id('select-remount-test-trigger')).tap())
+      await withSync(() => testElement('select-remount-test-trigger').tap())
 
-      await waitFor(element(by.id('select-remount-test-option-apple')))
+      await waitFor(testElement('select-remount-test-option-apple'))
         .toBeVisible()
         .withTimeout(10000)
 
@@ -78,9 +69,9 @@ describe('SelectRemount', () => {
       await remountAndWait()
 
       // try to open the Select again - THIS IS THE KEY TEST for #1859
-      await withSync(() => element(by.id('select-remount-test-trigger')).tap())
+      await withSync(() => testElement('select-remount-test-trigger').tap())
 
-      await waitFor(element(by.id('select-remount-test-option-apple')))
+      await waitFor(testElement('select-remount-test-option-apple'))
         .toBeVisible()
         .withTimeout(10000)
 
@@ -97,23 +88,23 @@ describe('SelectRemount', () => {
       await remountAndWait()
 
       // test first Select
-      await withSync(() => element(by.id('select-remount-test-trigger')).tap())
+      await withSync(() => testElement('select-remount-test-trigger').tap())
 
-      await waitFor(element(by.id('select-remount-test-option-apple')))
+      await waitFor(testElement('select-remount-test-option-apple'))
         .toBeVisible()
         .withTimeout(10000)
 
       // select an option to close the sheet
-      await withSync(() => element(by.id('select-remount-test-option-apple')).tap())
+      await withSync(() => testElement('select-remount-test-option-apple').tap())
 
       // wait for first sheet to fully close before interacting with second select
-      await waitFor(element(by.id('select-remount-test-2-trigger')))
+      await waitFor(testElement('select-remount-test-2-trigger'))
         .toBeVisible()
         .withTimeout(15000)
 
       // test second Select
-      await withSync(() => element(by.id('select-remount-test-2-trigger')).tap())
-      await waitFor(element(by.id('select-remount-test-2-option-apple')))
+      await withSync(() => testElement('select-remount-test-2-trigger').tap())
+      await waitFor(testElement('select-remount-test-2-option-apple'))
         .toBeVisible()
         .withTimeout(10000)
     } finally {

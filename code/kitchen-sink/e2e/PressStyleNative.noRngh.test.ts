@@ -10,7 +10,7 @@
  * it) but enable it briefly around each interaction.
  */
 
-import { by, device, element, expect, waitFor } from 'detox'
+import { by, element, expect, waitFor } from 'detox'
 import * as fs from 'fs'
 import * as assert from 'assert'
 import { PNG } from 'pngjs'
@@ -30,10 +30,6 @@ describe('PressStyleNative (no RNGH)', () => {
       newInstance: true,
       launchArgs: { disableGestureHandler: true },
     })
-  })
-
-  afterAll(async () => {
-    await device.enableSynchronization()
   })
 
   beforeEach(async () => {

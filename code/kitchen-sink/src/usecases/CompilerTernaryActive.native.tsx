@@ -58,8 +58,8 @@ import { useState } from 'react'
 import { Button, Text, YStack } from 'tamagui'
 function ActiveText({ isActive, label }: { isActive: boolean; label: string }) {
   return (
-    <_ReactNativeViewStyled0 testID={'opt-color-box'} _expressions={[isActive]}>
-      <_ReactNativeTextStyled1 testID={'active-text'} _expressions={[isActive]}>
+    <_ReactNativeViewStyled0 testID={'opt-color-box'} _expressions={[!!isActive]}>
+      <_ReactNativeTextStyled1 testID={'active-text'} _expressions={[!!isActive]}>
         {label}
       </_ReactNativeTextStyled1>
     </_ReactNativeViewStyled0>

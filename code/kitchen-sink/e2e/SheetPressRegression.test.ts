@@ -19,9 +19,7 @@ async function openSheet() {
   await testElement('sheet-press-trigger').tap()
   // native can expose duplicated Fabric nodes for the same testID; atIndex(0)
   // keeps the wait/action target deterministic.
-  await waitFor(testElement('sheet-press-input'))
-    .toBeVisible()
-    .withTimeout(5000)
+  await waitFor(testElement('sheet-press-input')).toBeVisible().withTimeout(5000)
   await sleep(700)
 }
 
@@ -62,15 +60,11 @@ describe('SheetPressRegression', () => {
 
     await testElement('sheet-press-nested-view').tap()
     await sleep(200)
-    await expect(testElement('sheet-press-nested-view-count')).toHaveText(
-      'nestedView: 1'
-    )
+    await expect(testElement('sheet-press-nested-view-count')).toHaveText('nestedView: 1')
 
     await testElement('sheet-press-media-card').tap()
     await sleep(200)
-    await expect(testElement('sheet-press-media-card-count')).toHaveText(
-      'mediaCard: 1'
-    )
+    await expect(testElement('sheet-press-media-card-count')).toHaveText('mediaCard: 1')
   })
 
   it('media card press survives keyboard-driven sheet movement', async () => {
@@ -81,9 +75,7 @@ describe('SheetPressRegression', () => {
 
     await testElement('sheet-press-media-card').tap()
     await sleep(300)
-    await expect(testElement('sheet-press-media-card-count')).toHaveText(
-      'mediaCard: 1'
-    )
+    await expect(testElement('sheet-press-media-card-count')).toHaveText('mediaCard: 1')
   })
 
   it('sheet can be dragged closed', async () => {
@@ -92,8 +84,6 @@ describe('SheetPressRegression', () => {
     await testElement('sheet-press-frame').swipe('down', 'slow', 0.75)
     await sleep(700)
 
-    await waitFor(testElement('sheet-press-input'))
-      .not.toBeVisible()
-      .withTimeout(5000)
+    await waitFor(testElement('sheet-press-input')).not.toBeVisible().withTimeout(5000)
   })
 })
