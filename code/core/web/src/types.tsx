@@ -1396,8 +1396,18 @@ export type MediaQueryKey = keyof Media
 export type MediaPropKeys = `$${MediaQueryKey}`
 export type MediaQueryState = { [key in MediaQueryKey]: boolean }
 
-export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> =
-  `$theme-${TK extends `${string}_${string}` ? never : TK}`
+// guard against a loose `Themes` whose `keyof` collapses to `string` (e.g. a config
+// whose themes type carries a string index signature). without this, TK becomes `string`
+// and ThemeMediaKeys becomes `$theme-${string}`, which collapses the whole WithMediaProps
+// mapped type into a `[key: string]` index signature that then swallows non-style props
+// like onPress/children. see issue #4010
+export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = TK extends string
+  ? string extends TK
+    ? never
+    : TK extends `${string}_${string}`
+      ? never
+      : `$theme-${TK}`
+  : never
 
 export type PlatformMediaKeys = `$platform-${AllPlatforms}`
 
