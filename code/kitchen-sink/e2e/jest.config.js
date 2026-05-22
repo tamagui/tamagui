@@ -27,6 +27,9 @@ module.exports = {
   watchman: false,
   haste: { forceNodeFilesystemAPI: true },
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', { isolatedModules: true }],
+    // use the dedicated e2e tsconfig (isolatedModules = transpile-only). without this
+    // ts-jest type-checked the whole monorepo per file via the package tsconfig's
+    // project references, costing ~7min/shard of startup before any test ran.
+    '^.+\\.tsx?$': ['ts-jest', { tsconfig: '<rootDir>/e2e/tsconfig.json' }],
   },
 }
