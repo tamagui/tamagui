@@ -108,6 +108,7 @@ type MotionRefs = {
   frozenExitTarget: Record<string, unknown> | null
   exitCompleteScheduled: boolean
   wasEntering: boolean
+  wasDisabled: boolean
 }
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
@@ -167,6 +168,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           frozenExitTarget: null,
           exitCompleteScheduled: false,
           wasEntering: false,
+          wasDisabled: false,
         }
       }
 
@@ -454,6 +456,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       useIsomorphicLayoutEffect(() => {
         if (refs.current.isFirstRender) {
           refs.current.isFirstRender = false
+          refs.current.wasDisabled = disableAnimation
 
           // during hydration, skip inline style writes entirely — SSR CSS
           // already has the correct values. writing them again as inline
@@ -473,6 +476,27 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           }
 
           // after hydration, use simpler logic
+          refs.current.lastDontAnimate = dontAnimate ? { ...dontAnimate } : {}
+          refs.current.lastDoAnimate = doAnimate ? { ...doAnimate } : {}
+          return
+        }
+
+        // when animations first turn on after the mount/hydration handoff, the
+        // element is already at its resting position (SSR atomic class, or the
+        // dontAnimate inline styles). animating now would spring from the lost
+        // "from" value — which for a transform reads as 0 and flashes the
+        // element across the screen (e.g. progress bar flashing full, #4011).
+        // jump straight to the resolved styles instead, so it renders at the
+        // right place with no enter animation. only real changes after this
+        // animate. components with an explicit enter animation still animate.
+        const justEnabled = refs.current.wasDisabled && !disableAnimation
+        refs.current.wasDisabled = disableAnimation
+        if (justEnabled && animationState !== 'enter') {
+          const node = stateRef.current.host
+          if (node instanceof HTMLElement) {
+            if (dontAnimate) Object.assign(node.style, dontAnimate)
+            if (doAnimate) Object.assign(node.style, doAnimate)
+          }
           refs.current.lastDontAnimate = dontAnimate ? { ...dontAnimate } : {}
           refs.current.lastDoAnimate = doAnimate ? { ...doAnimate } : {}
           return
