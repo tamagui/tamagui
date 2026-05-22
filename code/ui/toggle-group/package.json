@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/toggle-group",
-  "version": "2.0.0-rc.41-1779406554468",
+  "version": "2.0.0-rc.41-1779421513552",
   "source": "src/index.ts",
   "files": [
     "src",
