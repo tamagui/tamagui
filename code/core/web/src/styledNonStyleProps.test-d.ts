@@ -36,7 +36,9 @@ describe('issue #4010 - ThemeMediaKeys must not collapse to a string index', () 
   })
 
   test('mapping over the loose-Themes result introduces no string index signature', () => {
-    expectTypeOf<HasStringIndex<IndexedBy<ThemeMediaKeys<string>>>>().toEqualTypeOf<false>()
+    expectTypeOf<
+      HasStringIndex<IndexedBy<ThemeMediaKeys<string>>>
+    >().toEqualTypeOf<false>()
   })
 
   test('concrete themes still produce usable $theme- keys, sub-themes excluded', () => {
