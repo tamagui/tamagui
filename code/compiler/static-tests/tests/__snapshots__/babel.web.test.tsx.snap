@@ -2,7 +2,7 @@
 
 exports[`Text with hoverStyle and conditional spread preserves ternary 1`] = `
 "const _cn2 = "is_Text _cur-pointer _col-0hover-color12";
-const _cn = "is_Text _cur-pointer _fow-800 _col-color12";
+const _cn = "is_Text _cur-pointer _col-0hover-color12 _fow-800 _col-color12";
 // debug
 import { Text } from '@tamagui/core';
 export function Test({
@@ -79,7 +79,7 @@ exports[`conditional specific after generic style overrides 2`] = `
 
 exports[`conditional spread with hoverStyle preserves ternary 1`] = `
 "const _cn2 = "is_View _bg-red _cur-pointer _bg-0hover-green";
-const _cn = "is_View _cur-pointer _bg-blue";
+const _cn = "is_View _cur-pointer _bg-0hover-green _bg-blue";
 import { View } from '@tamagui/core';
 export function Test({
   isActive

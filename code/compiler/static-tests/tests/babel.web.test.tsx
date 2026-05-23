@@ -628,6 +628,41 @@ test('Text with hoverStyle and conditional spread preserves ternary', async () =
   expect(output?.js).toMatchSnapshot()
 })
 
+test('conditional color prop keeps hoverStyle color when flattened', async () => {
+  const output = await extractForWeb(
+    `
+    import { Text } from '@tamagui/core'
+
+    export function Test({ isActive, label }) {
+      return (
+        <Text
+          color={isActive ? '$color' : '$color11'}
+          hoverStyle={{ color: '$color' }}
+        >
+          {label}
+        </Text>
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.styles).toContain('color:var(--color11)')
+  expect(output?.styles).toContain(
+    '._col-0hover-color:hover{color:var(--color) !important;}'
+  )
+  expect(output?.js).toContain('isActive')
+  expect(output?.js).toContain('!isActive ?')
+  expect(output?.js).toContain('isActive ?')
+  expect(output?.js).toContain('_col-0hover-color _col-color11')
+  expect(output?.js).toContain('_col-0hover-color _col-color')
+})
+
 // role attribute is passed through during extraction
 test('role attribute is preserved during extraction', async () => {
   const output = await extractForWeb(
