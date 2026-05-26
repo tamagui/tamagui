@@ -20,9 +20,16 @@ export const Image = StyledImage.styleable<ImageProps>(
       progressiveRenderingEnabled,
       resizeMethod,
       tintColor,
+      // bridge RN <-> web a11y: <img> only honors `alt`, but consumers writing
+      // cross-platform code reach for RN's `accessibilityLabel`. without this
+      // mapping the label silently drops on web (no alt text, screen readers
+      // announce nothing, and react warns about an unknown prop on <img>).
+      accessibilityLabel,
+      alt,
       ...rest
-    } = inProps
-    return <StyledImage ref={ref} {...rest} />
+    } = inProps as ImageProps & { alt?: string }
+    const resolvedAlt = alt ?? accessibilityLabel
+    return <StyledImage ref={ref} {...(rest as any)} alt={resolvedAlt} />
   },
   {
     staticConfig: {

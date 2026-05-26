@@ -157,6 +157,11 @@ export function createImage<C extends ComponentType<any>>(
       useMap,
       onLoad,
       onError,
+      // bridge web <-> RN a11y: RN's Image only reads `accessibilityLabel`,
+      // but cross-platform code often passes `alt` (matching the HTML img API).
+      // without this mapping the label silently drops on native.
+      alt,
+      accessibilityLabel,
       ...rest
     } = props
 
@@ -193,6 +198,11 @@ export function createImage<C extends ComponentType<any>>(
         ...(resolvedWidth !== undefined && { width: resolvedWidth }),
         ...(resolvedHeight !== undefined && { height: resolvedHeight }),
       },
+    }
+
+    const a11yLabel = accessibilityLabel ?? alt
+    if (a11yLabel != null) {
+      finalProps.accessibilityLabel = a11yLabel
     }
 
     // Set resize mode / content fit
