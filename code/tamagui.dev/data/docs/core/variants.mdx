@@ -439,3 +439,31 @@ const MyParagraph = styled(ColorfulText, {
   } as const,
 })
 ```
+
+### Variant names and HTML attributes
+
+A declared variant name owns that prop. Tamagui's variant pipeline consumes
+the prop to produce styles, so it never lands on the underlying host element.
+
+That means if you pick a variant name that happens to match a real HTML
+attribute (`title`, `role`, `slot`, `form`, etc.) on a styled component that
+renders to a DOM element, the attribute is **silently swallowed** rather than
+forwarded:
+
+```tsx
+const Card = styled(View, {
+  variants: {
+    title: {
+      // careful: this shadows the HTML `title` attribute
+      true: { fontWeight: 'bold' },
+    },
+  } as const,
+})
+
+// the HTML `title` attribute does NOT get set — `title` is now your variant
+<Card title="tooltip text" />
+```
+
+Pick variant names that don't collide with attributes you care about, or
+choose a Tamagui-specific name and pass the HTML attribute alongside as a
+separate explicit prop.
