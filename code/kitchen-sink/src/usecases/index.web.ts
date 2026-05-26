@@ -3,6 +3,7 @@
 // - react-native-actions-sheet
 // - react-native-teleport
 
+export { UnstyledLeakCase } from './UnstyledLeakCase'
 export { AnimatedByProp } from './AnimatedByProp'
 export { AnimatePresenceEnterExitCase } from './AnimatePresenceEnterExitCase'
 export { AnimatePresenceExitTest } from './AnimatePresenceExitTest'

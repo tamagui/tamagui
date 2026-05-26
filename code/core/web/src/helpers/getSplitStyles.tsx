@@ -585,6 +585,20 @@ export const getSplitStyles: StyleSplitter = (
       const isStyledContextProp = styledContext && key in styledContext
 
       if (!isHOC && disablePropMap && !isStyledContextProp && !isMediaOrPseudo) {
+        // backstop for the shortcut path: a prop only reaches here when it's not
+        // a style key / variant / pseudo / media on this component. but if it's
+        // declared as a variant ANYWHERE in the inheritance chain (own or
+        // parent's), the variant pipeline already produced its effect (or chose
+        // to no-op for an unsupported value like `unstyled={false}` with only
+        // `true: {}` declared) — don't leak the boolean to the host element.
+        // edge case: a userland variant whose name shadows a real HTML attribute
+        // also gets dropped here, accepted as not worth distinguishing.
+        if (
+          (variants && key in variants) ||
+          (parentVariants && key in parentVariants)
+        ) {
+          return
+        }
         viewProps[key] = val
         return
       }
