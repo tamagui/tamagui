@@ -11,6 +11,12 @@ export function NewInputBasic() {
       <Input data-testid="disabled-input" disabled placeholder="Disabled input" />
       <Input data-testid="readonly-input" readOnly value="Read only value" />
       <TextArea data-testid="basic-textarea" placeholder="Basic textarea" rows={3} />
+      <TextArea
+        data-testid="disabled-textarea"
+        disabled
+        placeholder="Disabled textarea"
+        rows={3}
+      />
     </YStack>
   )
 }
