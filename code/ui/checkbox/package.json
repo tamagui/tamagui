@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/checkbox",
-  "version": "2.0.0",
+  "version": "2.0.0-1780064412517",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.ts",
   "files": [
