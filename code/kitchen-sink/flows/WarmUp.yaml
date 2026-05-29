@@ -1,5 +1,5 @@
 appId: com.tamagui.tamaguikitchensink
-tag:
+tags:
   - util
 ---
 # cold start with clearState to prime Hermes bytecode cache
