@@ -46,12 +46,19 @@ const RETRYABLE_LAUNCH_PATTERNS = [
 // breaker below) instead of jest killing the beforeAll hook from the outside.
 const LAUNCH_CONNECT_TIMEOUT_MS = 120000
 
+// disableSynchronization is near-instant on a healthy app but can hang on a
+// wedged one; it runs in every test's beforeEach (via safeReloadApp), so bound
+// it tightly to avoid burning the full hook timeout here before we even attempt
+// the (also-bounded) launch.
+const DISABLE_SYNC_TIMEOUT_MS = 20000
+
 // Once a launch demonstrably can't connect to Detox (flaky simulator / app
-// registration, not a test bug), every later launch in this jest process hangs
-// the same way. Trip this so the rest of the shard's files fail instantly rather
-// than each burning the full hook timeout x retries (the ~50min runaway in
-// memory project_detox_app_connect_runaway). Resets naturally on detox's
-// process-level retry.
+// registration, not a test bug), every later launch/reload in the SAME test file
+// hangs the same way. Trip this so the rest of THIS file's tests fail instantly
+// rather than each burning the full hook timeout. Note: jest isolates the module
+// registry per test file, so this resets per file (it does not carry across files
+// in a shard) and resets on detox's process-level retry. See memory
+// project_detox_app_connect_runaway.
 let appLaunchUnrecoverable = false
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
@@ -150,8 +157,8 @@ export async function safeLaunchApp(params?: LaunchAppParams): Promise<void> {
     }
   }
 
-  // gave up after all attempts: trip the breaker so the rest of this shard's
-  // files fail instantly instead of each hanging the full hook timeout x retries.
+  // gave up after all attempts: trip the breaker so the rest of THIS file's
+  // tests/reloads fail instantly instead of each hanging the full hook timeout.
   appLaunchUnrecoverable = true
   throw lastError
 }
@@ -165,7 +172,22 @@ export async function safeLaunchApp(params?: LaunchAppParams): Promise<void> {
  * settling, leaving the app redboxed and Detox waiting on reactNativeReload.
  */
 export async function safeReloadApp(): Promise<void> {
-  await device.disableSynchronization()
+  // breaker tripped earlier in this file: a reload will hang the same way, so
+  // fail this beforeEach instantly instead of burning the disableSync + launch
+  // windows again.
+  if (appLaunchUnrecoverable) {
+    throw new Error(
+      'skipping reload: a previous launch could not connect to Detox in this file. failing fast instead of hanging.'
+    )
+  }
+  // bound disableSynchronization: on a wedged app it can hang, and it runs in
+  // every test's beforeEach. if it hangs the launch below (also bounded + breaker)
+  // surfaces the real failure.
+  try {
+    await withTimeout(device.disableSynchronization(), DISABLE_SYNC_TIMEOUT_MS)
+  } catch {
+    // best-effort
+  }
   await safeLaunchApp({
     ...lastLaunchParams,
     newInstance: true,
