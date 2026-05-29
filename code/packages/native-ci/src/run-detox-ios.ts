@@ -12,7 +12,7 @@
  */
 
 import { withMetro } from './metro'
-import { parseDetoxArgs, runDetoxLaunchCanary, runDetoxTests } from './detox'
+import { parseDetoxArgs, runDetoxTests } from './detox'
 import { ensureIOSFolder, ensureIOSApp } from './ios'
 
 const options = parseDetoxArgs('ios')
@@ -32,29 +32,6 @@ await ensureIOSApp(options.config)
 
 // Run tests with Metro
 const exitCode = await withMetro('ios', async () => {
-  // pre-flight: confirm the app can launch and connect to Detox before running
-  // the suite. if it can't, every test file's beforeAll would hang the 180s
-  // hook timeout x retries (~50min); bail fast instead. see memory
-  // project_detox_app_connect_runaway.
-  const canaryCode = await runDetoxLaunchCanary({
-    config: options.config,
-    projectRoot: options.projectRoot,
-    recordLogs: options.recordLogs,
-    retries: options.retries,
-    workers: options.workers,
-  })
-
-  if (canaryCode !== 0) {
-    console.error(
-      '\nPre-flight launch canary failed: the app could not launch/connect to Detox. ' +
-        'Skipping the suite to fail fast (this is usually a flaky simulator/app-registration ' +
-        'issue, not a test failure). Re-run the shard.'
-    )
-    return canaryCode
-  }
-
-  console.info('\nPre-flight launch canary passed: app connects to Detox. Running suite.')
-
   return runDetoxTests({
     config: options.config,
     projectRoot: options.projectRoot,
