@@ -21,7 +21,9 @@ const rows = readFileSync(path, 'utf8')
   .map((l) => JSON.parse(l))
 
 if (!rows.length) {
-  console.info('no samples — was the collector running and the page loaded with ?track=1 ?')
+  console.info(
+    'no samples — was the collector running and the page loaded with ?track=1 ?'
+  )
   process.exit(0)
 }
 
@@ -30,7 +32,9 @@ const rel = (t: number) => `${String(t - t0).padStart(6)}ms`
 const pos = rows.filter((r) => r.k === 'pos')
 const touches = rows.filter((r) => r.k === 'touch')
 
-console.info(`\n=== sheet telemetry: ${rows.length} samples over ${rows[rows.length - 1].t - t0}ms ===`)
+console.info(
+  `\n=== sheet telemetry: ${rows.length} samples over ${rows[rows.length - 1].t - t0}ms ===`
+)
 const byKind: Record<string, number> = {}
 for (const r of rows) byKind[r.k] = (byKind[r.k] || 0) + 1
 console.info('kinds:', JSON.stringify(byKind))
@@ -78,8 +82,10 @@ for (let i = 1; i < pos.length; i++) {
   }
   prevDir = dir
 }
-if (runStart >= 0) flickRuns.push({ start: runStart, end: runEnd, peak: runPeak, n: runN })
-if (!flickRuns.length) console.info('  none — frame never reversed direction while idle ✓')
+if (runStart >= 0)
+  flickRuns.push({ start: runStart, end: runEnd, peak: runPeak, n: runN })
+if (!flickRuns.length)
+  console.info('  none — frame never reversed direction while idle ✓')
 else
   for (const f of flickRuns)
     console.info(

@@ -144,7 +144,13 @@ export function SheetWebKeyboardCase() {
               />
 
               {/* spacer content to make the sheet tall */}
-              <YStack height={220} bg="$backgroundHover" rounded="$4" items="center" justify="center">
+              <YStack
+                height={220}
+                bg="$backgroundHover"
+                rounded="$4"
+                items="center"
+                justify="center"
+              >
                 <Text color="$gray11">filler content</Text>
               </YStack>
 
