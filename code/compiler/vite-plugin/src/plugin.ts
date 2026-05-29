@@ -374,14 +374,32 @@ export function tamaguiPlugin({
       // from sub-entries, vite's dep crawler can otherwise split them into a
       // separate chunk with its own tamagui copy, producing two ThemeStateContext
       // instances and "Missing theme" errors at runtime.
-      addIfInstalled(userConf, userConf.root, ['@tamagui/toast', '@tamagui/toast/v2'])
+      //
+      // @tamagui/sheet/controller is the lightweight controller subpath imported
+      // by popover/dialog/select; the app imports @tamagui/sheet (full). if these
+      // land in separate optimized chunks they each get their own copy of
+      // SheetControllerContext, so the SheetController provider (from /controller)
+      // and the Sheet consumer (from the full entry) never match and adapted
+      // sheets silently never open. include both so they share one context chunk.
+      addIfInstalled(userConf, userConf.root, [
+        '@tamagui/toast',
+        '@tamagui/toast/v2',
+        '@tamagui/sheet',
+        '@tamagui/sheet/controller',
+      ])
 
       // dedupe tamagui packages so nested resolutions collapse to a single
       // instance. pairs with the include above: include pre-bundles, dedupe
       // prevents duplicate bundling when sub-deps re-resolve them.
       userConf.resolve ||= {}
       userConf.resolve.dedupe ||= []
-      for (const id of ['tamagui', '@tamagui/core', '@tamagui/web', '@tamagui/toast']) {
+      for (const id of [
+        'tamagui',
+        '@tamagui/core',
+        '@tamagui/web',
+        '@tamagui/toast',
+        '@tamagui/sheet',
+      ]) {
         if (
           !userConf.resolve.dedupe.includes(id) &&
           isInstalled(userConf.root || process.cwd(), id)
