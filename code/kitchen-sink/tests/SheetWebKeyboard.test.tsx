@@ -30,7 +30,10 @@ async function simulateKeyboard(page: import('@playwright/test').Page, kb: numbe
   await page.evaluate((kbHeight) => {
     const vv = window.visualViewport!
     const base = window.innerHeight
-    Object.defineProperty(vv, 'height', { configurable: true, get: () => base - kbHeight })
+    Object.defineProperty(vv, 'height', {
+      configurable: true,
+      get: () => base - kbHeight,
+    })
     Object.defineProperty(vv, 'offsetTop', { configurable: true, get: () => 0 })
     vv.dispatchEvent(new Event('resize'))
   }, kb)
@@ -175,7 +178,14 @@ async function touchDragSampling(
         const makeTouch = (tgt: EventTarget, y: number): Touch =>
           typeof (document as any).createTouch === 'function'
             ? (document as any).createTouch(window, tgt, 0, x, y, x, y)
-            : new Touch({ identifier: 0, target: tgt as any, clientX: x, clientY: y, pageX: x, pageY: y })
+            : new Touch({
+                identifier: 0,
+                target: tgt as any,
+                clientX: x,
+                clientY: y,
+                pageX: x,
+                pageY: y,
+              })
         const list = (touches: Touch[]): any =>
           hasLegacy ? (document as any).createTouchList(...touches) : touches
         const fire = (type: string, y: number) => {
@@ -192,7 +202,8 @@ async function touchDragSampling(
             })
           )
         }
-        const sample = () => samples.push(Math.round(frame.getBoundingClientRect().bottom))
+        const sample = () =>
+          samples.push(Math.round(frame.getBoundingClientRect().bottom))
         fire('touchstart', startY)
         sample()
         let step = 0

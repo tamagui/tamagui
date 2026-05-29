@@ -59,10 +59,15 @@ function flush(beacon = false) {
   const body = JSON.stringify(batch)
   try {
     if (beacon && navigator.sendBeacon) {
-      navigator.sendBeacon(`${COLLECTOR}/collect`, new Blob([body], { type: 'text/plain' }))
+      navigator.sendBeacon(
+        `${COLLECTOR}/collect`,
+        new Blob([body], { type: 'text/plain' })
+      )
     } else {
       // string body => text/plain;charset=UTF-8 => a "simple" request, no preflight
-      fetch(`${COLLECTOR}/collect`, { method: 'POST', body, keepalive: true }).catch(() => {})
+      fetch(`${COLLECTOR}/collect`, { method: 'POST', body, keepalive: true }).catch(
+        () => {}
+      )
     }
   } catch {}
 }
@@ -110,7 +115,12 @@ function measure() {
   let iT = NaN,
     iB = NaN
   const a = document.activeElement as HTMLElement | null
-  if (a && frame && frame.contains(a) && (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')) {
+  if (
+    a &&
+    frame &&
+    frame.contains(a) &&
+    (a.tagName === 'INPUT' || a.tagName === 'TEXTAREA')
+  ) {
     const r = a.getBoundingClientRect()
     iT = ri(r.top)
     iB = ri(r.bottom)
@@ -159,8 +169,14 @@ export function startSheetTracker() {
     // capture the resulting geometry on the same frame as the input
     measure()
   }
-  document.addEventListener('touchstart', onTouch('start'), { capture: true, passive: true })
-  document.addEventListener('touchmove', onTouch('move'), { capture: true, passive: true })
+  document.addEventListener('touchstart', onTouch('start'), {
+    capture: true,
+    passive: true,
+  })
+  document.addEventListener('touchmove', onTouch('move'), {
+    capture: true,
+    passive: true,
+  })
   document.addEventListener('touchend', onTouch('end'), { capture: true, passive: true })
 
   document.addEventListener(
