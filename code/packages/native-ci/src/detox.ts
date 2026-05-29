@@ -120,6 +120,58 @@ export async function resetDetoxLockFile(): Promise<void> {
   await proc.exited
 }
 
+// the pre-flight canary spec. lives in a subdir so the shard-coverage validator
+// (non-recursive readdir of e2e/) never flags it, and it's never in a shard's
+// explicit file list.
+const CANARY_TEST_FILE = 'e2e/_canary/launch.test.ts'
+
+// the canary should connect in well under a minute on a healthy setup; this
+// wall-clock backstop only fires if detox.init itself wedges (device boot/connect),
+// which the canary's own jest timeout (90s) wouldn't catch.
+const CANARY_TIMEOUT_MS = 5 * 60 * 1000
+
+/**
+ * Pre-flight launch canary: run ONLY the launch canary spec, with no retries and
+ * a short wall-clock backstop, before the real suite. If the app cannot launch
+ * and connect to Detox, this fails fast (~90s) so the caller can skip the suite
+ * instead of letting every test file hang the full hook timeout x retries
+ * (~50min). See memory project_detox_app_connect_runaway.
+ *
+ * @returns 0 if the app launched and connected, non-zero otherwise.
+ */
+export async function runDetoxLaunchCanary(options: DetoxRunnerOptions): Promise<number> {
+  await resetDetoxLockFile()
+
+  const canaryArgs = buildDetoxArgs({
+    ...options,
+    retries: 0,
+    testFiles: [CANARY_TEST_FILE],
+  })
+
+  console.info('\n--- Pre-flight launch canary ---')
+  console.info(`Command: npx ${canaryArgs.join(' ')}`)
+
+  const proc = Bun.spawn(['npx', ...canaryArgs], {
+    env: { ...process.env, DETOX_SERVER_PORT: String(DETOX_SERVER_PORT) },
+    stdout: 'inherit',
+    stderr: 'inherit',
+  })
+
+  const timeoutPromise = new Promise<'timeout'>((resolve) => {
+    setTimeout(() => resolve('timeout'), CANARY_TIMEOUT_MS)
+  })
+
+  const result = await Promise.race([proc.exited, timeoutPromise])
+
+  if (result === 'timeout') {
+    console.info('\nLaunch canary timed out, killing process...')
+    proc.kill('SIGKILL')
+    return 1
+  }
+
+  return result
+}
+
 /**
  * Run Detox tests with the given options
  *
