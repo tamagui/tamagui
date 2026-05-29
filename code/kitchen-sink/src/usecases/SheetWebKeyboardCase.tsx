@@ -114,7 +114,7 @@ export function SheetWebKeyboardCase() {
         />
         <Sheet.Frame
           testID="sheet-web-kb-frame"
-          br="$6"
+          rounded="$6"
           onLayout={track ? (e) => reportSheetLayout('frame', e) : undefined}
         >
           <Sheet.ScrollView
@@ -144,7 +144,7 @@ export function SheetWebKeyboardCase() {
               />
 
               {/* spacer content to make the sheet tall */}
-              <YStack height={220} bg="$backgroundHover" br="$4" ai="center" jc="center">
+              <YStack height={220} bg="$backgroundHover" rounded="$4" items="center" justify="center">
                 <Text color="$gray11">filler content</Text>
               </YStack>
 
@@ -155,7 +155,7 @@ export function SheetWebKeyboardCase() {
                 onChangeText={setBody}
               />
 
-              <XStack gap="$3" jc="flex-end">
+              <XStack gap="$3" justify="flex-end">
                 <Button testID="sheet-web-kb-cancel" onPress={() => setOpen(false)}>
                   Cancel
                 </Button>
