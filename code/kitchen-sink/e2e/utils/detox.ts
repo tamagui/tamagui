@@ -40,6 +40,20 @@ const RETRYABLE_LAUNCH_PATTERNS = [
   'Failed to run application on the device',
 ]
 
+// A healthy launch+connect is well under this even on a cold (Metro pre-warmed)
+// CI bundle, so if it fires the app is hanging, not slow. Bounding it below
+// jest's 180s hook timeout lets safeLaunchApp catch the hang itself (and trip the
+// breaker below) instead of jest killing the beforeAll hook from the outside.
+const LAUNCH_CONNECT_TIMEOUT_MS = 120000
+
+// Once a launch demonstrably can't connect to Detox (flaky simulator / app
+// registration, not a test bug), every later launch in this jest process hangs
+// the same way. Trip this so the rest of the shard's files fail instantly rather
+// than each burning the full hook timeout x retries (the ~50min runaway in
+// memory project_detox_app_connect_runaway). Resets naturally on detox's
+// process-level retry.
+let appLaunchUnrecoverable = false
+
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 type LaunchAppParams = Parameters<typeof device.launchApp>[0]
 
@@ -87,17 +101,31 @@ const tryRecoverLateLaunch = async (): Promise<boolean> => {
  * then disable sync before any main-thread-busy state can cause a hang.
  */
 export async function safeLaunchApp(params?: LaunchAppParams): Promise<void> {
+  // breaker tripped earlier in this run: the app can't connect to Detox, so don't
+  // waste another launch window, fail this file's beforeAll instantly.
+  if (appLaunchUnrecoverable) {
+    throw new Error(
+      'skipping launchApp: a previous launch could not connect to Detox in this run ' +
+        '(flaky simulator/app-registration). failing fast instead of hanging.'
+    )
+  }
+
   let lastError: unknown
   for (let attempt = 1; attempt <= LAUNCH_MAX_ATTEMPTS; attempt++) {
     try {
       lastLaunchParams = params
-      await device.launchApp({
-        ...params,
-        launchArgs: {
-          ...DEFAULT_LAUNCH_ARGS,
-          ...params?.launchArgs,
-        },
-      } as any)
+      // bound the launch+connect so a hang throws here (caught below) instead of
+      // jest killing the hook at 180s with no chance to trip the breaker.
+      await withTimeout(
+        device.launchApp({
+          ...params,
+          launchArgs: {
+            ...DEFAULT_LAUNCH_ARGS,
+            ...params?.launchArgs,
+          },
+        } as any),
+        LAUNCH_CONNECT_TIMEOUT_MS
+      )
       await device.disableSynchronization()
       await sleep(POST_LAUNCH_SETTLE_MS)
       return
@@ -107,7 +135,7 @@ export async function safeLaunchApp(params?: LaunchAppParams): Promise<void> {
         if (await tryRecoverLateLaunch()) {
           return
         }
-        throw err
+        break
       }
 
       if (await tryRecoverLateLaunch()) {
@@ -121,6 +149,10 @@ export async function safeLaunchApp(params?: LaunchAppParams): Promise<void> {
       await sleep(LAUNCH_RETRY_DELAY_MS)
     }
   }
+
+  // gave up after all attempts: trip the breaker so the rest of this shard's
+  // files fail instantly instead of each hanging the full hook timeout x retries.
+  appLaunchUnrecoverable = true
   throw lastError
 }
 
