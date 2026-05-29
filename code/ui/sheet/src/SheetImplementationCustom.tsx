@@ -26,6 +26,11 @@ import { getGestureHandlerState } from './gestureState'
 import { GestureSheetProvider } from './GestureSheetContext'
 import { resisted } from './helpers'
 import { getKeyboardOccludedHeight } from './keyboardAvoidance'
+import {
+  getStableLayoutViewportHeight,
+  getWebKeyboardHeight,
+  MIN_KEYBOARD_HEIGHT,
+} from './webViewport'
 import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
 import { useGestureHandlerPan } from './useGestureHandlerPan'
@@ -56,6 +61,19 @@ let sheetHiddenStyleSheet: HTMLStyleElement | null = null
 
 // on web we are always relative to window, on to screen
 const relativeDimensionTo = isWeb ? 'window' : 'screen'
+
+// height of the viewport the sheet positions against. on web this MUST be the
+// stable layout viewport and NOT Dimensions.get('window') — react-native-web's
+// Dimensions tracks visualViewport, which shrinks by the soft keyboard. capping
+// frameSize / maxContentSize against that shrinking value corrupts the fit-mode
+// math (translateY = screenSize - frameSize), detaching the sheet's bottom from
+// the screen edge when the keyboard opens. NOTE: window.innerHeight is NOT
+// stable on real iOS Safari (it shrinks with the keyboard too), so we use the
+// self-correcting baseline from webViewport instead. see getStableLayoutViewportHeight.
+function getStableViewportHeight(): number {
+  if (isWeb && typeof window !== 'undefined') return getStableLayoutViewportHeight()
+  return Dimensions.get(relativeDimensionTo).height
+}
 
 export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
   function SheetImplementationCustom(props, forwardedRef) {
@@ -142,28 +160,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       setIsShowingInnerSheet(hasChild)
     }, [])
 
-    // FIX: Store stable frameSize to prevent recalculation during exit animation
-    const stableFrameSize = React.useRef(frameSize)
-
-    React.useEffect(() => {
-      // Only update stable size when sheet is open
-      if (open && frameSize) {
-        stableFrameSize.current = frameSize
-      }
-    }, [open, frameSize])
-
-    // use stableFrameSize when closing to prevent position jumps during exit animation
-    // but when opening, always use the current frameSize so positions update correctly
-    const effectiveFrameSize = open ? frameSize : stableFrameSize.current || frameSize
-
-    const positions = React.useMemo(
-      () =>
-        snapPoints.map((point) =>
-          getYPositions(snapPointsMode, point, screenSize, effectiveFrameSize)
-        ),
-      [screenSize, effectiveFrameSize, snapPoints, snapPointsMode]
-    )
-
     // keyboard state tracking — just tracks height/visibility, no position animation.
     // Position animation is handled via keyboard-adjusted positions below,
     // matching the react-native-actions-sheet pattern.
@@ -174,8 +170,51 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       pauseKeyboardHandler,
       flushPendingHide,
     } = useKeyboardControllerSheet({
-      enabled: !isWeb && Boolean(moveOnKeyboardChange),
+      enabled: Boolean(moveOnKeyboardChange),
     })
+
+    // FIX: Store stable frameSize to prevent recalculation during exit animation
+    const stableFrameSize = React.useRef(frameSize)
+
+    React.useEffect(() => {
+      // Only update stable size when sheet is open
+      if (open && frameSize) {
+        stableFrameSize.current = frameSize
+      }
+    }, [open, frameSize])
+
+    // WEB keyboard anchor freeze. on real iOS Safari opening the keyboard shrinks
+    // the visual viewport AND innerHeight AND the measured layout, which would
+    // re-derive screenSize/frameSize smaller, recompute the fit positions, and
+    // fly the frame up then back down ("goes back down after the keyboard opens").
+    // so we snapshot the pre-keyboard geometry — captured every render while the
+    // keyboard is CLOSED, which dodges the open-transition race where a shrunk
+    // onLayout lands before isKeyboardVisible flips — and use it for the anchor
+    // math while the keyboard is open. the sheet then stays put; only the scroll
+    // content shifts to clear the keyboard (keyboardOccludedHeight padding below
+    // + SheetScrollView's frozen height).
+    const stableKbGeom = React.useRef({ frame: 0, screen: 0 })
+    if ((!isWeb || !isKeyboardVisible) && frameSize > 0 && screenSize > 0) {
+      stableKbGeom.current = { frame: frameSize, screen: screenSize }
+    }
+    const freezeForKb = isWeb && isKeyboardVisible && stableKbGeom.current.frame > 0
+    const effScreenSize = freezeForKb ? stableKbGeom.current.screen : screenSize
+
+    // use stableFrameSize when closing to prevent position jumps during exit animation
+    // but when opening, always use the current frameSize so positions update correctly
+    const effectiveFrameSize = freezeForKb
+      ? stableKbGeom.current.frame
+      : open
+        ? frameSize
+        : stableFrameSize.current || frameSize
+
+    const positions = React.useMemo(
+      () =>
+        snapPoints.map((point) =>
+          getYPositions(snapPointsMode, point, effScreenSize, effectiveFrameSize)
+        ),
+      [effScreenSize, effectiveFrameSize, snapPoints, snapPointsMode]
+    )
 
     const [isDragging, setIsDragging_] = React.useState(false)
 
@@ -198,28 +237,32 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       [pauseKeyboardHandler, flushPendingHide]
     )
 
-    // keyboard-adjusted positions: shift snap points up by keyboard height
-    // when keyboard is visible. This drives both gesture snap calculation
-    // and animation targets — keyboard never dismissed during drag.
-    // Capped at safe area top inset so the sheet never goes above the notch/status bar
-    // (matching the react-native-actions-sheet pattern).
+    // keyboard-adjusted snap positions.
     //
-    // IMPORTANT: frozen during drag to prevent gesture handler recreation.
-    // When user drags, TextInput may blur → keyboard dismisses → positions would revert,
-    // causing the gesture useMemo to recreate and cancel the active drag.
-    // The post-drag reconciliation effect handles animating to correct position after drag ends.
+    // WEB: the sheet stays ANCHORED at the bottom and keeps its full pre-keyboard
+    // height — it does NOT shift up or resize. Shifting/resizing with the
+    // translateY model detaches the bottom from the screen edge or teleports it.
+    // Instead the frame's anchor geometry is frozen (effScreenSize/effectiveFrameSize
+    // above) and its height is pinned (keyboardStableFrameHeight -> SheetScrollView);
+    // the scroll content is padded by keyboardOccludedHeight and the browser
+    // scroll-into-view lifts the focused input above the keyboard. So
+    // activePositions === positions on web.
+    //
+    // NATIVE: shift snap points up by keyboard height (the native keyboard is
+    // opaque and pushes content), capped at the safe-area top inset.
+    //
+    // IMPORTANT: frozen during drag to prevent gesture handler recreation —
+    // when a TextInput blurs mid-drag the keyboard state would otherwise revert
+    // and recreate the gesture useMemo, cancelling the active drag.
     const activePositionsRef = React.useRef(positions)
     const activePositions = React.useMemo(() => {
-      // during drag, return frozen positions to prevent gesture handler recreation.
-      // check both state (for re-render trigger) and ref (for synchronous check
-      // when keyboard hide event fires before isDragging state commits)
       if (isDragging || isDraggingRef.current) return activePositionsRef.current
 
       let result: number[]
-      if (!isKeyboardVisible || keyboardHeight <= 0) {
+      if (isWeb || !isKeyboardVisible || keyboardHeight <= 0) {
         result = positions
       } else {
-        const safeAreaTop = isWeb ? 0 : getSafeAreaTopInset()
+        const safeAreaTop = getSafeAreaTopInset()
         result = positions.map((p) => {
           // don't adjust the off-screen/close position (from dismissOnSnapToBottom's 0% snap)
           // — it must stay at screenSize so the user can drag between real snap points
@@ -233,12 +276,19 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     }, [positions, isKeyboardVisible, keyboardHeight, screenSize, isDragging])
 
     const keyboardOccludedHeight = getKeyboardOccludedHeight({
-      frameSize,
-      isKeyboardVisible: !isWeb && isKeyboardVisible,
+      frameSize: effectiveFrameSize,
+      isKeyboardVisible,
       keyboardHeight,
-      screenSize,
+      screenSize: effScreenSize,
       sheetY: position >= 0 ? activePositions[position] : undefined,
     })
+
+    // the authoritative pre-keyboard frame height to pin the scroll view to while
+    // the keyboard is open (web). stableKbGeom.frame is captured every render the
+    // keyboard is closed, so it survives the open transition; SheetScrollView
+    // gates application on its own live keyboard check.
+    const keyboardStableFrameHeight =
+      isWeb && hasFit && moveOnKeyboardChange ? stableKbGeom.current.frame : 0
 
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       animationDriver
@@ -417,6 +467,16 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         return
       }
 
+      // never fight an active drag: the gesture owns the animated position. on
+      // web the AnimatedView's onLayout re-fires with sub-pixel jitter as the
+      // frame translates (frameSize 499.99996 <-> 500.00003), and since frameSize
+      // is a dep of this effect that would re-run it mid-pull and snap the sheet
+      // back to its resting snap point. read the live ref so drag-end (which the
+      // reconcile-after-drag effect handles) isn't gated by stale deps.
+      if (isDraggingRef.current) {
+        return
+      }
+
       if (!frameSize || !screenSize || isHidden || (hasntMeasured && !open)) {
         return
       }
@@ -454,7 +514,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       if (!frameSize) return
       if (isShowingInnerSheet) return
 
-      const minY = positions[0]
+      // use keyboard-adjusted positions (matches the RNGH path): when the
+      // keyboard is open the sheet sits at activePositions[0], so clamping drags
+      // against the un-adjusted positions[0] would rubber-band the sheet down to
+      // near the bottom on any drag.
+      const minY = activePositions[0]
       scrollBridge.paneMinY = minY
       let startY = at.current
 
@@ -497,8 +561,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         let closestPoint = 0
         let dist = Number.POSITIVE_INFINITY
 
-        for (let i = 0; i < positions.length; i++) {
-          const position = positions[i]
+        for (let i = 0; i < activePositions.length; i++) {
+          const position = activePositions[i]
           const curDist = end > position ? end - position : position - end
           if (curDist < dist) {
             dist = curDist
@@ -528,6 +592,16 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           // if dragging handle always allow:
           if (e.target === providerProps.handleRef.current) {
             return true
+          }
+
+          // touch is on the ScrollView node — the web scroll-view gesture hook
+          // owns it and drives drag/release through scrollBridge directly (it
+          // re-baselines via scrollBridge.startPanDrag on each pan handoff). if
+          // we also granted here, RNW's PanResponder would set the animated
+          // position from a second, differently-based offset every move and the
+          // sheet would jitter/jump. defer entirely to the hook.
+          if (scrollBridge.scrollNodeTouched) {
+            return false
           }
 
           if (scrollBridge.hasScrollableContent === true) {
@@ -575,6 +649,17 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
       let isExternalDrag = false
 
+      // re-baseline a pan drag to the current animated position. the web
+      // scroll-view hook calls this on every transition INTO pan ownership
+      // (including handoffs back from scroll), so its panDragOffset — which it
+      // resets to 0 at each pan entry — is measured from where the sheet
+      // actually is now, not from where the gesture first grabbed it. without
+      // this the sheet would jump to a stale origin on a scroll→pan handoff.
+      scrollBridge.startPanDrag = () => {
+        isExternalDrag = true
+        grant()
+      }
+
       scrollBridge.drag = (dy) => {
         if (!isExternalDrag) {
           isExternalDrag = true
@@ -616,10 +701,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         onPanResponderTerminate: finish,
         onPanResponderRelease: finish,
       })
-    }, [disableDrag, isShowingInnerSheet, animateTo, frameSize, positions, setPosition])
+    }, [disableDrag, isShowingInnerSheet, animateTo, frameSize, activePositions, setPosition])
 
-    // animate to keyboard-adjusted position when keyboard state changes
+    // animate to keyboard-adjusted position when keyboard state changes.
+    // WEB skips this: the sheet stays anchored at its frozen position/height
+    // (activePositions don't change with the keyboard, and the anchor geometry is
+    // frozen), so there's nothing to re-animate. Running a timing animation here
+    // would only introduce movement where the sheet should hold perfectly still.
     React.useEffect(() => {
+      if (isWeb) return
       if (isDragging || isHidden || !open || disableAnimation) return
       if (!frameSize || !screenSize) return
       // use timing animation to match iOS keyboard animation (~250ms)
@@ -677,25 +767,45 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         return
       }
 
+      // on web (when moveOnKeyboardChange is on), ignore any layout measured
+      // while the soft keyboard is up: the visual viewport (which RN's web layout
+      // follows) shrinks, so this height would be the collapsed sheet, recompute
+      // the fit anchor, and fly the frame. a LIVE DOM check (not the
+      // isKeyboardVisible React state) is required — the state lags the resize, so
+      // the first shrunk onLayout lands before it flips. holding frameSize keeps
+      // the sheet anchored; the scroll content shifts to clear the keyboard.
+      if (isWeb && moveOnKeyboardChange && getWebKeyboardHeight() >= MIN_KEYBOARD_HEIGHT) {
+        return
+      }
+
       // avoid bugs where it grows forever for whatever reason
       // For inline mode (non-modal), don't cap at window height - use actual layout
       const layoutHeight = e.nativeEvent?.layout.height
       const next = modal
-        ? Math.min(layoutHeight, Dimensions.get(relativeDimensionTo).height)
+        ? Math.min(layoutHeight, getStableViewportHeight())
         : layoutHeight
       if (!next) return
-      setFrameSize(next)
+      // round: web onLayout reports sub-pixel heights (e.g. 499.99996) that jitter
+      // frame to frame as the view transforms; the raw float would re-fire every
+      // effect that depends on frameSize on each drag move.
+      setFrameSize(Math.round(next))
     })
 
-    const handleMaxContentViewLayout = React.useCallback((e: LayoutChangeEvent) => {
-      // avoid bugs where it grows forever for whatever reason
-      const next = Math.min(
-        e.nativeEvent?.layout.height,
-        Dimensions.get(relativeDimensionTo).height
-      )
-      if (!next) return
-      setMaxContentSize(next)
-    }, [])
+    const handleMaxContentViewLayout = React.useCallback(
+      (e: LayoutChangeEvent) => {
+        // see handleAnimationViewLayout — same keyboard guard, so screenSize
+        // (= maxContentSize) stays the full pre-keyboard viewport.
+        if (isWeb && moveOnKeyboardChange && getWebKeyboardHeight() >= MIN_KEYBOARD_HEIGHT) {
+          return
+        }
+        // avoid bugs where it grows forever for whatever reason
+        const next = Math.min(e.nativeEvent?.layout.height, getStableViewportHeight())
+        if (!next) return
+        // round to avoid sub-pixel churn re-firing size-dependent effects
+        setMaxContentSize(Math.round(next))
+      },
+      [moveOnKeyboardChange]
+    )
 
     const getAnimatedNumberStyle = React.useCallback(
       (val: number) => {
@@ -745,6 +855,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           <SheetProvider
             {...providerProps}
             keyboardOccludedHeight={keyboardOccludedHeight}
+            isKeyboardVisible={isKeyboardVisible}
+            keyboardStableFrameHeight={keyboardStableFrameHeight}
             setHasScrollView={setHasScrollView}
           >
             <GestureSheetProvider

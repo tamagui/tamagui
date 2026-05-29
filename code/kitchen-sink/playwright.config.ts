@@ -41,6 +41,14 @@ export default defineConfig({
       testMatch: '**/RemoveScroll.test.{ts,tsx}',
       metadata: { animationDriver: 'native' },
     },
+    // mobile WebKit (Safari engine + touch) for sheet keyboard/gesture tests —
+    // chromium's touch/scroll/rubber-band behavior differs from iOS Safari
+    {
+      name: 'webkit-sheet',
+      use: { browserName: 'webkit' },
+      testMatch: '**/SheetWebKeyboard.test.{ts,tsx}',
+      metadata: { animationDriver: 'css' },
+    },
     // Animated tests run with all animation drivers
     ...drivers.map((driver) => ({
       name: `animated-${driver}`,
