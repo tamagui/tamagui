@@ -175,6 +175,14 @@ export const PopoverContext = createStyledContext<PopoverContextValue>(
 // zIndex flows from root Popover prop to PopoverContent portal
 export const PopoverZIndexContext = React.createContext<number | undefined>(undefined)
 
+// when adapted to a Sheet, tracks whether the sheet has finished sliding out.
+// PopoverSheetController flips this true via SheetController.onAnimationComplete
+// so PopoverContent can hold its adapted children mounted until the slide-out
+// is done, instead of unmounting them on the popup's (passThrough) exit.
+// defaults true (= safe to unmount) for any PopoverContent rendered outside a
+// PopoverSheetController.
+const PopoverAdaptHiddenContext = React.createContext(true)
+
 export const PopoverTriggerContext = createStyledContext<PopoverTriggerContextValue>(
   {} as PopoverTriggerContextValue,
   'PopoverTrigger__'
@@ -512,8 +520,19 @@ export const PopoverContent = PopperContentFrame.styleable<PopoverContentProps>(
       }
     }, [open, isFullyHidden])
 
+    // when adapted to a Sheet, the content is portaled into the sheet via
+    // Adapt.Contents. its mount lifecycle must follow the sheet's slide-out
+    // (PopoverAdaptHiddenContext, flipped by SheetController.onAnimationComplete),
+    // NOT the popup's own exit animation (isFullyHidden); the popup runs in
+    // passThrough mode while adapted, so isFullyHidden either fires immediately
+    // (content vanishes mid-slide) or never (content leaks), depending on driver.
+    const isAdaptFullyHidden = React.useContext(PopoverAdaptHiddenContext)
     if (!context.keepChildrenMounted) {
-      if (isFullyHidden && !open) {
+      if (context.breakpointActive) {
+        if (!open && isAdaptFullyHidden) {
+          return null
+        }
+      } else if (isFullyHidden && !open) {
         return null
       }
     }
@@ -1132,6 +1151,24 @@ const PopoverSheetController = ({
   const breakpointActive = context?.breakpointActive
   const getShowSheet = useGet(showSheet)
 
+  // tracks whether the adapted Sheet has finished its slide-out animation.
+  // starts true (= safe to unmount) when closed; flips false the moment the
+  // popover opens; flips back to true when the sheet signals onAnimationComplete
+  // with open=false (slide-out finished). mirrors DialogSheetController.
+  const [isAdaptFullyHidden, setIsAdaptFullyHidden] = React.useState(!open)
+  if (open && isAdaptFullyHidden) {
+    setIsAdaptFullyHidden(false)
+  }
+
+  const handleSheetAnimationComplete = React.useCallback(
+    ({ open: isOpen }: { open: boolean }) => {
+      if (!isOpen) {
+        setIsAdaptFullyHidden(true)
+      }
+    },
+    []
+  )
+
   return (
     <SheetController
       onOpenChange={(val: boolean) => {
@@ -1139,10 +1176,13 @@ const PopoverSheetController = ({
           props.onOpenChange?.(val)
         }
       }}
+      onAnimationComplete={handleSheetAnimationComplete}
       open={open}
       hidden={!breakpointActive}
     >
-      {props.children}
+      <PopoverAdaptHiddenContext.Provider value={isAdaptFullyHidden}>
+        {props.children}
+      </PopoverAdaptHiddenContext.Provider>
     </SheetController>
   )
 }

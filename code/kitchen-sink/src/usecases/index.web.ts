@@ -95,6 +95,7 @@ export { ParagraphSpanFontInheritance } from './ParagraphSpanFontInheritance'
 export { PlaceholderTextColor } from './PlaceholderTextColor'
 export { PointerEventsCase } from './PointerEventsCase'
 export { ProgressFirstPaint } from './ProgressFirstPaint'
+export { PopoverAdaptSheetUnmountCase } from './PopoverAdaptSheetUnmountCase'
 export { PopoverAndMenuMultiTriggerCase } from './PopoverAndMenuMultiTriggerCase'
 export { PopoverCase, PopoverAnimatePositionCase } from './PopoverCase'
 export {
