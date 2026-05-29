@@ -5,6 +5,7 @@ import '~/tamagui.generated.css'
 import { LoadProgressBar, Slot } from 'one'
 import { setupPopper } from 'tamagui'
 import { Providers } from '../components/Providers'
+import { LoadCherryBomb } from '~/features/site/fonts/LoadFonts'
 
 setupPopper({
   // prevents a reflow on mount
@@ -73,6 +74,10 @@ export default function Layout() {
 
       <body>
         <LoadProgressBar />
+
+        {/* warm cherry-bomb on first interaction so it's ready when navigating
+            to pages that use it (home, takeout), no eager preload */}
+        <LoadCherryBomb prefetch />
 
         <Providers>
           <Slot />
