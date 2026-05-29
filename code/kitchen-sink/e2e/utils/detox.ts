@@ -32,7 +32,6 @@ const POST_LAUNCH_SETTLE_MS = 1500
 const LAUNCH_RETRY_DELAY_MS = 3000
 const LATE_LAUNCH_READY_DELAY_MS = 8000
 const LATE_LAUNCH_ACTION_TIMEOUT_MS = 5000
-const LAUNCH_MAX_ATTEMPTS = 3
 const RETRYABLE_LAUNCH_PATTERNS = [
   'FBSOpenApplicationServiceErrorDomain',
   'FBSOpenApplicationErrorDomain',
@@ -40,11 +39,21 @@ const RETRYABLE_LAUNCH_PATTERNS = [
   'Failed to run application on the device',
 ]
 
-// A healthy launch+connect is well under this even on a cold (Metro pre-warmed)
-// CI bundle, so if it fires the app is hanging, not slow. Bounding it below
-// jest's 180s hook timeout lets safeLaunchApp catch the hang itself (and trip the
-// breaker below) instead of jest killing the beforeAll hook from the outside.
-const LAUNCH_CONNECT_TIMEOUT_MS = 120000
+// Per-attempt launch+connect bound. Healthy launches on CI sims land ~30-45s (cold
+// beforeAll launch with the full bundle eval); 70s tolerates a slow spike while still
+// fitting a recovery relaunch in the deadline below. A worst case where it fires on a
+// genuinely-healthy launch just costs one extra relaunch - the test still passes.
+const LAUNCH_CONNECT_TIMEOUT_MS = 70000
+
+// terminateApp during recovery is best-effort and must never hang the path.
+const TERMINATE_TIMEOUT_MS = 15000
+
+// Total wall-time safeLaunchApp may spend recovering before it gives up. Kept under
+// jest's 180s beforeEach/test hook timeout so a flaky launch is recovered (or the
+// breaker tripped + a clean error thrown) from inside the hook, rather than jest
+// killing the hook from the outside with no chance to recover or fast-fail. The
+// reserve below keeps disableSync + settle inside this window too.
+const LAUNCH_RECOVERY_DEADLINE_MS = 165000
 
 // disableSynchronization is near-instant on a healthy app but can hang on a
 // wedged one; it runs in every test's beforeEach (via safeReloadApp), so bound
@@ -87,6 +96,22 @@ const isRetryableLaunchError = (err: unknown): boolean => {
   return RETRYABLE_LAUNCH_PATTERNS.some((p) => msg.includes(p))
 }
 
+const isTimeoutError = (err: unknown): boolean => {
+  const msg = err instanceof Error ? err.message : String(err)
+  return msg.includes('timed out after')
+}
+
+// Force-kill the app between recovery attempts. The next launchApp({ newInstance })
+// also terminates the prior instance, so this is belt-and-suspenders; bound it so a
+// stuck terminate can't eat the recovery budget.
+const safeTerminate = async (): Promise<void> => {
+  try {
+    await withTimeout(device.terminateApp(), TERMINATE_TIMEOUT_MS)
+  } catch {
+    // best-effort
+  }
+}
+
 const tryRecoverLateLaunch = async (): Promise<boolean> => {
   if (device.getPlatform() !== 'android') {
     return false
@@ -117,50 +142,75 @@ export async function safeLaunchApp(params?: LaunchAppParams): Promise<void> {
     )
   }
 
+  lastLaunchParams = params
+  const deadline = Date.now() + LAUNCH_RECOVERY_DEADLINE_MS
+  // reserve enough of the window for the post-launch disableSync + settle so a
+  // successful launch near the deadline still finishes inside the hook budget.
+  const reserveMs = DISABLE_SYNC_TIMEOUT_MS + POST_LAUNCH_SETTLE_MS + 2000
+  let attemptParams = params
+  let attempt = 0
   let lastError: unknown
-  for (let attempt = 1; attempt <= LAUNCH_MAX_ATTEMPTS; attempt++) {
+
+  while (true) {
+    const launchBudget = deadline - Date.now() - reserveMs
+    if (launchBudget <= 0) {
+      break
+    }
+    attempt++
     try {
-      lastLaunchParams = params
-      // bound the launch+connect so a hang throws here (caught below) instead of
-      // jest killing the hook at 180s with no chance to trip the breaker.
+      // bound the launch+connect AND the disableSync: either hanging means the app
+      // didn't come up cleanly, so we treat it as a failed attempt and recover below
+      // rather than letting jest kill the hook at 180s.
       await withTimeout(
         device.launchApp({
-          ...params,
+          ...attemptParams,
           launchArgs: {
             ...DEFAULT_LAUNCH_ARGS,
-            ...params?.launchArgs,
+            ...attemptParams?.launchArgs,
           },
         } as any),
-        LAUNCH_CONNECT_TIMEOUT_MS
+        Math.min(LAUNCH_CONNECT_TIMEOUT_MS, launchBudget)
       )
-      await device.disableSynchronization()
+      await withTimeout(device.disableSynchronization(), DISABLE_SYNC_TIMEOUT_MS)
       await sleep(POST_LAUNCH_SETTLE_MS)
       return
     } catch (err) {
       lastError = err
-      if (attempt === LAUNCH_MAX_ATTEMPTS || !isRetryableLaunchError(err)) {
-        if (await tryRecoverLateLaunch()) {
-          return
-        }
-        break
-      }
-
+      // android can connect a beat late; recover in place without relaunching.
       if (await tryRecoverLateLaunch()) {
         return
       }
 
+      const timedOut = isTimeoutError(err)
+      const retryableSim = isRetryableLaunchError(err)
+      if (!(timedOut || retryableSim)) {
+        // unknown error - don't burn the budget spinning on it.
+        break
+      }
+
+      if (timedOut) {
+        // the app process is likely up but never connected to Detox (or sync got
+        // stuck); force-kill it and force a fresh instance for the next attempt.
+        await safeTerminate()
+        attemptParams = { ...attemptParams, newInstance: true }
+      }
+
+      if (deadline - Date.now() - reserveMs - LAUNCH_RETRY_DELAY_MS <= 0) {
+        // no budget for another full attempt; give up to the breaker below.
+        break
+      }
       console.warn(
-        `safeLaunchApp: attempt ${attempt}/${LAUNCH_MAX_ATTEMPTS} failed with retryable simulator error, retrying after ${LAUNCH_RETRY_DELAY_MS}ms`,
+        `safeLaunchApp: attempt ${attempt} failed (${timedOut ? 'connect timeout' : 'simulator error'}), retrying after ${LAUNCH_RETRY_DELAY_MS}ms`,
         err instanceof Error ? err.message : err
       )
       await sleep(LAUNCH_RETRY_DELAY_MS)
     }
   }
 
-  // gave up after all attempts: trip the breaker so the rest of THIS file's
+  // recovery window exhausted: trip the breaker so the rest of THIS file's
   // tests/reloads fail instantly instead of each hanging the full hook timeout.
   appLaunchUnrecoverable = true
-  throw lastError
+  throw lastError ?? new Error('safeLaunchApp: launch recovery deadline exceeded')
 }
 
 /**

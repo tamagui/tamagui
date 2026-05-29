@@ -5,7 +5,12 @@ const repoRoot = process.cwd()
 const workflowPath = join(repoRoot, '.github/workflows/test-native.yml')
 const e2eDir = join(repoRoot, 'code/kitchen-sink/e2e')
 
-const explicitlyExcludedTests = new Map()
+const explicitlyExcludedTests = new Map([
+  // android-only: every test skips on iOS (device.getPlatform() === 'ios'), so running
+  // it on the iOS sim produced zero coverage while burning ~6.6min. it still runs in the
+  // android Detox job, which executes all e2e files unsharded.
+  ['SelectAndroidOnPress.test.ts', 'android-only (skips on iOS); runs in the android job'],
+])
 
 const workflow = readFileSync(workflowPath, 'utf8')
 const shardMatches = [...workflow.matchAll(/test_files:\s*'([^']*)'/g)]

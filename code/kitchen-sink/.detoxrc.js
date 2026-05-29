@@ -62,8 +62,11 @@ module.exports = {
       maxWorkers,
     },
     jest: {
-      setupTimeout: 300000, // 5 minutes - slow CI runners + retries can exceed 180s, especially for tests that compile in beforeAll
-      retries: 1, // Retry flaky tests once
+      setupTimeout: 300000, // 5 minutes - slow CI runners can exceed 180s, especially for tests that compile in beforeAll
+      // no whole-file retry: detox --retries re-runs the entire spec file (beforeAll +
+      // every test again), which is the 2x wall-time variance we're killing. individual
+      // flaky tests retry in-place via jest.retryTimes (see e2e/jest.setup.ts), which
+      // re-runs just the test + its beforeEach (fresh app) - far cheaper.
     },
   },
   artifacts: {
@@ -77,6 +80,13 @@ module.exports = {
     init: {
       exposeGlobals: true,
     },
+    // every e2e suite launches the app explicitly in beforeAll/beforeEach via
+    // safeLaunchApp, so skip detox's automatic per-file launch. 'auto' would launch
+    // once at env init and our newInstance:true launch would immediately relaunch
+    // over it - a wasted ~30-60s/file. manual also flips reinstallApp -> false, so
+    // detox reuses the app the CI workflow already installed + primed instead of
+    // reinstalling it per file.
+    launchApp: 'manual',
   },
   apps: {
     'ios.debug': {

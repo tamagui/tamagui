@@ -65,8 +65,11 @@ jobs:
             test_files: 'e2e/SheetScrollableDrag.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetKeyboardFitContent.test.ts e2e/SheetPressRegression.test.ts e2e/NativePortal.test.ts'
           - shard_name: '3/4'
             test_files: 'e2e/PointerEvents.test.ts e2e/MediaQueryGtMd.test.ts e2e/TabsOnInteraction.test.ts e2e/SafeArea.test.ts e2e/CompilerExtraction.test.ts e2e/CompilerTernaryActive.test.ts'
+          # SelectAndroidOnPress is android-only (skips every test on iOS) - it ran on
+          # the iOS sim for ~6.6min producing zero iOS coverage, so it's excluded here
+          # (see check-ios-detox-shards.mjs) and still runs in the android job.
           - shard_name: '4/4'
-            test_files: 'e2e/MenuRadioGroup.test.ts e2e/SelectAndroidOnPress.test.ts e2e/SelectRemount.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts e2e/ShorthandVariables.test.ts'
+            test_files: 'e2e/MenuRadioGroup.test.ts e2e/SelectRemount.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts e2e/ShorthandVariables.test.ts'
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -216,7 +219,10 @@ jobs:
         env:
           DETOX_IOS_APP_PATH: build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
         run: |
-          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 1 ${{ matrix.test_files }}
+          # --retries 0: no whole-file retry (that re-ran beforeAll + every test of a
+          # flaky file, the 2x wall-time variance). individual flaky tests retry
+          # in-place via jest.retryTimes (e2e/jest.setup.ts).
+          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 0 ${{ matrix.test_files }}
 
       - name: Report iOS Test Status
         if: always() && env.SKIP_IOS_TESTS == 'true'
@@ -617,8 +623,8 @@ jobs:
 
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
             # Android emulator is flaky - capture exit code but don't fail the job
-            # --retries 1 retries individual failing test files once (no full-suite retry — that's done at workflow level if at all)
-            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 1 || echo "ANDROID_TESTS_FAILED=true" >> $GITHUB_ENV
+            # --retries 0: no whole-file retry; individual tests retry via jest.retryTimes (e2e/jest.setup.ts)
+            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 0 || echo "ANDROID_TESTS_FAILED=true" >> $GITHUB_ENV
 
       - name: Report Android Test Status
         if: always()
