@@ -1,5 +1,5 @@
 appId: host.exp.Exponent
-tag:
+tags:
   - util
 ---
 # Stop the app first to ensure clean state

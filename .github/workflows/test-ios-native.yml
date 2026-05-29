@@ -181,45 +181,13 @@ jobs:
             exit 1
           fi
 
+      # run each flow independently and retry ONLY the flow that flakes, so a
+      # transient flake in one flow doesn't discard the passes of the others.
+      # the OpenApp/WarmUp util sub-flows are skipped (WarmUp ran in the step
+      # above; OpenApp is invoked via runFlow by every component flow).
       - name: Run Maestro Tests
         if: env.SKIP_MAESTRO_TESTS != 'true'
-        run: |
-          BUNDLE_ID="com.tamagui.tamaguikitchensink"
-          APP_PATH="${{ github.workspace }}/${{ needs.build.outputs.built-app-path }}"
-
-          for attempt in 1 2; do
-            echo "Test attempt $attempt of 2..."
-            if maestro test ./flows --exclude-tags=util --no-ansi; then
-              echo "Tests passed on attempt $attempt"
-              exit 0
-            fi
-
-            if [ $attempt -lt 2 ]; then
-              echo "Attempt $attempt failed — recovering simulator state..."
-
-              # terminate stale app, reinstall, verify registration
-              xcrun simctl terminate booted "$BUNDLE_ID" 2>/dev/null || true
-              sleep 2
-              xcrun simctl uninstall booted "$BUNDLE_ID" 2>/dev/null || true
-              xcrun simctl install booted "$APP_PATH"
-              sleep 3
-
-              if ! xcrun simctl get_app_container booted "$BUNDLE_ID" 2>/dev/null; then
-                echo "::warning::App not registered after reinstall, retrying anyway"
-              fi
-
-              # verify Metro is still alive
-              METRO_PID=$(cat /tmp/metro-pid 2>/dev/null)
-              if [ -n "$METRO_PID" ] && ! kill -0 "$METRO_PID" 2>/dev/null; then
-                echo "::error::Metro died during test run"
-                cat /tmp/metro.log | tail -50
-                exit 1
-              fi
-            fi
-          done
-
-          echo "All attempts failed"
-          exit 1
+        run: bash "${{ github.workspace }}/.github/scripts/run-maestro-flows.sh"
 
       - name: Dump Logs on Failure
         if: failure() && env.SKIP_MAESTRO_TESTS != 'true'
