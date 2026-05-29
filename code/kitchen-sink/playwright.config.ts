@@ -46,7 +46,7 @@ export default defineConfig({
     {
       name: 'webkit-sheet',
       use: { browserName: 'webkit' },
-      testMatch: '**/SheetWebKeyboard.test.{ts,tsx}',
+      testMatch: '**/SheetWebKeyboard*.test.{ts,tsx}',
       metadata: { animationDriver: 'css' },
     },
     // Animated tests run with all animation drivers
