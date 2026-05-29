@@ -67,6 +67,13 @@ export const SheetScrollView = React.forwardRef<
         }
       : { flex: 1 }
 
+    // AUTOFOCUS-ON-OPEN seed (web): the sheet is still reconstructing its
+    // pre-keyboard frame baseline and needs THIS scroll view to size to its
+    // content so it can measure the true content height. so we apply the stable
+    // screen only as a maxHeight cap (UNCLIP from the shrunk consumer maxHeight)
+    // and leave height undefined so it stays content-sized.
+    const isKeyboardSeeding = context.isKeyboardSeeding === true
+
     // when the keyboard is open the sheet stays ANCHORED at the bottom and keeps
     // its full pre-keyboard height — the keyboard overlays its lower part and the
     // keyboardOccludedHeight tail padding (added to the scroll content below) +
@@ -78,7 +85,9 @@ export const SheetScrollView = React.forwardRef<
     // open/close — no jump/teleport. applied AFTER {...props} so it wins.
     const keyboardFrozenOverride =
       hasFit && isKeyboardVisible && frozenFrameHeight > 0
-        ? { height: frozenFrameHeight, maxHeight: frozenFrameHeight }
+        ? isKeyboardSeeding
+          ? { maxHeight: frozenFrameHeight }
+          : { height: frozenFrameHeight, maxHeight: frozenFrameHeight }
         : null
 
     const panGestureRef = gestureContext?.panGestureRef

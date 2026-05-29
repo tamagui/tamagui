@@ -193,22 +193,56 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     // math while the keyboard is open. the sheet then stays put; only the scroll
     // content shifts to clear the keyboard (keyboardOccludedHeight padding below
     // + SheetScrollView's frozen height).
+    // this sheet is the kind the web keyboard anchor freeze is designed for — a
+    // fit-mode web sheet opted into keyboard handling. percent/constant sheets
+    // keep the live geometry (their height isn't pinned, so a frozen anchor
+    // would mismatch).
+    const isWebKbSheet = isWeb && hasFit && moveOnKeyboardChange
+
+    // whether we ever captured geometry while the keyboard was CLOSED. that's the
+    // authoritative baseline; until we have it, the autofocus-on-open seed below
+    // reconstructs one from keyboard-up measurements.
+    const hasCleanKbBaseline = React.useRef(false)
+    // the autofocus-on-open seed has settled on a stable frame height (the
+    // unclipped content stopped growing). until then we keep the seed phase open.
+    const seedSettled = React.useRef(false)
     const stableKbGeom = React.useRef({ frame: 0, screen: 0 })
     if ((!isWeb || !isKeyboardVisible) && frameSize > 0 && screenSize > 0) {
-      // mutate in place — the ref is only ever read field-by-field, never
-      // identity-compared, so this avoids a per-render allocation.
+      // keyboard-free render — the authoritative baseline. mutate in place: the
+      // ref is only ever read field-by-field, never identity-compared, so this
+      // avoids a per-render allocation.
       stableKbGeom.current.frame = frameSize
       stableKbGeom.current.screen = screenSize
-    }
-    // only freeze the anchor for the case this is designed for — a fit-mode web
-    // sheet opted into keyboard handling. percent/constant sheets keep the live
-    // geometry (their height isn't pinned, so a frozen anchor would mismatch).
-    const freezeForKb =
-      isWeb &&
-      hasFit &&
-      moveOnKeyboardChange &&
+      hasCleanKbBaseline.current = true
+    } else if (
+      isWebKbSheet &&
       isKeyboardVisible &&
-      stableKbGeom.current.frame > 0
+      !hasCleanKbBaseline.current &&
+      screenSize > 0
+    ) {
+      // AUTOFOCUS-ON-OPEN seed. when the input autofocuses as the sheet animates
+      // in, the keyboard rises BEFORE any keyboard-free layout lands, so the
+      // branch above never runs (frameSize/screenSize were 0 the whole time the
+      // keyboard was up) and freezeForKb stays false, collapsing the sheet to the
+      // shrunk consumer maxHeight. instead, reconstruct the baseline from the
+      // keyboard-up render: screen = the stable layout viewport
+      // (keyboard-independent). the frame is grown by the seeding layout path
+      // below: while seeding, the tail padding is suppressed and the scroll view
+      // is unclipped (via keyboardStableFrameHeight = stable screen), so the frame
+      // converges on its pure pre-keyboard content height across a couple layout
+      // passes. a real keyboard-free render later replaces it with the exact value
+      // (branch above).
+      stableKbGeom.current.screen = Math.max(stableKbGeom.current.screen, screenSize)
+    }
+    // are we still reconstructing the baseline from a keyboard-up render? true
+    // until either a clean baseline lands or the seeded frame settles.
+    const seedingKbBaseline =
+      isWebKbSheet &&
+      isKeyboardVisible &&
+      !hasCleanKbBaseline.current &&
+      !seedSettled.current
+    const freezeForKb =
+      isWebKbSheet && isKeyboardVisible && stableKbGeom.current.frame > 0
     const effScreenSize = freezeForKb ? stableKbGeom.current.screen : screenSize
 
     // use stableFrameSize when closing to prevent position jumps during exit animation
@@ -286,20 +320,39 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       return result
     }, [positions, isKeyboardVisible, keyboardHeight, screenSize, isDragging])
 
-    const keyboardOccludedHeight = getKeyboardOccludedHeight({
-      frameSize: effectiveFrameSize,
-      isKeyboardVisible,
-      keyboardHeight,
-      screenSize: effScreenSize,
-      sheetY: position >= 0 ? activePositions[position] : undefined,
-    })
+    const keyboardOccludedHeight = seedingKbBaseline
+      ? // while seeding, suppress the keyboard tail padding so the frame measures
+        // its PURE pre-keyboard content height (the padding would otherwise inflate
+        // it toward the full screen). re-enabled once the baseline is captured.
+        0
+      : getKeyboardOccludedHeight({
+          frameSize: effectiveFrameSize,
+          isKeyboardVisible,
+          keyboardHeight,
+          screenSize: effScreenSize,
+          sheetY: position >= 0 ? activePositions[position] : undefined,
+        })
 
     // the authoritative pre-keyboard frame height to pin the scroll view to while
     // the keyboard is open (web). stableKbGeom.frame is captured every render the
     // keyboard is closed, so it survives the open transition; SheetScrollView
     // gates application on its own live keyboard check.
-    const keyboardStableFrameHeight =
-      isWeb && hasFit && moveOnKeyboardChange ? stableKbGeom.current.frame : 0
+    //
+    // AUTOFOCUS-ON-OPEN seed: while still reconstructing the baseline (seeding,
+    // not yet settled) we use the STABLE SCREEN SIZE — a safe upper bound (a fit
+    // frame never exceeds the screen) that is > 0, so SheetScrollView's height
+    // override engages and UNCLIPS the scroll view from the shrunk consumer
+    // maxHeight. with the tail padding suppressed (above) the content then lays
+    // out to its pure intrinsic height, which the seeding layout grows the frame
+    // baseline toward across a couple passes. once settled (or once a real
+    // keyboard-free baseline lands) we pin that exact frame height.
+    const keyboardStableFrameHeight = !isWebKbSheet
+      ? 0
+      : seedingKbBaseline
+        ? stableKbGeom.current.screen || screenSize
+        : stableKbGeom.current.frame > 0
+          ? stableKbGeom.current.frame
+          : 0
 
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
       animationDriver
@@ -799,31 +852,82 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       () => isWeb && moveOnKeyboardChange && getWebKeyboardHeight() >= MIN_KEYBOARD_HEIGHT
     )
 
+    // AUTOFOCUS-ON-OPEN seed gates. normally a layout measured while the keyboard
+    // is up is dropped (it's the shrunk/collapsed sheet). but if the keyboard rose
+    // before ANY keyboard-free baseline was captured (the autofocus race),
+    // dropping every measurement leaves frameSize/screenSize stuck at 0 forever
+    // and the freeze never engages.
+    //
+    // frame: while seeding (not settled) the scroll view is unclipped and the
+    // tail padding suppressed, so the frame measures toward its pure pre-keyboard
+    // content height. the first keyboard-up pass is still clipped at the consumer
+    // maxHeight; the override only unclips it the following pass, so the frame
+    // grows. we take the MAX and mark the seed SETTLED once it stops growing
+    // (handled in handleAnimationViewLayout) — then later keyboard-up layouts are
+    // dropped again so the re-enabled tail padding can't inflate the frame.
+    const shouldSeedKbFrame = useEvent(
+      () =>
+        isWebKbSheet &&
+        !hasCleanKbBaseline.current &&
+        !seedSettled.current &&
+        ignoreLayoutForKeyboard()
+    )
+    // screen (= maxContentSize): keep reconstructing from the stable viewport for
+    // the whole keyboard-up-without-clean-baseline window.
+    const shouldSeedKbScreen = useEvent(
+      () => isWebKbSheet && !hasCleanKbBaseline.current && ignoreLayoutForKeyboard()
+    )
+
     const handleAnimationViewLayout = useEvent((e: LayoutChangeEvent) => {
       // don't update frameSize during exit animation to prevent position jumps
       if (!open && stableFrameSize.current !== 0) {
         return
       }
 
-      if (ignoreLayoutForKeyboard()) return
+      const seeding = shouldSeedKbFrame()
+      if (!seeding && ignoreLayoutForKeyboard()) return
 
       // avoid bugs where it grows forever for whatever reason
       // For inline mode (non-modal), don't cap at window height - use actual layout
       const layoutHeight = e.nativeEvent?.layout.height
-      const next = modal
-        ? Math.min(layoutHeight, getStableViewportHeight())
-        : layoutHeight
+      // while seeding, the keyboardStableFrameHeight fallback has unclipped the
+      // scroll view (capped at the stable screen) and the tail padding is
+      // suppressed, so this measures the pure pre-keyboard content height — cap it
+      // at the stable viewport like modal does.
+      const next =
+        modal || seeding
+          ? Math.min(layoutHeight, getStableViewportHeight())
+          : layoutHeight
       if (!next) return
       // round: web onLayout reports sub-pixel heights (e.g. 499.99996) that jitter
       // frame to frame as the view transforms; the raw float would re-fire every
       // effect that depends on frameSize on each drag move.
-      setFrameSize(Math.round(next))
+      const rounded = Math.round(next)
+      // seeding the frame: grow the baseline toward the unclipped content height.
+      // the first keyboard-up pass is clipped; the scroll-view override unclips it
+      // the next pass so it grows. once a pass doesn't exceed the running max the
+      // content has settled — mark the seed done so the next render exits the seed
+      // phase (freezeForKb pins this height, tail padding re-enables for scroll).
+      if (seeding) {
+        if (rounded > stableKbGeom.current.frame) {
+          stableKbGeom.current.frame = rounded
+        } else if (stableKbGeom.current.frame > 0) {
+          seedSettled.current = true
+        }
+      }
+      setFrameSize(rounded)
     })
 
     const handleMaxContentViewLayout = React.useCallback(
       (e: LayoutChangeEvent) => {
         // same keyboard guard so screenSize (= maxContentSize) stays the full
-        // pre-keyboard viewport.
+        // pre-keyboard viewport — except while seeding the baseline (see above),
+        // where we use the stable layout viewport directly so screenSize lands at
+        // the full pre-keyboard height instead of the shrunk visual viewport.
+        if (shouldSeedKbScreen()) {
+          setMaxContentSize(Math.round(getStableViewportHeight()))
+          return
+        }
         if (ignoreLayoutForKeyboard()) return
         // avoid bugs where it grows forever for whatever reason
         const next = Math.min(e.nativeEvent?.layout.height, getStableViewportHeight())
@@ -831,7 +935,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         // round to avoid sub-pixel churn re-firing size-dependent effects
         setMaxContentSize(Math.round(next))
       },
-      [ignoreLayoutForKeyboard]
+      [ignoreLayoutForKeyboard, shouldSeedKbScreen]
     )
 
     const getAnimatedNumberStyle = React.useCallback(
@@ -884,6 +988,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             keyboardOccludedHeight={keyboardOccludedHeight}
             isKeyboardVisible={isKeyboardVisible}
             keyboardStableFrameHeight={keyboardStableFrameHeight}
+            isKeyboardSeeding={seedingKbBaseline}
             setHasScrollView={setHasScrollView}
           >
             <GestureSheetProvider

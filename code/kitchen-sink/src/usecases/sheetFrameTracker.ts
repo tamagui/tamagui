@@ -84,15 +84,17 @@ let last = {
 }
 
 function measure() {
-  const frame = document.querySelector(
-    '[data-testid="sheet-web-kb-frame"]'
-  ) as HTMLElement | null
+  // match either the tap-to-focus fixture (sheet-web-kb-*) or the
+  // autofocus-on-open fixture (sheet-web-kb-af-*); only one is mounted at a time.
+  const frame = (document.querySelector('[data-testid="sheet-web-kb-frame"]') ||
+    document.querySelector('[data-testid="sheet-web-kb-af-frame"]')) as HTMLElement | null
   // nothing to track until the sheet's frame is mounted (avoids a NaN flood
   // while the sheet is closed)
   if (!frame) return
-  const scroll = document.querySelector(
-    '[data-testid="sheet-web-kb-scrollview"]'
-  ) as HTMLElement | null
+  const scroll = (document.querySelector('[data-testid="sheet-web-kb-scrollview"]') ||
+    document.querySelector(
+      '[data-testid="sheet-web-kb-af-scrollview"]'
+    )) as HTMLElement | null
   const vvObj = window.visualViewport
   const inn = ri(window.innerHeight)
   const vv = vvObj ? ri(vvObj.height) : inn

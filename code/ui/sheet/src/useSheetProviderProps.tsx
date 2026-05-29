@@ -19,6 +19,12 @@ export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
   // full size (anchored to the screen bottom) instead of collapsing to a
   // consumer maxHeight that shrank with the viewport. 0 when not applicable.
   keyboardStableFrameHeight: number
+  // AUTOFOCUS-ON-OPEN seed phase (web). while reconstructing the pre-keyboard
+  // baseline, SheetScrollView must UNCLIP (apply keyboardStableFrameHeight as
+  // maxHeight only, not a fixed height) so it sizes to its content and the sheet
+  // can measure the true content height. once settled the fixed-height pin
+  // applies. false outside the seed window.
+  isKeyboardSeeding: boolean
   setHasScrollView: (val: boolean) => void
 }
 

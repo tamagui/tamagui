@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { TextInput } from 'react-native'
 import { useWindowDimensions } from 'react-native'
 import { Button, Input, Sheet, Text, TextArea, XStack, YStack } from 'tamagui'
+import { reportSheetLayout, startSheetTracker } from './sheetFrameTracker'
 
 /**
  * Fixture for the mobile-web Sheet + soft-keyboard AUTOFOCUS bug.
@@ -15,7 +16,8 @@ import { Button, Input, Sheet, Text, TextArea, XStack, YStack } from 'tamagui'
  * up). Without the fix the anchor freeze never engages: the frame collapses /
  * stays occluded and the "Post Thread" button hides under the keyboard.
  *
- * Used by SheetWebKeyboardAutoFocus.test.tsx. `?open=1` starts open.
+ * Used by SheetWebKeyboardAutoFocus.test.tsx. `?open=1` starts open; `?track=1`
+ * enables the disk-persisted frame+gesture telemetry (see sheetFrameTracker.ts).
  */
 export function SheetWebKeyboardAutoFocusCase() {
   const params =
@@ -28,13 +30,19 @@ export function SheetWebKeyboardAutoFocusCase() {
   const dimensions = useWindowDimensions()
   const maxHeight = Math.round(dimensions.height * 0.7)
   const titleRef = useRef<TextInput>(null)
+  const track = params.get('track') === '1'
+
+  useEffect(() => {
+    if (track) startSheetTracker()
+  }, [track])
 
   // autofocus the first input as the sheet opens — the keyboard rises with the
-  // open animation. mirrors the 3pc create-thread sheet's autoFocus.
+  // open animation. mirrors the 3pc create-thread sheet's autoFocus. focus
+  // synchronously (no setTimeout) so focusin fires during the open render,
+  // before the frame's first keyboard-free layout can land.
   useEffect(() => {
     if (!open) return
-    const id = setTimeout(() => titleRef.current?.focus?.(), 0)
-    return () => clearTimeout(id)
+    titleRef.current?.focus?.()
   }, [open])
 
   return (
@@ -64,11 +72,16 @@ export function SheetWebKeyboardAutoFocusCase() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame testID="sheet-web-kb-af-frame" rounded="$6">
+        <Sheet.Frame
+          testID="sheet-web-kb-af-frame"
+          rounded="$6"
+          onLayout={track ? (e) => reportSheetLayout('frame', e) : undefined}
+        >
           <Sheet.ScrollView
             testID="sheet-web-kb-af-scrollview"
             maxHeight={maxHeight}
             keyboardShouldPersistTaps="handled"
+            onLayout={track ? (e) => reportSheetLayout('scroll', e) : undefined}
           >
             <YStack gap="$4" padding="$4">
               <Text fontSize="$6" fontWeight="bold">

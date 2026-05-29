@@ -6,6 +6,7 @@ export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
     keyboardOccludedHeight: number;
     isKeyboardVisible: boolean;
     keyboardStableFrameHeight: number;
+    isKeyboardSeeding: boolean;
     setHasScrollView: (val: boolean) => void;
 };
 export declare function useSheetProviderProps(props: SheetProps, state: SheetOpenState, options?: {
