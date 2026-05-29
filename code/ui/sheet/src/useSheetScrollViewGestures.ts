@@ -75,6 +75,10 @@ export function useSheetScrollViewGestures({
       }
 
       scrollBridge.scrollStartY = touch.pageY
+      // claim this touch for the scroll-view gesture hook so the PanResponder
+      // (which also negotiates this touch via RNW's responder system) defers
+      // and doesn't double-drive the sheet position. cleared on touchend.
+      scrollBridge.scrollNodeTouched = true
     }
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -115,6 +119,10 @@ export function useSheetScrollViewGestures({
         if (newOwner === 'pan') {
           s.panDragOffset = 0
           s.dys = []
+          // re-baseline the pan origin to the sheet's CURRENT position so the
+          // offset (reset to 0 here) maps to where it actually is — required for
+          // a correct scroll→pan handoff now that the PanResponder defers to us.
+          scrollBridge.startPanDrag?.()
           scrollBridge.setParentDragging(true)
           disableScroll()
         } else {
@@ -133,8 +141,13 @@ export function useSheetScrollViewGestures({
 
         s.dys.push(dy)
         if (s.dys.length > 100) s.dys = s.dys.slice(-10)
-      } else if (s.owner === 'scroll') {
-        // programmatic scroll for synthetic events
+      } else if (s.owner === 'scroll' && !e.isTrusted) {
+        // SYNTHETIC events only (tests): dispatched TouchEvents don't trigger the
+        // browser's native overflow scroll, so we move scrollTop ourselves. for a
+        // REAL touch (e.isTrusted) the browser already scrolls the overflow
+        // container natively — doing it again here double-applies the delta and
+        // makes scrollTop jitter / snap around. so for real touches we let native
+        // scrolling own it and only track the offset via the ScrollView onScroll.
         const scrollDelta = -dy
         const maxScrollY = node.scrollHeight - node.clientHeight
         const newScrollY = Math.max(0, Math.min(maxScrollY, currentScrollY + scrollDelta))
@@ -159,12 +172,20 @@ export function useSheetScrollViewGestures({
         }
 
         scrollBridge.release({ dragAt: s.panDragOffset, vy })
+      } else if (s.owner === 'scroll') {
+        // gesture ended while scrolling. a pan→scroll handoff only happens once
+        // the pane reached the top, so commit the top snap (index 0) and clear
+        // the dragging state HERE, on touchend — never mid-gesture (that would
+        // fight the live gesture). this replaces the PanResponder's release,
+        // which used to fire on touchend before it deferred to this hook.
+        scrollBridge.snapToPosition?.(0)
       }
 
       enableScroll()
       s.owner = 'none'
       s.panDragOffset = 0
       s.dys = []
+      scrollBridge.scrollNodeTouched = false
     }
 
     node.addEventListener('touchstart', handleTouchStart, {

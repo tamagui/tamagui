@@ -62,6 +62,8 @@ export function setupNativeSheet(
           <SheetProvider
             setHasScrollView={emptyFn}
             keyboardOccludedHeight={0}
+            isKeyboardVisible={false}
+            keyboardStableFrameHeight={0}
             {...providerProps}
             onlyShowFrame
           >

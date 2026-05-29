@@ -62,7 +62,8 @@ export type SheetProps = ScopedProps<{
     zIndex?: number;
     portalProps?: PortalProps;
     /**
-     * Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible
+     * Makes the sheet move up when the mobile keyboard opens so the focused input remains visible.
+     * Works on native (via keyboard events) and on mobile web (via the VisualViewport API).
      */
     moveOnKeyboardChange?: boolean;
     containerComponent?: React.ComponentType<any>;
@@ -104,6 +105,8 @@ export type ScrollBridge = {
     forceScrollTo?: (y: number) => void;
     isAtTop?: boolean;
     snapToPosition?: (positionIndex: number) => void;
+    startPanDrag?: () => void;
+    scrollNodeTouched?: boolean;
 };
 export interface KeyboardControllerSheetOptions {
     /**

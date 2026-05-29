@@ -9,6 +9,16 @@ import type { SheetOpenState } from './useSheetOpenState'
 
 export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
   keyboardOccludedHeight: number
+  // whether the soft keyboard is currently open. distinct from
+  // keyboardOccludedHeight (which is 0 once the sheet fits above the keyboard):
+  // the fit-mode height freeze must persist for the whole time the keyboard is
+  // open, not just while occluded, or it releases and the sheet collapses.
+  isKeyboardVisible: boolean
+  // the sheet's authoritative pre-keyboard frame height (web). SheetScrollView
+  // pins its height to this while the keyboard is open so the frame stays its
+  // full size (anchored to the screen bottom) instead of collapsing to a
+  // consumer maxHeight that shrank with the viewport. 0 when not applicable.
+  keyboardStableFrameHeight: number
   setHasScrollView: (val: boolean) => void
 }
 
