@@ -40,6 +40,11 @@ import { useSheetProviderProps } from './useSheetProviderProps'
 
 const hiddenSize = 10_000.1
 
+// extra scroll room added below the keyboard-height spacer so the lowest content
+// (e.g. the submit button) lifts CLEAR of the keyboard at full scroll instead of
+// landing flush against its top edge. ~one tap-target of breathing room.
+const KEYBOARD_SCROLL_MARGIN = 28
+
 // the re-established rngh root for a modal sheet (see modal branch below).
 // GestureHandlerRootView does its own native touch interception and ignores
 // pointerEvents, so it would block the whole app while the sheet sits closed
@@ -243,23 +248,23 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       !seedSettled.current
     const freezeForKb =
       isWebKbSheet && isKeyboardVisible && stableKbGeom.current.frame > 0
-    // when the keyboard is open, AVOID it: anchor the sheet's bottom to the
-    // keyboard top by shrinking the effective screen by the keyboard height. the
-    // fit-position math (frame bottom = effScreenSize) then lifts the frame above
-    // the keyboard instead of leaving it pinned to the occluded window bottom.
-    // the stable screen (document.documentElement.clientHeight) doesn't shrink
-    // with the keyboard, so subtracting keyboardHeight gives the real visible
-    // height above it — and freezing off that stable baseline keeps the lift
-    // smooth (single target) instead of flying up then back down.
-    const kbAvoidScreen = Math.max(0, stableKbGeom.current.screen - keyboardHeight)
-    const effScreenSize = freezeForKb ? kbAvoidScreen : screenSize
+    // when the keyboard is open, FREEZE the frame's anchor geometry at its
+    // pre-keyboard (full) size — frozen off the stable layout viewport
+    // (document.documentElement.clientHeight), which doesn't shrink with the
+    // keyboard. the keyboard is an overlay, so we deliberately do NOT shrink or
+    // move the frame (no resize, no spring). avoidance happens entirely below:
+    // a bottom spacer (keyboardOccludedHeight) gives the scroll content room to
+    // lift the lower content clear of the keyboard, and SheetScrollView scrolls
+    // the focused input above it. freezing prevents the live screenSize/frameSize
+    // jitter (which tracks the keyboard) from re-driving the position.
+    const effScreenSize = freezeForKb ? stableKbGeom.current.screen : screenSize
 
     // use stableFrameSize when closing to prevent position jumps during exit animation
-    // but when opening, always use the current frameSize so positions update correctly.
-    // while the keyboard is open, clamp the frame to the space above it so its
-    // full content sits above the keyboard and scrolls there.
+    // but when opening, always use the current frameSize so positions update
+    // correctly. while the keyboard is open, hold the full pre-keyboard frame
+    // height (frame stays at max — the keyboard is avoided via the spacer, below).
     const effectiveFrameSize = freezeForKb
-      ? Math.min(stableKbGeom.current.frame, kbAvoidScreen)
+      ? stableKbGeom.current.frame
       : open
         ? frameSize
         : stableFrameSize.current || frameSize
@@ -295,14 +300,12 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     // keyboard-adjusted snap positions.
     //
-    // WEB: the snap positions already AVOID the keyboard — they're built from
-    // effScreenSize/effectiveFrameSize above, which shrink to the space above the
-    // keyboard (anchor the frame bottom to the keyboard top) and clamp the frame
-    // to fit there. The lift is smooth because the geometry is frozen off the
-    // stable (non-shrinking) layout viewport baseline, so it animates to a single
-    // target instead of flying up then back down. The scroll view is pinned to the
-    // same clamped height (keyboardStableFrameHeight) so all content scrolls in the
-    // visible band. So activePositions === positions on web (no extra shift here).
+    // WEB: the sheet stays ANCHORED at the bottom and keeps its full pre-keyboard
+    // height — the keyboard is an overlay, so the frame neither shifts nor resizes.
+    // Avoidance is handled below the frame: a bottom spacer (keyboardOccludedHeight
+    // = keyboardHeight) extends the scroll content so the lower content (e.g. the
+    // footer) can scroll up clear of the keyboard, and SheetScrollView scrolls the
+    // focused input above it. So activePositions === positions on web (no shift).
     //
     // NATIVE: shift snap points up by keyboard height (the native keyboard is
     // opaque and pushes content), capped at the safe-area top inset.
@@ -331,14 +334,19 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       return result
     }, [positions, isKeyboardVisible, keyboardHeight, screenSize, isDragging])
 
-    const keyboardOccludedHeight =
-      seedingKbBaseline || freezeForKb
-        ? // seeding: suppress tail padding so the frame measures its PURE
-          // pre-keyboard content height. freezeForKb (web, kb open): the frame is
-          // now anchored ABOVE the keyboard (effScreenSize), so none of it is
-          // occluded and no tail padding is needed — the content scrolls inside
-          // the clamped above-keyboard frame.
-          0
+    const keyboardOccludedHeight = seedingKbBaseline
+      ? // while seeding, suppress the tail spacer so the frame measures its PURE
+        // pre-keyboard content height (the seeding layout grows the baseline toward
+        // it). the spacer engages on the next render once the baseline settles.
+        0
+      : freezeForKb
+        ? // WEB: the frame stays full-height with its bottom behind the keyboard
+          // overlay. add a bottom spacer of keyboard height (+ a margin) so the
+          // scroll content extends past the occluded band — that's the room
+          // SheetScrollView (and the user) needs to lift the focused input / footer
+          // clear of the keyboard. the margin keeps the lowest content (submit
+          // button) from sitting flush against the keyboard's top edge at full scroll.
+          keyboardHeight + KEYBOARD_SCROLL_MARGIN
         : getKeyboardOccludedHeight({
             frameSize: effectiveFrameSize,
             isKeyboardVisible,
@@ -365,10 +373,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       : seedingKbBaseline
         ? stableKbGeom.current.screen || screenSize
         : stableKbGeom.current.frame > 0
-          ? // pin the scroll view to the clamped above-keyboard height so its
-            // bottom sits at the keyboard top — all content (incl. the footer)
-            // scrolls within the visible band rather than behind the keyboard.
-            Math.min(stableKbGeom.current.frame, kbAvoidScreen)
+          ? // pin the scroll view to the full pre-keyboard frame height (the frame
+            // doesn't resize for the keyboard). its bottom sits behind the keyboard
+            // overlay; the bottom spacer (keyboardOccludedHeight) plus the focused-
+            // input auto-scroll lift the important content into the visible band.
+            stableKbGeom.current.frame
           : 0
 
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
@@ -588,22 +597,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           scrollBridge.setScrollEnabled?.(false)
         }
       }
-      // effScreenSize/effectiveFrameSize are deps so the frame re-animates when the
-      // keyboard opens/closes: they change the fit target (activePositions[position])
-      // to lift the frame above the keyboard, but screenSize itself doesn't shrink
-      // (it's the stable layout viewport), so without these the effect never re-runs
-      // and the frame stays pinned at its no-keyboard position.
-    }, [
-      hasntMeasured,
-      disableAnimation,
-      isHidden,
-      frameSize,
-      screenSize,
-      open,
-      position,
-      effScreenSize,
-      effectiveFrameSize,
-    ])
+      // NOTE: effScreenSize/effectiveFrameSize are intentionally NOT deps. With the
+      // spacer approach the frame's position target is frozen across keyboard
+      // open/close (same stable baseline), so it must NOT re-animate — keyboard
+      // avoidance is the bottom spacer + scroll, not a frame move.
+    }, [hasntMeasured, disableAnimation, isHidden, frameSize, screenSize, open, position])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
