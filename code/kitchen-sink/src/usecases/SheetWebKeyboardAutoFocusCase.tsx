@@ -37,6 +37,12 @@ export function SheetWebKeyboardAutoFocusCase() {
   // keyboard, which is the real-world case (3pc's autofocused field isn't at the
   // very top) and the one that exercises the auto-scroll-into-view on open.
   const focusTarget = params.get('focus') === 'body' ? 'body' : 'title'
+  // optional focus-bait input on the underlying page (?bait=1). lets a driver
+  // raise the soft keyboard BEFORE opening the sheet, so the sheet's very first
+  // layout happens with the keyboard already up — the deterministic encoding of
+  // the autofocus seed race on a real device/sim (where synthetic open taps
+  // otherwise always land in the keyboard-rises-after-layout good path).
+  const bait = params.get('bait') === '1'
 
   useEffect(() => {
     if (track) startSheetTracker()
@@ -57,6 +63,13 @@ export function SheetWebKeyboardAutoFocusCase() {
       <Text fontSize="$5" fontWeight="bold">
         Sheet + Web Keyboard (autofocus on open)
       </Text>
+
+      {bait ? (
+        <Input
+          testID="sheet-web-kb-af-bait"
+          placeholder="focus me first (raises keyboard)"
+        />
+      ) : null}
 
       <Button testID="sheet-web-kb-af-open" theme="blue" onPress={() => setOpen(true)}>
         Open Sheet

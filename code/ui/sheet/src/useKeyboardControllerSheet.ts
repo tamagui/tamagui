@@ -31,8 +31,25 @@ export function useKeyboardControllerSheet(
 ): KeyboardControllerSheetResult {
   const { enabled } = options
 
-  const [keyboardHeight, setKeyboardHeight] = useState(0)
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false)
+  // initialize from the CURRENT viewport, not blindly from 0/false. when the
+  // sheet opens with the soft keyboard already up (e.g. it was raised by a field
+  // on the page behind, or by an autofocus whose keyboard wins the race against
+  // the first layout), a false initial value makes the sheet's very first render
+  // believe the keyboard is down — it captures a keyboard-free baseline from a
+  // keyboard-shrunk layout and the anchor/seed machinery has to recover. reading
+  // the viewport synchronously here removes that first-render race: the sheet
+  // knows the keyboard is up on render 1 and takes the seed path deterministically.
+  const [keyboardHeight, setKeyboardHeight] = useState(() =>
+    isWeb && enabled && typeof window !== 'undefined' && window.visualViewport
+      ? (() => {
+          const h = getWebKeyboardHeight()
+          return h >= MIN_KEYBOARD_HEIGHT && isEditableElement(document.activeElement)
+            ? h
+            : 0
+        })()
+      : 0
+  )
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(() => keyboardHeight > 0)
 
   // action-sheet pattern: pause keyboard hide events during drag so the sheet
   // position doesn't revert mid-gesture when a TextInput blurs.
