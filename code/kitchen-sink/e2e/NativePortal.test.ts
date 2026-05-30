@@ -4,16 +4,12 @@
  */
 
 import { by, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp, withSync } from './utils/detox'
+import { reloadUseCase, withSync } from './utils/detox'
 
 const testElement = (id: string) => element(by.id(id)).atIndex(0)
 
 async function navigateToNativePortal() {
-  await navigateToTestCase('NativePortalTest', 'portal-status', {
-    // Re-enabling sync after navigation is brittle on iOS once portal animations settle.
-    skipEnableSync: true,
-  })
+  await reloadUseCase('NativePortalTest', 'portal-status')
 }
 
 async function openSelect() {
@@ -57,12 +53,7 @@ async function closeSheet() {
 }
 
 describe('NativePortal', () => {
-  beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
   beforeEach(async () => {
-    await safeReloadApp()
     await navigateToNativePortal()
   })
 

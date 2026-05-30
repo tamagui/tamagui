@@ -13,7 +13,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
-import { safeLaunchApp } from './utils/detox'
+import { reloadUseCase } from './utils/detox'
 
 // only run on iOS - RNGH gesture handling differs on Android
 const isAndroid = () => device.getPlatform() === 'android'
@@ -25,13 +25,7 @@ describe('SheetDragResist', () => {
     // renders the case at app root, skipping the home → quick-nav navigation that
     // safeReloadApp + navigateToTestCase paid (~60-90s/test). safeLaunchApp leaves
     // sync disabled, which the spring-animation drag tests require.
-    await safeLaunchApp({
-      newInstance: true,
-      launchArgs: { directUseCase: 'SheetDragResistCase' },
-    })
-    await waitFor(element(by.id('sheet-drag-resist-screen')))
-      .toExist()
-      .withTimeout(180000)
+    await reloadUseCase('SheetDragResistCase', 'sheet-drag-resist-screen')
   })
 
   afterEach(async () => {

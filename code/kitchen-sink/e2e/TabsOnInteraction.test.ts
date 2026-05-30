@@ -5,8 +5,7 @@
  */
 
 import { by, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, withSync } from './utils/detox'
+import { reloadUseCase, withSync } from './utils/detox'
 
 describe('TabsOnInteraction', () => {
   // launch + navigate once: the three tests read the same Tabs screen (only the
@@ -15,10 +14,7 @@ describe('TabsOnInteraction', () => {
   // gain. skipEnableSync: the Tabs screen keeps the main thread busy via
   // onLayout callbacks, so leaving sync enabled hangs; tests use withSync.
   beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-    await navigateToTestCase('TabsOnInteraction', 'tabs-root', {
-      skipEnableSync: true,
-    })
+    await reloadUseCase('TabsOnInteraction', 'tabs-root')
   })
 
   it('should fire onInteraction with layout for the default selected tab', async () => {

@@ -11,17 +11,11 @@
  */
 
 import { by, device, element, expect } from 'detox'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
-import { navigateToTestCase } from './utils/navigation'
+import { reloadUseCase } from './utils/detox'
 
 describe('ShorthandVariables', () => {
-  beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
   beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToTestCase('ShorthandVariables', 'boxshadow-var')
+    await reloadUseCase('ShorthandVariables', 'boxshadow-var')
   })
 
   it('should render boxShadow with $variable without crashing', async () => {

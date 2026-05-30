@@ -8,18 +8,12 @@
 
 import * as assert from 'assert'
 import { by, device, element, expect, waitFor } from 'detox'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
-import { navigateToTestCase } from './utils/navigation'
+import { reloadUseCase } from './utils/detox'
 import { getDominantColor, isBlueish, isReddish, formatRGB } from './utils/colors'
 
 describe('ThemeChangeBasic', () => {
-  beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
   beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToTestCase('ThemeChangeBasic', 'theme-change-basic-root')
+    await reloadUseCase('ThemeChangeBasic', 'theme-change-basic-root')
   })
 
   it('should show initial red theme', async () => {

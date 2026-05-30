@@ -16,7 +16,7 @@
  * the same hang.
  */
 
-import { device } from 'detox'
+import { by, device, element, waitFor } from 'detox'
 
 const DEFAULT_LAUNCH_ARGS = {
   disableKeyboardController: true,
@@ -184,4 +184,30 @@ export async function withSync<T>(fn: () => Promise<T>): Promise<T> {
   } finally {
     await device.disableSynchronization()
   }
+}
+
+/**
+ * Relaunch straight into a single use case via the `directUseCase` launch arg.
+ *
+ * The app renders that use-case component at the root (inside all the providers:
+ * Portal, GestureHandler, SafeArea, Keyboard, tamagui Provider), bypassing the
+ * home screen → quick-nav navigation that safeReloadApp + navigateToTestCase
+ * paid (~60-90s/test). safeLaunchApp leaves sync disabled. This both isolates
+ * each test (newInstance) and removes the navigation cost.
+ *
+ * `useCase` must match a component export in src/usecases (the same name passed
+ * to navigateToTestCase). `waitForId` is a testID rendered by that case.
+ */
+export async function reloadUseCase(
+  useCase: string,
+  waitForId: string,
+  extraLaunchArgs?: Record<string, unknown>
+): Promise<void> {
+  await safeLaunchApp({
+    newInstance: true,
+    launchArgs: { directUseCase: useCase, ...extraLaunchArgs },
+  })
+  await waitFor(element(by.id(waitForId)))
+    .toExist()
+    .withTimeout(180000)
 }

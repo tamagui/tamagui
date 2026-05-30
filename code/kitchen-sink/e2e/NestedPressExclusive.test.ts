@@ -7,8 +7,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, withSync } from './utils/detox'
+import { reloadUseCase, withSync } from './utils/detox'
 
 async function tapForCurrentPlatform(testID: string, point?: { x: number; y: number }) {
   if (device.getPlatform() === 'android') {
@@ -25,8 +24,7 @@ async function tapForCurrentPlatform(testID: string, point?: { x: number; y: num
 
 describe('NestedPressExclusive', () => {
   beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-    await navigateToTestCase('NestedPressExclusive', 'nested-press-root')
+    await reloadUseCase('NestedPressExclusive', 'nested-press-root')
   })
 
   it('should render the test case screen', async () => {

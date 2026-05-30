@@ -4,20 +4,14 @@
  */
 
 import { by, device, element, expect } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { reloadUseCase } from './utils/detox'
 
 async function navigateToPointerEvents() {
-  await navigateToTestCase('PointerEventsCase', 'pointer-events-root')
+  await reloadUseCase('PointerEventsCase', 'pointer-events-root')
 }
 
 describe('PointerEvents', () => {
-  beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
   beforeEach(async () => {
-    await safeReloadApp()
     await navigateToPointerEvents()
   })
 

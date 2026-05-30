@@ -14,8 +14,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
-import { navigateToTestCase } from './utils/navigation'
+import { reloadUseCase } from './utils/detox'
 
 const testElement = (id: string) => element(by.id(id)).atIndex(0)
 
@@ -28,15 +27,9 @@ const skipOnIOS = () => {
 }
 
 describe('SelectAndroidOnPress (#3436)', () => {
-  beforeAll(async () => {
-    if (skipOnIOS()) return
-    await safeLaunchApp({ newInstance: true })
-  })
-
   beforeEach(async () => {
     if (skipOnIOS()) return
-    await safeReloadApp()
-    await navigateToTestCase('SelectAndroidOnPress', 'select-android-trigger')
+    await reloadUseCase('SelectAndroidOnPress', 'select-android-trigger')
   })
 
   it('should render the test case screen', async () => {

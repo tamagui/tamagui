@@ -14,19 +14,11 @@
  */
 
 import { by, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { reloadUseCase } from './utils/detox'
 
 describe('ThemeMutation', () => {
-  beforeAll(async () => {
-    await safeLaunchApp()
-  })
-
   beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToTestCase('ThemeMutation', 'theme-mutation-button', {
-      skipEnableSync: true,
-    })
+    await reloadUseCase('ThemeMutation', 'theme-mutation-button')
   })
 
   it('should navigate to ThemeMutation test case', async () => {

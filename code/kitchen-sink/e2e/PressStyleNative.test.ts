@@ -12,8 +12,7 @@ import { by, device, element, expect, waitFor } from 'detox'
 import * as fs from 'fs'
 import * as assert from 'assert'
 import { PNG } from 'pngjs'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { reloadUseCase } from './utils/detox'
 
 // helper to get the dominant color from a PNG screenshot
 // samples pixels from the center region to avoid edges/text
@@ -59,12 +58,7 @@ function isBlueish(color: { r: number; g: number; b: number }): boolean {
 // TODO: These tests are flaky on iOS simulator - press events don't fire reliably
 // Need to investigate press event handling in simulator environment
 describe.skip('PressStyleNative', () => {
-  beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
   beforeEach(async () => {
-    await safeReloadApp()
     await navigateToPressStyleNative()
   })
 
@@ -229,5 +223,5 @@ describe.skip('PressStyleNative', () => {
 })
 
 async function navigateToPressStyleNative() {
-  await navigateToTestCase('PressStyleNative', 'color-test-pressable')
+  await reloadUseCase('PressStyleNative', 'color-test-pressable')
 }

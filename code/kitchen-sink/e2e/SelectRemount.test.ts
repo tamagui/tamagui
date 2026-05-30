@@ -11,8 +11,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp, withSync } from './utils/detox'
+import { reloadUseCase, withSync } from './utils/detox'
 
 const testElement = (id: string) => element(by.id(id)).atIndex(0)
 
@@ -32,15 +31,10 @@ async function remountAndWait() {
 }
 
 describe('SelectRemount', () => {
-  beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
   beforeEach(async () => {
-    await safeReloadApp()
     // skipEnableSync: tests manage sync themselves via withSync helper
     // re-enabling sync after navigation can hang if animations are still settling
-    await navigateToTestCase('SelectRemount', 'remount-button', { skipEnableSync: true })
+    await reloadUseCase('SelectRemount', 'remount-button')
   })
 
   it('should navigate to SelectRemount test case', async () => {
