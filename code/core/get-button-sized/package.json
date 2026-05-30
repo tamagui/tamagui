@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-button-sized",
-  "version": "2.0.0-1780094816896",
+  "version": "2.1.0",
   "files": [
     "src",
     "types",
