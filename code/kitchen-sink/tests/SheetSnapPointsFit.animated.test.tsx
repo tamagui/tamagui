@@ -351,6 +351,95 @@ test.describe('Sheet.ScrollView inside snapPointsMode="fit"', () => {
   })
 })
 
+test.describe('Sheet fit-mode through Dialog.Adapt (3pc filter-by-event style)', () => {
+  // mirrors the real 3PunchConvo "filter by event" sheet: a dialog adapting to a
+  // fit-mode sheet on xs, frame with absolute background layers, scrollview given an
+  // explicit consumer maxHeight, moveOnKeyboardChange, content taller than screen.
+  // regression: a flex:1 body collapsed the fit sheet to ~just the title height, so it
+  // hung as a sliver at the bottom edge. with a content-sized body it must fill to the
+  // capped height and scroll.
+  test('tall dialog sheet fills to capped height and scrolls, does not collapse', async ({
+    page,
+  }) => {
+    // xs (maxWidth 660) triggers the dialog sheet adaptation
+    await page.setViewportSize({ width: 400, height: 800 })
+    await page.reload()
+    await page.waitForLoadState('networkidle')
+    await page.waitForTimeout(300)
+
+    const trigger = page.getByTestId('repro-3pc-trigger')
+    const frame = page.getByTestId('repro-3pc-frame')
+    const scrollview = page.getByTestId('repro-3pc-scrollview')
+
+    await expect(trigger).toBeVisible()
+    await trigger.click()
+
+    // the adapted sheet, not the dialog, must render. frame/scrollview only exist
+    // in the Adapt branch, so their visibility confirms we got the sheet.
+    await expect(frame).toBeVisible({ timeout: 5000 })
+    await expect(scrollview).toBeVisible()
+    // let the open spring fully settle (spring drivers take longer than css)
+    await page.waitForTimeout(900)
+
+    const svBox = await scrollview.boundingBox()
+    const viewport = page.viewportSize()
+    expect(svBox).toBeTruthy()
+    expect(viewport).toBeTruthy()
+
+    // regression: must not collapse to a sliver (was ~100px). fills most of the
+    // viewport, capped at the consumer maxHeight (0.86 * height).
+    expect(svBox!.height).toBeGreaterThan(viewport!.height * 0.6)
+    expect(svBox!.height).toBeLessThanOrEqual(Math.round(viewport!.height * 0.86) + 12)
+
+    // and it is actually shown on-screen (not hanging below / off the viewport).
+    // boundingBox stays driver-agnostic; toBeInViewport tolerates sub-pixel
+    // spring settling that a strict bottom-edge pixel check would flake on.
+    await expect(scrollview).toBeInViewport({ ratio: 0.95 })
+
+    const cover = await frame.evaluate((frameEl) => {
+      const frameBox = frameEl.getBoundingClientRect()
+      const covers = Array.from(document.querySelectorAll('[data-sheet-cover]')).map(
+        (el) => {
+          const box = el.getBoundingClientRect()
+          return {
+            backgroundColor: getComputedStyle(el).backgroundColor,
+            height: box.height,
+            topDelta: Math.abs(box.top - frameBox.bottom),
+          }
+        }
+      )
+
+      return (
+        covers.find(
+          (candidate) =>
+            candidate.topDelta <= 2 &&
+            candidate.height >= window.innerHeight &&
+            candidate.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
+            candidate.backgroundColor !== 'transparent'
+        ) ?? null
+      )
+    })
+    expect(cover).toBeTruthy()
+
+    // content is taller than the cap, so it should scroll.
+    const scrolled = await scrollview.evaluate((el) => {
+      let target: Element | null = el
+      while (target && target.scrollHeight <= target.clientHeight) {
+        target = target.firstElementChild
+      }
+      if (!target) return { ok: false, sh: 0, ch: 0 }
+      target.scrollTop = target.scrollHeight
+      return {
+        ok: target.scrollTop > 0,
+        sh: target.scrollHeight,
+        ch: target.clientHeight,
+      }
+    })
+    expect(scrolled.sh).toBeGreaterThan(scrolled.ch)
+    expect(scrolled.ok).toBe(true)
+  })
+})
+
 test.describe('Adapted Dialog Sheet', () => {
   // TODO: This test is flaky in CI - the adaptation may not trigger reliably at 500px
   // The core functionality is tested by other Sheet tests
