@@ -187,6 +187,7 @@ export const SheetScrollView = React.forwardRef<
         cancelAnimationFrame(raf)
         let frames = 0
         let lastBottom = Number.NaN
+        let lastKeyboardTop = Number.NaN
         let stableFrames = 0
         const tick = () => {
           frames++
@@ -202,11 +203,20 @@ export const SheetScrollView = React.forwardRef<
             raf = requestAnimationFrame(tick)
             return
           }
-          // wait for the open animation to settle: measuring mid-slide reads the
-          // field far down the still-low frame and overscrolls it off the top.
+          // wait for BOTH the open animation AND the keyboard to settle. measuring
+          // mid-slide reads the field far down the still-low frame (overscroll); and
+          // lifting while the keyboard is still rising uses a keyboard-top that then
+          // keeps dropping, leaving the field only partly clear (inconsistent gap).
+          const vv = window.visualViewport
+          const keyboardTop = vv ? vv.offsetTop + vv.height : window.innerHeight
           const bottom = el.getBoundingClientRect().bottom
-          if (Number.isNaN(lastBottom) || Math.abs(bottom - lastBottom) > 1) {
+          const moved =
+            Number.isNaN(lastBottom) ||
+            Math.abs(bottom - lastBottom) > 1 ||
+            Math.abs(keyboardTop - lastKeyboardTop) > 1
+          if (moved) {
             lastBottom = bottom
+            lastKeyboardTop = keyboardTop
             stableFrames = 0
             raf = requestAnimationFrame(tick)
             return
@@ -219,11 +229,7 @@ export const SheetScrollView = React.forwardRef<
           // settled — lift the minimum needed (idempotent; no-op if already clear)
           const scroller = findScroller(el)
           if (!scroller) return
-          const vv = window.visualViewport
-          const keyboardTop = vv ? vv.offsetTop + vv.height : window.innerHeight
-          const overlap = Math.round(
-            el.getBoundingClientRect().bottom - (keyboardTop - KB_LIFT_MARGIN)
-          )
+          const overlap = Math.round(bottom - (keyboardTop - KB_LIFT_MARGIN))
           if (overlap > 0) scroller.scrollTop += overlap
         }
         raf = requestAnimationFrame(tick)
