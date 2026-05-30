@@ -64,7 +64,6 @@ export function setupNativeSheet(
             keyboardOccludedHeight={0}
             isKeyboardVisible={false}
             keyboardStableFrameHeight={0}
-            isKeyboardSeeding={false}
             {...providerProps}
             onlyShowFrame
           >

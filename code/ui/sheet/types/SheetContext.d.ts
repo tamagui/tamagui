@@ -35,7 +35,6 @@ export declare const SheetProvider: (props: {
     keyboardOccludedHeight: number;
     isKeyboardVisible: boolean;
     keyboardStableFrameHeight: number;
-    isKeyboardSeeding: boolean;
     setHasScrollView: (val: boolean) => void;
 } & {
     scope: import("@tamagui/create-context").Scope<SheetContextValue>;
