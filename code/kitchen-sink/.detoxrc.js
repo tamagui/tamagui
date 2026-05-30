@@ -80,13 +80,11 @@ module.exports = {
     init: {
       exposeGlobals: true,
     },
-    // every e2e suite launches the app explicitly in beforeAll/beforeEach via
-    // safeLaunchApp, so skip detox's automatic per-file launch. 'auto' would launch
-    // once at env init and our newInstance:true launch would immediately relaunch
-    // over it - a wasted ~30-60s/file. manual also flips reinstallApp -> false, so
-    // detox reuses the app the CI workflow already installed + primed instead of
-    // reinstalling it per file.
-    launchApp: 'manual',
+    // NOTE: do NOT set launchApp: 'manual' here. In detox 'manual' does not mean
+    // "the test calls device.launchApp itself" (that's always allowed) - it makes
+    // RuntimeDevice.launchApp route through waitForAppLaunch, which printLaunchHint()
+    // + pressAnyKey() and crashes in CI ('process.stdin.setRawMode is not a function')
+    // since stdin isn't a TTY. Leave it at the default 'auto'.
   },
   apps: {
     'ios.debug': {
