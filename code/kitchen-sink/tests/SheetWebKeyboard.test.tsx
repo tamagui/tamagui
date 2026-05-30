@@ -10,8 +10,12 @@ import { setupPage } from './test-utils'
  * Bugs covered:
  *  1. Keyboard avoidance: a fit-mode sheet sized off useWindowDimensions shrank
  *     when the keyboard opened (window.visualViewport — which RNW Dimensions
- *     tracks — shrinks by the keyboard height). The sheet must MOVE UP and keep
- *     its height, not collapse. (the frame-height teleport / "goes back down".)
+ *     tracks — shrinks by the keyboard height). The correct behavior: the sheet
+ *     is always full device height, slid down via translate to its resting
+ *     position; when the keyboard opens the WHOLE frame translates UP by the
+ *     keyboard height (capped so its top never crosses the top safe area), so
+ *     its content clears the keyboard. It keeps its height — it does not resize,
+ *     collapse, or stay anchored. (the frame-height teleport / "goes back down".)
  *  2. Drag double-drive: on web the PanResponder and the scroll-view touch hook
  *     both drove the animated position, so a pull-down jittered/jumped. With one
  *     owner the pull-down follows the finger monotonically.
@@ -69,7 +73,7 @@ async function openSheet(
 }
 
 test.describe('Sheet web keyboard avoidance', () => {
-  test('keyboard open keeps the sheet ANCHORED at the bottom (no shift, no resize)', async ({
+  test('keyboard open LIFTS the whole sheet up by the keyboard height (capped at the safe area), keeping its height', async ({
     page,
   }) => {
     await openSheet(page)
@@ -84,15 +88,20 @@ test.describe('Sheet web keyboard avoidance', () => {
     const after = await rect(page, 'sheet-web-kb-frame')
     expect(after).toBeTruthy()
 
-    // the sheet must NOT move or resize on web: it stays anchored at the bottom
-    // (the transparent keyboard overlays it; content scrolls instead). before the
-    // fixes it either shrank by the keyboard height OR flew up off-frame.
-    expect(Math.abs(after!.bottom - before!.bottom)).toBeLessThan(8)
-    expect(Math.abs(after!.top - before!.top)).toBeLessThan(8)
+    // the WHOLE frame translates UP so its content clears the keyboard — it does
+    // NOT stay anchored and it does NOT resize. the shift is the keyboard height,
+    // capped so the frame top never crosses the safe-area top (~0 in the test).
+    // before the fix it either stayed put (occluded) or collapsed/flew off-frame.
+    const shift = before!.bottom - after!.bottom
+    const expectedShift = Math.min(KB_HEIGHT, before!.top) // capped at safe-area top
+    expect(Math.abs(shift - expectedShift)).toBeLessThan(12)
+    // height is preserved (no resize/collapse)
     expect(Math.abs(after!.height - before!.height)).toBeLessThan(8)
+    // capped: the top never goes above the safe area
+    expect(after!.top).toBeGreaterThanOrEqual(-4)
   })
 
-  test('content becomes scrollable when the keyboard opens (tail padding)', async ({
+  test('a tall sheet whose lift is capped can scroll its lower content above the keyboard', async ({
     page,
   }) => {
     await openSheet(page)
@@ -100,15 +109,17 @@ test.describe('Sheet web keyboard avoidance', () => {
     await simulateKeyboard(page, KB_HEIGHT)
     await page.waitForTimeout(700)
 
-    // the keyboardOccludedHeight tail padding makes the content scrollable so the
-    // focused input can scroll above the keyboard while the sheet stays anchored.
+    // this fixture's sheet is taller than the visible band, so once it has lifted
+    // as far as the safe-area cap allows, its lowest content still sits behind the
+    // keyboard. the keyboardOccludedHeight spacer (= exactly that occluded amount)
+    // makes the content scrollable so the footer can reach above the keyboard.
     const canScroll = await page.evaluate(() => {
       const n = document.querySelector(
         '[data-testid="sheet-web-kb-scrollview"]'
       ) as HTMLElement
       return n ? n.scrollHeight - n.clientHeight : 0
     })
-    expect(canScroll).toBeGreaterThan(KB_HEIGHT - 40)
+    expect(canScroll).toBeGreaterThan(40)
   })
 
   test('keyboard close keeps the sheet anchored (no teleport)', async ({ page }) => {

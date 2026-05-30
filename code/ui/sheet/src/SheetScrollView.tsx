@@ -67,27 +67,15 @@ export const SheetScrollView = React.forwardRef<
         }
       : { flex: 1 }
 
-    // AUTOFOCUS-ON-OPEN seed (web): the sheet is still reconstructing its
-    // pre-keyboard frame baseline and needs THIS scroll view to size to its
-    // content so it can measure the true content height. so we apply the stable
-    // screen only as a maxHeight cap (UNCLIP from the shrunk consumer maxHeight)
-    // and leave height undefined so it stays content-sized.
-    const isKeyboardSeeding = context.isKeyboardSeeding === true
-
-    // when the keyboard is open the sheet stays ANCHORED at the bottom and keeps
-    // its full pre-keyboard height — the keyboard overlays its lower part and the
-    // keyboardOccludedHeight tail padding (added to the scroll content below) +
-    // browser scroll-into-view lift the focused input above the keyboard. so we
-    // pin the height to the sheet's authoritative frozenFrameHeight, overriding
-    // any consumer maxHeight (on web that's often tied to useWindowDimensions,
-    // which SHRINKS when the keyboard opens and would otherwise collapse the
-    // sheet). holding the height constant means nothing animates on keyboard
-    // open/close — no jump/teleport. applied AFTER {...props} so it wins.
+    // when the keyboard is open, pin the scroll view to the sheet's pre-keyboard
+    // frame height (frozenFrameHeight), overriding any consumer maxHeight. on web
+    // that maxHeight is often tied to useWindowDimensions, which SHRINKS when the
+    // keyboard opens and would otherwise collapse the sheet. holding the height
+    // constant means the frame only TRANSLATES up (no resize, no jump). applied
+    // AFTER {...props} so it wins.
     const keyboardFrozenOverride =
       hasFit && isKeyboardVisible && frozenFrameHeight > 0
-        ? isKeyboardSeeding
-          ? { maxHeight: frozenFrameHeight }
-          : { height: frozenFrameHeight, maxHeight: frozenFrameHeight }
+        ? { height: frozenFrameHeight, maxHeight: frozenFrameHeight }
         : null
 
     const panGestureRef = gestureContext?.panGestureRef

@@ -9,14 +9,14 @@ import { expect, test } from '@playwright/test'
  *
  * Bug: when the sheet autofocuses its first input as it opens, the soft keyboard
  * rises SIMULTANEOUSLY with the open animation, so it is already up at the
- * sheet's first layout pass. handleAnimationViewLayout / handleMaxContentViewLayout
- * drop any layout measured while the keyboard is up, so the keyboard-free frame
- * baseline (stableKbGeom.frame) is never captured — it stays 0. freezeForKb and
- * keyboardStableFrameHeight then stay 0, the SheetScrollView height freeze never
- * engages, and the frame COLLAPSES to the shrunk useWindowDimensions*0.7 cap with
- * the bottom "Post Thread" button occluded under the keyboard. Re-toggling the
- * keyboard doesn't fix it (still no keyboard-free baseline) and the sheet also
- * can't be scrolled to reveal the footer — exactly the consumer's report.
+ * sheet's first layout pass. layouts measured while the keyboard is up are
+ * dropped (they carry the shrunk viewport), so the frame must keep its full
+ * device-height size from before the keyboard and the WHOLE frame translates UP
+ * by the keyboard height (capped at the top safe area) so its content clears the
+ * keyboard. Before the fix the frame instead COLLAPSED to the shrunk
+ * useWindowDimensions*0.7 cap with the bottom "Post Thread" button occluded under
+ * the keyboard, and it could not be scrolled to reveal the footer — exactly the
+ * consumer's report.
  *
  * Reproduction: the keyboard is emulated by shrinking visualViewport.height and
  * dispatching one 'resize' (what a real iOS keyboard fires). To deterministically
@@ -163,8 +163,44 @@ async function touchDragSampling(
   )
 }
 
+// open with autofocus on a field that STARTS BEHIND the keyboard (?focus=body).
+// this is the real-world case — the consumer's autofocused field isn't at the very
+// top of the sheet — and it exercises the auto-scroll-into-view (an autofocused
+// field below the fold must be lifted above the keyboard on open, not left cut off).
+async function openWithBehindKeyboardAutofocus(page: import('@playwright/test').Page) {
+  await page.addInitScript((kb) => {
+    const apply = () => {
+      const vv = window.visualViewport
+      if (!vv) return
+      const base = window.innerHeight || 844
+      Object.defineProperty(vv, 'height', { configurable: true, get: () => base - kb })
+      Object.defineProperty(vv, 'offsetTop', { configurable: true, get: () => 0 })
+    }
+    apply()
+    window.addEventListener('DOMContentLoaded', apply)
+  }, KB_HEIGHT)
+
+  await page.goto(
+    '/?test=SheetWebKeyboardAutoFocusCase&animationDriver=css&open=1&focus=body',
+    { waitUntil: 'domcontentloaded' }
+  )
+  await page.waitForFunction(
+    () => {
+      const root = document.getElementById('root')
+      return root && root.children.length > 0
+    },
+    { timeout: 8000, polling: 50 }
+  )
+  await expect(page.getByTestId('sheet-web-kb-af-frame')).toBeVisible({ timeout: 5000 })
+  await page.waitForTimeout(1200)
+  // the fixture autofocused the Body; fire a resize so the keyboard hook latches the
+  // height, then give the auto-scroll-into-view a beat to lift the field.
+  await page.evaluate(() => window.visualViewport?.dispatchEvent(new Event('resize')))
+  await page.waitForTimeout(800)
+}
+
 test.describe('Sheet web keyboard avoidance — autofocus on open', () => {
-  test('keyboard rising with the open animation still anchors the sheet (frame keeps height)', async ({
+  test('keyboard rising with the open animation LIFTS the sheet above the keyboard (keeps height)', async ({
     page,
   }) => {
     await openWithAutofocusKeyboard(page)
@@ -172,16 +208,15 @@ test.describe('Sheet web keyboard avoidance — autofocus on open', () => {
     const frame = await rect(page, 'sheet-web-kb-af-frame')
     expect(frame).toBeTruthy()
 
-    // the sheet must keep a real (un-collapsed) height. before the fix the frame
-    // collapsed to the shrunk useWindowDimensions*0.7 cap (~366) because the
-    // keyboard-up first layout was dropped and the height freeze never engaged.
-    expect(frame!.height).toBeGreaterThan(KB_HEIGHT + 80)
-
-    // and it stays anchored to the screen bottom (the transparent keyboard
-    // overlays its lower part; content scrolls to clear it).
-    expect(Math.abs(frame!.bottom - VH)).toBeLessThan(8)
-    // its top is above the keyboard so its content is reachable.
-    expect(frame!.top).toBeLessThan(KEYBOARD_TOP)
+    // the sheet keeps a real (un-collapsed) height. before the fix the frame
+    // collapsed to the shrunk useWindowDimensions*0.7 cap.
+    expect(frame!.height).toBeGreaterThan(KB_HEIGHT)
+    // it LIFTS UP so its bottom sits at/above the keyboard top — it is NOT anchored
+    // at the screen bottom (that was the old, wrong behavior).
+    expect(frame!.bottom).toBeLessThanOrEqual(KEYBOARD_TOP + 8)
+    expect(frame!.bottom).toBeLessThan(VH - 100)
+    // capped: the top never crosses the safe-area top.
+    expect(frame!.top).toBeGreaterThanOrEqual(-4)
   })
 
   test('content becomes scrollable when the keyboard opens with autofocus', async ({
@@ -195,10 +230,10 @@ test.describe('Sheet web keyboard avoidance — autofocus on open', () => {
       ) as HTMLElement
       return n ? n.scrollHeight - n.clientHeight : 0
     })
-    // the keyboardOccludedHeight tail padding makes the content scrollable so the
-    // footer / focused input can scroll above the keyboard. before the fix the
-    // collapsed sheet wasn't anchored and this padding wasn't applied.
-    expect(canScroll).toBeGreaterThan(KB_HEIGHT - 40)
+    // the sheet is taller than the visible band, so after lifting (capped at the
+    // safe area) its lower content can still scroll up to reach above the keyboard
+    // — the keyboardOccludedHeight spacer (= the occluded amount) enables that.
+    expect(canScroll).toBeGreaterThan(40)
   })
 
   test('the bottom "Post Thread" button can be scrolled above the keyboard', async ({
@@ -244,5 +279,23 @@ test.describe('Sheet web keyboard avoidance — autofocus on open', () => {
       if (back > maxBackward) maxBackward = back
     }
     expect(maxBackward).toBeLessThan(12)
+  })
+
+  test('an autofocused field that starts behind the keyboard is scrolled above it', async ({
+    page,
+  }) => {
+    await openWithBehindKeyboardAutofocus(page)
+
+    // the whole sheet LIFTS up so its bottom sits at/above the keyboard top — it is
+    // NOT anchored at the screen bottom.
+    const frame = await rect(page, 'sheet-web-kb-af-frame')
+    expect(frame).toBeTruthy()
+    expect(frame!.bottom).toBeLessThanOrEqual(KEYBOARD_TOP + 8)
+
+    // the autofocused Body — which lays out BELOW the keyboard line at rest — ends
+    // up clear of the keyboard once the sheet has lifted, not cut off under it.
+    const body = await rect(page, 'sheet-web-kb-af-body')
+    expect(body).toBeTruthy()
+    expect(body!.bottom).toBeLessThanOrEqual(KEYBOARD_TOP + 8)
   })
 })
