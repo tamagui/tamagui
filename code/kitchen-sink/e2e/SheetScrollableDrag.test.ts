@@ -14,25 +14,26 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { safeLaunchApp } from './utils/detox'
 
 // only run on iOS - Android behavior is different
 const isAndroid = () => device.getPlatform() === 'android'
 
 describe('SheetScrollableDrag - RNGH Integration', () => {
-  beforeAll(async () => {
-    if (isAndroid()) return
-    await safeLaunchApp({ newInstance: true })
-  })
-
   beforeEach(async () => {
     if (isAndroid()) return
-    await safeReloadApp()
-    // skipEnableSync: navigation re-enabling sync hangs if animations are settling
-    await navigateToTestCase('SheetScrollableDrag', 'sheet-scrollable-drag-trigger', {
-      skipEnableSync: true,
+    // relaunch straight into the use case per test for clean gesture/scroll
+    // state. directUseCase renders the case at app root, skipping the home →
+    // quick-nav tap flow that safeReloadApp + navigateToTestCase paid
+    // (~60-90s/test). safeLaunchApp leaves sync disabled, which the drag tests
+    // require (gestures deliver without it).
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'SheetScrollableDrag' },
     })
+    await waitFor(element(by.id('sheet-scrollable-drag-trigger')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   it('should show RNGH enabled', async () => {

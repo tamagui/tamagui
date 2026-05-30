@@ -54,24 +54,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # 4 shards balanced by measured test-execution time (~26min each) so
-          # one slow file can't make a shard a 2x outlier. each of the heavy
-          # anchors lands on a separate shard: SelectAndroidOnPress (~16min) →
-          # shard 1, CompilerExtraction (~12min, in-test `tamagui build`) → shard
-          # 2 with otherwise-light files to absorb its variance, SheetScrollableDrag
-          # (~11min) → shard 3, PointerEvents + SelectRemount → shard 4. balance is
-          # validated by .github/scripts/check-ios-detox-shards.mjs (every e2e
-          # test must be assigned exactly once). note: a shard's wall time also
-          # includes a cold Metro bundle (~1min healthy, but can spike to ~20min
-          # on a degraded macOS runner — that's infra variance, not test cost).
+          # 4 shards. NOTE: being re-tuned — SheetScrollableDrag + SheetDragResist
+          # were just converted to the directUseCase launch pattern (relaunch
+          # straight into the case, no home → quick-nav navigation), which cuts
+          # ~60-90s/test of per-test overhead. once that pattern is rolled out to
+          # all files this matrix will be rebalanced to ≤30min/shard (and possibly
+          # collapsed to 3 shards). coverage validated by
+          # .github/scripts/check-ios-detox-shards.mjs (every e2e test assigned once).
           - shard_name: '1/4'
-            test_files: 'e2e/SelectAndroidOnPress.test.ts e2e/ShorthandVariables.test.ts e2e/NativePortal.test.ts e2e/GroupPressNative.test.ts e2e/MediaQueryGtMd.test.ts'
+            test_files: 'e2e/PressStyleNative.noRngh.test.ts e2e/PressStyleNative.test.ts e2e/check-rngh-status.test.ts e2e/GroupPressNative.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/PressStyleScrollStuck.test.ts e2e/NestedPressExclusive.test.ts'
           - shard_name: '2/4'
-            test_files: 'e2e/CompilerExtraction.test.ts e2e/PressStyleNative.test.ts e2e/CompilerTernaryActive.test.ts e2e/TabsOnInteraction.test.ts e2e/SheetPressRegression.test.ts e2e/check-rngh-status.test.ts e2e/SafeArea.test.ts'
+            test_files: 'e2e/SheetScrollableDrag.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetKeyboardFitContent.test.ts e2e/SheetPressRegression.test.ts e2e/NativePortal.test.ts'
           - shard_name: '3/4'
-            test_files: 'e2e/SheetScrollableDrag.test.ts e2e/PressStyleNative.noRngh.test.ts e2e/ThemeChangeBasic.test.ts e2e/MenuRadioGroup.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetKeyboardFitContent.test.ts'
+            test_files: 'e2e/PointerEvents.test.ts e2e/MediaQueryGtMd.test.ts e2e/TabsOnInteraction.test.ts e2e/SafeArea.test.ts e2e/CompilerExtraction.test.ts e2e/CompilerTernaryActive.test.ts'
           - shard_name: '4/4'
-            test_files: 'e2e/PointerEvents.test.ts e2e/SelectRemount.test.ts e2e/SheetDragResist.test.ts e2e/ThemeMutation.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/PressStyleScrollStuck.test.ts e2e/NestedPressExclusive.test.ts'
+            test_files: 'e2e/MenuRadioGroup.test.ts e2e/SelectAndroidOnPress.test.ts e2e/SelectRemount.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts e2e/ShorthandVariables.test.ts'
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
