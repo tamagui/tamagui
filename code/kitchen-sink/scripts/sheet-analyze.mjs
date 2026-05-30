@@ -30,7 +30,7 @@ if (!samples.length) {
 }
 
 const kbTop = (s) => (s.vo || 0) + s.vv
-const fin = (n) => (typeof n === 'number' && !Number.isNaN(n))
+const fin = (n) => typeof n === 'number' && !Number.isNaN(n)
 const clr = (top, bottom) => (fin(bottom) ? top - bottom : null) // + = above kb
 
 // a sheet is OPEN only when its frame is on-screen. closed/hidden sheets sit at
@@ -65,7 +65,9 @@ const fmt = (s) => {
   ].join('\n')
 }
 
-console.log(`== ${samples.length} pos samples (${kbUp.length} kb-up, ${kbDown.length} kb-down) ==\n`)
+console.log(
+  `== ${samples.length} pos samples (${kbUp.length} kb-up, ${kbDown.length} kb-down) ==\n`
+)
 
 console.log('LAST kb-up @ deepest scroll:')
 console.log(fmt(deepest))
@@ -86,11 +88,15 @@ if (kbDown.length && kbUp.length) {
     `\njank check  kb-down(fT=${d.fT} fB=${d.fB} fH=${d.fH})  vs  kb-up(fT=${u.fT} fB=${u.fB} fH=${u.fH})  -> ${moved ? 'FRAME MOVED (jank!)' : 'stable (no jank)'}`
   )
 } else {
-  console.log('\njank check: need both kb-down and kb-up samples (capture an open before focusing)')
+  console.log(
+    '\njank check: need both kb-down and kb-up samples (capture an open before focusing)'
+  )
 }
 
 // verdict
 if (bestPost) {
   const ok = bestPost.c >= 12
-  console.log(`\nVERDICT post-reachable: ${ok ? 'PASS' : 'FAIL'} (best clearance ${bestPost.c}px, want >= 12)`)
+  console.log(
+    `\nVERDICT post-reachable: ${ok ? 'PASS' : 'FAIL'} (best clearance ${bestPost.c}px, want >= 12)`
+  )
 }

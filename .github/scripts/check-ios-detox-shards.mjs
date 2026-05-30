@@ -9,7 +9,10 @@ const explicitlyExcludedTests = new Map([
   // android-only: every test skips on iOS (device.getPlatform() === 'ios'), so running
   // it on the iOS sim produced zero coverage while burning ~6.6min. it still runs in the
   // android Detox job, which executes all e2e files unsharded.
-  ['SelectAndroidOnPress.test.ts', 'android-only (skips on iOS); runs in the android job'],
+  [
+    'SelectAndroidOnPress.test.ts',
+    'android-only (skips on iOS); runs in the android job',
+  ],
 ])
 
 const workflow = readFileSync(workflowPath, 'utf8')

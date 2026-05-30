@@ -135,9 +135,7 @@ function measure() {
   let pT = NaN,
     pB = NaN
   const post = (document.querySelector('[data-testid="sheet-web-kb-post"]') ||
-    document.querySelector(
-      '[data-testid="sheet-web-kb-af-post"]'
-    )) as HTMLElement | null
+    document.querySelector('[data-testid="sheet-web-kb-af-post"]')) as HTMLElement | null
   if (post) {
     const pr = post.getBoundingClientRect()
     pT = ri(pr.top)
@@ -162,7 +160,22 @@ function measure() {
     const de = document.documentElement.clientHeight
     push({
       k: 'pos',
-      fT, fB, fH, sT, sH, sC, iT, iB, pT, pB, vv, vo, in: inn, kb, ae: aeTag, de,
+      fT,
+      fB,
+      fH,
+      sT,
+      sH,
+      sC,
+      iT,
+      iB,
+      pT,
+      pB,
+      vv,
+      vo,
+      in: inn,
+      kb,
+      ae: aeTag,
+      de,
     })
   }
 }

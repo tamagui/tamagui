@@ -209,9 +209,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     // use stableFrameSize when closing to prevent position jumps during the exit
     // animation; while open use the live frameSize.
-    const effectiveFrameSize = open
-      ? frameSize
-      : stableFrameSize.current || frameSize
+    const effectiveFrameSize = open ? frameSize : stableFrameSize.current || frameSize
 
     const positions = React.useMemo(
       () =>
