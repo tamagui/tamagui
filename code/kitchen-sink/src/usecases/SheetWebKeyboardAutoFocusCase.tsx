@@ -30,20 +30,27 @@ export function SheetWebKeyboardAutoFocusCase() {
   const dimensions = useWindowDimensions()
   const maxHeight = Math.round(dimensions.height * 0.7)
   const titleRef = useRef<TextInput>(null)
+  const bodyRef = useRef<TextInput>(null)
   const track = params.get('track') === '1'
+  // which field autofocuses on open. default 'title' (top of the sheet, already
+  // above the keyboard). 'body' autofocuses a field that STARTS BEHIND the
+  // keyboard, which is the real-world case (3pc's autofocused field isn't at the
+  // very top) and the one that exercises the auto-scroll-into-view on open.
+  const focusTarget = params.get('focus') === 'body' ? 'body' : 'title'
 
   useEffect(() => {
     if (track) startSheetTracker()
   }, [track])
 
-  // autofocus the first input as the sheet opens — the keyboard rises with the
-  // open animation. mirrors the 3pc create-thread sheet's autoFocus. focus
+  // autofocus an input as the sheet opens — the keyboard rises with the open
+  // animation. mirrors the 3pc create-thread sheet's autoFocus. focus
   // synchronously (no setTimeout) so focusin fires during the open render,
   // before the frame's first keyboard-free layout can land.
   useEffect(() => {
     if (!open) return
-    titleRef.current?.focus?.()
-  }, [open])
+    const ref = focusTarget === 'body' ? bodyRef : titleRef
+    ref.current?.focus?.()
+  }, [open, focusTarget])
 
   return (
     <YStack padding="$4" gap="$4" testID="sheet-web-kb-af-screen">
@@ -97,6 +104,7 @@ export function SheetWebKeyboardAutoFocusCase() {
               />
 
               <TextArea
+                ref={bodyRef}
                 testID="sheet-web-kb-af-body"
                 placeholder="Body"
                 value={body}

@@ -163,6 +163,42 @@ async function touchDragSampling(
   )
 }
 
+// open with autofocus on a field that STARTS BEHIND the keyboard (?focus=body).
+// this is the real-world case — the consumer's autofocused field isn't at the very
+// top of the sheet — and it exercises the auto-scroll-into-view (an autofocused
+// field below the fold must be lifted above the keyboard on open, not left cut off).
+async function openWithBehindKeyboardAutofocus(page: import('@playwright/test').Page) {
+  await page.addInitScript((kb) => {
+    const apply = () => {
+      const vv = window.visualViewport
+      if (!vv) return
+      const base = window.innerHeight || 844
+      Object.defineProperty(vv, 'height', { configurable: true, get: () => base - kb })
+      Object.defineProperty(vv, 'offsetTop', { configurable: true, get: () => 0 })
+    }
+    apply()
+    window.addEventListener('DOMContentLoaded', apply)
+  }, KB_HEIGHT)
+
+  await page.goto(
+    '/?test=SheetWebKeyboardAutoFocusCase&animationDriver=css&open=1&focus=body',
+    { waitUntil: 'domcontentloaded' }
+  )
+  await page.waitForFunction(
+    () => {
+      const root = document.getElementById('root')
+      return root && root.children.length > 0
+    },
+    { timeout: 8000, polling: 50 }
+  )
+  await expect(page.getByTestId('sheet-web-kb-af-frame')).toBeVisible({ timeout: 5000 })
+  await page.waitForTimeout(1200)
+  // the fixture autofocused the Body; fire a resize so the keyboard hook latches the
+  // height, then give the auto-scroll-into-view a beat to lift the field.
+  await page.evaluate(() => window.visualViewport?.dispatchEvent(new Event('resize')))
+  await page.waitForTimeout(800)
+}
+
 test.describe('Sheet web keyboard avoidance — autofocus on open', () => {
   test('keyboard rising with the open animation still anchors the sheet (frame keeps height)', async ({
     page,
@@ -244,5 +280,24 @@ test.describe('Sheet web keyboard avoidance — autofocus on open', () => {
       if (back > maxBackward) maxBackward = back
     }
     expect(maxBackward).toBeLessThan(12)
+  })
+
+  test('an autofocused field that starts behind the keyboard is scrolled above it', async ({
+    page,
+  }) => {
+    await openWithBehindKeyboardAutofocus(page)
+
+    // the frame stays anchored at the bottom and full height (same invariant as the
+    // title case — the keyboard is avoided by scroll, not by moving the frame).
+    const frame = await rect(page, 'sheet-web-kb-af-frame')
+    expect(frame).toBeTruthy()
+    expect(Math.abs(frame!.bottom - VH)).toBeLessThan(8)
+
+    // the autofocused Body — which lays out BELOW the keyboard line at rest — must be
+    // scrolled up clear of the keyboard, not left cut off under it. (the consumer
+    // report: the autofocused field "doesn't move up out of the way / is cut off".)
+    const body = await rect(page, 'sheet-web-kb-af-body')
+    expect(body).toBeTruthy()
+    expect(body!.bottom).toBeLessThanOrEqual(KEYBOARD_TOP + 8)
   })
 })
