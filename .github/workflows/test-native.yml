@@ -54,11 +54,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # 4 shards balanced by test execution time. the old ~7min/shard ts-jest
-          # type-check tax is gone (e2e now transpiles via e2e/tsconfig.json), so
-          # startup is small and these fit well under the native-ci runner's
-          # 45-minute process timeout. heaviest files: PressStyleNative.noRngh
-          # (~13min) and SheetScrollableDrag (~10min) head shards 1 and 2.
+          # 4 shards. NOTE: being re-tuned — SheetScrollableDrag + SheetDragResist
+          # were just converted to the directUseCase launch pattern (relaunch
+          # straight into the case, no home → quick-nav navigation), which cuts
+          # ~60-90s/test of per-test overhead. once that pattern is rolled out to
+          # all files this matrix will be rebalanced to ≤30min/shard (and possibly
+          # collapsed to 3 shards). coverage validated by
+          # .github/scripts/check-ios-detox-shards.mjs (every e2e test assigned once).
           - shard_name: '1/4'
             test_files: 'e2e/PressStyleNative.noRngh.test.ts e2e/PressStyleNative.test.ts e2e/check-rngh-status.test.ts e2e/GroupPressNative.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/PressStyleScrollStuck.test.ts e2e/NestedPressExclusive.test.ts'
           - shard_name: '2/4'

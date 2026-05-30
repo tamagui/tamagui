@@ -4,19 +4,13 @@
  */
 
 import { by, device, element, expect } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { reloadUseCase } from './utils/detox'
 
 // SafeAreaCase component is not implemented yet (entirely commented out)
 // TODO: enable once SafeAreaCase is implemented
 describe.skip('SafeArea', () => {
-  beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
   beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToTestCase('SafeAreaCase', 'safe-area-case')
+    await reloadUseCase('SafeAreaCase', 'safe-area-case')
   })
 
   it('should navigate to SafeAreaCase test case', async () => {

@@ -6,23 +6,17 @@
 
 import { by, device, element, expect } from 'detox'
 import * as assert from 'assert'
-import { navigateToTestCase } from './utils/navigation'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { reloadUseCase } from './utils/detox'
 
 async function navigateToGroupPressNative() {
-  await navigateToTestCase('GroupPressNative', 'group-press-native-root')
+  await reloadUseCase('GroupPressNative', 'group-press-native-root')
 }
 
 // TODO: These tests are flaky on iOS simulator - press events don't fire reliably
 // Need to investigate press event handling in simulator environment
 describe.skip('GroupPressNative', () => {
-  beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
   beforeEach(async () => {
-    await safeReloadApp()
     await navigateToGroupPressNative()
   })
 

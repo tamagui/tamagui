@@ -5,21 +5,16 @@
  */
 
 import { by, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp, withSync } from './utils/detox'
+import { reloadUseCase, withSync } from './utils/detox'
 
 describe('TabsOnInteraction', () => {
+  // launch + navigate once: the three tests read the same Tabs screen (only the
+  // last one switches tabs, in-place), so the old per-test safeReloadApp only
+  // added a relaunch + re-bundle + re-navigation (~55s/test) with no isolation
+  // gain. skipEnableSync: the Tabs screen keeps the main thread busy via
+  // onLayout callbacks, so leaving sync enabled hangs; tests use withSync.
   beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
-  beforeEach(async () => {
-    await safeReloadApp()
-    // skipEnableSync: the Tabs screen keeps the main thread busy via
-    // onLayout callbacks, so leaving sync enabled hangs the hook.
-    await navigateToTestCase('TabsOnInteraction', 'tabs-root', {
-      skipEnableSync: true,
-    })
+    await reloadUseCase('TabsOnInteraction', 'tabs-root')
   })
 
   it('should fire onInteraction with layout for the default selected tab', async () => {

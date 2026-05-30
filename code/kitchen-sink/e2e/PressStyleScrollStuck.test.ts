@@ -8,8 +8,7 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { reloadUseCase } from './utils/detox'
 
 const PILLS = [
   'General',
@@ -25,13 +24,8 @@ const PILLS = [
 ]
 
 describe('PressStyleScrollStuck', () => {
-  beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
   beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToTestCase('PressStyleScrollStuck', 'press-scroll-stuck-root')
+    await reloadUseCase('PressStyleScrollStuck', 'press-scroll-stuck-root')
   })
 
   it('renders the pill strip', async () => {

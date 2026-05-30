@@ -1,6 +1,5 @@
 import { by, element, expect, waitFor } from 'detox'
-import { safeLaunchApp, withSync } from './utils/detox'
-import { navigateToTestCase } from './utils/navigation'
+import { reloadUseCase, withSync } from './utils/detox'
 
 function getMenuItemMatcher(label: string) {
   return by.text(label)
@@ -20,10 +19,7 @@ async function selectColor(label: 'Red' | 'Green' | 'Blue') {
 
 describe('MenuRadioGroup', () => {
   beforeEach(async () => {
-    await safeLaunchApp({ newInstance: true })
-    await navigateToTestCase('MenuRadioGroupCase', 'menu-radio-selected-value', {
-      skipEnableSync: true,
-    })
+    await reloadUseCase('MenuRadioGroupCase', 'menu-radio-selected-value')
   })
 
   it('should render the menu radio group case', async () => {

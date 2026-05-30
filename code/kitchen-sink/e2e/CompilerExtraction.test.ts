@@ -7,9 +7,8 @@ import * as assert from 'assert'
 import { execSync } from 'child_process'
 import { unlinkSync, existsSync } from 'fs'
 import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { reloadUseCase } from './utils/detox'
 
 const SOURCE_FILE = 'src/usecases/CompilerExtraction.tsx'
 const NATIVE_FILE = 'src/usecases/CompilerExtraction.native.tsx'
@@ -29,13 +28,10 @@ describe('CompilerExtraction', () => {
       { stdio: 'inherit' }
     )
     console.log('Build complete, .native.tsx generated')
-
-    await safeLaunchApp({ newInstance: true })
   }, 600_000) // tamagui build can occasionally take 5-12 min on slow CI runners (sequential single-file builds with cold metro)
 
   it('should render and respond to theme changes', async () => {
-    await safeReloadApp()
-    await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root')
+    await reloadUseCase('CompilerExtraction', 'compiler-extraction-root')
     await new Promise((r) => setTimeout(r, 300))
 
     // verify components render
@@ -89,8 +85,7 @@ describe('CompilerExtraction', () => {
   })
 
   it('should benchmark optimized vs non-optimized (best of 3)', async () => {
-    await safeReloadApp()
-    await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root')
+    await reloadUseCase('CompilerExtraction', 'compiler-extraction-root')
     await new Promise((r) => setTimeout(r, 300))
 
     // show benchmark
