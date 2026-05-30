@@ -27,6 +27,7 @@ import { GestureSheetProvider } from './GestureSheetContext'
 import { resisted } from './helpers'
 import { getKeyboardOccludedHeight } from './keyboardAvoidance'
 import {
+  getMaxViewportHeight,
   getStableLayoutViewportHeight,
   getWebKeyboardHeight,
   MIN_KEYBOARD_HEIGHT,
@@ -385,8 +386,17 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       // use effScreenSize (the frozen anchor space the positions were built in) for
       // the off-screen/close target too, so a close while the keyboard is still up
       // animates fully out instead of to a mismatched live screenSize.
+      //
+      // web: clear the maximum the viewport can ever reveal, not just the current
+      // layout viewport. iOS Safari retracts its chrome on scroll and exposes area
+      // below the current viewport, so a sheet parked at effScreenSize would peek
+      // back in as the page scrolls. getMaxViewportHeight floors the target past
+      // anything Safari can expose.
+      const closeTarget = isWeb
+        ? Math.max(effScreenSize, getMaxViewportHeight())
+        : effScreenSize
       let toValue =
-        isHidden || position === -1 ? effScreenSize : activePositions[position]
+        isHidden || position === -1 ? closeTarget : activePositions[position]
 
       if (at.current === toValue) return
 

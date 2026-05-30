@@ -297,7 +297,7 @@ export function PurchaseModalContents() {
         }}
       >
         <Dialog.Adapt when="maxMd">
-          <Sheet modal transition="quick">
+          <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Frame bg="$color1" p={0} flex={1}>
               <Sheet.ScrollView flex={1}>
                 <Dialog.Adapt.Contents />

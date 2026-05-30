@@ -22,6 +22,7 @@ export declare function isEditableElement(el: Element | null): boolean;
  * visualViewport), so it stays constant while the keyboard animates in/out.
  */
 export declare function getStableLayoutViewportHeight(): number;
+export declare function getMaxViewportHeight(): number;
 /**
  * Soft-keyboard height = the occluded region between the (stable) layout
  * viewport bottom and the visual viewport bottom.

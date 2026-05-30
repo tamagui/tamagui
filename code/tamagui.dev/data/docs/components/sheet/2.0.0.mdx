@@ -172,6 +172,16 @@ Displays behind Frame. Extends [YStack](/docs/components/stacks).
 
 Contains the content. Extends [YStack](/docs/components/stacks).
 
+<PropsTable
+  data={[
+    {
+      name: 'disableHideBottomOverflow',
+      type: 'boolean',
+      description: `Disables the default cloned frame cover below the sheet. Leave it omitted or false when a spring can overshoot on open; the cover prevents page content from showing through below the sheet. If your frame uses decorative absolute layers, put the fallback background on Sheet.Frame so the cloned cover can occlude the bottom too.`,
+    },
+  ]}
+/>
+
 ### Sheet.Handle
 
 Shows a handle above the frame by default. On tap, it will cycle between

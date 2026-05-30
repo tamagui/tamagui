@@ -1,5 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type {
   GetProps,
   ViewProps,
@@ -25,6 +25,7 @@ import { SheetScrollView } from './SheetScrollView'
 import type { SheetProps, SheetScopedProps } from './types'
 import { useSheetController } from './useSheetController'
 import { useSheetOffscreenSize } from './useSheetOffscreenSize'
+import { getMaxViewportHeight } from './webViewport'
 
 type SharedSheetProps = {
   open?: boolean
@@ -136,9 +137,9 @@ export function createSheet<
 
   type ExtraFrameProps = {
     /**
-     * By default the sheet adds a view below its bottom that extends down another 50%,
-     * this is useful if your Sheet has a spring animation that bounces "past" the top when
-     * opening, preventing it from showing the content underneath.
+     * by default the sheet adds a view below its bottom that extends past the
+     * largest visible viewport height. this covers spring overshoot when opening
+     * so page content never shows through below the sheet.
      */
     disableHideBottomOverflow?: boolean
 
@@ -225,14 +226,25 @@ export function createSheet<
             <Frame
               {...props}
               componentName="SheetCover"
+              data-sheet-cover=""
               children={null}
               // Don't inherit testID - this is a visual helper element
               testID={undefined}
               id={undefined}
               position="absolute"
-              bottom="-100%"
+              // anchor the cover's top at the sheet's bottom edge (top: 100% of the
+              // container), then extend it downward. on web extend it past the
+              // largest viewport safari can reveal as its chrome retracts, so the
+              // sheet background covers the bottom instead of revealing the page.
+              // native keeps frameSize.
+              top="100%"
               zIndex={-1}
-              height={context.frameSize}
+              height={
+                isWeb
+                  ? Math.max(context.frameSize, getMaxViewportHeight())
+                  : context.frameSize
+              }
+              maxHeight={isWeb ? 'none' : undefined}
               left={0}
               right={0}
               borderWidth={0}
