@@ -17,16 +17,15 @@
  */
 
 import { by, device, element, expect } from 'detox'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { safeLaunchApp } from './utils/detox'
 import { navigateToTestCase } from './utils/navigation'
 
 describe('MediaQueryGtMd', () => {
+  // launch + navigate once: all three tests read the same static media-query
+  // screen and never mutate it, so the old per-test safeReloadApp only added a
+  // relaunch + re-bundle + re-navigation (~70s/test) with no isolation gain.
   beforeAll(async () => {
     await safeLaunchApp({ newInstance: true })
-  })
-
-  beforeEach(async () => {
-    await safeReloadApp()
     await navigateToTestCase('MediaQueryGtMd', 'media-test-both')
   })
 
