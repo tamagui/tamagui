@@ -395,8 +395,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       const closeTarget = isWeb
         ? Math.max(effScreenSize, getMaxViewportHeight())
         : effScreenSize
-      let toValue =
-        isHidden || position === -1 ? closeTarget : activePositions[position]
+      let toValue = isHidden || position === -1 ? closeTarget : activePositions[position]
 
       if (at.current === toValue) return
 

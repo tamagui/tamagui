@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/label",
-  "version": "2.1.0",
+  "version": "2.1.0-1780182832733",
   "source": "src/index.ts",
   "files": [
     "src",
