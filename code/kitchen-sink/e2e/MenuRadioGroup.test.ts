@@ -1,6 +1,6 @@
 import { by, element, expect, waitFor } from 'detox'
 import { safeLaunchApp, withSync } from './utils/detox'
-import { navigateToTestCase } from './utils/navigation'
+import { remountDirectUseCase } from './utils/navigation'
 
 function getMenuItemMatcher(label: string) {
   return by.text(label)
@@ -19,11 +19,18 @@ async function selectColor(label: 'Red' | 'Green' | 'Blue') {
 }
 
 describe('MenuRadioGroup', () => {
-  beforeEach(async () => {
-    await safeLaunchApp({ newInstance: true })
-    await navigateToTestCase('MenuRadioGroupCase', 'menu-radio-selected-value', {
-      skipEnableSync: true,
+  beforeAll(async () => {
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'MenuRadioGroupCase' },
     })
+    await waitFor(element(by.id('menu-radio-selected-value')))
+      .toExist()
+      .withTimeout(180000)
+  })
+
+  beforeEach(async () => {
+    await remountDirectUseCase('menu-radio-selected-value', { skipEnableSync: true })
   })
 
   it('should render the menu radio group case', async () => {

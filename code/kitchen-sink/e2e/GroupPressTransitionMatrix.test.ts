@@ -14,10 +14,10 @@
  * catch regressions if the fix accidentally breaks another combination.
  */
 
-import { by, device, element, expect as detoxExpect } from 'detox'
+import { by, element, expect as detoxExpect, waitFor } from 'detox'
 import * as assert from 'assert'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { remountDirectUseCase } from './utils/navigation'
+import { safeLaunchApp } from './utils/detox'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
 
 const CELLS = ['pp-cp', 'pa-cp', 'pp-ca', 'pa-ca'] as const
@@ -54,15 +54,17 @@ async function assertChildReturnedToDefault(cellId: string) {
 
 describe('GroupPressTransitionMatrix', () => {
   beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'GroupPressTransitionMatrix' },
+    })
+    await waitFor(element(by.id('group-press-transition-matrix-root')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToTestCase(
-      'GroupPressTransitionMatrix',
-      'group-press-transition-matrix-root'
-    )
+    await remountDirectUseCase('group-press-transition-matrix-root')
   })
 
   it('renders every cell and the release target', async () => {
