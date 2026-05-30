@@ -14,23 +14,32 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { remountDirectUseCase } from './utils/navigation'
+import { safeLaunchApp } from './utils/detox'
 
 // only run on iOS - Android behavior is different
 const isAndroid = () => device.getPlatform() === 'android'
 
+// Launch model: launch the native app ONCE with directUseCase, then remount the
+// case in-app per test (deep link, no relaunch). Each "Case" test assumes a
+// freshly-closed sheet at scrollY=0, which the remount restores. skipEnableSync
+// throughout: KeyboardProvider keeps the main thread busy and taps/swipes work
+// with sync disabled here.
 describe('SheetScrollableDrag - RNGH Integration', () => {
   beforeAll(async () => {
     if (isAndroid()) return
-    await safeLaunchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'SheetScrollableDrag' },
+    })
+    await waitFor(element(by.id('sheet-scrollable-drag-trigger')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
     if (isAndroid()) return
-    await safeReloadApp()
-    // skipEnableSync: navigation re-enabling sync hangs if animations are settling
-    await navigateToTestCase('SheetScrollableDrag', 'sheet-scrollable-drag-trigger', {
+    await remountDirectUseCase('sheet-scrollable-drag-trigger', {
       skipEnableSync: true,
     })
   })
