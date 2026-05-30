@@ -80,6 +80,7 @@ let last = {
   fH: NaN,
   sT: NaN,
   iB: NaN,
+  pB: NaN,
   vv: NaN,
 }
 
@@ -128,6 +129,21 @@ function measure() {
     iB = ri(r.bottom)
   }
 
+  // the submit/post button (fixed testid). its clearance above the keyboard is
+  // the real success metric — the primary action must be reachable, not occluded.
+  // tracked independent of focus so we can read it straight from the telemetry.
+  let pT = NaN,
+    pB = NaN
+  const post = (document.querySelector('[data-testid="sheet-web-kb-post"]') ||
+    document.querySelector(
+      '[data-testid="sheet-web-kb-af-post"]'
+    )) as HTMLElement | null
+  if (post) {
+    const pr = post.getBoundingClientRect()
+    pT = ri(pr.top)
+    pB = ri(pr.bottom)
+  }
+
   // NaN-safe inequality: NaN vs NaN counts as equal (no spurious change)
   const ne = (a: number, b: number) =>
     Number.isNaN(a) && Number.isNaN(b) ? false : a !== b
@@ -137,13 +153,17 @@ function measure() {
     ne(fH, last.fH) ||
     ne(sT, last.sT) ||
     ne(iB, last.iB) ||
+    ne(pB, last.pB) ||
     ne(vv, last.vv)
   if (changed) {
-    last = { fT, fB, fH, sT, iB, vv }
+    last = { fT, fB, fH, sT, iB, pB, vv }
     const ae = document.activeElement
     const aeTag = ae ? ae.tagName : ''
     const de = document.documentElement.clientHeight
-    push({ k: 'pos', fT, fB, fH, sT, sH, sC, iT, iB, vv, vo, in: inn, kb, ae: aeTag, de })
+    push({
+      k: 'pos',
+      fT, fB, fH, sT, sH, sC, iT, iB, pT, pB, vv, vo, in: inn, kb, ae: aeTag, de,
+    })
   }
 }
 
