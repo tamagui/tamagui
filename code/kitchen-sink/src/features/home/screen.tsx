@@ -6,7 +6,7 @@ import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
 import { Button, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
-import * as TestCases from '../../usecases'
+import { useCases as TestCases } from '../../usecases'
 
 const testCaseNames = Object.keys(TestCases)
 
