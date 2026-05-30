@@ -257,7 +257,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     // lift the lower content clear of the keyboard, and SheetScrollView scrolls
     // the focused input above it. freezing prevents the live screenSize/frameSize
     // jitter (which tracks the keyboard) from re-driving the position.
-    const effScreenSize = freezeForKb ? stableKbGeom.current.screen : screenSize
+    // anchor the frame's bottom to the STABLE layout viewport (clientHeight) on
+    // EVERY render of a web keyboard sheet — the soft keyboard never shrinks it.
+    // reading it directly (not the measured screenSize, which the keyboard DOES
+    // shrink and which races during the autofocus-open before the freeze captures a
+    // baseline) makes the bottom anchor deterministic: the frame sits at the phone
+    // bottom behind the keyboard on every open, regardless of tap/keyboard timing.
+    // this is what stops the "frame bottom lands way above the keyboard" bad open.
+    const stableAnchor = isWebKbSheet ? getStableViewportHeight() : 0
+    const effScreenSize = stableAnchor > 0 ? stableAnchor : screenSize
 
     // use stableFrameSize when closing to prevent position jumps during exit animation
     // but when opening, always use the current frameSize so positions update

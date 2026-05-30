@@ -147,22 +147,23 @@ export const SheetScrollView = React.forwardRef<
       scrollBridge.hasScrollableContent = hasScrollableContent
     }, [hasScrollableContent])
 
-    // AUTOFOCUS-ON-OPEN recovery (web). when an input autofocuses as the sheet
-    // opens, the browser's native scroll-into-view fires before the keyboard
-    // padding (keyboardOccludedHeight) and frozen height have laid out, so the
-    // focused input can stay occluded under the keyboard — the "tap the input
-    // again to fix it" symptom. once the keyboard is up and the layout has
-    // settled, explicitly scroll the focused input above the keyboard, which is
-    // exactly what that second tap's scroll-into-view does. measure against the
-    // visualViewport (the real visible region) rather than the scroll view's own
-    // box, whose lower part is occluded by the keyboard.
+    // KEYBOARD SCROLL-INTO-VIEW (web). lift the focused editable above the soft
+    // keyboard. the browser's native scroll-into-view fires before the keyboard
+    // spacer + frozen height have laid out, so a field that autofocuses as the
+    // sheet opens — or one below the keyboard line — can stay occluded (the "tap
+    // the input again to fix it" symptom). this has to be ROBUST to timing: the
+    // field may focus before OR after the keyboard registers, and the open
+    // animation settles over a few hundred ms. so instead of a single one-shot
+    // poll (which missed when it ran before the field focused or before the spacer
+    // laid out), we re-arm a settle-then-lift poll on (a) the keyboard becoming
+    // visible and (b) every focusin of an editable. each lift is idempotent: it
+    // waits until the keyboard is actually up AND the field's viewport position is
+    // stable, then scrolls only the minimum to clear it (no-op if already clear).
+    const KB_LIFT_MARGIN = 24
     useEffect(() => {
-      if (!isWeb || !hasFit || !isKeyboardVisible) return
+      if (!isWeb || !hasFit) return
       if (typeof window === 'undefined' || typeof document === 'undefined') return
-      let raf = 0
-      let frames = 0
-      let lastBottom = Number.NaN
-      let stableFrames = 0
+
       const findScroller = (el: HTMLElement): HTMLElement | null => {
         let n: HTMLElement | null = el.parentElement
         while (n) {
@@ -177,42 +178,69 @@ export const SheetScrollView = React.forwardRef<
         }
         return null
       }
-      const tick = () => {
-        frames++
-        const el = document.activeElement as HTMLElement | null
-        if (!el || !isEditableElement(el)) return
-        // CRITICAL: wait for the open animation to settle before measuring. the
-        // frame slides up over several frames; measuring mid-animation reads the
-        // input far down the (still-low) frame, yields a huge overlap, and
-        // overscrolls the focused input off the top. so we wait until the input's
-        // viewport position stops changing (or a frame cap) before scrolling.
-        const bottom = el.getBoundingClientRect().bottom
-        if (Number.isNaN(lastBottom) || Math.abs(bottom - lastBottom) > 1) {
-          lastBottom = bottom
-          stableFrames = 0
-          if (frames < 60) {
+
+      let raf = 0
+      // settle-then-lift: poll until the focused editable is present, the keyboard
+      // is up, and the field's position has stopped moving (open animation done),
+      // then lift it clear of the keyboard. capped so it can't spin forever.
+      const liftWhenStable = () => {
+        cancelAnimationFrame(raf)
+        let frames = 0
+        let lastBottom = Number.NaN
+        let stableFrames = 0
+        const tick = () => {
+          frames++
+          if (frames > 120) return // ~2s cap
+          const el = document.activeElement as HTMLElement | null
+          // field not focused yet (autofocus lands a tick later) — keep waiting
+          if (!el || !isEditableElement(el)) {
             raf = requestAnimationFrame(tick)
             return
           }
-        } else if (stableFrames < 3 && frames < 60) {
-          stableFrames++
-          raf = requestAnimationFrame(tick)
-          return
+          // keyboard not up yet (it rises after focus) — keep waiting
+          if (getWebKeyboardHeight() < MIN_KEYBOARD_HEIGHT) {
+            raf = requestAnimationFrame(tick)
+            return
+          }
+          // wait for the open animation to settle: measuring mid-slide reads the
+          // field far down the still-low frame and overscrolls it off the top.
+          const bottom = el.getBoundingClientRect().bottom
+          if (Number.isNaN(lastBottom) || Math.abs(bottom - lastBottom) > 1) {
+            lastBottom = bottom
+            stableFrames = 0
+            raf = requestAnimationFrame(tick)
+            return
+          }
+          if (stableFrames < 2) {
+            stableFrames++
+            raf = requestAnimationFrame(tick)
+            return
+          }
+          // settled — lift the minimum needed (idempotent; no-op if already clear)
+          const scroller = findScroller(el)
+          if (!scroller) return
+          const vv = window.visualViewport
+          const keyboardTop = vv ? vv.offsetTop + vv.height : window.innerHeight
+          const overlap = Math.round(
+            el.getBoundingClientRect().bottom - (keyboardTop - KB_LIFT_MARGIN)
+          )
+          if (overlap > 0) scroller.scrollTop += overlap
         }
-        const scroller = findScroller(el)
-        if (!scroller) return
-        const vv = window.visualViewport
-        const keyboardTop = vv ? vv.offsetTop + vv.height : window.innerHeight
-        // only scroll the minimum needed to lift the input clear of the keyboard;
-        // no-op when it's already visible (e.g. an autofocused title at the top).
-        const overlap = Math.round(
-          el.getBoundingClientRect().bottom - (keyboardTop - 16)
-        )
-        if (overlap > 0) scroller.scrollTop += overlap
+        raf = requestAnimationFrame(tick)
       }
-      raf = requestAnimationFrame(tick)
-      return () => cancelAnimationFrame(raf)
-    }, [isKeyboardVisible, hasFit])
+
+      const onFocusIn = (e: FocusEvent) => {
+        if (isEditableElement(e.target as Element | null)) liftWhenStable()
+      }
+      document.addEventListener('focusin', onFocusIn, true)
+      // arm immediately too, for the autofocus-on-open case where the field is
+      // already focused by the time this effect (or a keyboard-visible change) runs.
+      liftWhenStable()
+      return () => {
+        document.removeEventListener('focusin', onFocusIn, true)
+        cancelAnimationFrame(raf)
+      }
+    }, [hasFit, isKeyboardVisible])
 
     // platform-specific gesture handling
     const gestureProps = useSheetScrollViewGestures({
