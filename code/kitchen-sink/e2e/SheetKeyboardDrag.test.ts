@@ -15,7 +15,8 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { remountDirectUseCase } from './utils/navigation'
+import { safeLaunchApp } from './utils/detox'
 
 // only run on iOS - keyboard behavior differs on Android
 const isAndroid = () => device.getPlatform() === 'android'
@@ -29,15 +30,19 @@ describe.skip('SheetKeyboardDrag - Keyboard + Sheet Integration', () => {
     if (isAndroid()) return
     await safeLaunchApp({
       newInstance: true,
-      launchArgs: { disableKeyboardController: false },
+      launchArgs: {
+        directUseCase: 'SheetKeyboardDragCase',
+        disableKeyboardController: false,
+      },
     })
-    await navigateToSheetKeyboardDrag()
+    await waitFor(element(by.id('sheet-keyboard-drag-trigger')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
     if (isAndroid()) return
-    await safeReloadApp()
-    await navigateToSheetKeyboardDrag()
+    await remountDirectUseCase('sheet-keyboard-drag-trigger', { skipEnableSync: true })
   })
 
   it('should show status indicators', async () => {
@@ -234,23 +239,3 @@ describe.skip('SheetKeyboardDrag - Keyboard + Sheet Integration', () => {
     )
   })
 })
-
-async function navigateToSheetKeyboardDrag() {
-  // wait for app to load
-  await waitFor(element(by.text('Kitchen Sink')))
-    .toExist()
-    .withTimeout(30000)
-
-  await new Promise((r) => setTimeout(r, 500))
-
-  // use quick access link from home screen
-  await waitFor(element(by.id('home-sheet-keyboard-test')))
-    .toBeVisible()
-    .withTimeout(5000)
-  await element(by.id('home-sheet-keyboard-test')).tap()
-
-  // wait for test screen
-  await waitFor(element(by.id('sheet-keyboard-drag-trigger')))
-    .toExist()
-    .withTimeout(5000)
-}

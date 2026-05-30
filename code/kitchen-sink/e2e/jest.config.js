@@ -16,6 +16,9 @@ module.exports = {
   globalTeardown: 'detox/runners/jest/globalTeardown',
   reporters: ['detox/runners/jest/reporter'],
   testEnvironment: 'detox/runners/jest/testEnvironment',
+  // per-test retry for flaky individual tests (jest.retryTimes); replaces detox's
+  // whole-file --retries. must run after the framework is installed, hence AfterEnv.
+  setupFilesAfterEnv: ['<rootDir>/e2e/jest.setup.ts'],
   verbose: true,
   // watchman daemon disabled - jest must use node fallback watcher
   watchman: false,

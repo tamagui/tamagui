@@ -62,8 +62,11 @@ module.exports = {
       maxWorkers,
     },
     jest: {
-      setupTimeout: 300000, // 5 minutes - slow CI runners + retries can exceed 180s, especially for tests that compile in beforeAll
-      retries: 1, // Retry flaky tests once
+      setupTimeout: 300000, // 5 minutes - slow CI runners can exceed 180s, especially for tests that compile in beforeAll
+      // no whole-file retry: detox --retries re-runs the entire spec file (beforeAll +
+      // every test again), which is the 2x wall-time variance we're killing. individual
+      // flaky tests retry in-place via jest.retryTimes (see e2e/jest.setup.ts), which
+      // re-runs just the test + its beforeEach (fresh app) - far cheaper.
     },
   },
   artifacts: {
@@ -77,6 +80,11 @@ module.exports = {
     init: {
       exposeGlobals: true,
     },
+    // NOTE: do NOT set launchApp: 'manual' here. In detox 'manual' does not mean
+    // "the test calls device.launchApp itself" (that's always allowed) - it makes
+    // RuntimeDevice.launchApp route through waitForAppLaunch, which printLaunchHint()
+    // + pressAnyKey() and crashes in CI ('process.stdin.setRawMode is not a function')
+    // since stdin isn't a TTY. Leave it at the default 'auto'.
   },
   apps: {
     'ios.debug': {

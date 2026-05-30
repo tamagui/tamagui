@@ -3,7 +3,7 @@ import { ScrollView } from 'react-native'
 import { createParam } from 'solito'
 import { H1, YStack } from 'tamagui'
 
-import * as UseCases from '../../usecases'
+import { useCases as UseCases } from '../../usecases'
 
 const { useParam } = createParam<{ id: string }>()
 

@@ -9,8 +9,8 @@
  */
 
 import { by, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { remountDirectUseCase } from './utils/navigation'
+import { safeLaunchApp } from './utils/detox'
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 const testElement = (id: string) => element(by.id(id)).atIndex(0)
@@ -25,12 +25,17 @@ async function openSheet() {
 
 describe('SheetPressRegression', () => {
   beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'SheetPressRegressionCase' },
+    })
+    await waitFor(element(by.id('sheet-press-screen')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToTestCase('SheetPressRegressionCase', 'sheet-press-screen')
+    await remountDirectUseCase('sheet-press-screen')
   })
 
   it('footer Post / Cancel buttons fire onPress', async () => {

@@ -14,28 +14,23 @@ import { by, element, expect, waitFor } from 'detox'
 import * as fs from 'fs'
 import * as assert from 'assert'
 import { PNG } from 'pngjs'
-import { navigateToTestCase } from './utils/navigation'
+import { remountDirectUseCase } from './utils/navigation'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
-import { safeLaunchApp, safeReloadApp, withSync } from './utils/detox'
-
-async function navigateToPressStyleNative() {
-  await navigateToTestCase('PressStyleNative', 'color-test-pressable', {
-    skipEnableSync: true,
-  })
-}
+import { safeLaunchApp, withSync } from './utils/detox'
 
 describe('PressStyleNative (no RNGH)', () => {
   beforeAll(async () => {
     await safeLaunchApp({
       newInstance: true,
-      launchArgs: { disableGestureHandler: true },
+      launchArgs: { directUseCase: 'PressStyleNative', disableGestureHandler: true },
     })
+    await waitFor(element(by.id('color-test-pressable')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
-    await safeReloadApp()
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    await navigateToPressStyleNative()
+    await remountDirectUseCase('color-test-pressable', { skipEnableSync: true })
   })
 
   it('should render the test case screen', async () => {

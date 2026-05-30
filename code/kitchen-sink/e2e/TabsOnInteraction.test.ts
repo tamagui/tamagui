@@ -5,21 +5,22 @@
  */
 
 import { by, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp, withSync } from './utils/detox'
+import { safeLaunchApp, withSync } from './utils/detox'
 
+// Launch model: directUseCase renders the case at app root, so we launch the
+// native app ONCE in beforeAll and never relaunch. The three tests are
+// order-safe (only the last one taps a tab; nothing depends on post-tap state),
+// so no per-test reset is needed. safeLaunchApp leaves synchronization disabled
+// after launch, which the Tabs onLayout-busy screen requires.
 describe('TabsOnInteraction', () => {
   beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
-  beforeEach(async () => {
-    await safeReloadApp()
-    // skipEnableSync: the Tabs screen keeps the main thread busy via
-    // onLayout callbacks, so leaving sync enabled hangs the hook.
-    await navigateToTestCase('TabsOnInteraction', 'tabs-root', {
-      skipEnableSync: true,
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'TabsOnInteraction' },
     })
+    await waitFor(element(by.id('tabs-root')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   it('should fire onInteraction with layout for the default selected tab', async () => {

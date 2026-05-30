@@ -14,20 +14,26 @@
  * 1. Verifies elements render correctly
  * 2. Takes screenshots for visual verification
  * 3. Future: Could use pixel sampling to verify actual colors
+ *
+ * Launch model: directUseCase renders the case at app root, so we launch the
+ * native app ONCE in beforeAll and never relaunch. The three assertions are
+ * read-only against the same render, so no per-test reset is needed. This
+ * removes the per-test app relaunch (the only place the Detox connect-flake
+ * bites) and the navigation round-trip.
  */
 
-import { by, device, element, expect } from 'detox'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
-import { navigateToTestCase } from './utils/navigation'
+import { by, device, element, expect, waitFor } from 'detox'
+import { safeLaunchApp } from './utils/detox'
 
 describe('MediaQueryGtMd', () => {
   beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
-  beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToTestCase('MediaQueryGtMd', 'media-test-both')
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'MediaQueryGtMd' },
+    })
+    await waitFor(element(by.id('media-test-both')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   it('should render all media query test elements', async () => {

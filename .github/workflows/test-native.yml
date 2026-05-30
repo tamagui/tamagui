@@ -57,16 +57,21 @@ jobs:
           # 4 shards balanced by test execution time. the old ~7min/shard ts-jest
           # type-check tax is gone (e2e now transpiles via e2e/tsconfig.json), so
           # startup is small and these fit well under the native-ci runner's
-          # 45-minute process timeout. heaviest files: PressStyleNative.noRngh
-          # (~13min) and SheetScrollableDrag (~10min) head shards 1 and 2.
+          # 45-minute process timeout. CompilerExtraction runs an in-test
+          # `npx tamagui build` (~12-19min, variable) so it gets its OWN shard
+          # (with the iOS-skipped SafeArea/SheetKeyboardDrag, which cost ~0); the
+          # remaining files are bin-packed to ~14.5min test-exec each (~25min wall).
+          # SelectAndroidOnPress is android-only (excluded here via
+          # check-ios-detox-shards.mjs, still runs in the android job). Coverage
+          # validated by that script (every e2e test assigned exactly once).
           - shard_name: '1/4'
-            test_files: 'e2e/PressStyleNative.noRngh.test.ts e2e/PressStyleNative.test.ts e2e/check-rngh-status.test.ts e2e/GroupPressNative.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/PressStyleScrollStuck.test.ts e2e/NestedPressExclusive.test.ts'
+            test_files: 'e2e/CompilerExtraction.test.ts e2e/SafeArea.test.ts e2e/SheetKeyboardDrag.test.ts'
           - shard_name: '2/4'
-            test_files: 'e2e/SheetScrollableDrag.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetKeyboardFitContent.test.ts e2e/SheetPressRegression.test.ts e2e/NativePortal.test.ts'
+            test_files: 'e2e/PressStyleNative.noRngh.test.ts e2e/CompilerTernaryActive.test.ts e2e/TabsOnInteraction.test.ts e2e/PointerEvents.test.ts e2e/GroupPressNative.test.ts e2e/ShorthandVariables.test.ts e2e/check-rngh-status.test.ts'
           - shard_name: '3/4'
-            test_files: 'e2e/PointerEvents.test.ts e2e/MediaQueryGtMd.test.ts e2e/TabsOnInteraction.test.ts e2e/SafeArea.test.ts e2e/CompilerExtraction.test.ts e2e/CompilerTernaryActive.test.ts'
+            test_files: 'e2e/SheetScrollableDrag.test.ts e2e/ThemeMutation.test.ts e2e/NativePortal.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/MenuRadioGroup.test.ts e2e/PressStyleScrollStuck.test.ts'
           - shard_name: '4/4'
-            test_files: 'e2e/MenuRadioGroup.test.ts e2e/SelectAndroidOnPress.test.ts e2e/SelectRemount.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts e2e/ShorthandVariables.test.ts'
+            test_files: 'e2e/PressStyleNative.test.ts e2e/SheetPressRegression.test.ts e2e/SheetKeyboardFitContent.test.ts e2e/SelectRemount.test.ts e2e/SheetDragResist.test.ts e2e/ThemeChangeBasic.test.ts e2e/NestedPressExclusive.test.ts e2e/MediaQueryGtMd.test.ts'
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -216,7 +221,10 @@ jobs:
         env:
           DETOX_IOS_APP_PATH: build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
         run: |
-          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 1 ${{ matrix.test_files }}
+          # --retries 0: no whole-file retry (that re-ran beforeAll + every test of a
+          # flaky file, the 2x wall-time variance). individual flaky tests retry
+          # in-place via jest.retryTimes (e2e/jest.setup.ts).
+          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 0 ${{ matrix.test_files }}
 
       - name: Report iOS Test Status
         if: always() && env.SKIP_IOS_TESTS == 'true'
@@ -617,8 +625,8 @@ jobs:
 
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
             # Android emulator is flaky - capture exit code but don't fail the job
-            # --retries 1 retries individual failing test files once (no full-suite retry — that's done at workflow level if at all)
-            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 1 || echo "ANDROID_TESTS_FAILED=true" >> $GITHUB_ENV
+            # --retries 0: no whole-file retry; individual tests retry via jest.retryTimes (e2e/jest.setup.ts)
+            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 0 || echo "ANDROID_TESTS_FAILED=true" >> $GITHUB_ENV
 
       - name: Report Android Test Status
         if: always()

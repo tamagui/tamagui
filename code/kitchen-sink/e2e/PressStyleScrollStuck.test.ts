@@ -7,9 +7,9 @@
  * on the view — the animated bg color never returns to its rest value.
  */
 
-import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { by, element, expect, waitFor } from 'detox'
+import { remountDirectUseCase } from './utils/navigation'
+import { safeLaunchApp } from './utils/detox'
 
 const PILLS = [
   'General',
@@ -26,12 +26,17 @@ const PILLS = [
 
 describe('PressStyleScrollStuck', () => {
   beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'PressStyleScrollStuck' },
+    })
+    await waitFor(element(by.id('press-scroll-stuck-root')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToTestCase('PressStyleScrollStuck', 'press-scroll-stuck-root')
+    await remountDirectUseCase('press-scroll-stuck-root')
   })
 
   it('renders the pill strip', async () => {

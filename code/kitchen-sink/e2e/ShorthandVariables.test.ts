@@ -8,20 +8,25 @@
  * 1. Elements render without crashing
  * 2. Elements are visible (which means the boxShadow style was accepted)
  * 3. The app doesn't show any red box errors
+ *
+ * Launch model: directUseCase renders the case at app root, so we launch the
+ * native app ONCE in beforeAll and never relaunch. All assertions are read-only
+ * against the same render, so no per-test reset is needed. This removes the
+ * per-test app relaunch (the only place the Detox connect-flake bites).
  */
 
-import { by, device, element, expect } from 'detox'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
-import { navigateToTestCase } from './utils/navigation'
+import { by, element, expect, waitFor } from 'detox'
+import { safeLaunchApp } from './utils/detox'
 
 describe('ShorthandVariables', () => {
   beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
-  })
-
-  beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToTestCase('ShorthandVariables', 'boxshadow-var')
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'ShorthandVariables' },
+    })
+    await waitFor(element(by.id('boxshadow-var')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   it('should render boxShadow with $variable without crashing', async () => {

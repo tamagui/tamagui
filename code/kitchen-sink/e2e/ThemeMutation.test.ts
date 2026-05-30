@@ -14,17 +14,22 @@
  */
 
 import { by, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { remountDirectUseCase } from './utils/navigation'
+import { safeLaunchApp } from './utils/detox'
 
 describe('ThemeMutation', () => {
   beforeAll(async () => {
-    await safeLaunchApp()
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'ThemeMutation' },
+    })
+    await waitFor(element(by.id('theme-mutation-button')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToTestCase('ThemeMutation', 'theme-mutation-button', {
+    await remountDirectUseCase('theme-mutation-button', {
       skipEnableSync: true,
     })
   })
