@@ -5,7 +5,7 @@ import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
 import { H2, ListItem, YGroup, YStack } from 'tamagui'
 
-import * as TestCases from '../../usecases'
+import { useCases as TestCases } from '../../usecases'
 
 export function TestCasesScreen() {
   return (

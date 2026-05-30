@@ -56,3 +56,57 @@ export async function navigateToTestCase(
     await device.enableSynchronization()
   }
 }
+
+/**
+ * Remount the active directUseCase component without a native app relaunch.
+ *
+ * Fires a `tamagui-kitchen-sink://remount` deep link, which DirectUseCaseHost
+ * turns into a React key bump (full unmount + fresh mount of the case). This is
+ * the per-test reset for launch-once test files: same fresh-state guarantee as
+ * safeReloadApp, but it skips the native relaunch that is the sole trigger of
+ * the Detox launch/connect flake (and costs ~300ms instead of ~30s).
+ *
+ * Readiness is gated on the off-screen e2e-remount-count incrementing, because
+ * the keyed component swaps atomically and its own testIDs can't signal the swap.
+ *
+ * @param waitForElementId - optional testID to additionally wait for post-remount
+ */
+export async function remountDirectUseCase(
+  waitForElementId?: string,
+  options?: { skipEnableSync?: boolean }
+) {
+  // disable sync first: a busy animation/onLayout screen would otherwise hang
+  // the openURL + attribute reads below.
+  await device.disableSynchronization()
+
+  const before = await readRemountCount()
+  await device.openURL({ url: 'tamagui-kitchen-sink://remount' })
+
+  await waitFor(element(by.id('e2e-remount-count')))
+    .toHaveText(String(before + 1))
+    .withTimeout(15000)
+
+  // small settle for the fresh mount's first layout/animation frame
+  await new Promise((r) => setTimeout(r, 300))
+
+  if (waitForElementId) {
+    await waitFor(element(by.id(waitForElementId)))
+      .toExist()
+      .withTimeout(15000)
+  }
+
+  if (!options?.skipEnableSync) {
+    await device.enableSynchronization()
+  }
+}
+
+async function readRemountCount(): Promise<number> {
+  try {
+    const attributes = (await element(by.id('e2e-remount-count')).getAttributes()) as any
+    const value = Number.parseInt(attributes.text, 10)
+    return Number.isNaN(value) ? 0 : value
+  } catch {
+    // counter not present yet (first reset right after launch) - treat as 0
+    return 0
+  }
+}

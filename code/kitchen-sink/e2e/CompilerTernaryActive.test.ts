@@ -10,10 +10,10 @@
 import * as assert from 'assert'
 import { execSync } from 'child_process'
 import { unlinkSync, existsSync } from 'fs'
-import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
+import { by, element, expect, waitFor } from 'detox'
+import { remountDirectUseCase } from './utils/navigation'
 import { getDominantColor, formatRGB } from './utils/colors'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
+import { safeLaunchApp } from './utils/detox'
 
 const SOURCE_FILE = 'src/usecases/CompilerTernaryActive.tsx'
 const NATIVE_FILE = 'src/usecases/CompilerTernaryActive.native.tsx'
@@ -30,12 +30,20 @@ describe('CompilerTernaryActive', () => {
     })
     console.log('Build complete, .native.tsx generated')
 
-    await safeLaunchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'CompilerTernaryActive' },
+    })
+    await waitFor(element(by.id('compiler-ternary-active-root')))
+      .toExist()
+      .withTimeout(180000)
   }, 600_000) // tamagui build can occasionally take 5-12 min on slow CI runners
 
+  beforeEach(async () => {
+    await remountDirectUseCase('compiler-ternary-active-root')
+  })
+
   it('optimized and non-optimized text should match colors in both states', async () => {
-    await safeReloadApp()
-    await navigateToTestCase('CompilerTernaryActive', 'compiler-ternary-active-root')
     await new Promise((r) => setTimeout(r, 300))
 
     // verify initial state is inactive

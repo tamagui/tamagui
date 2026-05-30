@@ -11,8 +11,8 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp, withSync } from './utils/detox'
+import { remountDirectUseCase } from './utils/navigation'
+import { safeLaunchApp, withSync } from './utils/detox'
 
 const testElement = (id: string) => element(by.id(id)).atIndex(0)
 
@@ -33,14 +33,19 @@ async function remountAndWait() {
 
 describe('SelectRemount', () => {
   beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'SelectRemount' },
+    })
+    await waitFor(element(by.id('remount-button')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
-    await safeReloadApp()
     // skipEnableSync: tests manage sync themselves via withSync helper
-    // re-enabling sync after navigation can hang if animations are still settling
-    await navigateToTestCase('SelectRemount', 'remount-button', { skipEnableSync: true })
+    // re-enabling sync after remount can hang if animations are still settling
+    await remountDirectUseCase('remount-button', { skipEnableSync: true })
   })
 
   it('should navigate to SelectRemount test case', async () => {

@@ -3,22 +3,23 @@
  * Verifies touch events map correctly to pointer events on native
  */
 
-import { by, device, element, expect } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
-import { safeLaunchApp, safeReloadApp } from './utils/detox'
-
-async function navigateToPointerEvents() {
-  await navigateToTestCase('PointerEventsCase', 'pointer-events-root')
-}
+import { by, device, element, expect, waitFor } from 'detox'
+import { remountDirectUseCase } from './utils/navigation'
+import { safeLaunchApp } from './utils/detox'
 
 describe('PointerEvents', () => {
   beforeAll(async () => {
-    await safeLaunchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'PointerEventsCase' },
+    })
+    await waitFor(element(by.id('pointer-events-root')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
-    await safeReloadApp()
-    await navigateToPointerEvents()
+    await remountDirectUseCase('pointer-events-root')
   })
 
   it('should render the test case', async () => {
