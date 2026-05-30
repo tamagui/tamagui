@@ -10,7 +10,11 @@ import { getGestureHandlerState, isGestureHandlerEnabled } from './gestureState'
 import { useSheetContext } from './SheetContext'
 import type { SheetScopedProps } from './types'
 import { useSheetScrollViewGestures } from './useSheetScrollViewGestures'
-import { getWebKeyboardHeight, MIN_KEYBOARD_HEIGHT } from './webViewport'
+import {
+  getWebKeyboardHeight,
+  isEditableElement,
+  MIN_KEYBOARD_HEIGHT,
+} from './webViewport'
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
@@ -142,6 +146,73 @@ export const SheetScrollView = React.forwardRef<
     useEffect(() => {
       scrollBridge.hasScrollableContent = hasScrollableContent
     }, [hasScrollableContent])
+
+    // AUTOFOCUS-ON-OPEN recovery (web). when an input autofocuses as the sheet
+    // opens, the browser's native scroll-into-view fires before the keyboard
+    // padding (keyboardOccludedHeight) and frozen height have laid out, so the
+    // focused input can stay occluded under the keyboard — the "tap the input
+    // again to fix it" symptom. once the keyboard is up and the layout has
+    // settled, explicitly scroll the focused input above the keyboard, which is
+    // exactly what that second tap's scroll-into-view does. measure against the
+    // visualViewport (the real visible region) rather than the scroll view's own
+    // box, whose lower part is occluded by the keyboard.
+    useEffect(() => {
+      if (!isWeb || !hasFit || !isKeyboardVisible) return
+      if (typeof window === 'undefined' || typeof document === 'undefined') return
+      let raf = 0
+      let frames = 0
+      let lastBottom = Number.NaN
+      let stableFrames = 0
+      const findScroller = (el: HTMLElement): HTMLElement | null => {
+        let n: HTMLElement | null = el.parentElement
+        while (n) {
+          const overflowY = getComputedStyle(n).overflowY
+          if (
+            (overflowY === 'auto' || overflowY === 'scroll') &&
+            n.scrollHeight > n.clientHeight
+          ) {
+            return n
+          }
+          n = n.parentElement
+        }
+        return null
+      }
+      const tick = () => {
+        frames++
+        const el = document.activeElement as HTMLElement | null
+        if (!el || !isEditableElement(el)) return
+        // CRITICAL: wait for the open animation to settle before measuring. the
+        // frame slides up over several frames; measuring mid-animation reads the
+        // input far down the (still-low) frame, yields a huge overlap, and
+        // overscrolls the focused input off the top. so we wait until the input's
+        // viewport position stops changing (or a frame cap) before scrolling.
+        const bottom = el.getBoundingClientRect().bottom
+        if (Number.isNaN(lastBottom) || Math.abs(bottom - lastBottom) > 1) {
+          lastBottom = bottom
+          stableFrames = 0
+          if (frames < 60) {
+            raf = requestAnimationFrame(tick)
+            return
+          }
+        } else if (stableFrames < 3 && frames < 60) {
+          stableFrames++
+          raf = requestAnimationFrame(tick)
+          return
+        }
+        const scroller = findScroller(el)
+        if (!scroller) return
+        const vv = window.visualViewport
+        const keyboardTop = vv ? vv.offsetTop + vv.height : window.innerHeight
+        // only scroll the minimum needed to lift the input clear of the keyboard;
+        // no-op when it's already visible (e.g. an autofocused title at the top).
+        const overlap = Math.round(
+          el.getBoundingClientRect().bottom - (keyboardTop - 16)
+        )
+        if (overlap > 0) scroller.scrollTop += overlap
+      }
+      raf = requestAnimationFrame(tick)
+      return () => cancelAnimationFrame(raf)
+    }, [isKeyboardVisible, hasFit])
 
     // platform-specific gesture handling
     const gestureProps = useSheetScrollViewGestures({

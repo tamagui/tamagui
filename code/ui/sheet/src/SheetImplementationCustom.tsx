@@ -243,12 +243,23 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       !seedSettled.current
     const freezeForKb =
       isWebKbSheet && isKeyboardVisible && stableKbGeom.current.frame > 0
-    const effScreenSize = freezeForKb ? stableKbGeom.current.screen : screenSize
+    // when the keyboard is open, AVOID it: anchor the sheet's bottom to the
+    // keyboard top by shrinking the effective screen by the keyboard height. the
+    // fit-position math (frame bottom = effScreenSize) then lifts the frame above
+    // the keyboard instead of leaving it pinned to the occluded window bottom.
+    // the stable screen (document.documentElement.clientHeight) doesn't shrink
+    // with the keyboard, so subtracting keyboardHeight gives the real visible
+    // height above it — and freezing off that stable baseline keeps the lift
+    // smooth (single target) instead of flying up then back down.
+    const kbAvoidScreen = Math.max(0, stableKbGeom.current.screen - keyboardHeight)
+    const effScreenSize = freezeForKb ? kbAvoidScreen : screenSize
 
     // use stableFrameSize when closing to prevent position jumps during exit animation
-    // but when opening, always use the current frameSize so positions update correctly
+    // but when opening, always use the current frameSize so positions update correctly.
+    // while the keyboard is open, clamp the frame to the space above it so its
+    // full content sits above the keyboard and scrolls there.
     const effectiveFrameSize = freezeForKb
-      ? stableKbGeom.current.frame
+      ? Math.min(stableKbGeom.current.frame, kbAvoidScreen)
       : open
         ? frameSize
         : stableFrameSize.current || frameSize
@@ -284,14 +295,14 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     // keyboard-adjusted snap positions.
     //
-    // WEB: the sheet stays ANCHORED at the bottom and keeps its full pre-keyboard
-    // height — it does NOT shift up or resize. Shifting/resizing with the
-    // translateY model detaches the bottom from the screen edge or teleports it.
-    // Instead the frame's anchor geometry is frozen (effScreenSize/effectiveFrameSize
-    // above) and its height is pinned (keyboardStableFrameHeight -> SheetScrollView);
-    // the scroll content is padded by keyboardOccludedHeight and the browser
-    // scroll-into-view lifts the focused input above the keyboard. So
-    // activePositions === positions on web.
+    // WEB: the snap positions already AVOID the keyboard — they're built from
+    // effScreenSize/effectiveFrameSize above, which shrink to the space above the
+    // keyboard (anchor the frame bottom to the keyboard top) and clamp the frame
+    // to fit there. The lift is smooth because the geometry is frozen off the
+    // stable (non-shrinking) layout viewport baseline, so it animates to a single
+    // target instead of flying up then back down. The scroll view is pinned to the
+    // same clamped height (keyboardStableFrameHeight) so all content scrolls in the
+    // visible band. So activePositions === positions on web (no extra shift here).
     //
     // NATIVE: shift snap points up by keyboard height (the native keyboard is
     // opaque and pushes content), capped at the safe-area top inset.
@@ -320,18 +331,21 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       return result
     }, [positions, isKeyboardVisible, keyboardHeight, screenSize, isDragging])
 
-    const keyboardOccludedHeight = seedingKbBaseline
-      ? // while seeding, suppress the keyboard tail padding so the frame measures
-        // its PURE pre-keyboard content height (the padding would otherwise inflate
-        // it toward the full screen). re-enabled once the baseline is captured.
-        0
-      : getKeyboardOccludedHeight({
-          frameSize: effectiveFrameSize,
-          isKeyboardVisible,
-          keyboardHeight,
-          screenSize: effScreenSize,
-          sheetY: position >= 0 ? activePositions[position] : undefined,
-        })
+    const keyboardOccludedHeight =
+      seedingKbBaseline || freezeForKb
+        ? // seeding: suppress tail padding so the frame measures its PURE
+          // pre-keyboard content height. freezeForKb (web, kb open): the frame is
+          // now anchored ABOVE the keyboard (effScreenSize), so none of it is
+          // occluded and no tail padding is needed — the content scrolls inside
+          // the clamped above-keyboard frame.
+          0
+        : getKeyboardOccludedHeight({
+            frameSize: effectiveFrameSize,
+            isKeyboardVisible,
+            keyboardHeight,
+            screenSize: effScreenSize,
+            sheetY: position >= 0 ? activePositions[position] : undefined,
+          })
 
     // the authoritative pre-keyboard frame height to pin the scroll view to while
     // the keyboard is open (web). stableKbGeom.frame is captured every render the
@@ -351,7 +365,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       : seedingKbBaseline
         ? stableKbGeom.current.screen || screenSize
         : stableKbGeom.current.frame > 0
-          ? stableKbGeom.current.frame
+          ? // pin the scroll view to the clamped above-keyboard height so its
+            // bottom sits at the keyboard top — all content (incl. the footer)
+            // scrolls within the visible band rather than behind the keyboard.
+            Math.min(stableKbGeom.current.frame, kbAvoidScreen)
           : 0
 
     const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
@@ -571,7 +588,22 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           scrollBridge.setScrollEnabled?.(false)
         }
       }
-    }, [hasntMeasured, disableAnimation, isHidden, frameSize, screenSize, open, position])
+      // effScreenSize/effectiveFrameSize are deps so the frame re-animates when the
+      // keyboard opens/closes: they change the fit target (activePositions[position])
+      // to lift the frame above the keyboard, but screenSize itself doesn't shrink
+      // (it's the stable layout viewport), so without these the effect never re-runs
+      // and the frame stays pinned at its no-keyboard position.
+    }, [
+      hasntMeasured,
+      disableAnimation,
+      isHidden,
+      frameSize,
+      screenSize,
+      open,
+      position,
+      effScreenSize,
+      effectiveFrameSize,
+    ])
 
     const disableDrag = props.disableDrag ?? controller?.disableDrag
     const themeName = useThemeName()
