@@ -28,6 +28,8 @@
     "fs-extra": "^11.2.0",
     "lodash.debounce": "^4.0.8",
     "oxc-transform": "^0.112.0",
+    "picomatch": "4.0.3",
+    "rolldown": "1.0.1",
     "typescript": "~5.9.2"
   },
   "peerDependencies": {

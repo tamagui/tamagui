@@ -1,3 +1,5 @@
+import { getNativeOnlyMarker } from './nativeOnly'
+
 export { nestedHello } from './nested'
 
 export const greet = (name: string): string => {
@@ -27,6 +29,26 @@ export function guardNativeSideEffects(items: string[], debug?: string) {
 
 export function getPlatformMarker() {
   return process.env.TAMAGUI_TARGET === 'native' ? 'native-only-marker' : 'web-only-marker'
+}
+
+export function getNativeImportMarker() {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    return getNativeOnlyMarker()
+  }
+
+  return 'web-import-marker'
+}
+
+export function getNodeEnvMarker() {
+  if (process.env.NODE_ENV === 'test') {
+    return 'test-env-marker'
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    return 'development-env-marker'
+  }
+
+  return 'runtime-env-marker'
 }
 
 export function applyNativeLogicalMarker(items: string[]) {

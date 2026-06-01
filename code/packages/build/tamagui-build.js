@@ -27,6 +27,8 @@ const { transform } = require('@babel/core')
 const FSE = require('fs-extra')
 const esbuild = require('esbuild')
 const fastGlob = require('fast-glob')
+const picomatch = require('picomatch')
+const { rolldown } = require('rolldown')
 const createExternalPlugin = require('./externalNodePlugin')
 const debounce = require('lodash.debounce')
 const { basename, dirname } = require('node:path')
@@ -89,6 +91,183 @@ function dceTamaguiTarget(contents, { format, jsx, platform }) {
   }
 
   return result.code || contents
+}
+
+const sideEffectsMatchersCache = new Map()
+const packageSideEffectsCache = new Map()
+const sideEffectsExtensionCandidates = ['.js', '.mjs', '.cjs', '.jsx', '.ts', '.tsx']
+
+function normalizeSideEffectsSpecifier(specifier) {
+  return specifier
+    .replace(/[?#].*$/, '')
+    .replace(/^\.\/+/, '')
+    .replace(/^\/+/, '')
+}
+
+function getSideEffectsSpecifierCandidates(specifier) {
+  const normalized = normalizeSideEffectsSpecifier(specifier)
+  if (!normalized) return []
+
+  const candidates = [normalized]
+  const lastSegment = normalized.split('/').pop() || ''
+  const hasKnownExtension = /\.(?:[cm]?js|jsx|tsx?|css|json)$/.test(lastSegment)
+
+  if (!hasKnownExtension) {
+    for (const extension of sideEffectsExtensionCandidates) {
+      candidates.push(`${normalized}${extension}`)
+    }
+    for (const extension of sideEffectsExtensionCandidates) {
+      candidates.push(`${normalized}/index${extension}`)
+    }
+  }
+
+  return candidates
+}
+
+function sideEffectsMatch(sideEffects, specifier) {
+  if (sideEffects === true || sideEffects === undefined) return true
+  if (sideEffects === false) return false
+  if (!Array.isArray(sideEffects)) return true
+
+  const candidates = getSideEffectsSpecifierCandidates(specifier)
+  if (!candidates.length) return false
+
+  const cacheKey = JSON.stringify(sideEffects)
+  let matcher = sideEffectsMatchersCache.get(cacheKey)
+  if (!matcher) {
+    matcher = picomatch(sideEffects, { dot: true })
+    sideEffectsMatchersCache.set(cacheKey, matcher)
+  }
+  return candidates.some((candidate) => matcher(candidate))
+}
+
+function getPackageNameFromSpecifier(specifier) {
+  if (!specifier || specifier.startsWith('.') || specifier.startsWith('/')) return null
+  if (specifier.startsWith('node:')) return null
+  const parts = specifier.split('/')
+  return specifier.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0]
+}
+
+function findPackageJsonFromResolvedFile(filePath, packageName) {
+  let current = dirname(filePath)
+  while (current && current !== dirname(current)) {
+    const packageJsonPath = path.join(current, 'package.json')
+    if (FSE.existsSync(packageJsonPath)) {
+      try {
+        const json = FSE.readJSONSync(packageJsonPath)
+        if (!packageName || json.name === packageName) {
+          return { path: packageJsonPath, json }
+        }
+      } catch {
+        return null
+      }
+    }
+    current = dirname(current)
+  }
+  return null
+}
+
+function getPackageSideEffects(packageName) {
+  if (packageSideEffectsCache.has(packageName)) {
+    return packageSideEffectsCache.get(packageName)
+  }
+
+  let found = null
+
+  try {
+    const packageJsonPath = require.resolve(`${packageName}/package.json`, {
+      paths: [process.cwd()],
+    })
+    found = {
+      path: packageJsonPath,
+      json: FSE.readJSONSync(packageJsonPath),
+    }
+  } catch {
+    try {
+      const resolved = require.resolve(packageName, {
+        paths: [process.cwd()],
+      })
+      found = findPackageJsonFromResolvedFile(resolved, packageName)
+    } catch {
+      found = null
+    }
+  }
+
+  const value = found
+    ? {
+        sideEffects: found.json.sideEffects,
+      }
+    : null
+
+  packageSideEffectsCache.set(packageName, value)
+  return value
+}
+
+function moduleHasSideEffects(id) {
+  if (id.startsWith('.') || id.startsWith('/')) {
+    return sideEffectsMatch(pkg.sideEffects, id)
+  }
+
+  const packageName = getPackageNameFromSpecifier(id)
+  if (!packageName) return true
+
+  const packageInfo = getPackageSideEffects(packageName)
+  if (!packageInfo) return true
+
+  const subpath = normalizeSideEffectsSpecifier(id.slice(packageName.length))
+  return sideEffectsMatch(packageInfo.sideEffects, subpath)
+}
+
+function stripRolldownRegionComments(contents) {
+  return contents
+    .replace(/^\/\/#region[^\n]*(?:\n|$)/gm, '')
+    .replace(/^\/\/#endregion[^\n]*(?:\n|$)/gm, '')
+}
+
+async function pruneUnusedImports(contents, filePath) {
+  if (!contents.includes('import')) {
+    return contents
+  }
+
+  const entryId = `${path.resolve(filePath)}?tamagui-build-prune`
+
+  const bundle = await rolldown({
+    input: entryId,
+    external: (id) => id !== entryId,
+    platform: 'neutral',
+    plugins: [
+      {
+        name: 'tamagui-build-prune-entry',
+        resolveId(id) {
+          if (id === entryId) return id
+        },
+        load(id) {
+          if (id === entryId) {
+            return {
+              code: contents,
+              moduleSideEffects: true,
+            }
+          }
+        },
+      },
+    ],
+    treeshake: {
+      moduleSideEffects: (id) => moduleHasSideEffects(id),
+    },
+  })
+
+  try {
+    const result = await bundle.generate({
+      format: 'esm',
+      sourcemap: false,
+      comments: false,
+      minify: false,
+    })
+    const chunk = result.output.find((item) => item.type === 'chunk')
+    return chunk?.code ? stripRolldownRegionComments(chunk.code) : contents
+  } finally {
+    await bundle.close?.()
+  }
 }
 
 function hasFlag(flag) {
@@ -1065,21 +1244,22 @@ async function esbuildWriteIfChanged(
         }
 
         if (!isMap && path.endsWith('.js')) {
+          const hadTamaguiTarget = contents.includes('process.env.TAMAGUI_TARGET')
           contents = dceTamaguiTarget(contents, {
             format: opts.format,
             jsx: opts.jsx,
             platform,
           })
+
+          if (isESM && hadTamaguiTarget) {
+            contents = await pruneUnusedImports(contents, path)
+          }
         }
 
         if (isESM && pkg.sideEffects !== true && pkg.sideEffects !== undefined) {
           const sideEffects = pkg.sideEffects
           // sideEffects: false means nothing has side effects, strip all bare imports
           // sideEffects: ["*.css", ...] means only matching files have side effects
-          const picomatch = require('picomatch')
-          const matchers = sideEffects === false
-            ? null // strip everything
-            : (Array.isArray(sideEffects) ? sideEffects : []).map((p) => picomatch(p))
 
           const result = []
           const lines = contents.split('\n')
@@ -1090,14 +1270,13 @@ async function esbuildWriteIfChanged(
               result.push(line)
               continue
             }
-            const specifier = match[1].replace(/^\.\//, '')
             // sideEffects: false → strip all bare imports
-            if (matchers === null) {
+            if (sideEffects === false) {
               result.push('')
               continue
             }
             // sideEffects: [...] → keep if specifier matches any pattern
-            const hasSideEffect = matchers.some((m) => m(specifier))
+            const hasSideEffect = sideEffectsMatch(sideEffects, match[1])
             result.push(hasSideEffect ? line : '')
           }
 

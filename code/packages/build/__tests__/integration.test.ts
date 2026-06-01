@@ -30,7 +30,7 @@ describe('tamagui-build integration test', () => {
   beforeAll(() => {
     // Clean up dist directory before starting
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
-    execSync('rm -rf dist && rm -rf types', { cwd: jsMainPackagePath })
+    execSync('rm -rf dist', { cwd: jsMainPackagePath })
   })
 
   it('should build the package correctly', () => {
@@ -117,10 +117,11 @@ describe('tamagui-build integration test', () => {
       await new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(() => {
           reject(new Error('Timeout waiting for build to complete'))
-        }, 15000) // 30 second timeout
+        }, 15000)
 
         let initialBuildComplete = false
         let fileModified = false
+        const replacementGreeting = originalContent.includes('Hi,') ? 'Hey' : 'Hi'
 
         watchProcess.stdout.on('data', (data) => {
           console.log('Watch process output:', data.toString())
@@ -130,7 +131,7 @@ describe('tamagui-build integration test', () => {
               console.log('Initial build complete, modifying file...')
               // Modify the source file
               const newContent = `export const greet = (name: string): string => {
-  return \`Hi, \${name}!\`;
+  return \`${replacementGreeting}, \${name}!\`;
 };`
               writeFileSync(watchSrcFilePath, newContent)
               fileModified = true
@@ -138,7 +139,7 @@ describe('tamagui-build integration test', () => {
               console.log('Rebuild after file modification complete')
               // Check the updated content of the output file
               const output = readFileSync(watchDistCjsFilePath, 'utf-8')
-              expect(output).toContain('Hi,')
+              expect(output).toContain(`${replacementGreeting},`)
 
               // Change content back to original
               writeFileSync(watchSrcFilePath, originalContent)
@@ -150,6 +151,7 @@ describe('tamagui-build integration test', () => {
         })
       })
     } finally {
+      writeFileSync(watchSrcFilePath, originalContent)
       watchProcess.kill()
     }
   }, 15000)
@@ -181,6 +183,27 @@ describe('tamagui-build integration test', () => {
     // Check that the common code is present in both outputs
     expect(webOutput).toContain('greet:')
     expect(nativeOutput).toContain('greet:')
+  })
+
+  it('should prune imports left unused after platform DCE', async () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+
+    const webOutput = await readFile(join(distPath, 'esm', 'index.mjs'), 'utf-8')
+    const nativeOutput = await readFile(join(distPath, 'esm', 'index.native.js'), 'utf-8')
+    const nativeOnlyOutput = await readFile(
+      join(distPath, 'esm', 'nativeOnly.native.js'),
+      'utf-8'
+    )
+
+    expect(webOutput).toContain('web-import-marker')
+    expect(webOutput).not.toContain('native-import-marker')
+    expect(webOutput).not.toContain('getNativeOnlyMarker')
+    expect(webOutput).not.toContain('./nativeOnly')
+    expect(webOutput).toContain('process.env.NODE_ENV === "test"')
+    expect(webOutput).toContain('process.env.NODE_ENV === "development"')
+
+    expect(nativeOutput).toContain('getNativeOnlyMarker')
+    expect(nativeOnlyOutput).toContain('native-import-marker')
   })
 
   it('should keep side-effectful native statements outside dev-only guards', async () => {
@@ -292,6 +315,6 @@ describe('tamagui-build integration test', () => {
   afterAll(() => {
     // Clean up dist directory after tests
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
-    execSync('rm -rf dist && rm -rf types', { cwd: jsMainPackagePath })
+    execSync('rm -rf dist', { cwd: jsMainPackagePath })
   })
 })
