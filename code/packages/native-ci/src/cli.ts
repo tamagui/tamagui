@@ -36,6 +36,9 @@ import {
 } from './ios'
 import { setupAndroidDevice, ensureAndroidFolder } from './android'
 import type { Platform } from './constants'
+import { chmodSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 
 const HELP = `
 native-ci - Native CI/CD helpers for Expo apps
@@ -89,6 +92,26 @@ EXAMPLES:
   native-ci fingerprint ios
   native-ci fingerprint-test
 `
+
+function createMaestroXcrunShim() {
+  const binDir = mkdtempSync(join(tmpdir(), 'native-ci-maestro-'))
+  const xcrunPath = join(binDir, 'xcrun')
+
+  writeFileSync(
+    xcrunPath,
+    `#!/bin/sh
+if [ "$1" = "devicectl" ] && [ "$2" = "--json-output" ] && [ "$4" = "list" ] && [ "$5" = "devices" ]; then
+  printf '{"result":{"devices":[]}}\\n' > "$3"
+  exit 0
+fi
+
+exec /usr/bin/xcrun "$@"
+`
+  )
+  chmodSync(xcrunPath, 0o755)
+
+  return binDir
+}
 
 interface ParsedArgs {
   command: string
@@ -223,6 +246,7 @@ try {
             projectRoot: options.projectRoot,
             recordLogs: options.recordLogs,
             retries: options.retries,
+            testFiles: args.length > 0 ? args : undefined,
           })
         })
         process.exit(exitCode)
@@ -249,6 +273,7 @@ try {
             recordLogs: options.recordLogs,
             retries: options.retries,
             headless: options.headless,
+            testFiles: args.length > 0 ? args : undefined,
           })
         })
         process.exit(exitCode)
@@ -279,9 +304,22 @@ try {
           const flowArg = flow ? `./flows/${flow}` : './flows'
           const udidArgs = ['--udid', udid]
           const debugDir = `${options.projectRoot}/.maestro-debug`
-          const result =
-            await $`maestro test ${flowArg} --exclude-tags=util --no-ansi --debug-output=${debugDir} ${udidArgs}`.nothrow()
-          return result.exitCode
+          const xcrunShimDir = createMaestroXcrunShim()
+          const previousPath = process.env.PATH
+
+          try {
+            process.env.PATH = `${xcrunShimDir}:${previousPath ?? ''}`
+            const result =
+              await $`maestro test ${flowArg} --exclude-tags=util --no-ansi --debug-output=${debugDir} ${udidArgs}`.nothrow()
+            return result.exitCode
+          } finally {
+            if (previousPath === undefined) {
+              delete process.env.PATH
+            } else {
+              process.env.PATH = previousPath
+            }
+            rmSync(xcrunShimDir, { recursive: true, force: true })
+          }
         })
         process.exit(exitCode)
       } else if (platform === 'all') {

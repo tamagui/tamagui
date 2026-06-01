@@ -9,12 +9,7 @@ tags:
 # disableOnboarding=1 skips the Expo Go developer menu dialog
 - openLink: exp://127.0.0.1:8081?disableOnboarding=1
 
-# Dismiss any system dialogs (Apple Account Verification, etc.)
-- tapOn:
-    text: 'Not Now'
-    optional: true
-
 # Wait for app to load (60s timeout for CI where bundle download can be slow)
 - extendedWaitUntil:
-    visible: 'Kitchen Sink'
+    visible: 'Toast'
     timeout: 60000

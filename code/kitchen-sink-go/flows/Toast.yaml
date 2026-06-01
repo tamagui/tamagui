@@ -1,4 +1,4 @@
-appId: dev.tamagui.kitchensinkgo
+appId: host.exp.Exponent
 tags:
   - component
 ---
@@ -13,11 +13,19 @@ tags:
 - tapOn:
     id: 'toast-show-button'
 # Toast should appear (testID on ToastPositionWrapper, outside AnimatedView)
+- extendedWaitUntil:
+    visible:
+      id: 'toast-item'
+    timeout: 3000
 - assertVisible:
     id: 'toast-item'
-# Tap close button to dismiss
-- tapOn:
-    id: 'toast-close-button'
-# Toast should be gone
-- assertNotVisible:
-    id: 'toast-item'
+# Dismiss native toast via swipe; close button is web-only in this demo
+- swipe:
+    from:
+      id: 'toast-item'
+    direction: DOWN
+    duration: 200
+- extendedWaitUntil:
+    notVisible:
+      id: 'toast-item'
+    timeout: 5000
