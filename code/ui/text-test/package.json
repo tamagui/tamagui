@@ -3,9 +3,7 @@
   "version": "2.1.0-1780182832733",
   "private": true,
   "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",
   "scripts": {

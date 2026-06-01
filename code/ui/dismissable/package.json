@@ -8,7 +8,7 @@
     "dist"
   ],
   "type": "module",
-  "sideEffects": true,
+  "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",

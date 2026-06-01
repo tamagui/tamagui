@@ -5,11 +5,14 @@
     "types",
     "dist",
     "css",
+    "files",
     "otf",
     "woff2"
   ],
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "files/*.css"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",

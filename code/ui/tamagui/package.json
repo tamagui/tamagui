@@ -11,7 +11,7 @@
   "source": "src/index.ts",
   "type": "module",
   "sideEffects": [
-    "setup.js"
+    "setup.*"
   ],
   "main": "dist/cjs",
   "module": "dist/esm",

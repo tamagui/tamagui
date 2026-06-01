@@ -10,7 +10,9 @@
     "woff2"
   ],
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "css/*.css"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",

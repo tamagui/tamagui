@@ -11,7 +11,7 @@
   ],
   "type": "module",
   "sideEffects": [
-    "polyfill.js"
+    "polyfill.*"
   ],
   "main": "dist/cjs",
   "module": "dist/esm",
