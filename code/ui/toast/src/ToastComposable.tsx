@@ -12,7 +12,7 @@ import {
   View,
 } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
-import { Portal } from '@tamagui/portal'
+import { Portal, needsPortalRepropagation } from '@tamagui/portal'
 import { XStack, YStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
 import * as React from 'react'
@@ -671,7 +671,14 @@ const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
     )
 
     if (portalToRoot) {
-      return <Portal zIndex={portalZIndex}>{content}</Portal>
+      // legacy native portal hosts render children outside styled context propagation.
+      const portaledContent = needsPortalRepropagation() ? (
+        <ToastContext.Provider {...ctx}>{content}</ToastContext.Provider>
+      ) : (
+        content
+      )
+
+      return <Portal zIndex={portalZIndex}>{portaledContent}</Portal>
     }
 
     return content
