@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/shapes",
-  "version": "2.1.0-1780182832733",
+  "version": "2.1.0-1780288049558",
   "source": "src/index.ts",
   "files": [
     "src",

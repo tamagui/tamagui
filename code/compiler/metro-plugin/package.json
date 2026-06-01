@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/metro-plugin",
-  "version": "2.1.0-1780182832733",
+  "version": "2.1.0-1780288049558",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [

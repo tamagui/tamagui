@@ -65,14 +65,28 @@ export function ThemeMutation() {
 
   if (!themeName) {
     return (
-      <YStack flex={1} width="100%" padding="$4" alignItems="center" justifyContent="center" gap="$4">
+      <YStack
+        flex={1}
+        width="100%"
+        padding="$4"
+        alignItems="center"
+        justifyContent="center"
+        gap="$4"
+      >
         <Text>Loading theme...</Text>
       </YStack>
     )
   }
 
   return (
-    <YStack flex={1} width="100%" padding="$4" alignItems="center" justifyContent="center" gap="$4">
+    <YStack
+      flex={1}
+      width="100%"
+      padding="$4"
+      alignItems="center"
+      justifyContent="center"
+      gap="$4"
+    >
       <Text testID={TEST_IDS.themeMutationColorText}>Expected color: {currentColor}</Text>
 
       <Theme name={themeName as any}>
