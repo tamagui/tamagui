@@ -8,11 +8,13 @@
  * `document.documentElement.clientHeight` holds rock-steady at 714 the whole
  * time (open, mid-keyboard, and close). So clientHeight IS the stable layout
  * viewport, and we derive everything from it:
- *   - soft-keyboard height = clientHeight - visualViewport.height (stays correct
- *     even as innerHeight drifts), so the scroll padding clears the input.
- *   - the sheet's fit-mode anchor cap (translateY = screenSize - frameSize) reads
- *     clientHeight, so it never re-measures against a shrunk value and the frame
- *     stays anchored at the bottom.
+ *   - keyboard resize height = clientHeight - visualViewport.height (stays
+ *     correct even as innerHeight drifts), so keyboard detection is stable.
+ *   - keyboard bottom inset = clientHeight - (visualViewport.offsetTop +
+ *     visualViewport.height), so Safari's focus pan doesn't over-lift the sheet.
+ *   - the sheet's fit-mode position math reads clientHeight, so it never
+ *     re-measures against a shrunk value; the frame can translate with the
+ *     keyboard while keeping its natural fit height.
  */
 
 // ignore small viewport changes (URL bar collapse, accessory bars) so they
@@ -69,13 +71,30 @@ export function getMaxViewportHeight(): number {
   return _maxViewportHeight
 }
 
-/**
- * Soft-keyboard height = the occluded region between the (stable) layout
- * viewport bottom and the visual viewport bottom.
- */
-export function getWebKeyboardHeight(): number {
+export function getWebKeyboardResizeHeight(): number {
   if (typeof window === 'undefined') return 0
   const vv = window.visualViewport
   if (!vv) return 0
   return Math.max(0, Math.round(getStableLayoutViewportHeight() - vv.height))
+}
+
+export function getWebVisualViewportOffsetTop(): number {
+  if (typeof window === 'undefined') return 0
+  return Math.max(0, Math.round(window.visualViewport?.offsetTop || 0))
+}
+
+/**
+ * bottom layout inset hidden below the visual viewport. When Safari pans the
+ * visual viewport during focus, offsetTop reduces the bottom-hidden area.
+ */
+export function getWebKeyboardBottomInset(): number {
+  if (typeof window === 'undefined') return 0
+  const vv = window.visualViewport
+  if (!vv) return 0
+  const visibleBottom = getWebVisualViewportOffsetTop() + vv.height
+  return Math.max(0, Math.round(getStableLayoutViewportHeight() - visibleBottom))
+}
+
+export function getWebKeyboardHeight(): number {
+  return getWebKeyboardResizeHeight()
 }

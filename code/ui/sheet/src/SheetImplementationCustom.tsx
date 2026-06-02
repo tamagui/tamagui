@@ -25,11 +25,16 @@ import { GestureDetectorWrapper } from './GestureDetectorWrapper'
 import { getGestureHandlerState } from './gestureState'
 import { GestureSheetProvider } from './GestureSheetContext'
 import { resisted } from './helpers'
-import { getKeyboardOccludedHeight } from './keyboardAvoidance'
 import {
+  getKeyboardAdjustedSheetY,
+  getKeyboardOccludedHeight,
+  getSheetReleasePosition,
+} from './keyboardAvoidance'
+import {
+  getWebKeyboardResizeHeight,
   getMaxViewportHeight,
   getStableLayoutViewportHeight,
-  getWebKeyboardHeight,
+  getWebVisualViewportOffsetTop,
   MIN_KEYBOARD_HEIGHT,
 } from './webViewport'
 import { SheetProvider } from './SheetContext'
@@ -56,6 +61,10 @@ function getSafeAreaTopInset(): number {
   // use @tamagui/native abstraction - returns 0 when not enabled
   _cachedSafeAreaTop = getSafeArea().getInsets().top
   return _cachedSafeAreaTop
+}
+
+function getKeyboardSafeAreaTopInset(): number {
+  return getSafeAreaTopInset() + (isWeb ? getWebVisualViewportOffsetTop() : 0)
 }
 
 let sheetHiddenStyleSheet: HTMLStyleElement | null = null
@@ -101,6 +110,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const {
       frameSize,
       setFrameSize,
+      dismissOnSnapToBottom,
       snapPoints,
       snapPointsMode,
       hasFit,
@@ -184,28 +194,29 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
     }, [open, frameSize])
 
-    // WEB keyboard anchor freeze. on real iOS Safari opening the keyboard shrinks
+    // WEB keyboard frame freeze. on real iOS Safari opening the keyboard shrinks
     // the visual viewport AND innerHeight AND the measured layout, which would
     // re-derive screenSize/frameSize smaller, recompute the fit positions, and
     // fly the frame up then back down ("goes back down after the keyboard opens").
     // so we snapshot the pre-keyboard geometry — captured every render while the
     // keyboard is CLOSED, which dodges the open-transition race where a shrunk
-    // onLayout lands before isKeyboardVisible flips — and use it for the anchor
-    // math while the keyboard is open. the sheet then stays put; only the scroll
-    // content shifts to clear the keyboard (keyboardOccludedHeight padding below
-    // + SheetScrollView's frozen height).
-    // this sheet is the kind the web keyboard anchor freeze is designed for — a
+    // onLayout lands before isKeyboardVisible flips — and use it for frame-size
+    // math while the keyboard is open. the active snap position still shifts up
+    // by the keyboard height, capped at the safe-area top; the scroll view gets
+    // keyboardOccludedHeight padding for any tail left behind the keyboard.
+    // this sheet is the kind the web keyboard frame freeze is designed for — a
     // fit-mode web sheet opted into keyboard handling. percent/constant sheets
-    // keep the live geometry (their height isn't pinned, so a frozen anchor
-    // would mismatch).
+    // keep the live geometry (their height isn't pinned, so a frozen frame
+    // height would mismatch).
     const isWebKbSheet = isWeb && hasFit && moveOnKeyboardChange
 
     // the space the snap positions are built against. WEB: the stable layout
     // viewport (document.documentElement.clientHeight), which the soft keyboard
     // never shrinks (unlike the measured screenSize / visualViewport). NATIVE:
-    // the measured screenSize. positions are then shifted UP by keyboardHeight
-    // when the keyboard opens (activePositions, below) — the whole device-height
-    // frame slides up so its content clears the keyboard, capped at the safe area.
+    // the measured screenSize. activePositions shift up by keyboardHeight below
+    // so a small fit sheet keeps its natural height and moves with the keyboard;
+    // a tall fit sheet moves until capped at the safe-area top, leaving its tail
+    // behind the keyboard for the ScrollView padding to expose.
     const effScreenSize = isWebKbSheet ? getStableViewportHeight() : screenSize
 
     // use stableFrameSize when closing to prevent position jumps during the exit
@@ -243,15 +254,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     // keyboard-adjusted snap positions.
     //
-    // WEB: the sheet stays ANCHORED at the bottom and keeps its full pre-keyboard
-    // height — the keyboard is an overlay, so the frame neither shifts nor resizes.
-    // Avoidance is handled below the frame: a bottom spacer (keyboardOccludedHeight
-    // = keyboardHeight) extends the scroll content so the lower content (e.g. the
-    // footer) can scroll up clear of the keyboard, and SheetScrollView scrolls the
-    // focused input above it. So activePositions === positions on web (no shift).
-    //
-    // NATIVE: shift snap points up by keyboard height (the native keyboard is
-    // opaque and pushes content), capped at the safe-area top inset.
+    // WEB + NATIVE: shift snap points up by keyboard height, capped at the
+    // safe-area top inset. web fit sheets keep their frozen pre-keyboard height
+    // and add bottom spacer padding when the safe-area cap leaves a hidden tail.
     //
     // IMPORTANT: frozen during drag to prevent gesture handler recreation —
     // when a TextInput blurs mid-drag the keyboard state would otherwise revert
@@ -261,27 +266,29 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       if (isDragging || isDraggingRef.current) return activePositionsRef.current
 
       let result: number[]
+
       if (!isKeyboardVisible || keyboardHeight <= 0) {
         result = positions
       } else {
-        const safeAreaTop = getSafeAreaTopInset()
-        result = positions.map((p) => {
-          // don't adjust the off-screen/close position (from dismissOnSnapToBottom's 0% snap)
-          // — it must stay at screenSize so the user can drag between real snap points
-          // without accidentally closing the sheet
-          if (screenSize && p >= screenSize) return p
-          return Math.max(safeAreaTop, p - keyboardHeight)
-        })
+        result = positions.map((p) =>
+          getKeyboardAdjustedSheetY({
+            sheetY: p,
+            screenSize: effScreenSize,
+            isKeyboardVisible,
+            keyboardHeight,
+            shouldTranslate: true,
+            safeAreaTop: getKeyboardSafeAreaTopInset(),
+          })
+        )
       }
       activePositionsRef.current = result
       return result
-    }, [positions, isKeyboardVisible, keyboardHeight, screenSize, isDragging])
+    }, [positions, isKeyboardVisible, keyboardHeight, effScreenSize, isDragging])
 
-    // bottom spacer for a sheet TALLER than the visible band: once the frame has
-    // shifted up as far as the safe-area cap allows, its lowest content can still
-    // sit behind the keyboard. the spacer = exactly that occluded height, so the
-    // footer can scroll up clear of the keyboard. when the sheet fits above the
-    // keyboard this returns 0 (no spacer, no over-scroll). same logic web + native.
+    // bottom spacer for the part of the sheet hidden by the keyboard after the
+    // keyboard translation and safe-area clamping. if a small sheet fits above
+    // the keyboard this is 0; if a tall sheet is capped at the safe-area top, the
+    // spacer makes the remaining hidden tail scrollable.
     const keyboardOccludedHeight = getKeyboardOccludedHeight({
       frameSize: effectiveFrameSize,
       isKeyboardVisible,
@@ -293,8 +300,8 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     // pin the scroll view to the held (pre-keyboard) frame height while the
     // keyboard is up on web. on older iOS the consumer's window-derived maxHeight
     // shrinks with the keyboard, which would clip the scroll view (and the frame)
-    // smaller; this override keeps it at the full height so the frame only
-    // translates up, never resizes. 0 = no override (use the consumer maxHeight).
+    // smaller; this override keeps it at the full height so the frame translates
+    // with the keyboard but never resizes. 0 = no override (use the consumer maxHeight).
     const keyboardStableFrameHeight =
       isWebKbSheet && isKeyboardVisible && frameSize > 0 ? frameSize : 0
 
@@ -582,17 +589,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         // vy goes up to about 4 at most (+ is down, - is up)
         const end = currentPos + frameSize * vy * 0.2
 
-        let closestPoint = 0
-        let dist = Number.POSITIVE_INFINITY
-
-        for (let i = 0; i < activePositions.length; i++) {
-          const position = activePositions[i]
-          const curDist = end > position ? end - position : position - end
-          if (curDist < dist) {
-            dist = curDist
-            closestPoint = i
-          }
-        }
+        const closestPoint = getSheetReleasePosition({
+          positions: activePositions,
+          projectedEnd: end,
+          currentPosition: currentPos,
+          frameSize,
+          dismissOnSnapToBottom,
+          snapPointsMode,
+          isKeyboardVisible,
+        })
 
         // have to call both because state may not change but need to snap back
         setPosition(closestPoint)
@@ -732,14 +737,14 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       frameSize,
       activePositions,
       setPosition,
+      dismissOnSnapToBottom,
+      snapPointsMode,
     ])
 
-    // animate to the keyboard-adjusted position when the keyboard state changes.
-    // both web and native shift the whole frame UP by the keyboard height (capped
-    // at the top safe area, in activePositions) so the content keeps its position
-    // relative to the visible area — it was resting on the device bottom, now it
-    // rests on the keyboard top. the frame is device-height, so sliding it up never
-    // reveals a gap below the content.
+    // animate to the current keyboard-adjusted position when the keyboard state
+    // changes. activePositions shift the frame up by keyboardHeight, capped at
+    // the safe-area top; tall web fit sheets keep a frozen height and gain scroll
+    // padding for whatever tail remains behind the keyboard.
     React.useEffect(() => {
       if (isDragging || isHidden || !open || disableAnimation) return
       if (!frameSize || !screenSize) return
@@ -794,6 +799,9 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
         at.current = val
         animatedNumber.setValue(val, { type: 'direct' })
       },
+      dismissOnSnapToBottom,
+      snapPointsMode,
+      isKeyboardVisible,
       pauseKeyboardHandler,
     })
 
@@ -803,9 +811,12 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     // recompute the fit anchor and fly the frame. a LIVE DOM check, NOT the
     // isKeyboardVisible React state, is required: the state lags the resize, so
     // the first shrunk onLayout lands before the flag flips. holding the measured
-    // sizes keeps the sheet anchored; the scroll content shifts to clear the kb.
+    // size keeps the fit geometry stable while the frame translates with the kb.
     const ignoreLayoutForKeyboard = useEvent(
-      () => isWeb && moveOnKeyboardChange && getWebKeyboardHeight() >= MIN_KEYBOARD_HEIGHT
+      () =>
+        isWeb &&
+        moveOnKeyboardChange &&
+        getWebKeyboardResizeHeight() >= MIN_KEYBOARD_HEIGHT
     )
 
     const handleAnimationViewLayout = useEvent((e: LayoutChangeEvent) => {
@@ -817,7 +828,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       const layoutHeight = e.nativeEvent?.layout.height
       // drop a layout measured while the keyboard is up: on older iOS the web
       // viewport shrinks and the frame would resize. keep the pre-keyboard frame
-      // height so the frame just TRANSLATES up (activePositions) without resizing.
+      // height so the web frame translates without resizing.
       // exception: if we have no frame height yet (sheet opened with the keyboard
       // already up), accept it so the sheet can appear at all.
       if (ignoreLayoutForKeyboard() && frameSize > 0) return

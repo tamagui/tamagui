@@ -9,9 +9,10 @@ import { reportSheetLayout, startSheetTracker } from './sheetFrameTracker'
  * A fit-mode modal sheet whose ScrollView maxHeight is sized off window
  * dimensions (mirrors the 3pc create-thread sheet). On mobile web the soft
  * keyboard shrinks window.visualViewport, which react-native-web's Dimensions
- * tracks — so without the fix the sheet COLLAPSES instead of moving up, and
- * gesture handling jitters. With moveOnKeyboardChange the sheet shifts up and
- * keeps its height.
+ * tracks — so without the fix the sheet COLLAPSES and gesture handling jitters.
+ * With moveOnKeyboardChange the sheet keeps its fit height, translates up with
+ * the keyboard until capped at the top safe area, and the scroll view gets
+ * keyboard tail padding for whatever remains behind the keyboard.
  *
  * Used by SheetWebKeyboard.test.tsx. `?open=1` starts open; `?kb=0` disables
  * moveOnKeyboardChange to reproduce the old behavior.
@@ -103,9 +104,10 @@ export function SheetWebKeyboardCase() {
         dismissOnSnapToBottom
         moveOnKeyboardChange={moveOnKb}
         zIndex={100000}
-        transition="medium"
+        transition="bouncy"
       >
         <Sheet.Overlay
+          testID="sheet-web-kb-overlay"
           transition="lazy"
           bg="$color"
           opacity={0.5}
@@ -145,7 +147,7 @@ export function SheetWebKeyboardCase() {
 
               {/* spacer content to make the sheet tall */}
               <YStack
-                height={220}
+                height={360}
                 bg="$backgroundHover"
                 rounded="$4"
                 items="center"

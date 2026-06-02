@@ -10,7 +10,13 @@ import { getGestureHandlerState, isGestureHandlerEnabled } from './gestureState'
 import { useSheetContext } from './SheetContext'
 import type { SheetScopedProps } from './types'
 import { useSheetScrollViewGestures } from './useSheetScrollViewGestures'
-import { getWebKeyboardHeight, MIN_KEYBOARD_HEIGHT } from './webViewport'
+import {
+  getStableLayoutViewportHeight,
+  getWebKeyboardBottomInset,
+  getWebKeyboardResizeHeight,
+  isEditableElement,
+  MIN_KEYBOARD_HEIGHT,
+} from './webViewport'
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
@@ -39,7 +45,7 @@ export const SheetScrollView = React.forwardRef<
     // height freeze engages on the same render that would otherwise collapse it.
     const isKeyboardVisible =
       context.isKeyboardVisible === true ||
-      (isWeb && getWebKeyboardHeight() >= MIN_KEYBOARD_HEIGHT)
+      (isWeb && getWebKeyboardResizeHeight() >= MIN_KEYBOARD_HEIGHT)
     const [scrollEnabled] = useControllableState({
       prop: scrollEnabledProp,
       defaultProp: true,
@@ -71,7 +77,7 @@ export const SheetScrollView = React.forwardRef<
     // frame height (frozenFrameHeight), overriding any consumer maxHeight. on web
     // that maxHeight is often tied to useWindowDimensions, which SHRINKS when the
     // keyboard opens and would otherwise collapse the sheet. holding the height
-    // constant means the frame only TRANSLATES up (no resize, no jump). applied
+    // constant means the web frame can translate without resizing. applied
     // AFTER {...props} so it wins.
     const keyboardFrozenOverride =
       hasFit && isKeyboardVisible && frozenFrameHeight > 0
@@ -85,6 +91,7 @@ export const SheetScrollView = React.forwardRef<
     // RNGH scroll locking state
     const currentScrollOffset = useRef(0)
     const lockedScrollY = useRef(0)
+    const focusedInputScrollFrame = useRef(0)
 
     const setScrollEnabled = (next: boolean, lockTo?: number) => {
       if (!next) {
@@ -101,6 +108,67 @@ export const SheetScrollView = React.forwardRef<
     const forceScrollTo = (y: number) => {
       scrollRef.current?.scrollTo?.({ x: 0, y, animated: false })
     }
+
+    const scrollFocusedInputClearOfKeyboard = React.useCallback(() => {
+      if (!isWeb || !hasFit || !isKeyboardVisible || keyboardOccludedHeight <= 0) {
+        return
+      }
+      const node = scrollRef.current?.getScrollableNode() as HTMLElement | undefined
+      const active = document.activeElement as HTMLElement | null
+      if (!node || !active || !isEditableElement(active) || !node.contains(active)) {
+        return
+      }
+
+      const keyboardHeight = Math.max(keyboardOccludedHeight, getWebKeyboardBottomInset())
+      if (keyboardHeight <= 0) return
+
+      const activeRect = active.getBoundingClientRect()
+      const nodeRect = node.getBoundingClientRect()
+      const margin = 12
+      const keyboardTop = getStableLayoutViewportHeight() - keyboardHeight
+      const visibleTop = nodeRect.top + margin
+      const visibleBottom = Math.min(nodeRect.bottom, keyboardTop) - margin
+      let nextScrollTop = node.scrollTop
+
+      if (activeRect.bottom > visibleBottom) {
+        nextScrollTop += Math.ceil(activeRect.bottom - visibleBottom)
+      } else if (activeRect.top < visibleTop) {
+        nextScrollTop -= Math.ceil(visibleTop - activeRect.top)
+      }
+
+      const maxScrollTop = Math.max(0, node.scrollHeight - node.clientHeight)
+      nextScrollTop = Math.max(0, Math.min(maxScrollTop, nextScrollTop))
+      if (nextScrollTop === node.scrollTop) return
+
+      node.scrollTop = nextScrollTop
+      currentScrollOffset.current = nextScrollTop
+      scrollBridge.y = nextScrollTop
+      if (nextScrollTop > 0) scrollBridge.scrollStartY = -1
+    }, [hasFit, isKeyboardVisible, keyboardOccludedHeight, scrollBridge])
+
+    const scheduleFocusedInputScroll = React.useCallback(() => {
+      if (!isWeb || !hasFit) return
+      cancelAnimationFrame(focusedInputScrollFrame.current)
+      focusedInputScrollFrame.current = requestAnimationFrame(() => {
+        scrollFocusedInputClearOfKeyboard()
+        focusedInputScrollFrame.current = requestAnimationFrame(
+          scrollFocusedInputClearOfKeyboard
+        )
+      })
+    }, [hasFit, scrollFocusedInputClearOfKeyboard])
+
+    useEffect(() => {
+      if (!isWeb || !hasFit) return
+      scheduleFocusedInputScroll()
+      window.addEventListener('focusin', scheduleFocusedInputScroll)
+      window.visualViewport?.addEventListener('resize', scheduleFocusedInputScroll)
+
+      return () => {
+        cancelAnimationFrame(focusedInputScrollFrame.current)
+        window.removeEventListener('focusin', scheduleFocusedInputScroll)
+        window.visualViewport?.removeEventListener('resize', scheduleFocusedInputScroll)
+      }
+    }, [hasFit, scheduleFocusedInputScroll])
 
     useEffect(() => {
       setHasScrollView(true)
@@ -148,6 +216,9 @@ export const SheetScrollView = React.forwardRef<
           if (height !== contentHeight.current) {
             contentHeight.current = height
             updateScrollable()
+            if (keyboardOccludedHeight > 0) {
+              scheduleFocusedInputScroll()
+            }
           }
         }}
       >
@@ -232,6 +303,7 @@ export const SheetScrollView = React.forwardRef<
         scrollEnabled={scrollEnabled}
         onScroll={(e) => {
           const { y } = e.nativeEvent.contentOffset
+          currentScrollOffset.current = y
           scrollBridge.y = y
           if (y > 0) scrollBridge.scrollStartY = -1
           onScroll?.(e)

@@ -10,12 +10,11 @@ import { setupPage } from './test-utils'
  * Bugs covered:
  *  1. Keyboard avoidance: a fit-mode sheet sized off useWindowDimensions shrank
  *     when the keyboard opened (window.visualViewport — which RNW Dimensions
- *     tracks — shrinks by the keyboard height). The correct behavior: the sheet
- *     is always full device height, slid down via translate to its resting
- *     position; when the keyboard opens the WHOLE frame translates UP by the
- *     keyboard height (capped so its top never crosses the top safe area), so
- *     its content clears the keyboard. It keeps its height — it does not resize,
- *     collapse, or stay anchored. (the frame-height teleport / "goes back down".)
+ *     tracks — shrinks by the keyboard height). The correct behavior: keep the
+ *     natural pre-keyboard fit height, translate the frame up by the keyboard
+ *     height, and cap at the top safe area. When that cap leaves a tail behind
+ *     the keyboard, bottom scroll padding makes the lower content reachable.
+ *     (the frame-height teleport / "goes back down".)
  *  2. Drag double-drive: on web the PanResponder and the scroll-view touch hook
  *     both drove the animated position, so a pull-down jittered/jumped. With one
  *     owner the pull-down follows the finger monotonically.
@@ -73,7 +72,7 @@ async function openSheet(
 }
 
 test.describe('Sheet web keyboard avoidance', () => {
-  test('keyboard open LIFTS the whole sheet up by the keyboard height (capped at the safe area), keeping its height', async ({
+  test('keyboard open lifts the sheet by keyboard height, capped at the safe area, without resizing', async ({
     page,
   }) => {
     await openSheet(page)
@@ -88,20 +87,17 @@ test.describe('Sheet web keyboard avoidance', () => {
     const after = await rect(page, 'sheet-web-kb-frame')
     expect(after).toBeTruthy()
 
-    // the WHOLE frame translates UP so its content clears the keyboard — it does
-    // NOT stay anchored and it does NOT resize. the shift is the keyboard height,
-    // capped so the frame top never crosses the safe-area top (~0 in the test).
-    // before the fix it either stayed put (occluded) or collapsed/flew off-frame.
+    // the frame translates up to preserve its visible height. It is not expanded
+    // to full height: the fit height is preserved, and the shift caps at the top
+    // safe area when the sheet is taller than the visible band.
     const shift = before!.bottom - after!.bottom
-    const expectedShift = Math.min(KB_HEIGHT, before!.top) // capped at safe-area top
+    const expectedShift = Math.min(KB_HEIGHT, before!.top)
     expect(Math.abs(shift - expectedShift)).toBeLessThan(12)
-    // height is preserved (no resize/collapse)
     expect(Math.abs(after!.height - before!.height)).toBeLessThan(8)
-    // capped: the top never goes above the safe area
     expect(after!.top).toBeGreaterThanOrEqual(-4)
   })
 
-  test('a tall sheet whose lift is capped can scroll its lower content above the keyboard', async ({
+  test('a tall lifted sheet can scroll its lower content above the keyboard', async ({
     page,
   }) => {
     await openSheet(page)
@@ -109,10 +105,9 @@ test.describe('Sheet web keyboard avoidance', () => {
     await simulateKeyboard(page, KB_HEIGHT)
     await page.waitForTimeout(700)
 
-    // this fixture's sheet is taller than the visible band, so once it has lifted
-    // as far as the safe-area cap allows, its lowest content still sits behind the
-    // keyboard. the keyboardOccludedHeight spacer (= exactly that occluded amount)
-    // makes the content scrollable so the footer can reach above the keyboard.
+    // this fixture's sheet is tall enough that, after lifting to the safe-area
+    // cap, its lower tail still sits behind the keyboard. the spacer makes that
+    // tail scrollable so the footer can reach above the keyboard.
     const canScroll = await page.evaluate(() => {
       const n = document.querySelector(
         '[data-testid="sheet-web-kb-scrollview"]'
@@ -122,7 +117,9 @@ test.describe('Sheet web keyboard avoidance', () => {
     expect(canScroll).toBeGreaterThan(40)
   })
 
-  test('keyboard close keeps the sheet anchored (no teleport)', async ({ page }) => {
+  test('keyboard close returns the sheet to its original fit position (no teleport)', async ({
+    page,
+  }) => {
     await openSheet(page)
     const closed = await rect(page, 'sheet-web-kb-frame')
 
@@ -141,12 +138,12 @@ test.describe('Sheet web keyboard avoidance', () => {
     await page.waitForTimeout(700)
 
     const reopened = await rect(page, 'sheet-web-kb-frame')
-    // back exactly where it started — it never moved or resized
+    // back exactly where it started after the keyboard translation is removed.
     expect(Math.abs(reopened!.bottom - closed!.bottom)).toBeLessThan(8)
     expect(Math.abs(reopened!.height - closed!.height)).toBeLessThan(8)
   })
 
-  test('moveOnKeyboardChange OFF: reproduces the bug — sheet shrinks instead of moving up', async ({
+  test('moveOnKeyboardChange OFF: reproduces the bug — sheet shrinks without the freeze', async ({
     page,
   }) => {
     await openSheet(page, { kb: '0' })
@@ -159,8 +156,42 @@ test.describe('Sheet web keyboard avoidance', () => {
     const after = await rect(page, 'sheet-web-kb-frame')
     // with the hook disabled, the consumer maxHeight (useWindowDimensions * 0.7)
     // shrinks with the viewport and nothing freezes it, so the frame collapses —
-    // the exact bug the ON path fixes by preserving height + moving up.
+    // the exact bug the ON path fixes by preserving height + translating up.
     expect(after!.height).toBeLessThan(before!.height - 100)
+  })
+
+  test('overlay exit fades out once without restarting from the open state', async ({
+    page,
+  }) => {
+    await openSheet(page)
+
+    const openOpacity = await page.getByTestId('sheet-web-kb-overlay').evaluate((el) => {
+      return Number(getComputedStyle(el).opacity)
+    })
+    expect(openOpacity).toBeGreaterThan(0.3)
+
+    await page.getByTestId('sheet-web-kb-cancel').click()
+
+    const samples: number[] = []
+    for (let i = 0; i < 14; i++) {
+      await page.waitForTimeout(60)
+      const opacity = await page.evaluate(() => {
+        const el = document.querySelector('[data-testid="sheet-web-kb-overlay"]')
+        return el ? Number(getComputedStyle(el).opacity) : null
+      })
+      if (opacity !== null) {
+        samples.push(opacity)
+      }
+    }
+
+    expect(samples.length).toBeGreaterThan(4)
+    expect(Math.max(...samples)).toBeLessThanOrEqual(openOpacity + 0.08)
+
+    let maxRise = 0
+    for (let i = 1; i < samples.length; i++) {
+      maxRise = Math.max(maxRise, samples[i] - samples[i - 1])
+    }
+    expect(maxRise).toBeLessThan(0.04)
   })
 })
 
@@ -264,8 +295,8 @@ test.describe('Sheet web keyboard — drag & scroll', () => {
   })
 
   // regression: with the keyboard open the sheet sits at the keyboard-adjusted
-  // position (activePositions); the web PanResponder used to clamp drags against
-  // the un-adjusted positions[0], so a tiny scroll rubber-banded it down.
+  // position (activePositions); the PanResponder must clamp against that target
+  // instead of rubber-banding back toward the pre-keyboard position.
   test('a small scroll does NOT snap the sheet down when the keyboard is open', async ({
     page,
   }) => {
@@ -280,6 +311,23 @@ test.describe('Sheet web keyboard — drag & scroll', () => {
     const after = await rect(page, 'sheet-web-kb-frame')
 
     // before the fix a "barely scrolled" drag snapped the sheet ~280px down
+    expect(Math.abs(after!.top - before!.top)).toBeLessThan(60)
+  })
+
+  test('a fast short pull with the keyboard open bounces back instead of dismissing', async ({
+    page,
+  }) => {
+    await openSheet(page)
+    await page.getByTestId('sheet-web-kb-body').click()
+    await simulateKeyboard(page, KB_HEIGHT)
+    await page.waitForTimeout(800)
+
+    const before = await rect(page, 'sheet-web-kb-frame')
+    await touchDragSampling(page, 'sheet-web-kb-scrollview', 'sheet-web-kb-frame', 200, 4)
+    await page.waitForTimeout(900)
+    const after = await rect(page, 'sheet-web-kb-frame')
+
+    await expect(page.getByTestId('sheet-web-kb-overlay')).toBeVisible()
     expect(Math.abs(after!.top - before!.top)).toBeLessThan(60)
   })
 })

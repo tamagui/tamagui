@@ -27,7 +27,7 @@ export const animationsCSS = createAnimationsCSS({
   '1000ms': '1000ms ease-out',
   // ultra-slow for testing animation smoothness
   '5000ms': '5000ms linear',
-  bouncy: 'ease-in 200ms',
+  bouncy: 'cubic-bezier(0.34, 1.56, 0.64, 1) 360ms',
   lazy: 'ease-in 600ms',
   slow: 'ease-in 500ms',
   quick: 'ease-in 100ms',

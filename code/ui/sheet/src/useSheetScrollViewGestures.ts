@@ -8,6 +8,7 @@ interface GestureState {
   startY: number
   lastY: number
   owner: GestureOwner
+  hadPanOwner: boolean
   panDragOffset: number
   dys: number[]
   scrollYAtGestureStart: number
@@ -30,6 +31,7 @@ export function useSheetScrollViewGestures({
     startY: 0,
     lastY: 0,
     owner: 'none',
+    hadPanOwner: false,
     panDragOffset: 0,
     dys: [],
     scrollYAtGestureStart: 0,
@@ -69,6 +71,7 @@ export function useSheetScrollViewGestures({
         startY: touch.pageY,
         lastY: touch.pageY,
         owner: 'none',
+        hadPanOwner: false,
         panDragOffset: 0,
         dys: [],
         scrollYAtGestureStart: currentScrollY,
@@ -117,6 +120,7 @@ export function useSheetScrollViewGestures({
       // handle transitions
       if (newOwner !== s.owner) {
         if (newOwner === 'pan') {
+          s.hadPanOwner = true
           s.panDragOffset = 0
           s.dys = []
           // re-baseline the pan origin to the sheet's CURRENT position so the
@@ -128,7 +132,11 @@ export function useSheetScrollViewGestures({
         } else {
           scrollBridge.setParentDragging(false)
           scrollBridge.scrollLock = false
-          enableScroll()
+          if (s.hadPanOwner) {
+            disableScroll()
+          } else {
+            enableScroll()
+          }
         }
         s.owner = newOwner
       }
@@ -141,19 +149,21 @@ export function useSheetScrollViewGestures({
 
         s.dys.push(dy)
         if (s.dys.length > 100) s.dys = s.dys.slice(-10)
-      } else if (s.owner === 'scroll' && !e.isTrusted) {
-        // SYNTHETIC events only (tests): dispatched TouchEvents don't trigger the
-        // browser's native overflow scroll, so we move scrollTop ourselves. for a
-        // REAL touch (e.isTrusted) the browser already scrolls the overflow
-        // container natively — doing it again here double-applies the delta and
-        // makes scrollTop jitter / snap around. so for real touches we let native
-        // scrolling own it and only track the offset via the ScrollView onScroll.
+      } else if (s.owner === 'scroll' && (!e.isTrusted || s.hadPanOwner)) {
+        // synthetic events don't trigger native overflow scroll, so tests need us
+        // to move scrollTop directly. real mixed gestures need the same direct
+        // path after pan ownership: ios safari may not resume native scrolling
+        // mid-touch after an earlier prevented touchmove. pure real scrolls still
+        // use native scrolling; mixed pan↔scroll gestures keep overflow hidden
+        // and are driven here until touchend.
+        if (e.cancelable) e.preventDefault()
         const scrollDelta = -dy
         const maxScrollY = node.scrollHeight - node.clientHeight
         const newScrollY = Math.max(0, Math.min(maxScrollY, currentScrollY + scrollDelta))
         if (newScrollY !== currentScrollY) {
           node.scrollTop = newScrollY
           scrollBridge.y = newScrollY
+          if (newScrollY > 0) scrollBridge.scrollStartY = -1
         }
       }
     }
@@ -183,6 +193,7 @@ export function useSheetScrollViewGestures({
 
       enableScroll()
       s.owner = 'none'
+      s.hadPanOwner = false
       s.panDragOffset = 0
       s.dys = []
       scrollBridge.scrollNodeTouched = false

@@ -2,11 +2,11 @@
  * Web implementation of the keyboard controller sheet hook.
  *
  * Mobile browsers don't expose a keyboard API, but they do resize the
- * VisualViewport when the soft keyboard opens. We derive the keyboard height as
- * `getStableLayoutViewportHeight() - visualViewport.height` (see webViewport —
- * the stable baseline is document.documentElement.clientHeight, NOT innerHeight,
- * which itself shrinks with the keyboard on real iOS Safari) and feed it into the
- * keyboardOccludedHeight scroll padding in SheetImplementationCustom.
+ * VisualViewport when the soft keyboard opens. We use the viewport shrink
+ * (`clientHeight - visualViewport.height`) to detect the keyboard, then feed the
+ * bottom layout inset (`clientHeight - (offsetTop + height)`) into
+ * SheetImplementationCustom. The bottom inset accounts for iOS Safari panning
+ * the visual viewport during focus, so the sheet doesn't over-lift.
  *
  * Without this, a bottom sheet on mobile web stays pinned behind the keyboard:
  * react-native-web's Dimensions tracks the (shrinking) VisualViewport, so any
@@ -21,7 +21,8 @@ import type {
   KeyboardControllerSheetResult,
 } from './types'
 import {
-  getWebKeyboardHeight,
+  getWebKeyboardBottomInset,
+  getWebKeyboardResizeHeight,
   isEditableElement,
   MIN_KEYBOARD_HEIGHT,
 } from './webViewport'
@@ -42,9 +43,10 @@ export function useKeyboardControllerSheet(
   const [keyboardHeight, setKeyboardHeight] = useState(() =>
     isWeb && enabled && typeof window !== 'undefined' && window.visualViewport
       ? (() => {
-          const h = getWebKeyboardHeight()
-          return h >= MIN_KEYBOARD_HEIGHT && isEditableElement(document.activeElement)
-            ? h
+          const resizeHeight = getWebKeyboardResizeHeight()
+          return resizeHeight >= MIN_KEYBOARD_HEIGHT &&
+            isEditableElement(document.activeElement)
+            ? getWebKeyboardBottomInset()
             : 0
         })()
       : 0
@@ -83,8 +85,9 @@ export function useKeyboardControllerSheet(
     if (!vv) return
 
     const update = () => {
-      const height = getWebKeyboardHeight()
-      const tall = height >= MIN_KEYBOARD_HEIGHT
+      const resizeHeight = getWebKeyboardResizeHeight()
+      const height = getWebKeyboardBottomInset()
+      const tall = resizeHeight >= MIN_KEYBOARD_HEIGHT
       // require an editable element focused to *show* — this rules out URL-bar
       // collapse and other viewport changes that aren't a keyboard. but stay
       // visible while the viewport remains shrunk even if focus momentarily
@@ -110,11 +113,11 @@ export function useKeyboardControllerSheet(
       setKeyboardHeight((prev) => (prev === height ? prev : height))
     }
 
-    // only react to resize (keyboard height changes). we intentionally do NOT
-    // listen to visualViewport 'scroll' — that fires continuously while the
-    // sheet content scrolls and would re-derive the keyboard height from a
-    // shifting viewport, making the sheet jump.
+    // resize tracks keyboard open/close. scroll tracks iOS Safari's focus pan:
+    // visualViewport.offsetTop can change after the height has settled, and the
+    // sheet cap must move in that same layout coordinate space.
     vv.addEventListener('resize', update)
+    vv.addEventListener('scroll', update)
     // focus changes flip editable state without necessarily resizing the viewport
     window.addEventListener('focusin', update)
     window.addEventListener('focusout', update)
@@ -123,6 +126,7 @@ export function useKeyboardControllerSheet(
 
     return () => {
       vv.removeEventListener('resize', update)
+      vv.removeEventListener('scroll', update)
       window.removeEventListener('focusin', update)
       window.removeEventListener('focusout', update)
     }

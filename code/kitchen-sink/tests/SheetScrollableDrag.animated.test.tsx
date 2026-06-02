@@ -10,7 +10,7 @@
  * 4. Dragging up + hit sheet top → continue into scrolling
  */
 
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type CDPSession, type Page } from '@playwright/test'
 import { setupPage } from './test-utils'
 
 // mobile viewport with touch support for realistic sheet testing
@@ -39,28 +39,40 @@ test.beforeEach(async ({ page }) => {
  * this properly triggers touch events which our gesture handlers listen for
  *
  * use mode: 'touch' for scrollview/content areas (synthetic touch events)
- * use mode: 'mouse' for handle/frame areas (PanResponder uses mouse events on web)
+ * use mode: 'trusted-touch' for handle/frame areas (real mobile touch path)
  */
 async function dragSheet(
   page: Page,
   startX: number,
   startY: number,
   deltaY: number,
-  options: { steps?: number; stepDelay?: number; mode?: 'touch' | 'mouse' } = {}
+  options: { steps?: number; stepDelay?: number; mode?: 'touch' | 'trusted-touch' } = {}
 ) {
   const { steps = 20, stepDelay = 16, mode = 'touch' } = options
 
-  if (mode === 'mouse') {
-    // use mouse events for PanResponder-based elements (handle, frame)
-    await page.mouse.move(startX, startY)
-    await page.mouse.down()
+  if (mode === 'trusted-touch') {
+    const cdp = await page.context().newCDPSession(page)
+    let currentY = startY
+
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchStart',
+      touchPoints: [{ x: startX, y: currentY }],
+    })
 
     for (let i = 1; i <= steps; i++) {
-      await page.mouse.move(startX, startY + (deltaY * i) / steps)
+      currentY = startY + (deltaY * i) / steps
+      await cdp.send('Input.dispatchTouchEvent', {
+        type: 'touchMove',
+        touchPoints: [{ x: startX, y: currentY }],
+      })
       await page.waitForTimeout(stepDelay)
     }
 
-    await page.mouse.up()
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchEnd',
+      touchPoints: [],
+    })
+    await cdp.detach()
     return
   }
 
@@ -116,6 +128,43 @@ async function dragSheet(
     },
     { startX, startY, endY, steps, stepDelay }
   )
+}
+
+async function readScrollableDragState(page: Page) {
+  return page.evaluate(() => {
+    const frame = document.querySelector<HTMLElement>(
+      '[data-testid="sheet-scrollable-drag-frame"]'
+    )
+    const scrollview = document.querySelector<HTMLElement>(
+      '[data-testid="sheet-scrollable-drag-scrollview"]'
+    )
+    const unexpectedClose = document.querySelector<HTMLElement>(
+      '[data-testid="sheet-scrollable-drag-unexpected-close"]'
+    )
+    return {
+      frameTop: frame?.getBoundingClientRect().top ?? 0,
+      scrollTop: scrollview?.scrollTop ?? 0,
+      unexpectedClose: unexpectedClose?.textContent ?? '',
+    }
+  })
+}
+
+async function trustedTouchMove(
+  page: Page,
+  cdp: CDPSession,
+  point: { x: number; y: number },
+  deltaY: number,
+  steps: number
+) {
+  for (let i = 0; i < steps; i++) {
+    point.y += deltaY / steps
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchMove',
+      touchPoints: [{ x: point.x, y: point.y }],
+    })
+    await page.waitForTimeout(16)
+  }
+  return readScrollableDragState(page)
 }
 
 test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
@@ -402,6 +451,123 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     expect(maxScrollVal).toBeLessThanOrEqual(150)
   })
 
+  test('CRITICAL: trusted touch can drag to scroll to drag to scroll without lifting', async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(browserName !== 'chromium', 'trusted touch dispatch uses Chromium CDP')
+
+    await page.getByTestId('sheet-scrollable-drag-trigger').click()
+    await page.waitForTimeout(600)
+
+    const frame = page.getByTestId('sheet-scrollable-drag-frame')
+    await expect(frame).toBeVisible({ timeout: 5000 })
+
+    const scrollview = page.getByTestId('sheet-scrollable-drag-scrollview')
+    const scrollviewBox = await scrollview.boundingBox()
+    expect(scrollviewBox).toBeTruthy()
+
+    const point = {
+      x: scrollviewBox!.x + scrollviewBox!.width / 2,
+      y: scrollviewBox!.y + scrollviewBox!.height / 2,
+    }
+    const start = await readScrollableDragState(page)
+    const cdp = await page.context().newCDPSession(page)
+
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchStart',
+      touchPoints: [{ x: point.x, y: point.y }],
+    })
+
+    const afterDragDown = await trustedTouchMove(page, cdp, point, 180, 24)
+    const afterScrollUp = await trustedTouchMove(page, cdp, point, -420, 56)
+    const afterDragDownAgain = await trustedTouchMove(page, cdp, point, 380, 52)
+    const afterScrollUpAgain = await trustedTouchMove(page, cdp, point, -360, 48)
+
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchEnd',
+      touchPoints: [],
+    })
+    await cdp.detach()
+    await page.waitForTimeout(400)
+
+    expect(afterDragDown.frameTop).toBeGreaterThan(start.frameTop + 100)
+    expect(afterDragDown.scrollTop).toBeLessThanOrEqual(5)
+
+    expect(afterScrollUp.frameTop).toBeLessThanOrEqual(start.frameTop + 20)
+    expect(afterScrollUp.scrollTop).toBeGreaterThan(100)
+
+    expect(afterDragDownAgain.frameTop).toBeGreaterThan(start.frameTop + 60)
+    expect(afterDragDownAgain.scrollTop).toBeLessThanOrEqual(5)
+
+    expect(afterScrollUpAgain.frameTop).toBeLessThanOrEqual(start.frameTop + 20)
+    expect(afterScrollUpAgain.scrollTop).toBeGreaterThan(80)
+
+    const unexpectedClose = await page
+      .getByTestId('sheet-scrollable-drag-unexpected-close')
+      .textContent()
+    expect(unexpectedClose).toContain('no')
+  })
+
+  test('CRITICAL: trusted touch can scroll to drag to scroll to reverse-scroll without lifting', async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(browserName !== 'chromium', 'trusted touch dispatch uses Chromium CDP')
+
+    await page.getByTestId('sheet-scrollable-drag-trigger').click()
+    await page.waitForTimeout(600)
+
+    const frame = page.getByTestId('sheet-scrollable-drag-frame')
+    await expect(frame).toBeVisible({ timeout: 5000 })
+
+    const scrollview = page.getByTestId('sheet-scrollable-drag-scrollview')
+    const scrollviewBox = await scrollview.boundingBox()
+    expect(scrollviewBox).toBeTruthy()
+
+    const point = {
+      x: scrollviewBox!.x + scrollviewBox!.width / 2,
+      y: scrollviewBox!.y + scrollviewBox!.height / 2,
+    }
+    const start = await readScrollableDragState(page)
+    const cdp = await page.context().newCDPSession(page)
+
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchStart',
+      touchPoints: [{ x: point.x, y: point.y }],
+    })
+
+    const afterInitialScroll = await trustedTouchMove(page, cdp, point, -300, 40)
+    const afterDragDown = await trustedTouchMove(page, cdp, point, 460, 60)
+    const afterScrollDownAgain = await trustedTouchMove(page, cdp, point, -420, 56)
+    const afterReverseScroll = await trustedTouchMove(page, cdp, point, 160, 24)
+
+    await cdp.send('Input.dispatchTouchEvent', {
+      type: 'touchEnd',
+      touchPoints: [],
+    })
+    await cdp.detach()
+    await page.waitForTimeout(400)
+
+    expect(afterInitialScroll.frameTop).toBeLessThanOrEqual(start.frameTop + 20)
+    expect(afterInitialScroll.scrollTop).toBeGreaterThan(120)
+
+    expect(afterDragDown.frameTop).toBeGreaterThan(start.frameTop + 100)
+    expect(afterDragDown.scrollTop).toBeLessThanOrEqual(5)
+
+    expect(afterScrollDownAgain.frameTop).toBeLessThanOrEqual(start.frameTop + 30)
+    expect(afterScrollDownAgain.scrollTop).toBeGreaterThan(100)
+
+    expect(afterReverseScroll.frameTop).toBeLessThanOrEqual(start.frameTop + 30)
+    expect(afterReverseScroll.scrollTop).toBeLessThan(afterScrollDownAgain.scrollTop - 80)
+    expect(afterReverseScroll.scrollTop).toBeGreaterThan(10)
+
+    const unexpectedClose = await page
+      .getByTestId('sheet-scrollable-drag-unexpected-close')
+      .textContent()
+    expect(unexpectedClose).toContain('no')
+  })
+
   test('CRITICAL: from pos 1, single gesture drag up past top then reverse down - no mid-gesture snap', async ({
     page,
   }) => {
@@ -434,7 +600,7 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
       handleBox!.x + handleBox!.width / 2,
       handleBox!.y + handleBox!.height / 2,
       200,
-      { steps: 25, stepDelay: 16, mode: 'mouse' }
+      { steps: 25, stepDelay: 16, mode: 'trusted-touch' }
     )
     await page.waitForTimeout(600)
     await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText(
@@ -593,7 +759,7 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
       handleBox!.x + handleBox!.width / 2,
       handleBox!.y + handleBox!.height / 2,
       200,
-      { steps: 25, stepDelay: 16, mode: 'mouse' }
+      { steps: 25, stepDelay: 16, mode: 'trusted-touch' }
     )
     await page.waitForTimeout(600)
     await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText(
@@ -864,13 +1030,13 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     let handleBox = await handle.boundingBox()
     expect(handleBox).toBeTruthy()
 
-    // first drag down to position 1 (use mouse for handle)
+    // first drag down to position 1 using the mobile touch path
     await dragSheet(
       page,
       handleBox!.x + handleBox!.width / 2,
       handleBox!.y + handleBox!.height / 2,
       200,
-      { steps: 25, stepDelay: 16, mode: 'mouse' }
+      { steps: 25, stepDelay: 16, mode: 'trusted-touch' }
     )
     await page.waitForTimeout(600)
 
@@ -1109,13 +1275,13 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     let handleBox = await handle.boundingBox()
     expect(handleBox).toBeTruthy()
 
-    // first drag down to position 1 (use mouse for handle)
+    // first drag down to position 1 using the mobile touch path
     await dragSheet(
       page,
       handleBox!.x + handleBox!.width / 2,
       handleBox!.y + handleBox!.height / 2,
       200,
-      { steps: 25, stepDelay: 16, mode: 'mouse' }
+      { steps: 25, stepDelay: 16, mode: 'trusted-touch' }
     )
     await page.waitForTimeout(600)
     await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText(
@@ -1176,13 +1342,13 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     const handleBox = await handle.boundingBox()
     expect(handleBox).toBeTruthy()
 
-    // use mouse mode for handle (PanResponder-based element)
+    // use the mobile touch path for the handle
     await dragSheet(
       page,
       handleBox!.x + handleBox!.width / 2,
       handleBox!.y + handleBox!.height / 2,
       -150,
-      { steps: 20, stepDelay: 16, mode: 'mouse' }
+      { steps: 20, stepDelay: 16, mode: 'trusted-touch' }
     )
     await page.waitForTimeout(600)
 
@@ -1214,13 +1380,13 @@ test.describe('SheetScrollableDrag - RNGH Web Equivalent', () => {
     let handleBox = await handle.boundingBox()
     expect(handleBox).toBeTruthy()
 
-    // first drag down to position 1 (use mouse for handle)
+    // first drag down to position 1 using the mobile touch path
     await dragSheet(
       page,
       handleBox!.x + handleBox!.width / 2,
       handleBox!.y + handleBox!.height / 2,
       200,
-      { steps: 25, stepDelay: 16, mode: 'mouse' }
+      { steps: 25, stepDelay: 16, mode: 'trusted-touch' }
     )
     await page.waitForTimeout(600)
     await expect(page.getByTestId('sheet-scrollable-drag-position')).toContainText(

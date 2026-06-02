@@ -15,9 +15,9 @@ export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
   // open, not just while occluded, or it releases and the sheet collapses.
   isKeyboardVisible: boolean
   // the sheet's pre-keyboard frame height (web). SheetScrollView pins its height
-  // to this while the keyboard is open so the frame keeps its full size (and just
-  // translates up) instead of collapsing to a consumer maxHeight that shrank with
-  // the viewport. 0 when not applicable.
+  // to this while the keyboard is open so the frame translates at full size
+  // instead of collapsing to a consumer maxHeight that shrank with the viewport.
+  // 0 when not applicable.
   keyboardStableFrameHeight: number
   setHasScrollView: (val: boolean) => void
 }

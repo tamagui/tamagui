@@ -37,6 +37,11 @@ module.exports = {
       'react-dom/client': require.resolve('react-dom/client'),
       'react-dom': require.resolve('react-dom'),
       'react-native$': 'react-native-web',
+      '@tamagui/sheet/controller$': path.resolve(
+        __dirname,
+        '../ui/sheet/src/controller.ts'
+      ),
+      '@tamagui/sheet$': path.resolve(__dirname, '../ui/sheet/src/index.ts'),
       // dedupe react-native-web - workspace setup creates multiple copies
       // (kitchen-sink/node_modules + tamagui/node_modules + root) which each
       // initialize the responder system with their own state, breaking

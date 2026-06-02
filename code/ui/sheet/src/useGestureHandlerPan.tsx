@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useRef, type RefObject } from 'react'
 import { getGestureHandlerState, isGestureHandlerEnabled } from './gestureState'
-import type { ScrollBridge } from './types'
+import { getSheetReleasePosition } from './keyboardAvoidance'
+import type { ScrollBridge, SnapPointsMode } from './types'
 
 // threshold in pixels for considering sheet "at top" position
 // allows for small measurement variations
@@ -18,6 +19,9 @@ interface GesturePanConfig {
   resisted: (val: number, minY: number) => number
   disableDrag?: boolean
   isShowingInnerSheet?: boolean
+  dismissOnSnapToBottom?: boolean
+  snapPointsMode?: SnapPointsMode
+  isKeyboardVisible?: boolean
   // set the animated position directly (for smooth dragging)
   setAnimatedPosition: (val: number) => void
   // ref to scroll gesture for simultaneousWithExternalGesture
@@ -69,6 +73,16 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
 
   const gestureHandlerEnabled = isGestureHandlerEnabled()
   const panGestureRef = useRef<any>(null)
+  const releaseConfigRef = useRef({
+    dismissOnSnapToBottom: config.dismissOnSnapToBottom === true,
+    snapPointsMode: config.snapPointsMode ?? 'percent',
+    isKeyboardVisible: config.isKeyboardVisible === true,
+  })
+  releaseConfigRef.current = {
+    dismissOnSnapToBottom: config.dismissOnSnapToBottom === true,
+    snapPointsMode: config.snapPointsMode ?? 'percent',
+    isKeyboardVisible: config.isKeyboardVisible === true,
+  }
 
   // use refs for values that need to persist across gesture lifecycle
   // (useMemo closure variables get reset when gesture is recreated)
@@ -86,6 +100,7 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
     // causing positions to revert. Frozen positions ensure stable snap calculation.
     frozenPositions: [] as number[],
     frozenMinY: 0,
+    frozenIsKeyboardVisible: false,
     // whether pan gesture actually started (vs just a tap in onBegin)
     panStarted: false,
   })
@@ -156,6 +171,7 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         // doesn't change snap targets mid-gesture
         gs.frozenPositions = [...positions]
         gs.frozenMinY = minY
+        gs.frozenIsKeyboardVisible = releaseConfigRef.current.isKeyboardVisible
 
         // if sheet not at top, DISABLE SCROLL immediately and lock to 0
         // this prevents scroll from firing before pan takes over
@@ -292,17 +308,16 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         const velocity = velocityY / 1000
         const projectedEnd = currentPos + frameSize * velocity * 0.2
 
-        let closestPoint = 0
-        let minDist = Number.POSITIVE_INFINITY
-
-        for (let i = 0; i < snapPositions.length; i++) {
-          const pos = snapPositions[i]
-          const dist = Math.abs(projectedEnd - pos)
-          if (dist < minDist) {
-            minDist = dist
-            closestPoint = i
-          }
-        }
+        const releaseConfig = releaseConfigRef.current
+        const closestPoint = getSheetReleasePosition({
+          positions: snapPositions,
+          projectedEnd,
+          currentPosition: currentPos,
+          frameSize,
+          dismissOnSnapToBottom: releaseConfig.dismissOnSnapToBottom,
+          snapPointsMode: releaseConfig.snapPointsMode,
+          isKeyboardVisible: gs.frozenIsKeyboardVisible,
+        })
 
         onEnd(closestPoint)
       })
