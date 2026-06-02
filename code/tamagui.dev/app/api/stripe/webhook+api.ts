@@ -240,7 +240,7 @@ async function manageOneTimePayment(invoice: Stripe.Invoice) {
   const now = new Date()
   const oneYearFromNow = new Date(now.setFullYear(now.getFullYear() + 1))
 
-  await supabaseAdmin.from('subscriptions').insert({
+  const { error: subscriptionError } = await supabaseAdmin.from('subscriptions').upsert({
     id: invoice.id,
     user_id: uuid,
     metadata: invoice.metadata,
@@ -250,25 +250,57 @@ async function manageOneTimePayment(invoice: Stripe.Invoice) {
     current_period_start: new Date().toISOString(),
     current_period_end: oneYearFromNow.toISOString(),
     created: new Date().toISOString(),
+    ended_at: null,
+    canceled_at: null,
+    trial_start: null,
+    trial_end: null,
   })
+  if (subscriptionError) throw subscriptionError
 
-  const subscriptionItems = invoice.lines.data
-    .filter((item): item is Stripe.InvoiceLineItem & { price: { id: string } } =>
+  const invoiceLinesWithPrice = invoice.lines.data.filter(
+    (item): item is Stripe.InvoiceLineItem & { price: Stripe.Price } =>
       Boolean(item.price?.id)
-    )
-    .map((item) => ({
-      id: item.id,
-      subscription_id: invoice.id,
-      price_id: item.price.id,
-    }))
+  )
+
+  await syncInvoiceLinePrices(invoiceLinesWithPrice)
+
+  const subscriptionItems = invoiceLinesWithPrice.map((item) => ({
+    id: item.id,
+    subscription_id: invoice.id,
+    price_id: item.price.id,
+  }))
 
   if (subscriptionItems.length > 0) {
-    await supabaseAdmin.from('subscription_items').insert(subscriptionItems)
+    const { error } = await supabaseAdmin
+      .from('subscription_items')
+      .upsert(subscriptionItems)
+    if (error) throw error
   }
 
   // Handle V2 Pro License purchase - create project
   if (invoice.metadata?.type === 'pro_v2_license' && invoice.metadata?.version === 'v2') {
     await createProjectFromV2Purchase(invoice, uuid)
+  }
+}
+
+async function syncInvoiceLinePrices(
+  invoiceLines: Array<Stripe.InvoiceLineItem & { price: Stripe.Price }>
+) {
+  for (const line of invoiceLines) {
+    const product =
+      typeof line.price.product === 'string'
+        ? await stripe.products.retrieve(line.price.product)
+        : line.price.product
+
+    if ('deleted' in product && product.deleted) {
+      throw new Error(`Cannot sync deleted Stripe product for price ${line.price.id}`)
+    }
+
+    await upsertProductRecord(product)
+    await upsertPriceRecord({
+      ...line.price,
+      product,
+    })
   }
 }
 

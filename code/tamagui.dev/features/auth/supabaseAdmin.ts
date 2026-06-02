@@ -34,11 +34,7 @@ export const supabaseAdmin = new Proxy({} as ReturnType<typeof createClient<Data
   },
 })
 
-const toDateTime = (secs: number) => {
-  const t = new Date('1970-01-01T00:30:00Z') // Unix epoch start.
-  t.setSeconds(secs)
-  return t
-}
+const toDateTime = (secs: number) => new Date(secs * 1000)
 
 export const getBentoCode = async (codePath: string) => {
   const { data, error } = await supabaseAdmin.storage

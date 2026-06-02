@@ -16,7 +16,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 
 // From products.ts
 const EXPECTED_PRICES = {
-  PRO_V2_LICENSE: 'price_1Sv5TSFQGtHoG6xcMB42xb7d',
+  PRO_V2_LICENSE: 'price_1T4OsOFQGtHoG6xcBAL0yFd1',
   PRO_V2_UPGRADE: 'price_1Sv5TTFQGtHoG6xcm8GJ3Uhg',
   SUPPORT_DIRECT: 'price_1SuTIHFQGtHoG6xcSRnWg3xB',
   SUPPORT_SPONSOR: 'price_1SuTIVFQGtHoG6xcVVnbEeQx',

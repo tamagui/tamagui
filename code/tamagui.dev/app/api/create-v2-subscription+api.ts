@@ -3,12 +3,11 @@ import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { getParityDiscount } from '~/features/geo-pricing/parityConfig'
-import { V2_LICENSE_PRICE_CENTS } from '~/features/stripe/pricing'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import { stripe } from '~/features/stripe/stripe'
+import { getV2LicenseInvoiceItemCreateParams } from '~/features/stripe/v2LicenseInvoiceItem'
 
 // V2 Price IDs
-const PRO_V2_LICENSE_PRICE_ID = STRIPE_PRODUCTS.PRO_V2_LICENSE.priceId
 const PRO_V2_UPGRADE_PRICE_ID = STRIPE_PRODUCTS.PRO_V2_UPGRADE.priceId
 
 // V2 support tier type
@@ -146,57 +145,17 @@ export default apiRoute(async (req) => {
     const upgradeStartDate = new Date()
     upgradeStartDate.setFullYear(upgradeStartDate.getFullYear() + 1)
 
-    // Calculate price with parity discount applied
-    // Parity discount is applied first, then coupon (beta discount) stacks on top
-    const parityAdjustedPrice =
-      parityDiscountPercent > 0
-        ? Math.round(V2_LICENSE_PRICE_CENTS * (1 - parityDiscountPercent / 100))
-        : V2_LICENSE_PRICE_CENTS
-
-    // Create invoice for the license fee (with parity discount baked in)
-    // If parity applies, use custom amount. Otherwise use standard price.
-    if (parityDiscountPercent > 0) {
-      // custom price with parity discount
-      await stripe.invoiceItems.create(
-        {
-          customer: stripeCustomerId,
-          amount: parityAdjustedPrice,
-          currency: 'usd',
-          description: `Tamagui Pro V2 License (${parityDiscountPercent}% parity discount for ${countryCode})`,
-          metadata: {
-            version: 'v2',
-            parity_discount: String(parityDiscountPercent),
-            parity_country: countryCode || '',
-            original_price_cents: String(V2_LICENSE_PRICE_CENTS),
-          },
-        },
-        {
-          idempotencyKey: generateIdempotencyKey(
-            user.id,
-            'invoice_item',
-            idempotencyBase
-          ),
-        }
-      )
-    } else {
-      // standard price, no parity
-      await stripe.invoiceItems.create(
-        {
-          customer: stripeCustomerId,
-          price: PRO_V2_LICENSE_PRICE_ID,
-          metadata: {
-            version: 'v2',
-          },
-        },
-        {
-          idempotencyKey: generateIdempotencyKey(
-            user.id,
-            'invoice_item',
-            idempotencyBase
-          ),
-        }
-      )
-    }
+    // create invoice item for the license fee, keeping parity prices on the v2 product
+    await stripe.invoiceItems.create(
+      getV2LicenseInvoiceItemCreateParams({
+        stripeCustomerId,
+        parityDiscountPercent,
+        countryCode,
+      }),
+      {
+        idempotencyKey: generateIdempotencyKey(user.id, 'invoice_item', idempotencyBase),
+      }
+    )
 
     // Create and pay the invoice
     // Coupon (beta discount) applies on top of parity-adjusted price
@@ -375,7 +334,8 @@ async function cancelV1ProSubscriptionsOnV2Migration(stripeCustomerId: string) {
           sub.status === 'trialing' ||
           sub.status === 'past_due' ||
           sub.status === 'unpaid' ||
-          sub.status === 'incomplete')
+          sub.status === 'incomplete' ||
+          sub.status === 'canceled')
       )
     })
 
@@ -384,8 +344,9 @@ async function cancelV1ProSubscriptionsOnV2Migration(stripeCustomerId: string) {
         sub.status === 'past_due' ||
         sub.status === 'unpaid' ||
         sub.status === 'incomplete'
+      const shouldVoidOpenInvoices = isFailing || sub.status === 'canceled'
 
-      if (isFailing) {
+      if (shouldVoidOpenInvoices) {
         const openInvoices = await stripe.invoices.list({
           customer: stripeCustomerId,
           subscription: sub.id,
@@ -400,9 +361,16 @@ async function cancelV1ProSubscriptionsOnV2Migration(stripeCustomerId: string) {
             console.error(`Failed to void V1 invoice ${inv.id}:`, e)
           }
         }
+      }
+
+      if (isFailing) {
         await stripe.subscriptions.cancel(sub.id)
         console.info(
           `Canceled failing V1 Pro subscription ${sub.id} (was ${sub.status}) on V2 migration`
+        )
+      } else if (sub.status === 'canceled') {
+        console.info(
+          `Voided open invoices for canceled V1 Pro subscription ${sub.id} on V2 migration`
         )
       } else {
         await stripe.subscriptions.update(sub.id, {
