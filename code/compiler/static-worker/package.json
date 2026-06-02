@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/static-worker",
-  "version": "2.1.0-1780288049558",
+  "version": "2.1.0-1780426041711",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
