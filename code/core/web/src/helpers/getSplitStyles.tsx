@@ -372,6 +372,37 @@ function isSpacingProp(prop: string): boolean {
   return prop in numericOnlyProps
 }
 
+// props that follow Tailwind's spacing/sizing scale (numeric N → N * 0.25rem = N*4px).
+// reuses tokenCategories.size for the sizing half; spacing/position is listed explicitly
+// (there's no tokenCategories.space — those are the "everything else" default).
+// deliberately EXCLUDES radius/borderWidth/zIndex/flex etc. which take px/numbers but are
+// NOT on Tailwind's spacing scale (border-2 → 2px, rounded-lg → named, z-10 → 10).
+const tailwindScaleProps: Record<string, boolean> = {
+  ...tokenCategories.size,
+  gap: true,
+  rowGap: true,
+  columnGap: true,
+  top: true,
+  right: true,
+  bottom: true,
+  left: true,
+  inset: true,
+  margin: true,
+  marginTop: true,
+  marginRight: true,
+  marginBottom: true,
+  marginLeft: true,
+  marginHorizontal: true,
+  marginVertical: true,
+  padding: true,
+  paddingTop: true,
+  paddingRight: true,
+  paddingBottom: true,
+  paddingLeft: true,
+  paddingHorizontal: true,
+  paddingVertical: true,
+}
+
 /**
  * Validate that a value looks like a valid CSS/Tamagui value for tailwind processing.
  * This prevents "my-custom-class" from being parsed as marginVertical: "custom-class".
@@ -460,9 +491,13 @@ function tailwindClassToFlatProp(
   if (prop === 'opacity' && /^\d+$/.test(value)) {
     // opacity-50 → 0.5
     value = Number(value) / 100
-  } else if (/^\d+$/.test(value) && !value.startsWith('$')) {
-    // numeric values like w-100 → 100 (as number)
-    value = Number(value)
+  } else if (/^\d+(\.\d+)?$/.test(value) && !value.startsWith('$')) {
+    // numeric values: apply Tailwind's spacing/sizing scale (N → N * 0.25rem = N*4px),
+    // e.g. p-4 → 16, w-24 → 96, gap-2 → 8. props NOT on that scale (radius, borderWidth,
+    // zIndex, flex, …) stay raw: rounded-8 → 8, z-10 → 10, border-2 → 2.
+    const expanded = isShorthand ? shorthands[prop] : prop
+    const n = Number(value)
+    value = tailwindScaleProps[expanded] ? n * 4 : n
   } else if (typeof value === 'string') {
     // check if value matches a token name and resolve it
     // e.g., "blue5" → "$blue5" if $blue5 token exists
