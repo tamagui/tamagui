@@ -21,7 +21,8 @@
     "./code/comparisons/tamagui-bench",
     "./code/comparisons/tailwind-bench",
     "./code/comparisons/inline-bench",
-    "./code/comparisons/nativewind-bench"
+    "./code/comparisons/nativewind-bench",
+    "./code/comparisons/conformance/web"
   ],
   "scripts": {
     "postinstall": "bun ./scripts/postinstall.ts",
