@@ -6,7 +6,14 @@ const params = new URLSearchParams(location.search)
 const caseName = params.get('case')
 const target = (params.get('target') ?? 'tailwind') as 'tailwind' | 'tamagui'
 
-const found = cases.find((c) => c.name === caseName)
+// ad-hoc diagnostic: ?cls=<classes> renders a single box with that className (no registry entry)
+const rawCls = params.get('cls')
+const found = rawCls
+  ? {
+      name: 'raw',
+      render: ({ Box }: { Box: any }) => <Box id="cfm-root" className={rawCls} />,
+    }
+  : cases.find((c) => c.name === caseName)
 const rootEl = document.getElementById('root')!
 
 declare global {
