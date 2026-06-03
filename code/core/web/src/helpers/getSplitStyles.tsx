@@ -294,7 +294,19 @@ function preprocessTailwindClassName(
   const result: Record<string, any> = { ...props }
 
   for (const cls of classes) {
-    // only try to convert if it looks like a valid tailwind class
+    // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
+    // these may emit multiple props and may have no dash, so handle before the generic parse.
+    const ci = cls.lastIndexOf(':')
+    const base = ci === -1 ? cls : cls.slice(ci + 1)
+    const mods = ci === -1 ? '' : cls.slice(0, ci)
+    const util = tailwindUtilityMap[base]
+    if (util) {
+      for (const p in util) {
+        result[mods ? `$${mods}:${p}` : `$${p}`] = util[p]
+      }
+      continue
+    }
+    // otherwise try the generic prop-value conversion
     if (looksLikeTailwindClass(cls, shorthands, config)) {
       const flatProp = tailwindClassToFlatProp(cls, shorthands, config)
       if (flatProp) {
@@ -403,6 +415,40 @@ const tailwindScaleProps: Record<string, boolean> = {
   paddingVertical: true,
 }
 
+// named tailwind utilities whose whole class maps to fixed prop(s)+value(s). these overload the
+// generic prop-value split (e.g. flex-row is flexDirection, not flex:'row') or have no value
+// (hidden → display:none), so they can't be derived. each maps to one or more style props.
+const tailwindUtilityMap: Record<string, Record<string, any>> = {
+  'flex-row': { flexDirection: 'row' },
+  'flex-row-reverse': { flexDirection: 'row-reverse' },
+  'flex-col': { flexDirection: 'column' },
+  'flex-col-reverse': { flexDirection: 'column-reverse' },
+  'flex-wrap': { flexWrap: 'wrap' },
+  'flex-wrap-reverse': { flexWrap: 'wrap-reverse' },
+  'flex-nowrap': { flexWrap: 'nowrap' },
+  'flex-1': { flexGrow: 1, flexShrink: 1, flexBasis: '0%' },
+  'flex-auto': { flexGrow: 1, flexShrink: 1, flexBasis: 'auto' },
+  'flex-initial': { flexGrow: 0, flexShrink: 1, flexBasis: 'auto' },
+  'flex-none': { flexGrow: 0, flexShrink: 0, flexBasis: 'auto' },
+  hidden: { display: 'none' },
+}
+
+// tailwind value aliases for alignment props (items-*/justify-*/content-*/self-*):
+// e.g. justify-between → space-between, justify-start → flex-start.
+const tailwindAlignValues: Record<string, string> = {
+  between: 'space-between',
+  around: 'space-around',
+  evenly: 'space-evenly',
+  start: 'flex-start',
+  end: 'flex-end',
+}
+const alignProps: Record<string, boolean> = {
+  justifyContent: true,
+  alignItems: true,
+  alignContent: true,
+  alignSelf: true,
+}
+
 /**
  * Validate that a value looks like a valid CSS/Tamagui value for tailwind processing.
  * This prevents "my-custom-class" from being parsed as marginVertical: "custom-class".
@@ -499,9 +545,15 @@ function tailwindClassToFlatProp(
     const n = Number(value)
     value = tailwindScaleProps[expanded] ? n * 4 : n
   } else if (typeof value === 'string') {
-    // check if value matches a token name and resolve it
-    // e.g., "blue5" → "$blue5" if $blue5 token exists
-    value = resolveTokenValue(value, config)
+    const expanded = isShorthand ? shorthands[prop] : prop
+    if (alignProps[expanded] && tailwindAlignValues[value]) {
+      // justify-between → space-between, items-start → flex-start, …
+      value = tailwindAlignValues[value]
+    } else {
+      // check if value matches a token name and resolve it
+      // e.g., "blue5" → "$blue5" if $blue5 token exists
+      value = resolveTokenValue(value, config)
+    }
   }
 
   // build the flat prop key - expand shorthands to full prop name
