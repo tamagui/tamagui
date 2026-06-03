@@ -70,6 +70,50 @@ function padToCanvas(png: PNG, W: number, H: number): PNG {
   return out
 }
 
+// crop a full-frame PNG to the bounding box of its non-background (non-white) content.
+// used for the native leg: capture the whole device frame, then crop to the rendered case
+// (soot's post-hoc approach — avoids needing the element rect from the device).
+function lumaCropToContent(
+  buf: Buffer,
+  opts: { tol?: number; pad?: number } = {}
+): Buffer {
+  const png = PNG.sync.read(buf)
+  const { width: W, height: H, data } = png
+  const tol = opts.tol ?? 14
+  let minX = W, minY = H, maxX = -1, maxY = -1
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      const i = (W * y + x) << 2
+      if (255 - data[i] > tol || 255 - data[i + 1] > tol || 255 - data[i + 2] > tol) {
+        if (x < minX) minX = x
+        if (x > maxX) maxX = x
+        if (y < minY) minY = y
+        if (y > maxY) maxY = y
+      }
+    }
+  }
+  if (maxX < 0) return buf // all white
+  const pad = opts.pad ?? 0
+  minX = Math.max(0, minX - pad)
+  minY = Math.max(0, minY - pad)
+  maxX = Math.min(W - 1, maxX + pad)
+  maxY = Math.min(H - 1, maxY + pad)
+  const cw = maxX - minX + 1
+  const ch = maxY - minY + 1
+  const out = new PNG({ width: cw, height: ch })
+  for (let y = 0; y < ch; y++) {
+    for (let x = 0; x < cw; x++) {
+      const si = (W * (minY + y) + (minX + x)) << 2
+      const di = (cw * y + x) << 2
+      out.data[di] = data[si]
+      out.data[di + 1] = data[si + 1]
+      out.data[di + 2] = data[si + 2]
+      out.data[di + 3] = data[si + 3]
+    }
+  }
+  return PNG.sync.write(out)
+}
+
 type DiffResult = {
   diffPixels: number
   totalPixels: number
@@ -129,6 +173,13 @@ async function sideBySide(tailwind: Buffer, tamagui: Buffer, diffBuf: Buffer): P
     .toBuffer()
 }
 
+function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
+  return Promise.race([
+    p,
+    new Promise<T>((_, rej) => setTimeout(() => rej(new Error(`timeout: ${label}`)), ms)),
+  ])
+}
+
 type Capture = { buf: Buffer; visible: boolean }
 
 // a 2x2 white tile stands in for "rendered nothing visible" so the diff still runs and flags it
@@ -141,7 +192,7 @@ function blankTile(): Buffer {
 async function capture(page: import('playwright').Page, url: string): Promise<Capture> {
   await page.goto(url, { waitUntil: 'load' })
   await page.waitForFunction(() => (window as any).__conformanceReady === true, {
-    timeout: 30_000,
+    timeout: 10_000,
   })
   const root = page.locator('#cfm-root')
   await root.waitFor({ state: 'attached', timeout: 10_000 })
@@ -206,7 +257,6 @@ async function main() {
   try {
     await waitForServer(base + '/')
     browser = await chromium.launch()
-    const page = await browser.newPage({ deviceScaleFactor: 2 })
 
     for (const c of selected) {
       const dir = join(REPORT_DIR, c.name)
@@ -215,8 +265,40 @@ async function main() {
       const maxDiffPercent = c.tol?.maxDiffPercent ?? DEFAULT_MAX_DIFF_PERCENT
 
       console.log(`\n● ${c.name}`)
-      const tailwind = await capture(page, `${base}/?case=${c.name}&target=tailwind`)
-      const tamagui = await capture(page, `${base}/?case=${c.name}&target=tamagui`)
+      // fresh page per case so a hung/broken page can't poison the rest of the run
+      const page = await browser.newPage({ deviceScaleFactor: 2 })
+      let tailwind: Capture, tamagui: Capture
+      try {
+        tailwind = await withTimeout(
+          capture(page, `${base}/?case=${c.name}&target=tailwind`),
+          25_000,
+          `tailwind ${c.name}`
+        )
+        tamagui = await withTimeout(
+          capture(page, `${base}/?case=${c.name}&target=tamagui`),
+          25_000,
+          `tamagui ${c.name}`
+        )
+      } catch (e) {
+        console.log(`  ERROR  ${(e as Error).message?.split('\n')[0]}`)
+        summaries.push({
+          name: c.name,
+          webVsTailwind: {
+            diffPercent: 100,
+            diffPixels: 0,
+            totalPixels: 0,
+            dimsMatch: false,
+            tamaguiVisible: false,
+            tailwindDims: [0, 0],
+            tamaguiDims: [0, 0],
+            maxDiffPercent,
+            pass: false,
+          },
+        })
+        await page.close().catch(() => {})
+        continue
+      }
+      await page.close().catch(() => {})
       writeFileSync(join(dir, 'tailwind.png'), tailwind.buf)
       writeFileSync(join(dir, 'tamagui.png'), tamagui.buf)
 
