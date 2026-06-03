@@ -62,6 +62,7 @@ export type { WorkletsAccessor } from './workletsState'
 // safe area
 export { getSafeArea } from './safeAreaState'
 export type { SafeAreaAccessor } from './safeAreaState'
+export { useSafeAreaInsets } from './useSafeAreaInsets'
 
 // linear gradient
 export { getLinearGradient } from './linearGradientState'

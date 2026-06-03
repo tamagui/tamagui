@@ -10,7 +10,7 @@ import {
   useEvent,
   useThemeName,
 } from '@tamagui/core'
-import { getSafeArea } from '@tamagui/native'
+import { useSafeAreaInsets } from '@tamagui/native'
 import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import React, { useState } from 'react'
 import type {
@@ -54,17 +54,14 @@ const hiddenSize = 10_000.1
 const rnghRootStyleOpen = { width: '100%', height: '100%' } as const
 const rnghRootStyleClosed = { width: '100%', height: 0 } as const
 
-// safe area top inset, cached per-session (device-constant value)
-let _cachedSafeAreaTop: number | undefined
-function getSafeAreaTopInset(): number {
-  if (_cachedSafeAreaTop !== undefined) return _cachedSafeAreaTop
-  // use @tamagui/native abstraction - returns 0 when not enabled
-  _cachedSafeAreaTop = getSafeArea().getInsets().top
-  return _cachedSafeAreaTop
-}
-
-function getKeyboardSafeAreaTopInset(): number {
-  return getSafeAreaTopInset() + (isWeb ? getWebVisualViewportOffsetTop() : 0)
+// the top inset the keyboard-shifted sheet must not rise above. NATIVE: the live
+// safe-area top (notch/status bar), passed in from useSafeAreaInsets — NOT
+// getSafeArea().getInsets(), which returns cached/initial metrics and silently
+// reports 0 when @tamagui/native is duplicated (the instance setup-safe-area
+// enabled differs from the one read here), letting the sheet slide under the
+// notch. WEB: the visual-viewport top offset (no native inset applies).
+function getKeyboardSafeAreaTopInset(nativeSafeAreaTop: number): number {
+  return isWeb ? getWebVisualViewportOffsetTop() : nativeSafeAreaTop
 }
 
 let sheetHiddenStyleSheet: HTMLStyleElement | null = null
@@ -127,6 +124,12 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     const sheetRef = React.useRef<View>(undefined as unknown as View)
     const ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef as any)
+
+    // live safe-area insets (reactive). used to cap the keyboard shift so the
+    // sheet never rises under the notch/status bar. reads the single
+    // react-native-safe-area-context instance, so it stays correct even if
+    // @tamagui/native is duplicated in the consumer's install.
+    const safeAreaInsets = useSafeAreaInsets()
 
     // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
     const { animationDriver } = useConfiguration()
@@ -277,13 +280,20 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             isKeyboardVisible,
             keyboardHeight,
             shouldTranslate: true,
-            safeAreaTop: getKeyboardSafeAreaTopInset(),
+            safeAreaTop: getKeyboardSafeAreaTopInset(safeAreaInsets.top),
           })
         )
       }
       activePositionsRef.current = result
       return result
-    }, [positions, isKeyboardVisible, keyboardHeight, effScreenSize, isDragging])
+    }, [
+      positions,
+      isKeyboardVisible,
+      keyboardHeight,
+      effScreenSize,
+      isDragging,
+      safeAreaInsets.top,
+    ])
 
     // bottom spacer for the part of the sheet hidden by the keyboard after the
     // keyboard translation and safe-area clamping. if a small sheet fits above

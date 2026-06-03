@@ -104,6 +104,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SheetScrollLockCase: () => require('./SheetScrollLockCase').SheetScrollLockCase,
   SheetSnapPointsFitCase: () =>
     require('./SheetSnapPointsFitCase').SheetSnapPointsFitCase,
+  SheetFit3pcNativeRepro: () =>
+    require('./SheetFit3pcNativeRepro').SheetFit3pcNativeRepro,
   SheetPressRegressionCase: () =>
     require('./SheetPressRegressionCase').SheetPressRegressionCase,
   SlowThemeReRender: () => require('./SlowThemeReRender').SlowThemeReRender,
