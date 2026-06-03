@@ -75,7 +75,9 @@ function maskGearAndCrop(buf: Buffer): { buf: Buffer; visible: boolean } {
       data[i] = data[i + 1] = data[i + 2] = 255
     }
   }
-  const tol = 16
+  // low tolerance so very light tailwind backgrounds (slate-100 #f1f5f9, etc.) are still
+  // detected as content. native screenshots are lossless PNG so white is exactly 255 (no noise).
+  const tol = 9
   let minX = W, minY = H, maxX = -1, maxY = -1
   for (let y = 0; y < H; y++) {
     for (let x = 0; x < W; x++) {
