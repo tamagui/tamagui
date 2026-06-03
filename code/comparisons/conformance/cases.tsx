@@ -122,4 +122,73 @@ export const cases: ConformanceCase[] = [
       <Box id="cfm-root" className="w-16 h-16 overflow-hidden bg-slate-200">
         <Box className="w-32 h-32 bg-emerald-500" />
       </Box>) },
+
+  // ── more palette coverage (single boxes — pixel-match cleanly cross-platform) ───────
+  { name: 'bg-slate-50', render: box('w-16 h-16 bg-slate-50') },
+  { name: 'bg-slate-300', render: box('w-16 h-16 bg-slate-300') },
+  { name: 'bg-slate-700', render: box('w-16 h-16 bg-slate-700') },
+  { name: 'bg-blue-200', render: box('w-16 h-16 bg-blue-200') },
+  { name: 'bg-blue-800', render: box('w-16 h-16 bg-blue-800') },
+  { name: 'bg-green-300', render: box('w-16 h-16 bg-green-300') },
+  { name: 'bg-orange-500', render: box('w-16 h-16 bg-orange-500') },
+  { name: 'bg-purple-600', render: box('w-16 h-16 bg-purple-600') },
+  { name: 'bg-pink-400', render: box('w-16 h-16 bg-pink-400') },
+  { name: 'bg-yellow-300', render: box('w-16 h-16 bg-yellow-300') },
+  { name: 'bg-lime-500', render: box('w-16 h-16 bg-lime-500') },
+  { name: 'bg-teal-600', render: box('w-16 h-16 bg-teal-600') },
+
+  // ── more radii ──────────────────────────────────────────────────────────────
+  { name: 'rounded-sm', render: box('w-20 h-20 bg-indigo-500 rounded-sm') },
+  { name: 'rounded-2xl', render: box('w-20 h-20 bg-indigo-500 rounded-2xl') },
+  { name: 'rounded-3xl', render: box('w-24 h-24 bg-indigo-500 rounded-3xl') },
+
+  // ── opacity levels ────────────────────────────────────────────────────────────
+  { name: 'opacity-25', render: ({ Box }) => (
+      <Box className="w-16 h-16 bg-white"><Box id="cfm-root" className="w-16 h-16 bg-blue-600 opacity-25" /></Box>) },
+  { name: 'opacity-75', render: ({ Box }) => (
+      <Box className="w-16 h-16 bg-white"><Box id="cfm-root" className="w-16 h-16 bg-blue-600 opacity-75" /></Box>) },
+
+  // ── more sizing ───────────────────────────────────────────────────────────────
+  { name: 'size-12', render: box('w-12 h-12 bg-cyan-500') },
+  { name: 'size-28x14', render: box('w-28 h-14 bg-rose-500') },
+  { name: 'size-tiny', render: box('w-4 h-4 bg-black') },
+
+  // ── borders ───────────────────────────────────────────────────────────────────
+  { name: 'border-bare', render: box('w-20 h-20 bg-white border border-black') },
+  { name: 'border-8', render: box('w-24 h-24 bg-amber-200 border-8 border-emerald-600') },
+
+  // ── single-side padding (colored box, dark inner for a clean diff) ──────────────
+  { name: 'pad-left', render: ({ Box }) => (
+      <Box id="cfm-root" className="bg-sky-500 pl-8"><Box className="w-8 h-12 bg-slate-900" /></Box>) },
+  { name: 'pad-top', render: ({ Box }) => (
+      <Box id="cfm-root" className="bg-emerald-500 pt-8"><Box className="w-12 h-8 bg-slate-900" /></Box>) },
+
+  // ── flex alignment variants ─────────────────────────────────────────────────────
+  { name: 'items-end', render: ({ Box }) => (
+      <Box id="cfm-root" className="flex flex-row items-end w-40 h-16 bg-slate-200">
+        <Box className="w-8 h-8 bg-blue-600" />
+      </Box>) },
+  { name: 'justify-end', render: ({ Box }) => (
+      <Box id="cfm-root" className="flex flex-row justify-end w-40 h-10 bg-slate-200">
+        <Box className="w-8 h-8 bg-blue-600" />
+      </Box>) },
+  { name: 'justify-around', render: ({ Box }) => (
+      <Box id="cfm-root" className="flex flex-row justify-around w-40 h-10 bg-slate-200">
+        <Box className="w-6 h-8 bg-red-600" /><Box className="w-6 h-8 bg-green-600" />
+      </Box>) },
+  { name: 'self-end', render: ({ Box }) => (
+      <Box id="cfm-root" className="flex flex-row items-start w-32 h-20 bg-slate-200">
+        <Box className="w-8 h-8 bg-violet-600 self-end" />
+      </Box>) },
+
+  // ── position offsets ────────────────────────────────────────────────────────────
+  { name: 'absolute-br', render: ({ Box }) => (
+      <Box id="cfm-root" className="relative w-24 h-24 bg-slate-200">
+        <Box className="absolute bottom-2 right-2 w-8 h-8 bg-fuchsia-600" />
+      </Box>) },
+  { name: 'z-stack', render: ({ Box }) => (
+      <Box id="cfm-root" className="relative w-24 h-16 bg-slate-200">
+        <Box className="absolute top-0 left-0 w-16 h-16 bg-red-500 z-10" />
+        <Box className="absolute top-2 left-2 w-16 h-16 bg-blue-500" />
+      </Box>) },
 ]
