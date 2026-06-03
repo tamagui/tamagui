@@ -23,7 +23,9 @@ export function App() {
         style={{
           flex: 1,
           backgroundColor: '#ffffff',
-          paddingTop: 80,
+          // push content below the iOS status bar / dynamic island / Expo Go dev gear so the
+          // harness can mask that top strip and luma-crop cleanly to the case content
+          paddingTop: 220,
           alignItems: 'flex-start',
         }}
       >
