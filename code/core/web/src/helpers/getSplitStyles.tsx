@@ -260,6 +260,12 @@ function looksLikeTailwindClass(
   // classes with colons are always considered tailwind (modifiers)
   if (cls.includes(':')) return true
 
+  // two-segment prop prefixes (min-w-24, max-h-12, …)
+  if (/^(?:min|max)-[wh]-/.test(cls)) return true
+
+  // border utilities are overloaded (border-2 width vs border-red-500 color) — recognize them
+  if (/^border-/.test(cls)) return true
+
   // for prop-value patterns like "bg-red", check if the prop is known
   const dashIndex = cls.indexOf('-')
   if (dashIndex === -1) return false
@@ -431,6 +437,12 @@ const tailwindUtilityMap: Record<string, Record<string, any>> = {
   'flex-initial': { flexGrow: 0, flexShrink: 1, flexBasis: 'auto' },
   'flex-none': { flexGrow: 0, flexShrink: 0, flexBasis: 'auto' },
   hidden: { display: 'none' },
+  // position
+  relative: { position: 'relative' },
+  absolute: { position: 'absolute' },
+  'inset-0': { top: 0, right: 0, bottom: 0, left: 0 },
+  // bare border = 1px
+  border: { borderWidth: 1 },
 }
 
 // tailwind value aliases for alignment props (items-*/justify-*/content-*/self-*):
@@ -447,6 +459,29 @@ const alignProps: Record<string, boolean> = {
   alignItems: true,
   alignContent: true,
   alignSelf: true,
+}
+
+// tailwind utilities whose PROP spans two dash-segments (min-w-*, max-h-*, …). the generic
+// parser splits on the first dash, so these need explicit recognition.
+const tailwindPropPrefixes: Record<string, string> = {
+  'min-w': 'minWidth',
+  'min-h': 'minHeight',
+  'max-w': 'maxWidth',
+  'max-h': 'maxHeight',
+}
+
+// tailwind sizing keywords / fractions for width/height/min/max props.
+// returns a CSS value, or null if `value` isn't a sizing keyword (falls through to normal parse).
+function tailwindSizingValue(prop: string, value: string): string | null {
+  if (value === 'full') return '100%'
+  if (value === 'auto') return 'auto'
+  if (value === 'screen') return /[Hh]eight/.test(prop) ? '100vh' : '100vw'
+  if (value === 'min') return 'min-content'
+  if (value === 'max') return 'max-content'
+  if (value === 'fit') return 'fit-content'
+  const frac = /^(\d+)\/(\d+)$/.exec(value)
+  if (frac) return `${(Number(frac[1]) / Number(frac[2])) * 100}%`
+  return null
 }
 
 /**
@@ -508,8 +543,22 @@ function tailwindClassToFlatProp(
     return null
   }
 
-  const prop = lastPart.slice(0, dashIndex)
+  let prop = lastPart.slice(0, dashIndex)
   let value: any = lastPart.slice(dashIndex + 1)
+
+  // two-segment prop prefixes: min-w-24 → prop minWidth, value 24
+  if (prop === 'min' || prop === 'max') {
+    const m = /^((?:min|max)-[wh])-(.+)$/.exec(lastPart)
+    if (m && tailwindPropPrefixes[m[1]]) {
+      prop = tailwindPropPrefixes[m[1]]
+      value = m[2]
+    }
+  }
+
+  // border is overloaded: border-2 → borderWidth (raw px), border-red-500 → borderColor
+  if (prop === 'border') {
+    prop = /^\d+$/.test(value) ? 'borderWidth' : 'borderColor'
+  }
 
   // $ prefix is invalid in className values - tokens are auto-resolved by name
   if (typeof value === 'string' && value.startsWith('$')) {
@@ -526,6 +575,19 @@ function tailwindClassToFlatProp(
   const isShorthand = !!shorthands?.[prop]
   if (!isShorthand && !(prop in stylePropsAll)) {
     return null
+  }
+
+  const expandedProp = isShorthand ? shorthands[prop] : prop
+
+  // tailwind sizing keywords / fractions (w-full → 100%, w-1/2 → 50%, w-auto, w-screen).
+  // handled before isValidTailwindValue since fractions/keywords aren't plain CSS values.
+  if (tokenCategories.size[expandedProp]) {
+    const sized = tailwindSizingValue(expandedProp, value)
+    if (sized != null) {
+      const key =
+        modifiers.length > 0 ? `$${modifiers.join(':')}:${expandedProp}` : `$${expandedProp}`
+      return { key, value: sized }
+    }
   }
 
   // validate value looks like a CSS value, not a class name fragment
