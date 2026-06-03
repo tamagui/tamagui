@@ -497,9 +497,10 @@ function isValidTailwindValue(
   if (/^\d+(\.\d+)?$/.test(value)) return true
 
   // for spacing/sizing props, values must be numeric (tokens auto-resolve by name)
-  // this prevents "my-theme" from being treated as a margin value
+  // this prevents "my-theme" from being treated as a margin value. radius is excluded —
+  // Tailwind radii are NAMED (rounded-lg/md/full), which resolve to radius tokens.
   const expandedProp = shorthands?.[prop] || prop
-  if (isSpacingProp(expandedProp)) {
+  if (isSpacingProp(expandedProp) && !(expandedProp in tokenCategories.radius)) {
     return /^\d+(\.\d+)?$/.test(value)
   }
 
