@@ -22,7 +22,8 @@
     "./code/comparisons/tailwind-bench",
     "./code/comparisons/inline-bench",
     "./code/comparisons/nativewind-bench",
-    "./code/comparisons/conformance/web"
+    "./code/comparisons/conformance/web",
+    "./code/comparisons/conformance/native"
   ],
   "scripts": {
     "postinstall": "bun ./scripts/postinstall.ts",
