@@ -192,6 +192,254 @@ test.describe('Sheet snapPointsMode="fit"', () => {
   })
 })
 
+test.describe('Sheet.ScrollView inside snapPointsMode="fit"', () => {
+  // regression test for 7b03b3fcdc:
+  // ScrollView hardcoded flex:1 collapsed inside a hasFit Frame (flex:0/auto/undefined),
+  // so both ScrollView and Frame measured to 0 — overlay rendered, sheet did not.
+
+  test('short content: sheet renders with non-zero height (not collapsed)', async ({
+    page,
+  }) => {
+    const trigger = page.getByTestId('scrollview-fit-trigger')
+    const frame = page.getByTestId('scrollview-fit-frame')
+    const scrollview = page.getByTestId('scrollview-fit-scrollview')
+    const closeButton = page.getByTestId('scrollview-fit-close')
+
+    await expect(trigger).toBeVisible()
+    await trigger.click()
+
+    // sheet frame must be visible with measurable height — this is the bug
+    await expect(frame).toBeVisible({ timeout: 5000 })
+
+    const frameBox = await frame.boundingBox()
+    expect(frameBox).toBeTruthy()
+    // before the fix, frame height was 0 (collapsed) — assert real height
+    expect(frameBox!.height).toBeGreaterThan(80)
+
+    // scrollview should be visible too
+    await expect(scrollview).toBeVisible()
+    const svBox = await scrollview.boundingBox()
+    expect(svBox).toBeTruthy()
+    expect(svBox!.height).toBeGreaterThan(40)
+
+    // first content item visible
+    await expect(page.getByTestId('scrollview-fit-item-0')).toBeVisible()
+
+    // close
+    await closeButton.click()
+    await page.waitForTimeout(500)
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
+  })
+
+  test('short content: sheet height fits content, does NOT fill viewport', async ({
+    page,
+  }) => {
+    const trigger = page.getByTestId('scrollview-fit-trigger')
+    const frame = page.getByTestId('scrollview-fit-frame')
+
+    await trigger.click()
+    await expect(frame).toBeVisible({ timeout: 5000 })
+
+    // wait for animation to settle
+    await page.waitForTimeout(400)
+
+    const frameBox = await frame.boundingBox()
+    const viewport = page.viewportSize()
+    expect(frameBox).toBeTruthy()
+    expect(viewport).toBeTruthy()
+
+    // short content (~4 paragraphs + button + handle) should be well under viewport
+    // before fix: frame was 0; if maxHeight cap is wrong it'd be full viewport.
+    // fit mode with short content should be < 60% viewport.
+    expect(frameBox!.height).toBeLessThan(viewport!.height * 0.6)
+  })
+
+  test('tall content: scrollview is capped at viewport and scrolls', async ({ page }) => {
+    const trigger = page.getByTestId('scrollview-fit-tall-trigger')
+    const frame = page.getByTestId('scrollview-fit-tall-frame')
+    const scrollview = page.getByTestId('scrollview-fit-tall-scrollview')
+
+    await trigger.click()
+    await expect(frame).toBeVisible({ timeout: 5000 })
+    await page.waitForTimeout(400)
+
+    const scrollviewBox = await scrollview.boundingBox()
+    const viewport = page.viewportSize()
+    expect(scrollviewBox).toBeTruthy()
+    expect(viewport).toBeTruthy()
+
+    // the fix caps the SCROLLVIEW (not the frame) at screenSize. frame is scrollview
+    // + handle + frame padding so it can be slightly larger. assert the scrollview cap.
+    expect(scrollviewBox!.height).toBeLessThanOrEqual(viewport!.height + 1)
+    expect(scrollviewBox!.height).toBeGreaterThan(viewport!.height * 0.5)
+
+    // first row is visible, last row should NOT be visible without scrolling.
+    await expect(page.getByTestId('scrollview-fit-tall-item-0')).toBeVisible()
+
+    // scroll the scrollview to bottom via evaluate
+    const scrolled = await scrollview.evaluate((el) => {
+      const scroller = el.scrollHeight > el.clientHeight ? el : el.querySelector('*')
+      // walk up/down to find a scrollable element
+      let target: Element | null = el
+      while (target && target.scrollHeight <= target.clientHeight) {
+        target = target.firstElementChild
+      }
+      if (!target) return { ok: false, sh: 0, ch: 0 }
+      target.scrollTop = target.scrollHeight
+      return {
+        ok: target.scrollTop > 0,
+        sh: target.scrollHeight,
+        ch: target.clientHeight,
+        st: target.scrollTop,
+      }
+    })
+
+    // content must be taller than viewport (scrollable)
+    expect(scrolled.sh).toBeGreaterThan(scrolled.ch)
+    expect(scrolled.ok).toBe(true)
+  })
+
+  test('tall content: close button dismisses sheet', async ({ page }) => {
+    const trigger = page.getByTestId('scrollview-fit-tall-trigger')
+    const frame = page.getByTestId('scrollview-fit-tall-frame')
+    const scrollview = page.getByTestId('scrollview-fit-tall-scrollview')
+
+    await trigger.click()
+    await expect(frame).toBeVisible({ timeout: 5000 })
+    await page.waitForTimeout(400)
+
+    // scroll to bottom of the scrollview to bring the close button into view
+    await scrollview.evaluate((el) => {
+      const all: HTMLElement[] = [el as HTMLElement].concat(
+        Array.from(el.querySelectorAll('*')) as HTMLElement[]
+      )
+      for (const e of all) {
+        if (e.scrollHeight > e.clientHeight && e.clientHeight > 0) {
+          e.scrollTop = e.scrollHeight
+          return
+        }
+      }
+    })
+    await page.waitForTimeout(200)
+
+    const closeButton = page.getByTestId('scrollview-fit-tall-close')
+    await expect(closeButton).toBeVisible()
+    await closeButton.click()
+
+    await page.waitForTimeout(600)
+    await expect(frame).not.toBeInViewport({ ratio: 0.5 })
+  })
+
+  test('open/close cycle with ScrollView+fit does not collapse on reopen', async ({
+    page,
+  }) => {
+    const trigger = page.getByTestId('scrollview-fit-trigger')
+    const frame = page.getByTestId('scrollview-fit-frame')
+    const closeButton = page.getByTestId('scrollview-fit-close')
+
+    for (let i = 0; i < 3; i++) {
+      await trigger.click()
+      await expect(frame).toBeVisible({ timeout: 5000 })
+      await page.waitForTimeout(300)
+      const box = await frame.boundingBox()
+      expect(box).toBeTruthy()
+      // every reopen must have non-zero height
+      expect(box!.height).toBeGreaterThan(80)
+      await closeButton.click()
+      await page.waitForTimeout(400)
+    }
+  })
+})
+
+test.describe('Sheet fit-mode through Dialog.Adapt (3pc filter-by-event style)', () => {
+  // mirrors the real 3PunchConvo "filter by event" sheet: a dialog adapting to a
+  // fit-mode sheet on xs, frame with absolute background layers, scrollview given an
+  // explicit consumer maxHeight, moveOnKeyboardChange, content taller than screen.
+  // regression: a flex:1 body collapsed the fit sheet to ~just the title height, so it
+  // hung as a sliver at the bottom edge. with a content-sized body it must fill to the
+  // capped height and scroll.
+  test('tall dialog sheet fills to capped height and scrolls, does not collapse', async ({
+    page,
+  }) => {
+    // xs (maxWidth 660) triggers the dialog sheet adaptation
+    await page.setViewportSize({ width: 400, height: 800 })
+    await page.reload()
+    await page.waitForLoadState('networkidle')
+    await page.waitForTimeout(300)
+
+    const trigger = page.getByTestId('repro-3pc-trigger')
+    const frame = page.getByTestId('repro-3pc-frame')
+    const scrollview = page.getByTestId('repro-3pc-scrollview')
+
+    await expect(trigger).toBeVisible()
+    await trigger.click()
+
+    // the adapted sheet, not the dialog, must render. frame/scrollview only exist
+    // in the Adapt branch, so their visibility confirms we got the sheet.
+    await expect(frame).toBeVisible({ timeout: 5000 })
+    await expect(scrollview).toBeVisible()
+    // let the open spring fully settle (spring drivers take longer than css)
+    await page.waitForTimeout(900)
+
+    const svBox = await scrollview.boundingBox()
+    const viewport = page.viewportSize()
+    expect(svBox).toBeTruthy()
+    expect(viewport).toBeTruthy()
+
+    // regression: must not collapse to a sliver (was ~100px). fills most of the
+    // viewport, capped at the consumer maxHeight (0.86 * height).
+    expect(svBox!.height).toBeGreaterThan(viewport!.height * 0.6)
+    expect(svBox!.height).toBeLessThanOrEqual(Math.round(viewport!.height * 0.86) + 12)
+
+    // and it is actually shown on-screen (not hanging below / off the viewport).
+    // boundingBox stays driver-agnostic; toBeInViewport tolerates sub-pixel
+    // spring settling that a strict bottom-edge pixel check would flake on.
+    await expect(scrollview).toBeInViewport({ ratio: 0.95 })
+
+    const cover = await frame.evaluate((frameEl) => {
+      const frameBox = frameEl.getBoundingClientRect()
+      const covers = Array.from(document.querySelectorAll('[data-sheet-cover]')).map(
+        (el) => {
+          const box = el.getBoundingClientRect()
+          return {
+            backgroundColor: getComputedStyle(el).backgroundColor,
+            height: box.height,
+            topDelta: Math.abs(box.top - frameBox.bottom),
+          }
+        }
+      )
+
+      return (
+        covers.find(
+          (candidate) =>
+            candidate.topDelta <= 2 &&
+            candidate.height >= window.innerHeight &&
+            candidate.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
+            candidate.backgroundColor !== 'transparent'
+        ) ?? null
+      )
+    })
+    expect(cover).toBeTruthy()
+
+    // content is taller than the cap, so it should scroll.
+    const scrolled = await scrollview.evaluate((el) => {
+      let target: Element | null = el
+      while (target && target.scrollHeight <= target.clientHeight) {
+        target = target.firstElementChild
+      }
+      if (!target) return { ok: false, sh: 0, ch: 0 }
+      target.scrollTop = target.scrollHeight
+      return {
+        ok: target.scrollTop > 0,
+        sh: target.scrollHeight,
+        ch: target.clientHeight,
+      }
+    })
+    expect(scrolled.sh).toBeGreaterThan(scrolled.ch)
+    expect(scrolled.ok).toBe(true)
+  })
+})
+
 test.describe('Adapted Dialog Sheet', () => {
   // TODO: This test is flaky in CI - the adaptation may not trigger reliably at 500px
   // The core functionality is tested by other Sheet tests

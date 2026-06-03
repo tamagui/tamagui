@@ -1,8 +1,11 @@
 import React from 'react'
+import { Linking, Pressable } from 'react-native'
 import { addTheme, updateTheme } from '@tamagui/theme'
-import { Button, Square, Text, Theme, YStack, useIsomorphicLayoutEffect } from 'tamagui'
+import { Square, Text, Theme, YStack, useIsomorphicLayoutEffect } from 'tamagui'
 
 import { TEST_IDS } from '../constants/test-ids'
+
+const colors = ['red', 'blue', 'green', 'purple', 'orange'] as const
 
 /**
  * Test case for theme mutation with DynamicColorIOS optimization.
@@ -17,6 +20,7 @@ import { TEST_IDS } from '../constants/test-ids'
 export function ThemeMutation() {
   const [themeName, setThemeName] = React.useState<string | null>(null)
   const [currentColor, setCurrentColor] = React.useState('red')
+  const currentColorRef = React.useRef<(typeof colors)[number]>('red')
 
   // Create the custom theme on mount
   useIsomorphicLayoutEffect(() => {
@@ -30,12 +34,12 @@ export function ThemeMutation() {
     setThemeName('mutation-test')
   }, [])
 
-  const colors = ['red', 'blue', 'green', 'purple', 'orange'] as const
-
-  const cycleColor = () => {
-    const currentIndex = colors.indexOf(currentColor as (typeof colors)[number])
+  const cycleColor = React.useCallback(() => {
+    const currentIndex = colors.indexOf(currentColorRef.current)
     const nextIndex = (currentIndex + 1) % colors.length
     const nextColor = colors[nextIndex]
+
+    currentColorRef.current = nextColor
 
     updateTheme({
       name: 'mutation-test',
@@ -48,18 +52,41 @@ export function ThemeMutation() {
     // Note: We do NOT call useForceUpdate() here - the fix should make
     // forceUpdateThemes() (called internally by updateTheme) work properly
     setCurrentColor(nextColor)
-  }
+  }, [])
+
+  React.useEffect(() => {
+    const sub = Linking.addEventListener('url', ({ url }) => {
+      if (url.includes('theme-mutation-next')) {
+        cycleColor()
+      }
+    })
+    return () => sub.remove()
+  }, [cycleColor])
 
   if (!themeName) {
     return (
-      <YStack padding="$4" alignItems="center" gap="$4">
+      <YStack
+        flex={1}
+        width="100%"
+        padding="$4"
+        alignItems="center"
+        justifyContent="center"
+        gap="$4"
+      >
         <Text>Loading theme...</Text>
       </YStack>
     )
   }
 
   return (
-    <YStack padding="$4" alignItems="center" gap="$4">
+    <YStack
+      flex={1}
+      width="100%"
+      padding="$4"
+      alignItems="center"
+      justifyContent="center"
+      gap="$4"
+    >
       <Text testID={TEST_IDS.themeMutationColorText}>Expected color: {currentColor}</Text>
 
       <Theme name={themeName as any}>
@@ -71,9 +98,23 @@ export function ThemeMutation() {
         />
       </Theme>
 
-      <Button testID={TEST_IDS.themeMutationButton} onPress={cycleColor}>
-        Change Theme Color
-      </Button>
+      <Pressable
+        key={currentColor}
+        testID={TEST_IDS.themeMutationButton}
+        accessibilityRole="button"
+        onPress={cycleColor}
+        style={({ pressed }) => ({
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: 48,
+          minWidth: 220,
+          borderRadius: 12,
+          paddingHorizontal: 16,
+          backgroundColor: pressed ? '#d4d4d4' : '#e9e9e9',
+        })}
+      >
+        <Text>Change Theme Color</Text>
+      </Pressable>
     </YStack>
   )
 }

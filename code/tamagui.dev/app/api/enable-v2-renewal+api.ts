@@ -1,15 +1,13 @@
-import Stripe from 'stripe'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
-import { sendV2RenewalEnabledEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
 import { V1_PRODUCTS } from '~/features/stripe/products'
 
 /**
- * Enable V2 renewal for a V1 subscription
- * Requires authentication - user must own the subscription
+ * Legacy endpoint kept so old links and clients still resolve cleanly.
+ * Pre-V2 renewals now get 30% off automatically, so no mutation is needed.
  */
 export default apiRoute(async (req) => {
   if (req.method !== 'POST') {
@@ -53,15 +51,6 @@ export default apiRoute(async (req) => {
       return Response.json({ error: 'Subscription not found' }, { status: 404 })
     }
 
-    // check if already enabled
-    if (subscription.metadata?.v2_renewal_enabled === 'true') {
-      return Response.json({
-        success: true,
-        message: 'V2 renewal is already enabled for this subscription',
-        alreadyEnabled: true,
-      })
-    }
-
     // verify it's a V1 subscription
     const isV1 = subscription.items.data.some((item) => {
       const product = item.price?.product
@@ -72,44 +61,23 @@ export default apiRoute(async (req) => {
     if (!isV1) {
       return Response.json(
         {
-          error: 'This is not a V1 subscription. V2 renewal is only for V1 subscribers.',
+          error:
+            'This discount notice only applies to pre-v2 subscriptions and is automatic when they renew.',
         },
         { status: 400 }
       )
     }
 
-    // update Stripe subscription metadata
-    await stripe.subscriptions.update(subscriptionId, {
-      metadata: {
-        ...subscription.metadata,
-        v2_renewal_enabled: 'true',
-        v2_renewal_enabled_at: new Date().toISOString(),
-      },
-    })
-
-    // get user info to send confirmation email
-    const { data: userData } = await supabaseAdmin
-      .from('users')
-      .select('email, full_name')
-      .eq('id', user.id)
-      .single()
-
-    if (userData?.email) {
-      // send confirmation email
-      await sendV2RenewalEnabledEmail(userData.email, {
-        name: userData.full_name || 'there',
-      })
-    }
-
     return Response.json({
       success: true,
+      automatic: true,
       message:
-        'V2 renewal enabled! When your V1 subscription renews, you will automatically get Takeout 2 with 35% off.',
+        'Pre-v2 renewals now get 30% off automatically. No action is needed for this subscription.',
     })
   } catch (error) {
-    if (error instanceof Stripe.errors.StripeError) {
-      console.error('Stripe error enabling V2 renewal:', error.message)
-      return Response.json({ error: error.message }, { status: error.statusCode || 500 })
+    if (error instanceof Error) {
+      console.error('Error checking renewal discount eligibility:', error.message)
+      return Response.json({ error: error.message }, { status: 500 })
     }
     throw error
   }

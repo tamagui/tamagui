@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-media-driver",
-  "version": "2.0.0-rc.31",
+  "version": "2.1.0-1780426041711",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
@@ -40,8 +40,5 @@
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "react-native": "0.83.2"
-  },
-  "peerDependencies": {
-    "react-native": "*"
   }
 }

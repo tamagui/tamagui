@@ -1,0 +1,31 @@
+appId: host.exp.Exponent
+tags:
+  - component
+---
+- runFlow: OpenApp.yaml
+- scrollUntilVisible:
+    element: 'Toast'
+    centerElement: true
+- tapOn: 'Toast'
+# Toast v2 demo has circular icon buttons for positions
+- waitForAnimationToEnd
+# Tap the bottom-right position button to trigger a toast
+- tapOn:
+    id: 'toast-show-button'
+# Toast should appear (testID on ToastPositionWrapper, outside AnimatedView)
+- extendedWaitUntil:
+    visible:
+      id: 'toast-item'
+    timeout: 3000
+- assertVisible:
+    id: 'toast-item'
+# Dismiss native toast via swipe; close button is web-only in this demo
+- swipe:
+    from:
+      id: 'toast-item'
+    direction: DOWN
+    duration: 200
+- extendedWaitUntil:
+    notVisible:
+      id: 'toast-item'
+    timeout: 5000

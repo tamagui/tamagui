@@ -131,6 +131,10 @@ export function useSheetScrollViewGestures({
     } else {
       panHandles = !hasScrollableContent
       if (!panHandles) {
+        s.handoffOccurred = false
+        s.handoffDragOffset = 0
+        s.scrollEngaged = currentScrollY > 0
+        s.prevScrollY = currentScrollY
         s.isScrolling = true
         scrollBridge.scrollLock = true
         setScrollEnabled(true)

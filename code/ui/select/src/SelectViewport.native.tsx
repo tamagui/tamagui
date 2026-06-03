@@ -1,5 +1,6 @@
 import { AdaptContext, AdaptPortalContents, useAdaptContext } from '@tamagui/adapt'
 import { Theme, useThemeName } from '@tamagui/core'
+import { YStack } from '@tamagui/stacks'
 
 import { VIEWPORT_NAME } from './constants'
 import {
@@ -15,18 +16,25 @@ export const SelectViewport = (props: SelectViewportProps) => {
   const itemParentContext = useSelectItemParentContext(scope)
   const themeName = useThemeName()
 
-  // re-propogate context...
+  // re-propagate context
   const adaptContext = useAdaptContext()
-
-  return (
-    <AdaptPortalContents scope={context.adaptScope}>
-      <Theme name={themeName}>
-        <ForwardSelectContext itemContext={itemParentContext} context={context}>
-          <AdaptContext.Provider {...adaptContext}>{children}</AdaptContext.Provider>
-        </ForwardSelectContext>
-      </Theme>
-    </AdaptPortalContents>
+  const contents = (
+    <Theme name={themeName}>
+      <ForwardSelectContext itemContext={itemParentContext} context={context}>
+        <AdaptContext.Provider {...adaptContext}>{children}</AdaptContext.Provider>
+      </ForwardSelectContext>
+    </Theme>
   )
+
+  if (!context.open) {
+    if (context.lazyMount && context.renderValue) {
+      return null
+    }
+
+    return <YStack display="none">{contents}</YStack>
+  }
+
+  return <AdaptPortalContents scope={context.adaptScope}>{contents}</AdaptPortalContents>
 }
 
 SelectViewport.displayName = VIEWPORT_NAME

@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs'
 import { execSync } from 'node:child_process'
 import { createRequire } from 'node:module'
 import { resolve as pathResolve } from 'node:path'
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin, tamaguiAliases } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 import type { UserConfig } from 'vite'
@@ -91,7 +91,6 @@ const include = [
   'unified',
   '@tamagui/get-font-sized',
   '@tamagui/linear-gradient',
-  '@tamagui/lucide-icons-2',
   '@rehookify/datepicker',
   '@tamagui/get-token',
   '@tamagui/roving-focus',
@@ -116,10 +115,18 @@ export default {
 
   build: {
     cssCodeSplit: false,
+    rolldownOptions: {
+      output: {
+        // fix non-deterministic __esm init ordering bug
+        // https://github.com/rolldown/rolldown/issues/3143
+        strictExecutionOrder: true,
+      },
+    },
   },
 
   resolve: {
     preserveSymlinks: false,
+
     alias: [
       // Regex-based alias for bento components when not available
       ...(!hasBento
@@ -133,20 +140,13 @@ export default {
             },
           ]
         : []),
+
       // Standard string-based aliases
       {
         find: 'react-native-svg',
         replacement: '@tamagui/react-native-svg',
       },
-      // {
-      //   find: 'react-native-web',
-      //   replacement: resolve('@tamagui/react-native-web-lite'),
-      // },
-      // bugfix docsearch/react, weird
-      {
-        find: '@docsearch/react',
-        replacement: resolve('@docsearch/react'),
-      },
+
       {
         find: 'react-native/Libraries/Core/ReactNativeVersion',
         replacement: resolve('@tamagui/proxy-worm'),
@@ -183,6 +183,13 @@ export default {
         find: '@tamagui/bento',
         replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
       },
+
+      ...(process.env.RNW_LITE
+        ? tamaguiAliases({
+            rnwLite: true,
+            svg: true,
+          })
+        : []),
     ],
 
     dedupe: [
@@ -201,7 +208,7 @@ export default {
   },
 
   ssr: {
-    external: ['@vxrn/mdx', 'ws'],
+    external: ['@vxrn/mdx', 'ws', 'postmark', 'stripe'],
     noExternal: true,
   },
 
@@ -249,6 +256,20 @@ export const LocationNotification = BentoComponentStub
     }),
 
     one({
+      setupFile: {
+        server: './setup.server.ts',
+      },
+
+      server: {
+        cacheControl: {
+          'fonts/**': 'public, max-age=604800, stale-while-revalidate=86400',
+          '*.svg': 'public, max-age=86400',
+          '*.png': 'public, max-age=86400',
+          '*.jpg': 'public, max-age=86400',
+          '*.woff2': 'public, max-age=604800',
+        },
+      },
+
       react: {
         compiler: process.env.NODE_ENV === 'production',
       },

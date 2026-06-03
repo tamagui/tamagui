@@ -4,25 +4,27 @@
  * Verifies actual pixel colors change correctly
  */
 
-import { by, device, element, expect } from 'detox'
+import { by, element, expect, waitFor } from 'detox'
 import * as assert from 'assert'
-import { navigateToTestCase } from './utils/navigation'
+import { remountDirectUseCase } from './utils/navigation'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
-
-async function navigateToGroupPressNative() {
-  await navigateToTestCase('GroupPressNative', 'group-press-native-root')
-}
+import { safeLaunchApp } from './utils/detox'
 
 // TODO: These tests are flaky on iOS simulator - press events don't fire reliably
 // Need to investigate press event handling in simulator environment
 describe.skip('GroupPressNative', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'GroupPressNative' },
+    })
+    await waitFor(element(by.id('group-press-native-root')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
-    await navigateToGroupPressNative()
+    await remountDirectUseCase('group-press-native-root')
   })
 
   it('should render the test case screen', async () => {

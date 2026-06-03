@@ -1,3 +1,4 @@
+import { isResponse } from 'one'
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import type { UserContextType } from '~/features/auth/types'
@@ -14,7 +15,16 @@ import {
 } from '~/features/user/helpers'
 
 export default apiRoute(async (req) => {
-  const { user } = await ensureAuth({ req })
+  const { user } = await ensureAuth({ req }).catch((err) => {
+    if (isResponse(err) && err.status === 401) {
+      return { user: null }
+    }
+    throw err
+  })
+
+  if (!user) {
+    return Response.json(null)
+  }
 
   const [userTeams, userDetails, subscriptions, accessInfo, themeHistories, userPrivate] =
     await Promise.all([

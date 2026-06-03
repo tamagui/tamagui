@@ -168,6 +168,7 @@ export const docsRoutes = [
       { title: 'Tabs', route: '/ui/tabs' },
       { title: 'Tooltip', route: '/ui/tooltip' },
       { title: 'Toast', route: '/ui/toast' },
+      { title: 'Toast v2', route: '/ui/toast-2' },
     ],
   },
 

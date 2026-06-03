@@ -20,7 +20,8 @@ async function waitForServer(port: string, timeoutMs = 120_000) {
   while (Date.now() - start < timeoutMs) {
     try {
       const res = await fetch(url)
-      if (res.ok) return
+      const text = await res.text()
+      if (res.ok && text.includes('id="root"')) return
     } catch {}
     await new Promise((r) => setTimeout(r, 500))
   }

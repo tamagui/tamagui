@@ -1,5 +1,5 @@
 import { type RefObject } from 'react';
-import type { ScrollBridge } from './types';
+import type { ScrollBridge, SnapPointsMode } from './types';
 interface GesturePanConfig {
     positions: number[];
     frameSize: number;
@@ -12,6 +12,9 @@ interface GesturePanConfig {
     resisted: (val: number, minY: number) => number;
     disableDrag?: boolean;
     isShowingInnerSheet?: boolean;
+    dismissOnSnapToBottom?: boolean;
+    snapPointsMode?: SnapPointsMode;
+    isKeyboardVisible?: boolean;
     setAnimatedPosition: (val: number) => void;
     scrollGestureRef?: RefObject<any> | null;
     pauseKeyboardHandler?: RefObject<boolean>;

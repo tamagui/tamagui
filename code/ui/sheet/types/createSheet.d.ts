@@ -46,9 +46,9 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     Controlled: FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & RefAttributes<RNView>> & {
         Frame: ForwardRefExoticComponent<SheetScopedProps<Omit<GetProps<F>, keyof {
             /**
-             * By default the sheet adds a view below its bottom that extends down another 50%,
-             * this is useful if your Sheet has a spring animation that bounces "past" the top when
-             * opening, preventing it from showing the content underneath.
+             * by default the sheet adds a view below its bottom that extends past the
+             * largest visible viewport height. this covers spring overshoot when opening
+             * so page content never shows through below the sheet.
              */
             disableHideBottomOverflow?: boolean;
             /**
@@ -59,9 +59,9 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
             adjustPaddingForOffscreenContent?: boolean;
         }> & {
             /**
-             * By default the sheet adds a view below its bottom that extends down another 50%,
-             * this is useful if your Sheet has a spring animation that bounces "past" the top when
-             * opening, preventing it from showing the content underneath.
+             * by default the sheet adds a view below its bottom that extends past the
+             * largest visible viewport height. this covers spring overshoot when opening
+             * so page content never shows through below the sheet.
              */
             disableHideBottomOverflow?: boolean;
             /**
@@ -119,9 +119,9 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     };
     Frame: ForwardRefExoticComponent<SheetScopedProps<Omit<GetProps<F>, keyof {
         /**
-         * By default the sheet adds a view below its bottom that extends down another 50%,
-         * this is useful if your Sheet has a spring animation that bounces "past" the top when
-         * opening, preventing it from showing the content underneath.
+         * by default the sheet adds a view below its bottom that extends past the
+         * largest visible viewport height. this covers spring overshoot when opening
+         * so page content never shows through below the sheet.
          */
         disableHideBottomOverflow?: boolean;
         /**
@@ -132,9 +132,9 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
         adjustPaddingForOffscreenContent?: boolean;
     }> & {
         /**
-         * By default the sheet adds a view below its bottom that extends down another 50%,
-         * this is useful if your Sheet has a spring animation that bounces "past" the top when
-         * opening, preventing it from showing the content underneath.
+         * by default the sheet adds a view below its bottom that extends past the
+         * largest visible viewport height. this covers spring overshoot when opening
+         * so page content never shows through below the sheet.
          */
         disableHideBottomOverflow?: boolean;
         /**

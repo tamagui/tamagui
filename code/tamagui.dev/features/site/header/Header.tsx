@@ -312,7 +312,7 @@ const HeaderMenuButton = () => {
         <Button
           size="$5"
           circular
-          my={2}
+          my={-1}
           bg="transparent"
           borderWidth={0}
           onPress={(e) => {
@@ -415,7 +415,7 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
       </SlidingPopoverContext.Provider>
 
       <Adapt platform="touch" when="sm">
-        <Sheet transition={'quicker'} zIndex={100000000} modal dismissOnSnapToBottom>
+        <Sheet transition="medium" zIndex={100000000} modal dismissOnSnapToBottom>
           <Sheet.Frame>
             <Sheet.ScrollView showsVerticalScrollIndicator={false}>
               <Adapt.Contents />

@@ -48,3 +48,16 @@ test('renders textarea', async ({ page }) => {
   // Textarea should be rendered as textarea element
   await expect(textarea).toHaveAttribute('placeholder', 'Basic textarea')
 })
+
+test('disabled textarea forwards the disabled attribute and is not editable', async ({
+  page,
+}) => {
+  const textarea = page.locator('[data-testid="disabled-textarea"]')
+  await expect(textarea).toBeVisible()
+  // regression: multiline TextArea must forward the DOM disabled attr like Input
+  await expect(textarea).toBeDisabled()
+  // and stay non-editable
+  await textarea.click({ force: true }).catch(() => {})
+  await page.keyboard.type('should not appear')
+  await expect(textarea).toHaveValue('')
+})

@@ -115,7 +115,7 @@ function buildEmailHtml(name, daysUntilExpiry, isApology) {
 
   <div class="coupon-box">
     <div class="coupon-discount">30% off for returning</div>
-    <div class="coupon-code">WELCOMEBACK30</div>
+    <div class="coupon-code">RENEWAL30</div>
     <p style="margin: 4px 0 0; font-size: 14px;">Stacks with parity pricing!</p>
   </div>
 

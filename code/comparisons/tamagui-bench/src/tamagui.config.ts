@@ -5,6 +5,6 @@ export default createTamagui({
   ...config,
   settings: {
     ...config.settings,
-    styleMode: ['flat', 'tailwind'],
+    styleMode: 'tamagui-and-tailwind',
   },
 })

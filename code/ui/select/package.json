@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/select",
-  "version": "2.0.0-rc.31",
+  "version": "2.1.0-1780426041711",
   "source": "src/index.tsx",
   "files": [
     "src",
@@ -8,9 +8,7 @@
     "dist"
   ],
   "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
@@ -70,8 +68,7 @@
   },
   "peerDependencies": {
     "react": ">=19",
-    "react-dom": "*",
-    "react-native": "*"
+    "react-dom": "*"
   },
   "module:jsx": "dist/jsx",
   "removeSideEffects": "true"

@@ -147,11 +147,11 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
     style: {
       ...(rest.style as any),
       ...(placeholderTextColor && {
-        '--placeholderColor':
+        '--t_placeholderColor':
           theme[placeholderTextColor]?.variable || placeholderTextColor,
       }),
       ...(selectionColor && {
-        '--selectionBackground': theme[selectionColor]?.variable || selectionColor,
+        '--t_selectionBackground': theme[selectionColor]?.variable || selectionColor,
       }),
     },
   } as any
@@ -174,11 +174,11 @@ export const Input = StyledInput.styleable<InputProps>((inProps, forwardedRef) =
         <style>
           {`
       input::selection, textarea::selection {
-        background-color: var(--selectionBackground) !important;
+        background-color: var(--t_selectionBackground) !important;
       }
 
       input::placeholder, textarea::placeholder {
-        color: var(--placeholderColor) !important;
+        color: var(--t_placeholderColor) !important;
       }
       `}
         </style>

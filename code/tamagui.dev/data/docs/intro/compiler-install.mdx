@@ -641,6 +641,20 @@ export default () => <View disableOptimization />
 
 ### Web-only apps
 
-If you want autocompleted imports of `react-native` without having to install
-all the weight of react-native, you can set `react-native` version to `0.0.0`,
-and add `@types/react-native` at the latest version.
+This only applies to web-only apps. Native and universal apps already have
+`react-native` installed. For web-only apps, you still need `react-native`
+types in the parent project or workspace root for prop typing and autocomplete.
+You can either install `react-native` directly:
+
+```bash
+yarn add react-native
+```
+
+Or, if you only want the types:
+
+```bash
+yarn add react-native@0.0.0 @types/react-native
+```
+
+Tamagui's web runtime doesn't require `react-native` at runtime, but current
+prop typing and autocomplete rely on the `react-native` types being present.

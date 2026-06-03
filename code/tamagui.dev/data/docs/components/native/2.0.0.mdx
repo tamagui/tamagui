@@ -20,6 +20,14 @@ Import the setup modules at your app's entry point, before any Tamagui imports.
 npm install @tamagui/native
 ```
 
+<Notice>
+  `@tamagui/native` is a light setup package. When you use one of its optional
+  integrations, make sure the matching native dependency is installed in your
+  app as well, such as `react-native-gesture-handler`, `react-native-teleport`,
+  `zeego`, or `burnt`. In a monorepo, install those native packages in the
+  parent app or workspace root rather than a leaf package.
+</Notice>
+
 ## Portal
 
 **Native portals preserve React context** - the default implementation on native
@@ -40,11 +48,16 @@ import '@tamagui/native/setup-teleport'
 
 See [Portal docs](/docs/components/portal) for full details.
 
-## Sheet Gestures
+## Gesture Handler
 
-**Native gesture coordination** - makes sheets feel smoother and not get
-confused with scrollable content during drags. Without this, scroll and pan
-gestures can occasionally conflict on iOS.
+**Native gesture handling** - powers two features:
+
+1. **Press events** - `onPress` uses RNGH for more reliable press detection with
+   proper gesture coordination. Matches RN Pressable semantics where only the
+   innermost pressable fires (no double-firing with nested buttons).
+
+2. **Sheet gestures** - makes sheets feel smoother and not get confused with
+   scrollable content during drags.
 
 ### Setup
 
@@ -63,6 +76,60 @@ export default function App() {
   )
 }
 ```
+
+### Selective Features
+
+If you only want RNGH for specific features, use the configurable setup:
+
+```tsx
+import { setupGestureHandler } from '@tamagui/native/setup-gesture-handler'
+
+// only use RNGH for sheets, not press events
+setupGestureHandler({ pressEvents: false, sheet: true })
+
+// only use RNGH for press events, not sheets
+setupGestureHandler({ pressEvents: true, sheet: false })
+```
+
+### Press Event Behavior
+
+With RNGH enabled, `onPress` follows RN Pressable semantics:
+
+- **Nested pressables** - only the innermost fires (no event bubbling)
+- **Web parity** - `onPress` calls `stopPropagation()` automatically
+- **Use `onClick` on web** if you need standard DOM event bubbling
+
+This aligns to the React Native default behavior of Pressable.
+
+### PressBoundary
+
+If you need a non-Tamagui native wrapper to block a parent Tamagui pressable,
+use `PressBoundary` from `@tamagui/native/gesture-handler`.
+
+This is useful when mixing Tamagui pressables with React Native `Pressable`,
+custom native wrappers, or other components that don't use Tamagui's native
+press ownership automatically.
+
+```tsx
+import { PressBoundary } from '@tamagui/native/gesture-handler'
+import { Pressable } from 'react-native'
+
+export function AvatarLink() {
+  return (
+    <PressBoundary debugName="AvatarLink">
+      <Pressable onPress={() => {}}>
+        {/* your content */}
+      </Pressable>
+    </PressBoundary>
+  )
+}
+```
+
+`PressBoundary` only coordinates with Tamagui's native press ownership. It does
+not monkey-patch React Native bubbling semantics in general.
+
+Native `Menu.Trigger` and `ContextMenu.Trigger` already do this automatically,
+so you should not need extra wrappers or empty `onPress` handlers around them.
 
 See [Sheet docs](/docs/components/sheet) for full details.
 

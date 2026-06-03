@@ -234,6 +234,10 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       return getStyle(val.getValue())
     },
 
+    useAnimatedNumbersStyle(vals, getStyle) {
+      return getStyle(...vals.map((v) => v.getValue()))
+    },
+
     // @ts-ignore - styleState is added by createComponent
     useAnimations: ({
       props,
@@ -261,6 +265,9 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       const exitCompletedRef = React.useRef(false)
       const wasExitingRef = React.useRef(false)
       const exitInterruptedRef = React.useRef(false)
+      const sendExitCompleteRef = React.useRef(sendExitComplete)
+      const lastNonExitingStyleRef = React.useRef<Record<string, string>>({})
+      sendExitCompleteRef.current = sendExitComplete
 
       // detect transition into/out of exiting state
       const justStartedExiting = isExiting && !wasExitingRef.current
@@ -280,6 +287,15 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       // track previous exiting state
       React.useEffect(() => {
         wasExitingRef.current = isExiting
+      })
+
+      useIsomorphicLayoutEffect(() => {
+        const host = stateRef.current.host
+        if (isExiting || !host) return
+        const computedStyle = getComputedStyle(host as HTMLElement)
+        lastNonExitingStyleRef.current = {
+          opacity: computedStyle.opacity,
+        }
       })
 
       // use effectiveTransition computed by createComponent (single source of truth)
@@ -340,7 +356,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           if (cycleId !== exitCycleIdRef.current) return
           if (exitCompletedRef.current) return
           exitCompletedRef.current = true
-          sendExitComplete()
+          sendExitCompleteRef.current?.()
         }
 
         // if no properties to animate (animateOnly=[]), complete immediately
@@ -389,6 +405,21 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           .filter(Boolean)
           .join(', ')
 
+        const getResetValue = (key: string) => {
+          if (key === 'opacity') {
+            return (
+              style?.opacity ??
+              props.opacity ??
+              lastNonExitingStyleRef.current.opacity ??
+              1
+            )
+          }
+          if (TRANSFORM_KEYS.includes(key as any)) {
+            return key === 'scale' || key === 'scaleX' || key === 'scaleY' ? 1 : 0
+          }
+          return enterStyle?.[key]
+        }
+
         if (wasInterrupted) {
           exitInterruptedRef.current = false
           // disable transition, reset to enter state
@@ -399,13 +430,9 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           if (exitStyle) {
             const resetStyle: Record<string, unknown> = {}
             for (const key of Object.keys(exitStyle)) {
-              if (key === 'opacity') {
-                resetStyle[key] = 1
-              } else if (TRANSFORM_KEYS.includes(key as any)) {
-                resetStyle[key] =
-                  key === 'scale' || key === 'scaleX' || key === 'scaleY' ? 1 : 0
-              } else if (enterStyle?.[key] !== undefined) {
-                resetStyle[key] = enterStyle[key]
+              const resetValue = getResetValue(key)
+              if (resetValue !== undefined) {
+                resetStyle[key] = resetValue
               }
             }
             applyStylesToNode(node, resetStyle)
@@ -435,13 +462,9 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           // when exitStyle is applied, so the CSS transition wouldn't fire.
           const resetStyle: Record<string, unknown> = {}
           for (const key of Object.keys(exitStyle)) {
-            if (key === 'opacity') {
-              resetStyle[key] = 1
-            } else if (TRANSFORM_KEYS.includes(key as any)) {
-              resetStyle[key] =
-                key === 'scale' || key === 'scaleX' || key === 'scaleY' ? 1 : 0
-            } else if (enterStyle?.[key] !== undefined) {
-              resetStyle[key] = enterStyle[key]
+            const resetValue = getResetValue(key)
+            if (resetValue !== undefined) {
+              resetStyle[key] = resetValue
             }
           }
           applyStylesToNode(node, resetStyle)
@@ -564,16 +587,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           // override lets React's value take effect again.
           node.style.transition = ''
         }
-      }, [
-        sendExitComplete,
-        isExiting,
-        stateRef,
-        keys,
-        normalized,
-        defaultAnimation,
-        props.enterStyle,
-        props.exitStyle,
-      ])
+      }, [isExiting])
 
       // tamagui doesnt even use animation output during hydration
       if (isHydrating) {

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animate",
-  "version": "2.0.0-rc.31",
+  "version": "2.1.0-1780426041711",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
@@ -9,9 +9,7 @@
     "dist"
   ],
   "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",

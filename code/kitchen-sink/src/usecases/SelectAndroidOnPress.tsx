@@ -26,7 +26,6 @@ export function SelectAndroidOnPress() {
   const [lastAction, setLastAction] = React.useState('none')
 
   const handleValueChange = (newVal: string) => {
-    console.info('[SelectAndroidOnPress] onValueChange fired:', newVal)
     setVal(newVal)
     setChangeCount((c) => c + 1)
     setLastAction(`selected: ${newVal}`)

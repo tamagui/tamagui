@@ -1,21 +1,38 @@
-import type { ColorTokens, GetProps, SizeTokens } from '@tamagui/web';
+import type { TextContextStyles } from '@tamagui/text';
+import type { GetProps, SizeTokens } from '@tamagui/web';
 import type { FunctionComponent, JSX } from 'react';
 type ButtonVariant = 'outlined';
+type ButtonContextStyles = TextContextStyles & {
+    size?: SizeTokens;
+    variant?: ButtonVariant;
+    elevation?: SizeTokens | number;
+};
 export declare const ButtonContext: import("@tamagui/web").StyledContext<{
     size?: SizeTokens;
     variant?: ButtonVariant;
-    color?: ColorTokens | string;
+    color?: ButtonContextStyles["color"];
 }>;
 type IconProp = JSX.Element | FunctionComponent<{
     color?: any;
     size?: any;
 }> | null;
-type ButtonExtraProps = {
+declare const ButtonComponent: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+    size?: number | SizeTokens | undefined;
+    variant?: "outlined" | undefined;
+    disabled?: boolean | undefined;
+    unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    circular?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+}>, "form" | "name" | "value" | keyof TextContextStyles | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | "iconSize" | "type" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget"> & TextContextStyles & {
+    textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
     icon?: IconProp;
     iconAfter?: IconProp;
     scaleIcon?: number;
     iconSize?: SizeTokens;
-    type?: 'submit' | 'reset' | 'button';
+    type?: "submit" | "reset" | "button";
     form?: string;
     formAction?: string;
     formEncType?: string;
@@ -24,89 +41,172 @@ type ButtonExtraProps = {
     formTarget?: string;
     name?: string;
     value?: string | readonly string[] | number;
-};
-declare const ButtonComponent: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+}, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & TextContextStyles & {
+    textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    icon?: IconProp;
+    iconAfter?: IconProp;
+    scaleIcon?: number;
+    iconSize?: SizeTokens;
+    type?: "submit" | "reset" | "button";
+    form?: string;
+    formAction?: string;
+    formEncType?: string;
+    formMethod?: string;
+    formNoValidate?: boolean;
+    formTarget?: string;
+    name?: string;
+    value?: string | readonly string[] | number;
+}, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    disabled?: boolean | undefined;
+    unstyled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
-}>, keyof ButtonExtraProps> & ButtonExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & ButtonExtraProps, import("@tamagui/web").StackStyleBase, {
-    size?: number | SizeTokens | undefined;
-    variant?: "outlined" | undefined;
-    elevation?: number | SizeTokens | undefined;
-    circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
 export declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    disabled?: boolean | undefined;
+    unstyled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
-}>, keyof ButtonExtraProps> & ButtonExtraProps & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+}>, "form" | "name" | "value" | keyof TextContextStyles | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | "iconSize" | "type" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget"> & TextContextStyles & {
+    textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    icon?: IconProp;
+    iconAfter?: IconProp;
+    scaleIcon?: number;
+    iconSize?: SizeTokens;
+    type?: "submit" | "reset" | "button";
+    form?: string;
+    formAction?: string;
+    formEncType?: string;
+    formMethod?: string;
+    formNoValidate?: boolean;
+    formTarget?: string;
+    name?: string;
+    value?: string | readonly string[] | number;
+} & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    disabled?: boolean | undefined;
+    unstyled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
-}>, keyof ButtonExtraProps> & ButtonExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & ButtonExtraProps, import("@tamagui/web").StackStyleBase, {
+}>, "form" | "name" | "value" | keyof TextContextStyles | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | "iconSize" | "type" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget"> & TextContextStyles & {
+    textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    icon?: IconProp;
+    iconAfter?: IconProp;
+    scaleIcon?: number;
+    iconSize?: SizeTokens;
+    type?: "submit" | "reset" | "button";
+    form?: string;
+    formAction?: string;
+    formEncType?: string;
+    formMethod?: string;
+    formNoValidate?: boolean;
+    formTarget?: string;
+    name?: string;
+    value?: string | readonly string[] | number;
+}, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & TextContextStyles & {
+    textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+    noTextWrap?: boolean;
+} & {
+    icon?: IconProp;
+    iconAfter?: IconProp;
+    scaleIcon?: number;
+    iconSize?: SizeTokens;
+    type?: "submit" | "reset" | "button";
+    form?: string;
+    formAction?: string;
+    formEncType?: string;
+    formMethod?: string;
+    formNoValidate?: boolean;
+    formTarget?: string;
+    name?: string;
+    value?: string | readonly string[] | number;
+}, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
+    disabled?: boolean | undefined;
+    unstyled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
+        disabled?: boolean | undefined;
+        unstyled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
-    }>, keyof ButtonExtraProps> & ButtonExtraProps, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & ButtonExtraProps, import("@tamagui/web").StackStyleBase, {
+    }>, "form" | "name" | "value" | keyof TextContextStyles | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | "iconSize" | "type" | "formAction" | "formEncType" | "formMethod" | "formNoValidate" | "formTarget"> & TextContextStyles & {
+        textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+        noTextWrap?: boolean;
+    } & {
+        icon?: IconProp;
+        iconAfter?: IconProp;
+        scaleIcon?: number;
+        iconSize?: SizeTokens;
+        type?: "submit" | "reset" | "button";
+        form?: string;
+        formAction?: string;
+        formEncType?: string;
+        formMethod?: string;
+        formNoValidate?: boolean;
+        formTarget?: string;
+        name?: string;
+        value?: string | readonly string[] | number;
+    }, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps & TextContextStyles & {
+        textProps?: Partial<import("@tamagui/text").SizableTextProps>;
+        noTextWrap?: boolean;
+    } & {
+        icon?: IconProp;
+        iconAfter?: IconProp;
+        scaleIcon?: number;
+        iconSize?: SizeTokens;
+        type?: "submit" | "reset" | "button";
+        form?: string;
+        formAction?: string;
+        formEncType?: string;
+        formMethod?: string;
+        formNoValidate?: boolean;
+        formTarget?: string;
+        name?: string;
+        value?: string | readonly string[] | number;
+    }, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
+        disabled?: boolean | undefined;
+        unstyled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Apply: import("react").Provider<{
-        size?: SizeTokens;
-        variant?: ButtonVariant;
-        color?: ColorTokens | string;
-        elevation?: SizeTokens | number;
-    }> & import("react").ProviderExoticComponent<Partial<{
-        size?: SizeTokens;
-        variant?: ButtonVariant;
-        color?: ColorTokens | string;
-        elevation?: SizeTokens | number;
-    }> & {
+    Apply: import("react").Provider<ButtonContextStyles> & import("react").ProviderExoticComponent<Partial<ButtonContextStyles> & {
         children?: import("react").ReactNode;
         scope?: string;
     }>;
     Frame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
+        disabled?: boolean | undefined;
+        unstyled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic>;
     Text: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSizeTokens | undefined;

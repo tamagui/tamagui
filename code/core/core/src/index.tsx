@@ -2,6 +2,7 @@
 export * from '@tamagui/web'
 
 import { createMedia } from '@tamagui/react-native-media-driver'
+import { isWeb } from '@tamagui/constants'
 import {
   createMeasure,
   createMeasureInWindow,
@@ -32,6 +33,36 @@ import {
 import { createOptimizedView } from './createOptimizedView'
 import { getBaseViews } from './getBaseViews'
 import type { RNTextProps, RNViewProps } from './reactNativeTypes'
+
+type GestureEnabledFreezeState = {
+  frozen: boolean
+  enabled: boolean
+  warned: boolean
+}
+
+const GESTURE_STATE_KEY = '__tamagui_gesture__'
+const GESTURE_ENABLED_FREEZE_KEY = '__tamagui_gesture_enabled_freeze__'
+
+function freezeGestureHandlerEnabledMode() {
+  const g = globalThis as typeof globalThis & {
+    [GESTURE_STATE_KEY]?: { enabled?: boolean }
+    [GESTURE_ENABLED_FREEZE_KEY]?: GestureEnabledFreezeState
+  }
+
+  const freezeState = (g[GESTURE_ENABLED_FREEZE_KEY] ??= {
+    frozen: false,
+    enabled: false,
+    warned: false,
+  })
+
+  if (freezeState.frozen) {
+    return
+  }
+
+  freezeState.frozen = true
+  freezeState.enabled = Boolean(g[GESTURE_STATE_KEY]?.enabled)
+  freezeState.warned = false
+}
 
 // helpful for usage outside of tamagui
 export {
@@ -73,6 +104,10 @@ export * from './reactNativeTypes'
 
 // adds useElementLayout enable
 export const TamaguiProvider = (props: TamaguiProviderProps) => {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    freezeGestureHandlerEnabledMode()
+  }
+
   useIsomorphicLayoutEffect(() => {
     enable()
   }, [])
@@ -82,7 +117,7 @@ export const TamaguiProvider = (props: TamaguiProviderProps) => {
 
 // automate using the react native media driver
 export const createTamagui: typeof createTamaguiWeb = (conf) => {
-  if (process.env.TAMAGUI_TARGET === 'native') {
+  if (!isWeb) {
     if (conf.media) {
       conf.media = createMedia(conf.media)
     }

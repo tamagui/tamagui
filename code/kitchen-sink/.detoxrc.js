@@ -1,6 +1,57 @@
 // force single worker - multiple workers cause ECOMPROMISED lock file errors
 // see: https://github.com/wix/Detox/issues/4210
+const { execFileSync } = require('node:child_process')
+const { existsSync } = require('node:fs')
+const { join } = require('node:path')
+
 const maxWorkers = 1
+// dedicated detox metro port - both platforms route through it.
+// Android: app reads from android/app/src/main/res/values/integers.xml
+// iOS: launchArgs.RCT_jsLocation tells RCTBundleURLProvider where metro is
+const detoxMetroPort = process.env.DETOX_METRO_PORT || '9034'
+const defaultAndroidSdkRoot =
+  process.env.ANDROID_SDK_ROOT ||
+  process.env.ANDROID_HOME ||
+  join(process.env.HOME || '', 'Library/Android/sdk')
+const simulatorDevice = process.env.DETOX_DEVICE_UDID
+  ? { id: process.env.DETOX_DEVICE_UDID }
+  : { type: process.env.DETOX_DEVICE || 'iPhone 16' }
+
+function detectLocalAvdName() {
+  if (process.env.DETOX_AVD_NAME) {
+    return process.env.DETOX_AVD_NAME
+  }
+
+  const sdkRoot =
+    process.env.ANDROID_SDK_ROOT ||
+    process.env.ANDROID_HOME ||
+    join(process.env.HOME || '', 'Library/Android/sdk')
+  const emulatorPath = join(sdkRoot, 'emulator', 'emulator')
+
+  if (!existsSync(emulatorPath)) {
+    return 'Pixel_6_API_33_8GB'
+  }
+
+  try {
+    const avds = execFileSync(emulatorPath, ['-list-avds'], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    })
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean)
+
+    const preferred = ['Pixel_6_API_33_8GB', 'Pixel_6_API_31', 'Medium_Phone_API_36.1']
+
+    return (
+      preferred.find((name) => avds.includes(name)) || avds[0] || 'Pixel_6_API_33_8GB'
+    )
+  } catch {
+    return 'Pixel_6_API_33_8GB'
+  }
+}
+
+const localAndroidAvdName = detectLocalAvdName()
 
 /** @type {Detox.DetoxConfig} */
 module.exports = {
@@ -11,8 +62,11 @@ module.exports = {
       maxWorkers,
     },
     jest: {
-      setupTimeout: 180000, // 3 minutes for CI environments
-      retries: 2, // Retry flaky tests up to 2 times
+      setupTimeout: 300000, // 5 minutes - slow CI runners can exceed 180s, especially for tests that compile in beforeAll
+      // no whole-file retry: detox --retries re-runs the entire spec file (beforeAll +
+      // every test again), which is the 2x wall-time variance we're killing. individual
+      // flaky tests retry in-place via jest.retryTimes (see e2e/jest.setup.ts), which
+      // re-runs just the test + its beforeEach (fresh app) - far cheaper.
     },
   },
   artifacts: {
@@ -26,6 +80,11 @@ module.exports = {
     init: {
       exposeGlobals: true,
     },
+    // NOTE: do NOT set launchApp: 'manual' here. In detox 'manual' does not mean
+    // "the test calls device.launchApp itself" (that's always allowed) - it makes
+    // RuntimeDevice.launchApp route through waitForAppLaunch, which printLaunchHint()
+    // + pressAnyKey() and crashes in CI ('process.stdin.setRawMode is not a function')
+    // since stdin isn't a TTY. Leave it at the default 'auto'.
   },
   apps: {
     'ios.debug': {
@@ -40,7 +99,7 @@ module.exports = {
         'xcodebuild -workspace ios/tamaguikitchensink.xcworkspace -scheme tamaguikitchensink -configuration Debug -sdk iphonesimulator SYMROOT="$(pwd)/ios/build/Build/Products" OBJROOT="$(pwd)/ios/build/Build/Intermediates.noindex"',
       // tell RCTBundleURLProvider where metro is (auto-detection fails with dev-client)
       launchArgs: {
-        RCT_jsLocation: 'localhost',
+        RCT_jsLocation: `localhost:${detoxMetroPort}`,
       },
     },
     'ios.release': {
@@ -56,24 +115,20 @@ module.exports = {
       binaryPath: 'android/app/build/outputs/apk/debug/app-debug.apk',
       testBinaryPath:
         'android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk',
-      build:
-        'cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle',
-      // Port 8081 for Metro, port 8099 for Detox server (fixed in native-ci scripts)
-      reversePorts: [8081, 8099],
+      build: `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug --init-script init.gradle`,
+      // Dedicated Metro port for Detox plus the Detox server port.
+      reversePorts: [Number(detoxMetroPort), 8099],
     },
     'android.release': {
       type: 'android.apk',
       binaryPath: 'android/app/build/outputs/apk/release/app-release.apk',
-      build:
-        'cd android && ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release',
+      build: `cd android && ANDROID_SDK_ROOT="${defaultAndroidSdkRoot}" ANDROID_HOME="${defaultAndroidSdkRoot}" ./gradlew assembleRelease assembleAndroidTest -DtestBuildType=release`,
     },
   },
   devices: {
     simulator: {
       type: 'ios.simulator',
-      device: {
-        type: process.env.DETOX_DEVICE || 'iPhone 16',
-      },
+      device: simulatorDevice,
     },
     attached: {
       type: 'android.attached',
@@ -85,7 +140,7 @@ module.exports = {
       type: 'android.emulator',
       device: {
         // Local development - use your own AVD name (default matches what native-ci expects)
-        avdName: process.env.DETOX_AVD_NAME || 'Pixel_6_API_33_8GB',
+        avdName: localAndroidAvdName,
       },
     },
     // CI emulator - created by reactivecircus/android-emulator-runner

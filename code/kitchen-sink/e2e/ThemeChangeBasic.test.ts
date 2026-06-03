@@ -8,19 +8,26 @@
 
 import * as assert from 'assert'
 import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
+import { safeLaunchApp } from './utils/detox'
+import { remountDirectUseCase } from './utils/navigation'
 import { getDominantColor, isBlueish, isReddish, formatRGB } from './utils/colors'
 
+// Launch model: launch the native app ONCE with directUseCase, then remount the
+// case in-app per test (deep link, no relaunch). The case's theme is local
+// useState('red'), so a remount restores the initial red state each test.
 describe('ThemeChangeBasic', () => {
   beforeAll(async () => {
-    await device.disableSynchronization()
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'ThemeChangeBasic' },
+    })
+    await waitFor(element(by.id('theme-change-basic-root')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
-    await device.disableSynchronization()
-    await device.reloadReactNative()
-    await navigateToTestCase('ThemeChangeBasic', 'theme-change-basic-root')
+    await remountDirectUseCase('theme-change-basic-root')
   })
 
   it('should show initial red theme', async () => {

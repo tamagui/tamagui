@@ -238,7 +238,7 @@ describe('tailwind mode - disabled', () => {
       ...defaultConfig,
       settings: {
         ...defaultConfig.settings,
-        styleMode: 'flat',
+        styleMode: 'tamagui',
       },
     })
 

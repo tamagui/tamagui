@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/monorepo-test",
-  "version": "2.0.0-rc.31",
+  "version": "2.1.0-1780426041711",
   "private": true,
   "license": "MIT",
   "author": {
@@ -13,5 +13,6 @@
   },
   "devDependencies": {
     "vitest": "4.0.4"
-  }
+  },
+  "sideEffects": false
 }

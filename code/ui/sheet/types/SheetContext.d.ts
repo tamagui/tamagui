@@ -32,6 +32,9 @@ export declare const SheetProvider: (props: {
     setPositionImmediate: import("react").Dispatch<import("react").SetStateAction<number>>;
     onlyShowFrame: boolean;
 } & {
+    keyboardOccludedHeight: number;
+    isKeyboardVisible: boolean;
+    keyboardStableFrameHeight: number;
     setHasScrollView: (val: boolean) => void;
 } & {
     scope: import("@tamagui/create-context").Scope<SheetContextValue>;

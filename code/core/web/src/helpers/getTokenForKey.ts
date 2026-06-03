@@ -18,6 +18,20 @@ const fontShorthand = {
 let didLogMissingToken = false
 const colorKeys = tokenCategories.color
 
+// flat reverse-lookup: tokenCategoryByKey[propName] → category name.
+// replaces an O(categories) for-in scan at the hot path below that
+// iterates every category on every `$token` prop resolve. a sootsim
+// scroll profile of Uniswap spent material worker CPU walking five
+// categories per prop per render — one `key in tokenCategoryByKey`
+// lookup collapses that to O(1). tokenCategories is module-constant so
+// it's safe to flatten once at module init.
+const tokenCategoryByKey: Record<string, string> = {}
+for (const _cat in tokenCategories) {
+  for (const _k in tokenCategories[_cat as keyof typeof tokenCategories]) {
+    tokenCategoryByKey[_k] = _cat
+  }
+}
+
 // mutable state for font family tracking across propMapper
 let _lastFontFamilyToken: any = null
 
@@ -123,37 +137,36 @@ export const getTokenForKey = (
           break
         }
       }
-      for (const cat in tokenCategories) {
-        if (key in tokenCategories[cat]) {
-          const res = tokensParsed[cat]?.[value]
+      const cat = tokenCategoryByKey[key]
+      if (cat !== undefined) {
+        const res = tokensParsed[cat]?.[value]
 
-          if (res != null) {
-            valOrVar = res
-            hasSet = true
-          } else {
-            if (process.env.NODE_ENV === 'development') {
-              if (process.env.TAMAGUI_DISABLE_MISSING_TOKEN_LOG !== '1') {
-                if (!didLogMissingToken) {
-                  didLogMissingToken = true
-                  console.groupCollapsed(
-                    `[tamagui] Warning: missing token ${key} in category ${cat} - ${value} (open for details)`
-                  )
-                  console.info(
-                    `Note: this could just be due to you not setting all the theme tokens Tamagui expects, which is harmless, but
+        if (res != null) {
+          valOrVar = res
+          hasSet = true
+        } else {
+          if (process.env.NODE_ENV === 'development') {
+            if (process.env.TAMAGUI_DISABLE_MISSING_TOKEN_LOG !== '1') {
+              if (!didLogMissingToken) {
+                didLogMissingToken = true
+                console.groupCollapsed(
+                  `[tamagui] Warning: missing token ${key} in category ${cat} - ${value} (open for details)`
+                )
+                console.info(
+                  `Note: this could just be due to you not setting all the theme tokens Tamagui expects, which is harmless, but
                     it also often can be because you have a duplicated Tamagui in your bundle, which can cause tricky bugs.`
-                  )
-                  console.info(
-                    `To see if you have duplicated dependencies, in Chrome DevTools hit CMD+P and type TamaguiProvider.
+                )
+                console.info(
+                  `To see if you have duplicated dependencies, in Chrome DevTools hit CMD+P and type TamaguiProvider.
                     If you see both a .cjs and a .mjs entry, it's duplicated.`
-                  )
-                  console.info(
-                    `You can debug that issue by opening the .mjs and .cjs files and setting a breakpoint at the top of each.`
-                  )
-                  console.info(
-                    `We only log this warning one time as it's sometimes harmless, to disable this log entirely set process.env.TAMAGUI_DISABLE_MISSING_TOKEN_LOG=1.`
-                  )
-                  console.groupEnd()
-                }
+                )
+                console.info(
+                  `You can debug that issue by opening the .mjs and .cjs files and setting a breakpoint at the top of each.`
+                )
+                console.info(
+                  `We only log this warning one time as it's sometimes harmless, to disable this log entirely set process.env.TAMAGUI_DISABLE_MISSING_TOKEN_LOG=1.`
+                )
+                console.groupEnd()
               }
             }
           }

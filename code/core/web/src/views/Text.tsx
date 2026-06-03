@@ -41,6 +41,7 @@ export const Text = createComponent<
         },
 
   inlineWhenUnflattened: new Set(['fontFamily']),
+  inlineProps: new Set(['maxFontSizeMultiplier']),
 
   variants: {
     ...(process.env.TAMAGUI_TARGET === 'web' && {
@@ -50,6 +51,7 @@ export const Text = createComponent<
         ':number': (numberOfLines) =>
           numberOfLines >= 1
             ? {
+                maxWidth: '100%',
                 WebkitLineClamp: numberOfLines,
                 WebkitBoxOrient: 'vertical',
                 display: '-webkit-box',

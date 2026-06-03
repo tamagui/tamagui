@@ -5,16 +5,17 @@
 
 import { by, device, element, expect } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
+import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
 // SafeAreaCase component is not implemented yet (entirely commented out)
 // TODO: enable once SafeAreaCase is implemented
 describe.skip('SafeArea', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({ newInstance: true })
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
+    await safeReloadApp()
     await navigateToTestCase('SafeAreaCase', 'safe-area-case')
   })
 

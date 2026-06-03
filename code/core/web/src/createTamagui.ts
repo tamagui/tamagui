@@ -46,6 +46,13 @@ function shouldTokenCategoryHaveUnits(category: string): boolean {
   return UNIT_CATEGORIES.has(category)
 }
 
+// code optimizers were causing issues by not calling both of these as esbuild had compiled them
+// pulling them into a single initializeTamaguiConfig to prevent that
+function initializeTamaguiConfig(config: TamaguiInternalConfig) {
+  setConfig(config)
+  configureMedia(config)
+}
+
 export function createTamagui<Conf extends CreateTamaguiProps>(
   configIn: Conf
 ): InferTamaguiConfig<Conf> {
@@ -244,16 +251,17 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
   }
 
-  setConfig(config)
-  configureMedia(config)
+  initializeTamaguiConfig(config)
 
-  if (process.env.NODE_ENV === 'development') {
-    if (process.env.DEBUG?.startsWith('tamagui')) {
-      console.info('Tamagui config:', config)
-    }
-    if (!globalThis['Tamagui']) {
-      globalThis['Tamagui'] = Tamagui
-    }
+  if (process.env.NODE_ENV !== 'development') {
+    return config as any
+  }
+
+  if (process.env.DEBUG?.startsWith('tamagui')) {
+    console.info('Tamagui config:', config)
+  }
+  if (!globalThis['Tamagui']) {
+    globalThis['Tamagui'] = Tamagui
   }
 
   return config as any

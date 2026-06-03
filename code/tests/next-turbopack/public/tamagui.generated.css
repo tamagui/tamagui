@@ -5,8 +5,8 @@
 @scope (.is_Text) to (.is_View) { .is_Text { white-space: inherit; word-wrap: inherit; } }
 ._dsp_contents {display:contents;}
 ._no_backdrop::backdrop {display: none;}
-.is_Input::selection, .is_TextArea::selection {background-color: var(--selectionColor);}
-.is_Input::placeholder, .is_TextArea::placeholder {color: var(--placeholderColor);}
+.is_Input::selection, .is_TextArea::selection {background-color: var(--t_selectionColor);}
+.is_Input::placeholder, .is_TextArea::placeholder {color: var(--t_placeholderColor);}
 :root ._pe-boxonly>* {pointer-events:none;}
 :root ._pe-boxnone>* {pointer-events:auto;}
 ._hsb-x::-webkit-scrollbar:horizontal { display: none !important; }

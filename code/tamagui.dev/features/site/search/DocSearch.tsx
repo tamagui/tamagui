@@ -1,6 +1,10 @@
 import '@docsearch/css'
 import type { DocSearchModalProps } from '@docsearch/react'
-import { DocSearchModal } from '@docsearch/react'
+import { lazy, Suspense } from 'react'
+
+const DocSearchModal = lazy(() =>
+  import('@docsearch/react').then((m) => ({ default: m.DocSearchModal }))
+)
 
 export default function DocSearch(props: DocSearchModalProps) {
   return (
@@ -8,7 +12,9 @@ export default function DocSearch(props: DocSearchModalProps) {
       <style href="docsearch" precedence="default">
         {docSearchCSS}
       </style>
-      <DocSearchModal {...props} />
+      <Suspense>
+        <DocSearchModal {...props} />
+      </Suspense>
     </>
   )
 }

@@ -1,7 +1,12 @@
 @font-face {
   font-family: 'Cherry Bomb';
   src: url('/fonts/cherry-bomb.woff2') format('woff2');
-  font-weight: 400;
+  /* Cherry Bomb ships a single 400 master. We request weight 800 (see
+     tamagui-dev-config/fonts.ts) so the Inter/Arial-Black fallback renders heavy
+     during the load flash. Declaring a 100-900 range here makes that 800 request
+     map to this single master WITHOUT faux-bold synthesis, so the real font keeps
+     its natural look once loaded. */
+  font-weight: 100 900;
   font-style: normal;
   font-display: block;
 }

@@ -6,7 +6,7 @@ import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
 import { Button, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
-import * as TestCases from '../../usecases'
+import { useCases as TestCases } from '../../usecases'
 
 const testCaseNames = Object.keys(TestCases)
 
@@ -118,12 +118,33 @@ export function HomeScreen() {
           </YGroup.Item>
           <YGroup.Item>
             <LinkListItem
+              bg="$green3"
+              href="/test/SheetKeyboardFitContentCase"
+              pressStyle={{ backgroundColor: '$green4' }}
+              size="$5"
+              testID="home-sheet-keyboard-fit-test"
+            >
+              ⌨️ Sheet Keyboard Fit Test
+            </LinkListItem>
+          </YGroup.Item>
+          <YGroup.Item>
+            <LinkListItem
               bg="$purple3"
               href="/test/ActionsSheetComparison"
               pressStyle={{ backgroundColor: '$purple4' }}
               size="$5"
             >
               🔄 Actions Sheet Comparison
+            </LinkListItem>
+          </YGroup.Item>
+          <YGroup.Item>
+            <LinkListItem
+              bg="$green3"
+              href="/test/ToastMultipleCase"
+              pressStyle={{ backgroundColor: '$orange4' }}
+              size="$5"
+            >
+              🍞 Toast Multiple Case
             </LinkListItem>
           </YGroup.Item>
         </YGroup>

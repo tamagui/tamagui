@@ -102,8 +102,10 @@ export function buildDetoxArgs(options: DetoxRunnerOptions): string[] {
   return args
 }
 
-// 45 min timeout for detox tests (in ms) - allows room within 60 min CI job timeout
-const DETOX_TIMEOUT_MS = 45 * 60 * 1000
+// 60 min timeout for detox tests (in ms). the heaviest shard's real work is ~38min
+// (cold metro bundle + per-test app reloads), so 45min left too little margin; the
+// workflow job timeout is 90min, leaving room for setup + this run.
+const DETOX_TIMEOUT_MS = 60 * 60 * 1000
 
 /**
  * Reset Detox lock file to prevent ECOMPROMISED errors in CI

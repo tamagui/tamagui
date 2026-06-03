@@ -1,6 +1,6 @@
 {
   "name": "tamagui",
-  "version": "2.0.0-rc.31",
+  "version": "2.1.0-1780426041711",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "description": "Style and UI for React (web and native) meet an optimizing compiler",
   "repository": {
@@ -11,7 +11,7 @@
   "source": "src/index.ts",
   "type": "module",
   "sideEffects": [
-    "setup.js"
+    "setup.*"
   ],
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -137,7 +137,6 @@
     "@tamagui/use-debounce": "workspace:*",
     "@tamagui/use-force-update": "workspace:*",
     "@tamagui/use-window-dimensions": "workspace:*",
-    "@tamagui/v2-toast": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*",
     "@tamagui/font-size": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
@@ -149,8 +148,7 @@
     "react-native-web": "^0.21.0"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-native": "*"
+    "react": ">=19"
   },
   "alsoPublishAs_disabled": [
     "@tamagui/ui"

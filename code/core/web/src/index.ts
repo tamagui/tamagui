@@ -56,6 +56,7 @@ export * from './interfaces/GetRef'
 export {
   getConfig,
   getSetting,
+  getStyleCompat,
   getThemes,
   getToken,
   getTokens,
@@ -64,6 +65,7 @@ export {
   setConfig,
   setupDev,
   updateConfig,
+  type StyleCompat,
 } from './config'
 
 export { setNonce } from './helpers/insertStyleRule'

@@ -144,6 +144,7 @@ export function createImage<C extends ComponentType<any>>(
       src,
       width,
       height,
+      borderRadius,
       objectFit,
       objectPosition,
       // web only props - filter out on native
@@ -160,10 +161,12 @@ export function createImage<C extends ComponentType<any>>(
     } = props
 
     const resolvedWidth =
-      typeof width === 'string' && width[0] === '$' ? getTokenValue(width as any) : width
+      typeof width === 'string' && width[0] === '$'
+        ? getTokenValue(width as any, 'size')
+        : width
     const resolvedHeight =
       typeof height === 'string' && height[0] === '$'
-        ? getTokenValue(height as any)
+        ? getTokenValue(height as any, 'size')
         : height
 
     const finalSource = transformSource({
@@ -176,11 +179,17 @@ export function createImage<C extends ComponentType<any>>(
       ? Object.assign({}, ...rest.style.flat())
       : rest.style
 
+    const resolvedBorderRadius =
+      typeof borderRadius === 'string' && borderRadius[0] === '$'
+        ? getTokenValue(borderRadius as any, 'radius')
+        : borderRadius
+
     const finalProps: any = {
       ...rest,
       source: finalSource,
       style: {
         ...incomingStyle,
+        ...(resolvedBorderRadius !== undefined && { borderRadius: resolvedBorderRadius }),
         ...(resolvedWidth !== undefined && { width: resolvedWidth }),
         ...(resolvedHeight !== undefined && { height: resolvedHeight }),
       },

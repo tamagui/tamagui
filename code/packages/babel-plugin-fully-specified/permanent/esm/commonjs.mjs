@@ -34,8 +34,10 @@ function fullySpecifyCommonJS(api, options) {
                       return
                     }
                   }
-                  const filePathWithJs = resolvedPath + jsExtension
-                  if (existsSync(filePathWithJs)) {
+                  if (
+                    existsSync(resolvedPath + jsExtension) ||
+                    existsSync(resolvedPath + cjsExtension)
+                  ) {
                     ;((newModuleSpecifier += cjsExtension),
                       (arg.value = newModuleSpecifier))
                     return

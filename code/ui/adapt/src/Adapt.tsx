@@ -158,7 +158,7 @@ export const AdaptParent = ({ children, Contents, scope, portal }: AdaptParentPr
       return Contents
     }
 
-    // When teleport is enabled, use store-based children passing to avoid
+    // when teleport is enabled, use store-based children passing to avoid
     // nested teleport (inner PortalItem inside already-teleported Sheet)
     // which breaks touch coordinate mapping on iOS.
     if (isTeleport) {
@@ -280,9 +280,9 @@ export const AdaptPortalContents = (props: {
   const childrenStore = useContext(AdaptChildrenStoreContext)
   const isTeleport = !isWeb && getPortal().state.type === 'teleport'
 
-  // When teleport is enabled, bypass PortalItem to avoid nested teleport
+  // when teleport is enabled, bypass PortalItem to avoid nested teleport
   // (inner portal inside already-teleported Sheet) which breaks touch
-  // coordinate mapping on iOS. Children are passed via external store
+  // coordinate mapping on iOS. children are passed via external store
   // to TeleportAdaptContents rendered at Adapt.Contents.
   if (isTeleport && childrenStore) {
     return (
@@ -308,11 +308,19 @@ function AdaptPortalTeleport({
   store: AdaptChildrenStore
   children: React.ReactNode
 }) {
+  // keep the teleport store in sync without clearing it between parent
+  // renders. clearing only on real unmount or inactive lets React reconcile
+  // sheet/dialog/popover contents instead of remounting the subtree.
   useIsomorphicLayoutEffect(() => {
-    if (!isActive) return
-    store.set(children)
-    return () => store.set(null)
+    if (isActive) {
+      store.set(children)
+    } else {
+      store.set(null)
+    }
   })
+  useIsomorphicLayoutEffect(() => {
+    return () => store.set(null)
+  }, [store])
 
   return isActive ? null : <>{children}</>
 }

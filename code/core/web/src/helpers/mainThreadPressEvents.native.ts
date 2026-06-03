@@ -25,7 +25,12 @@ interface PressRef {
 const DEFAULT_LONG_PRESS_DELAY = 500
 const DEFAULT_MIN_PRESS_DURATION = 130
 
-export function useMainThreadPressEvents(events: any, viewProps: any, enabled = true) {
+export function useMainThreadPressEvents(
+  events: any,
+  viewProps: any,
+  enabled = true,
+  debugName?: string | null
+) {
   const ref = useRef<PressRef>(null as any)
   if (!ref.current) {
     ref.current = {
@@ -98,7 +103,6 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
   }
 
   viewProps.onResponderRelease = (e: any) => {
-    const wasActive = ref.current.state === 'active'
     const wasLongPressed = ref.current.state === 'longPressed'
     cleanup()
 

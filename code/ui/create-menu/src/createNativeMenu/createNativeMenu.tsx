@@ -5,7 +5,12 @@
  * Native: lazily resolves Zeego at render time so importing the package doesn't warn/error
  */
 
-import { getZeego, NativeMenuContext } from '@tamagui/native'
+import {
+  getZeego,
+  NativeMenuContext,
+  unstable_claimExternalPressOwnership,
+  unstable_releaseExternalPressOwnership,
+} from '@tamagui/native'
 import { isWeb, withStaticProperties, isIos } from '@tamagui/web'
 import type { FC } from 'react'
 import React from 'react'
@@ -79,6 +84,11 @@ type ComponentMap = Pick<
   'SubContent' | 'Content' | 'Sub' | 'Group' | 'SubTrigger'
 >
 
+type TriggerPressBoundaryHandlers = {
+  claim(debugName?: string | null): void
+  release(debugName?: string | null): void
+}
+
 export type NativeMenuComponents = {
   Menu: FC<NativeMenuProps> & {
     Trigger: FC<MenuTriggerProps>
@@ -123,6 +133,35 @@ function isItemLike(props: Record<string, unknown>, displayName: string): boolea
 
 function isPortalLike(displayName: string): boolean {
   return displayName === 'Portal' || displayName.includes('Portal')
+}
+
+function isTriggerLike(displayName: string): boolean {
+  return displayName === 'Trigger' || displayName.includes('(Trigger)')
+}
+
+function composeHandlers<T extends (...args: any[]) => void>(first?: T, second?: T) {
+  return (...args: Parameters<T>) => {
+    first?.(...args)
+    second?.(...args)
+  }
+}
+
+function getTriggerDebugName(
+  menuType: 'ContextMenu' | 'Menu',
+  props: Record<string, any>
+) {
+  const childProps =
+    React.isValidElement(props.children) && props.children.props
+      ? (props.children.props as Record<string, any>)
+      : null
+
+  const prefix = menuType === 'ContextMenu' ? 'ContextMenuTrigger' : 'MenuTrigger'
+  const detail =
+    childProps?.testID ??
+    childProps?.accessibilityLabel ??
+    (typeof props.textValue === 'string' ? props.textValue : null)
+
+  return [prefix, detail].filter(Boolean).join(':') || prefix
 }
 
 // stub used for web — never actually rendered, just needs to exist for withNativeMenu fallback
@@ -202,12 +241,19 @@ export const createNativeMenu = (
     return resolved
   }
 
+  type RadioContext = {
+    value?: string
+    onValueChange?: (value: string) => void
+  }
+
   // transform children tree for zeego compatibility
   function transformChildren(
     menu: ZeegoMenuModule,
     map: ComponentMap,
     children: React.ReactNode,
-    shouldReverseOnIos = false
+    shouldReverseOnIos = false,
+    triggerBoundaryHandlers?: TriggerPressBoundaryHandlers,
+    radioContext?: RadioContext
   ): React.ReactNode {
     const result: React.ReactNode[] = []
 
@@ -226,7 +272,9 @@ export const createNativeMenu = (
           menu,
           map,
           props.children as React.ReactNode,
-          false
+          false,
+          triggerBoundaryHandlers,
+          radioContext
         )
         React.Children.forEach(inner, (c) => result.push(c))
         return
@@ -238,9 +286,89 @@ export const createNativeMenu = (
           menu,
           map,
           props.children as React.ReactNode,
-          false
+          false,
+          triggerBoundaryHandlers,
+          radioContext
         )
         React.Children.forEach(inner, (c) => result.push(c))
+        return
+      }
+
+      if (isTriggerLike(displayName)) {
+        const debugName = getTriggerDebugName(MenuType, props)
+        const claim = () => triggerBoundaryHandlers?.claim(debugName)
+        const release = () => triggerBoundaryHandlers?.release(debugName)
+
+        result.push(
+          React.cloneElement(child, {
+            onTouchStart: composeHandlers(claim, props.onTouchStart),
+            onTouchEnd: composeHandlers(props.onTouchEnd, release),
+            onTouchCancel: composeHandlers(props.onTouchCancel, release),
+            onResponderGrant: composeHandlers(claim, props.onResponderGrant),
+            onResponderRelease: composeHandlers(props.onResponderRelease, release),
+            onResponderTerminate: composeHandlers(props.onResponderTerminate, release),
+            onPressIn: composeHandlers(claim, props.onPressIn),
+            onPressOut: composeHandlers(props.onPressOut, release),
+          } as any)
+        )
+        return
+      }
+
+      // RadioGroup: render as a zeego Group and pipe value/onValueChange
+      // down to any RadioItem descendants via radioContext
+      if (displayName.includes('RadioGroup')) {
+        const {
+          value: rgValue,
+          onValueChange: rgOnValueChange,
+          children: rgChildren,
+          ...rest
+        } = props as Record<string, any>
+
+        result.push(
+          React.createElement(
+            menu.Group,
+            { ...rest, key: child.key } as any,
+            transformChildren(
+              menu,
+              map,
+              rgChildren as React.ReactNode,
+              false,
+              triggerBoundaryHandlers,
+              { value: rgValue, onValueChange: rgOnValueChange }
+            )
+          )
+        )
+        return
+      }
+
+      // RadioItem: zeego has no radio primitive, so emit a CheckboxItem whose
+      // 'on'/'off' state is derived from the enclosing RadioGroup's value.
+      if (displayName.includes('RadioItem') && radioContext) {
+        const {
+          value: itemValue,
+          children: rChildren,
+          ...rest
+        } = props as Record<string, any>
+
+        const cleanChildren = React.Children.map(rChildren, (c) => {
+          if (!React.isValidElement(c)) return c
+          const dn = (c.type as { displayName?: string })?.displayName || ''
+          if (dn.includes('ItemIndicator')) return null
+          return c
+        })
+
+        result.push(
+          React.createElement(
+            menu.CheckboxItem,
+            {
+              ...rest,
+              key: child.key,
+              value: itemValue === radioContext.value ? 'on' : 'off',
+              onValueChange: () => radioContext.onValueChange?.(itemValue),
+            } as any,
+            cleanChildren
+          )
+        )
         return
       }
 
@@ -298,7 +426,9 @@ export const createNativeMenu = (
                   menu,
                   map,
                   childChildren as React.ReactNode,
-                  shouldReverse
+                  shouldReverse,
+                  triggerBoundaryHandlers,
+                  radioContext
                 )
               : childChildren
           )
@@ -387,17 +517,56 @@ export const createNativeMenu = (
   // on Android, provide NativeMenuContext so components use Gesture.Manual()
   // instead of Gesture.Tap() (which sends ACTION_CANCEL to MenuView)
   const Menu: FC<NativeMenuProps> = ({ children, onOpenChange, onOpenWillChange }) => {
+    const triggerOwnerRef = React.useRef<object | null>(null)
+    const claimTriggerBoundary = React.useCallback((debugName?: string | null) => {
+      if (triggerOwnerRef.current) {
+        unstable_releaseExternalPressOwnership(triggerOwnerRef.current, debugName)
+      }
+      triggerOwnerRef.current = unstable_claimExternalPressOwnership(debugName)
+    }, [])
+
+    const releaseTriggerBoundary = React.useCallback((debugName?: string | null) => {
+      if (!triggerOwnerRef.current) return
+      unstable_releaseExternalPressOwnership(triggerOwnerRef.current, debugName)
+      triggerOwnerRef.current = null
+    }, [])
+
+    React.useEffect(() => releaseTriggerBoundary, [releaseTriggerBoundary])
+
     const z = resolve()
     if (!z) return null
 
-    const rootProps: Record<string, unknown> = { onOpenChange }
+    const handleOpenChange = React.useCallback(
+      (isOpen: boolean) => {
+        if (!isOpen) {
+          releaseTriggerBoundary()
+        }
+        onOpenChange?.(isOpen)
+      },
+      [onOpenChange, releaseTriggerBoundary]
+    )
+
+    const handleOpenWillChange = React.useCallback(
+      (willOpen: boolean) => {
+        if (!willOpen) {
+          releaseTriggerBoundary()
+        }
+        onOpenWillChange?.(willOpen)
+      },
+      [onOpenWillChange, releaseTriggerBoundary]
+    )
+
+    const rootProps: Record<string, unknown> = { onOpenChange: handleOpenChange }
     if (isContextMenu && onOpenWillChange) {
-      rootProps.onOpenWillChange = onOpenWillChange
+      rootProps.onOpenWillChange = handleOpenWillChange
     }
 
     const content = (
       <z.menu.Root {...rootProps}>
-        {transformChildren(z.menu, z.componentMap, children)}
+        {transformChildren(z.menu, z.componentMap, children, false, {
+          claim: claimTriggerBoundary,
+          release: releaseTriggerBoundary,
+        })}
       </z.menu.Root>
     )
 

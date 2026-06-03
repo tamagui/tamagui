@@ -58,6 +58,11 @@ const UNTOUCHED_PROPS = {
   style: true,
 }
 
+// Platform variants that can't be resolved at compile time on native builds.
+// Defined at module level (not inside the loop) to avoid repeated Set allocations during compilation.
+// (requires runtime Platform.OS + Platform.isTV checks via react-native-tvos)
+const nativeOnlyPlatforms = new Set(['android', 'ios', 'tv', 'androidtv', 'tvos'])
+
 const createTernary = (x: Ternary) => x
 
 export type Extractor = ReturnType<typeof createExtractor>
@@ -73,10 +78,6 @@ function isFullyDisabled(props: TamaguiOptions) {
 export function createExtractor(
   { logger = console, platform = 'web' }: ExtractorOptions = { logger: console }
 ) {
-  if (!process.env.TAMAGUI_TARGET) {
-    throw new Error('Please set process.env.TAMAGUI_TARGET to either "web" or "native"')
-  }
-
   const INLINE_EXTRACTABLE = {
     ref: 'ref',
     key: 'key',
@@ -124,7 +125,7 @@ export function createExtractor(
   } as const
 
   const styleProps: SplitStyleProps = {
-    resolveValues: process.env.TAMAGUI_TARGET === 'native' ? 'value' : 'variable',
+    resolveValues: platform === 'native' ? 'value' : 'variable',
     noClass: false,
     isAnimated: false,
   }
@@ -132,7 +133,7 @@ export function createExtractor(
   const shouldAddDebugProp =
     // really basic disable this for next.js because it messes with ssr
     !process.env.npm_package_dependencies_next &&
-    process.env.TAMAGUI_TARGET !== 'native' &&
+    platform !== 'native' &&
     process.env.IDENTIFY_TAGS !== 'false' &&
     (process.env.NODE_ENV === 'development' || process.env.IDENTIFY_TAGS)
 
@@ -1447,6 +1448,12 @@ export function createExtractor(
                   )
                   // remove className - we dont use rnw styling
                   delete out.className
+                  // remove style - rnw createDOMProps unconditionally emits a
+                  // (possibly empty) style key, but we passed it a single
+                  // non-style prop. Leaving it in causes Object.keys(out) to
+                  // iterate twice and emit the original JSXAttribute twice
+                  // (e.g. duplicate testID), breaking the DOM output.
+                  delete out.style
                 }
               }
 
@@ -1470,6 +1477,23 @@ export function createExtractor(
                   key === '__source' ||
                   key === '__self'
                 ) {
+                  if (
+                    styleValue === FAILED_EVAL &&
+                    key !== name &&
+                    t.isJSXAttribute(attr.value)
+                  ) {
+                    // createDOMProps renamed the prop (e.g. testID -> data-testid).
+                    // preserve the original expression value but use the new
+                    // attribute name. restricted to FAILED_EVAL because the
+                    // later `case 'attr'` rename pass only runs on
+                    // statically-evaluable values; for static values that pass
+                    // intentionally preserves some prop names (e.g. focusable
+                    // in v2) instead of doing the createDOMProps rename.
+                    return {
+                      type: 'attr',
+                      value: t.jsxAttribute(t.jsxIdentifier(key), attr.value.value),
+                    } as const
+                  }
                   return attr
                 }
                 if (shouldPrintDebug) {
@@ -1516,7 +1540,7 @@ export function createExtractor(
                     return attr
                   }
 
-                  // $platform-web, $platform-native, $platform-ios, $platform-android
+                  // $platform-web, $platform-native, $platform-ios, $platform-android, $platform-tv, $platform-androidtv, $platform-tvos
                   if (name.startsWith('$platform-')) {
                     const platformName = name.slice(10) // remove '$platform-'
                     const isMatchingPlatform =
@@ -1538,6 +1562,20 @@ export function createExtractor(
                         attr: path.node,
                       }))
                     } else {
+                      // On native builds, sub-platform variants (android, ios, tv, androidtv, tvos)
+                      // can't be resolved at compile time - leave for runtime evaluation
+                      if (
+                        platform === 'native' &&
+                        nativeOnlyPlatforms.has(platformName)
+                      ) {
+                        if (shouldPrintDebug) {
+                          logger.info(
+                            `  ! keeping platform-specific style for runtime evaluation: ${name}`
+                          )
+                        }
+                        inlined.set(name, true)
+                        return attr
+                      }
                       // Platform doesn't match, skip these styles entirely
                       if (shouldPrintDebug) {
                         logger.info(`  ! skipping non-matching platform style: ${name}`)
@@ -2144,6 +2182,10 @@ export function createExtractor(
                       )
                       // remove rnw className use ours
                       out.className = cn
+                      // see note in single-prop branch above; createDOMProps
+                      // also emits a stray style key here that would duplicate
+                      // emitted JSXAttributes downstream.
+                      delete out.style
                     }
                     if (shouldPrintDebug) {
                       logger.info([' - expanded variant', name, out].join(' '))

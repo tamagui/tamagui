@@ -628,6 +628,41 @@ test('Text with hoverStyle and conditional spread preserves ternary', async () =
   expect(output?.js).toMatchSnapshot()
 })
 
+test('conditional color prop keeps hoverStyle color when flattened', async () => {
+  const output = await extractForWeb(
+    `
+    import { Text } from '@tamagui/core'
+
+    export function Test({ isActive, label }) {
+      return (
+        <Text
+          color={isActive ? '$color' : '$color11'}
+          hoverStyle={{ color: '$color' }}
+        >
+          {label}
+        </Text>
+      )
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  expect(output?.styles).toContain('color:var(--color11)')
+  expect(output?.styles).toContain(
+    '._col-0hover-color:hover{color:var(--color) !important;}'
+  )
+  expect(output?.js).toContain('isActive')
+  expect(output?.js).toContain('!isActive ?')
+  expect(output?.js).toContain('isActive ?')
+  expect(output?.js).toContain('_col-0hover-color _col-color11')
+  expect(output?.js).toContain('_col-0hover-color _col-color')
+})
+
 // role attribute is passed through during extraction
 test('role attribute is preserved during extraction', async () => {
   const output = await extractForWeb(
@@ -753,4 +788,34 @@ test('boxShadow with multiple $variables extracts correctly', async () => {
   expect(output?.styles).toContain('box-shadow')
   const varMatches = output?.styles?.match(/var\(--/g)
   expect(varMatches?.length).toBeGreaterThanOrEqual(2)
+})
+
+// regression: createDOMProps unconditionally emits a (possibly empty) style
+// key. without removing it after the call, Object.keys(out) iterates twice
+// for what was a single non-style prop, and the same JSXAttribute is emitted
+// twice in the output JSX. separately, the later attribute-rename pass that
+// converts testID -> data-testid only runs when the value is statically
+// evaluable, so dynamic testIDs were emitted as raw `<div testID={...}>`
+// and silently dropped by React.
+test('non-static testID with template literal is rewritten to data-testid', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test({ x }: { x: string }) {
+      return <View testID={\`a-\${x}\`} />
+    }
+  `,
+    {
+      options: {
+        platform: 'web',
+        components: ['@tamagui/core'],
+      },
+    }
+  )
+
+  // should be rewritten to data-testid (not raw testID) and only emitted once.
+  expect(output?.js).toContain('data-testid={`a-${x}`}')
+  expect(output?.js?.match(/data-testid=/g)?.length).toBe(1)
+  expect(output?.js?.match(/\btestID=/g) ?? []).toHaveLength(0)
 })

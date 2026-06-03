@@ -596,6 +596,7 @@ export type TamaguiComponentStateRef = {
   hasEverThemed?: boolean | 'wrapped'
   hasEverResetPresence?: boolean
   hasHadEvents?: boolean
+  hasRealPressEvents?: boolean
   isListeningToTheme?: boolean
   unPress?: Function
   setStateShallow?: ComponentSetStateShallow
@@ -813,24 +814,22 @@ export type StyleModeSetting = TamaguiConfig['settings'] extends {
 // StyleMode: available modes for different prop styles
 // - 'tamagui': Classic style props only (default)
 // - 'tailwind': className only, no style props
-// - 'flat': Flat $props only ($bg, $hover:bg)
 // - 'tamagui-and-tailwind': Classic style props + className processing
-// - 'tamagui-and-flat': Classic style props + flat $props
-export type StyleMode =
-  | 'tamagui'
-  | 'tailwind'
-  | 'flat'
-  | 'tamagui-and-tailwind'
-  | 'tamagui-and-flat'
+//
+// note: flat $props mode ('flat' / 'tamagui-and-flat') is temporarily shelved.
+// the type scaffolding below (IncludesFlatMode / WithFlatProps) stays dormant so it
+// can be brought back by re-adding those values to this union.
+export type StyleMode = 'tamagui' | 'tailwind' | 'tamagui-and-tailwind'
 
 // Helper types to check which modes are enabled
 export type IncludesClassicMode = StyleModeSetting extends
   | 'tamagui'
   | 'tamagui-and-tailwind'
-  | 'tamagui-and-flat'
   ? true
   : false
 
+// dormant while flat mode is shelved: StyleModeSetting never extends these, so this
+// is always false and the WithFlatProps branches below contribute nothing.
 export type IncludesFlatMode = StyleModeSetting extends 'flat' | 'tamagui-and-flat'
   ? true
   : false
@@ -1112,10 +1111,15 @@ type AutocompleteSpecificTokensSetting = boolean | 'except-special'
 
 export interface GenericTamaguiSettings {
   /**
-   * When true, flexBasis will be set to 0 when flex is positive. This will be
-   * the default in v2 of Tamagui alongside an alternative mode for web compat.
+   * controls style semantics where React Native/Yoga and CSS differ.
+   *
+   * - "legacy": preserves Tamagui v1 flex expansion.
+   * - "react-native": follows React Native/Yoga flex and raw numeric lineHeight semantics.
+   * - "web": follows CSS flex and unitless numeric lineHeight semantics.
+   *
+   * @default "web"
    */
-  styleCompat?: 'react-native' | 'legacy'
+  styleCompat?: 'legacy' | 'react-native' | 'web'
 
   // TODO
   /**
@@ -1216,9 +1220,7 @@ export interface GenericTamaguiSettings {
    *
    * - 'tamagui': Default - classic style props (backgroundColor, hoverStyle: {}, $sm: {})
    * - 'tailwind': className only, no style props (for Tailwind CSS users)
-   * - 'flat': Flat $props only ($bg, $hover:bg, $sm:bg) - no classic style props
    * - 'tamagui-and-tailwind': Classic style props + className processing
-   * - 'tamagui-and-flat': Classic style props + flat $props
    */
   styleMode?: StyleMode
 
@@ -1439,8 +1441,18 @@ export type MediaQueryKey = keyof Media
 export type MediaPropKeys = `$${MediaQueryKey}`
 export type MediaQueryState = { [key in MediaQueryKey]: boolean }
 
-export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> =
-  `$theme-${TK extends `${string}_${string}` ? never : TK}`
+// guard against a loose `Themes` whose `keyof` collapses to `string` (e.g. a config
+// whose themes type carries a string index signature). without this, TK becomes `string`
+// and ThemeMediaKeys becomes `$theme-${string}`, which collapses the whole WithMediaProps
+// mapped type into a `[key: string]` index signature that then swallows non-style props
+// like onPress/children. see issue #4010
+export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = TK extends string
+  ? string extends TK
+    ? never
+    : TK extends `${string}_${string}`
+      ? never
+      : `$theme-${TK}`
+  : never
 
 export type PlatformMediaKeys = `$platform-${AllPlatforms}`
 
@@ -1476,19 +1488,14 @@ export type WithMediaProps<A> = {
         [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>
       }
     : Key extends `$platform-web`
-      ? AddWebOnlyStyleProps<A>
-      : A
+      ? AddWebOnlyStyleProps<A> & { [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A> }
+      : A & { [Key in MediaPropKeys]?: A }
 }
 
-type AddWebOnlyStyleProps<A> = {
-  [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties
-    ? CSSProperties[SubKey]
-    : SubKey extends keyof A
-      ? A[SubKey]
-      : SubKey extends keyof WebOnlyValidStyleValues
-        ? WebOnlyValidStyleValues[SubKey]
-        : never
-}
+export type AddWebOnlyStyleProps<A> = Partial<CSSProperties> &
+  Partial<WebOnlyValidStyleValues> & {
+    [K in Exclude<keyof A, keyof CSSProperties>]?: A[K]
+  }
 
 export type WebOnlyValidStyleValues = {
   position: '-webkit-sticky'
@@ -1985,7 +1992,14 @@ export type PseudoStyles = {
   exitStyle?: ViewStyle
 }
 
-export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
+export type AllPlatforms =
+  | 'web'
+  | 'native'
+  | 'android'
+  | 'ios'
+  | 'tv'
+  | 'androidtv'
+  | 'tvos'
 
 //
 // Flat mode types (opt-in via styleMode: 'flat')
@@ -2561,6 +2575,7 @@ export interface StackStyleBase
 export interface TextStylePropsBase
   extends Omit<RNTextStyle, keyof ExtendedBaseProps>, ExtendedBaseProps {
   ellipsis?: boolean
+  numberOfLines?: number
   textDecorationDistance?: number
   textOverflow?: Properties['textOverflow']
   whiteSpace?: Properties['whiteSpace']
@@ -2833,7 +2848,7 @@ export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
   insets?: { top: number; right: number; bottom: number; left: number }
 }
 
-export type PropMappedValue = [string, any][] | undefined
+export type PropMappedValue = [string, any, any?][] | undefined
 
 export type GetStyleState = {
   style: TextStyle | null
@@ -3292,6 +3307,10 @@ export type UseAnimatedNumberStyle<
   V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
 > = (val: V, getStyle: (current: any) => any) => any
 
+export type UseAnimatedNumbersStyle<
+  V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
+> = (vals: V[], getStyle: (...currentValues: any[]) => any) => any
+
 export type UseAnimatedNumber<
   N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
 > = (initial: number) => N
@@ -3315,6 +3334,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   }) => React.ReactNode
   useAnimatedNumber: UseAnimatedNumber
   useAnimatedNumberStyle: UseAnimatedNumberStyle
+  useAnimatedNumbersStyle?: UseAnimatedNumbersStyle
   useAnimatedNumberReaction: UseAnimatedNumberReaction
   animations: A
   View?: any

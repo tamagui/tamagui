@@ -54,6 +54,12 @@ Then add the setup import at your app entry point:
 import '@tamagui/native/setup-zeego'
 ```
 
+<Notice theme="blue">
+  On native, `ContextMenu.Trigger` coordinates with parent Tamagui pressables
+  automatically. You should not need extra wrapper views or empty `onPress`
+  handlers just to prevent a parent `pressStyle` from activating.
+</Notice>
+
 <Notice theme="yellow">
   **Expo Router users:** This import must run _before_ `expo-router/entry`. Create an `index.js` at your project root that imports the setup first, then expo-router, and update your `package.json` main field to `"index.js"`. See the [upgrade guide](/docs/guides/how-to-upgrade#expo-router-entry-point) for details.
 </Notice>

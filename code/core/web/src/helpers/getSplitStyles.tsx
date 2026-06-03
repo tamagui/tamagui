@@ -24,6 +24,7 @@ import { isDevTools } from '../constants/isDevTools'
 import {
   getMediaImportanceIfMoreImportant,
   getMediaKey,
+  getMediaKeyImportance,
   mediaKeyMatch,
 } from '../hooks/useMedia'
 import { mediaState as globalMediaState, mediaQueryConfig } from './mediaState'
@@ -59,7 +60,7 @@ import {
 } from './getDynamicVal'
 import { getGroupPropParts } from './getGroupPropParts'
 import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertStyleRule'
-import { isActivePlatform } from './isActivePlatform'
+import { isActivePlatform, getPlatformSpecificityBump } from './isActivePlatform'
 import { isActiveTheme } from './isActiveTheme'
 import { log } from './log'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
@@ -68,10 +69,14 @@ import {
   type PseudoDescriptorKey,
   pseudoDescriptors,
   pseudoPriorities,
+  defaultMediaImportance,
 } from './pseudoDescriptors'
 import { skipProps } from './skipProps'
 import { sortString } from './sortString'
+import { styleOriginalValues } from './styleOriginalValues'
 import { transformsToString } from './transformsToString'
+
+export { styleOriginalValues }
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
 
@@ -80,11 +85,6 @@ export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 // note: we intentionally don't cache conf at module level here
 // because createTamagui may be called multiple times (HMR, tests)
 // and getConfig() already has its own caching
-
-// WeakMap to track original token values for style objects
-// Used to preserve '$8' style tokens instead of resolved 'var(--t-space-8)'
-// for context prop propagation to children (issues #3670, #3676)
-export const styleOriginalValues = new WeakMap<object, Record<string, any>>()
 
 type StyleSplitter = (
   props: { [key: string]: any },
@@ -228,22 +228,15 @@ function mergeDeep(target: any, source: any): any {
 }
 
 /**
- * Check if flat mode is enabled based on styleMode setting.
+ * Check if flat-style preprocessing should run. Tailwind mode reuses it to handle
+ * the props converted from className. (Flat $props mode is shelved; when it returns
+ * its 'flat' / 'tamagui-and-flat' values get re-added here alongside StyleMode.)
  */
 function isFlatModeEnabled(config: TamaguiInternalConfig): boolean {
   const styleMode = config.settings?.styleMode
   if (!styleMode) return false
-  // flat mode is enabled in 'flat' or 'tamagui-and-flat'
-  if (styleMode === 'flat' || styleMode === 'tamagui-and-flat') return true
-  // tailwind mode requires flat mode processing for the converted props
+  // tailwind mode requires flat-style processing for the converted props
   if (styleMode === 'tailwind' || styleMode === 'tamagui-and-tailwind') return true
-  // backward compat: support array/object format at runtime
-  if (Array.isArray(styleMode)) {
-    return styleMode.includes('flat') || styleMode.includes('tailwind')
-  }
-  if (typeof styleMode === 'object' && styleMode !== null) {
-    return (styleMode as any).flat === true || (styleMode as any).tailwind === true
-  }
   return false
 }
 
@@ -252,11 +245,6 @@ function isTailwindModeEnabled(config: TamaguiInternalConfig): boolean {
   if (!styleMode) return false
   // tailwind mode is enabled in 'tailwind' or 'tamagui-and-tailwind'
   if (styleMode === 'tailwind' || styleMode === 'tamagui-and-tailwind') return true
-  // backward compat: support array/object format at runtime
-  if (Array.isArray(styleMode)) return styleMode.includes('tailwind')
-  if (typeof styleMode === 'object' && styleMode !== null) {
-    return (styleMode as any).tailwind === true
-  }
   return false
 }
 
@@ -942,7 +930,7 @@ export const getSplitStyles: StyleSplitter = (
           const identifier = `t_group_${valInit}`
           const containerType = webContainerType || 'inline-size'
           const containerCSS = [
-            'continer',
+            'container',
             undefined,
             identifier,
             undefined,
@@ -1005,8 +993,10 @@ export const getSplitStyles: StyleSplitter = (
 
         if (keyInit === 'disabled' && valInit === true) {
           viewProps['aria-disabled'] = true
-          // Enhance with native semantics
+          // isInput: Input/TextArea wrap the real <input>/<textarea> in a styleable, so
+          // elementType is the wrapper here - forward disabled down or it never reaches it
           if (
+            isInput ||
             elementType === 'button' ||
             elementType === 'form' ||
             elementType === 'input' ||
@@ -1599,6 +1589,12 @@ export const getSplitStyles: StyleSplitter = (
               }
               importanceBump = priority
             }
+          } else if (isPlatformMedia) {
+            // Platform styles use specificity-based importance bumps so that more
+            // specific platform selectors reliably win over broader ones regardless
+            // of prop declaration order (e.g. $platform-tv always overrides
+            // $platform-native for the same property, even if tv is listed first).
+            importanceBump = getPlatformSpecificityBump(mediaKeyShort)
           }
 
           const mediaOriginalValues = styleOriginalValues.get(mediaStyle)
@@ -1612,6 +1608,14 @@ export const getSplitStyles: StyleSplitter = (
           }
 
           function mergeMediaStyle(key: string, val: any, originalVal?: any) {
+            // on native, non-style keys from media queries (like numberOfLines)
+            // need to go to viewProps, not style
+            if (process.env.TAMAGUI_TARGET === 'native') {
+              if (!isValidStyleKey(key, validStyles, accept)) {
+                viewProps[key] = val
+                return
+              }
+            }
             styleState.style ||= {}
             const didMerge = mergeMediaByImportance(
               styleState,
@@ -1633,17 +1637,64 @@ export const getSplitStyles: StyleSplitter = (
               continue
             }
             if (subKey[0] === '$') {
-              if (!isActivePlatform(subKey)) continue
-              if (!isActiveTheme(subKey, themeName)) continue
-              const subOriginalValues = styleOriginalValues.get(
-                mediaStyle[subKey] as object
-              )
-              for (const subSubKey in mediaStyle[subKey]) {
-                mergeMediaStyle(
-                  subSubKey,
-                  mediaStyle[subKey][subSubKey],
+              const subMediaType = getMediaKey(subKey)
+              if (subMediaType === 'platform') {
+                if (!isActivePlatform(subKey)) continue
+              } else if (subMediaType === 'theme') {
+                if (!isActiveTheme(subKey, themeName)) continue
+              } else if (subMediaType === true) {
+                // regular media query nested inside platform/theme/media
+                const subKeyShort = subKey.slice(1)
+                if (!mediaState[subKeyShort]) continue
+              }
+
+              const nestedVal = mediaStyle[subKey] as Record<string, any>
+              const subOriginalValues = styleOriginalValues.get(nestedVal)
+
+              // Nested styles are more specific than their outer context because
+              // they require both conditions to be true. Calculate an importance
+              // that is the sum of both the outer and inner importances so that:
+              //   1) nested always beats non-nested
+              //   2) $xs={{ $platform-android: ... }} and
+              //      $platform-android={{ $xs: ... }} produce identical importance
+              //      (last-declared wins for the same property)
+              const isSizeMediaKey = !!mediaState[mediaKeyShort]
+              const outerBase = isSizeMediaKey
+                ? getMediaKeyImportance(mediaKeyShort)
+                : defaultMediaImportance
+
+              let innerBase: number
+              if (subMediaType === 'platform') {
+                innerBase =
+                  defaultMediaImportance + getPlatformSpecificityBump(subKey.slice(1))
+              } else if (subMediaType === true) {
+                innerBase = getMediaKeyImportance(subKey.slice(1))
+              } else {
+                innerBase = defaultMediaImportance
+              }
+
+              const nestedImportance = outerBase + importanceBump + innerBase + 1
+
+              for (const subSubKey in nestedVal) {
+                // expand shorthands, getSubStyle doesn't expand keys
+                // inside nested $ objects (they pass through propMapper as-is)
+                const expandedKey = shorthands[subSubKey] || subSubKey
+                const { usedKeys } = styleState
+                if (usedKeys[expandedKey] && usedKeys[expandedKey] > nestedImportance) {
+                  continue
+                }
+                styleState.style ||= {}
+                mergeStyle(
+                  styleState,
+                  expandedKey,
+                  nestedVal[subSubKey],
+                  nestedImportance,
+                  false,
                   subOriginalValues?.[subSubKey]
                 )
+                if (expandedKey === 'fontFamily') {
+                  styleState.fontFamily = nestedVal[subSubKey] as string
+                }
               }
             } else {
               mergeMediaStyle(subKey, mediaStyle[subKey], mediaOriginalValues?.[subKey])
@@ -2047,9 +2098,9 @@ function mergeStyle(
     return
   }
 
-  // Track context overrides for pseudo/media styles (issues #3670, #3676)
-  // When a style sets a key that's in context props, update overriddenContextProps
-  // so it propagates to children. Use the original token value (like '$8')
+  // track context overrides for pseudo/media styles (issues #3670, #3676)
+  // when a style sets a key that's in context props, update overriddenContextProps
+  // so it propagates to children. use the original token value (like '$8')
   // instead of the resolved CSS variable (like 'var(--t-space-8)')
   // so children's functional variants can look up token values.
   const contextProps =
@@ -2094,61 +2145,70 @@ export const getSubStyle = (
   const { staticConfig, conf, styleProps } = styleState
   const styleOut: TextStyle = {}
   let originalValues: Record<string, any> | undefined
+  const styleInOriginalValues = styleOriginalValues.get(styleIn)
+  const parentProps = styleState.props
+  styleState.props = { ...parentProps, ...styleIn }
 
-  for (let key in styleIn) {
-    const val = styleIn[key]
-    key = conf.shorthands[key] || key
+  try {
+    for (let key in styleIn) {
+      const val = styleIn[key]
+      key = conf.shorthands[key] || key
 
-    // extract transition from pseudo-style props (e.g., hoverStyle.transition)
-    // store it separately for animation drivers to use for enter/exit timing
-    if (key === 'transition') {
-      styleState.pseudoTransitions ||= {}
-      styleState.pseudoTransitions[subKey as keyof typeof styleState.pseudoTransitions] =
-        val
-      // for CSS driver, also add transition to CSS output so native CSS transitions work
-      // group styles ($group-*) need !important to override inline base transition
-      const driver = styleState.animationDriver
-      if (driver?.outputStyle === 'css') {
-        const animationConfig = driver.animations?.[val as string]
-        if (animationConfig) {
-          const important = subKey[0] === '$' ? ' !important' : ''
-          styleOut['transition'] = `all ${animationConfig}${important}`
+      // extract transition from pseudo-style props (e.g., hoverStyle.transition)
+      // store it separately for animation drivers to use for enter/exit timing
+      if (key === 'transition') {
+        styleState.pseudoTransitions ||= {}
+        styleState.pseudoTransitions[
+          subKey as keyof typeof styleState.pseudoTransitions
+        ] = val
+        // for CSS driver, also add transition to CSS output so native CSS transitions work
+        // group styles ($group-*) need !important to override inline base transition
+        const driver = styleState.animationDriver
+        if (driver?.outputStyle === 'css') {
+          const animationConfig = driver.animations?.[val as string]
+          if (animationConfig) {
+            const important = subKey[0] === '$' ? ' !important' : ''
+            styleOut['transition'] = `all ${animationConfig}${important}`
+          }
         }
+        // not a known animation name, pass through as raw CSS
+        if (
+          !styleOut['transition'] &&
+          typeof val === 'string' &&
+          !driver?.animations?.[val]
+        ) {
+          styleOut['transition'] = val
+        }
+        continue
       }
-      // not a known animation name, pass through as raw CSS
-      if (
-        !styleOut['transition'] &&
-        typeof val === 'string' &&
-        !driver?.animations?.[val]
-      ) {
-        styleOut['transition'] = val
-      }
-      continue
-    }
 
-    const shouldSkip = !staticConfig.isHOC && key in skipProps && !styleProps.noSkip
-    if (shouldSkip) {
-      continue
-    }
+      const shouldSkip = !staticConfig.isHOC && key in skipProps && !styleProps.noSkip
+      if (shouldSkip) {
+        continue
+      }
 
-    propMapper(key, val, styleState, false, (skey, sval, originalVal) => {
-      // Track original values for context prop propagation
-      if (originalVal !== undefined) {
-        originalValues ||= {}
-        originalValues[skey] = originalVal
-      }
-      // pseudo inside media
-      if (skey in validPseudoKeys) {
-        sval = getSubStyle(styleState, skey, sval, avoidMergeTransform)
-      }
-      if (!avoidMergeTransform && skey in stylePropsTransform) {
-        mergeTransform(styleOut, skey, sval)
-      } else {
-        styleOut[skey] = styleProps.noNormalize
-          ? sval
-          : normalizeValueWithProperty(sval, key)
-      }
-    })
+      propMapper(key, val, styleState, false, (skey, sval, originalVal) => {
+        // track original values for context prop propagation
+        const trackedOriginalVal = styleInOriginalValues?.[skey] ?? originalVal
+        if (trackedOriginalVal !== undefined) {
+          originalValues ||= {}
+          originalValues[skey] = trackedOriginalVal
+        }
+        // pseudo inside media
+        if (skey in validPseudoKeys) {
+          sval = getSubStyle(styleState, skey, sval, avoidMergeTransform)
+        }
+        if (!avoidMergeTransform && skey in stylePropsTransform) {
+          mergeTransform(styleOut, skey, sval)
+        } else {
+          styleOut[skey] = styleProps.noNormalize
+            ? sval
+            : normalizeValueWithProperty(sval, key)
+        }
+      })
+    }
+  } finally {
+    styleState.props = parentProps
   }
 
   if (!avoidMergeTransform) {
@@ -2201,7 +2261,7 @@ export const getSubStyle = (
   }
 
   // Store original values in WeakMap instead of on the object itself
-  if (originalValues) {
+  if (originalValues && Object.keys(originalValues).length) {
     styleOriginalValues.set(styleOut, originalValues)
   }
 
@@ -2312,7 +2372,20 @@ function mergeMediaByImportance(
     isSizeMedia
   )
   if (importanceBump) {
-    importance = (importance || 0) + importanceBump
+    // With a specificity bump, the effective importance is always
+    // defaultMediaImportance + bump. This lets higher-specificity styles
+    // (e.g. $platform-tv > $platform-native) override lower-specificity ones
+    // regardless of prop declaration order, even when getMediaImportanceIfMoreImportant
+    // returns null (meaning the same base importance was already applied).
+    //
+    // We must re-check `usedKeys[key]` here (rather than relying on the null
+    // returned by getMediaImportanceIfMoreImportant) because that function only
+    // compares against `defaultMediaImportance`, which equals our base before
+    // the bump. We need to compare against the *bumped* value to correctly
+    // allow a more-specific style to win.
+    const bumpedImportance = defaultMediaImportance + importanceBump
+    importance =
+      !usedKeys[key] || bumpedImportance > usedKeys[key] ? bumpedImportance : null
   }
   if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
     log(

@@ -1,4 +1,5 @@
 import type { GestureState } from "./types";
+export declare function canChangeGestureHandlerEnabled(nextEnabled: boolean, source: string): boolean;
 export interface Insets {
 	top?: number;
 	left?: number;
@@ -6,6 +7,7 @@ export interface Insets {
 	right?: number;
 }
 export type PressGestureConfig = {
+	debugName?: string | null;
 	onPressIn?: (e: any) => void;
 	onPressOut?: (e: any) => void;
 	onPress?: (e: any) => void;
@@ -20,6 +22,9 @@ export interface GestureHandlerAccessor {
 	disable(): void;
 	createPressGesture(config: PressGestureConfig): any;
 }
+export type ExternalPressOwnershipToken = object;
+export declare function claimExternalPressOwnership(debugName?: string | null): ExternalPressOwnershipToken;
+export declare function releaseExternalPressOwnership(token: ExternalPressOwnershipToken | null | undefined, debugName?: string | null): void;
 export declare function getGestureHandler(): GestureHandlerAccessor;
 
 //# sourceMappingURL=gestureState.d.ts.map

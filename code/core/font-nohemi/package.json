@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-nohemi",
-  "version": "2.0.0-rc.31",
+  "version": "2.1.0-1780426041711",
   "files": [
     "types",
     "dist",
@@ -9,7 +9,9 @@
     "nohemi.css"
   ],
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink",
-  "version": "2.0.0-rc.31",
+  "version": "2.1.0-1780426041711",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -76,7 +76,7 @@
     "expo-image-picker": "~55.0.12",
     "expo-linear-gradient": "~55.0.8",
     "expo-linking": "~55.0.7",
-    "expo-splash-screen": "~55.0.8",
+    "expo-splash-screen": "~55.0.10",
     "react": ">=19",
     "react-dom": "*",
     "react-native": "0.83.2",
@@ -113,7 +113,7 @@
     "html-webpack-plugin": "^5.5.0",
     "jest": "^29",
     "mini-css-extract-plugin": "^2.9.1",
-    "one": "1.12.7",
+    "one": "1.16.3",
     "pngjs": "^7.0.0",
     "pod-install": "^0.3.2",
     "tilg": "0.1.1",

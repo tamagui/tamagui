@@ -35,10 +35,15 @@ export const useLoginLink = () => {
 
       const handleMessage = async (event: MessageEvent) => {
         if (event.origin !== window.location.origin) return
-        if (event.data.type === 'SUPABASE_AUTH_SUCCESS') {
+        if (event.data?.type === 'SUPABASE_AUTH_SUCCESS') {
           window.removeEventListener('message', handleMessage)
           await supabaseClient.auth.refreshSession()
           userSwr.refresh()
+        } else if (event.data?.type === 'SUPABASE_AUTH_ERROR') {
+          window.removeEventListener('message', handleMessage)
+          toast.show('Login failed', {
+            message: event.data.error || 'Please try again.',
+          })
         }
       }
 

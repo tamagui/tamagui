@@ -238,7 +238,7 @@ test.describe('Animation Behavior', () => {
     // Click to trigger exit animation
     await page.getByTestId('scenario-22-trigger').click()
 
-    // CSS bouncy is 200ms, spring bouncy takes longer
+    // CSS bouncy uses a visible overshoot curve; spring bouncy takes longer.
     // for CSS, check at 100ms; for spring, check at 150ms
     const checkTime = driver === 'css' ? 100 : 150
     await page.waitForTimeout(checkTime)

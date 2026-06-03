@@ -14,6 +14,7 @@ const plugins: babelParser.ParserPlugin[] = [
   'typescript',
   'optionalChaining',
   'nullishCoalescingOperator',
+  'topLevelAwait',
 ]
 
 export const parserOptions: babelParser.ParserOptions = Object.freeze({

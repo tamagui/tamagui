@@ -1,5 +1,5 @@
 import * as ReactDOM from 'react-dom'
-import { offset } from '@floating-ui/react-dom'
+import { detectOverflow, offset } from '@floating-ui/react-dom'
 import type { Middleware, MiddlewareState } from '@floating-ui/react-dom'
 
 // ported from floating-ui/react/_deprecated-inner.ts
@@ -48,7 +48,6 @@ export const inner = (props: InnerProps): Middleware => ({
 
     const {
       rects,
-      platform,
       elements: { floating },
     } = state
 
@@ -80,7 +79,7 @@ export const inner = (props: InnerProps): Middleware => ({
 
     const detectOverflowOptions = { padding }
 
-    const overflow = await platform.detectOverflow(
+    const overflow = await detectOverflow(
       getArgsWithCustomFloatingHeight(
         nextArgs,
         scrollEl.scrollHeight + clientTop + floating.clientTop
@@ -88,7 +87,7 @@ export const inner = (props: InnerProps): Middleware => ({
       detectOverflowOptions
     )
 
-    const refOverflow = await platform.detectOverflow(nextArgs, {
+    const refOverflow = await detectOverflow(nextArgs, {
       ...detectOverflowOptions,
       elementContext: 'reference',
     })
@@ -126,7 +125,7 @@ export const inner = (props: InnerProps): Middleware => ({
     }
 
     if (overflowRef) {
-      ;(overflowRef as any).current = await platform.detectOverflow(
+      ;(overflowRef as any).current = await detectOverflow(
         getArgsWithCustomFloatingHeight(
           { ...nextArgs, y: nextY },
           scrollEl.offsetHeight + clientTop + floating.clientTop

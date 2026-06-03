@@ -442,11 +442,19 @@ export function createComponent<
       startedUnhydrated,
     } = componentState
 
-    if (hasAnimationProp && animationDriver?.avoidReRenders) {
+    if (animationDriver?.avoidReRenders) {
+      // post-commit reconciliation of `nextState` with the committed React state.
+      // `nextState` is the source of truth for the fast `setStateShallow` path; it
+      // must stay populated until React actually commits the corresponding update,
+      // otherwise a follow-up update in the same JS task would read a stale closure
+      // `state` and bail on a false shallow-equal. once committed state matches
+      // `nextState`, clear it. if they diverge (animated components' fast path never
+      // calls into React), flush via componentState.setStateShallow here.
       useIsomorphicLayoutEffect(() => {
         const pendingState = stateRef.current.nextState
-        if (pendingState) {
-          stateRef.current.nextState = undefined
+        if (!pendingState) return
+        stateRef.current.nextState = undefined
+        if (!isEqualShallow(state, pendingState)) {
           componentState.setStateShallow(pendingState)
         }
       })
@@ -738,11 +746,15 @@ export function createComponent<
         const useStyleListener = stateRef.current.useStyleListener
 
         // if no animation driver is listening for style updates, fall back to normal re-render
-        // this happens when a component has group prop but no transition/animation prop
+        // this happens when a component has group prop but no transition/animation prop.
+        // keep nextState populated until React actually commits the update — clearing it
+        // here lets a subsequent setStateShallow in the same JS task (e.g. press-out
+        // right after press-in) compare against a stale closure `state` and bail out,
+        // losing the update. the post-commit layoutEffect below clears nextState once
+        // React state has caught up.
         if (!useStyleListener) {
           const pendingState = stateRef.current.nextState
           if (pendingState) {
-            stateRef.current.nextState = undefined
             ogSetStateShallow(pendingState)
           }
           return
@@ -1210,6 +1222,7 @@ export function createComponent<
     const runtimePressStyle = !disabled && noClass && pseudos?.pressStyle
     const runtimeFocusStyle = !disabled && noClass && pseudos?.focusStyle
     const runtimeFocusVisibleStyle = !disabled && noClass && pseudos?.focusVisibleStyle
+
     const attachFocus = Boolean(
       runtimePressStyle ||
       runtimeFocusStyle ||
@@ -1328,11 +1341,19 @@ export function createComponent<
                 }
               }
             : undefined,
+
           onPress: attachPress
             ? (e) => {
                 unPress()
-                // @ts-ignore
-                isWeb && onClick?.(e)
+                if (process.env.TAMAGUI_TARGET === 'web') {
+                  // @ts-ignore
+                  onClick?.(e)
+                  // matches RN pressable behavior - only when an explicit press
+                  // handler is set, so pressStyle alone doesn't swallow clicks
+                  if (onPress || onClick) {
+                    e.stopPropagation()
+                  }
+                }
                 onPress?.(e)
                 if (process.env.TAMAGUI_TARGET === 'web') {
                   onLongPress?.(e)
@@ -1405,11 +1426,37 @@ export function createComponent<
       log(`events`, { events, attachHover, attachPress })
     }
 
+    const propsWithHref = props as typeof props & { href?: unknown }
+    const propsInWithHref = propsIn as typeof propsIn & { href?: unknown }
+
+    const pressDebugDetail =
+      props.testID ??
+      propsIn.testID ??
+      props.accessibilityLabel ??
+      propsIn.accessibilityLabel ??
+      (typeof propsWithHref.href === 'string' ? propsWithHref.href : null) ??
+      (typeof propsInWithHref.href === 'string' ? propsInWithHref.href : null)
+
+    const pressDebugName =
+      [componentName, pressDebugDetail].filter(Boolean).join(':') || null
+
     // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
     // Skip gesture setup for HOC components - they may return null which crashes GestureDetector
+    // hasRealPressEvents distinguishes user-provided handlers from events.onPress
+    // synthesized for pressStyle alone — only the former should claim the responder.
+    const hasRealPressEvents = !!(onPress || onPressIn || onPressOut || onLongPress)
     const pressGesture =
       process.env.TAMAGUI_TARGET === 'native'
-        ? useEvents(events, viewProps, stateRef, staticConfig, isHOC, isInsideNativeMenu)
+        ? useEvents(
+            events,
+            viewProps,
+            stateRef,
+            staticConfig,
+            isHOC,
+            isInsideNativeMenu,
+            pressDebugName,
+            hasRealPressEvents
+          )
         : null
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
@@ -1490,9 +1537,16 @@ export function createComponent<
     }
 
     // wrap with GestureDetector for RNGH press handling (native only, no-op on web)
-    // Skip for HOC components - they pass press events to inner component instead
+    // Skip for HOC and composite components - they pass press events to inner component instead
     if (process.env.TAMAGUI_TARGET === 'native') {
-      content = wrapWithGestureDetector(content, pressGesture, stateRef, isHOC)
+      const isCompositeComponent = !isHOC && Component && typeof Component !== 'string'
+      content = wrapWithGestureDetector(
+        content,
+        pressGesture,
+        stateRef,
+        isHOC,
+        isCompositeComponent
+      )
     }
 
     // needs to reset the presence state for nested children

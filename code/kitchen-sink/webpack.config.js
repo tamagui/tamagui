@@ -37,6 +37,16 @@ module.exports = {
       'react-dom/client': require.resolve('react-dom/client'),
       'react-dom': require.resolve('react-dom'),
       'react-native$': 'react-native-web',
+      '@tamagui/sheet/controller$': path.resolve(
+        __dirname,
+        '../ui/sheet/src/controller.ts'
+      ),
+      '@tamagui/sheet$': path.resolve(__dirname, '../ui/sheet/src/index.ts'),
+      // dedupe react-native-web - workspace setup creates multiple copies
+      // (kitchen-sink/node_modules + tamagui/node_modules + root) which each
+      // initialize the responder system with their own state, breaking
+      // PanResponder when a different instance owns the document listeners.
+      'react-native-web': path.resolve(__dirname, '../../node_modules/react-native-web'),
       'react-native-svg': '@tamagui/react-native-svg',
     },
   },
@@ -50,7 +60,7 @@ module.exports = {
       directory: path.join(__dirname, 'public'),
     },
     compress: true,
-    port: process.env.PORT || 9000,
+    port: process.env.PORT || 7979,
   },
   ignoreWarnings: [
     // suppress react-native-worklets critical dependency warning

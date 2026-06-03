@@ -4,7 +4,17 @@ import { createSilkscreenFont } from '@tamagui/font-silkscreen'
 import { createGenericFont } from './createGenericFont'
 
 export const cherryBombFont = createCherryBombFont({
-  family: '"Cherry Bomb", Arial, sans-serif',
+  // Cherry Bomb is a heavy rounded display face; fall back to on-brand Inter,
+  // then heavy web-safe faces, so the brief pre-load flash looks close to the
+  // real thing instead of thin default Arial.
+  family:
+    '"Cherry Bomb", "Inter", "Arial Black", "Helvetica Neue", Helvetica, Arial, sans-serif',
+  // Cherry Bomb only ships weight 400 (so this doesn't change its look), but a
+  // heavy weight makes the Inter fallback render at ExtraBold (already preloaded)
+  // instead of thin, much closer to Cherry Bomb during the load flash.
+  weight: {
+    4: '800',
+  },
 })
 export const silkscreenFont = createSilkscreenFont()
 export const headingFont = createInterFont(

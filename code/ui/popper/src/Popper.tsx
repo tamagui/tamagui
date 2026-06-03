@@ -661,6 +661,14 @@ export const PopperContentFrame = styled(YStack, {
 
 export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
   function PopperContent(props, forwardedRef) {
+    // detect controlled animatePosition before destructuring. when the user passes
+    // animatePosition (even with a currently-falsy value like undefined or false),
+    // toggling it later must not flip 'transition' presence on the inner View - that
+    // would change useComponentState's hasAnimationProp mid-life, conditionally calling
+    // useAnimations/usePresence and tripping React's "Should have a queue" invariant.
+    const isAnimatePosControlled =
+      'animatePosition' in props || 'enableAnimationForPositionChange' in props
+
     const {
       scope,
       animatePosition,
@@ -801,11 +809,15 @@ export const PopperContent = React.forwardRef<PopperContentElement, PopperConten
       left: 0,
       position: strategy,
       opacity: hide ? 0 : 1,
-      ...(animatePos && {
-        transition: rest.transition,
+      // when animatePosition is controlled by the user, always emit these keys with
+      // safe no-op values (transition: undefined, animateOnly: []) so the inner
+      // View's hook count stays stable across animatePos toggles. animatePresence
+      // must always be false here too, to short-circuit usePresence consistently.
+      ...(isAnimatePosControlled && {
+        transition: animatePos ? rest.transition : undefined,
         // animateOnly: [] turns off transitions while keeping styles applied,
         // letting the element move to its position silently before animations start
-        animateOnly: disableAnimation ? [] : rest.animateOnly,
+        animateOnly: animatePos && !disableAnimation ? rest.animateOnly : [],
         animatePresence: false,
       }),
     }
@@ -921,6 +933,8 @@ type Sides = keyof typeof opposites
 
 export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
   function PopperArrow(propsIn, forwardedRef) {
+    // see PopperContent for why we detect controlled animatePosition before destructuring
+    const isAnimatePosControlled = 'animatePosition' in propsIn
     const { scope, animatePosition, transition, ...rest } = propsIn
     const { offset, size: sizeProp, borderWidth = 0, ...arrowProps } = rest
 
@@ -985,9 +999,9 @@ export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
         ref={refs}
         {...arrowStyle}
         {...(!arrowPositioned && { opacity: 0 })}
-        {...(animatePosition && {
-          transition,
-          animateOnly: ['transform'],
+        {...(isAnimatePosControlled && {
+          transition: animatePosition ? transition : undefined,
+          animateOnly: animatePosition ? ['transform'] : [],
           animatePresence: false,
         })}
       >

@@ -1,10 +1,11 @@
 {
   "name": "@tamagui/native",
-  "version": "2.0.0-rc.31",
+  "version": "2.1.0-1780426041711",
   "description": "Native setup modules for Tamagui - portals, gesture handler, worklets, and more",
   "type": "module",
   "sideEffects": [
-    "**/setup-*"
+    "**/setup-*",
+    "**/gesture-handler*"
   ],
   "main": "dist/cjs",
   "module": "dist/esm",
@@ -16,6 +17,9 @@
       ],
       "setup-gesture-handler": [
         "./types/setup-gesture-handler.d.ts"
+      ],
+      "gesture-handler": [
+        "./types/gesture-handler.d.ts"
       ],
       "setup-worklets": [
         "./types/setup-worklets.d.ts"
@@ -65,6 +69,15 @@
       "import": "./dist/esm/setup-gesture-handler.mjs",
       "require": "./dist/cjs/setup-gesture-handler.cjs",
       "default": "./dist/esm/setup-gesture-handler.mjs"
+    },
+    "./gesture-handler": {
+      "types": "./types/gesture-handler.d.ts",
+      "react-native": "./dist/esm/gesture-handler.native.js",
+      "browser": "./dist/esm/gesture-handler.mjs",
+      "module": "./dist/esm/gesture-handler.mjs",
+      "import": "./dist/esm/gesture-handler.mjs",
+      "require": "./dist/cjs/gesture-handler.cjs",
+      "default": "./dist/esm/gesture-handler.mjs"
     },
     "./setup-worklets": {
       "types": "./types/setup-worklets.d.ts",
@@ -143,53 +156,6 @@
     "zeego": "^3.0.0"
   },
   "peerDependencies": {
-    "@react-native-menu/menu": ">=2.0.0",
-    "burnt": ">=0.12.0",
-    "react": "*",
-    "react-native": "*",
-    "react-native-gesture-handler": ">=2.0.0",
-    "react-native-ios-context-menu": ">=3.0.0",
-    "react-native-ios-utilities": ">=5.0.0",
-    "react-native-keyboard-controller": ">=1.0.0",
-    "react-native-safe-area-context": ">=4.0.0",
-    "react-native-teleport": ">=0.5.0",
-    "react-native-worklets-core": ">=1.0.0",
-    "sf-symbols-typescript": "*",
-    "zeego": ">=3.0.0"
-  },
-  "peerDependenciesMeta": {
-    "react-native-gesture-handler": {
-      "optional": true
-    },
-    "react-native-keyboard-controller": {
-      "optional": true
-    },
-    "react-native-safe-area-context": {
-      "optional": true
-    },
-    "react-native-teleport": {
-      "optional": true
-    },
-    "react-native-worklets-core": {
-      "optional": true
-    },
-    "zeego": {
-      "optional": true
-    },
-    "@react-native-menu/menu": {
-      "optional": true
-    },
-    "react-native-ios-context-menu": {
-      "optional": true
-    },
-    "react-native-ios-utilities": {
-      "optional": true
-    },
-    "burnt": {
-      "optional": true
-    },
-    "sf-symbols-typescript": {
-      "optional": true
-    }
+    "react": "*"
   }
 }

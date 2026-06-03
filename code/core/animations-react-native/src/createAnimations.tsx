@@ -172,6 +172,13 @@ export const useAnimatedNumberStyle: UseAnimatedNumberStyle<RNAnimatedNum> = (
   return getStyle(value.getInstance())
 }
 
+export const useAnimatedNumbersStyle = (
+  vals: RNAnimatedNum[],
+  getStyle: (...currentValues: any[]) => any
+): any => {
+  return getStyle(...vals.map((v) => v.getInstance()))
+}
+
 export function createAnimations<A extends AnimationsConfig>(
   animations: A,
   options?: CreateAnimationsOptions
@@ -190,6 +197,7 @@ export function createAnimations<A extends AnimationsConfig>(
     useAnimatedNumber,
     useAnimatedNumberReaction,
     useAnimatedNumberStyle,
+    useAnimatedNumbersStyle,
     usePresence,
     ResetPresence,
     useAnimations: ({

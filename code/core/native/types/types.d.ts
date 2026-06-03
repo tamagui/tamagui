@@ -8,6 +8,7 @@ export interface GestureState {
 	Gesture: any;
 	GestureDetector: any;
 	ScrollView: any;
+	RootView: any;
 }
 export interface WorkletsState {
 	enabled: boolean;

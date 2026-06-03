@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink-shared",
-  "version": "2.0.0-rc.31",
+  "version": "2.1.0-1780426041711",
   "private": true,
   "main": "src/index.ts",
   "dependencies": {
@@ -11,7 +11,6 @@
     "tamagui": "workspace:*"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-native": "*"
+    "react": ">=19"
   }
 }

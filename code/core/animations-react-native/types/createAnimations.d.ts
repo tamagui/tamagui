@@ -17,6 +17,7 @@ export declare function useAnimatedNumber(initial: number): UniversalAnimatedNum
 type RNAnimatedNum = UniversalAnimatedNumber<Animated.Value>;
 export declare const useAnimatedNumberReaction: UseAnimatedNumberReaction<RNAnimatedNum>;
 export declare const useAnimatedNumberStyle: UseAnimatedNumberStyle<RNAnimatedNum>;
+export declare const useAnimatedNumbersStyle: (vals: RNAnimatedNum[], getStyle: (...currentValues: any[]) => any) => any;
 export declare function createAnimations<A extends AnimationsConfig>(animations: A, options?: CreateAnimationsOptions): AnimationDriver<A>;
 export {};
 

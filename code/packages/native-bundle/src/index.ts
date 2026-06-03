@@ -94,7 +94,16 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
   // For test bundles, bundle a fake react-native implementation
   // For production bundles, bundle react-native-web-lite
   // Note: react and all its subpaths (jsx-runtime, compiler-runtime, etc.) must be external
-  const external = isTest ? [/^react($|\/)/, /^react-native($|\/)/] : [/^react($|\/)/]
+  const external = isTest
+    ? [/^react($|\/)/, /^react-native($|\/)/]
+    : [
+        /^react($|\/)/,
+        /^react-native-reanimated($|\/)/,
+        /^react-native-worklets($|\/)/,
+        // Reanimated's internal code requires react-native/Libraries/Renderer/shims/ReactFabric
+        // which doesn't exist in the web bundle. Externalize it so the bundler doesn't try to resolve it.
+        /react-native\/Libraries\//,
+      ]
   const alias = isTest
     ? [
         // Aliases don't work for pre-bundled deps, so we externalize and alias in vitest config

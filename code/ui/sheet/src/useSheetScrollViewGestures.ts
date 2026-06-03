@@ -8,6 +8,7 @@ interface GestureState {
   startY: number
   lastY: number
   owner: GestureOwner
+  hadPanOwner: boolean
   panDragOffset: number
   dys: number[]
   scrollYAtGestureStart: number
@@ -30,6 +31,7 @@ export function useSheetScrollViewGestures({
     startY: 0,
     lastY: 0,
     owner: 'none',
+    hadPanOwner: false,
     panDragOffset: 0,
     dys: [],
     scrollYAtGestureStart: 0,
@@ -69,12 +71,17 @@ export function useSheetScrollViewGestures({
         startY: touch.pageY,
         lastY: touch.pageY,
         owner: 'none',
+        hadPanOwner: false,
         panDragOffset: 0,
         dys: [],
         scrollYAtGestureStart: currentScrollY,
       }
 
       scrollBridge.scrollStartY = touch.pageY
+      // claim this touch for the scroll-view gesture hook so the PanResponder
+      // (which also negotiates this touch via RNW's responder system) defers
+      // and doesn't double-drive the sheet position. cleared on touchend.
+      scrollBridge.scrollNodeTouched = true
     }
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -113,14 +120,23 @@ export function useSheetScrollViewGestures({
       // handle transitions
       if (newOwner !== s.owner) {
         if (newOwner === 'pan') {
+          s.hadPanOwner = true
           s.panDragOffset = 0
           s.dys = []
+          // re-baseline the pan origin to the sheet's CURRENT position so the
+          // offset (reset to 0 here) maps to where it actually is — required for
+          // a correct scroll→pan handoff now that the PanResponder defers to us.
+          scrollBridge.startPanDrag?.()
           scrollBridge.setParentDragging(true)
           disableScroll()
         } else {
           scrollBridge.setParentDragging(false)
           scrollBridge.scrollLock = false
-          enableScroll()
+          if (s.hadPanOwner) {
+            disableScroll()
+          } else {
+            enableScroll()
+          }
         }
         s.owner = newOwner
       }
@@ -133,14 +149,21 @@ export function useSheetScrollViewGestures({
 
         s.dys.push(dy)
         if (s.dys.length > 100) s.dys = s.dys.slice(-10)
-      } else if (s.owner === 'scroll') {
-        // programmatic scroll for synthetic events
+      } else if (s.owner === 'scroll' && (!e.isTrusted || s.hadPanOwner)) {
+        // synthetic events don't trigger native overflow scroll, so tests need us
+        // to move scrollTop directly. real mixed gestures need the same direct
+        // path after pan ownership: ios safari may not resume native scrolling
+        // mid-touch after an earlier prevented touchmove. pure real scrolls still
+        // use native scrolling; mixed pan↔scroll gestures keep overflow hidden
+        // and are driven here until touchend.
+        if (e.cancelable) e.preventDefault()
         const scrollDelta = -dy
         const maxScrollY = node.scrollHeight - node.clientHeight
         const newScrollY = Math.max(0, Math.min(maxScrollY, currentScrollY + scrollDelta))
         if (newScrollY !== currentScrollY) {
           node.scrollTop = newScrollY
           scrollBridge.y = newScrollY
+          if (newScrollY > 0) scrollBridge.scrollStartY = -1
         }
       }
     }
@@ -159,12 +182,21 @@ export function useSheetScrollViewGestures({
         }
 
         scrollBridge.release({ dragAt: s.panDragOffset, vy })
+      } else if (s.owner === 'scroll') {
+        // gesture ended while scrolling. a pan→scroll handoff only happens once
+        // the pane reached the top, so commit the top snap (index 0) and clear
+        // the dragging state HERE, on touchend — never mid-gesture (that would
+        // fight the live gesture). this replaces the PanResponder's release,
+        // which used to fire on touchend before it deferred to this hook.
+        scrollBridge.snapToPosition?.(0)
       }
 
       enableScroll()
       s.owner = 'none'
+      s.hadPanOwner = false
       s.panDragOffset = 0
       s.dys = []
+      scrollBridge.scrollNodeTouched = false
     }
 
     node.addEventListener('touchstart', handleTouchStart, {
