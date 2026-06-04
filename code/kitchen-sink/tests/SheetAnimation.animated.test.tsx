@@ -179,34 +179,51 @@ test.describe('Sheet Animation - CSS Driver', () => {
     const trigger = page.getByTestId('animation-lazy-trigger')
     const closeButton = page.getByTestId('animation-lazy-close')
 
-    // Click to open the sheet
     await trigger.click()
 
-    // Wait a small moment for sheet to start appearing
-    await page.waitForTimeout(50)
+    // capture transform values over the animation duration inside the browser.
+    // keeping the sampler in-page avoids playwright round-trip latency shifting
+    // the samples past the short animation window under parallel load.
+    type TransformSample = { t: number; transform: string }
+    const samples: TransformSample[] = await page.evaluate(
+      () =>
+        new Promise<TransformSample[]>((resolve) => {
+          const startedAt = performance.now()
+          const samples: TransformSample[] = []
 
-    // Capture transform values over the animation duration
-    const transforms: string[] = []
-    for (let i = 0; i < 20; i++) {
-      const transform = await page.evaluate(() => {
-        // Find the AnimatedView (parent of frame with transform)
-        const frame = document.querySelector('[data-testid="animation-lazy-frame"]')
-        if (!frame) return 'frame-not-found'
+          const readTransform = () => {
+            const frame = document.querySelector('[data-testid="animation-lazy-frame"]')
+            if (!frame) return 'frame-not-found'
 
-        let el: Element | null = frame
-        for (let j = 0; j < 5; j++) {
-          el = el?.parentElement
-          if (!el) break
-          const style = getComputedStyle(el)
-          if (style.position === 'absolute' && style.transform !== 'none') {
-            return style.transform
+            let el: Element | null = frame
+            for (let j = 0; j < 5; j++) {
+              el = el?.parentElement || null
+              if (!el) break
+              const style = getComputedStyle(el)
+              if (style.position === 'absolute' && style.transform !== 'none') {
+                return style.transform
+              }
+            }
+            return 'parent-not-found'
           }
-        }
-        return 'parent-not-found'
-      })
-      transforms.push(transform)
-      await page.waitForTimeout(30) // ~30ms between samples
-    }
+
+          const sample = () => {
+            const elapsed = performance.now() - startedAt
+            samples.push({ t: elapsed, transform: readTransform() })
+
+            if (elapsed >= 650) {
+              resolve(samples)
+              return
+            }
+
+            requestAnimationFrame(sample)
+          }
+
+          requestAnimationFrame(sample)
+        })
+    )
+
+    const transforms = samples.map((sample) => sample.transform)
 
     // Filter out errors and get unique values
     const uniqueTransforms = [

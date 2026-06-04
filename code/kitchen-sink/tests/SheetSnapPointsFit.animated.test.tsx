@@ -396,30 +396,35 @@ test.describe('Sheet fit-mode through Dialog.Adapt (3pc filter-by-event style)',
     // spring settling that a strict bottom-edge pixel check would flake on.
     await expect(scrollview).toBeInViewport({ ratio: 0.95 })
 
-    const cover = await frame.evaluate((frameEl) => {
-      const frameBox = frameEl.getBoundingClientRect()
-      const covers = Array.from(document.querySelectorAll('[data-sheet-cover]')).map(
-        (el) => {
-          const box = el.getBoundingClientRect()
-          return {
-            backgroundColor: getComputedStyle(el).backgroundColor,
-            height: box.height,
-            topDelta: Math.abs(box.top - frameBox.bottom),
-          }
-        }
-      )
+    await expect
+      .poll(
+        async () =>
+          frame.evaluate((frameEl) => {
+            const frameBox = frameEl.getBoundingClientRect()
+            const covers = Array.from(
+              document.querySelectorAll('[data-sheet-cover]')
+            ).map((el) => {
+              const box = el.getBoundingClientRect()
+              return {
+                backgroundColor: getComputedStyle(el).backgroundColor,
+                height: box.height,
+                topDelta: Math.abs(box.top - frameBox.bottom),
+              }
+            })
 
-      return (
-        covers.find(
-          (candidate) =>
-            candidate.topDelta <= 2 &&
-            candidate.height >= window.innerHeight &&
-            candidate.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
-            candidate.backgroundColor !== 'transparent'
-        ) ?? null
+            return (
+              covers.find(
+                (candidate) =>
+                  candidate.topDelta <= 2 &&
+                  candidate.height >= window.innerHeight &&
+                  candidate.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
+                  candidate.backgroundColor !== 'transparent'
+              ) ?? null
+            )
+          }),
+        { timeout: 5000 }
       )
-    })
-    expect(cover).toBeTruthy()
+      .toBeTruthy()
 
     // content is taller than the cap, so it should scroll.
     const scrolled = await scrollview.evaluate((el) => {
