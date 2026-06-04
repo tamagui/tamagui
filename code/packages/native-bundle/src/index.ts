@@ -100,6 +100,11 @@ export async function bundleNative(options: BundleOptions): Promise<void> {
         /^react($|\/)/,
         /^react-native-reanimated($|\/)/,
         /^react-native-worklets($|\/)/,
+        // safe-area-context is a native runtime dep provided by the app; its
+        // source imports TurboModuleRegistry from react-native, which the
+        // react-native-web-lite alias doesn't export. externalize so the bundler
+        // doesn't try to resolve it (same as reanimated/worklets above).
+        /^react-native-safe-area-context($|\/)/,
         // Reanimated's internal code requires react-native/Libraries/Renderer/shims/ReactFabric
         // which doesn't exist in the web bundle. Externalize it so the bundler doesn't try to resolve it.
         /react-native\/Libraries\//,
