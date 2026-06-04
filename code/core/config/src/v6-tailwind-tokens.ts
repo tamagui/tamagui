@@ -8,14 +8,17 @@
 // full Tailwind v3 color palette, generated from tailwindcss/colors (gen-palette.ts)
 export { tailwindColors } from './v6-tailwind-palette'
 
-// Tailwind border-radius scale (rem → px at 16px root)
+// Tailwind v4 border-radius scale (rem → px at 16px root). note v4 shifted these vs v3
+// (sm 2→4px) and added xs/4xl.
 export const tailwindRadius = {
   '$none': 0,
-  '$sm': 2,
+  '$xs': 2,
+  '$sm': 4,
   '$md': 6,
   '$lg': 8,
   '$xl': 12,
   '$2xl': 16,
   '$3xl': 24,
+  '$4xl': 32,
   '$full': 9999,
 }
