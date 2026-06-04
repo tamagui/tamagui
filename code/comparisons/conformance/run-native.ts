@@ -145,7 +145,10 @@ async function sideBySide(oracle: Buffer, native: Buffer, diff: Buffer): Promise
 }
 
 async function main() {
-  const selected = grep ? cases.filter((c) => c.name.includes(grep)) : cases
+  // skip cases that opt out of native (e.g. text glyphs / blur shadows never pixel-match a browser)
+  const selected = (grep ? cases.filter((c) => c.name.includes(grep)) : cases).filter(
+    (c) => !c.skip?.includes('native')
+  )
   rmSync(OUT, { recursive: true, force: true })
   mkdirSync(OUT, { recursive: true })
   console.log(`native conformance on ${UDID} via ${METRO}`)

@@ -255,9 +255,9 @@ type CaseSummary = {
 
 async function main() {
   const args = parseArgs()
-  const selected = args.grep
-    ? cases.filter((c) => c.name.includes(args.grep!))
-    : cases
+  const selected = (args.grep ? cases.filter((c) => c.name.includes(args.grep!)) : cases)
+    // web measures both DOM (tailwind) and tamagui legs — skip cases opting out of either
+    .filter((c) => !c.skip?.includes('tamagui') && !c.skip?.includes('tailwind'))
   if (!selected.length) {
     console.error(`no cases match --grep ${args.grep}`)
     process.exit(1)
