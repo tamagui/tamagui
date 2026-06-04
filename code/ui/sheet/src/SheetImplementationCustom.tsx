@@ -716,6 +716,10 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
       return PanResponder.create({
         onMoveShouldSetPanResponder: onMoveShouldSet,
+        // once we own the drag, don't yield it to another responder
+        // (re-renders during the drag were cooperatively terminating it under
+        // load, killing the gesture mid-drag)
+        onPanResponderTerminationRequest: () => false,
         onPanResponderGrant: grant,
         onPanResponderMove: (_e, { dy }) => {
           const toFull = dy + startY
