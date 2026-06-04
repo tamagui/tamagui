@@ -1,4 +1,4 @@
-import { Paragraph, Separator, XStack, YStack } from 'tamagui'
+import { Paragraph, Separator, XStack, YStack, type GetThemeValueForKey } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH2, HomeH3 } from '~/features/site/home/HomeHeaders'
 import {
@@ -17,12 +17,15 @@ const colLabels: Record<(typeof cols)[number], string> = {
   uniwind: 'Uniwind',
 }
 
-const mark: Record<Support, { glyph: string; color: string }> = {
+const mark = {
   full: { glyph: '●', color: '$green10' },
   partial: { glyph: '◐', color: '$yellow10' },
   web: { glyph: 'web', color: '$blue10' },
   none: { glyph: '–', color: '$color7' },
-}
+} as const satisfies Record<
+  Support,
+  { glyph: string; color: GetThemeValueForKey<'color'> }
+>
 
 function Cell({ s }: { s: Support }) {
   const m = mark[s]

@@ -1,8 +1,12 @@
 import { ScrollView } from 'react-native'
+import type { Href } from 'one'
 import { Paragraph, Text, XStack, YStack } from 'tamagui'
 import { ButtonLink } from '~/components/Link'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
+
+const tailwindIntroductionHref = '/tailwind/intro/introduction' as Href
+const tailwindStylesHref = '/tailwind/intro/styles' as Href
 
 // a single restrained code line: <View className="..." />, lightly two-toned.
 // scrolls horizontally on narrow screens instead of clipping the long className.
@@ -20,7 +24,7 @@ function HeroCode() {
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <Text
           fontFamily="$mono"
-          size="$4"
+          fontSize="$4"
           whiteSpace="pre"
           lineHeight="$6"
           px="$5"
@@ -86,19 +90,14 @@ export function TailwindHero() {
 
         <XStack gap="$3" items="center" flexWrap="wrap" justify="center" pt="$2">
           <ButtonLink
-            href="/tailwind/intro/introduction"
+            href={tailwindIntroductionHref}
             theme="accent"
             size="$5"
             fontFamily="$mono"
           >
             Read the docs
           </ButtonLink>
-          <ButtonLink
-            href="/tailwind/intro/styles"
-            chromeless
-            size="$5"
-            fontFamily="$mono"
-          >
+          <ButtonLink href={tailwindStylesHref} chromeless size="$5" fontFamily="$mono">
             How it works
           </ButtonLink>
         </XStack>

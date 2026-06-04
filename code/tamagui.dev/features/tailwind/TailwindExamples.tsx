@@ -8,7 +8,7 @@ function ClassLine({ line }: { line: string }) {
   return (
     <Text
       fontFamily="$mono"
-      size="$3"
+      fontSize="$3"
       whiteSpace="pre-wrap"
       color="$color11"
       lineHeight="$5"
@@ -70,13 +70,25 @@ export function TailwindExamples() {
         </Paragraph>
         {classToProp.map((pair) => (
           <XStack key={pair.cls} items="center" gap="$3" flexWrap="wrap">
-            <Text fontFamily="$mono" size="$2" color="$green10" flex={1} minWidth={220}>
+            <Text
+              fontFamily="$mono"
+              fontSize="$2"
+              color="$green10"
+              flex={1}
+              minWidth={220}
+            >
               {pair.cls}
             </Text>
-            <Text fontFamily="$mono" size="$2" color="$color8">
+            <Text fontFamily="$mono" fontSize="$2" color="$color8">
               ≡
             </Text>
-            <Text fontFamily="$mono" size="$2" color="$blue10" flex={1} minWidth={200}>
+            <Text
+              fontFamily="$mono"
+              fontSize="$2"
+              color="$blue10"
+              flex={1}
+              minWidth={200}
+            >
               {pair.prop}
             </Text>
           </XStack>
