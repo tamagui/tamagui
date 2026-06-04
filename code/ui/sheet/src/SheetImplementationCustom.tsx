@@ -10,7 +10,6 @@ import {
   useEvent,
   useThemeName,
 } from '@tamagui/core'
-import { useSafeAreaInsets } from '@tamagui/native'
 import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import React, { useState } from 'react'
 import type {
@@ -41,6 +40,7 @@ import { SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
 import { useGestureHandlerPan } from './useGestureHandlerPan'
 import { useKeyboardControllerSheet } from './useKeyboardControllerSheet'
+import { SafeAreaInsetsContext, useSafeAreaInsets } from './useSafeAreaInsets'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
@@ -53,16 +53,6 @@ const hiddenSize = 10_000.1
 // and collapses to 0 height when closed so it has no hit area.
 const rnghRootStyleOpen = { width: '100%', height: '100%' } as const
 const rnghRootStyleClosed = { width: '100%', height: 0 } as const
-
-// the top inset the keyboard-shifted sheet must not rise above. NATIVE: the live
-// safe-area top (notch/status bar), passed in from useSafeAreaInsets — NOT
-// getSafeArea().getInsets(), which returns cached/initial metrics and silently
-// reports 0 when @tamagui/native is duplicated (the instance setup-safe-area
-// enabled differs from the one read here), letting the sheet slide under the
-// notch. WEB: the visual-viewport top offset (no native inset applies).
-function getKeyboardSafeAreaTopInset(nativeSafeAreaTop: number): number {
-  return isWeb ? getWebVisualViewportOffsetTop() : nativeSafeAreaTop
-}
 
 let sheetHiddenStyleSheet: HTMLStyleElement | null = null
 
@@ -85,6 +75,16 @@ function getStableViewportHeight(): number {
 export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
   function SheetImplementationCustom(props, forwardedRef) {
     const parentSheet = React.useContext(ParentSheetContext)
+
+    // live safe-area insets (notch / status bar). read here in the component
+    // body — which renders INSIDE the app's SafeAreaProvider — so it is correct
+    // even though a modal sheet's CONTENT is teleported out through the portal.
+    // the keyboard-avoidance clamp below uses the top inset so a keyboard-shifted
+    // sheet tops out at the notch instead of sliding under it. web has no native
+    // safe-area context (CSS env() handles it) and uses the visual-viewport
+    // offset instead.
+    const safeAreaInsets = useSafeAreaInsets()
+    const safeAreaTopInset = safeAreaInsets?.top ?? 0
 
     const {
       transition,
@@ -124,12 +124,6 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
     const sheetRef = React.useRef<View>(undefined as unknown as View)
     const ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef as any)
-
-    // live safe-area insets (reactive). used to cap the keyboard shift so the
-    // sheet never rises under the notch/status bar. reads the single
-    // react-native-safe-area-context instance, so it stays correct even if
-    // @tamagui/native is duplicated in the consumer's install.
-    const safeAreaInsets = useSafeAreaInsets()
 
     // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
     const { animationDriver } = useConfiguration()
@@ -280,7 +274,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             isKeyboardVisible,
             keyboardHeight,
             shouldTranslate: true,
-            safeAreaTop: getKeyboardSafeAreaTopInset(safeAreaInsets.top),
+            safeAreaTop: isWeb ? getWebVisualViewportOffsetTop() : safeAreaTopInset,
           })
         )
       }
@@ -292,7 +286,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       keyboardHeight,
       effScreenSize,
       isDragging,
-      safeAreaInsets.top,
+      safeAreaTopInset,
     ])
 
     // bottom spacer for the part of the sheet hidden by the keyboard after the
@@ -607,6 +601,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           dismissOnSnapToBottom,
           snapPointsMode,
           isKeyboardVisible,
+          isWeb,
         })
 
         // have to call both because state may not change but need to snap back
@@ -996,8 +991,13 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       const adaptContext = useAdaptContext()
       contents = (
         <ProvideAdaptContext {...adaptContext}>
-          {/* @ts-ignore */}
-          {contents}
+          {/* re-propagate safe-area insets across the teleport: the sheet content
+              renders at the portal host, OUTSIDE the app's SafeAreaProvider, so
+              without this useSafeAreaInsets() inside the sheet reads 0. */}
+          <SafeAreaInsetsContext.Provider value={safeAreaInsets}>
+            {/* @ts-ignore */}
+            {contents}
+          </SafeAreaInsetsContext.Provider>
         </ProvideAdaptContext>
       )
     }

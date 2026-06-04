@@ -29,7 +29,6 @@ export { getWorklets } from "./workletsState";
 export type { WorkletsAccessor } from "./workletsState";
 export { getSafeArea } from "./safeAreaState";
 export type { SafeAreaAccessor } from "./safeAreaState";
-export { useSafeAreaInsets } from "./useSafeAreaInsets";
 export { getLinearGradient } from "./linearGradientState";
 export type { LinearGradientAccessor } from "./linearGradientState";
 export { isKeyboardControllerEnabled, getKeyboardControllerState, setKeyboardControllerState } from "./keyboardControllerState";
