@@ -50,8 +50,11 @@ const METRO = arg('--metro') ?? 'exp://127.0.0.1:8099'
 const grep = arg('--grep')
 const SHOT = join(HERE, '.native-shot.png')
 
+let linkCounter = 0
 function deepLink(name: string) {
-  execFileSync('xcrun', ['simctl', 'openurl', UDID, `${METRO}/--/?case=${name}`])
+  // unique counter param forces Expo Go to re-deliver the link (same-URL links are ignored),
+  // which (with the App's url-keyed remount) re-fires onLayout → a fresh rect POST.
+  execFileSync('xcrun', ['simctl', 'openurl', UDID, `${METRO}/--/?case=${name}&n=${linkCounter++}`])
 }
 function screenshot(): Buffer {
   execFileSync('xcrun', ['simctl', 'io', UDID, 'screenshot', SHOT])
@@ -59,52 +62,31 @@ function screenshot(): Buffer {
 }
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
-// paint the Expo Go dev-menu gear (top-right) white, then crop to the non-white content bbox
-function maskGearAndCrop(buf: Buffer): { buf: Buffer; visible: boolean } {
-  const png = PNG.sync.read(buf)
-  const { width: W, height: H, data } = png
-  // mask OS chrome: the top strip (status bar + dynamic island + Expo Go dev gear) and the
-  // bottom strip (home indicator). the app renders case content between these (stage
-  // paddingTop:220), so nothing real is lost.
-  const topMask = Math.floor(H * 0.23)
-  const bottomMask = Math.floor(H * 0.955)
-  for (let y = 0; y < H; y++) {
-    if (y >= topMask && y < bottomMask) continue
-    for (let x = 0; x < W; x++) {
-      const i = (W * y + x) << 2
-      data[i] = data[i + 1] = data[i + 2] = 255
+// the native #cfm-root self-measures (measureInWindow) and POSTs its on-screen rect here on each
+// render, so we crop the screenshot to the EXACT element (matching the web #cfm-root crop) instead
+// of guessing with luma + chrome masks.
+type Rect = { x: number; y: number; width: number; height: number; scale: number }
+let lastRect: Rect | null = null
+Bun.serve({
+  port: 8090,
+  async fetch(req) {
+    if (req.method === 'POST') {
+      try {
+        lastRect = (await req.json()) as Rect
+      } catch {}
     }
-  }
-  // low tolerance so very light tailwind backgrounds (slate-100 #f1f5f9, etc.) are still
-  // detected as content. native screenshots are lossless PNG so white is exactly 255 (no noise).
-  const tol = 9
-  let minX = W, minY = H, maxX = -1, maxY = -1
-  for (let y = 0; y < H; y++) {
-    for (let x = 0; x < W; x++) {
-      const i = (W * y + x) << 2
-      if (255 - data[i] > tol || 255 - data[i + 1] > tol || 255 - data[i + 2] > tol) {
-        if (x < minX) minX = x
-        if (x > maxX) maxX = x
-        if (y < minY) minY = y
-        if (y > maxY) maxY = y
-      }
-    }
-  }
-  if (maxX < 0) return { buf, visible: false }
-  const cw = maxX - minX + 1
-  const ch = maxY - minY + 1
-  const out = new PNG({ width: cw, height: ch })
-  for (let y = 0; y < ch; y++) {
-    for (let x = 0; x < cw; x++) {
-      const si = (W * (minY + y) + (minX + x)) << 2
-      const di = (cw * y + x) << 2
-      out.data[di] = data[si]
-      out.data[di + 1] = data[si + 1]
-      out.data[di + 2] = data[si + 2]
-      out.data[di + 3] = 255
-    }
-  }
-  return { buf: PNG.sync.write(out), visible: true }
+    return new Response('ok', { headers: { 'access-control-allow-origin': '*' } })
+  },
+})
+
+// crop the full-frame screenshot to the element rect (points × device scale → physical px)
+async function rectCrop(shot: Buffer, r: Rect): Promise<Buffer> {
+  const png = PNG.sync.read(shot)
+  const left = Math.max(0, Math.round(r.x * r.scale))
+  const top = Math.max(0, Math.round(r.y * r.scale))
+  const width = Math.max(1, Math.min(png.width - left, Math.round(r.width * r.scale)))
+  const height = Math.max(1, Math.min(png.height - top, Math.round(r.height * r.scale)))
+  return sharp(shot).extract({ left, top, width, height }).png().toBuffer()
 }
 
 async function diffResized(oracle: Buffer, native: Buffer) {
@@ -154,8 +136,9 @@ async function main() {
   console.log(`native conformance on ${UDID} via ${METRO}`)
 
   // warm up: load the app + first case (bundle may already be built)
+  lastRect = null
   deepLink(selected[0].name)
-  await sleep(4000)
+  for (let i = 0; i < 60 && !lastRect; i++) await sleep(250)
 
   const results: { name: string; diffPercent: number; pass: boolean; visible: boolean }[] = []
   for (const c of selected) {
@@ -164,23 +147,26 @@ async function main() {
       console.log(`● ${c.name}\n  SKIP  no web oracle (run the web suite first)`)
       continue
     }
+    // remount the case and wait for the app to report #cfm-root's exact rect
+    lastRect = null
     deepLink(c.name)
-    await sleep(2200)
-    const { buf: cropped, visible } = maskGearAndCrop(screenshot())
+    for (let i = 0; i < 40 && !lastRect; i++) await sleep(150)
     const dir = join(OUT, c.name)
     mkdirSync(dir, { recursive: true })
     const oracle = readFileSync(oraclePath)
 
-    if (!visible) {
-      results.push({ name: c.name, diffPercent: 100, pass: false, visible })
-      console.log(`● ${c.name}\n  FAIL  native rendered nothing visible`)
+    if (!lastRect) {
+      results.push({ name: c.name, diffPercent: 100, pass: false, visible: false })
+      console.log(`● ${c.name}\n  FAIL  no rect reported (render failed?)`)
       continue
     }
+    await sleep(350) // small settle so paint matches the measured layout
+    const cropped = await rectCrop(screenshot(), lastRect)
     const { diffPercent, diffBuf, nativeResized } = await diffResized(oracle, cropped)
     writeFileSync(join(dir, 'native.png'), cropped)
     writeFileSync(join(dir, 'side-by-side.png'), await sideBySide(oracle, nativeResized, diffBuf))
     const pass = diffPercent <= MAX_DIFF_PERCENT
-    results.push({ name: c.name, diffPercent: +diffPercent.toFixed(3), pass, visible })
+    results.push({ name: c.name, diffPercent: +diffPercent.toFixed(3), pass, visible: true })
     console.log(`● ${c.name}\n  ${pass ? 'PASS' : 'FAIL'}  native-vs-tailwind diff ${diffPercent.toFixed(2)}%`)
   }
 

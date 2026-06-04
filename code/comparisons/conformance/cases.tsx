@@ -48,17 +48,17 @@ export const cases: ConformanceCase[] = [
   { name: 'padding-all', render: ({ Box }) => (
       <Box id="cfm-root" className="w-40 bg-sky-400 p-4"><Box className="w-full h-8 bg-white" /></Box>) },
   { name: 'padding-xy', render: ({ Box }) => (
-      <Box id="cfm-root" className="bg-violet-500 px-6 py-2"><Box className="w-12 h-6 bg-white" /></Box>) },
+      <Box id="cfm-root" className="w-32 bg-violet-500 px-6 py-2"><Box className="w-12 h-6 bg-white" /></Box>) },
   { name: 'padding-t', render: ({ Box }) => (
       <Box id="cfm-root" className="w-24 bg-emerald-500 pt-8"><Box className="w-full h-6 bg-white" /></Box>) },
 
   // ── gap (flex) ────────────────────────────────────────────────────────────
   { name: 'gap-row', render: ({ Box }) => (
-      <Box id="cfm-root" className="flex flex-row gap-2 p-3 bg-slate-100">
+      <Box id="cfm-root" className="w-48 flex flex-row gap-2 p-3 bg-slate-100">
         <Box className="w-10 h-10 bg-red-500" /><Box className="w-10 h-10 bg-green-500" /><Box className="w-10 h-10 bg-blue-500" />
       </Box>) },
   { name: 'gap-col', render: ({ Box }) => (
-      <Box id="cfm-root" className="flex flex-col gap-3 p-3 bg-slate-100">
+      <Box id="cfm-root" className="w-24 flex flex-col gap-3 p-3 bg-slate-100">
         <Box className="w-10 h-6 bg-red-500" /><Box className="w-10 h-6 bg-green-500" />
       </Box>) },
 
@@ -159,9 +159,9 @@ export const cases: ConformanceCase[] = [
 
   // ── single-side padding (colored box, dark inner for a clean diff) ──────────────
   { name: 'pad-left', render: ({ Box }) => (
-      <Box id="cfm-root" className="bg-sky-500 pl-8"><Box className="w-8 h-12 bg-slate-900" /></Box>) },
+      <Box id="cfm-root" className="w-32 bg-sky-500 pl-8"><Box className="w-8 h-12 bg-slate-900" /></Box>) },
   { name: 'pad-top', render: ({ Box }) => (
-      <Box id="cfm-root" className="bg-emerald-500 pt-8"><Box className="w-12 h-8 bg-slate-900" /></Box>) },
+      <Box id="cfm-root" className="w-24 bg-emerald-500 pt-8"><Box className="w-12 h-8 bg-slate-900" /></Box>) },
 
   // ── flex alignment variants ─────────────────────────────────────────────────────
   { name: 'items-end', render: ({ Box }) => (
@@ -211,13 +211,13 @@ export const cases: ConformanceCase[] = [
   { name: 'min-w', render: box('w-4 min-w-24 h-8 bg-lime-500') },
 
   // ── spacing breadth (padding visible inside; margin via wrapper) ─────────────
-  { name: 'p-1', render: ({ Box }) => (<Box id="cfm-root" className="bg-sky-500 p-1"><Box className="w-12 h-12 bg-slate-900" /></Box>) },
-  { name: 'p-2', render: ({ Box }) => (<Box id="cfm-root" className="bg-sky-500 p-2"><Box className="w-12 h-12 bg-slate-900" /></Box>) },
-  { name: 'p-8', render: ({ Box }) => (<Box id="cfm-root" className="bg-sky-500 p-8"><Box className="w-8 h-8 bg-slate-900" /></Box>) },
-  { name: 'px-only', render: ({ Box }) => (<Box id="cfm-root" className="bg-emerald-500 px-8"><Box className="w-8 h-12 bg-slate-900" /></Box>) },
-  { name: 'py-only', render: ({ Box }) => (<Box id="cfm-root" className="bg-emerald-500 py-6"><Box className="w-12 h-8 bg-slate-900" /></Box>) },
-  { name: 'pr-only', render: ({ Box }) => (<Box id="cfm-root" className="bg-violet-500 pr-10"><Box className="w-8 h-10 bg-slate-900" /></Box>) },
-  { name: 'pb-only', render: ({ Box }) => (<Box id="cfm-root" className="bg-violet-500 pb-8"><Box className="w-10 h-8 bg-slate-900" /></Box>) },
+  { name: 'p-1', render: ({ Box }) => (<Box id="cfm-root" className="w-32 bg-sky-500 p-1"><Box className="w-12 h-12 bg-slate-900" /></Box>) },
+  { name: 'p-2', render: ({ Box }) => (<Box id="cfm-root" className="w-32 bg-sky-500 p-2"><Box className="w-12 h-12 bg-slate-900" /></Box>) },
+  { name: 'p-8', render: ({ Box }) => (<Box id="cfm-root" className="w-32 bg-sky-500 p-8"><Box className="w-8 h-8 bg-slate-900" /></Box>) },
+  { name: 'px-only', render: ({ Box }) => (<Box id="cfm-root" className="w-32 bg-emerald-500 px-8"><Box className="w-8 h-12 bg-slate-900" /></Box>) },
+  { name: 'py-only', render: ({ Box }) => (<Box id="cfm-root" className="w-24 bg-emerald-500 py-6"><Box className="w-12 h-8 bg-slate-900" /></Box>) },
+  { name: 'pr-only', render: ({ Box }) => (<Box id="cfm-root" className="w-32 bg-violet-500 pr-10"><Box className="w-8 h-10 bg-slate-900" /></Box>) },
+  { name: 'pb-only', render: ({ Box }) => (<Box id="cfm-root" className="w-24 bg-violet-500 pb-8"><Box className="w-10 h-8 bg-slate-900" /></Box>) },
   { name: 'margin-inner', render: ({ Box }) => (
       <Box id="cfm-root" className="w-32 h-16 bg-slate-200"><Box className="m-4 w-8 h-8 bg-blue-600" /></Box>) },
   { name: 'margin-top-inner', render: ({ Box }) => (
@@ -263,7 +263,7 @@ export const cases: ConformanceCase[] = [
   { name: 'self-stretch', render: ({ Box }) => (
       <Box id="cfm-root" className="flex flex-row items-start w-32 h-16 bg-slate-200"><Box className="w-8 bg-violet-600 self-stretch" /></Box>) },
   { name: 'flex-col-3', render: ({ Box }) => (
-      <Box id="cfm-root" className="flex flex-col gap-2 p-2 bg-slate-200"><Box className="w-10 h-5 bg-red-500" /><Box className="w-10 h-5 bg-green-500" /><Box className="w-10 h-5 bg-blue-500" /></Box>) },
+      <Box id="cfm-root" className="w-24 flex flex-col gap-2 p-2 bg-slate-200"><Box className="w-10 h-5 bg-red-500" /><Box className="w-10 h-5 bg-green-500" /><Box className="w-10 h-5 bg-blue-500" /></Box>) },
   { name: 'flex-wrap-many', render: ({ Box }) => (
       <Box id="cfm-root" className="flex flex-row flex-wrap gap-1 w-24 bg-slate-200">{[0,1,2,3,4,5].map((i) => <Box key={i} className="w-10 h-10 bg-indigo-500" />)}</Box>) },
   { name: 'grow-shrink', render: ({ Box }) => (

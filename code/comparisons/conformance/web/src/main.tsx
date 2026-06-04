@@ -1,9 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { cases } from '../../cases'
-// real Tailwind v4 CSS (oracle). loaded globally — harmless for the tamagui leg since tamagui
-// converts+removes the classes, so these rules never match tamagui's DOM.
-import './tailwind.css'
+// NOTE: real Tailwind v4 CSS (the oracle) is imported ONLY in the tailwind branch below, never
+// globally. if it were global, the tamagui leg's UNconverted classes (e.g. bare `grow`, `inset-x-0`)
+// would still be styled by tailwind's stylesheet → real conversion gaps would show as false passes.
+// native has no CSS fallback, so scoping the CSS to the oracle keeps web honest and matching native.
 
 const params = new URLSearchParams(location.search)
 const caseName = params.get('case')
@@ -49,13 +50,16 @@ function fail(msg: string) {
 if (!found) {
   fail(`unknown case: ${String(caseName)}`)
 } else if (target === 'tailwind') {
-  // real Tailwind v4 (oracle): plain DOM elements; the v4 CSS is imported at module top.
-  createRoot(rootEl).render(
-    <StrictMode>{found.render({ Box: 'div', Text: 'span' })}</StrictMode>
-  )
-  signalReady()
+  // real Tailwind v4 (oracle): plain DOM elements + the v4 CSS, imported HERE only (see top note).
+  import('./tailwind.css').then(() => {
+    createRoot(rootEl).render(
+      <StrictMode>{found.render({ Box: 'div', Text: 'span' })}</StrictMode>
+    )
+    signalReady()
+  })
 } else {
-  // tamagui tailwind mode: same className through tamagui's runtime conversion.
+  // tamagui tailwind mode: same className through tamagui's runtime conversion, with NO tailwind
+  // CSS on the page — so only what tamagui actually converts can style the element.
   Promise.all([import('tamagui'), import('./tamagui.config')]).then(
     ([{ TamaguiProvider, View, Text }, { default: config }]) => {
       createRoot(rootEl).render(
