@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/form",
-  "version": "2.1.0-1780520076274",
+  "version": "2.1.0-1780536257458",
   "source": "src/index.ts",
   "files": [
     "src",
