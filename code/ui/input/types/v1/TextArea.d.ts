@@ -15,7 +15,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
     render?: import("@tamagui/web").TamaguiComponentPropsBase["render"];
     multiline?: boolean;
     numberOfLines?: number;
-}, import("@tamagui/web").StackStyleBase & {
+}, import("@tamagui/web").StackStyleBase & import("@tamagui/web").TextStylePropsBase & {
     readonly placeholderTextColor?: import("@tamagui/web").ColorTokens | undefined;
     readonly selectionColor?: import("@tamagui/web").ColorTokens | undefined;
     readonly cursorColor?: import("@tamagui/web").ColorTokens | undefined;

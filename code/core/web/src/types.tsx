@@ -2693,7 +2693,14 @@ export type GetNonStyledProps<A extends StylableComponent> = A extends {
 export type GetBaseStyles<A, B> = A extends {
   __tama: [any, any, any, infer C, any, any]
 }
-  ? C
+  ? // when extending an existing tamagui component (e.g. styled(View, ...)), it
+    // contributes its base styles. but isText/isInput in the config still means
+    // "this accepts text styles" (it drives runtime validStyles too), so merge
+    // text style props in, otherwise text-only props and their shorthands (e.g.
+    // the `text` shorthand for `textAlign`) get dropped from the type.
+    B extends { isText: true } | { isInput: true }
+    ? C & TextStylePropsBase
+    : C
   : B extends { isText: true }
     ? TextStylePropsBase
     : B extends { isInput: true }

@@ -118,6 +118,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./InputAutoFocusStyledCase').InputAutoFocusStyledCase,
   ThemedListItem: () => require('./ListItem').ThemedListItem,
   NewInputBasic: () => require('./NewInputBasic').NewInputBasic,
+  InputTextShorthand: () => require('./InputTextShorthand').InputTextShorthand,
   OpacityModifierCase: () => require('./OpacityModifierCase').OpacityModifierCase,
   OnLayoutCase: () => require('./OnLayoutCase').OnLayoutCase,
   OnLayoutScaleCase: () => require('./OnLayoutScaleCase').OnLayoutScaleCase,

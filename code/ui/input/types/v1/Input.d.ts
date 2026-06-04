@@ -4,7 +4,7 @@ import React from 'react';
  * @summary An input is a text field that allows users to enter text.
  * @see — Docs https://tamagui.dev/ui/inputs#input
  */
-export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
+export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & import("@tamagui/core").TextStylePropsBase & {
     readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     readonly selectionColor?: import("@tamagui/core").ColorTokens | undefined;
     readonly cursorColor?: import("@tamagui/core").ColorTokens | undefined;
@@ -38,7 +38,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
     render?: import("@tamagui/core").TamaguiComponentPropsBase["render"];
     multiline?: boolean;
     numberOfLines?: number;
-}, import("@tamagui/core").StackStyleBase & {
+}, import("@tamagui/core").StackStyleBase & import("@tamagui/core").TextStylePropsBase & {
     readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     readonly selectionColor?: import("@tamagui/core").ColorTokens | undefined;
     readonly cursorColor?: import("@tamagui/core").ColorTokens | undefined;

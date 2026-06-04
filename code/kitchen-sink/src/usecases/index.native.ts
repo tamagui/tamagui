@@ -69,6 +69,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   ImageTokenStyle: () => require('./ImageTokenStyle').ImageTokenStyle,
   ThemedListItem: () => require('./ListItem').ThemedListItem,
   NewInputBasic: () => require('./NewInputBasic').NewInputBasic,
+  InputTextShorthand: () => require('./InputTextShorthand').InputTextShorthand,
   NewInputEvents: () => require('./NewInputEvents').NewInputEvents,
   OverlayStyled: () => require('./OverlayStyled').OverlayStyled,
   PlaceholderTextColor: () => require('./PlaceholderTextColor').PlaceholderTextColor,

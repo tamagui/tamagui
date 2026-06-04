@@ -4,7 +4,7 @@ import React from 'react';
  * A web-aligned input component.
  * @see — Docs https://tamagui.dev/ui/inputs#input
  */
-export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
+export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & import("@tamagui/core").TextStylePropsBase & {
     readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     readonly selectionColor?: import("@tamagui/core").ColorTokens | undefined;
     readonly cursorColor?: import("@tamagui/core").ColorTokens | undefined;
@@ -84,7 +84,7 @@ export declare const Input: import("@tamagui/core").TamaguiComponent<Omit<import
         };
     }) => void;
     textContentType?: import("./types").InputTextContentType;
-}, import("@tamagui/core").StackStyleBase & {
+}, import("@tamagui/core").StackStyleBase & import("@tamagui/core").TextStylePropsBase & {
     readonly placeholderTextColor?: import("@tamagui/core").ColorTokens | undefined;
     readonly selectionColor?: import("@tamagui/core").ColorTokens | undefined;
     readonly cursorColor?: import("@tamagui/core").ColorTokens | undefined;

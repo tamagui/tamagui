@@ -1539,7 +1539,11 @@ export type GetNonStyledProps<A extends StylableComponent> = A extends {
 } ? B : TamaguiComponentPropsBaseBase & GetProps<A>;
 export type GetBaseStyles<A, B> = A extends {
     __tama: [any, any, any, infer C, any, any];
-} ? C : B extends {
+} ? B extends {
+    isText: true;
+} | {
+    isInput: true;
+} ? C & TextStylePropsBase : C : B extends {
     isText: true;
 } ? TextStylePropsBase : B extends {
     isInput: true;
