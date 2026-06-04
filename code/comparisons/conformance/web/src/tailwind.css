@@ -1,3 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+/* the shared case registry lives outside this app's root — tell v4 to scan it for classes */
+@source '../../cases.tsx';

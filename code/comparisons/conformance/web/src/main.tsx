@@ -1,6 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { cases } from '../../cases'
+// real Tailwind v4 CSS (oracle). loaded globally — harmless for the tamagui leg since tamagui
+// converts+removes the classes, so these rules never match tamagui's DOM.
+import './tailwind.css'
 
 const params = new URLSearchParams(location.search)
 const caseName = params.get('case')
@@ -23,12 +26,19 @@ declare global {
 }
 
 function signalReady() {
-  // two frames so layout + any injected CSS settle before the harness screenshots
-  requestAnimationFrame(() =>
-    requestAnimationFrame(() => {
+  // wait until #cfm-root is actually laid out (Tailwind v4's CSS is injected async, so the
+  // box can be unsized for a few frames). fall back after ~0.7s for genuinely-empty cases
+  // (hidden, unconverted) so the harness still captures (and flags) them.
+  let tries = 0
+  const check = () => {
+    const r = document.getElementById('cfm-root')?.getBoundingClientRect()
+    if ((r && r.width > 0 && r.height > 0) || tries++ > 42) {
       window.__conformanceReady = true
-    })
-  )
+    } else {
+      requestAnimationFrame(check)
+    }
+  }
+  requestAnimationFrame(() => requestAnimationFrame(check))
 }
 
 function fail(msg: string) {
@@ -39,14 +49,11 @@ function fail(msg: string) {
 if (!found) {
   fail(`unknown case: ${String(caseName)}`)
 } else if (target === 'tailwind') {
-  // real Tailwind (oracle): plain DOM + local Tailwind v3 (postcss JIT, scans cases.tsx).
-  // dynamic import so preflight/utilities load ONLY for this leg, never the tamagui leg.
-  import('./tailwind.css').then(() => {
-    createRoot(rootEl).render(
-      <StrictMode>{found.render({ Box: 'div', Text: 'span' })}</StrictMode>
-    )
-    signalReady()
-  })
+  // real Tailwind v4 (oracle): plain DOM elements; the v4 CSS is imported at module top.
+  createRoot(rootEl).render(
+    <StrictMode>{found.render({ Box: 'div', Text: 'span' })}</StrictMode>
+  )
+  signalReady()
 } else {
   // tamagui tailwind mode: same className through tamagui's runtime conversion.
   Promise.all([import('tamagui'), import('./tamagui.config')]).then(

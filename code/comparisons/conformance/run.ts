@@ -189,28 +189,53 @@ function blankTile(): Buffer {
   return PNG.sync.write(p)
 }
 
-async function capture(page: import('playwright').Page, url: string): Promise<Capture> {
-  await page.goto(url, { waitUntil: 'load' })
-  await page.waitForFunction(() => (window as any).__conformanceReady === true, {
-    timeout: 10_000,
+// read #cfm-root's rect via getBoundingClientRect (robust — playwright's locator.boundingBox()
+// can spuriously return null for some laid-out elements).
+function rectOf(page: import('playwright').Page) {
+  return page.evaluate(() => {
+    const el = document.getElementById('cfm-root')
+    if (!el) return null
+    const r = el.getBoundingClientRect()
+    return { x: r.x, y: r.y, width: r.width, height: r.height }
   })
-  const root = page.locator('#cfm-root')
-  await root.waitFor({ state: 'attached', timeout: 10_000 })
-  // a broken tamagui conversion can produce a zero-size / hidden node — that IS the failure
-  // signal, so capture a blank tile instead of timing out on a "visible" wait.
-  const box = await root.boundingBox()
-  if (!box || box.width < 1 || box.height < 1) {
+}
+
+async function captureOnce(page: import('playwright').Page, url: string): Promise<Capture> {
+  // networkidle (not just load) so Tailwind v4's async-generated CSS module is fetched+applied
+  await page.goto(url, { waitUntil: 'networkidle' })
+  await page.locator('#cfm-root').waitFor({ state: 'attached', timeout: 10_000 })
+  await page.waitForTimeout(300)
+  // poll for layout (generous): on a cold vite the first request compiles the huge tamagui graph
+  // + generates Tailwind v4 CSS, which can take many seconds. subsequent cases resolve instantly.
+  let rect = await rectOf(page)
+  for (let i = 0; i < 80 && (!rect || rect.width < 1 || rect.height < 1); i++) {
+    await page.waitForTimeout(500)
+    rect = await rectOf(page)
+  }
+  if (!rect || rect.width < 1 || rect.height < 1) {
     return { buf: blankTile(), visible: false }
   }
-  // frame-stability: screenshot until two consecutive captures are byte-identical (settles JIT / fonts)
+  // screenshot the element region via clip (bypasses locator visibility heuristics)
+  const clip = { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
   let prev: Buffer | null = null
   for (let i = 0; i < 12; i++) {
-    const shot = await root.screenshot({ type: 'png' })
+    const shot = await page.screenshot({ clip, type: 'png' })
     if (prev && Buffer.compare(prev, shot) === 0) return { buf: shot, visible: true }
     prev = shot
     await page.waitForTimeout(100)
   }
   return { buf: prev!, visible: true }
+}
+
+async function capture(page: import('playwright').Page, url: string): Promise<Capture> {
+  let res = await captureOnce(page, url)
+  // a blank result can be a genuine failure (hidden/unconverted) OR a cold-vite flake on the
+  // very first measured case — reload once to disambiguate.
+  if (!res.visible) {
+    await page.waitForTimeout(800)
+    res = await captureOnce(page, url)
+  }
+  return res
 }
 
 type CaseSummary = {
@@ -258,6 +283,21 @@ async function main() {
     await waitForServer(base + '/')
     browser = await chromium.launch()
 
+    // warm up: a cold vite compiles tamagui + generates Tailwind v4 CSS lazily. prime BOTH legs
+    // and wait until the box is actually laid out, so the measured loop starts fully warm.
+    for (const target of ['tamagui', 'tailwind']) {
+      const warm = await browser.newPage()
+      await warm
+        .goto(`${base}/?case=${selected[0].name}&target=${target}`, { waitUntil: 'networkidle' })
+        .catch(() => {})
+      for (let i = 0; i < 120; i++) {
+        const b = await rectOf(warm).catch(() => null)
+        if (b && b.width > 0 && b.height > 0) break
+        await warm.waitForTimeout(500)
+      }
+      await warm.close()
+    }
+
     for (const c of selected) {
       const dir = join(REPORT_DIR, c.name)
       mkdirSync(dir, { recursive: true })
@@ -271,12 +311,12 @@ async function main() {
       try {
         tailwind = await withTimeout(
           capture(page, `${base}/?case=${c.name}&target=tailwind`),
-          25_000,
+          70_000,
           `tailwind ${c.name}`
         )
         tamagui = await withTimeout(
           capture(page, `${base}/?case=${c.name}&target=tamagui`),
-          25_000,
+          70_000,
           `tamagui ${c.name}`
         )
       } catch (e) {
