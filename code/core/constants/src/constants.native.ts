@@ -10,7 +10,8 @@ export const isWindowDefined: boolean = false
 export const useIsomorphicLayoutEffect: typeof useEffect = useLayoutEffect
 export const isChrome: boolean = false
 export const isWebTouchable: boolean = false
-export const isTouchable: boolean = true
+export const isNativeDesktop: boolean = Platform?.OS === 'macos' || Platform?.OS === 'windows'
+export const isTouchable: boolean = !isNativeDesktop
 // optional chain required: babel extractor loads native.cjs in node where Platform is undefined
 // On Android TV: Platform.OS === 'android' per react-native-tvos
 export const isAndroid: boolean =
@@ -27,14 +28,14 @@ export const isTV: boolean =
   process.env.TEST_NATIVE_PLATFORM === 'androidtv' ||
   process.env.TEST_NATIVE_PLATFORM === 'tvos'
 
-const platforms = { ios: 'ios', android: 'android' } as const
+const platforms = { ios: 'ios', android: 'android', macos: 'macos', windows: 'windows' } as const
 /**
  * Reflects Platform.OS. TV platforms are intentionally NOT separate values:
  * - Android TV has Platform.OS === 'android' (react-native-tvos behavior)
  * - tvOS has Platform.OS === 'ios' (react-native-tvos behavior)
  * Use `isTV` combined with `isAndroid`/`isIos` to detect specific TV platforms.
  */
-export const currentPlatform: 'web' | 'ios' | 'native' | 'android' =
+export const currentPlatform: 'web' | 'ios' | 'native' | 'android' | 'macos' | 'windows' =
   (Platform?.OS ? platforms[Platform.OS] : undefined) || 'native'
 
 // In Metro source mode, TAMAGUI_TARGET may not be set by the build tool.

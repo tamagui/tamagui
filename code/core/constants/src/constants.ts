@@ -22,6 +22,7 @@ export const isChrome: boolean =
 export const isWebTouchable: boolean =
   isClient && ('ontouchstart' in window || navigator.maxTouchPoints > 0)
 
+export const isNativeDesktop: boolean = false
 export const isTouchable: boolean = !isWeb || isWebTouchable
 // set :boolean to avoid inferring type to false
 // On web, isAndroid/isIos are always false in production.

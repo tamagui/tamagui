@@ -8,6 +8,7 @@ export declare const isWindowDefined: boolean;
 export declare const useIsomorphicLayoutEffect: typeof useEffect;
 export declare const isChrome: boolean;
 export declare const isWebTouchable: boolean;
+export declare const isNativeDesktop: boolean;
 export declare const isTouchable: boolean;
 export declare const isAndroid: boolean;
 export declare const isIos: boolean;

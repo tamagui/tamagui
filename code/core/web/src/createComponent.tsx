@@ -1,5 +1,11 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import {
+  isClient,
+  isNativeDesktop,
+  isServer,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import { NativeMenuContext } from '@tamagui/native'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
@@ -1250,7 +1256,7 @@ export function createComponent<
     const runtimeHoverStyle = !disabled && noClass && pseudos?.hoverStyle
     const needsHoverState = Boolean(hasDynamicGroupChildren || runtimeHoverStyle)
     const attachHover =
-      isWeb &&
+      (isWeb || isNativeDesktop) &&
       !!(hasDynamicGroupChildren || needsHoverState || onMouseEnter || onMouseLeave)
 
     // check presence rather than value to prevent reparenting bugs
