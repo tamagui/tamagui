@@ -60,7 +60,7 @@ export function SheetFit3pcNativeRepro() {
     <View flex={1} bg="$color3">
       {/* safe-area top marker: the sheet top must never rise above this line */}
       <View
-        data-testid="repro-3pc-native-safearea-marker"
+        testID="repro-3pc-native-safearea-marker"
         position="absolute"
         top={insets.top}
         left={0}
@@ -70,7 +70,7 @@ export function SheetFit3pcNativeRepro() {
         zIndex={1_000_000}
       />
       <YStack flex={1} padding="$4" gap="$2" justifyContent="center">
-        <Button data-testid="repro-3pc-native-trigger" onPress={() => setOpen(true)}>
+        <Button testID="repro-3pc-native-trigger" onPress={() => setOpen(true)}>
           Open 3pc-style fit sheet (tall)
         </Button>
         <Paragraph>
@@ -90,14 +90,14 @@ export function SheetFit3pcNativeRepro() {
         onAnimationComplete={handleAnimationComplete}
       >
         <TamaguiSheet.Overlay
-          data-testid="repro-3pc-native-overlay"
+          testID="repro-3pc-native-overlay"
           bg="$color5"
           opacity={0.5}
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
         <TamaguiSheet.Frame
-          data-testid="repro-3pc-native-frame"
+          testID="repro-3pc-native-frame"
           borderRadius={sheetBorderRadius}
           borderBottomRightRadius={0}
           borderBottomLeftRadius={0}
@@ -127,7 +127,7 @@ export function SheetFit3pcNativeRepro() {
           />
 
           <TamaguiSheet.ScrollView
-            data-testid="repro-3pc-native-scrollview"
+            testID="repro-3pc-native-scrollview"
             maxHeight={resolvedMaxHeight}
             keyboardShouldPersistTaps="handled"
           >
@@ -135,13 +135,13 @@ export function SheetFit3pcNativeRepro() {
               <Paragraph fontWeight="bold">Filter by event</Paragraph>
               <Input
                 ref={inputRef as any}
-                data-testid="repro-3pc-native-input"
+                testID="repro-3pc-native-input"
                 placeholder="Search events…"
               />
               {Array.from({ length: 30 }).map((_, i) => (
                 <View
                   key={i}
-                  data-testid={`repro-3pc-native-item-${i}`}
+                  testID={`repro-3pc-native-item-${i}`}
                   padding="$3"
                   borderRadius="$3"
                   bg="$background"
@@ -150,7 +150,7 @@ export function SheetFit3pcNativeRepro() {
                   <Paragraph>Event {i + 1} — Fight night card</Paragraph>
                 </View>
               ))}
-              <Button data-testid="repro-3pc-native-close" onPress={() => setOpen(false)}>
+              <Button testID="repro-3pc-native-close" onPress={() => setOpen(false)}>
                 Close
               </Button>
             </YStack>
