@@ -94,8 +94,17 @@ bun code/comparisons/conformance/run-native.ts          # native → report-nati
 bun code/comparisons/conformance/gen-palette-v4.ts      # regenerate palette from TW v4
 ```
 
+## Done
+
+- Promo page at `/tailwind` (`code/tamagui.dev/app/(site)/tailwind.tsx` + `features/tailwind/*`).
+  Hero, pixel-conformance proof (featured triple + per-case rows, real harness PNGs in
+  `public/tailwind/proof/`, all 0.0% diff), class/prop examples, honest coverage + variants tables.
+  Validated by rendering: `one dev` (site), screenshotted light/dark/mobile, doc links 200.
+  Run it: `cd code/tamagui.dev && bun run dev --port 3456` then open `/tailwind`.
+
 ## Not done yet
 
-- Promo page at `tamagui.dev/tailwind` (conformance numbers + examples + comparison-vs-others table;
-  comparison data in `code/comparisons/output/coverage.{md,html}` + `run-benchmarks.ts`).
 - Close the 4 real conversion gaps via multi-target shorthands (above) when picking this back up.
+- Skeptic follow-ups for the promo page: a Tailwind-specific "how it works" doc (CTAs currently land
+  on the generic intro in tailwind codeMode); optionally link the full 122-case report + one real
+  diff image; mobile polish on the hero code card.
