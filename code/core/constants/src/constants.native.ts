@@ -10,7 +10,8 @@ export const isWindowDefined: boolean = false
 export const useIsomorphicLayoutEffect: typeof useEffect = useLayoutEffect
 export const isChrome: boolean = false
 export const isWebTouchable: boolean = false
-export const isNativeDesktop: boolean = Platform?.OS === 'macos' || Platform?.OS === 'windows'
+export const isNativeDesktop: boolean =
+  Platform?.OS === 'macos' || Platform?.OS === 'windows'
 export const isTouchable: boolean = !isNativeDesktop
 // optional chain required: babel extractor loads native.cjs in node where Platform is undefined
 // On Android TV: Platform.OS === 'android' per react-native-tvos
@@ -28,7 +29,12 @@ export const isTV: boolean =
   process.env.TEST_NATIVE_PLATFORM === 'androidtv' ||
   process.env.TEST_NATIVE_PLATFORM === 'tvos'
 
-const platforms = { ios: 'ios', android: 'android', macos: 'macos', windows: 'windows' } as const
+const platforms = {
+  ios: 'ios',
+  android: 'android',
+  macos: 'macos',
+  windows: 'windows',
+} as const
 /**
  * Reflects Platform.OS. TV platforms are intentionally NOT separate values:
  * - Android TV has Platform.OS === 'android' (react-native-tvos behavior)
