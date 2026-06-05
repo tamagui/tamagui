@@ -147,7 +147,11 @@ export async function loadTamaguiBuildConfigAsync(
         esbuildWasmInitialized = true
       }
 
-      // use esbuild-wasm.transform to compile - no native service needed
+      // use esbuild-wasm.transform to compile this one small config file. note
+      // that in node, even esbuild-wasm's transform spawns a long-lived
+      // `--service --ping` child via ensureServiceIsRunning, so we tear it down
+      // below - otherwise every plugin instance leaks a persistent esbuild
+      // process for the lifetime of the dev server.
       const result = await esbuildWasm.transform(source, {
         loader: 'ts',
         format: 'cjs',
@@ -173,6 +177,16 @@ export async function loadTamaguiBuildConfigAsync(
     } catch (err) {
       console.error(`[tamagui] Error loading ${buildFilePath}:`, err)
       throw err
+    } finally {
+      // this is a one-shot transform - don't keep the esbuild-wasm service
+      // running for the rest of the process. it gets lazily re-spawned if
+      // transform is ever called again.
+      try {
+        esbuildWasm.stop()
+        esbuildWasmInitialized = false
+      } catch {
+        // ok - service may already be gone
+      }
     }
   }
 
