@@ -1,5 +1,7 @@
-import { isIos } from '@tamagui/constants'
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import {
+  supportsDynamicColorIOS,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import {
   createContext,
   useCallback,
@@ -127,7 +129,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     // check if this is a scheme-only change (light↔dark) where DynamicColorIOS handles it
     const isSchemeOnlyChange =
       process.env.TAMAGUI_TARGET === 'native' &&
-      isIos &&
+      supportsDynamicColorIOS &&
       getSetting('fastSchemeChange') &&
       local &&
       parentState &&

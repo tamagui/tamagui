@@ -12,6 +12,7 @@ export declare const isNativeDesktop: boolean;
 export declare const isTouchable: boolean;
 export declare const isAndroid: boolean;
 export declare const isIos: boolean;
+export declare const supportsDynamicColorIOS: boolean;
 export declare const isTV: boolean;
 /**
 * Reflects Platform.OS. TV platforms are intentionally NOT separate values:

@@ -24,6 +24,8 @@ export const isIos: boolean =
   Platform?.OS === 'ios' ||
   process.env.TEST_NATIVE_PLATFORM === 'ios' ||
   process.env.TEST_NATIVE_PLATFORM === 'tvos'
+export const supportsDynamicColorIOS: boolean =
+  isIos || process.env.TAMAGUI_DYNAMIC_COLOR_IOS === '1'
 export const isTV: boolean =
   Platform?.isTV ||
   process.env.TEST_NATIVE_PLATFORM === 'androidtv' ||

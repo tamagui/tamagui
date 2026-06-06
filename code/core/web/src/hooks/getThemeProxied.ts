@@ -1,4 +1,4 @@
-import { isIos } from '@tamagui/constants'
+import { supportsDynamicColorIOS } from '@tamagui/constants'
 import type { MutableRefObject } from 'react'
 import { getConfig, getSetting } from '../config'
 import { getVariable } from '../createVariable'
@@ -133,7 +133,7 @@ export function getThemeProxied(
             const shouldOptimize =
               scheme &&
               platform !== 'web' &&
-              isIos &&
+              supportsDynamicColorIOS &&
               !curProps.deopt &&
               !curState.isInverse &&
               fastSchemeChange &&
@@ -142,7 +142,7 @@ export function getThemeProxied(
             if (process.env.NODE_ENV === 'development' && curProps.debug === 'verbose') {
               console.info(
                 ` 🎨 useTheme().get(${key}) theme=${name} scheme=${scheme}`,
-                `\n   shouldOptimize=${shouldOptimize} (iOS=${isIos} deopt=${curProps.deopt} isInverse=${curState.isInverse} fastScheme=${fastSchemeChange} rootMatch=${rootMatchesSystem})`
+                `\n   shouldOptimize=${shouldOptimize} (dynamicColorIOS=${supportsDynamicColorIOS} deopt=${curProps.deopt} isInverse=${curState.isInverse} fastScheme=${fastSchemeChange} rootMatch=${rootMatchesSystem})`
               )
             }
 
@@ -177,7 +177,7 @@ export function getThemeProxied(
             if (process.env.NODE_ENV === 'development' && curProps.debug) {
               console.info(
                 ` 🎨 useTheme().get(${key}) tracking key (not optimizing)`,
-                `\n   platform=${platform} isIOS=${isIos} deopt=${curProps.deopt} fastScheme=${fastSchemeChange}`
+                `\n   platform=${platform} dynamicColorIOS=${supportsDynamicColorIOS} deopt=${curProps.deopt} fastScheme=${fastSchemeChange}`
               )
             }
 

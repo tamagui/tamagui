@@ -18,6 +18,7 @@ vi.mock('@tamagui/constants', async () => {
     isWeb: false,
     isClient: true,
     isAndroid: false,
+    supportsDynamicColorIOS: true,
   }
 })
 

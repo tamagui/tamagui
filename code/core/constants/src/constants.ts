@@ -36,6 +36,8 @@ export const isIos: boolean =
   process.env.TEST_NATIVE_PLATFORM === 'ios' ||
   // tvOS has Platform.OS === 'ios' per react-native-tvos
   process.env.TEST_NATIVE_PLATFORM === 'tvos'
+export const supportsDynamicColorIOS: boolean =
+  isIos || process.env.TAMAGUI_DYNAMIC_COLOR_IOS === '1'
 export const isTV: boolean =
   process.env.TEST_NATIVE_PLATFORM === 'androidtv' ||
   process.env.TEST_NATIVE_PLATFORM === 'tvos'
