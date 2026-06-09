@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/create-theme",
-  "version": "2.2.0",
+  "version": "2.2.0-1781044625560",
   "files": [
     "src",
     "types",
