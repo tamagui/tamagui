@@ -1,7 +1,4 @@
-import {
-  supportsDynamicColorIOS,
-  useIsomorphicLayoutEffect,
-} from '@tamagui/constants'
+import { supportsDynamicColorIOS, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   createContext,
   useCallback,

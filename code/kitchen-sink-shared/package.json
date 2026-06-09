@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/kitchen-sink-shared",
-  "version": "2.1.0-1780670002714",
+  "version": "2.1.0-1780964419737",
   "private": true,
   "main": "src/index.ts",
   "dependencies": {

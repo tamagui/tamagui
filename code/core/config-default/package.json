@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-default",
-  "version": "2.1.0-1780670002714",
+  "version": "2.1.0-1780964419737",
   "source": "src/index.ts",
   "files": [
     "types",
