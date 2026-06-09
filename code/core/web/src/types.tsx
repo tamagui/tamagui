@@ -1699,11 +1699,17 @@ export type SpaceTokens =
   | GetTokenString<keyof Tokens['space']>
   | ThemeValueFallbackSpace
 
-export type ColorTokens =
+// base color token strings (before opacity modifier)
+type ColorTokenBase =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof ThemeParsed>
+
+export type ColorTokens =
+  | ColorTokenBase
   | CSSColorNames
+  // opacity modifier: $token/50 → parsed at runtime in getTokenForKey
+  | `${ColorTokenBase & string}/${number}`
 
 export type ZIndexTokens =
   | SpecificTokensSpecial
@@ -1769,7 +1775,12 @@ export type FontWeightValues =
   | 'bold'
   | 'normal'
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues
-export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number
+// font color tokens also support the opacity modifier
+type FontColorTokenBase = `$${GetTokenFontKeysFor<'color'>}`
+export type FontColorTokens =
+  | FontColorTokenBase
+  | number
+  | `${FontColorTokenBase}/${number}`
 export type FontLetterSpacingTokens =
   | `$${GetTokenFontKeysFor<'letterSpacing'>}`
   | number
