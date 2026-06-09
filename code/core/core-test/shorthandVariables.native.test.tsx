@@ -141,7 +141,10 @@ describe('shorthand variables - native', () => {
       {
         type: 'linear-gradient',
         direction: '180deg',
-        colorStops: [{ color: 'rgba(255,255,255,0.5)' }, { color: 'rgba(255,255,255,0)' }],
+        colorStops: [
+          { color: 'rgba(255,255,255,0.5)' },
+          { color: 'rgba(255,255,255,0)' },
+        ],
       },
     ])
   })

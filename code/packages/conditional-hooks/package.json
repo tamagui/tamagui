@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/conditional-hooks",
-  "version": "2.1.0-1780964419737",
+  "version": "2.2.0",
   "files": [
     "src",
     "types",
