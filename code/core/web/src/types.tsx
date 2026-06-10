@@ -3264,7 +3264,11 @@ export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>
 
 type UseStyleListener = (
   nextStyle: Record<string, unknown>,
-  effectiveTransition?: TransitionProp | null
+  effectiveTransition?: TransitionProp | null,
+  // true while a self pseudo (hover/press/focus) is active. lets avoidReRenders drivers know
+  // the emitted style is a transient pseudo override that a real re-render must not be allowed
+  // to reconcile away, vs the no-pseudo base which renders own again.
+  pseudoActive?: boolean
 ) => void
 export type UseStyleEmitter = (cb: UseStyleListener) => void
 
