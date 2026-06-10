@@ -71,10 +71,10 @@ export const useComponentState = (
   // resolves instant (see createComponent's effectiveTransition default).
   const platformPseudo = Boolean(
     !isHOC &&
-      useAnimations &&
-      animationDriver?.avoidReRenders &&
-      getPlatformDriver()?.pseudo &&
-      ('hoverStyle' in props || 'pressStyle' in props || 'focusStyle' in props)
+    useAnimations &&
+    animationDriver?.avoidReRenders &&
+    getPlatformDriver()?.pseudo &&
+    ('hoverStyle' in props || 'pressStyle' in props || 'focusStyle' in props)
   )
 
   const willBeAnimatedClient = (() => {
