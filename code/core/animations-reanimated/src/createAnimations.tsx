@@ -769,13 +769,18 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           }
         }
 
+        // use effectiveTransition (createComponent's single source of truth) so a
+        // platform-pseudo component with no declared transition resolves its BASE
+        // config to instant ('0ms') too — not just its pseudo flips. otherwise base
+        // style changes on the driver path animate with the default spring and a
+        // hover-out / base color change visibly lingers (looks "stuck").
         return buildTransitionConfig(
-          props.transition,
+          effectiveTransition,
           animations,
           animationState,
           getStyleKeys(animatedStyles)
         )
-      }, [isHydrating, props.transition, animatedStyles, animationState])
+      }, [isHydrating, effectiveTransition, animatedStyles, animationState])
 
       // Store config in SharedValue for worklet access (concurrent-safe)
       // Using useEffect to avoid writing to shared value during render

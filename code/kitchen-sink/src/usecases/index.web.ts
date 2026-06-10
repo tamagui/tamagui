@@ -13,6 +13,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./ReanimatedEmitterLatchCase').ReanimatedEmitterLatchCase,
   ReanimatedStuckHoverCase: () =>
     require('./ReanimatedStuckHoverCase').ReanimatedStuckHoverCase,
+  ReanimatedPlatformDriverHoverCase: () =>
+    require('./ReanimatedPlatformDriverHoverCase').ReanimatedPlatformDriverHoverCase,
   AnimatePresenceEnterExitCase: () =>
     require('./AnimatePresenceEnterExitCase').AnimatePresenceEnterExitCase,
   AnimatePresenceExitTest: () =>
