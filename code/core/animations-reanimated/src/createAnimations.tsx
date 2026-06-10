@@ -751,9 +751,21 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // the un-hover/un-press emission flips it false and the next render reclaims the style.
       // no value comparison needed; runtime media stays correct because a render re-reads live
       // media into `animatedStyles`.
+      // exit overrides the pseudo exception: the exit render's style IS the
+      // authoritative target, and an element that exits while hovered/focused (every
+      // dialog closed by clicking a button inside it) would otherwise keep the stale
+      // emitted base latched — the worklet then "animates" to values already on
+      // screen, every exit-key callback completes in a frame, and AnimatePresence
+      // unmounts immediately (the dialog-exit-snap). mirrored into a plain ref so the
+      // emitter callback (which runs outside render) can read it.
       const pseudoActiveRef = useRef(false)
+      const isExitingJSRef = useRef(false)
+      isExitingJSRef.current = isExiting
       useIsomorphicLayoutEffect(() => {
-        if (!pseudoActiveRef.current && animatedTargetsRef.value !== null) {
+        if (
+          (isExiting || !pseudoActiveRef.current) &&
+          animatedTargetsRef.value !== null
+        ) {
           animatedTargetsRef.value = null
           staticTargetsRef.value = null
           transformTargetsRef.value = null
@@ -806,6 +818,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // =========================================================================
       useStyleEmitter?.(
         (nextStyle: Record<string, unknown>, effectiveTransition, pseudoActive) => {
+          // while exiting, the exit render owns the style — a pseudo flip mid-exit
+          // (hover-out as the element fades under the cursor) must not re-latch the
+          // base style over the in-flight exit targets.
+          if (isExitingJSRef.current) return
           // track whether a self pseudo is active so the render-time layout effect knows whether
           // this emitter snapshot is a transient override to keep latched or a base it can drop.
           pseudoActiveRef.current = pseudoActive === true
