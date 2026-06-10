@@ -19,8 +19,12 @@
 #                  sub-flows / warm-ups, not standalone tests
 #                                                            (default: "OpenApp.yaml WarmUp.yaml")
 #   METRO_PID_FILE if the pid in this file is dead, abort    (default: /tmp/metro-pid)
+#   FLOW_TIMEOUT   hard timeout (seconds) per flow attempt; a wedged xcuitest
+#                  driver makes `maestro test` hang with no exit, so without it
+#                  the loop never advances and the job sits idle until the
+#                  runner's 45-min cap                        (default: 360)
 #
-# NOT using `set -e`: a failing `maestro test` is expected and handled inline.
+# NOT using `set -e`: a failing/timed-out `maestro test` is expected and handled inline.
 
 set -uo pipefail
 
@@ -29,6 +33,7 @@ BUNDLE_ID="${BUNDLE_ID:-com.tamagui.tamaguikitchensink}"
 MAX_ATTEMPTS="${MAX_ATTEMPTS:-3}"
 SKIP_FLOWS="${SKIP_FLOWS:-OpenApp.yaml WarmUp.yaml}"
 METRO_PID_FILE="${METRO_PID_FILE:-/tmp/metro-pid}"
+FLOW_TIMEOUT="${FLOW_TIMEOUT:-360}"
 
 metro_alive() {
   local pid
@@ -46,6 +51,37 @@ recover_sim() {
     tail -50 /tmp/metro.log 2>/dev/null || true
     exit 1
   fi
+}
+
+# run `maestro test <flow>` with a hard per-attempt timeout. when the iOS
+# xcuitest driver wedges (e.g. "Request for viewHierarchy failed, code: 500"),
+# maestro hangs with no exit — without a timeout the retry loop below never
+# advances and the whole job sits idle until the runner's 45-min cap (observed:
+# a 28-min hang on one flow that then got force-cancelled = red CI for a flake).
+# on timeout we SIGTERM then SIGKILL maestro's PROCESS GROUP — `set -m` gives the
+# backgrounded job its own pgid, so killing -$pid also reaps the child
+# xcodebuild/driver processes — then recover_sim resets state and the next
+# attempt re-establishes a fresh driver. returns maestro's exit code, or 124.
+run_flow_with_timeout() {
+  local flow="$1"
+  set -m
+  maestro test "$flow" --no-ansi &
+  local pid=$!
+  set +m
+  local waited=0
+  while kill -0 "$pid" 2>/dev/null; do
+    if [ "$waited" -ge "$FLOW_TIMEOUT" ]; then
+      echo "::warning::flow exceeded ${FLOW_TIMEOUT}s — killing maestro (wedged xcuitest driver?)"
+      kill -TERM -"$pid" 2>/dev/null || kill -TERM "$pid" 2>/dev/null
+      sleep 10
+      kill -KILL -"$pid" 2>/dev/null || kill -KILL "$pid" 2>/dev/null
+      wait "$pid" 2>/dev/null
+      return 124
+    fi
+    sleep 5
+    waited=$((waited + 5))
+  done
+  wait "$pid"
 }
 
 shopt -s nullglob
@@ -71,7 +107,7 @@ for flow in "${flows[@]}"; do
   passed=false
   for attempt in $(seq 1 "$MAX_ATTEMPTS"); do
     echo "::group::$name (attempt $attempt/$MAX_ATTEMPTS)"
-    if maestro test "$flow" --no-ansi; then
+    if run_flow_with_timeout "$flow"; then
       passed=true
       echo "::endgroup::"
       echo "✓ $name passed (attempt $attempt/$MAX_ATTEMPTS)"
