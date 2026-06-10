@@ -730,6 +730,36 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         return { animatedStyles: animated, staticStyles }
       }, [disableAnimation, style, isDark, isMounting, props.animateOnly])
 
+      // reconcile the emitter latch with real re-renders.
+      //
+      // the avoidReRenders fast path lets a pure pseudo change (hover/press/focus) push
+      // styles straight to the worklet via useStyleEmitter with no React commit — it sets
+      // animatedTargetsRef. the worklet then treats `animatedTargetsRef !== null` as a
+      // permanent latch: once the emitter has fired even once, it reads its last-emitted
+      // snapshot and IGNORES `animatedStyles` from every subsequent re-render. so a base
+      // style that changes through React (e.g. a row's `backgroundColor` flipping with an
+      // external selection store, not a hover) never reaches the screen — it stays stuck on
+      // the stale emitted value until the next hover re-fires the emitter. (the "active row
+      // highlight gets stuck until you hover it again" report.)
+      //
+      // a real re-render is the freshest source of truth for the base style, so on render we
+      // drop the emitter latch and let the worklet fall back to `animatedStyles`. the one
+      // exception: while a self pseudo (hover/press/focus) is active the emitted style is a
+      // transient override that isn't in this render, so keep it latched — otherwise an
+      // unrelated re-render while hovering would snap back to the base. `pseudoActiveRef`
+      // tracks that flag straight off the emitter (which fires on every pseudo transition), so
+      // the un-hover/un-press emission flips it false and the next render reclaims the style.
+      // no value comparison needed; runtime media stays correct because a render re-reads live
+      // media into `animatedStyles`.
+      const pseudoActiveRef = useRef(false)
+      useIsomorphicLayoutEffect(() => {
+        if (!pseudoActiveRef.current && animatedTargetsRef.value !== null) {
+          animatedTargetsRef.value = null
+          staticTargetsRef.value = null
+          transformTargetsRef.value = null
+        }
+      })
+
       // Build animation config with per-property overrides using normalized transition
       const { baseConfig, propertyConfigs } = useMemo(() => {
         if (isHydrating) {
@@ -769,79 +799,84 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // avoidRerenders: register style emitter callback
       // when hover/press/etc state changes, this is called instead of re-rendering
       // =========================================================================
-      useStyleEmitter?.((nextStyle: Record<string, unknown>, effectiveTransition) => {
-        const animateOnly = props.animateOnly as string[] | undefined
-        const animated: Record<string, unknown> = {}
-        const statics: Record<string, unknown> = {}
-        const transforms: Array<Record<string, unknown>> = []
+      useStyleEmitter?.(
+        (nextStyle: Record<string, unknown>, effectiveTransition, pseudoActive) => {
+          // track whether a self pseudo is active so the render-time layout effect knows whether
+          // this emitter snapshot is a transient override to keep latched or a base it can drop.
+          pseudoActiveRef.current = pseudoActive === true
+          const animateOnly = props.animateOnly as string[] | undefined
+          const animated: Record<string, unknown> = {}
+          const statics: Record<string, unknown> = {}
+          const transforms: Array<Record<string, unknown>> = []
 
-        // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
-        // rebuild config whenever transition changes (entering OR exiting pseudo states)
-        const transitionToUse = effectiveTransition ?? props.transition
-        const { baseConfig: newBase, propertyConfigs: newPropertyConfigs } =
-          buildTransitionConfig(
-            transitionToUse,
-            animations,
-            animationState,
-            getStyleKeys(nextStyle)
-          )
+          // effectiveTransition is computed in createComponent based on entering/exiting pseudo states
+          // rebuild config whenever transition changes (entering OR exiting pseudo states)
+          const transitionToUse = effectiveTransition ?? props.transition
+          const { baseConfig: newBase, propertyConfigs: newPropertyConfigs } =
+            buildTransitionConfig(
+              transitionToUse,
+              animations,
+              animationState,
+              getStyleKeys(nextStyle)
+            )
 
-        // update configRef with the new config
-        configRef.value = {
-          baseConfig: newBase,
-          propertyConfigs: newPropertyConfigs,
-          disableAnimation: configRef.value.disableAnimation,
-          isHydrating: configRef.value.isHydrating,
-        }
-
-        for (const key in nextStyle) {
-          const rawValue = nextStyle[key]
-          const value = resolveDynamicValue(rawValue, isDark)
-
-          if (value == undefined) continue
-
-          if (configRef.value.disableAnimation) {
-            statics[key] = cloneAnimationValue(value)
-            continue
+          // update configRef with the new config
+          configRef.value = {
+            baseConfig: newBase,
+            propertyConfigs: newPropertyConfigs,
+            disableAnimation: configRef.value.disableAnimation,
+            isHydrating: configRef.value.isHydrating,
           }
 
-          if (key === 'transform' && Array.isArray(value)) {
-            for (const t of value as Record<string, unknown>[]) {
-              if (t && typeof t === 'object') {
-                const tKey = Object.keys(t)[0]
-                const tVal = t[tKey]
-                if (typeof tVal === 'number' || typeof tVal === 'string') {
-                  transforms.push(cloneAnimationValue(t) as Record<string, unknown>)
+          for (const key in nextStyle) {
+            const rawValue = nextStyle[key]
+            const value = resolveDynamicValue(rawValue, isDark)
+
+            if (value == undefined) continue
+
+            if (configRef.value.disableAnimation) {
+              statics[key] = cloneAnimationValue(value)
+              continue
+            }
+
+            if (key === 'transform' && Array.isArray(value)) {
+              for (const t of value as Record<string, unknown>[]) {
+                if (t && typeof t === 'object') {
+                  const tKey = Object.keys(t)[0]
+                  const tVal = t[tKey]
+                  if (typeof tVal === 'number' || typeof tVal === 'string') {
+                    transforms.push(cloneAnimationValue(t) as Record<string, unknown>)
+                  }
                 }
               }
+              continue
             }
-            continue
+
+            if (canAnimateProperty(key, value, animateOnly)) {
+              animated[key] = cloneAnimationValue(value)
+            } else {
+              statics[key] = cloneAnimationValue(value)
+            }
           }
 
-          if (canAnimateProperty(key, value, animateOnly)) {
-            animated[key] = cloneAnimationValue(value)
-          } else {
-            statics[key] = cloneAnimationValue(value)
+          // update shared values - on web, the mapper watches these if passed in dependencies
+          animatedTargetsRef.value = animated
+          staticTargetsRef.value = statics
+          transformTargetsRef.value = transforms
+
+          if (
+            process.env.NODE_ENV === 'development' &&
+            props.debug &&
+            props.debug !== 'profile'
+          ) {
+            console.info('[animations-reanimated] useStyleEmitter update', {
+              animated,
+              statics,
+              transforms,
+            })
           }
         }
-
-        // update shared values - on web, the mapper watches these if passed in dependencies
-        animatedTargetsRef.value = animated
-        staticTargetsRef.value = statics
-        transformTargetsRef.value = transforms
-
-        if (
-          process.env.NODE_ENV === 'development' &&
-          props.debug &&
-          props.debug !== 'profile'
-        ) {
-          console.info('[animations-reanimated] useStyleEmitter update', {
-            animated,
-            statics,
-            transforms,
-          })
-        }
-      })
+      )
 
       // Compute and register exit keys synchronously during render to avoid race conditions
       // This must happen BEFORE useAnimatedStyle runs so callbacks have a populated set

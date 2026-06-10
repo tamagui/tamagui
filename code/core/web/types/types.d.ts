@@ -1852,7 +1852,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     Text?: any;
 };
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>;
-type UseStyleListener = (nextStyle: Record<string, unknown>, effectiveTransition?: TransitionProp | null) => void;
+type UseStyleListener = (nextStyle: Record<string, unknown>, effectiveTransition?: TransitionProp | null, pseudoActive?: boolean) => void;
 export type UseStyleEmitter = (cb: UseStyleListener) => void;
 export type UseAnimationHook = (props: {
     style: Record<string, any>;

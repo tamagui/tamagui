@@ -796,7 +796,23 @@ export function createComponent<
         // update prev state for next comparison (includes group states)
         stateRef.current.prevPseudoState = extractPseudoState(updatedState)
 
-        useStyleListener((nextStyles?.style || {}) as any, effectiveTransition)
+        // a self pseudo being active means the emitted style is a transient hover/press/focus
+        // override (it's not in React state under avoidReRenders), so the worklet must keep it
+        // latched across incidental re-renders; when none is active this is the base and renders
+        // own it again.
+        const hasActivePseudo = Boolean(
+          updatedState.hover ||
+          updatedState.press ||
+          updatedState.pressIn ||
+          updatedState.focus ||
+          updatedState.focusWithin
+        )
+
+        useStyleListener(
+          (nextStyles?.style || {}) as any,
+          effectiveTransition,
+          hasActivePseudo
+        )
       }
 
       function updateGroupListeners() {

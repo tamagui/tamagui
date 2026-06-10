@@ -9,6 +9,8 @@ import type { ComponentType } from 'react'
 
 const loaders: Record<string, () => ComponentType<any>> = {
   AnimatedByProp: () => require('./AnimatedByProp').AnimatedByProp,
+  ReanimatedEmitterLatchCase: () =>
+    require('./ReanimatedEmitterLatchCase').ReanimatedEmitterLatchCase,
   AnimatePresenceEnterExitCase: () =>
     require('./AnimatePresenceEnterExitCase').AnimatePresenceEnterExitCase,
   AnimatePresenceExitTest: () =>
