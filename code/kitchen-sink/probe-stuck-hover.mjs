@@ -8,10 +8,13 @@ const page = await browser.newPage({ viewport: { width: 1200, height: 900 } })
 
 const url = `http://localhost:${PORT}/?theme=light&animationDriver=${driver}&test=ReanimatedStuckHoverCase`
 await page.goto(url, { waitUntil: 'networkidle' })
-await page.waitForFunction(() => document.getElementById('root')?.children.length > 0, { timeout: 10000 })
+await page.waitForFunction(() => document.getElementById('root')?.children.length > 0, {
+  timeout: 10000,
+})
 await page.waitForTimeout(400)
 
-const bg = (id) => page.getByTestId(id).evaluate((el) => getComputedStyle(el).backgroundColor)
+const bg = (id) =>
+  page.getByTestId(id).evaluate((el) => getComputedStyle(el).backgroundColor)
 const RED = 'rgb(255, 0, 0)'
 const center = async (id) => {
   const b = await page.getByTestId(id).boundingBox()

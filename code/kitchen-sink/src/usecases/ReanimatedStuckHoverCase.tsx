@@ -37,7 +37,7 @@ export function ReanimatedStuckHoverCase() {
         size={120}
         backgroundColor="rgb(255, 0, 0)"
         hoverStyle={{ backgroundColor: 'rgb(0, 255, 0)' }}
-        animation="quick"
+        transition="quick"
       />
 
       {/* re-render while hovered: the parent tick flips this row's irrelevant
