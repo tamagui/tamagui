@@ -1,5 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import {
+  getPlatformDriver,
   isClient,
   isNativeDesktop,
   isServer,
@@ -445,6 +446,7 @@ export function createComponent<
       outputStyle,
       willBeAnimated,
       willBeAnimatedClient,
+      platformPseudo,
       startedUnhydrated,
     } = componentState
 
@@ -465,6 +467,24 @@ export function createComponent<
         }
       })
     }
+
+    // renderer-driven pseudo states (setupPlatformDriver): the platform resolves
+    // hover natively per hitbox and pushes flips here, replacing the
+    // mouseEnter/mouseLeave lane on such renderers. the flip applies through the
+    // same setStateShallow the event handlers use — under the (driver-opened)
+    // avoidReRenders gate that's the emitter path: zero React commits, animated
+    // per the declared transition or instant by default. press stays on the
+    // responder event path (it must fire onPress anyway); the driver only owns
+    // the hover trigger for now.
+    useIsomorphicLayoutEffect(() => {
+      if (!platformPseudo || props.disabled) return
+      const pseudoDriver = getPlatformDriver()?.pseudo
+      const host = stateRef.current.host
+      if (!pseudoDriver || !host) return
+      return pseudoDriver.subscribe(host, ({ hovered }) => {
+        stateRef.current.setStateShallow?.({ hover: hovered })
+      })
+    }, [platformPseudo, props.disabled])
 
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
@@ -742,7 +762,7 @@ export function createComponent<
 
     if (
       !isPassthrough &&
-      (hasAnimationProp || groupName) &&
+      (hasAnimationProp || groupName || platformPseudo) &&
       animationDriver?.avoidReRenders &&
       !hasEnterExitTransition
     ) {
@@ -790,7 +810,8 @@ export function createComponent<
           stateRef.current.prevPseudoState,
           updatedState,
           nextStyles?.pseudoTransitions,
-          props.transition
+          // platform-pseudo with no declared transition = instant (CSS :hover semantics)
+          props.transition ?? (platformPseudo ? '0ms' : undefined)
         )
 
         // update prev state for next comparison (includes group states)
@@ -1027,7 +1048,8 @@ export function createComponent<
         stateRef.current.prevPseudoState,
         state,
         splitStyles?.pseudoTransitions,
-        props.transition
+        // platform-pseudo with no declared transition = instant (CSS :hover semantics)
+        props.transition ?? (platformPseudo ? '0ms' : undefined)
       )
 
       // add effectiveTransition to splitStyles for drivers to consume
@@ -1270,7 +1292,12 @@ export function createComponent<
     )
 
     const runtimeHoverStyle = !disabled && noClass && pseudos?.hoverStyle
-    const needsHoverState = Boolean(hasDynamicGroupChildren || runtimeHoverStyle)
+    // with a platform pseudo driver the hover STATE is driver-sourced; only keep
+    // the JS hover listeners when something else needs them (dynamic group
+    // children, or the user's own onMouseEnter/Leave handlers below).
+    const needsHoverState = Boolean(
+      hasDynamicGroupChildren || (runtimeHoverStyle && !platformPseudo)
+    )
     const attachHover =
       (isWeb || isNativeDesktop) &&
       !!(hasDynamicGroupChildren || needsHoverState || onMouseEnter || onMouseLeave)

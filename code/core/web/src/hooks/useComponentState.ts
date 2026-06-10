@@ -1,4 +1,4 @@
-import { isServer, isWeb } from '@tamagui/constants'
+import { getPlatformDriver, isServer, isWeb } from '@tamagui/constants'
 import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
@@ -63,8 +63,22 @@ export const useComponentState = (
     curStateRef.hasAnimated = true
   }
 
+  // a renderer platform driver with native pseudo states (react-native-gpui)
+  // makes ANY component with runtime pseudo styles ride the animation-driver
+  // emitter path — no per-site transition/animation prop required. the flip is
+  // driver-sourced (hover) or event-sourced (press/focus) but either way applies
+  // through the emitter with zero React commits; with no transition declared it
+  // resolves instant (see createComponent's effectiveTransition default).
+  const platformPseudo = Boolean(
+    !isHOC &&
+      useAnimations &&
+      animationDriver?.avoidReRenders &&
+      getPlatformDriver()?.pseudo &&
+      ('hoverStyle' in props || 'pressStyle' in props || 'focusStyle' in props)
+  )
+
   const willBeAnimatedClient = (() => {
-    const next = !!(hasAnimationProp && !isHOC && useAnimations)
+    const next = !!((hasAnimationProp || platformPseudo) && !isHOC && useAnimations)
     return Boolean(next || curStateRef.hasAnimated)
   })()
 
@@ -247,6 +261,7 @@ export const useComponentState = (
     outputStyle,
     willBeAnimated,
     willBeAnimatedClient,
+    platformPseudo,
   }
 }
 
