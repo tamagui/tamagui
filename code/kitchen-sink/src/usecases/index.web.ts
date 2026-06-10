@@ -11,6 +11,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   AnimatedByProp: () => require('./AnimatedByProp').AnimatedByProp,
   ReanimatedEmitterLatchCase: () =>
     require('./ReanimatedEmitterLatchCase').ReanimatedEmitterLatchCase,
+  ReanimatedStuckHoverCase: () =>
+    require('./ReanimatedStuckHoverCase').ReanimatedStuckHoverCase,
   AnimatePresenceEnterExitCase: () =>
     require('./AnimatePresenceEnterExitCase').AnimatePresenceEnterExitCase,
   AnimatePresenceExitTest: () =>
