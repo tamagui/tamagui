@@ -7,9 +7,17 @@ on:
     branches: [main, 'v*']
   workflow_dispatch:
 
+# cancel in-progress runs on feature branches, but let main finish for full history
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 env:
   test_container_app_path: code/kitchen-sink
-  MAESTRO_DRIVER_STARTUP_TIMEOUT: 360000
+  # macos-15 + Xcode 26 can spend more than six minutes starting Maestro's
+  # XCTest driver on a fresh runner, especially while the first Metro bundle is
+  # still settling. Keep this below the job timeout but high enough for CI.
+  MAESTRO_DRIVER_STARTUP_TIMEOUT: 900000
 
 jobs:
   build:
@@ -169,11 +177,12 @@ jobs:
           # WarmUp.yaml does clearState:true for a clean first launch.
           # Subsequent test flows use OpenApp.yaml (no clearState) so Hermes
           # bytecode cache persists across launches = much faster restarts.
-          # if WarmUp fails, the Maestro xcuitest driver (port 7001) is usually
-          # dead — every subsequent flow will fail with "Failed to connect to
-          # /127.0.0.1:7001", so fail fast rather than burn 15+ min on doomed retries.
+          # if WarmUp fails after the extended driver-start timeout, the Maestro
+          # xcuitest driver (port 7001) is usually dead — every subsequent flow
+          # will fail with "Failed to connect to /127.0.0.1:7001", so fail fast
+          # rather than burn the whole job on doomed retries.
           if ! maestro test ./flows/WarmUp.yaml --no-ansi; then
-            echo "::error::WarmUp failed — Maestro driver is likely dead, aborting"
+            echo "::error::WarmUp failed after waiting for Maestro's iOS driver, aborting"
             echo "=== Recent app logs ==="
             tail -50 /tmp/simulator-app.log 2>/dev/null || echo "No app logs"
             echo "=== Metro output ==="

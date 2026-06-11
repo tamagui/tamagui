@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/next-theme",
-  "version": "2.2.0-1781132308330",
+  "version": "2.2.0-1781217884154",
   "source": "src/index.ts",
   "files": [
     "src",
