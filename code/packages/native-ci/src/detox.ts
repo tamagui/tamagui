@@ -23,8 +23,6 @@ export interface DetoxRunnerOptions {
   workers?: number
   /** Specific test files to run (passed as positional args to detox) */
   testFiles?: string[]
-  /** reuse the already-installed app instead of letting Detox reinstall it */
-  reuse?: boolean
 }
 
 /**
@@ -89,10 +87,6 @@ export function buildDetoxArgs(options: DetoxRunnerOptions): string[] {
 
   if (options.headless) {
     args.push('--headless')
-  }
-
-  if (options.reuse) {
-    args.push('--reuse')
   }
 
   // add parallel workers if specified

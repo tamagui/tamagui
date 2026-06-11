@@ -10,7 +10,7 @@
  */
 
 import { test, expect } from 'bun:test'
-import { buildDetoxArgs, classifyDetoxFailures } from '../src/detox'
+import { classifyDetoxFailures } from '../src/detox'
 
 // June 9: PointerEvents beforeAll launch could not connect; noRngh passed this run.
 const JUNE9_CONNECT_TIMEOUT = `
@@ -127,16 +127,4 @@ Tests:       32 passed, 32 total
   expect(failedFiles).toEqual([])
   expect(flakeFiles).toEqual([])
   expect(realFiles).toEqual([])
-})
-
-test('builds Detox args with reuse only when requested', () => {
-  const base = {
-    config: 'ios.sim.debug',
-    projectRoot: '/tmp/app',
-    recordLogs: 'failing',
-    retries: 0,
-  }
-
-  expect(buildDetoxArgs(base)).not.toContain('--reuse')
-  expect(buildDetoxArgs({ ...base, reuse: true })).toContain('--reuse')
 })
