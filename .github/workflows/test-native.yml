@@ -54,7 +54,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # 7 shards keep each iOS Detox job inside the ~30m target even when
+          # 9 shards keep each iOS Detox job inside the ~30m target even when
           # macos-15 runner startup varies. CompilerExtraction runs an in-test
           # `npx tamagui build`, so it stays isolated with the skipped keyboard
           # files and the small SheetFitKeyboardSafeArea test. SheetScrollableDrag
@@ -62,19 +62,23 @@ jobs:
           # SelectAndroidOnPress is android-only (excluded here via
           # check-ios-detox-shards.mjs, still runs in the android job). Coverage
           # is validated by that script (every iOS e2e test assigned exactly once).
-          - shard_name: '1/7'
+          - shard_name: '1/9'
             test_files: 'e2e/CompilerExtraction.test.ts e2e/SafeArea.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts'
-          - shard_name: '2/7'
+          - shard_name: '2/9'
             test_files: 'e2e/SheetScrollableDrag.test.ts'
-          - shard_name: '3/7'
+          - shard_name: '3/9'
             test_files: 'e2e/PressStyleNative.noRngh.test.ts e2e/GroupPressNative.test.ts e2e/PressStyleScrollStuck.test.ts e2e/check-rngh-status.test.ts'
-          - shard_name: '4/7'
-            test_files: 'e2e/PointerEvents.test.ts e2e/SheetDragResist.test.ts e2e/NestedPressExclusive.test.ts'
-          - shard_name: '5/7'
+          - shard_name: '4/9'
+            test_files: 'e2e/PointerEvents.test.ts'
+          - shard_name: '5/9'
+            test_files: 'e2e/SheetDragResist.test.ts'
+          - shard_name: '6/9'
+            test_files: 'e2e/NestedPressExclusive.test.ts'
+          - shard_name: '7/9'
             test_files: 'e2e/NativePortal.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/PressStyleNative.test.ts e2e/SheetPressRegression.test.ts e2e/SheetKeyboardFitContent.test.ts'
-          - shard_name: '6/7'
+          - shard_name: '8/9'
             test_files: 'e2e/MenuRadioGroup.test.ts e2e/SelectRemount.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts'
-          - shard_name: '7/7'
+          - shard_name: '9/9'
             test_files: 'e2e/ShorthandVariables.test.ts e2e/CompilerTernaryActive.test.ts e2e/TabsOnInteraction.test.ts e2e/MediaQueryGtMd.test.ts'
     defaults:
       run:
