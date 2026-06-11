@@ -11,6 +11,7 @@
  *   --retries <n>         Number of retries for flaky tests (default: 0)
  */
 
+import { resolve } from 'node:path'
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
 import {
@@ -27,8 +28,10 @@ console.info('=== iOS Detox Test Runner ===')
 console.info(`Config: ${options.config}`)
 console.info(`Project root: ${options.projectRoot}`)
 
+const projectRoot = resolve(options.projectRoot)
+
 // Change to project root
-process.chdir(options.projectRoot)
+process.chdir(projectRoot)
 
 // Ensure ios folder exists (in case build artifacts were separated)
 await ensureIOSFolder()
@@ -36,9 +39,9 @@ await ensureIOSFolder()
 // Ensure iOS app is built (skipped on CI where app is pre-built)
 await ensureIOSApp(options.config)
 
-const bundleId = getIOSBundleId(options.projectRoot, options.config)
+const bundleId = getIOSBundleId(projectRoot, options.config)
 await ensureAppInstalled({
-  projectRoot: options.projectRoot,
+  projectRoot,
   bundleId,
   udid: getBootedSimulatorUDID() ?? undefined,
 })
@@ -47,7 +50,7 @@ await ensureAppInstalled({
 const exitCode = await withMetro('ios', async () => {
   return runDetoxTests({
     config: options.config,
-    projectRoot: options.projectRoot,
+    projectRoot,
     recordLogs: options.recordLogs,
     retries: options.retries,
     workers: options.workers,
