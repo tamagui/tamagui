@@ -7,6 +7,11 @@ on:
     branches: [main, 'v*']
   workflow_dispatch:
 
+# cancel in-progress runs on feature branches, but let main finish for full history
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 env:
   test_container_app_path: code/kitchen-sink
   # macos-15 + Xcode 26 can spend more than six minutes starting Maestro's
