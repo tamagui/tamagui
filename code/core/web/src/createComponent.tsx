@@ -459,6 +459,25 @@ export function createComponent<
       // `nextState`, clear it. if they diverge (animated components' fast path never
       // calls into React), flush via componentState.setStateShallow here.
       useIsomorphicLayoutEffect(() => {
+        // first: refresh the emitter latch while a self pseudo is active. the driver
+        // keeps the last-emitted snapshot latched across re-renders (so an unrelated
+        // render doesn't snap a hovered style back to base), but a render can change
+        // the styles that FEED the pseudo merge — e.g. a row becoming active removes
+        // its hoverStyle while still hovered — and the stale snapshot would keep
+        // painting over the new base (hover-beats-active-during-scrub).
+        // `updateStyleListener` is rebuilt each render over fresh props/state and
+        // reads `nextState || state`, so re-invoking it re-emits the correct merged
+        // style: identical values when the render was truly unrelated (no visual
+        // change), fresh values when it wasn't. gate on the last-EMITTED pseudo state
+        // (prevPseudoState), not React state — React state can lag the emitter by a
+        // commit, and a stale-true `state.hover` here would resurrect a hover the
+        // emitter already cleared. this must run BEFORE the nextState flush below so
+        // the re-emit still sees the freshest pseudo state.
+        const emitted = stateRef.current.prevPseudoState
+        if (emitted && (emitted.hover || emitted.press || emitted.focus)) {
+          stateRef.current.updateStyleListener?.()
+        }
+
         const pendingState = stateRef.current.nextState
         if (!pendingState) return
         stateRef.current.nextState = undefined
