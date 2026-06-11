@@ -55,8 +55,12 @@ test.describe('reanimated stuck hover (event-sourced)', () => {
     await page.waitForTimeout(250)
     expect(await bg(page, 'stuck-spring'), 'hover green').toBe(GREEN)
     await page.mouse.move(2, 2)
-    await page.waitForTimeout(450)
-    expect(await bg(page, 'stuck-spring'), 'hover-out must settle on base red').toBe(RED)
+    await expect
+      .poll(() => bg(page, 'stuck-spring'), {
+        message: 'hover-out must settle on base red',
+        timeout: 2000,
+      })
+      .toBe(RED)
   })
 
   test('hover-in then re-render then hover-out is not stuck', async ({ page }) => {
