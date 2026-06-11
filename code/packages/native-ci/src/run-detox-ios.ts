@@ -13,7 +13,13 @@
 
 import { withMetro } from './metro'
 import { parseDetoxArgs, runDetoxTests } from './detox'
-import { ensureIOSFolder, ensureIOSApp } from './ios'
+import {
+  ensureAppInstalled,
+  ensureIOSFolder,
+  ensureIOSApp,
+  getBootedSimulatorUDID,
+  getIOSBundleId,
+} from './ios'
 
 const options = parseDetoxArgs('ios')
 
@@ -30,6 +36,13 @@ await ensureIOSFolder()
 // Ensure iOS app is built (skipped on CI where app is pre-built)
 await ensureIOSApp(options.config)
 
+const bundleId = getIOSBundleId(options.projectRoot, options.config)
+await ensureAppInstalled({
+  projectRoot: options.projectRoot,
+  bundleId,
+  udid: getBootedSimulatorUDID() ?? undefined,
+})
+
 // Run tests with Metro
 const exitCode = await withMetro('ios', async () => {
   return runDetoxTests({
@@ -39,6 +52,7 @@ const exitCode = await withMetro('ios', async () => {
     retries: options.retries,
     workers: options.workers,
     testFiles: options.testFiles,
+    reuse: true,
   })
 })
 

@@ -14,6 +14,7 @@ export declare function getBootedSimulatorUDID(): string | null;
  * Boot an iOS simulator. Picks the first available iPhone device.
  */
 export declare function ensureBootedSimulator(): void;
+export declare function getIOSBundleId(projectRoot: string, config?: string): string;
 /**
  * Ensure the app is installed on a specific simulator.
  * For dev client apps, builds if needed then installs.

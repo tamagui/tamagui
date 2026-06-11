@@ -19,6 +19,8 @@ export interface DetoxRunnerOptions {
     workers?: number;
     /** Specific test files to run (passed as positional args to detox) */
     testFiles?: string[];
+    /** reuse the already-installed app instead of letting Detox reinstall it */
+    reuse?: boolean;
 }
 /**
  * Parse common CLI arguments for Detox runners

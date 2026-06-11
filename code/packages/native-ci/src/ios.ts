@@ -132,6 +132,28 @@ function getIOSAppBundleId(fullAppPath: string): string | null {
   }
 }
 
+export function getIOSBundleId(
+  projectRoot: string,
+  config: string = 'ios.sim.debug'
+): string {
+  const bundleId = getIOSAppBundleId(getIOSFullAppPath(projectRoot, config))
+  if (bundleId) {
+    return bundleId
+  }
+
+  try {
+    const appJson = JSON.parse(readFileSync(join(projectRoot, 'app.json'), 'utf-8'))
+    const appJsonBundleId = appJson.expo?.ios?.bundleIdentifier
+    if (appJsonBundleId) {
+      return appJsonBundleId
+    }
+  } catch {
+    // fall through to the explicit error below
+  }
+
+  throw new Error(`Could not determine iOS bundle id for ${projectRoot}`)
+}
+
 function isIOSAppBundleReady(fullAppPath: string): boolean {
   return existsSync(fullAppPath) && !!getIOSAppBundleId(fullAppPath)
 }
