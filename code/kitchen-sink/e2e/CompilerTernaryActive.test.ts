@@ -8,28 +8,13 @@
  */
 
 import * as assert from 'assert'
-import { execSync } from 'child_process'
-import { unlinkSync, existsSync } from 'fs'
 import { by, element, expect, waitFor } from 'detox'
 import { remountDirectUseCase } from './utils/navigation'
 import { getDominantColor, formatRGB } from './utils/colors'
 import { safeLaunchApp } from './utils/detox'
 
-const SOURCE_FILE = 'src/usecases/CompilerTernaryActive.tsx'
-const NATIVE_FILE = 'src/usecases/CompilerTernaryActive.native.tsx'
-
 describe('CompilerTernaryActive', () => {
   beforeAll(async () => {
-    if (existsSync(NATIVE_FILE)) {
-      unlinkSync(NATIVE_FILE)
-    }
-
-    console.log('Running tamagui build...')
-    execSync(`npx tamagui build ${SOURCE_FILE} --target native --output-around`, {
-      stdio: 'inherit',
-    })
-    console.log('Build complete, .native.tsx generated')
-
     await safeLaunchApp({
       newInstance: true,
       launchArgs: { directUseCase: 'CompilerTernaryActive' },
@@ -37,7 +22,7 @@ describe('CompilerTernaryActive', () => {
     await waitFor(element(by.id('compiler-ternary-active-root')))
       .toExist()
       .withTimeout(180000)
-  }, 600_000) // tamagui build can occasionally take 5-12 min on slow CI runners
+  })
 
   beforeEach(async () => {
     await remountDirectUseCase('compiler-ternary-active-root')

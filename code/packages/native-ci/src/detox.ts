@@ -205,7 +205,8 @@ export async function resetDetoxLockFile(): Promise<void> {
  * @returns the process exit code and the full combined stdout+stderr text.
  */
 async function spawnDetoxOnce(
-  detoxArgs: string[]
+  detoxArgs: string[],
+  testFiles: string[] = []
 ): Promise<{ exitCode: number; output: string }> {
   console.info('\n--- Running Detox tests ---')
   console.info(`Using fixed Detox server port: ${DETOX_SERVER_PORT}`)
@@ -214,7 +215,11 @@ async function spawnDetoxOnce(
   // pipe (not inherit) so we can capture output for flake classification; tee each
   // chunk straight back to our stdout/stderr so the live CI log is unchanged.
   const proc = Bun.spawn(['npx', ...detoxArgs], {
-    env: { ...process.env, DETOX_SERVER_PORT: String(DETOX_SERVER_PORT) },
+    env: {
+      ...process.env,
+      DETOX_SERVER_PORT: String(DETOX_SERVER_PORT),
+      TAMAGUI_DETOX_TEST_FILES: testFiles.join(' '),
+    },
     stdout: 'pipe',
     stderr: 'pipe',
   })
@@ -272,7 +277,7 @@ export async function runDetoxTests(options: DetoxRunnerOptions): Promise<number
   await resetDetoxLockFile()
 
   const detoxArgs = buildDetoxArgs(options)
-  const { exitCode, output } = await spawnDetoxOnce(detoxArgs)
+  const { exitCode, output } = await spawnDetoxOnce(detoxArgs, options.testFiles ?? [])
 
   if (exitCode === 0) {
     console.info('\nAll tests passed!')
@@ -305,7 +310,7 @@ export async function runDetoxTests(options: DetoxRunnerOptions): Promise<number
     await resetDetoxLockFile()
 
     const retryArgs = buildDetoxArgs({ ...options, testFiles: flakeFiles })
-    const retry = await spawnDetoxOnce(retryArgs)
+    const retry = await spawnDetoxOnce(retryArgs, flakeFiles)
     if (retry.exitCode === 0) {
       console.info(
         `\n✓ Recovered ${flakeFiles.length} connect-flaked file(s) on retry ${attempt}.`
