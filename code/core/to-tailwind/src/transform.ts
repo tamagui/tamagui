@@ -38,6 +38,8 @@ export function tamaguiToTailwind(
     return source
   }
 
+  let didTransform = false
+
   traverse(ast, {
     JSXOpeningElement(path) {
       const node = path.node
@@ -116,6 +118,7 @@ export function tamaguiToTailwind(
 
       // build the new className
       if (classes.length > 0) {
+        didTransform = true
         const classStr = classes.join(' ')
 
         if (existingClassName) {
@@ -129,18 +132,12 @@ export function tamaguiToTailwind(
           } else {
             // existing className is dynamic, use template literal
             keptAttrs.unshift(
-              t.jsxAttribute(
-                t.jsxIdentifier('className'),
-                t.stringLiteral(classStr)
-              )
+              t.jsxAttribute(t.jsxIdentifier('className'), t.stringLiteral(classStr))
             )
           }
         } else {
           keptAttrs.unshift(
-            t.jsxAttribute(
-              t.jsxIdentifier('className'),
-              t.stringLiteral(classStr)
-            )
+            t.jsxAttribute(t.jsxIdentifier('className'), t.stringLiteral(classStr))
           )
         }
       } else if (existingClassName) {
@@ -151,6 +148,7 @@ export function tamaguiToTailwind(
 
       // rename component to HTML tag
       if (renameComponents && isKnownComponent) {
+        didTransform = true
         node.name = t.jsxIdentifier(componentToTag[tagName])
       }
     },
@@ -159,10 +157,13 @@ export function tamaguiToTailwind(
       if (!t.isJSXIdentifier(path.node.name)) return
       const tagName = path.node.name.name
       if (options.renameComponents !== false && tagName in componentToTag) {
+        didTransform = true
         path.node.name = t.jsxIdentifier(componentToTag[tagName])
       }
     },
   })
+
+  if (!didTransform) return source
 
   const output = generate(ast, {
     retainLines: true,
@@ -218,10 +219,7 @@ function propValueToClass(
   return modifier ? `${modifier}:${cls}` : cls
 }
 
-function extractPseudoClasses(
-  attr: t.JSXAttribute,
-  modifier: string
-): string[] | null {
+function extractPseudoClasses(attr: t.JSXAttribute, modifier: string): string[] | null {
   // value should be an object expression: hoverStyle={{ bg: 'red', opacity: 0.5 }}
   if (!t.isJSXExpressionContainer(attr.value)) return null
   const expr = attr.value.expression

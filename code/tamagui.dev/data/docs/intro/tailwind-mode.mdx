@@ -1,13 +1,16 @@
-# Tamagui Tailwind Mode
+---
+title: Tailwind Mode
+description: Tailwind v4 utility syntax for Tamagui components
+---
 
 Tailwind mode lets Tamagui components consume Tailwind-style `className` strings
-and turn supported utilities into Tamagui styles. It is meant for projects that
-want Tailwind v4 syntax while still using Tamagui components, tokens, themes,
-media, and pseudo-state handling.
+and turn supported utilities into Tamagui styles. It is built for projects that
+want Tailwind syntax while keeping Tamagui components, tokens, themes, media, and
+pseudo-state handling.
 
 ## Configuration
 
-Enable it in your Tamagui config:
+Enable Tailwind-only mode in your Tamagui config:
 
 ```tsx
 import { createTamagui } from 'tamagui'
@@ -60,13 +63,13 @@ Numeric spacing and sizing utilities use Tailwind's scale:
 
 ```tsx
 <View className="p-4 w-24 gap-2" />
-// p-4  -> 16px
+// p-4 -> 16px
 // w-24 -> 96px
 // gap-2 -> 8px
 ```
 
-Not every numeric utility is on that scale. Border widths, z-index, opacity,
-flex values, and raw radius numbers keep their Tailwind meaning:
+Border widths, z-index, opacity, flex values, and raw radius numbers keep their
+Tailwind meaning:
 
 ```tsx
 <View className="border-2 rounded-8 z-10 opacity-50" />
@@ -76,8 +79,7 @@ flex values, and raw radius numbers keep their Tailwind meaning:
 // opacity-50 -> 0.5
 ```
 
-Use arbitrary values when you need literal pixels in source code transformed by
-`@tamagui/to-tailwind`:
+Use arbitrary values when you need literal pixels:
 
 ```tsx
 <View className="w-[100px] p-[10px]" />
@@ -101,8 +103,7 @@ token. A `$` prefix inside `className` is invalid and the class is preserved:
 
 ## Modifiers
 
-Pseudo states, media, platform, and theme modifiers are written with Tailwind's
-colon syntax:
+Pseudo states, media, platform, and theme modifiers use Tailwind's colon syntax:
 
 ```tsx
 <View className="bg-white hover:bg-gray-100 press:opacity-80 sm:p-6 dark:bg-black" />
@@ -115,8 +116,6 @@ Modifiers can be combined:
 ```
 
 ## Built-In Mappings
-
-Common Tailwind utilities map directly:
 
 | Utility | Tamagui style |
 | --- | --- |
@@ -132,18 +131,6 @@ Common Tailwind utilities map directly:
 Configured shorthands are also available. The v6 shorthands include mappings
 such as `bg`, `p`, `pt`, `px`, `m`, `mx`, `rounded`, `w`, `h`, `items`,
 `justify`, `grow`, `shrink`, and `z`.
-
-## Class Preservation
-
-Only recognized Tailwind-style classes are consumed:
-
-```tsx
-<View className="my-card bg-blue5 text-center another-class" />
-```
-
-In that example, `bg-blue5` becomes a Tamagui style. `my-card`,
-`text-center`, and `another-class` stay in the final `className` unless they are
-handled by the active mapping.
 
 ## Current Gaps
 

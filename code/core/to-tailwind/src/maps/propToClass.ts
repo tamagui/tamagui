@@ -5,6 +5,7 @@
 
 export const propToTailwindPrefix: Record<string, string> = {
   // backgrounds
+  background: 'bg',
   backgroundColor: 'bg',
   backgroundImage: 'bg',
   backgroundPosition: 'bg',

@@ -233,6 +233,7 @@ function mergeDeep(target: any, source: any): any {
  * its 'flat' / 'tamagui-and-flat' values get re-added here alongside StyleMode.)
  */
 function isFlatModeEnabled(config: TamaguiInternalConfig): boolean {
+  if (isTailwindModeDisabled()) return false
   const styleMode = config.settings?.styleMode
   if (!styleMode) return false
   // tailwind mode requires flat-style processing for the converted props
@@ -241,11 +242,16 @@ function isFlatModeEnabled(config: TamaguiInternalConfig): boolean {
 }
 
 function isTailwindModeEnabled(config: TamaguiInternalConfig): boolean {
+  if (isTailwindModeDisabled()) return false
   const styleMode = config.settings?.styleMode
   if (!styleMode) return false
   // tailwind mode is enabled in 'tailwind' or 'tamagui-and-tailwind'
   if (styleMode === 'tailwind' || styleMode === 'tamagui-and-tailwind') return true
   return false
+}
+
+function isTailwindModeDisabled(): boolean {
+  return process.env.TAMAGUI_DISABLE_TAILWIND_MODE === '1'
 }
 
 /**
@@ -586,7 +592,9 @@ function tailwindClassToFlatProp(
     const sized = tailwindSizingValue(expandedProp, value)
     if (sized != null) {
       const key =
-        modifiers.length > 0 ? `$${modifiers.join(':')}:${expandedProp}` : `$${expandedProp}`
+        modifiers.length > 0
+          ? `$${modifiers.join(':')}:${expandedProp}`
+          : `$${expandedProp}`
       return { key, value: sized }
     }
   }

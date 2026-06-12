@@ -2,9 +2,19 @@
   "name": "@tamagui/to-tailwind",
   "version": "2.0.0-rc.31",
   "private": false,
-  "main": "dist/index.cjs",
-  "module": "dist/index.native.js",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
   "source": "src/index.ts",
+  "exports": {
+    ".": {
+      "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
+    }
+  },
   "license": "MIT",
   "scripts": {
     "build": "tamagui-build",

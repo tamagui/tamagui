@@ -88,6 +88,9 @@ one core change; everything else is config data. Deferred for now (native alread
 ## Run
 
 ```
+# after a fresh root install, install the comparison app deps locally first:
+#   cd code/comparisons/conformance/web && bun install
+#   cd ../native && bun install
 bun code/comparisons/conformance/run.ts                 # web  → report/index.md
 # native prereqs (see gotcha #1): FRESH metro session + cold-launched Expo Go
 bun code/comparisons/conformance/run-native.ts          # native → report-native/index.md
@@ -101,10 +104,16 @@ bun code/comparisons/conformance/gen-palette-v4.ts      # regenerate palette fro
   `public/tailwind/proof/`, all 0.0% diff), class/prop examples, honest coverage + variants tables.
   Validated by rendering: `one dev` (site), screenshotted light/dark/mobile, doc links 200.
   Run it: `cd code/tamagui.dev && bun run dev --port 3456` then open `/tailwind`.
+- Host/query detection for Tailwind docs mode lives in `features/docs/isTailwindMode.ts`.
+  Production uses `tailwind.tamagui.dev`; development can use `?syntax=tailwind`.
+- Tailwind-specific docs page lives at `/docs/intro/tailwind-mode` and the promo route links to
+  `/tailwind/intro/tailwind-mode`.
+- Generated comparison output and nested comparison lockfiles are ignored and should not be
+  committed. The comparison apps are intentionally not root workspaces, so root installs do not pull
+  their Tailwind/NativeWind/Expo dependency sets.
 
 ## Not done yet
 
 - Close the 4 real conversion gaps via multi-target shorthands (above) when picking this back up.
-- Skeptic follow-ups for the promo page: a Tailwind-specific "how it works" doc (CTAs currently land
-  on the generic intro in tailwind codeMode); optionally link the full 122-case report + one real
-  diff image; mobile polish on the hero code card.
+- Optional promo-page follow-ups: link the full 122-case report + one real diff image; mobile polish
+  on the hero code card.

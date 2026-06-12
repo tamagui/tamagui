@@ -28,18 +28,18 @@ describe('tailwind mode - basic className', () => {
     expect(rule[StyleObjectValue]).toBe('red')
   })
 
-  test('className="w-100 h-50" sets width=100px and height=50px', () => {
+  test('className="w-100 h-50" uses the Tailwind spacing scale', () => {
     const styles = simplifiedGetSplitStyles(View, {
       className: 'w-100 h-50',
     } as any)
 
     const wRule = findRule(styles.rulesToInsert, 'width')
     expect(wRule).toBeTruthy()
-    expect(wRule[StyleObjectValue]).toBe('100px')
+    expect(wRule[StyleObjectValue]).toBe('400px')
 
     const hRule = findRule(styles.rulesToInsert, 'height')
     expect(hRule).toBeTruthy()
-    expect(hRule[StyleObjectValue]).toBe('50px')
+    expect(hRule[StyleObjectValue]).toBe('200px')
   })
 
   test('className="opacity-50" sets opacity to 0.5', () => {
@@ -52,18 +52,18 @@ describe('tailwind mode - basic className', () => {
     expect(rule[StyleObjectValue]).toBe(0.5)
   })
 
-  test('className="p-10 m-5" sets padding=10px and margin=5px', () => {
+  test('className="p-10 m-5" uses the Tailwind spacing scale', () => {
     const styles = simplifiedGetSplitStyles(View, {
       className: 'p-10 m-5',
     } as any)
 
     const ptRule = findRule(styles.rulesToInsert, 'paddingTop')
     expect(ptRule).toBeTruthy()
-    expect(ptRule[StyleObjectValue]).toBe('10px')
+    expect(ptRule[StyleObjectValue]).toBe('40px')
 
     const mtRule = findRule(styles.rulesToInsert, 'marginTop')
     expect(mtRule).toBeTruthy()
-    expect(mtRule[StyleObjectValue]).toBe('5px')
+    expect(mtRule[StyleObjectValue]).toBe('20px')
   })
 })
 
@@ -83,7 +83,7 @@ describe('tailwind mode - modifiers', () => {
     expect(hoverRule[StyleObjectValue]).toBe('blue')
   })
 
-  test('className="sm:p-20" generates media query class with 20px', () => {
+  test('className="sm:p-20" generates media query class with scaled spacing', () => {
     const styles = simplifiedGetSplitStyles(View, {
       className: 'sm:p-20',
     } as any)
@@ -96,7 +96,7 @@ describe('tailwind mode - modifiers', () => {
         r[StyleObjectIdentifier]?.includes('_sm')
     )
     expect(smPadRule).toBeTruthy()
-    expect(smPadRule[StyleObjectIdentifier]).toContain('20px')
+    expect(smPadRule[StyleObjectIdentifier]).toContain('80px')
   })
 
   test('className="sm:hover:bg-purple" generates combined modifier class', () => {
@@ -266,6 +266,39 @@ describe('tailwind mode - disabled', () => {
         styleMode: 'tailwind',
       },
     })
+  })
+
+  test('env var disables tailwind className processing', () => {
+    const defaultConfig = config.getDefaultTamaguiConfig()
+    createTamagui({
+      ...defaultConfig,
+      settings: {
+        ...defaultConfig.settings,
+        styleMode: 'tailwind',
+      },
+    })
+
+    const previous = process.env.TAMAGUI_DISABLE_TAILWIND_MODE
+    process.env.TAMAGUI_DISABLE_TAILWIND_MODE = '1'
+
+    try {
+      const styles = simplifiedGetSplitStyles(View, {
+        className: 'bg-red hover:bg-blue',
+      } as any)
+
+      const bgRule = findAnyRule(styles.rulesToInsert, 'backgroundColor')
+      expect(bgRule).toBeNull()
+
+      const finalClassName = styles.viewProps?.className || ''
+      expect(finalClassName).toContain('bg-red')
+      expect(finalClassName).toContain('hover:bg-blue')
+    } finally {
+      if (previous == null) {
+        delete process.env.TAMAGUI_DISABLE_TAILWIND_MODE
+      } else {
+        process.env.TAMAGUI_DISABLE_TAILWIND_MODE = previous
+      }
+    }
   })
 })
 

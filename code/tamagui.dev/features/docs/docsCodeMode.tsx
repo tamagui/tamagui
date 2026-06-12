@@ -1,21 +1,29 @@
 import { startTransition, useEffect, useState } from 'react'
 import { isClient } from 'tamagui'
+import { isTailwindLocation, isTailwindPath } from './isTailwindMode'
 
 export type CodeMode = 'tamagui' | 'tailwind'
 
 const STORAGE_KEY = 'tamagui-code-mode'
 
-let codeMode: CodeMode = 'tamagui'
+function getBrowserCodeMode(): CodeMode {
+  if (!isClient) return 'tamagui'
 
-// restore from localStorage
-if (isClient) {
+  if (isTailwindLocation(window.location) || isTailwindPath(window.location.pathname)) {
+    return 'tailwind'
+  }
+
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored === 'tailwind') codeMode = 'tailwind'
+    if (stored === 'tailwind') return 'tailwind'
   } catch {}
+
+  return 'tamagui'
 }
 
-const listeners = new Set<Function>()
+let codeMode: CodeMode = getBrowserCodeMode()
+
+const listeners = new Set<(next: CodeMode) => void>()
 
 export const setCodeMode = (next: CodeMode) => {
   codeMode = next
@@ -33,6 +41,8 @@ export const useCodeMode = (): CodeMode => {
   const [mode, setMode] = useState(codeMode)
 
   useEffect(() => {
+    setMode(getBrowserCodeMode())
+
     const fn = (next: CodeMode) => {
       startTransition(() => {
         setMode(next)

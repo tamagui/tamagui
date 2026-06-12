@@ -6,7 +6,7 @@ import { Link } from '~/components/Link'
 import { HomeH2, HomeH3 } from '~/features/site/home/HomeHeaders'
 import { conformance, proofCases, proofLegs, type ProofCase } from './tailwindData'
 
-const tailwindIntroductionHref = '/tailwind/intro/introduction' as Href
+const tailwindModeHref = '/tailwind/intro/tailwind-mode' as Href
 
 // one leg of a proof: the cropped harness render on a neutral specimen stage. uses a CSS
 // background-image (reliable on web) so light-background crops read as intentional specimens.
@@ -176,7 +176,7 @@ export function TailwindConformance() {
           real platform differences like CSS margin-collapse, which flexbox does not have.
           No fallbacks.
         </Paragraph>
-        <Link href={tailwindIntroductionHref} asChild>
+        <Link href={tailwindModeHref} asChild>
           <Paragraph fontFamily="$mono" size="$2" color="$accent7" cursor="pointer">
             Read the docs
           </Paragraph>

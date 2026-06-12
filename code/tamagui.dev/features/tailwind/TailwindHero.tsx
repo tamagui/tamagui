@@ -5,7 +5,7 @@ import { ButtonLink } from '~/components/Link'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
 
-const tailwindIntroductionHref = '/tailwind/intro/introduction' as Href
+const tailwindModeHref = '/tailwind/intro/tailwind-mode' as Href
 const tailwindStylesHref = '/tailwind/intro/styles' as Href
 
 // a single restrained code line: <View className="..." />, lightly two-toned.
@@ -89,16 +89,11 @@ export function TailwindHero() {
         <HeroCode />
 
         <XStack gap="$3" items="center" flexWrap="wrap" justify="center" pt="$2">
-          <ButtonLink
-            href={tailwindIntroductionHref}
-            theme="accent"
-            size="$5"
-            fontFamily="$mono"
-          >
+          <ButtonLink href={tailwindModeHref} theme="accent" size="$5" fontFamily="$mono">
             Read the docs
           </ButtonLink>
           <ButtonLink href={tailwindStylesHref} chromeless size="$5" fontFamily="$mono">
-            How it works
+            Styling reference
           </ButtonLink>
         </XStack>
       </ContainerLarge>

@@ -47,6 +47,13 @@ import { SearchButton } from './SearchButton'
 import { UpgradeToProPopover } from './UpgradeToProPopover'
 import { UserAvatar } from './UserAvatar'
 import type { HeaderProps } from './types'
+import { setCodeMode, useCodeMode } from '../../docs/docsCodeMode'
+import {
+  isTailwindHost,
+  isTailwindPath,
+  toTailwindPath,
+  toTamaguiPath,
+} from '../../docs/isTailwindMode'
 
 export function Header(props: HeaderProps) {
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -1112,26 +1119,65 @@ const Frame = styled(YStack, {
 
 const CodeModeToggle = React.memo(() => {
   const pathname = usePathname()
-  const router = useRouter()
-  const isTailwind = typeof window !== 'undefined' && window.location.search.includes('syntax=tailwind')
+  const codeMode = useCodeMode()
+  const [mounted, setMounted] = React.useState(false)
 
-  const setMode = React.useCallback((mode: 'tamagui' | 'tailwind') => {
-    if (mode === 'tailwind') {
-      router.push(`${pathname}?syntax=tailwind` as any)
-    } else {
-      router.push(pathname as any)
-    }
-  }, [pathname, router])
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const isTailwind = mounted && (codeMode === 'tailwind' || isTailwindPath(pathname))
+  const isTamagui = mounted && !isTailwind
+
+  const setMode = React.useCallback(
+    (mode: 'tamagui' | 'tailwind') => {
+      if (typeof window === 'undefined') return
+
+      setCodeMode(mode)
+
+      const url = new URL(window.location.href)
+
+      if (mode === 'tailwind') {
+        const tailwindPath = toTailwindPath(pathname)
+        if (tailwindPath === pathname) {
+          url.searchParams.set('syntax', 'tailwind')
+        } else {
+          url.searchParams.delete('syntax')
+        }
+        window.location.href = `${url.origin}${tailwindPath}${url.search}`
+        return
+      }
+
+      url.searchParams.delete('syntax')
+      const tamaguiPath = toTamaguiPath(pathname)
+
+      if (isTailwindHost(url.host)) {
+        url.host = url.host.replace(/^tailwind\./, '')
+        window.location.href = `${url.origin}${tamaguiPath}${url.search}`
+        return
+      }
+
+      window.location.href = `${url.origin}${tamaguiPath}${url.search}`
+    },
+    [pathname]
+  )
 
   return (
-    <XGroup maxH={28} size="$2" bg="$color2" borderRadius="$3" borderWidth={1} borderColor="$borderColor">
+    <XGroup
+      maxH={28}
+      size="$2"
+      bg="$color2"
+      borderRadius="$3"
+      borderWidth={1}
+      borderColor="$borderColor"
+    >
       <XGroup.Item>
         <Button
           size="$2"
           px="$2"
-          bg={!isTailwind ? '$color5' : 'transparent'}
-          color={!isTailwind ? '$color12' : '$color8'}
-          fontWeight={!isTailwind ? '600' : '400'}
+          bg={isTamagui ? '$color5' : 'transparent'}
+          color={isTamagui ? '$color12' : '$color8'}
+          fontWeight={isTamagui ? '600' : '400'}
           fontSize={11}
           onPress={() => setMode('tamagui')}
           borderWidth={0}

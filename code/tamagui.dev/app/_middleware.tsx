@@ -1,6 +1,11 @@
 import { createMiddleware } from 'one'
 import fs from 'node:fs'
 import path from 'node:path'
+import {
+  isTailwindHost,
+  isTailwindPath,
+  toTailwindPath,
+} from '../features/docs/isTailwindMode'
 
 // cache for component versions to avoid filesystem operations on every request
 const componentVersionCache = new Map<string, string[]>()
@@ -80,6 +85,18 @@ initializeVersionCache()
 
 export default createMiddleware(async ({ request, next }) => {
   const url = new URL(request.url)
+
+  if (
+    isTailwindHost(request.headers.get('host') || '') &&
+    !isTailwindPath(url.pathname)
+  ) {
+    const tailwindPath = toTailwindPath(url.pathname)
+
+    if (tailwindPath !== url.pathname) {
+      url.pathname = tailwindPath
+      return Response.redirect(url, 308)
+    }
+  }
 
   // handle llms.txt - serve full docs directly (no redirect)
   if (

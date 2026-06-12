@@ -254,14 +254,26 @@ describe('tamaguiToTailwind', () => {
       // should be unchanged (lowercase elements)
       expect(output).toContain('<div')
       expect(output).toContain('<button')
-      expect(output).toContain("style={{")
+      expect(output).toContain('style={{')
+    })
+
+    test('preserves no-op code exactly', () => {
+      const input = `import { createTamagui } from 'tamagui'
+
+const config = createTamagui({
+  themes: {},
+})`
+
+      expect(tamaguiToTailwind(input)).toBe(input)
     })
 
     test('handles spread props', () => {
-      const input = `<View {...props} backgroundColor="red" />`
+      const input = `<View background="red" {...props} width={200} />`
       const output = tamaguiToTailwind(input)
       expect(output).toContain('{...props}')
       expect(output).toContain('bg-red')
+      expect(output).toContain('w-[200px]')
+      expect(output).not.toContain('background=')
     })
   })
 
