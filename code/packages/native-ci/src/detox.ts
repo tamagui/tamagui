@@ -136,7 +136,11 @@ export async function runDetoxTests(options: DetoxRunnerOptions): Promise<number
 
   // Use Bun.spawn with timeout to prevent hanging on zombie processes
   const proc = Bun.spawn(['npx', ...detoxArgs], {
-    env: { ...process.env, DETOX_SERVER_PORT: String(DETOX_SERVER_PORT) },
+    env: {
+      ...process.env,
+      DETOX_SERVER_PORT: String(DETOX_SERVER_PORT),
+      TAMAGUI_DETOX_TEST_FILES: options.testFiles?.join(' ') || '',
+    },
     stdout: 'inherit',
     stderr: 'inherit',
   })

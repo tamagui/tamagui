@@ -8,7 +8,7 @@ module.exports = {
   testMatch: ['<rootDir>/e2e/**/*.test.ts'],
   testTimeout: 180000, // 3 minutes for CI environments with slow emulators
   maxWorkers,
-  globalSetup: 'detox/runners/jest/globalSetup',
+  globalSetup: '<rootDir>/e2e/globalSetup.js',
   globalTeardown: 'detox/runners/jest/globalTeardown',
   reporters: ['detox/runners/jest/reporter'],
   testEnvironment: 'detox/runners/jest/testEnvironment',

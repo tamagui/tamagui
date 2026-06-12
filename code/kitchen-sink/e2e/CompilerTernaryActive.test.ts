@@ -8,30 +8,15 @@
  */
 
 import * as assert from 'assert'
-import { execSync } from 'child_process'
-import { unlinkSync, existsSync } from 'fs'
 import { by, device, element, expect, waitFor } from 'detox'
 import { navigateToTestCase } from './utils/navigation'
 import { getDominantColor, formatRGB } from './utils/colors'
 import { safeLaunchApp, safeReloadApp } from './utils/detox'
 
-const SOURCE_FILE = 'src/usecases/CompilerTernaryActive.tsx'
-const NATIVE_FILE = 'src/usecases/CompilerTernaryActive.native.tsx'
-
 describe('CompilerTernaryActive', () => {
   beforeAll(async () => {
-    if (existsSync(NATIVE_FILE)) {
-      unlinkSync(NATIVE_FILE)
-    }
-
-    console.log('Running tamagui build...')
-    execSync(`npx tamagui build ${SOURCE_FILE} --target native --output-around`, {
-      stdio: 'inherit',
-    })
-    console.log('Build complete, .native.tsx generated')
-
     await safeLaunchApp({ newInstance: true })
-  }, 600_000) // tamagui build can occasionally take 5-12 min on slow CI runners
+  })
 
   it('optimized and non-optimized text should match colors in both states', async () => {
     await safeReloadApp()
