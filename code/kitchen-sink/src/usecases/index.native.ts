@@ -16,6 +16,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AnimationComprehensiveCase').AnimationComprehensiveCase,
   Benchmark: () => require('./Benchmark').Benchmark,
   ButtonCircular: () => require('./ButtonCircular').ButtonCircular,
+  GroupDisabledStyleLatchCase: () =>
+    require('./GroupDisabledStyleLatchCase').GroupDisabledStyleLatchCase,
   ButtonCustom: () => require('./ButtonCustom').ButtonCustom,
   ButtonInverse: () => require('./ButtonInverse').ButtonInverse,
   ButtonUnstyled: () => require('./ButtonUnstyled').ButtonUnstyled,

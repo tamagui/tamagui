@@ -966,9 +966,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           const emitterTransforms = transformTargetsRef.value
           const hasEmitterUpdates = emitterAnimated !== null
 
-          // Use emitter values if available, otherwise use React state values
+          // Use emitter values if available, otherwise use React state values.
+          // statics must fall back to the render's staticStyles (not {}): once an
+          // emitter snapshot has applied static keys, reanimated never unsets
+          // them, so after the latch drops a stale emitted value (e.g. a border
+          // color that missed animateOnly) would keep painting over the fresh
+          // style prop forever
           const animatedValues = hasEmitterUpdates ? emitterAnimated! : animatedStyles
-          const staticValues = hasEmitterUpdates ? emitterStatic! : {}
+          const staticValues = hasEmitterUpdates ? emitterStatic! : staticStyles
 
           // read exit state from shared values
           const currentlyExiting = isExitingRef.value
@@ -1055,6 +1060,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         isWeb
           ? [
               animatedStyles,
+              staticStyles,
               baseConfig,
               propertyConfigs,
               disableAnimation,
