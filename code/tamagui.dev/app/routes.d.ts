@@ -6,7 +6,7 @@ import type { OneRouter } from 'one'
 declare module 'one' {
   export namespace OneRouter {
     export interface __routes<T extends string = string> extends Record<string, unknown> {
-      StaticRoutes: 
+      StaticRoutes:
         | `/`
         | `/(blog)`
         | `/(blog)/blog`
@@ -67,7 +67,7 @@ declare module 'one' {
         | `/test`
         | `/theme`
         | `/theme/`
-      DynamicRoutes: 
+      DynamicRoutes:
         | `/(blog)/blog/${OneRouter.SingleRoutePart<T>}`
         | `/(docs)/docs/core/${OneRouter.SingleRoutePart<T>}`
         | `/(docs)/docs/guides/${OneRouter.SingleRoutePart<T>}`
@@ -93,7 +93,7 @@ declare module 'one' {
         | `/docs/intro/${OneRouter.SingleRoutePart<T>}`
         | `/theme/${string}`
         | `/ui/${string}`
-      DynamicRouteTemplate: 
+      DynamicRouteTemplate:
         | `/(blog)/blog/[slug]`
         | `/(docs)/docs/core/[slug]`
         | `/(docs)/docs/guides/[slug]`

@@ -135,6 +135,7 @@ export function Header(props: HeaderProps) {
           </XStack>
           {/* do shadow separate so we can contain paint because its causing perf issues */}
           <XStack
+            className="ease-in-out all ms200"
             z={-1}
             rounded="$10"
             fullscreen

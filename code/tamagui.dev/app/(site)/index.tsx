@@ -85,7 +85,7 @@ export default function TamaguiHomePage() {
         />
         <HomeThemes />
       </TintSection>
-      <TintSection index={4} mb={-120} z={10000}>
+      <TintSection index={4} mb={-120} z={100}>
         <HomeResponsive />
       </TintSection>
       <TintSection index={5} p={0} z={0}>
