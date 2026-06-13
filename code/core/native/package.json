@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/native",
-  "version": "2.2.0-1781132308330",
+  "version": "2.3.0",
   "description": "Native setup modules for Tamagui - portals, gesture handler, worklets, and more",
   "type": "module",
   "sideEffects": [
