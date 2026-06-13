@@ -64,14 +64,48 @@ describe('SheetFitKeyboardSafeArea', () => {
 
     await device.enableSynchronization()
   })
+
+  it('returns the fit sheet to a bottom-anchored fit position after the keyboard dismisses', async () => {
+    if (isAndroid()) return
+
+    await device.disableSynchronization()
+
+    // dismiss the keyboard: with keyboardShouldPersistTaps="handled", tapping a
+    // non-responder inside the scrollview resigns the first responder.
+    await element(by.id('repro-3pc-native-item-0')).tap()
+    await sleep(2000)
+
+    const safeAreaTop = await readFrameTop('repro-3pc-native-safearea-marker')
+    const sheetFrame = await readFrame('repro-3pc-native-frame')
+    console.info(
+      `post-dismiss sheet frame: y=${sheetFrame.y} height=${sheetFrame.height}, safe-area top=${safeAreaTop}`
+    )
+
+    // the 3pc regression: after keyboard dismiss the sheet stayed measured at
+    // full viewport height and snapped back to y=0, putting the header under the
+    // notch. post-dismiss the fit sheet must sit at/below the safe-area line.
+    if (sheetFrame.y < safeAreaTop - 1) {
+      throw new Error(
+        `fit sheet sits above the top safe area after keyboard dismiss: ` +
+          `sheet top=${sheetFrame.y}, safe-area top=${safeAreaTop}`
+      )
+    }
+
+    await device.enableSynchronization()
+  })
 })
 
 async function readFrameTop(id: string) {
+  return (await readFrame(id)).y
+}
+
+async function readFrame(id: string) {
   const attributes = await element(by.id(id)).getAttributes()
   const frame = (attributes as any).frame || (attributes as any).elementFrame
   const y = frame?.y
-  if (typeof y !== 'number') {
-    throw new Error(`expected ${id} to expose frame.y, got ${JSON.stringify(attributes)}`)
+  const height = frame?.height
+  if (typeof y !== 'number' || typeof height !== 'number') {
+    throw new Error(`expected ${id} to expose a frame, got ${JSON.stringify(attributes)}`)
   }
-  return Math.round(y)
+  return { y: Math.round(y), height: Math.round(height) }
 }
