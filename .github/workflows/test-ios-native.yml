@@ -7,12 +7,18 @@ on:
     branches: [main, 'v*']
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 env:
   test_container_app_path: code/kitchen-sink
   MAESTRO_DRIVER_STARTUP_TIMEOUT: 360000
 
 jobs:
   build:
+    # don't forward secrets (KV_STORE_REDIS_REST_*) to fork PR builds running on macOS runners.
+    # fork PRs skip the native build entirely; same-repo refs still build with secrets.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     uses: ./.github/workflows/build-ios-kitchensink-app.yml
     with:
       configuration: Debug
@@ -21,6 +27,7 @@ jobs:
   test:
     name: Run Maestro Tests (exports=${{ matrix.package-exports }})
     needs: build
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: macos-15
     timeout-minutes: 45
     strategy:

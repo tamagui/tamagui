@@ -11,6 +11,9 @@ on:
       - v2
       - 'v2-*'
 
+permissions:
+  contents: read
+
 # cancel in-progress runs on the same branch (avoids duplicate PR + push runs)
 concurrency:
   group: checks-${{ github.ref }}
@@ -83,7 +86,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version-file: 'package.json'
 

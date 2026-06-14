@@ -9,6 +9,9 @@ on:
       - rn82
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 # cancel in-progress runs on feature branches, but let main finish for full history
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -213,7 +216,7 @@ jobs:
 
       - name: Setup Bun
         if: env.SKIP_IOS_TESTS != 'true'
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version-file: 'package.json'
 
@@ -320,7 +323,7 @@ jobs:
 
       - name: Setup Android SDK
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
 
       - name: Prebuild Android
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
@@ -575,14 +578,14 @@ jobs:
 
       - name: Setup Bun
         if: env.SKIP_ANDROID_TESTS != 'true'
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version-file: 'package.json'
 
       - name: Start Android Emulator and Run Tests
         if: env.SKIP_ANDROID_TESTS != 'true'
         id: android-tests
-        uses: reactivecircus/android-emulator-runner@v2.37.0
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         with:
           api-level: 31
           target: google_apis
