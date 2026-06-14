@@ -1,0 +1,18 @@
+title = "tamagui gitleaks config"
+
+# build on top of gitleaks' built-in rules
+[extend]
+useDefault = true
+
+[allowlist]
+description = "known public / non-secret values that should not trip the scanner"
+# supabase ANON keys are public by design (RLS-gated) and the example env file
+# ships intentional placeholders
+paths = [
+  '''code/packages/bento-get/src/constants.ts''',
+  '''code/tests/next-site/.env.local.example''',
+]
+regexes = [
+  # supabase CLI local-dev default keys (iss: supabase-demo) are intentionally public
+  '''supabase-demo''',
+]
