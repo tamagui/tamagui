@@ -9,6 +9,9 @@ on:
 
 permissions:
   contents: read
+  # required: this workflow calls the reusable build-ios-kitchensink-app.yml,
+  # whose build-ios job declares pull-requests: read (caller must grant >= callee)
+  pull-requests: read
 
 env:
   test_container_app_path: code/kitchen-sink
