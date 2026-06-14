@@ -25,8 +25,8 @@ Both leaked credentials are dead; no rotation needed. The anon key currently in
 `bento-get/constants.ts` is a post-rotation key (public by design, RLS-gated).
 
 📋 Optional follow-up: scrub the `df848c8` blob from history (BFG /
-`git filter-repo`) for cleanliness, and run a one-time full-history
-`gitleaks detect` to confirm nothing else lurks.
+`git filter-repo`) for cleanliness. (GitHub secret scanning + push protection
+are now enabled and cover ongoing detection.)
 
 ### ⚠️ A2. Verify / remove the prod `test-user@tamagui.dev` account
 The test-user endpoint previously created this account in the **production**
@@ -72,8 +72,9 @@ bundle.
 ### Secrets hygiene / scanning
 - ✅ `.gitignore`: fixed `.env.test.localp` typo and added key-material globs
   (`*.pem`, `*.key`, `*.p12`, `*.p8`, `*.keystore`, …).
-- ✅ Added `gitleaks` CI workflow + `.gitleaks.toml` (allowlisting the public
-  Supabase anon key and intentional placeholders).
+- Secret scanning is handled by GitHub native secret scanning + push protection
+  (enabled below). A gitleaks CI job was trialed and removed — the org-licensed
+  Action plus full-tree CLI scans weren't worth the cost over native scanning.
 
 ### GitHub project configuration (applied live)
 - ✅ Secret scanning + **push protection** enabled (would have blocked the A1 leak).
@@ -98,8 +99,8 @@ bundle.
 - **Triage the `bun audit` backlog** (≈187 advisories, almost all transitive/dev
   in the site + zero stack). `bun update` for compatible fixes, then resolve the
   residual high/critical.
-- **Run a one-time full-history secret scan** (`gitleaks detect`) after A1 to
-  confirm nothing else lurks, and optionally scrub the A1 blob from history.
+- **Optionally scrub the A1 blob from history** (BFG / `git filter-repo`). The
+  leaked credentials are already dead, so this is cosmetic.
 - **SHA-pin first-party `actions/*`** too (left on `@v4` for now; Dependabot will
   manage them once pinned).
 - **Add rate limiting** to sensitive endpoints (coupon validation, theme
