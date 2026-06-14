@@ -3,6 +3,7 @@ import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { getParityDiscount } from '~/features/geo-pricing/parityConfig'
+import { assertValidCoupon } from '~/features/stripe/assertValidCoupon'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import { stripe } from '~/features/stripe/stripe'
 import { getV2LicenseInvoiceItemCreateParams } from '~/features/stripe/v2LicenseInvoiceItem'
@@ -65,6 +66,13 @@ export default apiRoute(async (req) => {
 
   try {
     const { user } = await ensureAuth({ req })
+
+    // server-side coupon validation: a client-supplied coupon must be valid and
+    // actually apply to the V2 license product before we let it discount the charge
+    if (couponId) {
+      await assertValidCoupon(couponId, STRIPE_PRODUCTS.PRO_V2_LICENSE.productId)
+    }
+
     // Deterministic idempotency base so request retries reuse Stripe operations.
     // paymentMethodId is unique per submit attempt, so a new checkout attempt still works.
     const idempotencyBase = [

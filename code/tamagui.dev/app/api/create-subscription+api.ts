@@ -2,6 +2,7 @@ import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { captureServerError } from '~/features/posthog'
+import { assertValidCoupon } from '~/features/stripe/assertValidCoupon'
 import { stripe } from '~/features/stripe/stripe'
 import type Stripe from 'stripe'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
@@ -35,6 +36,11 @@ export default apiRoute(async (req) => {
 
     if (!stripeCustomerId) {
       return Response.json({ error: 'Failed to get or create customer' }, { status: 500 })
+    }
+
+    // server-side coupon validation before it can discount the Pro charge
+    if (couponId) {
+      await assertValidCoupon(couponId, STRIPE_PRODUCTS.PRO_SUBSCRIPTION.productId)
     }
 
     // Attach the payment method to the customer

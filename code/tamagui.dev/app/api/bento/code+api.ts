@@ -3,25 +3,11 @@ import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { getQuery } from '~/features/api/getQuery'
 import { getBentoCode, supabaseAdmin } from '~/features/auth/supabaseAdmin'
-import { hasProAccess } from '~/features/bento/hasProAccess'
 
 export const GET: Endpoint = async (req) => {
   const query = getQuery(req)
   const codePath = `${query.section}/${query.part}/${query.fileName}`
   const fileName = `${query.fileName}`
-
-  // CLI
-  if (query.userGithubId) {
-    const hasPro = await hasProAccess(`${query.userGithubId}`)
-    if (!hasPro) {
-      return Response.json({ error: `no_access` }, { status: 500 })
-    }
-    return new Response(await getBentoCode(codePath), {
-      headers: new Headers({
-        'Content-Type': 'text/plain',
-      }),
-    })
-  }
 
   // OSS component
   if (OSS_COMPONENTS.includes(fileName)) {

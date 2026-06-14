@@ -1,6 +1,7 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
+import { assertValidCoupon } from '~/features/stripe/assertValidCoupon'
 import { stripe } from '~/features/stripe/stripe'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import type Stripe from 'stripe'
@@ -44,6 +45,11 @@ export default apiRoute(async (req) => {
     }
 
     const isSubscription = subscription.status === 'active'
+
+    // server-side coupon validation before it can discount the team-seats charge
+    if (couponId) {
+      await assertValidCoupon(couponId, STRIPE_PRODUCTS.PRO_TEAM_SEATS.productId)
+    }
 
     // Attach the payment method to the customer
     await stripe.paymentMethods.attach(paymentMethodId, {
