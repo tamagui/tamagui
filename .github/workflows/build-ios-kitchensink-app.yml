@@ -50,7 +50,7 @@ jobs:
         working-directory: ${{ env.test_container_app_path }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
@@ -99,7 +99,7 @@ jobs:
           fi
 
       - name: Check If Build Already Exists
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         id: pre-check-has-build
         if: ${{ steps.get-fingerprint-from-cache.outputs.fingerprint != 'null' }}
         with:
@@ -177,7 +177,7 @@ jobs:
 
       - name: Cache Pods
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         env:
           cache-name: ${{ env.app_id }}-pods
         with:
@@ -199,7 +199,7 @@ jobs:
 
       - name: Upload Pod Install Log on Failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pod-install-log
           path: ${{ env.test_container_app_path }}/pod-install.log
@@ -228,7 +228,7 @@ jobs:
 
       - name: Check If Build Already Exists
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit }}
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         id: check-has-build
         with:
           key: ${{ env.app_id }}-${{ inputs.configuration }}-${{ steps.calculate-fingerprint.outputs.fingerprint }}
@@ -238,7 +238,7 @@ jobs:
       - name: Restore Build Cache
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
         id: restore-build-cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         env:
           cache-name: ${{ env.app_id }}-build
         with:
@@ -263,13 +263,13 @@ jobs:
 
       - name: Upload Built App to Cache
         if: ${{ !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           key: ${{ steps.check-has-build.outputs.cache-primary-key }}
           path: ${{ steps.get-built-app-path.outputs.built_app_path }}
 
       - name: Upload Build Log
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v7
         if: ${{ always() && !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
         with:
           name: xcodebuild-${{ env.app_id }}-${{ inputs.configuration }}.log
@@ -277,7 +277,7 @@ jobs:
             ${{ env.test_container_app_path }}/xcodebuild.log
 
       - name: Save Build Cache
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         if: ${{ always() && !steps.pre-check-has-build.outputs.cache-hit && !steps.check-has-build.outputs.cache-hit }}
         with:
           key: ${{ steps.restore-build-cache.outputs.cache-primary-key }}
