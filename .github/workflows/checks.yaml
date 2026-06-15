@@ -31,6 +31,20 @@ jobs:
       - name: Install
         uses: ./.github/actions/install
 
+      # replaces dependabot - gate only on NEW critical advisories. the ignored
+      # ids below are all dev/test-only transitive deps (happy-dom, vitest ui,
+      # handlebars, protobufjs, shell-quote) that don't ship in runtime code.
+      # run `bun audit` locally to review the full high/critical backlog.
+      - name: Security audit
+        run: |
+          bun audit --audit-level critical \
+            --ignore GHSA-2w6w-674q-4c4q \
+            --ignore GHSA-96g7-g7g9-jxw8 \
+            --ignore GHSA-37j7-fg3j-429f \
+            --ignore GHSA-xq3m-2v4x-88gg \
+            --ignore GHSA-w7jw-789q-3m8p \
+            --ignore GHSA-5xrq-8626-4rwp
+
       - name: Check
         run: bun run check
 
