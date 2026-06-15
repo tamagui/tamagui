@@ -31,6 +31,14 @@ jobs:
       - name: Install
         uses: ./.github/actions/install
 
+      # replaces dependabot. all critical advisories are pinned to patched
+      # versions via root package.json "overrides", so this gates cleanly with
+      # no ignore list. remaining high/moderate advisories require cross-major
+      # bumps of example/tooling deps (vite, undici, tar, react-router, etc.) -
+      # run `bun audit` locally to review them.
+      - name: Security audit
+        run: bun audit --audit-level critical
+
       - name: Check
         run: bun run check
 
