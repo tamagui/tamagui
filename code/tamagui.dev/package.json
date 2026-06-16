@@ -86,7 +86,7 @@
     "swr": "^2.2.5",
     "tamagui": "workspace:*",
     "three": "^0.172.0",
-    "valibot": "^0.35.0",
+    "valibot": "^1.2.0",
     "victory": "^37.0.2",
     "vite": "^8.0.3",
     "vite-plugin-inspect": "^0.8.4",
