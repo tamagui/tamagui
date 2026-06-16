@@ -3403,6 +3403,7 @@
   },
   "patchedDependencies": {
     "gray-matter@4.0.3": "patches/gray-matter@4.0.3.patch",
+    "brace-expansion@5.0.6": "patches/brace-expansion@5.0.6.patch",
   },
   "overrides": {
     "@babel/core": "7.29.7",
