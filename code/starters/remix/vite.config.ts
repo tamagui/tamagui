@@ -6,8 +6,5 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
-  plugins: [
-    reactRouter(),
-    tamaguiPlugin(),
-  ],
+  plugins: [reactRouter(), tamaguiPlugin()],
 })
