@@ -125,17 +125,35 @@ const MAX_CONNECT_FLAKE_RETRIES = 1
 //     used ONLY by safeLaunchApp/safeReloadApp/safeTerminate; detox's own waitFor emits
 //     capital "Timed out after <n>ms waiting for", so the lowercase form is launch-only.
 //   - the safeLaunchApp/safeReloadApp breaker messages.
+//   - "FBSOpenApplicationServiceErrorDomain" - simulator can't launch the app (same
+//     pattern as RETRYABLE_LAUNCH_PATTERNS in detox utils; never appears in assertions).
+//   - "while tearing down Detox environment" - teardown hang, usually from ws close
+//     lingering after a prior file's crash; never caused by test logic.
+//   - "Detox worker instance has not been installed" - cascading failure when a prior
+//     file's teardown corrupted the worker; the test itself never ran.
 const CONNECT_FLAKE_SIGNATURES: RegExp[] = [
-  /Exceeded timeout of \d+ ms for a hook/,
+  /Exceeded timeout of \d+ ?ms for a hook/,
+  /Exceeded timeout of \d+ ?ms while tearing down/,
+  /Exceeded timeout of \d+ ?ms while handling jest-circus/,
   /\btimed out after \d+ms/,
   /could not connect to Detox/,
   /launch recovery deadline exceeded/,
   /skipping launchApp:/,
   /skipping reload:/,
+  /FBSOpenApplicationServiceErrorDomain/,
+  /FBSOpenApplicationErrorDomain/,
+  /Detox worker instance has not been installed/,
 ]
-
-const ANSI_PATTERN = /\[[0-9;]*m/g
-
+// Signatures that indicate a real test failure (assertion/logic error). When present,
+// the file is classified as real even if flake signatures also appear (e.g., a teardown
+// timeout that cascaded from a real assertion failure).
+const REAL_FAILURE_SIGNATURES: RegExp[] = [
+  /Exceeded timeout of \d+ ?ms while waiting for/,
+  /expect\([^)]+\)\.to/,
+  /AssertionError:/,
+  /(?<!Runtime)Error: (?!.*timed out after)/,
+]
+const ANSI_PATTERN = /\x1b\[[0-9;]*m/g
 interface DetoxFailureClassification {
   /** every spec file with a FAIL line */
   failedFiles: string[]
@@ -144,7 +162,6 @@ interface DetoxFailureClassification {
   /** failed files whose failure looks real (assertion/logic) - never retried */
   realFiles: string[]
 }
-
 /**
  * Classify a detox/jest run's combined output into connect-flake vs real failures,
  * per spec file. jest prints each file's `FAIL e2e/X.test.ts` line followed by that
@@ -162,11 +179,9 @@ export function classifyDetoxFailures(rawOutput: string): DetoxFailureClassifica
   for (const m of output.matchAll(delimiter)) {
     marks.push({ kind: m[1], file: m[2], index: m.index ?? 0 })
   }
-
   const failedFiles: string[] = []
   const flakeFiles: string[] = []
   const realFiles: string[] = []
-
   for (let i = 0; i < marks.length; i++) {
     const mark = marks[i]
     if (mark.kind !== 'FAIL') continue
@@ -174,14 +189,19 @@ export function classifyDetoxFailures(rawOutput: string): DetoxFailureClassifica
     const block = output.slice(mark.index, blockEnd)
     if (failedFiles.includes(mark.file)) continue
     failedFiles.push(mark.file)
-    const isFlake = CONNECT_FLAKE_SIGNATURES.some((sig) => sig.test(block))
-    if (isFlake) {
-      flakeFiles.push(mark.file)
-    } else {
+    // Check for real failures first - if present, don't retry even if flake patterns exist
+    const isReal = REAL_FAILURE_SIGNATURES.some((sig) => sig.test(block))
+    if (isReal) {
       realFiles.push(mark.file)
+    } else {
+      const isFlake = CONNECT_FLAKE_SIGNATURES.some((sig) => sig.test(block))
+      if (isFlake) {
+        flakeFiles.push(mark.file)
+      } else {
+        realFiles.push(mark.file)
+      }
     }
   }
-
   return { failedFiles, flakeFiles, realFiles }
 }
 

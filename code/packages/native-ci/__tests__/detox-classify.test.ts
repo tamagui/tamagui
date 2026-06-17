@@ -128,3 +128,68 @@ Tests:       32 passed, 32 total
   expect(flakeFiles).toEqual([])
   expect(realFiles).toEqual([])
 })
+
+// June 17: simulator FBSOpenApplicationServiceErrorDomain during test run
+const JUNE17_SIMULATOR_LAUNCH_FAILURE = `
+FAIL e2e/TabsOnInteraction.test.ts (240.123 s)
+  TabsOnInteraction
+    ✕ should fire onInteraction with layout for the default selected tab (60000 ms)
+  ● TabsOnInteraction › should fire onInteraction with layout for the default selected tab
+
+    An error was encountered processing the command (domain=FBSOpenApplicationServiceErrorDomain, code=4):
+    Simulator device failed to launch com.tamagui.tamaguikitchensink.
+    Underlying error (domain=FBSOpenApplicationServiceErrorDomain, code=4):
+    	The request to open "com.tamagui.tamaguikitchensink" failed.
+`
+
+// June 17: teardown timeout causing cascading worker failure
+const JUNE17_TEARDOWN_CASCADE = `
+FAIL e2e/TabsOnInteraction.test.ts (240.123 s)
+  TabsOnInteraction
+    ✕ should fire onInteraction with layout for the default selected tab (60000 ms)
+  ● Test suite failed to run
+
+    Exceeded timeout of 30000ms while tearing down Detox environment
+
+FAIL e2e/ShorthandVariables.test.ts (180.456 s)
+  ShorthandVariables
+    ✕ should handle shorthand variables (45000 ms)
+  ● Test suite failed to run
+
+    DetoxRuntimeError: Detox worker instance has not been installed in this context (DetoxSecondaryContext).
+    at get worker (node_modules/detox/src/Detox.js:123:45)
+`
+
+test('classifies simulator FBSOpenApplicationServiceErrorDomain as flake', () => {
+  const { failedFiles, flakeFiles, realFiles } =
+    classifyDetoxFailures(JUNE17_SIMULATOR_LAUNCH_FAILURE)
+  expect(failedFiles).toEqual(['e2e/TabsOnInteraction.test.ts'])
+  expect(flakeFiles).toEqual(['e2e/TabsOnInteraction.test.ts'])
+  expect(realFiles).toEqual([])
+})
+
+test('classifies teardown timeout + cascading worker failure as flake', () => {
+  const { failedFiles, flakeFiles, realFiles } =
+    classifyDetoxFailures(JUNE17_TEARDOWN_CASCADE)
+  expect(failedFiles).toEqual(['e2e/TabsOnInteraction.test.ts', 'e2e/ShorthandVariables.test.ts'])
+  expect(flakeFiles).toEqual(['e2e/TabsOnInteraction.test.ts', 'e2e/ShorthandVariables.test.ts'])
+  expect(realFiles).toEqual([])
+})
+
+test('real assertion failure with teardown timeout stays real', () => {
+  // A real failure followed by teardown timeout - the teardown timeout is flake
+  // but we classify per-file, so this file has both
+  const mixed = `
+FAIL e2e/PressStyleNative.test.ts (42.1 s)
+  PressStyleNative
+    ✕ should fire pressIn and pressOut events on tap (5300 ms)
+  ● PressStyleNative › should fire pressIn and pressOut events on tap
+    Exceeded timeout of 5000ms while waiting for element at by.id("simple-press-in-count") to have text "In: 1"
+  ● Test suite failed to run
+    Exceeded timeout of 30000ms while tearing down Detox environment
+`
+  const { flakeFiles, realFiles } = classifyDetoxFailures(mixed)
+  // File has both real failure AND teardown timeout - real failure takes priority
+  expect(flakeFiles).toEqual([])
+  expect(realFiles).toEqual(['e2e/PressStyleNative.test.ts'])
+})
