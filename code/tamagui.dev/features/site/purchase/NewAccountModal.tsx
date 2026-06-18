@@ -45,8 +45,13 @@ import { authFetch } from '~/features/api/authFetch'
 import { ADMIN_EMAILS } from '~/features/api/isAdmin'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
-import { CURRENT_PRODUCTS, V1_PRODUCTS } from '~/features/stripe/products'
+import { V1_PRODUCTS } from '~/features/stripe/products'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
+import {
+  isExpiredSubscription,
+  isManageableSubscription,
+  isPastDueSubscription,
+} from '~/features/user/subscriptionFilters'
 import { useUser } from '~/features/user/useUser'
 import { useClipboard } from '~/hooks/useClipboard'
 import { Pricing, ProductName, SubscriptionStatus } from '~/shared/types/subscription'
@@ -175,16 +180,10 @@ export const AccountView = () => {
   // Calculate values needed for hooks, but use safe defaults when data isn't ready
   const subscriptions = data?.subscriptions
 
-  const filteredSubscriptions = subscriptions?.filter(
-    (sub) =>
-      (sub.status === SubscriptionStatus.Active ||
-        sub.status === SubscriptionStatus.Trialing) &&
-      sub.subscription_items?.some(
-        (item) =>
-          item.price?.product?.id &&
-          CURRENT_PRODUCTS.includes(item.price.product.id as any)
-      )
-  )
+  // includes past_due/unpaid so a failed-renewal sub stays visible and cancellable -
+  // otherwise the user sees "no subscription" during Stripe's retry window and gets
+  // charged with no way to stop it. see features/user/subscriptionFilters.ts
+  const filteredSubscriptions = subscriptions?.filter(isManageableSubscription)
 
   // Deduplicate by product ID, keeping the one with latest current_period_end
   const activeSubscriptions = filteredSubscriptions?.reduce((acc, sub) => {
@@ -212,22 +211,14 @@ export const AccountView = () => {
     return acc
   }, [] as Subscription[])
 
-  // check for expired/canceled subscriptions (for renewal prompts)
-  const expiredSubscriptions = subscriptions?.filter(
-    (sub) =>
-      (sub.status === SubscriptionStatus.Canceled ||
-        sub.status === SubscriptionStatus.PastDue ||
-        sub.status === SubscriptionStatus.Unpaid ||
-        sub.status === SubscriptionStatus.IncompleteExpired) &&
-      sub.subscription_items?.some(
-        (item) =>
-          item.price?.product?.id &&
-          CURRENT_PRODUCTS.includes(item.price.product.id as any)
-      )
-  )
+  // check for expired/canceled subscriptions (for renewal prompts).
+  // past_due/unpaid are intentionally excluded here - they're live subscriptions surfaced
+  // in the manageable set above with their own "payment failed" banner, not expired ones.
+  const expiredSubscriptions = subscriptions?.filter(isExpiredSubscription)
 
   const hasExpiredSubscription = (expiredSubscriptions?.length ?? 0) > 0
   const hasNoActiveSubscription = (activeSubscriptions?.length ?? 0) === 0
+  const hasPastDueSubscription = activeSubscriptions?.some(isPastDueSubscription) ?? false
 
   const proTeamSubscription = activeSubscriptions?.find((sub) =>
     sub.subscription_items?.some(
@@ -308,6 +299,7 @@ export const AccountView = () => {
             hasBento={data?.accessInfo?.hasBento ?? false}
             hasExpiredSubscription={hasExpiredSubscription}
             hasNoActiveSubscription={hasNoActiveSubscription}
+            hasPastDueSubscription={hasPastDueSubscription}
           />
         )
 
@@ -1103,6 +1095,7 @@ const PlanTab = ({
   hasBento,
   hasExpiredSubscription,
   hasNoActiveSubscription,
+  hasPastDueSubscription,
 }: {
   subscription?: Subscription
   supportSubscription?: Subscription
@@ -1111,6 +1104,7 @@ const PlanTab = ({
   hasBento: boolean
   hasExpiredSubscription: boolean
   hasNoActiveSubscription: boolean
+  hasPastDueSubscription: boolean
 }) => {
   const [showDiscordAccess, setShowDiscordAccess] = useState(false)
   const [showSupportAccess, setShowSupportAccess] = useState(false)
@@ -1185,6 +1179,25 @@ const PlanTab = ({
 
   return (
     <YStack gap="$6">
+      {/* past-due banner - payment failed and Stripe is retrying */}
+      {hasPastDueSubscription && (
+        <YStack
+          bg="$red3"
+          borderColor="$red8"
+          borderWidth={1}
+          borderRadius="$4"
+          p="$4"
+          gap="$3"
+        >
+          <H4 color="$red11">Payment failed - your subscription is past due</H4>
+          <Paragraph color="$red11">
+            Your last payment didn't go through and Stripe is automatically retrying it.
+            To avoid being charged again, cancel your subscription below - cancelling a
+            past-due subscription stops the pending retry immediately.
+          </Paragraph>
+        </YStack>
+      )}
+
       {/* expired subscription banner */}
       {hasExpiredSubscription && hasNoActiveSubscription && (
         <YStack
@@ -1379,9 +1392,13 @@ const CancelSubscriptionSection = ({ subscription }: { subscription: Subscriptio
   const [isLoading, setIsLoading] = useState(false)
   const { refresh } = useUser()
 
+  const isPastDue = isPastDueSubscription(subscription)
+
   const handleCancel = async () => {
     const confirmed = window.confirm(
-      'Are you sure you want to cancel this subscription? You will retain access until the end of your billing period.'
+      isPastDue
+        ? 'Cancel this subscription now? This stops the pending payment retry immediately and ends the subscription.'
+        : 'Are you sure you want to cancel this subscription? You will retain access until the end of your billing period.'
     )
     if (!confirmed) return
 
@@ -1673,9 +1690,11 @@ const ManageTab = ({
   }
 
   // Cancel handler for a specific subscription
-  const handleCancelSubscription = async (subscriptionId: string) => {
+  const handleCancelSubscription = async (subscriptionId: string, isPastDue = false) => {
     const confirmed = window.confirm(
-      'Are you sure you want to cancel this subscription? This action cannot be undone.'
+      isPastDue
+        ? 'Cancel this subscription now? This stops the pending payment retry immediately and ends the subscription.'
+        : 'Are you sure you want to cancel this subscription? This action cannot be undone.'
     )
     if (!confirmed) return
 
@@ -1875,9 +1894,10 @@ const ManageTab = ({
                         : '$yellow9'
                     }
                   >
-                    {subscription.status === SubscriptionStatus.Trialing
+                    {(subscription.status === SubscriptionStatus.Trialing
                       ? SubscriptionStatus.Active
-                      : subscription.status}
+                      : (subscription.status ?? '')
+                    ).replace(/_/g, ' ')}
                   </Paragraph>
                 </XStack>
                 <XStack justify="space-between">
@@ -1904,7 +1924,12 @@ const ManageTab = ({
                     <Button
                       theme="red"
                       disabled={isLoading || !!subscription.cancel_at_period_end}
-                      onPress={() => handleCancelSubscription(subscription.id)}
+                      onPress={() =>
+                        handleCancelSubscription(
+                          subscription.id,
+                          isPastDueSubscription(subscription)
+                        )
+                      }
                     >
                       <Button.Text>
                         {subscription.cancel_at_period_end
