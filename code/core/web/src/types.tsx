@@ -1705,11 +1705,15 @@ type ColorTokenBase =
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof ThemeParsed>
 
+// keep this non-expanded. using `${ColorTokenBase}/${number}` preserves stricter
+// token names, but large user token/theme unions hit TS2590.
+type TokenWithOpacity = `$${string}/${number}`
+
 export type ColorTokens =
   | ColorTokenBase
   | CSSColorNames
   // opacity modifier: $token/50 → parsed at runtime in getTokenForKey
-  | `${ColorTokenBase & string}/${number}`
+  | TokenWithOpacity
 
 export type ZIndexTokens =
   | SpecificTokensSpecial
@@ -1777,10 +1781,7 @@ export type FontWeightValues =
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues
 // font color tokens also support the opacity modifier
 type FontColorTokenBase = `$${GetTokenFontKeysFor<'color'>}`
-export type FontColorTokens =
-  | FontColorTokenBase
-  | number
-  | `${FontColorTokenBase}/${number}`
+export type FontColorTokens = FontColorTokenBase | number | TokenWithOpacity
 export type FontLetterSpacingTokens =
   | `$${GetTokenFontKeysFor<'letterSpacing'>}`
   | number
