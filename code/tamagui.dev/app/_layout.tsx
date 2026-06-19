@@ -12,27 +12,6 @@ setupPopper({
   disableRTL: true,
 })
 
-// when chrome blocks cookies/storage (e.g. "block third-party cookies" in some
-// embedded/partitioned contexts, or "block all cookies"), accessing
-// window.localStorage throws a SecurityError synchronously. that throw happens
-// inside a react layout effect during hydration (color scheme, supabase auth,
-// etc) and unmounts the whole tree, leaving a blank page. install an in-memory
-// shim before any module js runs so every consumer of localStorage/sessionStorage
-// degrades gracefully instead of crashing. runs at parse time (classic inline
-// script) which is before deferred module scripts.
-const safeStorageScript = `(function(){
-function makeSafe(){var m=Object.create(null);return{
-getItem:function(k){k=String(k);return k in m?m[k]:null},
-setItem:function(k,v){m[String(k)]=String(v)},
-removeItem:function(k){delete m[String(k)]},
-clear:function(){m=Object.create(null)},
-key:function(i){return Object.keys(m)[i]||null},
-get length(){return Object.keys(m).length}}}
-['localStorage','sessionStorage'].forEach(function(key){
-try{var s=window[key];var t='__probe'+Math.random();s.setItem(t,'1');s.removeItem(t)}
-catch(e){try{Object.defineProperty(window,key,{configurable:true,value:makeSafe()})}catch(e2){}}})
-})()`
-
 // inlined @font-face (was 4 render-blocking /fonts/*.css links). font-display:swap
 // (was block) so text paints with a fallback immediately instead of FOIT.
 const fontFaceCss = `
@@ -46,7 +25,6 @@ export default function Layout() {
     <html lang="en-US">
       <head>
         <meta charSet="utf-8" />
-        <script dangerouslySetInnerHTML={{ __html: safeStorageScript }} />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta
           name="viewport"
