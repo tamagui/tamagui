@@ -257,7 +257,16 @@ export const HomeResponsive = memo(() => {
           />
           <YStack position="relative" flex={1} height="100%" width="100%">
             <YStack fullscreen className="mask-gradient-down" z={-1}>
-              <YStack fullscreen b="auto" height={439} className="bg-grid" />
+              {/* explicit position avoids fullscreen's inset:0 conflicting with the
+                fixed height in the cascade (same hydration CLS class as the hero) */}
+              <YStack
+                position="absolute"
+                t={0}
+                l={0}
+                r={0}
+                height={439}
+                className="bg-grid"
+              />
             </YStack>
           </YStack>
         </YStack>

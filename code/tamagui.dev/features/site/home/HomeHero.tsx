@@ -61,8 +61,13 @@ const HeroContents = memo(function HeroContents() {
 
   return (
     <ContainerLarge position="relative">
+      {/* explicit absolute position instead of `fullscreen` + l/r/b overrides:
+          fullscreen emits inset:0, which conflicts with _l/_r/_b in the css
+          cascade and flips winner around hydration, causing a ~0.3 horizontal
+          CLS in the hero (the decorative grid jumps from 1140 to 2140 wide) */}
       <YStack
-        fullscreen
+        position="absolute"
+        t={0}
         l={-500}
         r={-500}
         b={-100}
