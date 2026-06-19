@@ -165,9 +165,14 @@ export const NewAccountModal = () => {
           </Dialog.Content>
         </Dialog.Portal>
       </Dialog>
-      <Suspense fallback={null}>
-        <AddTeamMemberModalComponent />
-      </Suspense>
+      {/* only mount when the account modal is open: add-team is only ever opened
+          from inside this modal (addTeamMemberModal.show is set in AccountView).
+          mounting it eagerly pulled in stripe.js + the chunk on every page (home). */}
+      {store.show && (
+        <Suspense fallback={null}>
+          <AddTeamMemberModalComponent />
+        </Suspense>
+      )}
     </>
   )
 }
