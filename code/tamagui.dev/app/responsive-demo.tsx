@@ -140,8 +140,8 @@ export default function ResponsiveDemo() {
               </XStack>
               <Spacer flex={1} />
               <XStack items="center" gap="$4">
-                <Star size={20} color="var(--purple10)" />
-                <Paragraph theme="purple">4.55</Paragraph>
+                <Star size={20} color="var(--green10)" />
+                <Paragraph theme="green">4.55</Paragraph>
               </XStack>
             </XStack>
 

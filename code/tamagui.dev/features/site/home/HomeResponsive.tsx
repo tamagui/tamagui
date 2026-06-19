@@ -279,7 +279,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
     <YStack
       className="unselectable"
-      theme={active ? 'pink' : null}
+      theme={active ? 'green' : null}
       position="absolute"
       {...props}
     >
@@ -399,7 +399,7 @@ export const Safari = memo(
           <Tab borderColor="var(--green7)" borderTopLeftRadius={0}>
             Github
           </Tab>
-          <Tab borderColor="var(--pink7)" active>
+          <Tab borderColor="var(--green7)" active>
             Tamagui - React Native & Web UI kits
           </Tab>
           <Tab borderColor="var(--yellow7)" borderTopRightRadius={0}>
@@ -478,7 +478,7 @@ export const Safari = memo(
                   </XStack>
                   <Spacer flex={1} />
                   <XStack items="center" gap="$4">
-                    <Star size={20} color="var(--purple10)" />
+                    <Star size={20} color="var(--green10)" />
                     <Paragraph theme="red">4.55</Paragraph>
                   </XStack>
                 </XStack>
