@@ -72,8 +72,9 @@ export const MediaPlayer = memo(
             >
               <Rewind size={20} />
               <Button
-                variant="outlined"
+                bg="$background"
                 hoverStyle={{
+                  bg: '$backgroundHover',
                   elevation: '$6',
                   scale: 1.025,
                 }}
