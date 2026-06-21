@@ -1,9 +1,9 @@
 import { supportsDynamicColorIOS, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   createContext,
-  useCallback,
   useContext,
   useId,
+  useRef,
   useSyncExternalStore,
   type MutableRefObject,
 } from 'react'
@@ -87,120 +87,76 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   }
 
   const id = useId()
-  const subscribe = useCallback(
-    (cb: Function) => {
-      listenersByParent[parentId] = listenersByParent[parentId] || new Set()
-      listenersByParent[parentId].add(id)
-      allListeners.set(id, () => {
-        PendingUpdate.set(id, shouldForce ? 'force' : true)
-        cb()
-      })
-      return () => {
-        allListeners.delete(id)
-        listenersByParent[parentId].delete(id)
-        localStates.delete(id)
-        states.delete(id)
-        PendingUpdate.delete(id)
-      }
-    },
-    [id, parentId]
-  )
-
   const propsKey = getPropsKey(props)
 
-  const getSnapshot = () => {
-    let local = localStates.get(id)
-    const parentState = states.get(parentId)
-
-    // fast path: nothing changed since last snapshot
-    if (local && !PendingUpdate.has(id)) {
-      if (
-        parentState &&
-        (local as any)._parentName === parentState.name &&
-        (local as any)._propsKey === propsKey
-      ) {
-        return local
-      }
-    }
-
-    // check if this is a scheme-only change (light↔dark) where DynamicColorIOS handles it
-    const isSchemeOnlyChange =
-      process.env.TAMAGUI_TARGET === 'native' &&
-      supportsDynamicColorIOS &&
-      getSetting('fastSchemeChange') &&
-      local &&
-      parentState &&
-      local.scheme !== parentState.scheme &&
-      getThemeBaseName(local.name) === getThemeBaseName(parentState.name)
-
-    // all tracked keys are scheme-optimized = can skip re-render for scheme changes
-    const keysSize = keys?.current?.size ?? 0
-    const schemeKeysSize = schemeKeys?.current?.size ?? 0
-    const allKeysSchemeOptimized = schemeKeysSize === keysSize && keysSize > 0
-
-    const canSkipForSchemeChange = isSchemeOnlyChange && allKeysSchemeOptimized
-
-    const needsUpdate = props.passThrough
-      ? false
-      : isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
-        ? true
-        : !HasRenderedOnce.get(keys)
-          ? true
-          : canSkipForSchemeChange
-            ? false // skip re-render for scheme-only changes with DynamicColorIOS
-            : keys?.current?.size
-              ? true
-              : props.needsUpdate?.()
-
-    const [rerender, next] = getNextState(
-      local,
+  // stable ref-bag for both subscribe and getSnapshot closures so we don't
+  // re-allocate them per render. each render updates the latest values; the
+  // closures (created once per [id, parentId]) read through the ref.
+  const ref = useRef<{
+    id: string
+    parentId: string
+    props: UseThemeWithStateProps
+    propsKey: string
+    isRoot: boolean
+    keys: MutableRefObject<Set<string> | null>
+    schemeKeys?: MutableRefObject<Set<string> | null>
+    subscribe?: (cb: Function) => () => void
+    getSnapshot?: () => ThemeState
+  }>(null as any)
+  if (!ref.current) {
+    ref.current = {
+      id,
+      parentId,
       props,
       propsKey,
       isRoot,
-      id,
-      parentId,
-      needsUpdate,
-      PendingUpdate.get(id)
-    )
-
-    PendingUpdate.delete(id)
-
-    // we always create a new localState for every component
-    // that way we can use it to de-opt and avoid renders granularly
-    // we always return the localState object in each component
-    // the global state (states) should always be up to date with the latest
-    if (!local || rerender) {
-      local = { ...next }
-      localStates.set(id, local)
+      keys,
+      schemeKeys,
     }
-
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-      console.groupCollapsed(` ${id} getSnapshot ${rerender}`, local.name, '>', next.name)
-      console.info({
-        props,
-        propsKey,
-        isRoot,
-        parentId,
-        local,
-        next,
-        needsUpdate,
-        isSchemeOnlyChange,
-        allKeysSchemeOptimized,
-        canSkipForSchemeChange,
-      })
-      console.groupEnd()
+  } else {
+    // refresh latest values for the stable closures to read
+    ref.current.props = props
+    ref.current.propsKey = propsKey
+    ref.current.isRoot = isRoot
+    ref.current.keys = keys
+    ref.current.schemeKeys = schemeKeys
+    // if id or parentId actually changed we must rebuild subscribe so
+    // useSyncExternalStore re-subscribes against the new parent (matches the
+    // prior useCallback([id, parentId]) re-subscription semantics).
+    if (ref.current.id !== id || ref.current.parentId !== parentId) {
+      ref.current.id = id
+      ref.current.parentId = parentId
+      ref.current.subscribe = undefined
     }
-
-    if (next !== local) {
-      Object.assign(local, next)
-      local.id = id
-    }
-    ;(local as any)._parentName = parentState?.name
-    ;(local as any)._propsKey = propsKey
-    states.set(id, next)
-
-    return local
   }
+
+  // build stable subscribe + getSnapshot ONCE per [id, parentId]. they read
+  // all per-render inputs through ref.current. this avoids per-render closure
+  // allocation (which dominated the theme-prep-uses hotspot in the group/heavy
+  // benches) without changing observable behavior.
+  if (!ref.current.subscribe) {
+    const r = ref.current
+    const pid = r.parentId
+    const sid = r.id
+    r.subscribe = (cb: Function) => {
+      listenersByParent[pid] = listenersByParent[pid] || new Set()
+      listenersByParent[pid].add(sid)
+      allListeners.set(sid, () => {
+        PendingUpdate.set(sid, shouldForce ? 'force' : true)
+        cb()
+      })
+      return () => {
+        allListeners.delete(sid)
+        listenersByParent[pid]?.delete(sid)
+        localStates.delete(sid)
+        states.delete(sid)
+        PendingUpdate.delete(sid)
+      }
+    }
+    r.getSnapshot = () => getSnapshotImpl(r)
+  }
+  const subscribe = ref.current.subscribe!
+  const getSnapshot = ref.current.getSnapshot!
 
   if (process.env.NODE_ENV === 'development' && globalThis.time)
     globalThis.time`theme-prep-uses`
@@ -228,6 +184,111 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   }, [keys, propsKey])
 
   return state
+}
+
+type SnapshotRef = {
+  id: string
+  parentId: string
+  props: UseThemeWithStateProps
+  propsKey: string
+  isRoot: boolean
+  keys: MutableRefObject<Set<string> | null>
+  schemeKeys?: MutableRefObject<Set<string> | null>
+}
+
+const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
+  const { id, parentId, props, propsKey, isRoot, keys, schemeKeys } = r
+  let local = localStates.get(id)
+  const parentState = states.get(parentId)
+
+  // fast path: nothing changed since last snapshot
+  if (local && !PendingUpdate.has(id)) {
+    if (
+      parentState &&
+      (local as any)._parentName === parentState.name &&
+      (local as any)._propsKey === propsKey
+    ) {
+      return local
+    }
+  }
+
+  // check if this is a scheme-only change (light↔dark) where DynamicColorIOS handles it
+  const isSchemeOnlyChange =
+    process.env.TAMAGUI_TARGET === 'native' &&
+    supportsDynamicColorIOS &&
+    getSetting('fastSchemeChange') &&
+    local &&
+    parentState &&
+    local.scheme !== parentState.scheme &&
+    getThemeBaseName(local.name) === getThemeBaseName(parentState.name)
+
+  // all tracked keys are scheme-optimized = can skip re-render for scheme changes
+  const keysSize = keys?.current?.size ?? 0
+  const schemeKeysSize = schemeKeys?.current?.size ?? 0
+  const allKeysSchemeOptimized = schemeKeysSize === keysSize && keysSize > 0
+
+  const canSkipForSchemeChange = isSchemeOnlyChange && allKeysSchemeOptimized
+
+  const needsUpdate = props.passThrough
+    ? false
+    : isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
+      ? true
+      : !HasRenderedOnce.get(keys)
+        ? true
+        : canSkipForSchemeChange
+          ? false // skip re-render for scheme-only changes with DynamicColorIOS
+          : keys?.current?.size
+            ? true
+            : props.needsUpdate?.()
+
+  const [rerender, next] = getNextState(
+    local,
+    props,
+    propsKey,
+    isRoot,
+    id,
+    parentId,
+    needsUpdate,
+    PendingUpdate.get(id)
+  )
+
+  PendingUpdate.delete(id)
+
+  // we always create a new localState for every component
+  // that way we can use it to de-opt and avoid renders granularly
+  // we always return the localState object in each component
+  // the global state (states) should always be up to date with the latest
+  if (!local || rerender) {
+    local = { ...next }
+    localStates.set(id, local)
+  }
+
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+    console.groupCollapsed(` ${id} getSnapshot ${rerender}`, local.name, '>', next.name)
+    console.info({
+      props,
+      propsKey,
+      isRoot,
+      parentId,
+      local,
+      next,
+      needsUpdate,
+      isSchemeOnlyChange,
+      allKeysSchemeOptimized,
+      canSkipForSchemeChange,
+    })
+    console.groupEnd()
+  }
+
+  if (next !== local) {
+    Object.assign(local, next)
+    local.id = id
+  }
+  ;(local as any)._parentName = parentState?.name
+  ;(local as any)._propsKey = propsKey
+  states.set(id, next)
+
+  return local
 }
 
 const getNextState = (

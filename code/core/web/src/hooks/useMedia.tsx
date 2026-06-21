@@ -165,38 +165,47 @@ export function useMedia(
 ): UseMediaState {
   'use no memo'
 
-  const componentState = componentContext ? States.get(componentContext) : null
-
-  const internalRef = useRef<{
+  type MediaRef = {
     keys: Set<string>
     lastState: MediaQueryState
     pendingState?: MediaQueryState
-  }>(null)
+    // stable per-component closures + reusable Proxy. allocating new ones each
+    // render (via useSyncExternalStore + `new Proxy(state, ...)`) was a real
+    // per-component-per-render cost; we hold one Proxy whose target is swapped
+    // by mutating `proxyTarget` and re-reading it in the get trap.
+    proxyTarget: MediaQueryState
+    proxy: UseMediaState
+    getSnapshot: () => MediaQueryState
+    componentContext?: ComponentContextI
+    debug?: DebugProp
+  }
+
+  const internalRef = useRef<MediaRef | null>(null)
   if (!internalRef.current) {
-    internalRef.current = {
-      keys: new Set(),
-      lastState: getMedia(),
+    const initial = getMedia()
+    const r: MediaRef = {
+      keys: new Set<string>(),
+      lastState: initial,
+      proxyTarget: initial,
+      proxy: undefined as unknown as UseMediaState,
+      getSnapshot: undefined as unknown as () => MediaQueryState,
+      componentContext,
+      debug,
     }
-  }
-
-  // reset on next render
-  if (internalRef.current.pendingState) {
-    internalRef.current.lastState = internalRef.current.pendingState
-    internalRef.current.pendingState = undefined
-  }
-
-  const { keys } = internalRef.current
-
-  // clear each render to track only rendered touched keys
-  if (keys.size) {
-    keys.clear()
-  }
-
-  const state = useSyncExternalStore(
-    subscribe,
-    () => {
-      const curKeys = componentState?.keys || keys
-      const { lastState, pendingState } = internalRef.current!
+    r.proxy = new Proxy(initial, {
+      get(_, key) {
+        const target = r.proxyTarget
+        if (!disableMediaTouch && typeof key === 'string') {
+          r.keys.add(key)
+        }
+        return Reflect.get(target, key)
+      },
+    }) as UseMediaState
+    r.getSnapshot = () => {
+      const curKeys = r.componentContext
+        ? States.get(r.componentContext)?.keys || r.keys
+        : r.keys
+      const { lastState, pendingState } = r
 
       if (!curKeys.size) {
         return lastState
@@ -205,36 +214,51 @@ export function useMedia(
       const ms = getMedia()
       for (const key of curKeys) {
         if (ms[key] !== (pendingState || lastState)[key]) {
-          if (process.env.NODE_ENV === 'development' && debug) {
+          if (process.env.NODE_ENV === 'development' && r.debug) {
             console.warn(`useMedia() ✍️`, key, lastState[key], '=>', ms[key])
           }
 
           // in emitter mode (no-rerender) avoid changing state, instead emit
-          if (componentContext?.mediaEmit) {
-            componentContext.mediaEmit(ms)
-            internalRef.current!.pendingState = ms
+          if (r.componentContext?.mediaEmit) {
+            r.componentContext.mediaEmit(ms)
+            r.pendingState = ms
             return lastState
           }
 
-          internalRef.current!.lastState = ms
+          r.lastState = ms
 
           return ms
         }
       }
 
       return lastState
-    },
-    getServerSnapshot
-  )
+    }
+    internalRef.current = r
+  } else {
+    // refresh per-render inputs the closures read through the ref
+    internalRef.current.componentContext = componentContext
+    internalRef.current.debug = debug
+  }
 
-  return new Proxy(state, {
-    get(_, key) {
-      if (!disableMediaTouch && typeof key === 'string') {
-        keys.add(key)
-      }
-      return Reflect.get(state, key)
-    },
-  })
+  const ref = internalRef.current
+
+  // reset on next render
+  if (ref.pendingState) {
+    ref.lastState = ref.pendingState
+    ref.pendingState = undefined
+  }
+
+  // clear each render to track only rendered touched keys
+  if (ref.keys.size) {
+    ref.keys.clear()
+  }
+
+  const state = useSyncExternalStore(subscribe, ref.getSnapshot, getServerSnapshot)
+
+  // re-point the cached Proxy at the latest snapshot so the get trap returns
+  // current values; identity of the returned object is stable across renders.
+  ref.proxyTarget = state
+  return ref.proxy
 }
 
 const getServerSnapshot = () => initState
