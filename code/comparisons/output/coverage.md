@@ -6,14 +6,14 @@
 
 | Framework | Full | Partial | Web-only | None | Total | Coverage % |
 |-----------|------|---------|----------|------|-------|------------|
-| **tamagui** | 85 | 2 | 17 | 34 | 138 | 68.5% |
-| **tailwind** | 0 | 0 | 132 | 6 | 138 | 47.8% |
-| **nativewind** | 71 | 25 | 38 | 4 | 138 | 74.3% |
-| **uniwind** | 51 | 11 | 0 | 76 | 138 | 40.9% |
+| **tamagui** | 85 | 4 | 19 | 34 | 142 | 68.0% |
+| **tailwind** | 0 | 0 | 136 | 6 | 142 | 47.9% |
+| **nativewind** | 82 | 17 | 40 | 3 | 142 | 77.8% |
+| **uniwind** | 51 | 16 | 0 | 75 | 142 | 41.5% |
 
 ## Layout
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **display** | ✅ | 🌐 | ⚠️ | ⚠️ | RN only supports flex natively |
 | **position** | ✅ | 🌐 | ⚠️ | ⚠️ | RN lacks fixed/sticky |
@@ -33,7 +33,7 @@
 
 ## Flexbox
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **flex-direction** | ✅ | 🌐 | ✅ | ✅ |  |
 | **flex-wrap** | ✅ | 🌐 | ✅ | ✅ |  |
@@ -50,7 +50,7 @@
 
 ## Grid
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **grid-template-columns** | 🌐 | 🌐 | 🌐 | ❌ |  |
 | **grid-column** | 🌐 | 🌐 | 🌐 | ❌ |  |
@@ -61,27 +61,28 @@
 
 ## Spacing
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **padding** | ✅ | 🌐 | ✅ | ✅ |  |
 | **margin** | ✅ | 🌐 | ✅ | ✅ |  |
-| **padding-block/inline (logical)** | ✅ | 🌐 | ⚠️ | ❌ |  |
-| **margin-block/inline (logical)** | ✅ | 🌐 | ⚠️ | ❌ |  |
+| **padding-block/inline (logical)** | ✅ | 🌐 | ✅ | ❌ | NativeWind v5 maps ps/pe to RN paddingStart/End (RTL aware) |
+| **margin-block/inline (logical)** | ✅ | 🌐 | ✅ | ❌ | NativeWind v5 maps ms/me to RN marginStart/End (RTL aware) |
 | **space-between** | ❌ | 🌐 | ✅ | ✅ | Tamagui uses gap instead |
 
 ## Sizing
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **width** | ✅ | 🌐 | ✅ | ✅ |  |
 | **height** | ✅ | 🌐 | ✅ | ✅ |  |
 | **min-width / max-width** | ✅ | 🌐 | ✅ | ✅ |  |
 | **min-height / max-height** | ✅ | 🌐 | ✅ | ✅ |  |
+| **size (width + height)** | ⚠️ | 🌐 | ✅ | ⚠️ | Tailwind v4 / NativeWind v5 size-* sets width+height together; Tamagui uses separate $w/$h |
 | **inline-size / block-size** | ✅ | 🌐 | ❌ | ❌ |  |
 
 ## Typography
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **font-family** | ✅ | 🌐 | ✅ | ✅ |  |
 | **font-size** | ✅ | 🌐 | ✅ | ✅ |  |
@@ -100,11 +101,11 @@
 | **text-indent** | ❌ | 🌐 | 🌐 | ❌ |  |
 | **vertical-align** | ✅ | 🌐 | 🌐 | ❌ |  |
 | **font-variant-numeric** | ⚠️ | 🌐 | ⚠️ | ❌ |  |
-| **text-shadow** | ✅ | 🌐 | ❌ | ❌ |  |
+| **text-shadow** | ✅ | 🌐 | ⚠️ | ❌ | Tailwind v4 added text-shadow utilities; NativeWind v5 maps to RN textShadow* (single shadow only) |
 
 ## Backgrounds
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **background-color** | ✅ | 🌐 | ✅ | ✅ |  |
 | **background-image** | 🌐 | 🌐 | 🌐 | ❌ |  |
@@ -115,23 +116,23 @@
 
 ## Borders
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **border-width** | ✅ | 🌐 | ✅ | ✅ |  |
 | **border-color** | ✅ | 🌐 | ✅ | ✅ |  |
 | **border-style** | ✅ | 🌐 | ✅ | ⚠️ |  |
 | **border-radius** | ✅ | 🌐 | ✅ | ✅ |  |
-| **border-width (logical)** | ✅ | 🌐 | ⚠️ | ❌ |  |
+| **border-width (logical)** | ✅ | 🌐 | ✅ | ❌ | NativeWind v5 maps border-s/border-e to RN borderStartWidth/borderEndWidth |
 | **outline** | ✅ | 🌐 | ✅ | ❌ |  |
 | **ring** | ❌ | 🌐 | ✅ | ✅ | Tamagui can achieve this with boxShadow |
 | **divide** | ❌ | 🌐 | ✅ | ❌ |  |
 
 ## Effects
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **opacity** | ✅ | 🌐 | ✅ | ✅ |  |
-| **box-shadow** | ✅ | 🌐 | ⚠️ | ⚠️ | RN shadow implementation differs from CSS |
+| **box-shadow** | ✅ | 🌐 | ⚠️ | ⚠️ | NativeWind v5 maps shadow-* to RN 0.76+ boxShadow; still differs from CSS spread/inset |
 | **mix-blend-mode** | 🌐 | 🌐 | 🌐 | ❌ |  |
 | **cursor** | ✅ | 🌐 | 🌐 | ❌ |  |
 | **pointer-events** | ✅ | 🌐 | ✅ | ❌ |  |
@@ -139,14 +140,14 @@
 
 ## Filters
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **filter (blur, brightness, etc)** | 🌐 | 🌐 | 🌐 | ❌ |  |
 | **backdrop-filter** | 🌐 | 🌐 | 🌐 | ❌ |  |
 
 ## Transforms
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **transform** | ✅ | 🌐 | ✅ | ✅ |  |
 | **translate** | ✅ | 🌐 | ✅ | ✅ |  |
@@ -159,40 +160,41 @@
 
 ## Transitions & Animation
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
-| **animation** | ✅ | 🌐 | ⚠️ | ⚠️ | Tamagui uses pluggable animation drivers (CSS, reanimated, motion, native) |
-| **transition-property** | ❌ | 🌐 | ⚠️ | ❌ | Tamagui animation driver handles this automatically |
-| **transition-duration** | ❌ | 🌐 | ⚠️ | ❌ |  |
-| **transition-timing-function** | ❌ | 🌐 | ⚠️ | ❌ | Tamagui configures this per-animation driver |
+| **animation** | ✅ | 🌐 | ✅ | ⚠️ | NativeWind v5 runs real CSS @keyframes (incl. custom keyframes) on native; Tamagui uses pluggable drivers |
+| **transition-property** | ❌ | 🌐 | ✅ | ⚠️ | NativeWind v5 backs transition-* with real CSS transitions on native; Tamagui driver handles automatically |
+| **transition-duration** | ❌ | 🌐 | ✅ | ⚠️ |  |
+| **transition-timing-function** | ❌ | 🌐 | ✅ | ⚠️ | Tamagui configures this per-animation driver |
 | **enter/exit styles** | ✅ | ❌ | ❌ | ❌ | Tamagui-specific: AnimatePresence + enterStyle/exitStyle |
 
 ## Interactive States
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **hover** | ✅ | 🌐 | ✅ | ❌ | Uniwind has no hover (mobile-focused) |
 | **press / active** | ✅ | 🌐 | ✅ | ✅ |  |
 | **focus** | ✅ | 🌐 | ✅ | ✅ |  |
-| **focus-visible** | ✅ | 🌐 | ⚠️ | ❌ |  |
+| **focus-visible** | ✅ | 🌐 | 🌐 | ❌ | NativeWind v5 focus-visible is a web-only pseudo (no native equivalent) |
 | **focus-within** | ✅ | 🌐 | 🌐 | ❌ |  |
 | **disabled** | ✅ | 🌐 | ✅ | ✅ |  |
 | **group hover/press** | ❌ | 🌐 | ✅ | ❌ | Tamagui uses group prop on parent + grouping |
-| **peer variants** | ❌ | 🌐 | ✅ | ❌ |  |
+| **peer variants** | ❌ | 🌐 | ✅ | ❌ | NativeWind v5 improved group-*/peer-* tracking |
+| **has variant** | ❌ | 🌐 | 🌐 | ❌ | New in Tailwind v4; NativeWind v5 supports has-* on web only (no native :has()) |
 
 ## Responsive & Media
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **breakpoints** | ✅ | 🌐 | ✅ | ✅ |  |
-| **dark mode** | ✅ | 🌐 | ✅ | ✅ |  |
+| **dark mode** | ✅ | 🌐 | ✅ | ✅ | NativeWind v5 dark: uses native @media (prefers-color-scheme: dark) |
 | **combined media + pseudo** | ✅ | 🌐 | ✅ | ❌ |  |
-| **container queries** | ❌ | 🌐 | ⚠️ | ❌ |  |
-| **prefers-reduced-motion** | ❌ | 🌐 | ⚠️ | ❌ |  |
+| **container queries** | 🌐 | 🌐 | ✅ | ❌ | NativeWind v5 ships full container-query support (@container + container-type) on web and native; Tamagui containerType is web-only |
+| **prefers-reduced-motion** | ❌ | 🌐 | ⚠️ | ❌ | NativeWind v5 reads RN AccessibilityInfo reduce-motion on native |
 
 ## Platform
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **web-specific styles** | ✅ | 🌐 | ✅ | ✅ | Tailwind is web-only by default |
 | **native-specific styles** | ✅ | ❌ | ✅ | ❌ |  |
@@ -202,7 +204,7 @@
 
 ## Pseudo Elements
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **::before / ::after** | ❌ | 🌐 | ⚠️ | ❌ |  |
 | **::placeholder** | ❌ | 🌐 | ✅ | ❌ |  |
@@ -211,7 +213,7 @@
 
 ## Tables
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **border-collapse** | ❌ | 🌐 | 🌐 | ❌ |  |
 | **border-spacing** | ❌ | 🌐 | 🌐 | ❌ |  |
@@ -219,7 +221,7 @@
 
 ## SVG
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **fill** | ❌ | 🌐 | ⚠️ | ❌ |  |
 | **stroke** | ❌ | 🌐 | ⚠️ | ❌ |  |
@@ -227,7 +229,7 @@
 
 ## Interactivity
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **scroll-behavior** | ❌ | 🌐 | 🌐 | ❌ |  |
 | **scroll-snap** | ❌ | 🌐 | 🌐 | ❌ |  |
@@ -240,16 +242,18 @@
 
 ## Accessibility
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **sr-only** | ❌ | 🌐 | ✅ | ❌ |  |
 | **forced-color-adjust** | ❌ | 🌐 | 🌐 | ❌ |  |
 
 ## Design Tokens & Theming
 
-| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |
+| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **design tokens** | ✅ | 🌐 | ✅ | ✅ |  |
 | **theme switching** | ✅ | 🌐 | ✅ | ✅ | Tamagui has nested theme support with sub-themes |
 | **sub-themes / component themes** | ✅ | ❌ | ❌ | ⚠️ | Tamagui unique: deeply nested component-aware themes |
-| **arbitrary values** | ✅ | 🌐 | ✅ | ❌ |  |
+| **arbitrary values** | ✅ | 🌐 | ✅ | ❌ | NativeWind v5 improved arbitrary calc()/clamp() handling |
+| **CSS variables / custom properties** | 🌐 | 🌐 | ✅ | ❌ | NativeWind v5 implements Tailwind v4 @theme + var() resolution on web and native; Tamagui var() is web-only (uses tokens on native) |
+| **color opacity modifier** | ⚠️ | 🌐 | ✅ | ⚠️ | NativeWind v5 fully supports the /N opacity modifier (was partial in v4) |

@@ -59,7 +59,7 @@ function generateMarkdown(): string {
   for (const cat of categories) {
     lines.push(`## ${cat.name}`)
     lines.push('')
-    lines.push('| Utility | Tamagui | Tailwind | NativeWind | Uniwind | Notes |')
+    lines.push('| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |')
     lines.push('|---------|---------|----------|------------|---------|-------|')
     for (const util of cat.utilities) {
       const row = [
@@ -103,7 +103,7 @@ function generateHTML(): string {
   const frameworkLabels = {
     tamagui: 'Tamagui',
     tailwind: 'Tailwind',
-    nativewind: 'NativeWind',
+    nativewind: 'NativeWind v5',
     uniwind: 'Uniwind',
   }
 
@@ -217,7 +217,7 @@ function generateHTML(): string {
 <body>
 
 <h1>CSS Utility Coverage Comparison</h1>
-<p class="subtitle">Tamagui flat-styles vs Tailwind CSS vs NativeWind vs Uniwind</p>
+<p class="subtitle">Tamagui flat-styles vs Tailwind CSS vs NativeWind v5 vs Uniwind</p>
 
 <div class="legend">
   <div class="legend-item"><div class="legend-dot full"></div> Full support</div>
@@ -263,7 +263,7 @@ ${categories
         <th style="width:22%">Utility</th>
         <th style="width:12%">Tamagui</th>
         <th style="width:12%">Tailwind</th>
-        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">NativeWind v5</th>
         <th style="width:12%">Uniwind</th>
         <th style="width:30%">Notes</th>
       </tr>

@@ -1,3 +1,24 @@
+# compiler improvements
+
+bench results (June 2026, 500 components, Chromium, 3-run avg):
+- simple static mount: 7.6ms compiled, 8.5ms baseline, 19.3ms nativewind v5, 24.2ms uniwind
+- pseudo states mount: 6.6ms compiled, 8.7ms baseline, 18.4ms nativewind v5, 23.7ms uniwind
+- animated (JS spring) mount: 46ms compiled, 10.4ms baseline - **6.6x slower**
+
+the animated deopt is the key issue to fix:
+- when `animation` prop is present, compiler sets `shouldFlatten = false` (createExtractor.ts:1088-1109)
+- this bails the entire component to runtime, including static style props (width/height/bg/padding/etc)
+- goal: **partial extraction for animated components** - extract static style props to className even
+  when animation prop is present; only leave enterStyle/exitStyle/hoverStyle/pressStyle at runtime
+- estimated improvement: animated mount ~46ms -> ~15-18ms (same as the runtime animation overhead alone)
+- location: code/compiler/static/src/extractor/createExtractor.ts lines 1088-2342
+
+other compiler targets:
+- rich re-render is 10.6ms vs 9ms baseline (1.2x overhead) - minor, pseudo-state rule lookup
+- add "Tamagui (no compile)" bench variant to make the compiler savings visible in the comparison table
+
+---
+
 vite 8 monorepo fix:
 - added `tamagui-monorepo-exports-fix` plugin to `@tamagui/vite-plugin`
 - vite 8 (rolldown) resolves workspace subpath imports to filesystem dirs instead of package.json exports

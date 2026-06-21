@@ -52,7 +52,7 @@ const benchmarks: BenchConfig[] = [
     startCmd: 'npx vite --port 9103',
   },
   {
-    name: 'NativeWind v4',
+    name: 'NativeWind v5',
     dir: 'nativewind-bench',
     port: 9104,
     startCmd: 'npx vite --port 9104',

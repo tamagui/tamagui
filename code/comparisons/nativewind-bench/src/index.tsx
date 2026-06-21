@@ -135,7 +135,7 @@ function App() {
       setResults((prev) => {
         const next = { ...prev, [scenarioId]: result }
         if (currentIdx + 1 >= scenarios.length && resultsRef.current) {
-          renderResults(resultsRef.current, 'NativeWind v4', next)
+          renderResults(resultsRef.current, 'NativeWind v5', next)
         }
         return next
       })
@@ -152,7 +152,7 @@ function App() {
 
   return (
     <div style={{ padding: 24, color: '#eee', fontFamily: 'system-ui' }}>
-      <h1 style={{ fontSize: 24, margin: '0 0 8px' }}>NativeWind v4 Benchmark</h1>
+      <h1 style={{ fontSize: 24, margin: '0 0 8px' }}>NativeWind v5 Benchmark</h1>
       <p style={{ color: '#888', margin: '0 0 20px', fontSize: 14 }}>
         {ITEM_COUNT} components × {scenarios.length} scenarios · className on RN View
       </p>

@@ -1,4 +1,5 @@
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
 import { createRequire } from 'module'
 import path from 'path'
@@ -11,9 +12,8 @@ const codegenStub = path.join(__dirname, 'src/codegen-stub.ts')
 
 export default defineConfig({
   plugins: [
-    react({
-      jsxImportSource: 'nativewind',
-    }),
+    tailwindcss(),
+    react(),
   ],
   resolve: {
     alias: [

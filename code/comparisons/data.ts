@@ -5,7 +5,7 @@
  * which frameworks support it:
  *   - tamagui: flat-style prop syntax ($bg, $hover:bg, etc)
  *   - tailwind: tailwind CSS classes
- *   - nativewind: nativewind (tailwind for RN) support
+ *   - nativewind: nativewind v5 (tailwind v4 for RN) support
  *   - uniwind: uniwind (unistyles-based) support
  *
  * support levels:
@@ -437,8 +437,10 @@ export const categories: Category[] = [
         examples: {
           tamagui: '$paddingBlock={10} $paddingInline={10}',
           tailwind: 'ps-4 pe-4 / pb-4 pt-4',
+          nativewind: 'ps-4 pe-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        notes: 'NativeWind v5 maps ps/pe to RN paddingStart/End (RTL aware)',
       },
       {
         name: 'margin-block/inline (logical)',
@@ -446,8 +448,10 @@ export const categories: Category[] = [
         examples: {
           tamagui: '$marginBlock={10} $marginInline={10}',
           tailwind: 'ms-4 me-4',
+          nativewind: 'ms-4 me-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        notes: 'NativeWind v5 maps ms/me to RN marginStart/End (RTL aware)',
       },
       {
         name: 'space-between',
@@ -511,6 +515,18 @@ export const categories: Category[] = [
           uniwind: 'min-h-0 max-h-screen',
         },
         support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+      },
+      {
+        name: 'size (width + height)',
+        description: 'Combined width and height shorthand',
+        examples: {
+          tamagui: '$w={16} $h={16}',
+          tailwind: 'size-4 / size-full',
+          nativewind: 'size-4 / size-full',
+          uniwind: 'size-4',
+        },
+        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
+        notes: 'Tailwind v4 / NativeWind v5 size-* sets width+height together; Tamagui uses separate $w/$h',
       },
       {
         name: 'inline-size / block-size',
@@ -708,8 +724,10 @@ export const categories: Category[] = [
         examples: {
           tamagui: '$textShadow="0px 1px 2px rgba(0,0,0,0.3)"',
           tailwind: 'text-shadow-sm / text-shadow-lg',
+          nativewind: 'text-shadow-sm / text-shadow-lg',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'none', uniwind: 'none' },
+        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        notes: 'Tailwind v4 added text-shadow utilities; NativeWind v5 maps to RN textShadow* (single shadow only)',
       },
     ],
   },
@@ -837,8 +855,10 @@ export const categories: Category[] = [
         examples: {
           tamagui: '$borderBlockWidth={1} $borderInlineWidth={2}',
           tailwind: 'border-s / border-e',
+          nativewind: 'border-s / border-e',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        notes: 'NativeWind v5 maps border-s/border-e to RN borderStartWidth/borderEndWidth',
       },
       {
         name: 'outline',
@@ -900,7 +920,7 @@ export const categories: Category[] = [
           uniwind: 'shadow-sm / shadow-lg',
         },
         support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
-        notes: 'RN shadow implementation differs from CSS',
+        notes: 'NativeWind v5 maps shadow-* to RN 0.76+ boxShadow; still differs from CSS spread/inset',
       },
       {
         name: 'mix-blend-mode',
@@ -1075,36 +1095,39 @@ export const categories: Category[] = [
         examples: {
           tamagui: 'animation="bouncy"',
           tailwind: 'animate-spin / animate-bounce / animate-pulse',
-          nativewind: 'animate-spin',
+          nativewind: 'animate-spin / animate-bounce',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
+        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
         notes:
-          'Tamagui uses pluggable animation drivers (CSS, reanimated, motion, native)',
+          'NativeWind v5 runs real CSS @keyframes (incl. custom keyframes) on native; Tamagui uses pluggable drivers',
       },
       {
         name: 'transition-property',
         description: 'Which properties to transition',
         examples: {
           tailwind: 'transition / transition-colors / transition-all',
+          nativewind: 'transition / transition-colors / transition-all',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tamagui animation driver handles this automatically',
+        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
+        notes: 'NativeWind v5 backs transition-* with real CSS transitions on native; Tamagui driver handles automatically',
       },
       {
         name: 'transition-duration',
         description: 'Transition timing',
         examples: {
           tailwind: 'duration-150 / duration-300 / duration-500',
+          nativewind: 'duration-150 / duration-300',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
       },
       {
         name: 'transition-timing-function',
         description: 'Easing function',
         examples: {
           tailwind: 'ease-in / ease-out / ease-in-out',
+          nativewind: 'ease-in / ease-out / ease-in-out',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
         notes: 'Tamagui configures this per-animation driver',
       },
       {
@@ -1166,7 +1189,8 @@ export const categories: Category[] = [
           tailwind: 'focus-visible:outline-blue-500',
           nativewind: 'focus-visible:outline-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        notes: 'NativeWind v5 focus-visible is a web-only pseudo (no native equivalent)',
       },
       {
         name: 'focus-within',
@@ -1206,6 +1230,17 @@ export const categories: Category[] = [
           nativewind: 'peer-focus:text-blue-500',
         },
         support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        notes: 'NativeWind v5 improved group-*/peer-* tracking',
+      },
+      {
+        name: 'has variant',
+        description: 'Style based on descendant matching (:has())',
+        examples: {
+          tailwind: 'has-[:checked]:bg-blue-500',
+          nativewind: 'has-[:checked]:bg-blue-500',
+        },
+        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        notes: 'New in Tailwind v4; NativeWind v5 supports has-* on web only (no native :has())',
       },
     ],
   },
@@ -1237,6 +1272,7 @@ export const categories: Category[] = [
           uniwind: 'dark:bg-black',
         },
         support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        notes: 'NativeWind v5 dark: uses native @media (prefers-color-scheme: dark)',
       },
       {
         name: 'combined media + pseudo',
@@ -1252,17 +1288,22 @@ export const categories: Category[] = [
         name: 'container queries',
         description: 'Container-based responsive',
         examples: {
+          tamagui: '$containerType="inline-size"',
           tailwind: '@container / @lg:grid-cols-3',
+          nativewind: '@container / @lg:flex-row',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        notes: 'NativeWind v5 ships full container-query support (@container + container-type) on web and native; Tamagui containerType is web-only',
       },
       {
         name: 'prefers-reduced-motion',
         description: 'Reduced motion preference',
         examples: {
           tailwind: 'motion-reduce:animate-none',
+          nativewind: 'motion-reduce:animate-none',
         },
         support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        notes: 'NativeWind v5 reads RN AccessibilityInfo reduce-motion on native',
       },
     ],
   },
@@ -1584,9 +1625,32 @@ export const categories: Category[] = [
         examples: {
           tamagui: '$bg="rgb(123,45,67)"',
           tailwind: 'bg-[rgb(123,45,67)]',
-          nativewind: 'bg-[rgb(123,45,67)]',
+          nativewind: 'bg-[rgb(123,45,67)] / w-[calc(100%-2rem)]',
         },
         support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        notes: 'NativeWind v5 improved arbitrary calc()/clamp() handling',
+      },
+      {
+        name: 'CSS variables / custom properties',
+        description: 'CSS custom properties and var() references',
+        examples: {
+          tamagui: '$bg="var(--my-color)"',
+          tailwind: '@theme { --color-brand } / bg-[--my-var]',
+          nativewind: '@theme { --color-brand } / bg-[--my-var]',
+        },
+        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        notes: 'NativeWind v5 implements Tailwind v4 @theme + var() resolution on web and native; Tamagui var() is web-only (uses tokens on native)',
+      },
+      {
+        name: 'color opacity modifier',
+        description: 'Inline color alpha via /N syntax',
+        examples: {
+          tamagui: '$bg="$blue10" (use rgba)',
+          tailwind: 'bg-blue-500/50 text-black/75',
+          nativewind: 'bg-blue-500/50 text-black/75',
+        },
+        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
+        notes: 'NativeWind v5 fully supports the /N opacity modifier (was partial in v4)',
       },
     ],
   },
