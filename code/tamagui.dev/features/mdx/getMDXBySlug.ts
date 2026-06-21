@@ -81,18 +81,25 @@ const rehypeHeroTemplate = () => {
 // transforms JSX code blocks from tamagui syntax to tailwind className syntax
 // applied as a rehype plugin when ?syntax=tailwind is in the URL
 
-let tamaguiToTailwindFn: ((source: string) => string) | null = null
-
-function loadTransform() {
-  if (tamaguiToTailwindFn) return tamaguiToTailwindFn
+function loadTransform(): (source: string) => string {
   try {
-    const mod = requireFn('@tamagui/to-tailwind')
-    tamaguiToTailwindFn = mod.tamaguiToTailwind
+    // resolve through package.json so we always load the current `main` —
+    // node caches the pkg's `main` field internally and HMR rebuilds of
+    // @tamagui/to-tailwind would otherwise be invisible to the dev server.
+    const pkgJsonPath = requireFn.resolve('@tamagui/to-tailwind/package.json')
+    const pkg = JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8'))
+    const mainRel: string =
+      pkg.exports?.['.']?.require || pkg.main || 'dist/cjs/index.cjs'
+    const mainAbs = path.join(path.dirname(pkgJsonPath), mainRel)
+    const mod = requireFn(mainAbs)
+    if (mod?.tamaguiToTailwind) return mod.tamaguiToTailwind
   } catch (err) {
-    console.warn('[tailwind] failed to load @tamagui/to-tailwind:', (err as Error).message)
-    tamaguiToTailwindFn = (s: string) => s
+    console.warn(
+      '[tailwind] failed to load @tamagui/to-tailwind:',
+      (err as Error).message
+    )
   }
-  return tamaguiToTailwindFn!
+  return (s: string) => s
 }
 
 const rehypeTailwindTransform = () => {
