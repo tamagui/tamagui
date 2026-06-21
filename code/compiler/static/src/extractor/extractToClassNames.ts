@@ -170,6 +170,41 @@ export async function extractToClassNames({
         originalNodeName
       )
 
+      // detect static `group="<name>"` literal — runtime side normally emits the
+      // container-name/container-type CSS lazily via getSplitStyles (createComponent
+      // path), but extracted elements never go through that code, so we emit the
+      // equivalent CSS at compile time and add `t_group_<name>` to the className.
+      let staticGroupName: string | null = null
+      for (const attr of jsxPath.node.openingElement.attributes) {
+        if (!t.isJSXAttribute(attr) || !t.isJSXIdentifier(attr.name)) continue
+        if (attr.name.name !== 'group') continue
+        if (t.isStringLiteral(attr.value)) {
+          staticGroupName = attr.value.value
+        } else if (
+          t.isJSXExpressionContainer(attr.value) &&
+          t.isStringLiteral(attr.value.expression)
+        ) {
+          staticGroupName = attr.value.expression.value
+        }
+        // dynamic group={someProp} falls back to the runtime path.
+        break
+      }
+      if (staticGroupName) {
+        const containerIdentifier = `t_group_${staticGroupName}`
+        const containerType =
+          (tamaguiConfig.settings?.webContainerType as string | undefined) ||
+          'inline-size'
+        const containerSelector = `.${containerIdentifier}`
+        if (!cssMap.has(containerSelector)) {
+          cssMap.set(containerSelector, {
+            css: `${containerSelector} { container-name: ${staticGroupName}; container-type: ${containerType}; }`,
+            commentTexts: [comment],
+          })
+        } else {
+          cssMap.get(containerSelector)!.commentTexts.push(comment)
+        }
+      }
+
       function addStyle(style: StyleObject) {
         const identifier = style[StyleObjectIdentifier]
         const rules = style[StyleObjectRules]
@@ -194,20 +229,36 @@ export async function extractToClassNames({
           const property = style[0]
           const mediaName = property.slice(1)
 
-          // $group- styles must bail out entirely - they need runtime handling because
-          // group changes can affect children that may be animated and need hard values.
-          // In the future, CSS animation drivers could potentially optimize this.
+          // $group- styles extract through createMediaStyle which emits @container
+          // rules keyed on the parent's `t_group_<name>` className.
           if (mediaName.startsWith('group-')) {
-            throw new BailOptimizationError()
+            const mediaStyle = createMediaStyle(
+              style,
+              mediaName,
+              extractor.getTamagui()!.media,
+              'group',
+              false,
+              mediaStylesSeen
+            )
+            const identifier = addStyle(mediaStyle)
+            classNames.push(identifier)
+            continue
           }
 
           // Check for theme/platform media queries (e.g., $theme-dark, $platform-web)
           const mediaTypeMatch = mediaName.match(/^(theme|platform)-/)
           if (mediaTypeMatch) {
             const mediaType = mediaTypeMatch[1] as 'theme' | 'platform'
+            // createMediaStyle internally calls getGroupPropParts(`theme-` + key)
+            // for theme, so we must pass the short key ("dark", not "theme-dark")
+            // to avoid double-prefixing. Platform stays as-is (runtime parity).
+            const innerKey =
+              mediaType === 'theme'
+                ? mediaName.slice('theme-'.length)
+                : mediaName
             const mediaStyle = createMediaStyle(
               style,
-              mediaName,
+              innerKey,
               extractor.getTamagui()!.media,
               mediaType,
               false,
@@ -341,6 +392,13 @@ export async function extractToClassNames({
 
       if (baseFontFamily) {
         baseClassNameStr = `font_${baseFontFamily}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
+      }
+
+      // add t_group_<name> for elements with a static group="<name>" literal so
+      // descendants' @container <name> rules can match (runtime path normally
+      // appends this class; extracted elements bypass it).
+      if (staticGroupName) {
+        baseClassNameStr = `t_group_${staticGroupName}${baseClassNameStr ? ` ${baseClassNameStr}` : ''}`
       }
 
       // add is_View or is_Text base class matching runtime behavior
