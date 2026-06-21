@@ -298,6 +298,20 @@ function preprocessTailwindClassName(
   const classes = className.split(/\s+/).filter(Boolean)
   const regularClasses: string[] = []
   const result: Record<string, any> = { ...props }
+  // accumulate web-only utilities into a single $platform-web object so
+  // they're all merged into one platform branch (rather than later utilities
+  // clobbering earlier ones). pre-seed with any user-provided $platform-web
+  // so user values still win at the prop-set level (existing keys overwrite).
+  let webOnlyAcc: Record<string, any> | null = null
+  const accumulateWebOnly = (styles: Record<string, any>) => {
+    const acc =
+      webOnlyAcc ??
+      (webOnlyAcc =
+        result['$platform-web'] && typeof result['$platform-web'] === 'object'
+          ? { ...result['$platform-web'] }
+          : {})
+    for (const p in styles) acc[p] = styles[p]
+  }
 
   for (const cls of classes) {
     // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
@@ -312,6 +326,33 @@ function preprocessTailwindClassName(
       }
       continue
     }
+
+    // web-only utilities — route through $platform-web so they no-op on native.
+    // modifiers (hover:float-left etc.) are NOT supported here; if present,
+    // fall through to the regular-class preservation path. these CSS-only
+    // utilities are typically applied unconditionally.
+    if (!mods) {
+      const webExact = tailwindWebOnlyExactMap[base]
+      if (webExact) {
+        accumulateWebOnly(webExact)
+        continue
+      }
+      let matchedPrefix = false
+      for (let i = 0; i < tailwindWebOnlyPrefixHandlers.length; i++) {
+        const [prefix, handler] = tailwindWebOnlyPrefixHandlers[i]
+        if (base.startsWith(prefix)) {
+          const v = base.slice(prefix.length)
+          const styles = handler(v)
+          if (styles) {
+            accumulateWebOnly(styles)
+            matchedPrefix = true
+            break
+          }
+        }
+      }
+      if (matchedPrefix) continue
+    }
+
     // otherwise try the generic prop-value conversion
     if (looksLikeTailwindClass(cls, shorthands, config)) {
       const flatProp = tailwindClassToFlatProp(cls, shorthands, config)
@@ -322,6 +363,11 @@ function preprocessTailwindClassName(
     }
     // preserve all other classes (non-tailwind or failed conversion)
     regularClasses.push(cls)
+  }
+
+  // commit accumulated web-only styles as a single $platform-web prop
+  if (webOnlyAcc) {
+    result['$platform-web'] = webOnlyAcc
   }
 
   // update className to only include regular classes
@@ -469,6 +515,258 @@ const tailwindPropPrefixes: Record<string, string> = {
   'max-w': 'maxWidth',
   'max-h': 'maxHeight',
 }
+
+// web-only tailwind utilities: CSS properties Tailwind ships that React Native
+// has no equivalent for (float, columns, scroll-snap, mix-blend-mode, etc.).
+// These are routed through `$platform-web={{ cssProp: cssValue }}` so they work
+// on web and silently no-op on native — instead of producing an invalid Tamagui
+// prop that fails type checking or gets silently dropped.
+//
+// Two shapes are supported:
+//   - exact map (no value): isolate → { isolation: 'isolate' }
+//   - prefix map (value-bearing): float-left → { float: 'left' }
+//
+// Coverage target is the top ~30 web-only utilities. Modifiers (e.g.
+// `hover:float-left`) are intentionally NOT supported here — these utilities
+// are typically applied unconditionally; if modifiers are needed, users can
+// reach for `$platform-web={{ hoverStyle: { float: 'left' } }}` directly.
+//
+// Tailwind classes intentionally LEFT for the generic parser (already covered):
+//   - resize-none (resize is also a CSS prop; tw `resize` is overloaded but
+//     `resize-y`/`resize-x` aliases are unique → routed here)
+//   - caret-* — handled by existing $caretColor cross-platform path
+const tailwindWebOnlyExactMap: Record<string, Record<string, any>> = {
+  // isolation / stacking
+  isolate: { isolation: 'isolate' },
+  'isolation-auto': { isolation: 'auto' },
+  // overflow / scroll behavior
+  'scroll-smooth': { scrollBehavior: 'smooth' },
+  'scroll-auto': { scrollBehavior: 'auto' },
+  // scroll snap parents
+  'snap-none': { scrollSnapType: 'none' },
+  'snap-x': { scrollSnapType: 'x mandatory' },
+  'snap-y': { scrollSnapType: 'y mandatory' },
+  'snap-both': { scrollSnapType: 'both mandatory' },
+  'snap-mandatory': { scrollSnapType: 'mandatory' },
+  'snap-proximity': { scrollSnapType: 'proximity' },
+  // scroll snap children
+  'snap-start': { scrollSnapAlign: 'start' },
+  'snap-end': { scrollSnapAlign: 'end' },
+  'snap-center': { scrollSnapAlign: 'center' },
+  'snap-align-none': { scrollSnapAlign: 'none' },
+  'snap-normal': { scrollSnapStop: 'normal' },
+  'snap-always': { scrollSnapStop: 'always' },
+  // appearance reset
+  'appearance-none': { appearance: 'none' },
+  'appearance-auto': { appearance: 'auto' },
+  // resize
+  'resize-none': { resize: 'none' },
+  'resize-y': { resize: 'vertical' },
+  'resize-x': { resize: 'horizontal' },
+  resize: { resize: 'both' },
+  // float / clear
+  'float-left': { float: 'left' },
+  'float-right': { float: 'right' },
+  'float-none': { float: 'none' },
+  'float-start': { float: 'inline-start' },
+  'float-end': { float: 'inline-end' },
+  'clear-left': { clear: 'left' },
+  'clear-right': { clear: 'right' },
+  'clear-both': { clear: 'both' },
+  'clear-none': { clear: 'none' },
+  'clear-start': { clear: 'inline-start' },
+  'clear-end': { clear: 'inline-end' },
+  // contain
+  'contain-none': { contain: 'none' },
+  'contain-content': { contain: 'content' },
+  'contain-strict': { contain: 'strict' },
+  'contain-size': { contain: 'size' },
+  'contain-inline-size': { contain: 'inline-size' },
+  'contain-layout': { contain: 'layout' },
+  'contain-paint': { contain: 'paint' },
+  'contain-style': { contain: 'style' },
+  // place-content / place-items / place-self (CSS-only — RN uses justify/align)
+  'place-content-center': { placeContent: 'center' },
+  'place-content-start': { placeContent: 'start' },
+  'place-content-end': { placeContent: 'end' },
+  'place-content-between': { placeContent: 'space-between' },
+  'place-content-around': { placeContent: 'space-around' },
+  'place-content-evenly': { placeContent: 'space-evenly' },
+  'place-content-stretch': { placeContent: 'stretch' },
+  'place-items-start': { placeItems: 'start' },
+  'place-items-end': { placeItems: 'end' },
+  'place-items-center': { placeItems: 'center' },
+  'place-items-stretch': { placeItems: 'stretch' },
+  'place-self-auto': { placeSelf: 'auto' },
+  'place-self-start': { placeSelf: 'start' },
+  'place-self-end': { placeSelf: 'end' },
+  'place-self-center': { placeSelf: 'center' },
+  'place-self-stretch': { placeSelf: 'stretch' },
+  // break-* (page/column break — print/multicol)
+  'break-after-auto': { breakAfter: 'auto' },
+  'break-after-avoid': { breakAfter: 'avoid' },
+  'break-after-page': { breakAfter: 'page' },
+  'break-before-auto': { breakBefore: 'auto' },
+  'break-before-avoid': { breakBefore: 'avoid' },
+  'break-before-page': { breakBefore: 'page' },
+  'break-inside-auto': { breakInside: 'auto' },
+  'break-inside-avoid': { breakInside: 'avoid' },
+  'break-inside-avoid-page': { breakInside: 'avoid-page' },
+  'break-inside-avoid-column': { breakInside: 'avoid-column' },
+  // mix-blend-mode (composite — closest RN approximation is non-trivial)
+  'mix-blend-normal': { mixBlendMode: 'normal' },
+  'mix-blend-multiply': { mixBlendMode: 'multiply' },
+  'mix-blend-screen': { mixBlendMode: 'screen' },
+  'mix-blend-overlay': { mixBlendMode: 'overlay' },
+  'mix-blend-darken': { mixBlendMode: 'darken' },
+  'mix-blend-lighten': { mixBlendMode: 'lighten' },
+  'mix-blend-color-dodge': { mixBlendMode: 'color-dodge' },
+  'mix-blend-color-burn': { mixBlendMode: 'color-burn' },
+  'mix-blend-hard-light': { mixBlendMode: 'hard-light' },
+  'mix-blend-soft-light': { mixBlendMode: 'soft-light' },
+  'mix-blend-difference': { mixBlendMode: 'difference' },
+  'mix-blend-exclusion': { mixBlendMode: 'exclusion' },
+  'mix-blend-hue': { mixBlendMode: 'hue' },
+  'mix-blend-saturation': { mixBlendMode: 'saturation' },
+  'mix-blend-color': { mixBlendMode: 'color' },
+  'mix-blend-luminosity': { mixBlendMode: 'luminosity' },
+  'mix-blend-plus-darker': { mixBlendMode: 'plus-darker' },
+  'mix-blend-plus-lighter': { mixBlendMode: 'plus-lighter' },
+  // columns base (auto). values handled by prefix map below.
+  'columns-auto': { columns: 'auto' },
+  // visibility (covered cross-plat by visibility-hidden-native at expand-style
+  // level, so we do NOT remap `visible`/`invisible` here — they already work.)
+  // backdrop-filter shortcuts: only `backdrop-blur-none` is value-less
+  'backdrop-blur-none': { backdropFilter: 'none' },
+  // text-wrap / overflow-wrap
+  'text-wrap': { textWrap: 'wrap' },
+  'text-nowrap': { textWrap: 'nowrap' },
+  'text-balance': { textWrap: 'balance' },
+  'text-pretty': { textWrap: 'pretty' },
+  'wrap-break-word': { overflowWrap: 'break-word' },
+  'wrap-anywhere': { overflowWrap: 'anywhere' },
+  'wrap-normal': { overflowWrap: 'normal' },
+  // hyphens
+  'hyphens-none': { hyphens: 'none' },
+  'hyphens-manual': { hyphens: 'manual' },
+  'hyphens-auto': { hyphens: 'auto' },
+  // content (pseudo-element fallback when paired with content-empty)
+  'content-none': { content: 'none' },
+  // forced-color-adjust
+  'forced-color-adjust-auto': { forcedColorAdjust: 'auto' },
+  'forced-color-adjust-none': { forcedColorAdjust: 'none' },
+  // print-color-adjust
+  'print-color-adjust-auto': { printColorAdjust: 'auto' },
+  'print-color-adjust-exact': { printColorAdjust: 'exact' },
+  // touch-action (web pointer-events; native has its own gesture system)
+  'touch-auto': { touchAction: 'auto' },
+  'touch-none': { touchAction: 'none' },
+  'touch-pan-x': { touchAction: 'pan-x' },
+  'touch-pan-left': { touchAction: 'pan-left' },
+  'touch-pan-right': { touchAction: 'pan-right' },
+  'touch-pan-y': { touchAction: 'pan-y' },
+  'touch-pan-up': { touchAction: 'pan-up' },
+  'touch-pan-down': { touchAction: 'pan-down' },
+  'touch-pinch-zoom': { touchAction: 'pinch-zoom' },
+  'touch-manipulation': { touchAction: 'manipulation' },
+  // will-change
+  'will-change-auto': { willChange: 'auto' },
+  'will-change-scroll': { willChange: 'scroll-position' },
+  'will-change-contents': { willChange: 'contents' },
+  'will-change-transform': { willChange: 'transform' },
+  // sr-only / not-sr-only — visually-hidden accessibility utility.
+  // RN already strips screen-reader-only role; web needs the full clip recipe.
+  'sr-only': {
+    position: 'absolute',
+    width: 1,
+    height: 1,
+    padding: 0,
+    margin: -1,
+    overflow: 'hidden',
+    clip: 'rect(0, 0, 0, 0)',
+    whiteSpace: 'nowrap',
+    borderWidth: 0,
+  },
+  'not-sr-only': {
+    position: 'static',
+    width: 'auto',
+    height: 'auto',
+    padding: 0,
+    margin: 0,
+    overflow: 'visible',
+    clip: 'auto',
+    whiteSpace: 'normal',
+  },
+}
+
+// prefix-style web-only utilities: `<prefix>-<value>` → CSS prop + transformed value.
+// Each entry maps a class prefix to a (value → cssProps) function. Returning null
+// signals "not a match, fall through" (e.g. `columns-foo` shouldn't claim it).
+const tailwindWebOnlyPrefixHandlers: Array<
+  [string, (value: string) => Record<string, any> | null]
+> = [
+  // columns-2 → columns: 2 ; columns-3xs..7xl → named widths
+  [
+    'columns-',
+    (v) => {
+      if (/^\d+$/.test(v)) return { columns: Number(v) }
+      const named: Record<string, string> = {
+        '3xs': '16rem',
+        '2xs': '18rem',
+        xs: '20rem',
+        sm: '24rem',
+        md: '28rem',
+        lg: '32rem',
+        xl: '36rem',
+        '2xl': '42rem',
+        '3xl': '48rem',
+        '4xl': '56rem',
+        '5xl': '64rem',
+        '6xl': '72rem',
+        '7xl': '80rem',
+      }
+      return named[v] ? { columns: named[v] } : null
+    },
+  ],
+  // backdrop-blur-{sm,md,lg,xl,2xl,3xl,none}
+  [
+    'backdrop-blur-',
+    (v) => {
+      const blurs: Record<string, string> = {
+        sm: 'blur(4px)',
+        md: 'blur(12px)',
+        lg: 'blur(16px)',
+        xl: 'blur(24px)',
+        '2xl': 'blur(40px)',
+        '3xl': 'blur(64px)',
+        none: 'none',
+      }
+      return blurs[v] ? { backdropFilter: blurs[v] } : null
+    },
+  ],
+  // mix-blend-* prefix isn't really needed (all in exact map) — leaving room
+  // for `text-indent-N` and `scroll-{m,p}-N` follow-up.
+  // text-indent-N → textIndent: N*4px (tailwind spacing scale)
+  [
+    'text-indent-',
+    (v) => (/^\d+$/.test(v) ? { textIndent: Number(v) * 4 } : null),
+  ],
+  // accent-color: defers value lookup to the regular parser path. accent-blue-500
+  // is left to the generic parser since `accentColor` is a known web style prop;
+  // but the generic parser routes it to a flat $accentColor prop. We want it on
+  // $platform-web so it no-ops on native. So we shadow it here:
+  [
+    'accent-',
+    (v) => {
+      // simple values only: accent-blue, accent-blue-500 (tokenish strings).
+      // skip if value contains anything that doesn't look like a tailwind color.
+      if (!/^[a-z]+(-\d+)?$/.test(v) && !/^#[0-9a-fA-F]{3,8}$/.test(v)) return null
+      return { accentColor: v }
+    },
+  ],
+  // caret-* color: existing $caretColor path forwards to RN selectionColor/cursorColor.
+  // Leave it to the generic parser (do not handle here).
+]
 
 // tailwind sizing keywords / fractions for width/height/min/max props.
 // returns a CSS value, or null if `value` isn't a sizing keyword (falls through to normal parse).

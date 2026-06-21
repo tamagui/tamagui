@@ -1424,6 +1424,34 @@ export function createExtractor(
               return attr
             }
 
+            // group="<literal>" can extract into static container CSS on web
+            // (extractToClassNames detects this attr and emits the rule + className).
+            // Bail only when paired with untilMeasured (runtime-driven measurement).
+            if (
+              platform === 'web' &&
+              name === 'group' &&
+              t.isStringLiteral(attribute.value)
+            ) {
+              const siblingAttrs = traversePath.node.openingElement.attributes
+              const hasUntilMeasured = siblingAttrs.some(
+                (a) =>
+                  t.isJSXAttribute(a) &&
+                  t.isJSXIdentifier(a.name) &&
+                  a.name.name === 'untilMeasured'
+              )
+
+              if (hasUntilMeasured) {
+                if (shouldPrintDebug) {
+                  logger.info(`  ! group + untilMeasured: deopt`)
+                }
+                inlined.set('group', true)
+                return attr
+              }
+
+              // pass through as an attr - extractToClassNames consumes it
+              return attr
+            }
+
             // if value can be evaluated, extract it and filter it out
             const styleValue = attemptEvalSafe(value)
 
@@ -1529,10 +1557,15 @@ export function createExtractor(
               }
 
               if (isValidStyleKey(name, staticConfig)) {
-                // $theme-, $group- styles should not be flattened (needs runtime handling)
+                // $theme- and $group- styles flatten on web (compile-time CSS emission
+                // via createMediaStyle in extractToClassNames). Native still needs to
+                // bail since the native runtime drives them via _expressions.
                 // $platform- can be flattened if the platform matches
                 if (name[0] === '$') {
-                  if (name.startsWith('$theme-') || name.startsWith('$group-')) {
+                  if (
+                    platform === 'native' &&
+                    (name.startsWith('$theme-') || name.startsWith('$group-'))
+                  ) {
                     if (shouldPrintDebug) {
                       logger.info(`  ! not flattening media-like style: ${name}`)
                     }

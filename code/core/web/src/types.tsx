@@ -2986,6 +2986,24 @@ export type StaticConfigPublic = {
    * memoizes component, rarely useful except mostly style components that don't take children
    */
   memo?: boolean
+
+  /**
+   * (runtime perf) When true, the component is treated as a "lean" styled():
+   *
+   *   - no `$` token reachable (no theme dep)
+   *   - no `$sm`/`$md`/`$gtMd`/... reachable (no media dep)
+   *   - no hoverStyle/pressStyle/focusStyle/disabledStyle/focusVisibleStyle
+   *   - no animation prop
+   *   - no `group` in defaultProps
+   *   - no `$theme-*` pseudo
+   *
+   * Routes through `createLeanComponent` instead of the full path. Skips
+   * `useThemeWithState`, `useMedia`, and the pseudo-state `useState` inside
+   * `useComponentState`. Identity-stable hook count; selected once at
+   * `styled()` time and frozen on the StaticConfig. Intended to be set by the
+   * `styled()` analyzer; can also be forced for experiments.
+   */
+  lean?: boolean
 }
 
 type StaticConfigBase = StaticConfigPublic & {

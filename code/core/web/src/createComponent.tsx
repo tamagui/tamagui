@@ -231,6 +231,118 @@ if (isWeb && typeof document !== 'undefined') {
   // Mouse move will reset it when there's real mouse activity.
 }
 
+// Lane B (perf): a frozen empty theme + mounted state reused by every lean
+// component instance. Lean components by definition don't read tokens, so the
+// theme is never indexed — the object only exists to satisfy the StyleSplitter
+// signature without allocating per render.
+const LEAN_EMPTY_THEME = Object.freeze({}) as any
+const LEAN_STYLE_PROPS = Object.freeze({
+  isAnimated: false,
+  noClass: false,
+  resolveValues: 'auto' as const,
+}) as any
+
+/**
+ * Lane B (perf): the lean render path. Used when staticConfig.lean is true.
+ *
+ * Cuts the hook chain from ~14 → ~3 calls per render:
+ *   - useContext(ComponentContext)  (for inText + animationDriver — animationDriver is
+ *                                    ignored since lean = no animation, but inText
+ *                                    drives Text-inside-Text element selection)
+ *   - useSplitStyles                 (single pass, no theme / media / pseudo branches
+ *                                    are hit because lean was proved at styled() time)
+ *   - composeRefs once via useRef-free closure
+ *
+ * Skipped vs. full path:
+ *   - useThemeWithState              (no $ tokens reachable)
+ *   - useMedia                       (no $sm/$md/... reachable)
+ *   - useComponentState's useState   (no pseudo state to track)
+ *   - useDidFinishSSR / useIsClientOnly (lean is ssrSafe by construction)
+ *   - useAnimations                  (no animation prop)
+ *   - GroupContext useContext        (no 'group' in defaultProps)
+ *   - all useIsomorphicLayoutEffect's for pseudo / group / unmount transitions
+ *
+ * Hook count is identity-stable because staticConfig.lean is frozen at
+ * styled() time. SSR: lean produces the same className-only output server +
+ * client (no className-strategy switch), so hydration is by construction.
+ */
+function renderLean(
+  staticConfig: StaticConfig,
+  propsIn: any,
+  forwardedRef: any
+): ReactNode {
+  const config = getConfig()
+  const componentContext = React.useContext(ComponentContext)
+  const { isText } = staticConfig
+
+  // merge default props if present (cheap, allocation-free in the common case)
+  const defaultProps = staticConfig.defaultProps
+  let props: any = propsIn
+  if (defaultProps) {
+    props = { ...defaultProps, ...propsIn }
+  }
+
+  // pick the underlying element. lean is web-only by construction (no animation,
+  // no native pseudo states), so use the simple span/div selection.
+  const hasTextAncestor = !!(isWeb && isText ? componentContext.inText : false)
+  const Component = staticConfig.Component
+  const element = (isWeb && (props.render || Component)) || Component
+  const BaseComponent =
+    element || (isText ? 'span' : hasTextAncestor ? 'span' : 'div')
+  const elementType: any = element || BaseComponent
+
+  // run the style splitter. lean's stable-shape state lets the splitter
+  // hit only its fast paths — no token resolution, no media classes, no
+  // pseudo rule emission.
+  const splitStyles = useSplitStyles(
+    props,
+    staticConfig,
+    LEAN_EMPTY_THEME,
+    '',
+    defaultComponentStateMounted,
+    LEAN_STYLE_PROPS,
+    null,
+    componentContext,
+    null,
+    elementType,
+    false,
+    undefined,
+    null
+  )
+
+  if (!splitStyles) {
+    return null
+  }
+
+  const { viewProps: viewPropsIn } = splitStyles
+  const {
+    asChild: _asChild,
+    children,
+    themeShallow: _themeShallow,
+    spaceDirection: _spaceDirection,
+    separator: _separator,
+    passThrough: _passThrough,
+    forceStyle: _forceStyle,
+    theme: _themeProp,
+    onPress: _onPress,
+    onLongPress: _onLongPress,
+    onPressIn: _onPressIn,
+    onPressOut: _onPressOut,
+    onHoverIn: _onHoverIn,
+    onHoverOut: _onHoverOut,
+    ...nonTamaguiProps
+  } = viewPropsIn || {}
+
+  // ref-forwarding without a stable composedRef stash — lean doesn't track
+  // host for visualizer, group listeners, etc., so a plain forwardedRef is
+  // enough. when caller passes a function ref, react handles invocation.
+  if (forwardedRef) {
+    nonTamaguiProps.ref = forwardedRef
+  }
+
+  return React.createElement(elementType, nonTamaguiProps, children)
+}
+
 export function createComponent<
   ComponentPropTypes extends Record<string, any> = {},
   Ref extends TamaguiElement = TamaguiElement,
@@ -243,6 +355,15 @@ export function createComponent<
 
   const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
     'use no memo'
+
+    // Lane B (perf): branch to the lean render path when the styled() analyzer
+    // (or an explicit override) has proved the component is hook-light: no
+    // theme, no media, no pseudo state, no animation, no group. We branch at
+    // the top of the render — `staticConfig.lean` is frozen for the lifetime
+    // of the component, so the hook-count of any given instance is stable.
+    if (staticConfig.lean) {
+      return renderLean(staticConfig, propsIn, forwardedRef)
+    }
 
     config = config || getConfig()
 

@@ -162,6 +162,9 @@ export async function extractToClassNames({
       let attrClassName: t.Expression | null = null
       let baseFontFamily = ''
       let mediaStylesSeen = 1
+      // when set, this is the value of a static `group="..."` attribute -
+      // emit container CSS at compile time and inject `t_group_<name>` class.
+      let staticGroupName: string | null = null
 
       const comment = util.format(
         '/* %s:%s (%s) */',
@@ -194,11 +197,21 @@ export async function extractToClassNames({
           const property = style[0]
           const mediaName = property.slice(1)
 
-          // $group- styles must bail out entirely - they need runtime handling because
-          // group changes can affect children that may be animated and need hard values.
-          // In the future, CSS animation drivers could potentially optimize this.
+          // $group-<name>(-<media>?)(-<pseudo>?) — emit @container query CSS.
+          // Reuses the same createMediaStyle helper the runtime uses, so output
+          // is byte-identical to runtime emission and dedupes by identifier.
           if (mediaName.startsWith('group-')) {
-            throw new BailOptimizationError()
+            const mediaStyle = createMediaStyle(
+              style,
+              mediaName,
+              extractor.getTamagui()!.media,
+              'group',
+              false,
+              mediaStylesSeen
+            )
+            const identifier = addStyle(mediaStyle)
+            classNames.push(identifier)
+            continue
           }
 
           // Check for theme/platform media queries (e.g., $theme-dark, $platform-web)

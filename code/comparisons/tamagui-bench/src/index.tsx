@@ -4,6 +4,24 @@ import config from './tamagui.config'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
 import { ITEM_COUNT, HEAVY_COUNT, scenarios as allScenarios, renderResults, type BenchResult } from '../../shared/bench'
 
+// Lane B (perf) proof experiment: force-enable the lean render path on the
+// shared View used by the SIMPLE bench scenario. Lean skips useThemeWithState,
+// useMedia, and the pseudo-state useState inside useComponentState — only
+// safe when no $token / $media / pseudo / animation / group is reachable.
+// `simple` has none; `rich` (hoverStyle/pressStyle), `group`, `heavy`, and
+// `animated` (animation prop) do, so we toggle lean per-scenario rather than
+// globally. Toggle via ?lean=0 to compare against the full path.
+const leanParam = new URLSearchParams(window.location.search).get('lean')
+const leanEnabled = leanParam == null ? true : leanParam !== '0'
+const setViewLean = (on: boolean) => {
+  if (!leanEnabled) return
+  // staticConfig is the per-component frozen-shape config — mutating `lean`
+  // before a render cycle is safe because the next render reads the latest
+  // value, and we flip back to full path before any scenario that needs the
+  // skipped hooks. The hook count is still stable WITHIN a render.
+  ;(View as any).staticConfig.lean = on
+}
+
 // allow a URL ?skip=group,heavy to skip selected scenarios (runtime variant uses this).
 const skipSet = new Set(
   (typeof window !== 'undefined'
@@ -202,6 +220,10 @@ const scenarioComponents = {
   animated: AnimatedItems,
 }
 
+// scenarios that can run safely under the lean path (no $token / $media /
+// pseudo / animation / group props reachable in their JSX)
+const LEAN_SAFE_SCENARIOS = new Set(['simple'])
+
 function BenchRunner({
   scenarioId,
   onResult,
@@ -214,6 +236,11 @@ function BenchRunner({
   const startRef = useRef(0)
   const mountTimeRef = useRef(0)
   const Component = scenarioComponents[scenarioId as keyof typeof scenarioComponents]
+
+  // flip View into the lean render path only for scenarios that statically
+  // can't reach the skipped hooks. Set BEFORE the scenario JSX mounts so the
+  // very first render uses the lean path.
+  setViewLean(LEAN_SAFE_SCENARIOS.has(scenarioId))
 
   useLayoutEffect(() => {
     if (phase === 'mounting') {
