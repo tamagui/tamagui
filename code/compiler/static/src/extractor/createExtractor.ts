@@ -76,6 +76,46 @@ function isFullyDisabled(props: TamaguiOptions) {
   return props.disableExtraction && props.disableDebugAttr
 }
 
+// Walk up JSX ancestors looking for one that declares `group="<groupName>"` together
+// with the `untilMeasured` prop. Used to deopt children whose styles depend on a
+// parent that the runtime measures before emitting child styles (can't be modeled
+// in static CSS).
+function hasUntilMeasuredAncestor(
+  path: NodePath<any>,
+  groupName: string
+): boolean {
+  let current: NodePath<any> | null = path.parentPath
+  while (current) {
+    if (current.isJSXElement()) {
+      const opening = current.node.openingElement
+      let foundGroup = false
+      let foundUntilMeasured = false
+      for (const attr of opening.attributes) {
+        if (!t.isJSXAttribute(attr)) continue
+        if (!t.isJSXIdentifier(attr.name)) continue
+        const aName = attr.name.name
+        if (aName === 'group') {
+          // only literal string equality counts — dynamic group= is left to runtime
+          if (t.isStringLiteral(attr.value) && attr.value.value === groupName) {
+            foundGroup = true
+          } else if (
+            t.isJSXExpressionContainer(attr.value) &&
+            t.isStringLiteral(attr.value.expression) &&
+            attr.value.expression.value === groupName
+          ) {
+            foundGroup = true
+          }
+        } else if (aName === 'untilMeasured') {
+          foundUntilMeasured = true
+        }
+      }
+      if (foundGroup && foundUntilMeasured) return true
+    }
+    current = current.parentPath
+  }
+  return false
+}
+
 export function createExtractor(
   { logger = console, platform = 'web' }: ExtractorOptions = { logger: console }
 ) {
@@ -1440,6 +1480,18 @@ export function createExtractor(
               return attr
             }
 
+            // static `group="<literal>"` is handled at compile-time in
+            // extractToClassNames (emits container CSS + adds `t_group_<name>`
+            // className), so we drop the JSX attribute here without bailing
+            // flattening. dynamic `group={expr}` falls through to runtime.
+            if (
+              isTargetingHTML &&
+              name === 'group' &&
+              t.isStringLiteral(value)
+            ) {
+              return []
+            }
+
             // if value can be evaluated, extract it and filter it out
             const styleValue = attemptEvalSafe(value)
 
@@ -1545,15 +1597,28 @@ export function createExtractor(
               }
 
               if (isValidStyleKey(name, staticConfig)) {
-                // $theme-, $group- styles should not be flattened (needs runtime handling)
-                // $platform- can be flattened if the platform matches
+                // $theme- / $group- styles extract through the atomic-CSS pipeline
+                // (extractToClassNames → createMediaStyle), so they fall through to
+                // the normal style return below. The one case we still bail is
+                // $group-<name>-* when an ancestor element declares `group="<name>"`
+                // together with `untilMeasured` — the runtime measures the parent
+                // and only then emits child styles, which can't be modeled in CSS.
+                // $platform- can be flattened if the platform matches.
                 if (name[0] === '$') {
-                  if (name.startsWith('$theme-') || name.startsWith('$group-')) {
-                    if (shouldPrintDebug) {
-                      logger.info(`  ! not flattening media-like style: ${name}`)
+                  if (name.startsWith('$group-')) {
+                    const groupName = name.slice('$group-'.length).split('-')[0]
+                    if (
+                      groupName &&
+                      hasUntilMeasuredAncestor(path, groupName)
+                    ) {
+                      if (shouldPrintDebug) {
+                        logger.info(
+                          `  ! group="${groupName}" ancestor has untilMeasured, not flattening: ${name}`
+                        )
+                      }
+                      inlined.set(name, true)
+                      return attr
                     }
-                    inlined.set(name, true)
-                    return attr
                   }
 
                   // $platform-web, $platform-native, $platform-ios, $platform-android, $platform-tv, $platform-androidtv, $platform-tvos
@@ -2322,8 +2387,29 @@ export function createExtractor(
             const before = process.env.IS_STATIC
             process.env.IS_STATIC = 'is_static'
             try {
+              // $group-* / $theme-* keys carry block-form style objects that
+              // getSplitStyles drops in static mode (no parent group context,
+              // no theme value to read). Pluck them out so the atomic-CSS
+              // pipeline in extractToClassNames can emit @container / theme
+              // rules for them directly.
+              let extractedMediaLikeProps: Record<string, any> | null = null
+              let propsForSplit: any = props
+              for (const k in props) {
+                if (
+                  k[0] === '$' &&
+                  (k.startsWith('$group-') || k.startsWith('$theme-'))
+                ) {
+                  if (propsForSplit === props) {
+                    propsForSplit = { ...props }
+                  }
+                  extractedMediaLikeProps ||= {}
+                  extractedMediaLikeProps[k] = propsForSplit[k]
+                  delete propsForSplit[k]
+                }
+              }
+
               const out = getSplitStyles(
-                props,
+                propsForSplit,
                 staticConfig,
                 defaultTheme,
                 '',
@@ -2348,6 +2434,7 @@ export function createExtractor(
                 ...(includeProps ? out.viewProps : {}),
                 ...out.style,
                 ...out.pseudos,
+                ...extractedMediaLikeProps,
               }
 
               // check de-opt props again
