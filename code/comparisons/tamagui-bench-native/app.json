@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "tamagui-bench-native",
+    "slug": "tamagui-bench-native",
+    "version": "1.0.0",
+    "scheme": "tgbenchnative",
+    "platforms": ["ios"],
+    "ios": {
+      "bundleIdentifier": "dev.tamagui.benchnative"
+    }
+  }
+}

@@ -19,9 +19,12 @@
     "./code/tamagui.dev",
     "./code/ui/**/*",
     "./code/comparisons/tamagui-bench",
+    "./code/comparisons/tamagui-bench-native",
     "./code/comparisons/tailwind-bench",
     "./code/comparisons/inline-bench",
     "./code/comparisons/nativewind-bench",
+    "./code/comparisons/nativewind-bench-native",
+    "./code/comparisons/uniwind-bench-native",
     "./code/comparisons/conformance/web",
     "./code/comparisons/conformance/native"
   ],
