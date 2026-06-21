@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "2.1.0-1780426041711",
+  "version": "2.3.1",
   "license": "MIT",
   "source": "src/index.ts",
   "type": "module",
@@ -77,7 +77,8 @@
     "@tamagui/build": "workspace:*",
     "react": ">=19",
     "react-native": "0.83.2",
-    "react-native-gesture-handler": "~2.30.0"
+    "react-native-gesture-handler": "~2.30.0",
+    "react-native-safe-area-context": "~5.7.0"
   },
   "peerDependencies": {
     "react": ">=19"

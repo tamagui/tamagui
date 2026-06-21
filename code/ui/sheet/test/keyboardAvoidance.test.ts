@@ -160,7 +160,10 @@ describe('getKeyboardOccludedHeight', () => {
 })
 
 describe('getSheetReleasePosition', () => {
-  test('keeps a keyboard-fit sheet open when velocity projects a short drag to dismiss', () => {
+  // WEB keyboard-fit-dismiss threshold (the 75de9c9694 web keyboard-handoff fix):
+  // when the keyboard is up, a fit+dismiss sheet only dismisses after enough
+  // ACTUAL travel, ignoring a velocity-projected short drag.
+  test('web: keeps a keyboard-fit sheet open when velocity projects a short drag to dismiss', () => {
     expect(
       getSheetReleasePosition({
         positions: [0, 844],
@@ -170,11 +173,12 @@ describe('getSheetReleasePosition', () => {
         dismissOnSnapToBottom: true,
         snapPointsMode: 'fit',
         isKeyboardVisible: true,
+        isWeb: true,
       })
     ).toBe(0)
   })
 
-  test('allows a keyboard-fit sheet to dismiss after enough actual travel', () => {
+  test('web: allows a keyboard-fit sheet to dismiss after enough actual travel', () => {
     expect(
       getSheetReleasePosition({
         positions: [0, 844],
@@ -184,8 +188,43 @@ describe('getSheetReleasePosition', () => {
         dismissOnSnapToBottom: true,
         snapPointsMode: 'fit',
         isKeyboardVisible: true,
+        isWeb: true,
       })
     ).toBe(1)
+  })
+
+  // NATIVE must NOT apply the web threshold — it snaps purely by projected
+  // position (the pre-rework v2.1.0 behavior). regression guard: with the
+  // threshold leaking into native, this short-projected drag wrongly stayed open
+  // (0); native should snap to the nearest point (here: dismiss, index 1).
+  test('native: snaps a keyboard-fit sheet by projected position, ignoring the web threshold', () => {
+    expect(
+      getSheetReleasePosition({
+        positions: [0, 844],
+        projectedEnd: 480,
+        currentPosition: 150,
+        frameSize: 591,
+        dismissOnSnapToBottom: true,
+        snapPointsMode: 'fit',
+        isKeyboardVisible: true,
+        isWeb: false,
+      })
+    ).toBe(1)
+  })
+
+  test('native: a projected-open drag snaps back open', () => {
+    expect(
+      getSheetReleasePosition({
+        positions: [0, 844],
+        projectedEnd: 200,
+        currentPosition: 300,
+        frameSize: 591,
+        dismissOnSnapToBottom: true,
+        snapPointsMode: 'fit',
+        isKeyboardVisible: true,
+        isWeb: false,
+      })
+    ).toBe(0)
   })
 
   test('keeps normal multi-snap release behavior outside keyboard-fit dismiss', () => {
@@ -198,6 +237,7 @@ describe('getSheetReleasePosition', () => {
         dismissOnSnapToBottom: true,
         snapPointsMode: 'percent',
         isKeyboardVisible: true,
+        isWeb: true,
       })
     ).toBe(1)
   })

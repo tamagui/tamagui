@@ -1,10 +1,10 @@
+import { randomBytes } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
 import { apiRoute } from '~/features/api/apiRoute'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 
 const TEST_USER_EMAIL = 'test-user@tamagui.dev'
-const TEST_USER_PASSWORD = 'test-user-password-12345'
 
 // admin secret for production access (set TEST_USER_ADMIN_SECRET env var)
 const ADMIN_SECRET = process.env.TEST_USER_ADMIN_SECRET
@@ -50,8 +50,12 @@ export default apiRoute(async (req) => {
   }
 
   try {
+    // generate a fresh random password each run so the test user never carries a
+    // static, source-committed credential that could sign in directly via supabase
+    const password = randomBytes(24).toString('hex')
+
     // step 1: get or create the test user in auth
-    const userId = await getOrCreateTestUser()
+    const userId = await getOrCreateTestUser(password)
 
     // step 2: ensure user exists in users table
     await ensureUserRecord(userId)
@@ -79,7 +83,7 @@ export default apiRoute(async (req) => {
     const { data: signInData, error: signInError } =
       await supabase.auth.signInWithPassword({
         email: TEST_USER_EMAIL,
-        password: TEST_USER_PASSWORD,
+        password,
       })
 
     if (signInError || !signInData.session) {
@@ -119,19 +123,21 @@ export default apiRoute(async (req) => {
   }
 })
 
-async function getOrCreateTestUser(): Promise<string> {
+async function getOrCreateTestUser(password: string): Promise<string> {
   // check if user exists
   const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers()
   const existingUser = existingUsers?.users?.find((u) => u.email === TEST_USER_EMAIL)
 
   if (existingUser) {
+    // rotate to the fresh random password so we can sign in without a static secret
+    await supabaseAdmin.auth.admin.updateUserById(existingUser.id, { password })
     return existingUser.id
   }
 
   // create new user
   const { data: newUser, error } = await supabaseAdmin.auth.admin.createUser({
     email: TEST_USER_EMAIL,
-    password: TEST_USER_PASSWORD,
+    password,
     email_confirm: true,
     user_metadata: {
       full_name: 'Test User',

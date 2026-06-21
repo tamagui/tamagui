@@ -1,0 +1,20 @@
+diff --git a/src/server/DetoxServer.js b/src/server/DetoxServer.js
+index 1ab5f08690bfd3fae42b29ffead720df06a40059..737c4471018c4c75298fc5841ebdf6163dce3d65 100644
+--- a/src/server/DetoxServer.js
++++ b/src/server/DetoxServer.js
+@@ -107,6 +107,15 @@ class DetoxServer {
+     }, timeoutValue);
+ 
+     try {
++      // ws >=8 only invokes the close() callback once every client connection is
++      // closed; a lingering app connection otherwise keeps the server (and the node
++      // process) alive until the test job times out. force-terminate any remaining
++      // clients first so close() resolves immediately.
++      if (this._wss.clients) {
++        for (const client of this._wss.clients) {
++          client.terminate();
++        }
++      }
+       this._wss.close(() => {
+         clearTimeout(handle);
+         this._closing.resolve();

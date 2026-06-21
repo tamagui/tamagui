@@ -9,6 +9,12 @@ on:
       - rn82
   workflow_dispatch:
 
+permissions:
+  contents: read
+  # required: this workflow calls the reusable build-ios-kitchensink-app.yml,
+  # whose build-ios job declares pull-requests: read (caller must grant >= callee)
+  pull-requests: read
+
 # cancel in-progress runs on feature branches, but let main finish for full history
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -59,13 +65,14 @@ jobs:
           # startup is small and these fit well under the native-ci runner's
           # 45-minute process timeout. CompilerExtraction runs an in-test
           # `npx tamagui build` (~12-19min, variable) so it gets its OWN shard
-          # (with the iOS-skipped SafeArea/SheetKeyboardDrag, which cost ~0); the
+          # (with the iOS-skipped SafeArea/SheetKeyboardDrag, which cost ~0, plus
+          # the small iOS-running SheetFitKeyboardSafeArea, ~1 launch); the
           # remaining files are bin-packed to ~14.5min test-exec each (~25min wall).
           # SelectAndroidOnPress is android-only (excluded here via
           # check-ios-detox-shards.mjs, still runs in the android job). Coverage
           # validated by that script (every e2e test assigned exactly once).
           - shard_name: '1/4'
-            test_files: 'e2e/CompilerExtraction.test.ts e2e/SafeArea.test.ts e2e/SheetKeyboardDrag.test.ts'
+            test_files: 'e2e/CompilerExtraction.test.ts e2e/SafeArea.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts'
           - shard_name: '2/4'
             test_files: 'e2e/PressStyleNative.noRngh.test.ts e2e/CompilerTernaryActive.test.ts e2e/TabsOnInteraction.test.ts e2e/PointerEvents.test.ts e2e/GroupPressNative.test.ts e2e/ShorthandVariables.test.ts e2e/check-rngh-status.test.ts'
           - shard_name: '3/4'
@@ -212,7 +219,7 @@ jobs:
 
       - name: Setup Bun
         if: env.SKIP_IOS_TESTS != 'true'
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version-file: 'package.json'
 
@@ -319,7 +326,7 @@ jobs:
 
       - name: Setup Android SDK
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
 
       - name: Prebuild Android
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
@@ -574,14 +581,14 @@ jobs:
 
       - name: Setup Bun
         if: env.SKIP_ANDROID_TESTS != 'true'
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version-file: 'package.json'
 
       - name: Start Android Emulator and Run Tests
         if: env.SKIP_ANDROID_TESTS != 'true'
         id: android-tests
-        uses: reactivecircus/android-emulator-runner@v2.37.0
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         with:
           api-level: 31
           target: google_apis

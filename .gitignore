@@ -40,8 +40,19 @@ code/kitchen-sink/ios
 .env
 .env.local
 .env.development.local
-.env.test.localp
+.env.test.local
 .env.production.local
+
+# key material / credentials - never commit
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+*.p8
+*.mobileprovision
+**/serviceAccount*.json
 
 code/kitchen-sink/ios
 code/kitchen-sink/android

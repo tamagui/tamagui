@@ -79,7 +79,7 @@ const QueueCardFrame = ({
     size: 500,
     strategy: 'blur',
     blurPct: 100,
-    color: 'var(--pink10)',
+    color: 'var(--green10)',
     opacity: 0.3,
     background: 'transparent',
     offset: {

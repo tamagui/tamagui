@@ -67,7 +67,6 @@ const include = [
   '@tamagui/core',
   '@tamagui/web',
   // existing
-  '@ai-sdk/deepseek',
   'secure-json-parse',
   '@supabase/postgres-js',
   'ai',

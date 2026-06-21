@@ -10,7 +10,6 @@
  */
 
 import type { ComponentType, ReactNode } from 'react'
-import { unmountComponentAtNode } from 'react-dom'
 import { invariant } from '@tamagui/react-native-web-internals'
 
 import { renderApplication, getApplication } from './renderApplication'
@@ -151,6 +150,8 @@ export class AppRegistry {
   }
 
   static unmountApplicationComponentAtRootTag(rootTag: any) {
-    unmountComponentAtNode(rootTag)
+    // react 19 removed ReactDOM.unmountComponentAtNode; upstream react-native-web
+    // calls rootTag.unmount() on the createRoot root instead.
+    rootTag?.unmount?.()
   }
 }

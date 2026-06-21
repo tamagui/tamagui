@@ -131,6 +131,23 @@ describe('shorthand variables - native', () => {
       },
     ])
   })
+
+  test('backgroundImage with $token/NN opacity modifier resolves to concrete rgba', () => {
+    const { style } = getSplitStylesFor({
+      backgroundImage: 'linear-gradient(180deg, $white/50, $white/0)',
+    })
+
+    expect((style as any)?.experimental_backgroundImage).toEqual([
+      {
+        type: 'linear-gradient',
+        direction: '180deg',
+        colorStops: [
+          { color: 'rgba(255,255,255,0.5)' },
+          { color: 'rgba(255,255,255,0)' },
+        ],
+      },
+    ])
+  })
 })
 
 describe('border shorthand - native', () => {

@@ -111,6 +111,10 @@ export const HomeGlow = memo(() => {
             style={{
               background: `radial-gradient(var(--${curTint}7) 20%, transparent 50%)`,
               transition: `all ease-in-out 1000ms`,
+              // raster the gradient into its own gpu layer once so scrolling
+              // composites a cached texture instead of re-painting it each frame
+              willChange: 'transform',
+              transform: 'translateZ(0)',
             }}
           />
         </YStack>
@@ -130,6 +134,9 @@ export const HomeGlow = memo(() => {
       x={0}
       y={scrollTop}
       opacity={0.3}
+      // keep the whole glow group on its own compositor layer so page scroll
+      // moves a cached texture rather than repainting the gradients
+      style={{ willChange: 'transform' }}
       {...(isOnHeroBelow && {
         x: sectionIndex === 2 ? -xs : sectionIndex === 4 ? xs : 0,
         y: -100,

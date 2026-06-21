@@ -998,7 +998,9 @@ export type SpecificTokensSpecial = TamaguiSettings extends {
 } ? Val extends 'except-special' | undefined ? never : SpecificTokens : SpecificTokens;
 export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']>;
 export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace;
-export type ColorTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
+type ColorTokenBase = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed>;
+type TokenWithOpacity = `$${string}/${number}`;
+export type ColorTokens = ColorTokenBase | CSSColorNames | TokenWithOpacity;
 export type ZIndexTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['zIndex']> | ThemeValueFallbackZIndex | number;
 export type RadiusTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['radius']> | ThemeValueFallbackRadius | number | RemString;
 export type NonSpecificTokens = GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
@@ -1016,7 +1018,8 @@ export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | numbe
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number | RemString;
 export type FontWeightValues = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00` | 'bold' | 'normal';
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues;
-export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number;
+type FontColorTokenBase = `$${GetTokenFontKeysFor<'color'>}`;
+export type FontColorTokens = FontColorTokenBase | number | TokenWithOpacity;
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number | RemString;
 export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | RNTextStyle['fontStyle'];
 export type FontTransformTokens = `$${GetTokenFontKeysFor<'transform'>}` | RNTextStyle['textTransform'];
@@ -1569,7 +1572,11 @@ export type GetNonStyledProps<A extends StylableComponent> = A extends {
 } ? B : TamaguiComponentPropsBaseBase & GetProps<A>;
 export type GetBaseStyles<A, B> = A extends {
     __tama: [any, any, any, infer C, any, any];
-} ? C : B extends {
+} ? B extends {
+    isText: true;
+} | {
+    isInput: true;
+} ? C & TextStylePropsBase : C : B extends {
     isText: true;
 } ? TextStylePropsBase : B extends {
     isInput: true;
@@ -1876,7 +1883,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     Text?: any;
 };
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>;
-type UseStyleListener = (nextStyle: Record<string, unknown>, effectiveTransition?: TransitionProp | null) => void;
+type UseStyleListener = (nextStyle: Record<string, unknown>, effectiveTransition?: TransitionProp | null, pseudoActive?: boolean) => void;
 export type UseStyleEmitter = (cb: UseStyleListener) => void;
 export type UseAnimationHook = (props: {
     style: Record<string, any>;

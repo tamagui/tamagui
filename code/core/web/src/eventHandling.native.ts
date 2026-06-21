@@ -31,6 +31,14 @@ const getIsAndroid = () => {
   return isAndroidCache
 }
 
+let isNativeDesktopCache: boolean | undefined
+const getIsNativeDesktop = () => {
+  if (isNativeDesktopCache === undefined) {
+    isNativeDesktopCache = Platform?.OS === 'macos' || Platform?.OS === 'windows'
+  }
+  return isNativeDesktopCache
+}
+
 const responderClaim = () => true
 const responderWrapperStyle = { display: 'contents' } as const
 
@@ -56,6 +64,14 @@ export function useEvents(
     }
     if (events.onBlur) {
       viewProps['onBlur'] = events.onBlur
+    }
+    if (getIsNativeDesktop()) {
+      if (events.onMouseEnter) {
+        viewProps['onMouseEnter'] = events.onMouseEnter
+      }
+      if (events.onMouseLeave) {
+        viewProps['onMouseLeave'] = events.onMouseLeave
+      }
     }
   }
 

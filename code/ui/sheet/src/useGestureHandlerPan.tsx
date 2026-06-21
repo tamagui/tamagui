@@ -1,3 +1,4 @@
+import { isWeb } from '@tamagui/constants'
 import { useCallback, useMemo, useRef, type RefObject } from 'react'
 import { getGestureHandlerState, isGestureHandlerEnabled } from './gestureState'
 import { getSheetReleasePosition } from './keyboardAvoidance'
@@ -317,6 +318,7 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
           dismissOnSnapToBottom: releaseConfig.dismissOnSnapToBottom,
           snapPointsMode: releaseConfig.snapPointsMode,
           isKeyboardVisible: gs.frozenIsKeyboardVisible,
+          isWeb,
         })
 
         onEnd(closestPoint)

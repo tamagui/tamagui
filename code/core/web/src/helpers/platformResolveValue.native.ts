@@ -2,7 +2,10 @@ import type { GetStyleState, SplitStyleProps } from '../types'
 import { getTokenForKey } from './getTokenForKey'
 import { parseNativeStyle } from './parseNativeStyle'
 
-const tokenPattern = /(\$[\w.-]+)/g
+// includes the optional `/NN` opacity-modifier suffix ($color9/50) so
+// getTokenForKey receives it and can apply the alpha — without it the token
+// resolves but the bare `/50` is left behind in the parsed gradient string
+const tokenPattern = /(\$[\w.-]+(?:\/[\d.]+)?)/g
 
 // keys that need native object parsing (DynamicColorIOS support)
 const nativeParseKeys: Record<string, boolean> = {

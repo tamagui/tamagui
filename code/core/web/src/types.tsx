@@ -1744,11 +1744,21 @@ export type SpaceTokens =
   | GetTokenString<keyof Tokens['space']>
   | ThemeValueFallbackSpace
 
-export type ColorTokens =
+// base color token strings (before opacity modifier)
+type ColorTokenBase =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof ThemeParsed>
+
+// keep this non-expanded. using `${ColorTokenBase}/${number}` preserves stricter
+// token names, but large user token/theme unions hit TS2590.
+type TokenWithOpacity = `$${string}/${number}`
+
+export type ColorTokens =
+  | ColorTokenBase
   | CSSColorNames
+  // opacity modifier: $token/50 → parsed at runtime in getTokenForKey
+  | TokenWithOpacity
 
 export type ZIndexTokens =
   | SpecificTokensSpecial
@@ -1814,7 +1824,9 @@ export type FontWeightValues =
   | 'bold'
   | 'normal'
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues
-export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number
+// font color tokens also support the opacity modifier
+type FontColorTokenBase = `$${GetTokenFontKeysFor<'color'>}`
+export type FontColorTokens = FontColorTokenBase | number | TokenWithOpacity
 export type FontLetterSpacingTokens =
   | `$${GetTokenFontKeysFor<'letterSpacing'>}`
   | number
@@ -2792,7 +2804,14 @@ export type GetNonStyledProps<A extends StylableComponent> = A extends {
 export type GetBaseStyles<A, B> = A extends {
   __tama: [any, any, any, infer C, any, any]
 }
-  ? C
+  ? // when extending an existing tamagui component (e.g. styled(View, ...)), it
+    // contributes its base styles. but isText/isInput in the config still means
+    // "this accepts text styles" (it drives runtime validStyles too), so merge
+    // text style props in, otherwise text-only props and their shorthands (e.g.
+    // the `text` shorthand for `textAlign`) get dropped from the type.
+    B extends { isText: true } | { isInput: true }
+    ? C & TextStylePropsBase
+    : C
   : B extends { isText: true }
     ? TextStylePropsBase
     : B extends { isInput: true }
@@ -3345,7 +3364,11 @@ export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>
 
 type UseStyleListener = (
   nextStyle: Record<string, unknown>,
-  effectiveTransition?: TransitionProp | null
+  effectiveTransition?: TransitionProp | null,
+  // true while a self pseudo (hover/press/focus) is active. lets avoidReRenders drivers know
+  // the emitted style is a transient pseudo override that a real re-render must not be allowed
+  // to reconcile away, vs the no-pseudo base which renders own again.
+  pseudoActive?: boolean
 ) => void
 export type UseStyleEmitter = (cb: UseStyleListener) => void
 

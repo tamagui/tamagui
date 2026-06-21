@@ -1,7 +1,11 @@
 import type { GetStyleState, SplitStyleProps } from '../types'
 import { getTokenForKey } from './getTokenForKey'
 
-const tokenPattern = /(\$[\w.-]+)/g
+// includes the optional `/NN` opacity-modifier suffix ($color9/50) so
+// getTokenForKey receives it and can apply the alpha — without it the token
+// resolves but the bare `/50` is left behind in the CSS string, which makes
+// the whole declaration invalid
+const tokenPattern = /(\$[\w.-]+(?:\/[\d.]+)?)/g
 
 /**
  * web: resolves embedded $tokens in compound CSS strings via simple regex replacement.

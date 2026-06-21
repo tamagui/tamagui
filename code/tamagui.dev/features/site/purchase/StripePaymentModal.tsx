@@ -35,7 +35,9 @@
  */
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import type { Appearance, StripeError } from '@stripe/stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
+// `/pure` avoids the main entry's side effect that auto-injects js.stripe.com on
+// import; with /pure the script only loads when loadStripe() is actually called
+import { loadStripe } from '@stripe/stripe-js/pure'
 import { Info, X } from '@tamagui/lucide-icons-2'
 import { createStore, createUseStore } from '@tamagui/use-store'
 import { useEffect, useMemo, useState } from 'react'

@@ -34,6 +34,7 @@ export function getSheetReleasePosition({
   dismissOnSnapToBottom,
   snapPointsMode,
   isKeyboardVisible,
+  isWeb,
 }: {
   positions: number[]
   projectedEnd: number
@@ -42,6 +43,7 @@ export function getSheetReleasePosition({
   dismissOnSnapToBottom: boolean
   snapPointsMode: 'percent' | 'constant' | 'fit' | 'mixed'
   isKeyboardVisible: boolean
+  isWeb: boolean
 }) {
   let closestPoint = 0
   let dist = Number.POSITIVE_INFINITY
@@ -55,8 +57,14 @@ export function getSheetReleasePosition({
     }
   }
 
+  // the keyboard-open dismiss threshold is a WEB keyboard-handoff fix
+  // (75de9c9694). on native the keyboard is opaque and the sheet snaps purely by
+  // projected position (the pre-rework behavior), so gate it to web only —
+  // otherwise a native fit+dismiss sheet snaps to the wrong point with the
+  // keyboard up.
   const dismissPoint = positions.length - 1
   const isKeyboardFitDismiss =
+    isWeb &&
     dismissOnSnapToBottom &&
     isKeyboardVisible &&
     snapPointsMode === 'fit' &&

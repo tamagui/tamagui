@@ -101,6 +101,12 @@ function setupFocusTrap(
       // track the last focused element inside the container
       target?.addEventListener('blur', handleBlur, { signal: controller.signal })
       lastFocusedElementRef.current = target
+    } else if (target?.contains(container)) {
+      // focus landed on an ANCESTOR of the container (e.g. the native <dialog>
+      // wrapper a modal Dialog renders around its FocusScope content). during a
+      // text-selection drag the browser transiently focuses that ancestor; this
+      // is not focus escaping the modal, so refocusing the first tabbable element
+      // here only steals focus mid-drag and collapses the selection. ignore it.
     } else {
       // focus went outside container, schedule refocus after browser settles
       scheduleRefocus()
@@ -110,7 +116,18 @@ function setupFocusTrap(
   function handleFocusOut(event: FocusEvent) {
     controller.abort()
     if (focusScope.paused) return
-    if (!container.contains(event.relatedTarget as HTMLElement | null)) {
+    const relatedTarget = event.relatedTarget as HTMLElement | null
+    // relatedTarget === null means focus was lost to nothing rather than moved
+    // to another element — this happens while drag-selecting text or pressing on
+    // a non-focusable surface inside the dialog. radix's FocusScope returns early
+    // here; without this guard the rAF refocus steals focus to the first tabbable
+    // element mid-drag and collapses the in-progress text selection.
+    if (relatedTarget === null) return
+    // likewise, focus moving up to an ancestor of the container (the native
+    // <dialog> wrapper) during a pointer drag is not focus leaving the modal —
+    // refocusing would collapse the active text selection.
+    if (relatedTarget.contains(container)) return
+    if (!container.contains(relatedTarget)) {
       // focus leaving container, schedule refocus after browser settles
       scheduleRefocus()
     }

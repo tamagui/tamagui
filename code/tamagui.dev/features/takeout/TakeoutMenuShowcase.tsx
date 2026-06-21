@@ -226,7 +226,7 @@ function ProductCard() {
             <Paragraph fontWeight="700" color="$white">
               0.42 ETH
             </Paragraph>
-            <Paragraph size="$2" color="$orange10" fontWeight="600">
+            <Paragraph size="$2" color="$yellow10" fontWeight="600">
               RARE
             </Paragraph>
           </XStack>
@@ -595,10 +595,10 @@ function SliderComponent() {
 
 const chipData = [
   { label: 'React', color: 'blue', Icon: Code },
-  { label: 'Native', color: 'purple', Icon: Smartphone },
+  { label: 'Native', color: 'gray', Icon: Smartphone },
   { label: 'Web', color: 'green', Icon: Globe },
-  { label: 'Fast', color: 'orange', Icon: Zap },
-  { label: 'Styled', color: 'pink', Icon: Palette },
+  { label: 'Fast', color: 'yellow', Icon: Zap },
+  { label: 'Styled', color: 'red', Icon: Palette },
   { label: 'SSR', color: 'red', Icon: Cpu },
 ] as const
 

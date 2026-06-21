@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/radio-headless",
-  "version": "2.1.0-1780426041711",
+  "version": "2.3.1",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "source": "src/index.ts",
   "files": [

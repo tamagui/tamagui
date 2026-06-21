@@ -1,4 +1,5 @@
 import { apiRoute } from '~/features/api/apiRoute'
+import { ensureAuth } from '~/features/api/ensureAuth'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import { stripe } from '~/features/stripe/stripe'
 
@@ -9,6 +10,9 @@ export default apiRoute(async (req) => {
   if (req.method !== 'POST') {
     return Response.json({ error: 'Method not allowed' }, { status: 405 })
   }
+
+  // require auth so this can't be used anonymously as a coupon-enumeration oracle
+  await ensureAuth({ req })
 
   const { code } = await req.json()
 

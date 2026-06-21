@@ -1,6 +1,22 @@
 import { animationsCSS } from '@tamagui/config/v5-css'
 import { animationsMotion } from '@tamagui/config/v5-motion'
-import { defaultConfig, themes } from '@tamagui/config/v5-subtle'
+import {
+  createV5Theme,
+  defaultConfig,
+  subtleChildrenThemes,
+} from '@tamagui/config/v5-subtle'
+
+// only generate the accent themes the site actually uses: red/green/blue/gray/yellow
+// (the @tamagui/logo tint family). dropping orange/pink/purple/teal/neutral roughly
+// halves the render-blocking theme css. note: dropping an accent also removes its
+// color tokens (--pink10 etc.), so all $pink/$purple/$orange/$teal/$neutral usages are
+// collapsed to kept colors across the site. component themes are kept (they dedupe to
+// surfaces in css and the site shows them off). themes-as-js is still stripped to {}
+// on the client below and hydrated from css.
+const { gray, blue, red, yellow, green } = subtleChildrenThemes
+const themes = createV5Theme({
+  childrenThemes: { gray, blue, red, yellow, green },
+})
 import type { CreateTamaguiProps } from '@tamagui/core'
 import { setupDev } from '@tamagui/core'
 import { bodyFont, cherryBombFont, headingFont, monoFont, silkscreenFont } from './fonts'

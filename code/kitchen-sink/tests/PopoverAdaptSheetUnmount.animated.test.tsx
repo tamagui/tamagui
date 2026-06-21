@@ -53,50 +53,71 @@ test.describe('Popover Sheet Adapt - body persists during exit animation', () =>
 
     // drive the close imperatively (overlay covers the viewport; Pressable
     // ignores synthetic clicks). __popoverSetOpen is exposed by the use case.
-    const closeStart = Date.now()
-    await page.evaluate(() => {
-      ;(window as any).__popoverSetOpen?.(false)
-    })
+    // sanity: the close call must actually flip the sheet's data-state, else
+    // the persistence assertions below are meaningless. start the sampler and
+    // close in the same in-page task so playwright round-trip latency cannot
+    // shift the samples past the short exit animation under parallel load.
+    type Sample = { t: number; exists: boolean; state: string | null }
+    const samples: Sample[] = await page.evaluate(
+      () =>
+        new Promise<Sample[]>((resolve) => {
+          const startedAt = performance.now()
+          const samples: Sample[] = []
 
-    // SANITY: the close call must actually flip the sheet's data-state, else
-    // the persistence assertions below are meaningless.
-    await expect
-      .poll(
-        async () =>
-          page.evaluate(() =>
-            document.querySelector('.is_Sheet[data-state]')?.getAttribute('data-state')
-          ),
-        { timeout: 1000 }
-      )
-      .toBe('closed')
+          const record = () => {
+            samples.push({
+              t: performance.now() - startedAt,
+              exists: !!document.querySelector('[data-testid="popover-content-marker"]'),
+              state:
+                document
+                  .querySelector('.is_Sheet[data-state]')
+                  ?.getAttribute('data-state') ?? null,
+            })
+          }
 
-    // sample during the exit animation. `medium` css driver is ~400ms, so
-    // anything <250ms is solidly mid-slide. stop before the end so we don't
-    // race the legitimate post-animation cleanup.
-    type Sample = { t: number; exists: boolean }
-    const samples: Sample[] = []
-    const checkpoints = [30, 80, 150, 220]
-    let prev = 0
-    for (const t of checkpoints) {
-      await page.waitForTimeout(t - prev)
-      prev = t
-      const exists = await page.evaluate(
-        () => !!document.querySelector('[data-testid="popover-content-marker"]')
-      )
-      samples.push({ t: Date.now() - closeStart, exists })
-    }
+          ;(window as any).__popoverSetOpen?.(false)
+          record()
 
-    console.log('marker samples during exit animation:', samples)
+          const sample = () => {
+            record()
 
-    // EVERY sample during the slide-out should still find the marker. if the
-    // bug reproduces, the Adapt.Contents slot is torn down on the first frame
-    // after popover.open flips false, because PopoverContent unmounts on its
-    // own (popup) exit, not on the sheet's slide-out.
-    for (const s of samples) {
+            if (performance.now() - startedAt >= 500) {
+              resolve(samples)
+              return
+            }
+
+            requestAnimationFrame(sample)
+          }
+
+          requestAnimationFrame(sample)
+        })
+    )
+
+    const firstClosedAt = samples.find((s) => s.state === 'closed')?.t
+    expect(
+      firstClosedAt,
+      'close call should flip the sheet data-state while sampling'
+    ).toBeDefined()
+
+    // `medium` css driver is ~400ms, so anything <250ms after the browser
+    // observes the closed state is solidly mid-slide. assert only that early
+    // window so we don't race the legitimate post-animation cleanup.
+    const midAnimationSamples = samples.filter(
+      (s) => firstClosedAt != null && s.t >= firstClosedAt && s.t - firstClosedAt <= 250
+    )
+    expect(midAnimationSamples.length).toBeGreaterThan(0)
+
+    // every early sample during the slide-out should still find the marker. if
+    // the bug reproduces, the Adapt.Contents slot is torn down on the first
+    // frame after popover.open flips false, because PopoverContent unmounts on
+    // its own (popup) exit, not on the sheet's slide-out.
+    for (const s of midAnimationSamples) {
       expect
         .soft(
           s.exists,
-          `marker should still be in DOM at +${s.t}ms (mid-animation, before sheet finishes sliding)`
+          `marker should still be in DOM at +${Math.round(
+            firstClosedAt == null ? s.t : s.t - firstClosedAt
+          )}ms after closed state (mid-animation, before sheet finishes sliding)`
         )
         .toBe(true)
     }

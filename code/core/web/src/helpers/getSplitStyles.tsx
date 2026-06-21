@@ -1,8 +1,8 @@
 import {
   isAndroid,
   isClient,
-  isIos,
   isWeb,
+  supportsDynamicColorIOS,
   useIsomorphicLayoutEffect,
 } from '@tamagui/constants'
 import {
@@ -1596,7 +1596,7 @@ export const getSplitStyles: StyleSplitter = (
           if (isThemeMedia) {
             if (
               process.env.TAMAGUI_TARGET === 'native' &&
-              isIos &&
+              supportsDynamicColorIOS &&
               getSetting('fastSchemeChange')
             ) {
               // iOS will use https://reactnative.dev/docs/dynamiccolorios

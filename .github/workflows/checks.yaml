@@ -11,6 +11,9 @@ on:
       - v2
       - 'v2-*'
 
+permissions:
+  contents: read
+
 # cancel in-progress runs on the same branch (avoids duplicate PR + push runs)
 concurrency:
   group: checks-${{ github.ref }}
@@ -27,6 +30,14 @@ jobs:
 
       - name: Install
         uses: ./.github/actions/install
+
+      # replaces dependabot. all critical advisories are pinned to patched
+      # versions via root package.json "overrides", so this gates cleanly with
+      # no ignore list. remaining high/moderate advisories require cross-major
+      # bumps of example/tooling deps (vite, undici, tar, react-router, etc.) -
+      # run `bun audit` locally to review them.
+      - name: Security audit
+        run: bun audit --audit-level critical
 
       - name: Check
         run: bun run check
@@ -83,7 +94,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: oven-sh/setup-bun@v2
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version-file: 'package.json'
 

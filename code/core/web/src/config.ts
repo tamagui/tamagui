@@ -167,7 +167,10 @@ export const getThemes = () => getConfigFromGlobalOrLocal()!.themes
 export const updateConfig = (key: string, value: any) => {
   // for usage internally only
   const config = getConfigFromGlobalOrLocal()
-  Object.assign(config![key], value)
+  if (!config || !Object.prototype.hasOwnProperty.call(config, key)) {
+    return
+  }
+  Object.assign(config[key], value)
 }
 
 // searches by value name or token name

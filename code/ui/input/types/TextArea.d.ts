@@ -38,7 +38,7 @@ export declare const TextArea: import("@tamagui/web").TamaguiComponent<import("@
         };
     }) => void;
     textContentType?: import("./types").InputTextContentType;
-}, import("@tamagui/web").StackStyleBase & {
+}, import("@tamagui/web").StackStyleBase & import("@tamagui/web").TextStylePropsBase & {
     readonly placeholderTextColor?: import("@tamagui/web").ColorTokens | undefined;
     readonly selectionColor?: import("@tamagui/web").ColorTokens | undefined;
     readonly cursorColor?: import("@tamagui/web").ColorTokens | undefined;

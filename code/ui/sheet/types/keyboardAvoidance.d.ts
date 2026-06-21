@@ -6,7 +6,7 @@ export declare function getKeyboardAdjustedSheetY({ sheetY, screenSize, isKeyboa
     shouldTranslate: boolean;
     safeAreaTop: number;
 }): number;
-export declare function getSheetReleasePosition({ positions, projectedEnd, currentPosition, frameSize, dismissOnSnapToBottom, snapPointsMode, isKeyboardVisible, }: {
+export declare function getSheetReleasePosition({ positions, projectedEnd, currentPosition, frameSize, dismissOnSnapToBottom, snapPointsMode, isKeyboardVisible, isWeb, }: {
     positions: number[];
     projectedEnd: number;
     currentPosition: number;
@@ -14,6 +14,7 @@ export declare function getSheetReleasePosition({ positions, projectedEnd, curre
     dismissOnSnapToBottom: boolean;
     snapPointsMode: 'percent' | 'constant' | 'fit' | 'mixed';
     isKeyboardVisible: boolean;
+    isWeb: boolean;
 }): number;
 export declare function getKeyboardOccludedHeight({ frameSize, isKeyboardVisible, keyboardHeight, screenSize, sheetY, }: {
     frameSize: number;

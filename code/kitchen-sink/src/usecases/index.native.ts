@@ -16,6 +16,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AnimationComprehensiveCase').AnimationComprehensiveCase,
   Benchmark: () => require('./Benchmark').Benchmark,
   ButtonCircular: () => require('./ButtonCircular').ButtonCircular,
+  GroupDisabledStyleLatchCase: () =>
+    require('./GroupDisabledStyleLatchCase').GroupDisabledStyleLatchCase,
   ButtonCustom: () => require('./ButtonCustom').ButtonCustom,
   ButtonInverse: () => require('./ButtonInverse').ButtonInverse,
   ButtonUnstyled: () => require('./ButtonUnstyled').ButtonUnstyled,
@@ -69,6 +71,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   ImageTokenStyle: () => require('./ImageTokenStyle').ImageTokenStyle,
   ThemedListItem: () => require('./ListItem').ThemedListItem,
   NewInputBasic: () => require('./NewInputBasic').NewInputBasic,
+  InputTextShorthand: () => require('./InputTextShorthand').InputTextShorthand,
   NewInputEvents: () => require('./NewInputEvents').NewInputEvents,
   OverlayStyled: () => require('./OverlayStyled').OverlayStyled,
   PlaceholderTextColor: () => require('./PlaceholderTextColor').PlaceholderTextColor,
@@ -104,6 +107,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SheetScrollLockCase: () => require('./SheetScrollLockCase').SheetScrollLockCase,
   SheetSnapPointsFitCase: () =>
     require('./SheetSnapPointsFitCase').SheetSnapPointsFitCase,
+  SheetFit3pcNativeRepro: () =>
+    require('./SheetFit3pcNativeRepro').SheetFit3pcNativeRepro,
   SheetPressRegressionCase: () =>
     require('./SheetPressRegressionCase').SheetPressRegressionCase,
   SlowThemeReRender: () => require('./SlowThemeReRender').SlowThemeReRender,
