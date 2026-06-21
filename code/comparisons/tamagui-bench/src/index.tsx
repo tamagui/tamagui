@@ -88,14 +88,14 @@ function GroupItems({ seed }: { seed: number }) {
             height={32}
             borderRadius={16}
             backgroundColor="$blue5"
-            $group-row-hover:backgroundColor="$blue7"
+            $group-row-hover={{ backgroundColor: '$blue7' }}
           />
           <View flex={1}>
             <View
               height={10}
               borderRadius={4}
               backgroundColor="$gray8"
-              $group-row-hover:backgroundColor="$blue8"
+              $group-row-hover={{ backgroundColor: '$blue8' }}
             />
           </View>
         </View>
@@ -134,7 +134,7 @@ function HeavyItems({ seed }: { seed: number }) {
             height={44}
             borderRadius={22}
             backgroundColor={color}
-            $group-card-hover:opacity={0.8}
+            $group-card-hover={{ opacity: 0.8 }}
           />
           <View flex={1} gap={4}>
             <View
@@ -142,7 +142,7 @@ function HeavyItems({ seed }: { seed: number }) {
               borderRadius={4}
               backgroundColor="$gray11"
               width={80 + ((i * 17) % 60)}
-              $group-card-hover:backgroundColor="$blue9"
+              $group-card-hover={{ backgroundColor: '$blue9' }}
             />
             <View
               height={10}
@@ -156,7 +156,7 @@ function HeavyItems({ seed }: { seed: number }) {
             paddingVertical={3}
             borderRadius={6}
             backgroundColor="$blue3"
-            $group-card-hover:backgroundColor="$blue5"
+            $group-card-hover={{ backgroundColor: '$blue5' }}
           >
             <View width={24} height={8} borderRadius={3} backgroundColor="$blue9" />
           </View>
