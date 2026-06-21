@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-reanimated",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [

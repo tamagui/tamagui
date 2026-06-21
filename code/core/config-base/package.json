@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config-base",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "files": [
     "src",
     "types",
