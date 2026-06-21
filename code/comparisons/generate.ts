@@ -25,9 +25,11 @@ const frameworkLabel: Record<Framework, string> = {
   uniwind: 'Uniwind',
 }
 
-// weighted coverage %: full=1, partial & web-only=0.5
+// weighted coverage %: full=1, web-only=1 (it works on its target platform),
+// partial=0.5 (incomplete native support is the caveat). cross-platform delta
+// is what the "Full" column already shows separately.
 function coveragePct(s: { full: number; partial: number; webOnly: number; total: number }) {
-  return ((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100
+  return ((s.full + s.partial * 0.5 + s.webOnly) / s.total) * 100
 }
 
 // count of utilities at a given level for a framework within a set of categories
@@ -85,7 +87,7 @@ function generateMarkdown(): string {
   lines.push('## Summary')
   lines.push('')
   lines.push(
-    'Coverage % is weighted: Full = 1.0, Partial = 0.5, Web-only = 0.5, None = 0. ' +
+    'Coverage % is weighted: Full = 1.0, Web-only = 1.0 (works on its target platform), Partial = 0.5, None = 0. ' +
       'It rewards breadth; for the cross-platform story read the **Full** column (web + native) below.'
   )
   lines.push('')
@@ -526,7 +528,7 @@ const VIEW_EXPLAIN = {
   cross: "Only utilities where at least one cross-platform framework reaches <b>Full or Partial</b> support — meaning the utility runs on both web and native, with or without caveats. Coverage % = (Full + Partial × 0.5) / total. This is the number that matters for a write-once-run-everywhere library.",
   strict: "Only utilities where at least one cross-platform framework reaches <b>Full</b> support — no native caveats. Coverage % = Full / total. The strictest read: how many CSS utilities work identically on web and native.",
   'web-only': "Only utilities that no cross-platform framework supports on native (they exist on web only). Useful for seeing which CSS features simply don't translate to React Native and which framework still ships a web shim for them.",
-  all: "Every utility tracked, weighted as in the original comparison: Full = 1.0, Partial = 0.5, Web-only = 0.5, None = 0.",
+  all: "Every utility tracked. Coverage % = (Full + Web-only + Partial × 0.5) / total. Web-only is full credit because it works on its target platform — cross-platform delta is what the <b>Cross-platform</b> view above measures.",
 };
 
 // determine if a utility row belongs to the current view
@@ -579,7 +581,7 @@ function pctForView(view, s) {
   if (view === 'web-only') {
     return ((s.full + s.webOnly + s.partial * 0.5) / s.total) * 100;
   }
-  return ((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100;
+  return ((s.full + s.partial * 0.5 + s.webOnly) / s.total) * 100;
 }
 
 function renderSummary(view) {
@@ -674,7 +676,7 @@ const stats = computeCoverage()
 console.log('\n📊 Coverage Summary:\n')
 for (const fw of frameworks) {
   const s = stats[fw]
-  const pct = (((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100).toFixed(1)
+  const pct = (((s.full + s.partial * 0.5 + s.webOnly) / s.total) * 100).toFixed(1)
   const bar = '█'.repeat(Math.round(Number(pct) / 5)) + '░'.repeat(20 - Math.round(Number(pct) / 5))
   console.log(`  ${fw.padEnd(12)} ${bar} ${pct}%  (${s.full} full, ${s.partial} partial, ${s.webOnly} web-only, ${s.none} none)`)
 }
