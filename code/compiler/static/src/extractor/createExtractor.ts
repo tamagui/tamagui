@@ -1095,6 +1095,13 @@ export function createExtractor(
 
             ...(!isTargetingHTML
               ? [
+                  // native has no CSS pseudo selectors; these are runtime-only on
+                  // RN (event listeners + style merge in createComponent), and if
+                  // we let them flatten into the StyleSheet they get written
+                  // under a literal key (e.g. `"hoverStyle"`) that RN treats as
+                  // an unknown style prop → silent breakage. de-opt → preserve
+                  // the original prop on the runtime component.
+                  'hoverStyle',
                   'pressStyle',
                   'focusStyle',
                   'focusVisibleStyle',
@@ -2333,6 +2340,19 @@ export function createExtractor(
               // check de-opt props again
               for (const key in outProps) {
                 if (deoptProps.has(key)) {
+                  shouldFlatten = false
+                }
+                // native has no atomic-CSS sink for theme- / group- pseudo
+                // blocks; if they flatten they get serialized under the literal
+                // `$theme-…` / `$group-…` key into the RN StyleSheet, where the
+                // runtime's @container / theme-name matching never runs. de-opt
+                // → preserve as inline prop so getSplitStyles handles them at
+                // render time.
+                if (
+                  platform === 'native' &&
+                  key[0] === '$' &&
+                  (key.startsWith('$theme-') || key.startsWith('$group-'))
+                ) {
                   shouldFlatten = false
                 }
               }
