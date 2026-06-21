@@ -31,6 +31,10 @@ interface BenchConfig {
   port: number
   startCmd: string
   env?: Record<string, string>
+  // url query for scaling the dataset down on a per-variant basis (e.g. runtime).
+  query?: string
+  // when true, scenarios listed here will be skipped (the runtime variant times out on heavy).
+  skipScenarios?: string[]
 }
 
 const benchmarks: BenchConfig[] = [
@@ -41,9 +45,22 @@ const benchmarks: BenchConfig[] = [
     startCmd: 'npx vite --port 9101',
     env: { EXTRACT: '1' },
   },
-  // Tamagui (runtime) excluded: group/heavy scenarios require 1500+ TamaguiComponent instances
-  // running getSplitStyles per-render, which times out at 180s. Use EXTRACT=0 vite --port 9106
-  // manually if you only want simple/rich/animated scenarios.
+  // runtime variant runs the SAME app with EXTRACT=0 (no compile-time extraction)
+  // on a separate port. dataset is cut to 200 items via ?scale=200, but even at
+  // 200 items the group + heavy scenarios push the cumulative 5-scenario run past
+  // the playwright 180s ceiling (runtime getSplitStyles per-render-per-component
+  // dominates), so we skip those two scenarios for the runtime variant. compiled
+  // variant still covers them at 500 items. animated is kept — it deopts at the
+  // compiler level too, so the compiled vs runtime delta is meaningful there.
+  {
+    name: 'Tamagui (runtime, 200x)',
+    dir: 'tamagui-bench',
+    port: 9106,
+    startCmd: 'npx vite --port 9106',
+    env: { EXTRACT: '0' },
+    query: '?scale=200&skip=group,heavy',
+    skipScenarios: ['group', 'heavy'],
+  },
   {
     name: 'Tailwind CSS',
     dir: 'tailwind-bench',
@@ -95,18 +112,28 @@ function killPort(port: number) {
   } catch {}
 }
 
-async function runBenchmark(port: number): Promise<Record<string, { mount: number; rerender: number }>> {
+async function runBenchmark(
+  bench: BenchConfig
+): Promise<Record<string, { mount: number; rerender: number }>> {
   const { chromium } = await import('playwright')
   const browser = await chromium.launch()
   const page = await browser.newPage()
 
-  await page.goto(`http://localhost:${port}`)
+  const url = `http://localhost:${bench.port}/${bench.query ?? ''}`
+  await page.goto(url)
   await page.waitForSelector('#bench-start', { timeout: 10000 })
   await page.click('#bench-start')
-  await page.waitForSelector('#bench-result-animated-rerender', { timeout: 180000 })
+
+  // wait for the last scenario the variant actually runs.
+  const lastScenario = SCENARIOS.filter((s) => !bench.skipScenarios?.includes(s)).at(-1) ?? 'animated'
+  await page.waitForSelector(`#bench-result-${lastScenario}-rerender`, { timeout: 180000 })
 
   const results: Record<string, { mount: number; rerender: number }> = {}
   for (const s of SCENARIOS) {
+    if (bench.skipScenarios?.includes(s)) {
+      results[s] = { mount: NaN, rerender: NaN }
+      continue
+    }
     const mount = await page.locator(`#bench-result-${s}-mount`).getAttribute('data-value')
     const rerender = await page.locator(`#bench-result-${s}-rerender`).getAttribute('data-value')
     results[s] = {
@@ -124,8 +151,12 @@ function averageResults(
 ): Record<string, { mount: number; rerender: number }> {
   const avg: Record<string, { mount: number; rerender: number }> = {}
   for (const s of SCENARIOS) {
-    const mounts = allRuns.map((r) => r[s].mount)
-    const rerenders = allRuns.map((r) => r[s].rerender)
+    let mounts = allRuns.map((r) => r[s].mount).filter((n) => !Number.isNaN(n))
+    let rerenders = allRuns.map((r) => r[s].rerender).filter((n) => !Number.isNaN(n))
+    if (mounts.length === 0) {
+      avg[s] = { mount: NaN, rerender: NaN }
+      continue
+    }
     // drop highest and lowest if >= 3 runs
     if (mounts.length >= 3) {
       mounts.sort((a, b) => a - b)
@@ -159,13 +190,15 @@ function printTable(results: Results) {
   // find baseline (inline) for ratio
   const baseline = results['Inline (baseline)']
 
+  const fmt = (v: number, baseV: number | undefined) => {
+    if (Number.isNaN(v)) return 'skip'.padStart(colWidth)
+    const ratio = baseV && !Number.isNaN(baseV) ? (v / baseV).toFixed(1) + 'x' : ''
+    return `${v.toFixed(1)}${ratio ? ' (' + ratio + ')' : ''}`.padStart(colWidth)
+  }
+
   for (const s of SCENARIOS) {
     const label = SCENARIO_LABELS[s].padEnd(22)
-    const vals = frameworks.map((f) => {
-      const v = results[f][s].mount
-      const ratio = baseline ? (v / baseline[s].mount).toFixed(1) + 'x' : ''
-      return `${v.toFixed(1)}${ratio ? ' (' + ratio + ')' : ''}`.padStart(colWidth)
-    })
+    const vals = frameworks.map((f) => fmt(results[f][s].mount, baseline?.[s].mount))
     console.log('║' + label + vals.join(' ') + ' ║')
   }
 
@@ -180,11 +213,7 @@ function printTable(results: Results) {
 
   for (const s of SCENARIOS) {
     const label = SCENARIO_LABELS[s].padEnd(22)
-    const vals = frameworks.map((f) => {
-      const v = results[f][s].rerender
-      const ratio = baseline ? (v / baseline[s].rerender).toFixed(1) + 'x' : ''
-      return `${v.toFixed(1)}${ratio ? ' (' + ratio + ')' : ''}`.padStart(colWidth)
-    })
+    const vals = frameworks.map((f) => fmt(results[f][s].rerender, baseline?.[s].rerender))
     console.log('║' + label + vals.join(' ') + ' ║')
   }
 
@@ -237,7 +266,8 @@ ${SCENARIOS.map((s) => {
     return `<tr><td>${SCENARIO_LABELS[s]}</td>${frameworks
       .map((f) => {
         const v = results[f][s].mount
-        const ratio = baseline ? v / baseline[s].mount : 1
+        if (Number.isNaN(v)) return `<td><span class="ratio">skip</span></td>`
+        const ratio = baseline && !Number.isNaN(baseline[s].mount) ? v / baseline[s].mount : 1
         const color = colorForRatio(ratio)
         return `<td><span class="value" style="color:${color}">${v.toFixed(1)}</span> <span class="ratio">${ratio.toFixed(1)}x</span></td>`
       })
@@ -248,7 +278,8 @@ ${SCENARIOS.map((s) => {
     return `<tr><td>${SCENARIO_LABELS[s]}</td>${frameworks
       .map((f) => {
         const v = results[f][s].rerender
-        const ratio = baseline ? v / baseline[s].rerender : 1
+        if (Number.isNaN(v)) return `<td><span class="ratio">skip</span></td>`
+        const ratio = baseline && !Number.isNaN(baseline[s].rerender) ? v / baseline[s].rerender : 1
         const color = colorForRatio(ratio)
         return `<td><span class="value" style="color:${color}">${v.toFixed(1)}</span> <span class="ratio">${ratio.toFixed(1)}x</span></td>`
       })
@@ -301,7 +332,7 @@ async function main() {
       try {
         const runs: Record<string, { mount: number; rerender: number }>[] = []
         for (let i = 0; i < numRuns; i++) {
-          const result = await runBenchmark(bench.port)
+          const result = await runBenchmark(bench)
           runs.push(result)
           process.stdout.write(` #${i + 1}`)
         }

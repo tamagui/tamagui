@@ -2,7 +2,19 @@ import { createRoot } from 'react-dom/client'
 import { TamaguiProvider, View } from 'tamagui'
 import config from './tamagui.config'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
-import { ITEM_COUNT, HEAVY_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
+import { ITEM_COUNT, HEAVY_COUNT, scenarios as allScenarios, renderResults, type BenchResult } from '../../shared/bench'
+
+// allow a URL ?skip=group,heavy to skip selected scenarios (runtime variant uses this).
+const skipSet = new Set(
+  (typeof window !== 'undefined'
+    ? new URLSearchParams(window.location.search).get('skip')
+    : null
+  )
+    ?.split(',')
+    .map((s) => s.trim())
+    .filter(Boolean) ?? []
+)
+const scenarios = allScenarios.filter((s) => !skipSet.has(s.id))
 
 // ── scenario 1: simple (fully static — compiler CAN flatten) ──
 
@@ -256,7 +268,12 @@ function App() {
       setResults((prev) => {
         const next = { ...prev, [scenarioId]: result }
         if (currentIdx + 1 >= scenarios.length && resultsRef.current) {
-          renderResults(resultsRef.current, 'Tamagui (compiled)', next)
+          // label reflects the runtime vs compiled variant for in-page debugging.
+          const label =
+            new URLSearchParams(window.location.search).get('scale') != null
+              ? `Tamagui (runtime, ${ITEM_COUNT}x)`
+              : 'Tamagui (compiled)'
+          renderResults(resultsRef.current, label, next)
         }
         return next
       })

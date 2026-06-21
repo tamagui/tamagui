@@ -10,7 +10,7 @@ Coverage % is weighted: Full = 1.0, Partial = 0.5, Web-only = 0.5, None = 0. It 
 
 | Framework | Full (web+native) | Partial | Web-only | None | Total | Coverage % |
 |-----------|-------------------|---------|----------|------|-------|------------|
-| **Tamagui** | 79 | 11 | 28 | 31 | 149 | 66.1% |
+| **Tamagui** | 86 | 15 | 23 | 25 | 149 | 70.5% |
 | **Tailwind** | 0 | 0 | 142 | 7 | 149 | 47.7% |
 | **NativeWind v5** | 74 | 24 | 45 | 6 | 149 | 72.8% |
 | **Uniwind** | 51 | 19 | 0 | 79 | 149 | 40.6% |
@@ -21,15 +21,15 @@ The number that matters most for a write-once-render-everywhere library is how m
 
 | Framework | Fully cross-platform | of total | Share |
 |-----------|----------------------|----------|-------|
-| **Tamagui** | 79 | 149 | `███████████░░░░░░░░░` 53% |
+| **Tamagui** | 86 | 149 | `████████████░░░░░░░░` 58% |
 | **NativeWind v5** | 74 | 149 | `██████████░░░░░░░░░░` 50% |
 | **Uniwind** | 51 | 149 | `███████░░░░░░░░░░░░░` 34% |
 
-**Tamagui** leads cross-platform with **79** fully-supported utilities vs **NativeWind v5**'s 74. NativeWind closes the gap on web-leaning CSS features but marks several native paths experimental (transitions/animations) or web-only (space/divide, peer, structural selectors, sr-only a11y wiring).
+**Tamagui** leads cross-platform with **86** fully-supported utilities vs **NativeWind v5**'s 74. NativeWind closes the gap on web-leaning CSS features but marks several native paths experimental (transitions/animations) or web-only (space/divide, peer, structural selectors, sr-only a11y wiring).
 
 ## Layout
 
-_Coverage: Tamagui 73% · Tailwind 50% · NativeWind v5 70% · Uniwind 37%_
+_Coverage: Tamagui 77% · Tailwind 50% · NativeWind v5 70% · Uniwind 37%_
 
 | Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
@@ -42,12 +42,12 @@ _Coverage: Tamagui 73% · Tailwind 50% · NativeWind v5 70% · Uniwind 37%_
 | **aspect-ratio** | ✅ | 🌐 | ✅ | ⚠️ | **⚠️ Uniwind:** Tamagui: `$aspectRatio` cross-platform. Uniwind docs note aspect-ratio has "limited support". |
 | **box-sizing** | ✅ | 🌐 | ⚠️ | ⚠️ | **⚠️ NativeWind v5, Uniwind:** Tamagui: `$bxs` named prop, maps to RN 0.77+ boxSizing (New Architecture) so border-box/content-box both work cross-platform. RN defaults to and only supports border-box, so NativeWind/Uniwind box-border is a no-op and box-content is unsupported on native. |
 | **isolation** | ✅ | 🌐 | 🌐 | ❌ | Tamagui: `$isolation` maps to RN 0.77+ isolation (New Architecture) for native stacking contexts; NativeWind `isolate` is web-only. |
-| **visibility** | 🌐 | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** Tamagui: `$visibility` exists via RN-web on web only; on native there is no visibility, idiomatic Tamagui uses `$o={0}` (opacity) or conditional render. NativeWind `invisible` maps to opacity:0 on native (collapse is web-only). |
+| **visibility** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui: `visibility="hidden"` is cross-platform - native CSS visibility on web, expands to `opacity:0 + pointerEvents:none` on native. `visibility="collapse"` stays web-only (no RN equivalent). NativeWind `invisible` maps to opacity:0 on native (collapse is web-only). |
 | **float** | ❌ | 🌐 | 🌐 | ❌ | Not applicable to RN flexbox model |
 | **clear** | ❌ | 🌐 | 🌐 | ❌ |  |
 | **columns** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$columnCount` is a typed prop but CSS multi-column only renders on web; RN has no multi-column layout. Uniwind explicitly lists `columns-*` as unsupported. |
-| **object-fit** | 🌐 | 🌐 | ✅ | ❌ | Tamagui: `$objectFit` is web-only; on native use the Image component `resizeMode`/`objectFit` prop directly. NativeWind v5 maps object-* to the Image objectFit prop, so it works on native too. |
-| **object-position** | 🌐 | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** Tamagui: `$objectPosition` web-only. NativeWind partially maps object-position on native (limited values). |
+| **object-fit** | ✅ | 🌐 | ✅ | ❌ | Tamagui: `objectFit` is auto-mapped on native — Tamagui core expands `objectFit` to RN `resizeMode`, and the Image component also writes `style.objectFit` (RN 0.76+ reads it natively). Works with the default Image and expo-image (via `contentFit`). |
+| **object-position** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui: `objectPosition` is forwarded into the Image `style` on native and to `contentPosition` when using expo-image (full support there). Default RN Image currently ignores it — limited to keyword values like center/top/bottom/left/right via expo-image. |
 
 ## Flexbox
 
@@ -125,7 +125,7 @@ _Coverage: Tamagui 82% · Tailwind 50% · NativeWind v5 79% · Uniwind 50%_
 | **line-clamp** | ✅ | 🌐 | ✅ | ❌ |  |
 | **white-space** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$whiteSpace` is a web-only text prop (tree-shaken on native). On native, text wrapping is controlled by `numberOfLines` and container width, not white-space. |
 | **word-break** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$wordWrap` (`ww` shorthand) is web-only. RN has no word-break control; it breaks at whitespace or character based on platform text engine. |
-| **text-overflow** | 🌐 | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** Tamagui uses numberOfLines prop |
+| **text-overflow** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui: `$textOverflow="ellipsis"` works cross-platform on Text - web uses CSS text-overflow, native maps to numberOfLines={1} + ellipsizeMode="tail". Other values (clip) are web-only. |
 | **text-indent** | ❌ | 🌐 | 🌐 | ❌ |  |
 | **vertical-align** | ✅ | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** Tamagui: `$verticalAlign` maps to RN 0.71+ verticalAlign on Text (auto/top/bottom/middle), so it works cross-platform. NativeWind `align-*` is largely a web inline-element concept; RN only honors a subset on Text. |
 | **font-variant-numeric** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui: `$fontVariant` maps to RN fontVariant array; RN supports a subset (tabular-nums, oldstyle-nums, lining-nums, etc.) cross-platform but not the full CSS font-variant-numeric grammar. NativeWind maps the common numeric variants to RN fontVariant, same subset limitation. |
@@ -229,7 +229,7 @@ _Coverage: Tamagui 55% · Tailwind 50% · NativeWind v5 73% · Uniwind 32%_
 
 ## Responsive & Media
 
-_Coverage: Tamagui 67% · Tailwind 50% · NativeWind v5 75% · Uniwind 33%_
+_Coverage: Tamagui 83% · Tailwind 50% · NativeWind v5 75% · Uniwind 33%_
 
 | Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
@@ -238,11 +238,11 @@ _Coverage: Tamagui 67% · Tailwind 50% · NativeWind v5 75% · Uniwind 33%_
 | **combined media + pseudo** | ✅ | 🌐 | ✅ | ❌ |  |
 | **container queries** | ✅ | 🌐 | ✅ | ❌ | Tamagui: container queries are the `group` system combined with media keys — mark a parent `group="card"` and use `$group-card-$sm:` style keys. On web this uses real CSS container queries (containerType); on native it measures the parent and applies styles via the group emitter, so it works cross-platform (the `untilMeasured` prop exists to avoid flashes before first measure). NativeWind v5 also supports `@container` on native, implemented via onLayout measurement (size-based only, not CSS containment). Tailwind is web-only; Uniwind: not documented. |
 | **container query units (cqw/cqh)** | ❌ | 🌐 | ❌ | ❌ | cqw/cqh/cqi/cqb are CSS length units tied to a real CSS containment context (Tailwind v4 via arbitrary values). Tamagui and NativeWind implement container *queries* differently (JS measurement / group emitter) and do not expose container-relative length units; use a measured value or a breakpoint instead. |
-| **prefers-reduced-motion** | ❌ | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** Tamagui has no `$motion-reduce` style key; honor it imperatively (read the reduce-motion setting and swap the `animation` prop / disable animations). NativeWind v5 maps motion-reduce: to `prefers-reduced-motion` on web and RN AccessibilityInfo.isReduceMotionEnabled on native. |
+| **prefers-reduced-motion** | ✅ | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** `$motionReduce` and `$motionSafe` are built-in media keys in @tamagui/config. Web subscribes to `(prefers-reduced-motion: reduce | no-preference)` via `window.matchMedia`; native subscribes to `AccessibilityInfo.isReduceMotionEnabled` + the `reduceMotionChanged` event through `@tamagui/react-native-media-driver`. NativeWind v5 maps the same two states. |
 
 ## Platform
 
-_Coverage: Tamagui 80% · Tailwind 10% · NativeWind v5 100% · Uniwind 80%_
+_Coverage: Tamagui 100% · Tailwind 10% · NativeWind v5 100% · Uniwind 80%_
 
 | Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
@@ -250,7 +250,7 @@ _Coverage: Tamagui 80% · Tailwind 10% · NativeWind v5 100% · Uniwind 80%_
 | **native-specific styles** | ✅ | ❌ | ✅ | ❌ |  |
 | **ios-specific styles** | ✅ | ❌ | ✅ | ✅ |  |
 | **android-specific styles** | ✅ | ❌ | ✅ | ✅ |  |
-| **safe area insets** | ❌ | ❌ | ✅ | ✅ | No Tamagui style key for safe areas; use the `useSafeAreaInsets()` hook and feed values into `$pt`/`$pb` (one extra line). NativeWind and Uniwind both ship first-class safe-area utilities; Uniwind also has `-safe-or-*` / `-safe-offset-*` variants. |
+| **safe area insets** | ✅ | ❌ | ✅ | ✅ | Tamagui accepts `"safe"` as a first-class value on any inset/padding/margin prop (pt/pb/px/py/inset/top/...). On web it emits `env(safe-area-inset-*)`; on native it reads insets from `@tamagui/native/setup-safe-area`. NativeWind and Uniwind ship the same as utilities; Uniwind also has `-safe-or-*` / `-safe-offset-*` variants for fallbacks. |
 
 ## Pseudo Elements
 
@@ -275,13 +275,13 @@ _Coverage: Tamagui 0% · Tailwind 50% · NativeWind v5 50% · Uniwind 0%_
 
 ## SVG
 
-_Coverage: Tamagui 0% · Tailwind 50% · NativeWind v5 100% · Uniwind 0%_
+_Coverage: Tamagui 100% · Tailwind 50% · NativeWind v5 100% · Uniwind 0%_
 
 | Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
-| **fill** | ❌ | 🌐 | ✅ | ❌ | NativeWind v5 maps fill-* to the react-native-svg `fill` prop (colors resolve, incl. /N opacity), so it works on native. Tamagui has no SVG className utilities — pass `fill`/`stroke` props directly to @tamagui/lucide-icons or react-native-svg. |
-| **stroke** | ❌ | 🌐 | ✅ | ❌ | NativeWind v5 maps stroke-* to the react-native-svg `stroke` prop on native. Tamagui: pass `stroke` directly to the icon/SVG component. |
-| **stroke-width** | ❌ | 🌐 | ✅ | ❌ | NativeWind v5 maps stroke-width to react-native-svg `strokeWidth` on native. |
+| **fill** | ✅ | 🌐 | ✅ | ❌ | @tamagui/lucide-icons accepts `fill` as a style prop on both web and native, resolving theme tokens (e.g. `fill="$color10"`) via the icon `themed()` wrapper. Plain colors (e.g. `fill="red"`) pass through unchanged. |
+| **stroke** | ✅ | 🌐 | ✅ | ❌ | @tamagui/lucide-icons accepts `stroke` as a style prop on both web and native with theme-token resolution; when provided it also feeds the icon paths so the visible stroke color updates (not just the root <Svg>). |
+| **stroke-width** | ✅ | 🌐 | ✅ | ❌ | Tamagui icons accept numeric `strokeWidth` directly and resolve size tokens (e.g. `strokeWidth="$1"`) on both web and native. |
 
 ## Interactivity
 
@@ -296,22 +296,22 @@ _Coverage: Tamagui 15% · Tailwind 45% · NativeWind v5 40% · Uniwind 0%_
 | **appearance** | ❌ | 🌐 | 🌐 | ❌ | appearance-none resets browser-native control chrome — a web-only concept. RN controls are already custom-rendered, so there is nothing to reset. Tamagui: none. |
 | **field-sizing** | ❌ | 🌐 | ❌ | ❌ | field-sizing-content/fixed is new in Tailwind v4.0 and maps to the CSS `field-sizing` property (web only). RN auto-grows a TextInput via the `multiline` + onContentSizeChange pattern instead. Tamagui/NativeWind/Uniwind have no field-sizing utility. |
 | **scroll-timeline / scroll-driven animation** | ❌ | ❌ | ❌ | ❌ | Tailwind v4 has no built-in scroll-timeline utility (only arbitrary `[animation-timeline:...]` or a community plugin). On native, scroll-driven effects use Animated.event / Reanimated useAnimatedScrollHandler. No framework here ships a first-class scroll-timeline utility. |
-| **caret-color** | 🌐 | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** Tamagui: `$caretColor` is registered only for the web target. On native, RN exposes caret color via the TextInput `cursorColor` (Android) / `selectionColor` props, not a style prop — NativeWind partially bridges this. |
+| **caret-color** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui: on web, `$caretColor` is the CSS caret-color property. On native, `@tamagui/input` Input forwards `caretColor` to RN TextInput `cursorColor` (Android) + `selectionColor` (iOS+Android caret) — explicit `cursorColor`/`selectionColor` props still win. Cross-platform but only applies to the Input/TextArea components (not a generic style prop). |
 | **accent-color** | ❌ | 🌐 | 🌐 | ❌ |  |
 | **will-change** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$willChange` is a web-only GPU hint. RN has no will-change; native rasterization hints are platform-specific (e.g. shouldRasterizeIOS / renderToHardwareTextureAndroid). |
 
 ## Accessibility
 
-_Coverage: Tamagui 0% · Tailwind 50% · NativeWind v5 50% · Uniwind 0%_
+_Coverage: Tamagui 25% · Tailwind 50% · NativeWind v5 50% · Uniwind 0%_
 
 | Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
-| **sr-only** | ❌ | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** NativeWind v5 `sr-only` only emits the visual-hide style on native (1x1, absolute, clipped) — it does NOT wire accessibilityElementsHidden / importantForAccessibility / aria-hidden, so the semantics differ from web. `not-sr-only` is web-only. Tamagui has no sr-only utility; use the RN accessibility props (`accessible`, `aria-hidden`, `accessibilityLabel`) directly. |
+| **sr-only** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui ships `<VisuallyHidden>` (from `@tamagui/visually-hidden`) as a primitive that emits the standard sr-only style block on web (1x1, absolute, clip-path, no display:none) AND wires the matching a11y semantics on both platforms: `aria-hidden=false` on web, `accessible={true}` on native, plus `importantForAccessibility="yes"` on Android so ancestors with hide-descendants don't silence it. `visible` prop flips it back to fully visible (the `not-sr-only` escape hatch). NativeWind v5 `sr-only` only emits the visual-hide style on native — it does NOT wire accessibilityElementsHidden / importantForAccessibility / aria-hidden, so SR semantics differ from web. `not-sr-only` is web-only. Marked partial (not full) because it's a primitive component, not a class utility. |
 | **forced-colors / forced-color-adjust** | ❌ | 🌐 | 🌐 | ❌ | Forced-colors is a web/OS high-contrast feature. Tailwind v4 ships the `forced-colors:` variant + `forced-color-adjust-*` (both since v3.4); NativeWind exposes them web-only. RN has its own high-contrast handling, so no native style mapping. Tamagui: none. |
 
 ## Design Tokens & Theming
 
-_Coverage: Tamagui 79% · Tailwind 43% · NativeWind v5 79% · Uniwind 79%_
+_Coverage: Tamagui 86% · Tailwind 43% · NativeWind v5 79% · Uniwind 79%_
 
 | Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
@@ -321,7 +321,7 @@ _Coverage: Tamagui 79% · Tailwind 43% · NativeWind v5 79% · Uniwind 79%_
 | **sub-themes / component themes** | ✅ | ❌ | ❌ | ⚠️ | **⚠️ Uniwind:** Tamagui unique: deeply nested component-aware themes |
 | **arbitrary values** | ✅ | 🌐 | ✅ | ✅ | Tamagui takes any raw value directly as a prop ($bg="rgb(...)") — no bracket escape hatch needed. NativeWind v5 improved arbitrary calc()/clamp() handling. Uniwind bundles the real Tailwind v4 oxide compiler, so bracket arbitrary values parse; calc() resolves on web, limited on native. |
 | **CSS variables / custom properties** | ⚠️ | 🌐 | ✅ | ⚠️ | **⚠️ Tamagui, Uniwind:** Tamagui: the design-token system ($color, $4, theme values) IS the cross-platform var() equivalent — on web tokens compile to real CSS custom properties (`var(--...)`), on native they resolve to JS values. Raw `var(--x)` string literals only work on web. NativeWind v5 implements Tailwind v4 `@theme` + `var()` resolution on web AND native (its runtime resolves custom properties). Uniwind theming exists but var()/@theme breadth is less documented. |
-| **color opacity modifier** | ⚠️ | 🌐 | ✅ | ✅ | **⚠️ Tamagui:** Tamagui has no inline `/N` modifier — use a theme alpha token (`$color05`, `$blue10`) or an explicit rgba()/hsla() value. NativeWind v5 fully supports `/N` cross-platform (Tailwind v4 compiles it to color-mix(); v5 ships a runtime color-mix resolver). Uniwind supports `/N` in its examples. |
+| **color opacity modifier** | ✅ | 🌐 | ✅ | ✅ | Tamagui supports inline `/N` cross-platform on any color prop (`$bg="$blue10/50"`) and in tw-mode classNames (`bg-blue-500/50`); the runtime applies it via color-mix() on web and rgba() multiply on native, matching NativeWind v5 behavior. NativeWind v5 fully supports `/N` cross-platform (Tailwind v4 compiles it to color-mix(); v5 ships a runtime color-mix resolver). Uniwind supports `/N` in its examples. |
 
 ## Notable gaps
 
@@ -329,16 +329,16 @@ For each framework, the most impactful utilities it does **not** support (None o
 
 ### Tamagui
 
-- **visibility** (Layout) — web-only here; NativeWind v5 partial
-- **object-fit** (Layout) — web-only here; NativeWind v5 full
-- **object-position** (Layout) — web-only here; NativeWind v5 partial
 - **space-between** (Spacing) — no support; Tailwind 🌐, NativeWind v5 🌐, Uniwind full
-- **text-overflow** (Typography) — web-only here; NativeWind v5 partial
-- **prefers-reduced-motion** (Responsive & Media) — no support; Tailwind 🌐, NativeWind v5 partial
-- **safe area insets** (Platform) — no support; NativeWind v5 full, Uniwind full
 - **color-scheme** (Design Tokens & Theming) — web-only here; Uniwind partial
-- **sr-only** (Accessibility) — no support; Tailwind 🌐, NativeWind v5 partial
-- **fill** (SVG) — no support; Tailwind 🌐, NativeWind v5 full
+- **float** (Layout) — no support; Tailwind 🌐, NativeWind v5 🌐
+- **clear** (Layout) — no support; Tailwind 🌐, NativeWind v5 🌐
+- **text-indent** (Typography) — no support; Tailwind 🌐, NativeWind v5 🌐
+- **divide** (Borders) — no support; Tailwind 🌐, NativeWind v5 🌐
+- **peer variants** (Interactive States) — no support; Tailwind 🌐, NativeWind v5 🌐
+- **has variant** (Interactive States) — no support; Tailwind 🌐, NativeWind v5 🌐
+- **not variant** (Interactive States) — no support; Tailwind 🌐, NativeWind v5 🌐
+- **nth variant** (Interactive States) — no support; Tailwind 🌐, NativeWind v5 🌐
 
 ### Tailwind
 
@@ -346,7 +346,7 @@ For each framework, the most impactful utilities it does **not** support (None o
 - **native-specific styles** (Platform) — no support; Tamagui full, NativeWind v5 full
 - **ios-specific styles** (Platform) — no support; Tamagui full, NativeWind v5 full, Uniwind full
 - **android-specific styles** (Platform) — no support; Tamagui full, NativeWind v5 full, Uniwind full
-- **safe area insets** (Platform) — no support; NativeWind v5 full, Uniwind full
+- **safe area insets** (Platform) — no support; Tamagui full, NativeWind v5 full, Uniwind full
 - **sub-themes / component themes** (Design Tokens & Theming) — no support; Tamagui full, Uniwind partial
 
 ### NativeWind v5
@@ -363,12 +363,12 @@ For each framework, the most impactful utilities it does **not** support (None o
 ### Uniwind
 
 - **isolation** (Layout) — no support; Tamagui full, Tailwind 🌐, NativeWind v5 🌐
-- **visibility** (Layout) — no support; Tamagui 🌐, Tailwind 🌐, NativeWind v5 partial
-- **object-fit** (Layout) — no support; Tamagui 🌐, Tailwind 🌐, NativeWind v5 full
-- **object-position** (Layout) — no support; Tamagui 🌐, Tailwind 🌐, NativeWind v5 partial
+- **visibility** (Layout) — no support; Tamagui partial, Tailwind 🌐, NativeWind v5 partial
+- **object-fit** (Layout) — no support; Tamagui full, Tailwind 🌐, NativeWind v5 full
+- **object-position** (Layout) — no support; Tamagui partial, Tailwind 🌐, NativeWind v5 partial
 - **padding-block/inline (logical)** (Spacing) — no support; Tamagui full, Tailwind 🌐, NativeWind v5 full
 - **margin-block/inline (logical)** (Spacing) — no support; Tamagui full, Tailwind 🌐, NativeWind v5 full
 - **line-clamp** (Typography) — no support; Tamagui full, Tailwind 🌐, NativeWind v5 full
-- **text-overflow** (Typography) — no support; Tamagui 🌐, Tailwind 🌐, NativeWind v5 partial
+- **text-overflow** (Typography) — no support; Tamagui partial, Tailwind 🌐, NativeWind v5 partial
 - **vertical-align** (Typography) — no support; Tamagui full, Tailwind 🌐, NativeWind v5 partial
 - **font-variant-numeric** (Typography) — no support; Tamagui partial, Tailwind 🌐, NativeWind v5 partial

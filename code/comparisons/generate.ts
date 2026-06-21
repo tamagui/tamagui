@@ -278,7 +278,6 @@ function supportLabel(level: SupportLevel): string {
 }
 
 function generateHTML(): string {
-  const stats = computeCoverage()
   const frameworks = ['tamagui', 'tailwind', 'nativewind', 'uniwind'] as const
   const frameworkLabels = {
     tamagui: 'Tamagui',
@@ -286,6 +285,19 @@ function generateHTML(): string {
     nativewind: 'NativeWind v5',
     uniwind: 'Uniwind',
   }
+
+  // serialize the data so the page can recompute coverage per view client-side
+  const dataJson = JSON.stringify(
+    categories.map((c) => ({
+      name: c.name,
+      utilities: c.utilities.map((u) => ({
+        name: u.name,
+        description: u.description,
+        notes: u.notes ?? '',
+        support: u.support,
+      })),
+    }))
+  )
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -305,6 +317,7 @@ function generateHTML(): string {
     --text: #e5e5e5;
     --text-muted: #999;
     --border: #2a2a2a;
+    --accent: #a78bfa;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -316,7 +329,46 @@ function generateHTML(): string {
     margin: 0 auto;
   }
   h1 { font-size: 32px; margin-bottom: 8px; }
-  .subtitle { color: var(--text-muted); margin-bottom: 40px; font-size: 15px; }
+  .subtitle { color: var(--text-muted); margin-bottom: 24px; font-size: 15px; }
+
+  /* view filter */
+  .view-bar {
+    display: flex; flex-wrap: wrap;
+    gap: 8px; align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+  }
+  .view-bar-label {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--text-muted); margin-right: 8px;
+  }
+  .view-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+  }
+  .view-btn:hover { border-color: var(--accent); }
+  .view-btn.active {
+    background: color-mix(in srgb, var(--accent) 20%, transparent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .view-explain {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 28px;
+    padding: 0 4px;
+  }
+
   .legend {
     display: flex; gap: 20px; margin-bottom: 32px;
     flex-wrap: wrap;
@@ -353,10 +405,16 @@ function generateHTML(): string {
 
   /* category sections */
   .category { margin-bottom: 40px; }
+  .category.empty { display: none; }
   .category h2 {
     font-size: 20px; margin-bottom: 12px;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--border);
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .category h2 .count {
+    font-size: 12px; color: var(--text-muted); font-weight: 400;
+    letter-spacing: 0.5px; text-transform: uppercase;
   }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th {
@@ -371,6 +429,7 @@ function generateHTML(): string {
   }
   td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
   tr:hover td { background: var(--surface); }
+  tr.row-hidden { display: none; }
   .util-name { font-weight: 600; }
   .util-desc { color: var(--text-muted); font-size: 12px; }
 
@@ -388,10 +447,6 @@ function generateHTML(): string {
 
   .example { font-family: 'SF Mono', Monaco, monospace; font-size: 11px; color: var(--text-muted); }
   .notes { font-size: 12px; color: var(--text-muted); font-style: italic; max-width: 200px; }
-
-  .expandable { cursor: pointer; }
-  .expandable .examples-row { display: none; }
-  .expandable.open .examples-row { display: table-row; }
 </style>
 </head>
 <body>
@@ -399,44 +454,29 @@ function generateHTML(): string {
 <h1>CSS Utility Coverage Comparison</h1>
 <p class="subtitle">Tamagui flat-styles vs Tailwind CSS vs NativeWind v5 vs Uniwind</p>
 
+<div class="view-bar">
+  <span class="view-bar-label">Platform view</span>
+  <button class="view-btn" data-view="cross">Cross-platform (web + native)</button>
+  <button class="view-btn" data-view="strict">Strict (no native caveats)</button>
+  <button class="view-btn" data-view="web-only">Web-only</button>
+  <button class="view-btn" data-view="all">All</button>
+</div>
+<div class="view-explain" id="viewExplain"></div>
+
 <div class="legend">
-  <div class="legend-item"><div class="legend-dot full"></div> Full support</div>
-  <div class="legend-item"><div class="legend-dot partial"></div> Partial support</div>
+  <div class="legend-item"><div class="legend-dot full"></div> Full support (web + native)</div>
+  <div class="legend-item"><div class="legend-dot partial"></div> Partial (cross-platform with caveats)</div>
   <div class="legend-item"><div class="legend-dot web-only"></div> Web-only</div>
   <div class="legend-item"><div class="legend-dot none"></div> Not supported</div>
 </div>
 
-<div class="summary">
-${frameworks
-  .map((fw) => {
-    const s = stats[fw]
-    const pct = (((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100).toFixed(1)
-    const fullW = ((s.full / s.total) * 100).toFixed(1)
-    const partialW = ((s.partial / s.total) * 100).toFixed(1)
-    const webW = ((s.webOnly / s.total) * 100).toFixed(1)
-    const noneW = ((s.none / s.total) * 100).toFixed(1)
-    return `  <div class="summary-card">
-    <h3>${frameworkLabels[fw]}</h3>
-    <div class="pct ${fw}">${pct}%</div>
-    <div class="stat-row"><span>Full</span><span>${s.full}/${s.total}</span></div>
-    <div class="stat-row"><span>Partial</span><span>${s.partial}/${s.total}</span></div>
-    <div class="stat-row"><span>Web-only</span><span>${s.webOnly}/${s.total}</span></div>
-    <div class="stat-row"><span>None</span><span>${s.none}/${s.total}</span></div>
-    <div class="bar">
-      <div class="bar-full" style="width:${fullW}%"></div>
-      <div class="bar-partial" style="width:${partialW}%"></div>
-      <div class="bar-web" style="width:${webW}%"></div>
-      <div class="bar-none" style="width:${noneW}%"></div>
-    </div>
-  </div>`
-  })
-  .join('\n')}
-</div>
+<div class="summary" id="summary"></div>
 
+<div id="categories">
 ${categories
   .map(
-    (cat) => `<div class="category">
-  <h2>${cat.name}</h2>
+    (cat, ci) => `<div class="category" data-cat-idx="${ci}">
+  <h2>${cat.name} <span class="count" data-count></span></h2>
   <table>
     <thead>
       <tr>
@@ -450,8 +490,14 @@ ${categories
     </thead>
     <tbody>
 ${cat.utilities
-  .map(
-    (util) => `      <tr>
+  .map((util, ui) => {
+    const tagsAttr = JSON.stringify({
+      t: util.support.tamagui,
+      tw: util.support.tailwind,
+      n: util.support.nativewind,
+      u: util.support.uniwind,
+    })
+    return `      <tr data-util-idx="${ui}" data-support='${tagsAttr}'>
         <td>
           <div class="util-name">${util.name}</div>
           <div class="util-desc">${util.description}</div>
@@ -460,15 +506,150 @@ ${cat.utilities
         <td><span class="support-badge ${supportClass(util.support.tailwind)}">${supportLabel(util.support.tailwind)}</span></td>
         <td><span class="support-badge ${supportClass(util.support.nativewind)}">${supportLabel(util.support.nativewind)}</span></td>
         <td><span class="support-badge ${supportClass(util.support.uniwind)}">${supportLabel(util.support.uniwind)}</span></td>
-        <td class="notes">${util.notes ?? ''}</td>
+        <td class="notes">${(util.notes ?? '').replace(/'/g, "&#39;")}</td>
       </tr>`
-  )
+  })
   .join('\n')}
     </tbody>
   </table>
 </div>`
   )
   .join('\n\n')}
+</div>
+
+<script>
+const FRAMEWORKS = ${JSON.stringify(frameworks)};
+const FW_LABELS = ${JSON.stringify(frameworkLabels)};
+const DATA = ${dataJson};
+
+const VIEW_EXPLAIN = {
+  cross: "Only utilities where at least one cross-platform framework reaches <b>Full or Partial</b> support — meaning the utility runs on both web and native, with or without caveats. Coverage % = (Full + Partial × 0.5) / total. This is the number that matters for a write-once-run-everywhere library.",
+  strict: "Only utilities where at least one cross-platform framework reaches <b>Full</b> support — no native caveats. Coverage % = Full / total. The strictest read: how many CSS utilities work identically on web and native.",
+  'web-only': "Only utilities that no cross-platform framework supports on native (they exist on web only). Useful for seeing which CSS features simply don't translate to React Native and which framework still ships a web shim for them.",
+  all: "Every utility tracked, weighted as in the original comparison: Full = 1.0, Partial = 0.5, Web-only = 0.5, None = 0.",
+};
+
+// determine if a utility row belongs to the current view
+function rowMatchesView(s, view) {
+  const cross = [s.t, s.n, s.u]; // cross-platform contenders
+  const all = [s.t, s.tw, s.n, s.u];
+  if (view === 'cross') {
+    return cross.some(l => l === 'full' || l === 'partial');
+  }
+  if (view === 'strict') {
+    return cross.some(l => l === 'full');
+  }
+  if (view === 'web-only') {
+    const someoneWebOnly = all.some(l => l === 'web-only');
+    const nooneNative = cross.every(l => l !== 'full' && l !== 'partial');
+    return someoneWebOnly && nooneNative;
+  }
+  return true; // 'all'
+}
+
+// per-framework coverage % for the current view
+function computeView(view) {
+  const out = {};
+  for (const fw of FRAMEWORKS) out[fw] = { full:0, partial:0, webOnly:0, none:0, total:0 };
+  for (const cat of DATA) {
+    for (const u of cat.utilities) {
+      const s = { t: u.support.tamagui, tw: u.support.tailwind, n: u.support.nativewind, u: u.support.uniwind };
+      if (!rowMatchesView(s, view)) continue;
+      for (const fw of FRAMEWORKS) {
+        const lvl = u.support[fw];
+        out[fw].total++;
+        if (lvl === 'full') out[fw].full++;
+        else if (lvl === 'partial') out[fw].partial++;
+        else if (lvl === 'web-only') out[fw].webOnly++;
+        else out[fw].none++;
+      }
+    }
+  }
+  return out;
+}
+
+function pctForView(view, s) {
+  if (!s.total) return 0;
+  if (view === 'strict') {
+    return (s.full / s.total) * 100;
+  }
+  if (view === 'cross') {
+    return ((s.full + s.partial * 0.5) / s.total) * 100;
+  }
+  if (view === 'web-only') {
+    return ((s.full + s.webOnly + s.partial * 0.5) / s.total) * 100;
+  }
+  return ((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100;
+}
+
+function renderSummary(view) {
+  const stats = computeView(view);
+  const wrap = document.getElementById('summary');
+  wrap.innerHTML = '';
+  for (const fw of FRAMEWORKS) {
+    const s = stats[fw];
+    const pct = pctForView(view, s).toFixed(1);
+    const t = s.total || 1;
+    const fullW = ((s.full / t) * 100).toFixed(1);
+    const partialW = ((s.partial / t) * 100).toFixed(1);
+    const webW = ((s.webOnly / t) * 100).toFixed(1);
+    const div = document.createElement('div');
+    div.className = 'summary-card';
+    div.innerHTML = \`
+      <h3>\${FW_LABELS[fw]}</h3>
+      <div class="pct \${fw}">\${pct}%</div>
+      <div class="stat-row"><span>Full (web+native)</span><span>\${s.full}/\${s.total}</span></div>
+      <div class="stat-row"><span>Partial</span><span>\${s.partial}/\${s.total}</span></div>
+      <div class="stat-row"><span>Web-only</span><span>\${s.webOnly}/\${s.total}</span></div>
+      <div class="stat-row"><span>None</span><span>\${s.none}/\${s.total}</span></div>
+      <div class="bar">
+        <div class="bar-full" style="width:\${fullW}%"></div>
+        <div class="bar-partial" style="width:\${partialW}%"></div>
+        <div class="bar-web" style="width:\${webW}%"></div>
+      </div>
+    \`;
+    wrap.appendChild(div);
+  }
+}
+
+function applyRowFilter(view) {
+  const cats = document.querySelectorAll('.category');
+  cats.forEach((catEl) => {
+    let shown = 0;
+    catEl.querySelectorAll('tbody tr').forEach((tr) => {
+      const s = JSON.parse(tr.getAttribute('data-support'));
+      const match = rowMatchesView(s, view);
+      tr.classList.toggle('row-hidden', !match);
+      if (match) shown++;
+    });
+    catEl.classList.toggle('empty', shown === 0);
+    const countEl = catEl.querySelector('[data-count]');
+    if (countEl) countEl.textContent = \`\${shown} utilities\`;
+  });
+}
+
+function setView(view) {
+  document.querySelectorAll('.view-btn').forEach((b) => {
+    b.classList.toggle('active', b.getAttribute('data-view') === view);
+  });
+  document.getElementById('viewExplain').innerHTML = VIEW_EXPLAIN[view] || '';
+  renderSummary(view);
+  applyRowFilter(view);
+  try {
+    history.replaceState(null, '', '?view=' + view);
+  } catch (e) {}
+  try { localStorage.setItem('coverageView', view); } catch (e) {}
+}
+
+document.querySelectorAll('.view-btn').forEach((b) => {
+  b.addEventListener('click', () => setView(b.getAttribute('data-view')));
+});
+
+const urlView = new URLSearchParams(location.search).get('view');
+const storedView = (() => { try { return localStorage.getItem('coverageView'); } catch (e) { return null; } })();
+const initialView = urlView || storedView || 'cross';
+setView(['cross','strict','web-only','all'].includes(initialView) ? initialView : 'cross');
+</script>
 
 </body>
 </html>`

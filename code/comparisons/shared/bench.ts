@@ -9,8 +9,22 @@
  * playwright tests read results via the same IDs across all apps.
  */
 
-export const ITEM_COUNT = 500
-export const HEAVY_COUNT = 150
+// counts can be overridden via URL query (?scale=200&heavy=60) so the same
+// dev server can run the runtime variant at a smaller dataset without rebuild.
+const urlParams =
+  typeof window !== 'undefined'
+    ? new URLSearchParams(window.location.search)
+    : new URLSearchParams()
+
+const scaleParam = urlParams.get('scale')
+const heavyParam = urlParams.get('heavy')
+
+export const ITEM_COUNT = scaleParam ? parseInt(scaleParam, 10) : 500
+export const HEAVY_COUNT = heavyParam
+  ? parseInt(heavyParam, 10)
+  : scaleParam
+    ? Math.max(30, Math.round((parseInt(scaleParam, 10) / 500) * 150))
+    : 150
 
 export interface BenchResult {
   mount: number
