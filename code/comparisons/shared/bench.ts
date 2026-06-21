@@ -10,6 +10,7 @@
  */
 
 export const ITEM_COUNT = 500
+export const HEAVY_COUNT = 150
 
 export interface BenchResult {
   mount: number
@@ -22,9 +23,11 @@ export interface BenchScenario {
 }
 
 export const scenarios: BenchScenario[] = [
-  { id: 'simple', name: '1. Simple (basic layout props)' },
-  { id: 'rich', name: '2. Rich (pseudo states + dynamic)' },
-  { id: 'animated', name: '3. Animated (transitions)' },
+  { id: 'simple', name: '1. Simple (static layout props)' },
+  { id: 'rich', name: '2. Rich (pseudo states)' },
+  { id: 'group', name: '3. Group hover (parent group state affects child styles)' },
+  { id: 'heavy', name: '4. Heavy page (realistic card list, nested, mixed)' },
+  { id: 'animated', name: '5. Animated (JS spring)' },
 ]
 
 /**
@@ -42,7 +45,7 @@ export function renderResults(
     'padding:16px;background:#111;border-radius:12px;border:1px solid #333;color:#eee;font-family:monospace;'
 
   const h2 = document.createElement('h2')
-  h2.textContent = `${framework} — ${ITEM_COUNT} components`
+  h2.textContent = `${framework} — ${ITEM_COUNT}/${HEAVY_COUNT} components`
   h2.style.cssText = 'margin:0 0 16px;font-size:18px;'
   container.appendChild(h2)
 

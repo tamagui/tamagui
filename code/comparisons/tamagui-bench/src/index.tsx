@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client'
 import { TamaguiProvider, View } from 'tamagui'
 import config from './tamagui.config'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
-import { ITEM_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
+import { ITEM_COUNT, HEAVY_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
 
 // ── scenario 1: simple (fully static — compiler CAN flatten) ──
 
@@ -52,7 +52,110 @@ function RichItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-// ── scenario 3: animated (always deopts — animation prop) ──
+// ── scenario 3: group (parent group state affects child styles) ──
+
+function GroupItems({ seed }: { seed: number }) {
+  return useMemo(() => {
+    const arr = []
+    for (let i = 0; i < ITEM_COUNT; i++) {
+      arr.push(
+        <View
+          key={i + seed * ITEM_COUNT}
+          group="row"
+          flexDirection="row"
+          alignItems="center"
+          gap={8}
+          padding={8}
+          borderRadius={8}
+          backgroundColor="$gray2"
+          hoverStyle={{ backgroundColor: '$gray3' }}
+          margin={1}
+        >
+          <View
+            width={32}
+            height={32}
+            borderRadius={16}
+            backgroundColor="$blue5"
+            $group-row-hover:backgroundColor="$blue7"
+          />
+          <View flex={1}>
+            <View
+              height={10}
+              borderRadius={4}
+              backgroundColor="$gray8"
+              $group-row-hover:backgroundColor="$blue8"
+            />
+          </View>
+        </View>
+      )
+    }
+    return <>{arr}</>
+  }, [seed])
+}
+
+// ── scenario 4: heavy (realistic card list, nested, mixed) ──
+
+const CARD_COLORS = ['$blue5', '$green5', '$pink5', '$orange5']
+
+function HeavyItems({ seed }: { seed: number }) {
+  return useMemo(() => {
+    const arr = []
+    for (let i = 0; i < HEAVY_COUNT; i++) {
+      const color = CARD_COLORS[(i + seed) % 4]
+      arr.push(
+        <View
+          key={i + seed * HEAVY_COUNT}
+          group="card"
+          flexDirection="row"
+          alignItems="center"
+          gap={12}
+          padding={12}
+          borderRadius={10}
+          backgroundColor="$gray1"
+          borderWidth={1}
+          borderColor="$gray4"
+          marginBottom={4}
+          hoverStyle={{ backgroundColor: '$gray2', borderColor: '$gray6' }}
+        >
+          <View
+            width={44}
+            height={44}
+            borderRadius={22}
+            backgroundColor={color}
+            $group-card-hover:opacity={0.8}
+          />
+          <View flex={1} gap={4}>
+            <View
+              height={12}
+              borderRadius={4}
+              backgroundColor="$gray11"
+              width={80 + ((i * 17) % 60)}
+              $group-card-hover:backgroundColor="$blue9"
+            />
+            <View
+              height={10}
+              borderRadius={3}
+              backgroundColor="$gray8"
+              width={120 + ((i * 13) % 80)}
+            />
+          </View>
+          <View
+            paddingHorizontal={8}
+            paddingVertical={3}
+            borderRadius={6}
+            backgroundColor="$blue3"
+            $group-card-hover:backgroundColor="$blue5"
+          >
+            <View width={24} height={8} borderRadius={3} backgroundColor="$blue9" />
+          </View>
+        </View>
+      )
+    }
+    return <>{arr}</>
+  }, [seed])
+}
+
+// ── scenario 5: animated (always deopts — animation prop) ──
 
 function AnimatedItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -82,6 +185,8 @@ function AnimatedItems({ seed }: { seed: number }) {
 const scenarioComponents = {
   simple: SimpleItems,
   rich: RichItems,
+  group: GroupItems,
+  heavy: HeavyItems,
   animated: AnimatedItems,
 }
 

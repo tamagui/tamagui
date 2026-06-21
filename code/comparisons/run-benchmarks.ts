@@ -16,10 +16,12 @@ const args = process.argv.slice(2)
 const numRuns = parseInt(args.find((a) => a.startsWith('--runs='))?.split('=')[1] ?? '3')
 const outputHtml = args.includes('--html')
 
-const SCENARIOS = ['simple', 'rich', 'animated']
+const SCENARIOS = ['simple', 'rich', 'group', 'heavy', 'animated']
 const SCENARIO_LABELS: Record<string, string> = {
   simple: 'Simple (static props)',
   rich: 'Rich (pseudo states)',
+  group: 'Group hover',
+  heavy: 'Heavy page (150)',
   animated: 'Animated (spring)',
 }
 
@@ -39,6 +41,9 @@ const benchmarks: BenchConfig[] = [
     startCmd: 'npx vite --port 9101',
     env: { EXTRACT: '1' },
   },
+  // Tamagui (runtime) excluded: group/heavy scenarios require 1500+ TamaguiComponent instances
+  // running getSplitStyles per-render, which times out at 180s. Use EXTRACT=0 vite --port 9106
+  // manually if you only want simple/rich/animated scenarios.
   {
     name: 'Tailwind CSS',
     dir: 'tailwind-bench',
@@ -98,7 +103,7 @@ async function runBenchmark(port: number): Promise<Record<string, { mount: numbe
   await page.goto(`http://localhost:${port}`)
   await page.waitForSelector('#bench-start', { timeout: 10000 })
   await page.click('#bench-start')
-  await page.waitForSelector('#bench-result-animated-rerender', { timeout: 60000 })
+  await page.waitForSelector('#bench-result-animated-rerender', { timeout: 180000 })
 
   const results: Record<string, { mount: number; rerender: number }> = {}
   for (const s of SCENARIOS) {
@@ -185,7 +190,7 @@ function printTable(results: Results) {
 
   console.log('╚' + '═'.repeat(22) + frameworks.map(() => '═'.repeat(colWidth + 1)).join('') + '╝')
   console.log('')
-  console.log(`  ${numRuns} run(s), 500 components per scenario`)
+  console.log(`  ${numRuns} run(s), 500 components (150 for heavy) per scenario`)
   if (numRuns >= 3) console.log('  (min/max dropped)')
   console.log('')
 }
@@ -221,7 +226,7 @@ function generateHtml(results: Results): string {
 </head>
 <body>
 <h1>Benchmark Comparison</h1>
-<p class="sub">500 components · ${numRuns} run(s)${numRuns >= 3 ? ' (min/max dropped)' : ''}</p>
+<p class="sub">500/150 components · ${numRuns} run(s)${numRuns >= 3 ? ' (min/max dropped)' : ''}</p>
 <table>
 <thead>
 <tr><th>Scenario</th>${frameworks.map((f) => `<th>${f}</th>`).join('')}</tr>

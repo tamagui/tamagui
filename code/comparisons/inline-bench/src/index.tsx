@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
-import { ITEM_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
+import { ITEM_COUNT, HEAVY_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
 
 // ── scenario 1: simple ───────────────────────────────
 
@@ -50,7 +50,95 @@ function RichItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-// ── scenario 3: animated ─────────────────────────────
+// ── scenario 3: group (JS hover state — inline can't do true CSS group) ──
+
+function GroupItems({ seed }: { seed: number }) {
+  const [hoveredIdx, setHoveredIdx] = useState<number>(-1)
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {Array.from({ length: ITEM_COUNT }, (_, i) => (
+        <div
+          key={i + seed * ITEM_COUNT}
+          onMouseEnter={() => setHoveredIdx(i)}
+          onMouseLeave={() => setHoveredIdx(-1)}
+          style={{
+            display: 'flex', flexDirection: 'row', alignItems: 'center',
+            gap: 8, padding: 8, borderRadius: 8, margin: 1,
+            backgroundColor: hoveredIdx === i ? '#e5e7eb' : '#f3f4f6',
+          }}
+        >
+          <div style={{
+            width: 32, height: 32, borderRadius: 16,
+            backgroundColor: hoveredIdx === i ? '#3b82f6' : '#6366f1',
+          }} />
+          <div style={{ flex: 1 }}>
+            <div style={{
+              height: 10, borderRadius: 4,
+              backgroundColor: hoveredIdx === i ? '#3b82f6' : '#6b7280',
+            }} />
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+// ── scenario 4: heavy ────────────────────────────────
+
+const heavyInlineColors = ['#3b82f6', '#22c55e', '#ec4899', '#f97316']
+
+function HeavyItems({ seed }: { seed: number }) {
+  const [hoveredIdx, setHoveredIdx] = useState<number>(-1)
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {Array.from({ length: HEAVY_COUNT }, (_, i) => {
+        const isHovered = hoveredIdx === i
+        const color = heavyInlineColors[(i + seed) % 4]
+        return (
+          <div
+            key={i + seed * HEAVY_COUNT}
+            onMouseEnter={() => setHoveredIdx(i)}
+            onMouseLeave={() => setHoveredIdx(-1)}
+            style={{
+              display: 'flex', flexDirection: 'row', alignItems: 'center',
+              gap: 12, padding: 12, borderRadius: 10,
+              backgroundColor: isHovered ? '#f9fafb' : '#ffffff',
+              border: `1px solid ${isHovered ? '#9ca3af' : '#e5e7eb'}`,
+              marginBottom: 4,
+            }}
+          >
+            <div style={{
+              width: 44, height: 44, borderRadius: 22,
+              backgroundColor: color,
+              opacity: isHovered ? 0.8 : 1,
+            }} />
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div style={{
+                height: 12, borderRadius: 4,
+                backgroundColor: isHovered ? '#1d4ed8' : '#1f2937',
+                width: 80 + ((i * 17) % 60),
+              }} />
+              <div style={{
+                height: 10, borderRadius: 3,
+                backgroundColor: '#9ca3af',
+                width: 120 + ((i * 13) % 80),
+              }} />
+            </div>
+            <div style={{
+              paddingLeft: 8, paddingRight: 8, paddingTop: 3, paddingBottom: 3,
+              borderRadius: 6,
+              backgroundColor: isHovered ? '#bfdbfe' : '#dbeafe',
+            }}>
+              <div style={{ width: 24, height: 8, borderRadius: 3, backgroundColor: '#1d4ed8' }} />
+            </div>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+// ── scenario 5: animated ─────────────────────────────
 
 function AnimatedItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -79,6 +167,8 @@ function AnimatedItems({ seed }: { seed: number }) {
 const scenarioComponents = {
   simple: SimpleItems,
   rich: RichItems,
+  group: GroupItems,
+  heavy: HeavyItems,
   animated: AnimatedItems,
 }
 

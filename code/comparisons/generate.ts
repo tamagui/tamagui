@@ -8,13 +8,48 @@
  *   bun code/comparisons/generate.ts --format=all
  */
 
-import { categories, computeCoverage, type SupportLevel } from './data'
+import { categories, computeCoverage, type SupportLevel, type Category } from './data'
 import { writeFileSync, mkdirSync } from 'fs'
 import { join } from 'path'
 
 const format = process.argv.find((a) => a.startsWith('--format='))?.split('=')[1] ?? 'all'
 const outDir = join(import.meta.dir, 'output')
 mkdirSync(outDir, { recursive: true })
+
+const frameworks = ['tamagui', 'tailwind', 'nativewind', 'uniwind'] as const
+type Framework = (typeof frameworks)[number]
+const frameworkLabel: Record<Framework, string> = {
+  tamagui: 'Tamagui',
+  tailwind: 'Tailwind',
+  nativewind: 'NativeWind v5',
+  uniwind: 'Uniwind',
+}
+
+// weighted coverage %: full=1, partial & web-only=0.5
+function coveragePct(s: { full: number; partial: number; webOnly: number; total: number }) {
+  return ((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100
+}
+
+// count of utilities at a given level for a framework within a set of categories
+function countLevel(cats: Category[], fw: Framework, level: SupportLevel) {
+  let n = 0
+  for (const cat of cats) for (const u of cat.utilities) if (u.support[fw] === level) n++
+  return n
+}
+
+// per-category stats for one framework
+function categoryStats(cat: Category, fw: Framework) {
+  const s = { full: 0, partial: 0, webOnly: 0, none: 0, total: 0 }
+  for (const u of cat.utilities) {
+    s.total++
+    const lvl = u.support[fw]
+    if (lvl === 'full') s.full++
+    else if (lvl === 'partial') s.partial++
+    else if (lvl === 'web-only') s.webOnly++
+    else s.none++
+  }
+  return s
+}
 
 // ── markdown ──────────────────────────────────────────
 
@@ -34,48 +69,193 @@ function supportIcon(level: SupportLevel): string {
 function generateMarkdown(): string {
   const lines: string[] = []
   const stats = computeCoverage()
-  const frameworks = ['tamagui', 'tailwind', 'nativewind', 'uniwind'] as const
 
   lines.push('# CSS Utility Coverage Comparison')
   lines.push('')
-  lines.push('✅ Full | ⚠️ Partial | 🌐 Web-only | ❌ None')
+  lines.push(
+    '_Tamagui flat-styles vs Tailwind CSS v4 vs NativeWind v5 vs Uniwind. ' +
+      'Support is judged by whether a **named style prop / utility** does the right thing, ' +
+      'not whether a raw value can be smuggled through `style={{}}`._'
+  )
+  lines.push('')
+  lines.push('**Legend:** ✅ Full (works web + native) | ⚠️ Partial (works but with real caveats) | 🌐 Web-only | ❌ None')
   lines.push('')
 
-  // summary table
+  // ── summary table ──
   lines.push('## Summary')
   lines.push('')
-  lines.push('| Framework | Full | Partial | Web-only | None | Total | Coverage % |')
-  lines.push('|-----------|------|---------|----------|------|-------|------------|')
+  lines.push(
+    'Coverage % is weighted: Full = 1.0, Partial = 0.5, Web-only = 0.5, None = 0. ' +
+      'It rewards breadth; for the cross-platform story read the **Full** column (web + native) below.'
+  )
+  lines.push('')
+  lines.push('| Framework | Full (web+native) | Partial | Web-only | None | Total | Coverage % |')
+  lines.push('|-----------|-------------------|---------|----------|------|-------|------------|')
   for (const fw of frameworks) {
     const s = stats[fw]
-    const pct = (((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100).toFixed(1)
     lines.push(
-      `| **${fw}** | ${s.full} | ${s.partial} | ${s.webOnly} | ${s.none} | ${s.total} | ${pct}% |`
+      `| **${frameworkLabel[fw]}** | ${s.full} | ${s.partial} | ${s.webOnly} | ${s.none} | ${s.total} | ${coveragePct(s).toFixed(1)}% |`
     )
   }
   lines.push('')
 
-  // per-category tables
+  // ── cross-platform advantage ──
+  lines.push('## Cross-platform coverage (web + native)')
+  lines.push('')
+  lines.push(
+    'The number that matters most for a write-once-render-everywhere library is how many utilities ' +
+      'work **fully on both web and native** (✅), excluding anything that is web-only (🌐). ' +
+      'Tailwind is excluded here because it does not target native at all.'
+  )
+  lines.push('')
+  const crossPlat = (['tamagui', 'nativewind', 'uniwind'] as const)
+    .map((fw) => ({ fw, full: countLevel(categories, fw, 'full') }))
+    .sort((a, b) => b.full - a.full)
+  const total = stats.tamagui.total
+  lines.push('| Framework | Fully cross-platform | of total | Share |')
+  lines.push('|-----------|----------------------|----------|-------|')
+  for (const { fw, full } of crossPlat) {
+    const share = ((full / total) * 100).toFixed(0)
+    const bar = '█'.repeat(Math.round((full / total) * 20)).padEnd(20, '░')
+    lines.push(`| **${frameworkLabel[fw]}** | ${full} | ${total} | \`${bar}\` ${share}% |`)
+  }
+  lines.push('')
+  const leader = crossPlat[0]
+  const second = crossPlat[1]
+  lines.push(
+    `**${frameworkLabel[leader.fw]}** leads cross-platform with **${leader.full}** fully-supported ` +
+      `utilities vs **${frameworkLabel[second.fw]}**'s ${second.full}. ` +
+      'NativeWind closes the gap on web-leaning CSS features but marks several native paths ' +
+      'experimental (transitions/animations) or web-only (space/divide, peer, structural selectors, sr-only a11y wiring).'
+  )
+  lines.push('')
+
+  // ── per-category tables (with per-category coverage in the header) ──
   for (const cat of categories) {
+    const headerStats = frameworks
+      .map((fw) => {
+        const cs = categoryStats(cat, fw)
+        return `${frameworkLabel[fw]} ${coveragePct(cs).toFixed(0)}%`
+      })
+      .join(' · ')
     lines.push(`## ${cat.name}`)
+    lines.push('')
+    lines.push(`_Coverage: ${headerStats}_`)
     lines.push('')
     lines.push('| Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |')
     lines.push('|---------|---------|----------|------------|---------|-------|')
     for (const util of cat.utilities) {
+      // surface notes inline for any non-trivial row; mark partials explicitly
+      let notes = util.notes ?? ''
+      const partials = frameworks.filter((fw) => util.support[fw] === 'partial')
+      if (partials.length && notes) {
+        notes = `**⚠️ ${partials.map((p) => frameworkLabel[p]).join(', ')}:** ${notes}`
+      }
       const row = [
         `**${util.name}**`,
         supportIcon(util.support.tamagui),
         supportIcon(util.support.tailwind),
         supportIcon(util.support.nativewind),
         supportIcon(util.support.uniwind),
-        util.notes ?? '',
+        notes.replace(/\n/g, ' '),
       ]
       lines.push(`| ${row.join(' | ')} |`)
     }
     lines.push('')
   }
 
+  // ── notable gaps ──
+  lines.push('## Notable gaps')
+  lines.push('')
+  lines.push(
+    'For each framework, the most impactful utilities it does **not** support (None or, for native, Web-only) ' +
+      'that at least one competitor does. Sorted roughly by how commonly the feature is used.'
+  )
+  lines.push('')
+  for (const fw of frameworks) {
+    const gaps = collectGaps(fw)
+    if (!gaps.length) continue
+    lines.push(`### ${frameworkLabel[fw]}`)
+    lines.push('')
+    for (const g of gaps.slice(0, 10)) {
+      lines.push(`- **${g.name}** (${g.category}) — ${g.reason}`)
+    }
+    lines.push('')
+  }
+
   return lines.join('\n')
+}
+
+// pick utilities a framework lacks (none, or web-only when a rival is full) that a rival supports better.
+// ordered by category priority so the most-used buckets float to the top.
+const categoryPriority = [
+  'Layout',
+  'Flexbox',
+  'Spacing',
+  'Sizing',
+  'Typography',
+  'Backgrounds',
+  'Borders',
+  'Effects',
+  'Interactive States',
+  'Responsive & Media',
+  'Transitions & Animation',
+  'Transforms',
+  'Platform',
+  'Design Tokens & Theming',
+  'Accessibility',
+  'Pseudo Elements',
+  'Grid',
+  'Filters',
+  'SVG',
+  'Tables',
+  'Interactivity',
+]
+
+const levelRank: Record<SupportLevel, number> = { full: 3, partial: 2, 'web-only': 1, none: 0 }
+
+function collectGaps(fw: Framework) {
+  const others = frameworks.filter((f) => f !== fw)
+  const gaps: {
+    name: string
+    category: string
+    reason: string
+    prio: number
+    crossPlatformRival: boolean
+  }[] = []
+  for (const cat of categories) {
+    for (const u of cat.utilities) {
+      const mine = u.support[fw]
+      // a "gap" = a rival is strictly better (higher rank), and mine is none or web-only
+      if (mine === 'full' || mine === 'partial') continue
+      const better = others
+        .map((o) => ({ o, lvl: u.support[o] }))
+        .filter((x) => levelRank[x.lvl] > levelRank[mine])
+      if (!better.length) continue
+      // for tailwind (web framework), web-only isn't really a gap — skip those
+      if (fw === 'tailwind' && mine === 'web-only') continue
+      // does any rival actually have real cross-platform (full/partial) support? that's the meaningful gap.
+      const crossPlatformRival = better.some((b) => b.lvl === 'full' || b.lvl === 'partial')
+      const rivals = better.map((b) => `${frameworkLabel[b.o]} ${b.lvl === 'web-only' ? '🌐' : b.lvl}`)
+      const reason =
+        mine === 'web-only'
+          ? `web-only here; ${rivals.join(', ')}`
+          : `no support; ${rivals.join(', ')}`
+      const prio = categoryPriority.indexOf(cat.name)
+      gaps.push({
+        name: u.name,
+        category: cat.name,
+        reason,
+        prio: prio === -1 ? 99 : prio,
+        crossPlatformRival,
+      })
+    }
+  }
+  // surface gaps where a rival has genuine cross-platform support first (those are the ones that hurt),
+  // then fall back to category priority.
+  return gaps.sort(
+    (a, b) => Number(b.crossPlatformRival) - Number(a.crossPlatformRival) || a.prio - b.prio
+  )
 }
 
 // ── html ──────────────────────────────────────────────
@@ -310,7 +490,6 @@ if (format === 'html' || format === 'all') {
 
 // always print summary to stdout
 const stats = computeCoverage()
-const frameworks = ['tamagui', 'tailwind', 'nativewind', 'uniwind'] as const
 console.log('\n📊 Coverage Summary:\n')
 for (const fw of frameworks) {
   const s = stats[fw]

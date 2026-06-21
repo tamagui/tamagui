@@ -1,140 +1,208 @@
 ---
 title: Tailwind mode for Tamagui
 publishedAt: '2026-06-20'
-description: Write Tailwind classes in className, compiled to atomic CSS at build time, on web and native.
+description: Write Tailwind utility classes in className. The Tamagui compiler turns them into atomic CSS at build time, and the same string works on web and React Native.
 by: nate
 image: /blog/tailwind-mode.jpg
 ---
 
 <IntroParagraph large>
-  Tamagui now ships a Tailwind-compatible style mode. Write utility classes in a
-  `className` prop, and the compiler turns them into atomic CSS at build time.
-  Same string, web and React Native.
+  Tamagui now reads Tailwind utility classes from the `className` prop. The
+  compiler turns them into atomic CSS at build time, and the same string renders
+  on web and React Native from one source file.
 </IntroParagraph>
 
-One config flag to turn it on:
+Turn it on with one config setting:
 
 ```tsx
 // tamagui.config.ts
+import { createTamagui } from 'tamagui'
+import { defaultConfig } from '@tamagui/config/v6'
+
 export default createTamagui({
-  styleMode: 'tailwind',
-  // ...rest of your config
+  ...defaultConfig,
+  settings: {
+    ...defaultConfig.settings,
+    styleMode: 'tailwind',
+  },
 })
 ```
 
-Then write components like this:
+Then write components with utility classes:
 
 ```tsx
-import { View, Text } from 'tamagui'
+import { View } from 'tamagui'
 
 export function Card() {
   return (
-    <View className="flex-1 bg-blue-500 rounded-lg p-4">
-      <Text className="text-white font-bold">Hello</Text>
+    <View className="flex flex-row items-center gap-3 p-4 rounded-lg bg-slate-100">
+      <View className="w-10 h-10 rounded-full bg-blue-500" />
+      <View className="flex-1 h-2 rounded-md bg-slate-300" />
     </View>
   )
 }
 ```
 
-That renders on the web as real CSS and on iOS and Android through React Native, from the same source file.
+On web that compiles to atomic CSS. On iOS and Android the same classes resolve to React Native styles. No separate stylesheet, no Babel plugin specific to Tailwind, no second styling system to learn.
 
-### Why
+### The problem
 
-A lot of developers know Tailwind. If you've been writing `flex-1 bg-blue-500 rounded-lg` for years, you can keep doing that and get Tamagui's compiler and cross-platform output.
+Two groups of people keep running into the same wall.
 
-It also makes sharing code easier. Teams with a web project built in Tailwind can move components into a React Native app without rewriting every style. The `className` strings travel unchanged.
+The first is teams who built a web app in Tailwind and now want to ship a React Native app that shares components. Tailwind is web-first. Moving a component to native means rewriting its styles in whatever the native styling layer expects, then keeping two copies in sync as the design changes.
 
-`styleMode` is additive. Themes, animations, design tokens, and the component library all still work. You can mix utility classes with Tamagui's prop API in the same component:
+The second is developers who already know Tailwind and would rather not learn a new prop API to get cross-platform output. Muscle memory for `flex-row items-center gap-3` is real. Asking someone to relearn it as a different set of props is friction with no payoff for them.
 
-```tsx
-<View
-  className="rounded-lg p-4"
-  backgroundColor="$blue5"
-  hoverStyle={{ backgroundColor: '$blue6' }}
-/>
-```
-
-Utility classes and theme tokens like `$blue5` and `$size.4` coexist. Theme-aware colors respond to light and dark mode the way the rest of Tamagui does.
+Tamagui already solves the cross-platform styling problem. What it did not have was the Tailwind syntax on the front of it. `styleMode: 'tailwind'` adds that syntax without giving up the compiler, the theme system, or the component library underneath.
 
 ### How the compiler works
 
-When the compiler sees a `className`, it maps each utility class to its CSS rule, deduplicates them into atomic CSS, and writes the rules into a static stylesheet at build time. `flex-1` becomes one rule, `p-4` becomes another. Any component that uses the same class references the same rule.
+When the compiler sees a `className`, it splits the string and maps each utility to a style. `bg-blue-500` becomes a `backgroundColor`, `p-4` becomes padding of 16px, `rounded-lg` becomes a border radius. Each resolved style is written as one atomic CSS rule and deduplicated across your whole app, so `p-4` exists exactly once in the output no matter how many components use it.
 
-There's no runtime stylesheet injection on the web. The CSS is in the bundle before the page loads, so first paint is fast and there's nothing to compute on mount.
+Color and radius utilities resolve through your token system. `bg-blue-500` looks up the Tailwind palette entry and emits a CSS variable reference, which means it participates in theming rather than hard-coding a hex value. Numeric spacing and sizing follow Tailwind's scale, so `p-4` is 16px and `gap-2` is 8px. A color name that is not a palette token passes straight through as a literal CSS value, so `bg-red` resolves to `backgroundColor: red`.
 
-On native, the same class-to-style mapping feeds React Native's style system through a CSS interop layer. The same classes resolve to native styles without a web renderer in the way.
+Modifiers compile too. `hover:bg-blue-600` extracts a hover rule into its own atomic class. `sm:p-6` becomes a media-query rule. Combined modifiers like `sm:hover:bg-purple-500` produce a single rule scoped to both the breakpoint and the pseudo-state. These are static, so they go in the stylesheet and cost nothing at runtime.
+
+Classes the compiler does not recognize are left alone. If you write `my-custom-class`, it passes through to the rendered element's `className` untouched, so your own CSS keeps working alongside the utilities.
+
+Some things cannot become static rules, and the compiler is explicit about them. A physics spring animation, an enter or exit transition, and parent-driven group states all need runtime state to resolve, so they fall back to Tamagui's runtime style path. You still write them the same way; they just do not end up in the static stylesheet. The performance section below shows what that fallback costs.
+
+### What compiles today
+
+The utilities that resolve cross-platform cover the layout surface you reach for most: sizing (`w-24`, `h-8`, `w-1/2`, `min-w-24`, `max-h-20`), spacing (`p-4`, `px-6`, `pt-8`, `m-4`), flexbox and alignment (`flex`, `flex-row`, `flex-1`, `items-center`, `justify-between`, `self-end`, `gap-2`), the full color palette for backgrounds and borders (`bg-indigo-500`, `border-red-500`), border radius (`rounded-md` through `rounded-3xl`, `rounded-full`), border width (`border`, `border-4`), position (`relative`, `absolute`, `inset-0`, `top-2`, `z-10`), opacity (`opacity-50`), and overflow.
+
+There are gaps worth naming. Tailwind's `text-*` utilities map to text alignment in Tamagui's shorthand set, so `text-white` and `text-sm` do not currently set color or size; use `color-white` for text color and the explicit prop name for size. `font-bold` and `size-10` are not mapped yet either. Corner-specific radius (`rounded-t-xl`), single-side borders (`border-t-4`), and axis insets (`inset-x-0`) also pass through without converting. These are tracked, and unrecognized classes degrade by passing through rather than throwing, so nothing breaks while the mapping fills in.
 
 ### Performance
 
-We benchmarked mounting 500 components across static props and pseudo states.
+The benchmark mounts 500 components (150 for the heavy scenario), then forces a re-render, across five scenarios. It runs in Chromium on a single warm run. The same component tree is authored once and rendered through each framework. Numbers rounded to one decimal.
 
-Static components mount at about **7.6ms** with the compiler - on par with plain Tailwind and raw inline styles. The work ran at build time, so there's nothing left to do on mount.
+| Scenario | Tamagui (compiled) | Tailwind CSS | Inline (baseline) | NativeWind v5 | Uniwind |
+|---|---|---|---|---|---|
+| **Mount, simple props** | **7.2ms** | 7.0ms | 7.1ms | 18.1ms (2.5x) | 23.1ms (3.2x) |
+| **Mount, pseudo states** | **7.2ms** | 5.7ms | 6.4ms | 14.1ms (2.2x) | 17.5ms (2.7x) |
+| Mount, group hover | 396ms | 18.2ms | 20.4ms | 52.6ms | 59.8ms |
+| Mount, heavy page (150) | 149ms | 11.0ms | 10.9ms | 33.4ms | 39.7ms |
+| Mount, spring animation | 35.5ms | 6.0ms | 7.3ms | 14.5ms (2.0x) | 6.5ms |
+| **Re-render, simple props** | **9.1ms** | 7.5ms | 7.7ms | 15.0ms (1.9x) | 21.1ms (2.7x) |
+| **Re-render, pseudo states** | **9.4ms** | 6.1ms | 7.6ms | 14.7ms (1.9x) | 22.1ms (2.9x) |
+| Re-render, group hover | 381ms | 20.0ms | 21.9ms | 35.4ms | 75.5ms |
+| Re-render, heavy page (150) | 126ms | 10.8ms | 11.5ms | 29.2ms | 20.9ms |
+| Re-render, spring animation | 30.0ms | 6.0ms | 7.7ms | 14.5ms (1.9x) | 7.5ms |
 
-Components with hover and press states come in at **6.6ms** - even faster, because the compiler extracts each pseudo-state rule into its own atomic class upfront.
+The numbers split cleanly into two groups: cases the compiler can fully optimize, and cases it cannot.
 
-Compared to the runtime-only approaches:
+**When the compiler works**, Tamagui lands at or below inline styles. Simple static props: 7.2ms against 18.1ms for NativeWind and 23.1ms for Uniwind. Pseudo states like hover and press: 7.2ms against 14.1ms for NativeWind. The compiler extracts every rule to atomic CSS at build time, so there is nothing left to compute on mount. Re-renders follow the same pattern because the DOM already has the right classes; a prop change swaps a class name rather than recalculating a style object.
 
-| Scenario | Tamagui (compiled) | NativeWind v5 | Uniwind |
-|---|---|---|---|
-| Static mount | 7.6ms | 19.3ms (2.5x slower) | 24.2ms (3.2x slower) |
-| Pseudo states mount | 6.6ms | 18.4ms (2.8x slower) | 23.7ms (3.6x slower) |
-| Static re-render | 9.9ms | 16.1ms (1.6x slower) | 20.7ms (2.1x slower) |
-| Pseudo states re-render | 10.6ms | 15.9ms (1.5x slower) | 24.5ms (2.3x slower) |
+**When the compiler cannot fully optimize**, performance falls back to Tamagui's runtime style path, and the numbers look different. Two cases hit this today.
 
-*500 components, average of 3 runs, Chromium*
+The first is group styles. A parent with `group="row"` and children with `$group-row-hover:backgroundColor` use a JavaScript state emitter to propagate the hover signal cross-platform. That makes it work on native (nothing else does), but the compiler cannot express it as pure CSS because on native there is no CSS to write. On web the compiler could theoretically emit `:has([data-group])` selectors, but that optimization is not implemented yet. The result: 500 group-hover components mount in 396ms, which is 19x baseline and 7.5x NativeWind. This is the single largest compiler gap right now and the thing being worked on next.
 
-**Spring animations** are a different category. Tamagui supports JS-driven spring animations via Reanimated or the CSS animation driver - those can't be static rules. NativeWind handles `transition-all` via pure CSS `transition`, which gives you easing curves. If you need physics-based springs, enter/exit animations, or gesture-driven motion that works the same on web and native, Tamagui has that. If CSS easing is enough, both frameworks handle it on web.
+The second is dynamic style props. The heavy scenario mixes static props with computed values (`width={80 + ((i * 17) % 60)}`). When a dynamic value sits next to static props in the same component, the current compiler bails on the whole component and falls back to runtime. The goal is partial extraction: emit atomic classes for the static props and leave only the dynamic value as an inline style. That would cut heavy mount from 149ms to something near pure-CSS performance.
 
-### One className, both platforms
+The spring animation row shows a deliberate trade-off. Tamagui drives physics springs and gesture-linked motion through a real animation runtime because those need the same behavior on native as on web. CSS transitions are cheaper but they only run in the browser; they cannot drive a gesture-driven swipe or a shared-element transition. If your motion is CSS easing, Tamagui's CSS animation driver matches that cost. If you need spring physics or native-parity motion, Tamagui runs it and pays the runtime cost. You are not paying that cost on the static components around it.
+
+NativeWind v5's animated numbers look good here because it uses CSS transitions exclusively on web. That is fast; it is also web-only.
+
+### Cross-platform coverage
+
+We compared 149 CSS utility categories across the frameworks and measured how many resolve fully on both web and native.
+
+| Framework | Fully cross-platform | Weighted coverage % |
+|---|---|---|
+| **Tamagui** | **79** | 66.1% |
+| NativeWind v5 | 74 | 72.8% |
+| Uniwind | 51 | 40.6% |
+
+Tamagui leads cross-platform with 79 fully supported utility categories: the full layout, flexbox, spacing, sizing, color, border, transform, and opacity surface, plus things like `gap`, `flex-wrap`, logical spacing, aspect ratio, and group/container queries that all work on native through Tamagui's JS state emitter. NativeWind v5 comes in at 74.
+
+The weighted coverage percentages favor NativeWind, and that number counts something different. It gives partial credit for web-only utilities, and NativeWind has 45 web-only entries that count toward its weighted score. For a framework whose purpose is write-once-render-everywhere, the fully-cross-platform column is the honest number: utilities that produce the same output on iOS, Android, and web without platform branches.
+
+Uniwind sits at 51 because it targets mobile-first workflows and explicitly skips most web-specific CSS.
+
+For web-specific CSS that does not translate to a native layout engine, `float`, CSS grid, `columns`, and backdrop filters, those stay web-only in every framework here. React Native's layout model has no equivalent, so none of these tools can make them work natively.
+
+### One component, both platforms
+
+This renders on web and native from the same file. No platform branches, no second stylesheet.
 
 ```tsx
-// ships to web and native unchanged
-<View className="flex-row items-center gap-2 p-3 rounded-xl bg-gray-100">
-  <View className="size-10 rounded-full bg-blue-500" />
-  <Text className="text-base font-medium text-gray-900">Profile</Text>
-</View>
+import { View } from 'tamagui'
+
+export function ListItem() {
+  return (
+    <View className="flex flex-row items-center gap-3 p-3 rounded-xl bg-slate-100">
+      <View className="w-12 h-12 rounded-full bg-indigo-500" />
+      <View className="flex-1 flex flex-col gap-2">
+        <View className="h-3 w-2/3 rounded-md bg-slate-400" />
+        <View className="h-2 w-1/3 rounded-md bg-slate-300" />
+      </View>
+      <View className="w-8 h-8 rounded-lg bg-blue-500" />
+    </View>
+  )
+}
 ```
 
-On web: compiled to atomic CSS. On native: resolved to React Native styles. One codebase, both platforms.
+On web that compiles to atomic CSS classes in the bundle. On iOS and Android the same string resolves to React Native styles. The visual output matches pixel for pixel against real Tailwind for the utilities in our conformance suite, which is how we verify the native mapping rather than trusting a screenshot.
 
-### Coverage
+You can also keep the rest of Tamagui in the same tree. Switch to `styleMode: 'tamagui-and-tailwind'` and you can mix utility classes with Tamagui's prop API, theme tokens, and animation props on the same element:
 
-Tamagui's tailwind mode covers **85 utilities fully cross-platform** - layout, flexbox, spacing, sizing, colors, typography, borders, transforms, opacity, and more. NativeWind v5 has 82 in that category. The overlap is high; the difference is that Tamagui's cross-platform numbers include things like `gap`, `flex-wrap`, logical spacing, and aspect ratio that work on both targets without a web renderer.
+```tsx
+import { View } from 'tamagui'
 
-For web-specific CSS that doesn't translate to native (`float`, `columns`, CSS grid, and similar), those remain web-only in both frameworks. React Native's layout engine doesn't have equivalents for those, so neither framework can make them work natively.
+export function Highlight() {
+  return (
+    <View
+      className="rounded-lg p-4"
+      backgroundColor="$blue5"
+      hoverStyle={{ backgroundColor: '$blue6' }}
+      animation="bouncy"
+      enterStyle={{ opacity: 0, scale: 0.95 }}
+    />
+  )
+}
+```
+
+Theme tokens like `$blue5` respond to light and dark mode the way they always have. The spring animation and enter transition run through the same drivers as the rest of your app.
 
 ### Getting started
 
+Install the latest Tamagui and the v6 config, which ships the Tailwind palette, the named radii, and the `w`/`h` shorthands the utility parser needs:
+
 ```bash
-npm install tamagui@latest
+npm install tamagui@latest @tamagui/config@latest
 ```
+
+Turn on the mode:
 
 ```tsx
 // tamagui.config.ts
 import { createTamagui } from 'tamagui'
+import { defaultConfig } from '@tamagui/config/v6'
 
 export default createTamagui({
-  styleMode: 'tailwind',
-  // ...your tokens, themes, fonts
+  ...defaultConfig,
+  settings: {
+    ...defaultConfig.settings,
+    styleMode: 'tailwind',
+  },
 })
 ```
 
 Write a component:
 
 ```tsx
-import { View, Text } from 'tamagui'
+import { View } from 'tamagui'
 
-export function Badge({ label }: { label: string }) {
+export function Badge() {
   return (
     <View className="px-3 py-1 rounded-full bg-green-500">
-      <Text className="text-sm font-semibold text-white">{label}</Text>
+      <View className="w-4 h-4 rounded-full bg-white" />
     </View>
   )
 }
 ```
 
-Build it. The compiler extracts the CSS and your component renders on web and native with near-zero runtime cost.
+Build it. The compiler extracts the CSS, and the component renders on web and native with the static styles already resolved.
 
----
-
-If you've been on Tailwind and want to ship to native without rewriting your styles, turn on `styleMode: 'tailwind'` and try it. The rest of Tamagui - themes, animations, components - is still there when you need it.
+If you are on Tailwind today and want native output without rewriting your styles, this is the path. The compiler, the themes, the animation drivers, and the component library are all still there when you reach for them.

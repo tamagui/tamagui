@@ -1,7 +1,7 @@
 import './tailwind.css'
 import { createRoot } from 'react-dom/client'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
-import { ITEM_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
+import { ITEM_COUNT, HEAVY_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
 
 // ── scenario 1: simple ───────────────────────────────
 // tailwind: all styles are static CSS classes, zero runtime cost
@@ -49,7 +49,58 @@ function RichItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-// ── scenario 3: animated ─────────────────────────────
+// ── scenario 3: group ────────────────────────────────
+
+function GroupItems({ seed }: { seed: number }) {
+  return useMemo(() => {
+    const arr = []
+    for (let i = 0; i < ITEM_COUNT; i++) {
+      arr.push(
+        <div
+          key={i + seed * ITEM_COUNT}
+          className="group flex flex-row items-center gap-2 p-2 rounded-lg bg-gray-100 hover:bg-gray-200 m-px"
+        >
+          <div className="w-8 h-8 rounded-full bg-blue-500 group-hover:bg-blue-700" />
+          <div className="flex-1">
+            <div className="h-2.5 rounded bg-gray-600 group-hover:bg-blue-600" />
+          </div>
+        </div>
+      )
+    }
+    return <>{arr}</>
+  }, [seed])
+}
+
+// ── scenario 4: heavy ────────────────────────────────
+
+const heavyTwColors = ['bg-blue-500', 'bg-green-500', 'bg-pink-500', 'bg-orange-500']
+
+function HeavyItems({ seed }: { seed: number }) {
+  return useMemo(() => {
+    const arr = []
+    for (let i = 0; i < HEAVY_COUNT; i++) {
+      const color = heavyTwColors[(i + seed) % 4]
+      arr.push(
+        <div
+          key={i + seed * HEAVY_COUNT}
+          className="group flex flex-row items-center gap-3 p-3 rounded-xl border border-gray-200 mb-1 hover:bg-gray-50 hover:border-gray-400"
+        >
+          <div className={`w-11 h-11 rounded-full group-hover:opacity-80 ${color}`} />
+          <div className="flex flex-col flex-1 gap-1">
+            <div className="h-3 rounded bg-gray-800 group-hover:bg-blue-800" style={{ width: 80 + ((i * 17) % 60) }} />
+            <div className="h-2.5 rounded bg-gray-400" style={{ width: 120 + ((i * 13) % 80) }} />
+          </div>
+          <div className="px-2 py-0.5 rounded-md bg-blue-100 group-hover:bg-blue-300">
+            <div className="w-6 h-2 rounded bg-blue-700" />
+          </div>
+        </div>
+      )
+    }
+    return <>{arr}</>
+  }, [seed])
+}
+
+// ── scenario 5: animated ─────────────────────────────
 
 function AnimatedItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -73,6 +124,8 @@ function AnimatedItems({ seed }: { seed: number }) {
 const scenarioComponents = {
   simple: SimpleItems,
   rich: RichItems,
+  group: GroupItems,
+  heavy: HeavyItems,
   animated: AnimatedItems,
 }
 
