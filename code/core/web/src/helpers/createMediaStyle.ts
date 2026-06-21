@@ -10,10 +10,20 @@ export const MEDIA_SEP = '_'
 let prefixes: Record<string, string> | null = null
 let selectors: Record<string, string> | null = null
 
+// cache built MediaStyleObjects by (identifier, mediaKey, type, negate, priority).
+// identifier is already content-hashed in getCSSStylesAtomic (simpleHash of value
+// + property + pseudo), so it uniquely identifies the styleObject input. The
+// other key parts are the remaining inputs that affect the output. Output objects
+// are read-only by callers — they pull out [Identifier] and pass the array to
+// addStyleToInsertRules which gates on shouldInsertStyleRules, so sharing the
+// array between callers is safe.
+const mediaStyleCache = new Map<string, MediaStyleObject>()
+
 // call this when media config changes to reset cached prefixes/selectors
 export function resetMediaStyleCache() {
   prefixes = null
   selectors = null
+  mediaStyleCache.clear()
 }
 
 const groupPseudoToPseudoCSSMap = {
@@ -60,6 +70,14 @@ export const createMediaStyle = (
   priority?: number
 ): MediaStyleObject => {
   const [property, , identifier, pseudoIn, rules] = styleObject
+
+  // cache hit: identifier already content-hashes the styleObject's effective
+  // input (property + value + pseudo), remaining inputs are appended.
+  const cacheKey = `${identifier}|${mediaKeyIn}|${type}|${negate ? 1 : 0}|${priority || 0}`
+  const cached = mediaStyleCache.get(cacheKey)
+  if (cached) {
+    return cached
+  }
   const isTheme = type === 'theme'
   const isPlatform = type === 'platform'
   const isGroup = type === 'group'
@@ -163,5 +181,13 @@ export const createMediaStyle = (
     styleRule = `@media (hover:hover){${styleRule}}`
   }
 
-  return [property, undefined, nextIdentifier, undefined, [styleRule]]
+  const result: MediaStyleObject = [
+    property,
+    undefined,
+    nextIdentifier,
+    undefined,
+    [styleRule],
+  ]
+  mediaStyleCache.set(cacheKey, result)
+  return result
 }

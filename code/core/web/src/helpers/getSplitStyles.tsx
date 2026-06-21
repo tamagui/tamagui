@@ -312,6 +312,35 @@ function preprocessTailwindClassName(
       }
       continue
     }
+    // web-only utilities (float, isolate, scroll-smooth, columns-N, accent-blue5, …)
+    // route through $platform-web so they apply on web and no-op on native.
+    const webStatic = tailwindPlatformWebStatic[base]
+    if (webStatic) {
+      if (applyPlatformWeb(result, mods, webStatic)) continue
+      // unsupported modifier combo (e.g. pseudo): fall through to className preservation.
+      regularClasses.push(cls)
+      continue
+    }
+    let webMatched = false
+    for (const entry of tailwindPlatformWebPrefixes) {
+      // class must START with prefix followed by '-' (or BE the prefix itself, but those go
+      // through the static map). e.g. "columns-2" matches prefix "columns".
+      if (
+        base.length > entry.prefix.length + 1 &&
+        base[entry.prefix.length] === '-' &&
+        base.startsWith(entry.prefix)
+      ) {
+        const rawValue = base.slice(entry.prefix.length + 1)
+        const transformed = entry.transform(rawValue, config)
+        if (transformed != null) {
+          if (applyPlatformWeb(result, mods, { [entry.prop]: transformed })) {
+            webMatched = true
+          }
+          break
+        }
+      }
+    }
+    if (webMatched) continue
     // otherwise try the generic prop-value conversion
     if (looksLikeTailwindClass(cls, shorthands, config)) {
       const flatProp = tailwindClassToFlatProp(cls, shorthands, config)
@@ -443,6 +472,201 @@ const tailwindUtilityMap: Record<string, Record<string, any>> = {
   'inset-0': { top: 0, right: 0, bottom: 0, left: 0 },
   // bare border = 1px
   border: { borderWidth: 1 },
+}
+
+// web-only tailwind utilities: classes whose CSS property has no React Native equivalent.
+// these get routed through $platform-web={{ ... }} so they apply on web and no-op on native.
+// each entry maps the WHOLE class -> a partial CSS object that gets merged into the platform-web
+// payload for the class's modifier scope (so e.g. `hover:isolate sm:isolate` produce separate
+// hover/sm scoped objects).
+//
+// covers static-value classes only. parametric classes (columns-N, scroll-m-N, accent-color, etc.)
+// are handled by tailwindPlatformWebPrefixes below.
+const tailwindPlatformWebStatic: Record<string, Record<string, any>> = {
+  // float / clear
+  'float-left': { float: 'left' },
+  'float-right': { float: 'right' },
+  'float-none': { float: 'none' },
+  'clear-left': { clear: 'left' },
+  'clear-right': { clear: 'right' },
+  'clear-both': { clear: 'both' },
+  'clear-none': { clear: 'none' },
+  // isolation / mix-blend / containment
+  isolate: { isolation: 'isolate' },
+  'isolation-auto': { isolation: 'auto' },
+  'mix-blend-normal': { mixBlendMode: 'normal' },
+  'mix-blend-multiply': { mixBlendMode: 'multiply' },
+  'mix-blend-screen': { mixBlendMode: 'screen' },
+  'mix-blend-overlay': { mixBlendMode: 'overlay' },
+  'mix-blend-darken': { mixBlendMode: 'darken' },
+  'mix-blend-lighten': { mixBlendMode: 'lighten' },
+  'mix-blend-difference': { mixBlendMode: 'difference' },
+  'mix-blend-exclusion': { mixBlendMode: 'exclusion' },
+  'mix-blend-plus-lighter': { mixBlendMode: 'plus-lighter' },
+  'contain-none': { contain: 'none' },
+  'contain-content': { contain: 'content' },
+  'contain-strict': { contain: 'strict' },
+  'contain-size': { contain: 'size' },
+  'contain-layout': { contain: 'layout' },
+  'contain-paint': { contain: 'paint' },
+  'contain-style': { contain: 'style' },
+  // scroll behavior / snap
+  'scroll-auto': { scrollBehavior: 'auto' },
+  'scroll-smooth': { scrollBehavior: 'smooth' },
+  'snap-start': { scrollSnapAlign: 'start' },
+  'snap-end': { scrollSnapAlign: 'end' },
+  'snap-center': { scrollSnapAlign: 'center' },
+  'snap-align-none': { scrollSnapAlign: 'none' },
+  'snap-none': { scrollSnapType: 'none' },
+  'snap-x': { scrollSnapType: 'x' },
+  'snap-y': { scrollSnapType: 'y' },
+  'snap-both': { scrollSnapType: 'both' },
+  'snap-mandatory': { scrollSnapStop: 'always' },
+  'snap-normal': { scrollSnapStop: 'normal' },
+  // resize / appearance / cursor-form-only
+  'resize-none': { resize: 'none' },
+  resize: { resize: 'both' },
+  'resize-y': { resize: 'vertical' },
+  'resize-x': { resize: 'horizontal' },
+  'appearance-none': { appearance: 'none' },
+  'appearance-auto': { appearance: 'auto' },
+  // backdrop-filter clear
+  'backdrop-filter-none': { backdropFilter: 'none' },
+  // place-* (grid; web-only)
+  'place-content-start': { placeContent: 'start' },
+  'place-content-end': { placeContent: 'end' },
+  'place-content-center': { placeContent: 'center' },
+  'place-content-between': { placeContent: 'space-between' },
+  'place-content-around': { placeContent: 'space-around' },
+  'place-content-evenly': { placeContent: 'space-evenly' },
+  'place-content-stretch': { placeContent: 'stretch' },
+  'place-items-start': { placeItems: 'start' },
+  'place-items-end': { placeItems: 'end' },
+  'place-items-center': { placeItems: 'center' },
+  'place-items-stretch': { placeItems: 'stretch' },
+  'place-self-auto': { placeSelf: 'auto' },
+  'place-self-start': { placeSelf: 'start' },
+  'place-self-end': { placeSelf: 'end' },
+  'place-self-center': { placeSelf: 'center' },
+  'place-self-stretch': { placeSelf: 'stretch' },
+  // break-* (page/column breaks; web-only)
+  'break-before-auto': { breakBefore: 'auto' },
+  'break-before-avoid': { breakBefore: 'avoid' },
+  'break-before-page': { breakBefore: 'page' },
+  'break-after-auto': { breakAfter: 'auto' },
+  'break-after-avoid': { breakAfter: 'avoid' },
+  'break-after-page': { breakAfter: 'page' },
+  'break-inside-auto': { breakInside: 'auto' },
+  'break-inside-avoid': { breakInside: 'avoid' },
+  // columns keyword variants
+  'columns-auto': { columns: 'auto' },
+}
+
+// web-only tailwind utilities with parametric values (columns-2, scroll-mt-4, accent-blue-500).
+// each entry is [prefix, css-property, value-transform] — checked after the static map.
+// value-transform receives the raw suffix string + config and returns the final CSS value, or
+// null/undefined to skip routing (lets the class fall through to className preservation).
+const tailwindPlatformWebPrefixes: Array<{
+  prefix: string
+  prop: string
+  transform: (value: string, config: TamaguiInternalConfig) => any
+}> = [
+  // columns-2 / columns-3xs … treat numbers raw, keywords passthrough
+  {
+    prefix: 'columns',
+    prop: 'columns',
+    transform: (v) => (/^\d+$/.test(v) ? Number(v) : v),
+  },
+  // scroll-margin/padding utilities — scroll-mt-4 → scrollMarginTop:16; uses tailwind scale (n*4)
+  { prefix: 'scroll-mt', prop: 'scrollMarginTop', transform: scrollSpacing },
+  { prefix: 'scroll-mr', prop: 'scrollMarginRight', transform: scrollSpacing },
+  { prefix: 'scroll-mb', prop: 'scrollMarginBottom', transform: scrollSpacing },
+  { prefix: 'scroll-ml', prop: 'scrollMarginLeft', transform: scrollSpacing },
+  { prefix: 'scroll-m', prop: 'scrollMargin', transform: scrollSpacing },
+  { prefix: 'scroll-pt', prop: 'scrollPaddingTop', transform: scrollSpacing },
+  { prefix: 'scroll-pr', prop: 'scrollPaddingRight', transform: scrollSpacing },
+  { prefix: 'scroll-pb', prop: 'scrollPaddingBottom', transform: scrollSpacing },
+  { prefix: 'scroll-pl', prop: 'scrollPaddingLeft', transform: scrollSpacing },
+  { prefix: 'scroll-p', prop: 'scrollPadding', transform: scrollSpacing },
+  // accent / caret colors — resolve token by name (accent-blue5 → $blue5 if token exists)
+  {
+    prefix: 'accent',
+    prop: 'accentColor',
+    transform: (v, c) => resolveTokenValue(v, c),
+  },
+  {
+    prefix: 'caret',
+    prop: 'caretColor',
+    transform: (v, c) => resolveTokenValue(v, c),
+  },
+  // text-indent-4 → textIndent: '16px' (tailwind spacing scale). emit a string with the unit
+  // because css normalization only auto-appends px for known react-native style props, and
+  // textIndent / scrollMargin* aren't in that set — bare `16` becomes invalid CSS otherwise.
+  {
+    prefix: 'indent',
+    prop: 'textIndent',
+    transform: (v) => (/^\d+$/.test(v) ? `${Number(v) * 4}px` : v),
+  },
+]
+
+// shared transform for scroll-margin/padding utilities (tailwind n*4 scale).
+// returns a px string for numeric N (so CSS emits "16px", not invalid "16"); passes
+// keyword values (auto, inherit, …) through unchanged.
+function scrollSpacing(v: string): any {
+  if (/^\d+$/.test(v)) return `${Number(v) * 4}px`
+  return v
+}
+
+// SKIPPED (deliberately not routed through $platform-web):
+//   backdrop-blur-*, backdrop-saturate-*, etc. — these compose into a single filter chain that
+//   tailwind builds via CSS custom properties; one-class-at-a-time mapping would clobber a sibling
+//   backdrop-* class. Keep authoring those via inline style/$platform-web by hand.
+//   transform-* (rotate-N/scale-N/translate-X-N) — RN supports transforms natively; routing them
+//   to platform-web would diverge from tamagui's existing rotate/scale props. Use those instead.
+
+// merge a partial css object into the $platform-web payload for a given modifier scope.
+//
+// no modifiers:      result['$platform-web'] = { ...prev, ...patch }
+// media modifiers:   result['$sm'] = { '$platform-web': patch } — the media flow already
+//                    understands a nested $platform-web key.
+// pseudo modifiers:  not supported in this pass — pseudo style props (hoverStyle, focusStyle, …)
+//                    don't dispatch nested $platform-web, and emitting raw web-only CSS into
+//                    `hoverStyle: { isolation: ... }` would leak the prop onto native rendering.
+//                    classes like `hover:isolate` fall through to className preservation so the
+//                    user's tailwind CSS (if present) can pick them up. returns false so the
+//                    caller knows to skip routing.
+//
+// returns true when the patch landed on `result`, false to fall through to className.
+function applyPlatformWeb(
+  result: Record<string, any>,
+  mods: string,
+  patch: Record<string, any>
+): boolean {
+  if (!mods) {
+    const prev = result['$platform-web']
+    result['$platform-web'] =
+      prev && typeof prev === 'object' && !Array.isArray(prev)
+        ? { ...prev, ...patch }
+        : { ...patch }
+    return true
+  }
+  const modList = mods.split(':')
+  // any pseudo modifier in the chain → can't route safely, fall through.
+  for (const mod of modList) {
+    if (mod in flatPseudoMap) return false
+  }
+  // media-only chain (sm:dark:isolate, etc.) — build innermost-first.
+  let payload: Record<string, any> = { '$platform-web': { ...patch } }
+  for (let i = modList.length - 1; i >= 1; i--) {
+    payload = { [`$${modList[i]}`]: payload }
+  }
+  const topKey = `$${modList[0]}`
+  const prev = result[topKey]
+  result[topKey] =
+    prev && typeof prev === 'object' && !Array.isArray(prev)
+      ? mergeDeep(prev, payload)
+      : payload
+  return true
 }
 
 // tailwind value aliases for alignment props (items-*/justify-*/content-*/self-*):
