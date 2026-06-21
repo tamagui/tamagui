@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",
+    "@tamagui/timer": "workspace:*",
     "expo": "~55.0.6",
     "expo-linking": "*",
     "react": ">=19",

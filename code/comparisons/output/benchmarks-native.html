@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Native Benchmark Comparison (iOS) — 3-run</title>
+<style>
+  body { font-family: system-ui; background: #0a0a0a; color: #eee; padding: 40px; max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  .sub { color: #888; font-size: 13px; margin-bottom: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 12px; text-align: right; border-bottom: 1px solid #222; }
+  th:first-child, td:first-child { text-align: left; }
+  th { background: #141414; color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  tr:hover td { background: #141414; }
+  .section-header td { font-weight: 600; background: #1a1a1a; border-top: 2px solid #333; }
+  .ratio { font-size: 11px; color: #888; }
+  .value { font-weight: 600; font-family: monospace; color: #eee; }
+  .note { color: #f59e0b; font-size: 12px; margin-top: 16px; }
+</style>
+</head>
+<body>
+<h1>Native Benchmark Comparison (iOS)</h1>
+<p class="sub">200/60 components · 3 run(s) median (Uniwind: 2-run mean — script crashed before run #3) · iOS simulator via Expo Go</p>
+<table>
+<thead><tr><th>Scenario</th><th>Tamagui (runtime)</th><th>NativeWind v5</th><th>Uniwind</th></tr></thead>
+<tbody>
+<tr class="section-header"><td colspan="4">Mount (ms)</td></tr>
+<tr><td>Simple (static props)</td><td><span class="value">83.3</span></td><td><span class="value">41.1</span></td><td><span class="value">49.0</span></td></tr>
+<tr><td>Rich (pseudo states)</td><td><span class="value">136.1</span></td><td><span class="value">43.3</span></td><td><span class="value">44.5</span></td></tr>
+<tr><td>Group hover</td><td><span class="value">389.9</span></td><td><span class="value">170.6</span></td><td><span class="value">182.3</span></td></tr>
+<tr><td>Heavy page (60)</td><td><span class="value">214.6</span></td><td><span class="value">94.7</span></td><td><span class="value">97.6</span></td></tr>
+<tr><td>Animated (spring)</td><td><span class="value">112.6</span></td><td><span class="value">44.6</span></td><td><span class="value">45.3</span></td></tr>
+<tr class="section-header"><td colspan="4">Re-render (ms)</td></tr>
+<tr><td>Simple (static props)</td><td><span class="value">85.4</span></td><td><span class="value">48.4</span></td><td><span class="value">50.4</span></td></tr>
+<tr><td>Rich (pseudo states)</td><td><span class="value">135.7</span></td><td><span class="value">47.9</span></td><td><span class="value">45.9</span></td></tr>
+<tr><td>Group hover</td><td><span class="value">413.8</span></td><td><span class="value">173.1</span></td><td><span class="value">187.3</span></td></tr>
+<tr><td>Heavy page (60)</td><td><span class="value">224.5</span></td><td><span class="value">93.8</span></td><td><span class="value">101.9</span></td></tr>
+<tr><td>Animated (spring)</td><td><span class="value">112.8</span></td><td><span class="value">47.6</span></td><td><span class="value">48.5</span></td></tr>
+</tbody>
+</table>
+<p class="note">Note: native bench currently exposes only the runtime (non-compiled) Tamagui column. A compiled-native column requires wiring @tamagui/babel-plugin into the bench's metro config; deferred per the harness ship note. The native compiler de-opts shipped in commit 118e87993f (hoverStyle / $theme-* / $group-*) are correctness fixes that don't move the runtime-column numbers but unlock the future compiled-column work.</p>
+</body>
+</html>

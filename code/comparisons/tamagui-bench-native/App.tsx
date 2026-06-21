@@ -9,6 +9,7 @@
  * Scenarios match the web bench at code/comparisons/tamagui-bench/src/index.tsx but use
  * ITEM_COUNT=200 (matches Tamagui-runtime web column) to keep iOS sim runs sane.
  */
+import { timer } from '@tamagui/timer'
 import * as Linking from 'expo-linking'
 import { useURL } from 'expo-linking'
 import {
@@ -22,6 +23,23 @@ import {
 import { View as RNView, Text as RNText } from 'react-native'
 import { TamaguiProvider, View } from 'tamagui'
 import config from './tamagui.config'
+
+// wire the time profiler BEFORE any Tamagui render so the gated
+// time`label` calls in createComponent/getSplitStyles/useThemeState fire.
+// createComponent's render closure auto-prints time.print() ~50ms after the
+// last render via globalThis.willPrint.
+const PROFILE = true
+let activeTimer: ReturnType<typeof timer> | null = null
+if (PROFILE && process.env.NODE_ENV !== 'production') {
+  activeTimer = timer()
+  ;(globalThis as any).time = activeTimer.start({ quiet: true })
+}
+
+function resetTimerForScenario() {
+  if (!PROFILE) return
+  activeTimer = timer()
+  ;(globalThis as any).time = activeTimer.start({ quiet: true })
+}
 
 const HARNESS_URL = 'http://localhost:8091/result'
 const ITEM_COUNT = 200
@@ -209,7 +227,7 @@ function BenchRunner({
   onResult,
 }: {
   scenarioId: string
-  onResult: (result: { mount: number; rerender: number }) => void
+  onResult: (result: { mount: number; rerender: number; profile?: string }) => void
 }) {
   const [phase, setPhase] = useState<
     'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'
@@ -232,7 +250,19 @@ function BenchRunner({
     } else if (phase === 'rerendering') {
       const rerenderTime = performance.now() - startRef.current
       setPhase('done')
-      onResult({ mount: mountTimeRef.current, rerender: rerenderTime })
+      // wait long enough for createComponent's setTimeout(50) auto-print to NOT
+      // have fired yet (we want to call print ourselves to capture the string).
+      // We synchronously grab the output, then schedule the POST.
+      let profileOut: string | undefined
+      if (PROFILE && activeTimer) {
+        try {
+          // calling print() returns the formatted string AND console.info's it.
+          profileOut = activeTimer.print()
+        } catch (e) {
+          profileOut = `print error: ${String(e)}`
+        }
+      }
+      onResult({ mount: mountTimeRef.current, rerender: rerenderTime, profile: profileOut })
     }
   }, [phase, onResult])
 
@@ -265,7 +295,7 @@ export function App() {
   const valid = caseName && scenarioComponents[caseName] ? caseName : null
 
   const handleResult = useCallback(
-    (result: { mount: number; rerender: number }) => {
+    (result: { mount: number; rerender: number; profile?: string }) => {
       if (!valid) return
       fetch(HARNESS_URL, {
         method: 'POST',
@@ -274,8 +304,11 @@ export function App() {
           scenario: valid,
           mount: result.mount,
           rerender: result.rerender,
+          profile: result.profile,
         }),
       }).catch(() => {})
+      // reset for next scenario deep-link
+      resetTimerForScenario()
     },
     [valid]
   )

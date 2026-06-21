@@ -1,0 +1,30 @@
+{
+  "Tamagui (runtime)": {
+    "simple":   { "mount": 83.3,  "rerender": 85.4 },
+    "rich":     { "mount": 136.1, "rerender": 135.7 },
+    "group":    { "mount": 389.9, "rerender": 413.8 },
+    "heavy":    { "mount": 214.6, "rerender": 224.5 },
+    "animated": { "mount": 112.6, "rerender": 112.8 }
+  },
+  "NativeWind v5": {
+    "simple":   { "mount": 41.1, "rerender": 48.4 },
+    "rich":     { "mount": 43.3, "rerender": 47.9 },
+    "group":    { "mount": 170.6, "rerender": 173.1 },
+    "heavy":    { "mount": 94.7, "rerender": 93.8 },
+    "animated": { "mount": 44.6, "rerender": 47.6 }
+  },
+  "Uniwind": {
+    "simple":   { "mount": 49.0, "rerender": 50.4 },
+    "rich":     { "mount": 44.5, "rerender": 45.9 },
+    "group":    { "mount": 182.3, "rerender": 187.3 },
+    "heavy":    { "mount": 97.6, "rerender": 101.9 },
+    "animated": { "mount": 45.3, "rerender": 48.5 }
+  },
+  "_meta": {
+    "runs": { "Tamagui (runtime)": 3, "NativeWind v5": 3, "Uniwind": 2 },
+    "method": "median-of-3 for 3-run, mean-of-2 for Uniwind (script crashed silently before Uniwind run #3 and JSON/HTML write)",
+    "captured": "2026-06-21",
+    "components_per_scenario": "200 (60 for heavy)",
+    "platform": "iOS sim via Expo Go"
+  }
+}

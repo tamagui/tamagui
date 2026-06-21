@@ -1,0 +1,36 @@
+mount=217.1ms rerender=184.3ms
+
+Ran 400.0625 per-type, 12802 total
+                theme-prep-uses | avg 0.8093778ms | total 323.80170941352844ms
+
+                      use-state | avg 0.0683888ms | total 27.359833598136902ms
+                    theme-props | avg 0.0017552ms | total 0.7022222280502319ms
+                pre-theme-media | avg 0.0021497ms | total 0.860038161277771ms
+                          theme | avg 0.0373621ms | total 14.947214722633362ms
+                          media | avg 0.0212560ms | total 8.503748297691345ms
+           split-styles-prepare | avg 0.0017012ms | total 0.6805940866470337ms
+             split-styles-setup | avg 0.0153230ms | total 6.130175471305847ms
+                    style-state | avg 0.0021900ms | total 0.8761694431304932ms
+              before-prop-width | avg 0.0220888ms | total 8.836916446685791ms
+             before-prop-height | avg 0.0544109ms | total 21.7677983045578ms
+    before-prop-backgroundColor | avg 0.0240714ms | total 9.630074143409729ms
+       before-prop-borderRadius | avg 0.0157679ms | total 6.30818510055542ms
+             before-prop-margin | avg 0.0334891ms | total 13.397772073745728ms
+          split-styles-propsend | avg 0.0532807ms | total 21.315637707710266ms
+        split-styles-pre-result | avg 0.0054963ms | total 2.198878765106201ms
+              split-styles-done | avg 0.0034004ms | total 1.360399603843689ms
+                   split-styles | avg 0.0018727ms | total 0.7492027282714844ms
+                    destructure | avg 0.0105514ms | total 4.221248626708984ms
+                   events-hooks | avg 0.0223599ms | total 8.945367455482483ms
+                   events-setup | avg 0.0170008ms | total 6.801413416862488ms
+                         events | avg 0.0010778ms | total 0.43120479583740234ms
+                          hooks | avg 0.0197334ms | total 7.894621849060059ms
+                spaced-as-child | avg 0.0007891ms | total 0.31570351123809814ms
+                   use-children | avg 0.0378126ms | total 15.127417922019958ms
+                 create-element | avg 0.0067787ms | total 2.71190869808197ms
+                  group-context | avg 0.0062425ms | total 2.4974122047424316ms
+                themed-children | avg 0.0040787ms | total 1.6317448616027832ms
+               context-override | avg 0.0007954ms | total 0.3182138204574585ms
+                     style-tags | avg 0.0007834ms | total 0.3134450912475586ms
+                           rest | avg 0.0008455ms | total 0.3382906913757324ms
+                                    total 520.974563241005ms
