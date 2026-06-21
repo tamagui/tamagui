@@ -289,6 +289,73 @@ test('string ternary test should not be confused with media key', async () => {
   expect(code).toMatchSnapshot()
 })
 
+// native compiler under-fold: pseudo-state props must NOT flatten on native
+// (RN StyleSheet has no concept of $hover/$press — flattening would write a
+// literal "hoverStyle"/"pressStyle" key into the sheet and silently lose the
+// behavior at runtime). The compiler must de-opt → preserve the prop on the
+// runtime component, where createComponent/getSplitStyles handle it.
+test('hoverStyle on native should de-opt (preserve as inline prop)', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack backgroundColor="red" hoverStyle={{ backgroundColor: 'green' }} />
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // must NOT serialize hoverStyle into the StyleSheet
+  expect(code).not.toContain('"hoverStyle"')
+  // must preserve the JSX prop verbatim
+  expect(code).toContain('hoverStyle')
+  expect(code).toContain("backgroundColor: 'green'")
+  // and the original component (not __ReactNativeView) is preserved
+  expect(code).toContain('<YStack')
+  expect(code).toMatchSnapshot()
+})
+
+test('$theme-* on native should de-opt (preserve as inline prop)', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack backgroundColor="red" $theme-dark={{ backgroundColor: 'green' }} />
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // must NOT serialize $theme-dark as a sheet key (it would never match on RN)
+  expect(code).not.toContain('"$theme-dark"')
+  // must preserve as an inline JSX prop so runtime resolves it via theme
+  expect(code).toContain('$theme-dark')
+  expect(code).toContain('<YStack')
+  expect(code).toMatchSnapshot()
+})
+
+test('$group-* on native should de-opt (preserve as inline prop)', async () => {
+  const output = await extractForNative(`
+    import { YStack } from 'tamagui'
+    export function Test() {
+      return (
+        <YStack group="row">
+          <YStack
+            backgroundColor="red"
+            $group-row-hover={{ backgroundColor: 'green' }}
+          />
+        </YStack>
+      )
+    }
+  `)
+  const code = output?.code ?? ''
+  // must NOT serialize $group-row-hover as a sheet key
+  expect(code).not.toContain('"$group-row-hover"')
+  // must preserve as an inline JSX prop so runtime resolves it via GroupContext
+  expect(code).toContain('$group-row-hover')
+  // group="row" parent must remain (it provides the runtime container context)
+  expect(code).toContain('group="row"')
+  expect(code).toMatchSnapshot()
+})
+
 test('ternary with mixed theme-token and non-token values preserves all props', async () => {
   const output = await extractForNative(`
     import { Text } from 'tamagui'

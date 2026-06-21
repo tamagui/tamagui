@@ -1,5 +1,18 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`$group-* on native should de-opt (preserve as inline prop) 1`] = `
+"const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { YStack } from 'tamagui';
+export function Test() {
+  return <YStack group="row">
+          <YStack backgroundColor="red" $group-row-hover={{
+      backgroundColor: 'green'
+    }} />
+        </YStack>;
+}"
+`;
+
 exports[`$gtMd only should NOT apply on small screens 1`] = `
 "const __ReactNativeStyleSheet = require('react-native').StyleSheet;
 const _sheet = __ReactNativeStyleSheet.create({
@@ -62,6 +75,17 @@ export function Test() {
   return <_ReactNativeViewStyled0 _expressions={["md", "gtMd"]} />;
 }
 const _ReactNativeViewStyled0 = _withStableStyle(__ReactNativeView, (theme, _expressions) => [_sheet["0"], _expressions[0] ? _sheet["1"] : null, _expressions[1] ? _sheet["2"] : null], false, true);"
+`;
+
+exports[`$theme-* on native should de-opt (preserve as inline prop) 1`] = `
+"const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { YStack } from 'tamagui';
+export function Test() {
+  return <YStack backgroundColor="red" $theme-dark={{
+    backgroundColor: 'green'
+  }} />;
+}"
 `;
 
 exports[`basic conditional extraction 1`] = `
@@ -181,6 +205,17 @@ const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test(props) {
   return <YStack scale={props.isLoading ? 1 : 2} x={10} {...props} rotate="10deg" />;
+}"
+`;
+
+exports[`hoverStyle on native should de-opt (preserve as inline prop) 1`] = `
+"const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { YStack } from 'tamagui';
+export function Test() {
+  return <YStack backgroundColor="red" hoverStyle={{
+    backgroundColor: 'green'
+  }} />;
 }"
 `;
 
