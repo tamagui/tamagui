@@ -115,6 +115,111 @@ function hasUntilMeasuredAncestor(
   return false
 }
 
+/**
+ * Rewrite flat-modifier JSX attrs (`$group-row-hover:bg="red"`) into block-form
+ * (`$group-row-hover={{ bg: "red" }}`) so the existing `$group-*` / `$theme-*` /
+ * `$platform-*` / pseudo / media extraction paths can pick them up.
+ *
+ * Babel parses `<View $group-row-hover:bg="red" />` as a JSXNamespacedName
+ * (namespace = `$group-row-hover`, name = `bg`). The extractor's main loop
+ * requires `attribute.name.name` to be a string, so without this rewrite the
+ * attribute is treated as un-extractable and falls through to runtime, missing
+ * the static CSS extraction that the block form already gets.
+ *
+ * Multiple flat-modifier attrs sharing a namespace get merged into one block,
+ * preserving source order. Mutates `openingElement.attributes` in place.
+ */
+function rewriteFlatModifierAttrs(openingElement: t.JSXOpeningElement) {
+  const attrs = openingElement.attributes
+  let hasNamespaced = false
+  for (let i = 0; i < attrs.length; i++) {
+    const a = attrs[i]
+    if (
+      t.isJSXAttribute(a) &&
+      t.isJSXNamespacedName(a.name) &&
+      a.name.namespace.name[0] === '$'
+    ) {
+      hasNamespaced = true
+      break
+    }
+  }
+  if (!hasNamespaced) return
+
+  // First pass: collect props per namespace key (preserving first-seen index for output ordering).
+  // We bucket only the namespaced ones; existing JSXIdentifier attrs are preserved.
+  const buckets = new Map<
+    string,
+    { firstIdx: number; props: t.ObjectProperty[] }
+  >()
+  const drop = new Set<number>()
+
+  for (let i = 0; i < attrs.length; i++) {
+    const a = attrs[i]
+    if (
+      !t.isJSXAttribute(a) ||
+      !t.isJSXNamespacedName(a.name) ||
+      a.name.namespace.name[0] !== '$'
+    ) {
+      continue
+    }
+    const nsKey = a.name.namespace.name
+    const propName = a.name.name.name
+
+    // Convert value to an expression we can drop in an object literal.
+    let valueExpr: t.Expression
+    if (a.value == null) {
+      valueExpr = t.booleanLiteral(true)
+    } else if (t.isStringLiteral(a.value)) {
+      valueExpr = a.value
+    } else if (t.isJSXExpressionContainer(a.value)) {
+      const inner = a.value.expression
+      if (t.isJSXEmptyExpression(inner)) {
+        // unreachable in practice, skip
+        continue
+      }
+      valueExpr = inner
+    } else {
+      // JSXElement / JSXFragment etc. — extremely unlikely as a style value; bail.
+      continue
+    }
+
+    const key = t.isValidIdentifier(propName)
+      ? t.identifier(propName)
+      : t.stringLiteral(propName)
+    const prop = t.objectProperty(key, valueExpr)
+
+    const existing = buckets.get(nsKey)
+    if (existing) {
+      existing.props.push(prop)
+    } else {
+      buckets.set(nsKey, { firstIdx: i, props: [prop] })
+    }
+    drop.add(i)
+  }
+
+  // Second pass: build the new attribute list. At each bucket's firstIdx, emit
+  // the synthesized block-form attr; drop the rest of the bucket's positions.
+  const out: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
+  for (let i = 0; i < attrs.length; i++) {
+    if (!drop.has(i)) {
+      out.push(attrs[i])
+      continue
+    }
+    const a = attrs[i] as t.JSXAttribute
+    const nsKey = (a.name as t.JSXNamespacedName).namespace.name
+    const bucket = buckets.get(nsKey)
+    if (!bucket || bucket.firstIdx !== i) continue
+    out.push(
+      t.jsxAttribute(
+        t.jsxIdentifier(nsKey),
+        t.jsxExpressionContainer(t.objectExpression(bucket.props))
+      )
+    )
+  }
+
+  openingElement.attributes = out
+}
+
 export function createExtractor(
   { logger = console, platform = 'web' }: ExtractorOptions = { logger: console }
 ) {
@@ -918,6 +1023,12 @@ export function createExtractor(
         tm.mark('jsx-element', !!shouldPrintDebug)
 
         const node = traversePath.node.openingElement
+        // Rewrite flat-modifier props ($group-row-hover:bg="red") into block-form
+        // BEFORE snapshotting so a failed extraction restores the rewritten shape
+        // (the rewritten form remains semantically identical at runtime — getSplitStyles
+        // accepts both — but the block form is what the extractor's existing $group-* /
+        // $theme-* / $platform-* paths recognize).
+        rewriteFlatModifierAttrs(node)
         const ogAttributes = node.attributes.map((attr) => ({ ...attr }))
         const componentName = findComponentName(traversePath.scope)
         const closingElement = traversePath.node.closingElement

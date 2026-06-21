@@ -879,3 +879,82 @@ test('non-static testID with template literal is rewritten to data-testid', asyn
   expect(output?.js?.match(/data-testid=/g)?.length).toBe(1)
   expect(output?.js?.match(/\btestID=/g) ?? []).toHaveLength(0)
 })
+
+test('$group-* flat-modifier prop syntax extracts like block form', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View group="row">
+          <View
+            width={100}
+            $group-row-hover:backgroundColor="red"
+          />
+        </View>
+      )
+    }
+  `
+  )
+
+  // child should flatten just like the block-form variant does — no runtime prop left.
+  expect(output?.js).toContain('div')
+  expect(output?.js).not.toContain('$group-row-hover')
+  // hover pseudo matched off parent's container class, wrapped in (hover:hover)
+  expect(output?.styles).toContain('.t_group_row:hover')
+  expect(output?.styles).toContain('@media (hover:hover)')
+  expect(output?.styles).toContain('background-color')
+})
+
+test('$theme-* flat-modifier prop syntax extracts like block form', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View
+          width={100}
+          $theme-light:backgroundColor="white"
+          $theme-dark:backgroundColor="black"
+        />
+      )
+    }
+  `
+  )
+
+  expect(output?.js).toContain('div')
+  expect(output?.js).not.toContain('$theme-light')
+  expect(output?.js).not.toContain('$theme-dark')
+  expect(output?.styles).toContain('background-color')
+  expect(output?.styles).toContain('t_light')
+  expect(output?.styles).toContain('t_dark')
+})
+
+test('$group-* flat-modifier merges multiple props into one block', async () => {
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View group="row">
+          <View
+            width={100}
+            $group-row-hover:backgroundColor="red"
+            $group-row-hover:color="white"
+          />
+        </View>
+      )
+    }
+  `
+  )
+
+  expect(output?.js).toContain('div')
+  expect(output?.js).not.toContain('$group-row-hover')
+  // both styles should land on the same group-hover selector
+  expect(output?.styles).toContain('.t_group_row:hover')
+  expect(output?.styles).toContain('background-color')
+  expect(output?.styles).toContain('color')
+})
