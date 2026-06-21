@@ -192,6 +192,13 @@ export function createImage<C extends ComponentType<any>>(
         ...(resolvedBorderRadius !== undefined && { borderRadius: resolvedBorderRadius }),
         ...(resolvedWidth !== undefined && { width: resolvedWidth }),
         ...(resolvedHeight !== undefined && { height: resolvedHeight }),
+        // RN 0.76+ reads objectFit from style natively on Image; harmless on older.
+        // Also forwarded to the resize-mode prop below for back-compat / non-RN components.
+        ...(objectFit !== undefined && { objectFit }),
+        // RN doesn't currently read objectPosition from style; expo-image uses
+        // contentPosition (handled via objectPositionPropName below). Forwarding
+        // through style is a no-op there but matches CSS shape and is forward-compatible.
+        ...(objectPosition !== undefined && { objectPosition }),
       },
     }
 
@@ -200,7 +207,7 @@ export function createImage<C extends ComponentType<any>>(
       finalProps[resizeModePropName] = mapObjectFitToResizeMode(objectFit)
     }
 
-    // Add object position if supported
+    // Add object position if supported (e.g. expo-image's contentPosition)
     if (objectPositionPropName && objectPosition) {
       finalProps[objectPositionPropName] = objectPosition
     }

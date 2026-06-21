@@ -34,6 +34,12 @@ export declare const media: {
     gtXl: {
         minWidth: number;
     };
+    motionReduce: {
+        prefersReducedMotion: string;
+    };
+    motionSafe: {
+        prefersReducedMotion: string;
+    };
 };
 export declare const mediaQueryDefaultActive: {
     xl: boolean;
@@ -42,5 +48,7 @@ export declare const mediaQueryDefaultActive: {
     sm: boolean;
     xs: boolean;
     xxs: boolean;
+    motionReduce: boolean;
+    motionSafe: boolean;
 };
 //# sourceMappingURL=media.d.ts.map

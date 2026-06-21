@@ -50,7 +50,21 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
 
     const defaultColor = opts.defaultThemeColor
 
+    // resolve theme tokens for fill/stroke (so users can do fill="$color10" etc).
+    // tamagui-isms: leave non-token strings (e.g. "red", "#abc", "none") untouched.
+    const resolveSvgColor = (val: unknown) => {
+      if (typeof val !== 'string') return val
+      if (val[0] !== '$') return val
+      const themed = (theme as any)?.[val]
+      if (themed != null) return getVariable(themed)
+      return getVariable(val, 'color' as any)
+    }
+
+    const fillResolved = resolveSvgColor((propsIn as any).fill)
+    const strokeResolved = resolveSvgColor((propsIn as any).stroke)
+
     const colorIn =
+      strokeResolved ||
       style.color ||
       (defaultColor ? theme[defaultColor as string] : undefined) ||
       (!props.disableTheme ? theme.color : null) ||
@@ -73,6 +87,8 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
       color,
       size,
       strokeWidth,
+      ...(fillResolved !== undefined ? { fill: fillResolved } : null),
+      ...(strokeResolved !== undefined ? { stroke: strokeResolved } : null),
       style: style as any,
     }
 

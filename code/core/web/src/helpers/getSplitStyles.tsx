@@ -591,6 +591,22 @@ function tailwindClassToFlatProp(
     }
   }
 
+  // color opacity modifier: bg-blue-500/50 → split value into base + /N suffix,
+  // re-attached after token resolution so getTokenForKey applies it via color-mix
+  // (web) / rgba (native). only for color props; for non-color props a "/" in the
+  // value is left intact (e.g. fraction sizing handled above).
+  let opacitySuffix = ''
+  if (expandedProp in tokenCategories.color && typeof value === 'string') {
+    const slashIdx = value.lastIndexOf('/')
+    if (slashIdx > 0) {
+      const tail = value.slice(slashIdx + 1)
+      if (tail.length > 0 && /^\d+(\.\d+)?$/.test(tail)) {
+        opacitySuffix = `/${tail}`
+        value = value.slice(0, slashIdx)
+      }
+    }
+  }
+
   // validate value looks like a CSS value, not a class name fragment
   if (!isValidTailwindValue(value, prop, shorthands)) {
     return null
@@ -617,6 +633,13 @@ function tailwindClassToFlatProp(
       // e.g., "blue5" → "$blue5" if $blue5 token exists
       value = resolveTokenValue(value, config)
     }
+  }
+
+  // re-attach the color opacity suffix (bg-blue-500/50). getTokenForKey parses
+  // the trailing /N and applies it via normalizeColor (color-mix on web, rgba
+  // on native), matching the flat-styles "$blue10/50" path exactly.
+  if (opacitySuffix && typeof value === 'string') {
+    value = `${value}${opacitySuffix}`
   }
 
   // build the flat prop key - expand shorthands to full prop name
@@ -1128,6 +1151,14 @@ export const getSplitStyles: StyleSplitter = (
         if (keyInit === 'userSelect') {
           keyInit = 'selectable'
           valInit = valInit !== 'none'
+        } else if (keyInit === 'textOverflow') {
+          // map textOverflow="ellipsis" on Text to numberOfLines + ellipsizeMode.
+          // any other value (e.g. "clip") is a no-op on native (default behavior).
+          if (isText && valInit === 'ellipsis') {
+            viewProps.numberOfLines ??= 1
+            viewProps.ellipsizeMode ??= 'tail'
+          }
+          continue
         } else if (keyInit.startsWith('data-')) {
           continue
         }
