@@ -130,7 +130,11 @@ function startMetro(): ChildProcess {
   const cwd = join(HERE, BENCH_DIR)
   // PROFILE_CLEAR=1 forces a cold metro rebuild so freshly-edited workspace
   // packages (e.g. @tamagui/timer) are picked up instead of a stale cache.
-  const startArgs = process.env.PROFILE_CLEAR === '1' ? ['run', 'start', '--clear'] : ['run', 'start']
+  // PROD=1 builds a production JS bundle (NODE_ENV=production, no dev-only hooks
+  // like useId / the dev visualizer effect, minified) — the honest shipped shape.
+  // profile markers are gated out in prod, so this only yields mount/rerender.
+  const baseArgs = process.env.PROD === '1' ? ['run', 'start', '--no-dev', '--minify'] : ['run', 'start']
+  const startArgs = process.env.PROFILE_CLEAR === '1' ? [...baseArgs, '--clear'] : baseArgs
   const proc = spawn('bun', startArgs, {
     cwd,
     env: {

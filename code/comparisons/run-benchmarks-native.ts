@@ -32,6 +32,15 @@ const HERE = import.meta.dir
 const SCENARIOS = ['simple', 'rich', 'group', 'heavy', 'animated'] as const
 type ScenarioId = (typeof SCENARIOS)[number]
 
+// --scenarios=rich,simple restricts the run to a subset (faster grind loop).
+const SCENARIO_FILTER = args
+  .find((a) => a.startsWith('--scenarios='))
+  ?.split('=')[1]
+  ?.split(',')
+const ACTIVE_SCENARIOS: readonly ScenarioId[] = SCENARIO_FILTER
+  ? SCENARIOS.filter((s) => SCENARIO_FILTER.includes(s))
+  : SCENARIOS
+
 const SCENARIO_LABELS: Record<ScenarioId, string> = {
   simple: 'Simple (static props)',
   rich: 'Rich (pseudo states)',
@@ -217,8 +226,15 @@ function startMetro(dir: string, port: number): ChildProcess {
   const cwd = join(HERE, dir)
   // BENCH_CLEAR=1 forces a cold metro rebuild so a freshly-rebuilt compiler
   // (@tamagui/static / babel-plugin) is actually applied instead of a stale cache.
-  const startArgs =
-    process.env.BENCH_CLEAR === '1' ? ['run', 'start', '--clear'] : ['run', 'start']
+  // PROD=1 builds a production JS bundle (NODE_ENV=production, no dev-only hooks
+  // like useId / the dev visualizer effect, minified) — the honest shipped shape.
+  const prodArgs = process.env.PROD === '1' ? ['--no-dev', '--minify'] : []
+  const startArgs = [
+    'run',
+    'start',
+    ...prodArgs,
+    ...(process.env.BENCH_CLEAR === '1' ? ['--clear'] : []),
+  ]
   // expo start --port=N — same flag the conformance harness uses
   const proc = spawn('bun', startArgs, {
     cwd,
@@ -373,7 +389,7 @@ async function measureScenarios(
 ): Promise<RunResult> {
   const results = emptyRun()
   let isFirst = coldFirst
-  for (const s of SCENARIOS) {
+  for (const s of ACTIVE_SCENARIOS) {
     if (bench.skipScenarios?.includes(s)) {
       process.stdout.write(`${indent}${s}: skip\n`)
       continue
@@ -415,7 +431,7 @@ function averageResults(
   const avg: Record<ScenarioId, { mount: number; rerender: number } | null> = {
     simple: null, rich: null, group: null, heavy: null, animated: null,
   }
-  for (const s of SCENARIOS) {
+  for (const s of ACTIVE_SCENARIOS) {
     const mounts = runs.map((r) => r[s]?.mount).filter((n): n is number => typeof n === 'number')
     const rerenders = runs
       .map((r) => r[s]?.rerender)
@@ -445,7 +461,7 @@ type AllResults = Record<string, Record<ScenarioId, { mount: number; rerender: n
 // framework ÷ vanilla-RN, per scenario. >1 means slower than raw RN (e.g. 2.5 = 2.5× RN).
 function computeRatio(fw: RunResult, rn: RunResult): RunResult {
   const out = emptyRun()
-  for (const s of SCENARIOS) {
+  for (const s of ACTIVE_SCENARIOS) {
     const f = fw[s]
     const r = rn[s]
     if (f && r && r.mount > 0 && r.rerender > 0) {
@@ -467,13 +483,13 @@ function printRatioTable(ratios: Record<string, RunResult>) {
   line('╠╣')
   const fmt = (v: { mount: number; rerender: number } | null, k: 'mount' | 'rerender') =>
     (v ? `${v[k].toFixed(2)}×` : 'skip').padStart(colW)
-  for (const s of SCENARIOS) {
+  for (const s of ACTIVE_SCENARIOS) {
     console.log('║' + SCENARIO_LABELS[s].padEnd(22) + labels.map((f) => fmt(ratios[f][s], 'mount')).join(' ') + ' ║')
   }
   line('╠╣')
   console.log('║' + ' Re-render ×RN'.padEnd(22) + labels.map((f) => f.padStart(colW) + ' ').join('') + '║')
   line('╠╣')
-  for (const s of SCENARIOS) {
+  for (const s of ACTIVE_SCENARIOS) {
     console.log('║' + SCENARIO_LABELS[s].padEnd(22) + labels.map((f) => fmt(ratios[f][s], 'rerender')).join(' ') + ' ║')
   }
   line('╚╝')
@@ -493,7 +509,7 @@ function printTable(results: AllResults) {
     if (!v) return 'skip'.padStart(colW)
     return v[getField].toFixed(1).padStart(colW)
   }
-  for (const s of SCENARIOS) {
+  for (const s of ACTIVE_SCENARIOS) {
     const label = SCENARIO_LABELS[s].padEnd(22)
     const vals = labels.map((f) => fmt(results[f][s], 'mount'))
     console.log('║' + label + vals.join(' ') + ' ║')
@@ -503,7 +519,7 @@ function printTable(results: AllResults) {
     '║' + ' Re-render (ms)'.padEnd(22) + labels.map((f) => f.padStart(colW) + ' ').join('') + '║'
   )
   console.log('╠' + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + '╣')
-  for (const s of SCENARIOS) {
+  for (const s of ACTIVE_SCENARIOS) {
     const label = SCENARIO_LABELS[s].padEnd(22)
     const vals = labels.map((f) => fmt(results[f][s], 'rerender'))
     console.log('║' + label + vals.join(' ') + ' ║')
