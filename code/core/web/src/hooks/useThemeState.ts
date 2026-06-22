@@ -2,7 +2,6 @@ import { supportsDynamicColorIOS, useIsomorphicLayoutEffect } from '@tamagui/con
 import {
   createContext,
   useContext,
-  useId,
   useRef,
   useSyncExternalStore,
   type MutableRefObject,
@@ -54,6 +53,11 @@ export const getRootThemeState = () => rootThemeState
 // extracts base name without scheme: "light_red_surface1" -> "red_surface1"
 const getThemeBaseName = (name: string) => name.replace(/^(light|dark)_/, '')
 
+// Internal-only ids for the listenersByParent map. Never rendered into HTML,
+// so a process-wide counter is safe (no hydration mismatch from useId).
+let themeStateIdCounter = 0
+const nextThemeStateId = (): string => `t${++themeStateIdCounter}`
+
 export const useThemeState = (
   props: UseThemeWithStateProps,
   isRoot = false,
@@ -86,7 +90,12 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     )
   }
 
-  const id = useId()
+  // counter-based id, allocated once per component instance (on the ref below).
+  // useId is genuinely heavy on Hermes — it queries the fiber-tree position to
+  // generate a hydration-stable id. These ids are only used internally as keys
+  // in the listenersByParent map; they're never rendered to HTML, so a process-
+  // wide counter is safe (no hydration mismatch). Saves a real-millisecond
+  // hook call per styled component on native.
   const propsKey = getPropsKey(props)
 
   // stable ref-bag for both subscribe and getSnapshot closures so we don't
@@ -105,7 +114,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   }>(null as any)
   if (!ref.current) {
     ref.current = {
-      id,
+      id: nextThemeStateId(),
       parentId,
       props,
       propsKey,
@@ -120,11 +129,9 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     ref.current.isRoot = isRoot
     ref.current.keys = keys
     ref.current.schemeKeys = schemeKeys
-    // if id or parentId actually changed we must rebuild subscribe so
-    // useSyncExternalStore re-subscribes against the new parent (matches the
-    // prior useCallback([id, parentId]) re-subscription semantics).
-    if (ref.current.id !== id || ref.current.parentId !== parentId) {
-      ref.current.id = id
+    // if parentId actually changed we must rebuild subscribe so
+    // useSyncExternalStore re-subscribes against the new parent.
+    if (ref.current.parentId !== parentId) {
       ref.current.parentId = parentId
       ref.current.subscribe = undefined
     }
@@ -163,6 +170,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
 
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
 
+  const id = ref.current.id
   useIsomorphicLayoutEffect(() => {
     if (!HasRenderedOnce.get(keys)) {
       HasRenderedOnce.set(keys, true)
