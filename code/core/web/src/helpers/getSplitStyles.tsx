@@ -314,6 +314,18 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
+    // native: data-* attributes never become native props (they're stripped
+    // further down anyway), and the compiler-emitted data-disable-theme/-media
+    // flags are already consumed in createComponent. skip them before any per-prop
+    // work so they don't pay the isValidStyleKey + handling cost on the hot path.
+    if (
+      process.env.TAMAGUI_TARGET === 'native' &&
+      keyInit[0] === 'd' &&
+      keyInit.startsWith('data-')
+    ) {
+      continue
+    }
+
     if (
       process.env.NODE_ENV === 'development' &&
       (debug === 'profile' || (globalThis as any).time)
