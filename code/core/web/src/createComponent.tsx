@@ -36,7 +36,7 @@ import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
 import { themeable } from './helpers/themeable'
 import { getStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
-import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
+import { getDisabledMediaState, setMediaShouldUpdate, useMedia } from './hooks/useMedia'
 import { useThemeWithState } from './hooks/useTheme'
 import type { TamaguiComponentEvents } from './interfaces/TamaguiComponentEvents'
 import { hooks } from './setupHooks'
@@ -57,6 +57,7 @@ import type {
   TextProps,
   UseAnimationHook,
   UseAnimationProps,
+  UseMediaState,
   UseStyleEmitter,
   UseThemeWithStateProps,
 } from './types'
@@ -595,9 +596,11 @@ export function createComponent<
       elementType = animationDriver[isText ? 'Text' : 'View'] || elementType
     }
 
-    // internal use only
-    const disableThemeProp =
-      process.env.TAMAGUI_TARGET === 'native' ? false : props['data-disable-theme']
+    // internal use only. on native the compiler emits data-disable-theme for
+    // elements it proved read no theme (no tokens / theme prop / $theme-* / spread /
+    // animation), so useThemeState's `disable` early-return skips the whole
+    // subscription setup. on web it's the existing themeable()/Theme passthrough flag.
+    const disableThemeProp = props['data-disable-theme']
 
     const disableTheme = disableThemeProp || isHOC
 
@@ -695,7 +698,19 @@ export function createComponent<
     elementType = element || elementType
     const isStringElement = typeof elementType === 'string'
 
-    const mediaState = useMedia(componentContext, debugProp)
+    // compiler emits data-disable-media on native for elements with no media /
+    // $group / $theme keys (and no spread). the flag is a compile-time constant per
+    // call-site, so this conditional hook skip is stable every render for a given
+    // element (rules-of-hooks safe — same justification as cascadeOnChange). it skips
+    // useMedia's ref/reducer/effect allocation. on web TAMAGUI_TARGET folds to false
+    // at build time so useMedia stays unconditional there.
+    let mediaState: UseMediaState
+    if (process.env.TAMAGUI_TARGET === 'native' && props['data-disable-media']) {
+      mediaState = getDisabledMediaState()
+    } else {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      mediaState = useMedia(componentContext, debugProp)
+    }
 
     setDidGetVariableValue(false)
 
