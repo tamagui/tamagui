@@ -64,6 +64,31 @@ const UNTOUCHED_PROPS = {
 // (requires runtime Platform.OS + Platform.isTV checks via react-native-tvos)
 const nativeOnlyPlatforms = new Set(['android', 'ios', 'tv', 'androidtv', 'tvos'])
 
+// props whose presence forces createComponent to keep the native useEvents hook.
+// used to decide whether to emit data-disable-events on a deopted (non-flattened)
+// native element. mouse/hover keys included for native-desktop; group included
+// because a group parent can gain dynamic press-tracking children at runtime.
+const EVENT_PROP_NAMES = new Set([
+  'onPress',
+  'onPressIn',
+  'onPressOut',
+  'onLongPress',
+  'delayLongPress',
+  'onClick',
+  'onMouseDown',
+  'onMouseUp',
+  'onMouseEnter',
+  'onMouseLeave',
+  'onFocus',
+  'onBlur',
+  'pressStyle',
+  'focusStyle',
+  'focusVisibleStyle',
+  'focusWithinStyle',
+  'hoverStyle',
+  'group',
+])
+
 const createTernary = (x: Ternary) => x
 
 export type Extractor = ReturnType<typeof createExtractor>
@@ -2070,6 +2095,11 @@ export function createExtractor(
                 const hasSpread = ogAttributes.some((a) => t.isJSXSpreadAttribute(a))
                 let usesTheme = hasSpread
                 let usesMedia = hasSpread
+                // events: any handler, press/focus/hover pseudo-style, or group prop
+                // means createComponent must keep the native useEvents hook (RNGH
+                // gesture + refs). group is included because a group parent can gain
+                // dynamic press-tracking children at runtime. conservative on spread.
+                let usesEvents = hasSpread
                 for (const a of ogAttributes) {
                   if (!t.isJSXAttribute(a) || !t.isJSXIdentifier(a.name)) continue
                   const n = a.name.name
@@ -2085,6 +2115,9 @@ export function createExtractor(
                   if (n[0] === '$') {
                     usesMedia = true
                     if (n.startsWith('$theme-') || n.startsWith('$group-')) usesTheme = true
+                  }
+                  if (!usesEvents && EVENT_PROP_NAMES.has(n)) {
+                    usesEvents = true
                   }
                 }
                 if (!usesTheme) {
@@ -2106,6 +2139,11 @@ export function createExtractor(
                 if (!usesMedia) {
                   flagAttrs.push(
                     t.jsxAttribute(t.jsxIdentifier('data-disable-media'), null)
+                  )
+                }
+                if (!usesEvents) {
+                  flagAttrs.push(
+                    t.jsxAttribute(t.jsxIdentifier('data-disable-events'), null)
                   )
                 }
 

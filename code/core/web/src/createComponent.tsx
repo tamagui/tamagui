@@ -1544,9 +1544,20 @@ export function createComponent<
     // hasRealPressEvents distinguishes user-provided handlers from events.onPress
     // synthesized for pressStyle alone — only the former should claim the responder.
     const hasRealPressEvents = !!(onPress || onPressIn || onPressOut || onLongPress)
+    // data-disable-events: compiler proved this element has no event surface (no
+    // handlers, no press/focus/hover styles, no group, no spread) → skip the native
+    // useEvents hook entirely (RNGH gesture setup + refs + main-thread press hook).
+    // OR'd with the focus-within context because a leaf under a focusWithinStyle
+    // ancestor must still attach onFocus/onBlur to report up. both the flag (a
+    // compile-time constant per call-site) and the context presence (structural per
+    // fiber, gated on `'focusWithinStyle' in propsIn` at the provider) are stable, so
+    // hook order is stable per fiber — rules-of-hooks safe, same justification as
+    // data-disable-media.
     const pressGesture =
-      process.env.TAMAGUI_TARGET === 'native'
-        ? useEvents(
+      process.env.TAMAGUI_TARGET === 'native' &&
+      (!props['data-disable-events'] || componentContext.setParentFocusState)
+        ? // eslint-disable-next-line react-hooks/rules-of-hooks
+          useEvents(
             events,
             viewProps,
             stateRef,
