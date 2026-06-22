@@ -9,16 +9,28 @@ The Goal + Constraints sections are durable.
 
 ## Goal
 
-Tamagui **runtime** native perf within **10%** of the best framework on every
-benchmark metric (simple/group/heavy/animated × mount/rerender). Compiled
-column should easily land within 20% of perfectly optimized RN for simple
-cases (already does — beats NW v5 by ~29% on simple). The hard problem is
-runtime.
+Tamagui **runtime** native perf within **10%** of the best **styling library**
+on every benchmark metric (simple/group/heavy/animated × mount/rerender). The
+bar is **NativeWind v5 / Uniwind** — whichever is faster on each metric. The
+hard problem is runtime.
+
+**Raw React Native (`rn-bench-native`) is NOT the target — it is a reference
+floor only.** Hand-written `StyleSheet` does zero per-render style/theme
+resolution, so no runtime styling library (Tamagui, NativeWind, or Uniwind)
+can match it; chasing raw-RN parity is chasing an impossible bar. The `rn`
+column exists to show how much headroom the *whole styling-lib category* spends
+vs raw RN — it is informational, never a parity goalpost. When computing the
+"best framework" 10% window, **exclude the `rn` column and Tamagui's own
+columns**; compare only against NativeWind v5 and Uniwind.
+
+The compiled column already beats NW v5 by ~29% on simple, so compiled simple
+is solved. The open problem is the **runtime** column.
 
 Benchmarks: `code/comparisons/run-benchmarks-native.ts`. iOS sim via Expo Go.
 Median-of-3. Reference baseline: `code/comparisons/output/benchmarks-native.json`.
 
-Best-of-frameworks on iOS (NW v5 median-of-3 from baseline JSON):
+Best styling-library on iOS (NW v5 median-of-3 from baseline JSON; re-check
+Uniwind per-metric since it can be faster on some scenarios):
 - simple   mount 41.1 / rerender 48.4
 - rich     43.3 / 47.9
 - group    170.6 / 173.1
@@ -74,8 +86,22 @@ Commit chain on `v2-perf`:
 - `a96195d7b5` — `useMedia` Proxy → shared getter-prototype (Hermes inlines
   getters; Proxy trap was interpreted)
 - `a79dd60cea` — compiled-native bench column (babel-plugin extraction)
+- `b0030550c1` — **lazy theme/media subscription** (Option 1): the per-component
+  listener is only registered when the component actually reads a tracked theme
+  key / has an enabled media context. Components that read nothing never join
+  `listenersByParent`. Rules of hooks intact (hook always called; gate is inside
+  the effect). **Bench-neutral on the measured mount/rerender numbers** — the
+  subscription runs in a passive `useEffect`, which fires *after* the bench's
+  `useLayoutEffect` measurement window (App.tsx:246) closes. Its real value is the
+  unmeasured granular-theme-change case (fewer subscribers) + smaller listener
+  maps. Added 3 lifecycle tests to `themeMediaOverRender.web.test.tsx`
+  (dynamic-subscribe, renderVersion churn, sibling-unmount).
+- `d58bdf86a2` — extend native dead-hover skip to group-hover media keys.
 
-All preserve granularity. Over-render test passing confirms it.
+All preserve granularity. Over-render test (now 5 tests) passing confirms it.
+
+**NOTE the Status table below is STALE + inflated** (profile-native build, prior
+session). Re-measure with `run-benchmarks-native.ts` before trusting absolutes.
 
 ---
 
@@ -103,12 +129,84 @@ Within-10% status:
 - Rich: ❌ now measured; still roughly 2× over NW v5 under load.
 - Heavy/Animated: untested this session.
 
-**Profile breakdown** (`code/comparisons/output/profile-native/group.txt`):
-latest profile file is from the third run (not the median) and still shows
-`theme-prep-uses` dominating: 0.852ms per component × 1319 samples =
-**1124ms of 1542ms total (73%)**. This includes time-marker overhead
-(only in dev/profile builds); production bench will be lower but the relative
-gap should match.
+---
+
+## ⚠️ CRITICAL FINDING (2026-06-21 cont.): `theme-prep-uses` is a profiling artifact — do NOT optimize it
+
+The premise that `theme-prep-uses` is the dominant cost (~73%) is **wrong**. It
+is a measurement artifact of the `@tamagui/timer` design, not real synchronous
+work. Proof:
+
+- `code/packages/timer/src/index.ts`: each `` time`label` `` records
+  `performance.now() - start` (time since the *previous global marker*) into a
+  shared accumulator, and `print()` computes `avg = total / (runs/typeCount)` —
+  an approximation that **misattributes** when one label fires more often than
+  the average. The `theme-prep-uses` marker sits between `pre-theme-media`
+  (createComponent) and a point a few cheap hook calls later (useThemeState
+  line ~138); it absorbs scheduling/GC/inter-marker gaps.
+- The math is decisive. On `simple`, the profile reports `theme-prep-uses`
+  **avg 312ms** and on `group` **avg 8.3ms**. 200 components × 8.3ms = 1660ms
+  would *exceed* a full group mount pass (568ms). Synchronous per-component work
+  cannot exceed the total. → artifact.
+- The *real* theme resolution segment (`theme`, which wraps `getSnapshotImpl`)
+  is only **43ms total on group / 12.5ms on simple**. `media` 29ms/6.5ms.
+
+**Trustworthy cost map (per-segment totals, group, profiling build):** the cost
+is **spread**, not concentrated. Largest real segments: split-styles per-prop
+loop (`propsend` 67ms + per-prop `backgroundColor` 34, `borderRadius` 27, etc.
+≈ 150-170ms total), then fixed createComponent hook overhead — `state-*` hooks
+~80ms, events ~57ms, `use-children` 36ms, theme 43, media 29, `hooks` 17,
+`destructure` 14. No single 2× lever.
+
+Consequence: the prior session's Ideas A/B/C/D and the useId swap "did not move
+medians" **because they targeted the phantom.** Stop optimizing theme prep.
+
+NOTE: `profile-native.ts` numbers are *inflated* by the per-render timer-marker
+overhead. For real 10%-window comparison use `run-benchmarks-native.ts`
+(profiling off). Use `profile-native` only for the (now-corrected) relative
+hotspot map.
+
+---
+
+## Architectural assessment: runtime within 10% of NW is near-infeasible; compiled is the parity path
+
+The runtime gap vs NativeWind is **~15 hook calls + a per-prop style loop per
+element** that NW skips by resolving classNames at build time. Each hook is
+~0.01ms on Hermes; the sum (theme, media, presence, state×N, events, refs,
+reducers) plus split-styles is the irreducible ~0.48ms/item vs NW's ~0.22ms/item
+on simple. The legitimate levers (cut hook count for ALL components — single-path
+safe) are bounded; the usual parity trick (a fast-path that bypasses
+createComponent for trivial Views) is **forbidden by Hard Constraint #3 (one
+path, no fallbacks)**. After media/theme were already made lean (Option 1), there
+is no remaining micro-opt that closes a 2× gap.
+
+**The one runtime lever that *could* reach parity: a content-hash style cache.**
+The bench's 200 items have identical style props (only `key` differs); a
+module-level cache keyed by a cheap hash of (style-relevant props + theme name +
+media state + group state) would compute `getSplitStyles` once and reuse it
+across identical/ repeated components (real-world: list items). This is the
+runtime analogue of what compiled/NW do. HIGH RISK (cache-key completeness — miss
+one input → stale-style bug) and HIGH EFFORT (needs exhaustive correctness
+tests). Not a "fork" — a cache, arguably allowed under Constraint #3. **Requires
+a working bench to validate; do not attempt blind.**
+
+**Recommendation:** treat the **compiled column** as the 10%-parity story (it
+already beats NW on simple). Measure compiled group/rich/heavy/animated. Keep
+leaning out runtime (Option 1 done) but set the runtime expectation to
+"as lean as possible," not NW-parity, unless the user approves the cache effort
+or relaxing Constraint #3 for a trivial-component fast-path.
+
+---
+
+## Bench environment is currently flaky
+
+`profile-native.ts` timed out on all of simple/group/rich on 2026-06-21 cont.
+(expo-go deep-link relink not connecting under co-tenant `run-benchmarks.ts`
+web-bench load, load avg ~7-9). The relink/`acceptExpoOpenPrompt` logic in the
+harness papers over expo-go bundle errors but isn't reliable under load. Before
+trusting "no result," check `pgrep -alf run-benchmarks` and `uptime`, and prefer
+quiet windows. A pre-flight canary (load one scenario, confirm a POST arrives)
+before a full run would save wasted cycles.
 
 ---
 
