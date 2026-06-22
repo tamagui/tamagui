@@ -1,9 +1,64 @@
-# v2-perf — Native Runtime Within 10% Of Best — Handoff Doc
+# v2-perf — Native Perf — Handoff Doc
 
-Owner: Nate. Live branch: `v2-perf` (23 commits ahead of `flat-styles`).
+Owner: Nate. Live branch: `v2-perf`.
 
 This is a working handoff. Update the **Status** + **Next** sections as you go.
-The Goal + Constraints sections are durable.
+
+---
+
+## 🎯 GOAL PIVOT (2026-06-21): the goal is the COMPILER, and it must BEAT NW + Uniwind
+
+Nate's decision after working through the architecture: **runtime-within-10% is the
+wrong goal** (runtime resolves arbitrary styles per render — strictly more work
+than a className lookup — so it can't match NW/Uniwind; that's the cost of full
+runtime dynamism, see the Architectural assessment below). **The real race is
+Tamagui-COMPILED vs NativeWind vs Uniwind, and the target is to BEAT both on every
+scenario.**
+
+Why compiled can win:
+- **NativeWind / Uniwind** = build-time Tailwind **stylesheet** generation +
+  **runtime** `className → style` resolution (`cssInterop` for NW; a Metro plugin +
+  Tailwind v4 engine + thin runtime for Uniwind). They still pay a per-element
+  runtime resolution tax, just a lean one. (Uniwind is faster than NW = leaner
+  runtime, not a different category. Both: class vocabulary fixed at build time,
+  can't make a class from a runtime value.)
+- **Tamagui compiled** (`@tamagui/babel-plugin`) = **inlines the resolved style
+  object directly into the element** at build time → near-zero runtime resolution
+  for the static parts. Strictly less runtime work than a className lookup → should
+  beat them. Already beats NW on simple (compiled 29.3 vs NW 41.1, prior session).
+
+**The work: get the compiled column measured and faster than NW + Uniwind on
+simple/rich/group/heavy/animated.** Runtime stays "as lean as possible" (Option 1
+shipped) but is no longer the 10% target.
+
+### Bench is fixable — it was a stale Metro cache, not a real break
+
+Both native benches were crashing on Hermes with
+`ReferenceError: Property 'addEventListener' doesn't exist` (web-only code from
+`createComponent.tsx:123-125`, which is DCE'd in the native build but present in
+the web build). Root cause: a **stale Metro cache** captured a bundle that resolved
+`@tamagui/*` to their **web** builds (`index.mjs`) — likely while `bun run watch`
+had the native dist mid-rebuild. Proof: the runtime bench's first load hit a stale
+1146-module bundle and crashed, but after Metro rebuilt fresh (1307 modules) it ran
+fine and produced results. All of `tamagui` / `@tamagui/core` / `@tamagui/web`
+DO have correct `react-native` → `index.native.js` exports; package exports are on.
+
+**Fix = clear the Metro cache before measuring** (`expo start --clear` prewarm, or
+add `--clear` to the harness `startMetro` for cold runs). The harness's silent
+"TIMEOUT" on all scenarios was the stale-bundle crash poisoning the first load while
+the fresh rebuild outran the per-scenario deadline. A pre-flight canary (load one
+scenario, confirm a POST arrives) before a full run would catch this.
+
+### Next (for the compiled-beats-them goal)
+1. Measure **compiled vs NW vs Uniwind** on all 5 scenarios, cache cleared,
+   under quiet load (check `pgrep -alf run-benchmarks` + `uptime`). Establish the
+   real gaps.
+2. Where compiled trails, inspect the **extracted output** (`@tamagui/babel-plugin`)
+   — what runtime work survives extraction (theme/media/variant fallbacks, the
+   `createComponent` wrapper) that NW/Uniwind don't pay. That residual is the target.
+3. Consider whether the compiled wrapper can shed more of `createComponent` for
+   fully-static extracted components (the part that's safe to skip when the plugin
+   proved no dynamic props).
 
 ---
 
