@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { stopAccumulatingRules } from '../helpers/insertStyleRule'
-import { updateMediaListeners } from '../hooks/useMedia'
+import { MediaStateProvider, updateMediaListeners } from '../hooks/useMedia'
 import { resolveAnimationDriver } from '../helpers/resolveAnimationDriver'
 import type { AnimationDriver, TamaguiProviderProps } from '../types'
 import { TamaguiRoot } from './TamaguiRoot'
@@ -72,6 +72,10 @@ export function TamaguiProvider({
   if (getSetting('disableSSR')) {
     // never changes so conditional render fine, no re-parenting risk
     contents = <ClientOnly enabled>{contents}</ClientOnly>
+  }
+
+  if (getSetting('mediaOptimize') === 'initial-render') {
+    contents = <MediaStateProvider>{contents}</MediaStateProvider>
   }
 
   return (

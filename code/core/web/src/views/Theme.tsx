@@ -8,6 +8,7 @@ import {
   getThemeState,
   hasThemeUpdatingProps,
   ThemeStateContext,
+  ThemeStateValueContext,
 } from '../hooks/useThemeState'
 import type { ThemeProps, ThemeState } from '../types'
 import { ThemeDebug } from './ThemeDebug'
@@ -99,7 +100,9 @@ export function getThemedChildren(
   // from here on out we have to be careful not to re-parent
   children = (
     <ThemeStateContext.Provider value={themeState.id}>
-      {children}
+      <ThemeStateValueContext.Provider value={themeState}>
+        {children}
+      </ThemeStateValueContext.Provider>
     </ThemeStateContext.Provider>
   )
 

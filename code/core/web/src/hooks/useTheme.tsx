@@ -1,7 +1,16 @@
-import { useRef, type MutableRefObject } from 'react'
+import { useContext, useRef, type MutableRefObject } from 'react'
+import { getSetting } from '../config'
 import type { ThemeParsed, ThemeState, UseThemeWithStateProps } from '../types'
-import { getThemeProxied, type ThemeProxied } from './getThemeProxied'
-import { useThemeState } from './useThemeState'
+import {
+  getThemeProxied,
+  getThemeUntracked,
+  type ThemeProxied,
+} from './getThemeProxied'
+import {
+  getThemeStateForInitialRender,
+  ThemeStateValueContext,
+  useThemeState,
+} from './useThemeState'
 
 const EMPTY = {}
 
@@ -36,6 +45,19 @@ export const useThemeWithState = (
   forThemeView = false
 ): ThemeWithState => {
   'use no memo'
+
+  if (
+    getSetting('themeOptimize') === 'initial-render' &&
+    !isRoot &&
+    !forThemeView
+  ) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const parentState = useContext(ThemeStateValueContext)
+    const themeState = getThemeStateForInitialRender(parentState, props)
+    const themeProxied = props.passThrough ? {} : getThemeUntracked(themeState)
+
+    return [themeProxied, themeState]
+  }
 
   // single useRef holding both keys + schemeKeys; saves one hook slot per
   // component vs separate useRef calls. these still look like MutableRefObject

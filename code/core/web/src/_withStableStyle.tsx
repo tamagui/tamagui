@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
-import { getConfigMaybe } from './config'
+import { getConfigMaybe, getSetting } from './config'
 import { useMedia } from './hooks/useMedia'
 import { useTheme } from './hooks/useTheme'
-import { ThemeStateContext } from './hooks/useThemeState'
+import { getThemeUntracked } from './hooks/getThemeProxied'
+import { ThemeStateContext, ThemeStateValueContext } from './hooks/useThemeState'
 
 /** internal: this is for tamagui babel plugin usage only */
 
@@ -14,16 +15,35 @@ export const _withStableStyle = (
   createStyle: (theme: any, expressions: any[]) => object,
   hasThemeKeys?: boolean,
   hasMediaKeys?: boolean
-) =>
-  React.memo(
+) => {
+  let themeOptimizeInitial: boolean | undefined
+  let lastTheme: any
+  let lastStyle: object | undefined
+
+  return React.memo(
     React.forwardRef((props: any, ref) => {
       const { _expressions = EMPTY_EXPRESSIONS, ...rest } = props
 
       const parentId = useContext(ThemeStateContext)
+      const shouldOptimizeTheme =
+        hasThemeKeys &&
+        (themeOptimizeInitial ??=
+          getSetting('themeOptimize') === 'initial-render')
+      const parentThemeState =
+        shouldOptimizeTheme
+          ? // eslint-disable-next-line react-hooks/rules-of-hooks
+            useContext(ThemeStateValueContext)
+          : null
 
       // compile-time constants per wrapper, so conditional hooks are stable
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const theme = hasThemeKeys && parentId ? useTheme() : null
+      const theme =
+        hasThemeKeys && parentId
+          ? shouldOptimizeTheme
+            ? getThemeUntracked(parentThemeState)
+            : // eslint-disable-next-line react-hooks/rules-of-hooks
+              useTheme()
+          : null
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const media = hasMediaKeys ? useMedia() : null
 
@@ -51,12 +71,21 @@ export const _withStableStyle = (
         }
       }
 
+      const style =
+        shouldOptimizeTheme && !hasMediaKeys && resolvedExpressions === EMPTY_EXPRESSIONS
+          ? lastTheme === resolvedTheme
+            ? lastStyle!
+            : ((lastTheme = resolvedTheme),
+              (lastStyle = createStyle(resolvedTheme, resolvedExpressions)))
+          : createStyle(resolvedTheme, resolvedExpressions)
+
       return (
         <Component
           ref={ref}
-          style={createStyle(resolvedTheme, resolvedExpressions)}
+          style={style}
           {...rest}
         />
       )
     })
   )
+}

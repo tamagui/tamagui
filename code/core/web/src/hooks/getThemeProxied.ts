@@ -58,6 +58,39 @@ let curState: ThemeState | null
 
 const emptyObject = {}
 
+const untrackedCache: Map<ThemeParsed, ThemeProxied> = new Map()
+
+export function getThemeUntracked(_state: ThemeState | null): ThemeProxied {
+  if (!_state?.theme) {
+    return emptyObject
+  }
+
+  if (untrackedCache.has(_state.theme)) {
+    return untrackedCache.get(_state.theme)!
+  }
+
+  const untracked = Object.fromEntries(
+    Object.entries(_state.theme).flatMap(([key, value]) => {
+      const outVal = getVariable(value)
+      const gettable = {
+        ...value,
+        get() {
+          return outVal
+        },
+      }
+
+      return [
+        [key, gettable],
+        [`$${key}`, gettable],
+      ]
+    })
+  ) as ThemeProxied
+
+  untrackedCache.set(_state.theme, untracked)
+
+  return untracked
+}
+
 export function getThemeProxied(
   // underscore to prevent accidental usage below
   _props: UseThemeWithStateProps,

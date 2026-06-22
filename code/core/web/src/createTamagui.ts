@@ -227,6 +227,8 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     defaultProps,
     settings: {
       webContainerType: 'inline-size',
+      themeOptimize: 're-render',
+      mediaOptimize: 're-render',
       ...configIn.settings,
     },
     tokens: tokens as any,

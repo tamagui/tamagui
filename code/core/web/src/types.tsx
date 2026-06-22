@@ -1110,6 +1110,7 @@ type AllowedStyleValuesSetting =
   | AllowedStyleValuesSettingPerCategory
 
 type AutocompleteSpecificTokensSetting = boolean | 'except-special'
+type OptimizeRenderSetting = 'initial-render' | 're-render'
 
 export interface GenericTamaguiSettings {
   /**
@@ -1197,6 +1198,28 @@ export interface GenericTamaguiSettings {
    * dark/light re-renders.
    */
   fastSchemeChange?: boolean
+
+  /**
+   * optimizes theme reads either for cheap initial mount or granular re-renders.
+   *
+   * - "re-render": per-consumer theme subscriptions update only readers.
+   * - "initial-render": consumers read theme from context and re-render with
+   *   the themed subtree when theme context changes.
+   *
+   * @default "re-render"
+   */
+  themeOptimize?: OptimizeRenderSetting
+
+  /**
+   * optimizes media reads either for cheap initial mount or granular re-renders.
+   *
+   * - "re-render": per-consumer media subscriptions update only readers.
+   * - "initial-render": consumers read media from context and re-render with
+   *   the provider when media state changes.
+   *
+   * @default "re-render"
+   */
+  mediaOptimize?: OptimizeRenderSetting
 
   /**
    * On Web, this allows changing the behavior of container groups which by

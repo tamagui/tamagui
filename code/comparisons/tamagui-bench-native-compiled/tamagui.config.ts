@@ -3,6 +3,11 @@ import { createTamagui } from 'tamagui'
 
 const tamaguiConfig = createTamagui({
   ...defaultConfig,
+  settings: {
+    ...defaultConfig.settings,
+    themeOptimize: 'initial-render',
+    mediaOptimize: 'initial-render',
+  },
 })
 
 export type Conf = typeof tamaguiConfig

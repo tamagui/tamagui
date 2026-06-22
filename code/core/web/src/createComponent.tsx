@@ -12,7 +12,7 @@ import { NativeMenuContext } from '@tamagui/native'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
 import React, { ReactElement, ReactNode, useMemo } from 'react'
-import { devConfig, getConfig } from './config'
+import { devConfig, getConfig, getSetting } from './config'
 import { isDevTools } from './constants/isDevTools'
 import { ComponentContext } from './contexts/ComponentContext'
 import { GroupContext } from './contexts/GroupContext'
@@ -1008,7 +1008,9 @@ export function createComponent<
       console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
     }
 
-    setMediaShouldUpdate(componentContext, shouldListenForMedia, mediaListeningKeys)
+    if (getSetting('mediaOptimize') !== 'initial-render') {
+      setMediaShouldUpdate(componentContext, shouldListenForMedia, mediaListeningKeys)
+    }
 
     const {
       viewProps: viewPropsIn,

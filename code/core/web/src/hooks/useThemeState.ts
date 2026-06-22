@@ -19,6 +19,7 @@ import type {
 type ID = string
 
 export const ThemeStateContext = createContext<ID>('')
+export const ThemeStateValueContext = createContext<ThemeState | null>(null)
 
 const allListeners = new Map<ID, Function>()
 const listenersByParent: Record<ID, Set<ID>> = {}
@@ -50,6 +51,61 @@ let themes: Record<string, ThemeParsed> | null = null
 
 let rootThemeState: ThemeState | null = null
 export const getRootThemeState = () => rootThemeState
+
+export const getThemeStateForInitialRender = (
+  parentState: ThemeState | null,
+  props: UseThemeWithStateProps
+): ThemeState => {
+  if (props.passThrough || props.disable) {
+    return parentState || getFallbackThemeState()
+  }
+
+  if (!themes) {
+    themes = getConfig().themes
+  }
+
+  const propsKey = getPropsKey(props)
+  const name = propsKey ? getNewThemeName(parentState?.name, props, true) : null
+
+  if (!name) {
+    return parentState || getFallbackThemeState()
+  }
+
+  const theme = themes[name]
+  if (!theme) {
+    return parentState || getFallbackThemeState()
+  }
+
+  const scheme = getScheme(name)
+
+  return {
+    id: parentState?.id || '',
+    name,
+    theme,
+    scheme,
+    parentId: parentState?.id,
+    parentName: parentState?.name,
+    isInverse: !!parentState && scheme !== parentState.scheme,
+    isNew: true,
+  }
+}
+
+function getFallbackThemeState(): ThemeState {
+  const themes = getConfig().themes
+  const name = themes.light
+    ? 'light'
+    : themes.dark
+      ? 'dark'
+      : Object.keys(themes)[0] || 'light'
+
+  return {
+    id: '',
+    name,
+    theme: themes[name],
+    scheme: getScheme(name),
+    isNew: true,
+  }
+}
 
 // extracts base name without scheme: "light_red_surface1" -> "red_surface1"
 const getThemeBaseName = (name: string) => name.replace(/^(light|dark)_/, '')

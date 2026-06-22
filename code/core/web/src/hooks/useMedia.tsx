@@ -1,5 +1,14 @@
 import { isServer, isWeb } from '@tamagui/constants'
-import { useEffect, useReducer, useRef } from 'react'
+import {
+  createContext,
+  createElement,
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react'
 import { getSetting } from '../config'
 import { resetMediaStyleCache } from '../helpers/createMediaStyle'
 import { matchMedia } from '../helpers/matchMedia'
@@ -58,6 +67,20 @@ export const getMediaKeyImportance = (key: string) => {
 const dispose = new Set<Function>()
 
 let mediaVersion = 0
+
+export const MediaStateContext = createContext<MediaQueryState | null>(null)
+
+export function MediaStateProvider({ children }: { children: ReactNode }) {
+  const [state, setState] = useState(getMediaSnapshot)
+
+  useEffect(() => {
+    return subscribe(() => {
+      setState(getMedia())
+    })
+  }, [])
+
+  return createElement(MediaStateContext.Provider, { value: state }, children)
+}
 
 export const configureMedia = (config: TamaguiInternalConfig) => {
   const { media } = config
@@ -223,11 +246,20 @@ function subscribe(subscriber: () => void) {
   }
 }
 
+function getMediaSnapshot() {
+  return isServer ? initState : getMedia()
+}
+
 export function useMedia(
   componentContext?: ComponentContextI,
   debug?: DebugProp
 ): UseMediaState {
   'use no memo'
+
+  if (getSetting('mediaOptimize') === 'initial-render') {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return (useContext(MediaStateContext) || getMediaSnapshot()) as UseMediaState
+  }
 
   type MediaRef = {
     keys: Set<string>
