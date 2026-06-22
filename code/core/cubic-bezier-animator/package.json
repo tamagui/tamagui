@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/cubic-bezier-animator",
-  "version": "2.3.2",
+  "version": "2.3.2-1782110552417",
   "source": "src/index.tsx",
   "files": [
     "src",
