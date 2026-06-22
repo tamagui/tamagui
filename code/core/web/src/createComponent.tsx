@@ -1808,9 +1808,32 @@ export function createComponent<
     if (!groupContext || !groupEmitter) {
       return
     }
-    const nextState = { ...groupContext.state, pseudo }
-    groupEmitter.emit(nextState)
+
+    const nextPseudo = getGroupPseudoState(pseudo)
+    const previousPseudo = groupContext.state.pseudo
+    if (
+      previousPseudo &&
+      isEqualShallow(previousPseudo, nextPseudo) &&
+      isEqualShallow(nextPseudo, previousPseudo)
+    ) {
+      return
+    }
+
+    const nextState = { ...groupContext.state, pseudo: nextPseudo }
     groupContext.state = nextState
+    groupEmitter.emit(nextState)
+  }
+
+  function getGroupPseudoState(state: PseudoGroupState): PseudoGroupState {
+    return {
+      disabled: state.disabled,
+      hover: state.hover,
+      press: state.press,
+      pressIn: state.pressIn,
+      focus: state.focus,
+      focusVisible: state.focusVisible,
+      focusWithin: state.focusWithin,
+    }
   }
 
   // let hasLogged = false
