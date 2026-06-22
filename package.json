@@ -38,7 +38,7 @@
     "build:pre": "cd code/packages/babel-plugin-fully-specified && bun run build",
     "build:types": "SKIP_JS=1 bun run build",
     "build:verbose": "bun run build -vvv",
-    "build": "turbo run build",
+    "build": "turbo run build --filter='!@tamagui/comparison-*'",
     "check:deps": "manypkg check",
     "check:exports:web": "node ./scripts/check-package-exports-web-alignment.mjs",
     "check:unused": "knip --dependencies --workspace .",
