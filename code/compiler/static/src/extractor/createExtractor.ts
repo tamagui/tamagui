@@ -1375,6 +1375,19 @@ export function createExtractor(
               return [attribute.value!, path.get('value')!] as const
             })()
 
+            // These props have runtime-only meaning on native. Decide from the
+            // original JSX attr, before getSplitStyles has a chance to drop
+            // native-dead work like hoverStyle from its static output.
+            if (
+              deoptProps.has(name) ||
+              (platform === 'native' &&
+                name[0] === '$' &&
+                (name.startsWith('$theme-') || name.startsWith('$group-')))
+            ) {
+              inlined.set(name, true)
+              return attr
+            }
+
             const remove = () => {
               Array.isArray(valuePath)
                 ? valuePath.map((p) => p.remove())
