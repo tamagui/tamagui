@@ -67,7 +67,7 @@ function hasExpoGo(udid: string): boolean {
   try {
     const out = execFileSync('find', [
       `${home}/Library/Developer/CoreSimulator/Devices/${udid}/data/Containers/Bundle/Application`,
-      '-name', 'Expo Go.app',
+      '-name', '*xpo*Go.app',
       '-maxdepth', '4',
     ]).toString().trim()
     return out.length > 0
