@@ -1819,22 +1819,26 @@ export function createComponent<
       return
     }
 
-    const previousPseudo = groupContext.state.pseudo
+    const prevPseudo = groupContext.state.pseudo
+    const shouldReplacePseudo =
+      !prevPseudo ||
+      // old/default state objects carry non-pseudo fields; replace once instead
+      // of mutating the shared defaultComponentStateMounted object
+      'unmounted' in prevPseudo ||
+      'group' in prevPseudo ||
+      'hasDynGroupChildren' in prevPseudo ||
+      'transition' in prevPseudo
+    const nextPseudo = shouldReplacePseudo ? {} : prevPseudo
+    let didChange = shouldReplacePseudo
 
-    let didChange =
-      !previousPseudo ||
-      'unmounted' in previousPseudo ||
-      'group' in previousPseudo ||
-      'hasDynGroupChildren' in previousPseudo ||
-      'transition' in previousPseudo
-
-    if (!didChange) {
-      for (let i = 0; i < groupPseudoKeys.length; i++) {
-        const key = groupPseudoKeys[i]
-        if (previousPseudo[key] !== pseudo[key]) {
-          didChange = true
-          break
-        }
+    for (let i = 0; i < groupPseudoKeys.length; i++) {
+      const key = groupPseudoKeys[i]
+      const value = pseudo[key]
+      if (nextPseudo[key] !== value) {
+        nextPseudo[key] = value
+        didChange = true
+      } else if (didChange) {
+        nextPseudo[key] = value
       }
     }
 
@@ -1842,20 +1846,8 @@ export function createComponent<
       return
     }
 
-    const nextState = {
-      ...groupContext.state,
-      pseudo: {
-        disabled: pseudo.disabled,
-        hover: pseudo.hover,
-        press: pseudo.press,
-        pressIn: pseudo.pressIn,
-        focus: pseudo.focus,
-        focusVisible: pseudo.focusVisible,
-        focusWithin: pseudo.focusWithin,
-      },
-    }
-    groupContext.state = nextState
-    groupEmitter.emit(nextState)
+    groupContext.state.pseudo = nextPseudo
+    groupEmitter.emit(groupContext.state)
   }
 
   // let hasLogged = false
