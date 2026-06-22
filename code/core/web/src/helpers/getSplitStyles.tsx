@@ -1457,6 +1457,10 @@ export const getSplitStyles: StyleSplitter = (
 
     const isStyleProp = isValidStyleKeyInit || isMediaOrPseudo || (isVariant && !noExpand)
 
+    if (process.env.TAMAGUI_TARGET === 'native' && keyInit === 'hoverStyle') {
+      continue
+    }
+
     if (isStyleProp && (asChild === 'except-style' || asChild === 'except-style-web')) {
       continue
     }
@@ -1599,6 +1603,10 @@ export const getSplitStyles: StyleSplitter = (
       // handle group key transformation for variant-expanded keys (issue #3613)
       if (isMedia === 'group') {
         key = normalizeGroupKey(key, groupContext)
+      }
+
+      if (process.env.TAMAGUI_TARGET === 'native' && key === 'hoverStyle') {
+        return
       }
 
       if (
@@ -1923,6 +1931,10 @@ export const getSplitStyles: StyleSplitter = (
             const groupState = groupContext?.[groupName]?.state
             const groupPseudoKey = groupInfo.pseudo
             const groupMediaKey = groupInfo.media
+
+            if (process.env.TAMAGUI_TARGET === 'native' && groupPseudoKey === 'hover') {
+              return
+            }
 
             if (!groupState) {
               if (process.env.NODE_ENV === 'development' && debug) {

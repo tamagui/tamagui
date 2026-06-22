@@ -81,27 +81,34 @@ All preserve granularity. Over-render test passing confirms it.
 
 ## Status (latest measured medians)
 
-3-run median, captured under **high system load** (load avg 63 from co-tenant
-agent work in `~/tamagui-flat-styles` running multiple benches). Absolutes are
-~30% inflated vs the 06-21 quiet baseline; **compiled-vs-runtime delta is
-load-invariant.**
+After native hover-skip. 3-run median of
+`bun code/comparisons/profile-native.ts simple group rich`, captured under
+**very high system load** (load avg peaked at 110; co-tenant
+`~/tamagui-flat-styles` benches were active). Absolutes are still contaminated;
+compare deltas cautiously unless rerun under matched load.
 
 | scenario | runtime mount | runtime rerender | compiled mount | compiled rerender | NW v5 |
 |---|---|---|---|---|---|
-| simple | 112.9 | 112.8 | **29.3** | **33.6** | 41.1 / 48.4 |
-| group | 508.2 | 517.3 | 478.3 | 515.6 | 170.6 / 173.1 |
+| simple | 95.6 | 78.5 | **29.3** | **33.6** | 41.1 / 48.4 |
+| group | 320.6 | 312.5 | 478.3\* | 515.6\* | 170.6 / 173.1 |
+| rich | 101.4 | 97.7 | untested | untested | 43.3 / 47.9 |
+
+`*` compiled group numbers are from the pre-hover-skip measurement and should be
+rerun before drawing conclusions about compiled-vs-runtime after this commit.
 
 Within-10% status:
-- Simple: ✅ via compiled (beats NW v5). Runtime ~2.75× over. **Need to close.**
-- Group: ❌ both runtime AND compiled. Compiled doesn't help here because
-  `hoverStyle` + `$group-row-hover` block extraction → runtime path engages.
-- Rich/Heavy/Animated: untested this session, likely similar story to group.
+- Simple: ✅ via compiled (beats NW v5). Runtime still over target.
+- Group: ❌ runtime improved materially (508.2/517.3 → 320.6/312.5, about
+  37-40% faster) but still outside the 10% window.
+- Rich: ❌ now measured; still roughly 2× over NW v5 under load.
+- Heavy/Animated: untested this session.
 
 **Profile breakdown** (`code/comparisons/output/profile-native/group.txt`):
-`theme-prep-uses` averages 0.706ms per component × 2234 components per render =
-**1577ms of 2466ms total (64%)**. That's the dominant cost on native. Note
-this includes time-marker overhead (only in dev/profile builds); production
-bench will be lower but RELATIVE gap should match.
+latest profile file is from the third run (not the median) and still shows
+`theme-prep-uses` dominating: 0.852ms per component × 1319 samples =
+**1124ms of 1542ms total (73%)**. This includes time-marker overhead
+(only in dev/profile builds); production bench will be lower but the relative
+gap should match.
 
 ---
 
@@ -129,13 +136,14 @@ profile markers show `before-prop-hoverStyle 0.0091ms` and
 `before-prop-$group-row-hover 0.0295ms` — but those measure the marker spacing,
 not the inner work. The real win is unclear until measured.
 
-**Action item (started, not committed):**
+**Implemented:**
 Short-circuit in `code/core/web/src/helpers/getSplitStyles.tsx`:
 - On `TAMAGUI_TARGET === 'native'`, if `keyInit === 'hoverStyle'` →
   `continue` before any `getSubStyle` / `applyDefaultStyle` work.
+- Same for variant-expanded pseudo keys where `key === 'hoverStyle'`.
 - Same for media keys whose `getGroupPropParts(mediaKeyShort).pseudo === 'hover'`.
-  This needs the check INSIDE the `isGroupMedia` branch since pseudo isn't
-  known until parsing.
+  The group check runs before adding `pseudoGroups`, since native hover should
+  not subscribe to group hover state.
 
 **Side effects to verify:**
 - `pseudoGroups Set` (`getSplitStyles.tsx:1172, 1932, 1967`) is collected into
@@ -260,13 +268,16 @@ Must stay green for any change that touches `useTheme*`, `useMedia*`,
 
 ## Next (the work that needs doing right now)
 
-1. Implement hover skip on native in
-   `code/core/web/src/helpers/getSplitStyles.tsx` (see "Open Insight" above).
-   Watch will rebuild `@tamagui/core`.
-2. Re-run `bun code/comparisons/profile-native.ts simple group rich` 3× and
-   median. Compare runtime numbers to NW v5 baseline (41.1 simple, 170.6
-   group, 43.3 rich). Tag this commit `perf(native): skip dead hover work`.
-3. Run the over-render test — must stay green.
-4. If hover-skip moves the needle, plan the next vector
-   (theme-prep-uses cost reduction, see "What else" §2).
-5. Update **Status** + **Next** sections of this doc as you ship.
+1. Start **theme-prep-uses cost reduction** (see "What Else" §2). First likely
+   target: Idea A, avoid hot-path `getPropsKey` string work when props are the
+   stable empty `useTheme()` path.
+2. Preserve the hover-skip tests: focused native test
+   `getSplitStyles.native.test.tsx` now covers direct `hoverStyle`,
+   variant-expanded `hoverStyle`, group hover without `pseudoGroups`, and
+   media-only group registration.
+3. For the next runtime change, run:
+   - `TAMAGUI_TARGET=web npx vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts themeMediaOverRender.web.test.tsx`
+   - `TAMAGUI_TARGET=native npx vitest --run --config ../../packages/vite-plugin-internal/src/vite.config.ts getSplitStyles.native.test.tsx`
+   - `bun code/comparisons/profile-native.ts simple group rich` 3× and median.
+4. Rerun compiled native group/rich after hover-skip if compiled-vs-runtime
+   comparison matters for the next decision.

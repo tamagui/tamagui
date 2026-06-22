@@ -91,6 +91,72 @@ describe('getSplitStyles', () => {
     expect(() => getSplitStylesFor(props)).not.toThrow()
   })
 
+  test('native skips hover pseudo style work', () => {
+    const directHover = getSplitStylesFor({
+      hoverStyle: {
+        backgroundColor: 'red',
+      },
+    })
+
+    expect(directHover.style?.backgroundColor).toBeUndefined()
+
+    const HoverVariant = styled(View, {
+      variants: {
+        hoverable: {
+          true: {
+            hoverStyle: {
+              opacity: 0.5,
+            },
+          },
+        },
+      } as const,
+    })
+
+    const variantHover = getSplitStylesFor({ hoverable: true }, HoverVariant)
+
+    expect(variantHover.style?.opacity).toBeUndefined()
+
+    const groupContext = {
+      row: {
+        state: {
+          pseudo: {
+            hover: false,
+          },
+        },
+        subscribe: () => () => {},
+      },
+    }
+
+    const groupHover = getSplitStylesFor(
+      {
+        '$group-row-hover': {
+          backgroundColor: 'red',
+        },
+      },
+      View,
+      {
+        groupContext,
+      }
+    )
+
+    expect(groupHover.style?.backgroundColor).toBeUndefined()
+    expect(groupHover.pseudoGroups).toBeUndefined()
+
+    const groupMedia = getSplitStylesFor(
+      {
+        '$group-row-sm': {
+          opacity: 0.5,
+        },
+      },
+      View,
+      {
+        groupContext,
+      }
+    )
+
+    expect(groupMedia.mediaGroups?.has('sm')).toBe(true)
+  })
+
   test(`transform properties are correctly applied`, () => {
     const { style } = getSplitStylesFor({
       scale: 1.5,
@@ -303,7 +369,7 @@ describe.skip('getSplitStyles - pseudo prop merging', () => {
 function getSplitStylesFor(
   props: Record<string, any>,
   Component = View,
-  options: { mediaState?: Record<string, any> } = {}
+  options: { mediaState?: Record<string, any>; groupContext?: any } = {}
 ) {
   return getSplitStyles(
     props,
@@ -325,6 +391,7 @@ function getSplitStylesFor(
     },
     undefined,
     undefined,
+    options.groupContext,
     undefined,
     undefined
   )!
