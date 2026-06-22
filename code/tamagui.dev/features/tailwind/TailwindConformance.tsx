@@ -42,7 +42,7 @@ function ProofRow({ c, scale }: { c: ProofCase; scale: number }) {
       {proofLegs.map((leg, i) => (
         <XStack key={leg.key} items="center" gap="$2">
           {i > 0 && (
-            <Text fontFamily="$mono" size="$5" color="$color8">
+            <Text fontFamily="$mono" fontSize="$5" color="$color8">
               =
             </Text>
           )}
@@ -72,7 +72,7 @@ function MatchChip({ diff }: { diff: number }) {
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <YStack items="center" gap="$1" px="$6" py="$3">
-      <Text fontFamily="$mono" size="$10" color="$color12">
+      <Text fontFamily="$mono" fontSize="$10" color="$color12">
         {value}
       </Text>
       <Paragraph size="$2" color="$color10">
@@ -114,7 +114,7 @@ export function TailwindConformance() {
             <ProofRow c={featured} scale={2.3} />
           </XStack>
           <XStack items="center" justify="center" gap="$3" flexWrap="wrap">
-            <Text fontFamily="$mono" size="$3" color="$color11">
+            <Text fontFamily="$mono" fontSize="$3" color="$color11">
               className=&quot;{featured.className}&quot;
             </Text>
             <MatchChip diff={featured.diff} />
@@ -123,15 +123,11 @@ export function TailwindConformance() {
       </ThemeTint>
 
       {/* stat row */}
-      <XStack
-        self="center"
-        items="center"
-        flexWrap="wrap"
-        justify="center"
-        separator={<Separator vertical />}
-      >
+      <XStack self="center" items="center" flexWrap="wrap" justify="center">
         <Stat value={`${conformance.web}%`} label="web vs Tailwind" />
+        <Separator vertical />
         <Stat value={`${conformance.native}%`} label="iOS vs Tailwind" />
+        <Separator vertical />
         <Stat value={`${conformance.cases}`} label="cases measured" />
       </XStack>
 
@@ -158,7 +154,7 @@ export function TailwindConformance() {
               flexWrap="wrap"
             >
               <YStack gap="$2" minWidth={220} flex={1} items="flex-start">
-                <Text fontFamily="$mono" size="$2" color="$color11">
+                <Text fontFamily="$mono" fontSize="$2" color="$color11">
                   {c.className}
                 </Text>
                 <MatchChip diff={c.diff} />

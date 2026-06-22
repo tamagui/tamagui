@@ -1,10 +1,16 @@
 import { router, useLinkTo, type LinkProps as OneLinkProps } from 'one'
-import type { ButtonProps, ViewProps } from 'tamagui'
+import type { ButtonProps, GetProps, ViewProps } from 'tamagui'
 import { Button, Paragraph, Text } from 'tamagui'
 
 export type LinkProps = ViewProps &
   OneLinkProps<any> & {
     // for animating/doing something right before nav
+    delayNavigate?: boolean
+  }
+
+// ParagraphLink renders a Paragraph, so it accepts text props (fontFamily, size, ...)
+export type ParagraphLinkProps = GetProps<typeof Paragraph> &
+  OneLinkProps<any> & {
     delayNavigate?: boolean
   }
 
@@ -40,7 +46,7 @@ export const ParagraphLink = ({
   onPress,
   children,
   ...props
-}: LinkProps) => {
+}: ParagraphLinkProps) => {
   const linkProps = useLinkTo({ href: href as string, replace: !!replace })
 
   return (

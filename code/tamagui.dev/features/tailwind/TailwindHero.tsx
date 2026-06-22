@@ -20,7 +20,7 @@ function HeroCode() {
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <Text
           fontFamily="$mono"
-          size="$4"
+          fontSize="$4"
           whiteSpace="pre"
           lineHeight="$6"
           px="$5"
