@@ -1,30 +1,72 @@
 {
   "Tamagui (runtime)": {
-    "simple":   { "mount": 83.3,  "rerender": 85.4 },
-    "rich":     { "mount": 136.1, "rerender": 135.7 },
-    "group":    { "mount": 389.9, "rerender": 413.8 },
-    "heavy":    { "mount": 214.6, "rerender": 224.5 },
-    "animated": { "mount": 112.6, "rerender": 112.8 }
+    "simple": {
+      "mount": 78.12139179706574,
+      "rerender": 60.3075835943222
+    },
+    "themed": {
+      "mount": 73.6493916273117,
+      "rerender": 59.147266602516176
+    },
+    "rich": null,
+    "group": null,
+    "heavy": null,
+    "animated": null
+  },
+  "Tamagui (compiled)": {
+    "simple": {
+      "mount": 17.14667522907257,
+      "rerender": 18.198733401298522
+    },
+    "themed": {
+      "mount": 33.06890821456909,
+      "rerender": 23.88274199962616
+    },
+    "rich": null,
+    "group": null,
+    "heavy": null,
+    "animated": null
   },
   "NativeWind v5": {
-    "simple":   { "mount": 41.1, "rerender": 48.4 },
-    "rich":     { "mount": 43.3, "rerender": 47.9 },
-    "group":    { "mount": 170.6, "rerender": 173.1 },
-    "heavy":    { "mount": 94.7, "rerender": 93.8 },
-    "animated": { "mount": 44.6, "rerender": 47.6 }
+    "simple": {
+      "mount": 28.532766819000244,
+      "rerender": 26.699391579627992
+    },
+    "themed": {
+      "mount": 32.46515002250671,
+      "rerender": 26.549383401870728
+    },
+    "rich": null,
+    "group": null,
+    "heavy": null,
+    "animated": null
   },
   "Uniwind": {
-    "simple":   { "mount": 49.0, "rerender": 50.4 },
-    "rich":     { "mount": 44.5, "rerender": 45.9 },
-    "group":    { "mount": 182.3, "rerender": 187.3 },
-    "heavy":    { "mount": 97.6, "rerender": 101.9 },
-    "animated": { "mount": 45.3, "rerender": 48.5 }
+    "simple": {
+      "mount": 22.37746660709381,
+      "rerender": 24.154883408546446
+    },
+    "themed": {
+      "mount": 31.693550205230714,
+      "rerender": 25.899133348464964
+    },
+    "rich": null,
+    "group": null,
+    "heavy": null,
+    "animated": null
   },
-  "_meta": {
-    "runs": { "Tamagui (runtime)": 3, "NativeWind v5": 3, "Uniwind": 2 },
-    "method": "median-of-3 for 3-run, mean-of-2 for Uniwind (script crashed silently before Uniwind run #3 and JSON/HTML write)",
-    "captured": "2026-06-21",
-    "components_per_scenario": "200 (60 for heavy)",
-    "platform": "iOS sim via Expo Go"
+  "React Native": {
+    "simple": {
+      "mount": 19.19649042532994,
+      "rerender": 17.683198818793663
+    },
+    "themed": {
+      "mount": 24.169365337261787,
+      "rerender": 18.160961614205288
+    },
+    "rich": null,
+    "group": null,
+    "heavy": null,
+    "animated": null
   }
 }

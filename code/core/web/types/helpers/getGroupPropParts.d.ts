@@ -3,5 +3,6 @@ export type GroupParts = {
     pseudo?: string;
     media?: string;
 };
+export declare function resetGroupPropPartsCache(): void;
 export declare function getGroupPropParts(groupProp: string): GroupParts;
 //# sourceMappingURL=getGroupPropParts.d.ts.map

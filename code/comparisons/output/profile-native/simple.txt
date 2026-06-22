@@ -1,43 +1,5 @@
-mount=97.5ms rerender=82.0ms
+mount=23.1ms rerender=17.3ms
 
-Ran 400.05128205128204 per-type, 15602 total
-                theme-prep-uses | avg 0.3646802ms | total 145.89080047607422ms
-
-                    state-enter | avg 0.0131703ms | total 5.268829584121704ms
-          state-useDidFinishSSR | avg 0.0006591ms | total 0.2637084722518921ms
-          state-useIsClientOnly | avg 0.0005825ms | total 0.23303937911987305ms
-          state-useRef-stateRef | avg 0.0014904ms | total 0.5962512493133545ms
-              state-usePresence | avg 0.0020875ms | total 0.8351296186447144ms
-                 state-useState | avg 0.0037491ms | total 1.4998693466186523ms
- state-useCreateShallowSetState | avg 0.0027690ms | total 1.107761263847351ms
-                      use-state | avg 0.0061665ms | total 2.4669277667999268ms
-                    theme-props | avg 0.0007767ms | total 0.31073617935180664ms
-                pre-theme-media | avg 0.0009273ms | total 0.3709937334060669ms
-                          theme | avg 0.0158189ms | total 6.328379511833191ms
-                          media | avg 0.0088694ms | total 3.5482192039489746ms
-           split-styles-prepare | avg 0.0007620ms | total 0.30486905574798584ms
-             split-styles-setup | avg 0.0089874ms | total 3.5954384803771973ms
-                    style-state | avg 0.0009389ms | total 0.3756328821182251ms
-              before-prop-width | avg 0.0097730ms | total 3.909716486930847ms
-             before-prop-height | avg 0.0229979ms | total 9.200377941131592ms
-    before-prop-backgroundColor | avg 0.0067396ms | total 2.696213126182556ms
-       before-prop-borderRadius | avg 0.0070701ms | total 2.8284131288528442ms
-             before-prop-margin | avg 0.0176086ms | total 7.044374346733093ms
-          split-styles-propsend | avg 0.0132302ms | total 5.292786717414856ms
-        split-styles-pre-result | avg 0.0024134ms | total 0.9654959440231323ms
-              split-styles-done | avg 0.0014616ms | total 0.5847464799880981ms
-                   split-styles | avg 0.0008432ms | total 0.3373333215713501ms
-                    destructure | avg 0.0136355ms | total 5.454915285110474ms
-                   events-hooks | avg 0.0068473ms | total 2.739285945892334ms
-                   events-setup | avg 0.0098798ms | total 3.9524660110473633ms
-                         events | avg 0.0004766ms | total 0.19067299365997314ms
-                          hooks | avg 0.0081492ms | total 3.2601176500320435ms
-                spaced-as-child | avg 0.0003686ms | total 0.1474602222442627ms
-                   use-children | avg 0.0160788ms | total 6.432364344596863ms
-                 create-element | avg 0.0029563ms | total 1.1826995611190796ms
-                  group-context | avg 0.0005418ms | total 0.21676266193389893ms
-                themed-children | avg 0.0017312ms | total 0.692594051361084ms
-               context-override | avg 0.0003624ms | total 0.14499926567077637ms
-                     style-tags | avg 0.0003470ms | total 0.1388256549835205ms
-                           rest | avg 0.0003884ms | total 0.1553809642791748ms
-                                    total 230.56458830833435ms
+Ran 1 marker calls across 1 segments
+                  ~gap (ignore) | avg 1253.8439ms | total 1253.843ms | n=1
+                                    total 0ms (excludes gap/ignore)

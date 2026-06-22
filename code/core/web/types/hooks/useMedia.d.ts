@@ -1,7 +1,12 @@
-import type { ComponentContextI, DebugProp, GetStyleState, IsMediaType, TamaguiInternalConfig, UseMediaState, WidthHeight } from '../types';
+import { type ReactNode } from 'react';
+import type { ComponentContextI, DebugProp, GetStyleState, IsMediaType, MediaQueryState, TamaguiInternalConfig, UseMediaState, WidthHeight } from '../types';
 export declare const isMediaKey: (key: string) => boolean;
 export declare const getMediaKey: (key: string) => IsMediaType;
 export declare const getMediaKeyImportance: (key: string) => number;
+export declare const MediaStateContext: import("react").Context<MediaQueryState | null>;
+export declare function MediaStateProvider({ children }: {
+    children: ReactNode;
+}): import("react").FunctionComponentElement<import("react").ProviderProps<MediaQueryState | null>>;
 export declare const configureMedia: (config: TamaguiInternalConfig) => void;
 export declare function setupMediaListeners(): void;
 export declare function updateMediaListeners(): void;
@@ -9,6 +14,7 @@ type MediaState = {
     enabled?: boolean;
     keys?: Set<string> | null;
 };
+export declare function getDisabledMediaState(): UseMediaState;
 export declare function setMediaShouldUpdate(ref: any, enabled?: boolean, keys?: MediaState['keys']): void;
 export declare function useMedia(componentContext?: ComponentContextI, debug?: DebugProp): UseMediaState;
 export declare function _disableMediaTouch(val: boolean): void;
