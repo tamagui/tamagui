@@ -151,8 +151,18 @@ async function runScenario(udid: string, scenario: Scenario, isFirst: boolean): 
   lastResult = null
   deepLink(udid, scenario)
   const deadline = Date.now() + (isFirst ? COLD_BUNDLE_TIMEOUT_MS : SCENARIO_TIMEOUT_MS)
+  // re-deep-link periodically in case the first launch hit a transient bundle
+  // error (e.g. "styled is not a function" before metro fully resolves the
+  // workspace) — the second bundle then sees no deep-link and shows the
+  // default "case picker" state with no profile output.
+  const RELINK_INTERVAL_MS = isFirst ? 20_000 : 10_000
+  let nextRelink = Date.now() + RELINK_INTERVAL_MS
   while (Date.now() < deadline) {
     if (lastResult && lastResult.scenario === scenario) return lastResult
+    if (Date.now() >= nextRelink) {
+      deepLink(udid, scenario)
+      nextRelink = Date.now() + RELINK_INTERVAL_MS
+    }
     await sleep(200)
   }
   return null
