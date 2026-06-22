@@ -66,6 +66,8 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   mediaVersion++
   // reset cached media style prefixes/selectors so they get recalculated with new key order
   resetMediaStyleCache()
+  // touch-tracker getter object depends on the current media key set
+  resetMediaTouchTracker()
   for (const key in media) {
     getMedia()[key] = mediaQueryDefaultActive?.[key] || false
     mediaKeys.add(`$${key}`)
@@ -136,6 +138,47 @@ type MediaState = {
 
 const States = new WeakMap<any, MediaState>()
 
+// shared "touch tracker" prototype: one object whose enumerable getter
+// properties are pre-defined for every configured media key. Hermes inlines
+// getter calls; the old `new Proxy(state, { get })` path forced an interpreted
+// trap on every access — the dominant per-component cost in benchmarks. Each
+// component owns just an Object.create(proto) with a Symbol-keyed slot
+// pointing at its tracking set + current snapshot.
+type MediaRefSlot = {
+  proxyTarget: MediaQueryState
+  keys: Set<string>
+}
+let touchTrackerProto: object | null = null
+const refSlot = Symbol('mediaRefSlot')
+
+function buildTouchTrackerProto(): object {
+  const proto: PropertyDescriptorMap = {}
+  for (const fullKey of mediaKeys) {
+    const key = fullKey[0] === '$' ? fullKey.slice(1) : fullKey
+    proto[key] = {
+      enumerable: true,
+      configurable: true,
+      get(this: { [refSlot]: MediaRefSlot }) {
+        const slot = this[refSlot]
+        if (!disableMediaTouch) {
+          slot.keys.add(key)
+        }
+        return slot.proxyTarget[key]
+      },
+    }
+  }
+  return Object.create(null, proto)
+}
+
+function getTouchTrackerProto(): object {
+  if (!touchTrackerProto) touchTrackerProto = buildTouchTrackerProto()
+  return touchTrackerProto
+}
+
+function resetMediaTouchTracker() {
+  touchTrackerProto = null
+}
+
 export function setMediaShouldUpdate(
   ref: any,
   enabled?: boolean,
@@ -192,15 +235,11 @@ export function useMedia(
       componentContext,
       debug,
     }
-    r.proxy = new Proxy(initial, {
-      get(_, key) {
-        const target = r.proxyTarget
-        if (!disableMediaTouch && typeof key === 'string') {
-          r.keys.add(key)
-        }
-        return Reflect.get(target, key)
-      },
-    }) as UseMediaState
+    // proxy → Object.create(getterProto) with a Symbol slot. Per-key get is a
+    // monomorphic getter call (Hermes-fast) instead of a Proxy trap.
+    const tracker = Object.create(getTouchTrackerProto())
+    tracker[refSlot] = { proxyTarget: initial, keys: r.keys } as MediaRefSlot
+    r.proxy = tracker as UseMediaState
     r.getSnapshot = () => {
       const curKeys = r.componentContext
         ? States.get(r.componentContext)?.keys || r.keys
@@ -260,12 +299,14 @@ export function useMedia(
   const [, forceUpdate] = useReducer(incReducer, 0)
   const state = isServer ? initState : ref.getSnapshot()
   ref.proxyTarget = state
+  ;(ref.proxy as any)[refSlot].proxyTarget = state
 
   useEffect(() => {
     const cb = () => {
       const next = ref.getSnapshot()
       if (next !== ref.proxyTarget) {
         ref.proxyTarget = next
+        ;(ref.proxy as any)[refSlot].proxyTarget = next
         forceUpdate()
       }
     }
