@@ -141,6 +141,53 @@ instead of today's binary (raw-flattened vs full-createComponent). That's the
 slim-pressable direction; the bar it must beat is NW's 1.44 (rich) / 1.84 (group),
 with the press arbitration staying faithful while getting thin.
 
+### SHIPPED: graduated hook-disabling — `data-disable-events` (commit `f2374c8e84`)
+
+The "graduated runtime shapes" idea (no parallel component — ONE createComponent with
+the compiler granularly disabling hooks via stable per-call-site flags) is the
+resolution to the Constraint-#3 "one path" tension. The pattern already existed for
+theme/media; this extends it to the native **useEvents** hook (the rich/animated cost).
+
+**Disable matrix (compiler proves feature set per element → gates a hook):**
+
+| hook | gate flag | compiler proves | status |
+|---|---|---|---|
+| `useThemeWithState` | `data-disable-theme` | no theme/animation/enter/exit prop, no `$theme-`/`$group-`, no token style, no spread | ✅ |
+| `useMedia` | `data-disable-media` | no `$`-prop, no spread | ✅ |
+| `useEvents` (native) | `data-disable-events` | no `on{Press*,LongPress,Focus,Blur,Mouse*,Click}`, no `{press,focus,focusVisible,focusWithin,hover}Style`, no `group`, no spread | ✅ NEW |
+| `useComponentState` | — | no pseudo state ever read | ⬜ hard (DAG root — events/etc read its `stateRef`) |
+| group contexts (`useContext`+memo+layout effects) | — | no `group=`/`$group-*` | ⬜ next |
+
+**The one correctness rule:** the gate must be a compile-time constant per call-site
+(a literal the compiler inlines into JSX, never varying for that fiber) → the
+conditional hook resolves identically every render → React's real invariant (stable
+hook order per fiber) holds; we only override the *linter* (`eslint-disable
+rules-of-hooks`). Universal bailout: a spread (`{...props}`) keeps every hook.
+
+**The hard part events hit that theme/media don't — a non-local input.** `events` also
+depends on `componentContext.setParentFocusState`: an event-free *leaf* still needs
+`useEvents` if an **ancestor** has `focusWithinStyle` (to attach onFocus/onBlur and
+report up). The leaf can't know this from its own props. Fix: the runtime gate ORs in
+the context check — `!props['data-disable-events'] || componentContext.setParentFocusState`
+(`createComponent.tsx:~1538`). Both inputs are stable per fiber (the provider is gated
+on `'focusWithinStyle' in propsIn`, structural), so it stays rules-of-hooks-safe. This
+is why `useComponentState` (the DAG root everything reads `stateRef` from) is the LAST
+thing to gate, not the first.
+
+**Safe by construction:** the flag is only emitted when the element provably has zero
+event surface — in which case `useEvents` was already a full no-op (falls through every
+branch to `return null`). So skipping it can't change press behavior; it only removes a
+dead hook (RNGH gesture setup + 2 refs + main-thread press hook).
+
+**Validated:** flatten.native (+3 assertions: emits on event-free deopt, NOT on
+pressStyle, NOT on onPress), babel.native (22, no snapshot drift), all native runtime
+tests (90), new `eventsDisableGate.native.test.tsx` (+3: flag renders, hook-order
+stable across re-render, onPress control), over-render granularity (5), typecheck clean.
+**PENDING:** the iOS-sim ×RN bench measurement (does rich drop from 3.64 toward NW's
+1.44?) — needs the sim; run `BENCH_CLEAR=1 bun code/comparisons/run-benchmarks-native.ts
+--runs=5 --scenarios=rich,animated` and compare to baseline. The win is unmeasured until
+then; correctness is fully unit-validated.
+
 ### SHIPPED: partial-flatten on native deopt (commit `perf(compiler): partial-flatten…`)
 
 In `createExtractor` `!shouldFlatten` branch (native): even when an element must stay
