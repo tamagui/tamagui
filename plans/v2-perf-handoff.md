@@ -6,6 +6,87 @@ This is a working handoff. Update the **Status** + **Next** sections as you go.
 
 ---
 
+## 🎯 GOAL (2026-06-22): get the compiled native path FASTER than NativeWind AND Uniwind on every scenario
+
+### The bench was measuring the wrong thing — fixed (2026-06-22)
+
+The compiler has TWO native optimizations and the bench only exercised the extremes:
+- **100% flatten** (`shouldFlatten=true`) → raw `<View style={_sheet[n]}>`, createComponent
+  fully bypassed. Fully static elements (no theme, no pseudo).
+- **light-but-dynamic** = `_withStableStyle` (the `experimentalFlattenThemesOnNative`
+  path, now DEFAULT). A themed-but-pseudo-free element folds to a **raw RN View +
+  `_withStableStyle(RawView, (theme,_expr)=>[sheet, {bg: theme.blue5.get()}], hasTheme,
+  hasMedia)`** — `React.memo`/`forwardRef` + `useContext(ThemeStateContext)` + (conditional)
+  `useTheme()`/`useMedia()`. NO `useComponentState`, NO `getSplitStyles`, NO pointer-ref,
+  NO events. File: `code/core/web/src/_withStableStyle.tsx`.
+
+The bench had no scenario isolating `_withStableStyle`: `simple` is rgb→flatten, and
+`rich`/`group`/`animated` all have pseudo/press → full createComponent deopt. So the
+"compiled rich 3.64×" number quoted for ages was the **worst-case press path**, not the
+common themed case. **Added a `themed` scenario** (= `simple` shape with `backgroundColor="$blue5"`)
+across all 5 native bench apps + runner + profiler. Verified via real compiled output that
+it folds to `_withStableStyle`. `themed − simple` = the isolated light-gear cost.
+
+### Real ×RN numbers (3-run interleaved, 2026-06-22, sim 0B818936)
+
+| Mount ×RN | TG runtime | TG compiled | NativeWind | Uniwind |
+|---|---|---|---|---|
+| simple (flatten) | 4.70 | **0.98** ✅ | 1.44 | 1.22 |
+| themed (`_withStableStyle`) | 2.73 | **1.85** ❌ | 1.35 | 1.23 |
+
+| Re-render ×RN | TG runtime | TG compiled | NativeWind | Uniwind |
+|---|---|---|---|---|
+| simple | 3.61 | **1.11** ✅ | 1.52 | 1.34 |
+| themed | 3.59 | **2.07** ❌ | 1.56 | 1.44 |
+
+- **Flatten (simple): WINS both, mount + rerender.** Best-in-class, protect it.
+- **Light gear (themed): LOSES to both.** Per-element it adds ~0.12ms vs NW's ~0.04ms (~3×).
+  Suspect = `useTheme()` proxy + use-tracking (`theme.blue5.get()` registers the key for
+  subscription) — UNNECESSARY because the compiler already knows the keys statically.
+
+### Heavy press path (`rich`) bucket shares (profile, RELATIVE only — absolute ms inflated)
+
+getSplitStyles ~35% · state machine + hooks ~21% · use-children/create-element ~11% ·
+**events/RNGH ~11%** · theme/media ~7%. → RNGH (the off-thread press recognizer, the part
+worth keeping) is a MINORITY; getSplitStyles+state (~56%) is what a fast path would drop.
+
+### RESULT (2026-06-22): `themeOptimize`/`mediaOptimize` shipped (commit `72c34f7584`)
+
+Two settings, `themeOptimize`/`mediaOptimize: "initial-render" | "re-render"`, default
+`"re-render"` (existing behavior byte-for-byte unchanged). `"initial-render"` = dumb mode:
+no per-element theme/media subscription, theme read from a new `ThemeStateValueContext`
+(provided at root TamaguiProvider + every nested `<Theme>`, changes on switch → full
+re-render), values via `getThemeUntracked` (pre-resolved, cached per theme). Plus a
+per-wrapper style cache so all instances of a styled wrapper share one resolved style.
+Reviewed correct: defaults unchanged, nested-theme-correct, vitest themeMedia/useTheme/
+_withStableStyle passing.
+
+**Native ×RN (best read; machine under sustained ~13 load so ±0.15 noise):**
+
+| ×RN | simple | themed (`_withStableStyle`) | NativeWind | Uniwind |
+|---|---|---|---|---|
+| Mount | 0.85 | **1.34** (median ~1.37) | 1.30 (~1.36) | 1.28 (~1.20) |
+| Re-render | 1.02 | **1.32** | 1.50 | 1.35 |
+
+- themed **1.85× → ~1.34×** — theme machinery cost largely eliminated (profile residual
+  ~7ms/200 = the light-gear wrapper: extra fiber + 2 `useContext` + `getThemeUntracked`).
+- **Re-render: beats BOTH.** **Mount: ties NW, ~0.1–0.15× above Uniwind (within noise; median says Uniwind still a hair ahead).**
+- Remaining lever to clearly beat Uniwind on mount: shave the wrapper (collapse dumb-mode
+  2 `useContext`→1; maybe drop `memo`) — sub-noise-floor on this loaded machine, risks the
+  re-render win. Needs a quiet machine to measure.
+
+### The two levers to hit the goal
+
+1. **Cut `_withStableStyle`'s theme cost** — compiler knows the keys, so resolve directly +
+   subscribe precisely instead of the `useTheme()` proxy/use-tracking. Makes `themed` beat
+   both; every press element inherits it. LOWER RISK. ← doing first.
+2. **Static-pressStyle fast-path** on top of (1): raw RN View + RNGH + tiny press-state,
+   dropping getSplitStyles + state machine. Collapses `rich` from 3.64× toward
+   light-gear+RNGH. GATE: must validate press stays off-thread under JS load (the axis the
+   reverted onTouch attempt failed — a mount bench cannot see it).
+
+---
+
 ## 🎯 GOAL PIVOT (2026-06-21): the goal is the COMPILER, and it must BEAT NW + Uniwind
 
 Nate's decision after working through the architecture: **runtime-within-10% is the
@@ -114,32 +195,68 @@ is `className="group …"` (verified). Hold the dynamic scenarios to NativeWind
 (rich 1.44, group 1.84), not Uniwind. simple already wins (full extraction → raw RN,
 beats even Uniwind's lookup floor).
 
-### Why NW/Uniwind are leaner (it's the wrapper, confirmed by reading the benches)
+### Why NW/Uniwind are leaner (CORRECTED 2026-06-22 by reading their actual v5 native runtime)
 
-NW/Uniwind do NOT precompile press/group away — they can't (touch + parent state are
-runtime). What they precompile is a stylesheet of *conditional* rules; the runtime
-(`cssInterop`) then **injects event handlers + holds interaction state in a signals
-store** for `active:`, and propagates `group` state via React **context** to `group-*`
-descendants. Same category as Tamagui. The gap is two things:
-1. **Pay-for-what-you-use:** cssInterop attaches the interaction runtime ONLY to
-   elements that have those variants; a plain element is a raw RN primitive + a
-   resolved style object, ZERO hooks. Tamagui runs the full `createComponent`
-   (~15 hooks) on EVERY styled element, static or not. On a 600-element tree that
-   uniform wrapper tax is the bulk of the gap (see corrected cost map: ~276ms
-   createComponent machinery vs ~150ms style resolution on group).
-2. **Thinner interactive machinery:** NW press = signal flip on RN's built-in
-   pressability; Tamagui press = faithful RNGH `Gesture.Manual()` arbitration
-   (nested-press exclusivity, scroll termination, Fabric/Paper) — heavier but more
-   correct. NW state change = signal recompute of just the affected style (often no
-   React re-render); Tamagui = full component re-render via getSplitStyles.
+**Earlier claim in this doc was WRONG and is retracted.** It said a static NW/Uniwind
+element is "a raw RN primitive + style object, ZERO hooks" (pay-for-what-you-use) and
+that "NW state change = signal recompute, often no React re-render." Both are false.
+Source-archaeology of `react-native-css@3.0.7` (NW v5's engine) and `uniwind@1.9.0`:
 
-**Strategic implication:** Tamagui only beats them when the compiler flattens the
-element OUT of createComponent (simple). To beat NW on press/group it must do
-pay-for-what-you-use too — emit **graduated runtime shapes** (raw / press-only /
-group-only / full) based on the feature set the compiler already proves per element,
-instead of today's binary (raw-flattened vs full-createComponent). That's the
-slim-pressable direction; the bar it must beat is NW's 1.44 (rich) / 1.84 (group),
-with the press arbitration staying faithful while getting thin.
+- **There is NO static fast-path in either.** Both rewrite `react-native`'s `View` at
+  build time (import rewrite) into a wrapper that runs hooks on EVERY className element,
+  static or not. It's one constant wrapper; interaction is a small delta on top, not a
+  separate code path.
+- **Per-element base tax (every render, even fully static):**
+  - **NativeWind v5:** 5 React hooks (2 `useState`, 2 `useContext`, 1 `useEffect`) +
+    a per-className observable subscription + guards array + state hash + precompiled
+    stylesheet lookup. (`react-native-css/useNativeCss.ts:63-167`, `api.tsx:82-92`,
+    `rules.ts:24-258`.)
+  - **Uniwind:** 3 hooks (`useUniwindContext`, `useReducer`, `useLayoutEffect`) + a
+    `getStyles` resolve pass; prod subscribes to the store only if the class is
+    dynamic. (`uniwind/src/components/native/useStyle.ts:7-22`, `core/native/store.ts`.)
+  - **Tamagui deopted leaf (with all `data-disable-*` firing):** ~10+ hook slots —
+    `useComponentState` (SSR + client-only + ref + state) + 2 `useContext`
+    (Component, Group) + pointer `useRef` + `useMemo` + several `useLayoutEffect` —
+    PLUS the full `getSplitStyles` runtime resolution of the open-ended Tamagui prop API.
+- **Press is a React re-render in ALL THREE — none bypasses render.** NW: `onPressIn`
+  flips a per-element signal whose effect *is* a `setState` (`interaction.ts:73` →
+  `useNativeCss.ts:83`); the signals layer only makes it *surgical* (only subscribed
+  elements re-render), it does not avoid the render. Uniwind: `useState` inside its
+  `Pressable`/`Touchable` wrapper only (a plain `<View className="active:…">` never gets
+  press state; `store.ts:139`). Tamagui: RNGH → `setStateShallow` → `getSplitStyles`.
+- **Group:** NW = CSS container query, parent wraps in `ContainerContext.Provider` +
+  registers a per-parent observable, each `group-*` child subscribes via the context key
+  → parent press notifies only subscribed children (surgical, each via its own
+  `setState`). Uniwind = **not implemented on native at all** (no hover/group in source).
+  Tamagui = `GroupContext` + `allGroupContexts`.
+
+**So the gap is wrapper WEIGHT + style-resolution COST, not "wrapper vs nothing":**
+1. **Wrapper weight:** ~10+ hooks (TG) vs 5 (NW) vs 3 (Uniwind), compounded over 200-600
+   elements.
+2. **Open-ended runtime resolution vs precompiled lookup:** `getSplitStyles` resolves
+   arbitrary style props every render; NW/Uniwind precompile a Tailwind stylesheet and
+   do a class→rule lookup+filter. Lookup ≪ open-ended resolution. This is the price of
+   Tamagui's full runtime dynamism (any prop can be a runtime value).
+3. **Press arbitration:** RNGH `Gesture.Manual()` (nested-press exclusivity, scroll
+   termination, **off-thread recognition** → feels instant under JS load) is heavier per
+   interactive element than NW's "inject 3 handlers + flip a signal" — but more correct
+   and the off-thread feel is real value a mount benchmark cannot see (see the reverted
+   onTouch experiment).
+
+**Strategic implication (corrected):** Tamagui has TWO gears and nothing between —
+full-flatten (raw RN View, wins `simple` 1.02×) or the full heavy `createComponent`. The
+competitors don't have a flatten because their always-on gear is *already light*. Beating
+them on rich/group is NOT about shaving theme/media — it's building the **missing middle
+gear**: a runtime shape for a deopted element that runs ONLY what it needs (press-only /
+group-only), skipping the full state machine + open-ended resolver. `data-disable-*` is
+step one but insufficient (the leaf still runs `useComponentState` + `useSplitStyles` +
+contexts + pointer-ref + layout-effects). Bar to beat: NW 1.44 (rich) / 1.84 (group).
+
+**Bench caveat (native group is mismeasured):** hover never fires on touch, so our group
+rows (`$group-*-hover`, dead on native) and NW's group row (parent `group` with NO
+`group-*` consumers on its children) both measure *container/context scaffolding*, not
+live parent→child reactivity. An honest native group test needs `group-active:`
+(press-driven). Fix the bench before drawing group conclusions.
 
 ### SHIPPED: graduated hook-disabling — `data-disable-events` (commit `f2374c8e84`)
 
