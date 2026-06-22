@@ -49,29 +49,21 @@ add `--clear` to the harness `startMetro` for cold runs). The harness's silent
 the fresh rebuild outran the per-scenario deadline. A pre-flight canary (load one
 scenario, confirm a POST arrives) before a full run would catch this.
 
-**BUT the COMPILED bench has a SEPARATE, GENUINE bug (not stale cache).** With
-`--clear` (fresh 1301-module bundle) it STILL crashes with the same
-`addEventListener` on Hermes. So `@tamagui/babel-plugin` extraction is putting the
-**web** `createComponent` into the native bundle. What I ruled out / narrowed
-(2026-06-21):
-- `@tamagui/static`'s `getBabelPlugin` (in `extractToNative.ts`) is **hardcoded to
-  `platform: 'native'`** and emits raw `__ReactNativeView` / `StyleSheet` — NOT
-  `createComponent`. So *extracted* components are fine and aren't the leak.
-- `tamagui`/`@tamagui/core`/`@tamagui/web` all have correct `react-native` →
-  `index.native.js` exports; the runtime bench proves native resolution works.
-- The web code therefore comes from a **non-extracted fallback** (e.g.
-  `TamaguiProvider`, or a `<View>` with props the plugin couldn't statically
-  extract → falls back to runtime `tamagui`) **resolving to the web build inside
-  the compiled bundle**, OR a build-time config-bundle artifact. Lead:
-  `[tamagui] skipped loading 2 module` = `registerRequire.ts:260` warning-001 (the
-  build-time extractor skipped 2 modules during analysis).
-- **Next-session task:** find which module in the compiled native bundle carries the
-  bare `addEventListener('mouseup'` (source-map the Hermes error, or bisect: strip
-  the babel-plugin and re-add). Likely a fallback import that needs the
-  `react-native` condition / `@tamagui/core/native` rewrite that `bundle.ts:222`
-  applies to the config bundle but maybe not to the app's fallback imports. This is
-  the #1 blocker for the compiled-beats-NW+Uniwind goal — nothing can be measured
-  until it's fixed.
+**ROOT CAUSE FOUND + FIXED (2026-06-21).** It was NOT extraction/fallback — it was an
+upstream **tamagui-build** bug: the native ESM build leaves SOME relative imports
+**unresolved/extensionless** (`createComponent.native.js` → `from "./config"`,
+`index.native.js` → `export * from "./createComponent"`), while the web build resolves
+them (`./createComponent.mjs`). Bare imports then resolve to `.mjs` (WEB) because Metro's
+sourceExts order puts `.mjs` before `.native.js`. So **both** native benches were bundling
+the web `@tamagui/web` (96 web `.mjs` vs 1 native module) — crashing on `addEventListener`
+and, when not crashing, measuring web code on native (⇒ all prior native numbers invalid).
+
+- **Bench workaround (committed `31f01dd473`):** `config.resolver.sourceExts = [...filter
+  (e=>e!=='mjs'), 'mjs']` in both `tamagui-bench-native*/metro.config.js`. Verified: bundle
+  now has 0 web `.mjs`, 103 `.native.js`, 0 bare `addEventListener`.
+- **The real upstream fix** (fix tamagui-build so native imports are fully resolved) is
+  documented in `docs/v2-perf-followups.md` under "🚨 CRITICAL UPSTREAM BUG". Once fixed,
+  delete the bench sourceExts workaround.
 
 ### Next (for the compiled-beats-them goal)
 1. Measure **compiled vs NW vs Uniwind** on all 5 scenarios, cache cleared,
