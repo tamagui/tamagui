@@ -2176,11 +2176,60 @@ export function createExtractor(
                   if (n.startsWith('$group-') && getGroupPseudo(n) === 'hover') return false
                   return true
                 })
+
+                // disable-flags: if the surviving runtime props can't read theme/media,
+                // emit data-disable-theme / data-disable-media so createComponent skips
+                // those hooks (theme subscription setup + useMedia alloc). conservative —
+                // a spread, animation, theme prop, $theme-/$group- key, or any token-bearing
+                // value keeps the hook. consumed props are already token-free statics.
+                const hasSpread = ogAttributes.some((a) => t.isJSXSpreadAttribute(a))
+                let usesTheme = hasSpread
+                let usesMedia = hasSpread
+                for (const a of ogAttributes) {
+                  if (!t.isJSXAttribute(a) || !t.isJSXIdentifier(a.name)) continue
+                  const n = a.name.name
+                  if (consumed.has(n)) continue
+                  if (
+                    n === 'theme' ||
+                    n === 'animation' ||
+                    n === 'enterStyle' ||
+                    n === 'exitStyle'
+                  ) {
+                    usesTheme = true
+                  }
+                  if (n[0] === '$') {
+                    usesMedia = true
+                    if (n.startsWith('$theme-') || n.startsWith('$group-')) usesTheme = true
+                  }
+                }
+                if (!usesTheme) {
+                  for (const a of attrs) {
+                    if (a.type !== 'style' || !a.name || consumed.has(a.name)) continue
+                    if (styleValueHasToken(a.value)) {
+                      usesTheme = true
+                      break
+                    }
+                  }
+                }
+
+                const flagAttrs: t.JSXAttribute[] = []
+                if (!usesTheme) {
+                  flagAttrs.push(
+                    t.jsxAttribute(t.jsxIdentifier('data-disable-theme'), null)
+                  )
+                }
+                if (!usesMedia) {
+                  flagAttrs.push(
+                    t.jsxAttribute(t.jsxIdentifier('data-disable-media'), null)
+                  )
+                }
+
                 partial = [
                   t.jsxAttribute(
                     t.jsxIdentifier('style'),
                     t.jsxExpressionContainer(literalToAst(staticStyle) as t.Expression)
                   ),
+                  ...flagAttrs,
                   ...kept,
                 ]
               }

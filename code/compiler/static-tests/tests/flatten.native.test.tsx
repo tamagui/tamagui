@@ -173,6 +173,9 @@ describe('flatten-tests', () => {
     expect(code).not.toContain('hoverStyle')
     // still the runtime tamagui View (deopted), not folded to a raw RN view
     expect(code).toContain('<View style=')
+    // no tokens / media / group → createComponent skips the theme + media hooks
+    expect(code).toContain('data-disable-theme')
+    expect(code).toContain('data-disable-media')
   })
 
   // theme tokens must NOT be baked into the flattened static style — they stay inline
@@ -198,6 +201,10 @@ describe('flatten-tests', () => {
     expect(code).not.toContain('"backgroundColor": "$gray2"')
     // it remains an inline prop the runtime resolves per-theme
     expect(code).toContain('backgroundColor="$gray2"')
+    // token-bearing → theme hook MUST stay (no data-disable-theme), but it's still
+    // media-free so the media hook is skipped
+    expect(code).not.toContain('data-disable-theme')
+    expect(code).toContain('data-disable-media')
   })
 
   // TODO make this work:
