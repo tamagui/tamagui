@@ -24,19 +24,25 @@ import { View as RNView, Text as RNText } from 'react-native'
 import { TamaguiProvider, View } from 'tamagui'
 import config from './tamagui.config'
 
-// wire the time profiler BEFORE any Tamagui render so the gated
-// time`label` calls in createComponent/getSplitStyles/useThemeState fire.
-// createComponent's render closure auto-prints time.print() ~50ms after the
-// last render via globalThis.willPrint.
-const PROFILE = true
+// profile-native.ts enables this per deep link before Tamagui children render.
 let activeTimer: ReturnType<typeof timer> | null = null
-if (PROFILE && process.env.NODE_ENV !== 'production') {
+let profileEnabled = false
+
+function setProfileEnabled(enabled: boolean) {
+  if (!enabled || process.env.NODE_ENV === 'production') {
+    profileEnabled = false
+    activeTimer = null
+    delete (globalThis as any).time
+    return
+  }
+  if (profileEnabled && activeTimer) return
+  profileEnabled = true
   activeTimer = timer()
   ;(globalThis as any).time = activeTimer.start({ quiet: true })
 }
 
 function resetTimerForScenario() {
-  if (!PROFILE) return
+  if (!profileEnabled) return
   activeTimer = timer()
   ;(globalThis as any).time = activeTimer.start({ quiet: true })
 }
@@ -212,8 +218,33 @@ function AnimatedItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
+// isolates the light-dynamic gear: same shape as simple but a theme token
+// ($blue5) instead of an rgb literal. on the compiled path the token can't be
+// statically inlined (theme varies), so the element folds to _withStableStyle
+// (raw RN View + theme accessor) instead of a 100% static flatten. therefore
+// (themed − simple) = the real per-element cost of the light-dynamic gear.
+function ThemedItems({ seed }: { seed: number }) {
+  return useMemo(() => {
+    const arr = []
+    for (let i = 0; i < ITEM_COUNT; i++) {
+      arr.push(
+        <View
+          key={i + seed * ITEM_COUNT}
+          width={20}
+          height={20}
+          backgroundColor="$blue5"
+          borderRadius={3}
+          margin={1}
+        />
+      )
+    }
+    return <>{arr}</>
+  }, [seed])
+}
+
 const scenarioComponents: Record<string, (props: { seed: number }) => any> = {
   simple: SimpleItems,
+  themed: ThemedItems,
   rich: RichItems,
   group: GroupItems,
   heavy: HeavyItems,
@@ -254,7 +285,7 @@ function BenchRunner({
       // have fired yet (we want to call print ourselves to capture the string).
       // We synchronously grab the output, then schedule the POST.
       let profileOut: string | undefined
-      if (PROFILE && activeTimer) {
+      if (profileEnabled && activeTimer) {
         try {
           // calling print() returns the formatted string AND console.info's it.
           profileOut = activeTimer.print()
@@ -288,6 +319,7 @@ export function App() {
   const url = useURL()
   let caseName: string | null = null
   let framework = 'tamagui'
+  let profile = false
   if (url) {
     try {
       const params = Linking.parse(url).queryParams
@@ -296,9 +328,11 @@ export function App() {
       // either "tamagui" (runtime) or "tamagui-compiled" (when babel-plugin has
       // pre-extracted styles). Defaults to "tamagui" for direct use.
       if (params?.fw) framework = String(params.fw)
+      profile = params?.profile === '1'
     } catch {}
   }
   const valid = caseName && scenarioComponents[caseName] ? caseName : null
+  setProfileEnabled(Boolean(valid && profile))
 
   const handleResult = useCallback(
     (result: { mount: number; rerender: number; profile?: string }) => {

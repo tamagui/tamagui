@@ -29,7 +29,7 @@ const SCENARIO_TIMEOUT_MS = 60_000
 const COLD_BUNDLE_TIMEOUT_MS = 180_000
 const HERE = import.meta.dir
 
-const SCENARIOS = ['simple', 'rich', 'group', 'heavy', 'animated'] as const
+const SCENARIOS = ['simple', 'themed', 'rich', 'group', 'heavy', 'animated'] as const
 type ScenarioId = (typeof SCENARIOS)[number]
 
 // --scenarios=rich,simple restricts the run to a subset (faster grind loop).
@@ -43,6 +43,7 @@ const ACTIVE_SCENARIOS: readonly ScenarioId[] = SCENARIO_FILTER
 
 const SCENARIO_LABELS: Record<ScenarioId, string> = {
   simple: 'Simple (static props)',
+  themed: 'Themed (token bg → _withStableStyle)',
   rich: 'Rich (pseudo states)',
   group: 'Group hover',
   heavy: 'Heavy page (60)',
@@ -376,7 +377,7 @@ async function runOneScenario(
 type RunResult = Record<ScenarioId, { mount: number; rerender: number } | null>
 
 const emptyRun = (): RunResult => ({
-  simple: null, rich: null, group: null, heavy: null, animated: null,
+  simple: null, themed: null, rich: null, group: null, heavy: null, animated: null,
 })
 
 // measure all scenarios for a bench whose metro is ALREADY running. coldFirst marks
@@ -429,7 +430,7 @@ function averageResults(
   runs: Record<ScenarioId, { mount: number; rerender: number } | null>[]
 ): Record<ScenarioId, { mount: number; rerender: number } | null> {
   const avg: Record<ScenarioId, { mount: number; rerender: number } | null> = {
-    simple: null, rich: null, group: null, heavy: null, animated: null,
+    simple: null, themed: null, rich: null, group: null, heavy: null, animated: null,
   }
   for (const s of ACTIVE_SCENARIOS) {
     const mounts = runs.map((r) => r[s]?.mount).filter((n): n is number => typeof n === 'number')

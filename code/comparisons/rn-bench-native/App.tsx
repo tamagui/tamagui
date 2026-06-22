@@ -1,9 +1,3 @@
-/**
- * NativeWind native bench harness. Same shape as tamagui-bench-native/App.tsx but
- * uses className on RN View via nativewind. Deep-link routed:
- *   exp://HOST/--/?case=<scenarioId>&n=<counter>
- */
-import './global.css'
 import * as Linking from 'expo-linking'
 import { useURL } from 'expo-linking'
 import {
@@ -14,34 +8,21 @@ import {
   useRef,
   useState,
 } from 'react'
-import { View, Text } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 
 const HARNESS_URL = 'http://localhost:8091/result'
 const ITEM_COUNT = 200
 const HEAVY_COUNT = 60
 
-// ── scenarios (mirror web nativewind-bench/src/index.tsx) ───────
-
 function SimpleItems({ seed }: { seed: number }) {
   return useMemo(() => {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      arr.push(
-        <View
-          key={i + seed * ITEM_COUNT}
-          className="w-5 h-5 rounded bg-indigo-500 m-px"
-        />
-      )
+      arr.push(<View key={i + seed * ITEM_COUNT} style={styles.simpleItem} />)
     }
     return <>{arr}</>
   }, [seed])
 }
-
-const richClasses = [
-  'w-[60px] h-10 rounded-md p-1 border border-black/10 m-px bg-indigo-500 active:scale-[0.98] active:opacity-80',
-  'w-[60px] h-10 rounded-md p-1 border border-black/10 m-px bg-green-500 active:scale-[0.98] active:opacity-80',
-  'w-[60px] h-10 rounded-md p-1 border border-black/10 m-px bg-pink-500 active:scale-[0.98] active:opacity-80',
-]
 
 function RichItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -50,7 +31,7 @@ function RichItems({ seed }: { seed: number }) {
       arr.push(
         <View
           key={i + seed * ITEM_COUNT}
-          className={richClasses[(i + seed) % 3]}
+          style={[styles.richItem, richColorStyles[(i + seed) % 3]]}
         />
       )
     }
@@ -63,13 +44,10 @@ function GroupItems({ seed }: { seed: number }) {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
-        <View
-          key={i + seed * ITEM_COUNT}
-          className="group flex-row items-center gap-2 p-2 rounded-lg bg-gray-100 m-px"
-        >
-          <View className="w-8 h-8 rounded-full bg-blue-500" />
-          <View className="flex-1">
-            <View className="h-2.5 rounded bg-gray-600" />
+        <View key={i + seed * ITEM_COUNT} style={styles.groupItem}>
+          <View style={styles.groupAvatar} />
+          <View style={styles.groupContent}>
+            <View style={styles.groupLine} />
           </View>
         </View>
       )
@@ -78,7 +56,7 @@ function GroupItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-const heavyColors = ['bg-blue-500', 'bg-green-500', 'bg-pink-500', 'bg-orange-500']
+const heavyColors = ['#3b82f6', '#22c55e', '#ec4899', '#f97316']
 
 function HeavyItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -86,23 +64,14 @@ function HeavyItems({ seed }: { seed: number }) {
     for (let i = 0; i < HEAVY_COUNT; i++) {
       const color = heavyColors[(i + seed) % 4]
       arr.push(
-        <View
-          key={i + seed * HEAVY_COUNT}
-          className="group flex-row items-center gap-3 p-3 rounded-xl border border-gray-200 mb-1"
-        >
-          <View className={`w-11 h-11 rounded-full ${color}`} />
-          <View className="flex-1 gap-1">
-            <View
-              className="h-3 rounded bg-gray-800"
-              style={{ width: 80 + ((i * 17) % 60) }}
-            />
-            <View
-              className="h-2.5 rounded bg-gray-400"
-              style={{ width: 120 + ((i * 13) % 80) }}
-            />
+        <View key={i + seed * HEAVY_COUNT} style={styles.heavyItem}>
+          <View style={[styles.heavyAvatar, { backgroundColor: color }]} />
+          <View style={styles.heavyContent}>
+            <View style={[styles.heavyLineStrong, { width: 80 + ((i * 17) % 60) }]} />
+            <View style={[styles.heavyLineMuted, { width: 120 + ((i * 13) % 80) }]} />
           </View>
-          <View className="px-2 py-0.5 rounded-md bg-blue-100">
-            <View className="w-6 h-2 rounded bg-blue-700" />
+          <View style={styles.heavyBadge}>
+            <View style={styles.heavyBadgeLine} />
           </View>
         </View>
       )
@@ -115,30 +84,19 @@ function AnimatedItems({ seed }: { seed: number }) {
   return useMemo(() => {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      arr.push(
-        <View
-          key={i + seed * ITEM_COUNT}
-          className="w-6 h-6 rounded m-px bg-blue-500 transition-all duration-200 active:scale-95"
-        />
-      )
+      arr.push(<View key={i + seed * ITEM_COUNT} style={styles.animatedItem} />)
     }
     return <>{arr}</>
   }, [seed])
 }
 
-// themed = simple shape with a color class (apples-to-apples vs tamagui's token
-// bg). NW has no lighter "theme" path — every className element rides useNativeCss
-// (5 hooks), so this measures NW's per-element wrapper cost for a colored view.
+// themed = simple shape, raw RN baseline (no wrapper, no theme concept). this is
+// the ×RN denominator for the themed scenario — a plain colored view.
 function ThemedItems({ seed }: { seed: number }) {
   return useMemo(() => {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      arr.push(
-        <View
-          key={i + seed * ITEM_COUNT}
-          className="w-5 h-5 rounded bg-blue-500 m-px"
-        />
-      )
+      arr.push(<View key={i + seed * ITEM_COUNT} style={styles.themedItem} />)
     }
     return <>{arr}</>
   }, [seed])
@@ -197,7 +155,7 @@ function BenchRunner({
   if (phase === 'idle' || !Component) return null
 
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}>
+    <View style={styles.runner}>
       <Component seed={seed} />
     </View>
   )
@@ -219,7 +177,7 @@ export function App() {
       fetch(HARNESS_URL, {
         method: 'POST',
         body: JSON.stringify({
-          framework: 'nativewind',
+          framework: 'rn',
           scenario: valid,
           mount: result.mount,
           rerender: result.rerender,
@@ -230,26 +188,145 @@ export function App() {
   )
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: '#ffffff',
-        paddingTop: 60,
-        alignItems: 'flex-start',
-      }}
-    >
+    <View style={styles.app}>
       {valid ? (
         <View key={url ?? ''}>
-          <Text style={{ padding: 8, fontSize: 12, color: '#666' }}>
-            nativewind · {valid}
-          </Text>
+          <Text style={styles.title}>react native · {valid}</Text>
           <BenchRunner scenarioId={valid} onResult={handleResult} />
         </View>
       ) : (
-        <Text style={{ padding: 20 }}>
+        <Text style={styles.waiting}>
           {caseName ? `unknown case: ${caseName}` : 'waiting for ?case='}
         </Text>
       )}
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  app: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    paddingTop: 60,
+    alignItems: 'flex-start',
+  },
+  title: {
+    padding: 8,
+    fontSize: 12,
+    color: '#666666',
+  },
+  waiting: {
+    padding: 20,
+  },
+  runner: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    maxWidth: 600,
+  },
+  simpleItem: {
+    width: 20,
+    height: 20,
+    borderRadius: 3,
+    backgroundColor: 'rgb(99,102,241)',
+    margin: 1,
+  },
+  themedItem: {
+    width: 20,
+    height: 20,
+    borderRadius: 3,
+    backgroundColor: 'rgb(59,130,246)',
+    margin: 1,
+  },
+  richItem: {
+    width: 60,
+    height: 40,
+    borderRadius: 6,
+    padding: 4,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.1)',
+    margin: 1,
+  },
+  richIndigo: {
+    backgroundColor: '#6366f1',
+  },
+  richGreen: {
+    backgroundColor: '#22c55e',
+  },
+  richPink: {
+    backgroundColor: '#ec4899',
+  },
+  groupItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: '#f3f4f6',
+    margin: 1,
+  },
+  groupAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#3b82f6',
+  },
+  groupContent: {
+    flex: 1,
+  },
+  groupLine: {
+    height: 10,
+    borderRadius: 4,
+    backgroundColor: '#4b5563',
+  },
+  heavyItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    padding: 12,
+    borderRadius: 10,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    marginBottom: 4,
+  },
+  heavyAvatar: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+  },
+  heavyContent: {
+    flex: 1,
+    gap: 4,
+  },
+  heavyLineStrong: {
+    height: 12,
+    borderRadius: 4,
+    backgroundColor: '#1f2937',
+  },
+  heavyLineMuted: {
+    height: 10,
+    borderRadius: 3,
+    backgroundColor: '#9ca3af',
+  },
+  heavyBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    backgroundColor: '#dbeafe',
+  },
+  heavyBadgeLine: {
+    width: 24,
+    height: 8,
+    borderRadius: 3,
+    backgroundColor: '#1d4ed8',
+  },
+  animatedItem: {
+    width: 24,
+    height: 24,
+    borderRadius: 4,
+    backgroundColor: '#3b82f6',
+    margin: 1,
+  },
+})
+
+const richColorStyles = [styles.richIndigo, styles.richGreen, styles.richPink]

@@ -26,7 +26,7 @@ const HARNESS_PORT = 8091
 const COLD_BUNDLE_TIMEOUT_MS = 240_000
 const SCENARIO_TIMEOUT_MS = 90_000
 
-const ALL_SCENARIOS = ['simple', 'rich', 'group', 'heavy', 'animated'] as const
+const ALL_SCENARIOS = ['simple', 'themed', 'rich', 'group', 'heavy', 'animated'] as const
 type Scenario = (typeof ALL_SCENARIOS)[number]
 
 const targets = (process.argv.slice(2).filter((a) => !a.startsWith('--')) as Scenario[]) ?? []

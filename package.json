@@ -24,6 +24,7 @@
     "./code/comparisons/tailwind-bench",
     "./code/comparisons/inline-bench",
     "./code/comparisons/nativewind-bench",
+    "./code/comparisons/rn-bench-native",
     "./code/comparisons/nativewind-bench-native",
     "./code/comparisons/uniwind-bench-native",
     "./code/comparisons/conformance/web",

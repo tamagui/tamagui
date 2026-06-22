@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "rn-bench-native",
+    "slug": "rn-bench-native",
+    "version": "1.0.0",
+    "scheme": "rnbenchnative",
+    "platforms": ["ios"],
+    "ios": {
+      "bundleIdentifier": "dev.tamagui.rnbenchnative"
+    }
+  }
+}

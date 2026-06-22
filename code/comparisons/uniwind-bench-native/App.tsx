@@ -127,8 +127,27 @@ function AnimatedItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
+// themed = simple shape with a color class. Uniwind wraps every className element
+// in useStyle (3 hooks); a static color class is prod-subscription-free, so this
+// measures Uniwind's per-element wrapper cost for a colored view.
+function ThemedItems({ seed }: { seed: number }) {
+  return useMemo(() => {
+    const arr = []
+    for (let i = 0; i < ITEM_COUNT; i++) {
+      arr.push(
+        <View
+          key={i + seed * ITEM_COUNT}
+          className="w-5 h-5 rounded bg-blue-500 m-px"
+        />
+      )
+    }
+    return <>{arr}</>
+  }, [seed])
+}
+
 const scenarioComponents: Record<string, (props: { seed: number }) => any> = {
   simple: SimpleItems,
+  themed: ThemedItems,
   rich: RichItems,
   group: GroupItems,
   heavy: HeavyItems,
