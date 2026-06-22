@@ -94,19 +94,8 @@ export function getThemedChildren(
   }
 
   // from here on out we have to be careful not to re-parent
-  // moonshot: context value is the ThemeState snapshot itself, not just an ID.
-  // Components below read this via useContext(ThemeStateContext) and skip the
-  // per-component useSyncExternalStore subscription entirely.
-  //
-  // We strip `isNew` from the propagated snapshot so descendants don't try to
-  // wrap themselves in a theme span — only the actual <Theme> instance is
-  // "new". This also means the lite per-component path can return the
-  // context value verbatim with zero allocations.
-  const childContextState = themeState.isNew
-    ? ({ ...themeState, isNew: false } as ThemeState)
-    : themeState
   children = (
-    <ThemeStateContext.Provider value={childContextState}>
+    <ThemeStateContext.Provider value={themeState.id}>
       {children}
     </ThemeStateContext.Provider>
   )

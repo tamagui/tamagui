@@ -18,26 +18,15 @@ import type {
 
 type ID = string
 
-// The context now carries the resolved ThemeState snapshot directly.
-// This is THE moonshot change: components below a <Theme> simply read this
-// snapshot via useContext, instead of running their own useSyncExternalStore
-// subscription. Theme/media changes are rare; paying a context-driven re-render
-// on those rare events is dramatically cheaper than running an external-store
-// subscription on every component on every render.
-//
-// We default to null so the first <Theme _isRoot> can detect "no parent".
-export const ThemeStateContext = createContext<ThemeState | null>(null)
+export const ThemeStateContext = createContext<ID>('')
 
 const allListeners = new Map<ID, Function>()
-// kept for the root Theme: forceUpdateThemes iterates all listeners
 const listenersByParent: Record<ID, Set<ID>> = {}
 const HasRenderedOnce = new WeakMap<object, boolean>()
 const HadTheme = new WeakMap<object, boolean>()
 const PendingUpdate = new Map<any, boolean | 'force'>()
 
-// these caches survive for the lifetime of the app and grow only with the
-// number of <Theme> instances (typically a handful), not with the number of
-// styled components.
+// TODO this will gain memory over time but its not going to be a ton
 const states: Map<ID, ThemeState | undefined> = new Map()
 const localStates: Map<ID, ThemeState | undefined> = new Map()
 
@@ -65,18 +54,6 @@ export const getRootThemeState = () => rootThemeState
 // extracts base name without scheme: "light_red_surface1" -> "red_surface1"
 const getThemeBaseName = (name: string) => name.replace(/^(light|dark)_/, '')
 
-const EMPTY_KEYS: MutableRefObject<Set<string> | null> = { current: null }
-
-// =====================================================================
-// useThemeState — the only entry point. It auto-routes between the
-// subscribed path (used by <Theme> instances) and the lightweight
-// context-read path (used by every styled component). Differentiator:
-// the third arg `keys` is non-empty for <Theme>/useThemeWithState (a real ref
-// from caller), and we treat an entry coming from <Theme> as the owner of a
-// subscription. Components reach this only through useThemeStateAtComponent
-// (below), which short-circuits the subscription entirely.
-// =====================================================================
-
 export const useThemeState = (
   props: UseThemeWithStateProps,
   isRoot = false,
@@ -85,112 +62,10 @@ export const useThemeState = (
 ): ThemeState => {
   'use no memo'
 
-  return useThemeStateSubscribed(props, isRoot, keys, schemeKeys)
-}
-
-// =====================================================================
-// useThemeStateAtComponent — HOT PATH for every styled component render.
-//
-// Reads the parent ThemeState snapshot from context (microseconds), then
-// synchronously derives a component-specific theme if `componentName`
-// resolves to a sub-theme like `red_Button`. No useSyncExternalStore,
-// no useId, no useRef, no useIsomorphicLayoutEffect.
-// =====================================================================
-export const useThemeStateAtComponent = (
-  props: UseThemeWithStateProps
-): ThemeState => {
-  'use no memo'
-
-  const { disable, passThrough } = props
-
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-atc-pre-useContext`
-  const parentState = useContext(ThemeStateContext)
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-atc-useContext`
-
-  if (!parentState) {
-    throw new Error(
-      process.env.NODE_ENV === 'development'
-        ? `${MISSING_THEME_MESSAGE}
-
-Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? ` (component: ${props.componentName})` : ''}, but no parent theme context was found.`
-        : MISSING_THEME_MESSAGE
-    )
-  }
-
-  if (disable || passThrough) {
-    if (process.env.NODE_ENV === 'development' && globalThis.time)
-      globalThis.time`theme-atc-passthrough`
-    return parentState
-  }
-
-  const propsKey = getPropsKey(props)
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-atc-getPropsKey`
-  if (!propsKey) {
-    // nothing to derive (no name, no reset, no componentName), use parent as-is.
-    // <Theme> strips isNew before propagating via context, so parent is already
-    // safe to return without allocating.
-    if (process.env.NODE_ENV === 'development' && globalThis.time)
-      globalThis.time`theme-atc-nopropskey`
-    return parentState
-  }
-
-  if (!themes) {
-    themes = getConfig().themes
-  }
-
-  const name = getNewThemeName(parentState.name, props, false)
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-atc-getNewThemeName`
-  if (!name || name === parentState.name) {
-    if (process.env.NODE_ENV === 'development' && globalThis.time)
-      globalThis.time`theme-atc-same-as-parent`
-    return parentState
-  }
-
-  // synchronous derivation — no subscription, no per-render ref/closure churn
-  const scheme = getScheme(name)
-  const isInverse = scheme !== parentState.scheme
-  const next: ThemeState = {
-    id: parentState.id,
-    name,
-    theme: themes[name],
-    scheme,
-    parentId: parentState.id,
-    parentName: parentState.name,
-    isInverse,
-    isNew: true,
-  }
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-atc-derive`
-  return next
-}
-
-// =====================================================================
-// useThemeStateSubscribed — kept for <Theme>/useThemeWithState callers that
-// need the full subscription path (forceUpdateThemes invalidation, key tracking,
-// re-render gating). This runs at most a few times per app (once per <Theme>),
-// not once per component.
-// =====================================================================
-export const useThemeStateSubscribed = (
-  props: UseThemeWithStateProps,
-  isRoot = false,
-  keys: MutableRefObject<Set<string> | null>,
-  schemeKeys?: MutableRefObject<Set<string> | null>
-): ThemeState => {
-  'use no memo'
-
   const { disable } = props
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-sub-pre-useContext`
-  const parentState = useContext(ThemeStateContext)
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-sub-useContext`
-  const parentId = parentState?.id || ''
+  const parentId = useContext(ThemeStateContext)
 
-  if (!parentState && !isRoot) {
+  if (!parentId && !isRoot) {
     throw new Error(
       process.env.NODE_ENV === 'development'
         ? `${MISSING_THEME_MESSAGE}
@@ -202,23 +77,21 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
 
   if (disable) {
     return (
-      parentState || {
+      states.get(parentId) || {
         id: '',
         name: 'light',
         theme: getConfig().themes.light,
+        // inverses: 0,
       }
     )
   }
 
   const id = useId()
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-sub-useId`
   const propsKey = getPropsKey(props)
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-sub-getPropsKey`
 
   // stable ref-bag for both subscribe and getSnapshot closures so we don't
-  // re-allocate them per render.
+  // re-allocate them per render. each render updates the latest values; the
+  // closures (created once per [id, parentId]) read through the ref.
   const ref = useRef<{
     id: string
     parentId: string
@@ -241,11 +114,15 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
       schemeKeys,
     }
   } else {
+    // refresh latest values for the stable closures to read
     ref.current.props = props
     ref.current.propsKey = propsKey
     ref.current.isRoot = isRoot
     ref.current.keys = keys
     ref.current.schemeKeys = schemeKeys
+    // if id or parentId actually changed we must rebuild subscribe so
+    // useSyncExternalStore re-subscribes against the new parent (matches the
+    // prior useCallback([id, parentId]) re-subscription semantics).
     if (ref.current.id !== id || ref.current.parentId !== parentId) {
       ref.current.id = id
       ref.current.parentId = parentId
@@ -253,6 +130,10 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     }
   }
 
+  // build stable subscribe + getSnapshot ONCE per [id, parentId]. they read
+  // all per-render inputs through ref.current. this avoids per-render closure
+  // allocation (which dominated the theme-prep-uses hotspot in the group/heavy
+  // benches) without changing observable behavior.
   if (!ref.current.subscribe) {
     const r = ref.current
     const pid = r.parentId
@@ -278,12 +159,9 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   const getSnapshot = ref.current.getSnapshot!
 
   if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-sub-useRef-prep`
+    globalThis.time`theme-prep-uses`
 
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
-
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-sub-useSyncExternalStore`
 
   useIsomorphicLayoutEffect(() => {
     if (!HasRenderedOnce.get(keys)) {
@@ -292,6 +170,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     }
     if (!propsKey) {
       if (HadTheme.get(keys)) {
+        // we're removing the last theme, make sure to notify
         scheduleUpdate(id)
       }
       HadTheme.set(keys, false)
@@ -303,9 +182,6 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     scheduleUpdate(id)
     HadTheme.set(keys, true)
   }, [keys, propsKey])
-
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-sub-useIsoLayoutEffect`
 
   return state
 }
@@ -321,8 +197,6 @@ type SnapshotRef = {
 }
 
 const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-getSnap-enter`
   const { id, parentId, props, propsKey, isRoot, keys, schemeKeys } = r
   let local = localStates.get(id)
   const parentState = states.get(parentId)
@@ -334,12 +208,11 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
       (local as any)._parentName === parentState.name &&
       (local as any)._propsKey === propsKey
     ) {
-      if (process.env.NODE_ENV === 'development' && globalThis.time)
-        globalThis.time`theme-getSnap-fastpath`
       return local
     }
   }
 
+  // check if this is a scheme-only change (light↔dark) where DynamicColorIOS handles it
   const isSchemeOnlyChange =
     process.env.TAMAGUI_TARGET === 'native' &&
     supportsDynamicColorIOS &&
@@ -349,6 +222,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     local.scheme !== parentState.scheme &&
     getThemeBaseName(local.name) === getThemeBaseName(parentState.name)
 
+  // all tracked keys are scheme-optimized = can skip re-render for scheme changes
   const keysSize = keys?.current?.size ?? 0
   const schemeKeysSize = schemeKeys?.current?.size ?? 0
   const allKeysSchemeOptimized = schemeKeysSize === keysSize && keysSize > 0
@@ -362,7 +236,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
       : !HasRenderedOnce.get(keys)
         ? true
         : canSkipForSchemeChange
-          ? false
+          ? false // skip re-render for scheme-only changes with DynamicColorIOS
           : keys?.current?.size
             ? true
             : props.needsUpdate?.()
@@ -380,6 +254,10 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
 
   PendingUpdate.delete(id)
 
+  // we always create a new localState for every component
+  // that way we can use it to de-opt and avoid renders granularly
+  // we always return the localState object in each component
+  // the global state (states) should always be up to date with the latest
   if (!local || rerender) {
     local = { ...next }
     localStates.set(id, local)
@@ -409,9 +287,6 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
   ;(local as any)._parentName = parentState?.name
   ;(local as any)._propsKey = propsKey
   states.set(id, next)
-
-  if (process.env.NODE_ENV === 'development' && globalThis.time)
-    globalThis.time`theme-getSnap-slowpath`
 
   return local
 }
@@ -491,7 +366,9 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   }
 
   const scheme = getScheme(name)
+  // const parentInverses = parentState?.inverses ?? 0
   const isInverse = parentState && scheme !== parentState.scheme
+  // const inverses = parentInverses + (isInverse ? 1 : 0)
 
   const nextState = {
     id,
@@ -500,6 +377,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     scheme,
     parentId,
     parentName: parentState?.name,
+    // inverses,
     isInverse,
     isNew: true,
   } satisfies ThemeState
@@ -526,6 +404,8 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     console.groupEnd()
   }
 
+  // we still update the state (not changing identity), that way children can properly resolve the right state
+  // but this one wont trigger an update
   if (shouldAvoidRerender) {
     return [false, nextState]
   }
@@ -581,6 +461,7 @@ function getNewThemeName(
     )
   }
 
+  // check cache
   const cacheKey = `${parentName}|${name || ''}|${componentName || ''}|${reset ? 1 : 0}|${forceUpdate ? 1 : 0}`
   if (themeNameCacheVer !== cacheVersion) {
     themeNameCache.clear()
@@ -593,14 +474,20 @@ function getNewThemeName(
   const { themes } = getConfig()
 
   if (reset) {
+    // For reset, we need to go back to the grandparent theme
+    // If parentName is just a scheme (like "dark" or "light"),
+    // we should return the opposite scheme or a default
     const isSchemeOnly = parentName === 'light' || parentName === 'dark'
     if (isSchemeOnly) {
+      // If parent is just a scheme, go to the opposite scheme
       const result = parentName === 'light' ? 'dark' : 'light'
       themeNameCache.set(cacheKey, result)
       return result
     }
 
+    // For compound themes like "dark_blue", extract the scheme
     const lastPartIndex = parentName.lastIndexOf('_')
+    // parentName will have format light_{name} or dark_{name}
     const name = lastPartIndex <= 0 ? parentName : parentName.slice(lastPartIndex)
     const scheme = parentName.slice(0, lastPartIndex)
     const result = themes[name] ? name : scheme
@@ -610,6 +497,7 @@ function getNewThemeName(
 
   const parentParts = parentName.split('_')
 
+  // always remove component theme if it exists, we never sub a component theme
   const lastName = parentParts[parentParts.length - 1]
   if (lastName && lastName[0].toLowerCase() !== lastName[0]) {
     parentParts.pop()
@@ -623,10 +511,18 @@ function getNewThemeName(
 
   let found: string | null = null
 
+  // If name is provided, try it as a standalone theme first (both with and without scheme)
+  // This allows explicit theme overrides like:
+  // - <Theme name="blue"><Button theme="dark_green"> → finds "dark_green_Button"
+  // - <Theme name="blue"><Button theme="green"> → finds "light_green_Button"
+  // - <Theme name="blue"><Button theme="green_active"> → finds "light_green_active_Button"
   if (name) {
+    // First try the exact name as-is, but only if it already has a scheme prefix
+    // This prevents "green" from matching before we try "light_green_Button"
     const nameHasScheme = getScheme(name)
 
     if (nameHasScheme) {
+      // Name has scheme (like "dark_green"), try as-is with priority to component theme
       for (const subName of subNames) {
         if (subName in themes) {
           found = subName
@@ -635,16 +531,24 @@ function getNewThemeName(
       }
     }
 
+    // If not found and name doesn't have a scheme, try adding parent's scheme
     if (!found && !nameHasScheme) {
       const parentScheme = getScheme(parentName)
 
       if (parentScheme) {
+        // Try progressively shorter parent bases to preserve color context
+        // For parent "light_blue_surface1" + name "surface3":
+        //   Try: light_blue_surface1_surface3, light_blue_surface3, light_surface3
+        // This ensures color context (blue) is preserved before falling back to scheme-only
+
+        // Build list of potential bases from most specific to least specific
         const potentialBases: string[] = []
         for (let i = parentParts.length; i >= 1; i--) {
           potentialBases.push(parentParts.slice(0, i).join('_'))
         }
 
         outer: for (const base of potentialBases) {
+          // Try with componentName first, then without
           const candidates = [
             componentName ? `${base}_${name}_${componentName}` : undefined,
             `${base}_${name}`,
@@ -661,13 +565,19 @@ function getNewThemeName(
     }
   }
 
+  // If not found, fall back to the original search algorithm combining with parent
   if (!found) {
+    // If we're only adding componentName (no explicit name prop), don't backtrack through parent parts
+    // This preserves sub-themes like "light_red_surface1" when adding Button component
     if (!name && componentName) {
+      // Just try adding component to full parent
       const potential = `${parentParts.join('_')}_${componentName}`
       if (potential in themes) {
         found = potential
       }
+      // If not found, don't add component theme - return null to keep parent theme
     } else {
+      // Original backtracking search for when explicit name is provided
       const max = parentParts.length
 
       for (let i = 0; i <= max; i++) {
@@ -690,6 +600,8 @@ function getNewThemeName(
   if (
     !forceUpdate &&
     found === parentName &&
+    // if its a scheme only sub-theme, we always consider it "new" because it likely inverses
+    // and we want to avoid reparenting
     !validSchemes[found]
   ) {
     themeNameCache.set(cacheKey, null)

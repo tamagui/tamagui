@@ -1,10 +1,10 @@
-import { useContext } from 'react'
 import type { ThemeName } from '../types'
-import { ThemeStateContext } from './useThemeState'
+import { useThemeState } from './useThemeState'
+
+// can probably simplify this way down
+const forceUpdateState = { forceClassName: true, deopt: true, needsUpdate: () => true }
+const forceKeys = { current: new Set(['']) }
 
 export function useThemeName(): ThemeName {
-  // moonshot: just read the current theme snapshot from context. No subscription,
-  // no useId, no refs. Context updates propagate when the root <Theme> re-renders.
-  const state = useContext(ThemeStateContext)
-  return (state?.name as ThemeName) || ''
+  return useThemeState(forceUpdateState, false, forceKeys)?.name || ''
 }
