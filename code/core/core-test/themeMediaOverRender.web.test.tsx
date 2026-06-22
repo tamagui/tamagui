@@ -114,3 +114,155 @@ describe('theme/media over-render guard', () => {
     expect(staticReader.current).toBe(staticBaseline)
   })
 })
+
+// always calls useTheme (rules of hooks), but only READS a token when asked.
+// keys.current stays empty until readTheme flips true, so the subscription must
+// be established lazily (the effect re-evaluates shouldSubscribeToTheme every render).
+const ConditionalReader = memo(function ConditionalReader({
+  counter,
+  readTheme,
+}: {
+  counter: Counter
+  readTheme: boolean
+}) {
+  counter.current += 1
+  const theme = useTheme()
+  const bg = readTheme ? theme?.background?.val : 'red'
+  return <span style={{ background: String(bg) }} />
+})
+
+// re-renders whenever `tick` changes (parent-driven), exercising the
+// effect cleanup→setup churn that the renderVersion final-unmount guard sits on.
+const TickThemeReader = memo(function TickThemeReader({
+  counter,
+  tick,
+}: {
+  counter: Counter
+  tick: number
+}) {
+  counter.current += 1
+  const theme = useTheme()
+  const bg = theme?.background?.val
+  return <span data-tick={tick} style={{ background: String(bg) }} />
+})
+
+describe('theme subscription lifecycle', () => {
+  // guards the lazy-subscribe path: a component that does not read theme tokens
+  // must NOT subscribe, but once it begins reading them it MUST start updating.
+  test('a component that begins reading theme mid-life starts subscribing', () => {
+    const counter = { current: 0 }
+    let setName: (n: 'light' | 'dark') => void = () => {}
+
+    function App({ readTheme }: { readTheme: boolean }) {
+      const [name, setN] = useState<'light' | 'dark'>('light')
+      setName = setN
+      return (
+        <Theme name={name}>
+          <ConditionalReader counter={counter} readTheme={readTheme} />
+        </Theme>
+      )
+    }
+
+    const { rerender } = render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <App readTheme={false} />
+      </TamaguiProvider>
+    )
+
+    // not reading theme yet → a theme change must NOT re-render it
+    const beforeRead = counter.current
+    act(() => setName('dark'))
+    expect(counter.current).toBe(beforeRead)
+
+    // flip to reading theme: prop change re-renders once, populates keys,
+    // effect subscribes
+    act(() => {
+      rerender(
+        <TamaguiProvider config={conf} defaultTheme="light">
+          <App readTheme={true} />
+        </TamaguiProvider>
+      )
+    })
+
+    const afterRead = counter.current
+    // now a theme change MUST re-render it
+    act(() => setName('light'))
+    expect(counter.current).toBeGreaterThan(afterRead)
+  })
+
+  // guards the renderVersion final-unmount guard: parent-driven re-renders run
+  // effect cleanup before each new effect; that cleanup must NOT tear down the
+  // still-mounted subscription, so theme updates keep arriving after the churn.
+  test('a theme reader survives parent re-render churn and still updates on theme change', () => {
+    const counter = { current: 0 }
+    let setName: (n: 'light' | 'dark') => void = () => {}
+    let bump: () => void = () => {}
+
+    function App() {
+      const [name, setN] = useState<'light' | 'dark'>('light')
+      const [tick, setTick] = useState(0)
+      setName = setN
+      bump = () => setTick((t) => t + 1)
+      return (
+        <Theme name={name}>
+          <TickThemeReader counter={counter} tick={tick} />
+        </Theme>
+      )
+    }
+
+    render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <App />
+      </TamaguiProvider>
+    )
+
+    // churn: 3 parent-driven re-renders, each running the no-deps effect's
+    // cleanup→setup. the subscription must persist across all of them.
+    act(() => {
+      bump()
+      bump()
+      bump()
+    })
+
+    const afterChurn = counter.current
+    act(() => setName('dark'))
+    // subscription survived the churn → theme change re-renders it
+    expect(counter.current).toBeGreaterThan(afterChurn)
+  })
+
+  // guards final-unmount cleanup: unmounting one reader must run its cleanup
+  // without disturbing a sibling's still-live subscription.
+  test('unmounting a theme reader does not break a sibling subscription', () => {
+    const a = { current: 0 }
+    const b = { current: 0 }
+    let setName: (n: 'light' | 'dark') => void = () => {}
+    let setShowA: (v: boolean) => void = () => {}
+
+    function App() {
+      const [name, setN] = useState<'light' | 'dark'>('light')
+      const [showA, setSA] = useState(true)
+      setName = setN
+      setShowA = setSA
+      return (
+        <Theme name={name}>
+          {showA ? <ThemeReader counter={a} /> : null}
+          <ThemeReader counter={b} />
+        </Theme>
+      )
+    }
+
+    render(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <App />
+      </TamaguiProvider>
+    )
+
+    // unmount A → its effect's final cleanup runs (renderVersion matches)
+    act(() => setShowA(false))
+
+    const bBeforeChange = b.current
+    act(() => setName('dark'))
+    // sibling B's subscription is untouched → it still updates
+    expect(b.current).toBeGreaterThan(bBeforeChange)
+  })
+})

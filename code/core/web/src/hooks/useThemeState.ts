@@ -110,23 +110,9 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   // hook call per styled component on native.
   const propsKey = getPropsKey(props)
 
-  // stable ref-bag for both subscribe and getSnapshot closures so we don't
-  // re-allocate them per render. each render updates the latest values; the
-  // closures (created once per [id, parentId]) read through the ref.
-  // lastSnap caches the result of the last getSnapshot for the manual
-  // subscription bailout check below.
-  const ref = useRef<{
-    id: string
-    parentId: string
-    props: UseThemeWithStateProps
-    propsKey: string
-    isRoot: boolean
-    keys: MutableRefObject<Set<string> | null>
-    schemeKeys?: MutableRefObject<Set<string> | null>
-    subscribe?: (cb: () => void) => () => void
-    getSnapshot?: () => ThemeState
-    lastSnap?: ThemeState
-  }>(null as any)
+  // stable ref-bag for render inputs and the optional subscription cleanup.
+  // lastSnap caches the last getSnapshot result for the subscription bailout.
+  const ref = useRef<ThemeStateRef>(null as any)
   if (!ref.current) {
     ref.current = {
       id: nextThemeStateId(),
@@ -136,6 +122,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
       isRoot,
       keys,
       schemeKeys,
+      renderVersion: 0,
     }
   } else {
     // refresh latest values for the stable closures to read
@@ -144,41 +131,9 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     ref.current.isRoot = isRoot
     ref.current.keys = keys
     ref.current.schemeKeys = schemeKeys
-    // if parentId actually changed we must rebuild subscribe so
-    // useSyncExternalStore re-subscribes against the new parent.
-    if (ref.current.parentId !== parentId) {
-      ref.current.parentId = parentId
-      ref.current.subscribe = undefined
-    }
+    ref.current.parentId = parentId
   }
-
-  // build stable subscribe + getSnapshot ONCE per [id, parentId]. they read
-  // all per-render inputs through ref.current. this avoids per-render closure
-  // allocation (which dominated the theme-prep-uses hotspot in the group/heavy
-  // benches) without changing observable behavior.
-  if (!ref.current.subscribe) {
-    const r = ref.current
-    const pid = r.parentId
-    const sid = r.id
-    r.subscribe = (cb: () => void) => {
-      listenersByParent[pid] = listenersByParent[pid] || new Set()
-      listenersByParent[pid].add(sid)
-      allListeners.set(sid, () => {
-        PendingUpdate.set(sid, shouldForce ? 'force' : true)
-        cb()
-      })
-      return () => {
-        allListeners.delete(sid)
-        listenersByParent[pid]?.delete(sid)
-        localStates.delete(sid)
-        states.delete(sid)
-        PendingUpdate.delete(sid)
-      }
-    }
-    r.getSnapshot = () => getSnapshotImpl(r)
-  }
-  const subscribe = ref.current.subscribe!
-  const getSnapshot = ref.current.getSnapshot!
+  ref.current.renderVersion++
 
   if (process.env.NODE_ENV === 'development' && globalThis.time)
     globalThis.time`theme-prep-uses`
@@ -189,20 +144,59 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   // here: theme/media updates are event-driven, not transition-driven, and
   // useReducer in normal mode already gives same-tick batching.
   const [, forceUpdate] = useReducer(incReducer, 0)
-  const state = getSnapshot()
+  const state = getSnapshotImpl(ref.current)
   ref.current.lastSnap = state
 
   useEffect(() => {
     const r = ref.current
-    const cb = () => {
-      const next = r.getSnapshot!()
-      if (next !== r.lastSnap) {
-        r.lastSnap = next
-        forceUpdate()
+    const renderVersion = r.renderVersion
+
+    if (r.unsubscribe && r.subscribedParentId !== r.parentId) {
+      cleanupThemeSubscription(r)
+    }
+
+    if (shouldSubscribeToTheme(r, cascadeOnChange)) {
+      if (!r.unsubscribe) {
+        const pid = r.parentId
+        const sid = r.id
+        const cb = () => {
+          const next = getSnapshotImpl(r)
+          if (next !== r.lastSnap) {
+            r.lastSnap = next
+            forceUpdate()
+          }
+        }
+
+        listenersByParent[pid] = listenersByParent[pid] || new Set()
+        listenersByParent[pid].add(sid)
+        allListeners.set(sid, () => {
+          PendingUpdate.set(sid, shouldForce ? 'force' : true)
+          cb()
+        })
+        r.subscribedParentId = pid
+        r.unsubscribe = () => {
+          allListeners.delete(sid)
+          listenersByParent[pid]?.delete(sid)
+          localStates.delete(sid)
+          states.delete(sid)
+          PendingUpdate.delete(sid)
+          r.unsubscribe = undefined
+          r.subscribedParentId = undefined
+        }
+      }
+    } else if (r.unsubscribe) {
+      cleanupThemeSubscription(r)
+    }
+
+    return () => {
+      // react runs passive cleanup before the next effect as well as on unmount.
+      // a newer render bumps renderVersion before that cleanup, so equality here
+      // means this is the final unmount cleanup.
+      if (r.renderVersion === renderVersion) {
+        cleanupThemeState(r)
       }
     }
-    return subscribe(cb)
-  }, [subscribe])
+  })
 
   const id = ref.current.id
   if (cascadeOnChange) {
@@ -243,6 +237,37 @@ type SnapshotRef = {
   isRoot: boolean
   keys: MutableRefObject<Set<string> | null>
   schemeKeys?: MutableRefObject<Set<string> | null>
+}
+
+type ThemeStateRef = SnapshotRef & {
+  renderVersion: number
+  unsubscribe?: () => void
+  subscribedParentId?: string
+  lastSnap?: ThemeState
+}
+
+const shouldSubscribeToTheme = (
+  r: ThemeStateRef,
+  cascadeOnChange: boolean
+): boolean =>
+  r.isRoot ||
+  cascadeOnChange ||
+  hasThemeUpdatingProps(r.props) ||
+  !!r.keys.current?.size ||
+  !!r.props.needsUpdate?.()
+
+function cleanupThemeSubscription(r: ThemeStateRef) {
+  r.unsubscribe?.()
+}
+
+function cleanupThemeState(r: ThemeStateRef) {
+  if (r.unsubscribe) {
+    cleanupThemeSubscription(r)
+  } else {
+    localStates.delete(r.id)
+    states.delete(r.id)
+    PendingUpdate.delete(r.id)
+  }
 }
 
 const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
