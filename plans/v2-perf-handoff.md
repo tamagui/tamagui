@@ -78,6 +78,74 @@ and, when not crashing, measuring web code on native (⇒ all prior native numbe
 
 ---
 
+## SESSION 2026-06-21 (cont.): ×RN methodology + partial-flatten win + folding limits
+
+### Measurement: the ×RN ratio is the real metric (absolute ms is 2× noisy)
+
+iOS-sim absolute mount ms swings ~2× run-to-run under host load (compiled rich
+measured 117ms / 163ms / 273ms across runs of the *same* code). Fix (Nate's call):
+`run-benchmarks-native.ts` now keeps ONE vanilla-RN metro up the whole session and
+measures the RN baseline **interleaved per run** (right after each framework run,
+matched host load). It reports **`×RN` = framework ÷ vanilla-RN**, which cancels the
+drift. `BENCH_CLEAR=1` forces a cold metro rebuild so a freshly-built compiler is
+actually applied. The profiler timer (`@tamagui/timer`) was also fixed: it routed
+inter-render idle gaps into a `~gap (ignore)` bucket (the `theme-prep-uses` 300ms
+"artifact" was inter-component React reconciliation being attributed to the first
+marker of each render — now excluded).
+
+### Authoritative baseline (×RN mount, --runs=5, interleaved)
+
+| scenario | TG runtime | TG compiled | NativeWind | **Uniwind (target)** |
+|---|---|---|---|---|
+| simple | 4.78 | **1.02** ✅ | 1.76 | 1.26 |
+| rich | 4.26 | 6.95 | 1.44 | 1.15 |
+| group | 4.24 | 2.74 | 1.84 | 1.47 |
+| heavy | 4.31 | 4.08 | 1.51 | 1.25 |
+| animated | 3.42 | 4.18 | 1.51 | 1.19 |
+
+Uniwind is the bar (closest to raw RN, ~1.1–1.5×). simple already wins.
+
+### SHIPPED: partial-flatten on native deopt (commit `perf(compiler): partial-flatten…`)
+
+In `createExtractor` `!shouldFlatten` branch (native): even when an element must stay
+on the runtime path (pseudo/group/dynamic), pre-merge its **pure-static** style props
+into one `style={…}` so the runtime skips its per-prop loop for them (the dominant
+deopt cost on RN). Theme tokens (`$…`) + dynamic props stay **inline** (runtime
+resolves them → theme/media switching unaffected); dead native `hoverStyle` dropped.
+Guard: a `$`-token-string check keeps theme values out of the static object (no
+hardcoding). Result (×RN mount, runs=5): **rich 6.95→3.64, heavy 4.08→2.32,
+group 2.74→2.14, animated 4.18→3.51.** Validated: `flatten.native`/`babel.native`
+tests pass (+2 new tests), web extract unaffected, over-render granularity test green.
+
+### Why the rest is HARD/RISKY (do NOT fold these naively)
+
+- **rich / animated still ~3.5× because the press/animation machinery can't be
+  folded away safely.** `eventHandling.native.ts` press is battle-hardened: RNGH
+  `Gesture.Manual()` + `manualActivation` for press arbitration (NestedPressExclusive
+  so a pressStyle child doesn't steal a real-handler ancestor's press), Android-freeze
+  workarounds, Fabric/Paper responder-claim differences, ScrollView-termination
+  handling. A `Pressable`-based `_withPseudoStyle` WOULD regress these. Folding press
+  faithfully means reusing this exact machinery ≈ a slim createComponent.
+- **group / heavy ~2.1–2.3× is dominated by the theme-subscription mount cost**
+  (`theme-prep-uses`, ~600 themed components incl. `_withStableStyle` children each
+  calling `useTheme`). That IS the granular-update feature Nate said to protect.
+  The outers deopt on `group=`; folding them needs cross-element analysis ("this
+  group has only dead-hover descendants → drop `group=` on native") — risky (a
+  missed live `$group-*-press`/spread breaks group-press).
+- Skipping unused theme/media/event hooks (the `data-disable-theme` style flag,
+  already wired on web) is only ~9–19% and doesn't make any scenario win.
+
+### Follow-ups (each needs careful correctness work, not a quick change)
+
+1. `_withPseudoStyle` press fold for press-only leaves — must REUSE
+   `useEvents`/`wrapWithGestureDetector`, validate with Detox press tests.
+2. Cross-element group analysis to drop dead-hover-only `group=` on native.
+3. Enable `data-disable-theme`/`-media`/`-events` flags on native (compiler emits,
+   createComponent gates the hook on the stable prop — pattern already proven by
+   `_withStableStyle`'s `hasThemeKeys ? useTheme() : null`).
+
+---
+
 ## Goal
 
 Tamagui **runtime** native perf within **10%** of the best **styling library**
