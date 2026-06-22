@@ -26,7 +26,10 @@ export const Theme = forwardRef(function Theme(props: ThemeComponentPropsOnly, r
 
   const isRoot = !!props['_isRoot']
 
-  const [_, themeState] = useThemeWithState(props, isRoot)
+  // pass forThemeView=true so the descendant-cascade effect is installed —
+  // <Theme> pushes themeState.id into ThemeStateContext, so children subscribe
+  // under this id and need to be notified when our propsKey changes.
+  const [_, themeState] = useThemeWithState(props, isRoot, true)
 
   const disableDirectChildTheme = props['disable-child-theme']
 

@@ -67,7 +67,14 @@ export const useThemeState = (
   props: UseThemeWithStateProps,
   isRoot = false,
   keys: MutableRefObject<Set<string> | null>,
-  schemeKeys?: MutableRefObject<Set<string> | null>
+  schemeKeys?: MutableRefObject<Set<string> | null>,
+  // when true, install the propsKey-watching useIsomorphicLayoutEffect that
+  // schedules descendant updates via listenersByParent[id]. Only <Theme>
+  // providers actually push their themeState.id into ThemeStateContext, so
+  // only they can have descendants subscribed under their id. Leaf styled
+  // components pass false (the default) and save one hook slot per mount.
+  // Stable per call-site (rule of hooks satisfied).
+  cascadeOnChange = false
 ): ThemeState => {
   'use no memo'
 
@@ -198,25 +205,32 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   }, [subscribe])
 
   const id = ref.current.id
-  useIsomorphicLayoutEffect(() => {
-    if (!HasRenderedOnce.get(keys)) {
-      HasRenderedOnce.set(keys, true)
-      return
-    }
-    if (!propsKey) {
-      if (HadTheme.get(keys)) {
-        // we're removing the last theme, make sure to notify
-        scheduleUpdate(id)
+  if (cascadeOnChange) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useIsomorphicLayoutEffect(() => {
+      if (!HasRenderedOnce.get(keys)) {
+        HasRenderedOnce.set(keys, true)
+        return
       }
-      HadTheme.set(keys, false)
-      return
-    }
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-      console.warn(` · useTheme(${id}) scheduleUpdate`, propsKey, states.get(id)?.name)
-    }
-    scheduleUpdate(id)
-    HadTheme.set(keys, true)
-  }, [keys, propsKey])
+      if (!propsKey) {
+        if (HadTheme.get(keys)) {
+          // we're removing the last theme, make sure to notify
+          scheduleUpdate(id)
+        }
+        HadTheme.set(keys, false)
+        return
+      }
+      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+        console.warn(
+          ` · useTheme(${id}) scheduleUpdate`,
+          propsKey,
+          states.get(id)?.name
+        )
+      }
+      scheduleUpdate(id)
+      HadTheme.set(keys, true)
+    }, [keys, propsKey])
+  }
 
   return state
 }
