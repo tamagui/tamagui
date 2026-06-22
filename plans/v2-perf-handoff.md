@@ -95,15 +95,51 @@ marker of each render — now excluded).
 
 ### Authoritative baseline (×RN mount, --runs=5, interleaved)
 
-| scenario | TG runtime | TG compiled | NativeWind | **Uniwind (target)** |
+| scenario | TG runtime | TG compiled | **NativeWind (real bar)** | Uniwind |
 |---|---|---|---|---|
 | simple | 4.78 | **1.02** ✅ | 1.76 | 1.26 |
-| rich | 4.26 | 6.95 | 1.44 | 1.15 |
-| group | 4.24 | 2.74 | 1.84 | 1.47 |
+| rich | 4.26 | 6.95 | 1.44 | 1.15 ⚠️ |
+| group | 4.24 | 2.74 | 1.84 | 1.47 ⚠️ |
 | heavy | 4.31 | 4.08 | 1.51 | 1.25 |
-| animated | 3.42 | 4.18 | 1.51 | 1.19 |
+| animated | 3.42 | 4.18 | 1.51 | 1.19 ⚠️ |
 
-Uniwind is the bar (closest to raw RN, ~1.1–1.5×). simple already wins.
+⚠️ **Uniwind native does NOT implement the dynamic feature for rich/group/animated.**
+Its own bench header (`uniwind-bench-native/App.tsx`): "uniwind on native doesn't
+support hover/group-hover yet, so those scenarios record the no-interaction static
+styling cost only." Verified: its `richClasses` have NO `active:` and its group row
+has NO `group` class. So Uniwind's rich/group/animated numbers measure *static
+styling with zero interaction reactivity* — NOT comparable. **NativeWind is the real
+bar** for press/group: its rich uses `active:scale/active:opacity` and its group row
+is `className="group …"` (verified). Hold the dynamic scenarios to NativeWind
+(rich 1.44, group 1.84), not Uniwind. simple already wins (full extraction → raw RN,
+beats even Uniwind's lookup floor).
+
+### Why NW/Uniwind are leaner (it's the wrapper, confirmed by reading the benches)
+
+NW/Uniwind do NOT precompile press/group away — they can't (touch + parent state are
+runtime). What they precompile is a stylesheet of *conditional* rules; the runtime
+(`cssInterop`) then **injects event handlers + holds interaction state in a signals
+store** for `active:`, and propagates `group` state via React **context** to `group-*`
+descendants. Same category as Tamagui. The gap is two things:
+1. **Pay-for-what-you-use:** cssInterop attaches the interaction runtime ONLY to
+   elements that have those variants; a plain element is a raw RN primitive + a
+   resolved style object, ZERO hooks. Tamagui runs the full `createComponent`
+   (~15 hooks) on EVERY styled element, static or not. On a 600-element tree that
+   uniform wrapper tax is the bulk of the gap (see corrected cost map: ~276ms
+   createComponent machinery vs ~150ms style resolution on group).
+2. **Thinner interactive machinery:** NW press = signal flip on RN's built-in
+   pressability; Tamagui press = faithful RNGH `Gesture.Manual()` arbitration
+   (nested-press exclusivity, scroll termination, Fabric/Paper) — heavier but more
+   correct. NW state change = signal recompute of just the affected style (often no
+   React re-render); Tamagui = full component re-render via getSplitStyles.
+
+**Strategic implication:** Tamagui only beats them when the compiler flattens the
+element OUT of createComponent (simple). To beat NW on press/group it must do
+pay-for-what-you-use too — emit **graduated runtime shapes** (raw / press-only /
+group-only / full) based on the feature set the compiler already proves per element,
+instead of today's binary (raw-flattened vs full-createComponent). That's the
+slim-pressable direction; the bar it must beat is NW's 1.44 (rich) / 1.84 (group),
+with the press arbitration staying faithful while getting thin.
 
 ### SHIPPED: partial-flatten on native deopt (commit `perf(compiler): partial-flatten…`)
 
