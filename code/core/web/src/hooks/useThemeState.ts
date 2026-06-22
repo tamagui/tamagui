@@ -2,8 +2,9 @@ import { supportsDynamicColorIOS, useIsomorphicLayoutEffect } from '@tamagui/con
 import {
   createContext,
   useContext,
+  useEffect,
+  useReducer,
   useRef,
-  useSyncExternalStore,
   type MutableRefObject,
 } from 'react'
 import { getConfig, getSetting } from '../config'
@@ -58,6 +59,10 @@ const getThemeBaseName = (name: string) => name.replace(/^(light|dark)_/, '')
 let themeStateIdCounter = 0
 const nextThemeStateId = (): string => `t${++themeStateIdCounter}`
 
+// useReducer-based force-update; cheaper than useSyncExternalStore's internal
+// useState+useLayoutEffect+useEffect+useDebugValue chain on Hermes.
+const incReducer = (c: number): number => c + 1
+
 export const useThemeState = (
   props: UseThemeWithStateProps,
   isRoot = false,
@@ -101,6 +106,8 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   // stable ref-bag for both subscribe and getSnapshot closures so we don't
   // re-allocate them per render. each render updates the latest values; the
   // closures (created once per [id, parentId]) read through the ref.
+  // lastSnap caches the result of the last getSnapshot for the manual
+  // subscription bailout check below.
   const ref = useRef<{
     id: string
     parentId: string
@@ -109,8 +116,9 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     isRoot: boolean
     keys: MutableRefObject<Set<string> | null>
     schemeKeys?: MutableRefObject<Set<string> | null>
-    subscribe?: (cb: Function) => () => void
+    subscribe?: (cb: () => void) => () => void
     getSnapshot?: () => ThemeState
+    lastSnap?: ThemeState
   }>(null as any)
   if (!ref.current) {
     ref.current = {
@@ -145,7 +153,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     const r = ref.current
     const pid = r.parentId
     const sid = r.id
-    r.subscribe = (cb: Function) => {
+    r.subscribe = (cb: () => void) => {
       listenersByParent[pid] = listenersByParent[pid] || new Set()
       listenersByParent[pid].add(sid)
       allListeners.set(sid, () => {
@@ -168,7 +176,26 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   if (process.env.NODE_ENV === 'development' && globalThis.time)
     globalThis.time`theme-prep-uses`
 
-  const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+  // manual subscription replaces useSyncExternalStore: same granular bailout
+  // (getSnapshot returning the same ref → React doesn't re-render), fewer
+  // React-internal hook slots on Hermes. We don't need tearing prevention
+  // here: theme/media updates are event-driven, not transition-driven, and
+  // useReducer in normal mode already gives same-tick batching.
+  const [, forceUpdate] = useReducer(incReducer, 0)
+  const state = getSnapshot()
+  ref.current.lastSnap = state
+
+  useEffect(() => {
+    const r = ref.current
+    const cb = () => {
+      const next = r.getSnapshot!()
+      if (next !== r.lastSnap) {
+        r.lastSnap = next
+        forceUpdate()
+      }
+    }
+    return subscribe(cb)
+  }, [subscribe])
 
   const id = ref.current.id
   useIsomorphicLayoutEffect(() => {

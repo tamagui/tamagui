@@ -1,5 +1,5 @@
 import { isServer, isWeb } from '@tamagui/constants'
-import { useRef, useSyncExternalStore } from 'react'
+import { useEffect, useReducer, useRef } from 'react'
 import { getSetting } from '../config'
 import { resetMediaStyleCache } from '../helpers/createMediaStyle'
 import { matchMedia } from '../helpers/matchMedia'
@@ -253,13 +253,29 @@ export function useMedia(
     ref.keys.clear()
   }
 
-  const state = useSyncExternalStore(subscribe, ref.getSnapshot, getServerSnapshot)
-
-  // re-point the cached Proxy at the latest snapshot so the get trap returns
-  // current values; identity of the returned object is stable across renders.
+  // manual subscription (same shape as useThemeStateSubscribed): same
+  // granular bailout via getSnapshot returning the same MediaQueryState ref
+  // when none of the component's touched keys changed, but fewer
+  // React-internal hook slots on Hermes than useSyncExternalStore.
+  const [, forceUpdate] = useReducer(incReducer, 0)
+  const state = isServer ? initState : ref.getSnapshot()
   ref.proxyTarget = state
+
+  useEffect(() => {
+    const cb = () => {
+      const next = ref.getSnapshot()
+      if (next !== ref.proxyTarget) {
+        ref.proxyTarget = next
+        forceUpdate()
+      }
+    }
+    return subscribe(cb)
+  }, [])
+
   return ref.proxy
 }
+
+const incReducer = (c: number): number => c + 1
 
 const getServerSnapshot = () => initState
 
