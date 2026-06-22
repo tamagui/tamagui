@@ -1,5 +1,5 @@
 import { getPlatformDriver, isServer, isWeb } from '@tamagui/constants'
-import { useCreateShallowSetState } from '@tamagui/is-equal-shallow'
+import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import { getSetting } from '../config'
@@ -193,7 +193,34 @@ export const useComponentState = (
 
   const groupName = props.group as any as string | undefined
 
-  const setStateShallow = useCreateShallowSetState(setState, props.debug)
+  // hoisted shallow-set closure: created once per component instance and
+  // reused every render. Drops the useCallback hook that useCreateShallowSetState
+  // would otherwise add. setState from useState is stable per instance so we
+  // can safely capture it. debug is read off stateRef at call time.
+  if (!stateRef.current.setStateShallow) {
+    const r = stateRef.current
+    r.setStateShallow = (stateOrGetState: any) => {
+      setState((prev: any) => {
+        const next =
+          typeof stateOrGetState === 'function' ? stateOrGetState(prev) : stateOrGetState
+        const update = mergeIfNotShallowEqual(prev, next)
+        if (process.env.NODE_ENV === 'development') {
+          const dbg = (r as any).__debug
+          if (dbg && update !== prev) {
+            console.groupCollapsed(`setStateShallow CHANGE`, '=>', update)
+            console.info(`previously`, prev)
+            console.trace()
+            console.groupEnd()
+          }
+        }
+        return update
+      })
+    }
+  }
+  if (process.env.NODE_ENV === 'development') {
+    ;(stateRef.current as any).__debug = props.debug
+  }
+  const setStateShallow = stateRef.current.setStateShallow!
   if (process.env.NODE_ENV === 'development' && globalThis.time)
     globalThis.time`state-useCreateShallowSetState`
 
