@@ -76,6 +76,16 @@ function isFullyDisabled(props: TamaguiOptions) {
   return props.disableExtraction && props.disableDebugAttr
 }
 
+// a compile-evaluated style value carries a theme token if any leaf string is
+// "$"-prefixed (e.g. "$gray2"). such styles must NOT be flattened into a static
+// `style` object — the token is resolved at runtime so theme switching keeps working.
+function styleValueHasToken(v: any): boolean {
+  if (typeof v === 'string') return v.charCodeAt(0) === 36 // '$'
+  if (Array.isArray(v)) return v.some(styleValueHasToken)
+  if (v && typeof v === 'object') return Object.values(v).some(styleValueHasToken)
+  return false
+}
+
 // Walk up JSX ancestors looking for one that declares `group="<groupName>"` together
 // with the `untilMeasured` prop. Used to deopt children whose styles depend on a
 // parent that the runtime measures before emitting child styles (can't be modeled
@@ -2002,7 +2012,6 @@ export function createExtractor(
           })
 
           if (!shouldFlatten) {
-            // were no longer partially optimizing, it adds a lot of complexity for dubious performance
             if (shouldPrintDebug) {
               logger.info(
                 `Deopting ${JSON.stringify({
@@ -2014,7 +2023,54 @@ export function createExtractor(
                 })}`
               )
             }
-            node.attributes = ogAttributes
+            // PARTIAL FLATTEN (native): even when the element must stay on the runtime
+            // path (pseudo/group/dynamic keep it deopted), pre-merge the pure-static
+            // style props into a single `style={…}` so the runtime skips its per-prop
+            // loop for them (the dominant deopt cost on RN). theme tokens ($…) and
+            // dynamic props stay inline so theme/media switching + dynamics are
+            // unaffected; dead native hoverStyle is dropped (no-op on touch).
+            let partial: (t.JSXAttribute | t.JSXSpreadAttribute)[] | null = null
+            if (
+              platform === 'native' &&
+              !staticConfig.isHOC &&
+              !staticConfig.isStyledHOC &&
+              !ogAttributes.some(
+                (a) =>
+                  t.isJSXSpreadAttribute(a) ||
+                  (t.isJSXAttribute(a) &&
+                    t.isJSXIdentifier(a.name) &&
+                    a.name.name === 'style')
+              )
+            ) {
+              const staticStyle: Record<string, any> = {}
+              const consumed = new Set<string>()
+              for (const a of attrs) {
+                if (a.type !== 'style' || !a.name || !a.attr) continue
+                if (pseudoDescriptors[a.name]) continue
+                if (!t.isJSXAttribute(a.attr) || !t.isJSXIdentifier(a.attr.name)) continue
+                if (styleValueHasToken(a.value)) continue
+                Object.assign(staticStyle, a.value)
+                consumed.add(a.attr.name.name)
+              }
+              if (consumed.size >= 2) {
+                const kept = ogAttributes.filter((a) => {
+                  if (!t.isJSXAttribute(a) || !t.isJSXIdentifier(a.name)) return true
+                  const n = a.name.name
+                  if (consumed.has(n)) return false
+                  if (n === 'hoverStyle') return false
+                  if (n.startsWith('$group-') && getGroupPseudo(n) === 'hover') return false
+                  return true
+                })
+                partial = [
+                  t.jsxAttribute(
+                    t.jsxIdentifier('style'),
+                    t.jsxExpressionContainer(literalToAst(staticStyle) as t.Expression)
+                  ),
+                  ...kept,
+                ]
+              }
+            }
+            node.attributes = partial ?? ogAttributes
             return
           }
 
