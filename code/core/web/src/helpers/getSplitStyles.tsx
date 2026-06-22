@@ -1107,6 +1107,15 @@ function isValidStyleKey(
   return key in validStyles ? true : accept && key in accept
 }
 
+function shouldSkipNativeHoverProp(key: string, isMedia: false | boolean | string) {
+  if (process.env.TAMAGUI_TARGET !== 'native') return false
+  if (key === 'hoverStyle') return true
+  if (isMedia === 'group') {
+    return getGroupPropParts(key.slice(1)).pseudo === 'hover'
+  }
+  return false
+}
+
 export const getSplitStyles: StyleSplitter = (
   props,
   staticConfig,
@@ -1457,7 +1466,7 @@ export const getSplitStyles: StyleSplitter = (
 
     const isStyleProp = isValidStyleKeyInit || isMediaOrPseudo || (isVariant && !noExpand)
 
-    if (process.env.TAMAGUI_TARGET === 'native' && keyInit === 'hoverStyle') {
+    if (shouldSkipNativeHoverProp(keyInit, isMedia)) {
       continue
     }
 
@@ -1605,7 +1614,7 @@ export const getSplitStyles: StyleSplitter = (
         key = normalizeGroupKey(key, groupContext)
       }
 
-      if (process.env.TAMAGUI_TARGET === 'native' && key === 'hoverStyle') {
+      if (shouldSkipNativeHoverProp(key, isMedia)) {
         return
       }
 
