@@ -50,13 +50,22 @@ interface BenchConfig {
 
 const BENCHMARKS: BenchConfig[] = [
   {
-    // The native metro config doesn't run the tamagui babel plugin (no withTamagui), so this
-    // is the pure runtime path — same baseline as web's "Tamagui (runtime, 200x)" column.
-    // A compiled-native column requires wiring @tamagui/babel-plugin into metro; deferred.
     framework: 'tamagui',
     label: 'Tamagui (runtime)',
     dir: 'tamagui-bench-native',
     port: 8101,
+  },
+  {
+    framework: 'tamagui-compiled',
+    label: 'Tamagui (compiled)',
+    dir: 'tamagui-bench-native-compiled',
+    port: 8104,
+  },
+  {
+    framework: 'rn',
+    label: 'React Native',
+    dir: 'rn-bench-native',
+    port: 8105,
   },
   {
     framework: 'nativewind',
@@ -94,7 +103,7 @@ function hasExpoGo(udid: string): boolean {
   try {
     const out = execFileSync('find', [
       `${home}/Library/Developer/CoreSimulator/Devices/${udid}/data/Containers/Bundle/Application`,
-      '-name', 'Expo Go.app',
+      '-name', '*xpo*Go.app',
       '-maxdepth', '4',
     ]).toString().trim()
     return out.length > 0
@@ -152,6 +161,7 @@ interface IncomingResult {
   scenario: ScenarioId
   mount: number
   rerender: number
+  profile?: string
 }
 
 let lastResult: IncomingResult | null = null
@@ -162,6 +172,11 @@ const harness = Bun.serve({
       try {
         const body = (await req.json()) as IncomingResult
         if (body && body.scenario && SCENARIOS.includes(body.scenario)) {
+          if (body.profile) {
+            console.warn(
+              `  ⚠ received profile data during benchmark for ${body.framework}/${body.scenario}`
+            )
+          }
           lastResult = body
         }
       } catch {}
@@ -203,7 +218,13 @@ function startMetro(dir: string, port: number): ChildProcess {
   // expo start --port=N — same flag the conformance harness uses
   const proc = spawn('bun', ['run', 'start'], {
     cwd,
-    env: { ...process.env, BROWSER: 'none', EXPO_NO_TELEMETRY: '1', CI: '1' },
+    env: {
+      ...process.env,
+      BROWSER: 'none',
+      EXPO_NO_TELEMETRY: '1',
+      CI: '1',
+      EXPO_PUBLIC_TAMAGUI_BENCH_PROFILE: '0',
+    },
     stdio: 'pipe',
   })
   // tee stderr to a log file so failures are debuggable
@@ -228,6 +249,77 @@ function deepLink(udid: string, port: number, scenario: ScenarioId, framework: s
   execFileSync('xcrun', ['simctl', 'openurl', udid, url])
 }
 
+function snapshotText(out: string) {
+  try {
+    const parsed = JSON.parse(out)
+    return parsed.content?.map((entry: any) => entry.text).join('\n') || out
+  } catch {
+    return out
+  }
+}
+
+function tapExpoProjectRow(udid: string, text: string, projectName: string) {
+  if (!text.includes('DEVELOPMENT SERVERS') && !text.includes('RECENTLY OPENED')) {
+    return false
+  }
+  const labelIndex = text.indexOf(`"AXLabel" : "${projectName}"`)
+  if (labelIndex === -1) return false
+
+  const before = text.slice(Math.max(0, labelIndex - 1200), labelIndex)
+  const frameMatches = [
+    ...before.matchAll(
+      /"frame" : \{\s+"y" : ([\d.]+),\s+"x" : ([\d.]+),\s+"width" : ([\d.]+),\s+"height" : ([\d.]+)/g
+    ),
+  ]
+  const match = frameMatches[frameMatches.length - 1]
+  if (!match) return false
+
+  const y = Number(match[1])
+  const x = Number(match[2])
+  const width = Number(match[3])
+  const height = Number(match[4])
+
+  execFileSync('xcodebuildmcp', [
+    'ui-automation',
+    'tap',
+    '--simulator-id',
+    udid,
+    '--x',
+    String(Math.round(x + width / 2)),
+    '--y',
+    String(Math.round(y + height / 2)),
+  ], { stdio: 'ignore' })
+  return true
+}
+
+function acceptExpoOpenPrompt(udid: string, projectName: string) {
+  try {
+    const out = execFileSync('xcodebuildmcp', [
+      'simulator',
+      'snapshot-ui',
+      '--simulator-id',
+      udid,
+      '--output',
+      'json',
+    ], { stdio: ['ignore', 'pipe', 'ignore'] }).toString()
+    const text = snapshotText(out)
+    if (text.includes('Open in “Expo Go”?')) {
+      execFileSync('xcodebuildmcp', [
+        'ui-automation',
+        'tap',
+        '--simulator-id',
+        udid,
+        '--x',
+        '269',
+        '--y',
+        '481',
+      ], { stdio: 'ignore' })
+      return
+    }
+    tapExpoProjectRow(udid, text, projectName)
+  } catch {}
+}
+
 async function runOneScenario(
   udid: string,
   port: number,
@@ -237,7 +329,11 @@ async function runOneScenario(
 ): Promise<{ mount: number; rerender: number } | null> {
   lastResult = null
   deepLink(udid, port, scenario, bench.framework)
+  await sleep(600)
+  acceptExpoOpenPrompt(udid, bench.dir)
   const deadline = Date.now() + (isFirst ? COLD_BUNDLE_TIMEOUT_MS : SCENARIO_TIMEOUT_MS)
+  const relinkInterval = isFirst ? 20_000 : 10_000
+  let nextRelink = Date.now() + relinkInterval
   while (Date.now() < deadline) {
     if (
       lastResult &&
@@ -246,58 +342,67 @@ async function runOneScenario(
     ) {
       return { mount: lastResult.mount, rerender: lastResult.rerender }
     }
+    if (Date.now() >= nextRelink) {
+      deepLink(udid, port, scenario, bench.framework)
+      await sleep(600)
+      acceptExpoOpenPrompt(udid, bench.dir)
+      nextRelink = Date.now() + relinkInterval
+    }
     await sleep(200)
   }
   return null
 }
 
-async function runFramework(
+type RunResult = Record<ScenarioId, { mount: number; rerender: number } | null>
+
+const emptyRun = (): RunResult => ({
+  simple: null, rich: null, group: null, heavy: null, animated: null,
+})
+
+// measure all scenarios for a bench whose metro is ALREADY running. coldFirst marks
+// the very first deep-link to this app (cold bundle → longer timeout).
+async function measureScenarios(
   udid: string,
-  bench: BenchConfig
-): Promise<Record<ScenarioId, { mount: number; rerender: number } | null>> {
-  const results: Record<ScenarioId, { mount: number; rerender: number } | null> = {
-    simple: null, rich: null, group: null, heavy: null, animated: null,
-  }
-  let metro: ChildProcess | null = null
-  try {
-    killPort(bench.port)
-    metro = startMetro(bench.dir, bench.port)
-    const ok = await waitForMetro(bench.port, 60_000)
-    if (!ok) {
-      console.log(`  ⚠ metro for ${bench.label} did not start on :${bench.port}`)
-      return results
+  bench: BenchConfig,
+  coldFirst: boolean,
+  indent = '    '
+): Promise<RunResult> {
+  const results = emptyRun()
+  let isFirst = coldFirst
+  for (const s of SCENARIOS) {
+    if (bench.skipScenarios?.includes(s)) {
+      process.stdout.write(`${indent}${s}: skip\n`)
+      continue
     }
-    let isFirst = true
-    for (const s of SCENARIOS) {
-      if (bench.skipScenarios?.includes(s)) {
-        process.stdout.write(`    ${s}: skip\n`)
-        continue
-      }
-      const r = await runOneScenario(udid, bench.port, bench, s, isFirst)
-      isFirst = false
-      results[s] = r
-      if (r) {
-        process.stdout.write(
-          `    ${s.padEnd(8)} mount=${r.mount.toFixed(1)}ms rerender=${r.rerender.toFixed(1)}ms\n`
-        )
-      } else {
-        process.stdout.write(`    ${s.padEnd(8)} TIMEOUT\n`)
-      }
-      // small settle between scenarios
-      await sleep(300)
+    const r = await runOneScenario(udid, bench.port, bench, s, isFirst)
+    isFirst = false
+    results[s] = r
+    if (r) {
+      process.stdout.write(
+        `${indent}${s.padEnd(8)} mount=${r.mount.toFixed(1)}ms rerender=${r.rerender.toFixed(1)}ms\n`
+      )
+    } else {
+      process.stdout.write(`${indent}${s.padEnd(8)} TIMEOUT\n`)
     }
-  } finally {
-    if (metro) {
-      try {
-        metro.kill('SIGTERM')
-      } catch {}
-    }
-    // give the OS a beat to release the port, then force-kill anything still on it
-    await sleep(500)
-    killPort(bench.port)
-    await sleep(500)
+    await sleep(300)
   }
   return results
+}
+
+function startMetroFor(bench: BenchConfig): ChildProcess {
+  killPort(bench.port)
+  return startMetro(bench.dir, bench.port)
+}
+
+async function stopMetro(metro: ChildProcess | null, port: number) {
+  if (metro) {
+    try {
+      metro.kill('SIGTERM')
+    } catch {}
+  }
+  await sleep(500)
+  killPort(port)
+  await sleep(500)
 }
 
 function averageResults(
@@ -332,6 +437,43 @@ function averageResults(
 // ── reporting ────────────────────────────────────────────
 
 type AllResults = Record<string, Record<ScenarioId, { mount: number; rerender: number } | null>>
+
+// framework ÷ vanilla-RN, per scenario. >1 means slower than raw RN (e.g. 2.5 = 2.5× RN).
+function computeRatio(fw: RunResult, rn: RunResult): RunResult {
+  const out = emptyRun()
+  for (const s of SCENARIOS) {
+    const f = fw[s]
+    const r = rn[s]
+    if (f && r && r.mount > 0 && r.rerender > 0) {
+      out[s] = { mount: f.mount / r.mount, rerender: f.rerender / r.rerender }
+    }
+  }
+  return out
+}
+
+function printRatioTable(ratios: Record<string, RunResult>) {
+  const labels = Object.keys(ratios)
+  const colW = 18
+  const sep = '═'
+  const line = (c: string) =>
+    console.log(c[0] + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + c[1])
+  console.log('\n  × vanilla React Native (lower = closer to raw RN; interleaved per run)')
+  line('╔╗')
+  console.log('║' + ' Mount ×RN'.padEnd(22) + labels.map((f) => f.padStart(colW) + ' ').join('') + '║')
+  line('╠╣')
+  const fmt = (v: { mount: number; rerender: number } | null, k: 'mount' | 'rerender') =>
+    (v ? `${v[k].toFixed(2)}×` : 'skip').padStart(colW)
+  for (const s of SCENARIOS) {
+    console.log('║' + SCENARIO_LABELS[s].padEnd(22) + labels.map((f) => fmt(ratios[f][s], 'mount')).join(' ') + ' ║')
+  }
+  line('╠╣')
+  console.log('║' + ' Re-render ×RN'.padEnd(22) + labels.map((f) => f.padStart(colW) + ' ').join('') + '║')
+  line('╠╣')
+  for (const s of SCENARIOS) {
+    console.log('║' + SCENARIO_LABELS[s].padEnd(22) + labels.map((f) => fmt(ratios[f][s], 'rerender')).join(' ') + ' ║')
+  }
+  line('╚╝')
+}
 
 function printTable(results: AllResults) {
   const labels = Object.keys(results)
@@ -434,45 +576,80 @@ async function main() {
 
   // filter
   const benchmarks = ONLY
-    ? BENCHMARKS.filter((b) => b.framework === ONLY || b.dir.includes(ONLY))
+    ? BENCHMARKS.filter((b) => b.framework === ONLY || b.dir === ONLY)
     : BENCHMARKS
-  // dedupe entries that share a dir+port (e.g. tamagui + tamagui-runtime in the same app)
-  // — we still run them as separate columns but only start metro once.
   const allResults: AllResults = {}
+  // per-framework ratio vs vanilla RN measured INTERLEAVED (same run, matched host load).
+  // absolute ms drifts heavily with sim/host load; the framework÷RN ratio cancels it,
+  // so the ratio is the real, comparable metric.
+  const ratios: Record<string, RunResult> = {}
 
-  // group by dir so we boot one metro per app
-  const groups = new Map<string, BenchConfig[]>()
-  for (const b of benchmarks) {
-    if (!existsSync(join(HERE, b.dir))) {
-      console.log(`  ⚠ ${b.label}: dir ${b.dir} doesn't exist — skipping`)
-      continue
+  const exists = (b: BenchConfig) => existsSync(join(HERE, b.dir))
+  const rnBench = BENCHMARKS.find((b) => b.framework === 'rn')
+  const hasRnBaseline = rnBench && exists(rnBench)
+  // every non-RN framework we're benchmarking (RN is the interleaved baseline, not a column to race)
+  const fwBenches = benchmarks.filter((b) => b.framework !== 'rn' && exists(b))
+
+  // keep ONE rn metro up the whole session so we can interleave an rn measurement
+  // right after each framework run without paying app-switch metro restarts.
+  let rnMetro: ChildProcess | null = null
+  let rnCold = true
+  const rnAllRuns: RunResult[] = []
+  if (hasRnBaseline) {
+    console.log(`▶ ${rnBench!.dir} (baseline metro, port ${rnBench!.port})`)
+    rnMetro = startMetroFor(rnBench!)
+    if (!(await waitForMetro(rnBench!.port, 60_000))) {
+      console.log(`  ⚠ rn baseline metro did not start; continuing without ratios`)
+      await stopMetro(rnMetro, rnBench!.port)
+      rnMetro = null
     }
-    const arr = groups.get(b.dir) ?? []
-    arr.push(b)
-    groups.set(b.dir, arr)
   }
 
-  for (const [dir, group] of groups) {
-    console.log(`▶ ${dir} (port ${group[0].port})`)
-    for (const bench of group) {
-      console.log(`  ${bench.label}`)
-      const perRun: Record<ScenarioId, { mount: number; rerender: number } | null>[] = []
-      for (let i = 0; i < NUM_RUNS; i++) {
-        if (NUM_RUNS > 1) console.log(`    run #${i + 1}`)
-        try {
-          const r = await runFramework(udid!, bench)
-          perRun.push(r)
-        } catch (e: any) {
-          console.error(`    ! ${bench.label} error: ${e?.message ?? e}`)
+  try {
+    for (const bench of fwBenches) {
+      console.log(`▶ ${bench.label} (port ${bench.port})`)
+      let metro: ChildProcess | null = null
+      const fwPerRun: RunResult[] = []
+      const rnPerRun: RunResult[] = []
+      try {
+        metro = startMetroFor(bench)
+        if (!(await waitForMetro(bench.port, 60_000))) {
+          console.log(`  ⚠ metro for ${bench.label} did not start`)
+          continue
         }
+        let fwCold = true
+        for (let i = 0; i < NUM_RUNS; i++) {
+          if (NUM_RUNS > 1) console.log(`  run #${i + 1} — ${bench.label}`)
+          fwPerRun.push(await measureScenarios(udid!, bench, fwCold))
+          fwCold = false
+          if (rnMetro) {
+            if (NUM_RUNS > 1) console.log(`  run #${i + 1} — vanilla RN (baseline)`)
+            const rn = await measureScenarios(udid!, rnBench!, rnCold, '      rn ')
+            rnCold = false
+            rnPerRun.push(rn)
+            rnAllRuns.push(rn)
+          }
+        }
+      } catch (e: any) {
+        console.error(`  ! ${bench.label} error: ${e?.message ?? e}`)
+      } finally {
+        await stopMetro(metro, bench.port)
       }
       allResults[bench.label] =
-        NUM_RUNS >= 3
-          ? averageResults(perRun)
-          : (perRun[perRun.length - 1] ?? {
-              simple: null, rich: null, group: null, heavy: null, animated: null,
-            })
+        fwPerRun.length >= 3 ? averageResults(fwPerRun) : (fwPerRun.at(-1) ?? emptyRun())
+      if (rnPerRun.length) {
+        const fwAvg = allResults[bench.label]
+        const rnAvg = rnPerRun.length >= 3 ? averageResults(rnPerRun) : rnPerRun.at(-1)!
+        ratios[bench.label] = computeRatio(fwAvg, rnAvg)
+      }
     }
+  } finally {
+    if (rnMetro) await stopMetro(rnMetro, rnBench!.port)
+  }
+
+  if (hasRnBaseline && rnAllRuns.length) {
+    allResults[rnBench!.label] =
+      rnAllRuns.length >= 3 ? averageResults(rnAllRuns) : rnAllRuns.at(-1)!
   }
 
   if (Object.keys(allResults).length === 0) {
@@ -482,6 +659,7 @@ async function main() {
   }
 
   printTable(allResults)
+  if (Object.keys(ratios).length) printRatioTable(ratios)
 
   // always write JSON
   const outDir = join(HERE, 'output')
