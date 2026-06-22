@@ -11,12 +11,14 @@
  * Usage:
  *   bun code/comparisons/profile-native.ts             # simple + group
  *   bun code/comparisons/profile-native.ts simple
+ *   bun code/comparisons/profile-native.ts --udid=<UDID> simple group
  */
 import { execFileSync, execSync, spawn, type ChildProcess } from 'child_process'
 import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
 
 const HERE = import.meta.dir
+const UDID_ARG = process.argv.find((a) => a.startsWith('--udid='))?.split('=')[1]
 const COMPILED = process.argv.includes('--compiled')
 const BENCH_DIR = COMPILED ? 'tamagui-bench-native-compiled' : 'tamagui-bench-native'
 const PORT = COMPILED ? 8104 : 8101
@@ -53,6 +55,7 @@ const harness = Bun.serve({
 })
 
 function bootedUdid(): string | null {
+  if (UDID_ARG) return UDID_ARG
   try {
     const json = JSON.parse(
       execFileSync('xcrun', ['simctl', 'list', 'devices', 'booted', '-j']).toString()
@@ -125,9 +128,17 @@ async function waitForMetro(port: number, timeout = 60_000) {
 
 function startMetro(): ChildProcess {
   const cwd = join(HERE, BENCH_DIR)
-  const proc = spawn('bun', ['run', 'start'], {
+  // PROFILE_CLEAR=1 forces a cold metro rebuild so freshly-edited workspace
+  // packages (e.g. @tamagui/timer) are picked up instead of a stale cache.
+  const startArgs = process.env.PROFILE_CLEAR === '1' ? ['run', 'start', '--clear'] : ['run', 'start']
+  const proc = spawn('bun', startArgs, {
     cwd,
-    env: { ...process.env, BROWSER: 'none', EXPO_NO_TELEMETRY: '1', CI: '1' },
+    env: {
+      ...process.env,
+      BROWSER: 'none',
+      EXPO_NO_TELEMETRY: '1',
+      CI: '1',
+    },
     stdio: 'pipe',
   })
   const logFile = join(HERE, `.metro-profile-tamagui.log`)
@@ -144,15 +155,88 @@ function startMetro(): ChildProcess {
 let linkCounter = 0
 function deepLink(udid: string, scenario: Scenario) {
   const fw = COMPILED ? 'tamagui-compiled' : 'tamagui'
-  const url = `exp://127.0.0.1:${PORT}/--/?case=${scenario}&fw=${fw}&n=${linkCounter++}`
+  const url = `exp://127.0.0.1:${PORT}/--/?case=${scenario}&fw=${fw}&profile=1&n=${linkCounter++}`
   execFileSync('xcrun', ['simctl', 'openurl', udid, url])
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
+function snapshotText(out: string) {
+  try {
+    const parsed = JSON.parse(out)
+    return parsed.content?.map((entry: any) => entry.text).join('\n') || out
+  } catch {
+    return out
+  }
+}
+
+function tapExpoProjectRow(udid: string, text: string, projectName: string) {
+  if (!text.includes('DEVELOPMENT SERVERS') && !text.includes('RECENTLY OPENED')) {
+    return false
+  }
+  const labelIndex = text.indexOf(`"AXLabel" : "${projectName}"`)
+  if (labelIndex === -1) return false
+
+  const before = text.slice(Math.max(0, labelIndex - 1200), labelIndex)
+  const frameMatches = [
+    ...before.matchAll(
+      /"frame" : \{\s+"y" : ([\d.]+),\s+"x" : ([\d.]+),\s+"width" : ([\d.]+),\s+"height" : ([\d.]+)/g
+    ),
+  ]
+  const match = frameMatches[frameMatches.length - 1]
+  if (!match) return false
+
+  const y = Number(match[1])
+  const x = Number(match[2])
+  const width = Number(match[3])
+  const height = Number(match[4])
+
+  execFileSync('xcodebuildmcp', [
+    'ui-automation',
+    'tap',
+    '--simulator-id',
+    udid,
+    '--x',
+    String(Math.round(x + width / 2)),
+    '--y',
+    String(Math.round(y + height / 2)),
+  ], { stdio: 'ignore' })
+  return true
+}
+
+function acceptExpoOpenPrompt(udid: string) {
+  try {
+    const out = execFileSync('xcodebuildmcp', [
+      'simulator',
+      'snapshot-ui',
+      '--simulator-id',
+      udid,
+      '--output',
+      'json',
+    ], { stdio: ['ignore', 'pipe', 'ignore'] }).toString()
+    const text = snapshotText(out)
+    if (text.includes('Open in “Expo Go”?')) {
+      execFileSync('xcodebuildmcp', [
+        'ui-automation',
+        'tap',
+        '--simulator-id',
+        udid,
+        '--x',
+        '269',
+        '--y',
+        '481',
+      ], { stdio: 'ignore' })
+      return
+    }
+    tapExpoProjectRow(udid, text, BENCH_DIR)
+  } catch {}
+}
+
 async function runScenario(udid: string, scenario: Scenario, isFirst: boolean): Promise<Result | null> {
   lastResult = null
   deepLink(udid, scenario)
+  await sleep(600)
+  acceptExpoOpenPrompt(udid)
   const deadline = Date.now() + (isFirst ? COLD_BUNDLE_TIMEOUT_MS : SCENARIO_TIMEOUT_MS)
   // re-deep-link periodically in case the first launch hit a transient bundle
   // error (e.g. "styled is not a function" before metro fully resolves the
@@ -164,6 +248,8 @@ async function runScenario(udid: string, scenario: Scenario, isFirst: boolean): 
     if (lastResult && lastResult.scenario === scenario) return lastResult
     if (Date.now() >= nextRelink) {
       deepLink(udid, scenario)
+      await sleep(600)
+      acceptExpoOpenPrompt(udid)
       nextRelink = Date.now() + RELINK_INTERVAL_MS
     }
     await sleep(200)
