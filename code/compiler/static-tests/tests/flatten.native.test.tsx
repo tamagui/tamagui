@@ -176,6 +176,43 @@ describe('flatten-tests', () => {
     // no tokens / media / group → createComponent skips the theme + media hooks
     expect(code).toContain('data-disable-theme')
     expect(code).toContain('data-disable-media')
+    // pressStyle IS an event surface → the native useEvents hook must stay
+    expect(code).not.toContain('data-disable-events')
+  })
+
+  // a deopted element with NO event surface (no handlers, no press/focus/hover
+  // styles, no group) gets data-disable-events so createComponent skips the native
+  // useEvents hook (RNGH gesture + refs). a dynamic prop forces the deopt while the
+  // static props still partial-flatten (same shape as the pressStyle test above).
+  test(`emits data-disable-events on event-free deopt`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test({ o }) {
+        return (
+          <View width={60} height={40} backgroundColor="rgb(1,2,3)" opacity={o} />
+        )
+      }
+    `)
+    const code = output?.code ?? ''
+    // static props still partial-flatten onto the runtime View
+    expect(code).toContain('<View style=')
+    // no event surface → the native useEvents hook is skipped
+    expect(code).toContain('data-disable-events')
+  })
+
+  // the same shape WITH a real handler must NOT get data-disable-events
+  test(`keeps useEvents hook when an onPress handler is present`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test({ o, onPress }) {
+        return (
+          <View width={60} height={40} backgroundColor="rgb(1,2,3)" opacity={o} onPress={onPress} />
+        )
+      }
+    `)
+    const code = output?.code ?? ''
+    expect(code).toContain('<View style=')
+    expect(code).not.toContain('data-disable-events')
   })
 
   // theme tokens must NOT be baked into the flattened static style — they stay inline
