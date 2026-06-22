@@ -4,7 +4,7 @@ import { Text, YStack } from 'tamagui'
 const DEPTH = 64
 
 function NestedGroup({ index, active }: { index: number; active: boolean }) {
-  const group = `nested-${index}`
+  const group = `nested-${index}` as `nested-${number}`
   const parent = index === 0 ? 'root' : `nested-${index - 1}`
   const groupProps =
     index === 0
