@@ -12,6 +12,18 @@ const config = getDefaultConfig(projectRoot)
 config.resolver.unstable_enablePackageExports =
   process.env.TAMAGUI_PACKAGE_EXPORTS !== 'false'
 
+// @tamagui/web ships BOTH `.mjs` (web) and `.native.js` (native) for every file in
+// dist/esm. metro's default sourceExts order puts `.mjs` BEFORE `.js`, so a relative
+// import like `index.native.js` -> `export * from "./createComponent"` resolves to
+// `createComponent.mjs` (WEB) before it ever tries `createComponent.native.js`. that
+// pulls the entire web build (incl. module-top `addEventListener` -> Hermes crash, and
+// wrong code to benchmark) into the native bundle. moving `mjs` last lets the
+// `.native.js` platform variant win.
+config.resolver.sourceExts = [
+  ...config.resolver.sourceExts.filter((e) => e !== 'mjs'),
+  'mjs',
+]
+
 config.resolver.blockList = [/code\/tamagui\.dev\//, /code\/.*\/__tests__\//]
 
 config.watchFolders = [monorepoRoot]

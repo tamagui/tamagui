@@ -1,5 +1,65 @@
 # v2-perf Follow-ups — Shipped
 
+---
+
+## 🚨 CRITICAL UPSTREAM BUG (2026-06-21): tamagui-build leaves SOME native ESM imports unresolved → native bundles pull the WEB build
+
+**Severity: high. Likely affects real RN/Expo apps, not just the bench.** Found while
+wiring the compiled-native bench.
+
+### Symptom
+The native benches (runtime AND compiled) were bundling the **web** `@tamagui/web`
+build on Hermes: 96 web `.mjs` modules vs 1 `.native.js` in the bundle. This crashes
+at module-init (`ReferenceError: Property 'addEventListener' doesn't exist` — web-only
+code from `createComponent.tsx:123-125`) and, when it doesn't crash, **measures the
+wrong (web) code paths on native** — so every prior native Tamagui benchmark number is
+invalid (it was web code under Hermes).
+
+### Root cause
+`@tamagui/web` ships both `X.mjs` (web) and `X.native.js` (native) in `dist/esm/`.
+tamagui-build runs `@tamagui/babel-plugin-fully-specified` to make imports explicit
+(`tamagui-build.js:1363-1393`): web rewrites `./createComponent` → `./createComponent.mjs`,
+native is *supposed* to rewrite → `./createComponent.native.js` (`esExtensionDefault:
+'.native.js'`). **The web pass works; the native pass is INCONSISTENT:**
+- ✅ `_withStableStyle.native.js` → `from "./hooks/useMedia.native.js"` (resolved)
+- ❌ `createComponent.native.js` → `from "./config"`, `from "./contexts/ComponentContext"` (bare)
+- ❌ `index.native.js` → `export * from "./createComponent"` (bare)
+
+When a relative import is left **bare**, Metro resolves it with default sourceExts order
+(`.ios.mjs, .native.mjs, .mjs, .ios.js, .native.js, .js`) — so `.mjs` (WEB) wins over
+`.native.js` (NATIVE). The whole web subtree gets pulled in.
+
+Likely a **build-ordering/race** in the parallel native build (the fully-specified plugin
+resolves against the filesystem; deps not yet written → falls back to bare), or a
+resolution-matching gap in the plugin for `.native.js` (its `esExtensions: ['.js']` may
+not match `*.native.js` siblings). Needs confirmation.
+
+### The real fix (do this — it's upstream, affects shipped packages)
+Make tamagui-build's native pass resolve **every** relative import to its explicit
+`.native.js` (mirroring the web `.mjs` behavior). Candidates, in order:
+1. Fix `@tamagui/babel-plugin-fully-specified` native invocation so it deterministically
+   appends `.native.js` (apply `esExtensionDefault` even when the target isn't on disk yet,
+   or run the native pass after all native files are written).
+2. OR emit native ESM as `.native.mjs` so it sorts before `.mjs` in Metro (Nate's idea) —
+   sidesteps the ambiguity even if an import stays bare.
+3. OR separate web/native into different dist dirs so no `.mjs` can shadow a `.native.js`.
+
+After fixing, **delete the `config.resolver.sourceExts` workaround** added to
+`code/comparisons/tamagui-bench-native*/metro.config.js` (it masks this at the bench level
+only) and re-verify a native app bundles `*.native.js`.
+
+### Verification recipe
+```sh
+cd code/comparisons/tamagui-bench-native-compiled
+npx expo export --platform ios --dev --source-maps --output-dir /tmp/x
+# count web vs native @tamagui/web modules in the source map:
+node -e "const m=require('/tmp/x/.../index-*.js.map'); ... s.endsWith('.mjs') vs '.native.js'"
+# want: 0 .mjs, ~103 .native.js, and grep the bundle for bare addEventListener (want 0)
+```
+
+---
+
+
 Sprint round following `v2-perf-shipped.md`. Four parallel tracks plus a fresh comparison-bench resample. Two tracks landed clean, one landed partial (3-of-5 fixes in scope), one is research-only pending bench wiring. All on branch `v2-perf`, not pushed.
 
 ## TL;DR
