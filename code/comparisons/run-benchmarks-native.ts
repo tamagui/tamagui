@@ -215,8 +215,12 @@ async function waitForMetro(port: number, timeout = 60_000) {
 
 function startMetro(dir: string, port: number): ChildProcess {
   const cwd = join(HERE, dir)
+  // BENCH_CLEAR=1 forces a cold metro rebuild so a freshly-rebuilt compiler
+  // (@tamagui/static / babel-plugin) is actually applied instead of a stale cache.
+  const startArgs =
+    process.env.BENCH_CLEAR === '1' ? ['run', 'start', '--clear'] : ['run', 'start']
   // expo start --port=N — same flag the conformance harness uses
-  const proc = spawn('bun', ['run', 'start'], {
+  const proc = spawn('bun', startArgs, {
     cwd,
     env: {
       ...process.env,
