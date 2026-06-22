@@ -171,10 +171,13 @@ Short-circuit in `code/core/web/src/helpers/getSplitStyles.tsx`:
 2. **Reduce `theme-prep-uses` cost.** 0.7ms × 2234 = 64% of group render.
    Inside is mostly `useThemeWithState` → `useThemeState`. Already at the
    minimum hooks: useRef + useContext + useReducer + useEffect + getSnapshot.
-   - **Idea A**: hoist `getPropsKey` out of the hot path when props is the
+   - **Idea A (tried, reverted)**: hoist `getPropsKey` out of the hot path when props is the
      stable `EMPTY` (the path `useTheme()` takes). Currently
      `getPropsKey({name, reset, forceClassName, componentName})` runs string
-     concat every render even when all are undefined.
+     concat every render even when all are undefined. A shared empty-props
+     sentinel plus an early empty-key return passed tests but did not move
+     profile medians under load; group `theme-prep-uses` was neutral/slightly
+     worse (0.852ms → 0.868ms in the last-run profile), so it was not committed.
    - **Idea B**: skip `useEffect` setup on first render when there's nothing
      to subscribe to (e.g. root only, no parent). React still allocates the
      effect record either way — uncertain if measurable.
@@ -190,7 +193,10 @@ Short-circuit in `code/core/web/src/helpers/getSplitStyles.tsx`:
 3. **Drop `useId` in dev** (already done in prod path via counter — see
    `6688c9019a`). Verify the dev-only `internalID = React.useId()` at
    `createComponent.tsx:249` doesn't fire in the bench (it's gated on
-   `NODE_ENV === 'development'` though the bench IS dev).
+   `NODE_ENV === 'development'` though the bench IS dev). A counter stored in
+   `useRef` was tried and reverted: tests passed, but 3-run profile medians
+   worsened under load and group `theme-prep-uses` rose to 1.17ms in the
+   last-run profile. Do not retry this shape without a quieter matched bench.
 4. **`useSplitStyles` itself** — bench shows ~123ms in `split-styles-propsend`
    for group. The prop loop is unavoidable for non-extracted components, but
    per-prop work (`splitStyles-prepare 3ms`, `setup 12ms`, `propsend 123ms`)
@@ -268,9 +274,11 @@ Must stay green for any change that touches `useTheme*`, `useMedia*`,
 
 ## Next (the work that needs doing right now)
 
-1. Start **theme-prep-uses cost reduction** (see "What Else" §2). First likely
-   target: Idea A, avoid hot-path `getPropsKey` string work when props are the
-   stable empty `useTheme()` path.
+1. Continue **theme-prep-uses cost reduction** (see "What Else" §2), but skip
+   the already-reverted Idea A shape. The next useful direction is structural:
+   either prove/disprove Idea D (skip theme setup for styled components that
+   never read theme keys) or design a better native profile probe that actually
+   splits the bundled `theme-prep-uses` path.
 2. Preserve the hover-skip tests: focused native test
    `getSplitStyles.native.test.tsx` now covers direct `hoverStyle`,
    variant-expanded `hoverStyle`, group hover without `pseudoGroups`, and
@@ -281,3 +289,5 @@ Must stay green for any change that touches `useTheme*`, `useMedia*`,
    - `bun code/comparisons/profile-native.ts simple group rich` 3× and median.
 4. Rerun compiled native group/rich after hover-skip if compiled-vs-runtime
    comparison matters for the next decision.
+5. Avoid retrying the dev `useId` → `useRef` counter swap unless you can run a
+   quieter matched bench; the high-load attempt regressed all three scenarios.
