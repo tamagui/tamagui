@@ -85,6 +85,16 @@ const avoidReRenderKeys = new Set([
   'group',
 ])
 
+const groupPseudoKeys = [
+  'disabled',
+  'hover',
+  'press',
+  'pressIn',
+  'focus',
+  'focusVisible',
+  'focusWithin',
+] as const satisfies readonly (keyof PseudoGroupState)[]
+
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelPresses = () => {
     // clear all press downs
@@ -1809,31 +1819,43 @@ export function createComponent<
       return
     }
 
-    const nextPseudo = getGroupPseudoState(pseudo)
     const previousPseudo = groupContext.state.pseudo
-    if (
-      previousPseudo &&
-      isEqualShallow(previousPseudo, nextPseudo) &&
-      isEqualShallow(nextPseudo, previousPseudo)
-    ) {
+
+    let didChange =
+      !previousPseudo ||
+      'unmounted' in previousPseudo ||
+      'group' in previousPseudo ||
+      'hasDynGroupChildren' in previousPseudo ||
+      'transition' in previousPseudo
+
+    if (!didChange) {
+      for (let i = 0; i < groupPseudoKeys.length; i++) {
+        const key = groupPseudoKeys[i]
+        if (previousPseudo[key] !== pseudo[key]) {
+          didChange = true
+          break
+        }
+      }
+    }
+
+    if (!didChange) {
       return
     }
 
-    const nextState = { ...groupContext.state, pseudo: nextPseudo }
+    const nextState = {
+      ...groupContext.state,
+      pseudo: {
+        disabled: pseudo.disabled,
+        hover: pseudo.hover,
+        press: pseudo.press,
+        pressIn: pseudo.pressIn,
+        focus: pseudo.focus,
+        focusVisible: pseudo.focusVisible,
+        focusWithin: pseudo.focusWithin,
+      },
+    }
     groupContext.state = nextState
     groupEmitter.emit(nextState)
-  }
-
-  function getGroupPseudoState(state: PseudoGroupState): PseudoGroupState {
-    return {
-      disabled: state.disabled,
-      hover: state.hover,
-      press: state.press,
-      pressIn: state.pressIn,
-      focus: state.focus,
-      focusVisible: state.focusVisible,
-      focusWithin: state.focusWithin,
-    }
   }
 
   // let hasLogged = false
