@@ -175,38 +175,6 @@ export function useEvents(
           }
         : {}
 
-      // pressStyle-only observer (no real user handler, not inside a native menu):
-      // observe touches with raw RN onTouch* props instead of an RNGH Manual gesture
-      // + per-element GestureDetector. this removes ~all the per-component RNGH cost
-      // (gesture construction + native handler mount) while preserving the exact
-      // semantics the Manual+manualActivation observer provided: JS-thread callbacks
-      // (it was already runOnJS(true)), and — critically — it NEVER claims the
-      // responder, so a real-handler ancestor still wins arbitration
-      // (<Link asChild><View><Button pressStyle/></View></Link>). compose so we don't
-      // clobber onTouch* set by usePointerEvents. (Android pressStyle-only continues
-      // to use the responder fallback below — unchanged.)
-      const isPressStyleOnlyObserver =
-        hasPressEvents &&
-        !(hasRealPressEvents || stateRef.current.hasRealPressEvents) &&
-        !isInsideNativeMenu &&
-        !getIsAndroid()
-
-      if (isPressStyleOnlyObserver) {
-        viewProps.onTouchStart = composeEventHandlers(viewProps.onTouchStart, (e: any) =>
-          callbacksRef.current.onPressIn?.(e)
-        )
-        viewProps.onTouchEnd = composeEventHandlers(viewProps.onTouchEnd, (e: any) => {
-          callbacksRef.current.onPress?.(e)
-          callbacksRef.current.onPressOut?.(e)
-        })
-        viewProps.onTouchCancel = composeEventHandlers(
-          viewProps.onTouchCancel,
-          (e: any) => callbacksRef.current.onPressOut?.(e)
-        )
-        // no gesture → wrapWithGestureDetector won't wrap (no GestureDetector)
-        return null
-      }
-
       // only create gesture once, callbacks are read from ref
       if (!gestureRef.current) {
         const { Gesture } = gh.state
@@ -242,9 +210,28 @@ export function useEvents(
             delayLongPress: events?.delayLongPress,
             hitSlop: viewProps.hitSlop,
           })
+        } else if (!getIsAndroid()) {
+          // pressStyle-only (events.onPress was synthesized to drive pressStyle
+          // visuals, no user handler): use Manual + manualActivation. Touch
+          // observation runs on the UI thread for fast pressStyle feedback,
+          // but the gesture never activates → never claims responder/ownership,
+          // so a real-handler ancestor still wins arbitration. This is the fix
+          // for nested press scenarios like <Link asChild><View><Button/></View></Link>
+          // where the View carries the merged navigate onPress and the inner
+          // pressStyled Button must not steal the press.
+          //
+          // Android: skipped — see isAndroid comment at top. Synthesized
+          // pressStyle handlers fall through to viewProps responder events.
+          gestureRef.current = Gesture.Manual()
+            .runOnJS(true)
+            .manualActivation(true)
+            .onTouchesDown((e: any) => callbacksRef.current.onPressIn?.(e))
+            .onTouchesUp((e: any) => {
+              callbacksRef.current.onPress?.(e)
+              callbacksRef.current.onPressOut?.(e)
+            })
+            .onTouchesCancelled((e: any) => callbacksRef.current.onPressOut?.(e))
         }
-        // pressStyle-only on iOS is handled above via raw onTouch* (no gesture);
-        // pressStyle-only on Android uses the responder fallback (useMainThreadPressEvents).
       }
       // TODO update viewProps.hitSlop / events.delayLongPress!
 
@@ -273,21 +260,34 @@ export function wrapWithGestureDetector(
   }
 
   const gh = getGestureHandler()
-  const { GestureDetector } = gh.state
+  const { GestureDetector, Gesture } = gh.state
 
-  // wrap only when there's an actual gesture to attach: a real press handler, or
-  // the native-menu Manual gesture. pressStyle-only observers are now handled via
-  // raw onTouch* on viewProps (no gesture, no GestureDetector) and arrive here with
-  // gesture == null → returned unwrapped. gesture is sticky once created (gestureRef),
-  // so real-handler components stay wrapped and never reparent.
-  if (!GestureDetector || !gesture) {
+  // wrap whenever any press gesture was attached (real handler OR
+  // synthesized pressStyle observer). only the real-handler path claims
+  // the responder on Paper — observers must not preempt parents.
+  // On Android we skip the observer gesture entirely (see top-of-file
+  // isAndroid comment), so the wrap is real-handlers-only there.
+  const shouldWrap = getIsAndroid()
+    ? stateRef.current.hasRealPressEvents
+    : stateRef.current.hasHadEvents
+
+  if (!GestureDetector || !shouldWrap) {
     return content
   }
 
-  const gestureToUse = gesture
+  // use actual gesture or no-op Manual gesture to maintain tree structure
+  const gestureToUse = gesture || Gesture?.Manual()
 
-  // native-menu pressStyle Manual gesture: wrap but never claim the responder
-  // (observer only — must not preempt a real-handler ancestor).
+  if (!gestureToUse) {
+    return content
+  }
+
+  // pressStyle-only observers (Manual + manualActivation gesture) must never
+  // claim the responder — otherwise a nested pressStyle Tamagui child would
+  // preempt a real-handler ancestor (e.g. <Link asChild><View><Button/></View></Link>
+  // where the View carries the merged navigate handler and the inner Button
+  // has only pressStyle). The Manual gesture observes touches on the UI thread
+  // for fast pressStyle visuals without participating in arbitration.
   if (!stateRef.current.hasRealPressEvents) {
     return React.createElement(GestureDetector, { gesture: gestureToUse }, content)
   }
