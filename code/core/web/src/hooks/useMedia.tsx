@@ -212,6 +212,8 @@ export function useMedia(
     keys: Set<string>
     lastState: MediaQueryState
     pendingState?: MediaQueryState
+    renderVersion: number
+    unsubscribe?: () => void
     // stable per-component closures + reusable Proxy. allocating new ones each
     // render (via useSyncExternalStore + `new Proxy(state, ...)`) was a real
     // per-component-per-render cost; we hold one Proxy whose target is swapped
@@ -229,6 +231,7 @@ export function useMedia(
     const r: MediaRef = {
       keys: new Set<string>(),
       lastState: initial,
+      renderVersion: 0,
       proxyTarget: initial,
       proxy: undefined as unknown as UseMediaState,
       getSnapshot: undefined as unknown as () => MediaQueryState,
@@ -280,6 +283,7 @@ export function useMedia(
   }
 
   const ref = internalRef.current
+  ref.renderVersion++
 
   // reset on next render
   if (ref.pendingState) {
@@ -302,16 +306,36 @@ export function useMedia(
   ;(ref.proxy as any)[refSlot].proxyTarget = state
 
   useEffect(() => {
-    const cb = () => {
-      const next = ref.getSnapshot()
-      if (next !== ref.proxyTarget) {
-        ref.proxyTarget = next
-        ;(ref.proxy as any)[refSlot].proxyTarget = next
-        forceUpdate()
+    const renderVersion = ref.renderVersion
+    const shouldSubscribe =
+      !ref.componentContext || !!States.get(ref.componentContext)?.enabled
+
+    if (shouldSubscribe) {
+      if (!ref.unsubscribe) {
+        ref.unsubscribe = subscribe(() => {
+          const next = ref.getSnapshot()
+          if (next !== ref.proxyTarget) {
+            ref.proxyTarget = next
+            ;(ref.proxy as any)[refSlot].proxyTarget = next
+            forceUpdate()
+          }
+        })
+      }
+    } else if (ref.unsubscribe) {
+      ref.unsubscribe()
+      ref.unsubscribe = undefined
+    }
+
+    return () => {
+      // react runs passive cleanup before the next effect as well as on unmount.
+      // a newer render bumps renderVersion before that cleanup, so equality here
+      // means this is the final unmount cleanup.
+      if (ref.renderVersion === renderVersion) {
+        ref.unsubscribe?.()
+        ref.unsubscribe = undefined
       }
     }
-    return subscribe(cb)
-  }, [])
+  })
 
   return ref.proxy
 }
