@@ -13,6 +13,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./ReanimatedEmitterLatchCase').ReanimatedEmitterLatchCase,
   GroupDisabledStyleLatchCase: () =>
     require('./GroupDisabledStyleLatchCase').GroupDisabledStyleLatchCase,
+  GroupNestedNotifyLoopCase: () =>
+    require('./GroupNestedNotifyLoopCase').GroupNestedNotifyLoopCase,
   ReanimatedStuckHoverCase: () =>
     require('./ReanimatedStuckHoverCase').ReanimatedStuckHoverCase,
   ReanimatedPlatformDriverHoverCase: () =>
