@@ -10,8 +10,8 @@
   "dependencies": {
     "@tamagui/config": "workspace:*",
     "@tamagui/vite-plugin": "workspace:*",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": ">=19",
+    "react-dom": "*",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
@@ -20,8 +20,8 @@
     "pixelmatch": "^7.1.0",
     "playwright": "^1.49.0",
     "pngjs": "^7.0.0",
-    "sharp": "^0.33.5",
-    "tailwindcss": "^4.0.0",
-    "vite": "^6.0.0"
+    "sharp": "^0.34.5",
+    "tailwindcss": "^4.1.11",
+    "vite": "^8.0.3"
   }
 }

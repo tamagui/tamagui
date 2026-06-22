@@ -8,12 +8,12 @@
   },
   "dependencies": {
     "expo": "~55.0.6",
-    "expo-linking": "*",
+    "expo-linking": "~55.0.7",
     "nativewind": "5.0.0-preview.4",
     "react": ">=19",
     "react-native": "0.83.2",
-    "react-native-reanimated": "*",
-    "react-native-safe-area-context": "*"
+    "react-native-reanimated": "~4.2.2",
+    "react-native-safe-area-context": "~5.7.0"
   },
   "devDependencies": {
     "tailwindcss": "^4.1.11"
