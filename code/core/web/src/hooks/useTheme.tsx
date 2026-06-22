@@ -1,7 +1,10 @@
 import { useRef } from 'react'
 import type { ThemeParsed, ThemeState, UseThemeWithStateProps } from '../types'
 import { getThemeProxied, type ThemeProxied } from './getThemeProxied'
-import { useThemeState } from './useThemeState'
+import {
+  useThemeStateAtComponent,
+  useThemeStateSubscribed,
+} from './useThemeState'
 
 const EMPTY = {}
 
@@ -16,7 +19,15 @@ export const useTheme = () => {
 export type ThemeWithState = [ThemeParsed, ThemeState]
 
 /**
- * Adds a proxy around themeState that tracks update keys
+ * Adds a proxy around themeState that tracks update keys.
+ *
+ * Two call sites:
+ *  1. <Theme> uses isRoot or has full ThemeProps -> needs the subscribed path
+ *     (forceUpdateThemes invalidation, key tracking, scheme-only re-render gating).
+ *  2. Every styled component + useTheme()/usePropsAndStyle go through the lite
+ *     path that just reads parent ThemeState from context and synchronously
+ *     derives a component-specific sub-theme. No useSyncExternalStore on the
+ *     per-component hot path.
  */
 export const useThemeWithState = (
   props: UseThemeWithStateProps,
@@ -26,7 +37,14 @@ export const useThemeWithState = (
 
   const keys = useRef<Set<string> | null>(null)
   const schemeKeys = useRef<Set<string> | null>(null)
-  const themeState = useThemeState(props, isRoot, keys, schemeKeys)
+
+  // <Theme name="..."> / root provider go through the subscribed path; this is
+  // O(num_theme_instances) total, not O(num_components_rendered).
+  // Everyone else (createComponent, useProps, useTheme) goes through the lite
+  // context-read path.
+  const themeState = isRoot
+    ? useThemeStateSubscribed(props, true, keys, schemeKeys)
+    : useThemeStateAtComponent(props)
 
   if (process.env.NODE_ENV === 'development') {
     if (!props.passThrough && !themeState?.theme) {

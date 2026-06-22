@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import { getSetting } from '../config'
 import { ComponentContext } from '../contexts/ComponentContext'
 import { stopAccumulatingRules } from '../helpers/insertStyleRule'
-import { updateMediaListeners } from '../hooks/useMedia'
+import { MediaProvider, updateMediaListeners } from '../hooks/useMedia'
 import { resolveAnimationDriver } from '../helpers/resolveAnimationDriver'
 import type { AnimationDriver, TamaguiProviderProps } from '../types'
 import { TamaguiRoot } from './TamaguiRoot'
@@ -61,11 +61,13 @@ export function TamaguiProvider({
       animationDriver={defaultAnimationDriver}
       insets={memoizedInsets}
     >
-      <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>
-        <TamaguiRoot theme={defaultTheme} isRootRoot>
-          {children}
-        </TamaguiRoot>
-      </ThemeProvider>
+      <MediaProvider>
+        <ThemeProvider defaultTheme={defaultTheme} reset={reset} className={className}>
+          <TamaguiRoot theme={defaultTheme} isRootRoot>
+            {children}
+          </TamaguiRoot>
+        </ThemeProvider>
+      </MediaProvider>
     </ComponentContext.Provider>
   )
 

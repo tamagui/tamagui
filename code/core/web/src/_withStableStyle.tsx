@@ -19,11 +19,12 @@ export const _withStableStyle = (
     React.forwardRef((props: any, ref) => {
       const { _expressions = EMPTY_EXPRESSIONS, ...rest } = props
 
-      const parentId = useContext(ThemeStateContext)
+      const parentThemeState = useContext(ThemeStateContext)
+      const hasParentTheme = !!parentThemeState
 
       // compile-time constants per wrapper, so conditional hooks are stable
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      const theme = hasThemeKeys && parentId ? useTheme() : null
+      const theme = hasThemeKeys && hasParentTheme ? useTheme() : null
       // eslint-disable-next-line react-hooks/rules-of-hooks
       const media = hasMediaKeys ? useMedia() : null
 
@@ -32,7 +33,7 @@ export const _withStableStyle = (
         : _expressions
 
       let resolvedTheme: any = theme || EMPTY_THEME
-      if (hasThemeKeys && !parentId) {
+      if (hasThemeKeys && !hasParentTheme) {
         // monorepo edge case: ThemeStateContext is from a different instance
         const config = getConfigMaybe()
         const themes = config?.themes
