@@ -28,15 +28,15 @@ const DEFAULT_OPTIONS = {
   tryExtensions: ['.js'],
   esExtensions: ['.mjs'],
   convertProcessEnvToImportMetaEnv: false,
-}
+} satisfies FullySpecifiedOptions
 
 export default function FullySpecified(
   api: ConfigAPI,
-  rawOptions: FullySpecifiedOptions
+  rawOptions: Partial<FullySpecifiedOptions> = {}
 ): PluginObj {
   api.assertVersion(7)
 
-  const options = { ...DEFAULT_OPTIONS, ...rawOptions }
+  const options = normalizeOptions(rawOptions)
 
   /** For `import ... from '...'`. */
   const importDeclarationVisitor = (
@@ -157,6 +157,25 @@ export default function FullySpecified(
       MemberExpression: memberExpressionVisitor,
     },
   }
+}
+
+function normalizeOptions(rawOptions: Partial<FullySpecifiedOptions>): FullySpecifiedOptions {
+  const options = { ...DEFAULT_OPTIONS, ...rawOptions }
+
+  if (
+    rawOptions.esExtensionDefault &&
+    !rawOptions.tryExtensions &&
+    rawOptions.esExtensionDefault !== DEFAULT_OPTIONS.esExtensionDefault
+  ) {
+    options.tryExtensions = [
+      rawOptions.esExtensionDefault,
+      ...DEFAULT_OPTIONS.tryExtensions.filter(
+        (extension) => extension !== rawOptions.esExtensionDefault
+      ),
+    ]
+  }
+
+  return options
 }
 
 /**
