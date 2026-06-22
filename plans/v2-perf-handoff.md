@@ -126,12 +126,28 @@ tests pass (+2 new tests), web extract unaffected, over-render granularity test 
   workarounds, Fabric/Paper responder-claim differences, ScrollView-termination
   handling. A `Pressable`-based `_withPseudoStyle` WOULD regress these. Folding press
   faithfully means reusing this exact machinery ≈ a slim createComponent.
-- **group / heavy ~2.1–2.3× is dominated by the theme-subscription mount cost**
-  (`theme-prep-uses`, ~600 themed components incl. `_withStableStyle` children each
-  calling `useTheme`). That IS the granular-update feature Nate said to protect.
-  The outers deopt on `group=`; folding them needs cross-element analysis ("this
-  group has only dead-hover descendants → drop `group=` on native") — risky (a
-  missed live `$group-*-press`/spread breaks group-press).
+- **group / heavy ~2.1–2.3× is driven by COMPONENT COUNT, not theme.** ~600
+  components (incl. `_withStableStyle` children) each pay createComponent's full
+  fixed cost. Theme is NOT the dominant slice: the properly-measured `theme`
+  marker (`createComponent.tsx:683→687`, wraps the whole `useThemeWithState`) is
+  only **~43ms total on group / ~12ms simple ≈ 8% of mount**; media ~29ms ≈ 5%.
+  Do NOT read the old `theme-prep-uses` number as theme cost — it was the
+  inter-render reconciliation gap misattributed to the first marker after the
+  render boundary (artifact, fixed in `8ee11cb492`; see the ⚠️ CRITICAL FINDING
+  section). Within that ~43ms the work is *participation tax*, not theme logic:
+  `getNewThemeName` is string-cached (`useThemeState.ts:539`) and `getThemeProxied`
+  is cached per-theme-object (`getThemeProxied.ts:52,77`), so the residual is
+  5 React hook slots/component (useContext+2×useRef+useReducer+useEffect across
+  `useThemeState.ts` + `useTheme.tsx:43`) + per-render `themeStateProps`/`nextState`
+  allocations + the Hermes hidden-class deopt from dynamic `local._parentName`/
+  `_propsKey` assignments (`useThemeState.ts:361-362`). The real lever is fewer
+  components on the runtime path (partial-flatten) + shedding fixed hooks, not
+  optimizing theme. The granular-update subscription (the feature Nate protects)
+  lives in a passive `useEffect` that fires AFTER the mount measurement window —
+  it isn't even in these numbers. The outers still deopt on `group=`; folding
+  them needs cross-element analysis ("this group has only dead-hover descendants
+  → drop `group=` on native") — risky (a missed live `$group-*-press`/spread
+  breaks group-press).
 - Skipping unused theme/media/event hooks (the `data-disable-theme` style flag,
   already wired on web) is only ~9–19% and doesn't make any scenario win.
 
