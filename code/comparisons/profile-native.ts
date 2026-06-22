@@ -17,7 +17,9 @@ import { mkdirSync, writeFileSync } from 'fs'
 import { join } from 'path'
 
 const HERE = import.meta.dir
-const PORT = 8101
+const COMPILED = process.argv.includes('--compiled')
+const BENCH_DIR = COMPILED ? 'tamagui-bench-native-compiled' : 'tamagui-bench-native'
+const PORT = COMPILED ? 8104 : 8101
 const HARNESS_PORT = 8091
 const COLD_BUNDLE_TIMEOUT_MS = 240_000
 const SCENARIO_TIMEOUT_MS = 90_000
@@ -122,7 +124,7 @@ async function waitForMetro(port: number, timeout = 60_000) {
 }
 
 function startMetro(): ChildProcess {
-  const cwd = join(HERE, 'tamagui-bench-native')
+  const cwd = join(HERE, BENCH_DIR)
   const proc = spawn('bun', ['run', 'start'], {
     cwd,
     env: { ...process.env, BROWSER: 'none', EXPO_NO_TELEMETRY: '1', CI: '1' },
@@ -141,7 +143,8 @@ function startMetro(): ChildProcess {
 
 let linkCounter = 0
 function deepLink(udid: string, scenario: Scenario) {
-  const url = `exp://127.0.0.1:${PORT}/--/?case=${scenario}&fw=tamagui&n=${linkCounter++}`
+  const fw = COMPILED ? 'tamagui-compiled' : 'tamagui'
+  const url = `exp://127.0.0.1:${PORT}/--/?case=${scenario}&fw=${fw}&n=${linkCounter++}`
   execFileSync('xcrun', ['simctl', 'openurl', udid, url])
 }
 

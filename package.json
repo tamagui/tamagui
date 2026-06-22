@@ -20,6 +20,7 @@
     "./code/ui/**/*",
     "./code/comparisons/tamagui-bench",
     "./code/comparisons/tamagui-bench-native",
+    "./code/comparisons/tamagui-bench-native-compiled",
     "./code/comparisons/tailwind-bench",
     "./code/comparisons/inline-bench",
     "./code/comparisons/nativewind-bench",

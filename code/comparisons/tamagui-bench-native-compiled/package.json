@@ -1,0 +1,21 @@
+{
+  "name": "@tamagui/comparison-tamagui-bench-native-compiled",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start --port 8104"
+  },
+  "dependencies": {
+    "@tamagui/config": "workspace:*",
+    "@tamagui/timer": "workspace:*",
+    "expo": "~55.0.6",
+    "expo-linking": "*",
+    "react": ">=19",
+    "react-native": "0.83.2",
+    "tamagui": "workspace:*"
+  },
+  "devDependencies": {
+    "@tamagui/babel-plugin": "workspace:*"
+  }
+}
