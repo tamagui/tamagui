@@ -1,14 +1,32 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`$group-* on native should de-opt (preserve as inline prop) 1`] = `
+exports[`$group-* non-hover on native should de-opt (preserve as inline prop) 1`] = `
 "const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test() {
   return <YStack group="row">
-          <YStack backgroundColor="red" $group-row-hover={{
+          <YStack backgroundColor="red" $group-row-press={{
       backgroundColor: 'green'
     }} />
+        </YStack>;
+}"
+`;
+
+exports[`$group-*-hover on native should drop dead hover work 1`] = `
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
+  "0": {
+    "flexDirection": "column",
+    "backgroundColor": "red"
+  }
+});
+const __ReactNativeView = require('react-native').View;
+const __ReactNativeText = require('react-native').Text;
+import { YStack } from 'tamagui';
+export function Test() {
+  return <YStack group="row">
+          <__ReactNativeView style={_sheet["0"]} />
         </YStack>;
 }"
 `;
@@ -208,14 +226,19 @@ export function Test(props) {
 }"
 `;
 
-exports[`hoverStyle on native should de-opt (preserve as inline prop) 1`] = `
-"const __ReactNativeView = require('react-native').View;
+exports[`hoverStyle on native should drop dead hover work 1`] = `
+"const __ReactNativeStyleSheet = require('react-native').StyleSheet;
+const _sheet = __ReactNativeStyleSheet.create({
+  "0": {
+    "flexDirection": "column",
+    "backgroundColor": "red"
+  }
+});
+const __ReactNativeView = require('react-native').View;
 const __ReactNativeText = require('react-native').Text;
 import { YStack } from 'tamagui';
 export function Test() {
-  return <YStack backgroundColor="red" hoverStyle={{
-    backgroundColor: 'green'
-  }} />;
+  return <__ReactNativeView style={_sheet["0"]} />;
 }"
 `;
 
