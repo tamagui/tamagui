@@ -103,6 +103,16 @@
         "tailwindcss": "^4.1.11",
       },
     },
+    "code/comparisons/rn-bench-native": {
+      "name": "@tamagui/comparison-rn-bench-native",
+      "version": "0.0.0",
+      "dependencies": {
+        "expo": "~55.0.6",
+        "expo-linking": "*",
+        "react": ">=19",
+        "react-native": "0.83.2",
+      },
+    },
     "code/comparisons/tailwind-bench": {
       "name": "@tamagui/comparison-tailwind-bench",
       "version": "0.0.0",
@@ -5289,6 +5299,8 @@
     "@tamagui/comparison-nativewind-bench": ["@tamagui/comparison-nativewind-bench@workspace:code/comparisons/nativewind-bench"],
 
     "@tamagui/comparison-nativewind-bench-native": ["@tamagui/comparison-nativewind-bench-native@workspace:code/comparisons/nativewind-bench-native"],
+
+    "@tamagui/comparison-rn-bench-native": ["@tamagui/comparison-rn-bench-native@workspace:code/comparisons/rn-bench-native"],
 
     "@tamagui/comparison-tailwind-bench": ["@tamagui/comparison-tailwind-bench@workspace:code/comparisons/tailwind-bench"],
 
