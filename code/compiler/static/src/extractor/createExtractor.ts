@@ -503,6 +503,22 @@ export function createExtractor(
       )
     }
 
+    function getGroupPseudo(name: string) {
+      const [_, groupName, a, b, c] = name.split('-')
+      if (!groupName) return
+      const m2 = a && b ? `${a}-${b}` : ''
+      const media = (m2 && mediaQueryConfig[m2] && m2) || (a && mediaQueryConfig[a] && a)
+      return media
+        ? media === m2
+          ? c
+          : b
+            ? `${b}${c ? `-${c}` : ''}`
+            : undefined
+        : a
+          ? `${a}${b ? `-${b}` : ''}${c ? `-${c}` : ''}`
+          : undefined
+    }
+
     /**
      * Step 1: Determine if importing any statically extractable components
      */
@@ -1245,13 +1261,12 @@ export function createExtractor(
 
             ...(!isTargetingHTML
               ? [
-                  // native has no CSS pseudo selectors; these are runtime-only on
-                  // RN (event listeners + style merge in createComponent), and if
-                  // we let them flatten into the StyleSheet they get written
-                  // under a literal key (e.g. `"hoverStyle"`) that RN treats as
-                  // an unknown style prop → silent breakage. de-opt → preserve
-                  // the original prop on the runtime component.
-                  'hoverStyle',
+                  // native has no css pseudo selectors; these are runtime-only on
+                  // rn (event listeners + style merge in createComponent), and if
+                  // we let them flatten into the stylesheet they get written
+                  // under a literal key that rn treats as an unknown style prop.
+                  // hover is intentionally excluded: it is no-op on native and
+                  // should be dropped rather than preserved as runtime work.
                   'pressStyle',
                   'focusStyle',
                   'focusVisibleStyle',
@@ -1530,14 +1545,15 @@ export function createExtractor(
               return [attribute.value!, path.get('value')!] as const
             })()
 
-            // These props have runtime-only meaning on native. Decide from the
-            // original JSX attr, before getSplitStyles has a chance to drop
+            // these props have runtime-only meaning on native. decide from the
+            // original jsx attr, before getSplitStyles has a chance to drop
             // native-dead work like hoverStyle from its static output.
             if (
               deoptProps.has(name) ||
               (platform === 'native' &&
                 name[0] === '$' &&
-                (name.startsWith('$theme-') || name.startsWith('$group-')))
+                (name.startsWith('$theme-') ||
+                  (name.startsWith('$group-') && getGroupPseudo(name) !== 'hover')))
             ) {
               inlined.set(name, true)
               return attr
@@ -2517,6 +2533,14 @@ export function createExtractor(
                   if (propsForSplit === props) {
                     propsForSplit = { ...props }
                   }
+                  if (
+                    platform === 'native' &&
+                    k.startsWith('$group-') &&
+                    getGroupPseudo(k) === 'hover'
+                  ) {
+                    delete propsForSplit[k]
+                    continue
+                  }
                   extractedMediaLikeProps ||= {}
                   extractedMediaLikeProps[k] = propsForSplit[k]
                   delete propsForSplit[k]
@@ -2566,7 +2590,8 @@ export function createExtractor(
                 if (
                   platform === 'native' &&
                   key[0] === '$' &&
-                  (key.startsWith('$theme-') || key.startsWith('$group-'))
+                  (key.startsWith('$theme-') ||
+                    (key.startsWith('$group-') && getGroupPseudo(key) !== 'hover'))
                 ) {
                   shouldFlatten = false
                 }
