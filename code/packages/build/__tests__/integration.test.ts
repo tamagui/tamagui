@@ -204,6 +204,10 @@ describe('tamagui-build integration test', () => {
 
     expect(nativeOutput).toContain('getNativeOnlyMarker')
     expect(nativeOnlyOutput).toContain('native-import-marker')
+    expect(nativeOutput).toContain('from "./nativeOnly.native.js"')
+    expect(nativeOutput).toContain('from "./nested/index.native.js"')
+    expect(nativeOutput).not.toContain('from "./nativeOnly"')
+    expect(nativeOutput).not.toContain('from "./nested"')
   })
 
   it('should keep side-effectful native statements outside dev-only guards', async () => {
