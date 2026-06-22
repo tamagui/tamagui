@@ -80,7 +80,10 @@ function lumaCropToContent(
   const png = PNG.sync.read(buf)
   const { width: W, height: H, data } = png
   const tol = opts.tol ?? 14
-  let minX = W, minY = H, maxX = -1, maxY = -1
+  let minX = W,
+    minY = H,
+    maxX = -1,
+    maxY = -1
   for (let y = 0; y < H; y++) {
     for (let x = 0; x < W; x++) {
       const i = (W * y + x) << 2
@@ -151,7 +154,11 @@ function diff(aBuf: Buffer, bBuf: Buffer, threshold: number): DiffResult {
 }
 
 // [tailwind | tamagui | diff] side by side on white with thin gaps
-async function sideBySide(tailwind: Buffer, tamagui: Buffer, diffBuf: Buffer): Promise<Buffer> {
+async function sideBySide(
+  tailwind: Buffer,
+  tamagui: Buffer,
+  diffBuf: Buffer
+): Promise<Buffer> {
   const metas = await Promise.all(
     [tailwind, tamagui, diffBuf].map((b) => sharp(b).metadata())
   )
@@ -166,7 +173,12 @@ async function sideBySide(tailwind: Buffer, tamagui: Buffer, diffBuf: Buffer): P
     x += widths[i] + gap
   }
   return sharp({
-    create: { width: W, height: H, channels: 4, background: { r: 245, g: 245, b: 245, alpha: 1 } },
+    create: {
+      width: W,
+      height: H,
+      channels: 4,
+      background: { r: 245, g: 245, b: 245, alpha: 1 },
+    },
   })
     .composite(composites)
     .png()
@@ -200,7 +212,10 @@ function rectOf(page: import('playwright').Page) {
   })
 }
 
-async function captureOnce(page: import('playwright').Page, url: string): Promise<Capture> {
+async function captureOnce(
+  page: import('playwright').Page,
+  url: string
+): Promise<Capture> {
   // networkidle (not just load) so Tailwind v4's async-generated CSS module is fetched+applied
   await page.goto(url, { waitUntil: 'networkidle' })
   await page.locator('#cfm-root').waitFor({ state: 'attached', timeout: 10_000 })
@@ -288,7 +303,9 @@ async function main() {
     for (const target of ['tamagui', 'tailwind']) {
       const warm = await browser.newPage()
       await warm
-        .goto(`${base}/?case=${selected[0].name}&target=${target}`, { waitUntil: 'networkidle' })
+        .goto(`${base}/?case=${selected[0].name}&target=${target}`, {
+          waitUntil: 'networkidle',
+        })
         .catch(() => {})
       for (let i = 0; i < 120; i++) {
         const b = await rectOf(warm).catch(() => null)
@@ -381,7 +398,9 @@ async function main() {
   writeFileSync(join(REPORT_DIR, 'summary.json'), JSON.stringify(summaries, null, 2))
   writeReportMd(summaries)
   const passed = summaries.filter((s) => s.webVsTailwind.pass).length
-  console.log(`\n${passed}/${summaries.length} cases pass (web-vs-tailwind). report: ${REPORT_DIR}/index.md`)
+  console.log(
+    `\n${passed}/${summaries.length} cases pass (web-vs-tailwind). report: ${REPORT_DIR}/index.md`
+  )
   if (passed < summaries.length) process.exitCode = 1
 }
 

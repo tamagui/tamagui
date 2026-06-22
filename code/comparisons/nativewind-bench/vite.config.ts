@@ -11,10 +11,7 @@ const rnwPath = path.dirname(require.resolve('react-native-web/package.json'))
 const codegenStub = path.join(__dirname, 'src/codegen-stub.ts')
 
 export default defineConfig({
-  plugins: [
-    tailwindcss(),
-    react(),
-  ],
+  plugins: [tailwindcss(), react()],
   resolve: {
     alias: [
       // codegen stub must come before the general react-native alias

@@ -1,7 +1,13 @@
 import './tailwind.css'
 import { createRoot } from 'react-dom/client'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
-import { ITEM_COUNT, HEAVY_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
+import {
+  ITEM_COUNT,
+  HEAVY_COUNT,
+  scenarios,
+  renderResults,
+  type BenchResult,
+} from '../../shared/bench'
 
 // ── scenario 1: simple ───────────────────────────────
 // tailwind: all styles are static CSS classes, zero runtime cost
@@ -87,8 +93,14 @@ function HeavyItems({ seed }: { seed: number }) {
         >
           <div className={`w-11 h-11 rounded-full group-hover:opacity-80 ${color}`} />
           <div className="flex flex-col flex-1 gap-1">
-            <div className="h-3 rounded bg-gray-800 group-hover:bg-blue-800" style={{ width: 80 + ((i * 17) % 60) }} />
-            <div className="h-2.5 rounded bg-gray-400" style={{ width: 120 + ((i * 13) % 80) }} />
+            <div
+              className="h-3 rounded bg-gray-800 group-hover:bg-blue-800"
+              style={{ width: 80 + ((i * 17) % 60) }}
+            />
+            <div
+              className="h-2.5 rounded bg-gray-400"
+              style={{ width: 120 + ((i * 13) % 80) }}
+            />
           </div>
           <div className="px-2 py-0.5 rounded-md bg-blue-100 group-hover:bg-blue-300">
             <div className="w-6 h-2 rounded bg-blue-700" />
@@ -136,7 +148,9 @@ function BenchRunner({
   scenarioId: string
   onResult: (result: BenchResult) => void
 }) {
-  const [phase, setPhase] = useState<'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'>('idle')
+  const [phase, setPhase] = useState<
+    'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'
+  >('idle')
   const [seed, setSeed] = useState(0)
   const startRef = useRef(0)
   const mountTimeRef = useRef(0)
@@ -171,7 +185,9 @@ function BenchRunner({
   if (phase === 'idle') return null
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}>
+    <div
+      style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}
+    >
       <Component seed={seed} />
     </div>
   )

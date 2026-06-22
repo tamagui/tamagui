@@ -12,7 +12,9 @@ const vite = spawn('bun', ['x', 'vite', '--port', String(PORT), '--strictPort'],
 const base = `http://localhost:${PORT}`
 async function waitFor(url: string) {
   for (let i = 0; i < 120; i++) {
-    try { if ((await fetch(url)).ok) return } catch {}
+    try {
+      if ((await fetch(url)).ok) return
+    } catch {}
     await new Promise((r) => setTimeout(r, 250))
   }
 }
@@ -20,7 +22,9 @@ try {
   await waitFor(base + '/')
   const browser = await chromium.launch()
   const page = await browser.newPage()
-  await page.goto(`${base}/?case=bg-emerald&target=tailwind`, { waitUntil: 'networkidle' })
+  await page.goto(`${base}/?case=bg-emerald&target=tailwind`, {
+    waitUntil: 'networkidle',
+  })
   await page.waitForTimeout(2500)
   const info = await page.evaluate(() => {
     const el = document.getElementById('cfm-root')!
@@ -31,14 +35,19 @@ try {
       try {
         for (const rule of Array.from(sheet.cssRules)) {
           ruleCount++
-          if (rule.cssText.includes('emerald-400') || rule.cssText.includes('.w-16')) hasEmerald = true
+          if (rule.cssText.includes('emerald-400') || rule.cssText.includes('.w-16'))
+            hasEmerald = true
         }
       } catch {}
     }
     return {
       className: el.className,
-      width: cs.width, height: cs.height, bg: cs.backgroundColor,
-      styleSheets: document.styleSheets.length, ruleCount, hasEmeraldOrW16: hasEmerald,
+      width: cs.width,
+      height: cs.height,
+      bg: cs.backgroundColor,
+      styleSheets: document.styleSheets.length,
+      ruleCount,
+      hasEmeraldOrW16: hasEmerald,
       ready: (window as any).__conformanceReady,
     }
   })

@@ -1,11 +1,7 @@
 import { useContext, useRef, type MutableRefObject } from 'react'
 import { getSetting } from '../config'
 import type { ThemeParsed, ThemeState, UseThemeWithStateProps } from '../types'
-import {
-  getThemeProxied,
-  getThemeUntracked,
-  type ThemeProxied,
-} from './getThemeProxied'
+import { getThemeProxied, getThemeUntracked, type ThemeProxied } from './getThemeProxied'
 import {
   getThemeStateForInitialRender,
   ThemeStateValueContext,
@@ -46,11 +42,7 @@ export const useThemeWithState = (
 ): ThemeWithState => {
   'use no memo'
 
-  if (
-    getSetting('themeOptimize') === 'initial-render' &&
-    !isRoot &&
-    !forThemeView
-  ) {
+  if (getSetting('themeOptimize') === 'initial-render' && !isRoot && !forThemeView) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const parentState = useContext(ThemeStateValueContext)
     const themeState = getThemeStateForInitialRender(parentState, props)

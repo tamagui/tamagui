@@ -217,7 +217,10 @@ let disabledMediaState: UseMediaState | null = null
 export function getDisabledMediaState(): UseMediaState {
   if (!disabledMediaState) {
     const tracker = Object.create(getTouchTrackerProto())
-    tracker[refSlot] = { proxyTarget: getMedia(), keys: new Set<string>() } as MediaRefSlot
+    tracker[refSlot] = {
+      proxyTarget: getMedia(),
+      keys: new Set<string>(),
+    } as MediaRefSlot
     disabledMediaState = tracker as UseMediaState
   }
   return disabledMediaState

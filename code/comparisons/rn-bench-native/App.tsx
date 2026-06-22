@@ -1,13 +1,6 @@
 import * as Linking from 'expo-linking'
 import { useURL } from 'expo-linking'
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
 const HARNESS_URL = 'http://localhost:8091/result'

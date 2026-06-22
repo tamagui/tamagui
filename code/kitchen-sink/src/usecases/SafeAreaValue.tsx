@@ -32,12 +32,7 @@ export function SafeAreaValue() {
       </View>
 
       <View position="relative" height={120} backgroundColor="$gray3">
-        <View
-          position="absolute"
-          backgroundColor="$yellow4"
-          inset="safe"
-          padding="$2"
-        >
+        <View position="absolute" backgroundColor="$yellow4" inset="safe" padding="$2">
           <Text>inset="safe" (absolute child)</Text>
         </View>
       </View>

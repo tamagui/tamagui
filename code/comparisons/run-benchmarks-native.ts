@@ -51,10 +51,10 @@ const SCENARIO_LABELS: Record<ScenarioId, string> = {
 }
 
 interface BenchConfig {
-  framework: string   // POST.framework matches this
-  label: string       // column header in the table
-  dir: string         // workspace dir under code/comparisons/
-  port: number        // metro port
+  framework: string // POST.framework matches this
+  label: string // column header in the table
+  dir: string // workspace dir under code/comparisons/
+  port: number // metro port
   skipScenarios?: ScenarioId[]
 }
 
@@ -113,9 +113,13 @@ function hasExpoGo(udid: string): boolean {
   try {
     const out = execFileSync('find', [
       `${home}/Library/Developer/CoreSimulator/Devices/${udid}/data/Containers/Bundle/Application`,
-      '-name', '*xpo*Go.app',
-      '-maxdepth', '4',
-    ]).toString().trim()
+      '-name',
+      '*xpo*Go.app',
+      '-maxdepth',
+      '4',
+    ])
+      .toString()
+      .trim()
     return out.length > 0
   } catch {
     return false
@@ -300,41 +304,37 @@ function tapExpoProjectRow(udid: string, text: string, projectName: string) {
   const width = Number(match[3])
   const height = Number(match[4])
 
-  execFileSync('xcodebuildmcp', [
-    'ui-automation',
-    'tap',
-    '--simulator-id',
-    udid,
-    '--x',
-    String(Math.round(x + width / 2)),
-    '--y',
-    String(Math.round(y + height / 2)),
-  ], { stdio: 'ignore' })
+  execFileSync(
+    'xcodebuildmcp',
+    [
+      'ui-automation',
+      'tap',
+      '--simulator-id',
+      udid,
+      '--x',
+      String(Math.round(x + width / 2)),
+      '--y',
+      String(Math.round(y + height / 2)),
+    ],
+    { stdio: 'ignore' }
+  )
   return true
 }
 
 function acceptExpoOpenPrompt(udid: string, projectName: string) {
   try {
-    const out = execFileSync('xcodebuildmcp', [
-      'simulator',
-      'snapshot-ui',
-      '--simulator-id',
-      udid,
-      '--output',
-      'json',
-    ], { stdio: ['ignore', 'pipe', 'ignore'] }).toString()
+    const out = execFileSync(
+      'xcodebuildmcp',
+      ['simulator', 'snapshot-ui', '--simulator-id', udid, '--output', 'json'],
+      { stdio: ['ignore', 'pipe', 'ignore'] }
+    ).toString()
     const text = snapshotText(out)
     if (text.includes('Open in “Expo Go”?')) {
-      execFileSync('xcodebuildmcp', [
-        'ui-automation',
-        'tap',
-        '--simulator-id',
-        udid,
-        '--x',
-        '269',
-        '--y',
-        '481',
-      ], { stdio: 'ignore' })
+      execFileSync(
+        'xcodebuildmcp',
+        ['ui-automation', 'tap', '--simulator-id', udid, '--x', '269', '--y', '481'],
+        { stdio: 'ignore' }
+      )
       return
     }
     tapExpoProjectRow(udid, text, projectName)
@@ -377,7 +377,12 @@ async function runOneScenario(
 type RunResult = Record<ScenarioId, { mount: number; rerender: number } | null>
 
 const emptyRun = (): RunResult => ({
-  simple: null, themed: null, rich: null, group: null, heavy: null, animated: null,
+  simple: null,
+  themed: null,
+  rich: null,
+  group: null,
+  heavy: null,
+  animated: null,
 })
 
 // measure all scenarios for a bench whose metro is ALREADY running. coldFirst marks
@@ -430,10 +435,17 @@ function averageResults(
   runs: Record<ScenarioId, { mount: number; rerender: number } | null>[]
 ): Record<ScenarioId, { mount: number; rerender: number } | null> {
   const avg: Record<ScenarioId, { mount: number; rerender: number } | null> = {
-    simple: null, themed: null, rich: null, group: null, heavy: null, animated: null,
+    simple: null,
+    themed: null,
+    rich: null,
+    group: null,
+    heavy: null,
+    animated: null,
   }
   for (const s of ACTIVE_SCENARIOS) {
-    const mounts = runs.map((r) => r[s]?.mount).filter((n): n is number => typeof n === 'number')
+    const mounts = runs
+      .map((r) => r[s]?.mount)
+      .filter((n): n is number => typeof n === 'number')
     const rerenders = runs
       .map((r) => r[s]?.rerender)
       .filter((n): n is number => typeof n === 'number')
@@ -444,8 +456,10 @@ function averageResults(
     if (mounts.length >= 3) {
       mounts.sort((a, b) => a - b)
       rerenders.sort((a, b) => a - b)
-      mounts.shift(); mounts.pop()
-      rerenders.shift(); rerenders.pop()
+      mounts.shift()
+      mounts.pop()
+      rerenders.shift()
+      rerenders.pop()
     }
     avg[s] = {
       mount: mounts.reduce((a, b) => a + b, 0) / mounts.length,
@@ -457,7 +471,10 @@ function averageResults(
 
 // ── reporting ────────────────────────────────────────────
 
-type AllResults = Record<string, Record<ScenarioId, { mount: number; rerender: number } | null>>
+type AllResults = Record<
+  string,
+  Record<ScenarioId, { mount: number; rerender: number } | null>
+>
 
 // framework ÷ vanilla-RN, per scenario. >1 means slower than raw RN (e.g. 2.5 = 2.5× RN).
 function computeRatio(fw: RunResult, rn: RunResult): RunResult {
@@ -477,21 +494,45 @@ function printRatioTable(ratios: Record<string, RunResult>) {
   const colW = 18
   const sep = '═'
   const line = (c: string) =>
-    console.log(c[0] + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + c[1])
-  console.log('\n  × vanilla React Native (lower = closer to raw RN; interleaved per run)')
+    console.log(
+      c[0] + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + c[1]
+    )
+  console.log(
+    '\n  × vanilla React Native (lower = closer to raw RN; interleaved per run)'
+  )
   line('╔╗')
-  console.log('║' + ' Mount ×RN'.padEnd(22) + labels.map((f) => f.padStart(colW) + ' ').join('') + '║')
+  console.log(
+    '║' +
+      ' Mount ×RN'.padEnd(22) +
+      labels.map((f) => f.padStart(colW) + ' ').join('') +
+      '║'
+  )
   line('╠╣')
   const fmt = (v: { mount: number; rerender: number } | null, k: 'mount' | 'rerender') =>
     (v ? `${v[k].toFixed(2)}×` : 'skip').padStart(colW)
   for (const s of ACTIVE_SCENARIOS) {
-    console.log('║' + SCENARIO_LABELS[s].padEnd(22) + labels.map((f) => fmt(ratios[f][s], 'mount')).join(' ') + ' ║')
+    console.log(
+      '║' +
+        SCENARIO_LABELS[s].padEnd(22) +
+        labels.map((f) => fmt(ratios[f][s], 'mount')).join(' ') +
+        ' ║'
+    )
   }
   line('╠╣')
-  console.log('║' + ' Re-render ×RN'.padEnd(22) + labels.map((f) => f.padStart(colW) + ' ').join('') + '║')
+  console.log(
+    '║' +
+      ' Re-render ×RN'.padEnd(22) +
+      labels.map((f) => f.padStart(colW) + ' ').join('') +
+      '║'
+  )
   line('╠╣')
   for (const s of ACTIVE_SCENARIOS) {
-    console.log('║' + SCENARIO_LABELS[s].padEnd(22) + labels.map((f) => fmt(ratios[f][s], 'rerender')).join(' ') + ' ║')
+    console.log(
+      '║' +
+        SCENARIO_LABELS[s].padEnd(22) +
+        labels.map((f) => fmt(ratios[f][s], 'rerender')).join(' ') +
+        ' ║'
+    )
   }
   line('╚╝')
 }
@@ -501,12 +542,22 @@ function printTable(results: AllResults) {
   const colW = 18
   console.log('')
   const sep = '═'
-  console.log('╔' + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + '╗')
   console.log(
-    '║' + ' Mount (ms)'.padEnd(22) + labels.map((f) => f.padStart(colW) + ' ').join('') + '║'
+    '╔' + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + '╗'
   )
-  console.log('╠' + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + '╣')
-  const fmt = (v: { mount: number; rerender: number } | null, getField: 'mount' | 'rerender') => {
+  console.log(
+    '║' +
+      ' Mount (ms)'.padEnd(22) +
+      labels.map((f) => f.padStart(colW) + ' ').join('') +
+      '║'
+  )
+  console.log(
+    '╠' + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + '╣'
+  )
+  const fmt = (
+    v: { mount: number; rerender: number } | null,
+    getField: 'mount' | 'rerender'
+  ) => {
     if (!v) return 'skip'.padStart(colW)
     return v[getField].toFixed(1).padStart(colW)
   }
@@ -515,26 +566,35 @@ function printTable(results: AllResults) {
     const vals = labels.map((f) => fmt(results[f][s], 'mount'))
     console.log('║' + label + vals.join(' ') + ' ║')
   }
-  console.log('╠' + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + '╣')
   console.log(
-    '║' + ' Re-render (ms)'.padEnd(22) + labels.map((f) => f.padStart(colW) + ' ').join('') + '║'
+    '╠' + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + '╣'
   )
-  console.log('╠' + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + '╣')
+  console.log(
+    '║' +
+      ' Re-render (ms)'.padEnd(22) +
+      labels.map((f) => f.padStart(colW) + ' ').join('') +
+      '║'
+  )
+  console.log(
+    '╠' + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + '╣'
+  )
   for (const s of ACTIVE_SCENARIOS) {
     const label = SCENARIO_LABELS[s].padEnd(22)
     const vals = labels.map((f) => fmt(results[f][s], 'rerender'))
     console.log('║' + label + vals.join(' ') + ' ║')
   }
-  console.log('╚' + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + '╝')
+  console.log(
+    '╚' + sep.repeat(22) + labels.map(() => sep.repeat(colW + 1)).join('') + '╝'
+  )
   console.log(`  ${NUM_RUNS} run(s) on iOS sim, 200 items per scenario (60 for heavy)\n`)
 }
 
 function generateHtml(results: AllResults): string {
   const labels = Object.keys(results)
-  const fmt = (
-    v: { mount: number; rerender: number } | null,
-    f: 'mount' | 'rerender'
-  ) => (v ? `<span class="value">${v[f].toFixed(1)}</span>` : `<span class="ratio">skip</span>`)
+  const fmt = (v: { mount: number; rerender: number } | null, f: 'mount' | 'rerender') =>
+    v
+      ? `<span class="value">${v[f].toFixed(1)}</span>`
+      : `<span class="ratio">skip</span>`
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -578,7 +638,9 @@ async function main() {
   // pick sim — booted is fine ONLY if it has Expo Go; otherwise find one that does and boot it
   let udid = bootedUdid()
   if (udid && !hasExpoGo(udid)) {
-    console.log(`  Sim ${udid} is booted but has no Expo Go. Switching to a sim with Expo Go...`)
+    console.log(
+      `  Sim ${udid} is booted but has no Expo Go. Switching to a sim with Expo Go...`
+    )
     udid = null
   }
   if (!udid) {

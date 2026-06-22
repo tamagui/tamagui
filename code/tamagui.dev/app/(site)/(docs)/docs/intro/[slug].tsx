@@ -25,7 +25,9 @@ export async function loader({ params, search, request }) {
     await import('~/features/mdx/getMDXBySlug')
   const { isTailwindMode } = await import('~/features/docs/isTailwindMode')
   const tailwind = isTailwindMode({ search, request })
-  const { frontmatter, code } = await getMDXBySlug(`data/docs/intro`, params.slug, { tailwind })
+  const { frontmatter, code } = await getMDXBySlug(`data/docs/intro`, params.slug, {
+    tailwind,
+  })
   return {
     frontmatter,
     code,

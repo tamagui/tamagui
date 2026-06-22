@@ -27,7 +27,8 @@ import { join } from 'path'
 const ALL_SCENARIOS = ['simple', 'rich', 'group', 'heavy', 'animated'] as const
 type Scenario = (typeof ALL_SCENARIOS)[number]
 
-const targets = (process.argv.slice(2).filter((a) => !a.startsWith('--')) as Scenario[]) ?? []
+const targets =
+  (process.argv.slice(2).filter((a) => !a.startsWith('--')) as Scenario[]) ?? []
 const scenarios: Scenario[] = targets.length > 0 ? targets : ['group', 'heavy']
 
 // keep the dataset small so we capture HOT-FRAME breakdown, not throughput.
@@ -128,7 +129,9 @@ async function main() {
   } catch {
     console.error(`✗ runtime tamagui-bench dev server not running on :${PORT}`)
     console.error(`  start it with:`)
-    console.error(`    cd code/comparisons/tamagui-bench && EXTRACT=0 npx vite --port ${PORT}`)
+    console.error(
+      `    cd code/comparisons/tamagui-bench && EXTRACT=0 npx vite --port ${PORT}`
+    )
     process.exit(1)
   }
 

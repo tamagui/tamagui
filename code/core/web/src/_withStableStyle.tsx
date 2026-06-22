@@ -27,13 +27,11 @@ export const _withStableStyle = (
       const parentId = useContext(ThemeStateContext)
       const shouldOptimizeTheme =
         hasThemeKeys &&
-        (themeOptimizeInitial ??=
-          getSetting('themeOptimize') === 'initial-render')
-      const parentThemeState =
-        shouldOptimizeTheme
-          ? // eslint-disable-next-line react-hooks/rules-of-hooks
-            useContext(ThemeStateValueContext)
-          : null
+        (themeOptimizeInitial ??= getSetting('themeOptimize') === 'initial-render')
+      const parentThemeState = shouldOptimizeTheme
+        ? // eslint-disable-next-line react-hooks/rules-of-hooks
+          useContext(ThemeStateValueContext)
+        : null
 
       // compile-time constants per wrapper, so conditional hooks are stable
       // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -79,13 +77,7 @@ export const _withStableStyle = (
               (lastStyle = createStyle(resolvedTheme, resolvedExpressions)))
           : createStyle(resolvedTheme, resolvedExpressions)
 
-      return (
-        <Component
-          ref={ref}
-          style={style}
-          {...rest}
-        />
-      )
+      return <Component ref={ref} style={style} {...rest} />
     })
   )
 }

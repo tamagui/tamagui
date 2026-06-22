@@ -810,7 +810,9 @@ function tailwindClassToFlatProp(
     const sized = tailwindSizingValue(expandedProp, value)
     if (sized != null) {
       const key =
-        modifiers.length > 0 ? `$${modifiers.join(':')}:${expandedProp}` : `$${expandedProp}`
+        modifiers.length > 0
+          ? `$${modifiers.join(':')}:${expandedProp}`
+          : `$${expandedProp}`
       return { key, value: sized }
     }
   }

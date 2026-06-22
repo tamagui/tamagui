@@ -9,14 +9,7 @@
 import 'uniwind'
 import * as Linking from 'expo-linking'
 import { useURL } from 'expo-linking'
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { View, Text } from 'react-native'
 
 const HARNESS_URL = 'http://localhost:8091/result'
@@ -49,10 +42,7 @@ function RichItems({ seed }: { seed: number }) {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
-        <View
-          key={i + seed * ITEM_COUNT}
-          className={richClasses[(i + seed) % 3]}
-        />
+        <View key={i + seed * ITEM_COUNT} className={richClasses[(i + seed) % 3]} />
       )
     }
     return <>{arr}</>
@@ -117,10 +107,7 @@ function AnimatedItems({ seed }: { seed: number }) {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
-        <View
-          key={i + seed * ITEM_COUNT}
-          className="w-6 h-6 rounded m-px bg-blue-500"
-        />
+        <View key={i + seed * ITEM_COUNT} className="w-6 h-6 rounded m-px bg-blue-500" />
       )
     }
     return <>{arr}</>
@@ -135,10 +122,7 @@ function ThemedItems({ seed }: { seed: number }) {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
-        <View
-          key={i + seed * ITEM_COUNT}
-          className="w-5 h-5 rounded bg-blue-500 m-px"
-        />
+        <View key={i + seed * ITEM_COUNT} className="w-5 h-5 rounded bg-blue-500 m-px" />
       )
     }
     return <>{arr}</>

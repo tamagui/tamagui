@@ -144,11 +144,7 @@ export interface GetMDXOptions {
   tailwind?: boolean
 }
 
-export const getMDXBySlug = (
-  basePath: string,
-  slug: string,
-  options?: GetMDXOptions
-) => {
+export const getMDXBySlug = (basePath: string, slug: string, options?: GetMDXOptions) => {
   const plugins = [rehypeHeroTemplate]
 
   // when tailwind mode is requested, add the transform plugin

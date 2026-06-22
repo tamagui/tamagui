@@ -2,7 +2,13 @@ import './global.css'
 import { createRoot } from 'react-dom/client'
 import { View } from 'react-native'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
-import { ITEM_COUNT, HEAVY_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
+import {
+  ITEM_COUNT,
+  HEAVY_COUNT,
+  scenarios,
+  renderResults,
+  type BenchResult,
+} from '../../shared/bench'
 
 // ── scenario 1: simple ───────────────────────────────
 
@@ -34,10 +40,7 @@ function RichItems({ seed }: { seed: number }) {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
-        <View
-          key={i + seed * ITEM_COUNT}
-          className={richClasses[(i + seed) % 3]}
-        />
+        <View key={i + seed * ITEM_COUNT} className={richClasses[(i + seed) % 3]} />
       )
     }
     return <>{arr}</>
@@ -82,8 +85,14 @@ function HeavyItems({ seed }: { seed: number }) {
         >
           <View className={`w-11 h-11 rounded-full group-hover:opacity-80 ${color}`} />
           <View className="flex-1 gap-1">
-            <View className="h-3 rounded bg-gray-800 group-hover:bg-blue-800" style={{ width: 80 + ((i * 17) % 60) }} />
-            <View className="h-2.5 rounded bg-gray-400" style={{ width: 120 + ((i * 13) % 80) }} />
+            <View
+              className="h-3 rounded bg-gray-800 group-hover:bg-blue-800"
+              style={{ width: 80 + ((i * 17) % 60) }}
+            />
+            <View
+              className="h-2.5 rounded bg-gray-400"
+              style={{ width: 120 + ((i * 13) % 80) }}
+            />
           </View>
           <View className="px-2 py-0.5 rounded-md bg-blue-100 group-hover:bg-blue-300">
             <View className="w-6 h-2 rounded bg-blue-700" />
@@ -129,7 +138,9 @@ function BenchRunner({
   scenarioId: string
   onResult: (result: BenchResult) => void
 }) {
-  const [phase, setPhase] = useState<'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'>('idle')
+  const [phase, setPhase] = useState<
+    'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'
+  >('idle')
   const [seed, setSeed] = useState(0)
   const startRef = useRef(0)
   const mountTimeRef = useRef(0)
@@ -164,7 +175,9 @@ function BenchRunner({
   if (phase === 'idle') return null
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}>
+    <div
+      style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}
+    >
       <Component seed={seed} />
     </div>
   )
@@ -214,8 +227,14 @@ function App() {
         onClick={handleStart}
         disabled={running}
         style={{
-          padding: '8px 20px', fontSize: 14, borderRadius: 6,
-          border: 'none', background: '#f472b6', color: 'white', cursor: 'pointer', marginBottom: 16,
+          padding: '8px 20px',
+          fontSize: 14,
+          borderRadius: 6,
+          border: 'none',
+          background: '#f472b6',
+          color: 'white',
+          cursor: 'pointer',
+          marginBottom: 16,
         }}
       >
         {running ? `Running ${currentIdx + 1}/${scenarios.length}...` : 'Run Benchmarks'}

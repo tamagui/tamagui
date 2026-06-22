@@ -29,7 +29,8 @@ const SCENARIO_TIMEOUT_MS = 90_000
 const ALL_SCENARIOS = ['simple', 'themed', 'rich', 'group', 'heavy', 'animated'] as const
 type Scenario = (typeof ALL_SCENARIOS)[number]
 
-const targets = (process.argv.slice(2).filter((a) => !a.startsWith('--')) as Scenario[]) ?? []
+const targets =
+  (process.argv.slice(2).filter((a) => !a.startsWith('--')) as Scenario[]) ?? []
 const scenarios: Scenario[] = targets.length > 0 ? targets : ['simple', 'group']
 
 interface Result {
@@ -72,11 +73,17 @@ function hasExpoGo(udid: string): boolean {
   try {
     const out = execFileSync('find', [
       `${home}/Library/Developer/CoreSimulator/Devices/${udid}/data/Containers/Bundle/Application`,
-      '-name', '*xpo*Go.app',
-      '-maxdepth', '4',
-    ]).toString().trim()
+      '-name',
+      '*xpo*Go.app',
+      '-maxdepth',
+      '4',
+    ])
+      .toString()
+      .trim()
     return out.length > 0
-  } catch { return false }
+  } catch {
+    return false
+  }
 }
 
 function findSimWithExpoGo(): string | null {
@@ -96,7 +103,9 @@ function findSimWithExpoGo(): string | null {
     if (withExpo.length === 0) return null
     const pro = withExpo.find((c) => c.name === 'iPhone 16 Pro')
     return (pro ?? withExpo[0]).udid
-  } catch { return null }
+  } catch {
+    return null
+  }
 }
 
 function bootSim(udid: string) {
@@ -110,7 +119,12 @@ function bootSim(udid: string) {
 function killPort(port: number) {
   try {
     const pids = execSync(`lsof -ti:${port} 2>/dev/null`).toString().trim()
-    if (pids) for (const pid of pids.split('\n')) { try { process.kill(parseInt(pid)) } catch {} }
+    if (pids)
+      for (const pid of pids.split('\n')) {
+        try {
+          process.kill(parseInt(pid))
+        } catch {}
+      }
   } catch {}
 }
 
@@ -133,8 +147,10 @@ function startMetro(): ChildProcess {
   // PROD=1 builds a production JS bundle (NODE_ENV=production, no dev-only hooks
   // like useId / the dev visualizer effect, minified) — the honest shipped shape.
   // profile markers are gated out in prod, so this only yields mount/rerender.
-  const baseArgs = process.env.PROD === '1' ? ['run', 'start', '--no-dev', '--minify'] : ['run', 'start']
-  const startArgs = process.env.PROFILE_CLEAR === '1' ? [...baseArgs, '--clear'] : baseArgs
+  const baseArgs =
+    process.env.PROD === '1' ? ['run', 'start', '--no-dev', '--minify'] : ['run', 'start']
+  const startArgs =
+    process.env.PROFILE_CLEAR === '1' ? [...baseArgs, '--clear'] : baseArgs
   const proc = spawn('bun', startArgs, {
     cwd,
     env: {
@@ -195,48 +211,48 @@ function tapExpoProjectRow(udid: string, text: string, projectName: string) {
   const width = Number(match[3])
   const height = Number(match[4])
 
-  execFileSync('xcodebuildmcp', [
-    'ui-automation',
-    'tap',
-    '--simulator-id',
-    udid,
-    '--x',
-    String(Math.round(x + width / 2)),
-    '--y',
-    String(Math.round(y + height / 2)),
-  ], { stdio: 'ignore' })
+  execFileSync(
+    'xcodebuildmcp',
+    [
+      'ui-automation',
+      'tap',
+      '--simulator-id',
+      udid,
+      '--x',
+      String(Math.round(x + width / 2)),
+      '--y',
+      String(Math.round(y + height / 2)),
+    ],
+    { stdio: 'ignore' }
+  )
   return true
 }
 
 function acceptExpoOpenPrompt(udid: string) {
   try {
-    const out = execFileSync('xcodebuildmcp', [
-      'simulator',
-      'snapshot-ui',
-      '--simulator-id',
-      udid,
-      '--output',
-      'json',
-    ], { stdio: ['ignore', 'pipe', 'ignore'] }).toString()
+    const out = execFileSync(
+      'xcodebuildmcp',
+      ['simulator', 'snapshot-ui', '--simulator-id', udid, '--output', 'json'],
+      { stdio: ['ignore', 'pipe', 'ignore'] }
+    ).toString()
     const text = snapshotText(out)
     if (text.includes('Open in “Expo Go”?')) {
-      execFileSync('xcodebuildmcp', [
-        'ui-automation',
-        'tap',
-        '--simulator-id',
-        udid,
-        '--x',
-        '269',
-        '--y',
-        '481',
-      ], { stdio: 'ignore' })
+      execFileSync(
+        'xcodebuildmcp',
+        ['ui-automation', 'tap', '--simulator-id', udid, '--x', '269', '--y', '481'],
+        { stdio: 'ignore' }
+      )
       return
     }
     tapExpoProjectRow(udid, text, BENCH_DIR)
   } catch {}
 }
 
-async function runScenario(udid: string, scenario: Scenario, isFirst: boolean): Promise<Result | null> {
+async function runScenario(
+  udid: string,
+  scenario: Scenario,
+  isFirst: boolean
+): Promise<Result | null> {
   lastResult = null
   deepLink(udid, scenario)
   await sleep(600)
@@ -274,7 +290,9 @@ async function main() {
     console.log(`Booting sim ${udid}...`)
     bootSim(udid)
   }
-  try { execSync('open -a Simulator', { stdio: 'pipe' }) } catch {}
+  try {
+    execSync('open -a Simulator', { stdio: 'pipe' })
+  } catch {}
   console.log(`Using sim ${udid}`)
 
   killPort(PORT)
@@ -283,7 +301,9 @@ async function main() {
   const ok = await waitForMetro(PORT, 60_000)
   if (!ok) {
     console.error(`metro did not start on :${PORT}`)
-    try { metro.kill('SIGTERM') } catch {}
+    try {
+      metro.kill('SIGTERM')
+    } catch {}
     harness.stop()
     process.exit(1)
   }
@@ -305,7 +325,10 @@ async function main() {
       console.log(`  mount=${r.mount.toFixed(1)}ms rerender=${r.rerender.toFixed(1)}ms`)
       if (r.profile) {
         const path = join(outDir, `${s}.txt`)
-        writeFileSync(path, `mount=${r.mount.toFixed(1)}ms rerender=${r.rerender.toFixed(1)}ms\n\n${r.profile}\n`)
+        writeFileSync(
+          path,
+          `mount=${r.mount.toFixed(1)}ms rerender=${r.rerender.toFixed(1)}ms\n\n${r.profile}\n`
+        )
         console.log(`  wrote ${path}`)
       } else {
         console.log(`  (no profile data)`)
@@ -313,7 +336,9 @@ async function main() {
       await sleep(800)
     }
   } finally {
-    try { metro.kill('SIGTERM') } catch {}
+    try {
+      metro.kill('SIGTERM')
+    } catch {}
     await sleep(500)
     killPort(PORT)
     harness.stop()

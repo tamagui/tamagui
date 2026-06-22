@@ -12,14 +12,7 @@
 import { timer } from '@tamagui/timer'
 import * as Linking from 'expo-linking'
 import { useURL } from 'expo-linking'
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { View as RNView, Text as RNText } from 'react-native'
 import { TamaguiProvider, View } from 'tamagui'
 import config from './tamagui.config'
@@ -293,7 +286,11 @@ function BenchRunner({
           profileOut = `print error: ${String(e)}`
         }
       }
-      onResult({ mount: mountTimeRef.current, rerender: rerenderTime, profile: profileOut })
+      onResult({
+        mount: mountTimeRef.current,
+        rerender: rerenderTime,
+        profile: profileOut,
+      })
     }
   }, [phase, onResult])
 

@@ -54,7 +54,12 @@ let linkCounter = 0
 function deepLink(name: string) {
   // unique counter param forces Expo Go to re-deliver the link (same-URL links are ignored),
   // which (with the App's url-keyed remount) re-fires onLayout → a fresh rect POST.
-  execFileSync('xcrun', ['simctl', 'openurl', UDID, `${METRO}/--/?case=${name}&n=${linkCounter++}`])
+  execFileSync('xcrun', [
+    'simctl',
+    'openurl',
+    UDID,
+    `${METRO}/--/?case=${name}&n=${linkCounter++}`,
+  ])
 }
 function screenshot(): Buffer {
   execFileSync('xcrun', ['simctl', 'io', UDID, 'screenshot', SHOT])
@@ -98,7 +103,9 @@ async function diffResized(oracle: Buffer, native: Buffer) {
     .toBuffer()
   const n = PNG.sync.read(nResized)
   const diff = new PNG({ width: o.width, height: o.height })
-  const px = pixelmatch(o.data, n.data, diff.data, o.width, o.height, { threshold: THRESHOLD })
+  const px = pixelmatch(o.data, n.data, diff.data, o.width, o.height, {
+    threshold: THRESHOLD,
+  })
   return {
     diffPercent: (px / (o.width * o.height)) * 100,
     diffBuf: PNG.sync.write(diff),
@@ -119,7 +126,12 @@ async function sideBySide(oracle: Buffer, native: Buffer, diff: Buffer): Promise
     x += widths[i] + gap
   }
   return sharp({
-    create: { width: W, height: H, channels: 4, background: { r: 245, g: 245, b: 245, alpha: 1 } },
+    create: {
+      width: W,
+      height: H,
+      channels: 4,
+      background: { r: 245, g: 245, b: 245, alpha: 1 },
+    },
   })
     .composite(composites)
     .png()
@@ -140,7 +152,12 @@ async function main() {
   deepLink(selected[0].name)
   for (let i = 0; i < 60 && !lastRect; i++) await sleep(250)
 
-  const results: { name: string; diffPercent: number; pass: boolean; visible: boolean }[] = []
+  const results: {
+    name: string
+    diffPercent: number
+    pass: boolean
+    visible: boolean
+  }[] = []
   for (const c of selected) {
     const oraclePath = join(WEB_REPORT, c.name, 'tailwind.png')
     if (!existsSync(oraclePath)) {
@@ -164,20 +181,38 @@ async function main() {
     const cropped = await rectCrop(screenshot(), lastRect)
     const { diffPercent, diffBuf, nativeResized } = await diffResized(oracle, cropped)
     writeFileSync(join(dir, 'native.png'), cropped)
-    writeFileSync(join(dir, 'side-by-side.png'), await sideBySide(oracle, nativeResized, diffBuf))
+    writeFileSync(
+      join(dir, 'side-by-side.png'),
+      await sideBySide(oracle, nativeResized, diffBuf)
+    )
     const pass = diffPercent <= MAX_DIFF_PERCENT
-    results.push({ name: c.name, diffPercent: +diffPercent.toFixed(3), pass, visible: true })
-    console.log(`● ${c.name}\n  ${pass ? 'PASS' : 'FAIL'}  native-vs-tailwind diff ${diffPercent.toFixed(2)}%`)
+    results.push({
+      name: c.name,
+      diffPercent: +diffPercent.toFixed(3),
+      pass,
+      visible: true,
+    })
+    console.log(
+      `● ${c.name}\n  ${pass ? 'PASS' : 'FAIL'}  native-vs-tailwind diff ${diffPercent.toFixed(2)}%`
+    )
   }
 
-  const lines = ['# Native tailwind conformance — tamagui iOS vs real Tailwind\n', '| case | result | diff % |', '| --- | --- | --- |']
+  const lines = [
+    '# Native tailwind conformance — tamagui iOS vs real Tailwind\n',
+    '| case | result | diff % |',
+    '| --- | --- | --- |',
+  ]
   for (const r of results) {
-    lines.push(`| [${r.name}](./${r.name}/side-by-side.png) | ${r.pass ? '✅ pass' : '❌ fail'} | ${r.diffPercent}% |`)
+    lines.push(
+      `| [${r.name}](./${r.name}/side-by-side.png) | ${r.pass ? '✅ pass' : '❌ fail'} | ${r.diffPercent}% |`
+    )
   }
   writeFileSync(join(OUT, 'index.md'), lines.join('\n'))
   writeFileSync(join(OUT, 'summary.json'), JSON.stringify(results, null, 2))
   const passed = results.filter((r) => r.pass).length
-  console.log(`\nNATIVE: ${passed}/${results.length} pass = ${Math.round((passed / results.length) * 100)}%  → ${OUT}/index.md`)
+  console.log(
+    `\nNATIVE: ${passed}/${results.length} pass = ${Math.round((passed / results.length) * 100)}%  → ${OUT}/index.md`
+  )
 }
 
 main().catch((e) => {

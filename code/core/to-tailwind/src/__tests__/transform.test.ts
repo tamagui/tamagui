@@ -254,7 +254,7 @@ describe('tamaguiToTailwind', () => {
       // should be unchanged (lowercase elements)
       expect(output).toContain('<div')
       expect(output).toContain('<button')
-      expect(output).toContain("style={{")
+      expect(output).toContain('style={{')
     })
 
     test('handles spread props', () => {

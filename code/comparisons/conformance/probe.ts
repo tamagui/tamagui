@@ -34,11 +34,18 @@ async function waitForServer(url: string, timeoutMs = 60_000) {
   throw new Error(`server did not start: ${url}`)
 }
 
-async function read(page: import('playwright').Page, base: string, target: string, cls: string) {
+async function read(
+  page: import('playwright').Page,
+  base: string,
+  target: string,
+  cls: string
+) {
   await page.goto(`${base}/?cls=${encodeURIComponent(cls)}&target=${target}`, {
     waitUntil: 'load',
   })
-  await page.waitForFunction(() => (window as any).__conformanceReady === true, { timeout: 20_000 })
+  await page.waitForFunction(() => (window as any).__conformanceReady === true, {
+    timeout: 20_000,
+  })
   return page.evaluate(() => {
     const el = document.getElementById('cfm-root')!
     const cs = getComputedStyle(el)
@@ -67,8 +74,12 @@ try {
     const tw = await read(page, base, 'tailwind', cls)
     const tg = await read(page, base, 'tamagui', cls)
     console.log(`\n"${cls}"`)
-    console.log(`  tailwind:  w=${tw.width} h=${tw.height} bg=${tw.backgroundColor} radius=${tw.borderRadius} p=${tw.padding} op=${tw.opacity}`)
-    console.log(`  tamagui :  w=${tg.width} h=${tg.height} bg=${tg.backgroundColor} radius=${tg.borderRadius} p=${tg.padding} op=${tg.opacity}`)
+    console.log(
+      `  tailwind:  w=${tw.width} h=${tw.height} bg=${tw.backgroundColor} radius=${tw.borderRadius} p=${tw.padding} op=${tw.opacity}`
+    )
+    console.log(
+      `  tamagui :  w=${tg.width} h=${tg.height} bg=${tg.backgroundColor} radius=${tg.borderRadius} p=${tg.padding} op=${tg.opacity}`
+    )
     console.log(`  tamagui className after convert: "${tg.className}"`)
   }
   await browser.close()

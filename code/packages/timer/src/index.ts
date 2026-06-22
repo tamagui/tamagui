@@ -43,7 +43,8 @@ export function timer() {
         const elapsed = now - start
         const tag = templateToString(strings, ...vars)
         // large deltas are inter-render gaps, not this segment's real cost
-        const bucket = elapsed > GAP_MS && !tag.endsWith('(ignore)') ? '~gap (ignore)' : tag
+        const bucket =
+          elapsed > GAP_MS && !tag.endsWith('(ignore)') ? '~gap (ignore)' : tag
         runs++
         timings[bucket] = (timings[bucket] || 0) + elapsed
         counts[bucket] = (counts[bucket] || 0) + 1

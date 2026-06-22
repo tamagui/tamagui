@@ -159,7 +159,9 @@ export default function FullySpecified(
   }
 }
 
-function normalizeOptions(rawOptions: Partial<FullySpecifiedOptions>): FullySpecifiedOptions {
+function normalizeOptions(
+  rawOptions: Partial<FullySpecifiedOptions>
+): FullySpecifiedOptions {
   const options = { ...DEFAULT_OPTIONS, ...rawOptions }
 
   if (

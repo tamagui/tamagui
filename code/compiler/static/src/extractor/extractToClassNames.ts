@@ -253,9 +253,7 @@ export async function extractToClassNames({
             // for theme, so we must pass the short key ("dark", not "theme-dark")
             // to avoid double-prefixing. Platform stays as-is (runtime parity).
             const innerKey =
-              mediaType === 'theme'
-                ? mediaName.slice('theme-'.length)
-                : mediaName
+              mediaType === 'theme' ? mediaName.slice('theme-'.length) : mediaName
             const mediaStyle = createMediaStyle(
               style,
               innerKey,

@@ -16,8 +16,8 @@ export function TextOverflowEllipsis() {
         whiteSpace="nowrap"
         backgroundColor="$background"
       >
-        this is a very long line of text that should truncate with an ellipsis on both web and
-        native
+        this is a very long line of text that should truncate with an ellipsis on both web
+        and native
       </Text>
 
       {/* explicit numberOfLines wins on native (?? in mapping leaves it alone) */}
@@ -27,8 +27,8 @@ export function TextOverflowEllipsis() {
         numberOfLines={2}
         overflow="hidden"
       >
-        when numberOfLines is set explicitly on native, the textOverflow mapping should not
-        override it, allowing two-line ellipsis truncation
+        when numberOfLines is set explicitly on native, the textOverflow mapping should
+        not override it, allowing two-line ellipsis truncation
       </Text>
     </View>
   )
