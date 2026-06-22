@@ -29,8 +29,15 @@ export const useComponentState = (
 ) => {
   'use no memo'
 
+  if (process.env.NODE_ENV === 'development' && globalThis.time)
+    globalThis.time`state-enter`
+
   const isHydrated = useDidFinishSSR()
+  if (process.env.NODE_ENV === 'development' && globalThis.time)
+    globalThis.time`state-useDidFinishSSR`
   const needsHydration = !useIsClientOnly()
+  if (process.env.NODE_ENV === 'development' && globalThis.time)
+    globalThis.time`state-useIsClientOnly`
 
   const useAnimations = animationDriver?.isStub
     ? undefined
@@ -42,11 +49,17 @@ export const useComponentState = (
     // performance: avoid creating object every render
     undefined as unknown as TamaguiComponentStateRef
   )
+  if (process.env.NODE_ENV === 'development' && globalThis.time)
+    globalThis.time`state-useRef-stateRef`
 
   if (!stateRef.current) {
-    stateRef.current = {
+    const ref: TamaguiComponentStateRef = {
       startedUnhydrated: needsHydration && !isHydrated,
     }
+    // hoisted closure: built once per component instance and reused every render
+    // so themeStateProps.needsUpdate is not reallocated on the hot path
+    ref.needsUpdate = () => !!ref.isListeningToTheme
+    stateRef.current = ref
   }
 
   // after we get states mount we need to turn off isAnimated for server side
@@ -98,6 +111,8 @@ export const useComponentState = (
       props['animatePresence'] !== false &&
       animationDriver?.usePresence?.()) ||
     null
+  if (process.env.NODE_ENV === 'development' && globalThis.time)
+    globalThis.time`state-usePresence`
 
   const presenceState = presence?.[2]
   const isExiting = presenceState?.isPresent === false
@@ -147,6 +162,8 @@ export const useComponentState = (
 
   // HOOK
   const states = useState<TamaguiComponentState>(initialState)
+  if (process.env.NODE_ENV === 'development' && globalThis.time)
+    globalThis.time`state-useState`
 
   const state = props.forceStyle ? { ...states[0], [props.forceStyle]: true } : states[0]
   const setState = states[1]
@@ -177,6 +194,8 @@ export const useComponentState = (
   const groupName = props.group as any as string | undefined
 
   const setStateShallow = useCreateShallowSetState(setState, props.debug)
+  if (process.env.NODE_ENV === 'development' && globalThis.time)
+    globalThis.time`state-useCreateShallowSetState`
 
   // set enter/exit variants onto our new props object
   if (presenceState && isAnimated && isHydrated && staticConfig.variants) {

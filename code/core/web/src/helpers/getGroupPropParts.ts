@@ -15,7 +15,20 @@ function isValidPseudo(str: string | undefined): str is string {
   return kebabToCamel(str) in pseudoPriorities
 }
 
+// cache of parsed group prop names. group prop strings are finite (~dozens per
+// app) and the parse does split/regex/in-checks against getMedia on every call,
+// which shows up as the dominant `before-prop-$group-*` span on Hermes. cache
+// is keyed on the input string and invalidated by `resetGroupPropPartsCache()`
+// from configureMedia when the media map changes.
+let cache = new Map<string, GroupParts>()
+
+export function resetGroupPropPartsCache() {
+  cache = new Map()
+}
+
 export function getGroupPropParts(groupProp: string): GroupParts {
+  const cached = cache.get(groupProp)
+  if (cached !== undefined) return cached
   const m = getMedia()
   const [_, name, a, b, c] = groupProp.split('-')
   // check 2-part media key first (e.g. "max-md"), then 1-part
@@ -42,5 +55,7 @@ export function getGroupPropParts(groupProp: string): GroupParts {
     pseudoCandidate = undefined
   }
 
-  return { name, pseudo: pseudoCandidate, media }
+  const result: GroupParts = { name, pseudo: pseudoCandidate, media }
+  cache.set(groupProp, result)
+  return result
 }

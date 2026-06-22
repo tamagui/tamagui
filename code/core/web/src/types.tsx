@@ -598,6 +598,8 @@ export type TamaguiComponentStateRef = {
   hasHadEvents?: boolean
   hasRealPressEvents?: boolean
   isListeningToTheme?: boolean
+  // hoisted closure for themeStateProps.needsUpdate so we don't allocate per render
+  needsUpdate?: () => boolean
   unPress?: Function
   setStateShallow?: ComponentSetStateShallow
   useStyleListener?: UseStyleListener

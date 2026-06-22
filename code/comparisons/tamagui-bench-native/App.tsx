@@ -287,9 +287,15 @@ function BenchRunner({
 export function App() {
   const url = useURL()
   let caseName: string | null = null
+  let framework = 'tamagui'
   if (url) {
     try {
-      caseName = (Linking.parse(url).queryParams?.case as string) ?? null
+      const params = Linking.parse(url).queryParams
+      caseName = (params?.case as string) ?? null
+      // framework override via ?fw=… so the same bundle can report itself as
+      // either "tamagui" (runtime) or "tamagui-compiled" (when babel-plugin has
+      // pre-extracted styles). Defaults to "tamagui" for direct use.
+      if (params?.fw) framework = String(params.fw)
     } catch {}
   }
   const valid = caseName && scenarioComponents[caseName] ? caseName : null
@@ -300,7 +306,7 @@ export function App() {
       fetch(HARNESS_URL, {
         method: 'POST',
         body: JSON.stringify({
-          framework: 'tamagui',
+          framework,
           scenario: valid,
           mount: result.mount,
           rerender: result.rerender,
@@ -310,7 +316,7 @@ export function App() {
       // reset for next scenario deep-link
       resetTimerForScenario()
     },
-    [valid]
+    [valid, framework]
   )
 
   return (
@@ -326,7 +332,7 @@ export function App() {
         {valid ? (
           <RNView key={url ?? ''}>
             <RNText style={{ padding: 8, fontSize: 12, color: '#666' }}>
-              tamagui · {valid}
+              {framework} · {valid}
             </RNText>
             <BenchRunner scenarioId={valid} onResult={handleResult} />
           </RNView>

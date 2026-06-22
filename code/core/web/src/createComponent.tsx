@@ -603,7 +603,8 @@ export function createComponent<
     // Always set needsUpdate callback so it can check the ref's latest value
     // This ensures components with $theme-dark/$theme-light re-render on theme change
     // even when using raw colors (not tokens) since isListeningToTheme is set after useSplitStyles
-    themeStateProps.needsUpdate = () => !!stateRef.current.isListeningToTheme
+    // hoisted: closure is built ONCE per component instance in useComponentState
+    themeStateProps.needsUpdate = stateRef.current.needsUpdate
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
     if (process.env.TAMAGUI_TARGET === 'native') {
       themeStateProps.deopt = willBeAnimated
