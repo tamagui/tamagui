@@ -183,10 +183,24 @@ dead hook (RNGH gesture setup + 2 refs + main-thread press hook).
 pressStyle, NOT on onPress), babel.native (22, no snapshot drift), all native runtime
 tests (90), new `eventsDisableGate.native.test.tsx` (+3: flag renders, hook-order
 stable across re-render, onPress control), over-render granularity (5), typecheck clean.
-**PENDING:** the iOS-sim ×RN bench measurement (does rich drop from 3.64 toward NW's
-1.44?) — needs the sim; run `BENCH_CLEAR=1 bun code/comparisons/run-benchmarks-native.ts
---runs=5 --scenarios=rich,animated` and compare to baseline. The win is unmeasured until
-then; correctness is fully unit-validated.
+**MEASURED (iOS sim, runs=5, BENCH_CLEAR=1, `--only=tamagui-compiled`):** mount ×RN
+rich 3.75 / group 2.21 / heavy 2.42 — **all flat vs the pre-gate baseline (3.64 / 2.14
+/ 2.32), within noise.** No measurable win, and that's expected, not a failure:
+- Static check first: across ALL 5 scenarios the compiler emits `data-disable-events`
+  on only **3 elements, all in heavy** (themed leaves that deopt on `$blue9` tokens,
+  eventless). rich/animated keep events (`pressStyle`); group's eventless children
+  flatten away (dead-hover drop). So the gate's *surface* in this bench is ~nil.
+- The 3 heavy leaves skipping `useEvents` is below the sim noise floor (the RN baseline
+  term alone swings ~38% run-to-run on heavy), so it can't surface in wall-clock.
+- **The bench's cost is in the event-HAVING elements** (`pressStyle` on rich/animated,
+  `group=` on group/heavy) — which the gate correctly leaves alone. Therefore the ONLY
+  remaining lever for these scenarios is making the event-having path itself thinner
+  (the faithful-but-slim press fold), NOT more hook-skipping. The events gate stays as a
+  correct, free primitive that helps real eventless-deopted leaves (theme/media/animated
+  non-interactive views), but it is not what moves these benchmarks.
+- No revert-A/B run: delta is provably sub-noise, and a co-tenant web bench was sharing
+  the host (reverting shared `@tamagui/static` dist would be risky). Correctness is fully
+  unit-validated; the sim confirms it's noise-level here.
 
 ### SHIPPED: partial-flatten on native deopt (commit `perf(compiler): partial-flatten…`)
 
