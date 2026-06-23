@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/focusable",
-  "version": "2.3.2-1782110552417",
+  "version": "2.3.3",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
