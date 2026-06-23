@@ -180,6 +180,12 @@ jobs:
           restore-keys: |
             turbo-${{ runner.os }}-
 
+      - name: Setup Playwright Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
       - name: Run integration tests (shard ${{ matrix.shard }})
         run: cd code/kitchen-sink && NODE_ENV=test bun playwright test --shard=${{ matrix.shard }}
         timeout-minutes: 20
