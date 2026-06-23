@@ -52,8 +52,9 @@ describe('flat mode gating - styleMode not set (default)', () => {
       $sm: { backgroundColor: 'gray' },
     } as any)
 
-    // base styles go to inline style
-    expect(styles.viewProps.style.backgroundColor).toBe('red')
+    const bgRule = findRule(styles.rulesToInsert, 'backgroundColor')
+    expect(bgRule).toBeTruthy()
+    expect(bgRule![StyleObjectValue]).toBe('red')
 
     // pseudo and media styles go to classNames
     const hoverKeys = Object.keys(styles.classNames).filter((k) => k.includes('hover'))

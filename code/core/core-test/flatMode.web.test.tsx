@@ -6,10 +6,9 @@ import {
   Text,
   createTamagui,
   styled,
-  StyleObjectProperty,
   StyleObjectValue,
 } from '../web/src'
-import { simplifiedGetSplitStyles } from './utils'
+import { simplifiedGetSplitStyles, findRule } from './utils'
 
 beforeAll(() => {
   const defaultConfig = config.getDefaultTamaguiConfig()
@@ -22,7 +21,17 @@ beforeAll(() => {
   })
 })
 
-import { StyleObjectPseudo, StyleObjectIdentifier } from '@tamagui/helpers'
+function expectRuleValue(styles: any, prop: string, value: unknown) {
+  const rule = findRule(styles.rulesToInsert, prop)
+  expect(rule).toBeTruthy()
+  expect(rule![StyleObjectValue]).toBe(value)
+}
+
+function expectRuleValueContaining(styles: any, prop: string, value: string) {
+  const rule = findRule(styles.rulesToInsert, prop)
+  expect(rule).toBeTruthy()
+  expect(rule![StyleObjectValue]).toContain(value)
+}
 
 describe('flat mode - base props', () => {
   test('$bg="red" sets backgroundColor', () => {
@@ -30,7 +39,7 @@ describe('flat mode - base props', () => {
       $bg: 'red',
     } as any)
 
-    expect(styles.viewProps.style.backgroundColor).toBe('red')
+    expectRuleValue(styles, 'backgroundColor', 'red')
   })
 
   test('$p="10" sets padding', () => {
@@ -38,12 +47,10 @@ describe('flat mode - base props', () => {
       $p: 10,
     } as any)
 
-    // padding expands to individual sides (numeric values become px strings on web)
-    const s = styles.viewProps.style
-    expect(s.paddingTop).toBe('10px')
-    expect(s.paddingRight).toBe('10px')
-    expect(s.paddingBottom).toBe('10px')
-    expect(s.paddingLeft).toBe('10px')
+    expectRuleValue(styles, 'paddingTop', '10px')
+    expectRuleValue(styles, 'paddingRight', '10px')
+    expectRuleValue(styles, 'paddingBottom', '10px')
+    expectRuleValue(styles, 'paddingLeft', '10px')
   })
 
   test('$color="blue" sets color on Text', () => {
@@ -51,7 +58,7 @@ describe('flat mode - base props', () => {
       $color: 'blue',
     } as any)
 
-    expect(styles.viewProps.style.color).toBe('blue')
+    expectRuleValue(styles, 'color', 'blue')
   })
 
   test('$opacity="0.5" sets opacity', () => {
@@ -59,7 +66,7 @@ describe('flat mode - base props', () => {
       $opacity: 0.5,
     } as any)
 
-    expect(styles.viewProps.style.opacity).toBe(0.5)
+    expectRuleValue(styles, 'opacity', 0.5)
   })
 })
 
@@ -203,8 +210,7 @@ describe('flat mode - multiple flat props', () => {
       '$sm:bg': 'lightgray',
     } as any)
 
-    // base bg goes to inline style
-    expect(styles.viewProps.style.backgroundColor).toBe('white')
+    expectRuleValue(styles, 'backgroundColor', 'white')
 
     // hover bg goes to classNames
     const hoverKey = Object.keys(styles.classNames).find((k) => k.includes('hover'))
@@ -245,10 +251,7 @@ describe('flat mode - token values', () => {
       $bg: '$white',
     } as any)
 
-    // tokens resolve to CSS variables in inline style
-    const bg = styles.viewProps.style.backgroundColor
-    expect(bg).toBeDefined()
-    expect(bg).toContain('var(--')
+    expectRuleValueContaining(styles, 'backgroundColor', 'var(--')
   })
 
   test('$hover:bg="$black" resolves token in pseudo', () => {
@@ -272,11 +275,10 @@ describe('flat mode - shorthands', () => {
       $h: 50,
     } as any)
 
-    const s = styles.viewProps.style
-    expect(s.marginTop).toBe('10px')
-    expect(s.borderTopLeftRadius).toBe('8px')
-    expect(s.width).toBe('100px')
-    expect(s.height).toBe('50px')
+    expectRuleValue(styles, 'marginTop', '10px')
+    expectRuleValue(styles, 'borderTopLeftRadius', '8px')
+    expectRuleValue(styles, 'width', '100px')
+    expectRuleValue(styles, 'height', '50px')
   })
 
   test('hover with shorthands', () => {
@@ -348,8 +350,8 @@ describe('flat mode - edge cases', () => {
       $zIndex: 10,
     } as any)
 
-    expect(styles.viewProps.style.opacity).toBe(0.5)
-    expect(styles.viewProps.style.zIndex).toBe(10)
+    expectRuleValue(styles, 'opacity', 0.5)
+    expectRuleValue(styles, 'zIndex', 10)
   })
 })
 
@@ -466,7 +468,7 @@ describe('flat mode - precedence and edge cases', () => {
       $bg: 'blue',
     } as any)
 
-    expect(styles.viewProps.style.backgroundColor).toBe('blue')
+    expectRuleValue(styles, 'backgroundColor', 'blue')
   })
 
   test('backgroundColor overrides $bg when declared after', () => {
@@ -475,8 +477,7 @@ describe('flat mode - precedence and edge cases', () => {
       backgroundColor: 'red',
     } as any)
 
-    // last-declared wins (regular prop after flat)
-    expect(styles.viewProps.style.backgroundColor).toBe('red')
+    expectRuleValue(styles, 'backgroundColor', 'red')
   })
 
   test('empty value $bg="" does not crash', () => {
@@ -500,7 +501,7 @@ describe('flat mode - precedence and edge cases', () => {
       $opacity: 0,
     } as any)
 
-    expect(styles.viewProps.style.opacity).toBe(0)
+    expectRuleValue(styles, 'opacity', 0)
   })
 
   test('unknown flat prop $foo="bar" is silently ignored', () => {
@@ -554,10 +555,7 @@ describe('flat mode - embedded value syntax', () => {
       '$bg-white': true,
     } as any)
 
-    // white is a token → resolves to CSS var in inline style
-    const bg = styles.viewProps.style.backgroundColor
-    expect(bg).toBeDefined()
-    expect(bg).toContain('var(--')
+    expectRuleValueContaining(styles, 'backgroundColor', 'var(--')
   })
 
   test('embedded value with hyphenated token like bg-some-token works', () => {
@@ -575,7 +573,7 @@ describe('flat mode - embedded value syntax', () => {
       '$opacity-50': true,
     } as any)
 
-    expect(styles.viewProps.style.opacity).toBe(50)
+    expectRuleValue(styles, 'opacity', 50)
   })
 
   test('can mix embedded and explicit value syntax', () => {
