@@ -311,6 +311,7 @@ export type TamaguiComponentStateRef = {
     needsUpdate?: () => boolean;
     unPress?: Function;
     setStateShallow?: ComponentSetStateShallow;
+    baseSetStateShallow?: ComponentSetStateShallow;
     useStyleListener?: UseStyleListener;
     updateStyleListener?: () => void;
     group?: ComponentGroupEmitter;

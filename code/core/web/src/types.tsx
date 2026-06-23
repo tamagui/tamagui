@@ -602,6 +602,10 @@ export type TamaguiComponentStateRef = {
   needsUpdate?: () => boolean
   unPress?: Function
   setStateShallow?: ComponentSetStateShallow
+  // hoisted base shallow-setter that always calls the real React setState.
+  // kept on its own field so the avoidReRenders wrapper (which overwrites
+  // `setStateShallow`) can capture this as its real-re-render escape hatch.
+  baseSetStateShallow?: ComponentSetStateShallow
   useStyleListener?: UseStyleListener
   updateStyleListener?: () => void
 
