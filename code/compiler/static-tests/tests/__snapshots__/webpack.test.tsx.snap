@@ -228,13 +228,13 @@ exports[`webpack-tests > 8. styleExpansions 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _pos-relative _inset-0px"
+          class="is_View _fd-column _pos-relative _t-0px _r-0px _b-0px _l-0px"
         >
           <div
             class="is_View _fd-column _bg-red"
           >
             <div
-              class="is_View _fd-column _pos-relative _inset-0px _bg-white _col-blue"
+              class="is_View _fd-column _pos-relative _t-0px _r-0px _b-0px _l-0px _bg-white _col-blue"
             />
           </div>
         </div>
