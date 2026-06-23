@@ -1,6 +1,6 @@
 {
   "name": "create-tamagui",
-  "version": "2.3.0",
+  "version": "2.3.3",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
   "bin": "./run.js",
   "files": [
@@ -41,23 +41,13 @@
   "devDependencies": {
     "@playwright/test": "^1.49.1",
     "@tamagui/build": "workspace:*",
-    "@types/async-retry": "1.4.2",
-    "@types/cross-spawn": "^6.0.2",
     "@types/node": "^22.1.0",
     "@types/opener": "^1.4.3",
     "@types/prompts": "2.0.1",
     "@types/rimraf": "3.0.0",
-    "@types/tar": "4.0.3",
     "@types/validate-npm-package-name": "3.0.0",
-    "async-retry": "1.3.1",
-    "cpy": "7.3.0",
-    "cross-spawn": "6.0.5",
     "esbuild-register": "^3.6.0",
-    "got": "10.7.0",
-    "tar": "4.4.10",
     "tempy": "^3.1.0",
-    "update-check": "1.5.4",
-    "vitest": "4.0.4",
-    "wait-port": "^0.3.0"
+    "vitest": "4.0.4"
   }
 }

@@ -274,7 +274,7 @@ Don't add headers, backticks, or any labels around the structured data.
       console.info(`[theme/generate] trying model=${name}`)
       const result = await generateText({
         model: create(),
-        maxTokens: 4_000,
+        maxOutputTokens: 4_000,
         prompt: fullPrompt,
       })
       text = result.text

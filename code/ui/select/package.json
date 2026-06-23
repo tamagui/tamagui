@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/select",
-  "version": "2.3.0",
+  "version": "2.3.3",
   "source": "src/index.tsx",
   "files": [
     "src",

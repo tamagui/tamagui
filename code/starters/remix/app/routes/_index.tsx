@@ -1,4 +1,4 @@
-import type { MetaFunction } from '@remix-run/node'
+import type { MetaFunction } from 'react-router'
 import { styled, Text, type ThemeName, View } from 'tamagui'
 import { useState } from 'react'
 

@@ -30,7 +30,15 @@ const familiesValues = {
   ] as ThemeName[],
   valentine: ['red', 'red', 'red', 'red', 'red', 'red', 'red'] as ThemeName[],
   lunar: ['yellow', 'red', 'red', 'red', 'red', 'red', 'yellow'] as ThemeName[],
-  stpatricks: ['green', 'teal', 'green', 'teal', 'green', 'teal', 'green'] as ThemeName[],
+  stpatricks: [
+    'green',
+    'yellow',
+    'green',
+    'yellow',
+    'green',
+    'yellow',
+    'green',
+  ] as ThemeName[],
 }
 
 type Family = keyof typeof familiesValues

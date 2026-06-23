@@ -85,6 +85,16 @@ const avoidReRenderKeys = new Set([
   'group',
 ])
 
+const groupPseudoKeys = [
+  'disabled',
+  'hover',
+  'press',
+  'pressIn',
+  'focus',
+  'focusVisible',
+  'focusWithin',
+] as const satisfies readonly (keyof PseudoGroupState)[]
+
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelPresses = () => {
     // clear all press downs
@@ -1808,9 +1818,36 @@ export function createComponent<
     if (!groupContext || !groupEmitter) {
       return
     }
-    const nextState = { ...groupContext.state, pseudo }
-    groupEmitter.emit(nextState)
-    groupContext.state = nextState
+
+    const prevPseudo = groupContext.state.pseudo
+    const shouldReplacePseudo =
+      !prevPseudo ||
+      // old/default state objects carry non-pseudo fields; replace once instead
+      // of mutating the shared defaultComponentStateMounted object
+      'unmounted' in prevPseudo ||
+      'group' in prevPseudo ||
+      'hasDynGroupChildren' in prevPseudo ||
+      'transition' in prevPseudo
+    const nextPseudo = shouldReplacePseudo ? {} : prevPseudo
+    let didChange = shouldReplacePseudo
+
+    for (let i = 0; i < groupPseudoKeys.length; i++) {
+      const key = groupPseudoKeys[i]
+      const value = pseudo[key]
+      if (nextPseudo[key] !== value) {
+        nextPseudo[key] = value
+        didChange = true
+      } else if (didChange) {
+        nextPseudo[key] = value
+      }
+    }
+
+    if (!didChange) {
+      return
+    }
+
+    groupContext.state.pseudo = nextPseudo
+    groupEmitter.emit(groupContext.state)
   }
 
   // let hasLogged = false

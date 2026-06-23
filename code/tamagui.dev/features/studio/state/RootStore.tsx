@@ -24,7 +24,7 @@ function getPrefersScheme() {
 
 export class RootStore {
   // hardcoded for now
-  static colors = ['red', 'orange', 'blue', 'purple', 'green', 'pink', 'yellow']
+  static colors = ['red', 'blue', 'green', 'yellow', 'gray']
 
   async init() {
     matchDarkMode()?.addEventListener('change', () => {

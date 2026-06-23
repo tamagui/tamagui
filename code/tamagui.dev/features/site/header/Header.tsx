@@ -210,27 +210,6 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         </Link>
 
         <UpgradeToProPopover />
-
-        {/* <Theme name="teal">
-          <Link href="/blog/version-two">
-            <Button
-              size="$2"
-              bg="$color3"
-              borderWidth={0}
-              theme="teal"
-              $theme-light={{
-                boxShadow: 'inset 0 -2px 0 1px $color8',
-              }}
-              pressStyle={{
-                y: 1,
-              }}
-            >
-              <Span fontSize="$2" fontWeight="600">
-                v2 RC
-              </Span>
-            </Button>
-          </Link>
-        </Theme> */}
       </XStack>
 
       <View flex={1} />
