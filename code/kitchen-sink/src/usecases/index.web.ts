@@ -69,12 +69,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./DialogSheetAdaptUnmountCase').DialogSheetAdaptUnmountCase,
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
-  BenchmarkComparison: () => require('./BenchmarkComparison').BenchmarkComparison,
-  FlatMode: () => require('./FlatMode').FlatMode,
   StyleValidation: () => require('./StyleValidation').StyleValidation,
-  FlatModeVisual: () => require('./FlatModeVisual').FlatModeVisual,
-  FlatStyleComparison: () => require('./FlatStyleComparison').FlatStyleComparison,
-  TailwindMode: () => require('./TailwindMode').TailwindMode,
   FocusVisibleButton: () => require('./FocusVisibleButton').FocusVisibleButton,
   FocusVisibleButtonPointer: () =>
     require('./FocusVisibleButtonPointer').FocusVisibleButtonPointer,
