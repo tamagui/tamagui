@@ -4,7 +4,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { styled } from '@tamagui/core'
 import { needsPortalRepropagation } from '@tamagui/portal'
-import { YStack } from '@tamagui/stacks'
+import { YStack, getElevation } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 import { VIEWPORT_NAME } from './constants'
@@ -31,6 +31,16 @@ export const SelectViewportFrame = styled(YStack, {
         bordered: true,
         userSelect: 'none',
         outlineWidth: 0,
+      },
+    },
+
+    // YStack has no `elevate` variant, so `elevate: true` emitted by the
+    // `unstyled: false` variant above would otherwise leak to the DOM instead
+    // of resolving to shadow styles. Define it here (matching ThemeableStack)
+    // so it expands through getElevation using the frame's `size`.
+    elevate: {
+      true: (_: boolean, extras: any) => {
+        return getElevation(extras.props['size'], extras) as any
       },
     },
 
