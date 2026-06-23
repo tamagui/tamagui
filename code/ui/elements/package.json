@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/elements",
-  "version": "2.0.0-rc.31",
+  "version": "2.3.3",
   "source": "src/index.ts",
   "files": [
     "src",
@@ -8,9 +8,7 @@
     "dist"
   ],
   "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",

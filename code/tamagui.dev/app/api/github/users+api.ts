@@ -5,7 +5,6 @@ import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 type GitHubUser = {
   id: string
   full_name: string | null
-  email: string | null
   avatar_url: string | null
 }
 
@@ -22,15 +21,23 @@ export default apiRoute(async (req) => {
     return Response.json({ error: 'Query parameter is required' }, { status: 400 })
   }
 
-  const sanitized = query.replace(/[%_\\*()]/g, '')
+  // strip postgrest filter metacharacters (incl. comma, the .or()/.in() delimiter)
+  const sanitized = query.replace(/[%_\\*(),]/g, '').trim()
 
   try {
-    const { data, error } = await supabaseAdmin
+    // never return email (PII enumeration). match on name only, or on an exact
+    // email the caller already knows in full - no substring email search.
+    let builder = supabaseAdmin
       .from('users')
-      .select('*')
-      .or(`full_name.ilike.%${sanitized}%, email.ilike.%${sanitized}%`)
+      .select('id, full_name, avatar_url')
       .neq('id', user.id)
       .limit(5)
+
+    builder = query.includes('@')
+      ? builder.eq('email', query.trim().toLowerCase())
+      : builder.ilike('full_name', `%${sanitized}%`)
+
+    const { data, error } = await builder
 
     if (error) {
       throw error

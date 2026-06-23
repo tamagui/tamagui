@@ -33,7 +33,7 @@ const linking = {
   },
 }
 
-export function Navigation() {
+export function Navigation({ initialTestCase }: { initialTestCase?: string }) {
   const { resolvedTheme } = useThemeControl()
 
   return (
@@ -41,7 +41,7 @@ export function Navigation() {
       linking={linking}
       theme={resolvedTheme === 'dark' ? DarkTheme : DefaultTheme}
     >
-      <Stack.Navigator initialRouteName="home">
+      <Stack.Navigator initialRouteName={initialTestCase ? 'test' : 'home'}>
         <Stack.Screen
           name="home"
           component={HomeScreen}
@@ -85,6 +85,7 @@ export function Navigation() {
         <Stack.Screen
           name="test"
           component={TestScreen}
+          initialParams={initialTestCase ? { id: initialTestCase } : undefined}
           options={{
             title: 'Test Case',
             headerRight() {

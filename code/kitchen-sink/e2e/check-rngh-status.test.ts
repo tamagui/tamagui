@@ -1,17 +1,13 @@
 import { by, device, element, expect, waitFor } from 'detox'
+import { safeLaunchApp } from './utils/detox'
 
 describe('RNGH Status Check', () => {
   beforeAll(async () => {
-    await device.disableSynchronization()
-    await device.launchApp({ newInstance: true })
-  })
-
-  afterAll(async () => {
-    await device.enableSynchronization()
+    await safeLaunchApp({ newInstance: true })
   })
 
   it('should show RNGH status on home screen', async () => {
-    // Wait for app to load (sync disabled to avoid main thread busy hang)
+    // Wait for app to load
     await waitFor(element(by.text('Kitchen Sink')))
       .toExist()
       .withTimeout(60000)

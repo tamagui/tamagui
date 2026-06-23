@@ -1,15 +1,18 @@
 {
   "name": "@tamagui/font-cherry-bomb",
-  "version": "2.0.0-rc.31",
+  "version": "2.3.3",
   "files": [
     "types",
     "dist",
     "css",
+    "files",
     "otf",
     "woff2"
   ],
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "files/*.css"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",

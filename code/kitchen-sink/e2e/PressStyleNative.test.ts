@@ -8,11 +8,12 @@
  * 4. Actual pixel colors are verified via screenshots
  */
 
-import { by, device, element, expect, waitFor } from 'detox'
+import { by, element, expect, waitFor } from 'detox'
 import * as fs from 'fs'
 import * as assert from 'assert'
 import { PNG } from 'pngjs'
-import { navigateToTestCase } from './utils/navigation'
+import { remountDirectUseCase } from './utils/navigation'
+import { safeLaunchApp } from './utils/detox'
 
 // helper to get the dominant color from a PNG screenshot
 // samples pixels from the center region to avoid edges/text
@@ -59,12 +60,17 @@ function isBlueish(color: { r: number; g: number; b: number }): boolean {
 // Need to investigate press event handling in simulator environment
 describe.skip('PressStyleNative', () => {
   beforeAll(async () => {
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'PressStyleNative' },
+    })
+    await waitFor(element(by.id('color-test-pressable')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
-    await device.reloadReactNative()
-    await navigateToPressStyleNative()
+    await remountDirectUseCase('color-test-pressable')
   })
 
   it('should render the test case screen', async () => {
@@ -226,7 +232,3 @@ describe.skip('PressStyleNative', () => {
     })
   })
 })
-
-async function navigateToPressStyleNative() {
-  await navigateToTestCase('PressStyleNative', 'color-test-pressable')
-}

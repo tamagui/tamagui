@@ -51,9 +51,11 @@ export default function fullySpecifyCommonJS(
                   }
                 }
 
-                // Check if the moduleSpecifier.cjs file exists
-                const filePathWithJs = resolvedPath + jsExtension
-                if (existsSync(filePathWithJs)) {
+                // Check if source file exists (try .js first, then target extension)
+                if (
+                  existsSync(resolvedPath + jsExtension) ||
+                  existsSync(resolvedPath + cjsExtension)
+                ) {
                   newModuleSpecifier += cjsExtension
                   arg.value = newModuleSpecifier
                   return

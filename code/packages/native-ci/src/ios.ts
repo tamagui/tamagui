@@ -2,9 +2,9 @@
  * iOS-specific utilities for Detox test runners
  */
 
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs'
-import { dirname, join } from 'node:path'
-import { execSync } from 'node:child_process'
+import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs'
+import { dirname, isAbsolute, join } from 'node:path'
+import { execFileSync, execSync } from 'node:child_process'
 import { $ } from 'bun'
 import { isCI } from './runner'
 import { generateFingerprint } from './fingerprint'
@@ -75,6 +75,67 @@ function isAppInstalled(bundleId: string, udid: string): boolean {
   }
 }
 
+function getIOSProjectName(projectRoot: string): string {
+  const iosDir = join(projectRoot, 'ios')
+  const iosEntries = readdirSync(iosDir)
+  const workspace = iosEntries.find((entry) => entry.endsWith('.xcworkspace'))
+  if (workspace) return workspace.replace(/\.xcworkspace$/, '')
+
+  const project = iosEntries.find((entry) => entry.endsWith('.xcodeproj'))
+  if (project) return project.replace(/\.xcodeproj$/, '')
+
+  throw new Error(`No iOS workspace or project found in ${iosDir}`)
+}
+
+function getIOSBuildConfiguration(config: string): 'Debug' | 'Release' {
+  return config.toLowerCase().includes('release') ? 'Release' : 'Debug'
+}
+
+function getIOSAppPath(projectRoot: string, config: string): string {
+  if (process.env.DETOX_IOS_APP_PATH) return process.env.DETOX_IOS_APP_PATH
+
+  const appName = getIOSProjectName(projectRoot)
+  const buildConfiguration = getIOSBuildConfiguration(config)
+  return `ios/build/Build/Products/${buildConfiguration}-iphonesimulator/${appName}.app`
+}
+
+function getIOSFullAppPath(projectRoot: string, config: string): string {
+  const appPath = getIOSAppPath(projectRoot, config)
+  return isAbsolute(appPath) ? appPath : join(projectRoot, appPath)
+}
+
+function getIOSPodTargetName(projectRoot: string): string {
+  const podfile = readFileSync(join(projectRoot, 'ios', 'Podfile'), 'utf-8')
+  const match = podfile.match(/^\s*target ['"]([^'"]+)['"] do/m)
+  if (!match) {
+    throw new Error(`No CocoaPods target found in ${join(projectRoot, 'ios', 'Podfile')}`)
+  }
+  return match[1]
+}
+
+function getIOSAppBundleId(fullAppPath: string): string | null {
+  const infoPlist = join(fullAppPath, 'Info.plist')
+  if (!existsSync(infoPlist)) return null
+
+  try {
+    const bundleId = execFileSync(
+      '/usr/bin/plutil',
+      ['-extract', 'CFBundleIdentifier', 'raw', '-o', '-', infoPlist],
+      {
+        encoding: 'utf-8',
+        stdio: ['ignore', 'pipe', 'pipe'],
+      }
+    ).trim()
+    return bundleId || null
+  } catch {
+    return null
+  }
+}
+
+function isIOSAppBundleReady(fullAppPath: string): boolean {
+  return existsSync(fullAppPath) && !!getIOSAppBundleId(fullAppPath)
+}
+
 /**
  * Ensure the app is installed on a specific simulator.
  * For dev client apps, builds if needed then installs.
@@ -103,12 +164,10 @@ export async function ensureAppInstalled(opts: {
   console.info(`App ${bundleId} not installed, building...`)
   await ensureIOSFolder()
 
-  const appPath =
-    process.env.DETOX_IOS_APP_PATH ||
-    'ios/build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app'
-  const fullAppPath = join(projectRoot, appPath)
+  const appPath = getIOSAppPath(projectRoot, 'ios.sim.debug')
+  const fullAppPath = getIOSFullAppPath(projectRoot, 'ios.sim.debug')
 
-  if (!existsSync(fullAppPath)) {
+  if (!isIOSAppBundleReady(fullAppPath)) {
     await ensureIOSApp('ios.sim.debug')
   }
 
@@ -299,12 +358,10 @@ export async function ensureIOSApp(config: string = 'ios.sim.debug'): Promise<vo
 
   const projectRoot = process.cwd()
 
-  // Check if app binary exists (use the path from detoxrc)
-  const appPath =
-    process.env.DETOX_IOS_APP_PATH ||
-    'ios/build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app'
-  const fullAppPath = join(projectRoot, appPath)
-  const appExists = existsSync(fullAppPath)
+  // check if a complete app bundle exists
+  const appPath = getIOSAppPath(projectRoot, config)
+  const fullAppPath = getIOSFullAppPath(projectRoot, config)
+  const appExists = isIOSAppBundleReady(fullAppPath)
 
   // If app doesn't exist, we must build regardless of fingerprint
   if (!appExists) {
@@ -366,7 +423,7 @@ export async function ensureIOSApp(config: string = 'ios.sim.debug'): Promise<vo
 }
 
 /**
- * Build the iOS app using detox build
+ * Build the iOS app using the generated Xcode workspace.
  */
 async function buildIOSApp(
   config: string,
@@ -381,18 +438,23 @@ async function buildIOSApp(
     'ios',
     'Pods',
     'Target Support Files',
-    'Pods-tamaguikitchensink',
-    'Pods-tamaguikitchensink.debug.xcconfig'
+    `Pods-${getIOSPodTargetName(projectRoot)}`,
+    `Pods-${getIOSPodTargetName(projectRoot)}.debug.xcconfig`
   )
   if (!existsSync(podConfigPath)) {
     console.info('Installing CocoaPods dependencies...')
     await $`pod install --project-directory=ios`
   }
 
-  // Build the app using detox build
+  const scheme = getIOSProjectName(projectRoot)
+  const buildConfiguration = getIOSBuildConfiguration(config)
+  const workspace = join('ios', `${scheme}.xcworkspace`)
+  const symroot = join(projectRoot, 'ios', 'build', 'Build', 'Products')
+  const objroot = join(projectRoot, 'ios', 'build', 'Build', 'Intermediates.noindex')
+
   console.info(`Building iOS app (config: ${config})...`)
   console.info('This may take a few minutes on first run.')
-  await $`npx detox build -c ${config}`
+  await $`xcodebuild -workspace ${workspace} -scheme ${scheme} -configuration ${buildConfiguration} -sdk iphonesimulator SYMROOT=${symroot} OBJROOT=${objroot}`
 
   // Save the fingerprint cache
   if (fingerprint) {

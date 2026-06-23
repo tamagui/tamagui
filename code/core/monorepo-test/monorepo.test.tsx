@@ -2,15 +2,26 @@ import { execSync } from 'node:child_process'
 import { join } from 'node:path'
 import { expect, test } from 'vitest'
 
-let start = Date.now()
-new Array(100_000).fill(0).map(() => {
-  return JSON.stringify([].concat([]).concat([]).concat([]))
-})
+function runBaseline() {
+  const start = Date.now()
+  new Array(100_000).fill(0).map(() => {
+    return JSON.stringify([].concat([]).concat([]).concat([]))
+  })
+  return Date.now() - start
+}
 
-// on my m1 ~14ms
-const baseline = Date.now() - start
+function median(arr: number[]) {
+  const sorted = [...arr].sort((a, b) => a - b)
+  const mid = Math.floor(sorted.length / 2)
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2
+}
 
-console.info('baseline', baseline)
+// warm up, then take median of 5 runs
+runBaseline()
+const baselines = Array.from({ length: 5 }, runBaseline)
+const baseline = median(baselines)
+
+console.info('baselines', baselines.join(', '), '→ median', baseline)
 
 test('performance of types', { retry: 1, timeout: 5 * 60 * 1000 }, async () => {
   const out = execSync(`bun run typecheck --extendedDiagnostics || exit 0`, {

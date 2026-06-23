@@ -83,10 +83,14 @@ const inviteTeamMember = async (req: Request) => {
 
   const { user_id, team_subscription_id } = await req.json()
 
-  // verify user owns this team subscription
+  if (!user_id || typeof user_id !== 'string') {
+    return Response.json({ error: 'user_id is required' }, { status: 400 })
+  }
+
+  // verify user owns this team subscription and load seat capacity + members
   const { data: teamSub } = await supabaseAdmin
     .from('team_subscriptions')
-    .select('id')
+    .select('id, total_seats, team_members(member_id, status)')
     .eq('id', team_subscription_id)
     .eq('owner_id', user.id)
     .single()
@@ -96,6 +100,33 @@ const inviteTeamMember = async (req: Request) => {
       { error: 'Team subscription not found or access denied' },
       { status: 403 }
     )
+  }
+
+  const members = teamSub.team_members ?? []
+
+  // enforce seat capacity - never let an owner mint more active seats than paid for
+  const activeSeats = members.filter((m) => m.status === 'active').length
+  if (activeSeats >= teamSub.total_seats) {
+    return Response.json(
+      { error: 'No seats available. Add more seats to invite members.' },
+      { status: 403 }
+    )
+  }
+
+  // prevent duplicate active membership
+  if (members.some((m) => m.member_id === user_id && m.status === 'active')) {
+    return Response.json({ error: 'User is already a team member' }, { status: 409 })
+  }
+
+  // the invited user must actually exist
+  const { data: invitee } = await supabaseAdmin
+    .from('users')
+    .select('id')
+    .eq('id', user_id)
+    .single()
+
+  if (!invitee) {
+    return Response.json({ error: 'User not found' }, { status: 404 })
   }
 
   const { data: teamMember, error: teamMemberError } = await supabaseAdmin

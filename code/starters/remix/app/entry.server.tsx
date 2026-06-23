@@ -1,5 +1,5 @@
-import type { EntryContext } from '@remix-run/node'
-import { RemixServer } from '@remix-run/react'
+import type { EntryContext } from 'react-router'
+import { ServerRouter } from 'react-router'
 import { renderToString } from 'react-dom/server'
 import tamaguiConfig from '../tamagui.config'
 
@@ -7,13 +7,13 @@ export default function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext
+  routerContext: EntryContext
 ) {
   return new Promise((resolve, reject) => {
     try {
       const tamaguiCSS = tamaguiConfig.getCSS()
       let markup = renderToString(
-        <RemixServer context={remixContext} url={request.url} />
+        <ServerRouter context={routerContext} url={request.url} />
       )
       markup = markup.replace(
         '</head>',

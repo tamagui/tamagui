@@ -2,11 +2,11 @@ import type { TamaguiOptions, ExtractedResponse } from '@tamagui/static-worker'
 import * as Static from '@tamagui/static-worker'
 import { getPragmaOptions } from '@tamagui/static-worker'
 import { createHash } from 'node:crypto'
-import { existsSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { Plugin, PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
-import { normalizePath, transformWithEsbuild, type Environment } from 'vite'
+import type { Environment } from 'vite'
 import {
   loadTamaguiBuildConfig,
   getLoadPromise,
@@ -14,7 +14,12 @@ import {
   ensureFullConfigLoaded,
 } from './loadTamagui'
 
-const resolve = (name: string) => fileURLToPath(import.meta.resolve(name))
+// handle ESM/CJS duality for plugin dependencies - resolve from plugin's location, not user's project
+const _pluginRequire = createRequire(
+  typeof __filename === 'string' ? __filename : fileURLToPath(import.meta.url)
+)
+const resolve = (name: string) => _pluginRequire.resolve(name)
+const normalizePath = (value: string) => value.replace(/\\/g, '/')
 
 // shared cache across all plugin instances/environments via globalThis
 type CacheEntry = {
@@ -45,6 +50,34 @@ function setSharedCacheSize(size: number) {
 function clearSharedCache() {
   ;(globalThis as any)[CACHE_KEY] = {}
   ;(globalThis as any)[CACHE_SIZE_KEY] = 0
+}
+
+// resolves package ids against the user's project root (not the plugin's
+// install location). returns true if the id is resolvable, false if the
+// dep isn't installed, safe to call for optional deps.
+function isInstalled(projectRoot: string, id: string): boolean {
+  try {
+    const req = createRequire(path.join(projectRoot, 'package.json'))
+    req.resolve(id)
+    return true
+  } catch {
+    return false
+  }
+}
+
+function addIfInstalled(
+  userConf: { optimizeDeps?: { include?: string[] } },
+  projectRoot: string | undefined,
+  ids: string[]
+): void {
+  const root = projectRoot || process.cwd()
+  userConf.optimizeDeps ||= {}
+  userConf.optimizeDeps.include ||= []
+  for (const id of ids) {
+    if (!userConf.optimizeDeps.include.includes(id) && isInstalled(root, id)) {
+      userConf.optimizeDeps.include.push(id)
+    }
+  }
 }
 
 // pending extractions map - dedupes concurrent requests for same file
@@ -79,20 +112,23 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
   }
 
   if (options.rnwLite) {
-    // entry point for main import (may be without-animated variant)
-    const rnwl = resolve(
-      options.rnwLite === 'without-animated'
-        ? '@tamagui/react-native-web-lite/without-animated'
-        : '@tamagui/react-native-web-lite'
-    )
     // base package path for subpath imports (package directory, not entry file)
     const rnwlBase = path.dirname(resolve('@tamagui/react-native-web-lite/package.json'))
+    // vite aliases need the esm entry; require.resolve points at cjs.
+    const rnwl = normalizePath(
+      path.join(
+        rnwlBase,
+        options.rnwLite === 'without-animated'
+          ? 'dist/esm/without-animated.mjs'
+          : 'dist/esm/index.mjs'
+      )
+    )
     aliases.push(
       {
         // map deep RNW paths like dist/exports/StyleSheet/preprocess to rnw-lite's flat structure
         // extracts the final path segment (e.g. "preprocess" or "createReactDOMStyle")
         find: /^react-native(?:-web)?\/dist\/(?:exports|modules)\/.*\/([^/]+)$/,
-        replacement: `${rnwlBase}/dist/esm/$1.mjs`,
+        replacement: `${normalizePath(rnwlBase)}/dist/esm/$1.mjs`,
       },
       {
         find: /^react-native$/,
@@ -126,7 +162,7 @@ export function tamaguiPlugin({
   let shouldExtract = !tamaguiOptionsIn.disableExtraction
   let watcher: Promise<{ dispose: () => void } | void | undefined> | undefined
 
-  // TODO temporary fix
+  // temporary vxrn native env bridge
   const enableNativeEnv = !!globalThis.__vxrnEnableNativeEnv
 
   const extensions = [
@@ -215,15 +251,6 @@ export function tamaguiPlugin({
       })
     },
 
-    async transform(code, id) {
-      if (id.includes('expo-linear-gradient')) {
-        return transformWithEsbuild(code, id, {
-          loader: 'jsx',
-          jsx: 'automatic',
-        })
-      }
-    },
-
     async config(_, env) {
       const options = await ensureLoaded()
 
@@ -302,6 +329,17 @@ export function tamaguiPlugin({
         return {}
       }
 
+      // react-native-web-lite imports memoize-one internally. the esbuild dep
+      // scanner doesn't follow it through the react-native -> rnw-lite alias, so
+      // vite discovers it only at request time, re-optimizes mid-load, and full
+      // reloads. on slow runners (CI) the in-flight optimized-dep request 504s
+      // ("Outdated Optimize Dep") and surfaces as a console error. pre-include
+      // it so the first optimize pass is complete and no reload is triggered.
+      const include: string[] = []
+      if (isInstalled(process.cwd(), 'memoize-one')) {
+        include.push('memoize-one')
+      }
+
       return {
         resolve: {
           alias: tamaguiAliases({ rnwLite: options.useReactNativeWebLite }),
@@ -309,6 +347,7 @@ export function tamaguiPlugin({
         optimizeDeps: {
           // upstream react-native-web must not be pre-bundled when aliased to lite
           exclude: ['react-native-web'],
+          include,
         },
       }
     },
@@ -328,8 +367,46 @@ export function tamaguiPlugin({
       userConf.optimizeDeps.include ||= []
 
       // inline-style-prefixer is CJS with __esModule and breaks without pre-bundling
-      // (ReferenceError: exports is not defined). always include it.
+      // (reference error: exports is not defined). always include it.
       userConf.optimizeDeps.include.push('inline-style-prefixer')
+
+      // pre-bundle tamagui packages that use internal hooks (useThemeName, etc.)
+      // from sub-entries, vite's dep crawler can otherwise split them into a
+      // separate chunk with its own tamagui copy, producing two ThemeStateContext
+      // instances and "Missing theme" errors at runtime.
+      //
+      // @tamagui/sheet/controller is the lightweight controller subpath imported
+      // by popover/dialog/select; the app imports @tamagui/sheet (full). if these
+      // land in separate optimized chunks they each get their own copy of
+      // SheetControllerContext, so the SheetController provider (from /controller)
+      // and the Sheet consumer (from the full entry) never match and adapted
+      // sheets silently never open. include both so they share one context chunk.
+      addIfInstalled(userConf, userConf.root, [
+        '@tamagui/toast',
+        '@tamagui/toast/v2',
+        '@tamagui/sheet',
+        '@tamagui/sheet/controller',
+      ])
+
+      // dedupe tamagui packages so nested resolutions collapse to a single
+      // instance. pairs with the include above: include pre-bundles, dedupe
+      // prevents duplicate bundling when sub-deps re-resolve them.
+      userConf.resolve ||= {}
+      userConf.resolve.dedupe ||= []
+      for (const id of [
+        'tamagui',
+        '@tamagui/core',
+        '@tamagui/web',
+        '@tamagui/toast',
+        '@tamagui/sheet',
+      ]) {
+        if (
+          !userConf.resolve.dedupe.includes(id) &&
+          isInstalled(userConf.root || process.cwd(), id)
+        ) {
+          userConf.resolve.dedupe.push(id)
+        }
+      }
 
       if (!shouldExtract) return
 

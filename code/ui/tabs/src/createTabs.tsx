@@ -122,7 +122,7 @@ export function createTabs<
         observer.observe(el)
 
         return () => {
-          observer.unobserve(el)
+          observer.disconnect()
         }
       }, [context.triggersCount])
 
@@ -140,6 +140,11 @@ export function createTabs<
           active={isSelected}
         >
           <TabFrame
+            {...(!isWeb && {
+              onLayout: (event) => {
+                setLayout(event.nativeEvent.layout)
+              },
+            })}
             onMouseEnter={composeEventHandlers(props.onMouseEnter, () => {
               if (layout) {
                 onInteraction?.('hover', layout)

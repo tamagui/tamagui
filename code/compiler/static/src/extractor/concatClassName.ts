@@ -45,24 +45,9 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
         continue
       }
 
-      const nextChar = name[splitIndex + 1]
-      // synced to static-ui constants
-      // MEDIA_SEP
-      const isMediaQuery = nextChar === '_'
-      // PSEUDO_SEP
-      // commenting out three things to make pseudos override properly
-      // (leave in for a bit to see if other bugs pop up later):
-      // 1. const isPseudoQuery = nextChar === '0'
       const styleKey = name.slice(1, name.indexOf('-'))
-      // 2. isMediaQuery || isPseudoQuery
-      // extract just the media query name (e.g., 'lg' '_pr-_lg_260px')
-      // by finding the underscore after the media key name
-      const mediaStart = splitIndex + 2
-      const mediaEnd = name.indexOf('_', mediaStart)
-      const mediaKey =
-        isMediaQuery && mediaEnd > mediaStart ? name.slice(mediaStart, mediaEnd) : null
-      const uid = mediaKey ? styleKey + mediaKey : styleKey
-      // 3. && !isPseudoQuery
+      const { mediaKey, pseudoKey } = getClassNameScope(name, splitIndex)
+      const uid = `${styleKey}${mediaKey ? `@${mediaKey}` : ''}${pseudoKey ? `:${pseudoKey}` : ''}`
 
       if (usedPrefixes.has(uid)) {
         // if (shouldDebug) console.log('debug exclude:', usedPrefixes, name)
@@ -75,8 +60,8 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
       if (propName && propObjects) {
         if (
           propObjects.some((po) => {
-            if (mediaKey) {
-              const propKey = pseudoInvert[mediaKey]
+            if (pseudoKey) {
+              const propKey = pseudoInvert[pseudoKey]
               return po && po[propKey] && propName in po[propKey] && po[propKey] !== null
             }
             const res = po && propName in po && po[propName] !== null
@@ -95,11 +80,43 @@ export function concatClassName(_cn: Record<string, any> | null | undefined): st
   return final.trim()
 }
 
+function getClassNameScope(name: string, splitIndex: number) {
+  let mediaKey = ''
+  let pseudoKey = ''
+  let valueStart = splitIndex + 1
+
+  if (name[valueStart] === '_') {
+    const mediaEnd = name.indexOf('_', valueStart + 1)
+    if (mediaEnd > valueStart + 1) {
+      mediaKey = name.slice(valueStart + 1, mediaEnd)
+      valueStart = mediaEnd + 1
+    }
+  }
+
+  if (name[valueStart] === '0') {
+    const pseudoStart = valueStart + 1
+    for (const nextPseudoKey of pseudoKeys) {
+      if (name.startsWith(`${nextPseudoKey}-`, pseudoStart)) {
+        pseudoKey = nextPseudoKey
+        break
+      }
+    }
+  }
+
+  return { mediaKey, pseudoKey }
+}
+
 const pseudoInvert = {
   hover: 'hoverStyle',
+  active: 'pressStyle',
   focus: 'focusStyle',
-  press: 'pressStyle',
+  'focus-visible': 'focusVisibleStyle',
+  'focus-within': 'focusWithinStyle',
   focusVisible: 'focusVisibleStyle',
   focusWithin: 'focusWithinStyle',
   disabled: 'disabledStyle',
+  enter: 'enterStyle',
+  exit: 'exitStyle',
 }
+
+const pseudoKeys = Object.keys(pseudoInvert).sort((a, b) => b.length - a.length)

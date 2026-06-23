@@ -4,6 +4,7 @@ import * as FS from 'fs-extra'
 import type { TamaguiPlatform } from '../types'
 import { detectModuleFormat } from './detectModuleFormat'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
+import { hasTopLevelAwait } from './hasTopLevelAwait'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 import { TsconfigPathsPlugin } from './esbuildTsconfigPaths'
 
@@ -52,7 +53,12 @@ type Props = Omit<Partial<esbuild.BuildOptions>, 'entryPoints'> & {
 }
 
 function getESBuildConfig(
-  { entryPoints, resolvePlatformSpecificEntries, ...options }: Props,
+  {
+    entryPoints,
+    resolvePlatformSpecificEntries,
+    define: callerDefine,
+    ...options
+  }: Props,
   platform: TamaguiPlatform,
   aliases?: Record<string, string>
 ) {
@@ -62,15 +68,39 @@ function getESBuildConfig(
 
   const resolvedEntryPoints = !resolvePlatformSpecificEntries
     ? entryPoints
-    : entryPoints.map(resolveWebOrNativeSpecificEntry)
+    : entryPoints.map((entry) => resolveWebOrNativeSpecificEntry(entry, platform))
 
   // detect format from entry points if not explicitly provided by caller
   const detectedFormat = options.format || detectEntryFormat(resolvedEntryPoints[0])
+
+  // inline platform env vars for the bundled config + components.
+  // the bundled output runs in node afterward (CSS extraction time), at which
+  // point process.env reflects whatever the build tool's parent process had —
+  // not necessarily the platform we're bundling for. inlining via esbuild's
+  // define makes the bundle self-consistent regardless of host env, which
+  // matters most for vite/vxrn (which doesn't set TAMAGUI_TARGET globally
+  // because the same plugin handles native too) and for any code in the bundle
+  // graph that reads EXPO_OS (expo-modules-core's Platform.OS, etc.).
+  const platformDefines: Record<string, string> =
+    platform === 'web'
+      ? {
+          'process.env.TAMAGUI_TARGET': '"web"',
+          'process.env.EXPO_OS': '"web"',
+        }
+      : {
+          'process.env.TAMAGUI_TARGET': '"native"',
+          // EXPO_OS doesn't have a useful "native" value (it's ios/android),
+          // so leave it alone here and let the consumer set it if needed.
+        }
 
   const res: esbuild.BuildOptions = {
     bundle: true,
     entryPoints: resolvedEntryPoints,
     format: detectedFormat,
+    define: {
+      ...platformDefines,
+      ...callerDefine,
+    },
     // for ESM: prefer "module" field for resolution, add require() shim for bundled CJS deps
     ...(detectedFormat === 'esm'
       ? {
@@ -86,7 +116,7 @@ function getESBuildConfig(
     allowOverwrite: true,
     keepNames: true,
     resolveExtensions: [
-      ...(process.env.TAMAGUI_TARGET === 'web'
+      ...(platform === 'web'
         ? ['.web.tsx', '.web.ts', '.web.jsx', '.web.js']
         : ['.native.tsx', '.native.ts', '.native.jsx', '.native.js']),
       '.tsx',
@@ -146,15 +176,14 @@ function getESBuildConfig(
             }
 
             // stub files with top-level await - they're typically runtime-only
-            if (
-              /^\s*(?:const|let|var|export)\s+[^=]*=\s*await\b/m.test(contents) ||
-              /^await\s/m.test(contents)
-            ) {
+            if (hasTopLevelAwait(contents, args.path)) {
               if (process.env.DEBUG?.startsWith('tamagui')) {
                 console.info(`[tamagui] stubbing file with top-level await: ${args.path}`)
               }
               return {
-                contents: `// stubbed - contains top-level await\nmodule.exports = {}`,
+                // Keep this as an ESM-shaped stub so esbuild doesn't inline a
+                // top-level `module.exports = {}` into the parent bundle.
+                contents: `// stubbed - contains top-level await\nexport default {}`,
                 loader: 'js',
               }
             }

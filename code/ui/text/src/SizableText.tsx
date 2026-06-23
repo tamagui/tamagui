@@ -22,6 +22,11 @@ export const SizableText = styled(Text, {
   },
 })
 
+SizableText.staticConfig.inlineProps = new Set([
+  ...(SizableText.staticConfig.inlineProps || []),
+  'maxFontSizeMultiplier',
+])
+
 // we are doing weird stuff to avoid bad types
 // TODO make this just work
 SizableText.staticConfig.variants!.fontFamily = {

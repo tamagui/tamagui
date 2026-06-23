@@ -1,26 +1,28 @@
-import { View } from '@tamagui/core'
+import { styled, View } from '@tamagui/core'
 import { withStaticProperties } from '@tamagui/helpers'
-import React from 'react'
 
 import type { RovingFocusGroupProps, RovingFocusItemProps } from './RovingFocusGroup'
 
 // noop native doesn't need keyboard accessibility
 
 const ITEM_NAME = 'RovingFocusGroupItem'
-const RovingFocusGroupItem = React.forwardRef(
-  ({ children, ...props }: RovingFocusItemProps, _ref) => (
-    <View {...props}>{children}</View>
-  )
-)
-RovingFocusGroupItem.displayName = ITEM_NAME
+const RovingFocusGroupItem = styled(View, {
+  name: ITEM_NAME,
+})
+
 const GROUP_NAME = 'RovingFocusGroup'
+const RovingFocusGroupFrame = styled(View, {
+  name: GROUP_NAME,
+})
 
 const RovingFocusGroup = withStaticProperties(
-  React.forwardRef(({ children, ...props }: RovingFocusGroupProps, _ref) => (
-    <View {...props}>{children}</View>
-  )),
+  RovingFocusGroupFrame as typeof RovingFocusGroupFrame & {
+    (props: RovingFocusGroupProps & { children?: any }): any
+  },
   {
-    Item: RovingFocusGroupItem,
+    Item: RovingFocusGroupItem as typeof RovingFocusGroupItem & {
+      (props: RovingFocusItemProps & { children?: any }): any
+    },
   }
 )
 

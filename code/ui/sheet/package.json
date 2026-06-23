@@ -1,12 +1,10 @@
 {
   "name": "@tamagui/sheet",
-  "version": "2.0.0-rc.31",
+  "version": "2.3.3",
   "license": "MIT",
   "source": "src/index.ts",
   "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
@@ -35,7 +33,7 @@
       "module": "./dist/esm/controller.mjs",
       "import": "./dist/esm/controller.mjs",
       "require": "./dist/cjs/controller.cjs",
-      "default": "./dist/cjs/controller.native.js"
+      "default": "./dist/esm/controller.mjs"
     },
     "./setup-gesture-handler": {
       "types": "./types/setupGestureHandler.d.ts",
@@ -79,17 +77,11 @@
     "@tamagui/build": "workspace:*",
     "react": ">=19",
     "react-native": "0.83.2",
-    "react-native-gesture-handler": "~2.30.0"
+    "react-native-gesture-handler": "~2.30.0",
+    "react-native-safe-area-context": "~5.7.0"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-native": "*",
-    "react-native-gesture-handler": ">=2.0.0"
-  },
-  "peerDependenciesMeta": {
-    "react-native-gesture-handler": {
-      "optional": true
-    }
+    "react": ">=19"
   },
   "module:jsx": "dist/jsx",
   "removeSideEffects": true

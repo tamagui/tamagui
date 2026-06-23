@@ -43,12 +43,12 @@ type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>;
 declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
-    elevation?: number | SizeTokens | undefined;
-    circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    transparent?: boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
     fullscreen?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
@@ -68,16 +68,16 @@ declare const ButtonIcon: (props: {
 declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
-    elevation?: number | SizeTokens | undefined;
-    circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    transparent?: boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
     fullscreen?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
-}>, "unstyled" | "icon" | "iconAfter" | "scaleIcon" | keyof TextContextStyles | "textProps" | "noTextWrap" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
+}>, "unstyled" | keyof TextContextStyles | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & ThemeableProps & {
@@ -110,16 +110,16 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
 } & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
-    elevation?: number | SizeTokens | undefined;
-    circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    transparent?: boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
     fullscreen?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
-}>, "unstyled" | "icon" | "iconAfter" | "scaleIcon" | keyof TextContextStyles | "textProps" | "noTextWrap" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
+}>, "unstyled" | keyof TextContextStyles | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & ThemeableProps & {
@@ -182,12 +182,12 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
 }, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
-    elevation?: number | SizeTokens | undefined;
-    circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-    transparent?: boolean | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
+    elevation?: number | SizeTokens | undefined;
+    transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
     fullscreen?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
@@ -195,16 +195,16 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
-        elevation?: number | SizeTokens | undefined;
-        circular?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-        transparent?: boolean | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        circular?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
         fullscreen?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;
-    }>, "unstyled" | "icon" | "iconAfter" | "scaleIcon" | keyof TextContextStyles | "textProps" | "noTextWrap" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
+    }>, "unstyled" | keyof TextContextStyles | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
         textProps?: Partial<import("@tamagui/text").SizableTextProps>;
         noTextWrap?: boolean;
     } & ThemeableProps & {
@@ -267,12 +267,12 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     }, import("@tamagui/web").StackStyleBase, {
         size?: number | SizeTokens | undefined;
         variant?: "outlined" | undefined;
-        elevation?: number | SizeTokens | undefined;
-        circular?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-        transparent?: boolean | undefined;
         disabled?: boolean | undefined;
         unstyled?: boolean | undefined;
+        elevation?: number | SizeTokens | undefined;
+        transparent?: boolean | undefined;
+        circular?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
         fullscreen?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;

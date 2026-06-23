@@ -4,7 +4,7 @@ import { memo } from 'react'
 import type { ThemeName, YStackProps } from 'tamagui'
 import { Button, Paragraph, Separator, Square, Theme, XStack, YStack } from 'tamagui'
 
-import image from './mj.jpg'
+import image from './tame-impala.jpg'
 
 export const MediaPlayer = memo(
   (
@@ -45,12 +45,12 @@ export const MediaPlayer = memo(
               </Square>
 
               <YStack items="center" y={-3} minW={165} justify="center">
-                <Paragraph fontWeight="700">Billie Jean</Paragraph>
+                <Paragraph fontWeight="700">The Less I Know the Better</Paragraph>
                 <Paragraph color="$color11" size="$3">
-                  Michael Jackson
+                  Tame Impala
                 </Paragraph>
                 <Paragraph color="$color11" opacity={0.65} size="$3">
-                  Thriller
+                  Currents
                 </Paragraph>
               </YStack>
             </XStack>
@@ -72,8 +72,9 @@ export const MediaPlayer = memo(
             >
               <Rewind size={20} />
               <Button
-                variant="outlined"
+                bg="$background"
                 hoverStyle={{
+                  bg: '$backgroundHover',
                   elevation: '$6',
                   scale: 1.025,
                 }}

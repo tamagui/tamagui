@@ -49,11 +49,26 @@ const buildFast = process.argv.includes('--build-fast')
 const dryRun = process.argv.includes('--dry-run')
 const tamaguiGitUser = process.argv.includes('--tamagui-git-user')
 const isCI = shouldFinish || rePublish || undocumented || process.argv.includes('--ci')
+const canPromptForNpmOtp =
+  !shouldFinish && !undocumented && !process.argv.includes('--ci') && !process.env.CI
 const skipFinish =
   rePublish || skipAll || undocumented || process.argv.includes('--skip-finish')
 const forcePublishAll = process.argv.includes('--force-publish-all')
 
 const curVersion = fs.readJSONSync('./code/ui/tamagui/package.json').version
+
+function isPublishAuthOrOtpError(message: string) {
+  return (
+    /EOTP|one-time password/i.test(message) ||
+    /code E404[\s\S]*PUT https:\/\/registry\.npmjs\.org\/@[^/\s]+%2f[^/\s]+/i.test(
+      message
+    )
+  )
+}
+
+function redactNpmOtp(command: string) {
+  return command.replace(/--otp(?:=|\s+)\S+/g, '--otp=******')
+}
 
 async function getLastReleaseRef(): Promise<string | null> {
   // find the most recent baseline: either a v* tag or a canary commit
@@ -126,6 +141,11 @@ const nextVersion = (() => {
     return null
   }
 
+  // promoting an RC to stable: just use the base version (e.g. 2.0.0-rc.34 -> 2.0.0)
+  if (isCurrentRC && currentRCBase) {
+    return currentRCBase
+  }
+
   let plusVersion = skipVersion ? 0 : 1
   const patchAndCanary = curVersion.split('.')[2]
   const [patch, lastCanary] = patchAndCanary.split('-')
@@ -133,10 +153,11 @@ const nextVersion = (() => {
   if (lastCanary && canary) {
     plusVersion = 0
   }
+  const curMajor = +curVersion.split('.')[0] || 1
   const patchVersion = shouldPatch ? +patch + plusVersion : 0
   const curMinor = +curVersion.split('.')[1] || 0
   const minorVersion = curMinor + (shouldPatch ? 0 : plusVersion)
-  const next = `1.${minorVersion}.${patchVersion}`
+  const next = `${curMajor}.${minorVersion}.${patchVersion}`
 
   return next
 })()
@@ -551,84 +572,178 @@ async function run() {
       const tmpDir = `/tmp/tamagui-publish`
       await ensureDir(tmpDir)
 
-      // pack and publish
-      await pMap(
-        packagesToPublish,
-        async ({ name, cwd }) => {
-          const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
-          const publishTag = canary || isCanaryVersion ? 'canary' : 'latest'
-          const publishOptions = [publishTag && `--tag ${publishTag}`]
-            .filter(Boolean)
-            .join(' ')
+      const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
+      const publishTag = canary || isCanaryVersion ? 'canary' : 'latest'
+      const publishOptions = [publishTag && `--tag ${publishTag}`]
+        .filter(Boolean)
+        .join(' ')
 
-          // Copy to temp directory and replace workspace:* with versions
-          const tmpPackageDir = join(tmpDir, name.replace('/', '_'))
-          await fs.copy(cwd, tmpPackageDir, {
-            filter: (src) => {
-              // exclude node_modules to avoid symlink issues
-              return !src.includes('node_modules')
-            },
+      // shared OTP state — set once on first EOTP, then threaded through every
+      // subsequent npm publish. single-flight so parallel failures don't
+      // stack prompts; re-prompt if the code expires mid-batch.
+      let cachedOtp: string | undefined
+      let otpPromptInFlight: Promise<string> | undefined
+      const getOtp = (reason: string, optional = false): Promise<string> => {
+        if (otpPromptInFlight) return otpPromptInFlight
+        otpPromptInFlight = (async () => {
+          console.info(`\n${reason}`)
+          const { code } = await prompts({
+            type: 'text',
+            name: 'code',
+            message: optional
+              ? 'npm 2FA code (6 digits, empty to skip)'
+              : 'npm 2FA code (6 digits)',
+            validate: (v: string) =>
+              (optional && !(v ?? '').trim()) ||
+              /^\d{6}$/.test((v ?? '').trim()) ||
+              'Enter a 6-digit code',
           })
+          if (!code) {
+            if (optional) return ''
+            throw new Error('No OTP provided, aborting publish')
+          }
+          cachedOtp = String(code).trim()
+          return cachedOtp
+        })().finally(() => {
+          otpPromptInFlight = undefined
+        })
+        return otpPromptInFlight
+      }
 
-          // replace workspace:* with version in temp copy
-          const pkgJsonPath = join(tmpPackageDir, 'package.json')
-          const pkgJson = await fs.readJSON(pkgJsonPath)
-          for (const field of [
-            'dependencies',
-            'devDependencies',
-            'optionalDependencies',
-            'peerDependencies',
-          ]) {
-            if (!pkgJson[field]) continue
-            for (const depName in pkgJson[field]) {
-              if (pkgJson[field][depName].startsWith('workspace:')) {
-                // use the skipped package's last published version if it won't be published
-                pkgJson[field][depName] = skippedVersions.get(depName) || version
-              }
+      const failedPublishes: string[] = []
+
+      try {
+        await spawnify(`npm whoami`, { cwd: tmpDir })
+      } catch (err) {
+        throw new Error(
+          `npm is not authenticated for publishing. Run \`npm login\` and then re-run the release.\n\n${err}`
+        )
+      }
+
+      if (
+        !process.env.npm_config_otp &&
+        !process.env.NPM_CONFIG_OTP &&
+        canPromptForNpmOtp
+      ) {
+        await getOtp(
+          'Most Tamagui npm publishes require 2FA. Provide the current code now so every package publish uses it.',
+          true
+        )
+      } else {
+        cachedOtp = process.env.npm_config_otp || process.env.NPM_CONFIG_OTP
+      }
+
+      const publishOne = async ({ name, cwd }: { name: string; cwd: string }) => {
+        // Copy to temp directory and replace workspace:* with versions
+        const tmpPackageDir = join(tmpDir, name.replace('/', '_'))
+        await fs.copy(cwd, tmpPackageDir, {
+          filter: (src) => {
+            // exclude node_modules to avoid symlink issues
+            return !src.includes('node_modules')
+          },
+        })
+
+        // replace workspace:* with version in temp copy
+        const pkgJsonPath = join(tmpPackageDir, 'package.json')
+        const pkgJson = await fs.readJSON(pkgJsonPath)
+        for (const field of [
+          'dependencies',
+          'devDependencies',
+          'optionalDependencies',
+          'peerDependencies',
+        ]) {
+          if (!pkgJson[field]) continue
+          for (const depName in pkgJson[field]) {
+            if (pkgJson[field][depName].startsWith('workspace:')) {
+              // use the skipped package's last published version if it won't be published
+              pkgJson[field][depName] = skippedVersions.get(depName) || version
             }
           }
-          await writeJSON(pkgJsonPath, pkgJson, { spaces: 2 })
+        }
+        await writeJSON(pkgJsonPath, pkgJson, { spaces: 2 })
 
-          const filename = `${name.replace('/', '_')}-package.tmp.tgz`
-          const absolutePath = `${tmpDir}/${filename}`
-          await spawnify(`npm pack --pack-destination ${tmpDir}`, {
-            cwd: tmpPackageDir,
-            avoidLog: true,
-          })
+        const filename = `${name.replace('/', '_')}-package.tmp.tgz`
+        const absolutePath = `${tmpDir}/${filename}`
+        await spawnify(`npm pack --pack-destination ${tmpDir}`, {
+          cwd: tmpPackageDir,
+          avoidLog: true,
+        })
 
-          // npm pack creates a file with the package name, rename it to our expected name
-          const npmFilename = `${name.replace('@', '').replace('/', '-')}-${version}.tgz`
-          await fs.rename(join(tmpDir, npmFilename), absolutePath)
+        // npm pack creates a file with the package name, rename it to our expected name
+        const npmFilename = `${name.replace('@', '').replace('/', '-')}-${version}.tgz`
+        await fs.rename(join(tmpDir, npmFilename), absolutePath)
 
-          const publishCommand = ['npm publish', absolutePath, publishOptions]
+        const accessOption = name.startsWith('@') ? '--access public' : ''
+        const buildPublishCommand = () =>
+          ['npm publish', absolutePath, publishOptions, accessOption]
             .filter(Boolean)
             .join(' ')
 
-          console.info(`Publishing ${name}: ${publishCommand}`)
+        console.info(
+          `Publishing ${name}: ${redactNpmOtp(
+            [buildPublishCommand(), cachedOtp && '--otp=******'].filter(Boolean).join(' ')
+          )}`
+        )
 
-          await spawnify(publishCommand, {
-            cwd: tmpDir,
-          }).catch((err) => {
+        let attempt = 0
+        let otp = cachedOtp
+        while (true) {
+          attempt++
+          try {
+            await spawnify(buildPublishCommand(), {
+              cwd: tmpDir,
+              env: otp
+                ? {
+                    ...process.env,
+                    npm_config_otp: otp,
+                  }
+                : process.env,
+            })
+            return
+          } catch (err) {
+            const msg = String(err)
+            const needsOtp = isPublishAuthOrOtpError(msg)
+            if (needsOtp && attempt < 3) {
+              // the otp we used is stale; force a fresh prompt
+              if (otp && cachedOtp === otp) cachedOtp = undefined
+              otp = await getOtp(
+                attempt === 1
+                  ? `npm requires a 2FA code to publish ${name}`
+                  : `npm 2FA code expired, need a fresh one for ${name}`
+              )
+              continue
+            }
             if (rePublish) {
               console.warn(
                 `⚠️  ${name}: publish failed (likely already published), continuing`
               )
-            } else {
-              console.error(err)
-              process.exit(1)
+              return
             }
-          })
-        },
-        {
-          concurrency: 15,
+            console.error(`Failed to publish ${name}:`, err)
+            failedPublishes.push(name)
+            return
+          }
         }
-      )
+      }
+
+      // probe with the first package serially so EOTP triggers exactly one
+      // prompt before we fan out the rest in parallel
+      const [firstPkg, ...restPkgs] = packagesToPublish
+      if (firstPkg) {
+        await publishOne(firstPkg)
+      }
+      await pMap(restPkgs, publishOne, { concurrency: 15 })
+
+      if (failedPublishes.length > 0) {
+        throw new Error(
+          `Failed to publish ${failedPublishes.length} packages:\n${failedPublishes.join('\n')}\n\nRe-run with --republish to retry.`
+        )
+      }
 
       console.info(`✅ Published\n`)
 
       // for canary releases, point the canary dist-tag to the latest version for skipped packages
       // so `npm install @tamagui/lucide-icons-2@canary` still resolves
-      const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
       if ((canary || isCanaryVersion) && skippedPackages.length > 0) {
         console.info(
           `Updating canary dist-tags for ${skippedPackages.length} skipped packages...`

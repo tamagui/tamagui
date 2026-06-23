@@ -596,6 +596,7 @@ export type TamaguiComponentStateRef = {
   hasEverThemed?: boolean | 'wrapped'
   hasEverResetPresence?: boolean
   hasHadEvents?: boolean
+  hasRealPressEvents?: boolean
   isListeningToTheme?: boolean
   unPress?: Function
   setStateShallow?: ComponentSetStateShallow
@@ -1112,10 +1113,15 @@ type AutocompleteSpecificTokensSetting = boolean | 'except-special'
 
 export interface GenericTamaguiSettings {
   /**
-   * When true, flexBasis will be set to 0 when flex is positive. This will be
-   * the default in v2 of Tamagui alongside an alternative mode for web compat.
+   * controls style semantics where React Native/Yoga and CSS differ.
+   *
+   * - "legacy": preserves Tamagui v1 flex expansion.
+   * - "react-native": follows React Native/Yoga flex and raw numeric lineHeight semantics.
+   * - "web": follows CSS flex and unitless numeric lineHeight semantics.
+   *
+   * @default "web"
    */
-  styleCompat?: 'react-native' | 'legacy'
+  styleCompat?: 'legacy' | 'react-native' | 'web'
 
   // TODO
   /**
@@ -1439,8 +1445,18 @@ export type MediaQueryKey = keyof Media
 export type MediaPropKeys = `$${MediaQueryKey}`
 export type MediaQueryState = { [key in MediaQueryKey]: boolean }
 
-export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> =
-  `$theme-${TK extends `${string}_${string}` ? never : TK}`
+// guard against a loose `Themes` whose `keyof` collapses to `string` (e.g. a config
+// whose themes type carries a string index signature). without this, TK becomes `string`
+// and ThemeMediaKeys becomes `$theme-${string}`, which collapses the whole WithMediaProps
+// mapped type into a `[key: string]` index signature that then swallows non-style props
+// like onPress/children. see issue #4010
+export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = TK extends string
+  ? string extends TK
+    ? never
+    : TK extends `${string}_${string}`
+      ? never
+      : `$theme-${TK}`
+  : never
 
 export type PlatformMediaKeys = `$platform-${AllPlatforms}`
 
@@ -1476,19 +1492,14 @@ export type WithMediaProps<A> = {
         [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>
       }
     : Key extends `$platform-web`
-      ? AddWebOnlyStyleProps<A>
-      : A
+      ? AddWebOnlyStyleProps<A> & { [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A> }
+      : A & { [Key in MediaPropKeys]?: A }
 }
 
-type AddWebOnlyStyleProps<A> = {
-  [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties
-    ? CSSProperties[SubKey]
-    : SubKey extends keyof A
-      ? A[SubKey]
-      : SubKey extends keyof WebOnlyValidStyleValues
-        ? WebOnlyValidStyleValues[SubKey]
-        : never
-}
+export type AddWebOnlyStyleProps<A> = Partial<CSSProperties> &
+  Partial<WebOnlyValidStyleValues> & {
+    [K in Exclude<keyof A, keyof CSSProperties>]?: A[K]
+  }
 
 export type WebOnlyValidStyleValues = {
   position: '-webkit-sticky'
@@ -1737,11 +1748,21 @@ export type SpaceTokens =
   | GetTokenString<keyof Tokens['space']>
   | ThemeValueFallbackSpace
 
-export type ColorTokens =
+// base color token strings (before opacity modifier)
+type ColorTokenBase =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['color']>
   | GetTokenString<keyof ThemeParsed>
+
+// keep this non-expanded. using `${ColorTokenBase}/${number}` preserves stricter
+// token names, but large user token/theme unions hit TS2590.
+type TokenWithOpacity = `$${string}/${number}`
+
+export type ColorTokens =
+  | ColorTokenBase
   | CSSColorNames
+  // opacity modifier: $token/50 → parsed at runtime in getTokenForKey
+  | TokenWithOpacity
 
 export type ZIndexTokens =
   | SpecificTokensSpecial
@@ -1807,7 +1828,9 @@ export type FontWeightValues =
   | 'bold'
   | 'normal'
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues
-export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number
+// font color tokens also support the opacity modifier
+type FontColorTokenBase = `$${GetTokenFontKeysFor<'color'>}`
+export type FontColorTokens = FontColorTokenBase | number | TokenWithOpacity
 export type FontLetterSpacingTokens =
   | `$${GetTokenFontKeysFor<'letterSpacing'>}`
   | number
@@ -1985,7 +2008,14 @@ export type PseudoStyles = {
   exitStyle?: ViewStyle
 }
 
-export type AllPlatforms = 'web' | 'native' | 'android' | 'ios'
+export type AllPlatforms =
+  | 'web'
+  | 'native'
+  | 'android'
+  | 'ios'
+  | 'tv'
+  | 'androidtv'
+  | 'tvos'
 
 //
 // Flat mode types (opt-in via styleMode: 'flat')
@@ -2561,6 +2591,7 @@ export interface StackStyleBase
 export interface TextStylePropsBase
   extends Omit<RNTextStyle, keyof ExtendedBaseProps>, ExtendedBaseProps {
   ellipsis?: boolean
+  numberOfLines?: number
   textDecorationDistance?: number
   textOverflow?: Properties['textOverflow']
   whiteSpace?: Properties['whiteSpace']
@@ -2777,7 +2808,14 @@ export type GetNonStyledProps<A extends StylableComponent> = A extends {
 export type GetBaseStyles<A, B> = A extends {
   __tama: [any, any, any, infer C, any, any]
 }
-  ? C
+  ? // when extending an existing tamagui component (e.g. styled(View, ...)), it
+    // contributes its base styles. but isText/isInput in the config still means
+    // "this accepts text styles" (it drives runtime validStyles too), so merge
+    // text style props in, otherwise text-only props and their shorthands (e.g.
+    // the `text` shorthand for `textAlign`) get dropped from the type.
+    B extends { isText: true } | { isInput: true }
+    ? C & TextStylePropsBase
+    : C
   : B extends { isText: true }
     ? TextStylePropsBase
     : B extends { isInput: true }
@@ -2833,7 +2871,7 @@ export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
   insets?: { top: number; right: number; bottom: number; left: number }
 }
 
-export type PropMappedValue = [string, any][] | undefined
+export type PropMappedValue = [string, any, any?][] | undefined
 
 export type GetStyleState = {
   style: TextStyle | null
@@ -3292,6 +3330,10 @@ export type UseAnimatedNumberStyle<
   V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
 > = (val: V, getStyle: (current: any) => any) => any
 
+export type UseAnimatedNumbersStyle<
+  V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
+> = (vals: V[], getStyle: (...currentValues: any[]) => any) => any
+
 export type UseAnimatedNumber<
   N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>,
 > = (initial: number) => N
@@ -3315,6 +3357,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   }) => React.ReactNode
   useAnimatedNumber: UseAnimatedNumber
   useAnimatedNumberStyle: UseAnimatedNumberStyle
+  useAnimatedNumbersStyle?: UseAnimatedNumbersStyle
   useAnimatedNumberReaction: UseAnimatedNumberReaction
   animations: A
   View?: any
@@ -3325,7 +3368,11 @@ export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>
 
 type UseStyleListener = (
   nextStyle: Record<string, unknown>,
-  effectiveTransition?: TransitionProp | null
+  effectiveTransition?: TransitionProp | null,
+  // true while a self pseudo (hover/press/focus) is active. lets avoidReRenders drivers know
+  // the emitted style is a transient pseudo override that a real re-render must not be allowed
+  // to reconcile away, vs the no-pseudo base which renders own again.
+  pseudoActive?: boolean
 ) => void
 export type UseStyleEmitter = (cb: UseStyleListener) => void
 

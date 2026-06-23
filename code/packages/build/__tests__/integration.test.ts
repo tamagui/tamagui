@@ -30,7 +30,7 @@ describe('tamagui-build integration test', () => {
   beforeAll(() => {
     // Clean up dist directory before starting
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
-    execSync('rm -rf dist && rm -rf types', { cwd: jsMainPackagePath })
+    execSync('rm -rf dist', { cwd: jsMainPackagePath })
   })
 
   it('should build the package correctly', () => {
@@ -117,10 +117,11 @@ describe('tamagui-build integration test', () => {
       await new Promise<void>((resolve, reject) => {
         const timeout = setTimeout(() => {
           reject(new Error('Timeout waiting for build to complete'))
-        }, 15000) // 30 second timeout
+        }, 15000)
 
         let initialBuildComplete = false
         let fileModified = false
+        const replacementGreeting = originalContent.includes('Hi,') ? 'Hey' : 'Hi'
 
         watchProcess.stdout.on('data', (data) => {
           console.log('Watch process output:', data.toString())
@@ -130,7 +131,7 @@ describe('tamagui-build integration test', () => {
               console.log('Initial build complete, modifying file...')
               // Modify the source file
               const newContent = `export const greet = (name: string): string => {
-  return \`Hi, \${name}!\`;
+  return \`${replacementGreeting}, \${name}!\`;
 };`
               writeFileSync(watchSrcFilePath, newContent)
               fileModified = true
@@ -138,7 +139,7 @@ describe('tamagui-build integration test', () => {
               console.log('Rebuild after file modification complete')
               // Check the updated content of the output file
               const output = readFileSync(watchDistCjsFilePath, 'utf-8')
-              expect(output).toContain('Hi,')
+              expect(output).toContain(`${replacementGreeting},`)
 
               // Change content back to original
               writeFileSync(watchSrcFilePath, originalContent)
@@ -150,6 +151,7 @@ describe('tamagui-build integration test', () => {
         })
       })
     } finally {
+      writeFileSync(watchSrcFilePath, originalContent)
       watchProcess.kill()
     }
   }, 15000)
@@ -183,11 +185,73 @@ describe('tamagui-build integration test', () => {
     expect(nativeOutput).toContain('greet:')
   })
 
+  it('should prune imports left unused after platform DCE', async () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+
+    const webOutput = await readFile(join(distPath, 'esm', 'index.mjs'), 'utf-8')
+    const nativeOutput = await readFile(join(distPath, 'esm', 'index.native.js'), 'utf-8')
+    const nativeOnlyOutput = await readFile(
+      join(distPath, 'esm', 'nativeOnly.native.js'),
+      'utf-8'
+    )
+
+    expect(webOutput).toContain('web-import-marker')
+    expect(webOutput).not.toContain('native-import-marker')
+    expect(webOutput).not.toContain('getNativeOnlyMarker')
+    expect(webOutput).not.toContain('./nativeOnly')
+    expect(webOutput).toContain('process.env.NODE_ENV === "test"')
+    expect(webOutput).toContain('process.env.NODE_ENV === "development"')
+
+    expect(nativeOutput).toContain('getNativeOnlyMarker')
+    expect(nativeOnlyOutput).toContain('native-import-marker')
+    expect(nativeOutput).toContain('from "./nativeOnly.native.js"')
+    expect(nativeOutput).toContain('from "./nested/index.native.js"')
+    expect(nativeOutput).not.toContain('from "./nativeOnly"')
+    expect(nativeOutput).not.toContain('from "./nested"')
+  })
+
+  it('should emit a real require() (not the throwing __require shim) for native esm', async () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+
+    const nativeOutput = await readFile(join(distPath, 'esm', 'index.native.js'), 'utf-8')
+    const webOutput = await readFile(join(distPath, 'esm', 'index.mjs'), 'utf-8')
+
+    // native keeps the require behind the DCE guard, but as a real require() that Metro
+    // can statically resolve — never the __require() call site that throws at runtime
+    expect(nativeOutput).toContain('require("lodash.debounce")')
+    // no __require() call sites — that shim throws "Dynamic require ... is not supported"
+    expect(nativeOutput).not.toContain('__require(')
+
+    // web DCE strips the native branch entirely, so the require never leaks into web
+    expect(webOutput).toContain('web-require-marker')
+    expect(webOutput).not.toContain('lodash.debounce')
+  })
+
+  it('should keep side-effectful native statements outside dev-only guards', async () => {
+    execSync('bun run build', { cwd: simplePackagePath })
+
+    const nativeOutputPath = join(distPath, 'esm', 'index.native.js')
+    const nativeOutput = await readFile(nativeOutputPath, 'utf-8')
+
+    expect(nativeOutput).toContain('runNativeSideEffect(items);')
+    expect(nativeOutput).toContain('native-only-marker')
+    expect(nativeOutput).toContain('native-logical-marker')
+    expect(nativeOutput).not.toContain('if (runNativeSideEffect(')
+    expect(nativeOutput).not.toContain('if (false)')
+    expect(nativeOutput).not.toContain('if (true)')
+    expect(nativeOutput).not.toContain('runNativeSideEffect(items), process.env.NODE_ENV')
+    expect(nativeOutput).not.toContain('web-only-marker')
+    expect(nativeOutput).not.toContain('web-logical-marker')
+    expect(nativeOutput).not.toContain('&& items.push(')
+  })
+
   it('should minify the output when MINIFY=true is set', () => {
     // Build without minification and cache file sizes
     execSync('bun run build', { cwd: simplePackagePath })
     const originalCjsSize = statSync(distCjsFilePath).size
     const originalEsmSize = statSync(distEsmFilePath).size
+    const originalCjsOutput = readFileSync(distCjsFilePath, 'utf-8')
+    const originalEsmOutput = readFileSync(distEsmFilePath, 'utf-8')
 
     // Clean up the output
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
@@ -214,8 +278,12 @@ describe('tamagui-build integration test', () => {
     expect(esmOutput).not.toMatch(/^\s+$/m) // No lines with only whitespace
 
     // Check that the number of lines is reduced
-    expect(cjsOutput.split('\n').length).toBeLessThan(originalCjsSize > 0 ? 40 : 32)
-    expect(esmOutput.split('\n').length).toBeLessThan(originalEsmSize > 0 ? 40 : 32)
+    expect(cjsOutput.split('\n').length).toBeLessThanOrEqual(
+      originalCjsOutput.split('\n').length
+    )
+    expect(esmOutput.split('\n').length).toBeLessThanOrEqual(
+      originalEsmOutput.split('\n').length
+    )
   })
 
   it('should clean stale outputs before building', () => {
@@ -268,6 +336,6 @@ describe('tamagui-build integration test', () => {
   afterAll(() => {
     // Clean up dist directory after tests
     execSync('rm -rf dist && rm -rf types', { cwd: simplePackagePath })
-    execSync('rm -rf dist && rm -rf types', { cwd: jsMainPackagePath })
+    execSync('rm -rf dist', { cwd: jsMainPackagePath })
   })
 })

@@ -297,7 +297,7 @@ export function PurchaseModalContents() {
         }}
       >
         <Dialog.Adapt when="maxMd">
-          <Sheet modal transition="quick">
+          <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Frame bg="$color1" p={0} flex={1}>
               <Sheet.ScrollView flex={1}>
                 <Dialog.Adapt.Contents />
@@ -521,14 +521,14 @@ export function PurchaseModalContents() {
                             color="$color11"
                             style={{ textWrap: 'balance' }}
                           >
-                            You have subscribed before so you are eligible for a 25%
+                            You have subscribed before so you are eligible for a 30%
                             discount.
                             <br />
                             Use code{' '}
                             <Text fontWeight="bold" fontFamily="$mono" color="$color12">
                               {subscriptionStatus.couponCodes.previouslySubscribed}
                             </Text>{' '}
-                            at checkout for 25% off
+                            at checkout for 30% off
                           </Paragraph>
                         </XStack>
                       </Theme>

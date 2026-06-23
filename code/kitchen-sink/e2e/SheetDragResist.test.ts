@@ -13,7 +13,8 @@
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
+import { remountDirectUseCase } from './utils/navigation'
+import { safeLaunchApp } from './utils/detox'
 
 // only run on iOS - RNGH gesture handling differs on Android
 const isAndroid = () => device.getPlatform() === 'android'
@@ -21,17 +22,19 @@ const isAndroid = () => device.getPlatform() === 'android'
 describe('SheetDragResist', () => {
   beforeAll(async () => {
     if (isAndroid()) return
-    await device.disableSynchronization()
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'SheetDragResistCase' },
+    })
+    await waitFor(element(by.id('sheet-drag-resist-screen')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
     if (isAndroid()) return
-    // reload between tests for clean state
-    await device.disableSynchronization()
-    await device.reloadReactNative()
-    await navigateToSheetDragResistCase()
-    // disable sync AFTER navigation to avoid hang on spring animations during tests
+    await remountDirectUseCase('sheet-drag-resist-screen')
+    // disable sync AFTER remount to avoid hang on spring animations during tests
     await device.disableSynchronization()
   })
 
@@ -366,7 +369,3 @@ describe('SheetDragResist', () => {
     })
   })
 })
-
-async function navigateToSheetDragResistCase() {
-  await navigateToTestCase('SheetDragResistCase', 'sheet-drag-resist-screen')
-}

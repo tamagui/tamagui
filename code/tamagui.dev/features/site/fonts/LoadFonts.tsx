@@ -47,23 +47,25 @@ export function LoadFont(props: {
   const [show, setShow] = useState(!props.prefetch)
 
   useEffect(() => {
-    if (props.prefetch) {
-      // Query all 'a' and 'button' elements at the root of the document
-      const elements = document.querySelectorAll('a, button')
-      const disposes = Array.from(elements).map((element) => {
-        const listener = () => {
-          setShow(true)
-        }
-        element.addEventListener('mouseenter', listener)
-        return () => {
-          element.removeEventListener('mouseenter', listener)
-        }
-      })
-
-      return () => {
-        disposes.forEach((_) => _())
-      }
+    if (!props.prefetch) return
+    // one-time warm on the first user interaction anywhere on the page (touch +
+    // mouse + keyboard), so the font is already loading by the time the user
+    // navigates to a page that uses it, without an eager preload that
+    // Lighthouse dings for being unused on the current page.
+    const events = ['pointerdown', 'touchstart', 'keydown', 'mouseover'] as const
+    const removeAll = () => {
+      for (const e of events) document.removeEventListener(e, reveal, true)
     }
+    // function decl so removeAll (defined above) can reference it; on the first
+    // trigger we unregister ALL the listeners, not just the one that fired.
+    function reveal() {
+      removeAll()
+      setShow(true)
+    }
+    for (const e of events) {
+      document.addEventListener(e, reveal, { passive: true, capture: true })
+    }
+    return removeAll
   }, [props.prefetch])
 
   return (

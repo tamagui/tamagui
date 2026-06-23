@@ -4,35 +4,35 @@
   "type": "module",
   "sideEffects": false,
   "scripts": {
-    "build:web": "remix vite:build",
-    "dev": "remix vite:dev",
-    "start": "remix-serve ./build/server/index.js",
-    "typecheck": "tsc",
+    "build:web": "react-router build",
+    "dev": "react-router dev",
+    "start": "react-router-serve ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc",
     "prod": "bun run build:web && bun run start",
     "upgrade:tamagui": "bunx npm-check-updates -u '*tamagui*' '@tamagui/*' && bun install"
   },
   "dependencies": {
-    "@remix-run/node": "^2.12.1",
-    "@remix-run/react": "^2.12.1",
-    "@remix-run/serve": "^2.12.1",
+    "@react-router/node": "^7.18.0",
+    "@react-router/serve": "^7.18.0",
     "@tamagui/config": "workspace:*",
-    "isbot": "^4.1.0",
     "react": ">=19",
     "react-dom": "*",
+    "react-router": "^7.18.0",
     "tamagui": "workspace:*"
   },
   "devDependencies": {
-    "@remix-run/dev": "^2.12.1",
+    "@react-router/dev": "^7.18.0",
+    "@react-router/fs-routes": "^7.18.0",
     "@tamagui/vite-plugin": "workspace:*",
     "@types/react": "~19.1.10",
     "@types/react-dom": "~19.1.7",
     "typescript": "~5.9.2",
-    "vite": "^8.0.0",
+    "vite": "^8.0.3",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "engines": {
     "node": ">=20.0.0"
   },
   "packageManager": "bun@1.3.9",
-  "version": "2.0.0-rc.31"
+  "version": "2.3.3"
 }

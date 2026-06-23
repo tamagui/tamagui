@@ -45,7 +45,8 @@
         "DISABLE_NATIVE_TEST",
         "DISABLE_REACT_NATIVE",
         "SKIP_NATIVE_TESTS",
-        "NODE_ENV"
+        "NODE_ENV",
+        "PORT"
       ],
       "passThroughEnv": [
         "TAMAGUI_TARGET",
@@ -54,7 +55,8 @@
         "DISABLE_NATIVE_TEST",
         "DISABLE_REACT_NATIVE",
         "SKIP_NATIVE_TESTS",
-        "NODE_ENV"
+        "NODE_ENV",
+        "PORT"
       ]
     },
     "test:web": {
@@ -64,12 +66,14 @@
       "env": [
         "TAMAGUI_TARGET",
         "TAMAGUI_TEST_ANIMATION_DRIVER",
-        "NODE_ENV"
+        "NODE_ENV",
+        "PORT"
       ],
       "passThroughEnv": [
         "TAMAGUI_TARGET",
         "TAMAGUI_TEST_ANIMATION_DRIVER",
-        "NODE_ENV"
+        "NODE_ENV",
+        "PORT"
       ]
     },
     "test:native": {

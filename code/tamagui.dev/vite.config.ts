@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs'
 import { execSync } from 'node:child_process'
 import { createRequire } from 'node:module'
 import { resolve as pathResolve } from 'node:path'
-import { tamaguiPlugin } from '@tamagui/vite-plugin'
+import { tamaguiPlugin, tamaguiAliases } from '@tamagui/vite-plugin'
 import { one } from 'one/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 import type { UserConfig } from 'vite'
@@ -38,13 +38,13 @@ if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
 }
 
 // Generate bento proxy files (creates stubs if bento repo not found)
-const { hasBento } = generateBentoProxy({
+const { hasBento, bentoPath } = generateBentoProxy({
   basePath: pathResolve(import.meta.dirname, 'scripts'),
   silent: false,
 })
 
 if (hasBento) {
-  console.info('Using ../bento')
+  console.info(`Using bento at ${bentoPath}`)
 }
 
 // use createRequire instead of import.meta.resolve for bun compatibility in vite config
@@ -67,7 +67,6 @@ const include = [
   '@tamagui/core',
   '@tamagui/web',
   // existing
-  '@ai-sdk/deepseek',
   'secure-json-parse',
   '@supabase/postgres-js',
   'ai',
@@ -91,7 +90,6 @@ const include = [
   'unified',
   '@tamagui/get-font-sized',
   '@tamagui/linear-gradient',
-  '@tamagui/lucide-icons-2',
   '@rehookify/datepicker',
   '@tamagui/get-token',
   '@tamagui/roving-focus',
@@ -110,43 +108,34 @@ export default {
 
   server: {
     fs: {
-      allow: ['..', '../../../bento'],
+      allow: ['..', ...(bentoPath ? [bentoPath] : [])],
     },
   },
 
   build: {
     cssCodeSplit: false,
+    rolldownOptions: {
+      output: {
+        // fix non-deterministic __esm init ordering bug
+        // https://github.com/rolldown/rolldown/issues/3143
+        strictExecutionOrder: true,
+      },
+    },
   },
 
   resolve: {
     preserveSymlinks: false,
+
     alias: [
-      // Regex-based alias for bento components when not available
-      ...(!hasBento
-        ? [
-            {
-              find: /^@tamagui\/bento\/component\/.+$/,
-              replacement: pathResolve(
-                import.meta.dirname,
-                './helpers/dist/bento-component-stub.tsx'
-              ),
-            },
-          ]
-        : []),
+      // when bento is unavailable, @tamagui/bento/component/* is stubbed by the
+      // `stub-bento-components` plugin below (virtual module), not an alias
+
       // Standard string-based aliases
       {
         find: 'react-native-svg',
         replacement: '@tamagui/react-native-svg',
       },
-      // {
-      //   find: 'react-native-web',
-      //   replacement: resolve('@tamagui/react-native-web-lite'),
-      // },
-      // bugfix docsearch/react, weird
-      {
-        find: '@docsearch/react',
-        replacement: resolve('@docsearch/react'),
-      },
+
       {
         find: 'react-native/Libraries/Core/ReactNativeVersion',
         replacement: resolve('@tamagui/proxy-worm'),
@@ -156,21 +145,18 @@ export default {
         ? [
             {
               find: '@tamagui/bento/raw',
-              replacement: pathResolve(import.meta.dirname, '../../../bento/src/index'),
+              replacement: pathResolve(bentoPath, 'src/index'),
             },
             {
               find: '@tamagui/bento/provider',
               replacement: pathResolve(
-                import.meta.dirname,
-                '../../../bento/src/components/provider/CurrentRouteProvider'
+                bentoPath,
+                'src/components/provider/CurrentRouteProvider'
               ),
             },
             {
               find: '@tamagui/bento/component',
-              replacement: pathResolve(
-                import.meta.dirname,
-                '../../../bento/src/components'
-              ),
+              replacement: pathResolve(bentoPath, 'src/components'),
             },
           ]
         : []),
@@ -183,6 +169,13 @@ export default {
         find: '@tamagui/bento',
         replacement: pathResolve(import.meta.dirname, './helpers/dist/bento-proxy'),
       },
+
+      ...(process.env.RNW_LITE
+        ? tamaguiAliases({
+            rnwLite: true,
+            svg: true,
+          })
+        : []),
     ],
 
     dedupe: [
@@ -201,7 +194,7 @@ export default {
   },
 
   ssr: {
-    external: ['@vxrn/mdx', 'ws'],
+    external: ['@vxrn/mdx', 'ws', 'postmark', 'stripe'],
     noExternal: true,
   },
 
@@ -249,6 +242,20 @@ export const LocationNotification = BentoComponentStub
     }),
 
     one({
+      setupFile: {
+        server: './setup.server.ts',
+      },
+
+      server: {
+        cacheControl: {
+          'fonts/**': 'public, max-age=604800, stale-while-revalidate=86400',
+          '*.svg': 'public, max-age=86400',
+          '*.png': 'public, max-age=86400',
+          '*.jpg': 'public, max-age=86400',
+          '*.woff2': 'public, max-age=604800',
+        },
+      },
+
       react: {
         compiler: process.env.NODE_ENV === 'production',
       },

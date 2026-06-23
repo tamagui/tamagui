@@ -27,12 +27,12 @@ import {
   YStack,
   isTouchable,
   useDebounce,
-  useDidFinishSSR,
   useGet,
   useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
 import { Container, ContainerLarge } from '~/components/Containers'
+import { useIsIntersecting } from '~/hooks/useOnIntersecting'
 import { useTransitionState } from '~/hooks/useTransitionState'
 import favicon from '~/public/favicon.svg'
 import { HomeH2, HomeH3 } from './HomeHeaders'
@@ -46,15 +46,6 @@ const breakpoints = [
 
 const browserHeight = 485
 
-const IS_SAFARI =
-  typeof navigator !== 'undefined' &&
-  /^((?!chrome|android).)*safari/i.test(navigator.userAgent || '')
-
-const useIsSafari = () => {
-  const ssrDone = useDidFinishSSR()
-  return ssrDone ? IS_SAFARI : false
-}
-
 export const HomeResponsive = memo(() => {
   const [bounding, setBounding] = useTransitionState<DOMRect | null>(null)
   const prevMove = useRef(0)
@@ -65,7 +56,6 @@ export const HomeResponsive = memo(() => {
   const safariRef = useRef<HTMLElement | null>(null)
   const getState = useGet({ move, isDragging, bounding })
   const [sizeI, setSizeI] = useState(0)
-  // safari drags slower so lets pre-load iframe
   const [hasInteracted, setHasInteracted] = useState(false)
   const updateBoundings = useDebounce(() => {
     const rect = safariRef.current?.getBoundingClientRect() ?? null
@@ -74,13 +64,14 @@ export const HomeResponsive = memo(() => {
     })
   }, 350)
 
-  const isSafari = useIsSafari()
-
+  // load the iframe (with the demo photos) once the section scrolls near view,
+  // preloading a bit early so it's ready by the time it's on screen
+  const isIntersecting = useIsIntersecting(ref, { once: true, rootMargin: '300px' })
   useEffect(() => {
-    if (isSafari) {
+    if (isIntersecting) {
       setHasInteracted(true)
     }
-  }, [isSafari])
+  }, [isIntersecting])
 
   useIsomorphicLayoutEffect(() => {
     if (!bounding) {
@@ -127,29 +118,6 @@ export const HomeResponsive = memo(() => {
     prevMove.current = getState().move
     setIsDragging(false)
   }
-
-  // disabling the dragger for now it feels slow due to iframe
-  // useOnIntersecting(
-  //   ref,
-  //   ([entry], didResize) => {
-  //     if (!entry?.isIntersecting) return
-  //     const node = safariRef.current
-  //     if (!node) return
-  //     if (didResize) {
-  //       updateBoundings()
-  //     }
-  //     prevMove.current = getState().move - 10
-  //     window.addEventListener('pointermove', onMove)
-  //     return () => {
-  //       onMove.cancel()
-  //       window.removeEventListener('pointermove', onMove)
-  //       stop()
-  //     }
-  //   },
-  //   {
-  //     threshold: 0.01,
-  //   }
-  // )
 
   useEffect(() => {
     window.addEventListener('mouseup', stop)
@@ -257,7 +225,16 @@ export const HomeResponsive = memo(() => {
           />
           <YStack position="relative" flex={1} height="100%" width="100%">
             <YStack fullscreen className="mask-gradient-down" z={-1}>
-              <YStack fullscreen b="auto" height={439} className="bg-grid" />
+              {/* explicit position avoids fullscreen's inset:0 conflicting with the
+                fixed height in the cascade (same hydration CLS class as the hero) */}
+              <YStack
+                position="absolute"
+                t={0}
+                l={0}
+                r={0}
+                height={439}
+                className="bg-grid"
+              />
             </YStack>
           </YStack>
         </YStack>
@@ -270,7 +247,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
   return (
     <YStack
       className="unselectable"
-      theme={active ? 'pink' : null}
+      theme={active ? 'green' : null}
       position="absolute"
       {...props}
     >
@@ -390,7 +367,7 @@ export const Safari = memo(
           <Tab borderColor="var(--green7)" borderTopLeftRadius={0}>
             Github
           </Tab>
-          <Tab borderColor="var(--pink7)" active>
+          <Tab borderColor="var(--green7)" active>
             Tamagui - React Native & Web UI kits
           </Tab>
           <Tab borderColor="var(--yellow7)" borderTopRightRadius={0}>
@@ -469,7 +446,7 @@ export const Safari = memo(
                   </XStack>
                   <Spacer flex={1} />
                   <XStack items="center" gap="$4">
-                    <Star size={20} color="var(--purple10)" />
+                    <Star size={20} color="var(--green10)" />
                     <Paragraph theme="red">4.55</Paragraph>
                   </XStack>
                 </XStack>

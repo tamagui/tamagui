@@ -122,6 +122,17 @@ describe('shorthand variables - web', () => {
 
     expect(value).toMatch(/linear-gradient\(\$nonexistent, var\(--.*white/)
   })
+
+  test('backgroundImage with $token/NN opacity modifier resolves to color-mix', () => {
+    const styles = simplifiedGetSplitStyles(View, {
+      backgroundImage: 'linear-gradient(180deg, $white/50, $white/0)',
+    })
+    const value = getStyleValue(styles, 'backgroundImage')
+
+    expect(value).toMatch(
+      /linear-gradient\(180deg, color-mix\(in srgb, var\(--.*white.*\) 50%, transparent\), color-mix\(in srgb, var\(--.*white.*\) 0%, transparent\)\)/
+    )
+  })
 })
 
 describe('border shorthand - web', () => {

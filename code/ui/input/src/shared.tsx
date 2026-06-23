@@ -109,6 +109,12 @@ export const styledBody = [
     render: 'input',
     variants: {
       unstyled: {
+        true: {
+          // reset browser <input>/<textarea> defaults
+          outlineWidth: 0,
+          borderWidth: 0,
+          backgroundColor: 'transparent',
+        },
         false: defaultStyles,
       },
 

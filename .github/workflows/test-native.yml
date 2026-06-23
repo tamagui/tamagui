@@ -9,6 +9,12 @@ on:
       - rn82
   workflow_dispatch:
 
+permissions:
+  contents: read
+  # required: this workflow calls the reusable build-ios-kitchensink-app.yml,
+  # whose build-ios job declares pull-requests: read (caller must grant >= callee)
+  pull-requests: read
+
 # cancel in-progress runs on feature branches, but let main finish for full history
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -24,6 +30,18 @@ jobs:
   # iOS Build & Test
   # ─────────────────────────────────────────────────────────────────────────────
 
+  validate-ios-detox-shards:
+    name: Validate iOS Detox Shards
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Validate shard coverage
+        run: node .github/scripts/check-ios-detox-shards.mjs
+
   build-ios:
     name: Build iOS App
     uses: ./.github/workflows/build-ios-kitchensink-app.yml
@@ -33,23 +51,34 @@ jobs:
 
   test-ios:
     name: iOS Detox Tests (${{ matrix.shard_name }})
-    needs: build-ios
+    needs:
+      - build-ios
+      - validate-ios-detox-shards
     runs-on: macos-15
-    timeout-minutes: 60
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
         include:
-          # shard balance based on CI timings (seconds):
-          # shard 1 (~1200s): PressStyleNative.noRngh(804) + PointerEvents(378)
-          # shard 2 (~1100s): SheetScrollableDrag(874) + SheetDragResist(142) + SheetKeyboardDrag(22)
-          # shard 3 (~1100s): SelectRemount(353) + ThemeMutation(213) + ShorthandVariables(169) + CompilerExtraction(160) + ThemeChangeBasic(111) + rest
-          - shard_name: '1/3'
-            test_files: 'e2e/check-rngh-status.test.ts e2e/GroupPressNative.test.ts e2e/PressStyleNative.test.ts e2e/PressStyleNative.noRngh.test.ts e2e/PointerEvents.test.ts e2e/SafeArea.test.ts'
-          - shard_name: '2/3'
-            test_files: 'e2e/SheetScrollableDrag.test.ts e2e/SheetDragResist.test.ts e2e/SheetKeyboardDrag.test.ts e2e/NativePortal.test.ts e2e/MediaQueryGtMd.test.ts'
-          - shard_name: '3/3'
-            test_files: 'e2e/SelectRemount.test.ts e2e/CompilerExtraction.test.ts e2e/CompilerTernaryActive.test.ts e2e/SelectAndroidOnPress.test.ts e2e/ThemeChangeBasic.test.ts e2e/ThemeMutation.test.ts e2e/ShorthandVariables.test.ts'
+          # 4 shards balanced by test execution time. the old ~7min/shard ts-jest
+          # type-check tax is gone (e2e now transpiles via e2e/tsconfig.json), so
+          # startup is small and these fit well under the native-ci runner's
+          # 45-minute process timeout. CompilerExtraction runs an in-test
+          # `npx tamagui build` (~12-19min, variable) so it gets its OWN shard
+          # (with the iOS-skipped SafeArea/SheetKeyboardDrag, which cost ~0, plus
+          # the small iOS-running SheetFitKeyboardSafeArea, ~1 launch); the
+          # remaining files are bin-packed to ~14.5min test-exec each (~25min wall).
+          # SelectAndroidOnPress is android-only (excluded here via
+          # check-ios-detox-shards.mjs, still runs in the android job). Coverage
+          # validated by that script (every e2e test assigned exactly once).
+          - shard_name: '1/4'
+            test_files: 'e2e/CompilerExtraction.test.ts e2e/SafeArea.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts'
+          - shard_name: '2/4'
+            test_files: 'e2e/PressStyleNative.noRngh.test.ts e2e/CompilerTernaryActive.test.ts e2e/TabsOnInteraction.test.ts e2e/PointerEvents.test.ts e2e/GroupPressNative.test.ts e2e/ShorthandVariables.test.ts e2e/check-rngh-status.test.ts'
+          - shard_name: '3/4'
+            test_files: 'e2e/SheetScrollableDrag.test.ts e2e/ThemeMutation.test.ts e2e/NativePortal.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/MenuRadioGroup.test.ts e2e/PressStyleScrollStuck.test.ts'
+          - shard_name: '4/4'
+            test_files: 'e2e/PressStyleNative.test.ts e2e/SheetPressRegression.test.ts e2e/SheetKeyboardFitContent.test.ts e2e/SelectRemount.test.ts e2e/SheetDragResist.test.ts e2e/ThemeChangeBasic.test.ts e2e/NestedPressExclusive.test.ts e2e/MediaQueryGtMd.test.ts'
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -145,15 +174,52 @@ jobs:
         run: |
           xcrun simctl ui booted appearance light
 
+          # wait for SpringBoard to be fully ready (FrontBoard app registration depends on it)
+          echo "Waiting for SpringBoard readiness..."
+          for i in {1..30}; do
+            if xcrun simctl spawn booted launchctl list 2>/dev/null | grep -q SpringBoard; then
+              echo "SpringBoard ready after ~${i}s"
+              break
+            fi
+            sleep 1
+          done
+
       - name: Install App on Simulator
         if: env.SKIP_IOS_TESTS != 'true'
         working-directory: ${{ github.workspace }}
         run: |
-          xcrun simctl install booted "${{ needs.build-ios.outputs.built-app-path }}"
+          APP_PATH="${{ needs.build-ios.outputs.built-app-path }}"
+          BUNDLE_ID="com.tamagui.tamaguikitchensink"
+
+          for attempt in 1 2 3; do
+            echo "Install attempt $attempt/3..."
+            xcrun simctl install booted "$APP_PATH"
+            sleep 3
+
+            # verify FrontBoard registered the app
+            if xcrun simctl get_app_container booted "$BUNDLE_ID" 2>/dev/null; then
+              echo "App installed and registered on attempt $attempt"
+
+              # launch once to prime FrontBoard, then terminate
+              xcrun simctl launch booted "$BUNDLE_ID" 2>/dev/null || true
+              sleep 2
+              xcrun simctl terminate booted "$BUNDLE_ID" 2>/dev/null || true
+              break
+            fi
+
+            echo "::warning::App not registered with FrontBoard after install (attempt $attempt)"
+            if [ $attempt -lt 3 ]; then
+              xcrun simctl uninstall booted "$BUNDLE_ID" 2>/dev/null || true
+              sleep 5
+            else
+              echo "::error::App failed to register after 3 install attempts"
+              exit 1
+            fi
+          done
 
       - name: Setup Bun
         if: env.SKIP_IOS_TESTS != 'true'
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version-file: 'package.json'
 
@@ -162,7 +228,10 @@ jobs:
         env:
           DETOX_IOS_APP_PATH: build/Build/Products/Debug-iphonesimulator/tamaguikitchensink.app
         run: |
-          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 1 ${{ matrix.test_files }}
+          # --retries 0: no whole-file retry (that re-ran beforeAll + every test of a
+          # flaky file, the 2x wall-time variance). individual flaky tests retry
+          # in-place via jest.retryTimes (e2e/jest.setup.ts).
+          bun run ../packages/native-ci/src/run-detox-ios.ts --project-root "$PWD" --record-logs failing --retries 0 ${{ matrix.test_files }}
 
       - name: Report iOS Test Status
         if: always() && env.SKIP_IOS_TESTS == 'true'
@@ -257,7 +326,7 @@ jobs:
 
       - name: Setup Android SDK
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
 
       - name: Prebuild Android
         if: ${{ !steps.android-cache-check.outputs.cache-hit }}
@@ -456,12 +525,6 @@ jobs:
     timeout-minutes: 45
     # Android emulator in CI is flaky with window focus issues - don't block on failures
     continue-on-error: true
-    # Retry matrix - run up to 2 attempts sequentially to handle flakiness
-    strategy:
-      fail-fast: false
-      max-parallel: 1
-      matrix:
-        attempt: [1, 2]
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
@@ -490,6 +553,15 @@ jobs:
           echo "::warning::Android cache not restored (key: ${{ needs.build-android.outputs.android-cache-key }}). This may happen on first run after cache key changes."
           echo "SKIP_ANDROID_TESTS=true" >> $GITHUB_ENV
 
+      - name: Free Disk Space
+        if: env.SKIP_ANDROID_TESTS != 'true'
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android/sdk/ndk
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          df -h /
+
       - name: Install Dependencies
         if: env.SKIP_ANDROID_TESTS != 'true'
         uses: ./.github/actions/install
@@ -509,27 +581,30 @@ jobs:
 
       - name: Setup Bun
         if: env.SKIP_ANDROID_TESTS != 'true'
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
         with:
           bun-version-file: 'package.json'
 
       - name: Start Android Emulator and Run Tests
         if: env.SKIP_ANDROID_TESTS != 'true'
         id: android-tests
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
         with:
           api-level: 31
           target: google_apis
           arch: x86_64
           profile: pixel_4
           avd-name: test
-          ram-size: 2048M
-          heap-size: 512M
+          # 4G ram + 1G heap (was 2G/512M) - the kitchen-sink JS bundle eagerly imports
+          # all 192 test cases, so first launch under software graphics needs more headroom
+          # to let the main looper idle within AndroidX's 45s startActivitySync timeout.
+          ram-size: 4096M
+          heap-size: 1024M
           disk-size: 4G
           force-avd-creation: false
           emulator-boot-timeout: 600
           disable-animations: true
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none -memory 2048
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none -camera-front none
           working-directory: code/kitchen-sink
           script: |
             # Free up memory before tests
@@ -557,7 +632,8 @@ jobs:
 
             # Let Detox handle APK installation and ADB reverse setup via reversePorts config
             # Android emulator is flaky - capture exit code but don't fail the job
-            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 2 || echo "ANDROID_TESTS_FAILED=true" >> $GITHUB_ENV
+            # --retries 0: no whole-file retry; individual tests retry via jest.retryTimes (e2e/jest.setup.ts)
+            bun run ../packages/native-ci/src/run-detox-android.ts --headless --project-root "$PWD" --record-logs failing --retries 0 || echo "ANDROID_TESTS_FAILED=true" >> $GITHUB_ENV
 
       - name: Report Android Test Status
         if: always()
@@ -574,6 +650,6 @@ jobs:
         if: env.ANDROID_TESTS_FAILED == 'true' && env.SKIP_ANDROID_TESTS != 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: detox-artifacts-android-attempt-${{ matrix.attempt }}
+          name: detox-artifacts-android
           path: ${{ env.test_container_app_path }}/e2e/artifacts/
           retention-days: 7

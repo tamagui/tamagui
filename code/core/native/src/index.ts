@@ -42,7 +42,18 @@ export type { PortalAccessor } from './portalState'
 
 // gesture handler
 export { getGestureHandler } from './gestureState'
-export type { GestureHandlerAccessor, PressGestureConfig } from './gestureState'
+export {
+  claimExternalPressOwnership as unstable_claimExternalPressOwnership,
+  releaseExternalPressOwnership as unstable_releaseExternalPressOwnership,
+} from './gestureState'
+export type {
+  ExternalPressOwnershipToken,
+  GestureHandlerAccessor,
+  PressGestureConfig,
+} from './gestureState'
+// NOTE: setupGestureHandler is exported from setup-gesture-handler.ts entry point,
+// not here, to avoid bundler pulling in RNGH require during tree-shaking
+export type { GestureHandlerConfig } from './setup-gesture-handler'
 
 // worklets
 export { getWorklets } from './workletsState'

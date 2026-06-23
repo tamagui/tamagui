@@ -714,6 +714,7 @@ export function createBaseMenu({
 
     const context = useMenuContext(scope)
     const rootContext = useMenuRootContext(scope)
+    const popperContext = PopperPrimitive.usePopperContext(scope)
     const getItems = useCollection(scope)
     const [currentItemId, setCurrentItemId] = React.useState<string | null>(null)
     const contentRef = React.useRef<TamaguiElement>(null)
@@ -778,20 +779,39 @@ export function createBaseMenu({
       return () => cancelAnimationFrame(frame)
     }, [context.open])
 
-    // dismiss on scroll (web only) - but not when scrolling inside the menu
+    // dismiss on scroll (web only) - only when the scroll actually moves the
+    // menu's anchor. a scroll in an unrelated subtree leaves the menu's
+    // position unchanged, so it should not dismiss.
     React.useEffect(() => {
       if (!isWeb || disableDismissOnScroll || !context.open) return
       const handleScroll = (event: Event) => {
-        // don't dismiss if scrolling inside the menu content
-        const target = event.target as HTMLElement
-        if ((contentRef.current as unknown as HTMLElement)?.contains(target)) return
+        const scrolled = event.target as Node | null
+        if (!scrolled) return
+        // never dismiss when scrolling within the menu's own content
+        const content = contentRef.current as unknown as HTMLElement | null
+        if (content?.contains(scrolled)) return
+        // resolve the menu's anchor element (the trigger). a virtual reference
+        // (e.g. a context menu pinned to a point) may expose its DOM origin
+        // via `contextElement`.
+        const reference = popperContext.refs?.reference?.current as
+          | Element
+          | { contextElement?: Element | null }
+          | null
+          | undefined
+        const anchor =
+          reference instanceof Element ? reference : (reference?.contextElement ?? null)
+        // when we can see the anchor element, only dismiss if the scrolled
+        // container actually contains it - i.e. this scroll moved the menu
+        // relative to the viewport. window/document scrolls have `document`
+        // as the target, which contains the anchor, so those still dismiss.
+        if (anchor && !scrolled.contains(anchor)) return
         onDismiss?.()
       }
       window.addEventListener('scroll', handleScroll, { capture: true, passive: true })
       return () => {
         window.removeEventListener('scroll', handleScroll, { capture: true })
       }
-    }, [disableDismissOnScroll, context.open, onDismiss])
+    }, [disableDismissOnScroll, context.open, onDismiss, popperContext.refs])
 
     // Make sure the whole tree has focus guards as our `MenuContent` may be
     // the last element in the DOM (beacuse of the `Portal`)

@@ -101,8 +101,8 @@ const ShowcaseView = forwardRef<any, Props>(
       { shouldRetryOnError: false, revalidateOnFocus: false }
     )
 
-    const iDontHaveAccess =
-      error?.status === 403 || error?.status === 401 || error?.status === 500
+    const iDontHaveAccess = error?.status === 403 || error?.status === 401
+    const hasUnexpectedError = error && !iDontHaveAccess
 
     const minHeight = short ? 300 : 510
 
@@ -233,13 +233,13 @@ const ShowcaseView = forwardRef<any, Props>(
                   <Button.Text>Upgrade to Pro</Button.Text>
                 </Button>
               </YStack>
+            ) : hasUnexpectedError ? (
+              <Text text="center" color="$red10" $group-window-sm={{ fontSize: '$2' }}>
+                Source unavailable. Please try again later.
+              </Text>
             ) : data ? (
               <CodeWindow code={data} />
-            ) : (
-              <Text text="center" color="$green10" $group-window-sm={{ fontSize: '$2' }}>
-                Purchase the Bento package to access the code.
-              </Text>
-            )}
+            ) : null}
           </MessagesFrame>
         </YStack>
       </SizeProvider>

@@ -1,10 +1,10 @@
-import type { ToastProps } from '@tamagui/toast'
 import {
   Toast,
   ToastProvider as ToastProviderOG,
   ToastViewport,
   useToastController,
   useToastState,
+  type ToastProps,
 } from '@tamagui/toast'
 import { Theme, YStack } from 'tamagui'
 

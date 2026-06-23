@@ -1,18 +1,18 @@
 import type { TamaguiProviderProps } from 'tamagui'
 import { TamaguiProvider } from 'tamagui'
-import { ToastProvider } from '@tamagui/toast'
 
 import config from '../tamagui.config'
+import { useInsets } from './useInsets'
 
 export function Provider({
   children,
   ...rest
 }: Omit<Partial<TamaguiProviderProps>, 'config'>) {
+  const insets = useInsets()
+
   return (
-    <TamaguiProvider config={config} defaultTheme="light" {...rest}>
-      <ToastProvider swipeDirection="horizontal" duration={5000}>
-        {children}
-      </ToastProvider>
+    <TamaguiProvider config={config} defaultTheme="light" insets={insets} {...rest}>
+      {children}
     </TamaguiProvider>
   )
 }

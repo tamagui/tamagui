@@ -1,5 +1,6 @@
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
+// `/pure` avoids auto-injecting js.stripe.com on import (loads only on loadStripe())
+import { loadStripe } from '@stripe/stripe-js/pure'
 import type { Appearance, StripeError } from '@stripe/stripe-js'
 import { X } from '@tamagui/lucide-icons-2'
 import { createStore, createUseStore } from '@tamagui/use-store'
@@ -34,8 +35,11 @@ const key = isTestMode
 // lazy load stripe only when needed
 let stripePromise: ReturnType<typeof loadStripe> | null = null
 const getStripe = () => {
+  if (!key) {
+    return null
+  }
   if (!stripePromise) {
-    stripePromise = loadStripe(key || '')
+    stripePromise = loadStripe(key)
   }
   return stripePromise
 }

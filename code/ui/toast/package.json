@@ -1,16 +1,15 @@
 {
   "name": "@tamagui/toast",
-  "version": "2.0.0-rc.31",
+  "version": "2.3.3",
   "source": "src/index.ts",
   "files": [
     "src",
     "types",
-    "dist"
+    "dist",
+    "v2"
   ],
   "type": "module",
-  "sideEffects": [
-    "*.css"
-  ],
+  "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
@@ -24,6 +23,15 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
+    },
+    "./v2": {
+      "types": "./types/v2.d.ts",
+      "react-native": "./dist/esm/v2.native.js",
+      "browser": "./dist/esm/v2.mjs",
+      "module": "./dist/esm/v2.mjs",
+      "import": "./dist/esm/v2.mjs",
+      "require": "./dist/cjs/v2.cjs",
+      "default": "./dist/esm/v2.mjs"
     }
   },
   "publishConfig": {
@@ -59,8 +67,14 @@
     "react-native": "0.83.2"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-native": "*"
+    "react": ">=19"
   },
-  "module:jsx": "dist/jsx"
+  "module:jsx": "dist/jsx",
+  "typesVersions": {
+    "*": {
+      "v2": [
+        "./types/v2.d.ts"
+      ]
+    }
+  }
 }

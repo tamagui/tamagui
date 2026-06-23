@@ -21,5 +21,6 @@ export declare const useComponentState: (props: ViewProps | TextProps | Record<s
     outputStyle: "css" | "inline";
     willBeAnimated: boolean;
     willBeAnimatedClient: boolean;
+    platformPseudo: boolean;
 };
 //# sourceMappingURL=useComponentState.d.ts.map

@@ -10,6 +10,10 @@ export interface GestureState {
   Gesture: any
   GestureDetector: any
   ScrollView: any
+  // rngh's GestureHandlerRootView. native portals can render outside the app's
+  // root gesture view, so components that portal rngh gestures need to
+  // re-establish one around their content.
+  RootView: any
 }
 
 export interface WorkletsState {

@@ -8,8 +8,9 @@
   "license": "MIT",
   "scripts": {
     "build": "tamagui-build",
-    "test": "vitest --run",
-    "test:web": "vitest --run"
+    "test": "bun run build:test-deps && vitest --run",
+    "test:web": "bun run build:test-deps && vitest --run",
+    "build:test-deps": "bun run --cwd ../shorthands build && bun run --cwd ../config build"
   },
   "dependencies": {
     "@babel/parser": "^7.26.0",

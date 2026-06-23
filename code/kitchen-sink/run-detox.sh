@@ -20,16 +20,42 @@
 #   FORCE_BUILD=1       - Force rebuild even if app exists
 #   SKIP_BUILD=1        - Skip build check entirely
 #   SKIP_METRO=1        - Don't start Metro (assume it's running)
-#   DETOX_DEVICE=name   - iOS simulator device type (default: iPhone 15)
+#   DETOX_DEVICE=name   - iOS simulator device type (default: iPhone 16)
+#   DETOX_METRO_PORT=n  - Metro port reserved for Detox (default: 8082 on iOS, 8081 on Android)
 #
 
 set -e
 
 PLATFORM="${1:-ios}"  # ios or android
+# dedicated detox metro port - non-default to avoid colliding with other dev servers.
+# Android side: see android/app/src/main/res/values/integers.xml (react_native_dev_server_port)
+DEFAULT_DETOX_METRO_PORT=9034
+export DETOX_METRO_PORT="${DETOX_METRO_PORT:-$DEFAULT_DETOX_METRO_PORT}"
+
+detect_android_sdk() {
+  if [ -n "$ANDROID_SDK_ROOT" ] && [ -d "$ANDROID_SDK_ROOT" ]; then
+    return
+  fi
+
+  for candidate in \
+    "$HOME/Library/Android/sdk" \
+    "$HOME/Android/Sdk"
+  do
+    if [ -d "$candidate" ]; then
+      export ANDROID_SDK_ROOT="$candidate"
+      export ANDROID_HOME="$candidate"
+      return
+    fi
+  done
+}
 
 # --- Prerequisites check ---
 check_prerequisites() {
   local missing=false
+
+  if [ "$PLATFORM" = "android" ]; then
+    detect_android_sdk
+  fi
 
   if ! command -v detox &> /dev/null; then
     echo "detox-cli not found. Install with: npm install -g detox-cli"
@@ -38,6 +64,11 @@ check_prerequisites() {
 
   if [ "$PLATFORM" = "ios" ] && ! command -v applesimutils &> /dev/null; then
     echo "applesimutils not found. Install with: brew tap wix/brew && brew install applesimutils"
+    missing=true
+  fi
+
+  if [ "$PLATFORM" = "android" ] && [ -z "$ANDROID_SDK_ROOT" ]; then
+    echo "ANDROID_SDK_ROOT is not set and no local Android SDK was found"
     missing=true
   fi
 
@@ -88,6 +119,8 @@ esac
 METRO_PID=""
 STARTED_METRO=false
 
+# invoked by the EXIT trap below
+# shellcheck disable=SC2329
 cleanup() {
   if [ "$STARTED_METRO" = true ] && [ -n "$METRO_PID" ]; then
     echo ""
@@ -100,10 +133,99 @@ cleanup() {
 trap cleanup EXIT
 
 is_metro_running() {
-  curl -s http://localhost:8081/status > /dev/null 2>&1
+  curl -s "http://localhost:${DETOX_METRO_PORT}/status" > /dev/null 2>&1
 }
 
 DID_BUILD=false
+
+ios_bundle_id() {
+  if [ -e "$APP_PATH/Info.plist" ]; then
+    /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$APP_PATH/Info.plist" 2>/dev/null && return
+  fi
+
+  node -e "console.log(require('./app.json').expo.ios.bundleIdentifier)" 2>/dev/null
+}
+
+android_package_name() {
+  node -e "console.log(require('./app.json').expo.android.package)" 2>/dev/null
+}
+
+adb_command() {
+  if command -v adb > /dev/null 2>&1; then
+    command adb "$@"
+    return
+  fi
+
+  "$ANDROID_SDK_ROOT/platform-tools/adb" "$@"
+}
+
+shell_quote() {
+  printf "'%s'" "$(printf "%s" "$1" | sed "s/'/'\\\\''/g")"
+}
+
+is_app_installed() {
+  if [ "$PLATFORM" = "ios" ]; then
+    local bundle_id
+    bundle_id="$(ios_bundle_id)"
+
+    if [ -z "$bundle_id" ]; then
+      return 1
+    fi
+
+    local booted_simulators
+    if [ -n "$DETOX_DEVICE_UDID" ]; then
+      booted_simulators="$DETOX_DEVICE_UDID"
+    else
+      booted_simulators="$(xcrun simctl list devices booted | sed -n 's/.*(\([A-F0-9-]\{36\}\)) (Booted).*/\1/p')"
+    fi
+
+    if [ -z "$booted_simulators" ]; then
+      return 1
+    fi
+
+    local booted_simulator_count
+    booted_simulator_count="$(printf "%s\n" "$booted_simulators" | awk 'NF { count++ } END { print count + 0 }')"
+    if [ "$booted_simulator_count" -ne 1 ]; then
+      return 1
+    fi
+
+    while IFS= read -r udid; do
+      if [ -n "$udid" ] && xcrun simctl get_app_container "$udid" "$bundle_id" app > /dev/null 2>&1; then
+        return 0
+      fi
+    done <<< "$booted_simulators"
+
+    return 1
+  fi
+
+  local package_name
+  package_name="$(android_package_name)"
+
+  if [ -z "$package_name" ]; then
+    return 1
+  fi
+
+  local android_devices
+  android_devices="$(adb_command devices 2>/dev/null | awk 'NR > 1 && $2 == "device" { print $1 }')"
+
+  if [ -z "$android_devices" ]; then
+    return 1
+  fi
+
+  local android_device_count
+  android_device_count="$(printf "%s\n" "$android_devices" | awk 'NF { count++ } END { print count + 0 }')"
+  if [ "$android_device_count" -ne 1 ]; then
+    return 1
+  fi
+
+  while IFS= read -r serial; do
+    if [ -n "$serial" ] && adb_command -s "$serial" shell pm path "$package_name" 2>/dev/null | grep -q '^package:'; then
+      return 0
+    fi
+  done <<< "$android_devices"
+
+  return 1
+}
 
 needs_rebuild() {
   # if app doesn't exist, needs build
@@ -140,7 +262,15 @@ echo "  Detox Test Runner"
 echo "========================================"
 echo "Platform:    $PLATFORM"
 echo "Config:      $CONFIG"
-echo "Device:      ${DETOX_DEVICE:-iPhone 15}"
+if [ "$PLATFORM" = "ios" ]; then
+  echo "Device:      ${DETOX_DEVICE:-iPhone 16}"
+else
+  echo "Device:      ${DETOX_AVD_NAME:-auto-detected Android emulator}"
+fi
+echo "Metro port:  $DETOX_METRO_PORT"
+if [ "$PLATFORM" = "android" ]; then
+  echo "Android SDK: ${ANDROID_SDK_ROOT:-<unset>}"
+fi
 echo "Test filter: ${TEST_FILTER:-<all tests>}"
 echo ""
 
@@ -166,16 +296,16 @@ fi
 if [ "$SKIP_METRO" != "1" ]; then
   echo "=== Step 2: Metro bundler ==="
   if is_metro_running; then
-    echo "Metro already running on port 8081"
+    echo "Metro already running on port $DETOX_METRO_PORT"
   else
-    echo "Starting Metro..."
-    bun run start > /tmp/metro-detox.log 2>&1 &
+    echo "Starting Metro on port $DETOX_METRO_PORT..."
+    EXPO_NO_TELEMETRY=true npx expo start --dev-client --offline --port "$DETOX_METRO_PORT" > /tmp/metro-detox.log 2>&1 &
     METRO_PID=$!
     STARTED_METRO=true
 
     # wait for metro to be ready (up to 60s)
     echo -n "Waiting for Metro to start"
-    for i in {1..60}; do
+    for _ in {1..60}; do
       if is_metro_running; then
         echo " ready!"
         break
@@ -197,26 +327,35 @@ fi
 # step 3: run detox tests
 echo "=== Step 3: Running Detox tests ==="
 
-# use --reuse only if we didn't build (to reinstall after build)
+# use --reuse only if the app is already installed on the active device
 if [ "$DID_BUILD" = true ]; then
   echo "Fresh build detected, will reinstall app on simulator"
-  DETOX_ARGS="-c $CONFIG --maxWorkers 1"
+  DETOX_ARGS=(-c "$CONFIG" --maxWorkers 1)
+elif is_app_installed; then
+  DETOX_ARGS=(-c "$CONFIG" --reuse --maxWorkers 1)
 else
-  DETOX_ARGS="-c $CONFIG --reuse --maxWorkers 1"
+  echo "App is not installed on the active test device, will install before testing"
+  DETOX_ARGS=(-c "$CONFIG" --maxWorkers 1)
 fi
 
 # add headless flag if requested
 if [ "$HEADLESS" = "1" ]; then
-  DETOX_ARGS="$DETOX_ARGS --headless"
+  DETOX_ARGS+=(--headless)
 fi
 
 if [ -n "$TEST_FILTER" ]; then
-  DETOX_ARGS="$DETOX_ARGS -t \"$TEST_FILTER\""
+  QUOTED_TEST_FILTER="$(shell_quote "$TEST_FILTER")"
+  if [ -f "$TEST_FILTER" ] || [[ "$TEST_FILTER" == *".test."* ]] || [[ "$TEST_FILTER" == e2e/* ]]; then
+    DETOX_ARGS+=("$QUOTED_TEST_FILTER")
+  else
+    DETOX_ARGS+=(-t "$QUOTED_TEST_FILTER")
+  fi
 fi
 
-# run with eval to handle quoted test filter
-eval "npx detox test $DETOX_ARGS"
+set +e
+DETOX_METRO_PORT="$DETOX_METRO_PORT" npx detox test "${DETOX_ARGS[@]}"
 EXIT_CODE=$?
+set -e
 
 echo ""
 echo "========================================"

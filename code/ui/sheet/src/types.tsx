@@ -75,7 +75,8 @@ export type SheetProps = ScopedProps<
     zIndex?: number
     portalProps?: PortalProps
     /**
-     * Native-only flag that will make the sheet move up when the mobile keyboard opens so the focused input remains visible
+     * Makes the sheet move up when the mobile keyboard opens so the focused input remains visible.
+     * Works on native (via keyboard events) and on mobile web (via the VisualViewport API).
      */
     moveOnKeyboardChange?: boolean
     containerComponent?: React.ComponentType<any>
@@ -131,6 +132,15 @@ export type ScrollBridge = {
   isAtTop?: boolean
   // snap sheet to a specific position (for handoff UP)
   snapToPosition?: (positionIndex: number) => void
+  // re-baseline the pan drag origin to the current animated position. the web
+  // scroll-view hook calls this on each transition into pan ownership so a
+  // scroll→pan handoff resumes from where the sheet is, not a stale origin.
+  startPanDrag?: () => void
+  // web only: true while a touch is active on the ScrollView node. The web
+  // scroll-view gesture hook owns drag detection for those touches (it calls
+  // drag/release on this bridge), so the PanResponder must NOT also grant for
+  // them — otherwise two systems drive the animated position and it jitters.
+  scrollNodeTouched?: boolean
 }
 
 // keyboard controller sheet types

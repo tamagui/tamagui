@@ -1,14 +1,11 @@
 import * as React from 'react'
 
-const isServer = typeof window === 'undefined'
-
-// Use useInsertionEffect on the client to ensure the ref is updated before any
-// useLayoutEffect reads the returned callback. This fixes a React 19 timing
-// issue where a consumer's useLayoutEffect could fire before this ref update,
-// causing stale values. Falls back to useLayoutEffect for React < 18.3.
-const useIsomorphicInsertionEffect = isServer
-  ? React.useEffect
-  : React.useInsertionEffect || React.useLayoutEffect
+// useInsertionEffect ensures the ref is updated before any useLayoutEffect
+// reads the returned callback — fixes a React 19 timing issue where a
+// consumer's useLayoutEffect could fire before this ref update, causing stale
+// values. Falls back to useLayoutEffect for React < 18.3. No SSR branch: SSR
+// doesn't run layout effects, so the non-SSR path is correct everywhere.
+const useIsomorphicInsertionEffect = React.useInsertionEffect || React.useLayoutEffect
 
 // keeps a reference to the current value easily
 

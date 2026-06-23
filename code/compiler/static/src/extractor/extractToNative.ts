@@ -279,6 +279,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                 }
 
                 let hasDynamicStyle = false
+                let hasMediaKeys = false
 
                 for (const attr of props.attrs) {
                   switch (attr.type) {
@@ -293,6 +294,10 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                       const { consequent, alternate } = attr.value
                       const consExpr = getStyleExpression(consequent, true)
                       const altExpr = getStyleExpression(alternate, true)
+
+                      if (attr.value.inlineMediaQuery) {
+                        hasMediaKeys = true
+                      }
 
                       expressions.push(attr.value.test)
                       addStyleExpression(
@@ -349,6 +354,7 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   const WrapperIdentifier = t.identifier(wrapperName)
                   const WrapperJSXIdentifier = t.jsxIdentifier(wrapperName)
 
+                  const hasThemeKeysFlag = themeKeysUsed.size > 0
                   root.pushContainer(
                     'body',
                     t.variableDeclaration('const', [
@@ -361,6 +367,8 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                             // return styles directly - no useMemo, theme changes must trigger style recalc
                             t.arrayExpression([...hocStylesExpr.elements])
                           ),
+                          t.booleanLiteral(hasThemeKeysFlag),
+                          t.booleanLiteral(hasMediaKeys),
                         ])
                       ),
                     ])
@@ -376,10 +384,17 @@ export function getBabelParseDefinition(options: TamaguiOptions) {
                   }
 
                   if (expressions.length) {
+                    // coerce runtime expressions to boolean so they can't be
+                    // confused with string media keys at runtime
+                    const safeExpressions = expressions.map((expr) =>
+                      t.isStringLiteral(expr)
+                        ? expr
+                        : t.unaryExpression('!', t.unaryExpression('!', expr))
+                    )
                     props.node.attributes.push(
                       t.jsxAttribute(
                         t.jsxIdentifier('_expressions'),
-                        t.jsxExpressionContainer(t.arrayExpression(expressions))
+                        t.jsxExpressionContainer(t.arrayExpression(safeExpressions))
                       )
                     )
                   }

@@ -25,7 +25,12 @@ interface PressRef {
 const DEFAULT_LONG_PRESS_DELAY = 500
 const DEFAULT_MIN_PRESS_DURATION = 130
 
-export function useMainThreadPressEvents(events: any, viewProps: any, enabled = true) {
+export function useMainThreadPressEvents(
+  events: any,
+  viewProps: any,
+  enabled = true,
+  debugName?: string | null
+) {
   const ref = useRef<PressRef>(null as any)
   if (!ref.current) {
     ref.current = {
@@ -75,9 +80,23 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
     ref.current.longPressTimer = null
   }
 
-  viewProps.onStartShouldSetResponder = () => !events.disabled
+  // user-supplied responder props (the View's raw RN gesture API) must keep
+  // working: blindly overwriting them here silently killed any press-hold-drag
+  // gesture built on onResponderMove/onResponderRelease whenever the element
+  // also had hover/press events. compose instead — user handler first, then
+  // the press synthesis.
+  const userStartShouldSet = viewProps.onStartShouldSetResponder
+  const userGrant = viewProps.onResponderGrant
+  const userRelease = viewProps.onResponderRelease
+  const userTerminate = viewProps.onResponderTerminate
+  const userTerminationRequest = viewProps.onResponderTerminationRequest
+  const userMove = viewProps.onResponderMove
+
+  viewProps.onStartShouldSetResponder = (e: any) =>
+    Boolean(userStartShouldSet?.(e)) || !events.disabled
 
   viewProps.onResponderGrant = (e: any) => {
+    userGrant?.(e)
     cleanup()
     ref.current.state = 'pressing'
 
@@ -98,7 +117,7 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
   }
 
   viewProps.onResponderRelease = (e: any) => {
-    const wasActive = ref.current.state === 'active'
+    userRelease?.(e)
     const wasLongPressed = ref.current.state === 'longPressed'
     cleanup()
 
@@ -116,6 +135,7 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
   }
 
   viewProps.onResponderTerminate = (e: any) => {
+    userTerminate?.(e)
     cleanup()
     if (ref.current.state === 'active' || ref.current.state === 'longPressed') {
       deactivate(e)
@@ -123,11 +143,13 @@ export function useMainThreadPressEvents(events: any, viewProps: any, enabled = 
     ref.current.state = 'idle'
   }
 
-  viewProps.onResponderTerminationRequest = () => {
+  viewProps.onResponderTerminationRequest = (e: any) => {
+    if (userTerminationRequest) return userTerminationRequest(e)
     return events.cancelable !== false
   }
 
   viewProps.onResponderMove = (e: any) => {
+    userMove?.(e)
     events.onPressMove?.(e)
   }
 }

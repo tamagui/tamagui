@@ -1,4 +1,4 @@
-import { media } from '@tamagui/config/v6'
+import { media } from '@tamagui/config/v6-media'
 
 /**
  * maps tamagui pseudo-state prop names to tailwind modifier prefixes.

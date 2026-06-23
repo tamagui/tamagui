@@ -3,6 +3,9 @@ import type { TamaguiElement } from '@tamagui/core';
 import type { ScrollBridge, SheetProps } from './types';
 import type { SheetOpenState } from './useSheetOpenState';
 export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
+    keyboardOccludedHeight: number;
+    isKeyboardVisible: boolean;
+    keyboardStableFrameHeight: number;
     setHasScrollView: (val: boolean) => void;
 };
 export declare function useSheetProviderProps(props: SheetProps, state: SheetOpenState, options?: {

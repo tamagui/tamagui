@@ -62,8 +62,10 @@ function fullySpecifyCommonJS(api, options) {
                       return
                     }
                   }
-                  const filePathWithJs = resolvedPath + jsExtension
-                  if ((0, import_node_fs.existsSync)(filePathWithJs)) {
+                  if (
+                    (0, import_node_fs.existsSync)(resolvedPath + jsExtension) ||
+                    (0, import_node_fs.existsSync)(resolvedPath + cjsExtension)
+                  ) {
                     ;((newModuleSpecifier += cjsExtension),
                       (arg.value = newModuleSpecifier))
                     return

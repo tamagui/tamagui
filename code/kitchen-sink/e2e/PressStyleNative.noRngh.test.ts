@@ -10,50 +10,27 @@
  * it) but enable it briefly around each interaction.
  */
 
-import { by, device, element, expect, waitFor } from 'detox'
+import { by, element, expect, waitFor } from 'detox'
 import * as fs from 'fs'
 import * as assert from 'assert'
 import { PNG } from 'pngjs'
-import { navigateToTestCase } from './utils/navigation'
+import { remountDirectUseCase } from './utils/navigation'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
-
-// enable sync briefly for an interaction, then disable again
-async function withSync<T>(fn: () => Promise<T>): Promise<T> {
-  await device.enableSynchronization()
-  try {
-    return await fn()
-  } finally {
-    await device.disableSynchronization()
-  }
-}
-
-async function navigateToPressStyleNative() {
-  await navigateToTestCase('PressStyleNative', 'color-test-pressable', {
-    skipEnableSync: true,
-  })
-}
+import { safeLaunchApp, withSync } from './utils/detox'
 
 describe('PressStyleNative (no RNGH)', () => {
   beforeAll(async () => {
-    await device.disableSynchronization()
-    await device.launchApp({
+    await safeLaunchApp({
       newInstance: true,
-      launchArgs: { disableGestureHandler: true },
+      launchArgs: { directUseCase: 'PressStyleNative', disableGestureHandler: true },
     })
-  })
-
-  afterAll(async () => {
-    await device.enableSynchronization()
+    await waitFor(element(by.id('color-test-pressable')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
-    await device.disableSynchronization()
-    await device.launchApp({
-      newInstance: true,
-      launchArgs: { disableGestureHandler: true },
-    })
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    await navigateToPressStyleNative()
+    await remountDirectUseCase('color-test-pressable', { skipEnableSync: true })
   })
 
   it('should render the test case screen', async () => {

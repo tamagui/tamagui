@@ -139,6 +139,14 @@ describe('Input style props', () => {
     expectTypeOf<InputProps>().toHaveProperty('color')
   })
 
+  // textAlign must be a real base style prop so the `text` shorthand (text ->
+  // textAlign) can resolve to it. the shorthand itself is config-dependent, so
+  // it's exercised in kitchen-sink (InputTextShorthandType) where a config with
+  // the v4/v5 shorthands is registered.
+  test('accepts textAlign longhand', () => {
+    expectTypeOf<'center'>().toMatchTypeOf<NonNullable<InputProps['textAlign']>>()
+  })
+
   test('accepts size variant', () => {
     expectTypeOf<InputProps>().toHaveProperty('size')
   })

@@ -2,11 +2,12 @@ import { getSetting } from '../config'
 import { getVariableValue } from '../createVariable'
 import type { GenericFonts, GetStyleState, LanguageContextType } from '../types'
 
-const cache = new WeakMap()
+const cache = new WeakMap<GetStyleState, { props: GetStyleState['props']; value: any }>()
 
 export const getVariantExtras = (styleState: GetStyleState) => {
-  if (cache.has(styleState)) {
-    return cache.get(styleState)
+  const cached = cache.get(styleState)
+  if (cached?.props === styleState.props) {
+    return cached.value
   }
 
   const { props, conf, context, theme, styleProps } = styleState
@@ -39,7 +40,7 @@ export const getVariantExtras = (styleState: GetStyleState) => {
     props,
   }
 
-  cache.set(styleState, next)
+  cache.set(styleState, { props, value: next })
 
   return next as any
 }

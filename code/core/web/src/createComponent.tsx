@@ -1,5 +1,12 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isClient, isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import {
+  getPlatformDriver,
+  isClient,
+  isNativeDesktop,
+  isServer,
+  isWeb,
+  useIsomorphicLayoutEffect,
+} from '@tamagui/constants'
 import { NativeMenuContext } from '@tamagui/native'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { isEqualShallow } from '@tamagui/is-equal-shallow'
@@ -77,6 +84,16 @@ const avoidReRenderKeys = new Set([
   'media',
   'group',
 ])
+
+const groupPseudoKeys = [
+  'disabled',
+  'hover',
+  'press',
+  'pressIn',
+  'focus',
+  'focusVisible',
+  'focusWithin',
+] as const satisfies readonly (keyof PseudoGroupState)[]
 
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelPresses = () => {
@@ -439,18 +456,64 @@ export function createComponent<
       outputStyle,
       willBeAnimated,
       willBeAnimatedClient,
+      platformPseudo,
       startedUnhydrated,
     } = componentState
 
-    if (hasAnimationProp && animationDriver?.avoidReRenders) {
+    if (animationDriver?.avoidReRenders) {
+      // post-commit reconciliation of `nextState` with the committed React state.
+      // `nextState` is the source of truth for the fast `setStateShallow` path; it
+      // must stay populated until React actually commits the corresponding update,
+      // otherwise a follow-up update in the same JS task would read a stale closure
+      // `state` and bail on a false shallow-equal. once committed state matches
+      // `nextState`, clear it. if they diverge (animated components' fast path never
+      // calls into React), flush via componentState.setStateShallow here.
       useIsomorphicLayoutEffect(() => {
+        // first: refresh the emitter latch while a self pseudo is active. the driver
+        // keeps the last-emitted snapshot latched across re-renders (so an unrelated
+        // render doesn't snap a hovered style back to base), but a render can change
+        // the styles that FEED the pseudo merge — e.g. a row becoming active removes
+        // its hoverStyle while still hovered — and the stale snapshot would keep
+        // painting over the new base (hover-beats-active-during-scrub).
+        // `updateStyleListener` is rebuilt each render over fresh props/state and
+        // reads `nextState || state`, so re-invoking it re-emits the correct merged
+        // style: identical values when the render was truly unrelated (no visual
+        // change), fresh values when it wasn't. gate on the last-EMITTED pseudo state
+        // (prevPseudoState), not React state — React state can lag the emitter by a
+        // commit, and a stale-true `state.hover` here would resurrect a hover the
+        // emitter already cleared. this must run BEFORE the nextState flush below so
+        // the re-emit still sees the freshest pseudo state.
+        const emitted = stateRef.current.prevPseudoState
+        if (emitted && (emitted.hover || emitted.press || emitted.focus)) {
+          stateRef.current.updateStyleListener?.()
+        }
+
         const pendingState = stateRef.current.nextState
-        if (pendingState) {
-          stateRef.current.nextState = undefined
+        if (!pendingState) return
+        stateRef.current.nextState = undefined
+        if (!isEqualShallow(state, pendingState)) {
           componentState.setStateShallow(pendingState)
         }
       })
     }
+
+    // renderer-driven pseudo states (setupPlatformDriver): the platform resolves
+    // hover natively per hitbox and pushes flips here, replacing the
+    // mouseEnter/mouseLeave lane on such renderers. the flip applies through the
+    // same setStateShallow the event handlers use — under the (driver-opened)
+    // avoidReRenders gate that's the emitter path: zero React commits, animated
+    // per the declared transition or instant by default. press stays on the
+    // responder event path (it must fire onPress anyway); the driver only owns
+    // the hover trigger for now.
+    useIsomorphicLayoutEffect(() => {
+      if (!platformPseudo || props.disabled) return
+      const pseudoDriver = getPlatformDriver()?.pseudo
+      const host = stateRef.current.host
+      if (!pseudoDriver || !host) return
+      return pseudoDriver.subscribe(host, ({ hovered }) => {
+        stateRef.current.setStateShallow?.({ hover: hovered })
+      })
+    }, [platformPseudo, props.disabled])
 
     // create new context with groups, or else sublings will grab the same one
     const allGroupContexts = useMemo((): AllGroupContexts | null => {
@@ -728,7 +791,7 @@ export function createComponent<
 
     if (
       !isPassthrough &&
-      (hasAnimationProp || groupName) &&
+      (hasAnimationProp || groupName || platformPseudo) &&
       animationDriver?.avoidReRenders &&
       !hasEnterExitTransition
     ) {
@@ -738,11 +801,15 @@ export function createComponent<
         const useStyleListener = stateRef.current.useStyleListener
 
         // if no animation driver is listening for style updates, fall back to normal re-render
-        // this happens when a component has group prop but no transition/animation prop
+        // this happens when a component has group prop but no transition/animation prop.
+        // keep nextState populated until React actually commits the update — clearing it
+        // here lets a subsequent setStateShallow in the same JS task (e.g. press-out
+        // right after press-in) compare against a stale closure `state` and bail out,
+        // losing the update. the post-commit layoutEffect below clears nextState once
+        // React state has caught up.
         if (!useStyleListener) {
           const pendingState = stateRef.current.nextState
           if (pendingState) {
-            stateRef.current.nextState = undefined
             ogSetStateShallow(pendingState)
           }
           return
@@ -772,13 +839,30 @@ export function createComponent<
           stateRef.current.prevPseudoState,
           updatedState,
           nextStyles?.pseudoTransitions,
-          props.transition
+          // platform-pseudo with no declared transition = instant (CSS :hover semantics)
+          props.transition ?? (platformPseudo ? '0ms' : undefined)
         )
 
         // update prev state for next comparison (includes group states)
         stateRef.current.prevPseudoState = extractPseudoState(updatedState)
 
-        useStyleListener((nextStyles?.style || {}) as any, effectiveTransition)
+        // a self pseudo being active means the emitted style is a transient hover/press/focus
+        // override (it's not in React state under avoidReRenders), so the worklet must keep it
+        // latched across incidental re-renders; when none is active this is the base and renders
+        // own it again.
+        const hasActivePseudo = Boolean(
+          updatedState.hover ||
+          updatedState.press ||
+          updatedState.pressIn ||
+          updatedState.focus ||
+          updatedState.focusWithin
+        )
+
+        useStyleListener(
+          (nextStyles?.style || {}) as any,
+          effectiveTransition,
+          hasActivePseudo
+        )
       }
 
       function updateGroupListeners() {
@@ -993,7 +1077,8 @@ export function createComponent<
         stateRef.current.prevPseudoState,
         state,
         splitStyles?.pseudoTransitions,
-        props.transition
+        // platform-pseudo with no declared transition = instant (CSS :hover semantics)
+        props.transition ?? (platformPseudo ? '0ms' : undefined)
       )
 
       // add effectiveTransition to splitStyles for drivers to consume
@@ -1210,6 +1295,7 @@ export function createComponent<
     const runtimePressStyle = !disabled && noClass && pseudos?.pressStyle
     const runtimeFocusStyle = !disabled && noClass && pseudos?.focusStyle
     const runtimeFocusVisibleStyle = !disabled && noClass && pseudos?.focusVisibleStyle
+
     const attachFocus = Boolean(
       runtimePressStyle ||
       runtimeFocusStyle ||
@@ -1235,9 +1321,14 @@ export function createComponent<
     )
 
     const runtimeHoverStyle = !disabled && noClass && pseudos?.hoverStyle
-    const needsHoverState = Boolean(hasDynamicGroupChildren || runtimeHoverStyle)
+    // with a platform pseudo driver the hover STATE is driver-sourced; only keep
+    // the JS hover listeners when something else needs them (dynamic group
+    // children, or the user's own onMouseEnter/Leave handlers below).
+    const needsHoverState = Boolean(
+      hasDynamicGroupChildren || (runtimeHoverStyle && !platformPseudo)
+    )
     const attachHover =
-      isWeb &&
+      (isWeb || isNativeDesktop) &&
       !!(hasDynamicGroupChildren || needsHoverState || onMouseEnter || onMouseLeave)
 
     // check presence rather than value to prevent reparenting bugs
@@ -1328,11 +1419,19 @@ export function createComponent<
                 }
               }
             : undefined,
+
           onPress: attachPress
             ? (e) => {
                 unPress()
-                // @ts-ignore
-                isWeb && onClick?.(e)
+                if (process.env.TAMAGUI_TARGET === 'web') {
+                  // @ts-ignore
+                  onClick?.(e)
+                  // matches RN pressable behavior - only when an explicit press
+                  // handler is set, so pressStyle alone doesn't swallow clicks
+                  if (onPress || onClick) {
+                    e.stopPropagation()
+                  }
+                }
                 onPress?.(e)
                 if (process.env.TAMAGUI_TARGET === 'web') {
                   onLongPress?.(e)
@@ -1405,11 +1504,37 @@ export function createComponent<
       log(`events`, { events, attachHover, attachPress })
     }
 
+    const propsWithHref = props as typeof props & { href?: unknown }
+    const propsInWithHref = propsIn as typeof propsIn & { href?: unknown }
+
+    const pressDebugDetail =
+      props.testID ??
+      propsIn.testID ??
+      props.accessibilityLabel ??
+      propsIn.accessibilityLabel ??
+      (typeof propsWithHref.href === 'string' ? propsWithHref.href : null) ??
+      (typeof propsInWithHref.href === 'string' ? propsInWithHref.href : null)
+
+    const pressDebugName =
+      [componentName, pressDebugDetail].filter(Boolean).join(':') || null
+
     // EVENTS native - handles focus/blur, input special cases, and RNGH press handling
     // Skip gesture setup for HOC components - they may return null which crashes GestureDetector
+    // hasRealPressEvents distinguishes user-provided handlers from events.onPress
+    // synthesized for pressStyle alone — only the former should claim the responder.
+    const hasRealPressEvents = !!(onPress || onPressIn || onPressOut || onLongPress)
     const pressGesture =
       process.env.TAMAGUI_TARGET === 'native'
-        ? useEvents(events, viewProps, stateRef, staticConfig, isHOC, isInsideNativeMenu)
+        ? useEvents(
+            events,
+            viewProps,
+            stateRef,
+            staticConfig,
+            isHOC,
+            isInsideNativeMenu,
+            pressDebugName,
+            hasRealPressEvents
+          )
         : null
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
@@ -1490,9 +1615,16 @@ export function createComponent<
     }
 
     // wrap with GestureDetector for RNGH press handling (native only, no-op on web)
-    // Skip for HOC components - they pass press events to inner component instead
+    // Skip for HOC and composite components - they pass press events to inner component instead
     if (process.env.TAMAGUI_TARGET === 'native') {
-      content = wrapWithGestureDetector(content, pressGesture, stateRef, isHOC)
+      const isCompositeComponent = !isHOC && Component && typeof Component !== 'string'
+      content = wrapWithGestureDetector(
+        content,
+        pressGesture,
+        stateRef,
+        isHOC,
+        isCompositeComponent
+      )
     }
 
     // needs to reset the presence state for nested children
@@ -1686,9 +1818,36 @@ export function createComponent<
     if (!groupContext || !groupEmitter) {
       return
     }
-    const nextState = { ...groupContext.state, pseudo }
-    groupEmitter.emit(nextState)
-    groupContext.state = nextState
+
+    const prevPseudo = groupContext.state.pseudo
+    const shouldReplacePseudo =
+      !prevPseudo ||
+      // old/default state objects carry non-pseudo fields; replace once instead
+      // of mutating the shared defaultComponentStateMounted object
+      'unmounted' in prevPseudo ||
+      'group' in prevPseudo ||
+      'hasDynGroupChildren' in prevPseudo ||
+      'transition' in prevPseudo
+    const nextPseudo = shouldReplacePseudo ? {} : prevPseudo
+    let didChange = shouldReplacePseudo
+
+    for (let i = 0; i < groupPseudoKeys.length; i++) {
+      const key = groupPseudoKeys[i]
+      const value = pseudo[key]
+      if (nextPseudo[key] !== value) {
+        nextPseudo[key] = value
+        didChange = true
+      } else if (didChange) {
+        nextPseudo[key] = value
+      }
+    }
+
+    if (!didChange) {
+      return
+    }
+
+    groupContext.state.pseudo = nextPseudo
+    groupEmitter.emit(groupContext.state)
   }
 
   // let hasLogged = false

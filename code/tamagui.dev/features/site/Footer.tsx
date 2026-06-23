@@ -64,7 +64,7 @@ export const Footer = memo(() => {
             </H4>
             <ParagraphLink href="/docs/intro/introduction">Introduction</ParagraphLink>
             <ParagraphLink href="/docs/intro/installation">Installation</ParagraphLink>
-            <ParagraphLink href="/docs/core/introduction">Core</ParagraphLink>
+            <ParagraphLink href="/docs/core/configuration">Core</ParagraphLink>
             <ParagraphLink href="/docs/core/styled">styled()</ParagraphLink>
             <ParagraphLink href="/docs/intro/why-a-compiler">Compiler</ParagraphLink>
           </YStack>

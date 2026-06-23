@@ -23,6 +23,36 @@ export function setRequireResult(name: string, result: any) {
   compiled[name] = result
 }
 
+function getStaticExtractionStub(path: string) {
+  switch (path) {
+    case 'expo-constants':
+      return {
+        __esModule: true,
+        default: {
+          executionEnvironment: null,
+        },
+        ExecutionEnvironment: {
+          Bare: 'bare',
+          Standalone: 'standalone',
+          StoreClient: 'storeClient',
+        },
+      }
+    case 'expo-updates':
+      return {
+        __esModule: true,
+        default: {
+          isEnabled: false,
+          isUsingEmbeddedAssets: true,
+        },
+        checkForUpdateAsync: async () => ({ isAvailable: false }),
+        fetchUpdateAsync: async () => ({ isNew: false }),
+        reloadAsync: async () => {},
+      }
+    default:
+      return null
+  }
+}
+
 export function registerRequire(
   platform: TamaguiPlatform,
   { proxyWormImports } = {
@@ -77,6 +107,11 @@ export function registerRequire(
   Module.prototype.require = tamaguiRequire
 
   function tamaguiRequire(this: any, path: string) {
+    const staticExtractionStub = getStaticExtractionStub(path)
+    if (staticExtractionStub) {
+      return staticExtractionStub
+    }
+
     if (path === 'tamagui' && platform === 'native') {
       return og.apply(this, ['tamagui/native'])
     }
@@ -110,7 +145,9 @@ export function registerRequire(
     if (
       path === '@tamagui/react-native-web-lite' ||
       path === 'react-native' ||
-      path.startsWith('react-native/')
+      path.startsWith('react-native/') ||
+      path === 'react-native-web' ||
+      path.startsWith('react-native-web/')
     ) {
       try {
         return og.apply('react-native')
@@ -126,8 +163,32 @@ export function registerRequire(
         // also allow requires FROM within tamagui packages (relative imports like ./Separator.cjs)
         const callerFile = this?.filename || this?.id || ''
         const isFromTamaguiPkg =
-          callerFile.includes('@tamagui') || callerFile.includes('node_modules/tamagui/')
-        if (path === 'tamagui' || path.startsWith('@tamagui/') || isFromTamaguiPkg) {
+          callerFile.includes('@tamagui') ||
+          callerFile.includes('node_modules/tamagui/') ||
+          /\/tamagui\/code\/(core|ui|packages)\//.test(callerFile)
+        const isFromStaticLoader =
+          !callerFile ||
+          callerFile === '.' ||
+          callerFile === '[eval]' ||
+          callerFile.endsWith('/[eval]') ||
+          callerFile.includes('/code/compiler/static/') ||
+          callerFile.includes('/.tamagui/')
+        // relative requires from within a whitelisted package's own files
+        // (e.g. react/index.js does require('./cjs/react.development.js')).
+        // proxy-worming these breaks the package's own internals.
+        const isRelativeFromWhitelisted =
+          path.startsWith('.') &&
+          Object.keys(whitelisted).some((pkg) =>
+            callerFile.includes(`/node_modules/${pkg}/`)
+          )
+
+        if (
+          path === 'tamagui' ||
+          path.startsWith('@tamagui/') ||
+          isRelativeFromWhitelisted ||
+          isFromTamaguiPkg ||
+          isFromStaticLoader
+        ) {
           return og.apply(this, [path])
         }
         return proxyWorm

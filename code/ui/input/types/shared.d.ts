@@ -50,6 +50,11 @@ export declare const styledBody: readonly [{
     readonly render: "input";
     readonly variants: {
         readonly unstyled: {
+            readonly true: {
+                readonly outlineWidth: 0;
+                readonly borderWidth: 0;
+                readonly backgroundColor: "transparent";
+            };
             readonly false: {
                 readonly borderColor: "$borderColor";
                 readonly backgroundColor: "$background";

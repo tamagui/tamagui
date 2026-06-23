@@ -9,43 +9,37 @@
  *
  * These tests run on iOS only where RNGH integration matters most.
  *
- * IMPORTANT: On RN 0.83 Fabric, Detox sync must be enabled for TAP gestures
- * (touch delivery requires sync). Swipe gestures work with sync disabled.
- * We keep sync disabled by default (spring animations block sync) and only
- * enable briefly around taps via withSync().
+ * Sync is kept disabled throughout (KeyboardProvider keeps the main thread busy).
+ * Taps and swipes both work with sync disabled in this test.
  */
 
 import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
+import { remountDirectUseCase } from './utils/navigation'
+import { safeLaunchApp } from './utils/detox'
 
 // only run on iOS - Android behavior is different
 const isAndroid = () => device.getPlatform() === 'android'
 
-// enable sync briefly for a tap interaction, then disable again
-// RN 0.83 Fabric requires sync enabled for tap delivery
-// swipes work without sync and don't need this wrapper
-async function withSync<T>(fn: () => Promise<T>): Promise<T> {
-  await device.enableSynchronization()
-  try {
-    return await fn()
-  } finally {
-    await device.disableSynchronization()
-  }
-}
-
+// Launch model: launch the native app ONCE with directUseCase, then remount the
+// case in-app per test (deep link, no relaunch). Each "Case" test assumes a
+// freshly-closed sheet at scrollY=0, which the remount restores. skipEnableSync
+// throughout: KeyboardProvider keeps the main thread busy and taps/swipes work
+// with sync disabled here.
 describe('SheetScrollableDrag - RNGH Integration', () => {
   beforeAll(async () => {
     if (isAndroid()) return
-    await device.disableSynchronization()
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'SheetScrollableDrag' },
+    })
+    await waitFor(element(by.id('sheet-scrollable-drag-trigger')))
+      .toExist()
+      .withTimeout(180000)
   })
 
   beforeEach(async () => {
     if (isAndroid()) return
-    await device.disableSynchronization()
-    await device.reloadReactNative()
-    // skipEnableSync: navigation re-enabling sync hangs if animations are settling
-    await navigateToTestCase('SheetScrollableDrag', 'sheet-scrollable-drag-trigger', {
+    await remountDirectUseCase('sheet-scrollable-drag-trigger', {
       skipEnableSync: true,
     })
   })
@@ -59,7 +53,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
 
   it('should open sheet at position 0', async () => {
     if (isAndroid()) return
-    await withSync(() => element(by.id('sheet-scrollable-drag-trigger')).tap())
+    await element(by.id('sheet-scrollable-drag-trigger')).tap()
     await waitFor(element(by.id('sheet-scrollable-drag-frame')))
       .toBeVisible()
       .withTimeout(3000)
@@ -80,7 +74,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     if (isAndroid()) return
 
     // open sheet
-    await withSync(() => element(by.id('sheet-scrollable-drag-trigger')).tap())
+    await element(by.id('sheet-scrollable-drag-trigger')).tap()
     await waitFor(element(by.id('sheet-scrollable-drag-frame')))
       .toBeVisible()
       .withTimeout(3000)
@@ -124,7 +118,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     if (isAndroid()) return
 
     // open sheet
-    await withSync(() => element(by.id('sheet-scrollable-drag-trigger')).tap())
+    await element(by.id('sheet-scrollable-drag-trigger')).tap()
     await waitFor(element(by.id('sheet-scrollable-drag-frame')))
       .toBeVisible()
       .withTimeout(3000)
@@ -169,7 +163,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     if (isAndroid()) return
 
     // open sheet
-    await withSync(() => element(by.id('sheet-scrollable-drag-trigger')).tap())
+    await element(by.id('sheet-scrollable-drag-trigger')).tap()
     await waitFor(element(by.id('sheet-scrollable-drag-frame')))
       .toBeVisible()
       .withTimeout(3000)
@@ -215,7 +209,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     if (isAndroid()) return
 
     // open sheet
-    await withSync(() => element(by.id('sheet-scrollable-drag-trigger')).tap())
+    await element(by.id('sheet-scrollable-drag-trigger')).tap()
     await waitFor(element(by.id('sheet-scrollable-drag-frame')))
       .toBeVisible()
       .withTimeout(3000)
@@ -256,7 +250,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     if (isAndroid()) return
 
     // open sheet
-    await withSync(() => element(by.id('sheet-scrollable-drag-trigger')).tap())
+    await element(by.id('sheet-scrollable-drag-trigger')).tap()
     await waitFor(element(by.id('sheet-scrollable-drag-frame')))
       .toBeVisible()
       .withTimeout(3000)
@@ -299,7 +293,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     if (isAndroid()) return
 
     // open sheet
-    await withSync(() => element(by.id('sheet-scrollable-drag-trigger')).tap())
+    await element(by.id('sheet-scrollable-drag-trigger')).tap()
     await waitFor(element(by.id('sheet-scrollable-drag-frame')))
       .toBeVisible()
       .withTimeout(3000)
@@ -375,7 +369,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     // Some scroll events may fire during drag (maxScrollY > 0), but they're immediately reset.
 
     // open sheet
-    await withSync(() => element(by.id('sheet-scrollable-drag-trigger')).tap())
+    await element(by.id('sheet-scrollable-drag-trigger')).tap()
     await waitFor(element(by.id('sheet-scrollable-drag-frame')))
       .toBeVisible()
       .withTimeout(3000)
@@ -433,7 +427,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     // should move sheet to top THEN scroll content
 
     // open sheet
-    await withSync(() => element(by.id('sheet-scrollable-drag-trigger')).tap())
+    await element(by.id('sheet-scrollable-drag-trigger')).tap()
     await waitFor(element(by.id('sheet-scrollable-drag-frame')))
       .toBeVisible()
       .withTimeout(3000)
@@ -498,7 +492,7 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     // requires video/screenshot analysis during the gesture - documented in plans/native-gestures.md
 
     // open sheet
-    await withSync(() => element(by.id('sheet-scrollable-drag-trigger')).tap())
+    await element(by.id('sheet-scrollable-drag-trigger')).tap()
     await waitFor(element(by.id('sheet-scrollable-drag-frame')))
       .toBeVisible()
       .withTimeout(3000)

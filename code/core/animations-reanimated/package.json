@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-reanimated",
-  "version": "2.0.0-rc.31",
+  "version": "2.3.3",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
@@ -46,7 +46,7 @@
   },
   "peerDependencies": {
     "react": ">=19",
-    "react-native": "*",
     "react-native-reanimated": ">=3.0.0"
-  }
+  },
+  "sideEffects": false
 }

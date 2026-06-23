@@ -7,6 +7,9 @@ on:
     branches: [main, 'v*']
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 env:
   test_container_app_path: code/kitchen-sink-go
 
@@ -112,21 +115,13 @@ jobs:
           done
           xcrun simctl list devices booted
 
+      # per-flow retry (shared with test-ios-native): a flake in one flow is
+      # retried in isolation instead of re-running the whole suite. runs Expo
+      # Go (host.exp.Exponent), so terminate that between attempts.
       - name: Run Maestro Tests
-        run: |
-          for attempt in 1 2; do
-            echo "Test attempt $attempt of 2..."
-            if maestro test ./flows --exclude-tags=util --no-ansi; then
-              echo "Tests passed!"
-              exit 0
-            fi
-            if [ $attempt -lt 2 ]; then
-              echo "Attempt $attempt failed, retrying..."
-              sleep 10
-            fi
-          done
-          echo "All attempts failed"
-          exit 1
+        env:
+          BUNDLE_ID: host.exp.Exponent
+        run: bash "${{ github.workspace }}/.github/scripts/run-maestro-flows.sh"
 
       - name: Upload Maestro Artifacts on Failure
         if: failure()

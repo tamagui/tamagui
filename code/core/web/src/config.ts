@@ -10,6 +10,8 @@ import type {
   TokensMerged,
 } from './types'
 
+export type StyleCompat = 'legacy' | 'react-native' | 'web'
+
 let conf: TamaguiInternalConfig | null
 let setConfigCalledByThisInstance = false
 
@@ -72,6 +74,11 @@ export const getSetting = <Key extends keyof GenericTamaguiSettings>(
     // @ts-expect-error
     config[key]
   )
+}
+
+export function getStyleCompat(): StyleCompat {
+  const config = getConfigFromGlobalOrLocal()
+  return (config?.settings.styleCompat ?? (config as any)?.styleCompat) || 'web'
 }
 
 export const setConfig = (next: TamaguiInternalConfig) => {
@@ -160,7 +167,10 @@ export const getThemes = () => getConfigFromGlobalOrLocal()!.themes
 export const updateConfig = (key: string, value: any) => {
   // for usage internally only
   const config = getConfigFromGlobalOrLocal()
-  Object.assign(config![key], value)
+  if (!config || !Object.prototype.hasOwnProperty.call(config, key)) {
+    return
+  }
+  Object.assign(config[key], value)
 }
 
 // searches by value name or token name

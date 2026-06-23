@@ -1,47 +1,29 @@
 /**
  * Tests compiler extraction with theme functionality and performance.
- * Runs tamagui build to generate .native.tsx before testing.
  */
 
 import * as assert from 'assert'
-import { execSync } from 'child_process'
-import { unlinkSync, existsSync } from 'fs'
-import { by, device, element, expect, waitFor } from 'detox'
-import { navigateToTestCase } from './utils/navigation'
+import { by, element, expect, waitFor } from 'detox'
+import { remountDirectUseCase } from './utils/navigation'
 import { getDominantColor, isBlueish, formatRGB } from './utils/colors'
-
-const SOURCE_FILE = 'src/usecases/CompilerExtraction.tsx'
-const NATIVE_FILE = 'src/usecases/CompilerExtraction.native.tsx'
-const EXPECTED_OPTIMIZATIONS = 18
+import { safeLaunchApp } from './utils/detox'
 
 describe('CompilerExtraction', () => {
   beforeAll(async () => {
-    // remove existing .native.tsx to force rebuild
-    if (existsSync(NATIVE_FILE)) {
-      unlinkSync(NATIVE_FILE)
-    }
-
-    // run tamagui build to generate optimized .native.tsx
-    console.log('Running tamagui build...')
-    execSync(
-      `npx tamagui build ${SOURCE_FILE} --target native --output-around --expect-optimizations ${EXPECTED_OPTIMIZATIONS}`,
-      { stdio: 'inherit' }
-    )
-    console.log('Build complete, .native.tsx generated')
-
-    await device.disableSynchronization()
-    await device.launchApp({ newInstance: true })
+    await safeLaunchApp({
+      newInstance: true,
+      launchArgs: { directUseCase: 'CompilerExtraction' },
+    })
+    await waitFor(element(by.id('compiler-extraction-root')))
+      .toExist()
+      .withTimeout(180000)
   })
 
-  afterAll(async () => {
-    await device.enableSynchronization()
+  beforeEach(async () => {
+    await remountDirectUseCase('compiler-extraction-root')
   })
 
   it('should render and respond to theme changes', async () => {
-    await device.reloadReactNative()
-    await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root', {
-      skipEnableSync: true,
-    })
     await new Promise((r) => setTimeout(r, 300))
 
     // verify components render
@@ -95,10 +77,6 @@ describe('CompilerExtraction', () => {
   })
 
   it('should benchmark optimized vs non-optimized (best of 3)', async () => {
-    await device.reloadReactNative()
-    await navigateToTestCase('CompilerExtraction', 'compiler-extraction-root', {
-      skipEnableSync: true,
-    })
     await new Promise((r) => setTimeout(r, 300))
 
     // show benchmark

@@ -306,6 +306,7 @@ export type TamaguiComponentStateRef = {
     hasEverThemed?: boolean | 'wrapped';
     hasEverResetPresence?: boolean;
     hasHadEvents?: boolean;
+    hasRealPressEvents?: boolean;
     isListeningToTheme?: boolean;
     unPress?: Function;
     setStateShallow?: ComponentSetStateShallow;
@@ -600,10 +601,15 @@ type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSet
 type AutocompleteSpecificTokensSetting = boolean | 'except-special';
 export interface GenericTamaguiSettings {
     /**
-     * When true, flexBasis will be set to 0 when flex is positive. This will be
-     * the default in v2 of Tamagui alongside an alternative mode for web compat.
+     * controls style semantics where React Native/Yoga and CSS differ.
+     *
+     * - "legacy": preserves Tamagui v1 flex expansion.
+     * - "react-native": follows React Native/Yoga flex and raw numeric lineHeight semantics.
+     * - "web": follows CSS flex and unitless numeric lineHeight semantics.
+     *
+     * @default "web"
      */
-    styleCompat?: 'react-native' | 'legacy';
+    styleCompat?: 'legacy' | 'react-native' | 'web';
     /**
      * When true, Tamagui will always prefer a more specific style prop over a
      * less specific one.
@@ -882,7 +888,7 @@ export type MediaPropKeys = `$${MediaQueryKey}`;
 export type MediaQueryState = {
     [key in MediaQueryKey]: boolean;
 };
-export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = `$theme-${TK extends `${string}_${string}` ? never : TK}`;
+export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = TK extends string ? string extends TK ? never : TK extends `${string}_${string}` ? never : `$theme-${TK}` : never;
 export type PlatformMediaKeys = `$platform-${AllPlatforms}`;
 export interface TypeOverride {
     groupNames(): 1;
@@ -894,10 +900,14 @@ export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${Pa
 export type WithMediaProps<A> = {
     [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends MediaPropKeys ? A & {
         [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>;
-    } : Key extends `$platform-web` ? AddWebOnlyStyleProps<A> : A;
+    } : Key extends `$platform-web` ? AddWebOnlyStyleProps<A> & {
+        [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A>;
+    } : A & {
+        [Key in MediaPropKeys]?: A;
+    };
 };
-type AddWebOnlyStyleProps<A> = {
-    [SubKey in keyof A | keyof CSSProperties]?: SubKey extends keyof CSSProperties ? CSSProperties[SubKey] : SubKey extends keyof A ? A[SubKey] : SubKey extends keyof WebOnlyValidStyleValues ? WebOnlyValidStyleValues[SubKey] : never;
+export type AddWebOnlyStyleProps<A> = Partial<CSSProperties> & Partial<WebOnlyValidStyleValues> & {
+    [K in Exclude<keyof A, keyof CSSProperties>]?: A[K];
 };
 export type WebOnlyValidStyleValues = {
     position: '-webkit-sticky';
@@ -990,7 +1000,9 @@ export type SpecificTokensSpecial = TamaguiSettings extends {
 } ? Val extends 'except-special' | undefined ? never : SpecificTokens : SpecificTokens;
 export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']>;
 export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace;
-export type ColorTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed> | CSSColorNames;
+type ColorTokenBase = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed>;
+type TokenWithOpacity = `$${string}/${number}`;
+export type ColorTokens = ColorTokenBase | CSSColorNames | TokenWithOpacity;
 export type ZIndexTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['zIndex']> | ThemeValueFallbackZIndex | number;
 export type RadiusTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['radius']> | ThemeValueFallbackRadius | number | RemString;
 export type NonSpecificTokens = GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
@@ -1008,7 +1020,8 @@ export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | numbe
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number | RemString;
 export type FontWeightValues = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00` | 'bold' | 'normal';
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues;
-export type FontColorTokens = `$${GetTokenFontKeysFor<'color'>}` | number;
+type FontColorTokenBase = `$${GetTokenFontKeysFor<'color'>}`;
+export type FontColorTokens = FontColorTokenBase | number | TokenWithOpacity;
 export type FontLetterSpacingTokens = `$${GetTokenFontKeysFor<'letterSpacing'>}` | number | RemString;
 export type FontStyleTokens = `$${GetTokenFontKeysFor<'style'>}` | RNTextStyle['fontStyle'];
 export type FontTransformTokens = `$${GetTokenFontKeysFor<'transform'>}` | RNTextStyle['textTransform'];
@@ -1077,7 +1090,7 @@ export type PseudoStyles = {
     enterStyle?: ViewStyle;
     exitStyle?: ViewStyle;
 };
-export type AllPlatforms = 'web' | 'native' | 'android' | 'ios';
+export type AllPlatforms = 'web' | 'native' | 'android' | 'ios' | 'tv' | 'androidtv' | 'tvos';
 type FlatPseudoKey = 'hover' | 'press' | 'focus' | 'focus-visible' | 'focus-within' | 'disabled' | 'enter' | 'exit';
 type FlatThemeKey = 'dark' | 'light';
 export type WithFlatBaseProps<StyleProps> = {
@@ -1504,6 +1517,7 @@ export interface StackStyleBase extends Omit<ViewStyle, keyof ExtendedBaseProps 
 }
 export interface TextStylePropsBase extends Omit<RNTextStyle, keyof ExtendedBaseProps>, ExtendedBaseProps {
     ellipsis?: boolean;
+    numberOfLines?: number;
     textDecorationDistance?: number;
     textOverflow?: Properties['textOverflow'];
     whiteSpace?: Properties['whiteSpace'];
@@ -1560,7 +1574,11 @@ export type GetNonStyledProps<A extends StylableComponent> = A extends {
 } ? B : TamaguiComponentPropsBaseBase & GetProps<A>;
 export type GetBaseStyles<A, B> = A extends {
     __tama: [any, any, any, infer C, any, any];
-} ? C : B extends {
+} ? B extends {
+    isText: true;
+} | {
+    isInput: true;
+} ? C & TextStylePropsBase : C : B extends {
     isText: true;
 } ? TextStylePropsBase : B extends {
     isInput: true;
@@ -1587,7 +1605,7 @@ export type TamaguiProviderProps = Omit<ThemeProviderProps, 'children'> & {
         left: number;
     };
 };
-export type PropMappedValue = [string, any][] | undefined;
+export type PropMappedValue = [string, any, any?][] | undefined;
 export type GetStyleState = {
     style: TextStyle | null;
     usedKeys: Record<string, number>;
@@ -1839,6 +1857,7 @@ export type UseAnimatedNumberReaction<V extends UniversalAnimatedNumber<any> = U
     hostRef: RefObject<TamaguiElement>;
 }, onValue: (current: number) => void) => void;
 export type UseAnimatedNumberStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (val: V, getStyle: (current: any) => any) => any;
+export type UseAnimatedNumbersStyle<V extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (vals: V[], getStyle: (...currentValues: any[]) => any) => any;
 export type UseAnimatedNumber<N extends UniversalAnimatedNumber<any> = UniversalAnimatedNumber<any>> = (initial: number) => N;
 export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     isReactNative?: boolean;
@@ -1859,13 +1878,14 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
     }) => React.ReactNode;
     useAnimatedNumber: UseAnimatedNumber;
     useAnimatedNumberStyle: UseAnimatedNumberStyle;
+    useAnimatedNumbersStyle?: UseAnimatedNumbersStyle;
     useAnimatedNumberReaction: UseAnimatedNumberReaction;
     animations: A;
     View?: any;
     Text?: any;
 };
 export type UseAnimationProps = TamaguiComponentPropsBase & Record<string, any>;
-type UseStyleListener = (nextStyle: Record<string, unknown>, effectiveTransition?: TransitionProp | null) => void;
+type UseStyleListener = (nextStyle: Record<string, unknown>, effectiveTransition?: TransitionProp | null, pseudoActive?: boolean) => void;
 export type UseStyleEmitter = (cb: UseStyleListener) => void;
 export type UseAnimationHook = (props: {
     style: Record<string, any>;
