@@ -139,6 +139,30 @@ describe('tamaguiToTailwind', () => {
       const output = tamaguiToTailwind(input)
       expect(output).toContain('items-center')
     })
+
+    test('camelCase shorthand maps through Tamagui shorthands', () => {
+      const input = `<View maxW={100} minH={50} />`
+      const output = tamaguiToTailwind(input)
+      expect(output).toContain('max-w-[100px]')
+      expect(output).toContain('min-h-[50px]')
+    })
+
+    test('v6 shorthands map through Tamagui shorthands', () => {
+      const input = `<View w={100} h={50} basis="auto" />`
+      const output = tamaguiToTailwind(input)
+      expect(output).toContain('w-[100px]')
+      expect(output).toContain('h-[50px]')
+      expect(output).toContain('basis-auto')
+    })
+
+    test('non-tailwind config shorthands stay as props', () => {
+      const input = `<View wordWrap="break-word" shadowColor="red" />`
+      const output = tamaguiToTailwind(input)
+      expect(output).toContain('wordWrap="break-word"')
+      expect(output).toContain('shadowColor="red"')
+      expect(output).not.toContain('ww-break-word')
+      expect(output).not.toContain('shac-red')
+    })
   })
 
   describe('component renaming', () => {
@@ -210,16 +234,22 @@ describe('tamaguiToTailwind', () => {
   })
 
   describe('media queries', () => {
-    test('$sm media query', () => {
+    test('$sm media query uses the matching v6 min-width modifier', () => {
       const input = `<View $sm={{ backgroundColor: "green" }} />`
+      const output = tamaguiToTailwind(input)
+      expect(output).toContain('sm:bg-green')
+    })
+
+    test('$max-sm media query uses the explicit max-width modifier', () => {
+      const input = `<View $max-sm={{ backgroundColor: "green" }} />`
       const output = tamaguiToTailwind(input)
       expect(output).toContain('max-sm:bg-green')
     })
 
-    test('$gtSm media query (min-width)', () => {
-      const input = `<View $gtSm={{ padding: 20 }} />`
+    test('$md media query', () => {
+      const input = `<View $md={{ padding: 20 }} />`
       const output = tamaguiToTailwind(input)
-      expect(output).toContain('sm:p-[20px]')
+      expect(output).toContain('md:p-[20px]')
     })
   })
 
@@ -254,7 +284,7 @@ describe('tamaguiToTailwind', () => {
       // should be unchanged (lowercase elements)
       expect(output).toContain('<div')
       expect(output).toContain('<button')
-      expect(output).toContain("style={{")
+      expect(output).toContain('style={{')
     })
 
     test('handles spread props', () => {

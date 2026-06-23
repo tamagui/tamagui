@@ -1,3 +1,5 @@
+import { media } from '@tamagui/config/v6'
+
 /**
  * maps tamagui pseudo-state prop names to tailwind modifier prefixes.
  */
@@ -13,23 +15,10 @@ export const pseudoToModifier: Record<string, string> = {
   exitStyle: '', // no tailwind equivalent (unmount animation)
 }
 
-// tamagui media key → tailwind breakpoint modifier
-// tamagui uses max-width by default, tailwind uses min-width
-// so $sm (max-width: 800) → max-sm:
-// and $gtSm (min-width: 801) → sm:
-export const mediaToModifier: Record<string, string> = {
-  // max-width (tamagui default)
-  xs: 'max-xs',
-  sm: 'max-sm',
-  md: 'max-md',
-  lg: 'max-lg',
-  xl: 'max-xl',
-  xxs: 'max-[390px]',
+const mediaModifiers = new Set(Object.keys(media))
 
-  // min-width (gt variants)
-  gtXs: 'xs',
-  gtSm: 'sm',
-  gtMd: 'md',
-  gtLg: 'lg',
-  gtXl: 'xl',
+// v6 media names are tailwind modifier names:
+// $sm -> sm:, $max-sm -> max-sm:, $height-md -> height-md:
+export function mediaKeyToModifier(mediaKey: string): string | null {
+  return mediaModifiers.has(mediaKey) ? mediaKey : null
 }

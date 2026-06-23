@@ -97,6 +97,15 @@
       "import": "./dist/esm/v5-subtle.mjs",
       "require": "./dist/cjs/v5-subtle.cjs",
       "default": "./dist/esm/v5-subtle.mjs"
+    },
+    "./v6": {
+      "types": "./types/v6.d.ts",
+      "react-native": "./dist/esm/v6.native.js",
+      "browser": "./dist/esm/v6.mjs",
+      "module": "./dist/esm/v6.mjs",
+      "import": "./dist/esm/v6.mjs",
+      "require": "./dist/cjs/v6.cjs",
+      "default": "./dist/esm/v6.mjs"
     }
   },
   "publishConfig": {

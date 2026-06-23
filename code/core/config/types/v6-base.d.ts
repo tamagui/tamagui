@@ -1,0 +1,64 @@
+import type { Shorthands } from '@tamagui/shorthands/v6';
+import type { V5Themes, V5Tokens } from '@tamagui/themes/v5';
+import type { V5Fonts } from './v5-fonts';
+import type { V6Media } from './v6-media';
+export { shorthands } from '@tamagui/shorthands/v6';
+export { createThemes } from '@tamagui/theme-builder';
+export { adjustPalette, adjustPalettes, createV5Theme, defaultChildrenThemes, defaultDarkPalette, defaultLightPalette, hslToString, interpolateColor, opacify, parseHSL, tokens, type AdjustFn, type HSL, type PaletteAdjustments, type V5Theme, type V5ThemeNames, } from '@tamagui/themes/v5';
+export { createSystemFont, fonts } from './v5-fonts';
+export type { V5Fonts };
+export { breakpoints, media, mediaQueryDefaultActive } from './v6-media';
+export type { V6Media };
+export type V6Themes = V5Themes;
+export type V6Tokens = V5Tokens;
+export declare const selectionStyles: (theme: any) => {
+    backgroundColor: any;
+    color: any;
+} | null;
+export declare const settings: {
+    mediaQueryDefaultActive: {
+        touchable: boolean;
+        hoverable: boolean;
+        'max-xxl': boolean;
+        'max-xl': boolean;
+        'max-lg': boolean;
+        'max-md': boolean;
+        'max-sm': boolean;
+        'max-xs': boolean;
+        'max-xxs': boolean;
+        'max-xxxs': boolean;
+        xxxs: boolean;
+        xxs: boolean;
+        xs: boolean;
+        sm: boolean;
+        md: boolean;
+        lg: boolean;
+        xl: boolean;
+        xxl: boolean;
+        'max-height-sm': boolean;
+        'max-height-md': boolean;
+        'max-height-lg': boolean;
+        'height-sm': boolean;
+        'height-md': boolean;
+        'height-lg': boolean;
+    };
+    defaultFont: string;
+    fastSchemeChange: true;
+    shouldAddPrefersColorThemes: true;
+    allowedStyleValues: "somewhat-strict-web";
+    addThemeClassName: "html";
+    onlyAllowShorthands: true;
+    styleCompat: "react-native";
+};
+export type V6Settings = typeof settings;
+export type V6DefaultConfig = {
+    media: V6Media;
+    shorthands: Shorthands;
+    themes: V6Themes;
+    tokens: V6Tokens;
+    fonts: V5Fonts;
+    selectionStyles: typeof selectionStyles;
+    settings: V6Settings;
+};
+export declare const defaultConfig: V6DefaultConfig;
+//# sourceMappingURL=v6-base.d.ts.map

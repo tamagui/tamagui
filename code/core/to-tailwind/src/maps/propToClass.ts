@@ -1,123 +1,114 @@
+import { shorthands } from '@tamagui/shorthands/v6'
+
+export const tamaguiShorthands = shorthands
+
+const propPrefixEntries: [string, string][] = [
+  ...tailwindPrefixesFromShorthands(),
+
+  ['width', 'w'],
+  ['height', 'h'],
+  ['gap', 'gap'],
+  ['rowGap', 'gap-y'],
+  ['columnGap', 'gap-x'],
+
+  ['backgroundImage', 'bg'],
+  ['backgroundPosition', 'bg'],
+  ['backgroundSize', 'bg'],
+  ['backgroundRepeat', 'bg'],
+  ['backgroundClip', 'bg-clip'],
+
+  ['borderWidth', 'border'],
+  ['borderColor', 'border'],
+  ['borderStyle', 'border'],
+  ...sideEntries('border', 'Width', 'border'),
+  ...sideEntries('border', 'Color', 'border'),
+  ...cornerEntries(),
+
+  ['color', 'text'],
+  ['fontSize', 'text'],
+  ['fontWeight', 'font'],
+  ['fontFamily', 'font'],
+  ['fontStyle', ''],
+  ['lineHeight', 'leading'],
+  ['letterSpacing', 'tracking'],
+  ['textTransform', ''],
+  ['textDecorationLine', ''],
+  ['textDecorationColor', 'decoration'],
+
+  ['display', ''],
+  ['position', ''],
+  ['inset', 'inset'],
+  ['overflow', 'overflow'],
+  ['overflowX', 'overflow-x'],
+  ['overflowY', 'overflow-y'],
+
+  ['flex', 'flex'],
+  ['flexDirection', 'flex'],
+  ['flexWrap', 'flex'],
+  ['flexBasis', 'basis'],
+
+  ['opacity', 'opacity'],
+  ['boxShadow', 'shadow'],
+  ['cursor', 'cursor'],
+  ['pointerEvents', 'pointer-events'],
+
+  ['rotate', 'rotate'],
+  ['scale', 'scale'],
+  ['x', 'translate-x'],
+  ['y', 'translate-y'],
+
+  ['outlineWidth', 'outline'],
+  ['outlineColor', 'outline'],
+  ['outlineStyle', 'outline'],
+  ['outlineOffset', 'outline-offset'],
+
+  ['aspectRatio', 'aspect'],
+  ['objectFit', 'object'],
+  ['objectPosition', 'object'],
+]
+
 /**
- * maps CSS property names to Tailwind class prefixes.
- * e.g. backgroundColor → bg, padding → p, width → w
+ * maps css property names to tailwind class prefixes.
+ * most Tamagui shorthand-aligned prefixes come from @tamagui/shorthands/v6;
+ * the rest are tailwind vocabulary that Tamagui does not expose as shorthands.
  */
+export const propToTailwindPrefix: Record<string, string> =
+  Object.fromEntries(propPrefixEntries)
 
-export const propToTailwindPrefix: Record<string, string> = {
-  // backgrounds
-  backgroundColor: 'bg',
-  backgroundImage: 'bg',
-  backgroundPosition: 'bg',
-  backgroundSize: 'bg',
-  backgroundRepeat: 'bg',
-  backgroundClip: 'bg-clip',
+function tailwindPrefixesFromShorthands(): [string, string][] {
+  return Object.entries(shorthands).map(([short, prop]) => {
+    return [prop, shorthandToTailwindPrefix(short, prop)]
+  })
+}
 
-  // sizing
-  width: 'w',
-  height: 'h',
-  minWidth: 'min-w',
-  maxWidth: 'max-w',
-  minHeight: 'min-h',
-  maxHeight: 'max-h',
+function shorthandToTailwindPrefix(short: string, prop: string) {
+  switch (prop) {
+    case 'top':
+    case 'right':
+    case 'bottom':
+    case 'left':
+      return prop
+    default:
+      return short.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`)
+  }
+}
 
-  // spacing
-  padding: 'p',
-  paddingTop: 'pt',
-  paddingRight: 'pr',
-  paddingBottom: 'pb',
-  paddingLeft: 'pl',
-  paddingHorizontal: 'px',
-  paddingVertical: 'py',
-  margin: 'm',
-  marginTop: 'mt',
-  marginRight: 'mr',
-  marginBottom: 'mb',
-  marginLeft: 'ml',
-  marginHorizontal: 'mx',
-  marginVertical: 'my',
-  gap: 'gap',
-  rowGap: 'gap-y',
-  columnGap: 'gap-x',
+function sideEntries(base: string, suffix: string, prefix: string): [string, string][] {
+  return [
+    [`${base}Top${suffix}`, `${prefix}-t`],
+    [`${base}Right${suffix}`, `${prefix}-r`],
+    [`${base}Bottom${suffix}`, `${prefix}-b`],
+    [`${base}Left${suffix}`, `${prefix}-l`],
+  ]
+}
 
-  // borders
-  borderWidth: 'border',
-  borderTopWidth: 'border-t',
-  borderRightWidth: 'border-r',
-  borderBottomWidth: 'border-b',
-  borderLeftWidth: 'border-l',
-  borderColor: 'border',
-  borderTopColor: 'border-t',
-  borderRightColor: 'border-r',
-  borderBottomColor: 'border-b',
-  borderLeftColor: 'border-l',
-  borderRadius: 'rounded',
-  borderTopLeftRadius: 'rounded-tl',
-  borderTopRightRadius: 'rounded-tr',
-  borderBottomLeftRadius: 'rounded-bl',
-  borderBottomRightRadius: 'rounded-br',
-  borderStyle: 'border',
-
-  // typography
-  color: 'text',
-  fontSize: 'text',
-  fontWeight: 'font',
-  fontFamily: 'font',
-  fontStyle: '',
-  lineHeight: 'leading',
-  letterSpacing: 'tracking',
-  textAlign: 'text',
-  textTransform: '',
-  textDecorationLine: '',
-  textDecorationColor: 'decoration',
-
-  // layout
-  display: '',
-  position: '',
-  top: 'top',
-  right: 'right',
-  bottom: 'bottom',
-  left: 'left',
-  inset: 'inset',
-  zIndex: 'z',
-  overflow: 'overflow',
-  overflowX: 'overflow-x',
-  overflowY: 'overflow-y',
-
-  // flexbox
-  flex: 'flex',
-  flexDirection: 'flex',
-  flexWrap: 'flex',
-  flexGrow: 'grow',
-  flexShrink: 'shrink',
-  flexBasis: 'basis',
-  alignItems: 'items',
-  alignContent: 'content',
-  alignSelf: 'self',
-  justifyContent: 'justify',
-
-  // effects
-  opacity: 'opacity',
-  boxShadow: 'shadow',
-  cursor: 'cursor',
-  pointerEvents: 'pointer-events',
-  userSelect: 'select',
-
-  // transforms
-  rotate: 'rotate',
-  scale: 'scale',
-  x: 'translate-x',
-  y: 'translate-y',
-
-  // outline
-  outlineWidth: 'outline',
-  outlineColor: 'outline',
-  outlineStyle: 'outline',
-  outlineOffset: 'outline-offset',
-
-  // other
-  aspectRatio: 'aspect',
-  objectFit: 'object',
-  objectPosition: 'object',
+function cornerEntries(): [string, string][] {
+  return [
+    ['borderTopLeftRadius', 'rounded-tl'],
+    ['borderTopRightRadius', 'rounded-tr'],
+    ['borderBottomLeftRadius', 'rounded-bl'],
+    ['borderBottomRightRadius', 'rounded-br'],
+  ]
 }
 
 // values that become their own class (no prefix-value, just the value)

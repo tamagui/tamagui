@@ -76,7 +76,7 @@ export declare const shorthands: {
 export { animations } from './v3-animations';
 export { tokens, themes } from '@tamagui/themes/v3-themes';
 export { fonts } from './fonts';
-export { media, mediaQueryDefaultActive } from './media';
+export { media, mediaQueryDefaultActive } from './v3-media';
 export declare const selectionStyles: (theme: any) => {
     backgroundColor: any;
     color: any;
