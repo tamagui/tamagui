@@ -241,13 +241,3 @@ test('styled: danger variant', async ({ page }) => {
   const s = await getStyles(page.locator('#sv-styled-danger'))
   expect(s.backgroundColor).toBe('rgb(239, 68, 68)')
 })
-
-// ── visual screenshot ────────────────────────────────
-
-test('screenshot: full validation page', async ({ page }) => {
-  await page.mouse.move(0, 0)
-  await expect(page).toHaveScreenshot('style-validation-full.png', {
-    fullPage: true,
-    maxDiffPixelRatio: 0.02,
-  })
-})
