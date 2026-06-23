@@ -2010,8 +2010,118 @@ export type WithThemeValues<T extends object> = {
     | (K extends SafeAreaValueKeys ? 'safe' : never)
 }
 
-export type NarrowShorthands = Narrow<Shorthands>
-export type Longhands = NarrowShorthands[keyof NarrowShorthands]
+type LiteralObjectKeys<T> = keyof T extends infer Key
+  ? Key extends string
+    ? string extends Key
+      ? never
+      : Key
+    : Key extends number
+      ? number extends Key
+        ? never
+        : Key
+      : never
+  : never
+
+type KnownShorthands = {
+  ussel: 'userSelect'
+  cur: 'cursor'
+  pe: 'pointerEvents'
+  col: 'color'
+  ff: 'fontFamily'
+  fos: 'fontSize'
+  fost: 'fontStyle'
+  fow: 'fontWeight'
+  ls: 'letterSpacing'
+  lh: 'lineHeight'
+  ta: 'textAlign'
+  text: 'textAlign'
+  tt: 'textTransform'
+  ww: 'wordWrap'
+  ac: 'alignContent'
+  ai: 'alignItems'
+  als: 'alignSelf'
+  content: 'alignContent'
+  items: 'alignItems'
+  self: 'alignSelf'
+  b: 'bottom'
+  bc: 'backgroundColor'
+  bg: 'backgroundColor'
+  bbc: 'borderBottomColor'
+  bblr: 'borderBottomLeftRadius'
+  bbrr: 'borderBottomRightRadius'
+  bbw: 'borderBottomWidth'
+  blc: 'borderLeftColor'
+  blw: 'borderLeftWidth'
+  boc: 'borderColor'
+  br: 'borderRadius'
+  bs: 'borderStyle'
+  brw: 'borderRightWidth'
+  brc: 'borderRightColor'
+  btc: 'borderTopColor'
+  btlr: 'borderTopLeftRadius'
+  btrr: 'borderTopRightRadius'
+  btw: 'borderTopWidth'
+  bw: 'borderWidth'
+  dsp: 'display'
+  f: 'flex'
+  basis: 'flexBasis'
+  fb: 'flexBasis'
+  fd: 'flexDirection'
+  fg: 'flexGrow'
+  fs: 'flexShrink'
+  grow: 'flexGrow'
+  shrink: 'flexShrink'
+  fw: 'flexWrap'
+  h: 'height'
+  jc: 'justifyContent'
+  justify: 'justifyContent'
+  l: 'left'
+  m: 'margin'
+  mah: 'maxHeight'
+  maw: 'maxWidth'
+  maxH: 'maxHeight'
+  maxW: 'maxWidth'
+  mb: 'marginBottom'
+  mih: 'minHeight'
+  miw: 'minWidth'
+  minH: 'minHeight'
+  minW: 'minWidth'
+  ml: 'marginLeft'
+  mr: 'marginRight'
+  mt: 'marginTop'
+  mx: 'marginHorizontal'
+  my: 'marginVertical'
+  o: 'opacity'
+  ov: 'overflow'
+  p: 'padding'
+  pb: 'paddingBottom'
+  pl: 'paddingLeft'
+  pos: 'position'
+  pr: 'paddingRight'
+  pt: 'paddingTop'
+  px: 'paddingHorizontal'
+  py: 'paddingVertical'
+  r: 'right'
+  rounded: 'borderRadius'
+  select: 'userSelect'
+  shac: 'shadowColor'
+  shar: 'shadowRadius'
+  shof: 'shadowOffset'
+  shop: 'shadowOpacity'
+  t: 'top'
+  w: 'width'
+  z: 'zIndex'
+  zi: 'zIndex'
+}
+
+type LiteralShorthands = Pick<Narrow<Shorthands>, LiteralObjectKeys<Shorthands>>
+type ActiveShorthands = string extends keyof Shorthands
+  ? KnownShorthands & LiteralShorthands
+  : LiteralShorthands
+
+export type ShorthandKeys = keyof ActiveShorthands
+export type NarrowShorthands = Narrow<ActiveShorthands>
+export type Longhands = NarrowShorthands[ShorthandKeys]
 
 type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands']
 type OnlyShorthandStyleProps = TamaguiConfig['settings']['onlyShorthandStyleProps']
@@ -2032,8 +2142,8 @@ type ShorthandLonghandProps =
 
 // adds shorthand props
 export type WithShorthands<StyleProps> = {
-  [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps
-    ? StyleProps[Shorthands[Key]] | null
+  [Key in ShorthandKeys]?: ActiveShorthands[Key] extends keyof StyleProps
+    ? StyleProps[ActiveShorthands[Key]] | null
     : undefined
 }
 
@@ -2109,7 +2219,7 @@ type FlatThemeKey = 'dark' | 'light'
 // base flat props: $bg, $backgroundColor, $p, $padding, etc.
 // uses 'any' for values to avoid type complexity explosion while keeping prop names for autocomplete
 export type WithFlatBaseProps<StyleProps> = {
-  [Key in keyof Shorthands as `$${Key}`]?: any
+  [Key in ShorthandKeys as `$${Key}`]?: any
 } & {
   [Key in keyof StyleProps as `$${string & Key}`]?: any
 }

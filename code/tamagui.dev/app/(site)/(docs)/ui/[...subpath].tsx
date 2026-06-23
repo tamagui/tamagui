@@ -123,6 +123,8 @@ export function DocComponentsPage() {
   )
 }
 
+export default DocComponentsPage
+
 const DocsThemeTint = memo(({ children }: { children: any }) => {
   const isTinted = useIsDocsTinted()
   if (!isTinted) {
