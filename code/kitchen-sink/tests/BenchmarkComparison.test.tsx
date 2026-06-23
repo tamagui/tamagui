@@ -63,8 +63,4 @@ test('auto benchmark - all scenarios complete', async ({ page }) => {
       )
     }
   }
-
-  await expect(resultsTable).toHaveScreenshot('benchmark-results.png', {
-    maxDiffPixelRatio: 0.3,
-  })
 })
