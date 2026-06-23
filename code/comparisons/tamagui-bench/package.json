@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "EXTRACT=1 vite --port 9101",
     "dev:nocompile": "vite --port 9101",
-    "build": "EXTRACT=1 vite build"
+    "build": "sh -c 'EXTRACT=1 vite build'"
   },
   "dependencies": {
     "@tamagui/config": "workspace:*",

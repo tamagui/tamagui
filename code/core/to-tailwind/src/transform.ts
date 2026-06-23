@@ -6,8 +6,9 @@ import {
   propToTailwindPrefix,
   standaloneValueProps,
   componentToTag,
+  tamaguiShorthands,
 } from './maps/propToClass'
-import { pseudoToModifier, mediaToModifier } from './maps/pseudoMap'
+import { pseudoToModifier, mediaKeyToModifier } from './maps/pseudoMap'
 
 export interface TransformOptions {
   // rename View→div, Text→span, etc.
@@ -92,8 +93,8 @@ export function tamaguiToTailwind(
         // check media query props ($sm, $md, etc.)
         if (name[0] === '$') {
           const mediaKey = name.slice(1)
-          if (mediaKey in mediaToModifier) {
-            const modifier = mediaToModifier[mediaKey]
+          const modifier = mediaKeyToModifier(mediaKey)
+          if (modifier) {
             const innerClasses = extractPseudoClasses(attr, modifier)
             if (innerClasses) {
               classes.push(...innerClasses)
@@ -275,63 +276,8 @@ function getNumericValue(value: t.JSXAttribute['value']): number | null {
   return null
 }
 
-// maps full CSS prop name → shorthand used in tamagui
-const shorthandMap: Record<string, string> = {}
-// populated lazily
-let shorthandMapBuilt = false
-
-function buildShorthandMap() {
-  if (shorthandMapBuilt) return
-  try {
-    // import shorthands at runtime
-    const { shorthands } = require('@tamagui/shorthands/v4')
-    for (const [short, long] of Object.entries(shorthands)) {
-      shorthandMap[short as string] = long as string
-    }
-  } catch {
-    // fallback: hardcode common ones
-    Object.assign(shorthandMap, {
-      bg: 'backgroundColor',
-      p: 'padding',
-      pt: 'paddingTop',
-      pr: 'paddingRight',
-      pb: 'paddingBottom',
-      pl: 'paddingLeft',
-      px: 'paddingHorizontal',
-      py: 'paddingVertical',
-      m: 'margin',
-      mt: 'marginTop',
-      mr: 'marginRight',
-      mb: 'marginBottom',
-      ml: 'marginLeft',
-      mx: 'marginHorizontal',
-      my: 'marginVertical',
-      rounded: 'borderRadius',
-      t: 'top',
-      r: 'right',
-      b: 'bottom',
-      l: 'left',
-      z: 'zIndex',
-      items: 'alignItems',
-      justify: 'justifyContent',
-      self: 'alignSelf',
-      content: 'alignContent',
-      grow: 'flexGrow',
-      shrink: 'flexShrink',
-      select: 'userSelect',
-      text: 'textAlign',
-      maxW: 'maxWidth',
-      maxH: 'maxHeight',
-      minW: 'minWidth',
-      minH: 'minHeight',
-    })
-  }
-  shorthandMapBuilt = true
-}
-
 function resolveShorthand(name: string): string {
-  buildShorthandMap()
-  return shorthandMap[name] || name
+  return tamaguiShorthands[name] || name
 }
 
 function formatStringValue(prop: string, value: string): string {

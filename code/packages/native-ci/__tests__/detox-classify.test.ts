@@ -139,7 +139,7 @@ FAIL e2e/TabsOnInteraction.test.ts (240.123 s)
     An error was encountered processing the command (domain=FBSOpenApplicationServiceErrorDomain, code=4):
     Simulator device failed to launch com.tamagui.tamaguikitchensink.
     Underlying error (domain=FBSOpenApplicationServiceErrorDomain, code=4):
-    	The request to open "com.tamagui.tamaguikitchensink" failed.
+    The request to open "com.tamagui.tamaguikitchensink" failed.
 `
 
 // June 17: teardown timeout causing cascading worker failure

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 9102",
-    "build": "vite build"
+    "build": "sh -c 'vite build'"
   },
   "dependencies": {
     "react": ">=19",

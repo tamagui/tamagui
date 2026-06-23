@@ -6,7 +6,6 @@ import { getBentoCode, supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { hasProAccess } from '~/features/bento/hasProAccess'
 import { isTailwindMode } from '~/features/docs/isTailwindMode'
 
-// transform source code to tailwind if requested
 function maybeTransformToTailwind(source: string, req: Request): string {
   if (!isTailwindMode({ request: req, search: new URL(req.url).search })) {
     return source

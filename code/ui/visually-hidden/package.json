@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/visually-hidden",
-  "version": "2.3.1",
+  "version": "2.3.3",
   "source": "src/index.ts",
   "files": [
     "src",

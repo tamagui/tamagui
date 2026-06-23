@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config",
-  "version": "2.3.1",
+  "version": "2.3.3",
   "type": "module",
   "sideEffects": false,
   "main": "dist/cjs",
@@ -106,6 +106,15 @@
       "import": "./dist/esm/v5-subtle.mjs",
       "require": "./dist/cjs/v5-subtle.cjs",
       "default": "./dist/esm/v5-subtle.mjs"
+    },
+    "./v6-media": {
+      "types": "./types/v6-media.d.ts",
+      "react-native": "./dist/esm/v6-media.native.js",
+      "browser": "./dist/esm/v6-media.mjs",
+      "module": "./dist/esm/v6-media.mjs",
+      "import": "./dist/esm/v6-media.mjs",
+      "require": "./dist/cjs/v6-media.cjs",
+      "default": "./dist/esm/v6-media.mjs"
     }
   },
   "publishConfig": {

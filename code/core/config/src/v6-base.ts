@@ -1,27 +1,74 @@
-// v6 base config — currently v5 + Tailwind-style `w`/`h` shorthands. this is the opt-in
-// home for breaking, Tailwind-compatible changes (shorthands now; spacing scale, color
-// palette and named sizes to follow), so v5 stays stable.
 import { shorthands } from '@tamagui/shorthands/v6'
-import { themes, tokens as v5tokens } from '@tamagui/themes/v5'
+import type { Shorthands } from '@tamagui/shorthands/v6'
+import { themes, tokens } from '@tamagui/themes/v5'
+import type { V5Themes, V5Tokens } from '@tamagui/themes/v5'
 import type { CreateTamaguiProps } from '@tamagui/web'
+
 import { fonts } from './v5-fonts'
-import { media, mediaQueryDefaultActive } from './v5-media'
-import { selectionStyles, settings } from './v5-base'
-import { tailwindColors, tailwindRadius } from './v6-tailwind-tokens'
+import type { V5Fonts } from './v5-fonts'
+import { media, mediaQueryDefaultActive } from './v6-media'
+import type { V6Media } from './v6-media'
 
-// inherit all v5 helpers/types/theme re-exports, then override shorthands + defaultConfig
-export * from './v5-base'
-export { shorthands }
+export { shorthands } from '@tamagui/shorthands/v6'
+export { createThemes } from '@tamagui/theme-builder'
+export {
+  adjustPalette,
+  adjustPalettes,
+  createV5Theme,
+  defaultChildrenThemes,
+  defaultDarkPalette,
+  defaultLightPalette,
+  hslToString,
+  interpolateColor,
+  opacify,
+  parseHSL,
+  tokens,
+  type AdjustFn,
+  type HSL,
+  type PaletteAdjustments,
+  type V5Theme,
+  type V5ThemeNames,
+} from '@tamagui/themes/v5'
+export { createSystemFont, fonts } from './v5-fonts'
+export type { V5Fonts }
+export { breakpoints, media, mediaQueryDefaultActive } from './v6-media'
+export type { V6Media }
 
-// v5 tokens + Tailwind palette (color) and named radii, so styleMode:'tailwind' resolves
-// bg-indigo-500 / rounded-lg by name.
-const tokens = {
-  ...v5tokens,
-  color: { ...(v5tokens as any).color, ...tailwindColors },
-  radius: { ...(v5tokens as any).radius, ...tailwindRadius },
+export type V6Themes = V5Themes
+export type V6Tokens = V5Tokens
+
+export const selectionStyles = (theme) =>
+  theme.color5
+    ? {
+        backgroundColor: theme.color5,
+        color: theme.color11,
+      }
+    : null
+
+export const settings = {
+  mediaQueryDefaultActive,
+  defaultFont: 'body',
+  fastSchemeChange: true,
+  shouldAddPrefersColorThemes: true,
+  allowedStyleValues: 'somewhat-strict-web',
+  addThemeClassName: 'html',
+  onlyAllowShorthands: true,
+  styleCompat: 'react-native',
+} satisfies CreateTamaguiProps['settings']
+
+export type V6Settings = typeof settings
+
+export type V6DefaultConfig = {
+  media: V6Media
+  shorthands: Shorthands
+  themes: V6Themes
+  tokens: V6Tokens
+  fonts: V5Fonts
+  selectionStyles: typeof selectionStyles
+  settings: V6Settings
 }
 
-export const defaultConfig = {
+export const defaultConfig: V6DefaultConfig = {
   media,
   shorthands,
   themes,
@@ -29,4 +76,4 @@ export const defaultConfig = {
   fonts,
   selectionStyles,
   settings,
-} satisfies CreateTamaguiProps
+}

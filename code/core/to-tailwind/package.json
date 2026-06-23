@@ -2,32 +2,22 @@
   "name": "@tamagui/to-tailwind",
   "version": "2.0.0-rc.31",
   "private": false,
-  "type": "module",
-  "sideEffects": false,
+  "main": "dist/index.cjs",
+  "module": "dist/index.native.js",
   "source": "src/index.ts",
-  "main": "dist/cjs/index.cjs",
-  "module": "dist/esm/index.mjs",
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "react-native": "./dist/esm/index.native.js",
-      "browser": "./dist/esm/index.mjs",
-      "module": "./dist/esm/index.mjs",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/esm/index.mjs"
-    }
-  },
   "license": "MIT",
   "scripts": {
     "build": "tamagui-build",
-    "test": "vitest --run"
+    "test": "bun run build:test-deps && vitest --run src",
+    "test:web": "bun run build:test-deps && vitest --run src",
+    "build:test-deps": "bun run --cwd ../shorthands build && bun run --cwd ../config build"
   },
   "dependencies": {
-    "@babel/parser": "^7.25.4",
+    "@babel/parser": "^7.26.0",
     "@babel/traverse": "^7.25.4",
     "@babel/generator": "^7.25.5",
     "@babel/types": "^7.25.4",
+    "@tamagui/config": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/shorthands": "workspace:*"
   },

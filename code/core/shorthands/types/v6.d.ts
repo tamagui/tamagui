@@ -1,10 +1,12 @@
 export declare const shorthands: {
+    basis: "flexBasis";
+    h: "height";
+    w: "width";
     text: "textAlign";
     b: "bottom";
     bg: "backgroundColor";
     content: "alignContent";
     grow: "flexGrow";
-    h: "height";
     items: "alignItems";
     justify: "justifyContent";
     l: "left";
@@ -32,7 +34,6 @@ export declare const shorthands: {
     self: "alignSelf";
     shrink: "flexShrink";
     t: "top";
-    w: "width";
     z: "zIndex";
 };
 export type Shorthands = typeof shorthands;
