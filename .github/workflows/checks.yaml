@@ -181,5 +181,5 @@ jobs:
             turbo-${{ runner.os }}-
 
       - name: Run integration tests (shard ${{ matrix.shard }})
-        run: cd code/kitchen-sink && NODE_ENV=test bunx playwright test --shard=${{ matrix.shard }}
+        run: cd code/kitchen-sink && NODE_ENV=test bun playwright test --shard=${{ matrix.shard }}
         timeout-minutes: 20
