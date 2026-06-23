@@ -6,7 +6,7 @@ import { View, Text, XStack, YStack, styled, Button } from 'tamagui'
  *
  * 1. simple: basic layout props, fully compilable
  * 2. rich: pseudo states, variants, dynamic values
- * 3. animated: animation="bouncy" + enterStyle/exitStyle
+ * 3. animated: transition="bouncy" + enterStyle/exitStyle
  *
  * four renderers per scenario:
  *   - className: tailwind-style className="bg-red w-20 h-20"
@@ -85,14 +85,11 @@ function TimedContainer({
 
 function SimpleClassNameItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
+    const arr: React.ReactNode[] = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const hue = ((i * 7 + seed) % 360)
+      const hue = (i * 7 + seed) % 360
       arr.push(
-        <View
-          key={i}
-          className={`w-20 h-20 bg-hsl(${hue},70%,60%) rounded-3 m-1`}
-        />
+        <View key={i} className={`w-20 h-20 bg-hsl(${hue},70%,60%) rounded-3 m-1`} />
       )
     }
     return arr
@@ -102,9 +99,9 @@ function SimpleClassNameItems({ seed }: { seed: number }) {
 
 function SimpleRegularItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
+    const arr: React.ReactNode[] = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const hue = ((i * 7 + seed) % 360)
+      const hue = (i * 7 + seed) % 360
       arr.push(
         <View
           key={i}
@@ -130,15 +127,10 @@ const SimpleStyledBox = styled(View, {
 
 function SimpleStyledItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
+    const arr: React.ReactNode[] = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const hue = ((i * 7 + seed) % 360)
-      arr.push(
-        <SimpleStyledBox
-          key={i}
-          backgroundColor={`hsl(${hue}, 70%, 60%)`}
-        />
-      )
+      const hue = (i * 7 + seed) % 360
+      arr.push(<SimpleStyledBox key={i} backgroundColor={`hsl(${hue}, 70%, 60%)`} />)
     }
     return arr
   }, [seed])
@@ -147,9 +139,9 @@ function SimpleStyledItems({ seed }: { seed: number }) {
 
 function SimpleInlineItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
+    const arr: React.ReactNode[] = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const hue = ((i * 7 + seed) % 360)
+      const hue = (i * 7 + seed) % 360
       arr.push(
         <div
           key={i}
@@ -207,8 +199,8 @@ const variantList = ['primary', 'secondary', 'accent'] as const
 
 function RichClassNameItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
-    const colors = ['rgb(99,102,241)', 'rgb(34,197,94)', 'rgb(236,72,153)']
+    const arr: React.ReactNode[] = []
+    const colors = ['rgb(99,102,241)', 'rgb(34,197,94)', 'rgb(236,72,153)'] as const
     for (let i = 0; i < ITEM_COUNT; i++) {
       const color = colors[(i + seed) % 3]
       arr.push(
@@ -226,8 +218,8 @@ function RichClassNameItems({ seed }: { seed: number }) {
 
 function RichRegularItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
-    const colors = ['rgb(99,102,241)', 'rgb(34,197,94)', 'rgb(236,72,153)']
+    const arr: React.ReactNode[] = []
+    const colors = ['rgb(99,102,241)', 'rgb(34,197,94)', 'rgb(236,72,153)'] as const
     for (let i = 0; i < ITEM_COUNT; i++) {
       const color = colors[(i + seed) % 3]
       arr.push(
@@ -254,17 +246,10 @@ function RichRegularItems({ seed }: { seed: number }) {
 
 function RichStyledItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
+    const arr: React.ReactNode[] = []
     for (let i = 0; i < ITEM_COUNT; i++) {
       const v = variantList[(i + seed) % 3]
-      arr.push(
-        <RichCard
-          key={i}
-          variant={v}
-          margin={1}
-          opacity={0.7 + (i % 4) * 0.1}
-        />
-      )
+      arr.push(<RichCard key={i} variant={v} margin={1} opacity={0.7 + (i % 4) * 0.1} />)
     }
     return arr
   }, [seed])
@@ -273,8 +258,8 @@ function RichStyledItems({ seed }: { seed: number }) {
 
 function RichInlineItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
-    const colors = ['rgb(99,102,241)', 'rgb(34,197,94)', 'rgb(236,72,153)']
+    const arr: React.ReactNode[] = []
+    const colors = ['rgb(99,102,241)', 'rgb(34,197,94)', 'rgb(236,72,153)'] as const
     for (let i = 0; i < ITEM_COUNT; i++) {
       const color = colors[(i + seed) % 3]
       arr.push(
@@ -305,7 +290,7 @@ const AnimatedBox = styled(View, {
   height: 24,
   borderRadius: 4,
   backgroundColor: 'rgb(59,130,246)',
-  animation: 'bouncy',
+  transition: 'bouncy',
 
   enterStyle: {
     opacity: 0,
@@ -324,13 +309,13 @@ const AnimatedBox = styled(View, {
 
 function AnimatedClassNameItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
+    const arr: React.ReactNode[] = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const hue = ((i * 7 + seed) % 360)
+      const hue = (i * 7 + seed) % 360
       arr.push(
         <View
           key={i}
-          animation="bouncy"
+          transition="bouncy"
           className={`w-24 h-24 rounded-4 bg-hsl(${hue},70%,60%) m-1`}
           enterStyle={{ opacity: 0, scale: 0.5 }}
           hoverStyle={{ scale: 1.1 }}
@@ -345,13 +330,13 @@ function AnimatedClassNameItems({ seed }: { seed: number }) {
 
 function AnimatedRegularItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
+    const arr: React.ReactNode[] = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const hue = ((i * 7 + seed) % 360)
+      const hue = (i * 7 + seed) % 360
       arr.push(
         <View
           key={i}
-          animation="bouncy"
+          transition="bouncy"
           width={24}
           height={24}
           borderRadius={4}
@@ -370,15 +355,11 @@ function AnimatedRegularItems({ seed }: { seed: number }) {
 
 function AnimatedStyledItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
+    const arr: React.ReactNode[] = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const hue = ((i * 7 + seed) % 360)
+      const hue = (i * 7 + seed) % 360
       arr.push(
-        <AnimatedBox
-          key={i}
-          margin={1}
-          backgroundColor={`hsl(${hue}, 70%, 60%)`}
-        />
+        <AnimatedBox key={i} margin={1} backgroundColor={`hsl(${hue}, 70%, 60%)`} />
       )
     }
     return arr
@@ -388,9 +369,9 @@ function AnimatedStyledItems({ seed }: { seed: number }) {
 
 function AnimatedInlineItems({ seed }: { seed: number }) {
   const items = useMemo(() => {
-    const arr = []
+    const arr: React.ReactNode[] = []
     for (let i = 0; i < ITEM_COUNT; i++) {
-      const hue = ((i * 7 + seed) % 360)
+      const hue = (i * 7 + seed) % 360
       arr.push(
         <div
           key={i}
@@ -464,7 +445,9 @@ function AutoBenchmarkRunner({
   renderer: BenchScenario['renderers'][0]
   onResult: (result: { mount: number; rerender: number }) => void
 }) {
-  const [phase, setPhase] = useState<'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'>('idle')
+  const [phase, setPhase] = useState<
+    'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'
+  >('idle')
   const [seed, setSeed] = useState(0)
   const startRef = React.useRef(0)
   const mountTimeRef = React.useRef(0)
@@ -513,7 +496,8 @@ function AutoBenchAll() {
   const [running, setRunning] = useState(false)
 
   const allCombos = useMemo(() => {
-    const combos: { scenario: BenchScenario; renderer: BenchScenario['renderers'][0] }[] = []
+    const combos: { scenario: BenchScenario; renderer: BenchScenario['renderers'][0] }[] =
+      []
     for (const s of scenarios) {
       for (const r of s.renderers) {
         combos.push({ scenario: s, renderer: r })
@@ -564,7 +548,9 @@ function AutoBenchAll() {
       </Button>
 
       {currentCombo && (
-        <YStack key={`${currentCombo.scenario.id}-${currentCombo.renderer.id}-${currentIdx}`}>
+        <YStack
+          key={`${currentCombo.scenario.id}-${currentCombo.renderer.id}-${currentIdx}`}
+        >
           <Text fontSize={12} color="$color8">
             Running: {currentCombo.scenario.name} → {currentCombo.renderer.label}
           </Text>
@@ -642,13 +628,19 @@ function AutoBenchAll() {
 
 export function BenchmarkComparison() {
   return (
-    <YStack padding={24} gap={24} backgroundColor="$background" minHeight="100vh">
+    <YStack
+      padding={24}
+      gap={24}
+      backgroundColor="$background"
+      style={{ minHeight: '100vh' }}
+    >
       <YStack gap={4}>
         <Text fontSize={24} fontWeight="bold" color="$color">
           Benchmark Comparison
         </Text>
         <Text fontSize={14} color="$color8">
-          {ITEM_COUNT} components × 3 scenarios × 4 renderers (className / regular / styled / inline)
+          {ITEM_COUNT} components × 3 scenarios × 4 renderers (className / regular /
+          styled / inline)
         </Text>
       </YStack>
 

@@ -1093,18 +1093,29 @@ const Frame = styled(YStack, {
 const CodeModeToggle = React.memo(() => {
   const pathname = usePathname()
   const router = useRouter()
-  const isTailwind = typeof window !== 'undefined' && window.location.search.includes('syntax=tailwind')
+  const isTailwind =
+    typeof window !== 'undefined' && window.location.search.includes('syntax=tailwind')
 
-  const setMode = React.useCallback((mode: 'tamagui' | 'tailwind') => {
-    if (mode === 'tailwind') {
-      router.push(`${pathname}?syntax=tailwind` as any)
-    } else {
-      router.push(pathname as any)
-    }
-  }, [pathname, router])
+  const setMode = React.useCallback(
+    (mode: 'tamagui' | 'tailwind') => {
+      if (mode === 'tailwind') {
+        router.push(`${pathname}?syntax=tailwind` as any)
+      } else {
+        router.push(pathname as any)
+      }
+    },
+    [pathname, router]
+  )
 
   return (
-    <XGroup maxH={28} size="$2" bg="$color2" borderRadius="$3" borderWidth={1} borderColor="$borderColor">
+    <XGroup
+      maxH={28}
+      size="$2"
+      bg="$color2"
+      borderRadius="$3"
+      borderWidth={1}
+      borderColor="$borderColor"
+    >
       <XGroup.Item>
         <Button
           size="$2"

@@ -92,7 +92,12 @@ const RegularBox = styled(View, {
 
 export function FlatStyleComparison() {
   return (
-    <YStack padding={24} gap={32} backgroundColor="$background" minHeight="100vh">
+    <YStack
+      padding={24}
+      gap={32}
+      backgroundColor="$background"
+      style={{ minHeight: '100vh' }}
+    >
       <TailwindLoader />
 
       <YStack gap={4}>
@@ -138,10 +143,7 @@ export function FlatStyleComparison() {
           />
         </ComparisonCell>
         <ComparisonCell label="Tailwind">
-          <div
-            id="cmp-basic-tw"
-            className="w-20 h-20 bg-indigo-500 rounded-lg"
-          />
+          <div id="cmp-basic-tw" className="w-20 h-20 bg-indigo-500 rounded-lg" />
         </ComparisonCell>
       </ComparisonRow>
 
@@ -209,9 +211,30 @@ export function FlatStyleComparison() {
               $rounded: 8,
             } as any)}
           >
-            <View {...({ $width: 24, $height: 24, $bg: 'rgb(239,68,68)', $rounded: 4 } as any)} />
-            <View {...({ $width: 24, $height: 24, $bg: 'rgb(59,130,246)', $rounded: 4 } as any)} />
-            <View {...({ $width: 24, $height: 24, $bg: 'rgb(234,179,8)', $rounded: 4 } as any)} />
+            <View
+              {...({
+                $width: 24,
+                $height: 24,
+                $bg: 'rgb(239,68,68)',
+                $rounded: 4,
+              } as any)}
+            />
+            <View
+              {...({
+                $width: 24,
+                $height: 24,
+                $bg: 'rgb(59,130,246)',
+                $rounded: 4,
+              } as any)}
+            />
+            <View
+              {...({
+                $width: 24,
+                $height: 24,
+                $bg: 'rgb(234,179,8)',
+                $rounded: 4,
+              } as any)}
+            />
           </View>
         </ComparisonCell>
         <ComparisonCell label="Regular">
@@ -224,9 +247,24 @@ export function FlatStyleComparison() {
             backgroundColor="rgb(244,244,245)"
             borderRadius={8}
           >
-            <View width={24} height={24} backgroundColor="rgb(239,68,68)" borderRadius={4} />
-            <View width={24} height={24} backgroundColor="rgb(59,130,246)" borderRadius={4} />
-            <View width={24} height={24} backgroundColor="rgb(234,179,8)" borderRadius={4} />
+            <View
+              width={24}
+              height={24}
+              backgroundColor="rgb(239,68,68)"
+              borderRadius={4}
+            />
+            <View
+              width={24}
+              height={24}
+              backgroundColor="rgb(59,130,246)"
+              borderRadius={4}
+            />
+            <View
+              width={24}
+              height={24}
+              backgroundColor="rgb(234,179,8)"
+              borderRadius={4}
+            />
           </View>
         </ComparisonCell>
         <ComparisonCell label="Inline">
@@ -242,9 +280,30 @@ export function FlatStyleComparison() {
               borderRadius: 8,
             }}
           >
-            <div style={{ width: 24, height: 24, backgroundColor: 'rgb(239,68,68)', borderRadius: 4 }} />
-            <div style={{ width: 24, height: 24, backgroundColor: 'rgb(59,130,246)', borderRadius: 4 }} />
-            <div style={{ width: 24, height: 24, backgroundColor: 'rgb(234,179,8)', borderRadius: 4 }} />
+            <div
+              style={{
+                width: 24,
+                height: 24,
+                backgroundColor: 'rgb(239,68,68)',
+                borderRadius: 4,
+              }}
+            />
+            <div
+              style={{
+                width: 24,
+                height: 24,
+                backgroundColor: 'rgb(59,130,246)',
+                borderRadius: 4,
+              }}
+            />
+            <div
+              style={{
+                width: 24,
+                height: 24,
+                backgroundColor: 'rgb(234,179,8)',
+                borderRadius: 4,
+              }}
+            />
           </div>
         </ComparisonCell>
         <ComparisonCell label="Tailwind">
@@ -262,8 +321,13 @@ export function FlatStyleComparison() {
       {/* 4: typography */}
       <ComparisonRow label="4. Typography" id="cmp-type">
         <ComparisonCell label="Flat">
-          <View id="cmp-type-flat" {...({ $p: 12, $bg: 'rgb(255,255,255)', $rounded: 8 } as any)}>
-            <Text {...({ $fontSize: 18, $fontWeight: 'bold', $col: 'rgb(17,24,39)' } as any)}>
+          <View
+            id="cmp-type-flat"
+            {...({ $p: 12, $bg: 'rgb(255,255,255)', $rounded: 8 } as any)}
+          >
+            <Text
+              {...({ $fontSize: 18, $fontWeight: 'bold', $col: 'rgb(17,24,39)' } as any)}
+            >
               Heading
             </Text>
             <Text {...({ $fontSize: 14, $col: 'rgb(107,114,128)', $lh: 20 } as any)}>
@@ -272,7 +336,12 @@ export function FlatStyleComparison() {
           </View>
         </ComparisonCell>
         <ComparisonCell label="Regular">
-          <View id="cmp-type-regular" padding={12} backgroundColor="rgb(255,255,255)" borderRadius={8}>
+          <View
+            id="cmp-type-regular"
+            padding={12}
+            backgroundColor="rgb(255,255,255)"
+            borderRadius={8}
+          >
             <Text fontSize={18} fontWeight="bold" color="rgb(17,24,39)">
               Heading
             </Text>
@@ -410,8 +479,17 @@ export function FlatStyleComparison() {
               $gap: 8,
             } as any)}
           >
-            <View {...({ $width: '100%', $height: 60, $bg: 'rgb(99,102,241)', $rounded: 8 } as any)} />
-            <Text {...({ $fontSize: 14, $fontWeight: '600', $col: 'rgb(17,24,39)' } as any)}>
+            <View
+              {...({
+                $width: '100%',
+                $height: 60,
+                $bg: 'rgb(99,102,241)',
+                $rounded: 8,
+              } as any)}
+            />
+            <Text
+              {...({ $fontSize: 14, $fontWeight: '600', $col: 'rgb(17,24,39)' } as any)}
+            >
               Card Title
             </Text>
             <Text {...({ $fontSize: 12, $col: 'rgb(107,114,128)' } as any)}>
@@ -430,7 +508,12 @@ export function FlatStyleComparison() {
             boxShadow="0 1px 3px rgba(0,0,0,0.1)"
             gap={8}
           >
-            <View width="100%" height={60} backgroundColor="rgb(99,102,241)" borderRadius={8} />
+            <View
+              width="100%"
+              height={60}
+              backgroundColor="rgb(99,102,241)"
+              borderRadius={8}
+            />
             <Text fontSize={14} fontWeight="600" color="rgb(17,24,39)">
               Card Title
             </Text>
@@ -453,9 +536,20 @@ export function FlatStyleComparison() {
               gap: 8,
             }}
           >
-            <div style={{ width: '100%', height: 60, backgroundColor: 'rgb(99,102,241)', borderRadius: 8 }} />
-            <div style={{ fontSize: 14, fontWeight: 600, color: 'rgb(17,24,39)' }}>Card Title</div>
-            <div style={{ fontSize: 12, color: 'rgb(107,114,128)' }}>Some description text</div>
+            <div
+              style={{
+                width: '100%',
+                height: 60,
+                backgroundColor: 'rgb(99,102,241)',
+                borderRadius: 8,
+              }}
+            />
+            <div style={{ fontSize: 14, fontWeight: 600, color: 'rgb(17,24,39)' }}>
+              Card Title
+            </div>
+            <div style={{ fontSize: 12, color: 'rgb(107,114,128)' }}>
+              Some description text
+            </div>
           </div>
         </ComparisonCell>
         <ComparisonCell label="Tailwind">

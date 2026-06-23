@@ -9,7 +9,13 @@ import { View, Text, XStack, YStack, styled } from 'tamagui'
 // ── layout ───────────────────────────────────────────
 
 const LayoutAbsolute = () => (
-  <View id="sv-layout-relative" width={100} height={100} position="relative" backgroundColor="rgb(200,200,200)">
+  <View
+    id="sv-layout-relative"
+    width={100}
+    height={100}
+    position="relative"
+    backgroundColor="rgb(200,200,200)"
+  >
     <View
       id="sv-layout-absolute"
       position="absolute"
@@ -24,7 +30,13 @@ const LayoutAbsolute = () => (
 )
 
 const LayoutOverflow = () => (
-  <View id="sv-overflow" width={60} height={60} overflow="hidden" backgroundColor="rgb(200,200,200)">
+  <View
+    id="sv-overflow"
+    width={60}
+    height={60}
+    overflow="hidden"
+    backgroundColor="rgb(200,200,200)"
+  >
     <View width={120} height={120} backgroundColor="rgb(255,100,100)" />
   </View>
 )
@@ -42,7 +54,13 @@ const FlexRow = () => (
     width={200}
   >
     <View id="sv-flex-child-1" width={30} height={30} backgroundColor="rgb(255,0,0)" />
-    <View id="sv-flex-child-2" width={30} height={30} backgroundColor="rgb(0,255,0)" flexGrow={1} />
+    <View
+      id="sv-flex-child-2"
+      width={30}
+      height={30}
+      backgroundColor="rgb(0,255,0)"
+      flexGrow={1}
+    />
     <View id="sv-flex-child-3" width={30} height={30} backgroundColor="rgb(0,0,255)" />
   </XStack>
 )
@@ -123,12 +141,7 @@ const Typography = () => (
 
 const Backgrounds = () => (
   <XStack gap={8}>
-    <View
-      id="sv-bg-color"
-      width={60}
-      height={60}
-      backgroundColor="rgb(99,102,241)"
-    />
+    <View id="sv-bg-color" width={60} height={60} backgroundColor="rgb(99,102,241)" />
     <View
       id="sv-bg-gradient"
       width={60}
@@ -267,7 +280,11 @@ const InteractiveFocus = () => (
     backgroundColor="rgb(200,200,200)"
     focusable
     focusStyle={{ borderWidth: 2, borderColor: 'rgb(99,102,241)' }}
-    focusVisibleStyle={{ outlineWidth: 2, outlineColor: 'rgb(99,102,241)', outlineStyle: 'solid' }}
+    focusVisibleStyle={{
+      outlineWidth: 2,
+      outlineColor: 'rgb(99,102,241)',
+      outlineStyle: 'solid',
+    }}
   />
 )
 
@@ -316,7 +333,9 @@ const StyledVariants = () => (
 export function StyleValidation() {
   return (
     <YStack padding={20} gap={24} backgroundColor="$background" id="sv-root">
-      <Text fontSize={20} fontWeight="bold" color="$color">Style Validation</Text>
+      <Text fontSize={20} fontWeight="bold" color="$color">
+        Style Validation
+      </Text>
 
       <Section label="Layout">
         <LayoutAbsolute />
@@ -378,7 +397,9 @@ export function StyleValidation() {
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <YStack gap={8}>
-      <Text fontSize={14} fontWeight="600" color="$color8">{label}</Text>
+      <Text fontSize={14} fontWeight="600" color="$color8">
+        {label}
+      </Text>
       <XStack gap={12} flexWrap="wrap" alignItems="flex-start">
         {children}
       </XStack>

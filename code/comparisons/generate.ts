@@ -48,7 +48,9 @@ function generateMarkdown(): string {
   lines.push('|-----------|------|---------|----------|------|-------|------------|')
   for (const fw of frameworks) {
     const s = stats[fw]
-    const pct = (((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100).toFixed(1)
+    const pct = (((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100).toFixed(
+      1
+    )
     lines.push(
       `| **${fw}** | ${s.full} | ${s.partial} | ${s.webOnly} | ${s.none} | ${s.total} | ${pct}% |`
     )
@@ -230,7 +232,9 @@ function generateHTML(): string {
 ${frameworks
   .map((fw) => {
     const s = stats[fw]
-    const pct = (((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100).toFixed(1)
+    const pct = (((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100).toFixed(
+      1
+    )
     const fullW = ((s.full / s.total) * 100).toFixed(1)
     const partialW = ((s.partial / s.total) * 100).toFixed(1)
     const webW = ((s.webOnly / s.total) * 100).toFixed(1)
@@ -315,7 +319,10 @@ console.log('\n📊 Coverage Summary:\n')
 for (const fw of frameworks) {
   const s = stats[fw]
   const pct = (((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100).toFixed(1)
-  const bar = '█'.repeat(Math.round(Number(pct) / 5)) + '░'.repeat(20 - Math.round(Number(pct) / 5))
-  console.log(`  ${fw.padEnd(12)} ${bar} ${pct}%  (${s.full} full, ${s.partial} partial, ${s.webOnly} web-only, ${s.none} none)`)
+  const bar =
+    '█'.repeat(Math.round(Number(pct) / 5)) + '░'.repeat(20 - Math.round(Number(pct) / 5))
+  console.log(
+    `  ${fw.padEnd(12)} ${bar} ${pct}%  (${s.full} full, ${s.partial} partial, ${s.webOnly} web-only, ${s.none} none)`
+  )
 }
 console.log('')

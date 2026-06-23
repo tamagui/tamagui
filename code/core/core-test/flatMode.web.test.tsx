@@ -1,13 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import {
-  View,
-  Text,
-  createTamagui,
-  styled,
-  StyleObjectValue,
-} from '../web/src'
+import { View, Text, createTamagui, styled, StyleObjectValue } from '../web/src'
 import { simplifiedGetSplitStyles, findRule } from './utils'
 
 beforeAll(() => {

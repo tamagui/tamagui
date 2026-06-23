@@ -1,7 +1,12 @@
 import './tailwind.css'
 import { createRoot } from 'react-dom/client'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
-import { ITEM_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
+import {
+  ITEM_COUNT,
+  scenarios,
+  renderResults,
+  type BenchResult,
+} from '../../shared/bench'
 
 // ── scenario 1: simple ───────────────────────────────
 // tailwind: all styles are static CSS classes, zero runtime cost
@@ -83,7 +88,9 @@ function BenchRunner({
   scenarioId: string
   onResult: (result: BenchResult) => void
 }) {
-  const [phase, setPhase] = useState<'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'>('idle')
+  const [phase, setPhase] = useState<
+    'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'
+  >('idle')
   const [seed, setSeed] = useState(0)
   const startRef = useRef(0)
   const mountTimeRef = useRef(0)
@@ -118,7 +125,9 @@ function BenchRunner({
   if (phase === 'idle') return null
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}>
+    <div
+      style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}
+    >
       <Component seed={seed} />
     </div>
   )

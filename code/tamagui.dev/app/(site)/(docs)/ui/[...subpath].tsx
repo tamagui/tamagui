@@ -47,7 +47,9 @@ export async function loader(props: LoaderProps) {
     ? props.params.subpath[0]
     : props.params.subpath
 
-  const { frontmatter, code } = await getMDXBySlug('data/docs/components', subpath, { tailwind })
+  const { frontmatter, code } = await getMDXBySlug('data/docs/components', subpath, {
+    tailwind,
+  })
   const [componentName, componentVersion] = subpath.split('/')
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)
   return {
@@ -120,6 +122,8 @@ export function DocComponentsPage() {
     </DocsPageFrame>
   )
 }
+
+export default DocComponentsPage
 
 const DocsThemeTint = memo(({ children }: { children: any }) => {
   const isTinted = useIsDocsTinted()

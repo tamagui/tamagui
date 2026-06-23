@@ -84,13 +84,17 @@ function killPort(port: number) {
     const pids = execSync(`lsof -ti:${port} 2>/dev/null`).toString().trim()
     if (pids) {
       for (const pid of pids.split('\n')) {
-        try { process.kill(parseInt(pid)) } catch {}
+        try {
+          process.kill(parseInt(pid))
+        } catch {}
       }
     }
   } catch {}
 }
 
-async function runBenchmark(port: number): Promise<Record<string, { mount: number; rerender: number }>> {
+async function runBenchmark(
+  port: number
+): Promise<Record<string, { mount: number; rerender: number }>> {
   const { chromium } = await import('playwright')
   const browser = await chromium.launch()
   const page = await browser.newPage()
@@ -102,8 +106,12 @@ async function runBenchmark(port: number): Promise<Record<string, { mount: numbe
 
   const results: Record<string, { mount: number; rerender: number }> = {}
   for (const s of SCENARIOS) {
-    const mount = await page.locator(`#bench-result-${s}-mount`).getAttribute('data-value')
-    const rerender = await page.locator(`#bench-result-${s}-rerender`).getAttribute('data-value')
+    const mount = await page
+      .locator(`#bench-result-${s}-mount`)
+      .getAttribute('data-value')
+    const rerender = await page
+      .locator(`#bench-result-${s}-rerender`)
+      .getAttribute('data-value')
     results[s] = {
       mount: parseFloat(mount ?? '0'),
       rerender: parseFloat(rerender ?? '0'),
@@ -125,8 +133,10 @@ function averageResults(
     if (mounts.length >= 3) {
       mounts.sort((a, b) => a - b)
       rerenders.sort((a, b) => a - b)
-      mounts.shift(); mounts.pop()
-      rerenders.shift(); rerenders.pop()
+      mounts.shift()
+      mounts.pop()
+      rerenders.shift()
+      rerenders.pop()
     }
     avg[s] = {
       mount: mounts.reduce((a, b) => a + b, 0) / mounts.length,
@@ -142,14 +152,18 @@ function printTable(results: Results) {
 
   // header
   console.log('')
-  console.log('╔' + '═'.repeat(22) + frameworks.map(() => '═'.repeat(colWidth + 1)).join('') + '╗')
+  console.log(
+    '╔' + '═'.repeat(22) + frameworks.map(() => '═'.repeat(colWidth + 1)).join('') + '╗'
+  )
   console.log(
     '║' +
       ' Mount (ms)'.padEnd(22) +
       frameworks.map((f) => f.padStart(colWidth) + ' ').join('') +
       '║'
   )
-  console.log('╠' + '═'.repeat(22) + frameworks.map(() => '═'.repeat(colWidth + 1)).join('') + '╣')
+  console.log(
+    '╠' + '═'.repeat(22) + frameworks.map(() => '═'.repeat(colWidth + 1)).join('') + '╣'
+  )
 
   // find baseline (inline) for ratio
   const baseline = results['Inline (baseline)']
@@ -164,14 +178,18 @@ function printTable(results: Results) {
     console.log('║' + label + vals.join(' ') + ' ║')
   }
 
-  console.log('╠' + '═'.repeat(22) + frameworks.map(() => '═'.repeat(colWidth + 1)).join('') + '╣')
+  console.log(
+    '╠' + '═'.repeat(22) + frameworks.map(() => '═'.repeat(colWidth + 1)).join('') + '╣'
+  )
   console.log(
     '║' +
       ' Re-render (ms)'.padEnd(22) +
       frameworks.map((f) => f.padStart(colWidth) + ' ').join('') +
       '║'
   )
-  console.log('╠' + '═'.repeat(22) + frameworks.map(() => '═'.repeat(colWidth + 1)).join('') + '╣')
+  console.log(
+    '╠' + '═'.repeat(22) + frameworks.map(() => '═'.repeat(colWidth + 1)).join('') + '╣'
+  )
 
   for (const s of SCENARIOS) {
     const label = SCENARIO_LABELS[s].padEnd(22)
@@ -183,7 +201,9 @@ function printTable(results: Results) {
     console.log('║' + label + vals.join(' ') + ' ║')
   }
 
-  console.log('╚' + '═'.repeat(22) + frameworks.map(() => '═'.repeat(colWidth + 1)).join('') + '╝')
+  console.log(
+    '╚' + '═'.repeat(22) + frameworks.map(() => '═'.repeat(colWidth + 1)).join('') + '╝'
+  )
   console.log('')
   console.log(`  ${numRuns} run(s), 500 components per scenario`)
   if (numRuns >= 3) console.log('  (min/max dropped)')
@@ -229,26 +249,26 @@ function generateHtml(results: Results): string {
 <tbody>
 <tr class="section-header"><td colspan="${frameworks.length + 1}">Mount (ms)</td></tr>
 ${SCENARIOS.map((s) => {
-    return `<tr><td>${SCENARIO_LABELS[s]}</td>${frameworks
-      .map((f) => {
-        const v = results[f][s].mount
-        const ratio = baseline ? v / baseline[s].mount : 1
-        const color = colorForRatio(ratio)
-        return `<td><span class="value" style="color:${color}">${v.toFixed(1)}</span> <span class="ratio">${ratio.toFixed(1)}x</span></td>`
-      })
-      .join('')}</tr>`
-  }).join('\n')}
+  return `<tr><td>${SCENARIO_LABELS[s]}</td>${frameworks
+    .map((f) => {
+      const v = results[f][s].mount
+      const ratio = baseline ? v / baseline[s].mount : 1
+      const color = colorForRatio(ratio)
+      return `<td><span class="value" style="color:${color}">${v.toFixed(1)}</span> <span class="ratio">${ratio.toFixed(1)}x</span></td>`
+    })
+    .join('')}</tr>`
+}).join('\n')}
 <tr class="section-header"><td colspan="${frameworks.length + 1}">Re-render (ms)</td></tr>
 ${SCENARIOS.map((s) => {
-    return `<tr><td>${SCENARIO_LABELS[s]}</td>${frameworks
-      .map((f) => {
-        const v = results[f][s].rerender
-        const ratio = baseline ? v / baseline[s].rerender : 1
-        const color = colorForRatio(ratio)
-        return `<td><span class="value" style="color:${color}">${v.toFixed(1)}</span> <span class="ratio">${ratio.toFixed(1)}x</span></td>`
-      })
-      .join('')}</tr>`
-  }).join('\n')}
+  return `<tr><td>${SCENARIO_LABELS[s]}</td>${frameworks
+    .map((f) => {
+      const v = results[f][s].rerender
+      const ratio = baseline ? v / baseline[s].rerender : 1
+      const color = colorForRatio(ratio)
+      return `<td><span class="value" style="color:${color}">${v.toFixed(1)}</span> <span class="ratio">${ratio.toFixed(1)}x</span></td>`
+    })
+    .join('')}</tr>`
+}).join('\n')}
 </tbody>
 </table>
 </body>
@@ -300,7 +320,8 @@ async function main() {
           runs.push(result)
           process.stdout.write(` #${i + 1}`)
         }
-        allResults[bench.name] = numRuns >= 3 ? averageResults(runs) : runs[runs.length - 1]
+        allResults[bench.name] =
+          numRuns >= 3 ? averageResults(runs) : runs[runs.length - 1]
         console.log(' ✓')
       } catch (err: any) {
         console.log(` ❌ ${err.message}`)

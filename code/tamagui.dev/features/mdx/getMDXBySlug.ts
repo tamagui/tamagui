@@ -89,7 +89,10 @@ function loadTransform() {
     const mod = requireFn('@tamagui/to-tailwind')
     tamaguiToTailwindFn = mod.tamaguiToTailwind
   } catch (err) {
-    console.warn('[tailwind] failed to load @tamagui/to-tailwind:', (err as Error).message)
+    console.warn(
+      '[tailwind] failed to load @tamagui/to-tailwind:',
+      (err as Error).message
+    )
     tamaguiToTailwindFn = (s: string) => s
   }
   return tamaguiToTailwindFn!
@@ -137,11 +140,7 @@ export interface GetMDXOptions {
   tailwind?: boolean
 }
 
-export const getMDXBySlug = (
-  basePath: string,
-  slug: string,
-  options?: GetMDXOptions
-) => {
+export const getMDXBySlug = (basePath: string, slug: string, options?: GetMDXOptions) => {
   const plugins = [rehypeHeroTemplate]
 
   // when tailwind mode is requested, add the transform plugin

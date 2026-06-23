@@ -46,7 +46,9 @@ test('auto benchmark - all scenarios complete', async ({ page }) => {
   for (const scenario of scenarios) {
     console.log(`  ${scenario.toUpperCase()}:`)
     for (const [renderer, data] of Object.entries(results[scenario])) {
-      console.log(`    ${renderer.padEnd(12)} mount: ${data.mount.padStart(8)}ms  rerender: ${data.rerender.padStart(8)}ms`)
+      console.log(
+        `    ${renderer.padEnd(12)} mount: ${data.mount.padStart(8)}ms  rerender: ${data.rerender.padStart(8)}ms`
+      )
     }
     console.log('')
   }
@@ -56,7 +58,9 @@ test('auto benchmark - all scenarios complete', async ({ page }) => {
       const mount = parseFloat(data.mount)
       const rerender = parseFloat(data.rerender)
       expect(mount, `${scenario}/${renderer} mount should be > 0`).toBeGreaterThan(0)
-      expect(rerender, `${scenario}/${renderer} rerender should be > 0`).toBeGreaterThan(0)
+      expect(rerender, `${scenario}/${renderer} rerender should be > 0`).toBeGreaterThan(
+        0
+      )
     }
   }
 

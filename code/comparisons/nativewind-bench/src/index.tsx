@@ -2,7 +2,12 @@ import './global.css'
 import { createRoot } from 'react-dom/client'
 import { View } from 'react-native'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
-import { ITEM_COUNT, scenarios, renderResults, type BenchResult } from '../../shared/bench'
+import {
+  ITEM_COUNT,
+  scenarios,
+  renderResults,
+  type BenchResult,
+} from '../../shared/bench'
 
 // ── scenario 1: simple ───────────────────────────────
 
@@ -34,10 +39,7 @@ function RichItems({ seed }: { seed: number }) {
     const arr = []
     for (let i = 0; i < ITEM_COUNT; i++) {
       arr.push(
-        <View
-          key={i + seed * ITEM_COUNT}
-          className={richClasses[(i + seed) % 3]}
-        />
+        <View key={i + seed * ITEM_COUNT} className={richClasses[(i + seed) % 3]} />
       )
     }
     return <>{arr}</>
@@ -76,7 +78,9 @@ function BenchRunner({
   scenarioId: string
   onResult: (result: BenchResult) => void
 }) {
-  const [phase, setPhase] = useState<'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'>('idle')
+  const [phase, setPhase] = useState<
+    'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'
+  >('idle')
   const [seed, setSeed] = useState(0)
   const startRef = useRef(0)
   const mountTimeRef = useRef(0)
@@ -111,7 +115,9 @@ function BenchRunner({
   if (phase === 'idle') return null
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}>
+    <div
+      style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}
+    >
       <Component seed={seed} />
     </div>
   )
@@ -161,8 +167,14 @@ function App() {
         onClick={handleStart}
         disabled={running}
         style={{
-          padding: '8px 20px', fontSize: 14, borderRadius: 6,
-          border: 'none', background: '#f472b6', color: 'white', cursor: 'pointer', marginBottom: 16,
+          padding: '8px 20px',
+          fontSize: 14,
+          borderRadius: 6,
+          border: 'none',
+          background: '#f472b6',
+          color: 'white',
+          cursor: 'pointer',
+          marginBottom: 16,
         }}
       >
         {running ? `Running ${currentIdx + 1}/${scenarios.length}...` : 'Run Benchmarks'}

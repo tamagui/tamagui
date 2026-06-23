@@ -57,7 +57,12 @@ export const categories: Category[] = [
           nativewind: 'flex / hidden',
           uniwind: 'flex / block / hidden',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
         notes: 'RN only supports flex natively',
       },
       {
@@ -69,7 +74,12 @@ export const categories: Category[] = [
           nativewind: 'absolute / relative',
           uniwind: 'absolute / relative',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
         notes: 'RN lacks fixed/sticky',
       },
       {
@@ -81,7 +91,12 @@ export const categories: Category[] = [
           nativewind: 'top-4 right-4 bottom-4 left-4',
           uniwind: 'top-4 right-4 bottom-4 left-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'inset',
@@ -92,7 +107,12 @@ export const categories: Category[] = [
           nativewind: 'inset-4',
           uniwind: 'inset-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'z-index',
@@ -103,7 +123,12 @@ export const categories: Category[] = [
           nativewind: 'z-10',
           uniwind: 'z-10',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'overflow',
@@ -114,7 +139,12 @@ export const categories: Category[] = [
           nativewind: 'overflow-hidden / overflow-scroll',
           uniwind: 'overflow-hidden',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'partial',
+        },
       },
       {
         name: 'aspect-ratio',
@@ -125,7 +155,12 @@ export const categories: Category[] = [
           nativewind: 'aspect-square / aspect-video',
           uniwind: 'aspect-square',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'box-sizing',
@@ -136,7 +171,12 @@ export const categories: Category[] = [
           nativewind: 'box-border',
           uniwind: 'box-border',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
       },
       {
         name: 'isolation',
@@ -145,7 +185,12 @@ export const categories: Category[] = [
           tamagui: '$isolation="isolate"',
           tailwind: 'isolate / isolation-auto',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'visibility',
@@ -153,7 +198,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'visible / invisible / collapse',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
         notes: 'Tamagui uses opacity/display instead',
       },
       {
@@ -162,7 +212,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'float-left / float-right',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
         notes: 'Not applicable to RN flexbox model',
       },
       {
@@ -171,7 +226,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'clear-left / clear-both',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'columns',
@@ -180,7 +240,12 @@ export const categories: Category[] = [
           tamagui: '$columnCount={3}',
           tailwind: 'columns-3',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'object-fit',
@@ -188,7 +253,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'object-cover / object-contain',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
         notes: 'Also available as Image resizeMode on native',
       },
       {
@@ -197,7 +267,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'object-center / object-top',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -217,7 +292,12 @@ export const categories: Category[] = [
           nativewind: 'flex-row / flex-col',
           uniwind: 'flex-row / flex-col',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'flex-wrap',
@@ -228,7 +308,12 @@ export const categories: Category[] = [
           nativewind: 'flex-wrap / flex-nowrap',
           uniwind: 'flex-wrap / flex-nowrap',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'flex',
@@ -239,7 +324,12 @@ export const categories: Category[] = [
           nativewind: 'flex-1',
           uniwind: 'flex-1',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
         notes: 'RN flex only takes a single number',
       },
       {
@@ -251,7 +341,12 @@ export const categories: Category[] = [
           nativewind: 'grow / grow-0',
           uniwind: 'grow / grow-0',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'flex-shrink',
@@ -262,7 +357,12 @@ export const categories: Category[] = [
           nativewind: 'shrink / shrink-0',
           uniwind: 'shrink / shrink-0',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'flex-basis',
@@ -273,7 +373,12 @@ export const categories: Category[] = [
           nativewind: 'basis-auto',
           uniwind: 'basis-auto',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'partial',
+        },
       },
       {
         name: 'justify-content',
@@ -284,7 +389,12 @@ export const categories: Category[] = [
           nativewind: 'justify-center / justify-between',
           uniwind: 'justify-center / justify-between',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'align-items',
@@ -295,7 +405,12 @@ export const categories: Category[] = [
           nativewind: 'items-center / items-start',
           uniwind: 'items-center / items-start',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'align-self',
@@ -306,7 +421,12 @@ export const categories: Category[] = [
           nativewind: 'self-center / self-start',
           uniwind: 'self-center / self-start',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'align-content',
@@ -317,7 +437,12 @@ export const categories: Category[] = [
           nativewind: 'content-center',
           uniwind: 'content-center',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'gap',
@@ -328,7 +453,12 @@ export const categories: Category[] = [
           nativewind: 'gap-4',
           uniwind: 'gap-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'order',
@@ -337,7 +467,12 @@ export const categories: Category[] = [
           tamagui: '$order={1}',
           tailwind: 'order-1 / order-first / order-last',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -355,7 +490,12 @@ export const categories: Category[] = [
           tamagui: '$gridTemplateColumns="repeat(3, 1fr)"',
           tailwind: 'grid-cols-3',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'grid-column',
@@ -364,7 +504,12 @@ export const categories: Category[] = [
           tamagui: '$gridColumn="span 2"',
           tailwind: 'col-span-2 / col-start-1',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'grid-row',
@@ -373,7 +518,12 @@ export const categories: Category[] = [
           tamagui: '$gridRow="span 2"',
           tailwind: 'row-span-2 / row-start-1',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'grid-template-areas',
@@ -382,7 +532,12 @@ export const categories: Category[] = [
           tamagui: '$gridTemplateAreas="..."',
           tailwind: 'grid-areas-[...]',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'grid-auto-flow',
@@ -390,7 +545,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'grid-flow-row / grid-flow-col',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'place-content/items/self',
@@ -398,7 +558,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'place-content-center / place-items-center',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -418,7 +583,12 @@ export const categories: Category[] = [
           nativewind: 'p-4 pt-2 px-3',
           uniwind: 'p-4 pt-2 px-3',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'margin',
@@ -429,7 +599,12 @@ export const categories: Category[] = [
           nativewind: 'm-4 mt-2 mx-3',
           uniwind: 'm-4 mt-2 mx-3',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'padding-block/inline (logical)',
@@ -438,7 +613,12 @@ export const categories: Category[] = [
           tamagui: '$paddingBlock={10} $paddingInline={10}',
           tailwind: 'ps-4 pe-4 / pb-4 pt-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'margin-block/inline (logical)',
@@ -447,7 +627,12 @@ export const categories: Category[] = [
           tamagui: '$marginBlock={10} $marginInline={10}',
           tailwind: 'ms-4 me-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'space-between',
@@ -456,7 +641,12 @@ export const categories: Category[] = [
           tailwind: 'space-x-4 / space-y-4',
           nativewind: 'space-x-4 / space-y-4',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
         notes: 'Tamagui uses gap instead',
       },
     ],
@@ -477,7 +667,12 @@ export const categories: Category[] = [
           nativewind: 'w-24 / w-1/2 / w-full',
           uniwind: 'w-24 / w-1/2 / w-full',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'height',
@@ -488,7 +683,12 @@ export const categories: Category[] = [
           nativewind: 'h-24 / h-full',
           uniwind: 'h-24 / h-full',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'min-width / max-width',
@@ -499,7 +699,12 @@ export const categories: Category[] = [
           nativewind: 'min-w-0 max-w-lg',
           uniwind: 'min-w-0 max-w-lg',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'min-height / max-height',
@@ -510,7 +715,12 @@ export const categories: Category[] = [
           nativewind: 'min-h-0 max-h-screen',
           uniwind: 'min-h-0 max-h-screen',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'inline-size / block-size',
@@ -519,7 +729,12 @@ export const categories: Category[] = [
           tamagui: '$inlineSize={100} $blockSize={100}',
           tailwind: 'inline-size-* / block-size-*',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'none', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'none',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -539,7 +754,12 @@ export const categories: Category[] = [
           nativewind: 'font-sans',
           uniwind: 'font-sans',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'font-size',
@@ -550,7 +770,12 @@ export const categories: Category[] = [
           nativewind: 'text-sm / text-lg',
           uniwind: 'text-sm / text-lg',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'font-weight',
@@ -561,7 +786,12 @@ export const categories: Category[] = [
           nativewind: 'font-bold / font-semibold',
           uniwind: 'font-bold / font-semibold',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'font-style',
@@ -572,7 +802,12 @@ export const categories: Category[] = [
           nativewind: 'italic',
           uniwind: 'italic',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'color',
@@ -583,7 +818,12 @@ export const categories: Category[] = [
           nativewind: 'text-red-500',
           uniwind: 'text-red-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'text-align',
@@ -594,7 +834,12 @@ export const categories: Category[] = [
           nativewind: 'text-center',
           uniwind: 'text-center',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'text-transform',
@@ -605,7 +850,12 @@ export const categories: Category[] = [
           nativewind: 'uppercase / lowercase',
           uniwind: 'uppercase',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'text-decoration',
@@ -616,7 +866,12 @@ export const categories: Category[] = [
           nativewind: 'underline / line-through',
           uniwind: 'underline',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'partial',
+        },
       },
       {
         name: 'letter-spacing',
@@ -627,7 +882,12 @@ export const categories: Category[] = [
           nativewind: 'tracking-tight',
           uniwind: 'tracking-tight',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'line-height',
@@ -638,7 +898,12 @@ export const categories: Category[] = [
           nativewind: 'leading-tight',
           uniwind: 'leading-tight',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'line-clamp',
@@ -648,7 +913,12 @@ export const categories: Category[] = [
           tailwind: 'line-clamp-3',
           nativewind: 'line-clamp-3',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: 'white-space',
@@ -657,7 +927,12 @@ export const categories: Category[] = [
           tamagui: '$ws="nowrap"',
           tailwind: 'whitespace-nowrap / whitespace-pre',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'word-break',
@@ -666,7 +941,12 @@ export const categories: Category[] = [
           tamagui: '$wb="break-all"',
           tailwind: 'break-words / break-all',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'text-overflow',
@@ -674,7 +954,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'truncate / text-ellipsis / text-clip',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
         notes: 'Tamagui uses numberOfLines prop',
       },
       {
@@ -683,7 +968,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'indent-4 / indent-8',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'vertical-align',
@@ -692,7 +982,12 @@ export const categories: Category[] = [
           tamagui: '$va="middle"',
           tailwind: 'align-middle / align-top',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'font-variant-numeric',
@@ -700,7 +995,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'tabular-nums / oldstyle-nums',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'text-shadow',
@@ -709,7 +1009,12 @@ export const categories: Category[] = [
           tamagui: '$textShadow="0px 1px 2px rgba(0,0,0,0.3)"',
           tailwind: 'text-shadow-sm / text-shadow-lg',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'none', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'none',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -729,7 +1034,12 @@ export const categories: Category[] = [
           nativewind: 'bg-red-500',
           uniwind: 'bg-red-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'background-image',
@@ -752,7 +1062,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'bg-center / bg-top / bg-bottom',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'background-size',
@@ -760,7 +1075,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'bg-cover / bg-contain / bg-auto',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'background-repeat',
@@ -768,7 +1088,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'bg-repeat / bg-no-repeat',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'background-clip',
@@ -776,7 +1101,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'bg-clip-border / bg-clip-text',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -796,7 +1126,12 @@ export const categories: Category[] = [
           nativewind: 'border / border-2',
           uniwind: 'border / border-2',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'border-color',
@@ -807,7 +1142,12 @@ export const categories: Category[] = [
           nativewind: 'border-red-500',
           uniwind: 'border-red-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'border-style',
@@ -818,7 +1158,12 @@ export const categories: Category[] = [
           nativewind: 'border-solid / border-dashed',
           uniwind: 'border-solid',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'partial',
+        },
       },
       {
         name: 'border-radius',
@@ -829,7 +1174,12 @@ export const categories: Category[] = [
           nativewind: 'rounded-lg',
           uniwind: 'rounded-lg',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'border-width (logical)',
@@ -838,7 +1188,12 @@ export const categories: Category[] = [
           tamagui: '$borderBlockWidth={1} $borderInlineWidth={2}',
           tailwind: 'border-s / border-e',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'outline',
@@ -848,7 +1203,12 @@ export const categories: Category[] = [
           tailwind: 'outline / outline-2 / outline-blue-500',
           nativewind: 'outline / outline-2',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: 'ring',
@@ -858,7 +1218,12 @@ export const categories: Category[] = [
           nativewind: 'ring / ring-2',
           uniwind: 'ring / ring-2',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
         notes: 'Tamagui can achieve this with boxShadow',
       },
       {
@@ -868,7 +1233,12 @@ export const categories: Category[] = [
           tailwind: 'divide-x / divide-y / divide-gray-200',
           nativewind: 'divide-x / divide-y',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -888,7 +1258,12 @@ export const categories: Category[] = [
           nativewind: 'opacity-50',
           uniwind: 'opacity-50',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'box-shadow',
@@ -899,7 +1274,12 @@ export const categories: Category[] = [
           nativewind: 'shadow-sm / shadow-lg',
           uniwind: 'shadow-sm / shadow-lg',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
         notes: 'RN shadow implementation differs from CSS',
       },
       {
@@ -923,7 +1303,12 @@ export const categories: Category[] = [
           tamagui: '$cur="pointer"',
           tailwind: 'cursor-pointer / cursor-default',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'pointer-events',
@@ -933,7 +1318,12 @@ export const categories: Category[] = [
           tailwind: 'pointer-events-none / pointer-events-auto',
           nativewind: 'pointer-events-none',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: 'user-select',
@@ -942,7 +1332,12 @@ export const categories: Category[] = [
           tamagui: '$ussel="none"',
           tailwind: 'select-none / select-text / select-all',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -960,7 +1355,12 @@ export const categories: Category[] = [
           tamagui: '$filter="blur(4px)"',
           tailwind: 'blur-sm / brightness-150 / contrast-125',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'backdrop-filter',
@@ -968,7 +1368,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'backdrop-blur-sm / backdrop-brightness-150',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -986,7 +1391,12 @@ export const categories: Category[] = [
           tamagui: '$tr="rotate(45deg) scale(1.1)"',
           tailwind: 'transform',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'translate',
@@ -997,7 +1407,12 @@ export const categories: Category[] = [
           nativewind: 'translate-x-4',
           uniwind: 'translate-x-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'scale',
@@ -1008,7 +1423,12 @@ export const categories: Category[] = [
           nativewind: 'scale-150',
           uniwind: 'scale-150',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'rotate',
@@ -1019,7 +1439,12 @@ export const categories: Category[] = [
           nativewind: 'rotate-45',
           uniwind: 'rotate-45',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'skew',
@@ -1030,7 +1455,12 @@ export const categories: Category[] = [
           nativewind: 'skew-x-12',
           uniwind: 'skew-x-12',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'transform-origin',
@@ -1040,7 +1470,12 @@ export const categories: Category[] = [
           tailwind: 'origin-center / origin-top-left',
           nativewind: 'origin-center',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: 'perspective',
@@ -1049,7 +1484,12 @@ export const categories: Category[] = [
           tamagui: '$perspective={500}',
           tailwind: 'perspective-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'backface-visibility',
@@ -1058,7 +1498,12 @@ export const categories: Category[] = [
           tamagui: '$backfaceVisibility="hidden"',
           tailwind: 'backface-hidden / backface-visible',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -1077,7 +1522,12 @@ export const categories: Category[] = [
           tailwind: 'animate-spin / animate-bounce / animate-pulse',
           nativewind: 'animate-spin',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
         notes:
           'Tamagui uses pluggable animation drivers (CSS, reanimated, motion, native)',
       },
@@ -1087,7 +1537,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'transition / transition-colors / transition-all',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
         notes: 'Tamagui animation driver handles this automatically',
       },
       {
@@ -1096,7 +1551,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'duration-150 / duration-300 / duration-500',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'transition-timing-function',
@@ -1104,7 +1564,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'ease-in / ease-out / ease-in-out',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
         notes: 'Tamagui configures this per-animation driver',
       },
       {
@@ -1113,7 +1578,12 @@ export const categories: Category[] = [
         examples: {
           tamagui: '$enter:o={0} $exit:o={0}',
         },
-        support: { tamagui: 'full', tailwind: 'none', nativewind: 'none', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'none',
+          nativewind: 'none',
+          uniwind: 'none',
+        },
         notes: 'Tamagui-specific: AnimatePresence + enterStyle/exitStyle',
       },
     ],
@@ -1133,7 +1603,12 @@ export const categories: Category[] = [
           tailwind: 'hover:bg-blue-500',
           nativewind: 'hover:bg-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
         notes: 'Uniwind has no hover (mobile-focused)',
       },
       {
@@ -1145,7 +1620,12 @@ export const categories: Category[] = [
           nativewind: 'active:bg-blue-500',
           uniwind: 'active:bg-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'focus',
@@ -1156,7 +1636,12 @@ export const categories: Category[] = [
           nativewind: 'focus:border-blue-500',
           uniwind: 'focus:border-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'focus-visible',
@@ -1166,7 +1651,12 @@ export const categories: Category[] = [
           tailwind: 'focus-visible:outline-blue-500',
           nativewind: 'focus-visible:outline-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'focus-within',
@@ -1175,7 +1665,12 @@ export const categories: Category[] = [
           tamagui: '$focus-within:bg="blue"',
           tailwind: 'focus-within:bg-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'disabled',
@@ -1186,7 +1681,12 @@ export const categories: Category[] = [
           nativewind: 'disabled:opacity-50',
           uniwind: 'disabled:opacity-50',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'group hover/press',
@@ -1195,7 +1695,12 @@ export const categories: Category[] = [
           tailwind: 'group-hover:text-white',
           nativewind: 'group-hover:text-white',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
         notes: 'Tamagui uses group prop on parent + grouping',
       },
       {
@@ -1205,7 +1710,12 @@ export const categories: Category[] = [
           tailwind: 'peer-focus:text-blue-500',
           nativewind: 'peer-focus:text-blue-500',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -1225,7 +1735,12 @@ export const categories: Category[] = [
           nativewind: 'sm:bg-red-500 md:p-5',
           uniwind: 'sm:bg-red-500 md:p-5',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'dark mode',
@@ -1236,7 +1751,12 @@ export const categories: Category[] = [
           nativewind: 'dark:bg-black',
           uniwind: 'dark:bg-black',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'combined media + pseudo',
@@ -1246,7 +1766,12 @@ export const categories: Category[] = [
           tailwind: 'sm:hover:bg-blue-500',
           nativewind: 'sm:hover:bg-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: 'container queries',
@@ -1254,7 +1779,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: '@container / @lg:grid-cols-3',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'prefers-reduced-motion',
@@ -1262,7 +1792,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'motion-reduce:animate-none',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -1281,7 +1816,12 @@ export const categories: Category[] = [
           nativewind: 'web:cursor-pointer',
           uniwind: 'web:cursor-pointer',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
         notes: 'Tailwind is web-only by default',
       },
       {
@@ -1292,7 +1832,12 @@ export const categories: Category[] = [
           nativewind: 'native:p-5',
           uniwind: 'native:p-5',
         },
-        support: { tamagui: 'full', tailwind: 'none', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'none',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: 'ios-specific styles',
@@ -1302,7 +1847,12 @@ export const categories: Category[] = [
           nativewind: 'ios:p-5',
           uniwind: 'ios:p-5',
         },
-        support: { tamagui: 'full', tailwind: 'none', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'none',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'android-specific styles',
@@ -1312,7 +1862,12 @@ export const categories: Category[] = [
           nativewind: 'android:p-5',
           uniwind: 'android:p-5',
         },
-        support: { tamagui: 'full', tailwind: 'none', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'none',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'safe area insets',
@@ -1321,7 +1876,12 @@ export const categories: Category[] = [
           nativewind: 'pt-safe',
           uniwind: 'pt-safe / pt-safe-or-4',
         },
-        support: { tamagui: 'none', tailwind: 'none', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'none',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
         notes: 'Tamagui uses useSafeAreaInsets hook',
       },
     ],
@@ -1340,7 +1900,12 @@ export const categories: Category[] = [
           tailwind: 'before:content-[""] after:block',
           nativewind: 'before:content-[""]',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: '::placeholder',
@@ -1349,7 +1914,12 @@ export const categories: Category[] = [
           tailwind: 'placeholder:text-gray-400',
           nativewind: 'placeholder:text-gray-400',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: '::selection',
@@ -1357,7 +1927,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'selection:bg-blue-200',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'first-child / last-child',
@@ -1366,7 +1941,12 @@ export const categories: Category[] = [
           tailwind: 'first:pt-0 last:pb-0',
           nativewind: 'first:pt-0 last:pb-0',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -1383,7 +1963,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'border-collapse / border-separate',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'border-spacing',
@@ -1391,7 +1976,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'border-spacing-2',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'table-layout',
@@ -1399,7 +1989,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'table-auto / table-fixed',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -1417,7 +2012,12 @@ export const categories: Category[] = [
           tailwind: 'fill-red-500 / fill-current',
           nativewind: 'fill-red-500',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'stroke',
@@ -1426,7 +2026,12 @@ export const categories: Category[] = [
           tailwind: 'stroke-red-500 / stroke-current',
           nativewind: 'stroke-red-500',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'stroke-width',
@@ -1435,7 +2040,12 @@ export const categories: Category[] = [
           tailwind: 'stroke-1 / stroke-2',
           nativewind: 'stroke-1',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -1452,7 +2062,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'scroll-smooth / scroll-auto',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'scroll-snap',
@@ -1460,7 +2075,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'snap-x / snap-mandatory / snap-start',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'touch-action',
@@ -1468,7 +2088,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'touch-none / touch-pan-x',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'resize',
@@ -1476,7 +2101,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'resize / resize-x / resize-y / resize-none',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'appearance',
@@ -1484,7 +2114,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'appearance-none / appearance-auto',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'caret-color',
@@ -1493,7 +2128,12 @@ export const categories: Category[] = [
           tamagui: '$caretColor="blue"',
           tailwind: 'caret-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'accent-color',
@@ -1501,7 +2141,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'accent-blue-500',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'will-change',
@@ -1509,7 +2154,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'will-change-transform / will-change-scroll',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -1527,7 +2177,12 @@ export const categories: Category[] = [
           tailwind: 'sr-only / not-sr-only',
           nativewind: 'sr-only',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: 'forced-color-adjust',
@@ -1535,7 +2190,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'forced-color-adjust-auto / forced-color-adjust-none',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -1555,7 +2215,12 @@ export const categories: Category[] = [
           nativewind: 'tailwind.config.js',
           uniwind: 'unistyles theme',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'theme switching',
@@ -1566,7 +2231,12 @@ export const categories: Category[] = [
           nativewind: 'dark: variant',
           uniwind: 'useInitialTheme()',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
         notes: 'Tamagui has nested theme support with sub-themes',
       },
       {
@@ -1575,7 +2245,12 @@ export const categories: Category[] = [
         examples: {
           tamagui: '<Theme name="blue_Button">',
         },
-        support: { tamagui: 'full', tailwind: 'none', nativewind: 'none', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'none',
+          nativewind: 'none',
+          uniwind: 'partial',
+        },
         notes: 'Tamagui unique: deeply nested component-aware themes',
       },
       {
@@ -1586,7 +2261,12 @@ export const categories: Category[] = [
           tailwind: 'bg-[rgb(123,45,67)]',
           nativewind: 'bg-[rgb(123,45,67)]',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -1597,7 +2277,10 @@ export function computeCoverage() {
   const frameworks = ['tamagui', 'tailwind', 'nativewind', 'uniwind'] as const
   const stats = Object.fromEntries(
     frameworks.map((fw) => [fw, { full: 0, partial: 0, webOnly: 0, none: 0, total: 0 }])
-  ) as Record<(typeof frameworks)[number], { full: number; partial: number; webOnly: number; none: number; total: number }>
+  ) as Record<
+    (typeof frameworks)[number],
+    { full: number; partial: number; webOnly: number; none: number; total: number }
+  >
 
   for (const cat of categories) {
     for (const util of cat.utilities) {

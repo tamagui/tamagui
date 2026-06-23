@@ -172,7 +172,7 @@ const updateProject = async (req: Request) => {
     return Response.json({ error: 'Project not found or access denied' }, { status: 404 })
   }
 
-  const updates: Record<string, string> = {}
+  const updates: { name?: string; domain?: string } = {}
   if (name && name.length > 2) updates.name = name
   if (domain && domain.length > 2) updates.domain = domain
 
