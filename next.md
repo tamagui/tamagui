@@ -1,3 +1,57 @@
+v3 release plan:
+
+Goal: turn the current v2 work into v3 by using the major boundary for cleanup,
+not by expanding scope into every old moonshot.
+
+Core scope:
+
+- remove deprecated / duplicate API paths
+  - `focusable` => `tabIndex`
+  - `fullscreen` => `inset: 0, position: 'absolute'`
+  - remove deprecated Sheet/Menu/Tabs/Input/Toast/Popover/metro/theme-builder paths
+    where the replacement is clear
+  - clean out old configs and compatibility paths, at least v1-v3
+
+- simplify theme model
+  - remove component themes
+  - components should have an explicit `defaultTheme` instead
+  - use surface themes like `surface1` instead of `ListItem`/component sub-themes
+  - remove `name` from `styled()`
+  - remove `inverse` in favor of SSR-safe inverse sub-themes
+
+- core styling/runtime cleanup
+  - remove `styleable` forwarding ref behavior
+  - remove `inlineWhenUnflattened`
+  - remove `usePropsAndStyle` from icon `themed` or replace the pattern
+  - remove `getToken` / shift weirdness where possible
+  - keep `style()` helper out of this first v3 pass unless a very obvious small
+    version falls out naturally
+
+- native interaction work
+  - only pull keyboard-controller work in if it is already close enough to finish
+
+- component simplification
+  - make props more consistent across components
+  - clean up composable component structure, especially Dialog weirdness
+  - simplify Select/ListItem where it directly helps perf or API clarity
+  - remove more `ThemeableStack` / `SizableStack` usage and docs
+
+Important extra considerations:
+
+- Tailwind mode already exists; do not make v3 about re-proving Tailwind.
+- Make web as close to 100% RN-free as practical.
+  - likely remaining big pieces: Input and ScrollView
+  - audit smaller RN/RNW usages and remove straightforward ones
+- Flat mode decision:
+  - probably drop it
+  - only keep/improve it if a much cleaner shape becomes obvious
+- Tamagui mode may still get style tweaks, but keep them focused and compatible
+  with the cleanup goals above.
+- Avoid multiple runtime paths and transitional fallbacks where the v3 break lets
+  us choose one clear API.
+
+---
+
 # compiler improvements (updated June 2026)
 
 5-scenario bench (500 components simple/rich/group, 150 heavy, Chromium, 1 run):
