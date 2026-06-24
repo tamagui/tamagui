@@ -1,34 +1,26 @@
 v3 release plan:
 
-Goal: turn the current v2 work into v3 by using the major boundary for cleanup,
-not by expanding scope into every old moonshot.
-
-Core scope:
-
 - remove deprecated / duplicate API paths
   - `focusable` => `tabIndex`
   - `fullscreen` => `inset: 0, position: 'absolute'`
-  - remove deprecated Sheet/Menu/Tabs/Input/Toast/Popover/metro/theme-builder paths
-    where the replacement is clear
+  - remove deprecated stuff
   - clean out old configs and compatibility paths, at least v1-v3
 
 - simplify theme model
-  - remove component themes
-  - components should have an explicit `defaultTheme` instead
-  - use surface themes like `surface1` instead of `ListItem`/component sub-themes
-  - remove `name` from `styled()`
-  - remove `inverse` in favor of SSR-safe inverse sub-themes
+  - remove component themes / remove `name` from `styled()`
+  - component example just show using theme="surface1" for example
+  - remove `inverse` in favor of SSR-safe inverse sub-themes (accent already is)
+  - maybe make theme builder have easy "inverse" optoin so accent can be something else
 
 - core styling/runtime cleanup
-  - remove `styleable` forwarding ref behavior
+  - remove `styleable`
+  - remove forwardRef
   - remove `inlineWhenUnflattened`
   - remove `usePropsAndStyle` from icon `themed` or replace the pattern
-  - remove `getToken` / shift weirdness where possible
-  - keep `style()` helper out of this first v3 pass unless a very obvious small
-    version falls out naturally
-
-- native interaction work
-  - only pull keyboard-controller work in if it is already close enough to finish
+  - update button a bit to how i do them
+  - make icons default to font sizes not size tokens
+  - consider the line height default as a multiplier work we did
+  - remove `getToken` / shift weirdness in default styling
 
 - component simplification
   - make props more consistent across components
@@ -36,19 +28,18 @@ Core scope:
   - simplify Select/ListItem where it directly helps perf or API clarity
   - remove more `ThemeableStack` / `SizableStack` usage and docs
 
-Important extra considerations:
-
-- Tailwind mode already exists; do not make v3 about re-proving Tailwind.
-- Make web as close to 100% RN-free as practical.
-  - likely remaining big pieces: Input and ScrollView
-  - audit smaller RN/RNW usages and remove straightforward ones
-- Flat mode decision:
-  - probably drop it
-  - only keep/improve it if a much cleaner shape becomes obvious
-- Tamagui mode may still get style tweaks, but keep them focused and compatible
-  with the cleanup goals above.
-- Avoid multiple runtime paths and transitional fallbacks where the v3 break lets
-  us choose one clear API.
+- consider
+  - remove RN entirely from web (input, scrollview)
+  - conditional values or value objects
+  - see v3 cleanups
+  - native can have a non-signal mode for faster initial render
+  - activeStyle
+  - remove the flat mode we spiked in tw branch
+  - maybe better flat mode:
+    - ios-web(light-dark($shadow7, $shadow7), light-dark($red2, $red10))
+    - green-red-blue(#xxx, $some, $thing)
+    - xs-sm-md($10, $20) group-xl($40)
+    - light-dark(hover-press($red2, $red3), hover-press($red3, $red2))
 
 ---
 
@@ -191,14 +182,7 @@ and cant put another View next to Content and have it show
 
 - When using <Adapt.Contents /> inside an Adapt when="maxMd" it seems to hide the children before fully closed
 
-  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
-
 - When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
-
-  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723475036176189
-
-- AnimatePresence leaving things in DOM
-  - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723148309745679
 
 ---
 
@@ -279,16 +263,6 @@ animations improvements:
 
 - apply visibility hidden to fully hidden popover for perf gains
 
-- refresh site hero:
-
-  - 100% features work the same cross-platform
-  - optionally compile-time optimized, but 100% runtime feature-set
-  - 0-dependency: no / faster than react-native-web
-  - fully typesafe styling
-  - by far best SSR
-  - headless component kit
-  - super-powerful: themes, animations
-
 ---
 
 - popover bring back dismissable - document dismissable etc
@@ -331,7 +305,6 @@ v3:
 - RSD - no View + Text (just Element and we can extend it later)
 
   - compiler can optimize
-  - mimic text inhertance on native (or remove it on web)
   - https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
 - todo:
@@ -380,28 +353,11 @@ v3:
     - v2-3 ListItem simplification esp for performance of Select
     - fix Select hover/type/performance
 
-potential
-
-- group => container
-
 is this a bug? the is_static conditional is odd, maybe backward
 
 - if (shouldRetain || !(process.env.IS_STATIC === 'is_static')) {
 
 ---
-
-v3
-
-- perspective={1000} can be on either transform OR on flat, need to figure that out
-- `core-nested`, `core-flat`, `core-tailwind`:
-
-```tsx
-createCore<CustomTypes>({
-  propMapper(propsIn) {
-    return propsOut
-  },
-})
-```
 
 - can we remove the need for separate Text/View?
 
