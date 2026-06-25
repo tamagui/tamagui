@@ -29,17 +29,26 @@ v3 release plan:
   - remove more `ThemeableStack` / `SizableStack` usage and docs
 
 - consider
+  - Adapt you can control yourself
+  - customizable select on web (aka native on web)
+    - if Adapt can be controlled easily, adapters for more native rendering like native Select via the best native library (maybe even nativescript for rn)
+  - native popover positioning? safari 27 has better anchor-positioning
   - remove RN entirely from web (input, scrollview)
   - conditional values or value objects
   - see v3 cleanups
   - native can have a non-signal mode for faster initial render
-  - activeStyle
+  - styling:
+    - activeStyle
+    - before/after
   - remove the flat mode we spiked in tw branch
   - maybe better flat mode:
     - ios-web(light-dark($shadow7, $shadow7), light-dark($red2, $red10))
     - green-red-blue(#xxx, $some, $thing)
     - xs-sm-md($10, $20) group-xl($40)
     - light-dark(hover-press($red2, $red3), hover-press($red3, $red2))
+      - or ternary? light-dark ? hover-press(...) : hover-press(...)
+      - or? bg={$.ios($.light`$red`.dark`$blue`)}
+    - this pairs pretty well with a 'flat compiler mode' where we enforce no runtime at all, but quite a lift.
 
 ---
 
