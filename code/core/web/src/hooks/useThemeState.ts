@@ -215,11 +215,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
         return
       }
       if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-        console.warn(
-          ` · useTheme(${id}) scheduleUpdate`,
-          propsKey,
-          states.get(id)?.name
-        )
+        console.warn(` · useTheme(${id}) scheduleUpdate`, propsKey, states.get(id)?.name)
       }
       scheduleUpdate(id)
       HadTheme.set(keys, true)
@@ -246,10 +242,7 @@ type ThemeStateRef = SnapshotRef & {
   lastSnap?: ThemeState
 }
 
-const shouldSubscribeToTheme = (
-  r: ThemeStateRef,
-  cascadeOnChange: boolean
-): boolean =>
+const shouldSubscribeToTheme = (r: ThemeStateRef, cascadeOnChange: boolean): boolean =>
   r.isRoot ||
   cascadeOnChange ||
   hasThemeUpdatingProps(r.props) ||

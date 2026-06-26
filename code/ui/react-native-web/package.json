@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-web",
-  "version": "2.3.3",
+  "version": "2.3.3-1782462397214",
   "files": [
     "src",
     "types",

@@ -308,8 +308,7 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
         }
 
         if (panHandles) {
-          scrollBridge.lockScrollAtTop =
-            gs.startedBelowTop && !gs.scrollUnlockedAfterTop
+          scrollBridge.lockScrollAtTop = gs.startedBelowTop && !gs.scrollUnlockedAfterTop
           // pan handles - disable scroll and move sheet
           // when swiping down at top after scroll was engaged: lock at current scroll position
           //   (handoff from scroll to pan — preserve scroll offset)
@@ -337,8 +336,7 @@ export function useGestureHandlerPan(config: GesturePanConfig): GesturePanResult
       .onEnd((event: { velocityY: number }) => {
         const { velocityY } = event
         const currentPos = gs.startY + gs.accumulatedOffset
-        const keepScrollLockedAfterEnd =
-          gs.startedBelowTop && !gs.scrollUnlockedAfterTop
+        const keepScrollLockedAfterEnd = gs.startedBelowTop && !gs.scrollUnlockedAfterTop
 
         // clear scroll lock
         scrollBridge.lockScrollAtTop = false
