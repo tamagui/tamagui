@@ -358,6 +358,15 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
 
       scrollBridge.isAtTop = nowAtTop
       if (nowAtTop) {
+        if (scrollBridge.lockScrollAtTop) {
+          if (scrollBridge.y > 0) {
+            scrollBridge.forceScrollTo?.(0)
+            scrollBridge.y = 0
+          }
+          scrollBridge.scrollLockY = 0
+          scrollBridge.setScrollEnabled?.(false, 0)
+          return
+        }
         // if scroll drifted during drag (e.g. fast swipe from position 1),
         // reset it to 0 before enabling free scroll.
         if (scrollBridge.y > 0) {
