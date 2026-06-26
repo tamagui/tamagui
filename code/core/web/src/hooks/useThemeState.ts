@@ -3,6 +3,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useId,
   useReducer,
   useRef,
   type MutableRefObject,
@@ -54,11 +55,6 @@ export const getRootThemeState = () => rootThemeState
 // extracts base name without scheme: "light_red_surface1" -> "red_surface1"
 const getThemeBaseName = (name: string) => name.replace(/^(light|dark)_/, '')
 
-// Internal-only ids for the listenersByParent map. Never rendered into HTML,
-// so a process-wide counter is safe (no hydration mismatch from useId).
-let themeStateIdCounter = 0
-const nextThemeStateId = (): string => `t${++themeStateIdCounter}`
-
 // useReducer-based force-update; cheaper than useSyncExternalStore's internal
 // useState+useLayoutEffect+useEffect+useDebugValue chain on Hermes.
 const incReducer = (c: number): number => c + 1
@@ -102,12 +98,10 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     )
   }
 
-  // counter-based id, allocated once per component instance (on the ref below).
-  // useId is genuinely heavy on Hermes — it queries the fiber-tree position to
-  // generate a hydration-stable id. These ids are only used internally as keys
-  // in the listenersByParent map; they're never rendered to HTML, so a process-
-  // wide counter is safe (no hydration mismatch). Saves a real-millisecond
-  // hook call per styled component on native.
+  // useId keeps theme-provider ids tied to the React tree. A process-wide
+  // counter can let children observe a provider context id whose matching
+  // states Map entry was never populated in multi-root/native surfaces.
+  const id = useId()
   const propsKey = getPropsKey(props)
 
   // stable ref-bag for render inputs and the optional subscription cleanup.
@@ -115,7 +109,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
   const ref = useRef<ThemeStateRef>(null as any)
   if (!ref.current) {
     ref.current = {
-      id: nextThemeStateId(),
+      id,
       parentId,
       props,
       propsKey,
@@ -198,7 +192,6 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     }
   })
 
-  const id = ref.current.id
   if (cascadeOnChange) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useIsomorphicLayoutEffect(() => {
