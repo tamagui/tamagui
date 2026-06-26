@@ -414,8 +414,7 @@ const getNextState = (
     // useSyncExternalStore would avoid the race but force every themed node out
     // of concurrent rendering, so we keep the manual store and tolerate the
     // ordering here.
-    const next =
-      lastState ??
+    const next = lastState ??
       parentState ??
       rootThemeState ?? {
         id,
