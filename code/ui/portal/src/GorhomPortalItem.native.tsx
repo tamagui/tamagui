@@ -4,6 +4,7 @@
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent } from '@tamagui/core'
 import { getPortal, NativePortal } from '@tamagui/native'
+import { Theme, useThemeName } from '@tamagui/web'
 import { useEffect, useId } from 'react'
 import { usePortal } from './GorhomPortal'
 import type { PortalItemProps } from './types'
@@ -60,11 +61,24 @@ const GorhomPortalItemFallback = (props: PortalItemProps) => {
   const id = useId()
   const name = _providedName || id
 
+  // the gorhom host renders registered children in a separate flush, outside
+  // this subtree's theme context — so carry the theme as data: capture the
+  // resolved name here (reliable: this item renders at its definition site)
+  // and re-establish it with an absolute <Theme name> on the other side. that
+  // resolves themes[name] without needing the parent state, which the host
+  // flush can't see. mirrors the web Portal's repropagation (Portal.tsx).
+  const themeName = useThemeName()
+  const themedChildren = passThrough ? (
+    children
+  ) : (
+    <Theme name={themeName}>{children}</Theme>
+  )
+
   const handleOnMount = useEvent(() => {
     if (_providedHandleOnMount) {
-      _providedHandleOnMount(() => addUpdatePortal(name, children))
+      _providedHandleOnMount(() => addUpdatePortal(name, themedChildren))
     } else {
-      addUpdatePortal(name, children)
+      addUpdatePortal(name, themedChildren)
     }
   })
 
@@ -78,9 +92,9 @@ const GorhomPortalItemFallback = (props: PortalItemProps) => {
 
   const handleOnUpdate = useEvent(() => {
     if (_providedHandleOnUpdate) {
-      _providedHandleOnUpdate(() => addUpdatePortal(name, children))
+      _providedHandleOnUpdate(() => addUpdatePortal(name, themedChildren))
     } else {
-      addUpdatePortal(name, children)
+      addUpdatePortal(name, themedChildren)
     }
   })
 
@@ -97,7 +111,7 @@ const GorhomPortalItemFallback = (props: PortalItemProps) => {
     if (passThrough) return
 
     handleOnUpdate()
-  }, [children])
+  }, [children, themeName])
 
   return passThrough ? children : null
 }
