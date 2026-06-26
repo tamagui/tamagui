@@ -309,8 +309,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     const keyboardStableFrameHeight =
       isWebKbSheet && isKeyboardVisible && frameSize > 0 ? frameSize : 0
 
-    const { useAnimatedNumber, useAnimatedNumberStyle, useAnimatedNumberReaction } =
-      animationDriver
+    const { useAnimatedNumber, useAnimatedNumberStyle } = animationDriver
     const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
 
     useIsomorphicLayoutEffect(() => {
@@ -346,42 +345,43 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     // safety fallback timer for sheet close opacity
     const opacityFallbackTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
-    useAnimatedNumberReaction(
-      {
-        value: animatedNumber,
-        hostRef: sheetRef,
-      },
-      React.useCallback(
-        (value) => {
-          at.current = value
-          scrollBridge.paneY = value
-          // update isAtTop for scroll enable/disable
-          // activePositions[0] is the top snap point (keyboard-adjusted minY)
-          const minY = activePositions[0]
-          const wasAtTop = scrollBridge.isAtTop
-          const nowAtTop = value <= minY + 5
-          if (wasAtTop !== nowAtTop) {
-            scrollBridge.isAtTop = nowAtTop
-            // when reaching top, enable scroll; when leaving top, disable scroll
-            // this preemptively sets scroll state before any gestures start
-            if (nowAtTop) {
-              // if scroll drifted during drag (e.g. fast swipe from position 1),
-              // reset it to 0 before enabling free scroll
-              if (scrollBridge.y > 0) {
-                scrollBridge.forceScrollTo?.(0)
-                scrollBridge.y = 0
-              }
-              scrollBridge.scrollLockY = undefined
-              scrollBridge.setScrollEnabled?.(true)
-            } else {
-              scrollBridge.scrollLockY = 0
-              scrollBridge.setScrollEnabled?.(false)
-            }
-          }
-        },
-        [animationDriver, activePositions]
-      )
-    )
+    const syncAnimatedPosition = useEvent((value: number) => {
+      at.current = value
+      scrollBridge.paneY = value
+
+      // update isAtTop for scroll enable/disable. activePositions[0] is the
+      // top snap point (keyboard-adjusted minY).
+      const minY = activePositions[0]
+      const wasAtTop = scrollBridge.isAtTop
+      const nowAtTop = value <= minY + 5
+      if (wasAtTop === nowAtTop) return
+
+      scrollBridge.isAtTop = nowAtTop
+      if (nowAtTop) {
+        // if scroll drifted during drag (e.g. fast swipe from position 1),
+        // reset it to 0 before enabling free scroll.
+        if (scrollBridge.y > 0) {
+          scrollBridge.forceScrollTo?.(0)
+          scrollBridge.y = 0
+        }
+        scrollBridge.scrollLockY = undefined
+        scrollBridge.setScrollEnabled?.(true)
+      } else {
+        scrollBridge.scrollLockY = 0
+        scrollBridge.setScrollEnabled?.(false)
+      }
+    })
+
+    const setAnimatedPositionDirect = useEvent((value: number) => {
+      syncAnimatedPosition(value)
+      animatedNumber.setValue(value, { type: 'direct' })
+    })
+
+    const getAnimatedPosition = useEvent(() => {
+      const value = animatedNumber.getValue()
+      syncAnimatedPosition(value)
+      return value
+    })
 
     function stopSpring() {
       animatedNumber.stop()
@@ -422,6 +422,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       }
 
       const animationCompleteCallback = () => {
+        syncAnimatedPosition(toValue)
         if (opacityFallbackTimer.current) {
           clearTimeout(opacityFallbackTimer.current)
           opacityFallbackTimer.current = null
@@ -485,6 +486,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             duration: 0,
           },
           () => {
+            syncAnimatedPosition(screenSize)
             // imperfect but struggling to render properly here
             setTimeout(() => {
               setDisableAnimation(false)
@@ -678,7 +680,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       const grant = () => {
         setPanning(true)
         stopSpring()
-        startY = at.current
+        startY = getAnimatedPosition()
       }
 
       let isExternalDrag = false
@@ -700,7 +702,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
           grant()
         }
         const to = dy + startY
-        animatedNumber.setValue(resisted(to, minY), { type: 'direct' })
+        setAnimatedPositionDirect(resisted(to, minY))
       }
 
       scrollBridge.release = release
@@ -733,7 +735,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
             scrollBridge.setParentDragging(true)
           }
 
-          animatedNumber.setValue(to, { type: 'direct' })
+          setAnimatedPositionDirect(to)
         },
         onPanResponderEnd: finish,
         onPanResponderTerminate: finish,
@@ -799,15 +801,12 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       stopSpring,
       scrollBridge,
       setIsDragging,
-      getCurrentPosition: () => at.current,
+      getCurrentPosition: getAnimatedPosition,
       resisted,
       disableDrag,
       isShowingInnerSheet,
-      setAnimatedPosition: (val: number) => {
-        // directly set the animated value for smooth dragging
-        at.current = val
-        animatedNumber.setValue(val, { type: 'direct' })
-      },
+      // directly set the animated value for smooth dragging
+      setAnimatedPosition: setAnimatedPositionDirect,
       dismissOnSnapToBottom,
       snapPointsMode,
       isKeyboardVisible,

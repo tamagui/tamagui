@@ -96,10 +96,18 @@ export const SheetScrollView = React.forwardRef<
     const setScrollEnabled = (next: boolean, lockTo?: number) => {
       if (!next) {
         const lockY = lockTo ?? currentScrollOffset.current
+        if (scrollBridge.enabled === false && scrollBridge.scrollLockY === lockY) {
+          return
+        }
+        scrollBridge.enabled = false
         lockedScrollY.current = lockY
         scrollBridge.scrollLockY = lockY
         scrollRef.current?.scrollTo?.({ x: 0, y: lockY, animated: false })
       } else {
+        if (scrollBridge.enabled === true && scrollBridge.scrollLockY === undefined) {
+          return
+        }
+        scrollBridge.enabled = true
         lockedScrollY.current = currentScrollOffset.current
         scrollBridge.scrollLockY = undefined
       }
