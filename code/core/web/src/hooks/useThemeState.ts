@@ -405,20 +405,26 @@ const getNextState = (
   }
 
   if (!name) {
-    const next = lastState ?? parentState
-
-    if (!next) {
-      throw new Error(
-        process.env.NODE_ENV === 'development'
-          ? `${MISSING_THEME_MESSAGE}
-
-Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? ` (component: ${props.componentName})` : ''}, but no theme state was resolved (parentId: ${parentId}, id: ${id}).`
-          : MISSING_THEME_MESSAGE
-      )
-    }
+    // parentState can be transiently missing when a consumer renders in a
+    // separate sync flush (a portal/Toast viewport, or a native multi-root
+    // surface) before its provider has populated the module-level `states` map.
+    // that's recoverable — the next render resolves it — so fall back to the
+    // root theme (or a light stub) instead of throwing. the "no parent context"
+    // throw above still catches a genuinely missing provider. going back to
+    // useSyncExternalStore would avoid the race but force every themed node out
+    // of concurrent rendering, so we keep the manual store and tolerate the
+    // ordering here.
+    const next =
+      lastState ??
+      parentState ??
+      rootThemeState ?? {
+        id,
+        name: 'light',
+        theme: getConfig().themes.light,
+      }
 
     if (shouldRerender) {
-      const updated = { ...(parentState || lastState)! }
+      const updated = { ...(parentState || lastState || next)! }
       return [true, updated]
     }
 
