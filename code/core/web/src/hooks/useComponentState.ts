@@ -177,16 +177,16 @@ export const useComponentState = (
   const groupName = props.group as any as string | undefined
 
   // hoisted shallow-set closure: created once per component instance and
-  // reused every render. Drops the useCallback hook that useCreateShallowSetState
+  // reused every render. drops the useCallback hook that useCreateShallowSetState
   // would otherwise add. setState from useState is stable per instance so we
   // can safely capture it. debug is read off stateRef at call time.
   //
-  // IMPORTANT: this lives on `baseSetStateShallow`, NOT `setStateShallow`.
+  // important: this lives on `baseSetStateShallow`, not `setStateShallow`.
   // createComponent's avoidReRenders path overwrites `stateRef.current.setStateShallow`
-  // with an emitter wrapper and captures THIS base as its real-re-render escape hatch.
+  // with an emitter wrapper and captures this base as its real-re-render escape hatch.
   // if the base shared the `setStateShallow` field, on the 2nd+ render this hook would
   // read back the wrapper, the wrapper's escape hatch would point at itself, and a real
-  // re-render (e.g. unmounted 'should-enter' -> false) would never reach React — leaving
+  // re-render (e.g. unmounted 'should-enter' -> false) would never reach React, leaving
   // enter animations stuck at opacity 0.
   if (!stateRef.current.baseSetStateShallow) {
     const r = stateRef.current
