@@ -72,6 +72,7 @@ export const SheetScrollView = React.forwardRef<
           maxHeight: screenSize || undefined,
         }
       : { flex: 1 }
+    const contentContainerStyle = hasFit ? undefined : { minHeight: '100%' as const }
 
     // when the keyboard is open, pin the scroll view to the sheet's pre-keyboard
     // frame height (frozenFrameHeight), overriding any consumer maxHeight. on web
@@ -295,7 +296,7 @@ export const SheetScrollView = React.forwardRef<
             lastEmittedScrollOffset.current = y
             onScroll?.(e)
           }}
-          contentContainerStyle={{ minHeight: '100%' }}
+          contentContainerStyle={contentContainerStyle}
           bounces={false}
           keyboardShouldPersistTaps="always"
           keyboardDismissMode="none"
@@ -327,7 +328,7 @@ export const SheetScrollView = React.forwardRef<
           lastEmittedScrollOffset.current = y
           onScroll?.(e)
         }}
-        contentContainerStyle={{ minHeight: '100%' }}
+        contentContainerStyle={contentContainerStyle}
         {...gestureProps}
         {...props}
         {...keyboardFrozenOverride}
