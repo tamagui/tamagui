@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/font-size",
-  "version": "2.3.3-1782495782270",
+  "version": "2.3.3-1782530413169",
   "source": "src/index.ts",
   "files": [
     "src",
