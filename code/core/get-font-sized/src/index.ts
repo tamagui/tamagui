@@ -22,6 +22,20 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
 
   const style: TextStyle = {}
 
+  // A raw numeric size (e.g. `fontSize={32}`) is not a token key, so the
+  // `font.size` / `font.lineHeight` maps have no entry for it and every lookup
+  // below returns undefined. Treat the number as a literal fontSize and leave
+  // lineHeight unset, otherwise a stale default token lineHeight survives and
+  // clips glyph tops on iOS (see #4028). We don't scale the lineHeight here,
+  // leaving it to the platform default for the given font size.
+  if (typeof sizeToken === 'number') {
+    style.fontSize = sizeToken
+    if (fontFamily) style.fontFamily = fontFamily
+    if (props.fontStyle) style.fontStyle = props.fontStyle
+    if (props.color) style.color = props.color
+    return style
+  }
+
   // size related, treat them as overrides
   const fontSize = font.size[sizeToken]
   const lineHeight = font.lineHeight?.[sizeToken]
