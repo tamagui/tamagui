@@ -207,6 +207,26 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     // height would mismatch).
     const isWebKbSheet = isWeb && hasFit && moveOnKeyboardChange
 
+    // NATIVE keyboard frame freeze. native fit sheets feed keyboardOccludedHeight
+    // into the ScrollView as scrollable tail padding so content can clear the
+    // keyboard. but that padding grows the fit content, which grows the frame,
+    // which grows the occluded height — a feedback loop that balloons the sheet
+    // to the full-screen cap. web breaks the loop by freezing geometry against
+    // effScreenSize; native has no such freeze, so we pin the ScrollView to the
+    // frame height measured while the keyboard was closed (preKeyboardFrameSize)
+    // via keyboardStableFrameHeight below. unlike web, the native keyboard is an
+    // overlay that never shrinks the measured screen, so screenSize stays live.
+    const isNativeKbFitSheet = !isWeb && hasFit && Boolean(moveOnKeyboardChange)
+
+    // snapshot the fit frame height while the keyboard is closed, so the pin above
+    // holds the pre-keyboard viewport rather than a mid-feedback-loop value.
+    const preKeyboardFrameSize = React.useRef(0)
+    React.useEffect(() => {
+      if (isNativeKbFitSheet && open && !isKeyboardVisible && frameSize > 0) {
+        preKeyboardFrameSize.current = frameSize
+      }
+    }, [isNativeKbFitSheet, open, isKeyboardVisible, frameSize])
+
     // the space the snap positions are built against. WEB: the stable layout
     // viewport (document.documentElement.clientHeight), which the soft keyboard
     // never shrinks (unlike the measured screenSize / visualViewport). NATIVE:
@@ -307,7 +327,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
     // smaller; this override keeps it at the full height so the frame translates
     // with the keyboard but never resizes. 0 = no override (use the consumer maxHeight).
     const keyboardStableFrameHeight =
-      isWebKbSheet && isKeyboardVisible && frameSize > 0 ? frameSize : 0
+      isWebKbSheet && isKeyboardVisible && frameSize > 0
+        ? frameSize
+        : isNativeKbFitSheet && isKeyboardVisible && preKeyboardFrameSize.current > 0
+          ? preKeyboardFrameSize.current
+          : 0
 
     const { useAnimatedNumber, useAnimatedNumberStyle } = animationDriver
     const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
