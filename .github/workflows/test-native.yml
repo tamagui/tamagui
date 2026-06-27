@@ -145,10 +145,9 @@ jobs:
           npm install -g detox-cli &
           detox_pid=$!
 
-          (
-            brew tap wix/brew
-            brew install applesimutils
-          ) &
+          # install by fully-qualified name so homebrew auto-trusts only this
+          # formula (homebrew 6 refuses untrusted third-party taps otherwise)
+          brew install wix/brew/applesimutils &
           applesimutils_pid=$!
 
           wait "$detox_pid"
