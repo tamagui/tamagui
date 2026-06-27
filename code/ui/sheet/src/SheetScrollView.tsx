@@ -123,6 +123,33 @@ export const SheetScrollView = React.forwardRef<
       currentScrollOffset.current = y
     }
 
+    const emitManualScroll = React.useCallback(
+      (node: HTMLElement, y: number) => {
+        currentScrollOffset.current = y
+        scrollBridge.y = y
+        if (y > 0) scrollBridge.scrollStartY = -1
+        lastEmittedScrollOffset.current = y
+        onScroll?.({
+          nativeEvent: {
+            contentOffset: {
+              x: node.scrollLeft,
+              y,
+            },
+            contentSize: {
+              height: node.scrollHeight,
+              width: node.scrollWidth,
+            },
+            layoutMeasurement: {
+              height: node.offsetHeight,
+              width: node.offsetWidth,
+            },
+          },
+          timeStamp: Date.now(),
+        } as any)
+      },
+      [onScroll, scrollBridge]
+    )
+
     const scrollFocusedInputClearOfKeyboard = React.useCallback(() => {
       if (!isWeb || !hasFit || !isKeyboardVisible || keyboardOccludedHeight <= 0) {
         return
@@ -220,6 +247,7 @@ export const SheetScrollView = React.forwardRef<
       hasScrollableContent,
       scrollEnabled,
       setScrollEnabled,
+      onManualScroll: emitManualScroll,
     })
 
     // content wrapper for measuring height
