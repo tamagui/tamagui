@@ -9,7 +9,7 @@ import {
   createTeamSubscription,
   deletePriceRecord,
   deleteProductRecord,
-  deleteSubscriptionRecord,
+  markSubscriptionCanceled,
   manageSubscriptionStatusChange,
   upsertPriceRecord,
   upsertProductRecord,
@@ -185,7 +185,7 @@ export default apiRoute(async (req) => {
       }
       case 'customer.subscription.deleted': {
         await unclaimSubscription(event.data.object as Stripe.Subscription)
-        await deleteSubscriptionRecord(event.data.object as Stripe.Subscription)
+        await markSubscriptionCanceled(event.data.object as Stripe.Subscription)
         break
       }
 
