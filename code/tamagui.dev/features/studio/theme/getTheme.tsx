@@ -1,5 +1,6 @@
 import z from 'zod'
 import { getSupabaseServerClient } from '../../api/getSupabaseServerClient'
+import { supabaseAdmin } from '../../auth/supabaseAdmin'
 import type { ThemeSuiteItemData } from './types'
 
 const ColorEntrySchema = z.object({
@@ -60,7 +61,9 @@ export const getTheme = async (id: string, request?: Request) => {
   let user_name: string | null = null
 
   if (currentTheme?.user_id) {
-    const { data: user, error: userError } = await supabaseServerClient!
+    // read the author's name via the service role: users RLS only exposes the
+    // caller's own row, and this displays a different user's public theme.
+    const { data: user } = await supabaseAdmin
       .from('users')
       .select('full_name')
       .eq('id', currentTheme.user_id)
