@@ -3,7 +3,7 @@ import { animations } from './v3-animations'
 import type { CreateTamaguiProps } from '@tamagui/web'
 
 import { fonts } from './fonts'
-import { media, mediaQueryDefaultActive } from './media'
+import { media, mediaQueryDefaultActive } from './v3-media'
 
 // fix vite - react native uses global which it doesn't provide
 globalThis['global'] ||= globalThis
@@ -88,7 +88,7 @@ export const shorthands = {
 export { animations } from './v3-animations'
 export { tokens, themes } from '@tamagui/themes/v3-themes'
 export { fonts } from './fonts'
-export { media, mediaQueryDefaultActive } from './media'
+export { media, mediaQueryDefaultActive } from './v3-media'
 
 export const selectionStyles = (theme) =>
   theme.color5

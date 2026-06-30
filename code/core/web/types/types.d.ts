@@ -469,6 +469,16 @@ export type OnlyAllowShorthandsSetting = TamaguiConfig['settings'] extends {
 export type OnlyShorthandStylePropsSetting = TamaguiConfig['settings'] extends {
     onlyShorthandStyleProps: infer X;
 } ? X : false;
+export type StyleModeSetting = TamaguiConfig['settings'] extends {
+    styleMode: infer X;
+} ? X : 'tamagui';
+export type StyleModeName = 'tamagui' | 'tailwind' | 'flat' | 'tamagui-and-tailwind' | 'tamagui-and-flat';
+export type StyleModeObject = Partial<Record<'tamagui' | 'tailwind' | 'flat', boolean>>;
+export type StyleMode = StyleModeName | readonly StyleModeName[] | StyleModeObject;
+type StyleModeHas<Mode extends 'tamagui' | 'tailwind' | 'flat'> = StyleModeSetting extends readonly StyleModeName[] ? Mode extends StyleModeSetting[number] ? true : false : StyleModeSetting extends StyleModeObject ? StyleModeSetting[Mode] extends true ? true : false : Mode extends 'tamagui' ? StyleModeSetting extends 'tamagui' | 'tamagui-and-tailwind' | 'tamagui-and-flat' ? true : false : Mode extends 'tailwind' ? StyleModeSetting extends 'tailwind' | 'tamagui-and-tailwind' ? true : false : StyleModeSetting extends 'flat' | 'tamagui-and-flat' ? true : false;
+export type IncludesClassicMode = StyleModeHas<'tamagui'>;
+export type IncludesFlatMode = StyleModeHas<'flat'>;
+export type IncludesTailwindMode = StyleModeHas<'tailwind'>;
 export type CreateTamaguiConfig<A extends GenericTokens, B extends GenericThemes, C extends GenericShorthands = GenericShorthands, D extends GenericMedia = GenericMedia, E extends GenericAnimations = GenericAnimations, F extends GenericFonts = GenericFonts, H extends GenericTamaguiSettings = GenericTamaguiSettings, AnimDriverKeys extends string = string> = {
     fonts: RemoveLanguagePostfixes<F>;
     fontLanguages: GetLanguagePostfixes<F> extends never ? string[] : GetLanguagePostfixes<F>[];
@@ -683,6 +693,16 @@ export interface GenericTamaguiSettings {
      * two ways to style the same property.
      */
     onlyAllowShorthands?: boolean | undefined;
+    /**
+     * Enable different style modes for prop syntax.
+     *
+     * - 'tamagui': Default - classic style props (backgroundColor, hoverStyle: {}, $sm: {})
+     * - 'tailwind': className only, no style props (for Tailwind CSS users)
+     * - 'flat': Flat $props only ($bg, $hover:bg, $sm:bg) - no classic style props
+     * - 'tamagui-and-tailwind': Classic style props + className processing
+     * - 'tamagui-and-flat': Classic style props + flat $props
+     */
+    styleMode?: StyleMode;
     /**
      * Define a default font, for better types and default font on Text
      */
@@ -1040,13 +1060,108 @@ export type SafeAreaValueKeys = 'padding' | 'paddingTop' | 'paddingBottom' | 'pa
 export type WithThemeValues<T extends object> = {
     [K in keyof T]: (ThemeValueGet<K> extends never ? K extends keyof ExtraBaseProps ? T[K] : T[K] | 'unset' : GetThemeValueForKey<K> | Exclude<T[K], string> | 'unset') | (K extends SafeAreaValueKeys ? 'safe' : never);
 };
-export type NarrowShorthands = Narrow<Shorthands>;
-export type Longhands = NarrowShorthands[keyof NarrowShorthands];
+type LiteralObjectKeys<T> = keyof T extends infer Key ? Key extends string ? string extends Key ? never : Key : Key extends number ? number extends Key ? never : Key : never : never;
+type KnownShorthands = {
+    ussel: 'userSelect';
+    cur: 'cursor';
+    pe: 'pointerEvents';
+    col: 'color';
+    ff: 'fontFamily';
+    fos: 'fontSize';
+    fost: 'fontStyle';
+    fow: 'fontWeight';
+    ls: 'letterSpacing';
+    lh: 'lineHeight';
+    ta: 'textAlign';
+    text: 'textAlign';
+    tt: 'textTransform';
+    ww: 'wordWrap';
+    ac: 'alignContent';
+    ai: 'alignItems';
+    als: 'alignSelf';
+    content: 'alignContent';
+    items: 'alignItems';
+    self: 'alignSelf';
+    b: 'bottom';
+    bc: 'backgroundColor';
+    bg: 'backgroundColor';
+    bbc: 'borderBottomColor';
+    bblr: 'borderBottomLeftRadius';
+    bbrr: 'borderBottomRightRadius';
+    bbw: 'borderBottomWidth';
+    blc: 'borderLeftColor';
+    blw: 'borderLeftWidth';
+    boc: 'borderColor';
+    br: 'borderRadius';
+    bs: 'borderStyle';
+    brw: 'borderRightWidth';
+    brc: 'borderRightColor';
+    btc: 'borderTopColor';
+    btlr: 'borderTopLeftRadius';
+    btrr: 'borderTopRightRadius';
+    btw: 'borderTopWidth';
+    bw: 'borderWidth';
+    dsp: 'display';
+    f: 'flex';
+    basis: 'flexBasis';
+    fb: 'flexBasis';
+    fd: 'flexDirection';
+    fg: 'flexGrow';
+    fs: 'flexShrink';
+    grow: 'flexGrow';
+    shrink: 'flexShrink';
+    fw: 'flexWrap';
+    h: 'height';
+    jc: 'justifyContent';
+    justify: 'justifyContent';
+    l: 'left';
+    m: 'margin';
+    mah: 'maxHeight';
+    maw: 'maxWidth';
+    maxH: 'maxHeight';
+    maxW: 'maxWidth';
+    mb: 'marginBottom';
+    mih: 'minHeight';
+    miw: 'minWidth';
+    minH: 'minHeight';
+    minW: 'minWidth';
+    ml: 'marginLeft';
+    mr: 'marginRight';
+    mt: 'marginTop';
+    mx: 'marginHorizontal';
+    my: 'marginVertical';
+    o: 'opacity';
+    ov: 'overflow';
+    p: 'padding';
+    pb: 'paddingBottom';
+    pl: 'paddingLeft';
+    pos: 'position';
+    pr: 'paddingRight';
+    pt: 'paddingTop';
+    px: 'paddingHorizontal';
+    py: 'paddingVertical';
+    r: 'right';
+    rounded: 'borderRadius';
+    select: 'userSelect';
+    shac: 'shadowColor';
+    shar: 'shadowRadius';
+    shof: 'shadowOffset';
+    shop: 'shadowOpacity';
+    t: 'top';
+    w: 'width';
+    z: 'zIndex';
+    zi: 'zIndex';
+};
+type LiteralShorthands = Pick<Narrow<Shorthands>, LiteralObjectKeys<Shorthands>>;
+type ActiveShorthands = string extends keyof Shorthands ? KnownShorthands & LiteralShorthands : LiteralShorthands;
+export type ShorthandKeys = keyof ActiveShorthands;
+export type NarrowShorthands = Narrow<ActiveShorthands>;
+export type Longhands = NarrowShorthands[ShorthandKeys];
 type OnlyAllowShorthands = TamaguiConfig['settings']['onlyAllowShorthands'];
 type OnlyShorthandStyleProps = TamaguiConfig['settings']['onlyShorthandStyleProps'];
 type ShorthandLonghandProps = 'borderWidth' | 'borderStyle' | 'borderColor' | 'outlineWidth' | 'outlineStyle' | 'outlineColor' | 'outlineOffset' | 'shadowColor' | 'shadowOffset' | 'shadowOpacity' | 'shadowRadius';
 export type WithShorthands<StyleProps> = {
-    [Key in keyof Shorthands]?: Shorthands[Key] extends keyof StyleProps ? StyleProps[Shorthands[Key]] | null : undefined;
+    [Key in ShorthandKeys]?: ActiveShorthands[Key] extends keyof StyleProps ? StyleProps[ActiveShorthands[Key]] | null : undefined;
 };
 export type PseudoStyleWithTransition<A> = A & {
     transition?: TransitionProp | null;
@@ -1076,6 +1191,21 @@ export type PseudoStyles = {
     exitStyle?: ViewStyle;
 };
 export type AllPlatforms = 'web' | 'native' | 'android' | 'ios' | 'tv' | 'androidtv' | 'tvos';
+type FlatPseudoKey = 'hover' | 'press' | 'focus' | 'focus-visible' | 'focus-within' | 'disabled' | 'enter' | 'exit';
+type FlatThemeKey = 'dark' | 'light';
+export type WithFlatBaseProps<StyleProps> = {
+    [Key in ShorthandKeys as `$${Key}`]?: any;
+} & {
+    [Key in keyof StyleProps as `$${string & Key}`]?: any;
+};
+export type WithFlatModifierProps = {
+    [key: `$${FlatPseudoKey}:${string}`]: any;
+    [key: `$${MediaQueryKey}:${string}`]: any;
+    [key: `$${FlatThemeKey}:${string}`]: any;
+    [key: `$${AllPlatforms}:${string}`]: any;
+    [key: `$${string}:${string}:${string}`]: any;
+};
+export type WithFlatProps<StyleProps> = WithFlatBaseProps<StyleProps> & WithFlatModifierProps;
 type MaybeOmitLonghands<A> = OnlyShorthandStyleProps extends true ? Omit<A, ShorthandLonghandProps> : A;
 export type WithThemeAndShorthands<A extends object, Variants = {}> = OnlyAllowShorthands extends true ? WithThemeValues<MaybeOmitLonghands<Omit<A, Longhands>>> & Variants & WithShorthands<WithThemeValues<A>> : WithThemeValues<MaybeOmitLonghands<A>> & Variants & WithShorthands<WithThemeValues<A>>;
 export type WithThemeShorthandsAndPseudos<A extends object, Variants = {}> = WithThemeAndShorthands<A, Variants> & WithPseudoProps<WithThemeAndShorthands<A, Variants>>;
@@ -1502,11 +1632,11 @@ type LooseCombinedObjects<A extends object, B extends object> = A | B | (A & B);
 export interface StackNonStyleProps extends Omit<ViewProps, 'hitSlop' | 'pointerEvents' | 'display' | 'children' | keyof TamaguiComponentPropsBaseBase | RNOnlyProps | keyof ExtendBaseStackProps | 'style' | 'onFocus' | 'onBlur' | 'onPointerCancel' | 'onPointerDown' | 'onPointerMove' | 'onPointerUp'>, ExtendBaseStackProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>;
 }
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>;
+export type StackStyle = (IncludesClassicMode extends true ? WithThemeShorthandsPseudosMedia<StackStyleBase> : {}) & (IncludesFlatMode extends true ? WithFlatProps<StackStyleBase> : {});
 export interface TextNonStyleProps extends Omit<ReactTextProps, 'children' | keyof WebOnlyPressEvents | RNOnlyProps | keyof ExtendBaseTextProps | 'style'>, ExtendBaseTextProps, TamaguiComponentPropsBase {
     style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>;
 }
-export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>;
+export type TextStyle = (IncludesClassicMode extends true ? WithThemeShorthandsPseudosMedia<TextStylePropsBase> : {}) & (IncludesFlatMode extends true ? WithFlatProps<TextStylePropsBase> : {});
 export type TextProps = TextNonStyleProps & TextStyle;
 export interface ThemeableProps {
     theme?: ThemeName | null;
@@ -1519,7 +1649,7 @@ export type StyleableOptions = {
     staticConfig?: Partial<StaticConfig>;
 };
 export type Styleable<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties> = <CustomProps extends object | void = void, MergedProps = CustomProps extends void ? Props : Omit<Props, keyof CustomProps> & CustomProps, FunctionDef extends ForwardRefRenderFunction<Ref, MergedProps> = ForwardRefRenderFunction<Ref, MergedProps>>(a: FunctionDef, options?: StyleableOptions) => TamaguiComponent<MergedProps, Ref, NonStyledProps & CustomProps, BaseStyles, VariantProps, ParentStaticProperties>;
-export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> : {});
+export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<NonStyleProps, keyof StylePropsBase | keyof Variants> & (StylePropsBase extends object ? (IncludesClassicMode extends true ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants> : {}) & (IncludesFlatMode extends true ? WithFlatProps<StylePropsBase> : {}) : {});
 export type TamaguiComponent<Props = any, Ref = any, NonStyledProps = {}, BaseStyles extends object = {}, Variants = {}, ParentStaticProperties = {}> = ForwardRefExoticComponent<(Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, Variants> : Props) & RefAttributes<Ref>> & StaticComponentObject<Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties> & Omit<ParentStaticProperties, 'staticConfig' | 'styleable'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties];
 };

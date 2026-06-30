@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CSS Utility Coverage Comparison</title>
+<style>
+  :root {
+    --full: #22c55e;
+    --partial: #f59e0b;
+    --web-only: #3b82f6;
+    --none: #ef4444;
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface-2: #1e1e1e;
+    --text: #e5e5e5;
+    --text-muted: #999;
+    --border: #2a2a2a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 32px; margin-bottom: 8px; }
+  .subtitle { color: var(--text-muted); margin-bottom: 40px; font-size: 15px; }
+  .legend {
+    display: flex; gap: 20px; margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+  .legend-dot {
+    width: 12px; height: 12px; border-radius: 3px;
+  }
+  .legend-dot.full { background: var(--full); }
+  .legend-dot.partial { background: var(--partial); }
+  .legend-dot.web-only { background: var(--web-only); }
+  .legend-dot.none { background: var(--none); }
+
+  /* summary cards */
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .summary-card h3 { font-size: 18px; margin-bottom: 12px; }
+  .pct { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
+  .pct.tamagui { color: #a78bfa; }
+  .pct.tailwind { color: #38bdf8; }
+  .pct.nativewind { color: #f472b6; }
+  .pct.uniwind { color: #fb923c; }
+  .stat-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); padding: 2px 0; }
+  .bar { height: 6px; border-radius: 3px; background: var(--surface-2); margin-top: 12px; overflow: hidden; display: flex; }
+  .bar-full { background: var(--full); }
+  .bar-partial { background: var(--partial); }
+  .bar-web { background: var(--web-only); }
+  .bar-none { background: var(--none); }
+
+  /* category sections */
+  .category { margin-bottom: 40px; }
+  .category h2 {
+    font-size: 20px; margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  tr:hover td { background: var(--surface); }
+  .util-name { font-weight: 600; }
+  .util-desc { color: var(--text-muted); font-size: 12px; }
+
+  .support-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .support-full { background: color-mix(in srgb, var(--full) 20%, transparent); color: var(--full); }
+  .support-partial { background: color-mix(in srgb, var(--partial) 20%, transparent); color: var(--partial); }
+  .support-web-only { background: color-mix(in srgb, var(--web-only) 20%, transparent); color: var(--web-only); }
+  .support-none { background: color-mix(in srgb, var(--none) 20%, transparent); color: var(--none); }
+
+  .example { font-family: 'SF Mono', Monaco, monospace; font-size: 11px; color: var(--text-muted); }
+  .notes { font-size: 12px; color: var(--text-muted); font-style: italic; max-width: 200px; }
+
+  .expandable { cursor: pointer; }
+  .expandable .examples-row { display: none; }
+  .expandable.open .examples-row { display: table-row; }
+</style>
+</head>
+<body>
+
+<h1>CSS Utility Coverage Comparison</h1>
+<p class="subtitle">Tamagui flat-styles vs Tailwind CSS vs NativeWind vs Uniwind</p>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot full"></div> Full support</div>
+  <div class="legend-item"><div class="legend-dot partial"></div> Partial support</div>
+  <div class="legend-item"><div class="legend-dot web-only"></div> Web-only</div>
+  <div class="legend-item"><div class="legend-dot none"></div> Not supported</div>
+</div>
+
+<div class="summary">
+  <div class="summary-card">
+    <h3>Tamagui</h3>
+    <div class="pct tamagui">68.5%</div>
+    <div class="stat-row"><span>Full</span><span>85/138</span></div>
+    <div class="stat-row"><span>Partial</span><span>2/138</span></div>
+    <div class="stat-row"><span>Web-only</span><span>17/138</span></div>
+    <div class="stat-row"><span>None</span><span>34/138</span></div>
+    <div class="bar">
+      <div class="bar-full" style="width:61.6%"></div>
+      <div class="bar-partial" style="width:1.4%"></div>
+      <div class="bar-web" style="width:12.3%"></div>
+      <div class="bar-none" style="width:24.6%"></div>
+    </div>
+  </div>
+  <div class="summary-card">
+    <h3>Tailwind</h3>
+    <div class="pct tailwind">47.8%</div>
+    <div class="stat-row"><span>Full</span><span>0/138</span></div>
+    <div class="stat-row"><span>Partial</span><span>0/138</span></div>
+    <div class="stat-row"><span>Web-only</span><span>132/138</span></div>
+    <div class="stat-row"><span>None</span><span>6/138</span></div>
+    <div class="bar">
+      <div class="bar-full" style="width:0.0%"></div>
+      <div class="bar-partial" style="width:0.0%"></div>
+      <div class="bar-web" style="width:95.7%"></div>
+      <div class="bar-none" style="width:4.3%"></div>
+    </div>
+  </div>
+  <div class="summary-card">
+    <h3>NativeWind</h3>
+    <div class="pct nativewind">74.3%</div>
+    <div class="stat-row"><span>Full</span><span>71/138</span></div>
+    <div class="stat-row"><span>Partial</span><span>25/138</span></div>
+    <div class="stat-row"><span>Web-only</span><span>38/138</span></div>
+    <div class="stat-row"><span>None</span><span>4/138</span></div>
+    <div class="bar">
+      <div class="bar-full" style="width:51.4%"></div>
+      <div class="bar-partial" style="width:18.1%"></div>
+      <div class="bar-web" style="width:27.5%"></div>
+      <div class="bar-none" style="width:2.9%"></div>
+    </div>
+  </div>
+  <div class="summary-card">
+    <h3>Uniwind</h3>
+    <div class="pct uniwind">40.9%</div>
+    <div class="stat-row"><span>Full</span><span>51/138</span></div>
+    <div class="stat-row"><span>Partial</span><span>11/138</span></div>
+    <div class="stat-row"><span>Web-only</span><span>0/138</span></div>
+    <div class="stat-row"><span>None</span><span>76/138</span></div>
+    <div class="bar">
+      <div class="bar-full" style="width:37.0%"></div>
+      <div class="bar-partial" style="width:8.0%"></div>
+      <div class="bar-web" style="width:0.0%"></div>
+      <div class="bar-none" style="width:55.1%"></div>
+    </div>
+  </div>
+</div>
+
+<div class="category">
+  <h2>Layout</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">display</div>
+          <div class="util-desc">Set display type</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">RN only supports flex natively</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">position</div>
+          <div class="util-desc">Set positioning mode</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">RN lacks fixed/sticky</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">top/right/bottom/left</div>
+          <div class="util-desc">Position offsets</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">inset</div>
+          <div class="util-desc">Shorthand for all position offsets</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">z-index</div>
+          <div class="util-desc">Stack order</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">overflow</div>
+          <div class="util-desc">Overflow behavior</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">aspect-ratio</div>
+          <div class="util-desc">Aspect ratio</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">box-sizing</div>
+          <div class="util-desc">Box model sizing</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">isolation</div>
+          <div class="util-desc">Stacking context isolation</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">visibility</div>
+          <div class="util-desc">Element visibility</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui uses opacity/display instead</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">float</div>
+          <div class="util-desc">Float positioning</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Not applicable to RN flexbox model</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">clear</div>
+          <div class="util-desc">Clear floats</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">columns</div>
+          <div class="util-desc">Multi-column layout</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">object-fit</div>
+          <div class="util-desc">Replaced element sizing</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Also available as Image resizeMode on native</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">object-position</div>
+          <div class="util-desc">Replaced element position</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Flexbox</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">flex-direction</div>
+          <div class="util-desc">Main axis direction</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">flex-wrap</div>
+          <div class="util-desc">Wrapping behavior</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">flex</div>
+          <div class="util-desc">Flex shorthand</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">RN flex only takes a single number</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">flex-grow</div>
+          <div class="util-desc">Flex grow factor</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">flex-shrink</div>
+          <div class="util-desc">Flex shrink factor</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">flex-basis</div>
+          <div class="util-desc">Initial main size</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">justify-content</div>
+          <div class="util-desc">Main axis alignment</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">align-items</div>
+          <div class="util-desc">Cross axis alignment</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">align-self</div>
+          <div class="util-desc">Individual cross axis alignment</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">align-content</div>
+          <div class="util-desc">Multi-line cross axis alignment</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">gap</div>
+          <div class="util-desc">Gap between flex/grid items</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">order</div>
+          <div class="util-desc">Flex item order</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Grid</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">grid-template-columns</div>
+          <div class="util-desc">Define grid columns</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">grid-column</div>
+          <div class="util-desc">Column span/placement</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">grid-row</div>
+          <div class="util-desc">Row span/placement</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">grid-template-areas</div>
+          <div class="util-desc">Named grid areas</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">grid-auto-flow</div>
+          <div class="util-desc">Auto-placement algorithm</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">place-content/items/self</div>
+          <div class="util-desc">Combined alignment shorthands</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Spacing</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">padding</div>
+          <div class="util-desc">Inner spacing</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">margin</div>
+          <div class="util-desc">Outer spacing</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">padding-block/inline (logical)</div>
+          <div class="util-desc">Logical spacing (writing-mode aware)</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">margin-block/inline (logical)</div>
+          <div class="util-desc">Logical margin (writing-mode aware)</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">space-between</div>
+          <div class="util-desc">Space between child elements</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tamagui uses gap instead</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Sizing</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">width</div>
+          <div class="util-desc">Element width</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">height</div>
+          <div class="util-desc">Element height</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">min-width / max-width</div>
+          <div class="util-desc">Width constraints</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">min-height / max-height</div>
+          <div class="util-desc">Height constraints</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">inline-size / block-size</div>
+          <div class="util-desc">Logical sizing (writing-mode aware)</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Typography</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">font-family</div>
+          <div class="util-desc">Font family</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">font-size</div>
+          <div class="util-desc">Font size</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">font-weight</div>
+          <div class="util-desc">Font weight</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">font-style</div>
+          <div class="util-desc">Italic/normal</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">color</div>
+          <div class="util-desc">Text color</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">text-align</div>
+          <div class="util-desc">Text alignment</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">text-transform</div>
+          <div class="util-desc">Text case transformation</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">text-decoration</div>
+          <div class="util-desc">Underline/strikethrough</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">letter-spacing</div>
+          <div class="util-desc">Letter spacing</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">line-height</div>
+          <div class="util-desc">Line height</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">line-clamp</div>
+          <div class="util-desc">Truncate text to N lines</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">white-space</div>
+          <div class="util-desc">Whitespace handling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">word-break</div>
+          <div class="util-desc">Word breaking behavior</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">text-overflow</div>
+          <div class="util-desc">Text overflow behavior</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui uses numberOfLines prop</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">text-indent</div>
+          <div class="util-desc">First line indentation</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">vertical-align</div>
+          <div class="util-desc">Vertical alignment of inline elements</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">font-variant-numeric</div>
+          <div class="util-desc">Numeric font features</div>
+        </td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">text-shadow</div>
+          <div class="util-desc">Text shadow</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Backgrounds</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">background-color</div>
+          <div class="util-desc">Background color</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">background-image</div>
+          <div class="util-desc">Background images and gradients</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">background-position</div>
+          <div class="util-desc">Background image position</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">background-size</div>
+          <div class="util-desc">Background image sizing</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">background-repeat</div>
+          <div class="util-desc">Background tiling</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">background-clip</div>
+          <div class="util-desc">Background painting area</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Borders</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">border-width</div>
+          <div class="util-desc">Border width</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">border-color</div>
+          <div class="util-desc">Border color</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">border-style</div>
+          <div class="util-desc">Border style</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">border-radius</div>
+          <div class="util-desc">Corner rounding</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">border-width (logical)</div>
+          <div class="util-desc">Logical border widths (block/inline)</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">outline</div>
+          <div class="util-desc">Outline styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">ring</div>
+          <div class="util-desc">Box-shadow based ring</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tamagui can achieve this with boxShadow</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">divide</div>
+          <div class="util-desc">Borders between children</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Effects</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">opacity</div>
+          <div class="util-desc">Element opacity</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">box-shadow</div>
+          <div class="util-desc">Box shadow</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">RN shadow implementation differs from CSS</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">mix-blend-mode</div>
+          <div class="util-desc">Element blending mode</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">cursor</div>
+          <div class="util-desc">Mouse cursor style</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">pointer-events</div>
+          <div class="util-desc">Pointer event behavior</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">user-select</div>
+          <div class="util-desc">Text selection behavior</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Filters</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">filter (blur, brightness, etc)</div>
+          <div class="util-desc">CSS filter effects</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">backdrop-filter</div>
+          <div class="util-desc">Backdrop filter effects</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Transforms</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">transform</div>
+          <div class="util-desc">CSS transform</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">translate</div>
+          <div class="util-desc">Translate position</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">scale</div>
+          <div class="util-desc">Scale sizing</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">rotate</div>
+          <div class="util-desc">Rotation</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">skew</div>
+          <div class="util-desc">Skew distortion</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">transform-origin</div>
+          <div class="util-desc">Transform origin point</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">perspective</div>
+          <div class="util-desc">3D perspective depth</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">backface-visibility</div>
+          <div class="util-desc">Backface visibility in 3D</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Transitions & Animation</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">animation</div>
+          <div class="util-desc">Animation driver / keyframes</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui uses pluggable animation drivers (CSS, reanimated, motion, native)</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">transition-property</div>
+          <div class="util-desc">Which properties to transition</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui animation driver handles this automatically</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">transition-duration</div>
+          <div class="util-desc">Transition timing</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">transition-timing-function</div>
+          <div class="util-desc">Easing function</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui configures this per-animation driver</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">enter/exit styles</div>
+          <div class="util-desc">Mount/unmount animation styles</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui-specific: AnimatePresence + enterStyle/exitStyle</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Interactive States</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">hover</div>
+          <div class="util-desc">Hover state styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Uniwind has no hover (mobile-focused)</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">press / active</div>
+          <div class="util-desc">Press/active state styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">focus</div>
+          <div class="util-desc">Focus state styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">focus-visible</div>
+          <div class="util-desc">Keyboard focus state</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">focus-within</div>
+          <div class="util-desc">Focus within container</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">disabled</div>
+          <div class="util-desc">Disabled state styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">group hover/press</div>
+          <div class="util-desc">Styling based on parent state</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes">Tamagui uses group prop on parent + grouping</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">peer variants</div>
+          <div class="util-desc">Styling based on sibling state</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Responsive & Media</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">breakpoints</div>
+          <div class="util-desc">Responsive breakpoint modifiers</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">dark mode</div>
+          <div class="util-desc">Dark theme modifier</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">combined media + pseudo</div>
+          <div class="util-desc">Media query + interactive state</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">container queries</div>
+          <div class="util-desc">Container-based responsive</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">prefers-reduced-motion</div>
+          <div class="util-desc">Reduced motion preference</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Platform</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">web-specific styles</div>
+          <div class="util-desc">Web-only styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tailwind is web-only by default</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">native-specific styles</div>
+          <div class="util-desc">Native-only styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">ios-specific styles</div>
+          <div class="util-desc">iOS-only styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">android-specific styles</div>
+          <div class="util-desc">Android-only styling</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">safe area insets</div>
+          <div class="util-desc">Safe area padding</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tamagui uses useSafeAreaInsets hook</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Pseudo Elements</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">::before / ::after</div>
+          <div class="util-desc">Generated content pseudo-elements</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">::placeholder</div>
+          <div class="util-desc">Input placeholder styling</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">::selection</div>
+          <div class="util-desc">Text selection styling</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">first-child / last-child</div>
+          <div class="util-desc">Positional child selectors</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Tables</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">border-collapse</div>
+          <div class="util-desc">Table border collapsing</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">border-spacing</div>
+          <div class="util-desc">Table border spacing</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">table-layout</div>
+          <div class="util-desc">Table layout algorithm</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>SVG</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">fill</div>
+          <div class="util-desc">SVG fill color</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">stroke</div>
+          <div class="util-desc">SVG stroke color</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">stroke-width</div>
+          <div class="util-desc">SVG stroke width</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Interactivity</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">scroll-behavior</div>
+          <div class="util-desc">Smooth scrolling</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">scroll-snap</div>
+          <div class="util-desc">Scroll snapping</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">touch-action</div>
+          <div class="util-desc">Touch interaction behavior</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">resize</div>
+          <div class="util-desc">Element resizability</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">appearance</div>
+          <div class="util-desc">Native form control appearance</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">caret-color</div>
+          <div class="util-desc">Text input caret color</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">accent-color</div>
+          <div class="util-desc">Form control accent color</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">will-change</div>
+          <div class="util-desc">GPU rendering hints</div>
+        </td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Accessibility</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">sr-only</div>
+          <div class="util-desc">Screen reader only visibility</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">forced-color-adjust</div>
+          <div class="util-desc">Windows high contrast mode</div>
+        </td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="category">
+  <h2>Design Tokens & Theming</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:22%">Utility</th>
+        <th style="width:12%">Tamagui</th>
+        <th style="width:12%">Tailwind</th>
+        <th style="width:12%">NativeWind</th>
+        <th style="width:12%">Uniwind</th>
+        <th style="width:30%">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="util-name">design tokens</div>
+          <div class="util-desc">Configurable design tokens</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes"></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">theme switching</div>
+          <div class="util-desc">Runtime theme switching</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td class="notes">Tamagui has nested theme support with sub-themes</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">sub-themes / component themes</div>
+          <div class="util-desc">Scoped component-level theming</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td><span class="support-badge support-partial">Partial</span></td>
+        <td class="notes">Tamagui unique: deeply nested component-aware themes</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="util-name">arbitrary values</div>
+          <div class="util-desc">One-off custom values</div>
+        </td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-web-only">Web</span></td>
+        <td><span class="support-badge support-full">Full</span></td>
+        <td><span class="support-badge support-none">—</span></td>
+        <td class="notes"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
