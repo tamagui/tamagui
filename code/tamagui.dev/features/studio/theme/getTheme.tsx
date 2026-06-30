@@ -1,5 +1,4 @@
 import z from 'zod'
-import { getSupabaseServerClient } from '../../api/getSupabaseServerClient'
 import { supabaseAdmin } from '../../auth/supabaseAdmin'
 import type { ThemeSuiteItemData } from './types'
 
@@ -43,9 +42,10 @@ export const ThemeSuiteSchema = z.object({
   templateStrategy: z.literal('base'),
 })
 
-export const getTheme = async (id: string, request?: Request) => {
-  const supabaseServerClient = getSupabaseServerClient(request)
-  const { data: currentTheme, error: themeError } = await supabaseServerClient
+export const getTheme = async (id: string, _request?: Request) => {
+  // read via the service role: theme_histories is locked down (no public read);
+  // public sharing of a specific theme by id is mediated here server-side.
+  const { data: currentTheme, error: themeError } = await supabaseAdmin
     .from('theme_histories')
     .select(`
       theme_data,

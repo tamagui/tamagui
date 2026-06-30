@@ -311,7 +311,8 @@ Don't add headers, backticks, or any labels around the structured data.
         .single()
 
       if (existingData) {
-        // Update existing record
+        // Update existing record (ownership verified by the select above; scope
+        // the write to the owner too as defense-in-depth)
         await supabaseAdmin
           .from('theme_histories')
           .update({
@@ -320,6 +321,7 @@ Don't add headers, backticks, or any labels around the structured data.
             is_cached: false,
           })
           .eq('id', lastId)
+          .eq('user_id', user.id)
 
         nextId = existingData.id
       } else {
