@@ -1,6 +1,7 @@
 import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
+import { assertValidCoupon } from '~/features/stripe/assertValidCoupon'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import { stripe } from '~/features/stripe/stripe'
 
@@ -75,6 +76,19 @@ export default apiRoute(async (req) => {
 
     if (items.length === 0) {
       return Response.json({ error: 'No items selected' }, { status: 400 })
+    }
+
+    // server-side coupon validation (matches the other charge routes): a
+    // client-supplied coupon must be valid, unexpired, under its cap, and apply
+    // to the support product being charged before it can discount the sub.
+    if (couponId) {
+      const supportProductId =
+        supportTier === 'direct'
+          ? STRIPE_PRODUCTS.SUPPORT_DIRECT.productId
+          : supportTier === 'sponsor'
+            ? STRIPE_PRODUCTS.SUPPORT_SPONSOR.productId
+            : ''
+      await assertValidCoupon(couponId, supportProductId)
     }
 
     // Attach the payment method to the customer
