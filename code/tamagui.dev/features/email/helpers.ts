@@ -1,7 +1,8 @@
 // @ts-ignore
 import * as postmark from 'postmark'
+import { serverEnv } from '../api/serverEnv'
 
-const serverToken = process.env.POSTMARK_SERVER_TOKEN!
+const serverToken = serverEnv('POSTMARK_SERVER_TOKEN')!
 
 if (process.env.NODE_ENV === 'production') {
   if (!serverToken) {

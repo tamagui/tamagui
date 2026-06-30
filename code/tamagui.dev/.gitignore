@@ -1,3 +1,8 @@
+# secrets — never commit (.env holds live service_role / sk_live / PAT)
+.env
+.env.*
+!.env.example
+
 bento-output
 helpers/dist/
 

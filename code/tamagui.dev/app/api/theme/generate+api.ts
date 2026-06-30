@@ -4,6 +4,7 @@ import slugify from '@sindresorhus/slugify'
 import { generateText } from 'ai'
 import { z } from 'zod'
 import { apiRoute } from '~/features/api/apiRoute'
+import { serverEnv } from '~/features/api/serverEnv'
 import { ensureAccess } from '~/features/api/ensureAccess'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
@@ -11,7 +12,7 @@ import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import type { ThemeSuiteItemData } from '~/features/studio/theme/types'
 
 const openrouter = createOpenRouter({
-  apiKey: process.env.OPENROUTER_API_KEY,
+  apiKey: serverEnv('OPENROUTER_API_KEY'),
 })
 
 const modelChain = [
