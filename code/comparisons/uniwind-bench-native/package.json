@@ -1,0 +1,19 @@
+{
+  "name": "@tamagui/comparison-uniwind-bench-native",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start --port 8103"
+  },
+  "dependencies": {
+    "expo": "~55.0.6",
+    "expo-linking": "~55.0.7",
+    "react": ">=19",
+    "react-native": "0.83.2",
+    "uniwind": "^1.9.0"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.1.11"
+  }
+}

@@ -1,0 +1,41 @@
+mount=88.3ms rerender=66.9ms
+
+Ran 14001 marker calls across 37 segments
+                theme-prep-uses | avg 0.4000000ms | total 0.400000ms | n=1
+      non-tamagui time (ignore) | avg 0.4881768ms | total 195.2707ms | n=400
+                  ~gap (ignore) | avg 2.1659582ms | total 21.65958ms | n=10
+          state-useDidFinishSSR | avg 0.0015785ms | total 0.631413ms | n=400
+          state-useIsClientOnly | avg 0.0012696ms | total 0.507871ms | n=400
+          state-useRef-stateRef | avg 0.0021076ms | total 0.843075ms | n=400
+              state-usePresence | avg 0.0060642ms | total 2.425683ms | n=400
+                 state-useState | avg 0.0041822ms | total 1.668706ms | n=399
+ state-useCreateShallowSetState | avg 0.0018380ms | total 0.735202ms | n=400
+                      use-state | avg 0.0063701ms | total 2.548075ms | n=400
+                    theme-props | avg 0.0014227ms | total 0.569083ms | n=400
+                pre-theme-media | avg 0.0015138ms | total 0.605547ms | n=400
+                          theme | avg 0.0054120ms | total 2.164837ms | n=400
+                          media | avg 0.0022786ms | total 0.911450ms | n=400
+           split-styles-prepare | avg 0.0013581ms | total 0.543251ms | n=400
+                    style-state | avg 0.0015499ms | total 0.619961ms | n=400
+         before-prop-pressStyle | avg 0.0035049ms | total 1.398456ms | n=399
+        split-styles-pre-result | avg 0.0128028ms | total 5.121128ms | n=400
+              split-styles-done | avg 0.0020415ms | total 0.816622ms | n=400
+                   split-styles | avg 0.0014686ms | total 0.587463ms | n=400
+                    destructure | avg 0.0045836ms | total 1.833461ms | n=400
+                   events-hooks | avg 0.0056570ms | total 2.262822ms | n=400
+                   events-setup | avg 0.0075446ms | total 3.010303ms | n=399
+                         events | avg 0.0037221ms | total 1.488876ms | n=400
+                spaced-as-child | avg 0.0011105ms | total 0.444230ms | n=400
+                 create-element | avg 0.0033876ms | total 1.355041ms | n=400
+                  group-context | avg 0.0012338ms | total 0.493541ms | n=400
+                themed-children | avg 0.0010286ms | total 0.411465ms | n=400
+               context-override | avg 0.0010204ms | total 0.408169ms | n=400
+                     style-tags | avg 0.0009802ms | total 0.392081ms | n=400
+                           rest | avg 0.0010157ms | total 0.406284ms | n=400
+                    state-enter | avg 0.0088990ms | total 3.541840ms | n=398
+             split-styles-setup | avg 0.0031719ms | total 1.265622ms | n=399
+              before-prop-style | avg 0.0030128ms | total 1.202129ms | n=399
+          split-styles-propsend | avg 0.0246620ms | total 9.840160ms | n=399
+                          hooks | avg 0.0074541ms | total 2.974208ms | n=399
+                   use-children | avg 0.0134128ms | total 5.351714ms | n=399
+                                    total 59.779789447784424ms (excludes gap/ignore)
