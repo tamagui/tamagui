@@ -470,6 +470,55 @@ test('$group- with untilMeasured on the same parent does NOT extract child group
   // can still use it — only the descendants' group styles bail.
 })
 
+test('$group- styles on an animated element stay on the runtime path (never extract to CSS)', async () => {
+  // Q2 invariant: a static @container class can't drive a JS animation driver's
+  // interpolation, so an animated element's $group- style must NOT extract to CSS.
+  // the compiler enforces this via createExtractor's `animation` de-opt (the whole
+  // element drops to runtime), backed by extractToClassNames' animation guard.
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View group="card">
+          <View
+            width={100}
+            animation="bouncy"
+            $group-card={{ backgroundColor: 'red' }}
+          />
+        </View>
+      )
+    }
+  `
+  )
+  expect(output?.js).toContain('$group-card')
+})
+
+test('$group- styles on an element with enterStyle stay on the runtime path', async () => {
+  // same Q2 invariant via a different animation surface (enterStyle). guards
+  // against a regression where an animated element's group style leaks into
+  // static @container CSS.
+  const output = await extractForWeb(
+    `
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <View group="card">
+          <View
+            width={100}
+            enterStyle={{ opacity: 0 }}
+            $group-card={{ backgroundColor: 'red' }}
+          />
+        </View>
+      )
+    }
+  `
+  )
+  expect(output?.js).toContain('$group-card')
+})
+
 test('$theme- styles extract to atomic CSS', async () => {
   const output = await extractForWeb(
     `

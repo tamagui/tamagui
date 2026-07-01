@@ -205,6 +205,37 @@ export async function extractToClassNames({
         }
       }
 
+      // invariant guard for $group-/$theme- CSS extraction (below): those styles
+      // can only be extracted to static @container / theme CSS when a class toggle
+      // alone expresses the change. JS animation drivers (reanimated, motion, moti,
+      // react-native) interpolate in JS and need the runtime path to read hard
+      // values when the element animates — a static class can't drive them. gated
+      // on whether THIS element animates rather than on the driver, because motion
+      // is isReactNative:false yet still needs JS.
+      //
+      // in practice createExtractor's deoptProps already de-opts every animated
+      // element upstream (`animation`/`animateOnly`/`animatePresence` always;
+      // enterStyle/exitStyle on RN drivers), so a flattened element reaching here
+      // is normally non-animated and this never fires. it keeps the invariant
+      // local and correct regardless of future deoptProps changes — it only ever
+      // bails the animated case to runtime, never widens what extracts.
+      let elementIsAnimated = false
+      for (const attr of jsxPath.node.openingElement.attributes) {
+        if (!t.isJSXAttribute(attr) || !t.isJSXIdentifier(attr.name)) continue
+        const n = attr.name.name
+        if (
+          n === 'animation' ||
+          n === 'animateOnly' ||
+          n === 'animatePresence' ||
+          n === 'animatedBy' ||
+          n === 'enterStyle' ||
+          n === 'exitStyle'
+        ) {
+          elementIsAnimated = true
+          break
+        }
+      }
+
       function addStyle(style: StyleObject) {
         const identifier = style[StyleObjectIdentifier]
         const rules = style[StyleObjectRules]
@@ -232,6 +263,12 @@ export async function extractToClassNames({
           // $group- styles extract through createMediaStyle which emits @container
           // rules keyed on the parent's `t_group_<name>` className.
           if (mediaName.startsWith('group-')) {
+            // a class toggle can't drive a JS animation driver's interpolation;
+            // keep animated elements on the runtime path (matches pre-extraction
+            // behavior for the group case).
+            if (elementIsAnimated) {
+              throw new BailOptimizationError()
+            }
             const mediaStyle = createMediaStyle(
               style,
               mediaName,
@@ -249,6 +286,12 @@ export async function extractToClassNames({
           const mediaTypeMatch = mediaName.match(/^(theme|platform)-/)
           if (mediaTypeMatch) {
             const mediaType = mediaTypeMatch[1] as 'theme' | 'platform'
+            // $theme- values can change at runtime (theme switch); if this
+            // element animates, a JS driver must interpolate the change, so keep
+            // it on the runtime path. $platform- is build-time static — never gated.
+            if (mediaType === 'theme' && elementIsAnimated) {
+              throw new BailOptimizationError()
+            }
             // createMediaStyle internally calls getGroupPropParts(`theme-` + key)
             // for theme, so we must pass the short key ("dark", not "theme-dark")
             // to avoid double-prefixing. Platform stays as-is (runtime parity).
