@@ -28,18 +28,19 @@ describe('tailwind mode - basic className', () => {
     expect(rule[StyleObjectValue]).toBe('red')
   })
 
-  test('className="w-100 h-50" sets width=100px and height=50px', () => {
+  test('className="w-100 h-50" sets width=400px and height=200px (tailwind x4 scale)', () => {
     const styles = simplifiedGetSplitStyles(View, {
       className: 'w-100 h-50',
     } as any)
 
+    // tailwind spacing scale: N * 0.25rem == N * 4px at the 16px root
     const wRule = findRule(styles.rulesToInsert, 'width')
     expect(wRule).toBeTruthy()
-    expect(wRule[StyleObjectValue]).toBe('100px')
+    expect(wRule[StyleObjectValue]).toBe('400px')
 
     const hRule = findRule(styles.rulesToInsert, 'height')
     expect(hRule).toBeTruthy()
-    expect(hRule[StyleObjectValue]).toBe('50px')
+    expect(hRule[StyleObjectValue]).toBe('200px')
   })
 
   test('className="opacity-50" sets opacity to 0.5', () => {
@@ -52,18 +53,19 @@ describe('tailwind mode - basic className', () => {
     expect(rule[StyleObjectValue]).toBe(0.5)
   })
 
-  test('className="p-10 m-5" sets padding=10px and margin=5px', () => {
+  test('className="p-10 m-5" sets padding=40px and margin=20px (tailwind x4 scale)', () => {
     const styles = simplifiedGetSplitStyles(View, {
       className: 'p-10 m-5',
     } as any)
 
+    // tailwind spacing scale: N * 0.25rem == N * 4px at the 16px root
     const ptRule = findRule(styles.rulesToInsert, 'paddingTop')
     expect(ptRule).toBeTruthy()
-    expect(ptRule[StyleObjectValue]).toBe('10px')
+    expect(ptRule[StyleObjectValue]).toBe('40px')
 
     const mtRule = findRule(styles.rulesToInsert, 'marginTop')
     expect(mtRule).toBeTruthy()
-    expect(mtRule[StyleObjectValue]).toBe('5px')
+    expect(mtRule[StyleObjectValue]).toBe('20px')
   })
 })
 
@@ -83,12 +85,12 @@ describe('tailwind mode - modifiers', () => {
     expect(hoverRule[StyleObjectValue]).toBe('blue')
   })
 
-  test('className="sm:p-20" generates media query class with 20px', () => {
+  test('className="sm:p-20" generates media query class with 80px (tailwind x4 scale)', () => {
     const styles = simplifiedGetSplitStyles(View, {
       className: 'sm:p-20',
     } as any)
 
-    // media rules encode value in identifier
+    // media rules encode value in identifier; p-20 -> 20 * 4px == 80px
     const rules = Object.values(styles.rulesToInsert || {}) as any[]
     const smPadRule = rules.find(
       (r) =>
@@ -96,7 +98,7 @@ describe('tailwind mode - modifiers', () => {
         r[StyleObjectIdentifier]?.includes('_sm')
     )
     expect(smPadRule).toBeTruthy()
-    expect(smPadRule[StyleObjectIdentifier]).toContain('20px')
+    expect(smPadRule[StyleObjectIdentifier]).toContain('80px')
   })
 
   test('className="sm:hover:bg-purple" generates combined modifier class', () => {

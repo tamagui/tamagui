@@ -819,22 +819,12 @@ export type StyleModeSetting = TamaguiConfig['settings'] extends {
 // - 'tamagui': Classic style props only (default)
 // - 'tailwind': className only, no style props
 // - 'tamagui-and-tailwind': Classic style props + className processing
-//
-// note: flat $props mode ('flat' / 'tamagui-and-flat') is temporarily shelved.
-// the type scaffolding below (IncludesFlatMode / WithFlatProps) stays dormant so it
-// can be brought back by re-adding those values to this union.
 export type StyleMode = 'tamagui' | 'tailwind' | 'tamagui-and-tailwind'
 
 // Helper types to check which modes are enabled
 export type IncludesClassicMode = StyleModeSetting extends
   | 'tamagui'
   | 'tamagui-and-tailwind'
-  ? true
-  : false
-
-// dormant while flat mode is shelved: StyleModeSetting never extends these, so this
-// is always false and the WithFlatProps branches below contribute nothing.
-export type IncludesFlatMode = StyleModeSetting extends 'flat' | 'tamagui-and-flat'
   ? true
   : false
 
@@ -2061,49 +2051,6 @@ export type AllPlatforms =
   | 'androidtv'
   | 'tvos'
 
-//
-// Flat mode types (opt-in via styleMode: 'flat')
-//
-// Uses simplified index signatures to avoid type complexity explosion.
-// Full type checking for flat props happens at runtime during preprocessing.
-
-// flat pseudo modifiers (without Style suffix)
-type FlatPseudoKey =
-  | 'hover'
-  | 'press'
-  | 'focus'
-  | 'focus-visible'
-  | 'focus-within'
-  | 'disabled'
-  | 'enter'
-  | 'exit'
-
-// flat theme modifiers (common ones, custom themes covered by catch-all)
-type FlatThemeKey = 'dark' | 'light'
-
-// base flat props: $bg, $backgroundColor, $p, $padding, etc.
-// uses 'any' for values to avoid type complexity explosion while keeping prop names for autocomplete
-export type WithFlatBaseProps<StyleProps> = {
-  [Key in keyof Shorthands as `$${Key}`]?: any
-} & {
-  [Key in keyof StyleProps as `$${string & Key}`]?: any
-}
-
-// simplified type for modifier props - allows any value to avoid complexity explosion
-// supports: $hover:bg, $sm:bg, $dark:bg, $web:cursor, and chained variants
-export type WithFlatModifierProps = {
-  [key: `$${FlatPseudoKey}:${string}`]: any
-  [key: `$${MediaQueryKey}:${string}`]: any
-  [key: `$${FlatThemeKey}:${string}`]: any
-  [key: `$${AllPlatforms}:${string}`]: any
-  // catch-all for custom themes and chained modifiers like $sm:dark:hover:bg
-  [key: `$${string}:${string}:${string}`]: any
-}
-
-// combined flat props (typed base shorthands + loose modifiers)
-export type WithFlatProps<StyleProps> = WithFlatBaseProps<StyleProps> &
-  WithFlatModifierProps
-
 // MUST EXPORT ALL IN BETWEEN or else it expands declarations like crazy
 
 //
@@ -2694,10 +2641,9 @@ export interface StackNonStyleProps
 }
 
 // Conditionally include style props based on styleMode setting
-export type StackStyle = (IncludesClassicMode extends true
+export type StackStyle = IncludesClassicMode extends true
   ? WithThemeShorthandsPseudosMedia<StackStyleBase>
-  : {}) &
-  (IncludesFlatMode extends true ? WithFlatProps<StackStyleBase> : {})
+  : {}
 
 //
 // Text props
@@ -2721,10 +2667,9 @@ export interface TextNonStyleProps
 }
 
 // Conditionally include style props based on styleMode setting
-export type TextStyle = (IncludesClassicMode extends true
+export type TextStyle = IncludesClassicMode extends true
   ? WithThemeShorthandsPseudosMedia<TextStylePropsBase>
-  : {}) &
-  (IncludesFlatMode extends true ? WithFlatProps<TextStylePropsBase> : {})
+  : {}
 
 export type TextProps = TextNonStyleProps & TextStyle
 
@@ -2771,10 +2716,9 @@ export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   keyof StylePropsBase | keyof Variants
 > &
   (StylePropsBase extends object
-    ? (IncludesClassicMode extends true
-        ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
-        : {}) &
-        (IncludesFlatMode extends true ? WithFlatProps<StylePropsBase> : {})
+    ? IncludesClassicMode extends true
+      ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
+      : {}
     : {})
 
 export type TamaguiComponent<

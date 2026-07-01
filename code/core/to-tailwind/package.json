@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/to-tailwind",
-  "version": "2.0.0-rc.31",
+  "version": "2.4.0",
   "private": false,
   "type": "module",
   "sideEffects": false,
@@ -21,7 +21,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tamagui-build",
-    "test": "vitest --run"
+    "test": "vitest --run src",
+    "test:web": "vitest --run src"
   },
   "dependencies": {
     "@babel/parser": "^7.26.0",

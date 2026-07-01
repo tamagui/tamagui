@@ -227,19 +227,6 @@ function mergeDeep(target: any, source: any): any {
   return result
 }
 
-/**
- * Check if flat-style preprocessing should run. Tailwind mode reuses it to handle
- * the props converted from className. (Flat $props mode is shelved; when it returns
- * its 'flat' / 'tamagui-and-flat' values get re-added here alongside StyleMode.)
- */
-function isFlatModeEnabled(config: TamaguiInternalConfig): boolean {
-  const styleMode = config.settings?.styleMode
-  if (!styleMode) return false
-  // tailwind mode requires flat-style processing for the converted props
-  if (styleMode === 'tailwind' || styleMode === 'tamagui-and-tailwind') return true
-  return false
-}
-
 function isTailwindModeEnabled(config: TamaguiInternalConfig): boolean {
   const styleMode = config.settings?.styleMode
   if (!styleMode) return false
@@ -586,7 +573,9 @@ function tailwindClassToFlatProp(
     const sized = tailwindSizingValue(expandedProp, value)
     if (sized != null) {
       const key =
-        modifiers.length > 0 ? `$${modifiers.join(':')}:${expandedProp}` : `$${expandedProp}`
+        modifiers.length > 0
+          ? `$${modifiers.join(':')}:${expandedProp}`
+          : `$${expandedProp}`
       return { key, value: sized }
     }
   }
@@ -651,18 +640,18 @@ function tailwindClassToFlatProp(
 }
 
 /**
- * Preprocess flat mode props before the main loop.
- * Transforms syntax like $hover:bg="red" into hoverStyle: { backgroundColor: 'red' }
- * Also handles base flat props like $bg="red" → backgroundColor: "red"
- * This allows the existing handlers to process them normally.
+ * Preprocess the flat $-props produced by tailwind className conversion, before the
+ * main loop. Transforms syntax like $hover:bg="red" into hoverStyle: { backgroundColor:
+ * 'red' } and base flat props like $bg="red" → backgroundColor: "red", so the existing
+ * handlers can process them normally.
  */
 function preprocessFlatProps(
   props: Record<string, any>,
   shorthands: Record<string, string>,
   config: TamaguiInternalConfig
 ): Record<string, any> {
-  // only process if flat mode is enabled
-  if (!isFlatModeEnabled(config)) {
+  // these $-props are only produced when tailwind mode is enabled
+  if (!isTailwindModeEnabled(config)) {
     return props
   }
 
