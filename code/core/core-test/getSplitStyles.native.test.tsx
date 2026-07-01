@@ -318,6 +318,20 @@ describe('getSplitStyles', () => {
       expect(resultStr).toContain('blue')
     }
   })
+
+  test('drops "unset" on native instead of passing it to RN style', () => {
+    // React Native rejects CSS-wide keywords — aspectRatio throws on "unset".
+    // propMapper should drop "unset" so the prop falls back to its default.
+    expect(() =>
+      getSplitStylesFor({ aspectRatio: 'unset', backgroundColor: 'unset' })
+    ).not.toThrow()
+    const { style } = getSplitStylesFor({
+      aspectRatio: 'unset',
+      backgroundColor: 'unset',
+    })
+    expect(style?.aspectRatio).toBeUndefined()
+    expect(style?.backgroundColor).toBeUndefined()
+  })
 })
 
 describe.skip('getSplitStyles - pseudo prop merging', () => {
