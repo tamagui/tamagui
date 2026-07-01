@@ -26,7 +26,12 @@ const frameworkLabel: Record<Framework, string> = {
 }
 
 // weighted coverage %: full=1, partial & web-only=0.5
-function coveragePct(s: { full: number; partial: number; webOnly: number; total: number }) {
+function coveragePct(s: {
+  full: number
+  partial: number
+  webOnly: number
+  total: number
+}) {
   return ((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100
 }
 
@@ -78,7 +83,9 @@ function generateMarkdown(): string {
       'not whether a raw value can be smuggled through `style={{}}`._'
   )
   lines.push('')
-  lines.push('**Legend:** ✅ Full (works web + native) | ⚠️ Partial (works but with real caveats) | 🌐 Web-only | ❌ None')
+  lines.push(
+    '**Legend:** ✅ Full (works web + native) | ⚠️ Partial (works but with real caveats) | 🌐 Web-only | ❌ None'
+  )
   lines.push('')
 
   // ── summary table ──
@@ -89,8 +96,12 @@ function generateMarkdown(): string {
       'It rewards breadth; for the cross-platform story read the **Full** column (web + native) below.'
   )
   lines.push('')
-  lines.push('| Framework | Full (web+native) | Partial | Web-only | None | Total | Coverage % |')
-  lines.push('|-----------|-------------------|---------|----------|------|-------|------------|')
+  lines.push(
+    '| Framework | Full (web+native) | Partial | Web-only | None | Total | Coverage % |'
+  )
+  lines.push(
+    '|-----------|-------------------|---------|----------|------|-------|------------|'
+  )
   for (const fw of frameworks) {
     const s = stats[fw]
     lines.push(
@@ -117,7 +128,9 @@ function generateMarkdown(): string {
   for (const { fw, full } of crossPlat) {
     const share = ((full / total) * 100).toFixed(0)
     const bar = '█'.repeat(Math.round((full / total) * 20)).padEnd(20, '░')
-    lines.push(`| **${frameworkLabel[fw]}** | ${full} | ${total} | \`${bar}\` ${share}% |`)
+    lines.push(
+      `| **${frameworkLabel[fw]}** | ${full} | ${total} | \`${bar}\` ${share}% |`
+    )
   }
   lines.push('')
   const leader = crossPlat[0]
@@ -212,7 +225,12 @@ const categoryPriority = [
   'Interactivity',
 ]
 
-const levelRank: Record<SupportLevel, number> = { full: 3, partial: 2, 'web-only': 1, none: 0 }
+const levelRank: Record<SupportLevel, number> = {
+  full: 3,
+  partial: 2,
+  'web-only': 1,
+  none: 0,
+}
 
 function collectGaps(fw: Framework) {
   const others = frameworks.filter((f) => f !== fw)
@@ -235,8 +253,12 @@ function collectGaps(fw: Framework) {
       // for tailwind (web framework), web-only isn't really a gap — skip those
       if (fw === 'tailwind' && mine === 'web-only') continue
       // does any rival actually have real cross-platform (full/partial) support? that's the meaningful gap.
-      const crossPlatformRival = better.some((b) => b.lvl === 'full' || b.lvl === 'partial')
-      const rivals = better.map((b) => `${frameworkLabel[b.o]} ${b.lvl === 'web-only' ? '🌐' : b.lvl}`)
+      const crossPlatformRival = better.some(
+        (b) => b.lvl === 'full' || b.lvl === 'partial'
+      )
+      const rivals = better.map(
+        (b) => `${frameworkLabel[b.o]} ${b.lvl === 'web-only' ? '🌐' : b.lvl}`
+      )
       const reason =
         mine === 'web-only'
           ? `web-only here; ${rivals.join(', ')}`
@@ -254,7 +276,8 @@ function collectGaps(fw: Framework) {
   // surface gaps where a rival has genuine cross-platform support first (those are the ones that hurt),
   // then fall back to category priority.
   return gaps.sort(
-    (a, b) => Number(b.crossPlatformRival) - Number(a.crossPlatformRival) || a.prio - b.prio
+    (a, b) =>
+      Number(b.crossPlatformRival) - Number(a.crossPlatformRival) || a.prio - b.prio
   )
 }
 
@@ -506,7 +529,7 @@ ${cat.utilities
         <td><span class="support-badge ${supportClass(util.support.tailwind)}">${supportLabel(util.support.tailwind)}</span></td>
         <td><span class="support-badge ${supportClass(util.support.nativewind)}">${supportLabel(util.support.nativewind)}</span></td>
         <td><span class="support-badge ${supportClass(util.support.uniwind)}">${supportLabel(util.support.uniwind)}</span></td>
-        <td class="notes">${(util.notes ?? '').replace(/'/g, "&#39;")}</td>
+        <td class="notes">${(util.notes ?? '').replace(/'/g, '&#39;')}</td>
       </tr>`
   })
   .join('\n')}
@@ -675,7 +698,10 @@ console.log('\n📊 Coverage Summary:\n')
 for (const fw of frameworks) {
   const s = stats[fw]
   const pct = (((s.full + s.partial * 0.5 + s.webOnly * 0.5) / s.total) * 100).toFixed(1)
-  const bar = '█'.repeat(Math.round(Number(pct) / 5)) + '░'.repeat(20 - Math.round(Number(pct) / 5))
-  console.log(`  ${fw.padEnd(12)} ${bar} ${pct}%  (${s.full} full, ${s.partial} partial, ${s.webOnly} web-only, ${s.none} none)`)
+  const bar =
+    '█'.repeat(Math.round(Number(pct) / 5)) + '░'.repeat(20 - Math.round(Number(pct) / 5))
+  console.log(
+    `  ${fw.padEnd(12)} ${bar} ${pct}%  (${s.full} full, ${s.partial} partial, ${s.webOnly} web-only, ${s.none} none)`
+  )
 }
 console.log('')

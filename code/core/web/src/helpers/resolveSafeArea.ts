@@ -84,9 +84,7 @@ export function isSafeAreaKey(key: string): boolean {
 
 // resolve key="safe" -> array of [edge-key, value] pairs.
 // returns undefined if key isn't safe-area-aware.
-export function expandSafeAreaValue(
-  key: string,
-): Array<[string, string]> | undefined {
+export function expandSafeAreaValue(key: string): Array<[string, string]> | undefined {
   const edges = propEdges[key]
   if (!edges) return undefined
   if (typeof edges === 'string') {

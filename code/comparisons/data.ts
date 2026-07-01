@@ -57,8 +57,14 @@ export const categories: Category[] = [
           nativewind: 'flex / hidden',
           uniwind: 'flex / block / hidden',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
-        notes: 'Tamagui: `$dsp` is a named prop; `flex`/`none` work cross-platform, other values (block/grid/contents) web-only. RN natively only has flex + none, so NativeWind/Uniwind map flex/hidden and ignore the rest on native.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
+        notes:
+          'Tamagui: `$dsp` is a named prop; `flex`/`none` work cross-platform, other values (block/grid/contents) web-only. RN natively only has flex + none, so NativeWind/Uniwind map flex/hidden and ignore the rest on native.',
       },
       {
         name: 'position',
@@ -69,8 +75,14 @@ export const categories: Category[] = [
           nativewind: 'absolute / relative',
           uniwind: 'absolute / relative',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
-        notes: 'Tamagui: `$pos` named prop; absolute/relative/static cross-platform, fixed/sticky web-only (RN has no fixed/sticky positioning). NativeWind/Uniwind map absolute/relative on native and drop fixed/sticky.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
+        notes:
+          'Tamagui: `$pos` named prop; absolute/relative/static cross-platform, fixed/sticky web-only (RN has no fixed/sticky positioning). NativeWind/Uniwind map absolute/relative on native and drop fixed/sticky.',
       },
       {
         name: 'top/right/bottom/left',
@@ -81,7 +93,12 @@ export const categories: Category[] = [
           nativewind: 'top-4 right-4 bottom-4 left-4',
           uniwind: 'top-4 right-4 bottom-4 left-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'inset',
@@ -92,7 +109,12 @@ export const categories: Category[] = [
           nativewind: 'inset-4',
           uniwind: 'inset-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'z-index',
@@ -103,7 +125,12 @@ export const categories: Category[] = [
           nativewind: 'z-10',
           uniwind: 'z-10',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'overflow',
@@ -114,8 +141,14 @@ export const categories: Category[] = [
           nativewind: 'overflow-hidden / overflow-scroll',
           uniwind: 'overflow-hidden',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
-        notes: 'Tamagui: `$ov` named prop, cross-platform (visible/hidden/scroll). RN ignores overflow:scroll on Android for clipping. Uniwind: only overflow-hidden documented.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'partial',
+        },
+        notes:
+          'Tamagui: `$ov` named prop, cross-platform (visible/hidden/scroll). RN ignores overflow:scroll on Android for clipping. Uniwind: only overflow-hidden documented.',
       },
       {
         name: 'aspect-ratio',
@@ -126,8 +159,14 @@ export const categories: Category[] = [
           nativewind: 'aspect-square / aspect-video',
           uniwind: 'aspect-square',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
-        notes: 'Tamagui: `$aspectRatio` cross-platform. Uniwind docs note aspect-ratio has "limited support".',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'partial',
+        },
+        notes:
+          'Tamagui: `$aspectRatio` cross-platform. Uniwind docs note aspect-ratio has "limited support".',
       },
       {
         name: 'box-sizing',
@@ -138,8 +177,14 @@ export const categories: Category[] = [
           nativewind: 'box-border',
           uniwind: 'box-border',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
-        notes: 'Tamagui: `$bxs` named prop, maps to RN 0.77+ boxSizing (New Architecture) so border-box/content-box both work cross-platform. RN defaults to and only supports border-box, so NativeWind/Uniwind box-border is a no-op and box-content is unsupported on native.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
+        notes:
+          'Tamagui: `$bxs` named prop, maps to RN 0.77+ boxSizing (New Architecture) so border-box/content-box both work cross-platform. RN defaults to and only supports border-box, so NativeWind/Uniwind box-border is a no-op and box-content is unsupported on native.',
       },
       {
         name: 'isolation',
@@ -148,8 +193,14 @@ export const categories: Category[] = [
           tamagui: '$isolation="isolate"',
           tailwind: 'isolate / isolation-auto',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui: `$isolation` maps to RN 0.77+ isolation (New Architecture) for native stacking contexts; NativeWind `isolate` is web-only.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$isolation` maps to RN 0.77+ isolation (New Architecture) for native stacking contexts; NativeWind `isolate` is web-only.',
       },
       {
         name: 'visibility',
@@ -158,8 +209,14 @@ export const categories: Category[] = [
           tamagui: 'visibility="hidden"',
           tailwind: 'visible / invisible / collapse',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tamagui: `visibility="hidden"` is cross-platform - native CSS visibility on web, expands to `opacity:0 + pointerEvents:none` on native. `visibility="collapse"` stays web-only (no RN equivalent). NativeWind `invisible` maps to opacity:0 on native (collapse is web-only).',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `visibility="hidden"` is cross-platform - native CSS visibility on web, expands to `opacity:0 + pointerEvents:none` on native. `visibility="collapse"` stays web-only (no RN equivalent). NativeWind `invisible` maps to opacity:0 on native (collapse is web-only).',
       },
       {
         name: 'float',
@@ -167,7 +224,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'float-left / float-right',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
         notes: 'Not applicable to RN flexbox model',
       },
       {
@@ -176,7 +238,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'clear-left / clear-both',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'columns',
@@ -185,8 +252,14 @@ export const categories: Category[] = [
           tamagui: '$columnCount={3}',
           tailwind: 'columns-3',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui: `$columnCount` is a typed prop but CSS multi-column only renders on web; RN has no multi-column layout. Uniwind explicitly lists `columns-*` as unsupported.',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$columnCount` is a typed prop but CSS multi-column only renders on web; RN has no multi-column layout. Uniwind explicitly lists `columns-*` as unsupported.',
       },
       {
         name: 'object-fit',
@@ -196,8 +269,14 @@ export const categories: Category[] = [
           tailwind: 'object-cover / object-contain',
           nativewind: 'object-cover / object-contain',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
-        notes: 'Tamagui: `objectFit` is auto-mapped on native — Tamagui core expands `objectFit` to RN `resizeMode`, and the Image component also writes `style.objectFit` (RN 0.76+ reads it natively). Works with the default Image and expo-image (via `contentFit`).',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `objectFit` is auto-mapped on native — Tamagui core expands `objectFit` to RN `resizeMode`, and the Image component also writes `style.objectFit` (RN 0.76+ reads it natively). Works with the default Image and expo-image (via `contentFit`).',
       },
       {
         name: 'object-position',
@@ -206,8 +285,14 @@ export const categories: Category[] = [
           tamagui: '$objectPosition="center"',
           tailwind: 'object-center / object-top',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tamagui: `objectPosition` is forwarded into the Image `style` on native and to `contentPosition` when using expo-image (full support there). Default RN Image currently ignores it — limited to keyword values like center/top/bottom/left/right via expo-image.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `objectPosition` is forwarded into the Image `style` on native and to `contentPosition` when using expo-image (full support there). Default RN Image currently ignores it — limited to keyword values like center/top/bottom/left/right via expo-image.',
       },
     ],
   },
@@ -227,7 +312,12 @@ export const categories: Category[] = [
           nativewind: 'flex-row / flex-col',
           uniwind: 'flex-row / flex-col',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'flex-wrap',
@@ -238,7 +328,12 @@ export const categories: Category[] = [
           nativewind: 'flex-wrap / flex-nowrap',
           uniwind: 'flex-wrap / flex-nowrap',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'flex',
@@ -249,8 +344,14 @@ export const categories: Category[] = [
           nativewind: 'flex-1',
           uniwind: 'flex-1',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
-        notes: 'Tamagui: `$f` plus separate `$fg`/`$fs`/`$fb` give full control cross-platform. On native, RN flex is a single number, so the CSS `flex: grow shrink basis` shorthand (e.g. flex-auto/flex-initial) does not map cleanly; NativeWind/Uniwind support flex-1 but the multi-value shorthands are web-leaning.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
+        notes:
+          'Tamagui: `$f` plus separate `$fg`/`$fs`/`$fb` give full control cross-platform. On native, RN flex is a single number, so the CSS `flex: grow shrink basis` shorthand (e.g. flex-auto/flex-initial) does not map cleanly; NativeWind/Uniwind support flex-1 but the multi-value shorthands are web-leaning.',
       },
       {
         name: 'flex-grow',
@@ -261,7 +362,12 @@ export const categories: Category[] = [
           nativewind: 'grow / grow-0',
           uniwind: 'grow / grow-0',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'flex-shrink',
@@ -272,7 +378,12 @@ export const categories: Category[] = [
           nativewind: 'shrink / shrink-0',
           uniwind: 'shrink / shrink-0',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'flex-basis',
@@ -283,7 +394,12 @@ export const categories: Category[] = [
           nativewind: 'basis-auto',
           uniwind: 'basis-auto',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'partial',
+        },
       },
       {
         name: 'justify-content',
@@ -294,7 +410,12 @@ export const categories: Category[] = [
           nativewind: 'justify-center / justify-between',
           uniwind: 'justify-center / justify-between',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'align-items',
@@ -305,7 +426,12 @@ export const categories: Category[] = [
           nativewind: 'items-center / items-start',
           uniwind: 'items-center / items-start',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'align-self',
@@ -316,7 +442,12 @@ export const categories: Category[] = [
           nativewind: 'self-center / self-start',
           uniwind: 'self-center / self-start',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'align-content',
@@ -327,7 +458,12 @@ export const categories: Category[] = [
           nativewind: 'content-center',
           uniwind: 'content-center',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'gap',
@@ -338,8 +474,14 @@ export const categories: Category[] = [
           nativewind: 'gap-4 / gap-x-4 / gap-y-4',
           uniwind: 'gap-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
-        notes: 'Tamagui: `$gap`/`$columnGap`/`$rowGap` are named props, cross-platform via RN 0.71+ flexbox gap. All four support it natively now (RN 0.71+ added row/column gap to flexbox); pre-0.71 needed a margin workaround.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
+        notes:
+          'Tamagui: `$gap`/`$columnGap`/`$rowGap` are named props, cross-platform via RN 0.71+ flexbox gap. All four support it natively now (RN 0.71+ added row/column gap to flexbox); pre-0.71 needed a margin workaround.',
       },
       {
         name: 'order',
@@ -348,8 +490,14 @@ export const categories: Category[] = [
           tamagui: '$order={1}',
           tailwind: 'order-1 / order-first / order-last',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui: `$order` is a typed prop but flex `order` only affects web layout; RN flexbox ignores order (paint order = child order). Web-only for everyone.',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$order` is a typed prop but flex `order` only affects web layout; RN flexbox ignores order (paint order = child order). Web-only for everyone.',
       },
     ],
   },
@@ -367,8 +515,14 @@ export const categories: Category[] = [
           tamagui: '$gridTemplateColumns="repeat(3, 1fr)"',
           tailwind: 'grid-cols-3',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'CSS grid only exists on web; RN has no grid layout engine. Tamagui exposes `$gridTemplate*` as typed props but they no-op on native. All RN approaches require manual flex layout or a list component instead.',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'CSS grid only exists on web; RN has no grid layout engine. Tamagui exposes `$gridTemplate*` as typed props but they no-op on native. All RN approaches require manual flex layout or a list component instead.',
       },
       {
         name: 'grid-column',
@@ -377,7 +531,12 @@ export const categories: Category[] = [
           tamagui: '$gridColumn="span 2"',
           tailwind: 'col-span-2 / col-start-1',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'grid-row',
@@ -386,7 +545,12 @@ export const categories: Category[] = [
           tamagui: '$gridRow="span 2"',
           tailwind: 'row-span-2 / row-start-1',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'grid-template-areas',
@@ -395,7 +559,12 @@ export const categories: Category[] = [
           tamagui: '$gridTemplateAreas="..."',
           tailwind: 'grid-areas-[...]',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'grid-auto-flow',
@@ -404,8 +573,14 @@ export const categories: Category[] = [
           tamagui: '$gridAutoFlow="row"',
           tailwind: 'grid-flow-row / grid-flow-col',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui: `$gridAutoFlow` is a typed prop but renders web-only (RN has no grid).',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$gridAutoFlow` is a typed prop but renders web-only (RN has no grid).',
       },
       {
         name: 'place-content/items/self',
@@ -413,7 +588,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'place-content-center / place-items-center',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -433,7 +613,12 @@ export const categories: Category[] = [
           nativewind: 'p-4 pt-2 px-3',
           uniwind: 'p-4 pt-2 px-3',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'margin',
@@ -444,7 +629,12 @@ export const categories: Category[] = [
           nativewind: 'm-4 mt-2 mx-3',
           uniwind: 'm-4 mt-2 mx-3',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'padding-block/inline (logical)',
@@ -454,7 +644,12 @@ export const categories: Category[] = [
           tailwind: 'ps-4 pe-4 / pb-4 pt-4',
           nativewind: 'ps-4 pe-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
         notes: 'NativeWind v5 maps ps/pe to RN paddingStart/End (RTL aware)',
       },
       {
@@ -465,7 +660,12 @@ export const categories: Category[] = [
           tailwind: 'ms-4 me-4',
           nativewind: 'ms-4 me-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
         notes: 'NativeWind v5 maps ms/me to RN marginStart/End (RTL aware)',
       },
       {
@@ -475,8 +675,14 @@ export const categories: Category[] = [
           tailwind: 'space-x-4 / space-y-4',
           uniwind: 'space-x-4 / space-y-4',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'full' },
-        notes: 'Tamagui has no `space-*` className; the idiomatic equivalent is `$gap` (cross-platform). NativeWind v5 marks space-x/space-y as web-only (it injects a `> * + *` sibling selector that has no native equivalent) and recommends gap on native. Uniwind lists space-x/y as supported.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'full',
+        },
+        notes:
+          'Tamagui has no `space-*` className; the idiomatic equivalent is `$gap` (cross-platform). NativeWind v5 marks space-x/space-y as web-only (it injects a `> * + *` sibling selector that has no native equivalent) and recommends gap on native. Uniwind lists space-x/y as supported.',
       },
     ],
   },
@@ -496,7 +702,12 @@ export const categories: Category[] = [
           nativewind: 'w-24 / w-1/2 / w-full',
           uniwind: 'w-24 / w-1/2 / w-full',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'height',
@@ -507,7 +718,12 @@ export const categories: Category[] = [
           nativewind: 'h-24 / h-full',
           uniwind: 'h-24 / h-full',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'min-width / max-width',
@@ -518,7 +734,12 @@ export const categories: Category[] = [
           nativewind: 'min-w-0 max-w-lg',
           uniwind: 'min-w-0 max-w-lg',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'min-height / max-height',
@@ -529,7 +750,12 @@ export const categories: Category[] = [
           nativewind: 'min-h-0 max-h-screen',
           uniwind: 'min-h-0 max-h-screen',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'size (width + height)',
@@ -540,8 +766,14 @@ export const categories: Category[] = [
           nativewind: 'size-4 / size-full',
           uniwind: 'size-4',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
-        notes: 'The `size-*` shorthand (sets width+height together) shipped in Tailwind v3.4. Tamagui has no single shorthand: use `$w`/`$h` (both cross-platform, so the capability exists, just two props). NativeWind v5 docs only enumerate `w-*`/`h-*` as Full on native; `size-*` native support is undocumented/unconfirmed.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
+        notes:
+          'The `size-*` shorthand (sets width+height together) shipped in Tailwind v3.4. Tamagui has no single shorthand: use `$w`/`$h` (both cross-platform, so the capability exists, just two props). NativeWind v5 docs only enumerate `w-*`/`h-*` as Full on native; `size-*` native support is undocumented/unconfirmed.',
       },
       {
         name: 'inline-size / block-size',
@@ -550,8 +782,14 @@ export const categories: Category[] = [
           tamagui: '$inlineSize={100} $blockSize={100}',
           tailwind: 'w-* / h-* (logical via writing-mode)',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'none', uniwind: 'none' },
-        notes: 'Tamagui types `$inlineSize`/`$blockSize` as size-token props but they only resolve on web (RN has no inlineSize/blockSize style props; use `$w`/`$h`). On native, writing-mode is effectively LTR/TTB so logical == physical anyway.',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'none',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui types `$inlineSize`/`$blockSize` as size-token props but they only resolve on web (RN has no inlineSize/blockSize style props; use `$w`/`$h`). On native, writing-mode is effectively LTR/TTB so logical == physical anyway.',
       },
     ],
   },
@@ -571,7 +809,12 @@ export const categories: Category[] = [
           nativewind: 'font-sans',
           uniwind: 'font-sans',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'font-size',
@@ -582,7 +825,12 @@ export const categories: Category[] = [
           nativewind: 'text-sm / text-lg',
           uniwind: 'text-sm / text-lg',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'font-weight',
@@ -593,7 +841,12 @@ export const categories: Category[] = [
           nativewind: 'font-bold / font-semibold',
           uniwind: 'font-bold / font-semibold',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'font-style',
@@ -604,7 +857,12 @@ export const categories: Category[] = [
           nativewind: 'italic',
           uniwind: 'italic',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'color',
@@ -615,7 +873,12 @@ export const categories: Category[] = [
           nativewind: 'text-red-500',
           uniwind: 'text-red-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'text-align',
@@ -626,7 +889,12 @@ export const categories: Category[] = [
           nativewind: 'text-center',
           uniwind: 'text-center',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'text-transform',
@@ -637,7 +905,12 @@ export const categories: Category[] = [
           nativewind: 'uppercase / lowercase',
           uniwind: 'uppercase',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'text-decoration',
@@ -648,7 +921,12 @@ export const categories: Category[] = [
           nativewind: 'underline / line-through',
           uniwind: 'underline',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'partial',
+        },
       },
       {
         name: 'letter-spacing',
@@ -659,7 +937,12 @@ export const categories: Category[] = [
           nativewind: 'tracking-tight',
           uniwind: 'tracking-tight',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'line-height',
@@ -670,7 +953,12 @@ export const categories: Category[] = [
           nativewind: 'leading-tight',
           uniwind: 'leading-tight',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'line-clamp',
@@ -680,7 +968,12 @@ export const categories: Category[] = [
           tailwind: 'line-clamp-3',
           nativewind: 'line-clamp-3',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: 'white-space',
@@ -689,8 +982,14 @@ export const categories: Category[] = [
           tamagui: '$whiteSpace="nowrap"',
           tailwind: 'whitespace-nowrap / whitespace-pre',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui: `$whiteSpace` is a web-only text prop (tree-shaken on native). On native, text wrapping is controlled by `numberOfLines` and container width, not white-space.',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$whiteSpace` is a web-only text prop (tree-shaken on native). On native, text wrapping is controlled by `numberOfLines` and container width, not white-space.',
       },
       {
         name: 'word-break',
@@ -699,8 +998,14 @@ export const categories: Category[] = [
           tamagui: '$wordWrap="break-word"',
           tailwind: 'break-words / break-all',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui: `$wordWrap` (`ww` shorthand) is web-only. RN has no word-break control; it breaks at whitespace or character based on platform text engine.',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$wordWrap` (`ww` shorthand) is web-only. RN has no word-break control; it breaks at whitespace or character based on platform text engine.',
       },
       {
         name: 'text-overflow',
@@ -709,8 +1014,14 @@ export const categories: Category[] = [
           tamagui: '$textOverflow="ellipsis"',
           tailwind: 'truncate / text-ellipsis / text-clip',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tamagui: `$textOverflow="ellipsis"` works cross-platform on Text - web uses CSS text-overflow, native maps to numberOfLines={1} + ellipsizeMode="tail". Other values (clip) are web-only.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$textOverflow="ellipsis"` works cross-platform on Text - web uses CSS text-overflow, native maps to numberOfLines={1} + ellipsizeMode="tail". Other values (clip) are web-only.',
       },
       {
         name: 'text-indent',
@@ -718,7 +1029,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'indent-4 / indent-8',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'vertical-align',
@@ -727,8 +1043,14 @@ export const categories: Category[] = [
           tamagui: '$verticalAlign="middle"',
           tailwind: 'align-middle / align-top',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tamagui: `$verticalAlign` maps to RN 0.71+ verticalAlign on Text (auto/top/bottom/middle), so it works cross-platform. NativeWind `align-*` is largely a web inline-element concept; RN only honors a subset on Text.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$verticalAlign` maps to RN 0.71+ verticalAlign on Text (auto/top/bottom/middle), so it works cross-platform. NativeWind `align-*` is largely a web inline-element concept; RN only honors a subset on Text.',
       },
       {
         name: 'font-variant-numeric',
@@ -737,8 +1059,14 @@ export const categories: Category[] = [
           tamagui: '$fontVariant={["tabular-nums"]}',
           tailwind: 'tabular-nums / oldstyle-nums',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tamagui: `$fontVariant` maps to RN fontVariant array; RN supports a subset (tabular-nums, oldstyle-nums, lining-nums, etc.) cross-platform but not the full CSS font-variant-numeric grammar. NativeWind maps the common numeric variants to RN fontVariant, same subset limitation.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$fontVariant` maps to RN fontVariant array; RN supports a subset (tabular-nums, oldstyle-nums, lining-nums, etc.) cross-platform but not the full CSS font-variant-numeric grammar. NativeWind maps the common numeric variants to RN fontVariant, same subset limitation.',
       },
       {
         name: 'text-shadow',
@@ -748,8 +1076,14 @@ export const categories: Category[] = [
           tailwind: 'text-shadow-sm / text-shadow-lg',
           nativewind: 'text-shadow-sm / text-shadow-lg',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tailwind text-shadow utilities are new in v4.1; NativeWind v5 maps to RN textShadow* (single shadow only). Tamagui `$textShadow` + offset/radius/color are cross-platform via RN textShadow* props.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          'Tailwind text-shadow utilities are new in v4.1; NativeWind v5 maps to RN textShadow* (single shadow only). Tamagui `$textShadow` + offset/radius/color are cross-platform via RN textShadow* props.',
       },
       {
         name: 'text-wrap (balance / pretty)',
@@ -758,8 +1092,14 @@ export const categories: Category[] = [
           tamagui: '$textWrap="balance"',
           tailwind: 'text-balance / text-pretty',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tailwind `text-balance` (text-wrap: balance) and `text-pretty` shipped in v3.4. Tamagui `$textWrap` is a web-only prop. RN text layout has no balance/pretty algorithm, so all are web-only (NativeWind passes them through on web only).',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tailwind `text-balance` (text-wrap: balance) and `text-pretty` shipped in v3.4. Tamagui `$textWrap` is a web-only prop. RN text layout has no balance/pretty algorithm, so all are web-only (NativeWind passes them through on web only).',
       },
     ],
   },
@@ -779,7 +1119,12 @@ export const categories: Category[] = [
           nativewind: 'bg-red-500',
           uniwind: 'bg-red-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'background-image',
@@ -795,7 +1140,8 @@ export const categories: Category[] = [
           nativewind: 'partial',
           uniwind: 'none',
         },
-        notes: 'Tamagui: `$backgroundImage` maps to RN 0.76+ experimental_backgroundImage, so CSS gradients (linear/radial) render on native; raster url() background images stay web-only (use the Image component on native). NativeWind v5 similarly maps gradient utilities to RN 0.76+ backgroundImage; url() backgrounds remain web-only.',
+        notes:
+          'Tamagui: `$backgroundImage` maps to RN 0.76+ experimental_backgroundImage, so CSS gradients (linear/radial) render on native; raster url() background images stay web-only (use the Image component on native). NativeWind v5 similarly maps gradient utilities to RN 0.76+ backgroundImage; url() backgrounds remain web-only.',
       },
       {
         name: 'background-position',
@@ -803,7 +1149,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'bg-center / bg-top / bg-bottom',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'background-size',
@@ -811,7 +1162,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'bg-cover / bg-contain / bg-auto',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'background-repeat',
@@ -819,7 +1175,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'bg-repeat / bg-no-repeat',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'background-clip',
@@ -827,7 +1188,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'bg-clip-border / bg-clip-text',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -847,7 +1213,12 @@ export const categories: Category[] = [
           nativewind: 'border / border-2',
           uniwind: 'border / border-2',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'border-color',
@@ -858,7 +1229,12 @@ export const categories: Category[] = [
           nativewind: 'border-red-500',
           uniwind: 'border-red-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'border-style',
@@ -869,7 +1245,12 @@ export const categories: Category[] = [
           nativewind: 'border-solid / border-dashed',
           uniwind: 'border-solid',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'partial',
+        },
       },
       {
         name: 'border-radius',
@@ -880,7 +1261,12 @@ export const categories: Category[] = [
           nativewind: 'rounded-lg',
           uniwind: 'rounded-lg',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'border-width (logical)',
@@ -890,8 +1276,14 @@ export const categories: Category[] = [
           tailwind: 'border-s / border-e',
           nativewind: 'border-s / border-e',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
-        notes: 'NativeWind v5 maps border-s/border-e to RN borderStartWidth/borderEndWidth',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
+        notes:
+          'NativeWind v5 maps border-s/border-e to RN borderStartWidth/borderEndWidth',
       },
       {
         name: 'outline',
@@ -901,8 +1293,14 @@ export const categories: Category[] = [
           tailwind: 'outline / outline-2 / outline-blue-500',
           nativewind: 'outline / outline-2',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
-        notes: 'Tamagui: `$outline*` named props map to RN 0.77+ outline / outlineColor / outlineWidth / outlineOffset (New Architecture), so outlines render cross-platform. NativeWind v5 maps outline-* to the same RN props.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$outline*` named props map to RN 0.77+ outline / outlineColor / outlineWidth / outlineOffset (New Architecture), so outlines render cross-platform. NativeWind v5 maps outline-* to the same RN props.',
       },
       {
         name: 'ring',
@@ -912,8 +1310,14 @@ export const categories: Category[] = [
           tailwind: 'ring / ring-2 / ring-blue-500',
           nativewind: 'ring / ring-2',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tamagui has no `ring` shorthand but the same effect is a one-liner via `$bxsh` (box-shadow), which works cross-platform on RN 0.76+. NativeWind ring is box-shadow-based, so on native it inherits the RN boxShadow limitations (no inset). Uniwind: ring not documented.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui has no `ring` shorthand but the same effect is a one-liner via `$bxsh` (box-shadow), which works cross-platform on RN 0.76+. NativeWind ring is box-shadow-based, so on native it inherits the RN boxShadow limitations (no inset). Uniwind: ring not documented.',
       },
       {
         name: 'divide',
@@ -921,8 +1325,14 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'divide-x / divide-y / divide-gray-200',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'divide-* injects a `> * + *` sibling border. NativeWind v5 lists divide-width as web-only (no native sibling selector). Tamagui has no divide equivalent; idiomatic approach is a `<Separator>` component between children.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'divide-* injects a `> * + *` sibling border. NativeWind v5 lists divide-width as web-only (no native sibling selector). Tamagui has no divide equivalent; idiomatic approach is a `<Separator>` component between children.',
       },
     ],
   },
@@ -942,7 +1352,12 @@ export const categories: Category[] = [
           nativewind: 'opacity-50',
           uniwind: 'opacity-50',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'box-shadow',
@@ -953,8 +1368,14 @@ export const categories: Category[] = [
           nativewind: 'shadow-sm / shadow-lg',
           uniwind: 'shadow-sm / shadow-lg',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
-        notes: 'NativeWind v5 maps shadow-* to RN 0.76+ boxShadow; still differs from CSS spread/inset',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
+        notes:
+          'NativeWind v5 maps shadow-* to RN 0.76+ boxShadow; still differs from CSS spread/inset',
       },
       {
         name: 'mix-blend-mode',
@@ -977,8 +1398,14 @@ export const categories: Category[] = [
           tamagui: '$cur="pointer"',
           tailwind: 'cursor-pointer / cursor-default',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui: `$cur` (cursor) is accepted as a prop on native without error but only renders on web/web-of-RN; touch platforms have no cursor. Effectively web-only for everyone.',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$cur` (cursor) is accepted as a prop on native without error but only renders on web/web-of-RN; touch platforms have no cursor. Effectively web-only for everyone.',
       },
       {
         name: 'pointer-events',
@@ -988,8 +1415,14 @@ export const categories: Category[] = [
           tailwind: 'pointer-events-none / pointer-events-auto',
           nativewind: 'pointer-events-none / pointer-events-auto',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
-        notes: 'Tamagui: `$pe` maps to the core RN View pointerEvents prop (cross-platform). NativeWind maps pointer-events-* to the same RN prop. Uniwind: not documented.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$pe` maps to the core RN View pointerEvents prop (cross-platform). NativeWind maps pointer-events-* to the same RN prop. Uniwind: not documented.',
       },
       {
         name: 'user-select',
@@ -999,8 +1432,14 @@ export const categories: Category[] = [
           tailwind: 'select-none / select-text / select-all',
           nativewind: 'select-none / select-text',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tamagui: `$ussel` (userSelect) maps to RN 0.71+ userSelect on Text/View, so none/text/auto work cross-platform. NativeWind select-* maps to the same RN prop; select-all is web-only.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$ussel` (userSelect) maps to RN 0.71+ userSelect on Text/View, so none/text/auto work cross-platform. NativeWind select-* maps to the same RN prop; select-all is web-only.',
       },
     ],
   },
@@ -1019,8 +1458,14 @@ export const categories: Category[] = [
           tailwind: 'blur-sm / brightness-150 / contrast-125',
           nativewind: 'blur-sm / brightness-150',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tamagui: `$filter` maps to RN 0.76+ filter, so blur/brightness/contrast/etc. render on native — but some filters (e.g. drop-shadow) are Android 12+ only and behavior differs from CSS. NativeWind v5 maps filter utilities to the same RN 0.76+ prop with the same platform caveats.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$filter` maps to RN 0.76+ filter, so blur/brightness/contrast/etc. render on native — but some filters (e.g. drop-shadow) are Android 12+ only and behavior differs from CSS. NativeWind v5 maps filter utilities to the same RN 0.76+ prop with the same platform caveats.',
       },
       {
         name: 'backdrop-filter',
@@ -1029,8 +1474,14 @@ export const categories: Category[] = [
           tamagui: '$backdropFilter="blur(8px)"',
           tailwind: 'backdrop-blur-sm / backdrop-brightness-150',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui: `$backdropFilter` is web-only. RN has no backdrop-filter; native blur-behind effects need a dedicated component (e.g. expo-blur / @react-native-community/blur).',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$backdropFilter` is web-only. RN has no backdrop-filter; native blur-behind effects need a dedicated component (e.g. expo-blur / @react-native-community/blur).',
       },
     ],
   },
@@ -1048,7 +1499,12 @@ export const categories: Category[] = [
           tamagui: '$tr="rotate(45deg) scale(1.1)"',
           tailwind: 'transform',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'translate',
@@ -1059,7 +1515,12 @@ export const categories: Category[] = [
           nativewind: 'translate-x-4',
           uniwind: 'translate-x-4',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'scale',
@@ -1070,7 +1531,12 @@ export const categories: Category[] = [
           nativewind: 'scale-150',
           uniwind: 'scale-150',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'rotate',
@@ -1081,7 +1547,12 @@ export const categories: Category[] = [
           nativewind: 'rotate-45',
           uniwind: 'rotate-45',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'skew',
@@ -1092,7 +1563,12 @@ export const categories: Category[] = [
           nativewind: 'skew-x-12',
           uniwind: 'skew-x-12',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'transform-origin',
@@ -1102,7 +1578,12 @@ export const categories: Category[] = [
           tailwind: 'origin-center / origin-top-left',
           nativewind: 'origin-center',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: 'perspective',
@@ -1111,7 +1592,12 @@ export const categories: Category[] = [
           tamagui: '$perspective={500}',
           tailwind: 'perspective-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
       },
       {
         name: 'backface-visibility',
@@ -1120,7 +1606,12 @@ export const categories: Category[] = [
           tamagui: '$backfaceVisibility="hidden"',
           tailwind: 'backface-hidden / backface-visible',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -1139,7 +1630,12 @@ export const categories: Category[] = [
           tailwind: 'animate-spin / animate-bounce / animate-pulse',
           nativewind: 'animate-spin / animate-bounce',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
         notes:
           'Tamagui: `animation="..."` plus enter/exit styles, cross-platform via pluggable drivers (CSS on web; Reanimated/Moti/RN-Animated on native). NativeWind v5 `animate-*` is marked experimental on native (it now delegates to Reanimated CSS animations, RN 0.81+ / New Arch only). Uniwind animations are Pro-tier (paid) and Reanimated-backed.',
       },
@@ -1151,8 +1647,14 @@ export const categories: Category[] = [
           tailwind: 'transition / transition-colors / transition-all',
           nativewind: 'transition / transition-colors / transition-all',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
-        notes: 'Tamagui has no `transition-*` class; instead any prop change on a component with an `animation` driver animates automatically (cross-platform). NativeWind v5 transition-* is experimental on native (Reanimated-backed, RN 0.81+ / New Arch). Uniwind transitions are Pro-tier.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
+        notes:
+          'Tamagui has no `transition-*` class; instead any prop change on a component with an `animation` driver animates automatically (cross-platform). NativeWind v5 transition-* is experimental on native (Reanimated-backed, RN 0.81+ / New Arch). Uniwind transitions are Pro-tier.',
       },
       {
         name: 'transition-duration',
@@ -1162,8 +1664,14 @@ export const categories: Category[] = [
           tailwind: 'duration-150 / duration-300 / duration-500',
           nativewind: 'duration-150 / duration-300',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
-        notes: 'Tamagui sets duration through the animation driver config (e.g. spring/timing presets) rather than a `duration-*` class. NativeWind v5 duration-* is part of its experimental native transition support.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
+        notes:
+          'Tamagui sets duration through the animation driver config (e.g. spring/timing presets) rather than a `duration-*` class. NativeWind v5 duration-* is part of its experimental native transition support.',
       },
       {
         name: 'transition-timing-function',
@@ -1173,8 +1681,14 @@ export const categories: Category[] = [
           tailwind: 'ease-in / ease-out / ease-in-out',
           nativewind: 'ease-in / ease-out / ease-in-out',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'partial' },
-        notes: 'Tamagui configures easing per-animation driver (e.g. cubic-bezier on CSS, spring on Reanimated) rather than an `ease-*` class. NativeWind v5 ease-* is part of its experimental native transition support.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'partial',
+        },
+        notes:
+          'Tamagui configures easing per-animation driver (e.g. cubic-bezier on CSS, spring on Reanimated) rather than an `ease-*` class. NativeWind v5 ease-* is part of its experimental native transition support.',
       },
       {
         name: 'enter/exit styles',
@@ -1182,7 +1696,12 @@ export const categories: Category[] = [
         examples: {
           tamagui: '$enter:o={0} $exit:o={0}',
         },
-        support: { tamagui: 'full', tailwind: 'none', nativewind: 'none', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'none',
+          nativewind: 'none',
+          uniwind: 'none',
+        },
         notes: 'Tamagui-specific: AnimatePresence + enterStyle/exitStyle',
       },
     ],
@@ -1202,8 +1721,14 @@ export const categories: Category[] = [
           tailwind: 'hover:bg-blue-500',
           nativewind: 'hover:bg-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
-        notes: 'Tamagui `hoverStyle` / `$hover:` fires wherever a pointer exists (web + RN desktop/trackpad via onHoverIn); inert on touch like everywhere. NativeWind hover behaves the same. Uniwind explicitly lists `hover:` as unsupported (no RN equivalent in its model).',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui `hoverStyle` / `$hover:` fires wherever a pointer exists (web + RN desktop/trackpad via onHoverIn); inert on touch like everywhere. NativeWind hover behaves the same. Uniwind explicitly lists `hover:` as unsupported (no RN equivalent in its model).',
       },
       {
         name: 'press / active',
@@ -1214,7 +1739,12 @@ export const categories: Category[] = [
           nativewind: 'active:bg-blue-500',
           uniwind: 'active:bg-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'focus',
@@ -1225,7 +1755,12 @@ export const categories: Category[] = [
           nativewind: 'focus:border-blue-500',
           uniwind: 'focus:border-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'focus-visible',
@@ -1235,8 +1770,14 @@ export const categories: Category[] = [
           tailwind: 'focus-visible:outline-blue-500',
           nativewind: 'focus-visible:outline-blue-500',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui: `focusVisibleStyle` / `$focusVisible:` is registered only on web (it depends on the `:focus-visible` pseudo). NativeWind focus-visible is likewise web-only. No framework has a native equivalent (RN has no keyboard-vs-pointer focus distinction).',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `focusVisibleStyle` / `$focusVisible:` is registered only on web (it depends on the `:focus-visible` pseudo). NativeWind focus-visible is likewise web-only. No framework has a native equivalent (RN has no keyboard-vs-pointer focus distinction).',
       },
       {
         name: 'focus-within',
@@ -1245,8 +1786,14 @@ export const categories: Category[] = [
           tamagui: '$focusWithin:bg="blue"',
           tailwind: 'focus-within:bg-blue-500',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui exposes `focusWithinStyle` but it relies on the `:focus-within` pseudo, so it only takes effect on web; RN has no focus-within. Use a named `group` + focus state for a native equivalent.',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui exposes `focusWithinStyle` but it relies on the `:focus-within` pseudo, so it only takes effect on web; RN has no focus-within. Use a named `group` + focus state for a native equivalent.',
       },
       {
         name: 'disabled',
@@ -1257,7 +1804,12 @@ export const categories: Category[] = [
           nativewind: 'disabled:opacity-50',
           uniwind: 'disabled:opacity-50',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'group hover/press/focus',
@@ -1267,8 +1819,14 @@ export const categories: Category[] = [
           tailwind: 'group-hover:text-white',
           nativewind: 'group-hover:text-white',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
-        notes: 'Tamagui: mark the parent `group` (or `group="card"`) and style children with `$group-hover:`, `$group-card-hover:`, `$group-press:`, `$group-focus:` — implemented via a JS state emitter so it works cross-platform (web + native). NativeWind v5 group-* tracks parent state on native. Uniwind: group-active/focus is Pro-tier (free no-ops); group-hover never (no native hover).',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'partial',
+        },
+        notes:
+          'Tamagui: mark the parent `group` (or `group="card"`) and style children with `$group-hover:`, `$group-card-hover:`, `$group-press:`, `$group-focus:` — implemented via a JS state emitter so it works cross-platform (web + native). NativeWind v5 group-* tracks parent state on native. Uniwind: group-active/focus is Pro-tier (free no-ops); group-hover never (no native hover).',
       },
       {
         name: 'peer variants',
@@ -1277,8 +1835,14 @@ export const categories: Category[] = [
           tailwind: 'peer-focus:text-blue-500',
           nativewind: 'peer-focus:text-blue-500 (web only)',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'peer-* needs a CSS sibling selector. NativeWind v5 supports peer-* on web only — there is no native sibling-tracking model. Tamagui has no peer concept; the closest pattern is lifting shared state to a parent `group` or to React state. Uniwind: not supported.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'peer-* needs a CSS sibling selector. NativeWind v5 supports peer-* on web only — there is no native sibling-tracking model. Tamagui has no peer concept; the closest pattern is lifting shared state to a parent `group` or to React state. Uniwind: not supported.',
       },
       {
         name: 'has variant',
@@ -1287,8 +1851,14 @@ export const categories: Category[] = [
           tailwind: 'has-[:checked]:bg-blue-500',
           nativewind: 'has-[:checked]:bg-blue-500',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'has-* (`:has()` parent-selector) shipped in Tailwind v3.4. NativeWind v5 supports has-* on web only (no native `:has()`); Tamagui and Uniwind have no equivalent — track the condition in JS/state instead.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'has-* (`:has()` parent-selector) shipped in Tailwind v3.4. NativeWind v5 supports has-* on web only (no native `:has()`); Tamagui and Uniwind have no equivalent — track the condition in JS/state instead.',
       },
       {
         name: 'not variant',
@@ -1296,8 +1866,14 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'not-hover:opacity-75 not-first:mt-2',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'The `not-*` variant is new in Tailwind v4.0 and relies on the CSS `:not()` selector — web only. NativeWind has no native `:not()` model; Tamagui/Uniwind have no equivalent (invert the condition in JS).',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'The `not-*` variant is new in Tailwind v4.0 and relies on the CSS `:not()` selector — web only. NativeWind has no native `:not()` model; Tamagui/Uniwind have no equivalent (invert the condition in JS).',
       },
       {
         name: 'nth variant',
@@ -1305,8 +1881,14 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'nth-3:bg-gray-100 nth-[3n+1]:font-bold',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'The `nth-*` variant is new in Tailwind v4.0 (CSS `:nth-child()`) — web only. RN has no structural pseudo-classes, so NativeWind is web-only here and Tamagui/Uniwind have no equivalent; compute from the list index in JS.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'The `nth-*` variant is new in Tailwind v4.0 (CSS `:nth-child()`) — web only. RN has no structural pseudo-classes, so NativeWind is web-only here and Tamagui/Uniwind have no equivalent; compute from the list index in JS.',
       },
     ],
   },
@@ -1326,7 +1908,12 @@ export const categories: Category[] = [
           nativewind: 'sm:bg-red-500 md:p-5',
           uniwind: 'sm:bg-red-500 md:p-5',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'dark mode',
@@ -1337,7 +1924,12 @@ export const categories: Category[] = [
           nativewind: 'dark:bg-black',
           uniwind: 'dark:bg-black',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
         notes: 'NativeWind v5 dark: uses native @media (prefers-color-scheme: dark)',
       },
       {
@@ -1348,7 +1940,12 @@ export const categories: Category[] = [
           tailwind: 'sm:hover:bg-blue-500',
           nativewind: 'sm:hover:bg-blue-500',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: 'container queries',
@@ -1358,8 +1955,14 @@ export const categories: Category[] = [
           tailwind: '@container / @lg:grid-cols-3',
           nativewind: '@container / @lg:flex-row',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
-        notes: 'Tamagui: container queries are the `group` system combined with media keys — mark a parent `group="card"` and use `$group-card-$sm:` style keys. On web this uses real CSS container queries (containerType); on native it measures the parent and applies styles via the group emitter, so it works cross-platform (the `untilMeasured` prop exists to avoid flashes before first measure). NativeWind v5 also supports `@container` on native, implemented via onLayout measurement (size-based only, not CSS containment). Tailwind is web-only; Uniwind: not documented.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: container queries are the `group` system combined with media keys — mark a parent `group="card"` and use `$group-card-$sm:` style keys. On web this uses real CSS container queries (containerType); on native it measures the parent and applies styles via the group emitter, so it works cross-platform (the `untilMeasured` prop exists to avoid flashes before first measure). NativeWind v5 also supports `@container` on native, implemented via onLayout measurement (size-based only, not CSS containment). Tailwind is web-only; Uniwind: not documented.',
       },
       {
         name: 'container query units (cqw/cqh)',
@@ -1367,19 +1970,32 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'w-[50cqw] / text-[5cqi]',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'none', uniwind: 'none' },
-        notes: 'cqw/cqh/cqi/cqb are CSS length units tied to a real CSS containment context (Tailwind v4 via arbitrary values). Tamagui and NativeWind implement container *queries* differently (JS measurement / group emitter) and do not expose container-relative length units; use a measured value or a breakpoint instead.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'none',
+          uniwind: 'none',
+        },
+        notes:
+          'cqw/cqh/cqi/cqb are CSS length units tied to a real CSS containment context (Tailwind v4 via arbitrary values). Tamagui and NativeWind implement container *queries* differently (JS measurement / group emitter) and do not expose container-relative length units; use a measured value or a breakpoint instead.',
       },
       {
         name: 'prefers-reduced-motion',
         description: 'Reduced motion preference',
         examples: {
-          tamagui: '$motionReduce={{ animation: null }} / $motionSafe={{ animation: "bouncy" }}',
+          tamagui:
+            '$motionReduce={{ animation: null }} / $motionSafe={{ animation: "bouncy" }}',
           tailwind: 'motion-reduce:animate-none / motion-safe:...',
           nativewind: 'motion-reduce:animate-none',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: '`$motionReduce` and `$motionSafe` are built-in media keys in @tamagui/config. Web subscribes to `(prefers-reduced-motion: reduce | no-preference)` via `window.matchMedia`; native subscribes to `AccessibilityInfo.isReduceMotionEnabled` + the `reduceMotionChanged` event through `@tamagui/react-native-media-driver`. NativeWind v5 maps the same two states.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          '`$motionReduce` and `$motionSafe` are built-in media keys in @tamagui/config. Web subscribes to `(prefers-reduced-motion: reduce | no-preference)` via `window.matchMedia`; native subscribes to `AccessibilityInfo.isReduceMotionEnabled` + the `reduceMotionChanged` event through `@tamagui/react-native-media-driver`. NativeWind v5 maps the same two states.',
       },
     ],
   },
@@ -1398,7 +2014,12 @@ export const categories: Category[] = [
           nativewind: 'web:cursor-pointer',
           uniwind: 'web:cursor-pointer',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
         notes: 'Tailwind is web-only by default',
       },
       {
@@ -1409,7 +2030,12 @@ export const categories: Category[] = [
           nativewind: 'native:p-5',
           uniwind: 'native:p-5',
         },
-        support: { tamagui: 'full', tailwind: 'none', nativewind: 'full', uniwind: 'none' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'none',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
       },
       {
         name: 'ios-specific styles',
@@ -1419,7 +2045,12 @@ export const categories: Category[] = [
           nativewind: 'ios:p-5',
           uniwind: 'ios:p-5',
         },
-        support: { tamagui: 'full', tailwind: 'none', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'none',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'android-specific styles',
@@ -1429,7 +2060,12 @@ export const categories: Category[] = [
           nativewind: 'android:p-5',
           uniwind: 'android:p-5',
         },
-        support: { tamagui: 'full', tailwind: 'none', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'none',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'safe area insets',
@@ -1439,8 +2075,14 @@ export const categories: Category[] = [
           nativewind: 'pt-safe / p-safe',
           uniwind: 'pt-safe / inset-safe / pt-safe-or-4',
         },
-        support: { tamagui: 'full', tailwind: 'none', nativewind: 'full', uniwind: 'full' },
-        notes: 'Tamagui accepts `"safe"` as a first-class value on any inset/padding/margin prop (pt/pb/px/py/inset/top/...). On web it emits `env(safe-area-inset-*)`; on native it reads insets from `@tamagui/native/setup-safe-area`. NativeWind and Uniwind ship the same as utilities; Uniwind also has `-safe-or-*` / `-safe-offset-*` variants for fallbacks.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'none',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
+        notes:
+          'Tamagui accepts `"safe"` as a first-class value on any inset/padding/margin prop (pt/pb/px/py/inset/top/...). On web it emits `env(safe-area-inset-*)`; on native it reads insets from `@tamagui/native/setup-safe-area`. NativeWind and Uniwind ship the same as utilities; Uniwind also has `-safe-or-*` / `-safe-offset-*` variants for fallbacks.',
       },
     ],
   },
@@ -1458,8 +2100,14 @@ export const categories: Category[] = [
           tailwind: 'before:content-[""] after:block',
           nativewind: 'before:content-[""] (web only)',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Generated content has no RN equivalent (no pseudo-element box). NativeWind v5 only ships `content-none` and it is web-only. Tamagui has no before/after; render an extra element instead. Uniwind lists before:/after: as unsupported.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Generated content has no RN equivalent (no pseudo-element box). NativeWind v5 only ships `content-none` and it is web-only. Tamagui has no before/after; render an extra element instead. Uniwind lists before:/after: as unsupported.',
       },
       {
         name: '::placeholder',
@@ -1469,8 +2117,14 @@ export const categories: Category[] = [
           tailwind: 'placeholder:text-gray-400',
           nativewind: 'placeholder:text-gray-400',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
-        notes: 'Tamagui Input/TextArea expose `placeholderTextColor` (the one RN-supported placeholder style) cross-platform, but not arbitrary placeholder typography. NativeWind v5 rewrites `placeholder:` to the RN placeholderTextColor prop. Uniwind lists placeholder: as unsupported.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui Input/TextArea expose `placeholderTextColor` (the one RN-supported placeholder style) cross-platform, but not arbitrary placeholder typography. NativeWind v5 rewrites `placeholder:` to the RN placeholderTextColor prop. Uniwind lists placeholder: as unsupported.',
       },
       {
         name: '::selection',
@@ -1478,7 +2132,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'selection:bg-blue-200',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'first / last / odd / even child',
@@ -1486,8 +2145,14 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'first:pt-0 last:pb-0 odd:bg-gray-50',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Index-based child selectors need a CSS structural pseudo (:first-child / :nth-child). NativeWind v5 removed native support ("future version") — web-only. Tamagui has none; pass the index in JS (`index === 0 && {...}`). Uniwind: not supported.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Index-based child selectors need a CSS structural pseudo (:first-child / :nth-child). NativeWind v5 removed native support ("future version") — web-only. Tamagui has none; pass the index in JS (`index === 0 && {...}`). Uniwind: not supported.',
       },
     ],
   },
@@ -1504,7 +2169,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'border-collapse / border-separate',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'border-spacing',
@@ -1512,7 +2182,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'border-spacing-2',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'table-layout',
@@ -1520,7 +2195,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'table-auto / table-fixed',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
     ],
   },
@@ -1539,8 +2219,14 @@ export const categories: Category[] = [
           nativewind: 'fill-red-500',
           tamagui: 'fill="$color10" / fill="red"',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
-        notes: '@tamagui/lucide-icons accepts `fill` as a style prop on both web and native, resolving theme tokens (e.g. `fill="$color10"`) via the icon `themed()` wrapper. Plain colors (e.g. `fill="red"`) pass through unchanged.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
+        notes:
+          '@tamagui/lucide-icons accepts `fill` as a style prop on both web and native, resolving theme tokens (e.g. `fill="$color10"`) via the icon `themed()` wrapper. Plain colors (e.g. `fill="red"`) pass through unchanged.',
       },
       {
         name: 'stroke',
@@ -1550,8 +2236,14 @@ export const categories: Category[] = [
           nativewind: 'stroke-red-500',
           tamagui: 'stroke="$accent10" / stroke="red"',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
-        notes: '@tamagui/lucide-icons accepts `stroke` as a style prop on both web and native with theme-token resolution; when provided it also feeds the icon paths so the visible stroke color updates (not just the root <Svg>).',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
+        notes:
+          '@tamagui/lucide-icons accepts `stroke` as a style prop on both web and native with theme-token resolution; when provided it also feeds the icon paths so the visible stroke color updates (not just the root <Svg>).',
       },
       {
         name: 'stroke-width',
@@ -1561,8 +2253,14 @@ export const categories: Category[] = [
           nativewind: 'stroke-1',
           tamagui: 'strokeWidth={2} / strokeWidth="$1"',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'none' },
-        notes: 'Tamagui icons accept numeric `strokeWidth` directly and resolve size tokens (e.g. `strokeWidth="$1"`) on both web and native.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui icons accept numeric `strokeWidth` directly and resolve size tokens (e.g. `strokeWidth="$1"`) on both web and native.',
       },
     ],
   },
@@ -1579,7 +2277,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'scroll-smooth / scroll-auto',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'scroll-snap',
@@ -1587,7 +2290,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'snap-x / snap-mandatory / snap-start',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'touch-action',
@@ -1596,8 +2304,14 @@ export const categories: Category[] = [
           tamagui: '$touchAction="none"',
           tailwind: 'touch-none / touch-pan-x',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui: `$touchAction` is a web-only prop. On native, gesture handling is done with the gesture system (PanResponder / react-native-gesture-handler), not a style.',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$touchAction` is a web-only prop. On native, gesture handling is done with the gesture system (PanResponder / react-native-gesture-handler), not a style.',
       },
       {
         name: 'resize',
@@ -1605,7 +2319,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'resize / resize-x / resize-y / resize-none',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'appearance',
@@ -1613,8 +2332,14 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'appearance-none / appearance-auto',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'appearance-none resets browser-native control chrome — a web-only concept. RN controls are already custom-rendered, so there is nothing to reset. Tamagui: none.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'appearance-none resets browser-native control chrome — a web-only concept. RN controls are already custom-rendered, so there is nothing to reset. Tamagui: none.',
       },
       {
         name: 'field-sizing',
@@ -1622,8 +2347,14 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'field-sizing-content / field-sizing-fixed',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'none', uniwind: 'none' },
-        notes: 'field-sizing-content/fixed is new in Tailwind v4.0 and maps to the CSS `field-sizing` property (web only). RN auto-grows a TextInput via the `multiline` + onContentSizeChange pattern instead. Tamagui/NativeWind/Uniwind have no field-sizing utility.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'none',
+          uniwind: 'none',
+        },
+        notes:
+          'field-sizing-content/fixed is new in Tailwind v4.0 and maps to the CSS `field-sizing` property (web only). RN auto-grows a TextInput via the `multiline` + onContentSizeChange pattern instead. Tamagui/NativeWind/Uniwind have no field-sizing utility.',
       },
       {
         name: 'scroll-timeline / scroll-driven animation',
@@ -1631,8 +2362,14 @@ export const categories: Category[] = [
         examples: {
           tailwind: '[animation-timeline:scroll()] (arbitrary)',
         },
-        support: { tamagui: 'none', tailwind: 'none', nativewind: 'none', uniwind: 'none' },
-        notes: 'Tailwind v4 has no built-in scroll-timeline utility (only arbitrary `[animation-timeline:...]` or a community plugin). On native, scroll-driven effects use Animated.event / Reanimated useAnimatedScrollHandler. No framework here ships a first-class scroll-timeline utility.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'none',
+          nativewind: 'none',
+          uniwind: 'none',
+        },
+        notes:
+          'Tailwind v4 has no built-in scroll-timeline utility (only arbitrary `[animation-timeline:...]` or a community plugin). On native, scroll-driven effects use Animated.event / Reanimated useAnimatedScrollHandler. No framework here ships a first-class scroll-timeline utility.',
       },
       {
         name: 'caret-color',
@@ -1641,8 +2378,14 @@ export const categories: Category[] = [
           tamagui: '$caretColor="blue"',
           tailwind: 'caret-blue-500',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tamagui: on web, `$caretColor` is the CSS caret-color property. On native, `@tamagui/input` Input forwards `caretColor` to RN TextInput `cursorColor` (Android) + `selectionColor` (iOS+Android caret) — explicit `cursorColor`/`selectionColor` props still win. Cross-platform but only applies to the Input/TextArea components (not a generic style prop).',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: on web, `$caretColor` is the CSS caret-color property. On native, `@tamagui/input` Input forwards `caretColor` to RN TextInput `cursorColor` (Android) + `selectionColor` (iOS+Android caret) — explicit `cursorColor`/`selectionColor` props still win. Cross-platform but only applies to the Input/TextArea components (not a generic style prop).',
       },
       {
         name: 'accent-color',
@@ -1650,7 +2393,12 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'accent-blue-500',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
       },
       {
         name: 'will-change',
@@ -1659,8 +2407,14 @@ export const categories: Category[] = [
           tamagui: '$willChange="transform"',
           tailwind: 'will-change-transform / will-change-scroll',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Tamagui: `$willChange` is a web-only GPU hint. RN has no will-change; native rasterization hints are platform-specific (e.g. shouldRasterizeIOS / renderToHardwareTextureAndroid).',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui: `$willChange` is a web-only GPU hint. RN has no will-change; native rasterization hints are platform-specific (e.g. shouldRasterizeIOS / renderToHardwareTextureAndroid).',
       },
     ],
   },
@@ -1678,8 +2432,14 @@ export const categories: Category[] = [
           tailwind: 'sr-only / not-sr-only',
           nativewind: 'sr-only',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'partial', uniwind: 'none' },
-        notes: 'Tamagui ships `<VisuallyHidden>` (from `@tamagui/visually-hidden`) as a primitive that emits the standard sr-only style block on web (1x1, absolute, clip-path, no display:none) AND wires the matching a11y semantics on both platforms: `aria-hidden=false` on web, `accessible={true}` on native, plus `importantForAccessibility="yes"` on Android so ancestors with hide-descendants don\'t silence it. `visible` prop flips it back to fully visible (the `not-sr-only` escape hatch). NativeWind v5 `sr-only` only emits the visual-hide style on native — it does NOT wire accessibilityElementsHidden / importantForAccessibility / aria-hidden, so SR semantics differ from web. `not-sr-only` is web-only. Marked partial (not full) because it\'s a primitive component, not a class utility.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'partial',
+          uniwind: 'none',
+        },
+        notes:
+          'Tamagui ships `<VisuallyHidden>` (from `@tamagui/visually-hidden`) as a primitive that emits the standard sr-only style block on web (1x1, absolute, clip-path, no display:none) AND wires the matching a11y semantics on both platforms: `aria-hidden=false` on web, `accessible={true}` on native, plus `importantForAccessibility="yes"` on Android so ancestors with hide-descendants don\'t silence it. `visible` prop flips it back to fully visible (the `not-sr-only` escape hatch). NativeWind v5 `sr-only` only emits the visual-hide style on native — it does NOT wire accessibilityElementsHidden / importantForAccessibility / aria-hidden, so SR semantics differ from web. `not-sr-only` is web-only. Marked partial (not full) because it\'s a primitive component, not a class utility.',
       },
       {
         name: 'forced-colors / forced-color-adjust',
@@ -1687,8 +2447,14 @@ export const categories: Category[] = [
         examples: {
           tailwind: 'forced-colors:... / forced-color-adjust-auto',
         },
-        support: { tamagui: 'none', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'none' },
-        notes: 'Forced-colors is a web/OS high-contrast feature. Tailwind v4 ships the `forced-colors:` variant + `forced-color-adjust-*` (both since v3.4); NativeWind exposes them web-only. RN has its own high-contrast handling, so no native style mapping. Tamagui: none.',
+        support: {
+          tamagui: 'none',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'none',
+        },
+        notes:
+          'Forced-colors is a web/OS high-contrast feature. Tailwind v4 ships the `forced-colors:` variant + `forced-color-adjust-*` (both since v3.4); NativeWind exposes them web-only. RN has its own high-contrast handling, so no native style mapping. Tamagui: none.',
       },
     ],
   },
@@ -1708,7 +2474,12 @@ export const categories: Category[] = [
           nativewind: 'tailwind.config.js',
           uniwind: 'unistyles theme',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
       },
       {
         name: 'theme switching',
@@ -1719,7 +2490,12 @@ export const categories: Category[] = [
           nativewind: 'dark: variant',
           uniwind: 'useInitialTheme()',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
         notes: 'Tamagui has nested theme support with sub-themes',
       },
       {
@@ -1729,8 +2505,14 @@ export const categories: Category[] = [
           tamagui: '<Theme name="dark"> sets the scheme on web',
           tailwind: 'scheme-light / scheme-dark / scheme-light-dark',
         },
-        support: { tamagui: 'web-only', tailwind: 'web-only', nativewind: 'web-only', uniwind: 'partial' },
-        notes: 'The CSS `color-scheme` property (Tailwind v4 `scheme-*` utilities, new in v4.0) tells the browser to theme built-in UI (form controls, scrollbars). Tamagui sets color-scheme on web automatically when you switch to a dark `<Theme>`; on native there is no equivalent property (RN controls follow the app theme directly). Uniwind exposes light/dark theming but `scheme-*` breadth is undocumented.',
+        support: {
+          tamagui: 'web-only',
+          tailwind: 'web-only',
+          nativewind: 'web-only',
+          uniwind: 'partial',
+        },
+        notes:
+          'The CSS `color-scheme` property (Tailwind v4 `scheme-*` utilities, new in v4.0) tells the browser to theme built-in UI (form controls, scrollbars). Tamagui sets color-scheme on web automatically when you switch to a dark `<Theme>`; on native there is no equivalent property (RN controls follow the app theme directly). Uniwind exposes light/dark theming but `scheme-*` breadth is undocumented.',
       },
       {
         name: 'sub-themes / component themes',
@@ -1738,7 +2520,12 @@ export const categories: Category[] = [
         examples: {
           tamagui: '<Theme name="blue_Button">',
         },
-        support: { tamagui: 'full', tailwind: 'none', nativewind: 'none', uniwind: 'partial' },
+        support: {
+          tamagui: 'full',
+          tailwind: 'none',
+          nativewind: 'none',
+          uniwind: 'partial',
+        },
         notes: 'Tamagui unique: deeply nested component-aware themes',
       },
       {
@@ -1750,8 +2537,14 @@ export const categories: Category[] = [
           nativewind: 'bg-[rgb(123,45,67)] / w-[calc(100%-2rem)]',
           uniwind: 'bg-[rgb(123,45,67)]',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
-        notes: 'Tamagui takes any raw value directly as a prop ($bg="rgb(...)") — no bracket escape hatch needed. NativeWind v5 improved arbitrary calc()/clamp() handling. Uniwind bundles the real Tailwind v4 oxide compiler, so bracket arbitrary values parse; calc() resolves on web, limited on native.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
+        notes:
+          'Tamagui takes any raw value directly as a prop ($bg="rgb(...)") — no bracket escape hatch needed. NativeWind v5 improved arbitrary calc()/clamp() handling. Uniwind bundles the real Tailwind v4 oxide compiler, so bracket arbitrary values parse; calc() resolves on web, limited on native.',
       },
       {
         name: 'CSS variables / custom properties',
@@ -1761,8 +2554,14 @@ export const categories: Category[] = [
           tailwind: '@theme { --color-brand } / bg-(--my-var)',
           nativewind: '@theme { --color-brand } / bg-(--my-var)',
         },
-        support: { tamagui: 'partial', tailwind: 'web-only', nativewind: 'full', uniwind: 'partial' },
-        notes: 'Tamagui: the design-token system ($color, $4, theme values) IS the cross-platform var() equivalent — on web tokens compile to real CSS custom properties (`var(--...)`), on native they resolve to JS values. Raw `var(--x)` string literals only work on web. NativeWind v5 implements Tailwind v4 `@theme` + `var()` resolution on web AND native (its runtime resolves custom properties). Uniwind theming exists but var()/@theme breadth is less documented.',
+        support: {
+          tamagui: 'partial',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'partial',
+        },
+        notes:
+          'Tamagui: the design-token system ($color, $4, theme values) IS the cross-platform var() equivalent — on web tokens compile to real CSS custom properties (`var(--...)`), on native they resolve to JS values. Raw `var(--x)` string literals only work on web. NativeWind v5 implements Tailwind v4 `@theme` + `var()` resolution on web AND native (its runtime resolves custom properties). Uniwind theming exists but var()/@theme breadth is less documented.',
       },
       {
         name: 'color opacity modifier',
@@ -1773,8 +2572,14 @@ export const categories: Category[] = [
           nativewind: 'bg-blue-500/50 text-black/75',
           uniwind: 'bg-black/50',
         },
-        support: { tamagui: 'full', tailwind: 'web-only', nativewind: 'full', uniwind: 'full' },
-        notes: 'Tamagui supports inline `/N` cross-platform on any color prop (`$bg="$blue10/50"`) and in tw-mode classNames (`bg-blue-500/50`); the runtime applies it via color-mix() on web and rgba() multiply on native, matching NativeWind v5 behavior. NativeWind v5 fully supports `/N` cross-platform (Tailwind v4 compiles it to color-mix(); v5 ships a runtime color-mix resolver). Uniwind supports `/N` in its examples.',
+        support: {
+          tamagui: 'full',
+          tailwind: 'web-only',
+          nativewind: 'full',
+          uniwind: 'full',
+        },
+        notes:
+          'Tamagui supports inline `/N` cross-platform on any color prop (`$bg="$blue10/50"`) and in tw-mode classNames (`bg-blue-500/50`); the runtime applies it via color-mix() on web and rgba() multiply on native, matching NativeWind v5 behavior. NativeWind v5 fully supports `/N` cross-platform (Tailwind v4 compiles it to color-mix(); v5 ships a runtime color-mix resolver). Uniwind supports `/N` in its examples.',
       },
     ],
   },
@@ -1785,7 +2590,10 @@ export function computeCoverage() {
   const frameworks = ['tamagui', 'tailwind', 'nativewind', 'uniwind'] as const
   const stats = Object.fromEntries(
     frameworks.map((fw) => [fw, { full: 0, partial: 0, webOnly: 0, none: 0, total: 0 }])
-  ) as Record<(typeof frameworks)[number], { full: number; partial: number; webOnly: number; none: number; total: number }>
+  ) as Record<
+    (typeof frameworks)[number],
+    { full: number; partial: number; webOnly: number; none: number; total: number }
+  >
 
   for (const cat of categories) {
     for (const util of cat.utilities) {

@@ -129,18 +129,12 @@ export function tamaguiToTailwind(
           } else {
             // existing className is dynamic, use template literal
             keptAttrs.unshift(
-              t.jsxAttribute(
-                t.jsxIdentifier('className'),
-                t.stringLiteral(classStr)
-              )
+              t.jsxAttribute(t.jsxIdentifier('className'), t.stringLiteral(classStr))
             )
           }
         } else {
           keptAttrs.unshift(
-            t.jsxAttribute(
-              t.jsxIdentifier('className'),
-              t.stringLiteral(classStr)
-            )
+            t.jsxAttribute(t.jsxIdentifier('className'), t.stringLiteral(classStr))
           )
         }
       } else if (existingClassName) {
@@ -218,10 +212,7 @@ function propValueToClass(
   return modifier ? `${modifier}:${cls}` : cls
 }
 
-function extractPseudoClasses(
-  attr: t.JSXAttribute,
-  modifier: string
-): string[] | null {
+function extractPseudoClasses(attr: t.JSXAttribute, modifier: string): string[] | null {
   // value should be an object expression: hoverStyle={{ bg: 'red', opacity: 0.5 }}
   if (!t.isJSXExpressionContainer(attr.value)) return null
   const expr = attr.value.expression

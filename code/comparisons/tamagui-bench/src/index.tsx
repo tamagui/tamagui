@@ -2,7 +2,13 @@ import { createRoot } from 'react-dom/client'
 import { TamaguiProvider, View } from 'tamagui'
 import config from './tamagui.config'
 import { useState, useLayoutEffect, useEffect, useRef, useMemo, useCallback } from 'react'
-import { ITEM_COUNT, HEAVY_COUNT, scenarios as allScenarios, renderResults, type BenchResult } from '../../shared/bench'
+import {
+  ITEM_COUNT,
+  HEAVY_COUNT,
+  scenarios as allScenarios,
+  renderResults,
+  type BenchResult,
+} from '../../shared/bench'
 
 // allow a URL ?skip=group,heavy to skip selected scenarios (runtime variant uses this).
 const skipSet = new Set(
@@ -209,7 +215,9 @@ function BenchRunner({
   scenarioId: string
   onResult: (result: BenchResult) => void
 }) {
-  const [phase, setPhase] = useState<'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'>('idle')
+  const [phase, setPhase] = useState<
+    'idle' | 'mounting' | 'mounted' | 'rerendering' | 'done'
+  >('idle')
   const [seed, setSeed] = useState(0)
   const startRef = useRef(0)
   const mountTimeRef = useRef(0)
@@ -244,7 +252,9 @@ function BenchRunner({
   if (phase === 'idle') return null
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}>
+    <div
+      style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxWidth: 600 }}
+    >
       <Component seed={seed} />
     </div>
   )

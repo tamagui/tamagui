@@ -21,7 +21,9 @@ export async function loader(props: LoaderProps) {
   const { isTailwindMode } = await import('~/features/docs/isTailwindMode')
   const tailwind = isTailwindMode(props)
   const { slug } = props.params
-  const { frontmatter, code } = await getMDXBySlug('data/blog', slug as string, { tailwind })
+  const { frontmatter, code } = await getMDXBySlug('data/blog', slug as string, {
+    tailwind,
+  })
   const relatedPosts = frontmatter.relatedIds
     ? await Promise.all(
         frontmatter.relatedIds.map(async (id) => {

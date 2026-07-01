@@ -25,7 +25,13 @@ function Box(props: any) {
             if (w > 0 && h > 0) {
               fetch(HARNESS_RECT_URL, {
                 method: 'POST',
-                body: JSON.stringify({ x, y, width: w, height: h, scale: PixelRatio.get() }),
+                body: JSON.stringify({
+                  x,
+                  y,
+                  width: w,
+                  height: h,
+                  scale: PixelRatio.get(),
+                }),
               }).catch(() => {})
             }
           })
@@ -47,7 +53,14 @@ export function App() {
   const found = caseName ? cases.find((c) => c.name === caseName) : null
   return (
     <TamaguiProvider config={config} defaultTheme="light">
-      <RNView style={{ flex: 1, backgroundColor: '#ffffff', paddingTop: 220, alignItems: 'flex-start' }}>
+      <RNView
+        style={{
+          flex: 1,
+          backgroundColor: '#ffffff',
+          paddingTop: 220,
+          alignItems: 'flex-start',
+        }}
+      >
         {found ? (
           // key by url so every deep-link (with a unique counter param) remounts the case →
           // onLayout fires → #cfm-root re-measures + re-POSTs, even when re-linking the same case

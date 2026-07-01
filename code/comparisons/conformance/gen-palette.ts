@@ -37,4 +37,6 @@ const body = `// AUTO-GENERATED from tailwindcss/colors by gen-palette.ts — do
 export const tailwindColors: Record<string, string> = ${JSON.stringify(out, null, 2)}
 `
 writeFileSync(join(HERE, '../../core/config/src/v6-tailwind-palette.ts'), body)
-console.log(`wrote ${Object.keys(out).length} colors to code/core/config/src/v6-tailwind-palette.ts`)
+console.log(
+  `wrote ${Object.keys(out).length} colors to code/core/config/src/v6-tailwind-palette.ts`
+)
