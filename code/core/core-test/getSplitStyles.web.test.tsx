@@ -67,6 +67,58 @@ describe('getSplitStyles', () => {
     expect(Object.values(out.rulesToInsert)[0]?.[StyleObjectValue]).toEqual('10px')
   })
 
+  test(`prop "paddingTop" value "safe" becomes env(safe-area-inset-top)`, () => {
+    const out = simplifiedGetSplitStyles(View, { paddingTop: 'safe' })
+    const rule = Object.values(out.rulesToInsert).find(
+      (r) => r[StyleObjectProperty] === 'paddingTop'
+    )
+    expect(rule?.[StyleObjectValue]).toEqual('env(safe-area-inset-top)')
+  })
+
+  test(`prop "padding" value "safe" expands to 4 per-side env() values`, () => {
+    const out = simplifiedGetSplitStyles(View, { padding: 'safe' })
+    const byProp: Record<string, string> = {}
+    for (const rule of Object.values(out.rulesToInsert)) {
+      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
+    }
+    expect(byProp.paddingTop).toEqual('env(safe-area-inset-top)')
+    expect(byProp.paddingRight).toEqual('env(safe-area-inset-right)')
+    expect(byProp.paddingBottom).toEqual('env(safe-area-inset-bottom)')
+    expect(byProp.paddingLeft).toEqual('env(safe-area-inset-left)')
+  })
+
+  test(`prop "inset" value "safe" expands to top/right/bottom/left env() values`, () => {
+    const out = simplifiedGetSplitStyles(View, { inset: 'safe' })
+    const byProp: Record<string, string> = {}
+    for (const rule of Object.values(out.rulesToInsert)) {
+      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
+    }
+    expect(byProp.top).toEqual('env(safe-area-inset-top)')
+    expect(byProp.right).toEqual('env(safe-area-inset-right)')
+    expect(byProp.bottom).toEqual('env(safe-area-inset-bottom)')
+    expect(byProp.left).toEqual('env(safe-area-inset-left)')
+  })
+
+  test(`shorthand "pt" value "safe" becomes paddingTop env(safe-area-inset-top)`, () => {
+    const out = simplifiedGetSplitStyles(View, { pt: 'safe' })
+    const rule = Object.values(out.rulesToInsert).find(
+      (r) => r[StyleObjectProperty] === 'paddingTop'
+    )
+    expect(rule?.[StyleObjectValue]).toEqual('env(safe-area-inset-top)')
+  })
+
+  test(`prop "paddingHorizontal" value "safe" only emits left+right`, () => {
+    const out = simplifiedGetSplitStyles(View, { paddingHorizontal: 'safe' })
+    const byProp: Record<string, string> = {}
+    for (const rule of Object.values(out.rulesToInsert)) {
+      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
+    }
+    expect(byProp.paddingLeft).toEqual('env(safe-area-inset-left)')
+    expect(byProp.paddingRight).toEqual('env(safe-area-inset-right)')
+    expect(byProp.paddingTop).toBeUndefined()
+    expect(byProp.paddingBottom).toBeUndefined()
+  })
+
   test(`font props get the font family, regardless of the order`, () => {
     const styles = simplifiedGetSplitStyles(Text, {
       fontSize: '$1',

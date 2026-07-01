@@ -808,6 +808,32 @@ export type OnlyShorthandStylePropsSetting = TamaguiConfig['settings'] extends {
   ? X
   : false
 
+// StyleMode setting extraction
+export type StyleModeSetting = TamaguiConfig['settings'] extends {
+  styleMode: infer X
+}
+  ? X
+  : 'tamagui' // default is tamagui (classic only)
+
+// StyleMode: available modes for different prop styles
+// - 'tamagui': Classic style props only (default)
+// - 'tailwind': className only, no style props
+// - 'tamagui-and-tailwind': Classic style props + className processing
+export type StyleMode = 'tamagui' | 'tailwind' | 'tamagui-and-tailwind'
+
+// Helper types to check which modes are enabled
+export type IncludesClassicMode = StyleModeSetting extends
+  | 'tamagui'
+  | 'tamagui-and-tailwind'
+  ? true
+  : false
+
+export type IncludesTailwindMode = StyleModeSetting extends
+  | 'tailwind'
+  | 'tamagui-and-tailwind'
+  ? true
+  : false
+
 export type CreateTamaguiConfig<
   A extends GenericTokens,
   B extends GenericThemes,
@@ -1182,6 +1208,15 @@ export interface GenericTamaguiSettings {
    * two ways to style the same property.
    */
   onlyAllowShorthands?: boolean | undefined
+
+  /**
+   * Enable different style modes for prop syntax.
+   *
+   * - 'tamagui': Default - classic style props (backgroundColor, hoverStyle: {}, $sm: {})
+   * - 'tailwind': className only, no style props (for Tailwind CSS users)
+   * - 'tamagui-and-tailwind': Classic style props + className processing
+   */
+  styleMode?: StyleMode
 
   /**
    * Define a default font, for better types and default font on Text
@@ -2605,7 +2640,10 @@ export interface StackNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, ViewStyle>>
 }
 
-export type StackStyle = WithThemeShorthandsPseudosMedia<StackStyleBase>
+// Conditionally include style props based on styleMode setting
+export type StackStyle = IncludesClassicMode extends true
+  ? WithThemeShorthandsPseudosMedia<StackStyleBase>
+  : {}
 
 //
 // Text props
@@ -2628,7 +2666,10 @@ export interface TextNonStyleProps
   style?: StyleProp<LooseCombinedObjects<React.CSSProperties, RNTextStyle>>
 }
 
-export type TextStyle = WithThemeShorthandsPseudosMedia<TextStylePropsBase>
+// Conditionally include style props based on styleMode setting
+export type TextStyle = IncludesClassicMode extends true
+  ? WithThemeShorthandsPseudosMedia<TextStylePropsBase>
+  : {}
 
 export type TextProps = TextNonStyleProps & TextStyle
 
@@ -2675,7 +2716,9 @@ export type GetFinalProps<NonStyleProps, StylePropsBase, Variants> = Omit<
   keyof StylePropsBase | keyof Variants
 > &
   (StylePropsBase extends object
-    ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
+    ? IncludesClassicMode extends true
+      ? WithThemeShorthandsPseudosMedia<StylePropsBase, Variants>
+      : {}
     : {})
 
 export type TamaguiComponent<

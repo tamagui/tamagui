@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Native Benchmark Comparison (iOS)</title>
+<style>
+  body { font-family: system-ui; background: #0a0a0a; color: #eee; padding: 40px; max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  .sub { color: #888; font-size: 13px; margin-bottom: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 8px 12px; text-align: right; border-bottom: 1px solid #222; }
+  th:first-child, td:first-child { text-align: left; }
+  th { background: #141414; color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  tr:hover td { background: #141414; }
+  .section-header td { font-weight: 600; background: #1a1a1a; border-top: 2px solid #333; }
+  .ratio { font-size: 11px; color: #888; }
+  .value { font-weight: 600; font-family: monospace; color: #eee; }
+</style>
+</head>
+<body>
+<h1>Native Benchmark Comparison (iOS)</h1>
+<p class="sub">200/60 components · 3 run(s) · iOS simulator via Expo Go</p>
+<table>
+<thead><tr><th>Scenario</th><th>Tamagui (runtime)</th><th>Tamagui (compiled)</th><th>NativeWind v5</th><th>Uniwind</th><th>React Native</th></tr></thead>
+<tbody>
+<tr class="section-header"><td colspan="6">Mount (ms)</td></tr>
+<tr><td>Simple (static props)</td><td><span class="value">93.2</span></td><td><span class="value">17.2</span></td><td><span class="value">24.8</span></td><td><span class="value">27.8</span></td><td><span class="value">19.2</span></td></tr>
+<tr><td>Rich (pseudo states)</td><td><span class="value">95.9</span></td><td><span class="value">95.5</span></td><td><span class="value">33.2</span></td><td><span class="value">33.0</span></td><td><span class="value">27.1</span></td></tr>
+<tr><td>Group hover</td><td><span class="value">241.1</span></td><td><span class="value">146.7</span></td><td><span class="value">103.0</span></td><td><span class="value">94.9</span></td><td><span class="value">70.6</span></td></tr>
+<tr><td>Heavy page (60)</td><td><span class="value">143.4</span></td><td><span class="value">100.0</span></td><td><span class="value">60.1</span></td><td><span class="value">65.2</span></td><td><span class="value">42.8</span></td></tr>
+<tr><td>Animated (spring)</td><td><span class="value">84.3</span></td><td><span class="value">75.1</span></td><td><span class="value">34.2</span></td><td><span class="value">32.6</span></td><td><span class="value">23.8</span></td></tr>
+<tr class="section-header"><td colspan="6">Re-render (ms)</td></tr>
+<tr><td>Simple (static props)</td><td><span class="value">78.6</span></td><td><span class="value">18.2</span></td><td><span class="value">25.8</span></td><td><span class="value">30.6</span></td><td><span class="value">18.9</span></td></tr>
+<tr><td>Rich (pseudo states)</td><td><span class="value">83.3</span></td><td><span class="value">61.3</span></td><td><span class="value">27.1</span></td><td><span class="value">27.8</span></td><td><span class="value">20.4</span></td></tr>
+<tr><td>Group hover</td><td><span class="value">232.8</span></td><td><span class="value">140.7</span></td><td><span class="value">97.8</span></td><td><span class="value">88.0</span></td><td><span class="value">66.9</span></td></tr>
+<tr><td>Heavy page (60)</td><td><span class="value">145.0</span></td><td><span class="value">92.5</span></td><td><span class="value">54.0</span></td><td><span class="value">60.5</span></td><td><span class="value">39.0</span></td></tr>
+<tr><td>Animated (spring)</td><td><span class="value">78.8</span></td><td><span class="value">70.0</span></td><td><span class="value">26.0</span></td><td><span class="value">28.1</span></td><td><span class="value">16.9</span></td></tr>
+</tbody>
+</table>
+</body>
+</html>

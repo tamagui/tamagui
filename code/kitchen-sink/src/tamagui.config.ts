@@ -393,6 +393,7 @@ const tamaConf = createTamagui({
     allowedStyleValues: 'somewhat-strict',
     autocompleteSpecificTokens: 'except-special',
     fastSchemeChange: true,
+    styleMode: 'tamagui',
   },
   tokens,
   media: {

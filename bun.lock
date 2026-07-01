@@ -1033,6 +1033,21 @@
         "vitest": "4.0.4",
       },
     },
+    "code/core/to-tailwind": {
+      "name": "@tamagui/to-tailwind",
+      "version": "2.4.0",
+      "dependencies": {
+        "@babel/generator": "^7.25.5",
+        "@babel/parser": "^7.25.4",
+        "@babel/traverse": "^7.25.4",
+        "@babel/types": "^7.25.4",
+        "@tamagui/helpers": "workspace:*",
+        "@tamagui/shorthands": "workspace:*",
+      },
+      "devDependencies": {
+        "vitest": "4.0.4",
+      },
+    },
     "code/core/types": {
       "name": "@tamagui/types",
       "version": "2.4.0",
@@ -2109,6 +2124,36 @@
       },
       "peerDependencies": {
         "react": ">=19",
+      },
+    },
+    "code/tests/style-mode-tailwind-only": {
+      "name": "@tamagui/style-mode-tailwind-only-tests",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@tamagui/shorthands": "workspace:*",
+        "@tamagui/web": "workspace:*",
+        "typescript": "~5.9.2",
+        "vitest": "4.0.4",
+      },
+    },
+    "code/tests/style-mode-tamagui-and-tailwind": {
+      "name": "@tamagui/style-mode-tamagui-and-tailwind-tests",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@tamagui/shorthands": "workspace:*",
+        "@tamagui/web": "workspace:*",
+        "typescript": "~5.9.2",
+        "vitest": "4.0.4",
+      },
+    },
+    "code/tests/style-mode-tamagui-only": {
+      "name": "@tamagui/style-mode-tamagui-only-tests",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@tamagui/shorthands": "workspace:*",
+        "@tamagui/web": "workspace:*",
+        "typescript": "~5.9.2",
+        "vitest": "4.0.4",
       },
     },
     "code/ui/accordion": {
@@ -3379,6 +3424,7 @@
       "name": "@tamagui/visually-hidden",
       "version": "2.4.0",
       "dependencies": {
+        "@tamagui/constants": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -5267,6 +5313,12 @@
 
     "@tamagui/static-worker": ["@tamagui/static-worker@workspace:code/compiler/static-worker"],
 
+    "@tamagui/style-mode-tailwind-only-tests": ["@tamagui/style-mode-tailwind-only-tests@workspace:code/tests/style-mode-tailwind-only"],
+
+    "@tamagui/style-mode-tamagui-and-tailwind-tests": ["@tamagui/style-mode-tamagui-and-tailwind-tests@workspace:code/tests/style-mode-tamagui-and-tailwind"],
+
+    "@tamagui/style-mode-tamagui-only-tests": ["@tamagui/style-mode-tamagui-only-tests@workspace:code/tests/style-mode-tamagui-only"],
+
     "@tamagui/switch": ["@tamagui/switch@workspace:code/ui/switch"],
 
     "@tamagui/switch-headless": ["@tamagui/switch-headless@workspace:code/ui/switch-headless"],
@@ -5292,6 +5344,8 @@
     "@tamagui/themes": ["@tamagui/themes@workspace:code/core/themes"],
 
     "@tamagui/timer": ["@tamagui/timer@workspace:code/packages/timer"],
+
+    "@tamagui/to-tailwind": ["@tamagui/to-tailwind@workspace:code/core/to-tailwind"],
 
     "@tamagui/toast": ["@tamagui/toast@workspace:code/ui/toast"],
 

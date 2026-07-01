@@ -126,6 +126,9 @@ const nonAnimatableViewProps = {
   outlineStyle: true,
   overflow: true,
   position: true,
+  // visibility: native maps "hidden" -> opacity:0 + pointerEvents:none via expandStyle;
+  // on web passes through as CSS visibility (visible | hidden | collapse).
+  visibility: true,
 }
 
 // discrete (non-animatable) font properties

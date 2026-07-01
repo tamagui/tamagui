@@ -1,0 +1,5 @@
+mount=23.1ms rerender=17.3ms
+
+Ran 1 marker calls across 1 segments
+                  ~gap (ignore) | avg 1253.8439ms | total 1253.843ms | n=1
+                                    total 0ms (excludes gap/ignore)

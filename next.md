@@ -1,3 +1,43 @@
+# compiler improvements (updated June 2026)
+
+5-scenario bench (500 components simple/rich/group, 150 heavy, Chromium, 1 run):
+
+| scenario         | compiled | baseline | nativewind v5 | uniwind |
+|------------------|----------|----------|---------------|---------|
+| simple mount     | 7.2ms    | 7.1ms    | 18.1ms (2.5x) | 23.1ms  |
+| rich mount       | 7.2ms    | 6.4ms    | 14.1ms (2.2x) | 17.5ms  |
+| **group hover**  | **396ms (19.4x!)** | 20.4ms | 52.6ms (2.6x) | 59.8ms  |
+| **heavy page**   | **148ms (13.6x!)** | 10.9ms | 33.4ms (3.1x) | 39.7ms  |
+| animated spring  | 35.5ms (4.9x) | 7.3ms | 14.5ms (2.0x) | 6.5ms   |
+
+**priority 1 - group styles compiler optimization (19x slowdown is the biggest issue)**:
+- `group` prop and `$group-*-*` children are ALL in deoptProps → compiler bails out the entire tree
+- 500 group items × ~3 children = 1500 TamaguiComponent instances all running full getSplitStyles
+- goal: compile group parent to a div with data-group attribute; compile children's $group-* styles
+  to CSS :has([data-group]) selectors on web; preserve group JS emitter only for native
+- location: createExtractor.ts deoptProps (line 1088-1109), extractToClassNames.ts
+- estimated improvement: group mount 396ms → ~20ms (matching inline JS hover)
+
+**priority 2 - heavy/dynamic props partial compilation**:
+- `width={80 + ((i * 17) % 60)}` dynamic values prevent extraction of ANY styles
+- even fully static siblings of a dynamic prop don't get extracted
+- goal: extract the static props that ARE constant, leave only the dynamic ones as style={}
+- location: createExtractor.ts ~line 1200-1400 (per-prop static evaluation + batching)
+- estimated improvement: heavy page 148ms → ~25ms
+
+**priority 3 - animated spring (was previously highest priority)**:
+- compiler bails on `animation` prop, costs 35.5ms (4.9x vs baseline)
+- lower priority than group because NativeWind also struggles here (14.5ms, 2x baseline)
+  and animated components are less common than group/dynamic in real apps
+- goal: partial extraction of static props even when animation prop present (same approach as priority 2)
+- estimated improvement: 35.5ms → ~12ms
+
+coverage note: Tamagui has 79 fully cross-platform utilities vs NativeWind 74
+(group/container queries ARE cross-platform in Tamagui via JS state emitter on native)
+but group compile deopt completely negates this advantage for group-heavy UIs
+
+---
+
 vite 8 monorepo fix:
 - added `tamagui-monorepo-exports-fix` plugin to `@tamagui/vite-plugin`
 - vite 8 (rolldown) resolves workspace subpath imports to filesystem dirs instead of package.json exports

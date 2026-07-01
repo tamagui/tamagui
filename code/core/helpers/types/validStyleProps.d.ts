@@ -144,6 +144,7 @@ export declare const nonAnimatableStyleProps: {
     outlineStyle: boolean;
     overflow: boolean;
     position: boolean;
+    visibility: boolean;
 };
 export declare const stylePropsUnitless: {
     animationIterationCount: boolean;
@@ -444,6 +445,7 @@ export declare const stylePropsView: {
     outlineStyle: boolean;
     overflow: boolean;
     position: boolean;
+    visibility: boolean;
 };
 export declare const stylePropsTextOnly: {
     textDecorationDistance?: boolean | undefined;
@@ -736,6 +738,7 @@ export declare const stylePropsText: {
     outlineStyle: boolean;
     overflow: boolean;
     position: boolean;
+    visibility: boolean;
 };
 export declare const stylePropsAll: {
     textDecorationDistance?: boolean | undefined;
@@ -1001,6 +1004,7 @@ export declare const stylePropsAll: {
     outlineStyle: boolean;
     overflow: boolean;
     position: boolean;
+    visibility: boolean;
 };
 export declare const validPseudoKeys: {
     focusVisibleStyle?: boolean | undefined;
@@ -1257,5 +1261,6 @@ export declare const validStyles: {
     outlineStyle: boolean;
     overflow: boolean;
     position: boolean;
+    visibility: boolean;
 };
 //# sourceMappingURL=validStyleProps.d.ts.map

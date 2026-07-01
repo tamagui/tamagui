@@ -144,6 +144,12 @@ export declare const config: {
         gtXl: {
             minWidth: number;
         };
+        motionReduce: {
+            prefersReducedMotion: string;
+        };
+        motionSafe: {
+            prefersReducedMotion: string;
+        };
     };
     shorthands: {
         readonly ussel: "userSelect";
@@ -984,6 +990,8 @@ export declare const config: {
             sm: boolean;
             xs: boolean;
             xxs: boolean;
+            motionReduce: boolean;
+            motionSafe: boolean;
         };
         defaultFont: string;
         fastSchemeChange: true;

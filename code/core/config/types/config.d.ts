@@ -163,6 +163,12 @@ export declare const configWithoutAnimations: {
         gtXl: {
             minWidth: number;
         };
+        motionReduce: {
+            prefersReducedMotion: string;
+        };
+        motionSafe: {
+            prefersReducedMotion: string;
+        };
     };
     shorthands: {
         readonly ussel: "userSelect";
@@ -942,6 +948,8 @@ export declare const configWithoutAnimations: {
             sm: boolean;
             xs: boolean;
             xxs: boolean;
+            motionReduce: boolean;
+            motionSafe: boolean;
         };
     };
 };

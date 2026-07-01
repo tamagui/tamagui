@@ -17,6 +17,11 @@ export const media = {
   gtMd: { minWidth: 1020 + 1 },
   gtLg: { minWidth: 1280 + 1 },
   gtXl: { minWidth: 1650 + 1 },
+  // accessibility: reduced-motion preference
+  // web -> (prefers-reduced-motion: reduce|no-preference) via window.matchMedia
+  // native -> AccessibilityInfo.isReduceMotionEnabled (see @tamagui/react-native-media-driver)
+  motionReduce: { prefersReducedMotion: 'reduce' },
+  motionSafe: { prefersReducedMotion: 'no-preference' },
 }
 
 // note all the non "gt" ones should be true to start to match mobile-first
@@ -29,4 +34,6 @@ export const mediaQueryDefaultActive = {
   xs: true,
   // false
   xxs: false,
+  motionReduce: false,
+  motionSafe: true,
 }

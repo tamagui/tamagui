@@ -23,6 +23,7 @@ import { parseNativeStyle } from './parseNativeStyle'
 import { pseudoDescriptors } from './pseudoDescriptors'
 import { resolveCompoundTokens } from './resolveCompoundTokens'
 import { isRemValue, resolveRem } from './resolveRem'
+import { expandSafeAreaValue, isSafeAreaKey } from './resolveSafeArea'
 import { skipProps } from './skipProps'
 import { styleOriginalValues } from './styleOriginalValues'
 
@@ -64,6 +65,20 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
 
   // Capture original value before resolution (for context prop tracking)
   const originalValue = value
+
+  // "safe" value -> env(safe-area-inset-*) on web, numeric inset on native.
+  // expands multi-edge props (padding, inset, marginHorizontal, ...) into
+  // per-side keys so each side gets its own edge value.
+  if (value === 'safe' && isSafeAreaKey(key)) {
+    const expanded = expandSafeAreaValue(key)
+    if (expanded) {
+      for (let i = 0; i < expanded.length; i++) {
+        const [nkey, nvalue] = expanded[i]
+        map(nkey, nvalue, originalValue)
+      }
+      return
+    }
+  }
 
   if (value != null) {
     if (typeof value === 'string') {

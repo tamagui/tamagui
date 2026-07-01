@@ -59,6 +59,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   GroupProp: () => require('./GroupProp').GroupProp,
   MediaQueryGtMd: () => require('./MediaQueryGtMd').MediaQueryGtMd,
   MediaQueriesV5: () => require('./MediaQueriesV5').MediaQueriesV5,
+  MotionReduceCase: () => require('./MotionReduceCase').MotionReduceCase,
   MenuAccessibilityCase: () => require('./MenuAccessibilityCase').MenuAccessibilityCase,
   MenuAsChildPositionCase: () =>
     require('./MenuAsChildPositionCase').MenuAsChildPositionCase,
@@ -68,6 +69,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   MenuSubLeftCase: () => require('./MenuSubLeftCase').MenuSubLeftCase,
   NativePortalTest: () => require('./NativePortalTest').NativePortalTest,
   GroupUseCases: () => require('./GroupUseCases').GroupUseCases,
+  IconFillStroke: () => require('./IconFillStroke').IconFillStroke,
+  ImageObjectFit: () => require('./ImageObjectFit').ImageObjectFit,
   ImageTokenStyle: () => require('./ImageTokenStyle').ImageTokenStyle,
   ThemedListItem: () => require('./ListItem').ThemedListItem,
   NewInputBasic: () => require('./NewInputBasic').NewInputBasic,
@@ -88,6 +91,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   PseudoStyleMerge: () => require('./PseudoStyleMerge').PseudoStyleMerge,
   PseudoTransitionCase: () => require('./PseudoTransitionCase').PseudoTransitionCase,
   RenderPropCase: () => require('./RenderPropCase').RenderPropCase,
+  SafeAreaValue: () => require('./SafeAreaValue').SafeAreaValue,
   ScrollViewRefCase: () => require('./ScrollViewRefCase').ScrollViewRefCase,
   SecondPage: () => require('./SecondPage').SecondPage,
   SelectAndroidOnPress: () => require('./SelectAndroidOnPress').SelectAndroidOnPress,
@@ -145,6 +149,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   StyleProp: () => require('./StyleProp').StyleProp,
   TabsOnInteraction: () => require('./TabsOnInteraction').TabsOnInteraction,
   TextNestedInheritance: () => require('./TextNestedInheritance').TextNestedInheritance,
+  TextOverflowEllipsis: () => require('./TextOverflowEllipsis').TextOverflowEllipsis,
   ThemeChange: () => require('./ThemeChange').ThemeChange,
   ThemeChangeBasic: () => require('./ThemeChangeBasic').ThemeChangeBasic,
   ThemeComponentResolution: () =>
@@ -171,6 +176,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   V5ThemeBuilderOutput: () => require('./V5ThemeBuilderOutput').V5ThemeBuilderOutput,
   VariantFontFamily: () => require('./VariantFontFamily').VariantFontFamily,
   VariantsOrder: () => require('./VariantsOrder').VariantsOrder,
+  VisibilityCase: () => require('./VisibilityCase').VisibilityCase,
   ZIndex: () => require('./ZIndex').ZIndex,
   NestedPressExclusive: () => require('./NestedPressExclusive').NestedPressExclusive,
 }

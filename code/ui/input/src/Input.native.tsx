@@ -96,6 +96,14 @@ export const Input = StyledInput.styleable<InputExtraProps>((props, forwardedRef
     step,
     render,
 
+    // $caretColor is web-only as a CSS prop; on native forward to
+    // cursorColor (Android) + selectionColor (iOS+Android caret) unless
+    // those are explicitly set.
+    // @ts-ignore - caretColor is typed as web-only in core
+    caretColor,
+    cursorColor: cursorColorProp,
+    selectionColor: selectionColorProp,
+
     ...rest
   } = props
 
@@ -278,6 +286,11 @@ export const Input = StyledInput.styleable<InputExtraProps>((props, forwardedRef
     textAlignVertical,
     verticalAlign,
     showSoftInputOnFocus,
+
+    // $caretColor → cursorColor (Android) + selectionColor (iOS+Android),
+    // unless the caller passed those explicitly.
+    cursorColor: cursorColorProp ?? caretColor,
+    selectionColor: selectionColorProp ?? caretColor,
   }
 
   return <StyledInput ref={composedRef} {...finalProps} />
