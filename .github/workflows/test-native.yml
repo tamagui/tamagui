@@ -143,8 +143,22 @@ jobs:
         if: env.SKIP_IOS_TESTS != 'true'
         run: |
           npm install -g detox-cli &
-          (brew tap wix/brew && brew install applesimutils) &
-          wait
+          detox_pid=$!
+
+          # install by fully-qualified name so homebrew auto-trusts only this
+          # formula (homebrew 6 refuses untrusted third-party taps otherwise)
+          brew install wix/brew/applesimutils &
+          applesimutils_pid=$!
+
+          wait "$detox_pid"
+          wait "$applesimutils_pid"
+
+          brew_bin="$(brew --prefix)/bin"
+          echo "$brew_bin" >> "$GITHUB_PATH"
+          export PATH="$brew_bin:$PATH"
+
+          command -v detox
+          command -v applesimutils
 
       - name: Rebuild Detox Framework Cache
         if: env.SKIP_IOS_TESTS != 'true'

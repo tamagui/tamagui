@@ -883,6 +883,15 @@ function isValidStyleKey(
   return key in validStyles ? true : accept && key in accept
 }
 
+function shouldSkipNativeHoverProp(key: string, isMedia: false | boolean | string) {
+  if (process.env.TAMAGUI_TARGET !== 'native') return false
+  if (key === 'hoverStyle') return true
+  if (isMedia === 'group') {
+    return getGroupPropParts(key.slice(1)).pseudo === 'hover'
+  }
+  return false
+}
+
 export const getSplitStyles: StyleSplitter = (
   props,
   staticConfig,
@@ -1046,6 +1055,18 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'children') {
       viewProps[keyInit] = valInit
+      continue
+    }
+
+    // native: data-* attributes never become native props (they're stripped
+    // further down anyway), and the compiler-emitted data-disable-theme/-media
+    // flags are already consumed in createComponent. skip them before any per-prop
+    // work so they don't pay the isValidStyleKey + handling cost on the hot path.
+    if (
+      process.env.TAMAGUI_TARGET === 'native' &&
+      keyInit[0] === 'd' &&
+      keyInit.startsWith('data-')
+    ) {
       continue
     }
 
@@ -1233,6 +1254,10 @@ export const getSplitStyles: StyleSplitter = (
 
     const isStyleProp = isValidStyleKeyInit || isMediaOrPseudo || (isVariant && !noExpand)
 
+    if (shouldSkipNativeHoverProp(keyInit, isMedia)) {
+      continue
+    }
+
     if (isStyleProp && (asChild === 'except-style' || asChild === 'except-style-web')) {
       continue
     }
@@ -1375,6 +1400,10 @@ export const getSplitStyles: StyleSplitter = (
       // handle group key transformation for variant-expanded keys (issue #3613)
       if (isMedia === 'group') {
         key = normalizeGroupKey(key, groupContext)
+      }
+
+      if (shouldSkipNativeHoverProp(key, isMedia)) {
+        return
       }
 
       if (
@@ -1699,6 +1728,10 @@ export const getSplitStyles: StyleSplitter = (
             const groupState = groupContext?.[groupName]?.state
             const groupPseudoKey = groupInfo.pseudo
             const groupMediaKey = groupInfo.media
+
+            if (process.env.TAMAGUI_TARGET === 'native' && groupPseudoKey === 'hover') {
+              return
+            }
 
             if (!groupState) {
               if (process.env.NODE_ENV === 'development' && debug) {

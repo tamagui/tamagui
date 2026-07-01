@@ -1,6 +1,7 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import {
   getPlatformDriver,
+  isAndroid,
   isClient,
   isNativeDesktop,
   isServer,
@@ -84,6 +85,16 @@ const avoidReRenderKeys = new Set([
   'media',
   'group',
 ])
+
+const groupPseudoKeys = [
+  'disabled',
+  'hover',
+  'press',
+  'pressIn',
+  'focus',
+  'focusVisible',
+  'focusWithin',
+] as const satisfies readonly (keyof PseudoGroupState)[]
 
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelPresses = () => {
@@ -292,9 +303,14 @@ export function createComponent<
     // On Android, skip RNGH GestureDetector inside native menus (zeego) and use
     // direct press events instead — GestureDetector consumes touches before they
     // reach MenuView's native handler, preventing the menu from opening
+    // NativeMenuContext only affects Android RNGH press arbitration inside zeego
+    // menus (see eventHandling.native.ts:182). isAndroid is constant for the whole
+    // app run, so on iOS we skip this context read for every component — the branch
+    // never flips at runtime, so hook order stays stable (rules-of-hooks safe).
     const isInsideNativeMenu =
-      process.env.TAMAGUI_TARGET === 'native'
-        ? React.useContext(NativeMenuContext)
+      process.env.TAMAGUI_TARGET === 'native' && isAndroid
+        ? // eslint-disable-next-line react-hooks/rules-of-hooks
+          React.useContext(NativeMenuContext)
         : false
 
     if (
@@ -1808,9 +1824,36 @@ export function createComponent<
     if (!groupContext || !groupEmitter) {
       return
     }
-    const nextState = { ...groupContext.state, pseudo }
-    groupEmitter.emit(nextState)
-    groupContext.state = nextState
+
+    const prevPseudo = groupContext.state.pseudo
+    const shouldReplacePseudo =
+      !prevPseudo ||
+      // old/default state objects carry non-pseudo fields; replace once instead
+      // of mutating the shared defaultComponentStateMounted object
+      'unmounted' in prevPseudo ||
+      'group' in prevPseudo ||
+      'hasDynGroupChildren' in prevPseudo ||
+      'transition' in prevPseudo
+    const nextPseudo = shouldReplacePseudo ? {} : prevPseudo
+    let didChange = shouldReplacePseudo
+
+    for (let i = 0; i < groupPseudoKeys.length; i++) {
+      const key = groupPseudoKeys[i]
+      const value = pseudo[key]
+      if (nextPseudo[key] !== value) {
+        nextPseudo[key] = value
+        didChange = true
+      } else if (didChange) {
+        nextPseudo[key] = value
+      }
+    }
+
+    if (!didChange) {
+      return
+    }
+
+    groupContext.state.pseudo = nextPseudo
+    groupEmitter.emit(groupContext.state)
   }
 
   // let hasLogged = false

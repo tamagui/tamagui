@@ -3,7 +3,7 @@ import querystring from 'node:querystring'
 import React from 'react'
 import useSWR from 'swr'
 import { AppContext } from '../data/AppContext.js'
-import { debugLog } from '../commands/index.js'
+import { debugLog, redact } from '../commands/index.js'
 
 export const useFetchComponent = () => {
   const { installState, accessToken, tokenStore, setIsLoggedIn, setAccessToken } =
@@ -11,7 +11,7 @@ export const useFetchComponent = () => {
 
   const fetcher = async (url: string) => {
     debugLog('fetcher', url)
-    debugLog({ accessToken })
+    debugLog({ accessToken: redact(accessToken) })
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     }

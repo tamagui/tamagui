@@ -9,10 +9,13 @@ import type { ComponentType } from 'react'
 
 const loaders: Record<string, () => ComponentType<any>> = {
   AnimatedByProp: () => require('./AnimatedByProp').AnimatedByProp,
+  LogoDotInterruptCase: () => require('./LogoDotInterruptCase').LogoDotInterruptCase,
   ReanimatedEmitterLatchCase: () =>
     require('./ReanimatedEmitterLatchCase').ReanimatedEmitterLatchCase,
   GroupDisabledStyleLatchCase: () =>
     require('./GroupDisabledStyleLatchCase').GroupDisabledStyleLatchCase,
+  GroupNestedNotifyLoopCase: () =>
+    require('./GroupNestedNotifyLoopCase').GroupNestedNotifyLoopCase,
   ReanimatedStuckHoverCase: () =>
     require('./ReanimatedStuckHoverCase').ReanimatedStuckHoverCase,
   ReanimatedPlatformDriverHoverCase: () =>

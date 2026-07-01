@@ -39,6 +39,18 @@ export function getNativeImportMarker() {
   return 'web-import-marker'
 }
 
+export function getNativeRequireMarker() {
+  if (process.env.TAMAGUI_TARGET === 'native') {
+    // bare require behind a native DCE guard must survive as a real require(),
+    // not esbuild's __require() shim which throws under Metro's esm scope.
+    // lodash.debounce is just an external (yet bundleable) stand-in for a native-only require.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    return require('lodash.debounce').NativeRequireMarker
+  }
+
+  return 'web-require-marker'
+}
+
 export function getNodeEnvMarker() {
   if (process.env.NODE_ENV === 'test') {
     return 'test-env-marker'
