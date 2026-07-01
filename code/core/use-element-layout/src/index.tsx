@@ -86,7 +86,7 @@ export type LayoutEvent = {
   timeStamp: number
 }
 
-const NodeRectCache = new WeakMap<HTMLElement, DOMRect>()
+const NodeRectCache = new WeakMap<HTMLElement, DOMRectReadOnly>()
 
 // prevent thrashing during first hydration (somewhat, streaming gets trickier)
 let avoidUpdates = true
@@ -196,35 +196,7 @@ if (ENABLE) {
       parentRect = parentNode.getBoundingClientRect()
     }
 
-    const cachedRect = NodeRectCache.get(node)
-    const cachedParentRect = NodeRectCache.get(parentNode)
-
-    // optimization: inline comparison instead of isEqualShallow
-    const nodeChanged = !cachedRect || !rectsEqual(cachedRect, nodeRect)
-    const parentChanged = !cachedParentRect || !rectsEqual(cachedParentRect, parentRect)
-
-    if (nodeChanged || parentChanged) {
-      NodeRectCache.set(node, nodeRect as DOMRect)
-      NodeRectCache.set(parentNode, parentRect as DOMRect)
-
-      const event = getElementLayoutEvent(nodeRect, parentRect, node)
-
-      if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
-        console.log('[useElementLayout] change', {
-          tag: node.tagName,
-          id: node.id || undefined,
-          className: (node.className || '').slice(0, 60) || undefined,
-          layout: event.nativeEvent.layout,
-          first: !cachedRect,
-        })
-      }
-
-      if (avoidUpdates) {
-        queuedUpdates.set(node, () => onLayout(event))
-      } else {
-        onLayout(event)
-      }
-    }
+    emitLayoutIfChanged(node, parentNode, nodeRect, parentRect)
   }
 
   const rAF =
@@ -365,20 +337,67 @@ const getRelativeDimensions = (
   return { x, y, width, height, pageX: a.left, pageY: a.top }
 }
 
+function emitLayoutIfChanged(
+  node: HTMLElement,
+  parentNode: HTMLElement,
+  nodeRect: DOMRectReadOnly,
+  parentRect: DOMRectReadOnly
+) {
+  const onLayout = LayoutHandlers.get(node)
+  if (typeof onLayout !== 'function') return
+
+  const cachedRect = NodeRectCache.get(node)
+  const cachedParentRect = NodeRectCache.get(parentNode)
+
+  const nodeChanged = !cachedRect || !rectsEqual(cachedRect, nodeRect)
+  const parentChanged = !cachedParentRect || !rectsEqual(cachedParentRect, parentRect)
+
+  if (!nodeChanged && !parentChanged) return
+
+  NodeRectCache.set(node, nodeRect)
+  NodeRectCache.set(parentNode, parentRect)
+
+  const event = getElementLayoutEvent(nodeRect, parentRect, node)
+
+  if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
+    console.log('[useElementLayout] change', {
+      tag: node.tagName,
+      id: node.id || undefined,
+      className: (node.className || '').slice(0, 60) || undefined,
+      layout: event.nativeEvent.layout,
+      first: !cachedRect,
+    })
+  }
+
+  if (avoidUpdates) {
+    queuedUpdates.set(node, () => onLayout(event))
+  } else {
+    onLayout(event)
+  }
+}
+
+function observeLayoutNode(node: HTMLElement, disableKey?: string) {
+  Nodes.add(node)
+  if (disableKey) {
+    LayoutDisableKey.set(node, disableKey)
+  } else {
+    LayoutDisableKey.delete(node)
+  }
+  startGlobalObservers()
+  if (globalIntersectionObserver) {
+    globalIntersectionObserver.observe(node)
+    IntersectionState.set(node, true)
+  }
+}
+
 // register an arbitrary DOM element into the measurement loop without React lifecycle
 export function registerLayoutNode(
   node: HTMLElement,
   onChange: () => void,
   disableKey?: string
 ): () => void {
-  Nodes.add(node)
   LayoutHandlers.set(node, onChange)
-  if (disableKey) LayoutDisableKey.set(node, disableKey)
-  startGlobalObservers()
-  if (globalIntersectionObserver) {
-    globalIntersectionObserver.observe(node)
-    IntersectionState.set(node, true)
-  }
+  observeLayoutNode(node, disableKey)
   return () => cleanupNode(node)
 }
 
@@ -395,6 +414,35 @@ function cleanupNode(node: HTMLElement) {
 
 const PrevHostNode = new WeakMap<object, HTMLElement | undefined>()
 
+function emitLayoutFromClientRects(node: HTMLElement) {
+  const parentNode = node.parentElement
+  if (!parentNode) return
+
+  const nodeRect = node.getBoundingClientRect()
+  const parentRect = parentNode.getBoundingClientRect()
+  emitLayoutIfChanged(node, parentNode, nodeRect, parentRect)
+}
+
+async function emitLayoutFromObserver(node: HTMLElement) {
+  if (!ENABLE || strategy !== 'async') {
+    emitLayoutFromClientRects(node)
+    return
+  }
+
+  const parentNode = node.parentElement
+  if (!parentNode) return
+
+  const [nodeRect, parentRect] = await Promise.all([
+    getBoundingClientRectAsync(node),
+    getBoundingClientRectAsync(parentNode),
+  ])
+
+  if (!nodeRect || !parentRect) return
+  if (!Nodes.has(node) || node.parentElement !== parentNode) return
+
+  emitLayoutIfChanged(node, parentNode, nodeRect, parentRect)
+}
+
 export function useElementLayout(
   ref: RefObject<TamaguiComponentStatePartial>,
   onLayout?: ((e: LayoutEvent) => void) | null
@@ -408,7 +456,7 @@ export function useElementLayout(
     LayoutDisableKey.set(node, disableKey)
   }
 
-  // detect host swaps after commit and fire immediate sync layout
+  // detect host swaps after commit and seed the async layout measurement
   useIsomorphicLayoutEffect(() => {
     if (!onLayout) return
     const nextNode = ensureWebElement(ref.current?.host)
@@ -419,23 +467,9 @@ export function useElementLayout(
     PrevHostNode.set(ref, nextNode)
     if (!nextNode) return
 
-    Nodes.add(nextNode)
-    startGlobalObservers()
-    if (globalIntersectionObserver) {
-      globalIntersectionObserver.observe(nextNode)
-      IntersectionState.set(nextNode, true)
-    }
-
-    const handler = LayoutHandlers.get(nextNode)
-    if (typeof handler !== 'function') return
-    const parentNode = nextNode.parentElement
-    if (!parentNode) return
-
-    const nodeRect = nextNode.getBoundingClientRect()
-    const parentRect = parentNode.getBoundingClientRect()
-    NodeRectCache.set(nextNode, nodeRect)
-    NodeRectCache.set(parentNode, parentRect)
-    handler(getElementLayoutEvent(nodeRect, parentRect, nextNode))
+    LayoutHandlers.set(nextNode, onLayout)
+    observeLayoutNode(nextNode, disableKey)
+    void emitLayoutFromObserver(nextNode)
   })
 
   useIsomorphicLayoutEffect(() => {
@@ -443,13 +477,8 @@ export function useElementLayout(
     const node = ref.current?.host
     if (!node) return
 
-    Nodes.add(node)
-
-    startGlobalObservers()
-    if (globalIntersectionObserver) {
-      globalIntersectionObserver.observe(node)
-      IntersectionState.set(node, true)
-    }
+    LayoutHandlers.set(node, onLayout)
+    observeLayoutNode(node, disableKey)
 
     if (process.env.NODE_ENV === 'development' && isDebugLayout()) {
       console.log('[useElementLayout] register', {
@@ -458,18 +487,6 @@ export function useElementLayout(
         className: (node.className || '').slice(0, 60) || undefined,
         totalNodes: Nodes.size,
       })
-    }
-
-    // always do one immediate sync layout event for accuracy
-    const parentNode = node.parentNode as HTMLElement | null
-    if (parentNode) {
-      onLayout(
-        getElementLayoutEvent(
-          node.getBoundingClientRect(),
-          parentNode.getBoundingClientRect(),
-          node
-        )
-      )
     }
 
     return () => {

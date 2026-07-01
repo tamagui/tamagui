@@ -128,6 +128,11 @@ export function setupMediaListeners() {
 const listeners = new Set<any>()
 
 export function updateMediaListeners() {
+  // keep the shared disabled-media tracker pointing at live state (defensive;
+  // media-free components never read it, but this avoids staleness if they did)
+  if (disabledMediaState) {
+    ;(disabledMediaState as any)[refSlot].proxyTarget = getMedia()
+  }
   listeners.forEach((cb) => cb(getMedia()))
 }
 
@@ -177,6 +182,22 @@ function getTouchTrackerProto(): object {
 
 function resetMediaTouchTracker() {
   touchTrackerProto = null
+  disabledMediaState = null
+}
+
+// shared media state for components the compiler proved media-free
+// (data-disable-media). reads still return live media values (defensive: correct
+// initial style even if the flag were ever wrong) but it never subscribes and
+// costs no React hook slots. one shared instance — these components never write
+// to the keys set, so sharing is safe.
+let disabledMediaState: UseMediaState | null = null
+export function getDisabledMediaState(): UseMediaState {
+  if (!disabledMediaState) {
+    const tracker = Object.create(getTouchTrackerProto())
+    tracker[refSlot] = { proxyTarget: getMedia(), keys: new Set<string>() } as MediaRefSlot
+    disabledMediaState = tracker as UseMediaState
+  }
+  return disabledMediaState
 }
 
 export function setMediaShouldUpdate(
