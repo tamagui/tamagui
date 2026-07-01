@@ -1,5 +1,6 @@
 import { ScrollView } from 'react-native'
-import { Paragraph, Text, XStack, YStack } from 'tamagui'
+import type { Href } from 'one'
+import { Paragraph, SizableText, Text, XStack, YStack } from 'tamagui'
 import { ButtonLink } from '~/components/Link'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH1 } from '~/features/site/home/HomeHeaders'
@@ -18,7 +19,7 @@ function HeroCode() {
       overflow="hidden"
     >
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <Text
+        <SizableText
           fontFamily="$mono"
           size="$4"
           whiteSpace="pre"
@@ -34,7 +35,7 @@ function HeroCode() {
             "flex-row items-center gap-3 p-4 rounded-xl bg-indigo-500"
           </Text>
           <Text color="$color9">{' />'}</Text>
-        </Text>
+        </SizableText>
       </ScrollView>
     </YStack>
   )
@@ -86,7 +87,7 @@ export function TailwindHero() {
 
         <XStack gap="$3" items="center" flexWrap="wrap" justify="center" pt="$2">
           <ButtonLink
-            href="/tailwind/intro/introduction"
+            href={'/tailwind/intro/introduction' as Href}
             theme="accent"
             size="$5"
             fontFamily="$mono"
@@ -94,7 +95,7 @@ export function TailwindHero() {
             Read the docs
           </ButtonLink>
           <ButtonLink
-            href="/tailwind/intro/styles"
+            href={'/tailwind/intro/styles' as Href}
             chromeless
             size="$5"
             fontFamily="$mono"

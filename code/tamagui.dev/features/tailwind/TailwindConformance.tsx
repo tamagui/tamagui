@@ -1,4 +1,5 @@
-import { Paragraph, Separator, Text, XStack, YStack } from 'tamagui'
+import type { Href } from 'one'
+import { Paragraph, Separator, SizableText, XStack, YStack } from 'tamagui'
 import { ThemeTint } from '@tamagui/logo'
 import { ContainerLarge } from '~/components/Containers'
 import { ParagraphLink } from '~/components/Link'
@@ -42,9 +43,9 @@ function ProofRow({ c, scale }: { c: ProofCase; scale: number }) {
       {proofLegs.map((leg, i) => (
         <XStack key={leg.key} items="center" gap="$2">
           {i > 0 && (
-            <Text fontFamily="$mono" size="$5" color="$color8">
+            <SizableText fontFamily="$mono" size="$5" color="$color8">
               =
-            </Text>
+            </SizableText>
           )}
           <YStack items="center" gap="$2">
             <Specimen c={c} leg={leg.key} scale={scale} />
@@ -72,9 +73,9 @@ function MatchChip({ diff }: { diff: number }) {
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <YStack items="center" gap="$1" px="$6" py="$3">
-      <Text fontFamily="$mono" size="$10" color="$color12">
+      <SizableText fontFamily="$mono" size="$10" color="$color12">
         {value}
-      </Text>
+      </SizableText>
       <Paragraph size="$2" color="$color10">
         {label}
       </Paragraph>
@@ -114,24 +115,20 @@ export function TailwindConformance() {
             <ProofRow c={featured} scale={2.3} />
           </XStack>
           <XStack items="center" justify="center" gap="$3" flexWrap="wrap">
-            <Text fontFamily="$mono" size="$3" color="$color11">
+            <SizableText fontFamily="$mono" size="$3" color="$color11">
               className=&quot;{featured.className}&quot;
-            </Text>
+            </SizableText>
             <MatchChip diff={featured.diff} />
           </XStack>
         </YStack>
       </ThemeTint>
 
       {/* stat row */}
-      <XStack
-        self="center"
-        items="center"
-        flexWrap="wrap"
-        justify="center"
-        separator={<Separator vertical />}
-      >
+      <XStack self="center" items="center" flexWrap="wrap" justify="center">
         <Stat value={`${conformance.web}%`} label="web vs Tailwind" />
+        <Separator vertical />
         <Stat value={`${conformance.native}%`} label="iOS vs Tailwind" />
+        <Separator vertical />
         <Stat value={`${conformance.cases}`} label="cases measured" />
       </XStack>
 
@@ -158,9 +155,9 @@ export function TailwindConformance() {
               flexWrap="wrap"
             >
               <YStack gap="$2" minWidth={220} flex={1} items="flex-start">
-                <Text fontFamily="$mono" size="$2" color="$color11">
+                <SizableText fontFamily="$mono" size="$2" color="$color11">
                   {c.className}
-                </Text>
+                </SizableText>
                 <MatchChip diff={c.diff} />
               </YStack>
               <ProofRow c={c} scale={1.1} />
@@ -177,13 +174,10 @@ export function TailwindConformance() {
           real platform differences like CSS margin-collapse, which flexbox does not have.
           No fallbacks.
         </Paragraph>
-        <ParagraphLink
-          href="/tailwind/intro/introduction"
-          fontFamily="$mono"
-          size="$2"
-          color="$accent7"
-        >
-          Read the docs
+        <ParagraphLink href={'/tailwind/intro/introduction' as Href}>
+          <SizableText fontFamily="$mono" size="$2" color="$accent7">
+            Read the docs
+          </SizableText>
         </ParagraphLink>
       </YStack>
     </ContainerLarge>

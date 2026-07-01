@@ -1,4 +1,4 @@
-import { Paragraph, Separator, XStack, YStack } from 'tamagui'
+import { type ColorTokens, Paragraph, Separator, XStack, YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { HomeH2, HomeH3 } from '~/features/site/home/HomeHeaders'
 import {
@@ -17,7 +17,7 @@ const colLabels: Record<(typeof cols)[number], string> = {
   uniwind: 'Uniwind',
 }
 
-const mark: Record<Support, { glyph: string; color: string }> = {
+const mark: Record<Support, { glyph: string; color: ColorTokens }> = {
   full: { glyph: '●', color: '$green10' },
   partial: { glyph: '◐', color: '$yellow10' },
   web: { glyph: 'web', color: '$blue10' },

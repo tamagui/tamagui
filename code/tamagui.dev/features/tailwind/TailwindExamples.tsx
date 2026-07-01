@@ -1,4 +1,4 @@
-import { Paragraph, Text, XStack, YStack } from 'tamagui'
+import { Paragraph, SizableText, XStack, YStack } from 'tamagui'
 import { ContainerLarge } from '~/components/Containers'
 import { Grid } from '~/components/Grid'
 import { HomeH2, HomeH3 } from '~/features/site/home/HomeHeaders'
@@ -6,7 +6,7 @@ import { classToProp, exampleGroups } from './tailwindData'
 
 function ClassLine({ line }: { line: string }) {
   return (
-    <Text
+    <SizableText
       fontFamily="$mono"
       size="$3"
       whiteSpace="pre-wrap"
@@ -14,7 +14,7 @@ function ClassLine({ line }: { line: string }) {
       lineHeight="$5"
     >
       {line}
-    </Text>
+    </SizableText>
   )
 }
 
@@ -70,15 +70,27 @@ export function TailwindExamples() {
         </Paragraph>
         {classToProp.map((pair) => (
           <XStack key={pair.cls} items="center" gap="$3" flexWrap="wrap">
-            <Text fontFamily="$mono" size="$2" color="$green10" flex={1} minWidth={220}>
+            <SizableText
+              fontFamily="$mono"
+              size="$2"
+              color="$green10"
+              flex={1}
+              minWidth={220}
+            >
               {pair.cls}
-            </Text>
-            <Text fontFamily="$mono" size="$2" color="$color8">
+            </SizableText>
+            <SizableText fontFamily="$mono" size="$2" color="$color8">
               ≡
-            </Text>
-            <Text fontFamily="$mono" size="$2" color="$blue10" flex={1} minWidth={200}>
+            </SizableText>
+            <SizableText
+              fontFamily="$mono"
+              size="$2"
+              color="$blue10"
+              flex={1}
+              minWidth={200}
+            >
               {pair.prop}
-            </Text>
+            </SizableText>
           </XStack>
         ))}
       </YStack>
