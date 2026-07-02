@@ -5,6 +5,7 @@ import { promisify } from 'node:util'
 import pMap from 'p-map'
 import prompts from 'prompts'
 
+import { computePublishTag } from './release-publish-tag'
 import { spawnify } from './spawnify'
 
 process.setMaxListeners(50)
@@ -27,6 +28,16 @@ const undocumented = process.argv.includes('--undocumented')
 
 const canary = process.argv.includes('--canary')
 const isRC = process.argv.includes('--rc')
+const isBeta = process.argv.includes('--beta')
+// the prerelease channel requested via flag (null for stable / canary releases)
+const requestedChannel = isBeta ? 'beta' : isRC ? 'rc' : null
+
+// explicit dist-tag override: `--tag <name>`. always wins over version-based
+// detection (the escape hatch for publishing to an arbitrary tag).
+const explicitTagIdx = process.argv.indexOf('--tag')
+const explicitTag =
+  explicitTagIdx !== -1 ? (process.argv[explicitTagIdx + 1] || '').trim() : undefined
+
 const skipStarters = canary || skipAll || process.argv.includes('--skip-starters')
 const skipVersion = shouldFinish || rePublish || process.argv.includes('--skip-version')
 const shouldPatch = process.argv.includes('--patch')
@@ -107,13 +118,14 @@ async function hasSourceChanges(dir: string, tag: string): Promise<boolean> {
   }
 }
 
-// Check if current version is an RC (e.g., 1.143.0-rc.1 or 1.143.0-rc.1-1234567890)
-// Strip any canary timestamp suffix first
+// Detect the current prerelease channel, if any (e.g. 2.0.0-rc.34 or 3.0.0-beta.5).
+// Strip any canary timestamp suffix first so a canary of X.Y.Z isn't mistaken
+// for a channel prerelease.
 const curVersionStripped = curVersion.replace(/-\d{10,}$/, '')
-const rcMatch = curVersionStripped.match(/^(\d+\.\d+\.\d+)-rc\.(\d+)$/)
-const isCurrentRC = !!rcMatch
-const currentRCBase = rcMatch ? rcMatch[1] : null
-const currentRCNumber = rcMatch ? Number.parseInt(rcMatch[2], 10) : 0
+const channelMatch = curVersionStripped.match(/^(\d+\.\d+\.\d+)-([a-z]+)\.(\d+)$/i)
+const currentChannel = channelMatch ? channelMatch[2].toLowerCase() : null
+const currentChannelBase = channelMatch ? channelMatch[1] : null
+const currentChannelNumber = channelMatch ? Number.parseInt(channelMatch[3], 10) : 0
 
 const nextVersion = (() => {
   if (rePublish) {
@@ -124,26 +136,26 @@ const nextVersion = (() => {
     return `${curVersion.replace(/(-\d+)+$/, '')}-${Date.now()}`
   }
 
-  // RC mode: bump existing RC or compute new RC version
-  if (isRC) {
-    if (isCurrentRC) {
-      // Already an RC, bump the RC number
-      return `${currentRCBase}-rc.${currentRCNumber + 1}`
+  // prerelease channel mode (--rc / --beta): bump within the channel or start it
+  if (requestedChannel) {
+    if (currentChannel === requestedChannel && currentChannelBase) {
+      // already on this channel, bump the channel number
+      return `${currentChannelBase}-${requestedChannel}.${currentChannelNumber + 1}`
     }
-    // Not an RC yet - compute the RC version
+    // switching channels (rc -> beta) or coming from a canary: start the channel
+    // at .0 on the current base version (e.g. canary of X.Y.Z -> X.Y.Z-beta.0)
     const baseVersion = curVersion.replace(/-.*$/, '') // strip any existing prerelease
     const isCanaryOfCurrent = /-\d+$/.test(curVersion)
-    if (isCanaryOfCurrent) {
-      // canary of X.Y.Z -> X.Y.Z-rc.0
-      return `${baseVersion}-rc.0`
+    if (isCanaryOfCurrent || currentChannel) {
+      return `${baseVersion}-${requestedChannel}.0`
     }
-    // otherwise return null - will be set via prompt
+    // coming from a stable version - the base is ambiguous, set via prompt
     return null
   }
 
-  // promoting an RC to stable: just use the base version (e.g. 2.0.0-rc.34 -> 2.0.0)
-  if (isCurrentRC && currentRCBase) {
-    return currentRCBase
+  // promoting a prerelease to stable: use the base version (e.g. 2.0.0-rc.34 -> 2.0.0)
+  if (currentChannel && currentChannelBase) {
+    return currentChannelBase
   }
 
   let plusVersion = skipVersion ? 0 : 1
@@ -246,13 +258,13 @@ async function run() {
     let version = curVersion
 
     // ensure we are up to date
-    // ensure we are on main (skip branch check for canary releases)
-    if (!canary && !rePublish) {
+    // ensure we are on main (skip branch check for canary releases and dry runs)
+    if (!canary && !rePublish && !dryRun) {
       if (!isMain) {
         throw new Error(`Not on main`)
       }
     }
-    if (!dirty && !rePublish && !shouldFinish && !canary) {
+    if (!dirty && !rePublish && !shouldFinish && !canary && !dryRun) {
       await spawnify(`git pull --rebase origin main`)
     }
 
@@ -338,46 +350,53 @@ async function run() {
       let answer: { version: string }
 
       if (isCI || skipVersion) {
-        answer = { version: nextVersion! }
-      } else if (isRC && !isCurrentRC) {
-        // New RC - prompt for which version to RC
+        if (!nextVersion) {
+          throw new Error(
+            `Cannot compute a ${requestedChannel} version from a stable base (${curVersion}) non-interactively.\n` +
+              `Run without --ci to pick the base, or bump to a canary/${requestedChannel} version first.`
+          )
+        }
+        answer = { version: nextVersion }
+      } else if (requestedChannel && currentChannel !== requestedChannel) {
+        // Starting a new prerelease channel - prompt for which base version to use
         const baseVersion = curVersion.replace(/-.*$/, '') // strip any existing prerelease
         const [major, minor, patch] = baseVersion.split('.').map(Number)
 
         // check if current version is a canary (has prerelease suffix like -1234567)
         const isCanaryOfCurrent = /-\d+$/.test(curVersion)
 
-        const rcChoices = isCanaryOfCurrent
-          ? [
-              // canary of X.Y.Z -> offer X.Y.Z-rc.0 as the RC
-              {
-                title: `${major}.${minor}.${patch}-rc.0`,
-                value: `${major}.${minor}.${patch}-rc.0`,
-              },
-            ]
-          : [
-              {
-                title: `${major}.${minor + 1}.0-rc.0 (next minor)`,
-                value: `${major}.${minor + 1}.0-rc.0`,
-              },
-              {
-                title: `${major}.${minor}.${patch + 1}-rc.0 (next patch)`,
-                value: `${major}.${minor}.${patch + 1}-rc.0`,
-              },
-              {
-                title: `${major + 1}.0.0-rc.0 (next major)`,
-                value: `${major + 1}.0.0-rc.0`,
-              },
-            ]
+        const channelChoices =
+          isCanaryOfCurrent || currentChannel
+            ? [
+                // canary/other-channel of X.Y.Z -> offer X.Y.Z-<channel>.0
+                {
+                  title: `${major}.${minor}.${patch}-${requestedChannel}.0`,
+                  value: `${major}.${minor}.${patch}-${requestedChannel}.0`,
+                },
+              ]
+            : [
+                {
+                  title: `${major}.${minor + 1}.0-${requestedChannel}.0 (next minor)`,
+                  value: `${major}.${minor + 1}.0-${requestedChannel}.0`,
+                },
+                {
+                  title: `${major}.${minor}.${patch + 1}-${requestedChannel}.0 (next patch)`,
+                  value: `${major}.${minor}.${patch + 1}-${requestedChannel}.0`,
+                },
+                {
+                  title: `${major + 1}.0.0-${requestedChannel}.0 (next major)`,
+                  value: `${major + 1}.0.0-${requestedChannel}.0`,
+                },
+              ]
 
-        const rcAnswer = await prompts({
+        const channelAnswer = await prompts({
           type: 'select',
           name: 'version',
-          message: 'Which version to release as RC?',
-          choices: rcChoices,
+          message: `Which version to release as ${requestedChannel}?`,
+          choices: channelChoices,
         })
 
-        answer = rcAnswer
+        answer = channelAnswer
       } else {
         answer = await prompts({
           type: 'text',
@@ -391,10 +410,18 @@ async function run() {
       console.info('Next:', version, '\n')
     }
 
-    // safety check for major version bumps - always require interactive confirmation
+    // resolve + validate the npm dist-tag up front, so a prerelease can never
+    // slip onto `latest`, and so --dry-run can print the exact publish plan.
+    // throws loudly for an unrecognized prerelease instead of defaulting to latest.
+    const publishTag = computePublishTag(version, { canary, explicitTag })
+    console.info(`Publishing to npm dist-tag: ${publishTag}\n`)
+
+    // safety check for major version bumps going to `latest` - require interactive
+    // confirmation. a prerelease of a new major (e.g. 3.0.0-beta.0 -> `beta`) can't
+    // clobber the stable line, so it skips this gate.
     const curMajor = Number.parseInt(curVersion.split('.')[0], 10)
     const nextMajor = Number.parseInt(version.split('.')[0], 10)
-    if (nextMajor > curMajor) {
+    if (nextMajor > curMajor && publishTag === 'latest') {
       console.info(`\n⚠️  MAJOR VERSION BUMP: ${curVersion} → ${version}\n`)
 
       for (let i = 1; i <= 3; i++) {
@@ -410,14 +437,17 @@ async function run() {
       }
     }
 
-    console.info('install and build')
+    // dry run only previews the publish plan, so skip the heavy install/build/test
+    if (!dryRun) {
+      console.info('install and build')
+    }
 
-    if (!rePublish && !shouldFinish) {
+    if (!rePublish && !shouldFinish && !dryRun) {
       await spawnify(`bun install`)
     }
 
     // build from fresh
-    if (!skipBuild && !shouldFinish) {
+    if (!skipBuild && !shouldFinish && !dryRun) {
       // lets do a full clean and build:force, to ensure we dont have weird cached or leftover files
       if (buildFast) {
         await spawnify(`bun run build`)
@@ -428,7 +458,7 @@ async function run() {
     }
 
     // run checks
-    if (!shouldFinish) {
+    if (!shouldFinish && !dryRun) {
       if (!skipChecks) {
         console.info('run checks')
         await Promise.all([
@@ -458,8 +488,8 @@ async function run() {
       }
     }
 
-    // update version
-    if (!skipVersion && !shouldFinish) {
+    // update version (never write files during a dry run - it's a read-only preview)
+    if (!skipVersion && !shouldFinish && !dryRun) {
       await Promise.all(
         allPackageJsons.map(async ({ json, path }) => {
           const next = { ...json }
@@ -521,7 +551,9 @@ async function run() {
     const skippedVersions = new Map<string, string>()
 
     if (skippedPackages.length > 0) {
-      const distTag = canary ? 'canary' : 'latest'
+      // resolve against the same dist-tag we're publishing to, so a beta release
+      // points beta deps at the last beta, a stable at the last stable, etc.
+      const distTag = publishTag
       console.info(
         `Resolving last published versions for skipped packages (tag: ${distTag})...`
       )
@@ -548,7 +580,25 @@ async function run() {
     }
 
     if (!shouldFinish && dryRun) {
-      console.info(`Dry run, exiting before publish`)
+      console.info(`\n── dry run: publish plan ──`)
+      console.info(`version:      ${version}`)
+      console.info(`npm dist-tag: ${publishTag}`)
+      console.info(`\npublishing ${packagesToPublish.length} packages:\n`)
+      for (const { name } of packagesToPublish) {
+        const accessOption = name.startsWith('@') ? ' --access public' : ''
+        console.info(
+          `  npm publish ${name}@${version} --tag ${publishTag}${accessOption}`
+        )
+      }
+      if (skippedPackages.length > 0) {
+        console.info(
+          `\nskipped (unchanged), dist-tag "${publishTag}" will point at last published:`
+        )
+        for (const { name } of skippedPackages) {
+          console.info(`  ${name}@${skippedVersions.get(name) ?? '(unpublished)'}`)
+        }
+      }
+      console.info(`\nDry run, exiting before publish`)
       return
     }
 
@@ -572,11 +622,8 @@ async function run() {
       const tmpDir = `/tmp/tamagui-publish`
       await ensureDir(tmpDir)
 
-      const isCanaryVersion = /^\d+\.\d+\.\d+-\d+$/.test(version)
-      const publishTag = canary || isCanaryVersion ? 'canary' : 'latest'
-      const publishOptions = [publishTag && `--tag ${publishTag}`]
-        .filter(Boolean)
-        .join(' ')
+      // publishTag was resolved + validated up front (single source of truth)
+      const publishOptions = `--tag ${publishTag}`
 
       // shared OTP state — set once on first EOTP, then threaded through every
       // subsequent npm publish. single-flight so parallel failures don't
@@ -742,11 +789,12 @@ async function run() {
 
       console.info(`✅ Published\n`)
 
-      // for canary releases, point the canary dist-tag to the latest version for skipped packages
-      // so `npm install @tamagui/lucide-icons-2@canary` still resolves
-      if ((canary || isCanaryVersion) && skippedPackages.length > 0) {
+      // for a non-latest channel (canary/beta/rc/…), point that dist-tag at the
+      // latest published version of each skipped package so e.g.
+      // `npm install @tamagui/lucide-icons-2@beta` still resolves
+      if (publishTag !== 'latest' && skippedPackages.length > 0) {
         console.info(
-          `Updating canary dist-tags for ${skippedPackages.length} skipped packages...`
+          `Updating ${publishTag} dist-tags for ${skippedPackages.length} skipped packages...`
         )
         await pMap(
           skippedPackages,
@@ -755,13 +803,16 @@ async function run() {
               const { stdout } = await exec(`npm view ${name} dist-tags.latest`)
               const latestVersion = stdout.trim()
               if (latestVersion) {
-                await spawnify(`npm dist-tag add ${name}@${latestVersion} canary`, {
-                  avoidLog: true,
-                })
-                console.info(`  ✓ ${name}@${latestVersion} tagged as canary`)
+                await spawnify(
+                  `npm dist-tag add ${name}@${latestVersion} ${publishTag}`,
+                  {
+                    avoidLog: true,
+                  }
+                )
+                console.info(`  ✓ ${name}@${latestVersion} tagged as ${publishTag}`)
               }
             } catch (err) {
-              console.warn(`  ✗ ${name}: could not update canary tag`, err)
+              console.warn(`  ✗ ${name}: could not update ${publishTag} tag`, err)
             }
           },
           { concurrency: 10 }
