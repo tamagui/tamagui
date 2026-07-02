@@ -370,8 +370,6 @@ function PortalHostNonNative(props: PortalHostProps) {
   }
 
   return render(
-    state.map((item) => (
-      <React.Fragment key={item.name}>{item.node}</React.Fragment>
-    ))
+    state.map((item) => <React.Fragment key={item.name}>{item.node}</React.Fragment>)
   )
 }
