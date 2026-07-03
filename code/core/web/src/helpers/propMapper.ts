@@ -43,6 +43,14 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   const { conf, styleProps, staticConfig } = styleState
   const { variants } = staticConfig
 
+  // "unset" is a CSS-wide keyword: valid CSS on web, but React Native
+  // style props reject it (e.g. aspectRatio throws "must be a number, a
+  // ratio string or `auto`"). Drop it on native so the prop falls back to
+  // its initial value instead of crashing.
+  if (process.env.TAMAGUI_TARGET === 'native' && value === 'unset') {
+    return
+  }
+
   if (!styleProps.noExpand) {
     if (variants && key in variants) {
       const variantValue = resolveVariants(key, value, styleProps, styleState, '')
