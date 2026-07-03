@@ -98,9 +98,8 @@ describe('Sheet gesture state', () => {
     }
 
     try {
-      const { setupGestureHandler: setupNativeGestureHandler } = await import(
-        '../../core/native/src/setup-gesture-handler'
-      )
+      const { setupGestureHandler: setupNativeGestureHandler } =
+        await import('../../core/native/src/setup-gesture-handler')
 
       setupNativeGestureHandler({ pressEvents: false, sheet: true })
 
