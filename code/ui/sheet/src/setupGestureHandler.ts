@@ -4,8 +4,16 @@
 
 import { getGestureHandler } from '@tamagui/native'
 
+import type { GestureState } from '@tamagui/native'
+
+const SHEET_GESTURE_STATE_KEY = '__tamagui_sheet_gesture_state__'
+
 export function isGestureHandlerEnabled(): boolean {
-  return getGestureHandler().isEnabled
+  const g = globalThis as typeof globalThis & {
+    [SHEET_GESTURE_STATE_KEY]?: GestureState
+  }
+
+  return g[SHEET_GESTURE_STATE_KEY]?.enabled ?? getGestureHandler().isEnabled
 }
 
 export interface SetupGestureHandlerConfig {
@@ -24,11 +32,12 @@ export function setupGestureHandler(config: SetupGestureHandlerConfig): void {
   const { Gesture, GestureDetector, ScrollView } = config
 
   if (Gesture && GestureDetector) {
-    getGestureHandler().set({
+    g[SHEET_GESTURE_STATE_KEY] = {
       enabled: true,
       Gesture,
       GestureDetector,
       ScrollView: ScrollView || null,
-    })
+      RootView: null,
+    } satisfies GestureState
   }
 }
