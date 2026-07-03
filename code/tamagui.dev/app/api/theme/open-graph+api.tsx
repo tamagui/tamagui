@@ -1,21 +1,13 @@
-import { createServerClient } from '@supabase/ssr'
 import { ImageResponse } from '@vercel/og'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { getTheme } from '../../../features/studio/theme/getTheme'
 
 export async function GET(req: Request) {
-  const supabase = createServerClient(
-    import.meta.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
-    import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
-    {
-      cookies: {
-        getAll() {
-          return []
-        },
-      },
-    }
-  )
+  // service role: this server-side route caches OG images and writes the cache
+  // flags back to theme_histories, which is protected by RLS (no anon writes).
+  const supabase = supabaseAdmin
 
   try {
     const url = new URL(req.url)
@@ -571,7 +563,7 @@ export async function GET(req: Request) {
             og_image_url: fileName,
             is_cached: true,
           })
-          .eq('id', id)
+          .eq('id', Number(id))
 
         if (updateError) {
           console.error('DB update error:', updateError)

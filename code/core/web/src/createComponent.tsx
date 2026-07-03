@@ -280,10 +280,14 @@ export function createComponent<
 
     // test only
     if (process.env.NODE_ENV === 'test') {
-      if (propsIn['data-test-renders']) {
-        propsIn['data-test-renders']['current'] =
-          propsIn['data-test-renders']['current'] ?? 0
-        propsIn['data-test-renders']['current'] += 1
+      const testRenderCount = propsIn['data-test-renders']
+      if (
+        testRenderCount &&
+        typeof testRenderCount === 'object' &&
+        !Object.isFrozen(testRenderCount)
+      ) {
+        testRenderCount.current = testRenderCount.current ?? 0
+        testRenderCount.current += 1
       }
     }
 
@@ -1629,7 +1633,8 @@ export function createComponent<
         pressGesture,
         stateRef,
         isHOC,
-        isCompositeComponent
+        isCompositeComponent,
+        hasRealPressEvents
       )
     }
 
