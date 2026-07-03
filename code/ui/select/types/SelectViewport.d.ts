@@ -3,12 +3,22 @@ export declare const SelectViewportFrame: import("@tamagui/core").TamaguiCompone
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
+    transparent?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export declare const SelectViewport: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
+    transparent?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }>, "size" | "unstyled" | "scope" | "disableScroll"> & {
     size?: import("@tamagui/core").SizeTokens;
     disableScroll?: boolean;
@@ -26,5 +36,10 @@ export declare const SelectViewport: import("@tamagui/core").TamaguiComponent<Om
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
+    circular?: boolean | undefined;
+    transparent?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=SelectViewport.d.ts.map

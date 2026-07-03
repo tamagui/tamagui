@@ -1,10 +1,11 @@
 import { supportsDynamicColorIOS, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   createContext,
-  useCallback,
   useContext,
+  useEffect,
   useId,
-  useSyncExternalStore,
+  useReducer,
+  useRef,
   type MutableRefObject,
 } from 'react'
 import { getConfig, getSetting } from '../config'
@@ -54,11 +55,22 @@ export const getRootThemeState = () => rootThemeState
 // extracts base name without scheme: "light_red_surface1" -> "red_surface1"
 const getThemeBaseName = (name: string) => name.replace(/^(light|dark)_/, '')
 
+// useReducer-based force-update; cheaper than useSyncExternalStore's internal
+// useState+useLayoutEffect+useEffect+useDebugValue chain on Hermes.
+const incReducer = (c: number): number => c + 1
+
 export const useThemeState = (
   props: UseThemeWithStateProps,
   isRoot = false,
   keys: MutableRefObject<Set<string> | null>,
-  schemeKeys?: MutableRefObject<Set<string> | null>
+  schemeKeys?: MutableRefObject<Set<string> | null>,
+  // when true, install the propsKey-watching useIsomorphicLayoutEffect that
+  // schedules descendant updates via listenersByParent[id]. Only <Theme>
+  // providers actually push their themeState.id into ThemeStateContext, so
+  // only they can have descendants subscribed under their id. Leaf styled
+  // components pass false (the default) and save one hook slot per mount.
+  // Stable per call-site (rule of hooks satisfied).
+  cascadeOnChange = false
 ): ThemeState => {
   'use no memo'
 
@@ -86,148 +98,257 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     )
   }
 
+  // useId keeps theme-provider ids tied to the React tree. A process-wide
+  // counter can let children observe a provider context id whose matching
+  // states Map entry was never populated in multi-root/native surfaces.
   const id = useId()
-  const subscribe = useCallback(
-    (cb: Function) => {
-      listenersByParent[parentId] = listenersByParent[parentId] || new Set()
-      listenersByParent[parentId].add(id)
-      allListeners.set(id, () => {
-        PendingUpdate.set(id, shouldForce ? 'force' : true)
-        cb()
-      })
-      return () => {
-        allListeners.delete(id)
-        listenersByParent[parentId].delete(id)
-        localStates.delete(id)
-        states.delete(id)
-        PendingUpdate.delete(id)
-      }
-    },
-    [id, parentId]
-  )
-
   const propsKey = getPropsKey(props)
 
-  const getSnapshot = () => {
-    let local = localStates.get(id)
-    const parentState = states.get(parentId)
-
-    // fast path: nothing changed since last snapshot
-    if (local && !PendingUpdate.has(id)) {
-      if (
-        parentState &&
-        (local as any)._parentName === parentState.name &&
-        (local as any)._propsKey === propsKey
-      ) {
-        return local
-      }
-    }
-
-    // check if this is a scheme-only change (light↔dark) where DynamicColorIOS handles it
-    const isSchemeOnlyChange =
-      process.env.TAMAGUI_TARGET === 'native' &&
-      supportsDynamicColorIOS &&
-      getSetting('fastSchemeChange') &&
-      local &&
-      parentState &&
-      local.scheme !== parentState.scheme &&
-      getThemeBaseName(local.name) === getThemeBaseName(parentState.name)
-
-    // all tracked keys are scheme-optimized = can skip re-render for scheme changes
-    const keysSize = keys?.current?.size ?? 0
-    const schemeKeysSize = schemeKeys?.current?.size ?? 0
-    const allKeysSchemeOptimized = schemeKeysSize === keysSize && keysSize > 0
-
-    const canSkipForSchemeChange = isSchemeOnlyChange && allKeysSchemeOptimized
-
-    const needsUpdate = props.passThrough
-      ? false
-      : isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
-        ? true
-        : !HasRenderedOnce.get(keys)
-          ? true
-          : canSkipForSchemeChange
-            ? false // skip re-render for scheme-only changes with DynamicColorIOS
-            : keys?.current?.size
-              ? true
-              : props.needsUpdate?.()
-
-    const [rerender, next] = getNextState(
-      local,
+  // stable ref-bag for render inputs and the optional subscription cleanup.
+  // lastSnap caches the last getSnapshot result for the subscription bailout.
+  const ref = useRef<ThemeStateRef>(null as any)
+  if (!ref.current) {
+    ref.current = {
+      id,
+      parentId,
       props,
       propsKey,
       isRoot,
-      id,
-      parentId,
-      needsUpdate,
-      PendingUpdate.get(id)
-    )
-
-    PendingUpdate.delete(id)
-
-    // we always create a new localState for every component
-    // that way we can use it to de-opt and avoid renders granularly
-    // we always return the localState object in each component
-    // the global state (states) should always be up to date with the latest
-    if (!local || rerender) {
-      local = { ...next }
-      localStates.set(id, local)
+      keys,
+      schemeKeys,
+      renderVersion: 0,
     }
-
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-      console.groupCollapsed(` ${id} getSnapshot ${rerender}`, local.name, '>', next.name)
-      console.info({
-        props,
-        propsKey,
-        isRoot,
-        parentId,
-        local,
-        next,
-        needsUpdate,
-        isSchemeOnlyChange,
-        allKeysSchemeOptimized,
-        canSkipForSchemeChange,
-      })
-      console.groupEnd()
-    }
-
-    if (next !== local) {
-      Object.assign(local, next)
-      local.id = id
-    }
-    ;(local as any)._parentName = parentState?.name
-    ;(local as any)._propsKey = propsKey
-    states.set(id, next)
-
-    return local
+  } else {
+    // refresh latest values for the stable closures to read
+    ref.current.props = props
+    ref.current.propsKey = propsKey
+    ref.current.isRoot = isRoot
+    ref.current.keys = keys
+    ref.current.schemeKeys = schemeKeys
+    ref.current.parentId = parentId
   }
+  ref.current.renderVersion++
 
   if (process.env.NODE_ENV === 'development' && globalThis.time)
     globalThis.time`theme-prep-uses`
 
-  const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot)
+  // manual subscription replaces useSyncExternalStore: same granular bailout
+  // (getSnapshot returning the same ref → React doesn't re-render), fewer
+  // React-internal hook slots on Hermes. We don't need tearing prevention
+  // here: theme/media updates are event-driven, not transition-driven, and
+  // useReducer in normal mode already gives same-tick batching.
+  const [, forceUpdate] = useReducer(incReducer, 0)
+  const state = getSnapshotImpl(ref.current)
+  ref.current.lastSnap = state
 
-  useIsomorphicLayoutEffect(() => {
-    if (!HasRenderedOnce.get(keys)) {
-      HasRenderedOnce.set(keys, true)
-      return
+  useEffect(() => {
+    const r = ref.current
+    const renderVersion = r.renderVersion
+
+    if (r.unsubscribe && r.subscribedParentId !== r.parentId) {
+      cleanupThemeSubscription(r)
     }
-    if (!propsKey) {
-      if (HadTheme.get(keys)) {
-        // we're removing the last theme, make sure to notify
-        scheduleUpdate(id)
+
+    if (shouldSubscribeToTheme(r, cascadeOnChange)) {
+      if (!r.unsubscribe) {
+        const pid = r.parentId
+        const sid = r.id
+        const cb = () => {
+          const next = getSnapshotImpl(r)
+          if (next !== r.lastSnap) {
+            r.lastSnap = next
+            forceUpdate()
+          }
+        }
+
+        listenersByParent[pid] = listenersByParent[pid] || new Set()
+        listenersByParent[pid].add(sid)
+        allListeners.set(sid, () => {
+          PendingUpdate.set(sid, shouldForce ? 'force' : true)
+          cb()
+        })
+        r.subscribedParentId = pid
+        r.unsubscribe = () => {
+          allListeners.delete(sid)
+          listenersByParent[pid]?.delete(sid)
+          localStates.delete(sid)
+          states.delete(sid)
+          PendingUpdate.delete(sid)
+          r.unsubscribe = undefined
+          r.subscribedParentId = undefined
+        }
       }
-      HadTheme.set(keys, false)
-      return
+    } else if (r.unsubscribe) {
+      cleanupThemeSubscription(r)
     }
-    if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
-      console.warn(` · useTheme(${id}) scheduleUpdate`, propsKey, states.get(id)?.name)
+
+    return () => {
+      // react runs passive cleanup before the next effect as well as on unmount.
+      // a newer render bumps renderVersion before that cleanup, so equality here
+      // means this is the final unmount cleanup.
+      if (r.renderVersion === renderVersion) {
+        cleanupThemeState(r)
+      }
     }
-    scheduleUpdate(id)
-    HadTheme.set(keys, true)
-  }, [keys, propsKey])
+  })
+
+  if (cascadeOnChange) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useIsomorphicLayoutEffect(() => {
+      if (!HasRenderedOnce.get(keys)) {
+        HasRenderedOnce.set(keys, true)
+        return
+      }
+      if (!propsKey) {
+        if (HadTheme.get(keys)) {
+          // we're removing the last theme, make sure to notify
+          scheduleUpdate(id)
+        }
+        HadTheme.set(keys, false)
+        return
+      }
+      if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+        console.warn(` · useTheme(${id}) scheduleUpdate`, propsKey, states.get(id)?.name)
+      }
+      scheduleUpdate(id)
+      HadTheme.set(keys, true)
+    }, [keys, propsKey])
+  }
 
   return state
+}
+
+type SnapshotRef = {
+  id: string
+  parentId: string
+  props: UseThemeWithStateProps
+  propsKey: string
+  isRoot: boolean
+  keys: MutableRefObject<Set<string> | null>
+  schemeKeys?: MutableRefObject<Set<string> | null>
+}
+
+type ThemeStateRef = SnapshotRef & {
+  renderVersion: number
+  unsubscribe?: () => void
+  subscribedParentId?: string
+  lastSnap?: ThemeState
+}
+
+const shouldSubscribeToTheme = (r: ThemeStateRef, cascadeOnChange: boolean): boolean =>
+  r.isRoot ||
+  cascadeOnChange ||
+  hasThemeUpdatingProps(r.props) ||
+  !!r.keys.current?.size ||
+  !!r.props.needsUpdate?.()
+
+function cleanupThemeSubscription(r: ThemeStateRef) {
+  r.unsubscribe?.()
+}
+
+function cleanupThemeState(r: ThemeStateRef) {
+  if (r.unsubscribe) {
+    cleanupThemeSubscription(r)
+  } else {
+    localStates.delete(r.id)
+    states.delete(r.id)
+    PendingUpdate.delete(r.id)
+  }
+}
+
+const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
+  const { id, parentId, props, propsKey, isRoot, keys, schemeKeys } = r
+  let local = localStates.get(id)
+  const parentState = states.get(parentId)
+
+  // fast path: nothing changed since last snapshot
+  if (local && !PendingUpdate.has(id)) {
+    if (
+      parentState &&
+      (local as any)._parentName === parentState.name &&
+      (local as any)._propsKey === propsKey
+    ) {
+      return local
+    }
+  }
+
+  // check if this is a scheme-only change (light↔dark) where DynamicColorIOS handles it
+  const isSchemeOnlyChange =
+    process.env.TAMAGUI_TARGET === 'native' &&
+    supportsDynamicColorIOS &&
+    getSetting('fastSchemeChange') &&
+    local &&
+    parentState &&
+    local.scheme !== parentState.scheme &&
+    getThemeBaseName(local.name) === getThemeBaseName(parentState.name)
+
+  // all tracked keys are scheme-optimized = can skip re-render for scheme changes
+  const keysSize = keys?.current?.size ?? 0
+  const schemeKeysSize = schemeKeys?.current?.size ?? 0
+  const allKeysSchemeOptimized = schemeKeysSize === keysSize && keysSize > 0
+
+  const canSkipForSchemeChange = isSchemeOnlyChange && allKeysSchemeOptimized
+
+  const needsUpdate = props.passThrough
+    ? false
+    : isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
+      ? true
+      : !HasRenderedOnce.get(keys)
+        ? true
+        : canSkipForSchemeChange
+          ? false // skip re-render for scheme-only changes with DynamicColorIOS
+          : keys?.current?.size
+            ? true
+            : props.needsUpdate?.()
+
+  const [rerender, next] = getNextState(
+    local,
+    props,
+    propsKey,
+    isRoot,
+    id,
+    parentId,
+    needsUpdate,
+    PendingUpdate.get(id)
+  )
+
+  PendingUpdate.delete(id)
+
+  // we always create a new localState for every component
+  // that way we can use it to de-opt and avoid renders granularly
+  // we always return the localState object in each component
+  // the global state (states) should always be up to date with the latest
+  if (!local || rerender) {
+    local = { ...next }
+    localStates.set(id, local)
+  }
+
+  if (process.env.NODE_ENV === 'development' && props.debug === 'verbose') {
+    console.groupCollapsed(` ${id} getSnapshot ${rerender}`, local.name, '>', next.name)
+    console.info({
+      props,
+      propsKey,
+      isRoot,
+      parentId,
+      local,
+      next,
+      needsUpdate,
+      isSchemeOnlyChange,
+      allKeysSchemeOptimized,
+      canSkipForSchemeChange,
+    })
+    console.groupEnd()
+  }
+
+  if (next !== local) {
+    Object.assign(local, next)
+    local.id = id
+  }
+  ;(local as any)._parentName = parentState?.name
+  ;(local as any)._propsKey = propsKey
+  states.set(id, next)
+
+  return local
 }
 
 const getNextState = (
@@ -284,20 +405,25 @@ const getNextState = (
   }
 
   if (!name) {
-    const next = lastState ?? parentState
-
-    if (!next) {
-      throw new Error(
-        process.env.NODE_ENV === 'development'
-          ? `${MISSING_THEME_MESSAGE}
-
-Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? ` (component: ${props.componentName})` : ''}, but no theme state was resolved (parentId: ${parentId}, id: ${id}).`
-          : MISSING_THEME_MESSAGE
-      )
-    }
+    // parentState can be transiently missing when a consumer renders in a
+    // separate sync flush (a portal/Toast viewport, or a native multi-root
+    // surface) before its provider has populated the module-level `states` map.
+    // that's recoverable — the next render resolves it — so fall back to the
+    // root theme (or a light stub) instead of throwing. the "no parent context"
+    // throw above still catches a genuinely missing provider. going back to
+    // useSyncExternalStore would avoid the race but force every themed node out
+    // of concurrent rendering, so we keep the manual store and tolerate the
+    // ordering here.
+    const next = lastState ??
+      parentState ??
+      rootThemeState ?? {
+        id,
+        name: 'light',
+        theme: getConfig().themes.light,
+      }
 
     if (shouldRerender) {
-      const updated = { ...(parentState || lastState)! }
+      const updated = { ...(parentState || lastState || next)! }
       return [true, updated]
     }
 

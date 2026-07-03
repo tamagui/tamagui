@@ -2,6 +2,7 @@ import type Stripe from 'stripe'
 import * as v from 'valibot'
 import { apiRoute } from '~/features/api/apiRoute'
 import { getQuery } from '~/features/api/getQuery'
+import { serverEnv } from '~/features/api/serverEnv'
 import { readBodyBuffer } from '~/features/api/readBodyBuffer'
 import { unclaimSubscription } from '~/features/api/unclaimProduct'
 import {
@@ -25,7 +26,7 @@ import { stripe } from '~/features/stripe/stripe'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 
-const endpointSecret = process.env.STRIPE_SIGNING_SIGNATURE_SECRET
+const endpointSecret = serverEnv('STRIPE_SIGNING_SIGNATURE_SECRET')
 
 const Schema = v.object({
   referral: v.optional(v.string()),

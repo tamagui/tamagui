@@ -8,9 +8,9 @@ const DEFAULT_OPTIONS = {
   esExtensions: ['.mjs'],
   convertProcessEnvToImportMetaEnv: !1,
 }
-function FullySpecified(api, rawOptions) {
+function FullySpecified(api, rawOptions = {}) {
   api.assertVersion(7)
-  const options = { ...DEFAULT_OPTIONS, ...rawOptions },
+  const options = normalizeOptions(rawOptions),
     importDeclarationVisitor = (path, state) => {
       const filePath = state.file.opts.filename
       if (!filePath) return
@@ -87,6 +87,21 @@ function FullySpecified(api, rawOptions) {
       },
     },
   }
+}
+function normalizeOptions(rawOptions) {
+  const options = { ...DEFAULT_OPTIONS, ...rawOptions }
+  return (
+    rawOptions.esExtensionDefault &&
+      !rawOptions.tryExtensions &&
+      rawOptions.esExtensionDefault !== DEFAULT_OPTIONS.esExtensionDefault &&
+      (options.tryExtensions = [
+        rawOptions.esExtensionDefault,
+        ...DEFAULT_OPTIONS.tryExtensions.filter(
+          (extension) => extension !== rawOptions.esExtensionDefault
+        ),
+      ]),
+    options
+  )
 }
 function getFullySpecifiedModuleSpecifier(
   originalModuleSpecifier,

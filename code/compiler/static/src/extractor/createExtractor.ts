@@ -76,6 +76,53 @@ function isFullyDisabled(props: TamaguiOptions) {
   return props.disableExtraction && props.disableDebugAttr
 }
 
+// a compile-evaluated style value carries a theme token if any leaf string is
+// "$"-prefixed (e.g. "$gray2"). such styles must NOT be flattened into a static
+// `style` object — the token is resolved at runtime so theme switching keeps working.
+function styleValueHasToken(v: any): boolean {
+  if (typeof v === 'string') return v.charCodeAt(0) === 36 // '$'
+  if (Array.isArray(v)) return v.some(styleValueHasToken)
+  if (v && typeof v === 'object') return Object.values(v).some(styleValueHasToken)
+  return false
+}
+
+// Walk up JSX ancestors looking for one that declares `group="<groupName>"` together
+// with the `untilMeasured` prop. Used to deopt children whose styles depend on a
+// parent that the runtime measures before emitting child styles (can't be modeled
+// in static CSS).
+function hasUntilMeasuredAncestor(path: NodePath<any>, groupName: string): boolean {
+  let current: NodePath<any> | null = path.parentPath
+  while (current) {
+    if (current.isJSXElement()) {
+      const opening = current.node.openingElement
+      let foundGroup = false
+      let foundUntilMeasured = false
+      for (const attr of opening.attributes) {
+        if (!t.isJSXAttribute(attr)) continue
+        if (!t.isJSXIdentifier(attr.name)) continue
+        const aName = attr.name.name
+        if (aName === 'group') {
+          // only literal string equality counts — dynamic group= is left to runtime
+          if (t.isStringLiteral(attr.value) && attr.value.value === groupName) {
+            foundGroup = true
+          } else if (
+            t.isJSXExpressionContainer(attr.value) &&
+            t.isStringLiteral(attr.value.expression) &&
+            attr.value.expression.value === groupName
+          ) {
+            foundGroup = true
+          }
+        } else if (aName === 'untilMeasured') {
+          foundUntilMeasured = true
+        }
+      }
+      if (foundGroup && foundUntilMeasured) return true
+    }
+    current = current.parentPath
+  }
+  return false
+}
+
 export function createExtractor(
   { logger = console, platform = 'web' }: ExtractorOptions = { logger: console }
 ) {
@@ -357,6 +404,22 @@ export function createExtractor(
         staticConfig.variants?.[name] ||
         projectInfo?.tamaguiConfig?.shorthands[name]
       )
+    }
+
+    function getGroupPseudo(name: string) {
+      const [_, groupName, a, b, c] = name.split('-')
+      if (!groupName) return
+      const m2 = a && b ? `${a}-${b}` : ''
+      const media = (m2 && mediaQueryConfig[m2] && m2) || (a && mediaQueryConfig[a] && a)
+      return media
+        ? media === m2
+          ? c
+          : b
+            ? `${b}${c ? `-${c}` : ''}`
+            : undefined
+        : a
+          ? `${a}${b ? `-${b}` : ''}${c ? `-${c}` : ''}`
+          : undefined
     }
 
     /**
@@ -1095,6 +1158,12 @@ export function createExtractor(
 
             ...(!isTargetingHTML
               ? [
+                  // native has no css pseudo selectors; these are runtime-only on
+                  // rn (event listeners + style merge in createComponent), and if
+                  // we let them flatten into the stylesheet they get written
+                  // under a literal key that rn treats as an unknown style prop.
+                  // hover is intentionally excluded: it is no-op on native and
+                  // should be dropped rather than preserved as runtime work.
                   'pressStyle',
                   'focusStyle',
                   'focusVisibleStyle',
@@ -1368,6 +1437,20 @@ export function createExtractor(
               return [attribute.value!, path.get('value')!] as const
             })()
 
+            // these props have runtime-only meaning on native. decide from the
+            // original jsx attr, before getSplitStyles has a chance to drop
+            // native-dead work like hoverStyle from its static output.
+            if (
+              deoptProps.has(name) ||
+              (platform === 'native' &&
+                name[0] === '$' &&
+                (name.startsWith('$theme-') ||
+                  (name.startsWith('$group-') && getGroupPseudo(name) !== 'hover')))
+            ) {
+              inlined.set(name, true)
+              return attr
+            }
+
             const remove = () => {
               Array.isArray(valuePath)
                 ? valuePath.map((p) => p.remove())
@@ -1420,8 +1503,32 @@ export function createExtractor(
               return attr
             }
 
+            // static `group="<literal>"` is handled at compile-time in
+            // extractToClassNames (emits container CSS + adds `t_group_<name>`
+            // className), so we drop the JSX attribute here without bailing
+            // flattening. dynamic `group={expr}` falls through to runtime.
+            if (isTargetingHTML && name === 'group' && t.isStringLiteral(value)) {
+              return []
+            }
+
             // if value can be evaluated, extract it and filter it out
             const styleValue = attemptEvalSafe(value)
+
+            // media-like blocks with nested $-keys (eg $theme-dark={{ $sm: {…} }})
+            // can't resolve to static CSS in one pass — keep them on the runtime path
+            if (
+              name[0] === '$' &&
+              (name.startsWith('$theme-') || name.startsWith('$group-')) &&
+              styleValue &&
+              typeof styleValue === 'object' &&
+              Object.keys(styleValue).some((k) => k[0] === '$')
+            ) {
+              if (shouldPrintDebug) {
+                logger.info(`  ! nested media-like key inside ${name}, deopt to runtime`)
+              }
+              inlined.set(name, true)
+              return attr
+            }
 
             // never flatten if a prop isn't a valid static attribute
             // only post prop-mapping
@@ -1525,15 +1632,25 @@ export function createExtractor(
               }
 
               if (isValidStyleKey(name, staticConfig)) {
-                // $theme-, $group- styles should not be flattened (needs runtime handling)
-                // $platform- can be flattened if the platform matches
+                // $theme- / $group- styles extract through the atomic-CSS pipeline
+                // (extractToClassNames → createMediaStyle), so they fall through to
+                // the normal style return below. The one case we still bail is
+                // $group-<name>-* when an ancestor element declares `group="<name>"`
+                // together with `untilMeasured` — the runtime measures the parent
+                // and only then emits child styles, which can't be modeled in CSS.
+                // $platform- can be flattened if the platform matches.
                 if (name[0] === '$') {
-                  if (name.startsWith('$theme-') || name.startsWith('$group-')) {
-                    if (shouldPrintDebug) {
-                      logger.info(`  ! not flattening media-like style: ${name}`)
+                  if (name.startsWith('$group-')) {
+                    const groupName = name.slice('$group-'.length).split('-')[0]
+                    if (groupName && hasUntilMeasuredAncestor(path, groupName)) {
+                      if (shouldPrintDebug) {
+                        logger.info(
+                          `  ! group="${groupName}" ancestor has untilMeasured, not flattening: ${name}`
+                        )
+                      }
+                      inlined.set(name, true)
+                      return attr
                     }
-                    inlined.set(name, true)
-                    return attr
                   }
 
                   // $platform-web, $platform-native, $platform-ios, $platform-android, $platform-tv, $platform-androidtv, $platform-tvos
@@ -1901,7 +2018,6 @@ export function createExtractor(
           })
 
           if (!shouldFlatten) {
-            // were no longer partially optimizing, it adds a lot of complexity for dubious performance
             if (shouldPrintDebug) {
               logger.info(
                 `Deopting ${JSON.stringify({
@@ -1913,7 +2029,55 @@ export function createExtractor(
                 })}`
               )
             }
-            node.attributes = ogAttributes
+            // PARTIAL FLATTEN (native): even when the element must stay on the runtime
+            // path (pseudo/group/dynamic keep it deopted), pre-merge the pure-static
+            // style props into a single `style={…}` so the runtime skips its per-prop
+            // loop for them (the dominant deopt cost on RN). theme tokens ($…) and
+            // dynamic props stay inline so theme/media switching + dynamics are
+            // unaffected; dead native hoverStyle is dropped (no-op on touch).
+            let partial: (t.JSXAttribute | t.JSXSpreadAttribute)[] | null = null
+            if (
+              platform === 'native' &&
+              !staticConfig.isHOC &&
+              !staticConfig.isStyledHOC &&
+              !ogAttributes.some(
+                (a) =>
+                  t.isJSXSpreadAttribute(a) ||
+                  (t.isJSXAttribute(a) &&
+                    t.isJSXIdentifier(a.name) &&
+                    a.name.name === 'style')
+              )
+            ) {
+              const staticStyle: Record<string, any> = {}
+              const consumed = new Set<string>()
+              for (const a of attrs) {
+                if (a.type !== 'style' || !a.name || !a.attr) continue
+                if (pseudoDescriptors[a.name]) continue
+                if (!t.isJSXAttribute(a.attr) || !t.isJSXIdentifier(a.attr.name)) continue
+                if (styleValueHasToken(a.value)) continue
+                Object.assign(staticStyle, a.value)
+                consumed.add(a.attr.name.name)
+              }
+              if (consumed.size >= 2) {
+                const kept = ogAttributes.filter((a) => {
+                  if (!t.isJSXAttribute(a) || !t.isJSXIdentifier(a.name)) return true
+                  const n = a.name.name
+                  if (consumed.has(n)) return false
+                  if (n === 'hoverStyle') return false
+                  if (n.startsWith('$group-') && getGroupPseudo(n) === 'hover')
+                    return false
+                  return true
+                })
+                partial = [
+                  t.jsxAttribute(
+                    t.jsxIdentifier('style'),
+                    t.jsxExpressionContainer(literalToAst(staticStyle) as t.Expression)
+                  ),
+                  ...kept,
+                ]
+              }
+            }
+            node.attributes = partial ?? ogAttributes
             return
           }
 
@@ -2302,8 +2466,37 @@ export function createExtractor(
             const before = process.env.IS_STATIC
             process.env.IS_STATIC = 'is_static'
             try {
+              // $group-* / $theme-* keys carry block-form style objects that
+              // getSplitStyles drops in static mode (no parent group context,
+              // no theme value to read). Pluck them out so the atomic-CSS
+              // pipeline in extractToClassNames can emit @container / theme
+              // rules for them directly.
+              let extractedMediaLikeProps: Record<string, any> | null = null
+              let propsForSplit: any = props
+              for (const k in props) {
+                if (
+                  k[0] === '$' &&
+                  (k.startsWith('$group-') || k.startsWith('$theme-'))
+                ) {
+                  if (propsForSplit === props) {
+                    propsForSplit = { ...props }
+                  }
+                  if (
+                    platform === 'native' &&
+                    k.startsWith('$group-') &&
+                    getGroupPseudo(k) === 'hover'
+                  ) {
+                    delete propsForSplit[k]
+                    continue
+                  }
+                  extractedMediaLikeProps ||= {}
+                  extractedMediaLikeProps[k] = propsForSplit[k]
+                  delete propsForSplit[k]
+                }
+              }
+
               const out = getSplitStyles(
-                props,
+                propsForSplit,
                 staticConfig,
                 defaultTheme,
                 '',
@@ -2324,15 +2517,66 @@ export function createExtractor(
                 debugPropValue || shouldPrintDebug
               )!
 
+              // resolve tokens inside the plucked blocks: they skipped the main
+              // split, so values like "$color5" would flow raw into the emitted
+              // CSS where browsers reject the declaration. run each block through
+              // its own static split so tokens become var(--x) references.
+              // (native never extracts these — it deopts below — so web only.)
+              if (extractedMediaLikeProps && platform !== 'native') {
+                for (const k in extractedMediaLikeProps) {
+                  const block = extractedMediaLikeProps[k]
+                  if (!block || typeof block !== 'object') continue
+                  const blockOut = getSplitStyles(
+                    block,
+                    staticConfig,
+                    defaultTheme,
+                    '',
+                    componentState,
+                    {
+                      ...styleProps,
+                      noClass: true,
+                      fallbackProps: completeProps,
+                    },
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    false,
+                    debugPropValue || shouldPrintDebug
+                  )
+                  if (blockOut) {
+                    extractedMediaLikeProps[k] = {
+                      ...blockOut.style,
+                      ...blockOut.pseudos,
+                    }
+                  }
+                }
+              }
+
               let outProps = {
                 ...(includeProps ? out.viewProps : {}),
                 ...out.style,
                 ...out.pseudos,
+                ...extractedMediaLikeProps,
               }
 
               // check de-opt props again
               for (const key in outProps) {
                 if (deoptProps.has(key)) {
+                  shouldFlatten = false
+                }
+                // native has no atomic-CSS sink for theme- / group- pseudo
+                // blocks; if they flatten they get serialized under the literal
+                // `$theme-…` / `$group-…` key into the RN StyleSheet, where the
+                // runtime's @container / theme-name matching never runs. de-opt
+                // → preserve as inline prop so getSplitStyles handles them at
+                // render time.
+                if (
+                  platform === 'native' &&
+                  key[0] === '$' &&
+                  (key.startsWith('$theme-') ||
+                    (key.startsWith('$group-') && getGroupPseudo(key) !== 'hover'))
+                ) {
                   shouldFlatten = false
                 }
               }

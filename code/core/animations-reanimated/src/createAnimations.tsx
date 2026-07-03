@@ -488,9 +488,11 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               // withSpring/withTiming return animation descriptors that only
               // work when assigned to a SharedValue inside the UI runtime
               const cb = onFinish
-                ? () => {
+                ? (finished?: boolean) => {
                     'worklet'
-                    runOnJS(onFinish)()
+                    if (finished !== false) {
+                      runOnJS(onFinish)()
+                    }
                   }
                 : undefined
 

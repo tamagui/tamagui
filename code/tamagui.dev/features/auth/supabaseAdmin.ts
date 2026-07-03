@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 import type Stripe from 'stripe'
+import { serverEnv } from '../api/serverEnv'
 import { sendProductPurchaseEmail } from '~/features/email/helpers'
 import { stripe } from '~/features/stripe/stripe'
 import type { Price, Product } from '~/features/stripe/types'
@@ -8,7 +9,7 @@ import { STRIPE_PRODUCTS } from '../stripe/products'
 import type { Database } from '../supabase/types'
 
 const SUPA_URL = import.meta.env.NEXT_PUBLIC_SUPABASE_URL || 'http://localhost:54321'
-const SUPA_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+const SUPA_KEY = serverEnv('SUPABASE_SERVICE_ROLE_KEY') || ''
 
 // Note: supabaseAdmin uses the SERVICE_ROLE_KEY which you must only use in a secure server-side context
 // as it has admin priviliges and overwrites RLS policies!

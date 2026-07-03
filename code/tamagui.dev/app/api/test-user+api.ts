@@ -1,4 +1,4 @@
-import { randomBytes } from 'node:crypto'
+import { randomBytes, timingSafeEqual } from 'node:crypto'
 import { createClient } from '@supabase/supabase-js'
 import { apiRoute } from '~/features/api/apiRoute'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
@@ -9,6 +9,14 @@ const TEST_USER_EMAIL = 'test-user@tamagui.dev'
 // admin secret for production access (set TEST_USER_ADMIN_SECRET env var)
 const ADMIN_SECRET = process.env.TEST_USER_ADMIN_SECRET
 
+// constant-time secret check (avoids timing leaks; never throws on length diff)
+function secretMatches(provided: string | null, expected: string): boolean {
+  if (!provided) return false
+  const a = Buffer.from(provided)
+  const b = Buffer.from(expected)
+  return a.length === b.length && timingSafeEqual(a, b)
+}
+
 type TestUserType = 'new' | 'v1' | 'v2'
 
 /**
@@ -17,7 +25,8 @@ type TestUserType = 'new' | 'v1' | 'v2'
  * GET /api/test-user?type=new|v1|v2
  *
  * In development: works without auth
- * In production: requires ?secret=<TEST_USER_ADMIN_SECRET>
+ * In production: requires the `x-test-user-secret: <TEST_USER_ADMIN_SECRET>`
+ * header (never the URL — query strings leak into access/proxy logs)
  *
  * Creates/resets a test user with the specified subscription state:
  * - new: clean user with no subscriptions
@@ -29,7 +38,6 @@ type TestUserType = 'new' | 'v1' | 'v2'
 export default apiRoute(async (req) => {
   const url = new URL(req.url)
   const type = url.searchParams.get('type') as TestUserType | null
-  const secret = url.searchParams.get('secret')
 
   // security check
   const isDev = process.env.NODE_ENV === 'development'
@@ -40,7 +48,7 @@ export default apiRoute(async (req) => {
         { status: 403 }
       )
     }
-    if (secret !== ADMIN_SECRET) {
+    if (!secretMatches(req.headers.get('x-test-user-secret'), ADMIN_SECRET)) {
       return Response.json({ error: 'Invalid secret' }, { status: 403 })
     }
   }

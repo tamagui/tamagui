@@ -126,6 +126,9 @@ export type ScrollBridge = {
   _lastTouchY?: number
   // scroll lock position for forcing scroll back when pan handles
   scrollLockY?: number
+  // keep scroll locked while a drag that started below the top snap is still
+  // deciding whether to hand off into content scrolling.
+  lockScrollAtTop?: boolean
   // force scroll to position (compensates for async setNativeProps)
   forceScrollTo?: (y: number) => void
   // whether sheet is at top position (for scroll enable/disable)

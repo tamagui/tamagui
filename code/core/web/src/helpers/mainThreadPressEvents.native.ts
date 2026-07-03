@@ -6,6 +6,7 @@
  * long press, cancellation, and min press duration.
  */
 
+import { unstable_hasExternalPressOwnership } from '@tamagui/native'
 import { useRef } from 'react'
 
 type PressState =
@@ -20,6 +21,7 @@ interface PressRef {
   pressOutTimer: ReturnType<typeof setTimeout> | null
   longPressTimer: ReturnType<typeof setTimeout> | null
   activateTime: number
+  blockedByExternalOwnership: boolean
 }
 
 const DEFAULT_LONG_PRESS_DELAY = 500
@@ -39,6 +41,7 @@ export function useMainThreadPressEvents(
       pressOutTimer: null,
       longPressTimer: null,
       activateTime: 0,
+      blockedByExternalOwnership: false,
     }
   }
 
@@ -92,12 +95,22 @@ export function useMainThreadPressEvents(
   const userTerminationRequest = viewProps.onResponderTerminationRequest
   const userMove = viewProps.onResponderMove
 
-  viewProps.onStartShouldSetResponder = (e: any) =>
-    Boolean(userStartShouldSet?.(e)) || !events.disabled
+  viewProps.onStartShouldSetResponder = (e: any) => {
+    if (userStartShouldSet?.(e)) return true
+    return !events.disabled && !unstable_hasExternalPressOwnership()
+  }
 
   viewProps.onResponderGrant = (e: any) => {
-    userGrant?.(e)
     cleanup()
+
+    if (unstable_hasExternalPressOwnership()) {
+      ref.current.state = 'idle'
+      ref.current.blockedByExternalOwnership = true
+      return
+    }
+
+    userGrant?.(e)
+    ref.current.blockedByExternalOwnership = false
     ref.current.state = 'pressing'
 
     if (delayPressIn > 0) {
@@ -117,6 +130,13 @@ export function useMainThreadPressEvents(
   }
 
   viewProps.onResponderRelease = (e: any) => {
+    if (ref.current.blockedByExternalOwnership || unstable_hasExternalPressOwnership()) {
+      cleanup()
+      ref.current.blockedByExternalOwnership = false
+      ref.current.state = 'idle'
+      return
+    }
+
     userRelease?.(e)
     const wasLongPressed = ref.current.state === 'longPressed'
     cleanup()
@@ -132,6 +152,7 @@ export function useMainThreadPressEvents(
 
     deactivate(e)
     ref.current.state = 'idle'
+    ref.current.blockedByExternalOwnership = false
   }
 
   viewProps.onResponderTerminate = (e: any) => {
@@ -141,6 +162,7 @@ export function useMainThreadPressEvents(
       deactivate(e)
     }
     ref.current.state = 'idle'
+    ref.current.blockedByExternalOwnership = false
   }
 
   viewProps.onResponderTerminationRequest = (e: any) => {

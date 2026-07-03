@@ -600,6 +600,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const store = usePaymentModal()
   const [isProcessing, setIsProcessing] = useState(false)
   const { data: userData, isLoading, subscriptionStatus } = useUser()
+  const userId = userData?.user?.id
   const supabaseClient = useSupabaseClient()
   const [showCoupon, setShowCoupon] = useState(false)
   const [couponCode, setCouponCode] = useState('')
@@ -626,7 +627,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   // auto-apply promo coupon when modal opens
   // always check for active promo as the single source of truth, regardless of how modal was opened
   useEffect(() => {
-    if (!store.show || finalCoupon) return
+    if (!store.show || finalCoupon || !userId) return
 
     // determine which coupon code to use:
     // 1. prefilled code from store (passed from purchase modal)
@@ -641,11 +642,8 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     // auto-validate the coupon
     const validateCoupon = async () => {
       try {
-        const response = await fetch('/api/validate-coupon', {
+        const response = await authFetch('/api/validate-coupon', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
           body: JSON.stringify({ code: codeToValidate }),
         })
 
@@ -661,7 +659,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
       }
     }
     validateCoupon()
-  }, [store.show, store.prefilledCouponCode])
+  }, [store.show, store.prefilledCouponCode, userId, finalCoupon])
 
   // fetch parity discount from API (ensures it's always available, even if modal opened directly)
   const [parityDiscount, setParityDiscount] = useState<{
@@ -701,11 +699,9 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const handleApplyCoupon = async () => {
     try {
       setIsProcessing(true)
-      const response = await fetch('/api/validate-coupon', {
+      setCouponError(null)
+      const response = await authFetch('/api/validate-coupon', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ code: couponCode }),
       })
 

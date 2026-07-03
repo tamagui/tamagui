@@ -140,10 +140,19 @@ export function expandStyle(
       }
     }
 
-    // native-only key expansions (logical properties)
-    if (key in nativeExpansions) {
-      return nativeExpansions[key].map((k) => [k, value])
+    // native-only logical expansions (RTL-aware inline props output RN-style
+    // names like marginStart/borderEndColor that aren't valid CSS on web)
+    if (key in nativeInlineExpansions) {
+      return nativeInlineExpansions[key].map((k) => [k, value])
     }
+  }
+
+  // universal logical expansions — applied on both targets so atomic CSS
+  // generates one class per longhand. Otherwise `inset: 0` becomes a single
+  // `_inset-0px` class controlling four sub-properties, which silently breaks
+  // dedup/override against `top`/`left`/etc.
+  if (key in universalExpansions) {
+    return universalExpansions[key].map((k) => [k, value])
   }
 
   if (key in EXPANSIONS) {
@@ -202,52 +211,62 @@ for (const parent in EXPANSIONS) {
   EXPANSIONS[parent] = EXPANSIONS[parent].map((k) => `${prefix}${k}`)
 }
 
-// native-only expansions (logical properties not supported in RN)
-const nativeExpansions: Record<string, string[]> = {
-  // logical border properties
-  borderBlockColor: ['borderTopColor', 'borderBottomColor'],
-  borderInlineColor: ['borderEndColor', 'borderStartColor'],
-  borderBlockWidth: ['borderTopWidth', 'borderBottomWidth'],
-  borderInlineWidth: ['borderEndWidth', 'borderStartWidth'],
-  borderBlockStyle: ['borderTopStyle', 'borderBottomStyle'],
-  borderInlineStyle: ['borderEndStyle', 'borderStartStyle'],
-  borderBlockStartColor: ['borderTopColor'],
-  borderBlockEndColor: ['borderBottomColor'],
-  borderInlineStartColor: ['borderStartColor'],
-  borderInlineEndColor: ['borderEndColor'],
-  borderBlockStartWidth: ['borderTopWidth'],
-  borderBlockEndWidth: ['borderBottomWidth'],
-  borderInlineStartWidth: ['borderStartWidth'],
-  borderInlineEndWidth: ['borderEndWidth'],
-  borderBlockStartStyle: ['borderTopStyle'],
-  borderBlockEndStyle: ['borderBottomStyle'],
-  borderInlineStartStyle: ['borderStartStyle'],
-  borderInlineEndStyle: ['borderEndStyle'],
-  // logical margin/padding
+// Logical expansions whose targets are physical longhands valid on both
+// targets. Applied unconditionally so atomic CSS stays one-class-per-longhand:
+// without this, `inset: 0` emits `_inset-0px` (one class, four sub-properties)
+// and silently breaks dedup/override against `top`/`left`/etc.
+const universalExpansions: Record<string, string[]> = {
+  // inset
+  inset: ['top', 'right', 'bottom', 'left'],
+  insetBlock: ['top', 'bottom'],
+  insetBlockStart: ['top'],
+  insetBlockEnd: ['bottom'],
+  // block-axis margin/padding
   marginBlock: ['marginTop', 'marginBottom'],
-  marginInline: ['marginEnd', 'marginStart'],
-  paddingBlock: ['paddingTop', 'paddingBottom'],
-  paddingInline: ['paddingEnd', 'paddingStart'],
   marginBlockStart: ['marginTop'],
   marginBlockEnd: ['marginBottom'],
-  marginInlineStart: ['marginStart'],
-  marginInlineEnd: ['marginEnd'],
+  paddingBlock: ['paddingTop', 'paddingBottom'],
   paddingBlockStart: ['paddingTop'],
   paddingBlockEnd: ['paddingBottom'],
-  paddingInlineStart: ['paddingStart'],
-  paddingInlineEnd: ['paddingEnd'],
-  // logical sizing
+  // block-axis border
+  borderBlockColor: ['borderTopColor', 'borderBottomColor'],
+  borderBlockWidth: ['borderTopWidth', 'borderBottomWidth'],
+  borderBlockStyle: ['borderTopStyle', 'borderBottomStyle'],
+  borderBlockStartColor: ['borderTopColor'],
+  borderBlockEndColor: ['borderBottomColor'],
+  borderBlockStartWidth: ['borderTopWidth'],
+  borderBlockEndWidth: ['borderBottomWidth'],
+  borderBlockStartStyle: ['borderTopStyle'],
+  borderBlockEndStyle: ['borderBottomStyle'],
+  // logical sizing → physical width/height
   minBlockSize: ['minHeight'],
   maxBlockSize: ['maxHeight'],
   minInlineSize: ['minWidth'],
   maxInlineSize: ['maxWidth'],
   blockSize: ['height'],
   inlineSize: ['width'],
-  // inset
-  inset: ['top', 'right', 'bottom', 'left'],
-  insetBlock: ['top', 'bottom'],
-  insetBlockStart: ['top'],
-  insetBlockEnd: ['bottom'],
+}
+
+// Inline-axis logical expansions are native-only: their targets are RN-style
+// RTL-aware names (marginStart/borderEndColor/etc.) which web's CSS hyphenator
+// would emit as invalid CSS. On web these props pass through as native CSS
+// logical properties, which the browser handles RTL-aware.
+const nativeInlineExpansions: Record<string, string[]> = {
+  borderInlineColor: ['borderEndColor', 'borderStartColor'],
+  borderInlineWidth: ['borderEndWidth', 'borderStartWidth'],
+  borderInlineStyle: ['borderEndStyle', 'borderStartStyle'],
+  borderInlineStartColor: ['borderStartColor'],
+  borderInlineEndColor: ['borderEndColor'],
+  borderInlineStartWidth: ['borderStartWidth'],
+  borderInlineEndWidth: ['borderEndWidth'],
+  borderInlineStartStyle: ['borderStartStyle'],
+  borderInlineEndStyle: ['borderEndStyle'],
+  marginInline: ['marginEnd', 'marginStart'],
+  marginInlineStart: ['marginStart'],
+  marginInlineEnd: ['marginEnd'],
+  paddingInline: ['paddingEnd', 'paddingStart'],
+  paddingInlineStart: ['paddingStart'],
+  paddingInlineEnd: ['paddingEnd'],
   insetInlineStart: ['left'],
   insetInlineEnd: ['right'],
 }

@@ -1,9 +1,10 @@
 import crypto from 'crypto'
 import { apiRoute } from '~/features/api/apiRoute'
+import { serverEnv } from '~/features/api/serverEnv'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
 export default apiRoute(async (req) => {
-  if (!process.env.GITHUB_SPONSOR_WEBHOOK_SECRET) {
+  if (!serverEnv('GITHUB_SPONSOR_WEBHOOK_SECRET')) {
     throw new Error('GITHUB_SPONSOR_WEBHOOK_SECRET env var is not set')
   }
 
@@ -13,7 +14,7 @@ export default apiRoute(async (req) => {
   }
 
   const body = await req.text()
-  const hmac = crypto.createHmac('sha256', process.env.GITHUB_SPONSOR_WEBHOOK_SECRET!)
+  const hmac = crypto.createHmac('sha256', serverEnv('GITHUB_SPONSOR_WEBHOOK_SECRET')!)
   hmac.update(body)
   const expectedSignature = `sha256=${hmac.digest('hex')}`
 

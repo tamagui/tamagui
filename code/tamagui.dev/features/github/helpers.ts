@@ -1,3 +1,5 @@
+import { serverEnv } from '../api/serverEnv'
+
 export type GithubSponsorshipStatus =
   | {
       hasSponsorAccess: false
@@ -32,7 +34,7 @@ export type GithubAccessStatus = {
   orgs: GithubSponsorshipStatus[]
 }
 // sponsor checks reuse the admin token (the old read-only GITHUB_TOKEN was retired)
-const GITHUB_ADMIN_TOKEN = process.env.GITHUB_ADMIN_TOKEN
+const GITHUB_ADMIN_TOKEN = serverEnv('GITHUB_ADMIN_TOKEN')
 
 // whitelisting uniswap org for feedback
 const whitelistOrgs = {
