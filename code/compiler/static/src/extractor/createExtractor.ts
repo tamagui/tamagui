@@ -90,10 +90,7 @@ function styleValueHasToken(v: any): boolean {
 // with the `untilMeasured` prop. Used to deopt children whose styles depend on a
 // parent that the runtime measures before emitting child styles (can't be modeled
 // in static CSS).
-function hasUntilMeasuredAncestor(
-  path: NodePath<any>,
-  groupName: string
-): boolean {
+function hasUntilMeasuredAncestor(path: NodePath<any>, groupName: string): boolean {
   let current: NodePath<any> | null = path.parentPath
   while (current) {
     if (current.isJSXElement()) {
@@ -1510,11 +1507,7 @@ export function createExtractor(
             // extractToClassNames (emits container CSS + adds `t_group_<name>`
             // className), so we drop the JSX attribute here without bailing
             // flattening. dynamic `group={expr}` falls through to runtime.
-            if (
-              isTargetingHTML &&
-              name === 'group' &&
-              t.isStringLiteral(value)
-            ) {
+            if (isTargetingHTML && name === 'group' && t.isStringLiteral(value)) {
               return []
             }
 
@@ -1633,10 +1626,7 @@ export function createExtractor(
                 if (name[0] === '$') {
                   if (name.startsWith('$group-')) {
                     const groupName = name.slice('$group-'.length).split('-')[0]
-                    if (
-                      groupName &&
-                      hasUntilMeasuredAncestor(path, groupName)
-                    ) {
+                    if (groupName && hasUntilMeasuredAncestor(path, groupName)) {
                       if (shouldPrintDebug) {
                         logger.info(
                           `  ! group="${groupName}" ancestor has untilMeasured, not flattening: ${name}`
@@ -2058,7 +2048,8 @@ export function createExtractor(
                   const n = a.name.name
                   if (consumed.has(n)) return false
                   if (n === 'hoverStyle') return false
-                  if (n.startsWith('$group-') && getGroupPseudo(n) === 'hover') return false
+                  if (n.startsWith('$group-') && getGroupPseudo(n) === 'hover')
+                    return false
                   return true
                 })
                 partial = [
