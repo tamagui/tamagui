@@ -45,9 +45,24 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
 
   // "unset" is a CSS-wide keyword: valid CSS on web, but React Native
   // style props reject it (e.g. aspectRatio throws "must be a number, a
-  // ratio string or `auto`"). Drop it on native so the prop falls back to
-  // its initial value instead of crashing.
+  // ratio string or `auto`"). On native, clear anything an earlier prop or
+  // styled default already merged for this key — matching web, where unset
+  // resets toward initial — then drop the value so RN never sees it.
   if (process.env.TAMAGUI_TARGET === 'native' && value === 'unset') {
+    const expandedKey =
+      (!styleProps.disableExpandShorthands && conf.shorthands[key]) || key
+    const expanded = styleProps.noExpand
+      ? null
+      : expandStyle(expandedKey, value, conf.settings.styleCompat || 'web')
+    if (styleState.style) {
+      if (expanded) {
+        for (const [nkey] of expanded) {
+          delete styleState.style[nkey]
+        }
+      } else {
+        delete styleState.style[expandedKey]
+      }
+    }
     return
   }
 
