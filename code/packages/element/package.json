@@ -14,8 +14,11 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native": {
+        "types": "./src/index.native.ts",
+        "default": "./dist/esm/index.native.js"
+      },
       "types": "./src/index.ts",
-      "react-native": "./dist/esm/index.native.js",
       "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",
