@@ -332,6 +332,25 @@ describe('getSplitStyles', () => {
     expect(style?.aspectRatio).toBeUndefined()
     expect(style?.backgroundColor).toBeUndefined()
   })
+
+  test('"unset" clears styled defaults on native (web reset parity)', () => {
+    // web resolves unset through the cascade, clearing earlier values (styled
+    // defaults included); native must do the same rather than silently keeping
+    // the default. shorthands clear every key they expand to.
+    const StyledView = styled(View, {
+      backgroundColor: 'red',
+      padding: 10,
+    })
+
+    const { style } = getSplitStylesFor(
+      { backgroundColor: 'unset', p: 'unset' },
+      StyledView
+    )
+
+    expect(style?.backgroundColor).toBeUndefined()
+    expect(style?.padding).toBeUndefined()
+    expect(style?.paddingTop).toBeUndefined()
+  })
 })
 
 describe.skip('getSplitStyles - pseudo prop merging', () => {
