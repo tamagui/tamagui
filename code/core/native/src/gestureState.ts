@@ -93,6 +93,15 @@ type GestureTouchEvent = {
 }
 
 type PressOwnerSource = 'internal' | 'external' | null
+type PressOwnershipState = {
+  owner: object | null
+  ownerId: number | null
+  ownerSource: PressOwnerSource
+  ownerPointerId: number | null
+  timestamp: number
+}
+
+const PRESS_STATE_KEY = '__tamagui_press_state__'
 
 function getEventPointerId(e: any): number | null {
   const pointerId =
@@ -115,13 +124,17 @@ function getEventPointerId(e: any): number | null {
  * Uses a grace period to allow child gestures to steal ownership from parent,
  * since RNGH fires parent gestures before child gestures.
  */
-const pressState = {
-  owner: null as object | null,
-  ownerId: null as number | null,
-  ownerSource: null as PressOwnerSource,
-  ownerPointerId: null as number | null,
+const pressState = ((
+  globalThis as typeof globalThis & {
+    [PRESS_STATE_KEY]?: PressOwnershipState
+  }
+)[PRESS_STATE_KEY] ??= {
+  owner: null,
+  ownerId: null,
+  ownerSource: null,
+  ownerPointerId: null,
   timestamp: 0,
-}
+})
 
 export interface Insets {
   top?: number
@@ -189,6 +202,11 @@ export function releaseExternalPressOwnership(
     return
   }
   resetPressOwner()
+}
+
+export function hasExternalPressOwnership(): boolean {
+  resetStaleOwner(Date.now())
+  return pressState.ownerSource === 'external'
 }
 
 export function getGestureHandler(): GestureHandlerAccessor {
