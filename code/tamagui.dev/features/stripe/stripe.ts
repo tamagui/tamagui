@@ -1,11 +1,12 @@
 import Stripe from 'stripe'
+import { serverEnv } from '../api/serverEnv'
 
 const isTestMode =
   process.env.STRIPE_TEST_MODE === 'true' || process.env.NODE_ENV === 'development'
 
 const secretKey = isTestMode
-  ? process.env.STRIPE_SECRET_KEY_TEST
-  : process.env.STRIPE_SECRET_KEY
+  ? serverEnv('STRIPE_SECRET_KEY_TEST')
+  : serverEnv('STRIPE_SECRET_KEY')
 
 export const stripe = new Stripe(secretKey!, {
   // https://github.com/stripe/stripe-node#configuration

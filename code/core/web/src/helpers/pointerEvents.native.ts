@@ -25,13 +25,20 @@ export function usePointerEvents(props: any, viewProps: any) {
     onPointerEnter ||
     onPointerLeave
 
-  // track if pointer is currently inside bounds (for enter/leave)
-  const isInsideRef = useRef(false)
-  const layoutRef = useRef({ width: 0, height: 0 })
-  // track if pointer is captured (for move events outside bounds)
-  const isCapturedRef = useRef(false)
+  // single ref-bag (was three separate useRef slots) — one hook slot per
+  // component instead of three. isInside = pointer within bounds (enter/leave),
+  // layout = measured bounds, isCaptured = setPointerCapture state for moves.
+  const ref = useRef<{
+    isInside: boolean
+    layout: { width: number; height: number }
+    isCaptured: boolean
+  } | null>(null)
+  if (!ref.current) {
+    ref.current = { isInside: false, layout: { width: 0, height: 0 }, isCaptured: false }
+  }
 
   if (!hasPointerEvents) return
+  const bag = ref.current
 
   // create normalized event with setPointerCapture support
   const createNormalizedEvent = (e: any) => {
@@ -49,10 +56,10 @@ export function usePointerEvents(props: any, viewProps: any) {
       nativeEvent: touch,
       target: {
         setPointerCapture: (_pointerId: number) => {
-          isCapturedRef.current = true
+          bag.isCaptured = true
         },
         releasePointerCapture: (_pointerId: number) => {
-          isCapturedRef.current = false
+          bag.isCaptured = false
         },
       },
     }
@@ -69,7 +76,7 @@ export function usePointerEvents(props: any, viewProps: any) {
   // pointer up
   if (onPointerUp) {
     viewProps.onTouchEnd = composeEventHandlers(viewProps.onTouchEnd, (e: any) => {
-      isCapturedRef.current = false // auto-release on up
+      bag.isCaptured = false // auto-release on up
       onPointerUp(createNormalizedEvent(e))
     })
   }
@@ -78,12 +85,12 @@ export function usePointerEvents(props: any, viewProps: any) {
   if (onPointerMove) {
     viewProps.onTouchMove = composeEventHandlers(viewProps.onTouchMove, (e: any) => {
       const { locationX, locationY } = e.nativeEvent
-      const { width, height } = layoutRef.current
+      const { width, height } = bag.layout
       const isInBounds =
         locationX >= 0 && locationX <= width && locationY >= 0 && locationY <= height
 
       // fire if captured OR in bounds (matches web behavior)
-      if (isCapturedRef.current || isInBounds) {
+      if (bag.isCaptured || isInBounds) {
         onPointerMove(createNormalizedEvent(e))
       }
     })
@@ -92,7 +99,7 @@ export function usePointerEvents(props: any, viewProps: any) {
   // pointer cancel
   if (onPointerCancel) {
     viewProps.onTouchCancel = composeEventHandlers(viewProps.onTouchCancel, (e: any) => {
-      isCapturedRef.current = false
+      bag.isCaptured = false
       onPointerCancel(createNormalizedEvent(e))
     })
   }
@@ -101,7 +108,7 @@ export function usePointerEvents(props: any, viewProps: any) {
   if (onPointerEnter || onPointerLeave || onPointerMove) {
     // track layout for bounds checking
     viewProps.onLayout = composeEventHandlers(viewProps.onLayout, (e: any) => {
-      layoutRef.current = {
+      bag.layout = {
         width: e.nativeEvent.layout.width,
         height: e.nativeEvent.layout.height,
       }
@@ -112,9 +119,9 @@ export function usePointerEvents(props: any, viewProps: any) {
   if (onPointerEnter) {
     viewProps.onTouchStart = composeEventHandlers(viewProps.onTouchStart, (e: any) => {
       const { locationX, locationY } = e.nativeEvent
-      const { width, height } = layoutRef.current
+      const { width, height } = bag.layout
       if (locationX >= 0 && locationX <= width && locationY >= 0 && locationY <= height) {
-        isInsideRef.current = true
+        bag.isInside = true
         onPointerEnter(createNormalizedEvent(e))
       }
     })
@@ -124,18 +131,18 @@ export function usePointerEvents(props: any, viewProps: any) {
   if (onPointerLeave) {
     viewProps.onTouchMove = composeEventHandlers(viewProps.onTouchMove, (e: any) => {
       const { locationX, locationY } = e.nativeEvent
-      const { width, height } = layoutRef.current
+      const { width, height } = bag.layout
       const isInside =
         locationX >= 0 && locationX <= width && locationY >= 0 && locationY <= height
-      if (isInsideRef.current && !isInside) {
-        isInsideRef.current = false
+      if (bag.isInside && !isInside) {
+        bag.isInside = false
         onPointerLeave(createNormalizedEvent(e))
       }
     })
 
     viewProps.onTouchEnd = composeEventHandlers(viewProps.onTouchEnd, (e: any) => {
-      if (isInsideRef.current) {
-        isInsideRef.current = false
+      if (bag.isInside) {
+        bag.isInside = false
         onPointerLeave(createNormalizedEvent(e))
       }
     })

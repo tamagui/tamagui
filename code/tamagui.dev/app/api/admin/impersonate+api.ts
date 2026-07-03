@@ -4,6 +4,11 @@ import { isAdminEmail } from '~/features/api/isAdmin'
 import { readBodyJSON } from '~/features/api/readBodyJSON'
 import { supabaseAdmin } from '~/features/auth/supabaseAdmin'
 
+// escape for HTML text context (the impersonated user's email is DB-controlled
+// and gets rendered into the admin's own browser, so a malformed email must not
+// execute as markup in that high-value session)
+const escapeHtml = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
+
 /**
  * Generate impersonation link for admin to view a user's account
  * Admin-only endpoint
@@ -88,7 +93,7 @@ export default apiRoute(async (req) => {
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-  <p>Impersonating user ${targetUser.email}...</p>
+  <p>Impersonating user ${escapeHtml(targetUser.email)}...</p>
   <p style="color: red; font-weight: bold;">ADMIN IMPERSONATION MODE</p>
   <p id="status">Verifying...</p>
   <script>
@@ -96,13 +101,13 @@ export default apiRoute(async (req) => {
       const statusEl = document.getElementById('status');
       try {
         const supabase = window.supabase.createClient(
-          '${process.env.NEXT_PUBLIC_SUPABASE_URL}',
-          '${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}'
+          ${JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_URL ?? '')},
+          ${JSON.stringify(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '')}
         );
 
         // verify the OTP token
         const { data, error } = await supabase.auth.verifyOtp({
-          token_hash: '${token}',
+          token_hash: ${JSON.stringify(token)},
           type: 'magiclink'
         });
 

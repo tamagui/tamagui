@@ -1,5 +1,5 @@
 import { isServer, isWeb } from '@tamagui/constants'
-import { useRef, useSyncExternalStore } from 'react'
+import { useEffect, useReducer, useRef } from 'react'
 import { getSetting } from '../config'
 import { resetMediaStyleCache } from '../helpers/createMediaStyle'
 import { matchMedia } from '../helpers/matchMedia'
@@ -66,6 +66,8 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   mediaVersion++
   // reset cached media style prefixes/selectors so they get recalculated with new key order
   resetMediaStyleCache()
+  // touch-tracker getter object depends on the current media key set
+  resetMediaTouchTracker()
   for (const key in media) {
     getMedia()[key] = mediaQueryDefaultActive?.[key] || false
     mediaKeys.add(`$${key}`)
@@ -136,6 +138,47 @@ type MediaState = {
 
 const States = new WeakMap<any, MediaState>()
 
+// shared "touch tracker" prototype: one object whose enumerable getter
+// properties are pre-defined for every configured media key. Hermes inlines
+// getter calls; the old `new Proxy(state, { get })` path forced an interpreted
+// trap on every access — the dominant per-component cost in benchmarks. Each
+// component owns just an Object.create(proto) with a Symbol-keyed slot
+// pointing at its tracking set + current snapshot.
+type MediaRefSlot = {
+  proxyTarget: MediaQueryState
+  keys: Set<string>
+}
+let touchTrackerProto: object | null = null
+const refSlot = Symbol('mediaRefSlot')
+
+function buildTouchTrackerProto(): object {
+  const proto: PropertyDescriptorMap = {}
+  for (const fullKey of mediaKeys) {
+    const key = fullKey[0] === '$' ? fullKey.slice(1) : fullKey
+    proto[key] = {
+      enumerable: true,
+      configurable: true,
+      get(this: { [refSlot]: MediaRefSlot }) {
+        const slot = this[refSlot]
+        if (!disableMediaTouch) {
+          slot.keys.add(key)
+        }
+        return slot.proxyTarget[key]
+      },
+    }
+  }
+  return Object.create(null, proto)
+}
+
+function getTouchTrackerProto(): object {
+  if (!touchTrackerProto) touchTrackerProto = buildTouchTrackerProto()
+  return touchTrackerProto
+}
+
+function resetMediaTouchTracker() {
+  touchTrackerProto = null
+}
+
 export function setMediaShouldUpdate(
   ref: any,
   enabled?: boolean,
@@ -165,38 +208,46 @@ export function useMedia(
 ): UseMediaState {
   'use no memo'
 
-  const componentState = componentContext ? States.get(componentContext) : null
-
-  const internalRef = useRef<{
+  type MediaRef = {
     keys: Set<string>
     lastState: MediaQueryState
     pendingState?: MediaQueryState
-  }>(null)
+    renderVersion: number
+    unsubscribe?: () => void
+    // stable per-component closures + reusable Proxy. allocating new ones each
+    // render (via useSyncExternalStore + `new Proxy(state, ...)`) was a real
+    // per-component-per-render cost; we hold one Proxy whose target is swapped
+    // by mutating `proxyTarget` and re-reading it in the get trap.
+    proxyTarget: MediaQueryState
+    proxy: UseMediaState
+    getSnapshot: () => MediaQueryState
+    componentContext?: ComponentContextI
+    debug?: DebugProp
+  }
+
+  const internalRef = useRef<MediaRef | null>(null)
   if (!internalRef.current) {
-    internalRef.current = {
-      keys: new Set(),
-      lastState: getMedia(),
+    const initial = getMedia()
+    const r: MediaRef = {
+      keys: new Set<string>(),
+      lastState: initial,
+      renderVersion: 0,
+      proxyTarget: initial,
+      proxy: undefined as unknown as UseMediaState,
+      getSnapshot: undefined as unknown as () => MediaQueryState,
+      componentContext,
+      debug,
     }
-  }
-
-  // reset on next render
-  if (internalRef.current.pendingState) {
-    internalRef.current.lastState = internalRef.current.pendingState
-    internalRef.current.pendingState = undefined
-  }
-
-  const { keys } = internalRef.current
-
-  // clear each render to track only rendered touched keys
-  if (keys.size) {
-    keys.clear()
-  }
-
-  const state = useSyncExternalStore(
-    subscribe,
-    () => {
-      const curKeys = componentState?.keys || keys
-      const { lastState, pendingState } = internalRef.current!
+    // proxy → Object.create(getterProto) with a Symbol slot. Per-key get is a
+    // monomorphic getter call (Hermes-fast) instead of a Proxy trap.
+    const tracker = Object.create(getTouchTrackerProto())
+    tracker[refSlot] = { proxyTarget: initial, keys: r.keys } as MediaRefSlot
+    r.proxy = tracker as UseMediaState
+    r.getSnapshot = () => {
+      const curKeys = r.componentContext
+        ? States.get(r.componentContext)?.keys || r.keys
+        : r.keys
+      const { lastState, pendingState } = r
 
       if (!curKeys.size) {
         return lastState
@@ -205,37 +256,91 @@ export function useMedia(
       const ms = getMedia()
       for (const key of curKeys) {
         if (ms[key] !== (pendingState || lastState)[key]) {
-          if (process.env.NODE_ENV === 'development' && debug) {
+          if (process.env.NODE_ENV === 'development' && r.debug) {
             console.warn(`useMedia() ✍️`, key, lastState[key], '=>', ms[key])
           }
 
           // in emitter mode (no-rerender) avoid changing state, instead emit
-          if (componentContext?.mediaEmit) {
-            componentContext.mediaEmit(ms)
-            internalRef.current!.pendingState = ms
+          if (r.componentContext?.mediaEmit) {
+            r.componentContext.mediaEmit(ms)
+            r.pendingState = ms
             return lastState
           }
 
-          internalRef.current!.lastState = ms
+          r.lastState = ms
 
           return ms
         }
       }
 
       return lastState
-    },
-    getServerSnapshot
-  )
+    }
+    internalRef.current = r
+  } else {
+    // refresh per-render inputs the closures read through the ref
+    internalRef.current.componentContext = componentContext
+    internalRef.current.debug = debug
+  }
 
-  return new Proxy(state, {
-    get(_, key) {
-      if (!disableMediaTouch && typeof key === 'string') {
-        keys.add(key)
+  const ref = internalRef.current
+  ref.renderVersion++
+
+  // reset on next render
+  if (ref.pendingState) {
+    ref.lastState = ref.pendingState
+    ref.pendingState = undefined
+  }
+
+  // clear each render to track only rendered touched keys
+  if (ref.keys.size) {
+    ref.keys.clear()
+  }
+
+  // manual subscription (same shape as useThemeStateSubscribed): same
+  // granular bailout via getSnapshot returning the same MediaQueryState ref
+  // when none of the component's touched keys changed, but fewer
+  // React-internal hook slots on Hermes than useSyncExternalStore.
+  const [, forceUpdate] = useReducer(incReducer, 0)
+  const state = isServer ? initState : ref.getSnapshot()
+  ref.proxyTarget = state
+  ;(ref.proxy as any)[refSlot].proxyTarget = state
+
+  useEffect(() => {
+    const renderVersion = ref.renderVersion
+    const shouldSubscribe =
+      !ref.componentContext || !!States.get(ref.componentContext)?.enabled
+
+    if (shouldSubscribe) {
+      if (!ref.unsubscribe) {
+        ref.unsubscribe = subscribe(() => {
+          const next = ref.getSnapshot()
+          if (next !== ref.proxyTarget) {
+            ref.proxyTarget = next
+            ;(ref.proxy as any)[refSlot].proxyTarget = next
+            forceUpdate()
+          }
+        })
       }
-      return Reflect.get(state, key)
-    },
+    } else if (ref.unsubscribe) {
+      ref.unsubscribe()
+      ref.unsubscribe = undefined
+    }
+
+    return () => {
+      // react runs passive cleanup before the next effect as well as on unmount.
+      // a newer render bumps renderVersion before that cleanup, so equality here
+      // means this is the final unmount cleanup.
+      if (ref.renderVersion === renderVersion) {
+        ref.unsubscribe?.()
+        ref.unsubscribe = undefined
+      }
+    }
   })
+
+  return ref.proxy
 }
+
+const incReducer = (c: number): number => c + 1
 
 const getServerSnapshot = () => initState
 

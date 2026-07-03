@@ -73,6 +73,8 @@
     "llink": "lllink ~/one",
     "next-site": "./scripts/bun-run.sh @tamagui/next-site dev",
     "release:canary": "bun release --canary --ci",
+    "release:beta": "bun release --beta --ci",
+    "release:beta:dirty": "bun release --beta --dirty --ci",
     "release": "bun ./scripts/release.ts",
     "check:references": "bun ./scripts/check-references.ts",
     "check:references:fix": "bun ./scripts/check-references.ts --fix",

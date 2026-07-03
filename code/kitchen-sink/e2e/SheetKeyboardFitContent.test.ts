@@ -1,5 +1,6 @@
 import { by, device, element, expect, waitFor } from 'detox'
 import { safeLaunchApp, withSync } from './utils/detox'
+import { remountDirectUseCase } from './utils/navigation'
 
 const isAndroid = () => device.getPlatform() === 'android'
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
@@ -12,6 +13,15 @@ describe('SheetKeyboardFitContent', () => {
       launchArgs: { directUseCase: 'SheetKeyboardFitContentCase' },
     })
     await waitForSheetKeyboardFitContent()
+  })
+
+  // remount per test (launch once, deep-link remount) so a failed attempt that
+  // leaves the sheet open can't occlude the trigger on the jest retry - without
+  // this, any real failure cascades into a misleading "trigger not hittable".
+  beforeEach(async () => {
+    if (isAndroid()) return
+    await remountDirectUseCase('sheet-kb-fit-screen')
+    await device.disableSynchronization()
   })
 
   it('keeps fit Sheet.ScrollView stable through keyboard open, close, and scroll', async () => {

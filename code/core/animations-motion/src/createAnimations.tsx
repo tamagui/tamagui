@@ -397,8 +397,31 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               )
 
               // provide explicit [from, to] keyframe for transforms during
-              // mid-flight interruption so motion starts from the right place
-              if (midFlightValues?.transform && fixedDiff.transform) {
+              // mid-flight interruption so motion starts from the right place —
+              // but ONLY when we've torn down the previous animation (popper
+              // cancel above, or exit stop()). otherwise the prior WAAPI
+              // transform animation is still running, and pinning a one-frame-
+              // stale `from` matrix makes each new flush re-start the animation
+              // from that stale base instead of continuing from the live value.
+              // for a plain transition element being interrupted repeatedly
+              // (the tamagui.dev logo dot swept back and forth — worse the more
+              // concurrent React work the page is doing, since each render flushes
+              // again) that reads as a constant stutter/reset instead of a smooth
+              // glide. in the un-torn-down case motion's resolver already
+              // interpolates from the live value, so leave it alone. (regressed in
+              // 9485bcef0e when this keyframe was ungated; covered by
+              // LogoDotInterrupt.animated.test.tsx)
+              //
+              // note: an earlier version also keyframed entering-presence-child
+              // interrupts, but enter no longer tears down (see the stop() comment
+              // above — WAAPI replaces conflicting props per-property), so those
+              // now rely on the same live-value interpolation. covered by
+              // PopoverClickDuringEnter / AnimatePresenceEnterExit.
+              if (
+                (isPopperPosition || isCurrentlyExiting) &&
+                midFlightValues?.transform &&
+                fixedDiff.transform
+              ) {
                 fixedDiff.transform = [midFlightValues.transform, fixedDiff.transform]
               }
 

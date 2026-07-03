@@ -1254,6 +1254,15 @@ async function esbuildWriteIfChanged(
           if (isESM && hadTamaguiTarget) {
             contents = await pruneUnusedImports(contents, path)
           }
+
+          // esbuild emits bare require() in esm output as a __require() shim that throws
+          // ("Dynamic require ... is not supported") under Metro's esm module scope. native
+          // always has a real require, so call it directly. this keeps the
+          // require('react-native')-behind-a-TAMAGUI_TARGET==='native' DCE guard working on
+          // native instead of crashing at runtime (e.g. toast PanResponder).
+          if (platform === 'native' && isESM) {
+            contents = contents.replaceAll('__require(', 'require(')
+          }
         }
 
         if (isESM && pkg.sideEffects !== true && pkg.sideEffects !== undefined) {

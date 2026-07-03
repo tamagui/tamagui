@@ -72,6 +72,7 @@ export const SheetScrollView = React.forwardRef<
           maxHeight: screenSize || undefined,
         }
       : { flex: 1 }
+    const contentContainerStyle = hasFit ? undefined : { minHeight: '100%' as const }
 
     // when the keyboard is open, pin the scroll view to the sheet's pre-keyboard
     // frame height (frozenFrameHeight), overriding any consumer maxHeight. on web
@@ -90,16 +91,28 @@ export const SheetScrollView = React.forwardRef<
 
     // RNGH scroll locking state
     const currentScrollOffset = useRef(0)
+    const lastEmittedScrollOffset = useRef(0)
     const lockedScrollY = useRef(0)
     const focusedInputScrollFrame = useRef(0)
 
     const setScrollEnabled = (next: boolean, lockTo?: number) => {
       if (!next) {
-        const lockY = lockTo ?? currentScrollOffset.current
+        const lockY = lockTo ?? scrollBridge.scrollLockY ?? currentScrollOffset.current
+        if (scrollBridge.enabled === false && scrollBridge.scrollLockY === lockY) {
+          return
+        }
+        scrollBridge.enabled = false
         lockedScrollY.current = lockY
         scrollBridge.scrollLockY = lockY
-        scrollRef.current?.scrollTo?.({ x: 0, y: lockY, animated: false })
+        if (currentScrollOffset.current !== lockY) {
+          scrollRef.current?.scrollTo?.({ x: 0, y: lockY, animated: false })
+          currentScrollOffset.current = lockY
+        }
       } else {
+        if (scrollBridge.enabled === true && scrollBridge.scrollLockY === undefined) {
+          return
+        }
+        scrollBridge.enabled = true
         lockedScrollY.current = currentScrollOffset.current
         scrollBridge.scrollLockY = undefined
       }
@@ -107,7 +120,35 @@ export const SheetScrollView = React.forwardRef<
 
     const forceScrollTo = (y: number) => {
       scrollRef.current?.scrollTo?.({ x: 0, y, animated: false })
+      currentScrollOffset.current = y
     }
+
+    const emitManualScroll = React.useCallback(
+      (node: HTMLElement, y: number) => {
+        currentScrollOffset.current = y
+        scrollBridge.y = y
+        if (y > 0) scrollBridge.scrollStartY = -1
+        lastEmittedScrollOffset.current = y
+        onScroll?.({
+          nativeEvent: {
+            contentOffset: {
+              x: node.scrollLeft,
+              y,
+            },
+            contentSize: {
+              height: node.scrollHeight,
+              width: node.scrollWidth,
+            },
+            layoutMeasurement: {
+              height: node.offsetHeight,
+              width: node.offsetWidth,
+            },
+          },
+          timeStamp: Date.now(),
+        } as any)
+      },
+      [onScroll, scrollBridge]
+    )
 
     const scrollFocusedInputClearOfKeyboard = React.useCallback(() => {
       if (!isWeb || !hasFit || !isKeyboardVisible || keyboardOccludedHeight <= 0) {
@@ -206,6 +247,7 @@ export const SheetScrollView = React.forwardRef<
       hasScrollableContent,
       scrollEnabled,
       setScrollEnabled,
+      onManualScroll: emitManualScroll,
     })
 
     // content wrapper for measuring height
@@ -259,25 +301,30 @@ export const SheetScrollView = React.forwardRef<
                   animated: false,
                 })
               }
+              currentScrollOffset.current = scrollBridge.scrollLockY
               scrollBridge.y = scrollBridge.scrollLockY
-              onScroll?.({
-                ...e,
-                nativeEvent: {
-                  ...e.nativeEvent,
-                  contentOffset: {
-                    ...e.nativeEvent.contentOffset,
-                    y: scrollBridge.scrollLockY,
+              if (lastEmittedScrollOffset.current !== scrollBridge.scrollLockY) {
+                lastEmittedScrollOffset.current = scrollBridge.scrollLockY
+                onScroll?.({
+                  ...e,
+                  nativeEvent: {
+                    ...e.nativeEvent,
+                    contentOffset: {
+                      ...e.nativeEvent.contentOffset,
+                      y: scrollBridge.scrollLockY,
+                    },
                   },
-                },
-              })
+                })
+              }
               return
             }
 
             scrollBridge.y = y
             if (y > 0) scrollBridge.scrollStartY = -1
+            lastEmittedScrollOffset.current = y
             onScroll?.(e)
           }}
-          contentContainerStyle={{ minHeight: '100%' }}
+          contentContainerStyle={contentContainerStyle}
           bounces={false}
           keyboardShouldPersistTaps="always"
           keyboardDismissMode="none"
@@ -306,9 +353,10 @@ export const SheetScrollView = React.forwardRef<
           currentScrollOffset.current = y
           scrollBridge.y = y
           if (y > 0) scrollBridge.scrollStartY = -1
+          lastEmittedScrollOffset.current = y
           onScroll?.(e)
         }}
-        contentContainerStyle={{ minHeight: '100%' }}
+        contentContainerStyle={contentContainerStyle}
         {...gestureProps}
         {...props}
         {...keyboardFrozenOverride}
