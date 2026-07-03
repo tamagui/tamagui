@@ -102,6 +102,7 @@ export type ScrollBridge = {
     setScrollEnabled?: (enabled: boolean, lockTo?: number) => void;
     _lastTouchY?: number;
     scrollLockY?: number;
+    lockScrollAtTop?: boolean;
     forceScrollTo?: (y: number) => void;
     isAtTop?: boolean;
     snapToPosition?: (positionIndex: number) => void;

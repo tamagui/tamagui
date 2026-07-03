@@ -1,6 +1,7 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import {
   getPlatformDriver,
+  isAndroid,
   isClient,
   isNativeDesktop,
   isServer,
@@ -279,10 +280,14 @@ export function createComponent<
 
     // test only
     if (process.env.NODE_ENV === 'test') {
-      if (propsIn['data-test-renders']) {
-        propsIn['data-test-renders']['current'] =
-          propsIn['data-test-renders']['current'] ?? 0
-        propsIn['data-test-renders']['current'] += 1
+      const testRenderCount = propsIn['data-test-renders']
+      if (
+        testRenderCount &&
+        typeof testRenderCount === 'object' &&
+        !Object.isFrozen(testRenderCount)
+      ) {
+        testRenderCount.current = testRenderCount.current ?? 0
+        testRenderCount.current += 1
       }
     }
 
@@ -302,9 +307,14 @@ export function createComponent<
     // On Android, skip RNGH GestureDetector inside native menus (zeego) and use
     // direct press events instead — GestureDetector consumes touches before they
     // reach MenuView's native handler, preventing the menu from opening
+    // NativeMenuContext only affects Android RNGH press arbitration inside zeego
+    // menus (see eventHandling.native.ts:182). isAndroid is constant for the whole
+    // app run, so on iOS we skip this context read for every component — the branch
+    // never flips at runtime, so hook order stays stable (rules-of-hooks safe).
     const isInsideNativeMenu =
-      process.env.TAMAGUI_TARGET === 'native'
-        ? React.useContext(NativeMenuContext)
+      process.env.TAMAGUI_TARGET === 'native' && isAndroid
+        ? // eslint-disable-next-line react-hooks/rules-of-hooks
+          React.useContext(NativeMenuContext)
         : false
 
     if (
@@ -1623,7 +1633,8 @@ export function createComponent<
         pressGesture,
         stateRef,
         isHOC,
-        isCompositeComponent
+        isCompositeComponent,
+        hasRealPressEvents
       )
     }
 

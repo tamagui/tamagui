@@ -25,6 +25,7 @@ export interface GestureHandlerAccessor {
 export type ExternalPressOwnershipToken = object;
 export declare function claimExternalPressOwnership(debugName?: string | null): ExternalPressOwnershipToken;
 export declare function releaseExternalPressOwnership(token: ExternalPressOwnershipToken | null | undefined, debugName?: string | null): void;
+export declare function hasExternalPressOwnership(): boolean;
 export declare function getGestureHandler(): GestureHandlerAccessor;
 
 //# sourceMappingURL=gestureState.d.ts.map

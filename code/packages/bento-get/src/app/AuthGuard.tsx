@@ -1,7 +1,7 @@
 import { Alert } from '@inkjs/ui'
 import { Box } from 'ink'
 import React from 'react'
-import { debugLog } from '../commands/index.js'
+import { debugLog, redact } from '../commands/index.js'
 import { AppContext } from '../data/AppContext.js'
 import { useInstallComponent } from '../hooks/useInstallComponent.js'
 
@@ -16,7 +16,7 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
       setAccessToken(token)
       setIsLoggedIn(true)
       debugLog('Token found, setting isLoggedIn to true')
-      debugLog({ token })
+      debugLog({ token: redact(token) })
     } else {
       setIsLoggedIn(false)
     }

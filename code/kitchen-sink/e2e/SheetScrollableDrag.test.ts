@@ -387,6 +387,14 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
       'ScrollView Y: 0'
     )
 
+    const countBeforeAttr = await element(
+      by.id('sheet-scrollable-drag-scroll-count')
+    ).getAttributes()
+    const countBefore = parseInt(
+      ((countBeforeAttr as any).text as string).replace('Scroll events: ', ''),
+      10
+    )
+
     // drag UP - sheet moves to position 0
     // scroll events may fire but are locked to 0
     await element(by.id('sheet-scrollable-drag-scrollview')).swipe('up', 'fast', 0.5)
@@ -399,13 +407,23 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     const maxScrollAttr = await element(
       by.id('sheet-scrollable-drag-max-scroll-y')
     ).getAttributes()
+    const countAfterAttr = await element(
+      by.id('sheet-scrollable-drag-scroll-count')
+    ).getAttributes()
+    const countAfter = parseInt(
+      ((countAfterAttr as any).text as string).replace('Scroll events: ', ''),
+      10
+    )
+    const lockedScrollEvents = countAfter - countBefore
     console.log(
       'Case 7 result - Position:',
       (posAttr as any).text,
       'Scroll:',
       (scrollAttr as any).text,
       'MaxScroll:',
-      (maxScrollAttr as any).text
+      (maxScrollAttr as any).text,
+      'LockedScrollEvents:',
+      lockedScrollEvents
     )
 
     // sheet should be at position 0
@@ -418,6 +436,11 @@ describe('SheetScrollableDrag - RNGH Integration', () => {
     await expect(element(by.id('sheet-scrollable-drag-scroll-y'))).toHaveText(
       'ScrollView Y: 0'
     )
+    if (lockedScrollEvents > 3) {
+      throw new Error(
+        `Expected locked drag to emit <= 3 scroll events, got ${lockedScrollEvents}`
+      )
+    }
   })
 
   it('Case 9: HANDOFF - drag UP from position 1, continue into scroll in one gesture', async () => {

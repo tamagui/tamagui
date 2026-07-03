@@ -1,0 +1,18 @@
+-- security incident remediation, part 2 (2026-06-30)
+--
+-- tighten theme_histories from public-read to service-role-only. the previous
+-- migration enabled RLS with a public read policy to preserve theme sharing
+-- without a code change, but that still let anyone with the public anon key
+-- enumerate every user's themes (search_query prompts + theme_data + user_id).
+--
+-- all reads now go through the service role server-side: getTheme() fetches a
+-- single shared theme by id, recent/featured galleries and a user's own history
+-- are all served by API routes using supabaseAdmin. dropping the read policy
+-- leaves RLS enabled with no policy => anon/authenticated direct reads are
+-- denied, while the service role (which bypasses RLS) keeps every app path
+-- working.
+--
+-- NOTE: deploy ordering matters - the getTheme() change to read via the service
+-- role must be live BEFORE this policy is dropped, otherwise public /theme/<id>
+-- share links (read with the user-scoped client) would break.
+drop policy if exists "Public can read shared themes" on public.theme_histories;

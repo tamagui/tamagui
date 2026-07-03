@@ -77,10 +77,16 @@ export {
   _disableMediaTouch,
   configureMedia,
   mediaKeyMatch,
+  updateMediaListeners,
   useMedia,
 } from './hooks/useMedia'
 export { mediaObjectToString } from './helpers/mediaObjectToString'
-export { getMedia, mediaQueryConfig, mediaState } from './helpers/mediaState'
+export {
+  getMedia,
+  mediaQueryConfig,
+  mediaState,
+  setMediaState,
+} from './helpers/mediaState'
 export * from './hooks/useProps'
 export * from './hooks/useTheme'
 export * from './hooks/useThemeName'

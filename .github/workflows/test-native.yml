@@ -72,7 +72,7 @@ jobs:
           # check-ios-detox-shards.mjs, still runs in the android job). Coverage
           # validated by that script (every e2e test assigned exactly once).
           - shard_name: '1/4'
-            test_files: 'e2e/CompilerExtraction.test.ts e2e/SafeArea.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts'
+            test_files: 'e2e/CompilerExtraction.test.ts e2e/SafeArea.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts e2e/SheetPressResponderSheetRngh.test.ts'
           - shard_name: '2/4'
             test_files: 'e2e/PressStyleNative.noRngh.test.ts e2e/CompilerTernaryActive.test.ts e2e/TabsOnInteraction.test.ts e2e/PointerEvents.test.ts e2e/GroupPressNative.test.ts e2e/ShorthandVariables.test.ts e2e/check-rngh-status.test.ts'
           - shard_name: '3/4'
@@ -143,8 +143,22 @@ jobs:
         if: env.SKIP_IOS_TESTS != 'true'
         run: |
           npm install -g detox-cli &
-          (brew tap wix/brew && brew install applesimutils) &
-          wait
+          detox_pid=$!
+
+          # install by fully-qualified name so homebrew auto-trusts only this
+          # formula (homebrew 6 refuses untrusted third-party taps otherwise)
+          brew install wix/brew/applesimutils &
+          applesimutils_pid=$!
+
+          wait "$detox_pid"
+          wait "$applesimutils_pid"
+
+          brew_bin="$(brew --prefix)/bin"
+          echo "$brew_bin" >> "$GITHUB_PATH"
+          export PATH="$brew_bin:$PATH"
+
+          command -v detox
+          command -v applesimutils
 
       - name: Rebuild Detox Framework Cache
         if: env.SKIP_IOS_TESTS != 'true'

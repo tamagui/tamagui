@@ -1,6 +1,7 @@
 import type { PostgrestError } from '@supabase/supabase-js'
 import type { Endpoint } from 'one'
 import { isResponse } from 'one'
+import { ClientError } from './ClientError'
 
 export function apiRoute(handler: Endpoint) {
   return (async (req) => {
@@ -18,27 +19,22 @@ export function apiRoute(handler: Endpoint) {
 
       return out
     } catch (err) {
-      // not an error
+      // a Response thrown by the handler is an intentional result, not an error
       if (isResponse(err)) {
         return err
       }
 
+      // a ClientError is a user-facing message the caller is meant to see
+      if (err instanceof ClientError) {
+        return Response.json({ error: err.message }, { status: err.status })
+      }
+
+      // anything else is internal: log the detail server-side, return a generic
+      // body so we don't leak Postgres/Stripe/internal messages to the client
       const message = err instanceof Error ? err.message : `${err}`
+      console.trace(`Error in apiRoute ${req.url}: ${message}`, err)
 
-      // log errors with traces for debugging in prod
-      console.trace(`Error in apiRoute (caught response) ${req.url}: ${message}`, err)
-
-      return new Response(
-        JSON.stringify({
-          error: message,
-        }),
-        {
-          status: 500,
-          headers: {
-            'content-type': 'application/json',
-          },
-        }
-      )
+      return Response.json({ error: 'Internal server error' }, { status: 500 })
     }
   }) satisfies Endpoint
 }

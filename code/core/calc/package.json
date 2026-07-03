@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/calc",
-  "version": "2.3.3",
+  "version": "2.4.0-1783099846627",
   "files": [
     "src",
     "types",

@@ -22,7 +22,7 @@ export type { NativePortalState, GestureState, WorkletsState, SafeAreaState, Saf
 export { getPortal } from "./portalState";
 export type { PortalAccessor } from "./portalState";
 export { getGestureHandler } from "./gestureState";
-export { claimExternalPressOwnership as unstable_claimExternalPressOwnership, releaseExternalPressOwnership as unstable_releaseExternalPressOwnership } from "./gestureState";
+export { claimExternalPressOwnership as unstable_claimExternalPressOwnership, hasExternalPressOwnership as unstable_hasExternalPressOwnership, releaseExternalPressOwnership as unstable_releaseExternalPressOwnership } from "./gestureState";
 export type { ExternalPressOwnershipToken, GestureHandlerAccessor, PressGestureConfig } from "./gestureState";
 export type { GestureHandlerConfig } from "./setup-gesture-handler";
 export { getWorklets } from "./workletsState";

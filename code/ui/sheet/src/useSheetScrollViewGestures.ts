@@ -20,12 +20,14 @@ interface UseSheetScrollViewGesturesProps {
   hasScrollableContent: boolean
   scrollEnabled: boolean
   setScrollEnabled: (enabled: boolean, lockTo?: number) => void
+  onManualScroll?: (node: HTMLElement, y: number) => void
 }
 
 export function useSheetScrollViewGestures({
   scrollRef,
   scrollBridge,
   hasScrollableContent,
+  onManualScroll,
 }: UseSheetScrollViewGesturesProps) {
   const state = useRef<GestureState>({
     startY: 0,
@@ -36,6 +38,11 @@ export function useSheetScrollViewGestures({
     dys: [],
     scrollYAtGestureStart: 0,
   })
+  const onManualScrollRef = useRef(onManualScroll)
+
+  useEffect(() => {
+    onManualScrollRef.current = onManualScroll
+  }, [onManualScroll])
 
   useEffect(() => {
     if (!scrollRef.current) return
@@ -59,6 +66,13 @@ export function useSheetScrollViewGestures({
 
     const enableScroll = () => {
       node.style.overflowY = originalOverflow
+    }
+
+    const setScrollTop = (nextScrollY: number) => {
+      if (node.scrollTop === nextScrollY) return
+
+      node.scrollTop = nextScrollY
+      onManualScrollRef.current?.(node, nextScrollY)
     }
 
     const handleTouchStart = (e: TouchEvent) => {
@@ -97,7 +111,8 @@ export function useSheetScrollViewGestures({
 
       const isDraggingDown = dy > 0
       const currentScrollY = node.scrollTop
-      const isPaneAtTop = scrollBridge.paneY <= scrollBridge.paneMinY + 5
+      const isPaneAtTop =
+        scrollBridge.isAtTop ?? scrollBridge.paneY <= scrollBridge.paneMinY + 5
 
       scrollBridge.y = currentScrollY
 
@@ -161,7 +176,7 @@ export function useSheetScrollViewGestures({
         const maxScrollY = node.scrollHeight - node.clientHeight
         const newScrollY = Math.max(0, Math.min(maxScrollY, currentScrollY + scrollDelta))
         if (newScrollY !== currentScrollY) {
-          node.scrollTop = newScrollY
+          setScrollTop(newScrollY)
           scrollBridge.y = newScrollY
           if (newScrollY > 0) scrollBridge.scrollStartY = -1
         }

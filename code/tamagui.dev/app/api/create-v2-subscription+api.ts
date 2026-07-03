@@ -3,6 +3,7 @@ import { apiRoute } from '~/features/api/apiRoute'
 import { ensureAuth } from '~/features/api/ensureAuth'
 import { createOrRetrieveCustomer } from '~/features/auth/supabaseAdmin'
 import { getParityDiscount } from '~/features/geo-pricing/parityConfig'
+import { getTrustedCountryCode } from '~/features/geo-pricing/trustedCountry'
 import { assertValidCoupon } from '~/features/stripe/assertValidCoupon'
 import { STRIPE_PRODUCTS } from '~/features/stripe/products'
 import { stripe } from '~/features/stripe/stripe'
@@ -55,8 +56,11 @@ export default apiRoute(async (req) => {
     return Response.json({ error: 'Payment method is required' }, { status: 400 })
   }
 
-  // Get parity discount from Cloudflare header (server-side validation - can't be spoofed)
-  const countryCode = req.headers.get('CF-IPCountry')
+  // Parity discount applies to the actual charge, so the country must come from a
+  // request proven to have transited Cloudflare (getTrustedCountryCode) -- a direct
+  // origin hit can't spoof CF-IPCountry to discount the price. Unverified -> null ->
+  // 0% discount (full price).
+  const countryCode = getTrustedCountryCode(req)
   const parityDiscountPercent = getParityDiscount(countryCode)
 
   // Track created resources for rollback
