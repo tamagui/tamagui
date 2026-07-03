@@ -414,33 +414,21 @@ function cleanupNode(node: HTMLElement) {
 
 const PrevHostNode = new WeakMap<object, HTMLElement | undefined>()
 
-function emitLayoutFromClientRects(node: HTMLElement) {
+// spec: onLayout fires one synchronous initial event on mount and on host swap
+// (RN parity, and before-paint so consumers can position without flicker).
+// bypasses the avoidUpdates queue on purpose; seeds the rect cache so the
+// measurement loop doesn't re-emit an identical event a frame later.
+function emitLayoutSync(node: HTMLElement) {
+  const onLayout = LayoutHandlers.get(node)
+  if (typeof onLayout !== 'function') return
   const parentNode = node.parentElement
   if (!parentNode) return
 
   const nodeRect = node.getBoundingClientRect()
   const parentRect = parentNode.getBoundingClientRect()
-  emitLayoutIfChanged(node, parentNode, nodeRect, parentRect)
-}
-
-async function emitLayoutFromObserver(node: HTMLElement) {
-  if (!ENABLE || strategy !== 'async') {
-    emitLayoutFromClientRects(node)
-    return
-  }
-
-  const parentNode = node.parentElement
-  if (!parentNode) return
-
-  const [nodeRect, parentRect] = await Promise.all([
-    getBoundingClientRectAsync(node),
-    getBoundingClientRectAsync(parentNode),
-  ])
-
-  if (!nodeRect || !parentRect) return
-  if (!Nodes.has(node) || node.parentElement !== parentNode) return
-
-  emitLayoutIfChanged(node, parentNode, nodeRect, parentRect)
+  NodeRectCache.set(node, nodeRect)
+  NodeRectCache.set(parentNode, parentRect)
+  onLayout(getElementLayoutEvent(nodeRect, parentRect, node))
 }
 
 export function useElementLayout(
@@ -456,7 +444,7 @@ export function useElementLayout(
     LayoutDisableKey.set(node, disableKey)
   }
 
-  // detect host swaps after commit and seed the async layout measurement
+  // detect mounts + host swaps after commit and fire the immediate sync layout event
   useIsomorphicLayoutEffect(() => {
     if (!onLayout) return
     const nextNode = ensureWebElement(ref.current?.host)
@@ -469,7 +457,7 @@ export function useElementLayout(
 
     LayoutHandlers.set(nextNode, onLayout)
     observeLayoutNode(nextNode, disableKey)
-    void emitLayoutFromObserver(nextNode)
+    emitLayoutSync(nextNode)
   })
 
   useIsomorphicLayoutEffect(() => {
