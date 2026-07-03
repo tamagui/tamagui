@@ -1514,6 +1514,22 @@ export function createExtractor(
             // if value can be evaluated, extract it and filter it out
             const styleValue = attemptEvalSafe(value)
 
+            // media-like blocks with nested $-keys (eg $theme-dark={{ $sm: {…} }})
+            // can't resolve to static CSS in one pass — keep them on the runtime path
+            if (
+              name[0] === '$' &&
+              (name.startsWith('$theme-') || name.startsWith('$group-')) &&
+              styleValue &&
+              typeof styleValue === 'object' &&
+              Object.keys(styleValue).some((k) => k[0] === '$')
+            ) {
+              if (shouldPrintDebug) {
+                logger.info(`  ! nested media-like key inside ${name}, deopt to runtime`)
+              }
+              inlined.set(name, true)
+              return attr
+            }
+
             // never flatten if a prop isn't a valid static attribute
             // only post prop-mapping
             if (!variants[name] && !isValidStyleKey(name, staticConfig)) {
@@ -2500,6 +2516,42 @@ export function createExtractor(
                 false,
                 debugPropValue || shouldPrintDebug
               )!
+
+              // resolve tokens inside the plucked blocks: they skipped the main
+              // split, so values like "$color5" would flow raw into the emitted
+              // CSS where browsers reject the declaration. run each block through
+              // its own static split so tokens become var(--x) references.
+              // (native never extracts these — it deopts below — so web only.)
+              if (extractedMediaLikeProps && platform !== 'native') {
+                for (const k in extractedMediaLikeProps) {
+                  const block = extractedMediaLikeProps[k]
+                  if (!block || typeof block !== 'object') continue
+                  const blockOut = getSplitStyles(
+                    block,
+                    staticConfig,
+                    defaultTheme,
+                    '',
+                    componentState,
+                    {
+                      ...styleProps,
+                      noClass: true,
+                      fallbackProps: completeProps,
+                    },
+                    undefined,
+                    undefined,
+                    undefined,
+                    undefined,
+                    false,
+                    debugPropValue || shouldPrintDebug
+                  )
+                  if (blockOut) {
+                    extractedMediaLikeProps[k] = {
+                      ...blockOut.style,
+                      ...blockOut.pseudos,
+                    }
+                  }
+                }
+              }
 
               let outProps = {
                 ...(includeProps ? out.viewProps : {}),
