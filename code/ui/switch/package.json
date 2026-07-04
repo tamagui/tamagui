@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch",
-  "version": "2.4.0-1783110557100",
+  "version": "2.4.1",
   "source": "src/index.ts",
   "files": [
     "src",
