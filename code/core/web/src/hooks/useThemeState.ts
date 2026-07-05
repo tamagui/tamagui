@@ -431,9 +431,12 @@ const getNextState = (
   }
 
   const scheme = getScheme(name)
-  // const parentInverses = parentState?.inverses ?? 0
+  const parentInverses = parentState?.inverses ?? 0
   const isInverse = parentState && scheme !== parentState.scheme
-  // const inverses = parentInverses + (isInverse ? 1 : 0)
+  // cumulative from the root: once any level flips scheme, every descendant is
+  // considered inverted vs the OS, even sub-themes that match their immediate
+  // parent (dark_blue under dark). gates the DynamicColorIOS optimization below.
+  const inverses = parentInverses + (isInverse ? 1 : 0)
 
   const nextState = {
     id,
@@ -442,7 +445,7 @@ const getNextState = (
     scheme,
     parentId,
     parentName: parentState?.name,
-    // inverses,
+    inverses,
     isInverse,
     isNew: true,
   } satisfies ThemeState

@@ -202,6 +202,7 @@ export type ThemeState = {
     theme: ThemeParsed;
     parentName?: string;
     isInverse?: boolean;
+    inverses?: number;
     isNew?: boolean;
     parentId?: string;
     scheme?: 'light' | 'dark';

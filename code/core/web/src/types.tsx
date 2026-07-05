@@ -441,6 +441,13 @@ export type ThemeState = {
   theme: ThemeParsed
   parentName?: string
   isInverse?: boolean
+  // cumulative count of scheme inversions from the root down to this state.
+  // isInverse only compares to the immediate parent, so a sub-theme that keeps
+  // its parent's scheme (e.g. dark_blue under dark) has isInverse=false even
+  // though the whole subtree is inverted vs the root/OS. `inverses > 0` means
+  // "this subtree forced a scheme away from the OS somewhere above" and must not
+  // use the DynamicColorIOS scheme-optimization (which always follows the OS).
+  inverses?: number
   isNew?: boolean
   parentId?: string
   scheme?: 'light' | 'dark'
