@@ -97,6 +97,24 @@
       "import": "./dist/esm/v5-subtle.mjs",
       "require": "./dist/cjs/v5-subtle.cjs",
       "default": "./dist/esm/v5-subtle.mjs"
+    },
+    "./v6": {
+      "types": "./types/v6.d.ts",
+      "react-native": "./dist/esm/v6.native.js",
+      "browser": "./dist/esm/v6.mjs",
+      "module": "./dist/esm/v6.mjs",
+      "import": "./dist/esm/v6.mjs",
+      "require": "./dist/cjs/v6.cjs",
+      "default": "./dist/esm/v6.mjs"
+    },
+    "./v6-media": {
+      "types": "./types/v6-media.d.ts",
+      "react-native": "./dist/esm/v6-media.native.js",
+      "browser": "./dist/esm/v6-media.mjs",
+      "module": "./dist/esm/v6-media.mjs",
+      "import": "./dist/esm/v6-media.mjs",
+      "require": "./dist/cjs/v6-media.cjs",
+      "default": "./dist/esm/v6-media.mjs"
     }
   },
   "publishConfig": {

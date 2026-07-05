@@ -28,7 +28,7 @@ export type AnimateProps = BaseProps & PresenceProps;
 *
 *
 */
-export declare function Animate({ children, lazyMount, type, present, passThrough, ...props }: AnimateProps): React.ReactNode;
+export declare function Animate({ children, lazyMount, type, present, passThrough,...props }: AnimateProps): React.ReactNode;
 export {};
 
 //# sourceMappingURL=Animate.d.ts.map
