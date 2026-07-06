@@ -1,4 +1,5 @@
 import { useToastController } from '@tamagui/toast'
+import { navigateToInternalPath } from '~/features/security/navigation'
 import { useUser } from '../user/useUser'
 import { useSupabaseClient } from './useSupabaseClient'
 
@@ -28,18 +29,21 @@ export const useLoginLink = () => {
         // popup was blocked, show toast and redirect after delay
         toast.show('Popup blocked, redirecting to login...')
         setTimeout(() => {
-          window.location.href = '/login'
+          navigateToInternalPath('/login')
         }, 2000)
         return
       }
 
       const handleMessage = async (event: MessageEvent) => {
         if (event.origin !== window.location.origin) return
-        if (event.data?.type === 'SUPABASE_AUTH_SUCCESS') {
+        if (event.source !== popup) return
+        if (!isAuthPopupMessage(event.data)) return
+
+        if (event.data.type === 'SUPABASE_AUTH_SUCCESS') {
           window.removeEventListener('message', handleMessage)
           await supabaseClient.auth.refreshSession()
           userSwr.refresh()
-        } else if (event.data?.type === 'SUPABASE_AUTH_ERROR') {
+        } else if (event.data.type === 'SUPABASE_AUTH_ERROR') {
           window.removeEventListener('message', handleMessage)
           toast.show('Login failed', {
             message: event.data.error || 'Please try again.',
@@ -50,4 +54,26 @@ export const useLoginLink = () => {
       window.addEventListener('message', handleMessage)
     },
   }
+}
+
+function isAuthPopupMessage(
+  data: unknown
+): data is
+  | { type: 'SUPABASE_AUTH_SUCCESS' }
+  | { type: 'SUPABASE_AUTH_ERROR'; error?: string } {
+  if (!data || typeof data !== 'object') {
+    return false
+  }
+
+  const message = data as { type?: unknown; error?: unknown }
+
+  if (message.type === 'SUPABASE_AUTH_SUCCESS') {
+    return true
+  }
+
+  if (message.type !== 'SUPABASE_AUTH_ERROR') {
+    return false
+  }
+
+  return message.error === undefined || typeof message.error === 'string'
 }

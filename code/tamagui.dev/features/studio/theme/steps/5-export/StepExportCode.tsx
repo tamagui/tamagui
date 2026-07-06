@@ -275,13 +275,9 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
         px="$4"
         rounded="$4"
       >
-        <Text
-          fontFamily="$mono"
-          fontSize="$2"
-          dangerouslySetInnerHTML={{
-            __html: content,
-          }}
-        />
+        <Text fontFamily="$mono" fontSize="$2">
+          {content}
+        </Text>
       </ScrollView>
       {maxHeight && (
         <LinearGradient

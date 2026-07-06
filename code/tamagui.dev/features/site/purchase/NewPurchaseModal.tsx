@@ -23,6 +23,7 @@ import {
 import { useUser } from '~/features/user/useUser'
 import { useParityDiscount } from '~/hooks/useParityDiscount'
 import { ProductName } from '~/shared/types/subscription'
+import { navigateToInternalPath } from '~/features/security/navigation'
 import { Link } from '../../../components/Link'
 import { sendEvent } from '../../analytics/sendEvent'
 import { PromoCards } from '../header/PromoCards'
@@ -121,7 +122,7 @@ export function PurchaseModalContents() {
     sendEvent('Pro: Payment Success')
     // Allow analytics beacon time to flush before navigation.
     await new Promise((resolve) => setTimeout(resolve, 1000))
-    window.location.href = '/payment-finished'
+    navigateToInternalPath('/payment-finished')
   }
 
   const handleCheckout = () => {

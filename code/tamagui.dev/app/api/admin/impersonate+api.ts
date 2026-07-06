@@ -121,7 +121,7 @@ export default apiRoute(async (req) => {
           localStorage.setItem('sb-auth-token', JSON.stringify(data.session));
           localStorage.setItem('admin-impersonating', 'true');
           statusEl.textContent = 'Success! Redirecting...';
-          window.location.href = '/account';
+          window.location.assign('/account');
         } else {
           statusEl.textContent = 'No session returned';
         }
