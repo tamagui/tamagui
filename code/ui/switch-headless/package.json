@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/switch-headless",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "source": "src/index.ts",
   "files": [
     "src",
