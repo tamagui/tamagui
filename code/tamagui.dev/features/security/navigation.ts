@@ -11,6 +11,16 @@ type ExternalUrlOptions = {
   allowLocalHttp?: boolean
 }
 
+type RequestOriginOptions = {
+  allowedHostnames?: readonly string[]
+  fallbackOrigin?: string
+}
+
+type RequestLike = Pick<Request, 'headers' | 'url'>
+
+const DEFAULT_ALLOWED_REQUEST_HOSTNAMES = ['tamagui.dev', 'www.tamagui.dev'] as const
+const DEFAULT_PUBLIC_ORIGIN = 'https://tamagui.dev'
+
 export function safeDecodeURIComponent(value: string) {
   try {
     return decodeURIComponent(value)
@@ -111,6 +121,40 @@ export function getSafeSupabaseAuthUrl(value: unknown) {
   })
 }
 
+export function getSafeRequestOrigin(
+  request: RequestLike,
+  options: RequestOriginOptions = {}
+) {
+  const fallbackOrigin = options.fallbackOrigin ?? DEFAULT_PUBLIC_ORIGIN
+  const allowedHostnames =
+    options.allowedHostnames ?? DEFAULT_ALLOWED_REQUEST_HOSTNAMES
+
+  try {
+    const url = new URL(request.url)
+
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return fallbackOrigin
+    }
+
+    if (!isAllowedRequestHostname(url.hostname, allowedHostnames)) {
+      return fallbackOrigin
+    }
+
+    const forwardedProtocol = getForwardedProtocol(request.headers.get('x-forwarded-proto'))
+    if (forwardedProtocol) {
+      url.protocol = `${forwardedProtocol}:`
+    }
+
+    if (url.protocol === 'http:' && !isAllowedLocalHttp(url, true)) {
+      url.protocol = 'https:'
+    }
+
+    return url.origin
+  } catch {
+    return fallbackOrigin
+  }
+}
+
 function getSupabaseOrigin() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 
@@ -131,4 +175,22 @@ function isAllowedLocalHttp(url: URL, allowLocalHttp = false) {
   }
 
   return LOCAL_HOSTNAMES.has(url.hostname)
+}
+
+function isAllowedRequestHostname(
+  hostname: string,
+  allowedHostnames: readonly string[]
+) {
+  const normalizedHostname = hostname.toLowerCase()
+
+  return (
+    LOCAL_HOSTNAMES.has(normalizedHostname) ||
+    allowedHostnames.includes(normalizedHostname)
+  )
+}
+
+function getForwardedProtocol(value: string | null) {
+  const protocol = value?.split(',')[0]?.trim().toLowerCase()
+
+  return protocol === 'http' || protocol === 'https' ? protocol : null
 }

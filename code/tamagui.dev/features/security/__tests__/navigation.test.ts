@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   getSafeExternalUrl,
   getSafeInternalPath,
+  getSafeRequestOrigin,
   getSafeSupabaseAuthUrl,
   safeDecodeURIComponent,
 } from '../navigation'
@@ -74,5 +75,31 @@ describe('security navigation helpers', () => {
     expect(
       getSafeSupabaseAuthUrl('https://evil.test/auth/v1/authorize?provider=github')
     ).toBe(null)
+  })
+
+  it('keeps trusted request origins on https behind a TLS proxy', () => {
+    expect(
+      getSafeRequestOrigin(
+        new Request('http://tamagui.dev/api/auth/callback', {
+          headers: { 'x-forwarded-proto': 'https' },
+        })
+      )
+    ).toBe('https://tamagui.dev')
+
+    expect(
+      getSafeRequestOrigin(new Request('http://tamagui.dev/api/auth/callback'))
+    ).toBe('https://tamagui.dev')
+  })
+
+  it('allows local request origins without upgrading to https', () => {
+    expect(
+      getSafeRequestOrigin(new Request('http://localhost:8091/api/auth/callback'))
+    ).toBe('http://localhost:8091')
+  })
+
+  it('falls back for untrusted request hosts', () => {
+    expect(
+      getSafeRequestOrigin(new Request('https://evil.test/api/auth/callback'))
+    ).toBe('https://tamagui.dev')
   })
 })
