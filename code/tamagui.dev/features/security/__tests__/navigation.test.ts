@@ -98,8 +98,8 @@ describe('security navigation helpers', () => {
   })
 
   it('falls back for untrusted request hosts', () => {
-    expect(
-      getSafeRequestOrigin(new Request('https://evil.test/api/auth/callback'))
-    ).toBe('https://tamagui.dev')
+    expect(getSafeRequestOrigin(new Request('https://evil.test/api/auth/callback'))).toBe(
+      'https://tamagui.dev'
+    )
   })
 })

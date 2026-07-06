@@ -126,8 +126,7 @@ export function getSafeRequestOrigin(
   options: RequestOriginOptions = {}
 ) {
   const fallbackOrigin = options.fallbackOrigin ?? DEFAULT_PUBLIC_ORIGIN
-  const allowedHostnames =
-    options.allowedHostnames ?? DEFAULT_ALLOWED_REQUEST_HOSTNAMES
+  const allowedHostnames = options.allowedHostnames ?? DEFAULT_ALLOWED_REQUEST_HOSTNAMES
 
   try {
     const url = new URL(request.url)
@@ -140,7 +139,9 @@ export function getSafeRequestOrigin(
       return fallbackOrigin
     }
 
-    const forwardedProtocol = getForwardedProtocol(request.headers.get('x-forwarded-proto'))
+    const forwardedProtocol = getForwardedProtocol(
+      request.headers.get('x-forwarded-proto')
+    )
     if (forwardedProtocol) {
       url.protocol = `${forwardedProtocol}:`
     }
@@ -177,10 +178,7 @@ function isAllowedLocalHttp(url: URL, allowLocalHttp = false) {
   return LOCAL_HOSTNAMES.has(url.hostname)
 }
 
-function isAllowedRequestHostname(
-  hostname: string,
-  allowedHostnames: readonly string[]
-) {
+function isAllowedRequestHostname(hostname: string, allowedHostnames: readonly string[]) {
   const normalizedHostname = hostname.toLowerCase()
 
   return (
