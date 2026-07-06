@@ -1,3 +1,6 @@
+Image "types of property ''aria-hidden'' are incompatible." improve compat with real img
+
+
 vite 8 monorepo fix:
 - added `tamagui-monorepo-exports-fix` plugin to `@tamagui/vite-plugin`
 - vite 8 (rolldown) resolves workspace subpath imports to filesystem dirs instead of package.json exports
