@@ -1,24 +1,79 @@
+v3 release plan:
+
+- remove deprecated / duplicate API paths
+  - `focusable` => `tabIndex`
+  - `fullscreen` => `inset: 0, position: 'absolute'`
+  - remove deprecated stuff
+  - clean out old configs and compatibility paths, at least v1-v3
+
+- simplify theme model
+  - remove component themes / remove `name` from `styled()`
+  - component example just show using theme="surface1" for example
+  - remove `inverse` in favor of SSR-safe inverse sub-themes (accent already is)
+  - maybe make theme builder have easy "inverse" optoin so accent can be something else
+
+- core styling/runtime cleanup
+  - remove `styleable`
+  - remove forwardRef
+  - remove `inlineWhenUnflattened`
+  - remove `usePropsAndStyle` from icon `themed` or replace the pattern
+  - update button a bit to how i do them
+  - make icons default to font sizes not size tokens
+  - consider the line height default as a multiplier work we did
+  - remove `getToken` / shift weirdness in default styling
+
+- component simplification
+  - make props more consistent across components
+  - clean up composable component structure, especially Dialog weirdness
+    - there's a lot of incosistencies when u study across the different components in how they do portals, focus, other props
+  - simplify Select/ListItem where it directly helps perf or API clarity
+  - consider removing or simplifying `ThemeableStack` / `SizableStack`
+
+- Adapt
+  - making Adapt work however you want via render callback is a big win, basically a render callback that lets you decide how to render giving you the ressolved typed props. we could even de-couple any current native integrations so we only have a few recommended ones we wexport at like @tamagui/sheet/adapt-to-[some-native-library] for example
+
+  - remove RN entirely from web (eject input, scrollview)
+
+- consider
+  - conditional values or value objects
+  - see v3 cleanups
+  - native can have a non-signal mode for faster initial render
+  - activeStyle
+  - remove the flat mode we spiked in tw branch
+  - style improvements of some sort:
+    - light-dark() support
+    - css if functions of some sort
+    - bringing back some sort of "flat-mode" for tamagui
+      - bg="ios:light(red) dark(blue)"
+      - boxShadow="dark(0 0 10px $shadow5)"
+      - green-red-blue(#xxx, $some, $thing)
+      - light-dark(hover-press($red2, $red3), hover-press($red3, $red2))
+
+---
+
 # compiler improvements (updated June 2026)
 
 5-scenario bench (500 components simple/rich/group, 150 heavy, Chromium, 1 run):
 
-| scenario         | compiled | baseline | nativewind v5 | uniwind |
-|------------------|----------|----------|---------------|---------|
-| simple mount     | 7.2ms    | 7.1ms    | 18.1ms (2.5x) | 23.1ms  |
-| rich mount       | 7.2ms    | 6.4ms    | 14.1ms (2.2x) | 17.5ms  |
-| **group hover**  | **396ms (19.4x!)** | 20.4ms | 52.6ms (2.6x) | 59.8ms  |
-| **heavy page**   | **148ms (13.6x!)** | 10.9ms | 33.4ms (3.1x) | 39.7ms  |
-| animated spring  | 35.5ms (4.9x) | 7.3ms | 14.5ms (2.0x) | 6.5ms   |
+| scenario        | compiled           | baseline | nativewind v5 | uniwind |
+| --------------- | ------------------ | -------- | ------------- | ------- |
+| simple mount    | 7.2ms              | 7.1ms    | 18.1ms (2.5x) | 23.1ms  |
+| rich mount      | 7.2ms              | 6.4ms    | 14.1ms (2.2x) | 17.5ms  |
+| **group hover** | **396ms (19.4x!)** | 20.4ms   | 52.6ms (2.6x) | 59.8ms  |
+| **heavy page**  | **148ms (13.6x!)** | 10.9ms   | 33.4ms (3.1x) | 39.7ms  |
+| animated spring | 35.5ms (4.9x)      | 7.3ms    | 14.5ms (2.0x) | 6.5ms   |
 
 **priority 1 - group styles compiler optimization (19x slowdown is the biggest issue)**:
+
 - `group` prop and `$group-*-*` children are ALL in deoptProps → compiler bails out the entire tree
 - 500 group items × ~3 children = 1500 TamaguiComponent instances all running full getSplitStyles
-- goal: compile group parent to a div with data-group attribute; compile children's $group-* styles
+- goal: compile group parent to a div with data-group attribute; compile children's $group-\* styles
   to CSS :has([data-group]) selectors on web; preserve group JS emitter only for native
 - location: createExtractor.ts deoptProps (line 1088-1109), extractToClassNames.ts
 - estimated improvement: group mount 396ms → ~20ms (matching inline JS hover)
 
 **priority 2 - heavy/dynamic props partial compilation**:
+
 - `width={80 + ((i * 17) % 60)}` dynamic values prevent extraction of ANY styles
 - even fully static siblings of a dynamic prop don't get extracted
 - goal: extract the static props that ARE constant, leave only the dynamic ones as style={}
@@ -26,6 +81,7 @@
 - estimated improvement: heavy page 148ms → ~25ms
 
 **priority 3 - animated spring (was previously highest priority)**:
+
 - compiler bails on `animation` prop, costs 35.5ms (4.9x vs baseline)
 - lower priority than group because NativeWind also struggles here (14.5ms, 2x baseline)
   and animated components are less common than group/dynamic in real apps
@@ -39,6 +95,7 @@ but group compile deopt completely negates this advantage for group-heavy UIs
 ---
 
 vite 8 monorepo fix:
+
 - added `tamagui-monorepo-exports-fix` plugin to `@tamagui/vite-plugin`
 - vite 8 (rolldown) resolves workspace subpath imports to filesystem dirs instead of package.json exports
 - see https://github.com/vitejs/vite/issues/11676 and https://github.com/vitejs/vite/issues/20390
@@ -53,7 +110,6 @@ before v2 final:
 - // import '@tamagui/native/setup-safe-area'
 
 - activeStyle / accept not taking shorthands
-
   - wait on Switch.Thumb is is oppsoite
 
 - accept type not looking right?
@@ -75,11 +131,9 @@ and cant put another View next to Content and have it show
 - RN animation driver perf: remove useMemo, diff style in layout effect only (not render) for concurrent mode safety. compute diff in render (pure, read-only), apply + update refs in effect. only create/update Animated.Values for changed keys instead of re-processing all keys every render.
 
 - /Users/n8/tamagui/code/core/web/src/helpers/defaultAnimationDriver.tsx
-
   - should just be native on native, css on web? use platfomr extensions
 
 - split input/textinput into SizableTextInput / SizableInput or not?
-
   - otherwise its annoying af if you want your OWN size
 
 - fullscreen prop deprecated, use `inset: 0, position: 'absolute'` instead
@@ -91,11 +145,9 @@ and cant put another View next to Content and have it show
 - reanimated on native - no transitino can still avoidReRenders just set duration: 0 timing, should be faster
 
 - css driver can avoidReRenders
-
   - reanimated too but requires testing native + worklets
 
 - Text weirdness fixes (explore)
-
   - remove suppressHighlighting / margin 0 default from Text
   - fix display: inline issue
   - see what react-strict-dom is doing
@@ -108,7 +160,6 @@ and cant put another View next to Content and have it show
       </div>
 
 - smaller bugfixes/things to check work:
-
   - ensure onlyAllowShorthands changes types properly
   - tooltip: expects zIndex but shorthand overrides and doesn't work
   - small bug, circular prop https://x.com/flexbox_/status/1907415294047379748
@@ -116,7 +167,6 @@ and cant put another View next to Content and have it show
   - seems <Switch checked defaultChecked> isnt showing in the checked position
 
 - option for compiler to optimize $theme-, $platform-, $group- media values (currently bails from optimization)
-
   - useTheme().x.val may have bug on light/dark switch
   - react native 78 dialogs not working
     - https://discord.com/channels/909986013848412191/1354084025895227423/1354084025895227423
@@ -130,17 +180,14 @@ and cant put another View next to Content and have it show
 - if Popover can not be portaled that would be useful for some use cases
 
 - RadioGroup.Indicator can't use AnimatePresence i think because .styleable()
-
   - styleable shouldn't probably do anything with presence because the child should expect to handle that, at least need to double check taht
 
 - bug: if you name a file `polyfill-native.ts` tamagui-build doesnt output the .native files properly
 
 - When using <Adapt.Contents /> inside an Adapt when="maxMd" it seems to hide the children before fully closed
-
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723409606028379
 
 - When opening a fit Sheet while keyboard is active (at least on ios) the height of the sheet is off
-
   - https://uniswapteam.slack.com/archives/C07AHFK2QRK/p1723475036176189
 
 - AnimatePresence leaving things in DOM
@@ -179,7 +226,6 @@ and cant put another View next to Content and have it show
 - MCP works w your local tamagui config?
 
 - perf: could avoid even creating style rules, easy / big win:
-
   - note that in addStyleToInsertRules it checks if shouldInsert
   - note that we create all the style rules before we actually check if should insert
   - refactor: not _super_ simple in that the check may need to happen inside getStylesAtomic for example and it also needs to check the startedUnhydrated, so just need to refactor a bit so we have a "shouldInsert" a the top of getSplitStyles properly set up, then we can maybe pass to getStylesAtomic and anywhere ebfore we actually create the rulestoinsert
@@ -205,11 +251,9 @@ const padding = !props.unstyled
 animations improvements:
 
 - make tamagui package work in some simple way
-
   - probably making tamagui + tamagui/ui both work is fine
 
 - react-native-web-lite
-
   - tree shakeable, smaller, fixes things like data- attributes not passing
   - shares core style logic with tamagui for smaller bundles used together
   - outstanding bug? https://discord.com/channels/909986013848412191/1354817119233118288/1354839267771285546
@@ -217,7 +261,6 @@ animations improvements:
 - docs on reprop context on ios new arch
 
 - in SheetImplCustom bad logic for pulling up when scroll view inside
-
   - if scrollview isn't able to scroll we shouldn't disable that behavior:
     `if (scrollEnabled.current && hasScrollView.current && isDraggingUp) {`
     - we can: pass in scrollable node selector
@@ -226,7 +269,6 @@ animations improvements:
 - apply visibility hidden to fully hidden popover for perf gains
 
 - refresh site hero:
-
   - 100% features work the same cross-platform
   - optionally compile-time optimized, but 100% runtime feature-set
   - 0-dependency: no / faster than react-native-web
@@ -240,13 +282,11 @@ animations improvements:
 - popover bring back dismissable - document dismissable etc
 
 - escape on tamagui sheet doesn't close in general keyboard accessibility
-
   - check radix sheet and compare and improve
 
 - announcement
 
 - group props require the prop key to be stable like animations
-
   - saves 2 hooks in every component
   - in dev mode add a extra component around every component
     - make it so it automatically handles animation/group changes without breaking
@@ -270,18 +310,15 @@ v3:
 - remove `name` from styled()
 - remove inverse in favor of sub-themes that can inverse already ssr safe
 - naming:
-
   - themes => variables, control any property
   - remove tokens in favor of variables
 
 - RSD - no View + Text (just Element and we can extend it later)
-
   - compiler can optimize
   - mimic text inhertance on native (or remove it on web)
   - https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
 - todo:
-
   - remove $true tokens and concept
   - createStyledContext should be react compiler friendly and avoid mutating Context, just have another separate hook or soemthing.
   - remove themeBuilder from plugins in favor of just using ENV to tree shake
@@ -350,12 +387,10 @@ createCore<CustomTypes>({
 ```
 
 - can we remove the need for separate Text/View?
-
   - seems like we could scan just the direct descendents?
     https://github.com/facebook/react-strict-dom/blob/429e2fe1cb9370c59378d9ba1f4a40676bef7555/packages/react-strict-dom/src/native/modules/createStrictDOMComponent.js#L529
 
 - light-dark()
-
   - this is an official css thing so would be easy-ish to implement
 
 - run over components and review for removing some assumptions about `size`
@@ -370,7 +405,6 @@ createCore<CustomTypes>({
 - Sheet.overlay is memoized incorrectly props dont update it
 
 - popover trigger should send an event to close tooltips automatically on open
-
   - closeTooltips() helper
   - tooltip prop `closeOnGlobalPress`
 
@@ -403,24 +437,20 @@ $gtSm: false,
 - small win: `useTheme()` could take a theme name to use a diff theme than the current one
 
 - bug in useMedia + compiler
-
   - https://app.graphite.dev/github/pr/Uniswap/universe/10626/fix-web-toast-alignment
 
 - AnimatePresence refactor:
-
   - https://x.com/mattgperry/status/1816842995758498017?s=46&t=5wFlU_OsfjJ0sQPMFbtG0A
 
 - className merging in variants!
   - `positionSticky: { true: { className: 'position-sticky' } }`
 - opacity `/50`
 - AnimateList
-
   - like AnimatePresence but for >1 items
   - AnimatePresence keepMounted={} prop?
   - can handle direction + let you control mount behavior
 
 - remove scroll not working when Dialog adapted to Sheet on mobile
-
   - we may want Sheet to have its own removeScroll in this case
 
 - adapt nested-ScrollView problem: when a Dialog adapts to a Sheet, the Sheet already wraps contents in Sheet.ScrollView, so any inner ScrollView the consumer renders (e.g. DialogBody's `scrollable`) double-nests and content overscrolls while the sheet drags. right now dialog.tsx hand-detects `$xs` and skips its own ScrollView - that's a leaky workaround. need something better: either Adapt automatically unwraps/flattens a redundant ScrollView when adapting, or a documented pattern (e.g. a context flag the adapted child reads to know "a Sheet.ScrollView already owns scrolling, don't add one")
@@ -453,7 +483,6 @@ $gtSm: false,
 - settings page in takeout SSR hydration issue due to useThemeSetting
 
 - animatedStyle showing up in animated component snapshot on native
-
   - add some native snapshots in ci tests
 
 - addTheme updateTheme regression needs a test
@@ -479,7 +508,6 @@ $gtSm: false,
 - get takeout users studio access
 
 - studio color scales first class:
-
   - adding a color/scale really adds a theme
   - but also adds $colorName1 => $colorNameX to base theme
 
