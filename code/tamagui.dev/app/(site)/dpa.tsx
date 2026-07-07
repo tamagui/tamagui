@@ -1,5 +1,5 @@
 import { ThemeTint } from '@tamagui/logo'
-import { getMDXComponent } from 'mdx-bundler/client'
+import { getMDXComponent } from '@vxrn/mdx-rust/client'
 import { useLoader } from 'one'
 import React from 'react'
 import { Container } from '~/components/Containers'

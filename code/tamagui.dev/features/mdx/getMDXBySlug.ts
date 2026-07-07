@@ -5,13 +5,15 @@ import {
   getMDXBySlug as getMDXBySlugBase,
   getAllFrontmatter,
   getAllVersionsFromPath,
-} from '@vxrn/mdx'
+  type GetMDXOptions,
+} from '@vxrn/mdx-rust'
+import { highlightPlugin } from './highlightPlugin'
 
 export { getAllFrontmatter, getAllVersionsFromPath }
 export { getCompilationExamples } from './getCompilationExamples'
 
-// Resolve @tamagui/demos package location
-// require.resolve gives us dist/cjs/index.js, so go up 3 levels to get package root
+// resolve @tamagui/demos so `template=X` fences can inline the XDemo.tsx source.
+// require.resolve gives dist/cjs/index.js, so go up 3 levels to the package root.
 const requireFn =
   typeof require === 'undefined' ? createRequire(import.meta.url) : require
 let demosPath = ''
@@ -22,67 +24,37 @@ try {
   // may fail in SSG worker context where node_modules aren't fully accessible
 }
 
-// Simple tree visitor that doesn't depend on unist-util-visit
-// (Vite has issues with unist-util-visit ESM exports)
-function visitNodes(node: any, callback: (node: any) => void) {
-  callback(node)
-  if (node.children && Array.isArray(node.children)) {
-    for (const child of node.children) {
-      visitNodes(child, callback)
+const templateRe = /\btemplate=(?:"([^"]*)"|'([^']*)'|([^"'\s]+))/
+
+// satteri mdast plugin: inline the demo source for `template=X` hero fences.
+// leaves node.meta untouched so highlightPlugin can still read line/hero/etc.
+const heroTemplate = {
+  name: 'tamagui-hero-template',
+  code(node: any, ctx: any) {
+    const meta: string = node.meta || ''
+    const match = meta.match(templateRe)
+    const templateName = match ? match[1] ?? match[2] ?? match[3] : undefined
+    if (!templateName || !demosPath) return
+    try {
+      const source = fs.readFileSync(
+        path.join(demosPath, 'src', `${templateName}Demo.tsx`),
+        'utf8'
+      )
+      ctx.replaceNode(node, { ...node, value: source })
+    } catch (err: any) {
+      console.warn(`[tamagui-hero-template] ${templateName}:`, err.message)
     }
-  }
+  },
 }
 
-// Custom rehypeHeroTemplate that parses meta attribute directly
-// This is needed because extraPlugins run before rehypeMetaAttribute
-const metaRe = /\b([-\w]+)(?:=(?:"([^"]*)"|'([^']*)'|([^"'\s]+)))?/g
-
-const rehypeHeroTemplate = () => {
-  return (tree: any) => {
-    visitNodes(tree, (node: any) => {
-      if (node.type !== 'element' || node.tagName !== 'code') return
-
-      // Parse meta to get template property (before rehypeMetaAttribute runs)
-      let templateName: string | undefined
-      if (node.data?.meta) {
-        metaRe.lastIndex = 0
-        let match
-        while ((match = metaRe.exec(node.data.meta))) {
-          if (match[1] === 'template') {
-            templateName = match[2] || match[3] || match[4] || ''
-            break
-          }
-        }
-      }
-
-      // Also check properties in case rehypeMetaAttribute already ran
-      if (!templateName && node.properties?.template) {
-        templateName = node.properties.template
-      }
-
-      if (!templateName) return
-
-      const templatePath = path.join(demosPath, 'src', `${templateName}Demo.tsx`)
-
-      try {
-        const source = fs.readFileSync(templatePath, 'utf8')
-
-        // Handle case where code block has no children
-        if (!node.children || node.children.length === 0) {
-          node.children = [{ type: 'text', value: source }]
-        } else if (node.children[0]) {
-          node.children[0].value = source
-        }
-      } catch (err: any) {
-        console.warn(
-          `[rehypeHeroTemplate] Error loading template ${templateName}:`,
-          err.message
-        )
-      }
-    })
-  }
-}
-
-export const getMDXBySlug: typeof getMDXBySlugBase = (basePath, slug, extraPlugins) => {
-  return getMDXBySlugBase(basePath, slug, [rehypeHeroTemplate, ...(extraPlugins || [])])
+// tamagui.dev keeps its native <DocCodeBlock> (copy button, hero collapse, tabs),
+// so we compile with satteri but skip Expressive Code and feed DocCodeBlock the
+// same prism-tokenized output + meta props it got from the old rehype pipeline.
+export const getMDXBySlug: typeof getMDXBySlugBase = (basePath, slug, options) => {
+  return getMDXBySlugBase(basePath, slug, {
+    ...options,
+    expressiveCode: false,
+    mdastPlugins: [heroTemplate, ...(options?.mdastPlugins ?? [])],
+    hastPlugins: [highlightPlugin, ...(options?.hastPlugins ?? [])],
+  } as GetMDXOptions)
 }
