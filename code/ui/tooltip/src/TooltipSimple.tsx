@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import { getSpace } from '@tamagui/get-token'
 import type { SizableStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
@@ -13,7 +14,7 @@ export type TooltipSimpleProps = TooltipProps & {
   contentProps?: SizableStackProps
 }
 
-export const TooltipSimple: React.FC<TooltipSimpleProps> = React.forwardRef(
+export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
   ({ label, children, contentProps, disabled, ...tooltipProps }, ref) => {
     'use no memo'
 

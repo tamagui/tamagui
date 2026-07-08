@@ -2,7 +2,13 @@
 // https://github.com/radix-ui/primitives/blob/cfd8dcba5fa6a0e751486af418d05a7b88a7f541/packages/react/dismissable-layer/src/DismissableLayer.tsx#L324
 
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { Slot, TamaguiElement, View, composeEventHandlers } from '@tamagui/core'
+import {
+  Slot,
+  TamaguiElement,
+  View,
+  composeEventHandlers,
+  createRefComponent,
+} from '@tamagui/core'
 import { useEscapeKeydown } from '@tamagui/use-escape-keydown'
 import { useEvent } from '@tamagui/use-event'
 import * as React from 'react'
@@ -148,7 +154,7 @@ export function useDismissableLayersAbove(ref: React.RefObject<HTMLElement | nul
   return count
 }
 
-const Dismissable = React.forwardRef<
+const Dismissable = createRefComponent<
   HTMLElement,
   DismissableProps & { asChild?: boolean }
 >((props, forwardedRef) => {
@@ -339,7 +345,7 @@ Dismissable.displayName = DISMISSABLE_LAYER_NAME
 
 const BRANCH_NAME = 'DismissableBranch'
 
-const DismissableBranch = React.forwardRef<TamaguiElement, DismissableBranchProps>(
+const DismissableBranch = createRefComponent<TamaguiElement, DismissableBranchProps>(
   (props, forwardedRef) => {
     const { branches: branchesProp, ...rest } = props
     const context = React.useContext(DismissableContext)

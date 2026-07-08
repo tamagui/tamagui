@@ -1,4 +1,4 @@
-import { useComposedRefs } from '@tamagui/compose-refs'
+import { createRefComponent, useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { idle, useAsyncEffect } from '@tamagui/use-async'
 import { useEvent } from '@tamagui/use-event'
@@ -18,7 +18,7 @@ type FocusableTarget = HTMLElement | { focus(): void }
 
 type FocusScopeElement = HTMLDivElement
 
-const FocusScope = React.forwardRef<FocusScopeElement, FocusScopeProps>(
+const FocusScope = createRefComponent<FocusScopeElement, FocusScopeProps>(
   function FocusScope(
     { __scopeFocusScope, ...props }: ScopedProps<FocusScopeProps>,
     forwardedRef
@@ -157,7 +157,7 @@ function setupFocusTrap(
 
 export function useFocusScope(
   props: FocusScopeProps,
-  forwardedRef: React.ForwardedRef<FocusScopeElement>
+  forwardedRef?: React.Ref<FocusScopeElement>
 ) {
   const {
     loop = false,

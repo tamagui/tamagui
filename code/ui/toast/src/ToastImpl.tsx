@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import { useIsPresent } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
@@ -161,7 +162,7 @@ type ToastImplProps = ScopedProps<
   ToastImplPrivateProps & ToastImplFrameProps & ToastExtraProps
 >
 
-const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
+const ToastImpl = createRefComponent<TamaguiElement, ToastImplProps>(
   (props, forwardedRef) => {
     const {
       scope,

@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { isWeb } from '@tamagui/constants'
 import { getGestureHandler } from '@tamagui/native'
@@ -244,7 +245,7 @@ function resolveSwipeDirection(
   return 'horizontal'
 }
 
-const ToastRoot = React.forwardRef<TamaguiElement, ToastRootProps>(
+const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
   function ToastRoot(props, _ref) {
     const {
       children,

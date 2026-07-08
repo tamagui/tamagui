@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 // forked from radix-ui
 // https://github.com/radix-ui/primitives/blob/main/packages/react/alert-dialog/src/AlertDialog.tsx
 
@@ -152,7 +153,7 @@ type AlertDialogContentProps = ScopedProps<
   Omit<DialogContentProps, 'onPointerDownOutside' | 'onInteractOutside'>
 >
 
-const AlertDialogContent = React.forwardRef<TamaguiElement, AlertDialogContentProps>(
+const AlertDialogContent = createRefComponent<TamaguiElement, AlertDialogContentProps>(
   function AlertDialogContent(props, forwardedRef) {
     const { scope, children, ...contentProps } = props
     const dialogScope = getAlertDialogScope(scope)

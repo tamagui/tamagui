@@ -15,6 +15,7 @@ import {
   useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
+  createRefComponent,
 } from '@tamagui/web'
 import {
   type AnimationOptions,
@@ -25,14 +26,7 @@ import {
   useMotionValueEvent,
   type ValueTransition,
 } from 'motion/react'
-import React, {
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 const isServer = typeof window === 'undefined'
 
@@ -856,7 +850,7 @@ const MotionText = createMotionView('span')
 function createMotionView(defaultTag: string) {
   const isText = defaultTag === 'span'
 
-  const Component = forwardRef((propsIn: any, ref) => {
+  const Component = createRefComponent((propsIn: any, ref) => {
     const { forwardedRef, animation, render = defaultTag, style, ...propsRest } = propsIn
     const [scope, animate] = useAnimateSSRSafe()
     const hostRef = useRef<HTMLElement>(null)

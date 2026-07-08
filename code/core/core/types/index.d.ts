@@ -1,4 +1,5 @@
 export * from '@tamagui/web';
+export { createRefComponent, type RefProp } from '@tamagui/compose-refs';
 import type { StackNonStyleProps, StackStyleBase, TamaDefer, TamaguiComponent, TamaguiElement, TamaguiProviderProps, TamaguiTextElement, TextNonStyleProps, TextProps, TextStylePropsBase } from '@tamagui/web';
 import { createTamagui as createTamaguiWeb } from '@tamagui/web';
 import type { RNTextProps, RNViewProps } from './reactNativeTypes';

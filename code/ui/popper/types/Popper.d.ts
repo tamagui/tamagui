@@ -117,43 +117,7 @@ export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponen
     unstyled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const PopperContent: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "unstyled" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "elevate" | "bordered" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    unstyled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    circular?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    unstyled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    circular?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-    size?: import("@tamagui/core").SizeTokens | undefined;
-    unstyled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    transparent?: boolean | undefined;
-    circular?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-}>> & {
-    scope?: string;
-    /**
-     * Enable smooth animation when the content position changes (e.g., when flipping sides)
-     */
-    animatePosition?: boolean | "even-when-repositioning";
-    /** @deprecated Use `animatePosition` instead */
-    enableAnimationForPositionChange?: boolean | "even-when-repositioning";
-    passThrough?: boolean;
-} & React.RefAttributes<TamaguiElement>>;
+export declare const PopperContent: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopperContentProps>;
 export type PopperArrowExtraProps = {
     offset?: number;
     size?: SizeTokens;
@@ -168,8 +132,6 @@ export declare const PopperArrowFrame: import("@tamagui/core").TamaguiComponent<
     unstyled?: boolean | undefined;
     elevation?: number | SizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const PopperArrow: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | SizeTokens | undefined;
-}>, "elevation"> & import("@tamagui/stacks").StackVariants & PopperArrowExtraProps & React.RefAttributes<TamaguiElement>>;
+export declare const PopperArrow: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopperArrowProps>;
 export {};
 //# sourceMappingURL=Popper.d.ts.map

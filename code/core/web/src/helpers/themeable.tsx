@@ -9,16 +9,13 @@ export function themeable<ComponentType extends (props: any) => any>(
   staticConfig: Partial<StaticConfig>,
   optimize = false
 ) {
-  const withThemeComponent = React.forwardRef(function WithTheme(
-    props: ThemeableProps,
-    ref
-  ) {
+  const withThemeComponent = function WithTheme(props: ThemeableProps & { ref?: any }) {
     'use no memo'
 
     const userDefaults = getDefaultProps(staticConfig, props.componentName)
     const defaultTheme = userDefaults?.theme
     const defaultResetTheme = userDefaults?.themeReset
-    const { theme, componentName, themeReset, ...rest } = props
+    const { theme, componentName, themeReset, ref, ...rest } = props
 
     let overriddenContextProps: object | undefined
     const context = staticConfig?.context
@@ -89,7 +86,7 @@ export function themeable<ComponentType extends (props: any) => any>(
     }
 
     return contents
-  })
+  }
 
   const withTheme: any = withThemeComponent
   withTheme.displayName = `Themed(${

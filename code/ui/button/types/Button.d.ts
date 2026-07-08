@@ -67,7 +67,7 @@ declare const ButtonComponent: import("@tamagui/web").TamaguiComponent<Omit<impo
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
-export declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+export declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
@@ -92,7 +92,9 @@ export declare const Button: import("react").ForwardRefExoticComponent<Omit<impo
     formTarget?: string;
     name?: string;
     value?: string | readonly string[] | number;
-} & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+} & {
+    ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: number | SizeTokens | undefined;
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;

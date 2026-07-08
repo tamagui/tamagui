@@ -1,9 +1,9 @@
 import * as React from 'react';
 import type { FocusScopeProps } from './types';
 type FocusScopeElement = HTMLDivElement;
-declare const FocusScope: React.ForwardRefExoticComponent<FocusScopeProps & React.RefAttributes<HTMLDivElement>>;
-export declare function useFocusScope(props: FocusScopeProps, forwardedRef: React.ForwardedRef<FocusScopeElement>): {
-    ref: (node: HTMLDivElement) => void;
+declare const FocusScope: import("@tamagui/compose-refs").RefComponent<HTMLDivElement, FocusScopeProps>;
+export declare function useFocusScope(props: FocusScopeProps, forwardedRef?: React.Ref<FocusScopeElement>): {
+    ref: (node: HTMLElement) => void;
     onKeyDown: (event: React.KeyboardEvent) => void;
     asChild?: boolean;
 };

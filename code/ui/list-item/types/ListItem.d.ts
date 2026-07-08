@@ -21,13 +21,15 @@ declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<import("@ta
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
-export declare const ListItem: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+export declare const ListItem: FunctionComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;
     unstyled?: boolean | undefined;
     active?: boolean | undefined;
-}>, keyof ListItemExtraProps> & ListItemExtraProps & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
+}>, keyof ListItemExtraProps> & ListItemExtraProps & {
+    ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
     size?: SizeTokens | undefined;
     variant?: "outlined" | undefined;
     disabled?: boolean | undefined;

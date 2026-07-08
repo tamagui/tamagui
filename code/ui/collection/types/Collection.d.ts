@@ -10,14 +10,14 @@ declare function createCollection<ItemElement extends TamaguiElement, ItemData =
     } & {
         scope?: any;
     }>;
-    readonly Slot: React.ForwardRefExoticComponent<CollectionProps & {
+    readonly Slot: import("@tamagui/core").RefComponent<TamaguiElement | undefined, CollectionProps & {
         scope?: any;
-    } & React.RefAttributes<TamaguiElement | undefined>>;
-    readonly ItemSlot: React.ForwardRefExoticComponent<React.PropsWithoutRef<ItemData & {
+    }>;
+    readonly ItemSlot: import("@tamagui/core").RefComponent<ItemElement | undefined, ItemData & {
         children: React.ReactNode;
     } & {
         scope?: any;
-    }> & React.RefAttributes<ItemElement | undefined>>;
+    }>;
 }, (scope: string) => () => ({
     ref: React.RefObject<ItemElement | undefined>;
 } & ItemData)[]];

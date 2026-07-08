@@ -27,10 +27,10 @@ export declare function useIsInsideDismissable(ref: React.RefObject<HTMLElement 
  * returns the count of layers that are ancestors of the element
  */
 export declare function useDismissableLayersAbove(ref: React.RefObject<HTMLElement | null>): number;
-declare const Dismissable: React.ForwardRefExoticComponent<DismissableProps & {
+declare const Dismissable: import("@tamagui/compose-refs").RefComponent<HTMLElement, DismissableProps & {
     asChild?: boolean;
-} & React.RefAttributes<HTMLElement>>;
-declare const DismissableBranch: React.ForwardRefExoticComponent<DismissableBranchProps & React.RefAttributes<TamaguiElement>>;
+}>;
+declare const DismissableBranch: import("@tamagui/compose-refs").RefComponent<TamaguiElement, DismissableBranchProps>;
 export type PointerDownOutsideEvent = CustomEvent<{
     originalEvent: PointerEvent;
 }>;

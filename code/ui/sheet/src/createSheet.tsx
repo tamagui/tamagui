@@ -7,14 +7,14 @@ import type {
   TamaguiComponentExpectingVariants,
   TamaguiElement,
 } from '@tamagui/core'
-import { View } from '@tamagui/core'
+import { View, createRefComponent } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
-import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react'
-import { forwardRef, memo, useMemo, useEffect, useRef } from 'react'
+import type { FunctionComponent, ReactNode, Ref } from 'react'
+import { memo, useMemo, useEffect, useRef } from 'react'
 import type { View as RNView } from 'react-native'
 import { Platform } from 'react-native'
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
@@ -256,13 +256,14 @@ export function createSheet<
         </>
       )
     }
-  ) as any as ForwardRefExoticComponent<
-    SheetScopedProps<
-      Omit<GetProps<typeof Frame>, keyof ExtraFrameProps> & ExtraFrameProps
+  ) as any as (
+    props: SheetScopedProps<
+      Omit<GetProps<typeof Frame>, keyof ExtraFrameProps> &
+        ExtraFrameProps & { ref?: Ref<RNView> }
     >
-  >
+  ) => ReactNode
 
-  const Sheet = forwardRef<RNView, SheetProps>(function Sheet(props, ref) {
+  const Sheet = createRefComponent<RNView, SheetProps>(function Sheet(props, ref) {
     const hydrated = useDidFinishSSR()
     const { isShowingNonSheet } = useSheetController()
 
@@ -296,7 +297,7 @@ export function createSheet<
   }
 
   const Controlled = withStaticProperties(Sheet, components) as any as FunctionComponent<
-    Omit<SheetProps, 'open' | 'onOpenChange'> & RefAttributes<RNView>
+    Omit<SheetProps, 'open' | 'onOpenChange'> & { ref?: Ref<RNView> }
   > &
     typeof components
 

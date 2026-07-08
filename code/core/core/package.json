@@ -79,6 +79,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/compose-refs": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",
     "@tamagui/react-native-use-pressable": "workspace:*",

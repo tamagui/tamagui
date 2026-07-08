@@ -485,6 +485,7 @@
       "name": "@tamagui/core",
       "version": "2.4.2",
       "dependencies": {
+        "@tamagui/compose-refs": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/react-native-media-driver": "workspace:*",
         "@tamagui/react-native-use-pressable": "workspace:*",
@@ -512,6 +513,7 @@
       "version": "2.4.2",
       "devDependencies": {
         "@tamagui/core": "workspace:*",
+        "@tamagui/dialog": "workspace:*",
         "@testing-library/react": "^16.1.0",
         "@testing-library/react-native": "^12.9.0",
         "csstype": "^3.0.10",
@@ -863,6 +865,9 @@
     "code/core/native": {
       "name": "@tamagui/native",
       "version": "2.4.2",
+      "dependencies": {
+        "@tamagui/compose-refs": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "burnt": "^0.12.2",
@@ -2460,6 +2465,7 @@
       "name": "@tamagui/context-menu",
       "version": "2.4.2",
       "dependencies": {
+        "@tamagui/compose-refs": "workspace:*",
         "@tamagui/create-menu": "workspace:*",
         "@tamagui/popover": "workspace:*",
         "@tamagui/use-callback-ref": "workspace:*",
@@ -3395,6 +3401,7 @@
       "name": "@tamagui/toggle-group",
       "version": "2.4.2",
       "dependencies": {
+        "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/focusable": "workspace:*",

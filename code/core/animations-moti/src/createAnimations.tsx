@@ -11,6 +11,7 @@ import {
   View,
   type AnimationDriver,
   type UniversalAnimatedNumber,
+  createRefComponent,
 } from '@tamagui/core'
 
 // Helper to resolve dynamic theme values like {dynamic: {dark: "value", light: undefined}}
@@ -24,7 +25,7 @@ const resolveDynamicValue = (value: any, isDark: boolean): any => {
 import type { TransitionConfig } from 'moti'
 import { useMotify } from 'moti/author'
 import type { CSSProperties } from 'react'
-import React, { forwardRef, useMemo, useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import type { TextStyle } from 'react-native'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated_, {
@@ -58,7 +59,7 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
   const isText = defaultTag === 'span'
 
   const Component = Animated.createAnimatedComponent(
-    forwardRef((propsIn: any, ref) => {
+    createRefComponent((propsIn: any, ref) => {
       const { forwardedRef, animation, render = defaultTag, ...propsRest } = propsIn
       const hostRef = useRef(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)

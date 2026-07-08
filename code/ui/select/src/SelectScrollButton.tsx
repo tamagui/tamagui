@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import { autoUpdate, offset, useFloatingRaw as useFloating } from '@tamagui/floating'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import type { TamaguiElement } from '@tamagui/core'
@@ -18,7 +19,7 @@ import type {
 
 const SCROLL_UP_BUTTON_NAME = 'SelectScrollUpButton'
 
-export const SelectScrollUpButton = React.forwardRef<
+export const SelectScrollUpButton = createRefComponent<
   TamaguiElement,
   SelectScrollButtonProps
 >((props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
@@ -40,7 +41,7 @@ SelectScrollUpButton.displayName = SCROLL_UP_BUTTON_NAME
 
 const SCROLL_DOWN_BUTTON_NAME = 'SelectScrollDownButton'
 
-export const SelectScrollDownButton = React.forwardRef<
+export const SelectScrollDownButton = createRefComponent<
   TamaguiElement,
   SelectScrollButtonProps
 >((props: SelectScopedProps<SelectScrollButtonProps>, forwardedRef) => {
@@ -59,7 +60,7 @@ SelectScrollDownButton.displayName = SCROLL_DOWN_BUTTON_NAME
 type SelectScrollButtonImplElement = TamaguiElement
 
 const SelectScrollButtonImpl = React.memo(
-  React.forwardRef<SelectScrollButtonImplElement, SelectScrollButtonImplProps>(
+  createRefComponent<SelectScrollButtonImplElement, SelectScrollButtonImplProps>(
     (props, forwardedRef) => {
       const { scope, dir, componentName, ...scrollIndicatorProps } = props
       const { forceUpdate, open, fallback, setScrollTop, setInnerOffset, ...context } =
@@ -81,8 +82,13 @@ const SelectScrollButtonImpl = React.memo(
         whileElementsMounted: (...args) => autoUpdate(...args, { animationFrame: true }),
       })
 
-      // @ts-ignore TODO react 19 type needs fix
-      const composedRef = useComposedRefs(forwardedRef, refs.setFloating)
+      const setFloatingRef = React.useCallback(
+        (node: TamaguiElement | null) => {
+          refs.setFloating(node as HTMLElement | null)
+        },
+        [refs.setFloating]
+      )
+      const composedRef = useComposedRefs(forwardedRef, setFloatingRef)
 
       if (!isVisible) {
         return null

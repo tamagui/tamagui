@@ -1,6 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import type { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/core'
-import { styled, useEvent } from '@tamagui/core'
+import { createRefComponent, styled, useEvent } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
@@ -84,7 +84,7 @@ type ToastActionProps = ScopedProps<
   }
 >
 
-const ToastAction = React.forwardRef<TamaguiElement, ScopedProps<ToastActionProps>>(
+const ToastAction = createRefComponent<TamaguiElement, ScopedProps<ToastActionProps>>(
   function ToastAction(props, forwardedRef) {
     const { altText, ...actionProps } = props
     if (!altText) return null
@@ -119,7 +119,7 @@ const ToastCloseFrame = styled(YStack, {
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>
 type ToastCloseProps = ScopedProps<ToastCloseFrameProps & {}>
 
-const ToastClose = React.forwardRef<TamaguiElement, ToastCloseProps>(
+const ToastClose = createRefComponent<TamaguiElement, ToastCloseProps>(
   function ToastClose(props, forwardedRef) {
     const { scope, ...closeProps } = props
     const interactiveContext = useToastInteractiveContext(scope)

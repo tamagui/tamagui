@@ -7,9 +7,7 @@ type ImageLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error';
 type AvatarImageProps = Partial<ImageProps> & {
     onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
 };
-declare const AvatarImage: React.ForwardRefExoticComponent<Partial<ImageProps> & {
-    onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
-} & React.RefAttributes<TamaguiElement>>;
+declare const AvatarImage: import("@tamagui/core").RefComponent<TamaguiElement, AvatarImageProps>;
 export declare const AvatarFallbackFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
@@ -53,7 +51,7 @@ type AvatarProps = GetProps<typeof AvatarFrame>;
  * </Avatar>
  * ```
  */
-declare const Avatar: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "elevate" | "bordered" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+declare const Avatar: ((props: Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "elevate" | "bordered" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     size?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
@@ -77,10 +75,11 @@ declare const Avatar: React.ForwardRefExoticComponent<Omit<import("@tamagui/core
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>> & React.RefAttributes<TamaguiElement>> & {
-    Image: React.ForwardRefExoticComponent<Partial<ImageProps> & {
-        onLoadingStatusChange?: (status: ImageLoadingStatus) => void;
-    } & React.RefAttributes<TamaguiElement>>;
+}>> & import("@tamagui/core").RefProp<TamaguiElement>) => React.ReactNode) & {
+    displayName?: string;
+    propTypes?: any;
+} & {
+    Image: import("@tamagui/core").RefComponent<TamaguiElement, AvatarImageProps>;
     Fallback: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
     }>, "delayMs" | "__scopeAvatar"> & AvatarFallbackExtraProps & {

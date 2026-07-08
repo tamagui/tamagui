@@ -12,9 +12,10 @@ interface RovingFocusItemProps extends PrimitiveSpanProps {
     tabStopId?: string;
     active?: boolean;
 }
-declare const RovingFocusGroupItem: React.ForwardRefExoticComponent<RovingFocusItemProps & {
+declare const RovingFocusGroupItem: import("@tamagui/compose-refs").RefComponent<import("@tamagui/core").TamaguiElement, ScopedProps<RovingFocusItemProps>>;
+type ScopedProps<P> = P & {
     __scopeRovingFocusGroup?: string;
-} & React.RefAttributes<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View>>;
+};
 type Orientation = React.AriaAttributes['aria-orientation'];
 type Direction = 'ltr' | 'rtl';
 interface RovingFocusGroupOptions {
@@ -35,12 +36,13 @@ interface RovingFocusGroupOptions {
 }
 interface RovingFocusGroupProps extends RovingFocusGroupImplProps {
 }
-declare const RovingFocusGroup: React.ForwardRefExoticComponent<RovingFocusGroupProps & {
+declare const RovingFocusGroup: ((props: RovingFocusGroupProps & {
     __scopeRovingFocusGroup?: string;
-} & React.RefAttributes<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View>> & {
-    Item: React.ForwardRefExoticComponent<RovingFocusItemProps & {
-        __scopeRovingFocusGroup?: string;
-    } & React.RefAttributes<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View>>;
+} & import("@tamagui/compose-refs").RefProp<import("@tamagui/core").TamaguiElement>) => React.ReactNode) & {
+    displayName?: string;
+    propTypes?: any;
+} & {
+    Item: import("@tamagui/compose-refs").RefComponent<import("@tamagui/core").TamaguiElement, ScopedProps<RovingFocusItemProps>>;
 };
 export { RovingFocusGroup, RovingFocusGroupItem };
 export type { RovingFocusGroupProps, RovingFocusItemProps };
