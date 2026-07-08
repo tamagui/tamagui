@@ -181,8 +181,8 @@ and cant put another View next to Content and have it show
 
 - if Popover can not be portaled that would be useful for some use cases
 
-- RadioGroup.Indicator can't use AnimatePresence i think because of the old styled HOC wrapper
-  - the styled HOC wrapper shouldn't probably do anything with presence because the child should expect to handle that, at least need to double check taht
+- RadioGroup.Indicator can't use AnimatePresence i think because .styleable()
+  - styleable shouldn't probably do anything with presence because the child should expect to handle that, at least need to double check taht
 
 - bug: if you name a file `polyfill-native.ts` tamagui-build doesnt output the .native files properly
 
@@ -201,7 +201,7 @@ and cant put another View next to Content and have it show
 
 - var(--)
 - may want to align flexShrink = 1 by default to align with web default?
-- old styled HOC wrapper shouldnt forwardRef, remove it in general
+- styleable shouldnt forwardRef, remove it in general
 - Sheet API cleanup: stop pretending all subcomponents render where authored when `Sheet.Overlay` is actually hoisted out of the animated container
   - target shape:
     `Sheet`
