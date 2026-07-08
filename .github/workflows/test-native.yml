@@ -38,6 +38,8 @@ jobs:
   validate-ios-detox-shards:
     name: Validate iOS Detox Shards
     runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.plan-shards.outputs.shards }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,7 +48,8 @@ jobs:
           fetch-depth: 1
 
       - name: Validate shard coverage
-        run: node .github/scripts/check-ios-detox-shards.mjs
+        id: plan-shards
+        run: node .github/scripts/check-ios-detox-shards.mjs --github-output
 
   build-ios:
     name: Build iOS App
@@ -72,30 +75,7 @@ jobs:
             slug: iphone-16
           - name: iPhone 16 Pro Max
             slug: iphone-16-pro-max
-        shard:
-          # 4 shards balanced by test execution time. the old ~7min/shard ts-jest
-          # type-check tax is gone (e2e now transpiles via e2e/tsconfig.json), so
-          # startup is small and these fit well under the native-ci runner's
-          # 45-minute process timeout. CompilerExtraction runs an in-test
-          # `npx tamagui build` (~12-19min, variable) so it gets its OWN shard
-          # (with the iOS-skipped SafeArea/SheetKeyboardDrag, which cost ~0, plus
-          # the small iOS-running SheetFitKeyboardSafeArea, ~1 launch); the
-          # remaining files are bin-packed to ~14.5min test-exec each (~25min wall).
-          # SelectAndroidOnPress is android-only (excluded here via
-          # check-ios-detox-shards.mjs, still runs in the android job). Coverage
-          # validated by that script (every e2e test assigned exactly once).
-          - name: '1/4'
-            slug: '1-4'
-            test_files: 'e2e/CompilerExtraction.test.ts e2e/SafeArea.test.ts e2e/SheetKeyboardDrag.test.ts e2e/SheetFitKeyboardSafeArea.test.ts e2e/SheetPressResponderSheetRngh.test.ts'
-          - name: '2/4'
-            slug: '2-4'
-            test_files: 'e2e/PressStyleNative.noRngh.test.ts e2e/CompilerTernaryActive.test.ts e2e/TabsOnInteraction.test.ts e2e/PointerEvents.test.ts e2e/GroupPressNative.test.ts e2e/ShorthandVariables.test.ts e2e/check-rngh-status.test.ts'
-          - name: '3/4'
-            slug: '3-4'
-            test_files: 'e2e/SheetScrollableDrag.test.ts e2e/ThemeMutation.test.ts e2e/NativePortal.test.ts e2e/GroupPressTransitionMatrix.test.ts e2e/MenuRadioGroup.test.ts e2e/PressStyleScrollStuck.test.ts'
-          - name: '4/4'
-            slug: '4-4'
-            test_files: 'e2e/PressStyleNative.test.ts e2e/SheetPressRegression.test.ts e2e/SheetKeyboardFitContent.test.ts e2e/SelectRemount.test.ts e2e/SheetDragResist.test.ts e2e/ThemeChangeBasic.test.ts e2e/NestedPressExclusive.test.ts e2e/MediaQueryGtMd.test.ts'
+        shard: ${{ fromJson(needs.validate-ios-detox-shards.outputs.shards) }}
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
