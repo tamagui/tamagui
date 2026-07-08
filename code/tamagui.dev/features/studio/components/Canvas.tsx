@@ -6,7 +6,8 @@ import { EnsureFlexed, YStack, styled } from 'tamagui'
 import { sidebarWidth } from '../constants'
 
 export const CanvasFrame = styled(YStack, {
-  fullscreen: true,
+  position: 'absolute',
+  inset: 0,
   bg: '$background',
   items: 'center',
   justify: 'center',

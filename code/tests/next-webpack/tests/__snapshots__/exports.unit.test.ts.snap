@@ -204,7 +204,7 @@ export function SelectDemoItem(props: SelectProps & {
           <__ReactNativeView style={_sheet["3"]}>
             <ChevronUp size={20} />
           </__ReactNativeView>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['$background', 'transparent']} />
+          <LinearGradient start={[0, 0]} end={[0, 1]} position="absolute" inset={0} colors={['$background', 'transparent']} />
         </Select.ScrollUpButton>
 
         <Select.Viewport
@@ -236,7 +236,7 @@ export function SelectDemoItem(props: SelectProps & {
           <__ReactNativeView style={_sheet["5"]}>
             <ChevronDown size={20} />
           </__ReactNativeView>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['transparent', '$background']} />
+          <LinearGradient start={[0, 0]} end={[0, 1]} position="absolute" inset={0} colors={['transparent', '$background']} />
         </Select.ScrollDownButton>
       </Select.Content>
     </Select>;
@@ -536,7 +536,7 @@ export function SelectDemoItem(props: SelectProps & {
           <div className={_cn4}>
             <ChevronUp size={20} />
           </div>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['$background', 'transparent']} />
+          <LinearGradient start={[0, 0]} end={[0, 1]} position="absolute" inset={0} colors={['$background', 'transparent']} />
         </Select.ScrollUpButton>
 
         <Select.Viewport
@@ -568,7 +568,7 @@ export function SelectDemoItem(props: SelectProps & {
           <div className={_cn6}>
             <ChevronDown size={20} />
           </div>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['transparent', '$background']} />
+          <LinearGradient start={[0, 0]} end={[0, 1]} position="absolute" inset={0} colors={['transparent', '$background']} />
         </Select.ScrollDownButton>
       </Select.Content>
     </Select>;
@@ -904,7 +904,7 @@ export function SelectDemoItem(props: SelectProps & {
           <__ReactNativeView style={_sheet["3"]}>
             <ChevronUp size={20} />
           </__ReactNativeView>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['$background', 'transparent']} />
+          <LinearGradient start={[0, 0]} end={[0, 1]} position="absolute" inset={0} colors={['$background', 'transparent']} />
         </Select.ScrollUpButton>
 
         <Select.Viewport
@@ -936,7 +936,7 @@ export function SelectDemoItem(props: SelectProps & {
           <__ReactNativeView style={_sheet["5"]}>
             <ChevronDown size={20} />
           </__ReactNativeView>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['transparent', '$background']} />
+          <LinearGradient start={[0, 0]} end={[0, 1]} position="absolute" inset={0} colors={['transparent', '$background']} />
         </Select.ScrollDownButton>
       </Select.Content>
     </Select>;
@@ -1169,7 +1169,7 @@ export function SelectDemoItem(props: SelectProps & {
           <div className={_cn4}>
             <ChevronUp size={20} />
           </div>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['$background', 'transparent']} />
+          <LinearGradient start={[0, 0]} end={[0, 1]} position="absolute" inset={0} colors={['$background', 'transparent']} />
         </Select.ScrollUpButton>
 
         <Select.Viewport
@@ -1201,7 +1201,7 @@ export function SelectDemoItem(props: SelectProps & {
           <div className={_cn6}>
             <ChevronDown size={20} />
           </div>
-          <LinearGradient start={[0, 0]} end={[0, 1]} fullscreen colors={['transparent', '$background']} />
+          <LinearGradient start={[0, 0]} end={[0, 1]} position="absolute" inset={0} colors={['transparent', '$background']} />
         </Select.ScrollDownButton>
       </Select.Content>
     </Select>;

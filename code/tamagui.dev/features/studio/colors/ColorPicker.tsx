@@ -285,12 +285,12 @@ export const ColorPickerContents = memo((props: ColorPickerProps) => {
               select="none"
               pointerEvents="none"
               position="absolute"
-              fullscreen
+              inset={0}
               items="center"
               justify="center"
             >
               {!props.value && <Checkerboard rotate="45deg" />}
-              <YStack fullscreen bg={hex as any} />
+              <YStack position="absolute" inset={0} bg={hex as any} />
             </YStack>
           </View>
         </Popover.Trigger>

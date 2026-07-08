@@ -8,7 +8,6 @@ declare const createGroupScope: import("@tamagui/create-context").CreateScope;
 export declare const GroupFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: any;
 }, import("@tamagui/core").StaticConfigPublic>;
 export type GroupExtraProps = {
@@ -36,14 +35,12 @@ export declare const useGroupItem: (childrenProps: {
 export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: any;
 }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: any;
 }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
     __scopeGroup?: Scope;
@@ -52,13 +49,11 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
 }, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: any;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: any;
     }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
         __scopeGroup?: Scope;
@@ -67,7 +62,6 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
     }, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: any;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {
@@ -76,14 +70,12 @@ export declare const Group: React.ForwardRefExoticComponent<Omit<import("@tamagu
 export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: any;
 }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: any;
 }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
     __scopeGroup?: Scope;
@@ -92,13 +84,11 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
 }, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: any;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: any;
     }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
         __scopeGroup?: Scope;
@@ -107,7 +97,6 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     }, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: any;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {
@@ -116,14 +105,12 @@ export declare const YGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
 export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: any;
 }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
     __scopeGroup?: Scope;
 } & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: any;
 }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
     __scopeGroup?: Scope;
@@ -132,13 +119,11 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
 }, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     size?: any;
 }, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig" | "styleable"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: any;
     }>, keyof GroupExtraProps | "__scopeGroup"> & GroupExtraProps & {
         __scopeGroup?: Scope;
@@ -147,7 +132,6 @@ export declare const XGroup: React.ForwardRefExoticComponent<Omit<import("@tamag
     }, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: any;
     }, import("@tamagui/core").StaticConfigPublic];
 } & {

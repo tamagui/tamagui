@@ -158,9 +158,7 @@ export declare function createNonNativeMenu(params: CreateBaseMenuProps): {
                 readonly contentContainerStyle: "style";
             };
         }>> | undefined;
-    }, {
-        fullscreen?: boolean | undefined;
-    }, {
+    }, {}, {
         accept: {
             readonly contentContainerStyle: "style";
         };

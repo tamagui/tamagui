@@ -226,9 +226,9 @@ export function Test7() {
 // style expasion + imported constants
 export function Test8() {
   return (
-    <YStack fullscreen position="relative">
+    <YStack inset={0} position="relative">
       <YStack {...baseStyle}>
-        <YStack fullscreen position="relative" {...nestedStyle} />
+        <YStack inset={0} position="relative" {...nestedStyle} />
       </YStack>
     </YStack>
   )

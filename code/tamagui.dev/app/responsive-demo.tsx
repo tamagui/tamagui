@@ -42,7 +42,7 @@ export default function ResponsiveDemo() {
         </YStack>
         <YStack
           z={100}
-          $small={{ p: '$3', px: '$4', fullscreen: true }}
+          $small={{ p: '$3', px: '$4', position: 'absolute', inset: 0 }}
           $gtSmall={{ display: 'none' }}
         >
           {header}
@@ -170,7 +170,8 @@ const Overlay = (props) => {
     <LinearGradient
       width={800}
       height="100%"
-      fullscreen
+      position="absolute"
+      inset={0}
       z={10}
       colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.2)', 'rgba(0,0,0,0.85)']}
       {...props}

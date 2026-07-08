@@ -28,7 +28,7 @@ export const HeroTypography = memo(() => {
 
   return (
     <>
-      <YStack fullscreen className="" o={0.1} />
+      <YStack position="absolute" inset={0} className="" o={0.1} />
       {/* -5 my to fir grid nicely */}
       <YStack my={-5} position="relative" gap="$8">
         <YStack ref={ref} ai="center" gap="$3">

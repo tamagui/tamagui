@@ -396,7 +396,8 @@ const ThemeToggle = () => {
           <Switch.Thumb transition="quickest" size="$3">
             <YStack
               transition="bouncy"
-              fullscreen
+              position="absolute"
+              inset={0}
               items="center"
               justify="center"
               opacity={1}
@@ -407,7 +408,8 @@ const ThemeToggle = () => {
             </YStack>
             <YStack
               transition="bouncy"
-              fullscreen
+              position="absolute"
+              inset={0}
               items="center"
               justify="center"
               opacity={1}

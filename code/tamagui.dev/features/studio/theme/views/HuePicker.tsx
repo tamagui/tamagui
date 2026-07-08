@@ -15,11 +15,11 @@ export const HuePicker = memo(
               select="none"
               pointerEvents="none"
               position="absolute"
-              fullscreen
+              inset={0}
               items="center"
               justify="center"
             >
-              <YStack fullscreen bg={hsla(cur, 0.5, 0.5, 1) as any} />
+              <YStack position="absolute" inset={0} bg={hsla(cur, 0.5, 0.5, 1) as any} />
             </YStack>
           </View>
         </XGroup>

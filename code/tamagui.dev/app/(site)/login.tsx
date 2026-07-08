@@ -306,7 +306,7 @@ function SignIn() {
       bg="$background"
       justify="center"
       position="absolute"
-      fullscreen
+      inset={0}
       items="center"
     >
       <Spinner size="small" />

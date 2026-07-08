@@ -156,7 +156,8 @@ export const SectionTinted = ({
       {...props}
     >
       <YStack
-        fullscreen
+        position="absolute"
+        inset={0}
         className="all ease-in ms1000"
         z={-1}
         opacity={0.4}

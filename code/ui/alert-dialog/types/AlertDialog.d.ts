@@ -22,10 +22,8 @@ declare const AlertDialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<
     open?: boolean | undefined;
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-}>, "scope" | `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | keyof import("@tamagui/core").StackStyleBase | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/stacks").StackVariants | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+}>, "scope" | `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | "elevation" | keyof import("@tamagui/core").StackStyleBase | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
 } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> | "forceMount"> & Omit<{}, "scope"> & {
     scope?: AlertDialogScopes;
 } & {
@@ -34,8 +32,7 @@ declare const AlertDialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<
     scope?: import("@tamagui/dialog").DialogScopes;
 } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-}>, keyof import("@tamagui/stacks").StackVariants> & import("@tamagui/stacks").StackVariants, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
+}>, "elevation"> & import("@tamagui/stacks").StackVariants, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
     scope?: AlertDialogScopes;
 } & {
     forceMount?: boolean;
@@ -43,12 +40,10 @@ declare const AlertDialogOverlay: import("@tamagui/core").TamaguiComponent<Omit<
     scope?: import("@tamagui/dialog").DialogScopes;
 } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-}>, keyof import("@tamagui/stacks").StackVariants> & import("@tamagui/stacks").StackVariants, import("@tamagui/core").StackStyleBase, {
+}>, "elevation"> & import("@tamagui/stacks").StackVariants, import("@tamagui/core").StackStyleBase, {
     open?: boolean | undefined;
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type AlertDialogContentProps = ScopedProps<Omit<DialogContentProps, 'onPointerDownOutside' | 'onInteractOutside'>>;
 declare const AlertDialogContent: React.ForwardRefExoticComponent<Omit<Omit<DialogContentProps, "onPointerDownOutside" | "onInteractOutside">, "scope"> & {
@@ -101,10 +96,8 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
         open?: boolean | undefined;
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, "scope" | `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | keyof import("@tamagui/core").StackStyleBase | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/stacks").StackVariants | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    }>, "scope" | `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | "elevation" | keyof import("@tamagui/core").StackStyleBase | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> | "forceMount"> & Omit<{}, "scope"> & {
         scope?: AlertDialogScopes;
     } & {
@@ -113,8 +106,7 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
         scope?: import("@tamagui/dialog").DialogScopes;
     } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, keyof import("@tamagui/stacks").StackVariants> & import("@tamagui/stacks").StackVariants, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
+    }>, "elevation"> & import("@tamagui/stacks").StackVariants, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<{}, "scope"> & {
         scope?: AlertDialogScopes;
     } & {
         forceMount?: boolean;
@@ -122,12 +114,10 @@ declare const AlertDialog: React.FC<AlertDialogProps> & {
         scope?: import("@tamagui/dialog").DialogScopes;
     } & Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, keyof import("@tamagui/stacks").StackVariants> & import("@tamagui/stacks").StackVariants, import("@tamagui/core").StackStyleBase, {
+    }>, "elevation"> & import("@tamagui/stacks").StackVariants, import("@tamagui/core").StackStyleBase, {
         open?: boolean | undefined;
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Content: React.ForwardRefExoticComponent<Omit<Omit<DialogContentProps, "onPointerDownOutside" | "onInteractOutside">, "scope"> & {
         scope?: AlertDialogScopes;

@@ -49,7 +49,6 @@ declare const ButtonFrame: import("@tamagui/web").TamaguiComponent<import("@tama
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    fullscreen?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic>;
@@ -74,7 +73,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    fullscreen?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
 }>, "unstyled" | keyof TextContextStyles | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
@@ -116,7 +114,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    fullscreen?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
 }>, "unstyled" | keyof TextContextStyles | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
@@ -188,7 +185,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-    fullscreen?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
@@ -201,7 +197,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        fullscreen?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;
     }>, "unstyled" | keyof TextContextStyles | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
@@ -273,7 +268,6 @@ declare const Button: import("react").ForwardRefExoticComponent<Omit<import("@ta
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-        fullscreen?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];

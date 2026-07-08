@@ -71,7 +71,7 @@ const SandboxFrame = (props: { children: any; centered?: boolean }) => {
       />
 
       <Theme name={screenshot ? 'blue' : undefined}>
-        <XStack width="100%" height="100%" fullscreen>
+        <XStack width="100%" height="100%" position="absolute" inset={0}>
           <YStack
             {...(centered && {
               items: 'center',

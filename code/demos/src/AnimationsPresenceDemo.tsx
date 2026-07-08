@@ -17,7 +17,8 @@ const GalleryItem = styled(YStack, {
   z: 1,
   x: 0,
   opacity: 1,
-  fullscreen: true,
+  position: 'absolute',
+  inset: 0,
 
   variants: {
     // 1 = right, 0 = nowhere, -1 = left

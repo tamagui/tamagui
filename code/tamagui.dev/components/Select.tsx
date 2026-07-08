@@ -68,7 +68,8 @@ const SelectComponent = (
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['$background', '$background0']}
             rounded="$4"
           />
@@ -106,7 +107,8 @@ const SelectComponent = (
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['$background0', '$background']}
             rounded="$4"
           />

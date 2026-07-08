@@ -20,7 +20,6 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
@@ -30,7 +29,6 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
@@ -40,7 +38,6 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
@@ -51,7 +48,6 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;
@@ -61,27 +57,23 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    List: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "size" | "fullscreen"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    List: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "size"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: any;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: any;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
         size?: any;
     }>> & import("@tamagui/group").GroupExtraProps & {
         /**
@@ -446,7 +438,6 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
     Content: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;
@@ -454,7 +445,6 @@ export declare function createTabs<C extends TabsComponent, T extends TabCompone
     }>, keyof TabsContentExtraProps> & TabsContentExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsContentExtraProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         transparent?: boolean | undefined;
-        fullscreen?: boolean | undefined;
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;

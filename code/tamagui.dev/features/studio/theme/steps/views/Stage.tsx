@@ -5,7 +5,7 @@ import { ToggleButton } from './ToggleButton'
 
 export function Stage({ steps, current }: { current: number; steps: any[] }) {
   return (
-    <YStack fullscreen>
+    <YStack position="absolute" inset={0}>
       {steps.map((step, index) => {
         const isLeft = current > index
         const isRight = current < index
@@ -35,7 +35,8 @@ export function StageButtonBar({ steps }: { steps: UseSteps }) {
 }
 
 const Section = styled(YStack, {
-  fullscreen: true,
+  position: 'absolute',
+  inset: 0,
 
   t: 33,
   px: '$2',

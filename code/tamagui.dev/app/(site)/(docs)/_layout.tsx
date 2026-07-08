@@ -20,8 +20,6 @@ export default function DocsLayout() {
         backgroundImage="linear-gradient($color3, $colorTransparent)"
       />
 
-      {/* <YStack z={-1} fullscreen bg="$accent12" /> */}
-
       {/* main layout container */}
       <YStack minH="100vh" position="relative" z={1}>
         {/* content row with sidebar */}

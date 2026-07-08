@@ -4,11 +4,6 @@ import { View, styled } from '@tamagui/core'
 import { getElevation } from './getElevation'
 
 export interface StackVariants {
-  /**
-   * @deprecated use `inset: 0, position: 'absolute'` instead
-   */
-  fullscreen?: boolean
-
   elevation?: number | SizeTokens
 }
 
@@ -18,16 +13,7 @@ export type YStackProps = Omit<GetProps<typeof YStack>, keyof StackVariants> &
 export type XStackProps = YStackProps
 export type ZStackProps = YStackProps
 
-export const fullscreenStyle = {
-  position: 'absolute',
-  inset: 0,
-} as const
-
 const variants = {
-  fullscreen: {
-    true: fullscreenStyle,
-  },
-
   elevation: {
     '...size': getElevation,
     ':number': getElevation,

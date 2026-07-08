@@ -124,7 +124,8 @@ export function Header(props: HeaderProps) {
             <YStack
               opacity={isScrolled ? 0.6 : 0}
               className={`ease-out all ms300`}
-              fullscreen
+              position="absolute"
+              inset={0}
               bg="$color2"
             />
             <YStack mx="auto" px="$4" width="100%">
@@ -138,7 +139,8 @@ export function Header(props: HeaderProps) {
             className="ease-in-out all ms200"
             z={-1}
             rounded="$10"
-            fullscreen
+            position="absolute"
+            inset={0}
             boxShadow="0 8px 20px $shadow3"
             opacity={0}
             {...(isScrolled && {
@@ -224,7 +226,7 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         }}
         z={-1}
         justify="center"
-        fullscreen
+        inset={0}
         pointerEvents="none"
         items="center"
       >

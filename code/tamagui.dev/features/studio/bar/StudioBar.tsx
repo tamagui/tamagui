@@ -49,10 +49,11 @@ export const StudioBar = memo(function Header() {
       maxW={192}
       className="all ease-in-out ms300"
     >
-      <YStack rounded="$10" fullscreen className="blur-medium" />
+      <YStack rounded="$10" position="absolute" inset={0} className="blur-medium" />
       <YStack
         rounded="$10"
-        fullscreen
+        position="absolute"
+        inset={0}
         bg="$background"
         borderWidth={1}
         borderColor="$borderColor"
@@ -89,7 +90,7 @@ export const ThemeSwitch = memo(() => {
               }
             }}
           >
-            <XStack fullscreen z={100} x={2} y={0.5}>
+            <XStack position="absolute" inset={0} z={100} x={2} y={0.5}>
               {isLight && (
                 <Button
                   render="span"
