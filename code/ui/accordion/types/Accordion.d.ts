@@ -98,13 +98,16 @@ declare const AccordionContentFrame: import("@tamagui/core").TamaguiComponent<im
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type AccordionContentProps = GetProps<typeof AccordionContentFrame>;
-declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSingleProps | AccordionMultipleProps> & React.RefAttributes<AccordionElement>> & {
+declare const Accordion: ((props: ScopedProps<AccordionSingleProps | AccordionMultipleProps> & import("@tamagui/core").RefProp<AccordionElement>) => React.ReactNode) & {
+    displayName?: string;
+    propTypes?: any;
+} & {
     Trigger: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, TamaguiElement, import("@tamagui/core").StackNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Header: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/core").TextNonStyleProps, "unstyled" | "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
+    Header: import("@tamagui/core").RefComponent<import("@tamagui/core").TamaguiTextElement, Omit<Omit<import("@tamagui/core").TextNonStyleProps, "unstyled" | "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").FontSizeTokens | undefined;
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {
@@ -113,13 +116,15 @@ declare const Accordion: React.ForwardRefExoticComponent<ScopedProps<AccordionSi
     } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").TextStylePropsBase, {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").FontSizeTokens | undefined;
-    }>> & React.RefAttributes<import("@tamagui/core").TamaguiTextElement>, "ref"> & React.RefAttributes<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").Text>>;
+    }>> & {
+        ref?: React.Ref<import("@tamagui/core").TamaguiTextElement> | undefined;
+    }, "ref">>;
     Content: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").StackNonStyleProps & import("@tamagui/collapsible").CollapsibleContentExtraProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, TamaguiElement, import("@tamagui/core").StackNonStyleProps & import("@tamagui/collapsible").CollapsibleContentExtraProps & void, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Item: React.ForwardRefExoticComponent<AccordionItemProps & React.RefAttributes<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View>>;
+    Item: import("@tamagui/core").RefComponent<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, AccordionItemProps>;
     HeightAnimator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, {}>;
 };
 export { Accordion };

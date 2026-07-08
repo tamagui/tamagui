@@ -31,10 +31,12 @@ declare const ToastCloseFrame: import("@tamagui/core").TamaguiComponent<import("
 }, import("@tamagui/core").StaticConfigPublic>;
 type ToastCloseFrameProps = GetProps<typeof ToastCloseFrame>;
 type ToastCloseProps = ScopedProps<ToastCloseFrameProps & {}>;
-declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+declare const Toast: React.FunctionComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-}>, keyof ToastExtraProps> & ToastExtraProps & React.RefAttributes<TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}>, keyof ToastExtraProps> & ToastExtraProps & {
+    ref?: React.Ref<TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
 }>, keyof ToastExtraProps> & ToastExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastExtraProps, import("@tamagui/core").StackStyleBase, {
@@ -57,18 +59,8 @@ declare const Toast: React.ForwardRefExoticComponent<Omit<import("@tamagui/core"
         unstyled?: boolean | undefined;
         size?: import("@tamagui/core").FontSizeTokens | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Action: React.ForwardRefExoticComponent<Omit<ToastActionProps, "scope"> & {
-        scope?: import("./ToastProvider").ToastScopes;
-    } & React.RefAttributes<TamaguiElement>>;
-    Close: React.ForwardRefExoticComponent<Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    }>>, "scope"> & {
-        scope?: import("./ToastProvider").ToastScopes;
-    } & React.RefAttributes<TamaguiElement>>;
+    Action: import("@tamagui/core").RefComponent<TamaguiElement, ScopedProps<ToastActionProps>>;
+    Close: import("@tamagui/core").RefComponent<TamaguiElement, ToastCloseProps>;
 };
 export { Toast, ToastProvider, ToastViewport, useToast, useToastController, useToastState, };
 export type { CustomData, ToastActionProps, ToastCloseProps, ToastDescriptionProps, NativePlatform as ToastNativePlatform, NativeValue as ToastNativeValue, ToastProps, ToastProviderProps, ToastTitleProps, ToastViewportProps, };

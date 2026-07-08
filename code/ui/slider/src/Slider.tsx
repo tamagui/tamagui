@@ -9,6 +9,7 @@ import type {
   TamaguiElement,
 } from '@tamagui/core'
 import {
+  createRefComponent,
   getTokens,
   getVariableValue,
   styled,
@@ -76,7 +77,7 @@ if (process.env.TAMAGUI_TARGET === 'web') {
  * SliderHorizontal
  * -----------------------------------------------------------------------------------------------*/
 
-const SliderHorizontal = React.forwardRef<View, SliderHorizontalProps>(
+const SliderHorizontal = createRefComponent<View, SliderHorizontalProps>(
   (props: ScopedProps<SliderHorizontalProps>, forwardedRef) => {
     const {
       min,
@@ -216,7 +217,7 @@ function useSliderMeasure(sliderRef: React.RefObject<View | null>, measure: () =
  * SliderVertical
  * -----------------------------------------------------------------------------------------------*/
 
-const SliderVertical = React.forwardRef<View, SliderVerticalProps>(
+const SliderVertical = createRefComponent<View, SliderVerticalProps>(
   (props: ScopedProps<SliderVerticalProps>, forwardedRef) => {
     const {
       min,
@@ -322,7 +323,7 @@ export const SliderTrackFrame = styled(SliderFrame, {
   },
 })
 
-const SliderTrack = React.forwardRef<SliderTrackElement, SliderTrackProps>(
+const SliderTrack = createRefComponent<SliderTrackElement, SliderTrackProps>(
   function SliderTrack(props: ScopedProps<SliderTrackProps>, forwardedRef) {
     const { __scopeSlider, ...trackProps } = props
     const context = useSliderContext(__scopeSlider)
@@ -364,7 +365,7 @@ export const SliderActiveFrame = styled(SliderFrame, {
 
 type SliderActiveProps = GetProps<typeof SliderActiveFrame>
 
-const SliderActive = React.forwardRef<View, SliderActiveProps>(function SliderActive(
+const SliderActive = createRefComponent<View, SliderActiveProps>(function SliderActive(
   props: ScopedProps<SliderActiveProps>,
   forwardedRef
 ) {
@@ -571,7 +572,7 @@ const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
  * Slider
  * -----------------------------------------------------------------------------------------------*/
 
-const SliderComponent = React.forwardRef(
+const SliderComponent = createRefComponent(
   (props: ScopedProps<SliderProps>, forwardedRef) => {
     const {
       name,

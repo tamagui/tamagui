@@ -3,6 +3,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { FontSizeTokens, GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
 import {
+  createRefComponent,
   createStyledContext,
   getVariableValue,
   styled,
@@ -131,7 +132,7 @@ type SelectItemIndicatorProps = SelectScopedProps<
   GetProps<typeof SelectItemIndicatorFrame>
 >
 
-const SelectItemIndicator = React.forwardRef<TamaguiElement, SelectItemIndicatorProps>(
+const SelectItemIndicator = createRefComponent<TamaguiElement, SelectItemIndicatorProps>(
   function SelectItemIndicator(props, forwardedRef) {
     const { scope, ...itemIndicatorProps } = props
     const context = useSelectItemParentContext(scope)
@@ -288,7 +289,7 @@ const NativeSelectFrame = styled(YStack, {
 
 type SelectGroupProps = SelectScopedProps<GetProps<typeof SelectGroupFrame>>
 
-const SelectGroup = React.forwardRef<TamaguiElement, SelectGroupProps>(
+const SelectGroup = createRefComponent<TamaguiElement, SelectGroupProps>(
   (props, forwardedRef) => {
     const { scope, ...groupProps } = props
     const groupId = React.useId()

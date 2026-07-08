@@ -2,9 +2,8 @@ process.env.TAMAGUI_TARGET = 'native'
 
 import { Button } from '@tamagui/button'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, createTamagui, styled } from '@tamagui/core'
+import { TamaguiProvider, createRefComponent, createTamagui, styled } from '@tamagui/core'
 import { render } from '@testing-library/react-native'
-import { forwardRef } from 'react'
 import { afterEach, beforeEach, describe, expect, test } from 'vitest'
 import { getGestureHandler } from '../native/src/gestureState'
 
@@ -22,13 +21,15 @@ const StyledButton = styled(Button, {
   } as const,
 })
 
-const WrappedButton = forwardRef<any, { disabled?: boolean }>(({ disabled }, ref) => {
-  return (
-    <StyledButton ref={ref} disabled={disabled} onPress={() => {}}>
-      Submit
-    </StyledButton>
-  )
-})
+const WrappedButton = createRefComponent<any, { disabled?: boolean }>(
+  function WrappedButton({ disabled }, ref) {
+    return (
+      <StyledButton ref={ref} disabled={disabled} onPress={() => {}}>
+        Submit
+      </StyledButton>
+    )
+  }
+)
 
 function createGestureStub() {
   const gesture: any = {}
@@ -86,7 +87,7 @@ afterEach(() => {
 
 describe('styled(Button) disabled hook stability', () => {
   test.each([false, true])(
-    'does not throw when disabled toggles inside a forwardRef wrapper (RNGH enabled: %s)',
+    'does not throw when disabled toggles inside a ref prop wrapper (RNGH enabled: %s)',
     (gestureEnabled) => {
       setGestureHandlerEnabled(gestureEnabled)
 

@@ -52,7 +52,7 @@ export interface FocusScopeProps {
     | ((props: {
         onKeyDown: (event: React.KeyboardEvent) => void
         tabIndex?: number
-        ref: React.ForwardedRef<any>
+        ref: React.Ref<any>
       }) => React.ReactNode)
   asChild?: boolean
 }

@@ -143,6 +143,9 @@
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
   },
+  "dependencies": {
+    "@tamagui/compose-refs": "workspace:*"
+  },
   "devDependencies": {
     "@tamagui/build": "workspace:*",
     "burnt": "^0.12.2",

@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import '@tamagui/polyfill-dev'
 
 import { FloatingDelayGroup, useDelayGroupContext, type Delay } from '@tamagui/floating'
@@ -74,16 +75,18 @@ const TooltipContent = PopperContentFrame.styleable<TooltipContentProps>(
   }
 )
 
-const TooltipArrow = React.forwardRef<TamaguiElement, PopperArrowProps>((props, ref) => {
-  return (
-    <PopoverArrow
-      scope={props.scope || TOOLTIP_SCOPE}
-      componentName="Tooltip"
-      ref={ref}
-      {...props}
-    />
-  )
-})
+const TooltipArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
+  (props, ref) => {
+    return (
+      <PopoverArrow
+        scope={props.scope || TOOLTIP_SCOPE}
+        componentName="Tooltip"
+        ref={ref}
+        {...props}
+      />
+    )
+  }
+)
 
 export type TooltipProps = ScopedProps<
   PopperProps & {
@@ -144,7 +147,7 @@ export const closeOpenTooltips = () => {
   setOpens.forEach((x) => x(false))
 }
 
-const TooltipComponent = React.forwardRef(function Tooltip(
+const TooltipComponent = createRefComponent(function Tooltip(
   props: TooltipProps,
   // no real ref here but React complaining need to see why see SandboxCustomStyledAnimatedTooltip.ts
   ref
@@ -265,7 +268,7 @@ const TooltipComponent = React.forwardRef(function Tooltip(
   return content
 })
 
-const TooltipTrigger = React.forwardRef(function TooltipTrigger(
+const TooltipTrigger = createRefComponent(function TooltipTrigger(
   props: ScopedProps<PopoverTriggerProps>,
   ref: any
 ) {
@@ -273,7 +276,7 @@ const TooltipTrigger = React.forwardRef(function TooltipTrigger(
   return <PopoverTrigger {...rest} scope={scope || TOOLTIP_SCOPE} ref={ref} />
 })
 
-const TooltipAnchor = React.forwardRef(function TooltipAnchor(
+const TooltipAnchor = createRefComponent(function TooltipAnchor(
   props: ScopedProps<PopoverAnchorProps>,
   ref: any
 ) {

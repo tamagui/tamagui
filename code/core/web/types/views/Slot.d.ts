@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 interface SlotProps {
     children: ReactNode;
 }
-export declare const Slot: import("react").NamedExoticComponent<SlotProps & import("react").RefAttributes<any>>;
+export declare const Slot: import("react").NamedExoticComponent<SlotProps & import("@tamagui/compose-refs").RefProp<any>>;
 export declare const Slottable: {
     ({ children }: {
         children: ReactNode;

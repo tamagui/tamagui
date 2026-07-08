@@ -6,6 +6,7 @@ import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   LayoutMeasurementController,
   View as TamaguiView,
+  createRefComponent,
   createStyledContext,
   getVariableValue,
   registerLayoutNode,
@@ -659,7 +660,7 @@ export const PopperContentFrame = styled(YStack, {
   } as const,
 })
 
-export const PopperContent = React.forwardRef<PopperContentElement, PopperContentProps>(
+export const PopperContent = createRefComponent<PopperContentElement, PopperContentProps>(
   function PopperContent(props, forwardedRef) {
     // detect controlled animatePosition before destructuring. when the user passes
     // animatePosition (even with a currently-falsy value like undefined or false),
@@ -931,7 +932,7 @@ const opposites = {
 
 type Sides = keyof typeof opposites
 
-export const PopperArrow = React.forwardRef<TamaguiElement, PopperArrowProps>(
+export const PopperArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
   function PopperArrow(propsIn, forwardedRef) {
     // see PopperContent for why we detect controlled animatePosition before destructuring
     const isAnimatePosControlled = 'animatePosition' in propsIn

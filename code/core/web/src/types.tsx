@@ -4,13 +4,11 @@ import type {
   CSSProperties,
   ComponentType,
   Context,
-  ForwardRefExoticComponent,
-  ForwardRefRenderFunction,
   FunctionComponent,
   HTMLAttributes,
   ProviderExoticComponent,
+  Ref as ReactRef,
   ReactNode,
-  RefAttributes,
   RefObject,
 } from 'react'
 import type {
@@ -571,8 +569,8 @@ export type TamaguiProjectInfo = {
 
 export type DivAttributes = HTMLAttributes<HTMLDivElement>
 
-export type ReactComponentWithRef<Props, Ref> = ForwardRefExoticComponent<
-  Props & RefAttributes<Ref>
+export type ReactComponentWithRef<Props, Ref> = ComponentType<
+  Props & { ref?: ReactRef<Ref> }
 >
 
 // needs to be cb style for subscribeToContextGroup to be able to poke through to last state
@@ -2703,8 +2701,10 @@ export type Styleable<
   MergedProps = CustomProps extends void
     ? Props
     : Omit<Props, keyof CustomProps> & CustomProps,
-  FunctionDef extends ForwardRefRenderFunction<Ref, MergedProps> =
-    ForwardRefRenderFunction<Ref, MergedProps>,
+  FunctionDef extends (props: MergedProps, ref?: ReactRef<Ref>) => ReactNode = (
+    props: MergedProps,
+    ref?: ReactRef<Ref>
+  ) => ReactNode,
 >(
   a: FunctionDef,
   options?: StyleableOptions
@@ -2734,11 +2734,10 @@ export type TamaguiComponent<
   BaseStyles extends object = {},
   Variants = {},
   ParentStaticProperties = {},
-> = ForwardRefExoticComponent<
+> = FunctionComponent<
   (Props extends TamaDefer
     ? GetFinalProps<NonStyledProps, BaseStyles, Variants>
-    : Props) &
-    RefAttributes<Ref>
+    : Props) & { ref?: ReactRef<Ref> }
 > &
   StaticComponentObject<
     Props,
@@ -2755,13 +2754,11 @@ export type TamaguiComponent<
 export type InferGenericComponentProps<A> =
   A extends ComponentType<infer Props>
     ? Props
-    : A extends ForwardRefExoticComponent<infer P>
+    : A extends ReactComponentWithRef<infer P, any>
       ? P
-      : A extends ReactComponentWithRef<infer P, any>
-        ? P
-        : A extends new (props: infer Props) => any
-          ? Props
-          : {}
+      : A extends new (props: infer Props) => any
+        ? Props
+        : {}
 
 export type InferStyledProps<
   A extends StylableComponent,
@@ -3041,7 +3038,6 @@ export type ViewStyleWithPseudos =
 export type StylableComponent =
   | TamaguiComponent
   | ComponentType<any>
-  | ForwardRefExoticComponent<any>
   | ReactComponentWithRef<any, any>
   | (new (props: any) => any)
 

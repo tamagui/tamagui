@@ -1,5 +1,5 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isWeb, View, type GetRef } from '@tamagui/core'
+import { isWeb, View, type GetRef, createRefComponent } from '@tamagui/core'
 import type { ScrollViewProps } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -20,7 +20,7 @@ import {
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
-export const SheetScrollView = React.forwardRef<
+export const SheetScrollView = createRefComponent<
   GetRef<typeof ScrollView>,
   ScrollViewProps
 >(

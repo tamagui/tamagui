@@ -8,14 +8,14 @@ declare const Collection: {
     } & {
         scope?: any;
     }>;
-    readonly Slot: React.ForwardRefExoticComponent<import("@tamagui/collection").CollectionProps & {
+    readonly Slot: import("@tamagui/core").RefComponent<TamaguiElement | undefined, import("@tamagui/collection").CollectionProps & {
         scope?: any;
-    } & React.RefAttributes<TamaguiElement | undefined>>;
-    readonly ItemSlot: React.ForwardRefExoticComponent<{
+    }>;
+    readonly ItemSlot: import("@tamagui/core").RefComponent<TamaguiElement | undefined, {
         children: React.ReactNode;
     } & {
         scope?: any;
-    } & React.RefAttributes<TamaguiElement | undefined>>;
+    }>;
 }, useCollection: (scope: string) => () => {
     ref: React.RefObject<TamaguiElement | undefined>;
 }[];

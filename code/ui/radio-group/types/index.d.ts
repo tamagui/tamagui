@@ -1,7 +1,7 @@
 export * from './createRadioGroup';
 export * from './RadioGroup';
 export * from './RadioGroupStyledContext';
-export declare const RadioGroup: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+export declare const RadioGroup: import("react").FunctionComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
 }>, "native" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/web").StackStyleBase | "value" | "orientation" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
@@ -25,7 +25,9 @@ export declare const RadioGroup: import("react").ForwardRefExoticComponent<Omit<
     name?: string;
     native?: boolean;
     accentColor?: string;
-} & import("react").RefAttributes<import("@tamagui/web").TamaguiElement>> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
+} & {
+    ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
 }>, "native" | `$${string}` | `$${number}` | import("@tamagui/web").GroupMediaKeys | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/web").StackStyleBase | "value" | "orientation" | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {

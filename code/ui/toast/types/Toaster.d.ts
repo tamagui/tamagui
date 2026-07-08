@@ -108,5 +108,5 @@ export interface ToasterProps {
      */
     reducedMotion?: boolean;
 }
-export declare const Toaster: React.ForwardRefExoticComponent<ToasterProps & React.RefAttributes<TamaguiElement>>;
+export declare const Toaster: import("@tamagui/core").RefComponent<TamaguiElement, ToasterProps>;
 //# sourceMappingURL=Toaster.d.ts.map

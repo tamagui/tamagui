@@ -23,11 +23,13 @@ export interface ProgressExtraProps {
     getValueLabel?(value: number, max: number): string;
 }
 export type ProgressProps = GetProps<typeof ProgressFrame> & ProgressExtraProps;
-declare const Progress: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+declare const Progress: import("react").FunctionComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;
-}>, keyof ProgressExtraProps> & ProgressExtraProps & import("react").RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}>, keyof ProgressExtraProps> & ProgressExtraProps & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     size?: import("@tamagui/core").SizeTokens | undefined;

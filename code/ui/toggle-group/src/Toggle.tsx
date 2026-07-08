@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/compose-refs'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type { GetProps, TamaguiElement, ViewStyle } from '@tamagui/web'
@@ -99,7 +100,7 @@ type ToggleItemExtraProps = {
 
 export type ToggleProps = ToggleFrameProps & ToggleItemExtraProps
 
-export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
+export const Toggle = createRefComponent<TamaguiElement, ToggleProps>(
   function Toggle(props, forwardedRef) {
     const {
       active: activeProp,

@@ -29,7 +29,7 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     Frame?: F;
     Indicator?: D;
     Item?: I;
-}): React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+}): React.FunctionComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
 }>, "native" | `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "value" | "orientation" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
@@ -53,7 +53,9 @@ export declare function createRadioGroup<F extends RadioGroupComponent, D extend
     name?: string;
     native?: boolean;
     accentColor?: string;
-} & React.RefAttributes<import("@tamagui/core").TamaguiElement>> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+} & {
+    ref?: React.Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
 }>, "native" | `$${string}` | `$${number}` | import("@tamagui/core").GroupMediaKeys | "name" | keyof import("@tamagui/core").RNTamaguiViewNonStyleProps | "elevation" | keyof import("@tamagui/core").StackStyleBase | "value" | "orientation" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {

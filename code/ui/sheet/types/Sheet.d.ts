@@ -14,7 +14,7 @@ export declare const Frame: import("@tamagui/core").TamaguiComponent<import("@ta
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const Sheet: import("react").ForwardRefExoticComponent<{
+export declare const Sheet: ((props: {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: import("react").Dispatch<import("react").SetStateAction<boolean>> | ((open: boolean) => void);
@@ -45,9 +45,14 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
     }) => void;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-} & import("react").RefAttributes<import("react-native").View>> & {
-    Controlled: import("react").FunctionComponent<Omit<import("./types").SheetProps, "open" | "onOpenChange"> & import("react").RefAttributes<import("react-native").View>> & {
-        Frame: import("react").ForwardRefExoticComponent<import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+} & import("@tamagui/core").RefProp<import("react-native").View>) => import("react").ReactNode) & {
+    displayName?: string;
+    propTypes?: any;
+} & {
+    Controlled: import("react").FunctionComponent<Omit<import("./types").SheetProps, "open" | "onOpenChange"> & {
+        ref?: import("react").Ref<import("react-native").View>;
+    }> & {
+        Frame: (props: import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             unstyled?: boolean | undefined;
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;
         }>, keyof {
@@ -56,7 +61,9 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
         }> & {
             disableHideBottomOverflow?: boolean;
             adjustPaddingForOffscreenContent?: boolean;
-        }>>;
+        } & {
+            ref?: import("react").Ref<import("react-native").View>;
+        }>) => import("react").ReactNode;
         Overlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
             open?: boolean;
         }, "__scopeSheet"> & {
@@ -73,39 +80,15 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
         Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
             open?: boolean;
         }, {}> | import("@tamagui/core").TamaguiComponent<any, any, any, {}, {}, {}>;
-        ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+        ScrollView: import("@tamagui/core").RefComponent<import("react-native").ScrollView, import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
             }>> | undefined;
-        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-                accept: {
-                    readonly contentContainerStyle: "style";
-                };
-            }>> | undefined;
-        }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-                accept: {
-                    readonly contentContainerStyle: "style";
-                };
-            }>> | undefined;
-        }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-                accept: {
-                    readonly contentContainerStyle: "style";
-                };
-            }>> | undefined;
-        }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-                accept: {
-                    readonly contentContainerStyle: "style";
-                };
-            }>> | undefined;
-        }, {}>> & import("react").RefAttributes<import("react-native").ScrollView>>;
+        }, {}>>;
     };
-    Frame: import("react").ForwardRefExoticComponent<import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    Frame: (props: import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     }>, keyof {
@@ -114,7 +97,9 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
     }> & {
         disableHideBottomOverflow?: boolean;
         adjustPaddingForOffscreenContent?: boolean;
-    }>>;
+    } & {
+        ref?: import("react").Ref<import("react-native").View>;
+    }>) => import("react").ReactNode;
     Overlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
         open?: boolean;
     }, "__scopeSheet"> & {
@@ -131,36 +116,12 @@ export declare const Sheet: import("react").ForwardRefExoticComponent<{
     Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
         open?: boolean;
     }, {}> | import("@tamagui/core").TamaguiComponent<any, any, any, {}, {}, {}>;
-    ScrollView: import("react").ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+    ScrollView: import("@tamagui/core").RefComponent<import("react-native").ScrollView, import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
             accept: {
                 readonly contentContainerStyle: "style";
             };
         }>> | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }, {}>> & import("react").RefAttributes<import("react-native").ScrollView>>;
+    }, {}>>;
 };
 //# sourceMappingURL=Sheet.d.ts.map

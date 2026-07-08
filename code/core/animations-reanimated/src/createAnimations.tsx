@@ -11,9 +11,10 @@ import {
   View,
   type AnimationDriver,
   type UniversalAnimatedNumber,
+  createRefComponent,
 } from '@tamagui/core'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
-import React, { forwardRef, useMemo, useRef } from 'react'
+import React, { useMemo, useRef } from 'react'
 import type { SharedValue } from 'react-native-reanimated'
 import Animated_, {
   cancelAnimation,
@@ -283,7 +284,7 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
   const isText = defaultTag === 'span'
 
   const Component = Animated.createAnimatedComponent(
-    forwardRef((propsIn: any, ref) => {
+    createRefComponent((propsIn: any, ref) => {
       const { forwardedRef, render = defaultTag, ...rest } = propsIn
       const hostRef = useRef<HTMLElement>(null)
       const composedRefs = useComposedRefs(forwardedRef, ref, hostRef)
