@@ -79,7 +79,7 @@ export declare const useRadioGroupItem: (params: UseRadioItemParams) => {
     };
     rovingFocusGroupAttrs: {
         asChild: "except-style";
-        focusable: boolean;
+        tabIndex: number;
         active: boolean;
     };
 };

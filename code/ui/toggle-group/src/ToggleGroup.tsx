@@ -60,7 +60,7 @@ const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>
             <RovingFocusGroup.Item
               asChild="except-style"
               __scopeRovingFocusGroup={props.__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
-              focusable={!disabled}
+              tabIndex={disabled ? -1 : 0}
               active={active}
             >
               {inner}

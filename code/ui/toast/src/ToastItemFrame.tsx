@@ -34,7 +34,7 @@ export const ToastItemFrame = styled(YStack, {
   name: 'ToastItem',
   userSelect: 'none',
   cursor: 'default',
-  focusable: true,
+  tabIndex: 0,
 
   variants: {
     unstyled: {

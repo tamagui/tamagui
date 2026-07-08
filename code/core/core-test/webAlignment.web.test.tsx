@@ -209,7 +209,7 @@ describe('Web Alignment - Focus Props', () => {
     })
   })
 
-  describe('RN focus props are NOT converted (v2)', () => {
+  describe('RN focus props are NOT converted', () => {
     test('focusable is NOT converted (use tabIndex instead)', () => {
       const { viewProps } = simplifiedGetSplitStyles(View, {
         focusable: true,

@@ -134,7 +134,6 @@ type RovingFocusItemElement = React.ElementRef<typeof View>
 type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof View>
 interface RovingFocusItemProps extends PrimitiveSpanProps {
   tabStopId?: string
-  focusable?: boolean
   active?: boolean
 }
 
@@ -144,11 +143,13 @@ const RovingFocusGroupItem = React.forwardRef<
 >((props: ScopedProps<RovingFocusItemProps>, forwardedRef) => {
   const {
     __scopeRovingFocusGroup,
-    focusable = true,
     active = false,
     tabStopId,
+    tabIndex: tabIndexProp,
     ...itemProps
   } = props
+  const tabIndex = tabIndexProp ?? 0
+  const focusable = Number(tabIndex) >= 0
   const autoId = React.useId()
   const id = tabStopId || autoId
   const context = useRovingFocusContext(__scopeRovingFocusGroup)
@@ -172,7 +173,7 @@ const RovingFocusGroupItem = React.forwardRef<
       active={active}
     >
       <View
-        tabIndex={focusable ? 0 : -1}
+        tabIndex={tabIndex}
         data-orientation={context.orientation}
         {...itemProps}
         ref={forwardedRef}
