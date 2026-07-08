@@ -6,7 +6,7 @@ export declare function getWebEvents(): {};
 export declare function useEvents(events: any, viewProps: any, stateRef: {
     current: TamaguiComponentStateRef;
 }, staticConfig: StaticConfig, isHOC?: boolean, isInsideNativeMenu?: boolean, debugName?: string | null, hasRealPressEvents?: boolean): any;
-export declare function wrapWithGestureDetector(content: any, gesture: any, stateRef: {
+export declare function wrapWithGestureDetector(content: any, gesture: any, _stateRef: {
     current: TamaguiComponentStateRef;
-}, isHOC?: boolean, isCompositeComponent?: boolean): any;
+}, isHOC?: boolean, isCompositeComponent?: boolean, hasRealPressEvents?: boolean): any;
 //# sourceMappingURL=eventHandling.native.d.ts.map

@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/animations-motion",
-  "version": "2.4.0",
+  "version": "2.4.2",
   "license": "MIT",
   "source": "src/index.ts",
   "files": [
@@ -18,8 +18,11 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "react-native": {
+        "types": "./types/index.native.d.ts",
+        "default": "./dist/esm/index.native.js"
+      },
       "types": "./types/index.d.ts",
-      "react-native": "./dist/esm/index.native.js",
       "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
       "import": "./dist/esm/index.mjs",

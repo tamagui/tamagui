@@ -34,7 +34,7 @@ export const useUser = () => {
       // in the case where you are unauthorized lets clear all cookies
       // this is because we had a bad version of supabase ssr that caused bad cookies
       // and users with those cookies cant sign in
-      deleteSupabaseCookies()
+      await clearSupabaseCookies()
 
       return null
     },
@@ -58,13 +58,16 @@ export const useUser = () => {
   }
 }
 
-function deleteSupabaseCookies() {
-  document.cookie.split(';').forEach((cookie) => {
-    const [name] = cookie.split('=')
-    if (name.startsWith('sb-')) {
-      document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
-    }
-  })
+async function clearSupabaseCookies() {
+  try {
+    await fetch('/api/clear-supabase-cookies', {
+      method: 'POST',
+      credentials: 'same-origin',
+      cache: 'no-store',
+    })
+  } catch {
+    // stale cookies are cleanup-only; auth failure remains represented by null
+  }
 }
 
 export const UserGuard = ({ children }: { children: React.ReactNode }) => {

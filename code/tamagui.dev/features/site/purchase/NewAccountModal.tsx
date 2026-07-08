@@ -45,6 +45,7 @@ import { authFetch } from '~/features/api/authFetch'
 import { ADMIN_EMAILS } from '~/features/api/isAdmin'
 import type { UserContextType } from '~/features/auth/types'
 import { useSupabaseClient } from '~/features/auth/useSupabaseClient'
+import { navigateToInternalPath } from '~/features/security/navigation'
 import { V1_PRODUCTS } from '~/features/stripe/products'
 import { getDefaultAvatarImage } from '~/features/user/getDefaultAvatarImage'
 import {
@@ -422,7 +423,7 @@ const AccountHeader = () => {
 
       // Clear SWR cache and redirect
       await mutate('user', null)
-      window.location.href = '/'
+      navigateToInternalPath('/')
     } catch (error) {
       console.error('Logout failed:', error)
     }

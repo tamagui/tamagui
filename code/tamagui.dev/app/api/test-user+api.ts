@@ -113,7 +113,7 @@ export default apiRoute(async (req) => {
   <p>Logging in as test user (${type})...</p>
   <script>
     localStorage.setItem('sb-auth-token', ${JSON.stringify(sessionJson)});
-    window.location.href = '/account';
+    window.location.assign('/account');
   </script>
 </body>
 </html>`

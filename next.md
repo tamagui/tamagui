@@ -94,6 +94,10 @@ but group compile deopt completely negates this advantage for group-heavy UIs
 
 ---
 
+Image "types of property ''aria-hidden'' are incompatible." improve compat with real img
+
+---
+
 vite 8 monorepo fix:
 
 - added `tamagui-monorepo-exports-fix` plugin to `@tamagui/vite-plugin`

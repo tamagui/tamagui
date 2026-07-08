@@ -1,4 +1,5 @@
 import type { Endpoint } from 'one'
+import { getSafeRequestOrigin } from '~/features/security/navigation'
 
 export const GET: Endpoint = async (req) => {
   const url = new URL(req.url)
@@ -8,20 +9,15 @@ export const GET: Endpoint = async (req) => {
     return new Response('Missing code parameter', { status: 400 })
   }
 
-  // Pass code to client page - client will exchange using its stored PKCE code verifier
-  const headers = new Headers()
-  headers.set('content-type', 'text/html')
+  // Pass code to client page - client will exchange using its stored PKCE code verifier.
+  const redirectUrl = new URL('/auth', getSafeRequestOrigin(req))
+  redirectUrl.searchParams.set('code', code)
 
-  return new Response(
-    `<html>
-        <head>
-          <script>
-            window.location.href = "/auth?code=${encodeURIComponent(code)}"
-          </script>
-        </head>
-      </html>`,
-    {
-      headers,
-    }
-  )
+  return new Response(null, {
+    status: 303,
+    headers: {
+      'Cache-Control': 'no-store',
+      Location: redirectUrl.toString(),
+    },
+  })
 }

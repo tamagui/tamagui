@@ -1,4 +1,4 @@
-import { getMDXComponent } from 'mdx-bundler/client'
+import { getMDXComponent } from '@vxrn/mdx-rust/client'
 import React from 'react'
 import type { LoaderProps } from 'one'
 import { useLoader } from 'one'

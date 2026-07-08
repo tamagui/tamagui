@@ -77,7 +77,7 @@ export default function Layout() {
             fallback instead of staying invisible until the font loads (FOIT) —
             this was the LCP bottleneck (3.1s element render delay). fonts are
             preloaded above so the swap window is short. */}
-        <style dangerouslySetInnerHTML={{ __html: fontFaceCss }} />
+        <style>{fontFaceCss}</style>
       </head>
 
       <body>

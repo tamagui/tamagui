@@ -61,7 +61,7 @@ const include = [
   '@stripe/react-stripe-js',
   '@stripe/stripe-js',
   'swr/mutation',
-  'mdx-bundler/client',
+  '@vxrn/mdx-rust/client',
   // core tamagui packages must be pre-bundled together to avoid duplicate instances
   'tamagui',
   '@tamagui/core',
@@ -194,7 +194,14 @@ export default {
   },
 
   ssr: {
-    external: ['@vxrn/mdx', 'ws', 'postmark', 'stripe'],
+    external: [
+      '@vxrn/mdx-rust',
+      'satteri',
+      'satteri-expressive-code',
+      'ws',
+      'postmark',
+      'stripe',
+    ],
     noExternal: true,
   },
 

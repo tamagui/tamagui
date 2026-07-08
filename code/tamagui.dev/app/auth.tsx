@@ -1,6 +1,10 @@
 import { AuthClient } from '@supabase/auth-js'
 import { useLayoutEffect, useRef } from 'react'
 import { Spinner, Text, YStack } from 'tamagui'
+import {
+  getSafeInternalPath,
+  navigateToInternalPath,
+} from '~/features/security/navigation'
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -83,6 +87,8 @@ const createExchangeClient = () => {
 }
 
 const finishPopupOrRedirect = (target: string, message: any) => {
+  const safeTarget = getSafeInternalPath(target, { fallback: '/login' })
+
   if (window.opener && window.opener !== window) {
     try {
       window.opener.postMessage(message, window.location.origin)
@@ -90,11 +96,11 @@ const finishPopupOrRedirect = (target: string, message: any) => {
     window.close()
     // close can be blocked; fall back to redirect after a tick so the user isn't stranded
     setTimeout(() => {
-      if (!window.closed) window.location.href = target
+      if (!window.closed) navigateToInternalPath(safeTarget, { fallback: '/login' })
     }, 250)
     return
   }
-  window.location.href = target
+  navigateToInternalPath(safeTarget, { fallback: '/login' })
 }
 
 const exchangeSession = async (completedRef: { current: boolean }) => {
