@@ -94,7 +94,8 @@ export const TakeoutGlow = memo(() => {
           scaleX={isOpposing ? 1 : 1}
         >
           <YStack
-            fullscreen
+            position="absolute"
+            inset={0}
             style={{
               background: `radial-gradient(var(--${curTint}7) 20%, transparent 50%)`,
               transition: `all ease-in-out 1000ms`,

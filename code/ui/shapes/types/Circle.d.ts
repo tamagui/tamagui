@@ -3,7 +3,6 @@ export declare const Circle: import("@tamagui/web").TamaguiComponent<import("@ta
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     size?: number | import("@tamagui/web").SizeTokens | undefined;
     transparent?: boolean | undefined;
-    fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;

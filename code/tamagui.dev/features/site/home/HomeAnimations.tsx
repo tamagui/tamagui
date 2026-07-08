@@ -101,11 +101,12 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
             <YStack
               pointerEvents={disableScrollPane ? 'auto' : 'none'}
               opacity={disableScrollPane ? 1 : 0}
-              fullscreen
+              position="absolute"
+              inset={0}
               items="center"
               justify="center"
             >
-              <YStack fullscreen t="60%" opacity={0.5} />
+              <YStack position="absolute" inset={0} t="60%" opacity={0.5} />
               <Button
                 aria-label="View more"
                 y={200}
@@ -203,7 +204,7 @@ export const ExampleAnimations = memo(() => {
         width="60%"
         $sm={{ width: '100%' }}
       >
-        <YStack fullscreen z={-1} bg="$background" opacity={0.5} />
+        <YStack position="absolute" inset={0} z={-1} bg="$background" opacity={0.5} />
         {isIntersecting ? (
           <AnimationsDemo position={positionI} animation={animation.animation} />
         ) : null}

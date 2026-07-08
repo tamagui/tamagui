@@ -207,7 +207,7 @@ function ProductCard() {
         height="100%"
         objectFit="cover"
       />
-      <YStack fullscreen justify="flex-end">
+      <YStack position="absolute" inset={0} justify="flex-end">
         <YStack
           p="$2.5"
           gap="$1.5"
@@ -445,7 +445,7 @@ function ThemeToggle() {
               position="absolute"
               key="Sun"
               transition="medium"
-              fullscreen
+              inset={0}
               items="center"
               justify="center"
               opacity={checked ? 0 : 1}
@@ -461,7 +461,7 @@ function ThemeToggle() {
               position="absolute"
               transition="medium"
               key="moon"
-              fullscreen
+              inset={0}
               items="center"
               justify="center"
               transform={[
@@ -877,7 +877,7 @@ export function TakeoutMenuShowcase() {
           display="none"
           $gtMd={{ display: 'flex' }}
         >
-          <YStack fullscreen pointerEvents="none" overflow="visible">
+          <YStack position="absolute" inset={0} pointerEvents="none" overflow="visible">
             <YStack position="absolute" t={-20} l="40%" pointerEvents="auto">
               <FloatingWrapper speed="medium" delay={500}>
                 <ProductCard />

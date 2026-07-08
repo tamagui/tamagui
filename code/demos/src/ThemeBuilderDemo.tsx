@@ -3,7 +3,7 @@ import { Square, XStack, YStack } from 'tamagui'
 
 export function ThemeBuilderDemo() {
   return (
-    <YStack fullscreen overflow="hidden">
+    <YStack position="absolute" inset={0} overflow="hidden">
       <XStack maxH={200} y={-100} x={-50} rotate="-10deg">
         <Col y={35} bg="$color9" />
         <Col size="$8" y={30} bg="$color7" />

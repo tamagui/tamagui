@@ -682,7 +682,8 @@ function PopoverPortal({
       {/* without this you'll see the site menu re-rendering. It must be something in wrapping children in Theme */}
       {!!open && !context.breakpointActive && !context.hoverable && (
         <YStack
-          fullscreen
+          position="absolute"
+          inset={0}
           onPress={composeEventHandlers(onPress as any, context.onOpenToggle)}
         />
       )}

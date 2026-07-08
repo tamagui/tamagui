@@ -1,14 +1,12 @@
 import React from 'react';
 import type { ScrollView as RNScrollView } from 'react-native';
-export declare const SheetScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+export declare const SheetScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
     readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof RNScrollView, {
         accept: {
             readonly contentContainerStyle: "style";
         };
     }>> | undefined;
-}> & {
-    fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
     readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof RNScrollView, {
         accept: {
             readonly contentContainerStyle: "style";
@@ -20,9 +18,7 @@ export declare const SheetScrollView: React.ForwardRefExoticComponent<Omit<impor
             readonly contentContainerStyle: "style";
         };
     }>> | undefined;
-}> & {
-    fullscreen?: boolean | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
+}> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
     readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof RNScrollView, {
         accept: {
             readonly contentContainerStyle: "style";
@@ -34,7 +30,5 @@ export declare const SheetScrollView: React.ForwardRefExoticComponent<Omit<impor
             readonly contentContainerStyle: "style";
         };
     }>> | undefined;
-}, {
-    fullscreen?: boolean | undefined;
-}>> & React.RefAttributes<RNScrollView>>;
+}, {}>> & React.RefAttributes<RNScrollView>>;
 //# sourceMappingURL=SheetScrollView.d.ts.map

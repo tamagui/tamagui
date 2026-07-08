@@ -745,7 +745,13 @@ const PaletteColor = memo(
           }
         }}
       >
-        <XStack fullscreen bg={color as any} items="center" justify="center">
+        <XStack
+          position="absolute"
+          inset={0}
+          bg={color as any}
+          items="center"
+          justify="center"
+        >
           <SizableText
             selectable={false}
             color={index > 4 ? '$background' : '$color'}

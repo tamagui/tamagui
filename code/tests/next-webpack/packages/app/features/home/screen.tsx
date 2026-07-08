@@ -90,7 +90,8 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['$background', 'transparent']}
           />
         </Select.ScrollUpButton>
@@ -157,7 +158,8 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['transparent', '$background']}
           />
         </Select.ScrollDownButton>

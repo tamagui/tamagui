@@ -150,7 +150,8 @@ const ThemeBuilderModal = memo(() => {
       transition="medium"
     >
       <YStack
-        fullscreen
+        position="absolute"
+        inset={0}
         transition="medium"
         animateOnly={['transform']}
         ref={ref}

@@ -224,7 +224,7 @@ export const HomeThemes = memo(function HomeThemes() {
           pointerEvents={scrollLock === 'animate' ? 'none' : 'auto'}
           maxW={1400}
         >
-          <YStack fullscreen pointerEvents="none" z={1000000000} />
+          <YStack position="absolute" inset={0} pointerEvents="none" z={1000000000} />
           <XStack
             className="scroll-horizontal no-scrollbar"
             ref={scrollView as any}
@@ -292,7 +292,8 @@ export const HomeThemes = memo(function HomeThemes() {
           <YStack
             className="media-player-main-demo"
             pointerEvents="none"
-            fullscreen
+            position="absolute"
+            inset={0}
             items="center"
             justify="center"
             $xs={{ scale: 0.8 }}

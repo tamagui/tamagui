@@ -192,7 +192,8 @@ const TableCol = styled(YStack, {
 })
 
 const TableHighlight = styled(YStack, {
-  fullscreen: true,
+  position: 'absolute',
+  inset: 0,
   bg: '$yellow1',
 })
 

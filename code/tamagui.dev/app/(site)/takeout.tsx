@@ -59,7 +59,8 @@ export default function TakeoutPageNew() {
 
       <YStack
         className="grain"
-        fullscreen
+        position="absolute"
+        inset={0}
         t={-60}
         b={0}
         opacity={0.25}
@@ -120,7 +121,8 @@ export default function TakeoutPageNew() {
       <ThemeTint>
         <YStack
           z={-1}
-          fullscreen
+          position="absolute"
+          inset={0}
           style={{
             background: `linear-gradient(to bottom, transparent, transparent, var(--color2))`,
           }}

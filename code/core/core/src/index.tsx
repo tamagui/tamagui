@@ -259,21 +259,6 @@ export const Text = WebText as any as RNTamaguiText
 
 // const zz = <A />
 
-// const variants = {
-//   fullscreen: {
-//     true: {},
-//   },
-//   elevation: {
-//     '...size': () => ({}),
-//     ':number': () => ({}),
-//   },
-// } as const
-
-// export const YStack = styled(View, {
-//   flexDirection: 'column',
-//   variants,
-// })
-
 // import { TextInput } from 'react-native'
 // export const InputFrame = styled(
 //   TextInput,

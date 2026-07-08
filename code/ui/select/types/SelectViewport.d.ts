@@ -2,7 +2,6 @@ export declare const SelectViewportFrame: import("@tamagui/core").TamaguiCompone
     size?: import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     transparent?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -13,7 +12,6 @@ export declare const SelectViewport: import("@tamagui/core").TamaguiComponent<Om
     size?: import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     transparent?: boolean | undefined;
     elevate?: boolean | undefined;
@@ -35,7 +33,6 @@ export declare const SelectViewport: import("@tamagui/core").TamaguiComponent<Om
     size?: import("@tamagui/core").SizeTokens | undefined;
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
     circular?: boolean | undefined;
     transparent?: boolean | undefined;
     elevate?: boolean | undefined;

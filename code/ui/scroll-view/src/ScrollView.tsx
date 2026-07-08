@@ -1,4 +1,3 @@
-import { fullscreenStyle } from '@tamagui/stacks'
 import type { GetProps, GetRef } from '@tamagui/web'
 import { styled } from '@tamagui/web'
 import { ScrollView as ScrollViewNative } from 'react-native'
@@ -8,12 +7,6 @@ export const ScrollView = styled(
   {
     name: 'ScrollView',
     scrollEnabled: true,
-
-    variants: {
-      fullscreen: {
-        true: fullscreenStyle,
-      },
-    } as const,
   },
   {
     accept: {

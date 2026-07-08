@@ -67,14 +67,16 @@ export const SidePaneHost = memo(() => {
       {/* backdrop */}
       <XStack
         z={1000}
-        fullscreen
+        position="absolute"
+        inset={0}
         className="blur-behind transition ease-in 200ms"
         pointerEvents={visible ? 'auto' : 'none'}
         opacity={visible ? 1 : 0}
         data-tauri-drag-region
       />
       <XStack
-        fullscreen
+        position="absolute"
+        inset={0}
         transition="quick"
         l="15%"
         bg="$background"

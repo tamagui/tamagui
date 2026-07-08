@@ -61,9 +61,8 @@ const HeroContents = memo(function HeroContents() {
 
   return (
     <ContainerLarge position="relative">
-      {/* explicit absolute position instead of `fullscreen` + l/r/b overrides:
-          fullscreen emits inset:0, which conflicts with _l/_r/_b in the css
-          cascade and flips winner around hydration, causing a ~0.3 horizontal
+      {/* use explicit edge props because inset:0 conflicts with _l/_r/_b in the
+          css cascade and flips winner around hydration, causing a ~0.3 horizontal
           CLS in the hero (the decorative grid jumps from 1140 to 2140 wide) */}
       <YStack
         position="absolute"
@@ -77,7 +76,8 @@ const HeroContents = memo(function HeroContents() {
       >
         <YStack
           className="bg-grid"
-          fullscreen
+          position="absolute"
+          inset={0}
           pointerEvents="none"
           opacity={0.18}
           style={{
@@ -380,7 +380,7 @@ const TextWithEffects = ({ text }: { text: string }) => {
     <>
       <span style={{ opacity: 0 }}>{displayText}</span>
 
-      <YStack fullscreen>
+      <YStack position="absolute" inset={0}>
         <HeroText className="clip-text rainbow grain" l={-1} opacity={0.5}>
           {displayText}
         </HeroText>

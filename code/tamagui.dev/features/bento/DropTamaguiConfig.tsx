@@ -136,7 +136,8 @@ export const DropTamaguiConfig = () => {
             </Dialog.Close>
 
             <YStack
-              fullscreen
+              position="absolute"
+              inset={0}
               pointerEvents="none"
               opacity={dragging ? 1 : 0}
               bg="$background06"

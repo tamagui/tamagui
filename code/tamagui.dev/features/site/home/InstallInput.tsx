@@ -24,7 +24,13 @@ export const InstallInput = memo(() => {
         rounded="$10"
         position="relative"
       >
-        <YStack bg="$color9" opacity={0.125} fullscreen backdropFilter="blur(50px)" />
+        <YStack
+          bg="$color9"
+          opacity={0.125}
+          position="absolute"
+          inset={0}
+          backdropFilter="blur(50px)"
+        />
         <Paragraph
           text="center"
           size="$5"

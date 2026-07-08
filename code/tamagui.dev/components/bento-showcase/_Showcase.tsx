@@ -339,7 +339,7 @@ const PhoneFrame = (props: any) => {
         props.setPhoneFocused(false)
       }}
     >
-      <YStack fullscreen>
+      <YStack position="absolute" inset={0}>
         <PhoneSVG />
       </YStack>
       <YStack

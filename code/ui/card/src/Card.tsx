@@ -86,7 +86,8 @@ export const CardBackground = styled(YStack, {
     unstyled: {
       false: {
         zIndex: 0,
-        fullscreen: true,
+        position: 'absolute',
+        inset: 0,
         overflow: 'hidden',
         pointerEvents: 'none',
         padding: 0,

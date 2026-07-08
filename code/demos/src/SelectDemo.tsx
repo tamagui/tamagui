@@ -88,7 +88,8 @@ export function SelectDemoContents(
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['$background', 'transparent']}
             rounded="$4"
           />
@@ -153,7 +154,8 @@ export function SelectDemoContents(
           <LinearGradient
             start={[0, 0]}
             end={[0, 1]}
-            fullscreen
+            position="absolute"
+            inset={0}
             colors={['transparent', '$background']}
             rounded="$4"
           />
