@@ -4,6 +4,7 @@ import {
   SizableText,
   ThemeableStack,
   createStyledContext,
+  createStyledHOC,
   styled,
 } from 'tamagui'
 
@@ -120,7 +121,7 @@ type CustomButtonProps = GetProps<typeof CustomButtonFrame> & {
   children?: React.ReactNode
 }
 
-const CustomButtonComponent = CustomButtonFrame.styleable<CustomButtonProps>(
+const CustomButtonComponent = createStyledHOC(CustomButtonFrame)<CustomButtonProps>(
   function CustomButton(props, ref) {
     const { children, ...rest } = props
     return (
@@ -135,16 +136,16 @@ type ContextRefButtonProps = GetProps<typeof ContextRefButtonFrame> & {
   children?: React.ReactNode
 }
 
-const ContextRefButtonComponent = ContextRefButtonFrame.styleable<ContextRefButtonProps>(
-  function ContextRefButton(props, ref) {
-    const { children, ...rest } = props
-    return (
-      <ContextRefButtonFrame {...rest} ref={ref}>
-        <ContextRefButtonText>{children}</ContextRefButtonText>
-      </ContextRefButtonFrame>
-    )
-  }
-)
+const ContextRefButtonComponent = createStyledHOC(
+  ContextRefButtonFrame
+)<ContextRefButtonProps>(function ContextRefButton(props, ref) {
+  const { children, ...rest } = props
+  return (
+    <ContextRefButtonFrame {...rest} ref={ref}>
+      <ContextRefButtonText>{children}</ContextRefButtonText>
+    </ContextRefButtonFrame>
+  )
+})
 
 // Issue #3670 - pressStyle color not propagating to children
 // Button with pressStyle that changes color - should propagate to text on press
@@ -184,16 +185,16 @@ type PressStyleButtonProps = GetProps<typeof PressStyleButtonFrame> & {
   children?: React.ReactNode
 }
 
-const PressStyleButtonComponent = PressStyleButtonFrame.styleable<PressStyleButtonProps>(
-  function PressStyleButton(props, ref) {
-    const { children, ...rest } = props
-    return (
-      <PressStyleButtonFrame {...rest} ref={ref}>
-        <PressStyleButtonText>{children}</PressStyleButtonText>
-      </PressStyleButtonFrame>
-    )
-  }
-)
+const PressStyleButtonComponent = createStyledHOC(
+  PressStyleButtonFrame
+)<PressStyleButtonProps>(function PressStyleButton(props, ref) {
+  const { children, ...rest } = props
+  return (
+    <PressStyleButtonFrame {...rest} ref={ref}>
+      <PressStyleButtonText>{children}</PressStyleButtonText>
+    </PressStyleButtonFrame>
+  )
+})
 
 export function StyledContextColor() {
   return (

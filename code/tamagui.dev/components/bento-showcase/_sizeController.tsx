@@ -1,9 +1,9 @@
 import { Minus, Plus } from '@tamagui/lucide-icons-2'
 import type { SizeTokens } from 'tamagui'
-import { Button, Theme, YGroup } from 'tamagui'
+import { Button, Theme, YGroup, createStyledHOC } from 'tamagui'
 import { useContainerDim } from './hooks/useContainerDim'
 
-export const SizeController = YGroup.styleable<{
+export const SizeController = createStyledHOC(YGroup)<{
   size: SizeTokens
   setSize: (size: SizeTokens) => void
   sizes?: SizeTokens[]

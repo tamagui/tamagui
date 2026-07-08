@@ -148,6 +148,7 @@ export {
   createFont,
   createShorthands,
   createStyledContext,
+  createStyledHOC,
   createTokens,
   createVariable,
   getConfig,
