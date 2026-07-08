@@ -251,7 +251,7 @@ function looksLikeTailwindClass(
   if (/^(?:min|max)-[wh]-/.test(cls)) return true
 
   // border utilities are overloaded (border-2 width vs border-red-500 color) — recognize them
-  if (/^border-/.test(cls)) return true
+  if (cls.startsWith('border-')) return true
 
   // for prop-value patterns like "bg-red", check if the prop is known
   const dashIndex = cls.indexOf('-')

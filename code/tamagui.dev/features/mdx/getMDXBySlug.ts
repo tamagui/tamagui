@@ -33,7 +33,7 @@ const heroTemplate = {
   code(node: any, ctx: any) {
     const meta: string = node.meta || ''
     const match = meta.match(templateRe)
-    const templateName = match ? match[1] ?? match[2] ?? match[3] : undefined
+    const templateName = match ? (match[1] ?? match[2] ?? match[3]) : undefined
     if (!templateName || !demosPath) return
     try {
       const source = fs.readFileSync(

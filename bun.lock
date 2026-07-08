@@ -429,6 +429,7 @@
         "@tamagui/animations-reanimated": "workspace:*",
         "@tamagui/colors": "workspace:*",
         "@tamagui/core": "workspace:*",
+        "@tamagui/create-system-font": "workspace:*",
         "@tamagui/font-inter": "workspace:*",
         "@tamagui/font-silkscreen": "workspace:*",
         "@tamagui/react-native-media-driver": "workspace:*",
@@ -528,6 +529,21 @@
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
+      },
+      "peerDependencies": {
+        "react": ">=19",
+      },
+    },
+    "code/core/create-system-font": {
+      "name": "@tamagui/create-system-font",
+      "version": "2.4.2",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+      },
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "react": ">=19",
+        "vitest": "4.0.4",
       },
       "peerDependencies": {
         "react": ">=19",
@@ -5169,6 +5185,8 @@
     "@tamagui/create-context": ["@tamagui/create-context@workspace:code/core/create-context"],
 
     "@tamagui/create-menu": ["@tamagui/create-menu@workspace:code/ui/create-menu"],
+
+    "@tamagui/create-system-font": ["@tamagui/create-system-font@workspace:code/core/create-system-font"],
 
     "@tamagui/create-theme": ["@tamagui/create-theme@workspace:code/core/create-theme"],
 

@@ -1,5 +1,9 @@
 import type { FillInFont, GenericFont } from '@tamagui/core'
-import { createFont, getVariableValue, isWeb } from '@tamagui/core'
+import { isWeb } from '@tamagui/core'
+import {
+  createSystemFont as createSystemFontBase,
+  systemFontFamily,
+} from '@tamagui/create-system-font'
 
 export const createSystemFont = <A extends GenericFont>({
   font = {},
@@ -10,29 +14,19 @@ export const createSystemFont = <A extends GenericFont>({
   sizeLineHeight?: (fontSize: number) => number
   sizeSize?: (size: number) => number
 } = {}): FillInFont<A, keyof typeof defaultSizes> => {
-  // merge to allow individual overrides
-  const size = Object.fromEntries(
-    Object.entries({
-      ...defaultSizes,
-      ...font.size,
-    }).map(([k, v]) => [k, sizeSize(+v)])
-  )
-  return createFont({
-    family: isWeb
-      ? '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif'
-      : 'System',
-    lineHeight: Object.fromEntries(
-      Object.entries(size).map(([k, v]) => [k, sizeLineHeight(getVariableValue(v))])
-    ),
+  return createSystemFontBase({
+    font,
+    sizes: defaultSizes,
+    family: isWeb ? systemFontFamily.web : systemFontFamily.native,
+    sizeLineHeight,
+    sizeSize,
     weight: {
       4: '300',
     },
     letterSpacing: {
       4: 0,
     },
-    ...(font as any),
-    size,
-  })
+  }) as FillInFont<A, keyof typeof defaultSizes>
 }
 
 const defaultSizes = {
