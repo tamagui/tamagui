@@ -67,6 +67,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./DialogSheetAdaptResizeCase').DialogSheetAdaptResizeCase,
   DialogSheetAdaptUnmountCase: () =>
     require('./DialogSheetAdaptUnmountCase').DialogSheetAdaptUnmountCase,
+  AdaptLiveSlotSpikeCase: () =>
+    require('./AdaptLiveSlotSpikeCase').AdaptLiveSlotSpikeCase,
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
   StyleValidation: () => require('./StyleValidation').StyleValidation,

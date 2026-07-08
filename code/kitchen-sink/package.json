@@ -54,6 +54,7 @@
     "@tamagui/core": "workspace:*",
     "@tamagui/demos": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
+    "@tamagui/focus-scope": "workspace:*",
     "@tamagui/get-token": "workspace:*",
     "@tamagui/input": "workspace:*",
     "@tamagui/lucide-icons-2": "workspace:*",

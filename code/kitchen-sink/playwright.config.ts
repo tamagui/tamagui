@@ -2,6 +2,15 @@ import { defineConfig, devices } from '@playwright/test'
 import { ANIMATION_DRIVERS } from './tests/test-utils'
 
 const port = process.env.PORT || '9000'
+const browserChannel = process.env.PLAYWRIGHT_CHANNEL
+const chromiumUse = browserChannel
+  ? {
+      channel: browserChannel,
+      launchOptions: {
+        args: ['--use-angle=metal'],
+      },
+    }
+  : undefined
 
 // Support both single-driver mode (via env var) and multi-driver parallel mode
 const singleDriver = process.env.TAMAGUI_TEST_ANIMATION_DRIVER
@@ -33,6 +42,7 @@ export default defineConfig({
       name: 'default',
       testIgnore: '**/*.animated.test.{ts,tsx}',
       metadata: { animationDriver: 'native' },
+      ...(chromiumUse && { use: chromiumUse }),
     },
     // WebKit project scoped to RemoveScroll tests (scroll restoration)
     {
@@ -53,6 +63,7 @@ export default defineConfig({
     ...drivers.map((driver) => ({
       name: `animated-${driver}`,
       testMatch: '**/*.animated.test.{ts,tsx}',
+      ...(chromiumUse && { use: chromiumUse }),
       // AnimationsWithMediaQueries only passes with css and motion drivers for now
       ...(driver !== 'motion' &&
         driver !== 'css' && {
