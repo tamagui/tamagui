@@ -43,8 +43,8 @@ _Coverage: Tamagui 93% · Tailwind 100% · NativeWind v5 83% · Uniwind 37%_
 | **box-sizing** | ✅ | 🌐 | ⚠️ | ⚠️ | **⚠️ NativeWind v5, Uniwind:** Tamagui: `$bxs` named prop, maps to RN 0.77+ boxSizing (New Architecture) so border-box/content-box both work cross-platform. RN defaults to and only supports border-box, so NativeWind/Uniwind box-border is a no-op and box-content is unsupported on native. |
 | **isolation** | ✅ | 🌐 | 🌐 | ❌ | Tamagui: `$isolation` maps to RN 0.77+ isolation (New Architecture) for native stacking contexts; NativeWind `isolate` is web-only. |
 | **visibility** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui: `visibility="hidden"` is cross-platform - native CSS visibility on web, expands to `opacity:0 + pointerEvents:none` on native. `visibility="collapse"` stays web-only (no RN equivalent). NativeWind `invisible` maps to opacity:0 on native (collapse is web-only). |
-| **float** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ float: "left" }}` on web (the platform escape hatch passes raw CSS through). Not applicable to RN flexbox, so web-only across the board. |
-| **clear** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ clear: "both" }}` on web. No RN equivalent. |
+| **float** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ float: "left" }}` on web (the platform escape hatch passes raw CSS through). Not applicable to RN flexbox, so web-only across the board. |
+| **clear** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ clear: "both" }}` on web. No RN equivalent. |
 | **columns** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$columnCount` is a typed prop but CSS multi-column only renders on web; RN has no multi-column layout. Uniwind explicitly lists `columns-*` as unsupported. |
 | **object-fit** | ✅ | 🌐 | ✅ | ❌ | Tamagui: `objectFit` is auto-mapped on native — Tamagui core expands `objectFit` to RN `resizeMode`, and the Image component also writes `style.objectFit` (RN 0.76+ reads it natively). Works with the default Image and expo-image (via `contentFit`). |
 | **object-position** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui: `objectPosition` is forwarded into the Image `style` on native and to `contentPosition` when using expo-image (full support there). Default RN Image currently ignores it — limited to keyword values like center/top/bottom/left/right via expo-image. |
@@ -79,7 +79,7 @@ _Coverage: Tamagui 100% · Tailwind 100% · NativeWind v5 100% · Uniwind 0%_
 | **grid-row** | 🌐 | 🌐 | 🌐 | ❌ |  |
 | **grid-template-areas** | 🌐 | 🌐 | 🌐 | ❌ |  |
 | **grid-auto-flow** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$gridAutoFlow` is a typed prop but renders web-only (RN has no grid). |
-| **place-content/items/self** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ placeContent / placeItems / placeSelf: ... }}` on web. RN has no CSS grid, so place-* is web-only everywhere. |
+| **place-content/items/self** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ placeContent / placeItems / placeSelf: ... }}` on web. RN has no CSS grid, so place-* is web-only everywhere. |
 
 ## Spacing
 
@@ -126,7 +126,7 @@ _Coverage: Tamagui 95% · Tailwind 100% · NativeWind v5 89% · Uniwind 50%_
 | **white-space** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$whiteSpace` is a web-only text prop (tree-shaken on native). On native, text wrapping is controlled by `numberOfLines` and container width, not white-space. |
 | **word-break** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$wordWrap` (`ww` shorthand) is web-only. RN has no word-break control; it breaks at whitespace or character based on platform text engine. |
 | **text-overflow** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui: `$textOverflow="ellipsis"` works cross-platform on Text - web uses CSS text-overflow, native maps to numberOfLines={1} + ellipsizeMode="tail". Other values (clip) are web-only. |
-| **text-indent** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ textIndent: "1em" }}` on web. RN text engine has no text-indent. |
+| **text-indent** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ textIndent: "1em" }}` on web. RN text engine has no text-indent. |
 | **vertical-align** | ✅ | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** Tamagui: `$verticalAlign` maps to RN 0.71+ verticalAlign on Text (auto/top/bottom/middle), so it works cross-platform. NativeWind `align-*` is largely a web inline-element concept; RN only honors a subset on Text. |
 | **font-variant-numeric** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui: `$fontVariant` maps to RN fontVariant array; RN supports a subset (tabular-nums, oldstyle-nums, lining-nums, etc.) cross-platform but not the full CSS font-variant-numeric grammar. NativeWind maps the common numeric variants to RN fontVariant, same subset limitation. |
 | **text-shadow** | ✅ | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** Tailwind text-shadow utilities are new in v4.1; NativeWind v5 maps to RN textShadow* (single shadow only). Tamagui `$textShadow` + offset/radius/color are cross-platform via RN textShadow* props. |
@@ -140,10 +140,10 @@ _Coverage: Tamagui 92% · Tailwind 100% · NativeWind v5 92% · Uniwind 17%_
 |---------|---------|----------|------------|---------|-------|
 | **background-color** | ✅ | 🌐 | ✅ | ✅ |  |
 | **background-image** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui: `$backgroundImage` maps to RN 0.76+ experimental_backgroundImage, so CSS gradients (linear/radial) render on native; raster url() background images stay web-only (use the Image component on native). NativeWind v5 similarly maps gradient utilities to RN 0.76+ backgroundImage; url() backgrounds remain web-only. |
-| **background-position** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ backgroundPosition: ... }}` on web. RN has no CSS background-image so no native equivalent. |
-| **background-size** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ backgroundSize: ... }}` on web. No RN equivalent. |
-| **background-repeat** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ backgroundRepeat: ... }}` on web. No RN equivalent. |
-| **background-clip** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ backgroundClip: ... }}` on web (commonly used for gradient text). No RN equivalent. |
+| **background-position** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ backgroundPosition: ... }}` on web. RN has no CSS background-image so no native equivalent. |
+| **background-size** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ backgroundSize: ... }}` on web. No RN equivalent. |
+| **background-repeat** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ backgroundRepeat: ... }}` on web. No RN equivalent. |
+| **background-clip** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ backgroundClip: ... }}` on web (commonly used for gradient text). No RN equivalent. |
 
 ## Borders
 
@@ -168,7 +168,7 @@ _Coverage: Tamagui 100% · Tailwind 100% · NativeWind v5 83% · Uniwind 25%_
 |---------|---------|----------|------------|---------|-------|
 | **opacity** | ✅ | 🌐 | ✅ | ✅ |  |
 | **box-shadow** | ✅ | 🌐 | ⚠️ | ⚠️ | **⚠️ NativeWind v5, Uniwind:** NativeWind v5 maps shadow-* to RN 0.76+ boxShadow; still differs from CSS spread/inset |
-| **mix-blend-mode** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$mixBlendMode` is a web-only prop (also reachable via `$platform-web={{ mixBlendMode: ... }}`). No native equivalent — RN has no compositing-mode primitive. |
+| **mix-blend-mode** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$mixBlendMode` is a web-only prop (also reachable via `$web={{ mixBlendMode: ... }}`). No native equivalent — RN has no compositing-mode primitive. |
 | **cursor** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$cur` (cursor) is accepted as a prop on native without error but only renders on web/web-of-RN; touch platforms have no cursor. Effectively web-only for everyone. |
 | **pointer-events** | ✅ | 🌐 | ✅ | ❌ | Tamagui: `$pe` maps to the core RN View pointerEvents prop (cross-platform). NativeWind maps pointer-events-* to the same RN prop. Uniwind: not documented. |
 | **user-select** | ✅ | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** Tamagui: `$ussel` (userSelect) maps to RN 0.71+ userSelect on Text/View, so none/text/auto work cross-platform. NativeWind select-* maps to the same RN prop; select-all is web-only. |
@@ -237,7 +237,7 @@ _Coverage: Tamagui 100% · Tailwind 100% · NativeWind v5 75% · Uniwind 33%_
 | **dark mode** | ✅ | 🌐 | ✅ | ✅ | NativeWind v5 dark: uses native @media (prefers-color-scheme: dark) |
 | **combined media + pseudo** | ✅ | 🌐 | ✅ | ❌ |  |
 | **container queries** | ✅ | 🌐 | ✅ | ❌ | Tamagui: container queries are the `group` system combined with media keys — mark a parent `group="card"` and use `$group-card-$sm:` style keys. On web this uses real CSS container queries (containerType); on native it measures the parent and applies styles via the group emitter, so it works cross-platform (the `untilMeasured` prop exists to avoid flashes before first measure). NativeWind v5 also supports `@container` on native, implemented via onLayout measurement (size-based only, not CSS containment). Tailwind is web-only; Uniwind: not documented. |
-| **container query units (cqw/cqh)** | 🌐 | 🌐 | ❌ | ❌ | cqw/cqh/cqi/cqb are CSS length units tied to a real CSS containment context. Tamagui: reachable on web via `$platform-web={{ width: "50cqw" }}` once a parent sets containerType (which Tamagui's group system does). Tamagui and NativeWind implement container *queries* differently on native (JS measurement / group emitter) and do not expose container-relative length units there; use a measured value or a breakpoint instead. |
+| **container query units (cqw/cqh)** | 🌐 | 🌐 | ❌ | ❌ | cqw/cqh/cqi/cqb are CSS length units tied to a real CSS containment context. Tamagui: reachable on web via `$web={{ width: "50cqw" }}` once a parent sets containerType (which Tamagui's group system does). Tamagui and NativeWind implement container *queries* differently on native (JS measurement / group emitter) and do not expose container-relative length units there; use a measured value or a breakpoint instead. |
 | **prefers-reduced-motion** | ✅ | 🌐 | ⚠️ | ❌ | **⚠️ NativeWind v5:** `$motionReduce` and `$motionSafe` are built-in media keys in @tamagui/config. Web subscribes to `(prefers-reduced-motion: reduce | no-preference)` via `window.matchMedia`; native subscribes to `AccessibilityInfo.isReduceMotionEnabled` + the `reduceMotionChanged` event through `@tamagui/react-native-media-driver`. NativeWind v5 maps the same two states. |
 
 ## Platform
@@ -269,9 +269,9 @@ _Coverage: Tamagui 100% · Tailwind 100% · NativeWind v5 100% · Uniwind 0%_
 
 | Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
-| **border-collapse** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ borderCollapse: ... }}` on web. RN has no table model. |
-| **border-spacing** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ borderSpacing: ... }}` on web. No RN equivalent. |
-| **table-layout** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ tableLayout: ... }}` on web. No RN equivalent. |
+| **border-collapse** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ borderCollapse: ... }}` on web. RN has no table model. |
+| **border-spacing** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ borderSpacing: ... }}` on web. No RN equivalent. |
+| **table-layout** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ tableLayout: ... }}` on web. No RN equivalent. |
 
 ## SVG
 
@@ -289,15 +289,15 @@ _Coverage: Tamagui 85% · Tailwind 90% · NativeWind v5 75% · Uniwind 0%_
 
 | Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
-| **scroll-behavior** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ scrollBehavior: ... }}` on web. On native, use ScrollView animation props instead. |
-| **scroll-snap** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: scroll-snap-type / scroll-snap-align reachable via `$platform-web={{ ... }}` on web. On native, ScrollView has `snapToInterval` / `snapToOffsets` instead of CSS scroll-snap. |
+| **scroll-behavior** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ scrollBehavior: ... }}` on web. On native, use ScrollView animation props instead. |
+| **scroll-snap** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: scroll-snap-type / scroll-snap-align reachable via `$web={{ ... }}` on web. On native, ScrollView has `snapToInterval` / `snapToOffsets` instead of CSS scroll-snap. |
 | **touch-action** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$touchAction` is a web-only prop. On native, gesture handling is done with the gesture system (PanResponder / react-native-gesture-handler), not a style. |
-| **resize** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ resize: ... }}` on web (mostly useful on textareas). No native equivalent — RN form controls aren't user-resizable. |
-| **appearance** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ appearance: "none" }}` on web for resetting browser-native control chrome. RN controls are already custom-rendered, so there is nothing to reset on native. |
-| **field-sizing** | 🌐 | 🌐 | ❌ | ❌ | Tamagui: reachable via `$platform-web={{ fieldSizing: "content" }}` on web (the platform escape hatch passes raw CSS through). On native, use the `multiline` + onContentSizeChange pattern to auto-grow a TextInput. NativeWind/Uniwind have no field-sizing utility. |
+| **resize** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ resize: ... }}` on web (mostly useful on textareas). No native equivalent — RN form controls aren't user-resizable. |
+| **appearance** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ appearance: "none" }}` on web for resetting browser-native control chrome. RN controls are already custom-rendered, so there is nothing to reset on native. |
+| **field-sizing** | 🌐 | 🌐 | ❌ | ❌ | Tamagui: reachable via `$web={{ fieldSizing: "content" }}` on web (the platform escape hatch passes raw CSS through). On native, use the `multiline` + onContentSizeChange pattern to auto-grow a TextInput. NativeWind/Uniwind have no field-sizing utility. |
 | **scroll-timeline / scroll-driven animation** | ❌ | ❌ | ❌ | ❌ | Tailwind v4 has no built-in scroll-timeline utility (only arbitrary `[animation-timeline:...]` or a community plugin). On native, scroll-driven effects use Animated.event / Reanimated useAnimatedScrollHandler. No framework here ships a first-class scroll-timeline utility. |
 | **caret-color** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui: on web, `$caretColor` is the CSS caret-color property. On native, `@tamagui/input` Input forwards `caretColor` to RN TextInput `cursorColor` (Android) + `selectionColor` (iOS+Android caret) — explicit `cursorColor`/`selectionColor` props still win. Cross-platform but only applies to the Input/TextArea components (not a generic style prop). |
-| **accent-color** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$platform-web={{ accentColor: ... }}` on web for native form control tinting (checkbox / radio / progress). RN controls are custom-rendered, so no native equivalent. |
+| **accent-color** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: reachable via `$web={{ accentColor: ... }}` on web for native form control tinting (checkbox / radio / progress). RN controls are custom-rendered, so no native equivalent. |
 | **will-change** | 🌐 | 🌐 | 🌐 | ❌ | Tamagui: `$willChange` is a web-only GPU hint. RN has no will-change; native rasterization hints are platform-specific (e.g. shouldRasterizeIOS / renderToHardwareTextureAndroid). |
 
 ## Accessibility
@@ -307,7 +307,7 @@ _Coverage: Tamagui 75% · Tailwind 100% · NativeWind v5 75% · Uniwind 0%_
 | Utility | Tamagui | Tailwind | NativeWind v5 | Uniwind | Notes |
 |---------|---------|----------|------------|---------|-------|
 | **sr-only** | ⚠️ | 🌐 | ⚠️ | ❌ | **⚠️ Tamagui, NativeWind v5:** Tamagui ships `<VisuallyHidden>` (from `@tamagui/visually-hidden`) as a primitive that emits the standard sr-only style block on web (1x1, absolute, clip-path, no display:none) AND wires the matching a11y semantics on both platforms: `aria-hidden=false` on web, `accessible={true}` on native, plus `importantForAccessibility="yes"` on Android so ancestors with hide-descendants don't silence it. `visible` prop flips it back to fully visible (the `not-sr-only` escape hatch). NativeWind v5 `sr-only` only emits the visual-hide style on native — it does NOT wire accessibilityElementsHidden / importantForAccessibility / aria-hidden, so SR semantics differ from web. `not-sr-only` is web-only. Marked partial (not full) because it's a primitive component, not a class utility. |
-| **forced-colors / forced-color-adjust** | 🌐 | 🌐 | 🌐 | ❌ | Forced-colors is a web/OS high-contrast feature. Tailwind v4 ships the `forced-colors:` variant + `forced-color-adjust-*`; NativeWind exposes them web-only. Tamagui: the `forced-color-adjust` property is reachable via `$platform-web={{ forcedColorAdjust: ... }}` on web (the `forced-colors:` media variant itself is not exposed as a Tamagui media key). RN has its own high-contrast handling, so no native style mapping. |
+| **forced-colors / forced-color-adjust** | 🌐 | 🌐 | 🌐 | ❌ | Forced-colors is a web/OS high-contrast feature. Tailwind v4 ships the `forced-colors:` variant + `forced-color-adjust-*`; NativeWind exposes them web-only. Tamagui: the `forced-color-adjust` property is reachable via `$web={{ forcedColorAdjust: ... }}` on web (the `forced-colors:` media variant itself is not exposed as a Tamagui media key). RN has its own high-contrast handling, so no native style mapping. |
 
 ## Design Tokens & Theming
 

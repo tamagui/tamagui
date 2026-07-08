@@ -16,7 +16,7 @@ export function MenuOverflowCase() {
   return (
     <YStack
       data-testid="container"
-      $platform-web={{
+      $web={{
         height: '100vh',
       }}
       justifyContent="flex-end"

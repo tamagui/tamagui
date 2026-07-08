@@ -5,7 +5,7 @@ export function StylePlatform() {
     <>
       <View
         id="style-platform"
-        $platform-web={{
+        $web={{
           my: 10,
           overflowY: 'scroll',
           backgroundColor: 'red',
@@ -19,7 +19,7 @@ export function StylePlatform() {
         hoverStyle={{
           backgroundColor: 'yellow',
         }}
-        $platform-web={{
+        $web={{
           hoverStyle: {
             backgroundColor: 'green',
           },

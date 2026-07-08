@@ -325,7 +325,7 @@ const Box = styled(View, {
 // good - use platform modifiers
 const Box = styled(View, {
   padding: 20,
-  '$platform-web': { padding: 10 },
+  '$web': { padding: 10 },
 })
 ```
 

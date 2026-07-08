@@ -6,26 +6,36 @@ import { currentPlatform, isAndroid, isIos, isTV } from '@tamagui/constants'
  * props are declared.
  *
  * Cascade (low → high importance):
- *   $platform-native / $platform-web         → bump 0  (widest)
- *   $platform-android / $platform-ios        → bump 1  (OS-specific)
- *   $platform-tv                             → bump 2  (TV subset of Android/iOS)
- *   $platform-androidtv / $platform-tvos     → bump 3  (most specific)
+ *   $native / $web         → bump 0  (widest)
+ *   $android / $ios        → bump 1  (OS-specific)
+ *   $tv                    → bump 2  (TV subset of Android/iOS)
+ *   $androidtv / $tvos     → bump 3  (most specific)
  *
- * @param mediaKeyShort - Platform media key without the leading '$' (e.g. 'platform-tv', 'platform-androidtv')
+ * @param mediaKeyShort - Platform media key without the leading '$' (e.g. 'tv', 'androidtv')
  */
 export function getPlatformSpecificityBump(mediaKeyShort: string): number {
-  if (mediaKeyShort === 'platform-androidtv' || mediaKeyShort === 'platform-tvos')
-    return 3
-  if (mediaKeyShort === 'platform-tv') return 2
-  if (mediaKeyShort === 'platform-android' || mediaKeyShort === 'platform-ios') return 1
+  if (mediaKeyShort === 'androidtv' || mediaKeyShort === 'tvos') return 3
+  if (mediaKeyShort === 'tv') return 2
+  if (mediaKeyShort === 'android' || mediaKeyShort === 'ios') return 1
   return 0
 }
 
 export function isActivePlatform(key: string) {
-  if (!key.startsWith('$platform')) {
+  if (key[0] !== '$') {
     return true
   }
-  const platform = key.slice(10)
+  const platform = key.slice(1)
+  if (
+    platform !== 'web' &&
+    platform !== 'native' &&
+    platform !== 'android' &&
+    platform !== 'ios' &&
+    platform !== 'tv' &&
+    platform !== 'androidtv' &&
+    platform !== 'tvos'
+  ) {
+    return true
+  }
   return (
     // exact platform match (web, ios, android)
     platform === currentPlatform ||

@@ -170,7 +170,7 @@ export const DialogPortalFrame = styled(YStack, {
         position: 'absolute',
         inset: 0,
 
-        '$platform-web': {
+        '$web': {
           // undo dialog styles
           borderWidth: 0,
           backgroundColor: 'transparent',

@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'StylePlatform', type: 'useCase' })
 })
 
-test(`styles: $platform-web styles work`, async ({ page }) => {
+test(`styles: $web styles work`, async ({ page }) => {
   const view = page.locator('#style-platform')
 
   const styles = await view.evaluate((el) => {
@@ -18,7 +18,7 @@ test(`styles: $platform-web styles work`, async ({ page }) => {
   expect(styles.overflowY).toBe(`scroll`)
 })
 
-test(`styles: $platform-web hoverStyle works`, async ({ page }) => {
+test(`styles: $web hoverStyle works`, async ({ page }) => {
   const view = page.locator('#style-platform-hover')
 
   // Before hover: should be blue (base backgroundColor)
@@ -27,7 +27,7 @@ test(`styles: $platform-web hoverStyle works`, async ({ page }) => {
   })
   expect(baseStyles).toBe(`rgb(0, 0, 255)`)
 
-  // Hover: should be green ($platform-web hoverStyle overrides base hoverStyle)
+  // Hover: should be green ($web hoverStyle overrides base hoverStyle)
   await view.hover()
   await page.waitForTimeout(100)
 

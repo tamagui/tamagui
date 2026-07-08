@@ -19,6 +19,16 @@ import { timer } from './timer'
 import { BailOptimizationError } from './errors'
 import { concatClassName } from './concatClassName'
 
+const platformMediaKeys = new Set([
+  'web',
+  'native',
+  'android',
+  'ios',
+  'tv',
+  'androidtv',
+  'tvos',
+])
+
 export type ExtractedResponse = {
   js: string | Buffer
   styles: string
@@ -282,13 +292,14 @@ export async function extractToClassNames({
             continue
           }
 
-          // Check for theme/platform media queries (e.g., $theme-dark, $platform-web)
-          const mediaTypeMatch = mediaName.match(/^(theme|platform)-/)
-          if (mediaTypeMatch) {
-            const mediaType = mediaTypeMatch[1] as 'theme' | 'platform'
+          // check for theme/platform media queries (e.g., $theme-dark, $web)
+          const isPlatformMedia = platformMediaKeys.has(mediaName)
+          const themeMatch = mediaName.match(/^theme-/)
+          if (themeMatch || isPlatformMedia) {
+            const mediaType = isPlatformMedia ? 'platform' : 'theme'
             // $theme- values can change at runtime (theme switch); if this
             // element animates, a JS driver must interpolate the change, so keep
-            // it on the runtime path. $platform- is build-time static — never gated.
+            // it on the runtime path. platform is build-time static, so never gated.
             if (mediaType === 'theme' && elementIsAnimated) {
               throw new BailOptimizationError()
             }
