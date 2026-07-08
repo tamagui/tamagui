@@ -1,0 +1,3 @@
+import type { GetFinalProps, StyledHOCFactory, TamaguiComponent, TamaDefer } from './types';
+export declare function createStyledHOC<Props, Ref, NonStyledProps, BaseStyles extends object, VariantProps, ParentStaticProperties>(component: TamaguiComponent<Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties>): StyledHOCFactory<Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props, Ref, NonStyledProps, BaseStyles, VariantProps, ParentStaticProperties>;
+//# sourceMappingURL=createStyledHOC.d.ts.map

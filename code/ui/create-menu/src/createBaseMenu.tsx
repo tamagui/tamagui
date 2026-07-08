@@ -1,4 +1,4 @@
-import { createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import { Animate } from '@tamagui/animate'
 import { AnimatePresence as Presence } from '@tamagui/animate-presence'
 import { createCollection } from '@tamagui/collection'
@@ -205,7 +205,7 @@ interface MenuContentImplProps
   onInteractOutside?: DismissableLayerProps['onInteractOutside']
 }
 
-type StyleableMenuContentProps = MenuContentImplProps & ViewProps
+type StyledHOCMenuContentProps = MenuContentImplProps & ViewProps
 
 interface MenuGroupProps extends ViewProps {}
 
@@ -609,7 +609,7 @@ export function createBaseMenu({
     name: CONTENT_NAME,
   })
 
-  const MenuContent = MenuContentFrame.styleable<ScopedProps<MenuContentProps>>(
+  const MenuContent = createStyledHOC(MenuContentFrame)<ScopedProps<MenuContentProps>>(
     (props, forwardedRef) => {
       const scope = props.scope || MENU_CONTEXT
       const portalContext = usePortalContext(scope)
@@ -693,7 +693,7 @@ export function createBaseMenu({
 
   const MenuContentImpl = createRefComponent<
     MenuContentImplElement,
-    ScopedProps<StyleableMenuContentProps>
+    ScopedProps<StyledHOCMenuContentProps>
   >((props, forwardedRef) => {
     const {
       scope = MENU_CONTEXT,
@@ -1001,109 +1001,111 @@ export function createBaseMenu({
   const ITEM_NAME = 'MenuItem'
   const ITEM_SELECT = 'menu.itemSelect'
 
-  // use styleable so styled(Menu.Item, { focusStyle }) passes pseudo styles through correctly
-  const MenuItem = _Item.styleable<ScopedProps<MenuItemProps>>((props, forwardedRef) => {
-    const {
-      disabled = false,
-      onSelect,
-      preventCloseOnSelect,
-      children,
-      scope = MENU_CONTEXT,
-      // filter out native-only props that shouldn't reach the DOM
-      // @ts-ignore
-      destructive,
-      // @ts-ignore
-      hidden,
-      // @ts-ignore
-      androidIconName,
-      // @ts-ignore
-      iosIconName,
-      ...itemProps
-    } = props
-    const ref = React.useRef<TamaguiElement>(null)
-    const rootContext = useMenuRootContext(scope)
-    const contentContext = useMenuContentContext(scope)
-    const composedRefs = useComposedRefs(forwardedRef, ref)
-    const isPointerDownRef = React.useRef(false)
+  // use the styled HOC helper so styled(Menu.Item, { focusStyle }) passes pseudo styles through correctly
+  const MenuItem = createStyledHOC(_Item)<ScopedProps<MenuItemProps>>(
+    (props, forwardedRef) => {
+      const {
+        disabled = false,
+        onSelect,
+        preventCloseOnSelect,
+        children,
+        scope = MENU_CONTEXT,
+        // filter out native-only props that shouldn't reach the DOM
+        // @ts-ignore
+        destructive,
+        // @ts-ignore
+        hidden,
+        // @ts-ignore
+        androidIconName,
+        // @ts-ignore
+        iosIconName,
+        ...itemProps
+      } = props
+      const ref = React.useRef<TamaguiElement>(null)
+      const rootContext = useMenuRootContext(scope)
+      const contentContext = useMenuContentContext(scope)
+      const composedRefs = useComposedRefs(forwardedRef, ref)
+      const isPointerDownRef = React.useRef(false)
 
-    const handleSelect = () => {
-      const menuItem = ref.current
-      if (!disabled && menuItem) {
-        if (isWeb) {
-          const menuItemEl = menuItem as HTMLElement
-          const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
-            bubbles: true,
-            cancelable: true,
-          })
-          menuItemEl.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
-            once: true,
-          })
-          dispatchDiscreteCustomEvent(menuItemEl, itemSelectEvent)
-          // close the menu unless preventCloseOnSelect is set or event.preventDefault() was called
-          if (itemSelectEvent.defaultPrevented || preventCloseOnSelect) {
-            isPointerDownRef.current = false
+      const handleSelect = () => {
+        const menuItem = ref.current
+        if (!disabled && menuItem) {
+          if (isWeb) {
+            const menuItemEl = menuItem as HTMLElement
+            const itemSelectEvent = new CustomEvent(ITEM_SELECT, {
+              bubbles: true,
+              cancelable: true,
+            })
+            menuItemEl.addEventListener(ITEM_SELECT, (event) => onSelect?.(event), {
+              once: true,
+            })
+            dispatchDiscreteCustomEvent(menuItemEl, itemSelectEvent)
+            // close the menu unless preventCloseOnSelect is set or event.preventDefault() was called
+            if (itemSelectEvent.defaultPrevented || preventCloseOnSelect) {
+              isPointerDownRef.current = false
+            } else {
+              rootContext.onClose()
+            }
           } else {
-            rootContext.onClose()
-          }
-        } else {
-          // TODO: find a better way to handle this on native
-          onSelect?.({ target: menuItem } as unknown as Event)
-          isPointerDownRef.current = false
-          if (!preventCloseOnSelect) {
-            rootContext.onClose()
+            // TODO: find a better way to handle this on native
+            onSelect?.({ target: menuItem } as unknown as Event)
+            isPointerDownRef.current = false
+            if (!preventCloseOnSelect) {
+              rootContext.onClose()
+            }
           }
         }
       }
-    }
 
-    const content = typeof children === 'string' ? <Text>{children}</Text> : children
+      const content = typeof children === 'string' ? <Text>{children}</Text> : children
 
-    return (
-      <MenuItemImpl
-        outlineStyle="none"
-        {...itemProps}
-        scope={scope}
-        // @ts-ignore
-        ref={composedRefs}
-        disabled={disabled}
-        onPress={composeEventHandlers(props.onPress, handleSelect)}
-        onPointerDown={(event) => {
-          props.onPointerDown?.(event)
-          isPointerDownRef.current = true
-        }}
-        onPointerUp={composeEventHandlers(props.onPointerUp, (event) => {
-          // Pointer down can move to a different menu item which should activate it on pointer up.
-          // We dispatch a click for selection to allow composition with click based triggers and to
-          // prevent Firefox from getting stuck in text selection mode when the menu closes.
-          if (isWeb) {
-            // @ts-ignore
-            if (!isPointerDownRef.current) event.currentTarget?.click()
-          }
-        })}
-        {...(isWeb
-          ? {
-              onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
-                const isTypingAhead = contentContext.searchRef.current !== ''
-                if (disabled || (isTypingAhead && event.key === ' ')) return
-                if (SELECTION_KEYS.includes(event.key)) {
-                  // @ts-ignore
-                  event.currentTarget?.click()
-                  /**
-                   * We prevent default browser behaviour for selection keys as they should trigger
-                   * a selection only:
-                   * - prevents space from scrolling the page.
-                   * - if keydown causes focus to move, prevents keydown from firing on the new target.
-                   */
-                  event.preventDefault()
-                }
-              }),
+      return (
+        <MenuItemImpl
+          outlineStyle="none"
+          {...itemProps}
+          scope={scope}
+          // @ts-ignore
+          ref={composedRefs}
+          disabled={disabled}
+          onPress={composeEventHandlers(props.onPress, handleSelect)}
+          onPointerDown={(event) => {
+            props.onPointerDown?.(event)
+            isPointerDownRef.current = true
+          }}
+          onPointerUp={composeEventHandlers(props.onPointerUp, (event) => {
+            // Pointer down can move to a different menu item which should activate it on pointer up.
+            // We dispatch a click for selection to allow composition with click based triggers and to
+            // prevent Firefox from getting stuck in text selection mode when the menu closes.
+            if (isWeb) {
+              // @ts-ignore
+              if (!isPointerDownRef.current) event.currentTarget?.click()
             }
-          : {})}
-      >
-        {content}
-      </MenuItemImpl>
-    )
-  })
+          })}
+          {...(isWeb
+            ? {
+                onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                  const isTypingAhead = contentContext.searchRef.current !== ''
+                  if (disabled || (isTypingAhead && event.key === ' ')) return
+                  if (SELECTION_KEYS.includes(event.key)) {
+                    // @ts-ignore
+                    event.currentTarget?.click()
+                    /**
+                     * We prevent default browser behaviour for selection keys as they should trigger
+                     * a selection only:
+                     * - prevents space from scrolling the page.
+                     * - if keydown causes focus to move, prevents keydown from firing on the new target.
+                     */
+                    event.preventDefault()
+                  }
+                }),
+              }
+            : {})}
+        >
+          {content}
+        </MenuItemImpl>
+      )
+    }
+  )
 
   const MenuItemImpl = createRefComponent<
     MenuItemImplElement,
@@ -1197,9 +1199,11 @@ export function createBaseMenu({
    * MenuItemTitle
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_TITLE_NAME = 'MenuItemTitle'
-  const MenuItemTitle = _Title.styleable<MenuItemTitleProps>((props, forwardedRef) => {
-    return <_Title {...props} ref={forwardedRef} />
-  })
+  const MenuItemTitle = createStyledHOC(_Title)<MenuItemTitleProps>(
+    (props, forwardedRef) => {
+      return <_Title {...props} ref={forwardedRef} />
+    }
+  )
 
   MenuItemTitle.displayName = ITEM_TITLE_NAME
   /* ---------------------------------------------------------------------------------------------- */
@@ -1208,7 +1212,7 @@ export function createBaseMenu({
    * MenuItemSubTitle
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_SUB_TITLE_NAME = 'MenuItemSubTitle'
-  const MenuItemSubTitle = _SubTitle.styleable<MenuItemSubTitleProps>(
+  const MenuItemSubTitle = createStyledHOC(_SubTitle)<MenuItemSubTitleProps>(
     (props, forwardedRef) => {
       return <_SubTitle {...props} ref={forwardedRef} />
     }
@@ -1245,21 +1249,23 @@ export function createBaseMenu({
    * -----------------------------------------------------------------------------------------------*/
 
   const ITEM_ICON = 'MenuItemIcon'
-  const MenuItemIcon = _Icon.styleable<MenuItemIconProps>((props, forwardedRef) => {
-    // filter out native-only props that shouldn't reach the DOM
-    const {
-      // @ts-ignore
-      ios,
-      // @ts-ignore
-      android,
-      // @ts-ignore
-      androidIconName,
-      // @ts-ignore
-      iosIconName,
-      ...rest
-    } = props
-    return <_Icon {...rest} ref={forwardedRef} />
-  })
+  const MenuItemIcon = createStyledHOC(_Icon)<MenuItemIconProps>(
+    (props, forwardedRef) => {
+      // filter out native-only props that shouldn't reach the DOM
+      const {
+        // @ts-ignore
+        ios,
+        // @ts-ignore
+        android,
+        // @ts-ignore
+        androidIconName,
+        // @ts-ignore
+        iosIconName,
+        ...rest
+      } = props
+      return <_Icon {...rest} ref={forwardedRef} />
+    }
+  )
 
   MenuItemIcon.displayName = ITEM_ICON
 
@@ -1271,7 +1277,7 @@ export function createBaseMenu({
 
   const CHECKBOX_ITEM_NAME = 'MenuCheckboxItem'
 
-  const MenuCheckboxItem = _Item.styleable<ScopedProps<MenuCheckboxItemProps>>(
+  const MenuCheckboxItem = createStyledHOC(_Item)<ScopedProps<MenuCheckboxItemProps>>(
     (props, forwardedRef) => {
       const {
         checked = false,
@@ -1315,7 +1321,7 @@ export function createBaseMenu({
   const { Provider: RadioGroupProvider, useStyledContext: useRadioGroupContext } =
     createStyledContext<MenuRadioGroupProps>()
 
-  const MenuRadioGroup = _MenuGroup.styleable<ScopedProps<MenuRadioGroupProps>>(
+  const MenuRadioGroup = createStyledHOC(_MenuGroup)<ScopedProps<MenuRadioGroupProps>>(
     (props, forwardedRef) => {
       const { value, onValueChange, scope = MENU_CONTEXT, ...groupProps } = props
       const handleValueChange = useCallbackRef(onValueChange)
@@ -1338,7 +1344,7 @@ export function createBaseMenu({
 
   const RADIO_ITEM_NAME = 'MenuRadioItem'
 
-  const MenuRadioItem = _Item.styleable<ScopedProps<MenuRadioItemProps>>(
+  const MenuRadioItem = createStyledHOC(_Item)<ScopedProps<MenuRadioItemProps>>(
     (props, forwardedRef) => {
       const { value, scope = MENU_CONTEXT, ...radioItemProps } = props
       const context = useRadioGroupContext(scope)
@@ -1375,27 +1381,27 @@ export function createBaseMenu({
   const { Provider: ItemIndicatorProvider, useStyledContext: useItemIndicatorContext } =
     createStyledContext<CheckboxContextValue>()
 
-  const MenuItemIndicator = _Indicator.styleable<ScopedProps<MenuItemIndicatorProps>>(
-    (props, forwardedRef) => {
-      const { scope = MENU_CONTEXT, forceMount, ...itemIndicatorProps } = props
-      const indicatorContext = useItemIndicatorContext(scope)
-      return (
-        <Presence>
-          {forceMount ||
-          isIndeterminate(indicatorContext.checked) ||
-          indicatorContext.checked === true ? (
-            <_Indicator
-              componentName={ITEM_INDICATOR_NAME}
-              render="span"
-              {...itemIndicatorProps}
-              ref={forwardedRef}
-              data-state={getCheckedState(indicatorContext.checked)}
-            />
-          ) : null}
-        </Presence>
-      )
-    }
-  )
+  const MenuItemIndicator = createStyledHOC(_Indicator)<
+    ScopedProps<MenuItemIndicatorProps>
+  >((props, forwardedRef) => {
+    const { scope = MENU_CONTEXT, forceMount, ...itemIndicatorProps } = props
+    const indicatorContext = useItemIndicatorContext(scope)
+    return (
+      <Presence>
+        {forceMount ||
+        isIndeterminate(indicatorContext.checked) ||
+        indicatorContext.checked === true ? (
+          <_Indicator
+            componentName={ITEM_INDICATOR_NAME}
+            render="span"
+            {...itemIndicatorProps}
+            ref={forwardedRef}
+            data-state={getCheckedState(indicatorContext.checked)}
+          />
+        ) : null}
+      </Presence>
+    )
+  })
 
   MenuItemIndicator.displayName = ITEM_INDICATOR_NAME
 
@@ -1403,7 +1409,7 @@ export function createBaseMenu({
    * MenuArrow
    * -----------------------------------------------------------------------------------------------*/
 
-  // TODO this was styleable but it cant flatten anyways so likely fine just need to check
+  // TODO this wrapped a styled component but it cant flatten anyways so likely fine just need to check
   const MenuArrow = createRefComponent<TamaguiElement, MenuArrowProps>(
     function MenuArrow(props, forwardedRef) {
       const {
@@ -1781,120 +1787,120 @@ export function createBaseMenu({
     name: SUB_CONTENT_NAME,
   })
 
-  const MenuSubContent = MenuSubContentFrame.styleable<ScopedProps<MenuSubContentProps>>(
-    (props, forwardedRef) => {
-      const scope = props.scope || MENU_CONTEXT
-      const portalContext = usePortalContext(scope)
-      const { forceMount = portalContext.forceMount, ...subContentProps } = props
-      const context = useMenuContext(scope)
-      const rootContext = useMenuRootContext(scope)
-      const subContext = useMenuSubContext(scope)
-      const popperContext = PopperPrimitive.usePopperContext(scope)
-      const ref = React.useRef<MenuSubContentElement>(null)
-      const composedRefs = useComposedRefs(forwardedRef, ref)
+  const MenuSubContent = createStyledHOC(MenuSubContentFrame)<
+    ScopedProps<MenuSubContentProps>
+  >((props, forwardedRef) => {
+    const scope = props.scope || MENU_CONTEXT
+    const portalContext = usePortalContext(scope)
+    const { forceMount = portalContext.forceMount, ...subContentProps } = props
+    const context = useMenuContext(scope)
+    const rootContext = useMenuRootContext(scope)
+    const subContext = useMenuSubContext(scope)
+    const popperContext = PopperPrimitive.usePopperContext(scope)
+    const ref = React.useRef<MenuSubContentElement>(null)
+    const composedRefs = useComposedRefs(forwardedRef, ref)
 
-      // determine side from actual placement, not just RTL direction
-      // placement like "left-start" or "right-end" - extract the side
-      const placementSide = popperContext.placement?.split('-')[0] as
-        | 'left'
-        | 'right'
-        | 'top'
-        | 'bottom'
-        | undefined
-      // for submenus, we care about horizontal placement (left/right)
-      // default to 'right' for LTR, 'left' for RTL
-      const dataSide: Side =
-        placementSide === 'left' || placementSide === 'right'
-          ? placementSide
-          : rootContext.dir === 'rtl'
-            ? 'left'
-            : 'right'
+    // determine side from actual placement, not just RTL direction
+    // placement like "left-start" or "right-end" - extract the side
+    const placementSide = popperContext.placement?.split('-')[0] as
+      | 'left'
+      | 'right'
+      | 'top'
+      | 'bottom'
+      | undefined
+    // for submenus, we care about horizontal placement (left/right)
+    // default to 'right' for LTR, 'left' for RTL
+    const dataSide: Side =
+      placementSide === 'left' || placementSide === 'right'
+        ? placementSide
+        : rootContext.dir === 'rtl'
+          ? 'left'
+          : 'right'
 
-      // keyboard navigation follows text direction, not placement side
-      const effectiveDir: Direction = rootContext.dir
+    // keyboard navigation follows text direction, not placement side
+    const effectiveDir: Direction = rootContext.dir
 
-      return (
-        <Collection.Provider scope={scope}>
-          <Collection.Slot scope={scope}>
-            <MenuContentImpl
-              id={subContext.contentId}
-              aria-labelledby={subContext.triggerId}
-              {...subContentProps}
-              ref={composedRefs}
-              data-side={dataSide}
-              disableOutsidePointerEvents={false}
-              disableOutsideScroll={false}
-              trapFocus={false}
-              onOpenAutoFocus={(event) => {
-                // when opening a submenu, focus content for keyboard users only
-                if (rootContext.isUsingKeyboardRef.current) {
-                  // scope query to this submenu's subtree so nested submenus
-                  // don't accidentally focus a sibling/parent submenu content
-                  const root = ref.current as unknown as HTMLElement
-                  const content = root?.querySelector?.(
-                    '[data-tamagui-menu-content]'
-                  ) as HTMLElement | null
-                  ;(content || root)?.focus({ preventScroll: true })
+    return (
+      <Collection.Provider scope={scope}>
+        <Collection.Slot scope={scope}>
+          <MenuContentImpl
+            id={subContext.contentId}
+            aria-labelledby={subContext.triggerId}
+            {...subContentProps}
+            ref={composedRefs}
+            data-side={dataSide}
+            disableOutsidePointerEvents={false}
+            disableOutsideScroll={false}
+            trapFocus={false}
+            onOpenAutoFocus={(event) => {
+              // when opening a submenu, focus content for keyboard users only
+              if (rootContext.isUsingKeyboardRef.current) {
+                // scope query to this submenu's subtree so nested submenus
+                // don't accidentally focus a sibling/parent submenu content
+                const root = ref.current as unknown as HTMLElement
+                const content = root?.querySelector?.(
+                  '[data-tamagui-menu-content]'
+                ) as HTMLElement | null
+                ;(content || root)?.focus({ preventScroll: true })
+              }
+              event.preventDefault()
+            }}
+            // The menu might close because of focusing another menu item in the parent menu. We
+            // don't want it to refocus the trigger in that case so we handle trigger focus ourselves.
+            onCloseAutoFocus={(event) => event.preventDefault()}
+            onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) => {
+              // We prevent closing when the trigger is focused to avoid triggering a re-open animation
+              // on pointer interaction.
+              if (event.target !== subContext.trigger) context.onOpenChange(false)
+            })}
+            onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
+              // close only this submenu, not the root menu
+              context.onOpenChange(false)
+              // return focus to the submenu trigger with focusVisible since this is keyboard navigation
+              // @ts-ignore focusVisible is a newer API
+              subContext.trigger?.focus({ focusVisible: true })
+              // ensure pressing escape in submenu doesn't escape full screen mode
+              event.preventDefault()
+            })}
+            {...(isWeb
+              ? {
+                  onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
+                    // Submenu key events bubble through portals. We only care about keys in this menu.
+                    // @ts-ignore
+                    const isKeyDownInside = event.currentTarget.contains(
+                      event.target as HTMLElement
+                    )
+                    // use effectiveDir so arrow keys match the submenu's actual position
+                    // (e.g., ArrowRight closes a left-side submenu)
+                    const isCloseKey = SUB_CLOSE_KEYS[effectiveDir].includes(event.key)
+                    if (isKeyDownInside && isCloseKey) {
+                      context.onOpenChange(false)
+                      // We focus manually because we prevented it in `onCloseAutoFocus`
+                      // use focusVisible: true since this is keyboard navigation
+                      // @ts-ignore focusVisible is a newer API
+                      subContext.trigger?.focus({ focusVisible: true })
+                      // prevent window from scrolling
+                      event.preventDefault()
+                    }
+                  }),
                 }
-                event.preventDefault()
-              }}
-              // The menu might close because of focusing another menu item in the parent menu. We
-              // don't want it to refocus the trigger in that case so we handle trigger focus ourselves.
-              onCloseAutoFocus={(event) => event.preventDefault()}
-              onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) => {
-                // We prevent closing when the trigger is focused to avoid triggering a re-open animation
-                // on pointer interaction.
-                if (event.target !== subContext.trigger) context.onOpenChange(false)
-              })}
-              onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
-                // close only this submenu, not the root menu
-                context.onOpenChange(false)
-                // return focus to the submenu trigger with focusVisible since this is keyboard navigation
-                // @ts-ignore focusVisible is a newer API
-                subContext.trigger?.focus({ focusVisible: true })
-                // ensure pressing escape in submenu doesn't escape full screen mode
-                event.preventDefault()
-              })}
-              {...(isWeb
-                ? {
-                    onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
-                      // Submenu key events bubble through portals. We only care about keys in this menu.
-                      // @ts-ignore
-                      const isKeyDownInside = event.currentTarget.contains(
-                        event.target as HTMLElement
-                      )
-                      // use effectiveDir so arrow keys match the submenu's actual position
-                      // (e.g., ArrowRight closes a left-side submenu)
-                      const isCloseKey = SUB_CLOSE_KEYS[effectiveDir].includes(event.key)
-                      if (isKeyDownInside && isCloseKey) {
-                        context.onOpenChange(false)
-                        // We focus manually because we prevented it in `onCloseAutoFocus`
-                        // use focusVisible: true since this is keyboard navigation
-                        // @ts-ignore focusVisible is a newer API
-                        subContext.trigger?.focus({ focusVisible: true })
-                        // prevent window from scrolling
-                        event.preventDefault()
-                      }
-                    }),
-                  }
-                : null)}
-            />
-          </Collection.Slot>
-        </Collection.Provider>
-      )
-    }
-  )
+              : null)}
+          />
+        </Collection.Slot>
+      </Collection.Provider>
+    )
+  })
 
   MenuSubContent.displayName = SUB_CONTENT_NAME
 
   const Anchor = MenuAnchor
   const Portal = MenuPortal
   const Content = MenuContent
-  const Group = _MenuGroup.styleable<MenuGroupProps>((props, ref) => {
+  const Group = createStyledHOC(_MenuGroup)<MenuGroupProps>((props, ref) => {
     return <_MenuGroup {...props} ref={ref} />
   })
   Group.displayName = 'MenuGroup'
-  const Label = _Label.styleable<MenuLabelProps>((props, ref) => {
+  const Label = createStyledHOC(_Label)<MenuLabelProps>((props, ref) => {
     return <_Label {...props} ref={ref} />
   })
   Label.displayName = 'MenuLabel'
@@ -1903,7 +1909,7 @@ export function createBaseMenu({
   const RadioGroup = MenuRadioGroup
   const RadioItem = MenuRadioItem
   const ItemIndicator = MenuItemIndicator
-  const Separator = _Separator.styleable<MenuSeparatorProps>((props, ref) => {
+  const Separator = createStyledHOC(_Separator)<MenuSeparatorProps>((props, ref) => {
     return <_Separator {...props} ref={ref} />
   })
   Separator.displayName = 'MenuSeparator'

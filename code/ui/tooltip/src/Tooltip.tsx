@@ -1,4 +1,4 @@
-import { createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import '@tamagui/polyfill-dev'
 
 import { FloatingDelayGroup, useDelayGroupContext, type Delay } from '@tamagui/floating'
@@ -43,7 +43,7 @@ const ALWAYS_DISABLE_TOOLTIP = {
   // dismiss: true
 } as const
 
-const TooltipContent = PopperContentFrame.styleable<TooltipContentProps>(
+const TooltipContent = createStyledHOC(PopperContentFrame)<TooltipContentProps>(
   (props, ref) => {
     const preventAnimation = React.useContext(PreventTooltipAnimationContext)
     const zIndexFromContext = React.useContext(TooltipZIndexContext)

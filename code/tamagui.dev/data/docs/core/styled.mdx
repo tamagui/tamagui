@@ -191,11 +191,9 @@ const Box = styled(View, {
 <Box render="a" href="/about">About</Box>
 ```
 
-## styleable
+## createStyledHOC
 
-Any component created with `styled()` has a new static property on it called `.styleable()`.
-
-If you want a functional component that renders a Tamagui-styled component inside of it to _also_ be able to be `styled()`, you need to wrap it with `styleable`. This is a mouthful, let's see an example:
+If you want a functional component that renders a Tamagui-styled component inside of it to _also_ be able to be `styled()`, wrap it with `createStyledHOC`. This is a mouthful, let's see an example:
 
 ```tsx
 // 1. you create a `styled` component as usual:
@@ -215,13 +213,13 @@ const StyledHigherOrderStyledText = styled(HigherOrderStyledText, {
 
 The above code will generally cause weird issues, because Tamagui can't know that it needs to just forward some props down. Instead, Tamagui tries to "resolve" all the style props from `StyledHigherOrderStyledText` before passing them down to `HigherOrderStyledText`. But that causes problems, because now `HigherOrderStyledText` will merge things differently than you'd expect.
 
-The way to fix this is to add `.styleable()` around your `HigherOrderStyledText`. You'll also want to forward the ref, which is forwarded for you:
+The way to fix this is to wrap your `HigherOrderStyledText` with `createStyledHOC`. You'll also want to forward the ref, which is forwarded for you:
 
 ```tsx
 const StyledText = styled(Text)
 
-// note the styleable wrapper here:
-const HigherOrderStyledText = StyledText.styleable((props, ref) => (
+// note the createStyledHOC wrapper here:
+const HigherOrderStyledText = createStyledHOC(StyledText)((props, ref) => (
   <StyledText ref={ref} {...props} />
 ))
 
@@ -236,10 +234,10 @@ Now your component will handle everything properly, even if a theme is changed o
 
 A final note: you must pass all Tamagui style props given to `HigherOrderStyledText` down to a single `StyledText`, at least if you want everything to work fully correctly.
 
-And if you'd like to add new props on top of the existing props, you can pass them in for the first generic type argument of styleable:
+And if you'd like to add new props on top of the existing props, you can pass them in for the first generic type argument of `createStyledHOC`:
 
 ```tsx
-import { View, ViewProps } from '@tamagui/core'
+import { createStyledHOC, View, ViewProps } from '@tamagui/core'
 
 type ExtraProps = {
   someCustomProp: boolean
@@ -247,7 +245,7 @@ type ExtraProps = {
 
 export type CustomProps = ViewProps & ExtraProps
 
-const Custom = View.styleable<ExtraProps>((props) => {
+const Custom = createStyledHOC(View)<ExtraProps>((props) => {
   // ...
   return null
 })

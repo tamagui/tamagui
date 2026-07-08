@@ -1,7 +1,7 @@
 // forked from radix https://github.com/radix-ui/primitives/blob/main/packages/react/avatar/src/Avatar.tsx
 
 import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
-import { styled, createRefComponent } from '@tamagui/core'
+import { createStyledHOC, styled, createRefComponent } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -131,7 +131,7 @@ type AvatarFallbackExtraProps = {
 }
 type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & AvatarFallbackExtraProps
 
-const AvatarFallback = AvatarFallbackFrame.styleable<
+const AvatarFallback = createStyledHOC(AvatarFallbackFrame)<
   ScopedProps<AvatarFallbackExtraProps>
 >((props, forwardedRef) => {
   const { __scopeAvatar, delayMs, ...fallbackProps } = props

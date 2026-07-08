@@ -1,4 +1,4 @@
-import { createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import type { AnimatePresenceProps } from '@tamagui/animate-presence'
 import { AnimatePresence, ResetPresence } from '@tamagui/animate-presence'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
@@ -87,7 +87,7 @@ const CollapsibleTriggerFrame = styled(View, {
   render: 'button',
 })
 
-const CollapsibleTrigger = CollapsibleTriggerFrame.styleable(
+const CollapsibleTrigger = createStyledHOC(CollapsibleTriggerFrame)(
   (props: ScopedProps<CollapsibleTriggerProps>, forwardedRef) => {
     const { __scopeCollapsible, children, ...triggerProps } = props
     const context = useCollapsibleContext(__scopeCollapsible)
@@ -131,29 +131,28 @@ const CollapsibleContentFrame = styled(View, {
   name: CONTENT_NAME,
 })
 
-const CollapsibleContent =
-  CollapsibleContentFrame.styleable<CollapsibleContentExtraProps>(
-    (props, forwardedRef) => {
-      const {
-        forceMount,
-        children,
-        // @ts-expect-error
-        __scopeCollapsible,
-        ...contentProps
-      } = props
-      const context = useCollapsibleContext(__scopeCollapsible)
+const CollapsibleContent = createStyledHOC(
+  CollapsibleContentFrame
+)<CollapsibleContentExtraProps>((props, forwardedRef) => {
+  const {
+    forceMount,
+    children,
+    // @ts-expect-error
+    __scopeCollapsible,
+    ...contentProps
+  } = props
+  const context = useCollapsibleContext(__scopeCollapsible)
 
-      return (
-        <AnimatePresence {...contentProps}>
-          {forceMount || context.open ? (
-            <CollapsibleContentFrame ref={forwardedRef} {...contentProps}>
-              <ResetPresence>{children}</ResetPresence>
-            </CollapsibleContentFrame>
-          ) : null}
-        </AnimatePresence>
-      )
-    }
+  return (
+    <AnimatePresence {...contentProps}>
+      {forceMount || context.open ? (
+        <CollapsibleContentFrame ref={forwardedRef} {...contentProps}>
+          <ResetPresence>{children}</ResetPresence>
+        </CollapsibleContentFrame>
+      ) : null}
+    </AnimatePresence>
   )
+})
 
 CollapsibleContent.displayName = CONTENT_NAME
 

@@ -25,11 +25,9 @@ type CheckboxIndicatorActiveStyleProps = {
 export type CheckboxProps = CheckboxBaseProps & CheckboxExtraProps & CheckboxExpectingVariantProps & CheckboxFrameActiveStyleProps;
 type CheckboxComponent = React.ComponentType<any> & {
     context?: any;
-    styleable: DefaultCheckboxFrame['styleable'];
 };
 type CheckboxIndicatorComponent = React.ComponentType<any> & {
     context?: any;
-    styleable: DefaultIndicatorFrame['styleable'];
 };
 type CheckboxIndicatorBaseProps = ViewProps;
 type CheckboxIndicatorExtraProps = {
@@ -115,7 +113,7 @@ export declare function createCheckbox<F extends CheckboxComponent, T extends Ch
     accept: {
         readonly activeStyle: "style";
     };
-}, "staticConfig" | "styleable"> & {
+}, "staticConfig"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/core").InferStyleProps<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | SizeTokens | undefined;

@@ -1,4 +1,4 @@
-import { createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { isWeb } from '@tamagui/constants'
 import { getGestureHandler } from '@tamagui/native'
@@ -498,7 +498,7 @@ export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> 
   portalZIndex?: number
 }
 
-const ToastViewport = ToastViewportFrame.styleable<ToastViewportProps>(
+const ToastViewport = createStyledHOC(ToastViewportFrame)<ToastViewportProps>(
   function ToastViewport(props, ref) {
     const {
       offset = VIEWPORT_OFFSET,
@@ -900,7 +900,7 @@ export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
   children: React.ReactNode
 }
 
-const ToastItemInner = ToastItemFrame.styleable<ToastItemProps>(
+const ToastItemInner = createStyledHOC(ToastItemFrame)<ToastItemProps>(
   function ToastItem(props, ref) {
     const { toast, index, children, ...rest } = props
     const ctx = useToastContext('Toast.Item')
@@ -1296,7 +1296,7 @@ const ToastDescription = styled(SizableText, {
  * ToastClose - auto-wired to dismiss current toast
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastClose = ToastCloseFrame.styleable(function ToastClose(props, ref) {
+const ToastClose = createStyledHOC(ToastCloseFrame)(function ToastClose(props, ref) {
   // try to get handleClose from context, but allow manual override
   let handleClose: (() => void) | undefined
   try {
@@ -1319,7 +1319,7 @@ const ToastClose = ToastCloseFrame.styleable(function ToastClose(props, ref) {
  * ToastAction
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastAction = ToastActionFrame.styleable(function ToastAction(props, ref) {
+const ToastAction = createStyledHOC(ToastActionFrame)(function ToastAction(props, ref) {
   return <ToastActionFrame ref={ref} {...props} />
 })
 

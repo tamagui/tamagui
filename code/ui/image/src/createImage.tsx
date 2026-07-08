@@ -1,4 +1,4 @@
-import { getTokenValue, styled } from '@tamagui/web'
+import { createStyledHOC, getTokenValue, styled } from '@tamagui/web'
 import type { ComponentType } from 'react'
 import type { ImageResizeMode } from 'react-native'
 import type { ImageProps, ImageType } from './types'
@@ -138,106 +138,110 @@ export function createImage<C extends ComponentType<any>>(
   // Combined props: ImageProps (Tamagui) + Component's native props
   type CombinedProps = ImageProps & Omit<GetProps<C>, keyof ImageProps>
 
-  const ImageComponent = StyledImage.styleable<CombinedProps>((incomingProps, ref) => {
-    const props = incomingProps as any
-    const {
-      src,
-      width,
-      height,
-      borderRadius,
-      objectFit,
-      objectPosition,
-      // web only props - filter out on native
-      decoding,
-      elementTiming,
-      fetchpriority,
-      isMap,
-      loading,
-      sizes,
-      useMap,
-      onLoad,
-      onError,
-      ...rest
-    } = props
+  const ImageComponent = createStyledHOC(StyledImage)<CombinedProps>(
+    (incomingProps, ref) => {
+      const props = incomingProps as any
+      const {
+        src,
+        width,
+        height,
+        borderRadius,
+        objectFit,
+        objectPosition,
+        // web only props - filter out on native
+        decoding,
+        elementTiming,
+        fetchpriority,
+        isMap,
+        loading,
+        sizes,
+        useMap,
+        onLoad,
+        onError,
+        ...rest
+      } = props
 
-    const resolvedWidth =
-      typeof width === 'string' && width[0] === '$'
-        ? getTokenValue(width as any, 'size')
-        : width
-    const resolvedHeight =
-      typeof height === 'string' && height[0] === '$'
-        ? getTokenValue(height as any, 'size')
-        : height
+      const resolvedWidth =
+        typeof width === 'string' && width[0] === '$'
+          ? getTokenValue(width as any, 'size')
+          : width
+      const resolvedHeight =
+        typeof height === 'string' && height[0] === '$'
+          ? getTokenValue(height as any, 'size')
+          : height
 
-    const finalSource = transformSource({
-      src,
-      width: resolvedWidth,
-      height: resolvedHeight,
-    })
+      const finalSource = transformSource({
+        src,
+        width: resolvedWidth,
+        height: resolvedHeight,
+      })
 
-    const incomingStyle = Array.isArray(rest.style)
-      ? Object.assign({}, ...rest.style.flat())
-      : rest.style
+      const incomingStyle = Array.isArray(rest.style)
+        ? Object.assign({}, ...rest.style.flat())
+        : rest.style
 
-    const resolvedBorderRadius =
-      typeof borderRadius === 'string' && borderRadius[0] === '$'
-        ? getTokenValue(borderRadius as any, 'radius')
-        : borderRadius
+      const resolvedBorderRadius =
+        typeof borderRadius === 'string' && borderRadius[0] === '$'
+          ? getTokenValue(borderRadius as any, 'radius')
+          : borderRadius
 
-    const finalProps: any = {
-      ...rest,
-      source: finalSource,
-      style: {
-        ...incomingStyle,
-        ...(resolvedBorderRadius !== undefined && { borderRadius: resolvedBorderRadius }),
-        ...(resolvedWidth !== undefined && { width: resolvedWidth }),
-        ...(resolvedHeight !== undefined && { height: resolvedHeight }),
-        // RN 0.76+ reads objectFit from style natively on Image; harmless on older.
-        // Also forwarded to the resize-mode prop below for back-compat / non-RN components.
-        ...(objectFit !== undefined && { objectFit }),
-        // RN doesn't currently read objectPosition from style; expo-image uses
-        // contentPosition (handled via objectPositionPropName below). Forwarding
-        // through style is a no-op there but matches CSS shape and is forward-compatible.
-        ...(objectPosition !== undefined && { objectPosition }),
-      },
-    }
-
-    // Set resize mode / content fit
-    if (objectFit) {
-      finalProps[resizeModePropName] = mapObjectFitToResizeMode(objectFit)
-    }
-
-    // Add object position if supported (e.g. expo-image's contentPosition)
-    if (objectPositionPropName && objectPosition) {
-      finalProps[objectPositionPropName] = objectPosition
-    }
-
-    // Normalize onLoad event
-    if (onLoad) {
-      finalProps.onLoad = (e: any) => {
-        const source = e?.nativeEvent?.source || e?.source || {}
-        onLoad({
-          target: {
-            naturalHeight: source?.height,
-            naturalWidth: source?.width,
-          },
-          type: 'load',
-        } as any)
+      const finalProps: any = {
+        ...rest,
+        source: finalSource,
+        style: {
+          ...incomingStyle,
+          ...(resolvedBorderRadius !== undefined && {
+            borderRadius: resolvedBorderRadius,
+          }),
+          ...(resolvedWidth !== undefined && { width: resolvedWidth }),
+          ...(resolvedHeight !== undefined && { height: resolvedHeight }),
+          // RN 0.76+ reads objectFit from style natively on Image; harmless on older.
+          // Also forwarded to the resize-mode prop below for back-compat / non-RN components.
+          ...(objectFit !== undefined && { objectFit }),
+          // RN doesn't currently read objectPosition from style; expo-image uses
+          // contentPosition (handled via objectPositionPropName below). Forwarding
+          // through style is a no-op there but matches CSS shape and is forward-compatible.
+          ...(objectPosition !== undefined && { objectPosition }),
+        },
       }
-    }
 
-    // Normalize onError event
-    if (onError) {
-      finalProps.onError = () => {
-        onError({
-          type: 'error',
-        } as any)
+      // Set resize mode / content fit
+      if (objectFit) {
+        finalProps[resizeModePropName] = mapObjectFitToResizeMode(objectFit)
       }
-    }
 
-    // Render the underlying Component directly to ensure all props pass through
-    return <Component ref={ref} {...finalProps} />
-  }) as unknown as ImageType & React.FC<CombinedProps>
+      // Add object position if supported (e.g. expo-image's contentPosition)
+      if (objectPositionPropName && objectPosition) {
+        finalProps[objectPositionPropName] = objectPosition
+      }
+
+      // Normalize onLoad event
+      if (onLoad) {
+        finalProps.onLoad = (e: any) => {
+          const source = e?.nativeEvent?.source || e?.source || {}
+          onLoad({
+            target: {
+              naturalHeight: source?.height,
+              naturalWidth: source?.width,
+            },
+            type: 'load',
+          } as any)
+        }
+      }
+
+      // Normalize onError event
+      if (onError) {
+        finalProps.onError = () => {
+          onError({
+            type: 'error',
+          } as any)
+        }
+      }
+
+      // Render the underlying Component directly to ensure all props pass through
+      return <Component ref={ref} {...finalProps} />
+    }
+  ) as unknown as ImageType & React.FC<CombinedProps>
 
   // Add static methods if the component has them
   const comp = Component as any

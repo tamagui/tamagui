@@ -218,7 +218,7 @@ If you are building a component with more than one sub-components, you can
 follow this pattern:
 
 ```tsx
-import { GetProps, View, Text, styled } from 'tamagui' // or '@tamagui/core'
+import { GetProps, View, Text, createStyledHOC, styled } from 'tamagui' // or '@tamagui/core'
 
 const ButtonFrame = styled(View, {
   name: 'Button',
@@ -232,9 +232,9 @@ const ButtonText = styled(Text, {
 
 type ButtonProps = GetProps<typeof ButtonFrame>
 
-// styleable() wraps a functional component so it can be further styled with styled()
-// see /docs/core/styled#styleable for full documentation
-export const Button = ButtonFrame.styleable<ButtonProps>(
+// createStyledHOC wraps a functional component so it can be further styled with styled()
+// see /docs/core/styled#createstyledhoc for full documentation
+export const Button = createStyledHOC(ButtonFrame)<ButtonProps>(
   ({ children, ...props }, ref) => {
     return (
       <ButtonFrame ref={ref} {...props}>

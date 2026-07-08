@@ -1,5 +1,5 @@
 import type { GetProps } from '@tamagui/core'
-import { isWeb, withStaticProperties } from '@tamagui/core'
+import { createStyledHOC, isWeb, withStaticProperties } from '@tamagui/core'
 import type {
   RadioGroupContextValue,
   RadioGroupItemContextValue,
@@ -90,7 +90,7 @@ export function createRadioGroup<
     accentColor?: string
   }
 
-  const RadioGroupImp = Frame.styleable<RadioGroupProps>((props, ref) => {
+  const RadioGroupImp = createStyledHOC(Frame)<RadioGroupProps>((props, ref) => {
     const {
       value,
       defaultValue,
@@ -125,7 +125,7 @@ export function createRadioGroup<
     )
   })
 
-  const RadioGroupItemImp = Item.styleable<RadioGroupItemProps>((props, ref) => {
+  const RadioGroupItemImp = createStyledHOC(Item)<RadioGroupItemProps>((props, ref) => {
     const { value, labelledBy, onPress, onKeyDown, disabled, id, ...rest } = props
 
     const {
@@ -163,7 +163,7 @@ export function createRadioGroup<
 
   RadioGroupItemImp.displayName = 'RadioGroupItem'
 
-  const RadioIndicator = Indicator.styleable<RadioIndicatorProps>(
+  const RadioIndicator = createStyledHOC(Indicator)<RadioIndicatorProps>(
     (props: RadioIndicatorProps, forwardedRef) => {
       const { forceMount, disabled, ...indicatorProps } = props
       const { checked, ...useIndicatorRest } = useRadioGroupItemIndicator({

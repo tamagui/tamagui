@@ -72,7 +72,7 @@ export declare const RadioGroup: import("react").FunctionComponent<Omit<import("
 }, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("@tamagui/web").SizeTokens | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
-}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig" | "styleable"> & {
+}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
