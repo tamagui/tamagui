@@ -12,6 +12,7 @@ export type ListItemExtraProps = {
     title?: ReactNode;
     subTitle?: ReactNode;
     iconSize?: SizeTokens;
+    color?: ColorTokens | string;
 };
 export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps;
 declare const ListItemFrame: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
