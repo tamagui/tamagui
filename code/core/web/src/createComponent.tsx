@@ -1897,7 +1897,8 @@ export function createComponent<
 
   function styleable(Component: any, options?: StyleableOptions): any {
     let out: any = function StyleableComponent(props: any) {
-      return Component(props, props.ref)
+      const { ref, ...rest } = props
+      return Component(rest, ref)
     }
 
     const extendedConfig = extendStyledConfig(options?.staticConfig)

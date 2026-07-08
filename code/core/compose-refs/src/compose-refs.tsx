@@ -53,7 +53,8 @@ export function createRefComponent<RefType, Props extends object>(
   render: (props: Props, ref: Ref<RefType> | undefined) => ReactNode
 ): RefComponent<RefType, Props> {
   function RefComponent(props: Props & RefProp<RefType>) {
-    return render(props, props.ref)
+    const { ref, ...rest } = props
+    return render(rest as Props, ref)
   }
 
   RefComponent.displayName = render.name
