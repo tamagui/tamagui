@@ -15856,6 +15856,7 @@ export declare const tokens: {
         3: import("@tamagui/web").Variable<number>;
         3.5: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
+        true: import("@tamagui/web").Variable<number>;
         4.5: import("@tamagui/web").Variable<number>;
         5: import("@tamagui/web").Variable<number>;
         6: import("@tamagui/web").Variable<number>;
@@ -15883,6 +15884,7 @@ export declare const tokens: {
         [-3]: import("@tamagui/web").Variable<number>;
         [-3.5]: import("@tamagui/web").Variable<number>;
         [-4]: import("@tamagui/web").Variable<number>;
+        "-true": import("@tamagui/web").Variable<number>;
         [-4.5]: import("@tamagui/web").Variable<number>;
         [-5]: import("@tamagui/web").Variable<number>;
         [-6]: import("@tamagui/web").Variable<number>;
@@ -15913,6 +15915,7 @@ export declare const tokens: {
         $3: import("@tamagui/web").Variable<number>;
         "$3.5": import("@tamagui/web").Variable<number>;
         $4: import("@tamagui/web").Variable<number>;
+        $true: import("@tamagui/web").Variable<number>;
         "$4.5": import("@tamagui/web").Variable<number>;
         $5: import("@tamagui/web").Variable<number>;
         $6: import("@tamagui/web").Variable<number>;
@@ -15937,6 +15940,7 @@ export declare const tokens: {
         2: import("@tamagui/web").Variable<number>;
         3: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
+        true: import("@tamagui/web").Variable<number>;
         5: import("@tamagui/web").Variable<number>;
         6: import("@tamagui/web").Variable<number>;
         7: import("@tamagui/web").Variable<number>;
@@ -15961,6 +15965,7 @@ export declare const tokens: {
         2: import("@tamagui/web").Variable<number>;
         3: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
+        true: import("@tamagui/web").Variable<number>;
         5: import("@tamagui/web").Variable<number>;
         6: import("@tamagui/web").Variable<number>;
         7: import("@tamagui/web").Variable<number>;
@@ -15990,6 +15995,7 @@ export declare const tokens: {
         3: import("@tamagui/web").Variable<number>;
         3.5: import("@tamagui/web").Variable<number>;
         4: import("@tamagui/web").Variable<number>;
+        true: import("@tamagui/web").Variable<number>;
         4.5: import("@tamagui/web").Variable<number>;
         5: import("@tamagui/web").Variable<number>;
         6: import("@tamagui/web").Variable<number>;
@@ -16017,6 +16023,7 @@ export declare const tokens: {
         [-3]: import("@tamagui/web").Variable<number>;
         [-3.5]: import("@tamagui/web").Variable<number>;
         [-4]: import("@tamagui/web").Variable<number>;
+        "-true": import("@tamagui/web").Variable<number>;
         [-4.5]: import("@tamagui/web").Variable<number>;
         [-5]: import("@tamagui/web").Variable<number>;
         [-6]: import("@tamagui/web").Variable<number>;
@@ -16047,6 +16054,7 @@ export declare const tokens: {
         $3: import("@tamagui/web").Variable<number>;
         "$3.5": import("@tamagui/web").Variable<number>;
         $4: import("@tamagui/web").Variable<number>;
+        $true: import("@tamagui/web").Variable<number>;
         "$4.5": import("@tamagui/web").Variable<number>;
         $5: import("@tamagui/web").Variable<number>;
         $6: import("@tamagui/web").Variable<number>;

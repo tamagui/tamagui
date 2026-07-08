@@ -10,6 +10,7 @@ export declare const size: {
     $3: number;
     '$3.5': number;
     $4: number;
+    $true: number;
     '$4.5': number;
     $5: number;
     $6: number;
@@ -53,6 +54,7 @@ export declare const radius: {
     2: number;
     3: number;
     4: number;
+    true: number;
     5: number;
     6: number;
     7: number;
@@ -69,6 +71,7 @@ export declare const tokens: {
         2: number;
         3: number;
         4: number;
+        true: number;
         5: number;
         6: number;
         7: number;
@@ -98,6 +101,7 @@ export declare const tokens: {
         3: number;
         3.5: number;
         4: number;
+        true: number;
         4.5: number;
         5: number;
         6: number;
@@ -125,6 +129,7 @@ export declare const tokens: {
         [-3]: number;
         [-3.5]: number;
         [-4]: number;
+        "-true": number;
         [-4.5]: number;
         [-5]: number;
         [-6]: number;
@@ -155,6 +160,7 @@ export declare const tokens: {
         $3: number;
         '$3.5': number;
         $4: number;
+        $true: number;
         '$4.5': number;
         $5: number;
         $6: number;
