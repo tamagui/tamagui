@@ -159,50 +159,13 @@ function toPosixPath(path: string) {
 }
 
 function loadTamaguiToTailwind(): Transform {
-  normalizeCallableDefaultExport('@babel/traverse')
-  normalizeCallableDefaultExport('@babel/generator')
-
-  const mod = require('@tamagui/to-tailwind')
-  const transform = getTransformExport(mod)
-
-  if (typeof transform !== 'function') {
-    throw new Error('Could not load @tamagui/to-tailwind transform')
+  const { tamaguiToTailwind } = require('@tamagui/to-tailwind') as {
+    tamaguiToTailwind?: Transform
   }
 
-  return transform
-}
-
-function getTransformExport(mod: any): Transform | undefined {
-  return (
-    mod?.tamaguiToTailwind ||
-    mod?.default?.tamaguiToTailwind ||
-    (typeof mod?.default === 'function' ? mod.default : undefined) ||
-    (typeof mod === 'function' ? mod : undefined)
-  )
-}
-
-function normalizeCallableDefaultExport(packageName: string) {
-  const id = require.resolve(packageName)
-  const mod = require(packageName)
-  const callable = mod?.default
-
-  if (typeof callable !== 'function' || mod === callable) {
-    return
+  if (typeof tamaguiToTailwind !== 'function') {
+    throw new Error('@tamagui/to-tailwind did not export tamaguiToTailwind')
   }
 
-  for (const key of Reflect.ownKeys(mod)) {
-    if (key === 'default' || Reflect.has(callable, key)) {
-      continue
-    }
-
-    const descriptor = Object.getOwnPropertyDescriptor(mod, key)
-    if (descriptor) {
-      Object.defineProperty(callable, key, descriptor)
-    }
-  }
-
-  const cached = require.cache[id]
-  if (cached) {
-    cached.exports = callable
-  }
+  return tamaguiToTailwind
 }
