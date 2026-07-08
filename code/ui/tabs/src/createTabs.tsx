@@ -1,4 +1,4 @@
-import { createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { GroupProps } from '@tamagui/group'
@@ -78,7 +78,7 @@ export function createTabs<
    * @deprecated Use `TabLayout` instead
    */
 
-  const TabsTrigger = TabFrame.styleable<ScopedProps<TabsTabProps>>(
+  const TabsTrigger = createStyledHOC(TabFrame)<ScopedProps<TabsTabProps>>(
     (props, forwardedRef) => {
       const {
         __scopeTabs,
@@ -222,40 +222,39 @@ export function createTabs<
    * TabsContent
    * -----------------------------------------------------------------------------------------------*/
 
-  const TabsContent = ContentFrame.styleable<TabsContentExtraProps>(function TabsContent(
-    props: ScopedProps<TabsContentProps>,
-    forwardedRef
-  ) {
-    const { __scopeTabs, value, forceMount, children, ...contentProps } = props
-    const context = useTabsContext(__scopeTabs)
-    const isSelected = value === context.value
-    const show = forceMount || isSelected
+  const TabsContent = createStyledHOC(ContentFrame)<TabsContentExtraProps>(
+    function TabsContent(props: ScopedProps<TabsContentProps>, forwardedRef) {
+      const { __scopeTabs, value, forceMount, children, ...contentProps } = props
+      const context = useTabsContext(__scopeTabs)
+      const isSelected = value === context.value
+      const show = forceMount || isSelected
 
-    const triggerId = makeTriggerId(context.baseId, value)
-    const contentId = makeContentId(context.baseId, value)
+      const triggerId = makeTriggerId(context.baseId, value)
+      const contentId = makeContentId(context.baseId, value)
 
-    if (!show) {
-      return null
+      if (!show) {
+        return null
+      }
+
+      return (
+        <ContentFrame
+          key={value}
+          data-state={isSelected ? 'active' : 'inactive'}
+          data-orientation={context.orientation}
+          role="tabpanel"
+          aria-labelledby={triggerId}
+          // @ts-ignore
+          hidden={!show}
+          id={contentId}
+          tabIndex={0}
+          {...contentProps}
+          ref={forwardedRef}
+        >
+          {children}
+        </ContentFrame>
+      )
     }
-
-    return (
-      <ContentFrame
-        key={value}
-        data-state={isSelected ? 'active' : 'inactive'}
-        data-orientation={context.orientation}
-        role="tabpanel"
-        aria-labelledby={triggerId}
-        // @ts-ignore
-        hidden={!show}
-        id={contentId}
-        tabIndex={0}
-        {...contentProps}
-        ref={forwardedRef}
-      >
-        {children}
-      </ContentFrame>
-    )
-  })
+  )
 
   /* -------------------------------------------------------------------------------------------------
    * Tabs
@@ -269,7 +268,7 @@ export function createTabs<
 
   type RovingFocusGroupProps = React.ComponentPropsWithoutRef<typeof RovingFocusGroup>
 
-  const TabsComponent = TabsFrame.styleable<TabsExtraProps>(function Tabs(
+  const TabsComponent = createStyledHOC(TabsFrame)<TabsExtraProps>(function Tabs(
     props: ScopedProps<TabsProps>,
     forwardedRef
   ) {

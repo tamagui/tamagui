@@ -1,6 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { createStyledContext } from '@tamagui/core'
+import { createStyledHOC, createStyledContext } from '@tamagui/core'
 import type { ListItemProps } from '@tamagui/list-item'
 import { ListItem } from '@tamagui/list-item'
 import * as React from 'react'
@@ -34,7 +34,7 @@ export interface SelectItemExtraProps {
 export interface SelectItemProps
   extends Omit<ListItemProps, keyof SelectItemExtraProps>, SelectItemExtraProps {}
 
-export const SelectItem = ListItem.Frame.styleable<SelectItemExtraProps>(
+export const SelectItem = createStyledHOC(ListItem.Frame)<SelectItemExtraProps>(
   function SelectItem(props: SelectScopedProps<SelectItemProps>, forwardedRef) {
     const {
       scope,

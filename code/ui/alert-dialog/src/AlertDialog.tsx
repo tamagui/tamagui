@@ -1,4 +1,4 @@
-import { createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 // forked from radix-ui
 // https://github.com/radix-ui/primitives/blob/main/packages/react/alert-dialog/src/AlertDialog.tsx
 
@@ -68,29 +68,28 @@ const NativeAlertDialogTriggerFrame = styled(View, {
   name: TRIGGER_NAME,
 })
 
-const AlertDialogTrigger =
-  NativeAlertDialogTriggerFrame.styleable<AlertDialogTriggerProps>(
-    function AlertDialogTrigger(props, forwardedRef) {
-      if (props['__native']) {
-        const { __native, onPress, __onPress, ...rest } = props as any
-        return (
-          <NativeAlertDialogTriggerFrame
-            {...rest}
-            onPress={composeEventHandlers(onPress, __onPress)}
-          />
-        )
-      }
+const AlertDialogTrigger = createStyledHOC(
+  NativeAlertDialogTriggerFrame
+)<AlertDialogTriggerProps>(function AlertDialogTrigger(props, forwardedRef) {
+  if (props['__native']) {
+    const { __native, onPress, __onPress, ...rest } = props as any
+    return (
+      <NativeAlertDialogTriggerFrame
+        {...rest}
+        onPress={composeEventHandlers(onPress, __onPress)}
+      />
+    )
+  }
 
-      const { scope, ...triggerProps } = props
-      return (
-        <DialogTrigger
-          scope={getAlertDialogScope(scope)}
-          {...triggerProps}
-          ref={forwardedRef}
-        />
-      )
-    }
+  const { scope, ...triggerProps } = props
+  return (
+    <DialogTrigger
+      scope={getAlertDialogScope(scope)}
+      {...triggerProps}
+      ref={forwardedRef}
+    />
   )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * AlertDialogPortal
@@ -120,18 +119,18 @@ const AlertDialogOverlayFrame = styled(DialogOverlayFrame, {
 type AlertDialogOverlayExtraProps = ScopedProps<{}> & DialogOverlayExtraProps
 type AlertDialogOverlayProps = AlertDialogOverlayExtraProps & DialogOverlayProps
 
-const AlertDialogOverlay = AlertDialogOverlayFrame.styleable<AlertDialogOverlayProps>(
-  function AlertDialogOverlay(props, forwardedRef) {
-    const { scope, ...overlayProps } = props
-    return (
-      <DialogOverlay
-        scope={getAlertDialogScope(scope)}
-        {...overlayProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+const AlertDialogOverlay = createStyledHOC(
+  AlertDialogOverlayFrame
+)<AlertDialogOverlayProps>(function AlertDialogOverlay(props, forwardedRef) {
+  const { scope, ...overlayProps } = props
+  return (
+    <DialogOverlay
+      scope={getAlertDialogScope(scope)}
+      {...overlayProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * AlertDialogContent
@@ -220,7 +219,7 @@ const AlertDialogTitleFrame = styled(View, {
   name: TITLE_NAME,
 })
 
-const AlertDialogTitle = AlertDialogTitleFrame.styleable<AlertDialogTitleProps>(
+const AlertDialogTitle = createStyledHOC(AlertDialogTitleFrame)<AlertDialogTitleProps>(
   function AlertDialogTitle(props, forwardedRef) {
     const { scope, ...titleProps } = props
     return (
@@ -245,19 +244,18 @@ const AlertDialogDescriptionFrame = styled(View, {
   name: DESCRIPTION_NAME,
 })
 
-const AlertDialogDescription =
-  AlertDialogDescriptionFrame.styleable<AlertDialogDescriptionProps>(
-    function AlertDialogDescription(props, forwardedRef) {
-      const { scope, ...descriptionProps } = props
-      return (
-        <DialogDescription
-          scope={getAlertDialogScope(scope)}
-          {...descriptionProps}
-          ref={forwardedRef}
-        />
-      )
-    }
+const AlertDialogDescription = createStyledHOC(
+  AlertDialogDescriptionFrame
+)<AlertDialogDescriptionProps>(function AlertDialogDescription(props, forwardedRef) {
+  const { scope, ...descriptionProps } = props
+  return (
+    <DialogDescription
+      scope={getAlertDialogScope(scope)}
+      {...descriptionProps}
+      ref={forwardedRef}
+    />
   )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * AlertDialogAction
@@ -271,7 +269,7 @@ const AlertDialogActionFrame = styled(View, {
   name: ACTION_NAME,
 })
 
-const AlertDialogAction = AlertDialogActionFrame.styleable<AlertDialogActionProps>(
+const AlertDialogAction = createStyledHOC(AlertDialogActionFrame)<AlertDialogActionProps>(
   function AlertDialogAction(props, forwardedRef) {
     const { scope, ...actionProps } = props
     return (
@@ -296,7 +294,7 @@ const AlertDialogCancelFrame = styled(View, {
   name: CANCEL_NAME,
 })
 
-const AlertDialogCancel = AlertDialogCancelFrame.styleable<AlertDialogCancelProps>(
+const AlertDialogCancel = createStyledHOC(AlertDialogCancelFrame)<AlertDialogCancelProps>(
   function AlertDialogCancel(props, forwardedRef) {
     const { scope, ...cancelProps } = props
     const { cancelRef } = useAlertDialogContentContext(scope)
@@ -317,17 +315,16 @@ const AlertDialogDestructiveFrame = styled(View, {
   name: DESTRUCTIVE_NAME,
 })
 
-const AlertDialogDestructive =
-  AlertDialogDestructiveFrame.styleable<AlertDialogDestructiveProps>(
-    function AlertDialogDestructive(props, forwardedRef) {
-      const { scope, ...destructiveProps } = props
-      const { destructiveRef } = useAlertDialogContentContext(scope)
-      const ref = useComposedRefs(forwardedRef, destructiveRef)
-      return (
-        <DialogClose scope={getAlertDialogScope(scope)} {...destructiveProps} ref={ref} />
-      )
-    }
+const AlertDialogDestructive = createStyledHOC(
+  AlertDialogDestructiveFrame
+)<AlertDialogDestructiveProps>(function AlertDialogDestructive(props, forwardedRef) {
+  const { scope, ...destructiveProps } = props
+  const { destructiveRef } = useAlertDialogContentContext(scope)
+  const ref = useComposedRefs(forwardedRef, destructiveRef)
+  return (
+    <DialogClose scope={getAlertDialogScope(scope)} {...destructiveProps} ref={ref} />
   )
+})
 
 /* ---------------------------------------------------------------------------------------------- */
 

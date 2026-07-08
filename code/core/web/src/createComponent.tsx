@@ -33,7 +33,6 @@ import {
 } from './helpers/pseudoTransitions'
 import { setElementProps } from './helpers/setElementProps'
 import { subscribeToContextGroup } from './helpers/subscribeToContextGroup'
-import { themeable } from './helpers/themeable'
 import { getStyleTags } from './helpers/wrapStyleTags'
 import { useComponentState } from './hooks/useComponentState'
 import { setMediaShouldUpdate, useMedia } from './hooks/useMedia'
@@ -49,7 +48,6 @@ import type {
   PseudoGroupState,
   SingleGroupContext,
   StaticConfig,
-  StyleableOptions,
   TamaguiComponent,
   TamaguiComponentState,
   TamaguiElement,
@@ -1884,36 +1882,6 @@ export function createComponent<
   res = React.memo(res) as any
 
   res.staticConfig = staticConfig
-
-  function extendStyledConfig(extended?: Partial<StaticConfig>) {
-    return {
-      ...staticConfig,
-      ...extended,
-      neverFlatten: true,
-      isHOC: true,
-      isStyledHOC: false,
-    }
-  }
-
-  function styleable(Component: any, options?: StyleableOptions): any {
-    let out: any = function StyleableComponent(props: any) {
-      return Component(props, props.ref)
-    }
-
-    const extendedConfig = extendStyledConfig(options?.staticConfig)
-
-    out = options?.disableTheme ? out : themeable(out, extendedConfig, true)
-
-    if (extendedConfig.memo || process.env.TAMAGUI_MEMOIZE_STYLEABLE) {
-      out = React.memo(out)
-    }
-
-    out.staticConfig = extendedConfig
-    out.styleable = styleable
-    return out
-  }
-
-  res.styleable = styleable
 
   return res
 }

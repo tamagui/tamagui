@@ -11,6 +11,7 @@ import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
+  createStyledHOC,
   createStyledContext,
   createRefComponent,
   getExpandedShorthand,
@@ -121,7 +122,7 @@ const DialogTriggerFrame = styled(View, {
 
 type DialogTriggerProps = ScopedProps<ViewProps>
 
-const DialogTrigger = DialogTriggerFrame.styleable<ScopedProps<{}>>(
+const DialogTrigger = createStyledHOC(DialogTriggerFrame)<ScopedProps<{}>>(
   function DialogTrigger(props, forwardedRef) {
     const { scope, ...triggerProps } = props
     const isInsideButton = React.useContext(ButtonNestingContext)
@@ -399,7 +400,7 @@ export type DialogOverlayExtraProps = ScopedProps<{
 
 type DialogOverlayProps = YStackProps & DialogOverlayExtraProps
 
-const DialogOverlay = DialogOverlayFrame.styleable<DialogOverlayExtraProps>(
+const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProps>(
   function DialogOverlay({ scope, ...props }, forwardedRef) {
     const context = useDialogContext(scope)
     const { forceMount = context.forceMount, ...overlayProps } = props
@@ -476,7 +477,7 @@ type DialogContentExtraProps = ScopedProps<
 
 type DialogContentProps = DialogContentFrameProps & DialogContentExtraProps
 
-const DialogContent = DialogContentFrame.styleable<DialogContentExtraProps>(
+const DialogContent = createStyledHOC(DialogContentFrame)<DialogContentExtraProps>(
   function DialogContent({ scope, ...props }, forwardedRef) {
     const context = useDialogContext(scope)
 
@@ -734,7 +735,7 @@ const DialogTitleFrame = styled(H2, {
 type DialogTitleExtraProps = ScopedProps<{}>
 type DialogTitleProps = DialogTitleExtraProps & GetProps<typeof DialogTitleFrame>
 
-const DialogTitle = DialogTitleFrame.styleable<DialogTitleExtraProps>(
+const DialogTitle = createStyledHOC(DialogTitleFrame)<DialogTitleExtraProps>(
   function DialogTitle(props, forwardedRef) {
     const { scope, ...titleProps } = props
     const context = useDialogContext(scope)
@@ -754,19 +755,19 @@ type DialogDescriptionExtraProps = ScopedProps<{}>
 type DialogDescriptionProps = DialogDescriptionExtraProps &
   GetProps<typeof DialogDescriptionFrame>
 
-const DialogDescription = DialogDescriptionFrame.styleable<DialogDescriptionExtraProps>(
-  function DialogDescription(props, forwardedRef) {
-    const { scope, ...descriptionProps } = props
-    const context = useDialogContext(scope)
-    return (
-      <DialogDescriptionFrame
-        id={context.descriptionId}
-        {...descriptionProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+const DialogDescription = createStyledHOC(
+  DialogDescriptionFrame
+)<DialogDescriptionExtraProps>(function DialogDescription(props, forwardedRef) {
+  const { scope, ...descriptionProps } = props
+  const context = useDialogContext(scope)
+  return (
+    <DialogDescriptionFrame
+      id={context.descriptionId}
+      {...descriptionProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * DialogClose
@@ -785,7 +786,7 @@ export type DialogCloseExtraProps = ScopedProps<{
 
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps
 
-const DialogClose = DialogCloseFrame.styleable<DialogCloseExtraProps>(
+const DialogClose = createStyledHOC(DialogCloseFrame)<DialogCloseExtraProps>(
   (props, forwardedRef) => {
     const { scope, displayWhenAdapted, ...closeProps } = props
     const context = useDialogContext(scope)

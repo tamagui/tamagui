@@ -15,6 +15,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { SizeTokens, GetRef, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
+  createStyledHOC,
   createRefComponent,
   createStyledContext,
   useCreateShallowSetState,
@@ -491,7 +492,7 @@ export interface PopoverContentTypeProps extends Omit<
 
 export type PopoverContentProps = PopoverContentTypeProps
 
-export const PopoverContent = PopperContentFrame.styleable<PopoverContentProps>(
+export const PopoverContent = createStyledHOC(PopperContentFrame)<PopoverContentProps>(
   function PopoverContent(props, forwardedRef) {
     const {
       trapFocus,
@@ -898,7 +899,7 @@ export const PopoverClose = createRefComponent<TamaguiElement, PopoverCloseProps
 
 export type PopoverArrowProps = PopperArrowProps
 
-export const PopoverArrow = PopperArrowFrame.styleable<PopperArrowExtraProps>(
+export const PopoverArrow = createStyledHOC(PopperArrowFrame)<PopperArrowExtraProps>(
   function PopoverArrow(props, forwardedRef) {
     const { scope, ...rest } = props
     const context = usePopoverContext(scope)

@@ -64,22 +64,10 @@ export declare const Sheet: ((props: {
         } & {
             ref?: import("react").Ref<import("react-native").View>;
         }>) => import("react").ReactNode;
-        Overlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
-            open?: boolean;
-        }, "__scopeSheet"> & {
+        Overlay: import("@tamagui/core").TamaguiComponent<Omit<any, "__scopeSheet"> & {
             __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        }, any, any, any, {
-            open?: boolean;
-        }, {}> | import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
-            open?: boolean;
-        }, "__scopeSheet"> & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        }, any, {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        }, {}, {}, {}>;
-        Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
-            open?: boolean;
-        }, {}> | import("@tamagui/core").TamaguiComponent<any, any, any, {}, {}, {}>;
+        }, any, any, any, {}, {}>;
+        Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {}, {}>;
         ScrollView: import("@tamagui/core").RefComponent<import("react-native").ScrollView, import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
                 accept: {
@@ -100,22 +88,10 @@ export declare const Sheet: ((props: {
     } & {
         ref?: import("react").Ref<import("react-native").View>;
     }>) => import("react").ReactNode;
-    Overlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
-        open?: boolean;
-    }, "__scopeSheet"> & {
+    Overlay: import("@tamagui/core").TamaguiComponent<Omit<any, "__scopeSheet"> & {
         __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-    }, any, any, any, {
-        open?: boolean;
-    }, {}> | import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
-        open?: boolean;
-    }, "__scopeSheet"> & {
-        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-    }, any, {
-        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-    }, {}, {}, {}>;
-    Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {
-        open?: boolean;
-    }, {}> | import("@tamagui/core").TamaguiComponent<any, any, any, {}, {}, {}>;
+    }, any, any, any, {}, {}>;
+    Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {}, {}>;
     ScrollView: import("@tamagui/core").RefComponent<import("react-native").ScrollView, import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
             accept: {
