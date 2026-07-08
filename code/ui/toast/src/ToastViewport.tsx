@@ -290,7 +290,7 @@ const ToastViewport = React.memo(
            */}
           <Collection.Slot scope={context.toastScope}>
             <ToastViewportFrame
-              focusable={context.toastCount > 0}
+              tabIndex={context.toastCount > 0 ? 0 : -1}
               ref={composedRefs as any}
               {...viewportProps}
             >

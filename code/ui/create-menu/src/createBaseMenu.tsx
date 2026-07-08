@@ -1140,7 +1140,7 @@ export function createBaseMenu({
         <RovingFocusGroup.Item
           asChild
           __scopeRovingFocusGroup={scope}
-          focusable={!disabled}
+          tabIndex={disabled ? -1 : 0}
         >
           <_Item
             unstyled={unstyled}

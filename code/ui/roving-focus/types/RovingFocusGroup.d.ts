@@ -10,7 +10,6 @@ interface RovingFocusGroupImplProps extends Omit<PrimitiveDivProps, 'dir'>, Rovi
 type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof View>;
 interface RovingFocusItemProps extends PrimitiveSpanProps {
     tabStopId?: string;
-    focusable?: boolean;
     active?: boolean;
 }
 declare const RovingFocusGroupItem: React.ForwardRefExoticComponent<RovingFocusItemProps & {

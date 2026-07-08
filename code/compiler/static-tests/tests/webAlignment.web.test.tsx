@@ -171,9 +171,9 @@ test('boxShadow is extracted to CSS correctly', async () => {
   expect(output?.styles).toContain('box-shadow')
 })
 
-// Tests for RN props that are NOT converted in v2
+// Tests for RN props that are NOT converted
 
-test('accessibilityLabel is NOT converted to aria-label in v2', async () => {
+test('accessibilityLabel is NOT converted to aria-label', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -193,7 +193,7 @@ test('accessibilityLabel is NOT converted to aria-label in v2', async () => {
   expect(output?.js).not.toContain('aria-label')
 })
 
-test('accessibilityRole is NOT converted to role in v2', async () => {
+test('accessibilityRole is NOT converted to role', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -213,7 +213,7 @@ test('accessibilityRole is NOT converted to role in v2', async () => {
   expect(output?.js).not.toContain('role":')
 })
 
-test('focusable is NOT converted to tabIndex in v2', async () => {
+test('focusable is NOT converted to tabIndex', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'

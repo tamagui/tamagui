@@ -81,7 +81,7 @@ const ButtonFrame = styled(ThemeableStack, {
   render: 'button',
   context: ButtonContext,
   role: 'button',
-  focusable: true,
+  tabIndex: 0,
 
   variants: {
     unstyled: {
@@ -297,9 +297,8 @@ function useButton<Props extends ButtonProps>(
   const props = {
     size,
     ...(propsIn.disabled && {
-      // in rnw - false still has keyboard tabIndex, undefined = not actually focusable
-      focusable: undefined,
-      // even with tabIndex unset, it will keep focusVisibleStyle on web so disable it here
+      tabIndex: -1,
+      // keep focusVisibleStyle disabled while the button is disabled
       focusVisibleStyle: {
         borderColor: '$background',
       },

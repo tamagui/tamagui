@@ -11,14 +11,7 @@ export const defaultStyles = {
   borderWidth: 1,
   outlineWidth: 0,
   color: '$color',
-
-  ...(isWeb
-    ? {
-        tabIndex: 0 as const,
-      }
-    : {
-        focusable: true,
-      }),
+  tabIndex: 0,
 
   borderColor: '$borderColor',
   backgroundColor: '$background',

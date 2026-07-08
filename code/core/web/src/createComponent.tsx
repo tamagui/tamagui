@@ -1499,7 +1499,6 @@ export function createComponent<
         delayLongPress: viewProps.delayLongPress,
         delayPressIn: viewProps.delayPressIn,
         delayPressOut: viewProps.delayPressOut,
-        focusable: viewProps.focusable ?? true,
         minPressDuration: 0,
       })
     }

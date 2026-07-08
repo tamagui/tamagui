@@ -2617,7 +2617,6 @@ type LooseCombinedObjects<A extends object, B extends object> = A | B | (A & B)
 // - accessibilityViewIsModal → aria-modal
 // - accessibilityLiveRegion → aria-live
 // - accessible → tabIndex={0}
-// - focusable → tabIndex
 // - nativeID → id
 
 export interface StackNonStyleProps

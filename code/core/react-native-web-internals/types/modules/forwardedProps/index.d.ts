@@ -63,7 +63,6 @@ export declare const accessibilityProps: {
     accessibilityValueNow: boolean;
     accessibilityValueText: boolean;
     dir: boolean;
-    focusable: boolean;
 };
 export declare const clickProps: {
     onClick: boolean;
@@ -162,7 +161,6 @@ export declare const forwardedProps: {
         accessibilityValueNow: boolean;
         accessibilityValueText: boolean;
         dir: boolean;
-        focusable: boolean;
     };
     clickProps: {
         onClick: boolean;
@@ -282,7 +280,6 @@ export declare const forwardPropsListText: {
     accessibilityValueNow: boolean;
     accessibilityValueText: boolean;
     dir: boolean;
-    focusable: boolean;
     children: boolean;
     dataSet: boolean;
     nativeID: boolean;
@@ -371,7 +368,6 @@ export declare const forwardPropsListView: {
     accessibilityValueNow: boolean;
     accessibilityValueText: boolean;
     dir: boolean;
-    focusable: boolean;
     children: boolean;
     dataSet: boolean;
     nativeID: boolean;

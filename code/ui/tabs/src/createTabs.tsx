@@ -136,7 +136,7 @@ export function createTabs<
         <RovingFocusGroup.Item
           __scopeRovingFocusGroup={__scopeTabs || TABS_CONTEXT}
           asChild
-          focusable={!disabled}
+          tabIndex={disabled ? -1 : 0}
           active={isSelected}
         >
           <TabFrame

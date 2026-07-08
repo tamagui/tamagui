@@ -1594,8 +1594,8 @@ export function createExtractor(
                     // attribute name. restricted to FAILED_EVAL because the
                     // later `case 'attr'` rename pass only runs on
                     // statically-evaluable values; for static values that pass
-                    // intentionally preserves some prop names (e.g. focusable
-                    // in v2) instead of doing the createDOMProps rename.
+                    // intentionally preserves some prop names instead of doing
+                    // the createDOMProps rename.
                     return {
                       type: 'attr',
                       value: t.jsxAttribute(t.jsxIdentifier(key), attr.value.value),

@@ -627,26 +627,6 @@ describe('getSplitStyles', () => {
 
   //   expect(fontSizeRule?.rules[0].includes('font-size:var(--f-size-1)')).toBeTruthy()
   // })
-
-  // test(`prop "tabIndex" defaults to "0", overrides to "-1" when tag = button`, () => {
-  //   expect(
-  //     getSplitStylesStack(
-  //       {
-  //         focusable: true,
-  //       },
-  //       'button'
-  //     )['tabIndex']
-  //   ).toEqual('0')
-
-  //   expect(
-  //     getSplitStylesStack(
-  //       {
-  //         tabIndex: '-1',
-  //       },
-  //       'button'
-  //     )['tabIndex']
-  //   ).toEqual('-1')
-  // })
 })
 
 describe('getSplitStyles - asChild default props skipping', () => {
