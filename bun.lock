@@ -372,16 +372,19 @@
         "@tamagui/create-theme": "workspace:*",
         "@tamagui/generate-themes": "workspace:*",
         "@tamagui/static": "workspace:*",
+        "@tamagui/to-tailwind": "workspace:*",
         "@tamagui/types": "workspace:*",
         "@tamagui/vite-plugin": "workspace:*",
         "arg": "^5.0.2",
         "chalk": "^4.1.2",
         "change-case": "^4.1.2",
         "chokidar": "^3.5.2",
+        "diff": "^9.0.0",
         "esbuild": "^0.27.2",
         "express": "^4.18.2",
         "fs-extra": "^11.2.0",
         "get-port": "^7.0.0",
+        "glob": "^13.0.3",
         "marked": "^14.1.2",
         "marked-terminal": "^5.2.0",
         "micromatch": "^4.0.7",
@@ -6380,6 +6383,8 @@
     "devtools-protocol": ["devtools-protocol@0.0.1581282", "", {}, "sha512-nv7iKtNZQshSW2hKzYNr46nM/Cfh5SEvE2oV0/SEGgc9XupIY5ggf84Cz8eJIkBce7S3bmTAauFD6aysMpnqsQ=="],
 
     "didyoumean": ["didyoumean@1.2.2", "", {}, "sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw=="],
+
+    "diff": ["diff@9.0.0", "", {}, "sha512-svtcdpS8CgJyqAjEQIXdb3OjhFVVYjzGAPO8WGCmRbrml64SPw/jJD4GoE98aR7r25A0XcgrK3F02yw9R/vhQw=="],
 
     "diff-sequences": ["diff-sequences@29.6.3", "", {}, "sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q=="],
 

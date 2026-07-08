@@ -227,6 +227,25 @@ const COMMAND_MAP = {
     },
   },
 
+  'to-tailwind': {
+    shorthands: [],
+    description: `Convert Tamagui JSX props in files or globs to Tailwind className syntax`,
+    flags: {
+      '--help': Boolean,
+      '--write': Boolean,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const { toTailwind } = require('./to-tailwind')
+      const [_cmd, ...patterns] = _
+
+      await toTailwind({
+        patterns,
+        write: flags['--write'],
+      })
+    },
+  },
+
   'update-template': {
     shorthands: ['ut'],
     description: `Used to update your git repo with the source template. (e.g. Takeout)`,

@@ -1,6 +1,6 @@
 import { parse } from '@babel/parser'
-import traverse from '@babel/traverse'
-import generate from '@babel/generator'
+import _traverse from '@babel/traverse'
+import _generate from '@babel/generator'
 import * as t from '@babel/types'
 import {
   propToTailwindPrefix,
@@ -8,6 +8,9 @@ import {
   componentToTag,
 } from './maps/propToClass'
 import { pseudoToModifier, mediaToModifier } from './maps/pseudoMap'
+
+const traverse = (_traverse as any).default ?? _traverse
+const generate = (_generate as any).default ?? _generate
 
 export interface TransformOptions {
   // rename View→div, Text→span, etc.
