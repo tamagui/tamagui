@@ -1437,7 +1437,11 @@ export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
 // media
 export type MediaQueryObject = { [key: string]: string | number | string }
 export type MediaQueryKey = keyof Media
-export type MediaPropKeys = `$${MediaQueryKey}`
+export type MediaPropKeys = MediaQueryKey extends string
+  ? string extends MediaQueryKey
+    ? never
+    : `$${MediaQueryKey}`
+  : never
 export type MediaQueryState = { [key in MediaQueryKey]: boolean }
 
 // guard against a loose `Themes` whose `keyof` collapses to `string` (e.g. a config
@@ -1453,7 +1457,7 @@ export type ThemeMediaKeys<TK extends keyof Themes = keyof Themes> = TK extends 
       : `$theme-${TK}`
   : never
 
-export type PlatformMediaKeys = `$platform-${AllPlatforms}`
+export type PlatformMediaKeys = `$${AllPlatforms}`
 
 export interface TypeOverride {
   groupNames(): 1
@@ -1486,18 +1490,20 @@ export type WithMediaProps<A> = {
         // TODO we can support $theme- inside media queries here if we change to ThemeMediaKeys | PlatformMediaKeys
         [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>
       }
-    : Key extends `$platform-web`
+    : Key extends `$web`
       ? AddWebOnlyStyleProps<A> & { [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A> }
       : A & { [Key in MediaPropKeys]?: A }
 }
 
-export type AddWebOnlyStyleProps<A> = Partial<CSSProperties> &
+export type AddWebOnlyStyleProps<A> = Partial<
+  Omit<CSSProperties, keyof WebOnlyValidStyleValues>
+> &
   Partial<WebOnlyValidStyleValues> & {
     [K in Exclude<keyof A, keyof CSSProperties>]?: A[K]
   }
 
 export type WebOnlyValidStyleValues = {
-  position: '-webkit-sticky'
+  position: CSSProperties['position'] | '-webkit-sticky'
 }
 
 export type MediaQueries = {

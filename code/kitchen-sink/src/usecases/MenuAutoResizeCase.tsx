@@ -13,7 +13,7 @@ export function MenuAutoResizeCase() {
   return (
     <YStack
       data-testid="container"
-      $platform-web={{
+      $web={{
         height: '100vh',
       }}
       justifyContent="center"

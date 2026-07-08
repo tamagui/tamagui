@@ -73,7 +73,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
             overflow="hidden"
             size="$3"
             textAlign="center"
-            $platform-web={{
+            $web={{
               textWrap: 'balance',
             }}
           >

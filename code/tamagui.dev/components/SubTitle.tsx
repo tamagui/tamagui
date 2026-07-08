@@ -40,7 +40,7 @@ export const SubTitle = ({ children, ...props }) => {
       render="p"
       pb="$3"
       mb="$3"
-      $platform-web={{
+      $web={{
         textWrap: 'balance',
       }}
       $gtSm={{

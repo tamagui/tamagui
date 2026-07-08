@@ -26,6 +26,7 @@ import {
   getMediaKey,
   getMediaKeyImportance,
   mediaKeyMatch,
+  platformMediaKeys,
 } from '../hooks/useMedia'
 import { mediaState as globalMediaState, mediaQueryConfig } from './mediaState'
 import type {
@@ -117,8 +118,6 @@ for (const styleKey in pseudoDescriptors) {
   }
 }
 
-const flatPlatforms = new Set(['web', 'native', 'ios', 'android'])
-
 interface FlatParsedProp {
   mediaKey?: string
   pseudoKey?: string
@@ -202,7 +201,7 @@ function parseFlatModifierProp(
     }
 
     // check platform
-    if (flatPlatforms.has(mod)) {
+    if (platformMediaKeys.has(`$${mod}`)) {
       result.platformKey = mod
       continue
     }
@@ -728,7 +727,7 @@ function preprocessFlatProps(
 
           // wrap with platform if present
           if (platformKey) {
-            styleObj = { [`$platform-${platformKey}`]: styleObj }
+            styleObj = { [`$${platformKey}`]: styleObj }
           }
 
           // determine outermost key or merge directly
@@ -740,7 +739,7 @@ function preprocessFlatProps(
               : styleObj
           } else if (platformKey && !themeKey) {
             // just platform, no media
-            const injectKey = `$platform-${platformKey}`
+            const injectKey = `$${platformKey}`
             result[injectKey] = result[injectKey]
               ? mergeDeep(result[injectKey], styleObj[injectKey])
               : styleObj[injectKey]
@@ -1124,7 +1123,7 @@ export const getSplitStyles: StyleSplitter = (
         }
       }
       // transition prop is skipped when it's a named animation (e.g. 'quick')
-      // but raw CSS values (from $platform-web) should pass through as style
+      // but raw CSS values (from $web) should pass through as style
       if (
         keyInit === 'transition' &&
         typeof valInit === 'string' &&
@@ -1585,7 +1584,7 @@ export const getSplitStyles: StyleSplitter = (
           for (const style of mediaStyles) {
             // handle nested media:
             // for now we're doing weird stuff, getCSSStylesAtomic will put the
-            // $platform-web into property so we can check it here
+            // $web into property so we can check it here
             const property = style[StyleObjectProperty]
             const isSubStyle = property[0] === '$'
             if (isSubStyle && !isActivePlatform(property)) {
@@ -1606,8 +1605,8 @@ export const getSplitStyles: StyleSplitter = (
             }
 
             // this is imperfect it should be fixed further down, we mess up property when dealing with
-            // media-sub-style, like $sm={{ $platform-web: {} }}
-            // property is just $platform-web, it should br $platform-web-bg, so we add extra info from style
+            // media-sub-style, like $sm={{ $web: {} }}
+            // property is just $web, it should br $web-bg, so we add extra info from style
             // but that info includes the value too
             const subKey = isSubStyle ? style[2] : ''
             const fullKey = `${
@@ -1791,8 +1790,8 @@ export const getSplitStyles: StyleSplitter = (
           } else if (isPlatformMedia) {
             // Platform styles use specificity-based importance bumps so that more
             // specific platform selectors reliably win over broader ones regardless
-            // of prop declaration order (e.g. $platform-tv always overrides
-            // $platform-native for the same property, even if tv is listed first).
+            // of prop declaration order (e.g. $tv always overrides
+            // $native for the same property, even if tv is listed first).
             importanceBump = getPlatformSpecificityBump(mediaKeyShort)
           }
 
@@ -1854,8 +1853,8 @@ export const getSplitStyles: StyleSplitter = (
               // they require both conditions to be true. Calculate an importance
               // that is the sum of both the outer and inner importances so that:
               //   1) nested always beats non-nested
-              //   2) $xs={{ $platform-android: ... }} and
-              //      $platform-android={{ $xs: ... }} produce identical importance
+              //   2) $xs={{ $android: ... }} and
+              //      $android={{ $xs: ... }} produce identical importance
               //      (last-declared wins for the same property)
               const isSizeMediaKey = !!mediaState[mediaKeyShort]
               const outerBase = isSizeMediaKey
@@ -2573,7 +2572,7 @@ function mergeMediaByImportance(
   if (importanceBump) {
     // With a specificity bump, the effective importance is always
     // defaultMediaImportance + bump. This lets higher-specificity styles
-    // (e.g. $platform-tv > $platform-native) override lower-specificity ones
+    // (e.g. $tv > $native) override lower-specificity ones
     // regardless of prop declaration order, even when getMediaImportanceIfMoreImportant
     // returns null (meaning the same base importance was already applied).
     //

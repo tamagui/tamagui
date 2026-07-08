@@ -1,4 +1,5 @@
 import type { ComponentContextI, DebugProp, GetStyleState, IsMediaType, TamaguiInternalConfig, UseMediaState, WidthHeight } from '../types';
+export declare const platformMediaKeys: Set<string>;
 export declare const isMediaKey: (key: string) => boolean;
 export declare const getMediaKey: (key: string) => IsMediaType;
 export declare const getMediaKeyImportance: (key: string) => number;

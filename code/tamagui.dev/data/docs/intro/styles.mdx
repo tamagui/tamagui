@@ -166,10 +166,10 @@ type ViewStyle = WithStates & {
   $theme-dark?: WithStates
 
   // add platform queries
-  $platform-native?: WithStates
-  $platform-ios?: WithStates
-  $platform-android?: WithStates
-  $platform-web?: WithStates
+  $native?: WithStates
+  $ios?: WithStates
+  $android?: WithStates
+  $web?: WithStates
 }
 
 // Text style starts with this base but builds up the same:
@@ -363,7 +363,7 @@ being one of: platform, screen size, theme, or group. All of these styles use
 the same pattern, they use a `$` prefix for their styles, and they nest styles
 as a sub-object.
 
-For example you can target `$theme-light`, `$platform-ios`, or `$group-header`.
+For example you can target `$theme-light`, `$ios`, or `$group-header`.
 For screen size, which we call media queries, they have no prefix. Instead you
 define media queries on `createTamagui`. For example, if you define a media
 query named `large`, then `$large` is the prop name.
@@ -413,7 +413,7 @@ Android).
 Use it like so:
 
 ```tsx
-<Text $platform-ios={{ color: 'white' }} />
+<Text $ios={{ color: 'white' }} />
 ```
 
 ### Group

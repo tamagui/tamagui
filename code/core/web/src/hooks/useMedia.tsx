@@ -22,11 +22,22 @@ import type {
 } from '../types'
 import { defaultMediaImportance } from '../helpers/pseudoDescriptors'
 
-const mediaKeyRegex = /\$(platform|theme|group)-/
+export const platformMediaKeys = new Set([
+  '$web',
+  '$native',
+  '$android',
+  '$ios',
+  '$tv',
+  '$androidtv',
+  '$tvos',
+])
+
+const mediaKeyRegex = /\$(theme|group)-/
 
 export const isMediaKey = (key: string): boolean => {
   if (key[0] !== '$') return false
   if (mediaKeys.has(key)) return true
+  if (platformMediaKeys.has(key)) return true
   if (mediaKeyRegex.test(key)) return true
   return false
 }
@@ -34,8 +45,9 @@ export const isMediaKey = (key: string): boolean => {
 export const getMediaKey = (key: string): IsMediaType => {
   if (key[0] !== '$') return false
   if (mediaKeys.has(key)) return true
+  if (platformMediaKeys.has(key)) return 'platform'
   const match = key.match(mediaKeyRegex)
-  if (match) return match[1] as 'platform' | 'theme' | 'group'
+  if (match) return match[1] as 'theme' | 'group'
   return false
 }
 

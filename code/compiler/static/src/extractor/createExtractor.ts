@@ -62,6 +62,15 @@ const UNTOUCHED_PROPS = {
 // Defined at module level (not inside the loop) to avoid repeated Set allocations during compilation.
 // (requires runtime Platform.OS + Platform.isTV checks via react-native-tvos)
 const nativeOnlyPlatforms = new Set(['android', 'ios', 'tv', 'androidtv', 'tvos'])
+const platformMediaKeys = new Set([
+  'web',
+  'native',
+  'android',
+  'ios',
+  'tv',
+  'androidtv',
+  'tvos',
+])
 
 const createTernary = (x: Ternary) => x
 
@@ -382,12 +391,12 @@ export function createExtractor(
       if (platform === 'native' && name[0] === '$' && mediaQueryConfig[name.slice(1)]) {
         return false
       }
-      // Check for $theme-, $platform-, $group- prefixed keys
+      // check for $theme-, platform, $group- prefixed keys
       if (name[0] === '$') {
         const mediaName = name.slice(1)
         if (
           mediaName.startsWith('theme-') ||
-          mediaName.startsWith('platform-') ||
+          platformMediaKeys.has(mediaName) ||
           mediaName.startsWith('group-')
         ) {
           return true
@@ -1633,7 +1642,7 @@ export function createExtractor(
                 // $group-<name>-* when an ancestor element declares `group="<name>"`
                 // together with `untilMeasured` — the runtime measures the parent
                 // and only then emits child styles, which can't be modeled in CSS.
-                // $platform- can be flattened if the platform matches.
+                // platform keys can be flattened if the platform matches.
                 if (name[0] === '$') {
                   if (name.startsWith('$group-')) {
                     const groupName = name.slice('$group-'.length).split('-')[0]
@@ -1648,9 +1657,9 @@ export function createExtractor(
                     }
                   }
 
-                  // $platform-web, $platform-native, $platform-ios, $platform-android, $platform-tv, $platform-androidtv, $platform-tvos
-                  if (name.startsWith('$platform-')) {
-                    const platformName = name.slice(10) // remove '$platform-'
+                  // $web, $native, $ios, $android, $tv, $androidtv, $tvos
+                  const platformName = name.slice(1)
+                  if (platformMediaKeys.has(platformName)) {
                     const isMatchingPlatform =
                       platformName === platform ||
                       (platformName === 'native' && platform === 'native') ||
@@ -1660,7 +1669,7 @@ export function createExtractor(
                       // Flatten the inner styles directly
                       if (shouldPrintDebug) {
                         logger.info(
-                          `  flattening $platform-${platformName}: ${JSON.stringify(styleValue)}`
+                          `  flattening $${platformName}: ${JSON.stringify(styleValue)}`
                         )
                       }
                       return Object.entries(styleValue).map(([key, val]) => ({
@@ -2617,11 +2626,11 @@ export function createExtractor(
               const key = keys[0]
               const value = cur.value[key]
 
-              // Check if this is a media-like key ($theme-, $platform-, $group-, or $mediaQuery)
+              // check if this is a media-like key ($theme-, platform, $group-, or $mediaQuery)
               const isMediaLikeKey =
                 key[0] === '$' &&
                 (key.startsWith('$theme-') ||
-                  key.startsWith('$platform-') ||
+                  platformMediaKeys.has(key.slice(1)) ||
                   key.startsWith('$group-') ||
                   mediaQueryConfig[key.slice(1)])
 

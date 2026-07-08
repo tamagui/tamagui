@@ -9,7 +9,7 @@ import { Button, H2, Paragraph, Sheet, YStack } from 'tamagui'
 export function SheetScrollLockCase() {
   return (
     <YStack
-      $platform-web={{
+      $web={{
         minHeight: '200vh',
       }}
       padding="$4"

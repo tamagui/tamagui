@@ -35,7 +35,7 @@ export const TooltipLabelLarge = ({
       <Paragraph
         $gtXs={{ text: 'center' }}
         fontFamily="$mono"
-        $platform-web={{
+        $web={{
           textWrap: 'balance',
         }}
         color="$color8"

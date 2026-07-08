@@ -383,7 +383,7 @@ const ToastImpl = createRefComponent<TamaguiElement, ToastImplProps>(
                       data-state={open ? 'open' : 'closed'}
                       data-swipe-direction={context.swipeDirection}
                       pointerEvents="auto"
-                      $platform-web={{
+                      $web={{
                         touchAction: 'none',
                         userSelect: 'none',
                       }}

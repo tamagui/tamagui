@@ -545,7 +545,7 @@ test('$theme- styles extract to atomic CSS', async () => {
   expect(output?.styles).toContain('t_dark')
 })
 
-test('$platform-web styles are flattened on web', async () => {
+test('$web styles are flattened on web', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -554,21 +554,21 @@ test('$platform-web styles are flattened on web', async () => {
       return (
         <View
           width={100}
-          $platform-web={{ backgroundColor: 'red' }}
+          $web={{ backgroundColor: 'red' }}
         />
       )
     }
   `
   )
 
-  // $platform-web styles SHOULD be flattened on web - the platform is known at compile time
+  // $web styles SHOULD be flattened on web - the platform is known at compile time
   // The component should be converted to a plain div with the styles applied
   expect(output?.js).toContain('div')
-  expect(output?.js).not.toContain('$platform-web')
+  expect(output?.js).not.toContain('$web')
   expect(output?.styles).toContain('background-color')
 })
 
-test('$platform-web transition property is preserved', async () => {
+test('$web transition property is preserved', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -577,7 +577,7 @@ test('$platform-web transition property is preserved', async () => {
       return (
         <View
           width={100}
-          $platform-web={{
+          $web={{
             transition: 'clip-path 400ms ease, transform 400ms ease',
             clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
           }}
@@ -587,7 +587,7 @@ test('$platform-web transition property is preserved', async () => {
   `
   )
 
-  // transition inside $platform-web should be preserved as a CSS property
+  // transition inside $web should be preserved as a CSS property
   expect(output?.styles).toContain('transition')
   expect(output?.styles).toContain('clip-path')
 })

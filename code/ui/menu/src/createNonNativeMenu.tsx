@@ -571,7 +571,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
     showsHorizontalScrollIndicator: false,
     showsVerticalScrollIndicator: false,
 
-    '$platform-web': {
+    '$web': {
       maxHeight: 'var(--tamagui-menu-content-available-height)',
     },
   })
