@@ -104,7 +104,7 @@ export type {
   StackNonStyleProps,
   ViewProps,
   StaticConfig,
-  Styleable,
+  StyledHOCFactory,
   TamaguiBaseTheme,
   TamaguiBuildOptions,
   TamaguiComponent,

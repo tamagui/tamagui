@@ -1,4 +1,5 @@
 import {
+  createStyledHOC,
   composeEventHandlers,
   getVariableValue,
   isWeb,
@@ -49,7 +50,7 @@ export function createSwitch<
   Frame.staticConfig.context = SwitchStyledContext
   Thumb.staticConfig.context = SwitchStyledContext
 
-  const SwitchThumbComponent = Thumb.styleable<SwitchThumbProps>(
+  const SwitchThumbComponent = createStyledHOC(Thumb)<SwitchThumbProps>(
     function SwitchThumb(props, forwardedRef) {
       const { size: sizeProp, unstyled: unstyledProp, activeStyle, ...thumbProps } = props
       const styledContext = SwitchStyledContext.useStyledContext()
@@ -94,7 +95,7 @@ export function createSwitch<
     }
   )
 
-  const SwitchComponent = Frame.styleable<SwitchProps>(
+  const SwitchComponent = createStyledHOC(Frame)<SwitchProps>(
     function SwitchFrame(_props, forwardedRef) {
       const {
         native,

@@ -9,6 +9,7 @@ import type {
   TamaguiElement,
 } from '@tamagui/core'
 import {
+  createStyledHOC,
   createRefComponent,
   getTokens,
   getVariableValue,
@@ -471,7 +472,7 @@ export interface SliderThumbExtraProps {
 
 export interface SliderThumbProps extends SizableStackProps, SliderThumbExtraProps {}
 
-const SliderThumb = SliderThumbFrame.styleable<SliderThumbExtraProps>(
+const SliderThumb = createStyledHOC(SliderThumbFrame)<SliderThumbExtraProps>(
   function SliderThumb(props: ScopedProps<SliderThumbProps>, forwardedRef) {
     const { __scopeSlider, index = 0, circular, size: sizeProp, ...thumbProps } = props
     const context = useSliderContext(__scopeSlider)

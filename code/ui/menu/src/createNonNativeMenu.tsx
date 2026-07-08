@@ -1,4 +1,4 @@
-import { createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import type * as BaseMenuTypes from '@tamagui/create-menu'
 import {
   type MenuArrowProps as BaseMenuArrowProps,
@@ -282,7 +282,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const MenuTriggerFrame = Menu.Anchor
 
-  const MenuTrigger = View.styleable<ScopedProps<MenuTriggerProps>>(
+  const MenuTrigger = createStyledHOC(View)<ScopedProps<MenuTriggerProps>>(
     (props, forwardedRef) => {
       const {
         scope,
@@ -578,7 +578,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   /* -----------------------------------------------------------------------------------------------*/
 
-  // direct pass-through from base menu (preserves styleable)
+  // direct pass-through from base menu preserves the wrapped styled components
   const Group = Menu.Group
   const Label = Menu.Label
   const Item = Menu.Item

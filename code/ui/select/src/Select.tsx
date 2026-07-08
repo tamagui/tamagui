@@ -3,6 +3,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { FontSizeTokens, GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
 import {
+  createStyledHOC,
   createRefComponent,
   createStyledContext,
   getVariableValue,
@@ -54,7 +55,7 @@ export type SelectValueExtraProps = SelectScopedProps<{
 
 export type SelectValueProps = GetProps<typeof SelectValueFrame> & SelectValueExtraProps
 
-const SelectValue = SelectValueFrame.styleable<SelectValueExtraProps>(
+const SelectValue = createStyledHOC(SelectValueFrame)<SelectValueExtraProps>(
   function SelectValue(
     { scope, children: childrenProp, placeholder, ...props },
     forwardedRef
@@ -176,7 +177,7 @@ const SelectIndicatorFrame = styled(YStack, {
 
 export type SelectIndicatorProps = GetProps<typeof SelectIndicatorFrame>
 
-const SelectIndicator = SelectIndicatorFrame.styleable<
+const SelectIndicator = createStyledHOC(SelectIndicatorFrame)<
   SelectScopedProps<SelectIndicatorProps>
 >(function SelectIndicator({ scope, ...props }, forwardedRef) {
   const itemContext = useSelectItemParentContext(scope)
@@ -386,7 +387,7 @@ const SelectLabelFrame = styled(SizableText, {
 
 export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFrame>>
 
-const SelectLabel = SelectLabelFrame.styleable<{ scope?: any }>(
+const SelectLabel = createStyledHOC(SelectLabelFrame)<{ scope?: any }>(
   (props: SelectLabelProps, forwardedRef) => {
     const { scope, ...labelProps } = props
     const context = useSelectItemParentContext(scope)

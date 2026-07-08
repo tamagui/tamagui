@@ -5,6 +5,7 @@ import type {
 import { isIndeterminate, useCheckbox } from '@tamagui/checkbox-headless'
 import type { GetProps, NativeValue, SizeTokens, ViewProps } from '@tamagui/core'
 import {
+  createStyledHOC,
   getVariableValue,
   isWeb,
   shouldRenderNativePlatform,
@@ -54,11 +55,9 @@ export type CheckboxProps = CheckboxBaseProps &
 
 type CheckboxComponent = React.ComponentType<any> & {
   context?: any
-  styleable: DefaultCheckboxFrame['styleable']
 }
 type CheckboxIndicatorComponent = React.ComponentType<any> & {
   context?: any
-  styleable: DefaultIndicatorFrame['styleable']
 }
 
 type CheckboxIndicatorBaseProps = ViewProps
@@ -105,7 +104,7 @@ export function createCheckbox<
   ensureContext(Frame)
   ensureContext(Indicator)
 
-  const FrameComponent = Frame.styleable<CheckboxProps>(
+  const FrameComponent = createStyledHOC(Frame)<CheckboxProps>(
     function Checkbox(_props, forwardedRef) {
       const {
         scaleSize = 0.45,
@@ -231,7 +230,7 @@ export function createCheckbox<
     }
   )
 
-  const IndicatorComponent = Indicator.styleable<CheckboxIndicatorProps>(
+  const IndicatorComponent = createStyledHOC(Indicator)<CheckboxIndicatorProps>(
     (props, forwardedRef) => {
       const {
         children: childrenProp,

@@ -7,7 +7,7 @@ import type {
   TamaguiComponentExpectingVariants,
   TamaguiElement,
 } from '@tamagui/core'
-import { View, createRefComponent } from '@tamagui/core'
+import { createStyledHOC, View, createRefComponent } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { resolveViewZIndex } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
@@ -40,7 +40,7 @@ export function createSheet<
   F extends TamaguiComponent | SheetStyledComponent,
   O extends TamaguiComponent | SheetStyledComponent,
 >({ Handle, Frame, Overlay }: { Handle: H; Frame: F; Overlay: O }) {
-  const SheetHandle = Handle.styleable<any>(
+  const SheetHandle = createStyledHOC(Handle)<any>(
     (
       { __scopeSheet, ...props }: SheetScopedProps<SheetStyledComponent>,
       forwardedRef
@@ -96,7 +96,7 @@ export function createSheet<
    * SheetOverlay
    * -----------------------------------------------------------------------------------------------*/
 
-  const SheetOverlay = Overlay.styleable<SheetScopedProps<{}>>((propsIn, ref) => {
+  const SheetOverlay = createStyledHOC(Overlay)<SheetScopedProps<{}>>((propsIn, ref) => {
     const { __scopeSheet, ...props } = propsIn
     const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
 
@@ -152,7 +152,7 @@ export function createSheet<
     adjustPaddingForOffscreenContent?: boolean
   }
 
-  const SheetFrame = Frame.styleable<SheetProps & ExtraFrameProps>(
+  const SheetFrame = createStyledHOC(Frame)<SheetProps & ExtraFrameProps>(
     (
       {
         __scopeSheet,

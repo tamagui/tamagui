@@ -6,7 +6,7 @@ import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { SizableText } from '@tamagui/text'
 import type { FontSizeTokens, GetProps } from '@tamagui/web'
-import { styled } from '@tamagui/web'
+import { createStyledHOC, styled } from '@tamagui/web'
 import * as React from 'react'
 
 const NAME = 'Label'
@@ -63,7 +63,7 @@ export type LabelProps = GetProps<typeof LabelFrame> & {
   htmlFor?: string
 }
 
-export const Label = LabelFrame.styleable(function Label(props, forwardedRef) {
+export const Label = createStyledHOC(LabelFrame)(function Label(props, forwardedRef) {
   const { htmlFor, id: idProp, ...labelProps } = props
   const controlRef = React.useRef<HTMLElement | null>(null)
   const ref = React.useRef<any>(null)

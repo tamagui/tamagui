@@ -2684,12 +2684,12 @@ export interface ThemeableProps {
   debug?: DebugProp
 }
 
-export type StyleableOptions = {
+export type StyledHOCOptions = {
   disableTheme?: boolean
   staticConfig?: Partial<StaticConfig>
 }
 
-export type Styleable<
+export type StyledHOCFactory<
   Props,
   Ref,
   NonStyledProps,
@@ -2707,7 +2707,7 @@ export type Styleable<
   ) => ReactNode,
 >(
   a: FunctionDef,
-  options?: StyleableOptions
+  options?: StyledHOCOptions
 ) => TamaguiComponent<
   MergedProps,
   Ref,
@@ -2747,7 +2747,7 @@ export type TamaguiComponent<
     Variants,
     ParentStaticProperties
   > &
-  Omit<ParentStaticProperties, 'staticConfig' | 'styleable'> & {
+  Omit<ParentStaticProperties, 'staticConfig'> & {
     __tama: [Props, Ref, NonStyledProps, BaseStyles, Variants, ParentStaticProperties]
   }
 
@@ -2834,20 +2834,6 @@ export type StaticComponentObject<
   ParentStaticProperties,
 > = {
   staticConfig: StaticConfig
-
-  /*
-   * If you want your HOC of a styled() component to also be able to be styled(), you need this to wrap it.
-   */
-  styleable: Styleable<
-    Props extends TamaDefer
-      ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps>
-      : Props,
-    Ref,
-    NonStyledProps,
-    BaseStyles,
-    VariantProps,
-    ParentStaticProperties
-  >
 }
 
 export type TamaguiComponentExpectingVariants<
@@ -3004,7 +2990,7 @@ type StaticConfigBase = StaticConfigPublic & {
    */
   isHOC?: boolean
 
-  // insanity, for styled(styled(styleable(styled())))
+  // Tracks when styled() wraps a HOC that already wraps styled().
   isStyledHOC?: boolean
 }
 

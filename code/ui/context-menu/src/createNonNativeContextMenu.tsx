@@ -3,6 +3,7 @@ import type BaseMenuTypes from '@tamagui/create-menu'
 import { createBaseMenu, type CreateBaseMenuProps } from '@tamagui/create-menu'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
+  createStyledHOC,
   composeEventHandlers,
   composeRefs,
   createStyledContext,
@@ -153,7 +154,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const TRIGGER_NAME = 'ContextMenuTrigger'
 
-  const ContextMenuTrigger = View.styleable<ScopedProps<ContextMenuTriggerProps>>(
+  const ContextMenuTrigger = createStyledHOC(View)<ScopedProps<ContextMenuTriggerProps>>(
     (props, forwardedRef) => {
       const { scope, style, disabled = false, asChild, children, ...triggerProps } = props
       const context = useContextMenuContext(scope)
@@ -457,7 +458,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const INDICATOR_NAME = 'ContextMenuItemIndicator'
 
-  const ContextMenuItemIndicator = Menu.ItemIndicator.styleable<
+  const ContextMenuItemIndicator = createStyledHOC(Menu.ItemIndicator)<
     ScopedProps<ContextMenuItemIndicatorProps>
   >((props, forwardedRef) => {
     const { scope, ...itemIndicatorProps } = props
@@ -507,19 +508,19 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const SUB_TRIGGER_NAME = 'ContextMenuSubTrigger'
 
-  const ContextMenuSubTrigger = View.styleable<ScopedProps<ContextMenuSubTriggerProps>>(
-    (props, forwardedRef) => {
-      const { scope, ...subTriggerProps } = props
-      return (
-        <Menu.SubTrigger
-          componentName={SUB_TRIGGER_NAME}
-          scope={scope || CONTEXTMENU_CONTEXT}
-          {...subTriggerProps}
-          ref={forwardedRef}
-        />
-      )
-    }
-  )
+  const ContextMenuSubTrigger = createStyledHOC(View)<
+    ScopedProps<ContextMenuSubTriggerProps>
+  >((props, forwardedRef) => {
+    const { scope, ...subTriggerProps } = props
+    return (
+      <Menu.SubTrigger
+        componentName={SUB_TRIGGER_NAME}
+        scope={scope || CONTEXTMENU_CONTEXT}
+        {...subTriggerProps}
+        ref={forwardedRef}
+      />
+    )
+  })
 
   ContextMenuSubTrigger.displayName = SUB_TRIGGER_NAME
 

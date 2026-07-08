@@ -6,7 +6,13 @@ import { ButtonNestingContext, ThemeableStack } from '@tamagui/stacks'
 import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tamagui/web'
-import { createStyledContext, getVariableValue, styled, useProps } from '@tamagui/web'
+import {
+  createStyledHOC,
+  createStyledContext,
+  getVariableValue,
+  styled,
+  useProps,
+} from '@tamagui/web'
 import type { FunctionComponent, JSX } from 'react'
 import { useContext } from 'react'
 import { spacedChildren } from '@tamagui/spacer'
@@ -187,7 +193,7 @@ const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) =>
   return getThemedIcon(children)
 }
 
-const ButtonComponent = ButtonFrame.styleable<ButtonExtraProps>(
+const ButtonComponent = createStyledHOC(ButtonFrame)<ButtonExtraProps>(
   function Button(props, ref) {
     // @ts-ignore
     const { props: buttonProps } = useButton(props)
