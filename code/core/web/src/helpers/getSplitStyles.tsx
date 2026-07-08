@@ -925,7 +925,6 @@ export const getSplitStyles: StyleSplitter = (
     variants,
     isReactNative,
     inlineProps,
-    inlineWhenUnflattened,
     parentStaticConfig,
     acceptsClassName,
   } = staticConfig
@@ -1395,10 +1394,7 @@ export const getSplitStyles: StyleSplitter = (
         return
       }
 
-      if (
-        inlineProps?.has(key) ||
-        (process.env.IS_STATIC === 'is_static' && inlineWhenUnflattened?.has(key))
-      ) {
+      if (inlineProps?.has(key)) {
         viewProps[key] = props[key] ?? val
       }
 

@@ -20,6 +20,10 @@ beforeAll(() => {
 })
 
 describe('getSplitStyles', () => {
+  test('Text does not register inlineWhenUnflattened', () => {
+    expect((Text as any).staticConfig.inlineWhenUnflattened).toBeUndefined()
+  })
+
   test(`styled with variants`, () => {
     const ViewVariants = styled(Text, {
       color: 'blue',

@@ -1658,11 +1658,6 @@ export type StaticConfigPublic = {
      */
     inlineProps?: Set<string>;
     /**
-     * (compiler) If not flattening, leave this prop as original value.
-     * Only applies to style attributes
-     */
-    inlineWhenUnflattened?: Set<string>;
-    /**
      * Auto-detected, but can override. Wraps children to space them on top
      */
     isZStack?: boolean;
