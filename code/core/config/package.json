@@ -124,6 +124,7 @@
     "@tamagui/animations-reanimated": "workspace:*",
     "@tamagui/colors": "workspace:*",
     "@tamagui/core": "workspace:*",
+    "@tamagui/create-system-font": "workspace:*",
     "@tamagui/font-inter": "workspace:*",
     "@tamagui/font-silkscreen": "workspace:*",
     "@tamagui/react-native-media-driver": "workspace:*",

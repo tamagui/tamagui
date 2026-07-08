@@ -127,6 +127,9 @@
       "path": "code/core/create-context"
     },
     {
+      "path": "code/core/create-system-font"
+    },
+    {
       "path": "code/core/create-theme"
     },
     {

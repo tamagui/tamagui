@@ -79,7 +79,8 @@ function wrapLines(ast: any[], linesToHighlight: number[]) {
       properties: {
         dataLine: line,
         className: 'highlight-line',
-        dataHighlighted: linesToHighlight.includes(line) || highlightAll ? 'true' : 'false',
+        dataHighlighted:
+          linesToHighlight.includes(line) || highlightAll ? 'true' : 'false',
       },
       children,
       lineNumber: line,
@@ -95,7 +96,9 @@ function applyMultilineFix(ast: any) {
   html = html.replace(MULTILINE_TOKEN_SPAN, (match, token) =>
     match.replace(/\n/g, `</span>\n<span class="token ${token}">`)
   )
-  const hast = unified().use(rehypeParse, { emitParseErrors: true, fragment: true }).parse(html)
+  const hast = unified()
+    .use(rehypeParse, { emitParseErrors: true, fragment: true })
+    .parse(html)
   return (hast as any).children
 }
 
@@ -111,8 +114,13 @@ const CALLOUT = /__(.*?)__/g
 
 function rehypeHighlightWord(code: any) {
   const html = toHtml(code)
-  const result = html.replace(CALLOUT, (_, text) => `<span class="highlight-word">${text}</span>`)
-  const hast = unified().use(rehypeParse, { emitParseErrors: true, fragment: true }).parse(result)
+  const result = html.replace(
+    CALLOUT,
+    (_, text) => `<span class="highlight-word">${text}</span>`
+  )
+  const hast = unified()
+    .use(rehypeParse, { emitParseErrors: true, fragment: true })
+    .parse(result)
   return (hast as any).children
 }
 
@@ -125,7 +133,7 @@ export const highlightPlugin = {
   element: {
     filter: ['code'],
     visit(node: any, ctx: any) {
-      const props: any = { ...(node.properties || {}) }
+      const props: any = { ...node.properties }
 
       // meta attribute: surface fence meta as props for <DocCodeBlock>
       const meta: string = node.data?.meta || ''
