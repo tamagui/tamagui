@@ -2,7 +2,7 @@ import '@tamagui/polyfill-dev';
 import { type Delay } from '@tamagui/floating';
 import type { SizeTokens, TamaguiElement } from '@tamagui/core';
 import type { PopoverAnchorProps, PopoverContentProps, PopoverTriggerProps } from '@tamagui/popover';
-import type { PopperProps } from '@tamagui/popper';
+import type { PopperArrowProps, PopperProps } from '@tamagui/popper';
 import * as React from 'react';
 export type TooltipScopes = string;
 type ScopedProps<P> = Omit<P, 'scope'> & {
@@ -38,7 +38,7 @@ export declare const TooltipGroup: ({ children, delay, preventAnimation, timeout
     timeoutMs?: number;
 }) => import("react/jsx-runtime").JSX.Element;
 export declare const closeOpenTooltips: () => void;
-export declare const Tooltip: React.ForwardRefExoticComponent<Omit<PopperProps & {
+export declare const Tooltip: ((props: Omit<PopperProps & {
     open?: boolean;
     unstyled?: boolean;
     children?: React.ReactNode;
@@ -61,14 +61,12 @@ export declare const Tooltip: React.ForwardRefExoticComponent<Omit<PopperProps &
     zIndex?: number;
 }, "scope"> & {
     scope?: TooltipScopes;
-} & React.RefAttributes<unknown>> & {
-    Anchor: React.ForwardRefExoticComponent<Omit<PopoverAnchorProps, "scope"> & {
-        scope?: TooltipScopes;
-    } & React.RefAttributes<unknown>>;
-    Arrow: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, keyof import("@tamagui/stacks").StackVariants> & import("@tamagui/stacks").StackVariants & import("@tamagui/popper").PopperArrowExtraProps & React.RefAttributes<TamaguiElement>>;
+} & import("@tamagui/core").RefProp<unknown>) => React.ReactNode) & {
+    displayName?: string;
+    propTypes?: any;
+} & {
+    Anchor: import("@tamagui/core").RefComponent<unknown, ScopedProps<PopoverAnchorProps>>;
+    Arrow: import("@tamagui/core").RefComponent<TamaguiElement, PopperArrowProps>;
     Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: SizeTokens | undefined;
         unstyled?: boolean | undefined;
@@ -84,9 +82,7 @@ export declare const Tooltip: React.ForwardRefExoticComponent<Omit<PopperProps &
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Trigger: React.ForwardRefExoticComponent<Omit<PopoverTriggerProps, "scope"> & {
-        scope?: TooltipScopes;
-    } & React.RefAttributes<unknown>>;
+    Trigger: import("@tamagui/core").RefComponent<unknown, ScopedProps<PopoverTriggerProps>>;
 };
 export {};
 //# sourceMappingURL=Tooltip.d.ts.map

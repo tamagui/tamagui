@@ -1,5 +1,5 @@
 import type { GetProps, ViewProps, TamaguiComponent, TamaguiComponentExpectingVariants } from '@tamagui/core';
-import type { ForwardRefExoticComponent, FunctionComponent, RefAttributes } from 'react';
+import type { FunctionComponent, ReactNode, Ref } from 'react';
 import type { View as RNView } from 'react-native';
 import type { SheetProps, SheetScopedProps } from './types';
 type SharedSheetProps = {
@@ -11,7 +11,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     Handle: H;
     Frame: F;
     Overlay: O;
-}): ForwardRefExoticComponent<{
+}): ((props: {
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: import("react").Dispatch<import("react").SetStateAction<boolean>> | ((open: boolean) => void);
@@ -20,7 +20,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     snapPoints?: (string | number)[];
     snapPointsMode?: import("./types").SnapPointsMode;
     onPositionChange?: import("./types").PositionChangeHandler;
-    children?: import("react").ReactNode;
+    children?: ReactNode;
     dismissOnOverlayPress?: boolean;
     dismissOnSnapToBottom?: boolean;
     disableRemoveScroll?: boolean;
@@ -42,9 +42,14 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     }) => void;
 } & {
     __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-} & RefAttributes<RNView>> & {
-    Controlled: FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & RefAttributes<RNView>> & {
-        Frame: ForwardRefExoticComponent<SheetScopedProps<Omit<GetProps<F>, keyof {
+} & import("@tamagui/compose-refs").RefProp<RNView>) => ReactNode) & {
+    displayName?: string;
+    propTypes?: any;
+} & {
+    Controlled: FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & {
+        ref?: Ref<RNView>;
+    }> & {
+        Frame: (props: SheetScopedProps<Omit<GetProps<typeof Frame>, keyof {
             /**
              * by default the sheet adds a view below its bottom that extends past the
              * largest visible viewport height. this covers spring overshoot when opening
@@ -70,7 +75,9 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
              * turned on, the inner content is always set to the max height of the sheet.
              */
             adjustPaddingForOffscreenContent?: boolean;
-        }>>;
+        } & {
+            ref?: Ref<RNView>;
+        }>) => ReactNode;
         Overlay: TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
             __scopeSheet?: import("@tamagui/create-context").Scope<any>;
         }, any, any, any, SharedSheetProps, {}> | TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
@@ -79,35 +86,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
             __scopeSheet?: import("@tamagui/create-context").Scope<any>;
         }, {}, {}, {}>;
         Handle: TamaguiComponent<any, any, any, any, SharedSheetProps, {}> | TamaguiComponent<any, any, any, {}, {}, {}>;
-        ScrollView: ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-                accept: {
-                    readonly contentContainerStyle: "style";
-                };
-            }>> | undefined;
-        }> & {
-            fullscreen?: boolean | undefined;
-        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-                accept: {
-                    readonly contentContainerStyle: "style";
-                };
-            }>> | undefined;
-        }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-                accept: {
-                    readonly contentContainerStyle: "style";
-                };
-            }>> | undefined;
-        }> & {
-            fullscreen?: boolean | undefined;
-        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-            readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-                accept: {
-                    readonly contentContainerStyle: "style";
-                };
-            }>> | undefined;
-        }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
+        ScrollView: import("@tamagui/compose-refs").RefComponent<import("react-native").ScrollView, import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
                 accept: {
                     readonly contentContainerStyle: "style";
@@ -115,9 +94,9 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
             }>> | undefined;
         }, {
             fullscreen?: boolean | undefined;
-        }>> & RefAttributes<import("react-native").ScrollView>>;
+        }>>;
     };
-    Frame: ForwardRefExoticComponent<SheetScopedProps<Omit<GetProps<F>, keyof {
+    Frame: (props: SheetScopedProps<Omit<GetProps<typeof Frame>, keyof {
         /**
          * by default the sheet adds a view below its bottom that extends past the
          * largest visible viewport height. this covers spring overshoot when opening
@@ -143,7 +122,9 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
          * turned on, the inner content is always set to the max height of the sheet.
          */
         adjustPaddingForOffscreenContent?: boolean;
-    }>>;
+    } & {
+        ref?: Ref<RNView>;
+    }>) => ReactNode;
     Overlay: TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
         __scopeSheet?: import("@tamagui/create-context").Scope<any>;
     }, any, any, any, SharedSheetProps, {}> | TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
@@ -152,35 +133,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
         __scopeSheet?: import("@tamagui/create-context").Scope<any>;
     }, {}, {}, {}>;
     Handle: TamaguiComponent<any, any, any, any, SharedSheetProps, {}> | TamaguiComponent<any, any, any, {}, {}, {}>;
-    ScrollView: ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }> & {
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }> & {
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
+    ScrollView: import("@tamagui/compose-refs").RefComponent<import("react-native").ScrollView, import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
             accept: {
                 readonly contentContainerStyle: "style";
@@ -188,7 +141,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
         }>> | undefined;
     }, {
         fullscreen?: boolean | undefined;
-    }>> & RefAttributes<import("react-native").ScrollView>>;
+    }>>;
 };
 export {};
 //# sourceMappingURL=createSheet.d.ts.map

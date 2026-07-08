@@ -9,6 +9,7 @@ import {
   useDidFinishSSR,
   useEvent,
   useThemeName,
+  createRefComponent,
 } from '@tamagui/core'
 import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import React, { useState } from 'react'
@@ -72,7 +73,7 @@ function getStableViewportHeight(): number {
   return Dimensions.get(relativeDimensionTo).height
 }
 
-export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
+export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
   function SheetImplementationCustom(props, forwardedRef) {
     const parentSheet = React.useContext(ParentSheetContext)
 

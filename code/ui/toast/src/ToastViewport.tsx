@@ -1,7 +1,8 @@
+import { createRefComponent } from '@tamagui/core'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import type { GetProps, TamaguiElement } from '@tamagui/core'
+import type { GetProps, GetRef, TamaguiElement } from '@tamagui/core'
 import { styled } from '@tamagui/core'
 import { PortalHost } from '@tamagui/portal'
 import { YStack } from '@tamagui/stacks'
@@ -87,7 +88,7 @@ type ToastViewportProps = ToastViewportFrameProps & {
 }
 
 const ToastViewport = React.memo(
-  React.forwardRef<HTMLDivElement, ToastViewportProps>(
+  createRefComponent<HTMLDivElement, ToastViewportProps>(
     (props: ScopedProps<ToastViewportProps>, forwardedRef) => {
       const {
         scope,
@@ -342,7 +343,7 @@ ToastViewport.displayName = VIEWPORT_NAME
 
 const FOCUS_PROXY_NAME = 'ToastFocusProxy'
 
-type FocusProxyElement = React.ElementRef<typeof VisuallyHidden>
+type FocusProxyElement = GetRef<typeof VisuallyHidden>
 
 type VisuallyHiddenProps = GetProps<typeof VisuallyHidden>
 
@@ -352,7 +353,7 @@ interface FocusProxyProps extends VisuallyHiddenProps {
   context: ToastProviderContextValue
 }
 
-const FocusProxy = React.forwardRef<FocusProxyElement, ScopedProps<FocusProxyProps>>(
+const FocusProxy = createRefComponent<FocusProxyElement, ScopedProps<FocusProxyProps>>(
   (props, forwardedRef) => {
     const { onFocusFromOutsideViewport, viewportName, context, ...proxyProps } = props
     const viewport = context.viewports[viewportName] as HTMLElement

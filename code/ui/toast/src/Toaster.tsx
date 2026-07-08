@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 /**
  * Toaster — drop-in all-in-one toast component.
  * Thin wrapper around Toast + Toast.Viewport + Toast.List (composable API).
@@ -125,7 +126,7 @@ export interface ToasterProps {
   reducedMotion?: boolean
 }
 
-export const Toaster = React.forwardRef<TamaguiElement, ToasterProps>(
+export const Toaster = createRefComponent<TamaguiElement, ToasterProps>(
   function Toaster(props, ref) {
     const {
       position = 'bottom-right',

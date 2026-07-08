@@ -1,9 +1,10 @@
+import { createRefComponent } from '@tamagui/core'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { usePrevious } from '@tamagui/use-previous'
 import * as React from 'react'
 
 /* -----------------------------------------------------------------------------------------------*/
-const BubbleSelect = React.forwardRef<
+const BubbleSelect = createRefComponent<
   HTMLSelectElement,
   React.ComponentPropsWithoutRef<'select'>
 >((props, forwardedRef) => {

@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import { registerFocusable } from '@tamagui/focusable'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -81,7 +82,7 @@ type ToggleGroupItemImplProps = Omit<ToggleProps, 'defaultActive' | 'onActiveCha
   value: string
 }
 
-const ToggleGroupItemImpl = React.forwardRef<
+const ToggleGroupItemImpl = createRefComponent<
   TamaguiElement,
   ScopedProps<ToggleGroupItemImplProps>
 >((props, forwardedRef) => {
@@ -123,7 +124,7 @@ interface ToggleGroupMultipleProps extends ToggleGroupImplMultipleProps {
 type ToggleGroupProps = ToggleGroupSingleProps | ToggleGroupMultipleProps
 
 const ToggleGroup = withStaticProperties(
-  React.forwardRef<TamaguiElement, ScopedProps<ToggleGroupProps>>(
+  createRefComponent<TamaguiElement, ScopedProps<ToggleGroupProps>>(
     (props, forwardedRef) => {
       const { type, ...toggleGroupProps } = props
 
@@ -182,7 +183,7 @@ interface ToggleGroupImplSingleProps extends ToggleGroupImplProps {
   disableDeactivation?: boolean
 }
 
-const ToggleGroupImplSingle = React.forwardRef<
+const ToggleGroupImplSingle = createRefComponent<
   TamaguiElement,
   ScopedProps<ToggleGroupImplSingleProps>
 >((props: ScopedProps<ToggleGroupImplSingleProps>, forwardedRef) => {
@@ -230,7 +231,7 @@ interface ToggleGroupImplMultipleProps extends ToggleGroupImplProps {
   disableDeactivation?: never
 }
 
-const ToggleGroupImplMultiple = React.forwardRef<
+const ToggleGroupImplMultiple = createRefComponent<
   TamaguiElement,
   ToggleGroupImplMultipleProps
 >((props: ScopedProps<ToggleGroupImplMultipleProps>, forwardedRef) => {

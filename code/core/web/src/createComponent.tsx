@@ -252,8 +252,10 @@ export function createComponent<
 
   const { Component, isText, isHOC } = staticConfig
 
-  const component = React.forwardRef<Ref, ComponentPropTypes>((propsIn, forwardedRef) => {
+  const component = (propsInWithRef: ComponentPropTypes & { ref?: React.Ref<Ref> }) => {
     'use no memo'
+
+    const { ref: forwardedRef, ...propsIn } = propsInWithRef
 
     config = config || getConfig()
 
@@ -1819,7 +1821,7 @@ export function createComponent<
     }
 
     return content
-  })
+  }
 
   function notifyGroupSubscribers(
     groupContext: SingleGroupContext | null,
@@ -1894,10 +1896,10 @@ export function createComponent<
     }
   }
 
-  function styleable(Component: any, options?: StyleableOptions) {
-    const skipForwardRef = typeof Component === 'function' && Component.length === 1
-
-    let out = skipForwardRef ? Component : React.forwardRef(Component)
+  function styleable(Component: any, options?: StyleableOptions): any {
+    let out: any = function StyleableComponent(props: any) {
+      return Component(props, props.ref)
+    }
 
     const extendedConfig = extendStyledConfig(options?.staticConfig)
 

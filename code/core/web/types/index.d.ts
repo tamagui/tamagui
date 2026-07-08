@@ -48,6 +48,7 @@ export type * from './interfaces/RNExclusiveTypes';
 export type * from './interfaces/TamaguiComponentEvents';
 export type * from './types';
 export * from './interfaces/GetRef';
+export { createRefComponent, type RefProp } from '@tamagui/compose-refs';
 export { getConfig, getSetting, getStyleCompat, getThemes, getToken, getTokens, getTokenValue, loadAnimationDriver, setConfig, setupDev, updateConfig, type StyleCompat, } from './config';
 export { setNonce } from './helpers/insertStyleRule';
 export * from './constants/constants';

@@ -12,6 +12,7 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   createStyledContext,
+  createRefComponent,
   getExpandedShorthand,
   LayoutMeasurementController,
   styled,
@@ -230,11 +231,11 @@ const DialogPortalItem = ({
   )
 }
 
-const DialogPortal = React.forwardRef<TamaguiElement, DialogPortalProps>(
-  (props, forwardRef) => {
+const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
+  (props, forwardedRef) => {
     const { scope, forceMount, children, ...frameProps } = props
     const dialogRef = React.useRef<TamaguiElement>(null)
-    const ref = composeRefs(dialogRef, forwardRef)
+    const ref = composeRefs(dialogRef, forwardedRef)
 
     const context = useDialogContext(scope)
     const keepMounted = forceMount || context.keepChildrenMounted
@@ -508,7 +509,7 @@ type DialogContentTypeProps = DialogContentImplProps & {
   context: DialogContextValue
 }
 
-const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
+const DialogContentModal = createRefComponent<TamaguiElement, DialogContentTypeProps>(
   ({ children, context, ...props }, forwardedRef) => {
     const contentRef = React.useRef<TamaguiElement>(null)
     const composedRefs = useComposedRefs(forwardedRef, context.contentRef, contentRef)
@@ -555,7 +556,7 @@ const DialogContentModal = React.forwardRef<TamaguiElement, DialogContentTypePro
 
 /* -----------------------------------------------------------------------------------------------*/
 
-const DialogContentNonModal = React.forwardRef<TamaguiElement, DialogContentTypeProps>(
+const DialogContentNonModal = createRefComponent<TamaguiElement, DialogContentTypeProps>(
   (props, forwardedRef) => {
     const hasInteractedOutsideRef = React.useRef(false)
 
@@ -627,7 +628,7 @@ type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
 
 type DialogContentImplProps = DialogContentFrameProps & DialogContentImplExtraProps
 
-const DialogContentImpl = React.forwardRef<TamaguiElement, DialogContentImplProps>(
+const DialogContentImpl = createRefComponent<TamaguiElement, DialogContentImplProps>(
   (props, forwardedRef) => {
     const {
       trapFocus,
@@ -888,7 +889,7 @@ export type DialogHandle = {
 }
 
 const Dialog = withStaticProperties(
-  React.forwardRef<{ open: (val: boolean) => void }, DialogProps>(
+  createRefComponent<{ open: (val: boolean) => void }, DialogProps>(
     function Dialog(props, ref) {
       const {
         scope = '',

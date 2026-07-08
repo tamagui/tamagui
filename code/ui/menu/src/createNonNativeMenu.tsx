@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import type * as BaseMenuTypes from '@tamagui/create-menu'
 import {
   type MenuArrowProps as BaseMenuArrowProps,
@@ -433,62 +434,62 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const CONTENT_NAME = 'MenuContent'
 
-  const MenuContent = React.forwardRef<MenuContentElement, ScopedProps<MenuContentProps>>(
-    (props, forwardedRef) => {
-      const { scope, ...contentProps } = props
-      const context = useMenuContext(scope)
-      const hasInteractedOutsideRef = React.useRef(false)
+  const MenuContent = createRefComponent<
+    MenuContentElement,
+    ScopedProps<MenuContentProps>
+  >((props, forwardedRef) => {
+    const { scope, ...contentProps } = props
+    const context = useMenuContext(scope)
+    const hasInteractedOutsideRef = React.useRef(false)
 
-      return (
-        <Menu.Content
-          id={context.contentId}
-          aria-labelledby={context.triggerId}
-          scope={scope || DROPDOWN_MENU_CONTEXT}
-          {...contentProps}
-          ref={forwardedRef}
-          onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-            if (!hasInteractedOutsideRef.current) {
-              // delay to let React render new components and run their autoFocus effects
-              requestAnimationFrame(() => {
-                const activeEl = document.activeElement
-                if (!activeEl || activeEl === document.body) {
-                  context.triggerRef.current?.focus()
-                }
-              })
-            }
-            hasInteractedOutsideRef.current = false
-            // Always prevent auto focus because we either focus manually or want user agent focus
-            event.preventDefault()
-          })}
-          onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
-            const originalEvent = event.detail.originalEvent as PointerEvent
-            const ctrlLeftClick =
-              originalEvent.button === 0 && originalEvent.ctrlKey === true
-            const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-            if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
-          })}
-          style={
-            isWeb
-              ? {
-                  ...(props.style as object),
-                  ...({
-                    '--tamagui-menu-content-transform-origin':
-                      'var(--tamagui-popper-transform-origin)',
-                    '--tamagui-menu-content-available-width':
-                      'var(--tamagui-popper-available-width)',
-                    '--tamagui-menu-content-available-height':
-                      'var(--tamagui-popper-available-height)',
-                    '--tamagui-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
-                    '--tamagui-menu-trigger-height':
-                      'var(--tamagui-popper-anchor-height)',
-                  } as React.CSSProperties),
-                }
-              : props.style
+    return (
+      <Menu.Content
+        id={context.contentId}
+        aria-labelledby={context.triggerId}
+        scope={scope || DROPDOWN_MENU_CONTEXT}
+        {...contentProps}
+        ref={forwardedRef}
+        onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+          if (!hasInteractedOutsideRef.current) {
+            // delay to let React render new components and run their autoFocus effects
+            requestAnimationFrame(() => {
+              const activeEl = document.activeElement
+              if (!activeEl || activeEl === document.body) {
+                context.triggerRef.current?.focus()
+              }
+            })
           }
-        />
-      )
-    }
-  )
+          hasInteractedOutsideRef.current = false
+          // Always prevent auto focus because we either focus manually or want user agent focus
+          event.preventDefault()
+        })}
+        onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
+          const originalEvent = event.detail.originalEvent as PointerEvent
+          const ctrlLeftClick =
+            originalEvent.button === 0 && originalEvent.ctrlKey === true
+          const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+          if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
+        })}
+        style={
+          isWeb
+            ? {
+                ...(props.style as object),
+                ...({
+                  '--tamagui-menu-content-transform-origin':
+                    'var(--tamagui-popper-transform-origin)',
+                  '--tamagui-menu-content-available-width':
+                    'var(--tamagui-popper-available-width)',
+                  '--tamagui-menu-content-available-height':
+                    'var(--tamagui-popper-available-height)',
+                  '--tamagui-menu-trigger-width': 'var(--tamagui-popper-anchor-width)',
+                  '--tamagui-menu-trigger-height': 'var(--tamagui-popper-anchor-height)',
+                } as React.CSSProperties),
+              }
+            : props.style
+        }
+      />
+    )
+  })
 
   MenuContent.displayName = CONTENT_NAME
 
@@ -526,7 +527,7 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
 
   const SUB_CONTENT_NAME = 'MenuSubContent'
 
-  const MenuSubContent = React.forwardRef<
+  const MenuSubContent = createRefComponent<
     MenuSubContentElement,
     ScopedProps<MenuSubContentProps>
   >((props, forwardedRef) => {

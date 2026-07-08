@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import type { AnimatePresenceProps } from '@tamagui/animate-presence'
 import { AnimatePresence, ResetPresence } from '@tamagui/animate-presence'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
@@ -32,7 +33,7 @@ interface CollapsibleProps extends ViewProps {
   onOpenChange?(open: boolean): void
 }
 
-const _Collapsible = React.forwardRef<TamaguiElement, ScopedProps<CollapsibleProps>>(
+const _Collapsible = createRefComponent<TamaguiElement, ScopedProps<CollapsibleProps>>(
   (props, forwardedRef) => {
     const {
       __scopeCollapsible,

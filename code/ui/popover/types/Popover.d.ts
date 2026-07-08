@@ -127,7 +127,7 @@ export declare const PopoverContextProvider: React.MemoExoticComponent<({ scope,
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>;
 export declare const PopoverAnchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
     scope?: PopoverScopes;
-} & React.RefAttributes<TamaguiElement>>;
+} & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
 export type PopoverTriggerProps = ScopedPopoverProps<ViewProps & {
     /**
      * When true, disables the built-in click-to-toggle behavior on the trigger.
@@ -145,7 +145,7 @@ export declare const PopoverTrigger: React.NamedExoticComponent<Omit<import("@ta
     disablePressTrigger?: boolean;
 }, "scope"> & {
     scope?: PopoverScopes;
-} & React.RefAttributes<TamaguiElement>>;
+} & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
 export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, 'disableOutsidePointerEvents'> {
     /**
      * Enable smooth animation when the content position changes (e.g., when flipping sides)
@@ -202,9 +202,7 @@ export type PopoverContentImplProps = PopperContentProps & Omit<DismissableProps
     };
 };
 export type PopoverCloseProps = ScopedPopoverProps<YStackProps>;
-export declare const PopoverClose: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
-    scope?: PopoverScopes;
-} & React.RefAttributes<TamaguiElement>>;
+export declare const PopoverClose: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopoverCloseProps>;
 export type PopoverArrowProps = PopperArrowProps;
 export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
@@ -231,7 +229,7 @@ export type Popover = {
 export type PopoverScrollViewProps = ScrollViewProps & {
     scope?: string;
 };
-export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, "scope"> & {
+export declare const Popover: ((props: Omit<PopperProps, "scope"> & {
     scope?: PopoverScopes;
 } & {
     open?: boolean;
@@ -268,10 +266,13 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
      * @see https://tamagui.dev/ui/z-index
      */
     zIndex?: number;
-} & React.RefAttributes<Popover>> & {
+} & import("@tamagui/compose-refs").RefProp<Popover>) => React.ReactNode) & {
+    displayName?: string;
+    propTypes?: any;
+} & {
     Anchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
         scope?: PopoverScopes;
-    } & React.RefAttributes<TamaguiElement>>;
+    } & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
     Arrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
         elevation?: number | SizeTokens | undefined;
@@ -290,7 +291,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
         disablePressTrigger?: boolean;
     }, "scope"> & {
         scope?: PopoverScopes;
-    } & React.RefAttributes<TamaguiElement>>;
+    } & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
     Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: SizeTokens | undefined;
         unstyled?: boolean | undefined;
@@ -302,9 +303,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
         elevation?: number | SizeTokens | undefined;
         fullscreen?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
-    Close: React.ForwardRefExoticComponent<Omit<YStackProps, "scope"> & {
-        scope?: PopoverScopes;
-    } & React.RefAttributes<TamaguiElement>>;
+    Close: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopoverCloseProps>;
     Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
         Contents: {
             ({ scope, ...rest }: {
@@ -313,45 +312,7 @@ export declare const Popover: React.ForwardRefExoticComponent<Omit<PopperProps, 
             shouldForwardSpace: boolean;
         };
     };
-    ScrollView: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, keyof import("@tamagui/core").StackStyleBase | "fullscreen" | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }> & {
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }> & {
-        fullscreen?: boolean | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
-        readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<typeof import("react-native").ScrollView, {
-            accept: {
-                readonly contentContainerStyle: "style";
-            };
-        }>> | undefined;
-    }, {
-        fullscreen?: boolean | undefined;
-    }>> & {
-        scope?: string;
-    } & React.RefAttributes<import("react-native").ScrollView>>;
+    ScrollView: import("@tamagui/compose-refs").RefComponent<import("react-native").ScrollView, PopoverScrollViewProps>;
     FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
 };
 export {};

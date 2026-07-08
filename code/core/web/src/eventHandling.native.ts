@@ -124,7 +124,7 @@ export function useEvents(
   // component handles gesture detection at its own level.
   //
   // Composite component special case - when styled() wraps a non-Tamagui component
-  // (e.g. React.forwardRef), the elementType becomes that composite component.
+  // (e.g. component wrappers), the elementType becomes that composite component.
   // GestureDetector/responder wrapping around a composite component breaks during
   // re-renders triggered by pressStyle state changes (the gesture/responder loses
   // attachment to the native view through the composite layers). Pass events as props

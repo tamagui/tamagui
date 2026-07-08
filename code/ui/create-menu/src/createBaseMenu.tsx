@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import { Animate } from '@tamagui/animate'
 import { AnimatePresence as Presence } from '@tamagui/animate-presence'
 import { createCollection } from '@tamagui/collection'
@@ -17,6 +18,7 @@ import { useCallbackRef } from '@tamagui/use-callback-ref'
 import { useDirection } from '@tamagui/use-direction'
 import type { TextProps } from '@tamagui/web'
 import {
+  type GetRef,
   type ViewProps,
   composeEventHandlers,
   composeRefs,
@@ -156,7 +158,7 @@ interface MenuRootContentTypeProps extends Omit<
 
 /* ---------------------------------------------------------------------------------------------- */
 
-type MenuContentImplElement = React.ElementRef<typeof PopperPrimitive.PopperContent>
+type MenuContentImplElement = GetRef<typeof PopperPrimitive.PopperContent>
 type FocusScopeProps = React.ComponentPropsWithoutRef<typeof FocusScope>
 type DismissableLayerProps = React.ComponentPropsWithoutRef<typeof DismissableLayer>
 type MenuContentImplPrivateProps = {
@@ -630,7 +632,7 @@ export function createBaseMenu({
 
   /* ---------------------------------------------------------------------------------------------- */
 
-  const MenuRootContentModal = React.forwardRef<
+  const MenuRootContentModal = createRefComponent<
     MenuRootContentTypeElement,
     ScopedProps<MenuRootContentTypeProps>
   >((props, forwardedRef) => {
@@ -670,7 +672,7 @@ export function createBaseMenu({
     )
   })
 
-  const MenuRootContentNonModal = React.forwardRef<
+  const MenuRootContentNonModal = createRefComponent<
     MenuRootContentTypeElement,
     ScopedProps<MenuRootContentTypeProps>
   >((props, forwardedRef) => {
@@ -689,7 +691,7 @@ export function createBaseMenu({
     )
   })
 
-  const MenuContentImpl = React.forwardRef<
+  const MenuContentImpl = createRefComponent<
     MenuContentImplElement,
     ScopedProps<StyleableMenuContentProps>
   >((props, forwardedRef) => {
@@ -973,7 +975,7 @@ export function createBaseMenu({
                 loop={loop}
                 currentTabStopId={currentItemId}
                 onCurrentTabStopIdChange={setCurrentItemId}
-                onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
+                onEntryFocus={composeEventHandlers(onEntryFocus, (event: Event) => {
                   // for keyboard users, focus first item for immediate navigation
                   // for mouse users, prevent auto-focus to avoid showing focus style
                   if (!rootContext.isUsingKeyboardRef.current) {
@@ -1103,7 +1105,7 @@ export function createBaseMenu({
     )
   })
 
-  const MenuItemImpl = React.forwardRef<
+  const MenuItemImpl = createRefComponent<
     MenuItemImplElement,
     ScopedProps<MenuItemImplProps>
   >((props, forwardedRef) => {
@@ -1220,7 +1222,7 @@ export function createBaseMenu({
    * MenuItemImage
    * -----------------------------------------------------------------------------------------------*/
   const ITEM_IMAGE = 'MenuItemImage'
-  const MenuItemImage = React.forwardRef<Image, ImageProps>((props, forwardedRef) => {
+  const MenuItemImage = createRefComponent<Image, ImageProps>((props, forwardedRef) => {
     // filter out native-only props that shouldn't reach the DOM
     const {
       // @ts-ignore - native menu ios config
@@ -1402,7 +1404,7 @@ export function createBaseMenu({
    * -----------------------------------------------------------------------------------------------*/
 
   // TODO this was styleable but it cant flatten anyways so likely fine just need to check
-  const MenuArrow = React.forwardRef<TamaguiElement, MenuArrowProps>(
+  const MenuArrow = createRefComponent<TamaguiElement, MenuArrowProps>(
     function MenuArrow(props, forwardedRef) {
       const {
         scope = MENU_CONTEXT,
@@ -1534,7 +1536,7 @@ export function createBaseMenu({
 
   const SUB_TRIGGER_NAME = 'MenuSubTrigger'
 
-  const MenuSubTrigger = React.forwardRef<
+  const MenuSubTrigger = createRefComponent<
     TamaguiElement,
     ScopedProps<MenuSubTriggerProps>
   >((props, forwardedRef) => {

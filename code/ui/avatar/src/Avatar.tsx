@@ -1,7 +1,7 @@
 // forked from radix https://github.com/radix-ui/primitives/blob/main/packages/react/avatar/src/Avatar.tsx
 
 import type { GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
-import { styled } from '@tamagui/core'
+import { styled, createRefComponent } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -37,7 +37,7 @@ type AvatarImageProps = Partial<ImageProps> & {
   onLoadingStatusChange?: (status: ImageLoadingStatus) => void
 }
 
-const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
+const AvatarImage = createRefComponent<TamaguiElement, AvatarImageProps>(
   (props: ScopedProps<AvatarImageProps>, forwardedRef) => {
     const {
       __scopeAvatar,
@@ -180,7 +180,7 @@ type AvatarProps = GetProps<typeof AvatarFrame>
  * ```
  */
 const Avatar = withStaticProperties(
-  React.forwardRef<TamaguiElement, AvatarProps>(
+  createRefComponent<TamaguiElement, AvatarProps>(
     (props: ScopedProps<AvatarProps>, forwardedRef) => {
       const { __scopeAvatar, size = '$true', ...avatarProps } = props
       const [imageLoadingStatus, setImageLoadingStatus] =

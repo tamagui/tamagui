@@ -151,7 +151,10 @@ export declare function useToasts(): {
     position: ToastPosition;
 };
 export declare function useToastItem(): ToastItemContextValue;
-export declare const Toast: React.ForwardRefExoticComponent<ToastRootProps & React.RefAttributes<TamaguiElement>> & {
+export declare const Toast: ((props: ToastRootProps & import("@tamagui/core").RefProp<TamaguiElement>) => React.ReactNode) & {
+    displayName?: string;
+    propTypes?: any;
+} & {
     Viewport: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, keyof ToastViewportProps> & ToastViewportProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & ToastViewportProps, import("@tamagui/core").StackStyleBase, {

@@ -1,5 +1,6 @@
 // re-exports all of @tamagui/web just adds hooks
 export * from '@tamagui/web'
+export { createRefComponent, type RefProp } from '@tamagui/compose-refs'
 
 import { createMedia } from '@tamagui/react-native-media-driver'
 import { isWeb } from '@tamagui/constants'

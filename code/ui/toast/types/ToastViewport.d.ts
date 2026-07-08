@@ -70,6 +70,6 @@ declare const ToastViewport: React.NamedExoticComponent<Omit<import("@tamagui/co
      * When true, uses a portal to render at the very top of the root TamaguiProvider.
      */
     portalToRoot?: boolean;
-} & React.RefAttributes<HTMLDivElement>>;
+} & import("@tamagui/core").RefProp<HTMLDivElement>>;
 export { ToastViewport, VIEWPORT_DEFAULT_HOTKEY, VIEWPORT_PAUSE, VIEWPORT_RESUME, type ToastViewportProps, };
 //# sourceMappingURL=ToastViewport.d.ts.map

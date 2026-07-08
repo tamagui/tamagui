@@ -13,8 +13,9 @@ import { Animate } from '@tamagui/animate'
 import { ResetPresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
+import type { SizeTokens, GetRef, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
+  createRefComponent,
   createStyledContext,
   useCreateShallowSetState,
   useEvent,
@@ -346,7 +347,7 @@ const voidFn = () => {}
 export type PopoverAnchorProps = ScopedPopoverProps<YStackProps>
 
 export const PopoverAnchor = React.memo(
-  React.forwardRef<TamaguiElement, PopoverAnchorProps>(
+  createRefComponent<TamaguiElement, PopoverAnchorProps>(
     function PopoverAnchor(props, forwardedRef) {
       const { scope, ...rest } = props
       const context = usePopoverContext(scope)
@@ -378,7 +379,7 @@ export type PopoverTriggerProps = ScopedPopoverProps<
 >
 
 export const PopoverTrigger = React.memo(
-  React.forwardRef<TamaguiElement, PopoverTriggerProps>(
+  createRefComponent<TamaguiElement, PopoverTriggerProps>(
     function PopoverTrigger(props, forwardedRef) {
       const { scope, disablePressTrigger, ...rest } = props
       const triggerContext = usePopoverTriggerContext(scope)
@@ -695,7 +696,7 @@ function PopoverPortal({
 
 /* -----------------------------------------------------------------------------------------------*/
 
-type PopoverContentImplElement = React.ElementRef<typeof PopperContent>
+type PopoverContentImplElement = GetRef<typeof PopperContent>
 
 export type PopoverContentImplProps = PopperContentProps &
   Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> & {
@@ -747,7 +748,7 @@ type PopoverContentImplInteralProps = PopoverContentImplProps & {
   setIsFullyHidden: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const PopoverContentImpl = React.forwardRef<
+const PopoverContentImpl = createRefComponent<
   PopoverContentImplElement,
   PopoverContentImplInteralProps
 >(function PopoverContentImpl(props, forwardedRef) {
@@ -873,7 +874,7 @@ const dspContentsStyle = {
 
 export type PopoverCloseProps = ScopedPopoverProps<YStackProps>
 
-export const PopoverClose = React.forwardRef<TamaguiElement, PopoverCloseProps>(
+export const PopoverClose = createRefComponent<TamaguiElement, PopoverCloseProps>(
   function PopoverClose(props: ScopedPopoverProps<PopoverCloseProps>, forwardedRef) {
     const { scope, ...rest } = props
     const context = usePopoverContext(scope)
@@ -940,7 +941,7 @@ export type PopoverScrollViewProps = ScrollViewProps & {
   scope?: string
 }
 
-const PopoverScrollView = React.forwardRef<ScrollView, PopoverScrollViewProps>(
+const PopoverScrollView = createRefComponent<ScrollView, PopoverScrollViewProps>(
   ({ scope, ...props }, ref) => {
     const context = usePopoverContext(scope)
 
@@ -961,7 +962,7 @@ const PopoverScrollView = React.forwardRef<ScrollView, PopoverScrollViewProps>(
 const DEFAULT_SCOPE = ''
 
 export const Popover = withStaticProperties(
-  React.forwardRef<Popover, PopoverProps>(function Popover(
+  createRefComponent<Popover, PopoverProps>(function Popover(
     { scope = DEFAULT_SCOPE, ...props },
     ref
   ) {
@@ -992,7 +993,7 @@ export const Popover = withStaticProperties(
   }
 )
 
-const PopoverInner = React.forwardRef<
+const PopoverInner = createRefComponent<
   Popover,
   PopoverProps & { id: string; adaptScope: string }
 >(function PopoverInner(props, forwardedRef) {

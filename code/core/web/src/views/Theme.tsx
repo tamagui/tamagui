@@ -1,6 +1,7 @@
+import { createRefComponent } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { MutableRefObject } from 'react'
-import React, { Children, cloneElement, forwardRef, isValidElement, useRef } from 'react'
+import React, { Children, cloneElement, isValidElement, useRef } from 'react'
 import { getSetting } from '../config'
 import { variableToString } from '../createVariable'
 import { useThemeWithState } from '../hooks/useTheme'
@@ -14,7 +15,10 @@ import { ThemeDebug } from './ThemeDebug'
 
 type ThemeComponentPropsOnly = ThemeProps & { passThrough?: boolean; contain?: boolean }
 
-export const Theme = forwardRef(function Theme(props: ThemeComponentPropsOnly, ref) {
+export const Theme = createRefComponent(function Theme(
+  props: ThemeComponentPropsOnly,
+  ref
+) {
   'use no memo'
 
   // @ts-expect-error only for internal views

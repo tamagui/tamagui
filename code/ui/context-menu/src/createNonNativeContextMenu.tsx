@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/compose-refs'
 import type BaseMenuTypes from '@tamagui/create-menu'
 import { createBaseMenu, type CreateBaseMenuProps } from '@tamagui/create-menu'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -32,6 +33,10 @@ type ContextMenuOpenChangeEvent = {
   preventDefault(): void
   defaultPrevented: boolean
 }
+
+type InteractOutsideEvent = CustomEvent<{
+  originalEvent: PointerEvent | FocusEvent
+}>
 
 type ContextMenuContextValue = {
   triggerId: string
@@ -319,7 +324,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const CONTENT_NAME = 'ContextMenuContent'
 
-  const ContextMenuContent = React.forwardRef<
+  const ContextMenuContent = createRefComponent<
     ContextMenuContentElement,
     ScopedProps<ContextMenuContentProps>
   >((props, forwardedRef) => {
@@ -334,18 +339,21 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
         scope={scope || CONTEXTMENU_CONTEXT}
         {...contentProps}
         ref={forwardedRef}
-        onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
+        onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event: Event) => {
           if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus()
           hasInteractedOutsideRef.current = false
           event.preventDefault()
         })}
-        onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
-          const originalEvent = event.detail.originalEvent as PointerEvent
-          const ctrlLeftClick =
-            originalEvent.button === 0 && originalEvent.ctrlKey === true
-          const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-          if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
-        })}
+        onInteractOutside={composeEventHandlers(
+          props.onInteractOutside,
+          (event: InteractOutsideEvent) => {
+            const originalEvent = event.detail.originalEvent as PointerEvent
+            const ctrlLeftClick =
+              originalEvent.button === 0 && originalEvent.ctrlKey === true
+            const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+            if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
+          }
+        )}
       />
     )
   })
@@ -358,7 +366,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const ITEM_NAME = 'ContextMenuItem'
 
-  const ContextMenuItem = React.forwardRef<
+  const ContextMenuItem = createRefComponent<
     TamaguiElement,
     ScopedProps<ContextMenuItemProps>
   >((props, forwardedRef) => {
@@ -381,7 +389,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const CHECKBOX_ITEM_NAME = 'ContextMenuCheckboxItem'
 
-  const ContextMenuCheckboxItem = React.forwardRef<
+  const ContextMenuCheckboxItem = createRefComponent<
     TamaguiElement,
     ScopedProps<ContextMenuCheckboxItemProps>
   >((props, forwardedRef) => {
@@ -404,7 +412,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const RADIO_GROUP_NAME = 'ContextMenuRadioGroup'
 
-  const ContextMenuRadioGroup = React.forwardRef<
+  const ContextMenuRadioGroup = createRefComponent<
     ContextMenuRadioGroupElement,
     ScopedProps<ContextMenuRadioGroupProps>
   >((props, forwardedRef) => {
@@ -426,7 +434,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const RADIO_ITEM_NAME = 'ContextMenuRadioItem'
 
-  const ContextMenuRadioItem = React.forwardRef<
+  const ContextMenuRadioItem = createRefComponent<
     TamaguiElement,
     ScopedProps<ContextMenuRadioItemProps>
   >((props, forwardedRef) => {
@@ -521,7 +529,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const SUB_CONTENT_NAME = 'ContextMenuSubContent'
 
-  const ContextMenuSubContent = React.forwardRef<
+  const ContextMenuSubContent = createRefComponent<
     ContextMenuSubContentElement,
     ScopedProps<ContextMenuSubContentProps>
   >((props, forwardedRef) => {
@@ -562,7 +570,7 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
 
   const ARROW_NAME = 'ContextMenuArrow'
 
-  const ContextMenuArrow = React.forwardRef<
+  const ContextMenuArrow = createRefComponent<
     TamaguiElement,
     ScopedProps<ContextMenuArrowProps>
   >((props, forwardedRef) => {

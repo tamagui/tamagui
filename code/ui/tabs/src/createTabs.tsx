@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { GroupProps } from '@tamagui/group'
@@ -37,7 +38,7 @@ export function createTabs<
 
   const TAB_LIST_NAME = 'TabsList'
 
-  const TabsList = React.forwardRef<TamaguiElement, TabsListProps>(
+  const TabsList = createRefComponent<TamaguiElement, TabsListProps>(
     (props: ScopedProps<TabsListProps>, forwardedRef) => {
       const { __scopeTabs, loop = true, children, ...listProps } = props
       const context = useTabsContext(__scopeTabs)

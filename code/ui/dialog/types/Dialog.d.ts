@@ -71,18 +71,7 @@ export declare const DialogPortalFrame: import("@tamagui/core").TamaguiComponent
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
     fullscreen?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-declare const DialogPortal: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    fullscreen?: boolean | undefined;
-}>, keyof import("@tamagui/stacks").StackVariants> & import("@tamagui/stacks").StackVariants & {
-    /**
-     * Used to force mounting when more control is needed. Useful when
-     * controlling animation with React animation libraries.
-     */
-    forceMount?: boolean;
-} & {
-    scope?: DialogScopes;
-} & React.RefAttributes<TamaguiElement>>;
+declare const DialogPortal: import("@tamagui/compose-refs").RefComponent<TamaguiElement, DialogPortalProps>;
 /**
  * exported for internal use with extractable()
  */
@@ -257,7 +246,7 @@ declare const DialogWarningProvider: (props: {
 export type DialogHandle = {
     open: (val: boolean) => void;
 };
-declare const Dialog: React.ForwardRefExoticComponent<{
+declare const Dialog: ((props: {
     children?: React.ReactNode;
     open?: boolean;
     defaultOpen?: boolean;
@@ -281,26 +270,18 @@ declare const Dialog: React.ForwardRefExoticComponent<{
     }) => void;
 } & {
     scope?: DialogScopes;
-} & React.RefAttributes<{
+} & import("@tamagui/compose-refs").RefProp<{
     open: (val: boolean) => void;
-}>> & {
+}>) => React.ReactNode) & {
+    displayName?: string;
+    propTypes?: any;
+} & {
     Trigger: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, "scope"> & {
         scope?: DialogScopes;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
         scope?: DialogScopes;
     }, import("@tamagui/core").StackStyleBase, {}, import("@tamagui/core").StaticConfigPublic>;
-    Portal: React.ForwardRefExoticComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
-    }>, keyof import("@tamagui/stacks").StackVariants> & import("@tamagui/stacks").StackVariants & {
-        /**
-         * Used to force mounting when more control is needed. Useful when
-         * controlling animation with React animation libraries.
-         */
-        forceMount?: boolean;
-    } & {
-        scope?: DialogScopes;
-    } & React.RefAttributes<TamaguiElement>>;
+    Portal: import("@tamagui/compose-refs").RefComponent<TamaguiElement, DialogPortalProps>;
     Overlay: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         open?: boolean | undefined;
         unstyled?: boolean | undefined;

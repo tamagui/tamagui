@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, TamaguiElement } from '@tamagui/core'
 import { View, Text, styled, useEvent } from '@tamagui/core'
@@ -22,20 +23,21 @@ type ToastAnnounceExcludeExtraProps = {
 type ToastAnnounceExcludeProps = ToastAnnounceExcludeFrameProps &
   ToastAnnounceExcludeExtraProps
 
-const ToastAnnounceExclude = React.forwardRef<TamaguiElement, ToastAnnounceExcludeProps>(
-  (props, forwardedRef) => {
-    const { altText, ...announceExcludeProps } = props
+const ToastAnnounceExclude = createRefComponent<
+  TamaguiElement,
+  ToastAnnounceExcludeProps
+>((props, forwardedRef) => {
+  const { altText, ...announceExcludeProps } = props
 
-    return (
-      <ToastAnnounceExcludeFrame
-        data-toast-announce-exclude=""
-        data-toast-announce-alt={altText || undefined}
-        {...announceExcludeProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+  return (
+    <ToastAnnounceExcludeFrame
+      data-toast-announce-exclude=""
+      data-toast-announce-alt={altText || undefined}
+      {...announceExcludeProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 /* -----------------------------------------------------------------------------------------------*/
 

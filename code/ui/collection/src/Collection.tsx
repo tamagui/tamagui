@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type { TamaguiElement } from '@tamagui/core'
@@ -66,7 +67,7 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
 
   const COLLECTION_SLOT_NAME = name + 'CollectionSlot'
 
-  const CollectionSlot = React.forwardRef<
+  const CollectionSlot = createRefComponent<
     CollectionElement | undefined,
     ScopedCollectionProps<CollectionProps>
   >((props, forwardedRef) => {
@@ -89,7 +90,7 @@ function createCollection<ItemElement extends TamaguiElement, ItemData = {}>(
     children: React.ReactNode
   }
 
-  const CollectionItemSlot = React.forwardRef<
+  const CollectionItemSlot = createRefComponent<
     ItemElement | undefined,
     ScopedCollectionProps<CollectionItemSlotProps>
   >((props, forwardedRef) => {

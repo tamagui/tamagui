@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 /* -------------------------------------------------------------------------------------------------
  * SliderImpl
  * -----------------------------------------------------------------------------------------------*/
@@ -44,7 +45,7 @@ export const SliderFrame = styled(YStack, {
   } as const,
 })
 
-export const SliderImpl = React.forwardRef<View, SliderImplProps>(
+export const SliderImpl = createRefComponent<View, SliderImplProps>(
   (props: ScopedProps<SliderImplProps>, forwardedRef) => {
     const {
       __scopeSlider,

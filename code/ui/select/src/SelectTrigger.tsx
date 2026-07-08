@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import type { TamaguiElement } from '@tamagui/core'
 import type { ListItemProps } from '@tamagui/list-item'
@@ -19,7 +20,7 @@ const isPointerCoarse =
     ? window.matchMedia('(pointer:coarse)').matches
     : true
 
-export const SelectTrigger = React.forwardRef<TamaguiElement, SelectTriggerProps>(
+export const SelectTrigger = createRefComponent<TamaguiElement, SelectTriggerProps>(
   function SelectTrigger(props: SelectTriggerProps, forwardedRef) {
     const { scope, disabled = false, unstyled = false, ...triggerProps } = props
 

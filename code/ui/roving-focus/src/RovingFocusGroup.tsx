@@ -1,7 +1,14 @@
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
-import { Slot, View, createStyledContext, useEvent } from '@tamagui/core'
+import {
+  Slot,
+  View,
+  createStyledContext,
+  useEvent,
+  createRefComponent,
+  type GetRef,
+} from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
@@ -12,7 +19,7 @@ const EVENT_OPTIONS = { bubbles: false, cancelable: true }
 
 /* -----------------------------------------------------------------------------------------------*/
 
-type RovingFocusGroupImplElement = React.ElementRef<typeof View>
+type RovingFocusGroupImplElement = GetRef<typeof View>
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof View>
 interface RovingFocusGroupImplProps
   extends Omit<PrimitiveDivProps, 'dir'>, RovingFocusGroupOptions {
@@ -22,7 +29,7 @@ interface RovingFocusGroupImplProps
   onEntryFocus?: (event: Event) => void
 }
 
-const RovingFocusGroupImpl = React.forwardRef<
+const RovingFocusGroupImpl = createRefComponent<
   RovingFocusGroupImplElement,
   ScopedProps<RovingFocusGroupImplProps>
 >((props: ScopedProps<RovingFocusGroupImplProps>, forwardedRef) => {
@@ -130,7 +137,7 @@ const RovingFocusGroupImpl = React.forwardRef<
 
 const ITEM_NAME = 'RovingFocusGroupItem'
 
-type RovingFocusItemElement = React.ElementRef<typeof View>
+type RovingFocusItemElement = GetRef<typeof View>
 type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof View>
 interface RovingFocusItemProps extends PrimitiveSpanProps {
   tabStopId?: string
@@ -138,7 +145,7 @@ interface RovingFocusItemProps extends PrimitiveSpanProps {
   active?: boolean
 }
 
-const RovingFocusGroupItem = React.forwardRef<
+const RovingFocusGroupItem = createRefComponent<
   RovingFocusItemElement,
   ScopedProps<RovingFocusItemProps>
 >((props: ScopedProps<RovingFocusItemProps>, forwardedRef) => {
@@ -282,7 +289,7 @@ interface RovingFocusGroupProps extends RovingFocusGroupImplProps {}
 const ROVING_FOCUS_GROUP_CONTEXT = 'RovingFocusGroupContext'
 
 const RovingFocusGroup = withStaticProperties(
-  React.forwardRef<RovingFocusGroupElement, ScopedProps<RovingFocusGroupProps>>(
+  createRefComponent<RovingFocusGroupElement, ScopedProps<RovingFocusGroupProps>>(
     (props: ScopedProps<RovingFocusGroupProps>, forwardedRef) => {
       return (
         <Collection.Provider

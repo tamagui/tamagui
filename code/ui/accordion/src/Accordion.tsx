@@ -1,3 +1,4 @@
+import { createRefComponent } from '@tamagui/core'
 import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -34,7 +35,7 @@ interface AccordionMultipleProps extends AccordionImplMultipleProps {
 
 const ACCORDION_CONTEXT = 'Accordion'
 
-const AccordionComponent = React.forwardRef<
+const AccordionComponent = createRefComponent<
   AccordionElement,
   ScopedProps<AccordionSingleProps | AccordionMultipleProps>
 >((props: ScopedProps<AccordionSingleProps | AccordionMultipleProps>, forwardedRef) => {
@@ -116,7 +117,7 @@ interface AccordionImplSingleProps extends AccordionImplProps {
   collapsible?: boolean
 }
 
-const AccordionImplSingle = React.forwardRef<
+const AccordionImplSingle = createRefComponent<
   AccordionImplSingleElement,
   ScopedProps<AccordionImplSingleProps>
 >((props: ScopedProps<AccordionImplSingleProps>, forwardedRef) => {
@@ -173,7 +174,7 @@ interface AccordionImplMultipleProps extends AccordionImplProps {
   onValueChange?(value: string[]): void
 }
 
-const AccordionImplMultiple = React.forwardRef<
+const AccordionImplMultiple = createRefComponent<
   AccordionImplMultipleElement,
   ScopedProps<AccordionImplMultipleProps>
 >((props: ScopedProps<AccordionImplMultipleProps>, forwardedRef) => {
@@ -251,7 +252,7 @@ interface AccordionImplProps extends PrimitiveDivProps {
   control?(selected: string[]): void
 }
 
-const AccordionImpl = React.forwardRef<AccordionImplElement, AccordionImplProps>(
+const AccordionImpl = createRefComponent<AccordionImplElement, AccordionImplProps>(
   (props: ScopedProps<AccordionImplProps>, forwardedRef) => {
     const {
       __scopeAccordion,
@@ -377,7 +378,7 @@ type AccordionItemContextValue = {
 }
 const { Provider: AccordionItemProvider, useStyledContext: useAccordionItemContext } =
   createStyledContext<AccordionItemContextValue>()
-type AccordionItemElement = React.ElementRef<typeof Collapsible>
+type AccordionItemElement = GetRef<typeof Collapsible>
 type CollapsibleProps = React.ComponentPropsWithoutRef<typeof Collapsible>
 interface AccordionItemProps extends Omit<
   CollapsibleProps,
@@ -399,7 +400,7 @@ interface AccordionItemProps extends Omit<
  * `AccordionItem` contains all of the parts of a collapsible section inside of an `Accordion`.
  */
 
-const AccordionItem = React.forwardRef<AccordionItemElement, AccordionItemProps>(
+const AccordionItem = createRefComponent<AccordionItemElement, AccordionItemProps>(
   (props: ScopedProps<AccordionItemProps>, forwardedRef) => {
     const { __scopeAccordion, value, ...accordionItemProps } = props
     const accordionContext = useAccordionContext(__scopeAccordion)
@@ -444,7 +445,7 @@ AccordionItem.displayName = ITEM_NAME
 
 const HEADER_NAME = 'AccordionHeader'
 
-type AccordionHeaderElement = React.ElementRef<typeof H1>
+type AccordionHeaderElement = GetRef<typeof H1>
 type PrimitiveHeading3Props = React.ComponentPropsWithoutRef<typeof H1>
 type AccordionHeaderProps = PrimitiveHeading3Props
 
@@ -452,7 +453,7 @@ type AccordionHeaderProps = PrimitiveHeading3Props
  * `AccordionHeader` contains the content for the parts of an `AccordionItem` that will be visible
  * whether or not its content is collapsed.
  */
-const AccordionHeader = React.forwardRef<AccordionHeaderElement, AccordionHeaderProps>(
+const AccordionHeader = createRefComponent<AccordionHeaderElement, AccordionHeaderProps>(
   (props: ScopedProps<AccordionHeaderProps>, forwardedRef) => {
     const { __scopeAccordion, ...headerProps } = props
     const accordionContext = useAccordionContext(__scopeAccordion)

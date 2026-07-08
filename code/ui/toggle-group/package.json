@@ -34,6 +34,7 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/create-context": "workspace:*",
     "@tamagui/focusable": "workspace:*",
