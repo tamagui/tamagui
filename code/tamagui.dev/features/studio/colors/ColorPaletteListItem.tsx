@@ -91,7 +91,7 @@ export const ColorPaletteListItem = ({
                       borderBottomRightRadius: '$8',
                     })}
                   >
-                    <YStack bg={colorToHex(color) as any} fullscreen />
+                    <YStack bg={colorToHex(color) as any} position="absolute" inset={0} />
                   </YStack>
                 )
               })}

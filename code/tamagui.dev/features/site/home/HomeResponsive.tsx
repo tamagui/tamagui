@@ -224,9 +224,9 @@ export const HomeResponsive = memo(() => {
             opacity={0.1}
           />
           <YStack position="relative" flex={1} height="100%" width="100%">
-            <YStack fullscreen className="mask-gradient-down" z={-1}>
-              {/* explicit position avoids fullscreen's inset:0 conflicting with the
-                fixed height in the cascade (same hydration CLS class as the hero) */}
+            <YStack position="absolute" inset={0} className="mask-gradient-down" z={-1}>
+              {/* avoid inset:0 on this fixed-height layer to prevent the same
+                hydration CLS class as the hero */}
               <YStack
                 position="absolute"
                 t={0}
@@ -339,7 +339,7 @@ export const Safari = memo(
               </XStack>
             )}
 
-            <XStack fullscreen items="center">
+            <XStack position="absolute" inset={0} items="center">
               <XStack flex={1} />
               <XStack
                 height={30}
@@ -379,7 +379,8 @@ export const Safari = memo(
           <YStack height="100%" pointerEvents="none">
             {shouldLoad && (
               <YStack
-                fullscreen
+                position="absolute"
+                inset={0}
                 contain="paint"
                 opacity={isLoaded ? 1 : 0}
                 background="$background"
@@ -402,7 +403,7 @@ export const Safari = memo(
               </YStack>
             )}
 
-            <YStack z={0} fullscreen p="$4">
+            <YStack z={0} position="absolute" inset={0} p="$4">
               <XStack
                 items="center"
                 justify="center"
@@ -413,11 +414,12 @@ export const Safari = memo(
                 <YStack width={800} height={200}>
                   <LinearGradient
                     opacity={0.1}
-                    fullscreen
+                    position="absolute"
+                    inset={0}
                     colors={['$yellow10', '$green10']}
                   />
                 </YStack>
-                <YStack p="$4" position="absolute" fullscreen flex={1}>
+                <YStack p="$4" position="absolute" inset={0} flex={1}>
                   <YStack flex={1} />
                   <XStack>
                     <YStack flex={1}>

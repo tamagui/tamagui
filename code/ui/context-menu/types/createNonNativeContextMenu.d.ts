@@ -148,7 +148,6 @@ export declare function createNonNativeContextMenu(params: CreateBaseMenuProps):
         size?: import("@tamagui/web").SizeTokens | undefined;
         unstyled?: boolean | undefined;
         elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-        fullscreen?: boolean | undefined;
     }>, keyof BaseMenuTypes.MenuSubContentProps> & BaseMenuTypes.MenuSubContentProps & {
         scope?: string;
     } & React.RefAttributes<TamaguiElement>, "ref"> & {

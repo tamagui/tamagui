@@ -63,7 +63,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
     <ColorCanvasFrame>
       <XStack p="$2" gap="$4" position="relative">
         <Unspaced>
-          <YStack fullscreen z={0} bg="$background" opacity={0.5} />
+          <YStack position="absolute" inset={0} z={0} bg="$background" opacity={0.5} />
         </Unspaced>
 
         <XGroup>
@@ -153,7 +153,8 @@ export const ColorCanvas = memo(function ColorCanvas() {
                 >
                   <YStack
                     z={-1}
-                    fullscreen
+                    position="absolute"
+                    inset={0}
                     bg={
                       isActive
                         ? color.lightness > 50

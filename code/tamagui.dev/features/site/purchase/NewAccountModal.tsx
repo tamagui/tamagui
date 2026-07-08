@@ -505,7 +505,8 @@ const Tab = ({
       value={props.value}
     >
       <YStack
-        fullscreen
+        position="absolute"
+        inset={0}
         pointerEvents="none"
         z={-1}
         {...(isActive && {

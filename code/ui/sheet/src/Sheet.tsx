@@ -67,7 +67,7 @@ export const Overlay = styled(YStack, {
 
     unstyled: {
       false: {
-        fullscreen: true,
+        inset: 0,
         position: 'absolute',
         backgroundColor: '$background',
         zIndex: 100_000 - 1,

@@ -49,9 +49,15 @@ export function StudioPaletteBar({
             })}
           >
             <Checkerboard opacity={0.5} />
-            <XStack fullscreen bg={color as any} />
+            <XStack position="absolute" inset={0} bg={color as any} />
             {showLabelIndices && (
-              <YStack fullscreen justify="center" items="center" pointerEvents="none">
+              <YStack
+                position="absolute"
+                inset={0}
+                justify="center"
+                items="center"
+                pointerEvents="none"
+              >
                 <Paragraph
                   size="$1"
                   fontSize={11}

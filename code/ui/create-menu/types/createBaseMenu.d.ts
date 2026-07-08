@@ -179,7 +179,6 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
             size?: import("@tamagui/web").SizeTokens | undefined;
             unstyled?: boolean | undefined;
             elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
         }>, keyof MenuContentProps> & MenuContentProps & {
             scope?: string;
         }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuContentProps & {
@@ -188,7 +187,6 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
             size?: import("@tamagui/web").SizeTokens | undefined;
             unstyled?: boolean | undefined;
             elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
         Group: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
             unstyled?: boolean | undefined;
@@ -261,7 +259,6 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
             size?: import("@tamagui/web").SizeTokens | undefined;
             unstyled?: boolean | undefined;
             elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
         }>, keyof MenuSubContentProps> & MenuSubContentProps & {
             scope?: string;
         }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & MenuSubContentProps & {
@@ -270,7 +267,6 @@ export declare function createBaseMenu({ Item: _Item, Title: _Title, SubTitle: _
             size?: import("@tamagui/web").SizeTokens | undefined;
             unstyled?: boolean | undefined;
             elevation?: number | import("@tamagui/web").SizeTokens | undefined;
-            fullscreen?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic>;
         ItemTitle: import("@tamagui/web").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
             unstyled?: boolean | undefined;

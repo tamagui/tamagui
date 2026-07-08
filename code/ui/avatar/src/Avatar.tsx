@@ -74,7 +74,7 @@ const AvatarImage = React.forwardRef<TamaguiElement, AvatarImageProps>(
     }
 
     return (
-      <YStack fullscreen zIndex={1}>
+      <YStack position="absolute" inset={0} zIndex={1}>
         <Image
           position="absolute"
           top={0}
@@ -122,7 +122,7 @@ const FALLBACK_NAME = 'AvatarFallback'
 export const AvatarFallbackFrame = styled(YStack, {
   name: FALLBACK_NAME,
   position: 'absolute',
-  fullscreen: true,
+  inset: 0,
   zIndex: 0,
 })
 

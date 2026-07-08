@@ -166,7 +166,8 @@ export const DialogPortalFrame = styled(YStack, {
       false: {
         alignItems: 'center',
         justifyContent: 'center',
-        fullscreen: true,
+        position: 'absolute',
+        inset: 0,
 
         '$platform-web': {
           // undo dialog styles
@@ -374,7 +375,7 @@ export const DialogOverlayFrame = styled(YStack, {
 
     unstyled: {
       false: {
-        fullscreen: true,
+        inset: 0,
         position: 'absolute',
         backgroundColor: '$background',
         pointerEvents: 'auto',

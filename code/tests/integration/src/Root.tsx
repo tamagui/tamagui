@@ -10,7 +10,12 @@ export const Root = () => {
     <TamaguiProvider config={config} defaultTheme="light">
       <View flexDirection="column" flex={1} alignItems="center" justifyContent="center">
         <Text render="h1">Hello world</Text>
-        <LinearGradient zIndex={-1} fullscreen colors={['red', 'blue']} />
+        <LinearGradient
+          zIndex={-1}
+          position="absolute"
+          inset={0}
+          colors={['red', 'blue']}
+        />
       </View>
     </TamaguiProvider>
   )

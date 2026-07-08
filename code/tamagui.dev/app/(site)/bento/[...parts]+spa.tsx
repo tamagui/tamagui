@@ -65,7 +65,13 @@ export default function BentoPage() {
         </ContainerBento>
 
         <YStack py="$8" pb="$16" position="relative">
-          <YStack pointerEvents="none" fullscreen className="bg-grid" opacity={0.033} />
+          <YStack
+            pointerEvents="none"
+            position="absolute"
+            inset={0}
+            className="bg-grid"
+            opacity={0.033}
+          />
           <ContainerBento>
             <XStack position="relative" t={0}>
               <View className="sticky">

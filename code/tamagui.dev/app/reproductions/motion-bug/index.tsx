@@ -30,7 +30,8 @@ export default function MotionBugReproPage() {
 
       <HomeGlow />
       <YStack
-        fullscreen
+        position="absolute"
+        inset={0}
         className="grain"
         opacity={0.2}
         style={{
@@ -46,7 +47,8 @@ export default function MotionBugReproPage() {
         <YStack
           pointerEvents="none"
           z={0}
-          fullscreen
+          position="absolute"
+          inset={0}
           className="bg-dot-grid"
           style={{
             maskImage: `linear-gradient(transparent, #000, transparent)`,
@@ -67,7 +69,8 @@ export default function MotionBugReproPage() {
         <YStack
           pointerEvents="none"
           z={2}
-          fullscreen
+          position="absolute"
+          inset={0}
           className="bg-dot-grid"
           style={{
             maskImage: `linear-gradient(transparent, #000, transparent)`,

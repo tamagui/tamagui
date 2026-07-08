@@ -50,7 +50,8 @@ export function ProductCard({ product, children, ...props }) {
       >
         <ThemeTintAlt offset={colorOffset}>
           <YStack
-            fullscreen
+            position="absolute"
+            inset={0}
             z={0}
             rounded="$4"
             style={{
