@@ -771,7 +771,6 @@ export function createExtractor(
         }
 
         const componentSkipProps = new Set([
-          ...(Component.staticConfig.inlineWhenUnflattened || []),
           ...(Component.staticConfig.inlineProps || []),
           // for now skip variants, will return to them
           'variants',
@@ -1177,8 +1176,6 @@ export function createExtractor(
               : []),
           ])
 
-          const inlineWhenUnflattened = new Set(staticConfig.inlineWhenUnflattened || [])
-
           // Generate scope object at this level
           const staticNamespace = getStaticBindingsForScope(
             traversePath.scope,
@@ -1218,7 +1215,6 @@ export function createExtractor(
           const inlined = new Map<string, any>()
           const variantValues = new Map<string, any>()
           let hasSetOptimized = false
-          const inlineWhenUnflattenedOGVals = {}
 
           // RUN first pass
 
@@ -1630,11 +1626,6 @@ export function createExtractor(
 
             // FAILED = dynamic or ternary, keep going
             if (styleValue !== FAILED_EVAL) {
-              if (inlineWhenUnflattened.has(name)) {
-                // preserve original value for restoration
-                inlineWhenUnflattenedOGVals[name] = { styleValue, attr }
-              }
-
               if (isValidStyleKey(name, staticConfig)) {
                 // $theme- / $group- styles extract through the atomic-CSS pipeline
                 // (extractToClassNames → createMediaStyle), so they fall through to
@@ -2821,30 +2812,6 @@ export function createExtractor(
           }
 
           attrs = attrs.filter(Boolean)
-
-          // inlineWhenUnflattened
-          if (!shouldFlatten) {
-            if (inlineWhenUnflattened.size) {
-              for (const [index, attr] of attrs.entries()) {
-                if (attr.type === 'style') {
-                  for (const key in attr.value) {
-                    if (!inlineWhenUnflattened.has(key)) continue
-                    const val = inlineWhenUnflattenedOGVals[key]
-                    if (val) {
-                      // delete the style
-                      delete attr.value[key]
-
-                      // and insert it before
-                      attrs.splice(index - 1, 0, val.attr)
-                    } else {
-                      // just delete it, it was added during expansion but should be left inline
-                      delete attr.value[key]
-                    }
-                  }
-                }
-              }
-            }
-          }
 
           // delete empty styles:
           attrs = attrs.filter((x) => {

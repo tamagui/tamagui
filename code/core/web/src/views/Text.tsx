@@ -40,7 +40,6 @@ export const Text = createComponent<
           suppressHighlighting: true,
         },
 
-  inlineWhenUnflattened: new Set(['fontFamily']),
   inlineProps: new Set(['maxFontSizeMultiplier']),
 
   variants: {
