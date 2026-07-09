@@ -58,6 +58,11 @@ const rnghRootStyleClosed = { width: '100%', height: 0 } as const
 
 let sheetHiddenStyleSheet: HTMLStyleElement | null = null
 
+// stack of open modal sheets on web so escape only closes the top-most one.
+// pushed on open (child sheets mount their effect after the parent, so the
+// deepest sheet sits last), popped on close/unmount.
+const sheetEscapeLayers: object[] = []
+
 // on web we are always relative to window, on to screen
 const relativeDimensionTo = isWeb ? 'window' : 'screen'
 
@@ -827,14 +832,25 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     React.useEffect(() => {
       if (!isWeb || !modal || !open || shouldHideParentSheet) return
 
+      const layer = {}
+      sheetEscapeLayers.push(layer)
+
       const onKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
-          state.setOpen(false)
+          // only the top-most open modal sheet responds so a nested sheet
+          // doesn't take its parent down with it
+          if (sheetEscapeLayers[sheetEscapeLayers.length - 1] === layer) {
+            state.setOpen(false)
+          }
         }
       }
 
       document.addEventListener('keydown', onKeyDown)
       return () => {
+        const index = sheetEscapeLayers.indexOf(layer)
+        if (index > -1) {
+          sheetEscapeLayers.splice(index, 1)
+        }
         document.removeEventListener('keydown', onKeyDown)
       }
     }, [modal, open, shouldHideParentSheet, state.setOpen])

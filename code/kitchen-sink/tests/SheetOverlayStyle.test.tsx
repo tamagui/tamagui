@@ -40,10 +40,13 @@ test('Sheet.Overlay updates caller props while rendered in the sheet root', asyn
   )
 
   await page.getByTestId('sheet-overlay-style-toggle').click()
-  await page.waitForTimeout(100)
 
+  // poll: the css driver transitions background-color, so a fixed wait can
+  // sample an intermediate color mid-transition
+  await expect
+    .poll(async () => (await overlayStyles(page)).backgroundColor, { timeout: 5000 })
+    .toBe('rgba(10, 120, 80, 0.35)')
   const updated = await overlayStyles(page)
-  expect(updated.backgroundColor).toBe('rgba(10, 120, 80, 0.35)')
   expect(updated.opacity).toBeCloseTo(0.61, 1)
   await expect(page.getByTestId('sheet-overlay-style-overlay-copy')).toHaveText(
     'alternate overlay props'
@@ -62,9 +65,7 @@ test('Escape closes modal sheets only by default', async ({ page }) => {
   })
 
   await page.keyboard.press('Escape')
-  await expect(page.getByTestId('sheet-escape-modal-state')).toHaveText(
-    'modal-closed'
-  )
+  await expect(page.getByTestId('sheet-escape-modal-state')).toHaveText('modal-closed')
 
   await page.getByTestId('sheet-escape-nonmodal-open').click()
   await expect(page.getByTestId('sheet-escape-nonmodal-state')).toHaveText(
