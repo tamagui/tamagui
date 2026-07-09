@@ -367,7 +367,7 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
         class="_dsp_contents  font_body"
       >
         <span
-          class="is_Spacer is_View _pe-none _w-t-space-tru101 _h-t-space-tru101 _miw-t-space-tru101 _mih-t-space-tru101"
+          class="is_Spacer is_View _pe-none _w-t-space-4 _h-t-space-4 _miw-t-space-4 _mih-t-space-4"
         />
         <span
           class="is_Spacer is_View _pe-none _fg-1 _fs-1 _fb-0px _w-10px _h-10px _miw-10px _mih-10px"
