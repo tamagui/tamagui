@@ -26,7 +26,7 @@ export const SheetScrollView = createRefComponent<
 >(
   (
     {
-      __scopeSheet,
+      scope,
       children,
       onScroll,
       scrollEnabled: scrollEnabledProp,
@@ -34,7 +34,7 @@ export const SheetScrollView = createRefComponent<
     }: SheetScopedProps<ScrollViewProps>,
     ref
   ) => {
-    const context = useSheetContext(SHEET_SCROLL_VIEW_NAME, __scopeSheet)
+    const context = useSheetContext(scope)
     const gestureContext = useGestureSheetContext()
     const { scrollBridge, setHasScrollView, hasFit, screenSize } = context
     const keyboardOccludedHeight = Math.max(0, context.keyboardOccludedHeight || 0)

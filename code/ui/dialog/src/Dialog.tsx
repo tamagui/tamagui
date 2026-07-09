@@ -171,7 +171,7 @@ export const DialogPortalFrame = styled(YStack, {
         position: 'absolute',
         inset: 0,
 
-        '$web': {
+        $web: {
           // undo dialog styles
           borderWidth: 0,
           backgroundColor: 'transparent',
@@ -1014,6 +1014,7 @@ const DialogSheetController = (
 
   return (
     <SheetController
+      scope={props.scope}
       onOpenChange={(val) => {
         if (isAdapted) {
           props.onOpenChange?.(val)

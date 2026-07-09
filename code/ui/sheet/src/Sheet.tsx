@@ -4,7 +4,6 @@ import { XStack, YStack } from '@tamagui/stacks'
 import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
 import { createSheet } from './createSheet'
 
-export { createSheetScope } from './SheetContext'
 export * from './types'
 
 /* -------------------------------------------------------------------------------------------------

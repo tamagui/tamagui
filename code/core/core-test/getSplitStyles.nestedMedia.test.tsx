@@ -79,7 +79,7 @@ describe('Nested media + platform queries', () => {
         {
           $xs: {
             backgroundColor: 'orange',
-            '$android': {
+            $android: {
               backgroundColor: 'yellow',
             },
           },
@@ -97,7 +97,7 @@ describe('Nested media + platform queries', () => {
         {
           $xs: {
             backgroundColor: 'orange',
-            '$ios': {
+            $ios: {
               backgroundColor: 'yellow',
             },
           },
@@ -115,7 +115,7 @@ describe('Nested media + platform queries', () => {
         {
           $xs: {
             backgroundColor: 'orange',
-            '$android': {
+            $android: {
               backgroundColor: 'yellow',
             },
           },
@@ -132,7 +132,7 @@ describe('Nested media + platform queries', () => {
     test('$android with nested $xs applies on Android when xs is active', () => {
       const result = getSplitStylesFor(
         {
-          '$android': {
+          $android: {
             backgroundColor: 'green',
             $xs: {
               backgroundColor: 'red',
@@ -150,7 +150,7 @@ describe('Nested media + platform queries', () => {
     test('$android with nested $xs does NOT apply when xs is inactive', () => {
       const result = getSplitStylesFor(
         {
-          '$android': {
+          $android: {
             backgroundColor: 'green',
             $xs: {
               backgroundColor: 'red',
@@ -168,7 +168,7 @@ describe('Nested media + platform queries', () => {
     test('$ios with nested $xs does NOT apply on Android', () => {
       const result = getSplitStylesFor(
         {
-          '$ios': {
+          $ios: {
             backgroundColor: 'green',
             $xs: {
               backgroundColor: 'red',
@@ -189,11 +189,11 @@ describe('Nested media + platform queries', () => {
         {
           $xs: {
             backgroundColor: 'orange',
-            '$android': {
+            $android: {
               backgroundColor: 'yellow',
             },
           },
-          '$android': {
+          $android: {
             backgroundColor: 'green',
             $xs: {
               backgroundColor: 'red',
@@ -214,11 +214,11 @@ describe('Nested media + platform queries', () => {
         {
           $xs: {
             opacity: 0.5,
-            '$android': {
+            $android: {
               zIndex: 5,
             },
           },
-          '$android': {
+          $android: {
             zIndex: 10,
             $xs: {
               flex: 1,
@@ -243,7 +243,7 @@ describe('Nested media + platform queries', () => {
       const result = getSplitStylesFor(
         {
           $xs: {
-            '$android': {
+            $android: {
               bg: 'yellow',
             },
           },
@@ -258,7 +258,7 @@ describe('Nested media + platform queries', () => {
     test('shorthands in nested media query are expanded correctly', () => {
       const result = getSplitStylesFor(
         {
-          '$android': {
+          $android: {
             $xs: {
               bg: 'red',
             },

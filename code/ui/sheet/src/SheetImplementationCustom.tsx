@@ -938,12 +938,6 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     const setHasScrollView = React.useCallback((val: boolean) => {
       hasScrollView.current = val
     }, [])
-    // const id = useId()
-    // const { AdaptProvider, when, children } = useAdaptParent({
-    //   scope: `${id}Sheet`,
-    //   portal: true,
-    // })
-
     let contents = (
       <LayoutMeasurementController disable={!open}>
         <ParentSheetContext.Provider value={nextParentContext}>
@@ -1024,7 +1018,6 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     )
 
     if (process.env.TAMAGUI_TARGET === 'native' && needsPortalRepropagation()) {
-      // TODO alongside sheet scope="" need to pass scope here
       const adaptContext = useAdaptContext()
       contents = (
         <ProvideAdaptContext {...adaptContext}>

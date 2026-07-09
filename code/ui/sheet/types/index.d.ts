@@ -1,5 +1,4 @@
 export * from './Sheet';
-export * from './useSheet';
 export * from './createSheet';
 export * from './SheetController';
 export * from './useSheetController';
@@ -9,5 +8,4 @@ export * from './SheetScrollView';
 export * from './nativeSheet';
 export * from './types';
 export * from './contexts';
-export { getGestureHandlerState as unstable_getSheetGestureHandlerState, isGestureHandlerEnabled as unstable_isSheetGestureHandlerEnabled, } from './gestureState';
 //# sourceMappingURL=index.d.ts.map
