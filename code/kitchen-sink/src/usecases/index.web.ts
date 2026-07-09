@@ -72,6 +72,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
   StyleValidation: () => require('./StyleValidation').StyleValidation,
+  FocusScopeNoFocusCase: () => require('./FocusScopeNoFocusCase').FocusScopeNoFocusCase,
   FocusVisibleButton: () => require('./FocusVisibleButton').FocusVisibleButton,
   FocusVisibleButtonPointer: () =>
     require('./FocusVisibleButtonPointer').FocusVisibleButtonPointer,

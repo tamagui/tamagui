@@ -18,6 +18,7 @@ Note that this is a web-only component, on native it is a no-op.
     'Trap focus within a container for modal-like behavior.',
     'Auto-focus on mount and return focus on unmount.',
     'Loop focus between first and last tabbable elements.',
+    'Zero focus mode via noFocus to make everything focus-inert.',
     'Prevent reflows during animations with focusOnIdle.',
   ]}
 />
@@ -78,6 +79,26 @@ export default () => (
       </Dialog.Content>
     </Dialog.Portal>
   </Dialog>
+)
+```
+
+## Zero Focus Mode
+
+Use `noFocus` to disallow focus entirely while the scope is active - focus can
+land neither inside nor outside the scope. Any element that receives focus is
+immediately blurred, so `document.activeElement` settles on `document.body`.
+This takes precedence over `trapped` and auto-focus behavior:
+
+```tsx
+import { Button, FocusScope, Input, XStack } from 'tamagui'
+
+export default () => (
+  <FocusScope noFocus>
+    <XStack space="$4">
+      <Input placeholder="Cannot be focused" />
+      <Button>Cannot be focused either</Button>
+    </XStack>
+  </FocusScope>
 )
 ```
 
@@ -203,6 +224,13 @@ export default () => (
         'When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus',
     },
     {
+      name: 'noFocus',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Zero focus mode: while active, focus is allowed neither inside nor outside the scope - anything that receives focus is immediately blurred. Takes precedence over trapped and auto-focus. Web only',
+    },
+    {
       name: 'focusOnIdle',
       type: 'boolean | number | { min?: number; max?: number }',
       default: 'false',
@@ -258,6 +286,12 @@ Provides context-based control over FocusScope behavior:
       type: 'boolean',
       description:
         'Override trapped state for all child FocusScope.Controller.Scope components',
+    },
+    {
+      name: 'noFocus',
+      type: 'boolean',
+      description:
+        'Override noFocus (zero focus mode) for all child FocusScope.Controller.Scope components',
     },
     {
       name: 'focusOnIdle',
