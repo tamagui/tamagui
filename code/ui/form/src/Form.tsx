@@ -1,5 +1,5 @@
 import type { ViewProps } from '@tamagui/core'
-import { View, createStyledContext, styled } from '@tamagui/core'
+import { createStyledHOC, View, createStyledContext, styled } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 
 const FORM_NAME = 'Form'
@@ -41,7 +41,7 @@ export interface FormTriggerProps extends ViewProps {
   scope?: string
 }
 
-export const FormTrigger = FormTriggerFrame.styleable<FormTriggerProps>(
+export const FormTrigger = createStyledHOC(FormTriggerFrame)<FormTriggerProps>(
   (props, forwardedRef) => {
     const { scope, children, onPress, ...triggerProps } = props
     const context = useFormContext(scope)
@@ -63,7 +63,7 @@ export const FormTrigger = FormTriggerFrame.styleable<FormTriggerProps>(
  * Form
  * -----------------------------------------------------------------------------------------------*/
 
-const FormComponent = FormFrame.styleable<FormExtraProps>(function Form(
+const FormComponent = createStyledHOC(FormFrame)<FormExtraProps>(function Form(
   { scope, onSubmit, ...props },
   ref
 ) {

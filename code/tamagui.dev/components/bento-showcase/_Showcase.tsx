@@ -19,6 +19,7 @@ import {
   XStack,
   YStack,
   createStyledContext,
+  createStyledHOC,
   useEvent,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
@@ -368,7 +369,7 @@ export const { Provider: PhoneScaleProvider, useStyledContext: usePhoneScale } =
     invertScale: 1.464,
   })
 
-export const ShowcaseChildWrapper = ScrollView.styleable((props, ref) => {
+export const ShowcaseChildWrapper = createStyledHOC(ScrollView)((props, ref) => {
   const { sm } = useGroupMedia('window')
 
   return (
@@ -391,7 +392,7 @@ export const ShowcaseChildWrapper = ScrollView.styleable((props, ref) => {
 type ResizableBoxExtraProps = {
   hideDragHandle?: boolean
 }
-const ResizableBox = XStack.styleable<ResizableBoxExtraProps>(
+const ResizableBox = createStyledHOC(XStack)<ResizableBoxExtraProps>(
   ({ children, hideDragHandle, ...rest }, ref) => {
     const [width, setWidth] = useState<number | string>('100%')
     const startX = useRef(null)
@@ -565,7 +566,7 @@ export const WithSize = ({ children }: { children: any }) => {
   return React.cloneElement(children, { size })
 }
 
-export const SizeController = XGroup.styleable((props, ref) => {
+export const SizeController = createStyledHOC(XGroup)((props, ref) => {
   const { size, sizes, setSize, showController } = useSize()
 
   if (!showController) return null

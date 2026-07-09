@@ -1,6 +1,6 @@
 import { AnimatePresence } from '@tamagui/animate-presence'
 import type { GetProps, NativePlatform, NativeValue, TamaguiElement } from '@tamagui/core'
-import { createRefComponent, styled, useEvent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent, styled, useEvent } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import { YStack } from '@tamagui/stacks'
 import { SizableText } from '@tamagui/text'
@@ -141,7 +141,7 @@ const ToastClose = createRefComponent<TamaguiElement, ToastCloseProps>(
  * Toast
  * -----------------------------------------------------------------------------------------------*/
 
-const ToastComponent = ToastImplFrame.styleable<ToastExtraProps>(
+const ToastComponent = createStyledHOC(ToastImplFrame)<ToastExtraProps>(
   function Toast(props, forwardedRef) {
     const { forceMount, open: openProp, defaultOpen, onOpenChange, ...toastProps } = props
     const [open, setOpen] = useControllableState({

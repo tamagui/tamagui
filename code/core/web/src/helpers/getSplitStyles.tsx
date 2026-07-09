@@ -1182,7 +1182,7 @@ export const getSplitStyles: StyleSplitter = (
 
         if (keyInit === 'disabled' && valInit === true) {
           viewProps['aria-disabled'] = true
-          // isInput: Input/TextArea wrap the real <input>/<textarea> in a styleable, so
+          // isInput: Input/TextArea wrap the real <input>/<textarea> in a styled HOC, so
           // elementType is the wrapper here - forward disabled down or it never reaches it
           if (
             isInput ||

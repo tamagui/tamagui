@@ -7,7 +7,7 @@ import type {
   ViewProps,
   ThemeValueFallback,
 } from '@tamagui/web'
-import { styled, usePropsAndStyle } from '@tamagui/web'
+import { createStyledHOC, styled, usePropsAndStyle } from '@tamagui/web'
 import type { FC } from 'react'
 import { Image as RNImage } from 'react-native'
 
@@ -54,7 +54,7 @@ let hasWarned = false
  * @summary An image is a component that displays an image.
  * @see — Docs https://tamagui.dev/ui/image
  */
-export const Image = StyledImage.styleable<ImageProps>((inProps, ref) => {
+export const Image = createStyledHOC(StyledImage)<ImageProps>((inProps, ref) => {
   const [props, style] = usePropsAndStyle(inProps)
   const { src, source, objectFit, ...rest } = props
 

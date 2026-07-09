@@ -125,7 +125,7 @@ declare const Accordion: ((props: ScopedProps<AccordionSingleProps | AccordionMu
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Item: import("@tamagui/core").RefComponent<(HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, AccordionItemProps>;
-    HeightAnimator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, {}>;
+    HeightAnimator: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {}>, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {}, {}>;
 };
 export { Accordion };
 export type { AccordionContentProps, AccordionHeaderProps, AccordionItemProps, AccordionMultipleProps, AccordionSingleProps, AccordionTriggerProps, };

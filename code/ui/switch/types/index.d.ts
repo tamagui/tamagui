@@ -69,7 +69,7 @@ export declare const Switch: import("react").FunctionComponent<Omit<import("@tam
     accept: {
         readonly activeStyle: "style";
     };
-}, "staticConfig" | "styleable"> & {
+}, "staticConfig"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/web").InferStyleProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
             elevation?: number | import("@tamagui/web").SizeTokens | undefined;

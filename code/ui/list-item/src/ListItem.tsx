@@ -5,7 +5,13 @@ import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { themeableVariantStyles, YStack } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
-import { createStyledContext, styled, useProps, View } from '@tamagui/web'
+import {
+  createStyledContext,
+  createStyledHOC,
+  styled,
+  useProps,
+  View,
+} from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 
 type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
@@ -198,7 +204,7 @@ const ListItemIcon = (props: {
   return getThemedIcon(children)
 }
 
-const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
+const ListItemComponent = createStyledHOC(ListItemFrame)<ListItemExtraProps>(
   function ListItem(propsIn, ref) {
     const processedProps = useProps(propsIn, {
       noNormalize: true,
