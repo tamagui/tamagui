@@ -6,7 +6,7 @@ import { config } from '@tamagui/config/v3'
 import { defaultConfig as configV4, shorthands } from '@tamagui/config/v4'
 import { defaultConfig } from '@tamagui/config/v5'
 import { tamaguiThemes } from '@tamagui/themes/v4'
-import { createTamagui, type CreateTamaguiProps } from 'tamagui'
+import { createTamagui } from 'tamagui'
 // TODO just move this into this folder
 import { config as tamaguiDevConfig } from '../../packages/tamagui-dev-config/src/index'
 import { themeDev } from '../../packages/tamagui-dev-config/src/theme.dev'
@@ -348,8 +348,17 @@ const v5config = search.includes('v5config')
 const tamav5Config = search.includes('tamav5config')
 const generatedV5 = search.includes('generatedV5')
 
+const withTrueToken = <Tokens extends { true?: any; $true?: any; 4?: any; $4?: any }>(
+  tokens: Tokens
+) => ({
+  ...tokens,
+  true: tokens.true ?? tokens.$true ?? tokens[4] ?? tokens.$4,
+})
+
 const tokens = {
   ...config.tokens,
+  size: withTrueToken(config.tokens.size),
+  space: withTrueToken(config.tokens.space),
   color: {
     ...config.tokens.color,
     testsomethingdifferent: '#ff0000',
