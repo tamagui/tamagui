@@ -595,6 +595,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         themeName,
         stateRef,
         styleState,
+        onDidAnimate,
       } = animationProps
 
       // State flags
@@ -630,6 +631,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       // Get sendExitComplete callback from presence
       const sendExitComplete = presence?.[1]
+      const onDidAnimateRef = useRef(onDidAnimate)
+      onDidAnimateRef.current = onDidAnimate
+      const isExitingJSRef = useRef(false)
+      isExitingJSRef.current = isExiting
 
       // =========================================================================
       // Exit cycle state for deterministic per-property completion tracking
@@ -663,15 +668,39 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
       )
 
+      // =========================================================================
+      // Enter cycle state for onDidAnimate
+      // =========================================================================
+      const enterCycleIdRef = useRef(0)
+      const pendingEnterKeysRef = useRef<Set<string>>(new Set())
+      const enterCompletedRef = useRef(false)
+
+      const markEnterKeyDone = useEvent((key: string, cycleId: number) => {
+        if (cycleId !== enterCycleIdRef.current) return
+        if (enterCompletedRef.current) return
+        if (isExitingJSRef.current) return
+
+        pendingEnterKeysRef.current.delete(key)
+
+        if (pendingEnterKeysRef.current.size === 0) {
+          enterCompletedRef.current = true
+          onDidAnimateRef.current?.()
+        }
+      })
+
       // SharedValue to pass exit state into worklet
       const isExitingRef = useSharedValue(isExiting)
       const exitCycleIdShared = useSharedValue(exitCycleIdRef.current)
+      const isCompletingEnterRef = useSharedValue(false)
+      const enterCycleIdShared = useSharedValue(enterCycleIdRef.current)
 
       // start new exit cycle only on transition INTO exiting (not every render while exiting)
       if (justStartedExiting) {
         exitCycleIdRef.current++
         exitCompletedRef.current = false
         pendingExitKeysRef.current.clear()
+        enterCycleIdRef.current++
+        pendingEnterKeysRef.current.clear()
       }
       // invalidate pending callbacks when exit is canceled/interrupted
       if (justStoppedExiting) {
@@ -683,7 +712,15 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       useIsomorphicLayoutEffect(() => {
         isExitingRef.value = isExiting
         exitCycleIdShared.value = exitCycleIdRef.current
-      }, [isExiting, exitCycleIdRef.current])
+        isCompletingEnterRef.value =
+          !isExiting && justFinishedEntering && Boolean(onDidAnimateRef.current)
+        enterCycleIdShared.value = enterCycleIdRef.current
+      }, [
+        isExiting,
+        justFinishedEntering,
+        exitCycleIdRef.current,
+        enterCycleIdRef.current,
+      ])
 
       // track previous exiting state
       React.useEffect(() => {
@@ -762,8 +799,6 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // unmounts immediately (the dialog-exit-snap). mirrored into a plain ref so the
       // emitter callback (which runs outside render) can read it.
       const pseudoActiveRef = useRef(false)
-      const isExitingJSRef = useRef(false)
-      isExitingJSRef.current = isExiting
       useIsomorphicLayoutEffect(() => {
         if (
           (isExiting || !pseudoActiveRef.current) &&
@@ -905,6 +940,39 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // Compute and register exit keys synchronously during render to avoid race conditions
       // This must happen BEFORE useAnimatedStyle runs so callbacks have a populated set
       const exitKeysRegistered = useRef(false)
+      const enterKeysRegistered = useRef(false)
+
+      if (!isExiting && justFinishedEntering && onDidAnimate) {
+        const enterKeys: string[] = []
+        const animateOnly = props.animateOnly as string[] | undefined
+
+        for (const key in animatedStyles) {
+          if (key === 'transform') continue
+          if (canAnimateProperty(key, animatedStyles[key], animateOnly)) {
+            enterKeys.push(key)
+          }
+        }
+
+        const transforms = animatedStyles.transform
+        if (transforms && Array.isArray(transforms)) {
+          for (const t of transforms) {
+            if (!t) continue
+            const tKey = Object.keys(t)[0]
+            if (tKey) {
+              if (animateOnly && !animateOnly.includes(tKey)) {
+                continue
+              }
+              enterKeys.push(`transform:${tKey}`)
+            }
+          }
+        }
+
+        enterCycleIdRef.current++
+        enterCompletedRef.current = false
+        pendingEnterKeysRef.current = new Set(enterKeys)
+        enterKeysRegistered.current = enterKeys.length > 0
+      }
+
       if (justStartedExiting && sendExitComplete) {
         const exitKeys: string[] = []
         const animateOnly = props.animateOnly as string[] | undefined
@@ -951,6 +1019,17 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
       }, [justStartedExiting, sendExitComplete])
 
+      React.useEffect(() => {
+        if (isExiting || !justFinishedEntering || !onDidAnimate) return
+
+        if (!enterKeysRegistered.current && pendingEnterKeysRef.current.size === 0) {
+          if (!enterCompletedRef.current) {
+            enterCompletedRef.current = true
+            onDidAnimateRef.current?.()
+          }
+        }
+      }, [isExiting, justFinishedEntering, onDidAnimate])
+
       // Create animated style
       const animatedStyle = useAnimatedStyle(
         () => {
@@ -981,6 +1060,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           // read exit state from shared values
           const currentlyExiting = isExitingRef.value
           const currentCycleId = exitCycleIdShared.value
+          const currentlyCompletingEnter = isCompletingEnterRef.value
+          const currentEnterCycleId = enterCycleIdShared.value
 
           // Include static values from emitter (for hover/press style changes)
           for (const key in staticValues) {
@@ -1002,6 +1083,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               callback = (finished) => {
                 'worklet'
                 runOnJS(markExitKeyDone)(capturedKey, capturedCycleId, finished ?? false)
+              }
+            } else if (currentlyCompletingEnter) {
+              const capturedKey = key
+              const capturedCycleId = currentEnterCycleId
+              callback = () => {
+                'worklet'
+                runOnJS(markEnterKeyDone)(capturedKey, capturedCycleId)
               }
             }
 
@@ -1041,6 +1129,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                       finished ?? false
                     )
                   }
+                } else if (currentlyCompletingEnter) {
+                  const capturedKey = `transform:${transformKey}`
+                  const capturedCycleId = currentEnterCycleId
+                  callback = () => {
+                    'worklet'
+                    runOnJS(markEnterKeyDone)(capturedKey, capturedCycleId)
+                  }
                 }
 
                 validTransforms.push({
@@ -1074,7 +1169,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               transformTargetsRef,
               isExitingRef,
               exitCycleIdShared,
+              isCompletingEnterRef,
+              enterCycleIdShared,
               markExitKeyDone,
+              markEnterKeyDone,
             ]
           : undefined
       )

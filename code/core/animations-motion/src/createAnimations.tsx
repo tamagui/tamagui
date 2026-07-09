@@ -103,6 +103,7 @@ type MotionRefs = {
   exitCompleteScheduled: boolean
   wasEntering: boolean
   wasDisabled: boolean
+  onDidAnimate: (() => void) | null | undefined
 }
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
@@ -132,8 +133,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         isHydratingGlobal = true
       }
 
-      const { props, style, componentState, stateRef, useStyleEmitter, presence } =
-        animationProps
+      const {
+        props,
+        style,
+        componentState,
+        stateRef,
+        useStyleEmitter,
+        presence,
+        onDidAnimate,
+      } = animationProps
 
       const animationKey = Array.isArray(props.transition)
         ? props.transition[0]
@@ -163,6 +171,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           exitCompleteScheduled: false,
           wasEntering: false,
           wasDisabled: false,
+          onDidAnimate: undefined,
         }
       }
 
@@ -188,6 +197,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       refs.current.isExiting = isExiting
       refs.current.sendExitComplete = sendExitComplete
       refs.current.animationState = animationState
+      refs.current.onDidAnimate = onDidAnimate
 
       // detect transition into exiting state
       const justStartedExiting = isExiting && !refs.current.wasExiting
@@ -240,6 +250,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // read current state from refs (closure variables can be stale)
         const isCurrentlyExiting = refs.current.isExiting
         const currentSendExitComplete = refs.current.sendExitComplete
+        const currentAnimationState = refs.current.animationState
+        const currentOnDidAnimate = refs.current.onDidAnimate
 
         // freeze exit target: once the first exit animation starts, subsequent
         // renders (e.g. direction change) should not reverse the exit animation.
@@ -454,6 +466,22 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             }
             // else: exit animation already scheduled via a previous flush,
             // its .finished promise will call sendExitComplete when done
+          } else if (currentAnimationState === 'enter' && currentOnDidAnimate) {
+            if (startedControls) {
+              startedControls.finished
+                .then(() => {
+                  if (!refs.current.disposed && refs.current.animationState === 'enter') {
+                    currentOnDidAnimate()
+                  }
+                })
+                .catch(() => {
+                  if (!refs.current.disposed && refs.current.animationState === 'enter') {
+                    currentOnDidAnimate()
+                  }
+                })
+            } else {
+              currentOnDidAnimate()
+            }
           }
         }
       }

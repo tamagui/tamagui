@@ -246,11 +246,14 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       componentState,
       stateRef,
       styleState,
+      onDidAnimate,
     }: any) => {
       const isHydrating = componentState.unmounted === true
       const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
+      const onDidAnimateRef = React.useRef(onDidAnimate)
+      onDidAnimateRef.current = onDidAnimate
 
       // Track if we just finished entering (transition from entering to not entering)
       // This is needed because the CSS transition happens on the render AFTER t_unmounted is removed
@@ -588,6 +591,92 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           node.style.transition = ''
         }
       }, [isExiting])
+
+      useIsomorphicLayoutEffect(() => {
+        const host = stateRef.current.host
+        if (!onDidAnimateRef.current || isExiting || !justFinishedEntering || !host) {
+          return
+        }
+
+        const completeEnter = () => {
+          onDidAnimateRef.current?.()
+        }
+
+        if (keys.length === 0 || !hasNormalizedAnimation(normalized)) {
+          completeEnter()
+          return
+        }
+
+        const animationConfigs = getAnimationConfigsForKeys(
+          normalized,
+          animations as Record<string, string>,
+          keys,
+          defaultAnimation
+        )
+        let maxDuration = 0
+        let hasAnimationConfig = false
+        for (const animationValue of animationConfigs.values()) {
+          if (animationValue) {
+            hasAnimationConfig = true
+            maxDuration = Math.max(maxDuration, extractDuration(animationValue))
+          }
+        }
+
+        if (!hasAnimationConfig) {
+          completeEnter()
+          return
+        }
+
+        const node = host as HTMLElement
+        const transitioningProps = new Set(keys)
+        const delay = normalized.delay ?? 0
+        let completedCount = 0
+        let completed = false
+
+        const finish = () => {
+          if (completed) return
+          completed = true
+          clearTimeout(timeoutId)
+          node.removeEventListener('transitionend', onFinishAnimation)
+          node.removeEventListener('transitioncancel', onCancelAnimation)
+          completeEnter()
+        }
+
+        const onFinishAnimation = (event: TransitionEvent) => {
+          if (event.target !== node) return
+
+          const eventProp = event.propertyName
+          if (
+            transitioningProps.has('all') ||
+            transitioningProps.has(eventProp) ||
+            eventProp === 'all' ||
+            (eventProp === 'transform' &&
+              [...transitioningProps].some((key) =>
+                TRANSFORM_KEYS.includes(key as any)
+              ))
+          ) {
+            completedCount++
+            if (completedCount >= transitioningProps.size) {
+              finish()
+            }
+          }
+        }
+
+        const onCancelAnimation = () => {
+          finish()
+        }
+
+        const timeoutId = setTimeout(finish, maxDuration + delay)
+
+        node.addEventListener('transitionend', onFinishAnimation)
+        node.addEventListener('transitioncancel', onCancelAnimation)
+
+        return () => {
+          clearTimeout(timeoutId)
+          node.removeEventListener('transitionend', onFinishAnimation)
+          node.removeEventListener('transitioncancel', onCancelAnimation)
+        }
+      }, [justFinishedEntering, isExiting])
 
       // tamagui doesnt even use animation output during hydration
       if (isHydrating) {
