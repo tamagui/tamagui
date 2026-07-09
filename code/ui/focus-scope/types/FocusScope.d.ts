@@ -5,7 +5,6 @@ declare const FocusScope: import("@tamagui/compose-refs").RefComponent<HTMLDivEl
 export declare function useFocusScope(props: FocusScopeProps, forwardedRef?: React.Ref<FocusScopeElement>): {
     ref: (node: HTMLElement) => void;
     onKeyDown: (event: React.KeyboardEvent) => void;
-    asChild?: boolean;
 };
 export { FocusScope };
 export type { FocusScopeProps };

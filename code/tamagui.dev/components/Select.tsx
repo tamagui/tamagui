@@ -24,8 +24,6 @@ const SelectComponent = (
     defaultOpen,
     onOpenChange,
     dir,
-    name,
-    autoComplete,
     size,
     children,
     onActiveChange,
@@ -43,8 +41,6 @@ const SelectComponent = (
     defaultOpen,
     onOpenChange,
     dir,
-    name,
-    autoComplete,
     size,
     renderValue,
   } as SelectProps
