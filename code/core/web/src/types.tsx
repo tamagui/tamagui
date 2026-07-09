@@ -1765,6 +1765,7 @@ export type SpaceTokens =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['space']>
   | ThemeValueFallbackSpace
+  | true
 
 // base color token strings (before opacity modifier)
 type ColorTokenBase =
@@ -1787,6 +1788,7 @@ export type ZIndexTokens =
   | GetTokenString<keyof Tokens['zIndex']>
   | ThemeValueFallbackZIndex
   | number
+  | true
 
 export type RadiusTokens =
   | SpecificTokensSpecial
@@ -1794,6 +1796,7 @@ export type RadiusTokens =
   | ThemeValueFallbackRadius
   | number
   | RemString
+  | true
 
 export type NonSpecificTokens =
   | GetTokenString<keyof Tokens['radius']>

@@ -3,7 +3,7 @@ import type { FontSizeTokens, GetProps, SizeTokens, ThemeableProps } from '@tama
 import type { FunctionComponent, JSX } from 'react';
 type ButtonVariant = 'outlined';
 export declare const ButtonContext: import("@tamagui/web").StyledContext<Partial<TextContextStyles & {
-    size: SizeTokens;
+    size: SizeTokens | true;
     variant?: ButtonVariant;
 }>>;
 type ButtonIconProps = {
@@ -289,7 +289,7 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
 declare function useButton<Props extends ButtonProps>({ textProps, ...propsIn }: Props, { Text }?: {
     Text: any;
 }): {
-    spaceSize: number | import("@tamagui/web").UnionableString | "unset" | import("@tamagui/web").Variable<any>;
+    spaceSize: number | true | import("@tamagui/web").UnionableString | "unset" | import("@tamagui/web").Variable<any>;
     isNested: boolean;
     props: Props;
 };

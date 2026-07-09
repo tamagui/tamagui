@@ -174,7 +174,7 @@ const Progress = withStaticProperties(
         value: valueProp,
         max: maxProp,
         getValueLabel = defaultGetValueLabel,
-        size = '$true',
+        size = true,
         ...progressProps
       } = props
 

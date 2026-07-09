@@ -454,8 +454,8 @@ const DialogContentFrame = styled(ThemeableStack, {
         backgroundColor: '$background',
         borderWidth: 1,
         borderColor: '$borderColor',
-        padding: '$true',
-        borderRadius: '$true',
+        padding: true,
+        borderRadius: true,
         elevate: true,
         // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
         pointerEvents: 'auto',
@@ -464,7 +464,7 @@ const DialogContentFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    size: true,
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })

@@ -276,7 +276,7 @@ export function createTabs<
       orientation = 'horizontal',
       dir,
       activationMode = 'manual',
-      size = '$true',
+      size = true,
       ...tabsProps
     } = props
     const direction = useDirection(dir)

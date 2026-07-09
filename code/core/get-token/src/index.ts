@@ -1,5 +1,5 @@
 import type { Variable, VariableValGeneric } from '@tamagui/web'
-import { getDefaultSizeToken, getTokens, isVariable } from '@tamagui/web'
+import { getDefaultSizeToken, getTokens } from '@tamagui/web'
 
 // technically number | undefined just for compat with the generic VariableVal
 type GetTokenBase = Variable | string | number | boolean | undefined | VariableValGeneric
@@ -39,12 +39,7 @@ export const stepTokenUpOrDown = (
   options: GetTokenOptions = defaultOptions
 ): Variable<number> => {
   const tokens = getTokens({ prefixed: true })[type] as Record<string, Variable>
-  const currentResolved =
-    current === true || current === '$true'
-      ? getDefaultSizeToken()
-      : isVariable(current) && current.key === '$true'
-        ? tokens[getDefaultSizeToken()] || current
-        : current
+  const currentResolved = current === true ? getDefaultSizeToken() : current
 
   if (!(type in cacheVariables)) {
     cacheKeys[type] = []
@@ -53,7 +48,6 @@ export const stepTokenUpOrDown = (
     cacheWholeVariables[type] = []
 
     const sorted = Object.keys(tokens)
-      .filter((key) => key !== '$true')
       .map((k) => tokens[k])
       .sort((a, b) => a.val - b.val)
 

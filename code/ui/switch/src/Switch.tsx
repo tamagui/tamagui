@@ -11,7 +11,7 @@ export const SwitchThumb = styled(
     variants: {
       unstyled: {
         false: {
-          size: '$true',
+          size: true,
           backgroundColor: '$background',
           borderRadius: 1000,
         },

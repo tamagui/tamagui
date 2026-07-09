@@ -251,8 +251,8 @@ The `useTabs` hook accepts these options and returns props/helpers:
     },
     {
       name: 'size',
-      type: 'SizeTokens',
-      default: "'$true'",
+      type: 'SizeTokens | true',
+      default: 'true',
       description: `Sets the size of the tab triggers. Passed down via context to all Tabs.Tab children.`,
     },
     {

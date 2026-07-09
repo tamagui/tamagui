@@ -9,7 +9,7 @@ export const SizableText = styled(Text, {
   variants: {
     unstyled: {
       false: {
-        size: '$true',
+        size: true,
         color: '$color',
       },
     },
@@ -39,9 +39,7 @@ SizableText.staticConfig.variants!.fontFamily = {
     const sizeProp = extras.props['size']
     const fontSizeProp = extras.props['fontSize']
     const size =
-      sizeProp === '$true' && fontSizeProp
-        ? fontSizeProp
-        : extras.props['size'] || '$true'
+      sizeProp === true && fontSizeProp ? fontSizeProp : (extras.props['size'] ?? true)
     return getFontSized(size, extras)
   },
 }

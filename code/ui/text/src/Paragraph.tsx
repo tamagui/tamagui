@@ -8,7 +8,7 @@ export const Paragraph = styled(SizableText, {
   render: 'p',
   userSelect: 'auto',
   color: '$color',
-  size: '$true',
+  size: true,
   whiteSpace: 'normal',
 })
 

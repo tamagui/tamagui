@@ -45,8 +45,8 @@ describe('getSplitStyles', () => {
   test(`default size markers resolve to native layout values`, () => {
     const direct = getSplitStylesFor(
       {
-        padding: '$true',
-        borderRadius: '$true',
+        padding: true,
+        borderRadius: true,
       },
       View,
       {
@@ -79,7 +79,7 @@ describe('getSplitStyles', () => {
 
     const spread = getSplitStylesFor(
       {
-        size: '$true',
+        size: true,
       },
       SpreadSizeView,
       {

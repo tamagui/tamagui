@@ -3,7 +3,7 @@ export declare const SwitchStyledContext: import("@tamagui/core").StyledContext<
     active?: boolean;
     disabled?: boolean;
     frameWidth?: number;
-    size?: SizeTokens;
+    size?: SizeTokens | number | true;
     unstyled?: boolean;
 }>;
 //# sourceMappingURL=StyledContext.d.ts.map

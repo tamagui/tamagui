@@ -42,14 +42,18 @@ test('true token keys error in development', () => {
       })
     ).toThrow(/tokens\.size\.true.*settings\.defaultSize/)
 
+    const prefixedTrueKey = `$${'true'}`
+
     expect(() =>
       createTokens({
         radius: {
           4: 9,
-          $true: 9,
+          [prefixedTrueKey]: 9,
         },
       })
-    ).toThrow(/tokens\.radius\.\$true.*settings\.defaultSize/)
+    ).toThrow(
+      new RegExp(`tokens\\.radius\\.\\${prefixedTrueKey}.*settings\\.defaultSize`)
+    )
   } finally {
     process.env.NODE_ENV = originalNodeEnv
   }

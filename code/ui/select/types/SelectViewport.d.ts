@@ -18,13 +18,13 @@ export declare const SelectViewport: import("@tamagui/core").TamaguiComponent<Om
     bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
 }>, "size" | "scope" | "unstyled" | "disableScroll"> & {
-    size?: import("@tamagui/core").SizeTokens;
+    size?: import("@tamagui/core").SizeTokens | true;
     disableScroll?: boolean;
     unstyled?: boolean;
 } & {
     scope?: import("./types").SelectScopes;
 }, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
-    size?: import("@tamagui/core").SizeTokens;
+    size?: import("@tamagui/core").SizeTokens | true;
     disableScroll?: boolean;
     unstyled?: boolean;
 } & {

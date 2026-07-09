@@ -21,7 +21,7 @@ export declare const Checkbox: import("react").FunctionComponent<Omit<import("@t
     sizeAdjust?: number;
     native?: import("@tamagui/helpers").NativeValue<"web">;
 } & {
-    size?: import("@tamagui/web").SizeTokens;
+    size?: import("@tamagui/web").SizeTokens | true;
     unstyled?: boolean;
 } & {
     activeStyle?: import("@tamagui/web").GetProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
@@ -64,7 +64,7 @@ export declare const Checkbox: import("react").FunctionComponent<Omit<import("@t
     sizeAdjust?: number;
     native?: import("@tamagui/helpers").NativeValue<"web">;
 } & {
-    size?: import("@tamagui/web").SizeTokens;
+    size?: import("@tamagui/web").SizeTokens | true;
     unstyled?: boolean;
 } & {
     activeStyle?: import("@tamagui/web").GetProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
@@ -92,7 +92,7 @@ export declare const Checkbox: import("react").FunctionComponent<Omit<import("@t
     sizeAdjust?: number;
     native?: import("@tamagui/helpers").NativeValue<"web">;
 } & {
-    size?: import("@tamagui/web").SizeTokens;
+    size?: import("@tamagui/web").SizeTokens | true;
     unstyled?: boolean;
 } & {
     activeStyle?: import("@tamagui/web").GetProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
@@ -155,7 +155,7 @@ export declare const Checkbox: import("react").FunctionComponent<Omit<import("@t
         sizeAdjust?: number;
         native?: import("@tamagui/helpers").NativeValue<"web">;
     } & {
-        size?: import("@tamagui/web").SizeTokens;
+        size?: import("@tamagui/web").SizeTokens | true;
         unstyled?: boolean;
     } & {
         activeStyle?: import("@tamagui/web").GetProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {
@@ -183,7 +183,7 @@ export declare const Checkbox: import("react").FunctionComponent<Omit<import("@t
         sizeAdjust?: number;
         native?: import("@tamagui/helpers").NativeValue<"web">;
     } & {
-        size?: import("@tamagui/web").SizeTokens;
+        size?: import("@tamagui/web").SizeTokens | true;
         unstyled?: boolean;
     } & {
         activeStyle?: import("@tamagui/web").GetProps<import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase & {

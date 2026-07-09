@@ -3,7 +3,7 @@ import type { GetProps, NativeValue, SizeTokens, ViewProps } from '@tamagui/core
 import React from 'react';
 import { CheckboxFrame, CheckboxIndicatorFrame } from './Checkbox';
 type CheckboxExpectingVariantProps = {
-    size?: SizeTokens;
+    size?: SizeTokens | true;
     unstyled?: boolean;
 };
 type CheckboxExtraProps = HeadlessCheckboxExtraProps & {

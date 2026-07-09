@@ -53,7 +53,7 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
           elevation="$0.5"
           opacity={1}
           pointerEvents="none"
-          paddingVertical={getSpace(tooltipProps.size || '$true', {
+          paddingVertical={getSpace(tooltipProps.size ?? true, {
             shift: -4,
           })}
           animateOnly={['transform', 'opacity']}

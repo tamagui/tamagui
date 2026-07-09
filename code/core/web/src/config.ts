@@ -90,7 +90,7 @@ export const resolveDefaultSizeToken = <Val>(
   val: Val,
   config?: DefaultSizeConfig | null
 ): Exclude<Val, true> | string => {
-  return val === true || val === '$true' ? getDefaultSizeToken(config) : (val as any)
+  return val === true ? getDefaultSizeToken(config) : (val as any)
 }
 
 export function getStyleCompat(): StyleCompat {

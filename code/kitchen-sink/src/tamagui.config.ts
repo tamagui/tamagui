@@ -348,17 +348,8 @@ const v5config = search.includes('v5config')
 const tamav5Config = search.includes('tamav5config')
 const generatedV5 = search.includes('generatedV5')
 
-const withTrueToken = <Tokens extends { true?: any; $true?: any; 4?: any; $4?: any }>(
-  tokens: Tokens
-) => ({
-  ...tokens,
-  true: tokens.true ?? tokens.$true ?? tokens[4] ?? tokens.$4,
-})
-
 const tokens = {
   ...config.tokens,
-  size: withTrueToken(config.tokens.size),
-  space: withTrueToken(config.tokens.space),
   color: {
     ...config.tokens.color,
     testsomethingdifferent: '#ff0000',

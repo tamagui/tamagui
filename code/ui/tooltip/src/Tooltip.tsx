@@ -56,7 +56,7 @@ const TooltipContent = createStyledHOC(PopperContentFrame)<TooltipContentProps>(
           backgroundColor: '$background',
           alignItems: 'center',
           pointerEvents: 'none',
-          size: '$true',
+          size: true,
         })}
         ref={ref}
         // zIndex from root Tooltip prop flows to portal
@@ -224,7 +224,7 @@ const TooltipComponent = createRefComponent(function Tooltip(
   const contentId = React.useId()
   const smallerSize = props.unstyled
     ? null
-    : getSize('$true', {
+    : getSize(true, {
         shift: -2,
         bounds: [0],
       })

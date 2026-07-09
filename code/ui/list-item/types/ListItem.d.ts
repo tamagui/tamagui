@@ -11,7 +11,7 @@ export type ListItemExtraProps = {
     scaleIcon?: number;
     title?: ReactNode;
     subTitle?: ReactNode;
-    iconSize?: SizeTokens;
+    iconSize?: SizeTokens | true;
     color?: ColorTokens | string;
 };
 export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps;
@@ -58,11 +58,11 @@ export declare const ListItem: FunctionComponent<Omit<import("@tamagui/web").Get
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
     Apply: import("react").Provider<{
-        size?: SizeTokens;
+        size?: SizeTokens | true;
         variant?: ListItemVariant;
         color?: ColorTokens | string;
     }> & import("react").ProviderExoticComponent<Partial<{
-        size?: SizeTokens;
+        size?: SizeTokens | true;
         variant?: ListItemVariant;
         color?: ColorTokens | string;
     }> & {
@@ -86,7 +86,7 @@ export declare const ListItem: FunctionComponent<Omit<import("@tamagui/web").Get
     }, import("@tamagui/web").StaticConfigPublic>;
     Icon: (props: {
         children: React.ReactNode;
-        size?: SizeTokens;
+        size?: SizeTokens | true;
         scaleIcon?: number;
     }) => any;
     Title: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {

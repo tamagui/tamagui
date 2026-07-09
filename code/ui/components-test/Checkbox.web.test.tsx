@@ -3,7 +3,7 @@ import 'vitest-axe/extend-expect'
 
 import { Checkbox } from '@tamagui/checkbox'
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { View, TamaguiProvider, createTamagui, getTokenValue } from '@tamagui/core'
+import { View, TamaguiProvider, createTamagui } from '@tamagui/core'
 import type { RenderResult } from '@testing-library/react'
 import { fireEvent, render } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vitest } from 'vitest'
@@ -44,15 +44,17 @@ describe('given a default Checkbox', () => {
   let indicator: HTMLElement | null
 
   beforeEach(() => {
-    rendered = render(<CheckboxTest scaleSize={0} size="$true" />)
+    rendered = render(<CheckboxTest scaleSize={0} size={true} />)
     checkbox = rendered.getByRole(CHECKBOX_ROLE)
     indicator = rendered.queryByTestId(INDICATOR_TEST_ID)
   })
 
   it('should have the correct width and height depending on the theme', async () => {
+    const defaultSizeValue = conf.tokensParsed.size[conf.settings.defaultSize].val
+
     expect(checkbox).toHaveStyle({
-      width: `${getTokenValue('$true', 'size')}px`,
-      height: `${getTokenValue('$true', 'size')}px`,
+      width: `${defaultSizeValue}px`,
+      height: `${defaultSizeValue}px`,
     })
   })
 

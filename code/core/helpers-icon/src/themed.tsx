@@ -75,7 +75,7 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
     const size =
       typeof props.size === 'string'
         ? getTokenValue(props.size as any, 'size')
-        : props.size || (styledContext.size === '$true' ? undefined : styledContext.size)
+        : (props.size ?? styledContext.size)
 
     const strokeWidth =
       typeof props.strokeWidth === 'string'

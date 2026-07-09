@@ -66,32 +66,10 @@ describe('getSplitStyles', () => {
     expect(seenSize).toBe('$4')
   })
 
-  test(`size spread variants resolve $true through settings.defaultSize`, () => {
-    let seenSize: unknown
-    const SizedView = styled(View, {
-      variants: {
-        size: {
-          '...size': (val) => {
-            seenSize = val
-            return {
-              width: val,
-            }
-          },
-        },
-      } as const,
-    })
-
-    simplifiedGetSplitStyles(SizedView, {
-      size: '$true',
-    })
-
-    expect(seenSize).toBe('$4')
-  })
-
-  test(`direct $true style tokens resolve through settings.defaultSize`, () => {
+  test(`direct true style tokens resolve through settings.defaultSize`, () => {
     const out = simplifiedGetSplitStyles(View, {
-      padding: '$true',
-      borderRadius: '$true',
+      padding: true,
+      borderRadius: true,
     })
 
     const byProp: Record<string, string> = {}

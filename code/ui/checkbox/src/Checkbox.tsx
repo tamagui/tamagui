@@ -50,7 +50,7 @@ export const CheckboxFrame = styled(
     variants: {
       unstyled: {
         false: {
-          size: '$true',
+          size: true,
           backgroundColor: '$background',
           alignItems: 'center',
           justifyContent: 'center',

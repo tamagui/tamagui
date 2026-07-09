@@ -109,7 +109,7 @@ export const Paragraph = styled(SizableText, {
   tag: 'p',
   userSelect: 'auto',
   color: '$color',
-  size: '$true',
+  size: true,
   whiteSpace: 'normal',
 })
 ```
@@ -219,8 +219,8 @@ Extends Text with the `size` prop for theme-aware font sizing.
     {
       name: 'size',
       required: false,
-      type: 'SizeTokens',
-      description: `Sets font size, line height, letter spacing, and font weight from your theme's font configuration. Accepts any size token (e.g., "$4", "$true").`,
+      type: 'SizeTokens | true',
+      description: `Sets font size, line height, letter spacing, and font weight from your theme's font configuration. Accepts any size token (e.g., "$4") or true for the default size.`,
     },
     {
       name: 'ellipsis',
@@ -246,8 +246,8 @@ Extends SizableText with semantic defaults. Renders as `<p>` on web, uses theme 
     {
       name: 'size',
       required: false,
-      type: 'SizeTokens',
-      default: "'$true'",
+      type: 'SizeTokens | true',
+      default: 'true',
       description: `Sets font size from your theme. Defaults to the theme's base size.`,
     },
     {

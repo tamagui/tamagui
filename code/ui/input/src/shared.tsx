@@ -6,7 +6,7 @@ import { getFontSized } from '@tamagui/get-font-sized'
 import { getSpace } from '@tamagui/get-token'
 
 export const defaultStyles = {
-  size: '$true',
+  size: true,
   fontFamily: '$body',
   borderWidth: 1,
   outlineWidth: 0,
@@ -34,10 +34,7 @@ export const defaultStyles = {
   },
 } as const
 
-export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
-  val = '$true',
-  extras
-) => {
+export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = true, extras) => {
   // Check for textarea mode via tag, rows, multiline, or numberOfLines
   if (
     extras.props.tag === 'textarea' ||
@@ -65,7 +62,7 @@ export const inputSizeVariant: SizeVariantSpreadFunction<any> = (
 }
 
 export const textAreaSizeVariant: SizeVariantSpreadFunction<any> = (
-  val = '$true',
+  val = true,
   extras
 ) => {
   const { props } = extras

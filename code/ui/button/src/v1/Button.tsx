@@ -22,7 +22,7 @@ type ButtonVariant = 'outlined'
 export const ButtonContext = createStyledContext<
   Partial<
     TextContextStyles & {
-      size: SizeTokens
+      size: SizeTokens | true
       variant?: ButtonVariant
     }
   >
@@ -98,7 +98,7 @@ const ButtonFrame = styled(ThemeableStack, {
         backgroundColor: 'transparent',
       },
       false: {
-        size: '$true',
+        size: true,
         justifyContent: 'center',
         alignItems: 'center',
         flexWrap: 'nowrap',
@@ -244,7 +244,7 @@ function useButton<Props extends ButtonProps>(
     ...restProps
   } = propsActive
 
-  const size = propsActive.size || (propsActive.unstyled ? undefined : '$true')
+  const size = propsActive.size ?? (propsActive.unstyled ? undefined : true)
 
   const color = propsActive.color as any
 

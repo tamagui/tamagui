@@ -462,7 +462,7 @@ function styled<
 //   } as const,
 
 //   defaultVariants: {
-//     size: '$true',
+//     size: true,
 //   },
 // })
 
@@ -503,7 +503,7 @@ function styled<
 // type Props = GetProps<typeof Test>
 
 // const y = <Test someting>sadad</Test>
-// const z = <Test3 someting="$true" ork>sadad</Test3>
+// const z = <Test3 someting ork>sadad</Test3>
 
 //
 // merges variant types properly:

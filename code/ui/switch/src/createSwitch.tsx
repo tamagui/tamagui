@@ -65,7 +65,7 @@ export function createSwitch<
         process.env.TAMAGUI_HEADLESS === '1'
           ? true
           : (unstyledProp ?? unstyledContext ?? false)
-      const size = sizeProp ?? sizeContext ?? '$true'
+      const size = sizeProp ?? sizeContext ?? true
       const initialChecked = React.useRef(active).current
       const initialWidth = getVariableValue(props.width || size, 'size')
       const [thumbWidth, setThumbWidth] = React.useState(
@@ -154,7 +154,7 @@ export function createSwitch<
       return (
         <>
           <SwitchStyledContext.Provider
-            size={styledContext.size ?? props.size ?? '$true'}
+            size={styledContext.size ?? props.size ?? true}
             unstyled={unstyled}
             active={checked}
             disabled={disabled}
@@ -167,7 +167,7 @@ export function createSwitch<
               theme={activeThemeProp ?? null}
               {...(isWeb && { type: 'button' })}
               {...(!unstyled && {
-                size: styledContext.size ?? props.size ?? '$true',
+                size: styledContext.size ?? props.size ?? true,
               })}
               unstyled={unstyled}
               {...props}

@@ -92,8 +92,8 @@ export const Frame = styled(YStack, {
       false: {
         flex: 1,
         backgroundColor: '$background',
-        borderTopLeftRadius: '$true',
-        borderTopRightRadius: '$true',
+        borderTopLeftRadius: true,
+        borderTopRightRadius: true,
         width: '100%',
         maxHeight: '100%',
         overflow: 'hidden',
