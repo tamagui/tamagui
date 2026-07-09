@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { isValidElement } from 'react'
 import { invariant } from '@tamagui/react-native-web-internals'
 import { ScrollView } from '../../../ScrollView'
 import { RefreshControl } from '../../../RefreshControl'
@@ -304,7 +305,15 @@ class VirtualizedList extends StateSafePureComponent {
     const itemCount = getItemCount(data)
 
     if (itemCount === 0) {
-      return ListEmptyComponent ? <ListEmptyComponent /> : null
+      if (!ListEmptyComponent) return null
+      // match react-native: ListEmptyComponent may be a component TYPE or an
+      // already-created element. rendering a bare element as <ListEmptyComponent />
+      // throws "element type is invalid", so pass an element through untouched.
+      return isValidElement(ListEmptyComponent) ? (
+        ListEmptyComponent
+      ) : (
+        <ListEmptyComponent />
+      )
     }
 
     return (
