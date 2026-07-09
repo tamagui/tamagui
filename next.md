@@ -33,6 +33,7 @@ v3 release plan:
   - simplify Select/ListItem where it directly helps perf or API clarity
   - migration note: Select's unused `name` and `autoComplete` props were removed; they never backed form or autofill behavior.
   - consider removing or simplifying `ThemeableStack` / `SizableStack`
+  - FocusScope now has `noFocus` zero-focus mode (nothing can hold focus inside or outside while active), flows through Dialog/Popover/Select via FocusScope.Controller
 
 - Adapt
   - making Adapt work however you want via render callback is a big win, basically a render callback that lets you decide how to render giving you the ressolved typed props. we could even de-couple any current native integrations so we only have a few recommended ones we wexport at like @tamagui/sheet/adapt-to-[some-native-library] for example
