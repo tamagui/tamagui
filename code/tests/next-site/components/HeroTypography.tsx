@@ -61,7 +61,7 @@ export const HeroTypography = memo(() => {
             $sm={{ y: 0, miw: '110%', ai: 'center', x: 0, scale: 0.9 }}
           >
             <YStack ai="flex-end" h={270}>
-              <AnimatePresence exitBeforeEnter>
+              <AnimatePresence mode="wait">
                 <AnimatedHeading
                   debug
                   key={`${family}1`}

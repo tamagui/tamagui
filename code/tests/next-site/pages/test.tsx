@@ -15,7 +15,7 @@ export default () => {
         }}
       /> */}
 
-      <AnimatePresence exitBeforeEnter>
+      <AnimatePresence mode="wait">
         <AnimatedHeading family="mono" index={0} Component={H1} color="$red10">
           Swappable
         </AnimatedHeading>
