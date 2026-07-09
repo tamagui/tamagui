@@ -7,7 +7,7 @@ v3 release plan:
   - clean out old configs and compatibility paths, at least v1-v3
 
 - simplify theme model
-  - remove component themes / remove `name` from `styled()`
+  - remove component themes / remove `name` from `styled()` (or just make not theme-related)
   - component example just show using theme="surface1" for example
   - remove `inverse` in favor of SSR-safe inverse sub-themes (accent already is)
   - maybe make theme builder have easy "inverse" optoin so accent can be something else
@@ -35,6 +35,8 @@ v3 release plan:
   - remove RN entirely from web (eject input, scrollview)
 
 - consider
+  - compound variants?
+  - simplify functional variants
   - conditional values or value objects
   - see v3 cleanups
   - native can have a non-signal mode for faster initial render
