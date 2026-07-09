@@ -59,6 +59,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   DismissLayerStackingCase: () =>
     require('./DismissLayerStackingCase').DismissLayerStackingCase,
   DialogOpenControlled: () => require('./DialogOpenControlled').DialogOpenControlled,
+  DialogPresenceCompletionCase: () =>
+    require('./DialogPresenceCompletionCase').DialogPresenceCompletionCase,
   DialogPointerEventsCase: () =>
     require('./DialogPointerEventsCase').DialogPointerEventsCase,
   DialogScopedCase: () => require('./DialogScopedCase').DialogScopedCase,

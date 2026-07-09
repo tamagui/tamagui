@@ -74,6 +74,8 @@ type DialogContextValue = {
   forceMount?: boolean
   keepChildrenMounted?: boolean
   disableRemoveScroll?: boolean
+  hasPresentParts: boolean
+  setPartPresence(id: string, present: boolean): void
   triggerRef: React.RefObject<TamaguiElement | null>
   contentRef: React.RefObject<TamaguiElement | null>
   contentId: string
@@ -223,15 +225,10 @@ const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
     const ref = composeRefs(dialogRef, forwardedRef)
 
     const context = useDialogContext(scope)
+    const portalContext = forceMount ? { ...context, forceMount: true } : context
     const keepMounted = forceMount || context.keepChildrenMounted
     const isAdapted = useAdaptIsActive(context.adaptScope)
-    const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
-
-    if (context.open && isFullyHidden) {
-      setIsFullyHidden(false)
-    }
-
-    const isVisible = context.open ? true : !isFullyHidden
+    const isVisible = context.open || context.hasPresentParts
 
     if (isWeb) {
       useIsomorphicLayoutEffect(() => {
@@ -246,41 +243,18 @@ const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
       }, [isVisible])
     }
 
-    const onAnimationCompleteRef = React.useRef(context.onAnimationComplete)
-    onAnimationCompleteRef.current = context.onAnimationComplete
-
-    const handleExitComplete = React.useCallback(() => {
-      setIsFullyHidden(true)
-      onAnimationCompleteRef.current?.({ open: false })
-    }, [])
-
-    React.useEffect(() => {
-      if (context.open && !isAdapted && onAnimationCompleteRef.current) {
-        const tm = setTimeout(() => {
-          onAnimationCompleteRef.current?.({ open: true })
-        }, 350)
-        return () => clearTimeout(tm)
-      }
-    }, [context.open, isAdapted])
-
     const zIndex = getExpandedShorthand('zIndex', props)
 
     const contents = (
       <StackZIndexContext zIndex={resolveViewZIndex(zIndex)}>
-        <Animate
-          type="presence"
-          present={Boolean(context.open)}
-          keepChildrenMounted={Boolean(keepMounted)}
-          onExitComplete={handleExitComplete}
-          passThrough={isAdapted}
-        >
+        <DialogProvider scope={context.dialogScope} {...portalContext}>
           {children}
-        </Animate>
+        </DialogProvider>
       </StackZIndexContext>
     )
 
     const framedContents =
-      isFullyHidden && !keepMounted && !isAdapted ? null : (
+      !isVisible && !keepMounted && !isAdapted ? null : (
         <LayoutMeasurementController disable={!context.open}>
           <DialogPortalFrame
             ref={ref}
@@ -314,7 +288,7 @@ const DialogPortal = createRefComponent<TamaguiElement, DialogPortalProps>(
     return isAdapted ? (
       framedContents
     ) : (
-      <DialogPortalItem context={context}>{framedContents}</DialogPortalItem>
+      <DialogPortalItem context={portalContext}>{framedContents}</DialogPortalItem>
     )
   }
 )
@@ -333,6 +307,77 @@ const PassthroughTheme = ({
       {children}
     </Theme>
   )
+}
+
+function useDialogAnimationReporter(context: DialogContextValue) {
+  const onAnimationCompleteRef = React.useRef(context.onAnimationComplete)
+  onAnimationCompleteRef.current = context.onAnimationComplete
+
+  const openRef = React.useRef(context.open)
+  const pendingTransitionRef = React.useRef<boolean | null>(context.open ? true : null)
+
+  if (openRef.current !== context.open) {
+    openRef.current = context.open
+    pendingTransitionRef.current = context.open
+  }
+
+  const reportComplete = React.useCallback((open: boolean) => {
+    if (pendingTransitionRef.current !== open) return
+    if (openRef.current !== open) return
+
+    pendingTransitionRef.current = null
+    onAnimationCompleteRef.current?.({ open })
+  }, [])
+
+  return React.useMemo(
+    () => ({
+      onEnterComplete: () => reportComplete(true),
+      onExitComplete: () => reportComplete(false),
+    }),
+    [reportComplete]
+  )
+}
+
+function useDialogPartPresence(
+  context: DialogContextValue,
+  options: {
+    disabled?: boolean
+    forceMount?: boolean
+    id: string
+    onExitComplete?: () => void
+  }
+) {
+  const [isFullyHidden, setIsFullyHidden] = React.useState(!context.open)
+  const reactId = React.useId()
+  const partPresenceId = `${context.contentId}-${options.id}-${reactId}`
+  const keepMounted = options.forceMount || context.keepChildrenMounted
+  const isPresent = context.open || !isFullyHidden
+
+  useIsomorphicLayoutEffect(() => {
+    if (context.open && isFullyHidden) {
+      setIsFullyHidden(false)
+    }
+  }, [context.open, isFullyHidden])
+
+  useIsomorphicLayoutEffect(() => {
+    if (options.disabled) return
+
+    context.setPartPresence(partPresenceId, isPresent)
+    return () => {
+      context.setPartPresence(partPresenceId, false)
+    }
+  }, [context.setPartPresence, isPresent, options.disabled, partPresenceId])
+
+  const onExitComplete = React.useCallback(() => {
+    setIsFullyHidden(true)
+    options.onExitComplete?.()
+  }, [options.onExitComplete])
+
+  return {
+    keepMounted,
+    onExitComplete,
+    shouldRender: Boolean(keepMounted || context.open || !isFullyHidden),
+  }
 }
 
 /* -------------------------------------------------------------------------------------------------
@@ -385,23 +430,39 @@ const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProp
     const context = useDialogContext(scope)
     const { forceMount = context.forceMount, ...overlayProps } = props
     const isAdapted = useAdaptIsActive(context.adaptScope)
+    const presence = useDialogPartPresence(context, {
+      disabled: isAdapted,
+      forceMount,
+      id: 'overlay',
+    })
 
-    if (!forceMount) {
-      if (!context.modal || isAdapted) {
-        return null
-      }
+    if (!forceMount && isAdapted) {
+      return null
+    }
+
+    if (!presence.shouldRender) {
+      return null
     }
 
     // Make sure `Content` is scrollable even when it doesn't live inside `RemoveScroll`
     // ie. when `Overlay` and `Content` are siblings
     return (
-      <DialogOverlayFrame
-        data-state={getState(context.open)}
-        // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
-        pointerEvents={context.open ? 'auto' : 'none'}
-        {...overlayProps}
-        ref={forwardedRef}
-      />
+      <Animate
+        type="presence"
+        present={Boolean(context.open)}
+        keepChildrenMounted={Boolean(presence.keepMounted)}
+        onExitComplete={presence.onExitComplete}
+        passThrough={isAdapted}
+      >
+        <DialogOverlayFrame
+          key={`${context.contentId}-overlay`}
+          data-state={getState(context.open)}
+          // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
+          pointerEvents={context.open ? 'auto' : 'none'}
+          {...overlayProps}
+          ref={forwardedRef}
+        />
+      </Animate>
     )
   }
 )
@@ -448,27 +509,78 @@ type DialogContentProps = DialogContentFrameProps & DialogContentExtraProps
 const DialogContent = createStyledHOC(DialogContentFrame)<DialogContentExtraProps>(
   function DialogContent({ scope, ...props }, forwardedRef) {
     const context = useDialogContext(scope)
+    const isAdapted = useAdaptIsActive(context.adaptScope)
+    const reporter = useDialogAnimationReporter(context)
+    const onDidAnimateProp = props.onDidAnimate
+    const onDidAnimate = React.useCallback(() => {
+      reporter.onEnterComplete()
+      onDidAnimateProp?.()
+    }, [reporter.onEnterComplete, onDidAnimateProp])
+    const presence = useDialogPartPresence(context, {
+      disabled: isAdapted,
+      forceMount: context.forceMount,
+      id: 'content',
+      onExitComplete: reporter.onExitComplete,
+    })
 
     const contents = (
       <>
         {context.modal ? (
-          <DialogContentModal context={context} {...props} ref={forwardedRef} />
+          <DialogContentModal
+            context={context}
+            {...props}
+            onDidAnimate={onDidAnimate}
+            ref={forwardedRef}
+          />
         ) : (
-          <DialogContentNonModal context={context} {...props} ref={forwardedRef} />
+          <DialogContentNonModal
+            context={context}
+            {...props}
+            onDidAnimate={onDidAnimate}
+            ref={forwardedRef}
+          />
         )}
       </>
     )
 
-    if (!isWeb || context.disableRemoveScroll) {
-      return contents
+    if (isAdapted) {
+      if (!isWeb || context.disableRemoveScroll) {
+        return contents
+      }
+
+      return (
+        <RemoveScroll enabled={context.open && context.modal}>
+          <div data-remove-scroll-container className="_dsp_contents">
+            {contents}
+          </div>
+        </RemoveScroll>
+      )
     }
 
+    if (!presence.shouldRender) {
+      return null
+    }
+
+    const content =
+      !isWeb || context.disableRemoveScroll ? (
+        contents
+      ) : (
+        <RemoveScroll enabled={context.open && context.modal}>
+          <div data-remove-scroll-container className="_dsp_contents">
+            {contents}
+          </div>
+        </RemoveScroll>
+      )
+
     return (
-      <RemoveScroll enabled={context.open && context.modal}>
-        <div data-remove-scroll-container className="_dsp_contents">
-          {contents}
-        </div>
-      </RemoveScroll>
+      <Animate
+        type="presence"
+        present={Boolean(context.open)}
+        keepChildrenMounted={Boolean(presence.keepMounted)}
+        onExitComplete={presence.onExitComplete}
+      >
+        <React.Fragment key={context.contentId}>{content}</React.Fragment>
+      </Animate>
     )
   }
 )
@@ -594,6 +706,7 @@ type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
   onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
 
   context: DialogContextValue
+  onDidAnimate?: () => void
 }
 
 type DialogContentImplProps = DialogContentFrameProps & DialogContentImplExtraProps
@@ -610,6 +723,7 @@ const DialogContentImpl = createRefComponent<TamaguiElement, DialogContentImplPr
       onFocusOutside,
       onInteractOutside,
       context,
+      onDidAnimate,
       ...contentProps
     } = props
 
@@ -645,6 +759,7 @@ const DialogContentImpl = createRefComponent<TamaguiElement, DialogContentImplPr
         data-state={getState(context.open)}
         // allow clicking through content during exit animation
         pointerEvents={context.open ? 'auto' : 'none'}
+        onDidAnimate={onDidAnimate}
         {...contentProps}
       />
     )
@@ -874,6 +989,8 @@ const Dialog = withStaticProperties(
 
     const triggerRef = React.useRef<TamaguiElement>(null)
     const contentRef = React.useRef<TamaguiElement>(null)
+    const presentPartIdsRef = React.useRef(new Set<string>())
+    const [presentPartCount, setPresentPartCount] = React.useState(0)
 
     const [open, setOpen] = useControllableState({
       prop: openProp,
@@ -886,6 +1003,19 @@ const Dialog = withStaticProperties(
     }, [setOpen])
 
     const adaptScope = `DialogAdapt${scope}`
+
+    const setPartPresence = React.useCallback((id: string, present: boolean) => {
+      const presentPartIds = presentPartIdsRef.current
+      const hasPart = presentPartIds.has(id)
+
+      if (present && !hasPart) {
+        presentPartIds.add(id)
+        setPresentPartCount(presentPartIds.size)
+      } else if (!present && hasPart) {
+        presentPartIds.delete(id)
+        setPresentPartCount(presentPartIds.size)
+      }
+    }, [])
 
     const context = {
       dialogScope: scope,
@@ -901,6 +1031,8 @@ const Dialog = withStaticProperties(
       modal,
       keepChildrenMounted,
       disableRemoveScroll,
+      hasPresentParts: presentPartCount > 0,
+      setPartPresence,
       onAnimationComplete,
     } satisfies DialogContextValue
 

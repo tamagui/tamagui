@@ -34,6 +34,8 @@ type DialogContextValue = {
     forceMount?: boolean;
     keepChildrenMounted?: boolean;
     disableRemoveScroll?: boolean;
+    hasPresentParts: boolean;
+    setPartPresence(id: string, present: boolean): void;
     triggerRef: React.RefObject<TamaguiElement | null>;
     contentRef: React.RefObject<TamaguiElement | null>;
     contentId: string;
@@ -170,6 +172,7 @@ type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
      */
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
     context: DialogContextValue;
+    onDidAnimate?: () => void;
 };
 type DialogContentImplProps = DialogContentFrameProps & DialogContentImplExtraProps;
 declare const DialogTitleFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
