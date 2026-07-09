@@ -312,7 +312,7 @@ export const SliderTrackFrame = styled(SliderFrame, {
       false: {
         height: '100%',
         width: '100%',
-        backgroundColor: '$background',
+        backgroundColor: '$backgroundPress',
         position: 'relative',
         borderRadius: 100_000,
         overflow: 'hidden',
@@ -354,7 +354,7 @@ export const SliderActiveFrame = styled(SliderFrame, {
   variants: {
     unstyled: {
       false: {
-        backgroundColor: '$background',
+        backgroundColor: '$color',
         borderRadius: 100_000,
       },
     },
