@@ -19,7 +19,13 @@ export const useSheetOpenState = (props: SheetProps) => {
   // can register through useAdaptTarget().
   const isHidden = shouldUseAdapt ? !adaptContext.active : controllerIsHidden
   const wasHiddenRef = React.useRef(isHidden)
-  const controllerOpen = shouldUseAdapt ? adaptContext.open : legacyController?.open
+  // when the adapt target is exiting (media flipped off while the dialog stays
+  // open), Adapt keeps `active` true so the sheet stays mounted, and signals
+  // the close through handoff.hidden: drive the sheet's open state to false so
+  // it plays its exit animation and reports onAnimationComplete back to Adapt
+  const controllerOpen = shouldUseAdapt
+    ? Boolean(adaptContext.open) && !adaptContext.handoff.hidden
+    : legacyController?.open
   const localSkipNextAnimation = Boolean(
     wasHiddenRef.current && !isHidden && controllerOpen
   )
