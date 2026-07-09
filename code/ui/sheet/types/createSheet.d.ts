@@ -11,7 +11,7 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     Handle: H;
     Frame: F;
     Overlay: O;
-}): ((props: {
+}): ((props: Omit<{
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: import("react").Dispatch<import("react").SetStateAction<boolean>> | ((open: boolean) => void);
@@ -24,7 +24,6 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     dismissOnOverlayPress?: boolean;
     dismissOnSnapToBottom?: boolean;
     disableRemoveScroll?: boolean;
-    forceRemoveScrollEnabled?: boolean;
     transitionConfig?: import("@tamagui/core").AnimatedNumberStrategy;
     preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;
@@ -40,8 +39,8 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     onAnimationComplete?: (info: {
         open: boolean;
     }) => void;
-} & {
-    __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+}, "scope"> & {
+    scope?: import("./types").SheetScopes;
 } & import("@tamagui/compose-refs").RefProp<RNView>) => ReactNode) & {
     displayName?: string;
     propTypes?: any;
@@ -78,12 +77,12 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
         } & {
             ref?: Ref<RNView>;
         }>) => ReactNode;
-        Overlay: TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        }, any, any, any, SharedSheetProps, {}> | TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-        }, any, {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+        Overlay: TamaguiComponent<Omit<BaseProps, "scope"> & Omit<{}, "scope"> & {
+            scope?: import("./types").SheetScopes;
+        }, any, any, any, SharedSheetProps, {}> | TamaguiComponent<Omit<BaseProps, "scope"> & Omit<{}, "scope"> & {
+            scope?: import("./types").SheetScopes;
+        }, any, Omit<{}, "scope"> & {
+            scope?: import("./types").SheetScopes;
         }, {}, {}, {}>;
         Handle: TamaguiComponent<any, any, any, any, SharedSheetProps, {}> | TamaguiComponent<any, any, any, {}, {}, {}>;
         ScrollView: import("@tamagui/compose-refs").RefComponent<import("react-native").ScrollView, import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase & {
@@ -123,12 +122,12 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     } & {
         ref?: Ref<RNView>;
     }>) => ReactNode;
-    Overlay: TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
-        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-    }, any, any, any, SharedSheetProps, {}> | TamaguiComponent<Omit<BaseProps, "__scopeSheet"> & {
-        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
-    }, any, {
-        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+    Overlay: TamaguiComponent<Omit<BaseProps, "scope"> & Omit<{}, "scope"> & {
+        scope?: import("./types").SheetScopes;
+    }, any, any, any, SharedSheetProps, {}> | TamaguiComponent<Omit<BaseProps, "scope"> & Omit<{}, "scope"> & {
+        scope?: import("./types").SheetScopes;
+    }, any, Omit<{}, "scope"> & {
+        scope?: import("./types").SheetScopes;
     }, {}, {}, {}>;
     Handle: TamaguiComponent<any, any, any, any, SharedSheetProps, {}> | TamaguiComponent<any, any, any, {}, {}, {}>;
     ScrollView: import("@tamagui/compose-refs").RefComponent<import("react-native").ScrollView, import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase & {

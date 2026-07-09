@@ -7,8 +7,6 @@ import type { SheetProps } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
-// import { useSheetSnapPoints } from './useSheetSnapPoints'
-
 type SheetNativePlatforms = 'ios'
 
 const nativeSheets: Record<SheetNativePlatforms, FunctionComponent<SheetProps> | null> = {
@@ -29,8 +27,6 @@ export function setupNativeSheet(
     nativeSheets[platform] = (props: SheetProps) => {
       const state = useSheetOpenState(props)
       const providerProps = useSheetProviderProps(props, state)
-      // const { position } = providerProps
-      // const { positions } = useSheetSnapPoints(providerProps)
 
       const { open, setOpen } = state
       const ref = useRef<{
@@ -50,12 +46,6 @@ export function setupNativeSheet(
         props.onOpenChange?.(open)
         setOpen(next)
       }
-
-      // modalContentPreferredContentSize={{
-      //   mode: 'percent',
-      //   percentWidth: '100%',
-      //   percentHeight:
-      // }}
 
       return (
         <>

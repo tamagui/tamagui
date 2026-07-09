@@ -1173,6 +1173,7 @@ const PopoverSheetController = ({
 
   return (
     <SheetController
+      scope={scope}
       onOpenChange={(val: boolean) => {
         if (getShowSheet()) {
           props.onOpenChange?.(val)

@@ -17,7 +17,6 @@ import type { FunctionComponent, ReactNode, Ref } from 'react'
 import { memo, useMemo, useEffect, useRef } from 'react'
 import type { View as RNView } from 'react-native'
 import { Platform } from 'react-native'
-import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
 import { getNativeSheet } from './nativeSheet'
 import { useSheetContext } from './SheetContext'
 import { SheetImplementationCustom } from './SheetImplementationCustom'
@@ -42,10 +41,10 @@ export function createSheet<
 >({ Handle, Frame, Overlay }: { Handle: H; Frame: F; Overlay: O }) {
   const SheetHandle = Handle.styleable<any>(
     (
-      { __scopeSheet, ...props }: SheetScopedProps<SheetStyledComponent>,
+      { scope, ...props }: SheetScopedProps<SheetStyledComponent>,
       forwardedRef
     ) => {
-      const context = useSheetContext(SHEET_HANDLE_NAME, __scopeSheet)
+      const context = useSheetContext(scope)
       const composedRef = useComposedRefs<TamaguiElement>(context.handleRef, forwardedRef)
 
       // track if sheet was being dragged to prevent onPress toggle after drag
@@ -97,8 +96,8 @@ export function createSheet<
    * -----------------------------------------------------------------------------------------------*/
 
   const SheetOverlay = Overlay.styleable<SheetScopedProps<{}>>((propsIn, ref) => {
-    const { __scopeSheet, ...props } = propsIn
-    const context = useSheetContext(SHEET_OVERLAY_NAME, __scopeSheet)
+    const { scope, ...props } = propsIn
+    const context = useSheetContext(scope)
 
     // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
     // so we just pass it up to context
@@ -155,7 +154,7 @@ export function createSheet<
   const SheetFrame = Frame.styleable<SheetProps & ExtraFrameProps>(
     (
       {
-        __scopeSheet,
+        scope,
         adjustPaddingForOffscreenContent,
         disableHideBottomOverflow,
         children,
@@ -163,7 +162,7 @@ export function createSheet<
       },
       forwardedRef
     ) => {
-      const context = useSheetContext(SHEET_NAME, __scopeSheet)
+      const context = useSheetContext(scope)
       const { hasFit, disableRemoveScroll, frameSize, contentRef, open } = context
       const composedContentRef = useComposedRefs(forwardedRef, contentRef)
       const offscreenSize = useSheetOffscreenSize(context)
@@ -265,7 +264,7 @@ export function createSheet<
 
   const Sheet = createRefComponent<RNView, SheetProps>(function Sheet(props, ref) {
     const hydrated = useDidFinishSSR()
-    const { isShowingNonSheet } = useSheetController()
+    const { isShowingNonSheet } = useSheetController(props.scope)
 
     let SheetImplementation = SheetImplementationCustom
 

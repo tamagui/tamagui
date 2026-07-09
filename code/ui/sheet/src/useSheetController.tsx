@@ -1,7 +1,10 @@
-import React from 'react'
+import type React from 'react'
+import { createStyledContext, type StyledContext } from '@tamagui/core'
 
-export const useSheetController = () => {
-  const controller = React.useContext(SheetControllerContext)
+export const useSheetController = (scope?: string) => {
+  const controller = SheetControllerContext.useStyledContext(scope) as
+    | SheetControllerContextValue
+    | null
   const isHidden = controller?.hidden
   const isShowingNonSheet = isHidden && controller?.open
   return {
@@ -12,8 +15,11 @@ export const useSheetController = () => {
   }
 }
 
-export const SheetControllerContext =
-  React.createContext<SheetControllerContextValue | null>(null)
+export const SheetControllerContext = createStyledContext<SheetControllerContextValue>(
+  null as any,
+  'SheetController__'
+) as StyledContext<SheetControllerContextValue> &
+  React.Context<SheetControllerContextValue | null>
 
 export type SheetControllerContextValue = {
   id?: string

@@ -4,7 +4,7 @@ import type { SheetProps } from './types'
 import { useSheetController } from './useSheetController'
 
 export const useSheetOpenState = (props: SheetProps) => {
-  const { isHidden, controller } = useSheetController()
+  const { isHidden, controller } = useSheetController(props.scope)
 
   const onOpenChangeInternal = (val: boolean) => {
     controller?.onOpenChange?.(val)

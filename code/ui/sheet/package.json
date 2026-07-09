@@ -8,13 +8,6 @@
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "setup-gesture-handler": [
-        "./types/setupGestureHandler.d.ts"
-      ]
-    }
-  },
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -34,15 +27,6 @@
       "import": "./dist/esm/controller.mjs",
       "require": "./dist/cjs/controller.cjs",
       "default": "./dist/esm/controller.mjs"
-    },
-    "./setup-gesture-handler": {
-      "types": "./types/setupGestureHandler.d.ts",
-      "react-native": "./dist/esm/setupGestureHandler.native.js",
-      "browser": "./dist/esm/setupGestureHandler.mjs",
-      "module": "./dist/esm/setupGestureHandler.mjs",
-      "import": "./dist/esm/setupGestureHandler.mjs",
-      "require": "./dist/cjs/setupGestureHandler.cjs",
-      "default": "./dist/esm/setupGestureHandler.mjs"
     }
   },
   "publishConfig": {
@@ -60,7 +44,6 @@
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/constants": "workspace:*",
     "@tamagui/core": "workspace:*",
-    "@tamagui/create-context": "workspace:*",
     "@tamagui/helpers": "workspace:*",
     "@tamagui/native": "workspace:*",
     "@tamagui/portal": "workspace:*",

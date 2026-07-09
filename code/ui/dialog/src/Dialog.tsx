@@ -1013,6 +1013,7 @@ const DialogSheetController = (
 
   return (
     <SheetController
+      scope={props.scope}
       onOpenChange={(val) => {
         if (isAdapted) {
           props.onOpenChange?.(val)
