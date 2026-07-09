@@ -192,7 +192,7 @@ jobs:
             turbo-${{ runner.os }}-
 
       - name: Run kitchen-sink web + render-count tests (shard ${{ matrix.shard }})
-        run: cd code/kitchen-sink && NODE_ENV=test npx playwright test --shard=${{ matrix.shard }} --update-snapshots=missing
+        run: cd code/kitchen-sink && NODE_ENV=test npx playwright test --shard=${{ matrix.shard }} --update-snapshots=missing # bootstrap: remove after the Linux StyleValidation snapshots from this job's artifact are committed
         timeout-minutes: 20
 
   v3-ssr-hydration:
