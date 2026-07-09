@@ -47,12 +47,6 @@ export interface FocusScopeProps {
    */
   focusOnIdle?: boolean | number | { min?: number; max?: number }
 
-  children?:
-    | React.ReactNode
-    | ((props: {
-        onKeyDown: (event: React.KeyboardEvent) => void
-        tabIndex?: number
-        ref: React.Ref<any>
-      }) => React.ReactNode)
+  children?: React.ReactNode
   asChild?: boolean
 }

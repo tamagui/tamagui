@@ -9,6 +9,7 @@ import type { FocusScopeProps, ScopedProps } from './types'
 const AUTOFOCUS_ON_MOUNT = 'focusScope.autoFocusOnMount'
 const AUTOFOCUS_ON_UNMOUNT = 'focusScope.autoFocusOnUnmount'
 const EVENT_OPTIONS = { bubbles: false, cancelable: true }
+const FOCUS_SCOPE_STYLE: React.CSSProperties = { display: 'contents' }
 
 type FocusableTarget = HTMLElement | { focus(): void }
 
@@ -41,17 +42,27 @@ const FocusScope = createRefComponent<FocusScopeElement, FocusScopeProps>(
     }
 
     const childProps = useFocusScope(mergedProps, forwardedRef)
+    const { ref, style, ...scopeProps } =
+      childProps as React.HTMLAttributes<HTMLDivElement> & {
+        ref: React.Ref<HTMLDivElement>
+      }
+    const children = mergedProps.children
 
-    if (typeof mergedProps.children === 'function') {
-      return <>{mergedProps.children(childProps)}</>
-    }
-
-    return React.cloneElement(
-      React.Children.only(mergedProps.children) as any,
-      childProps
+    return (
+      <div {...scopeProps} ref={ref} style={getFocusScopeStyle(style)}>
+        {children}
+      </div>
     )
   }
 )
+
+function getFocusScopeStyle(style?: React.CSSProperties) {
+  if (!style) return FOCUS_SCOPE_STYLE
+  return {
+    ...style,
+    display: 'contents',
+  }
+}
 
 /* -------------------------------------------------------------------------------------------------
  * setupFocusTrap - extracted function to set up trap immediately in ref callback
@@ -167,7 +178,8 @@ export function useFocusScope(
     onUnmountAutoFocus: onUnmountAutoFocusProp,
     forceUnmount,
     focusOnIdle = true,
-    children,
+    children: _children,
+    asChild: _asChild,
     ...scopeProps
   } = props
   const [container, setContainer] = React.useState<HTMLElement | null>(null)
