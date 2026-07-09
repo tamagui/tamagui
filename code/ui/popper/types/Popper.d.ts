@@ -108,8 +108,6 @@ export type PopperContentProps = SizableStackProps & {
      * Enable smooth animation when the content position changes (e.g., when flipping sides)
      */
     animatePosition?: boolean | 'even-when-repositioning';
-    /** @deprecated Use `animatePosition` instead */
-    enableAnimationForPositionChange?: boolean | 'even-when-repositioning';
     passThrough?: boolean;
 };
 export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

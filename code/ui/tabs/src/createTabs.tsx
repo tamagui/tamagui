@@ -74,11 +74,7 @@ export function createTabs<
 
   const TRIGGER_NAME = 'TabsTrigger'
 
-  /**
-   * @deprecated Use `TabLayout` instead
-   */
-
-  const TabsTrigger = createStyledHOC(TabFrame)<ScopedProps<TabsTabProps>>(
+  const TabsTab = createStyledHOC(TabFrame)<ScopedProps<TabsTabProps>>(
     (props, forwardedRef) => {
       const {
         __scopeTabs,
@@ -216,7 +212,7 @@ export function createTabs<
     }
   )
 
-  TabsTrigger.displayName = TRIGGER_NAME
+  TabsTab.displayName = TRIGGER_NAME
 
   /* -------------------------------------------------------------------------------------------------
    * TabsContent
@@ -328,11 +324,7 @@ export function createTabs<
 
   return withStaticProperties(TabsComponent, {
     List: TabsList,
-    /**
-     * @deprecated Use Tabs.Tab instead
-     */
-    Trigger: TabsTrigger,
-    Tab: TabsTrigger,
+    Tab: TabsTab,
     Content: TabsContent,
   })
 }
@@ -391,10 +383,7 @@ type TabLayout = LayoutRectangle
 
 type TabsTriggerFrameProps = GetProps<typeof DefaultTabsTabFrame>
 
-/**
- * @deprecated use `TabTabsProps` instead
- */
-type TabsTriggerProps = TabsTriggerFrameProps & {
+type TabsTabProps = TabsTriggerFrameProps & {
   /** The value for the tabs state to be changed to after activation of the trigger */
   value: string
 
@@ -407,8 +396,6 @@ type TabsTriggerProps = TabsTriggerFrameProps & {
   /** Theme to apply when tab is active (use null for no theme) */
   activeTheme?: string | null
 }
-
-type TabsTabProps = TabsTriggerProps
 
 type TabsTriggerLayout = LayoutRectangle
 
@@ -434,5 +421,4 @@ export type {
   TabsProps,
   TabsTabProps,
   TabsTriggerLayout,
-  TabsTriggerProps,
 }

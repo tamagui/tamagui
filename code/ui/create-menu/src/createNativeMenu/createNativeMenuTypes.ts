@@ -74,12 +74,6 @@ export interface NativeMenuItemCommonProps {
    */
   children?: React.ReactNode
   /**
-   * The name of an iOS-only SF Symbol. For a full list, see https://developer.apple.com/sf-symbols/.
-   * @deprecated Please use the `name` inside of the `ios` prop instead.
-   * @platform ios
-   */
-  iosIconName?: string
-  /**
    * Icon configuration to be used on iOS. You can pass a SF Symbol icon using the `name` prop.
    * Additionally, you can configure the SF Symbol's features like weight, scale, color etc. by passing
    * the corresponding props. Note that some of those features require iOS 15+.

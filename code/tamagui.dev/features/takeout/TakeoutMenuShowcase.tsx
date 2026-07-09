@@ -440,7 +440,7 @@ function ThemeToggle() {
           bg="$color5"
           transition="200ms"
         >
-          <AnimatePresence exitBeforeEnter custom={{ direction: -1 }}>
+          <AnimatePresence mode="wait" custom={{ direction: -1 }}>
             <YStack
               position="absolute"
               key="Sun"

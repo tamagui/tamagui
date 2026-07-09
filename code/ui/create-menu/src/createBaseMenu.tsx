@@ -1017,8 +1017,6 @@ export function createBaseMenu({
         hidden,
         // @ts-ignore
         androidIconName,
-        // @ts-ignore
-        iosIconName,
         ...itemProps
       } = props
       const ref = React.useRef<TamaguiElement>(null)
@@ -1233,8 +1231,6 @@ export function createBaseMenu({
       ios,
       // @ts-ignore
       androidIconName,
-      // @ts-ignore
-      iosIconName,
       ...rest
     } = props
     return <_Image {...rest} ref={forwardedRef} />
@@ -1259,8 +1255,6 @@ export function createBaseMenu({
         android,
         // @ts-ignore
         androidIconName,
-        // @ts-ignore
-        iosIconName,
         ...rest
       } = props
       return <_Icon {...rest} ref={forwardedRef} />
