@@ -27,6 +27,7 @@ v3 release plan:
   - clean up composable component structure, especially Dialog weirdness
     - there's a lot of incosistencies when u study across the different components in how they do portals, focus, other props
   - simplify Select/ListItem where it directly helps perf or API clarity
+  - migration note: Select's unused `name` and `autoComplete` props were removed; they never backed form or autofill behavior.
   - consider removing or simplifying `ThemeableStack` / `SizableStack`
 
 - Adapt
