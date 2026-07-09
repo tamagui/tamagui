@@ -1,7 +1,6 @@
 import type { NativeValue, SizeTokens } from '@tamagui/core'
 import type { YStackProps } from '@tamagui/stacks'
 import type {
-  DispatchWithoutAction,
   HTMLProps,
   MutableRefObject,
   ReactNode,
@@ -48,8 +47,6 @@ export interface SelectProps<Value extends string = string> {
   defaultOpen?: boolean
   onOpenChange?(open: boolean): void
   dir?: SelectDirection
-  name?: string
-  autoComplete?: string
   size?: SizeTokens | true
   /**
    * If passed, will render a native component instead of the custom one. Currently only `web` is supported.
@@ -150,9 +147,6 @@ export interface SelectContextValue {
   open: boolean
   valueNode: Element | null
   onValueNodeChange(node: HTMLElement): void
-  forceUpdate: DispatchWithoutAction
-  // SheetImpl only:
-  isInSheet?: boolean
   // InlineImpl only:
   fallback: boolean
   blockSelection: boolean

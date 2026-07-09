@@ -30,9 +30,6 @@ export const SelectTrigger = createRefComponent<TamaguiElement, SelectTriggerPro
       forwardedRef,
       context.floatingContext?.refs.setReference as any
     )
-    // const getItems = useCollection(__scopeSelect)
-    // const labelId = useLabelContext(context.trigger)
-    // const labelledBy = ariaLabelledby || labelId
     if (itemParentContext.shouldRenderWebNative) {
       return null
     }

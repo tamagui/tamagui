@@ -1,9 +1,7 @@
 import {
   autoUpdate,
-  flip,
   inner,
   offset,
-  shift,
   size,
   useClick,
   useFloatingRaw as useFloatingDom,
@@ -19,7 +17,7 @@ import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent, useIsTouchDevice } from '@tamagui/core'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
-import { SCROLL_ARROW_THRESHOLD, WINDOW_PADDING } from './constants'
+import { SCROLL_ARROW_THRESHOLD } from './constants'
 import {
   SelectItemParentProvider,
   SelectProvider,
@@ -98,56 +96,36 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
     open,
     placement: 'bottom-start',
     whileElementsMounted: autoUpdate,
-    // eslint-disable-next-line no-constant-condition
-    middleware: false
-      ? // this is the logic from floating-ui
-        // but i find it causes issues (open, drag select, close, then re-open its not positioned "over")
-        // https://github.com/floating-ui/floating-ui/blob/master/packages/react/test/visual/components/MacSelect.tsx
-        [
-          offset(5),
-          touch
-            ? shift({ crossAxis: true, padding: WINDOW_PADDING })
-            : flip({ padding: WINDOW_PADDING }),
-          size({
-            apply({ availableHeight, rects }) {
-              Object.assign(floatingStyle.current, {
-                maxHeight: `${availableHeight}px`,
-                minWidth: `${rects.reference.width}px`,
-              })
-              if (refs.floating.current) {
-                Object.assign(refs.floating.current.style, floatingStyle.current)
-              }
-            },
-            padding: 10,
-          }),
-        ]
-      : [
-          size({
-            apply({
-              rects: {
-                reference: { width },
-              },
-            }) {
-              Object.assign(floatingStyle.current, {
-                minWidth: width + 8,
-              })
-              if (refs.floating.current) {
-                Object.assign(refs.floating.current.style, floatingStyle.current)
-              }
-            },
-          }),
-          inner({
-            listRef: listItemsRef,
-            overflowRef,
-            index: selectedIndex,
-            offset: innerOffset,
-            onFallbackChange: setFallback,
-            padding: 10,
-            minItemsVisible: touch ? 10 : 4,
-            referenceOverflowThreshold: 20,
-          }),
-          offset({ crossAxis: -5 }),
-        ],
+    // The removed alternate stack was the logic from floating-ui,
+    // but it causes issues (open, drag select, close, then re-open its not positioned "over")
+    // https://github.com/floating-ui/floating-ui/blob/master/packages/react/test/visual/components/MacSelect.tsx
+    middleware: [
+      size({
+        apply({
+          rects: {
+            reference: { width },
+          },
+        }) {
+          Object.assign(floatingStyle.current, {
+            minWidth: width + 8,
+          })
+          if (refs.floating.current) {
+            Object.assign(refs.floating.current.style, floatingStyle.current)
+          }
+        },
+      }),
+      inner({
+        listRef: listItemsRef,
+        overflowRef,
+        index: selectedIndex,
+        offset: innerOffset,
+        onFallbackChange: setFallback,
+        padding: 10,
+        minItemsVisible: touch ? 10 : 4,
+        referenceOverflowThreshold: 20,
+      }),
+      offset({ crossAxis: -5 }),
+    ],
   } as any)
 
   const floatingRef = refs.floating
