@@ -43,11 +43,7 @@ export interface FocusScopeProps {
         min?: number;
         max?: number;
     };
-    children?: React.ReactNode | ((props: {
-        onKeyDown: (event: React.KeyboardEvent) => void;
-        tabIndex?: number;
-        ref: React.Ref<any>;
-    }) => React.ReactNode);
+    children?: React.ReactNode;
     asChild?: boolean;
 }
 //# sourceMappingURL=types.d.ts.map
