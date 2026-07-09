@@ -1,5 +1,8 @@
 v3 release plan:
 
+- migration note: Dialog.Content no longer accepts the no-op `size` variant from DialogContentFrame, narrowing the public prop type.
+- migration note: non-modal Dialog.Content no longer enables RemoveScroll while open, so non-modal dialogs no longer lock page scroll.
+
 - remove deprecated / duplicate API paths
   - `focusable` => `tabIndex`
   - `fullscreen` => `inset: 0, position: 'absolute'`
