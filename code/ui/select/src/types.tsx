@@ -1,11 +1,6 @@
 import type { NativeValue, SizeTokens } from '@tamagui/core'
 import type { YStackProps } from '@tamagui/stacks'
-import type {
-  HTMLProps,
-  MutableRefObject,
-  ReactNode,
-  RefObject,
-} from 'react'
+import type { HTMLProps, MutableRefObject, ReactNode, RefObject } from 'react'
 
 // minimal types replacing @floating-ui/react imports
 type ContextData = Record<string, any>
