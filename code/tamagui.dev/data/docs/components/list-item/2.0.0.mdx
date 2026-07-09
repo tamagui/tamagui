@@ -104,7 +104,7 @@ export default () => (
 
 Icons can be passed to `icon` (before content) or `iconAfter` (after content) props.
 
-- **Automatic Sizing & Spacing**: Icons are automatically sized based on the ListItem's `size` prop. You can override this with the `iconSize` prop (accepts `SizeTokens`). Spacing between the icon and text is also automatically applied (40% of the icon's final size).
+- **Automatic Sizing & Spacing**: Icons are automatically sized based on the ListItem's `size` prop. You can override this with the `iconSize` prop (accepts `SizeTokens`). Spacing is applied using the frame `gap`, so it applies between all direct ListItem frame children, not only around icons.
 - **Scaling**: Use `scaleIcon` (number, default: 1) to further adjust the icon size relative to its base size.
 - **Component Props**: If you pass a component as an icon, it will receive `size` (the calculated pixel size) as a prop.
 
@@ -241,6 +241,13 @@ ListItems extend Stack views, inheriting all the [Tamagui standard props](/docs/
       type: 'SizeTokens',
       description:
         'Adjusts padding, min-height, and default font/icon sizes. Uses theme size tokens (e.g., "$3", "$4").',
+    },
+    {
+      name: 'color',
+      required: false,
+      type: 'ColorTokens | string',
+      description:
+        'Color token or CSS color inherited by `ListItem.Icon` children and icon props.',
     },
     {
       name: 'variant',

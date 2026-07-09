@@ -15,6 +15,29 @@ const chromelessStyle = {
   },
 }
 
+const outlinedStyle =
+  process.env.TAMAGUI_HEADLESS === '1'
+    ? {}
+    : {
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        borderColor: '$borderColor',
+
+        hoverStyle: {
+          backgroundColor: 'transparent',
+          borderColor: '$borderColorHover',
+        },
+
+        pressStyle: {
+          backgroundColor: 'transparent',
+          borderColor: '$borderColorPress',
+        },
+      }
+
+export const themeableVariantStyles = {
+  outlined: outlinedStyle,
+} as const
+
 export const themeableVariants = {
   circular,
   elevate,

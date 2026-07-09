@@ -18,6 +18,8 @@ test('ListItem renders correctly with default theme', async ({ page }) => {
 
   const styles = await getStyles(listItem)
   expect(styles.backgroundColor).toBe('rgb(242, 242, 242)')
+
+  await expect(page.locator('#themed-list-item-default > svg')).toBeVisible()
 })
 
 test('ListItem renders correctly with light theme', async ({ page }) => {
@@ -126,4 +128,37 @@ test('ListItem.Apply passes variant to children', async ({ page }) => {
   // Outlined variant applied via Apply context
   expect(styles.backgroundColor).toBe('rgba(0, 0, 0, 0)')
   expect(styles.borderWidth).toBe('1px')
+})
+
+test('ListItem re-provides size and color context to child icons', async ({ page }) => {
+  const listItem = page.locator('#themed-list-item-child-icon')
+  const icon = listItem.locator('svg').first()
+  const path = icon.locator('path').first()
+
+  await expect(listItem).toBeVisible()
+  await expect(icon).toBeVisible()
+
+  const box = await icon.boundingBox()
+  expect(box?.width).toBeGreaterThanOrEqual(18)
+  expect(box?.height).toBeGreaterThanOrEqual(18)
+
+  const stroke = await path.evaluate((el) => getComputedStyle(el).stroke)
+  expect(stroke).toBeTruthy()
+  expect(stroke).not.toBe('none')
+  expect(stroke).not.toBe('rgb(0, 0, 0)')
+})
+
+test('ListItem unstyled applies to bare text children', async ({ page }) => {
+  const listItem = page.locator('#themed-list-item-unstyled')
+  const text = listItem.getByText('Unstyled text', { exact: true })
+
+  await expect(listItem).toBeVisible()
+  await expect(text).toBeVisible()
+
+  const listItemStyles = await getStyles(listItem)
+  expect(listItemStyles.backgroundColor).toBe('rgba(0, 0, 0, 0)')
+  expect(listItemStyles.paddingLeft).toBe('0px')
+
+  const textStyles = await getStyles(text)
+  expect(textStyles.textOverflow).not.toBe('ellipsis')
 })
