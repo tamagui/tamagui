@@ -9,7 +9,8 @@ import { LoadProgressBar, SafeAreaView, Slot } from 'one'
 import { Configuration, isWeb, TamaguiProvider, XStack, YStack } from 'tamagui'
 import { ToggleThemeButton } from '~/components/ToggleThemeButton'
 import config from '~/config/tamagui/tamagui.config'
-import oneBall from '~/public/app-icon.png'
+
+const oneBall = '/app-icon.png'
 
 export default function Layout() {
   return (
