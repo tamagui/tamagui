@@ -27,7 +27,7 @@
       "default": "./dist/esm/index.mjs"
     },
     "./demo/*": {
-      "types": "./src/*.tsx",
+      "types": "./types/*.d.ts",
       "react-native": "./dist/esm/*.native.js",
       "browser": "./dist/esm/*.mjs",
       "module": "./dist/esm/*.mjs",
