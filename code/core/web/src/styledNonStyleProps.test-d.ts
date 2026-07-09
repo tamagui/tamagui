@@ -22,7 +22,13 @@ import { styled } from './styled'
 import { createStyledContext } from './helpers/createStyledContext'
 import { View } from './views/View'
 import { Text } from './views/Text'
-import type { GetProps, MediaPropKeys, PlatformMediaKeys, ThemeMediaKeys } from './types'
+import type {
+  GetProps,
+  MediaPropKeys,
+  PlatformMediaKeys,
+  ThemeMediaKeys,
+  ThemeName,
+} from './types'
 
 // builds a mapped type from a key union, mirroring how WithMediaProps maps over its keys
 type IndexedBy<K extends PropertyKey> = { [P in K]?: number }
@@ -67,6 +73,12 @@ describe('platform media keys', () => {
       textWrap: 'balance',
     }
     expectTypeOf(webProps).toMatchTypeOf<PlainProps['$web']>()
+  })
+})
+
+describe('built-in sub-theme names', () => {
+  test('inverse is accepted as a public sub-theme name', () => {
+    expectTypeOf<'inverse'>().toMatchTypeOf<ThemeName>()
   })
 })
 
