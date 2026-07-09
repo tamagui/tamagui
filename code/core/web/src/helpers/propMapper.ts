@@ -387,6 +387,19 @@ const resolveTokensAndVariants: StyleResolver<object> = (
       continue
     }
 
+    // boolean token shorthand (borderRadius: true etc) inside variant styles —
+    // mirrors the direct-prop gate in map(); without this the raw `true` reaches
+    // drivers (rn driver throws constructing Animated.Value(true))
+    if (val === true && subKey in defaultSizeTokenKeys) {
+      res[subKey] = getTokenForKey(
+        subKey,
+        resolveDefaultSizeToken(val, conf),
+        styleProps,
+        styleState
+      )
+      continue
+    }
+
     if (typeof val === 'string') {
       const fVal =
         val[0] === '$'
