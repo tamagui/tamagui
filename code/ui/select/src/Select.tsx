@@ -430,6 +430,7 @@ const SelectSheetController = (
 
   return (
     <SheetController
+      scope={props.scope}
       onOpenChange={(val) => {
         if (getShowSheet()) {
           props.onOpenChange(val)

@@ -12,7 +12,8 @@ export const SheetController = ({
   open,
   hidden,
   disableDrag,
-}: Partial<SheetControllerContextValue> & { children?: ReactNode }) => {
+  scope = '',
+}: Partial<SheetControllerContextValue> & { children?: ReactNode; scope?: string }) => {
   const onOpenChange = useEvent(onOpenChangeProp)
   const onAnimationComplete = useEvent(onAnimationCompleteProp)
   const id = useId()
@@ -40,7 +41,7 @@ export const SheetController = ({
   )
 
   return (
-    <SheetControllerContext.Provider value={memoValue}>
+    <SheetControllerContext.Provider scope={scope} {...memoValue}>
       {children}
     </SheetControllerContext.Provider>
   )
