@@ -1,5 +1,7 @@
 v3 release plan:
 
+- migration note: Dialog.Content no longer accepts the no-op `size` variant from DialogContentFrame, narrowing the public prop type.
+- migration note: non-modal Dialog.Content no longer enables RemoveScroll while open, so non-modal dialogs no longer lock page scroll.
 - migration note: FocusScope no longer supports function-as-children/render-prop; pass JSX children directly.
 
 - remove deprecated / duplicate API paths

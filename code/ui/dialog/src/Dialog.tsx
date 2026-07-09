@@ -71,8 +71,6 @@ type DialogProps = ScopedProps<{
   onAnimationComplete?: (info: { open: boolean }) => void
 }>
 
-type NonNull<A> = Exclude<A, void | null>
-
 type DialogContextValue = {
   forceMount?: boolean
   keepChildrenMounted?: boolean
@@ -83,9 +81,9 @@ type DialogContextValue = {
   titleId: string
   descriptionId: string
   onOpenToggle(): void
-  open: NonNull<DialogProps['open']>
-  onOpenChange: NonNull<DialogProps['onOpenChange']>
-  modal: NonNull<DialogProps['modal']>
+  open: Exclude<DialogProps['open'], void | null>
+  onOpenChange: Exclude<DialogProps['onOpenChange'], void | null>
+  modal: Exclude<DialogProps['modal'], void | null>
   dialogScope: DialogScopes
   adaptScope: string
   onAnimationComplete?: DialogProps['onAnimationComplete']
@@ -225,9 +223,7 @@ const DialogPortalItem = ({
   return isAdapted ? (
     <AdaptPortalContents scope={context.adaptScope}>{content}</AdaptPortalContents>
   ) : context.modal ? (
-    <PortalItem hostName={context.modal ? 'root' : context.adaptScope}>
-      {content}
-    </PortalItem>
+    <PortalItem hostName="root">{content}</PortalItem>
   ) : (
     content
   )
@@ -358,9 +354,6 @@ const PassthroughTheme = ({
 
 const OVERLAY_NAME = 'DialogOverlay'
 
-/**
- * exported for internal use with extractable()
- */
 export const DialogOverlayFrame = styled(YStack, {
   name: OVERLAY_NAME,
   zIndex: 1,
@@ -417,11 +410,6 @@ const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProp
     return (
       <DialogOverlayFrame
         data-state={getState(context.open)}
-        // TODO: this will be apply for v2
-        // onPress={() => {
-        //   // if the overlay is pressed, close the dialog
-        //   context.onOpenChange(false)
-        // }}
         // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
         pointerEvents={context.open ? 'auto' : 'none'}
         {...overlayProps}
@@ -442,12 +430,6 @@ const DialogContentFrame = styled(ThemeableStack, {
   zIndex: 2,
 
   variants: {
-    size: {
-      '...size': (val, extras) => {
-        return {}
-      },
-    },
-
     unstyled: {
       false: {
         position: 'relative',
@@ -464,7 +446,6 @@ const DialogContentFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: true,
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
@@ -496,7 +477,7 @@ const DialogContent = createStyledHOC(DialogContentFrame)<DialogContentExtraProp
     }
 
     return (
-      <RemoveScroll enabled={context.open}>
+      <RemoveScroll enabled={context.open && context.modal}>
         <div data-remove-scroll-container className="_dsp_contents">
           {contents}
         </div>
@@ -886,87 +867,73 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({
  * Dialog
  * -----------------------------------------------------------------------------------------------*/
 
-export type DialogHandle = {
-  open: (val: boolean) => void
-}
-
 const Dialog = withStaticProperties(
-  createRefComponent<{ open: (val: boolean) => void }, DialogProps>(
-    function Dialog(props, ref) {
-      const {
-        scope = '',
-        children,
-        open: openProp,
-        defaultOpen = false,
-        onOpenChange,
-        modal = true,
-        keepChildrenMounted,
-        disableRemoveScroll = false,
-        onAnimationComplete,
-      } = props
+  createRefComponent<TamaguiElement, DialogProps>(function Dialog(props) {
+    const {
+      scope = '',
+      children,
+      open: openProp,
+      defaultOpen = false,
+      onOpenChange,
+      modal = true,
+      keepChildrenMounted,
+      disableRemoveScroll = false,
+      onAnimationComplete,
+    } = props
 
-      const baseId = React.useId()
-      const dialogId = `Dialog-${scope}-${baseId}`
-      const contentId = `${dialogId}-content`
-      const titleId = `${dialogId}-title`
-      const descriptionId = `${dialogId}-description`
+    const baseId = React.useId()
+    const dialogId = `Dialog-${scope}-${baseId}`
+    const contentId = `${dialogId}-content`
+    const titleId = `${dialogId}-title`
+    const descriptionId = `${dialogId}-description`
 
-      const triggerRef = React.useRef<TamaguiElement>(null)
-      const contentRef = React.useRef<TamaguiElement>(null)
+    const triggerRef = React.useRef<TamaguiElement>(null)
+    const contentRef = React.useRef<TamaguiElement>(null)
 
-      const [open, setOpen] = useControllableState({
-        prop: openProp,
-        defaultProp: defaultOpen,
-        onChange: onOpenChange,
-      })
+    const [open, setOpen] = useControllableState({
+      prop: openProp,
+      defaultProp: defaultOpen,
+      onChange: onOpenChange,
+    })
 
-      const onOpenToggle = React.useCallback(() => {
-        setOpen((prevOpen) => !prevOpen)
-      }, [setOpen])
+    const onOpenToggle = React.useCallback(() => {
+      setOpen((prevOpen) => !prevOpen)
+    }, [setOpen])
 
-      const adaptScope = `DialogAdapt${scope}`
+    const adaptScope = `DialogAdapt${scope}`
 
-      const context = {
-        dialogScope: scope,
-        adaptScope,
-        triggerRef,
-        contentRef,
-        contentId,
-        titleId,
-        descriptionId,
-        open,
-        onOpenChange: setOpen,
-        onOpenToggle,
-        modal,
-        keepChildrenMounted,
-        disableRemoveScroll,
-        onAnimationComplete,
-      } satisfies DialogContextValue
+    const context = {
+      dialogScope: scope,
+      adaptScope,
+      triggerRef,
+      contentRef,
+      contentId,
+      titleId,
+      descriptionId,
+      open,
+      onOpenChange: setOpen,
+      onOpenToggle,
+      modal,
+      keepChildrenMounted,
+      disableRemoveScroll,
+      onAnimationComplete,
+    } satisfies DialogContextValue
 
-      React.useImperativeHandle(
-        ref,
-        () => ({
-          open: setOpen,
-        }),
-        [setOpen]
-      )
-
-      return (
-        <AdaptParent
-          scope={adaptScope}
-          portal={{
-            forwardProps: props,
-          }}
-        >
-          <DialogProvider scope={scope} {...context}>
-            <DialogSheetController onOpenChange={setOpen} scope={scope}>
-              {children}
-            </DialogSheetController>
-          </DialogProvider>
-        </AdaptParent>
-      )
-    }
-  ),
+    return (
+      <AdaptParent
+        scope={adaptScope}
+        portal={{
+          forwardProps: props,
+        }}
+      >
+        <DialogProvider scope={scope} {...context}>
+          <DialogSheetController onOpenChange={setOpen} scope={scope}>
+            {children}
+          </DialogSheetController>
+        </DialogProvider>
+      </AdaptParent>
+    )
+  }),
   {
     Trigger: DialogTrigger,
     Portal: DialogPortal,
@@ -979,8 +946,6 @@ const Dialog = withStaticProperties(
     Adapt,
   }
 )
-
-const getAdaptScope = (dialogScope: string) => `DialogAdapt${dialogScope}`
 
 const DialogSheetController = (
   props: ScopedProps<{
