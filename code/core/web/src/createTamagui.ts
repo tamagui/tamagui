@@ -1,4 +1,4 @@
-import { getConfigMaybe, setConfig, setTokens } from './config'
+import { DEFAULT_SIZE_TOKEN, getConfigMaybe, setConfig, setTokens } from './config'
 import type { DeepVariableObject } from './createVariables'
 import { createVariables } from './createVariables'
 import { defaultAnimationDriver } from './helpers/defaultAnimationDriver'
@@ -51,6 +51,37 @@ function shouldTokenCategoryHaveUnits(category: string): boolean {
 function initializeTamaguiConfig(config: TamaguiInternalConfig) {
   setConfig(config)
   configureMedia(config)
+}
+
+function normalizeDefaultSize(defaultSize: string | undefined) {
+  if (!defaultSize) return DEFAULT_SIZE_TOKEN
+  return defaultSize[0] === '$' ? defaultSize : `$${defaultSize}`
+}
+
+function validateDefaultSize(config: TamaguiInternalConfig) {
+  const defaultSize = config.settings.defaultSize || DEFAULT_SIZE_TOKEN
+  const missing: string[] = []
+
+  if (!config.tokensParsed.size?.[defaultSize]) {
+    missing.push(`tokens.size.${defaultSize}`)
+  }
+  if (!config.tokensParsed.space?.[defaultSize]) {
+    missing.push(`tokens.space.${defaultSize}`)
+  }
+
+  for (const fontName in config.fontsParsed) {
+    if (!config.fontsParsed[fontName]?.size?.[defaultSize]) {
+      missing.push(`fonts.${fontName}.size.${defaultSize}`)
+    }
+  }
+
+  if (missing.length) {
+    throw new Error(
+      `settings.defaultSize must point to an existing size token; missing ${missing.join(
+        ', '
+      )}`
+    )
+  }
 }
 
 export function createTamagui<Conf extends CreateTamaguiProps>(
@@ -124,6 +155,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
   }
 
   const specificTokens = {}
+  const defaultSize = normalizeDefaultSize(configIn.settings?.defaultSize)
 
   const themeConfig = (() => {
     // populate specificTokens (needed for runtime)
@@ -147,7 +179,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     // CSS generation (tree-shaken when TAMAGUI_DID_OUTPUT_CSS is set)
     const declarations = createTokenCSS(tokens as any, shouldTokenCategoryHaveUnits)
     const fontDeclarations = createFontCSS(fontsParsed, registerFontVariables)
-    const cssRuleSets = buildCSSRuleSets(declarations, fontDeclarations)
+    const cssRuleSets = buildCSSRuleSets(declarations, fontDeclarations, defaultSize)
 
     const themesIn = configIn.themes as ThemesLikeObject
     const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn, tokens.color)
@@ -228,6 +260,7 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     settings: {
       webContainerType: 'inline-size',
       ...configIn.settings,
+      defaultSize,
     },
     tokens: tokens as any,
     // vite made this into a function if it wasn't set
@@ -249,6 +282,10 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     defaultFontToken,
     // const tokens = [...getToken(tokens.size[0])]
     // .spacer-sm + ._dsp_contents._dsp-sm-hidden { margin-left: -var(--${}) }
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    validateDefaultSize(config)
   }
 
   initializeTamaguiConfig(config)

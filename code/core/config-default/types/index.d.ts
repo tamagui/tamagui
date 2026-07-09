@@ -133,9 +133,11 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             family: string;
             size: {
                 1: number;
+                4: number;
             };
             lineHeight: {
                 1: number;
+                4: number;
             };
             transform: {};
             weight: {
@@ -152,9 +154,11 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             family: string;
             size: {
                 1: number;
+                4: number;
             };
             lineHeight: {
                 1: number;
+                4: number;
             };
             transform: {};
             weight: {

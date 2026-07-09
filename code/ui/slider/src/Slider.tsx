@@ -13,6 +13,7 @@ import {
   createRefComponent,
   getTokens,
   getVariableValue,
+  resolveDefaultSizeToken,
   styled,
   useConfiguration,
   useCreateShallowSetState,
@@ -418,7 +419,7 @@ const getThumbSize = (val?: SizeTokens | number) => {
   const size =
     typeof val === 'number'
       ? val
-      : getSize(tokens.size[val as any] as any, {
+      : getSize(tokens.size[resolveDefaultSizeToken(val ?? true)] as any, {
           shift: -1,
         })
   return {

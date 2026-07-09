@@ -1,6 +1,11 @@
 import { YStack } from '@tamagui/stacks'
 import type { GetProps, SizeTokens } from '@tamagui/web'
-import { createStyledContext, styled, withStaticProperties } from '@tamagui/web'
+import {
+  createStyledContext,
+  resolveDefaultSizeToken,
+  styled,
+  withStaticProperties,
+} from '@tamagui/web'
 
 const CardContext = createStyledContext({
   size: '$true' as SizeTokens,
@@ -21,8 +26,10 @@ export const CardFrame = styled(YStack, {
 
     size: {
       '...size': (val, { tokens }) => {
+        const sizeToken = resolveDefaultSizeToken(val)
+
         return {
-          borderRadius: tokens.radius[val] ?? val,
+          borderRadius: tokens.radius[sizeToken] ?? sizeToken,
         }
       },
     },
@@ -48,8 +55,10 @@ export const CardHeader = styled(YStack, {
 
     size: {
       '...size': (val, { tokens }) => {
+        const sizeToken = resolveDefaultSizeToken(val)
+
         return {
-          padding: tokens.space[val] ?? val,
+          padding: tokens.space[sizeToken] ?? sizeToken,
         }
       },
     },

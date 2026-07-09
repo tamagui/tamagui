@@ -1,4 +1,5 @@
 import { View, Text, createTamagui, getSplitStyles, styled } from '@tamagui/core'
+import { StyleObjectProperty, StyleObjectValue } from '@tamagui/helpers'
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
@@ -39,6 +40,55 @@ describe('getSplitStyles', () => {
 
     expect(style?.columnGap).toBe(10)
     expect(style?.rowGap).toBe(10)
+  })
+
+  test(`default size markers resolve to native layout values`, () => {
+    const direct = getSplitStylesFor(
+      {
+        padding: '$true',
+        borderRadius: '$true',
+      },
+      View,
+      {
+        resolveValues: 'value',
+      }
+    )
+
+    expect(findLayoutValue(direct, 'paddingTop')).toBe('18px')
+    expect(findLayoutValue(direct, 'paddingRight')).toBe('18px')
+    expect(findLayoutValue(direct, 'paddingBottom')).toBe('18px')
+    expect(findLayoutValue(direct, 'paddingLeft')).toBe('18px')
+    expect(findLayoutValue(direct, 'borderTopLeftRadius')).toBe('9px')
+    expect(findLayoutValue(direct, 'borderTopRightRadius')).toBe('9px')
+    expect(findLayoutValue(direct, 'borderBottomRightRadius')).toBe('9px')
+    expect(findLayoutValue(direct, 'borderBottomLeftRadius')).toBe('9px')
+
+    let seenSize: unknown
+    const SpreadSizeView = styled(View, {
+      variants: {
+        size: {
+          '...size': (val) => {
+            seenSize = val
+            return {
+              width: val,
+            }
+          },
+        },
+      } as const,
+    })
+
+    const spread = getSplitStylesFor(
+      {
+        size: '$true',
+      },
+      SpreadSizeView,
+      {
+        resolveValues: 'value',
+      }
+    )
+
+    expect(seenSize).toBe('$4')
+    expect(findLayoutValue(spread, 'width')).toBe('44px')
   })
 
   test('functional variants see media-resolved sibling variant props', () => {
@@ -402,7 +452,11 @@ describe.skip('getSplitStyles - pseudo prop merging', () => {
 function getSplitStylesFor(
   props: Record<string, any>,
   Component = View,
-  options: { mediaState?: Record<string, any>; groupContext?: any } = {}
+  options: {
+    mediaState?: Record<string, any>
+    groupContext?: any
+    resolveValues?: 'none' | 'value' | 'web' | 'auto'
+  } = {}
 ) {
   return getSplitStyles(
     props,
@@ -421,6 +475,7 @@ function getSplitStylesFor(
     {
       isAnimated: false,
       mediaState: options.mediaState,
+      resolveValues: options.resolveValues,
     },
     undefined,
     undefined,
@@ -428,6 +483,24 @@ function getSplitStylesFor(
     undefined,
     undefined
   )!
+}
+
+function findLayoutValue(result: ReturnType<typeof getSplitStylesFor>, property: string) {
+  const styleValue = result.style?.[property] ?? result.viewProps?.style?.[property]
+  if (styleValue != null) {
+    return typeof styleValue === 'number' ? `${styleValue}px` : styleValue
+  }
+
+  for (const rule of Object.values(result.rulesToInsert ?? {})) {
+    if ((rule as any)[StyleObjectProperty] === property) {
+      return (rule as any)[StyleObjectValue]
+    }
+  }
+
+  const className = result.classNames?.[property]
+  const match =
+    typeof className === 'string' ? /-(-?\d+(?:\.\d+)?px)$/.exec(className) : null
+  return match?.[1]
 }
 
 function getThemeStylesView(props: Record<string, any>, themeName: string, tag?: string) {

@@ -1,3 +1,4 @@
+import { resolveDefaultSizeToken } from '@tamagui/core'
 import { getElevation } from './getElevation'
 
 export const elevate = {
@@ -24,7 +25,10 @@ export const circular = {
     if (!('size' in props)) {
       return circularStyle
     }
-    const size = typeof props.size === 'number' ? props.size : tokens.size[props.size]
+    const size =
+      typeof props.size === 'number'
+        ? props.size
+        : tokens.size[resolveDefaultSizeToken(props.size)]
     return {
       ...circularStyle,
       width: size,

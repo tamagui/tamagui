@@ -4,12 +4,18 @@ import type {
   ViewProps,
   VariantSpreadExtras,
 } from '@tamagui/core'
-import { getVariableValue, isAndroid, isVariable } from '@tamagui/core'
+import {
+  getVariableValue,
+  isAndroid,
+  isVariable,
+  resolveDefaultSizeToken,
+} from '@tamagui/core'
 
 export const getElevation: SizeVariantSpreadFunction<ViewProps> = (size, extras) => {
   if (!size) return
   const { tokens } = extras
-  const token = tokens.size[size]
+  const sizeToken = resolveDefaultSizeToken(size)
+  const token = tokens.size[sizeToken]
   const sizeNum = (isVariable(token) ? +token.val : size) as number
   return getSizedElevation(sizeNum, extras)
 }
@@ -19,15 +25,16 @@ export const getSizedElevation = (
   { theme, tokens }: VariantSpreadExtras<any>
 ) => {
   let num = 0
-  if (val === true) {
-    const val = getVariableValue(tokens.size['true'])
-    if (typeof val === 'number') {
-      num = val
+  if (typeof val === 'number') {
+    num = val
+  } else if (val) {
+    const token = tokens.size[resolveDefaultSizeToken(val)]
+    const tokenValue = getVariableValue(token)
+    if (typeof tokenValue === 'number') {
+      num = tokenValue
     } else {
       num = 10
     }
-  } else {
-    num = +val
   }
   if (num === 0) {
     return

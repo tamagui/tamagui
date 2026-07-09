@@ -706,6 +706,12 @@ export interface GenericTamaguiSettings {
      */
     defaultFont?: string;
     /**
+     * Define the token used when a component size is set to true.
+     *
+     * @default '$4'
+     */
+    defaultSize?: string;
+    /**
      * Web-only: define CSS text-selection styles
      */
     selectionStyles?: (theme: Record<string, string>) => null | {
@@ -1003,7 +1009,7 @@ export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Reco
 export type SpecificTokensSpecial = TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
 } ? Val extends 'except-special' | undefined ? never : SpecificTokens : SpecificTokens;
-export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']>;
+export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']> | true;
 export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace;
 type ColorTokenBase = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed>;
 type TokenWithOpacity = `$${string}/${number}`;
@@ -1021,7 +1027,7 @@ export type Font = ParseFont<Fonts>;
 export type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
 export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>;
-export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number | RemString;
+export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number | RemString | true;
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number | RemString;
 export type FontWeightValues = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00` | 'bold' | 'normal';
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues;

@@ -2,7 +2,7 @@ import { AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { createStyledHOC, styled } from '@tamagui/core'
+import { createStyledHOC, resolveDefaultSizeToken, styled } from '@tamagui/core'
 import { needsPortalRepropagation } from '@tamagui/portal'
 import { ThemeableStack, YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
@@ -38,8 +38,10 @@ export const SelectViewportFrame = styled(ThemeableStack, {
 
     size: {
       '...size': (val, { tokens }) => {
+        const sizeToken = resolveDefaultSizeToken(val)
+
         return {
-          borderRadius: tokens.radius[val] ?? val,
+          borderRadius: tokens.radius[sizeToken] ?? sizeToken,
         }
       },
     },

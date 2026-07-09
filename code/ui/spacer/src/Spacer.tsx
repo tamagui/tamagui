@@ -1,8 +1,11 @@
-import { styled, View, type SizeTokens } from '@tamagui/web'
+import { resolveDefaultSizeToken, styled, View, type SizeTokens } from '@tamagui/web'
 
 const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
-  size = size === true ? '$true' : size
-  const sizePx = tokens.space[size as any] ?? size
+  const sizeToken =
+    typeof size === 'boolean' || typeof size === 'string'
+      ? resolveDefaultSizeToken(size)
+      : size
+  const sizePx = tokens.space[sizeToken as any] ?? sizeToken
   return {
     width: sizePx,
     height: sizePx,

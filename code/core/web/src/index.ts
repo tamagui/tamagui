@@ -57,6 +57,7 @@ export { createRefComponent, type RefProp } from '@tamagui/compose-refs'
 
 export {
   getConfig,
+  getDefaultSizeToken,
   getSetting,
   getStyleCompat,
   getThemes,
@@ -64,9 +65,11 @@ export {
   getTokens,
   getTokenValue,
   loadAnimationDriver,
+  resolveDefaultSizeToken,
   setConfig,
   setupDev,
   updateConfig,
+  DEFAULT_SIZE_TOKEN,
   type StyleCompat,
 } from './config'
 

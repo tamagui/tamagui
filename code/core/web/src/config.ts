@@ -12,6 +12,8 @@ import type {
 
 export type StyleCompat = 'legacy' | 'react-native' | 'web'
 
+export const DEFAULT_SIZE_TOKEN = '$4'
+
 let conf: TamaguiInternalConfig | null
 let setConfigCalledByThisInstance = false
 
@@ -74,6 +76,21 @@ export const getSetting = <Key extends keyof GenericTamaguiSettings>(
     // @ts-expect-error
     config[key]
   )
+}
+
+type DefaultSizeConfig = Pick<TamaguiInternalConfig, 'settings'>
+
+export const getDefaultSizeToken = (
+  config: DefaultSizeConfig | null = getConfigFromGlobalOrLocal()
+): string => {
+  return config?.settings.defaultSize || DEFAULT_SIZE_TOKEN
+}
+
+export const resolveDefaultSizeToken = <Val>(
+  val: Val,
+  config?: DefaultSizeConfig | null
+): Exclude<Val, true> | string => {
+  return val === true || val === '$true' ? getDefaultSizeToken(config) : (val as any)
 }
 
 export function getStyleCompat(): StyleCompat {
