@@ -3,6 +3,14 @@ import { remountDirectUseCase } from './utils/navigation'
 import { safeLaunchApp, withSync } from './utils/detox'
 
 const testElement = (id: string) => element(by.id(id)).atIndex(0)
+const measuredV2StateBaseline = {
+  before: 'v2 instance: 1',
+  adapted: 'v2 instance: 3',
+  countAfterAdapt: 'v2 count: 0',
+  countAfterReturn: 'v2 count: 0',
+} as const
+
+const toSlotCount = (value: string) => value.replace(/^v2 /, 'slot ')
 
 async function getText(id: string) {
   const attributes = (await testElement(id).getAttributes()) as any
@@ -70,45 +78,50 @@ describe('AdaptLiveSlotSpike', () => {
     expect(await getText('live-slot-instance')).toBe(instanceBefore)
   })
 
-  it('state preservation characterization is no worse than current v2', async () => {
-    await withSync(() => testElement('v2-state-increment').tap())
+  it('state preservation characterization matches the measured v2 baseline', async () => {
+    await detoxExpect(testElement('v2-measured-before')).toHaveText(
+      measuredV2StateBaseline.before
+    )
+    await detoxExpect(testElement('v2-measured-adapted')).toHaveText(
+      measuredV2StateBaseline.adapted
+    )
+    await detoxExpect(testElement('v2-measured-count-after-adapt')).toHaveText(
+      measuredV2StateBaseline.countAfterAdapt
+    )
+    await detoxExpect(testElement('v2-measured-count-after-return')).toHaveText(
+      measuredV2StateBaseline.countAfterReturn
+    )
+
     await withSync(() => testElement('slot-state-increment').tap())
-    await detoxExpect(testElement('v2-state-count')).toHaveText('v2 count: 1')
     await detoxExpect(testElement('slot-state-count')).toHaveText('slot count: 1')
+    const slotInstanceBefore = await getText('slot-state-instance')
 
-    await withSync(() => testElement('v2-state-toggle').tap())
     await withSync(() => testElement('slot-state-toggle').tap())
-    await waitFor(testElement('v2-state-content')).toExist().withTimeout(10000)
     await waitFor(testElement('slot-state-content')).toExist().withTimeout(10000)
-    const v2CountAfterAdapt = await getText('v2-state-count')
     const slotCountAfterAdapt = await getText('slot-state-count')
+    const slotInstanceAfterAdapt = await getText('slot-state-instance')
 
-    await withSync(() => testElement('v2-state-toggle').tap())
     await withSync(() => testElement('slot-state-toggle').tap())
-    await waitFor(testElement('v2-state-content')).toExist().withTimeout(10000)
     await waitFor(testElement('slot-state-content')).toExist().withTimeout(10000)
-    const v2CountAfterReturn = await getText('v2-state-count')
     const slotCountAfterReturn = await getText('slot-state-count')
 
     console.log(
       'AdaptLiveSlotSpike native state observation',
       JSON.stringify({
-        v2: {
-          countAfterAdapt: v2CountAfterAdapt,
-          countAfterReturn: v2CountAfterReturn,
-        },
+        measuredV2: measuredV2StateBaseline,
         slot: {
+          before: slotInstanceBefore,
+          adapted: slotInstanceAfterAdapt,
           countAfterAdapt: slotCountAfterAdapt,
           countAfterReturn: slotCountAfterReturn,
         },
       })
     )
 
-    if (v2CountAfterAdapt === 'v2 count: 1') {
-      expect(slotCountAfterAdapt).toBe('slot count: 1')
-    }
-    if (v2CountAfterReturn === 'v2 count: 1') {
-      expect(slotCountAfterReturn).toBe('slot count: 1')
-    }
+    expect(slotInstanceAfterAdapt).not.toBe(slotInstanceBefore)
+    expect(slotCountAfterAdapt).toBe(toSlotCount(measuredV2StateBaseline.countAfterAdapt))
+    expect(slotCountAfterReturn).toBe(
+      toSlotCount(measuredV2StateBaseline.countAfterReturn)
+    )
   })
 })

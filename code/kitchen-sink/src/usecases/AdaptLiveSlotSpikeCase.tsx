@@ -1,8 +1,3 @@
-import {
-  Adapt as AdaptRaw,
-  AdaptParent as AdaptParentRaw,
-  AdaptPortalContents as AdaptPortalContentsRaw,
-} from '@tamagui/adapt'
 import { FocusScope as FocusScopeRaw } from '@tamagui/focus-scope'
 import React from 'react'
 import {
@@ -18,9 +13,6 @@ import {
   useIsomorphicLayoutEffect,
 } from 'tamagui'
 
-const Adapt = AdaptRaw as any
-const AdaptParent = AdaptParentRaw as React.ComponentType<any>
-const AdaptPortalContents = AdaptPortalContentsRaw as React.ComponentType<any>
 const Button = ButtonRaw as React.ComponentType<any>
 const FocusScope = FocusScopeRaw as React.ComponentType<any>
 const H2 = H2Raw as React.ComponentType<any>
@@ -45,6 +37,13 @@ const LiveSlotContext = React.createContext<LiveSlotStore | null>(null)
 const DialogContext = React.createContext('missing-dialog-context')
 const PortalContext = React.createContext('missing-portal-context')
 const TargetContext = React.createContext('missing-target-context')
+
+const measuredV2StateBaseline = {
+  before: 'v2 instance: 1',
+  adapted: 'v2 instance: 3',
+  countAfterAdapt: 'v2 count: 0',
+  countAfterReturn: 'v2 count: 0',
+} as const
 
 let nextStateProbeInstanceId = 0
 let nextLiveSlotProofInstanceId = 0
@@ -149,7 +148,6 @@ function LiveSlotContents() {
 export function AdaptLiveSlotSpikeCase() {
   const [liveActive, setLiveActive] = React.useState(true)
   const [liveRevision, setLiveRevision] = React.useState(0)
-  const [v2Adapted, setV2Adapted] = React.useState(false)
   const [slotAdapted, setSlotAdapted] = React.useState(false)
 
   return (
@@ -181,15 +179,10 @@ export function AdaptLiveSlotSpikeCase() {
       <YStack gap="$3">
         <H2 size="$6">State preservation characterization</H2>
         <Paragraph size="$3">
-          Current v2 Adapt vs the candidate live slot across inactive/active moves.
+          Measured v2 Adapt baseline vs the candidate live slot across inactive/active
+          moves.
         </Paragraph>
         <XStack gap="$3" flexWrap="wrap">
-          <Button
-            {...testProps('v2-state-toggle')}
-            onPress={() => setV2Adapted((x) => !x)}
-          >
-            v2 adapted: {v2Adapted ? 'yes' : 'no'}
-          </Button>
           <Button
             {...testProps('slot-state-toggle')}
             onPress={() => setSlotAdapted((x) => !x)}
@@ -199,7 +192,7 @@ export function AdaptLiveSlotSpikeCase() {
         </XStack>
 
         <XStack gap="$4" flexWrap="wrap">
-          <V2StatePanel adapted={v2Adapted} />
+          <MeasuredV2StateBaselinePanel />
           <SlotStatePanel adapted={slotAdapted} />
         </XStack>
       </YStack>
@@ -208,6 +201,10 @@ export function AdaptLiveSlotSpikeCase() {
 }
 
 function LiveSlotSheetTouchProof() {
+  if (isWeb) {
+    return null
+  }
+
   return (
     <LiveSlotProvider>
       <DialogContext.Provider value="sheet-dialog-parent-ok">
@@ -426,12 +423,10 @@ function SlotProofContent({ revision }: { revision: number }) {
   )
 }
 
-function V2StatePanel({ adapted }: { adapted: boolean }) {
-  const scope = 'AdaptLiveSlotSpikeV2'
-
+function MeasuredV2StateBaselinePanel() {
   return (
     <YStack
-      {...testProps('v2-state-panel')}
+      {...testProps('v2-measured-baseline-panel')}
       p="$3"
       gap="$3"
       borderWidth={1}
@@ -439,19 +434,15 @@ function V2StatePanel({ adapted }: { adapted: boolean }) {
       rounded="$4"
       minW={300}
     >
-      <Text fontWeight="700">current v2 Adapt</Text>
-      <AdaptParent scope={scope} portal>
-        <YStack {...testProps('v2-state-target')} data-state-target="v2-target">
-          <Adapt when={adapted}>
-            <Adapt.Contents />
-          </Adapt>
-        </YStack>
-        <YStack {...testProps('v2-state-source')} data-state-source="v2-source">
-          <AdaptPortalContents scope={scope}>
-            <StateProbe name="v2" />
-          </AdaptPortalContents>
-        </YStack>
-      </AdaptParent>
+      <Text fontWeight="700">measured v2 Adapt baseline</Text>
+      <Text {...testProps('v2-measured-before')}>{measuredV2StateBaseline.before}</Text>
+      <Text {...testProps('v2-measured-adapted')}>{measuredV2StateBaseline.adapted}</Text>
+      <Text {...testProps('v2-measured-count-after-adapt')}>
+        {measuredV2StateBaseline.countAfterAdapt}
+      </Text>
+      <Text {...testProps('v2-measured-count-after-return')}>
+        {measuredV2StateBaseline.countAfterReturn}
+      </Text>
     </YStack>
   )
 }
@@ -482,7 +473,7 @@ function SlotStatePanel({ adapted }: { adapted: boolean }) {
   )
 }
 
-function StateProbe({ name }: { name: 'v2' | 'slot' }) {
+function StateProbe({ name }: { name: 'slot' }) {
   const [count, setCount] = React.useState(0)
   const instanceIdRef = React.useRef(0)
 

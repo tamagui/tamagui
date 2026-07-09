@@ -66,6 +66,10 @@ Web result:
   remained reset after returning inactive. The candidate also remounted/reset
   and did not lose more state than v2, so it satisfies the PR-A "no worse than
   v2, documented" bar.
+- Reland note: once the Adapt core implementation is on the same branch, a live
+  "v2" probe also runs the new implementation. The committed regression tests
+  therefore pin the measured v2 baseline above and compare the candidate slot
+  against those recorded values instead of re-measuring v2 live.
 
 iOS result:
 

@@ -1,6 +1,15 @@
 import { expect, test } from '@playwright/test'
 import { setupPage } from './test-utils'
 
+const measuredV2StateBaseline = {
+  before: 'v2 instance: 1',
+  adapted: 'v2 instance: 3',
+  countAfterAdapt: 'v2 count: 0',
+  countAfterReturn: 'v2 count: 0',
+} as const
+
+const toSlotCount = (value: string) => value.replace(/^v2 /, 'slot ')
+
 test.describe('Adapt live-publish slot PR-A spike', () => {
   test.beforeEach(async ({ page }) => {
     await setupPage(page, {
@@ -78,49 +87,46 @@ test.describe('Adapt live-publish slot PR-A spike', () => {
     expect(instanceAfter).toBe(instanceBefore)
   })
 
-  test('state preservation characterization: candidate is no worse than current v2', async ({
+  test('state preservation characterization: candidate matches measured v2 baseline', async ({
     page,
   }) => {
-    const v2Increment = page.getByTestId('v2-state-increment')
+    await expect(page.getByTestId('v2-measured-before')).toHaveText(
+      measuredV2StateBaseline.before
+    )
+    await expect(page.getByTestId('v2-measured-adapted')).toHaveText(
+      measuredV2StateBaseline.adapted
+    )
+    await expect(page.getByTestId('v2-measured-count-after-adapt')).toHaveText(
+      measuredV2StateBaseline.countAfterAdapt
+    )
+    await expect(page.getByTestId('v2-measured-count-after-return')).toHaveText(
+      measuredV2StateBaseline.countAfterReturn
+    )
+
     const slotIncrement = page.getByTestId('slot-state-increment')
 
-    await v2Increment.click()
     await slotIncrement.click()
-    await expect(page.getByTestId('v2-state-count')).toHaveText('v2 count: 1')
     await expect(page.getByTestId('slot-state-count')).toHaveText('slot count: 1')
 
-    const v2InstanceBefore = await page.getByTestId('v2-state-instance').textContent()
     const slotInstanceBefore = await page.getByTestId('slot-state-instance').textContent()
 
-    await page.getByTestId('v2-state-toggle').click()
     await page.getByTestId('slot-state-toggle').click()
 
-    await expect(page.getByTestId('v2-state-content')).toBeVisible()
     await expect(page.getByTestId('slot-state-content')).toBeVisible()
 
-    const v2CountAfterAdapt = await page.getByTestId('v2-state-count').textContent()
     const slotCountAfterAdapt = await page.getByTestId('slot-state-count').textContent()
-    const v2InstanceAfterAdapt = await page.getByTestId('v2-state-instance').textContent()
     const slotInstanceAfterAdapt = await page
       .getByTestId('slot-state-instance')
       .textContent()
 
-    await page.getByTestId('v2-state-toggle').click()
     await page.getByTestId('slot-state-toggle').click()
 
-    await expect(page.getByTestId('v2-state-content')).toBeVisible()
     await expect(page.getByTestId('slot-state-content')).toBeVisible()
 
-    const v2CountAfterReturn = await page.getByTestId('v2-state-count').textContent()
     const slotCountAfterReturn = await page.getByTestId('slot-state-count').textContent()
 
     const observation = {
-      v2: {
-        before: v2InstanceBefore,
-        adapted: v2InstanceAfterAdapt,
-        countAfterAdapt: v2CountAfterAdapt,
-        countAfterReturn: v2CountAfterReturn,
-      },
+      measuredV2: measuredV2StateBaseline,
       slot: {
         before: slotInstanceBefore,
         adapted: slotInstanceAfterAdapt,
@@ -131,11 +137,10 @@ test.describe('Adapt live-publish slot PR-A spike', () => {
 
     console.log('AdaptLiveSlotSpike state observation', JSON.stringify(observation))
 
-    if (v2CountAfterAdapt === 'v2 count: 1') {
-      expect(slotCountAfterAdapt).toBe('slot count: 1')
-    }
-    if (v2CountAfterReturn === 'v2 count: 1') {
-      expect(slotCountAfterReturn).toBe('slot count: 1')
-    }
+    expect(slotInstanceAfterAdapt).not.toBe(slotInstanceBefore)
+    expect(slotCountAfterAdapt).toBe(toSlotCount(measuredV2StateBaseline.countAfterAdapt))
+    expect(slotCountAfterReturn).toBe(
+      toSlotCount(measuredV2StateBaseline.countAfterReturn)
+    )
   })
 })
