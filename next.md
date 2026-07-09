@@ -1,5 +1,7 @@
 v3 release plan:
 
+- migration note: FocusScope no longer supports function-as-children/render-prop; pass JSX children directly.
+
 - remove deprecated / duplicate API paths
   - `focusable` => `tabIndex`
   - `fullscreen` => `inset: 0, position: 'absolute'`

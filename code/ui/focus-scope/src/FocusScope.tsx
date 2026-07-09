@@ -10,10 +10,6 @@ const AUTOFOCUS_ON_MOUNT = 'focusScope.autoFocusOnMount'
 const AUTOFOCUS_ON_UNMOUNT = 'focusScope.autoFocusOnUnmount'
 const EVENT_OPTIONS = { bubbles: false, cancelable: true }
 const FOCUS_SCOPE_STYLE: React.CSSProperties = { display: 'contents' }
-const EMPTY_FOCUS_SCOPE_CHILD_PROPS = {
-  onKeyDown: () => {},
-  ref: () => {},
-}
 
 type FocusableTarget = HTMLElement | { focus(): void }
 
@@ -50,10 +46,7 @@ const FocusScope = createRefComponent<FocusScopeElement, FocusScopeProps>(
       childProps as React.HTMLAttributes<HTMLDivElement> & {
         ref: React.Ref<HTMLDivElement>
       }
-    const children =
-      typeof mergedProps.children === 'function'
-        ? mergedProps.children(EMPTY_FOCUS_SCOPE_CHILD_PROPS)
-        : mergedProps.children
+    const children = mergedProps.children
 
     return (
       <div {...scopeProps} ref={ref} style={getFocusScopeStyle(style)}>
