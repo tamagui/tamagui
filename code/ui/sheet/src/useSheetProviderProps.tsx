@@ -203,7 +203,7 @@ export function useSheetProviderProps(
     dismissOnOverlayPress: props.dismissOnOverlayPress ?? true,
     dismissOnSnapToBottom: props.dismissOnSnapToBottom ?? false,
     onOverlayComponent: options.onOverlayComponent,
-    scope: props.__scopeSheet,
+    scope: props.scope ?? '',
     hasFit,
     position,
     snapPoints,
