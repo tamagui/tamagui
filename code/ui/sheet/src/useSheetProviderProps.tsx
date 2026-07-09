@@ -24,10 +24,7 @@ export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
 
 export function useSheetProviderProps(
   props: SheetProps,
-  state: SheetOpenState,
-  options: {
-    onOverlayComponent?: (comp: any) => void
-  } = {}
+  state: SheetOpenState
 ) {
   const handleRef = React.useRef<TamaguiElement>(null)
   const contentRef = React.useRef<TamaguiElement>(null)
@@ -202,7 +199,6 @@ export function useSheetProviderProps(
     setFrameSize,
     dismissOnOverlayPress: props.dismissOnOverlayPress ?? true,
     dismissOnSnapToBottom: props.dismissOnSnapToBottom ?? false,
-    onOverlayComponent: options.onOverlayComponent,
     scope: props.scope ?? '',
     hasFit,
     position,
@@ -211,7 +207,7 @@ export function useSheetProviderProps(
     setMaxContentSize,
     setPosition,
     setPositionImmediate,
-    onlyShowFrame: false,
+    onlyShowContainer: false,
   }
 
   return providerProps

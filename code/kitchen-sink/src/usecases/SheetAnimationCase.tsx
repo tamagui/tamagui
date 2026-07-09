@@ -125,13 +125,13 @@ function SheetTest({ testId, transition, transitionConfig, label }: SheetTestPro
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame
+        <Sheet.Container
           padding="$4"
-          bg="$background"
           testID={`${testId}-frame`}
           data-testid={`${testId}-frame`}
-          onLayout={handleFrameLayout}
-        >
+          onLayout={handleFrameLayout}>
+          <Sheet.Background
+            bg="$background"/>
           <YStack gap="$4">
             <Paragraph testID={`${testId}-label`} data-testid={`${testId}-label`}>
               {label}
@@ -148,7 +148,7 @@ function SheetTest({ testId, transition, transitionConfig, label }: SheetTestPro
               Close
             </Button>
           </YStack>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </XStack>
   )

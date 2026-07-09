@@ -1387,11 +1387,13 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     >
       <Dialog.Adapt when="maxMd">
         <Sheet zIndex={1_000_001} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame bg="$color1" p={0} gap="$4">
+          <Sheet.Container p={0} gap="$4">
+            <Sheet.Background
+              bg="$color1"/>
             <Sheet.ScrollView showsVerticalScrollIndicator={false}>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             bg="$shadow4"
             transition="lazy"

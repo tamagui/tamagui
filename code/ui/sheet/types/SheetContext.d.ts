@@ -4,4 +4,5 @@ export declare const SheetProvider: import("react").Provider<SheetContextValue> 
     children?: import("react").ReactNode;
     scope?: string;
 }>, useSheetContext: (scope?: string) => SheetContextValue;
+export declare const SheetOverlayLayerContext: import("react").Context<boolean>;
 //# sourceMappingURL=SheetContext.d.ts.map

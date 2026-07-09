@@ -64,9 +64,10 @@ describe('Select native content', () => {
 
         <Adapt when="sm">
           <Sheet>
-            <Sheet.Frame>
+            <Sheet.Container>
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay />
           </Sheet>
         </Adapt>

@@ -92,11 +92,12 @@ export function SheetWebKeyboardAutoFocusCase() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame
+        <Sheet.Container
           testID="sheet-web-kb-af-frame"
           rounded="$6"
           onLayout={track ? (e) => reportSheetLayout('frame', e) : undefined}
         >
+          <Sheet.Background />
           <Sheet.ScrollView
             testID="sheet-web-kb-af-scrollview"
             maxHeight={maxHeight}
@@ -146,7 +147,7 @@ export function SheetWebKeyboardAutoFocusCase() {
               </XStack>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

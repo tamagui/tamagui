@@ -55,7 +55,7 @@ export function setupNativeSheet(
             isKeyboardVisible={false}
             keyboardStableFrameHeight={0}
             {...providerProps}
-            onlyShowFrame
+            onlyShowContainer
           >
             <ModalSheetView ref={ref} onModalDidDismiss={() => setOpenInternal(false)}>
               <ModalSheetViewMainContent>

@@ -80,9 +80,10 @@ function TakeoutStyleDialog({
           dismissOnSnapToBottom
           unmountChildrenWhenHidden
         >
-          <Sheet.Frame p="$4" gap="$4">
+          <Sheet.Container p="$4" gap="$4">
+            <Sheet.Background />
             <Adapt.Contents />
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             bg="$background"
             opacity={0.5}

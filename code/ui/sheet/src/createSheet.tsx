@@ -1,6 +1,6 @@
 import { AdaptCapabilities, useAdaptIsActive } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb } from '@tamagui/constants'
 import type {
   GetProps,
   ViewProps,
@@ -15,11 +15,11 @@ import { RemoveScroll } from '@tamagui/remove-scroll'
 import { useDidFinishSSR } from '@tamagui/use-did-finish-ssr'
 import { StackZIndexContext } from '@tamagui/z-index-stack'
 import type { FunctionComponent, ReactNode, Ref } from 'react'
-import { memo, useMemo, useEffect, useRef } from 'react'
+import { useContext, useMemo, useEffect, useRef } from 'react'
 import type { View as RNView } from 'react-native'
 import { Platform } from 'react-native'
 import { getNativeSheet } from './nativeSheet'
-import { useSheetContext } from './SheetContext'
+import { SheetOverlayLayerContext, useSheetContext } from './SheetContext'
 import { SheetImplementationCustom } from './SheetImplementationCustom'
 import { SheetScrollView } from './SheetScrollView'
 import type { SheetProps, SheetScopedProps } from './types'
@@ -37,9 +37,20 @@ type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedS
 
 export function createSheet<
   H extends TamaguiComponent | SheetStyledComponent,
-  F extends TamaguiComponent | SheetStyledComponent,
+  C extends TamaguiComponent | SheetStyledComponent,
+  B extends TamaguiComponent | SheetStyledComponent,
   O extends TamaguiComponent | SheetStyledComponent,
->({ Handle, Frame, Overlay }: { Handle: H; Frame: F; Overlay: O }) {
+>({
+  Handle,
+  Container,
+  Background,
+  Overlay,
+}: {
+  Handle: H
+  Container: C
+  Background: B
+  Overlay: O
+}) {
   const SheetHandle = createStyledHOC(Handle)<any>(
     ({ scope, ...props }: SheetScopedProps<SheetStyledComponent>, forwardedRef) => {
       const context = useSheetContext(scope)
@@ -58,7 +69,7 @@ export function createSheet<
         })
       }, [context.scrollBridge])
 
-      if (context.onlyShowFrame) {
+      if (context.onlyShowContainer) {
         return null
       }
 
@@ -96,51 +107,46 @@ export function createSheet<
   const SheetOverlay = createStyledHOC(Overlay)<SheetScopedProps<{}>>((propsIn, ref) => {
     const { scope, ...props } = propsIn
     const context = useSheetContext(scope)
+    const isInOverlayLayer = useContext(SheetOverlayLayerContext)
+    const didWarn = useRef(false)
 
-    // this ones a bit weird for legacy reasons, we need to hoist it above <Sheet /> AnimatedView
-    // so we just pass it up to context
-
-    const element = useMemo(() => {
-      return (
-        // @ts-ignore
-        <Overlay
-          {...props}
-          ref={ref}
-          onPress={composeEventHandlers(
-            props.onPress,
-            context.dismissOnOverlayPress
-              ? () => {
-                  context.setOpen(false)
-                }
-              : undefined
-          )}
-        />
-      )
-    }, [props, ref, context.dismissOnOverlayPress, context.setOpen])
-
-    useIsomorphicLayoutEffect(() => {
-      context.onOverlayComponent?.(element)
-    }, [element])
-
-    if (context.onlyShowFrame) {
+    if (context.onlyShowContainer) {
       return null
     }
 
-    return null
+    if (!isInOverlayLayer) {
+      if (process.env.NODE_ENV === 'development' && !didWarn.current) {
+        didWarn.current = true
+        console.error(
+          'Sheet.Overlay must be a direct child of Sheet. Move it next to Sheet.Handle and Sheet.Container.'
+        )
+      }
+
+      return null
+    }
+
+    return (
+      // @ts-ignore
+      <Overlay
+        {...props}
+        ref={ref}
+        onPress={composeEventHandlers(
+          props.onPress,
+          context.dismissOnOverlayPress
+            ? () => {
+                context.setOpen(false)
+              }
+            : undefined
+        )}
+      />
+    )
   })
 
   /* -------------------------------------------------------------------------------------------------
    * Sheet
    * -----------------------------------------------------------------------------------------------*/
 
-  type ExtraFrameProps = {
-    /**
-     * by default the sheet adds a view below its bottom that extends past the
-     * largest visible viewport height. this covers spring overshoot when opening
-     * so page content never shows through below the sheet.
-     */
-    disableHideBottomOverflow?: boolean
-
+  type ExtraContainerProps = {
     /**
      * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
      * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
@@ -149,12 +155,11 @@ export function createSheet<
     adjustPaddingForOffscreenContent?: boolean
   }
 
-  const SheetFrame = createStyledHOC(Frame)<SheetProps & ExtraFrameProps>(
+  const SheetContainer = createStyledHOC(Container)<SheetProps & ExtraContainerProps>(
     (
       {
         scope,
         adjustPaddingForOffscreenContent,
-        disableHideBottomOverflow,
         children,
         ...props
       },
@@ -179,7 +184,7 @@ export function createSheet<
 
         return (
           // @ts-expect-error
-          <Frame
+          <Container
             ref={composedContentRef}
             flex={hasFit && open ? 0 : 1}
             flexBasis={hasFit ? 'auto' : undefined}
@@ -201,7 +206,7 @@ export function createSheet<
             {adjustPaddingForOffscreenContent && (
               <View data-sheet-offscreen-pad height={offscreenSize} width="100%" />
             )}
-          </Frame>
+          </Container>
         )
       }, [
         open,
@@ -213,52 +218,44 @@ export function createSheet<
       ])
 
       return (
-        <>
-          <RemoveScroll enabled={!disableRemoveScroll && context.open}>
-            {sheetContents}
-          </RemoveScroll>
-
-          {/* below frame hide when bouncing past 100% */}
-          {!disableHideBottomOverflow && (
-            // @ts-ignore
-            <Frame
-              {...props}
-              componentName="SheetCover"
-              data-sheet-cover=""
-              children={null}
-              // Don't inherit testID - this is a visual helper element
-              testID={undefined}
-              id={undefined}
-              position="absolute"
-              // anchor the cover's top at the sheet's bottom edge (top: 100% of the
-              // container), then extend it downward. on web extend it past the
-              // largest viewport safari can reveal as its chrome retracts, so the
-              // sheet background covers the bottom instead of revealing the page.
-              // native keeps frameSize.
-              top="100%"
-              zIndex={-1}
-              height={
-                isWeb
-                  ? Math.max(context.frameSize, getMaxViewportHeight())
-                  : context.frameSize
-              }
-              maxHeight={isWeb ? 'none' : undefined}
-              left={0}
-              right={0}
-              borderWidth={0}
-              borderRadius={0}
-              shadowOpacity={0}
-            />
-          )}
-        </>
+        <RemoveScroll enabled={!disableRemoveScroll && context.open}>
+          {sheetContents}
+        </RemoveScroll>
       )
     }
   ) as any as (
     props: SheetScopedProps<
-      Omit<GetProps<typeof Frame>, keyof ExtraFrameProps> &
-        ExtraFrameProps & { ref?: Ref<RNView> }
+      Omit<GetProps<typeof Container>, keyof ExtraContainerProps> &
+        ExtraContainerProps & { ref?: Ref<RNView> }
     >
   ) => ReactNode
+
+  type ExtraBackgroundProps = {
+    /**
+     * Disables the default background extension below the sheet. Leave this off
+     * when a spring can overshoot on open so page content never shows through.
+     */
+    disableHideBottomOverflow?: boolean
+  }
+
+  const SheetBackground = createStyledHOC(Background)<
+    SheetScopedProps<GetProps<typeof Background> & ExtraBackgroundProps>
+  >(({ scope, disableHideBottomOverflow, ...props }, forwardedRef) => {
+    const context = useSheetContext(scope)
+    const bottomOverflow = isWeb
+      ? Math.max(context.frameSize, getMaxViewportHeight())
+      : context.frameSize
+
+    return (
+      // @ts-ignore
+      <Background
+        ref={forwardedRef}
+        data-sheet-background=""
+        bottom={disableHideBottomOverflow ? 0 : -bottomOverflow}
+        {...props}
+      />
+    )
+  })
 
   const Sheet = createRefComponent<RNView, SheetProps>(function Sheet(props, ref) {
     const hydrated = useDidFinishSSR()
@@ -296,7 +293,8 @@ export function createSheet<
   })
 
   const components = {
-    Frame: SheetFrame,
+    Container: SheetContainer,
+    Background: SheetBackground,
     Overlay: SheetOverlay,
     Handle: SheetHandle,
     ScrollView: SheetScrollView,

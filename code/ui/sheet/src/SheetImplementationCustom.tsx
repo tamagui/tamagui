@@ -21,6 +21,7 @@ import type {
 } from 'react-native'
 import { Dimensions, PanResponder, View } from 'react-native'
 import { ParentSheetContext, SheetInsideSheetContext } from './contexts'
+import { SHEET_OVERLAY_NAME } from './constants'
 import { GestureDetectorWrapper } from './GestureDetectorWrapper'
 import { getGestureHandlerState } from './gestureState'
 import { GestureSheetProvider } from './GestureSheetContext'
@@ -37,7 +38,7 @@ import {
   getWebVisualViewportOffsetTop,
   MIN_KEYBOARD_HEIGHT,
 } from './webViewport'
-import { SheetProvider } from './SheetContext'
+import { SheetOverlayLayerContext, SheetProvider } from './SheetContext'
 import type { SheetProps, SnapPointsMode } from './types'
 import { useGestureHandlerPan } from './useGestureHandlerPan'
 import { useKeyboardControllerSheet } from './useKeyboardControllerSheet'
@@ -100,11 +101,8 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     } = props
 
     const state = useSheetOpenState(props)
-    const [overlayComponent, setOverlayComponent] = React.useState<React.ReactNode>(null)
 
-    const providerProps = useSheetProviderProps(props, state, {
-      onOverlayComponent: setOverlayComponent,
-    })
+    const providerProps = useSheetProviderProps(props, state)
     const {
       frameSize,
       setFrameSize,
@@ -826,6 +824,21 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
       }
     }, [open])
 
+    React.useEffect(() => {
+      if (!isWeb || !modal || !open) return
+
+      const onKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          state.setOpen(false)
+        }
+      }
+
+      document.addEventListener('keydown', onKeyDown)
+      return () => {
+        document.removeEventListener('keydown', onKeyDown)
+      }
+    }, [modal, open, state.setOpen])
+
     // gesture handler hook for RNGH-based gesture coordination
     const { panGesture, panGestureRef, gestureHandlerEnabled } = useGestureHandlerPan({
       positions: activePositions,
@@ -938,6 +951,10 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     const setHasScrollView = React.useCallback((val: boolean) => {
       hasScrollView.current = val
     }, [])
+    const { overlayChildren, animatedChildren } = React.useMemo(
+      () => partitionSheetChildren(props.children),
+      [props.children]
+    )
     let contents = (
       <LayoutMeasurementController disable={!open}>
         <ParentSheetContext.Provider value={nextParentContext}>
@@ -955,9 +972,11 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
               panGesture={panGesture}
               panGestureRef={panGestureRef}
             >
-              <AnimatePresence custom={{ open }}>
-                {shouldHideParentSheet || !open ? null : overlayComponent}
-              </AnimatePresence>
+              <SheetOverlayLayerContext.Provider value>
+                <AnimatePresence custom={{ open }}>
+                  {shouldHideParentSheet || !open ? null : overlayChildren}
+                </AnimatePresence>
+              </SheetOverlayLayerContext.Provider>
 
               {snapPointsMode !== 'percent' && (
                 <View
@@ -1000,14 +1019,14 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
                 {/* wrap children with plain RN View for panResponder - tamagui views no longer handle responder events on web */}
                 {gestureHandlerEnabled && panGesture ? (
                   <GestureDetectorWrapper gesture={panGesture} style={{ flex: 1 }}>
-                    {props.children}
+                    {animatedChildren}
                   </GestureDetectorWrapper>
                 ) : (
                   <View
                     {...panResponder?.panHandlers}
                     style={{ flex: 1, width: '100%', height: '100%' }}
                   >
-                    {props.children}
+                    {animatedChildren}
                   </View>
                 )}
               </AnimatedView>
@@ -1079,6 +1098,36 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     return contents
   }
 )
+
+function partitionSheetChildren(children: React.ReactNode) {
+  const overlayChildren: React.ReactNode[] = []
+  const animatedChildren: React.ReactNode[] = []
+
+  React.Children.forEach(children, (child) => {
+    if (!React.isValidElement(child)) {
+      animatedChildren.push(child)
+      return
+    }
+
+    const childType = child.type as {
+      staticConfig?: {
+        componentName?: string
+      }
+    }
+
+    if (childType.staticConfig?.componentName === SHEET_OVERLAY_NAME) {
+      overlayChildren.push(child)
+      return
+    }
+
+    animatedChildren.push(child)
+  })
+
+  return {
+    overlayChildren,
+    animatedChildren,
+  }
+}
 
 function getYPositions(
   mode: SnapPointsMode,

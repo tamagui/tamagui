@@ -9,7 +9,11 @@ export declare const Overlay: import("@tamagui/core").TamaguiComponent<import("@
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const Frame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const Container: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    unstyled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
+export declare const Background: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
@@ -50,17 +54,13 @@ export declare const Sheet: ((props: Omit<{
     Controlled: import("react").FunctionComponent<Omit<import("./types").SheetProps, "open" | "onOpenChange"> & {
         ref?: import("react").Ref<import("react-native").View>;
     }> & {
-        Frame: (props: import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-            unstyled?: boolean | undefined;
-            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-        }>, keyof {
-            disableHideBottomOverflow?: boolean;
-            adjustPaddingForOffscreenContent?: boolean;
-        }> & {
-            disableHideBottomOverflow?: boolean;
+        Container: (props: import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetProps<typeof Container>, "adjustPaddingForOffscreenContent"> & {
             adjustPaddingForOffscreenContent?: boolean;
         } & {
             ref?: import("react").Ref<import("react-native").View>;
+        }>) => import("react").ReactNode;
+        Background: (props: import("./types").SheetScopedProps<import("@tamagui/core").GetProps<typeof Background> & {
+            disableHideBottomOverflow?: boolean;
         }>) => import("react").ReactNode;
         Overlay: import("@tamagui/core").TamaguiComponent<Omit<any, "scope"> & Omit<{}, "scope"> & {
             scope?: import("./types").SheetScopes;
@@ -74,17 +74,13 @@ export declare const Sheet: ((props: Omit<{
             }>> | undefined;
         }, {}>>;
     };
-    Frame: (props: import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        unstyled?: boolean | undefined;
-        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-    }>, keyof {
-        disableHideBottomOverflow?: boolean;
-        adjustPaddingForOffscreenContent?: boolean;
-    }> & {
-        disableHideBottomOverflow?: boolean;
+    Container: (props: import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetProps<typeof Container>, "adjustPaddingForOffscreenContent"> & {
         adjustPaddingForOffscreenContent?: boolean;
     } & {
         ref?: import("react").Ref<import("react-native").View>;
+    }>) => import("react").ReactNode;
+    Background: (props: import("./types").SheetScopedProps<import("@tamagui/core").GetProps<typeof Background> & {
+        disableHideBottomOverflow?: boolean;
     }>) => import("react").ReactNode;
     Overlay: import("@tamagui/core").TamaguiComponent<Omit<any, "scope"> & Omit<{}, "scope"> & {
         scope?: import("./types").SheetScopes;

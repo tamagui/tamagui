@@ -16,11 +16,12 @@ export const ProAgreementModal = () => {
     >
       <Dialog.Adapt when="maxMd">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame p="$4" gap="$4">
+          <Sheet.Container p="$4" gap="$4">
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             bg="$shadow4"
             transition="lazy"

@@ -8,9 +8,7 @@ export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
     keyboardStableFrameHeight: number;
     setHasScrollView: (val: boolean) => void;
 };
-export declare function useSheetProviderProps(props: SheetProps, state: SheetOpenState, options?: {
-    onOverlayComponent?: (comp: any) => void;
-}): {
+export declare function useSheetProviderProps(props: SheetProps, state: SheetOpenState): {
     screenSize: number;
     maxSnapPoint: string | number;
     disableRemoveScroll: boolean;
@@ -25,7 +23,6 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     setFrameSize: React.Dispatch<React.SetStateAction<number>>;
     dismissOnOverlayPress: boolean;
     dismissOnSnapToBottom: boolean;
-    onOverlayComponent: ((comp: any) => void) | undefined;
     scope: string;
     hasFit: boolean;
     position: number;
@@ -34,6 +31,6 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     setMaxContentSize: React.Dispatch<React.SetStateAction<number>>;
     setPosition: (next: number) => void;
     setPositionImmediate: React.Dispatch<React.SetStateAction<number>>;
-    onlyShowFrame: boolean;
+    onlyShowContainer: boolean;
 };
 //# sourceMappingURL=useSheetProviderProps.d.ts.map

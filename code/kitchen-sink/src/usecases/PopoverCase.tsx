@@ -111,9 +111,10 @@ function Demo({
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
           <Sheet modal dismissOnSnapToBottom>
-            <Sheet.Frame padding="$4">
+            <Sheet.Container padding="$4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay backgroundColor="$shadowColor" />
           </Sheet>
         </Adapt>

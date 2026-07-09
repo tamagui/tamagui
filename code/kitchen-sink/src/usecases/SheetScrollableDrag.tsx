@@ -159,7 +159,8 @@ export function SheetScrollableDrag() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle testID="sheet-scrollable-drag-handle" />
-        <Sheet.Frame testID="sheet-scrollable-drag-frame">
+        <Sheet.Container testID="sheet-scrollable-drag-frame">
+          <Sheet.Background />
           <Sheet.ScrollView
             testID="sheet-scrollable-drag-scrollview"
             onScroll={(e) => {
@@ -242,7 +243,7 @@ export function SheetScrollableDrag() {
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

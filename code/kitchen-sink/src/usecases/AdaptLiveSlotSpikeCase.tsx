@@ -228,17 +228,17 @@ function LiveSlotSheetTouchProof() {
             snapPoints={[72]}
             dismissOnSnapToBottom={false}
           >
-            <Sheet.Frame
+            <Sheet.Container
               {...testProps('sheet-live-slot-frame')}
               p="$4"
               gap="$3"
-              bg="$background"
-              data-sheet-live-slot-frame="no-portal-inline-sheet"
-            >
+              data-sheet-live-slot-frame="no-portal-inline-sheet">
+              <Sheet.Background
+                bg="$background"/>
               <TargetContext.Provider value="sheet-target-ok">
                 <LiveSlotContents />
               </TargetContext.Provider>
-            </Sheet.Frame>
+            </Sheet.Container>
           </Sheet>
         </YStack>
 
@@ -278,7 +278,7 @@ function SheetTouchProofContent() {
     <YStack
       {...testProps('sheet-live-slot-content')}
       accessibilityLabel="No portal sheet live slot panel"
-      accessibilityHint="Proof content rendered as plain Sheet.Frame children"
+      accessibilityHint="Proof content rendered as plain Sheet.Container children"
       p="$3"
       gap="$3"
       rounded="$3"

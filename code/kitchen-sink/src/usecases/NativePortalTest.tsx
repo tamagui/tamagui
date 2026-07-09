@@ -21,11 +21,12 @@ function SelectWithSheet({ id }: { id: string }) {
 
       <Adapt when={true} platform="touch">
         <Sheet modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             bg="$shadowColor"
             transition="lazy"
@@ -110,14 +111,15 @@ function SheetTest({ id }: { id: string }) {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame testID={`${id}-frame`} padding="$4">
+        <Sheet.Container testID={`${id}-frame`} padding="$4">
+          <Sheet.Background />
           <YStack gap="$4">
             <Text testID={`${id}-text`}>Sheet content works!</Text>
             <Button testID={`${id}-close`} onPress={() => setOpen(false)}>
               Close Sheet
             </Button>
           </YStack>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )
