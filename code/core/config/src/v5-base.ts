@@ -48,6 +48,7 @@ export const selectionStyles = (theme) =>
 export const settings = {
   mediaQueryDefaultActive,
   defaultFont: 'body',
+  defaultSize: '$4',
   fastSchemeChange: true,
   shouldAddPrefersColorThemes: true,
   allowedStyleValues: 'somewhat-strict-web',

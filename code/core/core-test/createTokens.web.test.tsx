@@ -27,3 +27,30 @@ test('color name no dot', () => {
     },
   })
 })
+
+test('true token keys error in development', () => {
+  const originalNodeEnv = process.env.NODE_ENV
+  process.env.NODE_ENV = 'development'
+
+  try {
+    expect(() =>
+      createTokens({
+        size: {
+          4: 44,
+          true: 44,
+        },
+      })
+    ).toThrow(/tokens\.size\.true.*settings\.defaultSize/)
+
+    expect(() =>
+      createTokens({
+        radius: {
+          4: 9,
+          $true: 9,
+        },
+      })
+    ).toThrow(/tokens\.radius\.\$true.*settings\.defaultSize/)
+  } finally {
+    process.env.NODE_ENV = originalNodeEnv
+  }
+})

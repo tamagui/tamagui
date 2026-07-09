@@ -20,6 +20,7 @@ export declare const settings: {
         '2xs': boolean;
     };
     defaultFont: string;
+    defaultSize: string;
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
     allowedStyleValues: "somewhat-strict-web";
@@ -143,7 +144,6 @@ export declare const defaultConfig: {
             2: number;
             3: number;
             4: number;
-            true: number;
             5: number;
             6: number;
             7: number;
@@ -173,7 +173,6 @@ export declare const defaultConfig: {
             3: number;
             3.5: number;
             4: number;
-            true: number;
             4.5: number;
             5: number;
             6: number;
@@ -201,7 +200,6 @@ export declare const defaultConfig: {
             [-3]: number;
             [-3.5]: number;
             [-4]: number;
-            "-true": number;
             [-4.5]: number;
             [-5]: number;
             [-6]: number;
@@ -232,7 +230,6 @@ export declare const defaultConfig: {
             $3: number;
             "$3.5": number;
             $4: number;
-            $true: number;
             "$4.5": number;
             $5: number;
             $6: number;
@@ -253,8 +250,8 @@ export declare const defaultConfig: {
         };
     };
     fonts: {
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13 | "true">;
-        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13 | "true">;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
+        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
     };
     selectionStyles: (theme: any) => {
         backgroundColor: any;
@@ -271,6 +268,7 @@ export declare const defaultConfig: {
             '2xs': boolean;
         };
         defaultFont: string;
+        defaultSize: string;
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";

@@ -40,8 +40,8 @@ export declare const fonts: {
                 normal: string;
             };
         };
-    }, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13 | "true">;
-    body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13 | "true">;
+    }, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
+    body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
     mono: {
         weight: {
             1: string;

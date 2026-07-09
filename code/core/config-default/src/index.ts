@@ -61,7 +61,6 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     3: 36,
     3.5: 40,
     4: 44,
-    true: 44,
     4.5: 48,
     5: 52,
     5.5: 59,
@@ -229,6 +228,7 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     settings: {
       shouldAddPrefersColorThemes: true,
       defaultFont: 'body',
+      defaultSize: '$4',
     },
   }
 }

@@ -22,7 +22,6 @@ export declare const webSystemFontSizes: {
 	readonly 2: 13;
 	readonly 3: 14;
 	readonly 4: 15;
-	readonly true: 15;
 	readonly 5: 16;
 	readonly 6: 18;
 	readonly 7: 22;
@@ -41,7 +40,6 @@ export declare const nativeSystemFontSizes: {
 	readonly 2: 12;
 	readonly 3: 15;
 	readonly 4: 17;
-	readonly true: 17;
 	readonly 5: 20;
 	readonly 6: 22;
 	readonly 7: 24;

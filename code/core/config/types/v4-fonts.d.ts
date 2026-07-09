@@ -9,7 +9,6 @@ declare const defaultSizes: {
     readonly 2: 12;
     readonly 3: 13;
     readonly 4: 14;
-    readonly true: 14;
     readonly 5: 16;
     readonly 6: 18;
     readonly 7: 20;
@@ -24,8 +23,8 @@ declare const defaultSizes: {
     readonly 16: 134;
 };
 export declare const fonts: {
-    body: FillInFont<GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13 | "true">;
-    heading: FillInFont<GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13 | "true">;
+    body: FillInFont<GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
+    heading: FillInFont<GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
 };
 export {};
 //# sourceMappingURL=v4-fonts.d.ts.map

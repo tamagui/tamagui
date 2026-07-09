@@ -52,7 +52,7 @@ export const ButtonFrame = styled(View, {
   } as const,
 
   defaultVariants: {
-    size: '$true',
+    size: true,
   },
 })
 

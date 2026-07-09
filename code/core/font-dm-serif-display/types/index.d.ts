@@ -8,7 +8,6 @@ declare const defaultSizes: {
 	readonly 2: 12;
 	readonly 3: 13;
 	readonly 4: 14;
-	readonly true: 14;
 	readonly 5: 18;
 	readonly 6: 22;
 	readonly 7: 26;
