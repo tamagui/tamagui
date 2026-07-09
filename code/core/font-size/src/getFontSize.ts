@@ -27,7 +27,7 @@ export const getFontSizeVariable = (
   }
   const conf = getConfig()
   const font = conf.fontsParsed[opts?.font || conf.defaultFontToken]
-  return font?.size[token] as Variable<string>
+  return font?.size[token as string] as Variable<string>
 }
 
 export const getFontSizeToken = (
@@ -45,7 +45,7 @@ export const getFontSizeToken = (
     font?.size ||
     // fallback to size tokens
     conf.tokensParsed.size
-  const size = resolveDefaultSizeToken(inSize ?? true, conf)
+  const size = resolveDefaultSizeToken(inSize ?? true, conf) as string
 
   const sizeTokens = Object.keys(fontSize).filter((key) => key !== '$true')
 
