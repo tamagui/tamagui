@@ -179,23 +179,7 @@ export function useSheetProviderProps(
     return bridge
   })
 
-  // Handle both new disableRemoveScroll and deprecated forceRemoveScrollEnabled
-  let disableRemoveScroll: boolean | undefined
-  if (props.disableRemoveScroll !== undefined) {
-    // New prop: disableRemoveScroll={true} means RemoveScroll is disabled
-    disableRemoveScroll = props.disableRemoveScroll || !open || !props.modal
-  } else if (props.forceRemoveScrollEnabled !== undefined) {
-    // Deprecated prop: forceRemoveScrollEnabled can override the default
-    if (process.env.NODE_ENV === 'development') {
-      console.warn(
-        '[Sheet] forceRemoveScrollEnabled is deprecated. Use disableRemoveScroll instead.'
-      )
-    }
-    disableRemoveScroll = !props.forceRemoveScrollEnabled
-  } else {
-    // Default: disabled when not open or not modal
-    disableRemoveScroll = !open || !props.modal
-  }
+  const disableRemoveScroll = props.disableRemoveScroll || !open || !props.modal
 
   const maxSnapPoint = snapPoints[0]
   const screenSize =

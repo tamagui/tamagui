@@ -27,7 +27,6 @@ export declare const Sheet: ((props: {
     dismissOnOverlayPress?: boolean;
     dismissOnSnapToBottom?: boolean;
     disableRemoveScroll?: boolean;
-    forceRemoveScrollEnabled?: boolean;
     transitionConfig?: import("@tamagui/core").AnimatedNumberStrategy;
     preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;

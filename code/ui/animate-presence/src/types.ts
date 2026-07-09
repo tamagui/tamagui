@@ -72,14 +72,6 @@ export interface AnimatePresenceProps {
   onExitComplete?: () => void
 
   /**
-   * If set to `true`, `AnimatePresence` will only render one component at a time. The exiting component
-   * will finish its exit animation before the entering component is rendered.
-   *
-   * @deprecated Use `mode="wait"` instead.
-   */
-  exitBeforeEnter?: boolean
-
-  /**
    * Used in Framer to flag that sibling children *shouldn't* re-render as a result of a
    * child being removed.
    *

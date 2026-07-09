@@ -191,7 +191,7 @@ const ThemeBuilderModal = memo(() => {
           gap="$4"
           flex={1}
         >
-          <AnimatePresence exitBeforeEnter custom={{ going: store.direction }}>
+          <AnimatePresence mode="wait" custom={{ going: store.direction }}>
             <Section
               flex={1}
               transition="75ms"

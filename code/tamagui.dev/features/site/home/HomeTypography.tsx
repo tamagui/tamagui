@@ -80,7 +80,7 @@ export const HomeTypography = memo(() => {
             $sm={{ y: 0, minW: '110%', items: 'center', x: 0, scale: 0.9 }}
           >
             <YStack items="flex-end" contain="paint layout" height={270}>
-              <AnimatePresence exitBeforeEnter>
+              <AnimatePresence mode="wait">
                 <AnimatedHeading
                   disableAnimation={!isIntersecting}
                   key={`${family}1`}

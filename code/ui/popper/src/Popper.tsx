@@ -637,8 +637,6 @@ export type PopperContentProps = SizableStackProps & {
    * Enable smooth animation when the content position changes (e.g., when flipping sides)
    */
   animatePosition?: boolean | 'even-when-repositioning'
-  /** @deprecated Use `animatePosition` instead */
-  enableAnimationForPositionChange?: boolean | 'even-when-repositioning'
   passThrough?: boolean
 }
 
@@ -668,19 +666,10 @@ export const PopperContent = createRefComponent<PopperContentElement, PopperCont
     // toggling it later must not flip 'transition' presence on the inner View - that
     // would change useComponentState's hasAnimationProp mid-life, conditionally calling
     // useAnimations/usePresence and tripping React's "Should have a queue" invariant.
-    const isAnimatePosControlled =
-      'animatePosition' in props || 'enableAnimationForPositionChange' in props
+    const isAnimatePosControlled = 'animatePosition' in props
 
-    const {
-      scope,
-      animatePosition,
-      enableAnimationForPositionChange,
-      children,
-      passThrough,
-      unstyled,
-      ...rest
-    } = props
-    const animatePos = animatePosition ?? enableAnimationForPositionChange
+    const { scope, animatePosition, children, passThrough, unstyled, ...rest } = props
+    const animatePos = animatePosition
     const context = usePopperContext(scope)
 
     const {

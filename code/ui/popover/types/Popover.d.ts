@@ -151,8 +151,6 @@ export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, '
      * Enable smooth animation when the content position changes (e.g., when flipping sides)
      */
     animatePosition?: boolean | 'even-when-repositioning';
-    /** @deprecated Use `animatePosition` instead */
-    enableAnimationForPositionChange?: boolean;
 }
 export type PopoverContentProps = PopoverContentTypeProps;
 export declare const PopoverContent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {

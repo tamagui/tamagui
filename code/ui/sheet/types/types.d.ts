@@ -31,11 +31,6 @@ export type SheetProps = ScopedProps<{
      * By default, RemoveScroll is enabled when the sheet is open and modal.
      */
     disableRemoveScroll?: boolean;
-    /**
-     * @deprecated Use `disableRemoveScroll` instead. This prop will be removed in a future version.
-     * Note: `disableRemoveScroll={true}` is equivalent to `forceRemoveScrollEnabled={false}`
-     */
-    forceRemoveScrollEnabled?: boolean;
     transitionConfig?: AnimatedNumberStrategy;
     /**
      * By default Sheet will prefer the open prop over a parent component that is
