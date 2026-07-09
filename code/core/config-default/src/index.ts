@@ -9,9 +9,11 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     family: 'Heading',
     size: {
       1: 15,
+      4: 15,
     },
     lineHeight: {
       1: 15,
+      4: 15,
     },
     transform: {},
     weight: {
@@ -29,9 +31,11 @@ export function getDefaultTamaguiConfig(platform: 'native' | 'web' = 'web') {
     family: 'System',
     size: {
       1: 15,
+      4: 15,
     },
     lineHeight: {
       1: 15,
+      4: 15,
     },
     transform: {},
     weight: {

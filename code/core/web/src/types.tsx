@@ -1229,6 +1229,13 @@ export interface GenericTamaguiSettings {
   defaultFont?: string
 
   /**
+   * Define the token used when a component size is set to true.
+   *
+   * @default '$4'
+   */
+  defaultSize?: string
+
+  /**
    * Web-only: define CSS text-selection styles
    */
   selectionStyles?: (theme: Record<string, string>) => null | {
@@ -1748,6 +1755,7 @@ export type SizeTokens =
   | SpecificTokensSpecial
   | ThemeValueFallbackSize
   | GetTokenString<keyof Tokens['size']>
+  | true
 
 export type SpaceTokens =
   | SpecificTokensSpecial
@@ -1825,6 +1833,7 @@ export type FontSizeTokens =
   | GetTokenString<GetTokenFontKeysFor<'size'>>
   | number
   | RemString
+  | true
 export type FontLineHeightTokens =
   | `$${GetTokenFontKeysFor<'lineHeight'>}`
   | number

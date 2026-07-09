@@ -26,7 +26,7 @@ export declare function buildCSSRuleSets(declarations: string[], fontDeclaration
     declarations: string[];
     language?: string;
     fontParsed: any;
-}>, defaultFontToken?: string): string[];
+}>, defaultSizeToken?: string): string[];
 /**
  * Generates theme CSS rules
  */

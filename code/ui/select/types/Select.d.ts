@@ -26,7 +26,7 @@ export declare const SelectGroupFrame: import("@tamagui/core").TamaguiComponent<
 }, import("@tamagui/core").StaticConfigPublic>;
 type SelectGroupProps = SelectScopedProps<GetProps<typeof SelectGroupFrame>>;
 declare const SelectLabelFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    size?: SizeTokens | FontSizeTokens | undefined;
+    size?: number | true | `$${string}` | `$${string}.${string}` | `$${string}.${number}` | `${number}rem` | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | `$${number}` | undefined;
     unstyled?: boolean | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFrame>>;
@@ -74,14 +74,14 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Label: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-        size?: SizeTokens | FontSizeTokens | undefined;
+        size?: number | true | `$${string}` | `$${string}.${string}` | `$${string}.${number}` | `${number}rem` | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | `$${number}` | undefined;
         unstyled?: boolean | undefined;
     }>, "scope"> & {
         scope?: any;
     }, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & {
         scope?: any;
     }, import("@tamagui/core").TextStylePropsBase, {
-        size?: SizeTokens | FontSizeTokens | undefined;
+        size?: number | true | `$${string}` | `$${string}.${string}` | `$${string}.${number}` | `${number}rem` | import("@tamagui/core").UnionableNumber | import("@tamagui/core").UnionableString | `$${number}` | undefined;
         unstyled?: boolean | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     ScrollDownButton: import("@tamagui/compose-refs").RefComponent<TamaguiElement, import("./types").SelectScrollButtonProps>;

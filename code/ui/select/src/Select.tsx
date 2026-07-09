@@ -7,6 +7,7 @@ import {
   createRefComponent,
   createStyledContext,
   getVariableValue,
+  resolveDefaultSizeToken,
   styled,
   useEvent,
   useGet,
@@ -257,14 +258,15 @@ const NativeSelectFrame = styled(YStack, {
     size: {
       '...size': (val, extras) => {
         const { tokens } = extras
-        const paddingHorizontal = getVariableValue(tokens.space[val])
+        const sizeToken = resolveDefaultSizeToken(val)
+        const paddingHorizontal = getVariableValue(tokens.space[sizeToken])
 
         return {
-          borderRadius: tokens.radius[val] ?? val,
-          minHeight: tokens.size[val],
+          borderRadius: tokens.radius[sizeToken] ?? sizeToken,
+          minHeight: tokens.size[sizeToken],
           paddingRight: paddingHorizontal + 20,
           paddingLeft: paddingHorizontal,
-          paddingVertical: getSpace(val, {
+          paddingVertical: getSpace(sizeToken, {
             shift: -3,
           }),
         }
@@ -370,9 +372,11 @@ const SelectLabelFrame = styled(SizableText, {
 
     size: {
       '...size': (val: SizeTokens, { tokens }) => {
+        const sizeToken = resolveDefaultSizeToken(val)
+
         return {
-          paddingHorizontal: tokens.space[val],
-          paddingVertical: getSpace(tokens.space[val], {
+          paddingHorizontal: tokens.space[sizeToken],
+          paddingVertical: getSpace(tokens.space[sizeToken], {
             shift: -4,
           }),
         }

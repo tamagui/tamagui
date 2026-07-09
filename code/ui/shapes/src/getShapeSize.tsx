@@ -1,12 +1,14 @@
 import type { SizableStackProps } from '@tamagui/stacks'
 import type { SizeVariantSpreadFunction } from '@tamagui/web'
+import { resolveDefaultSizeToken } from '@tamagui/web'
 
 export const getShapeSize: SizeVariantSpreadFunction<SizableStackProps> = (
   size,
   { tokens }
 ) => {
-  const width = tokens.size[size] ?? size
-  const height = tokens.size[size] ?? size
+  const sizeToken = resolveDefaultSizeToken(size)
+  const width = tokens.size[sizeToken] ?? sizeToken
+  const height = tokens.size[sizeToken] ?? sizeToken
   return {
     width,
     height,

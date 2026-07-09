@@ -1,4 +1,5 @@
 import { isAndroid } from '@tamagui/constants'
+import { resolveDefaultSizeToken } from '../config'
 import { getVariableValue, isVariable } from '../createVariable'
 import type {
   GetStyleState,
@@ -173,7 +174,11 @@ const resolveVariants: StyleResolver = (
   const { variants } = staticConfig
   if (!variants) return
 
-  let variantValue = getVariantDefinition(variants[key], value, conf, styleState)
+  const variant = variants[key]
+  if (value === true || value === '$true') {
+    value = resolveVariantSizeValue(variant, value, conf)
+  }
+  let variantValue = getVariantDefinition(variant, value, conf, styleState)
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
@@ -431,6 +436,19 @@ const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => (
   name,
   spreadName: `...${name}`,
 }))
+
+function resolveVariantSizeValue(variant: any, value: any, conf: TamaguiInternalConfig) {
+  if (!variant || typeof variant === 'function') {
+    return value
+  }
+  if (Object.prototype.hasOwnProperty.call(variant, value)) {
+    return value
+  }
+  if ('...size' in variant || '...space' in variant || '...fontSize' in variant) {
+    return resolveDefaultSizeToken(value, conf)
+  }
+  return value
+}
 
 // goes through specificity finding best matching variant function
 function getVariantDefinition(

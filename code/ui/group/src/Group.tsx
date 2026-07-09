@@ -1,5 +1,10 @@
 import type { GetProps } from '@tamagui/core'
-import { createStyledHOC, mergeSlotStyleProps, styled } from '@tamagui/core'
+import {
+  createStyledHOC,
+  mergeSlotStyleProps,
+  resolveDefaultSizeToken,
+  styled,
+} from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -29,7 +34,8 @@ export const GroupFrame = styled(YStack, {
     },
 
     size: (val, { tokens }) => {
-      const borderRadius = tokens.radius[val] ?? val ?? tokens.radius['$true']
+      const sizeToken = resolveDefaultSizeToken(val ?? true)
+      const borderRadius = tokens.radius[sizeToken] ?? sizeToken
       return {
         borderRadius,
       }

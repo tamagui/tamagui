@@ -11,6 +11,7 @@ import {
   createStyledContext,
   getVariableValue,
   registerLayoutNode,
+  resolveDefaultSizeToken,
   styled,
 } from '@tamagui/core'
 import type { PopupTriggerMap } from '@tamagui/floating'
@@ -652,9 +653,11 @@ export const PopperContentFrame = styled(YStack, {
 
     size: {
       '...size': (val, { tokens }) => {
+        const sizeToken = resolveDefaultSizeToken(val)
+
         return {
-          padding: tokens.space[val],
-          borderRadius: tokens.radius[val],
+          padding: tokens.space[sizeToken],
+          borderRadius: tokens.radius[sizeToken],
         }
       },
     },

@@ -44,6 +44,71 @@ describe('getSplitStyles', () => {
     expect(styles.classNames).toEqual({ color: '_col-red' })
   })
 
+  test(`size spread variants resolve true through settings.defaultSize`, () => {
+    let seenSize: unknown
+    const SizedView = styled(View, {
+      variants: {
+        size: {
+          '...size': (val) => {
+            seenSize = val
+            return {
+              width: val,
+            }
+          },
+        },
+      } as const,
+    })
+
+    simplifiedGetSplitStyles(SizedView, {
+      size: true,
+    })
+
+    expect(seenSize).toBe('$4')
+  })
+
+  test(`size spread variants resolve $true through settings.defaultSize`, () => {
+    let seenSize: unknown
+    const SizedView = styled(View, {
+      variants: {
+        size: {
+          '...size': (val) => {
+            seenSize = val
+            return {
+              width: val,
+            }
+          },
+        },
+      } as const,
+    })
+
+    simplifiedGetSplitStyles(SizedView, {
+      size: '$true',
+    })
+
+    expect(seenSize).toBe('$4')
+  })
+
+  test(`direct $true style tokens resolve through settings.defaultSize`, () => {
+    const out = simplifiedGetSplitStyles(View, {
+      padding: '$true',
+      borderRadius: '$true',
+    })
+
+    const byProp: Record<string, string> = {}
+    for (const rule of Object.values(out.rulesToInsert)) {
+      byProp[rule[StyleObjectProperty] as string] = rule[StyleObjectValue] as string
+    }
+
+    expect(byProp.paddingTop).toBe('var(--t-space-4)')
+    expect(byProp.paddingRight).toBe('var(--t-space-4)')
+    expect(byProp.paddingBottom).toBe('var(--t-space-4)')
+    expect(byProp.paddingLeft).toBe('var(--t-space-4)')
+    expect(byProp.borderTopLeftRadius).toBe('var(--t-radius-4)')
+    expect(byProp.borderTopRightRadius).toBe('var(--t-radius-4)')
+    expect(byProp.borderBottomRightRadius).toBe('var(--t-radius-4)')
+    expect(byProp.borderBottomLeftRadius).toBe('var(--t-radius-4)')
+  })
+
   test(`prop "aria-required" is passed through`, () => {
     const { viewProps } = simplifiedGetSplitStyles(
       View,

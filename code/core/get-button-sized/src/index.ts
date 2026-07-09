@@ -1,5 +1,9 @@
 import { getSpace } from '@tamagui/get-token'
-import type { SizeTokens, VariantSpreadExtras } from '@tamagui/web'
+import {
+  resolveDefaultSizeToken,
+  type SizeTokens,
+  type VariantSpreadExtras,
+} from '@tamagui/web'
 
 export const getButtonSized = (
   val: SizeTokens | number,
@@ -15,11 +19,12 @@ export const getButtonSized = (
       borderRadius: props.circular ? 100_000 : val * 0.2,
     }
   }
-  const xSize = getSpace(val)
-  const radiusToken = tokens.radius[val] ?? tokens.radius['$true']
+  const sizeToken = resolveDefaultSizeToken(val)
+  const xSize = getSpace(sizeToken)
+  const radiusToken = tokens.radius[sizeToken] ?? sizeToken
   return {
     paddingHorizontal: xSize,
-    height: val,
+    height: sizeToken,
     borderRadius: props.circular ? 100_000 : radiusToken,
   }
 }

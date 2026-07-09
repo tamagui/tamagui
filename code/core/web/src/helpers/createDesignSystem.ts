@@ -1,5 +1,6 @@
 import { isWeb } from '@tamagui/constants'
 import type { CreateTamaguiProps, Variable } from '../types'
+import { DEFAULT_SIZE_TOKEN } from '../config'
 import { getVariableVariable, isVariable } from '../createVariable'
 import { autoVariables, registerCSSVariable, variableToCSS } from './registerCSSVariable'
 import { getThemeCSSRules } from './getThemeCSSRules'
@@ -13,7 +14,7 @@ type ThemeConfig = {
 // helper to get font property CSS declarations
 function getFontPropertyDeclarations(
   fontParsed: any,
-  tokenKey: string = '$true'
+  tokenKey: string = DEFAULT_SIZE_TOKEN
 ): string[] {
   const props: string[] = ['font-family: var(--f-family)']
 
@@ -118,7 +119,7 @@ export function buildCSSRuleSets(
     string,
     { name: string; declarations: string[]; language?: string; fontParsed: any }
   >,
-  defaultFontToken: string = '$true'
+  defaultSizeToken: string = DEFAULT_SIZE_TOKEN
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const cssRuleSets: string[] = []
@@ -154,7 +155,7 @@ export function buildCSSRuleSets(
       if (firstFont?.fontParsed) {
         const fontProps = getFontPropertyDeclarations(
           firstFont.fontParsed,
-          defaultFontToken
+          defaultSizeToken
         )
         const sharedSelectors = [...fontSelectors, '.is_View'].join(', ')
         cssRuleSets.push(`${sharedSelectors} {${fontProps.join('; ')}}`)

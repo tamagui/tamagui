@@ -1,8 +1,8 @@
 import type { Variable, VariableValGeneric } from '@tamagui/web'
-import { getTokens, isVariable } from '@tamagui/web'
+import { getDefaultSizeToken, getTokens, isVariable } from '@tamagui/web'
 
 // technically number | undefined just for compat with the generic VariableVal
-type GetTokenBase = Variable | string | number | undefined | VariableValGeneric
+type GetTokenBase = Variable | string | number | boolean | undefined | VariableValGeneric
 
 type GetTokenOptions = {
   shift?: number
@@ -39,6 +39,12 @@ export const stepTokenUpOrDown = (
   options: GetTokenOptions = defaultOptions
 ): Variable<number> => {
   const tokens = getTokens({ prefixed: true })[type] as Record<string, Variable>
+  const currentResolved =
+    current === true || current === '$true'
+      ? getDefaultSizeToken()
+      : isVariable(current) && current.key === '$true'
+        ? tokens[getDefaultSizeToken()] || current
+        : current
 
   if (!(type in cacheVariables)) {
     cacheKeys[type] = []
@@ -47,6 +53,7 @@ export const stepTokenUpOrDown = (
     cacheWholeVariables[type] = []
 
     const sorted = Object.keys(tokens)
+      .filter((key) => key !== '$true')
       .map((k) => tokens[k])
       .sort((a, b) => a.val - b.val)
 
@@ -62,7 +69,7 @@ export const stepTokenUpOrDown = (
     }
   }
 
-  const isString = typeof current === 'string'
+  const isString = typeof currentResolved === 'string'
   const cache = options.excludeHalfSteps
     ? isString
       ? cacheWholeKeys
@@ -75,19 +82,13 @@ export const stepTokenUpOrDown = (
 
   const min = options.bounds?.[0] ?? 0
   const max = options.bounds?.[1] ?? tokensOrdered.length - 1
-  const currentIndex = tokensOrdered.indexOf(current as any)
-
-  let shift = options.shift || 0
-  if (shift) {
-    if (current === '$true' || (isVariable(current) && current.name === 'true')) {
-      shift += shift > 0 ? 1 : -1
-    }
-  }
+  const currentIndex = tokensOrdered.indexOf(currentResolved as any)
+  const shift = options.shift || 0
 
   const index = Math.min(max, Math.max(min, currentIndex + shift))
   const found = tokensOrdered[index]
 
-  const result = (typeof found === 'string' ? tokens[found] : found) || tokens['$true']
+  const result = typeof found === 'string' ? tokens[found] : found
 
   // console.log('found', { current, shift, index, found, result })
 

@@ -2,7 +2,7 @@ import { createRefComponent } from '@tamagui/compose-refs'
 import { composeEventHandlers } from '@tamagui/helpers'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import type { GetProps, TamaguiElement, ViewStyle } from '@tamagui/web'
-import { styled, View } from '@tamagui/web'
+import { resolveDefaultSizeToken, styled, View } from '@tamagui/web'
 import * as React from 'react'
 import { context } from './context'
 
@@ -50,9 +50,10 @@ export const ToggleFrame = styled(
       size: {
         '...size': (val, { tokens }) => {
           if (!val) return
+          const sizeToken = resolveDefaultSizeToken(val)
           return {
-            width: tokens.size[val],
-            height: tokens.size[val],
+            width: tokens.size[sizeToken],
+            height: tokens.size[sizeToken],
           }
         },
         ':number': (val) => ({
