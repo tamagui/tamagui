@@ -10,6 +10,8 @@ v3 release plan:
   - remove deprecated stuff
   - clean out old configs and compatibility paths, at least v1-v3
 
+- theme model open item: `$backgroundActive` no longer exists in v3 themes but is still referenced by checkbox/switch checked states, tabs active, and toggle-group active (silently no-ops). Slider was fixed (track $backgroundPress, fill $color); decide whether to reintroduce backgroundActive or migrate these four to existing tokens.
+
 - simplify theme model
   - remove component themes / remove `name` from `styled()` (or just make not theme-related)
   - component example just show using theme="surface1" for example
