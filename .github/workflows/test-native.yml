@@ -9,8 +9,6 @@ on:
       - rn82
   pull_request:
     branches:
-      - main
-      - 'v2-*'
       - 'v3-*'
   workflow_dispatch:
 

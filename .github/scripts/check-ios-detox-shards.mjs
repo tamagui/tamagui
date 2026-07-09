@@ -5,6 +5,15 @@ const repoRoot = process.cwd()
 const e2eDir = join(repoRoot, 'code/kitchen-sink/e2e')
 const shouldWriteGitHubOutput = process.argv.includes('--github-output')
 
+// 4 seed shards balanced by test execution time. The old ~7min/shard ts-jest
+// type-check tax is gone (e2e now transpiles via e2e/tsconfig.json), so startup
+// is small and these fit well under the native-ci runner's 45-minute process
+// timeout. CompilerExtraction runs an in-test `npx tamagui build` (~12-19min,
+// variable) so it gets its OWN shard (with the iOS-skipped SafeArea/
+// SheetKeyboardDrag, which cost ~0, plus the small iOS-running
+// SheetFitKeyboardSafeArea, ~1 launch); the remaining files are bin-packed to
+// ~14.5min test-exec each (~25min wall). SelectAndroidOnPress is android-only
+// and remains explicitly excluded below; it still runs in the android job.
 const seedShards = [
   {
     name: '1/4',
@@ -120,6 +129,12 @@ if (missingAssignments.length > 0) {
   console.info('Auto-discovered new iOS Detox tests:')
   for (const testName of missingAssignments) {
     console.info(`- ${testName}`)
+  }
+
+  if (missingAssignments.length > 4) {
+    console.info(
+      `::warning::Auto-discovered iOS Detox shard has ${missingAssignments.length} files; consider re-seeding shards if this approaches the 45-minute native-ci cap.`
+    )
   }
 }
 
