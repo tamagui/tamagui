@@ -21,6 +21,7 @@ export type AdaptCapabilitiesValue = {
 };
 export type AdaptTargetHandoff = {
     hidden: boolean;
+    skipNextAnimation?: boolean;
     onAnimationComplete: (info: {
         open: boolean;
     }) => void;
@@ -48,6 +49,7 @@ export type AdaptParentContextI = {
     onOpenChange?: (open: boolean) => void;
     state?: unknown;
     handoff: AdaptTargetHandoff;
+    targetFullyHidden: boolean;
     registerTarget: () => void;
     unregisterTarget: () => void;
     registerContents: () => void;
