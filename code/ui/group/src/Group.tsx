@@ -1,5 +1,5 @@
 import type { GetProps } from '@tamagui/core'
-import { mergeSlotStyleProps, styled } from '@tamagui/core'
+import { createStyledHOC, mergeSlotStyleProps, styled } from '@tamagui/core'
 import type { Scope } from '@tamagui/create-context'
 import { createContextScope } from '@tamagui/create-context'
 import { withStaticProperties } from '@tamagui/helpers'
@@ -50,7 +50,7 @@ export type GroupProps = GetProps<typeof GroupFrame> & GroupExtraProps
 
 function createGroup(verticalDefault: boolean) {
   return withStaticProperties(
-    GroupFrame.styleable<ScopedProps<GroupExtraProps>>((props, ref) => {
+    createStyledHOC(GroupFrame)<ScopedProps<GroupExtraProps>>((props, ref) => {
       const {
         __scopeGroup,
         children: childrenProp,

@@ -6,6 +6,7 @@ import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { GetProps, SizeTokens, Token } from '@tamagui/web'
 import {
+  createStyledHOC,
   createStyledContext,
   getTokenValue,
   styled,
@@ -232,7 +233,7 @@ type ButtonExtraProps = TextParentStyles & {
   value?: string | readonly string[] | number
 }
 
-const ButtonComponent = Frame.styleable<ButtonExtraProps>((propsIn, ref) => {
+const ButtonComponent = createStyledHOC(Frame)<ButtonExtraProps>((propsIn, ref) => {
   const isNested = useContext(ButtonNestingContext)
 
   // Process props through useProps to expand shorthands (like br -> borderRadius)

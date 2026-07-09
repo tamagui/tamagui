@@ -4,6 +4,7 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { SizeTokens, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
+  createStyledHOC,
   LayoutMeasurementController,
   View as TamaguiView,
   createRefComponent,
@@ -533,7 +534,7 @@ export type PopperAnchorExtraProps = {
 }
 export type PopperAnchorProps = YStackProps
 
-export const PopperAnchor = YStack.styleable<PopperAnchorExtraProps>(
+export const PopperAnchor = createStyledHOC(YStack)<PopperAnchorExtraProps>(
   function PopperAnchor(props, forwardedRef) {
     const { virtualRef, scope, ...rest } = props
     const context = usePopperContextSlow(scope)

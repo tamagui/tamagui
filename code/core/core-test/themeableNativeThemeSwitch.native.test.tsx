@@ -1,12 +1,12 @@
 process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
-import { TamaguiProvider, View, createTamagui } from '@tamagui/core'
+import { createStyledHOC, TamaguiProvider, View, createTamagui } from '@tamagui/core'
 import { render } from '@testing-library/react-native'
 import { expect, test } from 'vitest'
 
 // regression: themeable() passes data-disable-theme to the inner component of
-// every .styleable() HOC. on native that flag must be IGNORED — honoring it
+// every styled HOC. on native that flag must be IGNORED because honoring it
 // skips the theme subscription, and since components are React.memo'd nothing
 // re-renders the leaf on theme change, leaving resolved token colors stale.
 // (web is safe via CSS variables.) guards the native branch of disableThemeProp
@@ -14,7 +14,7 @@ import { expect, test } from 'vitest'
 
 const config = createTamagui(getDefaultTamaguiConfig('native'))
 
-const Custom = View.styleable((props, ref) => <View ref={ref} {...props} />)
+const Custom = createStyledHOC(View)((props, ref) => <View ref={ref} {...props} />)
 
 const findBg = (node: any): any => {
   if (!node) return undefined
@@ -29,7 +29,7 @@ const findBg = (node: any): any => {
   return undefined
 }
 
-test('styleable HOC leaf updates token color on theme switch (native)', () => {
+test('styled HOC leaf updates token color on theme switch (native)', () => {
   const ui = (theme: string) => (
     <TamaguiProvider config={config} defaultTheme={theme}>
       <Custom backgroundColor="$color" width={10} height={10} />

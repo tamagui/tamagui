@@ -1,4 +1,4 @@
-import { createRefComponent } from '@tamagui/core'
+import { createStyledHOC, createRefComponent } from '@tamagui/core'
 import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
@@ -511,7 +511,7 @@ type AccordionTriggerProps = GetProps<typeof AccordionTriggerFrame>
  * `AccordionTrigger` is the trigger that toggles the collapsed state of an `AccordionItem`. It
  * should always be nested inside of an `AccordionHeader`.
  */
-const AccordionTrigger = AccordionTriggerFrame.styleable(function AccordionTrigger(
+const AccordionTrigger = createStyledHOC(AccordionTriggerFrame)(function AccordionTrigger(
   props: ScopedProps<AccordionTriggerProps>,
   forwardedRef
 ) {
@@ -559,7 +559,7 @@ type AccordionContentProps = GetProps<typeof AccordionContentFrame>
 /**
  * `AccordionContent` contains the collapsible content for an `AccordionItem`.
  */
-const AccordionContent = AccordionContentFrame.styleable(function AccordionContent(
+const AccordionContent = createStyledHOC(AccordionContentFrame)(function AccordionContent(
   props: ScopedProps<AccordionContentProps>,
   forwardedRef
 ) {
@@ -579,7 +579,7 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
   )
 })
 
-const HeightAnimator = View.styleable((props, ref) => {
+const HeightAnimator = createStyledHOC(View)((props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, ...rest } = props
   const [measuredHeight, setMeasuredHeight] = React.useState<number>(0)

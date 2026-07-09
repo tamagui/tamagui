@@ -59,7 +59,7 @@ export declare function createSwitch<F extends SwitchComponent, T extends Switch
     accept: {
         readonly activeStyle: "style";
     };
-}, "staticConfig" | "styleable"> & {
+}, "staticConfig"> & {
     __tama: [Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase & {
         readonly activeStyle?: Partial<import("@tamagui/core").InferStyleProps<import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
             elevation?: number | import("@tamagui/core").SizeTokens | undefined;

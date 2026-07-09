@@ -1,5 +1,11 @@
 import type { ColorTokens, GetProps, ThemeTokens } from '@tamagui/core'
-import { normalizeColor, styled, useProps, useTheme } from '@tamagui/core'
+import {
+  createStyledHOC,
+  normalizeColor,
+  styled,
+  useProps,
+  useTheme,
+} from '@tamagui/core'
 import { YStack } from '@tamagui/stacks'
 import type { ViewStyle } from 'react-native'
 
@@ -20,48 +26,48 @@ const LinearGradientFrame = styled(YStack, {
   position: 'relative',
 })
 
-export const LinearGradient = LinearGradientFrame.styleable<LinearGradientExtraProps>(
-  (propsIn, ref) => {
-    const props = useProps(propsIn)
+export const LinearGradient = createStyledHOC(
+  LinearGradientFrame
+)<LinearGradientExtraProps>((propsIn, ref) => {
+  const props = useProps(propsIn)
 
-    const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
-    const theme = useTheme()
+  const { start, end, colors: colorsProp, locations, children, ...stackProps } = props
+  const theme = useTheme()
 
-    let colors =
-      props.colors?.map((c) => {
-        return (theme[c]?.get('web') as string) ?? c
-      }) || []
+  let colors =
+    props.colors?.map((c) => {
+      return (theme[c]?.get('web') as string) ?? c
+    }) || []
 
-    if (process.env.NODE_ENV !== 'production') {
-      if (
-        colors.some((c) => {
-          const normalized = normalizeColor(c)
-          if (!normalized || normalized.startsWith('$')) {
-            return true
-          }
-        })
-      ) {
-        console.error(
-          `LinearGradient: "colors" prop contains invalid color tokens: ${colors} fallback to default colors: ["#000", "#fff"]`
-        )
-        colors = ['#000', '#fff']
-      }
+  if (process.env.NODE_ENV !== 'production') {
+    if (
+      colors.some((c) => {
+        const normalized = normalizeColor(c)
+        if (!normalized || normalized.startsWith('$')) {
+          return true
+        }
+      })
+    ) {
+      console.error(
+        `LinearGradient: "colors" prop contains invalid color tokens: ${colors} fallback to default colors: ["#000", "#fff"]`
+      )
+      colors = ['#000', '#fff']
     }
-
-    return (
-      <LinearGradientFrame ref={ref as any} {...stackProps}>
-        <ExpoLinearGradient
-          start={start}
-          end={end}
-          colors={colors as any}
-          locations={locations as any}
-          style={gradientStyle}
-        />
-        {children}
-      </LinearGradientFrame>
-    )
   }
-)
+
+  return (
+    <LinearGradientFrame ref={ref as any} {...stackProps}>
+      <ExpoLinearGradient
+        start={start}
+        end={end}
+        colors={colors as any}
+        locations={locations as any}
+        style={gradientStyle}
+      />
+      {children}
+    </LinearGradientFrame>
+  )
+})
 
 export type LinearGradientProps = GetProps<typeof LinearGradient>
 

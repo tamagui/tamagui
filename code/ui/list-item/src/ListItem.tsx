@@ -6,7 +6,7 @@ import { getIcon, useCurrentColor } from '@tamagui/helpers-tamagui'
 import { YStack } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
-import { createStyledContext, styled, View } from '@tamagui/web'
+import { createStyledHOC, createStyledContext, styled, View } from '@tamagui/web'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 
 type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
@@ -209,7 +209,7 @@ const ListItemIcon = (props: {
   })
 }
 
-const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
+const ListItemComponent = createStyledHOC(ListItemFrame)<ListItemExtraProps>(
   function ListItem(propsIn, ref) {
     const {
       children,

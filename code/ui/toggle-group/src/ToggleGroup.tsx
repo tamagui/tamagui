@@ -6,7 +6,7 @@ import { RovingFocusGroup } from '@tamagui/roving-focus'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
 import type { GetProps, TamaguiElement } from '@tamagui/web'
-import { createStyledContext, styled, View } from '@tamagui/web'
+import { createStyledHOC, createStyledContext, styled, View } from '@tamagui/web'
 import React from 'react'
 
 import type { ToggleProps } from './Toggle'
@@ -35,7 +35,7 @@ type ToggleGroupItemProps = GetProps<typeof ToggleFrame> & {
   disabled?: boolean
 }
 
-const ToggleGroupItem = ToggleFrame.styleable<ScopedProps<ToggleGroupItemProps>>(
+const ToggleGroupItem = createStyledHOC(ToggleFrame)<ScopedProps<ToggleGroupItemProps>>(
   (props, forwardedRef) => {
     const valueContext = useToggleGroupValueContext(props.__scopeToggleGroup)
     const context = useToggleGroupContext(props.__scopeToggleGroup)
@@ -298,54 +298,55 @@ type ToggleGroupImplProps = GetProps<typeof ToggleGroupFrame> & {
   color?: string
 }
 
-const ToggleGroupImpl = ToggleGroupFrame.styleable<TamaguiElement, ToggleGroupImplProps>(
-  (props: ScopedProps<ToggleGroupImplProps>, forwardedRef) => {
-    const {
-      __scopeToggleGroup,
-      disabled = false,
-      orientation = 'horizontal',
-      dir,
-      rovingFocus = true,
-      loop = true,
-      color,
-      ...toggleGroupProps
-    } = props
-    const direction = useDirection(dir)
+const ToggleGroupImpl = createStyledHOC(ToggleGroupFrame)<
+  TamaguiElement,
+  ToggleGroupImplProps
+>((props: ScopedProps<ToggleGroupImplProps>, forwardedRef) => {
+  const {
+    __scopeToggleGroup,
+    disabled = false,
+    orientation = 'horizontal',
+    dir,
+    rovingFocus = true,
+    loop = true,
+    color,
+    ...toggleGroupProps
+  } = props
+  const direction = useDirection(dir)
 
-    const content = (
-      <ToggleGroupFrame
-        role="group"
-        ref={forwardedRef}
-        data-disabled={disabled ? '' : undefined}
-        {...toggleGroupProps}
-      />
-    )
+  const content = (
+    <ToggleGroupFrame
+      role="group"
+      ref={forwardedRef}
+      data-disabled={disabled ? '' : undefined}
+      {...toggleGroupProps}
+    />
+  )
 
-    return (
-      <ToggleGroupContext
-        scope={__scopeToggleGroup}
-        rovingFocus={rovingFocus}
-        disabled={disabled}
-      >
-        <ToggleContext.Provider color={color}>
-          {rovingFocus ? (
-            <RovingFocusGroup
-              asChild="except-style"
-              __scopeRovingFocusGroup={__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
-              orientation={orientation}
-              dir={direction}
-              loop={loop}
-            >
-              {content}
-            </RovingFocusGroup>
-          ) : (
-            content
-          )}
-        </ToggleContext.Provider>
-      </ToggleGroupContext>
-    )
-  }
-)
+  return (
+    <ToggleGroupContext
+      scope={__scopeToggleGroup}
+      rovingFocus={rovingFocus}
+      disabled={disabled}
+    >
+      <ToggleContext.Provider color={color}>
+        {rovingFocus ? (
+          <RovingFocusGroup
+            asChild="except-style"
+            __scopeRovingFocusGroup={__scopeToggleGroup || TOGGLE_GROUP_CONTEXT}
+            orientation={orientation}
+            dir={direction}
+            loop={loop}
+          >
+            {content}
+          </RovingFocusGroup>
+        ) : (
+          content
+        )}
+      </ToggleContext.Provider>
+    </ToggleGroupContext>
+  )
+})
 
 export { ToggleGroup }
 export type {

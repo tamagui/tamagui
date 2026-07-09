@@ -24,6 +24,7 @@ import {
   XGroup,
   XStack,
   YStack,
+  createStyledHOC,
   type PopoverProps,
 } from 'tamagui'
 import { Link } from '~/components/Link'
@@ -439,7 +440,7 @@ const SlidingPopoverContext = React.createContext({
   close() {},
 })
 
-export const SlidingPopoverTarget = YStack.styleable<{ id: ID }>(
+export const SlidingPopoverTarget = createStyledHOC(YStack)<{ id: ID }>(
   ({ id, ...props }, ref) => {
     const context = React.useContext(SlidingPopoverContext)
     const [layout, setLayout] = React.useState<LayoutRectangle | undefined>()

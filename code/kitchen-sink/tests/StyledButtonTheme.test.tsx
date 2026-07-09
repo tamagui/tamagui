@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
   await setupPage(page, { name: 'StyledButtonTheme', type: 'useCase' })
 })
 
-test(`button + styled + styleable + theme works`, async ({ page }) => {
+test(`button + styled + createStyledHOC + theme works`, async ({ page }) => {
   const styles = await page.locator('#test').evaluate((el) => {
     return window.getComputedStyle(el)
   })
