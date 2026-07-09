@@ -530,6 +530,11 @@ const DialogContent = createStyledHOC(DialogContentFrame)<DialogContentExtraProp
     const context = useDialogContext(scope)
     const isAdapted = useAdaptIsActive(context.adaptScope)
     const reporter = useDialogAnimationReporter(context)
+    const onDidAnimateProp = props.onDidAnimate
+    const onDidAnimate = React.useCallback(() => {
+      reporter.onEnterComplete()
+      onDidAnimateProp?.()
+    }, [reporter.onEnterComplete, onDidAnimateProp])
     const presence = useDialogPartPresence(context, {
       disabled: isAdapted,
       forceMount: context.forceMount,
@@ -542,15 +547,15 @@ const DialogContent = createStyledHOC(DialogContentFrame)<DialogContentExtraProp
         {context.modal ? (
           <DialogContentModal
             context={context}
-            onDidAnimate={reporter.onEnterComplete}
             {...props}
+            onDidAnimate={onDidAnimate}
             ref={forwardedRef}
           />
         ) : (
           <DialogContentNonModal
             context={context}
-            onDidAnimate={reporter.onEnterComplete}
             {...props}
+            onDidAnimate={onDidAnimate}
             ref={forwardedRef}
           />
         )}

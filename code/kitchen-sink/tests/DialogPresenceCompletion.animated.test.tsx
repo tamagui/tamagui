@@ -12,6 +12,12 @@ async function getEvents(page: Page, id: string): Promise<DialogPresenceEvent[]>
   }, id)
 }
 
+async function getUserEventCount(page: Page, id: string): Promise<number> {
+  return page.evaluate((scenarioId) => {
+    return (window as any).__dialogPresenceUserEvents?.[scenarioId] || 0
+  }, id)
+}
+
 async function waitForTransitionEvent(
   page: Page,
   id: string,
@@ -58,6 +64,7 @@ for (const id of ['portal', 'inline']) {
     const event = await waitForTransitionEvent(page, id, true)
     expect(event.elapsed).toBeGreaterThanOrEqual(850)
     await expectExactlyOneTransitionEvent(page, id, true)
+    expect(await getUserEventCount(page, id)).toBe(1)
   })
 
   test(`${id} dialog reports exit completion from the animation driver once`, async ({

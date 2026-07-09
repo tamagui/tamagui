@@ -9,11 +9,13 @@ type DialogPresenceEvent = {
 declare global {
   interface Window {
     __dialogPresenceEvents: Record<string, DialogPresenceEvent[]>
+    __dialogPresenceUserEvents: Record<string, number>
   }
 }
 
 if (typeof window !== 'undefined') {
   window.__dialogPresenceEvents ||= {}
+  window.__dialogPresenceUserEvents ||= {}
 }
 
 export function DialogPresenceCompletionCase() {
@@ -67,6 +69,13 @@ function PresenceScenario({
     [id]
   )
 
+  const handleDidAnimate = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      window.__dialogPresenceUserEvents[id] =
+        (window.__dialogPresenceUserEvents[id] || 0) + 1
+    }
+  }, [id])
+
   const dialogParts = (
     <>
       <Dialog.Overlay
@@ -86,6 +95,7 @@ function PresenceScenario({
         transition="1000ms"
         enterStyle={{ opacity: 0, y: -20, scale: 0.96 }}
         exitStyle={{ opacity: 0, y: 20, scale: 0.96 }}
+        onDidAnimate={handleDidAnimate}
       >
         <Dialog.Title>{label} dialog</Dialog.Title>
         <Dialog.Description>
