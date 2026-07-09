@@ -54,9 +54,6 @@ export type AdaptParentContextI = {
     unregisterContents: () => void;
     registerRenderCallback: () => void;
     unregisterRenderCallback: () => void;
-    targetCount: number;
-    contentsCount: number;
-    renderCallbackCount: number;
 };
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never;
 export type AdaptRenderState<State = unknown> = {

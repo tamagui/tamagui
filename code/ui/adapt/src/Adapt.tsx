@@ -100,9 +100,6 @@ export type AdaptParentContextI = {
   unregisterContents: () => void
   registerRenderCallback: () => void
   unregisterRenderCallback: () => void
-  targetCount: number
-  contentsCount: number
-  renderCallbackCount: number
 }
 
 type MediaQueryKeyString = MediaQueryKey extends string ? MediaQueryKey : never
@@ -148,9 +145,6 @@ export const AdaptContext = createStyledContext<AdaptParentContextI>({
   unregisterContents: () => {},
   registerRenderCallback: () => {},
   unregisterRenderCallback: () => {},
-  targetCount: 0,
-  contentsCount: 0,
-  renderCallbackCount: 0,
 })
 
 const AdaptCapabilitiesContext = createContext<AdaptCapabilitiesValue>({})
@@ -195,6 +189,7 @@ type AdaptParentProps = {
   onOpenChange?: (open: boolean) => void
   state?: unknown
   exitLatchTimeout?: number
+  // unused, removed with the old paths in PRs B-E
   portal?:
     | boolean
     | {
@@ -224,9 +219,6 @@ export const AdaptParent = ({
   const [rawActive, setRawActive] = React.useState(false)
   const [exiting, setExiting] = React.useState(false)
   const [present, setPresent] = React.useState(false)
-  const [targetCount, setTargetCount] = React.useState(0)
-  const [contentsCount, setContentsCount] = React.useState(0)
-  const [renderCallbackCount, setRenderCallbackCount] = React.useState(0)
   const targetCountRef = React.useRef(0)
   const contentsCountRef = React.useRef(0)
   const renderCallbackCountRef = React.useRef(0)
@@ -291,7 +283,6 @@ export const AdaptParent = ({
 
   const registerTarget = React.useCallback(() => {
     targetCountRef.current += 1
-    setTargetCount(targetCountRef.current)
 
     if (process.env.NODE_ENV === 'development' && targetCountRef.current > 1) {
       console.error(
@@ -302,27 +293,22 @@ export const AdaptParent = ({
 
   const unregisterTarget = React.useCallback(() => {
     targetCountRef.current = Math.max(0, targetCountRef.current - 1)
-    setTargetCount(targetCountRef.current)
   }, [])
 
   const registerContents = React.useCallback(() => {
     contentsCountRef.current += 1
-    setContentsCount(contentsCountRef.current)
   }, [])
 
   const unregisterContents = React.useCallback(() => {
     contentsCountRef.current = Math.max(0, contentsCountRef.current - 1)
-    setContentsCount(contentsCountRef.current)
   }, [])
 
   const registerRenderCallback = React.useCallback(() => {
     renderCallbackCountRef.current += 1
-    setRenderCallbackCount(renderCallbackCountRef.current)
   }, [])
 
   const unregisterRenderCallback = React.useCallback(() => {
     renderCallbackCountRef.current = Math.max(0, renderCallbackCountRef.current - 1)
-    setRenderCallbackCount(renderCallbackCountRef.current)
   }, [])
 
   React.useEffect(() => {
@@ -371,9 +357,6 @@ export const AdaptParent = ({
         unregisterContents={unregisterContents}
         registerRenderCallback={registerRenderCallback}
         unregisterRenderCallback={unregisterRenderCallback}
-        targetCount={targetCount}
-        contentsCount={contentsCount}
-        renderCallbackCount={renderCallbackCount}
       >
         {children}
       </ProvideAdaptContext>
@@ -506,28 +489,30 @@ function AdaptSlotPublisher({
   slot: AdaptSlotStore | null
   children: React.ReactNode
 }) {
-  const activeRef = React.useRef(isActive)
-  activeRef.current = isActive
+  const publishedRef = React.useRef(false)
 
-  // Publish the live element value on every render. Do not memoize this handoff:
+  // Publish the live element value after every commit. Do not memoize this handoff:
   // stale element deps caused the Sheet overlay-hoist regression this replaces.
-  if (slot) {
+  useIsomorphicLayoutEffect(() => {
+    if (!slot) return
+
     if (isActive) {
       slot.publish(children)
+      publishedRef.current = true
     } else {
       slot.clear()
+      publishedRef.current = false
     }
-  }
 
-  useIsomorphicLayoutEffect(() => {
-    slot?.notify()
+    slot.notify()
   })
 
   useIsomorphicLayoutEffect(() => {
     return () => {
-      if (activeRef.current) {
+      if (publishedRef.current) {
         slot?.clear()
         slot?.notify()
+        publishedRef.current = false
       }
     }
   }, [slot])
