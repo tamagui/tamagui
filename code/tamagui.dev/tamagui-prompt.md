@@ -135,7 +135,7 @@ Components can access theme values using `$` token syntax:
 
 **Special props:**
 
-- `inverse`: Automatically swaps light ↔ dark themes
+- `theme="inverse"`: Uses the opposite light or dark sub-theme
 - `reset`: Reverts to grandparent theme
 
 ## Tokens
@@ -451,4 +451,3 @@ The following components are available:
 - YGroup
 - YStack
 - ZStack
-

@@ -355,7 +355,7 @@ function generateMarkdown(config: any): string {
   sections.push('```\n\n')
 
   sections.push('**Special props:**\n\n')
-  sections.push('- `inverse`: Automatically swaps light ↔ dark themes\n')
+  sections.push('- `theme="inverse"`: Uses the opposite light or dark sub-theme\n')
   sections.push('- `reset`: Reverts to grandparent theme\n\n')
 
   // Tokens

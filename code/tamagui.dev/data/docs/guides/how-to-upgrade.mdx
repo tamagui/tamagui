@@ -237,7 +237,7 @@ import { Stack, type StackProps } from 'tamagui'
 import { View, type ViewProps } from 'tamagui'
 ```
 
-### `themeInverse` / `<Theme inverse>` to `theme="accent"`
+### `themeInverse` / `<Theme inverse>` to `theme="inverse"`
 
 ```tsx
 // before
@@ -245,8 +245,8 @@ import { View, type ViewProps } from 'tamagui'
 <Theme inverse><Card>...</Card></Theme>
 
 // after
-<Button theme="accent">Primary</Button>
-<Theme name="accent"><Card>...</Card></Theme>
+<Button theme="inverse">Primary</Button>
+<Theme name="inverse"><Card>...</Card></Theme>
 ```
 
 ### `space` / `spaceDirection` to `gap`
@@ -579,8 +579,8 @@ animation=     ->  transition=
 AnimationProp  ->  TransitionProp
 AnimationKeys  ->  TransitionKeys
 tag=           ->  render=
-themeInverse   ->  theme="accent"
-<Theme inverse ->  <Theme name="accent"
+themeInverse   ->  theme="inverse"
+<Theme inverse ->  <Theme name="inverse"
 <Stack         ->  <View
 </Stack>       ->  </View>
 StackProps     ->  ViewProps
@@ -623,7 +623,7 @@ While not required for migration, these v2 features can improve your app:
 - [ ] Rename `animation` prop to `transition` everywhere
 - [ ] Rename `tag` prop to `render`
 - [ ] Replace `Stack` with `View`, `StackProps` with `ViewProps`
-- [ ] Replace `themeInverse` / `<Theme inverse>` with `theme="accent"`
+- [ ] Replace `themeInverse` / `<Theme inverse>` with `theme="inverse"`
 - [ ] Replace `space` / `spaceDirection` with `gap`
 - [ ] Replace `onHoverIn` / `onHoverOut` with pointer events
 - [ ] Migrate shadows to `boxShadow`
