@@ -47,7 +47,7 @@ export const getFontSizeToken = (
     conf.tokensParsed.size
   const size = resolveDefaultSizeToken(inSize ?? true, conf) as string
 
-  const sizeTokens = Object.keys(fontSize).filter((key) => key !== '$true')
+  const sizeTokens = Object.keys(fontSize)
 
   let foundIndex = sizeTokens.indexOf(size)
   if (foundIndex === -1) {

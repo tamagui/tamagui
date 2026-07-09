@@ -5,7 +5,7 @@ export const SwitchStyledContext = createStyledContext<{
   active?: boolean
   disabled?: boolean
   frameWidth?: number
-  size?: SizeTokens
+  size?: SizeTokens | number | true
   unstyled?: boolean
 }>({
   active: false,

@@ -3,7 +3,7 @@ import type { SwitchExtraProps as HeadlessSwitchExtraProps } from '@tamagui/swit
 import type { SwitchProps as NativeSwitchProps, ViewStyle } from 'react-native';
 import type { SwitchThumb } from './Switch';
 export type SwitchSharedProps = {
-    size?: SizeTokens | number;
+    size?: SizeTokens | number | true;
     unstyled?: boolean;
 };
 export type SwitchBaseProps = ViewProps & SwitchSharedProps;

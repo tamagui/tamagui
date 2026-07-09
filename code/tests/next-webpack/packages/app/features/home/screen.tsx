@@ -138,9 +138,7 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
               width={'$4'}
               pointerEvents="none"
             >
-              <ChevronDown
-                size={getFontSize((props.size as FontSizeTokens) ?? '$true')}
-              />
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </YStack>
           )}
         </Select.Viewport>

@@ -11,7 +11,7 @@ export const RadioGroupItemFrame = styled(YStack, {
   variants: {
     unstyled: {
       false: {
-        size: '$true',
+        size: true,
         borderRadius: 1000,
         backgroundColor: '$background',
         alignItems: 'center',

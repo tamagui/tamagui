@@ -3,7 +3,7 @@ import { createStyledContext } from '@tamagui/core'
 
 export const RadioGroupStyledContext = createStyledContext(
   {
-    size: '$true' as SizeTokens,
+    size: true as SizeTokens | true,
     scaleIcon: 1,
   },
   'RadioGroup'

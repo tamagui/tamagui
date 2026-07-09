@@ -1,5 +1,5 @@
 import { tokenCategories } from '@tamagui/helpers'
-import { getConfig, resolveDefaultSizeToken } from '../config'
+import { getConfig } from '../config'
 import { isVariable } from '../createVariable'
 import type {
   GetStyleState,
@@ -76,16 +76,13 @@ export const getTokenForKey = (
   const { theme, conf = getConfig(), context, fontFamily, staticConfig } = styleState
 
   const themeValue = theme ? theme[value] || theme[value.slice(1)] : undefined
-  const defaultSizeValue =
-    value === '$true' ? resolveDefaultSizeToken(value, conf) : value
-
   const tokensParsed = conf.tokensParsed
   let valOrVar: any
   let hasSet = false
 
   const customTokenAccept = staticConfig?.accept?.[key]
   if (customTokenAccept) {
-    const tokenValue = customTokenAccept === 'color' ? value : defaultSizeValue
+    const tokenValue = value
     const val = themeValue ?? tokensParsed[customTokenAccept]?.[tokenValue]
     if (val != null) {
       resolveAs = 'value' // always resolve custom tokens as values
@@ -110,7 +107,7 @@ export const getTokenForKey = (
     }
     hasSet = true
   } else {
-    if (value !== '$true' && value in conf.specificTokens) {
+    if (value in conf.specificTokens) {
       hasSet = true
       valOrVar = conf.specificTokens[value]
     } else {
@@ -134,7 +131,7 @@ export const getTokenForKey = (
               ? getFontsForLanguage(conf.fontsParsed, context.language)
               : conf.fontsParsed
             const font = fontsParsed[fam] || fontsParsed[conf.defaultFontToken]
-            valOrVar = font?.[fontShorthand[key] || key]?.[defaultSizeValue] || value
+            valOrVar = font?.[fontShorthand[key] || key]?.[value] || value
             hasSet = true
           }
           break
@@ -142,8 +139,7 @@ export const getTokenForKey = (
       }
       const cat = tokenCategoryByKey[key]
       if (cat !== undefined) {
-        const tokenValue = cat === 'color' ? value : defaultSizeValue
-        const res = tokensParsed[cat]?.[tokenValue]
+        const res = tokensParsed[cat]?.[value]
 
         if (res != null) {
           valOrVar = res
@@ -179,7 +175,7 @@ export const getTokenForKey = (
     }
 
     if (!hasSet) {
-      const spaceVar = tokensParsed.space[defaultSizeValue]
+      const spaceVar = tokensParsed.space[value]
       if (spaceVar != null) {
         valOrVar = spaceVar
         hasSet = true

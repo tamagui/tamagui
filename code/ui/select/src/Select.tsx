@@ -299,7 +299,7 @@ const SelectGroup = createRefComponent<TamaguiElement, SelectGroupProps>(
 
     const context = useSelectContext(scope)
     const itemParentContext = useSelectItemParentContext(scope)
-    const size = itemParentContext.size ?? '$true'
+    const size = itemParentContext.size ?? true
     const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
 
     const content = (() => {
@@ -363,7 +363,7 @@ const SelectLabelFrame = styled(SizableText, {
   variants: {
     unstyled: {
       false: {
-        size: '$true',
+        size: true,
         ellipsis: true,
         maxWidth: '100%',
         cursor: 'default',
@@ -514,7 +514,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
     defaultValue,
     onValueChange,
     disablePreventBodyScroll,
-    size: sizeProp = '$true',
+    size: sizeProp = true,
     onActiveChange,
     dir,
     id,

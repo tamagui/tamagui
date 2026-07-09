@@ -3,12 +3,12 @@ import type { GetProps, SizeTokens } from '@tamagui/web';
 import type { FunctionComponent, JSX } from 'react';
 type ButtonVariant = 'outlined';
 type ButtonContextStyles = TextContextStyles & {
-    size?: SizeTokens;
+    size?: SizeTokens | true;
     variant?: ButtonVariant;
     elevation?: SizeTokens | number;
 };
 export declare const ButtonContext: import("@tamagui/web").StyledContext<{
-    size?: SizeTokens;
+    size?: SizeTokens | true;
     variant?: ButtonVariant;
     color?: ButtonContextStyles["color"];
 }>;
@@ -217,7 +217,7 @@ export declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFi
     Icon: (props: {
         children: React.ReactNode;
         scaleIcon?: number;
-        size?: SizeTokens;
+        size?: SizeTokens | true;
     }) => any;
 };
 export type ButtonProps = GetProps<typeof ButtonComponent>;

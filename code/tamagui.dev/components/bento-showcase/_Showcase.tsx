@@ -523,8 +523,8 @@ export const { Provider: RawSizeProvider, useStyledContext: useSize } =
   createStyledContext({
     sizes: [] as SizeTokens[],
     setSizes: (sizes: SizeTokens[]) => {},
-    size: '$true' as SizeTokens,
-    setSize: (size: SizeTokens) => {},
+    size: true as SizeTokens | true,
+    setSize: (size: SizeTokens | true) => {},
     showController: false,
     setShowController: (val: boolean) => {},
   })

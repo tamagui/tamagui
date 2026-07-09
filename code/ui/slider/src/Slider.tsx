@@ -414,7 +414,7 @@ const SliderActive = createRefComponent<View, SliderActiveProps>(function Slider
 
 // TODO make this customizable through tamagui
 // so we can accurately use it for estimatedSize below
-const getThumbSize = (val?: SizeTokens | number) => {
+const getThumbSize = (val?: SizeTokens | number | true) => {
   const tokens = getTokens()
   const size =
     typeof val === 'number'
@@ -486,7 +486,7 @@ const SliderThumb = createStyledHOC(SliderThumbFrame)<SliderThumbExtraProps>(
     const percent =
       value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
     const label = getLabel(index, context.values.length)
-    const sizeIn = sizeProp ?? context.size ?? '$true'
+    const sizeIn = sizeProp ?? context.size ?? true
     const [size, setSize] = React.useState(() => {
       // for SSR
       const estimatedSize = getVariableValue(getThumbSize(sizeIn).width) as number

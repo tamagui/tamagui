@@ -5,7 +5,7 @@ import type { TextParentStyles } from './types'
 
 type Props = TextParentStyles & {
   children?: React.ReactNode
-  size?: SizeTokens
+  size?: SizeTokens | true
 }
 
 export function wrapChildrenInText(

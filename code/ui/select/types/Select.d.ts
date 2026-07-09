@@ -112,13 +112,13 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
         bordered?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
     }>, "size" | "scope" | "unstyled" | "disableScroll"> & {
-        size?: SizeTokens;
+        size?: SizeTokens | true;
         disableScroll?: boolean;
         unstyled?: boolean;
     } & {
         scope?: import("./types").SelectScopes;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & {
-        size?: SizeTokens;
+        size?: SizeTokens | true;
         disableScroll?: boolean;
         unstyled?: boolean;
     } & {

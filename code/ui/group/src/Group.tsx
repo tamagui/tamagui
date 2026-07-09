@@ -29,7 +29,7 @@ export const GroupFrame = styled(YStack, {
   variants: {
     unstyled: {
       false: {
-        size: '$true',
+        size: true,
       },
     },
 

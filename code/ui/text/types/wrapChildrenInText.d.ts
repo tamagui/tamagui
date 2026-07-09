@@ -3,7 +3,7 @@ import React from 'react';
 import type { TextParentStyles } from './types';
 type Props = TextParentStyles & {
     children?: React.ReactNode;
-    size?: SizeTokens;
+    size?: SizeTokens | true;
 };
 export declare function wrapChildrenInText(TextComponent: any, propsIn: Props & {
     unstyled?: boolean;

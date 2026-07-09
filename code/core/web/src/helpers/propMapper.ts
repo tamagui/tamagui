@@ -1,4 +1,5 @@
 import { isAndroid } from '@tamagui/constants'
+import { tokenCategories } from '@tamagui/helpers'
 import { resolveDefaultSizeToken } from '../config'
 import { getVariableValue, isVariable } from '../createVariable'
 import type {
@@ -105,7 +106,14 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   }
 
   if (value != null) {
-    if (typeof value === 'string') {
+    if (value === true && key in defaultSizeTokenKeys) {
+      value = getTokenForKey(
+        key,
+        resolveDefaultSizeToken(value, conf),
+        styleProps,
+        styleState
+      )
+    } else if (typeof value === 'string') {
       if (value[0] === '$') {
         value = getTokenForKey(key, value, styleProps, styleState)
       } else {
@@ -175,7 +183,7 @@ const resolveVariants: StyleResolver = (
   if (!variants) return
 
   const variant = variants[key]
-  if (value === true || value === '$true') {
+  if (value === true) {
     value = resolveVariantSizeValue(variant, value, conf)
   }
   let variantValue = getVariantDefinition(variant, value, conf, styleState)
@@ -436,6 +444,56 @@ const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => (
   name,
   spreadName: `...${name}`,
 }))
+
+const defaultSizeTokenKeys: Record<string, boolean> = {
+  ...tokenCategories.size,
+  ...tokenCategories.radius,
+  ...tokenCategories.zIndex,
+  gap: true,
+  rowGap: true,
+  columnGap: true,
+  top: true,
+  right: true,
+  bottom: true,
+  left: true,
+  inset: true,
+  insetBlock: true,
+  insetBlockEnd: true,
+  insetBlockStart: true,
+  insetInline: true,
+  insetInlineEnd: true,
+  insetInlineStart: true,
+  margin: true,
+  marginBlock: true,
+  marginBlockEnd: true,
+  marginBlockStart: true,
+  marginInline: true,
+  marginInlineEnd: true,
+  marginInlineStart: true,
+  marginTop: true,
+  marginRight: true,
+  marginBottom: true,
+  marginEnd: true,
+  marginLeft: true,
+  marginHorizontal: true,
+  marginStart: true,
+  marginVertical: true,
+  padding: true,
+  paddingBlock: true,
+  paddingBlockEnd: true,
+  paddingBlockStart: true,
+  paddingInline: true,
+  paddingInlineEnd: true,
+  paddingInlineStart: true,
+  paddingTop: true,
+  paddingRight: true,
+  paddingBottom: true,
+  paddingEnd: true,
+  paddingLeft: true,
+  paddingHorizontal: true,
+  paddingStart: true,
+  paddingVertical: true,
+}
 
 function resolveVariantSizeValue(variant: any, value: any, conf: TamaguiInternalConfig) {
   if (!variant || typeof variant === 'function') {

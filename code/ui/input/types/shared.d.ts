@@ -1,6 +1,6 @@
 import type { SizeVariantSpreadFunction } from '@tamagui/core';
 export declare const defaultStyles: {
-    readonly size: "$true";
+    readonly size: true;
     readonly fontFamily: "$body";
     readonly borderWidth: 1;
     readonly outlineWidth: 0;
@@ -35,7 +35,7 @@ export declare const styledBody: readonly [{
                 readonly backgroundColor: "transparent";
             };
             readonly false: {
-                readonly size: "$true";
+                readonly size: true;
                 readonly fontFamily: "$body";
                 readonly borderWidth: 1;
                 readonly outlineWidth: 0;

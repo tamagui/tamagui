@@ -24,7 +24,7 @@ import { CheckboxFrame, CheckboxIndicatorFrame } from './Checkbox'
 import { CheckboxStyledContext } from './CheckboxStyledContext'
 
 type CheckboxExpectingVariantProps = {
-  size?: SizeTokens
+  size?: SizeTokens | true
   unstyled?: boolean
 }
 
@@ -126,7 +126,7 @@ export function createCheckbox<
       let size = 0
       if (!unstyled) {
         adjustedSize = getVariableValue(
-          getSize(propsActive.size ?? styledContext?.size ?? '$true', {
+          getSize(propsActive.size ?? styledContext?.size ?? true, {
             shift: sizeAdjust,
           })
         ) as number
@@ -192,7 +192,7 @@ export function createCheckbox<
       return (
         <CheckboxContext.Provider value={memoizedContext}>
           <CheckboxStyledContext.Provider
-            size={propsActive.size ?? styledContext?.size ?? '$true'}
+            size={propsActive.size ?? styledContext?.size ?? true}
             scaleIcon={scaleIcon ?? styledContext?.scaleIcon ?? 1}
             unstyled={unstyled}
             active={isActive}

@@ -852,7 +852,7 @@ const PopoverContentImpl = createRefComponent<
         ref={forwardedRef}
         passThrough={context.breakpointActive}
         {...(!contentProps.unstyled && {
-          size: '$true',
+          size: true,
           backgroundColor: '$background',
           alignItems: 'center',
         })}

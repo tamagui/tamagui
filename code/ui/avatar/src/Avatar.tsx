@@ -19,7 +19,7 @@ const [createAvatarContext, createAvatarScope] = createContextScope(AVATAR_NAME)
 type ImageLoadingStatus = 'idle' | 'loading' | 'loaded' | 'error'
 
 type AvatarContextValue = {
-  size: SizeTokens
+  size: SizeTokens | true
   imageLoadingStatus: ImageLoadingStatus
   onImageLoadingStatusChange(status: ImageLoadingStatus): void
 }
@@ -182,7 +182,7 @@ type AvatarProps = GetProps<typeof AvatarFrame>
 const Avatar = withStaticProperties(
   createRefComponent<TamaguiElement, AvatarProps>(
     (props: ScopedProps<AvatarProps>, forwardedRef) => {
-      const { __scopeAvatar, size = '$true', ...avatarProps } = props
+      const { __scopeAvatar, size = true, ...avatarProps } = props
       const [imageLoadingStatus, setImageLoadingStatus] =
         React.useState<ImageLoadingStatus>('idle')
       return (

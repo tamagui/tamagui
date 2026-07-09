@@ -228,7 +228,7 @@ export function SelectDemoItem(props: SelectProps & {
           </Select.Group>
           {/* Native gets an extra icon */}
           {props.native && <__ReactNativeView pointerEvents={"none"} style={_sheet["4"]}>
-              <ChevronDown size={getFontSize(props.size as FontSizeTokens ?? '$true')} />
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </__ReactNativeView>}
         </Select.Viewport>
 
@@ -560,7 +560,7 @@ export function SelectDemoItem(props: SelectProps & {
           </Select.Group>
           {/* Native gets an extra icon */}
           {props.native && <div className={_cn5}>
-              <ChevronDown size={getFontSize(props.size as FontSizeTokens ?? '$true')} />
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </div>}
         </Select.Viewport>
 
@@ -928,7 +928,7 @@ export function SelectDemoItem(props: SelectProps & {
           </Select.Group>
           {/* Native gets an extra icon */}
           {props.native && <__ReactNativeView pointerEvents={"none"} style={_sheet["4"]}>
-              <ChevronDown size={getFontSize(props.size as FontSizeTokens ?? '$true')} />
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </__ReactNativeView>}
         </Select.Viewport>
 
@@ -1193,7 +1193,7 @@ export function SelectDemoItem(props: SelectProps & {
           </Select.Group>
           {/* Native gets an extra icon */}
           {props.native && <div className={_cn5}>
-              <ChevronDown size={getFontSize(props.size as FontSizeTokens ?? '$true')} />
+              <ChevronDown size={getFontSize((props.size as FontSizeTokens) ?? true)} />
             </div>}
         </Select.Viewport>
 

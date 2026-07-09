@@ -5,7 +5,7 @@ import type { Direction, SliderContextValue } from './types'
 export const SLIDER_NAME = 'Slider'
 
 export const SliderContext = createStyledContext<SliderContextValue>({
-  size: '$true',
+  size: true,
   min: 0,
   max: 100,
   orientation: 'horizontal',

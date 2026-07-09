@@ -8,7 +8,7 @@ import {
 } from '@tamagui/web'
 
 const CardContext = createStyledContext({
-  size: '$true' as SizeTokens,
+  size: true as SizeTokens | true,
 })
 
 export const CardFrame = styled(YStack, {
@@ -18,7 +18,7 @@ export const CardFrame = styled(YStack, {
   variants: {
     unstyled: {
       false: {
-        size: '$true',
+        size: true,
         backgroundColor: '$background',
         position: 'relative',
       },

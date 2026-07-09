@@ -50,7 +50,7 @@ export interface SelectProps<Value extends string = string> {
   dir?: SelectDirection
   name?: string
   autoComplete?: string
-  size?: SizeTokens
+  size?: SizeTokens | true
   /**
    * If passed, will render a native component instead of the custom one. Currently only `web` is supported.
    */
@@ -126,7 +126,7 @@ export interface SelectItemParentContextValue {
     getItemProps: (userProps?: HTMLProps<HTMLElement> | undefined) => any
   }
   shouldRenderWebNative?: boolean
-  size?: SizeTokens
+  size?: SizeTokens | true
   /** fast setter: updates ref + emits to subscribers (no re-render) - use for keyboard navigation */
   setActiveIndexFast?: (index: number | null) => void
   /** the rendered content of the currently selected item (for portaling to SelectValue) */
@@ -175,7 +175,7 @@ export interface SelectContextValue {
 }
 
 export type SelectViewportExtraProps = SelectScopedProps<{
-  size?: SizeTokens
+  size?: SizeTokens | true
   disableScroll?: boolean
   unstyled?: boolean
 }>

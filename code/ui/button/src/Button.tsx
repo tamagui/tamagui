@@ -24,7 +24,7 @@ import { useContext } from 'react'
 type ButtonVariant = 'outlined'
 
 type ButtonContextStyles = TextContextStyles & {
-  size?: SizeTokens
+  size?: SizeTokens | true
   variant?: ButtonVariant
   elevation?: SizeTokens | number
 }
@@ -60,7 +60,7 @@ const Frame = styled(View, {
         backgroundColor: 'transparent',
       },
       false: {
-        size: '$true',
+        size: true,
         justifyContent: 'center',
         alignItems: 'center',
         flexWrap: 'nowrap',
@@ -165,7 +165,7 @@ const Text = styled(SizableText, {
 const Icon = (props: {
   children: React.ReactNode
   scaleIcon?: number
-  size?: SizeTokens
+  size?: SizeTokens | true
 }) => {
   const { children, scaleIcon = 1, size } = props
   const styledContext = context.useStyledContext()
@@ -188,7 +188,7 @@ const Icon = (props: {
 }
 
 export const ButtonContext = createStyledContext<{
-  size?: SizeTokens
+  size?: SizeTokens | true
   variant?: ButtonVariant
   color?: ButtonContextStyles['color']
 }>({
@@ -246,7 +246,7 @@ const ButtonComponent = createStyledHOC(Frame)<ButtonExtraProps>((propsIn, ref) 
     ...props
   } = processedProps
 
-  const size = propsIn.size || (propsIn.unstyled ? undefined : '$true')
+  const size = propsIn.size ?? (propsIn.unstyled ? undefined : true)
 
   const styledContext = context.useStyledContext()
   const contextColor = color ?? propsIn.color ?? styledContext?.color

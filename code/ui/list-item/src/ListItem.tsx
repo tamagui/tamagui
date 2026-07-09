@@ -25,7 +25,7 @@ export type ListItemExtraProps = {
   scaleIcon?: number
   title?: ReactNode
   subTitle?: ReactNode
-  iconSize?: SizeTokens
+  iconSize?: SizeTokens | true
   color?: ColorTokens | string
 }
 
@@ -34,7 +34,7 @@ export type ListItemProps = GetProps<typeof ListItemFrame> & ListItemExtraProps
 const NAME = 'ListItem'
 
 const context = createStyledContext<{
-  size?: SizeTokens
+  size?: SizeTokens | true
   variant?: ListItemVariant
   color?: ColorTokens | string
 }>({
@@ -52,7 +52,7 @@ const ListItemFrame = styled(View, {
   variants: {
     unstyled: {
       false: {
-        size: '$true',
+        size: true,
         alignItems: 'center',
         justifyContent: 'space-between',
         flexWrap: 'nowrap',
@@ -123,7 +123,7 @@ const ListItemText = styled(SizableText, {
     unstyled: {
       false: {
         color: '$color',
-        size: '$true',
+        size: true,
         flexGrow: 1,
         flexShrink: 1,
         ellipsis: true,
@@ -181,7 +181,7 @@ const ListItemTitle = styled(ListItemText, {
 
 const ListItemIcon = (props: {
   children: React.ReactNode
-  size?: SizeTokens
+  size?: SizeTokens | true
   scaleIcon?: number
 }) => {
   const { children, size, scaleIcon = 1 } = props
@@ -190,7 +190,7 @@ const ListItemIcon = (props: {
     throw new Error('ListItem.Icon must be used within a ListItem')
   }
 
-  const sizeToken = size ?? styledContext.size ?? '$true'
+  const sizeToken = size ?? styledContext.size ?? true
   const contextColor = styledContext.color
   const iconColorProp =
     contextColor === 'unset' || typeof contextColor === 'number'
@@ -231,13 +231,13 @@ const ListItemComponent = createStyledHOC(ListItemFrame)<ListItemExtraProps>(
     const size =
       rest.size ??
       propsIn.size ??
-      (isUnstyled ? undefined : styledContext?.size || '$true')
+      (isUnstyled ? undefined : (styledContext?.size ?? true))
     const contextColor = color ?? propsIn.color ?? styledContext?.color
     const iconColorProp =
       contextColor === 'unset' || typeof contextColor === 'number'
         ? undefined
         : contextColor
-    const iconSizeNumber = getThemedIconSize(iconSize || (size as any), scaleIcon)
+    const iconSizeNumber = getThemedIconSize(iconSize ?? (size as any), scaleIcon)
     const getThemedIcon = useGetThemedIcon({
       size: iconSizeNumber,
       color: iconColorProp,

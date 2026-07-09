@@ -44,7 +44,7 @@ export interface SliderVerticalProps extends SliderOrientationProps {
     dir?: Direction;
 }
 export interface SliderProps extends Omit<SliderHorizontalProps, keyof SliderOrientationPrivateProps | 'defaultValue'>, SliderEventProps {
-    size?: SizeTokens;
+    size?: SizeTokens | true;
     name?: string;
     disabled?: boolean;
     orientation?: React.AriaAttributes['aria-orientation'];
@@ -58,7 +58,7 @@ export interface SliderProps extends Omit<SliderHorizontalProps, keyof SliderOri
     onValueChange?(value: number[]): void;
 }
 export type SliderContextValue = {
-    size?: SizeTokens | number | null;
+    size?: SizeTokens | number | true | null;
     disabled?: boolean;
     min: number;
     max: number;

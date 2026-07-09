@@ -22,7 +22,7 @@ export const ToggleFrame = styled(
     variants: {
       unstyled: {
         false: {
-          size: '$true',
+          size: true,
           alignItems: 'center',
           justifyContent: 'center',
           display: 'flex',
