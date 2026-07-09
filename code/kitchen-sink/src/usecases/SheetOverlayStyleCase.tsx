@@ -6,6 +6,8 @@ export function SheetOverlayStyleCase() {
   const [alternate, setAlternate] = useState(false)
   const [escapeModalOpen, setEscapeModalOpen] = useState(false)
   const [escapeNonModalOpen, setEscapeNonModalOpen] = useState(false)
+  const [nestedParentOpen, setNestedParentOpen] = useState(false)
+  const [nestedChildOpen, setNestedChildOpen] = useState(false)
 
   return (
     <YStack padding="$4" gap="$4">
@@ -94,6 +96,55 @@ export function SheetOverlayStyleCase() {
         <Sheet.Container data-testid="sheet-escape-nonmodal-frame" padding="$4">
           <Sheet.Background />
           <Paragraph>Non-modal escape sheet</Paragraph>
+        </Sheet.Container>
+      </Sheet>
+
+      <Button
+        data-testid="sheet-escape-nested-parent-open"
+        onPress={() => setNestedParentOpen(true)}
+      >
+        Open nested escape sheet
+      </Button>
+      <Paragraph data-testid="sheet-escape-nested-parent-state">
+        {nestedParentOpen ? 'parent-open' : 'parent-closed'}
+      </Paragraph>
+      <Paragraph data-testid="sheet-escape-nested-child-state">
+        {nestedChildOpen ? 'child-open' : 'child-closed'}
+      </Paragraph>
+      <Sheet
+        modal
+        open={nestedParentOpen}
+        onOpenChange={setNestedParentOpen}
+        snapPoints={[55]}
+        transition="quick"
+      >
+        <Sheet.Overlay />
+        <Sheet.Container data-testid="sheet-escape-nested-parent-frame" padding="$4">
+          <Sheet.Background />
+          <Paragraph>Nested parent sheet</Paragraph>
+          <Button
+            data-testid="sheet-escape-nested-child-open"
+            onPress={() => setNestedChildOpen(true)}
+          >
+            Open child
+          </Button>
+
+          <Sheet
+            modal
+            open={nestedChildOpen}
+            onOpenChange={setNestedChildOpen}
+            snapPoints={[35]}
+            transition="quick"
+          >
+            <Sheet.Overlay />
+            <Sheet.Container
+              data-testid="sheet-escape-nested-child-frame"
+              padding="$4"
+            >
+              <Sheet.Background />
+              <Paragraph>Nested child sheet</Paragraph>
+            </Sheet.Container>
+          </Sheet>
         </Sheet.Container>
       </Sheet>
     </YStack>

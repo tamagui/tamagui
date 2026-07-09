@@ -422,6 +422,18 @@ Image now uses web-standard `src` instead of React Native's `source`:
 </Adapt>
 ```
 
+Move visual surface props from `Sheet.Frame` to `Sheet.Background`, and keep
+layout props on `Sheet.Container`. `Sheet.Background` now owns
+`disableHideBottomOverflow`.
+
+`Sheet.Container` no longer clips content with `overflow="hidden"`. If you rely
+on full-bleed content being clipped to the sheet's top radius, add clipping to
+your content or container explicitly.
+
+`Sheet.Overlay` must be a direct child of `Sheet`. In development, nested
+overlays warn with:
+`Sheet.Overlay must be a direct child of Sheet. Move it next to Sheet.Handle and Sheet.Container.`
+
 ### Select
 
 `SelectLabel` is now SizableText-based instead of ListItem-based.

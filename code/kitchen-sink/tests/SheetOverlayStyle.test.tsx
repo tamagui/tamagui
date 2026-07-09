@@ -75,3 +75,34 @@ test('Escape closes modal sheets only by default', async ({ page }) => {
     'nonmodal-open'
   )
 })
+
+test('Escape closes only the top-most nested modal sheet', async ({ page }) => {
+  await page.getByTestId('sheet-escape-nested-parent-open').click()
+  await expect(page.getByTestId('sheet-escape-nested-parent-state')).toHaveText(
+    'parent-open'
+  )
+  await expect(page.getByTestId('sheet-escape-nested-parent-frame')).toBeVisible({
+    timeout: 5000,
+  })
+
+  await page.getByTestId('sheet-escape-nested-child-open').click()
+  await expect(page.getByTestId('sheet-escape-nested-child-state')).toHaveText(
+    'child-open'
+  )
+  await expect(page.getByTestId('sheet-escape-nested-child-frame')).toBeVisible({
+    timeout: 5000,
+  })
+
+  await page.keyboard.press('Escape')
+  await expect(page.getByTestId('sheet-escape-nested-child-state')).toHaveText(
+    'child-closed'
+  )
+  await expect(page.getByTestId('sheet-escape-nested-parent-state')).toHaveText(
+    'parent-open'
+  )
+
+  await page.keyboard.press('Escape')
+  await expect(page.getByTestId('sheet-escape-nested-parent-state')).toHaveText(
+    'parent-closed'
+  )
+})

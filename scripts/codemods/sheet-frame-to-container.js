@@ -16,6 +16,7 @@ const surfaceProps = new Set([
   'borderStyle',
   'borderWidth',
   'boxShadow',
+  'disableHideBottomOverflow',
   'elevate',
   'elevation',
   'elevationAndroid',

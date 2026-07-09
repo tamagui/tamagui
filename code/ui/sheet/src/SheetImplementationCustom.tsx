@@ -825,7 +825,7 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     }, [open])
 
     React.useEffect(() => {
-      if (!isWeb || !modal || !open) return
+      if (!isWeb || !modal || !open || shouldHideParentSheet) return
 
       const onKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
@@ -837,7 +837,7 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
       return () => {
         document.removeEventListener('keydown', onKeyDown)
       }
-    }, [modal, open, state.setOpen])
+    }, [modal, open, shouldHideParentSheet, state.setOpen])
 
     // gesture handler hook for RNGH-based gesture coordination
     const { panGesture, panGestureRef, gestureHandlerEnabled } = useGestureHandlerPan({
