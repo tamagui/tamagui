@@ -7,7 +7,7 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
         scope?: string;
     } & {
         ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").MenuTriggerProps, "scope" | "ref" | keyof import("./createNonNativeMenu").MenuTriggerProps>>>;
+    } & Partial<Omit<import("@tamagui/create-menu").MenuTriggerProps, "scope" | keyof import("./createNonNativeMenu").MenuTriggerProps | "ref">>>;
     readonly Portal: React.FC<import("@tamagui/create-menu").MenuPortalProps & {
         scope?: string;
     } & Partial<Omit<React.FragmentProps, "scope" | keyof import("@tamagui/create-menu").MenuPortalProps>>>;
@@ -18,13 +18,13 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
         unstyled?: boolean | undefined;
     }>, keyof import("@tamagui/create-menu").MenuGroupProps> & import("@tamagui/create-menu").MenuGroupProps & {
         ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuGroupProps, "ref" | keyof import("@tamagui/create-menu").MenuGroupProps>>>;
+    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuGroupProps, keyof import("@tamagui/create-menu").MenuGroupProps | "ref">>>;
     readonly Label: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         unstyled?: boolean | undefined;
         size?: import("@tamagui/web").FontSizeTokens | undefined;
     }>, keyof import("@tamagui/create-menu").MenuLabelProps> & import("@tamagui/create-menu").MenuLabelProps & {
         ref?: React.Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuLabelProps, "elevation" | "fontFamily" | "fontSize" | "color" | "textShadowColor" | "lineHeight" | "fontWeight" | "letterSpacing" | "size" | "fontStyle" | "fontVariant" | "textAlign" | "textDecorationColor" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textTransform" | "whiteSpace" | "wordWrap" | "ref" | "allowFontScaling" | "ellipsizeMode" | "lineBreakMode" | "numberOfLines" | "maxFontSizeMultiplier" | "minimumFontScale" | "pressRetentionOffset" | "adjustsFontSizeToFit" | "dynamicTypeRamp" | "suppressHighlighting" | "lineBreakStrategyIOS" | "selectable" | "selectionColor" | "textBreakStrategy" | "dataDetectorType" | "android_hyphenationFrequency" | "textShadowOffset" | "textShadowRadius" | "writingDirection" | "textAlignVertical" | "includeFontPadding" | "ellipsis" | "textDecorationDistance" | keyof import("@tamagui/create-menu").MenuLabelProps>>>;
+    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuLabelProps, "elevation" | "size" | "fontFamily" | "fontSize" | "color" | "textShadowColor" | "lineHeight" | "fontWeight" | "letterSpacing" | "fontStyle" | "fontVariant" | "textAlign" | "textDecorationColor" | "textDecorationLine" | "textDecorationStyle" | "textOverflow" | "textShadow" | "textTransform" | "whiteSpace" | "wordWrap" | "allowFontScaling" | "ellipsizeMode" | "lineBreakMode" | "numberOfLines" | "maxFontSizeMultiplier" | "minimumFontScale" | "pressRetentionOffset" | "adjustsFontSizeToFit" | "dynamicTypeRamp" | "suppressHighlighting" | "lineBreakStrategyIOS" | "selectable" | "selectionColor" | "textBreakStrategy" | "dataDetectorType" | "android_hyphenationFrequency" | "textShadowOffset" | "textShadowRadius" | "writingDirection" | "textAlignVertical" | "includeFontPadding" | "ellipsis" | "textDecorationDistance" | keyof import("@tamagui/create-menu").MenuLabelProps | "ref">>>;
     readonly Item: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, "scope" | keyof import("@tamagui/create-menu").MenuItemProps> & import("@tamagui/create-menu").MenuItemProps & {
@@ -40,7 +40,7 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
         hidden?: boolean;
         destructive?: boolean;
         key: string;
-    }, "scope" | "ref" | keyof import("@tamagui/create-menu").MenuItemProps>>>;
+    }, "scope" | keyof import("@tamagui/create-menu").MenuItemProps | "ref">>>;
     readonly CheckboxItem: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, "scope" | keyof import("@tamagui/create-menu").MenuCheckboxItemProps> & import("@tamagui/create-menu").MenuCheckboxItemProps & {
@@ -53,7 +53,7 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
         value?: "mixed" | "on" | "off" | boolean;
         onValueChange?: (state: "mixed" | "on" | "off", prevState: "mixed" | "on" | "off") => void;
         key: string;
-    }, "scope" | "ref" | keyof import("@tamagui/create-menu").MenuCheckboxItemProps>>>;
+    }, "scope" | keyof import("@tamagui/create-menu").MenuCheckboxItemProps | "ref">>>;
     readonly RadioGroup: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps> & import("@tamagui/create-menu").MenuRadioGroupProps & {
@@ -62,7 +62,7 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
         ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
     } & Partial<Omit<{
         children: React.ReactNode;
-    }, "scope" | "ref" | keyof import("@tamagui/create-menu").MenuRadioGroupProps>>>;
+    }, "scope" | keyof import("@tamagui/create-menu").MenuRadioGroupProps | "ref">>>;
     readonly RadioItem: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, "scope" | keyof import("@tamagui/create-menu").MenuRadioItemProps> & import("@tamagui/create-menu").MenuRadioItemProps & {
@@ -71,7 +71,7 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
         ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
     } & Partial<Omit<{
         children: React.ReactNode;
-    }, "scope" | "ref" | keyof import("@tamagui/create-menu").MenuRadioItemProps>>>;
+    }, "scope" | keyof import("@tamagui/create-menu").MenuRadioItemProps | "ref">>>;
     readonly ItemIndicator: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
     }>, "scope" | keyof import("@tamagui/create-menu").MenuItemIndicatorProps> & import("@tamagui/create-menu").MenuItemIndicatorProps & {
@@ -124,9 +124,9 @@ export declare function createMenu(params: CreateBaseMenuProps): React.FC<import
     } & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemSubtitleProps, "size" | "ref" | keyof import("@tamagui/create-menu").MenuItemSubTitleProps>>>;
     readonly ItemIcon: React.FC<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/web").StackNonStyleProps, import("@tamagui/web").StackStyleBase, {
         unstyled?: boolean | undefined;
-    }>, import("@tamagui/web").GroupMediaKeys | "$native" | "$web" | "$android" | "$ios" | "$tv" | "$androidtv" | "$tvos" | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | keyof import("@tamagui/web").StackNonStyleProps> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & {
+    }>, "$native" | "$web" | "$android" | "$ios" | "$tv" | "$androidtv" | "$tvos" | import("@tamagui/web").GroupMediaKeys | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>>> & import("@tamagui/web").StackNonStyleProps & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & {
         ref?: React.Ref<import("@tamagui/web").TamaguiElement> | undefined;
-    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemCommonProps, import("@tamagui/web").GroupMediaKeys | "$native" | "$web" | "$android" | "$ios" | "$tv" | "$androidtv" | "$tvos" | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | keyof import("@tamagui/web").StackNonStyleProps | "ref">>>;
+    } & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemCommonProps, "$native" | "$web" | "$android" | "$ios" | "$tv" | "$androidtv" | "$tvos" | import("@tamagui/web").GroupMediaKeys | keyof import("@tamagui/web").StackStyleBase | keyof import("@tamagui/web").StackNonStyleProps | keyof import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> | "ref">>>;
     readonly ItemImage: React.FC<import("react-native").ImageProps & import("@tamagui/web").RefProp<import("react-native").Image> & Partial<Omit<import("@tamagui/create-menu").NativeMenuItemCommonProps & {
         source: import("react-native").ImageProps["source"];
         ios?: {
