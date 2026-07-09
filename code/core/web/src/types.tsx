@@ -1437,11 +1437,14 @@ export type GenericFont<Key extends GenericFontKey = GenericFontKey> = {
 // media
 export type MediaQueryObject = { [key: string]: string | number | string }
 export type MediaQueryKey = keyof Media
-export type MediaPropKeys = MediaQueryKey extends string
-  ? string extends MediaQueryKey
+type IsAny<A> = 0 extends 1 & A ? true : false
+type StrictMediaQueryKey =
+  IsAny<MediaQueryKey> extends true
     ? never
-    : `$${MediaQueryKey}`
-  : never
+    : string extends MediaQueryKey
+      ? never
+      : Extract<MediaQueryKey, string>
+export type MediaPropKeys = Exclude<`$${StrictMediaQueryKey}`, PlatformMediaKeys>
 export type MediaQueryState = { [key in MediaQueryKey]: boolean }
 
 // guard against a loose `Themes` whose `keyof` collapses to `string` (e.g. a config
@@ -1468,30 +1471,32 @@ export type GroupNames =
   ReturnType<TypeOverride['groupNames']> extends 1
     ? never
     : ReturnType<TypeOverride['groupNames']>
+type StrictGroupNames =
+  IsAny<GroupNames> extends true ? string : Extract<GroupNames, string | number>
 
 type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin'
 
 export type GroupMediaKeys =
-  | `$group-${GroupNames}`
-  | `$group-${GroupNames}-${ParentMediaStates}`
-  | `$group-${GroupNames}-${MediaQueryKey}`
-  | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}`
+  | `$group-${StrictGroupNames}`
+  | `$group-${StrictGroupNames}-${ParentMediaStates}`
+  | `$group-${StrictGroupNames}-${StrictMediaQueryKey}`
+  | `$group-${StrictGroupNames}-${StrictMediaQueryKey}-${ParentMediaStates}`
   | `$group-${ParentMediaStates}`
-  | `$group-${MediaQueryKey}`
-  | `$group-${MediaQueryKey}-${ParentMediaStates}`
+  | `$group-${StrictMediaQueryKey}`
+  | `$group-${StrictMediaQueryKey}-${ParentMediaStates}`
 
 export type WithMediaProps<A> = {
   [Key in
     | MediaPropKeys
     | GroupMediaKeys
     | ThemeMediaKeys
-    | PlatformMediaKeys]?: Key extends MediaPropKeys
-    ? A & {
-        // TODO we can support $theme- inside media queries here if we change to ThemeMediaKeys | PlatformMediaKeys
-        [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>
-      }
-    : Key extends `$web`
-      ? AddWebOnlyStyleProps<A> & { [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A> }
+    | PlatformMediaKeys]?: Key extends `$web`
+    ? AddWebOnlyStyleProps<A> & { [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A> }
+    : Key extends MediaPropKeys
+      ? A & {
+          // TODO we can support $theme- inside media queries here if we change to ThemeMediaKeys | PlatformMediaKeys
+          [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>
+        }
       : A & { [Key in MediaPropKeys]?: A }
 }
 

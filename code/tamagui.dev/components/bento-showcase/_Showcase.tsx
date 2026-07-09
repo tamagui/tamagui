@@ -311,7 +311,7 @@ const PhoneFrame = (props: any) => {
     <YStack
       // @ts-expect-error - window group name
       group="window"
-      focusable
+      tabIndex={0}
       className="ms300 all ease-out"
       borderRadius={43}
       height={600}

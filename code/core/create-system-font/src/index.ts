@@ -75,23 +75,28 @@ export const defaultSystemFontLineHeight = (size: number): number => {
 export const createSystemFont = <
   A extends GenericFont,
   Sizes extends SystemFontSizes = typeof webSystemFontSizes,
->({
-  font = {},
-  sizes = defaultSystemFontSizes as Sizes,
-  sizeLineHeight = defaultSystemFontLineHeight,
-  sizeSize = (size) => Math.round(size),
-  family = isWeb ? systemFontFamily.web : systemFontFamily.native,
-  weight = {
-    1: '400',
-  },
-  letterSpacing = {
-    4: 0,
-  },
-}: CreateSystemFontOptions<A, Sizes> = {}): FillInFont<A, SystemFontKeys<Sizes>> => {
+>(
+  options: CreateSystemFontOptions<A, Sizes> = {}
+): FillInFont<A, SystemFontKeys<Sizes>> => {
+  const {
+    sizeLineHeight = defaultSystemFontLineHeight,
+    sizeSize = (size) => Math.round(size),
+    family = isWeb ? systemFontFamily.web : systemFontFamily.native,
+    weight = {
+      1: '400',
+    },
+    letterSpacing = {
+      4: 0,
+    },
+  } = options
+  const font = options.font
+  const sizes = options.sizes ?? defaultSystemFontSizes
+  const fontSizes = font?.size ?? {}
+
   const size = Object.fromEntries(
     Object.entries({
       ...sizes,
-      ...font.size,
+      ...fontSizes,
     }).map(([key, value]) => [key, sizeSize(+value)])
   )
 

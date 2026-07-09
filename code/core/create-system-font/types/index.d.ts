@@ -60,7 +60,7 @@ export declare const defaultSystemFontLineHeight: (size: number) => number;
 export declare const createSystemFont: <
 	A extends GenericFont,
 	Sizes extends SystemFontSizes = typeof webSystemFontSizes
->({ font, sizes, sizeLineHeight, sizeSize, family, weight, letterSpacing }?: CreateSystemFontOptions<A, Sizes>) => FillInFont<A, SystemFontKeys<Sizes>>;
+>(options?: CreateSystemFontOptions<A, Sizes>) => FillInFont<A, SystemFontKeys<Sizes>>;
 export {};
 
 //# sourceMappingURL=index.d.ts.map

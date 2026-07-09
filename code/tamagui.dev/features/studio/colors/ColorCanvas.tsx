@@ -119,7 +119,7 @@ export const ColorCanvas = memo(function ColorCanvas() {
             return (
               <YStack
                 key={`${color}${i}`}
-                focusable
+                tabIndex={0}
                 onFocus={() => state.colors.setColorIndex(String(i))}
                 flex={1}
                 width={barWidth as any}

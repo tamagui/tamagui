@@ -278,7 +278,7 @@ const InteractiveFocus = () => (
     width={80}
     height={80}
     backgroundColor="rgb(200,200,200)"
-    focusable
+    tabIndex={0}
     focusStyle={{ borderWidth: 2, borderColor: 'rgb(99,102,241)' }}
     focusVisibleStyle={{
       outlineWidth: 2,

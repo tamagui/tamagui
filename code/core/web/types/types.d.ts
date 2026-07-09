@@ -885,7 +885,9 @@ export type MediaQueryObject = {
     [key: string]: string | number | string;
 };
 export type MediaQueryKey = keyof Media;
-export type MediaPropKeys = MediaQueryKey extends string ? string extends MediaQueryKey ? never : `$${MediaQueryKey}` : never;
+type IsAny<A> = 0 extends 1 & A ? true : false;
+type StrictMediaQueryKey = IsAny<MediaQueryKey> extends true ? never : string extends MediaQueryKey ? never : Extract<MediaQueryKey, string>;
+export type MediaPropKeys = Exclude<`$${StrictMediaQueryKey}`, PlatformMediaKeys>;
 export type MediaQueryState = {
     [key in MediaQueryKey]: boolean;
 };
@@ -896,13 +898,14 @@ export interface TypeOverride {
     animationDrivers(): 1;
 }
 export type GroupNames = ReturnType<TypeOverride['groupNames']> extends 1 ? never : ReturnType<TypeOverride['groupNames']>;
+type StrictGroupNames = IsAny<GroupNames> extends true ? string : Extract<GroupNames, string | number>;
 type ParentMediaStates = 'hover' | 'press' | 'focus' | 'focusVisible' | 'focusWithin';
-export type GroupMediaKeys = `$group-${GroupNames}` | `$group-${GroupNames}-${ParentMediaStates}` | `$group-${GroupNames}-${MediaQueryKey}` | `$group-${GroupNames}-${MediaQueryKey}-${ParentMediaStates}` | `$group-${ParentMediaStates}` | `$group-${MediaQueryKey}` | `$group-${MediaQueryKey}-${ParentMediaStates}`;
+export type GroupMediaKeys = `$group-${StrictGroupNames}` | `$group-${StrictGroupNames}-${ParentMediaStates}` | `$group-${StrictGroupNames}-${StrictMediaQueryKey}` | `$group-${StrictGroupNames}-${StrictMediaQueryKey}-${ParentMediaStates}` | `$group-${ParentMediaStates}` | `$group-${StrictMediaQueryKey}` | `$group-${StrictMediaQueryKey}-${ParentMediaStates}`;
 export type WithMediaProps<A> = {
-    [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends MediaPropKeys ? A & {
-        [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>;
-    } : Key extends `$web` ? AddWebOnlyStyleProps<A> & {
+    [Key in MediaPropKeys | GroupMediaKeys | ThemeMediaKeys | PlatformMediaKeys]?: Key extends `$web` ? AddWebOnlyStyleProps<A> & {
         [Key in MediaPropKeys]?: AddWebOnlyStyleProps<A>;
+    } : Key extends MediaPropKeys ? A & {
+        [Key in PlatformMediaKeys]?: AddWebOnlyStyleProps<A>;
     } : A & {
         [Key in MediaPropKeys]?: A;
     };

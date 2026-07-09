@@ -21,7 +21,6 @@ export function StyledViewOnFocus() {
   const [onFocus, setOnFocus] = React.useState(false)
   return (
     <StyledView
-      focusable
       testVariant
       data-onfocus={onFocus}
       id="onFocus"
