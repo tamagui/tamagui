@@ -49,7 +49,10 @@ export default () => (
   <Sheet>
     <Sheet.Overlay />
     <Sheet.Handle />
-    <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
+    <Sheet.Container>
+      <Sheet.Background />
+      {/* ...inner contents */}
+    </Sheet.Container>
   </Sheet>
 )
 ```
@@ -164,18 +167,22 @@ Contains every component for the sheet.
 
 ### Sheet.Overlay
 
-Displays behind Frame. Extends [YStack](/docs/components/stacks).
+Displays behind the animated sheet container. Extends [YStack](/docs/components/stacks).
 
-### Sheet.Frame
+### Sheet.Container
 
 Contains the content. Extends [YStack](/docs/components/stacks).
+
+### Sheet.Background
+
+Displays the visual sheet surface behind the container content. Extends [YStack](/docs/components/stacks).
 
 <PropsTable
   data={[
     {
       name: 'disableHideBottomOverflow',
       type: 'boolean',
-      description: `Disables the default cloned frame cover below the sheet. Leave it omitted or false when a spring can overshoot on open; the cover prevents page content from showing through below the sheet. If your frame uses decorative absolute layers, put the fallback background on Sheet.Frame so the cloned cover can occlude the bottom too.`,
+      description: `Disables the default background extension below the sheet. Leave it omitted or false when a spring can overshoot on open; the background prevents page content from showing through below the sheet.`,
     },
   ]}
 />
@@ -231,9 +238,10 @@ When using scrollable content inside a Sheet, use `Sheet.ScrollView` for proper 
 ```tsx
 <Sheet>
   <Sheet.Handle />
-  <Sheet.Frame>
+  <Sheet.Container>
+    <Sheet.Background />
     <Sheet.ScrollView>{/* Scrollable content */}</Sheet.ScrollView>
-  </Sheet.Frame>
+  </Sheet.Container>
 </Sheet>
 ```
 

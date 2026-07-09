@@ -62,11 +62,13 @@ export function SelectDemoItem(props: SelectProps & { trigger?: React.ReactNode 
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
+
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             backgroundColor="$shadowColor"
             transition="lazy"
@@ -267,6 +269,7 @@ function SheetDemo() {
         circular
         onPress={() => setOpen((x) => !x)}
       />
+
       <Sheet
         modal
         transition="medium"
@@ -283,8 +286,11 @@ function SheetDemo() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
+
         <Sheet.Handle bg="$color8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="$color2">
+        <Sheet.Container items="center" justify="center" gap="$10">
+          <Sheet.Background bg="$color2" />
+
           <XStack gap="$2">
             <Paragraph text="center">Made by</Paragraph>
             <Anchor
@@ -315,7 +321,7 @@ function SheetDemo() {
               })
             }}
           />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )

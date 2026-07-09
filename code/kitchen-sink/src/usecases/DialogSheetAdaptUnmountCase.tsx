@@ -15,9 +15,9 @@ const CONTENT_RADIUS = '$6' as const
  * Repro for the "content removes before animation on close" bug.
  *
  * Mirrors the three-punch-convo-app Dialog wrapper as closely as possible:
- * - Sheet.Frame with bg="$backgroundSurface" and *no* inner overlay/blur layer
+ * - Sheet.Background with bg="$backgroundSurface" and *no* inner overlay/blur layer
  *   painted on top of the contents (which is what masks the bug in takeout).
- * - Adapt.Contents nested inside Sheet.ScrollView in Sheet.Frame.
+ * - Adapt.Contents nested inside Sheet.ScrollView in Sheet.Container.
  *
  * Note: 3PC uses `Adapt platform="touch"`, but `isTouchable` is false on
  * desktop chromium (no `ontouchstart`), so we use `when="maxMd"` here so the
@@ -53,20 +53,20 @@ function ThreePunchDialog({
             exitStyle={{ opacity: 0 }}
             onPress={() => onOpenChange?.(false)}
           />
+
           <Sheet.Handle bg="$color5" />
-          <Sheet.Frame
-            testID="sheet-frame"
-            padding="$4"
-            gap="$4"
-            borderRadius="$6"
-            borderBottomRightRadius={0}
-            borderBottomLeftRadius={0}
-            bg="$background"
-          >
+          <Sheet.Container testID="sheet-frame" padding="$4" gap="$4">
+            <Sheet.Background
+              borderRadius="$6"
+              borderBottomRightRadius={0}
+              borderBottomLeftRadius={0}
+              bg="$background"
+            />
+
             <Sheet.ScrollView>
               <TamaguiDialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
         </Sheet>
       </TamaguiDialog.Adapt>
 

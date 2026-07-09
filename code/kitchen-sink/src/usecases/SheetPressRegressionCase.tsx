@@ -79,7 +79,10 @@ export function SheetPressRegressionCase() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame testID="sheet-press-frame" bg="$background">
+
+        <Sheet.Container testID="sheet-press-frame">
+          <Sheet.Background bg="$background" />
+
           <Sheet.ScrollView
             testID="sheet-press-scrollview"
             maxHeight={520}
@@ -176,7 +179,7 @@ export function SheetPressRegressionCase() {
               </Button>
             </XStack>
           </YStack>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
 
       {/* counters mirrored outside the sheet so they're readable after close */}

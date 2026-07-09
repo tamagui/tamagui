@@ -16,11 +16,13 @@ export const ProPoliciesModal = () => {
     >
       <Dialog.Adapt when="maxMd">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom>
-          <Sheet.Frame p="$8">
+          <Sheet.Container p="$8">
+            <Sheet.Background />
+
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             bg="$shadow4"
             transition="lazy"

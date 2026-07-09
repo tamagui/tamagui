@@ -71,8 +71,9 @@ function NoScrollViewSheet() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
+
         <Sheet.Handle testID="no-scroll-handle" />
-        <Sheet.Frame
+        <Sheet.Container
           testID="no-scroll-frame"
           padding="$4"
           gap="$4"
@@ -88,6 +89,8 @@ function NoScrollViewSheet() {
             }
           }}
         >
+          <Sheet.Background />
+
           <Paragraph testID="no-scroll-snap-indicator">
             Current snap point: {position}
           </Paragraph>
@@ -120,7 +123,7 @@ function NoScrollViewSheet() {
           <Button testID="no-scroll-close" onPress={() => setOpen(false)}>
             Close
           </Button>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )
@@ -175,8 +178,11 @@ function NonScrollableContentSheet() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
+
         <Sheet.Handle testID="non-scrollable-handle" />
-        <Sheet.Frame testID="non-scrollable-frame">
+        <Sheet.Container testID="non-scrollable-frame">
+          <Sheet.Background />
+
           <Sheet.ScrollView
             testID="non-scrollable-scrollview"
             onScroll={(e) => {
@@ -223,7 +229,7 @@ function NonScrollableContentSheet() {
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )
@@ -287,8 +293,11 @@ function ScrollableContentSheet() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
+
         <Sheet.Handle testID="scrollable-handle" />
-        <Sheet.Frame testID="scrollable-frame">
+        <Sheet.Container testID="scrollable-frame">
+          <Sheet.Background />
+
           <Sheet.ScrollView
             testID="scrollable-scrollview"
             onScroll={(e) => {
@@ -355,7 +364,7 @@ function ScrollableContentSheet() {
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

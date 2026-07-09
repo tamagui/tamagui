@@ -35,11 +35,13 @@ export default function TestSelectAdapt(props: SelectProps) {
             stiffness: 250,
           }}
         >
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
+
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             transition="quick"
             enterStyle={{ opacity: 0 }}

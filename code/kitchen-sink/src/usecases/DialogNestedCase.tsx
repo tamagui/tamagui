@@ -37,9 +37,11 @@ function DialogInstance({ level = 1 }: { level?: number }) {
           dismissOnSnapToBottom
           unmountChildrenWhenHidden
         >
-          <Sheet.Frame padding="$4" gap="$4">
+          <Sheet.Container padding="$4" gap="$4">
+            <Sheet.Background />
+
             <Adapt.Contents />
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             transition="lazy"
             enterStyle={{ opacity: 0 }}

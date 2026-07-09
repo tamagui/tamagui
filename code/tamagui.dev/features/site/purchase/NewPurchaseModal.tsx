@@ -299,11 +299,13 @@ export function PurchaseModalContents() {
       >
         <Dialog.Adapt when="maxMd">
           <Sheet modal dismissOnSnapToBottom transition="medium">
-            <Sheet.Frame bg="$color1" p={0} flex={1}>
+            <Sheet.Container p={0} flex={1}>
+              <Sheet.Background bg="$color1" />
+
               <Sheet.ScrollView flex={1}>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               bg="$shadow4"
               transition="lazy"
@@ -674,6 +676,7 @@ function Tab({
           },
         })}
       />
+
       <Paragraph
         fontFamily="$mono"
         size="$6"

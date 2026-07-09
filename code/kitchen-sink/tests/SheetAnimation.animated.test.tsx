@@ -122,7 +122,7 @@ test.describe('Sheet Animation - CSS Driver', () => {
     await trigger.click()
     await page.waitForTimeout(100) // Small wait for sheet to start rendering
 
-    // The transform is on the AnimatedView wrapper, which is the parent of Sheet.Frame
+    // The transform is on the AnimatedView wrapper, which is the parent of Sheet.Container
     // We need to find the element with position:absolute that wraps the frame
     const debugInfo = await page.evaluate(() => {
       const frame = document.querySelector('[data-testid="animation-quick-frame"]')
@@ -244,7 +244,7 @@ test.describe('Sheet Animation - CSS Driver', () => {
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
-      // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+      // Use .first() because Tamagui wrappers can duplicate testID on nested nodes
       const frame = page.getByTestId(`${testId}-frame`).first()
       const closeButton = page.getByTestId(`${testId}-close`)
 
@@ -260,7 +260,7 @@ test.describe('Sheet Animation - CSS Driver', () => {
 
   // transitionConfig not working reliably with CSS driver
   test.skip('transitionConfig prop works without animation prop', async ({ page }) => {
-    // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+    // Use .first() because Tamagui wrappers can duplicate testID on nested nodes
     const frame = page.getByTestId('transitionConfig-only-frame').first()
     const trigger = page.getByTestId('transitionConfig-only-trigger')
     const closeButton = page.getByTestId('transitionConfig-only-close')
@@ -293,7 +293,7 @@ test.describe('Sheet Animation - Motion Driver', () => {
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
-      // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+      // Use .first() because Tamagui wrappers can duplicate testID on nested nodes
       const frame = page.getByTestId(`${testId}-frame`).first()
       const closeButton = page.getByTestId(`${testId}-close`)
 
@@ -308,7 +308,7 @@ test.describe('Sheet Animation - Motion Driver', () => {
   })
 
   test('transitionConfig prop works without animation prop', async ({ page }) => {
-    // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+    // Use .first() because Tamagui wrappers can duplicate testID on nested nodes
     const frame = page.getByTestId('transitionConfig-only-frame').first()
     const trigger = page.getByTestId('transitionConfig-only-trigger')
     const closeButton = page.getByTestId('transitionConfig-only-close')
@@ -366,7 +366,7 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
 
     for (const testId of testIds) {
       const trigger = page.getByTestId(`${testId}-trigger`)
-      // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+      // Use .first() because Tamagui wrappers can duplicate testID on nested nodes
       const frame = page.getByTestId(`${testId}-frame`).first()
       const closeButton = page.getByTestId(`${testId}-close`)
 
@@ -385,7 +385,7 @@ test.describe('Sheet Animation - Reanimated Driver (default)', () => {
     const driver = (test.info().project?.metadata as any)?.animationDriver
     test.skip(driver === 'css', 'transitionConfig not supported by CSS animation driver')
 
-    // Use .first() because Sheet passes testId to both Sheet.Frame and SheetCover
+    // Use .first() because Tamagui wrappers can duplicate testID on nested nodes
     const frame = page.getByTestId('transitionConfig-only-frame').first()
     const trigger = page.getByTestId('transitionConfig-only-trigger')
     const closeButton = page.getByTestId('transitionConfig-only-close')

@@ -122,6 +122,7 @@ export function Header(props: HeaderProps) {
                 }),
               }}
             />
+
             <YStack
               opacity={isScrolled ? 0.6 : 0}
               className={`ease-out all ms300`}
@@ -129,6 +130,7 @@ export function Header(props: HeaderProps) {
               inset={0}
               bg="$color2"
             />
+
             <YStack mx="auto" px="$4" width="100%">
               <ThemeTint>
                 <HeaderContents floating {...props} />
@@ -399,11 +401,13 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
 
       <Adapt platform="touch" when="sm">
         <Sheet transition="medium" zIndex={100000000} modal dismissOnSnapToBottom>
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
+
             <Sheet.ScrollView showsVerticalScrollIndicator={false}>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay z={100} bg="$shadow4" />
         </Sheet>
       </Adapt>

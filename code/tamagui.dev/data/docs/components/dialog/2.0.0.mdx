@@ -352,7 +352,7 @@ active.
 
 See [Sheet](/docs/components/sheet) for more props.
 
-Must use `Adapt.Contents` inside the `Dialog.Sheet.Frame` to insert the contents
+Must use `Adapt.Contents` inside the `Dialog.Sheet.Container` to insert the contents
 given to `Dialog.Content`
 
 ```tsx
@@ -375,9 +375,10 @@ export default () => (
     {/* optionally change to sheet when small screen */}
     <Dialog.Adapt when="max-md">
       <Dialog.Sheet>
-        <Dialog.Sheet.Frame>
+        <Dialog.Sheet.Container>
+          <Dialog.Sheet.Background />
           <Dialog.Adapt.Contents />
-        </Dialog.Sheet.Frame>
+        </Dialog.Sheet.Container>
         <Dialog.Sheet.Overlay />
       </Dialog.Sheet>
     </Dialog.Adapt>

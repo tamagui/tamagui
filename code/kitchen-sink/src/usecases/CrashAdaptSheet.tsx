@@ -29,11 +29,13 @@ export function TestModal() {
           <Sheet.Overlay height={windowHeight} width={windowWidth} bg="$background" />
 
           {/* Uncommenting this causes a rare crash on native iOS Safari */}
-          <Sheet.Frame theme="red">
+          <Sheet.Container theme="red">
+            <Sheet.Background />
+
             <Sheet.ScrollView>
               <TDialog.Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
         </Sheet>
       </TDialog.Adapt>
 

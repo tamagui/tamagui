@@ -1,7 +1,12 @@
 import { styled } from '@tamagui/core'
 import { XStack, YStack } from '@tamagui/stacks'
 
-import { SHEET_HANDLE_NAME, SHEET_NAME, SHEET_OVERLAY_NAME } from './constants'
+import {
+  SHEET_BACKGROUND_NAME,
+  SHEET_CONTAINER_NAME,
+  SHEET_HANDLE_NAME,
+  SHEET_OVERLAY_NAME,
+} from './constants'
 import { createSheet } from './createSheet'
 
 export * from './types'
@@ -81,21 +86,41 @@ export const Overlay = styled(YStack, {
 })
 
 /* -------------------------------------------------------------------------------------------------
- * Sheet
+ * SheetContainer
  * -----------------------------------------------------------------------------------------------*/
 
-export const Frame = styled(YStack, {
-  name: SHEET_NAME,
+export const Container = styled(YStack, {
+  name: SHEET_CONTAINER_NAME,
 
   variants: {
     unstyled: {
       false: {
         flex: 1,
+        position: 'relative',
+        width: '100%',
+        maxHeight: '100%',
+      },
+    },
+  } as const,
+
+  defaultVariants: {
+    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  },
+})
+
+/* -------------------------------------------------------------------------------------------------
+ * SheetBackground
+ * -----------------------------------------------------------------------------------------------*/
+
+export const Background = styled(YStack, {
+  name: SHEET_BACKGROUND_NAME,
+
+  variants: {
+    unstyled: {
+      false: {
         backgroundColor: '$background',
         borderTopLeftRadius: '$true',
         borderTopRightRadius: '$true',
-        width: '100%',
-        maxHeight: '100%',
         overflow: 'hidden',
       },
     },
@@ -107,7 +132,8 @@ export const Frame = styled(YStack, {
 })
 
 export const Sheet = createSheet({
-  Frame,
+  Background,
+  Container,
   Handle,
   Overlay,
 })

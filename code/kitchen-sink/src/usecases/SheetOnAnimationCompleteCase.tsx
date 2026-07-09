@@ -38,7 +38,10 @@ export function SheetOnAnimationCompleteCase() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame padding="$4" bg="$background" data-testid="sheet-frame">
+
+        <Sheet.Container padding="$4" data-testid="sheet-frame">
+          <Sheet.Background bg="$background" />
+
           <Paragraph>Sheet content</Paragraph>
           <Button
             onPress={() => setOpen(false)}
@@ -47,7 +50,7 @@ export function SheetOnAnimationCompleteCase() {
           >
             Close
           </Button>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

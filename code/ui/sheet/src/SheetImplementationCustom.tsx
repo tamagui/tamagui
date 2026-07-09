@@ -37,7 +37,8 @@ import {
   getWebVisualViewportOffsetTop,
   MIN_KEYBOARD_HEIGHT,
 } from './webViewport'
-import { SheetProvider } from './SheetContext'
+import { SheetOverlayLayerContext, SheetProvider } from './SheetContext'
+import { SHEET_OVERLAY_NAME } from './constants'
 import type { SheetProps, SnapPointsMode } from './types'
 import { useGestureHandlerPan } from './useGestureHandlerPan'
 import { useKeyboardControllerSheet } from './useKeyboardControllerSheet'
@@ -46,6 +47,12 @@ import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
 
 const hiddenSize = 10_000.1
+
+let sheetEscapeId = 0
+const sheetEscapeStack: {
+  id: number
+  setOpen: (open: boolean) => void
+}[] = []
 
 // the re-established rngh root for a modal sheet (see modal branch below).
 // GestureHandlerRootView does its own native touch interception and ignores
@@ -71,6 +78,29 @@ const relativeDimensionTo = isWeb ? 'window' : 'screen'
 function getStableViewportHeight(): number {
   if (isWeb && typeof window !== 'undefined') return getStableLayoutViewportHeight()
   return Dimensions.get(relativeDimensionTo).height
+}
+
+function getSheetChildName(child: React.ReactElement) {
+  const type = child.type as any
+  if (type && 'staticConfig' in type) {
+    return type.staticConfig?.componentName
+  }
+  return type?.displayName || type?.name
+}
+
+function partitionSheetChildren(children: React.ReactNode) {
+  const overlayChildren: React.ReactNode[] = []
+  const contentChildren: React.ReactNode[] = []
+
+  React.Children.forEach(children, (child) => {
+    if (React.isValidElement(child) && getSheetChildName(child) === SHEET_OVERLAY_NAME) {
+      overlayChildren.push(child)
+      return
+    }
+    contentChildren.push(child)
+  })
+
+  return { overlayChildren, contentChildren }
 }
 
 export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
@@ -100,11 +130,12 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     } = props
 
     const state = useSheetOpenState(props)
-    const [overlayComponent, setOverlayComponent] = React.useState<React.ReactNode>(null)
+    const { overlayChildren, contentChildren } = React.useMemo(
+      () => partitionSheetChildren(props.children),
+      [props.children]
+    )
 
-    const providerProps = useSheetProviderProps(props, state, {
-      onOverlayComponent: setOverlayComponent,
-    })
+    const providerProps = useSheetProviderProps(props, state)
     const {
       frameSize,
       setFrameSize,
@@ -122,6 +153,10 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     const { open, controller, isHidden } = state
     const openRef = React.useRef(open)
     openRef.current = open
+    const escapeId = React.useRef(0)
+    if (!escapeId.current) {
+      escapeId.current = ++sheetEscapeId
+    }
 
     const sheetRef = React.useRef<View>(undefined as unknown as View)
     const ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef as any)
@@ -344,6 +379,37 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
         sheetInsideSheet(false)
       }
     }, [sheetInsideSheet, open])
+
+    React.useEffect(() => {
+      if (!isWeb || !modal || !open || isHidden) return
+
+      const entry = {
+        id: escapeId.current,
+        setOpen: state.setOpen,
+      }
+      sheetEscapeStack.push(entry)
+
+      const onKeyDown = (event: KeyboardEvent) => {
+        if (event.defaultPrevented || event.key !== 'Escape') return
+        const top = sheetEscapeStack[sheetEscapeStack.length - 1]
+        if (top?.id !== entry.id) return
+
+        event.preventDefault()
+        event.stopPropagation()
+        event.stopImmediatePropagation?.()
+        top.setOpen(false)
+      }
+
+      document.addEventListener('keydown', onKeyDown, true)
+
+      return () => {
+        document.removeEventListener('keydown', onKeyDown, true)
+        const index = sheetEscapeStack.indexOf(entry)
+        if (index >= 0) {
+          sheetEscapeStack.splice(index, 1)
+        }
+      }
+    }, [modal, open, isHidden, state.setOpen])
 
     const nextParentContext = React.useMemo(
       () => ({
@@ -955,9 +1021,11 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
               panGesture={panGesture}
               panGestureRef={panGestureRef}
             >
-              <AnimatePresence custom={{ open }}>
-                {shouldHideParentSheet || !open ? null : overlayComponent}
-              </AnimatePresence>
+              <SheetOverlayLayerContext.Provider value>
+                <AnimatePresence custom={{ open }}>
+                  {shouldHideParentSheet || !open ? null : overlayChildren}
+                </AnimatePresence>
+              </SheetOverlayLayerContext.Provider>
 
               {snapPointsMode !== 'percent' && (
                 <View
@@ -1000,14 +1068,14 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
                 {/* wrap children with plain RN View for panResponder - tamagui views no longer handle responder events on web */}
                 {gestureHandlerEnabled && panGesture ? (
                   <GestureDetectorWrapper gesture={panGesture} style={{ flex: 1 }}>
-                    {props.children}
+                    {contentChildren}
                   </GestureDetectorWrapper>
                 ) : (
                   <View
                     {...panResponder?.panHandlers}
                     style={{ flex: 1, width: '100%', height: '100%' }}
                   >
-                    {props.children}
+                    {contentChildren}
                   </View>
                 )}
               </AnimatedView>

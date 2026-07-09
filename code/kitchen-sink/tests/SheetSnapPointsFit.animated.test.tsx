@@ -402,22 +402,22 @@ test.describe('Sheet fit-mode through Dialog.Adapt (3pc filter-by-event style)',
         async () =>
           frame.evaluate((frameEl) => {
             const frameBox = frameEl.getBoundingClientRect()
-            const covers = Array.from(
-              document.querySelectorAll('[data-sheet-cover]')
+            const backgrounds = Array.from(
+              document.querySelectorAll('[data-sheet-background]')
             ).map((el) => {
               const box = el.getBoundingClientRect()
               return {
                 backgroundColor: getComputedStyle(el).backgroundColor,
-                height: box.height,
-                topDelta: Math.abs(box.top - frameBox.bottom),
+                bottomExtension: box.bottom - frameBox.bottom,
+                topDelta: Math.abs(box.top - frameBox.top),
               }
             })
 
             return (
-              covers.find(
+              backgrounds.find(
                 (candidate) =>
                   candidate.topDelta <= 2 &&
-                  candidate.height >= window.innerHeight &&
+                  candidate.bottomExtension >= window.innerHeight * 0.9 &&
                   candidate.backgroundColor !== 'rgba(0, 0, 0, 0)' &&
                   candidate.backgroundColor !== 'transparent'
               ) ?? null

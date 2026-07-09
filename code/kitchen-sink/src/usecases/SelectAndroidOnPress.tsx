@@ -59,11 +59,13 @@ export function SelectAndroidOnPress() {
 
         <Adapt when="maxMd" platform="touch">
           <Sheet modal dismissOnSnapToBottom transition="medium">
-            <Sheet.Frame>
+            <Sheet.Container>
+              <Sheet.Background />
+
               <Sheet.ScrollView>
                 <Adapt.Contents />
               </Sheet.ScrollView>
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               bg="$shadowColor"
               transition="lazy"

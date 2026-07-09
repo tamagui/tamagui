@@ -46,11 +46,13 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
 
       <Adapt when="maxMd" platform="touch">
         <Sheet modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
+
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay
             backgroundColor="$shadowColor"
             transition="lazy"

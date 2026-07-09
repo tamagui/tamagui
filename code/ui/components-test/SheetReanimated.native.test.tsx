@@ -45,12 +45,15 @@ function InnerSheet() {
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
       />
+
       <Sheet.Handle />
-      <Sheet.Frame flex={1} justify="center" items="center" gap="$5">
+      <Sheet.Container flex={1} justify="center" items="center" gap="$5">
+        <Sheet.Background />
+
         <YStack p="$5" gap="$8">
           <Paragraph>inner sheet</Paragraph>
         </YStack>
-      </Sheet.Frame>
+      </Sheet.Container>
     </Sheet>
   )
 }
@@ -72,12 +75,15 @@ function ReanimatedSheet({ modal }: { modal: boolean }) {
         enterStyle={{ opacity: 0 }}
         exitStyle={{ opacity: 0 }}
       />
+
       <Sheet.Handle />
-      <Sheet.Frame p="$4" justify="center" items="center" gap="$5">
+      <Sheet.Container p="$4" justify="center" items="center" gap="$5">
+        <Sheet.Background />
+
         <Button>close</Button>
         <Input width={200} />
         {modal && <InnerSheet />}
-      </Sheet.Frame>
+      </Sheet.Container>
     </Sheet>
   )
 }

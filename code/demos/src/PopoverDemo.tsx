@@ -31,18 +31,21 @@ export function PopoverDemo() {
           Icon={ChevronLeft}
           Name="left-popover"
         />
+
         <Demo
           shouldAdapt={shouldAdapt}
           placement="bottom"
           Icon={ChevronDown}
           Name="bottom-popover"
         />
+
         <Demo
           shouldAdapt={shouldAdapt}
           placement="top"
           Icon={ChevronUp}
           Name="top-popover"
         />
+
         <Demo
           shouldAdapt={shouldAdapt}
           placement="right"
@@ -75,9 +78,11 @@ export function Demo({
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
           <Sheet transition="medium" modal dismissOnSnapToBottom>
-            <Sheet.Frame p="$4">
+            <Sheet.Container p="$4">
+              <Sheet.Background />
+
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               bg="$shadowColor"
               transition="lazy"

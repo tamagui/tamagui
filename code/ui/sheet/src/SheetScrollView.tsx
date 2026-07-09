@@ -61,8 +61,8 @@ export const SheetScrollView = createRefComponent<
     // closed), so the height now comes from the sheet, which doesn't remount.
     const frozenFrameHeight = Math.max(0, context.keyboardStableFrameHeight || 0)
 
-    // with snapPointsMode="fit", Frame is content-sized (flex: 0, flex-basis: auto, height: undefined).
-    // a flex: 1 child can't grow inside a content-sized parent, so the ScrollView (and the Frame
+    // with snapPointsMode="fit", Container is content-sized (flex: 0, flex-basis: auto, height: undefined).
+    // a flex: 1 child can't grow inside a content-sized parent, so the ScrollView (and the Container
     // around it) collapse to 0 height. instead, let the ScrollView size to its content and cap it
     // at the available viewport (screenSize / maxContentSize) so scrolling kicks in for tall content.
     const fitSizingStyle = hasFit
@@ -78,7 +78,7 @@ export const SheetScrollView = createRefComponent<
     // frame height (frozenFrameHeight), overriding any consumer maxHeight. on web
     // that maxHeight is often tied to useWindowDimensions, which SHRINKS when the
     // keyboard opens and would otherwise collapse the sheet. holding the height
-    // constant means the web frame can translate without resizing. applied
+    // constant means the web container can translate without resizing. applied
     // AFTER {...props} so it wins.
     const keyboardFrozenOverride =
       hasFit && isKeyboardVisible && frozenFrameHeight > 0

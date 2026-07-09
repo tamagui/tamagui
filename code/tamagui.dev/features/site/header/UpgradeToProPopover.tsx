@@ -78,11 +78,13 @@ export const UpgradeToProPopover = (props: PopoverProps) => {
 
       <Adapt platform="touch" when="maxMd">
         <Sheet zIndex={100000000} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
+
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay z={100} bg="$shadow4" />
         </Sheet>
       </Adapt>

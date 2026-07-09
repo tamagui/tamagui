@@ -69,6 +69,7 @@ export function SheetFit3pcNativeRepro() {
         bg="red"
         zIndex={1_000_000}
       />
+
       <YStack flex={1} padding="$4" gap="$2" justifyContent="center">
         <Button testID="repro-3pc-native-trigger" onPress={() => setOpen(true)}>
           Open 3pc-style fit sheet (tall)
@@ -96,14 +97,16 @@ export function SheetFit3pcNativeRepro() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <TamaguiSheet.Frame
-          testID="repro-3pc-native-frame"
-          borderRadius={sheetBorderRadius}
-          borderBottomRightRadius={0}
-          borderBottomLeftRadius={0}
-          bg="transparent"
-          overflow="hidden"
-        >
+
+        <TamaguiSheet.Container testID="repro-3pc-native-frame">
+          <TamaguiSheet.Background
+            borderRadius={sheetBorderRadius}
+            borderBottomRightRadius={0}
+            borderBottomLeftRadius={0}
+            bg="transparent"
+            overflow="hidden"
+          />
+
           {/* decorative absolute layers exactly like 3pc's wrapper */}
           <YStack
             {...sheetTopRadius}
@@ -115,6 +118,7 @@ export function SheetFit3pcNativeRepro() {
             borderBottomWidth={0}
             borderColor="$borderColor"
           />
+
           <View {...sheetTopRadius} position="absolute" inset={0} bg="$color2" />
           <YStack
             {...sheetTopRadius}
@@ -138,6 +142,7 @@ export function SheetFit3pcNativeRepro() {
                 testID="repro-3pc-native-input"
                 placeholder="Search events…"
               />
+
               {Array.from({ length: 30 }).map((_, i) => (
                 <View
                   key={i}
@@ -155,7 +160,7 @@ export function SheetFit3pcNativeRepro() {
               </Button>
             </YStack>
           </TamaguiSheet.ScrollView>
-        </TamaguiSheet.Frame>
+        </TamaguiSheet.Container>
       </TamaguiSheet>
     </View>
   )

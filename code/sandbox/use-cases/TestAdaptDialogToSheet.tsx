@@ -35,12 +35,15 @@ export default function TestAdaptDialogToSheet() {
               width={40}
               height={4}
             />
+
             <Sheet.Overlay opacity={0.5} />
-            <Sheet.Frame>
+            <Sheet.Container>
+              <Sheet.Background />
+
               <YStack>
                 <Adapt.Contents />
               </YStack>
-            </Sheet.Frame>
+            </Sheet.Container>
           </Sheet>
         </Adapt>
 

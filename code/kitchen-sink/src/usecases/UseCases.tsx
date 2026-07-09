@@ -333,8 +333,9 @@ export const Sandbox = () => {
 //         dismissOnSnapToBottom
 //       >
 //         <Sheet.Overlay />
-//         <Sheet.Frame ai="center" jc="center">
-//           <Sheet.Handle />
+//         <Sheet.Handle />
+//         <Sheet.Container ai="center" jc="center">
+//           <Sheet.Background />
 //           <Button
 //             size="$6"
 //             circular
@@ -342,7 +343,7 @@ export const Sandbox = () => {
 //               setOpen(false)
 //             }}
 //           />
-//         </Sheet.Frame>
+//         </Sheet.Container>
 //       </Sheet>
 //     </>
 //   )

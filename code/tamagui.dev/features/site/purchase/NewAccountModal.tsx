@@ -107,11 +107,13 @@ export const NewAccountModal = () => {
       >
         <Dialog.Adapt when="maxMd">
           <Sheet modal dismissOnSnapToBottom transition="medium">
-            <Sheet.Frame bg="$background" p={0} gap="$4">
+            <Sheet.Container p={0} gap="$4">
+              <Sheet.Background bg="$background" />
+
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               transition="lazy"
               bg="$shadow6"
@@ -167,8 +169,8 @@ export const NewAccountModal = () => {
         </Dialog.Portal>
       </Dialog>
       {/* only mount when the account modal is open: add-team is only ever opened
-          from inside this modal (addTeamMemberModal.show is set in AccountView).
-          mounting it eagerly pulled in stripe.js + the chunk on every page (home). */}
+           from inside this modal (addTeamMemberModal.show is set in AccountView).
+           mounting it eagerly pulled in stripe.js + the chunk on every page (home). */}
       {store.show && (
         <Suspense fallback={null}>
           <AddTeamMemberModalComponent />
@@ -520,6 +522,7 @@ const Tab = ({
           },
         })}
       />
+
       <Paragraph
         fontFamily="$mono"
         size="$7"
@@ -544,14 +547,8 @@ const ServiceCard = ({
   description: string
   actionLabel: string
   onAction: () => void
-  secondAction?: null | {
-    label: string
-    onPress: () => void
-  }
-  thirdAction?: null | {
-    label: string
-    onPress: () => void
-  }
+  secondAction?: null | { label: string; onPress: () => void }
+  thirdAction?: null | { label: string; onPress: () => void }
 }) => {
   return (
     <YStack
@@ -632,6 +629,7 @@ const DiscordAccessDialog = ({
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
+
         <Dialog.Content
           bordered
           elevate
@@ -646,6 +644,7 @@ const DiscordAccessDialog = ({
             apiType={apiType}
             isTeamMember={isTeamMember}
           />
+
           <Dialog.Close asChild>
             <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
           </Dialog.Close>
@@ -982,6 +981,7 @@ const DiscordMember = ({
   const username = `${member.user?.username}${
     member.user?.discriminator !== '0' ? `#${member.user?.discriminator}` : ''
   }`
+
   const avatarSrc = member.user?.avatar
     ? `https://cdn.discordapp.com/avatars/${member.user?.id}/${member.user?.avatar}.png`
     : null
@@ -1072,6 +1072,7 @@ const ProjectSetupForm = ({ onComplete }: { onComplete: () => void }) => {
             onChangeText={setProjectDomain}
             fontFamily="$mono"
           />
+
           <Paragraph size="$2" color="$color9">
             Primary web domain for your project. Your license covers this domain plus
             iOS/Android apps.
@@ -1355,6 +1356,7 @@ const PlanTab = ({
                 // Add Discord join logic
               }}
             />
+
             <ServiceCard
               title="Priority Support"
               description="Direct support and prioritized issue handling"
@@ -1963,6 +1965,7 @@ const ManageTab = ({
               supportTier={supportTier}
               setSupportTier={setSupportTier}
             />
+
             <Button
               theme="accent"
               rounded="$10"
@@ -2804,6 +2807,7 @@ const AdminWhitelistSubTab = () => {
             value={newUsername}
             onChangeText={setNewUsername}
           />
+
           <Input
             flex={1}
             minWidth={150}
@@ -2811,6 +2815,7 @@ const AdminWhitelistSubTab = () => {
             value={newNote}
             onChangeText={setNewNote}
           />
+
           <Button
             theme="green"
             disabled={!newUsername.trim() || isAdding}

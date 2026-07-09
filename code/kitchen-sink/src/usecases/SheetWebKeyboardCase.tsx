@@ -114,11 +114,14 @@ export function SheetWebKeyboardCase() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame
+
+        <Sheet.Container
           testID="sheet-web-kb-frame"
           rounded="$6"
           onLayout={track ? (e) => reportSheetLayout('frame', e) : undefined}
         >
+          <Sheet.Background />
+
           <Sheet.ScrollView
             testID="sheet-web-kb-scrollview"
             maxHeight={maxHeight}
@@ -173,7 +176,7 @@ export function SheetWebKeyboardCase() {
               </XStack>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

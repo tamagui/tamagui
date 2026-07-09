@@ -30,7 +30,9 @@ export function SheetOverlayStyleCase() {
           exitStyle={{ opacity: 0 }}
         />
 
-        <Sheet.Frame data-testid="sheet-overlay-style-frame" padding="$4" gap="$4">
+        <Sheet.Container data-testid="sheet-overlay-style-frame" padding="$4" gap="$4">
+          <Sheet.Background />
+
           <Paragraph>Overlay style regression</Paragraph>
           <Button
             data-testid="sheet-overlay-style-toggle"
@@ -41,7 +43,7 @@ export function SheetOverlayStyleCase() {
           <Button data-testid="sheet-overlay-style-close" onPress={() => setOpen(false)}>
             Close
           </Button>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

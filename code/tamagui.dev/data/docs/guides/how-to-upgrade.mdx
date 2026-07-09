@@ -413,9 +413,10 @@ Image now uses web-standard `src` instead of React Native's `source`:
 // after
 <Adapt when="max-md" platform="touch">
   <Sheet modal dismissOnSnapToBottom>
-    <Sheet.Frame p="$4">
+    <Sheet.Container p="$4">
+      <Sheet.Background />
       <Adapt.Contents />
-    </Sheet.Frame>
+    </Sheet.Container>
     <Sheet.Overlay transition="quick" />
   </Sheet>
 </Adapt>

@@ -43,6 +43,7 @@ export function PopoverCase() {
               Name="left-popover"
               dataTestId="popover-left"
             />
+
             <Demo
               shouldAdapt={shouldAdapt}
               placement="bottom"
@@ -50,6 +51,7 @@ export function PopoverCase() {
               Name="bottom-popover"
               dataTestId="popover-bottom"
             />
+
             <Demo
               shouldAdapt={shouldAdapt}
               placement="top"
@@ -57,6 +59,7 @@ export function PopoverCase() {
               Name="top-popover"
               dataTestId="popover-top"
             />
+
             <Demo
               shouldAdapt={shouldAdapt}
               placement="right"
@@ -111,9 +114,11 @@ function Demo({
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
           <Sheet modal dismissOnSnapToBottom>
-            <Sheet.Frame padding="$4">
+            <Sheet.Container padding="$4">
+              <Sheet.Background />
+
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay backgroundColor="$shadowColor" />
           </Sheet>
         </Adapt>

@@ -191,6 +191,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SheetDragCase: () => require('./SheetDragCase').SheetDragCase,
   SheetDragResistCase: () => require('./SheetDragResistCase.web').SheetDragResistCase,
   SheetOverlayStyleCase: () => require('./SheetOverlayStyleCase').SheetOverlayStyleCase,
+  SheetRestructureCase: () => require('./SheetRestructureCase').SheetRestructureCase,
   SheetScrollableDrag: () => require('./SheetScrollableDrag').SheetScrollableDrag,
   SheetScrollLockCase: () => require('./SheetScrollLockCase').SheetScrollLockCase,
   SheetSnapPointsFitCase: () =>

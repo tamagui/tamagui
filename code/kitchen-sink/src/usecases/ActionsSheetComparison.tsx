@@ -59,7 +59,9 @@ export function ActionsSheetComparison() {
       >
         <Sheet.Overlay bg="$color" opacity={0.5} />
         <Sheet.Handle />
-        <Sheet.Frame>
+        <Sheet.Container>
+          <Sheet.Background />
+
           <Sheet.ScrollView>
             <YStack gap="$3" padding="$4">
               <Text fontSize="$5" fontWeight="bold">
@@ -85,7 +87,7 @@ export function ActionsSheetComparison() {
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
 
       {/* Actions Sheet - using their ScrollView component */}
