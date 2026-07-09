@@ -37,7 +37,12 @@ export const NativeSheetDemo = () => {
         />
 
         <Sheet.Handle />
-        <Sheet.Container padding="$4" justifyContent="center" alignItems="center" gap="$5">
+        <Sheet.Container
+          padding="$4"
+          justifyContent="center"
+          alignItems="center"
+          gap="$5"
+        >
           <Sheet.Background />
           <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
           <Input width={200} />

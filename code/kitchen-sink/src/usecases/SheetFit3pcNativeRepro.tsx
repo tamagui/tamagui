@@ -96,14 +96,13 @@ export function SheetFit3pcNativeRepro() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <TamaguiSheet.Container
-          testID="repro-3pc-native-frame"
-          overflow="hidden">
+        <TamaguiSheet.Container testID="repro-3pc-native-frame" overflow="hidden">
           <TamaguiSheet.Background
             borderBottomRightRadius={0}
             borderBottomLeftRadius={0}
             bg="transparent"
-            borderRadius={sheetBorderRadius}/>
+            borderRadius={sheetBorderRadius}
+          />
           {/* decorative absolute layers exactly like 3pc's wrapper */}
           <YStack
             {...sheetTopRadius}

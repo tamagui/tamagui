@@ -39,8 +39,7 @@ export function SheetOnAnimationCompleteCase() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Container padding="$4" data-testid="sheet-frame">
-          <Sheet.Background
-            bg="$background"/>
+          <Sheet.Background bg="$background" />
           <Paragraph>Sheet content</Paragraph>
           <Button
             onPress={() => setOpen(false)}

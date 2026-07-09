@@ -156,15 +156,7 @@ export function createSheet<
   }
 
   const SheetContainer = createStyledHOC(Container)<SheetProps & ExtraContainerProps>(
-    (
-      {
-        scope,
-        adjustPaddingForOffscreenContent,
-        children,
-        ...props
-      },
-      forwardedRef
-    ) => {
+    ({ scope, adjustPaddingForOffscreenContent, children, ...props }, forwardedRef) => {
       const context = useSheetContext(scope)
       const { hasFit, disableRemoveScroll, frameSize, contentRef, open } = context
       const composedContentRef = useComposedRefs(forwardedRef, contentRef)

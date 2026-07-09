@@ -137,10 +137,7 @@ export function SheetOverlayStyleCase() {
             transition="quick"
           >
             <Sheet.Overlay />
-            <Sheet.Container
-              data-testid="sheet-escape-nested-child-frame"
-              padding="$4"
-            >
+            <Sheet.Container data-testid="sheet-escape-nested-child-frame" padding="$4">
               <Sheet.Background />
               <Paragraph>Nested child sheet</Paragraph>
             </Sheet.Container>

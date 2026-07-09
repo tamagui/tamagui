@@ -43,7 +43,9 @@ test.describe('Popover Sheet Adapt - body persists during exit animation', () =>
       .poll(
         async () =>
           page.evaluate(() =>
-            document.querySelector('.is_SheetContainer[data-state]')?.getAttribute('data-state')
+            document
+              .querySelector('.is_SheetContainer[data-state]')
+              ?.getAttribute('data-state')
           ),
         { timeout: 5000 }
       )

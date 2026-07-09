@@ -7,22 +7,7 @@ type SharedSheetProps = {
 };
 type BaseProps = ViewProps & SharedSheetProps;
 type SheetStyledComponent = TamaguiComponentExpectingVariants<BaseProps, SharedSheetProps>;
-type ExtraContainerProps = {
-    /**
-     * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
-     * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
-     * turned on, the inner content is always set to the max height of the sheet.
-     */
-    adjustPaddingForOffscreenContent?: boolean;
-};
-type ExtraBackgroundProps = {
-    /**
-     * Disables the default background extension below the sheet. Leave this off
-     * when a spring can overshoot on open so page content never shows through.
-     */
-    disableHideBottomOverflow?: boolean;
-};
-export declare function createSheet<H extends TamaguiComponent | SheetStyledComponent, C extends TamaguiComponent | SheetStyledComponent, B extends TamaguiComponent | SheetStyledComponent, O extends TamaguiComponent | SheetStyledComponent>({ Handle, Container, Background, Overlay }: {
+export declare function createSheet<H extends TamaguiComponent | SheetStyledComponent, C extends TamaguiComponent | SheetStyledComponent, B extends TamaguiComponent | SheetStyledComponent, O extends TamaguiComponent | SheetStyledComponent>({ Handle, Container, Background, Overlay, }: {
     Handle: H;
     Container: C;
     Background: B;
@@ -64,10 +49,29 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
     Controlled: FunctionComponent<Omit<SheetProps, "open" | "onOpenChange"> & {
         ref?: Ref<RNView>;
     }> & {
-        Container: (props: SheetScopedProps<Omit<GetProps<typeof Container>, keyof ExtraContainerProps> & ExtraContainerProps & {
+        Container: (props: SheetScopedProps<Omit<GetProps<typeof Container>, "adjustPaddingForOffscreenContent"> & {
+            /**
+             * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
+             * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
+             * turned on, the inner content is always set to the max height of the sheet.
+             */
+            adjustPaddingForOffscreenContent?: boolean;
+        } & {
             ref?: Ref<RNView>;
         }>) => ReactNode;
-        Background: (props: SheetScopedProps<GetProps<typeof Background> & ExtraBackgroundProps>) => ReactNode;
+        Background: TamaguiComponent<SheetScopedProps<GetProps<B> & {
+            /**
+             * Disables the default background extension below the sheet. Leave this off
+             * when a spring can overshoot on open so page content never shows through.
+             */
+            disableHideBottomOverflow?: boolean;
+        }> extends infer T ? T extends SheetScopedProps<GetProps<B> & {
+            /**
+             * Disables the default background extension below the sheet. Leave this off
+             * when a spring can overshoot on open so page content never shows through.
+             */
+            disableHideBottomOverflow?: boolean;
+        }> ? T extends void ? any : Omit<any, keyof T> & T : never : never, any, any, any, {}, {}>;
         Overlay: TamaguiComponent<Omit<any, "scope"> & Omit<{}, "scope"> & {
             scope?: import("./types").SheetScopes;
         }, any, any, any, {}, {}>;
@@ -80,10 +84,29 @@ export declare function createSheet<H extends TamaguiComponent | SheetStyledComp
             }>> | undefined;
         }, {}>>;
     };
-    Container: (props: SheetScopedProps<Omit<GetProps<typeof Container>, keyof ExtraContainerProps> & ExtraContainerProps & {
+    Container: (props: SheetScopedProps<Omit<GetProps<typeof Container>, "adjustPaddingForOffscreenContent"> & {
+        /**
+         * Adds padding accounting for the currently offscreen content, so if you put a flex element inside
+         * the sheet, it will always flex to the height of the visible amount of the sheet. If this is not
+         * turned on, the inner content is always set to the max height of the sheet.
+         */
+        adjustPaddingForOffscreenContent?: boolean;
+    } & {
         ref?: Ref<RNView>;
     }>) => ReactNode;
-    Background: (props: SheetScopedProps<GetProps<typeof Background> & ExtraBackgroundProps>) => ReactNode;
+    Background: TamaguiComponent<SheetScopedProps<GetProps<B> & {
+        /**
+         * Disables the default background extension below the sheet. Leave this off
+         * when a spring can overshoot on open so page content never shows through.
+         */
+        disableHideBottomOverflow?: boolean;
+    }> extends infer T_1 ? T_1 extends SheetScopedProps<GetProps<B> & {
+        /**
+         * Disables the default background extension below the sheet. Leave this off
+         * when a spring can overshoot on open so page content never shows through.
+         */
+        disableHideBottomOverflow?: boolean;
+    }> ? T_1 extends void ? any : Omit<any, keyof T_1> & T_1 : never : never, any, any, any, {}, {}>;
     Overlay: TamaguiComponent<Omit<any, "scope"> & Omit<{}, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, any, any, any, {}, {}>;

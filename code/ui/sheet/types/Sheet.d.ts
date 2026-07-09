@@ -54,14 +54,31 @@ export declare const Sheet: ((props: Omit<{
     Controlled: import("react").FunctionComponent<Omit<import("./types").SheetProps, "open" | "onOpenChange"> & {
         ref?: import("react").Ref<import("react-native").View>;
     }> & {
-        Container: (props: import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetProps<typeof Container>, "adjustPaddingForOffscreenContent"> & {
+        Container: (props: import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+            unstyled?: boolean | undefined;
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        }>, "adjustPaddingForOffscreenContent"> & {
             adjustPaddingForOffscreenContent?: boolean;
         } & {
             ref?: import("react").Ref<import("react-native").View>;
         }>) => import("react").ReactNode;
-        Background: (props: import("./types").SheetScopedProps<import("@tamagui/core").GetProps<typeof Background> & {
+        Background: import("@tamagui/core").TamaguiComponent<Omit<any, "theme" | "debug" | "id" | "children" | "scope" | "style" | "hitSlop" | "needsOffscreenAlphaCompositing" | "onLayout" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "collapsableChildren" | "onBlur" | "onFocus" | "renderToHardwareTextureAndroid" | "tabIndex" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-modal" | "role" | "accessibilityLabelledBy" | "aria-labelledby" | "accessibilityLiveRegion" | "aria-live" | "screenReaderFocusable" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "accessibilityShowsLargeContentViewer" | "accessibilityLargeContentTitle" | "accessibilityRespondsToUserInteraction" | "target" | "htmlFor" | "asChild" | "dangerouslySetInnerHTML" | "disabled" | "className" | "themeShallow" | "unstyled" | "render" | "group" | "untilMeasured" | "componentName" | "disableOptimization" | "forceStyle" | "disableClassName" | "animatedBy" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "elevationAndroid" | "rel" | "download" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onClick" | "onDoubleClick" | "onContextMenu" | "onWheel" | "onKeyDown" | "onKeyUp" | "onChange" | "onInput" | "onBeforeInput" | "onScroll" | "onCopy" | "onCut" | "onPaste" | "onDrag" | "onDragStart" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDrop" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "$native" | "$web" | "$ios" | "$android" | "$tv" | "$androidtv" | "$tvos" | import("@tamagui/core").GroupMediaKeys | "disableHideBottomOverflow" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+            unstyled?: boolean | undefined;
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>>> & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+            unstyled?: boolean | undefined;
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+            unstyled?: boolean | undefined;
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+            unstyled?: boolean | undefined;
+            elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+        }>> & {
             disableHideBottomOverflow?: boolean;
-        }>) => import("react").ReactNode;
+        }, "scope"> & {
+            scope?: import("./types").SheetScopes;
+        }, any, any, any, {}, {}>;
         Overlay: import("@tamagui/core").TamaguiComponent<Omit<any, "scope"> & Omit<{}, "scope"> & {
             scope?: import("./types").SheetScopes;
         }, any, any, any, {}, {}>;
@@ -74,14 +91,31 @@ export declare const Sheet: ((props: Omit<{
             }>> | undefined;
         }, {}>>;
     };
-    Container: (props: import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetProps<typeof Container>, "adjustPaddingForOffscreenContent"> & {
+    Container: (props: import("./types").SheetScopedProps<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    }>, "adjustPaddingForOffscreenContent"> & {
         adjustPaddingForOffscreenContent?: boolean;
     } & {
         ref?: import("react").Ref<import("react-native").View>;
     }>) => import("react").ReactNode;
-    Background: (props: import("./types").SheetScopedProps<import("@tamagui/core").GetProps<typeof Background> & {
+    Background: import("@tamagui/core").TamaguiComponent<Omit<any, "theme" | "debug" | "id" | "children" | "scope" | "style" | "hitSlop" | "needsOffscreenAlphaCompositing" | "onLayout" | "removeClippedSubviews" | "testID" | "nativeID" | "collapsable" | "collapsableChildren" | "onBlur" | "onFocus" | "renderToHardwareTextureAndroid" | "tabIndex" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessible" | "accessibilityActions" | "accessibilityLabel" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-modal" | "role" | "accessibilityLabelledBy" | "aria-labelledby" | "accessibilityLiveRegion" | "aria-live" | "screenReaderFocusable" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage" | "accessibilityShowsLargeContentViewer" | "accessibilityLargeContentTitle" | "accessibilityRespondsToUserInteraction" | "target" | "htmlFor" | "asChild" | "dangerouslySetInnerHTML" | "disabled" | "className" | "themeShallow" | "unstyled" | "render" | "group" | "untilMeasured" | "componentName" | "disableOptimization" | "forceStyle" | "disableClassName" | "animatedBy" | "onScrollShouldSetResponder" | "onScrollShouldSetResponderCapture" | "onSelectionChangeShouldSetResponder" | "onSelectionChangeShouldSetResponderCapture" | "elevationAndroid" | "rel" | "download" | "onPress" | "onLongPress" | "onPressIn" | "onPressOut" | "onMouseEnter" | "onMouseLeave" | "onMouseDown" | "onMouseUp" | "onMouseMove" | "onMouseOver" | "onMouseOut" | "onClick" | "onDoubleClick" | "onContextMenu" | "onWheel" | "onKeyDown" | "onKeyUp" | "onChange" | "onInput" | "onBeforeInput" | "onScroll" | "onCopy" | "onCut" | "onPaste" | "onDrag" | "onDragStart" | "onDragEnd" | "onDragEnter" | "onDragLeave" | "onDragOver" | "onDrop" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "$native" | "$web" | "$ios" | "$android" | "$tv" | "$androidtv" | "$tvos" | import("@tamagui/core").GroupMediaKeys | "disableHideBottomOverflow" | keyof import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        unstyled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>>> & Omit<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "unstyled" | "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        unstyled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+        unstyled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+        unstyled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+    }>> & {
         disableHideBottomOverflow?: boolean;
-    }>) => import("react").ReactNode;
+    }, "scope"> & {
+        scope?: import("./types").SheetScopes;
+    }, any, any, any, {}, {}>;
     Overlay: import("@tamagui/core").TamaguiComponent<Omit<any, "scope"> & Omit<{}, "scope"> & {
         scope?: import("./types").SheetScopes;
     }, any, any, any, {}, {}>;

@@ -108,8 +108,7 @@ export const NewAccountModal = () => {
         <Dialog.Adapt when="maxMd">
           <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Container p={0} gap="$4">
-              <Sheet.Background
-                bg="$background"/>
+              <Sheet.Background bg="$background" />
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>

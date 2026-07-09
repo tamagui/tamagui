@@ -300,8 +300,7 @@ export function PurchaseModalContents() {
         <Dialog.Adapt when="maxMd">
           <Sheet modal dismissOnSnapToBottom transition="medium">
             <Sheet.Container p={0} flex={1}>
-              <Sheet.Background
-                bg="$color1"/>
+              <Sheet.Background bg="$color1" />
               <Sheet.ScrollView flex={1}>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>

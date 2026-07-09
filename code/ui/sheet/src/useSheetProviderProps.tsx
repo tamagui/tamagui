@@ -22,10 +22,7 @@ export type SheetContextValue = ReturnType<typeof useSheetProviderProps> & {
   setHasScrollView: (val: boolean) => void
 }
 
-export function useSheetProviderProps(
-  props: SheetProps,
-  state: SheetOpenState
-) {
+export function useSheetProviderProps(props: SheetProps, state: SheetOpenState) {
   const handleRef = React.useRef<TamaguiElement>(null)
   const contentRef = React.useRef<TamaguiElement>(null)
   const [frameSize, setFrameSize] = React.useState<number>(0)

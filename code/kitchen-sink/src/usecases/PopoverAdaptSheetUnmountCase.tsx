@@ -47,15 +47,13 @@ function AdaptedPopover({
             onPress={() => onOpenChange?.(false)}
           />
           <Sheet.Handle bg="$color5" />
-          <Sheet.Container
-            testID="sheet-frame"
-            padding="$4"
-            gap="$4">
+          <Sheet.Container testID="sheet-frame" padding="$4" gap="$4">
             <Sheet.Background
               borderBottomRightRadius={0}
               borderBottomLeftRadius={0}
               bg="$background"
-              borderRadius="$6"/>
+              borderRadius="$6"
+            />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>

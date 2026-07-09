@@ -56,8 +56,7 @@ const CustomSheet = ({ open, setOpen }) => {
         />
         <Sheet.Handle bg="$gray8" />
         <Sheet.Container items="center" justify="center" gap="$10">
-          <Sheet.Background
-            bg="rgba(255,0,0,0.5)"/>
+          <Sheet.Background bg="rgba(255,0,0,0.5)" />
           <Button
             size="$6"
             onPress={() => {

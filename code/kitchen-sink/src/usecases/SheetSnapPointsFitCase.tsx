@@ -80,14 +80,13 @@ function Tall3pcDialogAdaptSheet() {
             enterStyle={{ opacity: 0 }}
             exitStyle={{ opacity: 0 }}
           />
-          <Sheet.Container
-            data-testid="repro-3pc-frame"
-            overflow="hidden">
+          <Sheet.Container data-testid="repro-3pc-frame" overflow="hidden">
             <Sheet.Background
               borderBottomRightRadius={0}
               borderBottomLeftRadius={0}
               bg="$color2"
-              borderRadius={32}/>
+              borderRadius={32}
+            />
             <YStack
               {...sheetTopRadius}
               position="absolute"

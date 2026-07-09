@@ -284,8 +284,7 @@ function SheetDemo() {
         />
         <Sheet.Handle bg="$color8" />
         <Sheet.Container items="center" justify="center" gap="$10">
-          <Sheet.Background
-            bg="$color2"/>
+          <Sheet.Background bg="$color2" />
           <XStack gap="$2">
             <Paragraph text="center">Made by</Paragraph>
             <Anchor

@@ -129,9 +129,9 @@ function SheetTest({ testId, transition, transitionConfig, label }: SheetTestPro
           padding="$4"
           testID={`${testId}-frame`}
           data-testid={`${testId}-frame`}
-          onLayout={handleFrameLayout}>
-          <Sheet.Background
-            bg="$background"/>
+          onLayout={handleFrameLayout}
+        >
+          <Sheet.Background bg="$background" />
           <YStack gap="$4">
             <Paragraph testID={`${testId}-label`} data-testid={`${testId}-label`}>
               {label}

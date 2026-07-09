@@ -232,9 +232,9 @@ function LiveSlotSheetTouchProof() {
               {...testProps('sheet-live-slot-frame')}
               p="$4"
               gap="$3"
-              data-sheet-live-slot-frame="no-portal-inline-sheet">
-              <Sheet.Background
-                bg="$background"/>
+              data-sheet-live-slot-frame="no-portal-inline-sheet"
+            >
+              <Sheet.Background bg="$background" />
               <TargetContext.Provider value="sheet-target-ok">
                 <LiveSlotContents />
               </TargetContext.Provider>

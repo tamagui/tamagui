@@ -21,8 +21,7 @@ export const DialogTest = () => {
       <Dialog.Adapt when="maxMd">
         <Sheet zIndex={200000} modal dismissOnSnapToBottom transition="medium">
           <Sheet.Container padding={0} gap="$4">
-            <Sheet.Background
-              bg="$color2"/>
+            <Sheet.Background bg="$color2" />
             <Sheet.ScrollView>
               <Dialog.Adapt.Contents />
             </Sheet.ScrollView>

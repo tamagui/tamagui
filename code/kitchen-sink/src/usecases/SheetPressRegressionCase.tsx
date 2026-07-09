@@ -80,8 +80,7 @@ export function SheetPressRegressionCase() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Container testID="sheet-press-frame">
-          <Sheet.Background
-            bg="$background"/>
+          <Sheet.Background bg="$background" />
           <Sheet.ScrollView
             testID="sheet-press-scrollview"
             maxHeight={520}

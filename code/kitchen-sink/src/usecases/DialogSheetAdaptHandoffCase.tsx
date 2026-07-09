@@ -109,14 +109,12 @@ export function DialogSheetAdaptHandoffCase() {
               enterStyle={{ opacity: 0 }}
               exitStyle={{ opacity: 0 }}
             />
-            <Sheet.Container
-              testID="dialog-adapt-sheet-frame"
-              p="$4"
-              gap="$4">
+            <Sheet.Container testID="dialog-adapt-sheet-frame" p="$4" gap="$4">
               <Sheet.Background
                 borderTopLeftRadius="$6"
                 borderTopRightRadius="$6"
-                bg="$background"/>
+                bg="$background"
+              />
               <YStack testID="dialog-adapt-target">
                 <Adapt.Contents />
               </YStack>
