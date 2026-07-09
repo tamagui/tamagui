@@ -24,6 +24,16 @@ export interface FocusScopeProps {
   trapped?: boolean
 
   /**
+   * When `true`, enables a "zero focus" mode: while active, focus is
+   * allowed neither inside nor outside the scope. Any element that
+   * receives focus is immediately blurred so `document.activeElement`
+   * settles on `document.body`. Takes precedence over `trapped` and
+   * auto-focus behavior. Web only.
+   * @default false
+   */
+  noFocus?: boolean
+
+  /**
    * Event handler called when auto-focusing on mount.
    * Can be prevented.
    */
@@ -47,12 +57,6 @@ export interface FocusScopeProps {
    */
   focusOnIdle?: boolean | number | { min?: number; max?: number }
 
-  children?:
-    | React.ReactNode
-    | ((props: {
-        onKeyDown: (event: React.KeyboardEvent) => void
-        tabIndex?: number
-        ref: React.Ref<any>
-      }) => React.ReactNode)
+  children?: React.ReactNode
   asChild?: boolean
 }

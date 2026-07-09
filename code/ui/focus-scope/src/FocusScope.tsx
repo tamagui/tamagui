@@ -9,6 +9,7 @@ import type { FocusScopeProps, ScopedProps } from './types'
 const AUTOFOCUS_ON_MOUNT = 'focusScope.autoFocusOnMount'
 const AUTOFOCUS_ON_UNMOUNT = 'focusScope.autoFocusOnUnmount'
 const EVENT_OPTIONS = { bubbles: false, cancelable: true }
+const FOCUS_SCOPE_STYLE: React.CSSProperties = { display: 'contents' }
 
 type FocusableTarget = HTMLElement | { focus(): void }
 
@@ -34,6 +35,7 @@ const FocusScope = createRefComponent<FocusScopeElement, FocusScopeProps>(
       enabled: context.enabled ?? props.enabled,
       loop: context.loop ?? props.loop,
       trapped: context.trapped ?? props.trapped,
+      noFocus: context.noFocus ?? props.noFocus,
       onMountAutoFocus: context.onMountAutoFocus ?? props.onMountAutoFocus,
       onUnmountAutoFocus: context.onUnmountAutoFocus ?? props.onUnmountAutoFocus,
       forceUnmount: context.forceUnmount ?? props.forceUnmount,
@@ -41,17 +43,27 @@ const FocusScope = createRefComponent<FocusScopeElement, FocusScopeProps>(
     }
 
     const childProps = useFocusScope(mergedProps, forwardedRef)
+    const { ref, style, ...scopeProps } =
+      childProps as React.HTMLAttributes<HTMLDivElement> & {
+        ref: React.Ref<HTMLDivElement>
+      }
+    const children = mergedProps.children
 
-    if (typeof mergedProps.children === 'function') {
-      return <>{mergedProps.children(childProps)}</>
-    }
-
-    return React.cloneElement(
-      React.Children.only(mergedProps.children) as any,
-      childProps
+    return (
+      <div {...scopeProps} ref={ref} style={getFocusScopeStyle(style)}>
+        {children}
+      </div>
     )
   }
 )
+
+function getFocusScopeStyle(style?: React.CSSProperties) {
+  if (!style) return FOCUS_SCOPE_STYLE
+  return {
+    ...style,
+    display: 'contents',
+  }
+}
 
 /* -------------------------------------------------------------------------------------------------
  * setupFocusTrap - extracted function to set up trap immediately in ref callback
@@ -162,14 +174,18 @@ export function useFocusScope(
   const {
     loop = false,
     enabled = true,
-    trapped = false,
+    trapped: trappedProp = false,
+    noFocus = false,
     onMountAutoFocus: onMountAutoFocusProp,
     onUnmountAutoFocus: onUnmountAutoFocusProp,
     forceUnmount,
     focusOnIdle = true,
-    children,
+    children: _children,
+    asChild: _asChild,
     ...scopeProps
   } = props
+  // noFocus is a "zero focus" mode that takes precedence over trapping
+  const trapped = noFocus ? false : trappedProp
   const [container, setContainer] = React.useState<HTMLElement | null>(null)
   const containerRef = React.useRef<HTMLElement | null>(null)
   const onMountAutoFocus = useEvent(onMountAutoFocusProp)
@@ -236,11 +252,37 @@ export function useFocusScope(
     }
   }, [trapped, focusScope])
 
+  // zero focus mode: while active, nothing on the page can hold focus -
+  // not inside the scope, not outside it. any focusin is immediately
+  // blurred so document.activeElement settles on body
+  useIsomorphicLayoutEffect(() => {
+    if (!isWeb) return
+    if (!enabled || !noFocus || !container) return
+
+    const blurActiveElement = () => {
+      const active = document.activeElement as HTMLElement | null
+      if (active && active !== document.body && typeof active.blur === 'function') {
+        active.blur()
+      }
+    }
+
+    // clear any element already holding focus on activation
+    blurActiveElement()
+
+    // capture phase so we run before any other focus handling
+    document.addEventListener('focusin', blurActiveElement, true)
+    return () => {
+      document.removeEventListener('focusin', blurActiveElement, true)
+    }
+  }, [enabled, noFocus, container])
+
   useAsyncEffect(
     async (signal) => {
       if (!enabled) return
       if (!container) return
       if (forceUnmount) return
+      // zero focus mode skips all auto-focus behavior
+      if (noFocus) return
 
       // only reset stopped flag when trap is actually active
       // otherwise a prop change (trapped: true -> false) would reset it
@@ -334,6 +376,7 @@ export function useFocusScope(
       enabled,
       container,
       forceUnmount,
+      noFocus,
       onMountAutoFocus,
       onUnmountAutoFocus,
       focusScope,

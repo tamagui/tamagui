@@ -1,4 +1,4 @@
-import { useAdaptTarget } from '@tamagui/adapt'
+import { useAdaptContext, useAdaptTarget } from '@tamagui/adapt'
 import React from 'react'
 import { useControllableState } from '@tamagui/use-controllable-state'
 
@@ -7,17 +7,28 @@ import type { SheetControllerContextValue } from './useSheetController'
 import { useSheetController } from './useSheetController'
 
 export const useSheetOpenState = (props: SheetProps) => {
+  const adaptContext = useAdaptContext()
   const adapt = useAdaptTarget()
-  const {
-    isHidden: controllerIsHidden,
-    controller: legacyController,
-  } = useSheetController(props.scope)
+  const { isHidden: controllerIsHidden, controller: legacyController } =
+    useSheetController(props.scope)
   const shouldUseAdapt = Boolean(
-    adapt && (adapt.open !== undefined || adapt.onOpenChange)
+    adaptContext.open !== undefined || adaptContext.onOpenChange
   )
-  const isHidden = shouldUseAdapt ? adapt?.handoff.hidden : controllerIsHidden
+  // Dialog no longer mounts SheetController while Adapt is inactive, so the
+  // hidden state must come from the Adapt parent context even before a target
+  // can register through useAdaptTarget().
+  const isHidden = shouldUseAdapt ? !adaptContext.active : controllerIsHidden
   const wasHiddenRef = React.useRef(isHidden)
-  const localSkipNextAnimation = Boolean(wasHiddenRef.current && !isHidden && adapt?.open)
+  // when the adapt target is exiting (media flipped off while the dialog stays
+  // open), Adapt keeps `active` true so the sheet stays mounted, and signals
+  // the close through handoff.hidden: drive the sheet's open state to false so
+  // it plays its exit animation and reports onAnimationComplete back to Adapt
+  const controllerOpen = shouldUseAdapt
+    ? Boolean(adaptContext.open) && !adaptContext.handoff.hidden
+    : legacyController?.open
+  const localSkipNextAnimation = Boolean(
+    wasHiddenRef.current && !isHidden && controllerOpen
+  )
   const skipNextAnimation =
     (shouldUseAdapt ? adapt?.handoff.skipNextAnimation : undefined) ??
     localSkipNextAnimation
@@ -28,18 +39,17 @@ export const useSheetOpenState = (props: SheetProps) => {
     if (!adapt || !shouldUseAdapt) return null
 
     return {
-      open: adapt.open,
-      hidden: adapt.handoff.hidden,
-      onOpenChange: adapt.onOpenChange,
-      onAnimationComplete: adapt.handoff.onAnimationComplete,
+      open: adaptContext.open,
+      hidden: isHidden,
+      onOpenChange: adaptContext.active ? adaptContext.onOpenChange : undefined,
+      onAnimationComplete: adapt?.handoff.onAnimationComplete,
       skipNextAnimation,
     }
-  }, [adapt, shouldUseAdapt, skipNextAnimation])
+  }, [adapt, adaptContext, isHidden, shouldUseAdapt, skipNextAnimation])
 
   const controller = adaptController ?? legacyController
-  const controllerOpen = shouldUseAdapt ? adapt?.open : legacyController?.open
   const controllerOnOpenChange =
-    (shouldUseAdapt ? adapt?.onOpenChange : undefined) ??
+    (shouldUseAdapt && adaptContext.active ? adaptContext.onOpenChange : undefined) ??
     legacyController?.onOpenChange
 
   const onOpenChangeInternal = (val: boolean) => {

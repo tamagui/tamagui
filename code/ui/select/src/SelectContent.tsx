@@ -1,4 +1,3 @@
-import { isWeb } from '@tamagui/core'
 import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
@@ -72,8 +71,7 @@ export const SelectContent = ({
               }
             }}
           >
-            {/* div needed for FocusScope ref, display:contents keeps layout neutral */}
-            {isWeb ? <div style={{ display: 'contents' }}>{contents}</div> : contents}
+            {contents}
           </FocusScope>
         </Dismissable>
       </RemoveScroll>

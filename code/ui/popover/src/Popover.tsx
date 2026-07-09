@@ -802,7 +802,7 @@ const PopoverContentImpl = createRefComponent<
             onMountAutoFocus={onOpenAutoFocus}
             onUnmountAutoFocus={onCloseAutoFocus === false ? undefined : onCloseAutoFocus}
           >
-            <div style={dspContentsStyle}>{contents}</div>
+            {contents}
           </FocusScope>
         )
       }
@@ -863,10 +863,6 @@ const PopoverContentImpl = createRefComponent<
     </Animate>
   )
 })
-
-const dspContentsStyle = {
-  display: 'contents',
-}
 
 /* -------------------------------------------------------------------------------------------------
  * PopoverClose

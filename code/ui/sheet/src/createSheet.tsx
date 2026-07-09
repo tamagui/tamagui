@@ -1,4 +1,4 @@
-import { AdaptCapabilities, useAdaptIsActive } from '@tamagui/adapt'
+import { AdaptCapabilities, useAdaptContext, useAdaptIsActive } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
 import type {
@@ -260,7 +260,13 @@ export function createSheet<
   const Sheet = createRefComponent<RNView, SheetProps>(function Sheet(props, ref) {
     const hydrated = useDidFinishSSR()
     const isAdapted = useAdaptIsActive()
+    const adaptContext = useAdaptContext()
     const { isShowingNonSheet } = useSheetController(props.scope)
+    const shouldUseAdapt = Boolean(
+      adaptContext.open !== undefined || adaptContext.onOpenChange
+    )
+    const isShowingAdaptNonSheet =
+      shouldUseAdapt && !adaptContext.active && adaptContext.open
 
     let SheetImplementation = SheetImplementationCustom
 
@@ -277,7 +283,7 @@ export function createSheet<
     /**
      * Performance is sensitive here so avoid all the hooks below with this
      */
-    if (isShowingNonSheet || !hydrated) {
+    if (isShowingAdaptNonSheet || isShowingNonSheet || !hydrated) {
       return null
     }
 
