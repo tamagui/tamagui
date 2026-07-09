@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { getGestureHandler } from '@tamagui/native'
-import { unstable_isSheetGestureHandlerEnabled } from '@tamagui/sheet'
+import { getGestureHandlerConfig } from '@tamagui/native/setup-gesture-handler'
 import { Button, Input, Sheet, Text, View, XStack, YStack } from 'tamagui'
 
 /**
@@ -20,7 +20,7 @@ export function SheetPressRegressionCase() {
   const [open, setOpen] = useState(false)
   const [caption, setCaption] = useState('')
   const pressRnghEnabled = getGestureHandler().isEnabled
-  const sheetRnghEnabled = unstable_isSheetGestureHandlerEnabled()
+  const sheetRnghEnabled = getGestureHandlerConfig().sheet !== false
 
   const [postCount, setPostCount] = useState(0)
   const [cancelCount, setCancelCount] = useState(0)

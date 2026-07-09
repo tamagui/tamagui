@@ -1,4 +1,3 @@
-export { createSheetScope } from './SheetContext';
 export * from './types';
 export declare const Handle: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     open?: boolean | undefined;
@@ -14,7 +13,7 @@ export declare const Frame: import("@tamagui/core").TamaguiComponent<import("@ta
     unstyled?: boolean | undefined;
     elevation?: number | import("@tamagui/core").SizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
-export declare const Sheet: ((props: {
+export declare const Sheet: ((props: Omit<{
     open?: boolean;
     defaultOpen?: boolean;
     onOpenChange?: import("react").Dispatch<import("react").SetStateAction<boolean>> | ((open: boolean) => void);
@@ -42,8 +41,8 @@ export declare const Sheet: ((props: {
     onAnimationComplete?: (info: {
         open: boolean;
     }) => void;
-} & {
-    __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+}, "scope"> & {
+    scope?: import("./types").SheetScopes;
 } & import("@tamagui/core").RefProp<import("react-native").View>) => import("react").ReactNode) & {
     displayName?: string;
     propTypes?: any;
@@ -63,8 +62,8 @@ export declare const Sheet: ((props: {
         } & {
             ref?: import("react").Ref<import("react-native").View>;
         }>) => import("react").ReactNode;
-        Overlay: import("@tamagui/core").TamaguiComponent<Omit<any, "__scopeSheet"> & {
-            __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+        Overlay: import("@tamagui/core").TamaguiComponent<Omit<any, "scope"> & Omit<{}, "scope"> & {
+            scope?: import("./types").SheetScopes;
         }, any, any, any, {}, {}>;
         Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {}, {}>;
         ScrollView: import("@tamagui/core").RefComponent<import("react-native").ScrollView, import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase & {
@@ -87,8 +86,8 @@ export declare const Sheet: ((props: {
     } & {
         ref?: import("react").Ref<import("react-native").View>;
     }>) => import("react").ReactNode;
-    Overlay: import("@tamagui/core").TamaguiComponent<Omit<any, "__scopeSheet"> & {
-        __scopeSheet?: import("@tamagui/create-context").Scope<any>;
+    Overlay: import("@tamagui/core").TamaguiComponent<Omit<any, "scope"> & Omit<{}, "scope"> & {
+        scope?: import("./types").SheetScopes;
     }, any, any, any, {}, {}>;
     Handle: import("@tamagui/core").TamaguiComponent<any, any, any, any, {}, {}>;
     ScrollView: import("@tamagui/core").RefComponent<import("react-native").ScrollView, import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & import("react-native").ScrollViewProps, import("@tamagui/core").StackStyleBase & {

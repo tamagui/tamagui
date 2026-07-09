@@ -26,7 +26,7 @@ export declare function useSheetProviderProps(props: SheetProps, state: SheetOpe
     dismissOnOverlayPress: boolean;
     dismissOnSnapToBottom: boolean;
     onOverlayComponent: ((comp: any) => void) | undefined;
-    scope: import("@tamagui/create-context").Scope<any>;
+    scope: string;
     hasFit: boolean;
     position: number;
     snapPoints: (string | number)[];
