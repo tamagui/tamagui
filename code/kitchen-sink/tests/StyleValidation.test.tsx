@@ -245,6 +245,11 @@ test('styled: danger variant', async ({ page }) => {
 // ── visual screenshot ────────────────────────────────
 
 test('screenshot: full validation page', async ({ page }) => {
+  test.skip(
+    process.platform !== 'darwin',
+    'screenshot baseline committed for darwin only; linux bootstrap = tracked follow-up (add an artifact-upload of the snapshots dir, commit the png, remove this skip)'
+  )
+
   await page.mouse.move(0, 0)
   await expect(page).toHaveScreenshot('style-validation-full.png', {
     fullPage: true,
