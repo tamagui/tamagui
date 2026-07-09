@@ -1009,7 +1009,11 @@ export type TokensMerged = TokensParsed & Tokens
 export type Shorthands = TamaguiConfig['shorthands']
 export type Media = TamaguiConfig['media']
 export type Themes = TamaguiConfig['themes']
-export type ThemeName = Exclude<GetAltThemeNames<keyof Themes>, number>
+type BuiltInSubThemeName = 'inverse'
+export type ThemeName = Exclude<
+  GetAltThemeNames<keyof Themes> | BuiltInSubThemeName,
+  number
+>
 export type ThemeTokens = `$${ThemeKeys}`
 // Animation names (slow, fast, bouncy) for the `transition` prop
 // Extract animation keys from the driver's `animations` property

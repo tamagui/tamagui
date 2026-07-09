@@ -6,14 +6,14 @@ export function ThemeInverseDemo() {
       <YStack elevation="$4" bg="$background" p="$4" rounded="$4" gap="$3">
         <H5>Base Theme</H5>
         <Button>Normal</Button>
-        <Button theme="accent">Accent</Button>
+        <Button theme="inverse">Inverse</Button>
       </YStack>
 
       <Theme name="red">
         <YStack elevation="$4" bg="$background" p="$4" rounded="$4" gap="$3">
           <H5>Red Theme</H5>
           <Button>Normal</Button>
-          <Button theme="accent">Accent</Button>
+          <Button theme="inverse">Inverse</Button>
         </YStack>
       </Theme>
 
@@ -21,7 +21,7 @@ export function ThemeInverseDemo() {
         <YStack elevation="$4" bg="$background" p="$4" rounded="$4" gap="$3">
           <H5>Blue Theme</H5>
           <Button>Normal</Button>
-          <Button theme="accent">Accent</Button>
+          <Button theme="inverse">Inverse</Button>
         </YStack>
       </Theme>
 
@@ -29,7 +29,7 @@ export function ThemeInverseDemo() {
         <YStack elevation="$4" bg="$background" p="$4" rounded="$4" gap="$3">
           <H5>Green Theme</H5>
           <Button>Normal</Button>
-          <Button theme="accent">Accent</Button>
+          <Button theme="inverse">Inverse</Button>
         </YStack>
       </Theme>
     </XStack>

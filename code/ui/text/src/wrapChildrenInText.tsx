@@ -53,7 +53,7 @@ export function wrapChildrenInText(
 
   return React.Children.toArray(children).map((child, index) => {
     return typeof child === 'string' ? (
-      // so "data-disable-theme" is a hack to fix themeInverse, don't ask me why
+      // data-disable-theme keeps wrapped text from adding another theme boundary
       <TextComponent key={index} {...props} {...textProps}>
         {child}
       </TextComponent>

@@ -33,7 +33,7 @@ type ScopedProps<P> = Omit<P, 'scope'> & { scope?: TooltipScopes }
 
 export type TooltipContentProps = ScopedProps<PopoverContentProps>
 
-// warning: setting to stylebale causes issues with themeInverse across portal root
+// warning: setting to createStyledHOC causes issues with themes across portal roots
 
 // performance: avoid 2 components we never use
 const ALWAYS_DISABLE_TOOLTIP = {
