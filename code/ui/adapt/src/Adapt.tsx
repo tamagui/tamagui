@@ -67,6 +67,7 @@ export type AdaptCapabilitiesValue = {
 
 export type AdaptTargetHandoff = {
   hidden: boolean
+  skipNextAnimation?: boolean
   onAnimationComplete: (info: { open: boolean }) => void
 }
 
@@ -94,6 +95,7 @@ export type AdaptParentContextI = {
   onOpenChange?: (open: boolean) => void
   state?: unknown
   handoff: AdaptTargetHandoff
+  targetFullyHidden: boolean
   registerTarget: () => void
   unregisterTarget: () => void
   registerContents: () => void
@@ -139,6 +141,7 @@ export const AdaptContext = createStyledContext<AdaptParentContextI>({
     hidden: true,
     onAnimationComplete: () => {},
   },
+  targetFullyHidden: true,
   registerTarget: () => {},
   unregisterTarget: () => {},
   registerContents: () => {},
@@ -219,15 +222,29 @@ export const AdaptParent = ({
   const [rawActive, setRawActive] = React.useState(false)
   const [exiting, setExiting] = React.useState(false)
   const [present, setPresent] = React.useState(false)
+  const [targetFullyHidden, setTargetFullyHidden] = React.useState(!open)
+  const [closePending, setClosePending] = React.useState(false)
   const targetCountRef = React.useRef(0)
   const contentsCountRef = React.useRef(0)
   const renderCallbackCountRef = React.useRef(0)
   const rawActiveRef = React.useRef(false)
+  const openRef = React.useRef(open)
+  const wasTargetHiddenRef = React.useRef(!rawActive)
+  const hasHadActiveTargetRef = React.useRef(false)
 
   const shouldStartExit = !rawActive && present && Boolean(open)
   const active = rawActive || exiting || shouldStartExit
+  const targetHidden = !rawActive
+  const skipNextAnimation = Boolean(
+    rawActive && wasTargetHiddenRef.current && hasHadActiveTargetRef.current && open
+  )
 
   rawActiveRef.current = rawActive
+  openRef.current = open
+  if (rawActive) {
+    hasHadActiveTargetRef.current = true
+  }
+  wasTargetHiddenRef.current = targetHidden
 
   const releasePresenceLatch = React.useCallback(() => {
     setExiting(false)
@@ -241,6 +258,23 @@ export const AdaptParent = ({
       setExiting(true)
     }
   }, [shouldStartExit])
+
+  useIsomorphicLayoutEffect(() => {
+    if (open && rawActive) {
+      setTargetFullyHidden(false)
+      setClosePending(false)
+      return
+    }
+
+    if (!open) {
+      if (active && !targetFullyHidden) {
+        setClosePending(true)
+      } else if (!active) {
+        setTargetFullyHidden(true)
+        setClosePending(false)
+      }
+    }
+  }, [active, open, rawActive, targetFullyHidden])
 
   useIsomorphicLayoutEffect(() => {
     if (rawActive) {
@@ -269,16 +303,45 @@ export const AdaptParent = ({
     return () => clearTimeout(timer)
   }, [exiting, exitLatchTimeout, releasePresenceLatch])
 
+  React.useEffect(() => {
+    if (!closePending) return
+
+    const timer = setTimeout(() => {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(
+          `Adapt target did not report close animation completion within ${exitLatchTimeout}ms; marking target hidden.`
+        )
+      }
+      setTargetFullyHidden(true)
+      setClosePending(false)
+    }, exitLatchTimeout)
+
+    return () => clearTimeout(timer)
+  }, [closePending, exitLatchTimeout])
+
   const handoff = React.useMemo<AdaptTargetHandoff>(
     () => ({
-      hidden: !rawActive,
+      hidden: targetHidden,
+      skipNextAnimation,
       onAnimationComplete(info) {
-        if (!info.open) {
-          releasePresenceLatch()
+        if (info.open) {
+          setTargetFullyHidden(false)
+          setClosePending(false)
+          return
         }
+
+        if (openRef.current && rawActiveRef.current) {
+          setTargetFullyHidden(false)
+          setClosePending(false)
+          return
+        }
+
+        setTargetFullyHidden(true)
+        setClosePending(false)
+        releasePresenceLatch()
       },
     }),
-    [rawActive, releasePresenceLatch]
+    [releasePresenceLatch, skipNextAnimation, targetHidden]
   )
 
   const registerTarget = React.useCallback(() => {
@@ -351,6 +414,7 @@ export const AdaptParent = ({
         onOpenChange={onOpenChange}
         state={state}
         handoff={handoff}
+        targetFullyHidden={targetFullyHidden}
         registerTarget={registerTarget}
         unregisterTarget={unregisterTarget}
         registerContents={registerContents}

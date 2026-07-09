@@ -41,6 +41,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./DialogPointerEventsCase').DialogPointerEventsCase,
   DialogScopedCase: () => require('./DialogScopedCase').DialogScopedCase,
   DialogSheetAdaptCase: () => require('./DialogSheetAdaptCase').DialogSheetAdaptCase,
+  DialogSheetAdaptHandoffCase: () =>
+    require('./DialogSheetAdaptHandoffCase').DialogSheetAdaptHandoffCase,
   AdaptLiveSlotSpikeCase: () =>
     require('./AdaptLiveSlotSpikeCase').AdaptLiveSlotSpikeCase,
   Example: () => require('./Example').Example,

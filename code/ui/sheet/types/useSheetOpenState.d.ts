@@ -1,9 +1,11 @@
+import React from 'react';
 import type { SheetProps } from './types';
+import type { SheetControllerContextValue } from './useSheetController';
 export declare const useSheetOpenState: (props: SheetProps) => {
     open: boolean;
-    setOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isHidden: boolean | undefined;
-    controller: import("./useSheetController").SheetControllerContextValue | null;
+    controller: SheetControllerContextValue | null;
 };
 export type SheetOpenState = ReturnType<typeof useSheetOpenState>;
 //# sourceMappingURL=useSheetOpenState.d.ts.map

@@ -115,7 +115,7 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
     // `medium` for the css driver is `ease-in 400ms`, so anything <250ms after
     // the browser observes the closed state is solidly mid-slide. assert only
     // that early window so we don't race the legitimate post-animation cleanup
-    // that the fix does when SheetController.onAnimationComplete fires (the css
+    // that the fix does when Adapt handoff onAnimationComplete fires (the css
     // driver's completion signal is loose and can fire ~80ms before the visual
     // transition ends).
     const midAnimationSamples = samples.filter(
@@ -154,8 +154,8 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
 
     // and after the slide-out completes, the marker SHOULD unmount —
     // this is the other half of the fix (no permanent mount / memory leak).
-    // SheetController.onAnimationComplete flips DialogAdaptHiddenContext to
-    // true, DialogContent then returns null, the portal slot empties.
+    // Adapt handoff onAnimationComplete marks the target fully hidden,
+    // DialogContent then returns null, and the live slot empties.
     await expect
       .poll(
         async () =>
