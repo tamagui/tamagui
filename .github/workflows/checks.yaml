@@ -226,7 +226,7 @@ jobs:
       - name: Run SSR hydration checks
         run: |
           cd code/sandbox
-          TEST_MODE=dev NODE_ENV=test bunx playwright test \
+          TEST_MODE=prod NODE_ENV=test bunx playwright test \
             hydration-drivers.test.ts \
             motion-hydration.test.ts \
             ssr-theme.test.ts \
@@ -243,6 +243,7 @@ jobs:
             code/sandbox/.playwright-report
             code/sandbox/.playwright-results
           retention-days: 7
+          include-hidden-files: true
 
   v3-bundle-delta:
     if: github.event_name == 'pull_request' && (github.base_ref == 'v3-beta' || startsWith(github.base_ref, 'v3-') || startsWith(github.head_ref, 'v3-'))

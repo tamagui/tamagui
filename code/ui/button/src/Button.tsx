@@ -65,7 +65,7 @@ const Frame = styled(View, {
         borderWidth: 1,
         borderColor: 'transparent',
 
-        '$web': {
+        $web: {
           cursor: 'pointer',
         },
 
@@ -163,7 +163,7 @@ const Text = styled(SizableText, {
         ellipsis: true,
         color: '$color',
 
-        '$web': {
+        $web: {
           cursor: 'pointer',
         },
       },
