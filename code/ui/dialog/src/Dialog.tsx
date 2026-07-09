@@ -430,16 +430,13 @@ const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProp
     const context = useDialogContext(scope)
     const { forceMount = context.forceMount, ...overlayProps } = props
     const isAdapted = useAdaptIsActive(context.adaptScope)
-    // hidden overlays (non-modal or adapted) never animate, so they must not
-    // register part presence or the portal would stay visible forever
-    const isHidden = !forceMount && (!context.modal || isAdapted)
     const presence = useDialogPartPresence(context, {
-      disabled: isAdapted || isHidden,
+      disabled: isAdapted,
       forceMount,
       id: 'overlay',
     })
 
-    if (isHidden) {
+    if (!forceMount && isAdapted) {
       return null
     }
 

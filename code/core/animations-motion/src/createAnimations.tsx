@@ -101,6 +101,8 @@ type MotionRefs = {
   animationState: 'enter' | 'exit' | 'default'
   frozenExitTarget: Record<string, unknown> | null
   exitCompleteScheduled: boolean
+  enterCompleteScheduled: boolean
+  disableAnimation: boolean
   wasEntering: boolean
   wasDisabled: boolean
   onDidAnimate: (() => void) | null | undefined
@@ -169,6 +171,8 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           animationState: 'default',
           frozenExitTarget: null,
           exitCompleteScheduled: false,
+          enterCompleteScheduled: false,
+          disableAnimation: true,
           wasEntering: false,
           wasDisabled: false,
           onDidAnimate: undefined,
@@ -197,6 +201,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       refs.current.isExiting = isExiting
       refs.current.sendExitComplete = sendExitComplete
       refs.current.animationState = animationState
+      refs.current.disableAnimation = disableAnimation
       refs.current.onDidAnimate = onDidAnimate
 
       // detect transition into exiting state
@@ -207,6 +212,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       if (justStartedExiting || justStoppedExiting) {
         refs.current.frozenExitTarget = null
         refs.current.exitCompleteScheduled = false
+        refs.current.enterCompleteScheduled = false
       }
 
       // track previous exiting state
@@ -468,6 +474,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
             // its .finished promise will call sendExitComplete when done
           } else if (currentAnimationState === 'enter' && currentOnDidAnimate) {
             if (startedControls) {
+              refs.current.enterCompleteScheduled = true
               startedControls.finished
                 .then(() => {
                   if (!refs.current.disposed && refs.current.animationState === 'enter') {
@@ -479,7 +486,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
                     currentOnDidAnimate()
                   }
                 })
-            } else {
+            } else if (
+              !refs.current.enterCompleteScheduled &&
+              !refs.current.disableAnimation
+            ) {
+              // no animation needed for this enter (no style diff) — complete
+              // immediately. skipped while animation is disabled (mount flushes
+              // apply enter styles without animating; completing there would
+              // report enter done before the real transition even starts)
               currentOnDidAnimate()
             }
           }

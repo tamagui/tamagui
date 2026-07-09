@@ -651,9 +651,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
             transitioningProps.has(eventProp) ||
             eventProp === 'all' ||
             (eventProp === 'transform' &&
-              [...transitioningProps].some((key) =>
-                TRANSFORM_KEYS.includes(key as any)
-              ))
+              [...transitioningProps].some((key) => TRANSFORM_KEYS.includes(key as any)))
           ) {
             completedCount++
             if (completedCount >= transitioningProps.size) {

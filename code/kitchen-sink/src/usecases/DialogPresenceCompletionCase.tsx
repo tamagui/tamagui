@@ -78,8 +78,11 @@ function PresenceScenario({
 
   const dialogParts = (
     <>
+      {/* testID + data-testid: the native driver renders rn-web animated views
+          which strip arbitrary data-* props, but map testID to data-testid */}
       <Dialog.Overlay
         key={`${id}-overlay`}
+        testID={`${id}-overlay`}
         data-testid={`${id}-overlay`}
         opacity={0.4}
         transition="1000ms"
@@ -88,6 +91,7 @@ function PresenceScenario({
       />
       <Dialog.Content
         key={`${id}-content`}
+        testID={`${id}-content`}
         data-testid={`${id}-content`}
         width={320}
         gap="$3"
@@ -98,9 +102,7 @@ function PresenceScenario({
         onDidAnimate={handleDidAnimate}
       >
         <Dialog.Title>{label} dialog</Dialog.Title>
-        <Dialog.Description>
-          Tracks Dialog onAnimationComplete timing.
-        </Dialog.Description>
+        <Dialog.Description>Tracks Dialog onAnimationComplete timing.</Dialog.Description>
         <Paragraph data-testid={`${id}-event-count`}>{eventCount}</Paragraph>
         <Button data-testid={`${id}-close`} onPress={() => handleOpenChange(false)}>
           Close

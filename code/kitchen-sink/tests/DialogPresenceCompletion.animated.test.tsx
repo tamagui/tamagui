@@ -34,11 +34,7 @@ async function waitForTransitionEvent(
   throw new Error(`Timed out waiting for ${id} ${open ? 'open' : 'close'} event`)
 }
 
-async function expectExactlyOneTransitionEvent(
-  page: Page,
-  id: string,
-  open: boolean
-) {
+async function expectExactlyOneTransitionEvent(page: Page, id: string, open: boolean) {
   await page.waitForTimeout(300)
   const events = await getEvents(page, id)
   expect(events.filter((event) => event.open === open)).toHaveLength(1)

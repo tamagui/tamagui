@@ -2590,6 +2590,11 @@ interface ExtraBaseProps {
   animatePresence?: boolean
 
   /**
+   * Called by the animation driver once this component finishes animating.
+   */
+  onDidAnimate?: () => void
+
+  /**
    * Avoids as much work as possible and passes through the children with no changes.
    * Advanced: Useful for adapting to other element when you want to avoid re-parenting.
    */
