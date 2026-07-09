@@ -41,6 +41,7 @@ export declare const settings: {
         'height-lg': boolean;
     };
     defaultFont: string;
+    defaultSize: string;
     fastSchemeChange: true;
     shouldAddPrefersColorThemes: true;
     allowedStyleValues: "somewhat-strict-web";

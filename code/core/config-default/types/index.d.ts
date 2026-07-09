@@ -250,7 +250,6 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             3: import("@tamagui/web").Variable<number>;
             3.5: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
-            true: import("@tamagui/web").Variable<number>;
             4.5: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
             5.5: import("@tamagui/web").Variable<number>;
@@ -340,7 +339,6 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
             3: import("@tamagui/web").Variable<number>;
             3.5: import("@tamagui/web").Variable<number>;
             4: import("@tamagui/web").Variable<number>;
-            true: import("@tamagui/web").Variable<number>;
             4.5: import("@tamagui/web").Variable<number>;
             5: import("@tamagui/web").Variable<number>;
             5.5: import("@tamagui/web").Variable<number>;
@@ -412,6 +410,7 @@ export declare function getDefaultTamaguiConfig(platform?: 'native' | 'web'): {
     settings: {
         shouldAddPrefersColorThemes: boolean;
         defaultFont: string;
+        defaultSize: string;
     };
 };
 //# sourceMappingURL=index.d.ts.map

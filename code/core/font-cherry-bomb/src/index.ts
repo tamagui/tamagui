@@ -47,7 +47,6 @@ const defaultSizes = {
   2: (scale * 12) as number,
   3: (scale * 13) as number,
   4: (scale * 14) as number,
-  true: (scale * 14) as number,
   5: (scale * 16) as number,
   6: (scale * 18) as number,
   7: (scale * 20) as number,
