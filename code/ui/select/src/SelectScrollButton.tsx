@@ -63,7 +63,7 @@ const SelectScrollButtonImpl = React.memo(
   createRefComponent<SelectScrollButtonImplElement, SelectScrollButtonImplProps>(
     (props, forwardedRef) => {
       const { scope, dir, componentName, ...scrollIndicatorProps } = props
-      const { forceUpdate, open, fallback, setScrollTop, setInnerOffset, ...context } =
+      const { open, fallback, setScrollTop, setInnerOffset, ...context } =
         useSelectContext(scope)
       const floatingRef = context.floatingContext?.refs.floating
 

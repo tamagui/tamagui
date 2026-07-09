@@ -479,6 +479,7 @@ export const Select = withStaticProperties(
     Label: SelectLabel,
     ScrollDownButton: SelectScrollDownButton,
     ScrollUpButton: SelectScrollUpButton,
+    Separator: SelectSeparator,
     Trigger: SelectTrigger,
     Value: SelectValue,
     Viewport: SelectViewport,
@@ -525,7 +526,6 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
 
   const isAdapted = useAdaptIsActive(adaptScope)
   const SelectImpl = isAdapted || !isWeb ? SelectSheetImpl : SelectInlineImpl
-  const forceUpdate = React.useReducer(() => ({}), {})[1]
   const [selectedItem, setSelectedItem] = React.useState<React.ReactNode>(null)
 
   const [open, setOpen] = useControllableState({
@@ -580,6 +580,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
   const [selectedIndex, setSelectedIndex] = React.useState(0)
   const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
 
+  // Intentionally dependency-less: selectedIndexRef mirrors every render for non-reactive reads.
   useIsomorphicLayoutEffect(() => {
     selectedIndexRef.current = selectedIndex
   })
@@ -619,6 +620,7 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
       scopeName={scope}
       scope={scope}
       adaptScope={adaptScope}
+      // Intentionally keyed by open: items should see the value captured for this open cycle.
       initialValue={React.useMemo(() => value, [open])}
       size={sizeProp}
       activeIndexSubscribe={activeIndexSubscribe}
@@ -650,7 +652,6 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         dir={dir}
         blockSelection={false}
         fallback={false}
-        forceUpdate={forceUpdate}
         valueNode={valueNode}
         onValueNodeChange={setValueNode}
         activeIndex={activeIndex}
