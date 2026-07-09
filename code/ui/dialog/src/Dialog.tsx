@@ -70,8 +70,6 @@ type DialogProps = ScopedProps<{
   onAnimationComplete?: (info: { open: boolean }) => void
 }>
 
-type NonNull<A> = Exclude<A, void | null>
-
 type DialogContextValue = {
   forceMount?: boolean
   keepChildrenMounted?: boolean
@@ -84,9 +82,9 @@ type DialogContextValue = {
   titleId: string
   descriptionId: string
   onOpenToggle(): void
-  open: NonNull<DialogProps['open']>
-  onOpenChange: NonNull<DialogProps['onOpenChange']>
-  modal: NonNull<DialogProps['modal']>
+  open: Exclude<DialogProps['open'], void | null>
+  onOpenChange: Exclude<DialogProps['onOpenChange'], void | null>
+  modal: Exclude<DialogProps['modal'], void | null>
   dialogScope: DialogScopes
   adaptScope: string
   onAnimationComplete?: DialogProps['onAnimationComplete']
@@ -214,9 +212,7 @@ const DialogPortalItem = ({
   return isAdapted ? (
     <AdaptPortalContents scope={context.adaptScope}>{content}</AdaptPortalContents>
   ) : context.modal ? (
-    <PortalItem hostName={context.modal ? 'root' : context.adaptScope}>
-      {content}
-    </PortalItem>
+    <PortalItem hostName="root">{content}</PortalItem>
   ) : (
     content
   )
@@ -390,9 +386,6 @@ function useDialogPartPresence(
 
 const OVERLAY_NAME = 'DialogOverlay'
 
-/**
- * exported for internal use with extractable()
- */
 export const DialogOverlayFrame = styled(YStack, {
   name: OVERLAY_NAME,
   zIndex: 1,
@@ -437,13 +430,16 @@ const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProp
     const context = useDialogContext(scope)
     const { forceMount = context.forceMount, ...overlayProps } = props
     const isAdapted = useAdaptIsActive(context.adaptScope)
+    // hidden overlays (non-modal or adapted) never animate, so they must not
+    // register part presence or the portal would stay visible forever
+    const isHidden = !forceMount && (!context.modal || isAdapted)
     const presence = useDialogPartPresence(context, {
-      disabled: isAdapted,
+      disabled: isAdapted || isHidden,
       forceMount,
       id: 'overlay',
     })
 
-    if (!forceMount && isAdapted) {
+    if (isHidden) {
       return null
     }
 
@@ -464,11 +460,6 @@ const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProp
         <DialogOverlayFrame
           key={`${context.contentId}-overlay`}
           data-state={getState(context.open)}
-          // TODO: this will be apply for v2
-          // onPress={() => {
-          //   // if the overlay is pressed, close the dialog
-          //   context.onOpenChange(false)
-          // }}
           // We re-enable pointer-events prevented by `Dialog.Content` to allow scrolling the overlay.
           pointerEvents={context.open ? 'auto' : 'none'}
           {...overlayProps}
@@ -490,12 +481,6 @@ const DialogContentFrame = styled(ThemeableStack, {
   zIndex: 2,
 
   variants: {
-    size: {
-      '...size': (val, extras) => {
-        return {}
-      },
-    },
-
     unstyled: {
       false: {
         position: 'relative',
@@ -512,7 +497,6 @@ const DialogContentFrame = styled(ThemeableStack, {
   } as const,
 
   defaultVariants: {
-    size: true,
     unstyled: process.env.TAMAGUI_HEADLESS === '1',
   },
 })
@@ -568,7 +552,7 @@ const DialogContent = createStyledHOC(DialogContentFrame)<DialogContentExtraProp
       }
 
       return (
-        <RemoveScroll enabled={context.open}>
+        <RemoveScroll enabled={context.open && context.modal}>
           <div data-remove-scroll-container className="_dsp_contents">
             {contents}
           </div>
@@ -580,15 +564,16 @@ const DialogContent = createStyledHOC(DialogContentFrame)<DialogContentExtraProp
       return null
     }
 
-    const content = !isWeb || context.disableRemoveScroll ? (
-      contents
-    ) : (
-      <RemoveScroll enabled={context.open}>
-        <div data-remove-scroll-container className="_dsp_contents">
-          {contents}
-        </div>
-      </RemoveScroll>
-    )
+    const content =
+      !isWeb || context.disableRemoveScroll ? (
+        contents
+      ) : (
+        <RemoveScroll enabled={context.open && context.modal}>
+          <div data-remove-scroll-container className="_dsp_contents">
+            {contents}
+          </div>
+        </RemoveScroll>
+      )
 
     return (
       <Animate
@@ -985,102 +970,83 @@ const DescriptionWarning: React.FC<DescriptionWarningProps> = ({
  * Dialog
  * -----------------------------------------------------------------------------------------------*/
 
-export type DialogHandle = {
-  open: (val: boolean) => void
-}
-
 const Dialog = withStaticProperties(
-  createRefComponent<{ open: (val: boolean) => void }, DialogProps>(
-    function Dialog(props, ref) {
-      const {
-        scope = '',
-        children,
-        open: openProp,
-        defaultOpen = false,
-        onOpenChange,
-        modal = true,
-        keepChildrenMounted,
-        disableRemoveScroll = false,
-        onAnimationComplete,
-      } = props
+  createRefComponent<TamaguiElement, DialogProps>(function Dialog(props) {
+    const {
+      scope = '',
+      children,
+      open: openProp,
+      defaultOpen = false,
+      onOpenChange,
+      modal = true,
+      keepChildrenMounted,
+      disableRemoveScroll = false,
+      onAnimationComplete,
+    } = props
 
-      const baseId = React.useId()
-      const dialogId = `Dialog-${scope}-${baseId}`
-      const contentId = `${dialogId}-content`
-      const titleId = `${dialogId}-title`
-      const descriptionId = `${dialogId}-description`
+    const baseId = React.useId()
+    const dialogId = `Dialog-${scope}-${baseId}`
+    const contentId = `${dialogId}-content`
+    const titleId = `${dialogId}-title`
+    const descriptionId = `${dialogId}-description`
 
-      const triggerRef = React.useRef<TamaguiElement>(null)
-      const contentRef = React.useRef<TamaguiElement>(null)
-      const presentPartIdsRef = React.useRef(new Set<string>())
-      const [presentPartCount, setPresentPartCount] = React.useState(0)
+    const triggerRef = React.useRef<TamaguiElement>(null)
+    const contentRef = React.useRef<TamaguiElement>(null)
+    const presentPartIdsRef = React.useRef(new Set<string>())
+    const [presentPartCount, setPresentPartCount] = React.useState(0)
 
-      const [open, setOpen] = useControllableState({
-        prop: openProp,
-        defaultProp: defaultOpen,
-        onChange: onOpenChange,
-      })
+    const [open, setOpen] = useControllableState({
+      prop: openProp,
+      defaultProp: defaultOpen,
+      onChange: onOpenChange,
+    })
 
-      const onOpenToggle = React.useCallback(() => {
-        setOpen((prevOpen) => !prevOpen)
-      }, [setOpen])
+    const onOpenToggle = React.useCallback(() => {
+      setOpen((prevOpen) => !prevOpen)
+    }, [setOpen])
 
-      const adaptScope = `DialogAdapt${scope}`
+    const adaptScope = `DialogAdapt${scope}`
 
-      const setPartPresence = React.useCallback((id: string, present: boolean) => {
-        const presentPartIds = presentPartIdsRef.current
-        const hasPart = presentPartIds.has(id)
+    const setPartPresence = React.useCallback((id: string, present: boolean) => {
+      const presentPartIds = presentPartIdsRef.current
+      const hasPart = presentPartIds.has(id)
 
-        if (present && !hasPart) {
-          presentPartIds.add(id)
-          setPresentPartCount(presentPartIds.size)
-        } else if (!present && hasPart) {
-          presentPartIds.delete(id)
-          setPresentPartCount(presentPartIds.size)
-        }
-      }, [])
+      if (present && !hasPart) {
+        presentPartIds.add(id)
+        setPresentPartCount(presentPartIds.size)
+      } else if (!present && hasPart) {
+        presentPartIds.delete(id)
+        setPresentPartCount(presentPartIds.size)
+      }
+    }, [])
 
-      const context = {
-        dialogScope: scope,
-        adaptScope,
-        triggerRef,
-        contentRef,
-        contentId,
-        titleId,
-        descriptionId,
-        open,
-        onOpenChange: setOpen,
-        onOpenToggle,
-        modal,
-        keepChildrenMounted,
-        disableRemoveScroll,
-        hasPresentParts: presentPartCount > 0,
-        setPartPresence,
-        onAnimationComplete,
-      } satisfies DialogContextValue
+    const context = {
+      dialogScope: scope,
+      adaptScope,
+      triggerRef,
+      contentRef,
+      contentId,
+      titleId,
+      descriptionId,
+      open,
+      onOpenChange: setOpen,
+      onOpenToggle,
+      modal,
+      keepChildrenMounted,
+      disableRemoveScroll,
+      hasPresentParts: presentPartCount > 0,
+      setPartPresence,
+      onAnimationComplete,
+    } satisfies DialogContextValue
 
-      React.useImperativeHandle(
-        ref,
-        () => ({
-          open: setOpen,
-        }),
-        [setOpen]
-      )
-
-      return (
-        <AdaptParent
-          scope={adaptScope}
-          open={open}
-          onOpenChange={setOpen}
-          state={context}
-        >
-          <DialogProvider scope={scope} {...context}>
-            {children}
-          </DialogProvider>
-        </AdaptParent>
-      )
-    }
-  ),
+    return (
+      <AdaptParent scope={adaptScope} open={open} onOpenChange={setOpen} state={context}>
+        <DialogProvider scope={scope} {...context}>
+          {children}
+        </DialogProvider>
+      </AdaptParent>
+    )
+  }),
   {
     Trigger: DialogTrigger,
     Portal: DialogPortal,

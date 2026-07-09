@@ -86,6 +86,7 @@ export declare const Select: (<Value extends string = string>(props: SelectScope
     }, import("@tamagui/core").StaticConfigPublic>;
     ScrollDownButton: import("@tamagui/compose-refs").RefComponent<TamaguiElement, import("./types").SelectScrollButtonProps>;
     ScrollUpButton: import("@tamagui/compose-refs").RefComponent<TamaguiElement, import("./types").SelectScrollButtonProps>;
+    Separator: typeof SelectSeparator;
     Trigger: import("@tamagui/compose-refs").RefComponent<TamaguiElement, import("./SelectTrigger").SelectTriggerProps>;
     Value: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
         unstyled?: boolean | undefined;

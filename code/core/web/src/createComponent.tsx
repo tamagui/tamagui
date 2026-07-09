@@ -696,7 +696,11 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`theme`
 
-    elementType = element || elementType
+    // don't replace the animated driver component (set above) with the base element,
+    // the render string is forwarded to it via viewProps.render instead
+    if (!isAnimatedCustomComponent) {
+      elementType = element || elementType
+    }
     const isStringElement = typeof elementType === 'string'
 
     const mediaState = useMedia(componentContext, debugProp)
@@ -1614,9 +1618,10 @@ export function createComponent<
       }
 
       if (!content) {
-        // web-only, handle render === string passing to custom animated component
-        if (isRenderPropString) {
-          viewProps.render === renderProp
+        // web-only, forward render string to custom animated driver components
+        // (they render the tag themselves, see acceptRenderProp in drivers)
+        if (isRenderPropString && elementType['acceptRenderProp']) {
+          viewProps.render = renderProp
         }
 
         content = React.createElement(elementType, viewProps, content || children)
