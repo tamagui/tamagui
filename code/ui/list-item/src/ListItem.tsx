@@ -6,7 +6,6 @@ import { themeableVariantStyles, YStack } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
 import { createStyledContext, styled, useProps, View } from '@tamagui/web'
-import { createContext, useContext } from 'react'
 import type { FunctionComponent, JSX, ReactNode } from 'react'
 
 type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
@@ -36,11 +35,6 @@ const context = createStyledContext<{
   variant: undefined,
   color: undefined,
 })
-
-const ListItemIconContext = createContext<{
-  size?: SizeTokens
-  color?: ColorTokens | string
-} | null>(null)
 
 const ListItemFrame = styled(View, {
   context,
@@ -183,14 +177,13 @@ const ListItemIcon = (props: {
   scaleIcon?: number
 }) => {
   const { children, size, scaleIcon = 1 } = props
-  const iconContext = useContext(ListItemIconContext)
   const styledContext = context.useStyledContext()
-  if (!styledContext && !iconContext) {
+  if (!styledContext) {
     throw new Error('ListItem.Icon must be used within a ListItem')
   }
 
-  const sizeToken = size ?? iconContext?.size ?? styledContext.size ?? '$true'
-  const contextColor = iconContext?.color ?? styledContext.color
+  const sizeToken = size ?? styledContext.size ?? '$true'
+  const contextColor = styledContext.color
   const iconColorProp =
     contextColor === 'unset' || typeof contextColor === 'number'
       ? undefined
@@ -267,9 +260,9 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
     }
 
     return (
-      <ListItemIconContext.Provider value={{ size, color: contextColor }}>
-        <context.Provider {...listItemContext}>
-          <ListItemFrame ref={ref} unstyled={isUnstyled} {...(frameProps as any)}>
+      <context.Provider {...listItemContext}>
+        <ListItemFrame ref={ref} unstyled={isUnstyled} {...(frameProps as any)}>
+          <context.Provider {...listItemContext}>
             {themedIcon}
             {title || subTitle ? (
               <YStack flex={1}>
@@ -299,9 +292,9 @@ const ListItemComponent = ListItemFrame.styleable<ListItemExtraProps>(
               wrappedChildren
             )}
             {themedIconAfter}
-          </ListItemFrame>
-        </context.Provider>
-      </ListItemIconContext.Provider>
+          </context.Provider>
+        </ListItemFrame>
+      </context.Provider>
     )
   }
 )
