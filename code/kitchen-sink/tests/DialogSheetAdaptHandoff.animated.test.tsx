@@ -10,9 +10,7 @@ async function openAdaptedDialog(page: Page) {
   await expect(page.getByTestId('dialog-adapt-content')).toBeAttached({
     timeout: 5000,
   })
-  await expect
-    .poll(() => getSheetState(page), { timeout: 5000 })
-    .toBe('open')
+  await expect.poll(() => getSheetState(page), { timeout: 5000 }).toBe('open')
 }
 
 async function getSheetState(page: Page) {
@@ -164,9 +162,7 @@ test.describe('Dialog Sheet Adapt handoff', () => {
     })
 
     await expect.poll(() => contentIsInTarget(page), { timeout: 5000 }).toBe(true)
-    await expect
-      .poll(() => getSheetState(page), { timeout: 5000 })
-      .toBe('open')
+    await expect.poll(() => getSheetState(page), { timeout: 5000 }).toBe('open')
   })
 
   test('close during media handoff releases the adapted content after exit', async ({
@@ -204,8 +200,6 @@ test.describe('Dialog Sheet Adapt handoff', () => {
     await expect(page.getByTestId('dialog-adapt-instance')).toHaveText(
       instanceBefore ?? ''
     )
-    await expect
-      .poll(() => getSheetState(page), { timeout: 5000 })
-      .toBe('open')
+    await expect.poll(() => getSheetState(page), { timeout: 5000 }).toBe('open')
   })
 })

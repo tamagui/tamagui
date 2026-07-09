@@ -8,10 +8,8 @@ import { useSheetController } from './useSheetController'
 
 export const useSheetOpenState = (props: SheetProps) => {
   const adapt = useAdaptTarget()
-  const {
-    isHidden: controllerIsHidden,
-    controller: legacyController,
-  } = useSheetController(props.scope)
+  const { isHidden: controllerIsHidden, controller: legacyController } =
+    useSheetController(props.scope)
   const shouldUseAdapt = Boolean(
     adapt && (adapt.open !== undefined || adapt.onOpenChange)
   )
@@ -39,8 +37,7 @@ export const useSheetOpenState = (props: SheetProps) => {
   const controller = adaptController ?? legacyController
   const controllerOpen = shouldUseAdapt ? adapt?.open : legacyController?.open
   const controllerOnOpenChange =
-    (shouldUseAdapt ? adapt?.onOpenChange : undefined) ??
-    legacyController?.onOpenChange
+    (shouldUseAdapt ? adapt?.onOpenChange : undefined) ?? legacyController?.onOpenChange
 
   const onOpenChangeInternal = (val: boolean) => {
     controllerOnOpenChange?.(val)
