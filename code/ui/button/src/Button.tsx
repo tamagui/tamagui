@@ -1,7 +1,11 @@
-import { getFontSize } from '@tamagui/font-size'
 import { getButtonSized } from '@tamagui/get-button-sized'
-import { getIcon, useCurrentColor } from '@tamagui/helpers-tamagui'
-import { ButtonNestingContext, getElevation, themeableVariants } from '@tamagui/stacks'
+import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
+import {
+  ButtonNestingContext,
+  getElevation,
+  themeableVariants,
+  themeableVariantStyles,
+} from '@tamagui/stacks'
 import type { TextContextStyles, TextParentStyles } from '@tamagui/text'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type { GetProps, SizeTokens, Token } from '@tamagui/web'
@@ -65,7 +69,7 @@ const Frame = styled(View, {
         borderWidth: 1,
         borderColor: 'transparent',
 
-        '$web': {
+        $web: {
           cursor: 'pointer',
         },
 
@@ -88,24 +92,7 @@ const Frame = styled(View, {
     },
 
     variant: {
-      outlined:
-        process.env.TAMAGUI_HEADLESS === '1'
-          ? {}
-          : {
-              backgroundColor: 'transparent',
-              borderWidth: 1,
-              borderColor: '$borderColor',
-
-              hoverStyle: {
-                backgroundColor: 'transparent',
-                borderColor: '$borderColorHover',
-              },
-
-              pressStyle: {
-                backgroundColor: 'transparent',
-                borderColor: '$borderColorPress',
-              },
-            },
+      outlined: themeableVariantStyles.outlined,
     },
 
     circular: themeableVariants.circular,
@@ -163,7 +150,7 @@ const Text = styled(SizableText, {
         ellipsis: true,
         color: '$color',
 
-        '$web': {
+        $web: {
           cursor: 'pointer',
         },
       },
@@ -191,16 +178,13 @@ const Icon = (props: {
     styledContext.color === 'unset' || typeof styledContext.color === 'number'
       ? undefined
       : styledContext.color
-  const iconColor = useCurrentColor(iconColorProp)
-
-  const iconSize =
-    (typeof sizeToken === 'number' ? sizeToken * 0.5 : getFontSize(sizeToken as Token)) *
-    scaleIcon
-
-  return getIcon(children, {
+  const iconSize = getThemedIconSize(sizeToken, scaleIcon)
+  const getThemedIcon = useGetThemedIcon({
     size: iconSize,
-    color: iconColor,
+    color: iconColorProp,
   })
+
+  return getThemedIcon(children)
 }
 
 export const ButtonContext = createStyledContext<{
@@ -270,19 +254,16 @@ const ButtonComponent = createStyledHOC(Frame)<ButtonExtraProps>((propsIn, ref) 
     contextColor === 'unset' || typeof contextColor === 'number'
       ? undefined
       : contextColor
-  const iconColor = useCurrentColor(iconColorProp)
   const finalSize = iconSize ?? size ?? styledContext?.size
-  const iconSizeNumber =
-    (typeof finalSize === 'number' ? finalSize * 0.5 : getFontSize(finalSize as Token)) *
-    scaleIcon
+  const iconSizeNumber = getThemedIconSize(finalSize, scaleIcon)
+  const getThemedIcon = useGetThemedIcon({
+    size: iconSizeNumber,
+    color: iconColorProp,
+  })
 
   const [themedIcon, themedIconAfter] = [icon, iconAfter].map((icon) => {
     if (!icon) return null
-    return getIcon(icon, {
-      size: iconSizeNumber,
-      color: iconColor,
-      // No marginLeft or marginRight needed - spacing is handled by the gap property in Frame's size variants
-    })
+    return getThemedIcon(icon)
   })
 
   const wrappedChildren = wrapChildrenInText(

@@ -1,4 +1,25 @@
 import type { GetProps } from '@tamagui/core';
+export declare const themeableVariantStyles: {
+    readonly outlined: {
+        backgroundColor?: undefined;
+        borderWidth?: undefined;
+        borderColor?: undefined;
+        hoverStyle?: undefined;
+        pressStyle?: undefined;
+    } | {
+        backgroundColor: string;
+        borderWidth: number;
+        borderColor: string;
+        hoverStyle: {
+            backgroundColor: string;
+            borderColor: string;
+        };
+        pressStyle: {
+            backgroundColor: string;
+            borderColor: string;
+        };
+    };
+};
 export declare const themeableVariants: {
     readonly circular: {
         true: (_: any, { props, tokens }: {
