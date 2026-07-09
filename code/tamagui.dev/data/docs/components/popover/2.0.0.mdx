@@ -70,11 +70,12 @@ export default () => (
     <Adapt when="max-md">
       <Sheet>
         <Sheet.Overlay />
-        <Sheet.Frame>
+        <Sheet.Container>
+          <Sheet.Background />
           <Sheet.ScrollView>
             <Adapt.Contents />
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </Adapt>
   </Popover>
@@ -339,7 +340,7 @@ active. Import `Sheet` directly from `tamagui` or `@tamagui/sheet`.
 
 See [Sheet](/docs/components/sheet) for more props.
 
-Must use `Adapt.Contents` inside the `Sheet.Frame` to insert the
+Must use `Adapt.Contents` inside the `Sheet.Container` to insert the
 contents given to `Popover.Content`
 
 ### Popover.FocusScope

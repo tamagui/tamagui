@@ -107,11 +107,12 @@ export const NewAccountModal = () => {
       >
         <Dialog.Adapt when="maxMd">
           <Sheet modal dismissOnSnapToBottom transition="medium">
-            <Sheet.Frame bg="$background" p={0} gap="$4">
+            <Sheet.Container p={0} gap="$4">
+              <Sheet.Background bg="$background" />
               <Sheet.ScrollView>
                 <Dialog.Adapt.Contents />
               </Sheet.ScrollView>
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               transition="lazy"
               bg="$shadow6"

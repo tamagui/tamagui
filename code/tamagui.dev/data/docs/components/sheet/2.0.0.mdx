@@ -49,7 +49,10 @@ export default () => (
   <Sheet>
     <Sheet.Overlay />
     <Sheet.Handle />
-    <Sheet.Frame>{/* ...inner contents */}</Sheet.Frame>
+    <Sheet.Container>
+      <Sheet.Background />
+      {/* ...inner contents */}
+    </Sheet.Container>
   </Sheet>
 )
 ```
@@ -164,25 +167,49 @@ Contains every component for the sheet.
 
 ### Sheet.Overlay
 
-Displays behind Frame. Extends [YStack](/docs/components/stacks).
+Displays behind the sheet content. Extends [YStack](/docs/components/stacks).
 
-### Sheet.Frame
+`Sheet.Overlay` must be a direct child of `Sheet`. It renders outside the animated
+content region so it stays fixed while the container moves.
 
-Contains the content. Extends [YStack](/docs/components/stacks).
+### Sheet.Container
+
+Contains the sheet content and layout props. Extends
+[YStack](/docs/components/stacks).
+
+<PropsTable
+  data={[
+    {
+      name: 'adjustPaddingForOffscreenContent',
+      type: 'boolean',
+      description: `Adds padding for currently offscreen content so flex children size to the visible sheet area.`,
+    },
+  ]}
+/>
+
+### Sheet.Background
+
+The themed sheet surface. Extends [YStack](/docs/components/stacks).
+
+Place it as the first child of `Sheet.Container`. By default it fills the
+container and extends past the bottom edge so spring overshoot does not reveal
+the page below the sheet. Put visual surface props like `bg`, `borderRadius`,
+`elevation`, and `shadow*` on `Sheet.Background`; keep layout props like
+`padding`, `gap`, and `maxHeight` on `Sheet.Container`.
 
 <PropsTable
   data={[
     {
       name: 'disableHideBottomOverflow',
       type: 'boolean',
-      description: `Disables the default cloned frame cover below the sheet. Leave it omitted or false when a spring can overshoot on open; the cover prevents page content from showing through below the sheet. If your frame uses decorative absolute layers, put the fallback background on Sheet.Frame so the cloned cover can occlude the bottom too.`,
+      description: `Disables the default background extension below the sheet.`,
     },
   ]}
 />
 
 ### Sheet.Handle
 
-Shows a handle above the frame by default. On tap, it will cycle between
+Shows a handle above the container by default. On tap, it will cycle between
 `snapPoints`, but this can be overridden with `onPress`.
 
 Extends [XStack](/docs/components/stacks).
@@ -231,9 +258,10 @@ When using scrollable content inside a Sheet, use `Sheet.ScrollView` for proper 
 ```tsx
 <Sheet>
   <Sheet.Handle />
-  <Sheet.Frame>
+  <Sheet.Container>
+    <Sheet.Background />
     <Sheet.ScrollView>{/* Scrollable content */}</Sheet.ScrollView>
-  </Sheet.Frame>
+  </Sheet.Container>
 </Sheet>
 ```
 

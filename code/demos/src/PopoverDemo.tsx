@@ -75,9 +75,10 @@ export function Demo({
       {shouldAdapt && (
         <Adapt when="maxMd" platform="touch">
           <Sheet transition="medium" modal dismissOnSnapToBottom>
-            <Sheet.Frame p="$4">
+            <Sheet.Container p="$4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               bg="$shadowColor"
               transition="lazy"

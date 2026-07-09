@@ -55,7 +55,8 @@ const CustomSheet = ({ open, setOpen }) => {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle bg="$gray8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="rgba(255,0,0,0.5)">
+        <Sheet.Container items="center" justify="center" gap="$10">
+          <Sheet.Background bg="rgba(255,0,0,0.5)" />
           <Button
             size="$6"
             onPress={() => {
@@ -73,7 +74,7 @@ const CustomSheet = ({ open, setOpen }) => {
               setOpen(false)
             }}
           />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )

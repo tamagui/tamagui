@@ -79,7 +79,8 @@ function BasicScrollLockSheet() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle data-testid="basic-scroll-lock-handle" />
-        <Sheet.Frame data-testid="basic-scroll-lock-frame" padding="$4" gap="$4">
+        <Sheet.Container data-testid="basic-scroll-lock-frame" padding="$4" gap="$4">
+          <Sheet.Background />
           <Paragraph data-testid="basic-scroll-lock-snap-indicator">
             Current snap point: {position}
           </Paragraph>
@@ -93,7 +94,7 @@ function BasicScrollLockSheet() {
           <Button data-testid="basic-scroll-lock-close" onPress={() => setOpen(false)}>
             Close
           </Button>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )
@@ -134,7 +135,8 @@ function SheetWithScrollView() {
           exitStyle={{ opacity: 0 }}
         />
         <Sheet.Handle data-testid="scrollview-sheet-handle" />
-        <Sheet.Frame data-testid="scrollview-sheet-frame" padding="$4">
+        <Sheet.Container data-testid="scrollview-sheet-frame" padding="$4">
+          <Sheet.Background />
           <Paragraph data-testid="scrollview-sheet-snap-indicator">
             Current snap point: {position}
           </Paragraph>
@@ -159,7 +161,7 @@ function SheetWithScrollView() {
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>
   )

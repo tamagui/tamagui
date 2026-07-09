@@ -399,11 +399,12 @@ export const HeaderLinksPopover = (props: PopoverProps) => {
 
       <Adapt platform="touch" when="sm">
         <Sheet transition="medium" zIndex={100000000} modal dismissOnSnapToBottom>
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView showsVerticalScrollIndicator={false}>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay z={100} bg="$shadow4" />
         </Sheet>
       </Adapt>

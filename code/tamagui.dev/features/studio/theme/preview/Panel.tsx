@@ -105,9 +105,10 @@ export function Panel({
 
             <Adapt when="maxMd" platform="touch">
               <Sheet modal dismissOnSnapToBottom>
-                <Sheet.Frame p="$4">
+                <Sheet.Container p="$4">
+                  <Sheet.Background />
                   <Adapt.Contents />
-                </Sheet.Frame>
+                </Sheet.Container>
                 <Sheet.Overlay
                   transition="quickest"
                   enterStyle={{ opacity: 0 }}

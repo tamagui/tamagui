@@ -148,7 +148,8 @@ export function SheetKeyboardFitContentCase() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
-        <Sheet.Frame testID="sheet-kb-fit-frame">
+        <Sheet.Container testID="sheet-kb-fit-frame">
+          <Sheet.Background />
           <Sheet.ScrollView
             testID="sheet-kb-fit-scrollview"
             keyboardShouldPersistTaps="handled"
@@ -264,7 +265,7 @@ export function SheetKeyboardFitContentCase() {
               </Button>
             </YStack>
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </YStack>
   )

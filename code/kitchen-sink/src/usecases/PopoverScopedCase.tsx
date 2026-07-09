@@ -59,9 +59,10 @@ const TestPopoverContent = ({ name, shouldAdapt }) => {
       {shouldAdapt && (
         <Adapt when={true}>
           <Sheet transition="medium" modal dismissOnSnapToBottom>
-            <Sheet.Frame data-testid={`${name}-sheet-contents`} padding="$4">
+            <Sheet.Container data-testid={`${name}-sheet-contents`} padding="$4">
+              <Sheet.Background />
               <Adapt.Contents />
-            </Sheet.Frame>
+            </Sheet.Container>
             <Sheet.Overlay
               backgroundColor="$shadowColor"
               transition="lazy"
