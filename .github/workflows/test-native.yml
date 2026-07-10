@@ -67,12 +67,10 @@ jobs:
     timeout-minutes: 90
     strategy:
       fail-fast: false
+      # both devices on main only; single device elsewhere to keep hosted
+      # macOS runner load sane (shards still fan out per device)
       matrix:
-        ios_device:
-          - name: iPhone 16
-            slug: iphone-16
-          - name: iPhone 16 Pro Max
-            slug: iphone-16-pro-max
+        ios_device: ${{ github.ref == 'refs/heads/main' && fromJSON('[{"name":"iPhone 16","slug":"iphone-16"},{"name":"iPhone 16 Pro Max","slug":"iphone-16-pro-max"}]') || fromJSON('[{"name":"iPhone 16","slug":"iphone-16"}]') }}
         shard: ${{ fromJson(needs.validate-ios-detox-shards.outputs.shards) }}
     defaults:
       run:

@@ -7,6 +7,12 @@ on:
     branches: [main, 'v2-*', 'v3-*']
   workflow_dispatch:
 
+# cancel superseded runs off main — hosted macOS runners are scarce and
+# stale queued runs starve every other branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
 permissions:
   contents: read
   # required: this workflow calls the reusable build-ios-kitchensink-app.yml,
@@ -35,13 +41,9 @@ jobs:
     timeout-minutes: 45
     strategy:
       fail-fast: false
-      matrix:
-        package-exports: [true, false]
-        ios_device:
-          - name: iPhone 16
-            slug: iphone-16
-          - name: iPhone 16 Pro Max
-            slug: iphone-16-pro-max
+      # full device/exports matrix on main only; single combo elsewhere to
+      # keep hosted macOS runner load sane
+      matrix: ${{ github.ref == 'refs/heads/main' && fromJSON('{"package-exports":[true,false],"ios_device":[{"name":"iPhone 16","slug":"iphone-16"},{"name":"iPhone 16 Pro Max","slug":"iphone-16-pro-max"}]}') || fromJSON('{"package-exports":[true],"ios_device":[{"name":"iPhone 16","slug":"iphone-16"}]}') }}
     defaults:
       run:
         working-directory: ${{ env.test_container_app_path }}
