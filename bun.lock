@@ -372,16 +372,19 @@
         "@tamagui/create-theme": "workspace:*",
         "@tamagui/generate-themes": "workspace:*",
         "@tamagui/static": "workspace:*",
+        "@tamagui/to-tailwind": "workspace:*",
         "@tamagui/types": "workspace:*",
         "@tamagui/vite-plugin": "workspace:*",
         "arg": "^5.0.2",
         "chalk": "^4.1.2",
         "change-case": "^4.1.2",
         "chokidar": "^3.5.2",
+        "diff": "^9.0.0",
         "esbuild": "^0.27.2",
         "express": "^4.18.2",
         "fs-extra": "^11.2.0",
         "get-port": "^7.0.0",
+        "glob": "^13.0.3",
         "marked": "^14.1.2",
         "marked-terminal": "^5.2.0",
         "micromatch": "^4.0.7",
@@ -426,6 +429,7 @@
         "@tamagui/animations-reanimated": "workspace:*",
         "@tamagui/colors": "workspace:*",
         "@tamagui/core": "workspace:*",
+        "@tamagui/create-system-font": "workspace:*",
         "@tamagui/font-inter": "workspace:*",
         "@tamagui/font-silkscreen": "workspace:*",
         "@tamagui/react-native-media-driver": "workspace:*",
@@ -481,6 +485,7 @@
       "name": "@tamagui/core",
       "version": "2.4.3",
       "dependencies": {
+        "@tamagui/compose-refs": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/react-native-media-driver": "workspace:*",
         "@tamagui/react-native-use-pressable": "workspace:*",
@@ -508,6 +513,7 @@
       "version": "2.4.3",
       "devDependencies": {
         "@tamagui/core": "workspace:*",
+        "@tamagui/dialog": "workspace:*",
         "@testing-library/react": "^16.1.0",
         "@testing-library/react-native": "^12.9.0",
         "csstype": "^3.0.10",
@@ -525,6 +531,21 @@
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "react": ">=19",
+      },
+      "peerDependencies": {
+        "react": ">=19",
+      },
+    },
+    "code/core/create-system-font": {
+      "name": "@tamagui/create-system-font",
+      "version": "2.4.2",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+      },
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "react": ">=19",
+        "vitest": "4.0.4",
       },
       "peerDependencies": {
         "react": ">=19",
@@ -795,6 +816,7 @@
       "version": "2.4.3",
       "dependencies": {
         "@tamagui/core": "workspace:*",
+        "@tamagui/font-size": "workspace:*",
         "@tamagui/sizable-context": "workspace:*",
       },
       "devDependencies": {
@@ -821,6 +843,7 @@
       "name": "@tamagui/helpers-tamagui",
       "version": "2.4.3",
       "dependencies": {
+        "@tamagui/font-size": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
@@ -844,6 +867,9 @@
     "code/core/native": {
       "name": "@tamagui/native",
       "version": "2.4.3",
+      "dependencies": {
+        "@tamagui/compose-refs": "workspace:*",
+      },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
         "burnt": "^0.12.2",
@@ -2441,6 +2467,7 @@
       "name": "@tamagui/context-menu",
       "version": "2.4.3",
       "dependencies": {
+        "@tamagui/compose-refs": "workspace:*",
         "@tamagui/create-menu": "workspace:*",
         "@tamagui/popover": "workspace:*",
         "@tamagui/use-callback-ref": "workspace:*",
@@ -2964,7 +2991,6 @@
       "name": "@tamagui/scroll-view",
       "version": "2.4.3",
       "dependencies": {
-        "@tamagui/stacks": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {
@@ -3003,7 +3029,6 @@
         "@tamagui/use-controllable-state": "workspace:*",
         "@tamagui/use-debounce": "workspace:*",
         "@tamagui/use-event": "workspace:*",
-        "@tamagui/use-previous": "workspace:*",
         "@tamagui/z-index-stack": "workspace:*",
       },
       "devDependencies": {
@@ -3057,7 +3082,6 @@
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
         "@tamagui/core": "workspace:*",
-        "@tamagui/create-context": "workspace:*",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/native": "workspace:*",
         "@tamagui/portal": "workspace:*",
@@ -3376,6 +3400,7 @@
       "name": "@tamagui/toggle-group",
       "version": "2.4.3",
       "dependencies": {
+        "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/focusable": "workspace:*",
@@ -5167,6 +5192,8 @@
 
     "@tamagui/create-menu": ["@tamagui/create-menu@workspace:code/ui/create-menu"],
 
+    "@tamagui/create-system-font": ["@tamagui/create-system-font@workspace:code/core/create-system-font"],
+
     "@tamagui/create-theme": ["@tamagui/create-theme@workspace:code/core/create-theme"],
 
     "@tamagui/cubic-bezier-animator": ["@tamagui/cubic-bezier-animator@workspace:code/core/cubic-bezier-animator"],
@@ -6380,6 +6407,8 @@
     "devtools-protocol": ["devtools-protocol@0.0.1581282", "", {}, "sha512-nv7iKtNZQshSW2hKzYNr46nM/Cfh5SEvE2oV0/SEGgc9XupIY5ggf84Cz8eJIkBce7S3bmTAauFD6aysMpnqsQ=="],
 
     "didyoumean": ["didyoumean@1.2.2", "", {}, "sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw=="],
+
+    "diff": ["diff@9.0.0", "", {}, "sha512-svtcdpS8CgJyqAjEQIXdb3OjhFVVYjzGAPO8WGCmRbrml64SPw/jJD4GoE98aR7r25A0XcgrK3F02yw9R/vhQw=="],
 
     "diff-sequences": ["diff-sequences@29.6.3", "", {}, "sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q=="],
 
