@@ -11,6 +11,7 @@ import {
   type DocsSyntax,
   type DocsVersionFrontmatter,
 } from './docsVersion'
+import { cookieHasTailwind, writeSyntaxCookie } from './syntaxCookie'
 
 export function DocsVersionPicker({
   frontmatter,
@@ -28,13 +29,21 @@ export function DocsVersionPicker({
     setHydrated(true)
   }, [])
 
+  const cookieSyntax =
+    hydrated && typeof document !== 'undefined' && cookieHasTailwind(document.cookie)
+
   const state = React.useMemo(() => {
-    return getDocsVersionState({
+    const next = getDocsVersionState({
       pathname,
       search: new URLSearchParams(searchString),
       frontmatter,
     })
-  }, [frontmatter, pathname, searchString])
+    // sticky cookie applies when the url doesn't say otherwise
+    if (cookieSyntax && !new URLSearchParams(searchString).get('syntax')) {
+      next.syntax = 'tailwind'
+    }
+    return next
+  }, [frontmatter, pathname, searchString, cookieSyntax])
 
   const isDocsPath =
     state.canonicalPath.startsWith('/docs/') || state.canonicalPath.startsWith('/ui/')
@@ -51,6 +60,7 @@ export function DocsVersionPicker({
   }
 
   const setSyntax = (syntax: string) => {
+    writeSyntaxCookie(syntax as DocsSyntax)
     const href = getDocsVersionHref({
       state,
       syntax: syntax as DocsSyntax,

@@ -2,6 +2,7 @@ import { LogoWords, setTintFamily, TamaguiLogo, ThemeTint, useTint } from '@tama
 import { Check, ExternalLink, Figma, LogIn, Menu } from '@tamagui/lucide-icons-2'
 import { isTouchable, useGet, useMedia } from '@tamagui/web'
 import { useFocusEffect, usePathname, useRouter } from 'one'
+import { clientSyntaxIsTailwind, writeSyntaxCookie } from '~/features/docs/syntaxCookie'
 import * as React from 'react'
 import { useWindowDimensions, type LayoutRectangle } from 'react-native'
 import {
@@ -1099,17 +1100,67 @@ const CodeModeToggle = React.memo(() => {
   const router = useRouter()
   const [hydrated, setHydrated] = React.useState(false)
   const search = hydrated && typeof window !== 'undefined' ? window.location.search : ''
-  const isTailwind = hydrated && new URLSearchParams(search).get('syntax') === 'tailwind'
+  const isTailwind = hydrated && clientSyntaxIsTailwind(search)
 
   React.useEffect(() => {
     setHydrated(true)
   }, [])
+
+  // docs pages are static (SSG), so the loader can only vary on the URL —
+  // the cookie remembers the preference and this keeps the param present:
+  // 1) direct visits to clean urls get corrected once via replace
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('syntax')) return
+    if (!clientSyntaxIsTailwind(window.location.search)) return
+    params.set('syntax', 'tailwind')
+    window.location.replace(
+      `${window.location.pathname}?${params.toString()}${window.location.hash}`
+    )
+  }, [pathname])
+
+  // 2) internal link clicks carry the param forward while the mode is on
+  React.useEffect(() => {
+    if (typeof document === 'undefined') return
+    const onClick = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey ||
+        event.button !== 0
+      ) {
+        return
+      }
+      const anchor = (event.target as HTMLElement).closest?.('a')
+      if (!anchor || anchor.target === '_blank' || anchor.hasAttribute('download')) {
+        return
+      }
+      const href = anchor.getAttribute('href')
+      if (!href || !href.startsWith('/')) return
+      if (!clientSyntaxIsTailwind(window.location.search)) return
+      const url = new URL(href, window.location.origin)
+      if (url.searchParams.get('syntax')) return
+      url.searchParams.set('syntax', 'tailwind')
+      event.preventDefault()
+      event.stopPropagation()
+      router.push(`${url.pathname}${url.search}${url.hash}` as any)
+    }
+    // capture phase so we run before the router's own link handling
+    document.addEventListener('click', onClick, true)
+    return () => document.removeEventListener('click', onClick, true)
+  }, [router])
 
   const setMode = React.useCallback(
     (mode: 'tamagui' | 'tailwind') => {
       const searchParams = new URLSearchParams(
         typeof window !== 'undefined' ? window.location.search : ''
       )
+
+      // sticky across every navigation; the param stays for shareable urls
+      writeSyntaxCookie(mode)
 
       if (mode === 'tailwind') {
         searchParams.set('syntax', 'tailwind')
