@@ -227,6 +227,26 @@ const COMMAND_MAP = {
     },
   },
 
+  migrate: {
+    shorthands: [],
+    description: `Print an AI-agent prompt for migrating a Tamagui app to v3`,
+    usage: `$ tamagui migrate --from v2
+$ tamagui migrate --from v1`,
+    flags: {
+      '--help': Boolean,
+      '--from': String,
+    },
+    async run() {
+      const { _, ...flags } = arg(this.flags)
+      const [_cmd, fromArg] = _
+      const { printMigrationPrompt } = require('./migrate')
+
+      printMigrationPrompt({
+        from: flags['--from'] || fromArg,
+      })
+    },
+  },
+
   'to-tailwind': {
     shorthands: [],
     description: `Convert Tamagui JSX props in files or globs to Tailwind className syntax`,
@@ -351,8 +371,13 @@ main()
 async function main() {
   if (flags['--help']) {
     console.info(`\n$ tamagui ${command}: ${definition.description}\n`)
+    if ('usage' in definition && definition.usage) {
+      console.info(`Usage:\n${definition.usage}\n`)
+    }
     console.info(
-      `Flags: ${Object.entries(definition.flags).map(([k, v]) => `${k} (${v.name})`)}`
+      `Flags:\n${Object.entries(definition.flags)
+        .map(([k, v]) => `  ${k} (${v.name})`)
+        .join('\n')}`
     )
     process.exit(0)
   }
