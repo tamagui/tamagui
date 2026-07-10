@@ -29,6 +29,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   RawAnimatedValueCase: () => require('./RawAnimatedValueCase').RawAnimatedValueCase,
   AnimationsWithMediaQueriesCase: () =>
     require('./AnimationsWithMediaQueriesCase').AnimationsWithMediaQueriesCase,
+  AnimatedDOMPropsCase: () => require('./AnimatedDOMPropsCase').AnimatedDOMPropsCase,
   ThemeMediaAnimationCase: () =>
     require('./ThemeMediaAnimationCase').ThemeMediaAnimationCase,
   Benchmark: () => require('./Benchmark').Benchmark,

@@ -314,8 +314,9 @@ function createWebAnimatedComponent(defaultTag: 'div' | 'span') {
         stateRef as any,
         false
       )
+      const { nativeID, ...webProps } = transformedProps ?? viewProps
 
-      return <Element {...transformedProps} ref={composedRefs} />
+      return <Element {...webProps} ref={composedRefs} />
     })
   )
   ;(Component as any).acceptRenderProp = true
