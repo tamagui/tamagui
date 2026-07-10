@@ -95,7 +95,6 @@ export const RadioGroupIndicatorFrame = styled(YStack, {
         height: '33%',
         borderRadius: 1000,
         backgroundColor: '$color',
-        pressTheme: true,
       },
     },
   } as const,
