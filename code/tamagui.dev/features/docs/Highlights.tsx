@@ -4,7 +4,6 @@ import { H2, Paragraph, SizableText, Text, VisuallyHidden, XStack, YStack } from
 import { Features } from '~/components/Features'
 import { Link } from '~/components/Link'
 import { FrontmatterContext } from './FrontmatterContext'
-import { SourceVersionSwitcher } from './SourceVersionSwitcher'
 
 export function Highlights({ features, disableLinks, disableTitle, large }: any) {
   const frontmatter = React.useContext(FrontmatterContext)
@@ -52,13 +51,6 @@ export function Highlights({ features, disableLinks, disableTitle, large }: any)
             <h2 id="site-component-info-heading">Component Reference Links</h2>
           </VisuallyHidden>
           <YStack mt={disableTitle ? '$3' : '$6'} my="$3" gap="$3">
-            {frontmatter.versions && frontmatter.versions.length > 1 && (
-              <SourceVersionSwitcher
-                versions={frontmatter.versions}
-                componentName={frontmatter.name || frontmatter.component || ''}
-              />
-            )}
-
             <Link
               href={`https://github.com/tamagui/tamagui/tree/${sourceVersion ? `v${sourceVersion}` : 'main'}/code/ui/${
                 frontmatter.package

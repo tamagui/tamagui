@@ -1,13 +1,14 @@
 import { getDocsSection } from '@tamagui/logo'
 import { usePathname, useRouter } from 'one'
 import React, { startTransition, useEffect } from 'react'
+import { getCanonicalDocsPath } from './docsVersion'
 import { allNotPending } from './docsRoutes'
 
 export const useDocsMenu = () => {
   const [open, setOpen] = React.useState<boolean | 'press'>(false)
   const pathname = usePathname()
   const router = useRouter()
-  let currentPath = pathname
+  let currentPath = getCanonicalDocsPath(pathname)
   let documentVersion = ''
 
   const documentVersionPath = documentVersion ? `/${documentVersion}` : ''
@@ -19,7 +20,7 @@ export const useDocsMenu = () => {
     next = allNotPending[++nextIndex]
   }
 
-  const section = getDocsSection(pathname)
+  const section = getDocsSection(currentPath)
 
   // on route change close menu
   useEffect(() => {
