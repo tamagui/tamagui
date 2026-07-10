@@ -159,7 +159,10 @@ const BannerThemes = memo(() => {
           setFeaturedThemes(featuredWithMeta)
         }
       })
-      .catch(console.error)
+      .catch((err) => {
+        // themes api can be unreachable in dev/offline — banner falls back
+        console.warn('Could not fetch recent themes:', err)
+      })
   }, [])
 
   const handleThemeClick = (theme: ThemeWithData) => {
