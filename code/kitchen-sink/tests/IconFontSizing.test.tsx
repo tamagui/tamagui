@@ -24,7 +24,7 @@ async function directSvgWidth(page: any, testId: string) {
 // computed font-size (px) of the text inside a component
 async function fontSizePx(page: any, testId: string) {
   return await page.getByTestId(testId).evaluate((el: HTMLElement) => {
-    const spans = [...el.querySelectorAll('span')]
+    const spans = Array.from(el.querySelectorAll('span'))
     const t = spans.find((s) => s.textContent && /\S/.test(s.textContent))
     return t ? parseFloat(getComputedStyle(t).fontSize) : NaN
   })
