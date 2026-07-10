@@ -1,5 +1,5 @@
 import { getFontSized } from '@tamagui/get-font-sized'
-import { getSize, getSpace } from '@tamagui/get-token'
+import { oneSizeTokenSmaller } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { themeableVariantStyles, YStack } from '@tamagui/stacks'
@@ -8,6 +8,7 @@ import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui
 import {
   createStyledContext,
   createStyledHOC,
+  getVariableValue,
   resolveDefaultSizeToken,
   styled,
   useProps,
@@ -83,12 +84,11 @@ const ListItemFrame = styled(View, {
     size: {
       '...size': (val: SizeTokens, { tokens }) => {
         const sizeToken = resolveDefaultSizeToken(val)
+        const sizeVal = getVariableValue(tokens.size[sizeToken]) as number
         return {
           minHeight: tokens.size[sizeToken],
           paddingHorizontal: tokens.space[sizeToken],
-          paddingVertical: getSpace(tokens.space[sizeToken], {
-            shift: -4,
-          }),
+          paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
           gap: getThemedIconSize(resolveDefaultSizeToken(val), 0.4),
         }
       },
@@ -151,11 +151,8 @@ const ListItemSubtitle = styled(ListItemText, {
 
     size: {
       '...size': (val, extras) => {
-        const oneSmaller = getSize(val, {
-          shift: -1,
-          excludeHalfSteps: true,
-        })
-        const fontStyle = getFontSized(oneSmaller.key as FontSizeTokens, extras as any)
+        const oneSmaller = oneSizeTokenSmaller(val)
+        const fontStyle = getFontSized(oneSmaller as FontSizeTokens, extras as any)
         return fontStyle
       },
     },

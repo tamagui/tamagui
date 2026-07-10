@@ -15,23 +15,38 @@ function constructCSSVariableName(name: string) {
 
 type VariableIn<A = any> = Pick<Variable<A>, 'key' | 'name' | 'val'>
 
+// literal "Npx" string values (e.g. "17px") are treated as exact pixel values:
+// parsed to the number for native / arithmetic, flagged needsPx so web keeps
+// the px unit. they are never token keys (those are "$"-prefixed).
+const pxStringRe = /^-?\d*\.?\d+px$/
+
 export const createVariable = <A extends string | number | Variable = any>(
   props: VariableIn<A>,
   skipHash = false
 ): Variable<A> => {
   if (!skipHash && isVariable(props)) return props
   const { key, name, val } = props
-  return {
+  let finalVal: any = val
+  let needsPx = false
+  if (typeof val === 'string' && pxStringRe.test(val)) {
+    finalVal = Number.parseFloat(val)
+    needsPx = true
+  }
+  const variable: Variable<A> = {
     isVar: true,
     key,
     name: skipHash ? name : simpleHash(name, 40),
-    val,
+    val: finalVal,
     variable: isWeb
       ? skipHash
         ? constructCSSVariableName(name)
         : createCSSVariable(name)
       : '',
   }
+  if (needsPx && isWeb) {
+    variable.needsPx = true
+  }
+  return variable
 }
 
 // could do weakmap cache

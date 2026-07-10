@@ -55,9 +55,7 @@ export const ButtonFrame = styled(View, {
           height: tokens.size[sizeToken],
           borderRadius: tokens.radius[sizeToken],
           gap: tokens.space[sizeToken].val * 0.2,
-          paddingHorizontal: getSpace(sizeToken, {
-            shift: -1,
-          }),
+          paddingHorizontal: getSpace(sizeToken).val * 0.9,
         }
       },
     },
@@ -92,12 +90,10 @@ export const ButtonText = styled(Text, {
 const ButtonIcon = (props: { children: any }) => {
   // @ts-ignore
   const { size } = React.useContext(ButtonContext)
-  const smaller = getSize(size, {
-    shift: -2,
-  })
+  const smaller = getSize(size).val * 0.4
   const theme = useTheme()
   return React.cloneElement(props.children, {
-    size: smaller.val * 0.5,
+    size: smaller,
     color: theme.color.get(),
   })
 }

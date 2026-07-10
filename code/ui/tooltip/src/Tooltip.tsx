@@ -5,7 +5,7 @@ import { FloatingDelayGroup, useDelayGroupContext, type Delay } from '@tamagui/f
 import type { SizeTokens, TamaguiElement } from '@tamagui/core'
 import { useEvent } from '@tamagui/core'
 import { FloatingOverrideContext } from '@tamagui/floating'
-import { getSize } from '@tamagui/get-token'
+import { oneSizeTokenSmaller } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import type {
   PopoverAnchorProps,
@@ -222,19 +222,14 @@ const TooltipComponent = createRefComponent(function Tooltip(
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()
-  const smallerSize = props.unstyled
-    ? null
-    : getSize(true, {
-        shift: -2,
-        bounds: [0],
-      })
+  const smallerSize = props.unstyled ? null : oneSizeTokenSmaller(true)
 
   const content = (
     <FloatingOverrideContext.Provider value={floatingContext}>
       {/* default tooltip to a smaller size */}
       <Popper
         scope={scope}
-        size={smallerSize?.key as SizeTokens}
+        size={smallerSize as SizeTokens}
         allowFlip
         stayInFrame
         open={open}

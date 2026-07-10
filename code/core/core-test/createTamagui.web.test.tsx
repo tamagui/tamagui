@@ -102,8 +102,6 @@ describe('createTamagui', () => {
     })
 
     expect(getSize(true).key).toBe('$4')
-    expect(getSize(true, { shift: 1 }).key).toBe('$5')
-    expect(getSize(true, { shift: 1, excludeHalfSteps: true }).key).toBe('$5')
     expect(getFontSizeToken(true)).toBe('$4')
     expect(getFontSizeToken(true, { relativeSize: 1 })).toBe('$5')
   })

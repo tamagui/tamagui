@@ -14,8 +14,17 @@ const stylePropsAllPlusTransforms = {
   translateY: true,
 }
 
+// literal "Npx" values (e.g. fontSize="17px"). react native only accepts
+// numbers, so parse them there; web keeps the string and outputs it as css.
+const pxStringRe = /^-?\d*\.?\d+px$/
+
 export function normalizeValueWithProperty(value: any, property = ''): any {
-  if (!isWeb) return value
+  if (!isWeb) {
+    if (typeof value === 'string' && pxStringRe.test(value)) {
+      return Number.parseFloat(value)
+    }
+    return value
+  }
   if (
     stylePropsUnitless[property] ||
     (property && !stylePropsAllPlusTransforms[property]) ||
