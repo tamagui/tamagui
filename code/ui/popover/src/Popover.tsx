@@ -487,6 +487,7 @@ export const PopoverContent = createStyledHOC(PopperContentFrame)<PopoverContent
       enableRemoveScroll = false,
       zIndex: zIndexProp,
       scope,
+      forceMount,
       ...contentImplProps
     } = props
 
@@ -517,7 +518,7 @@ export const PopoverContent = createStyledHOC(PopperContentFrame)<PopoverContent
     // popup's own exit animation (isFullyHidden); the popup runs in passThrough
     // mode while adapted, so isFullyHidden either fires immediately (content
     // vanishes mid-slide) or never (content leaks), depending on driver.
-    if (!context.keepChildrenMounted) {
+    if (!forceMount && !context.keepChildrenMounted) {
       if (context.breakpointActive) {
         if (!open && adaptContext.targetFullyHidden) {
           return null
@@ -542,6 +543,7 @@ export const PopoverContent = createStyledHOC(PopperContentFrame)<PopoverContent
             {...contentImplProps}
             context={context}
             open={open}
+            forceMount={forceMount}
             enableRemoveScroll={enableRemoveScroll}
             ref={composedRefs}
             setIsFullyHidden={setIsFullyHidden}
@@ -697,6 +699,13 @@ export type PopoverContentImplProps = PopperContentProps &
     lazyMount?: boolean
 
     /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries. Matches Dialog:
+     * disables part presence gating so the content is always mounted.
+     */
+    forceMount?: boolean
+
+    /**
      * Whether focus should be trapped within the `Popover`
      * @default false
      */
@@ -759,13 +768,15 @@ const PopoverContentImpl = createRefComponent<
     setIsFullyHidden,
     lazyMount,
     forceUnmount,
+    forceMount,
     context,
     open,
     alwaysDisable,
     ...contentProps
   } = props
 
-  const { keepChildrenMounted, disableDismissable } = context
+  const { disableDismissable } = context
+  const keepChildrenMounted = context.keepChildrenMounted || forceMount
 
   const handleExitComplete = React.useCallback(() => {
     setIsFullyHidden?.(true)
