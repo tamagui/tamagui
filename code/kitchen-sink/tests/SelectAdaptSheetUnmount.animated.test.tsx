@@ -43,7 +43,7 @@ test.describe('Select Sheet Adapt - body persists during exit animation', () => 
 
     // start the sampler and close in the same in-page task so playwright
     // round-trip latency cannot shift samples past the short exit animation.
-    type Sample = { t: number; exists: boolean; state: string | null }
+    type Sample = { t: number; exists: boolean; state: string | null; top: number | null }
     const samples: Sample[] = await page.evaluate(
       () =>
         new Promise<Sample[]>((resolve) => {
@@ -58,6 +58,10 @@ test.describe('Select Sheet Adapt - body persists during exit animation', () => 
                 document
                   .querySelector('.is_SheetContainer[data-state]')
                   ?.getAttribute('data-state') ?? null,
+              top:
+                document
+                  .querySelector('.is_SheetContainer[data-state]')
+                  ?.getBoundingClientRect().top ?? null,
             })
           }
 
