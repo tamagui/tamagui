@@ -91,8 +91,9 @@ function createTamaguiAnimatedComponent(defaultTag = 'div') {
       const props = result?.viewProps || {}
       const Element = render
       const transformedProps = hooks.usePropsTransform?.(render, props, stateRef, false)
+      const { nativeID, ...webProps } = transformedProps ?? props
 
-      return <Element {...transformedProps} ref={composedRefs} />
+      return <Element {...webProps} ref={composedRefs} />
     })
   )
   Component['acceptRenderProp'] = true
