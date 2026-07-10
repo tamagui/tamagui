@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/get-font-sized",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "files": [
     "src",
     "types",

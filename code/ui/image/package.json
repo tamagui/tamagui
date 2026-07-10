@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/image",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "source": "src/index.ts",
   "files": [
     "src",
