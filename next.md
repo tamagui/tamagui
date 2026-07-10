@@ -7,6 +7,7 @@ v3 release plan:
 - composable structure audit: ListItem alignment, Select dead-code sweep + Select.Separator, FocusScope (display:contents wrapper, render-prop removed, new `noFocus` zero-focus mode threaded through Dialog/Popover/Select), Dialog (dead-code sweep, RemoveScroll gated to open modal dialogs, parts own presence, driver-level `onDidAnimate` completion), Sheet (scoped context, Frame => Container + Background split with codemod, Overlay must be direct child)
 - Adapt live slot core + dialog<->sheet handoff (exit animations play through media flips)
 - notable fixes along the way: boolean size-shorthand tokens inside variant styles, animated-driver custom component preservation (render-as-string clobbering), slider visible track/fill, dialog exit releases pointer-events locks (body lock, overlay, focus trap)
+- icons: sizing now defaults to font sizes instead of size tokens (`themed()` resolves token sizes via the current font's `font.size[token]` scale, so icons line up with text at every size), and `usePropsAndStyle` was removed from `themed()` (icons now resolve theme color/fill/stroke via `useTheme()` and build a minimal style object instead of running full style resolution on every render)
 
 migration notes so far:
 
@@ -15,10 +16,11 @@ migration notes so far:
 - FocusScope no longer supports function-as-children/render-prop; pass JSX children directly.
 - Select's unused `name` and `autoComplete` props were removed; they never backed form or autofill behavior.
 - Sheet.Frame => Sheet.Container + Sheet.Background (codemod: scripts/codemods/sheet-frame-to-container.js). Container no longer clips with overflow hidden. Sheet.Overlay must be a direct child of Sheet.
+- icon token sizes now resolve through the current font's size scale (`font.size[token]`) rather than the `size` token scale, so e.g. `<Icon size="$4" />` matches `$4` text instead of the `$4` space/size value. Raw numeric sizes are unchanged.
+- icon components no longer accept media/pseudo props directly (e.g. `$sm`, `hoverStyle`) — `themed()` dropped `usePropsAndStyle` and no longer runs full style resolution. Wrap an icon in a styled `View` if you need responsive/pseudo styling around it. Color/fill/stroke theme tokens, `size`, `strokeWidth`, `style`, and `testID` still work as before.
 
 ## active work (v3-gating)
 
-- icons: remove `usePropsAndStyle` from `themed` (replace the pattern) and default icon sizing to font sizes instead of size tokens — both are clear wins
 - remove `getToken` / shift weirdness in default styling (under investigation, proposal pending)
 - line height as multiplier: decided valid, but only for direct numeric values (that work already landed). Remaining: support "px" string values; move v5 config font tokens to "px" values so behavior is backwards compatible; v6 config then defines this logically right, ideally aligned to tailwind's scale.
 - remove RN entirely from web: eject Input and ScrollView by moving the "lite" implementations into the actual tamagui components; `lite` then re-exports from those packages
@@ -221,7 +223,6 @@ and cant put another View next to Content and have it show
   - then we can get rid of defaultProps
   - then get rid of expensive statiConfig.defaultProps merging every render
 - always dynamic optimize no need for special "components"
-- remove `usePropsAndStyle` from icon `themed` somehow / pattern for that
 - remove getToken + shift weirdness in general
 - react compiler on internals / concurrent friendly internals
 - eject from floating-ui if possible (its huge)
