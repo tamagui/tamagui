@@ -1,0 +1,63 @@
+---
+title: ScrollView
+description: Cross-platform ScrollView with Tamagui props
+name: scrollView
+component: ScrollView
+package: scroll-view
+demoName: ScrollView
+---
+
+<HeroContainer>
+  <ScrollViewDemo />
+</HeroContainer>
+
+```tsx hero template=ScrollView
+
+```
+
+<Highlights
+  features={[
+    `React Native-compatible surface for common ScrollView usage.`,
+    `Native web implementation without pulling in react-native-web.`,
+    `Adds all the style properties of Tamagui.`,
+  ]}
+/>
+
+In v3, `@tamagui/scroll-view` ships its own web implementation instead of
+wrapping `react-native-web`. It supports the ScrollView surface Tamagui uses most:
+`scrollTo`, `scrollToEnd`, `getScrollableNode`, React Native-shaped `onScroll`,
+`contentContainerStyle`, `horizontal`, and scroll indicator props.
+
+Props outside that mapped surface, such as momentum events, `snapTo*`, and
+`keyboardDismissMode`, are not supported on web through the lite implementation.
+
+## Installation
+
+ScrollView is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/scroll-view
+```
+
+## Usage
+
+```tsx
+import { ScrollView, YStack, ListItem } from 'tamagui'
+
+export default () => (
+  <ScrollView>
+    <YStack>
+      <ListItem>1</ListItem>
+      <ListItem>2</ListItem>
+      <ListItem>3</ListItem>
+      <ListItem>4</ListItem>
+    </YStack>
+  </ScrollView>
+)
+```
+
+## API Reference
+
+### ScrollView
+
+See [React Native ScrollView](https://reactnative.dev/docs/scrollview) and [Tamagui style props](https://tamagui.dev/docs/intro/props). On web, prefer the mapped props documented above.

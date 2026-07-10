@@ -29,17 +29,18 @@ export async function loader({ params, search, request }) {
   return {
     frontmatter,
     code,
+    search,
   }
 }
 
 export default function DocGuidesPage() {
-  const { code, frontmatter } = useLoader(loader)
-  const { next, previous, currentPath, documentVersionPath } = useDocsMenu()
+  const { code, frontmatter, search } = useLoader(loader)
+  const { next, previous } = useDocsMenu()
   const Component = useMemo(() => getMDXComponent(code), [code])
 
   const GITHUB_URL = 'https://github.com'
   const REPO_NAME = 'tamagui/tamagui'
-  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/data${currentPath}${documentVersionPath}.mdx`
+  const editUrl = `${GITHUB_URL}/${REPO_NAME}/edit/master/code/tamagui.dev/${frontmatter.slug}.mdx`
 
   return (
     <DocsPageFrame
@@ -47,6 +48,8 @@ export default function DocGuidesPage() {
       editUrl={editUrl}
       next={next}
       previous={previous}
+      frontmatter={frontmatter}
+      initialSearch={search}
     >
       <HeadInfo
         title={frontmatter.title}

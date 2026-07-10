@@ -18,12 +18,17 @@ demoName: Select
 <Highlights
   features={[
     `Comes with styling, yet completely customizable and themeable.`,
-    `Accepts animations, themes, size props and more.`,
+    `Accepts transitions, themes, size props and more.`,
     `Accessible, keyboard navigable, full-featured.`,
+    `Adapts to Sheet with the same handoff model as Dialog and Popover.`,
   ]}
 />
 
 Select provides a dropdown menu for choosing from a list of options. It's fully accessible with keyboard navigation, supports typeahead search, and [automatically stacks](/ui/z-index) above other content.
+
+In v3, Select keeps adapted sheet content mounted through the sheet exit
+animation, and web trigger and viewport parts expose `data-state="open" | "closed"`
+for styling.
 
 ## Installation
 
@@ -35,7 +40,7 @@ npm install @tamagui/select
 
 <Notice theme="blue">
   For native apps, we recommend [setting up native
-  portals](/docs/components/portal#native-portal-setup-recommended) to preserve React
+  portals](/ui/portal#native-portal-setup-recommended) to preserve React
   context inside Select content.
 </Notice>
 
@@ -132,11 +137,6 @@ Contains every component for the select:
       description: `Direction of text display.`,
     },
     {
-      name: 'name',
-      type: 'string',
-      description: `For use in forms.`,
-    },
-    {
       name: 'native',
       type: 'NativeValue',
       description: `If passed, will render a native component instead of the custom one. Currently only \`web\` is supported.`,
@@ -162,11 +162,12 @@ Contains every component for the select:
 
 ### Select.Trigger
 
-Extends [ListItem](/docs/components/list-item) to give sizing, icons, and more.
+Extends [ListItem](/ui/list-item) to give sizing, icons, and more.
+On web it includes `data-state="open" | "closed"`.
 
 ### Select.Value
 
-Extends [Paragraph](/docs/components/text), adding:
+Extends [Paragraph](/ui/text), adding:
 
 <PropsTable
   data={[
@@ -180,23 +181,49 @@ Extends [Paragraph](/docs/components/text), adding:
 
 ### Select.Content
 
-Main container for Select content, used to contain the up/down arrows, no API beyond children.
+Main container for Select content, used to contain the up/down arrows.
+
+<PropsTable
+  data={[
+    {
+      name: 'onEscapeKeyDown',
+      type: '(event: KeyboardEvent) => void',
+      description: `Called when Escape is pressed while the content is active.`,
+    },
+    {
+      name: 'onInteractOutside',
+      type: '(event: Event) => void',
+      description: `Called when pointer or focus interaction happens outside the content.`,
+    },
+    {
+      name: 'onPointerDownOutside',
+      type: '(event: Event) => void',
+      description: `Called on outside pointer down. Select composes this with its own preventDefault handling.`,
+    },
+    {
+      name: 'onFocusOutside',
+      type: '(event: Event) => void',
+      description: `Called on outside focus. Select composes this with its own preventDefault handling.`,
+    },
+  ]}
+/>
 
 ### Select.ScrollUpButton
 
 Inside Content first, displays when you can scroll up, stuck to the top.
 
-Extends [YStack](/docs/components/stacks).
+Extends [YStack](/ui/stacks).
 
 ### Select.ScrollDownButton
 
 Inside Content last, displays when you can scroll down, stuck to the bottom.
 
-Extends [YStack](/docs/components/stacks).
+Extends [YStack](/ui/stacks).
 
 ### Select.Viewport
 
-Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrollable content items as children.
+Extends [ThemeableStack](/ui/stacks#themeablestack). Contains scrollable content items as children.
+On web it includes `data-state="open" | "closed"`.
 
 <PropsTable
   data={[
@@ -220,15 +247,20 @@ Extends [ThemeableStack](/docs/components/stacks#themeablestack). Contains scrol
 
 ### Select.Group
 
-Extends [YStack](/docs/components/stacks). Use only when grouping together items, alongside a Label as the first child.
+Extends [YStack](/ui/stacks). Use only when grouping together items, alongside a Label as the first child.
 
 ### Select.Label
 
-Extends [SizableText](/docs/components/text). Used to label Groups. Includes size-based padding and minHeight for consistent appearance with other Select items.
+Extends [SizableText](/ui/text). Used to label Groups. Includes size-based padding and minHeight for consistent appearance with other Select items.
+
+### Select.Separator
+
+Extends [Separator](/ui/separator). Use inside `Select.Group` or
+`Select.Viewport` to visually divide option groups.
 
 ### Select.Item
 
-Extends [ListItem](/docs/components/list-item). Used to add selectable values to the list. Must provide an index as React Native doesn't give any escape hatch for us to configure that automatically.
+Extends [ListItem](/ui/list-item). Used to add selectable values to the list. Must provide an index as React Native doesn't give any escape hatch for us to configure that automatically.
 
 <PropsTable
   data={[
@@ -250,7 +282,7 @@ Extends [ListItem](/docs/components/list-item). Used to add selectable values to
 
 ### Select.ItemText
 
-Extends [Paragraph](/docs/components/text). Used inside Item to provide unselectable text that will show above once selected in the parent Select.
+Extends [Paragraph](/ui/text). Used inside Item to provide unselectable text that will show above once selected in the parent Select.
 
 ### Select.Indicator
 
@@ -294,6 +326,12 @@ Provides access to the underlying FocusScope component used by Select for focus 
       type: 'boolean',
       default: 'false',
       description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus.`,
+    },
+    {
+      name: 'noFocus',
+      type: 'boolean',
+      default: 'false',
+      description: `Zero focus mode. While active, focus is allowed neither inside nor outside the scope. Web only.`,
     },
     {
       name: 'focusOnIdle',
@@ -355,18 +393,19 @@ const labels = {
 
 This is especially useful when rendering many Selects on a single page, as each Select with 20+ items would otherwise mount all those items on initial page load.
 
-### Select.Sheet
+### Adapted Sheet
 
 When used alongside `<Adapt />`, Select will render as a sheet when that breakpoint is active.
 
 This is the only way to render a Select on Native for now, as mobile apps tend to show Select very differently from web and Tamagui wants to present the right abstractions for each platform.
 
-See [Sheet](/docs/components/sheet) for more props.
+See [Sheet](/ui/sheet) for more props.
 
-Must use `Select.Adapt.Contents` inside the `Select.Sheet.Frame` to insert the contents given to `Select.Content`
+Use `Adapt.Contents` inside `Sheet.Container` to insert the contents given to
+`Select.Content`.
 
 ```tsx
-import { Select } from 'tamagui' // or '@tamagui/select'
+import { Adapt, Select, Sheet } from 'tamagui'
 
 export default () => (
   <Select defaultValue="">
@@ -375,11 +414,11 @@ export default () => (
     </Select.Trigger>
 
     <Adapt when="max-md" platform="touch">
-      {/* or <Select.Sheet> */}
-      <Sheet>
-        <Sheet.Frame>
+      <Sheet modal dismissOnSnapToBottom>
+        <Sheet.Container>
+          <Sheet.Background />
           <Adapt.Contents />
-        </Sheet.Frame>
+        </Sheet.Container>
         <Sheet.Overlay />
       </Sheet>
     </Adapt>
@@ -392,6 +431,7 @@ export default () => (
           <Select.Item>
             <Select.ItemText />
           </Select.Item>
+          <Select.Separator />
         </Select.Group>
       </Select.Viewport>
       <Select.ScrollDownButton />

@@ -5,6 +5,8 @@ import { Paragraph, View, XStack, YStack } from 'tamagui'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DocsQuickNav, type Heading } from './DocsQuickNav'
+import { DocsVersionPicker } from './DocsVersionPicker'
+import type { DocsVersionFrontmatter } from './docsVersion'
 
 type DocsPageFrameProps = {
   children: ReactNode
@@ -12,6 +14,8 @@ type DocsPageFrameProps = {
   editUrl?: string
   previous?: { route: string; title: string } | null
   next?: { route: string; title: string } | null
+  frontmatter?: DocsVersionFrontmatter
+  initialSearch?: string
 }
 
 export function DocsPageFrame({
@@ -20,13 +24,18 @@ export function DocsPageFrame({
   editUrl,
   previous,
   next,
+  frontmatter,
+  initialSearch,
 }: DocsPageFrameProps) {
   return (
     <>
       {/* main content */}
       <YStack flex={1} flexBasis="auto" py="$8" px="$4">
         <YStack render="article">
-          <Container position="relative">{children}</Container>
+          <Container position="relative">
+            <DocsVersionPicker frontmatter={frontmatter} initialSearch={initialSearch} />
+            {children}
+          </Container>
 
           <Container>
             {(previous || next) && (

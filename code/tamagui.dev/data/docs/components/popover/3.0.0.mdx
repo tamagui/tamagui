@@ -20,6 +20,7 @@ demoName: Popover
     `Optional arrow to point to content.`,
     `Keeps within bounds of page.`,
     `Can be placed into 12 anchor positions.`,
+    `Adapts to Sheet with the same handoff model as Dialog and Select.`,
   ]}
 />
 
@@ -41,7 +42,7 @@ npm install @tamagui/popover
 
 <Notice theme="blue">
   For native apps, we recommend [setting up native
-  portals](/docs/components/portal#native-portal-setup-recommended) to preserve React
+  portals](/ui/portal#native-portal-setup-recommended) to preserve React
   context inside Popover content.
 </Notice>
 
@@ -70,11 +71,12 @@ export default () => (
     <Adapt when="max-md">
       <Sheet>
         <Sheet.Overlay />
-        <Sheet.Frame>
+        <Sheet.Container>
+          <Sheet.Background />
           <Sheet.ScrollView>
             <Adapt.Contents />
           </Sheet.ScrollView>
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </Adapt>
   </Popover>
@@ -124,6 +126,10 @@ export default () => (
 Note that the `Trigger` scope ties to the `Popover` scope.
 
 ## API Reference
+
+In v3, Popover uses the same Adapt handoff path as Dialog. Adapted content stays
+mounted through the sheet exit animation and unmounts after the sheet reports
+that it is fully hidden.
 
 ### Popover
 
@@ -231,7 +237,7 @@ For most of these properties, you'll want to reference the
 
 Popover.Arrow can be used to show an arrow that points at the Trigger element.
 In order for the Arrow to show you must have a Trigger element within your
-Popover. Arrows extend YStack, see [Stacks](/docs/components/stacks).
+Popover. Arrows extend YStack, see [Stacks](/ui/stacks).
 
 <PropsTable
   data={[
@@ -256,12 +262,12 @@ Popover. Arrows extend YStack, see [Stacks](/docs/components/stacks).
 ### Popover.Trigger
 
 Used to trigger opening of the popover when uncontrolled, just renders a YStack,
-see [Stacks](/docs/components/stacks).
+see [Stacks](/ui/stacks).
 
 ### Popover.Content
 
 Extends PopperContent which extends SizableStack which extends a YStack (see
-[Stacks](/docs/components/stacks)). Used to display the content of the popover.
+[Stacks](/ui/stacks)). Used to display the content of the popover.
 
 <PropsTable
   data={[
@@ -321,12 +327,18 @@ Extends PopperContent which extends SizableStack which extends a YStack (see
       type: `boolean`,
       description: `Delays mounting content until first open.`,
     },
+    {
+      name: 'forceMount',
+      required: false,
+      type: `boolean`,
+      description: `Disables part presence gating so the content stays mounted. Matches Dialog forceMount semantics.`,
+    },
   ]}
 />
 
 ### Popover.Anchor
 
-Renders as YStack, see [Stacks](/docs/components/stacks).
+Renders as YStack, see [Stacks](/ui/stacks).
 
 When you want the Trigger to be in another location from where the Popover
 attaches, use Anchor. When used, Anchor is where the Popover will attach, while
@@ -337,9 +349,9 @@ Trigger will open it.
 When used with `Adapt`, you can render a Sheet when that breakpoint is
 active. Import `Sheet` directly from `tamagui` or `@tamagui/sheet`.
 
-See [Sheet](/docs/components/sheet) for more props.
+See [Sheet](/ui/sheet) for more props.
 
-Must use `Adapt.Contents` inside the `Sheet.Frame` to insert the
+Must use `Adapt.Contents` inside the `Sheet.Container` to insert the
 contents given to `Popover.Content`
 
 ### Popover.FocusScope
@@ -366,6 +378,12 @@ management. Can be used to control focus behavior from a parent component.
       type: 'boolean',
       default: 'false',
       description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
+    },
+    {
+      name: 'noFocus',
+      type: 'boolean',
+      default: 'false',
+      description: `Zero focus mode. While active, focus is allowed neither inside nor outside the scope. Web only.`,
     },
     {
       name: 'focusOnIdle',

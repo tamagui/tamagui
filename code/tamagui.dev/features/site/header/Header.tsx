@@ -1097,16 +1097,35 @@ const Frame = styled(YStack, {
 const CodeModeToggle = React.memo(() => {
   const pathname = usePathname()
   const router = useRouter()
-  const isTailwind =
-    typeof window !== 'undefined' && window.location.search.includes('syntax=tailwind')
+  const [hydrated, setHydrated] = React.useState(false)
+  const search = hydrated && typeof window !== 'undefined' ? window.location.search : ''
+  const isTailwind = hydrated && new URLSearchParams(search).get('syntax') === 'tailwind'
+
+  React.useEffect(() => {
+    setHydrated(true)
+  }, [])
 
   const setMode = React.useCallback(
     (mode: 'tamagui' | 'tailwind') => {
+      const searchParams = new URLSearchParams(
+        typeof window !== 'undefined' ? window.location.search : ''
+      )
+
       if (mode === 'tailwind') {
-        router.push(`${pathname}?syntax=tailwind` as any)
+        searchParams.set('syntax', 'tailwind')
       } else {
-        router.push(pathname as any)
+        searchParams.delete('syntax')
       }
+
+      const nextSearch = searchParams.toString()
+      const nextUrl = nextSearch ? `${pathname}?${nextSearch}` : pathname
+
+      if (typeof window !== 'undefined') {
+        window.location.href = nextUrl
+        return
+      }
+
+      router.push(nextUrl as any)
     },
     [pathname, router]
   )
