@@ -1,63 +1,59 @@
 v3 release plan:
 
-- migration note: Dialog.Content no longer accepts the no-op `size` variant from DialogContentFrame, narrowing the public prop type.
-- migration note: non-modal Dialog.Content no longer enables RemoveScroll while open, so non-modal dialogs no longer lock page scroll.
-- migration note: FocusScope no longer supports function-as-children/render-prop; pass JSX children directly.
+## landed on v3-beta (July 2026)
 
-- remove deprecated / duplicate API paths
-  - `focusable` => `tabIndex`
-  - `fullscreen` => `inset: 0, position: 'absolute'`
-  - remove deprecated stuff
-  - clean out old configs and compatibility paths, at least v1-v3
+- deprecated API removals: `focusable` => `tabIndex`, `fullscreen`, `styleable`, forwardRef wrappers, `inlineWhenUnflattened`, ui-kit aliases, true tokens (default size resolves to `$4`), platform style key renames, createSystemFont moved to its own package
+- SSR-safe inverse sub-themes: `inverse` is a built-in sub-theme now, old themeInverse path gone
+- composable structure audit: ListItem alignment, Select dead-code sweep + Select.Separator, FocusScope (display:contents wrapper, render-prop removed, new `noFocus` zero-focus mode threaded through Dialog/Popover/Select), Dialog (dead-code sweep, RemoveScroll gated to open modal dialogs, parts own presence, driver-level `onDidAnimate` completion), Sheet (scoped context, Frame => Container + Background split with codemod, Overlay must be direct child)
+- Adapt live slot core + dialog<->sheet handoff (exit animations play through media flips)
+- notable fixes along the way: boolean size-shorthand tokens inside variant styles, animated-driver custom component preservation (render-as-string clobbering), slider visible track/fill, dialog exit releases pointer-events locks (body lock, overlay, focus trap)
 
-- theme model open item: `$backgroundActive` no longer exists in v3 themes but is still referenced by checkbox/switch checked states, tabs active, and toggle-group active (silently no-ops). Slider was fixed (track $backgroundPress, fill $color); decide whether to reintroduce backgroundActive or migrate these four to existing tokens.
+migration notes so far:
 
-- simplify theme model
+- Dialog.Content no longer accepts the no-op `size` variant from DialogContentFrame, narrowing the public prop type.
+- non-modal Dialog.Content no longer enables RemoveScroll while open, so non-modal dialogs no longer lock page scroll.
+- FocusScope no longer supports function-as-children/render-prop; pass JSX children directly.
+- Select's unused `name` and `autoComplete` props were removed; they never backed form or autofill behavior.
+- Sheet.Frame => Sheet.Container + Sheet.Background (codemod: scripts/codemods/sheet-frame-to-container.js). Container no longer clips with overflow hidden. Sheet.Overlay must be a direct child of Sheet.
+
+## active work (v3-gating)
+
+- icons: remove `usePropsAndStyle` from `themed` (replace the pattern) and default icon sizing to font sizes instead of size tokens — both are clear wins
+- remove `getToken` / shift weirdness in default styling (under investigation, proposal pending)
+- line height as multiplier: decided valid, but only for direct numeric values (that work already landed). Remaining: support "px" string values; move v5 config font tokens to "px" values so behavior is backwards compatible; v6 config then defines this logically right, ideally aligned to tailwind's scale.
+- remove RN entirely from web: eject Input and ScrollView by moving the "lite" implementations into the actual tamagui components; `lite` then re-exports from those packages
+- props-consistency pass across components: align how Dialog/Popover/Select/Tooltip/Toast handle portals, focus props, scoping, and naming (Dialog + Sheet are the cleaned-up reference now)
+- iOS CI: clear stale queued macOS runs, fix runner availability so Detox/Maestro actually run per-push
+
+## open decisions (not currently being executed)
+
+- theme model
   - remove component themes / remove `name` from `styled()` (or just make not theme-related)
   - component example just show using theme="surface1" for example
-  - remove `inverse` in favor of SSR-safe inverse sub-themes (accent already is)
-  - maybe make theme builder have easy "inverse" optoin so accent can be something else
+  - maybe make theme builder have easy "inverse" option so accent can be something else
+  - `$backgroundActive` no longer exists in v3 themes but is still referenced by checkbox/switch checked states, tabs active, and toggle-group active (silently no-ops). Slider was fixed (track $backgroundPress, fill $color); decide whether to reintroduce backgroundActive or migrate these four to existing tokens.
+- update button a bit to how i do them
+- consider removing or simplifying `ThemeableStack` / `SizableStack`
+- simplify Select/ListItem further where it directly helps perf or API clarity
+- Adapt render callback public API: render callback that lets you decide how to render given the resolved typed props; de-couple native integrations to `@tamagui/sheet/adapt-to-[some-native-library]` exports
 
-- core styling/runtime cleanup
-  - remove `styleable`
-  - remove forwardRef
-  - remove `inlineWhenUnflattened`
-  - remove `usePropsAndStyle` from icon `themed` or replace the pattern
-  - update button a bit to how i do them
-  - make icons default to font sizes not size tokens
-  - consider the line height default as a multiplier work we did
-  - remove `getToken` / shift weirdness in default styling
+## deferred / post-v3 unless revisited
 
-- component simplification
-  - make props more consistent across components
-  - clean up composable component structure, especially Dialog weirdness
-    - there's a lot of incosistencies when u study across the different components in how they do portals, focus, other props
-  - simplify Select/ListItem where it directly helps perf or API clarity
-  - migration note: Select's unused `name` and `autoComplete` props were removed; they never backed form or autofill behavior.
-  - consider removing or simplifying `ThemeableStack` / `SizableStack`
-  - FocusScope now has `noFocus` zero-focus mode (nothing can hold focus inside or outside while active), flows through Dialog/Popover/Select via FocusScope.Controller
-
-- Adapt
-  - making Adapt work however you want via render callback is a big win, basically a render callback that lets you decide how to render giving you the ressolved typed props. we could even de-couple any current native integrations so we only have a few recommended ones we wexport at like @tamagui/sheet/adapt-to-[some-native-library] for example
-
-  - remove RN entirely from web (eject input, scrollview)
-
-- consider
-  - compound variants?
-  - simplify functional variants
-  - conditional values or value objects
-  - see v3 cleanups
-  - native can have a non-signal mode for faster initial render
-  - activeStyle
-  - remove the flat mode we spiked in tw branch
-  - style improvements of some sort:
-    - light-dark() support
-    - css if functions of some sort
-    - bringing back some sort of "flat-mode" for tamagui
-      - bg="ios:light(red) dark(blue)"
-      - boxShadow="dark(0 0 10px $shadow5)"
-      - green-red-blue(#xxx, $some, $thing)
-      - light-dark(hover-press($red2, $red3), hover-press($red3, $red2))
+- compound variants?
+- simplify functional variants
+- conditional values or value objects
+- see v3 cleanups
+- native can have a non-signal mode for faster initial render
+- activeStyle
+- remove the flat mode we spiked in tw branch
+- style improvements of some sort:
+  - light-dark() support
+  - css if functions of some sort
+  - bringing back some sort of "flat-mode" for tamagui
+    - bg="ios:light(red) dark(blue)"
+    - boxShadow="dark(0 0 10px $shadow5)"
+    - green-red-blue(#xxx, $some, $thing)
+    - light-dark(hover-press($red2, $red3), hover-press($red3, $red2))
 
 ---
 
