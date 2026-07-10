@@ -139,6 +139,13 @@ export function setupMediaListeners() {
 
 const listeners = new Set<any>()
 
+// tracks whether the first client render pass (hydration) has completed.
+// until then useMedia must return `initState` (mediaQueryDefaultActive) so
+// the client's first render matches what the server rendered; the mount
+// effect then flips to real matchMedia values with a corrective re-render.
+// components mounting later get real values immediately.
+let didHydrateOnce = false
+
 export function updateMediaListeners() {
   listeners.forEach((cb) => cb(getMedia()))
 }
@@ -239,7 +246,10 @@ export function useMedia(
 
   const internalRef = useRef<MediaRef | null>(null)
   if (!internalRef.current) {
-    const initial = getMedia()
+    const initial =
+      !isServer && !didHydrateOnce && !getSetting('disableSSR')
+        ? initState
+        : getMedia()
     const r: MediaRef = {
       keys: new Set<string>(),
       lastState: initial,
@@ -318,6 +328,17 @@ export function useMedia(
   ;(ref.proxy as any)[refSlot].proxyTarget = state
 
   useEffect(() => {
+    didHydrateOnce = true
+
+    // if the hydration render used mediaQueryDefaultActive and the real
+    // matchMedia values differ, re-render now with the real values
+    const synced = ref.getSnapshot()
+    if (synced !== ref.proxyTarget) {
+      ref.proxyTarget = synced
+      ;(ref.proxy as any)[refSlot].proxyTarget = synced
+      forceUpdate()
+    }
+
     const renderVersion = ref.renderVersion
     const shouldSubscribe =
       !ref.componentContext || !!States.get(ref.componentContext)?.enabled
