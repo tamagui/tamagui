@@ -20,7 +20,6 @@ import {
   createStyledContext,
   useCreateShallowSetState,
   useEvent,
-  useGet,
   View,
 } from '@tamagui/core'
 import {
@@ -49,7 +48,6 @@ import {
 import { needsPortalRepropagation, Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
 import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
-import { SheetController } from '@tamagui/sheet/controller'
 import type { YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -176,14 +174,6 @@ export const PopoverContext = createStyledContext<PopoverContextValue>(
 
 // zIndex flows from root Popover prop to PopoverContent portal
 export const PopoverZIndexContext = React.createContext<number | undefined>(undefined)
-
-// when adapted to a Sheet, tracks whether the sheet has finished sliding out.
-// PopoverSheetController flips this true via SheetController.onAnimationComplete
-// so PopoverContent can hold its adapted children mounted until the slide-out
-// is done, instead of unmounting them on the popup's (passThrough) exit.
-// defaults true (= safe to unmount) for any PopoverContent rendered outside a
-// PopoverSheetController.
-const PopoverAdaptHiddenContext = React.createContext(true)
 
 export const PopoverTriggerContext = createStyledContext<PopoverTriggerContextValue>(
   {} as PopoverTriggerContextValue,
@@ -497,10 +487,12 @@ export const PopoverContent = createStyledHOC(PopperContentFrame)<PopoverContent
       enableRemoveScroll = false,
       zIndex: zIndexProp,
       scope,
+      forceMount,
       ...contentImplProps
     } = props
 
     const context = usePopoverContext(scope)
+    const adaptContext = useAdaptContext(context.adaptScope)
     const zIndexFromContext = React.useContext(PopoverZIndexContext)
     // prop on Content takes precedence for backwards compatibility, then context from root
     const zIndex = zIndexProp ?? zIndexFromContext
@@ -522,14 +514,13 @@ export const PopoverContent = createStyledHOC(PopperContentFrame)<PopoverContent
 
     // when adapted to a Sheet, the content is portaled into the sheet via
     // Adapt.Contents. its mount lifecycle must follow the sheet's slide-out
-    // (PopoverAdaptHiddenContext, flipped by SheetController.onAnimationComplete),
-    // NOT the popup's own exit animation (isFullyHidden); the popup runs in
-    // passThrough mode while adapted, so isFullyHidden either fires immediately
-    // (content vanishes mid-slide) or never (content leaks), depending on driver.
-    const isAdaptFullyHidden = React.useContext(PopoverAdaptHiddenContext)
-    if (!context.keepChildrenMounted) {
+    // (adaptContext.targetFullyHidden, driven by the Adapt handoff), NOT the
+    // popup's own exit animation (isFullyHidden); the popup runs in passThrough
+    // mode while adapted, so isFullyHidden either fires immediately (content
+    // vanishes mid-slide) or never (content leaks), depending on driver.
+    if (!forceMount && !context.keepChildrenMounted) {
       if (context.breakpointActive) {
-        if (!open && isAdaptFullyHidden) {
+        if (!open && adaptContext.targetFullyHidden) {
           return null
         }
       } else if (isFullyHidden && !open) {
@@ -552,6 +543,7 @@ export const PopoverContent = createStyledHOC(PopperContentFrame)<PopoverContent
             {...contentImplProps}
             context={context}
             open={open}
+            forceMount={forceMount}
             enableRemoveScroll={enableRemoveScroll}
             ref={composedRefs}
             setIsFullyHidden={setIsFullyHidden}
@@ -707,6 +699,13 @@ export type PopoverContentImplProps = PopperContentProps &
     lazyMount?: boolean
 
     /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries. Matches Dialog:
+     * disables part presence gating so the content is always mounted.
+     */
+    forceMount?: boolean
+
+    /**
      * Whether focus should be trapped within the `Popover`
      * @default false
      */
@@ -769,13 +768,15 @@ const PopoverContentImpl = createRefComponent<
     setIsFullyHidden,
     lazyMount,
     forceUnmount,
+    forceMount,
     context,
     open,
     alwaysDisable,
     ...contentProps
   } = props
 
-  const { keepChildrenMounted, disableDismissable } = context
+  const { disableDismissable } = context
+  const keepChildrenMounted = context.keepChildrenMounted || forceMount
 
   const handleExitComplete = React.useCallback(() => {
     setIsFullyHidden?.(true)
@@ -964,14 +965,43 @@ export const Popover = withStaticProperties(
   ) {
     const id = React.useId()
     const adaptScope = `PopoverAdapt${scope}`
+    const { open: openProp, defaultOpen, onOpenChange } = props
+    const viaRef = React.useRef<PopoverVia>(undefined)
+
+    // open state lives here (above AdaptParent) so the Adapt handoff can drive
+    // the adapted Sheet's open/close and unmount timing directly, mirroring Dialog
+    const [open, setOpen] = useControllableState({
+      prop: openProp,
+      defaultProp: defaultOpen || false,
+      onChange: (val) => {
+        onOpenChange?.(val, viaRef.current)
+      },
+    })
+
+    const handleOpenChange = useEvent((val: boolean, via?: PopoverVia): void => {
+      viaRef.current = via
+      setOpen(val)
+    })
+
+    // track open popovers for closeOpenPopovers()
+    React.useEffect(() => {
+      if (!open) return
+      openPopovers.add(setOpen)
+      return () => {
+        openPopovers.delete(setOpen)
+      }
+    }, [open, setOpen])
 
     return (
-      <AdaptParent scope={adaptScope} portal>
+      <AdaptParent scope={adaptScope} open={open} onOpenChange={setOpen}>
         <PopoverInner
           adaptScope={adaptScope}
           ref={ref}
           id={id}
           scope={scope}
+          open={open}
+          setOpen={setOpen}
+          handleOpenChange={handleOpenChange}
           {...props}
         />
       </AdaptParent>
@@ -991,13 +1021,19 @@ export const Popover = withStaticProperties(
 
 const PopoverInner = createRefComponent<
   Popover,
-  PopoverProps & { id: string; adaptScope: string }
+  PopoverProps & {
+    id: string
+    adaptScope: string
+    open: boolean
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    handleOpenChange: (open: boolean, via?: PopoverVia) => void
+  }
 >(function PopoverInner(props, forwardedRef) {
   const {
     children,
-    open: openProp,
-    defaultOpen,
-    onOpenChange,
+    open: _openProp,
+    defaultOpen: _defaultOpen,
+    onOpenChange: _onOpenChange,
     scope = DEFAULT_SCOPE,
     keepChildrenMounted: keepChildrenMountedProp,
     hoverable,
@@ -1006,12 +1042,14 @@ const PopoverInner = createRefComponent<
     zIndex,
     id,
     adaptScope,
+    open,
+    setOpen,
+    handleOpenChange,
     ...restProps
   } = props
 
   const triggerRef = React.useRef<TamaguiElement>(null)
   const [hasCustomAnchor, setHasCustomAnchor] = React.useState(false)
-  const viaRef = React.useRef<PopoverVia>(undefined)
 
   const [keepChildrenMounted] = useControllableState({
     prop: keepChildrenMountedProp,
@@ -1019,33 +1057,12 @@ const PopoverInner = createRefComponent<
     transition: keepChildrenMountedProp === 'lazy',
   })
 
-  const [open, setOpen] = useControllableState({
-    prop: openProp,
-    defaultProp: defaultOpen || false,
-    onChange: (val) => {
-      onOpenChange?.(val, viaRef.current)
-    },
-  })
-
-  // track open popovers for closeOpenPopovers()
-  React.useEffect(() => {
-    if (!open) return
-    openPopovers.add(setOpen)
-    return () => {
-      openPopovers.delete(setOpen)
-    }
-  }, [open, setOpen])
-
-  const handleOpenChange = useEvent((val, via) => {
-    viaRef.current = via
-    setOpen(val)
-  })
-
   const isAdapted = useAdaptIsActive(adaptScope)
 
   const floatingContext = useFloatingContext({
     open,
-    setOpen: handleOpenChange,
+    // floating passes a string via ('hover'), widen at this boundary
+    setOpen: handleOpenChange as (val: boolean, type?: string) => void,
     disable: isAdapted,
     hoverable,
     disableFocus: disableFocus,
@@ -1097,9 +1114,7 @@ const PopoverInner = createRefComponent<
         disableDismissable={disableDismissable}
         hoverable={hoverable}
       >
-        <PopoverSheetController onOpenChange={setOpen} open={open} scope={scope}>
-          {children}
-        </PopoverSheetController>
+        {children}
       </PopoverContextProvider>
     </Popper>
   )
@@ -1131,61 +1146,4 @@ const PopoverInner = createRefComponent<
 
 function getState(open: boolean) {
   return open ? 'open' : 'closed'
-}
-
-const PopoverSheetController = ({
-  open,
-  scope,
-  ...props
-}: {
-  open: boolean
-  scope?: string
-  children: React.ReactNode
-  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
-}) => {
-  const context = usePopoverContext(scope)
-  const showSheet = useShowPopoverSheet(context, open)
-  const breakpointActive = context?.breakpointActive
-  const getShowSheet = useGet(showSheet)
-
-  // tracks whether the adapted Sheet has finished its slide-out animation.
-  // starts true (= safe to unmount) when closed; flips false the moment the
-  // popover opens; flips back to true when the sheet signals onAnimationComplete
-  // with open=false (slide-out finished). mirrors DialogSheetController.
-  const [isAdaptFullyHidden, setIsAdaptFullyHidden] = React.useState(!open)
-  if (open && isAdaptFullyHidden) {
-    setIsAdaptFullyHidden(false)
-  }
-
-  const handleSheetAnimationComplete = React.useCallback(
-    ({ open: isOpen }: { open: boolean }) => {
-      if (!isOpen) {
-        setIsAdaptFullyHidden(true)
-      }
-    },
-    []
-  )
-
-  return (
-    <SheetController
-      scope={scope}
-      onOpenChange={(val: boolean) => {
-        if (getShowSheet()) {
-          props.onOpenChange?.(val)
-        }
-      }}
-      onAnimationComplete={handleSheetAnimationComplete}
-      open={open}
-      hidden={!breakpointActive}
-    >
-      <PopoverAdaptHiddenContext.Provider value={isAdaptFullyHidden}>
-        {props.children}
-      </PopoverAdaptHiddenContext.Provider>
-    </SheetController>
-  )
-}
-
-const useShowPopoverSheet = (context: PopoverContextValue, open: boolean) => {
-  const isAdapted = useAdaptIsActive(context.adaptScope)
-  return open === false ? false : isAdapted
 }

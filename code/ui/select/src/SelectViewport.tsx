@@ -144,6 +144,9 @@ export const SelectViewport = createStyledHOC(
             key="select-viewport"
             size={itemContext.size}
             role="presentation"
+            {...(isWeb && {
+              'data-state': context.open ? 'open' : 'closed',
+            })}
             {...viewportProps}
             {...style}
             {...floatingProps}

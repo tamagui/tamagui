@@ -189,6 +189,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SafeAreaValue: () => require('./SafeAreaValue').SafeAreaValue,
   ScrollViewRefCase: () => require('./ScrollViewRefCase').ScrollViewRefCase,
   SecondPage: () => require('./SecondPage').SecondPage,
+  SelectAdaptSheetUnmountCase: () =>
+    require('./SelectAdaptSheetUnmountCase').SelectAdaptSheetUnmountCase,
   SelectAndroidOnPress: () => require('./SelectAndroidOnPress').SelectAndroidOnPress,
   SelectFocusScopeCase: () => require('./SelectFocusScopeCase').SelectFocusScopeCase,
   SelectRemount: () => require('./SelectRemount').SelectRemount,

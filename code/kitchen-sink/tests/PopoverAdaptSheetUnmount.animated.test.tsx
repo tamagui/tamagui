@@ -125,8 +125,8 @@ test.describe('Popover Sheet Adapt - body persists during exit animation', () =>
     }
 
     // and after the slide-out completes, the marker SHOULD unmount, the other
-    // half of the fix (no permanent mount). SheetController.onAnimationComplete
-    // flips PopoverAdaptHiddenContext true, PopoverContent returns null.
+    // half of the fix (no permanent mount). the Adapt handoff flips
+    // adaptContext.targetFullyHidden true, so PopoverContent returns null.
     await expect
       .poll(
         async () =>
