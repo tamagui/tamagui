@@ -139,6 +139,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./InputAutoFocusAfterMenuCase').InputAutoFocusAfterMenuCase,
   InputAutoFocusStyledCase: () =>
     require('./InputAutoFocusStyledCase').InputAutoFocusStyledCase,
+  InputRefCase: () => require('./InputRefCase').InputRefCase,
   ThemedListItem: () => require('./ListItem').ThemedListItem,
   NewInputBasic: () => require('./NewInputBasic').NewInputBasic,
   InputTextShorthand: () => require('./InputTextShorthand').InputTextShorthand,
