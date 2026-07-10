@@ -1,657 +1,486 @@
 ---
-title: Upgrading from v1 to v2
-description: A comprehensive guide for migrating your Tamagui project from v1 to v2
+title: Upgrading to v3
+description: A complete guide for migrating Tamagui v2 apps to Tamagui v3.
 ---
 
-Tamagui v2 aligns with modern web standards, improves performance, and simplifies APIs. The migration is moderate -- mostly removing deprecated APIs, renaming props, and updating your config. This guide walks through every change.
+Tamagui v3 removes deprecated APIs, makes tokens and themes more predictable,
+and unifies the overlay Adapt path across Dialog, Popover, Select, and Sheet.
+Most migrations are mechanical, but the Sheet anatomy, token changes, and focus
+behavior should be verified in real screens.
 
-## Prerequisites
+<Notice theme="blue">
+  If you are on v1, migrate through the v2 guide first or run the v1-to-v3 AI
+  migration prompt from the CLI. v3 assumes the v2 web-standard prop model,
+  Config v5, React 19, React Native 0.81+, and TypeScript 5+ baseline.
+</Notice>
 
-Tamagui 2 requires:
+## 1. Update packages
 
-- **React 19+**
-- **React Native 0.81+** (with New Architecture support)
-- **TypeScript 5+**
-
-Upgrade these first before proceeding.
-
-## 1. Update Dependencies
-
-Bump all `@tamagui/*` and `tamagui` packages to `^2.0.0`:
+Bump all `tamagui` and `@tamagui/*` packages together.
 
 ```bash
-# if using npm/yarn/pnpm, update all tamagui packages
 npx tamagui check
 ```
 
-### Removed packages
+Then install the v3 versions with your package manager and make sure your lockfile
+does not contain duplicate `@tamagui/core`, `@tamagui/web`, or `tamagui` copies.
 
-- `@tamagui/animations-moti` -- use `@tamagui/animations-reanimated` (same API)
-- `@tamagui/image-next` -- use `Image` from `tamagui` directly
-
-### Add resolutions
-
-In monorepos, you may want to add resolutions to avoid duplicate copies of core packages (critical for context/provider to work):
-
-```json
-"resolutions": {
-  "@tamagui/core": "^2.0.0",
-  "@tamagui/web": "^2.0.0",
-  "tamagui": "^2.0.0"
-}
-```
-
-## 2. Config Migration (v4 to v5)
-
-You don't have to migrate to Config v5, and it changes some default style behaviors that may
-cause some issues. It's easier to migrate to Tamagui 2 first, then Config v5 after if you do choose to.
-Config v5 is mostly a superset of v5, but some media query names changed and some themes and colors are different.
-
-### Update imports
-
-```tsx
-// before
-import { defaultConfig } from '@tamagui/config/v4'
-
-// after
-import { defaultConfig } from '@tamagui/config/v5'
-import { animations } from '@tamagui/config/v5-css' // animations are now separate
-```
-
-Animations are no longer bundled with the config. Choose your driver:
-
-- `@tamagui/config/v5-css` -- CSS transitions (smallest bundle, web-only)
-- `@tamagui/config/v5-rn` -- React Native Animated API
-- `@tamagui/config/v5-reanimated` -- Reanimated (best native performance)
-- `@tamagui/config/v5-motion` -- Motion (Web Animations API, experimental)
-
-### Add animations to config
-
-```tsx
-import { defaultConfig } from '@tamagui/config/v5'
-import { animations } from '@tamagui/config/v5-css'
-import { createTamagui } from 'tamagui'
-
-export const config = createTamagui({
-  ...defaultConfig,
-  animations,
-})
-
-export type Conf = typeof config
-
-declare module 'tamagui' {
-  interface TamaguiCustomConfig extends Conf {}
-}
-```
-
-### Settings changes
-
-All root-level `createTamagui` settings have moved into the `settings` object:
-
-```tsx
-// before (v1)
-createTamagui({
-  defaultFont: 'body',
-  disableRootThemeClass: true,
-  // ...
-})
-
-// after (v2)
-createTamagui({
-  ...defaultConfig,
-  settings: {
-    ...defaultConfig.settings,
-    // your overrides
-  },
-})
-```
-
-**Removed settings:**
-
-- `maxDarkLightNesting` -- removed entirely
-- `cssStyleSeparator` -- removed entirely
-- `themeClassNameOnRoot` -- handled by `addThemeClassName`
-- `disableRootThemeClass` -- now part of `settings`
-
-### Flex and position defaults
-
-v5 changes two important defaults:
-
-- `flexBasis` changes from `auto` to `0` (React Native standard)
-- `position` changes from `relative` to `static` (browser default)
-
-If your layout relies on the old behavior, restore it:
-
-```tsx
-settings: {
-  ...defaultConfig.settings,
-  styleCompat: 'legacy',         // restores flexBasis: auto
-  defaultPosition: 'relative',   // restores position: relative
-}
-```
-
-Otherwise, you may need to add `position="relative"` explicitly on containers that have absolutely-positioned children, and add `flexBasis="auto"` where needed.
-
-### Media query renames
-
-- `$2xl` → `$xxl`
-- `$2xs` → `$xxs`
-- `$max2Xl` → `$max-xxl`
-- `$maxXl` → `$max-xl`
-- `$maxLg` → `$max-lg`
-- `$maxMd` → `$max-md`
-- `$maxSm` → `$max-sm`
-
-Max queries changed from camelCase to kebab-case. New height-based queries are also available (`$height-sm`, `$height-md`, etc.) and a `$pointerTouch` query.
-
-Breakpoint values now match Tailwind CSS: 640, 768, 1024, 1280, 1536.
-
-### Colors and themes
-
-Colors have been updated to Radix Colors v3 with slightly different values. Legacy colors are available at `@tamagui/colors/legacy`.
-
-v5 adds new color themes: `orange`, `pink`, `purple`, `teal`, `gray`, `neutral`.
-
-```tsx
-// before (v1) - manual theme-builder
-import { createThemes, defaultComponentThemes } from '@tamagui/theme-builder'
-const themes = createThemes({ ... })
-
-// after (v2) - simplified
-import { createV5Theme, defaultChildrenThemes } from '@tamagui/themes/v5'
-const themes = createV5Theme({
-  childrenThemes: {
-    ...defaultChildrenThemes,
-    // add custom color themes
-    cyan: { light: cyan, dark: cyanDark },
-  },
-})
-```
-
-Component themes are off by default in v5. Use `defaultProps` in your config instead:
-
-```tsx
-createTamagui({
-  ...defaultConfig,
-  defaultProps: {
-    Button: { theme: 'accent' },
-  },
-})
-```
-
-### Theme tree-shaking (SSR optimization)
-
-On the client, you can skip loading theme JS and hydrate from CSS variables instead:
-
-```tsx
-themes: process.env.VITE_ENVIRONMENT === 'client'
-  ? ({} as typeof themes)
-  : themes,
-```
-
-<Notice theme="blue">
-  Once your v5 config is set up, run `npx tamagui generate-prompt` and commit the output
-  to your repo. This helps AI assistants understand your Tamagui config and can speed up
-  the rest of the migration.
-</Notice>
-
-## 3. Prop Renames
-
-These are the most common find-and-replace changes.
-
-### `animation` to `transition`
-
-```tsx
-// before
-<View animation="bouncy" />
-<Sheet.Overlay animation="lazy" />
-
-// after
-<View transition="bouncy" />
-<Sheet.Overlay transition="lazy" />
-```
-
-The TypeScript type also changed: `AnimationProp` to `TransitionProp`.
-
-### `tag` to `render`
-
-```tsx
-// before
-<View tag="nav" />
-<View tag="button" />
-
-// after
-<View render="nav" />
-<View render="button" />
-```
-
-For `tag="a"`, consider using the `Anchor` component instead.
-
-### `Stack` to `View`
-
-```tsx
-// before
-import { Stack, type StackProps } from 'tamagui'
-
-// after
-import { View, type ViewProps } from 'tamagui'
-```
-
-### `themeInverse` / `<Theme inverse>` to `theme="inverse"`
-
-```tsx
-// before
-<Button themeInverse>Primary</Button>
-<Theme inverse><Card>...</Card></Theme>
-
-// after
-<Button theme="inverse">Primary</Button>
-<Theme name="inverse"><Card>...</Card></Theme>
-```
-
-### `space` / `spaceDirection` to `gap`
-
-```tsx
-// before
-<YStack space="$4" spaceDirection="both">
-
-// after
-<YStack gap="$4">
-```
-
-### `onHoverIn` / `onHoverOut`
-
-```tsx
-// before
-<View onHoverIn={handler} onHoverOut={handler} />
-
-// after
-<View onPointerEnter={handler} onPointerLeave={handler} />
-```
-
-### `ellipse` to `numberOfLines`
-
-```tsx
-// before
-<Text ellipse>Long text...</Text>
-
-// after
-<Text numberOfLines={1}>Long text...</Text>
-```
-
-## 4. Shadow Migration
-
-Replace React Native shadow props with CSS `boxShadow`:
-
-```tsx
-// before
-<View
-  shadowColor="$shadow3"
-  shadowRadius={20}
-  shadowOffset={{ height: 10, width: 0 }}
-/>
-
-// after
-<View boxShadow="0 10px 20px $shadow3" />
-```
-
-The format is `x y blur color`. Multiple shadows are comma-separated. Spread and inset are also supported.
-
-## 5. Accessibility Props
-
-All React Native accessibility props are replaced with web-standard ARIA equivalents:
-
-- `accessibilityLabel` → `aria-label`
-- `accessibilityRole` → `role`
-- `accessibilityHint` → `aria-describedby`
-- `accessibilityState={{ disabled }}` → `aria-disabled`
-- `accessibilityState={{ selected }}` → `aria-selected`
-- `accessibilityState={{ checked }}` → `aria-checked`
-- `accessibilityState={{ busy }}` → `aria-busy`
-- `accessibilityState={{ expanded }}` → `aria-expanded`
-- `accessibilityValue` → `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, `aria-valuetext`
-- `accessibilityElementsHidden` → `aria-hidden`
-- `accessibilityViewIsModal` → `aria-modal`
-- `accessibilityLiveRegion` → `aria-live`
-- `accessible` → `tabIndex={0}`
-- `focusable` → `tabIndex`
-- `nativeID` → `id`
-
-## 6. Component API Changes
-
-### Input
-
-Input now uses web-standard HTML attributes as the primary API:
-
-```tsx
-// before
-<Input
-  keyboardType="email-address"
-  secureTextEntry
-  returnKeyType="send"
-  textContentType="emailAddress"
-  onChangeText={(text) => setText(text)}
-  onKeyPress={(e) => {
-    if (e.nativeEvent.key === 'Enter') submit()
-  }}
-  editable={false}
-/>
-
-// after
-<Input
-  inputMode="email"
-  type="password"
-  enterKeyHint="send"
-  autoComplete="email"
-  onChange={(e) => setText(e.target?.value ?? e.nativeEvent?.text ?? '')}
-  onKeyDown={(e) => {
-    if (e.key === 'Enter') submit()
-  }}
-  readOnly
-/>
-```
-
-The old React Native props still work but are deprecated.
-
-### Image
-
-Image now uses web-standard `src` instead of React Native's `source`:
-
-```tsx
-// before
-<Image
-  source={{ uri: 'https://example.com/photo.jpg', width: 200, height: 200 }}
-  resizeMode="cover"
-/>
-
-// after
-<Image
-  src="https://example.com/photo.jpg"
-  width={200}
-  height={200}
-  objectFit="cover"
-/>
-```
-
-### Button
-
-- Text style props (`fontFamily`, `fontSize`, etc.) removed from the direct API -- style text through child components
-- Now defaults to `type="button"` to prevent accidental form submissions
-- `useButton` hook is deprecated
-
-### ListItem
-
-- Text style props removed -- use `ListItem.Text` and `ListItem.Subtitle` child components
-- Internal spacing props (`spaceFlex`, `scaleSpace`) removed
-
-### Tabs
-
-- `activationMode` now defaults to `'manual'` (was `'automatic'`) -- users must click or press Enter to change tabs, matching web standards
-- `Tabs.Trigger` removed in favor of `Tabs.Tab`
-
-### Group
-
-- `Group.Item` wrapper is now required (no more auto-cloning direct children)
-- Removed props: `space`, `separator`, `scrollable`, `showScrollIndicator`, `disablePassBorderRadius`, `forceUseItem`
-- Add `<Separator />` manually between items when needed
-
-### Sheet / Popover.Sheet
-
-`Popover.Sheet` sub-components are replaced with standalone `Sheet`:
-
-```tsx
-// before
-<Adapt when="maxMd" platform="touch">
-  <Popover.Sheet modal dismissOnSnapToBottom>
-    <Popover.Sheet.Frame p="$4">
-      <Adapt.Contents />
-    </Popover.Sheet.Frame>
-    <Popover.Sheet.Overlay animation="quick" />
-  </Popover.Sheet>
-</Adapt>
-
-// after
-<Adapt when="max-md" platform="touch">
-  <Sheet modal dismissOnSnapToBottom>
-    <Sheet.Container p="$4">
-      <Sheet.Background />
-      <Adapt.Contents />
-    </Sheet.Container>
-    <Sheet.Overlay transition="quick" />
-  </Sheet>
-</Adapt>
-```
-
-Move visual surface props from `Sheet.Frame` to `Sheet.Background`, and keep
-layout props on `Sheet.Container`. `Sheet.Background` now owns
-`disableHideBottomOverflow`.
-
-`Sheet.Container` no longer clips content with `overflow="hidden"`. If you rely
-on full-bleed content being clipped to the sheet's top radius, add clipping to
-your content or container explicitly.
-
-`Sheet.Overlay` must be a direct child of `Sheet`. In development, nested
-overlays warn with:
-`Sheet.Overlay must be a direct child of Sheet. Move it next to Sheet.Handle and Sheet.Container.`
-
-### Select
-
-`SelectLabel` is now SizableText-based instead of ListItem-based.
-
-## 7. Removed APIs
-
-- `<Spacer />` removed from core -- import from `@tamagui/spacer`
-- `composeEventHandlers` -- compose manually: `(val) => { a(val); b?.(val) }`
-- `useTheme(props)` -- use `<Theme>` component instead
-- `ThemeableStack` -- use `View`
-- `backgrounded` prop -- use `bg="$background"`
-- `selectable` prop -- use `select="text"`
-- `animatePresence` prop (inline) -- wrap with `<AnimatePresence>` component
-- `scrollbarWidth` prop -- use CSS
-- `isWindowDefined` -- use `isBrowser` from `@tamagui/constants`
-- `useTheme` from `@tamagui/next-theme` -- renamed to `useThemeSetting`
-- `@tamagui/react-native-use-responder-events` -- use pointer events (`onPointerDown`, etc.)
-
-## 8. Native Setup
-
-v2 requires explicit setup imports for native features. Add these at the top of your app entry before any Tamagui imports. Note these are optional and mostly new, so only if you were using native gradient, or toast before do you need to do this.
-
-```tsx
-// portals (Sheet, Dialog, Popover, Select, Toast)
-import '@tamagui/native/setup-teleport'
-
-// LinearGradient
-import '@tamagui/native/setup-expo-linear-gradient'
-
-// Toast (burnt)
-import '@tamagui/native/setup-burnt'
-
-// Menu (zeego)
-import '@tamagui/native/setup-zeego'
-
-// for smoother Sheet on native:
-import '@tamagui/native/setup-gesture-handler'
-```
-
-### Expo Router entry point
-
-With Expo Router, these setup imports must run **before** `expo-router/entry`. Create a custom entry point:
-
-```js
-// index.js (at project root)
-import '@tamagui/native/setup-zeego'
-// add other setup imports here as needed
-
-import 'expo-router/entry'
-```
-
-Then update your `package.json`:
+In monorepos, keep resolutions/overrides aligned:
 
 ```json
 {
-  "main": "index.js"
+  "resolutions": {
+    "@tamagui/core": "^3.0.0",
+    "@tamagui/web": "^3.0.0",
+    "tamagui": "^3.0.0"
+  }
 }
 ```
 
-This ensures native modules like zeego are configured before Expo Router initializes your app.
+## 2. Run the Sheet codemod
 
-## 9. Build Config
+`Sheet.Frame` has been replaced by `Sheet.Container` and `Sheet.Background`.
+Run the codemod before hand-editing Sheet callsites.
 
-Not much has changed, but there's some nice improvements you can make:
-
-### Vite
-
-```tsx
-import { tamaguiAliases, tamaguiPlugin } from '@tamagui/vite-plugin'
-
-export default {
-  plugins: [tamaguiPlugin()],
-  resolve: {
-    alias: [
-      ...tamaguiAliases({
-        rnwLite: true, // use lightweight react-native-web
-        svg: true,
-      }),
-    ],
-  },
-}
+```bash
+node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
 ```
 
-Create a `tamagui.build.ts` at your project root:
+If you are working from a local Tamagui checkout:
 
-```tsx
-import type { TamaguiBuildOptions } from 'tamagui'
-
-export default {
-  components: ['tamagui'],
-  config: './src/tamagui.config.ts',
-  outputCSS: './src/tamagui.generated.css',
-} satisfies TamaguiBuildOptions
+```bash
+node ./scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
 ```
 
-### Metro (Expo / React Native)
-
-No special Metro configuration is needed for Tamagui v2. A standard Expo Metro config works out of the box:
-
-```js
-// metro.config.js
-const { getDefaultConfig } = require('expo/metro-config')
-const config = getDefaultConfig(__dirname)
-
-module.exports = config
-```
-
-### Next.js (Turbopack)
-
-Add `resolveExtensions` and a `react-native-safe-area-context` shim:
-
-```js
-// next.config.js
-module.exports = {
-  turbopack: {
-    resolveAlias: {
-      'react-native': 'react-native-web',
-      'react-native-svg': '@tamagui/react-native-svg',
-      'react-native-safe-area-context': './shims/react-native-safe-area-context.js',
-    },
-    resolveExtensions: [
-      '.web.tsx',
-      '.web.ts',
-      '.web.js',
-      '.web.jsx',
-      '.tsx',
-      '.ts',
-      '.js',
-      '.jsx',
-      '.json',
-    ],
-  },
-}
-```
-
-### CSS
-
-We recommend generating Tamagui CSS to `tamagui.generated.css`, just so it's easier to configure linters and such:
+Review every changed Sheet. The codemod handles the common JSX rewrite, but you
+still need to decide which props are visual surface props and which are layout
+props.
 
 ```tsx
 // before
-import './tamagui.css'
+<Sheet>
+  <Sheet.Overlay />
+  <Sheet.Frame padding="$4" bg="$background" borderTopRadius="$6">
+    <Sheet.ScrollView>{children}</Sheet.ScrollView>
+  </Sheet.Frame>
+</Sheet>
+```
 
+```tsx
 // after
-import './tamagui.generated.css'
+<Sheet>
+  <Sheet.Overlay />
+  <Sheet.Container padding="$4">
+    <Sheet.Background bg="$background" borderTopRadius="$6" />
+    <Sheet.ScrollView>{children}</Sheet.ScrollView>
+  </Sheet.Container>
+</Sheet>
 ```
 
-Generate it with: `npx tamagui generate-css --output ./src/tamagui.generated.css`
+Rules to verify:
 
-## 10. Quick Reference: Find-and-Replace Patterns
+- `Sheet.Overlay` must be a direct child of `Sheet`.
+- `Sheet.Container` owns layout props like `padding`, `gap`, `height`,
+  `maxHeight`, and flex props.
+- `Sheet.Background` owns visual surface props like `bg`, `borderRadius`,
+  `elevation`, `shadow*`, and decorative absolute layers.
+- `Sheet.Container` no longer clips with `overflow="hidden"`. Add clipping
+  explicitly if your content relied on the old frame clipping.
+- `Sheet.Background` owns `disableHideBottomOverflow`.
 
-These are the most common replacements you can do across your codebase. Run carefully and review each change:
+## 3. Replace removed props and aliases
 
-```
-animation=     ->  transition=
-AnimationProp  ->  TransitionProp
-AnimationKeys  ->  TransitionKeys
-tag=           ->  render=
-themeInverse   ->  theme="inverse"
-<Theme inverse ->  <Theme name="inverse"
-<Stack         ->  <View
-</Stack>       ->  </View>
-StackProps     ->  ViewProps
-onHoverIn=     ->  onPointerEnter=
-onHoverOut=    ->  onPointerLeave=
-$2xl=          ->  $xxl=
-$2xs=          ->  $xxs=
-maxMD          ->  max-md
-maxLG          ->  max-lg
-maxSM          ->  max-sm
-maxXL          ->  max-xl
-max2Xl         ->  max-xxl
+Search for removed APIs:
+
+```bash
+rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust"
 ```
 
-## 11. New Features Worth Knowing
+Use these replacements:
 
-While not required for migration, these v2 features can improve your app:
+| Removed | Replacement |
+| --- | --- |
+| `focusable` | `tabIndex` |
+| `fullscreen` | explicit `position` and `inset` props |
+| `themeInverse` | `theme="inverse"` |
+| `<Theme inverse>` | `<Theme name="inverse">` |
+| `Sheet.Frame` | `Sheet.Container` plus `Sheet.Background` |
+| `.styleable()` | ordinary React composition or styled wrappers |
+| forwardRef wrapper statics | direct refs and normal component composition |
+| `inlineWhenUnflattened` | remove it |
+| deprecated UI kit aliases | import the current component names |
+| old platform style keys | use the current `$web`, `$native`, `$ios`, `$android`, etc. keys |
+| `forceRemoveScrollEnabled` | `disableRemoveScroll` with inverted intent |
+| `createCheckbox` `sizeAdjust` | explicit sizing math or component styles |
 
-- **`boxShadow`** -- full CSS box-shadow support with tokens
-- **`backgroundImage`** -- CSS gradients with token support
-- **`filter`**, **`mixBlendMode`** -- graphical effects
-- **`scope` prop** on Dialog, Popover, Sheet, Tooltip -- mount once at root for performance
-- **`activeStyle` / `activeTheme`** on Switch, Checkbox, ToggleGroup, Tabs
-- **Multiple animation drivers** via `animatedBy` prop
-- **`transition` delay and enter/exit control** -- `transition={{ enter: 'lazy', exit: 'quick' }}`
-- **Menu and ContextMenu** -- new components with native platform rendering
-- **Headless components** -- `@tamagui/switch-headless`, `@tamagui/checkbox-headless`, etc.
-- **CLI commands** -- `tamagui build`, `tamagui generate`, `tamagui generate-prompt`, `tamagui check`
-- **~32% smaller core bundle** (37KB to 25KB gzipped)
+Examples:
 
-## Migration Checklist
+```tsx
+// before
+<View focusable fullscreen />
+```
 
-- [ ] Upgrade React 19+, React Native 0.81+, TypeScript 5+
-- [ ] Bump all `@tamagui/*` packages to `^2.0.0`
-- [ ] Add package resolutions for `@tamagui/core`, `@tamagui/web`, `tamagui`
-- [ ] Update config from `@tamagui/config/v4` to `@tamagui/config/v5`
-- [ ] Import animations separately (`@tamagui/config/v5-css` or other driver)
-- [ ] Add `declare module 'tamagui'` type augmentation
-- [ ] Move root-level settings into `settings` object
-- [ ] Rename `animation` prop to `transition` everywhere
-- [ ] Rename `tag` prop to `render`
-- [ ] Replace `Stack` with `View`, `StackProps` with `ViewProps`
-- [ ] Replace `themeInverse` / `<Theme inverse>` with `theme="inverse"`
-- [ ] Replace `space` / `spaceDirection` with `gap`
-- [ ] Replace `onHoverIn` / `onHoverOut` with pointer events
-- [ ] Migrate shadows to `boxShadow`
-- [ ] Update media query names (`$2xl` to `$xxl`, max queries to kebab-case)
-- [ ] Update accessibility props to ARIA equivalents
-- [ ] Update Input props to web-standard API
-- [ ] Update Image from `source` to `src`
-- [ ] Wrap Group children in `Group.Item`
-- [ ] Update Tabs (`activationMode` default changed, `Trigger` to `Tab`)
-- [ ] Replace `Popover.Sheet.*` with standalone `Sheet.*`
-- [ ] Update Toast from `ToastProvider` wrapper to `Toaster` sibling
-- [ ] Import `Spacer` from `@tamagui/spacer` if used
-- [ ] Replace `@tamagui/animations-moti` with `@tamagui/animations-reanimated`
-- [ ] Add native setup imports (portals, LinearGradient, Toast, Menu)
-- [ ] Review flex/position defaults (add `position="relative"` where needed)
-- [ ] Update build config (Metro package exports, Vite aliases, CSS generation)
-- [ ] Update snapshot tests (shadow colors now use `color-mix()`)
-- [ ] Run `npx tamagui check` to verify dependency consistency
+```tsx
+// after
+<View tabIndex={0} position="absolute" inset={0} />
+```
+
+```tsx
+// before
+<Button themeInverse />
+<Theme inverse>
+  <Card />
+</Theme>
+```
+
+```tsx
+// after
+<Button theme="inverse" />
+<Theme name="inverse">
+  <Card />
+</Theme>
+```
+
+## 4. Remove true token references
+
+The default v3 configs no longer export `$true` token keys. Components still use
+the default size internally, and that default resolves to `$4`.
+
+```tsx
+// before
+<Button size="$true" />
+<XStack gap="$true" />
+```
+
+```tsx
+// after
+<Button size="$4" />
+<XStack gap="$4" />
+```
+
+Search both code and config files:
+
+```bash
+rg "\$true|true:" tamagui.config.* src code
+```
+
+Only replace token keys. Boolean variant values like `circular` or `unstyled={false}`
+are unrelated.
+
+## 5. Replace token stepping
+
+`@tamagui/get-token` no longer supports runtime scale stepping. Removed APIs:
+
+- `stepTokenUpOrDown`
+- `getTokenRelative`
+- the second options argument to `getSize`, `getSpace`, and `getRadius`
+- options such as `shift`, `bounds`, and `excludeHalfSteps`
+
+```tsx
+// before
+const padding = getSize(size, { shift: -2 })
+const radius = getRadius(radiusToken, { shift: 1 })
+```
+
+```tsx
+// after
+import { getVariableValue } from 'tamagui'
+
+const padding = getVariableValue(getSize(size)) * 0.6
+const radius = getVariableValue(getRadius(radiusToken)) * 1.2
+```
+
+If you need to move from `$5` to `$4`, use explicit token keys or a helper that
+only handles numeric token names. Do not rebuild runtime scale sorting in app
+code.
+
+## 6. Audit exact font sizes
+
+v3 distinguishes raw numbers from exact px strings:
+
+- `fontSize={17}` is a numeric platform value and keeps the platform-default
+  line-height path.
+- `fontSize="17px"` is an exact pixel value. Web passes it through as CSS;
+  native parses it to a number.
+
+The v5 config font `size` and `lineHeight` scales are pinned to px strings in
+v3, so the default config keeps v2 computed output.
+
+```tsx
+// platform-default line height behavior
+<Paragraph fontSize={17} />
+
+// exact px behavior
+<Paragraph fontSize="17px" />
+```
+
+If your config used numbers because you wanted exact web pixels, convert those
+font tokens to px strings.
+
+## 7. Update FocusScope usage
+
+FocusScope now renders a `display: contents` wrapper. Function-as-children is
+removed; pass JSX children directly.
+
+```tsx
+// before
+<FocusScope loop>
+  {({ ref, onKeyDown, tabIndex }) => (
+    <View ref={ref} onKeyDown={onKeyDown} tabIndex={tabIndex} />
+  )}
+</FocusScope>
+```
+
+```tsx
+// after
+<FocusScope loop>
+  <View />
+</FocusScope>
+```
+
+Use `noFocus` when a surface should temporarily reject all focus:
+
+```tsx
+<FocusScope noFocus>
+  <Input placeholder="Cannot receive focus" />
+</FocusScope>
+```
+
+`noFocus` takes precedence over `trapped` and auto-focus behavior. It is web-only;
+FocusScope remains a no-op on native.
+
+## 8. Update Dialog, Popover, and Select Adapt usage
+
+Dialog, Popover, and Select now share the same Adapt handoff model. Open state
+lives above `AdaptParent`, and adapted sheet content remains mounted until the
+sheet finishes hiding.
+
+Use the current Adapt anatomy:
+
+```tsx
+<Popover>
+  <Popover.Trigger />
+  <Popover.Content>
+    <Popover.Arrow />
+    <Adapt.Contents />
+  </Popover.Content>
+
+  <Adapt when="max-md" platform="touch">
+    <Sheet modal dismissOnSnapToBottom>
+      <Sheet.Container padding="$4">
+        <Sheet.Background />
+        <Adapt.Contents />
+      </Sheet.Container>
+      <Sheet.Overlay />
+    </Sheet>
+  </Adapt>
+</Popover>
+```
+
+Component-specific notes:
+
+- `Dialog.Content` no longer accepts the no-op `size` variant.
+- Non-modal `Dialog.Content` no longer enables RemoveScroll while open.
+- Dialog, Popover, and Select parts own their presence lifecycles.
+- Animation drivers can now complete part-level exits through `onDidAnimate`.
+- `Popover.Content forceMount` now matches Dialog semantics and disables part
+  presence gating.
+- Removed legacy Popover and Select sheet-controller internals. If app code
+  imported internal helpers like `useShowPopoverSheet` or `useSelectBreakpointActive`,
+  remove those imports and use Adapt state instead.
+
+## 9. Update Select APIs
+
+Select has a few public API changes and parity additions.
+
+Removed from `Select` root:
+
+- `name`
+- `autoComplete`
+
+They did not back real form or autofill behavior in the custom Select.
+
+Added or expanded:
+
+- `Select.Separator`
+- `Select.Content onEscapeKeyDown`
+- `Select.Content onInteractOutside`
+- `data-state="open" | "closed"` on `Select.Trigger`
+- `data-state="open" | "closed"` on the web `Select.Viewport`
+
+```tsx
+<Select.Content
+  onEscapeKeyDown={(event) => {
+    console.log('escape', event)
+  }}
+  onInteractOutside={(event) => {
+    console.log('outside', event)
+  }}
+>
+  <Select.Viewport>
+    <Select.Group>
+      <Select.Label>Fruit</Select.Label>
+      <Select.Item index={0} value="apple">
+        <Select.ItemText>Apple</Select.ItemText>
+      </Select.Item>
+      <Select.Separator />
+      <Select.Item index={1} value="orange">
+        <Select.ItemText>Orange</Select.ItemText>
+      </Select.Item>
+    </Select.Group>
+  </Select.Viewport>
+</Select.Content>
+```
+
+## 10. Update themed icon usage
+
+Themed icons now size token values through the current font size scale, not the
+space/size token scale. Raw numeric sizes are unchanged.
+
+```tsx
+// v3: aligns with font.size.$4
+<Search size="$4" />
+
+// unchanged: exact numeric size
+<Search size={18} />
+```
+
+Themed icons no longer accept Tamagui media or pseudo props directly because
+they no longer run full style resolution.
+
+```tsx
+// before
+<Search size="$4" $sm={{ opacity: 0.6 }} hoverStyle={{ scale: 1.05 }} />
+```
+
+```tsx
+// after
+const IconFrame = styled(View, {
+  $sm: { opacity: 0.6 },
+  hoverStyle: { scale: 1.05 },
+})
+
+<IconFrame>
+  <Search size="$4" />
+</IconFrame>
+```
+
+Theme color, `fill`, `stroke`, `size`, `strokeWidth`, `style`, and `testID` still
+work.
+
+## 11. Check ScrollView web usage
+
+`@tamagui/scroll-view` now has its own web implementation. It no longer routes
+through `react-native-web`.
+
+Covered web surface:
+
+- `scrollTo`
+- `scrollToEnd`
+- `getScrollableNode`
+- RN-shaped `onScroll`
+- `contentContainerStyle`
+- `horizontal`
+- scroll indicator props
+
+Unsupported old lite/RNW props should be replaced:
+
+- momentum scroll events
+- `snapTo*` props
+- `keyboardDismissMode`
+- any app-specific reliance on RNW's legacy style system
+
+## 12. Optional: adopt Tailwind mode
+
+Tailwind mode is optional for v3. It lets you write supported Tailwind utilities
+in `className` while Tamagui still handles compilation, tokens, themes, and
+native style output.
+
+```tsx
+import { createTamagui } from 'tamagui'
+import { defaultConfig } from '@tamagui/config/v5'
+
+export default createTamagui({
+  ...defaultConfig,
+  settings: {
+    ...defaultConfig.settings,
+    styleMode: 'tailwind',
+  },
+})
+```
+
+Use `styleMode: 'tamagui-and-tailwind'` if you want to mix utility classes with
+Tamagui props during migration.
+
+```tsx
+<View
+  className="rounded-lg p-4"
+  backgroundColor="$blue5"
+  hoverStyle={{ backgroundColor: '$blue6' }}
+/>
+```
+
+Read [Tailwind mode for Tamagui](/blog/tailwind-mode) for current utility
+coverage and known gaps.
+
+## 13. Verification checklist
+
+Run validation at the layer your app changed.
+
+Code checks:
+
+```bash
+npx tamagui check
+tsc --noEmit
+```
+
+Build checks:
+
+```bash
+npm run build
+```
+
+Runtime checks:
+
+- Open every screen that uses `Sheet`, especially fit sheets and sheets with
+  scrollable content.
+- Test `Dialog`, `Popover`, and `Select` at the breakpoints where they Adapt to
+  Sheet.
+- Verify close animations complete before content unmounts.
+- Verify non-modal Dialogs do not lock page scroll.
+- Verify keyboard focus, Escape, outside click, and return focus behavior.
+- Inspect icons next to text at every app size token you use.
+- Check any custom config tokens that used `$true`, numeric font sizes, or token
+  stepping.
+- If you use Tailwind mode, compare web and native output for your supported
+  utility classes.
+
+## Quick reference
+
+```bash
+# duplicate package / lockfile scan
+npx tamagui check
+
+# Sheet anatomy codemod
+node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
+
+# removed APIs
+rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown|forceRemoveScrollEnabled|sizeAdjust"
+```
+
+## v1 to v3 path
+
+For v1 apps, migrate in two passes:
+
+1. Apply the v1 to v2 changes: React 19, React Native 0.81+, TypeScript 5,
+   Config v5, `animation` to `transition`, `tag` to `render`, `Stack` to `View`,
+   `space` to `gap`, ARIA/web prop renames, native setup imports, and v2
+   component API changes.
+2. Apply the v2 to v3 changes in this guide.
+
+The CLI migration prompt can generate an AI-agent checklist for either path:
+
+```bash
+npx tamagui migrate --from v2
+npx tamagui migrate --from v1
+```

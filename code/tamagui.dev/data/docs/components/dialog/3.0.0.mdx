@@ -18,8 +18,9 @@ demoName: Dialog
 <Highlights
   features={[
     `Comes with styling, yet completely customizable and themeable.`,
-    `Accepts animations, themes, size props and more.`,
+    `Accepts transitions, themes, focus props and more.`,
     `Accessible with dev-time checks to ensure ARIA props.`,
+    `Parts own their presence lifecycle for reliable exit animations.`,
   ]}
 />
 
@@ -36,7 +37,7 @@ npm install @tamagui/dialog
 
 <Notice theme="blue">
   For native apps, we recommend [setting up native
-  portals](/docs/components/portal#native-portal-setup-recommended) to preserve React
+  portals](/ui/portal#native-portal-setup-recommended) to preserve React
   context inside Dialog content.
 </Notice>
 
@@ -131,6 +132,11 @@ By default, dialogs can be dismissed by:
   - Allow interaction with elements behind the dialog
   - Dismiss on any outside click
   - Do not trap focus
+  - Do not enable RemoveScroll while open in v3
+
+In v3, Dialog parts own their presence lifecycle. Overlay and content can finish
+exit animations before unmounting, and `onDidAnimate` completion is reported by
+the animated part rather than by the root alone.
 
 ### Preventing Outside Dismissal
 
@@ -162,9 +168,9 @@ Contains every component for the dialog. Beyond
       description: `Must contain Dialog.Content`,
     },
     {
-      name: 'size',
-      type: 'SizeTokens',
-      description: `Passes size down to all sub-components when set for padding, arrow, borderRadius.`,
+      name: 'scope',
+      type: 'string',
+      description: `Isolates this Dialog and its parts from other Dialog instances when needed.`,
     },
     {
       name: 'open',
@@ -199,6 +205,12 @@ Contains every component for the dialog. Beyond
       required: false,
       description: `Used to disable the automatic removal of scrolling from the page when open.`,
     },
+    {
+      name: 'onAnimationComplete',
+      type: '(info: { open: boolean }) => void',
+      required: false,
+      description: `Called when the dialog open or close animation completes.`,
+    },
   ]}
 />
 
@@ -231,6 +243,7 @@ Renders Dialog into appropriate container. Beyond
 ### Dialog.Content
 
 Main container for Dialog content, this is where you should apply animations.
+`Dialog.Content` no longer accepts the old no-op `size` variant in v3.
 
 Beyond [Tamagui Props](/docs/intro/props), adds:
 
@@ -254,6 +267,18 @@ Beyond [Tamagui Props](/docs/intro/props), adds:
       required: false,
       description: `When true, hover/focus/click interactions will be disabled on elements outside the Dialog. Users will need to click twice on outside elements to interact with them: once to close the Dialog, and again to trigger the element. Note: In v1, modal dialogs have this set to true by default.`,
     },
+    {
+      name: 'onEscapeKeyDown',
+      type: '(event: KeyboardEvent) => void',
+      required: false,
+      description: `Called when Escape is pressed while the content is active.`,
+    },
+    {
+      name: 'onInteractOutside',
+      type: '(event: Event) => void',
+      required: false,
+      description: `Called when pointer or focus interaction happens outside the content. Prevent default to stop dismissal.`,
+    },
   ]}
 />
 
@@ -276,13 +301,13 @@ Displays behind Content. Beyond [Tamagui Props](/docs/intro/props), adds:
 
 Required. Can wrap in VisuallyHidden to hide.
 
-Defaults to H2, see [Headings](/docs/components/headings).
+Defaults to H2, see [Headings](/ui/headings).
 
 ### Dialog.Description
 
 Required. Can wrap in VisuallyHidden to hide.
 
-Defaults to Paragraph, see [Paragraph](/docs/components/text).
+Defaults to Paragraph, see [Paragraph](/ui/text).
 
 ### Dialog.Close
 
@@ -327,6 +352,12 @@ management. Can be used to control focus behavior from a parent component.
       description: `When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus`,
     },
     {
+      name: 'noFocus',
+      type: 'boolean',
+      default: 'false',
+      description: `Zero focus mode. While active, focus is allowed neither inside nor outside the scope. Web only.`,
+    },
+    {
       name: 'focusOnIdle',
       type: 'boolean | number',
       default: 'false',
@@ -345,18 +376,18 @@ management. Can be used to control focus behavior from a parent component.
   ]}
 />
 
-### Dialog.Sheet
+### Adapted Sheet
 
-When used with `Adapt`, Dialog will render as a sheet when that breakpoint is
-active.
+When used with `Adapt`, Dialog can hand its content to a Sheet at the matching
+breakpoint.
 
-See [Sheet](/docs/components/sheet) for more props.
+See [Sheet](/ui/sheet) for more props.
 
-Must use `Adapt.Contents` inside the `Dialog.Sheet.Frame` to insert the contents
-given to `Dialog.Content`
+Use `Adapt.Contents` inside `Sheet.Container` to insert the contents given to
+`Dialog.Content`.
 
 ```tsx
-import { Dialog } from 'tamagui' // or '@tamagui/dialog'
+import { Adapt, Dialog, Sheet } from 'tamagui'
 
 export default () => (
   <Dialog>
@@ -373,20 +404,15 @@ export default () => (
     </Dialog.Portal>
 
     {/* optionally change to sheet when small screen */}
-    <Dialog.Adapt when="max-md">
-      <Dialog.Sheet>
-        <Dialog.Sheet.Frame>
-          <Dialog.Adapt.Contents />
-        </Dialog.Sheet.Frame>
-        <Dialog.Sheet.Overlay />
-      </Dialog.Sheet>
-    </Dialog.Adapt>
+    <Adapt when="max-md" platform="touch">
+      <Sheet modal dismissOnSnapToBottom>
+        <Sheet.Container>
+          <Sheet.Background />
+          <Adapt.Contents />
+        </Sheet.Container>
+        <Sheet.Overlay />
+      </Sheet>
+    </Adapt>
   </Dialog>
 )
 ```
-
-<Notice>
-  Note that Dialog.Sheet currently doesn't preserve state of the contents when it
-  transitions between Sheet and Portal. In the future, we can do this on the web using
-  react-reparenting.
-</Notice>

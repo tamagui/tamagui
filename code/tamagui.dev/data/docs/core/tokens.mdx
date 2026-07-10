@@ -49,6 +49,35 @@ getTokens().size.small.variable // returns something like (--size-small), which 
 
 Tamagui has some helpers that make working with variables easier, which are documented in [Exports](/docs/core/exports), namely [`getVariable`](/docs/core/exports#getvariable) which will return the CSS variable on web, but raw value on native, and `getVariableValue` which always returns the raw value.
 
+## v3 token behavior
+
+The default v3 configs do not export `$true` token keys. Component defaults still
+resolve to the default size, and that default size is `$4`.
+
+```tsx
+// before v3
+<Button size="$true" />
+
+// v3
+<Button size="$4" />
+```
+
+`@tamagui/get-token` also no longer performs runtime token stepping. `getSize`,
+`getSpace`, and `getRadius` resolve the same key you pass in. The old
+`stepTokenUpOrDown`, `getTokenRelative`, and options such as `shift`, `bounds`,
+and `excludeHalfSteps` are removed.
+
+```tsx
+// before v3
+const padding = getSize(size, { shift: -2 })
+
+// v3
+const padding = getVariableValue(getSize(size)) * 0.6
+```
+
+If you need a smaller or larger named token, choose that token explicitly. If
+you need proportional sizing, multiply the resolved numeric value.
+
 ### Color Tokens as Fallback Values for Themes
 
 Color tokens are available as fallback values when you access a theme. So when you `useTheme()` and then access a value that isn't in the theme, it will check for a `tokens.color` with the matching name.

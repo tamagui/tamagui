@@ -30,7 +30,7 @@ const MyView = () => (
 The types for the full set of styles accepted by styled, View and Text are
 exported as `ViewStyle` and `TextStyle`.
 
-For the full base styles, see the React Native docs (version 2 targets React
+For the full base styles, see the React Native docs (version 3 targets React
 Native 0.82):
 
 - [React Native View style props](https://reactnative.dev/docs/view-style-props)
@@ -176,11 +176,11 @@ type ViewStyle = WithStates & {
 type TextStyleBase = BaseViewStyle & {
   color?: string,
   fontFamily?: string,
-  fontSize?: string,
+  fontSize?: number | string,
   fontStyle?: string,
   fontWeight?: string,
-  letterSpacing?: string,
-  lineHeight?: string,
+  letterSpacing?: number | string,
+  lineHeight?: number | string,
   textAlign?: string,
   textDecorationColor?: string,
   textDecorationLine?: string,
@@ -190,6 +190,23 @@ type TextStyleBase = BaseViewStyle & {
   textShadowRadius?: string,
   textTransform?: string,
 }
+```
+
+## Font size values
+
+v3 distinguishes raw numeric font sizes from exact px strings:
+
+- `fontSize={17}` is a numeric platform value and keeps the platform-default
+  line-height path.
+- `fontSize="17px"` is an exact pixel value. Web passes it through as CSS;
+  native parses it to a number.
+
+The v5 config font `size` and `lineHeight` scales are pinned to px strings in
+v3, preserving v2 visual output while making exact px intent explicit.
+
+```tsx
+<Text fontSize={17}>Platform line height</Text>
+<Text fontSize="17px">Exact px size</Text>
 ```
 
 ## Pseudo States

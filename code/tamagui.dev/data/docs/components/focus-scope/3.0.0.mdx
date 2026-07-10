@@ -18,6 +18,7 @@ Note that this is a web-only component, on native it is a no-op.
     'Trap focus within a container for modal-like behavior.',
     'Auto-focus on mount and return focus on unmount.',
     'Loop focus between first and last tabbable elements.',
+    'Zero focus mode via noFocus to make everything focus-inert.',
     'Prevent reflows during animations with focusOnIdle.',
   ]}
 />
@@ -49,6 +50,9 @@ export default () => (
 )
 ```
 
+In v3, FocusScope renders a `display: contents` wrapper so it does not add a
+layout box around its children.
+
 ## Focus Trapping
 
 Use `trapped` to prevent focus from escaping the scope:
@@ -78,6 +82,26 @@ export default () => (
       </Dialog.Content>
     </Dialog.Portal>
   </Dialog>
+)
+```
+
+## Zero Focus Mode
+
+Use `noFocus` to disallow focus entirely while the scope is active - focus can
+land neither inside nor outside the scope. Any element that receives focus is
+immediately blurred, so `document.activeElement` settles on `document.body`.
+This takes precedence over `trapped` and auto-focus behavior:
+
+```tsx
+import { Button, FocusScope, Input, XStack } from 'tamagui'
+
+export default () => (
+  <FocusScope noFocus>
+    <XStack space="$4">
+      <Input placeholder="Cannot be focused" />
+      <Button>Cannot be focused either</Button>
+    </XStack>
+  </FocusScope>
 )
 ```
 
@@ -151,30 +175,10 @@ export default () => {
 }
 ```
 
-## Function as Children
+## Children
 
-For advanced use cases, pass a function to get access to focus props:
-
-```tsx
-import { FocusScope, View } from 'tamagui'
-
-export default () => (
-  <FocusScope loop>
-    {({ onKeyDown, tabIndex, ref }) => (
-      <View
-        ref={ref}
-        tabIndex={tabIndex}
-        onKeyDown={onKeyDown}
-        padding="$4"
-        borderWidth={1}
-        borderColor="$borderColor"
-      >
-        Custom focus container
-      </View>
-    )}
-  </FocusScope>
-)
-```
+Pass JSX children directly. Function-as-children was removed in v3 because
+FocusScope now owns the focus wrapper and renders it as `display: contents`.
 
 ## API Reference
 
@@ -203,6 +207,13 @@ export default () => (
         'When true, focus cannot escape the focus scope via keyboard, pointer, or programmatic focus',
     },
     {
+      name: 'noFocus',
+      type: 'boolean',
+      default: 'false',
+      description:
+        'Zero focus mode: while active, focus is allowed neither inside nor outside the scope - anything that receives focus is immediately blurred. Takes precedence over trapped and auto-focus. Web only',
+    },
+    {
       name: 'focusOnIdle',
       type: 'boolean | number | { min?: number; max?: number }',
       default: 'false',
@@ -228,9 +239,8 @@ export default () => (
     },
     {
       name: 'children',
-      type: 'React.ReactNode | ((props: FocusProps) => React.ReactNode)',
-      description:
-        'Content to apply focus management to, or function that receives focus props',
+      type: 'React.ReactNode',
+      description: 'Content to apply focus management to',
     },
   ]}
 />
@@ -258,6 +268,12 @@ Provides context-based control over FocusScope behavior:
       type: 'boolean',
       description:
         'Override trapped state for all child FocusScope.Controller.Scope components',
+    },
+    {
+      name: 'noFocus',
+      type: 'boolean',
+      description:
+        'Override noFocus (zero focus mode) for all child FocusScope.Controller.Scope components',
     },
     {
       name: 'focusOnIdle',
@@ -351,47 +367,5 @@ export default () => (
       </Dialog.Content>
     </Dialog.Portal>
   </Dialog>
-)
-```
-
-### Custom Focus Container
-
-```tsx
-import { Button, FocusScope, styled, XStack } from 'tamagui'
-
-const FocusContainer = styled(XStack, {
-  borderWidth: 2,
-  borderColor: 'transparent',
-  borderRadius: '$4',
-  padding: '$4',
-
-  variants: {
-    focused: {
-      true: {
-        borderColor: '$blue10',
-        shadowColor: '$blue10',
-        shadowRadius: 10,
-        shadowOpacity: 0.3,
-      },
-    },
-  },
-})
-
-export default () => (
-  <FocusScope loop>
-    {({ onKeyDown, tabIndex, ref }) => (
-      <FocusContainer
-        ref={ref}
-        tabIndex={tabIndex}
-        onKeyDown={onKeyDown}
-        space="$4"
-        focused
-      >
-        <Button>Action 1</Button>
-        <Button>Action 2</Button>
-        <Button>Action 3</Button>
-      </FocusContainer>
-    )}
-  </FocusScope>
 )
 ```

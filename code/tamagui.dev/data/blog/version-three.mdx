@@ -1,0 +1,390 @@
+---
+title: Tamagui 3
+publishedAt: '2026-07-10'
+description: Simpler APIs, a web-first core, stronger composition, and Tailwind syntax on the same compiler.
+by: nate
+---
+
+<IntroParagraph large>
+  Tamagui 3 is the simplification release: fewer legacy aliases, fewer hidden
+  wrappers, more web-standard APIs, and a cleaner path between Tamagui props,
+  composable UI, and Tailwind utility syntax.
+</IntroParagraph>
+
+Tamagui has always been about one source of UI truth across React Native and
+the web. Version 3 keeps that promise, but removes a lot of the compatibility
+layers that made the internals harder to reason about.
+
+The result is a smaller public surface, more predictable tokens, better overlay
+composition, and a new Tailwind mode that lets teams use utility classes without
+leaving Tamagui's compiler, theme system, or native output behind.
+
+<Notice>Give this blog post and the upgrade guide to your coding agent before migrating.</Notice>
+
+## The theme of v3
+
+Version 3 has three goals:
+
+- **Simplify the core.** Deprecated props and compatibility helpers are gone,
+  so component behavior is easier to type, inspect, and optimize.
+- **Make web the public API language.** Prefer `tabIndex`, ARIA props, CSS-like
+  style names, and explicit layout props, while Tamagui maps what it can to
+  native.
+- **Unify syntax choices.** Tamagui props and Tailwind classes now flow through
+  one compiler and one token system instead of competing styling stacks.
+
+## Tailwind mode
+
+The headline new feature is Tailwind mode. Turn it on in config and write
+utility classes in `className`:
+
+```tsx
+import { createTamagui } from 'tamagui'
+import { defaultConfig } from '@tamagui/config/v5'
+
+export default createTamagui({
+  ...defaultConfig,
+  settings: {
+    ...defaultConfig.settings,
+    styleMode: 'tailwind',
+  },
+})
+```
+
+```tsx
+import { View } from 'tamagui'
+
+export function Card() {
+  return (
+    <View className="flex flex-row items-center gap-3 p-4 rounded-lg bg-slate-100">
+      <View className="w-10 h-10 rounded-full bg-blue-500" />
+      <View className="flex-1 h-2 rounded-md bg-slate-300" />
+    </View>
+  )
+}
+```
+
+On web, the compiler extracts those utilities to atomic CSS. On iOS and Android,
+the same string resolves to React Native styles. You can also use
+`styleMode: 'tamagui-and-tailwind'` when you want utilities next to Tamagui
+props, tokens, media queries, and animations.
+
+Read the full [Tailwind mode post](/blog/tailwind-mode) for the compiler details
+and current utility coverage.
+
+## Removed deprecated APIs
+
+v3 removes APIs that already had clearer replacements.
+
+```tsx
+// before
+<View focusable fullscreen />
+<Button themeInverse />
+<Theme inverse>
+  <Card />
+</Theme>
+```
+
+```tsx
+// after
+<View tabIndex={0} position="absolute" inset={0} />
+<Button theme="inverse" />
+<Theme name="inverse">
+  <Card />
+</Theme>
+```
+
+The removed set includes `focusable`, `fullscreen`, `styleable`, forwardRef
+component wrappers, `inlineWhenUnflattened`, deprecated UI kit aliases, old
+platform style keys, and true token keys.
+
+If your code still uses `focusable`, move to `tabIndex`. If it uses
+`fullscreen`, write the layout explicitly with `position` and `inset`. If it
+uses `.styleable()` or relies on Tamagui forwarding through wrapper statics,
+move to ordinary React composition and refs.
+
+## True tokens are gone
+
+The old `$true` token aliases have been removed from v3 configs. Component
+defaults still resolve to the default size, which is `$4`.
+
+```tsx
+// before
+<Button size="$true" />
+<YStack gap="$true" />
+```
+
+```tsx
+// after
+<Button size="$4" />
+<YStack gap="$4" />
+```
+
+Boolean size shorthands in component variants still resolve through the default
+size path, but authored token keys should use real token names.
+
+## Token stepping is removed
+
+`@tamagui/get-token` no longer sorts a token scale at runtime to find a nearby
+token. `getSize`, `getSpace`, and `getRadius` now resolve the same key you pass
+in, and `stepTokenUpOrDown` / `getTokenRelative` are gone.
+
+```tsx
+// before
+const padding = getSize(size, { shift: -2 })
+const radius = getRadius(radiusToken, { shift: 1 })
+```
+
+```tsx
+// after
+import { getVariableValue } from 'tamagui'
+
+const padding = getVariableValue(getSize(size)) * 0.6
+const radius = getVariableValue(getRadius(radiusToken)) * 1.2
+```
+
+This makes custom configs more predictable. Components that previously stepped
+tokens now multiply the resolved numeric value with tuned constants.
+
+## Exact pixel font values
+
+Font sizes now distinguish numeric values from exact pixel strings. A raw number
+keeps the platform-default line-height path. A string like `"17px"` means the
+literal pixel value.
+
+```tsx
+// platform-default line height behavior
+<Paragraph fontSize={17} />
+
+// exact CSS/native pixel value
+<Paragraph fontSize="17px" />
+```
+
+The v5 config font `size` and `lineHeight` scales are pinned to px strings so v3
+keeps v2 visual output. Future config versions can redefine numeric font scales
+without changing what exact px strings mean.
+
+## Inverse themes are SSR-safe
+
+`inverse` is now a built-in sub-theme. The old `themeInverse` path is gone.
+
+```tsx
+// before
+<Button themeInverse>Save</Button>
+<Theme inverse>
+  <Card />
+</Theme>
+```
+
+```tsx
+// after
+<Button theme="inverse">Save</Button>
+<Theme name="inverse">
+  <Card />
+</Theme>
+```
+
+The new path works with SSR and avoids the forced nested light/dark inversion
+behavior that made theme output harder to predict.
+
+## Sheet anatomy is explicit
+
+`Sheet.Frame` has split into `Sheet.Container` and `Sheet.Background`.
+`Sheet.Container` owns layout. `Sheet.Background` owns the visual surface.
+`Sheet.Overlay` must be a direct child of `Sheet`.
+
+```tsx
+// before
+<Sheet>
+  <Sheet.Overlay />
+  <Sheet.Frame padding="$4" bg="$background" borderTopRadius="$6">
+    <Sheet.ScrollView>{children}</Sheet.ScrollView>
+  </Sheet.Frame>
+</Sheet>
+```
+
+```tsx
+// after
+<Sheet>
+  <Sheet.Overlay />
+  <Sheet.Container padding="$4">
+    <Sheet.Background bg="$background" borderTopRadius="$6" />
+    <Sheet.ScrollView>{children}</Sheet.ScrollView>
+  </Sheet.Container>
+</Sheet>
+```
+
+Run the codemod to do the mechanical part:
+
+```bash
+node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
+```
+
+or from a local checkout:
+
+```bash
+node ./scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
+```
+
+## Adapt handoff is unified
+
+Dialog, Popover, and Select now share the same Adapt handoff model. Open state
+lives above the Adapt parent, adapted Sheet content remains mounted through the
+slide-out, and parts own their presence animation lifecycles.
+
+```tsx
+<Popover>
+  <Popover.Trigger />
+  <Popover.Content forceMount>
+    <Popover.Arrow />
+    <Adapt.Contents />
+  </Popover.Content>
+
+  <Adapt when="max-md" platform="touch">
+    <Sheet modal dismissOnSnapToBottom>
+      <Sheet.Container padding="$4">
+        <Sheet.Background />
+        <Adapt.Contents />
+      </Sheet.Container>
+      <Sheet.Overlay />
+    </Sheet>
+  </Adapt>
+</Popover>
+```
+
+The practical effect: media flips no longer tear content out mid-exit, overlay
+pointer locks are released correctly, and animation drivers can report
+`onDidAnimate` completion at the part level.
+
+## FocusScope has a zero-focus mode
+
+FocusScope now renders a `display: contents` wrapper and no longer supports
+function-as-children. Pass children directly.
+
+```tsx
+// before
+<FocusScope loop>
+  {({ ref, onKeyDown, tabIndex }) => (
+    <View ref={ref} onKeyDown={onKeyDown} tabIndex={tabIndex} />
+  )}
+</FocusScope>
+```
+
+```tsx
+// after
+<FocusScope loop>
+  <View />
+</FocusScope>
+```
+
+The new `noFocus` mode makes the active scope focus-inert. Anything that
+receives focus is immediately blurred, which is useful during handoffs and
+transitions where focus should be temporarily impossible.
+
+```tsx
+<FocusScope noFocus>
+  <Input placeholder="Cannot receive focus" />
+</FocusScope>
+```
+
+## More consistent component state
+
+v3 tightens component parity across Dialog, Popover, Select, and Sheet:
+
+- `data-state="open" | "closed"` is available on more trigger/content parts.
+- `Select.Trigger` and the web Select viewport expose `data-state`.
+- `Select.Content` accepts `onEscapeKeyDown` and `onInteractOutside`.
+- `Select.Separator` is available for grouped option lists.
+- `Popover.Content` supports `forceMount` with Dialog-style semantics.
+- Non-modal Dialog content no longer enables RemoveScroll while open.
+- `Dialog.Content` no longer accepts the no-op `size` variant.
+
+```tsx
+<Select.Content
+  onEscapeKeyDown={(event) => {
+    console.log('escape', event)
+  }}
+  onInteractOutside={(event) => {
+    console.log('outside', event)
+  }}
+>
+  <Select.Viewport>
+    <Select.Group>
+      <Select.Label>Fruit</Select.Label>
+      <Select.Item index={0} value="apple">
+        <Select.ItemText>Apple</Select.ItemText>
+      </Select.Item>
+      <Select.Separator />
+      <Select.Item index={1} value="orange">
+        <Select.ItemText>Orange</Select.ItemText>
+      </Select.Item>
+    </Select.Group>
+  </Select.Viewport>
+</Select.Content>
+```
+
+## Icons size like text
+
+Themed icons now resolve token sizes through the current font size scale. This
+means `<Icon size="$4" />` aligns with `$4` text instead of using the space/size
+token scale.
+
+```tsx
+// before: size="$4" followed the size token scale
+<Button icon={<Search size="$4" />}>Search</Button>
+
+// after: size="$4" follows the current font.size.$4 scale
+<Button icon={<Search size="$4" />}>Search</Button>
+```
+
+Raw numeric icon sizes are unchanged. Media and pseudo props are no longer
+accepted directly on themed icons because icons no longer run full Tamagui style
+resolution. Wrap the icon when you need responsive or pseudo styling:
+
+```tsx
+const ResponsiveIcon = styled(View, {
+  $sm: { opacity: 0.6 },
+  hoverStyle: { scale: 1.05 },
+})
+
+<ResponsiveIcon>
+  <Search size="$4" color="$color" />
+</ResponsiveIcon>
+```
+
+## ScrollView no longer pulls in react-native on web
+
+`@tamagui/scroll-view` now ships a clean web implementation instead of routing
+through `react-native-web`. It covers the ScrollView surface Tamagui uses:
+`scrollTo`, `scrollToEnd`, `getScrollableNode`, RN-shaped `onScroll`,
+`contentContainerStyle`, horizontal scrolling, and indicator props.
+
+If you relied on unsupported web-only props through the old lite re-export, like
+momentum events, `snapTo*`, or `keyboardDismissMode`, replace them with direct
+web behavior or a custom wrapper.
+
+## Migrating
+
+Start with the [v3 upgrade guide](/docs/guides/how-to-upgrade). It includes the
+breaking change checklist, codemod commands, and verification steps.
+
+The short version:
+
+```bash
+npx tamagui check
+node ./node_modules/tamagui/scripts/codemods/sheet-frame-to-container.js "src/**/*.{ts,tsx}"
+```
+
+Then search for removed APIs:
+
+```bash
+rg "focusable|fullscreen|themeInverse|<Theme inverse|Sheet\.Frame|styleable\(|inlineWhenUnflattened|\$true|getTokenRelative|stepTokenUpOrDown"
+```
+
+Finally, validate at the layer you changed: typecheck, build, run your web app,
+and exercise Dialog, Popover, Select, and Sheet flows on the breakpoints where
+you use Adapt.
+
+## Credits
+
+Placeholder: credits for the v3 launch contributors and reviewers will go here.
