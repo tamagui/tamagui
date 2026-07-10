@@ -1,4 +1,5 @@
 import {
+  getPlatformDriver,
   isAndroid,
   isClient,
   isWeb,
@@ -155,6 +156,7 @@ function isValidStyleKey(
 
 function shouldSkipNativeHoverProp(key: string, isMedia: false | boolean | string) {
   if (process.env.TAMAGUI_TARGET !== 'native') return false
+  if (getPlatformDriver()?.pseudo) return false
   if (key === 'hoverStyle') return true
   if (isMedia === 'group') {
     return getGroupPropParts(key.slice(1)).pseudo === 'hover'
