@@ -11,6 +11,22 @@ async function openAdaptedDialog(page: Page) {
     timeout: 5000,
   })
   await expect.poll(() => getSheetState(page), { timeout: 5000 }).toBe('open')
+  // wait for the sheet's enter animation to fully settle before acting. without
+  // this, under CPU starvation the enter spring may not have advanced a single
+  // frame when a close/flip starts the exit spring - the exit then begins at its
+  // own target value and completes instantly, so the handoff releases the
+  // adapted content with no exit window at all (the flake this guards against)
+  await expect
+    .poll(
+      () =>
+        page.evaluate(() =>
+          ((globalThis as any).__dialogAdaptSheetAnim ?? []).some(
+            (event: { open: boolean }) => event.open
+          )
+        ),
+      { timeout: 10_000 }
+    )
+    .toBe(true)
 }
 
 async function getSheetState(page: Page) {

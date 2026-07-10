@@ -207,7 +207,10 @@ export const AdaptParent = ({
   open,
   onOpenChange,
   state,
-  exitLatchTimeout = 1_000,
+  // safety net only: must comfortably exceed the slowest real exit animation
+  // (spring drivers report completion at ~0.8s for sheet-sized moves; before
+  // the sheet defaulted rest thresholds they settled as late as ~1.7s)
+  exitLatchTimeout = 3_000,
 }: AdaptParentProps) => {
   const id = useId()
   const portalName = `AdaptPortal${scope}${id}`
