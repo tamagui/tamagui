@@ -1174,6 +1174,15 @@ export const getSplitStyles: StyleSplitter = (
     }
 
     if (process.env.TAMAGUI_TARGET === 'web') {
+      // map the RN Text `selectable` prop to the userSelect style so it never
+      // reaches the DOM as an invalid attribute (inverse of the native branch
+      // mapping userSelect => selectable)
+      if (keyInit === 'selectable' && !isValidStyleKeyInit) {
+        keyInit = 'userSelect'
+        valInit = valInit === false ? 'none' : 'auto'
+        isValidStyleKeyInit = isValidStyleKey(keyInit, validStyles, accept)
+      }
+
       if (!noExpand) {
         /**
          * Copying in the accessibility/prop handling from react-native-web here
