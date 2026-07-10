@@ -1,7 +1,14 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import config from '../config-default'
-import { View, Text, createStyledContext, createTamagui, styled } from '../core/src'
+import {
+  View,
+  Text,
+  createStyledContext,
+  createTamagui,
+  mergeComponentProps,
+  styled,
+} from '../core/src'
 // Stack was removed in v2 - use View instead (same props)
 import { simplifiedGetSplitStyles } from './utils'
 
@@ -29,6 +36,17 @@ beforeAll(() => {
  *   }
  */
 describe('styled context token preservation', () => {
+  test('undefined props preserve styled context tokens', () => {
+    const [props, overriddenContext] = mergeComponentProps(
+      null,
+      { size: '$true' },
+      { placement: 'left', size: undefined }
+    )
+
+    expect(props).toEqual({ size: '$true', placement: 'left' })
+    expect(overriddenContext).toBeNull()
+  })
+
   test('overriddenContextProps should contain original token values not CSS variables', () => {
     const GridContext = createStyledContext({
       gap: '$4',

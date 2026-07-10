@@ -1612,7 +1612,13 @@ export function createComponent<
         )
         if (out) {
           viewProps = out.viewProps
-          elementType = out.elementType
+          if (isAnimatedCustomComponent && typeof out.elementType === 'string') {
+            if (elementType['acceptRenderProp']) {
+              viewProps.render = out.elementType
+            }
+          } else {
+            elementType = out.elementType
+          }
         }
       }
 

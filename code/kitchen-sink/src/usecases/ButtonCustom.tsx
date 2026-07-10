@@ -28,6 +28,9 @@ export const ButtonCustom = Frame.styleable((props, ref) => {
       <ButtonStyled testID="button-styled" width={200}>
         test
       </ButtonStyled>
+      <ButtonStyled testID="button-styled-animated" transition="quick" width={200}>
+        animated
+      </ButtonStyled>
     </>
   ) as any
 })
