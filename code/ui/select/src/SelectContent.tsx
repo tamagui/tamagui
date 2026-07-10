@@ -63,9 +63,13 @@ export const SelectContent = ({
           // and focus changes during open (e.g. FocusScope trapping) shouldn't dismiss.
           // only escape key should trigger onDismiss here. user handlers run first,
           // then we always preventDefault so this layer never auto-dismisses.
-          onFocusOutside={composeEventHandlers(onFocusOutside, (e) => e.preventDefault(), {
-            checkDefaultPrevented: false,
-          })}
+          onFocusOutside={composeEventHandlers(
+            onFocusOutside,
+            (e) => e.preventDefault(),
+            {
+              checkDefaultPrevented: false,
+            }
+          )}
           onPointerDownOutside={composeEventHandlers(
             onPointerDownOutside,
             (e) => e.preventDefault(),

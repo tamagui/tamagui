@@ -177,10 +177,7 @@ export type SelectContentProps = SelectScopedProps<
     children?: React.ReactNode
   } & Pick<
     DismissableProps,
-    | 'onEscapeKeyDown'
-    | 'onPointerDownOutside'
-    | 'onFocusOutside'
-    | 'onInteractOutside'
+    'onEscapeKeyDown' | 'onPointerDownOutside' | 'onFocusOutside' | 'onInteractOutside'
   >
 >
 
