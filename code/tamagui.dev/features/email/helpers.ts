@@ -7,13 +7,13 @@ const serverToken = serverEnv('POSTMARK_SERVER_TOKEN')!
 export const trackedTransactionalEmail = {
   MessageStream: 'outbound',
   TrackOpens: true,
-  TrackLinks: 'HtmlAndText',
+  TrackLinks: postmark.Models.LinkTrackingOptions.HtmlAndText,
 } as const
 
 export const trackedBroadcastEmail = {
   MessageStream: 'broadcast',
   TrackOpens: true,
-  TrackLinks: 'HtmlAndText',
+  TrackLinks: postmark.Models.LinkTrackingOptions.HtmlAndText,
 } as const
 
 if (process.env.NODE_ENV === 'production') {

@@ -5,6 +5,11 @@ const { sendEmail } = vi.hoisted(() => ({
 }))
 
 vi.mock('postmark', () => ({
+  Models: {
+    LinkTrackingOptions: {
+      HtmlAndText: 'HtmlAndText',
+    },
+  },
   ServerClient: class {
     sendEmail = sendEmail
   },

@@ -288,7 +288,7 @@ async function manageOneTimePayment(invoice: Stripe.Invoice) {
 
 async function sendV2PurchaseWelcomeEmail(invoice: Stripe.Invoice, userId: string) {
   const currentInvoice = await stripe.invoices.retrieve(invoice.id)
-  if (currentInvoice.metadata.purchase_email_sent === 'true') {
+  if (currentInvoice.metadata?.purchase_email_sent === 'true') {
     return
   }
 
