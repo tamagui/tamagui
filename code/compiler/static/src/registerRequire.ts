@@ -244,7 +244,7 @@ export function registerRequire(
          */
 
         console.warn(
-          `  [tamagui] skipped "${path}" (set TAMAGUI_IGNORE_BUNDLE_ERRORS="${path}" to silence)`
+          `  [tamagui] skipped "${path}": ${err?.message} (set TAMAGUI_IGNORE_BUNDLE_ERRORS="${path}" to silence)`
         )
       }
 
