@@ -5,6 +5,7 @@ import {
   H2 as H2Raw,
   Input as InputRaw,
   Paragraph as ParagraphRaw,
+  ScrollView as ScrollViewRaw,
   Sheet as SheetRaw,
   Text as TextRaw,
   XStack as XStackRaw,
@@ -18,6 +19,7 @@ const FocusScope = FocusScopeRaw as React.ComponentType<any>
 const H2 = H2Raw as React.ComponentType<any>
 const Input = InputRaw as React.ComponentType<any>
 const Paragraph = ParagraphRaw as React.ComponentType<any>
+const ScrollView = ScrollViewRaw as React.ComponentType<any>
 const Sheet = SheetRaw as any
 const Text = TextRaw as React.ComponentType<any>
 const XStack = XStackRaw as React.ComponentType<any>
@@ -151,52 +153,61 @@ export function AdaptLiveSlotSpikeCase() {
   const [slotAdapted, setSlotAdapted] = React.useState(false)
 
   return (
-    <YStack p="$4" gap="$5" maxW={760}>
-      <YStack gap="$3">
-        <H2 size="$7">Adapt live slot spike</H2>
-        <Paragraph size="$3">
-          Local PR-A proof harness. It does not change Adapt core.
-        </Paragraph>
-        <XStack gap="$3" flexWrap="wrap">
-          <Button
-            {...testProps('live-slot-toggle')}
-            onPress={() => setLiveActive((x) => !x)}
-          >
-            live slot active: {liveActive ? 'yes' : 'no'}
-          </Button>
-          <Button
-            {...testProps('live-slot-update-prop')}
-            onPress={() => setLiveRevision((x) => x + 1)}
-          >
-            update published prop
-          </Button>
-        </XStack>
+    // scrollable root: the case is far taller than a phone screen, and the
+    // native Detox tests must be able to scroll each section into view (the
+    // web tests get this for free via Playwright auto-scroll)
+    <ScrollView {...testProps('adapt-live-slot-scroll')} flex={1}>
+      <YStack p="$4" gap="$5" maxW={760}>
+        <YStack gap="$3">
+          <H2 size="$7">Adapt live slot spike</H2>
+          <Paragraph size="$3">
+            Local PR-A proof harness. It does not change Adapt core.
+          </Paragraph>
+          <XStack gap="$3" flexWrap="wrap">
+            <Button
+              {...testProps('live-slot-toggle')}
+              onPress={() => setLiveActive((x) => !x)}
+            >
+              live slot active: {liveActive ? 'yes' : 'no'}
+            </Button>
+            <Button
+              {...testProps('live-slot-update-prop')}
+              onPress={() => setLiveRevision((x) => x + 1)}
+            >
+              update published prop
+            </Button>
+          </XStack>
+        </YStack>
+
+        <LiveSlotProof active={liveActive} revision={liveRevision} />
+
+        <YStack gap="$3">
+          <H2 size="$6">State preservation characterization</H2>
+          <Paragraph size="$3">
+            Measured v2 Adapt baseline vs the candidate live slot across inactive/active
+            moves.
+          </Paragraph>
+          <XStack gap="$3" flexWrap="wrap">
+            <Button
+              {...testProps('slot-state-toggle')}
+              onPress={() => setSlotAdapted((x) => !x)}
+            >
+              slot adapted: {slotAdapted ? 'yes' : 'no'}
+            </Button>
+          </XStack>
+
+          <XStack gap="$4" flexWrap="wrap">
+            <MeasuredV2StateBaselinePanel />
+            <SlotStatePanel adapted={slotAdapted} />
+          </XStack>
+        </YStack>
+
+        {/* keep the always-open native Sheet proof last: its absolutely
+            positioned content must not share the viewport with the state
+            panels while the Detox test scrolls/taps them */}
+        <LiveSlotSheetTouchProof />
       </YStack>
-
-      <LiveSlotProof active={liveActive} revision={liveRevision} />
-      <LiveSlotSheetTouchProof />
-
-      <YStack gap="$3">
-        <H2 size="$6">State preservation characterization</H2>
-        <Paragraph size="$3">
-          Measured v2 Adapt baseline vs the candidate live slot across inactive/active
-          moves.
-        </Paragraph>
-        <XStack gap="$3" flexWrap="wrap">
-          <Button
-            {...testProps('slot-state-toggle')}
-            onPress={() => setSlotAdapted((x) => !x)}
-          >
-            slot adapted: {slotAdapted ? 'yes' : 'no'}
-          </Button>
-        </XStack>
-
-        <XStack gap="$4" flexWrap="wrap">
-          <MeasuredV2StateBaselinePanel />
-          <SlotStatePanel adapted={slotAdapted} />
-        </XStack>
-      </YStack>
-    </YStack>
+    </ScrollView>
   )
 }
 
@@ -432,7 +443,8 @@ function MeasuredV2StateBaselinePanel() {
       borderWidth={1}
       borderColor="$orange8"
       rounded="$4"
-      minW={300}
+      flex={1}
+      minW={140}
     >
       <Text fontWeight="700">measured v2 Adapt baseline</Text>
       <Text {...testProps('v2-measured-before')}>{measuredV2StateBaseline.before}</Text>
@@ -456,7 +468,8 @@ function SlotStatePanel({ adapted }: { adapted: boolean }) {
       borderWidth={1}
       borderColor="$purple8"
       rounded="$4"
-      minW={300}
+      flex={1}
+      minW={140}
     >
       <Text fontWeight="700">candidate live slot</Text>
       <LiveSlotProvider>
