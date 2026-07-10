@@ -53,6 +53,9 @@ export const SelectTrigger = createRefComponent<TamaguiElement, SelectTriggerPro
         role="combobox"
         aria-haspopup="listbox"
         aria-expanded={context.open}
+        {...(process.env.TAMAGUI_TARGET === 'web' && {
+          'data-state': context.open ? 'open' : 'closed',
+        })}
         aria-autocomplete="none"
         dir={context.dir}
         disabled={disabled}
