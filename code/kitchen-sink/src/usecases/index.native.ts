@@ -136,6 +136,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   StyledContextTokens: () => require('./StyledContextTokens').StyledContextTokens,
   StyledHOCNamed: () => require('./StyledHOCNamed').StyledHOCNamed,
   StyledIconColor: () => require('./StyledIconColor').StyledIconColor,
+  IconFontSizing: () => require('./IconFontSizing').IconFontSizing,
   StyledInputFocusStyle: () => require('./StyledInputFocusStyle').StyledInputFocusStyle,
   StyledInputOnFocus: () => require('./StyledInputOnFocus').StyledInputOnFocus,
   StyledMediaQueryMerge: () => require('./StyledMediaQueryMerge').StyledMediaQueryMerge,

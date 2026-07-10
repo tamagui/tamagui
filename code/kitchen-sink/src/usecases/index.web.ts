@@ -35,6 +35,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   ButtonCircular: () => require('./ButtonCircular').ButtonCircular,
   ButtonCustom: () => require('./ButtonCustom').ButtonCustom,
   ButtonIconColor: () => require('./ButtonIconColor').ButtonIconColor,
+  IconFontSizing: () => require('./IconFontSizing').IconFontSizing,
   ButtonInverse: () => require('./ButtonInverse').ButtonInverse,
   ButtonUnstyled: () => require('./ButtonUnstyled').ButtonUnstyled,
   CheckboxDisabledOnPress: () =>

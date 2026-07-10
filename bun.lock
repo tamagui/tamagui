@@ -816,6 +816,7 @@
       "version": "2.4.2",
       "dependencies": {
         "@tamagui/core": "workspace:*",
+        "@tamagui/font-size": "workspace:*",
         "@tamagui/sizable-context": "workspace:*",
       },
       "devDependencies": {
