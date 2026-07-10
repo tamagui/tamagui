@@ -1,3 +1,4 @@
+import * as assert from 'assert'
 import { by, device, element, expect as detoxExpect, waitFor } from 'detox'
 import { safeLaunchApp, withSync } from './utils/detox'
 import { remountDirectUseCase } from './utils/navigation'
@@ -39,7 +40,9 @@ describe('DialogSheetAdaptHandoff', () => {
 
     await withSync(() => testElement('dialog-adapt-update').tap())
     await detoxExpect(testElement('dialog-adapt-revision')).toHaveText('revision: 1')
-    expect(await getText('dialog-adapt-instance')).toBe(instanceBefore)
+    // note: the global `expect` is Detox's matcher expect (exposeGlobals), so
+    // plain value assertions must use node assert
+    assert.strictEqual(await getText('dialog-adapt-instance'), instanceBefore)
 
     await withSync(() => testElement('dialog-adapt-close').tap())
     await waitFor(testElement('dialog-adapt-content'))
@@ -54,7 +57,7 @@ describe('DialogSheetAdaptHandoff', () => {
     await withSync(() => testElement('dialog-adapt-reopen-during-exit').tap())
 
     await waitFor(testElement('dialog-adapt-content')).toExist().withTimeout(10000)
-    expect(await getText('dialog-adapt-instance')).toBe(instanceBefore)
+    assert.strictEqual(await getText('dialog-adapt-instance'), instanceBefore)
     await detoxExpect(testElement('dialog-adapt-revision')).toHaveText('revision: 0')
   })
 

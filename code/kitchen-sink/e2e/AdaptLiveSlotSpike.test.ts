@@ -1,3 +1,4 @@
+import * as assert from 'assert'
 import { by, device, element, expect as detoxExpect, waitFor } from 'detox'
 import { remountDirectUseCase } from './utils/navigation'
 import { safeLaunchApp, withSync } from './utils/detox'
@@ -15,6 +16,15 @@ const toSlotCount = (value: string) => value.replace(/^v2 /, 'slot ')
 async function getText(id: string) {
   const attributes = (await testElement(id).getAttributes()) as any
   return attributes.text as string
+}
+
+// the case is taller than a phone screen; scroll an element into view before
+// tapping it (web tests get this for free via Playwright auto-scroll)
+async function scrollIntoView(id: string) {
+  await waitFor(testElement(id))
+    .toBeVisible()
+    .whileElement(by.id('adapt-live-slot-scroll'))
+    .scroll(250, 'down')
 }
 
 describe('AdaptLiveSlotSpike', () => {
@@ -54,6 +64,7 @@ describe('AdaptLiveSlotSpike', () => {
     )
     await detoxExpect(element(by.label('No portal sheet live slot panel'))).toExist()
 
+    await scrollIntoView('sheet-live-slot-button')
     await withSync(() => testElement('sheet-live-slot-button').tap())
     await detoxExpect(testElement('sheet-live-slot-press-count')).toHaveText(
       'sheet press-count: 1'
@@ -75,7 +86,9 @@ describe('AdaptLiveSlotSpike', () => {
     await detoxExpect(testElement('live-slot-context')).toHaveText(
       'dialog-context: dialog-parent-ok; portal-context: portal-wrapper-ok; target-context: target-context-ok; revision: 1'
     )
-    expect(await getText('live-slot-instance')).toBe(instanceBefore)
+    // note: the global `expect` is Detox's matcher expect (exposeGlobals), so
+    // plain value assertions must use node assert
+    assert.strictEqual(await getText('live-slot-instance'), instanceBefore)
   })
 
   it('state preservation characterization matches the measured v2 baseline', async () => {
@@ -92,15 +105,20 @@ describe('AdaptLiveSlotSpike', () => {
       measuredV2StateBaseline.countAfterReturn
     )
 
+    await scrollIntoView('slot-state-increment')
     await withSync(() => testElement('slot-state-increment').tap())
     await detoxExpect(testElement('slot-state-count')).toHaveText('slot count: 1')
     const slotInstanceBefore = await getText('slot-state-instance')
 
+    // the toggle sits just above the panels and stays co-visible with the
+    // increment button once the panels are scrolled into view
+    await waitFor(testElement('slot-state-toggle')).toBeVisible().withTimeout(5000)
     await withSync(() => testElement('slot-state-toggle').tap())
     await waitFor(testElement('slot-state-content')).toExist().withTimeout(10000)
     const slotCountAfterAdapt = await getText('slot-state-count')
     const slotInstanceAfterAdapt = await getText('slot-state-instance')
 
+    await waitFor(testElement('slot-state-toggle')).toBeVisible().withTimeout(5000)
     await withSync(() => testElement('slot-state-toggle').tap())
     await waitFor(testElement('slot-state-content')).toExist().withTimeout(10000)
     const slotCountAfterReturn = await getText('slot-state-count')
@@ -118,9 +136,13 @@ describe('AdaptLiveSlotSpike', () => {
       })
     )
 
-    expect(slotInstanceAfterAdapt).not.toBe(slotInstanceBefore)
-    expect(slotCountAfterAdapt).toBe(toSlotCount(measuredV2StateBaseline.countAfterAdapt))
-    expect(slotCountAfterReturn).toBe(
+    assert.notStrictEqual(slotInstanceAfterAdapt, slotInstanceBefore)
+    assert.strictEqual(
+      slotCountAfterAdapt,
+      toSlotCount(measuredV2StateBaseline.countAfterAdapt)
+    )
+    assert.strictEqual(
+      slotCountAfterReturn,
       toSlotCount(measuredV2StateBaseline.countAfterReturn)
     )
   })
