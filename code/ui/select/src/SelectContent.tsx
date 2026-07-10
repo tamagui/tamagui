@@ -1,3 +1,4 @@
+import { useAdaptContext, useAdaptIsActive } from '@tamagui/adapt'
 import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
@@ -11,7 +12,6 @@ import {
   useSelectItemParentContext,
 } from './context'
 import type { SelectContentProps } from './types'
-import { useShowSelectSheet } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectContent
@@ -25,7 +25,8 @@ export const SelectContent = ({
   const context = useSelectContext(scope)
   const itemParentContext = useSelectItemParentContext(scope)
   const zIndex = useContext(SelectZIndexContext)
-  const showSheet = useShowSelectSheet(context)
+  const isAdapted = useAdaptIsActive(context.adaptScope)
+  const adaptContext = useAdaptContext(context.adaptScope)
 
   const contents = children
 
@@ -33,8 +34,11 @@ export const SelectContent = ({
     return <>{children}</>
   }
 
-  if (showSheet) {
-    if (!context.open) {
+  if (isAdapted) {
+    // content is published into the Sheet via SelectViewport's AdaptPortalContents;
+    // keep it mounted through the sheet slide-out (adaptContext.targetFullyHidden),
+    // otherwise the sheet body vanishes mid-slide on close. mirrors Popover/Dialog.
+    if (!context.open && adaptContext.targetFullyHidden) {
       return null
     }
     return <>{contents}</>

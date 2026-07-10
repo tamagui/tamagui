@@ -10,14 +10,12 @@ import {
   resolveDefaultSizeToken,
   styled,
   useEvent,
-  useGet,
 } from '@tamagui/core'
 import { FocusScopeController } from '@tamagui/focus-scope'
 import { registerFocusable } from '@tamagui/focusable'
 import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { Separator } from '@tamagui/separator'
-import { SheetController } from '@tamagui/sheet/controller'
 import { XStack, YStack } from '@tamagui/stacks'
 import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
@@ -37,7 +35,6 @@ import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButt
 import { SelectTrigger } from './SelectTrigger'
 import { SelectViewport } from './SelectViewport'
 import type { SelectImplProps, SelectProps, SelectScopedProps } from './types'
-import { useShowSelectSheet } from './useSelectBreakpointActive'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectValue
@@ -421,33 +418,6 @@ export const SelectSeparator = styled(Separator, {
   name: 'SelectSeparator',
 })
 
-const SelectSheetController = (
-  props: SelectScopedProps<{
-    children: React.ReactNode
-    onOpenChange: React.Dispatch<React.SetStateAction<boolean>>
-  }>
-) => {
-  const context = useSelectContext(props.scope)
-  const showSheet = useShowSelectSheet(context)
-  const isAdapted = useAdaptIsActive(context.adaptScope)
-  const getShowSheet = useGet(showSheet)
-
-  return (
-    <SheetController
-      scope={props.scope}
-      onOpenChange={(val) => {
-        if (getShowSheet()) {
-          props.onOpenChange(val)
-        }
-      }}
-      open={context.open}
-      hidden={!isAdapted}
-    >
-      {props.children}
-    </SheetController>
-  )
-}
-
 const SelectSheetImpl = (props: SelectImplProps) => {
   return <>{props.children}</>
 }
@@ -462,9 +432,23 @@ export const Select = withStaticProperties(
   ) {
     const adaptScope = `AdaptSelect${props.scope || ''}`
 
+    // open state lives here (above AdaptParent) so the Adapt handoff can drive
+    // the adapted Sheet's open/close and unmount timing directly, mirroring Dialog
+    const [open, setOpen] = useControllableState({
+      prop: props.open,
+      defaultProp: props.defaultOpen || false,
+      onChange: props.onOpenChange,
+    })
+
     return (
-      <AdaptParent scope={adaptScope} portal>
-        <SelectInner scope={props.scope} adaptScope={adaptScope} {...props} />
+      <AdaptParent scope={adaptScope} open={open} onOpenChange={setOpen}>
+        <SelectInner
+          {...props}
+          scope={props.scope}
+          adaptScope={adaptScope}
+          open={open}
+          setOpen={setOpen}
+        />
       </AdaptParent>
     )
   },
@@ -502,15 +486,22 @@ function useEmitter<A>() {
   return [emit, subscribe] as const
 }
 
-function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: string }) {
+function SelectInner(
+  props: SelectScopedProps<SelectProps> & {
+    adaptScope: string
+    open: boolean
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  }
+) {
   const {
     scope = '',
     adaptScope,
     native,
     children,
-    open: openProp,
-    defaultOpen,
-    onOpenChange,
+    open,
+    setOpen,
+    defaultOpen: _defaultOpen,
+    onOpenChange: _onOpenChange,
     value: valueProp,
     defaultValue,
     onValueChange,
@@ -527,12 +518,6 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
   const isAdapted = useAdaptIsActive(adaptScope)
   const SelectImpl = isAdapted || !isWeb ? SelectSheetImpl : SelectInlineImpl
   const [selectedItem, setSelectedItem] = React.useState<React.ReactNode>(null)
-
-  const [open, setOpen] = useControllableState({
-    prop: openProp,
-    defaultProp: defaultOpen || false,
-    onChange: onOpenChange,
-  })
 
   const [value, setValue] = useControllableState({
     prop: valueProp,
@@ -664,23 +649,21 @@ function SelectInner(props: SelectScopedProps<SelectProps> & { adaptScope: strin
         renderValue={renderValue}
         lazyMount={lazyMount}
       >
-        <SelectSheetController onOpenChange={setOpen} scope={scope}>
-          {shouldRenderWebNative ? (
-            children
-          ) : (
-            <SelectImpl
-              activeIndexRef={activeIndexRef}
-              listContentRef={listContentRef}
-              selectedIndexRef={selectedIndexRef}
-              setActiveIndexFast={setActiveIndexFast}
-              {...props}
-              open={open}
-              value={value}
-            >
-              {children}
-            </SelectImpl>
-          )}
-        </SelectSheetController>
+        {shouldRenderWebNative ? (
+          children
+        ) : (
+          <SelectImpl
+            activeIndexRef={activeIndexRef}
+            listContentRef={listContentRef}
+            selectedIndexRef={selectedIndexRef}
+            setActiveIndexFast={setActiveIndexFast}
+            {...props}
+            open={open}
+            value={value}
+          >
+            {children}
+          </SelectImpl>
+        )}
       </SelectProvider>
     </SelectItemParentProvider>
   )
