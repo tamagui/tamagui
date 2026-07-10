@@ -77,6 +77,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   IconFillStroke: () => require('./IconFillStroke').IconFillStroke,
   ImageObjectFit: () => require('./ImageObjectFit').ImageObjectFit,
   ImageTokenStyle: () => require('./ImageTokenStyle').ImageTokenStyle,
+  InputRefCase: () => require('./InputRefCase').InputRefCase,
   ThemedListItem: () => require('./ListItem').ThemedListItem,
   NewInputBasic: () => require('./NewInputBasic').NewInputBasic,
   InputTextShorthand: () => require('./InputTextShorthand').InputTextShorthand,
