@@ -498,14 +498,34 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
         return
       }
 
-      animatedNumber.setValue(
-        toValue,
-        animationOverride || {
-          type: 'spring',
-          ...transitionConfig,
-        },
-        animationCompleteCallback
-      )
+      const resolvedConfig = animationOverride || {
+        type: 'spring',
+        ...transitionConfig,
+      }
+
+      // the sheet position spring moves hundreds of px. the spring drivers'
+      // default rest detection is tuned for tiny values (react-native Animated:
+      // 0.001px thresholds; reanimated 4: relative energyThreshold 6e-9), so for
+      // a sheet-sized move completion fires 1.4-1.7s after the animation is
+      // visually done - it always lost to Adapt's exit fallback latch and the
+      // sheet's own 1s opacity fallback, making every adapted close timer-driven
+      // (with a dev warning). default rest detection sized for px transforms:
+      // sub-pixel, invisible, but completes when the motion actually ends.
+      // user config still wins via spread order; each driver ignores the other
+      // driver's keys.
+      const springConfig =
+        !resolvedConfig.type || resolvedConfig.type === 'spring'
+          ? {
+              // react-native Animated (absolute px)
+              restDisplacementThreshold: 1,
+              restSpeedThreshold: 10,
+              // reanimated 4 (relative energy): ~0.3% of travel amplitude
+              energyThreshold: 1e-5,
+              ...resolvedConfig,
+            }
+          : resolvedConfig
+
+      animatedNumber.setValue(toValue, springConfig, animationCompleteCallback)
     })
 
     useIsomorphicLayoutEffect(() => {
