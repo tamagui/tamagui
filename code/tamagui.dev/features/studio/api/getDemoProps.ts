@@ -4,9 +4,9 @@ import { accentTokenName } from '~/features/studio/accentThemeName'
 import type { DemoOptions } from '../theme/demoOptions'
 
 // the outer border radius is one radius token larger than the inner one
-const oneRadiusLarger = (radius: unknown) => {
+const oneRadiusLarger = (radius: DemoOptions['borderRadius']) => {
   const n = Number(String(radius).replace('$', ''))
-  return Number.isNaN(n) ? radius : `$${n + 1}`
+  return (Number.isNaN(n) ? radius : `$${n + 1}`) as DemoOptions['borderRadius']
 }
 
 export function getDemoProps(demosOptions: DemoOptions, hasAccent = false) {
