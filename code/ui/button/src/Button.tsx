@@ -342,7 +342,6 @@ const ButtonComponent = Frame.styleable<ButtonExtraProps>((propsIn, ref) => {
           {...(isNested && { render: 'span' })}
           // pass resolved size to circular variant when no explicit size provided
           {...(props.circular && !propsIn.size && { size })}
-          tabIndex={0}
         >
           {themedIcon}
           {wrappedChildren}
