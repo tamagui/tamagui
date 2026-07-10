@@ -252,6 +252,11 @@ const ToastImpl = React.forwardRef<TamaguiElement, ToastImplProps>(
       if (open && !context.isClosePausedRef.current) {
         startTimer(duration)
       }
+      // clear on unmount: a replaced toast's stale timer would otherwise
+      // fire later and hide() whatever toast is currently showing
+      return () => {
+        clearTimeout(closeTimerRef.current)
+      }
     }, [open, duration, context.isClosePausedRef, startTimer])
 
     React.useEffect(() => {
