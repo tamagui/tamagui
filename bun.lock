@@ -1719,6 +1719,7 @@
         "@tamagui/react-native-use-pressable": "workspace:*",
         "@tamagui/react-native-use-responder-events": "workspace:*",
         "@tamagui/react-native-web-internals": "workspace:*",
+        "@tamagui/scroll-view": "workspace:*",
         "@tamagui/web": "workspace:*",
         "invariant": "^2.2.4",
         "memoize-one": "^6.0.0",
@@ -2991,7 +2992,6 @@
       "name": "@tamagui/scroll-view",
       "version": "2.4.2",
       "dependencies": {
-        "@tamagui/stacks": "workspace:*",
         "@tamagui/web": "workspace:*",
       },
       "devDependencies": {

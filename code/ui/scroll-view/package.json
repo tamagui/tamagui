@@ -34,7 +34,6 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
-    "@tamagui/stacks": "workspace:*",
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {

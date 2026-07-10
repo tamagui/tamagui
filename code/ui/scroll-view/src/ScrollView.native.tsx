@@ -1,15 +1,14 @@
 import type { GetProps, GetRef } from '@tamagui/web'
 import { styled } from '@tamagui/web'
-import { WebScrollView } from './WebScrollView'
+import { ScrollView as ScrollViewNative } from 'react-native'
 
 export const ScrollView = styled(
-  WebScrollView,
+  ScrollViewNative,
   {
     name: 'ScrollView',
     scrollEnabled: true,
   },
   {
-    acceptsClassName: true,
     accept: {
       contentContainerStyle: 'style',
     } as const,
