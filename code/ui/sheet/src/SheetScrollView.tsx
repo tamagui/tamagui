@@ -1,10 +1,9 @@
 import { composeRefs } from '@tamagui/compose-refs'
 import { isWeb, View, type GetRef, createRefComponent } from '@tamagui/core'
-import type { ScrollViewProps } from '@tamagui/scroll-view'
+import type { ScrollViewProps, ScrollViewRef } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { useEffect, useRef, useState } from 'react'
-import type { ScrollView as RNScrollView } from 'react-native'
 import { useGestureSheetContext } from './GestureSheetContext'
 import { getGestureHandlerState, isGestureHandlerEnabled } from './gestureState'
 import { useSheetContext } from './SheetContext'
@@ -50,7 +49,7 @@ export const SheetScrollView = createRefComponent<
       prop: scrollEnabledProp,
       defaultProp: true,
     })
-    const scrollRef = React.useRef<RNScrollView | null>(null)
+    const scrollRef = React.useRef<ScrollViewRef | null>(null)
 
     const [hasScrollableContent, setHasScrollableContent] = useState(true)
     const parentHeight = useRef(0)
