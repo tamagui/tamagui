@@ -2,6 +2,7 @@ import { useAdaptContext, useAdaptIsActive } from '@tamagui/adapt'
 import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
+import { composeEventHandlers } from '@tamagui/helpers'
 
 import { Portal } from '@tamagui/portal'
 import { RemoveScroll } from '@tamagui/remove-scroll'
@@ -20,6 +21,10 @@ import type { SelectContentProps } from './types'
 export const SelectContent = ({
   children,
   scope,
+  onEscapeKeyDown,
+  onPointerDownOutside,
+  onFocusOutside,
+  onInteractOutside,
   ...focusScopeProps
 }: SelectContentProps & FocusScopeProps) => {
   const context = useSelectContext(scope)
@@ -51,12 +56,21 @@ export const SelectContent = ({
           asChild
           forceUnmount={!context.open}
           onDismiss={() => itemParentContext.setOpen(false)}
+          onEscapeKeyDown={onEscapeKeyDown}
+          onInteractOutside={onInteractOutside}
           // prevent focus-outside and pointer-outside from triggering dismiss:
           // SelectImpl has its own document pointerdown listener for outside clicks,
           // and focus changes during open (e.g. FocusScope trapping) shouldn't dismiss.
-          // only escape key should trigger onDismiss here.
-          onFocusOutside={(e) => e.preventDefault()}
-          onPointerDownOutside={(e) => e.preventDefault()}
+          // only escape key should trigger onDismiss here. user handlers run first,
+          // then we always preventDefault so this layer never auto-dismisses.
+          onFocusOutside={composeEventHandlers(onFocusOutside, (e) => e.preventDefault(), {
+            checkDefaultPrevented: false,
+          })}
+          onPointerDownOutside={composeEventHandlers(
+            onPointerDownOutside,
+            (e) => e.preventDefault(),
+            { checkDefaultPrevented: false }
+          )}
         >
           <FocusScope
             {...focusScopeProps}
