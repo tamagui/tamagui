@@ -39,17 +39,12 @@ export const ButtonFrame = styled(View, {
 
           borderRadius: tokens.radius[sizeToken],
 
-          // note the getSpace and getSize helpers will let you shift down/up token sizes
-
-          // whereas with gap we just multiply by 0.2
-
-          // this is a stylistic choice, and depends on your design system values
+          // resolve tokens to numeric values and multiply to derive related
+          // sizes - this is a stylistic choice that depends on your token scale
 
           gap: tokens.space[sizeToken].val * 0.2,
 
-          paddingHorizontal: getSpace(sizeToken, {
-            shift: -1,
-          }),
+          paddingHorizontal: getSpace(sizeToken).val * 0.9,
         }
       },
     },
@@ -81,14 +76,12 @@ export const ButtonText = styled(Text, {
 const ButtonIcon = (props: { children: any }) => {
   const { size } = React.useContext(ButtonContext.context)
 
-  const smaller = getSize(size, {
-    shift: -2,
-  })
+  const smaller = getSize(size).val * 0.4
 
   const theme = useTheme()
 
   return React.cloneElement(props.children, {
-    size: smaller.val * 0.5,
+    size: smaller,
     color: theme.color.get(),
   })
 }

@@ -18,7 +18,6 @@ import {
   useConfiguration,
   useCreateShallowSetState,
 } from '@tamagui/core'
-import { getSize } from '@tamagui/get-token'
 import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
 import type { SizableStackProps } from '@tamagui/stacks'
 import { ThemeableStack } from '@tamagui/stacks'
@@ -419,9 +418,8 @@ const getThumbSize = (val?: SizeTokens | number | true) => {
   const size =
     typeof val === 'number'
       ? val
-      : getSize(tokens.size[resolveDefaultSizeToken(val ?? true)] as any, {
-          shift: -1,
-        })
+      : (getVariableValue(tokens.size[resolveDefaultSizeToken(val ?? true)]) as number) *
+        0.86
   return {
     width: size,
     height: size,

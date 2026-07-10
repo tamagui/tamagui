@@ -31,7 +31,6 @@ type CheckboxExpectingVariantProps = {
 type CheckboxExtraProps = HeadlessCheckboxExtraProps & {
   scaleIcon?: number
   scaleSize?: number
-  sizeAdjust?: number
   native?: NativeValue<'web'>
 }
 type CheckboxBaseProps = ViewProps
@@ -108,7 +107,6 @@ export function createCheckbox<
     function Checkbox(_props, forwardedRef) {
       const {
         scaleSize = 0.45,
-        sizeAdjust = 0,
         scaleIcon,
         checked: checkedProp,
         defaultChecked,
@@ -126,9 +124,7 @@ export function createCheckbox<
       let size = 0
       if (!unstyled) {
         adjustedSize = getVariableValue(
-          getSize(propsActive.size ?? styledContext?.size ?? true, {
-            shift: sizeAdjust,
-          })
+          getSize(propsActive.size ?? styledContext?.size ?? true)
         ) as number
         size = scaleSize ? Math.round(adjustedSize * scaleSize) : adjustedSize
       }

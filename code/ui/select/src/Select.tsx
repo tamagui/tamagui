@@ -14,7 +14,6 @@ import {
 } from '@tamagui/core'
 import { FocusScopeController } from '@tamagui/focus-scope'
 import { registerFocusable } from '@tamagui/focusable'
-import { getSpace } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { Separator } from '@tamagui/separator'
 import { SheetController } from '@tamagui/sheet/controller'
@@ -260,15 +259,14 @@ const NativeSelectFrame = styled(YStack, {
         const { tokens } = extras
         const sizeToken = resolveDefaultSizeToken(val)
         const paddingHorizontal = getVariableValue(tokens.space[sizeToken])
+        const sizeVal = getVariableValue(tokens.size[sizeToken]) as number
 
         return {
           borderRadius: tokens.radius[sizeToken] ?? sizeToken,
           minHeight: tokens.size[sizeToken],
           paddingRight: paddingHorizontal + 20,
           paddingLeft: paddingHorizontal,
-          paddingVertical: getSpace(sizeToken, {
-            shift: -3,
-          }),
+          paddingVertical: Math.max(0, Math.round(sizeVal * 0.4 - 8.5)),
         }
       },
     },
@@ -373,12 +371,11 @@ const SelectLabelFrame = styled(SizableText, {
     size: {
       '...size': (val: SizeTokens, { tokens }) => {
         const sizeToken = resolveDefaultSizeToken(val)
+        const sizeVal = getVariableValue(tokens.size[sizeToken]) as number
 
         return {
           paddingHorizontal: tokens.space[sizeToken],
-          paddingVertical: getSpace(tokens.space[sizeToken], {
-            shift: -4,
-          }),
+          paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
         }
       },
     },

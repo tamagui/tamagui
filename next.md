@@ -8,6 +8,7 @@ v3 release plan:
 - Adapt live slot core + dialog<->sheet handoff (exit animations play through media flips)
 - notable fixes along the way: boolean size-shorthand tokens inside variant styles, animated-driver custom component preservation (render-as-string clobbering), slider visible track/fill, dialog exit releases pointer-events locks (body lock, overlay, focus trap)
 - icons: sizing now defaults to font sizes instead of size tokens (`themed()` resolves token sizes via the current font's `font.size[token]` scale, so icons line up with text at every size), and `usePropsAndStyle` was removed from `themed()` (icons now resolve theme color/fill/stroke via `useTheme()` and build a minimal style object instead of running full style resolution on every render)
+- token stepping removed from default component styling: `@tamagui/get-token`'s `getSize`/`getSpace`/`getRadius` are now trivial same-key token resolvers (token in, Variable out). The runtime scale-sorting stepper (`stepTokenUpOrDown` / `getTokenRelative`, plus the `shift`/`bounds`/`excludeHalfSteps` options) is gone — it sorted the config's token scale at runtime and stepped up/down by index, which was unpredictable with custom configs. Components that stepped a token down now multiply the resolved numeric size value instead (input padding, list-item/select-label paddingVertical, select-native paddingVertical, popper arrow, slider thumb, tooltip content padding), with per-site constants tuned to match the previous default-config output within ~1-2px. "One size smaller" token-key lookups (list-item subtitle font, tooltip default size) use the new `oneSizeTokenSmaller`, which just decrements the `$N` key.
 
 migration notes so far:
 
@@ -18,10 +19,10 @@ migration notes so far:
 - Sheet.Frame => Sheet.Container + Sheet.Background (codemod: scripts/codemods/sheet-frame-to-container.js). Container no longer clips with overflow hidden. Sheet.Overlay must be a direct child of Sheet.
 - icon token sizes now resolve through the current font's size scale (`font.size[token]`) rather than the `size` token scale, so e.g. `<Icon size="$4" />` matches `$4` text instead of the `$4` space/size value. Raw numeric sizes are unchanged.
 - icon components no longer accept media/pseudo props directly (e.g. `$sm`, `hoverStyle`) — `themed()` dropped `usePropsAndStyle` and no longer runs full style resolution. Wrap an icon in a styled `View` if you need responsive/pseudo styling around it. Color/fill/stroke theme tokens, `size`, `strokeWidth`, `style`, and `testID` still work as before.
+- `@tamagui/get-token` public API removal: `stepTokenUpOrDown` and its alias `getTokenRelative` are gone, and `getSize` / `getSpace` / `getRadius` no longer accept the second options argument (`shift` / `bounds` / `excludeHalfSteps`). They now take a single token and return that token's Variable, resolving `true` to the default size and looking up cross-scale by the same key. Replace shifted lookups with arithmetic on the resolved numeric value (e.g. `getVariableValue(getSize(size)) * n`). `createCheckbox`'s `sizeAdjust` prop was also removed (it relied on token stepping).
 
 ## active work (v3-gating)
 
-- remove `getToken` / shift weirdness in default styling (under investigation, proposal pending)
 - line height as multiplier: decided valid, but only for direct numeric values (that work already landed). Remaining: support "px" string values; move v5 config font tokens to "px" values so behavior is backwards compatible; v6 config then defines this logically right, ideally aligned to tailwind's scale.
 - remove RN entirely from web: eject Input and ScrollView by moving the "lite" implementations into the actual tamagui components; `lite` then re-exports from those packages
 - props-consistency pass across components: align how Dialog/Popover/Select/Tooltip/Toast handle portals, focus props, scoping, and naming (Dialog + Sheet are the cleaned-up reference now)

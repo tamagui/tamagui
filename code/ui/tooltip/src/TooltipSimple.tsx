@@ -1,5 +1,5 @@
-import { createRefComponent } from '@tamagui/core'
-import { getSpace } from '@tamagui/get-token'
+import { createRefComponent, getVariableValue } from '@tamagui/core'
+import { getSize } from '@tamagui/get-token'
 import type { SizableStackProps } from '@tamagui/stacks'
 import { Paragraph } from '@tamagui/text'
 import * as React from 'react'
@@ -53,9 +53,12 @@ export const TooltipSimple: React.FC<TooltipSimpleProps> = createRefComponent(
           elevation="$0.5"
           opacity={1}
           pointerEvents="none"
-          paddingVertical={getSpace(tooltipProps.size ?? true, {
-            shift: -4,
-          })}
+          paddingVertical={Math.max(
+            0,
+            Math.round(
+              (getVariableValue(getSize(tooltipProps.size ?? true)) as number) * 0.36 - 9
+            )
+          )}
           animateOnly={['transform', 'opacity']}
           transition={[
             'quicker',

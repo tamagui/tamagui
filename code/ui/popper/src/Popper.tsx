@@ -37,7 +37,7 @@ import {
   size as sizeMiddleware,
   useFloating,
 } from '@tamagui/floating'
-import { getSpace } from '@tamagui/get-token'
+import { getSize } from '@tamagui/get-token'
 import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
 import { YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
@@ -938,12 +938,7 @@ export const PopperArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
     const sizeVal =
       typeof sizeProp === 'number'
         ? sizeProp
-        : getVariableValue(
-            getSpace(sizeProp ?? context.size, {
-              shift: -2,
-              bounds: [2],
-            })
-          )
+        : (getVariableValue(getSize(sizeProp ?? context.size)) as number) * 0.52 - 11.5
 
     const size = Math.max(0, +sizeVal)
 
