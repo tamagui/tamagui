@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/sheet",
-  "version": "2.4.2",
+  "version": "2.4.3",
   "license": "MIT",
   "source": "src/index.ts",
   "type": "module",
