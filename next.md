@@ -23,7 +23,8 @@ migration notes so far:
 
 - remove `getToken` / shift weirdness in default styling (under investigation, proposal pending)
 - line height as multiplier: decided valid, but only for direct numeric values (that work already landed). Remaining: support "px" string values; move v5 config font tokens to "px" values so behavior is backwards compatible; v6 config then defines this logically right, ideally aligned to tailwind's scale.
-- remove RN entirely from web: eject Input and ScrollView by moving the "lite" implementations into the actual tamagui components; `lite` then re-exports from those packages
+- landed: ScrollView ejected from react-native on web — clean-room WebScrollView in @tamagui/scroll-view mapping the used RN surface (scrollTo/scrollToEnd/getScrollableNode, RN-shaped onScroll, contentContainerStyle, horizontal, indicators); react-native-web-lite re-exports it (its 900-line legacy implementation deleted). Input was already web-native. migration note: on web via lite, ScrollView props outside the mapped subset (momentum events, snapTo*, keyboardDismissMode) are no longer supported.
+- open: decide whether lite's TextInput should also move into @tamagui/input as a web TextInput export (nothing in tamagui consumes it; tamagui Input is the replacement — left in lite for now)
 - props-consistency pass across components: align how Dialog/Popover/Select/Tooltip/Toast handle portals, focus props, scoping, and naming (Dialog + Sheet are the cleaned-up reference now)
 - iOS CI: clear stale queued macOS runs, fix runner availability so Detox/Maestro actually run per-push
 
