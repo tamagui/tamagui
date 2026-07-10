@@ -1,4 +1,4 @@
-import { isServer, isWeb } from '@tamagui/constants'
+import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEffect, useReducer, useRef } from 'react'
 import { getSetting } from '../config'
 import { resetMediaStyleCache } from '../helpers/createMediaStyle'
@@ -139,13 +139,6 @@ export function setupMediaListeners() {
 
 const listeners = new Set<any>()
 
-// tracks whether the first client render pass (hydration) has completed.
-// until then useMedia must return `initState` (mediaQueryDefaultActive) so
-// the client's first render matches what the server rendered; the mount
-// effect then flips to real matchMedia values with a corrective re-render.
-// components mounting later get real values immediately.
-let didHydrateOnce = false
-
 export function updateMediaListeners() {
   listeners.forEach((cb) => cb(getMedia()))
 }
@@ -246,10 +239,12 @@ export function useMedia(
 
   const internalRef = useRef<MediaRef | null>(null)
   if (!internalRef.current) {
-    const initial =
-      !isServer && !didHydrateOnce && !getSetting('disableSSR')
-        ? initState
-        : getMedia()
+    // SSR contract (see settings.disableSSR docs): every first render uses
+    // mediaQueryDefaultActive so hydration matches the server — including
+    // lazily-hydrated boundaries that mount long after the initial pass.
+    // a pre-paint layout effect then corrects to the real matchMedia values,
+    // so fresh client-only mounts never paint a wrong frame.
+    const initial = !isServer && !getSetting('disableSSR') ? initState : getMedia()
     const r: MediaRef = {
       keys: new Set<string>(),
       lastState: initial,
@@ -327,18 +322,17 @@ export function useMedia(
   ref.proxyTarget = state
   ;(ref.proxy as any)[refSlot].proxyTarget = state
 
-  useEffect(() => {
-    didHydrateOnce = true
-
-    // if the hydration render used mediaQueryDefaultActive and the real
-    // matchMedia values differ, re-render now with the real values
+  // correct the defaults-first render to real matchMedia values before paint
+  useIsomorphicLayoutEffect(() => {
     const synced = ref.getSnapshot()
     if (synced !== ref.proxyTarget) {
       ref.proxyTarget = synced
       ;(ref.proxy as any)[refSlot].proxyTarget = synced
       forceUpdate()
     }
+  }, [])
 
+  useEffect(() => {
     const renderVersion = ref.renderVersion
     const shouldSubscribe =
       !ref.componentContext || !!States.get(ref.componentContext)?.enabled

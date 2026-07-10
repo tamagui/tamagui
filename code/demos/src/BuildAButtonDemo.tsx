@@ -43,7 +43,7 @@ function ButtonCol(props: any) {
 
   return (
     <YStack p="$2" gap="$3">
-      <Button theme={props.subTheme} {...props}>
+      <Button theme={subTheme} {...buttonProps}>
         Hello
       </Button>
       <Button theme={('orange' + subThemeSuffix) as ThemeName} {...buttonProps}>
