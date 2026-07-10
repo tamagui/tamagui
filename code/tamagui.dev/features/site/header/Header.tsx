@@ -1118,7 +1118,14 @@ const CodeModeToggle = React.memo(() => {
       }
 
       const nextSearch = searchParams.toString()
-      router.push((nextSearch ? `${pathname}?${nextSearch}` : pathname) as any)
+      const nextUrl = nextSearch ? `${pathname}?${nextSearch}` : pathname
+
+      if (typeof window !== 'undefined') {
+        window.location.href = nextUrl
+        return
+      }
+
+      router.push(nextUrl as any)
     },
     [pathname, router]
   )

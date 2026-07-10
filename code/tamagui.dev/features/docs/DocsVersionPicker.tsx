@@ -51,12 +51,17 @@ export function DocsVersionPicker({
   }
 
   const setSyntax = (syntax: string) => {
-    router.push(
-      getDocsVersionHref({
-        state,
-        syntax: syntax as DocsSyntax,
-      }) as Href
-    )
+    const href = getDocsVersionHref({
+      state,
+      syntax: syntax as DocsSyntax,
+    })
+
+    if (typeof window !== 'undefined') {
+      window.location.href = href
+      return
+    }
+
+    router.push(href as Href)
   }
 
   const showArchiveNote = !state.isComponentDoc && !state.hasArchivedContent
