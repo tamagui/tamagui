@@ -186,11 +186,12 @@ export function SelectDemoItem(props: SelectProps & {
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay backgroundColor="$shadowColor" transition="lazy" enterStyle={{
           opacity: 0
         }} exitStyle={{
@@ -345,7 +346,8 @@ function SheetDemo() {
         opacity: 0
       }} />
         <Sheet.Handle bg="$color8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="$color2">
+        <Sheet.Container items="center" justify="center" gap="$10">
+          <Sheet.Background bg="$color2" />
           <__ReactNativeView style={_sheet["16"]}>
             <_ReactNativeTextStyled7>Made by</_ReactNativeTextStyled7>
             <Anchor color="$blue10" href="https://twitter.com/natebirdman" target="_blank">
@@ -362,7 +364,7 @@ function SheetDemo() {
             description: 'Just showing how toast works...'
           });
         }} />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>;
 }
@@ -518,11 +520,12 @@ export function SelectDemoItem(props: SelectProps & {
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay backgroundColor="$shadowColor" transition="lazy" enterStyle={{
           opacity: 0
         }} exitStyle={{
@@ -677,7 +680,8 @@ function SheetDemo() {
         opacity: 0
       }} />
         <Sheet.Handle bg="$color8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="$color2">
+        <Sheet.Container items="center" justify="center" gap="$10">
+          <Sheet.Background bg="$color2" />
           <div className={_cn14}>
             <p className={_cn15}>Made by</p>
             <Anchor color="$blue10" href="https://twitter.com/natebirdman" target="_blank">
@@ -694,7 +698,7 @@ function SheetDemo() {
             description: 'Just showing how toast works...'
           });
         }} />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>;
 }"
@@ -886,11 +890,12 @@ export function SelectDemoItem(props: SelectProps & {
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay backgroundColor="$shadowColor" transition="lazy" enterStyle={{
           opacity: 0
         }} exitStyle={{
@@ -1045,7 +1050,8 @@ function SheetDemo() {
         opacity: 0
       }} />
         <Sheet.Handle bg="$color8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="$color2">
+        <Sheet.Container items="center" justify="center" gap="$10">
+          <Sheet.Background bg="$color2" />
           <__ReactNativeView style={_sheet["16"]}>
             <_ReactNativeTextStyled7>Made by</_ReactNativeTextStyled7>
             <Anchor color="$blue10" href="https://twitter.com/natebirdman" target="_blank">
@@ -1062,7 +1068,7 @@ function SheetDemo() {
             description: 'Just showing how toast works...'
           });
         }} />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>;
 }
@@ -1151,11 +1157,12 @@ export function SelectDemoItem(props: SelectProps & {
 
       <Adapt when="maxMd" platform="touch">
         <Sheet native={!!props.native} modal dismissOnSnapToBottom transition="medium">
-          <Sheet.Frame>
+          <Sheet.Container>
+            <Sheet.Background />
             <Sheet.ScrollView>
               <Adapt.Contents />
             </Sheet.ScrollView>
-          </Sheet.Frame>
+          </Sheet.Container>
           <Sheet.Overlay backgroundColor="$shadowColor" transition="lazy" enterStyle={{
           opacity: 0
         }} exitStyle={{
@@ -1310,7 +1317,8 @@ function SheetDemo() {
         opacity: 0
       }} />
         <Sheet.Handle bg="$color8" />
-        <Sheet.Frame items="center" justify="center" gap="$10" bg="$color2">
+        <Sheet.Container items="center" justify="center" gap="$10">
+          <Sheet.Background bg="$color2" />
           <div className={_cn14}>
             <p className={_cn15}>Made by</p>
             <Anchor color="$blue10" href="https://twitter.com/natebirdman" target="_blank">
@@ -1327,7 +1335,7 @@ function SheetDemo() {
             description: 'Just showing how toast works...'
           });
         }} />
-        </Sheet.Frame>
+        </Sheet.Container>
       </Sheet>
     </>;
 }"
