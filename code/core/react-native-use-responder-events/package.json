@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/react-native-use-responder-events",
-  "version": "2.4.4",
+  "version": "2.4.5",
   "files": [
     "src",
     "types",
