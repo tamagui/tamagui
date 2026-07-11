@@ -145,6 +145,20 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
     const r = ref.current
     const renderVersion = r.renderVersion
 
+    // strict-mode dev double-invokes effects: cleanup runs between the two
+    // invocations with no render in between, so the "unchanged renderVersion
+    // means unmount" check below false-positives and deletes this component's
+    // registered theme state mid-lifecycle. the registry is only re-populated
+    // on this component's next render, so until then children resolve a
+    // missing parent and fall back to the root theme state (isNew: true) —
+    // which flips getThemedChildren to wrap and re-parents/remounts their
+    // hosts, losing focus (keyboard dismiss on first Input tap). per react's
+    // strict-mode contract, setup restores whatever cleanup tore down.
+    if (r.lastSnap && !states.has(r.id)) {
+      states.set(r.id, r.lastSnap)
+      localStates.set(r.id, r.lastSnap)
+    }
+
     if (r.unsubscribe && r.subscribedParentId !== r.parentId) {
       cleanupThemeSubscription(r)
     }
