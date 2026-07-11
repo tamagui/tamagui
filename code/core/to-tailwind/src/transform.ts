@@ -211,7 +211,9 @@ function propValueToClass(
   // some props use standalone classes (like `flex-1`)
   if (prefix === '') return modifier ? `${modifier}:${tailwindValue}` : tailwindValue
 
-  const cls = `${prefix}-${tailwindValue}`
+  // an empty tailwindValue means the bare prefix IS the class (e.g. tailwind's
+  // `border` = 1px), so don't emit a dangling `border-`
+  const cls = tailwindValue === '' ? prefix : `${prefix}-${tailwindValue}`
   return modifier ? `${modifier}:${cls}` : cls
 }
 

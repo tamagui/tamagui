@@ -39,6 +39,13 @@ describe('tamaguiToTailwind', () => {
       expect(output).toContain('opacity-50')
     })
 
+    test('borderWidth 1 emits bare `border`, not `border-`', () => {
+      const output = tamaguiToTailwind(`<View borderWidth={1} borderColor="$borderColor" />`)
+      expect(output).toContain('border border-borderColor')
+      // regression: the 1px default must not leave a dangling `border-`
+      expect(output).not.toMatch(/border-(?=\s|")/)
+    })
+
     test('token reference strips $', () => {
       const input = `<View backgroundColor="$blue5" />`
       const output = tamaguiToTailwind(input)
