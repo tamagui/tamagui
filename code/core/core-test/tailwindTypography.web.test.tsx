@@ -53,8 +53,8 @@ describe('styleMode lineHeight (leading-*)', () => {
     expect(rule('leading-[24px]', 'lineHeight')[StyleObjectValue]).toBe('24px')
   })
 
-  test('leading-8 resolves the $8 lineHeight token', () => {
-    expect(rule('leading-8', 'lineHeight')[StyleObjectValue]).toContain('var(--')
+  test('leading-8 keeps standard Tailwind semantics (2rem = 32px)', () => {
+    expect(rule('leading-8', 'lineHeight')[StyleObjectValue]).toBe('32px')
   })
 
   test('named leading-none/tight/loose are unitless multipliers', () => {

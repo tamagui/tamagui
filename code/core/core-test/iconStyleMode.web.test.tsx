@@ -5,7 +5,7 @@ import { reconstructIconStyleModeProps } from '@tamagui/helpers-icon'
 import { createTamagui, getConfig } from '../web/src'
 
 // lucide icons are plain themed() wrappers (not createComponent), so styleMode reconstructs
-// their color/size from the icon's own className here.
+// their color from the icon's own className here. size-* stays standard Tailwind width+height.
 beforeAll(() => {
   createTamagui({
     ...(defaultConfig as any),
@@ -18,7 +18,7 @@ beforeAll(() => {
 
 const theme = () => (getConfig() as any).themes.light
 
-describe('icon styleMode color/size reconstruction', () => {
+describe('icon styleMode color reconstruction', () => {
   test('color-color5 → $color5 color prop, class stripped', () => {
     const out = reconstructIconStyleModeProps(
       { className: 'color-color5' } as any,
@@ -28,17 +28,9 @@ describe('icon styleMode color/size reconstruction', () => {
     expect((out as any).className).toBeUndefined()
   })
 
-  test('size-6 → $6 size token', () => {
-    expect(
-      (reconstructIconStyleModeProps({ className: 'size-6' } as any, theme()) as any).size
-    ).toBe('$6')
-  })
-
-  test('size-[24px] arbitrary → 24 (number, not "24px" string)', () => {
-    expect(
-      (reconstructIconStyleModeProps({ className: 'size-[24px]' } as any, theme()) as any)
-        .size
-    ).toBe(24)
+  test('size-* remains untouched for standard Tailwind width+height semantics', () => {
+    const props = { className: 'size-6' } as any
+    expect(reconstructIconStyleModeProps(props, theme())).toBe(props)
   })
 
   test('color + size together', () => {
@@ -47,7 +39,8 @@ describe('icon styleMode color/size reconstruction', () => {
       theme()
     ) as any
     expect(out.color).toBe('$color10')
-    expect(out.size).toBe('$8')
+    expect(out.size).toBeUndefined()
+    expect(out.className).toBe('size-8')
   })
 
   test('raw color (color-red) stays raw, not a token', () => {

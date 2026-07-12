@@ -104,11 +104,19 @@ describe('tamaguiToTailwind', () => {
       )
     })
 
-    test('size / animation props become size-*/animation-* classes', () => {
-      expect(tamaguiToTailwind(`<Text size="$5" />`)).toContain('size-5')
+    test('size prop is retained; animation uses the non-standard animation-* namespace', () => {
+      expect(tamaguiToTailwind(`<Text size="$5" />`, { renameComponents: false })).toBe(
+        `<Text size="$5" />`
+      )
       expect(tamaguiToTailwind(`<View animation="bouncy" />`)).toContain(
         'animation-bouncy'
       )
+    })
+
+    test('lineHeight token is retained because numeric leading-* belongs to Tailwind', () => {
+      expect(
+        tamaguiToTailwind(`<Text lineHeight="$8" />`, { renameComponents: false })
+      ).toBe(`<Text lineHeight="$8" />`)
     })
 
     test('negative values in a style object are not dropped', () => {
@@ -355,7 +363,9 @@ describe('tamaguiToTailwind', () => {
     })
 
     test('color and font tokens stay dynamic (token names, never baked to px)', () => {
-      expect(tamaguiToTailwind(`<View backgroundColor="$color5" />`)).toContain('bg-color5')
+      expect(tamaguiToTailwind(`<View backgroundColor="$color5" />`)).toContain(
+        'bg-color5'
+      )
       expect(tamaguiToTailwind(`<Text fontSize="$5" />`)).toContain('text-5')
     })
   })

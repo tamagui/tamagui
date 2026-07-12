@@ -107,13 +107,20 @@ export async function toTailwind({
   const { findParseError } = require('@tamagui/to-tailwind') as {
     findParseError?: (source: string) => string | null
   }
+  if (typeof findParseError !== 'function') {
+    throw new Error(
+      '@tamagui/to-tailwind did not export findParseError — aborting because transactional parse safety is unavailable'
+    )
+  }
   const sources = new Map<string, string>()
   for (const file of files) {
     const source = await readFile(file, 'utf8')
     sources.set(file, source)
-    const err = typeof findParseError === 'function' ? findParseError(source) : null
+    const err = findParseError(source)
     if (err) {
-      throw new Error(`parse error in ${relative(cwd, file) || file}: ${err} — aborted, no files written`)
+      throw new Error(
+        `parse error in ${relative(cwd, file) || file}: ${err} — aborted, no files written`
+      )
     }
   }
 
@@ -276,7 +283,8 @@ async function loadTransformConfig(
     }
   }
   if (media !== undefined && !isObj(media)) bad('`media` must be an object')
-  if (shorthands !== undefined && !isObj(shorthands)) bad('`shorthands` must be an object')
+  if (shorthands !== undefined && !isObj(shorthands))
+    bad('`shorthands` must be an object')
   if (!tokens && !media && !shorthands) {
     bad('exposes no { tokens, media, shorthands }')
   }

@@ -12,7 +12,10 @@ import { StyleObjectProperty, StyleObjectValue } from '@tamagui/helpers'
 import { View, Text } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 import { tamaguiToTailwind } from '../to-tailwind/src/transform'
-import { propToTailwindPrefix, standaloneValueProps } from '../to-tailwind/src/maps/propToClass'
+import {
+  propToTailwindPrefix,
+  standaloneValueProps,
+} from '../to-tailwind/src/maps/propToClass'
 
 function classOf(out: string): string {
   const m = /className="([^"]*)"/.exec(out)
@@ -28,7 +31,7 @@ function resolved(Comp: any, props: Record<string, any>): Record<string, any> {
   const out: Record<string, any> = { ...(s.style || {}) }
   for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
     const p = r[StyleObjectProperty]
-    if (p != null && out[p] === undefined) out[p] = r[StyleObjectValue]
+    if (p != null) out[p] = r[StyleObjectValue]
   }
   // include behavioral viewProps (pointerEvents, accessibility*, role, …) so they aren't compared
   // hollow — but EXCLUDE the internal plumbing keys (className/style/children/ref) which differ by
@@ -122,6 +125,34 @@ const SAMPLE: Record<string, { comp: any; attr: string } | null> = {
 }
 
 export function runParityGate(label: string) {
+  describe(`parity gate [${label}] — shorthand/longhand order survives conversion`, () => {
+    const cases = [
+      {
+        source: `<View pt={20} p={10} />`,
+        props: { paddingTop: 20, padding: 10 },
+      },
+      {
+        source: `<View p={10} pt={20} />`,
+        props: { padding: 10, paddingTop: 20 },
+      },
+      {
+        source: `<View hoverStyle={{ paddingTop: 20, padding: 10 }} />`,
+        props: { hoverStyle: { paddingTop: 20, padding: 10 } },
+      },
+      {
+        source: `<View hoverStyle={{ padding: 10, paddingTop: 20 }} />`,
+        props: { hoverStyle: { padding: 10, paddingTop: 20 } },
+      },
+    ]
+    for (const { source, props } of cases) {
+      test(source, () => {
+        const cls = classOf(convert(source))
+        expect(cls).not.toBe('')
+        expect(resolved(View, { className: cls })).toEqual(resolved(View, props))
+      })
+    }
+  })
+
   describe(`parity gate [${label}] — every propToTailwindPrefix entry: class === source prop`, () => {
     for (const prop of Object.keys(propToTailwindPrefix)) {
       const sample = SAMPLE[prop]
@@ -149,7 +180,9 @@ export function runParityGate(label: string) {
           const tag = Comp === Text ? 'Text' : 'View'
           const cls = classOf(convert(`<${tag} ${prop}="${value}" />`))
           expect(cls).not.toBe('')
-          expect(resolved(Comp, { className: cls })).toEqual(resolved(Comp, { [prop]: value }))
+          expect(resolved(Comp, { className: cls })).toEqual(
+            resolved(Comp, { [prop]: value })
+          )
         })
       }
     }
@@ -192,7 +225,9 @@ function parseAttr(attr: string): Record<string, any> {
   if (braceIdx !== -1) {
     const name = attr.slice(0, braceIdx)
     const raw = attr.slice(braceIdx + 2, -1)
-    return { [name]: raw.startsWith("'") || raw.startsWith('"') ? raw.slice(1, -1) : Number(raw) }
+    return {
+      [name]: raw.startsWith("'") || raw.startsWith('"') ? raw.slice(1, -1) : Number(raw),
+    }
   }
   const eq = attr.indexOf('="')
   const name = attr.slice(0, eq)

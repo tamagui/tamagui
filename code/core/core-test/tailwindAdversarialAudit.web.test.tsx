@@ -41,7 +41,8 @@ function resolved(Comp: any, props: Record<string, any>): Record<string, any> {
   }
   const internal = new Set(['className', 'style', 'children', 'ref', 'key'])
   const vp = s.viewProps || {}
-  for (const k of Object.keys(vp)) if (!internal.has(k) && out[k] === undefined) out[k] = vp[k]
+  for (const k of Object.keys(vp))
+    if (!internal.has(k) && out[k] === undefined) out[k] = vp[k]
   return out
 }
 
@@ -60,12 +61,28 @@ describe('2 — dynamic className precedence: source className wins', () => {
     expect(resolved(View, { className: converted }).paddingTop).toBe('8px')
     expect(resolved(View, { className: 'p-2', padding: 10 }).paddingTop).toBe('8px')
   })
+
+  test('animation class wins over animation prop in either JSX attribute order', () => {
+    for (const source of [
+      `<View animation="slow" className="animation-fast" />`,
+      `<View className="animation-fast" animation="slow" />`,
+    ]) {
+      const cls = classOf(convert(source))
+      expect(cls).toContain('animation-slow')
+      expect(cls.endsWith('animation-fast')).toBe(true)
+      expect(preprocessStyleModeProps({ className: cls } as any, CFG).animation).toBe(
+        'fast'
+      )
+    }
+  })
 })
 
 describe('3 — XStack className="flex-col": flexDirection COLUMN (not the default row)', () => {
   test('converter does NOT append the implicit flex-row (which would override flex-col)', () => {
     // byte-preserved: the implicit XStack default is suppressed because the user class overrides
-    expect(convert(`<XStack className="flex-col" />`)).toBe(`<XStack className="flex-col" />`)
+    expect(convert(`<XStack className="flex-col" />`)).toBe(
+      `<XStack className="flex-col" />`
+    )
     expect(convert(`<XStack className="flex-col" />`)).not.toContain('flex-row')
   })
   test('flex-col resolves to flexDirection column', () => {
@@ -76,9 +93,13 @@ describe('3 — XStack className="flex-col": flexDirection COLUMN (not the defau
 describe('4 — existing hover:bg-red + converted hoverStyle blue: hover background RED', () => {
   test('source className wins', () => {
     const cls = classOf(
-      convert(`<View className="hover:bg-red" hoverStyle={{ backgroundColor: "blue" }} />`)
+      convert(
+        `<View className="hover:bg-red" hoverStyle={{ backgroundColor: "blue" }} />`
+      )
     )
-    const rules = Object.values(simplifiedGetSplitStyles(View, { className: cls } as any).rulesToInsert || {}) as any[]
+    const rules = Object.values(
+      simplifiedGetSplitStyles(View, { className: cls } as any).rulesToInsert || {}
+    ) as any[]
     const hoverBg = rules
       .filter((r) => r[StyleObjectProperty] === 'backgroundColor')
       .map((r) => r[StyleObjectValue])
@@ -105,7 +126,10 @@ describe('6 — nested media+pseudo (both directions) → md:hover:opacity-50', 
     expect(classOf(a)).toBe('md:hover:opacity-50')
     expect(classOf(b)).toBe('md:hover:opacity-50')
     expect(a).not.toContain('hoverStyle') // no residual
-    const flat = preprocessStyleModeProps({ className: 'md:hover:opacity-50' } as any, CFG)
+    const flat = preprocessStyleModeProps(
+      { className: 'md:hover:opacity-50' } as any,
+      CFG
+    )
     expect(flat.$md?.hoverStyle?.opacity).toBe(0.5)
   })
 })
@@ -128,11 +152,15 @@ describe('binding provenance', () => {
     expect(convert(src)).toBe(src)
   })
   test('tamagui View-as-alias converts', () => {
-    const out = convert(`import {View as TamaView} from "tamagui";\nexport const A = () => <TamaView padding={10} />`)
+    const out = convert(
+      `import {View as TamaView} from "tamagui";\nexport const A = () => <TamaView padding={10} />`
+    )
     expect(out).toContain('className="p-[10px]"')
   })
   test('tamagui namespace member converts', () => {
-    const out = convert(`import * as T from "tamagui";\nexport const A = () => <T.View padding={10} />`)
+    const out = convert(
+      `import * as T from "tamagui";\nexport const A = () => <T.View padding={10} />`
+    )
     expect(out).toContain('<T.View className="p-[10px]"')
   })
   test('bare unbound <View> keeps legacy behavior (converts)', () => {
@@ -158,7 +186,9 @@ describe('value domain', () => {
   test('literal underscore in var() survives', () => {
     const cls = classOf(convert(`<View backgroundColor="var(--my_color)" />`))
     expect(resolved(View, { className: cls }).backgroundColor).toBe('var(--my_color)')
-    expect(resolved(View, { backgroundColor: 'var(--my_color)' }).backgroundColor).toBe('var(--my_color)')
+    expect(resolved(View, { backgroundColor: 'var(--my_color)' }).backgroundColor).toBe(
+      'var(--my_color)'
+    )
   })
   test('raw fontFamily stays raw (not a token)', () => {
     const cls = classOf(convert(`<Text fontFamily="Inter-Black" />`))
@@ -171,7 +201,9 @@ describe('value domain', () => {
     expect(resolved(View, { width: '33.333%' }).width).toBe('33.333%')
   })
   test('string-valued custom token resolves exactly', () => {
-    const cls = classOf(convert(`<View padding="$fluid" />`, { tokens: { space: { fluid: '10%' } } }))
+    const cls = classOf(
+      convert(`<View padding="$fluid" />`, { tokens: { space: { fluid: '10%' } } })
+    )
     expect(cls).toBe('p-[10%]')
     expect(resolved(View, { className: cls }).paddingLeft).toBe('10%')
   })

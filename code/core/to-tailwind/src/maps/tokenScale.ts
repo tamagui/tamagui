@@ -24,7 +24,7 @@
  * explicit fallback when no config tokens are supplied.
  */
 
-import { tokenCategories } from '@tamagui/helpers'
+import { tokenCategories } from '@tamagui/helpers/tokenCategories'
 // CANONICAL default scales — a STATIC import of the source-of-truth token data. this is a
 // DECLARED dependency (package.json), so it resolves in a packed/published install, and a
 // static `import` compiles correctly to BOTH esm and cjs (the earlier bug was an UNDECLARED
@@ -77,7 +77,11 @@ export function isTokenScaleProp(prop: string): boolean {
 // either. returns undefined when the token is absent/unreadable.
 function readVal(v: any): number | string | undefined {
   if (typeof v === 'number' || typeof v === 'string') return v
-  if (v && typeof v === 'object' && (typeof v.val === 'number' || typeof v.val === 'string')) {
+  if (
+    v &&
+    typeof v === 'object' &&
+    (typeof v.val === 'number' || typeof v.val === 'string')
+  ) {
     return v.val
   }
   return undefined

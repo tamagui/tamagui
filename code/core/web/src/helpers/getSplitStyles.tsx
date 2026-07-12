@@ -295,39 +295,20 @@ function preprocessTailwindClassName(
     return props
   }
 
+  // One precedence contract: className wins over separate props, independent of JSX/object key
+  // order. The converter's overlap retention and existing-class ordering rely on this.
   const classes = className.split(/\s+/).filter(Boolean)
   const regularClasses: string[] = []
   const result: Record<string, any> = { ...props }
 
   for (const cls of classes) {
-    // component-level props (consumed by createComponent, not CSS): size-* → the size
-    // variant, animate(ion)-* → the named animation. cheap first-char gate avoids work.
+    // Component-level named animation prop. `animation-*` is deliberately non-standard;
+    // Tailwind owns `animate-*`, so leave those classes untouched for Tailwind itself.
     const c0 = cls.charCodeAt(0)
-    if (c0 === 115 /* s */ && cls.startsWith('size-')) {
-      if (result.size === undefined) {
-        const v = cls.slice(5)
-        if (v.charCodeAt(0) === 91 /* [ */ && v.charCodeAt(v.length - 1) === 93 /* ] */) {
-          // arbitrary size-[56px]/size-[56] → a NUMBER: the size variant matches ':number'
-          // (getShapeSize etc.), whereas a "56px" string matches neither ':number' nor a
-          // size token and is silently dropped (shape renders its default size).
-          const inner = v.slice(1, -1)
-          const num = Number.parseFloat(inner)
-          result.size = Number.isNaN(num) ? inner : num
-        } else {
-          result.size = /^\d+$/.test(v) ? `$${v}` : v
-        }
-      }
-      continue
-    }
-    if (
-      c0 === 97 /* a */ &&
-      (cls.startsWith('animation-') || cls.startsWith('animate-'))
-    ) {
-      if (result.animation === undefined) {
-        const v = cls.slice(cls.indexOf('-') + 1)
-        result.animation =
-          v.charCodeAt(0) === 91 && v.charCodeAt(v.length - 1) === 93 ? v.slice(1, -1) : v
-      }
+    if (c0 === 97 /* a */ && cls.startsWith('animation-')) {
+      const v = cls.slice(cls.indexOf('-') + 1)
+      result.animation =
+        v.charCodeAt(0) === 91 && v.charCodeAt(v.length - 1) === 93 ? v.slice(1, -1) : v
       continue
     }
 
@@ -966,8 +947,11 @@ function tailwindClassToFlatProp(
     } else if (value in tailwindLeadingNamed) {
       // named multipliers as strings so they stay unitless (not coerced to px)
       lhValue = tailwindLeadingNamed[value]
-    } else if (/^\d+$/.test(value)) {
-      lhValue = `$${value}`
+    } else if (/^\d+(\.\d+)?$/.test(value)) {
+      // Numeric leading-N is standard Tailwind's quarter-rem scale, not a Tamagui font token:
+      // leading-8 = 2rem = 32px. (text-N and tracking-N are not standard Tailwind utility
+      // names, so their Tamagui token spellings intentionally remain below/in their branches.)
+      lhValue = Number(value) * 4
     } else {
       lhValue = value
     }

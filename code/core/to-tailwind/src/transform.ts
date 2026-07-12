@@ -83,7 +83,10 @@ export function findParseError(source: string): string | null {
  * input:  <View backgroundColor="red" padding={10} hoverStyle={{ opacity: 0.8 }} />
  * output: <div className="bg-red p-[10px] hover:opacity-80" />
  */
-export function tamaguiToTailwind(source: string, options: TransformOptions = {}): string {
+export function tamaguiToTailwind(
+  source: string,
+  options: TransformOptions = {}
+): string {
   const { renameComponents = true } = options
 
   const ctx: Ctx = {
@@ -166,7 +169,11 @@ export function tamaguiToTailwind(source: string, options: TransformOptions = {}
       else if (componentName === 'ZStack') implicitClasses.push('relative')
 
       // pass 1: route non-style attrs immediately; DEFER base style props for the overlap pass
-      const styleEntries: { attr: t.JSXAttribute; fullProp: string; cls: string | null }[] = []
+      const styleEntries: {
+        attr: t.JSXAttribute
+        fullProp: string
+        cls: string | null
+      }[] = []
       for (const attr of node.attributes) {
         if (!t.isJSXAttribute(attr)) {
           keptAttrs.push(attr as any)
@@ -191,16 +198,14 @@ export function tamaguiToTailwind(source: string, options: TransformOptions = {}
           keptAttrs.push(attr)
           continue
         }
-        if (name === 'size' || name === 'animation') {
+        // `size-*` is owned by Tailwind (width + height), so a Tamagui component `size`
+        // variant cannot be represented by that class without changing its meaning. Retain the
+        // source size prop. `animation-*` is our non-Tailwind component-prop spelling; importantly
+        // we never claim Tailwind's `animate-*` namespace.
+        if (name === 'animation') {
           const strVal = getStringValue(attr.value)
           if (strVal !== null) {
-            if (name === 'size') {
-              classes.push(
-                strVal.startsWith('$') ? `size-${strVal.slice(1)}` : `size-[${strVal}]`
-              )
-            } else {
-              classes.push(`animation-${strVal}`)
-            }
+            classes.push(`animation-${strVal}`)
             continue
           }
           keptAttrs.push(attr)
@@ -228,7 +233,10 @@ export function tamaguiToTailwind(source: string, options: TransformOptions = {}
       // then the base props: convert only when NON-overlapping; otherwise RETAIN (a class would
       // beat the retained longhand/dynamic prop and flip precedence)
       for (const e of styleEntries) {
-        if (e.cls !== null && !overlapsSet(leafKeysOfProp(e.fullProp), retainedLeafKeys)) {
+        if (
+          e.cls !== null &&
+          !overlapsSet(leafKeysOfProp(e.fullProp), retainedLeafKeys)
+        ) {
           classes.push(e.cls)
         } else {
           keptAttrs.push(e.attr)
@@ -259,7 +267,10 @@ export function tamaguiToTailwind(source: string, options: TransformOptions = {}
             existingClassName.value = t.jsxExpressionContainer(
               t.templateLiteral(
                 [
-                  t.templateElement({ raw: `${classStr} `, cooked: `${classStr} ` }, false),
+                  t.templateElement(
+                    { raw: `${classStr} `, cooked: `${classStr} ` },
+                    false
+                  ),
                   t.templateElement({ raw: '', cooked: '' }, true),
                 ],
                 [expr]
@@ -547,7 +558,12 @@ function partitionStyleObject(
   // pass 1: classify each member (leaf convert/retain, or nested media/pseudo)
   type Entry =
     | { kind: 'retain'; prop: t.ObjectExpression['properties'][number] }
-    | { kind: 'nested'; key: t.Identifier; classes: string[]; residual: t.ObjectExpression['properties'] }
+    | {
+        kind: 'nested'
+        key: t.Identifier
+        classes: string[]
+        residual: t.ObjectExpression['properties']
+      }
     | { kind: 'leaf'; prop: t.ObjectProperty; fullProp: string; cls: string | null }
   const entries: Entry[] = []
 
@@ -626,7 +642,10 @@ function partitionStyleObject(
       if (e.residual.length > 0) {
         residual.push(t.objectProperty(e.key, t.objectExpression(e.residual)))
       }
-    } else if (e.cls !== null && !overlapsSet(leafKeysOfProp(e.fullProp), retainedLeafKeys)) {
+    } else if (
+      e.cls !== null &&
+      !overlapsSet(leafKeysOfProp(e.fullProp), retainedLeafKeys)
+    ) {
       classes.push(e.cls)
     } else {
       residual.push(e.prop) // dynamic / unconvertible / overlapping → RETAIN, never drop
@@ -716,6 +735,10 @@ function formatStringValue(ctx: Ctx, prop: string, value: string): string | null
   // config (number → [18px]/[400]; string → the exact CSS value, e.g. [10%]). color/font tokens
   // resolve by name at runtime → strip `$`. an UNRESOLVED numeric-scale token → RETAIN (null).
   if (value.startsWith('$')) {
+    // Numeric `leading-N` is owned by Tailwind's quarter-rem scale. A Tamagui line-height token
+    // is font-family/config dependent, so without that exact font scale we cannot emit an
+    // equivalent class. Retain it rather than claim leading-N with different semantics.
+    if (prop === 'lineHeight') return null
     const arb = resolveTokenArbitrary(prop, value, ctx.tokens)
     if (arb != null) return `[${encodeArbitrary(arb)}]`
     if (isTokenScaleProp(prop)) return null // missing from config → dead class → retain
@@ -836,7 +859,8 @@ function formatNumericValue(prop: string, value: number): string | null {
     return `[${value}]`
   }
   if (prop === 'flex') return String(value)
-  if (prop === 'flexGrow' || prop === 'flexShrink') return value === 0 ? '0' : String(value)
+  if (prop === 'flexGrow' || prop === 'flexShrink')
+    return value === 0 ? '0' : String(value)
   if (prop === 'zIndex') return String(value)
 
   // NAMED weight: numeric 700 → the named-weight class; unknown weight → retain (null)

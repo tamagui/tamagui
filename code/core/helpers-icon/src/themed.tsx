@@ -23,20 +23,20 @@ type Options = {
   resolveValues?: ResolveVariableAs
 }
 
-// styleMode: an icon's color/size can arrive as tailwind classes (color-color5, size-6)
-// because the converter turns the color/size PROPS into classes. icons aren't
+// styleMode: an icon's color can arrive as a color-* class because the converter turns the
+// color PROP into a class. icons aren't
 // createComponent components, so the styleMode className→prop pass never runs on them —
-// reconstruct color/size here from the icon's own className. cheap early-outs first: a
+// reconstruct color here from the icon's own className. `size-*` is standard Tailwind
+// width+height and must never be reinterpreted as Tamagui's component size variant. cheap early-outs first: a
 // normal icon (no className) or a non-styleMode app pays zero cost.
 export function reconstructIconStyleModeProps(props: IconProps, theme: any): IconProps {
   const cn = (props as any).className
   if (typeof cn !== 'string' || cn === '') return props
   const styleMode = getConfig().settings?.styleMode
   if (styleMode !== 'tailwind' && styleMode !== 'tamagui-and-tailwind') return props
-  if (!cn.includes('color-') && !cn.includes('size-')) return props
+  if (!cn.includes('color-')) return props
 
   let color: any
-  let size: any
   const rest: string[] = []
   for (const cls of cn.split(/\s+/)) {
     if (!cls) continue
@@ -46,27 +46,12 @@ export function reconstructIconStyleModeProps(props: IconProps, theme: any): Ico
       color = theme?.[`$${n}`] != null || theme?.[n] != null ? `$${n}` : n
       continue
     }
-    if (cls.startsWith('size-')) {
-      const v = cls.slice(5)
-      if (v[0] === '[') {
-        // arbitrary size-[24px]/size-[24] → a NUMBER (icon dimension); a string like
-        // "24px" would hit getFontSize and be mis-scaled
-        const inner = v.slice(1, -1)
-        const num = Number.parseFloat(inner)
-        size = Number.isNaN(num) ? inner : num
-      } else {
-        // size-6 → the $6 size token (icons resolve via the font-size scale)
-        size = /^\d+$/.test(v) ? `$${v}` : v
-      }
-      continue
-    }
     rest.push(cls)
   }
-  if (color === undefined && size === undefined) return props
+  if (color === undefined) return props
 
   const next: any = { ...props }
   if (color !== undefined && (props as any).color === undefined) next.color = color
-  if (size !== undefined && (props as any).size === undefined) next.size = size
   next.className = rest.length ? rest.join(' ') : undefined
   return next
 }

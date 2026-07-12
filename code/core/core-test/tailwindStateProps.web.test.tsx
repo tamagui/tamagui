@@ -1,13 +1,12 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { defaultConfig } from '@tamagui/config/v6'
-import { Circle } from '@tamagui/shapes'
 import { View, createTamagui, getConfig, StyleObjectValue } from '../web/src'
 import { preprocessStyleModeProps } from '../web/src/helpers/getSplitStyles'
 import { simplifiedGetSplitStyles, findRule } from './utils'
 
-// styleMode's SINGLE pass reconstructs enter:/exit:/size-*/animation-* into component-level
-// PROPS (that createComponent consumes before the state/variant/animation machinery), and
+// styleMode's SINGLE pass reconstructs enter:/exit:/animation-* into component-level PROPS
+// (that createComponent consumes before the state/variant/animation machinery), and
 // getSplitStyles skips re-processing those marked props.
 beforeAll(() => {
   createTamagui({
@@ -33,25 +32,25 @@ describe('styleMode className→prop reconstruction (single pass)', () => {
     expect(out.exitStyle).toEqual({ opacity: 0, y: 10 })
   })
 
-  test('size-N → size="$N", size-[..] arbitrary; animation-<name> → animation', () => {
-    expect(pre({ className: 'size-2' }).size).toBe('$2')
-    // arbitrary size is a NUMBER so it matches the size variant's ':number' case
-    expect(pre({ className: 'size-[14px]' }).size).toBe(14)
-    expect(pre({ className: 'size-[56]' }).size).toBe(56)
+  test('size-* and animate-* remain standard Tailwind classes; animation-* is Tamagui-only', () => {
+    const standardSize = pre({ className: 'size-4' })
+    expect(standardSize.size).toBeUndefined()
+    expect(standardSize.className).toBe('size-4')
     expect(pre({ className: 'animation-bouncy' }).animation).toBe('bouncy')
-    expect(pre({ className: 'animate-quick' }).animation).toBe('quick')
+    const standardAnimation = pre({ className: 'animate-spin' })
+    expect(standardAnimation.animation).toBeUndefined()
+    expect(standardAnimation.className).toBe('animate-spin')
   })
 
-  test('an explicit prop wins over the reconstructed one', () => {
+  test('standard size-* never becomes or overwrites a Tamagui size variant', () => {
     const out = pre({ className: 'size-2', size: '$8' })
     expect(out.size).toBe('$8')
+    expect(out.className).toBe('size-2')
   })
 
-  test('arbitrary size-[Npx] sets the dimension on a size-variant component (Circle)', () => {
-    const styles = simplifiedGetSplitStyles(Circle, { className: 'size-[56px]' } as any)
-    const rule = findRule(styles.rulesToInsert, 'width')
-    expect(rule).toBeTruthy()
-    expect(rule[StyleObjectValue]).toBe('56px')
+  test('animation-* class wins over an explicit animation prop regardless of object order', () => {
+    expect(pre({ animation: 'slow', className: 'animation-fast' }).animation).toBe('fast')
+    expect(pre({ className: 'animation-fast', animation: 'slow' }).animation).toBe('fast')
   })
 
   test('non-styleMode-state classes still resolve as styles after the pass', () => {
