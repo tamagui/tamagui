@@ -5,6 +5,13 @@
   "type": "module",
   "sideEffects": false,
   "source": "src/index.ts",
+  "files": [
+    "src/index.ts",
+    "src/transform.ts",
+    "src/maps",
+    "types",
+    "dist"
+  ],
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs",
   "exports": {
@@ -20,7 +27,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "tamagui-build",
+    "build": "tamagui-build --exclude __tests__",
     "test": "vitest --run src",
     "test:web": "vitest --run src"
   },

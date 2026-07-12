@@ -11,6 +11,7 @@
 
 import { beforeAll, describe, expect, test } from 'vitest'
 import { spawnSync } from 'node:child_process'
+import { existsSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { join } from 'node:path'
 
@@ -31,6 +32,30 @@ const SRC = `<View padding="$4" zIndex="$4" borderRadius="$8" />`
 const OPTS = { renameComponents: false }
 
 describe('built dist ESM + CJS parity', () => {
+  test('build and packed manifest exclude every test artifact', () => {
+    expect(existsSync(join(pkgRoot, 'dist/esm/__tests__'))).toBe(false)
+    expect(existsSync(join(pkgRoot, 'dist/cjs/__tests__'))).toBe(false)
+
+    const packed = spawnSync('npm', ['pack', '--dry-run', '--json'], {
+      cwd: pkgRoot,
+      encoding: 'utf8',
+    })
+    expect(packed.status, packed.stderr).toBe(0)
+    const result = JSON.parse(packed.stdout)[0]
+    const paths = result.files.map((file: { path: string }) => file.path)
+    expect(
+      paths.filter((path: string) => /(^|\/)__tests__(\/|$)|\.test\./.test(path))
+    ).toEqual([])
+    expect(paths).toEqual(
+      expect.arrayContaining([
+        'dist/esm/index.mjs',
+        'dist/esm/index.native.js',
+        'dist/cjs/index.cjs',
+        'src/index.ts',
+      ])
+    )
+  })
+
   test('CJS build converts tokens to their exact pixels (not the ×4 scale)', () => {
     const { tamaguiToTailwind } = require2('./dist/cjs/index.cjs')
     const out = tamaguiToTailwind(SRC, OPTS)
