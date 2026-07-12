@@ -28,10 +28,17 @@ describe('icon styleMode color/size reconstruction', () => {
     expect((out as any).className).toBeUndefined()
   })
 
-  test('size-6 → $6 size prop', () => {
+  test('size-6 → $6 size token', () => {
     expect(
       (reconstructIconStyleModeProps({ className: 'size-6' } as any, theme()) as any).size
     ).toBe('$6')
+  })
+
+  test('size-[24px] arbitrary → 24 (number, not "24px" string)', () => {
+    expect(
+      (reconstructIconStyleModeProps({ className: 'size-[24px]' } as any, theme()) as any)
+        .size
+    ).toBe(24)
   })
 
   test('color + size together', () => {

@@ -16,6 +16,9 @@ export interface IconStyleProps extends StackStyleBase {
 export type NonStyleProps = Omit<SvgProps, keyof IconStyleProps> & {
   disableTheme?: boolean
   style?: SvgProps['style']
+  // styleMode: icons accept a className whose color-*/size-* is reconstructed to the
+  // color/size props in themed() (icons aren't createComponent components)
+  className?: string
 }
 
 export type IconProps = GetFinalProps<NonStyleProps, IconStyleProps, {}>

@@ -48,7 +48,16 @@ export function reconstructIconStyleModeProps(props: IconProps, theme: any): Ico
     }
     if (cls.startsWith('size-')) {
       const v = cls.slice(5)
-      size = /^\d+$/.test(v) ? `$${v}` : v[0] === '[' ? v.slice(1, -1) : v
+      if (v[0] === '[') {
+        // arbitrary size-[24px]/size-[24] → a NUMBER (icon dimension); a string like
+        // "24px" would hit getFontSize and be mis-scaled
+        const inner = v.slice(1, -1)
+        const num = Number.parseFloat(inner)
+        size = Number.isNaN(num) ? inner : num
+      } else {
+        // size-6 → the $6 size token (icons resolve via the font-size scale)
+        size = /^\d+$/.test(v) ? `$${v}` : v
+      }
       continue
     }
     rest.push(cls)
