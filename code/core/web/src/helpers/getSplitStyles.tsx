@@ -256,6 +256,9 @@ function looksLikeTailwindClass(
   // matched earlier via tailwindUtilityMap, so any font-* reaching here is a family.
   if (cls.startsWith('font-')) return true
 
+  // leading-* is lineHeight (leading-8 token / leading-[1.25] arbitrary)
+  if (cls.startsWith('leading-')) return true
+
   // negative utility (-m-1, -mt-2, -top-1): the leading minus negates the value
   const core = cls[0] === '-' ? cls.slice(1) : cls
 
@@ -523,6 +526,19 @@ const alignProps: Record<string, boolean> = {
   alignSelf: true,
 }
 
+// text-<keyword> is textAlign; any other text-* value (text-[14px], text-5) is fontSize.
+const textAlignKeywords = new Set(['left', 'center', 'right', 'justify', 'start', 'end'])
+
+// named tailwind line-height multipliers (leading-tight …) as unitless strings.
+const tailwindLeadingNamed: Record<string, string> = {
+  none: '1',
+  tight: '1.25',
+  snug: '1.375',
+  normal: '1.5',
+  relaxed: '1.625',
+  loose: '2',
+}
+
 // tailwind utilities whose PROP spans two dash-segments (min-w-*, max-h-*, …). the generic
 // parser splits on the first dash, so these need explicit recognition.
 const tailwindPropPrefixes: Record<string, string> = {
@@ -645,6 +661,46 @@ function tailwindClassToFlatProp(
     return {
       key: modifiers.length > 0 ? `$${modifiers.join(':')}:fontFamily` : `$fontFamily`,
       value: famValue,
+    }
+  }
+
+  // text-* is overloaded in v6: text-<align> is textAlign (the `text` shorthand), but
+  // text-[14px]/text-5 are fontSize (standard tailwind overloads text-* for size too).
+  // disambiguate by value: alignment keywords stay textAlign, everything else is fontSize.
+  if (prop === 'text' && !textAlignKeywords.has(value)) {
+    let fsValue: any
+    if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
+      fsValue = value.slice(1, -1).replace(/_/g, ' ')
+    } else if (/^\d+$/.test(value)) {
+      // text-5 → the $5 font-size token (the converter strips the $ from fontSize="$5")
+      fsValue = `$${value}`
+    } else {
+      fsValue = value
+    }
+    return {
+      key: modifiers.length > 0 ? `$${modifiers.join(':')}:fontSize` : `$fontSize`,
+      value: fsValue,
+    }
+  }
+
+  // leading-* is lineHeight: leading-[1.25] (unitless multiplier), leading-[24px], or
+  // leading-8 (the $8 lineHeight token). tamagui keeps string values verbatim, so the
+  // unitless arbitrary form stays a multiplier rather than being coerced to px.
+  if (prop === 'leading') {
+    let lhValue: any
+    if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
+      lhValue = value.slice(1, -1).replace(/_/g, ' ')
+    } else if (value in tailwindLeadingNamed) {
+      // named multipliers as strings so they stay unitless (not coerced to px)
+      lhValue = tailwindLeadingNamed[value]
+    } else if (/^\d+$/.test(value)) {
+      lhValue = `$${value}`
+    } else {
+      lhValue = value
+    }
+    return {
+      key: modifiers.length > 0 ? `$${modifiers.join(':')}:lineHeight` : `$lineHeight`,
+      value: lhValue,
     }
   }
 
