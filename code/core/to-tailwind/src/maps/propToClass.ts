@@ -4,13 +4,10 @@
  */
 
 export const propToTailwindPrefix: Record<string, string> = {
-  // backgrounds
+  // backgrounds — ONLY backgroundColor. backgroundImage/Position/Size/Repeat/Clip all shared the
+  // `bg` prefix, so at runtime `bg-<value>` resolves to backgroundColor (wrong property) or is
+  // dead — the inverse ≠ the source prop. removed: those props are RETAINED, never mis-converted.
   backgroundColor: 'bg',
-  backgroundImage: 'bg',
-  backgroundPosition: 'bg',
-  backgroundSize: 'bg',
-  backgroundRepeat: 'bg',
-  backgroundClip: 'bg-clip',
 
   // sizing
   width: 'w',
@@ -36,8 +33,8 @@ export const propToTailwindPrefix: Record<string, string> = {
   marginHorizontal: 'mx',
   marginVertical: 'my',
   gap: 'gap',
-  rowGap: 'gap-y',
-  columnGap: 'gap-x',
+  // rowGap→gap-y / columnGap→gap-x are dead at runtime (parser has no gap-x/gap-y) — REMOVED,
+  // retained instead (parity gate: inverse ≠ source).
 
   // borders
   borderWidth: 'border',
@@ -45,6 +42,8 @@ export const propToTailwindPrefix: Record<string, string> = {
   borderRightWidth: 'border-r',
   borderBottomWidth: 'border-b',
   borderLeftWidth: 'border-l',
+  borderHorizontalWidth: 'border-x',
+  borderVerticalWidth: 'border-y',
   borderColor: 'border',
   borderTopColor: 'border-t',
   borderRightColor: 'border-r',
@@ -70,7 +69,7 @@ export const propToTailwindPrefix: Record<string, string> = {
   textAlign: 'text',
   textTransform: '',
   textDecorationLine: '',
-  textDecorationColor: 'decoration',
+  // textDecorationColor→decoration is dead at runtime — REMOVED, retained instead.
 
   // layout
   display: '',
@@ -82,8 +81,7 @@ export const propToTailwindPrefix: Record<string, string> = {
   inset: 'inset',
   zIndex: 'z',
   overflow: 'overflow',
-  overflowX: 'overflow-x',
-  overflowY: 'overflow-y',
+  // overflowX→overflow-x / overflowY→overflow-y are dead at runtime — REMOVED, retained instead.
 
   // flexbox
   flex: 'flex',
@@ -110,16 +108,13 @@ export const propToTailwindPrefix: Record<string, string> = {
   x: 'translate-x',
   y: 'translate-y',
 
-  // outline
-  outlineWidth: 'outline',
-  outlineColor: 'outline',
-  outlineStyle: 'outline',
-  outlineOffset: 'outline-offset',
+  // outline props share the `outline` prefix so `outline-<value>` can't disambiguate width vs
+  // color vs style at runtime (the inverse ≠ the source prop) — REMOVED, retained instead.
+  // objectPosition shared `object` with objectFit and resolves dead — REMOVED, retained.
 
   // other
   aspectRatio: 'aspect',
   objectFit: 'object',
-  objectPosition: 'object',
 }
 
 // values that become their own class (no prefix-value, just the value)
@@ -220,6 +215,23 @@ export const standaloneValueProps: Record<string, Record<string, string>> = {
     none: 'object-none',
     'scale-down': 'object-scale-down',
   },
+}
+
+// named font-weight VALUE parts (combined with the `font` prefix → `font-bold`). a numeric or
+// string fontWeight maps here ONLY for a standard weight — an unknown weight (e.g. "450") maps
+// to nothing, so it is NOT emitted as font-[450] (that resolves to fontFamily); it's retained.
+export const fontWeightNames: Record<string, string> = {
+  '100': 'thin',
+  '200': 'extralight',
+  '300': 'light',
+  '400': 'normal',
+  '500': 'medium',
+  '600': 'semibold',
+  '700': 'bold',
+  '800': 'extrabold',
+  '900': 'black',
+  normal: 'normal',
+  bold: 'bold',
 }
 
 // tamagui component → HTML tag

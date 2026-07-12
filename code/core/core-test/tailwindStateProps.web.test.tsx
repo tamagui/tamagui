@@ -29,7 +29,8 @@ describe('styleMode className→prop reconstruction (single pass)', () => {
 
   test('exit:* → exitStyle, translate reconstructs as y', () => {
     const out = pre({ className: 'exit:opacity-0 exit:translate-y-[10px]' })
-    expect(out.exitStyle).toEqual({ opacity: 0, y: '10px' })
+    // translate y is a NUMBER (native-valid; web treats numeric translate as px) — [10px] → 10
+    expect(out.exitStyle).toEqual({ opacity: 0, y: 10 })
   })
 
   test('size-N → size="$N", size-[..] arbitrary; animation-<name> → animation', () => {

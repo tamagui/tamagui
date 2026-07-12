@@ -12,9 +12,14 @@ type ToTailwindOptions = {
   patterns: string[]
   write?: boolean
   cwd?: string
-  // path to the app's tamagui config; its token scales + media keys drive an app-accurate
-  // conversion. when omitted, the converter uses its bundled default (v5) fallback.
+  // path to the app's tamagui config; its token scales + media keys + shorthands drive an
+  // app-accurate conversion.
   configPath?: string
+  // acknowledge use of the converter's bundled default scales (required for --write w/o --config)
+  useDefaultConfig?: boolean
+  // opt in to DOM renaming (View→div …). default false: Tamagui components are PRESERVED so the
+  // cross-platform (native) app keeps working.
+  renameDom?: boolean
 }
 
 type TokenScales = {
@@ -23,7 +28,12 @@ type TokenScales = {
   radius?: Record<string, any>
   zIndex?: Record<string, any>
 }
-type TransformConfig = { tokens?: TokenScales; media?: Record<string, any> }
+type TransformConfig = {
+  tokens?: TokenScales
+  media?: Record<string, any>
+  shorthands?: Record<string, string>
+  renameComponents?: boolean
+}
 
 type ToTailwindResult = {
   files: number
@@ -58,19 +68,61 @@ export async function toTailwind({
   write = false,
   cwd = process.cwd(),
   configPath,
+  useDefaultConfig = false,
+  renameDom = false,
 }: ToTailwindOptions): Promise<ToTailwindResult> {
   if (!patterns.length) {
-    throw new Error('Usage: tamagui to-tailwind <paths/glob> [--write] [--config <path>]')
+    throw new Error(
+      'Usage: tamagui to-tailwind <paths/glob> [--write] [--config <path> | --use-default-config] [--rename-dom]'
+    )
   }
 
+  // SAFETY: --write is DESTRUCTIVE. token/media semantics differ per app, so a --write with no
+  // config would GUESS the scales and corrupt pixels. require an explicit choice.
+  if (write && !configPath && !useDefaultConfig) {
+    throw new Error(
+      '--write requires either --config <path> (app scales) or --use-default-config ' +
+        '(acknowledge the bundled default scales). refusing to rewrite with guessed token pixels.'
+    )
+  }
+
+  const { transformConfig, usedDefault } = await loadTransformConfig(
+    configPath,
+    useDefaultConfig,
+    cwd
+  )
+  if (usedDefault && !useDefaultConfig) {
+    // dry-run fallback: loud, explicit warning that default pixels are used
+    console.warn(
+      '[to-tailwind] WARNING: no --config given — using the converter BUNDLED DEFAULT token/media ' +
+        'scales. token pixel values may not match this app. pass --config <path> for accuracy.'
+    )
+  }
+  transformConfig.renameComponents = renameDom
+
   const files = await collectFiles(patterns, cwd)
+
+  // TRANSACTIONAL parse check: abort BEFORE any transform/write if any file has parse errors,
+  // so malformed source is never normalized/partially rewritten.
+  const { findParseError } = require('@tamagui/to-tailwind') as {
+    findParseError?: (source: string) => string | null
+  }
+  const sources = new Map<string, string>()
+  for (const file of files) {
+    const source = await readFile(file, 'utf8')
+    sources.set(file, source)
+    const err = typeof findParseError === 'function' ? findParseError(source) : null
+    if (err) {
+      throw new Error(`parse error in ${relative(cwd, file) || file}: ${err} — aborted, no files written`)
+    }
+  }
+
   const tamaguiToTailwind = loadTamaguiToTailwind()
-  const transformConfig = await loadTransformConfig(configPath, cwd)
   let changed = 0
   let written = 0
 
   for (const file of files) {
-    const source = await readFile(file, 'utf8')
+    const source = sources.get(file)!
     const transformed = tamaguiToTailwind(source, transformConfig)
 
     if (transformed === source) {
@@ -178,11 +230,18 @@ function toPosixPath(path: string) {
 // CLI can't reliably do — an explicit path the user has already made requireable (or a small
 // module re-exporting `{ tokens, media }`) is the honest, non-magical contract. when omitted,
 // the converter falls back to its bundled default scales.
+// load the app config's token/media/shorthand scales. an EXPLICIT --config that fails to load or
+// has an invalid shape ABORTS (throws) — never silently falls back (that would rewrite with wrong
+// pixels). no --config → bundled default (usedDefault=true); the caller gates --write on this.
 async function loadTransformConfig(
   configPath: string | undefined,
+  useDefaultConfig: boolean,
   cwd: string
-): Promise<TransformConfig> {
-  if (!configPath) return {}
+): Promise<{ transformConfig: TransformConfig; usedDefault: boolean }> {
+  if (!configPath) {
+    // useDefaultConfig or dry-run: converter uses its in-package bundled defaults
+    return { transformConfig: {}, usedDefault: true }
+  }
   const resolved = resolve(cwd, configPath)
   let mod: any
   try {
@@ -191,25 +250,23 @@ async function loadTransformConfig(
     try {
       mod = await import(resolved)
     } catch {
-      console.warn(
-        `[to-tailwind] could not load --config ${configPath} (${
-          (requireErr as Error).message
-        }); falling back to the bundled default token/media scales.`
+      throw new Error(
+        `--config ${configPath} could not be loaded (${(requireErr as Error).message}) — ` +
+          `aborted (not falling back to default scales, which could corrupt pixels).`
       )
-      return {}
     }
   }
-  // accept a created config on `config`, `default`, `tamaguiConfig`, or the module itself
   const config = mod?.config ?? mod?.default ?? mod?.tamaguiConfig ?? mod
   const tokens = config?.tokens
   const media = config?.media
-  if (!tokens && !media) {
-    console.warn(
-      `[to-tailwind] --config ${configPath} loaded but exposes no { tokens, media }; using the bundled default scales.`
+  const shorthands = config?.shorthands
+  if (!tokens && !media && !shorthands) {
+    throw new Error(
+      `--config ${configPath} loaded but exposes no { tokens, media, shorthands } — ` +
+        `aborted (invalid config shape).`
     )
-    return {}
   }
-  return { tokens, media }
+  return { transformConfig: { tokens, media, shorthands }, usedDefault: false }
 }
 
 function loadTamaguiToTailwind(): Transform {

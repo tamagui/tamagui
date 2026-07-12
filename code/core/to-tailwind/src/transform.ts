@@ -6,30 +6,72 @@ import {
   propToTailwindPrefix,
   standaloneValueProps,
   componentToTag,
+  fontWeightNames,
 } from './maps/propToClass'
 import { pseudoToModifier, defaultMediaKeys } from './maps/pseudoMap'
 import { resolveTokenArbitrary, type TokenScales } from './maps/tokenScale'
+// CANONICAL default shorthands — a STATIC import (declared dep), ESM+CJS-safe, single owner.
+// (replaces a module-global lazy `require('@tamagui/shorthands/v4')`, which was the same
+// ESM-undefined / non-reentrant hazard as the tokens require.)
+import { shorthands as canonicalShorthands } from '@tamagui/shorthands/v4'
 
 const traverse = (_traverse as any).default ?? _traverse
 const generate = (_generate as any).default ?? _generate
 
+const defaultShorthands = canonicalShorthands as Record<string, string>
+
 export interface TransformOptions {
-  // rename View→div, Text→span, etc.
+  // rename View→div, Text→span, etc. DEFAULT true for the library (tamagui.dev doc snippets);
+  // the CLI/styleMode path passes FALSE so cross-platform Tamagui components are preserved.
   renameComponents?: boolean
-  // the app config's numeric token scales ({ space, size, radius, zIndex }) for EXACT $N → px
-  // resolution. the converter is a general tool, so pass the ACTUAL app config's tokens (an
-  // app may set space.$4 = 20); when omitted, the bundled default v5 scales are the fallback.
+  // the app config's numeric token scales ({ space, size, radius, zIndex }) for EXACT $N →
+  // value resolution. the converter is a general tool, so pass the ACTUAL app config's tokens
+  // (an app may set space.$4 = 20); when omitted, the bundled default scales are the fallback.
   tokens?: TokenScales
   // the app config's `media` (object or key list). ANY configured media key round-trips as an
-  // identity modifier ($tablet → `tablet:`). when omitted, a default identifier-safe key set
-  // is the fallback.
+  // identity modifier ($tablet → `tablet:`). when omitted, a default key set is the fallback.
   media?: Record<string, any> | string[]
+  // extra component names (beyond the built-in Tamagui set) whose props may be converted, e.g.
+  // an app's `styled()` outputs, or member paths like "Sheet.Container". arbitrary components
+  // stay untouched unless listed.
+  components?: string[]
+  // the app config's shorthands (short → long, e.g. { bg: 'backgroundColor' }). when omitted,
+  // the canonical default shorthands are used. threaded (not a module-global require).
+  shorthands?: Record<string, string>
 }
 
-// active config threaded through the (synchronous, non-reentrant) transform. set at the top
-// of tamaguiToTailwind so the value/media helpers can resolve against the app's real config.
-let activeTokens: TokenScales | undefined
-let activeMediaKeys: Set<string> = new Set(defaultMediaKeys)
+// per-call context (threaded, NOT module-global) so the converter is PURE and REENTRANT:
+// two conversions with different configs in one process never clash.
+interface Ctx {
+  tokens?: TokenScales
+  mediaKeys: Set<string>
+  componentAllow: Set<string>
+  shorthands: Record<string, string>
+}
+
+/**
+ * find recoverable parse errors in `source` (@babel errorRecovery). returns a short location
+ * string for the first error, or null if the source parses cleanly. the CLI uses this to ABORT
+ * (transactionally) before writing, so malformed source is never normalized/partially rewritten.
+ */
+export function findParseError(source: string): string | null {
+  try {
+    const ast = parse(source, {
+      sourceType: 'module',
+      plugins: ['jsx', 'typescript'],
+      errorRecovery: true,
+    })
+    const errs = (ast as any).errors as any[] | undefined
+    if (errs && errs.length > 0) {
+      const e = errs[0]
+      const loc = e?.loc ? `${e.loc.line}:${e.loc.column}` : '?'
+      return `${e?.reasonCode || e?.message || 'parse error'} at ${loc}`
+    }
+    return null
+  } catch (e) {
+    return (e as Error).message || 'parse error'
+  }
+}
 
 /**
  * converts tamagui JSX source code to tailwind className syntax.
@@ -37,17 +79,17 @@ let activeMediaKeys: Set<string> = new Set(defaultMediaKeys)
  * input:  <View backgroundColor="red" padding={10} hoverStyle={{ opacity: 0.8 }} />
  * output: <div className="bg-red p-[10px] hover:opacity-80" />
  */
-export function tamaguiToTailwind(
-  source: string,
-  options: TransformOptions = {}
-): string {
+export function tamaguiToTailwind(source: string, options: TransformOptions = {}): string {
   const { renameComponents = true } = options
 
-  // thread the app config for exact token resolution + general media pass-through
-  activeTokens = options.tokens
-  activeMediaKeys = options.media
-    ? new Set(Array.isArray(options.media) ? options.media : Object.keys(options.media))
-    : new Set(defaultMediaKeys)
+  const ctx: Ctx = {
+    tokens: options.tokens,
+    mediaKeys: options.media
+      ? new Set(Array.isArray(options.media) ? options.media : Object.keys(options.media))
+      : new Set(defaultMediaKeys),
+    componentAllow: new Set(options.components ?? []),
+    shorthands: options.shorthands ?? defaultShorthands,
+  }
 
   let ast: t.File
   try {
@@ -57,33 +99,66 @@ export function tamaguiToTailwind(
       errorRecovery: true,
     })
   } catch {
-    // if parsing fails, return source unchanged
+    return source // unparseable → leave untouched, never rewrite
+  }
+
+  // recoverable parse errors → do NOT transform (babel errorRecovery would otherwise normalize +
+  // partially rewrite malformed source). return unchanged; the CLI aborts via findParseError.
+  if ((ast as any).errors && (ast as any).errors.length > 0) {
     return source
   }
 
   traverse(ast, {
     JSXOpeningElement(path) {
       const node = path.node
-      if (!t.isJSXIdentifier(node.name)) return
 
-      const tagName = node.name.name
-      // only transform known tamagui components or components starting with uppercase
-      const isKnownComponent = tagName in componentToTag
-      const isUpperCase = tagName[0] === tagName[0].toUpperCase()
-      if (!isKnownComponent && !isUpperCase) return
+      // resolve the component name: a plain identifier (<View>) or a member path (<Sheet.Frame>)
+      const componentName = componentNameOf(node.name)
+      if (componentName === null) return
+      const isSimpleKnown = componentName in componentToTag
+      // ONLY convert props on KNOWN Tamagui styleMode components, KNOWN compound surfaces
+      // (Sheet.Frame …), or a caller allowlist. arbitrary components (<Chart>, <Chart.Axis>,
+      // <MyThing>) have their OWN prop API and don't read className — mutating their props
+      // silently breaks them, so leave them entirely untouched.
+      if (
+        !isSimpleKnown &&
+        !knownCompoundComponents.has(componentName) &&
+        !ctx.componentAllow.has(componentName)
+      ) {
+        return
+      }
+
+      // SPREAD-CONSERVATIVE: a spread makes attribute PRECEDENCE order-dependent
+      // (<View {...p} pad/> vs <View pad {...p}/> mean opposite things), and a spread may carry
+      // className or the same style key. we can't safely merge/reorder without evaluating the
+      // spread, so we do NOT convert props on any element that has a spread — left untouched.
+      if (node.attributes.some((a) => t.isJSXSpreadAttribute(a))) return
 
       const classes: string[] = []
-      const keptAttrs: (t.JSXAttribute | t.JSXSpreadAttribute)[] = []
+      const keptAttrs: t.JSXAttribute[] = []
       let existingClassName: t.JSXAttribute | null = null
 
+      // pre-scan a STATIC existing className for prop-prefix collisions. in styleMode className
+      // WINS over a separate style prop, so a converted prop that targets a key the existing
+      // className already sets must NOT be appended (last-class-wins would flip precedence) —
+      // it's RETAINED instead, matching source semantics. (order-independent: we scan first.)
+      const occupied = new Set<string>()
+      for (const a of node.attributes) {
+        if (t.isJSXAttribute(a) && a.name.name === 'className') {
+          const v = getStringValue(a.value)
+          if (v) for (const tok of v.split(/\s+/)) if (tok) occupied.add(classPrefixOf(tok))
+        }
+      }
+
       // add implicit flex for XStack/YStack
-      if (tagName === 'XStack') classes.push('flex', 'flex-row')
-      else if (tagName === 'YStack') classes.push('flex', 'flex-col')
-      else if (tagName === 'ZStack') classes.push('relative')
+      if (componentName === 'XStack') classes.push('flex', 'flex-row')
+      else if (componentName === 'YStack') classes.push('flex', 'flex-col')
+      else if (componentName === 'ZStack') classes.push('relative')
 
       for (const attr of node.attributes) {
-        if (t.isJSXSpreadAttribute(attr)) {
-          keptAttrs.push(attr)
+        // only JSXAttribute remain (spread-containing elements returned above)
+        if (!t.isJSXAttribute(attr)) {
+          keptAttrs.push(attr as any)
           continue
         }
 
@@ -95,41 +170,26 @@ export function tamaguiToTailwind(
           continue
         }
 
-        // check pseudo-state props (hoverStyle, pressStyle, etc.)
+        // pseudo-state props (hoverStyle, pressStyle, enterStyle, …)
         if (name in pseudoToModifier) {
-          const modifier = pseudoToModifier[name]
-          if (!modifier) {
-            // no tailwind equivalent (enterStyle, exitStyle)
-            keptAttrs.push(attr)
-            continue
-          }
-          const innerClasses = extractPseudoClasses(attr, modifier)
-          if (innerClasses) {
-            classes.push(...innerClasses)
-            continue
-          }
-          keptAttrs.push(attr)
+          partitionAttr(ctx, attr, pseudoToModifier[name], classes, keptAttrs)
           continue
         }
 
-        // check media query props ($sm, $md, $tablet, …). the modifier is the media key
-        // VERBATIM (identity) — the runtime resolves it by direct config.media lookup.
+        // media query props ($sm, $md, $tablet, …). modifier is the media key VERBATIM
+        // (identity) — the runtime resolves it by direct config.media lookup.
         if (name[0] === '$') {
           const mediaKey = name.slice(1)
-          if (activeMediaKeys.has(mediaKey)) {
-            const innerClasses = extractPseudoClasses(attr, mediaKey)
-            if (innerClasses) {
-              classes.push(...innerClasses)
-              continue
-            }
+          if (ctx.mediaKeys.has(mediaKey)) {
+            partitionAttr(ctx, attr, mediaKey, classes, keptAttrs)
+            continue
           }
-          // unknown $ prop (platform/theme/group, or a media key not in this config), keep as-is
-          keptAttrs.push(attr)
+          keptAttrs.push(attr) // unknown $ prop (platform/theme/group / unconfigured media)
           continue
         }
 
-        // size variant / named animation: styleMode reconstructs these classes back into
-        // the size/animation PROP in createComponent, so emit the class form.
+        // size variant / named animation: styleMode reconstructs these back into the
+        // size/animation PROP in createComponent, so emit the class form.
         if (name === 'size' || name === 'animation') {
           const strVal = getStringValue(attr.value)
           if (strVal !== null) {
@@ -147,28 +207,47 @@ export function tamaguiToTailwind(
         }
 
         // try to convert style prop to tailwind class
-        const cls = propValueToClass(name, attr.value)
-        if (cls) {
+        const cls = propValueToClass(ctx, name, attr.value)
+        if (cls && !occupied.has(classPrefixOf(cls))) {
           classes.push(cls)
         } else {
+          // unconvertible, OR same-key as the existing className (className wins) → retain
           keptAttrs.push(attr)
         }
       }
 
-      // build the new className
+      // build the new className, PRESERVING an existing static string or dynamic expression
       if (classes.length > 0) {
         const classStr = classes.join(' ')
-
         if (existingClassName) {
-          // merge with existing className
           const existingVal = getStringValue(existingClassName.value)
           if (existingVal !== null) {
+            // static string className → merge textually
             existingClassName.value = t.stringLiteral(
               existingVal ? `${existingVal} ${classStr}` : classStr
             )
             keptAttrs.unshift(existingClassName)
+          } else if (
+            t.isJSXExpressionContainer(existingClassName.value) &&
+            !t.isJSXEmptyExpression(existingClassName.value.expression)
+          ) {
+            // DYNAMIC className expression → COMBINE via template literal `${expr} classes`,
+            // never overwrite (the old code silently replaced it with a static string).
+            const expr = existingClassName.value.expression as t.Expression
+            existingClassName.value = t.jsxExpressionContainer(
+              t.templateLiteral(
+                [
+                  t.templateElement({ raw: '', cooked: '' }, false),
+                  t.templateElement(
+                    { raw: ` ${classStr}`, cooked: ` ${classStr}` },
+                    true
+                  ),
+                ],
+                [expr]
+              )
+            )
+            keptAttrs.unshift(existingClassName)
           } else {
-            // existing className is dynamic, use template literal
             keptAttrs.unshift(
               t.jsxAttribute(t.jsxIdentifier('className'), t.stringLiteral(classStr))
             )
@@ -184,9 +263,9 @@ export function tamaguiToTailwind(
 
       node.attributes = keptAttrs
 
-      // rename component to HTML tag
-      if (renameComponents && isKnownComponent) {
-        node.name = t.jsxIdentifier(componentToTag[tagName])
+      // rename ONLY simple known components (never member paths) and only when opted in
+      if (renameComponents && isSimpleKnown) {
+        node.name = t.jsxIdentifier(componentToTag[componentName])
       }
     },
 
@@ -199,25 +278,62 @@ export function tamaguiToTailwind(
     },
   })
 
-  const output = generate(ast, {
-    retainLines: true,
-    concise: false,
-  })
-
+  const output = generate(ast, { retainLines: true, concise: false })
   return output.code
 }
 
 // ── helpers ──────────────────────────────────────────
 
+// known Tamagui COMPOUND (member-path) surfaces that accept style props. unknown namespaces
+// (Chart.Axis, MyLib.Thing) are left untouched; a caller can extend via `components`.
+const knownCompoundComponents = new Set<string>([
+  'Sheet.Frame',
+  'Sheet.Overlay',
+  'Sheet.Handle',
+  'Sheet.ScrollView',
+  'Sheet.Container',
+  'Dialog.Content',
+  'Dialog.Overlay',
+  'Popover.Content',
+  'Tabs.Tab',
+])
+
+// resolve a JSX element name to a string: "View" (identifier) or "Sheet.Frame" (member path).
+// returns null for namespaced names or anything unexpected.
+function componentNameOf(name: t.JSXOpeningElement['name']): string | null {
+  if (t.isJSXIdentifier(name)) return name.name
+  if (t.isJSXMemberExpression(name)) {
+    const parts: string[] = []
+    let cur: t.JSXMemberExpression | t.JSXIdentifier = name
+    while (t.isJSXMemberExpression(cur)) {
+      parts.unshift(cur.property.name)
+      cur = cur.object
+    }
+    if (!t.isJSXIdentifier(cur)) return null
+    parts.unshift(cur.name)
+    return parts.join('.')
+  }
+  return null
+}
+
+// the prop-prefix a class token targets (modifiers + negation stripped): "hover:p-2" → "p",
+// "-mt-1" → "mt", "hidden" → "hidden". used for same-key className collision detection.
+function classPrefixOf(token: string): string {
+  const noMod = token.slice(token.lastIndexOf(':') + 1)
+  const core = noMod[0] === '-' ? noMod.slice(1) : noMod
+  const dash = core.indexOf('-')
+  return dash === -1 ? core : core.slice(0, dash)
+}
+
 function propValueToClass(
+  ctx: Ctx,
   propName: string,
   value: t.JSXAttribute['value'],
   modifier = ''
 ): string | null {
-  // resolve shorthands
-  const fullProp = resolveShorthand(propName)
+  const fullProp = resolveShorthand(ctx, propName)
 
-  // check standalone value props first (display, position, flexDirection, etc.)
+  // standalone value props first (display, position, flexDirection, …)
   if (fullProp in standaloneValueProps) {
     const strVal = getStringValue(value)
     if (strVal !== null && standaloneValueProps[fullProp][strVal]) {
@@ -226,37 +342,25 @@ function propValueToClass(
     }
   }
 
-  // check if we have a tailwind prefix for this prop
   const prefix = propToTailwindPrefix[fullProp]
-  if (prefix === undefined) return null // not a style prop we handle
+  if (prefix === undefined) return null // not a style prop we safely handle
 
   const strVal = getStringValue(value)
   const numVal = getNumericValue(value)
 
   let tailwindValue: string | null = null
-
-  if (strVal !== null) {
-    tailwindValue = formatStringValue(fullProp, strVal)
-  } else if (numVal !== null) {
-    tailwindValue = formatNumericValue(fullProp, numVal)
-  } else {
-    // can't statically convert (dynamic expression)
-    return null
-  }
+  if (strVal !== null) tailwindValue = formatStringValue(ctx, fullProp, strVal)
+  else if (numVal !== null) tailwindValue = formatNumericValue(fullProp, numVal)
+  else return null // dynamic expression → retain
 
   if (tailwindValue === null) return null
 
-  // some props use standalone classes (like `flex-1`)
   if (prefix === '') return modifier ? `${modifier}:${tailwindValue}` : tailwindValue
 
-  // an empty tailwindValue means the bare prefix IS the class (e.g. tailwind's
-  // `border` = 1px), so don't emit a dangling `border-`
   let cls: string
   if (tailwindValue === '') {
     cls = prefix
   } else if (tailwindValue[0] === '-' && tailwindValue[1] !== '[') {
-    // negative space token ($-1 → "-1") → tailwind negative utility (-m-1), not `m--1`.
-    // bracketed negatives (`[-4px]`) keep the minus inside the brackets.
     cls = `-${prefix}-${tailwindValue.slice(1)}`
   } else {
     cls = `${prefix}-${tailwindValue}`
@@ -264,40 +368,108 @@ function propValueToClass(
   return modifier ? `${modifier}:${cls}` : cls
 }
 
-function extractPseudoClasses(attr: t.JSXAttribute, modifier: string): string[] | null {
-  // value should be an object expression: hoverStyle={{ bg: 'red', opacity: 0.5 }}
-  if (!t.isJSXExpressionContainer(attr.value)) return null
-  const expr = attr.value.expression
-  if (!t.isObjectExpression(expr)) return null
-
+/**
+ * PARTITION a media/pseudo style object into (a) the tailwind classes we could convert and
+ * (b) the RESIDUAL properties we could not (dynamic values, complex expressions, spreads,
+ * nested-object residuals). LOSSLESS: every member goes to exactly one side, so the caller can
+ * emit the classes AND retain the residual under the same prop — never dropping user code.
+ *
+ * RECURSIVE for nested media+pseudo (and pseudo+media): a nested pseudo/media object is
+ * partitioned with a combined modifier ($md → hoverStyle ⇒ `md:hover:`), its classes bubble up,
+ * and any residual is retained as a nested object under the same key.
+ */
+function partitionStyleObject(
+  ctx: Ctx,
+  expr: t.ObjectExpression,
+  modifier: string
+): { classes: string[]; residual: t.ObjectExpression['properties'] } {
   const classes: string[] = []
+  const residual: t.ObjectExpression['properties'] = []
+
   for (const prop of expr.properties) {
-    if (!t.isObjectProperty(prop) || !t.isIdentifier(prop.key)) continue
+    if (!t.isObjectProperty(prop) || !t.isIdentifier(prop.key)) {
+      residual.push(prop) // spread / computed / method → retain verbatim
+      continue
+    }
     const propName = prop.key.name
     const value = prop.value
 
-    // wrap value as JSX-compatible for propValueToClass
-    let jsxValue: t.JSXAttribute['value']
+    // nested pseudo (hoverStyle inside $md) or nested media ($sm inside hoverStyle):
+    // recurse with a combined modifier, bubble classes up, retain nested residual
+    const nestedMod =
+      propName in pseudoToModifier
+        ? pseudoToModifier[propName]
+        : ctx.mediaKeys.has(propName)
+          ? propName
+          : null
+    if (nestedMod && t.isObjectExpression(value)) {
+      const combined = modifier ? `${modifier}:${nestedMod}` : nestedMod
+      const inner = partitionStyleObject(ctx, value, combined)
+      classes.push(...inner.classes)
+      if (inner.residual.length > 0) {
+        residual.push(t.objectProperty(prop.key, t.objectExpression(inner.residual)))
+      }
+      continue
+    }
+
+    // wrap a convertible leaf value (string / numeric / negative-numeric) for propValueToClass
+    let jsxValue: t.JSXAttribute['value'] | null = null
     if (t.isStringLiteral(value)) {
       jsxValue = value
     } else if (
       t.isNumericLiteral(value) ||
-      // negative numeric literal (y: -10) is a UnaryExpression — getNumericValue
-      // handles it, so wrap it too instead of dropping the prop
       (t.isUnaryExpression(value) &&
         value.operator === '-' &&
         t.isNumericLiteral(value.argument))
     ) {
       jsxValue = t.jsxExpressionContainer(value)
-    } else {
-      continue // can't convert complex values
     }
 
-    const cls = propValueToClass(propName, jsxValue, modifier)
+    const cls = jsxValue ? propValueToClass(ctx, propName, jsxValue, modifier) : null
     if (cls) classes.push(cls)
+    else residual.push(prop) // dynamic / unconvertible → RETAIN, never drop
   }
 
-  return classes.length > 0 ? classes : null
+  return { classes, residual }
+}
+
+// build a retained attribute holding the unconverted residual members under the SAME prop name
+// (reusing the original name node preserves `$md` / `$max-md` exactly).
+function buildResidualAttr(
+  attr: t.JSXAttribute,
+  residual: t.ObjectExpression['properties']
+): t.JSXAttribute {
+  return t.jsxAttribute(attr.name, t.jsxExpressionContainer(t.objectExpression(residual)))
+}
+
+// partition a media/pseudo attribute: push converted classes, retain a residual attribute for
+// anything unconverted. LOSSLESS — either the whole original attr is kept (nothing converted),
+// or classes are emitted plus a residual attr for the leftover members.
+function partitionAttr(
+  ctx: Ctx,
+  attr: t.JSXAttribute,
+  modifier: string,
+  classes: string[],
+  keptAttrs: t.JSXAttribute[]
+): void {
+  if (
+    !t.isJSXExpressionContainer(attr.value) ||
+    !t.isObjectExpression(attr.value.expression)
+  ) {
+    keptAttrs.push(attr) // not a style object (dynamic/spread) → retain untouched
+    return
+  }
+  const { classes: converted, residual } = partitionStyleObject(
+    ctx,
+    attr.value.expression,
+    modifier
+  )
+  if (converted.length === 0) {
+    keptAttrs.push(attr) // nothing converted → keep the original attribute whole
+    return
+  }
+  classes.push(...converted)
+  if (residual.length > 0) keptAttrs.push(buildResidualAttr(attr, residual))
 }
 
 function getStringValue(value: t.JSXAttribute['value']): string | null {
@@ -307,7 +479,6 @@ function getStringValue(value: t.JSXAttribute['value']): string | null {
     return value.expression.value
   }
   if (t.isJSXExpressionContainer(value) && t.isTemplateLiteral(value.expression)) {
-    // simple template literal with no expressions
     if (
       value.expression.expressions.length === 0 &&
       value.expression.quasis.length === 1
@@ -322,7 +493,6 @@ function getNumericValue(value: t.JSXAttribute['value']): number | null {
   if (!value) return null
   if (t.isJSXExpressionContainer(value)) {
     if (t.isNumericLiteral(value.expression)) return value.expression.value
-    // negative: -10
     if (
       t.isUnaryExpression(value.expression) &&
       value.expression.operator === '-' &&
@@ -334,78 +504,20 @@ function getNumericValue(value: t.JSXAttribute['value']): number | null {
   return null
 }
 
-// maps full CSS prop name → shorthand used in tamagui
-const shorthandMap: Record<string, string> = {}
-// populated lazily
-let shorthandMapBuilt = false
-
-function buildShorthandMap() {
-  if (shorthandMapBuilt) return
-  try {
-    // import shorthands at runtime
-    const { shorthands } = require('@tamagui/shorthands/v4')
-    for (const [short, long] of Object.entries(shorthands)) {
-      shorthandMap[short as string] = long as string
-    }
-  } catch {
-    // fallback: hardcode common ones
-    Object.assign(shorthandMap, {
-      bg: 'backgroundColor',
-      p: 'padding',
-      pt: 'paddingTop',
-      pr: 'paddingRight',
-      pb: 'paddingBottom',
-      pl: 'paddingLeft',
-      px: 'paddingHorizontal',
-      py: 'paddingVertical',
-      m: 'margin',
-      mt: 'marginTop',
-      mr: 'marginRight',
-      mb: 'marginBottom',
-      ml: 'marginLeft',
-      mx: 'marginHorizontal',
-      my: 'marginVertical',
-      rounded: 'borderRadius',
-      t: 'top',
-      r: 'right',
-      b: 'bottom',
-      l: 'left',
-      z: 'zIndex',
-      items: 'alignItems',
-      justify: 'justifyContent',
-      self: 'alignSelf',
-      content: 'alignContent',
-      grow: 'flexGrow',
-      shrink: 'flexShrink',
-      select: 'userSelect',
-      text: 'textAlign',
-      maxW: 'maxWidth',
-      maxH: 'maxHeight',
-      minW: 'minWidth',
-      minH: 'minHeight',
-    })
-  }
-  shorthandMapBuilt = true
+function resolveShorthand(ctx: Ctx, name: string): string {
+  return ctx.shorthands[name] || name
 }
 
-function resolveShorthand(name: string): string {
-  buildShorthandMap()
-  return shorthandMap[name] || name
-}
-
-function formatStringValue(prop: string, value: string): string {
+function formatStringValue(ctx: Ctx, prop: string, value: string): string | null {
   // token reference: resolve spacing/sizing/radius/zIndex tokens to their EXACT value and emit
-  // an arbitrary class (`[18px]`, `[400]`) using the app config's scales (tamagui's token scale
-  // ≠ Tailwind's ×4 scale, so `$4` → `p-4`/`z-4` would change the value — see tokenScale.ts).
-  // color/font tokens have no static value and fall through to stripping the `$` (resolved by
-  // name at runtime through the theme/font systems).
+  // an arbitrary class (`[18px]`, `[400]`) using the app config's scales. color/font tokens
+  // have no static value and fall through to stripping the `$` (resolved by name at runtime).
   if (value.startsWith('$')) {
-    const arb = resolveTokenArbitrary(prop, value, activeTokens)
+    const arb = resolveTokenArbitrary(prop, value, ctx.tokens)
     if (arb != null) return `[${arb}]`
     return value.slice(1)
   }
 
-  // percentage values
   if (value.endsWith('%')) {
     const pctMap: Record<string, string> = {
       '100%': 'full',
@@ -418,33 +530,16 @@ function formatStringValue(prop: string, value: string): string {
     return pctMap[value] || `[${value}]`
   }
 
-  // auto
   if (value === 'auto') return 'auto'
-  // full
   if (value === '100%') return 'full'
 
-  // named font weights
+  // named font weights only — an unknown weight (e.g. "450") is NOT emitted as font-[450]
+  // (that would resolve to fontFamily). return null → retain the source prop.
   if (prop === 'fontWeight') {
-    const weightMap: Record<string, string> = {
-      '100': 'thin',
-      '200': 'extralight',
-      '300': 'light',
-      '400': 'normal',
-      '500': 'medium',
-      '600': 'semibold',
-      '700': 'bold',
-      '800': 'extrabold',
-      '900': 'black',
-      bold: 'bold',
-      normal: 'normal',
-    }
-    return weightMap[value] || `[${value}]`
+    return fontWeightNames[value] ?? null
   }
 
-  // arbitrary CSS values → bracket so styleMode's `[..]` parser resolves them. covers
-  // functions (calc()/var()/rgb()), hex, multi-part values, negatives, and unit-bearing
-  // lengths (100vh, 24px, -8deg). spaces become underscores per the tailwind
-  // arbitrary-value convention (a class can't contain whitespace).
+  // arbitrary CSS values → bracket so styleMode's `[..]` parser resolves them
   if (
     value.includes('(') ||
     value.includes(' ') ||
@@ -455,65 +550,99 @@ function formatStringValue(prop: string, value: string): string {
     return `[${value.replace(/\s+/g, '_')}]`
   }
 
+  // boxShadow only round-trips as the arbitrary multi-part form (handled above). a plain value
+  // like "none" would emit shadow-none, which is dead at runtime → retain the source prop.
+  if (prop === 'boxShadow') return null
+
   return value
 }
 
-function formatNumericValue(prop: string, value: number): string {
-  // opacity: 0.5 → 50
+// props whose numeric value is a PX LENGTH — emit [Npx]; the runtime parser coerces [Npx] to a
+// NUMBER (React Native requires numbers; web re-adds px). border widths are handled separately
+// (they have Tailwind integer utilities). this is an explicit inventory — a numeric prop NOT
+// classified here is NOT converted (returns null → retained), never blindly defaulted to px.
+const pxLengthProps = new Set([
+  'width',
+  'height',
+  'minWidth',
+  'maxWidth',
+  'minHeight',
+  'maxHeight',
+  'flexBasis',
+  'padding',
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+  'paddingHorizontal',
+  'paddingVertical',
+  'margin',
+  'marginTop',
+  'marginRight',
+  'marginBottom',
+  'marginLeft',
+  'marginHorizontal',
+  'marginVertical',
+  'gap',
+  'rowGap',
+  'columnGap',
+  'top',
+  'right',
+  'bottom',
+  'left',
+  'inset',
+  'borderRadius',
+  'borderTopLeftRadius',
+  'borderTopRightRadius',
+  'borderBottomLeftRadius',
+  'borderBottomRightRadius',
+  'fontSize',
+  'letterSpacing',
+  'lineHeight',
+])
+
+function formatNumericValue(prop: string, value: number): string | null {
+  // opacity: use the named percentage utility ONLY when value*100 is EXACTLY an integer
+  // (0.5 → opacity-50); otherwise emit an arbitrary unitless value (0.333 → opacity-[0.333])
+  // so the resolved opacity is EXACT, never rounded/lossy.
   if (prop === 'opacity') {
-    return String(Math.round(value * 100))
+    const pct = value * 100
+    return Number.isInteger(pct) ? String(pct) : `[${value}]`
   }
 
-  // scale: 0.95 → [0.95], 1.05 → [1.05]
+  // UNITLESS number → [N] (no px): number on both platforms
+  if (prop === 'aspectRatio') return `[${value}]`
   if (prop === 'scale' || prop === 'scaleX' || prop === 'scaleY') {
     if (value === 0) return '0'
     if (value === 1) return '100'
     return `[${value}]`
   }
+  if (prop === 'flex') return String(value)
+  if (prop === 'flexGrow' || prop === 'flexShrink') return value === 0 ? '0' : String(value)
+  if (prop === 'zIndex') return String(value)
 
-  // flex: 1 → 1
-  if (prop === 'flex') {
-    return String(value)
-  }
+  // NAMED weight: numeric 700 → the named-weight class; unknown weight → retain (null)
+  if (prop === 'fontWeight') return fontWeightNames[String(value)] ?? null
 
-  // flexGrow / flexShrink: just the number
-  if (prop === 'flexGrow' || prop === 'flexShrink') {
-    return value === 0 ? '0' : String(value)
-  }
+  // ANGLE → deg
+  if (prop === 'rotate') return `[${value}deg]`
 
-  // zIndex: just the number
-  if (prop === 'zIndex') {
-    return String(value)
-  }
+  // translate x/y → px length
+  if (prop === 'x' || prop === 'y') return `[${value}px]`
 
-  // border widths: 0, 1, 2, 4, 8 are standard tailwind values
+  // border widths: 0, 1, 2, 4, 8 map to Tailwind integer utilities; others → [Npx]
   if (prop.includes('Width') && prop.startsWith('border')) {
     if (value === 0) return '0'
-    if (value === 1) return '' // border = border-1
+    if (value === 1) return '' // bare `border` / `border-r` = 1px
     if ([2, 4, 8].includes(value)) return String(value)
     return `[${value}px]`
   }
 
-  // outline width
-  if (prop === 'outlineWidth') {
-    return `[${value}px]`
+  // PX LENGTH props → [Npx] (negative keeps the sign inside the brackets)
+  if (pxLengthProps.has(prop)) {
+    return value < 0 ? `[-${Math.abs(value)}px]` : `[${value}px]`
   }
 
-  // rotation: just degrees
-  if (prop === 'rotate') {
-    return `[${value}deg]`
-  }
-
-  // translation
-  if (prop === 'x' || prop === 'y') {
-    return `[${value}px]`
-  }
-
-  // negative values
-  if (value < 0) {
-    return `[-${Math.abs(value)}px]`
-  }
-
-  // default: use arbitrary value with px
-  return `[${value}px]`
+  // unclassified numeric prop → do NOT guess a unit; retain the source prop
+  return null
 }

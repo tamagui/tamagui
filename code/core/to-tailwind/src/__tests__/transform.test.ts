@@ -395,11 +395,19 @@ describe('tamaguiToTailwind', () => {
       expect(output).toContain('style={{')
     })
 
-    test('handles spread props', () => {
-      const input = `<View {...props} backgroundColor="red" />`
-      const output = tamaguiToTailwind(input)
-      expect(output).toContain('{...props}')
-      expect(output).toContain('bg-red')
+    test('spread props: element left UNTOUCHED (spread makes precedence order-dependent)', () => {
+      // <View {...props} bg /> and <View bg {...props} /> mean OPPOSITE precedence; unshifting a
+      // generated className would flip/lose that, so a spread element is not converted at all.
+      const a = tamaguiToTailwind(`<View {...props} backgroundColor="red" />`)
+      expect(a).toContain('{...props}')
+      expect(a).toContain('backgroundColor="red"') // retained, NOT converted
+      expect(a).not.toContain('bg-red')
+      expect(a).not.toContain('className')
+
+      // both orders stay distinct (never collapse to the same output)
+      const b = tamaguiToTailwind(`<View backgroundColor="red" {...props} />`)
+      expect(b).not.toContain('className')
+      expect(b).toContain('backgroundColor="red"')
     })
   })
 

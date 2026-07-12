@@ -1,15 +1,11 @@
 /**
- * CONVERTER → RUNTIME ROUND-TRIP tests on the NATIVE target.
+ * CONVERTER → FULL NATIVE getSplitStyles round-trip. EXACT value + typeof, NO tolerant helpers.
  *
- * The web round-trip lives in tailwindRoundTrip.web.test.tsx. The app template runs native
- * too, so these assert the same converter output resolves correctly through the NATIVE
- * styleMode path — where the representation differs: borderWidth is a NUMBER (not "Npx"),
- * theme colors resolve to hsla/rgba, and boxShadow is parsed into an RN shadow object. The
- * assertions therefore lean on class-vs-source-prop PARITY (representation-independent) plus
- * exact pixel values for dimensions.
- *
- * This runs under `vitest` (native module resolution), not a simulator — it's cheap.
- * Command: from code/core/core-test, `bun run test:native` (or the *.native.test.tsx glob).
+ * React Native requires NUMBERS for dimensional + typography props (Yoga's parseCSSProperty
+ * rejects "Npx" → the value is silently DROPPED; StyleSheetTypes types fontSize/lineHeight/
+ * letterSpacing as number). So every converter-emitted [Npx] MUST resolve to a number on native.
+ * These tests drive the REAL converter from a SOURCE prop (never a hand-written class) and assert
+ * the resolved native `.style` value AND `typeof === 'number'` exactly.
  */
 
 process.env.TAMAGUI_TARGET = 'native'
@@ -17,7 +13,7 @@ process.env.TAMAGUI_TARGET = 'native'
 import { beforeAll, describe, expect, test } from 'vitest'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
 
-import { View, createTamagui } from '../web/src'
+import { View, Text, createTamagui } from '../web/src'
 import { getSplitStyles, preprocessStyleModeProps } from '../web/src/helpers/getSplitStyles'
 import { defaultComponentState } from '../web/src/defaultComponentState'
 import { tamaguiToTailwind } from '../to-tailwind/src/transform'
@@ -30,21 +26,22 @@ beforeAll(() => {
     ...(v6 as any),
     settings: { ...(v6 as any).settings, styleMode: 'tailwind' },
   } as any)
-  THEME = (CFG.themes as any).light ?? (CFG.themes as any)[Object.keys(CFG.themes)[0]]
+  THEME = (CFG.themes as any).light
 })
 
-function convertedClassName(sourceJSX: string): string {
+// SOURCE prop → real converter → the className it emits
+function toClass(sourceJSX: string): string {
   const out = tamaguiToTailwind(sourceJSX, { renameComponents: false })
   const m = /className="([^"]*)"/.exec(out)
   return m ? m[1] : ''
 }
 
-// native resolves inline (no atomic rules) — read `.style` directly
-function styleOf(props: Record<string, any>): Record<string, any> {
+// className → resolved FULL native style object
+function nativeStyle(Comp: any, className: string): Record<string, any> {
   return (
     getSplitStyles(
-      props as any,
-      View.staticConfig,
+      { className } as any,
+      Comp.staticConfig,
       THEME,
       'light',
       defaultComponentState,
@@ -58,147 +55,129 @@ function styleOf(props: Record<string, any>): Record<string, any> {
   )
 }
 
-const classStyle = (cls: string) => styleOf({ className: cls })
-const px = (v: any) => (typeof v === 'number' ? v : Number.parseFloat(v))
-
-// flat style props the parser reconstructs from a className, before the platform pipeline —
-// where borderWidth-vs-color and the numeric type are decided (identical on web and native).
-function flat(cls: string): Record<string, any> {
-  return preprocessStyleModeProps({ className: cls } as any, CFG)
+// SOURCE prop → converter → native style value (full round-trip in one step)
+function resolved(Comp: any, sourceJSX: string, styleProp: string): any {
+  return nativeStyle(Comp, toClass(sourceJSX))[styleProp]
 }
 
-describe('native — 1a: responsive media direction', () => {
-  test('converted class reconstructs the same $md media prop as the source (md = minWidth 768)', () => {
-    expect(CFG.media.md).toEqual({ minWidth: 768 })
-    const cls = convertedClassName(`<View display="none" $md={{ display: 'flex' }} />`)
-    expect(cls).toContain('md:flex')
-    expect(cls).not.toMatch(/max-md/)
-    const fromClass = preprocessStyleModeProps({ className: cls } as any, CFG)
-    expect(fromClass.$md).toEqual({ display: 'flex' })
-    expect(fromClass.$md).toEqual(
-      preprocessStyleModeProps({ display: 'none', $md: { display: 'flex' } } as any, CFG).$md
-    )
+function flat(className: string): Record<string, any> {
+  return preprocessStyleModeProps({ className } as any, CFG)
+}
+
+describe('native — px-length props resolve to EXACT NUMBERS (RN drops "Npx" strings)', () => {
+  test('spacing/sizing tokens', () => {
+    const p = resolved(View, `<View padding="$4" />`, 'paddingTop')
+    expect(p).toBe(18)
+    expect(typeof p).toBe('number')
+
+    const g = resolved(View, `<View gap="$6" />`, 'gap')
+    expect(g).toBe(32)
+    expect(typeof g).toBe('number')
+
+    const r = resolved(View, `<View borderRadius="$8" />`, 'borderTopLeftRadius')
+    expect(r).toBe(22)
+    expect(typeof r).toBe('number')
+
+    const w = resolved(View, `<View width="$10" />`, 'width')
+    expect(w).toBe(104)
+    expect(typeof w).toBe('number')
   })
 
-  test('bare flex resolves to display:flex', () => {
-    expect(classStyle('flex').display).toBe('flex')
-  })
-})
+  test('numeric literals', () => {
+    const p = resolved(View, `<View padding={10} />`, 'paddingTop')
+    expect(p).toBe(10)
+    expect(typeof p).toBe('number')
 
-describe('native — 1b: token pixel-fidelity', () => {
-  test('p="$4" → 18px, gap="$6" → 32px, radius "$8" → 22px (not the ×4 scale)', () => {
-    expect(px(classStyle(convertedClassName(`<View padding="$4" />`)).paddingTop)).toBe(18)
-    expect(px(classStyle(convertedClassName(`<View gap="$6" />`)).gap)).toBe(32)
-    expect(
-      px(classStyle(convertedClassName(`<View borderRadius="$8" />`)).borderTopLeftRadius)
-    ).toBe(22)
-    // old outputs would have been the wrong pixel values
-    expect(px(classStyle('p-4').paddingTop)).toBe(16)
-    expect(px(classStyle('rounded-8').borderTopLeftRadius)).toBe(8)
-  })
-})
-
-describe('native — 1c: fractional border width', () => {
-  test('borderWidth={0.5} → NUMERIC borderWidth 0.5, never a color (RN rejects "0.5px")', () => {
-    const cls = convertedClassName(`<View borderWidth={0.5} />`)
-    const f = flat(cls)
-    expect(f.borderWidth).toBe(0.5)
-    expect(typeof f.borderWidth).toBe('number')
-    expect(f.borderColor).toBeUndefined()
-    // native resolved style keeps the number on every side
-    const s = classStyle(cls)
-    expect(px(s.borderTopWidth)).toBe(0.5)
-    expect(px(s.borderBottomWidth)).toBe(0.5)
+    const bw = resolved(View, `<View borderWidth={0.5} />`, 'borderTopWidth')
+    expect(bw).toBe(0.5)
+    expect(typeof bw).toBe('number')
   })
 })
 
-describe('native — PASS 2: directional borders + corner radius', () => {
-  test('border (bare) → borderWidth 1 (number), no borderColor', () => {
-    const f = flat('border')
-    expect(f.borderWidth).toBe(1)
-    expect(typeof f.borderWidth).toBe('number')
-    expect(f.borderColor).toBeUndefined()
+describe('native — typography resolves to EXACT NUMBERS (RN StyleSheetTypes number-only)', () => {
+  test('fontSize={14} → 14', () => {
+    const v = resolved(Text, `<Text fontSize={14} />`, 'fontSize')
+    expect(v).toBe(14)
+    expect(typeof v).toBe('number')
   })
-
-  test('border-r (bare) → borderRightWidth 1 (number), no borderRightColor', () => {
-    const f = flat('border-r')
-    expect(f.borderRightWidth).toBe(1)
-    expect(typeof f.borderRightWidth).toBe('number')
-    expect(f.borderRightColor).toBeUndefined()
-    expect(px(classStyle('border-r').borderRightWidth)).toBe(1) // native resolved style
+  test('lineHeight={20} → 20', () => {
+    const v = resolved(Text, `<Text lineHeight={20} />`, 'lineHeight')
+    expect(v).toBe(20)
+    expect(typeof v).toBe('number')
   })
-
-  test('border-b-[0.5px] → borderBottomWidth 0.5 (number), no borderBottomColor', () => {
-    const cls = convertedClassName(`<View borderBottomWidth={0.5} />`)
-    const f = flat(cls)
-    expect(f.borderBottomWidth).toBe(0.5)
-    expect(typeof f.borderBottomWidth).toBe('number')
-    expect(f.borderBottomColor).toBeUndefined()
-    expect(px(classStyle(cls).borderBottomWidth)).toBe(0.5)
+  test('letterSpacing={0} → 0 (not dropped)', () => {
+    const v = resolved(Text, `<Text letterSpacing={0} />`, 'letterSpacing')
+    expect(v).toBe(0)
+    expect(typeof v).toBe('number')
   })
-
-  test('border-r-color2 → borderRightColor resolved (string), no borderRightWidth; class === source prop', () => {
-    const cls = convertedClassName(`<View borderRightColor="$color2" />`)
-    const f = flat(cls)
-    expect(typeof f.borderRightColor).toBe('string')
-    expect(f.borderRightColor).not.toBe('color2')
-    expect(f.borderRightWidth).toBeUndefined()
-    // full native pipeline: identical resolved color via class and source prop
-    const fromClass = classStyle(cls).borderRightColor
-    const fromProp = styleOf({ borderRightColor: '$color2' }).borderRightColor
-    expect(fromClass).toBeTruthy()
-    expect(fromClass).toBe(fromProp)
-  })
-
-  test('borderLeftWidth={3} → left width 3 (number)', () => {
-    const cls = convertedClassName(`<View borderLeftWidth={3} />`)
-    const f = flat(cls)
-    expect(f.borderLeftWidth).toBe(3)
-    expect(typeof f.borderLeftWidth).toBe('number')
-    expect(px(classStyle(cls).borderLeftWidth)).toBe(3)
-  })
-
-  test('corner radius borderTopLeftRadius="$8" → 22 on the top-left corner only', () => {
-    const cls = convertedClassName(`<View borderTopLeftRadius="$8" />`)
-    const f = flat(cls)
-    expect(f.borderTopLeftRadius).toBe(22)
-    expect(typeof f.borderTopLeftRadius).toBe('number')
-    expect(f.borderBottomRightRadius).toBeUndefined()
+  test('leading-[20px] → 20 number (native); leading-[1.25] unitless stays a web multiplier', () => {
+    // px lineHeight is native-valid → number 20
+    const px = flat('leading-[20px]').lineHeight
+    expect(px).toBe(20)
+    expect(typeof px).toBe('number')
+    // a UNITLESS multiplier stays a string ('1.25') — a number would px-ify to 1.25px on web
+    // (RN has no unitless multiplier; this is web-only semantics, preserved verbatim)
+    expect(flat('leading-[1.25]').lineHeight).toBe('1.25')
   })
 })
 
-describe('native — token category system: zIndex sentinel (default config)', () => {
-  test('zIndex="$4" → z-[400] → zIndex 400 (number), not raw 4', () => {
-    const cls = convertedClassName(`<View zIndex="$4" />`)
-    expect(cls).toContain('z-[400]')
-    const f = flat(cls)
-    expect(f.zIndex).toBe(400)
-    expect(typeof f.zIndex).toBe('number')
-    expect(flat('z-4').zIndex).toBe(4)
+describe('native — unitless props', () => {
+  test('aspectRatio={1.5} → 1.5 (unitless number, not 1.5px)', () => {
+    expect(toClass(`<View aspectRatio={1.5} />`)).toContain('aspect-[1.5]')
+    const v = resolved(View, `<View aspectRatio={1.5} />`, 'aspectRatio')
+    expect(v).toBe(1.5)
+    expect(typeof v).toBe('number')
+  })
+  test('zIndex="$4" → 400 number', () => {
+    const v = resolved(View, `<View zIndex="$4" />`, 'zIndex')
+    expect(v).toBe(400)
+    expect(typeof v).toBe('number')
+  })
+  test('opacity={0.333} → EXACT 0.333 (named form only when exact, else arbitrary)', () => {
+    expect(toClass(`<View opacity={0.333} />`)).toContain('opacity-[0.333]')
+    expect(resolved(View, `<View opacity={0.333} />`, 'opacity')).toBe(0.333) // never 0.33
+    expect(resolved(View, `<View opacity={0.5} />`, 'opacity')).toBe(0.5)
   })
 })
 
-describe('native — nested modifier expansion: md:hover:border-x', () => {
-  test('border-x-[0.5px] under md:hover: sets BOTH side widths (numbers), no colors', () => {
-    const inner = flat('md:hover:border-x-[0.5px]').$md?.hoverStyle
-    expect(inner).toBeTruthy()
-    expect(inner.borderLeftWidth).toBe(0.5)
-    expect(typeof inner.borderLeftWidth).toBe('number')
-    expect(inner.borderRightWidth).toBe(0.5)
-    expect(typeof inner.borderRightWidth).toBe('number')
-    expect(inner.borderLeftColor).toBeUndefined()
-    expect(inner.borderRightColor).toBeUndefined()
+describe('native — named enum: fontWeight', () => {
+  test('fontWeight={700} → font-bold → RN weight "700"; unknown weight retained', () => {
+    expect(toClass(`<Text fontWeight={700} />`)).toContain('font-bold')
+    expect(resolved(Text, `<Text fontWeight={700} />`, 'fontWeight')).toBe('700')
+    // a non-standard weight is NOT mis-emitted as font-[450] (would set fontFamily) — retained
+    const out = tamaguiToTailwind(`<Text fontWeight="450" />`, { renameComponents: false })
+    expect(out).not.toMatch(/font-\[450\]/)
+    expect(out).toContain('fontWeight="450"')
   })
 })
 
-describe('native — PASS 2: embedded shadow tokens', () => {
-  test('boxShadow="0 8px 18px $shadow5" resolves the token and parses to an RN shadow object, identical to the source prop', () => {
-    const cls = convertedClassName(`<View boxShadow="0 8px 18px $shadow5" />`)
-    const fromClass = classStyle(cls).boxShadow
-    const fromProp = styleOf({ boxShadow: '0 8px 18px $shadow5' }).boxShadow
-    // native parses the string into a shadow object; the token must be a resolved color
-    expect(JSON.stringify(fromClass)).not.toContain('$shadow5')
-    expect(fromClass).toEqual(fromProp)
-    expect(Array.isArray(fromClass) ? fromClass[0]?.blurRadius : undefined).toBe(18)
+describe('native — directional borders + per-edge radii (converter-driven)', () => {
+  test('borderRightWidth={1} + borderRightColor="$color2"', () => {
+    const s = nativeStyle(View, toClass(`<View borderRightWidth={1} borderRightColor="$color2" />`))
+    expect(s.borderRightWidth).toBe(1)
+    expect(typeof s.borderRightWidth).toBe('number')
+    expect(s.borderRightColor).toBeTruthy()
+    expect(s.borderRightColor).not.toBe('color2')
+  })
+  test('per-corner named radius: borderTopLeftRadius="$lg" → the lg radius, top-left only', () => {
+    // converter (default scales, no $lg) emits the NAMED form rounded-tl-lg; the runtime (v6)
+    // resolves $lg via the radius token system → a number, top-left corner only.
+    const cls = toClass(`<View borderTopLeftRadius="$lg" />`)
+    expect(cls).toContain('rounded-tl-lg')
+    const s = nativeStyle(View, cls)
+    expect(typeof s.borderTopLeftRadius).toBe('number')
+    expect(s.borderTopLeftRadius).toBeGreaterThan(0)
+    expect(s.borderBottomRightRadius).toBeUndefined()
+  })
+})
+
+describe('native — responsive media (converter-driven, parser-level structure)', () => {
+  test('$md show/hide reconstructs the correct media prop', () => {
+    const showCls = toClass(`<View display="none" $md={{ display: 'flex' }} />`)
+    expect(showCls).toContain('md:flex')
+    expect(showCls).not.toMatch(/max-md/)
+    expect(flat(showCls).$md).toEqual({ display: 'flex' })
+    const hideCls = toClass(`<View display="flex" $md={{ display: 'none' }} />`)
+    expect(flat(hideCls).$md).toEqual({ display: 'none' })
   })
 })

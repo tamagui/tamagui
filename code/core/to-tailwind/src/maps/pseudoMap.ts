@@ -30,8 +30,26 @@ export const pseudoToModifier: Record<string, string> = {
 // this list is only the FALLBACK set used when no config media is supplied: the common
 // identifier-safe default v5/v6 + legacy config-default keys. hyphenated keys (max-md,
 // max-height-lg) can't be written as a JSX `$prop`, so they only matter via the config set.
+// the FULL @tamagui/config v5/v6 default media key set (parity-tested against
+// `@tamagui/config/v6` defaultConfig.media in the test suite so it can't silently drift — an
+// earlier version omitted the max-*/height-* keys, dropping those media props to residual). JSX
+// attribute names CAN contain hyphens, so `$max-md`/`$max-height-lg` are valid source props and
+// must round-trip. also includes the legacy config-default (`gt*`, short/tall/…) keys so both
+// default configs convert without an explicit `media` option.
 export const defaultMediaKeys: string[] = [
-  // min-width (mobile-first) — v5/v6 primary breakpoints, Tailwind-aligned
+  // @tamagui/config v6 defaults
+  'touchable',
+  'hoverable',
+  'max-xxl',
+  'max-xl',
+  'max-lg',
+  'max-md',
+  'max-sm',
+  'max-xs',
+  'max-xxs',
+  'max-xxxs',
+  'max-200',
+  'max-100',
   'xxxs',
   'xxs',
   'xs',
@@ -40,17 +58,25 @@ export const defaultMediaKeys: string[] = [
   'lg',
   'xl',
   'xxl',
-  // gt* (min-width) — legacy config-default naming
+  'max-height-lg',
+  'max-height-md',
+  'max-height-sm',
+  'max-height-xs',
+  'max-height-xxs',
+  'max-height-xxxs',
+  'max-height-200',
+  'max-height-100',
+  'height-sm',
+  'height-md',
+  'height-lg',
+  // legacy config-default (min-width gt*, orientation/pointer)
   'gtXs',
   'gtSm',
   'gtMd',
   'gtLg',
   'gtXl',
-  // non-width default media
   'short',
   'tall',
   'hoverNone',
   'pointerCoarse',
-  'touchable',
-  'hoverable',
 ]

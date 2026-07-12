@@ -25,6 +25,12 @@
  */
 
 import { tokenCategories } from '@tamagui/helpers'
+// CANONICAL default scales — a STATIC import of the source-of-truth token data. this is a
+// DECLARED dependency (package.json), so it resolves in a packed/published install, and a
+// static `import` compiles correctly to BOTH esm and cjs (the earlier bug was an UNDECLARED
+// bare `require()`, which is `undefined` in ESM → silently empty tokens → the ×4 scale). there
+// is exactly ONE owner of these numbers (no hand-copied duplicate that can drift).
+import { tokens as canonicalDefaultTokens } from '@tamagui/themes/v5'
 
 // { space?, size?, radius?, zIndex? } — the numeric token scales from the app config.
 export interface TokenScales {
@@ -52,20 +58,8 @@ const fontProps = new Set([
   'fontWeight',
 ])
 
-// bundled default scales (used ONLY as an explicit fallback when the caller passes no tokens).
-// lazily required so the transform stays usable if the themes package can't be resolved.
-let defaultTokensCache: TokenScales | null = null
-function getDefaultTokens(): TokenScales {
-  if (defaultTokensCache) return defaultTokensCache
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { tokens } = require('@tamagui/themes/v5')
-    defaultTokensCache = tokens ?? {}
-  } catch {
-    defaultTokensCache = {}
-  }
-  return defaultTokensCache!
-}
+// exposed for the packed-consumer + parity tests (must equal the runtime default tokens).
+export const defaultTokenScales: TokenScales = canonicalDefaultTokens as TokenScales
 
 function readVal(v: any): number | null {
   if (typeof v === 'number') return v
@@ -88,7 +82,7 @@ export function resolveTokenArbitrary(
   if (fontProps.has(prop)) return null // font-resolved, dynamic
   const cat = tokenCategoryByKey[prop] ?? 'space'
   if (cat === 'color') return null // theme-resolved, dynamic
-  const scales = tokens ?? getDefaultTokens()
+  const scales = tokens ?? (canonicalDefaultTokens as TokenScales)
   const scale = (scales as any)[cat] as Record<string, any> | undefined
   if (!scale) return null
   // space/size/zIndex store keys WITH `$` (`$4`); radius stores them WITHOUT (`8`); negative

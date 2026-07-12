@@ -253,9 +253,13 @@ $ tamagui migrate --from v1`,
     flags: {
       '--help': Boolean,
       '--write': Boolean,
-      // path to the app's tamagui config so token/media resolution uses the app's ACTUAL
-      // scales (space/size/radius/zIndex) + media keys, not the bundled default fallback.
+      // path to the app's tamagui config so token/media/shorthand resolution uses the app's
+      // ACTUAL scales, not the bundled default fallback.
       '--config': String,
+      // acknowledge use of the bundled default scales (required for --write without --config).
+      '--use-default-config': Boolean,
+      // opt in to DOM renaming (View→div). default: preserve Tamagui components (RN-safe).
+      '--rename-dom': Boolean,
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
@@ -266,6 +270,8 @@ $ tamagui migrate --from v1`,
         patterns,
         write: flags['--write'],
         configPath: flags['--config'],
+        useDefaultConfig: flags['--use-default-config'],
+        renameDom: flags['--rename-dom'],
       })
     },
   },
@@ -402,6 +408,7 @@ async function main() {
     await definition.run()
   } catch (err: any) {
     console.error(`Error running command: ${err.message}`)
+    process.exit(1) // a thrown command error must be a NON-ZERO exit (safety: --write aborts)
   }
 
   process.exit(0)

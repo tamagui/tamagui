@@ -259,8 +259,9 @@ function looksLikeTailwindClass(
   // leading-* is lineHeight (leading-8 token / leading-[1.25] arbitrary)
   if (cls.startsWith('leading-')) return true
 
-  // tracking-* is letterSpacing; shadow-[..] is an arbitrary boxShadow
+  // tracking-* is letterSpacing; shadow-[..] is an arbitrary boxShadow; aspect-* is aspectRatio
   if (cls.startsWith('tracking-') || cls.startsWith('shadow-[')) return true
+  if (cls.startsWith('aspect-')) return true
 
   // negative utility (-m-1, -mt-2, -top-1): the leading minus negates the value
   const core = cls[0] === '-' ? cls.slice(1) : cls
@@ -551,12 +552,15 @@ const tailwindUtilityMap: Record<string, Record<string, any>> = {
   'border-solid': { borderStyle: 'solid' },
   'border-dashed': { borderStyle: 'dashed' },
   'border-dotted': { borderStyle: 'dotted' },
-  'border-none': { borderStyle: 'none', borderWidth: 0 },
+  // borderStyle only — must NOT also set borderWidth:0 (that would diverge from the source
+  // prop borderStyle="none", which the parity gate compares against).
+  'border-none': { borderStyle: 'none' },
   // position
   relative: { position: 'relative' },
   absolute: { position: 'absolute' },
   fixed: { position: 'fixed' },
   sticky: { position: 'sticky' },
+  static: { position: 'static' },
   'inset-0': { top: 0, right: 0, bottom: 0, left: 0 },
   // bare border = 1px
   border: { borderWidth: 1 },
@@ -642,6 +646,25 @@ const tailwindPropPrefixes: Record<string, string> = {
   'max-h': 'maxHeight',
   'translate-x': 'x',
   'translate-y': 'y',
+}
+
+// class prefixes whose prop name differs from the prefix (aspect-[1.5] → aspectRatio).
+const tailwindPropAlias: Record<string, string> = {
+  aspect: 'aspectRatio',
+}
+
+// CANONICAL arbitrary-value coercion. an arbitrary `[..]` whose inner is a UNITLESS number
+// (z-[400], aspect-[1.5], leading-[1.25]) or a PX length (p-[18px], text-[14px], border-[0.5px])
+// resolves to a NUMBER: React Native REQUIRES numbers for dimensional + typography props and
+// silently DROPS "Npx"/"400" strings (Yoga parseCSSProperty<CSSNumber,CSSPercentage> rejects px;
+// StyleSheetTypes types fontSize/lineHeight/letterSpacing as number). web accepts the number and
+// re-adds px via CSS. anything carrying a real unit/function (%, rem, vh, deg, calc(), var(),
+// #hex, colors) stays a STRING.
+function arbitraryValue(inner: string): number | string {
+  const px = /^(-?\d*\.?\d+)px$/.exec(inner)
+  if (px) return Number(px[1])
+  if (/^-?\d*\.?\d+$/.test(inner)) return Number(inner)
+  return inner
 }
 
 // tailwind sizing keywords / fractions for width/height/min/max props.
@@ -730,7 +753,16 @@ function expandBorderClass(
     if (dash === -1) return null
     const props = radiusCornerProps[rest.slice(0, dash)]
     if (!props) return null
-    const value = borderDimValue(rest.slice(dash + 1))
+    const rawVal = rest.slice(dash + 1)
+    const unwrapped =
+      rawVal.length > 1 && rawVal[0] === '[' && rawVal[rawVal.length - 1] === ']'
+        ? rawVal.slice(1, -1).replace(/_/g, ' ')
+        : rawVal
+    // a length/number (22, [22px]) is a raw dimension; a NAMED radius (lg, full, xl) resolves
+    // through the radius token system (rounded-tl-lg → the $lg radius on the top-left corner).
+    const value = /^-?\d*\.?\d+(px)?$/.test(unwrapped)
+      ? borderDimValue(rawVal)
+      : resolveTokenValue(unwrapped, config, props[0])
     const out: Record<string, any> = {}
     for (const p of props) out[p] = value
     return out
@@ -842,6 +874,9 @@ function tailwindClassToFlatProp(
     }
   }
 
+  // prefix→prop aliases (aspect-[1.5] → aspectRatio)
+  if (tailwindPropAlias[prop]) prop = tailwindPropAlias[prop]
+
   // border is overloaded: a LENGTH value is borderWidth, anything else is borderColor.
   // border-2 → 2, border-[0.5px] → 0.5 (fractional/hairline), border-[2px] → 2 all set
   // borderWidth as a NUMBER; border-red-500 / border-[#fff] / border-borderColor → color.
@@ -884,7 +919,8 @@ function tailwindClassToFlatProp(
   if (prop === 'text' && !textAlignKeywords.has(value)) {
     let fsValue: any
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
-      fsValue = value.slice(1, -1).replace(/_/g, ' ')
+      // fontSize is number-only on native: text-[14px] → 14 (arbitraryValue drops px)
+      fsValue = arbitraryValue(value.slice(1, -1).replace(/_/g, ' '))
     } else if (/^\d+$/.test(value)) {
       // text-5 → the $5 font-size token (the converter strips the $ from fontSize="$5")
       fsValue = `$${value}`
@@ -897,13 +933,17 @@ function tailwindClassToFlatProp(
     }
   }
 
-  // leading-* is lineHeight: leading-[1.25] (unitless multiplier), leading-[24px], or
-  // leading-8 (the $8 lineHeight token). tamagui keeps string values verbatim, so the
-  // unitless arbitrary form stays a multiplier rather than being coerced to px.
+  // leading-* is lineHeight: leading-[1.25] (unitless multiplier → NUMBER 1.25),
+  // leading-[24px] (→ NUMBER 24), or leading-8 (the $8 lineHeight token). lineHeight is
+  // number-only on native, so the arbitrary form coerces to a number (unitless stays unitless).
   if (prop === 'leading') {
     let lhValue: any
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
-      lhValue = value.slice(1, -1).replace(/_/g, ' ')
+      const inner = value.slice(1, -1).replace(/_/g, ' ')
+      // px length → NUMBER (native-valid: leading-[20px] → 20). a UNITLESS value is a web
+      // lineHeight MULTIPLIER and MUST stay a string (a number would be px-ified to "1.25px"
+      // on web, breaking the multiplier). RN has no unitless multiplier, so this is web-only.
+      lhValue = /^-?\d*\.?\d+px$/.test(inner) ? Number.parseFloat(inner) : inner
     } else if (value in tailwindLeadingNamed) {
       // named multipliers as strings so they stay unitless (not coerced to px)
       lhValue = tailwindLeadingNamed[value]
@@ -918,11 +958,12 @@ function tailwindClassToFlatProp(
     }
   }
 
-  // tracking-* is letterSpacing: tracking-[-1px] arbitrary, tracking-1 → the $1 token.
+  // tracking-* is letterSpacing (number-only on native): tracking-[0px] → 0, tracking-[-1px] →
+  // -1, tracking-1 → the $1 token.
   if (prop === 'tracking') {
     let lsValue: any
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
-      lsValue = value.slice(1, -1).replace(/_/g, ' ')
+      lsValue = arbitraryValue(value.slice(1, -1).replace(/_/g, ' '))
     } else if (/^\d+$/.test(value)) {
       lsValue = `$${value}`
     } else {
@@ -972,11 +1013,9 @@ function tailwindClassToFlatProp(
       modifiers.length > 0
         ? `$${modifiers.join(':')}:${expandedProp}`
         : `$${expandedProp}`
-    // a UNITLESS numeric arbitrary (z-[400], scale-[0.95], w-[104]) becomes a NUMBER: React
-    // Native requires numbers for zIndex/scale/dimensions and rejects "400"/"0.95" strings;
-    // web accepts the number too. values carrying a unit or function (18px, 100vh, calc(…),
-    // #fff, var(…)) stay strings.
-    return { key, value: /^-?\d*\.?\d+$/.test(inner) ? Number(inner) : inner }
+    // px-length + unitless arbitraries become NUMBERS (native requires numbers, drops "Npx"
+    // strings); unit/function values stay strings. one canonical rule (arbitraryValue).
+    return { key, value: arbitraryValue(inner) }
   }
 
   // tailwind sizing keywords / fractions (w-full → 100%, w-1/2 → 50%, w-auto, w-screen).

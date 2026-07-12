@@ -1072,6 +1072,7 @@
         "@babel/types": "^7.25.4",
         "@tamagui/helpers": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
+        "@tamagui/themes": "workspace:*",
       },
       "devDependencies": {
         "vitest": "4.0.4",
