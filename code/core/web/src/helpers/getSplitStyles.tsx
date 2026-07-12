@@ -320,11 +320,37 @@ function preprocessTailwindClassName(
   return result
 }
 
+// theme value names (color1-12, background, borderColor, shadow*, …) are not tokens but
+// resolve to their theme CSS var (var(--color5)) via the theme lookup props already use.
+// keys are uniform across a config's themes, so compute the set once per config.
+const themeValueKeysCache = new WeakMap<TamaguiInternalConfig, Set<string>>()
+function getThemeValueKeys(config: TamaguiInternalConfig): Set<string> {
+  let set = themeValueKeysCache.get(config)
+  if (!set) {
+    set = new Set<string>()
+    const themes = config.themes as Record<string, any>
+    // union keys across all themes: base themes hold the full palette while sub-themes
+    // may override a subset, and theme iteration order isn't guaranteed.
+    for (const name in themes) {
+      const t = themes[name]
+      if (t && typeof t === 'object' && !Array.isArray(t)) {
+        for (const k in t) set.add(k)
+      }
+    }
+    themeValueKeysCache.set(config, set)
+  }
+  return set
+}
+
 /**
  * Check if a value matches a token name (without $ prefix).
  * Returns the token value prefixed with $ if found, otherwise returns the original value.
  */
-function resolveTokenValue(value: string, config: TamaguiInternalConfig): string {
+function resolveTokenValue(
+  value: string,
+  config: TamaguiInternalConfig,
+  prop?: string
+): string {
   // already a token reference
   if (value.startsWith('$')) return value
 
@@ -337,6 +363,13 @@ function resolveTokenValue(value: string, config: TamaguiInternalConfig): string
         return `$${value}`
       }
     }
+  }
+
+  // theme-value color names (bg-color5, text-color10, border-borderColor) aren't tokens
+  // but resolve to their theme var; prefix so the value routes through the same theme
+  // resolution props use (var(--color5), theme-aware) instead of a dead literal 'color5'.
+  if (prop && prop in tokenCategories.color && getThemeValueKeys(config).has(value)) {
+    return `$${value}`
   }
 
   return value
@@ -618,8 +651,8 @@ function tailwindClassToFlatProp(
       value = tailwindAlignValues[value]
     } else {
       // check if value matches a token name and resolve it
-      // e.g., "blue5" → "$blue5" if $blue5 token exists
-      value = resolveTokenValue(value, config)
+      // e.g., "blue5" → "$blue5" if $blue5 token exists, or a theme color name
+      value = resolveTokenValue(value, config, expanded)
     }
   }
 
