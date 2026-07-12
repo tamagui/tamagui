@@ -305,12 +305,16 @@ function preprocessTailwindClassName(
     if (c0 === 115 /* s */ && cls.startsWith('size-')) {
       if (result.size === undefined) {
         const v = cls.slice(5)
-        result.size =
-          v.charCodeAt(0) === 91 /* [ */ && v.charCodeAt(v.length - 1) === 93 /* ] */
-            ? v.slice(1, -1)
-            : /^\d+$/.test(v)
-              ? `$${v}`
-              : v
+        if (v.charCodeAt(0) === 91 /* [ */ && v.charCodeAt(v.length - 1) === 93 /* ] */) {
+          // arbitrary size-[56px]/size-[56] → a NUMBER: the size variant matches ':number'
+          // (getShapeSize etc.), whereas a "56px" string matches neither ':number' nor a
+          // size token and is silently dropped (shape renders its default size).
+          const inner = v.slice(1, -1)
+          const num = Number.parseFloat(inner)
+          result.size = Number.isNaN(num) ? inner : num
+        } else {
+          result.size = /^\d+$/.test(v) ? `$${v}` : v
+        }
       }
       continue
     }

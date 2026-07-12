@@ -1,6 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { defaultConfig } from '@tamagui/config/v6'
+import { Circle } from '@tamagui/shapes'
 import { View, createTamagui, getConfig, StyleObjectValue } from '../web/src'
 import { preprocessStyleModeProps } from '../web/src/helpers/getSplitStyles'
 import { simplifiedGetSplitStyles, findRule } from './utils'
@@ -33,7 +34,9 @@ describe('styleMode className→prop reconstruction (single pass)', () => {
 
   test('size-N → size="$N", size-[..] arbitrary; animation-<name> → animation', () => {
     expect(pre({ className: 'size-2' }).size).toBe('$2')
-    expect(pre({ className: 'size-[14px]' }).size).toBe('14px')
+    // arbitrary size is a NUMBER so it matches the size variant's ':number' case
+    expect(pre({ className: 'size-[14px]' }).size).toBe(14)
+    expect(pre({ className: 'size-[56]' }).size).toBe(56)
     expect(pre({ className: 'animation-bouncy' }).animation).toBe('bouncy')
     expect(pre({ className: 'animate-quick' }).animation).toBe('quick')
   })
@@ -41,6 +44,13 @@ describe('styleMode className→prop reconstruction (single pass)', () => {
   test('an explicit prop wins over the reconstructed one', () => {
     const out = pre({ className: 'size-2', size: '$8' })
     expect(out.size).toBe('$8')
+  })
+
+  test('arbitrary size-[Npx] sets the dimension on a size-variant component (Circle)', () => {
+    const styles = simplifiedGetSplitStyles(Circle, { className: 'size-[56px]' } as any)
+    const rule = findRule(styles.rulesToInsert, 'width')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toBe('56px')
   })
 
   test('non-styleMode-state classes still resolve as styles after the pass', () => {
