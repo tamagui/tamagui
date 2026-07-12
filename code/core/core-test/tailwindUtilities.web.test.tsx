@@ -68,4 +68,31 @@ describe('styleMode standard utilities', () => {
     const hoverRule = rules.find((r) => r[StyleObjectValue] === '700')
     expect(hoverRule).toBeTruthy()
   })
+
+  // font-* is fontFamily (font weights are separate, tested above)
+  const fontFamilyCases: [string, any][] = [
+    ['font-mono', 'monospace'],
+    ['font-sans', 'sans-serif'],
+    ['font-serif', 'serif'],
+    ['font-[Inter]', 'Inter'],
+  ]
+  for (const [className, value] of fontFamilyCases) {
+    test(`Text ${className} → fontFamily=${value}`, () => {
+      const rule = ruleFor(Text, className, 'fontFamily')
+      expect(rule).toBeTruthy()
+      expect(rule[StyleObjectValue]).toBe(value)
+    })
+  }
+
+  test('font-<tamaguiFamily> resolves to a font-family css var', () => {
+    const rule = ruleFor(Text, 'font-heading', 'fontFamily')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toContain('var(--')
+  })
+
+  test('font-bold still maps to fontWeight, not fontFamily', () => {
+    const rule = ruleFor(Text, 'font-bold', 'fontWeight')
+    expect(rule).toBeTruthy()
+    expect(rule[StyleObjectValue]).toBe('700')
+  })
 })

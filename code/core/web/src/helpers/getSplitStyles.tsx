@@ -252,6 +252,10 @@ function looksLikeTailwindClass(
   // border utilities are overloaded (border-2 width vs border-red-500 color) — recognize them
   if (cls.startsWith('border-')) return true
 
+  // font-* is fontFamily (font-mono/sans/serif or font-<tamaguiFamily>); font weights are
+  // matched earlier via tailwindUtilityMap, so any font-* reaching here is a family.
+  if (cls.startsWith('font-')) return true
+
   // for prop-value patterns like "bg-red", check if the prop is known
   const dashIndex = cls.indexOf('-')
   if (dashIndex === -1) return false
@@ -614,6 +618,27 @@ function tailwindClassToFlatProp(
   // border is overloaded: border-2 → borderWidth (raw px), border-red-500 → borderColor
   if (prop === 'border') {
     prop = /^\d+$/.test(value) ? 'borderWidth' : 'borderColor'
+  }
+
+  // font-* is fontFamily: font-sans/serif/mono → CSS generic; font-[Inter] → arbitrary;
+  // font-<name> → the $<name> font token (resolves via the font system). font weights
+  // (font-bold, …) are handled earlier by tailwindUtilityMap and never reach here.
+  if (prop === 'font') {
+    let famValue: string
+    if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
+      famValue = value.slice(1, -1).replace(/_/g, ' ')
+    } else {
+      const generic: Record<string, string> = {
+        sans: 'sans-serif',
+        serif: 'serif',
+        mono: 'monospace',
+      }
+      famValue = generic[value] || `$${value}`
+    }
+    return {
+      key: modifiers.length > 0 ? `$${modifiers.join(':')}:fontFamily` : `$fontFamily`,
+      value: famValue,
+    }
   }
 
   // $ prefix is invalid in className values - tokens are auto-resolved by name
