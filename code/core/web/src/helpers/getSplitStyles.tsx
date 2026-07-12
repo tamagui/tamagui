@@ -256,11 +256,14 @@ function looksLikeTailwindClass(
   // matched earlier via tailwindUtilityMap, so any font-* reaching here is a family.
   if (cls.startsWith('font-')) return true
 
+  // negative utility (-m-1, -mt-2, -top-1): the leading minus negates the value
+  const core = cls[0] === '-' ? cls.slice(1) : cls
+
   // for prop-value patterns like "bg-red", check if the prop is known
-  const dashIndex = cls.indexOf('-')
+  const dashIndex = core.indexOf('-')
   if (dashIndex === -1) return false
 
-  const prop = cls.slice(0, dashIndex)
+  const prop = core.slice(0, dashIndex)
   // only consider it tailwind if the prop is a known shorthand or style prop
   return !!(shorthands?.[prop] || prop in stylePropsAll)
 }
@@ -593,8 +596,12 @@ function tailwindClassToFlatProp(
 ): { key: string; value: any } | null {
   // split by colon for modifiers
   const parts = cls.split(':')
-  const lastPart = parts.pop()!
+  const rawLast = parts.pop()!
   const modifiers = parts
+
+  // negative utility (-m-1, -mt-2, -top-1): a leading minus negates the resolved value
+  const negate = rawLast.length > 1 && rawLast[0] === '-'
+  const lastPart = negate ? rawLast.slice(1) : rawLast
 
   // parse the prop-value from the last part (e.g., "bg-blue5" → prop: "bg", value: "blue5")
   const dashIndex = lastPart.indexOf('-')
@@ -735,6 +742,12 @@ function tailwindClassToFlatProp(
   // on native), matching the flat-styles "$blue10/50" path exactly.
   if (opacitySuffix && typeof value === 'string') {
     value = `${value}${opacitySuffix}`
+  }
+
+  // negative utility: negate the resolved numeric value (-m-1 → margin -4)
+  if (negate) {
+    if (typeof value === 'number') value = -value
+    else if (typeof value === 'string' && value[0] !== '-') value = `-${value}`
   }
 
   // build the flat prop key - expand shorthands to full prop name
