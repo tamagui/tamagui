@@ -1,17 +1,13 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { defaultConfig } from '@tamagui/config/v6'
-import {
-  View,
-  createTamagui,
-  StyleObjectProperty,
-  StyleObjectValue,
-  StyleObjectPseudo,
-} from '../web/src'
+import { View, createTamagui, StyleObjectValue, StyleObjectPseudo } from '../web/src'
 import { simplifiedGetSplitStyles, findRule } from './utils'
 
-// enter:/exit: colon-modifiers map to enterStyle/exitStyle via the same machinery as
-// hover:/active:. also covers translate-x/translate-y two-segment transforms.
+// two-segment transform utilities (translate-x/translate-y) and their composition with
+// colon-modifiers. note: enter:/exit: classes produce the atomic rule but do NOT drive
+// the mount/unmount animation (that reads the enterStyle/exitStyle prop), so mount
+// animations stay props — see the to-tailwind pseudoMap.
 beforeAll(() => {
   createTamagui({
     ...(defaultConfig as any),
@@ -22,65 +18,33 @@ beforeAll(() => {
   })
 })
 
-function rules(props: any) {
-  const styles = simplifiedGetSplitStyles(View, props)
-  return (Object.values(styles.rulesToInsert || {}) as any[]).map(
-    (r) =>
-      `${r[StyleObjectProperty]}=${JSON.stringify(r[StyleObjectValue])}:${r[StyleObjectPseudo] || ''}`
+function transformRule(className: string) {
+  return findRule(
+    simplifiedGetSplitStyles(View, { className } as any).rulesToInsert,
+    'transform'
   )
 }
 
-describe('styleMode enter/exit modifiers', () => {
-  test('enter:opacity-0 sets opacity under the enter pseudo', () => {
-    const styles = simplifiedGetSplitStyles(View, { className: 'enter:opacity-0' } as any)
-    const list = Object.values(styles.rulesToInsert || {}) as any[]
-    const enterRule = list.find((r) => r[StyleObjectPseudo] === 'enter')
-    expect(enterRule).toBeTruthy()
-    expect(enterRule[StyleObjectProperty]).toBe('opacity')
-    expect(enterRule[StyleObjectValue]).toBe(0)
+describe('styleMode transform utilities', () => {
+  test('translate-y-[10px] → translateY(10px)', () => {
+    expect(transformRule('translate-y-[10px]')[StyleObjectValue]).toBe('translateY(10px)')
   })
 
-  test('enter:opacity-0 class ≡ enterStyle={{opacity:0}} prop', () => {
-    expect(rules({ className: 'enter:opacity-0' })).toEqual(
-      rules({ enterStyle: { opacity: 0 } })
-    )
+  test('translate-x-[4px] → translateX(4px)', () => {
+    expect(transformRule('translate-x-[4px]')[StyleObjectValue]).toBe('translateX(4px)')
   })
 
-  test('exit:opacity-0 class ≡ exitStyle={{opacity:0}} prop', () => {
-    expect(rules({ className: 'exit:opacity-0' })).toEqual(
-      rules({ exitStyle: { opacity: 0 } })
-    )
+  test('negative translate-y-[-2px] resolves', () => {
+    expect(transformRule('translate-y-[-2px]')[StyleObjectValue]).toBe('translateY(-2px)')
   })
 
-  test('enter:scale-[0.95] → transform scale under enter', () => {
+  test('hover:translate-y-[2px] applies under the hover pseudo', () => {
     const list = Object.values(
-      simplifiedGetSplitStyles(View, { className: 'enter:scale-[0.95]' } as any)
+      simplifiedGetSplitStyles(View, { className: 'hover:translate-y-[2px]' } as any)
         .rulesToInsert || {}
     ) as any[]
-    const enterRule = list.find((r) => r[StyleObjectPseudo] === 'enter')
-    expect(enterRule[StyleObjectValue]).toContain('scale(0.95)')
-  })
-
-  test('translate-y-[10px] / translate-x-[4px] resolve to transforms', () => {
-    expect(
-      findRule(
-        simplifiedGetSplitStyles(View, { className: 'translate-y-[10px]' } as any)
-          .rulesToInsert,
-        'transform'
-      )[StyleObjectValue]
-    ).toBe('translateY(10px)')
-    expect(
-      findRule(
-        simplifiedGetSplitStyles(View, { className: 'translate-x-[4px]' } as any)
-          .rulesToInsert,
-        'transform'
-      )[StyleObjectValue]
-    ).toBe('translateX(4px)')
-  })
-
-  test('enter:translate-y-[10px] class ≡ enterStyle={{y:10}} prop', () => {
-    expect(rules({ className: 'enter:translate-y-[10px]' })).toEqual(
-      rules({ enterStyle: { y: 10 } })
-    )
+    const hoverRule = list.find((r) => r[StyleObjectPseudo] === 'hover')
+    expect(hoverRule).toBeTruthy()
+    expect(hoverRule[StyleObjectValue]).toBe('translateY(2px)')
   })
 })

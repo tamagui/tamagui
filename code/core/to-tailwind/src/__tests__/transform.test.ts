@@ -83,20 +83,19 @@ describe('tamaguiToTailwind', () => {
       expect(tamaguiToTailwind(`<View margin="$4" />`)).toContain('m-4')
     })
 
-    test('enterStyle/exitStyle become enter:/exit: colon-modifier classes', () => {
-      const out = tamaguiToTailwind(`<View enterStyle={{ opacity: 0, scale: 0.95 }} />`)
-      expect(out).toContain('enter:opacity-0')
-      expect(out).toContain('enter:scale-[0.95]')
-      expect(tamaguiToTailwind(`<View exitStyle={{ opacity: 0 }} />`)).toContain(
-        'exit:opacity-0'
+    test('enterStyle/exitStyle stay tamagui props (class does not drive the animation)', () => {
+      // the enter:/exit: className path produces the atomic rule but does not animate
+      // (the driver reads the enterStyle/exitStyle prop), so the codemod leaves them props
+      expect(tamaguiToTailwind(`<View enterStyle={{ opacity: 0 }} />`)).toContain(
+        'enterStyle='
       )
     })
 
     test('negative values in a style object are not dropped', () => {
       // regression: y: -10 is a UnaryExpression and used to be silently skipped
-      const out = tamaguiToTailwind(`<View exitStyle={{ opacity: 0, y: -10 }} />`)
-      expect(out).toContain('exit:opacity-0')
-      expect(out).toContain('exit:translate-y-[-10px]')
+      const out = tamaguiToTailwind(`<View hoverStyle={{ opacity: 0.5, y: -2 }} />`)
+      expect(out).toContain('hover:opacity-50')
+      expect(out).toContain('hover:translate-y-[-2px]')
     })
 
     test('percentage width', () => {

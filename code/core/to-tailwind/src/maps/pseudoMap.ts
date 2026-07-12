@@ -9,10 +9,12 @@ export const pseudoToModifier: Record<string, string> = {
   focusVisibleStyle: 'focus-visible',
   focusWithinStyle: 'focus-within',
   disabledStyle: 'disabled',
-  // tamagui-own mount/unmount animation states — styleMode maps enter:/exit: colon
-  // modifiers to enterStyle/exitStyle via the same machinery as hover:/active:.
-  enterStyle: 'enter',
-  exitStyle: 'exit',
+  // mount/unmount animation states stay tamagui props: the enter:/exit: className path
+  // produces the atomic enter/exit rule but does NOT wire into the animation driver's
+  // AnimatePresence handling (which reads the enterStyle/exitStyle prop), so a class
+  // won't actually animate. left as props (runtime-proven residue).
+  enterStyle: '',
+  exitStyle: '',
 }
 
 // tamagui media key → tailwind breakpoint modifier
