@@ -213,7 +213,16 @@ function propValueToClass(
 
   // an empty tailwindValue means the bare prefix IS the class (e.g. tailwind's
   // `border` = 1px), so don't emit a dangling `border-`
-  const cls = tailwindValue === '' ? prefix : `${prefix}-${tailwindValue}`
+  let cls: string
+  if (tailwindValue === '') {
+    cls = prefix
+  } else if (tailwindValue[0] === '-' && tailwindValue[1] !== '[') {
+    // negative space token ($-1 → "-1") → tailwind negative utility (-m-1), not `m--1`.
+    // bracketed negatives (`[-4px]`) keep the minus inside the brackets.
+    cls = `-${prefix}-${tailwindValue.slice(1)}`
+  } else {
+    cls = `${prefix}-${tailwindValue}`
+  }
   return modifier ? `${modifier}:${cls}` : cls
 }
 

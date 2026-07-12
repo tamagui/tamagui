@@ -74,6 +74,15 @@ describe('tamaguiToTailwind', () => {
       expect(tamaguiToTailwind(`<View backgroundColor="$blue5" />`)).toContain('bg-blue5')
     })
 
+    test('negative space token emits a negative utility, not `m--1`', () => {
+      expect(tamaguiToTailwind(`<View margin="$-1" />`)).toContain('-m-1')
+      expect(tamaguiToTailwind(`<View marginTop="$-2" />`)).toContain('-mt-2')
+      expect(tamaguiToTailwind(`<View margin="$-1" />`)).not.toMatch(/m--1/)
+      // numeric negatives still bracket (mt-[-4px]); positive tokens unchanged
+      expect(tamaguiToTailwind(`<View marginTop={-4} />`)).toContain('mt-[-4px]')
+      expect(tamaguiToTailwind(`<View margin="$4" />`)).toContain('m-4')
+    })
+
     test('percentage width', () => {
       const input = `<View width="50%" />`
       const output = tamaguiToTailwind(input)
