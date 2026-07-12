@@ -87,7 +87,8 @@ export function Card() {
     expect(transformed).toContain(
       'className="flex flex-col p-[10px] bg-background gap-[4px]"'
     )
-    expect(transformed).toContain('className="text-color font-bold"')
+    // text color uses the `color-*` utility (v6 `text` is textAlign)
+    expect(transformed).toContain('className="color-color font-bold"')
     expect(transformed).not.toContain('<YStack')
   })
 })
