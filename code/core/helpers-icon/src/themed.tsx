@@ -1,4 +1,5 @@
 import {
+  getConfig,
   getTokenValue,
   getVariable,
   isWeb,
@@ -22,6 +23,45 @@ type Options = {
   resolveValues?: ResolveVariableAs
 }
 
+// styleMode: an icon's color/size can arrive as tailwind classes (color-color5, size-6)
+// because the converter turns the color/size PROPS into classes. icons aren't
+// createComponent components, so the styleMode className→prop pass never runs on them —
+// reconstruct color/size here from the icon's own className. cheap early-outs first: a
+// normal icon (no className) or a non-styleMode app pays zero cost.
+export function reconstructIconStyleModeProps(props: IconProps, theme: any): IconProps {
+  const cn = (props as any).className
+  if (typeof cn !== 'string' || cn === '') return props
+  const styleMode = getConfig().settings?.styleMode
+  if (styleMode !== 'tailwind' && styleMode !== 'tamagui-and-tailwind') return props
+  if (!cn.includes('color-') && !cn.includes('size-')) return props
+
+  let color: any
+  let size: any
+  const rest: string[] = []
+  for (const cls of cn.split(/\s+/)) {
+    if (!cls) continue
+    if (cls.startsWith('color-')) {
+      // color-color5 → the $color5 theme token; color-red → raw "red"
+      const n = cls.slice(6)
+      color = theme?.[`$${n}`] != null || theme?.[n] != null ? `$${n}` : n
+      continue
+    }
+    if (cls.startsWith('size-')) {
+      const v = cls.slice(5)
+      size = /^\d+$/.test(v) ? `$${v}` : v[0] === '[' ? v.slice(1, -1) : v
+      continue
+    }
+    rest.push(cls)
+  }
+  if (color === undefined && size === undefined) return props
+
+  const next: any = { ...props }
+  if (color !== undefined && (props as any).color === undefined) next.color = color
+  if (size !== undefined && (props as any).size === undefined) next.size = size
+  next.className = rest.length ? rest.join(' ') : undefined
+  return next
+}
+
 export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
   const opts: Options = {
     defaultThemeColor: process.env.DEFAULT_ICON_THEME_COLOR || '$color',
@@ -31,9 +71,12 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
     ...optsIn,
   }
 
-  const IconWrapper = (propsIn: IconProps) => {
+  const IconWrapper = (propsInRaw: IconProps) => {
     const styledContext = SizableContext.useStyledContext()
     const theme = useTheme()
+
+    // styleMode: reconstruct color/size from the icon's className (cheap no-op otherwise)
+    const propsIn = reconstructIconStyleModeProps(propsInRaw, theme)
 
     const {
       size: sizeProp,
