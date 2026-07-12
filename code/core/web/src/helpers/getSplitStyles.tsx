@@ -635,6 +635,19 @@ function tailwindClassToFlatProp(
 
   const expandedProp = isShorthand ? shorthands[prop] : prop
 
+  // arbitrary values: p-[4px], w-[100px], rounded-[8px], min-h-[100vh], rotate-[-8deg],
+  // h-[calc(100%-2px)], bg-[var(--color5)], bg-[#fff]. use the bracketed value directly as
+  // CSS — no scaling/token resolution. tailwind encodes spaces inside [] as underscores.
+  if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
+    const inner = value.slice(1, -1).replace(/_/g, ' ')
+    if (inner === '') return null
+    const key =
+      modifiers.length > 0
+        ? `$${modifiers.join(':')}:${expandedProp}`
+        : `$${expandedProp}`
+    return { key, value: inner }
+  }
+
   // tailwind sizing keywords / fractions (w-full → 100%, w-1/2 → 50%, w-auto, w-screen).
   // handled before isValidTailwindValue since fractions/keywords aren't plain CSS values.
   if (tokenCategories.size[expandedProp]) {
