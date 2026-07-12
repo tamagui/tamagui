@@ -40,7 +40,9 @@ describe('tamaguiToTailwind', () => {
     })
 
     test('borderWidth 1 emits bare `border`, not `border-`', () => {
-      const output = tamaguiToTailwind(`<View borderWidth={1} borderColor="$borderColor" />`)
+      const output = tamaguiToTailwind(
+        `<View borderWidth={1} borderColor="$borderColor" />`
+      )
       expect(output).toContain('border border-borderColor')
       // regression: the 1px default must not leave a dangling `border-`
       expect(output).not.toMatch(/border-(?=\s|")/)
@@ -56,9 +58,7 @@ describe('tamaguiToTailwind', () => {
       expect(tamaguiToTailwind(`<Text color="$color8" />`)).toContain('color-color8')
       expect(tamaguiToTailwind(`<Text color="red" />`)).toContain('color-red')
       // must not emit the text-* form for color, which would set textAlign
-      expect(tamaguiToTailwind(`<Text color="$color8" />`)).not.toMatch(
-        /text-color8/
-      )
+      expect(tamaguiToTailwind(`<Text color="$color8" />`)).not.toMatch(/text-color8/)
     })
 
     test('unit-bearing and negative string values become arbitrary [..] classes', () => {

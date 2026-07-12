@@ -60,9 +60,13 @@ describe('styleMode arbitrary values', () => {
     const rule = ruleFor('hover:w-[42px]', 'width')
     // hover rule stores width under the hover pseudo
     const theme = (getConfig() as any).themes.light
-    const styles = simplifiedGetSplitStyles(View, { className: 'hover:w-[42px]' } as any, {
-      theme,
-    })
+    const styles = simplifiedGetSplitStyles(
+      View,
+      { className: 'hover:w-[42px]' } as any,
+      {
+        theme,
+      }
+    )
     const rules = Object.values(styles.rulesToInsert || {}) as any[]
     expect(rules.some((r) => r[StyleObjectValue] === '42px')).toBe(true)
   })
