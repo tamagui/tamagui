@@ -253,6 +253,9 @@ $ tamagui migrate --from v1`,
     flags: {
       '--help': Boolean,
       '--write': Boolean,
+      // path to the app's tamagui config so token/media resolution uses the app's ACTUAL
+      // scales (space/size/radius/zIndex) + media keys, not the bundled default fallback.
+      '--config': String,
     },
     async run() {
       const { _, ...flags } = arg(this.flags)
@@ -262,6 +265,7 @@ $ tamagui migrate --from v1`,
       await toTailwind({
         patterns,
         write: flags['--write'],
+        configPath: flags['--config'],
       })
     },
   },

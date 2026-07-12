@@ -16,41 +16,41 @@ export const pseudoToModifier: Record<string, string> = {
   exitStyle: 'exit',
 }
 
-// tamagui media key → tailwind class modifier.
+// media keys pass through as IDENTITY tailwind modifiers ($md → `md:`).
 //
-// IDENTITY MAP. the styleMode runtime resolves a class modifier by looking the string up
-// DIRECTLY in `config.media` (getSplitStyles → parseFlatModifierProp: `mod in config.media`).
-// so the ONLY round-trip-correct modifier for a source `$key` prop is `key` itself — emitting
-// a different name (the old `md → max-md`) resolves to a DIFFERENT breakpoint (or, when that
+// the styleMode runtime resolves a class modifier by looking the string up DIRECTLY in
+// `config.media` (getSplitStyles → parseFlatModifierProp: `mod in config.media`). so the ONLY
+// round-trip-correct modifier for a source `$key` media prop is `key` itself — emitting a
+// different name (the old `md → max-md`) resolves to a DIFFERENT breakpoint (or, when that
 // name isn't a config key, is dropped entirely), which INVERTED responsive show/hide.
 //
-// this is also idiomatic Tailwind for the v5/v6 config the app template uses, where the
-// media keys are already Tailwind-named: `md` = { minWidth: 768 } (Tailwind `md:`) and
-// `max-md` = { maxWidth: 768 } (Tailwind `max-md:`). identity preserves both directions.
-export const mediaToModifier: Record<string, string> = {
+// because the converter is a GENERAL tool, the authoritative media-key set is the ACTUAL
+// app config's `media` (passed via TransformOptions.media) — ANY configured key round-trips,
+// including custom ones ($tablet → `tablet:`) and default max-*/height-*/touchable/hoverable.
+// this list is only the FALLBACK set used when no config media is supplied: the common
+// identifier-safe default v5/v6 + legacy config-default keys. hyphenated keys (max-md,
+// max-height-lg) can't be written as a JSX `$prop`, so they only matter via the config set.
+export const defaultMediaKeys: string[] = [
   // min-width (mobile-first) — v5/v6 primary breakpoints, Tailwind-aligned
-  xxxs: 'xxxs',
-  xxs: 'xxs',
-  xs: 'xs',
-  sm: 'sm',
-  md: 'md',
-  lg: 'lg',
-  xl: 'xl',
-  xxl: 'xxl',
-
-  // max-width (desktop-first) — v5/v6 `max-*` keys
-  'max-xxs': 'max-xxs',
-  'max-xs': 'max-xs',
-  'max-sm': 'max-sm',
-  'max-md': 'max-md',
-  'max-lg': 'max-lg',
-  'max-xl': 'max-xl',
-  'max-xxl': 'max-xxl',
-
-  // gt* (min-width) — legacy config-default naming; identity so it resolves there too
-  gtXs: 'gtXs',
-  gtSm: 'gtSm',
-  gtMd: 'gtMd',
-  gtLg: 'gtLg',
-  gtXl: 'gtXl',
-}
+  'xxxs',
+  'xxs',
+  'xs',
+  'sm',
+  'md',
+  'lg',
+  'xl',
+  'xxl',
+  // gt* (min-width) — legacy config-default naming
+  'gtXs',
+  'gtSm',
+  'gtMd',
+  'gtLg',
+  'gtXl',
+  // non-width default media
+  'short',
+  'tall',
+  'hoverNone',
+  'pointerCoarse',
+  'touchable',
+  'hoverable',
+]

@@ -7,8 +7,8 @@ import {
   standaloneValueProps,
   componentToTag,
 } from './maps/propToClass'
-import { pseudoToModifier, mediaToModifier } from './maps/pseudoMap'
-import { resolveTokenPx } from './maps/tokenScale'
+import { pseudoToModifier, defaultMediaKeys } from './maps/pseudoMap'
+import { resolveTokenArbitrary, type TokenScales } from './maps/tokenScale'
 
 const traverse = (_traverse as any).default ?? _traverse
 const generate = (_generate as any).default ?? _generate
@@ -16,7 +16,20 @@ const generate = (_generate as any).default ?? _generate
 export interface TransformOptions {
   // rename View→div, Text→span, etc.
   renameComponents?: boolean
+  // the app config's numeric token scales ({ space, size, radius, zIndex }) for EXACT $N → px
+  // resolution. the converter is a general tool, so pass the ACTUAL app config's tokens (an
+  // app may set space.$4 = 20); when omitted, the bundled default v5 scales are the fallback.
+  tokens?: TokenScales
+  // the app config's `media` (object or key list). ANY configured media key round-trips as an
+  // identity modifier ($tablet → `tablet:`). when omitted, a default identifier-safe key set
+  // is the fallback.
+  media?: Record<string, any> | string[]
 }
+
+// active config threaded through the (synchronous, non-reentrant) transform. set at the top
+// of tamaguiToTailwind so the value/media helpers can resolve against the app's real config.
+let activeTokens: TokenScales | undefined
+let activeMediaKeys: Set<string> = new Set(defaultMediaKeys)
 
 /**
  * converts tamagui JSX source code to tailwind className syntax.
@@ -29,6 +42,12 @@ export function tamaguiToTailwind(
   options: TransformOptions = {}
 ): string {
   const { renameComponents = true } = options
+
+  // thread the app config for exact token resolution + general media pass-through
+  activeTokens = options.tokens
+  activeMediaKeys = options.media
+    ? new Set(Array.isArray(options.media) ? options.media : Object.keys(options.media))
+    : new Set(defaultMediaKeys)
 
   let ast: t.File
   try {
@@ -93,18 +112,18 @@ export function tamaguiToTailwind(
           continue
         }
 
-        // check media query props ($sm, $md, etc.)
+        // check media query props ($sm, $md, $tablet, …). the modifier is the media key
+        // VERBATIM (identity) — the runtime resolves it by direct config.media lookup.
         if (name[0] === '$') {
           const mediaKey = name.slice(1)
-          if (mediaKey in mediaToModifier) {
-            const modifier = mediaToModifier[mediaKey]
-            const innerClasses = extractPseudoClasses(attr, modifier)
+          if (activeMediaKeys.has(mediaKey)) {
+            const innerClasses = extractPseudoClasses(attr, mediaKey)
             if (innerClasses) {
               classes.push(...innerClasses)
               continue
             }
           }
-          // unknown $ prop, keep as-is
+          // unknown $ prop (platform/theme/group, or a media key not in this config), keep as-is
           keptAttrs.push(attr)
           continue
         }
@@ -375,13 +394,14 @@ function resolveShorthand(name: string): string {
 }
 
 function formatStringValue(prop: string, value: string): string {
-  // token reference: resolve spacing/sizing/radius tokens to their EXACT pixel value and
-  // emit an arbitrary [Npx] class (tamagui's token scale ≠ Tailwind's ×4 scale, so `$4` →
-  // `p-4` would change the pixel value — see maps/tokenScale.ts). color/other tokens have
-  // no pixel value and fall through to stripping the `$` (resolved by name at runtime).
+  // token reference: resolve spacing/sizing/radius/zIndex tokens to their EXACT value and emit
+  // an arbitrary class (`[18px]`, `[400]`) using the app config's scales (tamagui's token scale
+  // ≠ Tailwind's ×4 scale, so `$4` → `p-4`/`z-4` would change the value — see tokenScale.ts).
+  // color/font tokens have no static value and fall through to stripping the `$` (resolved by
+  // name at runtime through the theme/font systems).
   if (value.startsWith('$')) {
-    const px = resolveTokenPx(prop, value)
-    if (px != null) return `[${px}px]`
+    const arb = resolveTokenArbitrary(prop, value, activeTokens)
+    if (arb != null) return `[${arb}]`
     return value.slice(1)
   }
 

@@ -79,6 +79,14 @@ function classStyle(cls: string): Record<string, any> {
   return styleOf({ className: cls })
 }
 
+// the flat style props the parser reconstructs from a className, BEFORE the platform
+// pipeline. this is where borderWidth-vs-borderColor and the numeric type are decided, and
+// it is IDENTICAL on web and native (the web CSS layer later re-stringifies a number to
+// "Npx", the native layer keeps the number — so typeof must be asserted here, not on .style).
+function flat(cls: string): Record<string, any> {
+  return preprocessStyleModeProps({ className: cls } as any, CFG)
+}
+
 // numeric pixel value regardless of number vs "Npx" string representation
 function px(v: any): number {
   return typeof v === 'number' ? v : Number.parseFloat(v)
@@ -157,46 +165,97 @@ describe('PASS 1 — 1b: token pixel-fidelity', () => {
 })
 
 describe('PASS 1 — 1c: fractional border width', () => {
-  test('borderWidth={0.5} → border-[0.5px] sets a WIDTH of 0.5, never a borderColor', () => {
+  test('borderWidth={0.5} → border-[0.5px] sets a NUMERIC borderWidth 0.5, never a color', () => {
     const cls = convertedClassName(`<View borderWidth={0.5} />`)
     expect(cls).toContain('border-[0.5px]')
-    const s = classStyle(cls)
-    expect(px(s.borderTopWidth)).toBe(0.5)
-    expect(px(s.borderBottomWidth)).toBe(0.5)
-    // the width must NOT have been written into a color prop
-    expect(s.borderColor).toBeUndefined()
-    expect(s.borderRightColor).not.toBe('0.5px')
+    const f = flat(cls)
+    expect(f.borderWidth).toBe(0.5)
+    expect(typeof f.borderWidth).toBe('number') // RN rejects "0.5px" strings for borderWidth
+    expect(f.borderColor).toBeUndefined() // absence of the opposite property
+    // resolved runtime style is 0.5 too (px() tolerates the web CSS "0.5px" representation)
+    expect(px(classStyle(cls).borderTopWidth)).toBe(0.5)
   })
 })
 
 describe('PASS 2 — directional borders + corner radius', () => {
-  test('border-r (bare) sets borderRightWidth 1', () => {
-    expect(px(classStyle('border-r').borderRightWidth)).toBe(1)
+  // value + typeof + ABSENCE-OF-OPPOSITE at the parser level (platform-agnostic)
+  test('border (bare) → borderWidth 1 (number), no borderColor', () => {
+    const f = flat('border')
+    expect(f.borderWidth).toBe(1)
+    expect(typeof f.borderWidth).toBe('number')
+    expect(f.borderColor).toBeUndefined()
   })
 
-  test('borderRightColor="$color2" → border-r-color2 resolves to the theme var, identical to the source prop', () => {
-    const cls = convertedClassName(`<View borderRightColor="$color2" />`)
-    const fromClass = classStyle(cls).borderRightColor
-    const fromProp = styleOf({ borderRightColor: '$color2' }).borderRightColor
-    expect(fromClass).toBe('var(--color2)')
-    expect(fromClass).toBe(fromProp)
+  test('border-r (bare) → borderRightWidth 1 (number), no borderRightColor', () => {
+    const f = flat('border-r')
+    expect(f.borderRightWidth).toBe(1)
+    expect(typeof f.borderRightWidth).toBe('number')
+    expect(f.borderRightColor).toBeUndefined()
   })
 
-  test('directional fractional width: borderBottomWidth={0.5} → 0.5 on the bottom edge', () => {
+  test('border-b-[0.5px] → borderBottomWidth 0.5 (number), no borderBottomColor', () => {
     const cls = convertedClassName(`<View borderBottomWidth={0.5} />`)
-    expect(px(classStyle(cls).borderBottomWidth)).toBe(0.5)
+    expect(cls).toContain('border-b-[0.5px]')
+    const f = flat(cls)
+    expect(f.borderBottomWidth).toBe(0.5)
+    expect(typeof f.borderBottomWidth).toBe('number')
+    expect(f.borderBottomColor).toBeUndefined()
   })
 
-  test('borderLeftWidth={3} → left width 3', () => {
+  test('border-r-color2 → borderRightColor resolved (string), no borderRightWidth', () => {
+    const cls = convertedClassName(`<View borderRightColor="$color2" />`)
+    const f = flat(cls)
+    expect(typeof f.borderRightColor).toBe('string')
+    expect(f.borderRightColor).not.toBe('color2') // resolved token ref, not the literal name
+    expect(String(f.borderRightColor)).toContain('color2')
+    expect(f.borderRightWidth).toBeUndefined()
+    // and it resolves to the same theme var as the source prop through the full pipeline
+    expect(classStyle(cls).borderRightColor).toBe('var(--color2)')
+    expect(classStyle(cls).borderRightColor).toBe(
+      styleOf({ borderRightColor: '$color2' }).borderRightColor
+    )
+  })
+
+  test('borderLeftWidth={3} → border-l-3 → left width 3 (number)', () => {
     const cls = convertedClassName(`<View borderLeftWidth={3} />`)
-    expect(px(classStyle(cls).borderLeftWidth)).toBe(3)
+    const f = flat(cls)
+    expect(f.borderLeftWidth).toBe(3)
+    expect(typeof f.borderLeftWidth).toBe('number')
+    expect(f.borderLeftColor).toBeUndefined()
   })
 
-  test('corner radius borderTopLeftRadius="$8" → 22px on the top-left corner only', () => {
+  test('corner radius borderTopLeftRadius="$8" → 22 on the top-left corner only', () => {
     const cls = convertedClassName(`<View borderTopLeftRadius="$8" />`)
-    const s = classStyle(cls)
-    expect(px(s.borderTopLeftRadius)).toBe(22)
-    expect(s.borderBottomRightRadius).toBeUndefined()
+    const f = flat(cls)
+    expect(f.borderTopLeftRadius).toBe(22)
+    expect(typeof f.borderTopLeftRadius).toBe('number')
+    expect(f.borderBottomRightRadius).toBeUndefined()
+  })
+})
+
+describe('token category system — zIndex sentinel (default config)', () => {
+  test('zIndex="$4" → z-[400] → runtime zIndex 400 (number, unitless), not raw 4', () => {
+    const cls = convertedClassName(`<View zIndex="$4" />`)
+    expect(cls).toContain('z-[400]')
+    const f = flat(cls)
+    expect(f.zIndex).toBe(400)
+    expect(typeof f.zIndex).toBe('number') // RN requires a numeric zIndex
+    // old strip-$ output (z-4) would have been the raw value 4, not the token's 400
+    expect(flat('z-4').zIndex).toBe(4)
+  })
+})
+
+describe('nested modifier expansion — md:hover:border-x', () => {
+  test('border-x-[0.5px] under md:hover: sets BOTH side widths (numbers), no colors', () => {
+    const f = flat('md:hover:border-x-[0.5px]')
+    const inner = f.$md?.hoverStyle
+    expect(inner).toBeTruthy()
+    expect(inner.borderLeftWidth).toBe(0.5)
+    expect(typeof inner.borderLeftWidth).toBe('number')
+    expect(inner.borderRightWidth).toBe(0.5)
+    expect(typeof inner.borderRightWidth).toBe('number')
+    expect(inner.borderLeftColor).toBeUndefined()
+    expect(inner.borderRightColor).toBeUndefined()
   })
 })
 

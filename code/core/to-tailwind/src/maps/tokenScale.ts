@@ -1,84 +1,71 @@
 /**
- * exact token → pixel resolution for pixel-fidelity conversion.
+ * exact token → value resolution for pixel-fidelity conversion.
  *
- * WHY: tamagui's space/size/radius scales are NOT Tailwind's ×4 scale. e.g. the v5/v6
- * space token `$4` = 18px (not 16), `$5` = 24px (not 20), `$6` = 32px (not 24); radius
- * `$8` = 22px (not 8). so converting `p="$4"` → `p-4` (which the runtime parses on the
- * Tailwind ×4 scale → 16px) CHANGES the pixel value. that silent drift is what the audit
- * caught: token → class was not pixel-equal to the source prop.
+ * WHY: tamagui's token scales are NOT Tailwind's ×4 scale. e.g. the default v5/v6 space token
+ * `$4` = 18px (not 16), radius `$8` = 22px (not 8), zIndex `$4` = 400 (not 4). so converting
+ * `p="$4"` → `p-4` (which the runtime parses on the Tailwind ×4 scale → 16px) CHANGES the
+ * value. that silent drift is what the audit caught: token → class was not equal to the source
+ * prop.
  *
- * FIX: resolve a `$N` token on a spacing/sizing/radius prop to its exact pixel value at
- * convert time and emit an arbitrary `[Npx]` class. the runtime parser passes arbitrary
- * `[Npx]` through verbatim (no scaling), so the converted value is pixel-identical to the
- * source prop. color tokens ($color5, $shadow6) stay token NAMES — they're theme-dependent
- * and resolve through the theme var system at runtime, so they must not be baked to px here.
+ * FIX: resolve a `$N` token to its exact value at convert time and emit an arbitrary class
+ * (`p-[18px]`, `z-[400]`). the runtime parser passes arbitrary values through verbatim (no
+ * scaling), so the converted value is identical to the source prop.
  *
- * the token values come from `@tamagui/themes/v5`, which is the token set the app template's
- * `@tamagui/config/v5` (and v6, which layers the Tailwind palette/radii on the same v5
- * space/size) uses. the converter is app-template tooling; if a config swaps token scales,
- * this map is the single place to point at the new tokens.
+ * CATEGORY RULE — MIRRORS THE RUNTIME (getTokenForKey). the runtime picks a token category
+ * from `tokenCategories` (radius / size / zIndex / color) via a flat prop→category map, with
+ * SPACE as the fallback for every other prop. we key off the SAME map so a tokenized
+ * borderWidth falls through to SPACE (like the runtime), zIndex uses the zIndex scale, etc.
+ * COLORS and FONTS are theme/font-dependent (resolved dynamically at runtime through the theme
+ * and font systems) and must NOT be baked to a px value here — they stay token NAMES.
+ *
+ * CONFIG-AWARE: the converter is a GENERAL tool run on arbitrary apps, so the scale values MUST
+ * come from the app's ACTUAL config (an app may set space.$4 = 20, zIndex.$4 = 40). the caller
+ * passes the config token scales; the bundled `@tamagui/themes/v5` values are used ONLY as an
+ * explicit fallback when no config tokens are supplied.
  */
 
-// lazily required so the transform stays usable if the themes package can't be resolved
-// (mirrors the shorthands lazy-require in transform.ts).
-let tokensCache: { space?: any; size?: any; radius?: any } | null = null
-function getTokens() {
-  if (tokensCache) return tokensCache
+import { tokenCategories } from '@tamagui/helpers'
+
+// { space?, size?, radius?, zIndex? } — the numeric token scales from the app config.
+export interface TokenScales {
+  space?: Record<string, any>
+  size?: Record<string, any>
+  radius?: Record<string, any>
+  zIndex?: Record<string, any>
+}
+
+// flat prop → category map, exactly the runtime's (getTokenForKey builds the same from
+// tokenCategories). categories present: radius, size, zIndex, color. everything NOT here
+// falls through to 'space' (padding/margin/gap/inset/borderWidth/...).
+const tokenCategoryByKey: Record<string, string> = {}
+for (const cat in tokenCategories) {
+  for (const k in (tokenCategories as any)[cat]) tokenCategoryByKey[k] = cat
+}
+
+// font props resolve through the font system at runtime (fontSize→text-*, leading, tracking),
+// not the px scale — keep them token NAMES so the runtime font resolution applies.
+const fontProps = new Set([
+  'fontFamily',
+  'fontSize',
+  'lineHeight',
+  'letterSpacing',
+  'fontWeight',
+])
+
+// bundled default scales (used ONLY as an explicit fallback when the caller passes no tokens).
+// lazily required so the transform stays usable if the themes package can't be resolved.
+let defaultTokensCache: TokenScales | null = null
+function getDefaultTokens(): TokenScales {
+  if (defaultTokensCache) return defaultTokensCache
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { tokens } = require('@tamagui/themes/v5')
-    tokensCache = tokens ?? {}
+    defaultTokensCache = tokens ?? {}
   } catch {
-    tokensCache = {}
+    defaultTokensCache = {}
   }
-  return tokensCache!
+  return defaultTokensCache!
 }
-
-// props resolved against the SPACE scale (padding/margin/gap/position)
-const spaceScaleProps = new Set([
-  'padding',
-  'paddingTop',
-  'paddingRight',
-  'paddingBottom',
-  'paddingLeft',
-  'paddingHorizontal',
-  'paddingVertical',
-  'margin',
-  'marginTop',
-  'marginRight',
-  'marginBottom',
-  'marginLeft',
-  'marginHorizontal',
-  'marginVertical',
-  'gap',
-  'rowGap',
-  'columnGap',
-  'top',
-  'right',
-  'bottom',
-  'left',
-  'inset',
-])
-
-// props resolved against the SIZE scale (width/height)
-const sizeScaleProps = new Set([
-  'width',
-  'height',
-  'minWidth',
-  'maxWidth',
-  'minHeight',
-  'maxHeight',
-  'flexBasis',
-])
-
-// props resolved against the RADIUS scale
-const radiusScaleProps = new Set([
-  'borderRadius',
-  'borderTopLeftRadius',
-  'borderTopRightRadius',
-  'borderBottomLeftRadius',
-  'borderBottomRightRadius',
-])
 
 function readVal(v: any): number | null {
   if (typeof v === 'number') return v
@@ -87,21 +74,28 @@ function readVal(v: any): number | null {
 }
 
 /**
- * resolve a `$N` tamagui token to its exact pixel value for `prop`'s token category.
- * returns null when the prop isn't a spacing/sizing/radius prop, or the token isn't found
- * (caller then falls back to stripping `$` — correct for color tokens etc).
+ * resolve a `$N` tamagui token to the INNER value of an arbitrary class ("18px", "400"),
+ * using the caller-supplied token scales (falling back to the bundled default). returns null
+ * when the prop is a color/font (stays a token name, resolved dynamically), or the token isn't
+ * found (caller then strips `$`). the unit follows the category: dimensional categories
+ * (space/size/radius) are px; zIndex is unitless.
  */
-export function resolveTokenPx(prop: string, token: string): number | null {
-  const tokens = getTokens()
-  let cat: Record<string, any> | undefined
-  if (spaceScaleProps.has(prop)) cat = tokens.space
-  else if (sizeScaleProps.has(prop)) cat = tokens.size
-  else if (radiusScaleProps.has(prop)) cat = tokens.radius
-  else return null
-  if (!cat) return null
-  // space/size store keys WITH the `$` (`$4`); radius stores them WITHOUT (`8`); negative
+export function resolveTokenArbitrary(
+  prop: string,
+  token: string,
+  tokens?: TokenScales
+): string | null {
+  if (fontProps.has(prop)) return null // font-resolved, dynamic
+  const cat = tokenCategoryByKey[prop] ?? 'space'
+  if (cat === 'color') return null // theme-resolved, dynamic
+  const scales = tokens ?? getDefaultTokens()
+  const scale = (scales as any)[cat] as Record<string, any> | undefined
+  if (!scale) return null
+  // space/size/zIndex store keys WITH `$` (`$4`); radius stores them WITHOUT (`8`); negative
   // space tokens store WITHOUT (`-4`). try the raw token then the `$`-stripped form.
-  let v = cat[token]
-  if (v == null) v = cat[token.slice(1)]
-  return readVal(v)
+  let v = scale[token]
+  if (v == null) v = scale[token.slice(1)]
+  const n = readVal(v)
+  if (n == null) return null
+  return cat === 'zIndex' ? String(n) : `${n}px`
 }

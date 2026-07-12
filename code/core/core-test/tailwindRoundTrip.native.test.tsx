@@ -61,6 +61,12 @@ function styleOf(props: Record<string, any>): Record<string, any> {
 const classStyle = (cls: string) => styleOf({ className: cls })
 const px = (v: any) => (typeof v === 'number' ? v : Number.parseFloat(v))
 
+// flat style props the parser reconstructs from a className, before the platform pipeline —
+// where borderWidth-vs-color and the numeric type are decided (identical on web and native).
+function flat(cls: string): Record<string, any> {
+  return preprocessStyleModeProps({ className: cls } as any, CFG)
+}
+
 describe('native — 1a: responsive media direction', () => {
   test('converted class reconstructs the same $md media prop as the source (md = minWidth 768)', () => {
     expect(CFG.media.md).toEqual({ minWidth: 768 })
@@ -93,37 +99,95 @@ describe('native — 1b: token pixel-fidelity', () => {
 })
 
 describe('native — 1c: fractional border width', () => {
-  test('borderWidth={0.5} sets a NUMBER width of 0.5 on every side, never a color', () => {
-    const s = classStyle(convertedClassName(`<View borderWidth={0.5} />`))
-    expect(s.borderTopWidth).toBe(0.5)
-    expect(s.borderBottomWidth).toBe(0.5)
-    expect(s.borderColor).toBeUndefined()
+  test('borderWidth={0.5} → NUMERIC borderWidth 0.5, never a color (RN rejects "0.5px")', () => {
+    const cls = convertedClassName(`<View borderWidth={0.5} />`)
+    const f = flat(cls)
+    expect(f.borderWidth).toBe(0.5)
+    expect(typeof f.borderWidth).toBe('number')
+    expect(f.borderColor).toBeUndefined()
+    // native resolved style keeps the number on every side
+    const s = classStyle(cls)
+    expect(px(s.borderTopWidth)).toBe(0.5)
+    expect(px(s.borderBottomWidth)).toBe(0.5)
   })
 })
 
 describe('native — PASS 2: directional borders + corner radius', () => {
-  test('border-r (bare) → borderRightWidth 1', () => {
-    expect(classStyle('border-r').borderRightWidth).toBe(1)
+  test('border (bare) → borderWidth 1 (number), no borderColor', () => {
+    const f = flat('border')
+    expect(f.borderWidth).toBe(1)
+    expect(typeof f.borderWidth).toBe('number')
+    expect(f.borderColor).toBeUndefined()
   })
 
-  test('borderRightColor="$color2" resolves identically via class and source prop', () => {
+  test('border-r (bare) → borderRightWidth 1 (number), no borderRightColor', () => {
+    const f = flat('border-r')
+    expect(f.borderRightWidth).toBe(1)
+    expect(typeof f.borderRightWidth).toBe('number')
+    expect(f.borderRightColor).toBeUndefined()
+    expect(px(classStyle('border-r').borderRightWidth)).toBe(1) // native resolved style
+  })
+
+  test('border-b-[0.5px] → borderBottomWidth 0.5 (number), no borderBottomColor', () => {
+    const cls = convertedClassName(`<View borderBottomWidth={0.5} />`)
+    const f = flat(cls)
+    expect(f.borderBottomWidth).toBe(0.5)
+    expect(typeof f.borderBottomWidth).toBe('number')
+    expect(f.borderBottomColor).toBeUndefined()
+    expect(px(classStyle(cls).borderBottomWidth)).toBe(0.5)
+  })
+
+  test('border-r-color2 → borderRightColor resolved (string), no borderRightWidth; class === source prop', () => {
     const cls = convertedClassName(`<View borderRightColor="$color2" />`)
+    const f = flat(cls)
+    expect(typeof f.borderRightColor).toBe('string')
+    expect(f.borderRightColor).not.toBe('color2')
+    expect(f.borderRightWidth).toBeUndefined()
+    // full native pipeline: identical resolved color via class and source prop
     const fromClass = classStyle(cls).borderRightColor
     const fromProp = styleOf({ borderRightColor: '$color2' }).borderRightColor
     expect(fromClass).toBeTruthy()
-    expect(fromClass).not.toBe('color2') // resolved, not a literal token name
     expect(fromClass).toBe(fromProp)
   })
 
-  test('directional fractional + fixed widths', () => {
-    expect(classStyle(convertedClassName(`<View borderBottomWidth={0.5} />`)).borderBottomWidth).toBe(0.5)
-    expect(classStyle(convertedClassName(`<View borderLeftWidth={3} />`)).borderLeftWidth).toBe(3)
+  test('borderLeftWidth={3} → left width 3 (number)', () => {
+    const cls = convertedClassName(`<View borderLeftWidth={3} />`)
+    const f = flat(cls)
+    expect(f.borderLeftWidth).toBe(3)
+    expect(typeof f.borderLeftWidth).toBe('number')
+    expect(px(classStyle(cls).borderLeftWidth)).toBe(3)
   })
 
   test('corner radius borderTopLeftRadius="$8" → 22 on the top-left corner only', () => {
-    const s = classStyle(convertedClassName(`<View borderTopLeftRadius="$8" />`))
-    expect(px(s.borderTopLeftRadius)).toBe(22)
-    expect(s.borderBottomRightRadius).toBeUndefined()
+    const cls = convertedClassName(`<View borderTopLeftRadius="$8" />`)
+    const f = flat(cls)
+    expect(f.borderTopLeftRadius).toBe(22)
+    expect(typeof f.borderTopLeftRadius).toBe('number')
+    expect(f.borderBottomRightRadius).toBeUndefined()
+  })
+})
+
+describe('native — token category system: zIndex sentinel (default config)', () => {
+  test('zIndex="$4" → z-[400] → zIndex 400 (number), not raw 4', () => {
+    const cls = convertedClassName(`<View zIndex="$4" />`)
+    expect(cls).toContain('z-[400]')
+    const f = flat(cls)
+    expect(f.zIndex).toBe(400)
+    expect(typeof f.zIndex).toBe('number')
+    expect(flat('z-4').zIndex).toBe(4)
+  })
+})
+
+describe('native — nested modifier expansion: md:hover:border-x', () => {
+  test('border-x-[0.5px] under md:hover: sets BOTH side widths (numbers), no colors', () => {
+    const inner = flat('md:hover:border-x-[0.5px]').$md?.hoverStyle
+    expect(inner).toBeTruthy()
+    expect(inner.borderLeftWidth).toBe(0.5)
+    expect(typeof inner.borderLeftWidth).toBe('number')
+    expect(inner.borderRightWidth).toBe(0.5)
+    expect(typeof inner.borderRightWidth).toBe('number')
+    expect(inner.borderLeftColor).toBeUndefined()
+    expect(inner.borderRightColor).toBeUndefined()
   })
 })
 

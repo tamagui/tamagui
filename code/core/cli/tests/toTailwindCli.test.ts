@@ -91,4 +91,42 @@ export function Card() {
     expect(transformed).toContain('className="color-color font-bold"')
     expect(transformed).not.toContain('<YStack')
   })
+
+  it('--config resolves token/media scales from the app config, not the bundled default', async () => {
+    const fixtureDir = await mkdtemp(join(tmpdir(), 'tamagui-to-tailwind-cfg-'))
+    tempDirs.push(fixtureDir)
+
+    // a config exposing custom scales: space.$4 = 20 (default is 18) + a custom breakpoint
+    const configPath = join(fixtureDir, 'tw.config.ts')
+    await writeFile(
+      configPath,
+      `export const config = {
+  tokens: { space: { $4: 20 } },
+  media: { tablet: { minWidth: 900 } },
+}
+`
+    )
+
+    const sourcePath = join(fixtureDir, 'Screen.tsx')
+    await writeFile(
+      sourcePath,
+      `import { View } from 'tamagui'
+export function Screen() {
+  return <View padding="$4" $tablet={{ padding: 10 }} />
+}
+`
+    )
+
+    const run = spawnSync(
+      'bun',
+      ['src/index.ts', 'to-tailwind', join(fixtureDir, 'Screen.tsx'), '--config', configPath],
+      { cwd: cliRoot, encoding: 'utf8', env: { ...process.env, FORCE_COLOR: '0' } }
+    )
+
+    expect(run.status).toBe(0)
+    // config-aware: space.$4 = 20 (not the bundled default 18), and $tablet round-trips
+    expect(run.stdout).toContain('p-[20px]')
+    expect(run.stdout).not.toContain('p-[18px]')
+    expect(run.stdout).toContain('tablet:p-[10px]')
+  })
 })

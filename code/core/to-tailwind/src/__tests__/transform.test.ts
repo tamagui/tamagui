@@ -313,6 +313,51 @@ describe('tamaguiToTailwind', () => {
       const output = tamaguiToTailwind(`<View $gtSm={{ padding: 20 }} />`)
       expect(output).toContain('gtSm:p-[20px]')
     })
+
+    test('a custom config media key round-trips as an identity modifier', () => {
+      // general pass-through: any configured media key ($tablet) → `tablet:` modifier
+      const out = tamaguiToTailwind(`<View $tablet={{ padding: 10 }} />`, {
+        media: { tablet: { minWidth: 900 } },
+      })
+      expect(out).toContain('tablet:p-[10px]')
+      // without the config media, an unknown key stays a prop (documented fallback)
+      const noCfg = tamaguiToTailwind(`<View $tablet={{ padding: 10 }} />`)
+      expect(noCfg).toContain('$tablet=')
+    })
+  })
+
+  describe('config-aware token resolution (mirrors the runtime token categories)', () => {
+    test('spacing tokens resolve from the PASSED config scale, not a hardcoded default', () => {
+      // an app with a custom space.$4 = 20 must emit p-[20px], not the default p-[18px]
+      const out = tamaguiToTailwind(`<View padding="$4" />`, {
+        tokens: { space: { $4: 20 } },
+      })
+      expect(out).toContain('p-[20px]')
+    })
+
+    test('zIndex tokens resolve via the zIndex scale (unitless), not raw or px', () => {
+      // default v5 zIndex.$4 = 400
+      expect(tamaguiToTailwind(`<View zIndex="$4" />`)).toContain('z-[400]')
+      // custom config value flows through, and it is UNITLESS (no px)
+      const custom = tamaguiToTailwind(`<View zIndex="$4" />`, {
+        tokens: { zIndex: { $4: 40 } },
+      })
+      expect(custom).toContain('z-[40]')
+      expect(custom).not.toMatch(/z-\[40px\]/)
+    })
+
+    test('a tokenized borderWidth falls through to the SPACE scale (like the runtime)', () => {
+      // borderWidth is not its own token category — the runtime resolves it via space
+      const out = tamaguiToTailwind(`<View borderWidth="$2" />`, {
+        tokens: { space: { $2: 7 } },
+      })
+      expect(out).toContain('border-[7px]')
+    })
+
+    test('color and font tokens stay dynamic (token names, never baked to px)', () => {
+      expect(tamaguiToTailwind(`<View backgroundColor="$color5" />`)).toContain('bg-color5')
+      expect(tamaguiToTailwind(`<Text fontSize="$5" />`)).toContain('text-5')
+    })
   })
 
   describe('complex examples', () => {

@@ -694,6 +694,22 @@ function borderDimValue(raw: string): number | string {
   return inner
 }
 
+// a border VALUE is a numeric WIDTH only for a bare integer (border-2, border-r-2) or an
+// Npx length (border-[0.5px], border-[2px]) — NEVER for a color, token, calc(), rem, %, or
+// var(...), which stay a border COLOR. always a NUMBER: React Native rejects "Npx" strings
+// for borderWidth, and a number is valid on web too (CSS re-adds px). returns null to signal
+// "this is a color, not a width".
+function borderWidthValue(rawVal: string): number | null {
+  const arbitrary =
+    rawVal.length > 1 && rawVal[0] === '[' && rawVal[rawVal.length - 1] === ']'
+  const inner = arbitrary ? rawVal.slice(1, -1) : rawVal
+  // bare integer (non-bracketed): border-2, border-r-3
+  if (!arbitrary && /^\d+$/.test(inner)) return Number(inner)
+  // Npx length (bracketed or bare): [0.5px], [2px], 2px
+  if (/^-?(?:\d+|\d*\.\d+)px$/.test(inner)) return Number.parseFloat(inner)
+  return null
+}
+
 /**
  * Expand a single-side/axis border class (border-t, border-r-2, border-b-[0.5px],
  * border-x-color5) or a per-corner/edge radius class (rounded-tl-[22px], rounded-t-4)
@@ -732,14 +748,15 @@ function expandBorderClass(
     return out
   }
 
-  const arbitrary =
-    rawVal.length > 1 && rawVal[0] === '[' && rawVal[rawVal.length - 1] === ']'
-  const inner = arbitrary ? rawVal.slice(1, -1).replace(/_/g, ' ') : rawVal
-  // a length (2, 0.5px, 3) is a WIDTH; anything else (a color name/token/hex/var) is a COLOR
-  if (/^-?\d*\.?\d+(px)?$/.test(inner)) {
-    const w = borderDimValue(rawVal)
+  // a bare integer / Npx length is a numeric WIDTH; anything else (color name/token/hex/var/
+  // calc/%) is a COLOR. width is always a NUMBER (native rejects "Npx" strings).
+  const w = borderWidthValue(rawVal)
+  if (w !== null) {
     for (const s of sides) out[`border${s}Width`] = w
   } else {
+    const arbitrary =
+      rawVal.length > 1 && rawVal[0] === '[' && rawVal[rawVal.length - 1] === ']'
+    const inner = arbitrary ? rawVal.slice(1, -1).replace(/_/g, ' ') : rawVal
     for (const s of sides) {
       out[`border${s}Color`] = arbitrary
         ? inner
@@ -831,14 +848,11 @@ function tailwindClassToFlatProp(
   // (regressed before: `border-[0.5px]` matched neither `^\d+$` here nor a length elsewhere,
   // so it fell through to borderColor:'0.5px' — a width written into the color prop.)
   if (prop === 'border') {
-    const inner =
-      value.length > 2 && value[0] === '[' && value[value.length - 1] === ']'
-        ? value.slice(1, -1)
-        : value
-    if (/^-?\d*\.?\d+(px)?$/.test(inner)) {
+    const w = borderWidthValue(value)
+    if (w !== null) {
       const key =
         modifiers.length > 0 ? `$${modifiers.join(':')}:borderWidth` : `$borderWidth`
-      return { key, value: Number.parseFloat(inner) }
+      return { key, value: w }
     }
     prop = 'borderColor'
   }
@@ -958,7 +972,11 @@ function tailwindClassToFlatProp(
       modifiers.length > 0
         ? `$${modifiers.join(':')}:${expandedProp}`
         : `$${expandedProp}`
-    return { key, value: inner }
+    // a UNITLESS numeric arbitrary (z-[400], scale-[0.95], w-[104]) becomes a NUMBER: React
+    // Native requires numbers for zIndex/scale/dimensions and rejects "400"/"0.95" strings;
+    // web accepts the number too. values carrying a unit or function (18px, 100vh, calc(…),
+    // #fff, var(…)) stay strings.
+    return { key, value: /^-?\d*\.?\d+$/.test(inner) ? Number(inner) : inner }
   }
 
   // tailwind sizing keywords / fractions (w-full → 100%, w-1/2 → 50%, w-auto, w-screen).

@@ -12,7 +12,18 @@ type ToTailwindOptions = {
   patterns: string[]
   write?: boolean
   cwd?: string
+  // path to the app's tamagui config; its token scales + media keys drive an app-accurate
+  // conversion. when omitted, the converter uses its bundled default (v5) fallback.
+  configPath?: string
 }
+
+type TokenScales = {
+  space?: Record<string, any>
+  size?: Record<string, any>
+  radius?: Record<string, any>
+  zIndex?: Record<string, any>
+}
+type TransformConfig = { tokens?: TokenScales; media?: Record<string, any> }
 
 type ToTailwindResult = {
   files: number
@@ -20,7 +31,7 @@ type ToTailwindResult = {
   written: number
 }
 
-type Transform = (source: string) => string
+type Transform = (source: string, options?: TransformConfig) => string
 
 const codeFileExtensions = new Set(['.js', '.jsx', '.ts', '.tsx'])
 const defaultFileGlob = '**/*.{js,jsx,ts,tsx}'
@@ -46,19 +57,21 @@ export async function toTailwind({
   patterns,
   write = false,
   cwd = process.cwd(),
+  configPath,
 }: ToTailwindOptions): Promise<ToTailwindResult> {
   if (!patterns.length) {
-    throw new Error('Usage: tamagui to-tailwind <paths/glob> [--write]')
+    throw new Error('Usage: tamagui to-tailwind <paths/glob> [--write] [--config <path>]')
   }
 
   const files = await collectFiles(patterns, cwd)
   const tamaguiToTailwind = loadTamaguiToTailwind()
+  const transformConfig = await loadTransformConfig(configPath, cwd)
   let changed = 0
   let written = 0
 
   for (const file of files) {
     const source = await readFile(file, 'utf8')
-    const transformed = tamaguiToTailwind(source)
+    const transformed = tamaguiToTailwind(source, transformConfig)
 
     if (transformed === source) {
       continue
@@ -156,6 +169,47 @@ function isCodeFile(file: string) {
 
 function toPosixPath(path: string) {
   return path.split(sep).join('/')
+}
+
+// load the app's tamagui config (a created-config object exposing `.tokens` and `.media`) so
+// the converter resolves tokens/media from the ACTUAL app scales. we take the EXPLICIT-path
+// route (`--config <path>`) rather than auto-discovering + bundling `tamagui.config.ts`: a real
+// tamagui config is TS with `~`/`@` aliases and needs the app's bundler to evaluate, which the
+// CLI can't reliably do — an explicit path the user has already made requireable (or a small
+// module re-exporting `{ tokens, media }`) is the honest, non-magical contract. when omitted,
+// the converter falls back to its bundled default scales.
+async function loadTransformConfig(
+  configPath: string | undefined,
+  cwd: string
+): Promise<TransformConfig> {
+  if (!configPath) return {}
+  const resolved = resolve(cwd, configPath)
+  let mod: any
+  try {
+    mod = require(resolved)
+  } catch (requireErr) {
+    try {
+      mod = await import(resolved)
+    } catch {
+      console.warn(
+        `[to-tailwind] could not load --config ${configPath} (${
+          (requireErr as Error).message
+        }); falling back to the bundled default token/media scales.`
+      )
+      return {}
+    }
+  }
+  // accept a created config on `config`, `default`, `tamaguiConfig`, or the module itself
+  const config = mod?.config ?? mod?.default ?? mod?.tamaguiConfig ?? mod
+  const tokens = config?.tokens
+  const media = config?.media
+  if (!tokens && !media) {
+    console.warn(
+      `[to-tailwind] --config ${configPath} loaded but exposes no { tokens, media }; using the bundled default scales.`
+    )
+    return {}
+  }
+  return { tokens, media }
 }
 
 function loadTamaguiToTailwind(): Transform {
