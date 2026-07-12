@@ -61,6 +61,19 @@ describe('tamaguiToTailwind', () => {
       )
     })
 
+    test('unit-bearing and negative string values become arbitrary [..] classes', () => {
+      expect(tamaguiToTailwind(`<View minHeight="100vh" />`)).toContain('min-h-[100vh]')
+      expect(tamaguiToTailwind(`<View rotate="-8deg" />`)).toContain('rotate-[-8deg]')
+      expect(tamaguiToTailwind(`<View marginTop="-4px" />`)).toContain('mt-[-4px]')
+      // spaces inside brackets become underscores (a class can't contain whitespace)
+      expect(tamaguiToTailwind(`<View height="calc(100% - 2px)" />`)).toContain(
+        'h-[calc(100%_-_2px)]'
+      )
+      // tokens and mapped percentages are unchanged
+      expect(tamaguiToTailwind(`<View width="50%" />`)).toContain('w-1/2')
+      expect(tamaguiToTailwind(`<View backgroundColor="$blue5" />`)).toContain('bg-blue5')
+    })
+
     test('percentage width', () => {
       const input = `<View width="50%" />`
       const output = tamaguiToTailwind(input)

@@ -381,9 +381,18 @@ function formatStringValue(prop: string, value: string): string {
     return weightMap[value] || `[${value}]`
   }
 
-  // css values that need brackets
-  if (value.includes('(') || value.includes(' ') || value.startsWith('#')) {
-    return `[${value}]`
+  // arbitrary CSS values → bracket so styleMode's `[..]` parser resolves them. covers
+  // functions (calc()/var()/rgb()), hex, multi-part values, negatives, and unit-bearing
+  // lengths (100vh, 24px, -8deg). spaces become underscores per the tailwind
+  // arbitrary-value convention (a class can't contain whitespace).
+  if (
+    value.includes('(') ||
+    value.includes(' ') ||
+    value.startsWith('#') ||
+    value.startsWith('-') ||
+    /^[\d.]+[a-z%]/i.test(value)
+  ) {
+    return `[${value.replace(/\s+/g, '_')}]`
   }
 
   return value
