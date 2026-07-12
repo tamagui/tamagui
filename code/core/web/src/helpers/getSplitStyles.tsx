@@ -299,6 +299,33 @@ function preprocessTailwindClassName(
   const result: Record<string, any> = { ...props }
 
   for (const cls of classes) {
+    // component-level props (consumed by createComponent, not CSS): size-* → the size
+    // variant, animate(ion)-* → the named animation. cheap first-char gate avoids work.
+    const c0 = cls.charCodeAt(0)
+    if (c0 === 115 /* s */ && cls.startsWith('size-')) {
+      if (result.size === undefined) {
+        const v = cls.slice(5)
+        result.size =
+          v.charCodeAt(0) === 91 /* [ */ && v.charCodeAt(v.length - 1) === 93 /* ] */
+            ? v.slice(1, -1)
+            : /^\d+$/.test(v)
+              ? `$${v}`
+              : v
+      }
+      continue
+    }
+    if (
+      c0 === 97 /* a */ &&
+      (cls.startsWith('animation-') || cls.startsWith('animate-'))
+    ) {
+      if (result.animation === undefined) {
+        const v = cls.slice(cls.indexOf('-') + 1)
+        result.animation =
+          v.charCodeAt(0) === 91 && v.charCodeAt(v.length - 1) === 93 ? v.slice(1, -1) : v
+      }
+      continue
+    }
+
     // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
     // these may emit multiple props and may have no dash, so handle before the generic parse.
     const ci = cls.lastIndexOf(':')
@@ -331,6 +358,35 @@ function preprocessTailwindClassName(
   }
 
   return result
+}
+
+// marks props that already went through the styleMode preprocessing, so getSplitStyles
+// doesn't tokenize the className a second time. a Symbol key is invisible to the `for..in`
+// main loop, so it never leaks into style processing.
+const STYLE_MODE_PREPROCESSED = Symbol('tamaguiStyleModePreprocessed')
+
+/**
+ * The single styleMode pass: tokenizes className once and flattens the resulting props once,
+ * producing the component-level PROPS (enterStyle/exitStyle via the flat-props pass, size +
+ * animation via the className pass) plus the style props. Hoisted to run in createComponent
+ * BEFORE the state/variant/animation machinery reads those props; getSplitStyles then skips
+ * its own preprocess for these marked props (guarded, so direct callers still self-process
+ * exactly once). Non-styleMode returns immediately with zero tokenization.
+ */
+export function preprocessStyleModeProps(
+  props: Record<string, any>,
+  config: TamaguiInternalConfig
+): Record<string, any> {
+  if (!isTailwindModeEnabled(config)) return props
+  // nothing to tokenize without a className; any direct $-flat props are handled once in
+  // getSplitStyles (this path never runs preprocessTailwindClassName here, so no double scan)
+  if (typeof props.className !== 'string') return props
+  const { shorthands } = config
+  const withTailwind = preprocessTailwindClassName(props, shorthands, config)
+  const flattened = preprocessFlatProps(withTailwind, shorthands, config)
+  // withTailwind/flattened are always copies here (className was a string), safe to mark
+  ;(flattened as any)[STYLE_MODE_PREPROCESSED] = true
+  return flattened
 }
 
 // theme value names (color1-12, background, borderColor, shadow*, …) are not tokens but
@@ -1235,19 +1291,21 @@ export const getSplitStyles: StyleSplitter = (
   const { accept } = staticConfig
   const { noSkip, disableExpandShorthands, noExpand, styledContext } = styleProps
 
-  // preprocess tailwind className if enabled
-  // transforms className="hover:bg-$blue5" → $hover:bg="$blue5"
-  const propsWithTailwind = preprocessTailwindClassName(props, shorthands, conf)
-
-  // update className if tailwind preprocessing changed it (removed tailwind classes)
-  if (propsWithTailwind.className !== props.className) {
-    className = propsWithTailwind.className || ''
+  // preprocess tailwind className + flat props (single pass). when createComponent already
+  // ran preprocessStyleModeProps (marked), skip both here so the className is tokenized
+  // exactly once; direct callers (tests, non-component paths) self-process once instead.
+  // transforms className="hover:bg-$blue5" → $hover:bg="$blue5" → hoverStyle: {…}
+  let processedProps: Record<string, any>
+  if ((props as any)[STYLE_MODE_PREPROCESSED]) {
+    processedProps = props
+    className = (props.className as string) || ''
+  } else {
+    const propsWithTailwind = preprocessTailwindClassName(props, shorthands, conf)
+    if (propsWithTailwind.className !== props.className) {
+      className = propsWithTailwind.className || ''
+    }
+    processedProps = preprocessFlatProps(propsWithTailwind, shorthands, conf)
   }
-
-  // preprocess flat mode props before the main loop
-  // transforms $hover:bg="red" → hoverStyle: { backgroundColor: 'red' }
-  // this allows the existing handlers to process them normally
-  const processedProps = preprocessFlatProps(propsWithTailwind, shorthands, conf)
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
   for (const keyOg in processedProps) {

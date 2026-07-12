@@ -5,9 +5,8 @@ import { View, createTamagui, StyleObjectValue, StyleObjectPseudo } from '../web
 import { simplifiedGetSplitStyles, findRule } from './utils'
 
 // two-segment transform utilities (translate-x/translate-y) and their composition with
-// colon-modifiers. note: enter:/exit: classes produce the atomic rule but do NOT drive
-// the mount/unmount animation (that reads the enterStyle/exitStyle prop), so mount
-// animations stay props — see the to-tailwind pseudoMap.
+// colon-modifiers. (enter:/exit: mount animations are handled via className→prop
+// reconstruction — see tailwindStateProps.web.test.tsx.)
 beforeAll(() => {
   createTamagui({
     ...(defaultConfig as any),
