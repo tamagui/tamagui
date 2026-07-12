@@ -42,8 +42,10 @@ export const propToTailwindPrefix: Record<string, string> = {
   borderRightWidth: 'border-r',
   borderBottomWidth: 'border-b',
   borderLeftWidth: 'border-l',
-  borderHorizontalWidth: 'border-x',
-  borderVerticalWidth: 'border-y',
+  // NOTE: borderHorizontalWidth/borderVerticalWidth are NOT tamagui style props — source
+  // resolves them to {} (no-op), so emitting border-x/border-y would PAINT borders the source
+  // never had. omitted → retained (no-op in, no-op out). the runtime border-x/-y parser support
+  // stays for standard hand-written Tailwind, but the converter never emits it.
   borderColor: 'border',
   borderTopColor: 'border-t',
   borderRightColor: 'border-r',
@@ -89,7 +91,7 @@ export const propToTailwindPrefix: Record<string, string> = {
   flexWrap: 'flex',
   flexGrow: 'grow',
   flexShrink: 'shrink',
-  flexBasis: 'basis',
+  // flexBasis→basis is dead at runtime (basis-* unresolved) → REMOVED, retained.
   alignItems: 'items',
   alignContent: 'content',
   alignSelf: 'self',
@@ -98,9 +100,9 @@ export const propToTailwindPrefix: Record<string, string> = {
   // effects
   opacity: 'opacity',
   boxShadow: 'shadow',
-  cursor: 'cursor',
+  // cursor→cursor is dead at runtime (no cursor utilities) → REMOVED, retained.
   pointerEvents: 'pointer-events',
-  userSelect: 'select',
+  // userSelect→select is dead at runtime (select-* unresolved) → REMOVED, retained.
 
   // transforms
   rotate: 'rotate',

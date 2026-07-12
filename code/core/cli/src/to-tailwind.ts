@@ -260,11 +260,25 @@ async function loadTransformConfig(
   const tokens = config?.tokens
   const media = config?.media
   const shorthands = config?.shorthands
+
+  // STRUCTURE validation (not just truthiness): a malformed config (e.g. { tokens: 42 }) with
+  // --write would otherwise silently produce wrong pixels. abort on any shape violation.
+  const isObj = (v: any) => v != null && typeof v === 'object' && !Array.isArray(v)
+  const bad = (msg: string) => {
+    throw new Error(`--config ${configPath} has a malformed shape: ${msg} — aborted.`)
+  }
+  if (tokens !== undefined) {
+    if (!isObj(tokens)) bad('`tokens` must be an object')
+    for (const cat of ['space', 'size', 'radius', 'zIndex']) {
+      if (tokens[cat] !== undefined && !isObj(tokens[cat])) {
+        bad(`\`tokens.${cat}\` must be an object`)
+      }
+    }
+  }
+  if (media !== undefined && !isObj(media)) bad('`media` must be an object')
+  if (shorthands !== undefined && !isObj(shorthands)) bad('`shorthands` must be an object')
   if (!tokens && !media && !shorthands) {
-    throw new Error(
-      `--config ${configPath} loaded but exposes no { tokens, media, shorthands } — ` +
-        `aborted (invalid config shape).`
-    )
+    bad('exposes no { tokens, media, shorthands }')
   }
   return { transformConfig: { tokens, media, shorthands }, usedDefault: false }
 }

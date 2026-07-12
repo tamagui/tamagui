@@ -339,7 +339,12 @@ function preprocessTailwindClassName(
     const util = tailwindUtilityMap[base]
     if (util) {
       for (const p in util) {
-        result[mods ? `$${mods}:${p}` : `$${p}`] = util[p]
+        // BASE (unmodified) util props are set DIRECTLY as props so they flow through the normal
+        // resolution — critical for props routed to viewProps (pointerEvents) or expanded (flex),
+        // which the `$prop` flat form doesn't convert for non-style keys. MODIFIED util props
+        // (hover:/md:) still use the `$mods:prop` flat form the modifier pass understands.
+        if (mods) result[`$${mods}:${p}`] = util[p]
+        else result[p] = util[p]
       }
       continue
     }
@@ -534,7 +539,9 @@ const tailwindUtilityMap: Record<string, Record<string, any>> = {
   'flex-wrap': { flexWrap: 'wrap' },
   'flex-wrap-reverse': { flexWrap: 'wrap-reverse' },
   'flex-nowrap': { flexWrap: 'nowrap' },
-  'flex-1': { flexGrow: 1, flexShrink: 1, flexBasis: '0%' },
+  // flex-1 → the tamagui `flex` shorthand = 1, resolved by the SAME expansion as `flex={1}`
+  // (native keeps { flex: 1 }; web expands to grow/shrink/basis) → parity on both targets.
+  'flex-1': { flex: 1 },
   'flex-auto': { flexGrow: 1, flexShrink: 1, flexBasis: 'auto' },
   'flex-initial': { flexGrow: 0, flexShrink: 1, flexBasis: 'auto' },
   'flex-none': { flexGrow: 0, flexShrink: 0, flexBasis: 'auto' },
@@ -592,9 +599,12 @@ const tailwindUtilityMap: Record<string, Record<string, any>> = {
   'object-fill': { objectFit: 'fill' },
   'object-none': { objectFit: 'none' },
   'object-scale-down': { objectFit: 'scale-down' },
-  // pointer events
+  // pointer events (incl. the React Native box-none / box-only values). pointerEvents resolves
+  // into viewProps, not style — the round-trip comparator must check viewProps too.
   'pointer-events-none': { pointerEvents: 'none' },
   'pointer-events-auto': { pointerEvents: 'auto' },
+  'pointer-events-box-none': { pointerEvents: 'box-none' },
+  'pointer-events-box-only': { pointerEvents: 'box-only' },
   // note: leading-* (lineHeight) is intentionally deferred — tamagui coerces numeric
   // lineHeight to px so unitless tailwind multipliers can't be expressed here, and the
   // token/size-variant mapping is pending the typography decision.
@@ -667,6 +677,15 @@ function arbitraryValue(inner: string): number | string {
   return inner
 }
 
+// decode the inside of an arbitrary `[..]` value: a `_` is a space, but an ESCAPED `\_` is a
+// LITERAL underscore (so `var(--my\_color)` → `var(--my_color)`, not `var(--my color)`). mirror
+// of the converter's encodeArbitrary. blindly decoding every `_` corrupted var()/calc() names.
+function decodeArbitrary(inner: string): string {
+  // protect escaped `\\_` (literal underscore) with a sentinel, decode `_`->space, then restore
+  const SENT = '\uE000'
+  return inner.replace(/\\_/g, SENT).replace(/_/g, ' ').split(SENT).join('_')
+}
+
 // tailwind sizing keywords / fractions for width/height/min/max props.
 // returns a CSS value, or null if `value` isn't a sizing keyword (falls through to normal parse).
 function tailwindSizingValue(prop: string, value: string): string | null {
@@ -709,7 +728,7 @@ const radiusCornerProps: Record<string, string[]> = {
 function borderDimValue(raw: string): number | string {
   let inner = raw
   if (raw.length > 1 && raw[0] === '[' && raw[raw.length - 1] === ']') {
-    inner = raw.slice(1, -1).replace(/_/g, ' ')
+    inner = decodeArbitrary(raw.slice(1, -1))
   }
   const px = /^(-?\d*\.?\d+)px$/.exec(inner)
   if (px) return Number.parseFloat(px[1])
@@ -756,7 +775,7 @@ function expandBorderClass(
     const rawVal = rest.slice(dash + 1)
     const unwrapped =
       rawVal.length > 1 && rawVal[0] === '[' && rawVal[rawVal.length - 1] === ']'
-        ? rawVal.slice(1, -1).replace(/_/g, ' ')
+        ? decodeArbitrary(rawVal.slice(1, -1))
         : rawVal
     // a length/number (22, [22px]) is a raw dimension; a NAMED radius (lg, full, xl) resolves
     // through the radius token system (rounded-tl-lg → the $lg radius on the top-left corner).
@@ -788,7 +807,7 @@ function expandBorderClass(
   } else {
     const arbitrary =
       rawVal.length > 1 && rawVal[0] === '[' && rawVal[rawVal.length - 1] === ']'
-    const inner = arbitrary ? rawVal.slice(1, -1).replace(/_/g, ' ') : rawVal
+    const inner = arbitrary ? decodeArbitrary(rawVal.slice(1, -1)) : rawVal
     for (const s of sides) {
       out[`border${s}Color`] = arbitrary
         ? inner
@@ -898,7 +917,7 @@ function tailwindClassToFlatProp(
   if (prop === 'font') {
     let famValue: string
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
-      famValue = value.slice(1, -1).replace(/_/g, ' ')
+      famValue = decodeArbitrary(value.slice(1, -1))
     } else {
       const generic: Record<string, string> = {
         sans: 'sans-serif',
@@ -920,7 +939,7 @@ function tailwindClassToFlatProp(
     let fsValue: any
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
       // fontSize is number-only on native: text-[14px] → 14 (arbitraryValue drops px)
-      fsValue = arbitraryValue(value.slice(1, -1).replace(/_/g, ' '))
+      fsValue = arbitraryValue(decodeArbitrary(value.slice(1, -1)))
     } else if (/^\d+$/.test(value)) {
       // text-5 → the $5 font-size token (the converter strips the $ from fontSize="$5")
       fsValue = `$${value}`
@@ -939,7 +958,7 @@ function tailwindClassToFlatProp(
   if (prop === 'leading') {
     let lhValue: any
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
-      const inner = value.slice(1, -1).replace(/_/g, ' ')
+      const inner = decodeArbitrary(value.slice(1, -1))
       // px length → NUMBER (native-valid: leading-[20px] → 20). a UNITLESS value is a web
       // lineHeight MULTIPLIER and MUST stay a string (a number would be px-ified to "1.25px"
       // on web, breaking the multiplier). RN has no unitless multiplier, so this is web-only.
@@ -963,7 +982,7 @@ function tailwindClassToFlatProp(
   if (prop === 'tracking') {
     let lsValue: any
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
-      lsValue = arbitraryValue(value.slice(1, -1).replace(/_/g, ' '))
+      lsValue = arbitraryValue(decodeArbitrary(value.slice(1, -1)))
     } else if (/^\d+$/.test(value)) {
       lsValue = `$${value}`
     } else {
@@ -980,7 +999,7 @@ function tailwindClassToFlatProp(
   if (prop === 'shadow' && value[0] === '[' && value[value.length - 1] === ']') {
     return {
       key: modifiers.length > 0 ? `$${modifiers.join(':')}:boxShadow` : `$boxShadow`,
-      value: value.slice(1, -1).replace(/_/g, ' '),
+      value: decodeArbitrary(value.slice(1, -1)),
     }
   }
 
@@ -1007,7 +1026,7 @@ function tailwindClassToFlatProp(
   // h-[calc(100%-2px)], bg-[var(--color5)], bg-[#fff]. use the bracketed value directly as
   // CSS — no scaling/token resolution. tailwind encodes spaces inside [] as underscores.
   if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
-    const inner = value.slice(1, -1).replace(/_/g, ' ')
+    const inner = decodeArbitrary(value.slice(1, -1))
     if (inner === '') return null
     const key =
       modifiers.length > 0

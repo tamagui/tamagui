@@ -115,7 +115,19 @@ export function Card() {
     })
     const run = runCli([join(dir, 'A.tsx'), '--config', join(dir, 'bad.config.ts')])
     expect(run.status).not.toBe(0)
-    expect(run.stderr).toMatch(/invalid config shape|no \{ tokens/i)
+    expect(run.stderr).toMatch(/malformed shape|no \{ tokens/i)
+  })
+
+  it('--write --config {tokens:42} (malformed STRUCTURE) ABORTS, file byte-identical', async () => {
+    const dir = await fixture({
+      'c.config.ts': `export const config = { tokens: 42 }\n`,
+      'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="$4" />\n`,
+    })
+    const before = await readFile(join(dir, 'A.tsx'), 'utf8')
+    const run = runCli([join(dir, 'A.tsx'), '--write', '--config', join(dir, 'c.config.ts')])
+    expect(run.status).not.toBe(0)
+    expect(run.stderr).toMatch(/malformed shape|tokens.*must be an object/i)
+    expect(await readFile(join(dir, 'A.tsx'), 'utf8')).toBe(before) // never written (byte-identical)
   })
 
   it('a recoverable parse error ABORTS before any write; file untouched', async () => {

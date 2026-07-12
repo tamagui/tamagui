@@ -1,3 +1,4 @@
+process.env.TAMAGUI_TARGET = 'native'
 import { beforeAll } from 'vitest'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
 import { createTamagui } from '../web/src'
@@ -10,4 +11,4 @@ beforeAll(() => {
   } as any)
 })
 
-runParityGate('web')
+runParityGate('native')

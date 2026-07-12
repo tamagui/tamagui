@@ -61,10 +61,26 @@ const fontProps = new Set([
 // exposed for the packed-consumer + parity tests (must equal the runtime default tokens).
 export const defaultTokenScales: TokenScales = canonicalDefaultTokens as TokenScales
 
-function readVal(v: any): number | null {
-  if (typeof v === 'number') return v
-  if (v && typeof v === 'object' && typeof v.val === 'number') return v.val
-  return null
+/**
+ * does `prop` resolve against a NUMERIC token scale (space/size/radius/zIndex)? true for those;
+ * false for color/font props (whose `$token` is resolved by NAME at runtime). used to decide
+ * data-loss retention: an unresolved `$token` on a numeric-scale prop would emit a dead class,
+ * so the converter RETAINS the source prop instead — while an unresolved color/font token is
+ * fine to pass through by name.
+ */
+export function isTokenScaleProp(prop: string): boolean {
+  if (fontProps.has(prop)) return false
+  return (tokenCategoryByKey[prop] ?? 'space') !== 'color'
+}
+
+// read a token's underlying value — a number, a string (e.g. "10%"), or a Variable wrapping
+// either. returns undefined when the token is absent/unreadable.
+function readVal(v: any): number | string | undefined {
+  if (typeof v === 'number' || typeof v === 'string') return v
+  if (v && typeof v === 'object' && (typeof v.val === 'number' || typeof v.val === 'string')) {
+    return v.val
+  }
+  return undefined
 }
 
 /**
@@ -87,9 +103,10 @@ export function resolveTokenArbitrary(
   if (!scale) return null
   // space/size/zIndex store keys WITH `$` (`$4`); radius stores them WITHOUT (`8`); negative
   // space tokens store WITHOUT (`-4`). try the raw token then the `$`-stripped form.
-  let v = scale[token]
-  if (v == null) v = scale[token.slice(1)]
-  const n = readVal(v)
-  if (n == null) return null
-  return cat === 'zIndex' ? String(n) : `${n}px`
+  const val = readVal(token in scale ? scale[token] : scale[token.slice(1)])
+  if (val === undefined) return null
+  // a STRING-valued token (e.g. space.fluid = "10%") is an EXACT CSS value → use verbatim
+  // (p-[10%]); a NUMBER is px on dimensional scales, unitless on zIndex.
+  if (typeof val === 'string') return val
+  return cat === 'zIndex' ? String(val) : `${val}px`
 }

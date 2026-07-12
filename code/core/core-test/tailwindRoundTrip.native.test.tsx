@@ -159,12 +159,16 @@ describe('native — directional borders + per-edge radii (converter-driven)', (
     expect(s.borderRightColor).toBeTruthy()
     expect(s.borderRightColor).not.toBe('color2')
   })
-  test('per-corner named radius: borderTopLeftRadius="$lg" → the lg radius, top-left only', () => {
-    // converter (default scales, no $lg) emits the NAMED form rounded-tl-lg; the runtime (v6)
-    // resolves $lg via the radius token system → a number, top-left corner only.
-    const cls = toClass(`<View borderTopLeftRadius="$lg" />`)
-    expect(cls).toContain('rounded-tl-lg')
-    const s = nativeStyle(View, cls)
+  test('converter RETAINS an unresolved radius token (no dead class)', () => {
+    // $lg is absent from the default v5 radius scale → RETAINED (data-loss protection), not a
+    // dead rounded-tl-lg. (a config that defines $lg would emit the exact [Npx].)
+    const out = tamaguiToTailwind(`<View borderTopLeftRadius="$lg" />`, { renameComponents: false })
+    expect(out).toBe(`<View borderTopLeftRadius="$lg" />`)
+  })
+  test('parser: standard hand-written rounded-tl-lg → the $lg radius, top-left corner only', () => {
+    // the PARSER supports per-edge NAMED radii (an app may write standard Tailwind rounded-tl-lg);
+    // it resolves via the radius token system on the top-left corner only.
+    const s = nativeStyle(View, 'rounded-tl-lg')
     expect(typeof s.borderTopLeftRadius).toBe('number')
     expect(s.borderTopLeftRadius).toBeGreaterThan(0)
     expect(s.borderBottomRightRadius).toBeUndefined()

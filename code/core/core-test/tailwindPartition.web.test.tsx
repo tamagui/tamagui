@@ -57,18 +57,19 @@ describe('partition — pseudo/media objects: convert supported, RETAIN dynamic 
   })
 
   test('nested media+pseudo converts recursively (partition, not drop)', () => {
-    const out = convert(`<View $md={{ hoverStyle: { borderHorizontalWidth: 0.5 } }} />`)
-    expect(out).toContain('md:hover:border-x-[0.5px]')
+    const out = convert(`<View $md={{ hoverStyle: { opacity: 0.5 } }} />`)
+    expect(out).toContain('md:hover:opacity-50')
     expect(out).not.toContain('$md=') // fully converted, nothing left to retain
   })
 })
 
 describe('partition — existing className is COMBINED, never overwritten', () => {
-  test('dynamic className + converting prop → combined template literal (foo preserved)', () => {
+  test('dynamic className + converting prop → combined, EXISTING className wins (last)', () => {
     const out = convert(`<View className={foo} padding={10} />`)
     expect(out).toContain('${foo}') // original expression preserved
     expect(out).toContain('p-[10px]') // new class added
-    expect(out).toMatch(/className=\{`.*p-\[10px\]`\}/)
+    // generated class FIRST, the dynamic expression LAST so the existing className wins
+    expect(out).toMatch(/className=\{`p-\[10px\] \$\{foo\}`\}/)
   })
 
   test('static className + non-conflicting prop → merged string', () => {
