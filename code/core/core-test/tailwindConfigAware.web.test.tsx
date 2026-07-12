@@ -13,7 +13,10 @@ import { defaultConfig as v6 } from '@tamagui/config/v6'
 import { StyleObjectProperty, StyleObjectValue } from '@tamagui/helpers'
 
 import { View, createTamagui } from '../web/src'
-import { getSplitStyles, preprocessStyleModeProps } from '../web/src/helpers/getSplitStyles'
+import {
+  getSplitStyles,
+  preprocessStyleModeProps,
+} from '../web/src/helpers/getSplitStyles'
 import { defaultComponentState } from '../web/src/defaultComponentState'
 import { tamaguiToTailwind } from '../to-tailwind/src/transform'
 
@@ -66,13 +69,12 @@ function styleFlat(props: Record<string, any>): Record<string, any> {
   }
   return out
 }
-const px = (v: any) => (typeof v === 'number' ? v : Number.parseFloat(v))
-
 describe('config-aware tokens (WEB) — converter reads the passed config, not a hardcode', () => {
   test('space.$4 = 20: padding="$4" → p-[20px] → runtime 20 (not the default 18)', () => {
     const cls = className(`<View padding="$4" />`)
     expect(cls).toContain('p-[20px]')
-    expect(px(styleFlat({ className: cls }).paddingTop)).toBe(20)
+    expect(styleFlat({ className: cls }).paddingTop).toBe('20px')
+    expect(typeof styleFlat({ className: cls }).paddingTop).toBe('string')
     // hardcode would have emitted the default 18 — prove the converter did NOT
     expect(cls).not.toContain('p-[18px]')
   })
@@ -93,6 +95,7 @@ describe('config-aware media (WEB) — a custom breakpoint round-trips', () => {
     expect(CFG.media.tablet).toEqual({ minWidth: 900 })
     const f = flat(cls)
     expect(f.$tablet).toBeTruthy()
-    expect(px(f.$tablet.padding)).toBe(10)
+    expect(f.$tablet.padding).toBe(10)
+    expect(typeof f.$tablet.padding).toBe('number')
   })
 })

@@ -12,7 +12,10 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
 
 import { View, createTamagui } from '../web/src'
-import { getSplitStyles, preprocessStyleModeProps } from '../web/src/helpers/getSplitStyles'
+import {
+  getSplitStyles,
+  preprocessStyleModeProps,
+} from '../web/src/helpers/getSplitStyles'
 import { defaultComponentState } from '../web/src/defaultComponentState'
 import { tamaguiToTailwind } from '../to-tailwind/src/transform'
 
@@ -60,14 +63,13 @@ function style(props: Record<string, any>): Record<string, any> {
     )!.style || {}
   )
 }
-const px = (v: any) => (typeof v === 'number' ? v : Number.parseFloat(v))
-
 describe('config-aware tokens (NATIVE) — converter reads the passed config', () => {
   test('space.$4 = 20: padding="$4" → p-[20px] → runtime 20 (not the default 18)', () => {
     const cls = className(`<View padding="$4" />`)
     expect(cls).toContain('p-[20px]')
     expect(cls).not.toContain('p-[18px]')
-    expect(px(style({ className: cls }).paddingTop)).toBe(20)
+    expect(style({ className: cls }).paddingTop).toBe(20)
+    expect(typeof style({ className: cls }).paddingTop).toBe('number')
   })
 
   test('zIndex.$4 = 40: zIndex="$4" → z-[40] → zIndex 40 (number)', () => {
@@ -86,6 +88,7 @@ describe('config-aware media (NATIVE) — a custom breakpoint round-trips', () =
     expect(CFG.media.tablet).toEqual({ minWidth: 900 })
     const f = flat(cls)
     expect(f.$tablet).toBeTruthy()
-    expect(px(f.$tablet.padding)).toBe(10)
+    expect(f.$tablet.padding).toBe(10)
+    expect(typeof f.$tablet.padding).toBe('number')
   })
 })

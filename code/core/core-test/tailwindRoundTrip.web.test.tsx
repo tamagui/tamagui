@@ -23,7 +23,10 @@ import {
 } from '@tamagui/helpers'
 
 import { View, createTamagui } from '../web/src'
-import { getSplitStyles, preprocessStyleModeProps } from '../web/src/helpers/getSplitStyles'
+import {
+  getSplitStyles,
+  preprocessStyleModeProps,
+} from '../web/src/helpers/getSplitStyles'
 import { defaultComponentState } from '../web/src/defaultComponentState'
 import { tamaguiToTailwind } from '../to-tailwind/src/transform'
 
@@ -87,11 +90,6 @@ function flat(cls: string): Record<string, any> {
   return preprocessStyleModeProps({ className: cls } as any, CFG)
 }
 
-// numeric pixel value regardless of number vs "Npx" string representation
-function px(v: any): number {
-  return typeof v === 'number' ? v : Number.parseFloat(v)
-}
-
 describe('PASS 1 — 1a: responsive media direction', () => {
   test('converter emits $md verbatim as md:, never the inverted max-md:', () => {
     const show = convertedClassName(`<View display="none" $md={{ display: 'flex' }} />`)
@@ -105,7 +103,8 @@ describe('PASS 1 — 1a: responsive media direction', () => {
   test('the md breakpoint is minWidth 768 (show ≥768), so the direction is not inverted', () => {
     // config truth: md is min-width (mobile-first), max-md is the max-width mirror
     expect(CFG.media.md).toEqual({ minWidth: 768 })
-    expect(CFG.media['max-md'].maxWidth).toBeCloseTo(768, 0)
+    expect(CFG.media['max-md'].maxWidth).toBe(767.98)
+    expect(typeof CFG.media['max-md'].maxWidth).toBe('number')
   })
 
   test('converted class resolves to the SAME media structure as the source $md prop', () => {
@@ -122,7 +121,9 @@ describe('PASS 1 — 1a: responsive media direction', () => {
     expect(fromClass.$md).toEqual(fromProp.$md)
 
     // bottom-tabs: base flex + hide at md → $md:{display:none} (hidden on desktop, shown mobile)
-    const hideCls = convertedClassName(`<View display="flex" $md={{ display: 'none' }} />`)
+    const hideCls = convertedClassName(
+      `<View display="flex" $md={{ display: 'none' }} />`
+    )
     const hide = preprocessStyleModeProps({ className: hideCls } as any, CFG)
     expect(hide.$md).toEqual({ display: 'none' })
   })
@@ -136,31 +137,36 @@ describe('PASS 1 — 1b: token pixel-fidelity', () => {
   test('spacing token p="$4" resolves to 18px — NOT the Tailwind ×4 scale (16px)', () => {
     const cls = convertedClassName(`<View padding="$4" />`)
     expect(cls).toContain('p-[18px]')
-    expect(px(classStyle(cls).paddingTop)).toBe(18)
+    expect(classStyle(cls).paddingTop).toBe('18px')
+    expect(typeof classStyle(cls).paddingTop).toBe('string')
     // proof the OLD strip-$ output (p-4) resolves to the WRONG value on the ×4 scale
-    expect(px(classStyle('p-4').paddingTop)).toBe(16)
+    expect(classStyle('p-4').paddingTop).toBe('16px')
     // and the source prop padding="$4" resolves to the same 18px space token
-    expect(String(styleOf({ padding: '$4' }).paddingTop)).toMatch(/space-4|18px/)
+    expect(styleOf({ padding: '$4' }).paddingTop).toBe('var(--c-space-4)')
+    expect(typeof styleOf({ padding: '$4' }).paddingTop).toBe('string')
   })
 
   test('gap "$6" resolves to 32px, not 24px', () => {
     const cls = convertedClassName(`<View gap="$6" />`)
     expect(cls).toContain('gap-[32px]')
-    expect(px(classStyle(cls).gap)).toBe(32)
-    expect(px(classStyle('gap-6').gap)).toBe(24) // old ×4-scale value = wrong
+    expect(classStyle(cls).gap).toBe('32px')
+    expect(typeof classStyle(cls).gap).toBe('string')
+    expect(classStyle('gap-6').gap).toBe('24px') // old ×4-scale value = wrong
   })
 
   test('radius token borderRadius="$8" resolves to 22px, not 8px', () => {
     const cls = convertedClassName(`<View borderRadius="$8" />`)
     expect(cls).toContain('rounded-[22px]')
-    expect(px(classStyle(cls).borderTopLeftRadius)).toBe(22)
-    expect(px(classStyle('rounded-8').borderTopLeftRadius)).toBe(8) // old raw value = wrong
+    expect(classStyle(cls).borderTopLeftRadius).toBe('22px')
+    expect(typeof classStyle(cls).borderTopLeftRadius).toBe('string')
+    expect(classStyle('rounded-8').borderTopLeftRadius).toBe('8px') // old raw value = wrong
   })
 
   test('size token width="$10" resolves to 104px', () => {
     const cls = convertedClassName(`<View width="$10" />`)
     expect(cls).toContain('w-[104px]')
-    expect(px(classStyle(cls).width)).toBe(104)
+    expect(classStyle(cls).width).toBe('104px')
+    expect(typeof classStyle(cls).width).toBe('string')
   })
 })
 
@@ -172,8 +178,8 @@ describe('PASS 1 — 1c: fractional border width', () => {
     expect(f.borderWidth).toBe(0.5)
     expect(typeof f.borderWidth).toBe('number') // RN rejects "0.5px" strings for borderWidth
     expect(f.borderColor).toBeUndefined() // absence of the opposite property
-    // resolved runtime style is 0.5 too (px() tolerates the web CSS "0.5px" representation)
-    expect(px(classStyle(cls).borderTopWidth)).toBe(0.5)
+    expect(classStyle(cls).borderTopWidth).toBe('0.5px')
+    expect(typeof classStyle(cls).borderTopWidth).toBe('string')
   })
 })
 
