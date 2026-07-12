@@ -242,7 +242,14 @@ function extractPseudoClasses(attr: t.JSXAttribute, modifier: string): string[] 
     let jsxValue: t.JSXAttribute['value']
     if (t.isStringLiteral(value)) {
       jsxValue = value
-    } else if (t.isNumericLiteral(value)) {
+    } else if (
+      t.isNumericLiteral(value) ||
+      // negative numeric literal (y: -10) is a UnaryExpression — getNumericValue
+      // handles it, so wrap it too instead of dropping the prop
+      (t.isUnaryExpression(value) &&
+        value.operator === '-' &&
+        t.isNumericLiteral(value.argument))
+    ) {
       jsxValue = t.jsxExpressionContainer(value)
     } else {
       continue // can't convert complex values
