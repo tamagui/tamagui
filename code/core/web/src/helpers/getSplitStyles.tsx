@@ -246,8 +246,8 @@ function looksLikeTailwindClass(
   // classes with colons are always considered tailwind (modifiers)
   if (cls.includes(':')) return true
 
-  // two-segment prop prefixes (min-w-24, max-h-12, …)
-  if (/^(?:min|max)-[wh]-/.test(cls)) return true
+  // two-segment prop prefixes (min-w-24, max-h-12, translate-x-*, translate-y-*)
+  if (/^(?:(?:min|max)-[wh]|translate-[xy])-/.test(cls)) return true
 
   // border utilities are overloaded (border-2 width vs border-red-500 color) — recognize them
   if (cls.startsWith('border-')) return true
@@ -557,6 +557,8 @@ const tailwindPropPrefixes: Record<string, string> = {
   'min-h': 'minHeight',
   'max-w': 'maxWidth',
   'max-h': 'maxHeight',
+  'translate-x': 'x',
+  'translate-y': 'y',
 }
 
 // tailwind sizing keywords / fractions for width/height/min/max props.
@@ -640,9 +642,9 @@ function tailwindClassToFlatProp(
   let prop = lastPart.slice(0, dashIndex)
   let value: any = lastPart.slice(dashIndex + 1)
 
-  // two-segment prop prefixes: min-w-24 → prop minWidth, value 24
-  if (prop === 'min' || prop === 'max') {
-    const m = /^((?:min|max)-[wh])-(.+)$/.exec(lastPart)
+  // two-segment prop prefixes: min-w-24 → prop minWidth, translate-y-[10px] → prop y
+  if (prop === 'min' || prop === 'max' || prop === 'translate') {
+    const m = /^((?:min|max)-[wh]|translate-[xy])-(.+)$/.exec(lastPart)
     if (m && tailwindPropPrefixes[m[1]]) {
       prop = tailwindPropPrefixes[m[1]]
       value = m[2]
