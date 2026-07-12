@@ -58,7 +58,9 @@ export const propToTailwindPrefix: Record<string, string> = {
   borderStyle: 'border',
 
   // typography
-  color: 'text',
+  // text color uses the `color-*` utility, not `text-*`: in v6 `text` is the textAlign
+  // shorthand, so `text-color5` would set textAlign and never resolve the color.
+  color: 'color',
   fontSize: 'text',
   fontWeight: 'font',
   fontFamily: 'font',

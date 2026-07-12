@@ -52,6 +52,15 @@ describe('tamaguiToTailwind', () => {
       expect(output).toContain('bg-blue5')
     })
 
+    test('text color uses color-* utility, not text-* (text is textAlign in v6)', () => {
+      expect(tamaguiToTailwind(`<Text color="$color8" />`)).toContain('color-color8')
+      expect(tamaguiToTailwind(`<Text color="red" />`)).toContain('color-red')
+      // must not emit the text-* form for color, which would set textAlign
+      expect(tamaguiToTailwind(`<Text color="$color8" />`)).not.toMatch(
+        /text-color8/
+      )
+    })
+
     test('percentage width', () => {
       const input = `<View width="50%" />`
       const output = tamaguiToTailwind(input)
@@ -252,7 +261,8 @@ describe('tamaguiToTailwind', () => {
       expect(output).toContain('hover:bg-backgroundHover')
       expect(output).toContain('text-[18px]')
       expect(output).toContain('font-bold')
-      expect(output).toContain('text-color')
+      // text color maps to the `color-*` utility (v6 `text` is textAlign)
+      expect(output).toContain('color-color')
     })
 
     test('preserves non-tamagui elements', () => {
