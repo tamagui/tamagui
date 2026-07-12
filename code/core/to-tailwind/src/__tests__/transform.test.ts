@@ -74,13 +74,25 @@ describe('tamaguiToTailwind', () => {
       expect(tamaguiToTailwind(`<View backgroundColor="$blue5" />`)).toContain('bg-blue5')
     })
 
-    test('negative space token emits a negative utility, not `m--1`', () => {
-      expect(tamaguiToTailwind(`<View margin="$-1" />`)).toContain('-m-1')
-      expect(tamaguiToTailwind(`<View marginTop="$-2" />`)).toContain('-mt-2')
+    test('spacing tokens resolve to their EXACT pixel value (not the Tailwind ×4 scale)', () => {
+      // tamagui space `$4` = 18px, `$5` = 24px, `$6` = 32px — NOT 16/20/24. emitting `m-4`
+      // would resolve to 16px at runtime (Tailwind ×4), silently changing the pixel value.
+      // emit an arbitrary [Npx] with the real token value so it's pixel-identical to `margin="$4"`.
+      expect(tamaguiToTailwind(`<View margin="$4" />`)).toContain('m-[18px]')
+      expect(tamaguiToTailwind(`<View padding="$5" />`)).toContain('p-[24px]')
+      expect(tamaguiToTailwind(`<View gap="$6" />`)).toContain('gap-[32px]')
+      // negative tokens resolve to their exact (negative) pixel value too
+      expect(tamaguiToTailwind(`<View margin="$-1" />`)).toContain('m-[-2px]')
+      expect(tamaguiToTailwind(`<View marginTop="$-2" />`)).toContain('mt-[-7px]')
       expect(tamaguiToTailwind(`<View margin="$-1" />`)).not.toMatch(/m--1/)
-      // numeric negatives still bracket (mt-[-4px]); positive tokens unchanged
+      // numeric literals still bracket their raw px
       expect(tamaguiToTailwind(`<View marginTop={-4} />`)).toContain('mt-[-4px]')
-      expect(tamaguiToTailwind(`<View margin="$4" />`)).toContain('m-4')
+    })
+
+    test('radius/size tokens resolve to their exact pixel value', () => {
+      // radius `$8` = 22px (not 8), size `$10` = 104px
+      expect(tamaguiToTailwind(`<View borderRadius="$8" />`)).toContain('rounded-[22px]')
+      expect(tamaguiToTailwind(`<View width="$10" />`)).toContain('w-[104px]')
     })
 
     test('enterStyle/exitStyle become enter:/exit: classes (reconstructed to props at runtime)', () => {
@@ -271,16 +283,35 @@ describe('tamaguiToTailwind', () => {
   })
 
   describe('media queries', () => {
-    test('$sm media query', () => {
-      const input = `<View $sm={{ backgroundColor: "green" }} />`
-      const output = tamaguiToTailwind(input)
-      expect(output).toContain('max-sm:bg-green')
+    // media keys are emitted VERBATIM (identity): the styleMode runtime resolves a class
+    // modifier by looking the string up directly in config.media, so the only round-trip-
+    // correct modifier for `$key` is `key`. the old inverting map (`$md → max-md`) either
+    // hit a different breakpoint or, when the mapped name wasn't a config key, was dropped.
+    test('$md media query keeps the md modifier (min-width in v5/v6 — Tailwind-aligned)', () => {
+      const output = tamaguiToTailwind(`<View $md={{ backgroundColor: "green" }} />`)
+      expect(output).toContain('md:bg-green')
+      // must NOT invert to max-md (that would flip show/hide direction)
+      expect(output).not.toMatch(/max-md:/)
     })
 
-    test('$gtSm media query (min-width)', () => {
-      const input = `<View $gtSm={{ padding: 20 }} />`
-      const output = tamaguiToTailwind(input)
-      expect(output).toContain('sm:p-[20px]')
+    test('responsive show/hide keeps the correct direction', () => {
+      // base hidden + show at md → hidden md:flex (shows at ≥768, not inverted)
+      const show = tamaguiToTailwind(`<View display="none" $md={{ display: "flex" }} />`)
+      expect(show).toContain('hidden')
+      expect(show).toContain('md:flex')
+      // base flex + hide at md → flex md:hidden (bottom tabs: visible mobile, hidden desktop)
+      const hide = tamaguiToTailwind(`<View display="flex" $md={{ display: "none" }} />`)
+      expect(hide).toContain('md:hidden')
+    })
+
+    test('$sm media query', () => {
+      const output = tamaguiToTailwind(`<View $sm={{ backgroundColor: "green" }} />`)
+      expect(output).toContain('sm:bg-green')
+    })
+
+    test('$gtSm media query keeps the gtSm modifier', () => {
+      const output = tamaguiToTailwind(`<View $gtSm={{ padding: 20 }} />`)
+      expect(output).toContain('gtSm:p-[20px]')
     })
   })
 

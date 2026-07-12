@@ -8,6 +8,7 @@ import {
   componentToTag,
 } from './maps/propToClass'
 import { pseudoToModifier, mediaToModifier } from './maps/pseudoMap'
+import { resolveTokenPx } from './maps/tokenScale'
 
 const traverse = (_traverse as any).default ?? _traverse
 const generate = (_generate as any).default ?? _generate
@@ -374,8 +375,13 @@ function resolveShorthand(name: string): string {
 }
 
 function formatStringValue(prop: string, value: string): string {
-  // token reference: strip $
+  // token reference: resolve spacing/sizing/radius tokens to their EXACT pixel value and
+  // emit an arbitrary [Npx] class (tamagui's token scale ≠ Tailwind's ×4 scale, so `$4` →
+  // `p-4` would change the pixel value — see maps/tokenScale.ts). color/other tokens have
+  // no pixel value and fall through to stripping the `$` (resolved by name at runtime).
   if (value.startsWith('$')) {
+    const px = resolveTokenPx(prop, value)
+    if (px != null) return `[${px}px]`
     return value.slice(1)
   }
 

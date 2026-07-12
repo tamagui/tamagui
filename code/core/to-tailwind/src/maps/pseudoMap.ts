@@ -16,23 +16,41 @@ export const pseudoToModifier: Record<string, string> = {
   exitStyle: 'exit',
 }
 
-// tamagui media key → tailwind breakpoint modifier
-// tamagui uses max-width by default, tailwind uses min-width
-// so $sm (max-width: 800) → max-sm:
-// and $gtSm (min-width: 801) → sm:
+// tamagui media key → tailwind class modifier.
+//
+// IDENTITY MAP. the styleMode runtime resolves a class modifier by looking the string up
+// DIRECTLY in `config.media` (getSplitStyles → parseFlatModifierProp: `mod in config.media`).
+// so the ONLY round-trip-correct modifier for a source `$key` prop is `key` itself — emitting
+// a different name (the old `md → max-md`) resolves to a DIFFERENT breakpoint (or, when that
+// name isn't a config key, is dropped entirely), which INVERTED responsive show/hide.
+//
+// this is also idiomatic Tailwind for the v5/v6 config the app template uses, where the
+// media keys are already Tailwind-named: `md` = { minWidth: 768 } (Tailwind `md:`) and
+// `max-md` = { maxWidth: 768 } (Tailwind `max-md:`). identity preserves both directions.
 export const mediaToModifier: Record<string, string> = {
-  // max-width (tamagui default)
-  xs: 'max-xs',
-  sm: 'max-sm',
-  md: 'max-md',
-  lg: 'max-lg',
-  xl: 'max-xl',
-  xxs: 'max-[390px]',
+  // min-width (mobile-first) — v5/v6 primary breakpoints, Tailwind-aligned
+  xxxs: 'xxxs',
+  xxs: 'xxs',
+  xs: 'xs',
+  sm: 'sm',
+  md: 'md',
+  lg: 'lg',
+  xl: 'xl',
+  xxl: 'xxl',
 
-  // min-width (gt variants)
-  gtXs: 'xs',
-  gtSm: 'sm',
-  gtMd: 'md',
-  gtLg: 'lg',
-  gtXl: 'xl',
+  // max-width (desktop-first) — v5/v6 `max-*` keys
+  'max-xxs': 'max-xxs',
+  'max-xs': 'max-xs',
+  'max-sm': 'max-sm',
+  'max-md': 'max-md',
+  'max-lg': 'max-lg',
+  'max-xl': 'max-xl',
+  'max-xxl': 'max-xxl',
+
+  // gt* (min-width) — legacy config-default naming; identity so it resolves there too
+  gtXs: 'gtXs',
+  gtSm: 'gtSm',
+  gtMd: 'gtMd',
+  gtLg: 'gtLg',
+  gtXl: 'gtXl',
 }

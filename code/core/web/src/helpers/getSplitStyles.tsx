@@ -342,6 +342,15 @@ function preprocessTailwindClassName(
       }
       continue
     }
+    // single-side/axis borders + per-corner radii (may emit multiple props, and overload
+    // width-vs-color, so they can't go through the generic first-dash split)
+    const borderProps = expandBorderClass(base, config)
+    if (borderProps) {
+      for (const p in borderProps) {
+        result[mods ? `$${mods}:${p}` : `$${p}`] = borderProps[p]
+      }
+      continue
+    }
     // otherwise try the generic prop-value conversion
     if (looksLikeTailwindClass(cls, shorthands, config)) {
       const flatProp = tailwindClassToFlatProp(cls, shorthands, config)
@@ -528,7 +537,21 @@ const tailwindUtilityMap: Record<string, Record<string, any>> = {
   'flex-auto': { flexGrow: 1, flexShrink: 1, flexBasis: 'auto' },
   'flex-initial': { flexGrow: 0, flexShrink: 1, flexBasis: 'auto' },
   'flex-none': { flexGrow: 0, flexShrink: 0, flexBasis: 'auto' },
+  // display keywords. `hidden`→none and `flex`→flex are the pair the app template's
+  // responsive show/hide relies on (base `hidden` + `$md:flex`, base `flex` + `$md:hidden`);
+  // without bare `flex` the media class only toggles OFF (hidden) and never back ON.
+  flex: { display: 'flex' },
+  'inline-flex': { display: 'inline-flex' },
+  block: { display: 'block' },
+  inline: { display: 'inline' },
+  grid: { display: 'grid' },
+  contents: { display: 'contents' },
   hidden: { display: 'none' },
+  // border styles (converter emits border-solid/dashed/dotted from borderStyle)
+  'border-solid': { borderStyle: 'solid' },
+  'border-dashed': { borderStyle: 'dashed' },
+  'border-dotted': { borderStyle: 'dotted' },
+  'border-none': { borderStyle: 'none', borderWidth: 0 },
   // position
   relative: { position: 'relative' },
   absolute: { position: 'absolute' },
@@ -635,6 +658,97 @@ function tailwindSizingValue(prop: string, value: string): string | null {
   return null
 }
 
+// single-side / axis border prefixes → the physical sides they set.
+const borderSideSuffix: Record<string, string[]> = {
+  t: ['Top'],
+  r: ['Right'],
+  b: ['Bottom'],
+  l: ['Left'],
+  x: ['Left', 'Right'],
+  y: ['Top', 'Bottom'],
+}
+
+// per-corner / per-edge radius prefixes → the corner radius props they set.
+const radiusCornerProps: Record<string, string[]> = {
+  tl: ['borderTopLeftRadius'],
+  tr: ['borderTopRightRadius'],
+  bl: ['borderBottomLeftRadius'],
+  br: ['borderBottomRightRadius'],
+  t: ['borderTopLeftRadius', 'borderTopRightRadius'],
+  b: ['borderBottomLeftRadius', 'borderBottomRightRadius'],
+  l: ['borderTopLeftRadius', 'borderBottomLeftRadius'],
+  r: ['borderTopRightRadius', 'borderBottomRightRadius'],
+}
+
+// unwrap a possibly-arbitrary value ([2px] → "2px") and coerce a bare number / px length to
+// a NUMBER (2px → 2, 0.5 → 0.5) so borderWidth/radius match tamagui's numeric props; other
+// units (1em, calc(…)) stay strings.
+function borderDimValue(raw: string): number | string {
+  let inner = raw
+  if (raw.length > 1 && raw[0] === '[' && raw[raw.length - 1] === ']') {
+    inner = raw.slice(1, -1).replace(/_/g, ' ')
+  }
+  const px = /^(-?\d*\.?\d+)px$/.exec(inner)
+  if (px) return Number.parseFloat(px[1])
+  if (/^-?\d*\.?\d+$/.test(inner)) return Number(inner)
+  return inner
+}
+
+/**
+ * Expand a single-side/axis border class (border-t, border-r-2, border-b-[0.5px],
+ * border-x-color5) or a per-corner/edge radius class (rounded-tl-[22px], rounded-t-4)
+ * into its flat style props. Returns null for non-directional classes (bare `border`,
+ * `border-2`, `rounded`, `rounded-lg`, `rounded-8`) so the util map / generic parse handle
+ * them. Without this the converter's directional classes were DEAD: `border-r` became
+ * borderColor:'r', `border-r-color2` failed validation, `rounded-tl-*` was unhandled.
+ */
+function expandBorderClass(
+  base: string,
+  config: TamaguiInternalConfig
+): Record<string, any> | null {
+  // per-corner/edge radius: needs a corner segment AND a value (rounded / rounded-lg /
+  // rounded-8 are non-directional and stay with the generic parse).
+  if (base.startsWith('rounded-')) {
+    const rest = base.slice('rounded-'.length)
+    const dash = rest.indexOf('-')
+    if (dash === -1) return null
+    const props = radiusCornerProps[rest.slice(0, dash)]
+    if (!props) return null
+    const value = borderDimValue(rest.slice(dash + 1))
+    const out: Record<string, any> = {}
+    for (const p of props) out[p] = value
+    return out
+  }
+
+  const m = /^border-([trblxy])(?:-(.+))?$/.exec(base)
+  if (!m) return null
+  const sides = borderSideSuffix[m[1]]
+  const rawVal = m[2]
+  const out: Record<string, any> = {}
+
+  // bare directional (border-r) → 1px on that side (mirrors bare `border` = 1px)
+  if (rawVal === undefined) {
+    for (const s of sides) out[`border${s}Width`] = 1
+    return out
+  }
+
+  const arbitrary =
+    rawVal.length > 1 && rawVal[0] === '[' && rawVal[rawVal.length - 1] === ']'
+  const inner = arbitrary ? rawVal.slice(1, -1).replace(/_/g, ' ') : rawVal
+  // a length (2, 0.5px, 3) is a WIDTH; anything else (a color name/token/hex/var) is a COLOR
+  if (/^-?\d*\.?\d+(px)?$/.test(inner)) {
+    const w = borderDimValue(rawVal)
+    for (const s of sides) out[`border${s}Width`] = w
+  } else {
+    for (const s of sides) {
+      out[`border${s}Color`] = arbitrary
+        ? inner
+        : resolveTokenValue(inner, config, `border${s}Color`)
+    }
+  }
+  return out
+}
+
 /**
  * Validate that a value looks like a valid CSS/Tamagui value for tailwind processing.
  * This prevents "my-custom-class" from being parsed as marginVertical: "custom-class".
@@ -711,9 +825,22 @@ function tailwindClassToFlatProp(
     }
   }
 
-  // border is overloaded: border-2 → borderWidth (raw px), border-red-500 → borderColor
+  // border is overloaded: a LENGTH value is borderWidth, anything else is borderColor.
+  // border-2 → 2, border-[0.5px] → 0.5 (fractional/hairline), border-[2px] → 2 all set
+  // borderWidth as a NUMBER; border-red-500 / border-[#fff] / border-borderColor → color.
+  // (regressed before: `border-[0.5px]` matched neither `^\d+$` here nor a length elsewhere,
+  // so it fell through to borderColor:'0.5px' — a width written into the color prop.)
   if (prop === 'border') {
-    prop = /^\d+$/.test(value) ? 'borderWidth' : 'borderColor'
+    const inner =
+      value.length > 2 && value[0] === '[' && value[value.length - 1] === ']'
+        ? value.slice(1, -1)
+        : value
+    if (/^-?\d*\.?\d+(px)?$/.test(inner)) {
+      const key =
+        modifiers.length > 0 ? `$${modifiers.join(':')}:borderWidth` : `$borderWidth`
+      return { key, value: Number.parseFloat(inner) }
+    }
+    prop = 'borderColor'
   }
 
   // font-* is fontFamily: font-sans/serif/mono → CSS generic; font-[Inter] → arbitrary;
