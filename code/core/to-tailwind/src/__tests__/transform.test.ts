@@ -48,6 +48,19 @@ describe('tamaguiToTailwind', () => {
       expect(output).not.toMatch(/border-(?=\s|")/)
     })
 
+    test('directional borderWidth 1 emits bare `border-t`, not `border-t-`', () => {
+      expect(tamaguiToTailwind(`<View borderTopWidth={1} />`)).toContain(
+        'className="border-t"'
+      )
+      expect(tamaguiToTailwind(`<View borderBottomWidth={1} />`)).toContain(
+        'className="border-b"'
+      )
+      // non-1 widths still get the numeric suffix
+      expect(tamaguiToTailwind(`<View borderTopWidth={2} />`)).toContain(
+        'className="border-t-2"'
+      )
+    })
+
     test('token reference strips $', () => {
       const input = `<View backgroundColor="$blue5" />`
       const output = tamaguiToTailwind(input)
