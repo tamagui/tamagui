@@ -459,9 +459,45 @@ const tailwindUtilityMap: Record<string, Record<string, any>> = {
   // position
   relative: { position: 'relative' },
   absolute: { position: 'absolute' },
+  fixed: { position: 'fixed' },
+  sticky: { position: 'sticky' },
   'inset-0': { top: 0, right: 0, bottom: 0, left: 0 },
   // bare border = 1px
   border: { borderWidth: 1 },
+  // font weight
+  'font-thin': { fontWeight: '100' },
+  'font-extralight': { fontWeight: '200' },
+  'font-light': { fontWeight: '300' },
+  'font-normal': { fontWeight: '400' },
+  'font-medium': { fontWeight: '500' },
+  'font-semibold': { fontWeight: '600' },
+  'font-bold': { fontWeight: '700' },
+  'font-extrabold': { fontWeight: '800' },
+  'font-black': { fontWeight: '900' },
+  // font style
+  italic: { fontStyle: 'italic' },
+  'not-italic': { fontStyle: 'normal' },
+  // text transform
+  uppercase: { textTransform: 'uppercase' },
+  lowercase: { textTransform: 'lowercase' },
+  capitalize: { textTransform: 'capitalize' },
+  'normal-case': { textTransform: 'none' },
+  // text decoration line
+  underline: { textDecorationLine: 'underline' },
+  'line-through': { textDecorationLine: 'line-through' },
+  'no-underline': { textDecorationLine: 'none' },
+  // object fit
+  'object-contain': { objectFit: 'contain' },
+  'object-cover': { objectFit: 'cover' },
+  'object-fill': { objectFit: 'fill' },
+  'object-none': { objectFit: 'none' },
+  'object-scale-down': { objectFit: 'scale-down' },
+  // pointer events
+  'pointer-events-none': { pointerEvents: 'none' },
+  'pointer-events-auto': { pointerEvents: 'auto' },
+  // note: leading-* (lineHeight) is intentionally deferred — tamagui coerces numeric
+  // lineHeight to px so unitless tailwind multipliers can't be expressed here, and the
+  // token/size-variant mapping is pending the typography decision.
 }
 
 // tailwind value aliases for alignment props (items-*/justify-*/content-*/self-*):
