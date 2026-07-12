@@ -83,11 +83,19 @@ describe('tamaguiToTailwind', () => {
       expect(tamaguiToTailwind(`<View margin="$4" />`)).toContain('m-4')
     })
 
-    test('enterStyle/exitStyle stay tamagui props (class does not drive the animation)', () => {
-      // the enter:/exit: className path produces the atomic rule but does not animate
-      // (the driver reads the enterStyle/exitStyle prop), so the codemod leaves them props
-      expect(tamaguiToTailwind(`<View enterStyle={{ opacity: 0 }} />`)).toContain(
-        'enterStyle='
+    test('enterStyle/exitStyle become enter:/exit: classes (reconstructed to props at runtime)', () => {
+      const out = tamaguiToTailwind(`<View enterStyle={{ opacity: 0, scale: 0.95 }} />`)
+      expect(out).toContain('enter:opacity-0')
+      expect(out).toContain('enter:scale-[0.95]')
+      expect(tamaguiToTailwind(`<View exitStyle={{ opacity: 0 }} />`)).toContain(
+        'exit:opacity-0'
+      )
+    })
+
+    test('size / animation props become size-*/animation-* classes', () => {
+      expect(tamaguiToTailwind(`<Text size="$5" />`)).toContain('size-5')
+      expect(tamaguiToTailwind(`<View animation="bouncy" />`)).toContain(
+        'animation-bouncy'
       )
     })
 

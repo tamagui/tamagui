@@ -108,6 +108,24 @@ export function tamaguiToTailwind(
           continue
         }
 
+        // size variant / named animation: styleMode reconstructs these classes back into
+        // the size/animation PROP in createComponent, so emit the class form.
+        if (name === 'size' || name === 'animation') {
+          const strVal = getStringValue(attr.value)
+          if (strVal !== null) {
+            if (name === 'size') {
+              classes.push(
+                strVal.startsWith('$') ? `size-${strVal.slice(1)}` : `size-[${strVal}]`
+              )
+            } else {
+              classes.push(`animation-${strVal}`)
+            }
+            continue
+          }
+          keptAttrs.push(attr)
+          continue
+        }
+
         // try to convert style prop to tailwind class
         const cls = propValueToClass(name, attr.value)
         if (cls) {
