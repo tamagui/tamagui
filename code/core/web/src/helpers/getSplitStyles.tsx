@@ -259,6 +259,9 @@ function looksLikeTailwindClass(
   // leading-* is lineHeight (leading-8 token / leading-[1.25] arbitrary)
   if (cls.startsWith('leading-')) return true
 
+  // tracking-* is letterSpacing; shadow-[..] is an arbitrary boxShadow
+  if (cls.startsWith('tracking-') || cls.startsWith('shadow-[')) return true
+
   // negative utility (-m-1, -mt-2, -top-1): the leading minus negates the value
   const core = cls[0] === '-' ? cls.slice(1) : cls
 
@@ -529,6 +532,14 @@ const alignProps: Record<string, boolean> = {
 // text-<keyword> is textAlign; any other text-* value (text-[14px], text-5) is fontSize.
 const textAlignKeywords = new Set(['left', 'center', 'right', 'justify', 'start', 'end'])
 
+// tailwind percentage utilities: value N → N/100 (opacity-50 → 0.5, scale-95 → 0.95).
+const percentUtilityProps: Record<string, boolean> = {
+  opacity: true,
+  scale: true,
+  scaleX: true,
+  scaleY: true,
+}
+
 // named tailwind line-height multipliers (leading-tight …) as unitless strings.
 const tailwindLeadingNamed: Record<string, string> = {
   none: '1',
@@ -704,6 +715,31 @@ function tailwindClassToFlatProp(
     }
   }
 
+  // tracking-* is letterSpacing: tracking-[-1px] arbitrary, tracking-1 → the $1 token.
+  if (prop === 'tracking') {
+    let lsValue: any
+    if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
+      lsValue = value.slice(1, -1).replace(/_/g, ' ')
+    } else if (/^\d+$/.test(value)) {
+      lsValue = `$${value}`
+    } else {
+      lsValue = value
+    }
+    return {
+      key:
+        modifiers.length > 0 ? `$${modifiers.join(':')}:letterSpacing` : `$letterSpacing`,
+      value: lsValue,
+    }
+  }
+
+  // shadow-[..] is an arbitrary boxShadow (named tailwind elevations aren't mapped).
+  if (prop === 'shadow' && value[0] === '[' && value[value.length - 1] === ']') {
+    return {
+      key: modifiers.length > 0 ? `$${modifiers.join(':')}:boxShadow` : `$boxShadow`,
+      value: value.slice(1, -1).replace(/_/g, ' '),
+    }
+  }
+
   // $ prefix is invalid in className values - tokens are auto-resolved by name
   if (typeof value === 'string' && value.startsWith('$')) {
     if (process.env.NODE_ENV === 'development') {
@@ -771,8 +807,8 @@ function tailwindClassToFlatProp(
   }
 
   // handle special value patterns
-  if (prop === 'opacity' && /^\d+$/.test(value)) {
-    // opacity-50 → 0.5
+  if (percentUtilityProps[prop] && /^\d+$/.test(value)) {
+    // tailwind percentage utilities: opacity-50 → 0.5, scale-95 → 0.95, scale-100 → 1
     value = Number(value) / 100
   } else if (/^\d+(\.\d+)?$/.test(value) && !value.startsWith('$')) {
     // numeric values: apply Tailwind's spacing/sizing scale (N → N * 0.25rem = N*4px),

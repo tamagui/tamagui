@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test } from 'vitest'
 
 import { defaultConfig } from '@tamagui/config/v6'
-import { View, createTamagui, getConfig, StyleObjectValue } from '../web/src'
+import { View, Text, createTamagui, getConfig, StyleObjectValue } from '../web/src'
 import { simplifiedGetSplitStyles, findRule } from './utils'
 
 // standard tailwind arbitrary values: prop-[value] uses the bracketed CSS directly.
@@ -87,5 +87,39 @@ describe('styleMode negative utilities', () => {
 
   test('positive m-1 is unaffected (margin 4px)', () => {
     expect(ruleFor('m-1', 'marginTop')[StyleObjectValue]).toBe('4px')
+  })
+})
+
+describe('styleMode letterSpacing / boxShadow / scale', () => {
+  // letterSpacing is a text prop → resolve on Text
+  const textRule = (className: string, prop: string) =>
+    findRule(simplifiedGetSplitStyles(Text, { className } as any).rulesToInsert, prop)
+
+  test('tracking-[-1px] → letterSpacing -1px', () => {
+    expect(textRule('tracking-[-1px]', 'letterSpacing')[StyleObjectValue]).toBe('-1px')
+  })
+
+  test('tracking-1 → the $1 letterSpacing token', () => {
+    expect(textRule('tracking-1', 'letterSpacing')[StyleObjectValue]).toContain('var(--')
+  })
+
+  test('shadow-[..] → arbitrary boxShadow with underscores as spaces', () => {
+    expect(
+      ruleFor('shadow-[0_8px_18px_rgba(0,0,0,0.1)]', 'boxShadow')[StyleObjectValue]
+    ).toBe('0 8px 18px rgba(0,0,0,0.1)')
+  })
+
+  test('scale-95 → scale(0.95) (percentage utility, /100 like opacity)', () => {
+    expect(ruleFor('scale-95', 'transform')[StyleObjectValue]).toContain('scale(0.95)')
+  })
+
+  test('scale-100 → scale(1)', () => {
+    expect(ruleFor('scale-100', 'transform')[StyleObjectValue]).toContain('scale(1)')
+  })
+
+  test('scale-[0.95] arbitrary is unchanged', () => {
+    expect(ruleFor('scale-[0.95]', 'transform')[StyleObjectValue]).toContain(
+      'scale(0.95)'
+    )
   })
 })
