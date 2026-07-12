@@ -20,17 +20,12 @@
  *
  * CONFIG-AWARE: the converter is a GENERAL tool run on arbitrary apps, so the scale values MUST
  * come from the app's ACTUAL config (an app may set space.$4 = 20, zIndex.$4 = 40). the caller
- * passes the config token scales; the bundled `@tamagui/themes/v5` values are used ONLY as an
+ * passes the config token scales; the parity-checked in-package snapshot is used ONLY as an
  * explicit fallback when no config tokens are supplied.
  */
 
 import { tokenCategories } from '@tamagui/helpers/tokenCategories'
-// CANONICAL default scales — a STATIC import of the source-of-truth token data. this is a
-// DECLARED dependency (package.json), so it resolves in a packed/published install, and a
-// static `import` compiles correctly to BOTH esm and cjs (the earlier bug was an UNDECLARED
-// bare `require()`, which is `undefined` in ESM → silently empty tokens → the ×4 scale). there
-// is exactly ONE owner of these numbers (no hand-copied duplicate that can drift).
-import { tokens as canonicalDefaultTokens } from '@tamagui/themes/v5'
+import { bundledDefaultTokenScales } from './defaultTokenScales'
 
 // { space?, size?, radius?, zIndex? } — the numeric token scales from the app config.
 export interface TokenScales {
@@ -59,7 +54,7 @@ const fontProps = new Set([
 ])
 
 // exposed for the packed-consumer + parity tests (must equal the runtime default tokens).
-export const defaultTokenScales: TokenScales = canonicalDefaultTokens as TokenScales
+export const defaultTokenScales: TokenScales = bundledDefaultTokenScales
 
 /**
  * does `prop` resolve against a NUMERIC token scale (space/size/radius/zIndex)? true for those;
@@ -102,7 +97,7 @@ export function resolveTokenArbitrary(
   if (fontProps.has(prop)) return null // font-resolved, dynamic
   const cat = tokenCategoryByKey[prop] ?? 'space'
   if (cat === 'color') return null // theme-resolved, dynamic
-  const scales = tokens ?? (canonicalDefaultTokens as TokenScales)
+  const scales = tokens ?? bundledDefaultTokenScales
   const scale = (scales as any)[cat] as Record<string, any> | undefined
   if (!scale) return null
   // space/size/zIndex store keys WITH `$` (`$4`); radius stores them WITHOUT (`8`); negative
