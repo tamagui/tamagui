@@ -262,6 +262,9 @@ function looksLikeTailwindClass(
   // tracking-* is letterSpacing; shadow-[..] is an arbitrary boxShadow
   if (cls.startsWith('tracking-') || cls.startsWith('shadow-[')) return true
 
+  // size-* maps to the tamagui `size` compound variant
+  if (cls.startsWith('size-')) return true
+
   // negative utility (-m-1, -mt-2, -top-1): the leading minus negates the value
   const core = cls[0] === '-' ? cls.slice(1) : cls
 
@@ -712,6 +715,23 @@ function tailwindClassToFlatProp(
     return {
       key: modifiers.length > 0 ? `$${modifiers.join(':')}:lineHeight` : `$lineHeight`,
       value: lhValue,
+    }
+  }
+
+  // size-* maps to the tamagui `size` compound variant (fontSize/lineHeight ramp on text,
+  // width/height on sizable components): size-5 → size="$5", size-[14px] → size="14px".
+  if (prop === 'size') {
+    let szValue: any
+    if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
+      szValue = value.slice(1, -1).replace(/_/g, ' ')
+    } else if (/^\d+$/.test(value)) {
+      szValue = `$${value}`
+    } else {
+      szValue = value
+    }
+    return {
+      key: modifiers.length > 0 ? `$${modifiers.join(':')}:size` : `$size`,
+      value: szValue,
     }
   }
 
