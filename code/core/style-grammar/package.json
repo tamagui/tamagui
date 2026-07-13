@@ -1,22 +1,25 @@
 {
-  "name": "@tamagui/to-tailwind",
-  "version": "2.4.0",
-  "private": false,
+  "name": "@tamagui/style-grammar",
+  "version": "2.4.3",
+  "license": "MIT",
   "type": "module",
   "sideEffects": false,
   "source": "src/index.ts",
   "files": [
     "src/index.ts",
-    "src/transform.ts",
-    "src/maps",
+    "src/candidate.ts",
+    "src/registry.ts",
+    "src/table.ts",
     "types",
     "dist"
   ],
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs",
+  "types": "types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "types": "./types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
       "browser": "./dist/esm/index.mjs",
       "module": "./dist/esm/index.mjs",
@@ -25,21 +28,16 @@
       "default": "./dist/esm/index.mjs"
     }
   },
-  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tamagui-build --exclude __tests__",
-    "test": "vitest --run src",
-    "test:web": "vitest --run src"
+    "test": "vitest --run src"
   },
-  "dependencies": {
-    "@babel/parser": "^7.25.4",
-    "@babel/traverse": "^7.25.4",
-    "@babel/generator": "^7.25.5",
-    "@babel/types": "^7.25.4",
-    "@tamagui/shorthands": "workspace:*",
-    "@tamagui/style-grammar": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@tamagui/build": "workspace:*",
     "vitest": "4.0.4"
   }
 }

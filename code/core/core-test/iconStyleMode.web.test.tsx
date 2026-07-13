@@ -43,19 +43,24 @@ describe('icon styleMode color reconstruction', () => {
     expect(out.className).toBe('size-8')
   })
 
-  test('raw color (color-red) stays raw, not a token', () => {
+  test('raw color uses brackets and stays raw, not a token', () => {
     expect(
-      (reconstructIconStyleModeProps({ className: 'color-red' } as any, theme()) as any)
+      (reconstructIconStyleModeProps({ className: 'color-[red]' } as any, theme()) as any)
         .color
     ).toBe('red')
   })
 
-  test('an explicit color prop wins over the class', () => {
+  test('className is last and wins over an explicit color prop', () => {
     const out = reconstructIconStyleModeProps(
       { className: 'color-color5', color: '$color10' } as any,
       theme()
     ) as any
-    expect(out.color).toBe('$color10')
+    expect(out.color).toBe('$color5')
+  })
+
+  test('missing color tokens are passthrough', () => {
+    const props = { className: 'color-notConfigured' } as any
+    expect(reconstructIconStyleModeProps(props, theme())).toBe(props)
   })
 
   test('non-icon classes are preserved on className', () => {

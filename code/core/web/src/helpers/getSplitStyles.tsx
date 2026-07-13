@@ -18,6 +18,18 @@ import {
   validPseudoKeys,
   validStyles as validStylesView,
 } from '@tamagui/helpers'
+import {
+  borderSideSuffix,
+  classifyCandidate,
+  decodeArbitrary,
+  getTokenCategory,
+  hasTokenName,
+  modifierToPseudo,
+  percentUtilityProps,
+  radiusCornerProps,
+  type GrammarConfigView,
+  type ParsedCandidate,
+} from '@tamagui/style-grammar'
 import React from 'react'
 import { getConfig, getFont, getSetting } from '../config'
 import { isDevTools } from '../constants/isDevTools'
@@ -107,17 +119,6 @@ type StyleSplitter = (
 
 export const PROP_SPLIT = '-'
 
-// derive flat pseudo map from pseudoDescriptors: { hover: 'hoverStyle', press: 'pressStyle', ... }
-// maps both CSS name (focus-visible) and stateKey (press) to the style key
-const flatPseudoMap: Record<string, string> = {}
-for (const styleKey in pseudoDescriptors) {
-  const desc = pseudoDescriptors[styleKey as keyof typeof pseudoDescriptors]
-  flatPseudoMap[desc.name] = styleKey
-  if (desc.stateKey && desc.stateKey !== desc.name) {
-    flatPseudoMap[desc.stateKey] = styleKey
-  }
-}
-
 interface FlatParsedProp {
   mediaKey?: string
   pseudoKey?: string
@@ -168,10 +169,17 @@ function parseFlatModifierProp(
       propShort = foundProp
       // resolve the embedded value (numeric, token, etc.)
       if (/^\d+(\.\d+)?$/.test(embeddedValue)) {
-        finalValue = Number(embeddedValue)
+        const expanded = shorthands[foundProp] || foundProp
+        finalValue = isTokenValueProp(expanded)
+          ? `$${embeddedValue}`
+          : Number(embeddedValue)
       } else {
         // try to resolve as token (handles "blue", "some-token", etc.)
-        finalValue = resolveTokenValue(embeddedValue, config)
+        finalValue = resolveTokenValue(
+          embeddedValue,
+          config,
+          shorthands[foundProp] || foundProp
+        )
       }
     }
   }
@@ -183,8 +191,8 @@ function parseFlatModifierProp(
   // parse modifiers (order doesn't matter)
   for (const mod of parts) {
     // check pseudo
-    if (mod in flatPseudoMap) {
-      result.pseudoKey = flatPseudoMap[mod]
+    if (mod in modifierToPseudo) {
+      result.pseudoKey = modifierToPseudo[mod]
       continue
     }
 
@@ -235,47 +243,6 @@ function isTailwindModeEnabled(config: TamaguiInternalConfig): boolean {
 }
 
 /**
- * Check if a class looks like a valid tailwind-style class by checking if its
- * prop prefix is a known shorthand or style property.
- */
-function looksLikeTailwindClass(
-  cls: string,
-  shorthands: Record<string, string>,
-  config: TamaguiInternalConfig
-): boolean {
-  // classes with colons are always considered tailwind (modifiers)
-  if (cls.includes(':')) return true
-
-  // two-segment prop prefixes (min-w-24, max-h-12, translate-x-*, translate-y-*)
-  if (/^(?:(?:min|max)-[wh]|translate-[xy])-/.test(cls)) return true
-
-  // border utilities are overloaded (border-2 width vs border-red-500 color) — recognize them
-  if (cls.startsWith('border-')) return true
-
-  // font-* is fontFamily (font-mono/sans/serif or font-<tamaguiFamily>); font weights are
-  // matched earlier via tailwindUtilityMap, so any font-* reaching here is a family.
-  if (cls.startsWith('font-')) return true
-
-  // leading-* is lineHeight (leading-8 token / leading-[1.25] arbitrary)
-  if (cls.startsWith('leading-')) return true
-
-  // tracking-* is letterSpacing; shadow-[..] is an arbitrary boxShadow; aspect-* is aspectRatio
-  if (cls.startsWith('tracking-') || cls.startsWith('shadow-[')) return true
-  if (cls.startsWith('aspect-')) return true
-
-  // negative utility (-m-1, -mt-2, -top-1): the leading minus negates the value
-  const core = cls[0] === '-' ? cls.slice(1) : cls
-
-  // for prop-value patterns like "bg-red", check if the prop is known
-  const dashIndex = core.indexOf('-')
-  if (dashIndex === -1) return false
-
-  const prop = core.slice(0, dashIndex)
-  // only consider it tailwind if the prop is a known shorthand or style prop
-  return !!(shorthands?.[prop] || prop in stylePropsAll)
-}
-
-/**
  * Preprocess Tailwind-style className strings into flat props.
  * Transforms syntax like className="hover:bg-$blue5 sm:p-$4" into flat props.
  * Works with user-defined tokens - does NOT hardcode Tailwind's color/spacing system.
@@ -300,24 +267,19 @@ function preprocessTailwindClassName(
   const classes = className.split(/\s+/).filter(Boolean)
   const regularClasses: string[] = []
   const result: Record<string, any> = { ...props }
+  const grammarConfig = getStyleGrammarConfig(config)
 
   for (const cls of classes) {
-    // Component-level named animation prop. `animation-*` is deliberately non-standard;
-    // Tailwind owns `animate-*`, so leave those classes untouched for Tailwind itself.
-    const c0 = cls.charCodeAt(0)
-    if (c0 === 97 /* a */ && cls.startsWith('animation-')) {
-      const v = cls.slice(cls.indexOf('-') + 1)
-      result.animation =
-        v.charCodeAt(0) === 91 && v.charCodeAt(v.length - 1) === 93 ? v.slice(1, -1) : v
+    const classification = classifyCandidate(cls, grammarConfig)
+    if (classification.kind === 'passthrough') {
+      regularClasses.push(cls)
       continue
     }
-
+    const parsed = classification.parsed
     // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
     // these may emit multiple props and may have no dash, so handle before the generic parse.
-    const ci = cls.lastIndexOf(':')
-    const base = ci === -1 ? cls : cls.slice(ci + 1)
-    const mods = ci === -1 ? '' : cls.slice(0, ci)
-    const util = tailwindUtilityMap[base]
+    const mods = parsed.modifiers.join(':')
+    const util = parsed.kind === 'utility' ? parsed.properties : null
     if (util) {
       for (const p in util) {
         // BASE (unmodified) util props are set DIRECTLY as props so they flow through the normal
@@ -329,22 +291,19 @@ function preprocessTailwindClassName(
       }
       continue
     }
-    // single-side/axis borders + per-corner radii (may emit multiple props, and overload
-    // width-vs-color, so they can't go through the generic first-dash split)
-    const borderProps = expandBorderClass(base, config)
-    if (borderProps) {
-      for (const p in borderProps) {
-        result[mods ? `$${mods}:${p}` : `$${p}`] = borderProps[p]
+    // Resolve only after the registry has claimed the candidate. Directional border/radius
+    // expansion below consumes that parsed decision instead of re-parsing width vs color.
+    const flatProp = tailwindClassToFlatProp(parsed, config)
+    if (flatProp) {
+      const expanded = expandBorderCandidate(parsed, flatProp.value)
+      if (expanded) {
+        for (const p in expanded) {
+          result[mods ? `$${mods}:${p}` : `$${p}`] = expanded[p]
+        }
+      } else {
+        result[flatProp.key] = flatProp.value
       }
       continue
-    }
-    // otherwise try the generic prop-value conversion
-    if (looksLikeTailwindClass(cls, shorthands, config)) {
-      const flatProp = tailwindClassToFlatProp(cls, shorthands, config)
-      if (flatProp) {
-        result[flatProp.key] = flatProp.value
-        continue // successfully converted, don't add to regularClasses
-      }
     }
     // preserve all other classes (non-tailwind or failed conversion)
     regularClasses.push(cls)
@@ -367,8 +326,8 @@ const STYLE_MODE_PREPROCESSED = Symbol('tamaguiStyleModePreprocessed')
 
 /**
  * The single styleMode pass: tokenizes className once and flattens the resulting props once,
- * producing the component-level PROPS (enterStyle/exitStyle via the flat-props pass, size +
- * animation via the className pass) plus the style props. Hoisted to run in createComponent
+ * producing enterStyle/exitStyle via the flat-props pass plus ordinary style props. Hoisted to
+ * run in createComponent
  * BEFORE the state/variant/animation machinery reads those props; getSplitStyles then skips
  * its own preprocess for these marked props (guarded, so direct callers still self-process
  * exactly once). Non-styleMode returns immediately with zero tokenization.
@@ -411,6 +370,59 @@ function getThemeValueKeys(config: TamaguiInternalConfig): Set<string> {
   return set
 }
 
+const styleGrammarConfigCache = new WeakMap<TamaguiInternalConfig, GrammarConfigView>()
+
+function addNames(target: Set<string>, source: Record<string, any> | undefined): void {
+  if (!source) return
+  for (const key in source) target.add(key[0] === '$' ? key.slice(1) : key)
+}
+
+function getStyleGrammarConfig(config: TamaguiInternalConfig): GrammarConfigView {
+  const cached = styleGrammarConfigCache.get(config)
+  if (cached) return cached
+
+  const tokenNames: NonNullable<GrammarConfigView['tokenNames']> = {
+    space: new Set<string>(),
+    size: new Set<string>(),
+    radius: new Set<string>(),
+    zIndex: new Set<string>(),
+    color: new Set<string>(),
+    fontFamily: new Set<string>(),
+    fontSize: new Set<string>(),
+    lineHeight: new Set<string>(),
+    letterSpacing: new Set<string>(),
+  }
+  for (const category of ['space', 'size', 'radius', 'zIndex', 'color'] as const) {
+    addNames(tokenNames[category] as Set<string>, config.tokensParsed?.[category])
+  }
+  for (const value of getThemeValueKeys(config)) {
+    ;(tokenNames.color as Set<string>).add(value)
+  }
+  for (const familyName in config.fontsParsed) {
+    ;(tokenNames.fontFamily as Set<string>).add(
+      familyName[0] === '$' ? familyName.slice(1) : familyName
+    )
+    const font = config.fontsParsed[familyName]
+    addNames(tokenNames.fontSize as Set<string>, font?.size)
+    addNames(tokenNames.lineHeight as Set<string>, font?.lineHeight)
+    addNames(tokenNames.letterSpacing as Set<string>, font?.letterSpacing)
+  }
+
+  const platformNames = new Set<string>()
+  for (const key of platformMediaKeys) {
+    platformNames.add(key[0] === '$' ? key.slice(1) : key)
+  }
+  const view: GrammarConfigView = {
+    shorthands: config.shorthands,
+    mediaNames: config.media,
+    themeNames: config.themes,
+    platformNames,
+    tokenNames,
+  }
+  styleGrammarConfigCache.set(config, view)
+  return view
+}
+
 /**
  * Check if a value matches a token name (without $ prefix).
  * Returns the token value prefixed with $ if found, otherwise returns the original value.
@@ -423,15 +435,10 @@ function resolveTokenValue(
   // already a token reference
   if (value.startsWith('$')) return value
 
-  // check if value matches a token in any category
-  const tokensParsed = config.tokensParsed
-  if (tokensParsed) {
-    for (const category in tokensParsed) {
-      // tokens are stored with $ prefix internally
-      if (tokensParsed[category]?.[`$${value}`]) {
-        return `$${value}`
-      }
-    }
+  // Token lookup is category-specific: p-red must not borrow a color token for padding.
+  const category = prop ? getTokenCategory(prop) : null
+  if (category && hasTokenName(getStyleGrammarConfig(config), category, value)) {
+    return `$${value}`
   }
 
   // theme-value color names (bg-color5, text-color10, border-borderColor) aren't tokens
@@ -444,204 +451,8 @@ function resolveTokenValue(
   return value
 }
 
-// props that expect numeric/spacing values (prevents "my-theme" → margin)
-// built from tokenCategories.size + tokenCategories.radius + space/position props
-const numericOnlyProps: Record<string, boolean> = {
-  ...tokenCategories.size,
-  ...tokenCategories.radius,
-  gap: true,
-  rowGap: true,
-  columnGap: true,
-  top: true,
-  right: true,
-  bottom: true,
-  left: true,
-  inset: true,
-  margin: true,
-  marginTop: true,
-  marginRight: true,
-  marginBottom: true,
-  marginLeft: true,
-  marginHorizontal: true,
-  marginVertical: true,
-  padding: true,
-  paddingTop: true,
-  paddingRight: true,
-  paddingBottom: true,
-  paddingLeft: true,
-  paddingHorizontal: true,
-  paddingVertical: true,
-  borderWidth: true,
-}
-
-function isSpacingProp(prop: string): boolean {
-  return prop in numericOnlyProps
-}
-
-// props that follow Tailwind's spacing/sizing scale (numeric N → N * 0.25rem = N*4px).
-// reuses tokenCategories.size for the sizing half; spacing/position is listed explicitly
-// (there's no tokenCategories.space — those are the "everything else" default).
-// deliberately EXCLUDES radius/borderWidth/zIndex/flex etc. which take px/numbers but are
-// NOT on Tailwind's spacing scale (border-2 → 2px, rounded-lg → named, z-10 → 10).
-const tailwindScaleProps: Record<string, boolean> = {
-  ...tokenCategories.size,
-  gap: true,
-  rowGap: true,
-  columnGap: true,
-  top: true,
-  right: true,
-  bottom: true,
-  left: true,
-  inset: true,
-  margin: true,
-  marginTop: true,
-  marginRight: true,
-  marginBottom: true,
-  marginLeft: true,
-  marginHorizontal: true,
-  marginVertical: true,
-  padding: true,
-  paddingTop: true,
-  paddingRight: true,
-  paddingBottom: true,
-  paddingLeft: true,
-  paddingHorizontal: true,
-  paddingVertical: true,
-}
-
-// named tailwind utilities whose whole class maps to fixed prop(s)+value(s). these overload the
-// generic prop-value split (e.g. flex-row is flexDirection, not flex:'row') or have no value
-// (hidden → display:none), so they can't be derived. each maps to one or more style props.
-const tailwindUtilityMap: Record<string, Record<string, any>> = {
-  'flex-row': { flexDirection: 'row' },
-  'flex-row-reverse': { flexDirection: 'row-reverse' },
-  'flex-col': { flexDirection: 'column' },
-  'flex-col-reverse': { flexDirection: 'column-reverse' },
-  'flex-wrap': { flexWrap: 'wrap' },
-  'flex-wrap-reverse': { flexWrap: 'wrap-reverse' },
-  'flex-nowrap': { flexWrap: 'nowrap' },
-  // flex-1 → the tamagui `flex` shorthand = 1, resolved by the SAME expansion as `flex={1}`
-  // (native keeps { flex: 1 }; web expands to grow/shrink/basis) → parity on both targets.
-  'flex-1': { flex: 1 },
-  'flex-auto': { flexGrow: 1, flexShrink: 1, flexBasis: 'auto' },
-  'flex-initial': { flexGrow: 0, flexShrink: 1, flexBasis: 'auto' },
-  'flex-none': { flexGrow: 0, flexShrink: 0, flexBasis: 'auto' },
-  // display keywords. `hidden`→none and `flex`→flex are the pair the app template's
-  // responsive show/hide relies on (base `hidden` + `$md:flex`, base `flex` + `$md:hidden`);
-  // without bare `flex` the media class only toggles OFF (hidden) and never back ON.
-  flex: { display: 'flex' },
-  'inline-flex': { display: 'inline-flex' },
-  block: { display: 'block' },
-  inline: { display: 'inline' },
-  grid: { display: 'grid' },
-  contents: { display: 'contents' },
-  hidden: { display: 'none' },
-  // border styles (converter emits border-solid/dashed/dotted from borderStyle)
-  'border-solid': { borderStyle: 'solid' },
-  'border-dashed': { borderStyle: 'dashed' },
-  'border-dotted': { borderStyle: 'dotted' },
-  // borderStyle only — must NOT also set borderWidth:0 (that would diverge from the source
-  // prop borderStyle="none", which the parity gate compares against).
-  'border-none': { borderStyle: 'none' },
-  // position
-  relative: { position: 'relative' },
-  absolute: { position: 'absolute' },
-  fixed: { position: 'fixed' },
-  sticky: { position: 'sticky' },
-  static: { position: 'static' },
-  'inset-0': { top: 0, right: 0, bottom: 0, left: 0 },
-  // bare border = 1px
-  border: { borderWidth: 1 },
-  // font weight
-  'font-thin': { fontWeight: '100' },
-  'font-extralight': { fontWeight: '200' },
-  'font-light': { fontWeight: '300' },
-  'font-normal': { fontWeight: '400' },
-  'font-medium': { fontWeight: '500' },
-  'font-semibold': { fontWeight: '600' },
-  'font-bold': { fontWeight: '700' },
-  'font-extrabold': { fontWeight: '800' },
-  'font-black': { fontWeight: '900' },
-  // font style
-  italic: { fontStyle: 'italic' },
-  'not-italic': { fontStyle: 'normal' },
-  // text transform
-  uppercase: { textTransform: 'uppercase' },
-  lowercase: { textTransform: 'lowercase' },
-  capitalize: { textTransform: 'capitalize' },
-  'normal-case': { textTransform: 'none' },
-  // text decoration line
-  underline: { textDecorationLine: 'underline' },
-  'line-through': { textDecorationLine: 'line-through' },
-  'no-underline': { textDecorationLine: 'none' },
-  // object fit
-  'object-contain': { objectFit: 'contain' },
-  'object-cover': { objectFit: 'cover' },
-  'object-fill': { objectFit: 'fill' },
-  'object-none': { objectFit: 'none' },
-  'object-scale-down': { objectFit: 'scale-down' },
-  // pointer events (incl. the React Native box-none / box-only values). pointerEvents resolves
-  // into viewProps, not style — the round-trip comparator must check viewProps too.
-  'pointer-events-none': { pointerEvents: 'none' },
-  'pointer-events-auto': { pointerEvents: 'auto' },
-  'pointer-events-box-none': { pointerEvents: 'box-none' },
-  'pointer-events-box-only': { pointerEvents: 'box-only' },
-  // note: leading-* (lineHeight) is intentionally deferred — tamagui coerces numeric
-  // lineHeight to px so unitless tailwind multipliers can't be expressed here, and the
-  // token/size-variant mapping is pending the typography decision.
-}
-
-// tailwind value aliases for alignment props (items-*/justify-*/content-*/self-*):
-// e.g. justify-between → space-between, justify-start → flex-start.
-const tailwindAlignValues: Record<string, string> = {
-  between: 'space-between',
-  around: 'space-around',
-  evenly: 'space-evenly',
-  start: 'flex-start',
-  end: 'flex-end',
-}
-const alignProps: Record<string, boolean> = {
-  justifyContent: true,
-  alignItems: true,
-  alignContent: true,
-  alignSelf: true,
-}
-
-// text-<keyword> is textAlign; any other text-* value (text-[14px], text-5) is fontSize.
-const textAlignKeywords = new Set(['left', 'center', 'right', 'justify', 'start', 'end'])
-
-// tailwind percentage utilities: value N → N/100 (opacity-50 → 0.5, scale-95 → 0.95).
-const percentUtilityProps: Record<string, boolean> = {
-  opacity: true,
-  scale: true,
-  scaleX: true,
-  scaleY: true,
-}
-
-// named tailwind line-height multipliers (leading-tight …) as unitless strings.
-const tailwindLeadingNamed: Record<string, string> = {
-  none: '1',
-  tight: '1.25',
-  snug: '1.375',
-  normal: '1.5',
-  relaxed: '1.625',
-  loose: '2',
-}
-
-// tailwind utilities whose PROP spans two dash-segments (min-w-*, max-h-*, …). the generic
-// parser splits on the first dash, so these need explicit recognition.
-const tailwindPropPrefixes: Record<string, string> = {
-  'min-w': 'minWidth',
-  'min-h': 'minHeight',
-  'max-w': 'maxWidth',
-  'max-h': 'maxHeight',
-  'translate-x': 'x',
-  'translate-y': 'y',
-}
-
-// class prefixes whose prop name differs from the prefix (aspect-[1.5] → aspectRatio).
-const tailwindPropAlias: Record<string, string> = {
-  aspect: 'aspectRatio',
+function isTokenValueProp(prop: string): boolean {
+  return getTokenCategory(prop) !== null
 }
 
 // CANONICAL arbitrary-value coercion. an arbitrary `[..]` whose inner is a UNITLESS number
@@ -658,15 +469,6 @@ function arbitraryValue(inner: string): number | string {
   return inner
 }
 
-// decode the inside of an arbitrary `[..]` value: a `_` is a space, but an ESCAPED `\_` is a
-// LITERAL underscore (so `var(--my\_color)` → `var(--my_color)`, not `var(--my color)`). mirror
-// of the converter's encodeArbitrary. blindly decoding every `_` corrupted var()/calc() names.
-function decodeArbitrary(inner: string): string {
-  // protect escaped `\\_` (literal underscore) with a sentinel, decode `_`->space, then restore
-  const SENT = '\uE000'
-  return inner.replace(/\\_/g, SENT).replace(/_/g, ' ').split(SENT).join('_')
-}
-
 // tailwind sizing keywords / fractions for width/height/min/max props.
 // returns a CSS value, or null if `value` isn't a sizing keyword (falls through to normal parse).
 function tailwindSizingValue(prop: string, value: string): string | null {
@@ -679,28 +481,6 @@ function tailwindSizingValue(prop: string, value: string): string | null {
   const frac = /^(\d+)\/(\d+)$/.exec(value)
   if (frac) return `${(Number(frac[1]) / Number(frac[2])) * 100}%`
   return null
-}
-
-// single-side / axis border prefixes → the physical sides they set.
-const borderSideSuffix: Record<string, string[]> = {
-  t: ['Top'],
-  r: ['Right'],
-  b: ['Bottom'],
-  l: ['Left'],
-  x: ['Left', 'Right'],
-  y: ['Top', 'Bottom'],
-}
-
-// per-corner / per-edge radius prefixes → the corner radius props they set.
-const radiusCornerProps: Record<string, string[]> = {
-  tl: ['borderTopLeftRadius'],
-  tr: ['borderTopRightRadius'],
-  bl: ['borderBottomLeftRadius'],
-  br: ['borderBottomRightRadius'],
-  t: ['borderTopLeftRadius', 'borderTopRightRadius'],
-  b: ['borderBottomLeftRadius', 'borderBottomRightRadius'],
-  l: ['borderTopLeftRadius', 'borderBottomLeftRadius'],
-  r: ['borderTopRightRadius', 'borderBottomRightRadius'],
 }
 
 // unwrap a possibly-arbitrary value ([2px] → "2px") and coerce a bare number / px length to
@@ -717,185 +497,69 @@ function borderDimValue(raw: string): number | string {
   return inner
 }
 
-// a border VALUE is a numeric WIDTH only for a bare integer (border-2, border-r-2) or an
-// Npx length (border-[0.5px], border-[2px]) — NEVER for a color, token, calc(), rem, %, or
-// var(...), which stay a border COLOR. always a NUMBER: React Native rejects "Npx" strings
-// for borderWidth, and a number is valid on web too (CSS re-adds px). returns null to signal
-// "this is a color, not a width".
-function borderWidthValue(rawVal: string): number | null {
-  const arbitrary =
-    rawVal.length > 1 && rawVal[0] === '[' && rawVal[rawVal.length - 1] === ']'
-  const inner = arbitrary ? rawVal.slice(1, -1) : rawVal
-  // bare integer (non-bracketed): border-2, border-r-3
-  if (!arbitrary && /^\d+$/.test(inner)) return Number(inner)
-  // Npx length (bracketed or bare): [0.5px], [2px], 2px
-  if (/^-?(?:\d+|\d*\.\d+)px$/.test(inner)) return Number.parseFloat(inner)
-  return null
-}
-
 /**
- * Expand a single-side/axis border class (border-t, border-r-2, border-b-[0.5px],
- * border-x-color5) or a per-corner/edge radius class (rounded-tl-[22px], rounded-t-4)
- * into its flat style props. Returns null for non-directional classes (bare `border`,
- * `border-2`, `rounded`, `rounded-lg`, `rounded-8`) so the util map / generic parse handle
- * them. Without this the converter's directional classes were DEAD: `border-r` became
- * borderColor:'r', `border-r-color2` failed validation, `rounded-tl-*` was unhandled.
+ * Expand a registry-parsed directional border/radius into all affected props. The registry
+ * already selected the token category and width-vs-color meaning; this function only expands
+ * that semantic result across sides/corners.
  */
-function expandBorderClass(
-  base: string,
-  config: TamaguiInternalConfig
+function expandBorderCandidate(
+  parsed: ParsedCandidate,
+  value: any
 ): Record<string, any> | null {
-  // per-corner/edge radius: needs a corner segment AND a value (rounded / rounded-lg /
-  // rounded-8 are non-directional and stay with the generic parse).
-  if (base.startsWith('rounded-')) {
-    const rest = base.slice('rounded-'.length)
-    const dash = rest.indexOf('-')
-    if (dash === -1) return null
-    const props = radiusCornerProps[rest.slice(0, dash)]
-    if (!props) return null
-    const rawVal = rest.slice(dash + 1)
-    const unwrapped =
-      rawVal.length > 1 && rawVal[0] === '[' && rawVal[rawVal.length - 1] === ']'
-        ? decodeArbitrary(rawVal.slice(1, -1))
-        : rawVal
-    // a length/number (22, [22px]) is a raw dimension; a NAMED radius (lg, full, xl) resolves
-    // through the radius token system (rounded-tl-lg → the $lg radius on the top-left corner).
-    const value = /^-?\d*\.?\d+(px)?$/.test(unwrapped)
-      ? borderDimValue(rawVal)
-      : resolveTokenValue(unwrapped, config, props[0])
+  const prefix = parsed.prefix
+  if (!prefix) return null
+  if (prefix.startsWith('rounded-')) {
+    const props = radiusCornerProps[prefix.slice('rounded-'.length)]
+    if (!props || props.length === 1) return null
     const out: Record<string, any> = {}
     for (const p of props) out[p] = value
     return out
   }
 
-  const m = /^border-([trblxy])(?:-(.+))?$/.exec(base)
+  const m = /^border-([trblxy])$/.exec(prefix)
   if (!m) return null
   const sides = borderSideSuffix[m[1]]
-  const rawVal = m[2]
+  const suffix = parsed.entry?.prop.endsWith('Width') ? 'Width' : 'Color'
   const out: Record<string, any> = {}
-
-  // bare directional (border-r) → 1px on that side (mirrors bare `border` = 1px)
-  if (rawVal === undefined) {
-    for (const s of sides) out[`border${s}Width`] = 1
-    return out
-  }
-
-  // a bare integer / Npx length is a numeric WIDTH; anything else (color name/token/hex/var/
-  // calc/%) is a COLOR. width is always a NUMBER (native rejects "Npx" strings).
-  const w = borderWidthValue(rawVal)
-  if (w !== null) {
-    for (const s of sides) out[`border${s}Width`] = w
-  } else {
-    const arbitrary =
-      rawVal.length > 1 && rawVal[0] === '[' && rawVal[rawVal.length - 1] === ']'
-    const inner = arbitrary ? decodeArbitrary(rawVal.slice(1, -1)) : rawVal
-    for (const s of sides) {
-      out[`border${s}Color`] = arbitrary
-        ? inner
-        : resolveTokenValue(inner, config, `border${s}Color`)
-    }
-  }
+  for (const side of sides) out[`border${side}${suffix}`] = value
   return out
 }
 
 /**
- * Validate that a value looks like a valid CSS/Tamagui value for tailwind processing.
- * This prevents "my-custom-class" from being parsed as marginVertical: "custom-class".
- */
-function isValidTailwindValue(
-  value: string,
-  prop: string,
-  shorthands?: Record<string, string>
-): boolean {
-  // numeric values are valid
-  if (/^\d+(\.\d+)?$/.test(value)) return true
-
-  // for spacing/sizing props, values must be numeric (tokens auto-resolve by name)
-  // this prevents "my-theme" from being treated as a margin value. radius is excluded —
-  // Tailwind radii are NAMED (rounded-lg/md/full), which resolve to radius tokens.
-  const expandedProp = shorthands?.[prop] || prop
-  if (isSpacingProp(expandedProp) && !(expandedProp in tokenCategories.radius)) {
-    return /^\d+(\.\d+)?$/.test(value)
-  }
-
-  // for other props (color, etc), simple alphanumeric values are valid
-  // e.g., "red", "blue5", "center", "100"
-  if (/^[a-zA-Z0-9]+$/.test(value)) return true
-
-  // values with only one hyphen that looks like a color variant are ok
-  // e.g., "blue-500", "gray-100"
-  if (/^[a-z]+-\d+$/.test(value)) return true
-
-  // anything else with hyphens is likely a custom class name, not a value
-  // e.g., "custom-class", "my-component"
-  return false
-}
-
-/**
- * Convert a class to a flat prop using config shorthands/tokens.
+ * Resolve a registry-parsed candidate through the active Tamagui config.
  * Examples:
  *   "hover:bg-blue5" → { key: "$hover:backgroundColor", value: "$blue5" } (if blue5 is a token)
  *   "sm:p-4" → { key: "$sm:padding", value: "$4" } (if 4 is a space token)
- *   "bg-red" → { key: "$backgroundColor", value: "red" } (raw CSS value)
+ *   "bg-[red]" → { key: "$backgroundColor", value: "red" } (raw CSS value)
  *   "w-100" → { key: "$width", value: 100 }
  *   "opacity-50" → { key: "$opacity", value: 0.5 }
  * Note: $ prefix in values (e.g., "m-$spacing") is invalid and will warn.
  */
 function tailwindClassToFlatProp(
-  cls: string,
-  shorthands: Record<string, string>,
+  parsed: ParsedCandidate,
   config: TamaguiInternalConfig
 ): { key: string; value: any } | null {
-  // split by colon for modifiers
-  const parts = cls.split(':')
-  const rawLast = parts.pop()!
-  const modifiers = parts
-
-  // negative utility (-m-1, -mt-2, -top-1): a leading minus negates the resolved value
-  const negate = rawLast.length > 1 && rawLast[0] === '-'
-  const lastPart = negate ? rawLast.slice(1) : rawLast
-
-  // parse the prop-value from the last part (e.g., "bg-blue5" → prop: "bg", value: "blue5")
-  const dashIndex = lastPart.indexOf('-')
-  if (dashIndex === -1) {
-    // no value, e.g., "flex" - not supported in this syntax
+  if (parsed.kind !== 'dynamic' || !parsed.entry || parsed.rawValue === undefined) {
     return null
   }
+  const modifiers = parsed.modifiers
+  const prop = parsed.entry.prop
+  const category = parsed.entry.tokenCategory
+  let value: any = parsed.rawValue
 
-  let prop = lastPart.slice(0, dashIndex)
-  let value: any = lastPart.slice(dashIndex + 1)
-
-  // two-segment prop prefixes: min-w-24 → prop minWidth, translate-y-[10px] → prop y
-  if (prop === 'min' || prop === 'max' || prop === 'translate') {
-    const m = /^((?:min|max)-[wh]|translate-[xy])-(.+)$/.exec(lastPart)
-    if (m && tailwindPropPrefixes[m[1]]) {
-      prop = tailwindPropPrefixes[m[1]]
-      value = m[2]
+  if (prop.endsWith('Width') && parsed.prefix?.startsWith('border')) {
+    if (parsed.valueKind === 'token') {
+      value = `$${parsed.negative ? '-' : ''}${value}`
+    } else if (parsed.valueKind === 'arbitrary') {
+      value = borderDimValue(value)
+    } else {
+      return null
     }
+    const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
+    return { key, value }
   }
 
-  // prefix→prop aliases (aspect-[1.5] → aspectRatio)
-  if (tailwindPropAlias[prop]) prop = tailwindPropAlias[prop]
-
-  // border is overloaded: a LENGTH value is borderWidth, anything else is borderColor.
-  // border-2 → 2, border-[0.5px] → 0.5 (fractional/hairline), border-[2px] → 2 all set
-  // borderWidth as a NUMBER; border-red-500 / border-[#fff] / border-borderColor → color.
-  // (regressed before: `border-[0.5px]` matched neither `^\d+$` here nor a length elsewhere,
-  // so it fell through to borderColor:'0.5px' — a width written into the color prop.)
-  if (prop === 'border') {
-    const w = borderWidthValue(value)
-    if (w !== null) {
-      const key =
-        modifiers.length > 0 ? `$${modifiers.join(':')}:borderWidth` : `$borderWidth`
-      return { key, value: w }
-    }
-    prop = 'borderColor'
-  }
-
-  // font-* is fontFamily: font-sans/serif/mono → CSS generic; font-[Inter] → arbitrary;
-  // font-<name> → the $<name> font token (resolves via the font system). font weights
-  // (font-bold, …) are handled earlier by tailwindUtilityMap and never reach here.
-  if (prop === 'font') {
+  if (prop === 'fontFamily') {
     let famValue: string
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
       famValue = decodeArbitrary(value.slice(1, -1))
@@ -913,19 +577,13 @@ function tailwindClassToFlatProp(
     }
   }
 
-  // text-* is overloaded in v6: text-<align> is textAlign (the `text` shorthand), but
-  // text-[14px]/text-5 are fontSize (standard tailwind overloads text-* for size too).
-  // disambiguate by value: alignment keywords stay textAlign, everything else is fontSize.
-  if (prop === 'text' && !textAlignKeywords.has(value)) {
+  if (prop === 'fontSize') {
     let fsValue: any
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
       // fontSize is number-only on native: text-[14px] → 14 (arbitraryValue drops px)
       fsValue = arbitraryValue(decodeArbitrary(value.slice(1, -1)))
-    } else if (/^\d+$/.test(value)) {
-      // text-5 → the $5 font-size token (the converter strips the $ from fontSize="$5")
-      fsValue = `$${value}`
     } else {
-      fsValue = value
+      fsValue = `$${value}`
     }
     return {
       key: modifiers.length > 0 ? `$${modifiers.join(':')}:fontSize` : `$fontSize`,
@@ -933,10 +591,7 @@ function tailwindClassToFlatProp(
     }
   }
 
-  // leading-* is lineHeight: leading-[1.25] (unitless multiplier → NUMBER 1.25),
-  // leading-[24px] (→ NUMBER 24), or leading-8 (the $8 lineHeight token). lineHeight is
-  // number-only on native, so the arbitrary form coerces to a number (unitless stays unitless).
-  if (prop === 'leading') {
+  if (prop === 'lineHeight') {
     let lhValue: any
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
       const inner = decodeArbitrary(value.slice(1, -1))
@@ -944,16 +599,8 @@ function tailwindClassToFlatProp(
       // lineHeight MULTIPLIER and MUST stay a string (a number would be px-ified to "1.25px"
       // on web, breaking the multiplier). RN has no unitless multiplier, so this is web-only.
       lhValue = /^-?\d*\.?\d+px$/.test(inner) ? Number.parseFloat(inner) : inner
-    } else if (value in tailwindLeadingNamed) {
-      // named multipliers as strings so they stay unitless (not coerced to px)
-      lhValue = tailwindLeadingNamed[value]
-    } else if (/^\d+(\.\d+)?$/.test(value)) {
-      // Numeric leading-N is standard Tailwind's quarter-rem scale, not a Tamagui font token:
-      // leading-8 = 2rem = 32px. (text-N and tracking-N are not standard Tailwind utility
-      // names, so their Tamagui token spellings intentionally remain below/in their branches.)
-      lhValue = Number(value) * 4
     } else {
-      lhValue = value
+      lhValue = `$${value}`
     }
     return {
       key: modifiers.length > 0 ? `$${modifiers.join(':')}:lineHeight` : `$lineHeight`,
@@ -961,16 +608,12 @@ function tailwindClassToFlatProp(
     }
   }
 
-  // tracking-* is letterSpacing (number-only on native): tracking-[0px] → 0, tracking-[-1px] →
-  // -1, tracking-1 → the $1 token.
-  if (prop === 'tracking') {
+  if (prop === 'letterSpacing') {
     let lsValue: any
     if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
       lsValue = arbitraryValue(decodeArbitrary(value.slice(1, -1)))
-    } else if (/^\d+$/.test(value)) {
-      lsValue = `$${value}`
     } else {
-      lsValue = value
+      lsValue = `$${value}`
     }
     return {
       key:
@@ -979,32 +622,12 @@ function tailwindClassToFlatProp(
     }
   }
 
-  // shadow-[..] is an arbitrary boxShadow (named tailwind elevations aren't mapped).
-  if (prop === 'shadow' && value[0] === '[' && value[value.length - 1] === ']') {
+  if (prop === 'boxShadow' && value[0] === '[' && value[value.length - 1] === ']') {
     return {
       key: modifiers.length > 0 ? `$${modifiers.join(':')}:boxShadow` : `$boxShadow`,
       value: decodeArbitrary(value.slice(1, -1)),
     }
   }
-
-  // $ prefix is invalid in className values - tokens are auto-resolved by name
-  if (typeof value === 'string' && value.startsWith('$')) {
-    if (process.env.NODE_ENV === 'development') {
-      console.warn(
-        `[tamagui] Invalid className value "${cls}": don't use $ prefix in class mode. ` +
-          `Use "${cls.replace('-$', '-')}" instead — tokens are auto-resolved by name.`
-      )
-    }
-    return null
-  }
-
-  // validate prop is a known shorthand or style prop
-  const isShorthand = !!shorthands?.[prop]
-  if (!isShorthand && !(prop in stylePropsAll)) {
-    return null
-  }
-
-  const expandedProp = isShorthand ? shorthands[prop] : prop
 
   // arbitrary values: p-[4px], w-[100px], rounded-[8px], min-h-[100vh], rotate-[-8deg],
   // h-[calc(100%-2px)], bg-[var(--color5)], bg-[#fff]. use the bracketed value directly as
@@ -1012,10 +635,7 @@ function tailwindClassToFlatProp(
   if (value.length > 2 && value[0] === '[' && value[value.length - 1] === ']') {
     const inner = decodeArbitrary(value.slice(1, -1))
     if (inner === '') return null
-    const key =
-      modifiers.length > 0
-        ? `$${modifiers.join(':')}:${expandedProp}`
-        : `$${expandedProp}`
+    const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
     // px-length + unitless arbitraries become NUMBERS (native requires numbers, drops "Npx"
     // strings); unit/function values stay strings. one canonical rule (arbitraryValue).
     return { key, value: arbitraryValue(inner) }
@@ -1023,13 +643,10 @@ function tailwindClassToFlatProp(
 
   // tailwind sizing keywords / fractions (w-full → 100%, w-1/2 → 50%, w-auto, w-screen).
   // handled before isValidTailwindValue since fractions/keywords aren't plain CSS values.
-  if (tokenCategories.size[expandedProp]) {
-    const sized = tailwindSizingValue(expandedProp, value)
+  if (category === 'size') {
+    const sized = tailwindSizingValue(prop, value)
     if (sized != null) {
-      const key =
-        modifiers.length > 0
-          ? `$${modifiers.join(':')}:${expandedProp}`
-          : `$${expandedProp}`
+      const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
       return { key, value: sized }
     }
   }
@@ -1039,7 +656,7 @@ function tailwindClassToFlatProp(
   // (web) / rgba (native). only for color props; for non-color props a "/" in the
   // value is left intact (e.g. fraction sizing handled above).
   let opacitySuffix = ''
-  if (expandedProp in tokenCategories.color && typeof value === 'string') {
+  if (category === 'color' && typeof value === 'string') {
     const slashIdx = value.lastIndexOf('/')
     if (slashIdx > 0) {
       const tail = value.slice(slashIdx + 1)
@@ -1050,31 +667,23 @@ function tailwindClassToFlatProp(
     }
   }
 
-  // validate value looks like a CSS value, not a class name fragment
-  if (!isValidTailwindValue(value, prop, shorthands)) {
-    return null
-  }
-
   // handle special value patterns
-  if (percentUtilityProps[prop] && /^\d+$/.test(value)) {
+  if (percentUtilityProps.has(prop) && /^\d+$/.test(value)) {
     // tailwind percentage utilities: opacity-50 → 0.5, scale-95 → 0.95, scale-100 → 1
     value = Number(value) / 100
   } else if (/^\d+(\.\d+)?$/.test(value) && !value.startsWith('$')) {
-    // numeric values: apply Tailwind's spacing/sizing scale (N → N * 0.25rem = N*4px),
-    // e.g. p-4 → 16, w-24 → 96, gap-2 → 8. props NOT on that scale (radius, borderWidth,
-    // zIndex, flex, …) stay raw: rounded-8 → 8, z-10 → 10, border-2 → 2.
-    const expanded = isShorthand ? shorthands[prop] : prop
-    const n = Number(value)
-    value = tailwindScaleProps[expanded] ? n * 4 : n
+    if (category) {
+      value = `$${parsed.negative ? '-' : ''}${value}`
+    } else {
+      value = Number(value)
+    }
   } else if (typeof value === 'string') {
-    const expanded = isShorthand ? shorthands[prop] : prop
-    if (alignProps[expanded] && tailwindAlignValues[value]) {
-      // justify-between → space-between, items-start → flex-start, …
-      value = tailwindAlignValues[value]
+    if (category) {
+      value = `$${parsed.negative ? '-' : ''}${value}`
     } else {
       // check if value matches a token name and resolve it
       // e.g., "blue5" → "$blue5" if $blue5 token exists, or a theme color name
-      value = resolveTokenValue(value, config, expanded)
+      value = resolveTokenValue(value, config, prop)
     }
   }
 
@@ -1085,16 +694,12 @@ function tailwindClassToFlatProp(
     value = `${value}${opacitySuffix}`
   }
 
-  // negative utility: negate the resolved numeric value (-m-1 → margin -4)
-  if (negate) {
+  if (parsed.negative && !category) {
     if (typeof value === 'number') value = -value
     else if (typeof value === 'string' && value[0] !== '-') value = `-${value}`
   }
 
-  // build the flat prop key - expand shorthands to full prop name
-  const finalProp = isShorthand ? shorthands[prop] : prop
-  const key =
-    modifiers.length > 0 ? `$${modifiers.join(':')}:${finalProp}` : `$${finalProp}`
+  const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`
 
   return { key, value }
 }

@@ -214,6 +214,9 @@
       "path": "code/core/shorthands"
     },
     {
+      "path": "code/core/style-grammar"
+    },
+    {
       "path": "code/core/simple-hash"
     },
     {

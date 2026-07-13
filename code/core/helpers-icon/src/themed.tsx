@@ -9,6 +9,11 @@ import {
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
 import { SizableContext } from '@tamagui/sizable-context'
+import {
+  classifyCandidate,
+  decodeArbitrary,
+  type GrammarConfigView,
+} from '@tamagui/style-grammar'
 
 import type { FC } from 'react'
 import type { IconProps } from './IconProps'
@@ -32,18 +37,38 @@ type Options = {
 export function reconstructIconStyleModeProps(props: IconProps, theme: any): IconProps {
   const cn = (props as any).className
   if (typeof cn !== 'string' || cn === '') return props
-  const styleMode = getConfig().settings?.styleMode
+  const config = getConfig()
+  const styleMode = config.settings?.styleMode
   if (styleMode !== 'tailwind' && styleMode !== 'tamagui-and-tailwind') return props
   if (!cn.includes('color-')) return props
+
+  const colorNames = new Set<string>()
+  for (const key in config.tokensParsed?.color) {
+    colorNames.add(key[0] === '$' ? key.slice(1) : key)
+  }
+  for (const key in theme) colorNames.add(key[0] === '$' ? key.slice(1) : key)
+  const grammarConfig: GrammarConfigView = {
+    shorthands: config.shorthands,
+    tokenNames: { color: colorNames },
+  }
 
   let color: any
   const rest: string[] = []
   for (const cls of cn.split(/\s+/)) {
     if (!cls) continue
-    if (cls.startsWith('color-')) {
-      // color-color5 → the $color5 theme token; color-red → raw "red"
-      const n = cls.slice(6)
-      color = theme?.[`$${n}`] != null || theme?.[n] != null ? `$${n}` : n
+    const classification = classifyCandidate(cls, grammarConfig)
+    const parsed = classification.kind === 'tamagui' ? classification.parsed : null
+    if (
+      parsed?.kind === 'dynamic' &&
+      parsed.entry?.prop === 'color' &&
+      parsed.modifiers.length === 0 &&
+      parsed.rawValue &&
+      !parsed.rawValue.includes('/')
+    ) {
+      color =
+        parsed.valueKind === 'arbitrary'
+          ? decodeArbitrary(parsed.rawValue.slice(1, -1))
+          : `$${parsed.rawValue}`
       continue
     }
     rest.push(cls)
@@ -51,7 +76,7 @@ export function reconstructIconStyleModeProps(props: IconProps, theme: any): Ico
   if (color === undefined) return props
 
   const next: any = { ...props }
-  if (color !== undefined && (props as any).color === undefined) next.color = color
+  if (color !== undefined) next.color = color
   next.className = rest.length ? rest.join(' ') : undefined
   return next
 }

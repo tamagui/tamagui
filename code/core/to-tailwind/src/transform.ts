@@ -3,17 +3,17 @@ import _traverse from '@babel/traverse'
 import _generate from '@babel/generator'
 import * as t from '@babel/types'
 import {
-  propToTailwindPrefix,
-  standaloneValueProps,
-  componentToTag,
+  defaultMediaKeys,
   fontWeightNames,
-} from './maps/propToClass'
-import { pseudoToModifier, defaultMediaKeys } from './maps/pseudoMap'
-import {
-  resolveTokenArbitrary,
-  isTokenScaleProp,
-  type TokenScales,
-} from './maps/tokenScale'
+  formatCandidate,
+  getTokenCategory,
+  propToTailwindPrefix,
+  pseudoToModifier,
+  standaloneValueProps,
+  type GrammarConfigView,
+  type TokenCategory,
+} from '@tamagui/style-grammar'
+import { componentToTag } from './maps/componentToTag'
 // CANONICAL default shorthands — a STATIC import (declared dep), ESM+CJS-safe, single owner.
 // (replaces a module-global lazy `require('@tamagui/shorthands/v4')`, which was the same
 // ESM-undefined / non-reentrant hazard as the tokens require.)
@@ -24,14 +24,60 @@ const generate = (_generate as any).default ?? _generate
 
 const defaultShorthands = canonicalShorthands as Record<string, string>
 
+function addConfigNames(
+  target: Set<string>,
+  source: Record<string, any> | undefined
+): void {
+  if (!source) return
+  for (const key in source) target.add(key[0] === '$' ? key.slice(1) : key)
+}
+
+function createTransformGrammarConfig(
+  options: TransformOptions,
+  mediaKeys: Set<string>,
+  shorthands: Record<string, string>
+): GrammarConfigView {
+  const tokenNames: Partial<Record<TokenCategory, Set<string>>> = {}
+  for (const category of ['space', 'size', 'radius', 'zIndex', 'color'] as const) {
+    if (options.tokens?.[category]) {
+      const names = new Set<string>()
+      addConfigNames(names, options.tokens[category])
+      tokenNames[category] = names
+    }
+  }
+  if (options.fonts) {
+    tokenNames.fontFamily = new Set<string>()
+    tokenNames.fontSize = new Set<string>()
+    tokenNames.lineHeight = new Set<string>()
+    tokenNames.letterSpacing = new Set<string>()
+    for (const familyName in options.fonts) {
+      tokenNames.fontFamily.add(familyName[0] === '$' ? familyName.slice(1) : familyName)
+      const font = options.fonts[familyName]
+      addConfigNames(tokenNames.fontSize, font?.size)
+      addConfigNames(tokenNames.lineHeight, font?.lineHeight)
+      addConfigNames(tokenNames.letterSpacing, font?.letterSpacing)
+    }
+  }
+  const themeNames = new Set<string>()
+  if (options.themes) {
+    tokenNames.color ||= new Set<string>()
+    for (const themeName in options.themes) {
+      themeNames.add(themeName)
+      addConfigNames(tokenNames.color, options.themes[themeName])
+    }
+  }
+  return {
+    shorthands,
+    mediaNames: mediaKeys,
+    themeNames,
+    tokenNames,
+  }
+}
+
 export interface TransformOptions {
   // rename View→div, Text→span, etc. DEFAULT true for the library (tamagui.dev doc snippets);
   // the CLI/styleMode path passes FALSE so cross-platform Tamagui components are preserved.
   renameComponents?: boolean
-  // the app config's numeric token scales ({ space, size, radius, zIndex }) for EXACT $N →
-  // value resolution. the converter is a general tool, so pass the ACTUAL app config's tokens
-  // (an app may set space.$4 = 20); when omitted, the bundled default scales are the fallback.
-  tokens?: TokenScales
   // the app config's `media` (object or key list). ANY configured media key round-trips as an
   // identity modifier ($tablet → `tablet:`). when omitted, a default key set is the fallback.
   media?: Record<string, any> | string[]
@@ -42,15 +88,19 @@ export interface TransformOptions {
   // the app config's shorthands (short → long, e.g. { bg: 'backgroundColor' }). when omitted,
   // the canonical default shorthands are used. threaded (not a module-global require).
   shorthands?: Record<string, string>
+  // Only token/font/theme NAMES are read. Values remain runtime-owned.
+  tokens?: Record<string, Record<string, any>>
+  fonts?: Record<string, any>
+  themes?: Record<string, Record<string, any>>
 }
 
 // per-call context (threaded, NOT module-global) so the converter is PURE and REENTRANT:
 // two conversions with different configs in one process never clash.
 interface Ctx {
-  tokens?: TokenScales
   mediaKeys: Set<string>
   componentAllow: Set<string>
   shorthands: Record<string, string>
+  grammarConfig: GrammarConfigView
 }
 
 /**
@@ -81,7 +131,7 @@ export function findParseError(source: string): string | null {
  * converts tamagui JSX source code to tailwind className syntax.
  *
  * input:  <View backgroundColor="red" padding={10} hoverStyle={{ opacity: 0.8 }} />
- * output: <div className="bg-red p-[10px] hover:opacity-80" />
+ * output: <div className="bg-[red] p-[10px] hover:opacity-80" />
  */
 export function tamaguiToTailwind(
   source: string,
@@ -89,13 +139,15 @@ export function tamaguiToTailwind(
 ): string {
   const { renameComponents = true } = options
 
+  const mediaKeys = options.media
+    ? new Set(Array.isArray(options.media) ? options.media : Object.keys(options.media))
+    : new Set(defaultMediaKeys)
+  const shorthands = options.shorthands ?? defaultShorthands
   const ctx: Ctx = {
-    tokens: options.tokens,
-    mediaKeys: options.media
-      ? new Set(Array.isArray(options.media) ? options.media : Object.keys(options.media))
-      : new Set(defaultMediaKeys),
+    mediaKeys,
     componentAllow: new Set(options.components ?? []),
-    shorthands: options.shorthands ?? defaultShorthands,
+    shorthands,
+    grammarConfig: createTransformGrammarConfig(options, mediaKeys, shorthands),
   }
 
   let ast: t.File
@@ -193,19 +245,6 @@ export function tamaguiToTailwind(
           const mediaKey = name.slice(1)
           if (ctx.mediaKeys.has(mediaKey)) {
             partitionAttr(ctx, attr, mediaKey, classes, keptAttrs)
-            continue
-          }
-          keptAttrs.push(attr)
-          continue
-        }
-        // `size-*` is owned by Tailwind (width + height), so a Tamagui component `size`
-        // variant cannot be represented by that class without changing its meaning. Retain the
-        // source size prop. `animation-*` is our non-Tailwind component-prop spelling; importantly
-        // we never claim Tailwind's `animate-*` namespace.
-        if (name === 'animation') {
-          const strVal = getStringValue(attr.value)
-          if (strVal !== null) {
-            classes.push(`animation-${strVal}`)
             continue
           }
           keptAttrs.push(attr)
@@ -497,39 +536,29 @@ function propValueToClass(
 ): string | null {
   const fullProp = resolveShorthand(ctx, propName)
 
-  // standalone value props first (display, position, flexDirection, …)
-  if (fullProp in standaloneValueProps) {
-    const strVal = getStringValue(value)
-    if (strVal !== null && standaloneValueProps[fullProp][strVal]) {
-      const cls = standaloneValueProps[fullProp][strVal]
-      return modifier ? `${modifier}:${cls}` : cls
-    }
-  }
-
-  const prefix = propToTailwindPrefix[fullProp]
-  if (prefix === undefined) return null // not a style prop we safely handle
+  if (propToTailwindPrefix[fullProp] === undefined) return null
 
   const strVal = getStringValue(value)
   const numVal = getNumericValue(value)
 
-  let tailwindValue: string | null = null
-  if (strVal !== null) tailwindValue = formatStringValue(ctx, fullProp, strVal)
-  else if (numVal !== null) tailwindValue = formatNumericValue(fullProp, numVal)
+  let formatted: FormattedValue | null = null
+  if (strVal !== null && standaloneValueProps[fullProp]?.[strVal]) {
+    formatted = { value: strVal, valueKind: 'enum' }
+  } else if (strVal !== null) formatted = formatStringValue(fullProp, strVal)
+  else if (numVal !== null) formatted = formatNumericValue(fullProp, numVal)
   else return null // dynamic expression → retain
 
-  if (tailwindValue === null) return null
+  if (formatted === null) return null
 
-  if (prefix === '') return modifier ? `${modifier}:${tailwindValue}` : tailwindValue
-
-  let cls: string
-  if (tailwindValue === '') {
-    cls = prefix
-  } else if (tailwindValue[0] === '-' && tailwindValue[1] !== '[') {
-    cls = `-${prefix}-${tailwindValue.slice(1)}`
-  } else {
-    cls = `${prefix}-${tailwindValue}`
-  }
-  return modifier ? `${modifier}:${cls}` : cls
+  return formatCandidate(
+    {
+      prop: fullProp,
+      value: formatted.value,
+      valueKind: formatted.valueKind,
+      modifiers: modifier ? modifier.split(':') : undefined,
+    },
+    ctx.grammarConfig
+  )
 }
 
 /**
@@ -730,23 +759,23 @@ function resolveShorthand(ctx: Ctx, name: string): string {
   return ctx.shorthands[name] || name
 }
 
-function formatStringValue(ctx: Ctx, prop: string, value: string): string | null {
-  // token reference: resolve spacing/sizing/radius/zIndex tokens to their EXACT value from the
-  // config (number → [18px]/[400]; string → the exact CSS value, e.g. [10%]). color/font tokens
-  // resolve by name at runtime → strip `$`. an UNRESOLVED numeric-scale token → RETAIN (null).
+type FormattedValue = {
+  value: string
+  valueKind: 'token' | 'arbitrary' | 'enum' | 'convenience'
+}
+
+function formatStringValue(prop: string, value: string): FormattedValue | null {
+  // Tokens are class VALUE NAMES, resolved by the runtime against the component prop's category.
+  // No converter-time token data is needed: padding="$4" → p-4 for every app config.
   if (value.startsWith('$')) {
-    // Numeric `leading-N` is owned by Tailwind's quarter-rem scale. A Tamagui line-height token
-    // is font-family/config dependent, so without that exact font scale we cannot emit an
-    // equivalent class. Retain it rather than claim leading-N with different semantics.
-    if (prop === 'lineHeight') return null
-    const arb = resolveTokenArbitrary(prop, value, ctx.tokens)
-    if (arb != null) return `[${encodeArbitrary(arb)}]`
-    if (isTokenScaleProp(prop)) return null // missing from config → dead class → retain
-    return value.slice(1)
+    if (prop === 'fontWeight') return null
+    return { value: value.slice(1), valueKind: 'token' }
   }
 
   // named font weight (fontWeight only). an unknown weight ("450") → retain (not font-[450]).
-  if (prop === 'fontWeight') return fontWeightNames[value] ?? null
+  if (prop === 'fontWeight') {
+    return fontWeightNames[value] ? { value, valueKind: 'enum' } : null
+  }
 
   // a NUMERIC-LOOKING STRING literal ("10", "0.5") is NOT a number — reinterpreting it as the
   // Tailwind scale or a token would diverge from the source string (which tamagui keeps verbatim,
@@ -763,14 +792,19 @@ function formatStringValue(ctx: Ctx, prop: string, value: string): string | null
       '25%': '1/4',
       '75%': '3/4',
     }
-    return exact[value] || `[${value}]`
+    if (getTokenCategory(prop) === 'size' && exact[value]) {
+      return { value: exact[value], valueKind: 'convenience' }
+    }
+    return { value, valueKind: 'arbitrary' }
   }
 
-  if (value === 'auto') return 'auto'
+  if (value === 'auto' && getTokenCategory(prop) === 'size') {
+    return { value, valueKind: 'convenience' }
+  }
 
   // raw fontFamily ("Inter-Black", "My_Font") is NOT a token → emit an ARBITRARY so the parser
   // treats it as a literal family (font-<name> would be read as the $<name> font token).
-  if (prop === 'fontFamily') return `[${encodeArbitrary(value)}]`
+  if (prop === 'fontFamily') return { value, valueKind: 'arbitrary' }
 
   // arbitrary CSS values → bracket so styleMode's `[..]` parser resolves them
   if (
@@ -781,21 +815,11 @@ function formatStringValue(ctx: Ctx, prop: string, value: string): string | null
     value.startsWith('-') ||
     /^[\d.]+[a-z%]/i.test(value)
   ) {
-    return `[${encodeArbitrary(value)}]`
+    return { value, valueKind: 'arbitrary' }
   }
 
-  // boxShadow only round-trips as the arbitrary multi-part form (handled above). a plain value
-  // like "none" would emit shadow-none, which is dead at runtime → retain the source prop.
-  if (prop === 'boxShadow') return null
-
-  return value
-}
-
-// encode an arbitrary value for a Tailwind class: spaces → `_`, and ESCAPE any literal `_` as
-// `\_` so `var(--my_color)` survives (the parser decodes `_`→space but restores `\_`→`_`).
-// mirror of decodeArbitrary in getSplitStyles.
-function encodeArbitrary(value: string): string {
-  return value.replace(/_/g, '\\_').replace(/\s+/g, '_')
+  // Plain strings are raw values. Brackets distinguish them from configured token names.
+  return { value, valueKind: 'arbitrary' }
 }
 
 // props whose numeric value is a PX LENGTH — emit [Npx]; the runtime parser coerces [Npx] to a
@@ -842,29 +866,40 @@ const pxLengthProps = new Set([
   'lineHeight',
 ])
 
-function formatNumericValue(prop: string, value: number): string | null {
+function formatNumericValue(prop: string, value: number): FormattedValue | null {
   // opacity: use the named percentage utility ONLY when value*100 is EXACTLY an integer
   // (0.5 → opacity-50); otherwise emit an arbitrary unitless value (0.333 → opacity-[0.333])
   // so the resolved opacity is EXACT, never rounded/lossy.
   if (prop === 'opacity') {
     const pct = value * 100
-    return Number.isInteger(pct) ? String(pct) : `[${value}]`
+    return Number.isInteger(pct)
+      ? { value: String(pct), valueKind: 'convenience' }
+      : { value: String(value), valueKind: 'arbitrary' }
   }
 
   // UNITLESS number → [N] (no px): number on both platforms
-  if (prop === 'aspectRatio') return `[${value}]`
+  if (prop === 'aspectRatio') return { value: String(value), valueKind: 'arbitrary' }
   if (prop === 'scale' || prop === 'scaleX' || prop === 'scaleY') {
-    if (value === 0) return '0'
-    if (value === 1) return '100'
-    return `[${value}]`
+    if (value === 0) return { value: '0', valueKind: 'convenience' }
+    if (value === 1) return { value: '100', valueKind: 'convenience' }
+    return { value: String(value), valueKind: 'arbitrary' }
   }
-  if (prop === 'flex') return String(value)
-  if (prop === 'flexGrow' || prop === 'flexShrink')
-    return value === 0 ? '0' : String(value)
-  if (prop === 'zIndex') return String(value)
+  if (prop === 'flex') {
+    return value === 1
+      ? { value: '1', valueKind: 'convenience' }
+      : { value: String(value), valueKind: 'arbitrary' }
+  }
+  if (prop === 'flexGrow' || prop === 'flexShrink') {
+    return { value: String(value), valueKind: 'arbitrary' }
+  }
+  if (prop === 'zIndex') return { value: String(value), valueKind: 'arbitrary' }
 
   // NAMED weight: numeric 700 → the named-weight class; unknown weight → retain (null)
-  if (prop === 'fontWeight') return fontWeightNames[String(value)] ?? null
+  if (prop === 'fontWeight') {
+    return fontWeightNames[String(value)]
+      ? { value: String(value), valueKind: 'enum' }
+      : null
+  }
 
   // rotate: a NUMERIC rotate has no unit — inventing "deg" diverges from the source (tamagui
   // rotate is a unit-bearing string). RETAIN numeric rotate; only rotate="10deg" (a string that
@@ -872,19 +907,19 @@ function formatNumericValue(prop: string, value: number): string | null {
   if (prop === 'rotate') return null
 
   // translate x/y → px length
-  if (prop === 'x' || prop === 'y') return `[${value}px]`
+  if (prop === 'x' || prop === 'y') {
+    return { value: `${value}px`, valueKind: 'arbitrary' }
+  }
 
-  // border widths: 0, 1, 2, 4, 8 map to Tailwind integer utilities; others → [Npx]
+  // Raw border-width numbers are pixels. Bare border-N is a token name in class grammar, so raw
+  // values always use the arbitrary form.
   if (prop.includes('Width') && prop.startsWith('border')) {
-    if (value === 0) return '0'
-    if (value === 1) return '' // bare `border` / `border-r` = 1px
-    if ([2, 4, 8].includes(value)) return String(value)
-    return `[${value}px]`
+    return { value: `${value}px`, valueKind: 'arbitrary' }
   }
 
   // PX LENGTH props → [Npx] (negative keeps the sign inside the brackets)
   if (pxLengthProps.has(prop)) {
-    return value < 0 ? `[-${Math.abs(value)}px]` : `[${value}px]`
+    return { value: `${value}px`, valueKind: 'arbitrary' }
   }
 
   // unclassified numeric prop → do NOT guess a unit; retain the source prop

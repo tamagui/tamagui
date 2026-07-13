@@ -7,7 +7,7 @@ import { describe, expect, test } from 'vitest'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
 
 import { tamaguiToTailwind } from '../to-tailwind/src/transform'
-import { defaultMediaKeys } from '../to-tailwind/src/maps/pseudoMap'
+import { defaultMediaKeys } from '@tamagui/style-grammar'
 
 const cls = (out: string) => (/className="([^"]*)"/.exec(out) || [, ''])[1]
 const convert = (s: string, o?: any) =>
@@ -15,7 +15,9 @@ const convert = (s: string, o?: any) =>
 
 describe('media default keys parity — fallback set covers the canonical config media', () => {
   test('every @tamagui/config v6 media key is in defaultMediaKeys (no silent drop)', () => {
-    const missing = Object.keys((v6 as any).media).filter((k) => !defaultMediaKeys.includes(k))
+    const missing = Object.keys((v6 as any).media).filter(
+      (k) => !defaultMediaKeys.includes(k)
+    )
     expect(missing).toEqual([])
   })
 
@@ -27,14 +29,13 @@ describe('media default keys parity — fallback set covers the canonical config
 })
 
 describe('converter purity / reentrancy — no module-global config leakage', () => {
-  test('interleaved conversions with different token configs each use their own', () => {
+  test('interleaved token-domain configs do not leak membership', () => {
     const A = { tokens: { space: { $4: 20 } } }
-    const B = { tokens: { space: { $4: 99 } } }
-    expect(convert(`<View padding="$4" />`, A)).toBe('p-[20px]')
-    expect(convert(`<View padding="$4" />`, B)).toBe('p-[99px]')
-    expect(convert(`<View padding="$4" />`, A)).toBe('p-[20px]') // A again — B did not leak
-    // and no config → bundled default (18), unaffected by the prior custom configs
-    expect(convert(`<View padding="$4" />`)).toBe('p-[18px]')
+    const B = { tokens: { space: { $5: 99 } } }
+    expect(convert(`<View padding="$4" />`, A)).toBe('p-4')
+    expect(convert(`<View padding="$4" />`, B)).toBe('')
+    expect(convert(`<View padding="$4" />`, A)).toBe('p-4')
+    expect(convert(`<View padding="$4" />`)).toBe('p-4')
   })
 
   test('interleaved media configs each use their own key set', () => {
@@ -42,19 +43,24 @@ describe('converter purity / reentrancy — no module-global config leakage', ()
     const B = { media: { widescreen: {} } }
     expect(convert(`<View $tablet={{ padding: 10 }} />`, A)).toBe('tablet:p-[10px]')
     // B has no `tablet` → $tablet is NOT converted (retained); A did not leak into B
-    expect(tamaguiToTailwind(`<View $tablet={{ padding: 10 }} />`, { renameComponents: false, ...B })).toContain('$tablet=')
+    expect(
+      tamaguiToTailwind(`<View $tablet={{ padding: 10 }} />`, {
+        renameComponents: false,
+        ...B,
+      })
+    ).toContain('$tablet=')
   })
 })
 
 describe('config-aware shorthands — uses the PASSED shorthands, not the hardcode', () => {
   test('a custom app shorthand resolves to its prop', () => {
     // app defines `bgc` → backgroundColor; with it, bgc converts; without it, retained
-    expect(convert(`<View bgc="red" />`, { shorthands: { bgc: 'backgroundColor' } })).toBe(
-      'bg-red'
-    )
-    expect(tamaguiToTailwind(`<View bgc="red" />`, { renameComponents: false })).toContain(
-      'bgc="red"'
-    )
+    expect(
+      convert(`<View bgc="red" />`, { shorthands: { bgc: 'backgroundColor' } })
+    ).toBe('bg-[red]')
+    expect(
+      tamaguiToTailwind(`<View bgc="red" />`, { renameComponents: false })
+    ).toContain('bgc="red"')
   })
 
   test('passing shorthands REPLACES the default set (hardcode not consulted)', () => {

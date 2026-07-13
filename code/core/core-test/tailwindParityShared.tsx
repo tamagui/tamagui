@@ -7,22 +7,27 @@
  */
 
 import { describe, expect, test } from 'vitest'
+import { defaultConfig as v6 } from '@tamagui/config/v6'
 import { StyleObjectProperty, StyleObjectValue } from '@tamagui/helpers'
 
 import { View, Text } from '../web/src'
 import { simplifiedGetSplitStyles } from './utils'
 import { tamaguiToTailwind } from '../to-tailwind/src/transform'
-import {
-  propToTailwindPrefix,
-  standaloneValueProps,
-} from '../to-tailwind/src/maps/propToClass'
+import { propToTailwindPrefix, standaloneValueProps } from '@tamagui/style-grammar'
 
 function classOf(out: string): string {
   const m = /className="([^"]*)"/.exec(out)
   return m ? m[1] : ''
 }
 function convert(sourceJSX: string): string {
-  return tamaguiToTailwind(sourceJSX, { renameComponents: false })
+  return tamaguiToTailwind(sourceJSX, {
+    renameComponents: false,
+    tokens: (v6 as any).tokens,
+    fonts: (v6 as any).fonts,
+    themes: (v6 as any).themes,
+    media: (v6 as any).media,
+    shorthands: (v6 as any).shorthands,
+  })
 }
 
 // merged resolved output: style/rules (base props only) + viewProps (pointerEvents, a11y, …)
