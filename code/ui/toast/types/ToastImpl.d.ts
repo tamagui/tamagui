@@ -1,11 +1,28 @@
 import type { GetProps, TamaguiElement } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
+import * as React from 'react';
 import type { GestureResponderEvent } from 'react-native';
 import type { ScopedProps } from './ToastProvider';
-declare const ToastImplFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+declare const ToastImplFrame: React.FunctionComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+    [x: string]: `$${string}` | `$${number}` | undefined;
+}), {
     unstyled?: boolean | undefined;
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+}> & {
+    ref?: React.Ref<TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+    [x: string]: `$${string}` | `$${number}` | undefined;
+}), {
+    unstyled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+        [x: string]: `$${string}` | `$${number}` | undefined;
+    }), {
+        unstyled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
+};
 type ToastProps = Omit<ToastImplProps, keyof ToastImplPrivateProps>;
 type SwipeEvent = GestureResponderEvent;
 declare const useToastInteractiveContext: (scope?: string) => {

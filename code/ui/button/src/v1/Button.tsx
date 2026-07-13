@@ -19,27 +19,47 @@ import { spacedChildren } from '@tamagui/spacer'
 
 type ButtonVariant = 'outlined'
 
+const buttonContextKeys = [
+  'color',
+  'ellipsis',
+  'fontFamily',
+  'fontSize',
+  'fontStyle',
+  'fontWeight',
+  'letterSpacing',
+  'maxFontSizeMultiplier',
+  'size',
+  'textAlign',
+  'variant',
+] as const
+
 export const ButtonContext = createStyledContext<
   Partial<
     TextContextStyles & {
       size: SizeTokens | true
       variant?: ButtonVariant
     }
-  >
->({
-  // keeping these here means they work with styled() passing down color to text
-  color: undefined,
-  ellipsis: undefined,
-  fontFamily: undefined,
-  fontSize: undefined,
-  fontStyle: undefined,
-  fontWeight: undefined,
-  letterSpacing: undefined,
-  maxFontSizeMultiplier: undefined,
-  size: undefined,
-  textAlign: undefined,
-  variant: undefined,
-})
+  >,
+  (typeof buttonContextKeys)[number]
+>(
+  {
+    // keeping these here means they work with styled() passing down color to text
+    color: undefined,
+    ellipsis: undefined,
+    fontFamily: undefined,
+    fontSize: undefined,
+    fontStyle: undefined,
+    fontWeight: undefined,
+    letterSpacing: undefined,
+    maxFontSizeMultiplier: undefined,
+    size: undefined,
+    textAlign: undefined,
+    variant: undefined,
+  },
+  {
+    keys: buttonContextKeys,
+  }
+)
 
 type ButtonIconProps = { color?: any; size?: any }
 type IconProp =

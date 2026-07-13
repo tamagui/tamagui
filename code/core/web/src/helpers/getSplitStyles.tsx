@@ -34,7 +34,6 @@ import React from 'react'
 import { getConfig, getFont, getSetting } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import {
-  getMediaImportanceIfMoreImportant,
   getMediaKey,
   getMediaKeyImportance,
   mediaKeyMatch,
@@ -49,6 +48,7 @@ import type {
   DebugProp,
   GetStyleResult,
   GetStyleState,
+  GenericCompoundVariant,
   PseudoStyles,
   RulesToInsert,
   SpaceTokens,
@@ -232,6 +232,110 @@ function mergeDeep(target: any, source: any): any {
     }
   }
   return result
+}
+
+function isPlainObject(value: unknown): value is Record<string, any> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return false
+  }
+  const proto = Object.getPrototypeOf(value)
+  return proto === Object.prototype || proto === null
+}
+
+function compoundMatcherMatches(expected: any, actual: any) {
+  if (Array.isArray(expected)) {
+    return expected.some((value) => Object.is(value, actual))
+  }
+  return Object.is(expected, actual)
+}
+
+function compoundVariantMatches(
+  compoundVariant: GenericCompoundVariant,
+  props: Record<string, any>
+) {
+  for (const key in compoundVariant) {
+    if (key === 'style') continue
+    if (!compoundMatcherMatches(compoundVariant[key], props[key])) {
+      return false
+    }
+  }
+  return true
+}
+
+type OrderedPropEntry = readonly [string, any]
+
+function getPropEntriesWithPrecedenceLayers(
+  processedProps: Record<string, any>,
+  processedBaseProps: Record<string, any> | undefined,
+  processedCallerProps: Record<string, any> | undefined,
+  variants: StaticConfig['variants'],
+  compoundVariants: StaticConfig['compoundVariants']
+) {
+  if (!compoundVariants?.length && !processedBaseProps && !processedCallerProps) {
+    return Object.entries(processedProps)
+  }
+
+  const orderedEntries: OrderedPropEntry[] = []
+  const isVariantKey = (key: string) => Boolean(variants && key in variants)
+
+  const addNonVariantProps = (
+    props?: Record<string, any>,
+    skipSpecialCallerProps = false
+  ) => {
+    if (!props) return
+    for (const key in props) {
+      if (skipSpecialCallerProps && (key === 'style' || key === 'className')) {
+        continue
+      }
+      if (!isVariantKey(key)) {
+        orderedEntries.push([key, props[key]])
+      }
+    }
+  }
+  const addPropIfPresent = (props: Record<string, any> | undefined, key: string) => {
+    if (props && key in props && !isVariantKey(key)) {
+      orderedEntries.push([key, props[key]])
+    }
+  }
+
+  addNonVariantProps(processedBaseProps)
+
+  for (const key in processedProps) {
+    if (isVariantKey(key)) {
+      orderedEntries.push([key, processedProps[key]])
+    }
+  }
+
+  if (compoundVariants) {
+    for (const compoundVariant of compoundVariants) {
+      if (!compoundVariantMatches(compoundVariant, processedProps)) {
+        continue
+      }
+      const { style } = compoundVariant
+      if (!isPlainObject(style)) {
+        continue
+      }
+      for (const key in style) {
+        orderedEntries.push([key, style[key]])
+      }
+    }
+  }
+
+  addNonVariantProps(processedCallerProps, true)
+  addPropIfPresent(processedCallerProps, 'style')
+  addPropIfPresent(processedCallerProps, 'className')
+
+  for (const key in processedProps) {
+    if (
+      !isVariantKey(key) &&
+      !(processedBaseProps && key in processedBaseProps) &&
+      !(processedCallerProps && key in processedCallerProps)
+    ) {
+      orderedEntries.push([key, processedProps[key]])
+    }
+  }
+
+  return orderedEntries
 }
 
 function isTailwindModeEnabled(config: TamaguiInternalConfig): boolean {
@@ -1106,11 +1210,30 @@ export const getSplitStyles: StyleSplitter = (
     }
     processedProps = preprocessFlatProps(propsWithTailwind, shorthands, conf)
   }
+  const preprocessLayer = (layer: Record<string, any> | undefined) => {
+    if (!layer || (layer as any)[STYLE_MODE_PREPROCESSED]) {
+      return layer
+    }
+    return preprocessFlatProps(
+      preprocessTailwindClassName(layer, shorthands, conf),
+      shorthands,
+      conf
+    )
+  }
+  const processedBaseProps = preprocessLayer(styleProps.baseProps)
+  const processedCallerProps = preprocessLayer(styleProps.callerProps)
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
-  for (const keyOg in processedProps) {
+  const orderedProcessedProps = getPropEntriesWithPrecedenceLayers(
+    processedProps,
+    processedBaseProps,
+    processedCallerProps,
+    variants,
+    staticConfig.compoundVariants
+  )
+  for (const [keyOg, valOg] of orderedProcessedProps) {
     let keyInit = keyOg
-    let valInit = processedProps[keyInit]
+    let valInit = valOg
 
     if (keyInit === 'children') {
       viewProps[keyInit] = valInit
@@ -2382,9 +2505,19 @@ function mergeStyle(
   // so it propagates to children. use the original token value (like '$8')
   // instead of the resolved CSS variable (like 'var(--t-space-8)')
   // so children's functional variants can look up token values.
-  const contextProps =
-    staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
-  if (contextProps && key in contextProps) {
+  const contextConfig = staticConfig.context || staticConfig.parentStaticConfig?.context
+  const contextProps = contextConfig?.props
+  const inheritedContextPropKeys =
+    !staticConfig.context ||
+    staticConfig.context === staticConfig.parentStaticConfig?.context
+      ? staticConfig.parentStaticConfig?.contextProps
+      : undefined
+  const contextPropKeys = staticConfig.contextProps || inheritedContextPropKeys
+  const isContextProp =
+    (contextProps && key in contextProps) ||
+    contextPropKeys?.includes(key) ||
+    contextConfig?.propKeys?.includes(key)
+  if (isContextProp) {
     styleState.overriddenContextProps ||= {}
     // Priority: 1) originalVal from propMapper, 2) tracked original from variant resolution, 3) val
     const originalFromState = styleState.originalContextPropValues?.[key]
@@ -2644,12 +2777,11 @@ function mergeMediaByImportance(
   originalVal?: any
 ) {
   const usedKeys = styleState.usedKeys
-  let importance = getMediaImportanceIfMoreImportant(
-    mediaKey,
-    key,
-    styleState,
-    isSizeMedia
-  )
+  const baseImportance = isSizeMedia
+    ? getMediaKeyImportance(mediaKey)
+    : defaultMediaImportance
+  let importance =
+    !usedKeys[key] || baseImportance >= usedKeys[key] ? baseImportance : null
   if (importanceBump) {
     // With a specificity bump, the effective importance is always
     // defaultMediaImportance + bump. This lets higher-specificity styles
@@ -2664,7 +2796,7 @@ function mergeMediaByImportance(
     // allow a more-specific style to win.
     const bumpedImportance = defaultMediaImportance + importanceBump
     importance =
-      !usedKeys[key] || bumpedImportance > usedKeys[key] ? bumpedImportance : null
+      !usedKeys[key] || bumpedImportance >= usedKeys[key] ? bumpedImportance : null
   }
   if (process.env.NODE_ENV === 'development' && debugProp === 'verbose') {
     log(

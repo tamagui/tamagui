@@ -29,20 +29,43 @@ type ButtonContextStyles = TextContextStyles & {
   elevation?: SizeTokens | number
 }
 
-const context = createStyledContext<ButtonContextStyles>({
-  size: undefined,
-  variant: undefined,
-  color: undefined,
-  elevation: undefined,
-  ellipsis: undefined,
-  fontFamily: undefined,
-  fontSize: undefined,
-  fontStyle: undefined,
-  fontWeight: undefined,
-  letterSpacing: undefined,
-  maxFontSizeMultiplier: undefined,
-  textAlign: undefined,
-})
+const buttonContextKeys = [
+  'size',
+  'variant',
+  'color',
+  'elevation',
+  'ellipsis',
+  'fontFamily',
+  'fontSize',
+  'fontStyle',
+  'fontWeight',
+  'letterSpacing',
+  'maxFontSizeMultiplier',
+  'textAlign',
+] as const
+
+const context = createStyledContext<
+  ButtonContextStyles,
+  (typeof buttonContextKeys)[number]
+>(
+  {
+    size: undefined,
+    variant: undefined,
+    color: undefined,
+    elevation: undefined,
+    ellipsis: undefined,
+    fontFamily: undefined,
+    fontSize: undefined,
+    fontStyle: undefined,
+    fontWeight: undefined,
+    letterSpacing: undefined,
+    maxFontSizeMultiplier: undefined,
+    textAlign: undefined,
+  },
+  {
+    keys: buttonContextKeys,
+  }
+)
 
 const Frame = styled(View, {
   context,
@@ -187,15 +210,25 @@ const Icon = (props: {
   return getThemedIcon(children)
 }
 
-export const ButtonContext = createStyledContext<{
-  size?: SizeTokens | true
-  variant?: ButtonVariant
-  color?: ButtonContextStyles['color']
-}>({
-  size: undefined,
-  variant: undefined,
-  color: undefined,
-})
+const exportedButtonContextKeys = ['size', 'variant', 'color'] as const
+
+export const ButtonContext = createStyledContext<
+  {
+    size?: SizeTokens | true
+    variant?: ButtonVariant
+    color?: ButtonContextStyles['color']
+  },
+  (typeof exportedButtonContextKeys)[number]
+>(
+  {
+    size: undefined,
+    variant: undefined,
+    color: undefined,
+  },
+  {
+    keys: exportedButtonContextKeys,
+  }
+)
 
 type IconProp = JSX.Element | FunctionComponent<{ color?: any; size?: any }> | null
 

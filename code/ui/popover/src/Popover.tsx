@@ -168,7 +168,7 @@ type PopoverTriggerContextValue = {
 
 export const PopoverContext = createStyledContext<PopoverContextValue>(
   // since we always provide this we can avoid setting here
-  {} as PopoverContextValue,
+  {},
   'Popover__'
 )
 
@@ -176,7 +176,7 @@ export const PopoverContext = createStyledContext<PopoverContextValue>(
 export const PopoverZIndexContext = React.createContext<number | undefined>(undefined)
 
 export const PopoverTriggerContext = createStyledContext<PopoverTriggerContextValue>(
-  {} as PopoverTriggerContextValue,
+  {},
   'PopoverTrigger__'
 )
 
