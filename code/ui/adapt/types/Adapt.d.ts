@@ -72,7 +72,7 @@ export type AdaptProps = {
     children: React.JSX.Element | ((contents: React.ReactNode, adapt: AdaptRenderState) => React.ReactNode);
 };
 type Component = (props: any) => any;
-export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI>;
+export declare const AdaptContext: import("@tamagui/core").StyledContext<AdaptParentContextI, "platform" | "Contents" | "scopeName" | "portalName" | "setPlatform" | "when" | "setWhen" | "active" | "rawActive" | "setRawActive" | "slot" | "handoff" | "targetFullyHidden" | "registerTarget" | "unregisterTarget" | "registerContents" | "unregisterContents" | "registerRenderCallback" | "unregisterRenderCallback">;
 export declare const ProvideAdaptContext: ({ children, ...context }: AdaptParentContextI & {
     children: any;
 }) => import("react/jsx-runtime").JSX.Element;

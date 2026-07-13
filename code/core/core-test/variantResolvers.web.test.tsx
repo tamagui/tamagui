@@ -204,6 +204,7 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(Comp, '1')).toBe(0.2)
     expect(getOpacity(Comp, true)).toBe(0.3)
     expect(getOpacity(Comp, null)).toBe(0.4)
+    expect(getOpacity(Comp, undefined)).toBeUndefined()
     expect(getOpacity(Comp, { other: true })).toBe(0.4)
   })
 

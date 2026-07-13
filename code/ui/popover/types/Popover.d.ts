@@ -82,9 +82,9 @@ type PopoverTriggerContextValue = {
     registerTrigger(id: string, setOpen: PopoverTriggerStateSetter): void;
     unregisterTrigger(id: string): void;
 };
-export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue>;
+export declare const PopoverContext: import("@tamagui/core").StyledContext<PopoverContextValue, never>;
 export declare const PopoverZIndexContext: React.Context<number | undefined>;
-export declare const PopoverTriggerContext: import("@tamagui/core").StyledContext<PopoverTriggerContextValue>;
+export declare const PopoverTriggerContext: import("@tamagui/core").StyledContext<PopoverTriggerContextValue, never>;
 export declare const usePopoverContext: (scope?: string) => PopoverContextValue;
 export declare const usePopoverTriggerContext: (scope?: string) => PopoverTriggerContextValue;
 /**
@@ -153,14 +153,18 @@ export interface PopoverContentTypeProps extends Omit<PopoverContentImplProps, '
     animatePosition?: boolean | 'even-when-repositioning';
 }
 export type PopoverContentProps = PopoverContentTypeProps;
-export declare const PopoverContent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    size?: SizeTokens | undefined;
+export declare const PopoverContent: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+    [x: string]: `$${string}` | `$${number}` | undefined;
+}), {
+    size?: import("@tamagui/core").Size | undefined;
     unstyled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
-}>, keyof PopoverContentTypeProps> & PopoverContentTypeProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopoverContentTypeProps, import("@tamagui/core").StackStyleBase, {
-    size?: SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+}>, keyof PopoverContentTypeProps> & PopoverContentTypeProps, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopoverContentTypeProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+    [x: string]: `$${string}` | `$${number}` | undefined;
+}), {
+    size?: import("@tamagui/core").Size | undefined;
     unstyled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").Size | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 export type PopoverContentImplProps = PopperContentProps & Omit<DismissableProps, 'onDismiss' | 'children' | 'onPointerDownCapture'> & {
     /**
@@ -168,6 +172,12 @@ export type PopoverContentImplProps = PopperContentProps & Omit<DismissableProps
      * inside a startTransition to clear the main thread
      */
     lazyMount?: boolean;
+    /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries. Matches Dialog:
+     * disables part presence gating so the content is always mounted.
+     */
+    forceMount?: boolean;
     /**
      * Whether focus should be trapped within the `Popover`
      * @default false
@@ -200,12 +210,16 @@ export type PopoverContentImplProps = PopperContentProps & Omit<DismissableProps
 export type PopoverCloseProps = ScopedPopoverProps<YStackProps>;
 export declare const PopoverClose: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopoverCloseProps>;
 export type PopoverArrowProps = PopperArrowProps;
-export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const PopoverArrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+    [x: string]: `$${string}` | `$${number}` | undefined;
+}), {
     unstyled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
-}>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | import("@tamagui/core").Size | undefined;
+}>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+    [x: string]: `$${string}` | `$${number}` | undefined;
+}), {
     unstyled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
+    elevation?: number | import("@tamagui/core").Size | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type Rect = {
     x: number;
@@ -267,12 +281,16 @@ export declare const Popover: ((props: Omit<PopperProps, "scope"> & {
     Anchor: React.NamedExoticComponent<Omit<YStackProps, "scope"> & {
         scope?: PopoverScopes;
     } & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
-    Arrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    Arrow: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+        [x: string]: `$${string}` | `$${number}` | undefined;
+    }), {
         unstyled?: boolean | undefined;
-        elevation?: number | SizeTokens | undefined;
-    }>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    }>, keyof PopperArrowExtraProps> & PopperArrowExtraProps, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopperArrowExtraProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+        [x: string]: `$${string}` | `$${number}` | undefined;
+    }), {
         unstyled?: boolean | undefined;
-        elevation?: number | SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core").Size | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Trigger: React.NamedExoticComponent<Omit<import("@tamagui/core").StackNonStyleProps & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {}>> & {
         /**
@@ -284,14 +302,18 @@ export declare const Popover: ((props: Omit<PopperProps, "scope"> & {
     }, "scope"> & {
         scope?: PopoverScopes;
     } & import("@tamagui/compose-refs").RefProp<TamaguiElement>>;
-    Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        size?: SizeTokens | undefined;
+    Content: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+        [x: string]: `$${string}` | `$${number}` | undefined;
+    }), {
+        size?: import("@tamagui/core").Size | undefined;
         unstyled?: boolean | undefined;
-        elevation?: number | SizeTokens | undefined;
-    }>, keyof PopoverContentTypeProps> & PopoverContentTypeProps, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopoverContentTypeProps, import("@tamagui/core").StackStyleBase, {
-        size?: SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    }>, keyof PopoverContentTypeProps> & PopoverContentTypeProps, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & PopoverContentTypeProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+        [x: string]: `$${string}` | `$${number}` | undefined;
+    }), {
+        size?: import("@tamagui/core").Size | undefined;
         unstyled?: boolean | undefined;
-        elevation?: number | SizeTokens | undefined;
+        elevation?: number | import("@tamagui/core").Size | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
     Close: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopoverCloseProps>;
     Adapt: ((props: import("@tamagui/adapt").AdaptProps) => import("react/jsx-runtime").JSX.Element) & {
@@ -302,7 +324,7 @@ export declare const Popover: ((props: Omit<PopperProps, "scope"> & {
             shouldForwardSpace: boolean;
         };
     };
-    ScrollView: import("@tamagui/compose-refs").RefComponent<import("react-native").ScrollView, PopoverScrollViewProps>;
+    ScrollView: import("@tamagui/compose-refs").RefComponent<import("@tamagui/scroll-view").ScrollViewRef, PopoverScrollViewProps>;
     FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
 };
 export {};

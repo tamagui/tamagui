@@ -332,7 +332,18 @@ const resolveTokensAndVariants: StyleResolver<object> = (
     if (staticConfig) {
       const contextProps =
         staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
-      if (contextProps && subKey in contextProps) {
+      const inheritedContextPropKeys =
+        !staticConfig.context ||
+        staticConfig.context === staticConfig.parentStaticConfig?.context
+          ? staticConfig.parentStaticConfig?.contextProps
+          : undefined
+      const contextPropKeys = staticConfig.contextProps || inheritedContextPropKeys
+      const isContextProp =
+        (contextProps && subKey in contextProps) ||
+        contextPropKeys?.includes(subKey) ||
+        staticConfig.context?.propKeys?.includes(subKey) ||
+        staticConfig.parentStaticConfig?.context?.propKeys?.includes(subKey)
+      if (isContextProp) {
         styleState.overriddenContextProps ||= {}
         styleState.overriddenContextProps[subKey] = val
         // Also track the original token value separately
@@ -514,6 +525,7 @@ function getVariantDefinition(
   { theme }: Partial<GetStyleState>
 ) {
   if (!variant) return
+  if (value === undefined) return
   if (typeof variant === 'function') {
     return { value: variant }
   }
