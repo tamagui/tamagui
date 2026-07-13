@@ -29,8 +29,8 @@ const environmentSpecificTransformPluginNames = new Set([
 ])
 
 const oneTsconfigPathsPluginName = 'one:tsconfig-paths'
-const bareTamaguiPackage = /^@tamagui\/[^/?#]+(?:[/?#]|$)/
-const inlineTamaguiPackage = /^@tamagui\/(?:config|core|web)(?:[/?#]|$)/
+const bareTamaguiPackage = /^(?:tamagui|@tamagui\/[^/?#]+)(?:[/?#]|$)/
+const inlineEvaluationTamaguiPackage = /^@tamagui\/(?:config|core|slider|web)(?:[/?#]|$)/
 const externalizablePackageExtensions = new Set(['', '.js', '.mjs', '.cjs'])
 type EvaluationResolveIdHandler = (this: any, source: string, ...args: any[]) => any
 type EvaluationBarePackageResolver = (
@@ -122,13 +122,53 @@ function getInstalledTamaguiPackages(root: string) {
     for (const entry of readdirSync(scopePath, { withFileTypes: true })) {
       if (!entry.isDirectory() && !entry.isSymbolicLink()) continue
       const packageName = `@tamagui/${entry.name}`
-      if (!inlineTamaguiPackage.test(packageName)) {
+      if (!inlineEvaluationTamaguiPackage.test(packageName)) {
         packages.add(packageName)
       }
     }
   }
 
   return packages
+}
+
+function getEvaluationExternalPackages(root: string) {
+  const packages = getInstalledTamaguiPackages(root)
+  if (isInstalled(root, 'tamagui')) {
+    packages.add('tamagui')
+  }
+  return packages
+}
+
+function getEvaluationResolve(
+  resolve: ResolvedConfig['environments'][string]['resolve'],
+  root: string,
+  disableTsconfigPaths: boolean
+) {
+  return {
+    ...resolve,
+    external:
+      resolve.external === true
+        ? (true as const)
+        : [
+            ...new Set([
+              ...(resolve.external || []),
+              ...getEvaluationExternalPackages(root),
+            ]),
+          ],
+    ...(disableTsconfigPaths && { tsconfigPaths: false }),
+  }
+}
+
+function isConfiguredExternalPackage(
+  source: string,
+  external: string[] | true | undefined
+) {
+  if (external === true) return true
+  const cleanSource = source.split(/[?#]/, 1)[0]
+  return external?.some(
+    (packageName) =>
+      cleanSource === packageName || cleanSource.startsWith(`${packageName}/`)
+  )
 }
 
 function createServeEvaluationConfig(config: ResolvedConfig): ResolvedConfig {
@@ -143,7 +183,13 @@ function createServeEvaluationConfig(config: ResolvedConfig): ResolvedConfig {
     if (!resolved) return
     const cleanResolved = resolved.split(/[?#]/, 1)[0]
     if (
-      inlineTamaguiPackage.test(source) ||
+      !inlineEvaluationTamaguiPackage.test(source) &&
+      isConfiguredExternalPackage(source, evaluationEnvironment.config.resolve.external)
+    ) {
+      return { id: source, external: true }
+    }
+    if (
+      inlineEvaluationTamaguiPackage.test(source) ||
       !normalizePath(cleanResolved).includes('/node_modules/') ||
       !externalizablePackageExtensions.has(path.extname(cleanResolved))
     ) {
@@ -160,21 +206,11 @@ function createServeEvaluationConfig(config: ResolvedConfig): ResolvedConfig {
     }
     return []
   })
-  const resolve = plugins.some((plugin) => plugin.name === oneTsconfigPathsPluginName)
-    ? {
-        ...environment.resolve,
-        external:
-          environment.resolve.external === true
-            ? (true as const)
-            : [
-                ...new Set([
-                  ...(environment.resolve.external || []),
-                  ...getInstalledTamaguiPackages(config.root),
-                ]),
-              ],
-        tsconfigPaths: false,
-      }
-    : environment.resolve
+  const resolve = getEvaluationResolve(
+    environment.resolve,
+    config.root,
+    plugins.some((plugin) => plugin.name === oneTsconfigPathsPluginName)
+  )
 
   const evaluationConfig: ResolvedConfig = {
     ...config,
@@ -196,9 +232,11 @@ async function createOwnedEvaluationConfig(config: ResolvedConfig) {
   const plugins = environment.plugins
     .filter(isEvaluationUserPlugin)
     .map((plugin) => createEvaluationPluginFacade(plugin))
-  const resolve = plugins.some((plugin) => plugin.name === oneTsconfigPathsPluginName)
-    ? { ...environment.resolve, tsconfigPaths: false }
-    : environment.resolve
+  const resolve = getEvaluationResolve(
+    environment.resolve,
+    config.root,
+    plugins.some((plugin) => plugin.name === oneTsconfigPathsPluginName)
+  )
   const { createEnvironment: _createEnvironment, ...dev } = environment.dev
 
   // ModuleRunner needs Vite's serve-time core pipeline (especially import
@@ -446,11 +484,12 @@ export function tamaguiPlugin({
       'process.env.TAMAGUI_IS_SERVER': JSON.stringify(true),
       'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
       'process.env.TAMAGUI_ENVIRONMENT': JSON.stringify(TAMAGUI_EVALUATION_ENVIRONMENT),
+      'process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL': JSON.stringify('1'),
     },
     resolve: {
       conditions: [...defaultClientConditions],
       mainFields: [...defaultClientMainFields],
-      noExternal: inlineTamaguiPackage,
+      noExternal: inlineEvaluationTamaguiPackage,
       extensions,
     },
     dev: {
@@ -857,12 +896,6 @@ export function tamaguiPlugin({
         // ensure tamagui is loaded before transform
         const options = await ensureLoaded()
 
-        // evaluate config and components before extraction
-        const evaluationDependencies = await tamaguiLoader.ensureFullConfigLoaded()
-        for (const dependency of evaluationDependencies) {
-          this.addWatchFile(dependency)
-        }
-
         // fully disabled = no extraction AND no debug attrs
         if (options?.disable) {
           return
@@ -875,6 +908,14 @@ export function tamaguiPlugin({
         const [validId] = id.split('?')
         if (!validId.endsWith('.tsx')) {
           return
+        }
+
+        // Evaluate config and components only for files that can be extracted.
+        // Register their dependency graph on the candidate transform so config
+        // edits still invalidate compilation without taxing every package module.
+        const evaluationDependencies = await tamaguiLoader.ensureFullConfigLoaded()
+        for (const dependency of evaluationDependencies) {
+          this.addWatchFile(dependency)
         }
         transformedModuleIds.add(validId)
 

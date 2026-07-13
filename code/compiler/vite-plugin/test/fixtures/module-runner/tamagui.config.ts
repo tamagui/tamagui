@@ -1,8 +1,18 @@
 import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui } from '@tamagui/core'
-import { resolution as packageExportResolution } from '@tamagui/evaluation-fixture/value'
+import {
+  modulePath as packageExportPath,
+  resolution as packageExportResolution,
+} from '@tamagui/evaluation-fixture/value'
+import { Slider } from '@tamagui/slider'
 import { resolution as conditionalResolution } from '@fixture/conditional'
-import evaluationPluginNames, { oneTsconfigPathsOrder } from '#evaluation-pipeline'
+import { Slider as TamaguiBarrelSlider } from 'tamagui'
+import evaluationPluginNames, {
+  oneTsconfigPathsOrder,
+  sliderResolution,
+  tamaguiExternalConfigured,
+  tamaguiResolution,
+} from '#evaluation-pipeline'
 import {
   resolution as commandResolution,
   space as commandSpace,
@@ -15,9 +25,27 @@ globalThis.__tamaguiFixtureEvaluationOrder ??= []
 globalThis.__tamaguiFixtureEvaluationOrder.push('config')
 globalThis.__tamaguiFixtureOwnedEvaluation?.push('import:config')
 globalThis.__tamaguiFixtureOwnedPluginNames = evaluationPluginNames
+globalThis.__tamaguiFixtureSliderIntervalDisabled =
+  process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL
+globalThis.__tamaguiFixtureSliderModuleLoaded = Boolean(Slider)
+globalThis.__tamaguiFixtureSliderResolution = sliderResolution
+globalThis.__tamaguiFixtureTamaguiBarrelLoaded = Boolean(TamaguiBarrelSlider)
+globalThis.__tamaguiFixtureTamaguiExternalConfigured = tamaguiExternalConfigured
+globalThis.__tamaguiFixtureTamaguiResolution = tamaguiResolution
 
 export const compilerResolution = `${conditionalResolution}:${workspaceResolution}:${pluginResolution}:${commandResolution}`
-export { evaluationPluginNames, oneTsconfigPathsOrder, packageExportResolution }
+export const sliderIntervalDisabled = process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL
+export const sliderModuleLoaded = Boolean(Slider)
+export const tamaguiBarrelLoaded = Boolean(TamaguiBarrelSlider)
+export {
+  evaluationPluginNames,
+  oneTsconfigPathsOrder,
+  packageExportPath,
+  packageExportResolution,
+  sliderResolution,
+  tamaguiExternalConfigured,
+  tamaguiResolution,
+}
 
 export default createTamagui({
   ...defaultConfig,

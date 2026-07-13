@@ -11,6 +11,7 @@ function spawnServer(command, args) {
     stdio: 'pipe',
     detached: true,
   })
+  proc.stdout.on('data', (d) => process.stdout.write(d))
   proc.stderr.on('data', (d) => console.log(d.toString()))
   return proc
 }
