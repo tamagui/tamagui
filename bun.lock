@@ -818,6 +818,7 @@
         "@tamagui/core": "workspace:*",
         "@tamagui/font-size": "workspace:*",
         "@tamagui/sizable-context": "workspace:*",
+        "@tamagui/style-grammar": "workspace:*",
       },
       "devDependencies": {
         "@tamagui/build": "workspace:*",
@@ -1000,6 +1001,14 @@
         "react": ">=19",
       },
     },
+    "code/core/style-grammar": {
+      "name": "@tamagui/style-grammar",
+      "version": "2.4.3",
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "vitest": "4.0.4",
+      },
+    },
     "code/core/test-design-system": {
       "name": "@tamagui/test-design-system",
       "version": "2.4.3",
@@ -1070,8 +1079,8 @@
         "@babel/parser": "^7.25.4",
         "@babel/traverse": "^7.25.4",
         "@babel/types": "^7.25.4",
-        "@tamagui/helpers": "workspace:*",
         "@tamagui/shorthands": "workspace:*",
+        "@tamagui/style-grammar": "workspace:*",
       },
       "devDependencies": {
         "vitest": "4.0.4",
@@ -1264,6 +1273,7 @@
         "@tamagui/is-equal-shallow": "workspace:*",
         "@tamagui/native": "workspace:*",
         "@tamagui/normalize-css-color": "workspace:*",
+        "@tamagui/style-grammar": "workspace:*",
         "@tamagui/timer": "workspace:*",
         "@tamagui/types": "workspace:*",
         "@tamagui/use-did-finish-ssr": "workspace:*",
@@ -5377,6 +5387,8 @@
     "@tamagui/static-tests": ["@tamagui/static-tests@workspace:code/compiler/static-tests"],
 
     "@tamagui/static-worker": ["@tamagui/static-worker@workspace:code/compiler/static-worker"],
+
+    "@tamagui/style-grammar": ["@tamagui/style-grammar@workspace:code/core/style-grammar"],
 
     "@tamagui/style-mode-tailwind-only-tests": ["@tamagui/style-mode-tailwind-only-tests@workspace:code/tests/style-mode-tailwind-only"],
 

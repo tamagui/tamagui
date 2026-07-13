@@ -21,7 +21,11 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
-import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
+import {
+  getSplitStyles,
+  preprocessStyleModeProps,
+  useSplitStyles,
+} from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
@@ -351,6 +355,12 @@ export function createComponent<
 
     props = nextProps as ViewProps | TextProps
     overriddenContextProps = overrides
+
+    // styleMode single pass (hoisted): tokenize className + flatten props ONCE here, so the
+    // reconstructed enterStyle/exitStyle/size/animation props are in place before the state
+    // machine / variant / animation driver below read them. getSplitStyles then skips its own
+    // preprocess for these (marked) props. No-op with zero cost when styleMode is off.
+    props = preprocessStyleModeProps(props, config) as ViewProps | TextProps
 
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {

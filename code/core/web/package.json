@@ -57,6 +57,7 @@
     "@tamagui/is-equal-shallow": "workspace:*",
     "@tamagui/native": "workspace:*",
     "@tamagui/normalize-css-color": "workspace:*",
+    "@tamagui/style-grammar": "workspace:*",
     "@tamagui/timer": "workspace:*",
     "@tamagui/types": "workspace:*",
     "@tamagui/use-did-finish-ssr": "workspace:*",

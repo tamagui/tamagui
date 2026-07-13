@@ -1,3 +1,4 @@
+export { tokenCategories } from './tokenCategories';
 export declare const cssShorthandLonghands: {
     borderWidth: boolean;
     borderStyle: boolean;
@@ -18,58 +19,6 @@ export declare const cssShorthandLonghands: {
     outlineStyle: boolean;
     outlineColor: boolean;
     outlineOffset: boolean;
-};
-export declare const tokenCategories: {
-    radius: {
-        borderRadius: boolean;
-        borderTopLeftRadius: boolean;
-        borderTopRightRadius: boolean;
-        borderBottomLeftRadius: boolean;
-        borderBottomRightRadius: boolean;
-        borderStartStartRadius: boolean;
-        borderStartEndRadius: boolean;
-        borderEndStartRadius: boolean;
-        borderEndEndRadius: boolean;
-    };
-    size: {
-        width: boolean;
-        height: boolean;
-        minWidth: boolean;
-        minHeight: boolean;
-        maxWidth: boolean;
-        maxHeight: boolean;
-        blockSize: boolean;
-        minBlockSize: boolean;
-        maxBlockSize: boolean;
-        inlineSize: boolean;
-        minInlineSize: boolean;
-        maxInlineSize: boolean;
-    };
-    zIndex: {
-        zIndex: boolean;
-    };
-    color: {
-        caretColor?: boolean | undefined;
-        outlineColor: boolean;
-        color: boolean;
-        textDecorationColor: boolean;
-        textShadowColor: boolean;
-        backgroundColor: boolean;
-        borderColor: boolean;
-        borderBlockStartColor: boolean;
-        borderBlockEndColor: boolean;
-        borderBlockColor: boolean;
-        borderBottomColor: boolean;
-        borderInlineColor: boolean;
-        borderInlineStartColor: boolean;
-        borderInlineEndColor: boolean;
-        borderTopColor: boolean;
-        borderLeftColor: boolean;
-        borderRightColor: boolean;
-        borderEndColor: boolean;
-        borderStartColor: boolean;
-        shadowColor: boolean;
-    };
 };
 export declare const nonAnimatableStyleProps: {
     whiteSpace?: boolean | undefined;
@@ -336,9 +285,6 @@ export declare const stylePropsView: {
     borderStartEndRadius: boolean;
     borderEndStartRadius: boolean;
     borderEndEndRadius: boolean;
-    color: boolean;
-    textDecorationColor: boolean;
-    textShadowColor: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
@@ -354,6 +300,9 @@ export declare const stylePropsView: {
     borderEndColor: boolean;
     borderStartColor: boolean;
     shadowColor: boolean;
+    color: boolean;
+    textDecorationColor: boolean;
+    textShadowColor: boolean;
     borderBottomEndRadius: boolean;
     borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
@@ -1152,9 +1101,6 @@ export declare const validStyles: {
     borderStartEndRadius: boolean;
     borderEndStartRadius: boolean;
     borderEndEndRadius: boolean;
-    color: boolean;
-    textDecorationColor: boolean;
-    textShadowColor: boolean;
     backgroundColor: boolean;
     borderColor: boolean;
     borderBlockStartColor: boolean;
@@ -1170,6 +1116,9 @@ export declare const validStyles: {
     borderEndColor: boolean;
     borderStartColor: boolean;
     shadowColor: boolean;
+    color: boolean;
+    textDecorationColor: boolean;
+    textShadowColor: boolean;
     borderBottomEndRadius: boolean;
     borderBottomStartRadius: boolean;
     borderBottomWidth: boolean;
