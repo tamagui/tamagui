@@ -602,6 +602,20 @@ fails, choose `oxc-parser` plus a Tamagui-owned symbol graph. Parser adapters
 target the same ESTree/TS-ESTree interface either way. Record the result in this
 plan and delete the losing spike code.
 
+**Decision (recorded 2026-07-13): yuku.** Evidence in
+`code/compiler/analyzer-spike/evidence/results.json` (Apple M3 Max, Node 24.3,
+`yuku-analyzer@0.6.1` vs `oxc-parser@0.112.0` + owned graph, 1,000-module
+two-branch fixture). All eight binding/re-export/spread/workspace/JSX fixtures
+and the source-map check passed for both candidates, with exact invalidation
+and zero unaffected reparses. yuku through its public API only, no fork. yuku
+won cold link 2.1x (64.7ms vs 136.1ms median), warm p95 (20.6ms vs 25.4ms),
+and memory 2.5x (20.0MiB vs 50.1MiB RSS; the owned graph exceeded the 2x
+memory rule). The owned graph won warm median (1.7ms vs 9.4ms); both sit far
+inside the 50ms warm budget. yuku's one failed gate, warm p95 ≤ 25% of cold
+median (0.318), is an artifact of its faster cold denominator, and it beats
+the alternative on both absolute terms of that ratio. The `oxc-owned` spike
+adapter is deleted; the yuku graph is the E2 starting point.
+
 **Resource class:** light/medium; no full repo build.
 
 ### E2 — shared element IR and project graph
