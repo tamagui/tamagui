@@ -1,6 +1,6 @@
 export * from './checkDeps'
 export * from './types'
-export { createExtractor } from './extractor/createExtractor'
+export { createExtractor, type Extractor } from './extractor/createExtractor'
 export { literalToAst } from './extractor/literalToAst'
 export * from './constants'
 export * from './extractor/extractToClassNames'

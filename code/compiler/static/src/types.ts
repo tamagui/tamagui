@@ -5,7 +5,7 @@ import type { StyleObject } from '@tamagui/helpers'
 import type { TamaguiOptions } from '@tamagui/types'
 import type { ViewStyle } from 'react-native'
 
-import type { LoadedComponents } from './extractor/bundleConfig'
+import type { LoadedComponents, TamaguiProjectInfo } from './extractor/bundleConfig'
 
 export type TamaguiPlatform = 'native' | 'web'
 
@@ -34,6 +34,12 @@ export interface Logger {
 export type ExtractorOptions = {
   logger?: Logger
   platform?: TamaguiPlatform
+  loadTamagui?: (props: TamaguiOptions) => Promise<TamaguiProjectInfo | null>
+  loadTamaguiSync?:
+    | false
+    | ((
+        props: Parameters<typeof import('./extractor/loadTamagui').loadTamaguiSync>[0]
+      ) => TamaguiProjectInfo)
 }
 
 export type ExtractedAttrAttr = {

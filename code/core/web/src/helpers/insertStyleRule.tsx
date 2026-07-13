@@ -44,6 +44,7 @@ export function scanAllSheets(
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     if (process.env.NODE_ENV === 'test') return
     if (process.env.TAMAGUI_TARGET !== 'web') return
+    if (typeof document === 'undefined') return
 
     let themes: DedupedThemes | undefined
 

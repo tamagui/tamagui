@@ -58,19 +58,34 @@ import type {
 } from './types'
 
 const activeSliderMeasureListeners = new Set<Function>()
+let activeSliderMeasureInterval: ReturnType<typeof setInterval> | undefined
 
 // run an interval on web as using translate can move things at any moment
 // without triggering layout or intersection observers
+function startSliderMeasureInterval() {
+  if (
+    process.env.TAMAGUI_TARGET !== 'web' ||
+    activeSliderMeasureInterval !== undefined ||
+    process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL
+  ) {
+    return
+  }
 
-if (process.env.TAMAGUI_TARGET === 'web') {
-  if (!process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL) {
-    setInterval?.(
-      () => {
-        activeSliderMeasureListeners.forEach((cb) => cb())
-      },
-      // really doesn't need to be super often
-      1000
-    )
+  activeSliderMeasureInterval = setInterval(() => {
+    activeSliderMeasureListeners.forEach((cb) => cb())
+  }, 1000)
+}
+
+function addActiveSliderMeasureListener(listener: Function) {
+  activeSliderMeasureListeners.add(listener)
+  startSliderMeasureInterval()
+}
+
+function removeActiveSliderMeasureListener(listener: Function) {
+  activeSliderMeasureListeners.delete(listener)
+  if (!activeSliderMeasureListeners.size && activeSliderMeasureInterval !== undefined) {
+    clearInterval(activeSliderMeasureInterval)
+    activeSliderMeasureInterval = undefined
   }
 }
 
@@ -193,9 +208,9 @@ function useSliderMeasure(sliderRef: React.RefObject<View | null>, measure: () =
       (entries) => {
         debouncedMeasure()
         if (entries?.[0].isIntersecting) {
-          activeSliderMeasureListeners.add(debouncedMeasure)
+          addActiveSliderMeasureListener(debouncedMeasure)
         } else {
-          activeSliderMeasureListeners.delete(debouncedMeasure)
+          removeActiveSliderMeasureListener(debouncedMeasure)
         }
       },
       {
@@ -208,7 +223,7 @@ function useSliderMeasure(sliderRef: React.RefObject<View | null>, measure: () =
     io.observe(node)
 
     return () => {
-      activeSliderMeasureListeners.delete(debouncedMeasure)
+      removeActiveSliderMeasureListener(debouncedMeasure)
       io.disconnect()
     }
   }, [])

@@ -1,15 +1,38 @@
+import type { ExtractedResponse } from '@tamagui/static';
 import type { TamaguiOptions } from '@tamagui/types';
-export declare function getTamaguiOptions(): TamaguiOptions | null;
-export declare function getLoadPromise(): Promise<TamaguiOptions> | null;
-/**
- * Load just the tamagui.build.ts config (lightweight)
- * This doesn't bundle the full tamagui config - call ensureFullConfigLoaded() for that
- */
-export declare function loadTamaguiBuildConfig(optionsIn?: Partial<TamaguiOptions>): Promise<TamaguiOptions>;
-/**
- * Ensure the full tamagui config is loaded (heavy - bundles config + components)
- * Call this lazily when transform/extraction is actually needed
- */
-export declare function ensureFullConfigLoaded(): Promise<void>;
-export declare function cleanup(): Promise<void>;
+import type { RunnableDevEnvironment } from 'vite';
+export declare const TAMAGUI_EVALUATION_ENVIRONMENT = "tamagui";
+type ResolvedEvaluationModule = {
+    moduleName: string;
+    id: string;
+    module: Record<string, unknown>;
+};
+type EvaluatedProjectModules = {
+    config: ResolvedEvaluationModule;
+    components: ResolvedEvaluationModule[];
+};
+export type ViteTamaguiLoader = {
+    getEnvironment(): RunnableDevEnvironment | null;
+    getGeneration(): number;
+    getLoadPromise(): Promise<TamaguiOptions> | null;
+    getTamaguiOptions(): TamaguiOptions | null;
+    getEvaluationDependencies(): string[];
+    isEvaluationDependency(id: string): boolean;
+    evaluateProjectModules(options: TamaguiOptions): Promise<EvaluatedProjectModules>;
+    loadTamaguiBuildConfig(): Promise<TamaguiOptions>;
+    setEnvironment(next: RunnableDevEnvironment, options?: {
+        owned?: boolean;
+    }): void;
+    invalidate(file?: string): void;
+    ensureFullConfigLoaded(): Promise<string[]>;
+    extractToClassNames(params: {
+        source: string;
+        sourcePath: string;
+        options: TamaguiOptions;
+        shouldPrintDebug: boolean | 'verbose';
+    }): Promise<ExtractedResponse | null>;
+    cleanup(): Promise<void>;
+};
+export declare function createViteTamaguiLoader(optionsIn?: Partial<TamaguiOptions>): ViteTamaguiLoader;
+export {};
 //# sourceMappingURL=loadTamagui.d.ts.map
