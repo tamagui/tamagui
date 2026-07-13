@@ -63,7 +63,19 @@ const FONT_SIZE_NAMES = [
 ] as const
 
 const RADIUS_NAMES = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const
-const Z_INDEX_NAMES = ['0', '1', '2', '3', '4', '5', '10', '20', '30', '40', '50'] as const
+const Z_INDEX_NAMES = [
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '10',
+  '20',
+  '30',
+  '40',
+  '50',
+] as const
 const SKIP_COLORS = new Set(['inherit', 'current', 'transparent', 'black', 'white'])
 
 type Scalar = number | string
@@ -107,9 +119,7 @@ function toPx(value: string, relativeTo?: number): number {
   if (/^-?\d+(?:\.\d+)?$/.test(value) && relativeTo !== undefined) {
     return Number(value) * relativeTo
   }
-  const ratio = /^calc\(\s*(-?\d+(?:\.\d+)?)\s*\/\s*(-?\d+(?:\.\d+)?)\s*\)$/.exec(
-    value
-  )
+  const ratio = /^calc\(\s*(-?\d+(?:\.\d+)?)\s*\/\s*(-?\d+(?:\.\d+)?)\s*\)$/.exec(value)
   if (ratio && relativeTo !== undefined) {
     return (Number(ratio[1]) / Number(ratio[2])) * relativeTo
   }
@@ -125,7 +135,9 @@ export function readPinnedTailwindSource(): PinnedTailwindSource {
       `Expected tailwindcss ${TAILWIND_VERSION}, resolved ${String(packageJson.version)}`
     )
   }
-  const playwrightPackagePath = fileURLToPath(import.meta.resolve('playwright/package.json'))
+  const playwrightPackagePath = fileURLToPath(
+    import.meta.resolve('playwright/package.json')
+  )
   const playwrightPackageJson = JSON.parse(readFileSync(playwrightPackagePath, 'utf8'))
   if (playwrightPackageJson.version !== PLAYWRIGHT_VERSION) {
     throw new Error(
@@ -162,7 +174,9 @@ export function createDefaultTables(themeCss: string): V6TailwindDefaultTables {
   }
   radius.$full = 9999
 
-  const zIndex = Object.fromEntries(Z_INDEX_NAMES.map((name) => [`$${name}`, Number(name)]))
+  const zIndex = Object.fromEntries(
+    Z_INDEX_NAMES.map((name) => [`$${name}`, Number(name)])
+  )
 
   const fontSize: Table = {}
   const lineHeight: Table = {}
@@ -303,7 +317,10 @@ ${renderTable('tailwindLineHeight', tables.lineHeight)}
 }
 
 async function main(): Promise<void> {
-  const outputPath = join(dirname(fileURLToPath(import.meta.url)), '../src/v6-tailwind-defaults.generated.ts')
+  const outputPath = join(
+    dirname(fileURLToPath(import.meta.url)),
+    '../src/v6-tailwind-defaults.generated.ts'
+  )
   const generated = await generateSource()
   if (process.argv.includes('--check')) {
     const current = readFileSync(outputPath, 'utf8')
@@ -312,18 +329,13 @@ async function main(): Promise<void> {
         'v6 Tailwind defaults drifted; run bun ./scripts/generate-v6-tailwind-defaults.ts'
       )
     }
-    console.info(
-      'v6 Tailwind defaults match tailwindcss@4.3.0 + playwright@1.58.2'
-    )
+    console.info('v6 Tailwind defaults match tailwindcss@4.3.0 + playwright@1.58.2')
     return
   }
   writeFileSync(outputPath, generated)
   console.info(`wrote ${outputPath}`)
 }
 
-if (
-  process.argv[1] &&
-  pathToFileURL(resolve(process.argv[1])).href === import.meta.url
-) {
+if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
   await main()
 }
