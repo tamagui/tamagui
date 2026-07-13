@@ -1009,13 +1009,18 @@ export type SpecificTokens<Record = Tokens, RK extends keyof Record = keyof Reco
 export type SpecificTokensSpecial = TamaguiSettings extends {
     autocompleteSpecificTokens: infer Val;
 } ? Val extends 'except-special' | undefined ? never : SpecificTokens : SpecificTokens;
-export type SizeTokens = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']> | true;
-export type SpaceTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | true;
+export type Size = SpecificTokensSpecial | ThemeValueFallbackSize | GetTokenString<keyof Tokens['size']> | true;
+export type SizeTokens = Size;
+export type Space = SpecificTokensSpecial | GetTokenString<keyof Tokens['space']> | ThemeValueFallbackSpace | true;
+export type SpaceTokens = Space;
 type ColorTokenBase = SpecificTokensSpecial | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof ThemeParsed>;
 type TokenWithOpacity = `$${string}/${number}`;
-export type ColorTokens = ColorTokenBase | CSSColorNames | TokenWithOpacity;
-export type ZIndexTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['zIndex']> | ThemeValueFallbackZIndex | number | true;
-export type RadiusTokens = SpecificTokensSpecial | GetTokenString<keyof Tokens['radius']> | ThemeValueFallbackRadius | number | RemString | true;
+export type Color = ColorTokenBase | CSSColorNames | TokenWithOpacity;
+export type ColorTokens = Color;
+export type ZIndex = SpecificTokensSpecial | GetTokenString<keyof Tokens['zIndex']> | ThemeValueFallbackZIndex | number | true;
+export type ZIndexTokens = ZIndex;
+export type Radius = SpecificTokensSpecial | GetTokenString<keyof Tokens['radius']> | ThemeValueFallbackRadius | number | RemString | true;
+export type RadiusTokens = Radius;
 export type NonSpecificTokens = GetTokenString<keyof Tokens['radius']> | GetTokenString<keyof Tokens['zIndex']> | GetTokenString<keyof Tokens['color']> | GetTokenString<keyof Tokens['space']> | GetTokenString<keyof Tokens['size']>;
 export type Token = NonSpecificTokens | (TamaguiSettings extends {
     autocompleteSpecificTokens: false;
@@ -1027,7 +1032,8 @@ export type Font = ParseFont<Fonts>;
 export type GetTokenFontKeysFor<A extends 'size' | 'weight' | 'letterSpacing' | 'family' | 'lineHeight' | 'transform' | 'style' | 'color'> = keyof TamaguiConfig['fonts']['body'][A];
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>;
 export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>;
-export type FontSizeTokens = GetTokenString<GetTokenFontKeysFor<'size'>> | number | RemString | true;
+export type FontSize = GetTokenString<GetTokenFontKeysFor<'size'>> | number | RemString | true;
+export type FontSizeTokens = FontSize;
 export type FontLineHeightTokens = `$${GetTokenFontKeysFor<'lineHeight'>}` | number | RemString;
 export type FontWeightValues = `${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}00` | 'bold' | 'normal';
 export type FontWeightTokens = `$${GetTokenFontKeysFor<'weight'>}` | FontWeightValues;
@@ -1730,6 +1736,15 @@ export type ViewStyleWithPseudos = TextStyle | (TextStyle & {
  * --------------------------------------------
  */
 export type StylableComponent = TamaguiComponent | ComponentType<any> | ReactComponentWithRef<any, any> | (new (props: any) => any);
+export declare const variantResolverNames: readonly ["Size", "Space", "Color", "Radius", "ZIndex", "Theme", "FontSize", "FontStyle", "FontTransform", "FontLineHeight", "FontLetterSpacing", "number", "string", "boolean", "any"];
+export type VariantResolverName = (typeof variantResolverNames)[number];
+type TrimWhitespace = ' ' | '\n' | '\t' | '\r' | '\v' | '\f';
+type Trim<S extends string> = S extends `${TrimWhitespace}${infer Next}` ? Trim<Next> : S extends `${infer Next}${TrimWhitespace}` ? Trim<Next> : S;
+type ValidateVariantResolverKey<Key extends string> = Trim<Key> extends `${infer Left}|${infer Right}` ? Trim<Left> extends VariantResolverName ? ValidateVariantResolverKey<Right> extends never ? never : Key : never : Trim<Key> extends VariantResolverName ? Key : never;
+export type VariantResolverKey<Key extends string = string> = Key extends string ? ValidateVariantResolverKey<Key> : never;
+type VariantResolverValueForName<Name extends string> = Name extends 'Size' ? Size : Name extends 'Space' ? Space : Name extends 'Color' ? Color : Name extends 'Radius' ? Radius : Name extends 'ZIndex' ? ZIndex : Name extends 'Theme' ? ThemeTokens : Name extends 'FontSize' ? FontSize : Name extends 'FontStyle' ? FontStyleTokens : Name extends 'FontTransform' ? FontTransformTokens : Name extends 'FontLineHeight' ? FontLineHeightTokens : Name extends 'FontLetterSpacing' ? FontLetterSpacingTokens : Name extends 'number' ? number : Name extends 'string' ? string : Name extends 'boolean' ? boolean : Name extends 'any' ? any : never;
+export type VariantResolverValue<Key extends string> = Trim<Key> extends `${infer Left}|${infer Right}` ? VariantResolverValueForName<Trim<Left>> | VariantResolverValue<Right> : VariantResolverValueForName<Trim<Key>>;
+export declare function createVariantResolver<Key extends string, Props extends PropLike = PropLike, Resolver extends VariantSpreadFunction<Props, VariantResolverValue<Key>> = VariantSpreadFunction<Props, VariantResolverValue<Key>>>(key: string extends Key ? never : Key & VariantResolverKey<Key>, resolver: Resolver): Resolver;
 export type SpreadKeys = '...fontSize' | '...fontStyle' | '...fontTransform' | '...lineHeight' | '...letterSpacing' | '...size' | '...space' | '...color' | '...zIndex' | '...theme' | '...radius';
 export type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, StaticConfig extends StaticConfigPublic = Parent extends {
     __tama: [any, any, any, any, any, infer S];
@@ -1774,7 +1789,7 @@ export type VariantSpreadFunction<Props extends PropLike, Val = any> = (val: Val
     [Key in keyof Props]: Props[Key] | Variable | VariableVal;
 } | null | undefined;
 export type VariantTypeKeys = ':string' | ':boolean' | ':number';
-export type GetVariantValues<Key> = Key extends `...${infer VariantSpread}` ? ThemeValueByCategory<VariantSpread> : Key extends 'true' | 'false' ? boolean : Key extends ':string' ? string : Key extends ':boolean' ? boolean : Key extends ':number' ? number : Key;
+export type GetVariantValues<Key> = Key extends `...${infer VariantSpread}` ? ThemeValueByCategory<VariantSpread> : Key extends 'true' | 'false' ? boolean : Key extends string ? VariantResolverKey<Key> extends never ? Key extends ':string' ? string : Key extends ':boolean' ? boolean : Key extends ':number' ? number : Key : VariantResolverValue<Key> : Key;
 export type FontSizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontSizeTokens>;
 export type SizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SizeTokens>;
 export type SpaceVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SpaceTokens>;

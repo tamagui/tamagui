@@ -1,6 +1,7 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, FormHTMLAttributes, HTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
 import type { GetRef } from './interfaces/GetRef';
 import type { GetBaseStyles, GetNonStyledProps, GetStaticConfig, GetStyledVariants, GetVariantValues, InferStyleProps, InferStyledProps, StackStyle, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, TamaguiComponentPropsBase, TextStyle, TextStylePropsBase, ThemeValueByCategory, VariantDefinitions, VariantSpreadFunction } from './types';
+export { createVariantResolver } from './types';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
     _isEmpty: 1;
 } ? true : false;
