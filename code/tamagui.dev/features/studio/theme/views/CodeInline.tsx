@@ -1,5 +1,6 @@
 import { Paragraph, styled } from 'tamagui'
 
+// @ts-ignore
 export const CodeInline = styled(Paragraph, {
   name: 'CodeInline',
   render: 'code',
@@ -7,7 +8,6 @@ export const CodeInline = styled(Paragraph, {
   backgroundColor: '$color02',
   cursor: 'inherit',
   rounded: '$3',
-  // @ts-ignore
   fontSize: '85%',
   p: '$1.5',
 })

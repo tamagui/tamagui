@@ -19,7 +19,7 @@ type FormContextValue = {
 
 export const FormContext = createStyledContext<FormContextValue>({
   onSubmit: undefined,
-} as FormContextValue)
+})
 
 export const { useStyledContext: useFormContext, Provider: FormProvider } = FormContext
 
