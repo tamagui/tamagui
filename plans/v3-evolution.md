@@ -35,6 +35,50 @@ requirement.
   compilable, zero render cost. Functional variants return objects only
   (dynamic class construction defeats the scanner).
 
+#### "token-first", precisely (this is the thing to be unambiguous about)
+
+The numeric part of a utility class is a **tamagui token NAME**, not a Tailwind
+scale index. `p-4` means `padding="$4"` — it resolves through the config's
+`space.$4` token, exactly as the prop `padding="$4"` does. It is NOT `4 × 4px`
+Tailwind math. The parser has ONE resolution path (the token system); it never
+does Tailwind's ×0.25rem arithmetic.
+
+Examples:
+- `p-4` → `padding="$4"` — the config token. 16px on an aligned v6 config, or
+  20px if your config sets `space.$4 = 20`. (Under the OLD parser at
+  `5a011ff4fb`, `p-4` was a hardcoded `16px` regardless of config — that is
+  what token-first removes.)
+- `rounded-8` → `borderRadius="$8"`; `z-4` → `zIndex="$4"`; `gap-2` → `$2`.
+- `bg-color5` → `backgroundColor="$color5"` (theme value — already name-based;
+  this direction already worked, token-first makes the numeric props match it).
+- Raw, non-token values use the arbitrary escape: `p-[16px]`, `w-[200px]`,
+  `h-[calc(100%-2px)]`. So you are never forced through a token.
+
+Why "first" (what it buys):
+- **One meaning**: `p-4` (class) and `padding="$4"` (prop) resolve identically,
+  so the styling language has no split personality between className and props.
+- **Lossless round-trip**: the `to-tailwind` converter emits `p-4` from
+  `padding="$4"` and back with no convert-time pixel baking — that baking (e.g.
+  `$4`→`p-4`→16px when `$4` was really 18px) was the exact bug class the audit
+  caught.
+- **Config-portable**: a shared component's `p-4` means "the CONSUMER's `$4`",
+  so it adapts to any downstream config instead of hardcoding pixels.
+
+**Tailwind muscle-memory (`p-4` = 16px) is satisfied at the CONFIG layer, not
+in the parser**: v6 aligns `space.$4` to 16px (one place, web + native,
+user-customizable). Change the token and both `p-4` and `padding="$4"` move
+together. This is why the two rulings ("token-first parser" + "config-level
+Tailwind alignment") are one design, not two.
+
+**Who claims `p-4` under hybrid tailwind**: our parser claims ANY class matching
+the tamagui grammar (`<shorthand/prop>-<token|value>`) and resolves it
+token-first; it does NOT forward those to Tailwind. Only classes we don't
+recognize (`grid-cols-3`, `backdrop-blur-md`, container queries, `data-*`
+variants…) pass through to the official Tailwind engine on web. `p-4` overlaps
+both systems; token-first + config alignment is precisely what makes that
+overlap seamless. On a NON-aligned config, `p-4` follows THAT config's `$4` —
+intended, config-honest behavior, not a Tailwind pixel guarantee.
+
 ### Variants / core API
 
 - **TS-style variant keys**: `'Size | number': (val, ctx) => styles` replaces
