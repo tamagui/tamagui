@@ -38,6 +38,8 @@ import type {
 } from './types'
 import type { Text } from './views/Text'
 
+export { createVariantResolver } from './types'
+
 type AreVariantsUndefined<Variants> =
   // because we pass in the Generic variants which for some reason has this :)
   Required<Variants> extends { _isEmpty: 1 } ? true : false
