@@ -2951,6 +2951,12 @@ export type StaticConfigPublic = {
   defaultProps?: Record<string, any>
 
   /**
+   * Static class input supplied to styled(Component, baseClassName, ...).
+   * B1 records this for compiler/static consumers; runtime class semantics land later.
+   */
+  baseClassName?: StaticStyleInput
+
+  /**
    * (compiler) If you need to pass context or something, prevents from ever
    * flattening. The 'jsx' option means it will never flatten. if you
    * pass JSX as a children (if its purely string, it will still flatten).
@@ -3193,6 +3199,8 @@ export type VariantDefinitions<
   _isEmpty?: 1
 }
 
+export type StaticStyleInput = string
+
 export type GetVariantProps<
   A extends StylableComponent,
   IsText extends boolean | undefined,
@@ -3245,6 +3253,7 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object
             [Key in string | number | 'true' | 'false']?:
               | MyProps
               | VariantSpreadFunction<MyProps, Val>
+              | StaticStyleInput
           } & {
             [Key in VariantTypeKeys]?: Key extends ':number'
               ? VariantSpreadFunction<MyProps, number>
