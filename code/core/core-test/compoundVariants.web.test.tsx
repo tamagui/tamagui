@@ -129,9 +129,9 @@ describe('compoundVariants - web', () => {
 
     expect(compoundOnly.style?.backgroundColor).toBe('red')
     expect(compoundOnly.style?.opacity).toBe(0.5)
-    expect(compoundOnly.style?.borderTopLeftRadius).toBe(2)
-    expect(compoundOnly.style?.marginTop).toBe(3)
-    expect(compoundOnly.style?.paddingTop).toBe(3)
+    expect(compoundOnly.style?.borderTopLeftRadius).toBe('2px')
+    expect(compoundOnly.style?.marginTop).toBe('3px')
+    expect(compoundOnly.style?.paddingTop).toBe('3px')
     expect(compoundOnly.viewProps.tone).toBeUndefined()
 
     const callerOverrides = simplifiedGetSplitStyles(
@@ -163,9 +163,9 @@ describe('compoundVariants - web', () => {
 
     expect(callerOverrides.style?.backgroundColor).toBe('black')
     expect(callerOverrides.style?.opacity).toBe(0.7)
-    expect(callerOverrides.style?.borderTopLeftRadius).toBe(2)
-    expect(callerOverrides.style?.marginTop).toBe(4)
-    expect(callerOverrides.style?.paddingTop).toBe(3)
+    expect(callerOverrides.style?.borderTopLeftRadius).toBe('2px')
+    expect(callerOverrides.style?.marginTop).toBe('4px')
+    expect(callerOverrides.style?.paddingTop).toBe('3px')
 
     const permutedCaller = simplifiedGetSplitStyles(
       Frame,
@@ -297,7 +297,7 @@ describe('compoundVariants - web', () => {
           },
         }
       ).style?.marginTop
-    ).toBe(1004)
+    ).toBe('1004px')
   })
 
   test('higher media specificity beats more than 1000 later lower media entries', () => {
@@ -347,7 +347,7 @@ describe('compoundVariants - web', () => {
           },
         }
       ).style?.marginTop
-    ).toBe(2000)
+    ).toBe('2000px')
   })
 
   test('nested media/platform specificity remains numeric', () => {
@@ -380,7 +380,7 @@ describe('compoundVariants - web', () => {
     expect(
       lowerSpecificityLast.style?.marginTop ??
         getRuleValue(lowerSpecificityLast.rulesToInsert, 'marginTop')
-    ).toBe(2)
+    ).toBe('2px')
   })
 
   test('nested platform matrices preserve equal-specificity later-order behavior', () => {
@@ -415,7 +415,7 @@ describe('compoundVariants - web', () => {
     expect(
       equalSpecificityLaterWins.style?.marginTop ??
         getRuleValue(equalSpecificityLaterWins.rulesToInsert, 'marginTop')
-    ).toBe(2)
+    ).toBe('2px')
   })
 
   test('real Provider supplies explicit context props without consuming host props', () => {
