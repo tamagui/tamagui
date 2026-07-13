@@ -23,9 +23,9 @@ import { tamaguiToTailwind } from '../to-tailwind/src/transform'
 // custom config: overridden token scales + an extra media key
 const tokens = {
   ...(v6 as any).tokens,
-  space: { ...(v6 as any).tokens.space, $4: 20 }, // default is 18 → prove we use 20
+  space: { ...(v6 as any).tokens.space, $4: 20 }, // default is 16 → prove we use 20
   size: { ...(v6 as any).tokens.size, $auto: 321 },
-  zIndex: { ...(v6 as any).tokens.zIndex, $4: 40 }, // default is 400 → prove we use 40
+  zIndex: { ...(v6 as any).tokens.zIndex, $4: 40 }, // default is 4 → prove we use 40
 }
 const media = { ...(v6 as any).media, tablet: { minWidth: 900 } }
 const fonts = { ...(v6 as any).fonts, sans: (v6 as any).fonts.body }
@@ -75,10 +75,21 @@ function styleFlat(props: Record<string, any>): Record<string, any> {
 describe('config-aware tokens (WEB) — class names follow runtime-owned values', () => {
   test('space.$4: padding="$4" → p-4 → direct-token parity', () => {
     const cls = className(`<View padding="$4" />`)
+    const fromClass = styleFlat({ className: cls }).paddingTop
+    const fromProp = styleFlat({ padding: '$4' }).paddingTop
     expect(cls).toContain('p-4')
-    expect(styleFlat({ className: cls }).paddingTop).toBe(
-      styleFlat({ padding: '$4' }).paddingTop
-    )
+    expect(tokens.space.$4).toBe(20)
+    expect(CFG.tokensParsed.space.$4.val).toBe(20)
+    expect(fromClass).toBe(fromProp)
+    expect(typeof fromClass).toBe('string')
+  })
+
+  test('overriding space.$4 does not mutate the distinct size.$4 domain', () => {
+    const cls = className(`<View width="$4" />`)
+    expect(cls).toContain('w-4')
+    expect(tokens.size.$4).toBe(16)
+    expect(CFG.tokensParsed.size.$4.val).toBe(16)
+    expect(styleFlat({ className: cls }).width).toBe(styleFlat({ width: '$4' }).width)
   })
 
   test('zIndex.$4: zIndex="$4" → z-4 → direct-token parity', () => {

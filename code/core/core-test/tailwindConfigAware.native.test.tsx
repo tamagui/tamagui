@@ -73,6 +73,15 @@ describe('config-aware tokens (NATIVE) — class names follow runtime-owned valu
     expect(typeof style({ className: cls }).paddingTop).toBe('number')
   })
 
+  test('overriding space.$4 does not mutate the distinct size.$4 domain', () => {
+    const cls = className(`<View width="$4" />`)
+    expect(cls).toContain('w-4')
+    expect(tokens.size.$4).toBe(16)
+    expect(style({ className: cls }).width).toBe(16)
+    expect(style({ className: cls }).width).toBe(style({ width: '$4' }).width)
+    expect(typeof style({ className: cls }).width).toBe('number')
+  })
+
   test('zIndex.$4 = 40: zIndex="$4" → z-4 → zIndex 40 (number)', () => {
     const cls = className(`<View zIndex="$4" />`)
     expect(cls).toContain('z-4')

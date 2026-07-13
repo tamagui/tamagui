@@ -21,7 +21,7 @@ import {
   StyleObjectValue,
 } from '@tamagui/helpers'
 
-import { View, createTamagui } from '../web/src'
+import { Text, View, createTamagui } from '../web/src'
 import {
   getSplitStyles,
   preprocessStyleModeProps,
@@ -60,10 +60,10 @@ function convertedClassName(sourceJSX: string): string {
 // (rulesToInsert), off-web they live in inline `.style` — merge both so the round-trip
 // assertions read the same resolved runtime value under either target. base-prop rules
 // only (media/pseudo-scoped rules are skipped; media is asserted via preprocessStyleModeProps).
-function styleOf(props: Record<string, any>): Record<string, any> {
+function styleOf(props: Record<string, any>, Comp: any = View): Record<string, any> {
   const s = getSplitStyles(
     props as any,
-    View.staticConfig,
+    Comp.staticConfig,
     THEME,
     'light',
     defaultComponentState,
@@ -84,8 +84,8 @@ function styleOf(props: Record<string, any>): Record<string, any> {
   return out
 }
 
-function classStyle(cls: string): Record<string, any> {
-  return styleOf({ className: cls })
+function classStyle(cls: string, Comp: any = View): Record<string, any> {
+  return styleOf({ className: cls }, Comp)
 }
 
 // the flat style props the parser reconstructs from a className, BEFORE the platform
@@ -142,16 +142,20 @@ describe('PASS 1 — 1a: responsive media direction', () => {
 describe('PASS 1 — 1b: token-first config fidelity', () => {
   test('spacing token padding="$4" emits p-4 and resolves exactly like the source prop', () => {
     const cls = convertedClassName(`<View padding="$4" />`)
+    const fromClass = classStyle(cls).paddingTop
+    const fromProp = styleOf({ padding: '$4' }).paddingTop
     expect(cls).toContain('p-4')
-    expect(classStyle(cls).paddingTop).toBe(styleOf({ padding: '$4' }).paddingTop)
-    expect(typeof classStyle(cls).paddingTop).toBe(
-      typeof styleOf({ padding: '$4' }).paddingTop
-    )
+    expect((v6 as any).tokens.space.$4).toBe(16)
+    expect(CFG.tokensParsed.space.$4.val).toBe(16)
+    expect(fromClass).toBe(fromProp)
+    expect(typeof fromClass).toBe('string')
+    expect(typeof fromClass).toBe(typeof fromProp)
   })
 
   test('gap="$6" emits gap-6 and follows the active space token', () => {
     const cls = convertedClassName(`<View gap="$6" />`)
     expect(cls).toContain('gap-6')
+    expect((v6 as any).tokens.space.$6).toBe(24)
     expect(classStyle(cls).gap).toBe(styleOf({ gap: '$6' }).gap)
   })
 
@@ -166,7 +170,33 @@ describe('PASS 1 — 1b: token-first config fidelity', () => {
   test('width="$10" emits w-10 and follows the active size token', () => {
     const cls = convertedClassName(`<View width="$10" />`)
     expect(cls).toContain('w-10')
+    expect((v6 as any).tokens.size.$10).toBe(40)
     expect(classStyle(cls).width).toBe(styleOf({ width: '$10' }).width)
+  })
+
+  test('the configured named radius is the direct Tailwind value', () => {
+    const cls = convertedClassName(`<View borderRadius="$lg" />`)
+    expect(cls).toContain('rounded-lg')
+    expect((v6 as any).tokens.radius.$lg).toBe(8)
+    expect(classStyle(cls).borderTopLeftRadius).toBe(
+      styleOf({ borderRadius: '$lg' }).borderTopLeftRadius
+    )
+  })
+})
+
+describe('PASS 1 — 1b: aligned named typography', () => {
+  test('text-base and leading-base follow the paired default font tokens', () => {
+    const cls = convertedClassName(`<Text fontSize="$base" lineHeight="$base" />`)
+    const fromClass = classStyle(cls, Text)
+    const fromProp = styleOf({ fontSize: '$base', lineHeight: '$base' }, Text)
+    expect(cls).toContain('text-base')
+    expect(cls).toContain('leading-base')
+    expect((v6 as any).fonts.body.size.$base).toBe('16px')
+    expect((v6 as any).fonts.body.lineHeight.$base).toBe('24px')
+    expect(fromClass.fontSize).toBe(fromProp.fontSize)
+    expect(fromClass.lineHeight).toBe(fromProp.lineHeight)
+    expect(typeof fromClass.fontSize).toBe('string')
+    expect(typeof fromClass.lineHeight).toBe('string')
   })
 })
 
@@ -241,11 +271,13 @@ describe('PASS 2 — directional borders + corner radius', () => {
 })
 
 describe('token category system — zIndex sentinel (default config)', () => {
-  test('zIndex="$4" → z-4 → runtime uses the active zIndex token', () => {
-    const cls = convertedClassName(`<View zIndex="$4" />`)
-    expect(cls).toContain('z-4')
-    expect(flat(cls).zIndex).toBe('$4')
-    expect(classStyle(cls).zIndex).toBe(styleOf({ zIndex: '$4' }).zIndex)
+  test('zIndex="$10" → z-10 → runtime uses the direct Tailwind value', () => {
+    const cls = convertedClassName(`<View zIndex="$10" />`)
+    expect(cls).toContain('z-10')
+    expect((v6 as any).tokens.zIndex.$10).toBe(10)
+    expect((v6 as any).tokens.zIndex.$4).toBe(4)
+    expect(flat(cls).zIndex).toBe('$10')
+    expect(classStyle(cls).zIndex).toBe(styleOf({ zIndex: '$10' }).zIndex)
   })
 })
 

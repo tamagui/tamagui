@@ -27,6 +27,7 @@
     "v2-reanimated.js",
     "v2-native.d.ts",
     "v2-native.js",
+    "scripts",
     "dist",
     "**/__tests__"
   ],

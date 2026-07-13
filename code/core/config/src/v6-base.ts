@@ -1,25 +1,56 @@
-// v6 base config — currently v5 + Tailwind-style `w`/`h` shorthands. this is the opt-in
-// home for breaking, Tailwind-compatible changes (shorthands now; spacing scale, color
-// palette and named sizes to follow), so v5 stays stable.
+// v6 is the opt-in home for breaking Tailwind-compatible defaults, so v5 stays stable.
 import { shorthands } from '@tamagui/shorthands/v6'
 import { themes, tokens as v5tokens } from '@tamagui/themes/v5'
 import type { CreateTamaguiProps } from '@tamagui/web'
-import { fonts } from './v5-fonts'
+import { fonts as v5fonts } from './v5-fonts'
 import { media, mediaQueryDefaultActive } from './v5-media'
 import { selectionStyles, settings } from './v5-base'
-import { tailwindColors, tailwindRadius } from './v6-tailwind-tokens'
+import {
+  tailwindColors,
+  tailwindFontSize,
+  tailwindLineHeight,
+  tailwindRadius,
+  tailwindSize,
+  tailwindSpace,
+  tailwindZIndex,
+} from './v6-tailwind-tokens'
 
 // inherit all v5 helpers/types/theme re-exports, then override shorthands + defaultConfig
 export * from './v5-base'
 export { shorthands }
 
-// v5 tokens + Tailwind palette (color) and named radii, so styleMode:'tailwind' resolves
-// bg-indigo-500 / rounded-lg by name.
-const tokens = {
-  ...v5tokens,
-  color: { ...(v5tokens as any).color, ...tailwindColors },
-  radius: { ...(v5tokens as any).radius, ...tailwindRadius },
+// Space and size deliberately remain separate configured domains even though their default
+// values coincide. Radius keeps v5's numeric component scale while adding Tailwind's named
+// border-radius scale; v6's z-index names resolve to their direct CSS values.
+export const tokens = {
+  color: tailwindColors,
+  space: tailwindSpace,
+  size: tailwindSize,
+  radius: { ...v5tokens.radius, ...tailwindRadius },
+  zIndex: tailwindZIndex,
+} as const
+
+// Font px strings are normalized to numeric Variable values by createVariable. Keep the same
+// public numeric type contract as v5's pinFontToPx while retaining the generated map's exact keys.
+type NormalizedPxScale<T extends Record<string, string>> = {
+  [Key in keyof T]: number
 }
+
+const asNormalizedPxScale = <T extends Record<string, string>>(scale: T) =>
+  scale as unknown as NormalizedPxScale<T>
+
+function withTailwindTypeScale<F extends { size: object; lineHeight: object }>(font: F) {
+  return {
+    ...font,
+    size: { ...font.size, ...asNormalizedPxScale(tailwindFontSize) },
+    lineHeight: { ...font.lineHeight, ...asNormalizedPxScale(tailwindLineHeight) },
+  }
+}
+
+export const fonts = {
+  body: withTailwindTypeScale(v5fonts.body),
+  heading: withTailwindTypeScale(v5fonts.heading),
+} satisfies NonNullable<CreateTamaguiProps['fonts']>
 
 export const defaultConfig = {
   media,
