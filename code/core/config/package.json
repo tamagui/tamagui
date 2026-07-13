@@ -113,6 +113,8 @@
   },
   "scripts": {
     "build": "tamagui-build",
+    "check:v6-tailwind-defaults": "bun ./scripts/generate-v6-tailwind-defaults.ts --check",
+    "test:v6-tailwind-defaults": "bun test ./scripts/v6-tailwind-defaults.test.ts",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build"
@@ -134,7 +136,9 @@
     "@tamagui/web": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/build": "workspace:*"
+    "@tamagui/build": "workspace:*",
+    "playwright": "1.58.2",
+    "tailwindcss": "4.3.0"
   },
   "peerDependencies": {
     "@tamagui/animations-moti": "*"

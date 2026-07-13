@@ -1,14 +1,2 @@
-export { tailwindColors } from './v6-tailwind-palette';
-export declare const tailwindRadius: {
-    $none: number;
-    $xs: number;
-    $sm: number;
-    $md: number;
-    $lg: number;
-    $xl: number;
-    $2xl: number;
-    $3xl: number;
-    $4xl: number;
-    $full: number;
-};
+export { tailwindColors, tailwindFontSize, tailwindLineHeight, tailwindRadius, tailwindSize, tailwindSource, tailwindSpace, tailwindZIndex, } from './v6-tailwind-defaults.generated';
 //# sourceMappingURL=v6-tailwind-tokens.d.ts.map

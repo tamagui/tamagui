@@ -46,11 +46,11 @@ function toClass(sourceJSX: string): string {
   return m ? m[1] : ''
 }
 
-// className → resolved FULL native style object
-function nativeStyle(Comp: any, className: string): Record<string, any> {
+// props → resolved FULL native style object
+function nativeStyleOf(Comp: any, props: Record<string, any>): Record<string, any> {
   return (
     getSplitStyles(
-      { className } as any,
+      props as any,
       Comp.staticConfig,
       THEME,
       'light',
@@ -65,6 +65,10 @@ function nativeStyle(Comp: any, className: string): Record<string, any> {
   )
 }
 
+function nativeStyle(Comp: any, className: string): Record<string, any> {
+  return nativeStyleOf(Comp, { className })
+}
+
 // SOURCE prop → converter → native style value (full round-trip in one step)
 function resolved(Comp: any, sourceJSX: string, styleProp: string): any {
   return nativeStyle(Comp, toClass(sourceJSX))[styleProp]
@@ -77,11 +81,13 @@ function flat(className: string): Record<string, any> {
 describe('native — px-length props resolve to EXACT NUMBERS (RN drops "Npx" strings)', () => {
   test('spacing/sizing tokens', () => {
     const p = resolved(View, `<View padding="$4" />`, 'paddingTop')
-    expect(p).toBe(18)
+    expect((v6 as any).tokens.space.$4).toBe(16)
+    expect(p).toBe(nativeStyleOf(View, { padding: '$4' }).paddingTop)
+    expect(p).toBe(16)
     expect(typeof p).toBe('number')
 
     const g = resolved(View, `<View gap="$6" />`, 'gap')
-    expect(g).toBe(32)
+    expect(g).toBe(24)
     expect(typeof g).toBe('number')
 
     const r = resolved(View, `<View borderRadius="$8" />`, 'borderTopLeftRadius')
@@ -89,8 +95,16 @@ describe('native — px-length props resolve to EXACT NUMBERS (RN drops "Npx" st
     expect(typeof r).toBe('number')
 
     const w = resolved(View, `<View width="$10" />`, 'width')
-    expect(w).toBe(104)
+    expect(w).toBe(nativeStyleOf(View, { width: '$10' }).width)
+    expect(w).toBe(40)
     expect(typeof w).toBe('number')
+  })
+
+  test('named radius token matches the direct Tailwind value', () => {
+    const radius = resolved(View, `<View borderRadius="$lg" />`, 'borderTopLeftRadius')
+    expect(radius).toBe(nativeStyleOf(View, { borderRadius: '$lg' }).borderTopLeftRadius)
+    expect(radius).toBe(8)
+    expect(typeof radius).toBe('number')
   })
 
   test('numeric literals', () => {
@@ -105,6 +119,20 @@ describe('native — px-length props resolve to EXACT NUMBERS (RN drops "Npx" st
 })
 
 describe('native — typography resolves to EXACT NUMBERS (RN StyleSheetTypes number-only)', () => {
+  test('named text-base/leading-base use the paired Tailwind defaults', () => {
+    const className = toClass(`<Text fontSize="$base" lineHeight="$base" />`)
+    const fromClass = nativeStyle(Text, className)
+    const fromProp = nativeStyleOf(Text, { fontSize: '$base', lineHeight: '$base' })
+    expect(className).toContain('text-base')
+    expect(className).toContain('leading-base')
+    expect(fromClass.fontSize).toBe(fromProp.fontSize)
+    expect(fromClass.fontSize).toBe(16)
+    expect(typeof fromClass.fontSize).toBe('number')
+    expect(fromClass.lineHeight).toBe(fromProp.lineHeight)
+    expect(fromClass.lineHeight).toBe(24)
+    expect(typeof fromClass.lineHeight).toBe('number')
+  })
+
   test('fontSize={14} → 14', () => {
     const v = resolved(Text, `<Text fontSize={14} />`, 'fontSize')
     expect(v).toBe(14)
@@ -138,9 +166,10 @@ describe('native — unitless props', () => {
     expect(v).toBe(1.5)
     expect(typeof v).toBe('number')
   })
-  test('zIndex="$4" → 400 number', () => {
-    const v = resolved(View, `<View zIndex="$4" />`, 'zIndex')
-    expect(v).toBe(400)
+  test('zIndex="$10" → 10 number', () => {
+    const v = resolved(View, `<View zIndex="$10" />`, 'zIndex')
+    expect(v).toBe(nativeStyleOf(View, { zIndex: '$10' }).zIndex)
+    expect(v).toBe(10)
     expect(typeof v).toBe('number')
   })
   test('opacity={0.333} → EXACT 0.333 (named form only when exact, else arbitrary)', () => {
