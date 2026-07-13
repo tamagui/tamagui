@@ -124,7 +124,19 @@ describe('candidate grammar', () => {
   test('raw values use brackets and remain category-safe', () => {
     expect(parseCandidate('p-[16px]', config)?.entry?.prop).toBe('padding')
     expect(parseCandidate('border-[0.5px]', config)?.entry?.prop).toBe('borderWidth')
+    expect(parseCandidate('border-[0]', config)?.entry?.prop).toBe('borderWidth')
+    expect(parseCandidate('border-[1rem]', config)?.entry?.prop).toBe('borderWidth')
+    expect(parseCandidate('border-r-[1rem]', config)?.entry?.prop).toBe(
+      'borderRightWidth'
+    )
+    expect(parseCandidate('border-[calc(1rem+1px)]', config)?.entry?.prop).toBe(
+      'borderWidth'
+    )
     expect(parseCandidate('border-[#fff]', config)?.entry?.prop).toBe('borderColor')
+    expect(parseCandidate('border-[red]', config)?.entry?.prop).toBe('borderColor')
+    expect(parseCandidate('border-[var(--border)]', config)).toBeNull()
+    expect(parseCandidate('border-[inherit]', config)).toBeNull()
+    expect(parseCandidate('border-[1%]', config)).toBeNull()
     expect(parseCandidate('text-[14px]', config)?.entry?.prop).toBe('fontSize')
     expect(parseCandidate('z-[123]', config)?.entry?.prop).toBe('zIndex')
     expect(parseCandidate('bg-[red]', config)?.valueKind).toBe('arbitrary')
@@ -138,6 +150,24 @@ describe('candidate grammar', () => {
     expect(parseCandidate('font-sans', config)?.convenience).toBe('font-generic')
     expect(parseCandidate('border', config)?.convenience).toBe('bare-border')
     expect(parseCandidate('flex-1', config)?.convenience).toBe('flex-bundle')
+    expect(parseCandidate('w-0/1', config)?.convenience).toBe('sizing-keyword')
+    expect(parseCandidate('w-1/0', config)).toBeNull()
+  })
+
+  test('leading-negative syntax is limited to valid configured tokens', () => {
+    expect(parseCandidate('-m-1', config)?.valueKind).toBe('token')
+    expect(parseCandidate('m-[-16px]', config)?.valueKind).toBe('arbitrary')
+    for (const candidate of [
+      '-m-[16px]',
+      '-p-1',
+      '-w-full',
+      '-w-1/2',
+      '-text-center',
+      '-font-sans',
+      '-opacity-50',
+    ]) {
+      expect(parseCandidate(candidate, config), candidate).toBeNull()
+    }
   })
 
   test('converter token spellings parse back through the same registry', () => {
@@ -162,15 +192,24 @@ describe('candidate grammar', () => {
       expect(parsed?.entry?.prop).toBe(prop)
       expect(parsed?.modifiers).toEqual(['hover'])
     }
+    expect(
+      formatCandidate({ prop: 'color', value: 'color5/50', valueKind: 'token' })
+    ).toBe('color-color5/50')
+    expect(parseCandidate('color-color5/50', config)).toMatchObject({
+      valueKind: 'token',
+      rawValue: 'color5/50',
+      entry: { prop: 'color', tokenCategory: 'color' },
+    })
   })
 
-  test('formatter rejects collisions and covers arbitrary, whole, empty-prefix, and modifiers', () => {
+  test('formatter resolves collisions and covers arbitrary, whole, empty-prefix, and modifiers', () => {
     const collisionConfig: GrammarConfigView = {
       tokenNames: {
-        space: ['2'],
+        space: ['0', '2'],
+        size: ['auto'],
         color: ['2'],
         fontSize: ['center'],
-        fontFamily: ['bold'],
+        fontFamily: ['bold', 'sans'],
       },
     }
     expect(
@@ -191,13 +230,91 @@ describe('candidate grammar', () => {
         { prop: 'fontSize', value: 'center', valueKind: 'token' },
         collisionConfig
       )
-    ).toBeNull()
+    ).toBe('text-center')
     expect(
       formatCandidate(
         { prop: 'fontFamily', value: 'bold', valueKind: 'token' },
         collisionConfig
       )
+    ).toBe('font-bold')
+    expect(
+      formatCandidate(
+        { prop: 'fontFamily', value: 'sans', valueKind: 'token' },
+        collisionConfig
+      )
+    ).toBe('font-sans')
+    expect(
+      formatCandidate(
+        { prop: 'width', value: 'auto', valueKind: 'token' },
+        collisionConfig
+      )
+    ).toBe('w-auto')
+    expect(
+      formatCandidate(
+        { prop: 'inset', value: '0', valueKind: 'token' },
+        collisionConfig
+      )
+    ).toBe('inset-0')
+    expect(parseCandidate('w-auto', collisionConfig)).toMatchObject({
+      kind: 'dynamic',
+      valueKind: 'token',
+      entry: { prop: 'width' },
+    })
+    expect(parseCandidate('inset-0', collisionConfig)).toMatchObject({
+      kind: 'dynamic',
+      valueKind: 'token',
+      entry: { prop: 'inset' },
+    })
+    expect(parseCandidate('font-bold', collisionConfig)).toMatchObject({
+      kind: 'dynamic',
+      valueKind: 'token',
+      entry: { prop: 'fontFamily' },
+    })
+    expect(parseCandidate('font-sans', collisionConfig)).toMatchObject({
+      kind: 'dynamic',
+      valueKind: 'token',
+      entry: { prop: 'fontFamily' },
+    })
+    expect(parseCandidate('text-center', collisionConfig)).toMatchObject({
+      kind: 'dynamic',
+      valueKind: 'token',
+      entry: { prop: 'fontSize' },
+    })
+    expect(
+      formatCandidate(
+        { prop: 'width', value: 'auto', valueKind: 'convenience' },
+        collisionConfig
+      )
     ).toBeNull()
+    expect(
+      formatCandidate(
+        { prop: 'width', value: 'auto', valueKind: 'convenience' },
+        config
+      )
+    ).toBe('w-auto')
+    expect(
+      formatCandidate(
+        { prop: 'textAlign', value: 'center', valueKind: 'enum' },
+        collisionConfig
+      )
+    ).toBeNull()
+    expect(
+      formatCandidate({ prop: 'textAlign', value: 'center', valueKind: 'enum' }, config)
+    ).toBe('text-center')
+    expect(
+      formatCandidate(
+        { prop: 'fontWeight', value: '700', valueKind: 'enum' },
+        collisionConfig
+      )
+    ).toBeNull()
+    expect(
+      formatCandidate({ prop: 'fontSize', value: 'center', valueKind: 'token' })
+    ).toBeNull()
+    for (const family of ['sans', 'serif', 'mono']) {
+      expect(
+        formatCandidate({ prop: 'fontFamily', value: family, valueKind: 'token' })
+      ).toBeNull()
+    }
     expect(
       formatCandidate({ prop: 'fontWeight', value: 'bold', valueKind: 'enum' }, config)
     ).toBeNull()
@@ -211,6 +328,17 @@ describe('candidate grammar', () => {
         config
       )
     ).toBe('font-[Inter_Black]')
+    expect(
+      formatCandidate(
+        { prop: 'borderWidth', value: '1rem', valueKind: 'arbitrary' },
+        config
+      )
+    ).toBe('border-[1rem]')
+    expect(
+      formatCandidate(
+        { prop: 'borderColor', value: 'var(--border)', valueKind: 'arbitrary' }
+      )
+    ).toBeNull()
     expect(parseCandidate('font-[Inter_Black]', config)?.entry?.prop).toBe('fontFamily')
     expect(
       formatCandidate({ prop: 'display', value: 'flex', valueKind: 'enum' }, config)
@@ -227,15 +355,27 @@ describe('candidate grammar', () => {
   })
 
   test('every standalone converter candidate is generated into the whole-class registry', () => {
+    const wholeConfig: GrammarConfigView = {
+      ...config,
+      tokenNames: {
+        ...tokenNames,
+        space: tokenNames.space.filter((name) => name !== '0'),
+      },
+    }
     for (const prop in standaloneValueProps) {
       for (const value in standaloneValueProps[prop]) {
         const candidate = standaloneValueProps[prop][value]
+        expect(
+          formatCandidate({ prop, value, valueKind: 'enum' }, wholeConfig)
+        ).toBe(candidate)
         expect(wholeClassUtilities[candidate]).toEqual({ [prop]: value })
-        expect(parseCandidate(candidate, config)?.properties).toEqual({ [prop]: value })
+        expect(parseCandidate(candidate, wholeConfig)?.properties).toEqual({
+          [prop]: value,
+        })
       }
     }
     for (const candidate in wholeClassUtilities) {
-      expect(parseCandidate(candidate, config)?.properties).toEqual(
+      expect(parseCandidate(candidate, wholeConfig)?.properties).toEqual(
         wholeClassUtilities[candidate]
       )
       expect(grammarTable).toContain(`| \`${candidate}\` |`)
@@ -257,10 +397,14 @@ describe('candidate grammar', () => {
       'scale-N',
       'unbracketed raw colors',
       'font-sans',
+      'configured tokens colliding with conveniences/enums',
       'alignment aliases',
       'flex bundles',
       'bare border',
       'inset-0',
+      'leading-negative arbitrary/convenience/enum forms',
+      'ambiguous overloaded border arbitrary values',
+      'zero-denominator fractions',
     ]) {
       expect(grammarTable).toContain(decision)
     }

@@ -29,7 +29,9 @@ const convert = (s: string) => tamaguiToTailwind(s, { renameComponents: false })
 
 describe('partition — pseudo/media objects: convert supported, RETAIN dynamic (no drop)', () => {
   test('hoverStyle mixed static+dynamic → class + retained residual', () => {
-    const out = convert(`<View hoverStyle={{ opacity: 0.5, backgroundColor: dynamicColor }} />`)
+    const out = convert(
+      `<View hoverStyle={{ opacity: 0.5, backgroundColor: dynamicColor }} />`
+    )
     expect(out).toContain('hover:opacity-50') // converted
     expect(out).toContain('hoverStyle={{') // residual retained
     expect(out).toContain('backgroundColor: dynamicColor') // the dynamic member SURVIVES
@@ -51,7 +53,9 @@ describe('partition — pseudo/media objects: convert supported, RETAIN dynamic 
     const hover = (Object.values(s.rulesToInsert || {}) as any[]).filter(
       (r) => r[StyleObjectPseudo] === 'hover'
     )
-    const byProp = Object.fromEntries(hover.map((r) => [r[StyleObjectProperty], r[StyleObjectValue]]))
+    const byProp = Object.fromEntries(
+      hover.map((r) => [r[StyleObjectProperty], r[StyleObjectValue]])
+    )
     expect(byProp.opacity).toBe(0.5) // from the className
     expect(byProp.backgroundColor).toBe('blue') // from the retained hoverStyle — BOTH present
   })
@@ -80,31 +84,32 @@ describe('partition — existing className is COMBINED, never overwritten', () =
 })
 
 describe('precedence — same-key className wins → RETAIN the prop (no last-class flip)', () => {
-  // in styleMode className WINS over a separate style prop. appending p-[10px] after p-2 would
+  // in styleMode className WINS over a separate style prop. appending p-[10px] after p-[8px] would
   // make padding 10 win (last class); instead the padding prop is RETAINED so className's p-2
   // still wins — matching source. tested in BOTH attribute orders.
-  test('{className:"p-2", padding:10} → padding retained, no p-[10px] appended', () => {
-    const a = convert(`<View className="p-2" padding={10} />`)
+  test('{className:"p-[8px]", padding:10} → padding retained, no generated class', () => {
+    const a = convert(`<View className="p-[8px]" padding={10} />`)
     expect(a).not.toContain('p-[10px]')
     expect(a).toContain('padding={10}')
-    const b = convert(`<View padding={10} className="p-2" />`)
+    const b = convert(`<View padding={10} className="p-[8px]" />`)
     expect(b).not.toContain('p-[10px]')
     expect(b).toContain('padding={10}')
   })
 
   test('resolved(converted) === resolved(source) for the same-key case (className wins = 8px)', () => {
-    const src = { className: 'p-2', padding: 10 }
+    const src = { className: 'p-[8px]', padding: 10 }
     const source = simplifiedGetSplitStyles(View, src as any)
     // converter leaves it unchanged (padding retained), so resolution is identical + className wins
     const findPad = (s: any) => {
       const merged: Record<string, any> = { ...(s.style || {}) }
       for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
         const p = r[StyleObjectProperty]
-        if (p === 'paddingTop' && merged.paddingTop === undefined) merged.paddingTop = r[StyleObjectValue]
+        if (p === 'paddingTop' && merged.paddingTop === undefined)
+          merged.paddingTop = r[StyleObjectValue]
       }
       return merged.paddingTop
     }
-    expect(findPad(source)).toBe('8px') // p-2 = 8px on the Tailwind scale, NOT padding 10
+    expect(findPad(source)).toBe('8px')
   })
 })
 

@@ -73,20 +73,20 @@ describe('styleMode arbitrary values', () => {
 })
 
 describe('styleMode negative utilities', () => {
-  test('-m-1 negates the scale value (margin -4px)', () => {
-    expect(ruleFor('-m-1', 'marginTop')[StyleObjectValue]).toBe('-4px')
+  test('-m-1 resolves the configured negative space token', () => {
+    expect(ruleFor('-m-1', 'marginTop')[StyleObjectValue]).toContain('var(--')
   })
 
-  test('-mt-2 → marginTop -8px', () => {
-    expect(ruleFor('-mt-2', 'marginTop')[StyleObjectValue]).toBe('-8px')
+  test('-mt-2 resolves the configured negative space token', () => {
+    expect(ruleFor('-mt-2', 'marginTop')[StyleObjectValue]).toContain('var(--')
   })
 
-  test('-top-1 → top -4px', () => {
-    expect(ruleFor('-top-1', 'top')[StyleObjectValue]).toBe('-4px')
+  test('-top-1 resolves the configured negative space token', () => {
+    expect(ruleFor('-top-1', 'top')[StyleObjectValue]).toContain('var(--')
   })
 
-  test('positive m-1 is unaffected (margin 4px)', () => {
-    expect(ruleFor('m-1', 'marginTop')[StyleObjectValue]).toBe('4px')
+  test('positive m-1 resolves the configured space token', () => {
+    expect(ruleFor('m-1', 'marginTop')[StyleObjectValue]).toContain('var(--')
   })
 })
 

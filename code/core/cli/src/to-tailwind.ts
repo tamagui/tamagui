@@ -1,5 +1,6 @@
 import { readFile, stat, writeFile } from 'node:fs/promises'
 import { extname, relative, resolve, sep } from 'node:path'
+import { bundledDefaultGrammarConfig } from './to-tailwind-default-config'
 
 type GlobOptions = {
   cwd: string
@@ -12,26 +13,22 @@ type ToTailwindOptions = {
   patterns: string[]
   write?: boolean
   cwd?: string
-  // path to the app's tamagui config; its token scales + media keys + shorthands drive an
-  // app-accurate conversion.
+  // path to the app config; token/font/theme names, media, and shorthands drive claiming.
   configPath?: string
-  // acknowledge use of the converter's bundled default scales (required for --write w/o --config)
+  // explicitly use the canonical bundled v5 token/font/theme/media/shorthand domains.
   useDefaultConfig?: boolean
   // opt in to DOM renaming (View→div …). default false: Tamagui components are PRESERVED so the
   // cross-platform (native) app keeps working.
   renameDom?: boolean
 }
 
-type TokenScales = {
-  space?: Record<string, any>
-  size?: Record<string, any>
-  radius?: Record<string, any>
-  zIndex?: Record<string, any>
-}
 type TransformConfig = {
-  tokens?: TokenScales
+  tokens?: Record<string, Record<string, any>>
+  fonts?: Record<string, any>
+  themes?: Record<string, Record<string, any>>
   media?: Record<string, any>
   shorthands?: Record<string, string>
+  grammarConfig?: typeof bundledDefaultGrammarConfig
   renameComponents?: boolean
 }
 
@@ -77,12 +74,12 @@ export async function toTailwind({
     )
   }
 
-  // SAFETY: --write is DESTRUCTIVE. token/media semantics differ per app, so a --write with no
-  // config would GUESS the scales and corrupt pixels. require an explicit choice.
+  // SAFETY: --write is destructive. Token domains, media, and shorthands differ per app, so
+  // require either an explicit app config or the explicit canonical bundled-config opt-in.
   if (write && !configPath && !useDefaultConfig) {
     throw new Error(
-      '--write requires either --config <path> (app scales) or --use-default-config ' +
-        '(acknowledge the bundled default scales). refusing to rewrite with guessed token pixels.'
+      '--write requires either --config <path> (app token/media grammar) or ' +
+        '--use-default-config (acknowledge the bundled defaults).'
     )
   }
 
@@ -92,10 +89,10 @@ export async function toTailwind({
     cwd
   )
   if (usedDefault && !useDefaultConfig) {
-    // dry-run fallback: loud, explicit warning that default pixels are used
+    // Dry-run fallback: explicit token references emit their names; other config data defaults.
     console.warn(
-      '[to-tailwind] WARNING: no --config given — using the converter BUNDLED DEFAULT token/media ' +
-        'scales. token pixel values may not match this app. pass --config <path> for accuracy.'
+      '[to-tailwind] WARNING: no --config given — explicit token references emit their names ' +
+        'and bundled media/shorthands are used. pass --config <path> to enforce app domains.'
     )
   }
   transformConfig.renameComponents = renameDom
@@ -230,23 +227,29 @@ function toPosixPath(path: string) {
   return path.split(sep).join('/')
 }
 
-// load the app's tamagui config (a created-config object exposing `.tokens` and `.media`) so
-// the converter resolves tokens/media from the ACTUAL app scales. we take the EXPLICIT-path
+// Load the app's token/font/theme NAMES plus media/shorthands. Token values are never baked into
+// output; names are used only to reject missing or ambiguous candidates. We take the explicit-path
 // route (`--config <path>`) rather than auto-discovering + bundling `tamagui.config.ts`: a real
 // tamagui config is TS with `~`/`@` aliases and needs the app's bundler to evaluate, which the
 // CLI can't reliably do — an explicit path the user has already made requireable (or a small
-// module re-exporting `{ tokens, media }`) is the honest, non-magical contract. when omitted,
-// the converter falls back to its bundled default scales.
-// load the app config's token/media/shorthand scales. an EXPLICIT --config that fails to load or
-// has an invalid shape ABORTS (throws) — never silently falls back (that would rewrite with wrong
-// pixels). no --config → bundled default (usedDefault=true); the caller gates --write on this.
+// module re-exporting the relevant config view) is the honest, non-magical contract. An explicit
+// config that fails to load or has an invalid relevant shape aborts. The bundled-config opt-in
+// loads canonical v5 domains; config-less dry-run leaves token/font/theme domains unknown.
 async function loadTransformConfig(
   configPath: string | undefined,
   useDefaultConfig: boolean,
   cwd: string
 ): Promise<{ transformConfig: TransformConfig; usedDefault: boolean }> {
   if (!configPath) {
-    // useDefaultConfig or dry-run: converter uses its in-package bundled defaults
+    if (useDefaultConfig) {
+      // --use-default-config is an authoritative opt-in. The local snapshot contains names only;
+      // a focused dev-only parity test checks every domain against the canonical v5 config.
+      return {
+        transformConfig: { grammarConfig: bundledDefaultGrammarConfig },
+        usedDefault: true,
+      }
+    }
+    // Config-less dry-run keeps domains unknown and uses converter media/shorthand defaults.
     return { transformConfig: {}, usedDefault: true }
   }
   const resolved = resolve(cwd, configPath)
@@ -259,36 +262,42 @@ async function loadTransformConfig(
     } catch {
       throw new Error(
         `--config ${configPath} could not be loaded (${(requireErr as Error).message}) — ` +
-          `aborted (not falling back to default scales, which could corrupt pixels).`
+          `aborted (not falling back to defaults).`
       )
     }
   }
   const config = mod?.config ?? mod?.default ?? mod?.tamaguiConfig ?? mod
   const tokens = config?.tokens
+  const fonts = config?.fonts
+  const themes = config?.themes
   const media = config?.media
   const shorthands = config?.shorthands
 
-  // STRUCTURE validation (not just truthiness): a malformed config (e.g. { tokens: 42 }) with
-  // --write would otherwise silently produce wrong pixels. abort on any shape violation.
+  // Structure validation: malformed relevant config must abort rather than silently fall back.
   const isObj = (v: any) => v != null && typeof v === 'object' && !Array.isArray(v)
   const bad = (msg: string) => {
     throw new Error(`--config ${configPath} has a malformed shape: ${msg} — aborted.`)
   }
   if (tokens !== undefined) {
     if (!isObj(tokens)) bad('`tokens` must be an object')
-    for (const cat of ['space', 'size', 'radius', 'zIndex']) {
-      if (tokens[cat] !== undefined && !isObj(tokens[cat])) {
-        bad(`\`tokens.${cat}\` must be an object`)
+    for (const category of ['space', 'size', 'radius', 'zIndex', 'color']) {
+      if (tokens[category] !== undefined && !isObj(tokens[category])) {
+        bad(`\`tokens.${category}\` must be an object`)
       }
     }
   }
+  if (fonts !== undefined && !isObj(fonts)) bad('`fonts` must be an object')
+  if (themes !== undefined && !isObj(themes)) bad('`themes` must be an object')
   if (media !== undefined && !isObj(media)) bad('`media` must be an object')
   if (shorthands !== undefined && !isObj(shorthands))
     bad('`shorthands` must be an object')
-  if (!tokens && !media && !shorthands) {
-    bad('exposes no { tokens, media, shorthands }')
+  if (!tokens && !fonts && !themes && !media && !shorthands) {
+    bad('exposes no { tokens, fonts, themes, media, shorthands }')
   }
-  return { transformConfig: { tokens, media, shorthands }, usedDefault: false }
+  return {
+    transformConfig: { tokens, fonts, themes, media, shorthands },
+    usedDefault: false,
+  }
 }
 
 function loadTamaguiToTailwind(): Transform {

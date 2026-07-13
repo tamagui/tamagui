@@ -50,6 +50,15 @@ describe('icon styleMode color reconstruction', () => {
     ).toBe('red')
   })
 
+  test('token opacity is reconstructed without losing its suffix', () => {
+    const out = reconstructIconStyleModeProps(
+      { className: 'color-color5/50' } as any,
+      theme()
+    ) as any
+    expect(out.color).toBe('$color5/50')
+    expect(out.className).toBeUndefined()
+  })
+
   test('className is last and wins over an explicit color prop', () => {
     const out = reconstructIconStyleModeProps(
       { className: 'color-color5', color: '$color10' } as any,

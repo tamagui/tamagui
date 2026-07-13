@@ -1,9 +1,8 @@
 /**
  * CONFIG-AWARE converter → runtime round-trip (NATIVE).
  *
- * Native mirror of tailwindConfigAware.web.test.tsx: proves the converter resolves tokens and
- * media from the app's ACTUAL config (custom space.$4 = 20, zIndex.$4 = 40, a `tablet`
- * breakpoint), not a hardcoded default, and that the values are native-valid (numeric zIndex).
+ * Native mirror of tailwindConfigAware.web.test.tsx: proves token/font names emitted by the
+ * converter resolve through the app's ACTUAL config.
  */
 
 process.env.TAMAGUI_TARGET = 'native'
@@ -22,10 +21,12 @@ import { tamaguiToTailwind } from '../to-tailwind/src/transform'
 const tokens = {
   ...(v6 as any).tokens,
   space: { ...(v6 as any).tokens.space, $4: 20 },
+  size: { ...(v6 as any).tokens.size, $auto: 321 },
   zIndex: { ...(v6 as any).tokens.zIndex, $4: 40 },
 }
 const media = { ...(v6 as any).media, tablet: { minWidth: 900 } }
-const convertOpts = { renameComponents: false as const, tokens, media }
+const fonts = { ...(v6 as any).fonts, sans: (v6 as any).fonts.body }
+const convertOpts = { renameComponents: false as const, tokens, fonts, media }
 
 let CFG: any
 
@@ -33,6 +34,7 @@ beforeAll(() => {
   CFG = createTamagui({
     ...(v6 as any),
     tokens,
+    fonts,
     media,
     settings: { ...(v6 as any).settings, styleMode: 'tailwind' },
   } as any)
@@ -63,21 +65,35 @@ function style(props: Record<string, any>): Record<string, any> {
     )!.style || {}
   )
 }
-describe('config-aware tokens (NATIVE) — converter reads the passed config', () => {
-  test('space.$4 = 20: padding="$4" → p-[20px] → runtime 20 (not the default 18)', () => {
+describe('config-aware tokens (NATIVE) — class names follow runtime-owned values', () => {
+  test('space.$4 = 20: padding="$4" → p-4 → runtime 20', () => {
     const cls = className(`<View padding="$4" />`)
-    expect(cls).toContain('p-[20px]')
-    expect(cls).not.toContain('p-[18px]')
+    expect(cls).toContain('p-4')
     expect(style({ className: cls }).paddingTop).toBe(20)
     expect(typeof style({ className: cls }).paddingTop).toBe('number')
   })
 
-  test('zIndex.$4 = 40: zIndex="$4" → z-[40] → zIndex 40 (number)', () => {
+  test('zIndex.$4 = 40: zIndex="$4" → z-4 → zIndex 40 (number)', () => {
     const cls = className(`<View zIndex="$4" />`)
-    expect(cls).toContain('z-[40]')
-    const f = flat(cls)
-    expect(f.zIndex).toBe(40)
-    expect(typeof f.zIndex).toBe('number')
+    expect(cls).toContain('z-4')
+    expect(style({ className: cls }).zIndex).toBe(40)
+    expect(typeof style({ className: cls }).zIndex).toBe('number')
+  })
+
+  test('size.$auto wins w-auto and resolves the configured token, not the convenience', () => {
+    const cls = className(`<View width="$auto" />`)
+    expect(cls).toContain('w-auto')
+    expect(style({ className: cls }).width).toBe(style({ width: '$auto' }).width)
+    expect(style({ className: cls }).width).not.toBe('auto')
+  })
+
+  test('fontFamily.$sans wins font-sans and resolves the configured token', () => {
+    const cls = className(`<View fontFamily="$sans" />`)
+    expect(cls).toContain('font-sans')
+    expect(flat(cls).fontFamily).toBe('$sans')
+    expect(style({ className: cls }).fontFamily).toBe(
+      style({ fontFamily: '$sans' }).fontFamily
+    )
   })
 })
 

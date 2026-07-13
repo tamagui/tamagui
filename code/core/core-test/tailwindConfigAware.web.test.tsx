@@ -1,11 +1,11 @@
 /**
  * CONFIG-AWARE converter → runtime round-trip (WEB).
  *
- * The converter is a GENERAL tool run on arbitrary apps: token → px resolution and media
- * pass-through MUST come from the app's ACTUAL config, not a hardcoded default. This file
- * builds a CUSTOM config (space.$4 = 20 not the default 18, zIndex.$4 = 40 not 400, a custom
- * `tablet` breakpoint) and proves the converter, given that config's tokens/media, produces
- * classes that resolve to the CUSTOM values at runtime — i.e. it read the passed config.
+ * The converter is a GENERAL tool run on arbitrary apps: token membership and media
+ * pass-through MUST come from the app's ACTUAL config, while values stay runtime-owned. This file
+ * builds a CUSTOM config (custom token values/names, a font named `sans`, and a custom `tablet`
+ * breakpoint) and proves the converter, given that config, produces classes that resolve to the
+ * CUSTOM values at runtime — i.e. it read the passed config.
  */
 
 import { beforeAll, describe, expect, test } from 'vitest'
@@ -24,10 +24,12 @@ import { tamaguiToTailwind } from '../to-tailwind/src/transform'
 const tokens = {
   ...(v6 as any).tokens,
   space: { ...(v6 as any).tokens.space, $4: 20 }, // default is 18 → prove we use 20
+  size: { ...(v6 as any).tokens.size, $auto: 321 },
   zIndex: { ...(v6 as any).tokens.zIndex, $4: 40 }, // default is 400 → prove we use 40
 }
 const media = { ...(v6 as any).media, tablet: { minWidth: 900 } }
-const convertOpts = { renameComponents: false as const, tokens, media }
+const fonts = { ...(v6 as any).fonts, sans: (v6 as any).fonts.body }
+const convertOpts = { renameComponents: false as const, tokens, fonts, media }
 
 let CFG: any
 
@@ -35,6 +37,7 @@ beforeAll(() => {
   CFG = createTamagui({
     ...(v6 as any),
     tokens,
+    fonts,
     media,
     settings: { ...(v6 as any).settings, styleMode: 'tailwind' },
   } as any)
@@ -69,22 +72,39 @@ function styleFlat(props: Record<string, any>): Record<string, any> {
   }
   return out
 }
-describe('config-aware tokens (WEB) — converter reads the passed config, not a hardcode', () => {
-  test('space.$4 = 20: padding="$4" → p-[20px] → runtime 20 (not the default 18)', () => {
+describe('config-aware tokens (WEB) — class names follow runtime-owned values', () => {
+  test('space.$4: padding="$4" → p-4 → direct-token parity', () => {
     const cls = className(`<View padding="$4" />`)
-    expect(cls).toContain('p-[20px]')
-    expect(styleFlat({ className: cls }).paddingTop).toBe('20px')
-    expect(typeof styleFlat({ className: cls }).paddingTop).toBe('string')
-    // hardcode would have emitted the default 18 — prove the converter did NOT
-    expect(cls).not.toContain('p-[18px]')
+    expect(cls).toContain('p-4')
+    expect(styleFlat({ className: cls }).paddingTop).toBe(
+      styleFlat({ padding: '$4' }).paddingTop
+    )
   })
 
-  test('zIndex.$4 = 40: zIndex="$4" → z-[40] → runtime zIndex 40 (number)', () => {
+  test('zIndex.$4: zIndex="$4" → z-4 → direct-token parity', () => {
     const cls = className(`<View zIndex="$4" />`)
-    expect(cls).toContain('z-[40]')
-    const f = flat(cls)
-    expect(f.zIndex).toBe(40)
-    expect(typeof f.zIndex).toBe('number')
+    expect(cls).toContain('z-4')
+    expect(styleFlat({ className: cls }).zIndex).toBe(
+      styleFlat({ zIndex: '$4' }).zIndex
+    )
+  })
+
+  test('size.$auto wins w-auto and resolves the configured token, not the convenience', () => {
+    const cls = className(`<View width="$auto" />`)
+    expect(cls).toContain('w-auto')
+    expect(styleFlat({ className: cls }).width).toBe(
+      styleFlat({ width: '$auto' }).width
+    )
+    expect(styleFlat({ className: cls }).width).not.toBe('auto')
+  })
+
+  test('fontFamily.$sans wins font-sans and resolves the configured token', () => {
+    const cls = className(`<View fontFamily="$sans" />`)
+    expect(cls).toContain('font-sans')
+    expect(flat(cls).fontFamily).toBe('$sans')
+    expect(styleFlat({ className: cls }).fontFamily).toBe(
+      styleFlat({ fontFamily: '$sans' }).fontFamily
+    )
   })
 })
 

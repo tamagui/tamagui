@@ -5,7 +5,7 @@ import { View, createTamagui, getConfig, StyleObjectValue } from '../web/src'
 import { preprocessStyleModeProps } from '../web/src/helpers/getSplitStyles'
 import { simplifiedGetSplitStyles, findRule } from './utils'
 
-// styleMode's SINGLE pass reconstructs enter:/exit:/animation-* into component-level PROPS
+// styleMode's SINGLE pass reconstructs enter:/exit: into component-level PROPS
 // (that createComponent consumes before the state/variant/animation machinery), and
 // getSplitStyles skips re-processing those marked props.
 beforeAll(() => {
@@ -32,11 +32,12 @@ describe('styleMode className→prop reconstruction (single pass)', () => {
     expect(out.exitStyle).toEqual({ opacity: 0, y: 10 })
   })
 
-  test('size-* and animate-* remain standard Tailwind classes; animation-* is Tamagui-only', () => {
+  test('size-*, animate-*, and animation-* remain passthrough classes', () => {
     const standardSize = pre({ className: 'size-4' })
     expect(standardSize.size).toBeUndefined()
     expect(standardSize.className).toBe('size-4')
-    expect(pre({ className: 'animation-bouncy' }).animation).toBe('bouncy')
+    expect(pre({ className: 'animation-bouncy' }).animation).toBeUndefined()
+    expect(pre({ className: 'animation-bouncy' }).className).toBe('animation-bouncy')
     const standardAnimation = pre({ className: 'animate-spin' })
     expect(standardAnimation.animation).toBeUndefined()
     expect(standardAnimation.className).toBe('animate-spin')
@@ -48,14 +49,13 @@ describe('styleMode className→prop reconstruction (single pass)', () => {
     expect(out.className).toBe('size-2')
   })
 
-  test('animation-* class wins over an explicit animation prop regardless of object order', () => {
-    expect(pre({ animation: 'slow', className: 'animation-fast' }).animation).toBe('fast')
-    expect(pre({ className: 'animation-fast', animation: 'slow' }).animation).toBe('fast')
+  test('animation-* never overwrites an explicit animation prop', () => {
+    expect(pre({ animation: 'slow', className: 'animation-fast' }).animation).toBe('slow')
+    expect(pre({ className: 'animation-fast', animation: 'slow' }).animation).toBe('slow')
   })
 
   test('non-styleMode-state classes still resolve as styles after the pass', () => {
-    // bg-red gets flattened to a style prop; getSplitStyles still emits its rule
-    const styles = simplifiedGetSplitStyles(View, pre({ className: 'bg-red' }) as any)
+    const styles = simplifiedGetSplitStyles(View, pre({ className: 'bg-[red]' }) as any)
     expect(findRule(styles.rulesToInsert, 'backgroundColor')[StyleObjectValue]).toBe(
       'red'
     )
@@ -71,9 +71,9 @@ describe('getSplitStyles preprocess guard (process exactly once)', () => {
     return rule ? rule[StyleObjectValue] : null
   }
 
-  test('marked path === direct path (bg-red)', () => {
-    expect(bgValue(pre({ className: 'bg-red' }))).toBe('red')
-    expect(bgValue({ className: 'bg-red' })).toBe('red')
+  test('marked path === direct path (bg-[red])', () => {
+    expect(bgValue(pre({ className: 'bg-[red]' }))).toBe('red')
+    expect(bgValue({ className: 'bg-[red]' })).toBe('red')
   })
 
   test('marked path === direct path (theme color bg-color5)', () => {

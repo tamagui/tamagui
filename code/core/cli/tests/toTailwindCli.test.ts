@@ -40,7 +40,7 @@ describe('tamagui to-tailwind CLI', () => {
     await Promise.all(tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })))
   })
 
-  it('dry-run with no config: warns about default scales, PRESERVES components, shows output', async () => {
+  it('dry-run with no config documents name-only fallback, PRESERVES components, shows output', async () => {
     const dir = await fixture({
       'Card.tsx': `import { Text, YStack } from 'tamagui'
 export function Card() {
@@ -54,8 +54,7 @@ export function Card() {
     })
     const run = runCli([dir])
     expect(run.status).toBe(0)
-    // loud default-scales warning (previously claimed but never fired)
-    expect(run.stderr + run.stdout).toMatch(/BUNDLED DEFAULT|default.*scales/i)
+    expect(run.stderr + run.stdout).toMatch(/explicit token references emit their names/i)
     // components PRESERVED (not DOM-renamed) so the native app keeps working
     expect(run.stdout).toContain('flex flex-col p-[10px] bg-background gap-[4px]')
     expect(run.stdout).toContain('YStack') // NOT div
@@ -75,16 +74,17 @@ export function Card() {
 
   it('--write --use-default-config proceeds (defaults) and PRESERVES components', async () => {
     const dir = await fixture({
-      'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="$4" />\n`,
+      'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="$4" width="$definitelyAbsent" />\n`,
     })
     const run = runCli([join(dir, 'A.tsx'), '--write', '--use-default-config'])
     expect(run.status).toBe(0)
     const out = await readFile(join(dir, 'A.tsx'), 'utf8')
-    expect(out).toContain('p-[18px]') // default v5 space $4 = 18
+    expect(out).toContain('p-4')
+    expect(out).toContain('width="$definitelyAbsent"')
     expect(out).toContain('<View') // preserved, not div
   })
 
-  it('--write --config <good> uses the APP scales (not the default)', async () => {
+  it('--write --config <good> uses the authoritative app domains', async () => {
     const dir = await fixture({
       'tw.config.ts': `export const config = { tokens: { space: { $4: 20 } }, media: { tablet: { minWidth: 900 } } }\n`,
       'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="$4" $tablet={{ padding: 10 }} />\n`,
@@ -92,8 +92,7 @@ export function Card() {
     const run = runCli([join(dir, 'A.tsx'), '--write', '--config', join(dir, 'tw.config.ts')])
     expect(run.status).toBe(0)
     const out = await readFile(join(dir, 'A.tsx'), 'utf8')
-    expect(out).toContain('p-[20px]') // app space $4 = 20 (NOT the default 18)
-    expect(out).not.toContain('p-[18px]')
+    expect(out).toContain('p-4') // app token NAME, never its current pixel value
     expect(out).toContain('tablet:p-[10px]') // app custom media round-trips
   })
 

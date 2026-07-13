@@ -51,20 +51,26 @@ describe('styleMode theme-value color classes', () => {
     expect(rule[StyleObjectValue]).toBe('var(--background)')
   })
 
-  test('non-theme raw color keyword bg-red stays literal', () => {
-    const rule = colorRule('bg-red', 'backgroundColor')
+  test('bracketed non-theme color keyword stays literal', () => {
+    const rule = colorRule('bg-[red]', 'backgroundColor')
     expect(rule).toBeTruthy()
     expect(rule[StyleObjectValue]).toBe('red')
   })
 
-  test('palette token bg-blue-500 still resolves to a css var', () => {
+  test('a configured palette token resolves to its CSS variable', () => {
+    expect((getConfig() as any).tokensParsed.color).toHaveProperty('$blue-500')
     const rule = colorRule('bg-blue-500', 'backgroundColor')
     expect(rule).toBeTruthy()
-    expect(rule[StyleObjectValue]).toContain('var(--')
+    expect(rule[StyleObjectValue]).toBe('var(--blue-500)')
   })
 
-  test('non-color scale class w-100 is unaffected', () => {
-    const styles = simplifiedGetSplitStyles(View, { className: 'w-100' } as any, {
+  test('an unconfigured palette name passes through', () => {
+    expect((getConfig() as any).tokensParsed.color).not.toHaveProperty('$brand-500')
+    expect(colorRule('bg-brand-500', 'backgroundColor')).toBeNull()
+  })
+
+  test('non-color arbitrary width is unaffected', () => {
+    const styles = simplifiedGetSplitStyles(View, { className: 'w-[400px]' } as any, {
       theme: theme(),
     })
     const rule = findRule(styles.rulesToInsert, 'width')

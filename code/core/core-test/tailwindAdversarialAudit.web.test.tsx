@@ -54,25 +54,25 @@ describe('1 — spread element: opening AND closing stay paired (no </div> corru
 })
 
 describe('2 — dynamic className precedence: source className wins', () => {
-  test('className={foo} padding={10}: with foo="p-2", paddingTop resolves 8 (className wins), not 10', () => {
+  test('className={foo} padding={10}: with foo="p-[8px]", className wins', () => {
     const cls = dynClassOf(convert(`<View className={foo} padding={10} />`))
     // foo is the dynamic expression; substitute the adversarial value
-    const converted = cls.replace('${foo}', 'p-2')
+    const converted = cls.replace('${foo}', 'p-[8px]')
     expect(resolved(View, { className: converted }).paddingTop).toBe('8px')
-    expect(resolved(View, { className: 'p-2', padding: 10 }).paddingTop).toBe('8px')
+    expect(resolved(View, { className: 'p-[8px]', padding: 10 }).paddingTop).toBe('8px')
   })
 
-  test('animation class wins over animation prop in either JSX attribute order', () => {
+  test('animation props and animation-* classes both remain untouched', () => {
     for (const source of [
       `<View animation="slow" className="animation-fast" />`,
       `<View className="animation-fast" animation="slow" />`,
     ]) {
       const cls = classOf(convert(source))
-      expect(cls).toContain('animation-slow')
-      expect(cls.endsWith('animation-fast')).toBe(true)
-      expect(preprocessStyleModeProps({ className: cls } as any, CFG).animation).toBe(
-        'fast'
-      )
+      expect(cls).toBe('animation-fast')
+      expect(convert(source)).toContain('animation="slow"')
+      expect(
+        preprocessStyleModeProps({ className: cls } as any, CFG).animation
+      ).toBeUndefined()
     }
   })
 })
@@ -90,11 +90,11 @@ describe('3 — XStack className="flex-col": flexDirection COLUMN (not the defau
   })
 })
 
-describe('4 — existing hover:bg-red + converted hoverStyle blue: hover background RED', () => {
+describe('4 — existing raw hover color + converted hoverStyle: className wins', () => {
   test('source className wins', () => {
     const cls = classOf(
       convert(
-        `<View className="hover:bg-red" hoverStyle={{ backgroundColor: "blue" }} />`
+        `<View className="hover:bg-[red]" hoverStyle={{ backgroundColor: "blue" }} />`
       )
     )
     const rules = Object.values(
@@ -200,12 +200,12 @@ describe('value domain', () => {
     expect(resolved(View, { className: cls }).width).toBe('33.333%')
     expect(resolved(View, { width: '33.333%' }).width).toBe('33.333%')
   })
-  test('string-valued custom token resolves exactly', () => {
+  test('string-valued custom token emits its name, never its current value', () => {
     const cls = classOf(
       convert(`<View padding="$fluid" />`, { tokens: { space: { fluid: '10%' } } })
     )
-    expect(cls).toBe('p-[10%]')
-    expect(resolved(View, { className: cls }).paddingLeft).toBe('10%')
+    expect(cls).toBe('p-fluid')
+    expect(cls).not.toContain('10%')
   })
 })
 

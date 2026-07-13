@@ -8,8 +8,7 @@
  * runtime (getSplitStyles), and asserts the RESOLVED STYLE — and, where it matters, that it
  * equals the style the SOURCE PROP itself resolves to.
  *
- * Config is @tamagui/config/v6 defaultConfig — the exact config the app template uses:
- * md = { minWidth: 768 }, max-md = { maxWidth: 767.98 }, space $4 = 18px, radius $8 = 22px.
+ * Config is @tamagui/config/v6 defaultConfig — the exact config the app template uses.
  * A real theme is passed to getSplitStyles (as createComponent does) so theme-var colors and
  * embedded shadow tokens resolve exactly as they do in the app.
  */
@@ -44,7 +43,14 @@ beforeAll(() => {
 // run the real converter over a source JSX string and return the className it produced.
 // renameComponents:false keeps <View> a tamagui component so styleMode processes the class.
 function convertedClassName(sourceJSX: string): string {
-  const out = tamaguiToTailwind(sourceJSX, { renameComponents: false })
+  const out = tamaguiToTailwind(sourceJSX, {
+    renameComponents: false,
+    tokens: (v6 as any).tokens,
+    fonts: (v6 as any).fonts,
+    themes: (v6 as any).themes,
+    media: (v6 as any).media,
+    shorthands: (v6 as any).shorthands,
+  })
   const m = /className="([^"]*)"/.exec(out)
   return m ? m[1] : ''
 }
@@ -133,40 +139,34 @@ describe('PASS 1 — 1a: responsive media direction', () => {
   })
 })
 
-describe('PASS 1 — 1b: token pixel-fidelity', () => {
-  test('spacing token p="$4" resolves to 18px — NOT the Tailwind ×4 scale (16px)', () => {
+describe('PASS 1 — 1b: token-first config fidelity', () => {
+  test('spacing token padding="$4" emits p-4 and resolves exactly like the source prop', () => {
     const cls = convertedClassName(`<View padding="$4" />`)
-    expect(cls).toContain('p-[18px]')
-    expect(classStyle(cls).paddingTop).toBe('18px')
-    expect(typeof classStyle(cls).paddingTop).toBe('string')
-    // proof the OLD strip-$ output (p-4) resolves to the WRONG value on the ×4 scale
-    expect(classStyle('p-4').paddingTop).toBe('16px')
-    // and the source prop padding="$4" resolves to the same 18px space token
-    expect(styleOf({ padding: '$4' }).paddingTop).toBe('var(--c-space-4)')
-    expect(typeof styleOf({ padding: '$4' }).paddingTop).toBe('string')
+    expect(cls).toContain('p-4')
+    expect(classStyle(cls).paddingTop).toBe(styleOf({ padding: '$4' }).paddingTop)
+    expect(typeof classStyle(cls).paddingTop).toBe(
+      typeof styleOf({ padding: '$4' }).paddingTop
+    )
   })
 
-  test('gap "$6" resolves to 32px, not 24px', () => {
+  test('gap="$6" emits gap-6 and follows the active space token', () => {
     const cls = convertedClassName(`<View gap="$6" />`)
-    expect(cls).toContain('gap-[32px]')
-    expect(classStyle(cls).gap).toBe('32px')
-    expect(typeof classStyle(cls).gap).toBe('string')
-    expect(classStyle('gap-6').gap).toBe('24px') // old ×4-scale value = wrong
+    expect(cls).toContain('gap-6')
+    expect(classStyle(cls).gap).toBe(styleOf({ gap: '$6' }).gap)
   })
 
-  test('radius token borderRadius="$8" resolves to 22px, not 8px', () => {
+  test('borderRadius="$8" emits rounded-8 and follows the active radius token', () => {
     const cls = convertedClassName(`<View borderRadius="$8" />`)
-    expect(cls).toContain('rounded-[22px]')
-    expect(classStyle(cls).borderTopLeftRadius).toBe('22px')
-    expect(typeof classStyle(cls).borderTopLeftRadius).toBe('string')
-    expect(classStyle('rounded-8').borderTopLeftRadius).toBe('8px') // old raw value = wrong
+    expect(cls).toContain('rounded-8')
+    expect(classStyle(cls).borderTopLeftRadius).toBe(
+      styleOf({ borderRadius: '$8' }).borderTopLeftRadius
+    )
   })
 
-  test('size token width="$10" resolves to 104px', () => {
+  test('width="$10" emits w-10 and follows the active size token', () => {
     const cls = convertedClassName(`<View width="$10" />`)
-    expect(cls).toContain('w-[104px]')
-    expect(classStyle(cls).width).toBe('104px')
-    expect(typeof classStyle(cls).width).toBe('string')
+    expect(cls).toContain('w-10')
+    expect(classStyle(cls).width).toBe(styleOf({ width: '$10' }).width)
   })
 })
 
@@ -222,7 +222,7 @@ describe('PASS 2 — directional borders + corner radius', () => {
     )
   })
 
-  test('borderLeftWidth={3} → border-l-3 → left width 3 (number)', () => {
+  test('borderLeftWidth={3} → border-l-[3px] → left width 3 (number)', () => {
     const cls = convertedClassName(`<View borderLeftWidth={3} />`)
     const f = flat(cls)
     expect(f.borderLeftWidth).toBe(3)
@@ -230,24 +230,22 @@ describe('PASS 2 — directional borders + corner radius', () => {
     expect(f.borderLeftColor).toBeUndefined()
   })
 
-  test('corner radius borderTopLeftRadius="$8" → 22 on the top-left corner only', () => {
+  test('corner radius token stays a token on the top-left corner only', () => {
     const cls = convertedClassName(`<View borderTopLeftRadius="$8" />`)
     const f = flat(cls)
-    expect(f.borderTopLeftRadius).toBe(22)
-    expect(typeof f.borderTopLeftRadius).toBe('number')
+    expect(cls).toContain('rounded-tl-8')
+    expect(f.borderTopLeftRadius).toBe('$8')
+    expect(typeof f.borderTopLeftRadius).toBe('string')
     expect(f.borderBottomRightRadius).toBeUndefined()
   })
 })
 
 describe('token category system — zIndex sentinel (default config)', () => {
-  test('zIndex="$4" → z-[400] → runtime zIndex 400 (number, unitless), not raw 4', () => {
+  test('zIndex="$4" → z-4 → runtime uses the active zIndex token', () => {
     const cls = convertedClassName(`<View zIndex="$4" />`)
-    expect(cls).toContain('z-[400]')
-    const f = flat(cls)
-    expect(f.zIndex).toBe(400)
-    expect(typeof f.zIndex).toBe('number') // RN requires a numeric zIndex
-    // old strip-$ output (z-4) would have been the raw value 4, not the token's 400
-    expect(flat('z-4').zIndex).toBe(4)
+    expect(cls).toContain('z-4')
+    expect(flat(cls).zIndex).toBe('$4')
+    expect(classStyle(cls).zIndex).toBe(styleOf({ zIndex: '$4' }).zIndex)
   })
 })
 
@@ -274,5 +272,20 @@ describe('PASS 2 — embedded shadow tokens', () => {
     expect(String(fromClass)).not.toContain('$shadow5') // token must be resolved, not left dead
     expect(fromClass).toBe('0 8px 18px var(--shadow5)')
     expect(fromClass).toBe(fromProp)
+  })
+})
+
+describe('adversarial candidate boundaries', () => {
+  test('leading-negative arbitrary and zero-denominator fractions pass through', () => {
+    expect(flat('-m-[16px]').className).toBe('-m-[16px]')
+    expect(flat('-w-full').className).toBe('-w-full')
+    expect(flat('w-1/0').className).toBe('w-1/0')
+  })
+
+  test('type-provable arbitrary border widths preserve their value and type', () => {
+    expect(flat('border-[0]').borderWidth).toBe(0)
+    expect(typeof flat('border-[0]').borderWidth).toBe('number')
+    expect(flat('border-[1rem]').borderWidth).toBe('1rem')
+    expect(flat('border-[var(--border)]').className).toBe('border-[var(--border)]')
   })
 })

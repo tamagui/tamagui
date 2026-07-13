@@ -14,7 +14,10 @@ import { beforeAll, describe, expect, test } from 'vitest'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
 
 import { View, Text, createTamagui } from '../web/src'
-import { getSplitStyles, preprocessStyleModeProps } from '../web/src/helpers/getSplitStyles'
+import {
+  getSplitStyles,
+  preprocessStyleModeProps,
+} from '../web/src/helpers/getSplitStyles'
 import { defaultComponentState } from '../web/src/defaultComponentState'
 import { tamaguiToTailwind } from '../to-tailwind/src/transform'
 
@@ -31,7 +34,14 @@ beforeAll(() => {
 
 // SOURCE prop → real converter → the className it emits
 function toClass(sourceJSX: string): string {
-  const out = tamaguiToTailwind(sourceJSX, { renameComponents: false })
+  const out = tamaguiToTailwind(sourceJSX, {
+    renameComponents: false,
+    tokens: (v6 as any).tokens,
+    fonts: (v6 as any).fonts,
+    themes: (v6 as any).themes,
+    media: (v6 as any).media,
+    shorthands: (v6 as any).shorthands,
+  })
   const m = /className="([^"]*)"/.exec(out)
   return m ? m[1] : ''
 }
@@ -145,7 +155,10 @@ describe('native — named enum: fontWeight', () => {
     expect(toClass(`<Text fontWeight={700} />`)).toContain('font-bold')
     expect(resolved(Text, `<Text fontWeight={700} />`, 'fontWeight')).toBe('700')
     // a non-standard weight is NOT mis-emitted as font-[450] (would set fontFamily) — retained
-    const out = tamaguiToTailwind(`<Text fontWeight="450" />`, { renameComponents: false })
+    const out = tamaguiToTailwind(`<Text fontWeight="450" />`, {
+      renameComponents: false,
+      tokens: (v6 as any).tokens,
+    })
     expect(out).not.toMatch(/font-\[450\]/)
     expect(out).toContain('fontWeight="450"')
   })
@@ -153,25 +166,29 @@ describe('native — named enum: fontWeight', () => {
 
 describe('native — directional borders + per-edge radii (converter-driven)', () => {
   test('borderRightWidth={1} + borderRightColor="$color2"', () => {
-    const s = nativeStyle(View, toClass(`<View borderRightWidth={1} borderRightColor="$color2" />`))
+    const s = nativeStyle(
+      View,
+      toClass(`<View borderRightWidth={1} borderRightColor="$color2" />`)
+    )
     expect(s.borderRightWidth).toBe(1)
     expect(typeof s.borderRightWidth).toBe('number')
     expect(s.borderRightColor).toBeTruthy()
     expect(s.borderRightColor).not.toBe('color2')
   })
-  test('converter RETAINS an unresolved radius token (no dead class)', () => {
-    // $lg is absent from the default v5 radius scale → RETAINED (data-loss protection), not a
-    // dead rounded-tl-lg. (a config that defines $lg would emit the exact [Npx].)
-    const out = tamaguiToTailwind(`<View borderTopLeftRadius="$lg" />`, { renameComponents: false })
-    expect(out).toBe(`<View borderTopLeftRadius="$lg" />`)
+  test('configured rounded-tl-lg radius token round-trips and is consumed', () => {
+    expect(CFG.tokensParsed.radius).toHaveProperty('$lg')
+    expect(toClass(`<View borderTopLeftRadius="$lg" />`)).toBe('rounded-tl-lg')
+    expect(flat('rounded-tl-lg').className).toBeUndefined()
+    expect(nativeStyle(View, 'rounded-tl-lg').borderTopLeftRadius).toBe(8)
   })
-  test('parser: standard hand-written rounded-tl-lg → the $lg radius, top-left corner only', () => {
-    // the PARSER supports per-edge NAMED radii (an app may write standard Tailwind rounded-tl-lg);
-    // it resolves via the radius token system on the top-left corner only.
-    const s = nativeStyle(View, 'rounded-tl-lg')
-    expect(typeof s.borderTopLeftRadius).toBe('number')
-    expect(s.borderTopLeftRadius).toBeGreaterThan(0)
-    expect(s.borderBottomRightRadius).toBeUndefined()
+  test('parser: a missing radius token is passthrough, never guessed', () => {
+    expect(CFG.tokensParsed.radius).not.toHaveProperty('$missing-radius')
+    expect(flat('rounded-tl-missing-radius').className).toBe(
+      'rounded-tl-missing-radius'
+    )
+    expect(
+      nativeStyle(View, 'rounded-tl-missing-radius').borderTopLeftRadius
+    ).toBeUndefined()
   })
 })
 

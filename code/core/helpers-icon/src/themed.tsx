@@ -62,8 +62,7 @@ export function reconstructIconStyleModeProps(props: IconProps, theme: any): Ico
       parsed?.kind === 'dynamic' &&
       parsed.entry?.prop === 'color' &&
       parsed.modifiers.length === 0 &&
-      parsed.rawValue &&
-      !parsed.rawValue.includes('/')
+      parsed.rawValue
     ) {
       color =
         parsed.valueKind === 'arbitrary'

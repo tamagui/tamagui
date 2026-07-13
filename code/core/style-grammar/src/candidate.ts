@@ -54,6 +54,46 @@ const extraPrefixes = [
   'rounded-b',
   'rounded-l',
 ]
+const negativeTokenProps = new Set([
+  'margin',
+  'marginTop',
+  'marginRight',
+  'marginBottom',
+  'marginLeft',
+  'marginHorizontal',
+  'marginVertical',
+  'top',
+  'right',
+  'bottom',
+  'left',
+  'inset',
+  'zIndex',
+  'x',
+  'y',
+  'letterSpacing',
+])
+const borderWidthKeywords = new Set(['thin', 'medium', 'thick'])
+const ambiguousCssKeywords = new Set([
+  'auto',
+  'dashed',
+  'dotted',
+  'double',
+  'groove',
+  'hidden',
+  'inherit',
+  'initial',
+  'inset',
+  'none',
+  'outset',
+  'revert',
+  'revert-layer',
+  'ridge',
+  'solid',
+  'unset',
+])
+const cssLengthUnits =
+  '(?:px|em|rem|ex|ch|cap|ic|lh|rlh|vw|vh|vmin|vmax|svw|svh|svmin|svmax|lvw|lvh|lvmin|lvmax|dvw|dvh|dvmin|dvmax|cm|mm|q|in|pt|pc)'
+const cssLengthPattern = new RegExp(`^-?(?:\\d+|\\d*\\.\\d+)${cssLengthUnits}$`, 'i')
 
 function hasName(names: Names | undefined, name: string): boolean {
   if (!names) return false
@@ -205,6 +245,30 @@ function arbitraryValueIsBalanced(value: string): boolean {
   return !escaped && !quote && stack.length === 0
 }
 
+function fractionIsValid(value: string): boolean {
+  const fraction = /^(\d+)\/(\d+)$/.exec(value)
+  return !!fraction && Number(fraction[2]) !== 0
+}
+
+function arbitraryBorderKind(value: string): 'width' | 'color' | null {
+  if (/^-?(?:\d+|\d*\.\d+)$/.test(value)) return 'width'
+  if (cssLengthPattern.test(value) || borderWidthKeywords.has(value)) return 'width'
+  if (/^(?:calc|min|max|clamp)\(/.test(value)) return 'width'
+  if (ambiguousCssKeywords.has(value) || /^var\(/.test(value)) return null
+  if (
+    value.startsWith('#') ||
+    /^(?:rgb|hsl|hwb|lab|lch|oklab|oklch|color|color-mix|light-dark)\(/.test(value) ||
+    /^[a-zA-Z][a-zA-Z0-9-]*$/.test(value)
+  ) {
+    return 'color'
+  }
+  return null
+}
+
+function tokenLookupName(category: TokenCategory, value: string): string {
+  return category === 'color' ? value.replace(/\/\d+(?:\.\d+)?$/, '') : value
+}
+
 function chooseEntry(
   entries: readonly GrammarEntry[],
   prefix: string,
@@ -222,10 +286,10 @@ function chooseEntry(
     if (prefix.startsWith('border')) {
       const width = entries.find((entry) => entry.prop.endsWith('Width'))
       const color = entries.find((entry) => entry.prop.endsWith('Color'))
+      const kind = arbitraryBorderKind(decodeArbitrary(arbitrary))
+      if (!kind || !width || !color) return null
       return {
-        entry: /^-?(?:\d+|\d*\.\d+)px$/.test(decodeArbitrary(arbitrary))
-          ? width!
-          : color!,
+        entry: kind === 'width' ? width : color,
         valueKind: 'arbitrary',
       }
     }
@@ -245,27 +309,27 @@ function chooseEntry(
   }
 
   if (prefix === 'text') {
+    const fontSize = entries.find((entry) => entry.prop === 'fontSize')
+    if (fontSize && hasTokenName(config, 'fontSize', rawValue)) {
+      return { entry: fontSize, valueKind: 'token' }
+    }
     if (textAlignKeywords.has(rawValue)) {
       return {
         entry: entries.find((entry) => entry.prop === 'textAlign')!,
         valueKind: 'enum',
       }
     }
-    const fontSize = entries.find((entry) => entry.prop === 'fontSize')
-    return fontSize && hasTokenName(config, 'fontSize', rawValue)
-      ? { entry: fontSize, valueKind: 'token' }
-      : null
+    return null
   }
 
   if (prefix === 'font') {
     const fontFamily = entries.find((entry) => entry.prop === 'fontFamily')
     if (!fontFamily) return null
-    return fontGenerics.has(rawValue) || hasTokenName(config, 'fontFamily', rawValue)
-      ? {
-          entry: fontFamily,
-          valueKind: fontGenerics.has(rawValue) ? 'convenience' : 'token',
-          convenience: fontGenerics.has(rawValue) ? 'font-generic' : undefined,
-        }
+    if (hasTokenName(config, 'fontFamily', rawValue)) {
+      return { entry: fontFamily, valueKind: 'token' }
+    }
+    return fontGenerics.has(rawValue)
+      ? { entry: fontFamily, valueKind: 'convenience', convenience: 'font-generic' }
       : null
   }
 
@@ -296,7 +360,7 @@ function chooseEntry(
       }
       if (
         entry.tokenCategory === 'size' &&
-        (sizingConveniences.has(rawValue) || /^\d+\/\d+$/.test(rawValue))
+        (sizingConveniences.has(rawValue) || fractionIsValid(rawValue))
       ) {
         return { entry, valueKind: 'convenience', convenience: 'sizing-keyword' }
       }
@@ -324,8 +388,51 @@ export function parseCandidate(
     (modifier) => modifierAliases[modifier] || modifier
   )
 
+  const negative = split.base[0] === '-'
+  const core = negative ? split.base.slice(1) : split.base
+  const prefix = findPrefix(core, config)
+  let dynamic:
+    | {
+        prefix: string
+        rawValue: string
+        selected: NonNullable<ReturnType<typeof chooseEntry>>
+      }
+    | undefined
+  if (prefix) {
+    const rawValue = core.slice(prefix.length + 1)
+    if (rawValue && !rawValue.startsWith('$')) {
+      const entries = resolveEntries(prefix, config)
+      const selected = chooseEntry(entries, prefix, rawValue, negative, config)
+      if (
+        selected &&
+        (!negative ||
+          (selected.valueKind === 'token' &&
+            negativeTokenProps.has(selected.entry.prop)))
+      ) {
+        dynamic = { prefix, rawValue, selected }
+        // An exact configured token owns its spelling before a reserved whole utility. Other
+        // dynamic forms defer to the whole utility and are used only when no whole form exists.
+        if (selected.valueKind === 'token') {
+          return {
+            candidate,
+            base: split.base,
+            modifiers,
+            negative,
+            kind: 'dynamic',
+            prefix,
+            rawValue,
+            arbitrary: arbitraryInner(rawValue) !== null,
+            entry: selected.entry,
+            valueKind: selected.valueKind,
+            convenience: selected.convenience,
+          }
+        }
+      }
+    }
+  }
+
   const direct = wholeClassUtilities[split.base]
-  if (direct) {
+  if (!negative && direct) {
     const convenience = wholeClassConveniences[split.base]
     return {
       candidate,
@@ -338,29 +445,22 @@ export function parseCandidate(
       negative: false,
     }
   }
-
-  const negative = split.base[0] === '-'
-  const core = negative ? split.base.slice(1) : split.base
-  const prefix = findPrefix(core, config)
-  if (!prefix) return null
-  const rawValue = core.slice(prefix.length + 1)
-  if (!rawValue || rawValue.startsWith('$')) return null
-  const entries = resolveEntries(prefix, config)
-  const selected = chooseEntry(entries, prefix, rawValue, negative, config)
-  if (!selected) return null
-  return {
-    candidate,
-    base: split.base,
-    modifiers,
-    negative,
-    kind: 'dynamic',
-    prefix,
-    rawValue,
-    arbitrary: arbitraryInner(rawValue) !== null,
-    entry: selected.entry,
-    valueKind: selected.valueKind,
-    convenience: selected.convenience,
+  if (dynamic) {
+    return {
+      candidate,
+      base: split.base,
+      modifiers,
+      negative,
+      kind: 'dynamic',
+      prefix: dynamic.prefix,
+      rawValue: dynamic.rawValue,
+      arbitrary: arbitraryInner(dynamic.rawValue) !== null,
+      entry: dynamic.selected.entry,
+      valueKind: dynamic.selected.valueKind,
+      convenience: dynamic.selected.convenience,
+    }
   }
+  return null
 }
 
 export function classifyCandidate(
@@ -380,6 +480,26 @@ export interface FormatCandidateInput {
   modifiers?: readonly string[]
 }
 
+function tokenValidationConfig(
+  entry: GrammarEntry,
+  value: string,
+  config: GrammarConfigView | undefined
+): GrammarConfigView {
+  const tokenNames: Partial<Record<TokenCategory, Names>> = {
+    ...(config?.tokenNames || {}),
+  }
+  const category = entry.tokenCategory!
+  if (tokenNames[category] === undefined) {
+    tokenNames[category] = [tokenLookupName(category, value)]
+  }
+  for (const other of prefixToEntries[entry.prefix] || []) {
+    if (other.tokenCategory && tokenNames[other.tokenCategory] === undefined) {
+      tokenNames[other.tokenCategory] = []
+    }
+  }
+  return { ...config, tokenNames }
+}
+
 export function formatCandidate(
   { prop, value, valueKind, modifiers = [] }: FormatCandidateInput,
   config?: GrammarConfigView
@@ -387,7 +507,7 @@ export function formatCandidate(
   const entry = grammarEntries.find((candidate) => candidate.prop === prop)
   if (!entry) return null
   if (valueKind === 'arbitrary' && value === '') return null
-  if (config && !modifiersAreKnown(modifiers, config)) return null
+  if (!modifiersAreKnown(modifiers, config || {})) return null
   const normalizedModifiers = modifiers.map(
     (modifier) => modifierAliases[modifier] || modifier
   )
@@ -407,18 +527,26 @@ export function formatCandidate(
     if (prop === 'fontWeight') {
       const name = fontWeightNames[value]
       if (!name) return null
-      const candidate = `font-${name}`
-      if (String(wholeClassUtilities[candidate]?.fontWeight) !== value) return null
-      return normalizedModifiers.length
-        ? `${normalizedModifiers.join(':')}:${candidate}`
-        : candidate
+      const core = `font-${name}`
+      if (String(wholeClassUtilities[core]?.fontWeight) !== value) return null
+      const candidate = normalizedModifiers.length
+        ? `${normalizedModifiers.join(':')}:${core}`
+        : core
+      if (config) {
+        const parsed = parseCandidate(candidate, config)
+        if (!parsed?.properties || String(parsed.properties.fontWeight) !== value) {
+          return null
+        }
+      }
+      return candidate
     }
   }
   if (!entry.prefix) return null
   if (valueKind === 'token') {
     if (!entry.tokenCategory) return null
     const sourceDomainKnown = !!config && hasTokenDomain(config, entry.tokenCategory)
-    if (sourceDomainKnown && !hasTokenName(config!, entry.tokenCategory, value))
+    const lookupName = tokenLookupName(entry.tokenCategory, value)
+    if (sourceDomainKnown && !hasTokenName(config!, entry.tokenCategory, lookupName))
       return null
     const colliding = prefixToEntries[entry.prefix].filter(
       (other) => other.prop !== prop && other.tokenCategory
@@ -443,23 +571,51 @@ export function formatCandidate(
     : core
   const whole = wholeClassUtilities[core]
   if (whole) {
-    if (valueKind === 'token') return null
-    if (
+    if (valueKind === 'token') {
+      if (!config || !hasTokenDomain(config, entry.tokenCategory!)) return null
+    } else if (config) {
+      const parsed = parseCandidate(candidate, config)
+      if (parsed?.kind === 'utility') {
+        return Object.prototype.hasOwnProperty.call(parsed.properties, prop) &&
+          String(parsed.properties?.[prop]) === value
+          ? candidate
+          : null
+      }
+      return parsed?.entry?.prop === prop && parsed.valueKind === valueKind
+        ? candidate
+        : null
+    } else if (
       Object.prototype.hasOwnProperty.call(whole, prop) &&
       String(whole[prop]) === value
     ) {
       return candidate
-    }
-    return null
-  }
-  const canValidateToken =
-    valueKind !== 'token' ||
-    (!!entry.tokenCategory && !!config && hasTokenDomain(config, entry.tokenCategory))
-  if (config && canValidateToken) {
-    const parsed = parseCandidate(candidate, config)
-    if (!parsed || parsed.entry?.prop !== prop || parsed.valueKind !== valueKind)
+    } else {
       return null
+    }
   }
+  if (valueKind === 'token') {
+    if (
+      !hasTokenDomain(config || {}, entry.tokenCategory!) &&
+      parseCandidate(candidate, config || {})
+    ) {
+      return null
+    }
+    const parsed = parseCandidate(candidate, tokenValidationConfig(entry, value, config))
+    const parsedValue = parsed?.rawValue
+      ? `${parsed.negative ? '-' : ''}${parsed.rawValue}`
+      : null
+    if (
+      parsed?.kind !== 'dynamic' ||
+      parsed.entry?.prop !== prop ||
+      parsed.valueKind !== 'token' ||
+      parsedValue !== value
+    ) {
+      return null
+    }
+    return candidate
+  }
+  const parsed = parseCandidate(candidate, config || {})
+  if (!parsed || parsed.entry?.prop !== prop || parsed.valueKind !== valueKind) return null
   return candidate
 }
 

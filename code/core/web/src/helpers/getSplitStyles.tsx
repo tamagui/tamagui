@@ -479,7 +479,9 @@ function tailwindSizingValue(prop: string, value: string): string | null {
   if (value === 'max') return 'max-content'
   if (value === 'fit') return 'fit-content'
   const frac = /^(\d+)\/(\d+)$/.exec(value)
-  if (frac) return `${(Number(frac[1]) / Number(frac[2])) * 100}%`
+  if (frac && Number(frac[2]) !== 0) {
+    return `${(Number(frac[1]) / Number(frac[2])) * 100}%`
+  }
   return null
 }
 
@@ -569,7 +571,8 @@ function tailwindClassToFlatProp(
         serif: 'serif',
         mono: 'monospace',
       }
-      famValue = generic[value] || `$${value}`
+      famValue =
+        parsed.valueKind === 'token' ? `$${value}` : generic[value] || `$${value}`
     }
     return {
       key: modifiers.length > 0 ? `$${modifiers.join(':')}:fontFamily` : `$fontFamily`,
@@ -642,8 +645,9 @@ function tailwindClassToFlatProp(
   }
 
   // tailwind sizing keywords / fractions (w-full → 100%, w-1/2 → 50%, w-auto, w-screen).
-  // handled before isValidTailwindValue since fractions/keywords aren't plain CSS values.
-  if (category === 'size') {
+  // handled before isValidTailwindValue since fractions/keywords aren't plain CSS values. An
+  // exact configured size token with the same spelling stays a token.
+  if (category === 'size' && parsed.valueKind !== 'token') {
     const sized = tailwindSizingValue(prop, value)
     if (sized != null) {
       const key = modifiers.length > 0 ? `$${modifiers.join(':')}:${prop}` : `$${prop}`

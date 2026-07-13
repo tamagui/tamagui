@@ -53,13 +53,13 @@ describe('styleMode lineHeight (leading-*)', () => {
     expect(rule('leading-[24px]', 'lineHeight')[StyleObjectValue]).toBe('24px')
   })
 
-  test('leading-8 keeps standard Tailwind semantics (2rem = 32px)', () => {
-    expect(rule('leading-8', 'lineHeight')[StyleObjectValue]).toBe('32px')
+  test('leading-8 resolves through the active lineHeight token', () => {
+    expect(rule('leading-8', 'lineHeight')[StyleObjectValue]).toContain('var(--')
   })
 
-  test('named leading-none/tight/loose are unitless multipliers', () => {
-    expect(rule('leading-none', 'lineHeight')[StyleObjectValue]).toBe('1')
-    expect(rule('leading-tight', 'lineHeight')[StyleObjectValue]).toBe('1.25')
-    expect(rule('leading-loose', 'lineHeight')[StyleObjectValue]).toBe('2')
+  test('unregistered leading aliases pass through', () => {
+    for (const cls of ['leading-none', 'leading-tight', 'leading-loose']) {
+      expect(rule(cls, 'lineHeight')).toBeNull()
+    }
   })
 })

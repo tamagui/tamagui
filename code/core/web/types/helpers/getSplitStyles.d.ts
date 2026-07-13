@@ -9,8 +9,8 @@ type StyleSplitter = (props: {
 export declare const PROP_SPLIT = "-";
 /**
  * The single styleMode pass: tokenizes className once and flattens the resulting props once,
- * producing the component-level PROPS (enterStyle/exitStyle via the flat-props pass, size +
- * animation via the className pass) plus the style props. Hoisted to run in createComponent
+ * producing enterStyle/exitStyle via the flat-props pass plus ordinary style props. Hoisted to
+ * run in createComponent
  * BEFORE the state/variant/animation machinery reads those props; getSplitStyles then skips
  * its own preprocess for these marked props (guarded, so direct callers still self-process
  * exactly once). Non-styleMode returns immediately with zero tokenization.

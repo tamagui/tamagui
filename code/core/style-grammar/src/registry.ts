@@ -245,6 +245,12 @@ export const standaloneValueProps: Readonly<
     auto: 'overflow-auto',
     visible: 'overflow-visible',
   },
+  pointerEvents: {
+    none: 'pointer-events-none',
+    auto: 'pointer-events-auto',
+    'box-none': 'pointer-events-box-none',
+    'box-only': 'pointer-events-box-only',
+  },
   textAlign: {
     left: 'text-left',
     center: 'text-center',
@@ -297,10 +303,6 @@ export const wholeClassUtilities: Readonly<
   'flex-initial': { flexGrow: 0, flexShrink: 1, flexBasis: 'auto' },
   'flex-none': { flexGrow: 0, flexShrink: 0, flexBasis: 'auto' },
   contents: { display: 'contents' },
-  'pointer-events-none': { pointerEvents: 'none' },
-  'pointer-events-auto': { pointerEvents: 'auto' },
-  'pointer-events-box-none': { pointerEvents: 'box-none' },
-  'pointer-events-box-only': { pointerEvents: 'box-only' },
   border: { borderWidth: 1 },
   'border-t': { borderTopWidth: 1 },
   'border-r': { borderRightWidth: 1 },
@@ -461,6 +463,11 @@ export const grammarDecisions: readonly GrammarDecision[] = [
     reason: 'documented generic-family aliases',
   },
   {
+    syntax: 'configured tokens colliding with conveniences/enums',
+    decision: 'keep',
+    reason: 'the exact configured category token wins; otherwise the convenience wins',
+  },
+  {
     syntax: 'alignment aliases',
     decision: 'keep',
     reason: 'exact prop-specific enum aliases only',
@@ -482,5 +489,20 @@ export const grammarDecisions: readonly GrammarDecision[] = [
     syntax: 'unregistered enum/keyword values',
     decision: 'drop',
     reason: 'raw values use brackets',
+  },
+  {
+    syntax: 'leading-negative arbitrary/convenience/enum forms',
+    decision: 'drop',
+    reason: 'raw negative values put the sign inside brackets',
+  },
+  {
+    syntax: 'ambiguous overloaded border arbitrary values',
+    decision: 'drop',
+    reason: 'width versus color must be type-provable',
+  },
+  {
+    syntax: 'zero-denominator fractions',
+    decision: 'drop',
+    reason: 'fractions must resolve to a finite percentage',
   },
 ] as const

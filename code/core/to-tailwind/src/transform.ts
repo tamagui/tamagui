@@ -24,6 +24,13 @@ const generate = (_generate as any).default ?? _generate
 
 const defaultShorthands = canonicalShorthands as Record<string, string>
 
+function namesToSet(names: GrammarConfigView['mediaNames']): Set<string> {
+  if (!names) return new Set()
+  if (Array.isArray(names)) return new Set(names)
+  if (names instanceof Set) return new Set(names)
+  return new Set(Object.keys(names))
+}
+
 function addConfigNames(
   target: Set<string>,
   source: Record<string, any> | undefined
@@ -37,19 +44,40 @@ function createTransformGrammarConfig(
   mediaKeys: Set<string>,
   shorthands: Record<string, string>
 ): GrammarConfigView {
+  if (options.grammarConfig) {
+    return { ...options.grammarConfig, shorthands, mediaNames: mediaKeys }
+  }
   const tokenNames: Partial<Record<TokenCategory, Set<string>>> = {}
-  for (const category of ['space', 'size', 'radius', 'zIndex', 'color'] as const) {
+  const tokenCategories = ['space', 'size', 'radius', 'zIndex', 'color'] as const
+  const fontCategories = [
+    'fontFamily',
+    'fontSize',
+    'lineHeight',
+    'letterSpacing',
+  ] as const
+  // Supplying any token/font/theme domain means this is an authoritative config view: omitted
+  // domains are known-empty. With no such fields, config-less conversion remains conservative but
+  // may emit unambiguous token names whose membership cannot be proved until runtime.
+  const authoritative = ['tokens', 'fonts', 'themes', 'media', 'shorthands'].some(
+    (key) => Object.prototype.hasOwnProperty.call(options, key)
+  )
+  if (authoritative) {
+    for (const category of [...tokenCategories, ...fontCategories]) {
+      tokenNames[category] = new Set<string>()
+    }
+  }
+  for (const category of tokenCategories) {
     if (options.tokens?.[category]) {
-      const names = new Set<string>()
+      const names = tokenNames[category] || new Set<string>()
       addConfigNames(names, options.tokens[category])
       tokenNames[category] = names
     }
   }
   if (options.fonts) {
-    tokenNames.fontFamily = new Set<string>()
-    tokenNames.fontSize = new Set<string>()
-    tokenNames.lineHeight = new Set<string>()
-    tokenNames.letterSpacing = new Set<string>()
+    tokenNames.fontFamily ||= new Set<string>()
+    tokenNames.fontSize ||= new Set<string>()
+    tokenNames.lineHeight ||= new Set<string>()
+    tokenNames.letterSpacing ||= new Set<string>()
     for (const familyName in options.fonts) {
       tokenNames.fontFamily.add(familyName[0] === '$' ? familyName.slice(1) : familyName)
       const font = options.fonts[familyName]
@@ -92,6 +120,8 @@ export interface TransformOptions {
   tokens?: Record<string, Record<string, any>>
   fonts?: Record<string, any>
   themes?: Record<string, Record<string, any>>
+  // Precomputed names-only view for dependency-free callers such as CLI bundled defaults.
+  grammarConfig?: GrammarConfigView
 }
 
 // per-call context (threaded, NOT module-global) so the converter is PURE and REENTRANT:
@@ -139,10 +169,13 @@ export function tamaguiToTailwind(
 ): string {
   const { renameComponents = true } = options
 
-  const mediaKeys = options.media
-    ? new Set(Array.isArray(options.media) ? options.media : Object.keys(options.media))
-    : new Set(defaultMediaKeys)
-  const shorthands = options.shorthands ?? defaultShorthands
+  const mediaKeys = options.grammarConfig?.mediaNames
+    ? namesToSet(options.grammarConfig.mediaNames)
+    : options.media
+      ? new Set(Array.isArray(options.media) ? options.media : Object.keys(options.media))
+      : new Set(defaultMediaKeys)
+  const shorthands =
+    options.grammarConfig?.shorthands ?? options.shorthands ?? defaultShorthands
   const ctx: Ctx = {
     mediaKeys,
     componentAllow: new Set(options.components ?? []),
