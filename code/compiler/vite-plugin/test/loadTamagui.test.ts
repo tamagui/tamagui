@@ -23,6 +23,7 @@ const componentEntryPath = path.join(fixtureRoot, 'packages/components/src/index
 const watchOutputRoot = path.join(fixtureRoot, '.watch-dist')
 const fixtureComponents = ['@fixture/components', '@fixture/components/static']
 const evaluationPipelineId = '\0fixture-evaluation-pipeline'
+const oneCompilerResolutionId = '\0fixture-one-compiler-resolution'
 const fixtureAliases = {
   '#workspace-resolution': resolutionPath,
   '@fixture/conditional': path.join(fixtureRoot, 'packages/conditional'),
@@ -59,6 +60,50 @@ function fixtureResolverPlugin(): Plugin {
       }
     },
   }
+}
+
+function environmentSpecificCompilerPlugins(): Plugin[] {
+  return [
+    {
+      name: 'one:compiler',
+      apply: 'build',
+      enforce: 'pre',
+      resolveId(source, importer) {
+        if (source !== '#plugin-resolution') return
+        const evaluationProbe = (globalThis as any).__tamaguiFixtureOwnedEvaluation
+        const environmentName = this.environment?.name
+        if (importer?.endsWith('tamagui.config.ts')) {
+          evaluationProbe?.push(`one:resolve:${environmentName}:config`)
+        } else if (importer?.endsWith('/packages/components/src/resolution.ts')) {
+          evaluationProbe?.push(`one:resolve:${environmentName}:component`)
+        }
+        return oneCompilerResolutionId
+      },
+      load(id) {
+        if (id !== oneCompilerResolutionId) return
+        ;(globalThis as any).__tamaguiFixtureOwnedEvaluation?.push(
+          `one:load:${this.environment?.name}`
+        )
+        return `export const resolution = 'user-plugin'`
+      },
+      transform() {
+        const environmentName = this.environment?.name
+        if (environmentName !== 'client' && environmentName !== 'ssr') {
+          throw new Error(`Invalid env: ${environmentName}`)
+        }
+      },
+    },
+    {
+      name: 'one:compiler-css-to-js',
+      apply: 'build',
+      transform() {
+        const environmentName = this.environment?.name
+        if (environmentName !== 'client' && environmentName !== 'ssr') {
+          throw new Error(`Invalid env: ${environmentName}`)
+        }
+      },
+    },
+  ]
 }
 
 type LifecycleCounts = {
@@ -190,6 +235,20 @@ async function readBuiltCss(outDir: string) {
   return readFile(path.join(outDir, cssFile), 'utf8')
 }
 
+function getBuildOutput(result: Awaited<ReturnType<typeof build>>) {
+  const outputs = Array.isArray(result) ? result : [result]
+  return outputs
+    .flatMap((output: any) => output.output || [])
+    .map((output: any) =>
+      output.type === 'asset'
+        ? typeof output.source === 'string'
+          ? output.source
+          : Buffer.from(output.source).toString('utf8')
+        : output.code
+    )
+    .join('\n')
+}
+
 function waitForWatchBuild(watcher: any) {
   return new Promise<void>((resolve, reject) => {
     const onEvent = (event: any) => {
@@ -226,6 +285,20 @@ afterEach(async () => {
     await rm(path.join(fixtureRoot, 'node_modules'), { force: true, recursive: true })
     await rm(watchOutputRoot, { force: true, recursive: true })
   }
+})
+
+test('clears loader state when closing an owned environment fails', async () => {
+  const loader = createViteTamaguiLoader({ disable: true })
+  await loader.loadTamaguiBuildConfig()
+  const closeError = new Error('fixture close failed')
+  const close = vi.fn().mockRejectedValue(closeError)
+  loader.setEnvironment({ close } as any, { owned: true })
+
+  await expect(loader.cleanup()).rejects.toBe(closeError)
+  expect(close).toHaveBeenCalledOnce()
+  expect(loader.getEnvironment()).toBeNull()
+  expect(loader.getLoadPromise()).toBeNull()
+  expect(loader.getTamaguiOptions()).toBeNull()
 })
 
 test('evaluates config and components through the app resolver and invalidates HMR', async () => {
@@ -488,6 +561,7 @@ test('evaluates the same fixture during a production build without legacy bundle
       alias: fixtureAliases,
     },
     plugins: [
+      ...environmentSpecificCompilerPlugins(),
       ...fixturePlugins(lifecycle),
       tamaguiPlugin({
         config: '#fixture-config',
@@ -504,17 +578,7 @@ test('evaluates the same fixture during a production build without legacy bundle
     },
   })
 
-  const outputs = Array.isArray(result) ? result : [result]
-  const buildOutput = outputs
-    .flatMap((output: any) => output.output || [])
-    .map((output: any) =>
-      output.type === 'asset'
-        ? typeof output.source === 'string'
-          ? output.source
-          : Buffer.from(output.source).toString('utf8')
-        : output.code
-    )
-    .join('\n')
+  const buildOutput = getBuildOutput(result)
 
   expect(buildOutput).toContain('browser:workspace-v1:user-plugin:build-only')
   expect(buildOutput).not.toContain('serve-only')
@@ -524,6 +588,9 @@ test('evaluates the same fixture during a production build without legacy bundle
   const evaluationPluginNames = (globalThis as any).__tamaguiFixtureOwnedPluginNames
   expect(evaluationProbe).toContain('resolve:build')
   expect(evaluationProbe).toContain('import:config')
+  expect(evaluationProbe).toContain('one:resolve:tamagui:config')
+  expect(evaluationProbe).toContain('one:resolve:tamagui:component')
+  expect(evaluationProbe).toContain('one:load:tamagui')
   expect(evaluationProbe).not.toContain('resolve:serve')
   expect(evaluationProbe.indexOf('resolve:build')).toBeLessThan(
     evaluationProbe.indexOf('import:config')
@@ -551,6 +618,8 @@ test('evaluates the same fixture during a production build without legacy bundle
     )
   ).toHaveLength(1)
   expect(evaluationPluginNames).not.toContain('fixture-serve-resolver:environment')
+  expect(evaluationPluginNames).toContain('one:compiler')
+  expect(evaluationPluginNames).toContain('one:compiler-css-to-js')
   expect(lifecycle).toEqual({
     options: 1,
     buildStart: 1,
@@ -559,6 +628,166 @@ test('evaluates the same fixture during a production build without legacy bundle
   })
   await expect(access(path.join(fixtureRoot, '.tamagui'))).rejects.toThrow()
 })
+
+test('keeps the owned runner alive across concurrent builds sharing one plugin', async () => {
+  const originalConfigSpace = await readFile(configSpacePath, 'utf8')
+  const slowOutDir = path.join(fixtureRoot, '.concurrent-slow')
+  const fastOutDir = path.join(fixtureRoot, '.concurrent-fast')
+  const afterCleanupOutDir = path.join(fixtureRoot, '.concurrent-after')
+  let holdSlowTransform = true
+  let thirdBuildPassedCleanup = false
+  let markSlowTransformStarted!: () => void
+  let releaseSlowTransform!: () => void
+  let markCleanupStarted!: () => void
+  let releaseCleanup!: () => void
+  let markThirdBuildStarted!: () => void
+  let markThirdBuildPassedCleanup!: () => void
+  const slowTransformStarted = new Promise<void>((resolve) => {
+    markSlowTransformStarted = resolve
+  })
+  const slowTransformRelease = new Promise<void>((resolve) => {
+    releaseSlowTransform = resolve
+  })
+  const cleanupStarted = new Promise<void>((resolve) => {
+    markCleanupStarted = resolve
+  })
+  const cleanupRelease = new Promise<void>((resolve) => {
+    releaseCleanup = resolve
+  })
+  const thirdBuildStarted = new Promise<void>((resolve) => {
+    markThirdBuildStarted = resolve
+  })
+  const thirdBuildPassedCleanupPromise = new Promise<void>((resolve) => {
+    markThirdBuildPassedCleanup = resolve
+  })
+
+  const slowTransformGate: Plugin = {
+    name: 'fixture-concurrent-build-gate',
+    enforce: 'pre',
+    buildStart: {
+      order: 'pre',
+      sequential: true,
+      handler() {
+        if (this.environment.config.build.outDir === afterCleanupOutDir) {
+          markThirdBuildStarted()
+        }
+      },
+    },
+    resolveId() {
+      const environment = this.environment as any
+      if (
+        environment.name === TAMAGUI_EVALUATION_ENVIRONMENT &&
+        !environment.__tamaguiFixtureClosePatched
+      ) {
+        environment.__tamaguiFixtureClosePatched = true
+        const close = environment.close.bind(environment)
+        environment.close = async () => {
+          markCleanupStarted()
+          await cleanupRelease
+          await close()
+        }
+      }
+    },
+    transform: {
+      order: 'pre',
+      async handler(_source, id) {
+        if (
+          holdSlowTransform &&
+          this.environment.config.build.outDir === slowOutDir &&
+          path.resolve(id.split('?')[0]) === appPath
+        ) {
+          holdSlowTransform = false
+          markSlowTransformStarted()
+          await slowTransformRelease
+        }
+      },
+    },
+  }
+  const releaseAfterTamaguiBuildEnd: Plugin = {
+    name: 'fixture-release-concurrent-build',
+    buildStart: {
+      order: 'post',
+      sequential: true,
+      handler() {
+        if (this.environment.config.build.outDir === afterCleanupOutDir) {
+          thirdBuildPassedCleanup = true
+          markThirdBuildPassedCleanup()
+        }
+      },
+    },
+    buildEnd: {
+      order: 'post',
+      sequential: true,
+      handler() {
+        if (this.environment.config.build.outDir === fastOutDir) {
+          releaseSlowTransform()
+        }
+      },
+    },
+  }
+  const sharedPlugins = [
+    slowTransformGate,
+    ...fixturePlugins(),
+    tamaguiPlugin({
+      config: '#fixture-config',
+      components: fixtureComponents,
+      enableDynamicEvaluation: true,
+    }),
+    releaseAfterTamaguiBuildEnd,
+  ]
+  const runBuild = (outDir: string) =>
+    build({
+      configFile: false,
+      root: fixtureRoot,
+      logLevel: 'silent',
+      resolve: {
+        alias: fixtureAliases,
+      },
+      plugins: sharedPlugins,
+      build: {
+        outDir,
+        write: false,
+        lib: {
+          entry: appPath,
+          formats: ['es'],
+        },
+      },
+    })
+
+  try {
+    const slowBuild = runBuild(slowOutDir)
+    await slowTransformStarted
+    const fastBuild = runBuild(fastOutDir)
+    const fastResult = await fastBuild
+    await cleanupStarted
+
+    await writeFile(configSpacePath, originalConfigSpace.replace('1', '4'))
+    const afterCleanupBuild = runBuild(afterCleanupOutDir)
+    await thirdBuildStarted
+    expect(thirdBuildPassedCleanup).toBe(false)
+    releaseCleanup()
+    await thirdBuildPassedCleanupPromise
+
+    const [slowResult, afterCleanupResult] = await Promise.all([
+      slowBuild,
+      afterCleanupBuild,
+    ])
+
+    for (const result of [slowResult, fastResult]) {
+      const output = getBuildOutput(result)
+      expect(output).toContain('className')
+      expect(output).not.toContain('$fixture')
+      expectMediaPaddingCss(output, 21)
+    }
+
+    const rebuiltOutput = getBuildOutput(afterCleanupResult)
+    expectMediaPaddingCss(rebuiltOutput, 24)
+  } finally {
+    releaseSlowTransform()
+    releaseCleanup()
+    await writeFile(configSpacePath, originalConfigSpace)
+  }
+}, 30_000)
 
 test('isolates extraction caches and rebuilds CSS for a config-only dependency', async () => {
   const originalConfigSpace = await readFile(configSpacePath, 'utf8')

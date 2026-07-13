@@ -21,13 +21,20 @@ import type {
 import type { Environment } from 'vite'
 import { createViteTamaguiLoader, TAMAGUI_EVALUATION_ENVIRONMENT } from './loadTamagui'
 
+const environmentSpecificTransformPluginNames = new Set([
+  'one:compiler',
+  'one:compiler-css-to-js',
+])
+
 function createEvaluationPluginFacade(plugin: Plugin): Plugin {
   return {
     name: plugin.name,
     enforce: plugin.enforce,
     resolveId: plugin.resolveId,
     load: plugin.load,
-    transform: plugin.transform,
+    transform: environmentSpecificTransformPluginNames.has(plugin.name)
+      ? undefined
+      : plugin.transform,
   }
 }
 
@@ -251,6 +258,29 @@ export function tamaguiPlugin({
   const tamaguiLoader = createViteTamaguiLoader(tamaguiOptionsIn)
   const pluginInstanceId = getNextPluginInstanceId()
   let buildEnvironmentPromise: Promise<void> | null = null
+  let buildCleanupPromise: Promise<void> | null = null
+  const activeBuildEnvironments = new Set<Environment>()
+
+  const releaseBuildEnvironment = async (environment: Environment) => {
+    if (!activeBuildEnvironments.delete(environment) || activeBuildEnvironments.size) {
+      return
+    }
+    const currentCleanup = Promise.resolve().then(async () => {
+      try {
+        await tamaguiLoader.cleanup()
+      } finally {
+        buildEnvironmentPromise = null
+      }
+    })
+    buildCleanupPromise = currentCleanup
+    try {
+      await currentCleanup
+    } finally {
+      if (buildCleanupPromise === currentCleanup) {
+        buildCleanupPromise = null
+      }
+    }
+  }
 
   const extensions = [
     `.web.mjs`,
@@ -384,11 +414,7 @@ export function tamaguiPlugin({
     },
 
     async buildEnd() {
-      try {
-        await tamaguiLoader.cleanup()
-      } finally {
-        buildEnvironmentPromise = null
-      }
+      await releaseBuildEnvironment(this.environment)
     },
 
     async config(_, env) {
@@ -549,29 +575,38 @@ export function tamaguiPlugin({
 
     async buildStart() {
       const buildConfig = this.environment.getTopLevelConfig()
-      if (buildConfig.command === 'build' && !tamaguiLoader.getEnvironment()) {
-        await tamaguiLoader.loadTamaguiBuildConfig()
-        buildEnvironmentPromise ||= (async () => {
-          const evaluationConfig = await createOwnedEvaluationConfig(buildConfig)
-          const evaluationEnvironment = createRunnableDevEnvironment(
-            TAMAGUI_EVALUATION_ENVIRONMENT,
-            evaluationConfig,
-            { hot: false }
-          )
-          try {
-            await evaluationEnvironment.init()
-          } catch (error) {
-            await evaluationEnvironment.close().catch(() => undefined)
-            throw error
-          }
-          tamaguiLoader.setEnvironment(evaluationEnvironment, { owned: true })
-        })()
-        try {
+      if (buildConfig.command !== 'build') return
+
+      const pendingCleanup = buildCleanupPromise
+      if (pendingCleanup) {
+        await pendingCleanup
+      }
+
+      const buildEnvironment = this.environment
+      activeBuildEnvironments.add(buildEnvironment)
+      try {
+        if (!tamaguiLoader.getEnvironment()) {
+          await tamaguiLoader.loadTamaguiBuildConfig()
+          buildEnvironmentPromise ||= (async () => {
+            const evaluationConfig = await createOwnedEvaluationConfig(buildConfig)
+            const evaluationEnvironment = createRunnableDevEnvironment(
+              TAMAGUI_EVALUATION_ENVIRONMENT,
+              evaluationConfig,
+              { hot: false }
+            )
+            try {
+              await evaluationEnvironment.init()
+            } catch (error) {
+              await evaluationEnvironment.close().catch(() => undefined)
+              throw error
+            }
+            tamaguiLoader.setEnvironment(evaluationEnvironment, { owned: true })
+          })()
           await buildEnvironmentPromise
-        } catch (error) {
-          buildEnvironmentPromise = null
-          throw error
         }
+      } catch (error) {
+        await releaseBuildEnvironment(buildEnvironment)
+        throw error
       }
     },
 

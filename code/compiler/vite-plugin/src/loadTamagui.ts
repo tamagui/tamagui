@@ -232,15 +232,18 @@ export function createViteTamaguiLoader(
     },
 
     async cleanup() {
-      if (ownsEnvironment && environment) {
-        await environment.close()
+      try {
+        if (ownsEnvironment && environment) {
+          await environment.close()
+        }
+      } finally {
+        environment = null
+        ownsEnvironment = false
+        loadPromise = null
+        loadedOptions = null
+        projectPromise = null
+        extractor = null
       }
-      environment = null
-      ownsEnvironment = false
-      loadPromise = null
-      loadedOptions = null
-      projectPromise = null
-      extractor = null
     },
   }
 }
