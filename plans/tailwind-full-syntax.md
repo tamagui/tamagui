@@ -40,6 +40,20 @@ alone and does not claim utility candidates.
 classification. Runtime parsing, `to-tailwind`, the compiler, and the bundler
 candidate filter all consume that package.
 
+Static component authoring uses the class-first overload as its preferred
+shape:
+
+```tsx
+styled(View, 'items-center p-4', {
+  variants: { size: { sm: 'h-8 px-3', md: 'h-10 px-4' } },
+})
+```
+
+This is typed as a separate string-discriminated overload of `styled`, with
+the options object third and the existing advanced static config optionally
+fourth. The implementation normalizes into the existing styled path; it does
+not introduce a second runtime or a broad `string | object` generic.
+
 The official scanner may discover every source candidate, but the Tamagui Vite
 plugin filters the candidate list before calling Tailwind `build()`:
 

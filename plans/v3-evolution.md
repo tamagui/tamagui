@@ -143,14 +143,14 @@ Caller props and caller `className` still win.
 
 ### Static class strings in `styled()`
 
-All of these are supported and scanner-visible:
+The preferred form gives the base class string its own argument and keeps
+variants/config in the following object. All strings remain scanner-visible:
 
 ```tsx
 const Frame = styled(View, 'p-4 rounded-4')
 
-const Button = styled(View, {
+const Button = styled(View, 'items-center justify-center', {
   name: 'Button',
-  className: 'items-center justify-center',
   variants: {
     size: { sm: 'h-8 px-3', md: 'h-10 px-4' },
   },
@@ -158,8 +158,27 @@ const Button = styled(View, {
 })
 ```
 
-The compiler treats these strings as static style input. No render-time string
-construction is introduced.
+This is a discriminated overload, not a `string | object` union threaded
+through the existing generics:
+
+```ts
+styled(Component, styleOptions?, staticConfig?)
+styled(Component, baseClassName, styleOptions?, staticConfig?)
+```
+
+The second signature infers variants from its third argument. Its optional
+fourth argument preserves the rare advanced static config (`accept`, `isText`,
+`neverFlatten`, and similar fields) without mixing those fields into ordinary
+styled options. The implementation normalizes both signatures into the one
+existing styled path. Before runtime work, a focused type fixture must prove
+variant inference, `defaultVariants`, invalid-key errors, component prop
+inference, and the optional fourth argument. If that overload cannot retain the
+same inference quality as the object form without assertions or duplicated
+public types, keep the object form canonical instead of accumulating type
+machinery.
+
+The compiler treats the class strings as static style input. No render-time
+string construction is introduced.
 
 ### Component/skin boundary
 
@@ -374,16 +393,21 @@ type names. Runtime tests mirror the same matrix.
    matchers, and apply array order after simple variants.
 3. Make every styled-context key a typed, consumed component prop without
    `emptyVariants` declarations.
-4. Add `styled(Component, '...')`, base `className`, simple-variant strings,
-   and compound `style` strings. Feed all static strings through the shared
-   grammar/compiler path.
-5. Teach extraction/static-config serialization the new fields and prove
+4. Add overloads for `styled(Component, baseClassName, styleOptions?,
+   staticConfig?)` while preserving `styled(Component, styleOptions?,
+   staticConfig?)`. Normalize both into one implementation; do not broaden the
+   current generic parameter to `string | object` or duplicate runtime paths.
+5. Add base-class, simple-variant, and compound `style` strings. Feed all
+   static strings through the shared grammar/compiler path.
+6. Teach extraction/static-config serialization the new fields and prove
    runtime/compiler output parity.
 
-**Acceptance:** a single integration fixture exercises base object + base
-class, simple functional/static variants, compound matches, context-provided
-matches, and call-site overrides on web/native/extracted web. No attribute
-order changes precedence.
+**Acceptance:** a compile-only fixture first proves equivalent prop/variant
+inference for both overloads, including `defaultVariants`, invalid variants,
+and a fourth-argument static config. A single integration fixture then
+exercises base object + base class, simple functional/static variants, compound
+matches, context-provided matches, and call-site overrides on
+web/native/extracted web. No attribute order changes precedence.
 
 **Resource class:** medium.
 
