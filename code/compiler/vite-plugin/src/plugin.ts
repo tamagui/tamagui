@@ -1,10 +1,12 @@
 import Static from '@tamagui/static'
 import type { ExtractedResponse, TamaguiOptions } from '@tamagui/static'
 import { createHash } from 'node:crypto'
+import { existsSync, readdirSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import {
+  createIdResolver,
   createRunnableDevEnvironment,
   defaultClientConditions,
   defaultClientMainFields,
@@ -28,9 +30,23 @@ const environmentSpecificTransformPluginNames = new Set([
 
 const oneTsconfigPathsPluginName = 'one:tsconfig-paths'
 const bareTamaguiPackage = /^@tamagui\/[^/?#]+(?:[/?#]|$)/
+const inlineTamaguiPackage = /^@tamagui\/(?:config|core|web)(?:[/?#]|$)/
+const externalizablePackageExtensions = new Set(['', '.js', '.mjs', '.cjs'])
 type EvaluationResolveIdHandler = (this: any, source: string, ...args: any[]) => any
+type EvaluationBarePackageResolver = (
+  environment: Environment,
+  source: string,
+  importer?: string
+) =>
+  | Promise<string | { id: string; external: true } | undefined>
+  | string
+  | { id: string; external: true }
+  | undefined
 
-function createEvaluationResolveId(plugin: Plugin): Plugin['resolveId'] {
+function createEvaluationResolveId(
+  plugin: Plugin,
+  resolveBarePackage?: EvaluationBarePackageResolver
+): Plugin['resolveId'] {
   const resolveId = plugin.resolveId
   if (plugin.name !== oneTsconfigPathsPluginName || !resolveId) {
     return resolveId
@@ -44,7 +60,10 @@ function createEvaluationResolveId(plugin: Plugin): Plugin['resolveId'] {
     // directory fallbacks before Vite can apply the package exports map. Keep
     // user TS aliases in this resolver, but let Tamagui packages use Vite's
     // normal package resolution and externalization policy.
-    if (bareTamaguiPackage.test(source)) return
+    if (bareTamaguiPackage.test(source)) {
+      const importer = typeof args[0] === 'string' ? args[0] : undefined
+      return resolveBarePackage?.(this.environment, source, importer)
+    }
     return Reflect.apply(handler, this, [source, ...args])
   }
 
@@ -53,11 +72,14 @@ function createEvaluationResolveId(plugin: Plugin): Plugin['resolveId'] {
     : evaluationHandler
 }
 
-function createEvaluationPluginFacade(plugin: Plugin): Plugin {
+function createEvaluationPluginFacade(
+  plugin: Plugin,
+  resolveBarePackage?: EvaluationBarePackageResolver
+): Plugin {
   return {
     name: plugin.name,
     enforce: plugin.enforce,
-    resolveId: createEvaluationResolveId(plugin),
+    resolveId: createEvaluationResolveId(plugin, resolveBarePackage),
     load: plugin.load,
     transform: environmentSpecificTransformPluginNames.has(plugin.name)
       ? undefined
@@ -82,11 +104,98 @@ function isEvaluationUserPlugin(plugin: Plugin) {
   )
 }
 
+function isEvaluationCorePlugin(plugin: Plugin) {
+  return (
+    plugin.name === 'alias' ||
+    plugin.name.startsWith('vite:') ||
+    plugin.name.startsWith('builtin:vite-')
+  )
+}
+
+function getInstalledTamaguiPackages(root: string) {
+  const packageRequire = createRequire(path.join(root, 'package.json'))
+  const packages = new Set<string>()
+
+  for (const modulePath of packageRequire.resolve.paths('@tamagui/core') || []) {
+    const scopePath = path.join(modulePath, '@tamagui')
+    if (!existsSync(scopePath)) continue
+    for (const entry of readdirSync(scopePath, { withFileTypes: true })) {
+      if (!entry.isDirectory() && !entry.isSymbolicLink()) continue
+      const packageName = `@tamagui/${entry.name}`
+      if (!inlineTamaguiPackage.test(packageName)) {
+        packages.add(packageName)
+      }
+    }
+  }
+
+  return packages
+}
+
+function createServeEvaluationConfig(config: ResolvedConfig): ResolvedConfig {
+  const environment = config.environments[TAMAGUI_EVALUATION_ENVIRONMENT]
+  let packageResolver: ReturnType<typeof createIdResolver> | undefined
+  const resolveBarePackage: EvaluationBarePackageResolver = async (
+    evaluationEnvironment,
+    source,
+    importer
+  ) => {
+    const resolved = await packageResolver?.(evaluationEnvironment, source, importer)
+    if (!resolved) return
+    const cleanResolved = resolved.split(/[?#]/, 1)[0]
+    if (
+      inlineTamaguiPackage.test(source) ||
+      !normalizePath(cleanResolved).includes('/node_modules/') ||
+      !externalizablePackageExtensions.has(path.extname(cleanResolved))
+    ) {
+      return resolved
+    }
+    return { id: source, external: true }
+  }
+  const plugins = environment.plugins.flatMap((plugin) => {
+    if (isEvaluationCorePlugin(plugin)) {
+      return [plugin]
+    }
+    if (isEvaluationUserPlugin(plugin)) {
+      return [createEvaluationPluginFacade(plugin, resolveBarePackage)]
+    }
+    return []
+  })
+  const resolve = plugins.some((plugin) => plugin.name === oneTsconfigPathsPluginName)
+    ? {
+        ...environment.resolve,
+        external:
+          environment.resolve.external === true
+            ? (true as const)
+            : [
+                ...new Set([
+                  ...(environment.resolve.external || []),
+                  ...getInstalledTamaguiPackages(config.root),
+                ]),
+              ],
+        tsconfigPaths: false,
+      }
+    : environment.resolve
+
+  const evaluationConfig: ResolvedConfig = {
+    ...config,
+    environments: {
+      ...config.environments,
+      [TAMAGUI_EVALUATION_ENVIRONMENT]: {
+        ...environment,
+        plugins,
+        resolve,
+      },
+    },
+  }
+  packageResolver = createIdResolver(evaluationConfig)
+  return evaluationConfig
+}
+
 async function createOwnedEvaluationConfig(config: ResolvedConfig) {
   const environment = config.environments[TAMAGUI_EVALUATION_ENVIRONMENT]
   const plugins = environment.plugins
     .filter(isEvaluationUserPlugin)
-    .map(createEvaluationPluginFacade)
+    .map((plugin) => createEvaluationPluginFacade(plugin))
   const resolve = plugins.some((plugin) => plugin.name === oneTsconfigPathsPluginName)
     ? { ...environment.resolve, tsconfigPaths: false }
     : environment.resolve
@@ -94,8 +203,9 @@ async function createOwnedEvaluationConfig(config: ResolvedConfig) {
 
   // ModuleRunner needs Vite's serve-time core pipeline (especially import
   // analysis), but user plugin selection must remain the already-resolved
-  // build pipeline. The facades retain only evaluation hooks, so resolving this
-  // owned config cannot replay user configuration or build lifecycles.
+  // pipeline for the outer command. The facades retain only evaluation hooks,
+  // so resolving this owned config cannot replay user configuration or outer
+  // lifecycles.
   return resolveConfig(
     {
       configFile: false,
@@ -340,12 +450,13 @@ export function tamaguiPlugin({
     resolve: {
       conditions: [...defaultClientConditions],
       mainFields: [...defaultClientMainFields],
-      noExternal: /^@tamagui\/(?:config|core|web)(?:\/|$)/,
+      noExternal: inlineTamaguiPackage,
       extensions,
     },
     dev: {
       createEnvironment(name, resolved) {
-        return createRunnableDevEnvironment(name, resolved)
+        const evaluationConfig = createServeEvaluationConfig(resolved)
+        return createRunnableDevEnvironment(name, evaluationConfig)
       },
       moduleRunnerTransform: true,
     },

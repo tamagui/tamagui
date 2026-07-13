@@ -1,7 +1,8 @@
 import { defaultConfig } from '@tamagui/config/v4'
 import { createTamagui } from '@tamagui/core'
+import { resolution as packageExportResolution } from '@tamagui/evaluation-fixture/value'
 import { resolution as conditionalResolution } from '@fixture/conditional'
-import evaluationPluginNames from '#evaluation-pipeline'
+import evaluationPluginNames, { oneTsconfigPathsOrder } from '#evaluation-pipeline'
 import {
   resolution as commandResolution,
   space as commandSpace,
@@ -16,7 +17,7 @@ globalThis.__tamaguiFixtureOwnedEvaluation?.push('import:config')
 globalThis.__tamaguiFixtureOwnedPluginNames = evaluationPluginNames
 
 export const compilerResolution = `${conditionalResolution}:${workspaceResolution}:${pluginResolution}:${commandResolution}`
-export { evaluationPluginNames }
+export { evaluationPluginNames, oneTsconfigPathsOrder, packageExportResolution }
 
 export default createTamagui({
   ...defaultConfig,

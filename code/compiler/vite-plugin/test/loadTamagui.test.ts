@@ -7,6 +7,7 @@ import {
   readdir,
   rename,
   rm,
+  symlink,
   writeFile,
 } from 'node:fs/promises'
 import path from 'node:path'
@@ -30,6 +31,10 @@ const resolutionPath = path.join(fixtureRoot, 'packages/workspace/src/resolution
 const configSpacePath = path.join(fixtureRoot, 'packages/workspace/src/config-space.ts')
 const componentEntryPath = path.join(fixtureRoot, 'packages/components/src/index.ts')
 const evaluationFixturePackagePath = path.join(fixtureRoot, 'packages/evaluation-fixture')
+const evaluationFixturePhysicalRuntimePath = path.join(
+  fixtureRoot,
+  '.evaluation-fixture-runtime'
+)
 const evaluationFixtureRuntimePath = path.join(
   fixtureRoot,
   'node_modules/@tamagui/evaluation-fixture'
@@ -42,7 +47,10 @@ const evaluationPipelineId = '\0fixture-evaluation-pipeline'
 const oneCompilerResolutionId = '\0fixture-one-compiler-resolution'
 const fixtureAliases = {
   '#workspace-resolution': resolutionPath,
-  '@fixture/conditional': path.join(fixtureRoot, 'packages/conditional'),
+}
+
+function isEvaluationCorePluginName(name: string) {
+  return name === 'alias' || name.startsWith('vite:') || name.startsWith('builtin:vite-')
 }
 
 function fixtureResolverPlugin(): Plugin {
@@ -113,12 +121,30 @@ function oneTsconfigPathsPlugin(): Plugin {
   }
 }
 
-function environmentSpecificCompilerPlugins(): Plugin[] {
+function environmentSpecificCompilerPlugins(
+  apply: 'serve' | 'build' = 'build'
+): Plugin[] {
+  const recordLifecycle = (pluginName: string, hook: string) => {
+    ;((globalThis as any).__tamaguiFixtureOneConfigLifecycles ??= []).push(
+      `${pluginName}:${hook}`
+    )
+  }
+  const recordTransform = (pluginName: string, environmentName: string | undefined) => {
+    ;((globalThis as any).__tamaguiFixtureOneTransformEnvironments ??= []).push(
+      `${pluginName}:${environmentName}`
+    )
+  }
   return [
     {
       name: 'one:compiler',
-      apply: 'build',
+      apply,
       enforce: 'pre',
+      config() {
+        recordLifecycle('one:compiler', 'config')
+      },
+      configResolved() {
+        recordLifecycle('one:compiler', 'configResolved')
+      },
       resolveId(source, importer) {
         if (source !== '#plugin-resolution') return
         const evaluationProbe = (globalThis as any).__tamaguiFixtureOwnedEvaluation
@@ -139,6 +165,7 @@ function environmentSpecificCompilerPlugins(): Plugin[] {
       },
       transform() {
         const environmentName = this.environment?.name
+        recordTransform('one:compiler', environmentName)
         if (environmentName !== 'client' && environmentName !== 'ssr') {
           throw new Error(`Invalid env: ${environmentName}`)
         }
@@ -146,9 +173,16 @@ function environmentSpecificCompilerPlugins(): Plugin[] {
     },
     {
       name: 'one:compiler-css-to-js',
-      apply: 'build',
+      apply,
+      config() {
+        recordLifecycle('one:compiler-css-to-js', 'config')
+      },
+      configResolved() {
+        recordLifecycle('one:compiler-css-to-js', 'configResolved')
+      },
       transform() {
         const environmentName = this.environment?.name
+        recordTransform('one:compiler-css-to-js', environmentName)
         if (environmentName !== 'client' && environmentName !== 'ssr') {
           throw new Error(`Invalid env: ${environmentName}`)
         }
@@ -330,13 +364,21 @@ beforeEach(async () => {
   previousCwd = process.cwd()
   process.chdir(fixtureRoot)
   const fixturePackageScope = path.join(fixtureRoot, 'node_modules/@tamagui')
+  const fixtureConditionalScope = path.join(fixtureRoot, 'node_modules/@fixture')
   await mkdir(fixturePackageScope, { recursive: true })
-  await cp(evaluationFixturePackagePath, evaluationFixtureRuntimePath, {
+  await mkdir(fixtureConditionalScope, { recursive: true })
+  await cp(evaluationFixturePackagePath, evaluationFixturePhysicalRuntimePath, {
     recursive: true,
   })
   await rename(
-    path.join(evaluationFixtureRuntimePath, 'package.json.fixture'),
-    path.join(evaluationFixtureRuntimePath, 'package.json')
+    path.join(evaluationFixturePhysicalRuntimePath, 'package.json.fixture'),
+    path.join(evaluationFixturePhysicalRuntimePath, 'package.json')
+  )
+  await symlink(evaluationFixturePhysicalRuntimePath, evaluationFixtureRuntimePath, 'dir')
+  await symlink(
+    path.join(fixtureRoot, 'packages/conditional'),
+    path.join(fixtureConditionalScope, 'conditional'),
+    'dir'
   )
 })
 
@@ -354,7 +396,10 @@ afterEach(async () => {
     delete (globalThis as any).__tamaguiFixturePackageExportResolution
     delete (globalThis as any).__tamaguiFixtureMetroFallbackUsed
     delete (globalThis as any).__tamaguiFixtureOneTsconfigPathsOrder
+    delete (globalThis as any).__tamaguiFixtureOneConfigLifecycles
+    delete (globalThis as any).__tamaguiFixtureOneTransformEnvironments
     await rm(path.join(fixtureRoot, 'node_modules'), { force: true, recursive: true })
+    await rm(evaluationFixturePhysicalRuntimePath, { force: true, recursive: true })
     await rm(watchOutputRoot, { force: true, recursive: true })
   }
 })
@@ -374,6 +419,7 @@ test('clears loader state when closing an owned environment fails', async () => 
 })
 
 test('evaluates config and components through the app resolver and invalidates HMR', async () => {
+  ;(globalThis as any).__tamaguiFixtureOwnedEvaluation = []
   const server = await createServer({
     configFile: false,
     root: fixtureRoot,
@@ -385,7 +431,8 @@ test('evaluates config and components through the app resolver and invalidates H
       alias: fixtureAliases,
     },
     plugins: [
-      ...fixturePlugins(),
+      ...environmentSpecificCompilerPlugins('serve'),
+      ...fixturePlugins(undefined, true),
       fixtureTransformProbePlugin(),
       tamaguiPlugin({
         components: fixtureComponents,
@@ -402,6 +449,17 @@ test('evaluates config and components through the app resolver and invalidates H
   if (!isRunnableDevEnvironment(evaluationEnvironment)) {
     throw new Error('Expected a runnable Tamagui evaluation environment')
   }
+  const resolvedCorePlugins = server.config.environments[
+    TAMAGUI_EVALUATION_ENVIRONMENT
+  ].plugins.filter((plugin) => isEvaluationCorePluginName(plugin.name))
+  const evaluationCorePlugins = evaluationEnvironment.plugins.filter((plugin) =>
+    isEvaluationCorePluginName(plugin.name)
+  )
+  expect(evaluationCorePlugins.length).toBeGreaterThan(0)
+  expect(evaluationCorePlugins).toHaveLength(resolvedCorePlugins.length)
+  expect(
+    evaluationCorePlugins.every((plugin) => resolvedCorePlugins.includes(plugin))
+  ).toBe(true)
 
   const loader = createViteTamaguiLoader()
   loader.setEnvironment(evaluationEnvironment)
@@ -421,6 +479,21 @@ test('evaluates config and components through the app resolver and invalidates H
     path.join(fixtureRoot, 'tamagui.config.ts')
   )
   expect(directConfigResolution?.id).toBe(path.join(fixtureRoot, 'tamagui.config.ts'))
+  const inlinePackageResolution = await evaluationEnvironment.pluginContainer.resolveId(
+    '@tamagui/config/v5',
+    directConfigResolution!.id
+  )
+  expect(inlinePackageResolution?.id).toMatch(
+    /(?:node_modules\/@tamagui\/config|code\/core\/config)\/dist\/esm\/v5\.mjs$/
+  )
+  expect(inlinePackageResolution?.external).not.toBe(true)
+  const externalPackages = evaluationEnvironment.config.resolve.external
+  expect(externalPackages).toContain('@tamagui/evaluation-fixture')
+  expect(externalPackages).toContain('@tamagui/shorthands')
+  expect(externalPackages).not.toContain('@tamagui/config')
+  expect(externalPackages).not.toContain('@tamagui/core')
+  expect(externalPackages).not.toContain('@tamagui/web')
+  expect(externalPackages).not.toContain('@fixture/conditional')
   const directConfigModule = await evaluationEnvironment.runner.import(
     directConfigResolution!.id
   )
@@ -428,8 +501,14 @@ test('evaluates config and components through the app resolver and invalidates H
     'browser:workspace-v1:user-plugin:serve-only'
   )
   expect(
-    evaluationEnvironment.plugins.some((plugin) => plugin.name === 'one:tsconfig-paths')
-  ).toBe(false)
+    evaluationEnvironment.plugins.filter((plugin) => plugin.name === 'one:tsconfig-paths')
+  ).toHaveLength(1)
+  expect(directConfigModule.oneTsconfigPathsOrder).toBe('pre')
+  expect(directConfigModule.packageExportResolution).toBe('package-export-esm')
+  expect((globalThis as any).__tamaguiFixturePackageExportPath).toMatch(
+    /\.evaluation-fixture-runtime\/esm\/value\.mjs$/
+  )
+  expect((globalThis as any).__tamaguiFixtureMetroFallbackUsed).toBeUndefined()
   expect((directConfigModule.default as any).media.sm).toEqual({ minWidth: 16 })
   expect(directConfigModule.evaluationPluginNames).toContain('vite:import-analysis')
 
@@ -447,6 +526,45 @@ test('evaluates config and components through the app resolver and invalidates H
     'config',
     'component',
   ])
+  const evaluationProbe = (globalThis as any).__tamaguiFixtureOwnedEvaluation
+  expect(
+    evaluationProbe.filter((entry: string) => entry === 'one:resolve:tamagui:config')
+  ).toHaveLength(1)
+  expect(
+    evaluationProbe.filter((entry: string) => entry === 'one:resolve:tamagui:component')
+  ).toHaveLength(1)
+  expect(
+    evaluationProbe.filter((entry: string) => entry === 'one:load:tamagui')
+  ).toHaveLength(1)
+  const evaluationPluginNames = directConfigModule.evaluationPluginNames as string[]
+  expect(evaluationPluginNames.filter((name) => name === 'one:compiler')).toHaveLength(1)
+  expect(
+    evaluationPluginNames.filter((name) => name === 'one:compiler-css-to-js')
+  ).toHaveLength(1)
+  expect(
+    evaluationPluginNames.filter((name) => name.includes('import-analysis'))
+  ).toHaveLength(1)
+  expect(evaluationPluginNames.filter((name) => name === 'alias')).toHaveLength(1)
+  expect(
+    evaluationPluginNames.filter((name) =>
+      ['vite:resolve-dev', 'builtin:vite-resolve'].includes(name)
+    )
+  ).toHaveLength(1)
+  expect(
+    evaluationPluginNames.filter((name) => name === 'fixture-serve-resolver:environment')
+  ).toHaveLength(1)
+  expect(evaluationPluginNames).not.toContain('fixture-build-resolver:environment')
+  expect(evaluationPluginNames).not.toContain('tamagui')
+  expect(evaluationPluginNames).not.toContain('tamagui-extract')
+  expect(evaluationPluginNames).not.toContain('tamagui-rnw-lite')
+  expect(evaluationPluginNames.some((name) => name.startsWith('native:'))).toBe(false)
+  expect((globalThis as any).__tamaguiFixtureOneConfigLifecycles).toEqual([
+    'one:compiler:config',
+    'one:compiler-css-to-js:config',
+    'one:compiler:configResolved',
+    'one:compiler-css-to-js:configResolved',
+  ])
+  expect((globalThis as any).__tamaguiFixtureOneTransformEnvironments).toBeUndefined()
 
   const firstTransform = await clientEnvironment.transformRequest('/src/App.tsx')
   expect(firstTransform?.code).toBeTruthy()
@@ -474,6 +592,13 @@ test('evaluates config and components through the app resolver and invalidates H
   const initialTransformVisits = { ...getTransformVisits() }
   expect(initialTransformVisits.client).toBeGreaterThan(0)
   expect(initialTransformVisits.ssr).toBeGreaterThan(0)
+  const oneTransformEnvironments = (globalThis as any)
+    .__tamaguiFixtureOneTransformEnvironments as string[]
+  expect(oneTransformEnvironments).toContain('one:compiler:client')
+  expect(oneTransformEnvironments).toContain('one:compiler-css-to-js:client')
+  expect(oneTransformEnvironments).toContain('one:compiler:ssr')
+  expect(oneTransformEnvironments).toContain('one:compiler-css-to-js:ssr')
+  expect(oneTransformEnvironments.some((entry) => entry.endsWith(':tamagui'))).toBe(false)
 
   const originalResolution = await readFile(resolutionPath, 'utf8')
   const originalConfigSpace = await readFile(configSpacePath, 'utf8')
@@ -490,7 +615,7 @@ test('evaluates config and components through the app resolver and invalidates H
     const events = getHmrEvents().filter(
       (payload) => !(payload.type === 'full-reload' && payload.triggeredBy)
     )
-    expect(events.length).toBeLessThanOrEqual(1)
+    expect(events.length, JSON.stringify(events, null, 2)).toBeLessThanOrEqual(1)
     for (const payload of events) {
       if (payload.type === 'full-reload') {
         expect(payload).toEqual({ type: 'full-reload', path: '*' })
@@ -701,7 +826,7 @@ test('evaluates the same fixture during a production build without legacy bundle
   expect((globalThis as any).__tamaguiFixtureTsconfigPathsContext).toBe('tamagui')
   expect((globalThis as any).__tamaguiFixtureOneTsconfigPathsOrder).toBe('pre')
   expect((globalThis as any).__tamaguiFixturePackageExportPath).toMatch(
-    /\/evaluation-fixture\/esm\/value\.mjs$/
+    /\.evaluation-fixture-runtime\/esm\/value\.mjs$/
   )
   expect((globalThis as any).__tamaguiFixturePackageExportResolution).toBe(
     'package-export-esm'
