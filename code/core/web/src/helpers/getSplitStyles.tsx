@@ -277,31 +277,32 @@ function getPropEntriesWithPrecedenceLayers(
 
   const orderedEntries: OrderedPropEntry[] = []
   const isVariantKey = (key: string) => Boolean(variants && key in variants)
-
-  const addNonVariantProps = (
-    props?: Record<string, any>,
-    skipSpecialCallerProps = false
-  ) => {
-    if (!props) return
-    for (const key in props) {
-      if (skipSpecialCallerProps && (key === 'style' || key === 'className')) {
-        continue
-      }
-      if (!isVariantKey(key)) {
-        orderedEntries.push([key, props[key]])
-      }
-    }
-  }
   const addPropIfPresent = (props: Record<string, any> | undefined, key: string) => {
     if (props && key in props && !isVariantKey(key)) {
       orderedEntries.push([key, props[key]])
     }
   }
 
-  addNonVariantProps(processedBaseProps)
+  if (processedBaseProps) {
+    for (const key in processedBaseProps) {
+      orderedEntries.push([key, processedBaseProps[key]])
+    }
+  }
+
+  if (processedCallerProps) {
+    for (const key in processedCallerProps) {
+      if (isVariantKey(key)) {
+        orderedEntries.push([key, processedCallerProps[key]])
+      }
+    }
+  }
 
   for (const key in processedProps) {
-    if (isVariantKey(key)) {
+    if (
+      isVariantKey(key) &&
+      !(processedBaseProps && key in processedBaseProps) &&
+      !(processedCallerProps && key in processedCallerProps)
+    ) {
       orderedEntries.push([key, processedProps[key]])
     }
   }
@@ -321,19 +322,35 @@ function getPropEntriesWithPrecedenceLayers(
     }
   }
 
-  addNonVariantProps(processedCallerProps, true)
+  if (processedCallerProps) {
+    for (const key in processedCallerProps) {
+      if (key !== 'style' && key !== 'className' && !isVariantKey(key)) {
+        orderedEntries.push([key, processedCallerProps[key]])
+      }
+    }
+  }
   addPropIfPresent(processedCallerProps, 'style')
   addPropIfPresent(processedCallerProps, 'className')
 
   for (const key in processedProps) {
     if (
       !isVariantKey(key) &&
+      key !== 'style' &&
+      key !== 'className' &&
       !(processedBaseProps && key in processedBaseProps) &&
       !(processedCallerProps && key in processedCallerProps)
     ) {
       orderedEntries.push([key, processedProps[key]])
     }
   }
+  addPropIfPresent(
+    processedBaseProps || processedCallerProps ? undefined : processedProps,
+    'style'
+  )
+  addPropIfPresent(
+    processedBaseProps || processedCallerProps ? undefined : processedProps,
+    'className'
+  )
 
   return orderedEntries
 }

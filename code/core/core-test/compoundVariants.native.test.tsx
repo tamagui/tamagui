@@ -173,6 +173,55 @@ describe('compoundVariants - native', () => {
     expect(permutedCaller.style).toEqual(callerOverrides.style)
   })
 
+  test('preserves nested styled default precedence before compounds', () => {
+    const Parent = styled(
+      View,
+      {
+        opacity: 0.2,
+        variants: {
+          inherit: {
+            false: {
+              opacity: 0.15,
+            },
+          },
+        } as const,
+        defaultVariants: {
+          inherit: false,
+        },
+      },
+      {
+        acceptsClassName: false,
+      }
+    )
+    const Child = styled(
+      Parent,
+      {
+        opacity: 0.3,
+        compoundVariants: [
+          {
+            style: {
+              borderWidth: 2,
+            },
+          },
+        ],
+      },
+      {
+        acceptsClassName: false,
+      }
+    )
+
+    const result = simplifiedGetSplitStyles(
+      Child,
+      {},
+      {
+        mergeDefaultProps: true,
+      }
+    )
+
+    expect(result.style?.opacity).toBe(0.3)
+    expect(result.style?.borderTopWidth).toBe(2)
+  })
+
   test('compound matchers use Object.is for scalars and readonly arrays', () => {
     const AmountFrame = styled(
       View,
