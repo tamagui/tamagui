@@ -26,11 +26,38 @@ const environmentSpecificTransformPluginNames = new Set([
   'one:compiler-css-to-js',
 ])
 
+const oneTsconfigPathsPluginName = 'one:tsconfig-paths'
+const bareTamaguiPackage = /^@tamagui\/[^/?#]+(?:[/?#]|$)/
+type EvaluationResolveIdHandler = (this: any, source: string, ...args: any[]) => any
+
+function createEvaluationResolveId(plugin: Plugin): Plugin['resolveId'] {
+  const resolveId = plugin.resolveId
+  if (plugin.name !== oneTsconfigPathsPluginName || !resolveId) {
+    return resolveId
+  }
+
+  const handler = (
+    typeof resolveId === 'object' ? resolveId.handler : resolveId
+  ) as EvaluationResolveIdHandler
+  const evaluationHandler = function (this: any, source: string, ...args: any[]) {
+    // One's TS-path resolver can map workspace package imports to Metro's CJS
+    // directory fallbacks before Vite can apply the package exports map. Keep
+    // user TS aliases in this resolver, but let Tamagui packages use Vite's
+    // normal package resolution and externalization policy.
+    if (bareTamaguiPackage.test(source)) return
+    return Reflect.apply(handler, this, [source, ...args])
+  }
+
+  return typeof resolveId === 'object'
+    ? { ...resolveId, handler: evaluationHandler }
+    : evaluationHandler
+}
+
 function createEvaluationPluginFacade(plugin: Plugin): Plugin {
   return {
     name: plugin.name,
     enforce: plugin.enforce,
-    resolveId: plugin.resolveId,
+    resolveId: createEvaluationResolveId(plugin),
     load: plugin.load,
     transform: environmentSpecificTransformPluginNames.has(plugin.name)
       ? undefined
@@ -60,6 +87,9 @@ async function createOwnedEvaluationConfig(config: ResolvedConfig) {
   const plugins = environment.plugins
     .filter(isEvaluationUserPlugin)
     .map(createEvaluationPluginFacade)
+  const resolve = plugins.some((plugin) => plugin.name === oneTsconfigPathsPluginName)
+    ? { ...environment.resolve, tsconfigPaths: false }
+    : environment.resolve
   const { createEnvironment: _createEnvironment, ...dev } = environment.dev
 
   // ModuleRunner needs Vite's serve-time core pipeline (especially import
@@ -74,13 +104,13 @@ async function createOwnedEvaluationConfig(config: ResolvedConfig) {
       logLevel: config.logLevel,
       plugins,
       define: environment.define,
-      resolve: environment.resolve,
+      resolve,
       environments: {
         [TAMAGUI_EVALUATION_ENVIRONMENT]: {
           consumer: environment.consumer,
           keepProcessEnv: environment.keepProcessEnv,
           define: environment.define,
-          resolve: environment.resolve,
+          resolve,
           optimizeDeps: environment.optimizeDeps,
           dev: {
             ...dev,

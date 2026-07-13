@@ -1,5 +1,14 @@
 import { execFile } from 'node:child_process'
-import { access, readFile, readdir, rm, writeFile } from 'node:fs/promises'
+import {
+  access,
+  cp,
+  mkdir,
+  readFile,
+  readdir,
+  rename,
+  rm,
+  writeFile,
+} from 'node:fs/promises'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { promisify } from 'node:util'
@@ -20,6 +29,13 @@ const appPath = path.join(fixtureRoot, 'src/App.tsx')
 const resolutionPath = path.join(fixtureRoot, 'packages/workspace/src/resolution.ts')
 const configSpacePath = path.join(fixtureRoot, 'packages/workspace/src/config-space.ts')
 const componentEntryPath = path.join(fixtureRoot, 'packages/components/src/index.ts')
+const evaluationFixturePackagePath = path.join(fixtureRoot, 'packages/evaluation-fixture')
+const evaluationFixtureRuntimePath = path.join(
+  fixtureRoot,
+  'node_modules/@tamagui/evaluation-fixture'
+)
+const metroFallbackPath = path.join(evaluationFixtureRuntimePath, 'metro/value/index.js')
+const userAliasPath = path.join(fixtureRoot, 'packages/workspace/src/user-alias.ts')
 const watchOutputRoot = path.join(fixtureRoot, '.watch-dist')
 const fixtureComponents = ['@fixture/components', '@fixture/components/static']
 const evaluationPipelineId = '\0fixture-evaluation-pipeline'
@@ -43,7 +59,15 @@ function fixtureResolverPlugin(): Plugin {
   }
   const load = function (this: any, id: string) {
     if (id === evaluationPipelineId) {
-      return `export default ${JSON.stringify(this.environment.plugins.map((plugin: Plugin) => plugin.name))}`
+      const plugins = this.environment.plugins as Plugin[]
+      const oneTsconfigPaths = plugins.find(
+        (plugin) => plugin.name === 'one:tsconfig-paths'
+      )
+      const oneTsconfigPathsOrder =
+        typeof oneTsconfigPaths?.resolveId === 'object'
+          ? oneTsconfigPaths.resolveId.order
+          : undefined
+      return `export default ${JSON.stringify(plugins.map((plugin) => plugin.name))}; export const oneTsconfigPathsOrder = ${JSON.stringify(oneTsconfigPathsOrder)}`
     }
   }
   return {
@@ -58,6 +82,33 @@ function fixtureResolverPlugin(): Plugin {
         resolveId,
         load,
       }
+    },
+  }
+}
+
+function oneTsconfigPathsPlugin(): Plugin {
+  return {
+    name: 'one:tsconfig-paths',
+    enforce: 'pre',
+    config() {
+      return {
+        resolve: {
+          tsconfigPaths: true,
+        },
+      }
+    },
+    resolveId: {
+      order: 'pre',
+      handler(source) {
+        if (source === '@tamagui/evaluation-fixture/value') {
+          return metroFallbackPath
+        }
+        if (source === '~/user-alias') {
+          ;(globalThis as any).__tamaguiFixtureTsconfigPathsContext =
+            this.environment?.name
+          return userAliasPath
+        }
+      },
     },
   }
 }
@@ -115,14 +166,20 @@ type LifecycleCounts = {
 
 function commandResolverPlugin(
   command: 'serve' | 'build',
-  lifecycle?: LifecycleCounts
+  lifecycle?: LifecycleCounts,
+  useBuildProofConfig = false
 ): Plugin {
   const resolveId = (source: string) => {
     if (source === '#fixture-config') {
       ;((globalThis as any).__tamaguiFixtureOwnedEvaluation ??= []).push(
         `resolve:${command}`
       )
-      return path.join(fixtureRoot, 'tamagui.config.ts')
+      return path.join(
+        fixtureRoot,
+        command === 'build' && useBuildProofConfig
+          ? 'tamagui.build.config.ts'
+          : 'tamagui.config.ts'
+      )
     }
     if (source === '#command-resolution') {
       return path.join(fixtureRoot, `packages/workspace/src/${command}-resolution.ts`)
@@ -163,11 +220,12 @@ function commandResolverPlugin(
   }
 }
 
-function fixturePlugins(lifecycle?: LifecycleCounts) {
+function fixturePlugins(lifecycle?: LifecycleCounts, includeOneTsconfigPaths = false) {
   return [
+    ...(includeOneTsconfigPaths ? [oneTsconfigPathsPlugin()] : []),
     fixtureResolverPlugin(),
     commandResolverPlugin('serve'),
-    commandResolverPlugin('build', lifecycle),
+    commandResolverPlugin('build', lifecycle, includeOneTsconfigPaths),
   ]
 }
 
@@ -268,9 +326,18 @@ function waitForWatchBuild(watcher: any) {
 const servers: Awaited<ReturnType<typeof createServer>>[] = []
 let previousCwd = ''
 
-beforeEach(() => {
+beforeEach(async () => {
   previousCwd = process.cwd()
   process.chdir(fixtureRoot)
+  const fixturePackageScope = path.join(fixtureRoot, 'node_modules/@tamagui')
+  await mkdir(fixturePackageScope, { recursive: true })
+  await cp(evaluationFixturePackagePath, evaluationFixtureRuntimePath, {
+    recursive: true,
+  })
+  await rename(
+    path.join(evaluationFixtureRuntimePath, 'package.json.fixture'),
+    path.join(evaluationFixtureRuntimePath, 'package.json')
+  )
 })
 
 afterEach(async () => {
@@ -282,6 +349,11 @@ afterEach(async () => {
     delete (globalThis as any).__tamaguiFixtureOwnedEvaluation
     delete (globalThis as any).__tamaguiFixtureOwnedPluginNames
     delete (globalThis as any).__tamaguiFixtureTransformVisits
+    delete (globalThis as any).__tamaguiFixtureTsconfigPathsContext
+    delete (globalThis as any).__tamaguiFixturePackageExportPath
+    delete (globalThis as any).__tamaguiFixturePackageExportResolution
+    delete (globalThis as any).__tamaguiFixtureMetroFallbackUsed
+    delete (globalThis as any).__tamaguiFixtureOneTsconfigPathsOrder
     await rm(path.join(fixtureRoot, 'node_modules'), { force: true, recursive: true })
     await rm(watchOutputRoot, { force: true, recursive: true })
   }
@@ -355,6 +427,9 @@ test('evaluates config and components through the app resolver and invalidates H
   expect(directConfigModule.compilerResolution).toBe(
     'browser:workspace-v1:user-plugin:serve-only'
   )
+  expect(
+    evaluationEnvironment.plugins.some((plugin) => plugin.name === 'one:tsconfig-paths')
+  ).toBe(false)
   expect((directConfigModule.default as any).media.sm).toEqual({ minWidth: 16 })
   expect(directConfigModule.evaluationPluginNames).toContain('vite:import-analysis')
 
@@ -562,7 +637,7 @@ test('evaluates the same fixture during a production build without legacy bundle
     },
     plugins: [
       ...environmentSpecificCompilerPlugins(),
-      ...fixturePlugins(lifecycle),
+      ...fixturePlugins(lifecycle, true),
       tamaguiPlugin({
         config: '#fixture-config',
         components: fixtureComponents,
@@ -618,8 +693,20 @@ test('evaluates the same fixture during a production build without legacy bundle
     )
   ).toHaveLength(1)
   expect(evaluationPluginNames).not.toContain('fixture-serve-resolver:environment')
+  expect(
+    evaluationPluginNames.filter((name: string) => name === 'one:tsconfig-paths')
+  ).toHaveLength(1)
   expect(evaluationPluginNames).toContain('one:compiler')
   expect(evaluationPluginNames).toContain('one:compiler-css-to-js')
+  expect((globalThis as any).__tamaguiFixtureTsconfigPathsContext).toBe('tamagui')
+  expect((globalThis as any).__tamaguiFixtureOneTsconfigPathsOrder).toBe('pre')
+  expect((globalThis as any).__tamaguiFixturePackageExportPath).toMatch(
+    /\/evaluation-fixture\/esm\/value\.mjs$/
+  )
+  expect((globalThis as any).__tamaguiFixturePackageExportResolution).toBe(
+    'package-export-esm'
+  )
+  expect((globalThis as any).__tamaguiFixtureMetroFallbackUsed).toBeUndefined()
   expect(lifecycle).toEqual({
     options: 1,
     buildStart: 1,
