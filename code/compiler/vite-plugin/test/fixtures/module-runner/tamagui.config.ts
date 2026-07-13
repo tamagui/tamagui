@@ -10,7 +10,6 @@ import { Slider as TamaguiBarrelSlider } from 'tamagui'
 import evaluationPluginNames, {
   oneTsconfigPathsOrder,
   sliderResolution,
-  tamaguiExternalConfigured,
   tamaguiResolution,
 } from '#evaluation-pipeline'
 import {
@@ -30,7 +29,6 @@ globalThis.__tamaguiFixtureSliderIntervalDisabled =
 globalThis.__tamaguiFixtureSliderModuleLoaded = Boolean(Slider)
 globalThis.__tamaguiFixtureSliderResolution = sliderResolution
 globalThis.__tamaguiFixtureTamaguiBarrelLoaded = Boolean(TamaguiBarrelSlider)
-globalThis.__tamaguiFixtureTamaguiExternalConfigured = tamaguiExternalConfigured
 globalThis.__tamaguiFixtureTamaguiResolution = tamaguiResolution
 
 export const compilerResolution = `${conditionalResolution}:${workspaceResolution}:${pluginResolution}:${commandResolution}`
@@ -43,7 +41,6 @@ export {
   packageExportPath,
   packageExportResolution,
   sliderResolution,
-  tamaguiExternalConfigured,
   tamaguiResolution,
 }
 

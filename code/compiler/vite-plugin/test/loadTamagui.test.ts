@@ -43,6 +43,11 @@ const metroFallbackPath = path.join(evaluationFixtureRuntimePath, 'metro/value/i
 const userAliasPath = path.join(fixtureRoot, 'packages/workspace/src/user-alias.ts')
 const watchOutputRoot = path.join(fixtureRoot, '.watch-dist')
 const fixtureComponents = ['@fixture/components', '@fixture/components/static']
+const directPackageFixtureComponents = [
+  ...fixtureComponents,
+  'tamagui',
+  '@tamagui/button',
+]
 const evaluationPipelineId = '\0fixture-evaluation-pipeline'
 const oneCompilerResolutionId = '\0fixture-one-compiler-resolution'
 const fixtureAliases = {
@@ -83,19 +88,7 @@ function fixtureResolverPlugin(): Plugin {
         'tamagui',
         path.join(fixtureRoot, 'tamagui.config.ts')
       )
-      const external = this.environment.config.resolve.external
-      const tamaguiExternalConfigured =
-        external === true || external?.includes('tamagui') === true
-      return `export default ${JSON.stringify(plugins.map((plugin) => plugin.name))}; export const oneTsconfigPathsOrder = ${JSON.stringify(oneTsconfigPathsOrder)}; export const sliderResolution = ${JSON.stringify({ id: sliderResolution?.id, external: sliderResolution?.external === true })}; export const tamaguiResolution = ${JSON.stringify({ id: tamaguiResolution?.id, external: tamaguiResolution?.external === true })}; export const tamaguiExternalConfigured = ${JSON.stringify(tamaguiExternalConfigured)}`
-    }
-  }
-  const transform = function (this: any, _source: string, id: string) {
-    if (
-      this.environment?.name === TAMAGUI_EVALUATION_ENVIRONMENT &&
-      /\/(?:node_modules\/tamagui|code\/ui\/tamagui)\//.test(id)
-    ) {
-      ;(globalThis as any).__tamaguiFixtureTamaguiBarrelTransforms =
-        ((globalThis as any).__tamaguiFixtureTamaguiBarrelTransforms || 0) + 1
+      return `export default ${JSON.stringify(plugins.map((plugin) => plugin.name))}; export const oneTsconfigPathsOrder = ${JSON.stringify(oneTsconfigPathsOrder)}; export const sliderResolution = ${JSON.stringify({ id: sliderResolution?.id, external: sliderResolution?.external === true })}; export const tamaguiResolution = ${JSON.stringify({ id: tamaguiResolution?.id, external: tamaguiResolution?.external === true })}`
     }
   }
   return {
@@ -103,14 +96,12 @@ function fixtureResolverPlugin(): Plugin {
     enforce: 'pre',
     resolveId,
     load,
-    transform,
     applyToEnvironment() {
       return {
         name: 'fixture-user-resolver:environment',
         enforce: 'pre',
         resolveId,
         load,
-        transform,
       }
     },
   }
@@ -419,8 +410,6 @@ afterEach(async () => {
     delete (globalThis as any).__tamaguiFixtureSliderModuleLoaded
     delete (globalThis as any).__tamaguiFixtureSliderResolution
     delete (globalThis as any).__tamaguiFixtureTamaguiBarrelLoaded
-    delete (globalThis as any).__tamaguiFixtureTamaguiBarrelTransforms
-    delete (globalThis as any).__tamaguiFixtureTamaguiExternalConfigured
     delete (globalThis as any).__tamaguiFixtureTamaguiResolution
     delete (globalThis as any).__tamaguiFixtureTransformVisits
     delete (globalThis as any).__tamaguiFixtureTsconfigPathsContext
@@ -472,7 +461,7 @@ test('evaluates config and components through the app resolver and invalidates H
       ...fixturePlugins(undefined, true),
       fixtureTransformProbePlugin(),
       tamaguiPlugin({
-        components: fixtureComponents,
+        components: directPackageFixtureComponents,
         enableDynamicEvaluation: true,
         disableWatchTamaguiConfig: false,
       }),
@@ -531,21 +520,26 @@ test('evaluates config and components through the app resolver and invalidates H
     'tamagui',
     directConfigResolution!.id
   )
+  const buttonResolution = await evaluationEnvironment.pluginContainer.resolveId(
+    '@tamagui/button',
+    directConfigResolution!.id
+  )
   expect(inlinePackageResolution?.id).toMatch(
     /(?:node_modules\/@tamagui\/config|code\/core\/config)\/dist\/esm\/v5\.mjs$/
   )
   expect(inlinePackageResolution?.external).not.toBe(true)
   expect(sliderResolution?.id).toMatch(/\/slider\/dist\/esm\/index\.mjs$/)
   expect(sliderResolution?.external).not.toBe(true)
-  expect(tamaguiResolution).toEqual({
-    id: 'tamagui',
-    external: true,
-  })
+  expect(tamaguiResolution?.id).toMatch(/\/tamagui\/dist\/esm\/index\.mjs$/)
+  expect(tamaguiResolution?.external).not.toBe(true)
+  expect(buttonResolution?.id).toMatch(/\/button\/dist\/esm\/index\.mjs$/)
+  expect(buttonResolution?.external).not.toBe(true)
   const externalPackages = evaluationEnvironment.config.resolve.external
   expect(externalPackages).toContain('@tamagui/evaluation-fixture')
   expect(externalPackages).toContain('@tamagui/shorthands')
-  expect(externalPackages).toContain('tamagui')
+  expect(externalPackages).not.toContain('tamagui')
   expect(externalPackages).not.toContain('@tamagui/config')
+  expect(externalPackages).not.toContain('@tamagui/button')
   expect(externalPackages).not.toContain('@tamagui/core')
   expect(externalPackages).not.toContain('@tamagui/slider')
   expect(externalPackages).not.toContain('@tamagui/web')
@@ -572,11 +566,10 @@ test('evaluates config and components through the app resolver and invalidates H
   })
   expect(directConfigModule.tamaguiBarrelLoaded).toBe(true)
   expect(directConfigModule.tamaguiResolution).toEqual({
-    id: 'tamagui',
-    external: true,
+    id: tamaguiResolution?.id,
+    external: false,
   })
   expect(process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL).toBeUndefined()
-  expect((globalThis as any).__tamaguiFixtureTamaguiBarrelTransforms).toBeUndefined()
   expect((globalThis as any).__tamaguiFixturePackageExportPath).toMatch(
     /\.evaluation-fixture-runtime\/esm\/value\.mjs$/
   )
@@ -586,7 +579,7 @@ test('evaluates config and components through the app resolver and invalidates H
 
   const firstEvaluation = await loader.evaluateProjectModules({
     config: 'tamagui.config.ts',
-    components: fixtureComponents,
+    components: directPackageFixtureComponents,
   })
   expect(firstEvaluation.config.module.compilerResolution).toBe(
     'browser:workspace-v1:user-plugin:serve-only'
@@ -594,6 +587,8 @@ test('evaluates config and components through the app resolver and invalidates H
   expect((firstEvaluation.components[1].module.default as any).compilerResolution).toBe(
     'browser:workspace-v1:user-plugin:serve-only'
   )
+  expect(firstEvaluation.components[2].module.Slider).toBeTruthy()
+  expect(firstEvaluation.components[3].module.Button).toBeTruthy()
   expect((globalThis as any).__tamaguiFixtureEvaluationOrder).toEqual([
     'config',
     'component',
@@ -840,7 +835,7 @@ test('evaluates the same fixture during a production build without legacy bundle
       ...fixturePlugins(lifecycle, true),
       tamaguiPlugin({
         config: '#fixture-config',
-        components: fixtureComponents,
+        components: directPackageFixtureComponents,
         enableDynamicEvaluation: true,
       }),
     ],
@@ -913,9 +908,7 @@ test('evaluates the same fixture during a production build without legacy bundle
     external: false,
   })
   expect((globalThis as any).__tamaguiFixtureTamaguiBarrelLoaded).toBe(true)
-  expect((globalThis as any).__tamaguiFixtureTamaguiExternalConfigured).toBe(true)
   expect(process.env.TAMAGUI_DISABLE_SLIDER_INTERVAL).toBeUndefined()
-  expect((globalThis as any).__tamaguiFixtureTamaguiBarrelTransforms).toBeUndefined()
   expect((globalThis as any).__tamaguiFixtureMetroFallbackUsed).toBeUndefined()
   expect(lifecycle).toEqual({
     options: 1,

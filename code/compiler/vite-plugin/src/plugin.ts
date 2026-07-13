@@ -29,7 +29,7 @@ const environmentSpecificTransformPluginNames = new Set([
 ])
 
 const oneTsconfigPathsPluginName = 'one:tsconfig-paths'
-const bareTamaguiPackage = /^(?:tamagui|@tamagui\/[^/?#]+)(?:[/?#]|$)/
+const bareTamaguiPackage = /^@tamagui\/[^/?#]+(?:[/?#]|$)/
 const inlineEvaluationTamaguiPackage = /^@tamagui\/(?:config|core|slider|web)(?:[/?#]|$)/
 const externalizablePackageExtensions = new Set(['', '.js', '.mjs', '.cjs'])
 type EvaluationResolveIdHandler = (this: any, source: string, ...args: any[]) => any
@@ -112,7 +112,38 @@ function isEvaluationCorePlugin(plugin: Plugin) {
   )
 }
 
-function getInstalledTamaguiPackages(root: string) {
+function isConfiguredEvaluationPackage(source: string, packages: Set<string>) {
+  const cleanSource = source.split(/[?#]/, 1)[0]
+  return [...packages].some(
+    (packageName) =>
+      cleanSource === packageName || cleanSource.startsWith(`${packageName}/`)
+  )
+}
+
+function getEvaluationPackageName(source: string | undefined) {
+  if (!source) return
+  const cleanSource = source.split(/[?#]/, 1)[0]
+  if (
+    !cleanSource ||
+    cleanSource.startsWith('.') ||
+    cleanSource.startsWith('#') ||
+    cleanSource.startsWith('\0') ||
+    path.isAbsolute(cleanSource)
+  ) {
+    return
+  }
+  if (cleanSource.startsWith('@')) {
+    const [scope, name] = cleanSource.split('/')
+    return scope && name ? `${scope}/${name}` : undefined
+  }
+  const [name] = cleanSource.split('/')
+  return name && !path.extname(name) ? name : undefined
+}
+
+function getInstalledTamaguiPackages(
+  root: string,
+  configuredEvaluationPackages: Set<string>
+) {
   const packageRequire = createRequire(path.join(root, 'package.json'))
   const packages = new Set<string>()
 
@@ -122,7 +153,10 @@ function getInstalledTamaguiPackages(root: string) {
     for (const entry of readdirSync(scopePath, { withFileTypes: true })) {
       if (!entry.isDirectory() && !entry.isSymbolicLink()) continue
       const packageName = `@tamagui/${entry.name}`
-      if (!inlineEvaluationTamaguiPackage.test(packageName)) {
+      if (
+        !inlineEvaluationTamaguiPackage.test(packageName) &&
+        !configuredEvaluationPackages.has(packageName)
+      ) {
         packages.add(packageName)
       }
     }
@@ -131,18 +165,11 @@ function getInstalledTamaguiPackages(root: string) {
   return packages
 }
 
-function getEvaluationExternalPackages(root: string) {
-  const packages = getInstalledTamaguiPackages(root)
-  if (isInstalled(root, 'tamagui')) {
-    packages.add('tamagui')
-  }
-  return packages
-}
-
 function getEvaluationResolve(
   resolve: ResolvedConfig['environments'][string]['resolve'],
   root: string,
-  disableTsconfigPaths: boolean
+  disableTsconfigPaths: boolean,
+  configuredEvaluationPackages: Set<string>
 ) {
   return {
     ...resolve,
@@ -151,8 +178,14 @@ function getEvaluationResolve(
         ? (true as const)
         : [
             ...new Set([
-              ...(resolve.external || []),
-              ...getEvaluationExternalPackages(root),
+              ...(resolve.external || []).filter(
+                (packageName) =>
+                  !isConfiguredEvaluationPackage(
+                    packageName,
+                    configuredEvaluationPackages
+                  )
+              ),
+              ...getInstalledTamaguiPackages(root, configuredEvaluationPackages),
             ]),
           ],
     ...(disableTsconfigPaths && { tsconfigPaths: false }),
@@ -171,7 +204,10 @@ function isConfiguredExternalPackage(
   )
 }
 
-function createServeEvaluationConfig(config: ResolvedConfig): ResolvedConfig {
+function createServeEvaluationConfig(
+  config: ResolvedConfig,
+  configuredEvaluationPackages: Set<string>
+): ResolvedConfig {
   const environment = config.environments[TAMAGUI_EVALUATION_ENVIRONMENT]
   let packageResolver: ReturnType<typeof createIdResolver> | undefined
   const resolveBarePackage: EvaluationBarePackageResolver = async (
@@ -184,12 +220,14 @@ function createServeEvaluationConfig(config: ResolvedConfig): ResolvedConfig {
     const cleanResolved = resolved.split(/[?#]/, 1)[0]
     if (
       !inlineEvaluationTamaguiPackage.test(source) &&
+      !isConfiguredEvaluationPackage(source, configuredEvaluationPackages) &&
       isConfiguredExternalPackage(source, evaluationEnvironment.config.resolve.external)
     ) {
       return { id: source, external: true }
     }
     if (
       inlineEvaluationTamaguiPackage.test(source) ||
+      isConfiguredEvaluationPackage(source, configuredEvaluationPackages) ||
       !normalizePath(cleanResolved).includes('/node_modules/') ||
       !externalizablePackageExtensions.has(path.extname(cleanResolved))
     ) {
@@ -209,7 +247,8 @@ function createServeEvaluationConfig(config: ResolvedConfig): ResolvedConfig {
   const resolve = getEvaluationResolve(
     environment.resolve,
     config.root,
-    plugins.some((plugin) => plugin.name === oneTsconfigPathsPluginName)
+    plugins.some((plugin) => plugin.name === oneTsconfigPathsPluginName),
+    configuredEvaluationPackages
   )
 
   const evaluationConfig: ResolvedConfig = {
@@ -227,7 +266,10 @@ function createServeEvaluationConfig(config: ResolvedConfig): ResolvedConfig {
   return evaluationConfig
 }
 
-async function createOwnedEvaluationConfig(config: ResolvedConfig) {
+async function createOwnedEvaluationConfig(
+  config: ResolvedConfig,
+  configuredEvaluationPackages: Set<string>
+) {
   const environment = config.environments[TAMAGUI_EVALUATION_ENVIRONMENT]
   const plugins = environment.plugins
     .filter(isEvaluationUserPlugin)
@@ -235,7 +277,8 @@ async function createOwnedEvaluationConfig(config: ResolvedConfig) {
   const resolve = getEvaluationResolve(
     environment.resolve,
     config.root,
-    plugins.some((plugin) => plugin.name === oneTsconfigPathsPluginName)
+    plugins.some((plugin) => plugin.name === oneTsconfigPathsPluginName),
+    configuredEvaluationPackages
   )
   const { createEnvironment: _createEnvironment, ...dev } = environment.dev
 
@@ -435,6 +478,7 @@ export function tamaguiPlugin({
   const enableNativeEnv = !!globalThis.__vxrnEnableNativeEnv
   const tamaguiLoader = createViteTamaguiLoader(tamaguiOptionsIn)
   const pluginInstanceId = getNextPluginInstanceId()
+  const configuredEvaluationPackages = new Set<string>()
   let buildEnvironmentPromise: Promise<void> | null = null
   let buildCleanupPromise: Promise<void> | null = null
   const activeBuildEnvironments = new Set<Environment>()
@@ -489,12 +533,15 @@ export function tamaguiPlugin({
     resolve: {
       conditions: [...defaultClientConditions],
       mainFields: [...defaultClientMainFields],
-      noExternal: inlineEvaluationTamaguiPackage,
+      noExternal: [inlineEvaluationTamaguiPackage, ...configuredEvaluationPackages],
       extensions,
     },
     dev: {
       createEnvironment(name, resolved) {
-        const evaluationConfig = createServeEvaluationConfig(resolved)
+        const evaluationConfig = createServeEvaluationConfig(
+          resolved,
+          configuredEvaluationPackages
+        )
         return createRunnableDevEnvironment(name, evaluationConfig)
       },
       moduleRunnerTransform: true,
@@ -602,6 +649,13 @@ export function tamaguiPlugin({
 
       if (!options) {
         throw new Error(`No tamagui options loaded`)
+      }
+
+      for (const source of [options.config, ...(options.components || [])]) {
+        const packageName = getEvaluationPackageName(source)
+        if (packageName) {
+          configuredEvaluationPackages.add(packageName)
+        }
       }
 
       return {
@@ -768,7 +822,10 @@ export function tamaguiPlugin({
         if (!tamaguiLoader.getEnvironment()) {
           await tamaguiLoader.loadTamaguiBuildConfig()
           buildEnvironmentPromise ||= (async () => {
-            const evaluationConfig = await createOwnedEvaluationConfig(buildConfig)
+            const evaluationConfig = await createOwnedEvaluationConfig(
+              buildConfig,
+              configuredEvaluationPackages
+            )
             const evaluationEnvironment = createRunnableDevEnvironment(
               TAMAGUI_EVALUATION_ENVIRONMENT,
               evaluationConfig,
