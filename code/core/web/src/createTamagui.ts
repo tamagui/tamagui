@@ -53,6 +53,42 @@ function initializeTamaguiConfig(config: TamaguiInternalConfig) {
   configureMedia(config)
 }
 
+export function installTamaguiConfig(config: TamaguiInternalConfig) {
+  const tokens = config.tokens as Record<string, Record<string, Variable>>
+  const tokensParsed = config.tokensParsed as Record<string, Record<string, Variable>>
+  const tokensMerged: TokensMerged = {} as any
+  const categories = new Set([
+    ...Object.keys(tokens || {}),
+    ...Object.keys(tokensParsed || {}),
+  ])
+
+  for (const category of categories) {
+    const categoryTokens = tokens?.[category] || {}
+    const categoryTokensParsed = tokensParsed?.[category] || {}
+    const categoryTokensMerged = (tokensMerged[category] = {})
+
+    for (const name in categoryTokens) {
+      const unprefixedName = name[0] === '$' ? name.slice(1) : name
+      const prefixedName = `$${unprefixedName}`
+      categoryTokensMerged[unprefixedName] = categoryTokens[name]
+      categoryTokensMerged[prefixedName] =
+        categoryTokensParsed[prefixedName] ?? categoryTokens[name]
+    }
+
+    for (const name in categoryTokensParsed) {
+      const unprefixedName = name[0] === '$' ? name.slice(1) : name
+      const prefixedName = `$${unprefixedName}`
+      categoryTokensMerged[unprefixedName] ??=
+        categoryTokens[unprefixedName] ?? categoryTokensParsed[name]
+      categoryTokensMerged[prefixedName] = categoryTokensParsed[name]
+    }
+  }
+
+  setTokens(tokensMerged)
+  initializeTamaguiConfig(config)
+  return config
+}
+
 function normalizeDefaultSize(defaultSize: string | undefined) {
   if (!defaultSize) return DEFAULT_SIZE_TOKEN
   return defaultSize[0] === '$' ? defaultSize : `$${defaultSize}`

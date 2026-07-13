@@ -126,14 +126,14 @@ export async function loadTamaguiFromModules(
     throw new Error(`The Vite module runner did not return a valid Tamagui config`)
   }
 
-  const { createTamagui } = requireTamaguiCore(props.platform || 'web')
+  const hostCore = requireTamaguiCore(props.platform || 'web')
   if (!(tamaguiConfig as TamaguiInternalConfig).parsed) {
-    tamaguiConfig = createTamagui(tamaguiConfig as any) as TamaguiInternalConfig
+    tamaguiConfig = hostCore.createTamagui(tamaguiConfig as any) as TamaguiInternalConfig
   } else {
     // Module runners can evaluate the config in a separate Tamagui module
-    // instance. Mirror loadTamaguiSync's host-side setup so module-local state
-    // such as mediaQueryConfig matches the evaluated project config.
-    createTamagui(tamaguiConfig as any)
+    // instance. Install the already-parsed config so host module-local state
+    // matches without re-parsing it or running browser-only CSS discovery.
+    hostCore.installTamaguiConfig(tamaguiConfig as TamaguiInternalConfig)
   }
 
   setLoadedConfig(tamaguiConfig as TamaguiInternalConfig)

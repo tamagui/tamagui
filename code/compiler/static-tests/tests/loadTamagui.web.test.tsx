@@ -32,6 +32,7 @@ beforeEach(() => {
 afterEach(() => {
   rmSync(tempDir, { recursive: true, force: true })
   vi.unstubAllEnvs()
+  vi.unstubAllGlobals()
 })
 
 describe('resolveWebOrNativeSpecificEntry', () => {
@@ -124,32 +125,84 @@ describe('esbundleTamaguiConfig platform defines', () => {
 })
 
 describe('loadTamaguiFromModules', () => {
-  test('synchronizes media from an already-parsed evaluated config', async () => {
+  test('parses an unparsed config without browser CSS discovery', async () => {
+    const hostCore = createRequire(import.meta.url)(
+      '@tamagui/core'
+    ) as typeof import('@tamagui/core')
+    const previousHostConfig = hostCore.createTamagui(defaultConfig)
+    const rawConfig = {
+      ...defaultConfig,
+      themes: {},
+    }
+
+    try {
+      vi.stubEnv('NODE_ENV', 'production')
+      vi.stubEnv('TAMAGUI_TARGET', 'web')
+      vi.stubGlobal('document', undefined)
+
+      const project = await loadTamaguiFromModules(
+        { platform: 'web', components: [] },
+        { config: { default: rawConfig }, components: [] }
+      )
+
+      expect(project.tamaguiConfig).not.toBe(rawConfig)
+      expect(project.tamaguiConfig.parsed).toBe(true)
+      expect(hostCore.getConfig()).toBe(project.tamaguiConfig)
+    } finally {
+      hostCore.installTamaguiConfig(previousHostConfig)
+    }
+
+    expect(hostCore.getConfig()).toBe(previousHostConfig)
+  })
+
+  test('installs an already-parsed evaluated config without browser CSS discovery', async () => {
     const hostCore = createRequire(import.meta.url)(
       '@tamagui/core'
     ) as typeof import('@tamagui/core')
     const hostMediaQueryConfig = hostCore.mediaQueryConfig
+    const previousHostConfig = hostCore.createTamagui(defaultConfig)
     const evaluatedConfig = createTamagui(defaultConfig)
-    const boundaryMedia = { minWidth: 4321 }
+    const boundaryMedia = { ...evaluatedConfig.media.sm, minWidth: 4321 }
     const parsedConfig = {
       ...evaluatedConfig,
+      themes: {},
       media: {
         ...evaluatedConfig.media,
-        evaluatedBoundary: boundaryMedia,
+        sm: boundaryMedia,
       },
     }
+    const tokenName = Object.keys(parsedConfig.tokens.space)[0]
+    const unprefixedTokenName = tokenName[0] === '$' ? tokenName.slice(1) : tokenName
+    const prefixedTokenName = `$${unprefixedTokenName}`
 
     expect(hostMediaQueryConfig).not.toBe(mediaQueryConfig)
-    expect(hostMediaQueryConfig.evaluatedBoundary).toBeUndefined()
+    expect(hostMediaQueryConfig.sm).not.toEqual(boundaryMedia)
 
-    const project = await loadTamaguiFromModules(
-      { platform: 'web', components: [] },
-      { config: { default: parsedConfig }, components: [] }
-    )
+    try {
+      vi.stubEnv('NODE_ENV', 'production')
+      vi.stubEnv('TAMAGUI_TARGET', 'web')
+      vi.stubGlobal('document', undefined)
 
-    expect(project.tamaguiConfig).toBe(parsedConfig)
-    expect(hostMediaQueryConfig.evaluatedBoundary).toEqual(boundaryMedia)
+      const project = await loadTamaguiFromModules(
+        { platform: 'web', components: [] },
+        { config: { default: parsedConfig }, components: [] }
+      )
 
-    delete hostMediaQueryConfig.evaluatedBoundary
+      const hostTokens = hostCore.getTokens()
+      expect(project.tamaguiConfig).toBe(parsedConfig)
+      expect(hostCore.getConfig()).toBe(parsedConfig)
+      expect(hostMediaQueryConfig.sm).toEqual(boundaryMedia)
+      expect(hostTokens.space[unprefixedTokenName]).toBe(
+        parsedConfig.tokens.space[tokenName]
+      )
+      expect(hostTokens.space[prefixedTokenName]).toBe(
+        parsedConfig.tokensParsed.space[prefixedTokenName]
+      )
+    } finally {
+      hostCore.installTamaguiConfig(previousHostConfig)
+    }
+
+    expect(hostCore.getConfig()).toBe(previousHostConfig)
+    expect(hostMediaQueryConfig.sm).toEqual(previousHostConfig.media.sm)
   })
 })
