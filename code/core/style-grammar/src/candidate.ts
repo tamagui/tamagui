@@ -406,8 +406,7 @@ export function parseCandidate(
       if (
         selected &&
         (!negative ||
-          (selected.valueKind === 'token' &&
-            negativeTokenProps.has(selected.entry.prop)))
+          (selected.valueKind === 'token' && negativeTokenProps.has(selected.entry.prop)))
       ) {
         dynamic = { prefix, rawValue, selected }
         // An exact configured token owns its spelling before a reserved whole utility. Other
@@ -615,7 +614,8 @@ export function formatCandidate(
     return candidate
   }
   const parsed = parseCandidate(candidate, config || {})
-  if (!parsed || parsed.entry?.prop !== prop || parsed.valueKind !== valueKind) return null
+  if (!parsed || parsed.entry?.prop !== prop || parsed.valueKind !== valueKind)
+    return null
   return candidate
 }
 

@@ -250,10 +250,7 @@ describe('candidate grammar', () => {
       )
     ).toBe('w-auto')
     expect(
-      formatCandidate(
-        { prop: 'inset', value: '0', valueKind: 'token' },
-        collisionConfig
-      )
+      formatCandidate({ prop: 'inset', value: '0', valueKind: 'token' }, collisionConfig)
     ).toBe('inset-0')
     expect(parseCandidate('w-auto', collisionConfig)).toMatchObject({
       kind: 'dynamic',
@@ -287,10 +284,7 @@ describe('candidate grammar', () => {
       )
     ).toBeNull()
     expect(
-      formatCandidate(
-        { prop: 'width', value: 'auto', valueKind: 'convenience' },
-        config
-      )
+      formatCandidate({ prop: 'width', value: 'auto', valueKind: 'convenience' }, config)
     ).toBe('w-auto')
     expect(
       formatCandidate(
@@ -335,9 +329,11 @@ describe('candidate grammar', () => {
       )
     ).toBe('border-[1rem]')
     expect(
-      formatCandidate(
-        { prop: 'borderColor', value: 'var(--border)', valueKind: 'arbitrary' }
-      )
+      formatCandidate({
+        prop: 'borderColor',
+        value: 'var(--border)',
+        valueKind: 'arbitrary',
+      })
     ).toBeNull()
     expect(parseCandidate('font-[Inter_Black]', config)?.entry?.prop).toBe('fontFamily')
     expect(
@@ -365,9 +361,9 @@ describe('candidate grammar', () => {
     for (const prop in standaloneValueProps) {
       for (const value in standaloneValueProps[prop]) {
         const candidate = standaloneValueProps[prop][value]
-        expect(
-          formatCandidate({ prop, value, valueKind: 'enum' }, wholeConfig)
-        ).toBe(candidate)
+        expect(formatCandidate({ prop, value, valueKind: 'enum' }, wholeConfig)).toBe(
+          candidate
+        )
         expect(wholeClassUtilities[candidate]).toEqual({ [prop]: value })
         expect(parseCandidate(candidate, wholeConfig)?.properties).toEqual({
           [prop]: value,

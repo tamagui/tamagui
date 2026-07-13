@@ -183,9 +183,7 @@ describe('native — directional borders + per-edge radii (converter-driven)', (
   })
   test('parser: a missing radius token is passthrough, never guessed', () => {
     expect(CFG.tokensParsed.radius).not.toHaveProperty('$missing-radius')
-    expect(flat('rounded-tl-missing-radius').className).toBe(
-      'rounded-tl-missing-radius'
-    )
+    expect(flat('rounded-tl-missing-radius').className).toBe('rounded-tl-missing-radius')
     expect(
       nativeStyle(View, 'rounded-tl-missing-radius').borderTopLeftRadius
     ).toBeUndefined()

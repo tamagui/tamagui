@@ -32,12 +32,16 @@ describe('tamagui to-tailwind CLI', () => {
       encoding: 'utf8',
     })
     if (build.status !== 0) {
-      throw new Error(`Failed to build @tamagui/to-tailwind:\n${build.stdout}\n${build.stderr}`)
+      throw new Error(
+        `Failed to build @tamagui/to-tailwind:\n${build.stdout}\n${build.stderr}`
+      )
     }
   })
 
   afterEach(async () => {
-    await Promise.all(tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })))
+    await Promise.all(
+      tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true }))
+    )
   })
 
   it('dry-run with no config documents name-only fallback, PRESERVES components, shows output', async () => {
@@ -89,7 +93,12 @@ export function Card() {
       'tw.config.ts': `export const config = { tokens: { space: { $4: 20 } }, media: { tablet: { minWidth: 900 } } }\n`,
       'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="$4" $tablet={{ padding: 10 }} />\n`,
     })
-    const run = runCli([join(dir, 'A.tsx'), '--write', '--config', join(dir, 'tw.config.ts')])
+    const run = runCli([
+      join(dir, 'A.tsx'),
+      '--write',
+      '--config',
+      join(dir, 'tw.config.ts'),
+    ])
     expect(run.status).toBe(0)
     const out = await readFile(join(dir, 'A.tsx'), 'utf8')
     expect(out).toContain('p-4') // app token NAME, never its current pixel value
@@ -123,7 +132,12 @@ export function Card() {
       'A.tsx': `import {View} from 'tamagui'\nexport const A = () => <View padding="$4" />\n`,
     })
     const before = await readFile(join(dir, 'A.tsx'), 'utf8')
-    const run = runCli([join(dir, 'A.tsx'), '--write', '--config', join(dir, 'c.config.ts')])
+    const run = runCli([
+      join(dir, 'A.tsx'),
+      '--write',
+      '--config',
+      join(dir, 'c.config.ts'),
+    ])
     expect(run.status).not.toBe(0)
     expect(run.stderr).toMatch(/malformed shape|tokens.*must be an object/i)
     expect(await readFile(join(dir, 'A.tsx'), 'utf8')).toBe(before) // never written (byte-identical)
@@ -144,7 +158,12 @@ export function Card() {
     const dir = await fixture({
       'A.tsx': `import {YStack} from 'tamagui'\nexport const A = () => <YStack padding={10} />\n`,
     })
-    const run = runCli([join(dir, 'A.tsx'), '--write', '--use-default-config', '--rename-dom'])
+    const run = runCli([
+      join(dir, 'A.tsx'),
+      '--write',
+      '--use-default-config',
+      '--rename-dom',
+    ])
     expect(run.status).toBe(0)
     const out = await readFile(join(dir, 'A.tsx'), 'utf8')
     expect(out).toContain('<div')

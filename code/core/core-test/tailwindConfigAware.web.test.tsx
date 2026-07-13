@@ -84,17 +84,13 @@ describe('config-aware tokens (WEB) — class names follow runtime-owned values'
   test('zIndex.$4: zIndex="$4" → z-4 → direct-token parity', () => {
     const cls = className(`<View zIndex="$4" />`)
     expect(cls).toContain('z-4')
-    expect(styleFlat({ className: cls }).zIndex).toBe(
-      styleFlat({ zIndex: '$4' }).zIndex
-    )
+    expect(styleFlat({ className: cls }).zIndex).toBe(styleFlat({ zIndex: '$4' }).zIndex)
   })
 
   test('size.$auto wins w-auto and resolves the configured token, not the convenience', () => {
     const cls = className(`<View width="$auto" />`)
     expect(cls).toContain('w-auto')
-    expect(styleFlat({ className: cls }).width).toBe(
-      styleFlat({ width: '$auto' }).width
-    )
+    expect(styleFlat({ className: cls }).width).toBe(styleFlat({ width: '$auto' }).width)
     expect(styleFlat({ className: cls }).width).not.toBe('auto')
   })
 

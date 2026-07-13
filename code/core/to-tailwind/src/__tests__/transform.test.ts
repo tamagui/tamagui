@@ -448,7 +448,10 @@ describe('tamaguiToTailwind', () => {
       expect(
         tamaguiToTailwind(`<Text fontFamily="$sans" />`, {
           ...options,
-          fonts: { ...options.fonts, sans: { size: {}, lineHeight: {}, letterSpacing: {} } },
+          fonts: {
+            ...options.fonts,
+            sans: { size: {}, lineHeight: {}, letterSpacing: {} },
+          },
         })
       ).toContain('font-sans')
 
