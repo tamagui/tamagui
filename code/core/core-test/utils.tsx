@@ -6,14 +6,9 @@ import {
 import type { SplitStyleProps } from '../web/src'
 import { getDefaultProps, getSplitStyles } from '../web/src'
 import { defaultComponentState } from '../web/src/defaultComponentState'
+import { mergeComponentProps } from '../web/src/helpers/mergeProps'
 
 const emptyObj = {} as any
-
-const styleProps = {
-  mediaState: undefined,
-  isAnimated: false,
-  resolveValues: 'auto',
-} satisfies SplitStyleProps
 
 export function simplifiedGetSplitStyles(
   component: any,
@@ -21,25 +16,51 @@ export function simplifiedGetSplitStyles(
   options: {
     render?: string
     mediaState?: Record<string, any>
+    componentState?: Partial<typeof defaultComponentState>
     mergeDefaultProps?: boolean
     theme?: any
     themeName?: string
     groupContext?: any
   } = {}
 ) {
-  // optionally merge in default props like createComponent does
+  const context = component.staticConfig.context
+  const contextPropKeys = component.staticConfig.contextProps || context?.propKeys
+  const styledContext = contextPropKeys
+    ? {
+        ...contextPropKeys.reduce<Record<string, any>>((next, key) => {
+          next[key] = true
+          return next
+        }, {}),
+        ...(context.props || {}),
+      }
+    : context?.props
+  // optionally merge in default/context props like createComponent does
   let mergedProps = props
+  let baseProps: Record<string, any> | undefined
   if (options.mergeDefaultProps) {
     const defaults = getDefaultProps(component.staticConfig, props.componentName)
-    mergedProps = { ...defaults, ...props }
+    ;[baseProps] = mergeComponentProps(defaults, styledContext, {})
+    ;[mergedProps] = mergeComponentProps(defaults, styledContext, props)
   }
+
+  const styleProps = {
+    mediaState: options.mediaState,
+    isAnimated: false,
+    resolveValues: 'auto',
+    baseProps,
+    callerProps: props,
+    styledContext,
+  } satisfies SplitStyleProps
 
   return getSplitStyles(
     mergedProps,
     component.staticConfig,
     options.theme ?? emptyObj,
     options.themeName ?? '',
-    defaultComponentState,
+    {
+      ...defaultComponentState,
+      ...options.componentState,
+    },
     styleProps,
     emptyObj,
     {

@@ -125,9 +125,13 @@ export type SpaceKeys =
   | 'borderInlineStartWidth'
   | 'borderInlineEndWidth'
 
-export type StyledContext<Props extends Record<string, any> = any> = Context<Props> & {
+export type StyledContext<
+  Props extends Record<string, any> = any,
+  ConsumedKeys extends keyof Props & string = keyof Props & string,
+> = Context<Props> & {
   context: Context<Props>
   props: Record<string, any> | undefined
+  propKeys?: readonly ConsumedKeys[]
   Provider: ProviderExoticComponent<
     Partial<Props | undefined> & {
       children?: ReactNode
@@ -136,6 +140,14 @@ export type StyledContext<Props extends Record<string, any> = any> = Context<Pro
   >
 
   useStyledContext: (scope?: string) => Props
+}
+
+export type StyledContextOptions<
+  Props extends Record<string, any>,
+  ConsumedKeys extends keyof Props & string = keyof Props & string,
+> = {
+  keys?: readonly ConsumedKeys[]
+  namespace?: string
 }
 
 export type TamaguiComponentState = {
@@ -2947,6 +2959,20 @@ export type GenericVariantDefinitions = {
   }
 }
 
+export type CompoundVariantDefinition<
+  MatchProps extends Record<string, any> = Record<string, any>,
+  StyleProps extends Record<string, any> = Record<string, any>,
+> = {
+  [Key in keyof MatchProps]?: MatchProps[Key] | readonly MatchProps[Key][]
+} & {
+  style: StyleProps
+}
+
+export type GenericCompoundVariant = CompoundVariantDefinition<
+  Record<string, any>,
+  Record<string, any>
+>
+
 export type StaticConfigPublic = {
   defaultProps?: Record<string, any>
 
@@ -3011,6 +3037,10 @@ export type StaticConfigPublic = {
    * memoizes component, rarely useful except mostly style components that don't take children
    */
   memo?: boolean
+
+  compoundVariants?: readonly GenericCompoundVariant[]
+
+  contextProps?: readonly string[]
 }
 
 type StaticConfigBase = StaticConfigPublic & {
@@ -3018,7 +3048,11 @@ type StaticConfigBase = StaticConfigPublic & {
 
   variants?: GenericVariantDefinitions
 
+  compoundVariants?: readonly GenericCompoundVariant[]
+
   context?: StyledContext
+
+  contextProps?: readonly string[]
 
   /**
    * Used for applying sub theme style
@@ -3110,8 +3144,9 @@ type ValidateVariantResolverKey<Key extends string> =
       ? Key
       : never
 
-export type VariantResolverKey<Key extends string = string> =
-  Key extends string ? ValidateVariantResolverKey<Key> : never
+export type VariantResolverKey<Key extends string = string> = Key extends string
+  ? ValidateVariantResolverKey<Key>
+  : never
 
 type VariantResolverValueForName<Name extends string> = Name extends 'Size'
   ? Size
@@ -3153,10 +3188,8 @@ export type VariantResolverValue<Key extends string> =
 export function createVariantResolver<
   Key extends string,
   Props extends PropLike = PropLike,
-  Resolver extends VariantSpreadFunction<Props, VariantResolverValue<Key>> = VariantSpreadFunction<
-    Props,
-    VariantResolverValue<Key>
-  >,
+  Resolver extends VariantSpreadFunction<Props, VariantResolverValue<Key>> =
+    VariantSpreadFunction<Props, VariantResolverValue<Key>>,
 >(
   key: string extends Key ? never : Key & VariantResolverKey<Key>,
   resolver: Resolver
@@ -3366,6 +3399,8 @@ export type ResolveVariableAs =
 
 export type SplitStyleProps = {
   styledContext?: Record<string, any>
+  baseProps?: Record<string, any>
+  callerProps?: Record<string, any>
   mediaState?: Record<string, boolean>
   noClass?: boolean
   noExpand?: boolean

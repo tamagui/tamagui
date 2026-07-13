@@ -68,7 +68,7 @@ export type PopperContextValue = UseFloatingReturn & PopperContextShared
 
 export const PopperContextFast = createStyledContext<PopperContextValue>(
   // since we always provide this we can avoid setting here
-  {} as PopperContextValue,
+  {},
   'Popper__'
 )
 
@@ -88,7 +88,7 @@ export type PopperContextSlowValue = Pick<
 
 export const PopperContextSlow = createStyledContext<PopperContextSlowValue>(
   // since we always provide this we can avoid setting here
-  {} as PopperContextSlowValue,
+  {},
   'PopperSlow__'
 )
 

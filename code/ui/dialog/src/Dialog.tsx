@@ -92,7 +92,7 @@ type DialogContextValue = {
 
 export const DialogContext = createStyledContext<DialogContextValue>(
   // since we always provide this we can avoid setting here
-  {} as DialogContextValue,
+  {},
   'Dialog__'
 )
 

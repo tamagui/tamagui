@@ -86,10 +86,7 @@ interface ToastContextValue {
   icons?: ToastIcons
 }
 
-const ToastContext = createStyledContext<ToastContextValue>(
-  {} as ToastContextValue,
-  'Toast__'
-)
+const ToastContext = createStyledContext<ToastContextValue>({}, 'Toast__')
 
 const useToastContextValue = ToastContext.useStyledContext
 
@@ -471,7 +468,7 @@ const ToastViewportFrame = styled(View, {
   },
 })
 
-export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> {
+export type ToastViewportProps = GetProps<typeof ToastViewportFrame> & {
   /**
    * Offset from screen edge
    * @default 24
@@ -894,7 +891,7 @@ function DragWrapper({
  * ToastItem (the wrapper with stacking/drag)
  * -----------------------------------------------------------------------------------------------*/
 
-export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
+export type ToastItemProps = GetProps<typeof ToastItemFrame> & {
   toast: ToastT
   index: number
   children: React.ReactNode

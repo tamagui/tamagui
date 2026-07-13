@@ -204,6 +204,7 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(Comp, '1')).toBe(0.2)
     expect(getOpacity(Comp, true)).toBe(0.3)
     expect(getOpacity(Comp, null)).toBe(0.4)
+    expect(getOpacity(Comp, undefined)).toBeUndefined()
     expect(getOpacity(Comp, { other: true })).toBe(0.4)
   })
 
@@ -554,7 +555,10 @@ describe('TS-style variant resolvers', () => {
       } as const,
     })
 
-    configure({ allowedStyleValues: 'strict', autocompleteSpecificTokens: 'except-special' })
+    configure({
+      allowedStyleValues: 'strict',
+      autocompleteSpecificTokens: 'except-special',
+    })
     expect(getOpacity(Comp, '$radius.4')).toBeUndefined()
     configure({ allowedStyleValues: 'strict', autocompleteSpecificTokens: undefined })
     expect(getOpacity(Comp, '$radius.4')).toBeUndefined()

@@ -125,30 +125,60 @@ export type AdaptProps = {
 
 type Component = (props: any) => any
 
-export const AdaptContext = createStyledContext<AdaptParentContextI>({
-  Contents: null as any,
-  scopeName: '',
-  portalName: '',
-  platform: null as any,
-  setPlatform: (x: AdaptPlatform) => {},
-  when: null as any,
-  setWhen: () => {},
-  active: false,
-  rawActive: false,
-  setRawActive: () => {},
-  slot: null,
-  handoff: {
-    hidden: true,
-    onAnimationComplete: () => {},
+const adaptContextKeys = [
+  'Contents',
+  'scopeName',
+  'portalName',
+  'platform',
+  'setPlatform',
+  'when',
+  'setWhen',
+  'active',
+  'rawActive',
+  'setRawActive',
+  'slot',
+  'handoff',
+  'targetFullyHidden',
+  'registerTarget',
+  'unregisterTarget',
+  'registerContents',
+  'unregisterContents',
+  'registerRenderCallback',
+  'unregisterRenderCallback',
+] as const
+
+export const AdaptContext = createStyledContext<
+  AdaptParentContextI,
+  (typeof adaptContextKeys)[number]
+>(
+  {
+    Contents: null as any,
+    scopeName: '',
+    portalName: '',
+    platform: null as any,
+    setPlatform: (x: AdaptPlatform) => {},
+    when: null as any,
+    setWhen: () => {},
+    active: false,
+    rawActive: false,
+    setRawActive: () => {},
+    slot: null,
+    handoff: {
+      hidden: true,
+      onAnimationComplete: () => {},
+    },
+    targetFullyHidden: true,
+    registerTarget: () => {},
+    unregisterTarget: () => {},
+    registerContents: () => {},
+    unregisterContents: () => {},
+    registerRenderCallback: () => {},
+    unregisterRenderCallback: () => {},
   },
-  targetFullyHidden: true,
-  registerTarget: () => {},
-  unregisterTarget: () => {},
-  registerContents: () => {},
-  unregisterContents: () => {},
-  registerRenderCallback: () => {},
-  unregisterRenderCallback: () => {},
-})
+  {
+    keys: adaptContextKeys,
+  }
+)
 
 const AdaptCapabilitiesContext = createContext<AdaptCapabilitiesValue>({})
 

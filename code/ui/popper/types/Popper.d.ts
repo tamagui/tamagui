@@ -22,8 +22,28 @@ export type PopperContextShared = {
     };
 };
 export type PopperContextValue = UseFloatingReturn & PopperContextShared;
-export declare const PopperContextFast: import("@tamagui/core").StyledContext<PopperContextValue>;
-export declare const PopperPositionContext: <VariantProps extends Record<string, any>>(defaultValues?: VariantProps, namespace?: string) => import("@tamagui/core").StyledContext<VariantProps>;
+export declare const PopperContextFast: import("@tamagui/core").StyledContext<PopperContextValue, never>;
+export declare const PopperPositionContext: {
+    <VariantProps extends Record<string, any>, ConsumedKeys extends Extract<keyof VariantProps, string>>(defaultValues: VariantProps, namespaceOrOptions: import("@tamagui/core").StyledContextOptions<VariantProps, ConsumedKeys> & {
+        keys: readonly ConsumedKeys[];
+    }): import("@tamagui/core").StyledContext<VariantProps, ConsumedKeys>;
+    <VariantProps extends Record<string, any>>(defaultValues: {
+        [x: string]: never;
+        [x: number]: never;
+        [x: symbol]: never;
+    }, namespaceOrOptions?: string | {
+        namespace?: string;
+        keys?: never;
+    }): import("@tamagui/core").StyledContext<VariantProps, never>;
+    <VariantProps extends Record<string, any>>(defaultValues: VariantProps & ({ [Key_1 in Exclude<keyof VariantProps, { [Key in keyof VariantProps]-?: {} extends Pick<VariantProps, Key> ? Key : never; }[keyof VariantProps]>]: VariantProps[Key_1]; } & { [Key_2 in { [Key in keyof VariantProps]-?: {} extends Pick<VariantProps, Key> ? Key : never; }[keyof VariantProps]]: VariantProps[Key_2] | undefined; }), namespaceOrOptions?: string | {
+        namespace?: string;
+        keys?: never;
+    }): import("@tamagui/core").StyledContext<VariantProps, Extract<keyof VariantProps, string>>;
+    <VariantProps extends Record<string, any>, ConsumedKeys extends Extract<keyof VariantProps, string>>(defaultValues: undefined, namespaceOrOptions: import("@tamagui/core").StyledContextOptions<VariantProps, ConsumedKeys> & {
+        keys: readonly ConsumedKeys[];
+    }): import("@tamagui/core").StyledContext<VariantProps, ConsumedKeys>;
+    <VariantProps extends Record<string, any> = Record<string, any>>(defaultValues?: undefined, namespaceOrOptions?: string): import("@tamagui/core").StyledContext<VariantProps, never>;
+};
 export declare const usePopperContext: (scope?: string) => PopperContextValue, PopperProviderFast: React.Provider<PopperContextValue> & React.ProviderExoticComponent<Partial<PopperContextValue> & {
     children?: React.ReactNode;
     scope?: string;
@@ -33,7 +53,7 @@ export type PopperContextSlowValue = Pick<UseFloatingReturn, 'getReferenceProps'
     onLeaveReference?: () => void;
     triggerElements?: PopupTriggerMap;
 };
-export declare const PopperContextSlow: import("@tamagui/core").StyledContext<PopperContextSlowValue>;
+export declare const PopperContextSlow: import("@tamagui/core").StyledContext<PopperContextSlowValue, never>;
 export declare const usePopperContextSlow: (scope?: string) => PopperContextSlowValue, PopperProviderSlow: React.Provider<PopperContextSlowValue> & React.ProviderExoticComponent<Partial<PopperContextSlowValue> & {
     children?: React.ReactNode;
     scope?: string;
@@ -110,11 +130,29 @@ export type PopperContentProps = SizableStackProps & {
     animatePosition?: boolean | 'even-when-repositioning';
     passThrough?: boolean;
 };
-export declare const PopperContentFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    size?: SizeTokens | undefined;
+export declare const PopperContentFrame: React.FunctionComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+    [x: string]: `$${string}` | `$${number}` | undefined;
+}), {
+    size?: import("@tamagui/core").Size | undefined;
     unstyled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+}> & {
+    ref?: React.Ref<TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+    [x: string]: `$${string}` | `$${number}` | undefined;
+}), {
+    size?: import("@tamagui/core").Size | undefined;
+    unstyled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+        [x: string]: `$${string}` | `$${number}` | undefined;
+    }), {
+        size?: import("@tamagui/core").Size | undefined;
+        unstyled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
+};
 export declare const PopperContent: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopperContentProps>;
 export type PopperArrowExtraProps = {
     offset?: number;
@@ -126,10 +164,26 @@ export type PopperArrowExtraProps = {
     animatePosition?: boolean;
 };
 export type PopperArrowProps = YStackProps & PopperArrowExtraProps;
-export declare const PopperArrowFrame: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+export declare const PopperArrowFrame: React.FunctionComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+    [x: string]: `$${string}` | `$${number}` | undefined;
+}), {
     unstyled?: boolean | undefined;
-    elevation?: number | SizeTokens | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+}> & {
+    ref?: React.Ref<TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+    [x: string]: `$${string}` | `$${number}` | undefined;
+}), {
+    unstyled?: boolean | undefined;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase | (import("@tamagui/core").StackStyleBase & {
+        [x: string]: `$${string}` | `$${number}` | undefined;
+    }), {
+        unstyled?: boolean | undefined;
+        elevation?: number | import("@tamagui/core").Size | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
+};
 export declare const PopperArrow: import("@tamagui/compose-refs").RefComponent<TamaguiElement, PopperArrowProps>;
 export {};
 //# sourceMappingURL=Popper.d.ts.map

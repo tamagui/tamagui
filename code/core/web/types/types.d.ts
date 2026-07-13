@@ -7,14 +7,19 @@ import type { RNOnlyProps } from './interfaces/RNExclusiveTypes';
 export type SizeKeys = 'width' | 'height' | 'minWidth' | 'minHeight' | 'maxWidth' | 'maxHeight' | 'shadowRadius';
 export type ColorKeys = 'color' | 'backgroundColor' | 'borderColor' | 'borderBottomColor' | 'borderTopColor' | 'borderLeftColor' | 'borderRightColor' | 'shadowColor' | 'outlineColor' | 'textShadowColor' | 'borderBlockColor' | 'borderBlockEndColor' | 'borderBlockStartColor' | 'borderInlineColor' | 'borderInlineStartColor' | 'borderInlineEndColor';
 export type SpaceKeys = 'space' | 'padding' | 'paddingHorizontal' | 'paddingVertical' | 'paddingLeft' | 'paddingTop' | 'paddingBottom' | 'paddingLeft' | 'paddingRight' | 'paddingEnd' | 'paddingStart' | 'margin' | 'marginHorizontal' | 'marginVertical' | 'marginLeft' | 'marginTop' | 'marginBottom' | 'marginLeft' | 'marginRight' | 'marginEnd' | 'marginStart' | 'marginBlock' | 'marginBlockStart' | 'marginBlockEnd' | 'marginInline' | 'marginInlineStart' | 'marginInlineEnd' | 'paddingBlock' | 'paddingBlockStart' | 'paddingBlockEnd' | 'paddingInline' | 'paddingInlineStart' | 'paddingInlineEnd' | 'x' | 'y' | 'gap' | 'rowGap' | 'columnGap' | 'scale' | 'scaleX' | 'scaleY' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderTopStartRadius' | 'borderBottomEndRadius' | 'borderBottomLeftRadius' | 'borderBottomRightRadius' | 'borderBottomStartRadius' | 'borderBottomWidth' | 'borderLeftWidth' | 'borderRadius' | 'borderRightWidth' | 'borderTopEndRadius' | 'borderTopLeftRadius' | 'borderTopRightRadius' | 'borderEndWidth' | 'borderStartWidth' | 'borderTopStartRadius' | 'borderTopWidth' | 'borderWidth' | 'left' | 'top' | 'right' | 'bottom' | 'shadowOffset' | 'borderBlockWidth' | 'borderBlockStartWidth' | 'borderBlockEndWidth' | 'borderInlineWidth' | 'borderInlineStartWidth' | 'borderInlineEndWidth';
-export type StyledContext<Props extends Record<string, any> = any> = Context<Props> & {
+export type StyledContext<Props extends Record<string, any> = any, ConsumedKeys extends keyof Props & string = keyof Props & string> = Context<Props> & {
     context: Context<Props>;
     props: Record<string, any> | undefined;
+    propKeys?: readonly ConsumedKeys[];
     Provider: ProviderExoticComponent<Partial<Props | undefined> & {
         children?: ReactNode;
         scope?: string;
     }>;
     useStyledContext: (scope?: string) => Props;
+};
+export type StyledContextOptions<Props extends Record<string, any>, ConsumedKeys extends keyof Props & string = keyof Props & string> = {
+    keys?: readonly ConsumedKeys[];
+    namespace?: string;
 };
 export type TamaguiComponentState = {
     unmounted: boolean | 'should-enter';
@@ -1644,8 +1649,19 @@ export type GenericVariantDefinitions = {
         };
     };
 };
+export type CompoundVariantDefinition<MatchProps extends Record<string, any> = Record<string, any>, StyleProps extends Record<string, any> = Record<string, any>> = {
+    [Key in keyof MatchProps]?: MatchProps[Key] | readonly MatchProps[Key][];
+} & {
+    style: StyleProps;
+};
+export type GenericCompoundVariant = CompoundVariantDefinition<Record<string, any>, Record<string, any>>;
 export type StaticConfigPublic = {
     defaultProps?: Record<string, any>;
+    /**
+     * Static class input supplied to styled(Component, baseClassName, ...).
+     * B1 records this for compiler/static consumers; runtime class semantics land later.
+     */
+    baseClassName?: StaticStyleInput;
     /**
      * (compiler) If you need to pass context or something, prevents from ever
      * flattening. The 'jsx' option means it will never flatten. if you
@@ -1694,11 +1710,15 @@ export type StaticConfigPublic = {
      * memoizes component, rarely useful except mostly style components that don't take children
      */
     memo?: boolean;
+    compoundVariants?: readonly GenericCompoundVariant[];
+    contextProps?: readonly string[];
 };
 type StaticConfigBase = StaticConfigPublic & {
     Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any, any>;
     variants?: GenericVariantDefinitions;
+    compoundVariants?: readonly GenericCompoundVariant[];
     context?: StyledContext;
+    contextProps?: readonly string[];
     /**
      * Used for applying sub theme style
      */
@@ -1751,6 +1771,7 @@ export type VariantDefinitions<Parent extends StylableComponent = TamaguiCompone
 } ? S : {}, MyProps extends object = Partial<GetVariantProps<Parent, StaticConfig['isText'] extends true ? true : StaticConfig['isInput'] extends true ? true : false>>, Val = any> = VariantDefinitionFromProps<MyProps, Val> & {
     _isEmpty?: 1;
 };
+export type StaticStyleInput = string;
 export type GetVariantProps<A extends StylableComponent, IsText extends boolean | undefined> = A extends {
     __tama: [
         infer Props,
@@ -1765,7 +1786,7 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object ? 
     [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
         [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...space' ? SpaceVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
     } & {
-        [Key in string | number | 'true' | 'false']?: MyProps | VariantSpreadFunction<MyProps, Val>;
+        [Key in string | number | 'true' | 'false']?: MyProps | VariantSpreadFunction<MyProps, Val> | StaticStyleInput;
     } & {
         [Key in VariantTypeKeys]?: Key extends ':number' ? VariantSpreadFunction<MyProps, number> : Key extends ':boolean' ? VariantSpreadFunction<MyProps, boolean> : Key extends ':string' ? VariantSpreadFunction<MyProps, string> : never;
     });
@@ -1809,6 +1830,8 @@ export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFuncti
 export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web' | 'except-theme';
 export type SplitStyleProps = {
     styledContext?: Record<string, any>;
+    baseProps?: Record<string, any>;
+    callerProps?: Record<string, any>;
     mediaState?: Record<string, boolean>;
     noClass?: boolean;
     noExpand?: boolean;

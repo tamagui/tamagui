@@ -4,6 +4,7 @@ import { describe, expect, expectTypeOf, test } from 'vitest'
 
 import type { GetProps, StaticStyleInput } from './types'
 import { styled, type StyledOptions } from './styled'
+import { createStyledContext } from './helpers/createStyledContext'
 import { View } from './views/View'
 
 type HasStringIndex<T> = string extends keyof T ? true : false
@@ -77,18 +78,10 @@ describe('styled v3 overloads', () => {
     expectTypeOf<ClassProps['ref']>().toEqualTypeOf<
       ReactRef<HTMLButtonElement> | undefined
     >()
-    expectTypeOf<ObjectProps['tone']>().toEqualTypeOf<
-      'neutral' | 'active' | undefined
-    >()
-    expectTypeOf<ClassProps['tone']>().toEqualTypeOf<
-      'neutral' | 'active' | undefined
-    >()
-    expectTypeOf<ObjectProps['emphasis']>().toEqualTypeOf<
-      'low' | 'high' | undefined
-    >()
-    expectTypeOf<ClassProps['emphasis']>().toEqualTypeOf<
-      'low' | 'high' | undefined
-    >()
+    expectTypeOf<ObjectProps['tone']>().toEqualTypeOf<'neutral' | 'active' | undefined>()
+    expectTypeOf<ClassProps['tone']>().toEqualTypeOf<'neutral' | 'active' | undefined>()
+    expectTypeOf<ObjectProps['emphasis']>().toEqualTypeOf<'low' | 'high' | undefined>()
+    expectTypeOf<ClassProps['emphasis']>().toEqualTypeOf<'low' | 'high' | undefined>()
     expectTypeOf<HasStringIndex<ObjectProps>>().toEqualTypeOf<false>()
     expectTypeOf<HasStringIndex<ClassProps>>().toEqualTypeOf<false>()
   })
@@ -217,5 +210,415 @@ describe('styled v3 overloads', () => {
         },
       },
     } as const)
+  })
+
+  test('context keys without defaults are typed consumed props for compounds', () => {
+    type FrameContextProps = {
+      tone?: 'critical' | 'neutral'
+      density?: 'compact' | 'spacious'
+    }
+    type OneKeyContextProps = {
+      tone?: 'critical' | 'neutral'
+    }
+    type RequiredToneContextProps = {
+      tone: 'critical' | 'neutral'
+    }
+    type RequiredUndefinedToneContextProps = {
+      tone: 'critical' | 'neutral' | undefined
+    }
+    const FrameContext = createStyledContext<FrameContextProps>()
+    // @ts-expect-error undefined-default contexts with consumed-key generics require keys
+    createStyledContext<FrameContextProps, 'tone'>(undefined, {
+      namespace: 'missing-keys',
+    })
+    // @ts-expect-error explicit broad default objects must provide every claimed key
+    createStyledContext<FrameContextProps>({
+      tone: 'critical',
+    })
+    createStyledContext<FrameContextProps>(
+      // @ts-expect-error full default keys require an explicit consumed-key generic
+      {
+        tone: 'critical',
+        density: 'compact',
+      },
+      {
+        keys: ['tone'],
+      }
+    )
+    createStyledContext<FrameContextProps>(
+      // @ts-expect-error full default empty keys still require an explicit consumed-key generic
+      {
+        tone: 'critical',
+        density: 'compact',
+      },
+      {
+        keys: [],
+      }
+    )
+    const PresentUndefinedContext = createStyledContext<OneKeyContextProps>({
+      tone: undefined,
+    })
+    // @ts-expect-error required keys cannot default to undefined unless their type allows it
+    createStyledContext<RequiredToneContextProps>({
+      tone: undefined,
+    })
+    const RequiredUndefinedContext =
+      createStyledContext<RequiredUndefinedToneContextProps>({
+        tone: undefined,
+      })
+    const EmptyDefaultContext = createStyledContext<FrameContextProps>({})
+    // @ts-expect-error keyed empty defaults require an explicit consumed-key generic
+    createStyledContext<FrameContextProps>({}, { keys: ['tone'] })
+    const EmptyDefaultKeyedContext = createStyledContext<FrameContextProps, 'tone'>(
+      {},
+      {
+        keys: ['tone'],
+      }
+    )
+    const PartialDefaultContext = createStyledContext<FrameContextProps, 'tone'>(
+      {
+        tone: 'critical',
+      },
+      {
+        keys: ['tone'],
+      }
+    )
+    const FullDefaultKeyedContext = createStyledContext<FrameContextProps, 'tone'>(
+      {
+        tone: 'critical',
+        density: 'compact',
+      },
+      {
+        keys: ['tone'],
+      }
+    )
+    const frameVariants = {
+      state: {
+        active: {},
+        selected: {},
+      },
+    } as const
+    type FrameOptions = StyledOptions<
+      typeof View,
+      {},
+      typeof frameVariants,
+      typeof FrameContext,
+      'tone' | 'density'
+    >
+
+    const validOptions = {
+      context: FrameContext,
+      contextProps: ['tone', 'density'],
+      variants: frameVariants,
+      compoundVariants: [
+        {
+          tone: 'critical',
+          density: ['compact', 'spacious'],
+          state: 'active',
+          style: {
+            opacity: 0.8,
+          },
+        },
+      ],
+    } as const satisfies FrameOptions
+
+    const Frame = styled(View, validOptions)
+    type Props = GetProps<typeof Frame>
+
+    expectTypeOf<Props['tone']>().toEqualTypeOf<'critical' | 'neutral' | undefined>()
+    expectTypeOf<Props['density']>().toEqualTypeOf<'compact' | 'spacious' | undefined>()
+    expectTypeOf<Props['state']>().toEqualTypeOf<'active' | 'selected' | undefined>()
+    expectTypeOf<HasStringIndex<Props>>().toEqualTypeOf<false>()
+
+    const invalidTone: FrameOptions = {
+      context: FrameContext,
+      contextProps: ['tone', 'density'],
+      variants: frameVariants,
+      compoundVariants: [
+        {
+          // @ts-expect-error invalid context matcher value
+          tone: 'missing',
+          state: 'active',
+          style: {
+            opacity: 0.8,
+          },
+        },
+      ],
+    }
+
+    const invalidStyle: FrameOptions = {
+      context: FrameContext,
+      contextProps: ['tone', 'density'],
+      variants: frameVariants,
+      compoundVariants: [
+        {
+          tone: 'critical',
+          state: 'active',
+          // @ts-expect-error compound style is object-only in B1.2
+          style: 'opacity-100',
+        },
+      ],
+    }
+
+    styled(View, invalidTone)
+    styled(View, 'items-center', invalidStyle)
+
+    const ContextOnly = styled(View, {
+      context: FrameContext,
+    } as const)
+    type ContextOnlyProps = GetProps<typeof ContextOnly>
+    expectTypeOf<HasStringIndex<ContextOnlyProps>>().toEqualTypeOf<false>()
+    // @ts-expect-error no-default contexts do not become props without contextProps
+    const ignoredContextProp: ContextOnlyProps['tone'] = 'critical'
+    expectTypeOf(ignoredContextProp).toEqualTypeOf<any>()
+
+    const DefaultContext = createStyledContext({
+      mode: 'on' as 'on' | 'off',
+    })
+    const DefaultContextFrame = styled(View, {
+      context: DefaultContext,
+    } as const)
+    type DefaultContextProps = GetProps<typeof DefaultContextFrame>
+    expectTypeOf<DefaultContextProps['mode']>().toEqualTypeOf<'on' | 'off' | undefined>()
+
+    const EmptyDefaultFrame = styled(View, {
+      context: EmptyDefaultContext,
+    } as const)
+    type EmptyDefaultProps = GetProps<typeof EmptyDefaultFrame>
+    // @ts-expect-error empty default contexts consume no optional keys
+    const emptyDefaultTone: EmptyDefaultProps['tone'] = 'critical'
+    expectTypeOf(emptyDefaultTone).toEqualTypeOf<any>()
+
+    const PresentUndefinedFrame = styled(View, {
+      context: PresentUndefinedContext,
+    } as const)
+    type PresentUndefinedProps = GetProps<typeof PresentUndefinedFrame>
+    expectTypeOf<PresentUndefinedProps['tone']>().toEqualTypeOf<
+      'critical' | 'neutral' | undefined
+    >()
+    // @ts-expect-error present undefined default keys keep exact values
+    const invalidPresentUndefinedTone: PresentUndefinedProps['tone'] = 'missing'
+    expectTypeOf(invalidPresentUndefinedTone).toEqualTypeOf<
+      'critical' | 'neutral' | undefined
+    >()
+
+    const RequiredUndefinedFrame = styled(View, {
+      context: RequiredUndefinedContext,
+    } as const)
+    type RequiredUndefinedProps = GetProps<typeof RequiredUndefinedFrame>
+    expectTypeOf<RequiredUndefinedProps['tone']>().toEqualTypeOf<
+      'critical' | 'neutral' | undefined
+    >()
+
+    const EmptyDefaultKeyedFrame = styled(View, {
+      context: EmptyDefaultKeyedContext,
+    } as const)
+    type EmptyDefaultKeyedProps = GetProps<typeof EmptyDefaultKeyedFrame>
+    expectTypeOf<EmptyDefaultKeyedProps['tone']>().toEqualTypeOf<
+      'critical' | 'neutral' | undefined
+    >()
+
+    const FullDefaultKeyedFrame = styled(View, {
+      context: FullDefaultKeyedContext,
+    } as const)
+    type FullDefaultKeyedProps = GetProps<typeof FullDefaultKeyedFrame>
+    expectTypeOf<FullDefaultKeyedProps['tone']>().toEqualTypeOf<
+      'critical' | 'neutral' | undefined
+    >()
+    // @ts-expect-error explicit full-default keys consume only requested keys
+    const fullDefaultKeyedDensity: FullDefaultKeyedProps['density'] = 'compact'
+    expectTypeOf(fullDefaultKeyedDensity).toEqualTypeOf<any>()
+
+    const PartialDefaultFrame = styled(View, {
+      context: PartialDefaultContext,
+    } as const)
+    type PartialDefaultProps = GetProps<typeof PartialDefaultFrame>
+    expectTypeOf<PartialDefaultProps['tone']>().toEqualTypeOf<
+      'critical' | 'neutral' | undefined
+    >()
+    // @ts-expect-error omitted optional default keys are not consumed without explicit keys
+    const omittedPartialDefaultProp: PartialDefaultProps['density'] = 'compact'
+    expectTypeOf(omittedPartialDefaultProp).toEqualTypeOf<any>()
+
+    const AnyContext = createStyledContext<any>()
+    const AnyContextFrame = styled(View, {
+      context: AnyContext,
+    } as const)
+    type AnyContextProps = GetProps<typeof AnyContextFrame>
+    expectTypeOf<HasStringIndex<AnyContextProps>>().toEqualTypeOf<false>()
+    // @ts-expect-error broad StyledContext<any> does not add arbitrary props
+    const anyContextProp: AnyContextProps['anything'] = 'value'
+    expectTypeOf(anyContextProp).toEqualTypeOf<any>()
+
+    const Parent = styled(View, {
+      variants: {
+        tone: {
+          critical: {},
+          neutral: {},
+        },
+      },
+    } as const)
+
+    const OverlapChild = styled(Parent, {
+      variants: {
+        tone: {
+          success: {},
+        },
+      },
+      compoundVariants: [
+        {
+          tone: 'critical',
+          style: {
+            opacity: 0.4,
+          },
+        },
+        {
+          tone: 'success',
+          style: {
+            opacity: 0.8,
+          },
+        },
+      ],
+    } as const)
+    type OverlapProps = GetProps<typeof OverlapChild>
+    expectTypeOf<OverlapProps['tone']>().toEqualTypeOf<
+      'critical' | 'neutral' | 'success' | undefined
+    >()
+
+    const Child = styled(Parent, {
+      context: FrameContext,
+      contextProps: ['density'],
+      variants: frameVariants,
+      compoundVariants: [
+        {
+          tone: 'critical',
+          density: 'compact',
+          state: 'active',
+          style: {
+            opacity: 0.7,
+          },
+        },
+      ],
+    } as const)
+    type ChildProps = GetProps<typeof Child>
+    expectTypeOf<ChildProps['tone']>().toEqualTypeOf<'critical' | 'neutral' | undefined>()
+    expectTypeOf<ChildProps['density']>().toEqualTypeOf<
+      'compact' | 'spacious' | undefined
+    >()
+    expectTypeOf<ChildProps['state']>().toEqualTypeOf<'active' | 'selected' | undefined>()
+
+    // @ts-expect-error direct styled calls keep inherited variant values closed
+    styled(Parent, {
+      context: FrameContext,
+      contextProps: ['density'] as const,
+      variants: frameVariants,
+      compoundVariants: [
+        {
+          tone: 'missing',
+          density: 'compact',
+          state: 'active',
+          style: {
+            opacity: 0.7,
+          },
+        },
+      ],
+    })
+
+    // @ts-expect-error direct styled calls keep new variant values closed
+    styled(Parent, {
+      context: FrameContext,
+      contextProps: ['density'] as const,
+      variants: frameVariants,
+      compoundVariants: [
+        {
+          tone: 'critical',
+          density: 'compact',
+          state: 'missing',
+          style: {
+            opacity: 0.7,
+          },
+        },
+      ],
+    })
+
+    // @ts-expect-error direct styled calls keep context keys closed
+    styled(Parent, {
+      context: FrameContext,
+      contextProps: ['density'] as const,
+      variants: frameVariants,
+      compoundVariants: [
+        {
+          tone: 'critical',
+          density: 'compact',
+          mood: 'serious',
+          state: 'active',
+          style: {
+            opacity: 0.7,
+          },
+        },
+      ],
+    })
+
+    type ChildOptions = StyledOptions<
+      typeof Parent,
+      {},
+      typeof frameVariants,
+      typeof FrameContext,
+      'density'
+    >
+
+    const invalidInheritedVariant: ChildOptions = {
+      context: FrameContext,
+      contextProps: ['density'],
+      variants: frameVariants,
+      compoundVariants: [
+        {
+          // @ts-expect-error inherited variant values stay closed
+          tone: 'missing',
+          density: 'compact',
+          state: 'active',
+          style: {
+            opacity: 0.7,
+          },
+        },
+      ],
+    }
+    const invalidNewVariant: ChildOptions = {
+      context: FrameContext,
+      contextProps: ['density'],
+      variants: frameVariants,
+      compoundVariants: [
+        {
+          tone: 'critical',
+          density: 'compact',
+          // @ts-expect-error new variant values stay closed
+          state: 'missing',
+          style: {
+            opacity: 0.7,
+          },
+        },
+      ],
+    }
+    const invalidUnconsumedContext: ChildOptions = {
+      context: FrameContext,
+      contextProps: ['density'],
+      variants: frameVariants,
+      compoundVariants: [
+        {
+          tone: 'critical',
+          density: 'compact',
+          // @ts-expect-error context props must be explicitly consumed by styled
+          mood: 'serious',
+          state: 'active',
+          style: {
+            opacity: 0.7,
+          },
+        },
+      ],
+    }
+
+    styled(Parent, invalidInheritedVariant)
+    styled(Parent, invalidNewVariant)
+    styled(Parent, invalidUnconsumedContext)
   })
 })

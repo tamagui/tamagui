@@ -94,6 +94,25 @@ const groupPseudoKeys = [
   'focusWithin',
 ] as const satisfies readonly (keyof PseudoGroupState)[]
 
+function getStyledContextKeys(
+  staticConfig: StaticConfig,
+  styledContextValue: GenericProps | undefined
+) {
+  const propKeys = staticConfig.contextProps || staticConfig.context?.propKeys
+  if (!propKeys) {
+    return styledContextValue
+  }
+
+  const out: GenericProps = {}
+  for (const key of propKeys) {
+    out[key] = true
+  }
+  if (styledContextValue) {
+    Object.assign(out, styledContextValue)
+  }
+  return out
+}
+
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelPresses = () => {
     // clear all press downs
@@ -348,6 +367,7 @@ export function createComponent<
       styledContextValue,
       propsIn
     )
+    const [baseProps] = mergeComponentProps(defaultProps, styledContextValue, {})
 
     props = nextProps as ViewProps | TextProps
     overriddenContextProps = overrides
@@ -723,7 +743,9 @@ export function createComponent<
       isExiting,
       isAnimated,
       willBeAnimated,
-      styledContext: styledContextValue,
+      styledContext: getStyledContextKeys(staticConfig, styledContextValue),
+      baseProps,
+      callerProps: propsIn,
     } as const
 
     const themeName = themeState?.name || ''

@@ -47,6 +47,7 @@ describe('TS-style variant resolvers - native', () => {
 
     expect(getOpacity(Comp, null)).toBe(0.63)
     expect(getOpacity(Comp, { other: true })).toBe(0.64)
+    expect(getOpacity(Comp, undefined)).toBeUndefined()
   })
 
   test('legacy true spread resolver receives default token', () => {
