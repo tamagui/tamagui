@@ -58,10 +58,10 @@ const MenuLabel = styled(SizableText, {
 
 const SEPARATOR_NAME = 'MenuSeparator'
 
+// @ts-ignore
 const MenuSeparator = styled(View, {
   name: SEPARATOR_NAME,
   role: 'separator',
-  // @ts-ignore
   'aria-orientation': 'horizontal',
 
   variants: {

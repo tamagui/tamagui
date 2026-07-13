@@ -5,6 +5,7 @@ import { describe, expect, expectTypeOf, test } from 'vitest'
 import type { GetProps, StaticStyleInput } from './types'
 import { styled, type StyledOptions } from './styled'
 import { createStyledContext } from './helpers/createStyledContext'
+import { Text } from './views/Text'
 import { View } from './views/View'
 
 type HasStringIndex<T> = string extends keyof T ? true : false
@@ -620,5 +621,36 @@ describe('styled v3 overloads', () => {
     styled(Parent, invalidInheritedVariant)
     styled(Parent, invalidNewVariant)
     styled(Parent, invalidUnconsumedContext)
+  })
+
+  test('context keys already accepted by a parent stay on one prop path', () => {
+    const TextContext = createStyledContext({
+      size: '$4' as '$4' | '$5',
+      color: undefined as string | undefined,
+      tone: 'neutral' as 'neutral' | 'critical',
+    })
+    const ContextText = styled(Text, {
+      context: TextContext,
+      variants: {
+        unstyled: {
+          false: {},
+        },
+      },
+    } as const)
+    const ContextTextChild = styled(ContextText, {
+      context: TextContext,
+      variants: {
+        size: {
+          $4: { fontSize: '$4' },
+          $5: { fontSize: '$5' },
+        },
+      },
+    } as const)
+
+    type Props = GetProps<typeof ContextTextChild>
+    expectTypeOf<'$4'>().toMatchTypeOf<Props['size']>()
+    expectTypeOf<string | undefined>().toMatchTypeOf<Props['color']>()
+    expectTypeOf<Props['tone']>().toEqualTypeOf<'neutral' | 'critical' | undefined>()
+    expectTypeOf<HasStringIndex<Props>>().toEqualTypeOf<false>()
   })
 })

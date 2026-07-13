@@ -153,9 +153,9 @@ const Ul = styled(YStack, {
   pl: 20,
 })
 
+// @ts-ignore
 const Li = styled(Paragraph, {
   name: 'li',
   render: 'li',
-  // @ts-ignore
   display: 'list-item',
 })

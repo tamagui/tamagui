@@ -15,7 +15,9 @@ import { getReactNativeConfig } from './setupReactNative'
 import type {
   CompoundVariantDefinition,
   GetBaseStyles,
+  GetFinalProps,
   GetNonStyledProps,
+  GetProps,
   GetStaticConfig,
   GetStyledVariants,
   GetVariantValues,
@@ -56,13 +58,34 @@ type GetVariantAcceptedValues<V> = V extends object
 type NoInferLocal<T> = [T][T extends any ? 0 : never]
 type IsAny<T> = 0 extends 1 & T ? true : false
 
+type InferStyledOptionsProps<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Context,
+  ContextPropKeys extends string,
+> = ParentComponent extends { __tama: any }
+  ? GetFinalProps<
+      GetNonStyledProps<ParentComponent>,
+      GetBaseStyles<ParentComponent, StyledConfig>,
+      StyledVariantsWithContext<
+        GetStyledVariants<ParentComponent>,
+        GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>
+      >
+    >
+  : InferStyledProps<ParentComponent, StyledConfig> &
+      GetStyledContextProps<Context, ContextPropKeys>
+
 export type StyledOptions<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
-  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   Context extends StyledContext<any> | undefined = undefined,
   ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>,
-> = Partial<InferStyledProps<ParentComponent, StyledConfig>> & {
+> = (Context extends undefined
+  ? Partial<InferStyledProps<ParentComponent, StyledConfig>>
+  : Partial<
+      InferStyledOptionsProps<ParentComponent, StyledConfig, Context, ContextPropKeys>
+    >) & {
   name?: string
   variants?: Variants | undefined
   defaultVariants?: NoInferLocal<GetVariantAcceptedValues<NonNullable<Variants>>>
@@ -110,22 +133,19 @@ type GetStyledContextProps<
       : Partial<Pick<Props, Extract<Keys, keyof Props & string>>>
     : {}
 
+type GetStyledContextVariantProps<
+  ParentComponent extends StylableComponent,
+  Context,
+  Keys extends string,
+> = Omit<GetStyledContextProps<Context, Keys>, keyof GetProps<ParentComponent>>
+
 type GetCompoundVariantMatchProps<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
-  Variants,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   Context,
   ContextPropKeys extends string,
-> = Omit<
-  StyledMergedVariants<
-    ParentComponent,
-    StyledConfig,
-    Variants extends VariantDefinitions<ParentComponent, StyledConfig>
-      ? Variants
-      : undefined
-  >,
-  '_isEmpty'
-> &
+> = Omit<StyledMergedVariants<ParentComponent, StyledConfig, Variants>, '_isEmpty'> &
   GetStyledContextProps<Context, ContextPropKeys>
 
 type StyledCustomTokenProps<
@@ -149,11 +169,11 @@ type StyledCustomTokenProps<
 type StyledMergedVariants<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
-  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   ParentVariants = GetStyledVariants<ParentComponent>,
-  OurVariantProps = GetVariantAcceptedValues<NonNullable<Variants>>,
+  OurVariantProps = GetVariantAcceptedValues<Variants>,
 > =
-  AreVariantsUndefined<NonNullable<Variants>> extends true
+  AreVariantsUndefined<Variants> extends true
     ? ParentVariants
     : AreVariantsUndefined<ParentVariants> extends true
       ? Omit<OurVariantProps, '_isEmpty'>
@@ -163,23 +183,38 @@ type StyledMergedVariants<
             | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
         }
 
+type StyledVariantsWithContext<Variants, ContextProps> = keyof ContextProps extends never
+  ? Variants
+  : {
+      [Key in keyof Variants | keyof ContextProps]?:
+        | (Key extends keyof Variants ? Variants[Key] : never)
+        | (Key extends keyof ContextProps ? ContextProps[Key] : never)
+    }
+
 type StyledComponentResult<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
-  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   Context extends StyledContext<any> | undefined = undefined,
   ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>,
   ParentStylesBase extends object = GetBaseStyles<ParentComponent, StyledConfig>,
-  Accepted = StyledConfig['accept'],
 > = TamaguiComponent<
   TamaDefer,
   GetRef<ParentComponent>,
-  GetNonStyledProps<ParentComponent> & GetStyledContextProps<Context, ContextPropKeys>,
-  Accepted extends Record<string, any>
+  GetNonStyledProps<ParentComponent>,
+  StyledConfig['accept'] extends Record<string, any>
     ? ParentStylesBase &
-        StyledCustomTokenProps<ParentComponent, StyledConfig, ParentStylesBase, Accepted>
+        StyledCustomTokenProps<
+          ParentComponent,
+          StyledConfig,
+          ParentStylesBase,
+          StyledConfig['accept']
+        >
     : ParentStylesBase,
-  StyledMergedVariants<ParentComponent, StyledConfig, Variants>,
+  StyledVariantsWithContext<
+    StyledMergedVariants<ParentComponent, StyledConfig, Variants>,
+    GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>
+  >,
   GetStaticConfig<ParentComponent, StyledConfig>
 >
 
@@ -351,8 +386,7 @@ export function styledHtml<
 function styled<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
-  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined =
-    undefined,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   Context extends StyledContext<any> | undefined = undefined,
   ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>,
 >(
@@ -375,8 +409,7 @@ function styled<
 function styled<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
-  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined =
-    undefined,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   Context extends StyledContext<any> | undefined = undefined,
   ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>,
 >(
@@ -400,7 +433,7 @@ function styled<
 function styled<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
-  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   Context extends StyledContext<any> | undefined,
   ContextPropKeys extends string,
 >(
@@ -432,11 +465,9 @@ function styled<
   type ParentVariants = GetStyledVariants<ParentComponent>
 
   type OurVariantProps =
-    AreVariantsUndefined<NonNullable<Variants>> extends true
-      ? {}
-      : GetVariantAcceptedValues<NonNullable<Variants>>
+    AreVariantsUndefined<Variants> extends true ? {} : GetVariantAcceptedValues<Variants>
   type MergedVariants =
-    AreVariantsUndefined<NonNullable<Variants>> extends true
+    AreVariantsUndefined<Variants> extends true
       ? ParentVariants
       : AreVariantsUndefined<ParentVariants> extends true
         ? Omit<OurVariantProps, '_isEmpty'>
@@ -474,11 +505,14 @@ function styled<
   type StyledComponent = TamaguiComponent<
     TamaDefer,
     GetRef<ParentComponent>,
-    ParentNonStyledProps & GetStyledContextProps<Context, ContextPropKeys>,
+    ParentNonStyledProps,
     Accepted extends Record<string, any>
       ? ParentStylesBase & CustomTokenProps
       : ParentStylesBase,
-    MergedVariants,
+    StyledVariantsWithContext<
+      MergedVariants,
+      GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>
+    >,
     GetStaticConfig<ParentComponent, StyledConfig>
   >
 
@@ -519,7 +553,7 @@ function styled<
       contextProps,
       compoundVariants,
       ...defaultProps
-    } = options || {}
+    } = (options || {}) as Record<string, any>
 
     let parentDefaultVariants
     let parentDefaultProps
@@ -552,7 +586,6 @@ function styled<
           }
         }
         if (parentStaticConfig.variants) {
-          // @ts-expect-error
           variants = mergeVariants(parentStaticConfig.variants, variants)
         }
         parentCompoundVariants = parentStaticConfig.compoundVariants
@@ -600,7 +633,6 @@ function styled<
       ...(!isPlainStyledComponent && {
         Component,
       }),
-      // @ts-expect-error
       variants,
       compoundVariants: mergedCompoundVariants,
       baseClassName: mergedBaseClassName,
