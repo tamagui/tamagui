@@ -1,156 +1,165 @@
-# Tailwind mode: full v4 syntax via the official compiler
+# Tailwind hybrid: official v4 for the unclaimed web surface
 
-Research plan, July 2026. Goal: users can write any Tailwind v4 class. On web
-everything works because the official Tailwind engine generates the CSS. On
-native, the subset that maps to RN styles works and the rest is silently
-dropped (dev warning). We stop hand-maintaining a Tailwind reimplementation.
+Research and implementation detail for `v3-evolution.md`. The master plan owns
+sequencing and acceptance. This file owns the hybrid boundary.
 
-## Where we are today (v2-tailwind branch)
+## Product contract
 
-- `code/core/web/src/helpers/getSplitStyles.tsx` parses `className` at runtime
-  with hand-rolled maps (`tailwindUtilityMap`, `tailwindClassToFlatProp`,
-  `tailwindPropPrefixes`, ~400 lines). Recognized classes become Tamagui props
-  and flow through our style pipeline; unrecognized classes pass through in
-  `className`.
-- `code/core/to-tailwind` is the reverse direction (tamagui props → tailwind
-  classes), separate concern, unaffected here.
-- Consequence: "if we support it, it works." Coverage is whatever we ported.
-  Variants, arbitrary values, container queries, `data-*` variants, `@theme`
-  values etc. only work insofar as we reimplemented them. That is the thing
-  users complain about and it is an unwinnable catch-up game.
+Tamagui parses the Tamagui grammar first. Any class it can prove is a
+configured shorthand/prop plus an accepted token/value is claimed, consumed,
+and resolved through Tamagui on web and native. Everything else is passthrough:
 
-## What the ecosystem gives us now
+- web: the official Tailwind v4 engine generates the rule;
+- native: the class is dropped with one development warning per candidate;
+- later, an optional build-time native registry may support a measured subset.
 
-- **Tailwind v4 has a real programmatic API.** `compile(css, { loadStylesheet })`
-  from the `tailwindcss` package returns a compiler; `compiler.build([...candidates])`
-  emits CSS for exactly those class names. There is also
-  `__unstable__loadDesignSystem()` with `parseCandidate()` /
-  `candidatesToCss()` (used by tailwind-merge, prettier-plugin, intellisense).
-  Marked internal/undocumented but stable enough that the whole tooling
-  ecosystem depends on it. Source: tailwindlabs/tailwindcss discussion #16581.
-- **The scanner is separate and reusable.** `@tailwindcss/oxide` (Rust) does
-  candidate extraction from source files; `@tailwindcss/vite` wires it up.
-- **This architecture is proven on native.** NativeWind v5 (still preview,
-  targets tw v4) and Uniwind (stable, tw v4 only, bundler-plugin based, no
-  babel) both work by compiling real Tailwind CSS at build time and converting
-  the resulting CSS declarations to RN styles in a generated registry. Uniwind
-  in particular validates the "official compiler + CSS-to-RN interop, no
-  runtime parser" shape and benchmarks ~2x faster than NativeWind.
+Examples:
 
-## OWNER RULING (2026-07-12): hybrid — our engine first, tailwind for the rest
+| candidate | owner | reason |
+| --- | --- | --- |
+| `p-4` | Tamagui | `p` is a shorthand and `$4` exists in `space` |
+| `bg-color5` | Tamagui | configured theme/token value |
+| `hover:p-4` | Tamagui | Tamagui modifier + claimed base |
+| `grid-cols-3` | Tailwind web | no Tamagui prop grammar |
+| `backdrop-blur-md` | Tailwind web | web-only long tail |
+| `data-[state=open]:grid` | Tailwind web | official variant syntax |
 
-Our parser claims what it recognizes (tamagui grammar: token names, theme
-values, our shorthand/prop classes); a claimed class is CONSUMED (converted to
-props, removed from the emitted className) and styles through tamagui's
-theme-reactive pipeline on web AND native. Everything unrecognized passes
-through untouched: on web the official tailwind engine covers it (full v4
-syntax, zero catch-up), on native it drops with a dev warning (registry for
-the RN-mappable subset can come later). Claim-then-passthrough is deterministic
-— each class lives in exactly one system, so there is no cascade fight beyond
-ordering our atomic CSS vs tailwind's @layer output.
+`p-4` is token-first: it means `padding="$4"`, not Tailwind arithmetic. The v6
+default config aligns `$4` to 16px, so the default result feels identical while
+remaining configurable and cross-platform.
 
-Consequences:
-- The hand-rolled parser is KEPT, scoped to the tamagui grammar — we stop
-  extending it toward full-tailwind coverage (that catch-up game is what this
-  plan kills; the passthrough absorbs the long tail).
-- Users customize themes/tokens through tamagui config; `bg-color5`/`p-4`
-  resolve as tamagui tokens. The `p-4` = 16px tailwind expectation is met by
-  the v6 config aligning its numeric scales to tailwind values (config-level
-  alignment, not parser special-casing).
-- The "delete the hand-rolled parser" verdict below is superseded; the
-  registry architecture below remains the reference for the optional native
-  tailwind-subset support later.
+Both class-enabled modes use this exact pipeline. `styleMode: 'tailwind'`
+exposes className-only styling types; `styleMode: 'tamagui-and-tailwind'` also
+exposes Tamagui style props. There is no second parser or Tailwind integration
+for either mode. `styleMode: 'tamagui'` leaves ordinary className passthrough
+alone and does not claim utility candidates.
 
-## Original proposal (superseded by the hybrid ruling above, kept for the
-registry/native reference)
+## One grammar, no dual emission
 
-Ownership split: **Tailwind owns class → CSS. Tamagui owns themes/tokens and
-the native pipeline.**
+`@tamagui/style-grammar` is the shared, dependency-free owner of candidate
+classification. Runtime parsing, `to-tailwind`, the compiler, and the bundler
+candidate filter all consume that package.
 
-### Web
+The official scanner may discover every source candidate, but the Tamagui Vite
+plugin filters the candidate list before calling Tailwind `build()`:
 
-1. Stop converting recognized tailwind classes into Tamagui props on web.
-   `className` passes through to the DOM untouched.
-2. CSS generation comes from the official engine. Two options:
-   - (a) tell users to add `@tailwindcss/vite` alongside the tamagui plugin;
-   - (b) embed `compile()` + oxide scanning inside `@tamagui/vite-plugin` so
-     tailwind mode is zero-config.
-   Recommend (b) as the default with (a) documented as an escape hatch, since
-   we need the compiler instance anyway for native and for theme interop.
-3. Theme interop: generate an `@theme` layer from the tamagui config (tokens →
-   `--color-*`, `--spacing-*`, media breakpoints → `--breakpoint-*`) so
-   `bg-background`, `text-color`, `p-4` resolve to tamagui theme CSS variables
-   and stay theme-reactive. Tamagui themes already emit CSS variables on web,
-   so this is mostly a naming mapping, generated once at build.
-4. Precedence: tamagui-generated atomic CSS and tailwind utilities must have a
-   deterministic order. Emit tailwind output into a cascade layer
-   (`@layer`, v4 is layer-native) ordered relative to tamagui's stylesheet.
-   Decide and document: className beats props or props beat className (v4
-   layers make either enforceable; recommend className wins since it reads as
-   an override at the call site).
+```text
+source candidates
+  -> classifyCandidate(candidate, config view)
+     -> claimed Tamagui: runtime/compiler only; do not send to Tailwind
+     -> passthrough: send to official Tailwind compiler
+```
 
-### Native
+This filtering is required. Letting Tailwind emit rules for claimed classes
+would create duplicate CSS, unclear precedence, and exactly the “two styling
+systems for `p-4`” problem the hybrid design is meant to avoid.
 
-1. Build-time registry, same shape as uniwind: oxide scans source →
-   candidates → `compiler.build(candidates)` → parse the emitted CSS
-   (lightweight-css or postcss) → declarations → RN style objects → emit a
-   generated JS module mapping class name → style (+ variant metadata:
-   media query, hover/press/focus, dark/light).
-2. Runtime: `getSplitStyles` in tailwind mode does a registry lookup per class
-   instead of parsing. Media/pseudo variants map onto tamagui's existing media
-   and pseudo systems (we already have drivers for both, which is our edge
-   over nativewind). Classes with no RN-mappable declarations are dropped;
-   `process.env.NODE_ENV=development` warns once per class.
-3. Theme variables: v4 emits `var(--...)` heavily. Resolution table generated
-   from the same `@theme` mapping; runtime resolves through the active tamagui
-   theme, so `bg-background` is dynamic per theme on native too.
-4. Delete the hand-rolled maps in `getSplitStyles.tsx` once the registry path
-   passes the existing `core-test/tailwindMode.web.test.tsx` suite plus a new
-   native conversion suite. One path only: the runtime parser does not stay as
-   a fallback. Dynamically constructed class names that never appear in source
-   don't work, which is the same rule tailwind itself imposes on web, so it is
-   teachable and expected.
+The generated grammar table is also the audit surface. It marks direct
+prop/token spellings and the small set of retained conveniences (`w-full`,
+fractions, percentage opacity, and similar). No new Tailwind convenience is
+hand-implemented just because Tailwind supports it; unclaimed syntax belongs to
+the official engine.
 
-### Bundler coverage
+## Vite implementation
 
-Vite first (embeds cleanly via the plugin). Metro needs the same registry
-generation step in `@tamagui/metro-plugin`; the scanner and compiler are plain
-node APIs so nothing is vite-specific except the wiring. Webpack/Next after.
+Add an official-engine service to `@tamagui/vite-plugin`:
 
-## Gotchas / open questions
+1. Require/pin Tailwind v4 for hybrid mode. A missing/incompatible version is a
+   clear startup error, not a silent fallback.
+2. Use Tailwind's compiler and scanner APIs. Keep the dependency behind one
+   adapter plus a canary suite because parts of the programmatic API are not
+   public.
+3. Scan static source strings, including static class strings in `styled()`.
+4. Filter claimed candidates with the active Tamagui config.
+5. Build CSS only for passthrough candidates and update incrementally on HMR.
+6. Emit into a deterministic layer after Tamagui atomics so call-site
+   passthrough classes win over styled defaults and call-site props.
+7. Do not inject preflight. An app opts into Tailwind base styles through its
+   stylesheet.
 
-- The tailwind programmatic API is officially internal. Pin the version,
-  vendor a thin wrapper, add a CI test that compiles a canary class list so a
-  minor tailwind bump can't silently break us. (tailwind-merge and prettier
-  live with this fine.)
-- CSS → RN conversion has real edge cases: shorthand expansion (`border`,
-  `inset`), units (rem-based spacing scale → numeric px via a root font size
-  constant), `calc()` (drop or partially evaluate), transforms syntax,
-  gradients (drop), `space-x-*` child selectors (unsupported on native, drop).
-  Steal test cases from nativewind's and uniwind's interop suites.
-- Class merging: two classes setting the same property (`p-2 p-4`) resolve by
-  CSS order on web; the native registry must apply in candidate order to
-  match. Also decide how `styled()` variants that inject className compose.
-- SSR: class pass-through makes SSR simpler on web (no extraction needed for
-  tailwind classes), but check hydration interplay with tamagui's inline style
-  path.
-- Compiler (static extraction) interplay: extracted tamagui props become
-  tamagui atomic classes while tailwind classes ride alongside; the cascade
-  layer ordering must hold for both.
+No Tamagui-token-to-`@theme` mirror is needed for claimed classes: token classes
+never reach Tailwind. An app may still define independent Tailwind theme values
+for passthrough classes in its own CSS.
 
-## Phases
+### Dynamic classes
 
-1. **Spike (small):** embed `compile()` in the vite plugin, generate the
-   `@theme` mapping from a tamagui config, render kitchen-sink tailwind pages
-   with full v4 syntax on web. Proves theme interop + precedence.
-2. **Native registry:** scanner + build + CSS→RN conversion + generated
-   module + `getSplitStyles` lookup. Port `tailwindMode` tests, add native
-   conversion tests.
-3. **Kill the hand-rolled parser**, wire metro, docs. Ship as the tailwind
-   mode (it replaces the current behavior rather than sitting next to it).
+- Claimed Tamagui candidates may be assembled dynamically because the runtime
+  parser owns them.
+- Passthrough Tailwind candidates follow Tailwind's static discovery rules.
+  They must appear literally or be safelisted through the official mechanism.
+- Functional `styled()` variants return style objects. Static variant values
+  may be class strings and are scanner-visible.
+
+This is one deliberate boundary, not a fallback heuristic.
+
+## Precedence
+
+There are two cases:
+
+1. A claimed class is consumed into Tamagui props/styles. The shared Tamagui
+   precedence contract applies.
+2. A passthrough class remains on the DOM. Cascade layer ordering makes it win
+   over base/styled Tamagui output at the call site.
+
+Tests must cover extracted and runtime Tamagui styles, SSR/hydration, duplicate
+property candidates, variant-injected classes, and user `className` order.
+
+## Native contract
+
+V3 beta does not compile arbitrary Tailwind CSS to React Native. It provides:
+
+- full token/theme/dynamic support for the claimed Tamagui grammar;
+- a deduplicated development warning for each unclaimed class;
+- a production drop with no invalid `className` forwarding.
+
+An optional later native registry would scan passthrough candidates, compile
+them with the official engine, translate mappable declarations to RN style
+objects, and generate a module. It must not grow the Tamagui runtime parser or
+become a v3-beta blocker.
+
+## Shovel-ready spike
+
+Build a real Vite fixture with:
+
+- `p-4 bg-color5` (claimed Tamagui);
+- grid and container query utilities;
+- `backdrop-blur`;
+- `data-*` and arbitrary variants;
+- an app-owned Tailwind theme value;
+- static classes inside `styled()` variants/compound variants;
+- SSR plus client hydration and HMR.
+
+Acceptance:
+
+1. Every surface paints correctly in development and production.
+2. Token/theme changes update claimed classes without a Tailwind rebuild.
+3. Generated Tailwind CSS contains zero claimed candidates.
+4. Call-site passthrough classes win deterministically.
+5. No hydration/console errors.
+6. Report raw/gzip CSS size against the same app without passthrough classes.
+7. Tailwind adapter canary compiles a fixed long-tail candidate list.
+
+If filtering cannot prevent duplicate claimed rules, stop with the minimal
+fixture. Do not ship dual ownership.
+
+## Bundler order
+
+1. Vite is the first official-engine frontend.
+2. Webpack/Next receive adapters after the Vite contract is stable.
+3. Metro does not need Tailwind for the v3-beta native contract; it only needs
+   the Tamagui grammar/compiler. A native Tailwind registry is separate work.
+
+## Non-goals
+
+- Reimplementing Tailwind variants/utilities in `getSplitStyles`.
+- Making arbitrary Tailwind web CSS work on native in the first release.
+- Injecting a second token/theme source for classes Tamagui already owns.
+- Keeping a manual Tailwind plugin path beside the embedded hybrid path.
+- Supporting dynamic passthrough candidates beyond official Tailwind rules.
 
 ## References
 
-- https://github.com/tailwindlabs/tailwindcss/discussions/16581 (programmatic v4)
-- https://uniwind.dev/vs-nativewind and https://docs.uniwind.dev/ (registry architecture)
-- https://www.nativewind.dev/v5 (tw v4 preview status)
+- `plans/v3-evolution.md` — master execution contract
+- Tailwind programmatic API discussion: tailwindlabs/tailwindcss#16581
+- `@tailwindcss/oxide` and `@tailwindcss/vite`
+- NativeWind/Uniwind sources for a possible later native registry
