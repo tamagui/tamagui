@@ -3104,8 +3104,9 @@ type ValidateVariantResolverKey<Key extends string> =
       ? Key
       : never
 
-export type VariantResolverKey<Key extends string = string> =
-  Key extends string ? ValidateVariantResolverKey<Key> : never
+export type VariantResolverKey<Key extends string = string> = Key extends string
+  ? ValidateVariantResolverKey<Key>
+  : never
 
 type VariantResolverValueForName<Name extends string> = Name extends 'Size'
   ? Size
@@ -3147,10 +3148,8 @@ export type VariantResolverValue<Key extends string> =
 export function createVariantResolver<
   Key extends string,
   Props extends PropLike = PropLike,
-  Resolver extends VariantSpreadFunction<Props, VariantResolverValue<Key>> = VariantSpreadFunction<
-    Props,
-    VariantResolverValue<Key>
-  >,
+  Resolver extends VariantSpreadFunction<Props, VariantResolverValue<Key>> =
+    VariantSpreadFunction<Props, VariantResolverValue<Key>>,
 >(
   key: string extends Key ? never : Key & VariantResolverKey<Key>,
   resolver: Resolver

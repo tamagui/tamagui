@@ -125,8 +125,7 @@ describe('variant resolver types', () => {
 
     const validKey: VariantResolverKey<'Size | number'> = 'Size | number'
     expectTypeOf(validKey).toEqualTypeOf<'Size | number'>()
-    const whitespaceKey: VariantResolverKey<'\tSize\n|\rnumber\f'> =
-      '\tSize\n|\rnumber\f'
+    const whitespaceKey: VariantResolverKey<'\tSize\n|\rnumber\f'> = '\tSize\n|\rnumber\f'
     expectTypeOf(whitespaceKey).toEqualTypeOf<'\tSize\n|\rnumber\f'>()
 
     // @ts-expect-error invalid resolver names are not accepted

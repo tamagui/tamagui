@@ -554,7 +554,10 @@ describe('TS-style variant resolvers', () => {
       } as const,
     })
 
-    configure({ allowedStyleValues: 'strict', autocompleteSpecificTokens: 'except-special' })
+    configure({
+      allowedStyleValues: 'strict',
+      autocompleteSpecificTokens: 'except-special',
+    })
     expect(getOpacity(Comp, '$radius.4')).toBeUndefined()
     configure({ allowedStyleValues: 'strict', autocompleteSpecificTokens: undefined })
     expect(getOpacity(Comp, '$radius.4')).toBeUndefined()

@@ -695,7 +695,9 @@ function matchesVariantResolver(
         isRemString(value)
       )
     case 'FontStyle':
-      return isBodyFontToken(conf, 'style', value) || value === 'normal' || value === 'italic'
+      return (
+        isBodyFontToken(conf, 'style', value) || value === 'normal' || value === 'italic'
+      )
     case 'FontTransform':
       return (
         isBodyFontToken(conf, 'transform', value) ||
@@ -815,10 +817,7 @@ function getAllowedStyleValuesSetting(
   return { setting, isGloballyAbsent: false }
 }
 
-function isSomewhatStrictValue(
-  category: AllowedCategory,
-  value: any
-) {
+function isSomewhatStrictValue(category: AllowedCategory, value: any) {
   switch (category) {
     case 'size':
     case 'space':
