@@ -1,8 +1,15 @@
 import { mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import { defaultConfig } from '@tamagui/config/v4'
+import { createTamagui, mediaQueryConfig } from '@tamagui/core'
+import {
+  esbundleTamaguiConfig,
+  loadTamaguiFromModules,
+  resolveWebOrNativeSpecificEntry,
+} from '@tamagui/static'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
-import { esbundleTamaguiConfig, resolveWebOrNativeSpecificEntry } from '@tamagui/static'
 
 // regression: vite-plugin doesn't set process.env.TAMAGUI_TARGET (vxrn handles
 // both web and native through the same plugin), so the static extractor must
@@ -113,5 +120,36 @@ describe('esbundleTamaguiConfig platform defines', () => {
     expect(out).toContain('"native"')
     // EXPO_OS shouldn't be inlined for native (ios vs android is ambiguous)
     expect(out).toContain('process.env.EXPO_OS')
+  })
+})
+
+describe('loadTamaguiFromModules', () => {
+  test('synchronizes media from an already-parsed evaluated config', async () => {
+    const hostCore = createRequire(import.meta.url)(
+      '@tamagui/core'
+    ) as typeof import('@tamagui/core')
+    const hostMediaQueryConfig = hostCore.mediaQueryConfig
+    const evaluatedConfig = createTamagui(defaultConfig)
+    const boundaryMedia = { minWidth: 4321 }
+    const parsedConfig = {
+      ...evaluatedConfig,
+      media: {
+        ...evaluatedConfig.media,
+        evaluatedBoundary: boundaryMedia,
+      },
+    }
+
+    expect(hostMediaQueryConfig).not.toBe(mediaQueryConfig)
+    expect(hostMediaQueryConfig.evaluatedBoundary).toBeUndefined()
+
+    const project = await loadTamaguiFromModules(
+      { platform: 'web', components: [] },
+      { config: { default: parsedConfig }, components: [] }
+    )
+
+    expect(project.tamaguiConfig).toBe(parsedConfig)
+    expect(hostMediaQueryConfig.evaluatedBoundary).toEqual(boundaryMedia)
+
+    delete hostMediaQueryConfig.evaluatedBoundary
   })
 })

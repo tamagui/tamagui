@@ -1,4 +1,4 @@
-import type { TamaguiOptions } from '@tamagui/static-worker';
+import type { TamaguiOptions } from '@tamagui/static';
 import type { PluginOption } from 'vite';
 type AliasOptions = {
     /** use @tamagui/react-native-web-lite, 'without-animated' for smaller bundle */

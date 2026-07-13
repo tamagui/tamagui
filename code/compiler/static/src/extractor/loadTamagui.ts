@@ -9,13 +9,15 @@ import * as fsExtra from 'fs-extra'
 
 import { SHOULD_DEBUG } from '../constants'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
-import { getNameToPaths, registerRequire } from '../registerRequire'
+import { getNameToPaths, registerRequire, setRequireResult } from '../registerRequire'
 import {
   type TamaguiProjectInfo,
+  getComponentStaticConfigByName,
   getBundledConfig,
   getLoadedConfig,
   hasBundledConfigChanged,
   loadComponentsSync,
+  setLoadedConfig,
   writeTamaguiCSS,
 } from './bundleConfig'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
@@ -84,6 +86,77 @@ export async function loadTamagui(
   } finally {
     isLoadingPromise = null
   }
+}
+
+export type EvaluatedTamaguiModule = {
+  moduleName: string
+  module: Record<string, unknown>
+}
+
+export type EvaluatedTamaguiProject = {
+  config: Record<string, unknown>
+  components: EvaluatedTamaguiModule[]
+}
+
+/**
+ * Load a Tamagui project from modules evaluated by the host bundler.
+ *
+ * Bundler adapters with a module runner use this boundary so aliases, package
+ * conditions, and user plugins are identical between application and compiler
+ * evaluation. Adapters without a module runner continue to use loadTamagui().
+ */
+export async function loadTamaguiFromModules(
+  propsIn: Partial<TamaguiOptions>,
+  evaluated: EvaluatedTamaguiProject
+): Promise<TamaguiProjectInfo> {
+  const props = getFilledOptions(propsIn)
+
+  await generateThemesAndLog(props)
+
+  const configModule = evaluated.config as any
+  let tamaguiConfig = (configModule.default || configModule.config || configModule) as
+    | TamaguiInternalConfig
+    | { config?: TamaguiInternalConfig }
+
+  if ('config' in tamaguiConfig && tamaguiConfig.config && !('tokens' in tamaguiConfig)) {
+    tamaguiConfig = tamaguiConfig.config
+  }
+
+  if (!tamaguiConfig || (tamaguiConfig as any)._isProxyWorm) {
+    throw new Error(`The Vite module runner did not return a valid Tamagui config`)
+  }
+
+  const { createTamagui } = requireTamaguiCore(props.platform || 'web')
+  if (!(tamaguiConfig as TamaguiInternalConfig).parsed) {
+    tamaguiConfig = createTamagui(tamaguiConfig as any) as TamaguiInternalConfig
+  } else {
+    // Module runners can evaluate the config in a separate Tamagui module
+    // instance. Mirror loadTamaguiSync's host-side setup so module-local state
+    // such as mediaQueryConfig matches the evaluated project config.
+    createTamagui(tamaguiConfig as any)
+  }
+
+  setLoadedConfig(tamaguiConfig as TamaguiInternalConfig)
+
+  const components = evaluated.components.map(({ moduleName, module }) => {
+    setRequireResult(moduleName, module)
+    return {
+      moduleName,
+      nameToInfo: getComponentStaticConfigByName(moduleName, module.default ?? module),
+    }
+  })
+
+  const projectInfo = {
+    components,
+    nameToPaths: {},
+    tamaguiConfig: tamaguiConfig as TamaguiInternalConfig,
+  } satisfies TamaguiProjectInfo
+
+  if (props.outputCSS) {
+    await writeTamaguiCSS(props.outputCSS, projectInfo.tamaguiConfig)
+  }
+
+  return projectInfo
 }
 
 // debounce a bit

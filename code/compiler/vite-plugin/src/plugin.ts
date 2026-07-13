@@ -1,18 +1,91 @@
-import type { TamaguiOptions, ExtractedResponse } from '@tamagui/static-worker'
-import * as Static from '@tamagui/static-worker'
-import { getPragmaOptions } from '@tamagui/static-worker'
+import Static from '@tamagui/static'
+import type { ExtractedResponse, TamaguiOptions } from '@tamagui/static'
 import { createHash } from 'node:crypto'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { Plugin, PluginOption, ResolvedConfig, ViteDevServer } from 'vite'
-import type { Environment } from 'vite'
 import {
-  loadTamaguiBuildConfig,
-  getLoadPromise,
-  getTamaguiOptions,
-  ensureFullConfigLoaded,
-} from './loadTamagui'
+  createRunnableDevEnvironment,
+  defaultClientConditions,
+  defaultClientMainFields,
+  isRunnableDevEnvironment,
+  resolveConfig,
+} from 'vite'
+import type {
+  EnvironmentOptions,
+  Plugin,
+  PluginOption,
+  ResolvedConfig,
+  ViteDevServer,
+} from 'vite'
+import type { Environment } from 'vite'
+import { createViteTamaguiLoader, TAMAGUI_EVALUATION_ENVIRONMENT } from './loadTamagui'
+
+function createEvaluationPluginFacade(plugin: Plugin): Plugin {
+  return {
+    name: plugin.name,
+    enforce: plugin.enforce,
+    resolveId: plugin.resolveId,
+    load: plugin.load,
+    transform: plugin.transform,
+  }
+}
+
+const tamaguiEvaluationPluginNames = new Set([
+  'tamagui',
+  'tamagui-extract',
+  'tamagui-rnw-lite',
+])
+
+function isEvaluationUserPlugin(plugin: Plugin) {
+  return (
+    !!(plugin.resolveId || plugin.load || plugin.transform) &&
+    plugin.name !== 'alias' &&
+    !plugin.name.startsWith('native:') &&
+    !plugin.name.startsWith('vite:') &&
+    !plugin.name.startsWith('builtin:vite-') &&
+    !tamaguiEvaluationPluginNames.has(plugin.name)
+  )
+}
+
+async function createOwnedEvaluationConfig(config: ResolvedConfig) {
+  const environment = config.environments[TAMAGUI_EVALUATION_ENVIRONMENT]
+  const plugins = environment.plugins
+    .filter(isEvaluationUserPlugin)
+    .map(createEvaluationPluginFacade)
+  const { createEnvironment: _createEnvironment, ...dev } = environment.dev
+
+  // ModuleRunner needs Vite's serve-time core pipeline (especially import
+  // analysis), but user plugin selection must remain the already-resolved
+  // build pipeline. The facades retain only evaluation hooks, so resolving this
+  // owned config cannot replay user configuration or build lifecycles.
+  return resolveConfig(
+    {
+      configFile: false,
+      root: config.root,
+      mode: config.mode,
+      logLevel: config.logLevel,
+      plugins,
+      define: environment.define,
+      resolve: environment.resolve,
+      environments: {
+        [TAMAGUI_EVALUATION_ENVIRONMENT]: {
+          consumer: environment.consumer,
+          keepProcessEnv: environment.keepProcessEnv,
+          define: environment.define,
+          resolve: environment.resolve,
+          optimizeDeps: environment.optimizeDeps,
+          dev: {
+            ...dev,
+            moduleRunnerTransform: true,
+          },
+        },
+      },
+    },
+    'serve',
+    config.mode
+  )
+}
 
 // handle ESM/CJS duality for plugin dependencies - resolve from plugin's location, not user's project
 const _pluginRequire = createRequire(
@@ -26,11 +99,19 @@ type CacheEntry = {
   js: string
   map: any
   cssImport: string | null
+  css: { id: string; code: string } | null
 }
 
 const CACHE_KEY = '__tamagui_vite_cache__'
 const CACHE_SIZE_KEY = '__tamagui_vite_cache_size__'
 const PENDING_KEY = '__tamagui_vite_pending__'
+const PLUGIN_INSTANCE_KEY = '__tamagui_vite_plugin_instance__'
+
+function getNextPluginInstanceId() {
+  const next = ((globalThis as any)[PLUGIN_INSTANCE_KEY] || 0) + 1
+  ;(globalThis as any)[PLUGIN_INSTANCE_KEY] = next
+  return next
+}
 
 function getSharedCache(): Record<string, CacheEntry> {
   if (!(globalThis as any)[CACHE_KEY]) {
@@ -48,8 +129,12 @@ function setSharedCacheSize(size: number) {
 }
 
 function clearSharedCache() {
-  ;(globalThis as any)[CACHE_KEY] = {}
-  ;(globalThis as any)[CACHE_SIZE_KEY] = 0
+  const cache = getSharedCache()
+  for (const key in cache) {
+    delete cache[key]
+  }
+  setSharedCacheSize(0)
+  getPendingExtractions().clear()
 }
 
 // resolves package ids against the user's project root (not the plugin's
@@ -160,10 +245,12 @@ export function tamaguiPlugin({
 } = {}): PluginOption {
   // extraction ON by default, set disableExtraction: true to opt out
   let shouldExtract = !tamaguiOptionsIn.disableExtraction
-  let watcher: Promise<{ dispose: () => void } | void | undefined> | undefined
 
   // temporary vxrn native env bridge
   const enableNativeEnv = !!globalThis.__vxrnEnableNativeEnv
+  const tamaguiLoader = createViteTamaguiLoader(tamaguiOptionsIn)
+  const pluginInstanceId = getNextPluginInstanceId()
+  let buildEnvironmentPromise: Promise<void> | null = null
 
   const extensions = [
     `.web.mjs`,
@@ -180,14 +267,38 @@ export function tamaguiPlugin({
     '.json',
   ]
 
+  const getEvaluationEnvironmentOptions = (): EnvironmentOptions => ({
+    consumer: 'server',
+    keepProcessEnv: true,
+    define: {
+      'process.env.IS_STATIC': JSON.stringify('is_static'),
+      'process.env.TAMAGUI_IS_CLIENT': JSON.stringify(false),
+      'process.env.TAMAGUI_IS_SERVER': JSON.stringify(true),
+      'process.env.TAMAGUI_TARGET': JSON.stringify('web'),
+      'process.env.TAMAGUI_ENVIRONMENT': JSON.stringify(TAMAGUI_EVALUATION_ENVIRONMENT),
+    },
+    resolve: {
+      conditions: [...defaultClientConditions],
+      mainFields: [...defaultClientMainFields],
+      noExternal: /^@tamagui\/(?:config|core|web)(?:\/|$)/,
+      extensions,
+    },
+    dev: {
+      createEnvironment(name, resolved) {
+        return createRunnableDevEnvironment(name, resolved)
+      },
+      moduleRunnerTransform: true,
+    },
+  })
+
   // start loading immediately but don't block
-  loadTamaguiBuildConfig(tamaguiOptionsIn)
+  tamaguiLoader.loadTamaguiBuildConfig()
 
   // helper to await load when needed
   const ensureLoaded = async () => {
-    const promise = getLoadPromise()
+    const promise = tamaguiLoader.getLoadPromise()
     if (promise) await promise
-    const options = getTamaguiOptions()
+    const options = tamaguiLoader.getTamaguiOptions()
     // update shouldExtract from loaded config (tamagui.build.ts)
     if (options) {
       shouldExtract = !options.disableExtraction
@@ -202,6 +313,9 @@ export function tamaguiPlugin({
   const memoryCache = getSharedCache()
 
   const cssMap = new Map<string, string>()
+  const transformedModuleIds = new Set<string>()
+  const compilerHotUpdateSignatures = new Map<string, string>()
+  const compilerHotReloadSignatures = new Map<string, string>()
   let config: ResolvedConfig
   let server: ViteDevServer
   const virtualExt = `.tamagui.css`
@@ -237,18 +351,44 @@ export function tamaguiPlugin({
     }
   }
 
+  function invalidateCompilerModules() {
+    if (server) {
+      const ids = new Set([...transformedModuleIds, ...cssMap.keys()])
+      for (const environment of Object.values(server.environments)) {
+        if (environment.name === TAMAGUI_EVALUATION_ENVIRONMENT) continue
+        for (const id of ids) {
+          const modules = environment.moduleGraph.getModulesByFile(id)
+          if (!modules) continue
+          for (const module of modules) {
+            environment.moduleGraph.invalidateModule(module)
+          }
+        }
+      }
+    }
+    cssMap.clear()
+  }
+
   const basePlugin: Plugin = {
     name: 'tamagui',
     enforce: 'pre',
 
     configureServer(_server) {
       server = _server
+      const evaluationEnvironment = server.environments[TAMAGUI_EVALUATION_ENVIRONMENT]
+      if (!isRunnableDevEnvironment(evaluationEnvironment)) {
+        throw new Error(
+          `The ${TAMAGUI_EVALUATION_ENVIRONMENT} Vite environment must support ModuleRunner evaluation`
+        )
+      }
+      tamaguiLoader.setEnvironment(evaluationEnvironment)
     },
 
     async buildEnd() {
-      await watcher?.then((res) => {
-        res?.dispose()
-      })
+      try {
+        await tamaguiLoader.cleanup()
+      } finally {
+        buildEnvironmentPromise = null
+      }
     },
 
     async config(_, env) {
@@ -256,17 +396,6 @@ export function tamaguiPlugin({
 
       if (!options) {
         throw new Error(`No tamagui options loaded`)
-      }
-
-      // start watching config if enabled
-      if (!options.disableWatchTamaguiConfig) {
-        watcher = Static.watchTamaguiConfig({
-          components: ['tamagui'],
-          config: './src/tamagui.config.ts',
-          ...options,
-        }).catch((err) => {
-          console.error(` [Tamagui] Error watching config: ${err}`)
-        })
       }
 
       return {
@@ -279,6 +408,7 @@ export function tamaguiPlugin({
               'process.env.TAMAGUI_ENVIRONMENT': '"client"',
             },
           },
+          [TAMAGUI_EVALUATION_ENVIRONMENT]: getEvaluationEnvironmentOptions(),
         },
 
         define: {
@@ -324,7 +454,7 @@ export function tamaguiPlugin({
         return {}
       }
 
-      const options = getTamaguiOptions()
+      const options = tamaguiLoader.getTamaguiOptions()
       if (!options?.useReactNativeWebLite) {
         return {}
       }
@@ -417,6 +547,82 @@ export function tamaguiPlugin({
       config = resolvedConfig
     },
 
+    async buildStart() {
+      const buildConfig = this.environment.getTopLevelConfig()
+      if (buildConfig.command === 'build' && !tamaguiLoader.getEnvironment()) {
+        await tamaguiLoader.loadTamaguiBuildConfig()
+        buildEnvironmentPromise ||= (async () => {
+          const evaluationConfig = await createOwnedEvaluationConfig(buildConfig)
+          const evaluationEnvironment = createRunnableDevEnvironment(
+            TAMAGUI_EVALUATION_ENVIRONMENT,
+            evaluationConfig,
+            { hot: false }
+          )
+          try {
+            await evaluationEnvironment.init()
+          } catch (error) {
+            await evaluationEnvironment.close().catch(() => undefined)
+            throw error
+          }
+          tamaguiLoader.setEnvironment(evaluationEnvironment, { owned: true })
+        })()
+        try {
+          await buildEnvironmentPromise
+        } catch (error) {
+          buildEnvironmentPromise = null
+          throw error
+        }
+      }
+    },
+
+    hotUpdate: {
+      order: 'post',
+      async handler(options) {
+        if (!tamaguiLoader.isEvaluationDependency(options.file)) {
+          return
+        }
+
+        const signature = await (async () => {
+          if (options.type === 'delete') {
+            return getHash(`${options.type}:${options.file}`)
+          }
+          try {
+            return getHash(`${options.type}:${options.file}:${await options.read()}`)
+          } catch {
+            return getHash(`${options.type}:${options.file}:${options.timestamp}`)
+          }
+        })()
+
+        if (compilerHotUpdateSignatures.get(options.file) !== signature) {
+          compilerHotUpdateSignatures.set(options.file, signature)
+          tamaguiLoader.invalidate(options.file)
+          clearSharedCache()
+          invalidateCompilerModules()
+        }
+        if (
+          this.environment.name === 'client' &&
+          compilerHotReloadSignatures.get(options.file) !== signature
+        ) {
+          compilerHotReloadSignatures.set(options.file, signature)
+          this.environment.hot.send({
+            type: 'full-reload',
+            path: '*',
+            triggeredBy: options.file,
+          })
+        }
+        return []
+      },
+    },
+
+    watchChange(id) {
+      if (config.command !== 'build' || !tamaguiLoader.isEvaluationDependency(id)) {
+        return
+      }
+      tamaguiLoader.invalidate(id)
+      clearSharedCache()
+      invalidateCompilerModules()
+    },
+
     async resolveId(source) {
       if (!shouldExtract) return
 
@@ -434,8 +640,8 @@ export function tamaguiPlugin({
         return
       }
 
-      const absoluteId = source.startsWith(config.root)
-        ? source
+      const absoluteId = validId.startsWith(config.root)
+        ? validId
         : getAbsoluteVirtualFileId(validId)
 
       if (cssMap.has(absoluteId)) {
@@ -446,7 +652,7 @@ export function tamaguiPlugin({
     async load(id) {
       if (!shouldExtract) return
 
-      const options = getTamaguiOptions()
+      const options = tamaguiLoader.getTamaguiOptions()
       if (options?.disable) {
         return
       }
@@ -466,11 +672,20 @@ export function tamaguiPlugin({
     transform: {
       order: 'pre',
       async handler(code, id) {
+        // Config/component evaluation must run through user plugins without
+        // recursively invoking Tamagui extraction inside its own ModuleRunner.
+        if (this.environment?.name === TAMAGUI_EVALUATION_ENVIRONMENT) {
+          return
+        }
+
         // ensure tamagui is loaded before transform
         const options = await ensureLoaded()
 
-        // ensure full config (heavy bundling) is loaded before extraction
-        await ensureFullConfigLoaded()
+        // evaluate config and components before extraction
+        const evaluationDependencies = await tamaguiLoader.ensureFullConfigLoaded()
+        for (const dependency of evaluationDependencies) {
+          this.addWatchFile(dependency)
+        }
 
         // fully disabled = no extraction AND no debug attrs
         if (options?.disable) {
@@ -485,8 +700,9 @@ export function tamaguiPlugin({
         if (!validId.endsWith('.tsx')) {
           return
         }
+        transformedModuleIds.add(validId)
 
-        const { shouldDisable, shouldPrintDebug } = await getPragmaOptions({
+        const { shouldDisable, shouldPrintDebug } = await Static.getPragmaOptions({
           source: code,
           path: validId,
         })
@@ -504,12 +720,18 @@ export function tamaguiPlugin({
 
         const isSSR = isNotClient(this.environment)
 
-        // cache key without environment - share compiled JS between SSR/client
-        const cacheKey = getHash(`${code}${id}`)
+        // share compiled JS between client/SSR, but never across plugin instances
+        const extractionGeneration = tamaguiLoader.getGeneration()
+        const cacheKey = getHash(
+          `${pluginInstanceId}:${extractionGeneration}:${code}${id}`
+        )
         const pending = getPendingExtractions()
 
         // helper to format result based on environment
         const formatResult = (entry: CacheEntry) => {
+          if (entry.css) {
+            cssMap.set(entry.css.id, entry.css.code)
+          }
           const finalCode =
             !isSSR && entry.cssImport ? `${entry.js}\n${entry.cssImport}` : entry.js
           return { code: finalCode, map: entry.map }
@@ -551,7 +773,7 @@ export function tamaguiPlugin({
         const extractionPromise = (async (): Promise<CacheEntry | null> => {
           let extracted: ExtractedResponse | null
           try {
-            extracted = await Static!.extractToClassNames({
+            extracted = await tamaguiLoader.extractToClassNames({
               source: code,
               sourcePath: validId,
               options: options!,
@@ -577,10 +799,15 @@ export function tamaguiPlugin({
             return null
           }
 
+          if (extractionGeneration !== tamaguiLoader.getGeneration()) {
+            return null
+          }
+
           const rootRelativeId = `${validId}${virtualExt}`
           const absoluteId = getAbsoluteVirtualFileId(rootRelativeId)
 
           let cssImport: string | null = null
+          let css: CacheEntry['css'] = null
 
           // store CSS and prepare import (but don't include in cached JS)
           if (extracted.styles) {
@@ -592,6 +819,7 @@ export function tamaguiPlugin({
 
             cssImport = `import "${rootRelativeId}";`
             cssMap.set(absoluteId, extracted.styles)
+            css = { id: absoluteId, code: extracted.styles }
           }
 
           // cache the JS separately from CSS import
@@ -600,10 +828,11 @@ export function tamaguiPlugin({
             js: jsCode,
             map: extracted.map,
             cssImport,
+            css,
           }
 
           // track cache size and clear if too large (64MB)
-          const newSize = getSharedCacheSize() + jsCode.length
+          const newSize = getSharedCacheSize() + jsCode.length + (css?.code.length || 0)
           if (newSize > 67108864) {
             clearSharedCache()
           } else {

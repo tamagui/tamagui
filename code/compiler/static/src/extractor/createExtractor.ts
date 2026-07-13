@@ -132,7 +132,12 @@ function hasUntilMeasuredAncestor(path: NodePath<any>, groupName: string): boole
 }
 
 export function createExtractor(
-  { logger = console, platform = 'web' }: ExtractorOptions = { logger: console }
+  {
+    logger = console,
+    platform = 'web',
+    loadTamagui: loadTamaguiProject = loadTamagui,
+    loadTamaguiSync: loadTamaguiProjectSync = loadTamaguiSync,
+  }: ExtractorOptions = { logger: console }
 ) {
   const INLINE_EXTRACTABLE = {
     ref: 'ref',
@@ -279,14 +284,17 @@ export function createExtractor(
     if (isFullyDisabled(props)) {
       return null
     }
-    return (projectInfo ||= loadTamaguiSync(props))
+    if (!loadTamaguiProjectSync) {
+      return projectInfo
+    }
+    return (projectInfo ||= loadTamaguiProjectSync(props))
   }
 
   async function load(props: TamaguiOptions) {
     if (isFullyDisabled(props)) {
       return null
     }
-    return (projectInfo ||= await loadTamagui(props))
+    return (projectInfo ||= await loadTamaguiProject(props))
   }
 
   return {
@@ -726,7 +734,11 @@ export function createExtractor(
               )
             }
 
-            const out = loadTamaguiSync({
+            if (!loadTamaguiProjectSync) {
+              return
+            }
+
+            const out = loadTamaguiProjectSync({
               forceExports: true,
               components: [sourcePath],
               cacheKey: version,
@@ -989,7 +1001,11 @@ export function createExtractor(
                     // proactively load the file
                     dynamicLoadingInProgress.add(resolved)
                     try {
-                      const out = loadTamaguiSync({
+                      if (!loadTamaguiProjectSync) {
+                        return
+                      }
+
+                      const out = loadTamaguiProjectSync({
                         forceExports: true,
                         components: [resolved],
                       })

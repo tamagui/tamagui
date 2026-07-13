@@ -230,6 +230,9 @@ export function hasBundledConfigChanged() {
 let loadedConfig: TamaguiInternalConfig | null = null
 
 export const getLoadedConfig = () => loadedConfig
+export const setLoadedConfig = (config: TamaguiInternalConfig) => {
+  loadedConfig = config
+}
 
 function getBundleKey(props: TamaguiOptions) {
   return JSON.stringify({
@@ -886,7 +889,7 @@ const esbuildit = (src: string, target?: 'modern') => {
   }).code
 }
 
-function getComponentStaticConfigByName(name: string, exported: any) {
+export function getComponentStaticConfigByName(name: string, exported: any) {
   const components: Record<string, { staticConfig: StaticConfig }> = {}
   try {
     if (!exported || typeof exported !== 'object' || Array.isArray(exported)) {
