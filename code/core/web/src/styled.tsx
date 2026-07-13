@@ -52,6 +52,69 @@ type GetVariantAcceptedValues<V> = V extends object
     }
   : undefined
 
+export type StyledOptions<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined,
+> = Partial<InferStyledProps<ParentComponent, StyledConfig>> & {
+  name?: string
+  variants?: Variants | undefined
+  defaultVariants?: GetVariantAcceptedValues<NonNullable<Variants>>
+  context?: StyledContext
+  render?: string | React.ReactElement
+}
+
+type StyledCustomTokenProps<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  ParentStylesBase extends object,
+  Accepted = StyledConfig['accept'],
+> = Accepted extends Record<string, any>
+  ? {
+      [Key in keyof Accepted]?:
+        | (Key extends keyof ParentStylesBase ? ParentStylesBase[Key] : never)
+        | (Accepted[Key] extends 'style'
+            ? Partial<InferStyleProps<ParentComponent, StyledConfig>>
+            : Accepted[Key] extends 'textStyle'
+              ? Partial<InferStyleProps<typeof Text, StyledConfig>>
+              : ThemeValueByCategory<Accepted[Key]>)
+    }
+  : {}
+
+type StyledMergedVariants<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined,
+  ParentVariants = GetStyledVariants<ParentComponent>,
+  OurVariantProps = GetVariantAcceptedValues<NonNullable<Variants>>,
+> = AreVariantsUndefined<NonNullable<Variants>> extends true
+  ? ParentVariants
+  : AreVariantsUndefined<ParentVariants> extends true
+    ? Omit<OurVariantProps, '_isEmpty'>
+    : {
+        [Key in Exclude<keyof ParentVariants | keyof OurVariantProps, '_isEmpty'>]?:
+          | (Key extends keyof ParentVariants ? ParentVariants[Key] : undefined)
+          | (Key extends keyof OurVariantProps ? OurVariantProps[Key] : undefined)
+      }
+
+type StyledComponentResult<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined,
+  ParentStylesBase extends object = GetBaseStyles<ParentComponent, StyledConfig>,
+  Accepted = StyledConfig['accept'],
+> = TamaguiComponent<
+  TamaDefer,
+  GetRef<ParentComponent>,
+  GetNonStyledProps<ParentComponent>,
+  Accepted extends Record<string, any>
+    ? ParentStylesBase &
+        StyledCustomTokenProps<ParentComponent, StyledConfig, ParentStylesBase, Accepted>
+    : ParentStylesBase,
+  StyledMergedVariants<ParentComponent, StyledConfig, Variants>,
+  GetStaticConfig<ParentComponent, StyledConfig>
+>
+
 // ---- HTML element support for styledHtml('tagName') ----
 
 // text-like elements use TextStylePropsBase
@@ -220,19 +283,43 @@ export function styledHtml<
 function styled<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
-  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined = undefined,
+>(
+  ComponentIn: ParentComponent,
+  options?: StyledOptions<ParentComponent, StyledConfig, Variants>,
+  config?: StyledConfig
+): StyledComponentResult<ParentComponent, StyledConfig, Variants>
+function styled<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined = undefined,
+>(
+  ComponentIn: ParentComponent,
+  baseClassName: string,
+  options?: StyledOptions<ParentComponent, StyledConfig, Variants>,
+  config?: StyledConfig
+): StyledComponentResult<ParentComponent, StyledConfig, Variants>
+function styled<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig> | undefined,
 >(
   ComponentIn: ParentComponent,
   // this should be Partial<GetProps<ParentComponent>> but causes excessively deep type issues
-  options?: Partial<InferStyledProps<ParentComponent, StyledConfig>> & {
-    name?: string
-    variants?: Variants | undefined
-    defaultVariants?: GetVariantAcceptedValues<Variants>
-    context?: StyledContext
-    render?: string | React.ReactElement
-  },
-  config?: StyledConfig
+  optionsOrBaseClassName?: StyledOptions<ParentComponent, StyledConfig, Variants> | string,
+  configOrOptions?: StyledOptions<ParentComponent, StyledConfig, Variants> | StyledConfig,
+  maybeConfig?: StyledConfig
 ) {
+  const hasBaseClassName = typeof optionsOrBaseClassName === 'string'
+  const baseClassName = hasBaseClassName ? optionsOrBaseClassName : undefined
+  const optionsIn = (
+    hasBaseClassName ? configOrOptions : optionsOrBaseClassName
+  ) as StyledOptions<ParentComponent, StyledConfig, Variants> | undefined
+  const config = (hasBaseClassName ? maybeConfig : configOrOptions) as
+    | StyledConfig
+    | undefined
+  const options = optionsIn
+
   // do type stuff at top for easier readability
 
   // get parent props without pseudos and medias so we can rebuild both with new variants
@@ -241,9 +328,11 @@ function styled<
   type ParentVariants = GetStyledVariants<ParentComponent>
 
   type OurVariantProps =
-    AreVariantsUndefined<Variants> extends true ? {} : GetVariantAcceptedValues<Variants>
+    AreVariantsUndefined<NonNullable<Variants>> extends true
+      ? {}
+      : GetVariantAcceptedValues<NonNullable<Variants>>
   type MergedVariants =
-    AreVariantsUndefined<Variants> extends true
+    AreVariantsUndefined<NonNullable<Variants>> extends true
       ? ParentVariants
       : AreVariantsUndefined<ParentVariants> extends true
         ? Omit<OurVariantProps, '_isEmpty'>
@@ -322,6 +411,10 @@ function styled<
 
     let parentDefaultVariants
     let parentDefaultProps
+    const mergedBaseClassName =
+      parentStaticConfig?.baseClassName && baseClassName
+        ? `${parentStaticConfig.baseClassName} ${baseClassName}`
+        : baseClassName || parentStaticConfig?.baseClassName
 
     if (parentStaticConfig) {
       const avoid = parentStaticConfig.isHOC && !parentStaticConfig.isStyledHOC
@@ -386,6 +479,7 @@ function styled<
       }),
       // @ts-expect-error
       variants,
+      baseClassName: mergedBaseClassName,
       defaultProps,
       defaultVariants,
       componentName: name || parentStaticConfig?.componentName,
