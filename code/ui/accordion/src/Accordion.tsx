@@ -477,31 +477,12 @@ AccordionHeader.displayName = HEADER_NAME
  * -----------------------------------------------------------------------------------------------*/
 
 const AccordionTriggerFrame = styled(Collapsible.Trigger, {
-  variants: {
-    unstyled: {
-      false: {
-        cursor: 'pointer',
-        backgroundColor: '$background',
-        padding: true,
-
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
-        },
-
-        focusStyle: {
-          backgroundColor: '$backgroundFocus',
-        },
-
-        pressStyle: {
-          backgroundColor: '$backgroundPress',
-        },
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  cursor: 'pointer',
+  backgroundColor: '$background',
+  padding: true,
+  hoverStyle: { backgroundColor: '$backgroundHover' },
+  focusStyle: { backgroundColor: '$backgroundFocus' },
+  pressStyle: { backgroundColor: '$backgroundPress' },
 })
 
 type AccordionTrigger = GetRef<typeof AccordionTriggerFrame>
@@ -540,18 +521,8 @@ const AccordionTrigger = createStyledHOC(AccordionTriggerFrame)(function Accordi
  * -----------------------------------------------------------------------------------------------*/
 
 const AccordionContentFrame = styled(Collapsible.Content, {
-  variants: {
-    unstyled: {
-      false: {
-        padding: true,
-        backgroundColor: '$background',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  padding: true,
+  backgroundColor: '$background',
 })
 
 type AccordionContentProps = GetProps<typeof AccordionContentFrame>

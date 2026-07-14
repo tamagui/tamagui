@@ -40,8 +40,20 @@ export function VersionSwitcherItem({ versions }: { versions: { name: string }[]
       disablePreventBodyScroll
       zIndex={200000}
     >
-      <Select.Trigger maxWidth={220} iconAfter={ChevronDown} borderRadius={8}>
+      <Select.Trigger
+        maxWidth={220}
+        height={36}
+        paddingHorizontal="$3"
+        gap="$2"
+        backgroundColor="$background"
+        borderWidth={1}
+        borderColor="$borderColor"
+        borderRadius={8}
+      >
         <Select.Value placeholder="2.0.0" />
+        <Select.Icon marginLeft="auto">
+          <ChevronDown size={16} />
+        </Select.Icon>
       </Select.Trigger>
 
       <Adapt when="maxMd" platform="touch">

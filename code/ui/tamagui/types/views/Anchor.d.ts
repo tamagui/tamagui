@@ -6,10 +6,8 @@ export interface AnchorExtraProps {
 }
 export type AnchorProps = SizableTextProps & AnchorExtraProps;
 export declare const Anchor: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TextNonStyleProps, import("@tamagui/core").TextStylePropsBase, {
-    unstyled?: boolean | undefined;
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
-}>, keyof AnchorExtraProps> & AnchorExtraProps, import("@tamagui/core").TamaguiTextElement, import("@tamagui/core").TextNonStyleProps & AnchorExtraProps, import("@tamagui/core").TextStylePropsBase, {
-    unstyled?: boolean | undefined;
-    size?: import("@tamagui/core").FontSizeTokens | undefined;
+    size?: import("@tamagui/core").FontSize | undefined;
+}>, keyof AnchorExtraProps> & AnchorExtraProps, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").Text, import("@tamagui/core").TextNonStyleProps & AnchorExtraProps, import("@tamagui/core").TextStylePropsBase, {
+    size?: import("@tamagui/core").FontSize | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 //# sourceMappingURL=Anchor.d.ts.map

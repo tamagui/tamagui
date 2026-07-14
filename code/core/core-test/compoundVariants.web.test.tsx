@@ -17,6 +17,7 @@ import {
   View,
   createStyledContext,
   createTamagui,
+  normalizeStaticConfigStyles,
   styled,
 } from '../web/src'
 import { getDefaultTamaguiConfig } from '../config-default'
@@ -195,6 +196,165 @@ describe('compoundVariants - web', () => {
     )
 
     expect(permutedCaller.style).toEqual(callerOverrides.style)
+  })
+
++  test('same-declaration base objects override normalized base classes', () => {
+    const Frame = styled(
+      View,
+      'p-4 rounded-4',
+      { padding: 8, borderRadius: 2 },
+      { acceptsClassName: false }
+    )
+    const result = simplifiedGetSplitStyles(Frame, {}, { mergeDefaultProps: true })
+    expect(result.style?.paddingTop).toBe('8px')
+    expect(result.style?.borderTopLeftRadius).toBe('2px')
+  })
+
+  test('static strings share runtime precedence with objects and functions', () => {
+    const FrameContext = createStyledContext({
+      tone: 'critical' as 'critical' | 'neutral',
+    })
+    const Frame = styled(
+      View,
+      'p-[4px]',
+      {
+        context: FrameContext,
+        minWidth: 2,
+        variants: {
+          size: {
+            sm: 'w-[20px]',
+          },
+          mode: {
+            solid: {
+              borderWidth: 1,
+            },
+          },
+          raised: {
+            true: () => ({
+              height: 10,
+            }),
+          },
+        } as const,
+        defaultVariants: {
+          size: 'sm',
+          mode: 'solid',
+        },
+        compoundVariants: [
+          {
+            size: ['sm'],
+            tone: 'critical',
+            style: 'bg-[red] opacity-[0.5]',
+          },
+          {
+            mode: 'solid',
+            style: {
+              borderColor: 'green',
+            },
+          },
+        ],
+      },
+      {
+        acceptsClassName: false,
+      }
+    )
+
+    const result = simplifiedGetSplitStyles(
+      Frame,
+      {
+        raised: true,
+        backgroundColor: 'blue',
+      },
+      {
+        mergeDefaultProps: true,
+      }
+    )
+
+    expect(result.style).toMatchObject({
+      paddingTop: '4px',
+      minWidth: '2px',
+      width: '20px',
+      height: '10px',
+      opacity: 0.5,
+      backgroundColor: 'blue',
+      borderTopWidth: '1px',
+      borderTopColor: 'green',
+    })
+  })
+
+  test('late static string resolution is immutable, idempotent, and preserves modifiers', () => {
+    const Frame = styled(
+      View,
+      'p-4 rounded-4 hover:bg-[red] sm:m-4 enter:opacity-0 base-user',
+      {
+        padding: 8,
+        borderRadius: 2,
+        variants: {
+          size: {
+            sm: 'h-8 px-3 hover:opacity-50 sm:mt-4 enter:scale-95 simple-user',
+          },
+        } as const,
+        defaultVariants: { size: 'sm' },
+        compoundVariants: [
+          {
+            size: 'sm',
+            style: 'w-8 p-0 hover:bg-[blue] sm:mb-4 enter:opacity-50 compound-user',
+          },
+        ],
+      },
+      { acceptsClassName: false }
+    )
+    const authored = Frame.staticConfig
+    const resolved = normalizeStaticConfigStyles(authored)
+
+    expect(authored.baseClassName).toContain('p-4')
+    expect(authored.variants?.size?.sm).toBe(
+      'h-8 px-3 hover:opacity-50 sm:mt-4 enter:scale-95 simple-user'
+    )
+    expect(authored.compoundVariants?.[0]?.style).toContain('w-8')
+    expect(normalizeStaticConfigStyles(resolved)).toBe(resolved)
+    const packageResolved = normalizeStaticConfigStyles(
+      authored,
+      packageTamaguiConfig as any
+    )
+    expect(packageResolved).not.toBe(resolved)
+    expect(normalizeStaticConfigStyles(authored, packageTamaguiConfig as any)).toBe(
+      packageResolved
+    )
+    expect(resolved.baseStyle).toMatchObject({
+      padding: '$4',
+      borderRadius: '$4',
+      hoverStyle: { backgroundColor: 'red' },
+      $sm: { margin: '$4' },
+      enterStyle: { opacity: 0 },
+      className: 'base-user',
+    })
+    expect(resolved.variants?.size?.sm).toMatchObject({
+      height: '$8',
+      paddingHorizontal: '$3',
+      hoverStyle: { opacity: 0.5 },
+      $sm: { marginTop: '$4' },
+      enterStyle: { scale: 0.95 },
+      className: 'simple-user',
+    })
+    expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
+      width: '$8',
+      padding: '$0',
+      hoverStyle: { backgroundColor: 'blue' },
+      $sm: { marginBottom: '$4' },
+      enterStyle: { opacity: 0.5 },
+      className: 'compound-user',
+    })
+
+    const result = simplifiedGetSplitStyles(
+      Frame,
+      { className: 'caller-user' },
+      { mergeDefaultProps: true }
+    )
+    expect(result.style?.paddingTop).toBe('var(--t-space-0)')
+    expect(result.style?.width).toBe('var(--t-size-8)')
+    expect(result.viewProps.className).toMatch(
+      /base-user.*simple-user.*compound-user.*caller-user/
+    )
   })
 
   test('compound matchers use Object.is for scalars and readonly arrays', () => {

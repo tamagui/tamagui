@@ -15,7 +15,8 @@ import {
   ArrowUpRight,
 } from '@tamagui/lucide-icons-2'
 import { useRef, useState } from 'react'
-import { Button, Label, SizableText, Slider, XStack, YStack } from 'tamagui'
+import { Label, SizableText, Slider, XStack, YStack } from 'tamagui'
+import { Button } from './Button'
 
 export const ToastDemo = () => {
   const [position, setPosition] = useState<ToastPosition>('bottom-right')

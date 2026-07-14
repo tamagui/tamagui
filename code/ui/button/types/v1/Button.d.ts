@@ -5,7 +5,7 @@ type ButtonVariant = 'outlined';
 export declare const ButtonContext: import("@tamagui/web").StyledContext<Partial<TextContextStyles & {
     size: SizeTokens | true;
     variant?: ButtonVariant;
-}>, "color" | "size" | "variant" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "textAlign">;
+}>, "color" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "textAlign" | "size" | "variant">;
 type ButtonIconProps = {
     color?: any;
     size?: any;
@@ -34,17 +34,10 @@ type ButtonExtraProps = TextParentStyles & ThemeableProps & {
      * adjust internal space relative to icon size
      */
     scaleSpace?: number;
-    /**
-     * remove default styles
-     */
-    unstyled?: boolean;
 };
 type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>;
-declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "color" | "size" | "variant" | "elevation" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "textAlign" | "disabled" | "unstyled" | "transparent" | keyof import("@tamagui/web").StackStyleBase | "circular" | "chromeless" | "elevate" | "bordered"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "color" | "ellipsis" | "fontFamily" | "fontSize" | "fontStyle" | "fontWeight" | "letterSpacing" | "maxFontSizeMultiplier" | "textAlign" | "size" | "elevation" | "disabled" | "transparent" | keyof import("@tamagui/web").StackStyleBase | "circular" | "variant" | "elevate" | "bordered" | "chromeless"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     color?: "unset" | import("@tamagui/web").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
-    variant?: "outlined" | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
     ellipsis?: boolean | "unset" | undefined;
     fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
     fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
@@ -52,19 +45,18 @@ declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/core").RNTama
     fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
     letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
+    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
+    size?: number | false | import("@tamagui/web").Size | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
     disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    variant?: "outlined" | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     color?: "unset" | import("@tamagui/web").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
-    variant?: "outlined" | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
     ellipsis?: boolean | "unset" | undefined;
     fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
     fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
@@ -72,19 +64,18 @@ declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/core").RNTama
     fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
     letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
+    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
+    size?: number | false | import("@tamagui/web").Size | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
     disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    variant?: "outlined" | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {
     color?: "unset" | import("@tamagui/web").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
-    variant?: "outlined" | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
     ellipsis?: boolean | "unset" | undefined;
     fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
     fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
@@ -92,21 +83,20 @@ declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/core").RNTama
     fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
     letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
+    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
+    size?: number | false | import("@tamagui/web").Size | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
     disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    variant?: "outlined" | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }>> & {
     ref?: import("react").Ref<import("@tamagui/web").TamaguiElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     color?: "unset" | import("@tamagui/web").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
-    variant?: "outlined" | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
     ellipsis?: boolean | "unset" | undefined;
     fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
     fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
@@ -114,20 +104,19 @@ declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/core").RNTama
     fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
     letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
+    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
+    size?: number | false | import("@tamagui/web").Size | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
     disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    variant?: "outlined" | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         color?: "unset" | import("@tamagui/web").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
-        variant?: "outlined" | undefined;
-        elevation?: number | import("@tamagui/web").Size | undefined;
         ellipsis?: boolean | "unset" | undefined;
         fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
         fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
@@ -135,39 +124,36 @@ declare const ButtonFrame: FunctionComponent<Omit<import("@tamagui/core").RNTama
         fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
         letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
         maxFontSizeMultiplier?: number | undefined;
-        textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
+        textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
+        size?: number | false | import("@tamagui/web").Size | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
         disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
+        variant?: "outlined" | undefined;
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
-declare const ButtonText: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | "variant" | "unstyled" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
+declare const ButtonText: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase | "variant"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
     size?: import("@tamagui/web").FontSize | undefined;
     variant?: "outlined" | undefined;
-    unstyled?: boolean | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
     size?: import("@tamagui/web").FontSize | undefined;
     variant?: "outlined" | undefined;
-    unstyled?: boolean | undefined;
 } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
     size?: import("@tamagui/web").FontSize | undefined;
     variant?: "outlined" | undefined;
-    unstyled?: boolean | undefined;
 }>> & {
     ref?: import("react").Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
     size?: import("@tamagui/web").FontSize | undefined;
     variant?: "outlined" | undefined;
-    unstyled?: boolean | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSize | undefined;
         variant?: "outlined" | undefined;
-        unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
 declare const ButtonIcon: (props: {
@@ -180,9 +166,6 @@ declare const ButtonIcon: (props: {
  */
 declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     color?: "unset" | import("@tamagui/web").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
-    variant?: "outlined" | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
     ellipsis?: boolean | "unset" | undefined;
     fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
     fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
@@ -190,15 +173,17 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
     fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
     letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
+    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
+    size?: number | false | import("@tamagui/web").Size | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
     disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    variant?: "outlined" | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
-}>, keyof TextContextStyles | "unstyled" | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
+    chromeless?: boolean | "all" | undefined;
+}>, keyof TextContextStyles | "scaleIcon" | "textProps" | "icon" | "iconAfter" | "noTextWrap" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & ThemeableProps & {
@@ -224,17 +209,10 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
      * adjust internal space relative to icon size
      */
     scaleSpace?: number;
-    /**
-     * remove default styles
-     */
-    unstyled?: boolean;
 } & {
     ref?: import("react").Ref<(HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
     color?: "unset" | import("@tamagui/web").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
-    variant?: "outlined" | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
     ellipsis?: boolean | "unset" | undefined;
     fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
     fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
@@ -242,15 +220,17 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
     fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
     letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
+    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
+    size?: number | false | import("@tamagui/web").Size | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
     disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    variant?: "outlined" | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
-}>, keyof TextContextStyles | "unstyled" | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
+    chromeless?: boolean | "all" | undefined;
+}>, keyof TextContextStyles | "scaleIcon" | "textProps" | "icon" | "iconAfter" | "noTextWrap" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
 } & ThemeableProps & {
@@ -276,10 +256,6 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
      * adjust internal space relative to icon size
      */
     scaleSpace?: number;
-    /**
-     * remove default styles
-     */
-    unstyled?: boolean;
 }, (HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TextContextStyles & {
     textProps?: Partial<import("@tamagui/text").SizableTextProps>;
     noTextWrap?: boolean;
@@ -306,15 +282,8 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
      * adjust internal space relative to icon size
      */
     scaleSpace?: number;
-    /**
-     * remove default styles
-     */
-    unstyled?: boolean;
 }, import("@tamagui/web").StackStyleBase, {
     color?: "unset" | import("@tamagui/web").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-    size?: number | import("@tamagui/web").Size | undefined;
-    variant?: "outlined" | undefined;
-    elevation?: number | import("@tamagui/web").Size | undefined;
     ellipsis?: boolean | "unset" | undefined;
     fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
     fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
@@ -322,20 +291,19 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
     fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
     letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
     maxFontSizeMultiplier?: number | undefined;
-    textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
+    textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
+    size?: number | false | import("@tamagui/web").Size | undefined;
+    elevation?: number | import("@tamagui/web").Size | undefined;
     disabled?: boolean | undefined;
-    unstyled?: boolean | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
+    variant?: "outlined" | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
 }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
     __tama: [Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
         color?: "unset" | import("@tamagui/web").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
-        variant?: "outlined" | undefined;
-        elevation?: number | import("@tamagui/web").Size | undefined;
         ellipsis?: boolean | "unset" | undefined;
         fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
         fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
@@ -343,15 +311,17 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
         fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
         letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
         maxFontSizeMultiplier?: number | undefined;
-        textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
+        textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
+        size?: number | false | import("@tamagui/web").Size | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
         disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
+        variant?: "outlined" | undefined;
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;
-    }>, keyof TextContextStyles | "unstyled" | "textProps" | "noTextWrap" | "icon" | "iconAfter" | "scaleIcon" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
+        chromeless?: boolean | "all" | undefined;
+    }>, keyof TextContextStyles | "scaleIcon" | "textProps" | "icon" | "iconAfter" | "noTextWrap" | keyof ThemeableProps | "spaceFlex" | "scaleSpace"> & TextContextStyles & {
         textProps?: Partial<import("@tamagui/text").SizableTextProps>;
         noTextWrap?: boolean;
     } & ThemeableProps & {
@@ -377,10 +347,6 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
          * adjust internal space relative to icon size
          */
         scaleSpace?: number;
-        /**
-         * remove default styles
-         */
-        unstyled?: boolean;
     }, (HTMLElement & import("@tamagui/web").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TextContextStyles & {
         textProps?: Partial<import("@tamagui/text").SizableTextProps>;
         noTextWrap?: boolean;
@@ -407,15 +373,8 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
          * adjust internal space relative to icon size
          */
         scaleSpace?: number;
-        /**
-         * remove default styles
-         */
-        unstyled?: boolean;
     }, import("@tamagui/web").StackStyleBase, {
         color?: "unset" | import("@tamagui/web").GetThemeValueForKey<"color"> | import("react-native").OpaqueColorValue | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
-        variant?: "outlined" | undefined;
-        elevation?: number | import("@tamagui/web").Size | undefined;
         ellipsis?: boolean | "unset" | undefined;
         fontFamily?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontFamily"> | undefined;
         fontSize?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontSize"> | undefined;
@@ -423,39 +382,36 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
         fontWeight?: "unset" | import("@tamagui/web").GetThemeValueForKey<"fontWeight"> | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | undefined;
         letterSpacing?: "unset" | import("@tamagui/web").GetThemeValueForKey<"letterSpacing"> | undefined;
         maxFontSizeMultiplier?: number | undefined;
-        textAlign?: "auto" | "unset" | "left" | "right" | "center" | "justify" | undefined;
+        textAlign?: "left" | "right" | "unset" | "auto" | "center" | "justify" | undefined;
+        size?: number | false | import("@tamagui/web").Size | undefined;
+        elevation?: number | import("@tamagui/web").Size | undefined;
         disabled?: boolean | undefined;
-        unstyled?: boolean | undefined;
         transparent?: boolean | undefined;
         circular?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
+        variant?: "outlined" | undefined;
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 } & {
-    Text: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | "variant" | "unstyled" | keyof import("@tamagui/web").TextStylePropsBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
+    Text: FunctionComponent<Omit<import("@tamagui/web").TextNonStyleProps, "size" | keyof import("@tamagui/web").TextStylePropsBase | "variant"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
         size?: import("@tamagui/web").FontSize | undefined;
         variant?: "outlined" | undefined;
-        unstyled?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase> & {
         size?: import("@tamagui/web").FontSize | undefined;
         variant?: "outlined" | undefined;
-        unstyled?: boolean | undefined;
     } & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").TextStylePropsBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSize | undefined;
         variant?: "outlined" | undefined;
-        unstyled?: boolean | undefined;
     }>> & {
         ref?: import("react").Ref<import("@tamagui/web").TamaguiTextElement> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
         size?: import("@tamagui/web").FontSize | undefined;
         variant?: "outlined" | undefined;
-        unstyled?: boolean | undefined;
     }, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
         __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/web").TamaguiTextElement, import("@tamagui/web").TextNonStyleProps, import("@tamagui/web").TextStylePropsBase, {
             size?: import("@tamagui/web").FontSize | undefined;
             variant?: "outlined" | undefined;
-            unstyled?: boolean | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     };
     Icon: (props: {
@@ -469,7 +425,7 @@ declare const Button: FunctionComponent<Omit<import("@tamagui/web").GetFinalProp
 declare function useButton<Props extends ButtonProps>({ textProps, ...propsIn }: Props, { Text }?: {
     Text: any;
 }): {
-    spaceSize: number | true | import("@tamagui/web").UnionableString | "unset" | import("@tamagui/web").Variable<any>;
+    spaceSize: number | true | import("@tamagui/web").UnionableString | import("@tamagui/web").Variable<any> | "unset";
     isNested: boolean;
     props: Props;
 };

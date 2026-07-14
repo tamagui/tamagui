@@ -11,6 +11,7 @@ import {
   writeFile,
 } from 'node:fs/promises'
 import path from 'node:path'
+import { createRequire } from 'node:module'
 import { pathToFileURL } from 'node:url'
 import { promisify } from 'node:util'
 import ts from 'typescript'
@@ -26,6 +27,8 @@ import { tamaguiPlugin } from '../src/plugin'
 
 const execFileAsync = promisify(execFile)
 const fixtureRoot = path.resolve(__dirname, 'fixtures/module-runner')
+const fixtureRequire = createRequire(path.join(fixtureRoot, 'package.json'))
+const coreResetPath = fixtureRequire.resolve('@tamagui/core/reset.css')
 const appPath = path.join(fixtureRoot, 'src/App.tsx')
 const resolutionPath = path.join(fixtureRoot, 'packages/workspace/src/resolution.ts')
 const configSpacePath = path.join(fixtureRoot, 'packages/workspace/src/config-space.ts')
@@ -419,6 +422,7 @@ afterEach(async () => {
     delete (globalThis as any).__tamaguiFixtureOneTsconfigPathsOrder
     delete (globalThis as any).__tamaguiFixtureOneConfigLifecycles
     delete (globalThis as any).__tamaguiFixtureOneTransformEnvironments
+    delete (globalThis as any).__tamaguiFixtureStyleMode
     await rm(path.join(fixtureRoot, 'node_modules'), { force: true, recursive: true })
     await rm(evaluationFixturePhysicalRuntimePath, { force: true, recursive: true })
     await rm(watchOutputRoot, { force: true, recursive: true })
@@ -442,6 +446,101 @@ test('clears loader state when closing an owned environment fails', async () => 
   expect(loader.getEnvironment()).toBeNull()
   expect(loader.getLoadPromise()).toBeNull()
   expect(loader.getTamaguiOptions()).toBeNull()
+})
+
+test('optimizes the core singleton with context-bearing Tamagui packages', async () => {
+  const server = await createServer({
+    configFile: false,
+    root: fixtureRoot,
+    logLevel: 'silent',
+    server: {
+      middlewareMode: true,
+    },
+    plugins: [
+      tamaguiPlugin({
+        config: 'tamagui.config.ts',
+        components: ['tamagui', '@tamagui/sheet'],
+        disable: true,
+        useReactNativeWebLite: true,
+      }),
+    ],
+  })
+  servers.push(server)
+
+  expect(server.config.optimizeDeps.include).toEqual(
+    expect.arrayContaining([
+      '@tamagui/core',
+      '@tamagui/web',
+      '@tamagui/sheet',
+      '@tamagui/sheet/controller',
+      '@react-native/normalize-color',
+    ])
+  )
+  expect(server.config.resolve.dedupe).toEqual(
+    expect.arrayContaining(['tamagui', '@tamagui/core', '@tamagui/web'])
+  )
+  expect(server.config.ssr.noExternal).toEqual(
+    expect.arrayContaining([
+      expect.any(RegExp),
+      'tamagui',
+      'react-native',
+      'react-native-web',
+    ])
+  )
+})
+
+test('layers the core reset only in hybrid style modes', async () => {
+  const transformReset = async (styleMode: 'tamagui' | 'tamagui-and-tailwind') => {
+    ;(globalThis as any).__tamaguiFixtureStyleMode = styleMode
+    let capturedReset = ''
+    const captureResetPlugin: Plugin = {
+      name: `fixture-capture-reset-${styleMode}`,
+      enforce: 'pre',
+      transform: {
+        order: 'post',
+        handler(code, id) {
+          if (path.resolve(id.split('?')[0]) === path.resolve(coreResetPath)) {
+            capturedReset = code
+          }
+        },
+      },
+    }
+    const server = await createServer({
+      configFile: false,
+      root: fixtureRoot,
+      logLevel: 'silent',
+      server: {
+        middlewareMode: true,
+        fs: {
+          allow: [path.dirname(coreResetPath)],
+        },
+      },
+      resolve: {
+        alias: fixtureAliases,
+      },
+      plugins: [
+        ...environmentSpecificCompilerPlugins('serve'),
+        ...fixturePlugins(undefined, true),
+        tamaguiPlugin({
+          components: directPackageFixtureComponents,
+          enableDynamicEvaluation: true,
+        }),
+        captureResetPlugin,
+      ],
+    })
+    servers.push(server)
+
+    const clientEnvironment = server.environments.client
+    await clientEnvironment.transformRequest(`/@fs${coreResetPath}`)
+    expect(capturedReset).toBeTruthy()
+    return capturedReset
+  }
+
+  const originalReset = await readFile(coreResetPath, 'utf8')
+  expect(await transformReset('tamagui')).toBe(originalReset)
+  expect(await transformReset('tamagui-and-tailwind')).toBe(
+    `@layer tamagui {\n${originalReset}\n}`
+  )
 })
 
 test('evaluates config and components through the app resolver and invalidates HMR', async () => {
@@ -640,6 +739,16 @@ test('evaluates config and components through the app resolver and invalidates H
   expect(cssRequest).toBeTruthy()
   const firstCss = await clientEnvironment.transformRequest(cssRequest!)
   expectMediaPaddingCss(firstCss?.code, 16)
+  const compiledTransform = await clientEnvironment.transformRequest('/src/Compiled.jsx')
+  expect(compiledTransform?.code).toMatch(/\("div",\s*\{\s*className:\s*"[^"]+"/)
+  expect(compiledTransform?.code).toMatch(/["']data-compiled["']:\s*["']yes["']/)
+  const compiledCssRequest = compiledTransform?.code.match(
+    /import "([^"]+\.tamagui\.css)"/
+  )?.[1]
+  expect(compiledCssRequest).toBeTruthy()
+  const compiledCss = await clientEnvironment.transformRequest(compiledCssRequest!)
+  expect(compiledCss?.code).toMatch(/\(\s*(?:width\s*>=|min-width\s*:)\s*16px\s*\)/)
+  expect(compiledCss?.code).toMatch(/padding-top\s*:\s*7px/)
   const absoluteCssRequest = `${fixtureRoot}/src/App.tsx.tamagui.css`
   const queryResolution = await clientEnvironment.pluginContainer.resolveId(
     `${absoluteCssRequest}?direct`
@@ -655,6 +764,9 @@ test('evaluates config and components through the app resolver and invalidates H
   ).toBeUndefined()
   const firstSsrTransform = await ssrEnvironment.transformRequest('/src/App.tsx')
   expect(firstSsrTransform?.code).toBeTruthy()
+  const compiledSsrTransform = await ssrEnvironment.transformRequest('/src/Compiled.jsx')
+  expect(compiledSsrTransform?.code).toMatch(/\("div",\s*\{\s*className:\s*"[^"]+"/)
+  expect(compiledSsrTransform?.code).not.toContain('.tamagui.css')
   await Promise.all([
     clientEnvironment.waitForRequestsIdle(),
     ssrEnvironment.waitForRequestsIdle(),
@@ -1157,7 +1269,7 @@ test('published declarations typecheck for a package consumer', async () => {
     path.resolve(__dirname, '../types/loadTamagui.d.ts'),
     'utf8'
   )
-  expect(pluginTypes).not.toContain('@tamagui/static-worker')
+  expect(pluginTypes).toContain('@tamagui/static')
   expect(loaderTypes).toContain('createViteTamaguiLoader')
   expect(loaderTypes).not.toContain('export declare function getTamaguiOptions')
 })

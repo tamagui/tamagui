@@ -20,7 +20,6 @@ import type {
   GetProps,
   GetStaticConfig,
   GetStyledVariants,
-  GetVariantValues,
   InferStyleProps,
   InferStyledProps,
   StackStyle,
@@ -37,6 +36,8 @@ import type {
   ThemeValueByCategory,
   ThemeValueGet,
   VariantDefinitions,
+  VariantResolverKey,
+  VariantResolverValue,
   VariantSpreadFunction,
 } from './types'
 import type { Text } from './views/Text'
@@ -51,9 +52,17 @@ type GetVariantAcceptedValues<V> = V extends object
   ? {
       [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val>
         ? Val
-        : GetVariantValues<keyof V[Key]>
+        : GetVariantAcceptedValue<keyof V[Key]>
     }
   : undefined
+
+type GetVariantAcceptedValue<Key> = Key extends 'true' | 'false'
+  ? boolean
+  : Key extends string
+    ? VariantResolverKey<Key> extends never
+      ? Key
+      : VariantResolverValue<Key>
+    : Key
 
 type NoInferLocal<T> = [T][T extends any ? 0 : never]
 type IsAny<T> = 0 extends 1 & T ? true : false
@@ -75,17 +84,35 @@ type InferStyledOptionsProps<
   : InferStyledProps<ParentComponent, StyledConfig> &
       GetStyledContextProps<Context, ContextPropKeys>
 
+type GetStyledOptionsAcceptedProps<
+  ParentComponent extends StylableComponent,
+  StyledConfig extends StaticConfigPublic,
+  Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
+  Context,
+  ContextPropKeys extends string,
+> = (Context extends undefined
+  ? Partial<InferStyledProps<ParentComponent, StyledConfig>>
+  : Partial<
+      InferStyledOptionsProps<ParentComponent, StyledConfig, Context, ContextPropKeys>
+    >) &
+  (AreVariantsUndefined<Variants> extends true
+    ? {}
+    : Partial<GetVariantAcceptedValues<Variants>>) &
+  GetStyledContextProps<Context, ContextPropKeys>
+
 export type StyledOptions<
   ParentComponent extends StylableComponent,
   StyledConfig extends StaticConfigPublic,
   Variants extends VariantDefinitions<ParentComponent, StyledConfig>,
   Context extends StyledContext<any> | undefined = undefined,
   ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>,
-> = (Context extends undefined
-  ? Partial<InferStyledProps<ParentComponent, StyledConfig>>
-  : Partial<
-      InferStyledOptionsProps<ParentComponent, StyledConfig, Context, ContextPropKeys>
-    >) & {
+> = GetStyledOptionsAcceptedProps<
+  ParentComponent,
+  StyledConfig,
+  Variants,
+  Context,
+  ContextPropKeys
+> & {
   name?: string
   variants?: Variants | undefined
   defaultVariants?: NoInferLocal<GetVariantAcceptedValues<NonNullable<Variants>>>
@@ -669,33 +696,6 @@ function styled<
 
   return component as any as StyledComponent
 }
-
-// sanity check types:
-
-// type YP = GetProps<typeof InputFrame>
-// type x = YP['onChangeText']
-// type x2 = YP['size']
-// const X = <InputFrame placeholder="red" hoverStyle={{}} />
-
-// import { Stack } from './views/Stack'
-// const X = styled(Stack, {
-//   variants: {
-//     size: {
-//       '...size': (val) => {
-//         return {
-//           pointerEvents: 'auto'
-//         }
-//       }
-//     },
-//     disabled: {
-//       true: {
-//         alignContent: 'center',
-//         opacity: 0.5,
-//         pointerEvents: 'none',
-//       },
-//     },
-//   } as const
-// })
 
 // // type variants = GetStyledVariants<typeof X>
 // const y = <X disabled size="$10" />

@@ -35,30 +35,19 @@ export const ToastItemFrame = styled(YStack, {
   userSelect: 'none',
   cursor: 'default',
   tabIndex: 0,
-
-  variants: {
-    unstyled: {
-      false: {
-        backgroundColor: '$background',
-        borderRadius: '$6',
-        paddingHorizontal: '$4',
-        paddingVertical: '$3',
-        borderWidth: 1,
-        borderColor: '$borderColor',
-        shadowColor: 'rgba(0, 0, 0, 0.15)',
-        shadowOffset: { width: 0, height: 4 },
-        shadowRadius: 12,
-        focusVisibleStyle: {
-          outlineWidth: 2,
-          outlineColor: '$color8',
-          outlineStyle: 'solid',
-        },
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  backgroundColor: '$background',
+  borderRadius: '$6',
+  paddingHorizontal: '$4',
+  paddingVertical: '$3',
+  borderWidth: 1,
+  borderColor: '$borderColor',
+  shadowColor: 'rgba(0, 0, 0, 0.15)',
+  shadowOffset: { width: 0, height: 4 },
+  shadowRadius: 12,
+  focusVisibleStyle: {
+    outlineWidth: 2,
+    outlineColor: '$color8',
+    outlineStyle: 'solid',
   },
 })
 
@@ -72,28 +61,17 @@ export const ToastCloseFrame = styled(XStack, {
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
-
-  variants: {
-    unstyled: {
-      false: {
-        width: 18,
-        height: 18,
-        borderRadius: '$10',
-        backgroundColor: '$background',
-        borderWidth: 1,
-        borderColor: '$borderColor',
-        shadowColor: 'rgba(0, 0, 0, 0.08)',
-        shadowOffset: { width: 0, height: 1 },
-        shadowRadius: 3,
-        hoverStyle: { backgroundColor: '$color3' },
-        pressStyle: { backgroundColor: '$color4' },
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  width: 18,
+  height: 18,
+  borderRadius: '$10',
+  backgroundColor: '$background',
+  borderWidth: 1,
+  borderColor: '$borderColor',
+  shadowColor: 'rgba(0, 0, 0, 0.08)',
+  shadowOffset: { width: 0, height: 1 },
+  shadowRadius: 3,
+  hoverStyle: { backgroundColor: '$color3' },
+  pressStyle: { backgroundColor: '$color4' },
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -106,23 +84,12 @@ export const ToastActionFrame = styled(XStack, {
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
-
-  variants: {
-    unstyled: {
-      false: {
-        borderRadius: '$2',
-        paddingHorizontal: '$2',
-        height: 24,
-        backgroundColor: '$color5',
-        hoverStyle: { backgroundColor: '$color6' },
-        pressStyle: { backgroundColor: '$color7' },
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  borderRadius: '$2',
+  paddingHorizontal: '$2',
+  height: 24,
+  backgroundColor: '$color5',
+  hoverStyle: { backgroundColor: '$color6' },
+  pressStyle: { backgroundColor: '$color7' },
 })
 
 /* -------------------------------------------------------------------------------------------------

@@ -2,7 +2,8 @@ import type { Provider } from '@supabase/auth-js'
 import { LogoIcon } from '@tamagui/logo'
 import type { FormEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
-import { Button, Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
+import { Input, Paragraph, Separator, Spinner, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Notice } from '~/components/Notice'
 import { useSupabase } from '~/features/auth/useSupabaseClient'
@@ -182,7 +183,7 @@ function SignIn() {
             type="submit"
             disabled={loading}
             onClick={() => handleOAuthSignIn('github')}
-            size="$4"
+            size="medium"
             icon={loading ? <Spinner size="small" /> : GithubIcon}
             opacity={loading ? 0.5 : 1}
           >

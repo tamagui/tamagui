@@ -101,20 +101,8 @@ const ContextRefButtonFrame = styled(ThemeableStack, {
 const ContextRefButtonText = styled(SizableText, {
   name: 'ContextRefButtonText',
   context: CustomButtonContext,
-
-  variants: {
-    // Using unstyled pattern like ButtonText does
-    unstyled: {
-      false: {
-        // This $color should reference the parent's color value from context
-        color: '$color',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: false,
-  },
+  // this $color should reference the parent's color value from context
+  color: '$color',
 })
 
 type CustomButtonProps = GetProps<typeof CustomButtonFrame> & {

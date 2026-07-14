@@ -3,8 +3,13 @@ import assert from 'node:assert/strict'
 import { TraceMap, originalPositionFor } from '@jridgewell/trace-mapping'
 import MagicString from 'magic-string'
 
-import { childNode, findAstNode, identifierName } from './ast'
-import type { AnalyzerCandidate } from './contracts'
+import {
+  childNode,
+  findAstNode,
+  identifierName,
+  textOfSpan,
+  type AnalyzerCandidate,
+} from '@tamagui/compiler-core'
 
 function lineAndColumn(source: string, offset: number): { line: number; column: number } {
   const prefix = source.slice(0, offset)
@@ -14,17 +19,26 @@ function lineAndColumn(source: string, offset: number): { line: number; column: 
 
 export function assertSpanEditSourceMap(candidate: AnalyzerCandidate, id: string): void {
   const source = candidate.sourceOf(id)
-  const attribute = findAstNode(candidate.programOf(id), (node) => {
-    if (node.type !== 'JSXAttribute') return false
-    return identifierName(childNode(node, 'name')) === 'padding'
+  const declarationIndex = source.indexOf('export const')
+  const declarationStart = declarationIndex === -1 ? 0 : declarationIndex
+  const editable = findAstNode(candidate.programOf(id), (node) => {
+    if (node.start < declarationStart) return false
+    if (node.type === 'JSXAttribute') {
+      return identifierName(childNode(node, 'name')) === 'padding'
+    }
+    if (node.type === 'Property' || node.type === 'ObjectProperty') {
+      return identifierName(childNode(node, 'key')) === 'padding'
+    }
+    return false
   })
-  const attributeName = attribute && childNode(attribute, 'name')
+  const editableName =
+    editable && childNode(editable, editable.type === 'JSXAttribute' ? 'name' : 'key')
   const unchangedStart = source.indexOf('config.padding')
   assert.ok(
-    attributeName,
+    editableName,
     `${candidate.name}: source-map fixture must contain a padding attribute`
   )
-  assert.equal(source.slice(attributeName.start, attributeName.end), 'padding')
+  assert.equal(textOfSpan(source, editableName), 'padding')
   assert.notEqual(
     unchangedStart,
     -1,
@@ -32,15 +46,17 @@ export function assertSpanEditSourceMap(candidate: AnalyzerCandidate, id: string
   )
 
   const edited = new MagicString(source)
-  edited.overwrite(attributeName.start, attributeName.end, 'paddingBlock')
+  const editStart = editableName.start
+  const editEnd = editableName.end
+  edited.overwrite(editStart, editEnd, 'paddingBlock')
   const code = edited.toString()
   const map = edited.generateMap({ source: id, includeContent: true, hires: true })
   const traced = new TraceMap(map.toString())
 
-  assert.match(code, /paddingBlock=\{config\.padding\}/)
+  assert.match(code, /paddingBlock/)
   const generatedEdit = lineAndColumn(code, code.indexOf('paddingBlock'))
   const originalEdit = originalPositionFor(traced, generatedEdit)
-  const expectedEdit = lineAndColumn(source, attributeName.start)
+  const expectedEdit = lineAndColumn(source, editStart)
   assert.deepEqual(
     {
       source: originalEdit.source,

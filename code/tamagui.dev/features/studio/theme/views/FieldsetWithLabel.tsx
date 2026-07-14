@@ -1,6 +1,7 @@
 import { Info } from '@tamagui/lucide-icons-2'
 import { useRef, useState } from 'react'
-import { Button, Heading, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
+import { Heading, Input, Paragraph, TooltipSimple, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 export type FieldsetWithLabelProps = {
   enableEditLabel?: boolean
@@ -97,12 +98,12 @@ export const FieldsetWithLabel = ({
                 }
               >
                 <Button
-                  size="$1"
+                  size="small"
                   scaleIcon={1.2}
                   ml="$2"
                   circular
                   rounded={100}
-                  chromeless
+                  variant="quiet"
                   icon={<Info color="$color9" />}
                   position="absolute"
                   t={0}

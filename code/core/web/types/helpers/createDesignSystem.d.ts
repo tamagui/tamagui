@@ -26,7 +26,7 @@ export declare function buildCSSRuleSets(declarations: string[], fontDeclaration
     declarations: string[];
     language?: string;
     fontParsed: any;
-}>, defaultSizeToken?: string): string[];
+}>, defaultFontSizeToken?: string): string[];
 /**
  * Generates theme CSS rules
  */
@@ -43,5 +43,5 @@ export declare function getCSS(themeConfig: ThemeConfig, opts: {
     exclude?: "themes" | "design-system" | string | null;
 } | undefined, lastIndex: {
     value: number;
-}): string;
+}, hybrid?: boolean): string;
 //# sourceMappingURL=createDesignSystem.d.ts.map

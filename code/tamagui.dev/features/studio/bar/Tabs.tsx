@@ -104,7 +104,6 @@ export const BarTabs = memo(function HeaderTabs({
         {tabs.map(({ component, value, hasChanges }) => (
           <Tabs.Tab
             key={value}
-            unstyled
             borderColor="transparent"
             px="$3"
             value={value}

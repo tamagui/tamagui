@@ -1,5 +1,6 @@
 import { Menu } from '@tamagui/menu'
-import { Button, ScrollView, YStack } from 'tamagui'
+import { ScrollView, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu dismiss-on-scroll test case
@@ -18,7 +19,7 @@ import { Button, ScrollView, YStack } from 'tamagui'
 const filler = (prefix: string) =>
   Array.from({ length: 30 }).map((_, i) => (
     <YStack key={`${prefix}-${i}`} height={40} justifyContent="center">
-      <Button size="$2" chromeless>
+      <Button size="small" variant="quiet">
         {prefix} row {i + 1}
       </Button>
     </YStack>
@@ -47,7 +48,7 @@ export function MenuDismissOnScrollCase() {
       >
         <Menu>
           <Menu.Trigger asChild>
-            <Button data-testid="menu-trigger" size="$4">
+            <Button data-testid="menu-trigger" size="medium">
               Open Menu
             </Button>
           </Menu.Trigger>
@@ -58,7 +59,7 @@ export function MenuDismissOnScrollCase() {
               minWidth={200}
               borderWidth={1}
               borderColor="$borderColor"
-              elevation="$3"
+              boxShadow="0 4px 12px $shadowColor"
               padding="$2"
             >
               <Menu.Item

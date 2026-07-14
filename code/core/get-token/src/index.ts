@@ -1,18 +1,18 @@
 import type { Variable, VariableValGeneric } from '@tamagui/web'
-import { getDefaultSizeToken, getTokens } from '@tamagui/web'
+import { getDefaultSizeToken, getDefaultToken, getTokens } from '@tamagui/web'
 
 // technically number | undefined just for compat with the generic VariableVal
 type GetTokenBase = Variable | string | number | boolean | undefined | VariableValGeneric
 
 // trivial same-key token resolver: token in, Variable out.
-// resolves `true` to the config's default size token, looks the key up in the
+// resolves `true` to the config's category default, looks the key up in the
 // requested scale, and passes through numbers / unknown keys unchanged.
 const resolveToken = (
   type: 'size' | 'space' | 'radius',
   input: GetTokenBase
 ): Variable<number> => {
   const tokens = getTokens({ prefixed: true })[type] as Record<string, Variable>
-  const resolved = input === true ? getDefaultSizeToken() : input
+  const resolved = input === true ? getDefaultToken(type) : input
   if (resolved == null) return resolved as any
   const key = typeof resolved === 'object' ? (resolved as Variable).key : String(resolved)
   return (tokens[key] ?? resolved) as any

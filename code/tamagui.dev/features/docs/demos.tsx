@@ -157,9 +157,6 @@ export const SwitchDemo = lazyDemo(() =>
 export const SwitchHeadlessDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/SwitchHeadlessDemo').then((x) => x.SwitchHeadlessDemo)
 )
-export const SwitchUnstyledDemo = lazyDemo(() =>
-  import('@tamagui/demos/demo/SwitchUnstyledDemo').then((x) => x.SwitchUnstyledDemo)
-)
 export const SliderDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/SliderDemo').then((x) => x.SliderDemo)
 )
@@ -196,9 +193,6 @@ export const CheckboxDemo = lazyDemo(() =>
 export const CheckboxHeadlessDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/CheckboxHeadlessDemo').then((x) => x.CheckboxHeadlessDemo)
 )
-export const CheckboxUnstyledDemo = lazyDemo(() =>
-  import('@tamagui/demos/demo/CheckboxUnstyledDemo').then((x) => x.CheckboxUnstyledDemo)
-)
 export const RadioGroupDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/RadioGroupDemo').then((x) => x.RadioGroupDemo)
 )
@@ -207,10 +201,8 @@ export const RadioGroupHeadlessDemo = lazyDemo(() =>
     (x) => x.RadioGroupHeadlessDemo
   )
 )
-export const RadioGroupUnstyledDemo = lazyDemo(() =>
-  import('@tamagui/demos/demo/RadioGroupUnstyledDemo').then(
-    (x) => x.RadioGroupUnstyledDemo
-  )
+export const RadioGroupCustomDemo = lazyDemo(() =>
+  import('@tamagui/demos/demo/RadioGroupCustomDemo').then((x) => x.RadioGroupCustomDemo)
 )
 
 export const MenuDemo = lazyDemo(() =>
@@ -221,6 +213,6 @@ export const ContextMenuDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/ContextMenuDemo').then((x) => x.ContextMenuDemo)
 )
 
-export const TabsHeadlessDemo = lazyDemo(() =>
-  import('@tamagui/demos/demo/TabsHeadlessDemo').then((x) => x.TabsHeadlessDemo)
+export const TabsCustomDemo = lazyDemo(() =>
+  import('@tamagui/demos/demo/TabsCustomDemo').then((x) => x.TabsCustomDemo)
 )

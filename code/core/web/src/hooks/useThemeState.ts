@@ -519,7 +519,7 @@ function getNewThemeName(
   forceUpdate = false
 ): string | null {
   const { name, reset } = props
-  const componentName = props.unstyled ? undefined : props.componentName
+  const { componentName } = props
 
   if (name && reset) {
     throw new Error(

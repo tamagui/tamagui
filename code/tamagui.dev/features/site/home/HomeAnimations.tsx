@@ -2,7 +2,6 @@ import { LogoIcon, useTint } from '@tamagui/logo'
 import { ArrowDown, Play } from '@tamagui/lucide-icons-2'
 import React, { memo, useEffect, useRef, useState } from 'react'
 import {
-  Button,
   ListItem,
   Paragraph,
   Separator,
@@ -12,6 +11,7 @@ import {
   useControllableState,
   useEvent,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { useIsIntersecting } from '~/hooks/useOnIntersecting'
@@ -111,7 +111,7 @@ export function HomeAnimations({ animationCode }: { animationCode: string }) {
                 aria-label="View more"
                 y={200}
                 iconAfter={ArrowDown}
-                size="$4"
+                size="medium"
                 theme="accent"
                 z={10}
                 onPress={() => setDisableScrollPane((prev) => !prev)}
@@ -300,7 +300,7 @@ export function AnimationsDemoBase(props) {
         l={20}
         icon={Play}
         theme={props.tint}
-        size="$5"
+        size="large"
         circular
         onPress={onPress}
       />

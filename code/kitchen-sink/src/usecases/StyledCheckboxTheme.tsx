@@ -4,6 +4,11 @@ import { Checkbox as TamaguiCheckbox, styled, withStaticProperties } from 'tamag
 export const Checkbox = withStaticProperties(
   styled(TamaguiCheckbox, {
     theme: 'green',
+    width: 20,
+    height: 20,
+    backgroundColor: '$background',
+    borderColor: '$borderColor',
+    borderWidth: 1,
   }),
   {
     Indicator() {

@@ -149,36 +149,21 @@ type DialogPortalProps = ScopedProps<
 export const DialogPortalFrame = styled(YStack, {
   pointerEvents: 'none',
   render: 'dialog',
-
-  variants: {
-    unstyled: {
-      false: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        inset: 0,
-
-        $web: {
-          // undo dialog styles
-          borderWidth: 0,
-          backgroundColor: 'transparent',
-          color: 'inherit',
-          maxInlineSize: 'none',
-          margin: 0,
-          width: 'auto',
-          height: 'auto',
-          // ensure always in frame and right height
-          maxHeight: '100vh',
-          position: 'fixed',
-          // ensure dialog inherits stacking context from portal wrapper
-          zIndex: 1,
-        },
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'absolute',
+  inset: 0,
+  $web: {
+    borderWidth: 0,
+    backgroundColor: 'transparent',
+    color: 'inherit',
+    maxInlineSize: 'none',
+    margin: 0,
+    width: 'auto',
+    height: 'auto',
+    maxHeight: '100vh',
+    position: 'fixed',
+    zIndex: 1,
   },
 })
 
@@ -389,6 +374,10 @@ const OVERLAY_NAME = 'DialogOverlay'
 export const DialogOverlayFrame = styled(YStack, {
   name: OVERLAY_NAME,
   zIndex: 1,
+  inset: 0,
+  position: 'absolute',
+  backgroundColor: '$background',
+  pointerEvents: 'auto',
 
   variants: {
     open: {
@@ -399,20 +388,7 @@ export const DialogOverlayFrame = styled(YStack, {
         pointerEvents: 'none',
       },
     },
-
-    unstyled: {
-      false: {
-        inset: 0,
-        position: 'absolute',
-        backgroundColor: '$background',
-        pointerEvents: 'auto',
-      },
-    },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export type DialogOverlayExtraProps = ScopedProps<{
@@ -480,26 +456,15 @@ const CONTENT_NAME = 'DialogContent'
 const DialogContentFrame = styled(ThemeableStack, {
   name: CONTENT_NAME,
   zIndex: 2,
-
-  variants: {
-    unstyled: {
-      false: {
-        position: 'relative',
-        backgroundColor: '$background',
-        borderWidth: 1,
-        borderColor: '$borderColor',
-        padding: true,
-        borderRadius: true,
-        elevate: true,
-        // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
-        pointerEvents: 'auto',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  position: 'relative',
+  backgroundColor: '$background',
+  borderWidth: 1,
+  borderColor: '$borderColor',
+  padding: true,
+  borderRadius: true,
+  elevate: true,
+  // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
+  pointerEvents: 'auto',
 })
 
 type DialogContentFrameProps = GetProps<typeof DialogContentFrame>
@@ -639,9 +604,7 @@ const DialogContentModal = createRefComponent<TamaguiElement, DialogContentTypeP
         onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) =>
           event.preventDefault()
         )}
-        {...(!props.unstyled && {
-          outlineStyle: 'none',
-        })}
+        outlineStyle="none"
       >
         {children}
       </DialogContentImpl>
@@ -883,30 +846,31 @@ export type DialogCloseExtraProps = ScopedProps<{
 
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps
 
-const DialogClose = createStyledHOC(DialogCloseFrame)<DialogCloseExtraProps>(
-  (props, forwardedRef) => {
-    const { scope, displayWhenAdapted, ...closeProps } = props
-    const context = useDialogContext(scope)
-    const isAdapted = useAdaptIsActive(context.adaptScope)
-    const isInsideButton = React.useContext(ButtonNestingContext)
+const DialogClose = createStyledHOC(DialogCloseFrame)<DialogCloseExtraProps>((
+  props,
+  forwardedRef
+) => {
+  const { scope, displayWhenAdapted, ...closeProps } = props
+  const context = useDialogContext(scope)
+  const isAdapted = useAdaptIsActive(context.adaptScope)
+  const isInsideButton = React.useContext(ButtonNestingContext)
 
-    if (isAdapted && !displayWhenAdapted) {
-      return null
-    }
-
-    return (
-      <DialogCloseFrame
-        aria-label="Dialog Close"
-        render={isInsideButton ? 'span' : 'button'}
-        {...closeProps}
-        ref={forwardedRef}
-        onPress={composeEventHandlers(props.onPress as any, () => {
-          context.onOpenChange(false)
-        })}
-      />
-    )
+  if (isAdapted && !displayWhenAdapted) {
+    return null
   }
-)
+
+  return (
+    <DialogCloseFrame
+      aria-label="Dialog Close"
+      render={isInsideButton ? 'span' : 'button'}
+      {...closeProps}
+      ref={forwardedRef}
+      onPress={composeEventHandlers(props.onPress as any, () => {
+        context.onOpenChange(false)
+      })}
+    />
+  )
+})
 
 /* -----------------------------------------------------------------------------------------------*/
 

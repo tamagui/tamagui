@@ -1,7 +1,6 @@
 import { useStoreSelector } from '@tamagui/use-store'
 import { memo, useEffect } from 'react'
 import {
-  Button,
   H4,
   Label,
   ScrollView,
@@ -11,6 +10,7 @@ import {
   YGroup,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { Select } from '../../../../../components/Select'
 import {
@@ -270,7 +270,7 @@ const ThemeBuilderComponentCard = memo(({ name }: { name: string }) => {
               {parts.map((part: any) => {
                 return (
                   <YStack key={part.name}>
-                    <Button size="$3">{part.name}</Button>
+                    <Button size="medium">{part.name}</Button>
                   </YStack>
                 )
               })}

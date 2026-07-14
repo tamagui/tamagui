@@ -4,7 +4,7 @@ import { themes, tokens as v5tokens } from '@tamagui/themes/v5'
 import type { CreateTamaguiProps } from '@tamagui/web'
 import { fonts as v5fonts } from './v5-fonts'
 import { media, mediaQueryDefaultActive } from './v5-media'
-import { selectionStyles, settings } from './v5-base'
+import { selectionStyles, settings as v5Settings } from './v5-base'
 import {
   tailwindColors,
   tailwindFontSize,
@@ -51,6 +51,19 @@ export const fonts = {
   body: withTailwindTypeScale(v5fonts.body),
   heading: withTailwindTypeScale(v5fonts.heading),
 } satisfies NonNullable<CreateTamaguiProps['fonts']>
+
+export const settings = {
+  ...v5Settings,
+  defaultSize: '$11',
+  defaultTokens: {
+    space: '$4',
+    radius: '$4',
+    zIndex: '$4',
+    fontSize: '$4',
+  },
+} satisfies CreateTamaguiProps['settings']
+
+export type V6Settings = typeof settings
 
 export const defaultConfig = {
   media,

@@ -1,6 +1,7 @@
 import React from 'react'
-import { Select, Label, YStack, XStack, Button } from 'tamagui'
-import { ChevronDown } from '@tamagui/lucide-icons-2'
+import { Label, YStack, XStack, View } from 'tamagui'
+import { Button } from '../components/Button'
+import { Select } from '../components/Select'
 
 // Render value helpers for SSR support
 const fruitsAndVeggiesLabels: Record<string, string> = {
@@ -42,8 +43,9 @@ export function SelectFocusScopeCase() {
           onValueChange={setValue1}
           renderValue={(v) => fruitsAndVeggiesLabels[v]}
         >
-          <Select.Trigger data-testid="basic-select-trigger" iconAfter={ChevronDown}>
+          <Select.Trigger data-testid="basic-select-trigger">
             <Select.Value placeholder="Select an option" />
+            <Select.Icon />
           </Select.Trigger>
 
           <Select.Content data-testid="basic-select-content">
@@ -91,8 +93,9 @@ export function SelectFocusScopeCase() {
           onValueChange={setValue2}
           renderValue={(v) => colorLabels[v]}
         >
-          <Select.Trigger data-testid="custom-select-trigger" iconAfter={ChevronDown}>
+          <Select.Trigger data-testid="custom-select-trigger">
             <Select.Value placeholder="Choose a color" />
+            <Select.Icon />
           </Select.Trigger>
 
           <Select.Content data-testid="custom-select-content">
@@ -147,11 +150,12 @@ export function SelectFocusScopeCase() {
           <Select
             value={value3}
             onValueChange={setValue3}
-            size="$3"
+            size="small"
             renderValue={(v) => sizeLabels[v]}
           >
-            <Select.Trigger data-testid="small-select-trigger" iconAfter={ChevronDown}>
+            <Select.Trigger data-testid="small-select-trigger">
               <Select.Value placeholder="Size" />
+              <Select.Icon />
             </Select.Trigger>
 
             <Select.Content data-testid="small-select-content">
@@ -185,8 +189,9 @@ export function SelectFocusScopeCase() {
           onValueChange={setValue4}
           renderValue={(v) => fruitsAndVeggiesLabels[v]}
         >
-          <Select.Trigger data-testid="default-select-trigger" iconAfter={ChevronDown}>
+          <Select.Trigger data-testid="default-select-trigger">
             <Select.Value placeholder="Select an option" />
+            <Select.Icon />
           </Select.Trigger>
 
           <Select.Content data-testid="default-select-content">
@@ -235,8 +240,9 @@ export function SelectFocusScopeCase() {
           lazyMount
           renderValue={(v) => fruitsAndVeggiesLabels[v]}
         >
-          <Select.Trigger data-testid="lazy-select-trigger" iconAfter={ChevronDown}>
+          <Select.Trigger data-testid="lazy-select-trigger">
             <Select.Value placeholder="Select an option" />
+            <Select.Icon />
           </Select.Trigger>
 
           <Select.Content data-testid="lazy-select-content">
@@ -267,4 +273,3 @@ export function SelectFocusScopeCase() {
 }
 
 // Add missing import
-import { View } from 'tamagui'

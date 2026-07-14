@@ -1,17 +1,17 @@
 import { Check, CheckCircle } from '@tamagui/lucide-icons-2'
 import type { CheckboxProps, RadioGroupItemProps } from 'tamagui'
 import {
-  Button,
   Checkbox,
   Label,
   Paragraph,
-  RadioGroup,
   Separator,
   XStack,
   YStack,
   isClient,
   styled,
 } from 'tamagui'
+import { Button } from '~/components/Button'
+import { RadioGroup } from '~/components/RadioGroup'
 import type { Database } from '~/features/supabase/types'
 import { getTakeoutPriceInfo } from './getProductInfo'
 
@@ -31,8 +31,8 @@ export const isSafariMobile = (() => {
 
 export function PurchaseButton({ children, fontFamily = '$mono', ...props }) {
   return (
-    <Button size="$6" rounded="$10" {...props}>
-      <Button.Text size="$6" fontFamily={fontFamily as any}>
+    <Button size="large" rounded="$10" {...props}>
+      <Button.Text size="large" fontFamily={fontFamily as any}>
         {children}
       </Button.Text>
     </Button>

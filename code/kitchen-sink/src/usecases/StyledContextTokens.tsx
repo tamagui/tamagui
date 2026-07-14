@@ -47,7 +47,7 @@ const GridChild = styled(View, {
   variants: {
     columns: {
       // Functional variant that uses context props
-      ':number': (columns, { props, tokens }) => {
+      number: (columns, { props, tokens }) => {
         const gapToken = props.gap as string
 
         // Test: gapToken should be '$2', '$4', or '$8' - NOT 'var(--t-space-X)'

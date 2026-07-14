@@ -1,20 +1,22 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, FormHTMLAttributes, HTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
 import type { GetRef } from './interfaces/GetRef';
-import type { CompoundVariantDefinition, GetBaseStyles, GetFinalProps, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, GetVariantValues, InferStyleProps, InferStyledProps, StackStyle, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, TamaguiComponentPropsBase, TextStyle, ThemeValueByCategory, VariantDefinitions, VariantSpreadFunction } from './types';
+import type { CompoundVariantDefinition, GetBaseStyles, GetFinalProps, GetNonStyledProps, GetProps, GetStaticConfig, GetStyledVariants, InferStyleProps, InferStyledProps, StackStyle, StaticConfigPublic, StylableComponent, StyledContext, TamaDefer, TamaguiComponent, TamaguiComponentPropsBase, TextStyle, ThemeValueByCategory, VariantDefinitions, VariantResolverKey, VariantResolverValue, VariantSpreadFunction } from './types';
 import type { Text } from './views/Text';
 export { createVariantResolver } from './types';
 type AreVariantsUndefined<Variants> = Required<Variants> extends {
     _isEmpty: 1;
 } ? true : false;
 type GetVariantAcceptedValues<V> = V extends object ? {
-    [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantValues<keyof V[Key]>;
+    [Key in keyof V]?: V[Key] extends VariantSpreadFunction<any, infer Val> ? Val : GetVariantAcceptedValue<keyof V[Key]>;
 } : undefined;
+type GetVariantAcceptedValue<Key> = Key extends 'true' | 'false' ? boolean : Key extends string ? VariantResolverKey<Key> extends never ? Key : VariantResolverValue<Key> : Key;
 type NoInferLocal<T> = [T][T extends any ? 0 : never];
 type IsAny<T> = 0 extends 1 & T ? true : false;
 type InferStyledOptionsProps<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Context, ContextPropKeys extends string> = ParentComponent extends {
     __tama: any;
 } ? GetFinalProps<GetNonStyledProps<ParentComponent>, GetBaseStyles<ParentComponent, StyledConfig>, StyledVariantsWithContext<GetStyledVariants<ParentComponent>, GetStyledContextVariantProps<ParentComponent, Context, ContextPropKeys>>> : InferStyledProps<ParentComponent, StyledConfig> & GetStyledContextProps<Context, ContextPropKeys>;
-export type StyledOptions<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>> = (Context extends undefined ? Partial<InferStyledProps<ParentComponent, StyledConfig>> : Partial<InferStyledOptionsProps<ParentComponent, StyledConfig, Context, ContextPropKeys>>) & {
+type GetStyledOptionsAcceptedProps<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context, ContextPropKeys extends string> = (Context extends undefined ? Partial<InferStyledProps<ParentComponent, StyledConfig>> : Partial<InferStyledOptionsProps<ParentComponent, StyledConfig, Context, ContextPropKeys>>) & (AreVariantsUndefined<Variants> extends true ? {} : Partial<GetVariantAcceptedValues<Variants>>) & GetStyledContextProps<Context, ContextPropKeys>;
+export type StyledOptions<ParentComponent extends StylableComponent, StyledConfig extends StaticConfigPublic, Variants extends VariantDefinitions<ParentComponent, StyledConfig>, Context extends StyledContext<any> | undefined = undefined, ContextPropKeys extends string = GetStyledContextDefaultKeys<Context>> = GetStyledOptionsAcceptedProps<ParentComponent, StyledConfig, Variants, Context, ContextPropKeys> & {
     name?: string;
     variants?: Variants | undefined;
     defaultVariants?: NoInferLocal<GetVariantAcceptedValues<NonNullable<Variants>>>;

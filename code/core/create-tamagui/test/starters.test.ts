@@ -13,7 +13,7 @@ describe('expo-router starter', () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf-8'))
     expect(pkg.dependencies['@tamagui/config']).toBe('workspace:*')
     expect(pkg.dependencies['tamagui']).toBe('workspace:*')
-    expect(pkg.devDependencies['@tamagui/babel-plugin']).toBe('workspace:*')
+    expect(pkg.devDependencies['@tamagui/metro-plugin']).toBe('workspace:*')
   })
 
   it('does not depend on @tamagui/cli', () => {
@@ -22,9 +22,10 @@ describe('expo-router starter', () => {
     expect(pkg.devDependencies?.['@tamagui/cli']).toBeUndefined()
   })
 
-  it('uses vanilla metro config', () => {
+  it('uses the shared Tamagui Metro compiler', () => {
     const metro = fs.readFileSync(path.join(dir, 'metro.config.js'), 'utf-8')
-    expect(metro).not.toContain('withTamagui')
+    expect(metro).toContain("require('@tamagui/metro-plugin')")
+    expect(metro).toContain('withTamagui(getDefaultConfig(__dirname)')
     expect(metro).toContain('getDefaultConfig')
   })
 

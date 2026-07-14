@@ -20,44 +20,22 @@ const VIEWPORT_RESUME = 'toast.viewportResume'
 
 const ToastViewportWrapperFrame = styled(YStack, {
   name: 'ViewportWrapper',
-
-  variants: {
-    unstyled: {
-      false: {
-        pointerEvents: 'box-none',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        position: isWeb ? ('fixed' as any) : 'absolute',
-        maxWidth: '100%',
-        tabIndex: 0,
-        zIndex: 100000,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  pointerEvents: 'box-none',
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  position: isWeb ? ('fixed' as any) : 'absolute',
+  maxWidth: '100%',
+  tabIndex: 0,
+  zIndex: 100000,
 })
 
 const ToastViewportFrame = styled(YStack, {
   name: VIEWPORT_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        pointerEvents: 'box-none',
-        position: isWeb ? ('fixed' as any) : 'absolute',
-        maxWidth: '100%',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  pointerEvents: 'box-none',
+  position: isWeb ? ('fixed' as any) : 'absolute',
+  maxWidth: '100%',
 })
 
 type ToastViewportFrameProps = GetProps<typeof ToastViewportFrame>

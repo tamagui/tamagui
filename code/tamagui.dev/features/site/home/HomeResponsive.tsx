@@ -15,7 +15,6 @@ import {
 } from 'react'
 import type { YStackProps } from 'tamagui'
 import {
-  Button,
   Circle,
   H3,
   H4,
@@ -31,6 +30,7 @@ import {
   useIsomorphicLayoutEffect,
   useMedia,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Container, ContainerLarge } from '~/components/Containers'
 import { useIsIntersecting } from '~/hooks/useOnIntersecting'
 import { useTransitionState } from '~/hooks/useTransitionState'
@@ -256,7 +256,7 @@ const Marker = memo(({ name, active, onPress, ...props }: any) => {
         <Button
           aria-label={`Responsive size ${name}`}
           borderWidth={1}
-          size="$3"
+          size="medium"
           circular
           position="absolute"
           t={0}

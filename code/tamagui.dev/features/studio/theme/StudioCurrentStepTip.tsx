@@ -1,6 +1,7 @@
 import { Lightbulb, X } from '@tamagui/lucide-icons-2'
 import { useEffect, useState } from 'react'
-import { Button, Popover, Theme } from 'tamagui'
+import { Popover, Theme } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 
@@ -31,8 +32,8 @@ export function StudioCurrentStepTip() {
   const button = (
     <Button
       cursor="default"
-      size="$2"
-      chromeless
+      size="small"
+      variant="quiet"
       scaleIcon={1.2}
       circular
       icon={Lightbulb}
@@ -59,7 +60,8 @@ export function StudioCurrentStepTip() {
           borderColor="$borderColor"
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
-          elevate
+          backgroundColor="$background"
+          boxShadow="0 4px 12px $shadowColor"
           maxW={500}
           transition={[
             'quickest',
@@ -70,12 +72,16 @@ export function StudioCurrentStepTip() {
             },
           ]}
         >
-          <Popover.Arrow borderWidth={2} borderColor="$borderColor" />
+          <Popover.Arrow
+            backgroundColor="$background"
+            borderWidth={2}
+            borderColor="$borderColor"
+          />
 
           <Tip />
 
           <Button
-            size="$2"
+            size="small"
             circular
             position="absolute"
             t="$-3"

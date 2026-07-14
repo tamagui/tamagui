@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { ScrollView as RNScrollView } from 'react-native'
-import { Button, Sheet, Text, YStack } from 'tamagui'
+import { Sheet, Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 import { getGestureHandler } from '@tamagui/native'
 
 /**
@@ -206,7 +207,7 @@ export function SheetScrollableDrag() {
               <Button
                 testID="sheet-scrollable-drag-add-items"
                 onPress={() => setItemCount((c) => c + 5)}
-                size="$3"
+                size="medium"
               >
                 Add 5 Items ({itemCount} total)
               </Button>

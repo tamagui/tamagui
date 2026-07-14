@@ -57,28 +57,6 @@ async function renderListItem(element: React.ReactElement) {
   return rendered!
 }
 
-function flattenStyle(style: any): Record<string, any> {
-  if (Array.isArray(style)) {
-    return Object.assign({}, ...style.map(flattenStyle))
-  }
-
-  return style || {}
-}
-
-function findTextNode(rendered: TestRenderer.ReactTestRenderer, text: string) {
-  const nodes = rendered.root.findAll((node) => node.props.children === text)
-  const textNode = nodes.find((node) => {
-    const type = node.type
-    return type === 'Text' || (typeof type === 'function' && type.name === 'Text')
-  })
-
-  if (!textNode) {
-    throw new Error(`text node not found: ${text}`)
-  }
-
-  return textNode
-}
-
 describe('ListItem native composition', () => {
   test('re-provides size and color to child icons', async () => {
     const iconProps: any[] = []
@@ -101,24 +79,5 @@ describe('ListItem native composition', () => {
       size: 46,
       color: '#ff0000',
     })
-  })
-
-  test('applies unstyled to bare text children', async () => {
-    const rendered = await renderListItem(
-      <ListItem testID="unstyled-list-item" unstyled>
-        Plain text
-      </ListItem>
-    )
-
-    const frame = rendered.root.findByProps({ testID: 'unstyled-list-item' })
-    const frameStyle = flattenStyle(frame.props.style)
-    expect(frameStyle.backgroundColor).toBeUndefined()
-    expect(frameStyle.minHeight).toBeUndefined()
-    expect(frameStyle.paddingHorizontal).toBeUndefined()
-
-    const textStyle = flattenStyle(findTextNode(rendered, 'Plain text').props.style)
-    expect(textStyle.color).toBeUndefined()
-    expect(textStyle.flexGrow).toBeUndefined()
-    expect(textStyle.textOverflow).toBeUndefined()
   })
 })

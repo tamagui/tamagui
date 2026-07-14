@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { Button, H4, Label, Paragraph, RadioGroup, XStack, YStack } from 'tamagui'
+import { H4, Label, Paragraph, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
+import { RadioGroup } from '~/components/RadioGroup'
 import { AccentTheme } from '../../components/AccentTheme'
 import { useDemoProps } from '../hooks/useDemoProps'
 const options = [
@@ -92,14 +94,14 @@ export const PricingCards = () => {
           </Paragraph>
         </Paragraph>
         <XStack gap="$2">
-          <Button flex={1} size="$5" {...demoProps.borderRadiusProps}>
+          <Button flex={1} size="large" {...demoProps.borderRadiusProps}>
             Cancel
           </Button>
 
           <AccentTheme>
             <Button
               flex={1}
-              size="$5"
+              size="large"
               {...demoProps.borderRadiusProps}
               {...demoProps.buttonOutlineProps}
             >

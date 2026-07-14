@@ -8,7 +8,7 @@ import {
   type ResolveVariableAs,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
-import { SizableContext } from '@tamagui/sizable-context'
+import { SizeContext } from '@tamagui/size'
 import {
   classifyCandidate,
   decodeArbitrary,
@@ -17,8 +17,6 @@ import {
 
 import type { FC } from 'react'
 import type { IconProps } from './IconProps'
-
-export { SizableContext }
 
 type Options = {
   noClass?: boolean
@@ -90,7 +88,7 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
   }
 
   const IconWrapper = (propsInRaw: IconProps) => {
-    const styledContext = SizableContext.useStyledContext()
+    const styledContext = SizeContext.useStyledContext()
     const theme = useTheme()
 
     // styleMode: reconstruct color/size from the icon's className (cheap no-op otherwise)
@@ -133,7 +131,7 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
 
     // v3: icon sizes resolve via the current font's size scale (font.size[token]),
     // so icons visually align with text at each size. raw numbers stay literal.
-    // context size (SizableContext, e.g. from Button/ListItem) resolves the same way.
+    // context size (for example from Button/ListItem) resolves the same way.
     const size =
       typeof sizeProp === 'number'
         ? sizeProp

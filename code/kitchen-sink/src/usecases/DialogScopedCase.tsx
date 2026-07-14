@@ -1,4 +1,5 @@
-import { Adapt, Button, Dialog, Input, Label, Sheet, XStack, YStack } from 'tamagui'
+import { Adapt, Dialog, Input, Label, Sheet, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 export function DialogScopedCase() {
   const shouldAdapt = window.location.search.includes('adapt=true')

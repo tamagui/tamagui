@@ -852,11 +852,6 @@ const PopoverContentImpl = createRefComponent<
         id={context.contentId}
         ref={forwardedRef}
         passThrough={context.breakpointActive}
-        {...(!contentProps.unstyled && {
-          size: true,
-          backgroundColor: '$background',
-          alignItems: 'center',
-        })}
         {...contentProps}
       >
         <PortalAdaptSafe context={context}>{contents}</PortalAdaptSafe>

@@ -31,20 +31,9 @@ const INDICATOR_NAME = 'ProgressIndicator'
 
 export const ProgressIndicatorFrame = styled(YStack, {
   name: INDICATOR_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        height: '100%',
-        width: '100%',
-        backgroundColor: '$background',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  height: '100%',
+  width: '100%',
+  backgroundColor: '$background',
 })
 
 export type ProgressIndicatorProps = GetProps<typeof ProgressIndicatorFrame>
@@ -80,11 +69,8 @@ const ProgressIndicator = createStyledHOC(ProgressIndicatorFrame)(
         data-max={context.max}
         x={x}
         width="200%"
-        {...(!props.unstyled && {
-          animateOnly: ['transform'],
-          // on native, hide until we have width measurement
-          ...(!isWeb && context.width === 0 && { opacity: 0 }),
-        })}
+        animateOnly={['transform']}
+        {...(!isWeb && context.width === 0 && { opacity: 0 })}
         {...indicatorProps}
         ref={forwardedRef}
         transition={!isWeb && !context.width ? null : transition}
@@ -130,18 +116,13 @@ type ProgressState = 'indeterminate' | 'complete' | 'loading'
 
 export const ProgressFrame = styled(YStack, {
   name: 'Progress',
+  borderRadius: 100_000,
+  overflow: 'hidden',
+  backgroundColor: '$background',
 
   variants: {
-    unstyled: {
-      false: {
-        borderRadius: 100_000,
-        overflow: 'hidden',
-        backgroundColor: '$background',
-      },
-    },
-
     size: {
-      '...size': (val) => {
+      Size: (val) => {
         const size = Math.round(getVariableValue(getSize(val)) * 0.25)
         return {
           height: size,
@@ -151,10 +132,6 @@ export const ProgressFrame = styled(YStack, {
       },
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export interface ProgressExtraProps {
@@ -197,9 +174,7 @@ const Progress = withStaticProperties(
             data-state={getProgressState(value, max)}
             data-value={value ?? undefined}
             data-max={max}
-            {...(progressProps.unstyled !== true && {
-              size,
-            })}
+            size={size}
             {...progressProps}
             {...(!isWeb && {
               onLayout: (e) => {

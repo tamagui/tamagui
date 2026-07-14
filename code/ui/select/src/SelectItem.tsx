@@ -1,8 +1,8 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { createStyledHOC, createStyledContext } from '@tamagui/core'
-import type { ListItemProps } from '@tamagui/list-item'
-import { ListItem } from '@tamagui/list-item'
+import { createStyledHOC, createStyledContext, styled, View } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
+import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
 import { useSelectItemParentContext } from './context'
 import type { SelectScopedProps } from './types'
@@ -32,9 +32,17 @@ export interface SelectItemExtraProps {
 }
 
 export interface SelectItemProps
-  extends Omit<ListItemProps, keyof SelectItemExtraProps>, SelectItemExtraProps {}
+  extends
+    Omit<GetProps<typeof SelectItemFrame>, keyof SelectItemExtraProps>,
+    SelectItemExtraProps {}
 
-export const SelectItem = createStyledHOC(ListItem.Frame)<SelectItemExtraProps>(
+export const SelectItemFrame = styled(View, {
+  name: ITEM_NAME,
+  alignItems: 'center',
+  flexDirection: 'row',
+})
+
+export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>(
   function SelectItem(props: SelectScopedProps<SelectItemProps>, forwardedRef) {
     const {
       scope,
@@ -62,13 +70,13 @@ export const SelectItem = createStyledHOC(ListItem.Frame)<SelectItemExtraProps>(
       dataRef,
       interactions,
       shouldRenderWebNative,
-      size,
       onActiveChange,
       initialValue,
       setActiveIndexFast,
     } = context
 
     const [isSelected, setSelected] = React.useState(initialValue === value)
+    const pendingMouseUpSelectionRef = React.useRef(false)
 
     // set initial selectedIndex when this item matches the initial value
     useIsomorphicLayoutEffect(() => {
@@ -127,78 +135,125 @@ export const SelectItem = createStyledHOC(ListItem.Frame)<SelectItemExtraProps>(
     }, [index, setValueAtIndex, value])
 
     function handleSelect() {
+      if (disabled) return
       setSelectedIndex(index)
       onChange(value)
       setOpen(false)
     }
 
     const selectItemProps = React.useMemo(() => {
-      return interactions
-        ? interactions.getItemProps({
-            onTouchMove() {
-              allowSelectRef!.current = true
-              allowMouseUpRef!.current = false
-            },
-            onTouchEnd() {
-              allowSelectRef!.current = false
-              allowMouseUpRef!.current = true
-            },
-            onKeyDown(event) {
-              if (
-                event.key === 'Enter' ||
-                (event.key === ' ' && !dataRef?.current.typing)
-              ) {
-                event.preventDefault()
-                handleSelect()
-              } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-                // prevent default and stop propagation so floating-ui doesn't also handle
-                event.preventDefault()
-                event.stopPropagation()
-                const itemCount = listRef?.current.length ?? 0
-                if (itemCount === 0) return
+      if (interactions) {
+        const {
+          onTouchMove,
+          onTouchEnd,
+          onKeyDown,
+          onClick,
+          onMouseUp,
+          onPress,
+          ...itemProps
+        } = restProps
+        const interactionProps = interactions.getItemProps({
+          ...itemProps,
+          onTouchMove() {
+            allowSelectRef!.current = true
+            allowMouseUpRef!.current = false
+          },
+          onTouchEnd() {
+            allowSelectRef!.current = false
+            allowMouseUpRef!.current = true
+          },
+          onKeyDown(event) {
+            if (disabled) return
+            if (
+              event.key === 'Enter' ||
+              (event.key === ' ' && !dataRef?.current.typing)
+            ) {
+              event.preventDefault()
+              handleSelect()
+            } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+              // prevent default and stop propagation so floating-ui doesn't also handle
+              event.preventDefault()
+              event.stopPropagation()
+              const itemCount = listRef?.current.length ?? 0
+              if (itemCount === 0) return
 
-                let nextIndex: number
-                if (event.key === 'ArrowDown') {
-                  nextIndex = index + 1 >= itemCount ? 0 : index + 1
-                } else {
-                  nextIndex = index - 1 < 0 ? itemCount - 1 : index - 1
-                }
-                // use fast setter to avoid triggering state updates that reset activeIndex
-                setActiveIndexFast?.(nextIndex)
+              let nextIndex: number
+              if (event.key === 'ArrowDown') {
+                nextIndex = index + 1 >= itemCount ? 0 : index + 1
               } else {
-                allowSelectRef!.current = true
+                nextIndex = index - 1 < 0 ? itemCount - 1 : index - 1
               }
-            },
+              // use fast setter to avoid triggering state updates that reset activeIndex
+              setActiveIndexFast?.(nextIndex)
+            } else {
+              allowSelectRef!.current = true
+            }
+          },
+          onClick() {
+            if (disabled) return
+            const shouldSelect =
+              pendingMouseUpSelectionRef.current || allowSelectRef!.current
+            pendingMouseUpSelectionRef.current = false
+            clearTimeout(selectTimeoutRef!.current)
+            allowSelectRef!.current = true
+            if (shouldSelect) {
+              handleSelect()
+            }
+          },
+          onMouseUp() {
+            if (disabled) return
+            if (!allowMouseUpRef!.current) {
+              // Re-enable mouseup and selection for subsequent interactions
+              allowMouseUpRef!.current = true
+              allowSelectRef!.current = true
+              return
+            }
 
-            onClick() {
-              if (allowSelectRef!.current) {
+            pendingMouseUpSelectionRef.current = allowSelectRef!.current
+
+            // A normal click follows mouseup synchronously. Defer the drag-release
+            // fallback so the caller's onClick runs before selection closes the item.
+            clearTimeout(selectTimeoutRef!.current)
+            selectTimeoutRef!.current = setTimeout(() => {
+              allowSelectRef!.current = true
+              if (pendingMouseUpSelectionRef.current) {
+                pendingMouseUpSelectionRef.current = false
                 handleSelect()
               }
-            },
+            })
+          },
+        } as any)
 
-            onMouseUp() {
-              if (!allowMouseUpRef!.current) {
-                // Re-enable mouseup and selection for subsequent interactions
-                allowMouseUpRef!.current = true
-                allowSelectRef!.current = true
-                return
-              }
-
-              if (allowSelectRef!.current) {
-                handleSelect()
-              }
-
-              // On touch devices, prevent the element from
-              // immediately closing `onClick` by deferring it
+        return {
+          ...interactionProps,
+          onTouchMove: composeEventHandlers(
+            onTouchMove as any,
+            interactionProps.onTouchMove
+          ),
+          onTouchEnd: composeEventHandlers(
+            onTouchEnd as any,
+            interactionProps.onTouchEnd
+          ),
+          onKeyDown: composeEventHandlers(onKeyDown as any, interactionProps.onKeyDown),
+          onClick(event: any) {
+            onClick?.(event)
+            if (event.defaultPrevented) {
+              pendingMouseUpSelectionRef.current = false
               clearTimeout(selectTimeoutRef!.current)
-              selectTimeoutRef!.current = setTimeout(() => {
-                allowSelectRef!.current = true
-              })
-            },
-          })
-        : {
-            onPress: handleSelect,
-          }
+              allowSelectRef!.current = true
+              return
+            }
+            interactionProps.onClick?.(event)
+          },
+          onMouseUp: composeEventHandlers(onMouseUp as any, interactionProps.onMouseUp),
+          onPress,
+        }
+      }
+
+      return {
+        ...restProps,
+        onPress: composeEventHandlers(restProps.onPress as any, handleSelect),
+      }
     }, [handleSelect, index, listRef, setActiveIndexFast])
 
     return (
@@ -209,11 +264,12 @@ export const SelectItem = createStyledHOC(ListItem.Frame)<SelectItemExtraProps>(
         isSelected={isSelected}
       >
         {shouldRenderWebNative ? (
-          <option value={value}>{props.children}</option>
+          <option value={value} disabled={disabled}>
+            {props.children}
+          </option>
         ) : (
-          <ListItem.Frame
+          <SelectItemFrame
             render="div"
-            componentName={ITEM_NAME}
             ref={composedRefs}
             role="option"
             aria-labelledby={textId}
@@ -222,31 +278,7 @@ export const SelectItem = createStyledHOC(ListItem.Frame)<SelectItemExtraProps>(
             aria-disabled={disabled || undefined}
             data-disabled={disabled ? '' : undefined}
             tabIndex={disabled ? undefined : -1}
-            {...(!props.unstyled && {
-              cursor: 'default',
-              size,
-              outlineOffset: -0.5,
-              zIndex: 100,
-
-              hoverStyle: {
-                backgroundColor: '$backgroundHover',
-              },
-
-              pressStyle: {
-                backgroundColor: '$backgroundPress',
-              },
-
-              focusStyle: {
-                backgroundColor: '$backgroundFocus',
-              },
-
-              focusVisibleStyle: {
-                outlineColor: '$outlineColor',
-                outlineWidth: 1,
-                outlineStyle: 'solid',
-              },
-            })}
-            {...restProps}
+            zIndex={100}
             {...selectItemProps}
           />
         )}

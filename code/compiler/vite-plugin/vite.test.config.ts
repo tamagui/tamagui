@@ -4,6 +4,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   resolve: {
     alias: {
+      '@tamagui/compiler-core': path.resolve(__dirname, '../compiler-core/src/index.ts'),
       '@tamagui/static': path.resolve(__dirname, '../static/src/index.ts'),
     },
   },

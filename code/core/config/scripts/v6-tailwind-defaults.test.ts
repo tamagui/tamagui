@@ -10,6 +10,7 @@ import {
   tailwindSpace,
   tailwindZIndex,
 } from '../src/v6-tailwind-defaults.generated'
+import { settings } from '../src/v6-base'
 import {
   PLAYWRIGHT_VERSION,
   TAILWIND_VERSION,
@@ -19,6 +20,18 @@ import {
 } from './generate-v6-tailwind-defaults'
 
 describe('v6 Tailwind defaults provenance', () => {
+  test('component and category defaults preserve the v5 control geometry', () => {
+    expect(settings).toMatchObject({
+      defaultSize: '$11',
+      defaultTokens: {
+        space: '$4',
+        radius: '$4',
+        zIndex: '$4',
+        fontSize: '$4',
+      },
+    })
+  })
+
   test('the generated metadata matches both exact canonical toolchain inputs', () => {
     const source = readPinnedTailwindSource()
     expect(tailwindSource).toEqual({

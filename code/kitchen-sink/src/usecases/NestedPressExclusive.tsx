@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Pressable, ScrollView } from 'react-native'
-import { Button, Text, YStack, XStack } from 'tamagui'
+import { Text, YStack, XStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Test case for nested press exclusivity:
@@ -102,7 +103,7 @@ export function NestedPressExclusive() {
             <Text testID="child-press-out-count">Child out: {childPressOutCount}</Text>
           </XStack>
           <Text testID="last-pressed">Last pressed: {lastPressed}</Text>
-          <Button testID="nested-press-reset" size="$3" onPress={resetCounts}>
+          <Button testID="nested-press-reset" size="medium" onPress={resetCounts}>
             Reset counts
           </Button>
         </YStack>
@@ -125,14 +126,14 @@ function NestedTamaguiTest() {
     <YStack gap="$2">
       <Button
         testID="outer-tamagui-button"
-        size="$5"
+        size="large"
         onPress={() => setOuterCount((c) => c + 1)}
       >
         <YStack alignItems="center">
           <Text>Outer Tamagui Button</Text>
           <Button
             testID="inner-tamagui-button"
-            size="$3"
+            size="medium"
             onPress={() => setInnerCount((c) => c + 1)}
           >
             Inner Button

@@ -21,6 +21,7 @@ import {
 import {
   borderSideSuffix,
   classifyCandidate,
+  createGrammarConfigView,
   decodeArbitrary,
   getTokenCategory,
   hasTokenName,
@@ -76,6 +77,7 @@ import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertS
 import { isActivePlatform, getPlatformSpecificityBump } from './isActivePlatform'
 import { isActiveTheme } from './isActiveTheme'
 import { log } from './log'
+import { mergeProps } from './mergeProps'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { propMapper } from './propMapper'
 import {
@@ -346,6 +348,8 @@ function isTailwindModeEnabled(config: TamaguiInternalConfig): boolean {
   return false
 }
 
+const warnedNativePassthroughCandidates = new Set<string>()
+
 /**
  * Preprocess Tailwind-style className strings into flat props.
  * Transforms syntax like className="hover:bg-$blue5 sm:p-$4" into flat props.
@@ -355,9 +359,10 @@ function isTailwindModeEnabled(config: TamaguiInternalConfig): boolean {
 function preprocessTailwindClassName(
   props: Record<string, any>,
   shorthands: Record<string, string>,
-  config: TamaguiInternalConfig
+  config: TamaguiInternalConfig,
+  force = false
 ): Record<string, any> {
-  if (!isTailwindModeEnabled(config)) {
+  if (!force && !isTailwindModeEnabled(config)) {
     return props
   }
 
@@ -376,6 +381,18 @@ function preprocessTailwindClassName(
   for (const cls of classes) {
     const classification = classifyCandidate(cls, grammarConfig)
     if (classification.kind === 'passthrough') {
+      if (!isWeb) {
+        if (
+          process.env.NODE_ENV !== 'production' &&
+          !warnedNativePassthroughCandidates.has(cls)
+        ) {
+          warnedNativePassthroughCandidates.add(cls)
+          console.warn(
+            `[tamagui] Tailwind candidate "${cls}" is web-only and was dropped on native. Use a Tamagui grammar candidate or a native style prop for cross-platform output.`
+          )
+        }
+        continue
+      }
       regularClasses.push(cls)
       continue
     }
@@ -421,6 +438,79 @@ function preprocessTailwindClassName(
   }
 
   return result
+}
+
+export function parseStaticStyle(
+  input: string,
+  config: TamaguiInternalConfig = getConfig()
+) {
+  const { shorthands } = config
+  return preprocessFlatProps(
+    preprocessTailwindClassName({ className: input }, shorthands, config, true),
+    shorthands,
+    config,
+    true
+  )
+}
+
+const normalizedStaticConfigCache = new WeakMap<
+  StaticConfig,
+  WeakMap<TamaguiInternalConfig, StaticConfig>
+>()
+const normalizedStaticConfigs = new WeakSet<StaticConfig>()
+
+export function normalizeStaticConfigStyles(
+  staticConfig: StaticConfig,
+  config: TamaguiInternalConfig = getConfig()
+) {
+  if (normalizedStaticConfigs.has(staticConfig)) {
+    return staticConfig
+  }
+  let configCache = normalizedStaticConfigCache.get(staticConfig)
+  const cached = configCache?.get(config)
+  if (cached) return cached
+
+  let variants = staticConfig.variants
+  if (variants) {
+    variants = Object.fromEntries(
+      Object.entries(variants).map(([variantName, definition]) => [
+        variantName,
+        typeof definition === 'object' && definition
+          ? Object.fromEntries(
+              Object.entries(definition).map(([matcher, value]) => [
+                matcher,
+                typeof value === 'string' ? parseStaticStyle(value, config) : value,
+              ])
+            )
+          : definition,
+      ])
+    )
+  }
+
+  const compoundVariants = staticConfig.compoundVariants?.map((compoundVariant) => ({
+    ...compoundVariant,
+    style:
+      typeof compoundVariant.style === 'string'
+        ? parseStaticStyle(compoundVariant.style, config)
+        : compoundVariant.style,
+  }))
+
+  const normalized: StaticConfig = {
+    ...staticConfig,
+    baseStyle: staticConfig.baseClassName
+      ? parseStaticStyle(staticConfig.baseClassName, config)
+      : staticConfig.baseStyle,
+    variants,
+    compoundVariants,
+  }
+  normalizedStaticConfigs.add(normalized)
+  configCache ||= new WeakMap()
+  configCache.set(config, normalized)
+  normalizedStaticConfigCache.set(staticConfig, configCache)
+  const normalizedConfigCache = new WeakMap<TamaguiInternalConfig, StaticConfig>()
+  normalizedConfigCache.set(config, normalized)
+  normalizedStaticConfigCache.set(normalized, normalizedConfigCache)
+  return normalized
 }
 
 // marks props that already went through the styleMode preprocessing, so getSplitStyles
@@ -476,53 +566,11 @@ function getThemeValueKeys(config: TamaguiInternalConfig): Set<string> {
 
 const styleGrammarConfigCache = new WeakMap<TamaguiInternalConfig, GrammarConfigView>()
 
-function addNames(target: Set<string>, source: Record<string, any> | undefined): void {
-  if (!source) return
-  for (const key in source) target.add(key[0] === '$' ? key.slice(1) : key)
-}
-
 function getStyleGrammarConfig(config: TamaguiInternalConfig): GrammarConfigView {
   const cached = styleGrammarConfigCache.get(config)
   if (cached) return cached
 
-  const tokenNames: NonNullable<GrammarConfigView['tokenNames']> = {
-    space: new Set<string>(),
-    size: new Set<string>(),
-    radius: new Set<string>(),
-    zIndex: new Set<string>(),
-    color: new Set<string>(),
-    fontFamily: new Set<string>(),
-    fontSize: new Set<string>(),
-    lineHeight: new Set<string>(),
-    letterSpacing: new Set<string>(),
-  }
-  for (const category of ['space', 'size', 'radius', 'zIndex', 'color'] as const) {
-    addNames(tokenNames[category] as Set<string>, config.tokensParsed?.[category])
-  }
-  for (const value of getThemeValueKeys(config)) {
-    ;(tokenNames.color as Set<string>).add(value)
-  }
-  for (const familyName in config.fontsParsed) {
-    ;(tokenNames.fontFamily as Set<string>).add(
-      familyName[0] === '$' ? familyName.slice(1) : familyName
-    )
-    const font = config.fontsParsed[familyName]
-    addNames(tokenNames.fontSize as Set<string>, font?.size)
-    addNames(tokenNames.lineHeight as Set<string>, font?.lineHeight)
-    addNames(tokenNames.letterSpacing as Set<string>, font?.letterSpacing)
-  }
-
-  const platformNames = new Set<string>()
-  for (const key of platformMediaKeys) {
-    platformNames.add(key[0] === '$' ? key.slice(1) : key)
-  }
-  const view: GrammarConfigView = {
-    shorthands: config.shorthands,
-    mediaNames: config.media,
-    themeNames: config.themes,
-    platformNames,
-    tokenNames,
-  }
+  const view = createGrammarConfigView(config, { platformNames: platformMediaKeys })
   styleGrammarConfigCache.set(config, view)
   return view
 }
@@ -821,10 +869,10 @@ function tailwindClassToFlatProp(
 function preprocessFlatProps(
   props: Record<string, any>,
   shorthands: Record<string, string>,
-  config: TamaguiInternalConfig
+  config: TamaguiInternalConfig,
+  force = false
 ): Record<string, any> {
-  // these $-props are only produced when tailwind mode is enabled
-  if (!isTailwindModeEnabled(config)) {
+  if (!force && !isTailwindModeEnabled(config)) {
     return props
   }
 
@@ -1070,6 +1118,7 @@ export const getSplitStyles: StyleSplitter = (
   animationDriver
 ) => {
   const conf = getConfig()
+  staticConfig = normalizeStaticConfigStyles(staticConfig, conf)
   // use passed animationDriver or fall back to context/config
   const driver =
     animationDriver ||
@@ -1117,7 +1166,7 @@ export const getSplitStyles: StyleSplitter = (
   let dynamicThemeAccess: boolean | undefined
   let pseudoGroups: Set<string> | undefined
   let mediaGroups: Set<string> | undefined
-  let className = (props.className as string) || '' // existing classNames
+  let className = ''
   let mediaStylesSeen = 0
 
   const validStyles =
@@ -1220,7 +1269,15 @@ export const getSplitStyles: StyleSplitter = (
       conf
     )
   }
-  const processedBaseProps = preprocessLayer(styleProps.baseProps)
+  const { className: baseClassName, ...processedBaseClassProps } =
+    staticConfig.baseStyle || {}
+  if (baseClassName) {
+    className = `${baseClassName} ${className}`.trim()
+  }
+  const processedDefaultProps = preprocessLayer(styleProps.baseProps)
+  const processedBaseProps = processedBaseClassProps
+    ? mergeProps(processedBaseClassProps, processedDefaultProps || {})
+    : processedDefaultProps
   const processedCallerProps = preprocessLayer(styleProps.callerProps)
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
@@ -1284,7 +1341,12 @@ export const getSplitStyles: StyleSplitter = (
       }
     }
 
-    if (keyInit === 'className') continue // handled above first
+    if (keyInit === 'className') {
+      if (typeof valInit === 'string' && valInit) {
+        className = `${className} ${valInit}`.trim()
+      }
+      continue
+    }
 
     // when asChild, skip default props - they shouldn't be passed down to children
     if (asChild) {
@@ -1512,10 +1574,8 @@ export const getSplitStyles: StyleSplitter = (
         console.groupEnd()
       }
 
-      // if it's a variant here, we have a two layer variant...
-      // aka styled(Input, { unstyled: true, variants: { unstyled: {} } })
-      // which now has it's own unstyled + the child unstyled...
-      // so *don't* skip applying the styles if its different from the parent one
+      // a styled child can pass through a parent variant and define the same key
+      // itself, so keep applying its own definition when the variants differ
       if (!isVariant) {
         continue
       }
@@ -1553,6 +1613,13 @@ export const getSplitStyles: StyleSplitter = (
 
     propMapper(keyInit, valInit, styleState, disablePropMap, (key, val, originalVal) => {
       const isStyledContextProp = styledContext && key in styledContext
+
+      if (key === 'className') {
+        if (typeof val === 'string' && val) {
+          className = `${className} ${val}`.trim()
+        }
+        return
+      }
 
       if (!isHOC && disablePropMap && !isStyledContextProp && !isMediaOrPseudo) {
         viewProps[key] = val

@@ -366,6 +366,83 @@ describe('TS-style variant resolvers', () => {
     expect(booleanFirstSeen).toBe(true)
   })
 
+  test('true resolves through the matched category and exact true stays raw', () => {
+    configure({
+      defaultSize: '$4',
+      defaultTokens: {
+        space: '$1',
+        radius: '$2',
+        zIndex: '$1',
+        fontSize: '$1',
+      },
+    })
+
+    try {
+      const seen: Record<string, unknown> = {}
+      const Comp = styled(View, {
+        variants: {
+          sizeValue: {
+            Size: (value) => {
+              seen.size = value
+              return { opacity: 0.1 }
+            },
+          },
+          spaceValue: {
+            Space: (value) => {
+              seen.space = value
+              return { opacity: 0.2 }
+            },
+          },
+          radiusValue: {
+            Radius: (value) => {
+              seen.radius = value
+              return { opacity: 0.3 }
+            },
+          },
+          zIndexValue: {
+            ZIndex: (value) => {
+              seen.zIndex = value
+              return { opacity: 0.4 }
+            },
+          },
+          fontSizeValue: {
+            FontSize: (value) => {
+              seen.fontSize = value
+              return { opacity: 0.5 }
+            },
+          },
+          fanoutValue: {
+            true: (value) => {
+              seen.fanout = value
+              return { opacity: 0.6 }
+            },
+            Size: () => ({ opacity: 0.7 }),
+          },
+        } as const,
+      })
+
+      simplifiedGetSplitStyles(Comp, {
+        sizeValue: true,
+        spaceValue: true,
+        radiusValue: true,
+        zIndexValue: true,
+        fontSizeValue: true,
+        fanoutValue: true,
+      })
+
+      expect(seen).toEqual({
+        size: '$4',
+        space: '$1',
+        radius: '$2',
+        zIndex: '$1',
+        fontSize: '$1',
+        fanout: true,
+      })
+    } finally {
+      configure()
+    }
+  })
+
   test('resolver domains include non-token values from exported value types', () => {
     const cases = [
       ['Size', 24],
@@ -671,21 +748,43 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(Comp, 4)).toBe(0.77)
   })
 
-  test('legacy spread fallback keeps fixed category order after TS-style resolvers', () => {
+  test('legacy-shaped keys only match as exact literals', () => {
+    const legacySpreadKey = `${'.'.repeat(3)}size`
+    const legacyNumberKey = `:${'number'}`
+    const legacyCatchAllKey = '.'.repeat(3)
     const Comp = styled(View, {
       variants: {
         kind: {
-          '...zIndex': () => ({
-            opacity: 0.2,
+          [legacySpreadKey]: () => ({ opacity: 0.81 }),
+          [legacyNumberKey]: () => ({ opacity: 0.82 }),
+          [legacyCatchAllKey]: () => ({ opacity: 0.83 }),
+        },
+      } as const,
+    })
+
+    expect(getOpacity(Comp, legacySpreadKey)).toBe(0.81)
+    expect(getOpacity(Comp, legacyNumberKey)).toBe(0.82)
+    expect(getOpacity(Comp, legacyCatchAllKey)).toBe(0.83)
+    expect(getOpacity(Comp, '$4')).toBeUndefined()
+    expect(getOpacity(Comp, 4)).toBeUndefined()
+    expect(getOpacity(Comp, 'other')).toBeUndefined()
+  })
+
+  test('overlapping TS-style resolvers use declaration order', () => {
+    const Comp = styled(View, {
+      variants: {
+        kind: {
+          Size: () => ({
+            opacity: 0.5,
           }),
-          '...space': () => ({
-            opacity: 0.3,
-          }),
-          '...radius': () => ({
+          Radius: () => ({
             opacity: 0.4,
           }),
-          '...size': () => ({
-            opacity: 0.5,
+          Space: () => ({
+            opacity: 0.3,
+          }),
+          ZIndex: () => ({
+            opacity: 0.2,
           }),
         },
       } as const,
@@ -694,13 +793,13 @@ describe('TS-style variant resolvers', () => {
     expect(getOpacity(Comp, '$4')).toBe(0.5)
   })
 
-  test('legacy default-size spread resolvers receive default token for true', () => {
-    for (const spreadKey of ['...size', '...space', '...fontSize'] as const) {
+  test('default-size resolvers receive the default token for true', () => {
+    for (const resolverKey of ['Size', 'Space', 'FontSize'] as const) {
       let seenSize: unknown
       const Comp = styled(View, {
         variants: {
           kind: {
-            [spreadKey]: (value) => {
+            [resolverKey]: (value) => {
               seenSize = value
               return {
                 opacity: 0.58,

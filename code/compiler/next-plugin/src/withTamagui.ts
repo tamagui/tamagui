@@ -5,7 +5,6 @@ import { getGlobalCssLoader } from 'next/dist/build/webpack/config/blocks/css/lo
 import path from 'node:path'
 import type { PluginOptions as LoaderPluginOptions } from 'tamagui-loader'
 import { TamaguiPlugin } from 'tamagui-loader'
-import webpack from 'webpack'
 
 const { loadTamaguiBuildConfigSync } = Static
 
@@ -49,7 +48,7 @@ export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
         'expo-linear-gradient',
       ],
       webpack: (webpackConfig: any, options: any) => {
-        const { dir, config, dev, isServer } = options
+        const { dir, config, dev, isServer, webpack } = options
 
         // @ts-ignore
         if (typeof globalThis['__DEV__'] === 'undefined') {

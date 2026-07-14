@@ -169,7 +169,7 @@ export function BorderRadiusInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -265,7 +265,7 @@ export function BorderWidthInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -332,7 +332,7 @@ export function FontFamilyInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -406,7 +406,7 @@ export function FillStyleInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -505,7 +505,7 @@ export function ElevationInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -611,7 +611,7 @@ export function SpacingInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -683,7 +683,7 @@ export function TextAccentInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -755,7 +755,7 @@ export function BackgroundAccentInput() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"

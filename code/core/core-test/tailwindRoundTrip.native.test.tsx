@@ -10,7 +10,7 @@
 
 process.env.TAMAGUI_TARGET = 'native'
 
-import { beforeAll, describe, expect, test } from 'vitest'
+import { beforeAll, describe, expect, test, vi } from 'vitest'
 import { defaultConfig as v6 } from '@tamagui/config/v6'
 
 import { View, Text, createTamagui } from '../web/src'
@@ -210,12 +210,34 @@ describe('native — directional borders + per-edge radii (converter-driven)', (
     expect(flat('rounded-tl-lg').className).toBeUndefined()
     expect(nativeStyle(View, 'rounded-tl-lg').borderTopLeftRadius).toBe(8)
   })
-  test('parser: a missing radius token is passthrough, never guessed', () => {
+  test('parser: a missing radius token warns once and is dropped', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     expect(CFG.tokensParsed.radius).not.toHaveProperty('$missing-radius')
-    expect(flat('rounded-tl-missing-radius').className).toBe('rounded-tl-missing-radius')
+    expect(flat('rounded-tl-missing-radius').className).toBeUndefined()
+    expect(flat('rounded-tl-missing-radius').className).toBeUndefined()
+    expect(warn).toHaveBeenCalledTimes(1)
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('web-only'))
     expect(
       nativeStyle(View, 'rounded-tl-missing-radius').borderTopLeftRadius
     ).toBeUndefined()
+    warn.mockRestore()
+  })
+  test('production silently drops passthrough while claimed tokens still resolve', () => {
+    const nodeEnv = process.env.NODE_ENV
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    try {
+      process.env.NODE_ENV = 'production'
+      expect(flat('grid-cols-[93px]').className).toBeUndefined()
+      expect(warn).not.toHaveBeenCalled()
+      expect(nativeStyle(View, 'rounded-tl-lg').borderTopLeftRadius).toBe(8)
+    } finally {
+      if (nodeEnv === undefined) {
+        delete process.env.NODE_ENV
+      } else {
+        process.env.NODE_ENV = nodeEnv
+      }
+      warn.mockRestore()
+    }
   })
 })
 

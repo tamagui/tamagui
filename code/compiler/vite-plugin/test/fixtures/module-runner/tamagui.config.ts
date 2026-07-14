@@ -44,8 +44,16 @@ export {
   tamaguiResolution,
 }
 
+const fixtureStyleMode = (globalThis as any).__tamaguiFixtureStyleMode
+
 export default createTamagui({
   ...defaultConfig,
+  ...(fixtureStyleMode && {
+    settings: {
+      ...defaultConfig.settings,
+      styleMode: fixtureStyleMode,
+    },
+  }),
   media: {
     ...defaultConfig.media,
     sm: {

@@ -9,6 +9,9 @@
       "path": "../core"
     },
     {
+      "path": "../size"
+    },
+    {
       "path": "../style-grammar"
     }
   ],

@@ -7,6 +7,8 @@ type StyleSplitter = (props: {
     [key: string]: any;
 }, staticConfig: StaticConfig, theme: ThemeParsed, themeName: string, componentState: TamaguiComponentState, styleProps: SplitStyleProps, parentSplitStyles?: GetStyleResult | null, context?: ComponentContextI, groupContext?: AllGroupContexts | null, elementType?: string, startedUnhydrated?: boolean, debug?: DebugProp, animationDriver?: AnimationDriver | null) => null | GetStyleResult;
 export declare const PROP_SPLIT = "-";
+export declare function parseStaticStyle(input: string, config?: TamaguiInternalConfig): Record<string, any>;
+export declare function normalizeStaticConfigStyles(staticConfig: StaticConfig, config?: TamaguiInternalConfig): StaticConfig;
 /**
  * The single styleMode pass: tokenizes className once and flattens the resulting props once,
  * producing enterStyle/exitStyle via the flat-props pass plus ordinary style props. Hoisted to

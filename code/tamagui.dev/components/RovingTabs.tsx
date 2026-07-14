@@ -145,7 +145,6 @@ export function Tab({
   const imageName = logo ?? pkgManager
   return (
     <Tabs.Tab
-      unstyled
       pl="$2"
       pr="$2.5"
       py="$1.5"

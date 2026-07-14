@@ -5,7 +5,7 @@ import type {
   TextStyle,
   VariantSpreadFunction,
 } from '@tamagui/web'
-import { resolveDefaultSizeToken, styled, Text } from '@tamagui/web'
+import { resolveDefaultToken, styled, Text } from '@tamagui/web'
 
 export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
   sizeTokenIn = true,
@@ -17,7 +17,10 @@ export const getFontSized: VariantSpreadFunction<TextProps, FontSizeTokens> = (
     }
   }
 
-  const sizeToken = resolveDefaultSizeToken(sizeTokenIn) as Exclude<FontSizeTokens, true>
+  const sizeToken = resolveDefaultToken(sizeTokenIn, 'fontSize') as Exclude<
+    FontSizeTokens,
+    true
+  >
 
   const style: TextStyle = {}
 
@@ -72,7 +75,7 @@ export const SizableText = styled(Text, {
 
   variants: {
     size: {
-      '...fontSize': getFontSized,
+      FontSize: getFontSized,
     },
   } as const,
 

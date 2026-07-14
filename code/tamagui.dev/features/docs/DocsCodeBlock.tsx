@@ -10,7 +10,6 @@ import { useStore } from '@tamagui/use-store'
 import { forwardRef, useEffect, useId, useRef, useState } from 'react'
 import {
   AnimatePresence,
-  Button,
   Paragraph,
   Spacer,
   TooltipSimple,
@@ -18,6 +17,7 @@ import {
   YStack,
   useEvent,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { LinearGradient } from '@tamagui/linear-gradient'
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { Pre } from '~/components/Pre'
@@ -120,14 +120,14 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
             <Button
               aria-label="Show or hide code"
               icon={Code2}
-              size="$3"
+              size="medium"
               z={10}
               onPress={() => setIsCollapsed(!isCollapsed)}
             >
               {isCollapsed ? 'Show code' : 'Hide code'}
             </Button>
             <TooltipSimple label="Toggle tint on/off">
-              <Button size="$3" onPress={toggleDocsTinted} z={10} icon={Paintbrush} />
+              <Button size="medium" onPress={toggleDocsTinted} z={10} icon={Paintbrush} />
             </TooltipSimple>
           </XStack>
         )}
@@ -153,7 +153,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                 <Spacer flex={1} />
                 <Button
                   z={10}
-                  size="$3"
+                  size="medium"
                   onPress={() => setIsCutoff(!isCutoff)}
                   self="center"
                 >
@@ -212,7 +212,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
                   <Button
                     position="absolute"
                     aria-label="Copy code to clipboard"
-                    size="$2"
+                    size="small"
                     t={showFileName ? '$6' : '$3'}
                     r="$3"
                     display="inline-flex"
@@ -231,7 +231,11 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               {isLong && !isCutoff && (
                 <>
                   <Spacer />
-                  <Button size="$3" onPress={() => setIsCutoff(!isCutoff)} self="center">
+                  <Button
+                    size="medium"
+                    onPress={() => setIsCutoff(!isCutoff)}
+                    self="center"
+                  >
                     Show less
                   </Button>
                 </>

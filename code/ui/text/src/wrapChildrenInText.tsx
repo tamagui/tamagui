@@ -10,9 +10,7 @@ type Props = TextParentStyles & {
 
 export function wrapChildrenInText(
   TextComponent: any,
-  propsIn: Props & {
-    unstyled?: boolean
-  },
+  propsIn: Props & {},
   extraProps?: Record<string, any>
 ) {
   const {

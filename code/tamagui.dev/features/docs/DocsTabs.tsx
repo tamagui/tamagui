@@ -28,7 +28,6 @@ function TabsComponent(props: TabsProps) {
   return (
     <Tabs
       onValueChange={updateUrl}
-      unstyled
       orientation="horizontal"
       flexDirection="column"
       borderWidth={0}

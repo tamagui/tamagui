@@ -11,7 +11,6 @@ import {
   createStyledContext,
   getVariableValue,
   registerLayoutNode,
-  resolveDefaultSizeToken,
   styled,
 } from '@tamagui/core'
 import type { PopupTriggerMap } from '@tamagui/floating'
@@ -38,8 +37,6 @@ import {
   useFloating,
 } from '@tamagui/floating'
 import { getSize } from '@tamagui/get-token'
-import type { SizableStackProps, YStackProps } from '@tamagui/stacks'
-import { YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 import { Keyboard, useWindowDimensions } from 'react-native'
@@ -533,9 +530,9 @@ export type PopperAnchorExtraProps = {
   virtualRef?: React.RefObject<any>
   scope?: string
 }
-export type PopperAnchorProps = YStackProps
+export type PopperAnchorProps = ViewProps
 
-export const PopperAnchor = createStyledHOC(YStack)<PopperAnchorExtraProps>(
+export const PopperAnchor = createStyledHOC(TamaguiView)<PopperAnchorExtraProps>(
   function PopperAnchor(props, forwardedRef) {
     const { virtualRef, scope, ...rest } = props
     const context = usePopperContextSlow(scope)
@@ -632,7 +629,7 @@ export const PopperAnchor = createStyledHOC(YStack)<PopperAnchorExtraProps>(
 
 type PopperContentElement = TamaguiElement
 
-export type PopperContentProps = SizableStackProps & {
+export type PopperContentProps = ViewProps & {
   scope?: string
   /**
    * Enable smooth animation when the content position changes (e.g., when flipping sides)
@@ -641,25 +638,8 @@ export type PopperContentProps = SizableStackProps & {
   passThrough?: boolean
 }
 
-export const PopperContentFrame = styled(YStack, {
+export const PopperContentFrame = styled(TamaguiView, {
   name: 'PopperContent',
-
-  variants: {
-    unstyled: {
-      true: {},
-    },
-
-    size: {
-      '...size': (val, { tokens }) => {
-        const sizeToken = resolveDefaultSizeToken(val)
-
-        return {
-          padding: tokens.space[sizeToken],
-          borderRadius: tokens.radius[sizeToken],
-        }
-      },
-    },
-  } as const,
 })
 
 export const PopperContent = createRefComponent<PopperContentElement, PopperContentProps>(
@@ -671,7 +651,7 @@ export const PopperContent = createRefComponent<PopperContentElement, PopperCont
     // useAnimations/usePresence and tripping React's "Should have a queue" invariant.
     const isAnimatePosControlled = 'animatePosition' in props
 
-    const { scope, animatePosition, children, passThrough, unstyled, ...rest } = props
+    const { scope, animatePosition, children, passThrough, ...rest } = props
     const animatePos = animatePosition
     const context = usePopperContext(scope)
 
@@ -682,7 +662,6 @@ export const PopperContent = createRefComponent<PopperContentElement, PopperCont
       x,
       y,
       getFloatingProps,
-      size,
       isPositioned,
       transformOrigin,
       update,
@@ -843,11 +822,9 @@ export const PopperContent = createRefComponent<PopperContentElement, PopperCont
           <PopperContentFrame
             key="popper-content-frame"
             passThrough={passThrough}
-            unstyled={unstyled}
             {...(!passThrough && {
               'data-placement': placement,
               'data-strategy': strategy,
-              size,
               ...style,
               ...transformOriginStyle,
               ...rest,
@@ -875,45 +852,21 @@ export type PopperArrowExtraProps = {
   animatePosition?: boolean
 }
 
-export type PopperArrowProps = YStackProps & PopperArrowExtraProps
+export type PopperArrowProps = ViewProps & PopperArrowExtraProps
 
-export const PopperArrowFrame = styled(YStack, {
+export const PopperArrowFrame = styled(TamaguiView, {
   name: 'PopperArrow',
-
-  variants: {
-    unstyled: {
-      false: {
-        borderColor: '$borderColor',
-        backgroundColor: '$background',
-        position: 'relative',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  position: 'relative',
 })
 
-const PopperArrowOuterFrame = styled(YStack, {
+const PopperArrowOuterFrame = styled(TamaguiView, {
   name: 'PopperArrowOuter',
-
-  variants: {
-    unstyled: {
-      false: {
-        position: 'absolute',
-        zIndex: 1_000_000,
-        pointerEvents: 'none',
-        overflow: 'hidden',
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  position: 'absolute',
+  zIndex: 1_000_000,
+  pointerEvents: 'none',
+  overflow: 'hidden',
+  alignItems: 'center',
+  justifyContent: 'center',
 })
 
 const opposites = {

@@ -1,4 +1,5 @@
-import { Button, H1, Paragraph, YStack } from 'tamagui'
+import { H1, Paragraph, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Container } from '../../../components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Link } from '~/components/Link'
@@ -37,7 +38,7 @@ export default function EnableV2RenewalPage() {
           </Paragraph>
 
           <Link href="/account">
-            <Button size="$4" theme="accent" mt="$4">
+            <Button size="medium" theme="accent" mt="$4">
               Go to Account
             </Button>
           </Link>

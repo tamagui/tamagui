@@ -1,7 +1,8 @@
 import { ChevronLeft } from '@tamagui/lucide-icons-2'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, H1, Paragraph, Text, XStack, YStack } from 'tamagui'
+import { H1, Paragraph, Text, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu Submenu Left Side Test Case
@@ -39,7 +40,7 @@ export function MenuSubLeftCase() {
       <XStack justifyContent="flex-end" paddingRight="$10">
         <Menu allowFlip={false} placement="bottom-end" offset={8}>
           <Menu.Trigger asChild>
-            <Button id="menu-trigger" size="$4">
+            <Button id="menu-trigger" size="medium">
               Open Menu (Left Submenu)
             </Button>
           </Menu.Trigger>
@@ -52,7 +53,7 @@ export function MenuSubLeftCase() {
               borderWidth={1}
               borderColor="$borderColor"
               bg="$background"
-              elevation="$3"
+              boxShadow="0 4px 12px $shadowColor"
             >
               <Menu.Item
                 key="menu-item-1"
@@ -103,7 +104,7 @@ export function MenuSubLeftCase() {
                     minW={180}
                     borderWidth={1}
                     borderColor="$borderColor"
-                    elevation="$3"
+                    boxShadow="0 4px 12px $shadowColor"
                   >
                     <Menu.Item
                       key="submenu-item-1"

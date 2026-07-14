@@ -24,7 +24,7 @@ test('static export hydrates without Missing theme error', async ({ page }) => {
   const themeErrors = errors.filter((e) => e.includes('Missing theme'))
   expect(themeErrors).toHaveLength(0)
 
-  // verify themed styles are applied (not unstyled)
+  // verify themed styles are applied
   const color = await heading.evaluate((el) => window.getComputedStyle(el).color)
   expect(color).toBeTruthy()
   expect(color).not.toBe('')

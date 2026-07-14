@@ -9,7 +9,7 @@ export const elevate = {
 
 export const bordered = (val: boolean | number, { props }) => {
   return {
-    // TODO size it with size in '...size'
+    // TODO size it with the Size resolver
     borderWidth: typeof val === 'number' ? val : 1,
     borderColor: '$borderColor',
   }

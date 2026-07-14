@@ -2,8 +2,13 @@ import { readdir, readFile } from 'node:fs/promises'
 import { dirname, extname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import type { ProjectInput } from './contracts'
-import { resolutionKey } from './contracts'
+import {
+  resolutionKey,
+  resolvedModuleId,
+  type HostResolvedProject,
+  type ProjectInput,
+  type ResolvedModuleId,
+} from '@tamagui/compiler-core'
 
 const fixtureRoot = resolve(
   dirname(fileURLToPath(import.meta.url)),
@@ -47,9 +52,94 @@ export async function loadFixtureProject(): Promise<ProjectInput> {
       resolutionKey('/src/App.create-element.ts', '@fixture/ui'),
       '/packages/ui/src/index.ts',
     ],
+    [resolutionKey('/src/Parity.tsx', './config'), '/src/config.ts'],
+    [resolutionKey('/src/Parity.tsx', '@fixture/ui'), '/packages/ui/src/index.ts'],
+    [resolutionKey('/src/Parity.compiled.ts', './config'), '/src/config.ts'],
+    [
+      resolutionKey('/src/Parity.compiled.ts', '@fixture/ui'),
+      '/packages/ui/src/index.ts',
+    ],
+    [resolutionKey('/src/Parity.create-element.ts', './config'), '/src/config.ts'],
+    [
+      resolutionKey('/src/Parity.create-element.ts', '@fixture/ui'),
+      '/packages/ui/src/index.ts',
+    ],
+    [resolutionKey('/src/Styled.tsx', '@fixture/ui'), '/packages/ui/src/index.ts'],
+    [resolutionKey('/src/Lower.tsx', '@fixture/ui'), '/packages/ui/src/index.ts'],
+    [resolutionKey('/src/bailouts.ts', '#missing'), '/external/missing.ts'],
+    [resolutionKey('/src/bailouts.ts', '@fixture/ui'), '/packages/ui/src/index.ts'],
   ])
 
   return { files, resolutions }
+}
+
+export async function loadHostFixtureProject(): Promise<HostResolvedProject> {
+  const project = await loadFixtureProject()
+  const hostProject = hostResolvedProjectFromInput(project)
+  const externalImports = new Map<string, { specifier: string; resolvedId: string }[]>([
+    [
+      '/src/App.compiled.ts',
+      [{ specifier: 'react/jsx-runtime', resolvedId: '/external/react-jsx-runtime.mjs' }],
+    ],
+    [
+      '/src/App.create-element.ts',
+      [{ specifier: 'react', resolvedId: '/external/react.mjs' }],
+    ],
+    [
+      '/src/Parity.compiled.ts',
+      [{ specifier: 'react/jsx-runtime', resolvedId: '/external/react-jsx-runtime.mjs' }],
+    ],
+    [
+      '/src/Parity.create-element.ts',
+      [{ specifier: 'react', resolvedId: '/external/react.mjs' }],
+    ],
+    [
+      '/src/bailouts.ts',
+      [{ specifier: 'react/jsx-runtime', resolvedId: '/external/react-jsx-runtime.mjs' }],
+    ],
+    [
+      '/src/External.tsx',
+      [{ specifier: '@external/ui', resolvedId: '/external/ui.mjs' }],
+    ],
+  ])
+  return {
+    modules: hostProject.modules.map((module) => ({
+      ...module,
+      imports: [
+        ...module.imports,
+        ...(externalImports.get(module.id) ?? []).map((dependency) => ({
+          specifier: dependency.specifier,
+          resolvedId: resolvedModuleId(dependency.resolvedId),
+          external: true,
+        })),
+      ],
+    })),
+  }
+}
+
+export function hostResolvedProjectFromInput(project: ProjectInput): HostResolvedProject {
+  const importsById = new Map<
+    ResolvedModuleId,
+    { specifier: string; resolvedId: ResolvedModuleId }[]
+  >()
+  for (const [key, value] of project.resolutions) {
+    const separator = key.indexOf('\0')
+    const id = resolvedModuleId(key.slice(0, separator))
+    const specifier = key.slice(separator + 1)
+    const imports = importsById.get(id) ?? []
+    imports.push({ specifier, resolvedId: resolvedModuleId(value) })
+    importsById.set(id, imports)
+  }
+  return {
+    modules: [...project.files].map(([id, source]) => {
+      const resolvedId = resolvedModuleId(id)
+      return {
+        id: resolvedId,
+        source,
+        imports: importsById.get(resolvedId) ?? [],
+      }
+    }),
+  }
 }
 
 export function createGeneratedProject(size = 1_000): ProjectInput {

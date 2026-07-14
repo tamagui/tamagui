@@ -1,6 +1,7 @@
 import { useSearchParams } from 'one'
 import { useEffect, useState } from 'react'
-import { Button, H2, Paragraph, Spinner, YStack } from 'tamagui'
+import { H2, Paragraph, Spinner, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { HeadInfo } from '~/components/HeadInfo'
 import { Link } from '~/components/Link'
 import { authFetch } from '~/features/api/authFetch'
@@ -82,7 +83,7 @@ export default function AcceptInvitePage() {
                 Your GitHub account is already a member of the Tamagui team.
               </Paragraph>
               <Button
-                size="$4"
+                size="medium"
                 theme="green"
                 onPress={() =>
                   window.open(
@@ -106,7 +107,7 @@ export default function AcceptInvitePage() {
                 The invite should be in your inbox now.
               </Paragraph>
               <Button
-                size="$4"
+                size="medium"
                 theme="accent"
                 onPress={() =>
                   window.open(

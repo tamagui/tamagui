@@ -1,6 +1,6 @@
 import { createRefComponent } from '@tamagui/compose-refs'
-import type BaseMenuTypes from '@tamagui/create-menu'
-import { createBaseMenu, type CreateBaseMenuProps } from '@tamagui/create-menu'
+import type * as BaseMenuTypes from '@tamagui/create-menu'
+import { createBaseMenu } from '@tamagui/create-menu'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import {
   createStyledHOC,
@@ -96,8 +96,8 @@ type ContextMenuSubContentProps = React.ComponentPropsWithoutRef<BaseMenu['SubCo
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
-  const { Menu } = createBaseMenu(params)
+export function createNonNativeContextMenu() {
+  const { Menu } = createBaseMenu()
 
   /* -------------------------------------------------------------------------------------------------
    * ContextMenu

@@ -1,5 +1,5 @@
 import Static from '@tamagui/static'
-import type { ExtractedResponse, Extractor, TamaguiProjectInfo } from '@tamagui/static'
+import type { TamaguiProjectInfo } from '@tamagui/static'
 import type { TamaguiOptions } from '@tamagui/types'
 import path from 'node:path'
 import type { RunnableDevEnvironment } from 'vite'
@@ -22,6 +22,11 @@ export type ViteTamaguiLoader = {
   getGeneration(): number
   getLoadPromise(): Promise<TamaguiOptions> | null
   getTamaguiOptions(): TamaguiOptions | null
+  getTamaguiConfig(): Promise<TamaguiProjectInfo['tamaguiConfig']>
+  getCompilerProject(): Promise<{
+    projectInfo: TamaguiProjectInfo
+    componentModules: { moduleName: string; id: string }[]
+  }>
   getEvaluationDependencies(): string[]
   isEvaluationDependency(id: string): boolean
   evaluateProjectModules(options: TamaguiOptions): Promise<EvaluatedProjectModules>
@@ -29,12 +34,6 @@ export type ViteTamaguiLoader = {
   setEnvironment(next: RunnableDevEnvironment, options?: { owned?: boolean }): void
   invalidate(file?: string): void
   ensureFullConfigLoaded(): Promise<string[]>
-  extractToClassNames(params: {
-    source: string
-    sourcePath: string
-    options: TamaguiOptions
-    shouldPrintDebug: boolean | 'verbose'
-  }): Promise<ExtractedResponse | null>
   cleanup(): Promise<void>
 }
 
@@ -46,7 +45,7 @@ export function createViteTamaguiLoader(
   let loadPromise: Promise<TamaguiOptions> | null = null
   let loadedOptions: TamaguiOptions | null = null
   let projectPromise: Promise<TamaguiProjectInfo> | null = null
-  let extractor: Extractor | null = null
+  let projectModules: EvaluatedProjectModules | null = null
   const evaluationDependencies = new Set<string>()
   let generation = 0
 
@@ -161,6 +160,7 @@ export function createViteTamaguiLoader(
         ...options,
         components: [...new Set(['@tamagui/core', ...(options.components || [])])],
       })
+      projectModules = evaluated
 
       return Static.loadTamaguiFromModules(options, {
         config: evaluated.config.module,
@@ -174,19 +174,30 @@ export function createViteTamaguiLoader(
     return projectPromise
   }
 
-  const getExtractor = () => {
-    return (extractor ||= Static.createExtractor({
-      platform: 'web',
-      loadTamagui: loadProject,
-      loadTamaguiSync: false,
-    }))
-  }
-
   return {
     getEnvironment: () => environment,
     getGeneration: () => generation,
     getLoadPromise: () => loadPromise,
     getTamaguiOptions: () => loadedOptions,
+    async getTamaguiConfig() {
+      const options = await loadTamaguiBuildConfig()
+      if (options.disable) return null
+      return (await loadProject(options)).tamaguiConfig
+    },
+    async getCompilerProject() {
+      const options = await loadTamaguiBuildConfig()
+      const projectInfo = await loadProject(options)
+      if (!projectModules) {
+        throw new Error('The Tamagui compiler project modules were not evaluated')
+      }
+      return {
+        projectInfo,
+        componentModules: projectModules.components.map(({ moduleName, id }) => ({
+          moduleName,
+          id,
+        })),
+      }
+    },
     getEvaluationDependencies: () => [...evaluationDependencies],
     isEvaluationDependency: (id: string) =>
       evaluationDependencies.has(normalizeDependency(id)),
@@ -199,7 +210,7 @@ export function createViteTamaguiLoader(
       ownsEnvironment = options?.owned === true
       generation++
       projectPromise = null
-      extractor = null
+      projectModules = null
     },
 
     invalidate(file?: string) {
@@ -208,7 +219,7 @@ export function createViteTamaguiLoader(
       }
       generation++
       projectPromise = null
-      extractor = null
+      projectModules = null
     },
 
     async ensureFullConfigLoaded() {
@@ -217,18 +228,6 @@ export function createViteTamaguiLoader(
         await loadProject(options)
       }
       return [...evaluationDependencies]
-    },
-
-    async extractToClassNames(params: {
-      source: string
-      sourcePath: string
-      options: TamaguiOptions
-      shouldPrintDebug: boolean | 'verbose'
-    }): Promise<ExtractedResponse | null> {
-      return Static.extractToClassNames({
-        extractor: getExtractor(),
-        ...params,
-      })
     },
 
     async cleanup() {
@@ -242,7 +241,7 @@ export function createViteTamaguiLoader(
         loadPromise = null
         loadedOptions = null
         projectPromise = null
-        extractor = null
+        projectModules = null
       }
     },
   }

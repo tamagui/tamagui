@@ -48,6 +48,8 @@
     "react-native-reanimated": "~4.2.2"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "moti": "*",
+    "react": ">=19",
+    "react-native-reanimated": "*"
   }
 }

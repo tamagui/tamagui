@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { getGestureHandler } from '@tamagui/native'
 import { getGestureHandlerConfig } from '@tamagui/native/setup-gesture-handler'
-import { Button, Input, Sheet, Text, View, XStack, YStack } from 'tamagui'
+import { Input, Sheet, Text, View, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * regression repro for 2ce98f604a (rngh press tap maxDistance).

@@ -5,6 +5,7 @@ import { getVariableVariable, isVariable } from '../createVariable'
 import { autoVariables, registerCSSVariable, variableToCSS } from './registerCSSVariable'
 import { getThemeCSSRules } from './getThemeCSSRules'
 import { getAllRules } from './insertStyleRule'
+import { wrapWithTamaguiLayer } from './hybridStyle'
 
 type ThemeConfig = {
   cssRuleSets: string[]
@@ -119,7 +120,7 @@ export function buildCSSRuleSets(
     string,
     { name: string; declarations: string[]; language?: string; fontParsed: any }
   >,
-  defaultSizeToken: string = DEFAULT_SIZE_TOKEN
+  defaultFontSizeToken: string = DEFAULT_SIZE_TOKEN
 ): string[] {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS) {
     const cssRuleSets: string[] = []
@@ -155,7 +156,7 @@ export function buildCSSRuleSets(
       if (firstFont?.fontParsed) {
         const fontProps = getFontPropertyDeclarations(
           firstFont.fontParsed,
-          defaultSizeToken
+          defaultFontSizeToken
         )
         const sharedSelectors = [...fontSelectors, '.is_View'].join(', ')
         cssRuleSets.push(`${sharedSelectors} {${fontProps.join('; ')}}`)
@@ -204,7 +205,8 @@ export function getCSS(
     sinceLastCall?: boolean
     exclude?: 'themes' | 'design-system' | string | null
   } = {},
-  lastIndex: { value: number }
+  lastIndex: { value: number },
+  hybrid = false
 ): string {
   if (!process.env.TAMAGUI_DID_OUTPUT_CSS && process.env.TAMAGUI_TARGET === 'web') {
     const { separator = '\n', sinceLastCall, exclude } = opts
@@ -213,7 +215,8 @@ export function getCSS(
       const rules = getAllRules()
       const newRules = rules.slice(lastIndex.value)
       lastIndex.value = rules.length
-      return newRules.join(separator)
+      const css = newRules.join(separator)
+      return hybrid ? wrapWithTamaguiLayer(css) : css
     }
 
     lastIndex.value = 0
@@ -221,7 +224,7 @@ export function getCSS(
     const runtimeStyles = getAllRules().join(separator)
 
     if (exclude === 'design-system') {
-      return runtimeStyles
+      return hybrid ? wrapWithTamaguiLayer(runtimeStyles) : runtimeStyles
     }
 
     const themeRules = exclude ? '' : themeConfig.getThemeRulesSets().join(separator)
@@ -257,9 +260,10 @@ ${hideScrollBarsCSS}
 ${autoVarCSS}
 ${themeConfig.cssRuleSets.join(separator)}`
 
-    return `${designSystem}
+    const css = `${designSystem}
 ${themeRules}
 ${runtimeStyles}`
+    return hybrid ? wrapWithTamaguiLayer(css) : css
   }
   return ''
 }

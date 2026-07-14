@@ -104,7 +104,6 @@
     "@expo/fingerprint": "~0.16.6",
     "@playwright/test": "^1.49.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
-    "@tamagui/babel-plugin": "workspace:*",
     "@tamagui/metro-plugin": "workspace:*",
     "@types/jest": "29.5.14",
     "@types/pngjs": "^6.0.5",

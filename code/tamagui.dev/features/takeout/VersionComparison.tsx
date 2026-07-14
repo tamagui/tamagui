@@ -1,7 +1,6 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, X } from '@tamagui/lucide-icons-2'
 import {
-  Button,
   H3,
   Paragraph,
   SizableText,
@@ -11,6 +10,7 @@ import {
   styled,
   useThemeName,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Link } from '~/components/Link'
 import { SubTitle } from '../../components/SubTitle'
 
@@ -212,7 +212,7 @@ export function VersionComparison() {
           <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
             <ThemeTintAlt>
               <Button
-                size="$4"
+                size="medium"
                 bg="$color5"
                 borderWidth={0.5}
                 borderColor="$color7"
@@ -229,7 +229,7 @@ export function VersionComparison() {
           <Link href="https://takeout.tamagui.dev/docs/highlights" target="_blank">
             <ThemeTintAlt offset={2}>
               <Button
-                size="$4"
+                size="medium"
                 bg="$color5"
                 borderWidth={0.5}
                 borderColor="$color7"
@@ -245,7 +245,7 @@ export function VersionComparison() {
           </Link>
           <Link href="https://github.com/tamagui/takeout-free" target="_blank">
             <Button
-              size="$4"
+              size="medium"
               bg="$color3"
               borderWidth={0.5}
               borderColor="$color6"

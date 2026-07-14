@@ -2,7 +2,6 @@ import { LogoIcon } from '@tamagui/logo'
 import { Moon, Sun, X } from '@tamagui/lucide-icons-2'
 import { memo } from 'react'
 import {
-  Button,
   Paragraph,
   Popover,
   PortalHost,
@@ -11,6 +10,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { topBarHeight } from '~/features/studio/constants'
 import { useRootStore } from '../state/useGlobalState'
@@ -95,8 +95,8 @@ export const ThemeSwitch = memo(() => {
                 <Button
                   render="span"
                   disabled
-                  chromeless
-                  size="$1"
+                  variant="quiet"
+                  size="small"
                   scaleIcon={1}
                   opacity={0.44}
                   x={-1.5}
@@ -111,8 +111,8 @@ export const ThemeSwitch = memo(() => {
                 <Button
                   render="span"
                   disabled
-                  chromeless
-                  size="$1"
+                  variant="quiet"
+                  size="small"
                   scaleIcon={1}
                   opacity={0.25}
                   x={-1.5}
@@ -128,8 +128,8 @@ export const ThemeSwitch = memo(() => {
                   <Button
                     render="span"
                     disabled
-                    chromeless
-                    size="$1"
+                    variant="quiet"
+                    size="small"
                     scaleIcon={1.2}
                     opacity={0.8}
                     y={-0.75}
@@ -140,8 +140,8 @@ export const ThemeSwitch = memo(() => {
                   <Button
                     render="span"
                     disabled
-                    chromeless
-                    size="$1"
+                    variant="quiet"
+                    size="small"
                     scaleIcon={1.2}
                     opacity={0.5}
                     y={-0.75}
@@ -161,7 +161,8 @@ export const ThemeSwitch = memo(() => {
         borderColor="$borderColor"
         enterStyle={{ y: -10, opacity: 0 }}
         exitStyle={{ y: -10, opacity: 0 }}
-        elevate
+        backgroundColor="$background"
+        boxShadow="0 4px 12px $shadowColor"
         transition={[
           'quickest',
           {
@@ -171,11 +172,16 @@ export const ThemeSwitch = memo(() => {
           },
         ]}
       >
-        <Popover.Arrow size="$5" borderWidth={2} borderColor="$borderColor" />
+        <Popover.Arrow
+          backgroundColor="$background"
+          size="$5"
+          borderWidth={2}
+          borderColor="$borderColor"
+        />
 
         <Paragraph size="$2">{tip}</Paragraph>
         <Button
-          size="$1"
+          size="small"
           circular
           position="absolute"
           t="$-2"

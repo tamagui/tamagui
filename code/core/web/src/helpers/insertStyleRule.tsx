@@ -1,5 +1,6 @@
 import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import { createVariable } from '../createVariable'
+import { getConfigMaybe } from '../config'
 import type {
   DedupedTheme,
   DedupedThemes,
@@ -7,6 +8,7 @@ import type {
   ThemeParsed,
   TokensParsed,
 } from '../types'
+import { isTailwindStyleMode, wrapWithTamaguiLayer } from './hybridStyle'
 
 // only cache tamagui styles
 // TODO merge totalSelectorsInserted and allSelectors?
@@ -92,12 +94,12 @@ function updateSheetStyles(
 ): DedupedThemes | undefined {
   // avoid errors on cross origin sheets
   // https://stackoverflow.com/questions/49993633/uncaught-domexception-failed-to-read-the-cssrules-property
-  let rules: CSSRuleList
+  let rules: CSSRule[]
   try {
-    rules = sheet.cssRules
-    if (!rules) {
+    if (!sheet.cssRules) {
       return
     }
+    rules = flattenCSSRules(sheet.cssRules)
   } catch {
     return
   }
@@ -165,6 +167,21 @@ function updateSheetStyles(
   scannedCache.set(sheet, cacheKey)
 
   return dedupedThemes
+}
+
+function flattenCSSRules(rules: CSSRuleList, output: CSSRule[] = []): CSSRule[] {
+  for (let index = 0; index < rules.length; index++) {
+    const rule = rules[index]
+    if (rule instanceof CSSStyleRule) {
+      output.push(rule)
+      continue
+    }
+    if ('cssRules' in rule) {
+      const nested = (rule as CSSGroupingRule).cssRules
+      if (nested) flattenCSSRules(nested, output)
+    }
+  }
+  return output
 }
 
 let colorVarToVal: Record<string, string>
@@ -330,7 +347,10 @@ export function insertStyleRules(rulesToInsert: RulesToInsert) {
 
     try {
       for (const rule of rules) {
-        sheet.insertRule(rule, sheet.cssRules.length)
+        sheet.insertRule(
+          isTailwindStyleMode(getConfigMaybe()) ? wrapWithTamaguiLayer(rule) : rule,
+          sheet.cssRules.length
+        )
       }
     } catch (err) {
       if (process.env.NODE_ENV === 'production') {

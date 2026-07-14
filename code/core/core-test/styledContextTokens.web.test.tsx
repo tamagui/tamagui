@@ -23,7 +23,7 @@ beforeAll(() => {
  *
  * Real-world example from user report:
  *   Parent sets gap="$4" via context
- *   Child has functional variant: `:number`: (nr, { props, tokens }) => {
+ *   Child has functional variant: `number`: (nr, { props, tokens }) => {
  *     const gapVal = tokens.space[props.gap].val  // FAILS if props.gap is "var(--space-4)"
  *     return { width: `calc(${100/nr}% - ${gapVal}px)` }
  *   }

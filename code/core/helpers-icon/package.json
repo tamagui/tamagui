@@ -35,7 +35,7 @@
   "dependencies": {
     "@tamagui/core": "workspace:*",
     "@tamagui/font-size": "workspace:*",
-    "@tamagui/sizable-context": "workspace:*",
+    "@tamagui/size": "workspace:*",
     "@tamagui/style-grammar": "workspace:*"
   },
   "devDependencies": {

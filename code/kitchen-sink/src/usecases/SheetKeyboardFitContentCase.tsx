@@ -1,6 +1,7 @@
 import { useState, useSyncExternalStore } from 'react'
 import { Keyboard, type NativeScrollEvent, type NativeSyntheticEvent } from 'react-native'
-import { Button, Image, Input, Sheet, Text, XStack, YStack } from 'tamagui'
+import { Image, Input, Sheet, Text, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 const MOCK_URLS = {
   tall: 'https://picsum.photos/400/600',
@@ -200,7 +201,7 @@ export function SheetKeyboardFitContentCase() {
               <XStack gap="$2">
                 <Button
                   testID="sheet-kb-fit-load-tall"
-                  size="$3"
+                  size="medium"
                   theme="green"
                   flex={1}
                   onPress={() => {
@@ -212,7 +213,7 @@ export function SheetKeyboardFitContentCase() {
                 </Button>
                 <Button
                   testID="sheet-kb-fit-load-short"
-                  size="$3"
+                  size="medium"
                   theme="blue"
                   flex={1}
                   onPress={() => {
@@ -224,7 +225,7 @@ export function SheetKeyboardFitContentCase() {
                 </Button>
                 <Button
                   testID="sheet-kb-fit-reset"
-                  size="$3"
+                  size="medium"
                   flex={1}
                   onPress={() => {
                     setImageUrl(null)
@@ -237,7 +238,7 @@ export function SheetKeyboardFitContentCase() {
 
               <Button
                 testID="sheet-kb-fit-dismiss-kb"
-                size="$3"
+                size="medium"
                 onPress={() => {
                   Keyboard.dismiss()
                   addEventMetric('dismiss-kb')
@@ -248,7 +249,7 @@ export function SheetKeyboardFitContentCase() {
 
               <Button
                 testID="sheet-kb-fit-post"
-                size="$3"
+                size="medium"
                 theme="green"
                 onPress={() => addEventMetric('post')}
               >
@@ -257,7 +258,7 @@ export function SheetKeyboardFitContentCase() {
 
               <Button
                 testID="sheet-kb-fit-close"
-                size="$3"
+                size="medium"
                 theme="red"
                 onPress={() => setOpen(false)}
               >

@@ -1,18 +1,42 @@
-import { loadTamaguiBuildConfigSync, type TamaguiOptions } from '@tamagui/static'
+import { createRequire } from 'node:module'
+import { join } from 'node:path'
+
+import Static from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/static'
+
+import { defaultMetroCompilerCacheRoot } from './compilerCache'
+import { MetroCompilerFrontend } from './frontend'
+import { writeMetroCompilerTransformerBridge } from './transformer'
+import { composeMetroGetTransformOptions } from './transformOptions'
 
 export type MetroTamaguiOptions = TamaguiOptions & {
   /**
    * @deprecated CSS interop is no longer supported. Use `tamagui generate` instead.
    */
   cssInterop?: boolean
+  /** Override the ignored on-disk handoff used by Metro transform workers. */
+  compilerCacheRoot?: string
 }
 
 // Use a loose type for metro config to avoid version-specific type incompatibilities
 type MetroConfigInput = {
+  projectRoot?: string
   resolver?: any
   transformer?: any
   transformerPath?: string
   [key: string]: any
+}
+
+const frontends = new WeakMap<object, MetroCompilerFrontend>()
+const { loadTamaguiBuildConfigSync } = Static
+const requireFromPlugin = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
+
+export function getMetroCompilerFrontend(
+  metroConfig: MetroConfigInput
+): MetroCompilerFrontend | null {
+  return frontends.get(metroConfig) ?? null
 }
 
 /**
@@ -42,7 +66,7 @@ export function withTamagui(
   metroConfig: MetroConfigInput,
   optionsIn?: MetroTamaguiOptions
 ): MetroConfigInput {
-  const { cssInterop, ...tamaguiOptionsIn } = optionsIn || {}
+  const { compilerCacheRoot, cssInterop, ...tamaguiOptionsIn } = optionsIn || {}
 
   if (cssInterop) {
     console.warn(
@@ -67,5 +91,54 @@ export function withTamagui(
     tamagui: options,
   }
 
+  if (!options.disable) {
+    const projectRoot = metroConfig.projectRoot ?? process.cwd()
+    const requireFromProject = createRequire(join(projectRoot, 'package.json'))
+    const originalBabelTransformerPath =
+      metroConfig.transformer.babelTransformerPath ??
+      requireFromProject.resolve('metro-babel-transformer')
+    const cacheBaseRoot = compilerCacheRoot ?? defaultMetroCompilerCacheRoot(projectRoot)
+    const frontend = new MetroCompilerFrontend({
+      projectRoot,
+      resolver: metroConfig.resolver,
+      transformer: metroConfig.transformer,
+      tamaguiOptions: options,
+      originalBabelTransformerPath,
+      cacheRoot: cacheBaseRoot,
+      reportDiagnostic(diagnostic) {
+        console.warn(`[@tamagui/metro-plugin] ${diagnostic.code}: ${diagnostic.message}`)
+      },
+    })
+    const transformerFactoryPath = requireFromPlugin.resolve(
+      '@tamagui/metro-plugin/transformer'
+    )
+    metroConfig.transformer.babelTransformerPath = writeMetroCompilerTransformerBridge(
+      transformerFactoryPath,
+      {
+        cacheBaseRoot,
+        originalBabelTransformerPath,
+      }
+    )
+    const userGetTransformOptions = metroConfig.transformer.getTransformOptions
+    metroConfig.transformer.getTransformOptions = composeMetroGetTransformOptions(
+      frontend,
+      userGetTransformOptions
+    )
+    frontends.set(metroConfig, frontend)
+  }
+
   return metroConfig
 }
+
+export {
+  METRO_COMPILER_CACHE_VERSION,
+  MetroCompilerCache,
+  MetroCompilerCacheError,
+  defaultMetroCompilerCacheRoot,
+} from './compilerCache'
+export type { MetroCompilerDiagnostic } from './diagnostics'
+export type {
+  MetroCompilerGeneration,
+  MetroCompilerScanOptions,
+  MetroCompilerUpdate,
+} from './frontend'

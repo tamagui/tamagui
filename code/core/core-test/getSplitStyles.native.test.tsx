@@ -67,7 +67,7 @@ describe('getSplitStyles', () => {
     const SpreadSizeView = styled(View, {
       variants: {
         size: {
-          '...size': (val) => {
+          Size: (val) => {
             seenSize = val
             return {
               width: val,
@@ -89,6 +89,57 @@ describe('getSplitStyles', () => {
 
     expect(seenSize).toBe('$4')
     expect(findLayoutValue(spread, 'width')).toBe('44px')
+  })
+
+  test(`direct true style tokens use native category defaults`, () => {
+    const next = config.getDefaultTamaguiConfig('native')
+    const configured = createTamagui({
+      ...next,
+      settings: {
+        ...next.settings,
+        defaultSize: '$5',
+        defaultTokens: {
+          space: '$3',
+          radius: '$2',
+          zIndex: '$1',
+          fontSize: '$1',
+        },
+      },
+    })
+
+    try {
+      const direct = getSplitStylesFor(
+        {
+          height: true,
+          padding: true,
+          borderRadius: true,
+          zIndex: true,
+          fontSize: true,
+        },
+        Text,
+        {
+          resolveValues: 'value',
+        }
+      )
+
+      expect(findLayoutValue(direct, 'height')).toBe(
+        `${configured.tokensParsed.size.$5.val}px`
+      )
+      expect(findLayoutValue(direct, 'paddingTop')).toBe(
+        `${configured.tokensParsed.space.$3.val}px`
+      )
+      expect(findLayoutValue(direct, 'borderTopLeftRadius')).toBe(
+        `${configured.tokensParsed.radius.$2.val}px`
+      )
+      expect(findLayoutValue(direct, 'zIndex')).toBe(
+        `${configured.tokensParsed.zIndex.$1.val}px`
+      )
+      expect(findLayoutValue(direct, 'fontSize')).toBe(
+        `${configured.fontsParsed.$body.size.$1.val}px`
+      )
+    } finally {
+      createTamagui(config.getDefaultTamaguiConfig('native'))
+    }
   })
 
   test('functional variants see media-resolved sibling variant props', () => {

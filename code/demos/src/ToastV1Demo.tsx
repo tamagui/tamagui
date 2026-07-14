@@ -1,6 +1,8 @@
 import { Toast, useToastController, useToastState } from '@tamagui/toast'
 import React from 'react'
-import { Button, Label, Switch, XStack, YStack } from 'tamagui'
+import { Label, XStack, YStack } from 'tamagui'
+import { Button } from './Button'
+import { Switch } from './ControlSkins'
 
 /**
  *  IMPORTANT NOTE: if you're copy-pasting this demo into your code, make sure to add:
@@ -47,7 +49,7 @@ const CurrentToast = () => {
           )}
         </YStack>
         <Toast.Action asChild altText="Dismiss toast">
-          <Button size="$2">Dismiss</Button>
+          <Button size="small">Dismiss</Button>
         </Toast.Action>
       </XStack>
     </Toast>

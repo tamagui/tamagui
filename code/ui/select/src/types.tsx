@@ -1,6 +1,5 @@
-import type { NativeValue, SizeTokens } from '@tamagui/core'
+import type { NativeValue, SizeTokens, ViewProps } from '@tamagui/core'
 import type { DismissableProps } from '@tamagui/dismissable'
-import type { YStackProps } from '@tamagui/stacks'
 import type { HTMLProps, MutableRefObject, ReactNode, RefObject } from 'react'
 
 // minimal types replacing @floating-ui/react imports
@@ -167,10 +166,9 @@ export interface SelectContextValue {
 export type SelectViewportExtraProps = SelectScopedProps<{
   size?: SizeTokens | true
   disableScroll?: boolean
-  unstyled?: boolean
 }>
 
-export type SelectViewportProps = YStackProps & SelectViewportExtraProps
+export type SelectViewportProps = ViewProps & SelectViewportExtraProps
 
 export type SelectContentProps = SelectScopedProps<
   {
@@ -181,7 +179,7 @@ export type SelectContentProps = SelectScopedProps<
   >
 >
 
-export type SelectScrollButtonImplProps = YStackProps &
+export type SelectScrollButtonImplProps = ViewProps &
   SelectScopedProps<{
     dir: 'up' | 'down'
     componentName: string

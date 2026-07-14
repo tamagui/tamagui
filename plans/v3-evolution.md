@@ -34,9 +34,8 @@ release-staging tree:
    JSX calls, delegates resolution to the host bundler, explains bailouts, and
    works in Vite and Metro. A temporary parity switch may exist on a feature
    branch; no user-facing dual-engine fallback ships.
-7. DOM mode is compile-only: literal DOM tags map to native primitives and
-   literal text is wrapped at compile time. There is no per-render string
-   inspection and no React Strict DOM runtime dependency.
+
+Compile-only DOM support is explicitly out of scope for this v3-beta plan.
 
 ## Locked contracts
 
@@ -65,9 +64,11 @@ Claiming is deterministic:
 - Everything else is passthrough. On web the Tailwind engine sees it; on native
   it is dropped with a deduplicated development warning.
 
-Precedence is also one rule: base styled values, simple variants, and compound
-variants apply in that order; call-site style props override them; call-site
-`className` is last and wins. Attribute order must not change the result.
+Precedence follows existing Tamagui behavior: props are processed in authored
+order and later output wins, with parent styled values applied before lighter
+child and call-site values. Compound variants run after their matched simple
+variants, call-site style props remain later, and call-site `className` is last.
+Reordering authored props may therefore change the result.
 
 The three type modes remain one implementation:
 
@@ -211,22 +212,6 @@ string construction is introduced.
   and writes a content-hash cache read by isolated transform workers.
 - A diagnostics mode reports the exact binding/prop/import that caused bailout.
 
-### DOM mode boundary
-
-- Web literal tags remain literal tags.
-- Native literal tags are rewritten by the compiler to `@tamagui/dom` behavior
-  primitives.
-- Direct literal string/number children of View-backed tags are wrapped at
-  compile time. Dynamic strings and opaque child components are not inspected;
-  invalid native text placement fails exactly as React Native does today.
-- The v1 tag set covers ordinary View-backed structure (`div`, `section`,
-  `main`, `header`, `footer`, `nav`, `ul`, `ol`, `li`), Text-backed tags
-  (`span`, `p`, `h1`-`h6`, `label`, `strong`, `em`, `code`), and the basic
-  interactive/image set (`button`, `a`, `img`, `input`, `textarea`).
-- Structural rewrites for `overflow -> ScrollView`, `select`/`option`, form
-  submission, and broad HTMLElement ref emulation are a later packet, not a
-  hidden requirement of v1.
-
 ## Current baseline and recovery point
 
 - Local `v3-beta` plan baseline: `b5e47829a8`; it is three commits ahead of
@@ -257,7 +242,7 @@ B0 variant engine ─> B1 compound/context/class strings ─> B2 repo migration
 E0 Vite ModuleRunner ─> E1 analyzer decision spike ─> E2 shared IR/graph
                                                  ├─> E3 Vite compiler
                                                  └─> E4 Metro compiler
-                                                      └─> F0 DOM v1
+                                                      └─> E5 remaining adapters/removal
 
 All completed lanes ─> G0 integrated canary ─> G1 release dry run ─> owner publish gate
 ```
@@ -407,7 +392,8 @@ inference for both overloads, including `defaultVariants`, invalid variants,
 and a fourth-argument static config. A single integration fixture then
 exercises base object + base class, simple functional/static variants, compound
 matches, context-provided matches, and call-site overrides on
-web/native/extracted web. No attribute order changes precedence.
+web/native/extracted web. Results preserve the established prop-order,
+parent-to-child, and caller-last semantics.
 
 **Resource class:** medium.
 
@@ -678,33 +664,6 @@ resolvers. Platform-specific adapters are acceptable; two extractors for the
 same adapter are not. Delete Babel extractor/evaluator dependencies once the
 last supported adapter moves.
 
-### F0 — compile-only DOM v1
-
-**Goal:** author the supported DOM subset once and run it on web/native.
-
-**Owner surfaces:** new `@tamagui/dom` behavior package, compiler IR native
-rewrite, DOM conformance fixtures.
-
-**Implementation:**
-
-1. Encode the locked tag classification and attribute/event map as data shared
-   by compiler tests and runtime behavior primitives.
-2. Leave web tags untouched.
-3. On native, inject imports and rewrite tags; wrap only direct literal text/
-   number children of View-backed tags.
-4. Match React Strict DOM's documented layout defaults and text inheritance
-   semantics where React Native differs, but implement them through Tamagui's
-   own primitives. No RSD dependency and no runtime child inspection.
-5. Warn at compile time for unsupported tags/attributes/nesting when statically
-   knowable. Otherwise bail rather than guess.
-
-**Acceptance:** the same source fixture renders semantic web DOM and native
-View/Text/press/input behavior; direct literal text works; dynamic invalid text
-still fails natively; event/accessibility mappings and layout defaults have
-conformance assertions; no per-render string scan appears in the bundle.
-
-**Resource class:** medium/heavy after E4.
-
 ### G0 — integrated canary
 
 Build one small v6 app that deliberately combines every lane:
@@ -714,8 +673,7 @@ Build one small v6 app that deliberately combines every lane:
   syntax;
 - a copied named-size Button skin and a copied Sheet/Select skin;
 - TS-style + compound + context variants;
-- imported cross-file styled constants compiled through Vite and Metro;
-- a supported DOM-mode subtree.
+- imported cross-file styled constants compiled through Vite and Metro.
 
 Prove web dev/HMR, web production/SSR/hydration, native Metro bundle/runtime,
 typecheck, package exports, and exact style values. This canary is the final
@@ -794,7 +752,7 @@ logical lanes but one heavy machine lane.
 9. **E1/E2:** choose the analyzer and build the shared graph/IR.
 10. **C2/C3** and **E3/E4** proceed on separate owner files, with heavy gates
     serialized.
-11. **C4**, then **F0**, then the integrated **G0/G1** closeout.
+11. **C4**, then **E5**, then the integrated **G0/G1** closeout.
 
 ## Stop conditions
 
@@ -816,7 +774,5 @@ a fallback, compatibility mode, or speculative workaround.
 
 - `plans/tailwind-full-syntax.md` — official-engine hybrid detail
 - `plans/compiler-oxc.md` — parser/analyzer and bundler research
-- `plans/dom-mode.md` — DOM mapping semantics and limitations
 - `~/github/chat/src/interface/buttons/` — named-size/user-skin model
 - `~/github/yuku` — analyzer candidate
-- `~/github/react-strict-dom` — semantics reference only

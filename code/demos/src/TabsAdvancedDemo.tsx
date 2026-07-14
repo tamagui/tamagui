@@ -1,15 +1,8 @@
 import React from 'react'
 import type { ViewProps, TabLayout, TabsTabProps } from 'tamagui'
-import {
-  AnimatePresence,
-  Button,
-  H5,
-  SizableText,
-  Tabs,
-  XStack,
-  YStack,
-  styled,
-} from 'tamagui'
+import { AnimatePresence, H5, SizableText, XStack, YStack, styled } from 'tamagui'
+import { Button } from './Button'
+import { Tabs } from './ControlSkins'
 
 const demos = ['background', 'underline'] as const
 const demosTitle: Record<(typeof demos)[number], string> = {
@@ -32,7 +25,7 @@ export const TabsAdvancedDemo = () => {
         l="$4"
         $xxs={{ display: 'none' }}
       >
-        <Button size="$2" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
+        <Button size="small" onPress={() => setDemoIndex((x) => (x + 1) % demos.length)}>
           {demosTitle[demo]}
         </Button>
       </XStack>
@@ -130,7 +123,6 @@ const TabsAdvancedBackground = () => {
           backgroundColor="transparent"
         >
           <Tabs.Tab
-            unstyled
             paddingHorizontal="$3"
             value="tab1"
             onInteraction={handleOnInteraction}
@@ -138,7 +130,6 @@ const TabsAdvancedBackground = () => {
             <SizableText>Profile</SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            unstyled
             paddingHorizontal="$3"
             value="tab2"
             onInteraction={handleOnInteraction}
@@ -146,7 +137,6 @@ const TabsAdvancedBackground = () => {
             <SizableText>Connections</SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            unstyled
             paddingHorizontal="$3"
             value="tab3"
             onInteraction={handleOnInteraction}
@@ -257,7 +247,6 @@ const TabsAdvancedUnderline = () => {
           backgroundColor="transparent"
         >
           <Tabs.Tab
-            unstyled
             paddingHorizontal="$3"
             value="tab1"
             onInteraction={handleOnInteraction}
@@ -267,7 +256,6 @@ const TabsAdvancedUnderline = () => {
             </SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            unstyled
             paddingHorizontal="$3"
             value="tab2"
             onInteraction={handleOnInteraction}
@@ -277,7 +265,6 @@ const TabsAdvancedUnderline = () => {
             </SizableText>
           </Tabs.Tab>
           <Tabs.Tab
-            unstyled
             paddingHorizontal="$3"
             value="tab3"
             onInteraction={handleOnInteraction}
@@ -337,7 +324,7 @@ const AnimatedYStack = styled(YStack, {
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     direction: {
-      ':number': (direction) => ({
+      number: (direction) => ({
         enterStyle: {
           x: direction > 0 ? -25 : 25,
           opacity: 0,

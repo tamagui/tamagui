@@ -26,7 +26,7 @@ export const PromoLinksRow = () => {
               href="/takeout"
             >
               <XGroup.Item>
-                <TakeoutButton mr={-1} elevation={0} />
+                <TakeoutButton mr={-1} boxShadow="none" />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>
@@ -43,7 +43,7 @@ export const PromoLinksRow = () => {
               href="/bento"
             >
               <XGroup.Item>
-                <BentoButton mr={-1} elevation={0} />
+                <BentoButton mr={-1} boxShadow="none" />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>
@@ -61,7 +61,7 @@ export const PromoLinksRow = () => {
               target="_blank"
             >
               <XGroup.Item>
-                <ConsultingButton elevation={0} />
+                <ConsultingButton boxShadow="none" />
               </XGroup.Item>
             </Link>
           </Tooltip.Trigger>
@@ -71,7 +71,7 @@ export const PromoLinksRow = () => {
           animatePosition
           transition="medium"
           bg="$background"
-          elevation="$2"
+          boxShadow="0 4px 12px $shadowColor"
           rounded="$4"
           px="$2.5"
           py="$1"

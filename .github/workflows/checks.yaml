@@ -76,6 +76,12 @@ jobs:
       - name: Install playwright
         run: bunx playwright install
 
+      - name: Check v6 Tailwind defaults
+        working-directory: code/core/config
+        run: |
+          bun run check:v6-tailwind-defaults
+          bun run test:v6-tailwind-defaults
+
       - name: Restore Turbo cache
         uses: actions/cache@v4
         with:

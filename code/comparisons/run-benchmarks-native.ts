@@ -230,7 +230,7 @@ async function waitForMetro(port: number, timeout = 60_000) {
 function startMetro(dir: string, port: number): ChildProcess {
   const cwd = join(HERE, dir)
   // BENCH_CLEAR=1 forces a cold metro rebuild so a freshly-rebuilt compiler
-  // (@tamagui/static / babel-plugin) is actually applied instead of a stale cache.
+  // The shared compiler is actually applied instead of using a stale cache.
   // PROD=1 builds a production JS bundle (NODE_ENV=production, no dev-only hooks
   // like useId / the dev visualizer effect, minified) — the honest shipped shape.
   const prodArgs = process.env.PROD === '1' ? ['--no-dev', '--minify'] : []

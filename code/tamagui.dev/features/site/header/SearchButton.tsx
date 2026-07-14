@@ -1,11 +1,9 @@
 import { Search as SearchIcon } from '@tamagui/lucide-icons-2'
 import { memo, useContext, useEffect, useRef } from 'react'
-import type { GetProps } from 'tamagui'
-import { Button, SizableText, TooltipSimple } from 'tamagui'
+import { SizableText, TooltipSimple } from 'tamagui'
 
+import { Button, type ButtonProps } from '~/components/Button'
 import { SearchContext } from '~/features/site/search/SearchContext'
-
-type ButtonProps = GetProps<typeof Button>
 
 export const SearchButton = memo((props: ButtonProps) => {
   const { onOpen, onInput } = useContext(SearchContext)

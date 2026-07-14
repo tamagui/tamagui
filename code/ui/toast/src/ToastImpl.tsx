@@ -42,29 +42,18 @@ import { VIEWPORT_PAUSE, VIEWPORT_RESUME } from './ToastViewport'
 const ToastImplFrame = styled(YStack, {
   name: 'ToastImpl',
   tabIndex: 0,
-
-  variants: {
-    unstyled: {
-      false: {
-        focusStyle: {
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineColor: '$outlineColor',
-        },
-        backgroundColor: '$color6',
-        borderRadius: '$4',
-        paddingHorizontal: '$4',
-        paddingVertical: '$3',
-        marginHorizontal: 'auto',
-        marginVertical: '$1',
-        elevation: '$3',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
+  focusStyle: {
+    outlineStyle: 'solid',
+    outlineWidth: 2,
+    outlineColor: '$outlineColor',
   },
+  backgroundColor: '$color6',
+  borderRadius: '$4',
+  paddingHorizontal: '$4',
+  paddingVertical: '$3',
+  marginHorizontal: 'auto',
+  marginVertical: '$1',
+  elevation: '$3',
 })
 
 type ToastProps = Omit<ToastImplProps, keyof ToastImplPrivateProps>

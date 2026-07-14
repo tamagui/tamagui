@@ -1,9 +1,13 @@
 import assert from 'node:assert/strict'
 import { performance } from 'node:perf_hooks'
 
-import type { CandidateFactory } from '../contracts'
-import { evaluateBinding } from '../evaluate'
-import { createGeneratedProject } from '../fixture'
+import {
+  ProjectGraph,
+  resolvedModuleId,
+  type CandidateFactory,
+  type HostModuleInput,
+} from '@tamagui/compiler-core'
+import { createGeneratedProject, hostResolvedProjectFromInput } from '../fixture'
 
 export interface Distribution {
   medianMs: number
@@ -53,6 +57,7 @@ export function measureCandidateTiming(
   moduleCount = 1_000
 ): Omit<CandidateMeasurement, 'memory'> {
   const project = createGeneratedProject(moduleCount)
+  const hostProject = hostResolvedProjectFromInput(project)
   const affectedFinalIndex = moduleCount / 2 - 1
   const unaffectedRootIndex = moduleCount / 2
   const unaffectedFinalIndex = moduleCount - 1
@@ -65,46 +70,62 @@ export function measureCandidateTiming(
   for (let sample = 0; sample < 10; sample++) {
     collectGarbage()
     const start = performance.now()
-    const candidate = factory.create(project)
-    candidate.link()
-    assert.ok(candidate.definitionOf(affectedFinalId, affectedFinalName))
-    assert.ok(candidate.definitionOf(unaffectedFinalId, unaffectedFinalName))
+    const graph = new ProjectGraph(factory, hostProject)
+    assert.ok(graph.resolveBinding(resolvedModuleId(affectedFinalId), affectedFinalName))
+    assert.ok(
+      graph.resolveBinding(resolvedModuleId(unaffectedFinalId), unaffectedFinalName)
+    )
     coldSamples.push(performance.now() - start)
   }
 
-  const candidate = factory.create(project)
-  candidate.link()
-  assert.ok(candidate.definitionOf(affectedFinalId, affectedFinalName))
-  assert.ok(candidate.definitionOf(unaffectedFinalId, unaffectedFinalName))
+  const graph = new ProjectGraph(factory, hostProject)
+  assert.ok(graph.resolveBinding(resolvedModuleId(affectedFinalId), affectedFinalName))
+  assert.ok(
+    graph.resolveBinding(resolvedModuleId(unaffectedFinalId), unaffectedFinalName)
+  )
   const expectedAffected = [...project.files.keys()]
     .filter((id) => Number(id.match(/module-(\d+)\.ts$/)?.[1]) < moduleCount / 2)
     .sort()
-  const actualAffected = candidate.affectedBy('/generated/module-0.ts')
+  const rootId = resolvedModuleId('/generated/module-0.ts')
+  const actualAffected = graph.affectedBy(rootId)
   const initialParseCounts = new Map(
-    [...project.files.keys()].map((id) => [id, candidate.parseCount(id)])
+    [...project.files.keys()].map((id) => [id, graph.parseCount(resolvedModuleId(id))])
   )
+  const rootModule = hostProject.modules.find((module) => module.id === rootId)
+  assert.ok(rootModule)
   const warmSamples: number[] = []
 
   for (let sample = 0; sample < 100; sample++) {
     const nextValue = sample % 2 === 0 ? 2 : 1
     const start = performance.now()
-    candidate.addFile('/generated/module-0.ts', `export const value0 = ${nextValue}\n`)
-    candidate.link()
-    assert.equal(
-      evaluateBinding(candidate, affectedFinalId, affectedFinalName),
-      nextValue + affectedFinalIndex
+    graph.updateModule({
+      ...rootModule,
+      source: `export const value0 = ${nextValue}\n`,
+    })
+    const affected = graph.evaluateBinding(
+      resolvedModuleId(affectedFinalId),
+      affectedFinalName
     )
-    assert.equal(
-      evaluateBinding(candidate, unaffectedFinalId, unaffectedFinalName),
-      1 + unaffectedFinalIndex - unaffectedRootIndex
+    assert.equal(affected.ok, true)
+    if (affected.ok) assert.equal(affected.value, nextValue + affectedFinalIndex)
+    const unaffected = graph.evaluateBinding(
+      resolvedModuleId(unaffectedFinalId),
+      unaffectedFinalName
     )
+    assert.equal(unaffected.ok, true)
+    if (unaffected.ok) {
+      assert.equal(unaffected.value, 1 + unaffectedFinalIndex - unaffectedRootIndex)
+    }
     warmSamples.push(performance.now() - start)
   }
 
   const unaffectedReparseCount = [...project.files.keys()]
     .filter((id) => id !== '/generated/module-0.ts')
     .reduce(
-      (total, id) => total + candidate.parseCount(id) - (initialParseCounts.get(id) ?? 0),
+      (total, id) =>
+        total +
+        graph.parseCount(resolvedModuleId(id)) -
+        (initialParseCounts.get(id) ?? 0),
       0
     )
   const cold = distribution(coldSamples)
@@ -134,15 +155,15 @@ export function measureCandidateMemory(
   moduleCount = 1_000
 ): MemoryMeasurement {
   const project = createGeneratedProject(moduleCount)
+  const hostProject = hostResolvedProjectFromInput(project)
   const finalIndex = moduleCount / 2 - 1
   const finalId = `/generated/module-${finalIndex}.ts`
   const finalName = `value${finalIndex}`
 
   collectGarbage()
   const before = process.memoryUsage()
-  const candidate = factory.create(project)
-  candidate.link()
-  assert.ok(candidate.definitionOf(finalId, finalName))
+  const graph = new ProjectGraph(factory, hostProject)
+  assert.ok(graph.resolveBinding(resolvedModuleId(finalId), finalName))
   collectGarbage()
   const after = process.memoryUsage()
 

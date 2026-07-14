@@ -68,10 +68,6 @@ export type TamaguiComponentPropsBaseBase = {
      */
     themeShallow?: boolean;
     /**
-     * If true, component themes will not be applied
-     */
-    unstyled?: boolean;
-    /**
      * Same as the web id property for setting a uid on an element
      */
     id?: string;
@@ -590,7 +586,6 @@ export type UseThemeWithStateProps = ThemeProps & {
     passThrough?: boolean;
     disable?: boolean;
     needsUpdate?: () => boolean;
-    unstyled?: boolean;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${infer Theme}_${infer Alt}` ? Theme | GetAltThemeNames<Alt> : S) | S;
@@ -608,6 +603,8 @@ type AllowedStyleValuesSettingPerCategory = {
 };
 type AllowedStyleValuesSetting = AllowedValueSettingBase | AllowedStyleValuesSettingPerCategory;
 type AutocompleteSpecificTokensSetting = boolean | 'except-special';
+export type DefaultTokenCategory = 'size' | 'space' | 'radius' | 'zIndex' | 'fontSize';
+export type DefaultTokens = Partial<Record<Exclude<DefaultTokenCategory, 'size'>, string>>;
 export interface GenericTamaguiSettings {
     /**
      * controls style semantics where React Native/Yoga and CSS differ.
@@ -716,6 +713,12 @@ export interface GenericTamaguiSettings {
      * @default '$4'
      */
     defaultSize?: string;
+    /**
+     * define category-specific defaults for boolean token values.
+     *
+     * categories without an override fall back to `defaultSize`.
+     */
+    defaultTokens?: DefaultTokens;
     /**
      * Web-only: define CSS text-selection styles
      */
@@ -1644,7 +1647,7 @@ export type StyleResolver<Response = PropMappedValue> = (key: string, value: any
 export type PropMapper = (key: string, value: any, state: GetStyleState, disabled: boolean, map: (key: string, val: any, originalVal?: any) => void) => void;
 export type GenericVariantDefinitions = {
     [key: string]: {
-        [key: string]: ((a: any, b: any) => any) | {
+        [key: string]: ((a: any, b: any) => any) | StaticStyleInput | {
             [key: string]: any;
         };
     };
@@ -1652,15 +1655,12 @@ export type GenericVariantDefinitions = {
 export type CompoundVariantDefinition<MatchProps extends Record<string, any> = Record<string, any>, StyleProps extends Record<string, any> = Record<string, any>> = {
     [Key in keyof MatchProps]?: MatchProps[Key] | readonly MatchProps[Key][];
 } & {
-    style: StyleProps;
+    style: StyleProps | StaticStyleInput;
 };
 export type GenericCompoundVariant = CompoundVariantDefinition<Record<string, any>, Record<string, any>>;
 export type StaticConfigPublic = {
     defaultProps?: Record<string, any>;
-    /**
-     * Static class input supplied to styled(Component, baseClassName, ...).
-     * B1 records this for compiler/static consumers; runtime class semantics land later.
-     */
+    /** Static class input supplied to styled(Component, baseClassName, ...). */
     baseClassName?: StaticStyleInput;
     /**
      * (compiler) If you need to pass context or something, prevents from ever
@@ -1715,6 +1715,7 @@ export type StaticConfigPublic = {
 };
 type StaticConfigBase = StaticConfigPublic & {
     Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any, any>;
+    baseStyle?: Record<string, any>;
     variants?: GenericVariantDefinitions;
     compoundVariants?: readonly GenericCompoundVariant[];
     context?: StyledContext;
@@ -1765,7 +1766,6 @@ export type VariantResolverKey<Key extends string = string> = Key extends string
 type VariantResolverValueForName<Name extends string> = Name extends 'Size' ? Size : Name extends 'Space' ? Space : Name extends 'Color' ? Color : Name extends 'Radius' ? Radius : Name extends 'ZIndex' ? ZIndex : Name extends 'Theme' ? ThemeTokens : Name extends 'FontSize' ? FontSize : Name extends 'FontStyle' ? FontStyleTokens : Name extends 'FontTransform' ? FontTransformTokens : Name extends 'FontLineHeight' ? FontLineHeightTokens : Name extends 'FontLetterSpacing' ? FontLetterSpacingTokens : Name extends 'number' ? number : Name extends 'string' ? string : Name extends 'boolean' ? boolean : Name extends 'any' ? any : never;
 export type VariantResolverValue<Key extends string> = Trim<Key> extends `${infer Left}|${infer Right}` ? VariantResolverValueForName<Trim<Left>> | VariantResolverValue<Right> : VariantResolverValueForName<Trim<Key>>;
 export declare function createVariantResolver<Key extends string, Props extends PropLike = PropLike, Resolver extends VariantSpreadFunction<Props, VariantResolverValue<Key>> = VariantSpreadFunction<Props, VariantResolverValue<Key>>>(key: string extends Key ? never : Key & VariantResolverKey<Key>, resolver: Resolver): Resolver;
-export type SpreadKeys = '...fontSize' | '...fontStyle' | '...fontTransform' | '...lineHeight' | '...letterSpacing' | '...size' | '...space' | '...color' | '...zIndex' | '...theme' | '...radius';
 export type VariantDefinitions<Parent extends StylableComponent = TamaguiComponent, StaticConfig extends StaticConfigPublic = Parent extends {
     __tama: [any, any, any, any, any, infer S];
 } ? S : {}, MyProps extends object = Partial<GetVariantProps<Parent, StaticConfig['isText'] extends true ? true : StaticConfig['isInput'] extends true ? true : false>>, Val = any> = VariantDefinitionFromProps<MyProps, Val> & {
@@ -1783,13 +1783,9 @@ export type GetVariantProps<A extends StylableComponent, IsText extends boolean 
     ];
 } ? Props extends TamaDefer ? GetFinalProps<NonStyledProps, BaseStyles, VariantProps> : Props : WithThemeShorthandsPseudosMedia<IsText extends true ? TextStylePropsBase : StackStyleBase>;
 export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object ? {
-    [propName: string]: VariantSpreadFunction<MyProps, Val> | ({
-        [Key in SpreadKeys]?: Key extends '...fontSize' ? FontSizeVariantSpreadFunction<MyProps> : Key extends '...size' ? SizeVariantSpreadFunction<MyProps> : Key extends '...space' ? SpaceVariantSpreadFunction<MyProps> : Key extends '...color' ? ColorVariantSpreadFunction<MyProps> : Key extends '...lineHeight' ? FontLineHeightVariantSpreadFunction<MyProps> : Key extends '...fontTransform' ? FontTransformVariantSpreadFunction<MyProps> : Key extends '...fontStyle' ? FontStyleVariantSpreadFunction<MyProps> : Key extends '...letterSpacing' ? FontLetterSpacingVariantSpreadFunction<MyProps> : Key extends '...zIndex' ? ZIndexVariantSpreadFunction<MyProps> : Key extends '...radius' ? RadiusVariantSpreadFunction<MyProps> : Key extends '...theme' ? ThemeVariantSpreadFunction<MyProps> : never;
-    } & {
+    [propName: string]: VariantSpreadFunction<MyProps, Val> | {
         [Key in string | number | 'true' | 'false']?: MyProps | VariantSpreadFunction<MyProps, Val> | StaticStyleInput;
-    } & {
-        [Key in VariantTypeKeys]?: Key extends ':number' ? VariantSpreadFunction<MyProps, number> : Key extends ':boolean' ? VariantSpreadFunction<MyProps, boolean> : Key extends ':string' ? VariantSpreadFunction<MyProps, string> : never;
-    });
+    };
 } : {};
 export type GenericStackVariants = VariantDefinitionFromProps<StackNonStyleProps & StackStyle, any>;
 export type GenericTextVariants = VariantDefinitionFromProps<TextProps, any>;
@@ -1809,8 +1805,6 @@ type PropLike = {
 export type VariantSpreadFunction<Props extends PropLike, Val = any> = (val: Val, config: VariantSpreadExtras<Props>) => {
     [Key in keyof Props]: Props[Key] | Variable | VariableVal;
 } | null | undefined;
-export type VariantTypeKeys = ':string' | ':boolean' | ':number';
-export type GetVariantValues<Key> = Key extends `...${infer VariantSpread}` ? ThemeValueByCategory<VariantSpread> : Key extends 'true' | 'false' ? boolean : Key extends string ? VariantResolverKey<Key> extends never ? Key extends ':string' ? string : Key extends ':boolean' ? boolean : Key extends ':number' ? number : Key : VariantResolverValue<Key> : Key;
 export type FontSizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, FontSizeTokens>;
 export type SizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SizeTokens>;
 export type SpaceVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<A, SpaceTokens>;

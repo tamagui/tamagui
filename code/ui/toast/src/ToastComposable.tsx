@@ -449,23 +449,12 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
 
 const ToastViewportFrame = styled(View, {
   name: 'ToastViewport',
-
-  variants: {
-    unstyled: {
-      false: {
-        position: isWeb ? ('fixed' as any) : 'absolute',
-        zIndex: 100000,
-        pointerEvents: 'box-none',
-        maxWidth: '100%',
-        ...(isWeb && { width: 356 }),
-        minHeight: 1,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  position: isWeb ? ('fixed' as any) : 'absolute',
+  zIndex: 100000,
+  pointerEvents: 'box-none',
+  maxWidth: '100%',
+  ...(isWeb && { width: 356 }),
+  minHeight: 1,
 })
 
 export type ToastViewportProps = GetProps<typeof ToastViewportFrame> & {
@@ -1252,20 +1241,9 @@ const ToastItemInner = createStyledHOC(ToastItemFrame)<ToastItemProps>(
 
 const ToastTitle = styled(SizableText, {
   name: 'ToastTitle',
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color',
-        fontWeight: '600',
-        size: '$4',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  color: '$color',
+  fontWeight: '600',
+  size: '$4',
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -1274,19 +1252,8 @@ const ToastTitle = styled(SizableText, {
 
 const ToastDescription = styled(SizableText, {
   name: 'ToastDescription',
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color11',
-        size: '$2',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  color: '$color11',
+  size: '$2',
 })
 
 /* -------------------------------------------------------------------------------------------------

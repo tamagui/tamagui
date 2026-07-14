@@ -2,7 +2,8 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import type { SheetProps } from '@tamagui/sheet'
 import { Sheet } from '@tamagui/sheet'
 import React from 'react'
-import { Button, H2, Input, Paragraph, XStack, YStack } from 'tamagui'
+import { H2, Input, Paragraph, XStack, YStack } from 'tamagui'
+import { Button } from './components/Button'
 
 export const NativeSheetDemo = () => {
   const [position, setPosition] = React.useState(0)
@@ -44,11 +45,16 @@ export const NativeSheetDemo = () => {
           gap="$5"
         >
           <Sheet.Background />
-          <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
+          <Button
+            size="large"
+            circular
+            icon={ChevronDown}
+            onPress={() => setOpen(false)}
+          />
           <Input width={200} />
           <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
           <Button
-            size="$6"
+            size="large"
             circular
             icon={ChevronUp}
             onPress={() => setInnerOpen(true)}
@@ -81,7 +87,7 @@ function InnerSheet(props: SheetProps) {
         <Sheet.ScrollView>
           <YStack p="$5" gap="$8">
             <Button
-              size="$6"
+              size="large"
               circular
               alignSelf="center"
               icon={ChevronDown}

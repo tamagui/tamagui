@@ -1,4 +1,4 @@
-import type { ButtonProps } from 'tamagui'
+import type { ButtonProps } from '~/components/Button'
 
 import { accentTokenName } from '~/features/studio/accentThemeName'
 import type { DemoOptions } from '../theme/demoOptions'

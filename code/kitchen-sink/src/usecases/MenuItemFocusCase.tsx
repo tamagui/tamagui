@@ -1,6 +1,7 @@
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, Input, YStack } from 'tamagui'
+import { Input, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu item focus preservation test case
@@ -16,7 +17,7 @@ export function MenuItemFocusCase() {
     <YStack padding="$4" gap="$4">
       <Menu placement="bottom-start">
         <Menu.Trigger asChild>
-          <Button data-testid="menu-trigger" size="$4">
+          <Button data-testid="menu-trigger" size="medium">
             Open Menu
           </Button>
         </Menu.Trigger>
@@ -28,7 +29,7 @@ export function MenuItemFocusCase() {
             minW={200}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
           >
             <Menu.Item
               data-testid="focus-input-item"

@@ -1,6 +1,7 @@
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, Theme, YStack } from 'tamagui'
+import { Theme, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu Theme Test Case
@@ -21,7 +22,7 @@ export function MenuThemeCase() {
       >
         <Menu placement="bottom-start" offset={8}>
           <Menu.Trigger asChild>
-            <Button data-testid="menu-trigger" size="$4">
+            <Button data-testid="menu-trigger" size="medium">
               Open Menu
             </Button>
           </Menu.Trigger>

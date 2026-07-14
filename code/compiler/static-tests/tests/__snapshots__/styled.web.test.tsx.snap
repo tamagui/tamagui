@@ -1,11 +1,13 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`styled() tests > extracts to className at call-site 1`] = `
-"const _cn = "is_View _bg-green";
-import { MyStack } from '@tamagui/test-design-system';
-export function Test() {
-  return <div className={_cn} />;
-}"
+"
+      import { MyStack } from '@tamagui/test-design-system'
+
+      export function Test() {
+        return <div className="is_View _bg-green" />
+      }
+"
 `;
 
 exports[`styled() tests > extracts to className at call-site 2`] = `":root ._bg-green{background-color:green;}"`;

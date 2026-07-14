@@ -1,14 +1,6 @@
 import { X } from '@tamagui/lucide-icons-2'
-import {
-  Adapt,
-  Button,
-  Dialog,
-  Paragraph,
-  Sheet,
-  Unspaced,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button } from '../components/Button'
+import { Adapt, Dialog, Paragraph, Sheet, Unspaced, XStack, YStack } from 'tamagui'
 
 export function DialogNestedCase() {
   return (
@@ -108,7 +100,7 @@ function DialogInstance({ level = 1 }: { level?: number }) {
                   position="absolute"
                   right="$3"
                   top="$3"
-                  size="$2"
+                  size="small"
                   circular
                   icon={X}
                 />

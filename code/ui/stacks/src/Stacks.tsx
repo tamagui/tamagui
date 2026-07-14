@@ -15,8 +15,8 @@ export type ZStackProps = YStackProps
 
 const variants = {
   elevation: {
-    '...size': getElevation,
-    ':number': getElevation,
+    number: getElevation,
+    Size: getElevation,
   },
 } as const
 

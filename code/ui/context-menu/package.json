@@ -36,6 +36,7 @@
   "dependencies": {
     "@tamagui/compose-refs": "workspace:*",
     "@tamagui/create-menu": "workspace:*",
+    "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/use-callback-ref": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",

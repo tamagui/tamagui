@@ -1,7 +1,8 @@
 import { Check } from '@tamagui/lucide-icons-2'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, H1, Paragraph, Text, YStack } from 'tamagui'
+import { H1, Paragraph, Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 export function MenuRadioGroupCase() {
   const [color, setColor] = React.useState('blue')
@@ -37,7 +38,7 @@ export function MenuRadioGroupCase() {
       <YStack alignItems="flex-start" gap="$4">
         <Menu allowFlip placement="bottom-start" offset={8}>
           <Menu.Trigger asChild>
-            <Button testID="menu-radio-trigger" size="$4">
+            <Button testID="menu-radio-trigger" size="medium">
               Pick a color
             </Button>
           </Menu.Trigger>
@@ -50,7 +51,7 @@ export function MenuRadioGroupCase() {
               borderWidth={1}
               borderColor="$borderColor"
               bg="$background"
-              elevation="$3"
+              boxShadow="0 4px 12px $shadowColor"
             >
               <Menu.RadioGroup value={color} onValueChange={handleValueChange}>
                 {options.map((option) => (

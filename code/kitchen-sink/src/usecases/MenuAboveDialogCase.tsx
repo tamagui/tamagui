@@ -40,7 +40,7 @@ export function MenuAboveDialogCase() {
                     bg="$background"
                     borderWidth={1}
                     borderColor="$borderColor"
-                    elevation="$4"
+                    boxShadow="0 4px 12px $shadowColor"
                   >
                     <Menu.Item testID="menu-item-1">
                       <Menu.ItemTitle>Item 1</Menu.ItemTitle>

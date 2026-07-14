@@ -1,16 +1,21 @@
-import { type TamaguiOptions } from '@tamagui/static';
+import type { TamaguiOptions } from '@tamagui/static';
+import { MetroCompilerFrontend } from './frontend';
 export type MetroTamaguiOptions = TamaguiOptions & {
     /**
      * @deprecated CSS interop is no longer supported. Use `tamagui generate` instead.
      */
     cssInterop?: boolean;
+    /** Override the ignored on-disk handoff used by Metro transform workers. */
+    compilerCacheRoot?: string;
 };
 type MetroConfigInput = {
+    projectRoot?: string;
     resolver?: any;
     transformer?: any;
     transformerPath?: string;
     [key: string]: any;
 };
+export declare function getMetroCompilerFrontend(metroConfig: MetroConfigInput): MetroCompilerFrontend | null;
 /**
  * Configure Metro for Tamagui.
  *
@@ -35,5 +40,7 @@ type MetroConfigInput = {
  * ```
  */
 export declare function withTamagui(metroConfig: MetroConfigInput, optionsIn?: MetroTamaguiOptions): MetroConfigInput;
-export {};
+export { METRO_COMPILER_CACHE_VERSION, MetroCompilerCache, MetroCompilerCacheError, defaultMetroCompilerCacheRoot, } from './compilerCache';
+export type { MetroCompilerDiagnostic } from './diagnostics';
+export type { MetroCompilerGeneration, MetroCompilerScanOptions, MetroCompilerUpdate, } from './frontend';
 //# sourceMappingURL=index.d.ts.map

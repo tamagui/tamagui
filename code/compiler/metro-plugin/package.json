@@ -2,15 +2,33 @@
   "name": "@tamagui/metro-plugin",
   "version": "2.4.3",
   "license": "MIT",
+  "type": "module",
   "source": "src/index.ts",
   "files": [
     "src",
     "types",
     "dist"
   ],
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
   "types": "./types/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "browser": "./dist/esm/index.mjs",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/cjs/index.cjs"
+    },
+    "./transformer": {
+      "types": "./types/transformer.d.ts",
+      "import": "./dist/esm/transformer.mjs",
+      "require": "./dist/cjs/transformer.cjs",
+      "default": "./dist/cjs/transformer.cjs"
+    }
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -21,6 +39,8 @@
     "clean:build": "tamagui-build clean:build"
   },
   "dependencies": {
+    "@jridgewell/trace-mapping": "0.3.31",
+    "@tamagui/compiler-core": "workspace:*",
     "@tamagui/static": "workspace:*"
   },
   "devDependencies": {

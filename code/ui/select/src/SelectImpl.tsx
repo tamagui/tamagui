@@ -15,6 +15,7 @@ import {
 } from '@tamagui/floating'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEvent, useIsTouchDevice } from '@tamagui/core'
+import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
 import { flushSync } from 'react-dom'
 import { SCROLL_ARROW_THRESHOLD } from './constants'
@@ -215,11 +216,10 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
   const interactionsContext = React.useMemo(() => {
     return {
       ...interactions,
-      getReferenceProps() {
+      getReferenceProps(props: Record<string, any> = {}) {
         return interactions.getReferenceProps({
-          ref: refs.reference as any,
-          className: 'SelectTrigger',
-          onKeyDown(event) {
+          ...props,
+          onKeyDown: composeEventHandlers(props.onKeyDown, (event: any) => {
             if (
               event.key === 'Enter' ||
               event.code === 'Space' ||
@@ -228,7 +228,7 @@ export const SelectInlineImpl = (props: SelectImplProps) => {
               event.preventDefault()
               setOpen(true)
             }
-          },
+          }),
         })
       },
       getFloatingProps(props) {

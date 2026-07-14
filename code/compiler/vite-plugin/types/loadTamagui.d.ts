@@ -1,4 +1,4 @@
-import type { ExtractedResponse } from '@tamagui/static';
+import type { TamaguiProjectInfo } from '@tamagui/static';
 import type { TamaguiOptions } from '@tamagui/types';
 import type { RunnableDevEnvironment } from 'vite';
 export declare const TAMAGUI_EVALUATION_ENVIRONMENT = "tamagui";
@@ -16,6 +16,14 @@ export type ViteTamaguiLoader = {
     getGeneration(): number;
     getLoadPromise(): Promise<TamaguiOptions> | null;
     getTamaguiOptions(): TamaguiOptions | null;
+    getTamaguiConfig(): Promise<TamaguiProjectInfo['tamaguiConfig']>;
+    getCompilerProject(): Promise<{
+        projectInfo: TamaguiProjectInfo;
+        componentModules: {
+            moduleName: string;
+            id: string;
+        }[];
+    }>;
     getEvaluationDependencies(): string[];
     isEvaluationDependency(id: string): boolean;
     evaluateProjectModules(options: TamaguiOptions): Promise<EvaluatedProjectModules>;
@@ -25,12 +33,6 @@ export type ViteTamaguiLoader = {
     }): void;
     invalidate(file?: string): void;
     ensureFullConfigLoaded(): Promise<string[]>;
-    extractToClassNames(params: {
-        source: string;
-        sourcePath: string;
-        options: TamaguiOptions;
-        shouldPrintDebug: boolean | 'verbose';
-    }): Promise<ExtractedResponse | null>;
     cleanup(): Promise<void>;
 };
 export declare function createViteTamaguiLoader(optionsIn?: Partial<TamaguiOptions>): ViteTamaguiLoader;

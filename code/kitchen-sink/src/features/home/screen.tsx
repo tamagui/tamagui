@@ -5,7 +5,8 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import type { UseLinkProps } from 'solito/link'
 import { useLink } from 'solito/link'
 import type { ListItemProps } from 'tamagui'
-import { Button, ListItem, Paragraph, YGroup, YStack } from 'tamagui'
+import { ListItem, Paragraph, YGroup, YStack } from 'tamagui'
+import { Button } from '../../components/Button'
 import { useCases as TestCases } from '../../usecases'
 
 const testCaseNames = Object.keys(TestCases)
@@ -48,7 +49,7 @@ function TestCasesSection() {
     <YStack gap="$2">
       <Button
         testID="toggle-test-cases"
-        size="$3"
+        size="medium"
         onPress={() => {
           setExpanded(!expanded)
         }}

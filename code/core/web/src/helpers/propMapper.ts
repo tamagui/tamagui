@@ -1,9 +1,10 @@
 import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
-import { resolveDefaultSizeToken } from '../config'
+import { resolveDefaultToken } from '../config'
 import { getVariableValue, isVariable } from '../createVariable'
 import type {
   GetStyleState,
+  DefaultTokenCategory,
   PropMapper,
   SplitStyleProps,
   StyleResolver,
@@ -108,10 +109,11 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   }
 
   if (value != null) {
-    if (value === true && key in defaultSizeTokenKeys) {
+    const defaultTokenCategory = defaultTokenCategories[key]
+    if (value === true && defaultTokenCategory) {
       value = getTokenForKey(
         key,
-        resolveDefaultSizeToken(value, conf),
+        resolveDefaultToken(value, defaultTokenCategory, conf),
         styleProps,
         styleState
       )
@@ -217,8 +219,8 @@ const resolveVariants: StyleResolver = (
   if (typeof variantValue === 'function') {
     const fn = variantValue as VariantSpreadFunction<any>
     const extras = getVariantExtras(styleState)
-    if (variantMatch?.resolveDefaultSize) {
-      value = resolveDefaultSizeToken(value, conf)
+    if (variantMatch?.resolveDefaultTokenCategory) {
+      value = resolveDefaultToken(value, variantMatch.resolveDefaultTokenCategory, conf)
     }
     variantValue = fn(value, extras)
 
@@ -404,10 +406,11 @@ const resolveTokensAndVariants: StyleResolver<object> = (
     // boolean token shorthand (borderRadius: true etc) inside variant styles —
     // mirrors the direct-prop gate in map(); without this the raw `true` reaches
     // drivers (rn driver throws constructing Animated.Value(true))
-    if (val === true && subKey in defaultSizeTokenKeys) {
+    const defaultTokenCategory = defaultTokenCategories[subKey]
+    if (val === true && defaultTokenCategory) {
       res[subKey] = getTokenForKey(
         subKey,
-        resolveDefaultSizeToken(val, conf),
+        resolveDefaultToken(val, defaultTokenCategory, conf),
         styleProps,
         styleState
       )
@@ -467,63 +470,76 @@ const resolveTokensAndVariants: StyleResolver<object> = (
   return res
 }
 
-const defaultSizeTokenKeys: Record<string, boolean> = {
-  ...tokenCategories.size,
-  ...tokenCategories.radius,
-  ...tokenCategories.zIndex,
-  gap: true,
-  rowGap: true,
-  columnGap: true,
-  top: true,
-  right: true,
-  bottom: true,
-  left: true,
-  inset: true,
-  insetBlock: true,
-  insetBlockEnd: true,
-  insetBlockStart: true,
-  insetInline: true,
-  insetInlineEnd: true,
-  insetInlineStart: true,
-  margin: true,
-  marginBlock: true,
-  marginBlockEnd: true,
-  marginBlockStart: true,
-  marginInline: true,
-  marginInlineEnd: true,
-  marginInlineStart: true,
-  marginTop: true,
-  marginRight: true,
-  marginBottom: true,
-  marginEnd: true,
-  marginLeft: true,
-  marginHorizontal: true,
-  marginStart: true,
-  marginVertical: true,
-  padding: true,
-  paddingBlock: true,
-  paddingBlockEnd: true,
-  paddingBlockStart: true,
-  paddingInline: true,
-  paddingInlineEnd: true,
-  paddingInlineStart: true,
-  paddingTop: true,
-  paddingRight: true,
-  paddingBottom: true,
-  paddingEnd: true,
-  paddingLeft: true,
-  paddingHorizontal: true,
-  paddingStart: true,
-  paddingVertical: true,
+function mapDefaultTokenCategory(
+  keys: Record<string, boolean>,
+  category: DefaultTokenCategory
+) {
+  return Object.fromEntries(Object.keys(keys).map((key) => [key, category]))
+}
+
+const defaultTokenCategories: Record<string, DefaultTokenCategory> = {
+  ...mapDefaultTokenCategory(tokenCategories.size, 'size'),
+  ...mapDefaultTokenCategory(tokenCategories.radius, 'radius'),
+  ...mapDefaultTokenCategory(tokenCategories.zIndex, 'zIndex'),
+  fontSize: 'fontSize',
+  gap: 'space',
+  rowGap: 'space',
+  columnGap: 'space',
+  top: 'space',
+  right: 'space',
+  bottom: 'space',
+  left: 'space',
+  inset: 'space',
+  insetBlock: 'space',
+  insetBlockEnd: 'space',
+  insetBlockStart: 'space',
+  insetInline: 'space',
+  insetInlineEnd: 'space',
+  insetInlineStart: 'space',
+  margin: 'space',
+  marginBlock: 'space',
+  marginBlockEnd: 'space',
+  marginBlockStart: 'space',
+  marginInline: 'space',
+  marginInlineEnd: 'space',
+  marginInlineStart: 'space',
+  marginTop: 'space',
+  marginRight: 'space',
+  marginBottom: 'space',
+  marginEnd: 'space',
+  marginLeft: 'space',
+  marginHorizontal: 'space',
+  marginStart: 'space',
+  marginVertical: 'space',
+  padding: 'space',
+  paddingBlock: 'space',
+  paddingBlockEnd: 'space',
+  paddingBlockStart: 'space',
+  paddingInline: 'space',
+  paddingInlineEnd: 'space',
+  paddingInlineStart: 'space',
+  paddingTop: 'space',
+  paddingRight: 'space',
+  paddingBottom: 'space',
+  paddingEnd: 'space',
+  paddingLeft: 'space',
+  paddingHorizontal: 'space',
+  paddingStart: 'space',
+  paddingVertical: 'space',
 }
 
 // goes through specificity finding best matching variant function
+type VariantDefinitionMatch = {
+  value: any
+  resolveDefaultTokenCategory?: DefaultTokenCategory
+}
+
 function getVariantDefinition(
   variant: any,
   value: any,
   conf: TamaguiInternalConfig,
   { theme }: Partial<GetStyleState>
-) {
+): VariantDefinitionMatch | undefined {
   if (!variant) return
   if (value === undefined) return
   if (typeof variant === 'function') {
@@ -535,78 +551,32 @@ function getVariantDefinition(
   for (const { key, parts } of getCompiledVariantResolvers(variant)) {
     for (const part of parts) {
       if (matchesVariantResolver(part, value, conf, theme)) {
+        const resolveDefaultTokenCategory =
+          value === true ? defaultTokenCategoryByResolverName[part] : undefined
         return {
           value: variant[key],
-          resolveDefaultSize: value === true && defaultSizeResolverNames.has(part),
+          resolveDefaultTokenCategory,
         }
       }
     }
   }
 
-  const legacyValue =
-    value === true && hasLegacyDefaultSizeResolver(variant)
-      ? resolveDefaultSizeToken(value, conf)
-      : value
-
-  if (legacyValue != null) {
-    const { tokensParsed } = conf
-    for (const { name, spreadName } of legacyTokenCats) {
-      if (spreadName in variant) {
-        // check tokens first
-        if (name in tokensParsed && legacyValue in tokensParsed[name]) {
-          return {
-            value: variant[spreadName],
-            resolveDefaultSize:
-              value === true && legacyDefaultSizeSpreadNames.has(spreadName),
-          }
-        }
-        // or check theme (only color lives in theme, others are in tokens)
-        if (
-          name === 'color' &&
-          theme &&
-          typeof legacyValue === 'string' &&
-          legacyValue[0] === '$'
-        ) {
-          const themeKey = legacyValue.slice(1)
-          if (themeKey in theme) {
-            return {
-              value: variant[spreadName],
-              resolveDefaultSize:
-                value === true && legacyDefaultSizeSpreadNames.has(spreadName),
-            }
-          }
-        }
-      }
-    }
-    const fontSizeVariant = variant['...fontSize']
-    if (fontSizeVariant && conf.fontSizeTokens.has(legacyValue)) {
-      return {
-        value: fontSizeVariant,
-        resolveDefaultSize: value === true,
-      }
-    }
-  }
-  // fallback to catch all | size
-  const fallback = variant[`:${typeof value}`] || variant['...']
-  return fallback ? { value: fallback } : undefined
+  return
 }
 
 type VariantResolverName = (typeof variantResolverNames)[number]
 
 const variantResolverNameSet = new Set<string>(variantResolverNames)
 
-const legacyTokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => ({
-  name,
-  spreadName: `...${name}`,
-}))
-
-const defaultSizeResolverNames = new Set<VariantResolverName>([
-  'Size',
-  'Space',
-  'FontSize',
-])
-
-const legacyDefaultSizeSpreadNames = new Set(['...size', '...space'])
+const defaultTokenCategoryByResolverName: Partial<
+  Record<VariantResolverName, DefaultTokenCategory>
+> = {
+  Size: 'size',
+  Space: 'space',
+  Radius: 'radius',
+  ZIndex: 'zIndex',
+  FontSize: 'fontSize',
+}
 
 type CompiledVariantResolver = {
   key: string
@@ -632,9 +602,7 @@ function getCompiledVariantResolvers(variant: object) {
 }
 
 function parseVariantResolverKey(key: string): VariantResolverName[] | null {
-  if (!key || key[0] === ':' || key.startsWith('...')) {
-    return null
-  }
+  if (!key) return null
   const parts = key.split('|').map((part) => part.trim())
   if (!parts.length) return null
   for (const part of parts) {
@@ -651,9 +619,6 @@ function matchesVariantResolver(
   conf: TamaguiInternalConfig,
   theme: Partial<GetStyleState>['theme']
 ) {
-  if (value === true && defaultSizeResolverNames.has(resolverName)) {
-    return true
-  }
   switch (resolverName) {
     case 'Size':
       return (
@@ -739,10 +704,6 @@ function matchesVariantResolver(
     case 'any':
       return true
   }
-}
-
-function hasLegacyDefaultSizeResolver(variant: any) {
-  return '...size' in variant || '...space' in variant || '...fontSize' in variant
 }
 
 function isTokenCategoryValue(

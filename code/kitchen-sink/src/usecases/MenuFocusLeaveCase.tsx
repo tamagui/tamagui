@@ -28,7 +28,7 @@ export function MenuFocusLeaveCase() {
             minWidth={220}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
           >
             <Menu.Item data-testid="menu-item-1" key="item-1" textValue="Item One">
               <Menu.ItemTitle>Item One</Menu.ItemTitle>
@@ -57,7 +57,7 @@ export function MenuFocusLeaveCase() {
                   minWidth={180}
                   borderWidth={1}
                   borderColor="$borderColor"
-                  elevation="$3"
+                  boxShadow="0 4px 12px $shadowColor"
                 >
                   <Menu.Item
                     data-testid="submenu-1-item-1"
@@ -97,7 +97,7 @@ export function MenuFocusLeaveCase() {
                   minWidth={180}
                   borderWidth={1}
                   borderColor="$borderColor"
-                  elevation="$3"
+                  boxShadow="0 4px 12px $shadowColor"
                 >
                   <Menu.Item
                     data-testid="submenu-2-item-1"

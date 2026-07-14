@@ -3,21 +3,16 @@ import { View, styled } from '@tamagui/core'
 
 export const Separator = styled(View, {
   name: 'Separator',
+  borderColor: '$backgroundFocus',
+  flexShrink: 0,
+  borderWidth: 0,
+  flex: 1,
+  height: 0,
+  maxHeight: 0,
+  borderBottomWidth: 1,
+  y: -0.5,
 
   variants: {
-    unstyled: {
-      false: {
-        borderColor: '$backgroundFocus',
-        flexShrink: 0,
-        borderWidth: 0,
-        flex: 1,
-        height: 0,
-        maxHeight: 0,
-        borderBottomWidth: 1,
-        y: -0.5,
-      },
-    },
-
     vertical: {
       true: {
         y: 0,
@@ -34,8 +29,4 @@ export const Separator = styled(View, {
       },
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })

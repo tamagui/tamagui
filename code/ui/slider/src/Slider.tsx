@@ -19,7 +19,6 @@ import {
   useCreateShallowSetState,
 } from '@tamagui/core'
 import { clamp, composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
-import type { SizableStackProps } from '@tamagui/stacks'
 import { ThemeableStack } from '@tamagui/stacks'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import { useDirection } from '@tamagui/use-direction'
@@ -320,23 +319,12 @@ type SliderTrackElement = TamaguiElement
 
 export const SliderTrackFrame = styled(SliderFrame, {
   name: 'Slider',
-
-  variants: {
-    unstyled: {
-      false: {
-        height: '100%',
-        width: '100%',
-        backgroundColor: '$backgroundPress',
-        position: 'relative',
-        borderRadius: 100_000,
-        overflow: 'hidden',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  height: '100%',
+  width: '100%',
+  backgroundColor: '$backgroundPress',
+  position: 'relative',
+  borderRadius: 100_000,
+  overflow: 'hidden',
 })
 
 const SliderTrack = createRefComponent<SliderTrackElement, SliderTrackProps>(
@@ -364,19 +352,8 @@ export const SliderActiveFrame = styled(SliderFrame, {
   name: 'SliderActive',
   position: 'absolute',
   pointerEvents: 'box-none',
-
-  variants: {
-    unstyled: {
-      false: {
-        backgroundColor: '$color',
-        borderRadius: 100_000,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  backgroundColor: '$color',
+  borderRadius: 100_000,
 })
 
 type SliderActiveProps = GetProps<typeof SliderActiveFrame>
@@ -445,46 +422,37 @@ const getThumbSize = (val?: SizeTokens | number | true) => {
 
 export const SliderThumbFrame = styled(ThemeableStack, {
   name: 'SliderThumb',
+  position: 'absolute',
+  borderWidth: 2,
+  borderColor: '$borderColor',
+  backgroundColor: '$background',
+  pressStyle: {
+    backgroundColor: '$backgroundPress',
+    borderColor: '$borderColorPress',
+  },
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+    borderColor: '$borderColorHover',
+  },
+  focusVisibleStyle: {
+    outlineStyle: 'solid',
+    outlineWidth: 2,
+    outlineColor: '$outlineColor',
+  },
 
   variants: {
     size: {
-      '...size': getThumbSize,
-      ':number': getThumbSize,
-    },
-
-    unstyled: {
-      false: {
-        position: 'absolute',
-        borderWidth: 2,
-        borderColor: '$borderColor',
-        backgroundColor: '$background',
-        pressStyle: {
-          backgroundColor: '$backgroundPress',
-          borderColor: '$borderColorPress',
-        },
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
-          borderColor: '$borderColorHover',
-        },
-        focusVisibleStyle: {
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-          outlineColor: '$outlineColor',
-        },
-      },
+      number: getThumbSize,
+      Size: getThumbSize,
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export interface SliderThumbExtraProps {
   index?: number
 }
 
-export interface SliderThumbProps extends SizableStackProps, SliderThumbExtraProps {}
+export type SliderThumbProps = GetProps<typeof SliderThumbFrame> & SliderThumbExtraProps
 
 const SliderThumb = createStyledHOC(SliderThumbFrame)<SliderThumbExtraProps>(
   function SliderThumb(props: ScopedProps<SliderThumbProps>, forwardedRef) {
@@ -499,7 +467,7 @@ const SliderThumb = createStyledHOC(SliderThumbFrame)<SliderThumbExtraProps>(
     const percent =
       value === undefined ? 0 : convertValueToPercentage(value, context.min, context.max)
     const label = getLabel(index, context.values.length)
-    const sizeIn = sizeProp ?? context.size ?? true
+    const sizeIn = (sizeProp ?? context.size ?? true) as SizeTokens | number | true
     const [size, setSize] = React.useState(() => {
       // for SSR
       const estimatedSize = getVariableValue(getThumbSize(sizeIn).width) as number

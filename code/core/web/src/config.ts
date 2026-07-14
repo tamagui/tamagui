@@ -3,6 +3,7 @@ import { MISSING_THEME_MESSAGE } from './constants/constants'
 import type {
   AnimationDriver,
   ConfigListener,
+  DefaultTokenCategory,
   GenericTamaguiSettings,
   TamaguiInternalConfig,
   Token,
@@ -78,19 +79,37 @@ export const getSetting = <Key extends keyof GenericTamaguiSettings>(
   )
 }
 
-type DefaultSizeConfig = Pick<TamaguiInternalConfig, 'settings'>
+type DefaultTokenConfig = Pick<TamaguiInternalConfig, 'settings'>
+
+export const getDefaultToken = (
+  category: DefaultTokenCategory,
+  config: DefaultTokenConfig | null = getConfigFromGlobalOrLocal()
+): string => {
+  const defaultSize = config?.settings.defaultSize || DEFAULT_SIZE_TOKEN
+  return category === 'size'
+    ? defaultSize
+    : config?.settings.defaultTokens?.[category] || defaultSize
+}
+
+export const resolveDefaultToken = <Val>(
+  val: Val,
+  category: DefaultTokenCategory,
+  config?: DefaultTokenConfig | null
+): Exclude<Val, true> | string => {
+  return val === true ? getDefaultToken(category, config) : (val as any)
+}
 
 export const getDefaultSizeToken = (
-  config: DefaultSizeConfig | null = getConfigFromGlobalOrLocal()
+  config: DefaultTokenConfig | null = getConfigFromGlobalOrLocal()
 ): string => {
-  return config?.settings.defaultSize || DEFAULT_SIZE_TOKEN
+  return getDefaultToken('size', config)
 }
 
 export const resolveDefaultSizeToken = <Val>(
   val: Val,
-  config?: DefaultSizeConfig | null
+  config?: DefaultTokenConfig | null
 ): Exclude<Val, true> | string => {
-  return val === true ? getDefaultSizeToken(config) : (val as any)
+  return resolveDefaultToken(val, 'size', config)
 }
 
 export function getStyleCompat(): StyleCompat {

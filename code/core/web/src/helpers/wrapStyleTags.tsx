@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
 import type { StyleObject } from '../types'
+import { getConfigMaybe } from '../config'
+import { isTailwindStyleMode, wrapWithTamaguiLayer } from './hybridStyle'
 
 // turns out this is pretty slow, creating a bunch of extra tags...
 
@@ -11,6 +13,7 @@ const styleTagCache = new Map<
     len: number
     first: string | undefined
     last: string | undefined
+    hybrid: boolean
   }
 >()
 
@@ -30,16 +33,19 @@ function getCachedStyleTag(styleObject: StyleObject) {
   const identifier = styleObject[StyleObjectIdentifier]
   const rules = styleObject[StyleObjectRules]
   const cached = styleTagCache.get(identifier)
+  const hybrid = isTailwindStyleMode(getConfigMaybe())
 
   if (
     cached &&
     cached.len === rules.length &&
     cached.first === rules[0] &&
-    cached.last === rules[rules.length - 1]
+    cached.last === rules[rules.length - 1] &&
+    cached.hybrid === hybrid
   ) {
     return cached.element
   }
 
+  const css = rules.join('\n')
   const element = (
     <style
       key={identifier}
@@ -50,7 +56,7 @@ function getCachedStyleTag(styleObject: StyleObject) {
       // we remove after first render in favor of inserting to a global stylesheet (faster)
       suppressHydrationWarning
     >
-      {rules.join('\n')}
+      {hybrid ? wrapWithTamaguiLayer(css) : css}
     </style>
   )
 
@@ -59,6 +65,7 @@ function getCachedStyleTag(styleObject: StyleObject) {
     len: rules.length,
     first: rules[0],
     last: rules[rules.length - 1],
+    hybrid,
   })
 
   return element

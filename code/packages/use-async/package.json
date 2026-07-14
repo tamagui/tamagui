@@ -8,9 +8,9 @@
   ],
   "type": "module",
   "sideEffects": false,
-  "main": "dist/cjs",
-  "module": "dist/esm",
-  "types": "./src",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./src/index.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {

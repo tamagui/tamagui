@@ -1,7 +1,8 @@
 import Static from '@tamagui/static'
-import type { ExtractedResponse, TamaguiOptions } from '@tamagui/static'
+import type { TamaguiOptions } from '@tamagui/static'
 import { createHash } from 'node:crypto'
 import { existsSync, readdirSync } from 'node:fs'
+import { readFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -15,6 +16,7 @@ import {
 } from 'vite'
 import type {
   EnvironmentOptions,
+  EnvironmentModuleNode,
   Plugin,
   PluginOption,
   ResolvedConfig,
@@ -22,6 +24,15 @@ import type {
 } from 'vite'
 import type { Environment } from 'vite'
 import { createViteTamaguiLoader, TAMAGUI_EVALUATION_ENVIRONMENT } from './loadTamagui'
+import {
+  createTailwindHybridState,
+  isTamaguiCoreResetCSS,
+  layerTamaguiCoreResetCSS,
+  TAILWIND_RESOLVED_ID,
+  TAILWIND_VIRTUAL_ID,
+  updateTailwindForWatchChange,
+  wrapWithTamaguiLayer,
+} from './tailwind'
 
 const environmentSpecificTransformPluginNames = new Set([
   'one:compiler',
@@ -322,47 +333,12 @@ const _pluginRequire = createRequire(
 const resolve = (name: string) => _pluginRequire.resolve(name)
 const normalizePath = (value: string) => value.replace(/\\/g, '/')
 
-// shared cache across all plugin instances/environments via globalThis
-type CacheEntry = {
-  js: string
-  map: any
-  cssImport: string | null
-  css: { id: string; code: string } | null
-}
-
-const CACHE_KEY = '__tamagui_vite_cache__'
-const CACHE_SIZE_KEY = '__tamagui_vite_cache_size__'
-const PENDING_KEY = '__tamagui_vite_pending__'
 const PLUGIN_INSTANCE_KEY = '__tamagui_vite_plugin_instance__'
 
 function getNextPluginInstanceId() {
   const next = ((globalThis as any)[PLUGIN_INSTANCE_KEY] || 0) + 1
   ;(globalThis as any)[PLUGIN_INSTANCE_KEY] = next
   return next
-}
-
-function getSharedCache(): Record<string, CacheEntry> {
-  if (!(globalThis as any)[CACHE_KEY]) {
-    ;(globalThis as any)[CACHE_KEY] = {}
-  }
-  return (globalThis as any)[CACHE_KEY]
-}
-
-function getSharedCacheSize(): number {
-  return (globalThis as any)[CACHE_SIZE_KEY] || 0
-}
-
-function setSharedCacheSize(size: number) {
-  ;(globalThis as any)[CACHE_SIZE_KEY] = size
-}
-
-function clearSharedCache() {
-  const cache = getSharedCache()
-  for (const key in cache) {
-    delete cache[key]
-  }
-  setSharedCacheSize(0)
-  getPendingExtractions().clear()
 }
 
 // resolves package ids against the user's project root (not the plugin's
@@ -391,14 +367,6 @@ function addIfInstalled(
       userConf.optimizeDeps.include.push(id)
     }
   }
-}
-
-// pending extractions map - dedupes concurrent requests for same file
-function getPendingExtractions(): Map<string, Promise<CacheEntry | null>> {
-  if (!(globalThis as any)[PENDING_KEY]) {
-    ;(globalThis as any)[PENDING_KEY] = new Map()
-  }
-  return (globalThis as any)[PENDING_KEY]
 }
 
 type AliasOptions = {
@@ -477,6 +445,8 @@ export function tamaguiPlugin({
   // temporary vxrn native env bridge
   const enableNativeEnv = !!globalThis.__vxrnEnableNativeEnv
   const tamaguiLoader = createViteTamaguiLoader(tamaguiOptionsIn)
+  const compilerFrontend = new Static.CompilerFrontend()
+  const tailwindState = createTailwindHybridState()
   const pluginInstanceId = getNextPluginInstanceId()
   const configuredEvaluationPackages = new Set<string>()
   let buildEnvironmentPromise: Promise<void> | null = null
@@ -566,9 +536,6 @@ export function tamaguiPlugin({
   // extract plugin state
   const getHash = (input: string) => createHash('sha1').update(input).digest('base64')
 
-  // use shared cache across environments
-  const memoryCache = getSharedCache()
-
   const cssMap = new Map<string, string>()
   const transformedModuleIds = new Set<string>()
   const compilerHotUpdateSignatures = new Map<string, string>()
@@ -577,12 +544,36 @@ export function tamaguiPlugin({
   let server: ViteDevServer
   const virtualExt = `.tamagui.css`
 
+  const configureTailwind = async (addWatchFile: (file: string) => void) => {
+    return tailwindState.configure(
+      config.root,
+      tamaguiLoader.getGeneration(),
+      await tamaguiLoader.getTamaguiConfig(),
+      addWatchFile,
+      (glob) => server?.watcher.add(glob)
+    )
+  }
+
   const getAbsoluteVirtualFileId = (filePath: string) => {
     if (filePath.startsWith(config.root)) {
       return filePath
     }
     return normalizePath(path.join(config.root, filePath))
   }
+
+  const isAppJSXSource = (filePath: string) => {
+    if (!/\.[jt]sx$/.test(filePath)) return false
+    const relative = path.relative(config.root, filePath)
+    return (
+      relative !== '' &&
+      relative !== '..' &&
+      !relative.startsWith(`..${path.sep}`) &&
+      !relative.split(path.sep).includes('node_modules')
+    )
+  }
+
+  const isFrameworkAnalysisRequest = (id: string) =>
+    id.includes('__react-router-build-client-route')
 
   function isNotClient(environment?: Environment) {
     return environment?.name && environment.name !== 'client'
@@ -594,21 +585,8 @@ export function tamaguiPlugin({
     )
   }
 
-  function invalidateModule(absoluteId: string) {
-    if (!server) return
-
-    const { moduleGraph } = server
-    const modules = moduleGraph.getModulesByFile(absoluteId)
-
-    if (modules) {
-      for (const module of modules) {
-        moduleGraph.invalidateModule(module)
-        module.lastHMRTimestamp = module.lastInvalidationTimestamp || Date.now()
-      }
-    }
-  }
-
   function invalidateCompilerModules() {
+    tailwindState.clear()
     if (server) {
       const ids = new Set([...transformedModuleIds, ...cssMap.keys()])
       for (const environment of Object.values(server.environments)) {
@@ -623,6 +601,19 @@ export function tamaguiPlugin({
       }
     }
     cssMap.clear()
+  }
+
+  function invalidateTailwindModule() {
+    if (!server) return
+    for (const environment of Object.values(server.environments)) {
+      if (environment.name !== 'client') continue
+      const module = environment.moduleGraph.getModuleById(TAILWIND_RESOLVED_ID)
+      if (module) environment.moduleGraph.invalidateModule(module)
+    }
+  }
+
+  function getClientTailwindModule() {
+    return server?.environments.client?.moduleGraph.getModuleById(TAILWIND_RESOLVED_ID)
   }
 
   const basePlugin: Plugin = {
@@ -734,6 +725,13 @@ export function tamaguiPlugin({
         resolve: {
           alias: tamaguiAliases({ rnwLite: options.useReactNativeWebLite }),
         },
+        ssr: {
+          // Installed packages are externalized by default in SSR builds, which
+          // bypasses the RNW-lite alias and executes React Native Web's CJS entry
+          // directly in Node. Bundle the Tamagui/RN boundary just as Vite does
+          // for linked workspace packages.
+          noExternal: [/^@tamagui\//, 'tamagui', 'react-native', 'react-native-web'],
+        },
         optimizeDeps: {
           // upstream react-native-web must not be pre-bundled when aliased to lite
           exclude: ['react-native-web'],
@@ -756,14 +754,16 @@ export function tamaguiPlugin({
       userConf.optimizeDeps ||= {}
       userConf.optimizeDeps.include ||= []
 
-      // inline-style-prefixer is CJS with __esModule and breaks without pre-bundling
-      // (reference error: exports is not defined). always include it.
+      // These dependencies are CJS and break when served directly to the browser
+      // (`exports`/`module` is not defined). Pre-bundle them before Tamagui's linked
+      // package graph can expose them as late-discovered transitive dependencies.
       userConf.optimizeDeps.include.push('inline-style-prefixer')
+      addIfInstalled(userConf, userConf.root, ['@react-native/normalize-color'])
 
-      // pre-bundle tamagui packages that use internal hooks (useThemeName, etc.)
-      // from sub-entries, vite's dep crawler can otherwise split them into a
-      // separate chunk with its own tamagui copy, producing two ThemeStateContext
-      // instances and "Missing theme" errors at runtime.
+      // pre-bundle core and web alongside tamagui packages that use internal
+      // contexts and hooks. if either remains linked while these entries are
+      // optimized, Provider imports and optimized consumers can receive
+      // separate theme/component/config contexts even with resolve.dedupe.
       //
       // @tamagui/sheet/controller is the lightweight controller subpath imported
       // by popover/dialog/select; the app imports @tamagui/sheet (full). if these
@@ -772,6 +772,8 @@ export function tamaguiPlugin({
       // and the Sheet consumer (from the full entry) never match and adapted
       // sheets silently never open. include both so they share one context chunk.
       addIfInstalled(userConf, userConf.root, [
+        '@tamagui/core',
+        '@tamagui/web',
         '@tamagui/toast',
         '@tamagui/toast/v2',
         '@tamagui/sheet',
@@ -851,7 +853,81 @@ export function tamaguiPlugin({
       order: 'post',
       async handler(options) {
         if (!tamaguiLoader.isEvaluationDependency(options.file)) {
-          return
+          if (this.environment.name !== 'client') return
+          const source = options.type === 'delete' ? null : await options.read()
+          const affectedModules = new Set<EnvironmentModuleNode>()
+          const compilerHmrRoots = new Set<string>(
+            compilerFrontend.dependentsOf(options.file)
+          )
+          if (compilerHmrRoots.size || compilerFrontend.has(options.file)) {
+            compilerHmrRoots.add(options.file)
+          }
+          if (compilerFrontend.has(options.file) || compilerHmrRoots.size > 0) {
+            const loadedOptions = await ensureLoaded()
+            if (!loadedOptions?.disable) {
+              const invalidatedIds =
+                options.type === 'delete'
+                  ? compilerFrontend.remove(options.file).invalidatedIds
+                  : await compilerFrontend.update({
+                      id: options.file,
+                      source: source!,
+                      root: config.root,
+                      project: {
+                        ...(await tamaguiLoader.getCompilerProject()),
+                        generation: `${pluginInstanceId}:${tamaguiLoader.getGeneration()}`,
+                      },
+                      resolve: async (specifier, importer) => {
+                        const resolution =
+                          await this.environment.pluginContainer.resolveId(
+                            specifier,
+                            importer
+                          )
+                        return resolution
+                          ? { id: resolution.id, external: resolution.external === true }
+                          : null
+                      },
+                      load: async (dependencyId) => {
+                        const cleanDependencyId = dependencyId.split(/[?#]/, 1)[0]
+                        if (!path.isAbsolute(cleanDependencyId)) return null
+                        try {
+                          return await readFile(cleanDependencyId, 'utf8')
+                        } catch {
+                          return null
+                        }
+                      },
+                    })
+              for (const invalidatedId of invalidatedIds) {
+                for (const module of this.environment.moduleGraph.getModulesByFile(
+                  invalidatedId
+                ) ?? []) {
+                  this.environment.moduleGraph.invalidateModule(module)
+                  if (compilerHmrRoots.has(invalidatedId) || module.isSelfAccepting) {
+                    affectedModules.add(module)
+                  }
+                }
+                const cssId = getAbsoluteVirtualFileId(`${invalidatedId}${virtualExt}`)
+                const cssModule = this.environment.moduleGraph.getModuleById(cssId)
+                if (cssModule) {
+                  this.environment.moduleGraph.invalidateModule(cssModule)
+                }
+              }
+            }
+          }
+          if (!(await configureTailwind(() => {}))) {
+            return affectedModules.size ? [...affectedModules] : undefined
+          }
+          const changed =
+            options.type === 'delete'
+              ? await tailwindState.removeSource(options.file)
+              : await tailwindState.scanSource(options.file, source!)
+          if (!changed) return affectedModules.size ? [...affectedModules] : undefined
+          const virtualModule = getClientTailwindModule()
+          if (!virtualModule)
+            return affectedModules.size ? [...affectedModules] : undefined
+          this.environment.moduleGraph.invalidateModule(virtualModule)
+          affectedModules.add(virtualModule)
+          for (const module of options.modules) affectedModules.add(module)
+          return [...affectedModules]
         }
 
         const signature = await (async () => {
@@ -868,7 +944,6 @@ export function tamaguiPlugin({
         if (compilerHotUpdateSignatures.get(options.file) !== signature) {
           compilerHotUpdateSignatures.set(options.file, signature)
           tamaguiLoader.invalidate(options.file)
-          clearSharedCache()
           invalidateCompilerModules()
         }
         if (
@@ -886,18 +961,21 @@ export function tamaguiPlugin({
       },
     },
 
-    watchChange(id) {
-      if (config.command !== 'build' || !tamaguiLoader.isEvaluationDependency(id)) {
+    async watchChange(id, change) {
+      if (config.command !== 'build') {
         return
       }
-      tamaguiLoader.invalidate(id)
-      clearSharedCache()
-      invalidateCompilerModules()
+      if (tamaguiLoader.isEvaluationDependency(id)) {
+        tamaguiLoader.invalidate(id)
+        invalidateCompilerModules()
+        return
+      }
+      await updateTailwindForWatchChange(tailwindState, id, change.event, () =>
+        configureTailwind((file) => this.addWatchFile(file))
+      )
     },
 
     async resolveId(source) {
-      if (!shouldExtract) return
-
       if (isNative(this.environment)) {
         return
       }
@@ -905,6 +983,12 @@ export function tamaguiPlugin({
       if (isNotClient(this.environment)) {
         return
       }
+
+      if (source === TAILWIND_VIRTUAL_ID) {
+        return TAILWIND_RESOLVED_ID
+      }
+
+      if (!shouldExtract) return
 
       const [validId, query] = source.split('?')
 
@@ -922,8 +1006,6 @@ export function tamaguiPlugin({
     },
 
     async load(id) {
-      if (!shouldExtract) return
-
       const options = tamaguiLoader.getTamaguiOptions()
       if (options?.disable) {
         return
@@ -936,6 +1018,15 @@ export function tamaguiPlugin({
       if (isNotClient(this.environment)) {
         return
       }
+
+      if (id === TAILWIND_RESOLVED_ID) {
+        if (!(await configureTailwind((file) => this.addWatchFile(file)))) {
+          return ''
+        }
+        return tailwindState.css
+      }
+
+      if (!shouldExtract) return
 
       const [validId] = id.split('?')
       return cssMap.get(validId)
@@ -950,7 +1041,31 @@ export function tamaguiPlugin({
           return
         }
 
-        // ensure tamagui is loaded before transform
+        // Frameworks may run route-analysis transforms before Vite starts the
+        // build environment. The real module transform runs again after
+        // buildStart installs the owned Tamagui evaluation runner.
+        if (!tamaguiLoader.getEnvironment()) return
+
+        if (isNative(this.environment)) {
+          return
+        }
+
+        const [validId] = id.split('?')
+        if (isTamaguiCoreResetCSS(validId)) {
+          const layeredResetCSS = layerTamaguiCoreResetCSS(
+            validId,
+            code,
+            await configureTailwind((file) => this.addWatchFile(file))
+          )
+          if (layeredResetCSS) {
+            return { code: layeredResetCSS, map: null }
+          }
+        }
+        if (isFrameworkAnalysisRequest(id) || !isAppJSXSource(validId)) {
+          return
+        }
+
+        // ensure tamagui is loaded only for application JSX candidates
         const options = await ensureLoaded()
 
         // fully disabled = no extraction AND no debug attrs
@@ -958,187 +1073,109 @@ export function tamaguiPlugin({
           return
         }
 
-        if (isNative(this.environment)) {
-          return
-        }
-
-        const [validId] = id.split('?')
-        if (!validId.endsWith('.tsx')) {
-          return
-        }
-
-        // Evaluate config and components only for files that can be extracted.
-        // Register their dependency graph on the candidate transform so config
-        // edits still invalidate compilation without taxing every package module.
-        const evaluationDependencies = await tamaguiLoader.ensureFullConfigLoaded()
-        for (const dependency of evaluationDependencies) {
-          this.addWatchFile(dependency)
-        }
-        transformedModuleIds.add(validId)
-
-        const { shouldDisable, shouldPrintDebug } = await Static.getPragmaOptions({
-          source: code,
-          path: validId,
-        })
-
-        if (shouldPrintDebug) {
-          console.trace(
-            `Current file: ${id} in environment: ${this.environment?.name}, shouldDisable: ${shouldDisable}`
-          )
-          console.info(`\n\nOriginal source:\n${code}\n\n`)
-        }
-
-        if (shouldDisable) {
-          return
-        }
-
         const isSSR = isNotClient(this.environment)
-
-        // share compiled JS between client/SSR, but never across plugin instances
-        const extractionGeneration = tamaguiLoader.getGeneration()
-        const cacheKey = getHash(
-          `${pluginInstanceId}:${extractionGeneration}:${code}${id}`
-        )
-        const pending = getPendingExtractions()
-
-        // helper to format result based on environment
-        const formatResult = (entry: CacheEntry) => {
-          if (entry.css) {
-            cssMap.set(entry.css.id, entry.css.code)
+        const tailwindEnabled = await configureTailwind((file) => this.addWatchFile(file))
+        if (tailwindEnabled && (await tailwindState.scanSource(validId, code))) {
+          invalidateTailwindModule()
+        }
+        const tailwindImport =
+          tailwindEnabled && !isSSR ? `import "${TAILWIND_VIRTUAL_ID}";` : null
+        if (tailwindEnabled) {
+          transformedModuleIds.add(validId)
+          for (const dependency of tamaguiLoader.getEvaluationDependencies()) {
+            this.addWatchFile(dependency)
           }
-          const finalCode =
-            !isSSR && entry.cssImport ? `${entry.js}\n${entry.cssImport}` : entry.js
-          return { code: finalCode, map: entry.map }
         }
 
-        // check cache first
-        const cached = memoryCache[cacheKey]
-        if (cached) {
-          if (process.env.DEBUG_TAMAGUI_CACHE) {
-            console.info(
-              `[tamagui-cache] HIT ${this.environment?.name || 'unknown'} ${id.split('/').pop()} key=${cacheKey.slice(0, 8)}`
-            )
-          }
-          return formatResult(cached)
-        }
-
-        // check if another request is already extracting this file
-        const pendingExtraction = pending.get(cacheKey)
-        if (pendingExtraction) {
-          if (process.env.DEBUG_TAMAGUI_CACHE) {
-            console.info(
-              `[tamagui-cache] WAIT ${this.environment?.name || 'unknown'} ${id.split('/').pop()} key=${cacheKey.slice(0, 8)}`
-            )
-          }
-          const result = await pendingExtraction
-          if (result) {
-            return formatResult(result)
-          }
-          return
-        }
-
-        if (process.env.DEBUG_TAMAGUI_CACHE) {
-          console.info(
-            `[tamagui-cache] EXTRACT ${this.environment?.name || 'unknown'} ${id.split('/').pop()} key=${cacheKey.slice(0, 8)}`
-          )
-        }
-
-        // create extraction promise and store it for deduplication
-        const extractionPromise = (async (): Promise<CacheEntry | null> => {
-          let extracted: ExtractedResponse | null
-          try {
-            extracted = await tamaguiLoader.extractToClassNames({
-              source: code,
-              sourcePath: validId,
-              options: options!,
-              shouldPrintDebug,
-            })
-          } catch (err) {
-            if (process.env.DEBUG_TAMAGUI_CACHE) {
-              console.info(
-                `[tamagui-cache] ERROR extracting ${id.split('/').pop()}:`,
-                err
-              )
-            }
-            console.error(err instanceof Error ? err.message : String(err))
-            return null
-          }
-
-          if (!extracted) {
-            if (process.env.DEBUG_TAMAGUI_CACHE) {
-              console.info(
-                `[tamagui-cache] no extraction result for ${id.split('/').pop()}`
-              )
-            }
-            return null
-          }
-
-          if (extractionGeneration !== tamaguiLoader.getGeneration()) {
-            return null
-          }
-
-          const rootRelativeId = `${validId}${virtualExt}`
-          const absoluteId = getAbsoluteVirtualFileId(rootRelativeId)
-
-          let cssImport: string | null = null
-          let css: CacheEntry['css'] = null
-
-          // store CSS and prepare import (but don't include in cached JS)
-          if (extracted.styles) {
-            this.addWatchFile(rootRelativeId)
-
-            if (server && cssMap.has(absoluteId)) {
-              invalidateModule(rootRelativeId)
-            }
-
-            cssImport = `import "${rootRelativeId}";`
-            cssMap.set(absoluteId, extracted.styles)
-            css = { id: absoluteId, code: extracted.styles }
-          }
-
-          // cache the JS separately from CSS import
-          const jsCode = extracted.js.toString()
-          const cacheEntry: CacheEntry = {
-            js: jsCode,
-            map: extracted.map,
-            cssImport,
-            css,
-          }
-
-          // track cache size and clear if too large (64MB)
-          const newSize = getSharedCacheSize() + jsCode.length + (css?.code.length || 0)
-          if (newSize > 67108864) {
-            clearSharedCache()
-          } else {
-            setSharedCacheSize(newSize)
-          }
-          memoryCache[cacheKey] = cacheEntry
-
-          if (process.env.DEBUG_TAMAGUI_CACHE) {
-            console.info(
-              `[tamagui-cache] WRITE key=${cacheKey.slice(0, 8)} cacheSize=${Object.keys(memoryCache).length}`
-            )
-          }
-
-          return cacheEntry
-        })()
-
-        // store pending promise for deduplication
-        pending.set(cacheKey, extractionPromise)
-
-        try {
-          const result = await extractionPromise
-          if (result) {
-            return formatResult(result)
-          }
-          return
-        } finally {
-          // clean up pending map
-          pending.delete(cacheKey)
-        }
+        return tailwindImport
+          ? { code: `${code}\n${tailwindImport}`, map: null }
+          : undefined
       },
     },
   }
 
-  return [basePlugin, rnwLitePlugin, extractPlugin]
+  // Source and compiled JSX reach this filtered post-transform after user syntax
+  // plugins and before Vite import analysis.
+  const sharedCompilerPlugin: Plugin = {
+    name: 'tamagui-compiler',
+    enforce: 'post',
+    transform: {
+      order: 'pre',
+      async handler(code, id) {
+        if (this.environment?.name === TAMAGUI_EVALUATION_ENVIRONMENT) return
+        if (!tamaguiLoader.getEnvironment()) return
+        if (isNative(this.environment)) return
+
+        const [validId] = id.split('?')
+        if (
+          isFrameworkAnalysisRequest(id) ||
+          !isAppJSXSource(validId) ||
+          !/\.[jt]sx$/.test(validId)
+        )
+          return
+        const options = await ensureLoaded()
+        if (options?.disable || !shouldExtract) return
+
+        const { shouldDisable } = await Static.getPragmaOptions({
+          source: code,
+          path: validId,
+        })
+        if (shouldDisable) return
+
+        const evaluationDependencies = await tamaguiLoader.ensureFullConfigLoaded()
+        for (const dependency of evaluationDependencies) this.addWatchFile(dependency)
+        const compilerProject = await tamaguiLoader.getCompilerProject()
+        const result = await compilerFrontend.compile({
+          id: validId,
+          source: code,
+          root: config.root,
+          target: 'web',
+          project: {
+            ...compilerProject,
+            generation: `${pluginInstanceId}:${tamaguiLoader.getGeneration()}`,
+          },
+          resolve: async (specifier, importer) => {
+            const resolution = await this.resolve(specifier, importer, { skipSelf: true })
+            return resolution
+              ? { id: resolution.id, external: resolution.external === true }
+              : null
+          },
+          load: async (dependencyId) => {
+            const cleanDependencyId = dependencyId.split(/[?#]/, 1)[0]
+            if (!path.isAbsolute(cleanDependencyId)) return null
+            try {
+              return await readFile(cleanDependencyId, 'utf8')
+            } catch {
+              return null
+            }
+          },
+        })
+        transformedModuleIds.add(validId)
+        for (const dependency of result.plan.dependencies) {
+          if (path.isAbsolute(dependency)) this.addWatchFile(dependency)
+        }
+
+        const isSSR = isNotClient(this.environment)
+        let cssImport: string | null = null
+        if (result.plan.css) {
+          const rootRelativeId = `${validId}${virtualExt}`
+          const absoluteId = getAbsoluteVirtualFileId(rootRelativeId)
+          const css = tailwindState.layerTamagui
+            ? wrapWithTamaguiLayer(result.plan.css)
+            : result.plan.css
+          cssMap.set(absoluteId, css)
+          this.addWatchFile(rootRelativeId)
+          if (!isSSR) cssImport = `import "${rootRelativeId}";`
+        }
+        const finalCode = cssImport
+          ? `${result.output.code}\n${cssImport}`
+          : result.output.code
+        return result.output.changed || cssImport
+          ? { code: finalCode, map: result.output.map as any }
+          : undefined
+      },
+    },
+  }
+
+  return [basePlugin, rnwLitePlugin, extractPlugin, sharedCompilerPlugin]
 }

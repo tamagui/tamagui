@@ -50,12 +50,12 @@ describe('TS-style variant resolvers - native', () => {
     expect(getOpacity(Comp, undefined)).toBeUndefined()
   })
 
-  test('legacy true spread resolver receives default token', () => {
+  test('Size resolver receives the default token for true', () => {
     let seenSize: unknown
     const Comp = styled(View, {
       variants: {
         kind: {
-          '...size': (value) => {
+          Size: (value) => {
             seenSize = value
             return {
               opacity: 0.65,
@@ -67,5 +67,27 @@ describe('TS-style variant resolvers - native', () => {
 
     expect(getOpacity(Comp, true)).toBe(0.65)
     expect(seenSize).toBe('$4')
+  })
+
+  test('legacy-shaped keys only match as exact literals', () => {
+    const legacySpreadKey = `${'.'.repeat(3)}size`
+    const legacyNumberKey = `:${'number'}`
+    const legacyCatchAllKey = '.'.repeat(3)
+    const Comp = styled(View, {
+      variants: {
+        kind: {
+          [legacySpreadKey]: () => ({ opacity: 0.66 }),
+          [legacyNumberKey]: () => ({ opacity: 0.67 }),
+          [legacyCatchAllKey]: () => ({ opacity: 0.68 }),
+        },
+      } as const,
+    })
+
+    expect(getOpacity(Comp, legacySpreadKey)).toBe(0.66)
+    expect(getOpacity(Comp, legacyNumberKey)).toBe(0.67)
+    expect(getOpacity(Comp, legacyCatchAllKey)).toBe(0.68)
+    expect(getOpacity(Comp, '$4')).toBeUndefined()
+    expect(getOpacity(Comp, 4)).toBeUndefined()
+    expect(getOpacity(Comp, 'other')).toBeUndefined()
   })
 })

@@ -18,37 +18,36 @@ export const ToggleFrame = styled(
     name: NAME,
     render: 'button',
     context,
+    size: true,
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    backgroundColor: '$background',
+    borderColor: '$borderColor',
+    borderWidth: 1,
+    margin: -1,
+    hoverStyle: {
+      backgroundColor: '$backgroundHover',
+      borderColor: '$borderColorHover',
+    },
+    pressStyle: {
+      backgroundColor: '$backgroundPress',
+      borderColor: '$borderColorPress',
+    },
+    focusVisibleStyle: {
+      outlineColor: '$outlineColor',
+      outlineWidth: 2,
+      outlineStyle: 'solid',
+      zIndex: 10,
+    },
 
     variants: {
-      unstyled: {
-        false: {
-          size: true,
-          alignItems: 'center',
-          justifyContent: 'center',
-          display: 'flex',
-          backgroundColor: '$background',
-          borderColor: '$borderColor',
-          borderWidth: 1,
-          margin: -1,
-          hoverStyle: {
-            backgroundColor: '$backgroundHover',
-            borderColor: '$borderColorHover',
-          },
-          pressStyle: {
-            backgroundColor: '$backgroundPress',
-            borderColor: '$borderColorPress',
-          },
-          focusVisibleStyle: {
-            outlineColor: '$outlineColor',
-            outlineWidth: 2,
-            outlineStyle: 'solid',
-            zIndex: 10,
-          },
-        },
-      },
-
       size: {
-        '...size': (val, { tokens }) => {
+        number: (val) => ({
+          width: val,
+          height: val,
+        }),
+        Size: (val, { tokens }) => {
           if (!val) return
           const sizeToken = resolveDefaultSizeToken(val)
           return {
@@ -56,10 +55,6 @@ export const ToggleFrame = styled(
             height: tokens.size[sizeToken],
           }
         },
-        ':number': (val) => ({
-          width: val,
-          height: val,
-        }),
       },
 
       defaultActiveStyle: {
@@ -74,10 +69,6 @@ export const ToggleFrame = styled(
         },
       },
     } as const,
-
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1',
-    },
   },
   {
     accept: {
@@ -109,7 +100,6 @@ export const Toggle = createRefComponent<TamaguiElement, ToggleProps>(
       defaultActive = false,
       onActiveChange,
       activeTheme,
-      unstyled = false,
       ...buttonProps
     } = props
 
@@ -125,12 +115,7 @@ export const Toggle = createRefComponent<TamaguiElement, ToggleProps>(
         aria-pressed={active}
         data-state={active ? 'on' : 'off'}
         data-disabled={props.disabled ? '' : undefined}
-        unstyled={unstyled}
-        {...(active &&
-          !activeStyle &&
-          !unstyled && {
-            defaultActiveStyle: true,
-          })}
+        {...(active && !activeStyle && { defaultActiveStyle: true })}
         {...(active &&
           activeStyle && {
             ...(activeStyle as any),

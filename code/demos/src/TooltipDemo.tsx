@@ -6,7 +6,8 @@ import {
   Circle,
 } from '@tamagui/lucide-icons-2'
 import type { TooltipProps } from 'tamagui'
-import { Button, Paragraph, Theme, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
+import { Paragraph, Theme, Tooltip, TooltipGroup, XStack, YStack } from 'tamagui'
+import { Button } from './Button'
 
 export function TooltipDemo() {
   return (

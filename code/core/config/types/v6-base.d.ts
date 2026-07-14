@@ -506,6 +506,49 @@ export declare const fonts: {
         };
     };
 };
+export declare const settings: {
+    defaultSize: string;
+    defaultTokens: {
+        space: string;
+        radius: string;
+        zIndex: string;
+        fontSize: string;
+    };
+    mediaQueryDefaultActive: {
+        touchable: boolean;
+        hoverable: boolean;
+        'max-xxl': boolean;
+        'max-xl': boolean;
+        'max-lg': boolean;
+        'max-md': boolean;
+        'max-sm': boolean;
+        'max-xs': boolean;
+        'max-xxs': boolean;
+        'max-xxxs': boolean;
+        xxxs: boolean;
+        xxs: boolean;
+        xs: boolean;
+        sm: boolean;
+        md: boolean;
+        lg: boolean;
+        xl: boolean;
+        xxl: boolean;
+        'max-height-sm': boolean;
+        'max-height-md': boolean;
+        'max-height-lg': boolean;
+        'height-sm': boolean;
+        'height-md': boolean;
+        'height-lg': boolean;
+    };
+    defaultFont: string;
+    fastSchemeChange: true;
+    shouldAddPrefersColorThemes: true;
+    allowedStyleValues: "somewhat-strict-web";
+    addThemeClassName: "html";
+    onlyAllowShorthands: true;
+    styleCompat: "web";
+};
+export type V6Settings = typeof settings;
 export declare const defaultConfig: {
     media: {
         readonly touchable: {
@@ -1150,6 +1193,13 @@ export declare const defaultConfig: {
         color: any;
     } | null;
     settings: {
+        defaultSize: string;
+        defaultTokens: {
+            space: string;
+            radius: string;
+            zIndex: string;
+            fontSize: string;
+        };
         mediaQueryDefaultActive: {
             touchable: boolean;
             hoverable: boolean;
@@ -1177,7 +1227,6 @@ export declare const defaultConfig: {
             'height-lg': boolean;
         };
         defaultFont: string;
-        defaultSize: string;
         fastSchemeChange: true;
         shouldAddPrefersColorThemes: true;
         allowedStyleValues: "somewhat-strict-web";

@@ -20,6 +20,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./GroupDisabledStyleLatchCase').GroupDisabledStyleLatchCase,
   ButtonCustom: () => require('./ButtonCustom').ButtonCustom,
   ButtonInverse: () => require('./ButtonInverse').ButtonInverse,
+  ButtonSkin: () => require('./ButtonSkin').ButtonSkin,
   ButtonUnstyled: () => require('./ButtonUnstyled').ButtonUnstyled,
   CheckboxDisabledOnPress: () =>
     require('./CheckboxDisabledOnPress').CheckboxDisabledOnPress,
@@ -103,6 +104,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SelectAndroidOnPress: () => require('./SelectAndroidOnPress').SelectAndroidOnPress,
   SelectFocusScopeCase: () => require('./SelectFocusScopeCase').SelectFocusScopeCase,
   SelectRemount: () => require('./SelectRemount').SelectRemount,
+  SelectSkin: () => require('./SelectSkin').SelectSkin,
   Shadows: () => require('./Shadows').Shadows,
   ShorthandVariables: () => require('./ShorthandVariables').ShorthandVariables,
   SheetAnimationCase: () => require('./SheetAnimationCase').SheetAnimationCase,

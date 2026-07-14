@@ -120,6 +120,101 @@ describe('styled v3 overloads', () => {
     styled(Button, 'inline-flex', invalidDefaultKey)
   })
 
+  test('options accept own variant and consumed context defaults only', () => {
+    type DefaultsContextProps = {
+      density?: 'compact' | 'spacious'
+      unconsumed?: boolean
+    }
+    const DefaultsContext = createStyledContext<DefaultsContextProps>()
+    const ownVariants = {
+      tone: {
+        quiet: {
+          opacity: 0.5,
+        },
+        strong: {
+          opacity: 1,
+        },
+      },
+    } as const
+    type Options = StyledOptions<
+      typeof View,
+      {},
+      typeof ownVariants,
+      typeof DefaultsContext,
+      'density'
+    >
+
+    const validOptions = {
+      context: DefaultsContext,
+      contextProps: ['density'],
+      variants: ownVariants,
+      tone: 'quiet',
+      density: 'compact',
+    } as const satisfies Options
+    const ObjectFirst = styled(View, validOptions)
+    const ClassFirst = styled(View, 'items-center', validOptions)
+
+    type ObjectProps = GetProps<typeof ObjectFirst>
+    type ClassProps = GetProps<typeof ClassFirst>
+    expectTypeOf<ObjectProps['tone']>().toEqualTypeOf<'quiet' | 'strong' | undefined>()
+    expectTypeOf<ClassProps['tone']>().toEqualTypeOf<'quiet' | 'strong' | undefined>()
+    expectTypeOf<ObjectProps['density']>().toEqualTypeOf<
+      'compact' | 'spacious' | undefined
+    >()
+    expectTypeOf<ClassProps['density']>().toEqualTypeOf<
+      'compact' | 'spacious' | undefined
+    >()
+    expectTypeOf<HasStringIndex<Options>>().toEqualTypeOf<false>()
+    expectTypeOf<HasStringIndex<ObjectProps>>().toEqualTypeOf<false>()
+    expectTypeOf<HasStringIndex<ClassProps>>().toEqualTypeOf<false>()
+
+    const invalidVariantValue: Options = {
+      context: DefaultsContext,
+      contextProps: ['density'],
+      variants: ownVariants,
+      // @ts-expect-error own variant defaults keep exact values
+      tone: 'missing',
+    }
+    const invalidContextValue: Options = {
+      context: DefaultsContext,
+      contextProps: ['density'],
+      variants: ownVariants,
+      // @ts-expect-error consumed context defaults keep exact values
+      density: 'dense',
+    }
+    const invalidUnconsumedContext: Options = {
+      context: DefaultsContext,
+      contextProps: ['density'],
+      variants: ownVariants,
+      // @ts-expect-error unconsumed context keys are not accepted defaults
+      unconsumed: true,
+    }
+    const invalidUnknownProp: Options = {
+      context: DefaultsContext,
+      contextProps: ['density'],
+      variants: ownVariants,
+      // @ts-expect-error arbitrary defaults remain closed
+      unknownDefault: true,
+    }
+
+    styled(View, invalidVariantValue)
+    styled(View, invalidContextValue)
+    styled(View, invalidUnconsumedContext)
+    styled(View, invalidUnknownProp)
+
+    // @ts-expect-error direct calls keep own variant defaults closed
+    styled(View, {
+      variants: ownVariants,
+      tone: 'missing',
+    } as const)
+
+    // @ts-expect-error direct calls do not infer arbitrary default props
+    styled(View, {
+      variants: ownVariants,
+      unknownDefault: true,
+    } as const)
+  })
+
   test('baseClassName metadata inherits parent first', () => {
     const ParentClass = styled(
       Button,
@@ -347,7 +442,7 @@ describe('styled v3 overloads', () => {
       ],
     }
 
-    const invalidStyle: FrameOptions = {
+    const staticStyle: FrameOptions = {
       context: FrameContext,
       contextProps: ['tone', 'density'],
       variants: frameVariants,
@@ -355,14 +450,13 @@ describe('styled v3 overloads', () => {
         {
           tone: 'critical',
           state: 'active',
-          // @ts-expect-error compound style is object-only in B1.2
           style: 'opacity-100',
         },
       ],
     }
 
     styled(View, invalidTone)
-    styled(View, 'items-center', invalidStyle)
+    styled(View, 'items-center', staticStyle)
 
     const ContextOnly = styled(View, {
       context: FrameContext,
@@ -632,7 +726,7 @@ describe('styled v3 overloads', () => {
     const ContextText = styled(Text, {
       context: TextContext,
       variants: {
-        unstyled: {
+        plain: {
           false: {},
         },
       },

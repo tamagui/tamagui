@@ -2,7 +2,11 @@ import React from 'react';
 import type { GetProps, RadiusTokens, SizeTokens, ViewProps, ThemeValueFallback } from '@tamagui/web';
 import type { FC } from 'react';
 import { Image as RNImage } from 'react-native';
-declare const StyledImage: import("@tamagui/web").TamaguiComponent<import("@tamagui/web").TamaDefer, RNImage, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ImageProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic>;
+declare const StyledImage: React.FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ImageProps, keyof import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase, {}>> & {
+    ref?: React.Ref<RNImage> | undefined;
+}> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, RNImage, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ImageProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic> & Omit<import("@tamagui/web").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/web").TamaDefer, RNImage, import("@tamagui/web").TamaguiComponentPropsBaseBase & import("react-native").ImageProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
+};
 type StyledImageProps = Omit<GetProps<typeof StyledImage>, 'borderRadius'> & {
     borderRadius?: RadiusTokens;
 };

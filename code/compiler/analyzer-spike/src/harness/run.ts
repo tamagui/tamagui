@@ -4,8 +4,8 @@ import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { spawnSync } from 'node:child_process'
 
-import type { CandidateFactory } from '../contracts'
-import { loadFixtureProject } from '../fixture'
+import { yukuFactory, type CandidateFactory } from '@tamagui/compiler-core'
+import { loadFixtureProject, loadHostFixtureProject } from '../fixture'
 import { assertCandidateCorrectness } from './correctness'
 import {
   measureCandidateMemory,
@@ -20,7 +20,7 @@ const evidencePath = resolve(workspaceRoot, 'evidence/results.json')
 
 async function loadFactory(name: string): Promise<CandidateFactory> {
   if (name === 'yuku') {
-    return (await import('../candidates/yuku')).yukuFactory
+    return yukuFactory
   }
   throw new Error(`Unknown analyzer candidate: ${name}`)
 }
@@ -61,9 +61,10 @@ async function main(): Promise<void> {
   }
 
   const project = await loadFixtureProject()
+  const hostProject = await loadHostFixtureProject()
   const factories = await Promise.all(candidateNames.map(loadFactory))
   const correctness = factories.map((factory) =>
-    assertCandidateCorrectness(factory, project)
+    assertCandidateCorrectness(factory, project, hostProject)
   )
   const timings = factories.map((factory) =>
     runWorker<Omit<CandidateMeasurement, 'memory'>>(factory, 'timing')

@@ -255,7 +255,7 @@ export const Sandbox = () => {
             Hello world
             </TestFontTokensInVariants> */}
 
-          {/* <Button size="$2" $sm={{ size: '$8' }} >
+          {/* <Button size="small" $sm={{ size: 'large' }} >
             test
             </Button> */}
 
@@ -322,7 +322,7 @@ export const Sandbox = () => {
 //   const [position, setPosition] = useState(0)
 //   return (
 //     <>
-//       <Button size="$6" circular onPress={() => setOpen((x) => !x)} />
+//       <Button size="large" circular onPress={() => setOpen((x) => !x)} />
 //       <Sheet
 //         modal
 //         open={open}
@@ -352,7 +352,7 @@ export const Sandbox = () => {
 // const Frame = styled(ButtonFrame, {
 //   variants: {
 //     square: {
-//       ':number': (size, { tokens }) => {
+//       number: (size, { tokens }) => {
 //         return {
 //           width: tokens.size[size] ?? size,
 //           p: 0,

@@ -32,7 +32,7 @@ export const FlatBubbleCard = styled(YStack, {
     },
 
     highlight: {
-      '...': (val) => ({
+      Color: (val) => ({
         backgroundColor: val,
       }),
     },

@@ -46,10 +46,12 @@ describe('tamagui-build integration test', () => {
     const esmOutput = readFileSync(distEsmFilePath, 'utf-8')
     expect(cjsOutput).toContain('Hello,')
     expect(esmOutput).toContain('Hello,')
-    expect(esmOutput).toContain("./nested/index.mjs")
+    expect(esmOutput).toContain('./nested/index.mjs')
     expect(existsSync(join(distPath, 'cjs', 'index.cjs'))).toBe(true)
     expect(existsSync(join(distPath, 'esm', 'index.js'))).toBe(true)
     expect(existsSync(join(distPath, 'jsx', 'index.js'))).toBe(true)
+    expect(existsSync(join(distPath, 'cjs', 'ignored.test-d.cjs'))).toBe(false)
+    expect(existsSync(join(distPath, 'esm', 'ignored.test-d.mjs'))).toBe(false)
   })
 
   it('should bundle the package correctly', () => {
