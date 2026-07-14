@@ -4,8 +4,9 @@ import ActionSheet, {
   type ActionSheetRef,
   ScrollView as ActionScrollView,
 } from 'react-native-actions-sheet'
-import { Sheet, Text, YStack, Paragraph } from 'tamagui'
+import { Text, YStack, Paragraph } from 'tamagui'
 import { Button } from '../components/Button'
+import { Sheet } from '../components/Sheet'
 
 /**
  * Test case for Sheet drag resistance behavior
