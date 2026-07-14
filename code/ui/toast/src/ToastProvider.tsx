@@ -83,7 +83,7 @@ interface ToastProviderProps {
   id?: string
   /**
    * Will show a native toast if is true or is set to the current platform. On iOS, it wraps `SPIndicator` and `SPAlert`. On Android, it wraps `ToastAndroid`. On web, it wraps Notification API. Mobile's native features are handled by `burnt`.
-   * Only works with the imperative `useToast` hook.
+   * Only works with the imperative toast controller.
    */
   native?: NativeValue
   /**

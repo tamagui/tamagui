@@ -8,7 +8,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import { ToastAnnounceExclude } from './ToastAnnounce'
 import type { CustomData } from './ToastImperative'
-import { useToast, useToastController, useToastState } from './ToastImperative'
+import { useToastController, useToastState } from './ToastImperative'
 import type { ToastExtraProps, ToastProps } from './ToastImpl'
 import { ToastImpl, ToastImplFrame, useToastInteractiveContext } from './ToastImpl'
 import type { ScopedProps, ToastProviderProps } from './ToastProvider'
@@ -199,7 +199,6 @@ export {
   ToastViewport,
   //
   // imperative
-  useToast,
   useToastController,
   useToastState,
 }

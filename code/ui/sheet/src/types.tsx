@@ -39,12 +39,6 @@ export type SheetProps = ScopedProps<
      */
     disableRemoveScroll?: boolean
 
-    /**
-     * @deprecated Use `disableRemoveScroll` instead. This prop will be removed in a future version.
-     * Note: `disableRemoveScroll={true}` is equivalent to `forceRemoveScrollEnabled={false}`
-     */
-    forceRemoveScrollEnabled?: boolean
-
     transitionConfig?: AnimatedNumberStrategy
 
     /**

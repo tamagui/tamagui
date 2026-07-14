@@ -43,14 +43,12 @@ export const AnimatePresence: FunctionComponent<
   enterExitVariant,
   initial = true,
   onExitComplete,
-  exitBeforeEnter,
   mode,
   presenceAffectsLayout = true,
   custom,
   passThrough,
 }) => {
-  // Determine effective mode: mode prop takes precedence, then exitBeforeEnter for backwards compatibility
-  const effectiveMode = mode ?? (exitBeforeEnter ? 'wait' : 'sync')
+  const effectiveMode = mode ?? 'sync'
 
   /**
    * Filter any children that aren't ReactElements. We can only track components

@@ -296,7 +296,7 @@ const ToastViewport = React.memo(
             >
               <PortalHost
                 render={(children) => (
-                  <AnimatePresence exitBeforeEnter={!multipleToasts}>
+                  <AnimatePresence mode={multipleToasts ? 'sync' : 'wait'}>
                     {children}
                   </AnimatePresence>
                 )}

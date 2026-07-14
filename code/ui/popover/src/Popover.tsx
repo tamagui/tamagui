@@ -484,8 +484,6 @@ export interface PopoverContentTypeProps extends Omit<
    * Enable smooth animation when the content position changes (e.g., when flipping sides)
    */
   animatePosition?: boolean | 'even-when-repositioning'
-  /** @deprecated Use `animatePosition` instead */
-  enableAnimationForPositionChange?: boolean
 }
 
 export type PopoverContentProps = PopoverContentTypeProps

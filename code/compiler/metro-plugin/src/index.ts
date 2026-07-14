@@ -1,11 +1,6 @@
 import { loadTamaguiBuildConfigSync, type TamaguiOptions } from '@tamagui/static'
 
-export type MetroTamaguiOptions = TamaguiOptions & {
-  /**
-   * @deprecated CSS interop is no longer supported. Use `tamagui generate` instead.
-   */
-  cssInterop?: boolean
-}
+export type MetroTamaguiOptions = TamaguiOptions
 
 // Use a loose type for metro config to avoid version-specific type incompatibilities
 type MetroConfigInput = {
@@ -42,13 +37,7 @@ export function withTamagui(
   metroConfig: MetroConfigInput,
   optionsIn?: MetroTamaguiOptions
 ): MetroConfigInput {
-  const { cssInterop, ...tamaguiOptionsIn } = optionsIn || {}
-
-  if (cssInterop) {
-    console.warn(
-      '[@tamagui/metro-plugin] cssInterop option is deprecated. Use `tamagui generate` to pre-generate CSS instead.'
-    )
-  }
+  const tamaguiOptionsIn = optionsIn || {}
 
   const options = {
     ...tamaguiOptionsIn,

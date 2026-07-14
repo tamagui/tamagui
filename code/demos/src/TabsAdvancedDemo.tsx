@@ -156,7 +156,7 @@ const TabsAdvancedBackground = () => {
         </Tabs.List>
       </YStack>
 
-      <AnimatePresence exitBeforeEnter custom={{ direction }} initial={false}>
+      <AnimatePresence mode="wait" custom={{ direction }} initial={false}>
         <AnimatedYStack key={currentTab}>
           <Tabs.Content value={currentTab} forceMount flex={1} justify="center">
             <H5 text="center">{currentTab}</H5>
