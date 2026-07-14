@@ -59,9 +59,13 @@ describe('Turbopack + Tamagui CLI optimization', () => {
     // CSS import at top
     expect(optimized.split('\n')[0]).toBe('import "./_TestComponent.css"')
 
-    // Text components flattened to <span className={...}>
-    expect(optimized).toContain('<span className={')
-    expect(optimized).toContain('_cn')
+    // Static text is flattened with the shared compiler's direct class string.
+    expect(optimized).toContain('<span className="')
+    expect(optimized).not.toContain('_cn')
+
+    // Tamagui press events retain the runtime component so onPress is mapped
+    // to the correct platform event rather than leaking onto a DOM element.
+    expect(optimized).toContain('<Button onPress=')
 
     // Original <Text ...> JSX should be replaced
     expect(optimized).not.toMatch(/<Text color=/)

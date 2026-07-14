@@ -231,6 +231,15 @@ const compilerStyleProps = new Set([
   'render',
 ])
 
+const runtimeWebEventProps = new Set([
+  'onHoverIn',
+  'onHoverOut',
+  'onLongPress',
+  'onPress',
+  'onPressIn',
+  'onPressOut',
+])
+
 function isSerializableNativeStyle(value: unknown): boolean {
   if (value == null || typeof value === 'number' || typeof value === 'boolean') {
     return true
@@ -406,6 +415,22 @@ export function createTamaguiCompilerHost(
           Object.assign(props, entry.value.value)
         } else {
           props[entry.name] = entry.value.value
+        }
+      }
+      if (platform === 'web') {
+        const directRuntimeEvent = input.element.entries.find(
+          (entry) => entry.kind === 'prop' && runtimeWebEventProps.has(entry.name)
+        )
+        const runtimeEvent =
+          directRuntimeEvent?.kind === 'prop'
+            ? directRuntimeEvent.name
+            : Object.keys(props).find((name) => runtimeWebEventProps.has(name))
+        if (runtimeEvent) {
+          return bailout(
+            input,
+            'local/unsupported-target',
+            `${runtimeEvent} requires Tamagui runtime event mapping`
+          )
         }
       }
       if (platform === 'native') {

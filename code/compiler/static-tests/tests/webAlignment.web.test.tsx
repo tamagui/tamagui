@@ -233,7 +233,7 @@ test('focusable is NOT converted to tabIndex', async () => {
   expect(output?.js).not.toContain('tabIndex')
 })
 
-test('onPress is preserved in extracted output (kept for cross-platform)', async () => {
+test('onPress keeps the component on the runtime event path', async () => {
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -249,7 +249,6 @@ test('onPress is preserved in extracted output (kept for cross-platform)', async
     }
   )
 
-  // onPress is kept for cross-platform compatibility
-  const fullOutput = JSON.stringify(output)
-  expect(fullOutput).toContain('onPress')
+  expect(output?.js).toContain('<View onPress')
+  expect(output?.js).not.toContain('<div onPress')
 })
