@@ -1,5 +1,6 @@
 // developer-tools contract: exact token provenance for a component's final
-// winning native style object.
+// winning native style object. tamagui only records it in development when
+// TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE=1.
 //
 // this is a pure inspection side channel. it records, per resolved style key,
 // which token produced the value and the full theme name that resolved it
@@ -31,10 +32,7 @@ export type StyleTokenBinding = {
 
 export type StyleTokenProvenance = Record<string, StyleTokenBinding>
 
-export function setStyleTokenProvenance(
-  style: object,
-  provenance: StyleTokenProvenance
-) {
+export function setStyleTokenProvenance(style: object, provenance: StyleTokenProvenance) {
   Object.defineProperty(style, provenanceSymbol, {
     value: provenance,
     enumerable: false,

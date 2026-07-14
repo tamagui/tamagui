@@ -74,10 +74,7 @@ import {
 import { skipProps } from './skipProps'
 import { sortString } from './sortString'
 import { styleOriginalValues } from './styleOriginalValues'
-import {
-  type StyleTokenProvenance,
-  setStyleTokenProvenance,
-} from './styleProvenance'
+import { type StyleTokenProvenance, setStyleTokenProvenance } from './styleProvenance'
 import { transformsToString } from './transformsToString'
 
 export { styleOriginalValues }
@@ -85,6 +82,10 @@ export { getStyleTokenProvenance, STYLE_TOKEN_PROVENANCE_KEY } from './styleProv
 export type { StyleTokenBinding, StyleTokenProvenance } from './styleProvenance'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
+
+const shouldTrackStyleTokenProvenance =
+  process.env.NODE_ENV === 'development' &&
+  process.env.TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE === '1'
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
@@ -1380,13 +1381,15 @@ export const getSplitStyles: StyleSplitter = (
             styleState.style ||= {}
             const normalized = normalizeStyle(style)
             Object.assign(styleState.style, normalized)
-            // the literal style prop is merged last and wins: carry its own
-            // token provenance forward, and clear a prior token wherever it
-            // supplies a literal (e.g. style={{ color: '#fff' }} over
-            // color="$color9" must stay a literal).
-            const styleOriginals = styleOriginalValues.get(normalized)
-            for (const k in normalized) {
-              recordStyleTokenProvenance(styleState, k, styleOriginals?.[k])
+            if (shouldTrackStyleTokenProvenance) {
+              // the literal style prop is merged last and wins: carry its own
+              // token provenance forward, and clear a prior token wherever it
+              // supplies a literal (e.g. style={{ color: '#fff' }} over
+              // color="$color9" must stay a literal).
+              const styleOriginals = styleOriginalValues.get(normalized)
+              for (const k in normalized) {
+                recordStyleTokenProvenance(styleState, k, styleOriginals?.[k])
+              }
             }
           }
         }
@@ -1433,7 +1436,7 @@ export const getSplitStyles: StyleSplitter = (
   // (and non-className web) this is the same identity assigned to viewProps.style,
   // so a consumer inspecting the host node's style can recover the token + theme
   // behind each resolved value without any enumerable-key or RN-output change.
-  if (styleState.style && styleState.tokenProvenance) {
+  if (shouldTrackStyleTokenProvenance && styleState.style && styleState.tokenProvenance) {
     const provenance: StyleTokenProvenance = {}
     let hasProvenance = false
     for (const key in styleState.tokenProvenance) {
@@ -1626,10 +1629,12 @@ function mergeStyle(
         // if you dont do this you'll be passing props.transform arrays directly here and then mutating them
         // if theres any flatTransforms later, causing issues (mutating props is bad, in strict mode styles get borked)
         key === 'transform' && Array.isArray(out) ? [...out] : out
-      // dev-tools token provenance: this write is the current winner for `key`
-      // (importance-gated above), so record the token that produced it, or clear
-      // a prior token when a literal wins — keeping literal-over-token exact.
-      recordStyleTokenProvenance(styleState, key, originalVal)
+      if (shouldTrackStyleTokenProvenance) {
+        // dev-tools token provenance: this write is the current winner for `key`
+        // (importance-gated above), so record the token that produced it, or clear
+        // a prior token when a literal wins, keeping literal-over-token exact.
+        recordStyleTokenProvenance(styleState, key, originalVal)
+      }
     }
   }
 }

@@ -2,15 +2,12 @@ process.env.TAMAGUI_TARGET = 'native'
 
 import { getDefaultTamaguiConfig } from '@tamagui/config-default'
 import {
-  TamaguiProvider,
-  Theme,
   View,
   createTamagui,
   getSplitStyles,
   getStyleTokenProvenance,
   styled,
-} from '@tamagui/core'
-import { render } from '@testing-library/react-native'
+} from '../web/src'
 import { describe, expect, test } from 'vitest'
 
 // config-default themes used here:
@@ -18,54 +15,51 @@ import { describe, expect, test } from 'vitest'
 //   dark       → { background: '#000', color: '#fff' }
 //   dark_blue  → { background: 'blue',  color: 'white' }
 const config = createTamagui(getDefaultTamaguiConfig('native'))
+const provenanceEnabled =
+  process.env.NODE_ENV === 'development' &&
+  process.env.TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE === '1'
 
-function collectStyleObjects(node: any, out: any[] = []): any[] {
-  if (!node) return out
-  const s = node.props?.style
-  const flat = Array.isArray(s) ? s.flat(Infinity) : [s]
-  for (const item of flat) if (item && typeof item === 'object') out.push(item)
-  for (const child of node.children || []) collectStyleObjects(child, out)
-  return out
+const componentState = {
+  hover: false,
+  press: false,
+  pressIn: false,
+  focus: false,
+  unmounted: true,
+  disabled: false,
+  focusVisible: false,
 }
 
-function findByTestID(node: any, testID: string): any {
-  if (!node) return null
-  if (node.props?.testID === testID) return node
-  for (const child of node.children || []) {
-    const found = findByTestID(child, testID)
-    if (found) return found
+function splitInspect(
+  themeName: string,
+  props: Record<string, any>,
+  Component: typeof View = View
+) {
+  const result = getSplitStyles(
+    props,
+    Component.staticConfig,
+    config.themes[themeName] ?? {},
+    themeName,
+    componentState,
+    { isAnimated: false, resolveValues: 'auto' },
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined
+  )!
+  return {
+    resolved: result.style,
+    provenance: getStyleTokenProvenance(result.style),
   }
-  return null
 }
 
-// render a real component tree (exactly the path an app takes: TamaguiProvider →
-// createComponent → getSplitStyles → host View), then read the resolved style
-// and its token provenance off the painted host node — the same style object a
-// native consumer (SootSim capture) ingests.
-function renderInspect(theme: string, ui: React.ReactElement, testID: string) {
-  const { toJSON } = render(
-    <TamaguiProvider config={config} defaultTheme={theme}>
-      {ui}
-    </TamaguiProvider>
-  )
-  const node = findByTestID(toJSON(), testID)
-  const styles = collectStyleObjects(node)
-  const resolved: Record<string, any> = Object.assign({}, ...styles)
-  let provenance: Record<string, any> | undefined
-  for (const s of styles) {
-    const p = getStyleTokenProvenance(s)
-    if (p) provenance = { ...provenance, ...p }
-  }
-  return { resolved, provenance }
-}
-
-describe('getSplitStyles token provenance', () => {
+describe.runIf(provenanceEnabled)('getSplitStyles token provenance', () => {
   test('a direct color token resolves to a real color and records its token + theme', () => {
-    const { resolved, provenance } = renderInspect(
-      'light',
-      <View testID="t" backgroundColor="$background" width={10} height={10} />,
-      't'
-    )
+    const { resolved, provenance } = splitInspect('light', {
+      backgroundColor: '$background',
+      width: 10,
+      height: 10,
+    })
     expect(resolved.backgroundColor).toBe('#fff')
     expect(provenance).toEqual({
       backgroundColor: { token: '$background', theme: 'light' },
@@ -73,11 +67,11 @@ describe('getSplitStyles token provenance', () => {
   })
 
   test('a shorthand token records against the expanded style key', () => {
-    const { resolved, provenance } = renderInspect(
-      'dark',
-      <View testID="t" bg="$background" width={10} height={10} />,
-      't'
-    )
+    const { resolved, provenance } = splitInspect('dark', {
+      bg: '$background',
+      width: 10,
+      height: 10,
+    })
     expect(resolved.backgroundColor).toBe('#000')
     expect(provenance).toEqual({
       backgroundColor: { token: '$background', theme: 'dark' },
@@ -92,10 +86,10 @@ describe('getSplitStyles token provenance', () => {
         },
       } as const,
     })
-    const { provenance } = renderInspect(
+    const { provenance } = splitInspect(
       'light',
-      <Toned testID="t" toned width={10} height={10} />,
-      't'
+      { toned: true, width: 10, height: 10 },
+      Toned
     )
     expect(provenance).toEqual({
       backgroundColor: { token: '$background', theme: 'light' },
@@ -104,13 +98,11 @@ describe('getSplitStyles token provenance', () => {
   })
 
   test('a nested theme name rides along with the token', () => {
-    const { resolved, provenance } = renderInspect(
-      'dark',
-      <Theme name="blue">
-        <View testID="t" backgroundColor="$background" width={10} height={10} />
-      </Theme>,
-      't'
-    )
+    const { resolved, provenance } = splitInspect('dark_blue', {
+      backgroundColor: '$background',
+      width: 10,
+      height: 10,
+    })
     expect(resolved.backgroundColor).toBe('blue')
     expect(provenance).toEqual({
       backgroundColor: { token: '$background', theme: 'dark_blue' },
@@ -119,11 +111,12 @@ describe('getSplitStyles token provenance', () => {
 
   test('a literal style-prop override stays a literal even when it equals the token value', () => {
     // in `dark`, $color resolves to #fff — the same value the literal supplies.
-    const { resolved, provenance } = renderInspect(
-      'dark',
-      <View testID="t" color="$color" style={{ color: '#fff' }} width={10} height={10} />,
-      't'
-    )
+    const { resolved, provenance } = splitInspect('dark', {
+      color: '$color',
+      style: { color: '#fff' },
+      width: 10,
+      height: 10,
+    })
     expect(resolved.color).toBe('#fff')
     // the literal wins, so there is NO token binding for color: identity is
     // preserved even though the token would have resolved to the same color.
@@ -131,11 +124,11 @@ describe('getSplitStyles token provenance', () => {
   })
 
   test('a purely literal style carries no provenance', () => {
-    const { provenance } = renderInspect(
-      'light',
-      <View testID="t" backgroundColor="#abcdef" width={10} height={10} />,
-      't'
-    )
+    const { provenance } = splitInspect('light', {
+      backgroundColor: '#abcdef',
+      width: 10,
+      height: 10,
+    })
     expect(provenance).toBeUndefined()
   })
 
@@ -165,5 +158,16 @@ describe('getSplitStyles token provenance', () => {
     expect(getStyleTokenProvenance(result.style)).toEqual({
       backgroundColor: { token: '$color', theme: 'dark' },
     })
+  })
+})
+
+describe.runIf(!provenanceEnabled)('getSplitStyles token provenance disabled', () => {
+  test('does not track tokens without both development mode and the opt-in flag', () => {
+    const { provenance } = splitInspect('light', {
+      backgroundColor: '$background',
+      width: 10,
+      height: 10,
+    })
+    expect(provenance).toBeUndefined()
   })
 })
