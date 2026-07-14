@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test:native": "TAMAGUI_TARGET=native NODE_ENV=test vitest --run --config vitest.config.ts tests/native-runtime.test.tsx",
+    "test:native": "TAMAGUI_TARGET=native NODE_ENV=test bun -e \"const path = require('node:path'); await import(path.join(path.dirname(require.resolve('vitest-native/package.json')), 'vitest.mjs'))\" -- --run --config vitest.config.ts tests/native-runtime.test.tsx",
     "web:dev": "NODE_ENV=development vite --host 127.0.0.1 --clearScreen false",
     "web:build": "NODE_ENV=production vite build",
     "web:ssr": "NODE_ENV=production vite build --ssr src/ssr.tsx --outDir dist-ssr",
@@ -28,7 +28,7 @@
     "@playwright/test": "^1.49.1",
     "@tamagui/metro-plugin": "workspace:*",
     "@tamagui/vite-plugin": "workspace:*",
-    "@types/node": "^24.0.0",
+    "@types/node": "^22.1.0",
     "@types/react": "~19.1.10",
     "@vitejs/plugin-react": "^6.0.0",
     "babel-preset-expo": "~55.0.0",
@@ -36,6 +36,7 @@
     "tailwindcss": "4.3.0",
     "typescript": "~5.9.2",
     "vite": "^8.0.3",
-    "vitest": "4.1.0"
+    "vitest": "4.0.4",
+    "vitest-native": "npm:vitest@4.1.0"
   }
 }
