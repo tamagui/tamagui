@@ -179,7 +179,7 @@ describe('compoundVariants - native', () => {
     expect(permutedCaller.style).toEqual(callerOverrides.style)
   })
 
-+  test('same-declaration base objects override normalized base classes', () => {
+  test('same-declaration base objects override normalized base classes', () => {
     const Frame = styled(
       View,
       'p-4 rounded-4',
@@ -299,24 +299,24 @@ describe('compoundVariants - native', () => {
       hoverStyle: { backgroundColor: 'red' },
       $sm: { margin: '$4' },
       enterStyle: { opacity: 0 },
-      className: 'base-user',
     })
+    expect(resolved.baseStyle?.className).toBeUndefined()
     expect(resolved.variants?.size?.sm).toMatchObject({
       height: '$8',
       paddingHorizontal: '$3',
       hoverStyle: { opacity: 0.5 },
       $sm: { marginTop: '$4' },
       enterStyle: { scale: 0.95 },
-      className: 'simple-user',
     })
+    expect(resolved.variants?.size?.sm).not.toHaveProperty('className')
     expect(resolved.compoundVariants?.[0]?.style).toMatchObject({
       width: '$8',
       padding: '$0',
       hoverStyle: { backgroundColor: 'blue' },
       $sm: { marginBottom: '$4' },
       enterStyle: { opacity: 0.5 },
-      className: 'compound-user',
     })
+    expect(resolved.compoundVariants?.[0]?.style).not.toHaveProperty('className')
 
     const result = simplifiedGetSplitStyles(
       Frame,

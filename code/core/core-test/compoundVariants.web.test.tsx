@@ -198,7 +198,7 @@ describe('compoundVariants - web', () => {
     expect(permutedCaller.style).toEqual(callerOverrides.style)
   })
 
-+  test('same-declaration base objects override normalized base classes', () => {
+  test('same-declaration base objects override normalized base classes', () => {
     const Frame = styled(
       View,
       'p-4 rounded-4',

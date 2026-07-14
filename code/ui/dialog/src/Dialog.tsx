@@ -846,31 +846,30 @@ export type DialogCloseExtraProps = ScopedProps<{
 
 type DialogCloseProps = GetProps<typeof DialogCloseFrame> & DialogCloseExtraProps
 
-const DialogClose = createStyledHOC(DialogCloseFrame)<DialogCloseExtraProps>((
-  props,
-  forwardedRef
-) => {
-  const { scope, displayWhenAdapted, ...closeProps } = props
-  const context = useDialogContext(scope)
-  const isAdapted = useAdaptIsActive(context.adaptScope)
-  const isInsideButton = React.useContext(ButtonNestingContext)
+const DialogClose = createStyledHOC(DialogCloseFrame)<DialogCloseExtraProps>(
+  (props, forwardedRef) => {
+    const { scope, displayWhenAdapted, ...closeProps } = props
+    const context = useDialogContext(scope)
+    const isAdapted = useAdaptIsActive(context.adaptScope)
+    const isInsideButton = React.useContext(ButtonNestingContext)
 
-  if (isAdapted && !displayWhenAdapted) {
-    return null
+    if (isAdapted && !displayWhenAdapted) {
+      return null
+    }
+
+    return (
+      <DialogCloseFrame
+        aria-label="Dialog Close"
+        render={isInsideButton ? 'span' : 'button'}
+        {...closeProps}
+        ref={forwardedRef}
+        onPress={composeEventHandlers(props.onPress as any, () => {
+          context.onOpenChange(false)
+        })}
+      />
+    )
   }
-
-  return (
-    <DialogCloseFrame
-      aria-label="Dialog Close"
-      render={isInsideButton ? 'span' : 'button'}
-      {...closeProps}
-      ref={forwardedRef}
-      onPress={composeEventHandlers(props.onPress as any, () => {
-        context.onOpenChange(false)
-      })}
-    />
-  )
-})
+)
 
 /* -----------------------------------------------------------------------------------------------*/
 
