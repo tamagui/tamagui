@@ -49,7 +49,7 @@ function flattenStyle(style: any): Record<string, any> {
 }
 
 describe('compoundVariants - native', () => {
-  test('match resolved defaults and context keys before caller direct/style props', () => {
+  test('applies matched compounds in the same forward pass as authored props', () => {
     const FrameContext = createStyledContext<{
       tone?: 'critical' | 'neutral'
     }>()
@@ -153,9 +153,9 @@ describe('compoundVariants - native', () => {
 
     expect(callerOverrides.style?.backgroundColor).toBe('black')
     expect(callerOverrides.style?.marginTop).toBe(4)
-    expect(callerOverrides.style?.paddingTop).toBe(3)
+    expect(callerOverrides.style?.paddingTop).toBe(1)
 
-    const permutedCaller = simplifiedGetSplitStyles(
+    const compoundAfterEarlyCaller = simplifiedGetSplitStyles(
       Frame,
       {
         style: {
@@ -176,7 +176,9 @@ describe('compoundVariants - native', () => {
       }
     )
 
-    expect(permutedCaller.style).toEqual(callerOverrides.style)
+    expect(compoundAfterEarlyCaller.style?.backgroundColor).toBe('red')
+    expect(compoundAfterEarlyCaller.style?.marginTop).toBe(3)
+    expect(compoundAfterEarlyCaller.style?.paddingTop).toBe(3)
   })
 
   test('same-declaration base objects override normalized base classes', () => {

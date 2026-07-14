@@ -124,6 +124,10 @@ async function waitForContent(page, port) {
     'oklch(0.623 0.214 259.815)'
   )
   await expect(page.locator('#hybrid-cascade')).toHaveCSS('padding', '18px')
+  await expect(page.locator('#hybrid-forward-late-prop')).toHaveCSS(
+    'background-color',
+    'rgb(84, 84, 84)'
+  )
 }
 
 test(`loads dev mode no error or warning logs`, async ({ page }) => {

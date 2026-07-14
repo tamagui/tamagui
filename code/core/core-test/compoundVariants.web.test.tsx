@@ -35,7 +35,7 @@ describe('compoundVariants - web', () => {
     }
   }
 
-  test('match defaults and explicit context keys, then yield to caller direct/style values', () => {
+  test('applies matched compounds in the same forward pass as authored props', () => {
     const FrameContext = createStyledContext<{
       tone?: 'critical' | 'neutral'
     }>()
@@ -164,11 +164,11 @@ describe('compoundVariants - web', () => {
 
     expect(callerOverrides.style?.backgroundColor).toBe('black')
     expect(callerOverrides.style?.opacity).toBe(0.7)
-    expect(callerOverrides.style?.borderTopLeftRadius).toBe('2px')
+    expect(callerOverrides.style?.borderTopLeftRadius).toBe('1px')
     expect(callerOverrides.style?.marginTop).toBe('4px')
-    expect(callerOverrides.style?.paddingTop).toBe('3px')
+    expect(callerOverrides.style?.paddingTop).toBe('1px')
 
-    const permutedCaller = simplifiedGetSplitStyles(
+    const compoundAfterEarlyCaller = simplifiedGetSplitStyles(
       Frame,
       {
         style: {
@@ -195,7 +195,11 @@ describe('compoundVariants - web', () => {
       }
     )
 
-    expect(permutedCaller.style).toEqual(callerOverrides.style)
+    expect(compoundAfterEarlyCaller.style?.backgroundColor).toBe('red')
+    expect(compoundAfterEarlyCaller.style?.opacity).toBe(0.5)
+    expect(compoundAfterEarlyCaller.style?.borderTopLeftRadius).toBe('2px')
+    expect(compoundAfterEarlyCaller.style?.marginTop).toBe('3px')
+    expect(compoundAfterEarlyCaller.style?.paddingTop).toBe('3px')
   })
 
   test('same-declaration base objects override normalized base classes', () => {

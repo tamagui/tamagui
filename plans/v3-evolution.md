@@ -64,11 +64,12 @@ Claiming is deterministic:
 - Everything else is passthrough. On web the Tailwind engine sees it; on native
   it is dropped with a deduplicated development warning.
 
-Precedence follows existing Tamagui behavior: props are processed in authored
-order and later output wins, with parent styled values applied before lighter
-child and call-site values. Compound variants run after their matched simple
-variants, call-site style props remain later, and call-site `className` is last.
-Reordering authored props may therefore change the result.
+Precedence follows existing Tamagui behavior: every contribution participates
+in one forward pass and later output wins per property. Parent styled values are
+encountered before lighter child and call-site values; matched compound variants
+run immediately after their last selector at that authored position. `style` and
+`className` are not privileged tiers. Reordering authored props may therefore
+change the result, including in the Tailwind class pipeline.
 
 The three type modes remain one implementation:
 
@@ -139,8 +140,9 @@ compoundVariants: [
 ```
 
 All matchers must match resolved props/defaults/context. A matcher may be one
-value or a readonly array. Entries apply in array order after simple variants.
-Caller props and caller `className` still win.
+value or a readonly array. Entries apply in array order immediately after the
+last matching selector in the forward pass; any later authored contribution may
+override them.
 
 ### Static class strings in `styled()`
 
@@ -391,9 +393,9 @@ type names. Runtime tests mirror the same matrix.
 inference for both overloads, including `defaultVariants`, invalid variants,
 and a fourth-argument static config. A single integration fixture then
 exercises base object + base class, simple functional/static variants, compound
-matches, context-provided matches, and call-site overrides on
-web/native/extracted web. Results preserve the established prop-order,
-parent-to-child, and caller-last semantics.
+matches, context-provided matches, and call-site ordering on
+web/native/extracted web. Results preserve the established parent-to-child,
+single-forward-pass semantics without a separate caller tier.
 
 **Resource class:** medium.
 

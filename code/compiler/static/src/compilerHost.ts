@@ -65,6 +65,24 @@ function objectClassName(value: string): string {
   return `className: ${JSON.stringify(value)}`
 }
 
+function jsxStyleAttributes(className: string, style: Record<string, unknown> | null) {
+  return [
+    className ? jsxClassName(className) : '',
+    style ? `style={${JSON.stringify(style)}}` : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
+function objectStyleProperties(className: string, style: Record<string, unknown> | null) {
+  return [
+    className ? objectClassName(className) : '',
+    style ? `style: ${JSON.stringify(style)}` : '',
+  ]
+    .filter(Boolean)
+    .join(', ')
+}
+
 function extractedStyleArtifacts(
   split: any,
   props: Record<string, unknown>,
@@ -539,7 +557,7 @@ export function createTamaguiCompilerHost(
       process.env.TAMAGUI_TARGET = platform
       let split: any
       const defaultProps = core.getDefaultProps(component.staticConfig) ?? {}
-      const completeProps = { ...defaultProps, ...props }
+      const completeProps = core.mergeProps(defaultProps, props)
       try {
         split = core.getSplitStyles(
           completeProps,
@@ -733,11 +751,25 @@ export function createTamaguiCompilerHost(
       }
       const artifacts = extractedStyleArtifacts(split, props, options.tamaguiConfig)
       const className = artifacts.className
+      const rawInlineStyle = split.viewProps?.style
+      const inlineStyle =
+        staticObject(rawInlineStyle) &&
+        !rawInlineStyle['$$css'] &&
+        Object.keys(rawInlineStyle).length > 0
+          ? (rawInlineStyle as Record<string, unknown>)
+          : null
+      if (rawInlineStyle && !inlineStyle && !isSerializableNativeStyle(rawInlineStyle)) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'Web inline style output is not a static serializable value'
+        )
+      }
       if (input.element.form !== 'jsx') {
         const propsContent = compiledPropsContent(
           input,
           styleEntries,
-          objectClassName(className)
+          objectStyleProperties(className, inlineStyle)
         )
         if (!propsContent) {
           return bailout(
@@ -763,16 +795,17 @@ export function createTamaguiCompilerHost(
         }
       }
       if (styleEntries.length === 0) {
+        const attributes = jsxStyleAttributes(className, inlineStyle)
         return {
           ok: true,
-          edits: className
+          edits: attributes
             ? [
                 ...tagEdits,
                 ...webPropEdits,
                 {
                   start: input.element.component.span.end,
                   end: input.element.component.span.end,
-                  content: ` ${jsxClassName(className)}`,
+                  content: ` ${attributes}`,
                   origin: input.element.component.span,
                 },
               ]
@@ -792,7 +825,7 @@ export function createTamaguiCompilerHost(
           {
             start: first!.span.start,
             end: first!.span.end,
-            content: jsxClassName(className),
+            content: jsxStyleAttributes(className, inlineStyle),
             origin: first!.span,
           },
           ...rest.map((entry) => ({

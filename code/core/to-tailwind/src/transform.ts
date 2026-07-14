@@ -224,17 +224,35 @@ export function tamaguiToTailwind(
       // spread, so we do NOT convert props on any element that has a spread — left untouched.
       if (node.attributes.some((a) => t.isJSXSpreadAttribute(a))) return
 
+      // A dynamic class may overlap any neighboring style prop. Combining everything into one
+      // generated className would move that contribution and violate authored forward order, so
+      // retain the element exactly as written.
+      const hasDynamicClassName = node.attributes.some(
+        (attr) =>
+          t.isJSXAttribute(attr) &&
+          attr.name.name === 'className' &&
+          getStringValue(attr.value) === null
+      )
+      if (hasDynamicClassName) return
+
+      const hasClassName = node.attributes.some(
+        (attr) => t.isJSXAttribute(attr) && attr.name.name === 'className'
+      )
+      const hasNeighboringStyleProp = node.attributes.some((attr) => {
+        if (!t.isJSXAttribute(attr) || attr.name.name === 'className') return false
+        const name = attr.name.name as string
+        if (name in pseudoToModifier) return true
+        if (name[0] === '$' && ctx.mediaKeys.has(name.slice(1))) return true
+        return isConvertibleStyleProp(resolveShorthand(ctx, name))
+      })
+      if (hasClassName && hasNeighboringStyleProp) return
+
       const classes: string[] = []
       const keptAttrs: t.JSXAttribute[] = []
       let existingClassName: t.JSXAttribute | null = null
 
-      // pre-scan a STATIC existing className for prop-prefix collisions. in styleMode className
-      // WINS over a separate style prop. so a converted class must NOT override a style key that
-      // an existing className, or a RETAINED (dynamic/unconvertible) longhand prop, also sets —
-      // className always beats props regardless of textual order, so this can't be fixed by
-      // ordering, only AVOIDED. we therefore RETAIN any convertible prop whose resolved leaf keys
-      // (shorthand→longhand→axis→corner expansion) overlap a blocked key. compute the blocked set
-      // from the existing className first (order-independent).
+      // Pre-scan a static existing className for prop-prefix collisions. Overlapping values stay
+      // authored as separate props so the runtime forward pass can preserve their source order.
       const blockedLeafKeys = new Set<string>()
       for (const a of node.attributes) {
         if (t.isJSXAttribute(a) && a.name.name === 'className') {

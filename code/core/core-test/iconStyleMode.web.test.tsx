@@ -59,12 +59,17 @@ describe('icon styleMode color reconstruction', () => {
     expect(out.className).toBeUndefined()
   })
 
-  test('className is last and wins over an explicit color prop', () => {
-    const out = reconstructIconStyleModeProps(
+  test('className and explicit color follow authored order', () => {
+    const classThenProp = reconstructIconStyleModeProps(
       { className: 'color-color5', color: '$color10' } as any,
       theme()
     ) as any
-    expect(out.color).toBe('$color5')
+    const propThenClass = reconstructIconStyleModeProps(
+      { color: '$color10', className: 'color-color5' } as any,
+      theme()
+    ) as any
+    expect(classThenProp.color).toBe('$color10')
+    expect(propThenClass.color).toBe('$color5')
   })
 
   test('missing color tokens are passthrough', () => {

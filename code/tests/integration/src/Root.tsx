@@ -19,6 +19,13 @@ export const Root = () => {
           <Text>Tailwind wins after Tamagui</Text>
         </View>
         <View
+          id="hybrid-forward-late-prop"
+          className="bg-blue-500"
+          backgroundColor="$dark9"
+        >
+          <Text>Tamagui wins when authored later</Text>
+        </View>
+        <View
           id="hybrid-grid"
           data-state="open"
           className="@container grid w-[400px] grid-cols-2 gap-3 backdrop-blur-sm data-[state=open]:opacity-75 [&>span]:text-red-500"

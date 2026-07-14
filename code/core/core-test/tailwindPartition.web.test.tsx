@@ -68,25 +68,34 @@ describe('partition — pseudo/media objects: convert supported, RETAIN dynamic 
 })
 
 describe('partition — existing className is COMBINED, never overwritten', () => {
-  test('dynamic className + converting prop → combined, EXISTING className wins (last)', () => {
-    const out = convert(`<View className={foo} padding={10} />`)
-    expect(out).toContain('${foo}') // original expression preserved
-    expect(out).toContain('p-[10px]') // new class added
-    // generated class FIRST, the dynamic expression LAST so the existing className wins
-    expect(out).toMatch(/className=\{`p-\[10px\] \$\{foo\}`\}/)
+  test('dynamic className + neighboring style prop stays authored', () => {
+    expect(convert(`<View className={foo} padding={10} />`)).toBe(
+      `<View className={foo} padding={10} />`
+    )
   })
 
-  test('static className + non-conflicting prop → merged string', () => {
-    const out = convert(`<View className="flex-1" padding={10} />`)
-    expect(out).toContain('flex-1')
-    expect(out).toContain('p-[10px]')
+  test('static className + neighboring style prop stays authored', () => {
+    expect(convert(`<View className="flex-1" padding={10} />`)).toBe(
+      `<View className="flex-1" padding={10} />`
+    )
   })
 })
 
-describe('precedence — same-key className wins → RETAIN the prop (no last-class flip)', () => {
-  // in styleMode className WINS over a separate style prop. appending p-[10px] after p-[8px] would
-  // make padding 10 win (last class); instead the padding prop is RETAINED so className's p-2
-  // still wins — matching source. tested in BOTH attribute orders.
+describe('precedence — same-key className and props retain authored order', () => {
+  test('passthrough Tailwind conflicts merge left-to-right', () => {
+    const forward = simplifiedGetSplitStyles(View, {
+      className: 'supports-[display:grid]:bg-red-500 supports-[display:grid]:bg-blue-500',
+    }).viewProps.className
+    const reverse = simplifiedGetSplitStyles(View, {
+      className: 'supports-[display:grid]:bg-blue-500 supports-[display:grid]:bg-red-500',
+    }).viewProps.className
+
+    expect(forward).toContain('supports-[display:grid]:bg-blue-500')
+    expect(forward).not.toContain('supports-[display:grid]:bg-red-500')
+    expect(reverse).toContain('supports-[display:grid]:bg-red-500')
+    expect(reverse).not.toContain('supports-[display:grid]:bg-blue-500')
+  })
+
   test('{className:"p-[8px]", padding:10} → padding retained, no generated class', () => {
     const a = convert(`<View className="p-[8px]" padding={10} />`)
     expect(a).not.toContain('p-[10px]')
@@ -96,10 +105,7 @@ describe('precedence — same-key className wins → RETAIN the prop (no last-cl
     expect(b).toContain('padding={10}')
   })
 
-  test('resolved(converted) === resolved(source) for the same-key case (className wins = 8px)', () => {
-    const src = { className: 'p-[8px]', padding: 10 }
-    const source = simplifiedGetSplitStyles(View, src as any)
-    // converter leaves it unchanged (padding retained), so resolution is identical + className wins
+  test('the later contribution wins in both attribute orders', () => {
     const findPad = (s: any) => {
       const merged: Record<string, any> = { ...(s.style || {}) }
       for (const r of Object.values(s.rulesToInsert || {}) as any[]) {
@@ -109,7 +115,12 @@ describe('precedence — same-key className wins → RETAIN the prop (no last-cl
       }
       return merged.paddingTop
     }
-    expect(findPad(source)).toBe('8px')
+    expect(
+      findPad(simplifiedGetSplitStyles(View, { className: 'p-[8px]', padding: 10 }))
+    ).toBe('10px')
+    expect(
+      findPad(simplifiedGetSplitStyles(View, { padding: 10, className: 'p-[8px]' }))
+    ).toBe('8px')
   })
 })
 

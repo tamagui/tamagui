@@ -72,9 +72,15 @@ export function reconstructIconStyleModeProps(props: IconProps, theme: any): Ico
   }
   if (color === undefined) return props
 
-  const next: any = { ...props }
-  if (color !== undefined) next.color = color
-  next.className = rest.length ? rest.join(' ') : undefined
+  const next: any = {}
+  for (const key in props) {
+    if (key === 'className') {
+      next.color = color
+      next.className = rest.length ? rest.join(' ') : undefined
+    } else {
+      next[key] = (props as any)[key]
+    }
+  }
   return next
 }
 

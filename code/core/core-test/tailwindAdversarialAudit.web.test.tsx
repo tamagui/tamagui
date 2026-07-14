@@ -30,8 +30,6 @@ const classOf = (out: string) => {
   const m = /className="([^"]*)"/.exec(out)
   return m ? (JSON.parse(`"${m[1]}"`) as string) : ''
 }
-const dynClassOf = (out: string) => (/className=\{`([^`]*)`\}/.exec(out) || [, ''])[1]!
-
 function resolved(Comp: any, props: Record<string, any>): Record<string, any> {
   const s = simplifiedGetSplitStyles(Comp, props as any)
   const out: Record<string, any> = { ...(s.style || {}) }
@@ -53,13 +51,13 @@ describe('1 — spread element: opening AND closing stay paired (no </div> corru
   })
 })
 
-describe('2 — dynamic className precedence: source className wins', () => {
-  test('className={foo} padding={10}: with foo="p-[8px]", className wins', () => {
-    const cls = dynClassOf(convert(`<View className={foo} padding={10} />`))
-    // foo is the dynamic expression; substitute the adversarial value
-    const converted = cls.replace('${foo}', 'p-[8px]')
-    expect(resolved(View, { className: converted }).paddingTop).toBe('8px')
-    expect(resolved(View, { className: 'p-[8px]', padding: 10 }).paddingTop).toBe('8px')
+describe('2 — dynamic className follows authored forward order', () => {
+  test('dynamic classes stay authored and the later contribution wins', () => {
+    expect(convert(`<View className={foo} padding={10} />`)).toBe(
+      `<View className={foo} padding={10} />`
+    )
+    expect(resolved(View, { className: 'p-[8px]', padding: 10 }).paddingTop).toBe('10px')
+    expect(resolved(View, { padding: 10, className: 'p-[8px]' }).paddingTop).toBe('8px')
   })
 
   test('animation props and animation-* classes both remain untouched', () => {
@@ -90,21 +88,31 @@ describe('3 — XStack className="flex-col": flexDirection COLUMN (not the defau
   })
 })
 
-describe('4 — existing raw hover color + converted hoverStyle: className wins', () => {
-  test('source className wins', () => {
-    const cls = classOf(
+describe('4 — existing raw hover color + hoverStyle follow authored order', () => {
+  test('the later hover contribution wins', () => {
+    const hoverColors = (props: Record<string, any>) => {
+      const rules = Object.values(
+        simplifiedGetSplitStyles(View, props as any).rulesToInsert || {}
+      ) as any[]
+      return rules
+        .filter((rule) => rule[StyleObjectProperty] === 'backgroundColor')
+        .map((rule) => rule[StyleObjectValue])
+    }
+    const classThenProp = hoverColors({
+      className: 'hover:bg-[red]',
+      hoverStyle: { backgroundColor: 'blue' },
+    })
+    const propThenClass = hoverColors({
+      hoverStyle: { backgroundColor: 'blue' },
+      className: 'hover:bg-[red]',
+    })
+    expect(classThenProp[classThenProp.length - 1]).toBe('blue')
+    expect(propThenClass[propThenClass.length - 1]).toBe('red')
+    expect(
       convert(
         `<View className="hover:bg-[red]" hoverStyle={{ backgroundColor: "blue" }} />`
       )
-    )
-    const rules = Object.values(
-      simplifiedGetSplitStyles(View, { className: cls } as any).rulesToInsert || {}
-    ) as any[]
-    const hoverBg = rules
-      .filter((r) => r[StyleObjectProperty] === 'backgroundColor')
-      .map((r) => r[StyleObjectValue])
-    // red is emitted last (wins); blue is present but overridden
-    expect(hoverBg[hoverBg.length - 1]).toBe('red')
+    ).toBe(`<View className="hover:bg-[red]" hoverStyle={{ backgroundColor: "blue" }} />`)
   })
 })
 

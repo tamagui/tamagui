@@ -32,6 +32,7 @@ import {
   type ParsedCandidate,
 } from '@tamagui/style-grammar'
 import React from 'react'
+import { twMerge } from 'tailwind-merge'
 import { getConfig, getFont, getSetting } from '../config'
 import { isDevTools } from '../constants/isDevTools'
 import {
@@ -77,7 +78,6 @@ import { insertStyleRules, shouldInsertStyleRules, updateRules } from './insertS
 import { isActivePlatform, getPlatformSpecificityBump } from './isActivePlatform'
 import { isActiveTheme } from './isActiveTheme'
 import { log } from './log'
-import { mergeProps } from './mergeProps'
 import { normalizeValueWithProperty } from './normalizeValueWithProperty'
 import { propMapper } from './propMapper'
 import {
@@ -266,84 +266,60 @@ function compoundVariantMatches(
 
 type OrderedPropEntry = readonly [string, any]
 
-function getPropEntriesWithPrecedenceLayers(
+function getPropEntriesInForwardOrder(
   processedProps: Record<string, any>,
-  processedBaseProps: Record<string, any> | undefined,
-  processedCallerProps: Record<string, any> | undefined,
-  variants: StaticConfig['variants'],
+  processedBaseStyle: Record<string, any> | undefined,
   compoundVariants: StaticConfig['compoundVariants']
 ) {
-  if (!compoundVariants?.length && !processedBaseProps && !processedCallerProps) {
-    return Object.entries(processedProps)
+  const propEntries = Object.entries(processedProps) as OrderedPropEntry[]
+  const orderedEntries = processedBaseStyle
+    ? (Object.entries(processedBaseStyle) as OrderedPropEntry[])
+    : []
+
+  if (!compoundVariants?.length) {
+    orderedEntries.push(...propEntries)
+    return orderedEntries
   }
 
-  const orderedEntries: OrderedPropEntry[] = []
-  const isVariantKey = (key: string) => Boolean(variants && key in variants)
-  const baseLayer =
-    processedBaseProps || (!processedCallerProps ? processedProps : undefined)
-
-  // Preserve Tamagui's authored prop ordering for static/default/context props. In
-  // particular, a more-derived direct prop must stay after an inherited default
-  // variant when styled() assembled it that way. Pulling every variant into a
-  // separate phase changes that ordering and lets the inherited variant win.
-  if (baseLayer) {
-    for (const key in baseLayer) {
-      // A caller-selected variant replaces the lower/default selector. Expand the
-      // final value once in the caller-variant phase immediately before compounds.
-      if (isVariantKey(key) && processedCallerProps && key in processedCallerProps) {
-        continue
-      }
-      orderedEntries.push([key, baseLayer[key]])
+  // Compounds are ordinary contributions in the same authored forward pass. A
+  // matching compound runs immediately after its last selector entry, then any
+  // later prop/style/className is free to override it. Never collect variants,
+  // compounds, or caller values into precedence tiers.
+  const compoundsByAnchor = new Map<number, OrderedPropEntry[]>()
+  for (const compoundVariant of compoundVariants) {
+    if (!compoundVariantMatches(compoundVariant, processedProps)) {
+      continue
     }
+    const { style } = compoundVariant
+    if (!isPlainObject(style)) {
+      continue
+    }
+
+    let anchor = -1
+    for (const selectorKey in compoundVariant) {
+      if (selectorKey === 'style') continue
+      for (let index = propEntries.length - 1; index >= 0; index--) {
+        if (propEntries[index][0] === selectorKey) {
+          anchor = Math.max(anchor, index)
+          break
+        }
+      }
+    }
+
+    const entries = compoundsByAnchor.get(anchor) || []
+    for (const key in style) {
+      entries.push([key, style[key]])
+    }
+    compoundsByAnchor.set(anchor, entries)
   }
 
-  if (processedCallerProps) {
-    for (const key in processedCallerProps) {
-      if (isVariantKey(key)) {
-        orderedEntries.push([key, processedProps[key]])
-      }
-    }
+  const beforeProps = compoundsByAnchor.get(-1)
+  if (beforeProps) orderedEntries.push(...beforeProps)
+  for (let index = 0; index < propEntries.length; index++) {
+    orderedEntries.push(propEntries[index])
+    const compounds = compoundsByAnchor.get(index)
+    if (compounds) orderedEntries.push(...compounds)
   }
-
-  if (compoundVariants) {
-    for (const compoundVariant of compoundVariants) {
-      if (!compoundVariantMatches(compoundVariant, processedProps)) {
-        continue
-      }
-      const { style } = compoundVariant
-      if (!isPlainObject(style)) {
-        continue
-      }
-      for (const key in style) {
-        orderedEntries.push([key, style[key]])
-      }
-    }
-  }
-
-  if (processedCallerProps) {
-    for (const key in processedCallerProps) {
-      if (!isVariantKey(key) && key !== 'style' && key !== 'className') {
-        orderedEntries.push([key, processedCallerProps[key]])
-      }
-    }
-    if ('style' in processedCallerProps) {
-      orderedEntries.push(['style', processedCallerProps.style])
-    }
-    if ('className' in processedCallerProps) {
-      orderedEntries.push(['className', processedCallerProps.className])
-    }
-  }
-
-  for (const key in processedProps) {
-    if (
-      !isVariantKey(key) &&
-      !(baseLayer && key in baseLayer) &&
-      !(processedCallerProps && key in processedCallerProps)
-    ) {
-      orderedEntries.push([key, processedProps[key]])
-    }
-  }
-
   return orderedEntries
 }
 
@@ -378,14 +354,12 @@ function preprocessTailwindClassName(
     return props
   }
 
-  // One precedence contract: className wins over separate props, independent of JSX/object key
-  // order. The converter's overlap retention and existing-class ordering rely on this.
   const classes = className.split(/\s+/).filter(Boolean)
   const regularClasses: string[] = []
-  const result: Record<string, any> = { ...props }
+  const result: Record<string, any> = {}
   const grammarConfig = getStyleGrammarConfig(config)
 
-  for (const cls of classes) {
+  const applyClass = (cls: string) => {
     const classification = classifyCandidate(cls, grammarConfig)
     if (classification.kind === 'passthrough') {
       if (!isWeb) {
@@ -398,10 +372,10 @@ function preprocessTailwindClassName(
             `[tamagui] Tailwind candidate "${cls}" is web-only and was dropped on native. Use a Tamagui grammar candidate or a native style prop for cross-platform output.`
           )
         }
-        continue
+        return
       }
       regularClasses.push(cls)
-      continue
+      return
     }
     const parsed = classification.parsed
     // named utilities first (flex-row, flex-1, hidden, …) — whole class → fixed prop(s).
@@ -417,7 +391,7 @@ function preprocessTailwindClassName(
         if (mods) result[`$${mods}:${p}`] = util[p]
         else result[p] = util[p]
       }
-      continue
+      return
     }
     // Resolve only after the registry has claimed the candidate. Directional border/radius
     // expansion below consumes that parsed decision instead of re-parsing width vs color.
@@ -431,17 +405,25 @@ function preprocessTailwindClassName(
       } else {
         result[flatProp.key] = flatProp.value
       }
-      continue
+      return
     }
     // preserve all other classes (non-tailwind or failed conversion)
     regularClasses.push(cls)
   }
 
-  // update className to only include regular classes
-  if (regularClasses.length > 0) {
-    result.className = regularClasses.join(' ')
-  } else {
-    delete result.className
+  // Expand the className exactly where it was authored. Claimed classes and
+  // ordinary props therefore share one forward pass: whichever contribution is
+  // encountered later wins. Classes within the string are likewise applied in
+  // their own left-to-right order.
+  for (const key in props) {
+    if (key !== 'className') {
+      result[key] = props[key]
+      continue
+    }
+    for (const cls of classes) applyClass(cls)
+    if (regularClasses.length > 0) {
+      result.className = regularClasses.join(' ')
+    }
   }
 
   return result
@@ -1161,7 +1143,7 @@ export const getSplitStyles: StyleSplitter = (
   const viewProps: GetStyleResult['viewProps'] = {}
   const mediaState = styleProps.mediaState || globalMediaState
 
-  const shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClass
+  let shouldDoClasses = acceptsClassName && isWeb && !styleProps.noClass
 
   const rulesToInsert: RulesToInsert =
     process.env.TAMAGUI_TARGET === 'native' ? (undefined as any) : {}
@@ -1258,43 +1240,69 @@ export const getSplitStyles: StyleSplitter = (
   let processedProps: Record<string, any>
   if ((props as any)[STYLE_MODE_PREPROCESSED]) {
     processedProps = props
-    className = (props.className as string) || ''
   } else {
     const propsWithTailwind = preprocessTailwindClassName(props, shorthands, conf)
-    if (propsWithTailwind.className !== props.className) {
-      className = propsWithTailwind.className || ''
-    }
     processedProps = preprocessFlatProps(propsWithTailwind, shorthands, conf)
   }
-  const preprocessLayer = (layer: Record<string, any> | undefined) => {
-    if (!layer || (layer as any)[STYLE_MODE_PREPROCESSED]) {
-      return layer
-    }
-    return preprocessFlatProps(
-      preprocessTailwindClassName(layer, shorthands, conf),
-      shorthands,
-      conf
-    )
-  }
-  const { className: baseClassName, ...processedBaseClassProps } =
-    staticConfig.baseStyle || {}
-  if (baseClassName) {
-    className = `${baseClassName} ${className}`.trim()
-  }
-  const processedDefaultProps = preprocessLayer(styleProps.baseProps)
-  const processedBaseProps = processedBaseClassProps
-    ? mergeProps(processedBaseClassProps, processedDefaultProps || {})
-    : processedDefaultProps
-  const processedCallerProps = preprocessLayer(styleProps.callerProps)
   const { webContainerType } = conf.settings
   const parentVariants = parentStaticConfig?.variants
-  const orderedProcessedProps = getPropEntriesWithPrecedenceLayers(
+  const orderedProcessedProps = getPropEntriesInForwardOrder(
     processedProps,
-    processedBaseProps,
-    processedCallerProps,
-    variants,
+    staticConfig.baseStyle,
     staticConfig.compoundVariants
   )
+
+  const mergeStylePropAtCurrentPosition = (styleProp: any) => {
+    if (styleProps.noMergeStyle || !styleProp) return
+    if (isHOC) {
+      viewProps.style = normalizeStyle(styleProp)
+      return
+    }
+    const isArray = Array.isArray(styleProp)
+    const length = isArray ? styleProp.length : 1
+    for (let index = 0; index < length; index++) {
+      const style = isArray ? styleProp[index] : styleProp
+      if (!style) continue
+      if (style['$$css']) {
+        Object.assign(styleState.classNames, style)
+        continue
+      }
+      const normalized = normalizeStyle(style)
+      styleState.style ||= {}
+      for (const key in normalized) {
+        styleState.style[key] = normalized[key]
+        // An authored style object is one ordinary contribution, not a permanent
+        // higher-precedence tier. Reset the key so any later contribution can win.
+        styleState.usedKeys[key] = 1
+      }
+    }
+  }
+
+  const flushForwardStylesToClasses = () => {
+    if (!shouldDoClasses || !styleState.style) return
+    if (styleState.flatTransforms) {
+      mergeFlatTransforms(styleState.style, styleState.flatTransforms)
+      styleState.flatTransforms = undefined
+    }
+    if (styleProps.noNormalize !== false) {
+      fixStyles(styleState.style)
+      if (!styleProps.noExpand && !styleProps.noMergeStyle) {
+        if (isWeb && (isReactNative ? driver?.inputStyle !== 'css' : true)) {
+          styleToCSS(styleState.style)
+        }
+      }
+    }
+    const flushedKeys = Object.keys(styleState.style)
+    for (const atomicStyle of getCSSStylesAtomic(styleState.style)) {
+      addStyleToInsertRules(rulesToInsert, atomicStyle)
+      classNames[atomicStyle[StyleObjectProperty]] = atomicStyle[StyleObjectIdentifier]
+    }
+    styleState.style = {}
+    for (const key of flushedKeys) {
+      delete styleState.usedKeys[key]
+    }
+  }
+
   for (const [keyOg, valOg] of orderedProcessedProps) {
     let keyInit = keyOg
     let valInit = valOg
@@ -1350,8 +1358,22 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'className') {
       if (typeof valInit === 'string' && valInit) {
-        className = `${className} ${valInit}`.trim()
+        className = isTailwindModeEnabled(conf)
+          ? twMerge(className, valInit)
+          : `${className} ${valInit}`.trim()
+        // Tailwind passthrough CSS is emitted after the base Tamagui layer. Once
+        // it appears in the authored pass, keep subsequent Tamagui contributions
+        // inline so they retain their later, last-wins position.
+        if (isTailwindModeEnabled(conf)) {
+          flushForwardStylesToClasses()
+          shouldDoClasses = false
+        }
       }
+      continue
+    }
+
+    if (keyInit === 'style') {
+      mergeStylePropAtCurrentPosition(valInit)
       continue
     }
 
@@ -2362,29 +2384,6 @@ export const getSplitStyles: StyleSplitter = (
             addStyleToInsertRules(rulesToInsert, atomicStyle)
             classNames[atomicStyle[StyleObjectProperty]] =
               atomicStyle[StyleObjectIdentifier]
-          }
-        }
-      }
-    }
-  }
-
-  // merge after the prop loop - and always keep it on style dont turn into className except if RN gives us
-  const styleProp = props.style
-
-  if (!styleProps.noMergeStyle && styleProp) {
-    if (isHOC) {
-      viewProps.style = normalizeStyle(styleProp)
-    } else {
-      const isArray = Array.isArray(styleProp)
-      const len = isArray ? styleProp.length : 1
-      for (let i = 0; i < len; i++) {
-        const style = isArray ? styleProp[i] : styleProp
-        if (style) {
-          if (style['$$css']) {
-            Object.assign(styleState.classNames, style)
-          } else {
-            styleState.style ||= {}
-            Object.assign(styleState.style, normalizeStyle(style))
           }
         }
       }

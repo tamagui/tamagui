@@ -214,6 +214,28 @@ export const App = () => <Card padding={12} data-styled="yes" />
     expect(plan.css).toContain('opacity:0.5')
   })
 
+  test('lowers compounds and style props in authored forward order', () => {
+    const source = (props: string) => `
+import { View, styled } from '@tamagui/core'
+const Frame = styled(View, {
+  variants: { tone: { active: {} } },
+  compoundVariants: [
+    { tone: 'active', style: { opacity: 0.5 } },
+  ],
+})
+export const App = () => <Frame ${props} />
+`
+    const compoundLast = compile(source('style={{ opacity: 0.2 }} tone="active"'))
+    expect(codes(compoundLast.plan)).toEqual([])
+    expect(compactCss(compoundLast.plan.css)).toContain('opacity:0.5')
+    expect(compactCss(compoundLast.plan.css)).not.toContain('opacity:0.2')
+
+    const styleLast = compile(source('tone="active" style={{ opacity: 0.2 }}'))
+    expect(codes(styleLast.plan)).toEqual([])
+    expect(compactCss(styleLast.plan.css)).toContain('opacity:0.2')
+    expect(compactCss(styleLast.plan.css)).not.toContain('opacity:0.5')
+  })
+
   test('lowers compiled jsx/jsxs and createElement calls through the same plan', () => {
     const source = `
 import { View } from '@tamagui/core'
