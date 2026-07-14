@@ -6,6 +6,7 @@ import { expect, test } from '@playwright/test'
 import waitPort from 'wait-port'
 
 const devPort = 5008
+const hmrPort = 5011
 const prodPort = 5009
 const hydratePort = 5010
 
@@ -22,13 +23,34 @@ function spawnServer(command, args) {
   return proc
 }
 
-function killServer(proc) {
-  try {
-    // kill the entire process group so child processes are cleaned up
-    process.kill(-proc.pid, 'SIGTERM')
-  } catch {
-    // process may have already exited
-  }
+async function killServer(proc) {
+  if (proc.exitCode !== null || proc.signalCode) return
+
+  await new Promise((resolve) => {
+    let timeout
+    let forceTimeout
+    const finish = () => {
+      clearTimeout(timeout)
+      clearTimeout(forceTimeout)
+      resolve()
+    }
+    timeout = setTimeout(() => {
+      try {
+        process.kill(-proc.pid, 'SIGKILL')
+      } catch {
+        // process may have exited between the timeout and the signal
+      }
+    }, 5000)
+    forceTimeout = setTimeout(finish, 7000)
+
+    proc.once('exit', finish)
+    try {
+      // Kill the entire process group so child processes release the port too.
+      process.kill(-proc.pid, 'SIGTERM')
+    } catch {
+      finish()
+    }
+  })
 }
 
 async function waitForContent(page, port) {
@@ -110,7 +132,7 @@ test(`loads dev mode no error or warning logs`, async ({ page }) => {
     await waitPort({ port: devPort, host: 'localhost' })
     await waitForContent(page, devPort)
   } finally {
-    killServer(server)
+    await killServer(server)
   }
 })
 
@@ -121,10 +143,10 @@ test(`updates passthrough candidates on add, remove, and re-add`, async ({ page 
   const original = readFileSync(fixturePath, 'utf8')
   const originalTokens = readFileSync(tokensPath, 'utf8')
   const originalConfig = readFileSync(configPath, 'utf8')
-  const server = spawnServer('bun', ['run', 'dev', '--port', String(devPort)])
+  const server = spawnServer('bun', ['run', 'dev', '--port', String(hmrPort)])
   try {
-    await waitPort({ port: devPort, host: 'localhost' })
-    await page.goto(`http://localhost:${devPort}`)
+    await waitPort({ port: hmrPort, host: 'localhost' })
+    await page.goto(`http://localhost:${hmrPort}`)
     await expect(page.locator('#hybrid-hmr')).toHaveCSS('grid-template-columns', '121px')
 
     writeFileSync(fixturePath, original.replace('grid-cols-[121px]', 'grid-cols-[137px]'))
@@ -159,7 +181,7 @@ test(`updates passthrough candidates on add, remove, and re-add`, async ({ page 
     writeFileSync(fixturePath, original)
     writeFileSync(tokensPath, originalTokens)
     writeFileSync(configPath, originalConfig)
-    killServer(server)
+    await killServer(server)
   }
 })
 
@@ -175,7 +197,7 @@ test(`builds to prod same thing`, async ({ page }) => {
     await waitPort({ port: prodPort, host: 'localhost' })
     await waitForContent(page, prodPort)
   } finally {
-    killServer(server)
+    await killServer(server)
   }
 
   const assets = readdirSync(path.resolve('dist/assets'))
@@ -255,6 +277,6 @@ test('builds SSR without virtual CSS and hydrates it with the hybrid client', as
     await waitForContent(page, hydratePort)
   } finally {
     writeFileSync(clientHTMLPath, clientHTML)
-    killServer(server)
+    await killServer(server)
   }
 })
