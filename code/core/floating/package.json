@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/floating",
-  "version": "2.4.5",
+  "version": "2.4.5-1784066510418",
   "source": "src/index.ts",
   "files": [
     "src",
