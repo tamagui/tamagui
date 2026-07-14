@@ -1,7 +1,8 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2'
-import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
+import { Menu } from '../components/Menu'
 
 /**
  * Test case for menu focus leave behavior

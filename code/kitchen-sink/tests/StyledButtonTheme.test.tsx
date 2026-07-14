@@ -11,8 +11,13 @@ test(`button + styled + createStyledHOC + theme works`, async ({ page }) => {
     return window.getComputedStyle(el)
   })
 
-  // Green theme background from themeDev (desaturated green)
-  expect(styles.backgroundColor).toBe(`rgb(219, 235, 224)`)
+  const referenceStyles = await page.locator('#test-theme-reference').evaluate((el) => {
+    return window.getComputedStyle(el)
+  })
+
+  // The copied Button skin resolves its $background from the authored green Theme.
+  expect(styles.backgroundColor).toBe(referenceStyles.backgroundColor)
+  expect(styles.backgroundColor).not.toBe('rgba(0, 0, 0, 0)')
 
   const styles2 = await page.locator('#test2').evaluate((el) => {
     return window.getComputedStyle(el)

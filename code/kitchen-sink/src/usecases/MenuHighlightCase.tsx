@@ -1,5 +1,6 @@
-import { Menu } from '@tamagui/menu'
-import { Button, YStack, Text } from 'tamagui'
+import { YStack, Text } from 'tamagui'
+import { Button } from '../components/Button'
+import { Menu } from '../components/Menu'
 
 /**
  * Menu highlight test case

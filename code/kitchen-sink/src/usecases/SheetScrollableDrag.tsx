@@ -1,7 +1,8 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { ScrollView as RNScrollView } from 'react-native'
-import { Sheet, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
 import { Button } from '../components/Button'
+import { Sheet } from '../components/Sheet'
 import { getGestureHandler } from '@tamagui/native'
 
 /**

@@ -279,32 +279,29 @@ function getPropEntriesWithPrecedenceLayers(
 
   const orderedEntries: OrderedPropEntry[] = []
   const isVariantKey = (key: string) => Boolean(variants && key in variants)
+  const baseLayer =
+    processedBaseProps || (!processedCallerProps ? processedProps : undefined)
 
-  const addNonVariantProps = (
-    props?: Record<string, any>,
-    skipSpecialCallerProps = false
-  ) => {
-    if (!props) return
-    for (const key in props) {
-      if (skipSpecialCallerProps && (key === 'style' || key === 'className')) {
+  // Preserve Tamagui's authored prop ordering for static/default/context props. In
+  // particular, a more-derived direct prop must stay after an inherited default
+  // variant when styled() assembled it that way. Pulling every variant into a
+  // separate phase changes that ordering and lets the inherited variant win.
+  if (baseLayer) {
+    for (const key in baseLayer) {
+      // A caller-selected variant replaces the lower/default selector. Expand the
+      // final value once in the caller-variant phase immediately before compounds.
+      if (isVariantKey(key) && processedCallerProps && key in processedCallerProps) {
         continue
       }
-      if (!isVariantKey(key)) {
-        orderedEntries.push([key, props[key]])
+      orderedEntries.push([key, baseLayer[key]])
+    }
+  }
+
+  if (processedCallerProps) {
+    for (const key in processedCallerProps) {
+      if (isVariantKey(key)) {
+        orderedEntries.push([key, processedProps[key]])
       }
-    }
-  }
-  const addPropIfPresent = (props: Record<string, any> | undefined, key: string) => {
-    if (props && key in props && !isVariantKey(key)) {
-      orderedEntries.push([key, props[key]])
-    }
-  }
-
-  addNonVariantProps(processedBaseProps)
-
-  for (const key in processedProps) {
-    if (isVariantKey(key)) {
-      orderedEntries.push([key, processedProps[key]])
     }
   }
 
@@ -323,14 +320,24 @@ function getPropEntriesWithPrecedenceLayers(
     }
   }
 
-  addNonVariantProps(processedCallerProps, true)
-  addPropIfPresent(processedCallerProps, 'style')
-  addPropIfPresent(processedCallerProps, 'className')
+  if (processedCallerProps) {
+    for (const key in processedCallerProps) {
+      if (!isVariantKey(key) && key !== 'style' && key !== 'className') {
+        orderedEntries.push([key, processedCallerProps[key]])
+      }
+    }
+    if ('style' in processedCallerProps) {
+      orderedEntries.push(['style', processedCallerProps.style])
+    }
+    if ('className' in processedCallerProps) {
+      orderedEntries.push(['className', processedCallerProps.className])
+    }
+  }
 
   for (const key in processedProps) {
     if (
       !isVariantKey(key) &&
-      !(processedBaseProps && key in processedBaseProps) &&
+      !(baseLayer && key in baseLayer) &&
       !(processedCallerProps && key in processedCallerProps)
     ) {
       orderedEntries.push([key, processedProps[key]])
