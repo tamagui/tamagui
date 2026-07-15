@@ -61,6 +61,12 @@ export type SheetProps = ScopedProps<
     unmountChildrenWhenHidden?: boolean
 
     /**
+     * Keep the sheet content wrapper opaque while the sheet is hidden.
+     * Useful for native visual effects that cannot initialize below a transparent ancestor.
+     */
+    disableTransparencyHide?: boolean
+
+    /**
      * Adapts the sheet to use native sheet on the given platform (if available)
      */
     native?: 'ios'[] | boolean

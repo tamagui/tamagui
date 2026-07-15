@@ -93,6 +93,7 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
       zIndex = parentSheet.zIndex + 1,
       moveOnKeyboardChange = false,
       unmountChildrenWhenHidden = false,
+      disableTransparencyHide = false,
       portalProps,
       containerComponent: ContainerComponent = React.Fragment,
       onAnimationComplete,
@@ -994,7 +995,11 @@ export const SheetImplementationCustom = React.forwardRef<View, SheetProps>(
                     width: '100%',
                     height: forcedContentHeight,
                     minHeight: forcedContentHeight,
-                    opacity: !shouldHideParentSheet ? opacity : 0,
+                    opacity: shouldHideParentSheet
+                      ? 0
+                      : disableTransparencyHide
+                        ? 1
+                        : opacity,
                     ...((shouldHideParentSheet || !open) && {
                       pointerEvents: 'none',
                     }),
