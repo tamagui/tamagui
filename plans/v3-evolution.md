@@ -491,6 +491,10 @@ callers migrate.
 **Acceptance:** existing Sheet animation/drag/scroll-lock/keyboard/overlay
 tests pass against the public parts; a copied skin changes every aesthetic
 without re-wiring context; no factory or `unstyled` branch remains.
+Additionally (see `plans/v3-animation-api.md`, packet H2): sheet source
+contains no opacity control, the live animated position is public via
+`Sheet.useAnimatedPosition`, and the canonical skin demonstrates a
+drag-linked overlay fade built on the public animation hooks.
 
 **Resource class:** heavy validation; serialize animated browser/native cases.
 
@@ -801,6 +805,8 @@ a fallback, compatibility mode, or speculative workaround.
 ## References
 
 - `plans/tailwind-full-syntax.md` — official-engine hybrid detail
+- `plans/v3-animation-api.md` — public animation hooks, `onTransition`,
+  Sheet position exposure and opacity removal (lane H)
 - `plans/compiler-oxc.md` — parser/analyzer and bundler research
 - `plans/dom-mode.md` — DOM mapping semantics and limitations
 - `~/github/chat/src/interface/buttons/` — named-size/user-skin model
