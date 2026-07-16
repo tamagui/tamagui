@@ -1133,6 +1133,8 @@ export type UseThemeWithStateProps = ThemeProps & {
   passThrough?: boolean
   disable?: boolean
   needsUpdate?: () => boolean
+  /** <Variables> inline theme layer: patches merged over the parent theme */
+  inlineValues?: Pick<VariablesProps, 'values' | 'dark' | 'light'>
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]

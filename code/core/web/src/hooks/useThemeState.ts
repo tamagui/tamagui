@@ -9,6 +9,7 @@ import {
   type MutableRefObject,
 } from 'react'
 import { getConfig, getSetting } from '../config'
+import { getInlineValuesKey, getMergedInlineTheme } from '../helpers/variables'
 import { MISSING_THEME_MESSAGE } from '../constants/constants'
 import type {
   ThemeParsed,
@@ -333,7 +334,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
               ? true
               : props.needsUpdate?.()
 
-  const [rerender, next] = getNextState(
+  const [rerender, nextRaw] = getNextState(
     local,
     props,
     propsKey,
@@ -343,6 +344,23 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     needsUpdate,
     PendingUpdate.get(id)
   )
+
+  // <Variables> inline theme layer: swap in the merged theme so descendants
+  // (which read states.get(parentId).theme) see the patched values. Merged
+  // objects are identity-cached per (parent theme, values, scheme) and the
+  // merge is idempotent, so bailouts stay stable.
+  let next = nextRaw
+  if (props.inlineValues && nextRaw?.theme) {
+    const merged = getMergedInlineTheme(
+      nextRaw.theme,
+      props.inlineValues,
+      nextRaw.scheme,
+      getConfig()
+    )
+    if (merged !== nextRaw.theme) {
+      next = { ...nextRaw, theme: merged as ThemeParsed }
+    }
+  }
 
   PendingUpdate.delete(id)
 
@@ -712,8 +730,17 @@ function getNewThemeName(
   return found
 }
 
-const getPropsKey = ({ name, reset, forceClassName, componentName }: ThemeProps) =>
-  `${name || ''}${reset || ''}${forceClassName || ''}${componentName || ''}`
+const getPropsKey = ({
+  name,
+  reset,
+  forceClassName,
+  componentName,
+  inlineValues,
+}: UseThemeWithStateProps) =>
+  `${name || ''}${reset || ''}${forceClassName || ''}${componentName || ''}${
+    inlineValues ? getInlineValuesKey(inlineValues) : ''
+  }`
 
-export const hasThemeUpdatingProps = (props: ThemeProps) =>
-  'name' in props || 'reset' in props || 'forceClassName' in props
+export const hasThemeUpdatingProps = (props: UseThemeWithStateProps) =>
+  'name' in props || 'reset' in props || 'forceClassName' in props ||
+  'inlineValues' in props

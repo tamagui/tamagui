@@ -21,6 +21,26 @@ export type VariablesCSS = {
  * theme system's own selector strategy (getThemeCSSRules).
  */
 export declare function getVariablesCSSRules(props: VariablesProps, conf: TamaguiInternalConfig): VariablesCSS | null;
+type InlineValues = Pick<VariablesProps, 'values' | 'dark' | 'light'>;
+export declare const inlineLayerKey = "_tmgInlineLayer";
+export type InlineLayerInfo = {
+    key: string;
+    overridden: Set<string>;
+    pairs: Record<string, {
+        light: string | number;
+        dark: string | number;
+    }>;
+};
+export declare const getInlineValuesKey: (inline: InlineValues) => string;
+/**
+ * Builds the merged theme for a <Variables> layer: parent theme spread plus
+ * overridden keys as Variables, resolved per the shared contract (effective
+ * scheme map, fixed-point references, cycle-involved keys dropped in both
+ * schemes). Returns the parent theme unchanged when nothing applies.
+ * Identity-stable per (parentTheme, values, scheme) so snapshot bailouts and
+ * proxy caches hold.
+ */
+export declare function getMergedInlineTheme(parentTheme: Record<string, Variable>, inline: InlineValues, scheme: 'light' | 'dark' | undefined, conf: TamaguiInternalConfig): Record<string, Variable>;
 /**
  * Config-level custom variables: merged into every base theme at createTamagui
  * time so they behave exactly like theme keys in every existing code path.
@@ -28,4 +48,5 @@ export declare function getVariablesCSSRules(props: VariablesProps, conf: Tamagu
  * proxyThemesToParents (native) and the cascade (web).
  */
 export declare function mergeConfigVariablesIntoTheme(theme: Record<string, Variable>, themeName: string, variables: GenericVariables, specificTokens: Record<string, Variable>, tokensParsed: TokensParsed): void;
+export {};
 //# sourceMappingURL=variables.d.ts.map

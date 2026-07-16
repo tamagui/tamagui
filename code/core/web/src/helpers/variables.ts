@@ -304,6 +304,172 @@ export function getVariablesCSSRules(
   return result
 }
 
+// ---- inline theme layer (<Variables> on native + JS theme readers on web) ----
+
+type InlineValues = Pick<VariablesProps, 'values' | 'dark' | 'light'>
+
+// non-enumerable marker on merged theme objects: cache key for idempotency,
+// overridden key set, and literal light/dark pairs for the iOS fast-scheme path
+export const inlineLayerKey = '_tmgInlineLayer'
+
+export type InlineLayerInfo = {
+  key: string
+  overridden: Set<string>
+  pairs: Record<string, { light: string | number; dark: string | number }>
+}
+
+const serializeBucket = (bucket: VariablesProps['values']): string => {
+  if (!bucket) return ''
+  const map = bucket as Record<string, VariableValIn>
+  return Object.keys(map)
+    .sort()
+    .map((key) => {
+      const value = map[key]
+      if (value && typeof value === 'object') return `${key}:px${value.val}`
+      return `${key}:${value}`
+    })
+    .join(',')
+}
+
+export const getInlineValuesKey = (inline: InlineValues): string =>
+  `${serializeBucket(inline.values)};${serializeBucket(inline.dark)};${serializeBucket(inline.light)}`
+
+const mergedThemeCache = new WeakMap<object, Map<string, Record<string, Variable>>>()
+
+/**
+ * Builds the merged theme for a <Variables> layer: parent theme spread plus
+ * overridden keys as Variables, resolved per the shared contract (effective
+ * scheme map, fixed-point references, cycle-involved keys dropped in both
+ * schemes). Returns the parent theme unchanged when nothing applies.
+ * Identity-stable per (parentTheme, values, scheme) so snapshot bailouts and
+ * proxy caches hold.
+ */
+export function getMergedInlineTheme(
+  parentTheme: Record<string, Variable>,
+  inline: InlineValues,
+  scheme: 'light' | 'dark' | undefined,
+  conf: TamaguiInternalConfig
+): Record<string, Variable> {
+  const activeScheme = scheme === 'dark' ? 'dark' : 'light'
+  const cacheKey = `${getInlineValuesKey(inline)}|${activeScheme}`
+
+  // idempotency: re-applying the same layer to its own output is a no-op
+  const existingInfo = (parentTheme as any)[inlineLayerKey] as InlineLayerInfo | undefined
+  if (existingInfo?.key === cacheKey) {
+    return parentTheme
+  }
+
+  let byKey = mergedThemeCache.get(parentTheme)
+  if (byKey?.has(cacheKey)) {
+    return byKey.get(cacheKey)!
+  }
+
+  const values = (inline.values || {}) as Record<string, VariableValIn>
+  const light = (inline.light || {}) as Record<string, VariableValIn>
+  const dark = (inline.dark || {}) as Record<string, VariableValIn>
+  const effective = { ...values, ...(activeScheme === 'dark' ? dark : light) }
+  const opposite = { ...values, ...(activeScheme === 'dark' ? light : dark) }
+  const dropped = getCycleDroppedKeys(inline)
+  const keySet = getThemeKeySet(conf)
+
+  // resolve one key within an effective map to a raw value (fixed-point over
+  // sibling refs, then parent theme, then tokens); undefined = drop
+  const resolveRaw = (keyIn: string, map: Record<string, VariableValIn>): unknown => {
+    let key = keyIn
+    let value: VariableValIn | undefined = map[key]
+    while (typeof value === 'string' && value[0] === '$') {
+      const name = value.slice(1)
+      if (name in map && !dropped?.has(name)) {
+        key = name
+        value = map[name]
+        continue
+      }
+      const themeValue = parentTheme[name]
+      if (themeValue !== undefined) {
+        return isVariable(themeValue) ? themeValue.val : themeValue
+      }
+      const specific = conf.specificTokens[value] as Variable | undefined
+      if (specific) return specific.val
+      for (const category of tokenCategoryOrder) {
+        const token = conf.tokensParsed[category]?.[value] as Variable | undefined
+        if (token) return token.val
+      }
+      warnOnce(
+        `missing:${value}`,
+        `Variables: reference "${value}" doesn't match any theme key, custom variable, or token — dropping.`
+      )
+      return
+    }
+    if (value && typeof value === 'object') {
+      return (value as { val: number }).val
+    }
+    return value
+  }
+
+  const info: InlineLayerInfo = {
+    key: cacheKey,
+    // nested layers: carry the parent layer's overrides forward (its values
+    // are plain enumerable entries after the spread, but the iOS pair info
+    // would otherwise be lost)
+    overridden: new Set(existingInfo?.overridden),
+    pairs: { ...existingInfo?.pairs },
+  }
+
+  const merged: Record<string, Variable> = { ...parentTheme }
+  let didOverride = false
+
+  for (const key of Object.keys(effective).sort()) {
+    if (dropped?.has(key)) continue
+    if (effective[key] == null) continue
+    if (!keySet.has(key)) {
+      warnOnce(
+        `unknown:${key}`,
+        `Variables: "${key}" is not a theme key or config-declared variable (createTamagui({ variables })) — dropping. Native can't resolve undeclared keys, so declaring them keeps platforms in sync.`
+      )
+      continue
+    }
+    const raw = resolveRaw(key, effective)
+    if (raw === undefined) continue
+
+    didOverride = true
+    merged[key] = createVariable({ key, name: key, val: raw as any })
+    info.overridden.add(key)
+    delete info.pairs[key]
+
+    // iOS fast-scheme pairs only when both scheme-effective values are
+    // literals — references would need opposite-theme resolution, so those
+    // keys deopt from DynamicColorIOS instead (tracked normally)
+    const activeLiteral = effective[key]
+    const oppositeLiteral = opposite[key]
+    const isLiteral = (v: unknown) =>
+      (typeof v === 'string' && v[0] !== '$') || typeof v === 'number'
+    if (isLiteral(activeLiteral) && isLiteral(oppositeLiteral)) {
+      info.pairs[key] = {
+        light: (activeScheme === 'light' ? activeLiteral : oppositeLiteral) as
+          | string
+          | number,
+        dark: (activeScheme === 'dark' ? activeLiteral : oppositeLiteral) as
+          | string
+          | number,
+      }
+    }
+  }
+
+  if (!didOverride && !existingInfo) {
+    return parentTheme
+  }
+
+  Object.defineProperty(merged, inlineLayerKey, {
+    value: info,
+    enumerable: false,
+  })
+
+  byKey ||= new Map()
+  mergedThemeCache.set(parentTheme, byKey)
+  byKey.set(cacheKey, merged)
+  return merged
+}
+
 /**
  * Config-level custom variables: merged into every base theme at createTamagui
  * time so they behave exactly like theme keys in every existing code path.

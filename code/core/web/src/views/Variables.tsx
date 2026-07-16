@@ -1,4 +1,4 @@
-import { useIsomorphicLayoutEffect } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import React from 'react'
 import { getConfig } from '../config'
 import { getVariablesCSSRules } from '../helpers/variables'
@@ -7,33 +7,43 @@ import {
   shouldInsertStyleRules,
   updateRules,
 } from '../helpers/insertStyleRule'
+import { useThemeWithState } from '../hooks/useTheme'
+import { ThemeStateContext } from '../hooks/useThemeState'
 import type { RulesToInsert, VariablesProps } from '../types'
 
-const useInsertEffectCompat =
-  process.env.TAMAGUI_TARGET === 'native'
-    ? () => {}
-    : React.useInsertionEffect || useIsomorphicLayoutEffect
-
-let didWarnNative = false
+const useInsertEffectCompat = isWeb
+  ? React.useInsertionEffect || useIsomorphicLayoutEffect
+  : () => {}
 
 /**
  * Anonymous inline theme patch: redefines theme keys and config-declared
- * custom variables for the subtree. On web this is pure CSS custom property
- * redefinition — consumers restyle with zero re-renders. dark/light values
- * compile under scheme-scoped selectors.
+ * custom variables for the subtree. See plans/variables.md.
  *
- * See plans/variables.md. Native support (inline theme layer) lands in the
- * follow-up packet; until then Variables is a no-op passthrough on native.
+ * Both platforms provide an inline theme layer (a merged theme riding the
+ * existing theme-state subscription) so JS theme readers (useTheme().val,
+ * animation drivers) see patched values. On web, styles additionally compile
+ * to CSS custom properties on this node, so styled consumers restyle with
+ * zero re-renders and dark/light values apply via scheme-scoped selectors.
  */
 export function Variables(props: VariablesProps) {
+  const inlineValues = {
+    values: props.values,
+    dark: props.dark,
+    light: props.light,
+  }
+
+  // forThemeView=true: descendants subscribe under this state id and get
+  // scheduled when the values (folded into propsKey) change
+  const [, themeState] = useThemeWithState({ inlineValues }, false, true)
+
+  let children: React.ReactNode = (
+    <ThemeStateContext.Provider value={themeState.id}>
+      {props.children}
+    </ThemeStateContext.Provider>
+  )
+
   if (process.env.TAMAGUI_TARGET === 'native') {
-    if (process.env.NODE_ENV === 'development' && !didWarnNative) {
-      didWarnNative = true
-      console.warn(
-        `[tamagui] <Variables> is not yet applied on native (web-only for now), rendering children unchanged`
-      )
-    }
-    return props.children as any
+    return children
   }
 
   const res = getVariablesCSSRules(props, getConfig())
@@ -53,7 +63,7 @@ export function Variables(props: VariablesProps) {
       className={`is_Variables _dsp_contents${res ? ` ${res.identifier}` : ''}`}
       style={displayContents}
     >
-      {props.children}
+      {children}
     </span>
   )
 }

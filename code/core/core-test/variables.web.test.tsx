@@ -8,6 +8,7 @@ import {
   createTamagui,
   getVariablesCSSRules,
   TamaguiProvider,
+  useTheme,
   Variables,
   View,
 } from '@tamagui/core'
@@ -186,6 +187,27 @@ describe('<Variables>', () => {
       rule.cssText.includes(identifier)
     )
     expect(inserted.length).toBe(1)
+  })
+
+  test('inline layer patches JS theme readers (useTheme().val)', () => {
+    const ReadVal = () => {
+      const theme = useTheme()
+      return <span data-testid="read-val">{String(theme.surfaceBorder?.val)}</span>
+    }
+    const make = (value: string) => (
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Variables values={{ surfaceBorder: value }}>
+          <ReadVal />
+        </Variables>
+      </TamaguiProvider>
+    )
+    const view = render(make('rgb(9, 9, 9)'))
+    expect(view.getByTestId('read-val').textContent).toBe('rgb(9, 9, 9)')
+
+    // changing the patch updates subscribed readers
+    view.rerender(make('rgb(8, 8, 8)'))
+    expect(view.getByTestId('read-val').textContent).toBe('rgb(8, 8, 8)')
+    view.unmount()
   })
 
   test('re-mounting the same values does not duplicate rules', () => {
