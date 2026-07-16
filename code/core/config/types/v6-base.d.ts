@@ -441,7 +441,7 @@ export declare const tokens: {
     };
 };
 export declare const fonts: {
-    body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 3 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
+    body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
         size: {
             $xs: number;
             $sm: number;
@@ -473,7 +473,7 @@ export declare const fonts: {
             $9xl: number;
         };
     };
-    heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 3 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
+    heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
         size: {
             $xs: number;
             $sm: number;
@@ -1123,7 +1123,7 @@ export declare const defaultConfig: {
         };
     };
     fonts: {
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 3 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
             size: {
                 $xs: number;
                 $sm: number;
@@ -1155,7 +1155,7 @@ export declare const defaultConfig: {
                 $9xl: number;
             };
         };
-        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 3 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
+        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13> & {
             size: {
                 $xs: number;
                 $sm: number;

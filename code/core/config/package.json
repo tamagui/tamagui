@@ -50,15 +50,6 @@
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
     },
-    "./reanimated": {
-      "types": "./types/index.reanimated.d.ts",
-      "react-native": "./dist/esm/index.reanimated.native.js",
-      "browser": "./dist/esm/index.reanimated.mjs",
-      "module": "./dist/esm/index.reanimated.mjs",
-      "import": "./dist/esm/index.reanimated.mjs",
-      "require": "./dist/cjs/index.reanimated.cjs",
-      "default": "./dist/esm/index.reanimated.mjs"
-    },
     "./v3": {
       "types": "./types/v3.d.ts",
       "react-native": "./dist/esm/v3.native.js",
@@ -172,13 +163,5 @@
     "@tamagui/build": "workspace:*",
     "playwright": "1.58.2",
     "tailwindcss": "4.3.0"
-  },
-  "peerDependencies": {
-    "@tamagui/animations-moti": "*"
-  },
-  "peerDependenciesMeta": {
-    "@tamagui/animations-moti": {
-      "optional": true
-    }
   }
 }

@@ -40,8 +40,8 @@ export declare const fonts: {
                 normal: string;
             };
         };
-    }, 2 | 9 | 15 | 1 | 10 | 3 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
-    body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 2 | 9 | 15 | 1 | 10 | 3 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
+    }, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
+    body: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
     mono: {
         weight: {
             1: string;
@@ -65,6 +65,6 @@ export declare const fonts: {
             16: number;
         };
     };
-    silkscreen: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 2 | 9 | 15 | 1 | 10 | 3 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
+    silkscreen: import("@tamagui/font-inter").FillInFont<import("@tamagui/font-inter").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
 };
 //# sourceMappingURL=fonts.d.ts.map

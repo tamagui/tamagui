@@ -33,7 +33,6 @@
   },
   "dependencies": {
     "@tamagui/animations-css": "workspace:*",
-    "@tamagui/animations-moti": "workspace:*",
     "@tamagui/animations-motion": "workspace:*",
     "@tamagui/animations-reanimated": "workspace:*",
     "@tamagui/colors": "workspace:*",
