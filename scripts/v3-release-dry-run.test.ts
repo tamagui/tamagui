@@ -166,6 +166,20 @@ describe('G1 temporary manifests', () => {
     expect(JSON.stringify(output)).not.toContain('workspace:')
   })
 
+  test('does not confuse a removed package with a longer live package name', () => {
+    expect(() =>
+      createTemporaryPackManifest(
+        {
+          name: '@tamagui/example',
+          version: '3.0.0-beta.0',
+          dependencies: { '@tamagui/animations-motion': '2.4.6' },
+        },
+        new Map(),
+        '/repo'
+      )
+    ).not.toThrow()
+  })
+
   test('rejects local paths, unresolved workspaces, deleted packages, and unstaged internals', () => {
     expect(() =>
       createTemporaryPackManifest(
@@ -308,6 +322,18 @@ describe('G1 tarball audits', () => {
     })
     await expect(auditExtractedPackage(root, '/repo')).resolves.toBeUndefined()
     expect(exportSpecifiers(manifest)).toEqual(['@tamagui/example'])
+  })
+
+  test('accepts a live package whose name extends a deleted package name', async () => {
+    const root = await fixturePackage(
+      {
+        name: '@tamagui/example',
+        version: '3.0.0-beta.0',
+        dependencies: { '@tamagui/animations-motion': '2.4.6' },
+      },
+      { 'dist/index.mjs': `import '@tamagui/animations-motion'` }
+    )
+    await expect(auditExtractedPackage(root, '/repo')).resolves.toBeUndefined()
   })
 
   test('rejects recursive workspace refs, deleted refs, source-only imports, missing exports, and undeclared deps', async () => {
