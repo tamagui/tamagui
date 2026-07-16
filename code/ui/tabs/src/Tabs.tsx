@@ -237,9 +237,9 @@ export const TabsTab = createStyledHOC(TabsTabFrame)<TabsTabExtraProps>(function
         id={triggerId}
         theme={isSelected ? (activeTheme ?? null) : null}
         size={context.size}
-        {...(isSelected && activeStyle)}
         disabled={disabled}
         {...triggerProps}
+        {...(isSelected && activeStyle)}
         ref={composeRefs(forwardedRef, triggerRef)}
         onPress={composeEventHandlers(onPress ?? undefined, (event) => {
           const isPrimaryPointer =
