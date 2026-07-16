@@ -30,6 +30,13 @@ export type PromoConfig = {
   theme?: 'green' | 'yellow' | 'blue' | 'red'
 }
 
+export type PromoCoupon = {
+  id: string
+  code: string
+  percent_off: number | null
+  amount_off: number | null
+}
+
 // define active promotions here
 export const ACTIVE_PROMOS: PromoConfig[] = [
   {
@@ -59,6 +66,22 @@ export function getActivePromo(): PromoConfig | null {
 // get a promo by code
 export function getPromoByCode(code: string): PromoConfig | null {
   return ACTIVE_PROMOS.find((p) => p.code.toLowerCase() === code.toLowerCase()) || null
+}
+
+export function getActivePromoCoupon(): PromoCoupon | null {
+  const promo = getActivePromo()
+  if (!promo) return null
+
+  return {
+    id: promo.couponId,
+    code: promo.code,
+    percent_off: promo.percentOff ?? null,
+    amount_off: promo.amountOff ?? null,
+  }
+}
+
+export function getCheckoutCouponId(requestedCouponId?: string | null) {
+  return requestedCouponId || getActivePromo()?.couponId || null
 }
 
 // calculate discounted price

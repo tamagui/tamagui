@@ -2903,6 +2903,10 @@ export type GetStyleState = {
   // Track original token values (like '$8') before they get resolved to CSS vars
   // This is used to preserve token strings in overriddenContextProps
   originalContextPropValues?: Record<string, any>
+  // opt-in dev-tools token provenance: original token string (like '$background')
+  // for each winning base style key, cleared on literal override. stamped onto
+  // the final style object as non-enumerable metadata (see helpers/styleProvenance).
+  tokenProvenance?: Record<string, string>
   // Transitions extracted from pseudo-style props (e.g., hoverStyle.transition)
   pseudoTransitions?: PseudoTransitions | null
   // Resolved animation driver (respects animatedBy prop)

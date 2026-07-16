@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/adapt",
-  "version": "2.4.3",
+  "version": "2.4.6",
   "files": [
     "src",
     "types",

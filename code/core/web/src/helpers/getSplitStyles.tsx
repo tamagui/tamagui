@@ -1,4 +1,5 @@
 import {
+  getPlatformDriver,
   isAndroid,
   isClient,
   isWeb,
@@ -75,11 +76,18 @@ import {
 import { skipProps } from './skipProps'
 import { sortString } from './sortString'
 import { styleOriginalValues } from './styleOriginalValues'
+import { type StyleTokenProvenance, setStyleTokenProvenance } from './styleProvenance'
 import { transformsToString } from './transformsToString'
 
 export { styleOriginalValues }
+export { getStyleTokenProvenance, STYLE_TOKEN_PROVENANCE_KEY } from './styleProvenance'
+export type { StyleTokenBinding, StyleTokenProvenance } from './styleProvenance'
 
 export type SplitStyles = ReturnType<typeof getSplitStyles>
+
+const shouldTrackStyleTokenProvenance =
+  process.env.NODE_ENV === 'development' &&
+  process.env.TAMAGUI_ENABLE_STYLE_TOKEN_PROVENANCE === '1'
 
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>
 
@@ -873,6 +881,7 @@ function isValidStyleKey(
 
 function shouldSkipNativeHoverProp(key: string, isMedia: false | boolean | string) {
   if (process.env.TAMAGUI_TARGET !== 'native') return false
+  if (getPlatformDriver()?.pseudo) return false
   if (key === 'hoverStyle') return true
   if (isMedia === 'group') {
     return getGroupPropParts(key.slice(1)).pseudo === 'hover'
@@ -2115,7 +2124,18 @@ export const getSplitStyles: StyleSplitter = (
             Object.assign(styleState.classNames, style)
           } else {
             styleState.style ||= {}
-            Object.assign(styleState.style, normalizeStyle(style))
+            const normalized = normalizeStyle(style)
+            Object.assign(styleState.style, normalized)
+            if (shouldTrackStyleTokenProvenance) {
+              // the literal style prop is merged last and wins: carry its own
+              // token provenance forward, and clear a prior token wherever it
+              // supplies a literal (e.g. style={{ color: '#fff' }} over
+              // color="$color9" must stay a literal).
+              const styleOriginals = styleOriginalValues.get(normalized)
+              for (const k in normalized) {
+                recordStyleTokenProvenance(styleState, k, styleOriginals?.[k])
+              }
+            }
           }
         }
       }
@@ -2155,6 +2175,22 @@ export const getSplitStyles: StyleSplitter = (
   ) {
     // @ts-expect-error
     time`split-styles-pre-result`
+  }
+
+  // stamp exact token provenance onto the final winning style object. on native
+  // (and non-className web) this is the same identity assigned to viewProps.style,
+  // so a consumer inspecting the host node's style can recover the token + theme
+  // behind each resolved value without any enumerable-key or RN-output change.
+  if (shouldTrackStyleTokenProvenance && styleState.style && styleState.tokenProvenance) {
+    const provenance: StyleTokenProvenance = {}
+    let hasProvenance = false
+    for (const key in styleState.tokenProvenance) {
+      provenance[key] = { token: styleState.tokenProvenance[key], theme: themeName }
+      hasProvenance = true
+    }
+    if (hasProvenance) {
+      setStyleTokenProvenance(styleState.style, provenance)
+    }
   }
 
   const result: GetStyleResult = {
@@ -2339,7 +2375,29 @@ function mergeStyle(
         // if you dont do this you'll be passing props.transform arrays directly here and then mutating them
         // if theres any flatTransforms later, causing issues (mutating props is bad, in strict mode styles get borked)
         key === 'transform' && Array.isArray(out) ? [...out] : out
+      if (shouldTrackStyleTokenProvenance) {
+        // dev-tools token provenance: this write is the current winner for `key`
+        // (importance-gated above), so record the token that produced it, or clear
+        // a prior token when a literal wins, keeping literal-over-token exact.
+        recordStyleTokenProvenance(styleState, key, originalVal)
+      }
     }
+  }
+}
+
+// track which token produced the winning value for a style key so the final
+// style object can expose exact provenance. only the base (painted) style is
+// tracked — pseudo/media writes flow through mergeStyle at their real importance,
+// and a literal override clears any earlier token for that key.
+function recordStyleTokenProvenance(
+  styleState: GetStyleState,
+  key: string,
+  originalVal: any
+) {
+  if (typeof originalVal === 'string' && originalVal[0] === '$') {
+    ;(styleState.tokenProvenance ||= {})[key] = originalVal
+  } else if (styleState.tokenProvenance && key in styleState.tokenProvenance) {
+    delete styleState.tokenProvenance[key]
   }
 }
 

@@ -17,6 +17,7 @@ import {
   createTeamInvoice,
 } from '~/features/auth/supabaseAdmin'
 import {
+  sendProductPurchaseEmail,
   sendProductRenewalEmail,
   sendV1ExpirationEmail,
   sendPaymentFailedEmail,
@@ -281,7 +282,42 @@ async function manageOneTimePayment(invoice: Stripe.Invoice) {
   // Handle V2 Pro License purchase - create project
   if (invoice.metadata?.type === 'pro_v2_license' && invoice.metadata?.version === 'v2') {
     await createProjectFromV2Purchase(invoice, uuid)
+    await sendV2PurchaseWelcomeEmail(invoice, uuid)
   }
+}
+
+async function sendV2PurchaseWelcomeEmail(invoice: Stripe.Invoice, userId: string) {
+  const currentInvoice = await stripe.invoices.retrieve(invoice.id)
+  if (currentInvoice.metadata?.purchase_email_sent === 'true') {
+    return
+  }
+
+  const userResult = await supabaseAdmin.auth.admin.getUserById(userId)
+  if (userResult.error) {
+    throw userResult.error
+  }
+
+  const email = currentInvoice.customer_email || userResult.data.user.email
+  if (!email) {
+    throw new Error(`No email found for V2 purchase ${invoice.id}`)
+  }
+
+  const fullName = userResult.data.user.user_metadata?.full_name
+  const name =
+    (typeof fullName === 'string' && fullName.trim()) ||
+    email.split('@').shift() ||
+    'friend'
+
+  await sendProductPurchaseEmail(email, {
+    name,
+    product_name: 'Tamagui Pro',
+  })
+
+  await stripe.invoices.update(invoice.id, {
+    metadata: {
+      purchase_email_sent: 'true',
+    },
+  })
 }
 
 async function syncInvoiceLinePrices(
