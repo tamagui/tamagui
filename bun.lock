@@ -133,7 +133,6 @@
         "check-dependency-version-consistency": "^4.1.0",
         "esbuild": "^0.27.2",
         "esbuild-register": "^3.6.0",
-        "esbuild-wasm": "^0.27.2",
         "fast-glob": "^3.2.11",
         "find-cache-dir": "^3.3.2",
         "find-root": "^1.1.0",
@@ -2434,7 +2433,6 @@
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/focusable": "workspace:*",
         "@tamagui/helpers": "workspace:*",
@@ -2651,6 +2649,7 @@
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
+        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/start-transition": "workspace:*",
         "@tamagui/use-async": "workspace:*",
@@ -6590,8 +6589,6 @@
     "esbuild-loader": ["esbuild-loader@4.4.2", "", { "dependencies": { "esbuild": "^0.27.1", "get-tsconfig": "^4.10.1", "loader-utils": "^2.0.4", "webpack-sources": "^1.4.3" }, "peerDependencies": { "webpack": "^4.40.0 || ^5.0.0" } }, "sha512-8LdoT9sC7fzfvhxhsIAiWhzLJr9yT3ggmckXxsgvM07wgrRxhuT98XhLn3E7VczU5W5AFsPKv9DdWcZIubbWkQ=="],
 
     "esbuild-register": ["esbuild-register@3.6.0", "", { "dependencies": { "debug": "^4.3.4" }, "peerDependencies": { "esbuild": ">=0.12 <1" } }, "sha512-H2/S7Pm8a9CL1uhp9OvjwrBh5Pvx0H8qVOxNu8Wed9Y7qv56MPtq+GGM8RJpq6glYJn9Wspr8uw7l55uyinNeg=="],
-
-    "esbuild-wasm": ["esbuild-wasm@0.27.4", "", { "bin": { "esbuild": "bin/esbuild" } }, "sha512-3xhVMcJ8Odvb1QjlWnjBGSYVYESsi3/oJYwLyVvbHOb2CiV4mFtD6x8Lk6JFnRxwEE3fUeVuJLbIxyVQWa867g=="],
 
     "escalade": ["escalade@3.2.0", "", {}, "sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA=="],
 
