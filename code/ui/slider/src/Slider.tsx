@@ -710,14 +710,11 @@ const SliderComponent = createRefComponent(
             }
           }}
         />
-        {/* {isFormControl &&
-        values.map((value, index) => (
-          <BubbleInput
-            key={index}
-            name={name ? name + (values.length > 1 ? '[]' : '') : undefined}
-            value={value}
-          />
-        ))} */}
+        {isWeb &&
+          name &&
+          values.map((value, index) => (
+            <input key={index} type="hidden" name={name} value={value} />
+          ))}
       </SliderProvider>
     )
   }
@@ -730,41 +727,6 @@ const Slider = withStaticProperties(SliderComponent, {
 })
 
 Slider.displayName = SLIDER_NAME
-
-/* -----------------------------------------------------------------------------------------------*/
-
-// // TODO
-// const BubbleInput = (props: any) => {
-//   const { value, ...inputProps } = props
-//   const ref = React.useRef<HTMLInputElement>(null)
-//   const prevValue = usePrevious(value)
-
-//   // Bubble value change to parents (e.g form change event)
-//   React.useEffect(() => {
-//     const input = ref.current!
-//     const inputProto = window.HTMLInputElement.prototype
-//     const descriptor = Object.getOwnPropertyDescriptor(inputProto, 'value') as PropertyDescriptor
-//     const setValue = descriptor.set
-//     if (prevValue !== value && setValue) {
-//       const event = new Event('input', { bubbles: true })
-//       setValue.call(input, value)
-//       input.dispatchEvent(event)
-//     }
-//   }, [prevValue, value])
-
-//   /**
-//    * We purposefully do not use `type="hidden"` here otherwise forms that
-//    * wrap it will not be able to access its value via the FormData API.
-//    *
-//    * We purposefully do not add the `value` attribute here to allow the value
-//    * to be set programatically and bubble to any parent form `onChange` event.
-//    * Adding the `value` will cause React to consider the programatic
-//    * dispatch a duplicate and it will get swallowed.
-//    */
-//   return <input style={{ display: 'none' }} {...inputProps} ref={ref} defaultValue={value} />
-// }
-
-/* -----------------------------------------------------------------------------------------------*/
 
 const Track = SliderTrack
 const Range = SliderActive
