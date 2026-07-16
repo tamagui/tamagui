@@ -84,12 +84,29 @@ for (const popup of popupAdapters) {
       await page.getByTestId(`${popup.id}-cancel-pointer`).click()
       await page.getByTestId(`${popup.id}-trigger`).click()
       await expect(content).toBeVisible()
-      await page.getByTestId(`${popup.id}-outside`).click({ force: true })
+      // click a non-focusable target: canceling outside-press vetoes the
+      // pointer dismissal only. focus moving to a focusable outside element
+      // still dismisses via focus-out (Radix semantics) — the interact-all
+      // test below covers keeping it open against focusable targets
+      await page.getByTestId(`${popup.id}-outside-plain`).click({ force: true })
 
       await expect(content).toBeVisible()
       await expect(page.getByTestId(`${popup.id}-last-event`)).toContainText(
         'pointer:outside-press:event:true:true|interact:outside-press:event:true:true'
       )
+    })
+
+    test('keeps the popup open against focusable outside clicks when interact details are canceled', async ({
+      page,
+    }) => {
+      const content = page.getByTestId(`${popup.id}-content`)
+
+      await page.getByTestId(`${popup.id}-cancel-interact`).click()
+      await page.getByTestId(`${popup.id}-trigger`).click()
+      await expect(content).toBeVisible()
+      await page.getByTestId(`${popup.id}-outside`).click({ force: true })
+
+      await expect(content).toBeVisible()
     })
 
     test('keeps the popup open when focus-outside details are canceled', async ({

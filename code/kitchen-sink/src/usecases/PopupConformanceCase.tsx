@@ -56,6 +56,10 @@ function PopupConformanceHarness({
       record('focus', details)
     },
     onInteractOutside: (details) => {
+      // 'interact-all' cancels every outside interaction (pointer and the
+      // focus-out that can follow it) — the pattern for keeping a popup open
+      // against outside clicks on focusable elements
+      if (cancelReason === 'interact-all') details.cancel()
       record('interact', details, lastSpecificDetailsRef.current === details)
     },
   }
@@ -80,7 +84,14 @@ function PopupConformanceHarness({
       >
         Cancel focus outside
       </Button>
+      <Button
+        data-testid={`${id}-cancel-interact`}
+        onPress={() => setCancelReason('interact-all')}
+      >
+        Cancel all outside interactions
+      </Button>
       <Button data-testid={`${id}-outside`}>Outside {id}</Button>
+      <Text data-testid={`${id}-outside-plain`}>Plain outside {id}</Text>
       <Text data-testid={`${id}-last-event`}>{lastEvent}</Text>
       <Popup id={id} callbacks={callbacks} />
     </YStack>

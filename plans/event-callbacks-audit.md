@@ -332,3 +332,23 @@ use-controllable-state, then dismissable/focus-scope/roving-focus substrate +
 popup conformance suite) are dispatchable as one packet ahead of C4 and do
 not overlap current lane owner files. Phases 3 and 4 land with C2/C3/C4 as
 planned.
+
+## 7. Contract amendment (2026-07-16, post-integration regression)
+
+`cancel()` NO LONGER calls the source event's `preventDefault()` (reverses the
+section-1 wording). Proven wrong by a real regression: Select keeps its
+content and Dismissable layer mounted while closed and always-cancels
+outside-press details to defer to its own listener; with the preventDefault
+bridge, every trigger press had its native document pointerdown
+preventDefaulted and the select never opened (SelectTypeahead/SelectSkin, 5
+tests). Vetoing a Tamagui state change and canceling a native default are
+separate concerns (base-ui separates them as preventBaseUIHandler vs
+preventDefault). Handlers that also want the native default canceled call
+`details.event?.preventDefault?.()` explicitly. Two call sites depended on the
+bridge and now do this: Dismissable's escape auto-dismiss (consuming escape
+preventDefaults the keydown, matching pre-details behavior) and the submenu
+self-close escape handler in createBaseMenu. The same regression also
+unmasked a latent focus-outside bug, now fixed: browser focus fixup can land
+focusin on an ancestor of the layer (the native <dialog> element when its
+inner active element blurs); an ancestor gaining focus never counts as
+focus-out.

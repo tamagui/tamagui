@@ -1798,8 +1798,11 @@ export function createBaseMenu() {
               // return focus to the submenu trigger with focusVisible since this is keyboard navigation
               // @ts-ignore focusVisible is a newer API
               subContext.trigger?.focus({ focusVisible: true })
-              // ensure pressing escape in submenu doesn't escape full screen mode
+              // we close the submenu ourselves, so veto the layer's dismiss
               event.cancel()
+              // and still ensure escape doesn't exit fullscreen (cancel no
+              // longer touches the native event)
+              event.event?.preventDefault?.()
             })}
             {...(isWeb
               ? {

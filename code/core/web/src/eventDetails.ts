@@ -53,10 +53,6 @@ export type TamaguiChangeEventDetails<
   readonly isCanceled: boolean
 }
 
-type PreventDefaultEvent = {
-  preventDefault?(): void
-}
-
 export function createChangeEventDetails<
   Reason extends TamaguiChangeReason,
   NativeEvent = unknown,
@@ -74,10 +70,13 @@ export function createChangeEventDetails<
     reason,
     event,
     trigger,
+    // cancel vetoes the Tamagui state change only. it never touches the native
+    // event: a details object is often created from a shared document-level
+    // event (outside pointerdown), where preventDefault would break unrelated
+    // interactions (e.g. the trigger press that opens a Select). callers that
+    // also want the native default canceled call details.event.preventDefault()
     cancel() {
-      if (isCanceled) return
       isCanceled = true
-      ;(event as PreventDefaultEvent | undefined)?.preventDefault?.()
     },
     get isCanceled() {
       return isCanceled

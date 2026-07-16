@@ -212,6 +212,10 @@ const Dismissable = createRefComponent<
     const branches = branchesProp || context.branches
     const isFocusInBranch = [...branches].some((branch) => branch.contains(target))
     if (isFocusInBranch) return
+    // browser focus fixup can move focus to an ancestor of this layer (e.g. the
+    // native <dialog> element when its inner active element blurs). an ancestor
+    // gaining focus is not the user focusing elsewhere — never dismiss for it
+    if (node && target.contains(node)) return
     const details = createChangeEventDetails('focus-out', event, event.target, {
       interaction: 'focus' as const,
     })
@@ -236,7 +240,13 @@ const Dismissable = createRefComponent<
     if (!isHighestLayer) return
     const details = createChangeEventDetails('escape-key', event, event.target)
     onEscapeKeyDown?.(details)
-    if (!details.isCanceled) onDismiss?.(details)
+    if (!details.isCanceled && onDismiss) {
+      // consuming the escape prevents native defaults (exiting fullscreen etc),
+      // matching the pre-details behavior. a canceled dismiss leaves the native
+      // event alone; handlers that self-close call preventDefault themselves
+      event.preventDefault()
+      onDismiss(details)
+    }
   })
 
   React.useEffect(() => {

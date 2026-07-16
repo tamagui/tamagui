@@ -4,7 +4,7 @@ import { useControllableState } from '@tamagui/use-controllable-state'
 import { describe, expect, test, vi } from 'vitest'
 
 describe('event callback details', () => {
-  test('cancel is idempotent and prevents the source event once', () => {
+  test('cancel is idempotent and never touches the native event', () => {
     const preventDefault = vi.fn()
     const event = { preventDefault }
     const details = createChangeEventDetails('escape-key', event)
@@ -14,7 +14,10 @@ describe('event callback details', () => {
 
     expect(details.event).toBe(event)
     expect(details.isCanceled).toBe(true)
-    expect(preventDefault).toHaveBeenCalledTimes(1)
+    // vetoing the state change must not cancel native defaults: outside-press
+    // details wrap a shared document pointerdown, where preventDefault breaks
+    // unrelated interactions (Select trigger press regression, 2026-07-16)
+    expect(preventDefault).not.toHaveBeenCalled()
   })
 
   test('keeps event undefined for imperative and native sources', () => {
