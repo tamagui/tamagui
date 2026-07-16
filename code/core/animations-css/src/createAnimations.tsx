@@ -7,12 +7,37 @@ import {
 } from '@tamagui/animation-helpers'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
-import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
+import type {
+  AnimatedNumberStrategy,
+  AnimationDriver,
+  UniversalAnimatedNumber,
+} from '@tamagui/web'
 import { transformsToString } from '@tamagui/web'
 import React, { useState } from 'react' // import { animate } from '@tamagui/cubic-bezier-animator'
 
 const EXTRACT_MS_REGEX = /(\d+(?:\.\d+)?)\s*ms/
 const EXTRACT_S_REGEX = /(\d+(?:\.\d+)?)\s*s/
+
+// rAF-driven animated number is browser-only. read (don't call) at module scope
+// so ssr never touches requestAnimationFrame.
+const hasRAF = typeof requestAnimationFrame !== 'undefined'
+const nowMs = () => (typeof performance !== 'undefined' ? performance.now() : Date.now())
+
+// spring params use the same names/semantics as react-native Animated, so an
+// explicit transitionConfig (stiffness/damping/mass) feels the same across
+// drivers. defaults are critically damped (zeta ~1) rather than RN's bouncy
+// 100/10: a css consumer that supplies no spring params gets a clean, prompt,
+// non-oscillating settle whose completion beats the sheet's 1s fallback timer
+// instead of ringing for ~1.4s. rest-detection thresholds are sub-pixel by
+// default; the sheet passes px-sized overrides.
+const SPRING_DEFAULTS = {
+  stiffness: 300,
+  damping: 35,
+  mass: 1,
+  overshootClamping: false,
+  restSpeedThreshold: 0.001,
+  restDisplacementThreshold: 0.001,
+}
 
 /**
  * Helper function to extract duration from CSS animation string
@@ -165,51 +190,151 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
     outputStyle: 'css',
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<Function> {
-      const [val, setVal] = React.useState(initial)
-      const finishTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+      // val state is only a re-render trigger; valueRef is the source of truth
+      const [, setVal] = React.useState(initial)
+      const valueRef = React.useRef(initial)
+      const rafRef = React.useRef<number | null>(null)
+      const finishRef = React.useRef<(() => void) | null>(null)
+
+      // notify JS-thread reaction listeners registered against this instance
+      const notify = (value: number) => {
+        const listeners = reactionListeners.get(setVal)
+        if (listeners) {
+          listeners.forEach((listener) => listener(value))
+        }
+      }
+
+      // stop the ticker without firing completion (interruption/stop)
+      const cancelTicker = () => {
+        if (rafRef.current != null) {
+          cancelAnimationFrame(rafRef.current)
+          rafRef.current = null
+        }
+        finishRef.current = null
+      }
 
       return {
         getInstance() {
           return setVal
         },
         getValue() {
-          return val
+          return valueRef.current
         },
         setValue(next, config, onFinish) {
+          // any new set supersedes a running animation; the previous onFinish
+          // is dropped (not called), matching the react-native driver where an
+          // interrupted spring reports finished:false and never fires onFinish
+          cancelTicker()
+
+          const strategy = config ?? { type: 'spring' as const }
+          const from = valueRef.current
+
+          // commit the target to react state. the css driver renders by
+          // re-render (useAnimatedNumberStyle reads getValue), and the frame's
+          // CSS transition eases the DOM from `from` to `next`. we set state ONCE
+          // rather than every frame — stepping state per frame re-triggers that
+          // CSS transition each render and the DOM lags hundreds of ms behind.
+          valueRef.current = next
           setVal(next)
 
-          // clear any pending finish callback from a previous setValue
-          if (finishTimerRef.current) {
-            clearTimeout(finishTimerRef.current)
-            finishTimerRef.current = null
+          // direct sets (sheet dragging), non-browser environments, zero-duration
+          // timing, and no-op moves resolve immediately with synchronous completion
+          if (
+            !hasRAF ||
+            strategy.type === 'direct' ||
+            (strategy.type === 'timing' && strategy.duration === 0) ||
+            from === next
+          ) {
+            notify(next)
+            onFinish?.()
+            return
           }
 
-          if (onFinish) {
-            if (
-              !config ||
-              config.type === 'direct' ||
-              (config.type === 'timing' && config.duration === 0)
-            ) {
-              onFinish()
-            } else {
-              // estimate duration: use explicit duration, or fall back to
-              // default CSS transition duration for spring-type configs
-              const duration = config.type === 'timing' ? config.duration : 300
-              finishTimerRef.current = setTimeout(onFinish, duration)
+          finishRef.current = onFinish ?? null
+
+          // drive the JS-thread listener path frame by frame and fire real
+          // completion when the animation's own math settles (spring rest
+          // detection / timing end), not an estimated-duration timer
+          const settle = () => {
+            rafRef.current = null
+            notify(next)
+            const done = finishRef.current
+            finishRef.current = null
+            done?.()
+          }
+
+          if (strategy.type === 'timing') {
+            const duration = strategy.duration
+            const start = nowMs()
+            const tick = () => {
+              const t = Math.min(1, (nowMs() - start) / duration)
+              if (t >= 1) {
+                settle()
+                return
+              }
+              // linear interpolation timing path
+              notify(from + (next - from) * t)
+              rafRef.current = requestAnimationFrame(tick)
             }
+            rafRef.current = requestAnimationFrame(tick)
+            return
           }
 
-          // call reaction listeners with the new value
-          const listeners = reactionListeners.get(setVal)
-          if (listeners) {
-            listeners.forEach((listener) => listener(next))
+          // spring: plain semi-implicit euler integrator with rest detection.
+          // substeps at a fixed 1ms dt keep stiff springs stable at the rAF rate.
+          const s = strategy as Extract<AnimatedNumberStrategy, { type: 'spring' }>
+          const stiffness = s.stiffness ?? SPRING_DEFAULTS.stiffness
+          const damping = s.damping ?? SPRING_DEFAULTS.damping
+          const mass = s.mass ?? SPRING_DEFAULTS.mass
+          const overshootClamping =
+            s.overshootClamping ?? SPRING_DEFAULTS.overshootClamping
+          const restSpeed = s.restSpeedThreshold ?? SPRING_DEFAULTS.restSpeedThreshold
+          const restDisplacement =
+            s.restDisplacementThreshold ?? SPRING_DEFAULTS.restDisplacementThreshold
+
+          let velocity = 0
+          let value = from
+          let lastTime = nowMs()
+
+          const tick = () => {
+            const frameNow = nowMs()
+            // cap dt so a backgrounded tab doesn't integrate one giant step
+            let dt = (frameNow - lastTime) / 1000
+            lastTime = frameNow
+            if (dt > 0.064) dt = 0.064
+
+            const steps = Math.max(1, Math.ceil(dt / 0.001))
+            const sdt = dt / steps
+            for (let i = 0; i < steps; i++) {
+              const springForce = -stiffness * (value - next)
+              const dampingForce = -damping * velocity
+              const accel = (springForce + dampingForce) / mass
+              velocity += accel * sdt
+              value += velocity * sdt
+            }
+
+            if (
+              overshootClamping &&
+              ((from < next && value > next) || (from > next && value < next))
+            ) {
+              value = next
+              velocity = 0
+            }
+
+            const isVelocityRest = Math.abs(velocity) <= restSpeed
+            const isDisplacementRest = Math.abs(next - value) <= restDisplacement
+            if (isVelocityRest && isDisplacementRest) {
+              settle()
+              return
+            }
+
+            notify(value)
+            rafRef.current = requestAnimationFrame(tick)
           }
+          rafRef.current = requestAnimationFrame(tick)
         },
         stop() {
-          if (finishTimerRef.current) {
-            clearTimeout(finishTimerRef.current)
-            finishTimerRef.current = null
-          }
+          cancelTicker()
         },
       }
     },

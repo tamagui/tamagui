@@ -29,6 +29,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   AnimationComprehensiveCase: () =>
     require('./AnimationComprehensiveCase').AnimationComprehensiveCase,
   RawAnimatedValueCase: () => require('./RawAnimatedValueCase').RawAnimatedValueCase,
+  CSSAnimatedNumberCompletionCase: () =>
+    require('./CSSAnimatedNumberCompletionCase').CSSAnimatedNumberCompletionCase,
   AnimationsWithMediaQueriesCase: () =>
     require('./AnimationsWithMediaQueriesCase').AnimationsWithMediaQueriesCase,
   AnimatedDOMPropsCase: () => require('./AnimatedDOMPropsCase').AnimatedDOMPropsCase,
