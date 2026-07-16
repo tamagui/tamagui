@@ -1,8 +1,5 @@
 import {
-  ProjectGraph,
-  applyLoweredModule,
-  lowerModule,
-  materializeModule,
+  CompilerSession,
   resolvedModuleId,
   yukuFactory,
   type AppliedLoweredModule,
@@ -72,7 +69,7 @@ function sourceCanBeLinked(root: string, id: string): boolean {
  * load result; compiler-core never guesses package, alias, or workspace resolution.
  */
 export class CompilerFrontend {
-  private readonly graph = new ProjectGraph(yukuFactory, { modules: [] })
+  private readonly session = new CompilerSession()
   private queue: Promise<unknown> = Promise.resolve()
 
   compile(input: CompilerInput): Promise<CompilerResult> {
@@ -83,31 +80,39 @@ export class CompilerFrontend {
 
   update(input: CompilerUpdateInput): Promise<ResolvedModuleId[]> {
     const operation = this.queue.then(async () => {
-      const { invalidated } = await this.install(input)
-      return [...invalidated]
+      const { modules } = await this.buildTree(input)
+      const invalidated = new Set<ResolvedModuleId>()
+      for (const module of modules.values()) {
+        for (const id of this.session.update(module)) invalidated.add(id)
+      }
+      return [...invalidated].sort()
     })
     this.queue = operation.catch(() => undefined)
     return operation
   }
 
   has(id: string): boolean {
-    return this.graph.contentHash(resolvedModuleId(cleanId(id))) !== null
+    return this.session.has(resolvedModuleId(cleanId(id)))
   }
 
   dependentsOf(id: string): ResolvedModuleId[] {
-    return this.graph.dependentsOf(resolvedModuleId(cleanId(id)))
+    return this.session.dependentsOf(resolvedModuleId(cleanId(id)))
   }
 
   remove(id: string) {
-    return this.graph.removeModule(resolvedModuleId(cleanId(id)))
+    return this.session.remove(resolvedModuleId(cleanId(id)))
   }
 
   parseCount(id: string): number {
-    return this.graph.parseCount(resolvedModuleId(cleanId(id)))
+    return this.session.parseCount(resolvedModuleId(cleanId(id)))
   }
 
   private async compileNow(input: CompilerInput): Promise<CompilerResult> {
-    const { id, invalidated } = await this.install(input)
+    const { rootModule, modules } = await this.buildTree(input)
+    const invalidated = new Set<ResolvedModuleId>()
+    for (const module of modules.values()) {
+      for (const id of this.session.update(module)) invalidated.add(id)
+    }
     const projectInfo = input.project.projectInfo
     if (!projectInfo.tamaguiConfig || !projectInfo.components) {
       throw new Error('The compiler requires evaluated Tamagui config and components')
@@ -121,24 +126,29 @@ export class CompilerFrontend {
         resolvedId: cleanId(component.id),
       })),
     })
-    const plan = lowerModule({
-      module: materializeModule(this.graph, id),
-      source: input.source,
-      target: input.target,
-      host,
-      options: { projectGeneration: input.project.generation },
+    const result = await this.session.compile({
+      module: rootModule,
+      adapter: {
+        target: input.target,
+        projectGeneration: input.project.generation,
+        host,
+        async load(id) {
+          return modules.get(id) ?? null
+        },
+      },
       structuralPass: input.structuralPass,
     })
+    for (const id of result.invalidatedIds) invalidated.add(id)
     return {
-      plan,
-      output: applyLoweredModule(input.source, id, plan),
-      invalidatedIds: [...invalidated],
+      plan: result.plan,
+      output: result.output,
+      invalidatedIds: [...invalidated].sort(),
     }
   }
 
-  private async install(input: CompilerUpdateInput): Promise<{
-    id: ResolvedModuleId
-    invalidated: Set<ResolvedModuleId>
+  private async buildTree(input: CompilerUpdateInput): Promise<{
+    rootModule: HostModuleInput
+    modules: Map<ResolvedModuleId, HostModuleInput>
   }> {
     const componentBySpecifier = new Map(
       input.project.componentModules.map((component) => [
@@ -146,16 +156,22 @@ export class CompilerFrontend {
         resolvedModuleId(cleanId(component.id)),
       ])
     )
-    const visited = new Set<ResolvedModuleId>()
-    const invalidated = new Set<ResolvedModuleId>()
+    const modules = new Map<ResolvedModuleId, HostModuleInput>()
+    const loading = new Set<ResolvedModuleId>()
 
-    const install = async (rawId: string, source: string): Promise<void> => {
+    const loadModule = async (
+      rawId: string,
+      source: string
+    ): Promise<HostModuleInput> => {
       const id = resolvedModuleId(cleanId(rawId))
-      if (visited.has(id)) return
-      visited.add(id)
+      const existing = modules.get(id)
+      if (existing) return existing
+      if (loading.has(id)) {
+        return { id, source, imports: [] }
+      }
+      loading.add(id)
 
       const imports: HostModuleInput['imports'][number][] = []
-      const linked: { id: ResolvedModuleId; source: string }[] = []
       for (const specifier of yukuFactory.scanImports(id, source)) {
         const configuredComponent = componentBySpecifier.get(specifier)
         if (configuredComponent) {
@@ -173,21 +189,21 @@ export class CompilerFrontend {
             ? resolvedModuleId(cleanId(resolution.id))
             : externalId(specifier)
         imports.push({ specifier, resolvedId, external: !canLink })
-        if (canLink) {
+        if (canLink && !modules.has(resolvedId) && !loading.has(resolvedId)) {
           const dependencySource = await input.load(resolution.id)
           if (dependencySource !== null) {
-            linked.push({ id: resolvedId, source: dependencySource })
+            await loadModule(resolution.id, dependencySource)
           }
         }
       }
 
-      for (const dependency of linked) await install(dependency.id, dependency.source)
-      const update = this.graph.updateModule({ id, source, imports })
-      for (const affected of update.invalidatedIds) invalidated.add(affected)
+      const module = { id, source, imports }
+      modules.set(id, module)
+      loading.delete(id)
+      return module
     }
 
-    await install(input.id, input.source)
-    const id = resolvedModuleId(cleanId(input.id))
-    return { id, invalidated }
+    const rootModule = await loadModule(input.id, input.source)
+    return { rootModule, modules }
   }
 }

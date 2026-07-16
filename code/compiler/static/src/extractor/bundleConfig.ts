@@ -1,6 +1,3 @@
-import generate from '@babel/generator'
-import traverse from '@babel/traverse'
-import * as t from '@babel/types'
 import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, unlinkSync } from 'node:fs'
 import { basename, dirname, extname, join, relative, sep } from 'node:path'
@@ -13,7 +10,7 @@ import * as FS from 'fs-extra'
 import { readFile } from 'node:fs/promises'
 import { registerRequire, setRequireResult } from '../registerRequire'
 import type { TamaguiOptions } from '../types'
-import { babelParse } from './babelParse'
+import { addLocalExports } from './addLocalExports'
 import { esbuildLoaderConfig, esbundleTamaguiConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
 import { hasTopLevelAwait } from './hasTopLevelAwait'
@@ -608,7 +605,7 @@ export async function loadComponentsInner(
       const attemptLoad = async ({ forceExports = false } = {}) => {
         if (isDynamic) {
           writtenContents = forceExports
-            ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
+            ? addLocalExports(esbuildit(fileContents, 'modern'), name)
             : fileContents
           loadModule = getDynamicEvalOutfile(name, format, writtenContents)
 
@@ -764,7 +761,7 @@ export function loadComponentsInnerSync(
       function attemptLoad({ forceExports = false } = {}) {
         if (isDynamic) {
           writtenContents = forceExports
-            ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
+            ? addLocalExports(esbuildit(fileContents, 'modern'), name)
             : fileContents
           loadModule = getDynamicEvalOutfile(name, 'cjs', writtenContents)
 
@@ -933,49 +930,3 @@ function interopDefaultExport(mod: any) {
 }
 
 const cacheComponents: Record<string, LoadedComponents[]> = {}
-
-function transformAddExports(ast: t.File) {
-  const usedNames = new Set<string>()
-
-  // avoid clobbering
-  // @ts-ignore
-  traverse(ast, {
-    ExportNamedDeclaration(nodePath) {
-      if (nodePath.node.specifiers) {
-        for (const spec of nodePath.node.specifiers) {
-          usedNames.add(
-            t.isIdentifier(spec.exported) ? spec.exported.name : spec.exported.value
-          )
-        }
-      }
-    },
-  })
-
-  // @ts-ignore
-  traverse(ast, {
-    VariableDeclaration(nodePath) {
-      // top level only
-      if (!t.isProgram(nodePath.parent)) return
-      const decs = nodePath.node.declarations
-      if (decs.length > 1) return
-      const [dec] = decs
-      if (!t.isIdentifier(dec.id)) return
-      if (!dec.init) return
-      if (usedNames.has(dec.id.name)) return
-      usedNames.add(dec.id.name)
-      nodePath.replaceWith(
-        t.exportNamedDeclaration(t.variableDeclaration('let', [dec]), [
-          t.exportSpecifier(t.identifier(dec.id.name), t.identifier(dec.id.name)),
-        ])
-      )
-    },
-  })
-
-  // @ts-ignore
-  return generate(ast as any, {
-    concise: false,
-    filename: 'test.tsx',
-    retainLines: false,
-    sourceMaps: false,
-  }).code
-}

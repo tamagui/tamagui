@@ -2,6 +2,7 @@ import { Analyzer, type Module, type Symbol as YukuSymbol } from 'yuku-analyzer'
 
 import type {
   AnalyzerCandidate,
+  AstNode,
   CandidateFactory,
   DefinitionSite,
   ParseDiagnostic,
@@ -166,4 +167,23 @@ export const yukuFactory: CandidateFactory = {
       ),
     ]
   },
+}
+
+export function parseModuleAst(
+  source: string,
+  id = '/tamagui/compiler-module.tsx'
+): AstNode {
+  const candidate = yukuFactory.create({
+    files: new Map([[id, source]]),
+    resolutions: new Map(),
+  })
+  const diagnostics = candidate
+    .diagnostics()
+    .filter((diagnostic) => diagnostic.kind === 'parse')
+  if (diagnostics.length) {
+    throw new Error(
+      `Unable to parse ${id}: ${diagnostics.map(({ message }) => message).join('; ')}`
+    )
+  }
+  return candidate.programOf(id)
 }

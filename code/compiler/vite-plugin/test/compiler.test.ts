@@ -1,7 +1,15 @@
 import { resolve } from 'node:path'
 
-import { resolvedModuleId } from '@tamagui/compiler-core'
-import { CompilerFrontend, loadTamaguiSync } from '@tamagui/static'
+import {
+  CompilerSession,
+  resolvedModuleId,
+  type HostModuleInput,
+} from '@tamagui/compiler-core'
+import {
+  CompilerFrontend,
+  createTamaguiCompilerHost,
+  loadTamaguiSync,
+} from '@tamagui/static'
 import { beforeAll, expect, test } from 'vitest'
 
 const root = resolve(import.meta.dirname, 'fixtures/compiler')
@@ -94,4 +102,71 @@ export const App = () => jsx(View, { padding: space, 'data-compiled': 'yes' })
   expect(second.invalidatedIds).toEqual([])
   expect(frontend.parseCount(appId)).toBe(1)
   expect(frontend.parseCount(tokensId)).toBe(2)
+})
+
+test('generic compiler session consumes only canonical host-resolved modules', async () => {
+  const session = new CompilerSession()
+  const appModule: HostModuleInput = {
+    id: resolvedModuleId(appId),
+    source: `
+import { jsx } from 'react/jsx-runtime'
+import { View } from '@tamagui/core'
+import { space } from '~/tokens'
+export const App = () => jsx(View, { padding: space })
+`,
+    imports: [
+      {
+        specifier: 'react/jsx-runtime',
+        resolvedId: resolvedModuleId(runtimeId),
+        external: true,
+      },
+      {
+        specifier: '@tamagui/core',
+        resolvedId: resolvedModuleId(coreId),
+        external: true,
+      },
+      {
+        specifier: '~/tokens',
+        resolvedId: resolvedModuleId(tokensId),
+      },
+    ],
+  }
+  const tokenModule: HostModuleInput = {
+    id: resolvedModuleId(tokensId),
+    source: 'export const space = 20\n',
+    imports: [],
+  }
+  const host = createTamaguiCompilerHost({
+    target: 'web',
+    tamaguiConfig: projectInfo.tamaguiConfig!,
+    components: projectInfo.components!,
+    componentModules: [{ moduleName: '@tamagui/core', resolvedId: coreId }],
+  })
+  const adapter = {
+    target: 'web' as const,
+    projectGeneration: 'generic-session-v1',
+    host,
+    async load(id: string) {
+      return id === tokensId ? tokenModule : null
+    },
+  }
+
+  const first = await session.compile({ module: appModule, adapter })
+  expect(first.plan.css).toContain('padding-top:20px')
+  expect(first.plan.diagnostics).toEqual([])
+  expect(session.has(tokenModule.id)).toBe(true)
+  expect(session.dependentsOf(tokenModule.id)).toEqual([appModule.id])
+  expect(session.parseCount(appModule.id)).toBe(1)
+
+  const invalidated = session.update({
+    ...tokenModule,
+    source: 'export const space = 24\n',
+  })
+  expect(invalidated).toEqual([tokenModule.id, appModule.id].sort())
+  expect(session.parseCount(appModule.id)).toBe(1)
+
+  const second = await session.compile({ module: appModule, adapter })
+  expect(second.plan.css).toContain('padding-top:24px')
+  expect(second.plan.css).not.toContain('padding-top:20px')
+  expect(session.remove(tokenModule.id).invalidatedIds).toContain(appModule.id)
 })
