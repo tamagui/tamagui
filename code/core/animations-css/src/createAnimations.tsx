@@ -218,6 +218,33 @@ function applyStylesToNode(
   }
 }
 
+// force a re-render whenever any of the given animated numbers notifies. used
+// by useAnimatedNumberStyle so a consumer re-reads getValue() on every change.
+function useSubscribeToAnimatedNumbers(
+  reactionListeners: WeakMap<any, Set<Function>>,
+  vals: UniversalAnimatedNumber<Function>[]
+): void {
+  const [, force] = React.useState(0)
+  const instances = vals.map((v) => v.getInstance())
+
+  React.useEffect(() => {
+    const listener = () => force((n) => (n + 1) % 1_000_000)
+    const queues = instances.map((instance) => {
+      let queue = reactionListeners.get(instance)
+      if (!queue) {
+        queue = new Set<Function>()
+        reactionListeners.set(instance, queue)
+      }
+      queue.add(listener)
+      return queue
+    })
+    return () => {
+      for (const queue of queues) queue.delete(listener)
+    }
+    // re-subscribe only when an underlying instance identity changes
+  }, instances)
+}
+
 export function createAnimations<A extends object>(animations: A): AnimationDriver<A> {
   const reactionListeners = new WeakMap<any, Set<Function>>()
 
@@ -395,10 +422,16 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
     },
 
     useAnimatedNumberStyle(val, getStyle) {
+      // css has no UI thread, so a consumer of an external animated number
+      // (e.g. a drag-linked overlay reading Sheet.useAnimatedPosition) must
+      // re-render on each value change to recompute the style. subscribe to the
+      // same listener path notify() drives.
+      useSubscribeToAnimatedNumbers(reactionListeners, [val])
       return getStyle(val.getValue())
     },
 
     useAnimatedNumbersStyle(vals, getStyle) {
+      useSubscribeToAnimatedNumbers(reactionListeners, vals)
       return getStyle(...vals.map((v) => v.getValue()))
     },
 
