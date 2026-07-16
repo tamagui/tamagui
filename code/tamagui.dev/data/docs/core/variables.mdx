@@ -1,0 +1,110 @@
+---
+title: Variables
+description: Redefine theme values for any part of the tree
+---
+
+The `Variables` component patches theme values for a subtree, the same way CSS
+custom properties let you redefine `--x` on any node. Listed keys override,
+everything else inherits from the parent theme. No named theme, no config
+change, no re-renders on web.
+
+## Usage
+
+```tsx
+import { Variables, View } from 'tamagui' // or '@tamagui/core'
+
+export default () => (
+  <Variables values={{ backgroundHover: '$blue4' }} dark={{ backgroundHover: '$blue2' }}>
+    <View backgroundColor="$background" hoverStyle={{ backgroundColor: '$backgroundHover' }} />
+  </Variables>
+)
+```
+
+`values` applies always, while `dark` and `light` merge on top when the
+subtree's color scheme matches. On web this compiles to CSS custom properties
+under scheme-scoped selectors, so switching between light and dark restyles
+the subtree without re-rendering it.
+
+Keys must be theme keys, or custom variables you declare in your config
+(below). Unknown keys warn in development and are dropped, which keeps web and
+native behavior identical since native resolves values in JavaScript.
+
+## Custom variables
+
+Declare your own variables in `createTamagui`. They merge into your base
+themes, so they work everywhere theme keys work: style props, `useTheme()`,
+and `Variables` redefinition.
+
+```tsx
+const config = createTamagui({
+  // ...tokens, themes
+  variables: {
+    surfaceBorder: '$borderColor', // reference a theme key
+    disabledOpacity: 0.5,
+    focusRingColor: '$blue10',
+    focusRingWidth: 2,
+    pressScale: 0.97,
+    // per-scheme values
+    accent: { light: '#005ac8', dark: '#78b4ff' },
+  },
+})
+```
+
+Then use them like any theme value, and redefine them per area:
+
+```tsx
+<View borderColor="$surfaceBorder" />
+
+<Variables values={{ surfaceBorder: '$red8' }}>
+  {/* everything here sees the red surface border */}
+</Variables>
+```
+
+This is the intended home for design-system conventions that used to be
+copied into every component: focus rings, disabled treatments, press
+feedback, easing names. Define them once at the root, read them from your
+copied component styles, and redefine them per section when a marketing page
+or a dense settings panel wants a different feel.
+
+## References
+
+Values can reference theme keys and tokens:
+
+- `$background` finds the theme key (or custom variable) visible at the
+  `Variables` node.
+- `$size.4` and `$color.blue10` reference tokens by category.
+- A bare token name like `$blue10` checks theme keys first, then scans token
+  categories in a fixed order: color, space, size, radius, zIndex. Use the
+  qualified form if a name exists in more than one category.
+
+References resolve at the `Variables` node and descendants inherit the
+resolved value, matching how CSS computes custom properties. Chains are fine
+(`a: '$b'` where `b: '$c'`), but there is no `calc()`-style computation, and a
+reference cycle drops the involved keys entirely on both platforms with a
+development warning.
+
+## Units
+
+Numbers become `px` on web and stay numbers on native, the same as numeric
+style props. Keys that end in `opacity`, `scale`, `zIndex`, `weight`, `flex`,
+`grow`, `shrink`, `ratio`, or `elevation` stay unitless. For explicit pixel
+values use a `"10px"` string or the `px(10)` helper; native receives the
+number either way.
+
+## Nesting and themes
+
+`Variables` inside `Variables` stacks patches, with the nearest definition
+winning per key. A `<Theme>` below a `Variables` resets whatever keys that
+theme defines, exactly like nesting themes today; if a patch should survive a
+theme switch, place the `Variables` inside it. Custom variables are only
+defined on base themes, so sub-themes like `surface1` inherit your patches
+rather than resetting them.
+
+## Platform notes
+
+On web, styled components consume patches through CSS custom properties:
+changing `values` or flipping the color scheme costs zero re-renders in the
+subtree. JavaScript readers (`useTheme().key.val`, animation drivers) see the
+same patched values on web and native. On iOS with
+`settings.fastSchemeChange`, patched keys whose light and dark values are
+both literals keep the no-re-render scheme flip via `DynamicColorIOS`.

@@ -425,7 +425,36 @@ Tamagui props during migration.
 Read [Tailwind mode for Tamagui](/blog/tailwind-mode) for current utility
 coverage and known gaps.
 
-## 13. Verification checklist
+## 13. Migrate createTamagui defaultProps
+
+`createTamagui({ defaultProps })` is deprecated in v3 and slated for removal.
+Each of its uses has a more direct replacement:
+
+- **Styling defaults** move to [Variables](/docs/core/variables): declare the
+  value once in `variables`, read it in your component styles, and redefine it
+  per subtree instead of forcing props onto every instance of a component.
+- **A component's default look** belongs in the component itself — v3
+  components are behavior primitives plus styles you own, so edit your copied
+  component instead of patching it from config.
+- **Prop propagation to children** uses
+  [createStyledContext](/docs/core/create-styled-context), which makes the
+  shared keys typed props on every styled component that consumes the context.
+
+```tsx
+// before
+createTamagui({
+  defaultProps: { Square: { backgroundColor: '$violet6' } },
+})
+
+// after
+createTamagui({
+  variables: { squareBackground: '$violet6' },
+})
+// in your Square styles
+styled(View, { backgroundColor: '$squareBackground' })
+```
+
+## 14. Verification checklist
 
 Run validation at the layer your app changed.
 
