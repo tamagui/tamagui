@@ -48,9 +48,11 @@ type ThemeGettable<Val> = Val & {
 }
 
 // only proxy each theme one time, after that we know that renders are sync,
-// so we can just change the focus of the proxied theme and it can be re-used
-const trackingCache: Map<ThemeParsed, ThemeProxied> = new Map()
-const untrackedCache: Map<ThemeParsed, ThemeProxied> = new Map()
+// so we can just change the focus of the proxied theme and it can be re-used.
+// WeakMap so dynamically created theme objects (inline <Variables> layers)
+// don't retain their proxies after the layer is gone
+const trackingCache: WeakMap<ThemeParsed, ThemeProxied> = new WeakMap()
+const untrackedCache: WeakMap<ThemeParsed, ThemeProxied> = new WeakMap()
 
 let curKeys: MutableRefObject<Set<string> | null>
 let curSchemeKeys: MutableRefObject<Set<string> | null>
