@@ -266,3 +266,95 @@ describe('theme subscription lifecycle', () => {
     expect(b.current).toBeGreaterThan(bBeforeChange)
   })
 })
+
+describe('first-render optimization mode', () => {
+  test('keeps theme/media values reactive without granular key tracking', () => {
+    const defaultConfig = getDefaultTamaguiConfig()
+    const firstRenderConfig = createTamagui({
+      ...defaultConfig,
+      settings: {
+        ...defaultConfig.settings,
+        optimizeFor: 'first-render',
+      },
+    })
+    const dormantThemeReader = { current: 0 }
+    const dormantMediaReader = { current: 0 }
+    let setName: (name: 'light' | 'dark') => void = () => {}
+
+    const DormantThemeReader = memo(function DormantThemeReader() {
+      dormantThemeReader.current += 1
+      useTheme()
+      return null
+    })
+
+    const DormantMediaReader = memo(function DormantMediaReader() {
+      dormantMediaReader.current += 1
+      useMedia()
+      return null
+    })
+
+    function Reader() {
+      const theme = useTheme()
+      const media = useMedia()
+      const background = theme.background.val
+      const backgroundAlias = theme.$background
+
+      return (
+        <span
+          data-testid="first-render-reader"
+          data-background={String(background)}
+          data-background-alias={String(backgroundAlias.val)}
+          data-background-get={String(theme.background.get('web'))}
+          data-sm={String(media.sm)}
+          style={{ background: String(background) }}
+        />
+      )
+    }
+
+    function App() {
+      const [name, setThemeName] = useState<'light' | 'dark'>('light')
+      setName = setThemeName
+
+      return (
+        <Theme name={name}>
+          <Reader />
+          <DormantThemeReader />
+          <DormantMediaReader />
+        </Theme>
+      )
+    }
+
+    setMediaState({ sm: false, md: false, lg: false, xl: false, xxl: false } as any)
+
+    const { getByTestId } = render(
+      <TamaguiProvider config={firstRenderConfig} defaultTheme="light">
+        <App />
+      </TamaguiProvider>
+    )
+    const reader = getByTestId('first-render-reader')
+    const initialBackground = reader.style.background
+
+    expect(reader.dataset.background).toBe('#fff')
+    expect(reader.dataset.backgroundAlias).toBe('#fff')
+    expect(reader.dataset.backgroundGet).toContain('var(--')
+    expect(reader.dataset.sm).toBe('false')
+
+    const dormantThemeBaseline = dormantThemeReader.current
+    act(() => {
+      setName('dark')
+    })
+
+    expect(reader.dataset.background).toBe('#000')
+    expect(reader.style.background).not.toBe(initialBackground)
+    expect(dormantThemeReader.current).toBeGreaterThan(dormantThemeBaseline)
+
+    const dormantMediaBaseline = dormantMediaReader.current
+    act(() => {
+      setMediaState({ sm: true, md: false, lg: false, xl: false, xxl: false } as any)
+      updateMediaListeners()
+    })
+
+    expect(reader.dataset.sm).toBe('true')
+    expect(dormantMediaReader.current).toBeGreaterThan(dormantMediaBaseline)
+  })
+})

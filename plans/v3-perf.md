@@ -71,6 +71,30 @@ This is the highest-leverage item for native and the one thing on the list that
 changes the architecture rather than shaving constants — do it first or in parallel
 with Lane B since it touches the same files.
 
+### Results: `optimizeFor` setting
+
+Implemented as the startup config setting
+`settings.optimizeFor?: 'updates' | 'first-render'`, with both platforms retaining
+`'updates'` as the default. The first-render path keeps theme/media changes reactive
+through coarse subscriptions while skipping theme key tracking, the media touched-key
+set/tracker, granular snapshot comparisons, and the createComponent tracking setup.
+`useTheme()` keeps `.val`, `.get()`, and `$key` aliases unchanged.
+
+Final runtime profiler results below are median per-render composite time across three
+runs (`total` divided by `Ran … per-type`) on `simple | rich | heavy`:
+
+| scenario | updates | first-render | delta |
+| --- | ---: | ---: | ---: |
+| simple | 4.70 ms | 3.83 ms | -18.6% |
+| rich | 5.10 ms | 3.54 ms | -30.6% |
+| heavy | 1.88 ms | 1.40 ms | -25.5% |
+
+The `theme-prep-uses` label independently moved from 4.54 → 3.68 ms (simple),
+4.87 → 3.34 ms (rich), and 1.45 → 0.97 ms (heavy). The web first-render runs
+intentionally show coarse media correction renders, so aggregate totals include more
+renders; the acceptance comparison is per-component render work. Default updates mode
+kept the granular render counts and the theme/media over-render guard remains green.
+
 ---
 
 ## Lane B — render hot-path micro-optimizations

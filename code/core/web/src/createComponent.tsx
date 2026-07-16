@@ -620,10 +620,14 @@ export function createComponent<
     if ('theme' in props) {
       themeStateProps.name = props.theme
     }
-    // Always set needsUpdate callback so it can check the ref's latest value
-    // This ensures components with $theme-dark/$theme-light re-render on theme change
-    // even when using raw colors (not tokens) since isListeningToTheme is set after useSplitStyles
-    themeStateProps.needsUpdate = () => !!stateRef.current.isListeningToTheme
+    if (!stateRef.current.optimizeForFirstRender) {
+      // this ensures components with $theme-dark/$theme-light re-render on
+      // theme change even when using raw colors (not tokens), since
+      // isListeningToTheme is set after useSplitStyles.
+      themeStateProps.needsUpdate =
+        stateRef.current.themeNeedsUpdate ||
+        (stateRef.current.themeNeedsUpdate = () => !!stateRef.current.isListeningToTheme)
+    }
     // on native we optimize theme changes if fastSchemeChange is enabled, otherwise deopt
     if (process.env.TAMAGUI_TARGET === 'native') {
       themeStateProps.deopt = willBeAnimated
@@ -1010,7 +1014,12 @@ export function createComponent<
       console.info(`useMedia() createComponent`, shouldListenForMedia, mediaListeningKeys)
     }
 
-    setMediaShouldUpdate(componentContext, shouldListenForMedia, mediaListeningKeys)
+    setMediaShouldUpdate(
+      componentContext,
+      shouldListenForMedia,
+      mediaListeningKeys,
+      stateRef.current.optimizeForFirstRender
+    )
 
     const {
       viewProps: viewPropsIn,

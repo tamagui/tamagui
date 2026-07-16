@@ -46,6 +46,7 @@ export const useComponentState = (
   if (!stateRef.current) {
     stateRef.current = {
       startedUnhydrated: needsHydration && !isHydrated,
+      optimizeForFirstRender: getSetting('optimizeFor') === 'first-render',
     }
   }
 

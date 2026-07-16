@@ -70,7 +70,8 @@ export const useThemeState = (
   // only they can have descendants subscribed under their id. Leaf styled
   // components pass false (the default) and save one hook slot per mount.
   // Stable per call-site (rule of hooks satisfied).
-  cascadeOnChange = false
+  cascadeOnChange = false,
+  optimizeForFirstRender = false
 ): ThemeState => {
   'use no memo'
 
@@ -116,6 +117,7 @@ Looked for theme${props.name ? ` "${props.name}"` : ''}${props.componentName ? `
       isRoot,
       keys,
       schemeKeys,
+      optimizeForFirstRender,
       renderVersion: 0,
     }
   } else {
@@ -240,6 +242,7 @@ type SnapshotRef = {
   isRoot: boolean
   keys: MutableRefObject<Set<string> | null>
   schemeKeys?: MutableRefObject<Set<string> | null>
+  optimizeForFirstRender: boolean
 }
 
 type ThemeStateRef = SnapshotRef & {
@@ -250,6 +253,7 @@ type ThemeStateRef = SnapshotRef & {
 }
 
 const shouldSubscribeToTheme = (r: ThemeStateRef, cascadeOnChange: boolean): boolean =>
+  r.optimizeForFirstRender ||
   r.isRoot ||
   cascadeOnChange ||
   hasThemeUpdatingProps(r.props) ||
@@ -271,7 +275,16 @@ function cleanupThemeState(r: ThemeStateRef) {
 }
 
 const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
-  const { id, parentId, props, propsKey, isRoot, keys, schemeKeys } = r
+  const {
+    id,
+    parentId,
+    props,
+    propsKey,
+    isRoot,
+    keys,
+    schemeKeys,
+    optimizeForFirstRender,
+  } = r
   let local = localStates.get(id)
   const parentState = states.get(parentId)
 
@@ -288,6 +301,7 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
 
   // check if this is a scheme-only change (light↔dark) where DynamicColorIOS handles it
   const isSchemeOnlyChange =
+    !optimizeForFirstRender &&
     process.env.TAMAGUI_TARGET === 'native' &&
     supportsDynamicColorIOS &&
     getSetting('fastSchemeChange') &&
@@ -296,24 +310,28 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
     local.scheme !== parentState.scheme &&
     getThemeBaseName(local.name) === getThemeBaseName(parentState.name)
 
-  // all tracked keys are scheme-optimized = can skip re-render for scheme changes
-  const keysSize = keys?.current?.size ?? 0
-  const schemeKeysSize = schemeKeys?.current?.size ?? 0
-  const allKeysSchemeOptimized = schemeKeysSize === keysSize && keysSize > 0
+  let allKeysSchemeOptimized = false
+  if (!optimizeForFirstRender) {
+    const keysSize = keys.current?.size ?? 0
+    const schemeKeysSize = schemeKeys?.current?.size ?? 0
+    allKeysSchemeOptimized = schemeKeysSize === keysSize && keysSize > 0
+  }
 
-  const canSkipForSchemeChange = isSchemeOnlyChange && allKeysSchemeOptimized
+  const canSkipForSchemeChange = !!isSchemeOnlyChange && allKeysSchemeOptimized
 
   const needsUpdate = props.passThrough
     ? false
-    : isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
+    : optimizeForFirstRender
       ? true
-      : !HasRenderedOnce.get(keys)
+      : isRoot || props.name === 'light' || props.name === 'dark' || props.name === null
         ? true
-        : canSkipForSchemeChange
-          ? false // skip re-render for scheme-only changes with DynamicColorIOS
-          : keys?.current?.size
-            ? true
-            : props.needsUpdate?.()
+        : !HasRenderedOnce.get(keys)
+          ? true
+          : canSkipForSchemeChange
+            ? false // skip re-render for scheme-only changes with DynamicColorIOS
+            : keys?.current?.size
+              ? true
+              : props.needsUpdate?.()
 
   const [rerender, next] = getNextState(
     local,

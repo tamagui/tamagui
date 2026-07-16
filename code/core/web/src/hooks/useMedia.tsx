@@ -194,8 +194,11 @@ function resetMediaTouchTracker() {
 export function setMediaShouldUpdate(
   ref: any,
   enabled?: boolean,
-  keys?: MediaState['keys']
+  keys?: MediaState['keys'],
+  optimizeForFirstRender = false
 ) {
+  if (optimizeForFirstRender) return
+
   const cur = States.get(ref)
 
   if (!cur || cur.enabled !== enabled || keys) {
@@ -221,7 +224,7 @@ export function useMedia(
   'use no memo'
 
   type MediaRef = {
-    keys: Set<string>
+    keys: Set<string> | null
     lastState: MediaQueryState
     pendingState?: MediaQueryState
     renderVersion: number
@@ -235,6 +238,7 @@ export function useMedia(
     getSnapshot: () => MediaQueryState
     componentContext?: ComponentContextI
     debug?: DebugProp
+    optimizeForFirstRender: boolean
   }
 
   const internalRef = useRef<MediaRef | null>(null)
@@ -245,8 +249,9 @@ export function useMedia(
     // a pre-paint layout effect then corrects to the real matchMedia values,
     // so fresh client-only mounts never paint a wrong frame.
     const initial = !isServer && !getSetting('disableSSR') ? initState : getMedia()
+    const optimizeForFirstRender = getSetting('optimizeFor') === 'first-render'
     const r: MediaRef = {
-      keys: new Set<string>(),
+      keys: optimizeForFirstRender ? null : new Set<string>(),
       lastState: initial,
       renderVersion: 0,
       proxyTarget: initial,
@@ -254,16 +259,40 @@ export function useMedia(
       getSnapshot: undefined as unknown as () => MediaQueryState,
       componentContext,
       debug,
+      optimizeForFirstRender,
     }
-    // proxy → Object.create(getterProto) with a Symbol slot. Per-key get is a
-    // monomorphic getter call (Hermes-fast) instead of a Proxy trap.
-    const tracker = Object.create(getTouchTrackerProto())
-    tracker[refSlot] = { proxyTarget: initial, keys: r.keys } as MediaRefSlot
-    r.proxy = tracker as UseMediaState
+    if (optimizeForFirstRender) {
+      r.proxy = initial as UseMediaState
+    } else {
+      // proxy → Object.create(getterProto) with a Symbol slot. Per-key get is a
+      // monomorphic getter call (Hermes-fast) instead of a Proxy trap.
+      const tracker = Object.create(getTouchTrackerProto())
+      tracker[refSlot] = {
+        proxyTarget: initial,
+        keys: r.keys!,
+      } as MediaRefSlot
+      r.proxy = tracker as UseMediaState
+    }
     r.getSnapshot = () => {
+      if (r.optimizeForFirstRender) {
+        const ms = getMedia()
+        if (ms === r.lastState) {
+          return r.lastState
+        }
+
+        if (r.componentContext?.mediaEmit) {
+          r.componentContext.mediaEmit(ms)
+          r.pendingState = ms
+          return r.lastState
+        }
+
+        r.lastState = ms
+        return ms
+      }
+
       const curKeys = r.componentContext
-        ? States.get(r.componentContext)?.keys || r.keys
-        : r.keys
+        ? States.get(r.componentContext)?.keys || r.keys!
+        : r.keys!
       const { lastState, pendingState } = r
 
       if (!curKeys.size) {
@@ -309,7 +338,7 @@ export function useMedia(
   }
 
   // clear each render to track only rendered touched keys
-  if (ref.keys.size) {
+  if (ref.keys?.size) {
     ref.keys.clear()
   }
 
@@ -318,16 +347,24 @@ export function useMedia(
   // when none of the component's touched keys changed, but fewer
   // React-internal hook slots on Hermes than useSyncExternalStore.
   const [, forceUpdate] = useReducer(incReducer, 0)
-  const state = isServer ? initState : ref.getSnapshot()
+  const state = isServer
+    ? initState
+    : ref.optimizeForFirstRender && ref.renderVersion === 1
+      ? ref.lastState
+      : ref.getSnapshot()
   ref.proxyTarget = state
-  ;(ref.proxy as any)[refSlot].proxyTarget = state
+  if (!ref.optimizeForFirstRender) {
+    ;(ref.proxy as any)[refSlot].proxyTarget = state
+  }
 
   // correct the defaults-first render to real matchMedia values before paint
   useIsomorphicLayoutEffect(() => {
     const synced = ref.getSnapshot()
     if (synced !== ref.proxyTarget) {
       ref.proxyTarget = synced
-      ;(ref.proxy as any)[refSlot].proxyTarget = synced
+      if (!ref.optimizeForFirstRender) {
+        ;(ref.proxy as any)[refSlot].proxyTarget = synced
+      }
       forceUpdate()
     }
   }, [])
@@ -335,7 +372,9 @@ export function useMedia(
   useEffect(() => {
     const renderVersion = ref.renderVersion
     const shouldSubscribe =
-      !ref.componentContext || !!States.get(ref.componentContext)?.enabled
+      ref.optimizeForFirstRender ||
+      !ref.componentContext ||
+      !!States.get(ref.componentContext)?.enabled
 
     if (shouldSubscribe) {
       if (!ref.unsubscribe) {
@@ -343,7 +382,9 @@ export function useMedia(
           const next = ref.getSnapshot()
           if (next !== ref.proxyTarget) {
             ref.proxyTarget = next
-            ;(ref.proxy as any)[refSlot].proxyTarget = next
+            if (!ref.optimizeForFirstRender) {
+              ;(ref.proxy as any)[refSlot].proxyTarget = next
+            }
             forceUpdate()
           }
         })
@@ -364,7 +405,7 @@ export function useMedia(
     }
   })
 
-  return ref.proxy
+  return ref.optimizeForFirstRender ? (state as UseMediaState) : ref.proxy
 }
 
 const incReducer = (c: number): number => c + 1

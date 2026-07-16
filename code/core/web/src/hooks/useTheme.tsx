@@ -1,4 +1,5 @@
 import { useRef, type MutableRefObject } from 'react'
+import { getSetting } from '../config'
 import type { ThemeParsed, ThemeState, UseThemeWithStateProps } from '../types'
 import { getThemeProxied, type ThemeProxied } from './getThemeProxied'
 import { useThemeState } from './useThemeState'
@@ -8,6 +9,7 @@ const EMPTY = {}
 type KeysBag = {
   keys: MutableRefObject<Set<string> | null>
   schemeKeys: MutableRefObject<Set<string> | null>
+  optimizeForFirstRender: boolean
 }
 
 export const useTheme = () => {
@@ -21,7 +23,7 @@ export const useTheme = () => {
 export type ThemeWithState = [ThemeParsed, ThemeState]
 
 /**
- * Adds a proxy around themeState that tracks update keys
+ * Adds the public theme value wrapper and tracks update keys in updates mode.
  */
 export const useThemeWithState = (
   props: UseThemeWithStateProps,
@@ -45,10 +47,18 @@ export const useThemeWithState = (
     bag.current = {
       keys: { current: null },
       schemeKeys: { current: null },
+      optimizeForFirstRender: getSetting('optimizeFor') === 'first-render',
     }
   }
-  const { keys, schemeKeys } = bag.current
-  const themeState = useThemeState(props, isRoot, keys, schemeKeys, forThemeView)
+  const { keys, schemeKeys, optimizeForFirstRender } = bag.current
+  const themeState = useThemeState(
+    props,
+    isRoot,
+    keys,
+    schemeKeys,
+    forThemeView,
+    optimizeForFirstRender
+  )
 
   if (process.env.NODE_ENV === 'development') {
     if (!props.passThrough && !themeState?.theme) {
@@ -64,7 +74,7 @@ export const useThemeWithState = (
 
   const themeProxied = props.passThrough
     ? {}
-    : getThemeProxied(props, themeState, keys, schemeKeys)
+    : getThemeProxied(props, themeState, keys, schemeKeys, optimizeForFirstRender)
 
   return [themeProxied, themeState]
 }

@@ -10,7 +10,7 @@ type MediaState = {
     enabled?: boolean;
     keys?: Set<string> | null;
 };
-export declare function setMediaShouldUpdate(ref: any, enabled?: boolean, keys?: MediaState['keys']): void;
+export declare function setMediaShouldUpdate(ref: any, enabled?: boolean, keys?: MediaState['keys'], optimizeForFirstRender?: boolean): void;
 export declare function useMedia(componentContext?: ComponentContextI, debug?: DebugProp): UseMediaState;
 export declare function _disableMediaTouch(val: boolean): void;
 export declare function getMediaState(mediaGroups: Set<string>, layout: WidthHeight): Record<string, boolean>;

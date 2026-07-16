@@ -300,6 +300,7 @@ export type ComponentContextI = {
 };
 export type TamaguiComponentStateRef = {
     startedUnhydrated: boolean;
+    optimizeForFirstRender?: boolean;
     host?: TamaguiElement;
     composedRef?: (x: TamaguiElement) => void;
     willHydrate?: boolean;
@@ -314,6 +315,7 @@ export type TamaguiComponentStateRef = {
     unPress?: Function;
     setStateShallow?: ComponentSetStateShallow;
     baseSetStateShallow?: ComponentSetStateShallow;
+    themeNeedsUpdate?: () => boolean;
     useStyleListener?: UseStyleListener;
     updateStyleListener?: () => void;
     group?: ComponentGroupEmitter;
@@ -683,6 +685,22 @@ export interface GenericTamaguiSettings {
      * dark/light re-renders.
      */
     fastSchemeChange?: boolean;
+    /**
+     * Chooses whether Tamagui optimizes component renders for granular updates or
+     * for the lowest first-render overhead.
+     *
+     * - "updates" tracks the theme and media keys each component reads so changes
+     *   only re-render consumers of those values.
+     * - "first-render" skips per-key tracking and uses coarse theme and media
+     *   subscriptions. Theme and media changes still apply, but may re-render
+     *   every Tamagui component under the changed provider.
+     *
+     * This is a startup-level setting. Set it when creating the Tamagui config
+     * and do not change it while the app is running.
+     *
+     * @default "updates"
+     */
+    optimizeFor?: 'updates' | 'first-render';
     /**
      * On Web, this allows changing the behavior of container groups which by
      * default uses `container-type: inline-size`.
