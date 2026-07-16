@@ -139,7 +139,8 @@ type ResolvedDeclarations = [key: string, cssValue: string][]
 
 const resolveDeclarations = (
   valuesIn: VariablesProps['values'],
-  conf: TamaguiInternalConfig
+  conf: TamaguiInternalConfig,
+  skip?: Set<string> | null
 ): ResolvedDeclarations => {
   const out: ResolvedDeclarations = []
   if (!valuesIn) return out
@@ -148,6 +149,7 @@ const resolveDeclarations = (
   for (const key of Object.keys(values).sort()) {
     const value = values[key]
     if (value == null) continue
+    if (skip?.has(key)) continue
     if (!keySet.has(key)) {
       warnOnce(
         `unknown:${key}`,
@@ -168,34 +170,54 @@ const toDeclarationBlock = (declarations: ResolvedDeclarations) =>
     .map(([key, value]) => `--${cssVariablePrefix}${simpleHash(key, 40)}:${value};`)
     .join('')
 
-// dev-only: sibling references that form a cycle compute to invalid CSS in the
-// browser; detect and warn so it's debuggable
-const devCheckCycles = (props: VariablesProps) => {
-  if (process.env.NODE_ENV !== 'development') return
-  const buckets = [props.values, props.dark, props.light]
-  for (const bucketIn of buckets) {
-    if (!bucketIn) continue
-    const bucket = bucketIn as Record<string, VariableValIn>
-    for (const key in bucket) {
-      const seen = new Set<string>()
+// sibling references that form a cycle compute to invalid CSS in the browser
+// and are unresolvable in the native fixed-point resolver. contract
+// (plans/variables.md): a key whose reference chain reaches a cycle in EITHER
+// scheme-effective map ({...values, ...light} / {...values, ...dark}) is
+// dropped from all emission, in every mode, so web and native stay identical
+// regardless of the active scheme.
+const getCycleDroppedKeys = (props: VariablesProps): Set<string> | null => {
+  const values = props.values as Record<string, VariableValIn> | undefined
+  const light = props.light as Record<string, VariableValIn> | undefined
+  const dark = props.dark as Record<string, VariableValIn> | undefined
+
+  let dropped: Set<string> | null = null
+
+  const check = (map: Record<string, VariableValIn>) => {
+    for (const key in map) {
+      const path: string[] = []
+      const pathSet = new Set<string>()
       let current = key
       while (true) {
-        const value = bucket[current]
+        if (pathSet.has(current)) {
+          // everything from the cycle entry onward is unresolvable; the
+          // earlier chain into it is too, so drop the whole walked path
+          dropped ||= new Set()
+          for (const k of path) dropped.add(k)
+          break
+        }
+        path.push(current)
+        pathSet.add(current)
+        const value = map[current]
         if (typeof value !== 'string' || value[0] !== '$') break
         const next = value.slice(1)
-        if (seen.has(next)) {
-          warnOnce(
-            `cycle:${key}`,
-            `Variables: reference cycle detected at "${key}" — these values will not resolve.`
-          )
-          return
-        }
-        seen.add(next)
-        if (!(next in bucket)) break
+        if (!(next in map)) break
         current = next
       }
     }
   }
+
+  check({ ...values, ...light })
+  check({ ...values, ...dark })
+
+  if (dropped && process.env.NODE_ENV === 'development') {
+    warnOnce(
+      `cycle:${[...dropped].join(',')}`,
+      `Variables: reference cycle involving "${[...dropped].join('", "')}" — dropping these keys (they cannot resolve on either platform).`
+    )
+  }
+
+  return dropped
 }
 
 const rulesCache = new Map<string, VariablesCSS | null>()
@@ -212,11 +234,11 @@ export function getVariablesCSSRules(
   props: VariablesProps,
   conf: TamaguiInternalConfig
 ): VariablesCSS | null {
-  devCheckCycles(props)
+  const cycleDropped = getCycleDroppedKeys(props)
 
-  const base = resolveDeclarations(props.values, conf)
-  const dark = resolveDeclarations(props.dark, conf)
-  const light = resolveDeclarations(props.light, conf)
+  const base = resolveDeclarations(props.values, conf, cycleDropped)
+  const dark = resolveDeclarations(props.dark, conf, cycleDropped)
+  const light = resolveDeclarations(props.light, conf, cycleDropped)
 
   if (!base.length && !dark.length && !light.length) {
     return null
