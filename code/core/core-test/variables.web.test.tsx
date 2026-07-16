@@ -111,6 +111,57 @@ describe('getVariablesCSSRules', () => {
   test('unknown keys drop, empty output is null', () => {
     expect(getVariablesCSSRules({ values: { notAKey: 'red' } as any }, conf)).toBe(null)
   })
+
+  test('cycle-involved keys drop in all modes', () => {
+    // direct cycle: both keys dropped
+    expect(
+      getVariablesCSSRules(
+        { values: { surfaceBorder: '$chained', chained: '$surfaceBorder' } },
+        conf
+      )
+    ).toBe(null)
+
+    // a chain leading into a cycle drops too
+    expect(
+      getVariablesCSSRules(
+        {
+          values: {
+            accent: '$surfaceBorder',
+            surfaceBorder: '$chained',
+            chained: '$surfaceBorder',
+          },
+        },
+        conf
+      )
+    ).toBe(null)
+
+    // cycle in one scheme-effective map drops the keys everywhere
+    // (deterministic scheme-independent contract, see plans/variables.md)
+    expect(
+      getVariablesCSSRules(
+        {
+          values: { surfaceBorder: '$chained', chained: '$surfaceBorder' },
+          dark: { chained: 'red' },
+        },
+        conf
+      )
+    ).toBe(null)
+
+    // unaffected sibling keys survive a dropped cycle
+    const res = getVariablesCSSRules(
+      {
+        values: {
+          accent: '#123',
+          surfaceBorder: '$chained',
+          chained: '$surfaceBorder',
+        },
+      },
+      conf
+    )!
+    expect(res.rules[0]).toContain('--accent:#123;')
+    expect(res.rules[0]).not.toContain('--surfaceBorder')
+    expect(res.rules[0]).not.toContain('--chained')
+  })
 })
 
 describe('<Variables>', () => {
