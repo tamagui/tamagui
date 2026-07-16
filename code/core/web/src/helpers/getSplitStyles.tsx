@@ -2618,13 +2618,21 @@ function passDownProp(
   shouldMergeObject = false
 ) {
   if (shouldMergeObject) {
-    const next = {
-      ...viewProps[key],
-      ...val,
+    if (key in viewProps) {
+      const next = {
+        ...viewProps[key],
+        ...val,
+      }
+      // delete so re-adding moves the key to the end: precedence follows the
+      // latest occurrence when an HOC child re-iterates props in order. only
+      // done on repeat occurrences so the common case avoids the
+      // dictionary-mode deopt delete causes on viewProps
+      delete viewProps[key]
+      viewProps[key] = next
+    } else {
+      // clone to avoid aliasing the parent's object
+      viewProps[key] = { ...val }
     }
-    // need to re-insert it at current position
-    delete viewProps[key]
-    viewProps[key] = next
   } else {
     viewProps[key] = val
   }
