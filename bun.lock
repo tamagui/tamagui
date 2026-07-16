@@ -496,6 +496,7 @@
       "devDependencies": {
         "@tamagui/core": "workspace:*",
         "@tamagui/dialog": "workspace:*",
+        "@tamagui/use-controllable-state": "workspace:*",
         "@testing-library/react": "^16.1.0",
         "@testing-library/react-native": "^12.9.0",
         "csstype": "^3.0.10",
@@ -1128,6 +1129,7 @@
       "name": "@tamagui/use-controllable-state",
       "version": "2.4.6",
       "dependencies": {
+        "@tamagui/core": "workspace:*",
         "@tamagui/start-transition": "workspace:*",
         "@tamagui/use-event": "workspace:*",
       },

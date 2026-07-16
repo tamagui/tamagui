@@ -36,6 +36,7 @@ export * from './helpers/wrapStyleTags'
 
 export * from './createComponent'
 export * from './createFont'
+export * from './eventDetails'
 export * from './createStyledHOC'
 export * from './createShorthands'
 export * from './createTamagui'
