@@ -20,6 +20,7 @@ import {
   publishCommand,
   stableJson,
   topologicalPackageOrder,
+  withWorkspaceVersion,
   type PackageManifest,
   type WorkspacePackage,
 } from './v3-release-dry-run-lib'
@@ -123,6 +124,15 @@ describe('G1 package selection', () => {
       '@tamagui/web',
       'tamagui',
     ])
+  })
+
+  test('applies a preview version without mutating workspace manifests', () => {
+    const versioned = withWorkspaceVersion(packages, '3.0.0-beta.1')
+    expect(versioned.every((pkg) => pkg.version === '3.0.0-beta.1')).toBe(true)
+    expect(versioned.every((pkg) => pkg.manifest.version === '3.0.0-beta.1')).toBe(true)
+    expect(packages.every((pkg) => pkg.version === '3.0.0-beta.0')).toBe(true)
+    expect(versioned[0]).not.toBe(packages[0])
+    expect(versioned[0]?.manifest).not.toBe(packages[0]?.manifest)
   })
 
   test('discovers a public workspace package whose directory is named types', async () => {

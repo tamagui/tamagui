@@ -48,6 +48,7 @@ export interface ReleasePreviewReport {
   canarySource: string
   consumerDir: string
   packer: 'npm' | 'bun'
+  previewVersion?: string
   requestedPackages: string[]
   packedPackages: string[]
   artifacts: PackedArtifact[]
@@ -201,6 +202,18 @@ export async function discoverPublicWorkspacePackages(
     })
   }
   return packages.sort((left, right) => left.name.localeCompare(right.name))
+}
+
+export function withWorkspaceVersion(
+  packages: readonly WorkspacePackage[],
+  version?: string
+): WorkspacePackage[] {
+  if (!version) return [...packages]
+  return packages.map((pkg) => ({
+    ...pkg,
+    version,
+    manifest: { ...pkg.manifest, version },
+  }))
 }
 
 export function packagesForChangedPaths(

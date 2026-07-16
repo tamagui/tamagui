@@ -67,10 +67,15 @@ bun scripts/v3-release-dry-run.ts \
   --canary <g0-canary-dir> \
   --packer npm \
   --release-preview \
+  --version 3.0.0-beta.0 \
   --tag beta
 ```
 
 Use `--packer bun` to repeat the artifact proof through `bun pm pack`. The full run:
+
+`--version` rewrites versions and internal dependency ranges only in temporary staged
+manifests. Release-preview mode rejects a missing version so it cannot print beta-tagged
+publish commands for the repository's current stable package versions.
 
 1. builds selected packages in dependency order and verifies source package manifests did
    not change;
