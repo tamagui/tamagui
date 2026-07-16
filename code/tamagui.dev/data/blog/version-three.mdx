@@ -323,6 +323,22 @@ v3 tightens component parity across Dialog, Popover, Select, and Sheet:
 </Select.Content>
 ```
 
+## Forms and accessibility fixes
+
+A few smaller components caught up with their documented behavior:
+
+- **Tabs** now default `activationMode` to `automatic`, matching the docs and
+  the ARIA authoring guidance. If you relied on the old manual-by-default
+  behavior, set `activationMode="manual"` explicitly. Automatic activation is
+  web-only; native always activates on press.
+- **Slider** finally participates in forms: passing `name` renders one hidden
+  input per thumb, so a range slider submits repeated entries readable via
+  `FormData.getAll(name)`.
+- **Separator** renders `role="separator"` with the correct
+  `aria-orientation` on web.
+- **Avatar.Fallback** takes `delay` (the old `delayMs` still works but is
+  deprecated).
+
 ## Icons size like text
 
 Themed icons now resolve token sizes through the current font size scale. This
