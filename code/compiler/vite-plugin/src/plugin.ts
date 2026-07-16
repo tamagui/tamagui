@@ -433,6 +433,129 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
   return aliases
 }
 
+export function tamaguiNativePlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
+  const compilerFrontend = new Static.CompilerFrontend()
+  const projectDependencies = new Set<string>()
+  let root = process.cwd()
+  let projectPromise: Promise<Static.CompilerProject | null> | null = null
+  let generation = 0
+
+  const loadProject = async (resolveModule: (specifier: string) => Promise<string>) => {
+    projectPromise ||= (async () => {
+      const options = await Static.loadTamaguiBuildConfigAsync({
+        ...tamaguiOptionsIn,
+        platform: 'native',
+      })
+      if (options.disable || options.disableExtraction) return null
+      const projectInfo = await Static.loadTamagui({ ...options, platform: 'native' })
+      if (!projectInfo) {
+        throw new Error('Unable to load the Tamagui project for Vite native compilation')
+      }
+      const componentModules = await Promise.all(
+        [...new Set(['@tamagui/core', ...(options.components || [])])].map(
+          async (moduleName) => {
+            const id = await resolveModule(moduleName)
+            projectDependencies.add(id.split(/[?#]/, 1)[0])
+            return { moduleName, id }
+          }
+        )
+      )
+      const configPath = options.config || 'tamagui.config.ts'
+      projectDependencies.add(
+        path.isAbsolute(configPath) ? configPath : path.resolve(root, configPath)
+      )
+      generation++
+      return {
+        projectInfo,
+        componentModules,
+        generation: `vite-native:${generation}`,
+      }
+    })()
+    return projectPromise
+  }
+
+  return {
+    name: 'tamagui-native-compiler',
+    enforce: 'post',
+    configResolved(config) {
+      root = config.root
+    },
+    watchChange(id) {
+      if (projectDependencies.has(id.split(/[?#]/, 1)[0])) {
+        projectPromise = null
+      }
+    },
+    transform: {
+      order: 'pre',
+      async handler(code, id) {
+        const environmentName = this.environment?.name
+        if (environmentName !== 'ios' && environmentName !== 'android') return
+        const [validId] = id.split('?')
+        if (
+          !validId ||
+          !/\.[jt]sx$/.test(validId) ||
+          validId.split(path.sep).includes('node_modules')
+        ) {
+          return
+        }
+        const { shouldDisable } = await Static.getPragmaOptions({
+          source: code,
+          path: validId,
+        })
+        if (shouldDisable) return
+
+        const resolve = async (specifier: string, importer: string) => {
+          const resolution = await this.resolve(specifier, importer, { skipSelf: true })
+          return resolution
+            ? { id: resolution.id, external: resolution.external === true }
+            : null
+        }
+        const project = await loadProject(async (specifier) => {
+          const resolution = await resolve(
+            specifier,
+            path.join(root, '__tamagui_native.tsx')
+          )
+          if (!resolution) {
+            throw new Error(`Unable to resolve native compiler component ${specifier}`)
+          }
+          return resolution.id
+        })
+        if (!project) return
+        for (const dependency of projectDependencies) this.addWatchFile(dependency)
+
+        const result = await compilerFrontend.compile({
+          id: validId,
+          source: code,
+          root,
+          target: 'native',
+          project,
+          resolve,
+          load: async (dependencyId) => {
+            const cleanDependencyId = dependencyId.split(/[?#]/, 1)[0]
+            if (!path.isAbsolute(cleanDependencyId)) return null
+            try {
+              return await readFile(cleanDependencyId, 'utf8')
+            } catch {
+              return null
+            }
+          },
+        })
+        for (const dependency of result.plan.dependencies) {
+          if (path.isAbsolute(dependency)) this.addWatchFile(dependency)
+        }
+        if (result.plan.css) {
+          throw new Error(
+            `Native Tamagui compilation produced unexpected CSS for ${validId}`
+          )
+        }
+        return result.output.changed
+          ? { code: result.output.code, map: result.output.map as any }
+          : undefined
+      },
+    },
+  }
+}
+
 export function tamaguiPlugin({
   disableResolveConfig,
   ...tamaguiOptionsIn
@@ -1177,5 +1300,11 @@ export function tamaguiPlugin({
     },
   }
 
-  return [basePlugin, rnwLitePlugin, extractPlugin, sharedCompilerPlugin]
+  return [
+    basePlugin,
+    rnwLitePlugin,
+    extractPlugin,
+    sharedCompilerPlugin,
+    tamaguiNativePlugin(tamaguiOptionsIn),
+  ]
 }

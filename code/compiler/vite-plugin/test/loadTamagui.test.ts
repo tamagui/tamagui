@@ -23,7 +23,7 @@ import {
   createViteTamaguiLoader,
   TAMAGUI_EVALUATION_ENVIRONMENT,
 } from '../src/loadTamagui'
-import { tamaguiPlugin } from '../src/plugin'
+import { tamaguiNativePlugin, tamaguiPlugin } from '../src/plugin'
 
 const execFileAsync = promisify(execFile)
 const fixtureRoot = path.resolve(__dirname, 'fixtures/module-runner')
@@ -32,6 +32,10 @@ const coreResetPath = fixtureRequire.resolve('@tamagui/core/reset.css')
 const appPath = path.join(fixtureRoot, 'src/App.tsx')
 const resolutionPath = path.join(fixtureRoot, 'packages/workspace/src/resolution.ts')
 const configSpacePath = path.join(fixtureRoot, 'packages/workspace/src/config-space.ts')
+const nativeConfigPath = path.resolve(
+  import.meta.dirname,
+  '../../static-tests/tests/lib/tamagui.config.cjs'
+)
 const componentEntryPath = path.join(fixtureRoot, 'packages/components/src/index.ts')
 const evaluationFixturePackagePath = path.join(fixtureRoot, 'packages/evaluation-fixture')
 const evaluationFixturePhysicalRuntimePath = path.join(
@@ -446,6 +450,51 @@ test('clears loader state when closing an owned environment fails', async () => 
   expect(loader.getEnvironment()).toBeNull()
   expect(loader.getLoadPromise()).toBeNull()
   expect(loader.getTamaguiOptions()).toBeNull()
+})
+
+test('native plugin lowers source in One-style iOS and Android environments', async () => {
+  const plugin = tamaguiNativePlugin({
+    config: nativeConfigPath,
+    components: ['@tamagui/core'],
+  })
+  const configResolved =
+    typeof plugin.configResolved === 'object'
+      ? plugin.configResolved.handler
+      : plugin.configResolved
+  await configResolved?.call({} as any, { root: fixtureRoot } as any)
+
+  const transform =
+    typeof plugin.transform === 'object' ? plugin.transform.handler : plugin.transform
+  const watched = new Set<string>()
+  for (const platform of ['ios', 'android']) {
+    const result = await transform?.call(
+      {
+        environment: { name: platform },
+        addWatchFile(id: string) {
+          watched.add(id)
+        },
+        async resolve(specifier: string) {
+          if (specifier === '@tamagui/core') {
+            return { id: fixtureRequire.resolve('@tamagui/core') }
+          }
+          return null
+        },
+      } as any,
+      `
+import { View } from '@tamagui/core'
+export function App() {
+  return <View x={12} y={8} testID="native-vite" />
+}
+`,
+      path.join(fixtureRoot, `src/NativeApp.${platform}.tsx`)
+    )
+
+    expect(result).toBeTruthy()
+    expect(typeof result === 'object' && result.code).toContain('<__TamaguiNativeView')
+    expect(typeof result === 'object' && result.code).toContain('"translateX":12')
+    expect(typeof result === 'object' && result.code).not.toContain('.tamagui.css')
+  }
+  expect(watched).toContain(nativeConfigPath)
 })
 
 test('optimizes the core singleton with context-bearing Tamagui packages', async () => {

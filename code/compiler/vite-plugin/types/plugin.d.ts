@@ -1,5 +1,5 @@
 import type { TamaguiOptions } from '@tamagui/static';
-import type { PluginOption } from 'vite';
+import type { Plugin, PluginOption } from 'vite';
 type AliasOptions = {
     /** use @tamagui/react-native-web-lite, 'without-animated' for smaller bundle */
     rnwLite?: boolean | 'without-animated';
@@ -15,6 +15,7 @@ type AliasEntry = {
  * use this when you need control over alias ordering in your config
  */
 export declare function tamaguiAliases(options?: AliasOptions): AliasEntry[];
+export declare function tamaguiNativePlugin(tamaguiOptionsIn?: TamaguiOptions): Plugin;
 export declare function tamaguiPlugin({ disableResolveConfig, ...tamaguiOptionsIn }?: TamaguiOptions & {
     disableResolveConfig?: boolean;
 }): PluginOption;
