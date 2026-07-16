@@ -323,6 +323,39 @@ v3 tightens component parity across Dialog, Popover, Select, and Sheet:
 </Select.Content>
 ```
 
+## Field and Form handle validation together
+
+v3 adds a behavior-only `Field` primitive and upgrades `Form` into a
+cross-platform field coordinator. Labels, descriptions, errors, and controls
+associate automatically. Validation can be a function or a Standard Schema
+from Zod 4, Valibot, or ArkType.
+
+```tsx
+<Form onSubmit={(values, details) => save(values)}>
+  <Field name="email" validationMode="onBlur" validate={emailSchema}>
+    <Field.Label>Email</Field.Label>
+    <EmailInput required />
+    <Field.Description>Used for account recovery.</Field.Description>
+    <Field.Error />
+  </Field>
+
+  <Form.Trigger asChild>
+    <Button>Continue</Button>
+  </Form.Trigger>
+</Form>
+```
+
+Field validity starts at `null`, so pristine controls are not announced or
+styled as valid or invalid. Async checks never delay submit, and stale results
+cannot replace validation for a newer value. Form collects named values,
+accepts server or React Hook Form errors, and focuses the first invalid control
+on web and native.
+
+The package has no built-in aesthetic styles. Field state is available through
+data attributes on web and styled context on every platform, so copied skins
+can respond to `invalid`, `dirty`, `filled`, `focused`, and the other field
+flags.
+
 ## Forms and accessibility fixes
 
 A few smaller components caught up with their documented behavior:
