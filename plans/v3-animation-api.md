@@ -289,6 +289,24 @@ and "H-6" in H-4 means packet H3 (the css real animated number).
   it settles on real value/velocity thresholds; getAnimations() does not apply
   to JS-driven numbers.
 
+## Amendment 2026-07-16c: H0 + H3 landed (branches v3-anim-h0/h3, integrated on v3-anim); H2 notes
+
+- H3 kept the sheet frame's css `transition` as the visual driver on the css
+  driver: `setValue` commits the target once (css eases the DOM), while a rAF
+  integrator drives reaction listeners per-frame and fires real completion on
+  spring rest. If H2 moves the sheet to a purely rAF-driven position it must
+  remove the frame's css transition in the same change, or the DOM lags the
+  physics by hundreds of ms (measured).
+- Bug for H2 to fix: the sheet object-spreads `animations['medium']` into
+  `transitionConfig`, which on the css driver is a string (`'ease-in 400ms'`
+  becomes char-indexed junk), so no real spring params ever reach the css
+  driver. The css driver now defaults to a critically-damped spring
+  (stiffness 300 / damping 35) so completion (~530ms) beats the dormant 1s
+  fallback timer, which H2 deletes.
+- H0 note: presence hooks stay exported via `@tamagui/animate-presence` (a
+  web→use-presence re-export would create a build cycle and an ambiguous
+  star-export collision under `tamagui`).
+
 ## Amendments applied to v3-evolution.md
 
 - C2 acceptance additionally requires: sheet source contains no opacity
