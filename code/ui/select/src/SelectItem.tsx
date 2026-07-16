@@ -1,11 +1,22 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { createStyledHOC, createStyledContext, styled, View } from '@tamagui/core'
+import {
+  createChangeEventDetails,
+  createStyledHOC,
+  createStyledContext,
+  styled,
+  View,
+} from '@tamagui/core'
 import type { GetProps } from '@tamagui/core'
 import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
 import { useSelectItemParentContext } from './context'
-import type { SelectScopedProps } from './types'
+import { getSelectOptionProps } from './selectionController'
+import type {
+  SelectActiveChangeDetails,
+  SelectScopedProps,
+  SelectValueChangeDetails,
+} from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectItem
@@ -16,6 +27,7 @@ const ITEM_NAME = 'SelectItem'
 type SelectItemContextValue = {
   value: string
   textId: string
+  textValue?: string
   isSelected: boolean
 }
 
@@ -26,7 +38,8 @@ export const {
 
 export interface SelectItemExtraProps {
   value: string
-  index: number
+  /** @deprecated registry order is authoritative. this prop is accepted but inert. */
+  index?: number
   disabled?: boolean
   textValue?: string
 }
@@ -49,46 +62,59 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
       value,
       disabled = false,
       textValue: textValueProp,
-      index,
+      index: _index,
       ...restProps
     } = props
 
     const context = useSelectItemParentContext(scope)
 
     const {
-      setSelectedIndex,
       listRef,
-      setOpen,
-      onChange,
+      registry,
+      mode,
+      selectedValues,
+      selectValue,
       activeIndexSubscribe,
       activeIndexRef,
-      valueSubscribe,
       allowMouseUpRef,
       allowSelectRef,
-      setValueAtIndex,
       selectTimeoutRef,
-      dataRef,
       interactions,
       shouldRenderWebNative,
-      onActiveChange,
-      initialValue,
       setActiveIndexFast,
+      moveActive,
+      search,
     } = context
 
-    const [isSelected, setSelected] = React.useState(initialValue === value)
+    const isSelected = selectedValues.includes(value)
     const pendingMouseUpSelectionRef = React.useRef(false)
+    const registrationRef = React.useRef<ReturnType<typeof registry.registerItem> | null>(
+      null
+    )
+    const initialRegistration = React.useRef({
+      value,
+      disabled,
+      textValue: textValueProp,
+    })
 
-    // set initial selectedIndex when this item matches the initial value
     useIsomorphicLayoutEffect(() => {
-      if (initialValue === value) {
-        setSelectedIndex(index)
+      const registration = registry.registerItem(initialRegistration.current)
+      registrationRef.current = registration
+      return () => {
+        registrationRef.current = null
+        registration.unregister()
       }
-    }, [])
+    }, [registry])
+
+    useIsomorphicLayoutEffect(() => {
+      registrationRef.current?.update({ value, disabled, textValue: textValueProp })
+    }, [disabled, textValueProp, value])
+
+    const index = registry.getIndex(value)
 
     React.useEffect(() => {
       const handleActiveIndex = (i: number) => {
         if (index === i) {
-          onActiveChange(value, index)
           if (isWeb) {
             // use rAF to focus after browser's click handling completes
             // this prevents the trigger from stealing focus after we set it
@@ -106,23 +132,15 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
       }
 
       return activeIndexSubscribe(handleActiveIndex)
-    }, [index])
-
-    React.useEffect(() => {
-      return valueSubscribe((val) => {
-        setSelected(val === value)
-      })
-    }, [value])
+    }, [activeIndexRef, activeIndexSubscribe, index, listRef])
 
     const textId = React.useId()
 
     const refCallback = React.useCallback(
       (node) => {
         if (!isWeb) return
-        if (node instanceof HTMLElement) {
-          if (listRef) {
-            listRef.current[index] = node
-          }
+        if (listRef && index >= 0) {
+          listRef.current[index] = node instanceof HTMLElement ? node : null
         }
       },
       [index, listRef]
@@ -130,16 +148,53 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
 
     const composedRefs = useComposedRefs(forwardedRef, refCallback)
 
-    useIsomorphicLayoutEffect(() => {
-      setValueAtIndex(index, value)
-    }, [index, setValueAtIndex, value])
+    const handleSelect = React.useCallback(
+      (event?: any, reason: 'item-press' | 'keyboard' = 'item-press') => {
+        if (disabled) return
+        const nativeEvent = (event?.nativeEvent || event) as Event | undefined
+        selectValue(
+          value,
+          createChangeEventDetails(
+            reason,
+            nativeEvent,
+            event?.currentTarget
+          ) as SelectValueChangeDetails
+        )
+      },
+      [disabled, selectValue, value]
+    )
 
-    function handleSelect() {
-      if (disabled) return
-      setSelectedIndex(index)
-      onChange(value)
-      setOpen(false)
-    }
+    const handleKeyDown = React.useCallback(
+      (event: any) => {
+        if (disabled) return
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          handleSelect(event, 'keyboard')
+          return
+        }
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+          event.preventDefault()
+          event.stopPropagation()
+          moveActive(
+            event.key === 'ArrowDown' ? 1 : -1,
+            (event.nativeEvent || event) as Event
+          )
+          return
+        }
+        if (
+          !interactions &&
+          event.key?.length === 1 &&
+          !event.metaKey &&
+          !event.ctrlKey
+        ) {
+          search(event.key, (event.nativeEvent || event) as Event)
+        }
+        if (allowSelectRef) {
+          allowSelectRef.current = true
+        }
+      },
+      [allowSelectRef, disabled, handleSelect, interactions, moveActive, search]
+    )
 
     const selectItemProps = React.useMemo(() => {
       if (interactions) {
@@ -149,6 +204,7 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
           onKeyDown,
           onClick,
           onMouseUp,
+          onMouseMove,
           onPress,
           ...itemProps
         } = restProps
@@ -162,34 +218,17 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
             allowSelectRef!.current = false
             allowMouseUpRef!.current = true
           },
-          onKeyDown(event) {
-            if (disabled) return
-            if (
-              event.key === 'Enter' ||
-              (event.key === ' ' && !dataRef?.current.typing)
-            ) {
-              event.preventDefault()
-              handleSelect()
-            } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-              // prevent default and stop propagation so floating-ui doesn't also handle
-              event.preventDefault()
-              event.stopPropagation()
-              const itemCount = listRef?.current.length ?? 0
-              if (itemCount === 0) return
-
-              let nextIndex: number
-              if (event.key === 'ArrowDown') {
-                nextIndex = index + 1 >= itemCount ? 0 : index + 1
-              } else {
-                nextIndex = index - 1 < 0 ? itemCount - 1 : index - 1
-              }
-              // use fast setter to avoid triggering state updates that reset activeIndex
-              setActiveIndexFast?.(nextIndex)
-            } else {
-              allowSelectRef!.current = true
-            }
+          onMouseMove(event) {
+            if (disabled || index < 0) return
+            setActiveIndexFast?.(index, {
+              reason: 'item-hover',
+              event: (event.nativeEvent || event) as Event,
+              trigger: event.currentTarget,
+              index,
+            } as SelectActiveChangeDetails)
           },
-          onClick() {
+          onKeyDown: handleKeyDown,
+          onClick(event) {
             if (disabled) return
             const shouldSelect =
               pendingMouseUpSelectionRef.current || allowSelectRef!.current
@@ -197,10 +236,10 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
             clearTimeout(selectTimeoutRef!.current)
             allowSelectRef!.current = true
             if (shouldSelect) {
-              handleSelect()
+              handleSelect(event)
             }
           },
-          onMouseUp() {
+          onMouseUp(event) {
             if (disabled) return
             if (!allowMouseUpRef!.current) {
               // Re-enable mouseup and selection for subsequent interactions
@@ -218,7 +257,7 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
               allowSelectRef!.current = true
               if (pendingMouseUpSelectionRef.current) {
                 pendingMouseUpSelectionRef.current = false
-                handleSelect()
+                handleSelect(event)
               }
             })
           },
@@ -246,21 +285,54 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
             interactionProps.onClick?.(event)
           },
           onMouseUp: composeEventHandlers(onMouseUp as any, interactionProps.onMouseUp),
+          onMouseMove: composeEventHandlers(
+            onMouseMove as any,
+            interactionProps.onMouseMove
+          ),
           onPress,
         }
       }
 
       return {
         ...restProps,
+        onKeyDown: composeEventHandlers(restProps.onKeyDown as any, handleKeyDown),
+        onMouseMove: composeEventHandlers(restProps.onMouseMove as any, (event: any) => {
+          if (disabled || index < 0) return
+          setActiveIndexFast?.(index, {
+            reason: 'item-hover',
+            event: (event.nativeEvent || event) as Event,
+            trigger: event.currentTarget,
+            index,
+          } as SelectActiveChangeDetails)
+        }),
         onPress: composeEventHandlers(restProps.onPress as any, handleSelect),
       }
-    }, [handleSelect, index, listRef, setActiveIndexFast])
+    }, [
+      allowMouseUpRef,
+      allowSelectRef,
+      disabled,
+      handleKeyDown,
+      handleSelect,
+      index,
+      interactions,
+      restProps,
+      selectTimeoutRef,
+      setActiveIndexFast,
+    ])
+
+    const accessibilityProps = getSelectOptionProps(
+      mode,
+      isSelected,
+      disabled,
+      isWeb ? 'web' : 'native'
+    )
 
     return (
       <SelectItemContextProvider
         scope={scope}
         value={value}
         textId={textId || ''}
+        textValue={textValueProp}
         isSelected={isSelected}
       >
         {shouldRenderWebNative ? (
@@ -271,15 +343,13 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
           <SelectItemFrame
             render="div"
             ref={composedRefs}
-            role="option"
             aria-labelledby={textId}
-            aria-selected={isSelected}
             data-state={isSelected ? 'active' : 'inactive'}
-            aria-disabled={disabled || undefined}
             data-disabled={disabled ? '' : undefined}
             tabIndex={disabled ? undefined : -1}
             zIndex={100}
             {...selectItemProps}
+            {...accessibilityProps}
           />
         )}
       </SelectItemContextProvider>

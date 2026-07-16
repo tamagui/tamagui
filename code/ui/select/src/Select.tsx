@@ -3,17 +3,18 @@ import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps } from '@tamagui/core'
 import {
+  createChangeEventDetails,
   createStyledHOC,
   createStyledContext,
   styled,
   Text,
-  useEvent,
   View,
 } from '@tamagui/core'
 import { FocusScopeController } from '@tamagui/focus-scope'
 import { registerFocusable } from '@tamagui/focusable'
 import { withStaticProperties } from '@tamagui/helpers'
 import { useControllableState } from '@tamagui/use-controllable-state'
+import type { ControllableStateSetter } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import {
   SelectItemParentProvider,
@@ -29,7 +30,27 @@ import { ITEM_TEXT_NAME, SelectItemText } from './SelectItemText'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectTrigger } from './SelectTrigger'
 import { SelectViewport } from './SelectViewport'
-import type { SelectImplProps, SelectProps, SelectScopedProps } from './types'
+import {
+  createSelectItemRegistry,
+  createSelectSelectionController,
+  selectedValuesFromSelection,
+  type SelectMode,
+  type SelectSelection,
+} from './selectionController'
+import type {
+  SelectActiveChangeDetails,
+  SelectImplProps,
+  SelectOpenChangeDetails,
+  SelectProps,
+  SelectScopedProps,
+  SelectValueForMode,
+  SelectValueChangeDetails,
+} from './types'
+
+export type SelectValue<
+  Value extends string = string,
+  Multiple extends boolean | undefined = false,
+> = SelectValueForMode<Value, Multiple>
 
 /* -------------------------------------------------------------------------------------------------
  * SelectValue
@@ -57,17 +78,27 @@ export const SelectValue = createStyledHOC(SelectValueFrame)<SelectValueExtraPro
     const itemParentContext = useSelectItemParentContext(scope)
 
     const composedRefs = useComposedRefs(
-      // @ts-ignore TODO react 19 type needs fix
+      // @ts-ignore react 19 ref type mismatch
       forwardedRef,
       context.onValueNodeChange as any
     )
-    const isEmptyValue = context.value == null || context.value === ''
+    const isEmptyValue = context.selectedValues.length === 0
 
-    // Use renderValue for SSR support - called synchronously during render
-    // Falls back to the portal-based selectedItem, then to the raw value for SSR
-    const renderedValue = context.renderValue?.(context.value)
+    // renderValue is synchronous for ssr and lazy item mounting
+    const renderedValue =
+      childrenProp === undefined ? context.renderValue?.(context.value) : undefined
+    const registeredValue =
+      context.mode === 'multiple'
+        ? context.selectedValues.map((value, index) => (
+            <React.Fragment key={value}>
+              {index > 0 ? ', ' : null}
+              {itemParentContext.registry.getItem(value)?.label ?? value}
+            </React.Fragment>
+          ))
+        : (itemParentContext.registry.getItem(context.selectedValues[0])?.label ??
+          context.value)
     const children =
-      childrenProp ?? renderedValue ?? itemParentContext.selectedItem ?? context.value
+      childrenProp !== undefined ? childrenProp : (renderedValue ?? registeredValue)
     const selectValueChildren = isEmptyValue ? (placeholder ?? children) : children
 
     return (
@@ -218,6 +249,7 @@ const NativeSelectFrame = styled(Text, {
   name: 'NativeSelect',
   render: 'select',
 })
+const NativeSelect = NativeSelectFrame as any
 
 type SelectGroupProps = SelectScopedProps<GetProps<typeof SelectGroupFrame>>
 
@@ -233,20 +265,30 @@ export const SelectGroup = createStyledHOC(SelectGroupFrame)<{ scope?: string }>
     const content = (() => {
       if (itemParentContext.shouldRenderWebNative) {
         return (
-          <NativeSelectFrame
+          <NativeSelect
             {...groupProps}
             // @ts-ignore it's ok since render="select"
             value={context.value}
+            multiple={context.mode === 'multiple'}
+            name={itemParentContext.name}
+            form={itemParentContext.form}
             id={itemParentContext.id}
             onChange={
               ((event: React.ChangeEvent<HTMLSelectElement>) => {
-                itemParentContext.onChange(event.currentTarget.value)
+                const value =
+                  context.mode === 'multiple'
+                    ? Array.from(
+                        event.currentTarget.selectedOptions,
+                        (option) => option.value
+                      )
+                    : event.currentTarget.value
+                itemParentContext.changeNativeValue(value, event.nativeEvent)
               }) as any
             }
             ref={nativeSelectRef as any}
           >
             {props.children}
-          </NativeSelectFrame>
+          </NativeSelect>
         )
       }
       return (
@@ -319,27 +361,43 @@ const SelectSheetImpl = (props: SelectImplProps) => {
  * Select
  * -----------------------------------------------------------------------------------------------*/
 
-export function SelectRoot<Value extends string = string>(
-  props: SelectScopedProps<SelectProps<Value>>
-) {
+export function SelectRoot<
+  Value extends string = string,
+  Multiple extends boolean | undefined = false,
+>(props: SelectScopedProps<SelectProps<Value, Multiple>>) {
   const adaptScope = `AdaptSelect${props.scope || ''}`
 
   // open state lives here (above AdaptParent) so the Adapt handoff can drive
   // the adapted Sheet's open/close and unmount timing directly, mirroring Dialog
-  const [open, setOpen] = useControllableState({
+  const [open, requestOpenChange] = useControllableState<
+    boolean,
+    SelectOpenChangeDetails
+  >({
     prop: props.open,
     defaultProp: props.defaultOpen || false,
-    onChange: props.onOpenChange,
+    onChange: props.onOpenChange as any,
   })
 
+  const handleAdaptOpenChange = React.useCallback(
+    (nextOpen: boolean) => {
+      requestOpenChange(
+        nextOpen,
+        createChangeEventDetails(
+          nextOpen ? 'trigger-press' : 'outside-press'
+        ) as SelectOpenChangeDetails
+      )
+    },
+    [requestOpenChange]
+  )
+
   return (
-    <AdaptParent scope={adaptScope} open={open} onOpenChange={setOpen}>
+    <AdaptParent scope={adaptScope} open={open} onOpenChange={handleAdaptOpenChange}>
       <SelectInner
-        {...props}
+        {...(props as SelectScopedProps<SelectProps<string, boolean>>)}
         scope={props.scope}
         adaptScope={adaptScope}
         open={open}
-        setOpen={setOpen}
+        requestOpenChange={requestOpenChange}
       />
     </AdaptParent>
   )
@@ -380,10 +438,10 @@ function useEmitter<A>() {
 }
 
 function SelectInner(
-  props: SelectScopedProps<SelectProps> & {
+  props: SelectScopedProps<SelectProps<string, boolean>> & {
     adaptScope: string
     open: boolean
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    requestOpenChange: ControllableStateSetter<boolean, SelectOpenChangeDetails>
   }
 ) {
   const {
@@ -392,12 +450,15 @@ function SelectInner(
     native,
     children,
     open,
-    setOpen,
+    requestOpenChange,
     defaultOpen: _defaultOpen,
     onOpenChange: _onOpenChange,
     value: valueProp,
     defaultValue,
     onValueChange,
+    multiple = false,
+    name,
+    form,
     disablePreventBodyScroll,
     size: sizeProp = true,
     onActiveChange,
@@ -409,38 +470,69 @@ function SelectInner(
   } = props
 
   const isAdapted = useAdaptIsActive(adaptScope)
-  const SelectImpl = isAdapted || !isWeb ? SelectSheetImpl : SelectInlineImpl
-  const [selectedItem, setSelectedItem] = React.useState<React.ReactNode>(null)
+  const SelectImpl = isAdapted ? SelectSheetImpl : SelectInlineImpl
+  const mode: SelectMode = multiple ? 'multiple' : 'single'
 
-  const [value, setValue] = useControllableState({
-    prop: valueProp,
-    defaultProp: defaultValue || '',
-    onChange: onValueChange,
+  const [valueState, requestValueChange] = useControllableState<
+    SelectSelection,
+    SelectValueChangeDetails
+  >({
+    prop: valueProp as SelectSelection | undefined,
+    defaultProp: (defaultValue ?? (mode === 'multiple' ? [] : '')) as SelectSelection,
+    onChange: onValueChange as any,
     transition: true,
   })
 
-  React.useEffect(() => {
-    if (open) {
-      emitValue(value)
-    }
-  }, [open])
+  const value = React.useMemo(
+    () =>
+      mode === 'multiple'
+        ? selectedValuesFromSelection(mode, valueState)
+        : typeof valueState === 'string'
+          ? valueState
+          : '',
+    [mode, valueState]
+  )
+  const selectedValues = React.useMemo(
+    () => selectedValuesFromSelection(mode, value),
+    [mode, value]
+  )
 
-  React.useEffect(() => {
-    emitValue(value)
-  }, [value])
-
-  if (process.env.TAMAGUI_TARGET === 'native') {
-    React.useEffect(() => {
-      if (!props.id) return
-
-      return registerFocusable(props.id, {
-        focusAndSelect: () => {
-          setOpen?.((value) => !value)
-        },
-        focus: () => {},
-      })
-    }, [props.id])
+  const [, rerenderRegistry] = React.useReducer((version) => version + 1, 0)
+  const registryRef = React.useRef<ReturnType<typeof createSelectItemRegistry> | null>(
+    null
+  )
+  if (!registryRef.current) {
+    registryRef.current = createSelectItemRegistry(rerenderRegistry)
   }
+  const registry = registryRef.current
+
+  const controllerRef = React.useRef<ReturnType<
+    typeof createSelectSelectionController
+  > | null>(null)
+  if (!controllerRef.current) {
+    controllerRef.current = createSelectSelectionController({
+      mode,
+      value,
+      registry,
+    })
+  }
+  const controller = controllerRef.current
+  controller.setMode(mode)
+  controller.setValue(value)
+
+  React.useEffect(() => {
+    if (process.env.TAMAGUI_TARGET !== 'native' || !props.id) return
+
+    return registerFocusable(props.id, {
+      focusAndSelect: () => {
+        requestOpenChange(
+          (current) => !current,
+          createChangeEventDetails('trigger-press') as SelectOpenChangeDetails
+        )
+      },
+      focus: () => {},
+    })
+  }, [props.id, requestOpenChange])
 
   // activeIndex is stored in a ref to avoid re-renders on every hover
   // we have two setters:
@@ -450,13 +542,15 @@ function SelectInner(
   const activeIndexRef = React.useRef<number | null>(null)
   const [activeIndex, setActiveIndexState] = React.useState<number | null>(null)
 
-  const [emitValue, valueSubscribe] = useEmitter<any>()
   const [emitActiveIndex, activeIndexSubscribe] = useEmitter<number>()
 
   const selectedIndexRef = React.useRef<number | null>(null)
   const listContentRef = React.useRef<string[]>([])
-  const [selectedIndex, setSelectedIndex] = React.useState(0)
+  const listRef = React.useRef<Array<HTMLElement | null>>([])
   const [valueNode, setValueNode] = React.useState<HTMLElement | null>(null)
+  const selectedIndex = Math.max(0, controller.selectionAnchorIndex())
+  listContentRef.current = registry.getTypeaheadLabels()
+  listRef.current.length = registry.getItems().length
 
   // Intentionally dependency-less: selectedIndexRef mirrors every render for non-reactive reads.
   useIsomorphicLayoutEffect(() => {
@@ -472,25 +566,135 @@ function SelectInner(
   // fast setter: updates ref + emits to subscribers without causing re-renders
   // use this for mouse hover / keyboard navigation where we don't need parent re-renders
   const setActiveIndexFast = React.useCallback(
-    (index: number | null) => {
+    (index: number | null, details?: SelectActiveChangeDetails) => {
       if (activeIndexRef.current !== index) {
         activeIndexRef.current = index
+        controller.setActiveIndex(index)
         if (typeof index === 'number') {
           emitActiveIndex(index)
+          const item = registry.getItems()[index]
+          if (item && details) {
+            onActiveChange?.(item.value, details)
+          }
         }
       }
     },
-    [emitActiveIndex]
+    [controller, emitActiveIndex, onActiveChange, registry]
   )
 
   // slow setter: also triggers a re-render for components that need the state value
   // use this sparingly, e.g., when controlled scrolling needs to scroll item into view
   const setActiveIndex = React.useCallback(
-    (index: number | null) => {
-      setActiveIndexFast(index)
+    (index: number | null, details?: SelectActiveChangeDetails) => {
+      setActiveIndexFast(index, details)
       setActiveIndexState(index)
     },
     [setActiveIndexFast]
+  )
+
+  const activeDetails = React.useCallback(
+    (
+      reason: SelectActiveChangeDetails['reason'],
+      index: number,
+      event?: Event
+    ): SelectActiveChangeDetails => ({
+      reason,
+      event,
+      trigger: undefined,
+      index,
+    }),
+    []
+  )
+
+  const moveActive = React.useCallback(
+    (direction: 1 | -1, event?: Event) => {
+      const nextIndex = registry.nextEnabledIndex(activeIndexRef.current, direction)
+      if (nextIndex >= 0) {
+        setActiveIndex(nextIndex, activeDetails('keyboard', nextIndex, event))
+      }
+    },
+    [activeDetails, registry, setActiveIndex]
+  )
+
+  const typeaheadRef = React.useRef({ text: '', timeout: null as any })
+  const search = React.useCallback(
+    (text: string, event?: Event) => {
+      clearTimeout(typeaheadRef.current.timeout)
+      typeaheadRef.current.text += text
+      let nextIndex = registry.findTypeaheadIndex(
+        typeaheadRef.current.text,
+        activeIndexRef.current
+      )
+      if (nextIndex < 0 && typeaheadRef.current.text.length > 1) {
+        typeaheadRef.current.text = text
+        nextIndex = registry.findTypeaheadIndex(text, activeIndexRef.current)
+      }
+      typeaheadRef.current.timeout = setTimeout(() => {
+        typeaheadRef.current.text = ''
+      }, 750)
+      if (nextIndex >= 0) {
+        setActiveIndex(nextIndex, activeDetails('keyboard', nextIndex, event))
+      }
+    },
+    [activeDetails, registry, setActiveIndex]
+  )
+
+  React.useEffect(() => {
+    return () => clearTimeout(typeaheadRef.current.timeout)
+  }, [])
+
+  React.useEffect(() => {
+    if (open) {
+      const anchorIndex = controller.selectionAnchorIndex()
+      const nextIndex = anchorIndex >= 0 ? anchorIndex : registry.firstEnabledIndex()
+      if (nextIndex >= 0) {
+        setActiveIndexFast(nextIndex, activeDetails('list-navigation', nextIndex))
+      }
+    } else {
+      setActiveIndexFast(null)
+      setActiveIndexState(null)
+    }
+  }, [open, selectedIndex, registry.getItems().length])
+
+  const selectValue = React.useCallback(
+    (nextItemValue: string, details: SelectValueChangeDetails) => {
+      const item = registry.getItem(nextItemValue)
+      if (!item || item.disabled) return
+      controller.setMode(mode)
+      controller.setValue(value)
+      const previousValue = controller.value
+      const nextValue = controller.toggle(nextItemValue)
+      requestValueChange(nextValue, details)
+      if (details.isCanceled) {
+        controller.setValue(previousValue)
+        return
+      }
+      if (controller.shouldCloseOnSelect) {
+        requestOpenChange(
+          false,
+          createChangeEventDetails(
+            details.reason === 'keyboard' ? 'keyboard' : 'item-press',
+            details.event,
+            details.trigger
+          ) as SelectOpenChangeDetails
+        )
+      }
+    },
+    [controller, mode, registry, requestOpenChange, requestValueChange, value]
+  )
+
+  const changeNativeValue = React.useCallback(
+    (nextValue: SelectSelection, event: Event) => {
+      const details = createChangeEventDetails(
+        'native-change',
+        event
+      ) as SelectValueChangeDetails
+      requestValueChange(nextValue, details)
+      if (!details.isCanceled) {
+        controller.setValue(nextValue)
+      }
+    },
+    [controller, requestValueChange]
   )
 
   const content = (
@@ -498,29 +702,23 @@ function SelectInner(
       scopeName={scope}
       scope={scope}
       adaptScope={adaptScope}
-      // Intentionally keyed by open: items should see the value captured for this open cycle.
-      initialValue={React.useMemo(() => value, [open])}
+      mode={mode}
+      selectedValues={selectedValues}
+      registry={registry}
       size={sizeProp}
       activeIndexSubscribe={activeIndexSubscribe}
       activeIndexRef={activeIndexRef}
-      valueSubscribe={valueSubscribe}
-      setOpen={setOpen}
+      requestOpenChange={requestOpenChange}
       id={id}
-      onChange={React.useCallback((val) => {
-        setValue(val)
-        emitValue(val)
-      }, [])}
-      onActiveChange={useEvent((value, index) => {
-        onActiveChange?.(value, index)
-      })}
-      setSelectedIndex={setSelectedIndex}
-      setValueAtIndex={React.useCallback((index, value) => {
-        listContentRef.current[index] = value
-      }, [])}
+      name={name}
+      form={form}
+      selectValue={selectValue}
+      changeNativeValue={changeNativeValue}
       shouldRenderWebNative={shouldRenderWebNative}
       setActiveIndexFast={setActiveIndexFast}
-      selectedItem={selectedItem}
-      setSelectedItem={setSelectedItem}
+      listRef={listRef}
+      moveActive={moveActive}
+      search={search}
     >
       <SelectProvider
         scope={scope}
@@ -537,6 +735,12 @@ function SelectInner(
         selectedIndex={selectedIndex}
         setActiveIndex={setActiveIndex}
         value={value}
+        mode={mode}
+        selectedValues={selectedValues}
+        activeItem={
+          activeIndex == null ? undefined : registry.getItems()[activeIndex]?.value
+        }
+        selectionAnchor={controller.selectionAnchor()?.value}
         open={open}
         native={native}
         renderValue={renderValue}
@@ -558,6 +762,17 @@ function SelectInner(
           </SelectImpl>
         )}
       </SelectProvider>
+      {isWeb && !shouldRenderWebNative && name
+        ? (mode === 'multiple' ? selectedValues : [value as string]).map((inputValue) => (
+            <input
+              key={inputValue}
+              type="hidden"
+              name={name}
+              form={form}
+              value={inputValue}
+            />
+          ))
+        : null}
     </SelectItemParentProvider>
   )
 

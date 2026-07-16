@@ -35,6 +35,7 @@ function normalizeLabelText(label: ReactNode): string {
 export function createSelectItemRegistry(onChange?: () => void) {
   const items: SelectRegisteredItem[] = []
   const pendingLabels = new Map<string, { label: ReactNode; textValue?: string }>()
+  const explicitTextValues = new Map<symbol, string | undefined>()
 
   const notify = () => onChange?.()
 
@@ -52,8 +53,10 @@ export function createSelectItemRegistry(onChange?: () => void) {
     const registeredItem: SelectRegisteredItem = {
       ...item,
       ...pendingLabel,
+      textValue: item.textValue ?? pendingLabel?.textValue,
       id,
     }
+    explicitTextValues.set(id, item.textValue)
     items.push(registeredItem)
     notify()
 
@@ -63,17 +66,32 @@ export function createSelectItemRegistry(onChange?: () => void) {
         const index = items.findIndex((current) => current.id === id)
         if (index < 0) return
         const current = items[index]
+        if ('textValue' in next) {
+          explicitTextValues.set(id, next.textValue)
+        }
+        const nextItem = { ...current, ...next }
+        if (next.value !== undefined && next.value !== current.value) {
+          const nextLabel = pendingLabels.get(next.value)
+          nextItem.label = nextLabel?.label
+        }
+        const explicitTextValue = explicitTextValues.get(id)
+        nextItem.textValue =
+          explicitTextValue ||
+          normalizeLabelText(nextItem.label) ||
+          (nextItem.label ? nextItem.value : undefined)
         const changed = Object.entries(next).some(
           ([key, value]) => current[key as keyof SelectRegisteredItem] !== value
         )
-        if (!changed) return
-        items[index] = { ...current, ...next }
+        const textValueChanged = current.textValue !== nextItem.textValue
+        if (!changed && !textValueChanged) return
+        items[index] = nextItem
         notify()
       },
       unregister() {
         const index = items.findIndex((current) => current.id === id)
         if (index < 0) return
         items.splice(index, 1)
+        explicitTextValues.delete(id)
         notify()
       },
     }
@@ -83,9 +101,12 @@ export function createSelectItemRegistry(onChange?: () => void) {
     const normalizedTextValue = textValue || normalizeLabelText(label) || value
     pendingLabels.set(value, { label, textValue: normalizedTextValue })
     const item = getItem(value)
-    if (item && (item.label !== label || item.textValue !== normalizedTextValue)) {
+    const effectiveTextValue = item
+      ? explicitTextValues.get(item.id) || normalizedTextValue
+      : normalizedTextValue
+    if (item && (item.label !== label || item.textValue !== effectiveTextValue)) {
       item.label = label
-      item.textValue = normalizedTextValue
+      item.textValue = effectiveTextValue
       notify()
     }
 
@@ -97,7 +118,7 @@ export function createSelectItemRegistry(onChange?: () => void) {
       const current = getItem(value)
       if (current && current.label === label) {
         current.label = undefined
-        current.textValue = undefined
+        current.textValue = explicitTextValues.get(current.id)
         notify()
       }
     }
@@ -252,6 +273,9 @@ export function createSelectSelectionController({
     },
     get activeItem() {
       return activeIndex == null ? undefined : registry.getItems()[activeIndex]
+    },
+    get shouldCloseOnSelect() {
+      return mode === 'single'
     },
     setMode,
     setValue,
