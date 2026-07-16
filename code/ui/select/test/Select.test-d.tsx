@@ -52,3 +52,71 @@ export const SelectPartsTypeTest = () => (
 
 // @ts-expect-error root values stay within the explicit literal union
 export const InvalidSelectValue = () => <Select.Root<Fruit> value="orange" />
+
+export const MultipleSelectTypeTest = () => (
+  <Select.Root<Fruit, true>
+    multiple
+    value={['apple']}
+    defaultValue={['pear']}
+    onValueChange={(value, details) => {
+      const exact: Fruit[] = value
+      const reason: 'item-press' | 'keyboard' | 'native-change' = details.reason
+      void exact
+      void reason
+    }}
+    onOpenChange={(_open, details) => {
+      const reason:
+        | 'trigger-press'
+        | 'keyboard'
+        | 'outside-press'
+        | 'escape-key'
+        | 'item-press' = details.reason
+      void reason
+    }}
+    onActiveChange={(_value, details) => {
+      const index: number = details.index
+      const reason: 'item-hover' | 'list-navigation' | 'keyboard' = details.reason
+      void index
+      void reason
+    }}
+    renderValue={(value) => value.join(', ')}
+  />
+)
+
+export const ExplicitSingleSelectTypeTest = () => (
+  <Select.Root<Fruit, false>
+    multiple={false}
+    value="apple"
+    onValueChange={(value) => {
+      const exact: Fruit = value
+      void exact
+    }}
+    renderValue={(value) => value}
+  />
+)
+
+declare const runtimeMultiple: boolean
+
+export const RuntimeMultipleSelectTypeTest = () => (
+  <Select.Root<Fruit, boolean>
+    multiple={runtimeMultiple}
+    value={runtimeMultiple ? ['apple'] : 'apple'}
+    onValueChange={(value) => {
+      const exact: Fruit | Fruit[] = value
+      void exact
+    }}
+  />
+)
+
+export const InvalidMultipleValue = () => (
+  // @ts-expect-error multiple values are arrays
+  <Select.Root<Fruit, true> multiple value="apple" />
+)
+
+export const InvalidMultipleDefaultValue = () => (
+  // @ts-expect-error multiple default values are arrays
+  <Select.Root<Fruit, true> multiple defaultValue="apple" />
+)
+
+// @ts-expect-error single values stay scalar
+export const InvalidSingleArrayValue = () => <Select.Root<Fruit> value={['apple']} />
