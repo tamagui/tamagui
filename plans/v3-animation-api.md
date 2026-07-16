@@ -259,6 +259,18 @@ Order: H0 -> H1 -> (H2 with C2, H3 in parallel) -> H4. H2 must not start
 before B2's `transition` rename is merged in the target branch, since the
 sheet prop surface changes in both.
 
+## Amendment 2026-07-16: disableTransparencyHide (merged from main/v2.4.6)
+
+Main added a `disableTransparencyHide` sheet prop (keep the hidden wrapper
+opaque so native visual effects can initialize under it). H-4 removes the
+transparency hide entirely, so the prop as named dies — but `display: 'none'`
+hides harder than `opacity: 0`, so the escape hatch must survive as "don't
+apply the hidden state to the closed wrapper". H2 renames it to match the new
+mechanism and honors `disableTransparencyHide` as a deprecated alias through
+the betas (it shipped in stable 2.4.x). Also note: the spring rest-detection
+fix already on v3-beta makes close-complete events prompt on native drivers,
+and "H-6" in H-4 means packet H3 (the css real animated number).
+
 ## Amendments applied to v3-evolution.md
 
 - C2 acceptance additionally requires: sheet source contains no opacity
