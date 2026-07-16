@@ -1,6 +1,7 @@
 import { isServer, isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { useEffect, useReducer, useRef } from 'react'
 import { getSetting } from '../config'
+import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
 import { resetMediaStyleCache } from '../helpers/createMediaStyle'
 import { matchMedia } from '../helpers/matchMedia'
 import { mediaObjectToString } from '../helpers/mediaObjectToString'
@@ -255,7 +256,7 @@ export function useMedia(
     // a pre-paint layout effect then corrects to the real matchMedia values,
     // so fresh client-only mounts never paint a wrong frame.
     const initial = !isServer && !getSetting('disableSSR') ? initState : getMedia()
-    const optimizeForFirstRender = getSetting('optimizeFor') === 'first-render'
+    const optimizeForFirstRender = isOptimizedForFirstRender()
     const r: MediaRef = {
       keys: optimizeForFirstRender ? null : new Set<string>(),
       lastState: initial,

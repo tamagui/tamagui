@@ -1214,7 +1214,11 @@ export interface GenericTamaguiSettings {
    * This is a startup-level setting. Set it when creating the Tamagui config
    * and do not change it while the app is running.
    *
-   * @default "updates"
+   * Defaults per platform: web defaults to "updates" (granular theme/media
+   * changes matter most), native defaults to "first-render" (initial render
+   * speed matters most, and full-tree re-renders are cheaper without the DOM).
+   *
+   * @default "updates" on web, "first-render" on native
    */
   optimizeFor?: 'updates' | 'first-render'
 

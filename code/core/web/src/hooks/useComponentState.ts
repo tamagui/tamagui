@@ -3,6 +3,7 @@ import { mergeIfNotShallowEqual } from '@tamagui/is-equal-shallow'
 import { useDidFinishSSR, useIsClientOnly } from '@tamagui/use-did-finish-ssr'
 import { useRef, useState } from 'react'
 import { getSetting } from '../config'
+import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
 import {
   defaultComponentState,
   defaultComponentStateMounted,
@@ -46,7 +47,7 @@ export const useComponentState = (
   if (!stateRef.current) {
     stateRef.current = {
       startedUnhydrated: needsHydration && !isHydrated,
-      optimizeForFirstRender: getSetting('optimizeFor') === 'first-render',
+      optimizeForFirstRender: isOptimizedForFirstRender(),
     }
   }
 

@@ -1,5 +1,5 @@
 import { useRef, type MutableRefObject } from 'react'
-import { getSetting } from '../config'
+import { isOptimizedForFirstRender } from './isOptimizedForFirstRender'
 import type { ThemeParsed, ThemeState, UseThemeWithStateProps } from '../types'
 import { getThemeProxied, type ThemeProxied } from './getThemeProxied'
 import { useThemeState } from './useThemeState'
@@ -47,7 +47,7 @@ export const useThemeWithState = (
     bag.current = {
       keys: { current: null },
       schemeKeys: { current: null },
-      optimizeForFirstRender: getSetting('optimizeFor') === 'first-render',
+      optimizeForFirstRender: isOptimizedForFirstRender(),
     }
   }
   const { keys, schemeKeys, optimizeForFirstRender } = bag.current
