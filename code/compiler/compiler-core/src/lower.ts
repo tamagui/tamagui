@@ -68,6 +68,8 @@ export interface CompilerLoweringHost {
     styledDefinition: MaterializedStyledDefinition | null
   ): LoweringComponent | null
   isStyleProp(name: string, component: LoweringComponent): boolean
+  /** The host can retain this dynamic prop while committing other safe candidate edits. */
+  canLowerDynamicStyleProp?(name: string, component: LoweringComponent): boolean
   lowerCandidate(input: LoweringCandidateInput): LoweringCandidateResult
 }
 
@@ -162,7 +164,8 @@ function unsafeEntry(
   if (
     entry.kind === 'prop' &&
     host.isStyleProp(entry.name, component) &&
-    entry.value.kind === 'bailout'
+    entry.value.kind === 'bailout' &&
+    !host.canLowerDynamicStyleProp?.(entry.name, component)
   ) {
     return diagnostic(
       'local/dynamic-style-value',
