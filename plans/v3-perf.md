@@ -333,3 +333,28 @@ icons/fonts are lean metadata, not glyph payloads.
   AND pay startup execution for nothing. Split brief in `plans/v3-themes-split-brief.md`,
   Opus agent `ab-mrnwvjot-71256`.
 - **Next up**: C1 (motion per-frame pipeline) once the tree settles; then D1/D2.
+
+### 2026-07-16 (later)
+
+- **Lane A landed + platform defaults**: `2ef029b9a5` (Sol agent) added `optimizeFor`;
+  `e8c36cc7ee` flips defaults per platform via `isOptimizedForFirstRender` .native fork
+  (web `updates`, native `first-render`). Docs: configuration.mdx settings table + v3
+  blog section (`3c943ca78b`).
+- **Lane D3 landed**: `91d6d3d4f9` themes builder split (agent).
+- **Moti driver removed** (`7a2165bdb8`): package deleted along with the legacy
+  moti-backed `@tamagui/config/reanimated` entry; upgrade guide notes the replacement.
+  C4 is obsolete.
+- **B9 shipped after all** (`9596fcc4c9`): keep the delete-reorder only for repeat
+  keys; first occurrence (the common case) avoids the dictionary-mode deopt.
+- **v3-consolidate merged into v3-beta** (`070288ffda`): conflicts resolved in
+  tabs (createTabs deleted upstream; ported activationMode='automatic' default into
+  Tabs.tsx), separator (flat styles + a11y attrs), generated d.ts regenerated.
+  Post-merge fix `d854f8fa1f`: Tab activeStyle must spread after props to beat
+  styled() skin base styles. Validation: root build 164 pkgs, core-test 370 native +
+  674 web green, kitchen-sink default suite green for everything owned by this lane
+  (600 pass; the 5 remaining Select failures bisect to the later popup
+  interaction-details re-land `af5e1256a2`, reported to that lane).
+- **Warning for future validation runs**: turbo restored stale dist from cache after
+  the merge (dismissable predated its own src) — use `bun run build:js` (--force)
+  before trusting playwright results; don't rebuild packages or bun install while a
+  playwright webServer is serving.
