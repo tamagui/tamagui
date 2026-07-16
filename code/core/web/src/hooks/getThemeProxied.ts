@@ -3,6 +3,7 @@ import type { MutableRefObject } from 'react'
 import { getConfig, getSetting } from '../config'
 import { getVariable } from '../createVariable'
 import { getDynamicVal } from '../helpers/getDynamicVal'
+import { inlineLayerKey, type InlineLayerInfo } from '../helpers/variables'
 import type {
   ThemeParsed,
   ThemeState,
@@ -147,7 +148,31 @@ export function getThemeProxied(
             )
           }
 
-          if (shouldOptimize) {
+          // an inline <Variables> layer overrides this key: the config.themes
+          // pair below would bypass it. use the layer's literal light/dark
+          // pair when it has one, otherwise deopt to normal tracking
+          const inlineLayer = (curState.theme as any)?.[inlineLayerKey] as
+            | InlineLayerInfo
+            | undefined
+          const inlineOverridden = !!inlineLayer?.overridden.has(key)
+
+          if (shouldOptimize && inlineOverridden) {
+            const pair = inlineLayer!.pairs[key]
+            if (pair) {
+              if (!optimizeForFirstRender) {
+                track(key, true)
+              }
+              return getDynamicVal({
+                scheme,
+                val: String(pair[scheme]),
+                oppositeVal: String(pair[scheme === 'dark' ? 'light' : 'dark']),
+              })
+            }
+            // referenced values have no precomputed pair: fall through to
+            // the tracked path below
+          }
+
+          if (shouldOptimize && !inlineOverridden) {
             const oppositeScheme = scheme === 'dark' ? 'light' : 'dark'
             const oppositeName = name.replace(scheme, oppositeScheme)
             const color = getVariable(config.themes[name]?.[key])

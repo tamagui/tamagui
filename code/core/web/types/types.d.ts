@@ -615,6 +615,8 @@ export type UseThemeWithStateProps = ThemeProps & {
     passThrough?: boolean;
     disable?: boolean;
     needsUpdate?: () => boolean;
+    /** <Variables> inline theme layer: patches merged over the parent theme */
+    inlineValues?: Pick<VariablesProps, 'values' | 'dark' | 'light'>;
 };
 type ArrayIntersection<A extends any[]> = A[keyof A];
 type GetAltThemeNames<S> = (S extends `${infer Theme}_${infer Alt}` ? Theme | GetAltThemeNames<Alt> : S) | S;
