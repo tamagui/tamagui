@@ -1,4 +1,4 @@
-import { createRefComponent } from '@tamagui/core'
+import { createChangeEventDetails, createRefComponent } from '@tamagui/core'
 import { useIsPresent } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb } from '@tamagui/constants'
@@ -104,7 +104,7 @@ export type ToastExtraProps = {
    */
   duration?: number
   /**
-   * Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.
+   * Event handler called when the escape key is down. It can be canceled by calling `details.cancel()`.
    */
   onEscapeKeyDown?: DismissableProps['onEscapeKeyDown']
   /**
@@ -386,8 +386,13 @@ const ToastImpl = createRefComponent<TamaguiElement, ToastImplProps>(
                       {...(isWeb && {
                         onKeyDown: composeEventHandlers(props.onKeyDown, (event) => {
                           if (event.key !== 'Escape') return
-                          onEscapeKeyDown?.(event)
-                          if (!event.defaultPrevented) {
+                          const details = createChangeEventDetails(
+                            'escape-key',
+                            event,
+                            event.currentTarget
+                          )
+                          onEscapeKeyDown?.(details)
+                          if (!details.isCanceled) {
                             context.isFocusedToastEscapeKeyDownRef.current = true
                             handleClose()
                           }

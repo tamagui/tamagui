@@ -62,17 +62,13 @@ export const SelectContent = ({
           // SelectImpl has its own document pointerdown listener for outside clicks,
           // and focus changes during open (e.g. FocusScope trapping) shouldn't dismiss.
           // only escape key should trigger onDismiss here. user handlers run first,
-          // then we always preventDefault so this layer never auto-dismisses.
-          onFocusOutside={composeEventHandlers(
-            onFocusOutside,
-            (e) => e.preventDefault(),
-            {
-              checkDefaultPrevented: false,
-            }
-          )}
+          // then we always cancel so this layer never auto-dismisses.
+          onFocusOutside={composeEventHandlers(onFocusOutside, (e) => e.cancel(), {
+            checkDefaultPrevented: false,
+          })}
           onPointerDownOutside={composeEventHandlers(
             onPointerDownOutside,
-            (e) => e.preventDefault(),
+            (e) => e.cancel(),
             { checkDefaultPrevented: false }
           )}
         >
@@ -82,11 +78,11 @@ export const SelectContent = ({
             trapped
             onMountAutoFocus={(e) => {
               // prevent FocusScope from auto-focusing - floating-ui handles focus in SelectItem
-              e.preventDefault()
+              e.cancel()
             }}
             onUnmountAutoFocus={(e) => {
               // return focus to trigger on close
-              e.preventDefault()
+              e.cancel()
               const trigger = context.floatingContext?.refs?.reference?.current
               if (trigger instanceof HTMLElement) {
                 trigger.focus()

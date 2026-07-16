@@ -31,12 +31,6 @@ declare const Dismissable: import("@tamagui/compose-refs").RefComponent<HTMLElem
     asChild?: boolean;
 }>;
 declare const DismissableBranch: import("@tamagui/compose-refs").RefComponent<TamaguiElement, DismissableBranchProps>;
-export type PointerDownOutsideEvent = CustomEvent<{
-    originalEvent: PointerEvent;
-}>;
-export type FocusOutsideEvent = CustomEvent<{
-    originalEvent: FocusEvent;
-}>;
 export { Dismissable, DismissableBranch };
-export type { DismissableProps };
+export type { DismissableDismissDetails, DismissableProps, FocusOutsideDetails, InteractOutsideDetails, PointerDownOutsideDetails, } from './DismissableProps';
 //# sourceMappingURL=Dismissable.d.ts.map

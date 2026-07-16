@@ -186,7 +186,7 @@ interface MenuContentImplProps
   extends MenuContentImplPrivateProps, Omit<PopperContentProps, 'dir' | 'onPlaced'> {
   /**
    * Event handler called when auto-focusing on close.
-   * Can be prevented.
+   * Can be canceled.
    */
   onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
 
@@ -640,7 +640,7 @@ export function createBaseMenu() {
         // We make sure we don't trigger our `onDismiss` in such case.
         onFocusOutside={composeEventHandlers(
           props.onFocusOutside,
-          (event: Event) => event.preventDefault(),
+          (event) => event.cancel(),
           { checkDefaultPrevented: false }
         )}
         onDismiss={() => context.onOpenChange(false)}
@@ -782,13 +782,13 @@ export function createBaseMenu() {
         // relative to the viewport. window/document scrolls have `document`
         // as the target, which contains the anchor, so those still dismiss.
         if (anchor && !scrolled.contains(anchor)) return
-        onDismiss?.()
+        context.onOpenChange(false)
       }
       window.addEventListener('scroll', handleScroll, { capture: true, passive: true })
       return () => {
         window.removeEventListener('scroll', handleScroll, { capture: true })
       }
-    }, [disableDismissOnScroll, context.open, onDismiss, popperContext.refs])
+    }, [disableDismissOnScroll, context.open, context.onOpenChange, popperContext.refs])
 
     // Make sure the whole tree has focus guards as our `MenuContent` may be
     // the last element in the DOM (beacuse of the `Portal`)
@@ -914,7 +914,7 @@ export function createBaseMenu() {
             onMountAutoFocus={composeEventHandlers(onOpenAutoFocus, (event) => {
               // when opening, explicitly focus the content area only and leave
               // `onEntryFocus` in control of focusing first item
-              event.preventDefault()
+              event.cancel()
               // contentRef.current doesn't reliably point to the focusable DOM element
               // due to how refs propagate through Tamagui's styled component chain,
               // so we query for the element directly using the data attribute
@@ -942,11 +942,11 @@ export function createBaseMenu() {
                 loop={loop}
                 currentTabStopId={currentItemId}
                 onCurrentTabStopIdChange={setCurrentItemId}
-                onEntryFocus={composeEventHandlers(onEntryFocus, (event: Event) => {
+                onEntryFocus={composeEventHandlers(onEntryFocus, (event) => {
                   // for keyboard users, focus first item for immediate navigation
                   // for mouse users, prevent auto-focus to avoid showing focus style
                   if (!rootContext.isUsingKeyboardRef.current) {
-                    event.preventDefault()
+                    event.cancel()
                   }
                 })}
               >
@@ -1782,15 +1782,15 @@ export function createBaseMenu() {
                 ) as HTMLElement | null
                 ;(content || root)?.focus({ preventScroll: true })
               }
-              event.preventDefault()
+              event.cancel()
             }}
             // The menu might close because of focusing another menu item in the parent menu. We
             // don't want it to refocus the trigger in that case so we handle trigger focus ourselves.
-            onCloseAutoFocus={(event) => event.preventDefault()}
+            onCloseAutoFocus={(event) => event.cancel()}
             onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) => {
               // We prevent closing when the trigger is focused to avoid triggering a re-open animation
               // on pointer interaction.
-              if (event.target !== subContext.trigger) context.onOpenChange(false)
+              if (event.event?.target !== subContext.trigger) context.onOpenChange(false)
             })}
             onEscapeKeyDown={composeEventHandlers(props.onEscapeKeyDown, (event) => {
               // close only this submenu, not the root menu
@@ -1799,7 +1799,7 @@ export function createBaseMenu() {
               // @ts-ignore focusVisible is a newer API
               subContext.trigger?.focus({ focusVisible: true })
               // ensure pressing escape in submenu doesn't escape full screen mode
-              event.preventDefault()
+              event.cancel()
             })}
             {...(isWeb
               ? {

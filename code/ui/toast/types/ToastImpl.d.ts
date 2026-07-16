@@ -56,7 +56,7 @@ export type ToastExtraProps = {
      */
     duration?: number;
     /**
-     * Event handler called when the escape key is down. It can be prevented by calling `event.preventDefault`.
+     * Event handler called when the escape key is down. It can be canceled by calling `details.cancel()`.
      */
     onEscapeKeyDown?: DismissableProps['onEscapeKeyDown'];
     /**

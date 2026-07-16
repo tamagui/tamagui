@@ -215,12 +215,12 @@ type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
     trapFocus?: FocusScopeProps['trapped'];
     /**
      * Event handler called when auto-focusing on open.
-     * Can be prevented.
+     * Can be canceled.
      */
     onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus'];
     /**
      * Event handler called when auto-focusing on close.
-     * Can be prevented.
+     * Can be canceled.
      */
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
     context: DialogContextValue;

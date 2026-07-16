@@ -1,4 +1,5 @@
 import type { Scope } from '@tamagui/create-context'
+import type { TamaguiChangeEventDetails } from '@tamagui/core'
 import type React from 'react'
 
 export type ScopedProps<P> = P & { __scopeFocusScope?: Scope }
@@ -35,15 +36,15 @@ export interface FocusScopeProps {
 
   /**
    * Event handler called when auto-focusing on mount.
-   * Can be prevented.
+   * Can be canceled.
    */
-  onMountAutoFocus?: (event: Event) => void
+  onMountAutoFocus?: (details: TamaguiChangeEventDetails<'trigger-focus', Event>) => void
 
   /**
    * Event handler called when auto-focusing on unmount.
-   * Can be prevented.
+   * Can be canceled.
    */
-  onUnmountAutoFocus?: (event: Event) => void
+  onUnmountAutoFocus?: (details: TamaguiChangeEventDetails<'focus-out', Event>) => void
 
   /**
    * If unmount is animated, you want to force re-focus at start of animation not after
