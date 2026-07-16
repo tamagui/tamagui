@@ -67,3 +67,4 @@ code/studio/types/**
 .playwright-report/
 .playwright-results/
 test-results/
+.agentbus/
