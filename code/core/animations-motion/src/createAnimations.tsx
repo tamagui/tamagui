@@ -109,6 +109,7 @@ type MotionRefs = {
   exitCompleteScheduled: boolean
   wasEntering: boolean
   wasDisabled: boolean
+  wasNoClass: boolean
 }
 
 export function createAnimations<A extends Record<string, AnimationConfig>>(
@@ -138,8 +139,15 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         isHydratingGlobal = true
       }
 
-      const { props, style, componentState, stateRef, useStyleEmitter, presence } =
-        animationProps
+      const {
+        props,
+        style,
+        componentState,
+        stateRef,
+        useStyleEmitter,
+        presence,
+        styleProps,
+      } = animationProps
 
       const animationKey = Array.isArray(props.transition)
         ? props.transition[0]
@@ -169,6 +177,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           exitCompleteScheduled: false,
           wasEntering: false,
           wasDisabled: false,
+          wasNoClass: !!styleProps.noClass,
         }
       }
 
@@ -514,7 +523,18 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         // animate. components with an explicit enter animation still animate.
         const justEnabled = refs.current.wasDisabled && !disableAnimation
         refs.current.wasDisabled = disableAnimation
-        if (justEnabled && animationState !== 'enter') {
+
+        // SSR hydration handoff: styleProps.noClass flips false -> true on the
+        // render where the core strips the SSR atomic classes and moves every
+        // style inline (outputStyle: 'inline'). the style delta is huge but the
+        // visual state is unchanged — animating it would spring every property
+        // from the stripped (zeroed) computed values, visibly collapsing and
+        // re-growing SSR-painted elements right after load. jump instead: the
+        // inline writes below run pre-paint, so the strip is never visible.
+        const justStrippedClasses = !refs.current.wasNoClass && !!styleProps.noClass
+        refs.current.wasNoClass = !!styleProps.noClass
+
+        if ((justEnabled || justStrippedClasses) && animationState !== 'enter') {
           const node = stateRef.current.host
           if (node instanceof HTMLElement) {
             if (dontAnimate) Object.assign(node.style, dontAnimate)
@@ -530,7 +550,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           dontAnimate,
           animationOptions,
         })
-      }, [style, isExiting, disableAnimation])
+      }, [style, isExiting, disableAnimation, styleProps.noClass])
 
       if (process.env.NODE_ENV === 'development') {
         if (props['debug'] && props['debug'] !== 'profile') {
