@@ -363,6 +363,32 @@ If you relied on unsupported web-only props through the old lite re-export, like
 momentum events, `snapTo*`, or `keyboardDismissMode`, replace them with direct
 web behavior or a custom wrapper.
 
+## Pick your render tradeoff with optimizeFor
+
+Tamagui tracks exactly which theme and media values each component reads, so a
+theme or breakpoint change re-renders only the components that used the changed
+values. That granularity is the right default on web, but the bookkeeping isn't
+free: every component pays a small tracking cost on its first render.
+
+v3 adds a setting that makes the tradeoff explicit:
+
+```tsx
+export const config = createTamagui({
+  settings: {
+    // "updates": granular theme/media tracking, minimal re-renders on change
+    // "first-render": skip tracking for the fastest initial render
+    optimizeFor: 'first-render',
+  },
+})
+```
+
+The defaults now differ per platform: web optimizes for `updates`, native
+optimizes for `first-render`. On native, initial render speed dominates the
+user experience and full-tree re-renders are cheaper without the DOM, so
+skipping per-key tracking is close to free. Theme and media changes still
+apply correctly in both modes, they just re-render more coarsely under
+`first-render`.
+
 ## Migrating
 
 Start with the [v3 upgrade guide](/docs/guides/how-to-upgrade). It includes the
