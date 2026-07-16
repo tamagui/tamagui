@@ -64,6 +64,9 @@ export const ThemeInverseDemo = lazyDemo(() =>
 export const FormsDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/FormsDemo').then((x) => x.FormsDemo)
 )
+export const FieldDemo = lazyDemo(() =>
+  import('@tamagui/demos/demo/FieldDemo').then((x) => x.FieldDemo)
+)
 export const InputsDemo = lazyDemo(() =>
   import('@tamagui/demos/demo/InputsDemo').then((x) => x.InputsDemo)
 )

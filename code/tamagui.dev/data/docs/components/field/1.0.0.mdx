@@ -1,0 +1,321 @@
+---
+title: Field
+description: Accessible labels, messages, and validation state for form controls
+name: field
+component: Field
+package: field
+demoName: Field
+---
+
+<HeroContainer>
+  <FieldDemo />
+</HeroContainer>
+
+```tsx hero template=Field
+
+```
+
+<Highlights
+  features={[
+    `Automatically connects labels, descriptions, errors, and controls.`,
+    `Validates with functions or any Standard Schema library.`,
+    `Shares the same validation state on web, iOS, and Android.`,
+    `Ships behavior only, so every visual choice stays in your app.`,
+  ]}
+/>
+
+Field groups a control with its accessible name, supporting messages, and
+validation state. It works on its own for common forms and can also sit under
+React Hook Form or another form library.
+
+The package has no visual defaults. Style its parts directly or copy a small
+skin into your app.
+
+## Installation
+
+Field is already installed in `tamagui`, or you can install it independently:
+
+```bash
+npm install @tamagui/field
+```
+
+## Usage
+
+```tsx
+import { Field, Form } from 'tamagui'
+
+export function ProfileForm() {
+  return (
+    <Form onSubmit={(values) => console.log(values)}>
+      <Field name="email" validationMode="onBlur">
+        <Field.Label>Email</Field.Label>
+        <EmailInput required />
+        <Field.Description>Used for account recovery.</Field.Description>
+        <Field.Error />
+      </Field>
+
+      <Form.Trigger />
+    </Form>
+  )
+}
+```
+
+Controls integrate through `useFieldControl()`. The hook is also the extension
+point for custom inputs:
+
+```tsx
+import { Field, Input } from 'tamagui'
+import { useEffect, useRef } from 'react'
+
+function EmailInput(props) {
+  const field = Field.useFieldControl()
+  const ref = useRef(null)
+  const value = useRef('')
+
+  useEffect(() => {
+    return field.registerControl({
+      id: field.ariaProps.id,
+      controlRef: ref,
+      inputRef: ref,
+      getValue: () => value.current,
+      required: props.required,
+    })
+  }, [field.ariaProps.id, field.registerControl, props.required])
+
+  return (
+    <Input
+      {...props}
+      {...field.ariaProps}
+      {...field.dataProps}
+      ref={ref}
+      name={field.name}
+      disabled={field.disabled || props.disabled}
+      onFocus={field.onFocus}
+      onBlur={() => field.onBlur(value.current)}
+      onChange={(event) => {
+        value.current = event.target.value
+        field.onChange(value.current)
+      }}
+    />
+  )
+}
+```
+
+Outside a Field, `useFieldControl()` returns a stable no-op contract. A shared
+control can consume it without adding a wrapper check or a second render path.
+
+## Validation
+
+Pass a function that returns one error, several errors, or `null`:
+
+```tsx
+<Field
+  name="username"
+  validate={(value, formValues) => {
+    if (String(value).length < 3) {
+      return 'Use at least 3 characters'
+    }
+    if (value === formValues.email) {
+      return 'Username and email must differ'
+    }
+    return null
+  }}
+>
+  {/* ... */}
+</Field>
+```
+
+Async validators are supported. They never delay a submit. Field uses
+monotonic validation commits, so a slow response for an old value cannot
+replace a newer result.
+
+Field also accepts a [Standard Schema](https://standardschema.dev/) directly.
+Zod 4, Valibot, and ArkType implement this interface:
+
+```tsx
+import * as v from 'valibot'
+
+const email = v.pipe(v.string(), v.email('Enter a valid email'))
+
+<Field name="email" validate={email}>
+  {/* ... */}
+</Field>
+```
+
+`valid` is intentionally tri-state:
+
+- `null` means the field has not been evaluated.
+- `true` means the latest validation passed.
+- `false` means the field is invalid.
+
+Pristine fields do not emit valid or invalid state. A missing required value is
+also suppressed until the user edits the field or tries to submit the form.
+
+## Validation modes
+
+`validationMode` can be set on Form and overridden by a Field:
+
+- `onSubmit` is the default. After the first submit attempt, that field
+  revalidates as its value changes.
+- `onBlur` validates when focus leaves the control.
+- `onChange` validates on every change. Use `validationDebounceTime` to delay
+  expensive checks.
+
+```tsx
+<Form validationMode="onSubmit">
+  <Field name="username" validationMode="onChange" validationDebounceTime={250}>
+    {/* ... */}
+  </Field>
+</Form>
+```
+
+## Styling field state
+
+Every Field part emits `data-valid`, `data-invalid`, `data-touched`,
+`data-dirty`, `data-filled`, `data-focused`, and `data-disabled` on web.
+The same keys are published through `FieldStyledContext` on native and web.
+
+```tsx
+import { Field, FieldStyledContext, Input, styled } from 'tamagui'
+
+const FieldInput = styled(Input, {
+  context: FieldStyledContext,
+
+  variants: {
+    invalid: {
+      true: {
+        borderColor: '$red9',
+      },
+    },
+  },
+})
+```
+
+## Groups with Field.Item
+
+Use `Field.Item` when one logical field owns several controls. Each item gets
+its own label and description while sharing the root field state.
+
+```tsx
+<Field name="notifications">
+  <Field.Label>Notifications</Field.Label>
+  <Field.Description>Choose every channel you want to use.</Field.Description>
+
+  <Field.Item>
+    <Field.Label>Email</Field.Label>
+    <NotificationCheckbox value="email" />
+  </Field.Item>
+
+  <Field.Item>
+    <Field.Label>Push</Field.Label>
+    <NotificationCheckbox value="push" />
+  </Field.Item>
+
+  <Field.Error />
+</Field>
+```
+
+## Anatomy
+
+```tsx
+<Field>
+  <Field.Label />
+  {/* integrated control */}
+  <Field.Description />
+  <Field.Error />
+  <Field.Item />
+</Field>
+```
+
+## API Reference
+
+### Field
+
+Contains the field state and validation behavior. It accepts
+[Tamagui Props](/docs/intro/props), plus:
+
+<PropsTable
+  data={[
+    {
+      name: 'name',
+      type: 'string',
+      description: `The key used when Form projects submitted values and external errors.`,
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      default: 'false',
+      description: `Disables the field and its integrated controls.`,
+    },
+    {
+      name: 'validate',
+      type: 'FieldValidator | StandardSchemaV1',
+      description: `Validates the field value. Functions receive (value, formValues).`,
+    },
+    {
+      name: 'validationMode',
+      type: `'onSubmit' | 'onBlur' | 'onChange'`,
+      default: `'onSubmit'`,
+      description: `Overrides the surrounding Form validation mode.`,
+    },
+    {
+      name: 'validationDebounceTime',
+      type: 'number',
+      default: '0',
+      description: `Milliseconds to debounce validation in onChange mode.`,
+    },
+  ]}
+/>
+
+### Field.Label
+
+An accessible label. It is associated with the current item control
+automatically. On native, pressing it focuses the registered control.
+
+Accepts [Tamagui Props](/docs/intro/props).
+
+### Field.Description
+
+Supporting text added to the control description. Associations continue to
+work when the message is rendered through a portal.
+
+Accepts [Tamagui Props](/docs/intro/props).
+
+### Field.Error
+
+Renders the current validation or Form error when the field is invalid.
+
+<PropsTable
+  data={[
+    {
+      name: 'match',
+      type: 'boolean | keyof FieldValidityState',
+      description: `Shows for all errors by default, for one ValidityState key, or always when true.`,
+    },
+  ]}
+/>
+
+### Field.Item
+
+Creates label and description scope for one member of a grouped field.
+
+<PropsTable
+  data={[
+    {
+      name: 'disabled',
+      type: 'boolean',
+      default: 'false',
+      description: `Disables this item while retaining the root field state.`,
+    },
+  ]}
+/>
+
+### useFieldState
+
+Returns the current value, errors, validity, and the `touched`, `dirty`,
+`filled`, `focused`, and `disabled` flags.
+
+### useFieldControl
+
+Returns the control integration contract: `name`, `disabled`, `ariaProps`,
+`dataProps`, focus/change reporters, and `registerControl`.
