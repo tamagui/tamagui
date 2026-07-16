@@ -162,6 +162,28 @@ Contains every component for the sheet.
       default: 'false',
       description: `By default Sheet will prefer the open prop over a parent component that is controlling it via Adapt. In general if you want to Adapt to a sheet, you'd leave the open prop undefined. If you'd like to have the parent override the prop you've set manually on Sheet, set this to true.`,
     },
+    {
+      name: 'onTransition',
+      type: `(e: { phase: 'start' | 'end', cause: 'open' | 'close' | 'snap', position: number, finished?: boolean }) => void`,
+      description: `Fires at the start and end of the sheet's position transition. cause is "open" when moving from closed, "close" when moving off screen, and "snap" when moving between snap points while open. On the end phase, finished is false when the transition was interrupted (e.g. a close canceled by a re-open). position is the resolved translateY target in px from the top of the screen. Replaces the old onAnimationComplete prop.`,
+    },
+    {
+      name: 'disableHideWhenClosed',
+      type: 'boolean',
+      default: 'false',
+      description: `By default a fully-closed sheet wrapper is hidden with display: "none". Set this to keep the closed wrapper laid out, for example so native visual effects can initialize below it. pointerEvents still gates interaction while closed.`,
+    },
+    {
+      name: 'disableTransparencyHide',
+      type: 'boolean',
+      description: `Deprecated alias for disableHideWhenClosed, honored through the v3 betas.`,
+    },
+    {
+      name: 'unmountChildrenWhenHidden',
+      type: 'boolean',
+      default: 'false',
+      description: `(experimental) Remove the children while the sheet is fully closed to save some rendering cost. Can interfere with animations.`,
+    },
   ]}
 />
 
@@ -171,6 +193,10 @@ Displays behind the sheet content. Extends [YStack](/ui/stacks).
 
 `Sheet.Overlay` must be a direct child of `Sheet`. It renders outside the animated
 content region so it stays fixed while the container moves.
+
+In v3 the sheet no longer fades anything for you. `Sheet.Overlay` has no baked-in
+opacity, so you drive its fade yourself. See [Overlay fades](#overlay-fades) for
+the two supported patterns.
 
 ### Sheet.Container
 
@@ -214,10 +240,105 @@ Shows a handle above the container by default. On tap, it will cycle between
 
 Extends [XStack](/ui/stacks).
 
+In v3 the Handle ships no opacity of its own. The idle dim and the fade-in on
+open are aesthetics, so they live in the copied skin rather than the behavior
+package. Set `opacity` (and an `open`-driven opacity if you want it) on your own
+`Sheet.Handle`.
+
 ### Sheet.ScrollView
 
 Allows scrolling within Sheet. Extends
 [ScrollView](/ui/scroll-view).
+
+## Sheet.useAnimatedPosition
+
+`Sheet.useAnimatedPosition()` returns the sheet's live animated position so you
+can drive effects that track the drag on the UI thread. Call it inside a `Sheet`;
+it throws with a clear message outside that scope.
+
+```tsx
+const { value, screenSize, frameSize, snapOffsets, minY } =
+  Sheet.useAnimatedPosition()
+```
+
+- `value` is the exact `UniversalAnimatedNumber` driving the frame's translateY,
+  in px from the top of the screen. Feed it to
+  [useAnimatedNumberStyle](/docs/core/animations#imperative-animation-hooks).
+- `screenSize` is the height of the viewport the sheet positions against.
+- `frameSize` is the measured height of the sheet frame.
+- `snapOffsets` are the resolved translateY positions, in the same order as
+  `snapPoints`.
+- `minY` is the top-most (fully open) position.
+
+These are enough to compute any progress mapping inside a `getStyle` worklet.
+There is no separate derived progress value; the recipe lives in docs and the
+canonical skin.
+
+## Overlay fades
+
+The sheet does not fade anything for you, so an overlay fade is your code. There
+are two supported patterns.
+
+**1. Presence fade** — animates on open and close only. Put enter/exit styles on
+`Sheet.Overlay`:
+
+```tsx
+<Sheet.Overlay
+  opacity={0.5}
+  transition="quick"
+  enterStyle={{ opacity: 0 }}
+  exitStyle={{ opacity: 0 }}
+/>
+```
+
+**2. Drag-linked fade** — tracks the finger. Read the animated position and map
+it to opacity with `useAnimatedNumberStyle`:
+
+```tsx
+import type { Animated } from 'react-native'
+import {
+  Sheet,
+  View as TamaguiView,
+  useAnimatedNumberStyle,
+  useConfiguration,
+} from 'tamagui'
+
+// drag-linked overlay fade built entirely on the public hooks:
+// Sheet.useAnimatedPosition() gives the live translateY, useAnimatedNumberStyle
+// maps it to an opacity worklet. rendered through the driver's animated view so
+// it works on every driver (css re-renders + DOM transition, motion/reanimated
+// run on their own value).
+function DragLinkedBackdrop() {
+  const { animationDriver } = useConfiguration()
+  const AnimatedView = (animationDriver?.View ?? TamaguiView) as typeof Animated.View
+
+  const { value, screenSize } = Sheet.useAnimatedPosition()
+
+  const style = useAnimatedNumberStyle(value, (y: number) => {
+    'worklet'
+    return { opacity: Math.max(0, 0.6 * (1 - y / screenSize)) }
+  })
+
+  return (
+    <Sheet.Overlay backgroundColor="transparent">
+      <AnimatedView
+        transition="quick"
+        style={[
+          { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' },
+          style,
+        ]}
+      />
+    </Sheet.Overlay>
+  )
+}
+// opt this wrapper into the sheet's overlay layer
+DragLinkedBackdrop.isSheetOverlay = true
+```
+
+A custom drag-linked overlay wrapper like this must set the static
+`isSheetOverlay = true` flag so the sheet hoists it into the overlay layer the
+way it does for `Sheet.Overlay`, and it should render through the driver's
+animated view so the worklet-driven style applies on every driver.
 
 ## Native Gesture Handler Integration
 
@@ -276,6 +397,11 @@ This ensures:
 If you don't set up `react-native-gesture-handler`, Sheet falls back to React Native's built-in `PanResponder`. This works well for basic use cases but has some limitations on iOS where scroll and pan gestures can occasionally conflict.
 
 ## Notes
+
+A fully-closed sheet is hidden with `display: 'none'` rather than by fading to
+transparent. Use [`disableHideWhenClosed`](#sheet) if you need the closed
+wrapper to stay laid out. `pointerEvents` still gates interaction while closed,
+and `unmountChildrenWhenHidden` keys off the same closed state.
 
 For Android you need to manually re-propagate any context when using `modal`.
 This is because React Native doesn't support portals yet.

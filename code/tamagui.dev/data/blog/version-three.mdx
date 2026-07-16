@@ -72,6 +72,28 @@ props, tokens, media queries, and animations.
 Read the full [Tailwind mode post](/blog/tailwind-mode) for the compiler details
 and current utility coverage.
 
+## Style precedence is authored order
+
+Because Tamagui props, `style`, `className`, and Tailwind utilities all flow
+through one compiler now, they resolve under one rule: every contribution
+participates in a single forward pass, and later output wins per property.
+
+Base `styled()` values come first, then variants, then call-site props, `style`,
+and `className`. Matched compound variants run immediately after their last
+selector at that authored position. Neither `style` nor `className` is a
+privileged tier that always wins.
+
+The practical consequence is that attribute order matters. Reordering authored
+props can change the result, including in the Tailwind class pipeline.
+
+```tsx
+// bg-blue-500 wins: it is authored after backgroundColor
+<View backgroundColor="$red9" className="bg-blue-500" />
+
+// $red9 wins: it is authored after the class
+<View className="bg-blue-500" backgroundColor="$red9" />
+```
+
 ## Removed deprecated APIs
 
 v3 removes APIs that already had clearer replacements.
@@ -253,8 +275,62 @@ slide-out, and parts own their presence animation lifecycles.
 ```
 
 The practical effect: media flips no longer tear content out mid-exit, overlay
-pointer locks are released correctly, and animation drivers can report
-`onDidAnimate` completion at the part level.
+pointer locks are released correctly, and animation drivers report transition
+completion at the part level through the new typed `onTransition` lifecycle.
+
+## A first-class animation API
+
+v3 stops shipping framework-owned fades and other baked-in animation, so it also
+gives you first-class ways to drive those effects yourself. The animation surface
+that used to live inside the drivers is now public.
+
+The same animated-number primitives the drivers use are exported from `tamagui`:
+
+```tsx
+import {
+  useAnimationDriver,
+  useAnimatedNumber,
+  useAnimatedNumberStyle,
+  useAnimatedNumbersStyle,
+  useAnimatedNumberReaction,
+} from 'tamagui'
+```
+
+Each is a thin delegation to the configured driver, so your code exercises the
+same surface first-party components do. On the CSS driver, animated numbers now
+run on a `requestAnimationFrame` ticker with real completion callbacks instead of
+an estimated-duration timer, so completion is accurate on the web.
+
+There is also a typed transition lifecycle on every animated component. It
+replaces the untyped, enter-only `onDidAnimate`:
+
+```tsx
+<View
+  transition="quick"
+  onTransition={(e) => {
+    // e: { phase: 'start' | 'end', cause: 'enter' | 'exit' | 'update', finished?: boolean }
+  }}
+/>
+```
+
+Sheet publishes its live position through the same hooks, so drag-linked effects
+are ordinary user code:
+
+```tsx
+import { Sheet, useAnimatedNumberStyle } from 'tamagui'
+
+function Backdrop() {
+  const { value, screenSize } = Sheet.useAnimatedPosition()
+  const style = useAnimatedNumberStyle(value, (y) => {
+    'worklet'
+    return { opacity: Math.max(0, 0.5 * (1 - y / screenSize)) }
+  })
+  return <Sheet.Overlay style={style} />
+}
+```
+
+See the [animations docs](/docs/core/animations) for the full hook family and the
+[Sheet docs](/ui/sheet#overlay-fades) for both overlay fade patterns.
 
 ## FocusScope has a zero-focus mode
 
