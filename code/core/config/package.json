@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/config",
-  "version": "2.4.5-1784076621864",
+  "version": "2.4.6",
   "type": "module",
   "sideEffects": false,
   "main": "dist/cjs",

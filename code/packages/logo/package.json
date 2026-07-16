@@ -1,6 +1,6 @@
 {
   "name": "@tamagui/logo",
-  "version": "2.4.5-1784076621864",
+  "version": "2.4.6",
   "source": "src/index.tsx",
   "files": [
     "src",
