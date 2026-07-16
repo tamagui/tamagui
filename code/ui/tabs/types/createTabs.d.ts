@@ -304,7 +304,8 @@ type TabsExtraProps<Tab = string> = {
      */
     dir?: RovingFocusGroupProps['dir'];
     /**
-     * Whether a tab is activated automatically or manually. Only supported in web.
+     * Whether a tab is activated automatically or manually. Automatic activation is only
+     * supported on web; native tabs always activate manually.
      * @defaultValue automatic
      * */
     activationMode?: 'automatic' | 'manual';
