@@ -26,7 +26,11 @@ import {
   SHEET_OVERLAY_NAME,
 } from './constants'
 import { getNativeSheet } from './nativeSheet'
-import { SheetOverlayLayerContext, useSheetContext } from './SheetContext'
+import {
+  SheetOverlayLayerContext,
+  useAnimatedPosition,
+  useSheetContext,
+} from './SheetContext'
 import { SheetImplementationCustom } from './SheetImplementationCustom'
 import { SheetScrollView } from './SheetScrollView'
 import type { SheetProps, SheetScopedProps } from './types'
@@ -49,14 +53,14 @@ type SheetViewProps<ExtraProps extends object = {}> = SheetScopedProps<
 const SheetHandleFrame = styled(XStack, {
   name: SHEET_HANDLE_NAME,
 
+  // the behavior Handle ships no opacity rules; open/close aesthetics (fade in
+  // when open, dim when idle) live in the copied skin. see the canonical skin.
   variants: {
     open: {
       true: {
-        opacity: 1,
         pointerEvents: 'auto',
       },
       false: {
-        opacity: 0,
         pointerEvents: 'none',
       },
     },
@@ -322,5 +326,6 @@ export const SheetControlled = withStaticProperties(
 export const Sheet = withStaticProperties(SheetRoot, {
   Root: SheetRoot,
   Controlled: SheetControlled,
+  useAnimatedPosition,
   ...sheetParts,
 })

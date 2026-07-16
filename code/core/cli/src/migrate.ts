@@ -193,7 +193,7 @@ After:
 - Dialog, Popover, and Select use one Adapt handoff model.
 - Adapted Sheet content stays mounted through the sheet slide-out.
 - Parts own their presence animation lifecycles.
-- Animation drivers can complete part-level exits through \`onDidAnimate\`.
+- The \`onDidAnimate\` prop is replaced by the typed \`onTransition\` lifecycle: \`onTransition={(e) => e.phase === 'end' && e.cause === 'enter' && done()}\`.
 - \`Popover.Content forceMount\` now matches Dialog semantics.
 - \`Dialog.Content\` no longer accepts the old no-op \`size\` variant.
 - Non-modal Dialog content no longer enables RemoveScroll while open.

@@ -47,8 +47,14 @@ export type SheetProps = SheetScopedProps<{
      */
     unmountChildrenWhenHidden?: boolean;
     /**
-     * Keep the sheet content wrapper opaque while the sheet is hidden.
-     * Useful for native visual effects that cannot initialize below a transparent ancestor.
+     * By default a fully-closed sheet wrapper is hidden with `display: 'none'`.
+     * Set this to keep the closed wrapper laid out (e.g. for native visual effects
+     * that cannot initialize below a hidden ancestor). `pointerEvents` still gates
+     * interaction while closed.
+     */
+    disableHideWhenClosed?: boolean;
+    /**
+     * @deprecated use `disableHideWhenClosed` instead.
      */
     disableTransparencyHide?: boolean;
     /**
@@ -71,12 +77,21 @@ export type SheetProps = SheetScopedProps<{
     moveOnKeyboardChange?: boolean;
     containerComponent?: React.ComponentType<any>;
     /**
-     * Called when the sheet open/close animation completes.
+     * Fires at the start and end of the sheet's position transition. `cause` is
+     * `open` when moving from closed, `close` when moving off screen, and `snap`
+     * when moving between snap points while open. On the `end` phase, `finished`
+     * is `false` when the transition was interrupted (e.g. a close canceled by a
+     * re-open). `position` is the resolved translateY (px from screen top) target.
      */
-    onAnimationComplete?: (info: {
-        open: boolean;
-    }) => void;
+    onTransition?: (e: SheetTransitionEvent) => void;
 }>;
+export type SheetTransitionCause = 'open' | 'close' | 'snap';
+export type SheetTransitionEvent = {
+    phase: 'start' | 'end';
+    cause: SheetTransitionCause;
+    position: number;
+    finished?: boolean;
+};
 export type PositionChangeHandler = (position: number) => void;
 type OpenChangeHandler = ((open: boolean) => void) | React.Dispatch<React.SetStateAction<boolean>>;
 export type RemoveScrollProps = React.ComponentProps<typeof RemoveScroll>;

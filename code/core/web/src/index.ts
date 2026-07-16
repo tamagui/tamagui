@@ -95,6 +95,7 @@ export {
   mediaState,
   setMediaState,
 } from './helpers/mediaState'
+export * from './hooks/useAnimationDriver'
 export * from './hooks/useProps'
 export * from './hooks/useTheme'
 export * from './hooks/useThemeName'

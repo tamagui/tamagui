@@ -50,8 +50,8 @@ export function SheetFit3pcNativeRepro() {
 
   // 3pc focuses its primary input once the open animation completes, raising the
   // soft keyboard; with moveOnKeyboardChange the sheet then shifts up.
-  const handleAnimationComplete = ({ open: didOpen }: { open: boolean }) => {
-    if (didOpen) {
+  const handleTransition = (e: { phase: string; cause: string }) => {
+    if (e.phase === 'end' && e.cause !== 'close') {
       setTimeout(() => inputRef.current?.focus(), 150)
     }
   }
@@ -87,7 +87,7 @@ export function SheetFit3pcNativeRepro() {
         snapPointsMode="fit"
         dismissOnSnapToBottom
         moveOnKeyboardChange
-        onAnimationComplete={handleAnimationComplete}
+        onTransition={handleTransition}
       >
         <TamaguiSheet.Overlay
           testID="repro-3pc-native-overlay"

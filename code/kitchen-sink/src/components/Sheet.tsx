@@ -9,11 +9,22 @@ export const SheetHandle = styled(SheetBehavior.Handle, {
   zIndex: 10,
   marginHorizontal: '35%',
   marginBottom: '$2',
-  opacity: 0.6,
 
+  // Handle opacity aesthetics live in the skin, not the behavior package.
+  opacity: 0.5,
   hoverStyle: {
-    opacity: 0.85,
+    opacity: 0.7,
   },
+  variants: {
+    open: {
+      true: {
+        opacity: 1,
+      },
+      false: {
+        opacity: 0,
+      },
+    },
+  } as const,
 })
 
 export const SheetOverlay = styled(SheetBehavior.Overlay, {
@@ -68,5 +79,6 @@ export const SheetControlled = withStaticProperties(SheetControlledRoot, sheetPa
 export const Sheet = withStaticProperties(SheetRoot, {
   Root: SheetRoot,
   Controlled: SheetControlled,
+  useAnimatedPosition: SheetBehavior.useAnimatedPosition,
   ...sheetParts,
 })

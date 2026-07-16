@@ -7,6 +7,7 @@ import {
   getConfig,
   getSplitStyles,
   hooks,
+  type OnTransition,
   styleToCSS,
   Text,
   TransitionProp,
@@ -105,7 +106,11 @@ type MotionRefs = {
   disableAnimation: boolean
   wasEntering: boolean
   wasDisabled: boolean
-  onDidAnimate: (() => void) | null | undefined
+  onTransition: OnTransition | null | undefined
+  enterStarted: boolean
+  exitStarted: boolean
+  updateInFlight: boolean
+  updateControls: AnimationPlaybackControlsWithThen | null
   wasNoClass: boolean
 }
 
@@ -143,7 +148,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         stateRef,
         useStyleEmitter,
         presence,
-        onDidAnimate,
+        onTransition,
         styleProps,
       } = animationProps
 
@@ -177,9 +182,23 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
           disableAnimation: true,
           wasEntering: false,
           wasDisabled: false,
-          onDidAnimate: undefined,
+          onTransition: undefined,
+          enterStarted: false,
+          exitStarted: false,
+          updateInFlight: false,
+          updateControls: null,
           wasNoClass: !!styleProps.noClass,
         }
+      }
+
+      const emit = (
+        phase: 'start' | 'end',
+        cause: 'enter' | 'exit' | 'update',
+        finished?: boolean
+      ) => {
+        refs.current.onTransition?.(
+          phase === 'end' ? { phase, cause, finished } : { phase, cause }
+        )
       }
 
       // track entering state transitions
@@ -205,7 +224,7 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       refs.current.sendExitComplete = sendExitComplete
       refs.current.animationState = animationState
       refs.current.disableAnimation = disableAnimation
-      refs.current.onDidAnimate = onDidAnimate
+      refs.current.onTransition = onTransition
 
       // detect transition into exiting state
       const justStartedExiting = isExiting && !refs.current.wasExiting
@@ -222,6 +241,14 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
       useEffect(() => {
         refs.current.wasExiting = isExiting
       })
+
+      // exit interrupted by a re-enter: emit a finished:false end for it
+      useIsomorphicLayoutEffect(() => {
+        if (justStoppedExiting && refs.current.exitStarted) {
+          refs.current.exitStarted = false
+          emit('end', 'exit', false)
+        }
+      }, [justStoppedExiting])
 
       const {
         dontAnimate = {},
@@ -260,7 +287,6 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         const isCurrentlyExiting = refs.current.isExiting
         const currentSendExitComplete = refs.current.sendExitComplete
         const currentAnimationState = refs.current.animationState
-        const currentOnDidAnimate = refs.current.onDidAnimate
 
         // freeze exit target: once the first exit animation starts, subsequent
         // renders (e.g. direction change) should not reverse the exit animation.
@@ -451,44 +477,60 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
         } finally {
           // exit completion: notify AnimatePresence when exit animation finishes
           if (isCurrentlyExiting && currentSendExitComplete) {
+            // an enter animation that was still in flight is now interrupted
+            if (refs.current.enterStarted) {
+              refs.current.enterStarted = false
+              emit('end', 'enter', false)
+            }
             if (startedControls) {
               // new animation started — attach completion handler
+              if (!refs.current.exitStarted) {
+                refs.current.exitStarted = true
+                emit('start', 'exit')
+              }
               refs.current.exitCompleteScheduled = true
+              const complete = (finished: boolean) => {
+                // guard: only complete if still exiting (prevents stale promise
+                // from calling sendExitComplete after a re-entry cancels the exit)
+                if (!refs.current.isExiting) return
+                if (refs.current.exitStarted) {
+                  refs.current.exitStarted = false
+                  // exit 'end' fires immediately before presence safeToRemove
+                  emit('end', 'exit', finished)
+                }
+                currentSendExitComplete()
+              }
               startedControls.finished
-                .then(() => {
-                  // guard: only complete if still exiting (prevents stale promise
-                  // from calling sendExitComplete after a re-entry cancels the exit)
-                  if (refs.current.isExiting) {
-                    currentSendExitComplete()
-                  }
-                })
-                .catch(() => {
-                  if (refs.current.isExiting) {
-                    currentSendExitComplete()
-                  }
-                })
+                .then(() => complete(true))
+                .catch(() => complete(false))
             } else if (!refs.current.exitCompleteScheduled) {
               // no animation started AND none previously scheduled (e.g. diff=null
               // on re-render mid-exit because frozenExitTarget matches lastDoAnimate)
               // — complete immediately only if we've never started an exit animation
+              emit('start', 'exit')
+              emit('end', 'exit', true)
               currentSendExitComplete()
             }
             // else: exit animation already scheduled via a previous flush,
             // its .finished promise will call sendExitComplete when done
-          } else if (currentAnimationState === 'enter' && currentOnDidAnimate) {
+          } else if (currentAnimationState === 'enter') {
             if (startedControls) {
+              if (!refs.current.enterStarted) {
+                refs.current.enterStarted = true
+                emit('start', 'enter')
+              }
               refs.current.enterCompleteScheduled = true
+              const complete = (finished: boolean) => {
+                if (refs.current.disposed || refs.current.animationState !== 'enter')
+                  return
+                if (refs.current.enterStarted) {
+                  refs.current.enterStarted = false
+                  emit('end', 'enter', finished)
+                }
+              }
               startedControls.finished
-                .then(() => {
-                  if (!refs.current.disposed && refs.current.animationState === 'enter') {
-                    currentOnDidAnimate()
-                  }
-                })
-                .catch(() => {
-                  if (!refs.current.disposed && refs.current.animationState === 'enter') {
-                    currentOnDidAnimate()
-                  }
-                })
+                .then(() => complete(true))
+                .catch(() => complete(false))
             } else if (
               !refs.current.enterCompleteScheduled &&
               !refs.current.disableAnimation
@@ -497,8 +539,29 @@ export function createAnimations<A extends Record<string, AnimationConfig>>(
               // immediately. skipped while animation is disabled (mount flushes
               // apply enter styles without animating; completing there would
               // report enter done before the real transition even starts)
-              currentOnDidAnimate()
+              emit('start', 'enter')
+              emit('end', 'enter', true)
             }
+          } else if (startedControls) {
+            // update: a style change while mounted. a new update that supersedes
+            // an in-flight one closes it out as finished:false (motion silently
+            // replaces the conflicting property animation without settling the
+            // old controls, so we can't rely on its promise for the interrupted
+            // one). the latest controls reports true on natural completion.
+            const controls = startedControls
+            if (refs.current.updateInFlight) {
+              emit('end', 'update', false)
+            }
+            refs.current.updateInFlight = true
+            refs.current.updateControls = controls
+            emit('start', 'update')
+            const settle = (finished: boolean) => {
+              if (refs.current.updateControls !== controls) return
+              refs.current.updateInFlight = false
+              refs.current.updateControls = null
+              emit('end', 'update', finished)
+            }
+            controls.finished.then(() => settle(true)).catch(() => settle(false))
           }
         }
       }

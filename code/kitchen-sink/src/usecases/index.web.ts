@@ -28,7 +28,11 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AnimatePresenceExitTest').AnimatePresenceExitTest,
   AnimationComprehensiveCase: () =>
     require('./AnimationComprehensiveCase').AnimationComprehensiveCase,
+  PublicAnimatedNumberCase: () =>
+    require('./PublicAnimatedNumberCase').PublicAnimatedNumberCase,
   RawAnimatedValueCase: () => require('./RawAnimatedValueCase').RawAnimatedValueCase,
+  CSSAnimatedNumberCompletionCase: () =>
+    require('./CSSAnimatedNumberCompletionCase').CSSAnimatedNumberCompletionCase,
   AnimationsWithMediaQueriesCase: () =>
     require('./AnimationsWithMediaQueriesCase').AnimationsWithMediaQueriesCase,
   AnimatedDOMPropsCase: () => require('./AnimatedDOMPropsCase').AnimatedDOMPropsCase,
@@ -81,6 +85,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AdaptLiveSlotSpikeCase').AdaptLiveSlotSpikeCase,
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
+  OnTransitionCase: () => require('./OnTransitionCase').OnTransitionCase,
   StyleValidation: () => require('./StyleValidation').StyleValidation,
   FocusScopeNoFocusCase: () => require('./FocusScopeNoFocusCase').FocusScopeNoFocusCase,
   FocusVisibleButton: () => require('./FocusVisibleButton').FocusVisibleButton,
@@ -205,6 +210,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SheetOnAnimationCompleteCase: () =>
     require('./SheetOnAnimationCompleteCase').SheetOnAnimationCompleteCase,
   SheetDragCase: () => require('./SheetDragCase').SheetDragCase,
+  SheetDragFadeCase: () => require('./SheetDragFadeCase').SheetDragFadeCase,
   SheetDragResistCase: () => require('./SheetDragResistCase.web').SheetDragResistCase,
   SheetOverlayStyleCase: () => require('./SheetOverlayStyleCase').SheetOverlayStyleCase,
   SheetScrollableDrag: () => require('./SheetScrollableDrag').SheetScrollableDrag,

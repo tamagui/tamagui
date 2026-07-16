@@ -7,12 +7,76 @@ import {
 } from '@tamagui/animation-helpers'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
-import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
+import type {
+  AnimatedNumberStrategy,
+  AnimationDriver,
+  UniversalAnimatedNumber,
+} from '@tamagui/web'
 import { transformsToString } from '@tamagui/web'
 import React, { useState } from 'react' // import { animate } from '@tamagui/cubic-bezier-animator'
 
 const EXTRACT_MS_REGEX = /(\d+(?:\.\d+)?)\s*ms/
 const EXTRACT_S_REGEX = /(\d+(?:\.\d+)?)\s*s/
+
+// rAF-driven animated number is browser-only. read (don't call) at module scope
+// so ssr never touches requestAnimationFrame.
+const hasRAF = typeof requestAnimationFrame !== 'undefined'
+const nowMs = () => (typeof performance !== 'undefined' ? performance.now() : Date.now())
+
+// spring params use the same names/semantics as react-native Animated, so an
+// explicit transitionConfig (stiffness/damping/mass) feels the same across
+// drivers. defaults are critically damped (zeta ~1) rather than RN's bouncy
+// 100/10: a css consumer that supplies no spring params gets a clean, prompt,
+// non-oscillating settle whose completion beats the sheet's 1s fallback timer
+// instead of ringing for ~1.4s. rest-detection thresholds are sub-pixel by
+// default; the sheet passes px-sized overrides.
+const SPRING_DEFAULTS = {
+  stiffness: 300,
+  damping: 35,
+  mass: 1,
+  overshootClamping: false,
+  restSpeedThreshold: 0.001,
+  restDisplacementThreshold: 0.001,
+}
+
+// resolve once all WAAPI animations on `node` finish. mirrors base-ui's
+// useAnimationsFinished: resolves immediately when the browser exposes no
+// animations (zero-animation elements), and re-checks after an aborted
+// animation in case a property it depended on changed mid-flight and started a
+// new one. falls back to immediate resolve when getAnimations is unavailable
+// (ssr / older webviews). resolves `false` when animations were canceled with
+// nothing left running (interruption).
+function waitForAnimations(node: HTMLElement): Promise<boolean> {
+  if (typeof node.getAnimations !== 'function') {
+    return Promise.resolve(true)
+  }
+  return new Promise<boolean>((resolve) => {
+    const check = () => {
+      const animations = node.getAnimations()
+      if (animations.length === 0) {
+        resolve(true)
+        return
+      }
+      Promise.all(animations.map((a) => a.finished))
+        .then(() => resolve(true))
+        .catch(() => {
+          const remaining = node.getAnimations()
+          if (remaining.some((a) => a.playState === 'running' || a.pending)) {
+            check()
+            return
+          }
+          resolve(false)
+        })
+    }
+    // css transitions register as pending until the next style recalc, so give
+    // the browser one frame to start them before we read getAnimations.
+    if (hasRAF) {
+      requestAnimationFrame(check)
+    } else {
+      check()
+    }
+  })
+}
 
 /**
  * Helper function to extract duration from CSS animation string
@@ -155,6 +219,33 @@ function applyStylesToNode(
   }
 }
 
+// force a re-render whenever any of the given animated numbers notifies. used
+// by useAnimatedNumberStyle so a consumer re-reads getValue() on every change.
+function useSubscribeToAnimatedNumbers(
+  reactionListeners: WeakMap<any, Set<Function>>,
+  vals: UniversalAnimatedNumber<Function>[]
+): void {
+  const [, force] = React.useState(0)
+  const instances = vals.map((v) => v.getInstance())
+
+  React.useEffect(() => {
+    const listener = () => force((n) => (n + 1) % 1_000_000)
+    const queues = instances.map((instance) => {
+      let queue = reactionListeners.get(instance)
+      if (!queue) {
+        queue = new Set<Function>()
+        reactionListeners.set(instance, queue)
+      }
+      queue.add(listener)
+      return queue
+    })
+    return () => {
+      for (const queue of queues) queue.delete(listener)
+    }
+    // re-subscribe only when an underlying instance identity changes
+  }, instances)
+}
+
 export function createAnimations<A extends object>(animations: A): AnimationDriver<A> {
   const reactionListeners = new WeakMap<any, Set<Function>>()
 
@@ -166,51 +257,151 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
     outputStyle: 'css',
 
     useAnimatedNumber(initial): UniversalAnimatedNumber<Function> {
-      const [val, setVal] = React.useState(initial)
-      const finishTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+      // val state is only a re-render trigger; valueRef is the source of truth
+      const [, setVal] = React.useState(initial)
+      const valueRef = React.useRef(initial)
+      const rafRef = React.useRef<number | null>(null)
+      const finishRef = React.useRef<(() => void) | null>(null)
+
+      // notify JS-thread reaction listeners registered against this instance
+      const notify = (value: number) => {
+        const listeners = reactionListeners.get(setVal)
+        if (listeners) {
+          listeners.forEach((listener) => listener(value))
+        }
+      }
+
+      // stop the ticker without firing completion (interruption/stop)
+      const cancelTicker = () => {
+        if (rafRef.current != null) {
+          cancelAnimationFrame(rafRef.current)
+          rafRef.current = null
+        }
+        finishRef.current = null
+      }
 
       return {
         getInstance() {
           return setVal
         },
         getValue() {
-          return val
+          return valueRef.current
         },
         setValue(next, config, onFinish) {
+          // any new set supersedes a running animation; the previous onFinish
+          // is dropped (not called), matching the react-native driver where an
+          // interrupted spring reports finished:false and never fires onFinish
+          cancelTicker()
+
+          const strategy = config ?? { type: 'spring' as const }
+          const from = valueRef.current
+
+          // commit the target to react state. the css driver renders by
+          // re-render (useAnimatedNumberStyle reads getValue), and the frame's
+          // CSS transition eases the DOM from `from` to `next`. we set state ONCE
+          // rather than every frame — stepping state per frame re-triggers that
+          // CSS transition each render and the DOM lags hundreds of ms behind.
+          valueRef.current = next
           setVal(next)
 
-          // clear any pending finish callback from a previous setValue
-          if (finishTimerRef.current) {
-            clearTimeout(finishTimerRef.current)
-            finishTimerRef.current = null
+          // direct sets (sheet dragging), non-browser environments, zero-duration
+          // timing, and no-op moves resolve immediately with synchronous completion
+          if (
+            !hasRAF ||
+            strategy.type === 'direct' ||
+            (strategy.type === 'timing' && strategy.duration === 0) ||
+            from === next
+          ) {
+            notify(next)
+            onFinish?.()
+            return
           }
 
-          if (onFinish) {
-            if (
-              !config ||
-              config.type === 'direct' ||
-              (config.type === 'timing' && config.duration === 0)
-            ) {
-              onFinish()
-            } else {
-              // estimate duration: use explicit duration, or fall back to
-              // default CSS transition duration for spring-type configs
-              const duration = config.type === 'timing' ? config.duration : 300
-              finishTimerRef.current = setTimeout(onFinish, duration)
+          finishRef.current = onFinish ?? null
+
+          // drive the JS-thread listener path frame by frame and fire real
+          // completion when the animation's own math settles (spring rest
+          // detection / timing end), not an estimated-duration timer
+          const settle = () => {
+            rafRef.current = null
+            notify(next)
+            const done = finishRef.current
+            finishRef.current = null
+            done?.()
+          }
+
+          if (strategy.type === 'timing') {
+            const duration = strategy.duration
+            const start = nowMs()
+            const tick = () => {
+              const t = Math.min(1, (nowMs() - start) / duration)
+              if (t >= 1) {
+                settle()
+                return
+              }
+              // linear interpolation timing path
+              notify(from + (next - from) * t)
+              rafRef.current = requestAnimationFrame(tick)
             }
+            rafRef.current = requestAnimationFrame(tick)
+            return
           }
 
-          // call reaction listeners with the new value
-          const listeners = reactionListeners.get(setVal)
-          if (listeners) {
-            listeners.forEach((listener) => listener(next))
+          // spring: plain semi-implicit euler integrator with rest detection.
+          // substeps at a fixed 1ms dt keep stiff springs stable at the rAF rate.
+          const s = strategy as Extract<AnimatedNumberStrategy, { type: 'spring' }>
+          const stiffness = s.stiffness ?? SPRING_DEFAULTS.stiffness
+          const damping = s.damping ?? SPRING_DEFAULTS.damping
+          const mass = s.mass ?? SPRING_DEFAULTS.mass
+          const overshootClamping =
+            s.overshootClamping ?? SPRING_DEFAULTS.overshootClamping
+          const restSpeed = s.restSpeedThreshold ?? SPRING_DEFAULTS.restSpeedThreshold
+          const restDisplacement =
+            s.restDisplacementThreshold ?? SPRING_DEFAULTS.restDisplacementThreshold
+
+          let velocity = 0
+          let value = from
+          let lastTime = nowMs()
+
+          const tick = () => {
+            const frameNow = nowMs()
+            // cap dt so a backgrounded tab doesn't integrate one giant step
+            let dt = (frameNow - lastTime) / 1000
+            lastTime = frameNow
+            if (dt > 0.064) dt = 0.064
+
+            const steps = Math.max(1, Math.ceil(dt / 0.001))
+            const sdt = dt / steps
+            for (let i = 0; i < steps; i++) {
+              const springForce = -stiffness * (value - next)
+              const dampingForce = -damping * velocity
+              const accel = (springForce + dampingForce) / mass
+              velocity += accel * sdt
+              value += velocity * sdt
+            }
+
+            if (
+              overshootClamping &&
+              ((from < next && value > next) || (from > next && value < next))
+            ) {
+              value = next
+              velocity = 0
+            }
+
+            const isVelocityRest = Math.abs(velocity) <= restSpeed
+            const isDisplacementRest = Math.abs(next - value) <= restDisplacement
+            if (isVelocityRest && isDisplacementRest) {
+              settle()
+              return
+            }
+
+            notify(value)
+            rafRef.current = requestAnimationFrame(tick)
           }
+          rafRef.current = requestAnimationFrame(tick)
         },
         stop() {
-          if (finishTimerRef.current) {
-            clearTimeout(finishTimerRef.current)
-            finishTimerRef.current = null
-          }
+          cancelTicker()
         },
       }
     },
@@ -232,10 +423,16 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
     },
 
     useAnimatedNumberStyle(val, getStyle) {
+      // css has no UI thread, so a consumer of an external animated number
+      // (e.g. a drag-linked overlay reading Sheet.useAnimatedPosition) must
+      // re-render on each value change to recompute the style. subscribe to the
+      // same listener path notify() drives.
+      useSubscribeToAnimatedNumbers(reactionListeners, [val])
       return getStyle(val.getValue())
     },
 
     useAnimatedNumbersStyle(vals, getStyle) {
+      useSubscribeToAnimatedNumbers(reactionListeners, vals)
       return getStyle(...vals.map((v) => v.getValue()))
     },
 
@@ -247,14 +444,23 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       componentState,
       stateRef,
       styleState,
-      onDidAnimate,
+      onTransition,
     }: any) => {
       const isHydrating = componentState.unmounted === true
       const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
-      const onDidAnimateRef = React.useRef(onDidAnimate)
-      onDidAnimateRef.current = onDidAnimate
+      const onTransitionRef = React.useRef(onTransition)
+      onTransitionRef.current = onTransition
+      const emit = (
+        phase: 'start' | 'end',
+        cause: 'enter' | 'exit' | 'update',
+        finished?: boolean
+      ) => {
+        onTransitionRef.current?.(
+          phase === 'end' ? { phase, cause, finished } : { phase, cause }
+        )
+      }
 
       // Track if we just finished entering (transition from entering to not entering)
       // This is needed because the CSS transition happens on the render AFTER t_unmounted is removed
@@ -272,6 +478,14 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       const sendExitCompleteRef = React.useRef(sendExitComplete)
       const lastNonExitingStyleRef = React.useRef<Record<string, string>>({})
       sendExitCompleteRef.current = sendExitComplete
+
+      // onTransition lifecycle bookkeeping (independent from presence completion)
+      const enterCycleIdRef = React.useRef(0)
+      const enterStartedRef = React.useRef(false)
+      const updateCycleIdRef = React.useRef(0)
+      const updateInFlightRef = React.useRef(false)
+      const prevUpdateSigRef = React.useRef<string | null>(null)
+      const exitStartedRef = React.useRef(false)
 
       // detect transition into/out of exiting state
       const justStartedExiting = isExiting && !wasExitingRef.current
@@ -355,11 +569,23 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         // capture current cycle id for this effect
         const cycleId = exitCycleIdRef.current
 
-        // helper to complete exit with guards
+        // emit exit start once per cycle
+        if (!exitStartedRef.current) {
+          exitStartedRef.current = true
+          emit('start', 'exit')
+        }
+
+        // helper to complete exit with guards. the exit 'end' event fires
+        // immediately before presence safeToRemove so users can observe exit
+        // completion without reaching into presence internals.
         const completeExit = () => {
           if (cycleId !== exitCycleIdRef.current) return
           if (exitCompletedRef.current) return
           exitCompletedRef.current = true
+          if (exitStartedRef.current) {
+            exitStartedRef.current = false
+            emit('end', 'exit', true)
+          }
           sendExitCompleteRef.current?.()
         }
 
@@ -593,89 +819,86 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         }
       }, [isExiting])
 
+      // signature of the animatable style, so the update effect can detect
+      // in-place style changes. the css driver applies most style values as
+      // atomic classNames (not inline style), so the signature must include the
+      // className map. only computed when a listener is attached.
+      const styleSignature = onTransition
+        ? (() => {
+            const { transition: _t, ...rest } = style
+            return `${JSON.stringify(styleState?.classNames ?? null)}|${JSON.stringify(rest)}`
+          })()
+        : ''
+
+      // enter lifecycle: emit start when the enter transition kicks off, end
+      // once every animation on the node finishes (getAnimations-based, resolves
+      // immediately for zero-animation elements). the promise outlives benign
+      // re-renders because it keys off the cycle id, not the effect lifetime.
       useIsomorphicLayoutEffect(() => {
         const host = stateRef.current.host
-        if (!onDidAnimateRef.current || isExiting || !justFinishedEntering || !host) {
+        if (!onTransitionRef.current || isExiting || !justFinishedEntering || !host) {
           return
         }
+        const node = host as HTMLElement
+        const cycleId = ++enterCycleIdRef.current
+        enterStartedRef.current = true
+        emit('start', 'enter')
+        void waitForAnimations(node).then((finished) => {
+          if (cycleId !== enterCycleIdRef.current || !enterStartedRef.current) return
+          enterStartedRef.current = false
+          emit('end', 'enter', finished)
+        })
+      }, [justFinishedEntering, isExiting])
 
-        const completeEnter = () => {
-          onDidAnimateRef.current?.()
-        }
-
-        if (keys.length === 0 || !hasNormalizedAnimation(normalized)) {
-          completeEnter()
+      // update lifecycle: a style change while mounted (not entering or exiting).
+      // a new update that supersedes an in-flight one emits end(finished:false).
+      useIsomorphicLayoutEffect(() => {
+        const host = stateRef.current.host
+        if (
+          !onTransitionRef.current ||
+          isEntering ||
+          justFinishedEntering ||
+          isExiting ||
+          !host
+        ) {
+          // keep the signature current so leaving enter/exit isn't seen as an update
+          prevUpdateSigRef.current = styleSignature
           return
         }
-
-        const animationConfigs = getAnimationConfigsForKeys(
-          normalized,
-          animations as Record<string, string>,
-          keys,
-          defaultAnimation
-        )
-        let maxDuration = 0
-        let hasAnimationConfig = false
-        for (const animationValue of animationConfigs.values()) {
-          if (animationValue) {
-            hasAnimationConfig = true
-            maxDuration = Math.max(maxDuration, extractDuration(animationValue))
-          }
-        }
-
-        if (!hasAnimationConfig) {
-          completeEnter()
+        if (prevUpdateSigRef.current === null) {
+          prevUpdateSigRef.current = styleSignature
           return
         }
+        if (styleSignature === prevUpdateSigRef.current) return
+        prevUpdateSigRef.current = styleSignature
 
         const node = host as HTMLElement
-        const transitioningProps = new Set(keys)
-        const delay = normalized.delay ?? 0
-        let completedCount = 0
-        let completed = false
-
-        const finish = () => {
-          if (completed) return
-          completed = true
-          clearTimeout(timeoutId)
-          node.removeEventListener('transitionend', onFinishAnimation)
-          node.removeEventListener('transitioncancel', onCancelAnimation)
-          completeEnter()
+        if (updateInFlightRef.current) {
+          emit('end', 'update', false)
         }
+        updateInFlightRef.current = true
+        const cycleId = ++updateCycleIdRef.current
+        emit('start', 'update')
+        void waitForAnimations(node).then((finished) => {
+          if (cycleId !== updateCycleIdRef.current) return
+          updateInFlightRef.current = false
+          emit('end', 'update', finished)
+        })
+      }, [styleSignature, isEntering, justFinishedEntering, isExiting])
 
-        const onFinishAnimation = (event: TransitionEvent) => {
-          if (event.target !== node) return
-
-          const eventProp = event.propertyName
-          if (
-            transitioningProps.has('all') ||
-            transitioningProps.has(eventProp) ||
-            eventProp === 'all' ||
-            (eventProp === 'transform' &&
-              [...transitioningProps].some((key) => TRANSFORM_KEYS.has(key)))
-          ) {
-            completedCount++
-            if (completedCount >= transitioningProps.size) {
-              finish()
-            }
-          }
+      // interruption: emit a finished:false end for an enter canceled by an exit,
+      // or an exit canceled by a re-enter (before its own completion fired).
+      useIsomorphicLayoutEffect(() => {
+        if (justStartedExiting && enterStartedRef.current) {
+          enterCycleIdRef.current++
+          enterStartedRef.current = false
+          emit('end', 'enter', false)
         }
-
-        const onCancelAnimation = () => {
-          finish()
+        if (justStoppedExiting && exitStartedRef.current && !exitCompletedRef.current) {
+          exitStartedRef.current = false
+          emit('end', 'exit', false)
         }
-
-        const timeoutId = setTimeout(finish, maxDuration + delay)
-
-        node.addEventListener('transitionend', onFinishAnimation)
-        node.addEventListener('transitioncancel', onCancelAnimation)
-
-        return () => {
-          clearTimeout(timeoutId)
-          node.removeEventListener('transitionend', onFinishAnimation)
-          node.removeEventListener('transitioncancel', onCancelAnimation)
-        }
-      }, [justFinishedEntering, isExiting])
+      }, [justStartedExiting, justStoppedExiting])
 
       // tamagui doesnt even use animation output during hydration
       if (isHydrating) {

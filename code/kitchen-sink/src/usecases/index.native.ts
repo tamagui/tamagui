@@ -14,6 +14,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AnimatePresenceExitTest').AnimatePresenceExitTest,
   AnimationComprehensiveCase: () =>
     require('./AnimationComprehensiveCase').AnimationComprehensiveCase,
+  PublicAnimatedNumberCase: () =>
+    require('./PublicAnimatedNumberCase').PublicAnimatedNumberCase,
   Benchmark: () => require('./Benchmark').Benchmark,
   ButtonCircular: () => require('./ButtonCircular').ButtonCircular,
   GroupDisabledStyleLatchCase: () =>
@@ -48,6 +50,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AdaptLiveSlotSpikeCase').AdaptLiveSlotSpikeCase,
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
+  OnTransitionCase: () => require('./OnTransitionCase').OnTransitionCase,
   FocusScopeNoFocusCase: () => require('./FocusScopeNoFocusCase').FocusScopeNoFocusCase,
   FocusVisibleButton: () => require('./FocusVisibleButton').FocusVisibleButton,
   FocusVisibleButtonPointer: () =>

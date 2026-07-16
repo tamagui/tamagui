@@ -102,12 +102,13 @@ export function DialogSheetAdaptHandoffCase() {
             snapPointsMode="fit"
             dismissOnSnapToBottom
             unmountChildrenWhenHidden
-            onAnimationComplete={(info) => {
+            onTransition={(e) => {
               // expose sheet animation completion so tests can wait for the
               // enter spring to settle before interrupting it (deterministic
               // signal instead of timing assumptions)
+              if (e.phase !== 'end' || e.finished === false) return
               const events = ((globalThis as any).__dialogAdaptSheetAnim ||= [])
-              events.push({ open: info.open, t: performance.now() })
+              events.push({ open: e.cause !== 'close', t: performance.now() })
             }}
           >
             <Sheet.Overlay
