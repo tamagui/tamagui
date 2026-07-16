@@ -462,3 +462,23 @@ Deviations from the spec text above, decided during implementation:
 6. **Native stopgap:** `<Variables>` on native renders children unchanged
    with a one-time dev warning until the inline-theme-layer packet lands.
    Both packets land on the `variables` branch before any merge to v3-beta.
+
+### Review follow-ups (accepted by coordinator)
+
+7. **Config-variable references resolve to raw values at parse time**
+   (`mergeConfigVariablesIntoTheme`), not to live `var()` chains. Accepted as
+   the parity-correct choice: native has no cascade, so a live web reference
+   would re-resolve under a sub-theme that redefines the referenced key while
+   native kept the parse-time value — a platform divergence for the same
+   config. Per-theme resolution at parse time gives both platforms identical,
+   snapshot-at-config semantics. (Live, cascade-tracked references remain the
+   behavior of <Variables> element patches, where both platforms resolve at
+   the same node.)
+8. **Cycle-involved keys are dropped in all modes, not just dev-warned.** A
+   key whose reference chain reaches a cycle in either scheme-effective map
+   ({...values, ...light} / {...values, ...dark}) is dropped from all
+   emission. Dropping is deliberately scheme-independent even when only one
+   scheme's merge cycles: web emits both schemes' CSS at once and native
+   resolves one scheme at a time, so any scheme-dependent drop rule would
+   diverge; unresolvable authoring errors lose their keys deterministically
+   everywhere instead. Dev mode additionally warns with the dropped key list.
