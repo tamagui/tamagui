@@ -168,7 +168,7 @@ test.describe('Dialog Sheet Adapt - body persists during exit animation', () => 
 
     // and after the slide-out completes, the marker SHOULD unmount —
     // this is the other half of the fix (no permanent mount / memory leak).
-    // Adapt handoff onAnimationComplete marks the target fully hidden,
+    // Adapt handoff onTransition (close-complete) marks the target fully hidden,
     // DialogContent then returns null, and the live slot empties.
     await expect
       .poll(

@@ -209,6 +209,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SheetOnAnimationCompleteCase: () =>
     require('./SheetOnAnimationCompleteCase').SheetOnAnimationCompleteCase,
   SheetDragCase: () => require('./SheetDragCase').SheetDragCase,
+  SheetDragFadeCase: () => require('./SheetDragFadeCase').SheetDragFadeCase,
   SheetDragResistCase: () => require('./SheetDragResistCase.web').SheetDragResistCase,
   SheetOverlayStyleCase: () => require('./SheetOverlayStyleCase').SheetOverlayStyleCase,
   SheetScrollableDrag: () => require('./SheetScrollableDrag').SheetScrollableDrag,
