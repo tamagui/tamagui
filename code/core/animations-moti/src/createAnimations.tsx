@@ -259,6 +259,16 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // Check scheme first, then fall back to checking theme name for 'dark'
       const isDark = themeState?.scheme === 'dark' || themeState?.name?.startsWith('dark')
 
+      // change detection for the memo below: JSON.stringify(style) as a dep
+      // serialized the whole style object every render; compare instead and
+      // only stringify nested values (transform, shadowOffset) when hit
+      const styleVersion = React.useRef(0)
+      const prevStyle = React.useRef<typeof style | null>(null)
+      if (!isShallowStyleEqual(prevStyle.current, style)) {
+        styleVersion.current++
+        prevStyle.current = style
+      }
+
       // this memo is very important for performance, there's a big cost to
       // updating these values every render
       const { dontAnimate, motiProps } = useMemo(() => {
@@ -355,8 +365,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         presence,
         animationKey,
         componentState.unmounted,
-        JSON.stringify(style),
-        presenceContext,
+        styleVersion.current,
         isDark,
       ])
 
@@ -381,4 +390,36 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       }
     },
   }
+}
+
+// shallow equality with a stringify fallback for nested style values
+// (transform arrays, shadowOffset objects)
+function isShallowStyleEqual(
+  a: Record<string, any> | null,
+  b: Record<string, any> | null
+) {
+  if (a === b) return true
+  if (!a || !b) return false
+  let aCount = 0
+  for (const key in a) {
+    aCount++
+    const av = a[key]
+    const bv = b[key]
+    if (av === bv) continue
+    if (
+      av &&
+      bv &&
+      typeof av === 'object' &&
+      typeof bv === 'object' &&
+      JSON.stringify(av) === JSON.stringify(bv)
+    ) {
+      continue
+    }
+    return false
+  }
+  let bCount = 0
+  for (const _key in b) {
+    bCount++
+  }
+  return aCount === bCount
 }
