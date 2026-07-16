@@ -11,7 +11,7 @@ test(`theme passes through createStyledHOC`, async ({ page }) => {
     return window.getComputedStyle(el)
   })
 
-  // green theme backgroundPress: the checkbox is defaultChecked so its checked
-  // state applies $backgroundPress (was base background while $backgroundActive no-oped)
-  expect(styles.backgroundColor).toBe(`rgb(184, 209, 194)`)
+  // green theme base background: in v3 the checked-state look is skin-owned via
+  // activeStyle, and this case passes none, so the frame keeps the theme background
+  expect(styles.backgroundColor).toBe(`rgb(232, 242, 235)`)
 })
