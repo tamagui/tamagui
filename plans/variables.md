@@ -482,3 +482,38 @@ Deviations from the spec text above, decided during implementation:
    resolves one scheme at a time, so any scheme-dependent drop rule would
    diverge; unresolvable authoring errors lose their keys deterministically
    everywhere instead. Dev mode additionally warns with the dropped key list.
+
+## Implementation notes (native packet, branch `variables`)
+
+1. **The inline layer runs on BOTH platforms**, not native-only as the spec
+   sketched. Web keeps the CSS custom-property emission for styles (still
+   zero re-renders, proven by the unchanged kitchen-sink render-count tests),
+   and additionally provides the merged theme through the same theme-state
+   layer so JS theme readers (`useTheme().key.val`, animation drivers,
+   non-CSS consumers like SVG) see patched values identically on web and
+   native. Without this, web `.val` reads would silently return unpatched
+   values — the same class of divergence the reference decision avoided.
+2. Mechanics as spec'd: `UseThemeWithStateProps.inlineValues`, values hash
+   folded into `getPropsKey`, `hasThemeUpdatingProps` treats the layer as
+   theme-updating, merged theme swapped into the snapshot in
+   `getSnapshotImpl` and stored in the `states` map so descendants resolve
+   it. Merged objects are identity-cached per (parent theme, values, scheme)
+   in a WeakMap and carry a non-enumerable marker for idempotent re-merge,
+   nested-layer carry-forward, and the iOS pair info.
+3. **DynamicColorIOS**: overridden keys use a precomputed light/dark pair
+   when both scheme-effective values are literals (scheme flips stay
+   render-free); referenced values deopt to the normal tracked path (they
+   would need opposite-theme resolution). The base `config.themes` pair is
+   never consulted for an overridden key.
+4. **Test coverage caveat**: repo-wide `@testing-library/react-native`
+   rendering is broken since the RN 76 upgrade (pre-existing, all such tests
+   skipped), so native coverage is direct unit tests of the layer under
+   `TAMAGUI_TARGET=native` plus web integration tests exercising the same
+   hook path. The DynamicColorIOS branch (`supportsDynamicColorIOS` is false
+   in vitest) still needs one on-device/simulator validation pass before
+   v3-beta merge — open item, coordinate for a heavy lane slot.
+5. Baseline noise, not this branch: `tailwind*.test` files fail to LOAD in
+   core-test on both this branch and v3-beta main checkout
+   (`TSCONFIG_ERROR: ../to-tailwind/src/transform.ts`) — belongs to the
+   A-lane; `code/ui/select/types/Select.d.ts` regenerates with churn on any
+   build (stale committed types).
