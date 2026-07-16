@@ -27,9 +27,8 @@ const nowMs = () => (typeof performance !== 'undefined' ? performance.now() : Da
 // explicit transitionConfig (stiffness/damping/mass) feels the same across
 // drivers. defaults are critically damped (zeta ~1) rather than RN's bouncy
 // 100/10: a css consumer that supplies no spring params gets a clean, prompt,
-// non-oscillating settle whose completion beats the sheet's 1s fallback timer
-// instead of ringing for ~1.4s. rest-detection thresholds are sub-pixel by
-// default; the sheet passes px-sized overrides.
+// non-oscillating settle instead of ringing for ~1.4s. rest-detection thresholds
+// are sub-pixel by default; the sheet passes px-sized overrides.
 const SPRING_DEFAULTS = {
   stiffness: 300,
   damping: 35,

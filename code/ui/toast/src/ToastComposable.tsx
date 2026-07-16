@@ -1012,12 +1012,6 @@ const ToastItemInner = createStyledHOC(ToastItemFrame)<ToastItemProps>(
       dragRef,
     } = useToastAnimations({
       reducedMotion: ctx.reducedMotion,
-      swipeAxis:
-        ctx.swipeDirection === 'up' ||
-        ctx.swipeDirection === 'down' ||
-        ctx.swipeDirection === 'vertical'
-          ? 'vertical'
-          : 'horizontal',
     })
 
     const { isDragging, gestureHandlers, gesture } = useAnimatedDragGesture({

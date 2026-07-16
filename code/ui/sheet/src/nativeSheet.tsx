@@ -67,7 +67,7 @@ export function setupNativeSheet(
             {/* so just hiding it here for now... not great... */}
             <YStack
               position="absolute"
-              opacity={0}
+              display="none"
               pointerEvents="none"
               width={0}
               height={0}

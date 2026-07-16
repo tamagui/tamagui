@@ -5,9 +5,9 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   LayoutMeasurementController,
   View as TamaguiView,
+  useAnimationDriver,
   useAnimatedNumber,
   useAnimatedNumberStyle,
-  useConfiguration,
   useDidFinishSSR,
   useEvent,
   useThemeName,
@@ -161,12 +161,7 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     const sheetRef = React.useRef<View>(undefined as unknown as View)
     const ref = useComposedRefs(forwardedRef, sheetRef, providerProps.contentRef as any)
 
-    // TODO this can be extracted into a helper getAnimationConfig(animationProp as array | string)
-    const { animationDriver } = useConfiguration()
-
-    if (!animationDriver) {
-      throw new Error(`Sheet requires an animation driver to be set`)
-    }
+    const animationDriver = useAnimationDriver()
 
     const transitionConfig = (() => {
       // explicit transitionConfig prop always takes precedence
@@ -1053,12 +1048,12 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
     const animatedPositionValue = React.useMemo(
       () => ({
         value: animatedNumber,
-        screenSize,
+        screenSize: effScreenSize,
         frameSize,
-        snapOffsets: positions,
-        minY: positions[0] ?? 0,
+        snapOffsets: activePositions,
+        minY: activePositions[0] ?? 0,
       }),
-      [animatedNumber, screenSize, frameSize, positions]
+      [animatedNumber, effScreenSize, frameSize, activePositions]
     )
 
     const { overlayChildren, animatedChildren } = React.useMemo(
@@ -1217,14 +1212,6 @@ type SheetPartStaticConfig = {
 }
 
 export function isSheetOverlayComponent(type: unknown) {
-  // a custom wrapper (e.g. a drag-linked backdrop built on the public hooks
-  // that renders a Sheet.Overlay) opts into the overlay layer by setting a
-  // static isSheetOverlay flag, so it lands beside Sheet.Overlay and can read
-  // Sheet.useAnimatedPosition().
-  if ((type as { isSheetOverlay?: boolean } | null)?.isSheetOverlay) {
-    return true
-  }
-
   let staticConfig = (type as { staticConfig?: SheetPartStaticConfig } | null)
     ?.staticConfig
 

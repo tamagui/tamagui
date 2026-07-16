@@ -6,8 +6,8 @@ import {
   Sheet,
   View as TamaguiView,
   YStack,
+  useAnimationDriver,
   useAnimatedNumberStyle,
-  useConfiguration,
 } from 'tamagui'
 
 // drag-linked overlay fade built entirely on the public hooks:
@@ -16,9 +16,9 @@ import {
 // it works on every driver (css re-renders + DOM transition, motion/reanimated
 // run on their own value). no framework-owned fade involved.
 function DragLinkedBackdrop() {
-  const { animationDriver } = useConfiguration()
-  const AnimatedView = (animationDriver?.['NumberView'] ??
-    animationDriver?.View ??
+  const animationDriver = useAnimationDriver()
+  const AnimatedView = (animationDriver['NumberView'] ??
+    animationDriver.View ??
     TamaguiView) as typeof Animated.View
 
   const { value, screenSize } = Sheet.useAnimatedPosition()
@@ -29,31 +29,27 @@ function DragLinkedBackdrop() {
   })
 
   return (
-    <Sheet.Overlay testID="drag-fade-overlay" backgroundColor="transparent">
-      <AnimatedView
-        // @ts-ignore css/motion drivers attach the transition here
-        transition="quick"
-        // @ts-ignore
-        disableClassName
-        testID="drag-fade-backdrop"
-        data-testid="drag-fade-backdrop"
-        style={[
-          {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: '#000',
-          },
-          style,
-        ]}
-      />
-    </Sheet.Overlay>
+    <AnimatedView
+      // @ts-ignore css/motion drivers attach the transition here
+      transition="quick"
+      // @ts-ignore
+      disableClassName
+      testID="drag-fade-backdrop"
+      data-testid="drag-fade-backdrop"
+      style={[
+        {
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: '#000',
+        },
+        style,
+      ]}
+    />
   )
 }
-// opt this wrapper into the sheet's overlay layer (see isSheetOverlayComponent)
-DragLinkedBackdrop.isSheetOverlay = true
 
 export function SheetDragFadeCase() {
   const [open, setOpen] = useState(false)
@@ -72,7 +68,9 @@ export function SheetDragFadeCase() {
         dismissOnSnapToBottom
         transition="quick"
       >
-        <DragLinkedBackdrop />
+        <Sheet.Overlay testID="drag-fade-overlay" backgroundColor="transparent">
+          <DragLinkedBackdrop />
+        </Sheet.Overlay>
         <Sheet.Handle testID="drag-fade-handle" height={16} backgroundColor="$color8" />
         <Sheet.Container testID="drag-fade-frame" padding="$4" gap="$4">
           <Sheet.Background backgroundColor="$background" />

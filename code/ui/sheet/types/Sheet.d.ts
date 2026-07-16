@@ -158,7 +158,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
         }>> | undefined;
     }, {}>> & {
         h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-        o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+        o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
         pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
@@ -204,7 +204,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
         }>> | undefined;
     }, {}>> & {
         h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-        o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+        o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
         pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
@@ -348,7 +348,7 @@ export declare const Sheet: ((props: Omit<{
         }>> | undefined;
     }, {}>> & {
         h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-        o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+        o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
         pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
@@ -394,7 +394,7 @@ export declare const Sheet: ((props: Omit<{
         }>> | undefined;
     }, {}>> & {
         h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-        o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+        o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
         pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
@@ -507,7 +507,7 @@ export declare const Sheet: ((props: Omit<{
             }>> | undefined;
         }, {}>> & {
             h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-            o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+            o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
             pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
         }, "scope"> & {
             scope?: import("./types").SheetScopes;
@@ -553,7 +553,7 @@ export declare const Sheet: ((props: Omit<{
             }>> | undefined;
         }, {}>> & {
             h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-            o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+            o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
             pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
         }, "scope"> & {
             scope?: import("./types").SheetScopes;

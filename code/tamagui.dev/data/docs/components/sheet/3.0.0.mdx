@@ -299,8 +299,8 @@ import type { Animated } from 'react-native'
 import {
   Sheet,
   View as TamaguiView,
+  useAnimationDriver,
   useAnimatedNumberStyle,
-  useConfiguration,
 } from 'tamagui'
 
 // drag-linked overlay fade built entirely on the public hooks:
@@ -309,8 +309,8 @@ import {
 // it works on every driver (css re-renders + DOM transition, motion/reanimated
 // run on their own value).
 function DragLinkedBackdrop() {
-  const { animationDriver } = useConfiguration()
-  const AnimatedView = (animationDriver?.View ?? TamaguiView) as typeof Animated.View
+  const animationDriver = useAnimationDriver()
+  const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
 
   const { value, screenSize } = Sheet.useAnimatedPosition()
 
@@ -320,25 +320,24 @@ function DragLinkedBackdrop() {
   })
 
   return (
-    <Sheet.Overlay backgroundColor="transparent">
-      <AnimatedView
-        transition="quick"
-        style={[
-          { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' },
-          style,
-        ]}
-      />
-    </Sheet.Overlay>
+    <AnimatedView
+      transition="quick"
+      style={[
+        { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#000' },
+        style,
+      ]}
+    />
   )
 }
-// opt this wrapper into the sheet's overlay layer
-DragLinkedBackdrop.isSheetOverlay = true
+
+<Sheet.Overlay backgroundColor="transparent">
+  <DragLinkedBackdrop />
+</Sheet.Overlay>
 ```
 
-A custom drag-linked overlay wrapper like this must set the static
-`isSheetOverlay = true` flag so the sheet hoists it into the overlay layer the
-way it does for `Sheet.Overlay`, and it should render through the driver's
-animated view so the worklet-driven style applies on every driver.
+Keep `Sheet.Overlay` as the direct child of `Sheet`, then render the hook-driven
+backdrop inside it. The driver's animated view makes the worklet-driven style
+apply on every driver.
 
 ## Native Gesture Handler Integration
 
