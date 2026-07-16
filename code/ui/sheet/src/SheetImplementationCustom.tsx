@@ -5,6 +5,8 @@ import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   LayoutMeasurementController,
   View as TamaguiView,
+  useAnimatedNumber,
+  useAnimatedNumberStyle,
   useConfiguration,
   useDidFinishSSR,
   useEvent,
@@ -338,7 +340,6 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
           ? preKeyboardFrameSize.current
           : 0
 
-    const { useAnimatedNumber, useAnimatedNumberStyle } = animationDriver
     const AnimatedView = (animationDriver.View ?? TamaguiView) as typeof Animated.View
 
     useIsomorphicLayoutEffect(() => {

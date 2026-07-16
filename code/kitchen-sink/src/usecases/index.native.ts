@@ -14,6 +14,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AnimatePresenceExitTest').AnimatePresenceExitTest,
   AnimationComprehensiveCase: () =>
     require('./AnimationComprehensiveCase').AnimationComprehensiveCase,
+  PublicAnimatedNumberCase: () =>
+    require('./PublicAnimatedNumberCase').PublicAnimatedNumberCase,
   Benchmark: () => require('./Benchmark').Benchmark,
   ButtonCircular: () => require('./ButtonCircular').ButtonCircular,
   GroupDisabledStyleLatchCase: () =>

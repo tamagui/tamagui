@@ -3458,7 +3458,7 @@ export type AnimationDriver<A extends AnimationConfig = AnimationConfig> = {
   }) => React.ReactNode
   useAnimatedNumber: UseAnimatedNumber
   useAnimatedNumberStyle: UseAnimatedNumberStyle
-  useAnimatedNumbersStyle?: UseAnimatedNumbersStyle
+  useAnimatedNumbersStyle: UseAnimatedNumbersStyle
   useAnimatedNumberReaction: UseAnimatedNumberReaction
   animations: A
   View?: any

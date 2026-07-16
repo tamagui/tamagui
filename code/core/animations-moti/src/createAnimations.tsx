@@ -246,6 +246,23 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       }, [val, getStyle, derivedValue, instance])
     },
 
+    /**
+     * `getStyle` must be a worklet
+     */
+    useAnimatedNumbersStyle(vals, getStyle) {
+      const instances = vals.map((v) => v.getInstance())
+
+      const derivedValues = useDerivedValue(() => {
+        return instances.map((inst) => inst.value)
+        // dependency array is very important here
+      }, [getStyle, ...instances])
+
+      return useAnimatedStyle(() => {
+        return getStyle(...derivedValues.value)
+        // dependency array is very important here
+      }, [getStyle, derivedValues, ...instances])
+    },
+
     useAnimations: (animationProps) => {
       const { props, presence, style, componentState } = animationProps
       const animationKey = Array.isArray(props.transition)

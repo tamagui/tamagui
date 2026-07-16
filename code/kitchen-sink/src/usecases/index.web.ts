@@ -28,6 +28,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AnimatePresenceExitTest').AnimatePresenceExitTest,
   AnimationComprehensiveCase: () =>
     require('./AnimationComprehensiveCase').AnimationComprehensiveCase,
+  PublicAnimatedNumberCase: () =>
+    require('./PublicAnimatedNumberCase').PublicAnimatedNumberCase,
   RawAnimatedValueCase: () => require('./RawAnimatedValueCase').RawAnimatedValueCase,
   CSSAnimatedNumberCompletionCase: () =>
     require('./CSSAnimatedNumberCompletionCase').CSSAnimatedNumberCompletionCase,
