@@ -433,6 +433,197 @@ export function tamaguiAliases(options: AliasOptions = {}): AliasEntry[] {
   return aliases
 }
 
+type VxrnNativePluginContext = {
+  root: string
+  platform: 'ios' | 'android'
+  dev: boolean
+}
+
+function createTamaguiNativePlugin(
+  tamaguiOptionsIn: TamaguiOptions,
+  nativeContext?: VxrnNativePluginContext
+): Plugin {
+  let compilerFrontend = new Static.CompilerFrontend()
+  const projectDependencies = new Set<string>()
+  let root = nativeContext?.root || process.cwd()
+  let projectPromise: Promise<Static.CompilerProject | null> | null = null
+  let rebuildProject = false
+  let generation = 0
+
+  const loadProject = async (resolveModule: (specifier: string) => Promise<string>) => {
+    if (projectPromise) return projectPromise
+    const shouldRebuild = rebuildProject
+    rebuildProject = false
+    const pending = (async () => {
+      projectDependencies.clear()
+      const loadedOptions = await Static.loadTamaguiBuildConfigAsync({
+        ...tamaguiOptionsIn,
+        root,
+        platform: 'native',
+        outputCSS: undefined,
+      })
+      const options = { ...loadedOptions, root, outputCSS: undefined }
+      for (const dependency of Static.getTamaguiBuildConfigDependencies(loadedOptions)) {
+        projectDependencies.add(normalizePath(dependency))
+      }
+      if (options.disable || options.disableExtraction) return null
+      const projectInfo = await Static.loadTamagui(
+        { ...options, platform: 'native' },
+        shouldRebuild
+      )
+      if (!projectInfo) {
+        throw new Error('Unable to load the Tamagui project for Vite native compilation')
+      }
+      for (const dependency of projectInfo.dependencies ?? []) {
+        projectDependencies.add(normalizePath(dependency.split(/[?#]/, 1)[0]))
+      }
+      const componentModules = await Promise.all(
+        [...new Set(['@tamagui/core', ...(options.components || [])])].map(
+          async (moduleName) => {
+            const id = await resolveModule(moduleName)
+            projectDependencies.add(normalizePath(id.split(/[?#]/, 1)[0]))
+            return { moduleName, id }
+          }
+        )
+      )
+      const configPath = options.config || 'tamagui.config.ts'
+      projectDependencies.add(
+        normalizePath(
+          path.isAbsolute(configPath) ? configPath : path.resolve(root, configPath)
+        )
+      )
+      const buildFile = options.buildFile || 'tamagui.build.ts'
+      projectDependencies.add(
+        normalizePath(
+          path.isAbsolute(buildFile) ? buildFile : path.resolve(root, buildFile)
+        )
+      )
+      if (options.themeBuilder?.input) {
+        projectDependencies.add(
+          normalizePath(
+            path.isAbsolute(options.themeBuilder.input)
+              ? options.themeBuilder.input
+              : path.resolve(root, options.themeBuilder.input)
+          )
+        )
+      }
+      generation++
+      return {
+        projectInfo,
+        componentModules,
+        generation: `vite-native:${generation}`,
+      }
+    })()
+    const guarded = pending.catch((error) => {
+      if (projectPromise === guarded) projectPromise = null
+      rebuildProject = true
+      throw error
+    })
+    projectPromise = guarded
+    return projectPromise
+  }
+
+  return {
+    name: 'tamagui-native-compiler',
+    enforce: 'post',
+    configResolved(config) {
+      root = config.root
+    },
+    watchChange(id) {
+      if (projectDependencies.has(normalizePath(id.split(/[?#]/, 1)[0]))) {
+        rebuildProject = true
+        projectPromise = null
+        compilerFrontend = new Static.CompilerFrontend()
+      }
+    },
+    transform: {
+      order: 'pre',
+      async handler(code, id) {
+        const environmentName = nativeContext?.platform || this.environment?.name
+        if (environmentName !== 'ios' && environmentName !== 'android') return
+        const [validId] = id.split('?')
+        if (
+          !validId ||
+          !/\.[jt]sx$/.test(validId) ||
+          normalizePath(validId).split('/').includes('node_modules')
+        ) {
+          return
+        }
+        const { shouldDisable } = await Static.getPragmaOptions({
+          source: code,
+          path: validId,
+        })
+        if (shouldDisable) return
+
+        const resolve = async (specifier: string, importer: string) => {
+          const resolution = await this.resolve(specifier, importer, { skipSelf: true })
+          return resolution
+            ? { id: resolution.id, external: resolution.external === true }
+            : null
+        }
+        const project = await loadProject(async (specifier) => {
+          const resolution = await resolve(
+            specifier,
+            path.join(root, '__tamagui_native.tsx')
+          )
+          if (!resolution) {
+            throw new Error(`Unable to resolve native compiler component ${specifier}`)
+          }
+          return resolution.id
+        })
+        if (!project) return
+        for (const dependency of projectDependencies) this.addWatchFile(dependency)
+
+        const result = await compilerFrontend.compile({
+          id: validId,
+          source: code,
+          root,
+          target: 'native',
+          project,
+          resolve,
+          load: async (dependencyId) => {
+            const cleanDependencyId = dependencyId.split(/[?#]/, 1)[0]
+            if (!path.isAbsolute(cleanDependencyId)) return null
+            try {
+              return await readFile(cleanDependencyId, 'utf8')
+            } catch {
+              return null
+            }
+          },
+        })
+        for (const dependency of result.plan.dependencies) {
+          if (path.isAbsolute(dependency)) this.addWatchFile(dependency)
+        }
+        if (result.plan.css) {
+          throw new Error(
+            `Native Tamagui compilation produced unexpected CSS for ${validId}`
+          )
+        }
+        return result.output.changed
+          ? { code: result.output.code, map: result.output.map as any }
+          : undefined
+      },
+    },
+  }
+}
+
+export function tamaguiNativePlugin(tamaguiOptionsIn: TamaguiOptions = {}): Plugin {
+  const plugin = createTamaguiNativePlugin(tamaguiOptionsIn)
+  const api =
+    plugin.api && typeof plugin.api === 'object'
+      ? (plugin.api as Record<string, unknown>)
+      : {}
+
+  return {
+    ...plugin,
+    api: {
+      ...api,
+      vxrnNative: (context: VxrnNativePluginContext) =>
+        createTamaguiNativePlugin(tamaguiOptionsIn, context),
+    },
+  }
+}
+
 export function tamaguiPlugin({
   disableResolveConfig,
   ...tamaguiOptionsIn
@@ -867,7 +1058,7 @@ export function tamaguiPlugin({
             if (!loadedOptions?.disable) {
               const invalidatedIds =
                 options.type === 'delete'
-                  ? compilerFrontend.remove(options.file).invalidatedIds
+                  ? (await compilerFrontend.remove(options.file)).invalidatedIds
                   : await compilerFrontend.update({
                       id: options.file,
                       source: source!,
@@ -1177,5 +1368,11 @@ export function tamaguiPlugin({
     },
   }
 
-  return [basePlugin, rnwLitePlugin, extractPlugin, sharedCompilerPlugin]
+  return [
+    basePlugin,
+    rnwLitePlugin,
+    extractPlugin,
+    sharedCompilerPlugin,
+    tamaguiNativePlugin(tamaguiOptionsIn),
+  ]
 }

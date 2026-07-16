@@ -663,12 +663,30 @@ bundle execution, diagnostics, and cache corruption recovery are proven.
 
 **Resource class:** heavy; Metro and native validation run alone.
 
-### E5 — webpack/Next adapters and Babel extractor removal
+### E5 — supported compiler adapters and legacy removal
 
-After Vite/Metro stabilize, adapt the shared engine to webpack/Next using their
-resolvers. Platform-specific adapters are acceptable; two extractors for the
-same adapter are not. Delete Babel extractor/evaluator dependencies once the
-last supported adapter moves.
+The supported v3 compiler matrix is Vite for web, One's Rolldown native pipeline
+through its Vite config provider API, Metro, and the bundler-neutral
+`CompilerSession` API in `@tamagui/compiler-core`. Each adapter supplies
+canonical module ids, resolved imports, source, project generation, and the
+Tamagui lowering host. Compiler core never guesses paths or owns bundler
+resolution.
+
+Turbopack does not expose the graph-aware transform and virtual CSS hooks this
+compiler needs. Its supported path is therefore explicit CLI precompilation:
+`tamagui build --target web <source> -- next dev` (or `next build`). The CLI
+writes real CSS imports for Turbopack and restores the source tree when the
+wrapped process exits. `@tamagui/next-plugin` and `tamagui-loader` remain
+webpack-only compatibility surfaces and are not part of the v3 compiler path.
+
+`@tamagui/static` contains the shared Tamagui frontend and config evaluator but
+has no Babel parser, traversal, generator, or types dependency. Metro may still
+run a user's Babel transformer before handing canonical source to the shared
+compiler; that is a Metro host concern, not a second Tamagui extractor.
+
+**Acceptance:** generic session resolution/invalidation tests, Vite web tests,
+One iOS and Android native production bundles, Metro graph/cache tests, and a
+Next Turbopack production build through the restore-safe CLI wrapper all pass.
 
 ### G0 — integrated canary
 

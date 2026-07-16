@@ -34,15 +34,15 @@ export interface CompilerResult {
  * load result; compiler-core never guesses package, alias, or workspace resolution.
  */
 export declare class CompilerFrontend {
-    private readonly graph;
+    private readonly session;
     private queue;
     compile(input: CompilerInput): Promise<CompilerResult>;
     update(input: CompilerUpdateInput): Promise<ResolvedModuleId[]>;
     has(id: string): boolean;
     dependentsOf(id: string): ResolvedModuleId[];
-    remove(id: string): import("@tamagui/compiler-core").GraphInvalidation;
+    remove(id: string): Promise<import("@tamagui/compiler-core").GraphInvalidation>;
     parseCount(id: string): number;
     private compileNow;
-    private install;
+    private buildTree;
 }
 //# sourceMappingURL=compiler.d.ts.map
