@@ -19,12 +19,15 @@ export type AdaptCapabilitiesValue = {
     overlay?: boolean;
     dismiss?: boolean;
 };
+export type AdaptTargetTransitionEvent = {
+    phase: 'start' | 'end';
+    cause: 'open' | 'close' | 'snap';
+    finished?: boolean;
+};
 export type AdaptTargetHandoff = {
     hidden: boolean;
     skipNextAnimation?: boolean;
-    onAnimationComplete: (info: {
-        open: boolean;
-    }) => void;
+    onTransition: (e: AdaptTargetTransitionEvent) => void;
 };
 export type AdaptTarget<State = unknown> = {
     open?: boolean;
@@ -87,12 +90,11 @@ type AdaptParentProps = {
     open?: boolean;
     onOpenChange?: (open: boolean) => void;
     state?: unknown;
-    exitLatchTimeout?: number;
     portal?: boolean | {
         forwardProps?: any;
     };
 };
-export declare const AdaptParent: ({ children, Contents, scope, open, onOpenChange, state, exitLatchTimeout, }: AdaptParentProps) => import("react/jsx-runtime").JSX.Element;
+export declare const AdaptParent: ({ children, Contents, scope, open, onOpenChange, state, }: AdaptParentProps) => import("react/jsx-runtime").JSX.Element;
 /**
  * Components
  */

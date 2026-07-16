@@ -65,10 +65,20 @@ export type AdaptCapabilitiesValue = {
   dismiss?: boolean
 }
 
+// structurally matches @tamagui/sheet's SheetTransitionEvent (adapt cannot
+// import it — sheet depends on adapt). the adapt target reports its position
+// transition here so the parent can release the presence latch on real close
+// completion instead of a timer.
+export type AdaptTargetTransitionEvent = {
+  phase: 'start' | 'end'
+  cause: 'open' | 'close' | 'snap'
+  finished?: boolean
+}
+
 export type AdaptTargetHandoff = {
   hidden: boolean
   skipNextAnimation?: boolean
-  onAnimationComplete: (info: { open: boolean }) => void
+  onTransition: (e: AdaptTargetTransitionEvent) => void
 }
 
 export type AdaptTarget<State = unknown> = {
@@ -165,7 +175,7 @@ export const AdaptContext = createStyledContext<
     slot: null,
     handoff: {
       hidden: true,
-      onAnimationComplete: () => {},
+      onTransition: () => {},
     },
     targetFullyHidden: true,
     registerTarget: () => {},
@@ -221,7 +231,6 @@ type AdaptParentProps = {
   open?: boolean
   onOpenChange?: (open: boolean) => void
   state?: unknown
-  exitLatchTimeout?: number
   // unused, removed with the old paths in PRs B-E
   portal?:
     | boolean
@@ -237,10 +246,6 @@ export const AdaptParent = ({
   open,
   onOpenChange,
   state,
-  // safety net only: must comfortably exceed the slowest real exit animation
-  // (spring drivers report completion at ~0.8s for sheet-sized moves; before
-  // the sheet defaulted rest thresholds they settled as late as ~1.7s)
-  exitLatchTimeout = 3_000,
 }: AdaptParentProps) => {
   const id = useId()
   const portalName = `AdaptPortal${scope}${id}`
@@ -256,7 +261,6 @@ export const AdaptParent = ({
   const [exiting, setExiting] = React.useState(false)
   const [present, setPresent] = React.useState(false)
   const [targetFullyHidden, setTargetFullyHidden] = React.useState(!open)
-  const [closePending, setClosePending] = React.useState(false)
   const targetCountRef = React.useRef(0)
   const contentsCountRef = React.useRef(0)
   const renderCallbackCountRef = React.useRef(0)
@@ -295,19 +299,16 @@ export const AdaptParent = ({
   useIsomorphicLayoutEffect(() => {
     if (open && rawActive) {
       setTargetFullyHidden(false)
-      setClosePending(false)
       return
     }
 
-    if (!open) {
-      if (active && !targetFullyHidden) {
-        setClosePending(true)
-      } else if (!active) {
-        setTargetFullyHidden(true)
-        setClosePending(false)
-      }
+    // once closed and the target is no longer active (exit finished or never
+    // started), mark it hidden. an active exit waits for the target's
+    // close-complete transition to fire the handoff below.
+    if (!open && !active) {
+      setTargetFullyHidden(true)
     }
-  }, [active, open, rawActive, targetFullyHidden])
+  }, [active, open, rawActive])
 
   useIsomorphicLayoutEffect(() => {
     if (rawActive) {
@@ -321,56 +322,26 @@ export const AdaptParent = ({
     }
   }, [active, exiting, rawActive])
 
-  React.useEffect(() => {
-    if (!exiting) return
-
-    const timer = setTimeout(() => {
-      if (process.env.NODE_ENV === 'development') {
-        console.warn(
-          `Adapt target did not report exit animation completion within ${exitLatchTimeout}ms; releasing the presence latch.`
-        )
-      }
-      releasePresenceLatch()
-    }, exitLatchTimeout)
-
-    return () => clearTimeout(timer)
-  }, [exiting, exitLatchTimeout, releasePresenceLatch])
-
-  React.useEffect(() => {
-    if (!closePending) return
-
-    const timer = setTimeout(() => {
-      if (process.env.NODE_ENV === 'development') {
-        console.warn(
-          `Adapt target did not report close animation completion within ${exitLatchTimeout}ms; marking target hidden.`
-        )
-      }
-      setTargetFullyHidden(true)
-      setClosePending(false)
-    }, exitLatchTimeout)
-
-    return () => clearTimeout(timer)
-  }, [closePending, exitLatchTimeout])
-
   const handoff = React.useMemo<AdaptTargetHandoff>(
     () => ({
       hidden: targetHidden,
       skipNextAnimation,
-      onAnimationComplete(info) {
-        if (info.open) {
+      onTransition(e) {
+        // only act on completed transitions; a started or interrupted
+        // (finished === false) transition leaves the latch as-is.
+        if (e.phase !== 'end' || e.finished === false) return
+
+        if (e.cause !== 'close') {
           setTargetFullyHidden(false)
-          setClosePending(false)
           return
         }
 
         if (openRef.current && rawActiveRef.current) {
           setTargetFullyHidden(false)
-          setClosePending(false)
           return
         }
 
         setTargetFullyHidden(true)
-        setClosePending(false)
         releasePresenceLatch()
       },
     }),
