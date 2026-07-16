@@ -331,3 +331,29 @@ Post-beta queue (new work, roughly in order):
    (also unlocks Select `multiple` + object values via shared machinery).
 9. **Number-field, otp-field, checkbox-group** riding the Field system.
 10. **Navigation-menu, scroll-area**; preview-card opportunistically.
+
+## 10. Docs and blog obligations (owner-requested, do not drop)
+
+Every packet in this workstream must land with its user-facing writing, and
+the v3 blog post (`code/tamagui.dev/data/blog/version-three.mdx`, drafted
+2026-07-10) predates all of it. Checklist, updated as packets merge:
+
+- [ ] Blog: eventDetails callbacks (`onOpenChange(open, details)`, reasons,
+      cancel) — headline breaking change, belongs in the migration section.
+- [ ] Blog + `docs/components/tabs`: activationMode now truly defaults to
+      `automatic` (web-only note).
+- [ ] `docs/components/slider`: `name` now submits real form values (one
+      hidden input per thumb, repeated name).
+- [ ] `docs/components/separator`: web `role`/`aria-orientation` semantics.
+- [ ] `docs/components/avatar`: `delay` preferred, `delayMs` deprecated.
+- [ ] Select `multiple` (with C3): blog section + select docs, four-path
+      behavior notes per plans/select-v3-improvements.md.
+- [ ] State-attribute vocabulary + grammar modifiers (`open:`, `checked:`,
+      `invalid:`) when they land: blog (tailwind-mode section) + a styling
+      guide page.
+- [ ] `data-starting-style`/`data-ending-style` CSS animation path (lane H):
+      blog animation section + animations docs.
+- [ ] Field/Form system (F1/F2): new docs pages + blog mention.
+
+Site changes use the `site:` commit prefix and are validated with a real
+render (Playwright or dev-server check), per repo contract.
