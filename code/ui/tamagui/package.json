@@ -88,6 +88,7 @@
     "@tamagui/element": "workspace:*",
     "@tamagui/elements": "workspace:*",
     "@tamagui/fake-react-native": "workspace:*",
+    "@tamagui/field": "workspace:*",
     "@tamagui/focusable": "workspace:*",
     "@tamagui/form": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
