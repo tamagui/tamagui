@@ -367,10 +367,10 @@ exports[`webpack-tests > 15. extracts spacer (complex expansion) 1`] = `
         class="_dsp_contents  font_body"
       >
         <span
-          class="is_Spacer is_View _w-t-space-4 _h-t-space-4 _miw-t-space-4 _mih-t-space-4 _pe-none"
+          class="is_Spacer is_View _pe-none _w-t-space-4 _h-t-space-4 _miw-t-space-4 _mih-t-space-4"
         />
         <span
-          class="is_Spacer is_View _w-10px _h-10px _miw-10px _mih-10px _pe-none _fg-1 _fs-1 _fb-0px"
+          class="is_Spacer is_View _pe-none _fg-1 _fs-1 _fb-0px _w-10px _h-10px _miw-10px _mih-10px"
         />
         <div
           style="display: contents;"
@@ -418,7 +418,7 @@ exports[`webpack-tests > 18. extracts flexWrap property 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-row _fwr-wrap _gap-t-space-2"
+          class="is_View _fwr-wrap _fd-row _gap-t-space-2"
         >
           <span
             class="is_Text _col-color"
@@ -448,7 +448,7 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-row _fwr-wrap"
+          class="is_View _fwr-wrap _fd-row"
           items="center"
           justify="space-between"
         >
@@ -480,7 +480,7 @@ exports[`webpack-tests > 19. extracts flexWrap with conditional 2`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-row _fwr-nowrap"
+          class="is_View _fwr-nowrap _fd-row"
           items="center"
           justify="space-between"
         >
@@ -616,7 +616,7 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fwr-_sm_nowrap _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fd-row _fwr-wrap _gap-t-space-2"
+          class="is_View _fwr-_sm_nowrap _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-wrap _fd-row _gap-t-space-2"
         >
           <span
             class="is_Text _col-color"
