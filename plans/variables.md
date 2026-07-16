@@ -403,3 +403,27 @@ config `variables` inference flows to `$name` style props.
    contract above.
 5. **Docs/blog**: component page, custom-variables guide section, defaultProps
    migration entry, skin-kit convention doc with the canonical skins.
+
+## Coordinator decisions (2026-07-16, review)
+
+Spec accepted; the snapshot-semantics reference decision is better than the
+one-level cap the original brief floated (enforceable on both platforms, and
+web/native parity falls out of it). Answers:
+
+1. **dark/light only in v1: approved.** The `themed={{name}}` general form
+   waits for a real consumer; the emission mechanism already generalizes.
+2. **Theme-hooks churn:** the optimizeFor rework is landed (`e8c36cc7ee`
+   verified on v3-beta) and hooks are clean; the themes-split brief running
+   in parallel explicitly does not touch `code/core/web/src/hooks/*`.
+   Proceed with the web packet now (it touches no hooks). Before starting
+   the native packet, message the coordinator to confirm the hooks owner is
+   finished — do not treat silence as done.
+3. **`trackingCache` WeakMap fix: defer to the native packet, land it as
+   that packet's first standalone commit** — keeps the web packet
+   zero-hooks-contact and fixes the leak class before the merged layers that
+   make it reachable exist.
+4. Amendment: add `fontWeight` to the unitless allowlist (a custom variable
+   `headingWeight: 600` must not emit `600px`); audit the list once against
+   RN-numeric style keys before freezing it.
+
+Green light: implement step 1 (web runtime) per the implementation order.
