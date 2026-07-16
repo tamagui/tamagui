@@ -1,12 +1,17 @@
 import * as React from 'react';
-type ChangeCb<T> = (next: T) => void;
-export declare function useControllableState<T>({ prop, defaultProp, onChange, strategy, preventUpdate, transition, }: {
+import type { TamaguiChangeEventDetails } from '@tamagui/core';
+type ChangeCb<T, Details extends TamaguiChangeEventDetails> = (next: T, details?: Details) => void;
+export type ControllableStateSetter<T, Details extends TamaguiChangeEventDetails = TamaguiChangeEventDetails> = {
+    (next: React.SetStateAction<T>): void;
+    (next: React.SetStateAction<T>, details: Details): void;
+};
+export declare function useControllableState<T, Details extends TamaguiChangeEventDetails = TamaguiChangeEventDetails>({ prop, defaultProp, onChange, strategy, preventUpdate, transition, }: {
     prop?: T | undefined;
     defaultProp: T;
-    onChange?: ChangeCb<T>;
+    onChange?: ChangeCb<T, Details>;
     strategy?: 'prop-wins' | 'most-recent-wins';
     preventUpdate?: boolean;
     transition?: boolean;
-}): [T, React.Dispatch<React.SetStateAction<T>>];
+}): [T, ControllableStateSetter<T, Details>];
 export {};
 //# sourceMappingURL=useControllableState.d.ts.map
