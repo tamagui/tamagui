@@ -203,6 +203,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./SelectAdaptSheetUnmountCase').SelectAdaptSheetUnmountCase,
   SelectAndroidOnPress: () => require('./SelectAndroidOnPress').SelectAndroidOnPress,
   SelectFocusScopeCase: () => require('./SelectFocusScopeCase').SelectFocusScopeCase,
+  SelectMultipleCase: () => require('./SelectMultipleCase').SelectMultipleCase,
   SelectRemount: () => require('./SelectRemount').SelectRemount,
   SelectSkin: () => require('./SelectSkin').SelectSkin,
   Shadows: () => require('./Shadows').Shadows,

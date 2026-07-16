@@ -23,6 +23,7 @@ describe('Select selection controller', () => {
     })
 
     expect(controller.toggle('apple')).toEqual(['apple'])
+    expect(controller.shouldCloseOnSelect).toBe(false)
     expect(controller.toggle('pear')).toEqual(['apple', 'pear'])
     expect(controller.toggle('apple')).toEqual(['pear'])
     expect(controller.toggle('apple')).toEqual(['pear', 'apple'])
@@ -49,6 +50,7 @@ describe('Select selection controller', () => {
 
     expect(controller.moveActive(1)?.value).toBe('apple')
     expect(controller.moveActive(1)?.value).toBe('pear')
+    expect(controller.activeItem?.value).toBe('pear')
     expect(controller.moveActive(-1)?.value).toBe('apple')
   })
 
@@ -86,7 +88,24 @@ describe('Select selection controller', () => {
     })
 
     expect(controller.toggle('pear')).toBe('pear')
+    expect(controller.shouldCloseOnSelect).toBe(true)
     expect(controller.isSelected('pear')).toBe(true)
     expect(controller.toggle('pear')).toBe('pear')
+  })
+
+  test('registers item labels while preserving explicit typeahead text', () => {
+    const registry = createSelectItemRegistry()
+    const registration = registry.registerItem({ value: 'apple', disabled: false })
+    const unregisterLabel = registry.registerLabel('apple', 'Apple')
+
+    expect(registry.getItem('apple')?.label).toBe('Apple')
+    expect(registry.getItem('apple')?.textValue).toBe('Apple')
+
+    registration.update({ textValue: 'Pomme' })
+    expect(registry.getItem('apple')?.textValue).toBe('Pomme')
+
+    unregisterLabel()
+    expect(registry.getItem('apple')?.label).toBeUndefined()
+    expect(registry.getItem('apple')?.textValue).toBe('Pomme')
   })
 })

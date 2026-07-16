@@ -51,6 +51,12 @@ export default defineConfig({
       testMatch: '**/RemoveScroll.test.{ts,tsx}',
       metadata: { animationDriver: 'native' },
     },
+    {
+      name: 'webkit-select-native',
+      use: { ...devices['Desktop Safari'] },
+      testMatch: '**/SelectMultipleNativeWeb.test.{ts,tsx}',
+      metadata: { animationDriver: 'native' },
+    },
     // mobile WebKit (Safari engine + touch) for sheet keyboard/gesture tests —
     // chromium's touch/scroll/rubber-band behavior differs from iOS Safari
     {
