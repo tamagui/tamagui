@@ -1,16 +1,16 @@
 export declare const animations: import("@tamagui/web").AnimationDriver<{
     '100ms': {
-        type: string;
+        type: "timing";
         duration: number;
     };
     bouncy: {
-        type: string;
+        type: "spring";
         damping: number;
         mass: number;
         stiffness: number;
     };
     lazy: {
-        type: string;
+        type: "spring";
         damping: number;
         stiffness: number;
     };
@@ -20,18 +20,18 @@ export declare const animations: import("@tamagui/web").AnimationDriver<{
         mass: number;
     };
     slow: {
-        type: string;
+        type: "spring";
         damping: number;
         stiffness: number;
     };
     quick: {
-        type: string;
+        type: "spring";
         damping: number;
         mass: number;
         stiffness: number;
     };
     tooltip: {
-        type: string;
+        type: "spring";
         damping: number;
         mass: number;
         stiffness: number;

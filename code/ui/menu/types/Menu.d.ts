@@ -119,6 +119,7 @@ export declare function createMenu(): React.FC<import("./createNonNativeMenu").M
     readonly ScrollView: (React.FunctionComponent<Omit<import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/web").StackStyleBase | "contentContainerStyle"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -126,6 +127,7 @@ export declare function createMenu(): React.FC<import("./createNonNativeMenu").M
     }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -133,6 +135,7 @@ export declare function createMenu(): React.FC<import("./createNonNativeMenu").M
     }>> & import("@tamagui/web").WithPseudoProps<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -140,6 +143,7 @@ export declare function createMenu(): React.FC<import("./createNonNativeMenu").M
     }> & import("@tamagui/web").WithShorthands<import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -147,6 +151,7 @@ export declare function createMenu(): React.FC<import("./createNonNativeMenu").M
     }>>> & import("@tamagui/web").WithMediaProps<import("@tamagui/web").WithThemeShorthandsAndPseudos<import("@tamagui/web").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -156,17 +161,20 @@ export declare function createMenu(): React.FC<import("./createNonNativeMenu").M
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
         }>> | undefined;
     }, {}, {
         acceptsClassName: true;
+        neverFlatten: true;
         accept: {
             readonly contentContainerStyle: "style";
         };
     } & import("@tamagui/web").StaticConfigPublic> & Omit<{
         acceptsClassName: true;
+        neverFlatten: true;
         accept: {
             readonly contentContainerStyle: "style";
         };
@@ -174,12 +182,14 @@ export declare function createMenu(): React.FC<import("./createNonNativeMenu").M
         __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/web").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & React.RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/web").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/web").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
             }>> | undefined;
         }, {}, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };

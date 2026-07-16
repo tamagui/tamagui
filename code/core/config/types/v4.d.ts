@@ -250,8 +250,8 @@ export declare const defaultConfig: {
         };
     };
     fonts: {
-        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
-        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 9 | 15 | 1 | 10 | 3 | 2 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
+        body: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 3 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
+        heading: import("@tamagui/web").FillInFont<import("@tamagui/web").GenericFont, 2 | 9 | 15 | 1 | 10 | 3 | 5 | 6 | 16 | 11 | 12 | 14 | 4 | 7 | 8 | 13>;
     };
     selectionStyles: (theme: any) => {
         backgroundColor: any;

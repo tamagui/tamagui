@@ -110,6 +110,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     ScrollView: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -117,6 +118,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     }, {}>, string | number | symbol> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -124,6 +126,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -131,6 +134,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -138,6 +142,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -145,6 +150,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -158,6 +164,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     }, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -165,6 +172,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -172,6 +180,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -179,6 +188,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -186,6 +196,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -199,12 +210,14 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
     }, import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
         }>> | undefined;
     }, {}, {
         acceptsClassName: true;
+        neverFlatten: true;
         accept: {
             readonly contentContainerStyle: "style";
         };
@@ -288,6 +301,7 @@ export declare const Sheet: ((props: Omit<{
     ScrollView: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -295,6 +309,7 @@ export declare const Sheet: ((props: Omit<{
     }, {}>, string | number | symbol> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -302,6 +317,7 @@ export declare const Sheet: ((props: Omit<{
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -309,6 +325,7 @@ export declare const Sheet: ((props: Omit<{
     }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -316,6 +333,7 @@ export declare const Sheet: ((props: Omit<{
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -323,6 +341,7 @@ export declare const Sheet: ((props: Omit<{
     }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -336,6 +355,7 @@ export declare const Sheet: ((props: Omit<{
     }, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -343,6 +363,7 @@ export declare const Sheet: ((props: Omit<{
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -350,6 +371,7 @@ export declare const Sheet: ((props: Omit<{
     }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -357,6 +379,7 @@ export declare const Sheet: ((props: Omit<{
     }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -364,6 +387,7 @@ export declare const Sheet: ((props: Omit<{
     }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
@@ -377,12 +401,14 @@ export declare const Sheet: ((props: Omit<{
     }, import("@tamagui/core").StackStyleBase & {
         readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
         }>> | undefined;
     }, {}, {
         acceptsClassName: true;
+        neverFlatten: true;
         accept: {
             readonly contentContainerStyle: "style";
         };
@@ -434,6 +460,7 @@ export declare const Sheet: ((props: Omit<{
         ScrollView: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
@@ -441,6 +468,7 @@ export declare const Sheet: ((props: Omit<{
         }, {}>, string | number | symbol> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
@@ -448,6 +476,7 @@ export declare const Sheet: ((props: Omit<{
         }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
@@ -455,6 +484,7 @@ export declare const Sheet: ((props: Omit<{
         }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
@@ -462,6 +492,7 @@ export declare const Sheet: ((props: Omit<{
         }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
@@ -469,6 +500,7 @@ export declare const Sheet: ((props: Omit<{
         }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
@@ -482,6 +514,7 @@ export declare const Sheet: ((props: Omit<{
         }, import("@tamagui/scroll-view").ScrollViewRef, import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef> & Omit<Omit<import("@tamagui/core").TamaguiComponentPropsBaseBase & Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>, keyof import("@tamagui/core").StackStyleBase | "contentContainerStyle"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
@@ -489,6 +522,7 @@ export declare const Sheet: ((props: Omit<{
         }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
@@ -496,6 +530,7 @@ export declare const Sheet: ((props: Omit<{
         }>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
@@ -503,6 +538,7 @@ export declare const Sheet: ((props: Omit<{
         }> & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
@@ -510,6 +546,7 @@ export declare const Sheet: ((props: Omit<{
         }>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
@@ -523,12 +560,14 @@ export declare const Sheet: ((props: Omit<{
         }, import("@tamagui/core").StackStyleBase & {
             readonly contentContainerStyle?: Partial<import("@tamagui/core").InferStyleProps<import("react").ForwardRefExoticComponent<Omit<any, "ref"> & import("react").RefAttributes<import("@tamagui/scroll-view").ScrollViewRef>>, {
                 acceptsClassName: true;
+                neverFlatten: true;
                 accept: {
                     readonly contentContainerStyle: "style";
                 };
             }>> | undefined;
         }, {}, {
             acceptsClassName: true;
+            neverFlatten: true;
             accept: {
                 readonly contentContainerStyle: "style";
             };
