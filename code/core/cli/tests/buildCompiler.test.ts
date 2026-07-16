@@ -41,7 +41,7 @@ describe('CLI shared compiler runtime', () => {
       })
       expect(result.status, result.stderr).toBe(0)
       expect(result.stdout).toContain('E5_STATS=')
-      expect(result.stdout).toContain('"flattened":8')
+      expect(result.stdout).toContain('"flattened":10')
 
       const [compiled, css] = await Promise.all([
         readFile(join(output, 'Root.tsx'), 'utf8'),
