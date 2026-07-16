@@ -50,8 +50,8 @@ export class CompilerSession {
     return operation
   }
 
-  update(module: HostModuleInput): ResolvedModuleId[] {
-    return this.#graph.updateModule(module).invalidatedIds
+  update(module: HostModuleInput): Promise<ResolvedModuleId[]> {
+    return this.#enqueue(() => this.#graph.updateModule(module).invalidatedIds)
   }
 
   has(id: ResolvedModuleId): boolean {
@@ -62,12 +62,18 @@ export class CompilerSession {
     return this.#graph.dependentsOf(id)
   }
 
-  remove(id: ResolvedModuleId): GraphInvalidation {
-    return this.#graph.removeModule(id)
+  remove(id: ResolvedModuleId): Promise<GraphInvalidation> {
+    return this.#enqueue(() => this.#graph.removeModule(id))
   }
 
   parseCount(id: ResolvedModuleId): number {
     return this.#graph.parseCount(id)
+  }
+
+  #enqueue<T>(operation: () => T | Promise<T>): Promise<T> {
+    const queued = this.#queue.then(operation)
+    this.#queue = queued.catch(() => undefined)
+    return queued
   }
 
   async #compile({

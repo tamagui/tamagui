@@ -9,22 +9,30 @@
     "types",
     "dist"
   ],
-  "type": "commonjs",
-  "main": "dist",
+  "type": "module",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
   "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./types/index.d.ts",
-      "default": "./dist/index.cjs"
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
     },
     "./checkDeps": {
       "types": "./types/checkDeps.d.ts",
-      "default": "./dist/checkDeps.cjs"
+      "import": "./dist/esm/checkDeps.mjs",
+      "require": "./dist/cjs/checkDeps.cjs",
+      "default": "./dist/esm/checkDeps.mjs"
     },
     "./loadTamagui": {
       "types": "./types/extractor/loadTamagui.d.ts",
-      "default": "./dist/extractor/loadTamagui.cjs"
+      "import": "./dist/esm/extractor/loadTamagui.mjs",
+      "require": "./dist/cjs/extractor/loadTamagui.cjs",
+      "default": "./dist/esm/extractor/loadTamagui.mjs"
     }
   },
   "publishConfig": {
@@ -55,7 +63,6 @@
     "check-dependency-version-consistency": "^4.1.0",
     "esbuild": "^0.27.2",
     "esbuild-register": "^3.6.0",
-    "esbuild-wasm": "^0.27.2",
     "fast-glob": "^3.2.11",
     "find-cache-dir": "^3.3.2",
     "find-root": "^1.1.0",

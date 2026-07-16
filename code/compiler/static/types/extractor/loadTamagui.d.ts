@@ -1,6 +1,6 @@
 import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types';
 import { type TamaguiProjectInfo } from './bundleConfig';
-export declare function loadTamagui(propsIn: Partial<TamaguiOptions>): Promise<TamaguiProjectInfo | null>;
+export declare function loadTamagui(propsIn: Partial<TamaguiOptions>, rebuild?: boolean): Promise<TamaguiProjectInfo | null>;
 export type EvaluatedTamaguiModule = {
     moduleName: string;
     module: Record<string, unknown>;
@@ -18,9 +18,9 @@ export type EvaluatedTamaguiProject = {
  */
 export declare function loadTamaguiFromModules(propsIn: Partial<TamaguiOptions>, evaluated: EvaluatedTamaguiProject): Promise<TamaguiProjectInfo>;
 export declare const generateThemesAndLog: (options: TamaguiOptions, force?: boolean) => Promise<void>;
+export declare function getTamaguiBuildConfigDependencies(options: TamaguiOptions): readonly string[];
 /**
- * Load tamagui.build.ts config using esbuild-wasm transform
- * Uses WASM to avoid native esbuild service lifecycle issues (EPIPE errors)
+ * Load tamagui.build.ts and its relative imports as one Node module.
  */
 export declare function loadTamaguiBuildConfigAsync(tamaguiOptions: Partial<TamaguiOptions> | undefined): Promise<TamaguiOptions>;
 /**

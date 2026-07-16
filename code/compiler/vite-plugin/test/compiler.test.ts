@@ -158,7 +158,7 @@ export const App = () => jsx(View, { padding: space })
   expect(session.dependentsOf(tokenModule.id)).toEqual([appModule.id])
   expect(session.parseCount(appModule.id)).toBe(1)
 
-  const invalidated = session.update({
+  const invalidated = await session.update({
     ...tokenModule,
     source: 'export const space = 24\n',
   })
@@ -168,5 +168,53 @@ export const App = () => jsx(View, { padding: space })
   const second = await session.compile({ module: appModule, adapter })
   expect(second.plan.css).toContain('padding-top:24px')
   expect(second.plan.css).not.toContain('padding-top:20px')
-  expect(session.remove(tokenModule.id).invalidatedIds).toContain(appModule.id)
+  expect((await session.remove(tokenModule.id)).invalidatedIds).toContain(appModule.id)
+})
+
+test('generic compiler session serializes updates behind an active compile', async () => {
+  const session = new CompilerSession()
+  const tokenId = resolvedModuleId(tokensId)
+  const module: HostModuleInput = {
+    id: resolvedModuleId(appId),
+    source: `import { space } from '~/tokens'\nexport const value = space\n`,
+    imports: [{ specifier: '~/tokens', resolvedId: tokenId }],
+  }
+  const oldTokens: HostModuleInput = {
+    id: tokenId,
+    source: 'export const space = 20\n',
+    imports: [],
+  }
+  const newTokens: HostModuleInput = {
+    ...oldTokens,
+    source: 'export const space = 24\n',
+  }
+  let releaseLoad!: () => void
+  const loadGate = new Promise<void>((resolve) => {
+    releaseLoad = resolve
+  })
+  const host = createTamaguiCompilerHost({
+    target: 'web',
+    tamaguiConfig: projectInfo.tamaguiConfig!,
+    components: projectInfo.components!,
+    componentModules: [],
+  })
+  const adapter = {
+    target: 'web' as const,
+    projectGeneration: 'concurrent-session-v1',
+    host,
+    async load(id: string) {
+      if (id !== tokenId) return null
+      await loadGate
+      return oldTokens
+    },
+  }
+
+  const compile = session.compile({ module, adapter })
+  const update = session.update(newTokens)
+  releaseLoad()
+  await compile
+
+  expect(await update).toContain(tokenId)
+  expect(session.dependentsOf(tokenId)).toEqual([module.id])
+  expect(await session.update(newTokens)).toEqual([])
 })

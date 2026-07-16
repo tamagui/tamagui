@@ -25,10 +25,10 @@ export interface CompilerSessionResult {
 export declare class CompilerSession {
     #private;
     compile(input: CompileModuleInput): Promise<CompilerSessionResult>;
-    update(module: HostModuleInput): ResolvedModuleId[];
+    update(module: HostModuleInput): Promise<ResolvedModuleId[]>;
     has(id: ResolvedModuleId): boolean;
     dependentsOf(id: ResolvedModuleId): ResolvedModuleId[];
-    remove(id: ResolvedModuleId): GraphInvalidation;
+    remove(id: ResolvedModuleId): Promise<GraphInvalidation>;
     parseCount(id: ResolvedModuleId): number;
 }
 //# sourceMappingURL=session.d.ts.map

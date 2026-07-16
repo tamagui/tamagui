@@ -20,7 +20,10 @@ const vitePluginDist = pathResolve(
   import.meta.dirname,
   '../compiler/vite-plugin/dist/esm/index.mjs'
 )
-const staticDist = pathResolve(import.meta.dirname, '../compiler/static/dist/index.cjs')
+const staticDist = pathResolve(
+  import.meta.dirname,
+  '../compiler/static/dist/cjs/index.cjs'
+)
 
 if (!existsSync(vitePluginDist) || !existsSync(staticDist)) {
   console.info('')

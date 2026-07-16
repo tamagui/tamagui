@@ -1,12 +1,17 @@
 import { readFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import esbuild from 'esbuild'
-import * as FS from 'fs-extra'
+import FS from 'fs-extra'
 import type { TamaguiPlatform } from '../types'
 import { detectModuleFormat } from './detectModuleFormat'
 import { esbuildAliasPlugin } from './esbuildAliasPlugin'
 import { hasTopLevelAwait } from './hasTopLevelAwait'
 import { resolveWebOrNativeSpecificEntry } from './loadTamagui'
 import { TsconfigPathsPlugin } from './esbuildTsconfigPaths'
+
+const nodeRequire = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
 
 export const esbuildLoaderConfig = {
   '.js': 'jsx',
@@ -209,7 +214,7 @@ function getESBuildConfig(
       {
         name: 'external',
         setup(build) {
-          const proxyWormPath = require.resolve('@tamagui/proxy-worm')
+          const proxyWormPath = nodeRequire.resolve('@tamagui/proxy-worm')
 
           // only externalize @tamagui/core and @tamagui/web - these are provided at runtime
           // other @tamagui/* packages (like @tamagui/config/v3) must be bundled in to avoid
@@ -276,7 +281,7 @@ function detectEntryFormat(entryPoint: string): esbuild.BuildOptions['format'] {
   }
   // bare module specifier - check package.json type field
   try {
-    const pkgJsonPath = require.resolve(entryPoint + '/package.json')
+    const pkgJsonPath = nodeRequire.resolve(entryPoint + '/package.json')
     const pkg = JSON.parse(readFileSync(pkgJsonPath, 'utf-8'))
     return pkg.type === 'module' ? 'esm' : 'cjs'
   } catch {

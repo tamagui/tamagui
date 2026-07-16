@@ -40,7 +40,7 @@ export declare class CompilerFrontend {
     update(input: CompilerUpdateInput): Promise<ResolvedModuleId[]>;
     has(id: string): boolean;
     dependentsOf(id: string): ResolvedModuleId[];
-    remove(id: string): import("@tamagui/compiler-core").GraphInvalidation;
+    remove(id: string): Promise<import("@tamagui/compiler-core").GraphInvalidation>;
     parseCount(id: string): number;
     private compileNow;
     private buildTree;

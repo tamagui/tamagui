@@ -59,7 +59,8 @@ function externalId(specifier: string): ResolvedModuleId {
 
 function sourceCanBeLinked(root: string, id: string): boolean {
   const clean = cleanId(id)
-  if (!path.isAbsolute(clean) || clean.includes('/node_modules/')) return false
+  const normalized = clean.replace(/\\/g, '/')
+  if (!path.isAbsolute(clean) || normalized.includes('/node_modules/')) return false
   const relative = path.relative(root, clean)
   return relative === '' || (relative !== '..' && !relative.startsWith(`..${path.sep}`))
 }
@@ -83,7 +84,7 @@ export class CompilerFrontend {
       const { modules } = await this.buildTree(input)
       const invalidated = new Set<ResolvedModuleId>()
       for (const module of modules.values()) {
-        for (const id of this.session.update(module)) invalidated.add(id)
+        for (const id of await this.session.update(module)) invalidated.add(id)
       }
       return [...invalidated].sort()
     })
@@ -100,7 +101,11 @@ export class CompilerFrontend {
   }
 
   remove(id: string) {
-    return this.session.remove(resolvedModuleId(cleanId(id)))
+    const operation = this.queue.then(() =>
+      this.session.remove(resolvedModuleId(cleanId(id)))
+    )
+    this.queue = operation.catch(() => undefined)
+    return operation
   }
 
   parseCount(id: string): number {
@@ -111,7 +116,7 @@ export class CompilerFrontend {
     const { rootModule, modules } = await this.buildTree(input)
     const invalidated = new Set<ResolvedModuleId>()
     for (const module of modules.values()) {
-      for (const id of this.session.update(module)) invalidated.add(id)
+      for (const id of await this.session.update(module)) invalidated.add(id)
     }
     const projectInfo = input.project.projectInfo
     if (!projectInfo.tamaguiConfig || !projectInfo.components) {
