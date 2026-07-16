@@ -10,15 +10,15 @@ demoName: Tabs
 <YStack className="is-sticky" />
 
 <Tabs id="type" defaultValue="styled">
-<Tabs.List>
+<Tabs.List width={360}>
   <TooltipSimple label="With Tamagui's default styles">
-    <Tabs.Tab value="styled">Styled</Tabs.Tab>
+    <Tabs.Tab value="styled" flex={1}>Styled</Tabs.Tab>
   </TooltipSimple>
   <TooltipSimple label="No default styles, easy to customize">
-    <Tabs.Tab value="unstyled">Unstyled</Tabs.Tab>
+    <Tabs.Tab value="unstyled" flex={1}>Unstyled</Tabs.Tab>
   </TooltipSimple>
   <TooltipSimple label="No dependency on Tamagui's core">
-    <Tabs.Tab value="headless" label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
+    <Tabs.Tab value="headless" flex={1} label="No styles and no dependency on Tamagui's styling">Headless</Tabs.Tab>
   </TooltipSimple>
 </Tabs.List>
 
@@ -27,10 +27,10 @@ demoName: Tabs
     <TabsDemo />
   </Tabs.Content>
   <Tabs.Content value="unstyled" justifyContent="center" alignItems="center" width="100%">
-    <TabsHeadlessDemo />
+    <TabsCustomDemo />
   </Tabs.Content>
   <Tabs.Content value="headless" justifyContent="center" alignItems="center" width="100%">
-    <TabsHeadlessDemo />
+    <TabsCustomDemo />
   </Tabs.Content>
 </HeroContainer>
 
@@ -40,13 +40,13 @@ demoName: Tabs
 ````
 </Tabs.Content>
 <Tabs.Content value="unstyled">
-```tsx hero template=TabsHeadless
+```tsx hero template=TabsCustom
 
 ````
 
 </Tabs.Content>
 <Tabs.Content value="headless">
-```tsx hero template=TabsHeadless
+```tsx hero template=TabsCustom
 
 ````
 </Tabs.Content>
