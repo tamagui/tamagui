@@ -623,6 +623,26 @@ even `light_alert_subtle` is possible.
 For more on themes, see the [themes docs](/docs/core/themes), and more
 [advanced theme building library](/docs/guides/theme-builder).
 
+### Variables
+
+Custom variables sit alongside your themes: they merge into every base theme,
+resolve like theme keys in style props and `useTheme()`, and can be redefined
+for any subtree with the [Variables component](/docs/core/variables).
+
+```tsx
+const config = createTamagui({
+  // ...
+  variables: {
+    surfaceBorder: '$borderColor',
+    disabledOpacity: 0.5,
+    accent: { light: '#005ac8', dark: '#78b4ff' },
+  },
+})
+```
+
+Values can be literals, references to theme keys or tokens (`'$borderColor'`,
+`'$size.4'`), or per-scheme `{ light, dark }` pairs.
+
 ### Media
 
 For more full docs on media queries, see the

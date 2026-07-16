@@ -405,6 +405,48 @@ skipping per-key tracking is close to free. Theme and media changes still
 apply correctly in both modes, they just re-render more coarsely under
 `first-render`.
 
+## Variables: inline theme patches
+
+Themes are tables keyed by name, which made one common thing harder than it
+should be: changing a couple of values for one part of the tree. In v2 that
+meant defining another named theme, or passing override props down manually.
+
+v3 adds `Variables`, an anonymous patch on the nearest theme:
+
+```tsx
+<Variables values={{ backgroundHover: '$blue4' }} dark={{ backgroundHover: '$blue2' }}>
+  <SettingsPanel />
+</Variables>
+```
+
+Listed keys override, everything else inherits. On web this compiles to CSS
+custom properties, so the entire subtree restyles with zero re-renders — the
+same trick your compiled styles already use, exposed as a component.
+`dark` and `light` values compile under scheme selectors, so color-scheme
+flips are also render-free. On native, the patch rides the existing granular
+theme system, and JavaScript readers like `useTheme()` see the same values on
+both platforms.
+
+You can also declare your own variables in config:
+
+```tsx
+createTamagui({
+  variables: {
+    focusRingColor: '$blue10',
+    focusRingWidth: 2,
+    disabledOpacity: 0.5,
+    pressScale: 0.97,
+  },
+})
+```
+
+These behave like theme keys everywhere — style props, `useTheme()`, and
+`Variables` redefinition — and they are the intended replacement for
+convention-by-copy-paste: define your focus ring once, read `$focusRingColor`
+in the components you own, and redefine it per section when a screen wants a
+different accent. Together with the component changes above, this also
+replaces `createTamagui({ defaultProps })`, which is deprecated in v3.
+
 ## Migrating
 
 Start with the [v3 upgrade guide](/docs/guides/how-to-upgrade). It includes the
