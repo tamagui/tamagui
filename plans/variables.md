@@ -427,3 +427,38 @@ web/native parity falls out of it). Answers:
    RN-numeric style keys before freezing it.
 
 Green light: implement step 1 (web runtime) per the implementation order.
+
+## Implementation notes (web packet, branch `variables`)
+
+Deviations from the spec text above, decided during implementation:
+
+1. **Config variables merge into base themes only** (names without `_`), not
+   every parsed theme. Sub-themes therefore never own the keys: they inherit
+   through `proxyThemesToParents` on native and the cascade on web, which is
+   what lets a `<Variables>` patch survive a sub-theme switch below it
+   (`<Theme name="surface1">` doesn't reset `$focusRingColor`). A scheme-base
+   theme switch (`<Theme name="dark">`) still resets them, matching CSS. The
+   spec's "assign into every ThemeParsed" wording is superseded by this.
+2. **No shared scheme-selector helper extracted from `getThemeCSSRules`.**
+   Its selector generation is entangled with theme-name hierarchies; the
+   Variables case only ever scopes one class under light/dark. A dedicated
+   ~20-line emitter in `helpers/variables.ts` provides the same guarantee
+   (two levels of scheme inversion, `:root`-prefixed specificity, both
+   root-attached and descendant scheme classes, prefers-color-scheme media
+   fallback ordered after the base rule). Revisit sharing only if/when
+   `themed={{ [name]: values }}` lands.
+3. **`getThemeCSSRules` now emits `needsPx` theme values with their px unit**
+   (`variable.needsPx ? val + 'px' : val`). Pre-existing latent bug: a theme
+   value authored as `'10px'` parsed to `val: 10, needsPx: true` but emitted
+   `--tN:10`. Config variables rely on the fix for numeric px values.
+4. **Unitless rule is a suffix set** on the lowercased key: `opacity, scale,
+   zindex, weight, flex, grow, shrink, ratio, elevation` (covers fontWeight
+   per review amendment; audited against RN numeric style keys: opacity,
+   zIndex, flex/flexGrow/flexShrink, aspectRatio, scale*, fontWeight,
+   elevation, shadowOpacity).
+5. **`tamagui` package exports are an explicit list** (`code/ui/tamagui/src/
+   index.ts`), so `Variables`, `VariablesProps`, `VariablesValues`, and
+   `GenericVariables` are added there as well as to `@tamagui/web`.
+6. **Native stopgap:** `<Variables>` on native renders children unchanged
+   with a one-time dev warning until the inline-theme-layer packet lands.
+   Both packets land on the `variables` branch before any merge to v3-beta.
