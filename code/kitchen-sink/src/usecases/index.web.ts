@@ -92,6 +92,10 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./FocusVisibleButtonWithFocusStyle').FocusVisibleButtonWithFocusStyle,
   FontTokensInVariants: () => require('./FontTokensInVariants').FontTokensInVariants,
   FocusWithinCase: () => require('./FocusWithinCase').FocusWithinCase,
+  FieldReactHookFormBridgeCase: () =>
+    require('./FieldReactHookFormBridgeCase').FieldReactHookFormBridgeCase,
+  FieldValidatedSignupCase: () =>
+    require('./FieldValidatedSignupCase').FieldValidatedSignupCase,
   FormButtonTypeCase: () => require('./FormButtonTypeCase').FormButtonTypeCase,
   GroupHoverMobile: () => require('./GroupHoverMobile').GroupHoverMobile,
   GroupPressInVariant: () => require('./GroupPressInVariant').GroupPressInVariant,
