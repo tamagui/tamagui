@@ -265,9 +265,10 @@ Main added a `disableTransparencyHide` sheet prop (keep the hidden wrapper
 opaque so native visual effects can initialize under it). H-4 removes the
 transparency hide entirely, so the prop as named dies — but `display: 'none'`
 hides harder than `opacity: 0`, so the escape hatch must survive as "don't
-apply the hidden state to the closed wrapper". H2 renames it to match the new
-mechanism and honors `disableTransparencyHide` as a deprecated alias through
-the betas (it shipped in stable 2.4.x). Also note: the spring rest-detection
+apply the hidden state to the closed wrapper". H2 renames it to
+`disableHideWhenClosed` (matches `unmountChildrenWhenHidden` naming) and honors
+`disableTransparencyHide` as a deprecated alias through the betas (it shipped
+in stable 2.4.x). Also note: the spring rest-detection
 fix already on v3-beta makes close-complete events prompt on native drivers,
 and "H-6" in H-4 means packet H3 (the css real animated number).
 

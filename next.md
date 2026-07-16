@@ -54,6 +54,8 @@ migration notes so far:
   - landed: data-state open/closed on `Select.Trigger` and the Select viewport (web) to match Dialog/Popover; Tooltip inherits via Popover parts.
   - not done: unifying the internal `ScopedProps` type-shape (popover/tooltip use `Omit<P,'scope'> & {scope?}`, dialog/select/toast use `P & {scope?}`) — cosmetic rename with type-churn risk and no correctness value, left as-is. Toast light-touch scoping/naming not revisited.
 - iOS CI: clear stale queued macOS runs, fix runner availability so Detox/Maestro actually run per-push
+- animation API lane H (plans/v3-animation-api.md) in execution: H0 public hooks + H3 real css animated number first (feature branches off v3-beta, land in beta.1), then H1 onTransition, then H2 sheet position/opacity removal with the C2 skin
+- v2 deprecation sweep (tracked, not started): full review of every prop/API v3 changed, backported as `@deprecated` JSDoc on main so v2 users get editor warnings before upgrading. Source list = the migration notes above plus: `disableTransparencyHide` (v3 replaces transparency hiding with display-none hiding, successor `disableHideWhenClosed`), `onDidAnimate` and Sheet `onAnimationComplete` (v3: `onTransition`), `Sheet.Frame` (v3: Container + Background), get-token steppers (`stepTokenUpOrDown`/`getTokenRelative`/options arg), icon media/pseudo props. Do on main, not v3-beta.
 
 ## open decisions (not currently being executed)
 
