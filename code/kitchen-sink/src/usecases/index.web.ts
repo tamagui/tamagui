@@ -247,6 +247,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   StyleCompatCase: () => require('./StyleCompatCase').StyleCompatCase,
   StylePlatform: () => require('./StylePlatform').StylePlatform,
   StyleProp: () => require('./StyleProp').StyleProp,
+  SliderFormCase: () => require('./SliderFormCase').SliderFormCase,
   TabsOnInteraction: () => require('./TabsOnInteraction').TabsOnInteraction,
   TextNestedInheritance: () => require('./TextNestedInheritance').TextNestedInheritance,
   TextOverflowEllipsis: () => require('./TextOverflowEllipsis').TextOverflowEllipsis,
