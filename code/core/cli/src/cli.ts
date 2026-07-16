@@ -3,13 +3,7 @@ import chalk from 'chalk'
 
 import { disposeAll, getOptions } from './utils'
 
-// exit handlers
-;['exit', 'SIGINT'].forEach((_) => {
-  process.on(_, () => {
-    disposeAll()
-    process.exit()
-  })
-})
+process.on('exit', disposeAll)
 
 const COMMAND_MAP = {
   check: {

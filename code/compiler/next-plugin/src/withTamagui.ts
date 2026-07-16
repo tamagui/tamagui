@@ -33,6 +33,10 @@ export type WithTamaguiProps = LoaderPluginOptions & {
   disableOptimizeLucideIcons?: boolean
 }
 
+/**
+ * @deprecated Webpack-only compatibility adapter. For Next.js with Turbopack,
+ * run `tamagui build --target web <source> -- next dev` or `next build`.
+ */
 export const withTamagui = (tamaguiOptionsIn?: WithTamaguiProps) => {
   return (nextConfig: any = {}) => {
     const tamaguiOptions = {
