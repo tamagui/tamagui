@@ -311,17 +311,51 @@ v3 tightens component parity across Dialog, Popover, Select, and Sheet:
   <Select.Viewport>
     <Select.Group>
       <Select.Label>Fruit</Select.Label>
-      <Select.Item index={0} value="apple">
+      <Select.Item value="apple">
         <Select.ItemText>Apple</Select.ItemText>
       </Select.Item>
       <Select.Separator />
-      <Select.Item index={1} value="orange">
+      <Select.Item value="orange">
         <Select.ItemText>Orange</Select.ItemText>
       </Select.Item>
     </Select.Group>
   </Select.Viewport>
 </Select.Content>
 ```
+
+## Select multiple across web and native
+
+Select now accepts `multiple`, with an ordered `string[]` value on every custom
+and native path. Selecting an option appends it, selecting it again removes it,
+and the remaining order stays intact. Custom lists remain open while values are
+toggled, including Select content adapted into a Sheet.
+
+```tsx
+const [fruit, setFruit] = useState<string[]>([])
+
+<Select
+  multiple
+  name="fruit"
+  value={fruit}
+  onValueChange={setFruit}
+  renderValue={(values) => values.join(' + ')}
+>
+  {/* trigger, content, and registered items */}
+</Select>
+```
+
+On web, custom Selects submit one repeated form entry per selected value.
+`form` associates them with an external form even when the visible list moves
+through `Adapt.Contents`. `native="web"` uses a real `<select multiple>` and
+keeps the browser's own interaction and submission behavior. Plain React Native
+content uses checkbox-style selected accessibility state. An adapted Sheet owns
+its dismissal through the overlay, drag-to-bottom, platform back, or controlled
+state. Select does not inject a completion row.
+
+`Select.Value` uses registered item labels and separates them with `, ` by
+default. `renderValue` remains the escape hatch for SSR, lazy mounting, chips,
+localized separators, or count summaries. `Select.Item` no longer needs an
+`index`; the old prop is accepted as an inert migration aid during the v3 beta.
 
 ## Field and Form handle validation together
 
