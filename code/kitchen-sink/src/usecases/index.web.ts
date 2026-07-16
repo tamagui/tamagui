@@ -67,6 +67,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./DialogPresenceCompletionCase').DialogPresenceCompletionCase,
   DialogPointerEventsCase: () =>
     require('./DialogPointerEventsCase').DialogPointerEventsCase,
+  PopupConformanceCase: () => require('./PopupConformanceCase').PopupConformanceCase,
   DialogScopedCase: () => require('./DialogScopedCase').DialogScopedCase,
   DialogSheetAdaptCase: () => require('./DialogSheetAdaptCase').DialogSheetAdaptCase,
   DialogSheetAdaptHandoffCase: () =>

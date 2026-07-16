@@ -556,8 +556,8 @@ export const PopoverContent = createStyledHOC(PopperContentFrame)<PopoverContent
               props.onCloseAutoFocus === false
                 ? undefined
                 : composeEventHandlers(props.onCloseAutoFocus, (event) => {
-                    if (event.defaultPrevented) return
-                    event.preventDefault()
+                    if (event.isCanceled) return
+                    event.cancel()
                     if (!isRightClickOutsideRef.current)
                       context.triggerRef.current?.focus()
                   })
@@ -565,7 +565,8 @@ export const PopoverContent = createStyledHOC(PopperContentFrame)<PopoverContent
             onPointerDownOutside={composeEventHandlers(
               props.onPointerDownOutside,
               (event) => {
-                const originalEvent = event.detail.originalEvent
+                const originalEvent = event.event
+                if (!originalEvent) return
                 const ctrlLeftClick =
                   originalEvent.button === 0 && originalEvent.ctrlKey === true
                 const isRightClick = originalEvent.button === 2 || ctrlLeftClick
@@ -577,7 +578,9 @@ export const PopoverContent = createStyledHOC(PopperContentFrame)<PopoverContent
             // We make sure we don't trigger our `onDismiss` in such case.
             onFocusOutside={composeEventHandlers(
               props.onFocusOutside,
-              (event) => event.preventDefault(),
+              (event) => {
+                if (trapFocus ?? open) event.cancel()
+              },
               { checkDefaultPrevented: false }
             )}
           />
@@ -718,12 +721,12 @@ export type PopoverContentImplProps = PopperContentProps &
     disableFocusScope?: boolean
 
     /**
-     * Event handler called when auto-focusing on open. Can be prevented.
+     * Event handler called when auto-focusing on open. Can be canceled.
      */
     onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus']
 
     /**
-     * Event handler called when auto-focusing on close. Can be prevented.
+     * Event handler called when auto-focusing on close. Can be canceled.
      */
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false
 

@@ -461,10 +461,11 @@ export function createNonNativeMenu(params: CreateBaseMenuProps) {
           }
           hasInteractedOutsideRef.current = false
           // Always prevent auto focus because we either focus manually or want user agent focus
-          event.preventDefault()
+          event.cancel()
         })}
         onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
-          const originalEvent = event.detail.originalEvent as PointerEvent
+          if (event.interaction !== 'pointer' || !event.event) return
+          const originalEvent = event.event
           const ctrlLeftClick =
             originalEvent.button === 0 && originalEvent.ctrlKey === true
           const isRightClick = originalEvent.button === 2 || ctrlLeftClick

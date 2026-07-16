@@ -619,25 +619,26 @@ const DialogContentModal = createRefComponent<TamaguiElement, DialogContentTypeP
         trapFocus={context.open}
         disableOutsidePointerEvents
         onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
-          event.preventDefault()
+          event.cancel()
           context.triggerRef.current?.focus()
         })}
         onPointerDownOutside={composeEventHandlers(
           props.onPointerDownOutside,
           (event) => {
-            const originalEvent = event['detail'].originalEvent
+            const originalEvent = event.event
+            if (!originalEvent) return
             const ctrlLeftClick =
               originalEvent.button === 0 && originalEvent.ctrlKey === true
             const isRightClick = originalEvent.button === 2 || ctrlLeftClick
             // If the event is a right-click, we shouldn't close because
             // it is effectively as if we right-clicked the `Overlay`.
-            if (isRightClick) event.preventDefault()
+            if (isRightClick) event.cancel()
           }
         )}
         // When focus is trapped, a `focusout` event may still happen.
         // We make sure we don't trigger our `onDismiss` in such case.
         onFocusOutside={composeEventHandlers(props.onFocusOutside, (event) =>
-          event.preventDefault()
+          event.cancel()
         )}
         {...(!props.unstyled && {
           outlineStyle: 'none',
@@ -667,12 +668,12 @@ const DialogContentNonModal = createRefComponent<TamaguiElement, DialogContentTy
         onCloseAutoFocus={(event) => {
           props.onCloseAutoFocus?.(event)
 
-          if (!event.defaultPrevented) {
+          if (!event.isCanceled) {
             if (!hasInteractedOutsideRef.current) {
               props.context.triggerRef.current?.focus()
             }
             // Always prevent auto focus because we either focus manually or want user agent focus
-            event.preventDefault()
+            event.cancel()
           }
 
           hasInteractedOutsideRef.current = false
@@ -680,7 +681,7 @@ const DialogContentNonModal = createRefComponent<TamaguiElement, DialogContentTy
         onInteractOutside={(event) => {
           props.onInteractOutside?.(event)
 
-          if (!event.defaultPrevented) hasInteractedOutsideRef.current = true
+          if (!event.isCanceled) hasInteractedOutsideRef.current = true
 
           // Prevent dismissing when clicking the trigger.
           // As the trigger is already setup to close, without doing so would
@@ -688,11 +689,11 @@ const DialogContentNonModal = createRefComponent<TamaguiElement, DialogContentTy
           //
           // We use `onInteractOutside` as some browsers also
           // focus on pointer down, creating the same issue.
-          const target = event.target as HTMLElement
+          const target = event.event?.target as HTMLElement | null
           const trigger = props.context.triggerRef.current
-          if (!(trigger instanceof HTMLElement)) return
+          if (!target || !(trigger instanceof HTMLElement)) return
           const targetIsTrigger = trigger.contains(target)
-          if (targetIsTrigger) event.preventDefault()
+          if (targetIsTrigger) event.cancel()
         }}
       />
     )
@@ -711,13 +712,13 @@ type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
 
   /**
    * Event handler called when auto-focusing on open.
-   * Can be prevented.
+   * Can be canceled.
    */
   onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus']
 
   /**
    * Event handler called when auto-focusing on close.
-   * Can be prevented.
+   * Can be canceled.
    */
   onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
 

@@ -7,6 +7,7 @@ import {
   TamaguiElement,
   View,
   composeEventHandlers,
+  createChangeEventDetails,
   createRefComponent,
 } from '@tamagui/core'
 import { useEscapeKeydown } from '@tamagui/use-escape-keydown'
@@ -29,8 +30,6 @@ export function dispatchDiscreteCustomEvent<E extends CustomEvent>(
 
 const DISMISSABLE_LAYER_NAME = 'Dismissable'
 const CONTEXT_UPDATE = 'dismissable.update'
-const POINTER_DOWN_OUTSIDE = 'dismissable.pointerDownOutside'
-const FOCUS_OUTSIDE = 'dismissable.focusOutside'
 
 let originalBodyPointerEvents: string
 
@@ -199,9 +198,12 @@ const Dismissable = createRefComponent<
     const branches = branchesProp || context.branches
     const isPointerDownOnBranch = [...branches].some((branch) => branch.contains(target))
     if (!isPointerEventsEnabled || isPointerDownOnBranch) return
-    onPointerDownOutside?.(event)
-    onInteractOutside?.(event)
-    if (!event.defaultPrevented) onDismiss?.()
+    const details = createChangeEventDetails('outside-press', event, event.target, {
+      interaction: 'pointer' as const,
+    })
+    onPointerDownOutside?.(details)
+    onInteractOutside?.(details)
+    if (!details.isCanceled) onDismiss?.(details)
   })
 
   const focusOutside = useFocusOutside((event) => {
@@ -210,9 +212,12 @@ const Dismissable = createRefComponent<
     const branches = branchesProp || context.branches
     const isFocusInBranch = [...branches].some((branch) => branch.contains(target))
     if (isFocusInBranch) return
-    onFocusOutside?.(event)
-    onInteractOutside?.(event)
-    if (!event.defaultPrevented) onDismiss?.()
+    const details = createChangeEventDetails('focus-out', event, event.target, {
+      interaction: 'focus' as const,
+    })
+    onFocusOutside?.(details)
+    onInteractOutside?.(details)
+    if (!details.isCanceled) onDismiss?.(details)
   })
 
   // track forceUnmount in a ref so escape handler can check it
@@ -229,11 +234,9 @@ const Dismissable = createRefComponent<
     const currentIndex = node ? currentLayers.indexOf(node) : -1
     const isHighestLayer = currentIndex === currentLayers.length - 1
     if (!isHighestLayer) return
-    onEscapeKeyDown?.(event)
-    if (!event.defaultPrevented && onDismiss) {
-      event.preventDefault()
-      onDismiss()
-    }
+    const details = createChangeEventDetails('escape-key', event, event.target)
+    onEscapeKeyDown?.(details)
+    if (!details.isCanceled) onDismiss?.(details)
   })
 
   React.useEffect(() => {
@@ -373,33 +376,23 @@ DismissableBranch.displayName = BRANCH_NAME
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export type PointerDownOutsideEvent = CustomEvent<{ originalEvent: PointerEvent }>
-export type FocusOutsideEvent = CustomEvent<{ originalEvent: FocusEvent }>
-
 /**
  * Listens for `pointerdown` outside a react subtree. We use `pointerdown` rather than `pointerup`
  * to mimic layer dismissing behaviour present in OS.
  * Returns props to pass to the node we want to check for outside events.
  */
-function usePointerDownOutside(
-  onPointerDownOutside?: (event: PointerDownOutsideEvent) => void
-) {
-  const handlePointerDownOutside = useEvent(onPointerDownOutside) as EventListener
+function usePointerDownOutside(onPointerDownOutside?: (event: PointerEvent) => void) {
+  const handlePointerDownOutside = useEvent(onPointerDownOutside)
   const isPointerInsideReactTreeRef = React.useRef(false)
   const handleClickRef = React.useRef(() => {})
 
   React.useEffect(() => {
     const handlePointerDown = (event: PointerEvent) => {
       if (event.target && !isPointerInsideReactTreeRef.current) {
-        const eventDetail = { originalEvent: event }
-
-        function handleAndDispatchPointerDownOutsideEvent() {
-          handleAndDispatchCustomEvent(
-            POINTER_DOWN_OUTSIDE,
-            handlePointerDownOutside,
-            eventDetail,
-            { discrete: true }
-          )
+        function handlePointerDownOutsideEvent() {
+          if (handlePointerDownOutside) {
+            ReactDOM.flushSync(() => handlePointerDownOutside(event))
+          }
         }
 
         /**
@@ -416,10 +409,10 @@ function usePointerDownOutside(
          */
         if (event.pointerType === 'touch') {
           document.removeEventListener('click', handleClickRef.current)
-          handleClickRef.current = handleAndDispatchPointerDownOutsideEvent
+          handleClickRef.current = handlePointerDownOutsideEvent
           document.addEventListener('click', handleClickRef.current, { once: true })
         } else {
-          handleAndDispatchPointerDownOutsideEvent()
+          handlePointerDownOutsideEvent()
         }
       }
       isPointerInsideReactTreeRef.current = false
@@ -459,17 +452,14 @@ function usePointerDownOutside(
  * Listens for when focus happens outside a react subtree.
  * Returns props to pass to the root (node) of the subtree we want to check.
  */
-function useFocusOutside(onFocusOutside?: (event: FocusOutsideEvent) => void) {
-  const handleFocusOutside = useEvent(onFocusOutside) as EventListener
+function useFocusOutside(onFocusOutside?: (event: FocusEvent) => void) {
+  const handleFocusOutside = useEvent(onFocusOutside)
   const isFocusInsideReactTreeRef = React.useRef(false)
 
   React.useEffect(() => {
     const handleFocus = (event: FocusEvent) => {
       if (event.target && !isFocusInsideReactTreeRef.current) {
-        const eventDetail = { originalEvent: event }
-        handleAndDispatchCustomEvent(FOCUS_OUTSIDE, handleFocusOutside, eventDetail, {
-          discrete: false,
-        })
+        handleFocusOutside?.(event)
       }
     }
     document.addEventListener('focusin', handleFocus)
@@ -491,23 +481,12 @@ function dispatchUpdate() {
   document.dispatchEvent(event)
 }
 
-function handleAndDispatchCustomEvent<E extends CustomEvent, OriginalEvent extends Event>(
-  name: string,
-  handler: ((event: E) => void) | undefined,
-  detail: { originalEvent: OriginalEvent } & (E extends CustomEvent<infer D> ? D : never),
-  { discrete }: { discrete: boolean }
-) {
-  const target = detail.originalEvent.target
-  const event = new CustomEvent(name, { bubbles: false, cancelable: true, detail })
-  if (handler) target.addEventListener(name, handler as EventListener, { once: true })
-
-  if (discrete) {
-    dispatchDiscreteCustomEvent(target, event)
-  } else {
-    target.dispatchEvent(event)
-  }
-}
-
 export { Dismissable, DismissableBranch }
 
-export type { DismissableProps }
+export type {
+  DismissableDismissDetails,
+  DismissableProps,
+  FocusOutsideDetails,
+  InteractOutsideDetails,
+  PointerDownOutsideDetails,
+} from './DismissableProps'

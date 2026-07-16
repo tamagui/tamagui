@@ -1,11 +1,13 @@
-import { View } from '@tamagui/core';
+import { View, type TamaguiChangeEventDetails } from '@tamagui/core';
 import * as React from 'react';
 type PrimitiveDivProps = React.ComponentPropsWithoutRef<typeof View>;
+export type RovingFocusChangeDetails = TamaguiChangeEventDetails<'keyboard' | 'trigger-focus' | 'focus-out', React.KeyboardEvent | React.MouseEvent | React.FocusEvent>;
+export type RovingFocusEntryDetails = TamaguiChangeEventDetails<'trigger-focus', React.FocusEvent>;
 interface RovingFocusGroupImplProps extends Omit<PrimitiveDivProps, 'dir'>, RovingFocusGroupOptions {
     currentTabStopId?: string | null;
     defaultCurrentTabStopId?: string;
-    onCurrentTabStopIdChange?: (tabStopId: string | null) => void;
-    onEntryFocus?: (event: Event) => void;
+    onCurrentTabStopIdChange?: (tabStopId: string | null, details: RovingFocusChangeDetails) => void;
+    onEntryFocus?: (details: RovingFocusEntryDetails) => void;
 }
 type PrimitiveSpanProps = React.ComponentPropsWithoutRef<typeof View>;
 interface RovingFocusItemProps extends PrimitiveSpanProps {

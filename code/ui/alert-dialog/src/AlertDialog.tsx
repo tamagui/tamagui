@@ -181,14 +181,14 @@ const AlertDialogContent = createRefComponent<TamaguiElement, AlertDialogContent
             onOpenAutoFocus={composeEventHandlers(
               contentProps.onOpenAutoFocus,
               (event) => {
-                event.preventDefault()
+                event.cancel()
                 if (isWeb) {
                   cancelRef.current?.focus({ preventScroll: true })
                 }
               }
             )}
-            onPointerDownOutside={(event) => event.preventDefault()}
-            onInteractOutside={(event) => event.preventDefault()}
+            onPointerDownOutside={(event) => event.cancel()}
+            onInteractOutside={(event) => event.cancel()}
           >
             {/**
              * We have to use `Slottable` here as we cannot wrap the `AlertDialogContentProvider`

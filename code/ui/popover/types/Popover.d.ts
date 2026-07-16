@@ -185,11 +185,11 @@ export type PopoverContentImplProps = PopperContentProps & Omit<DismissableProps
      */
     disableFocusScope?: boolean;
     /**
-     * Event handler called when auto-focusing on open. Can be prevented.
+     * Event handler called when auto-focusing on open. Can be canceled.
      */
     onOpenAutoFocus?: FocusScopeProps['onMountAutoFocus'];
     /**
-     * Event handler called when auto-focusing on close. Can be prevented.
+     * Event handler called when auto-focusing on close. Can be canceled.
      */
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'] | false;
     enableRemoveScroll?: boolean;

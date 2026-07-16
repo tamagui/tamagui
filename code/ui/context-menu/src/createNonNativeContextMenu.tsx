@@ -35,10 +35,6 @@ type ContextMenuOpenChangeEvent = {
   defaultPrevented: boolean
 }
 
-type InteractOutsideEvent = CustomEvent<{
-  originalEvent: PointerEvent | FocusEvent
-}>
-
 type ContextMenuContextValue = {
   triggerId: string
   triggerRef: React.RefObject<TamaguiElement | null>
@@ -340,21 +336,19 @@ export function createNonNativeContextMenu(params: CreateBaseMenuProps) {
         scope={scope || CONTEXTMENU_CONTEXT}
         {...contentProps}
         ref={forwardedRef}
-        onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event: Event) => {
+        onCloseAutoFocus={composeEventHandlers(props.onCloseAutoFocus, (event) => {
           if (!hasInteractedOutsideRef.current) context.triggerRef.current?.focus()
           hasInteractedOutsideRef.current = false
-          event.preventDefault()
+          event.cancel()
         })}
-        onInteractOutside={composeEventHandlers(
-          props.onInteractOutside,
-          (event: InteractOutsideEvent) => {
-            const originalEvent = event.detail.originalEvent as PointerEvent
-            const ctrlLeftClick =
-              originalEvent.button === 0 && originalEvent.ctrlKey === true
-            const isRightClick = originalEvent.button === 2 || ctrlLeftClick
-            if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
-          }
-        )}
+        onInteractOutside={composeEventHandlers(props.onInteractOutside, (event) => {
+          if (event.interaction !== 'pointer' || !event.event) return
+          const originalEvent = event.event
+          const ctrlLeftClick =
+            originalEvent.button === 0 && originalEvent.ctrlKey === true
+          const isRightClick = originalEvent.button === 2 || ctrlLeftClick
+          if (!context.modal || isRightClick) hasInteractedOutsideRef.current = true
+        })}
       />
     )
   })
