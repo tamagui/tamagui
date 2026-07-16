@@ -35,6 +35,7 @@ module.exports = {
       'react/compiler-runtime': require.resolve('react/compiler-runtime'),
       react: require.resolve('react'),
       'react-dom/client': require.resolve('react-dom/client'),
+      'react-dom/server': require.resolve('react-dom/server.browser'),
       'react-dom': require.resolve('react-dom'),
       'react-native$': 'react-native-web',
       '@tamagui/sheet/controller$': path.resolve(

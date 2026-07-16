@@ -185,7 +185,8 @@ if (!skipVersion) {
   console.info(`Re-releasing ${curVersion}`)
 }
 
-const isMain = (await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim() === 'main'
+const currentBranch = (await exec(`git rev-parse --abbrev-ref HEAD`)).stdout.trim()
+const isMain = currentBranch === 'main'
 
 async function getWorkspacePackages() {
   const rootPkg = await fs.readJSON('package.json')
@@ -258,14 +259,15 @@ async function run() {
     let version = curVersion
 
     // ensure we are up to date
-    // ensure we are on main (skip branch check for canary releases and dry runs)
-    if (!canary && !rePublish && !dryRun) {
+    // ensure we are on main (skip branch check for canary releases, channel
+    // prereleases like --beta/--rc which cut from their own branch, and dry runs)
+    if (!canary && !rePublish && !dryRun && !requestedChannel) {
       if (!isMain) {
         throw new Error(`Not on main`)
       }
     }
     if (!dirty && !rePublish && !shouldFinish && !canary && !dryRun) {
-      await spawnify(`git pull --rebase origin main`)
+      await spawnify(`git pull --rebase origin ${currentBranch}`)
     }
 
     const packagePaths = await getWorkspacePackages()

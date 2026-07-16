@@ -226,6 +226,7 @@ export declare const Sheet: ((props: Omit<{
     transitionConfig?: import("@tamagui/core").AnimatedNumberStrategy;
     preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;
+    disableTransparencyHide?: boolean;
     native?: "ios"[] | boolean;
     transition?: import("@tamagui/core").TransitionProp;
     handleDisableScroll?: boolean;

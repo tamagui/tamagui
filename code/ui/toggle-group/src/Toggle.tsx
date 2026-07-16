@@ -59,12 +59,12 @@ export const ToggleFrame = styled(
 
       defaultActiveStyle: {
         true: {
-          backgroundColor: '$backgroundActive',
+          backgroundColor: '$backgroundPress',
           hoverStyle: {
-            backgroundColor: '$backgroundActive',
+            backgroundColor: '$backgroundPress',
           },
           focusStyle: {
-            backgroundColor: '$backgroundActive',
+            backgroundColor: '$backgroundPress',
           },
         },
       },

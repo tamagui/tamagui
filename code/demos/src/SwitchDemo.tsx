@@ -40,8 +40,7 @@ export function SwitchWithLabel(props: {
         transition="300ms"
         size={props.size}
         defaultChecked={props.defaultChecked}
-        // use activeStyle to choose youra active color
-        // default to $backgroundActive unless an active style is supplied
+        // use activeStyle to choose your checked-state color
         activeStyle={{
           backgroundColor: '$color6',
         }}

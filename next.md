@@ -1,5 +1,26 @@
 v3 release plan:
 
+## cutting a beta (verified July 2026)
+
+From the v3-beta branch, with a clean tree and CI green on the pushed HEAD:
+
+```
+bun ./scripts/release.ts --beta --force-publish-all
+```
+
+Run it interactively (not `--ci`): coming from stable 2.4.6 the beta base is
+ambiguous, so pick `3.0.0-beta.0 (next major)` at the prompt. `computePublishTag`
+maps `3.0.0-beta.x` to the npm dist-tag `beta` automatically; it cannot land on
+`latest`. `--force-publish-all` matters for the first beta: without it,
+`skipPublishIfUnchanged` packages resolve dep versions via `npm view <pkg>
+dist-tags.beta`, which doesn't exist yet, and dependents would reference
+never-published versions. Preconditions: `git fetch origin --tags` (baseline
+detection picks the newest v* tag vs canary commit), npm login + a 2FA code,
+and nothing uncommitted anywhere (the finish step runs `git add -A`). The
+script runs check/lint/typecheck/tests/build itself, then publishes ~160
+packages, commits the version bump, tags `v3.0.0-beta.0`, and pushes the
+branch + tag. `--dry-run` prints the plan without writing.
+
 ## landed on v3-beta (July 2026)
 
 - deprecated API removals: `focusable` => `tabIndex`, `fullscreen`, `styleable`, forwardRef wrappers, `inlineWhenUnflattened`, ui-kit aliases, true tokens (default size resolves to `$4`), platform style key renames, createSystemFont moved to its own package
@@ -33,6 +54,8 @@ migration notes so far:
   - landed: data-state open/closed on `Select.Trigger` and the Select viewport (web) to match Dialog/Popover; Tooltip inherits via Popover parts.
   - not done: unifying the internal `ScopedProps` type-shape (popover/tooltip use `Omit<P,'scope'> & {scope?}`, dialog/select/toast use `P & {scope?}`) — cosmetic rename with type-churn risk and no correctness value, left as-is. Toast light-touch scoping/naming not revisited.
 - iOS CI: clear stale queued macOS runs, fix runner availability so Detox/Maestro actually run per-push
+- animation API lane H (plans/v3-animation-api.md) in execution: H0 public hooks + H3 real css animated number first (feature branches off v3-beta, land in beta.1), then H1 onTransition, then H2 sheet position/opacity removal with the C2 skin
+- v2 deprecation sweep (tracked, not started): full review of every prop/API v3 changed, backported as `@deprecated` JSDoc on main so v2 users get editor warnings before upgrading. Source list = the migration notes above plus: `disableTransparencyHide` (v3 replaces transparency hiding with display-none hiding, successor `disableHideWhenClosed`), `onDidAnimate` and Sheet `onAnimationComplete` (v3: `onTransition`), `Sheet.Frame` (v3: Container + Background), get-token steppers (`stepTokenUpOrDown`/`getTokenRelative`/options arg), icon media/pseudo props. Do on main, not v3-beta.
 
 ## open decisions (not currently being executed)
 
@@ -40,7 +63,7 @@ migration notes so far:
   - remove component themes / remove `name` from `styled()` (or just make not theme-related)
   - component example just show using theme="surface1" for example
   - maybe make theme builder have easy "inverse" option so accent can be something else
-  - `$backgroundActive` no longer exists in v3 themes but is still referenced by checkbox/switch checked states, tabs active, and toggle-group active (silently no-ops). Slider was fixed (track $backgroundPress, fill $color); decide whether to reintroduce backgroundActive or migrate these four to existing tokens.
+  - ~~`$backgroundActive` no longer exists in v3 themes but is still referenced by checkbox/switch checked states, tabs active, and toggle-group active (silently no-ops).~~ resolved: migrated all four to `$backgroundPress` (matching the slider fix), regression-tested in kitchen-sink `ActiveStateBackground.test.tsx`
 - update button a bit to how i do them
 - consider removing or simplifying `ThemeableStack` / `SizableStack`
 - simplify Select/ListItem further where it directly helps perf or API clarity

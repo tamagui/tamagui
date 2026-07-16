@@ -1640,6 +1640,7 @@ export type GetStyleState = {
     flatTransforms?: Record<string, any>;
     overriddenContextProps?: Record<string, any>;
     originalContextPropValues?: Record<string, any>;
+    tokenProvenance?: Record<string, string>;
     pseudoTransitions?: PseudoTransitions | null;
     animationDriver?: AnimationDriver | null;
 };

@@ -1,6 +1,8 @@
 import type { AllGroupContexts, AnimationDriver, ComponentContextI, DebugProp, GetStyleResult, GetStyleState, SplitStyleProps, StaticConfig, TamaguiComponentState, TamaguiInternalConfig, TextStyle, ThemeParsed } from '../types';
 import { styleOriginalValues } from './styleOriginalValues';
 export { styleOriginalValues };
+export { getStyleTokenProvenance, STYLE_TOKEN_PROVENANCE_KEY } from './styleProvenance';
+export type { StyleTokenBinding, StyleTokenProvenance } from './styleProvenance';
 export type SplitStyles = ReturnType<typeof getSplitStyles>;
 export type SplitStyleResult = ReturnType<typeof getSplitStyles>;
 type StyleSplitter = (props: {

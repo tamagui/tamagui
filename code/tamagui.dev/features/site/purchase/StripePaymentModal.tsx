@@ -174,7 +174,7 @@ import {
   V2_LICENSE_PRICE,
   usePaymentModal,
 } from './paymentModalStore'
-import { calculatePromoPrice, getActivePromo } from './promoConfig'
+import { getActivePromo, getActivePromoCoupon } from './promoConfig'
 
 type StripePaymentModalProps = {
   yearlyTotal: number
@@ -243,7 +243,6 @@ const PaymentForm = ({
 
     try {
       // Submit the form first
-      console.log('[Payment] Submitting elements...')
       const { error: submitError } = await elements.submit()
 
       if (submitError) {
@@ -252,10 +251,7 @@ const PaymentForm = ({
         onError(submitError)
         return
       }
-      console.log('[Payment] Elements submitted successfully')
-
       // Create payment method
-      console.log('[Payment] Creating payment method...')
       const { error: paymentMethodError, paymentMethod } =
         await stripe.createPaymentMethod({
           elements,
@@ -267,8 +263,6 @@ const PaymentForm = ({
         onError(paymentMethodError)
         return
       }
-      console.log('[Payment] Payment method created:', paymentMethod.id)
-
       let data: any = null
 
       // Support-tier-only checkout from account modal: do not create V2 license again.
@@ -320,7 +314,6 @@ const PaymentForm = ({
 
       // V2 purchase flow - V1 users can buy V2 (different product), V2 users can't buy again
       if (isV2 && !subscriptionStatus.proV2) {
-        console.log('[Payment] Creating V2 subscription...')
         const response = await authFetch('/api/create-v2-subscription', {
           method: 'POST',
           body: JSON.stringify({
@@ -331,8 +324,6 @@ const PaymentForm = ({
         })
 
         data = await response.json()
-        console.log('[Payment] V2 subscription response:', response.status, data)
-
         if (!response.ok) {
           console.error('[Payment] V2 subscription failed:', data)
           const error = new Error(data.error || JSON.stringify(data))
@@ -605,6 +596,8 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
   const [showCoupon, setShowCoupon] = useState(false)
   const [couponCode, setCouponCode] = useState('')
   const [finalCoupon, setFinalCoupon] = useState<Coupon | null>(null)
+  const configuredPromoCoupon = getActivePromoCoupon()
+  const effectiveCoupon = finalCoupon ?? configuredPromoCoupon
   const [couponError, setCouponError] = useState<string | null>(null)
   const { handleLogin } = useLoginLink()
 
@@ -638,6 +631,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
     if (!codeToValidate) return
 
     setCouponCode(codeToValidate)
+
+    // configured promotions are applied synchronously in the UI and independently
+    // enforced by the purchase endpoint, so checkout never races this request.
+    if (activePromo?.code.toLowerCase() === codeToValidate.toLowerCase()) return
 
     // auto-validate the coupon
     const validateCoupon = async () => {
@@ -795,7 +792,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         ? V2_LICENSE_PRICE * 100
         : monthlyTotal * 100 + yearlyTotal * 100
     const amount = Math.ceil(
-      calculateDiscountedAmount(baseAmount / 100, finalCoupon) * 100
+      calculateDiscountedAmount(baseAmount / 100, effectiveCoupon) * 100
     )
 
     const renderTotalView = () => {
@@ -804,7 +801,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
         const supportPrice = SUPPORT_TIERS[supportTier].price
         const discountedSupportPrice = calculateDiscountedAmount(
           supportPrice,
-          finalCoupon
+          effectiveCoupon
         )
         return (
           <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
@@ -818,7 +815,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 {SUPPORT_TIERS[supportTier].label} Support
               </Paragraph>
               <YStack items="flex-end">
-                {finalCoupon && (
+                {effectiveCoupon && (
                   <Paragraph
                     fontFamily="$mono"
                     size="$3"
@@ -850,7 +847,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 Total
               </H3>
               <YStack items="flex-end">
-                {finalCoupon && (
+                {effectiveCoupon && (
                   <Paragraph
                     fontFamily="$mono"
                     size="$3"
@@ -877,7 +874,9 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 }}
                 onPress={() => setShowCoupon((x) => !x)}
               >
-                {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
+                {effectiveCoupon
+                  ? `Applied: ${effectiveCoupon.code}`
+                  : 'Have a coupon code?'}
               </SizableText>
               {showCoupon && (
                 <XStack gap="$2" items="center">
@@ -902,12 +901,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   {couponError}
                 </Paragraph>
               )}
-              {finalCoupon && (
+              {effectiveCoupon && (
                 <Paragraph size="$2" color="$green10">
                   Coupon applied:{' '}
-                  {finalCoupon.percent_off
-                    ? `${finalCoupon.percent_off}% off`
-                    : `$${finalCoupon?.amount_off ? finalCoupon.amount_off / 100 : 0} off`}
+                  {effectiveCoupon.percent_off
+                    ? `${effectiveCoupon.percent_off}% off`
+                    : `$${effectiveCoupon.amount_off ? effectiveCoupon.amount_off / 100 : 0} off`}
                 </Paragraph>
               )}
             </YStack>
@@ -917,8 +916,11 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
       // V2 Order Summary
       if (isV2) {
-        const discountedPrice = calculateDiscountedAmount(V2_LICENSE_PRICE, finalCoupon)
-        const hasAnyDiscount = parityDiscount || finalCoupon
+        const discountedPrice = calculateDiscountedAmount(
+          V2_LICENSE_PRICE,
+          effectiveCoupon
+        )
+        const hasAnyDiscount = parityDiscount || effectiveCoupon
         return (
           <YStack flex={1} gap="$4" bg="$color2" p="$4" rounded="$4">
             <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
@@ -958,13 +960,13 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 </Paragraph>
               </XStack>
             )}
-            {finalCoupon && (
+            {effectiveCoupon && (
               <XStack justify="space-between">
                 <Paragraph fontFamily="$mono" size="$3" color="$green10">
-                  Promo: {finalCoupon.code}
+                  Promo: {effectiveCoupon.code}
                 </Paragraph>
                 <Paragraph fontFamily="$mono" size="$3" color="$green10">
-                  -{finalCoupon.percent_off}%
+                  -{effectiveCoupon.percent_off}%
                 </Paragraph>
               </XStack>
             )}
@@ -975,7 +977,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   {SUPPORT_TIERS[supportTier].label} Support
                 </Paragraph>
                 <YStack items="flex-end">
-                  {finalCoupon && (
+                  {effectiveCoupon && (
                     <Paragraph
                       fontFamily="$mono"
                       size="$3"
@@ -990,7 +992,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                     {Math.ceil(
                       calculateDiscountedAmount(
                         SUPPORT_TIERS[supportTier].price,
-                        finalCoupon
+                        effectiveCoupon
                       )
                     ).toLocaleString()}
                     /mo
@@ -1027,7 +1029,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 Total
               </H3>
               <YStack items="flex-end">
-                {finalCoupon && (
+                {effectiveCoupon && (
                   <Paragraph
                     fontFamily="$mono"
                     size="$3"
@@ -1045,7 +1047,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                     ` + $${Math.ceil(
                       calculateDiscountedAmount(
                         SUPPORT_TIERS[supportTier].price,
-                        finalCoupon
+                        effectiveCoupon
                       )
                     ).toLocaleString()}/mo`}
                 </H3>
@@ -1063,7 +1065,9 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 }}
                 onPress={() => setShowCoupon((x) => !x)}
               >
-                {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
+                {effectiveCoupon
+                  ? `Applied: ${effectiveCoupon.code}`
+                  : 'Have a coupon code?'}
               </SizableText>
               {showCoupon && (
                 <XStack gap="$2" items="center">
@@ -1088,12 +1092,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   {couponError}
                 </Paragraph>
               )}
-              {finalCoupon && (
+              {effectiveCoupon && (
                 <Paragraph size="$2" color="$green10">
                   Coupon applied:{' '}
-                  {finalCoupon.percent_off
-                    ? `${finalCoupon.percent_off}% off`
-                    : `$${finalCoupon?.amount_off ? finalCoupon.amount_off / 100 : 0} off`}
+                  {effectiveCoupon.percent_off
+                    ? `${effectiveCoupon.percent_off}% off`
+                    : `$${effectiveCoupon.amount_off ? effectiveCoupon.amount_off / 100 : 0} off`}
                 </Paragraph>
               )}
             </YStack>
@@ -1128,7 +1132,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 Pro subscription
               </Paragraph>
               <YStack items="flex-end">
-                {finalCoupon && (
+                {effectiveCoupon && (
                   <Paragraph
                     fontFamily="$mono"
                     size="$3"
@@ -1139,7 +1143,10 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   </Paragraph>
                 )}
                 <Paragraph fontFamily="$mono">
-                  ${Math.ceil(calculateDiscountedAmount(yearlyTotal / 12, finalCoupon))}
+                  $
+                  {Math.ceil(
+                    calculateDiscountedAmount(yearlyTotal / 12, effectiveCoupon)
+                  )}
                   /month
                 </Paragraph>
               </YStack>
@@ -1152,7 +1159,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 <XStack justify="space-between">
                   <Paragraph fontFamily="$mono">Chat Support</Paragraph>
                   <YStack items="flex-end">
-                    {finalCoupon && (
+                    {effectiveCoupon && (
                       <Paragraph
                         fontFamily="$mono"
                         size="$3"
@@ -1163,7 +1170,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                       </Paragraph>
                     )}
                     <Paragraph fontFamily="$mono">
-                      ${Math.ceil(calculateDiscountedAmount(200, finalCoupon))}
+                      ${Math.ceil(calculateDiscountedAmount(200, effectiveCoupon))}
                       /month
                     </Paragraph>
                   </YStack>
@@ -1175,7 +1182,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                     {SUPPORT_TIERS[supportTier].label} Support
                   </Paragraph>
                   <YStack items="flex-end">
-                    {finalCoupon && (
+                    {effectiveCoupon && (
                       <Paragraph
                         fontFamily="$mono"
                         size="$3"
@@ -1190,7 +1197,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                       {Math.ceil(
                         calculateDiscountedAmount(
                           SUPPORT_TIERS[supportTier].price,
-                          finalCoupon
+                          effectiveCoupon
                         )
                       )}
                       /month
@@ -1207,7 +1214,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 Team Seats ({teamSeats} {teamSeats === 1 ? 'seat' : 'seats'})
               </Paragraph>
               <YStack items="flex-end">
-                {finalCoupon && (
+                {effectiveCoupon && (
                   <Paragraph
                     fontFamily="$mono"
                     size="$3"
@@ -1218,7 +1225,8 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                   </Paragraph>
                 )}
                 <Paragraph fontFamily="$mono">
-                  ${Math.ceil(calculateDiscountedAmount(teamSeats * 100, finalCoupon))}
+                  $
+                  {Math.ceil(calculateDiscountedAmount(teamSeats * 100, effectiveCoupon))}
                   /year
                 </Paragraph>
               </YStack>
@@ -1232,7 +1240,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               Total
             </H3>
             <YStack items="flex-end">
-              {finalCoupon && (
+              {effectiveCoupon && (
                 <Paragraph
                   $maxMd={{ fontSize: '$6' }}
                   fontFamily="$mono"
@@ -1247,11 +1255,15 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
 
               <H3 $maxMd={{ fontSize: '$6' }} fontFamily="$mono">
                 {yearlyTotal
-                  ? `$${Math.ceil(calculateDiscountedAmount(yearlyTotal, finalCoupon))}`
+                  ? `$${Math.ceil(
+                      calculateDiscountedAmount(yearlyTotal, effectiveCoupon)
+                    )}`
                   : ''}
                 {yearlyTotal && monthlyTotal ? ' + ' : ''}
                 {monthlyTotal > 0 &&
-                  `$${Math.ceil(calculateDiscountedAmount(monthlyTotal, finalCoupon))}/month`}
+                  `$${Math.ceil(
+                    calculateDiscountedAmount(monthlyTotal, effectiveCoupon)
+                  )}/month`}
               </H3>
             </YStack>
           </XStack>
@@ -1274,7 +1286,9 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
               }}
               onPress={() => setShowCoupon((x) => !x)}
             >
-              {finalCoupon ? `Applied: ${finalCoupon.code}` : 'Have a coupon code?'}
+              {effectiveCoupon
+                ? `Applied: ${effectiveCoupon.code}`
+                : 'Have a coupon code?'}
             </SizableText>
             {showCoupon && (
               <XStack gap="$2" items="center">
@@ -1299,12 +1313,12 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 {couponError}
               </Paragraph>
             )}
-            {finalCoupon && (
+            {effectiveCoupon && (
               <Paragraph size="$2" color="$green10">
                 Coupon applied:{' '}
-                {finalCoupon.percent_off
-                  ? `${finalCoupon.percent_off}% off`
-                  : `$${finalCoupon?.amount_off ? finalCoupon.amount_off / 100 : 0} off`}
+                {effectiveCoupon.percent_off
+                  ? `${effectiveCoupon.percent_off}% off`
+                  : `$${effectiveCoupon.amount_off ? effectiveCoupon.amount_off / 100 : 0} off`}
               </Paragraph>
             )}
           </YStack>
@@ -1360,7 +1374,7 @@ export const StripePaymentModal = (props: StripePaymentModalProps) => {
                 isProcessing={isProcessing}
                 setIsProcessing={setIsProcessing}
                 userData={userData}
-                finalCoupon={finalCoupon}
+                finalCoupon={effectiveCoupon}
                 subscriptionStatus={subscriptionStatus}
                 // V2 fields
                 isV2={isV2}
