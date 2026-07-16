@@ -30,6 +30,10 @@ In v3, Select keeps adapted sheet content mounted through the sheet exit
 animation, and web trigger and viewport parts expose `data-state="open" | "closed"`
 for styling.
 
+Select also supports ordered multiple selection across custom web lists,
+browser-native controls, adapted Sheets, and plain React Native content. The
+same item registry and value controller power every path.
+
 ## Installation
 
 Select is already installed in `tamagui`, or you can install it independently:
@@ -73,10 +77,64 @@ export default () => (
 )
 ```
 
-<Notice>
-  Note that Select only works on Native using the Adapt component to adapt it to a Sheet.
-  See below for docs.
-</Notice>
+## Multiple selection
+
+Pass `multiple` to use a controlled or uncontrolled `string[]`. Selecting a new
+item appends it. Selecting it again removes it without changing the order of the
+remaining values. Multiple selection keeps custom lists and adapted Sheets open.
+
+```tsx
+const [fruit, setFruit] = useState<Array<'apple' | 'pear'>>([])
+
+<Select multiple name="fruit" value={fruit} onValueChange={setFruit}>
+  <Select.Trigger>
+    <Select.Value placeholder="Choose fruit" />
+  </Select.Trigger>
+  <Select.Content>
+    <Select.Viewport>
+      <Select.Item value="apple">
+        <Select.ItemText>Apple</Select.ItemText>
+        <Select.ItemIndicator />
+      </Select.Item>
+      <Select.Item value="pear">
+        <Select.ItemText>Pear</Select.ItemText>
+        <Select.ItemIndicator />
+      </Select.Item>
+    </Select.Viewport>
+  </Select.Content>
+</Select>
+```
+
+`Select.Value` renders registered `Select.ItemText` labels in selection order,
+separated by `, `. Use `renderValue` for chips, localized separators, summaries,
+or labels that must render before lazy items mount.
+
+```tsx
+<Select
+  multiple
+  value={fruit}
+  renderValue={(values) => `${values.length} selected`}
+/>
+```
+
+### Behavior by render path
+
+- A custom floating web Select is an ARIA multi-select listbox. Arrow keys and
+  typeahead move focus. Enter and Space toggle the focused option.
+- `native="web"` renders a real `<select multiple>`. Browser selection,
+  keyboard behavior, and form submission are authoritative.
+- An adapted Sheet uses the same listbox controller on web and stays open after
+  each toggle. The Sheet closes through its overlay, drag-to-bottom behavior,
+  platform back action, or controlled state. Select does not add a Done row.
+- Plain React Native content renders inline when no Adapt target is active.
+  Multiple items expose checkbox-style accessibility state and remain visible
+  after a toggle.
+
+On custom web paths, `name` renders one root-level hidden input per selected
+value, including when the collection is portaled into a Sheet. `form` can point
+those inputs at an external form. The browser-native path puts `name` and `form`
+on its `<select>` directly and does not render hidden inputs. React Native does
+not render HTML form controls.
 
 ## API Reference
 
@@ -103,18 +161,24 @@ Contains every component for the select:
     },
     {
       name: 'value',
-      type: 'string',
-      description: `Controlled value.`,
+      type: 'string | string[]',
+      description: `Controlled value. With multiple, this is an ordered string array.`,
     },
     {
       name: 'defaultValue',
-      type: 'string',
-      description: `Default value.`,
+      type: 'string | string[]',
+      description: `Default value. With multiple, this defaults to an empty array.`,
+    },
+    {
+      name: 'multiple',
+      type: 'boolean',
+      default: 'false',
+      description: `Enables ordered multiple selection and makes value callbacks array-valued.`,
     },
     {
       name: 'onValueChange',
-      type: '(value: string) => void',
-      description: `Callback on value change.`,
+      type: '(value, details) => void',
+      description: `Cancelable value request. Details identify item-press, keyboard, or native-change.`,
     },
     {
       name: 'open',
@@ -128,13 +192,23 @@ Contains every component for the select:
     },
     {
       name: 'onOpenChange',
-      type: '(open: boolean) => void',
-      description: `Callback on open change.`,
+      type: '(open: boolean, details) => void',
+      description: `Cancelable open request with the interaction reason and source event.`,
     },
     {
       name: 'dir',
       type: 'Direction',
       description: `Direction of text display.`,
+    },
+    {
+      name: 'name',
+      type: 'string',
+      description: `Web form field name. Multiple values submit as repeated entries.`,
+    },
+    {
+      name: 'form',
+      type: 'string',
+      description: `Associates the web form control with an external form id.`,
     },
     {
       name: 'native',
@@ -143,8 +217,8 @@ Contains every component for the select:
     },
     {
       name: 'renderValue',
-      type: '(value: string) => ReactNode',
-      description: `Render function for the selected value. Useful for SSR when you need custom display text. By default, Select falls back to showing the raw value for SSR compatibility.`,
+      type: '(value: string | string[]) => ReactNode',
+      description: `Render function for the selected value. Multiple mode receives the ordered string array. Useful for SSR, lazy mounting, chips, and custom summaries.`,
     },
     {
       name: 'lazyMount',
@@ -260,17 +334,12 @@ Extends [Separator](/ui/separator). Use inside `Select.Group` or
 
 ### Select.Item
 
-Extends [ListItem](/ui/list-item). Used to add selectable values to the list. Must provide an index as React Native doesn't give any escape hatch for us to configure that automatically.
+Extends [ListItem](/ui/list-item). Used to add selectable string values to the
+list. Item registration order controls keyboard navigation, typeahead, and
+selection anchoring.
 
 <PropsTable
   data={[
-    {
-      name: 'index',
-      type: 'number',
-      required: true,
-      description: `Incrementally starting from 0, matching its appearance in the list.`,
-    },
-
     {
       name: 'value',
       type: 'string',
@@ -375,7 +444,7 @@ const labels = {
   <Select.Content>
     <Select.Viewport>
       {/* These items mount in a startTransition when first opened */}
-      <Select.Item index={0} value="apple">
+      <Select.Item value="apple">
         <Select.ItemText>Apple</Select.ItemText>
       </Select.Item>
       {/* ... more items */}
