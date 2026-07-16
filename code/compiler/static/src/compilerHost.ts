@@ -249,7 +249,7 @@ const compilerStyleProps = new Set([
   'render',
 ])
 
-const runtimeWebEventProps = new Set([
+const runtimeEventProps = new Set([
   'onHoverIn',
   'onHoverOut',
   'onLongPress',
@@ -435,14 +435,17 @@ export function createTamaguiCompilerHost(
           props[entry.name] = entry.value.value
         }
       }
-      if (platform === 'web') {
+      // both platforms: web needs runtime event mapping, and a flattened bare
+      // RN View silently ignores onPress/onLongPress (Tamagui wires press via
+      // its responder system at runtime)
+      {
         const directRuntimeEvent = input.element.entries.find(
-          (entry) => entry.kind === 'prop' && runtimeWebEventProps.has(entry.name)
+          (entry) => entry.kind === 'prop' && runtimeEventProps.has(entry.name)
         )
         const runtimeEvent =
           directRuntimeEvent?.kind === 'prop'
             ? directRuntimeEvent.name
-            : Object.keys(props).find((name) => runtimeWebEventProps.has(name))
+            : Object.keys(props).find((name) => runtimeEventProps.has(name))
         if (runtimeEvent) {
           return bailout(
             input,

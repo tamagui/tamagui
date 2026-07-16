@@ -111,6 +111,25 @@ describe('flatten-tests', () => {
     expect(output?.code).contains("backgroundColor='$invalid-identifier'")
   })
 
+  test(`bails on runtime event handlers — a bare RN View ignores onPress`, async () => {
+    const output = await extractForNative(`
+      import { View } from 'tamagui'
+      export function Test() {
+        return (
+          <View
+            width={60}
+            backgroundColor="rgb(1,2,3)"
+            onPress={() => console.info('pressed')}
+          />
+        )
+      }
+    `)
+    const code = output?.code ?? ''
+    expect(code).toContain('onPress')
+    expect(code).toContain('<View')
+    expect(code).not.toContain('__TamaguiNativeView')
+  })
+
   test(`preserves the complete runtime candidate on pressStyle bailout`, async () => {
     const output = await extractForNative(`
       import { View } from 'tamagui'
