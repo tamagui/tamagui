@@ -54,6 +54,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./FocusVisibleButtonPointer').FocusVisibleButtonPointer,
   FocusVisibleButtonWithFocusStyle: () =>
     require('./FocusVisibleButtonWithFocusStyle').FocusVisibleButtonWithFocusStyle,
+  FieldValidatedSignupCase: () =>
+    require('./FieldValidatedSignupCase').FieldValidatedSignupCase,
   FontTokensInVariants: () => require('./FontTokensInVariants').FontTokensInVariants,
   GroupHoverMobile: () => require('./GroupHoverMobile').GroupHoverMobile,
   GroupPressInVariant: () => require('./GroupPressInVariant').GroupPressInVariant,
