@@ -272,6 +272,23 @@ in stable 2.4.x). Also note: the spring rest-detection
 fix already on v3-beta makes close-complete events prompt on native drivers,
 and "H-6" in H-4 means packet H3 (the css real animated number).
 
+## Amendment 2026-07-16b: base-ui completion-detection findings (see plans/base-ui-comparison.md sec 2)
+
+- H1 css-driver mapping: prefer `Promise.all(element.getAnimations().map(a =>
+  a.finished))` over `transitionend`/`transitioncancel` aggregation — it
+  resolves immediately for zero-animation elements, needs a re-check after
+  aborted animations, and detects user-authored css transitions the driver
+  didn't start. Reference: base-ui `useAnimationsFinished`
+  (~/github/base-ui/packages/react/src/utils or internals).
+- H2 additionally deletes Adapt's 3000ms `exitLatchTimeout` (not just the
+  sheet's 1s opacity fallback) once close-complete events are trustworthy.
+- Follow-up idea (not this lane): emit `data-starting-style` /
+  `data-ending-style` from the presence system so className/tailwind users get
+  pure-css enter/exit without a driver.
+- H3 note: the animated-number rAF integrator is not an estimate-based timer —
+  it settles on real value/velocity thresholds; getAnimations() does not apply
+  to JS-driven numbers.
+
 ## Amendments applied to v3-evolution.md
 
 - C2 acceptance additionally requires: sheet source contains no opacity
