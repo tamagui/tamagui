@@ -455,3 +455,24 @@ coupled to the old Select visual defaults.
 - Base UI Select source under `~/github/base-ui/packages/react/src/select/`,
   especially its root, item, value, list, and native form behavior
 - Base UI `internals/itemEquality.ts` and `internals/resolveValueLabel.tsx`
+
+## Coordinator decisions (2026-07-16)
+
+Design accepted. Implementation is authorized as part of C3 per the
+sequencing above; no pre-C3 patch of the legacy implementation. Answers to
+the open questions:
+
+1. No default Done UI. Sheet dismissal is the completion model. A
+   behavior-only `Select.Close` primitive may be added later if real demand
+   appears; it is not part of this packet.
+2. Registry order becomes authoritative. `Select.Item index` is removed from
+   docs and accepted as a deprecated inert prop during migration, deleted
+   before v3 final.
+3. Yes: `name` + `form` are the initial web form surface. `required`,
+   root-level `disabled`, autofill, and Field context arrive with the Field
+   packet (`plans/field-system.md`, F0/F3: Select registers a controlRef
+   with Field).
+4. Yes: `', '` is the default multiple-label separator; `renderValue` covers
+   chips, localization, and count summaries.
+5. Yes: browser-native multi-select behavior is the explicit platform
+   contract for `native="web"`.
