@@ -1,4 +1,5 @@
 import type { NativeValue, SizeTokens } from '@tamagui/core';
+import type { DismissableProps } from '@tamagui/dismissable';
 import type { YStackProps } from '@tamagui/stacks';
 import type { HTMLProps, MutableRefObject, ReactNode, RefObject } from 'react';
 type ContextData = Record<string, any>;
@@ -156,7 +157,7 @@ export type SelectViewportExtraProps = SelectScopedProps<{
 export type SelectViewportProps = YStackProps & SelectViewportExtraProps;
 export type SelectContentProps = SelectScopedProps<{
     children?: React.ReactNode;
-}>;
+} & Pick<DismissableProps, 'onEscapeKeyDown' | 'onPointerDownOutside' | 'onFocusOutside' | 'onInteractOutside'>>;
 export type SelectScrollButtonImplProps = YStackProps & SelectScopedProps<{
     dir: 'up' | 'down';
     componentName: string;

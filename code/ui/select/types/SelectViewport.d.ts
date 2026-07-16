@@ -17,7 +17,7 @@ export declare const SelectViewport: import("@tamagui/core").TamaguiComponent<Om
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}>, "scope" | "size" | "unstyled" | "disableScroll"> & {
+}>, "size" | "unstyled" | "scope" | "disableScroll"> & {
     size?: import("@tamagui/core").SizeTokens | true;
     disableScroll?: boolean;
     unstyled?: boolean;

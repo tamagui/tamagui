@@ -169,6 +169,12 @@ export type PopoverContentImplProps = PopperContentProps & Omit<DismissableProps
      */
     lazyMount?: boolean;
     /**
+     * Used to force mounting when more control is needed. Useful when
+     * controlling animation with React animation libraries. Matches Dialog:
+     * disables part presence gating so the content is always mounted.
+     */
+    forceMount?: boolean;
+    /**
      * Whether focus should be trapped within the `Popover`
      * @default false
      */
@@ -302,7 +308,7 @@ export declare const Popover: ((props: Omit<PopperProps, "scope"> & {
             shouldForwardSpace: boolean;
         };
     };
-    ScrollView: import("@tamagui/compose-refs").RefComponent<import("react-native").ScrollView, PopoverScrollViewProps>;
+    ScrollView: import("@tamagui/compose-refs").RefComponent<import("@tamagui/scroll-view").ScrollViewRef, PopoverScrollViewProps>;
     FocusScope: (props: import("@tamagui/focus-scope/types/types").ScopedProps<import("@tamagui/focus-scope").FocusScopeControllerProps>) => import("react/jsx-runtime").JSX.Element;
 };
 export {};
