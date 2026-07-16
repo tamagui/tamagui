@@ -1616,6 +1616,22 @@ export type TransitionProp =
     ]
 
 /**
+ * Emitted by the animation driver at the start and end of a transition.
+ *
+ * `cause` is `enter` when the component mounts into an AnimatePresence, `exit`
+ * when it unmounts, and `update` for any style change while it stays mounted.
+ * On the `end` phase, `finished` is `false` when the transition was interrupted
+ * (e.g. an exit canceled by a re-enter, or an update superseded by another).
+ */
+export type TransitionEvent = {
+  phase: 'start' | 'end'
+  cause: 'enter' | 'exit' | 'update'
+  finished?: boolean
+}
+
+export type OnTransition = (event: TransitionEvent) => void
+
+/**
  * Tokens
  */
 
@@ -2619,9 +2635,10 @@ interface ExtraBaseProps {
   animatePresence?: boolean
 
   /**
-   * Called by the animation driver once this component finishes animating.
+   * Called by the animation driver at the start and end of each transition
+   * (enter, exit, or an in-place style update). See `TransitionEvent`.
    */
-  onDidAnimate?: () => void
+  onTransition?: OnTransition
 
   /**
    * Avoids as much work as possible and passes through the children with no changes.
@@ -3489,7 +3506,7 @@ export type UseAnimationHook = (props: {
   themeName: string
   pseudos: WithPseudoProps<ViewStyle> | null
   stateRef: { current: TamaguiComponentStateRef }
-  onDidAnimate?: any
+  onTransition?: OnTransition
   delay?: number
 }) => null | {
   style?: StackStyleBase | StackStyleBase[]

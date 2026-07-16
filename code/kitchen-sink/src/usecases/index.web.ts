@@ -84,6 +84,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./AdaptLiveSlotSpikeCase').AdaptLiveSlotSpikeCase,
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
+  OnTransitionCase: () => require('./OnTransitionCase').OnTransitionCase,
   StyleValidation: () => require('./StyleValidation').StyleValidation,
   FocusScopeNoFocusCase: () => require('./FocusScopeNoFocusCase').FocusScopeNoFocusCase,
   FocusVisibleButton: () => require('./FocusVisibleButton').FocusVisibleButton,

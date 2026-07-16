@@ -39,6 +39,45 @@ const SPRING_DEFAULTS = {
   restDisplacementThreshold: 0.001,
 }
 
+// resolve once all WAAPI animations on `node` finish. mirrors base-ui's
+// useAnimationsFinished: resolves immediately when the browser exposes no
+// animations (zero-animation elements), and re-checks after an aborted
+// animation in case a property it depended on changed mid-flight and started a
+// new one. falls back to immediate resolve when getAnimations is unavailable
+// (ssr / older webviews). resolves `false` when animations were canceled with
+// nothing left running (interruption).
+function waitForAnimations(node: HTMLElement): Promise<boolean> {
+  if (typeof node.getAnimations !== 'function') {
+    return Promise.resolve(true)
+  }
+  return new Promise<boolean>((resolve) => {
+    const check = () => {
+      const animations = node.getAnimations()
+      if (animations.length === 0) {
+        resolve(true)
+        return
+      }
+      Promise.all(animations.map((a) => a.finished))
+        .then(() => resolve(true))
+        .catch(() => {
+          const remaining = node.getAnimations()
+          if (remaining.some((a) => a.playState === 'running' || a.pending)) {
+            check()
+            return
+          }
+          resolve(false)
+        })
+    }
+    // css transitions register as pending until the next style recalc, so give
+    // the browser one frame to start them before we read getAnimations.
+    if (hasRAF) {
+      requestAnimationFrame(check)
+    } else {
+      check()
+    }
+  })
+}
+
 /**
  * Helper function to extract duration from CSS animation string
  * Examples: "ease-in 200ms" -> 200, "cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms" -> 400
@@ -371,14 +410,23 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       componentState,
       stateRef,
       styleState,
-      onDidAnimate,
+      onTransition,
     }: any) => {
       const isHydrating = componentState.unmounted === true
       const isEntering = !!componentState.unmounted
       const isExiting = presence?.[0] === false
       const sendExitComplete = presence?.[1]
-      const onDidAnimateRef = React.useRef(onDidAnimate)
-      onDidAnimateRef.current = onDidAnimate
+      const onTransitionRef = React.useRef(onTransition)
+      onTransitionRef.current = onTransition
+      const emit = (
+        phase: 'start' | 'end',
+        cause: 'enter' | 'exit' | 'update',
+        finished?: boolean
+      ) => {
+        onTransitionRef.current?.(
+          phase === 'end' ? { phase, cause, finished } : { phase, cause }
+        )
+      }
 
       // Track if we just finished entering (transition from entering to not entering)
       // This is needed because the CSS transition happens on the render AFTER t_unmounted is removed
@@ -396,6 +444,14 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
       const sendExitCompleteRef = React.useRef(sendExitComplete)
       const lastNonExitingStyleRef = React.useRef<Record<string, string>>({})
       sendExitCompleteRef.current = sendExitComplete
+
+      // onTransition lifecycle bookkeeping (independent from presence completion)
+      const enterCycleIdRef = React.useRef(0)
+      const enterStartedRef = React.useRef(false)
+      const updateCycleIdRef = React.useRef(0)
+      const updateInFlightRef = React.useRef(false)
+      const prevUpdateSigRef = React.useRef<string | null>(null)
+      const exitStartedRef = React.useRef(false)
 
       // detect transition into/out of exiting state
       const justStartedExiting = isExiting && !wasExitingRef.current
@@ -479,11 +535,23 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         // capture current cycle id for this effect
         const cycleId = exitCycleIdRef.current
 
-        // helper to complete exit with guards
+        // emit exit start once per cycle
+        if (!exitStartedRef.current) {
+          exitStartedRef.current = true
+          emit('start', 'exit')
+        }
+
+        // helper to complete exit with guards. the exit 'end' event fires
+        // immediately before presence safeToRemove so users can observe exit
+        // completion without reaching into presence internals.
         const completeExit = () => {
           if (cycleId !== exitCycleIdRef.current) return
           if (exitCompletedRef.current) return
           exitCompletedRef.current = true
+          if (exitStartedRef.current) {
+            exitStartedRef.current = false
+            emit('end', 'exit', true)
+          }
           sendExitCompleteRef.current?.()
         }
 
@@ -717,89 +785,86 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         }
       }, [isExiting])
 
+      // signature of the animatable style, so the update effect can detect
+      // in-place style changes. the css driver applies most style values as
+      // atomic classNames (not inline style), so the signature must include the
+      // className map. only computed when a listener is attached.
+      const styleSignature = onTransition
+        ? (() => {
+            const { transition: _t, ...rest } = style
+            return `${JSON.stringify(styleState?.classNames ?? null)}|${JSON.stringify(rest)}`
+          })()
+        : ''
+
+      // enter lifecycle: emit start when the enter transition kicks off, end
+      // once every animation on the node finishes (getAnimations-based, resolves
+      // immediately for zero-animation elements). the promise outlives benign
+      // re-renders because it keys off the cycle id, not the effect lifetime.
       useIsomorphicLayoutEffect(() => {
         const host = stateRef.current.host
-        if (!onDidAnimateRef.current || isExiting || !justFinishedEntering || !host) {
+        if (!onTransitionRef.current || isExiting || !justFinishedEntering || !host) {
           return
         }
+        const node = host as HTMLElement
+        const cycleId = ++enterCycleIdRef.current
+        enterStartedRef.current = true
+        emit('start', 'enter')
+        void waitForAnimations(node).then((finished) => {
+          if (cycleId !== enterCycleIdRef.current || !enterStartedRef.current) return
+          enterStartedRef.current = false
+          emit('end', 'enter', finished)
+        })
+      }, [justFinishedEntering, isExiting])
 
-        const completeEnter = () => {
-          onDidAnimateRef.current?.()
-        }
-
-        if (keys.length === 0 || !hasNormalizedAnimation(normalized)) {
-          completeEnter()
+      // update lifecycle: a style change while mounted (not entering or exiting).
+      // a new update that supersedes an in-flight one emits end(finished:false).
+      useIsomorphicLayoutEffect(() => {
+        const host = stateRef.current.host
+        if (
+          !onTransitionRef.current ||
+          isEntering ||
+          justFinishedEntering ||
+          isExiting ||
+          !host
+        ) {
+          // keep the signature current so leaving enter/exit isn't seen as an update
+          prevUpdateSigRef.current = styleSignature
           return
         }
-
-        const animationConfigs = getAnimationConfigsForKeys(
-          normalized,
-          animations as Record<string, string>,
-          keys,
-          defaultAnimation
-        )
-        let maxDuration = 0
-        let hasAnimationConfig = false
-        for (const animationValue of animationConfigs.values()) {
-          if (animationValue) {
-            hasAnimationConfig = true
-            maxDuration = Math.max(maxDuration, extractDuration(animationValue))
-          }
-        }
-
-        if (!hasAnimationConfig) {
-          completeEnter()
+        if (prevUpdateSigRef.current === null) {
+          prevUpdateSigRef.current = styleSignature
           return
         }
+        if (styleSignature === prevUpdateSigRef.current) return
+        prevUpdateSigRef.current = styleSignature
 
         const node = host as HTMLElement
-        const transitioningProps = new Set(keys)
-        const delay = normalized.delay ?? 0
-        let completedCount = 0
-        let completed = false
-
-        const finish = () => {
-          if (completed) return
-          completed = true
-          clearTimeout(timeoutId)
-          node.removeEventListener('transitionend', onFinishAnimation)
-          node.removeEventListener('transitioncancel', onCancelAnimation)
-          completeEnter()
+        if (updateInFlightRef.current) {
+          emit('end', 'update', false)
         }
+        updateInFlightRef.current = true
+        const cycleId = ++updateCycleIdRef.current
+        emit('start', 'update')
+        void waitForAnimations(node).then((finished) => {
+          if (cycleId !== updateCycleIdRef.current) return
+          updateInFlightRef.current = false
+          emit('end', 'update', finished)
+        })
+      }, [styleSignature, isEntering, justFinishedEntering, isExiting])
 
-        const onFinishAnimation = (event: TransitionEvent) => {
-          if (event.target !== node) return
-
-          const eventProp = event.propertyName
-          if (
-            transitioningProps.has('all') ||
-            transitioningProps.has(eventProp) ||
-            eventProp === 'all' ||
-            (eventProp === 'transform' &&
-              [...transitioningProps].some((key) => TRANSFORM_KEYS.includes(key as any)))
-          ) {
-            completedCount++
-            if (completedCount >= transitioningProps.size) {
-              finish()
-            }
-          }
+      // interruption: emit a finished:false end for an enter canceled by an exit,
+      // or an exit canceled by a re-enter (before its own completion fired).
+      useIsomorphicLayoutEffect(() => {
+        if (justStartedExiting && enterStartedRef.current) {
+          enterCycleIdRef.current++
+          enterStartedRef.current = false
+          emit('end', 'enter', false)
         }
-
-        const onCancelAnimation = () => {
-          finish()
+        if (justStoppedExiting && exitStartedRef.current && !exitCompletedRef.current) {
+          exitStartedRef.current = false
+          emit('end', 'exit', false)
         }
-
-        const timeoutId = setTimeout(finish, maxDuration + delay)
-
-        node.addEventListener('transitionend', onFinishAnimation)
-        node.addEventListener('transitioncancel', onCancelAnimation)
-
-        return () => {
-          clearTimeout(timeoutId)
-          node.removeEventListener('transitionend', onFinishAnimation)
-          node.removeEventListener('transitioncancel', onCancelAnimation)
-        }
-      }, [justFinishedEntering, isExiting])
+      }, [justStartedExiting, justStoppedExiting])
 
       // tamagui doesnt even use animation output during hydration
       if (isHydrating) {

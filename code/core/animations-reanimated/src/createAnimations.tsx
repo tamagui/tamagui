@@ -596,8 +596,20 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         themeName,
         stateRef,
         styleState,
-        onDidAnimate,
+        onTransition,
       } = animationProps
+
+      const onTransitionRef = useRef(onTransition)
+      onTransitionRef.current = onTransition
+      const emit = (
+        phase: 'start' | 'end',
+        cause: 'enter' | 'exit' | 'update',
+        finished?: boolean
+      ) => {
+        onTransitionRef.current?.(
+          phase === 'end' ? { phase, cause, finished } : { phase, cause }
+        )
+      }
 
       // State flags
       const isHydrating = componentState.unmounted === true
@@ -632,8 +644,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       // Get sendExitComplete callback from presence
       const sendExitComplete = presence?.[1]
-      const onDidAnimateRef = useRef(onDidAnimate)
-      onDidAnimateRef.current = onDidAnimate
+      const enterStartedRef = useRef(false)
+      const exitStartedRef = useRef(false)
       const isExitingJSRef = useRef(false)
       isExitingJSRef.current = isExiting
 
@@ -664,13 +676,18 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           // check if all exit animations are done
           if (pendingExitKeysRef.current.size === 0) {
             exitCompletedRef.current = true
+            if (exitStartedRef.current) {
+              exitStartedRef.current = false
+              // exit 'end' fires immediately before presence safeToRemove
+              emit('end', 'exit', true)
+            }
             sendExitComplete?.()
           }
         }
       )
 
       // =========================================================================
-      // Enter cycle state for onDidAnimate
+      // Enter cycle state for the onTransition enter 'end' event
       // =========================================================================
       const enterCycleIdRef = useRef(0)
       const pendingEnterKeysRef = useRef<Set<string>>(new Set())
@@ -685,7 +702,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
         if (pendingEnterKeysRef.current.size === 0) {
           enterCompletedRef.current = true
-          onDidAnimateRef.current?.()
+          if (enterStartedRef.current) {
+            enterStartedRef.current = false
+            emit('end', 'enter', true)
+          }
         }
       })
 
@@ -694,6 +714,28 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const exitCycleIdShared = useSharedValue(exitCycleIdRef.current)
       const isCompletingEnterRef = useSharedValue(false)
       const enterCycleIdShared = useSharedValue(enterCycleIdRef.current)
+
+      // update lifecycle: in-place style change while mounted (not enter/exit)
+      const isUpdatingShared = useSharedValue(false)
+      const updateCycleIdShared = useSharedValue(0)
+      const updateCycleIdRef = useRef(0)
+      const pendingUpdateKeysRef = useRef<Set<string>>(new Set())
+      const updateCompletedRef = useRef(false)
+      const updateStartedRef = useRef(false)
+      const prevAnimatedSigRef = useRef<string | null>(null)
+
+      const markUpdateKeyDone = useEvent((key: string, cycleId: number) => {
+        if (cycleId !== updateCycleIdRef.current) return
+        if (updateCompletedRef.current) return
+        pendingUpdateKeysRef.current.delete(key)
+        if (pendingUpdateKeysRef.current.size === 0) {
+          updateCompletedRef.current = true
+          if (updateStartedRef.current) {
+            updateStartedRef.current = false
+            emit('end', 'update', true)
+          }
+        }
+      })
 
       // start new exit cycle only on transition INTO exiting (not every render while exiting)
       if (justStartedExiting) {
@@ -714,7 +756,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         isExitingRef.value = isExiting
         exitCycleIdShared.value = exitCycleIdRef.current
         isCompletingEnterRef.value =
-          !isExiting && justFinishedEntering && Boolean(onDidAnimateRef.current)
+          !isExiting && justFinishedEntering && Boolean(onTransitionRef.current)
         enterCycleIdShared.value = enterCycleIdRef.current
       }, [
         isExiting,
@@ -943,7 +985,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const exitKeysRegistered = useRef(false)
       const enterKeysRegistered = useRef(false)
 
-      if (!isExiting && justFinishedEntering && onDidAnimate) {
+      if (!isExiting && justFinishedEntering && onTransition) {
         const enterKeys: string[] = []
         const animateOnly = props.animateOnly as string[] | undefined
 
@@ -1007,29 +1049,118 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         exitKeysRegistered.current = exitKeys.length > 0
       }
 
+      // update key registration: a genuine style change while mounted (not
+      // entering, exiting, or hydrating). detected by comparing an animated
+      // style signature to the previous render's.
+      const isDefaultState =
+        !isExiting && !isEntering && !justFinishedEntering && !disableAnimation
+      let justStartedUpdate = false
+      if (onTransition && isDefaultState) {
+        const sig = JSON.stringify(animatedStyles)
+        if (prevAnimatedSigRef.current !== null && sig !== prevAnimatedSigRef.current) {
+          const updateKeys: string[] = []
+          const animateOnly = props.animateOnly as string[] | undefined
+          for (const key in animatedStyles) {
+            if (key === 'transform') continue
+            if (canAnimateProperty(key, animatedStyles[key], animateOnly)) {
+              updateKeys.push(key)
+            }
+          }
+          const transforms = animatedStyles.transform
+          if (transforms && Array.isArray(transforms)) {
+            for (const t of transforms) {
+              if (!t) continue
+              const tKey = Object.keys(t)[0]
+              if (tKey) {
+                if (animateOnly && !animateOnly.includes(tKey)) continue
+                updateKeys.push(`transform:${tKey}`)
+              }
+            }
+          }
+          if (updateKeys.length > 0) {
+            updateCycleIdRef.current++
+            updateCompletedRef.current = false
+            pendingUpdateKeysRef.current = new Set(updateKeys)
+            justStartedUpdate = true
+          }
+        }
+        prevAnimatedSigRef.current = sig
+      } else if (onTransition) {
+        prevAnimatedSigRef.current = JSON.stringify(animatedStyles)
+      }
+
+      // publish update state to the worklet so it attaches completion callbacks
+      useIsomorphicLayoutEffect(() => {
+        isUpdatingShared.value = Boolean(onTransitionRef.current)
+        updateCycleIdShared.value = updateCycleIdRef.current
+      }, [updateCycleIdRef.current, Boolean(onTransition)])
+
+      // emit update start (and finished:false for a superseded in-flight update)
+      useIsomorphicLayoutEffect(() => {
+        if (!justStartedUpdate) return
+        if (updateStartedRef.current) {
+          emit('end', 'update', false)
+        }
+        updateStartedRef.current = true
+        emit('start', 'update')
+      }, [updateCycleIdRef.current])
+
       // handle zero-animation case in effect (after render commit)
       React.useEffect(() => {
         if (!justStartedExiting || !sendExitComplete) return
+
+        // enter still in flight when exit begins is reported as finished:false
+        if (enterStartedRef.current) {
+          enterStartedRef.current = false
+          emit('end', 'enter', false)
+        }
+
+        // emit exit start once per exit cycle
+        if (onTransitionRef.current && !exitStartedRef.current) {
+          exitStartedRef.current = true
+          emit('start', 'exit')
+        }
 
         // if no keys were registered, complete immediately
         if (!exitKeysRegistered.current && pendingExitKeysRef.current.size === 0) {
           if (!exitCompletedRef.current) {
             exitCompletedRef.current = true
+            if (exitStartedRef.current) {
+              exitStartedRef.current = false
+              emit('end', 'exit', true)
+            }
             sendExitComplete()
           }
         }
       }, [justStartedExiting, sendExitComplete])
 
+      // exit interrupted by a re-enter: report the exit as finished:false
+      useIsomorphicLayoutEffect(() => {
+        if (justStoppedExiting && exitStartedRef.current && !exitCompletedRef.current) {
+          exitStartedRef.current = false
+          emit('end', 'exit', false)
+        }
+      }, [justStoppedExiting])
+
       React.useEffect(() => {
-        if (isExiting || !justFinishedEntering || !onDidAnimate) return
+        if (isExiting || !justFinishedEntering || !onTransition) return
+
+        // emit enter start once per enter cycle
+        if (!enterStartedRef.current) {
+          enterStartedRef.current = true
+          emit('start', 'enter')
+        }
 
         if (!enterKeysRegistered.current && pendingEnterKeysRef.current.size === 0) {
           if (!enterCompletedRef.current) {
             enterCompletedRef.current = true
-            onDidAnimateRef.current?.()
+            if (enterStartedRef.current) {
+              enterStartedRef.current = false
+              emit('end', 'enter', true)
+            }
           }
         }
-      }, [isExiting, justFinishedEntering, onDidAnimate])
+      }, [isExiting, justFinishedEntering, onTransition])
 
       // Create animated style
       const animatedStyle = useAnimatedStyle(
@@ -1063,6 +1194,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           const currentCycleId = exitCycleIdShared.value
           const currentlyCompletingEnter = isCompletingEnterRef.value
           const currentEnterCycleId = enterCycleIdShared.value
+          const currentlyUpdating = isUpdatingShared.value
+          const currentUpdateCycleId = updateCycleIdShared.value
 
           // Include static values from emitter (for hover/press style changes)
           for (const key in staticValues) {
@@ -1091,6 +1224,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               callback = () => {
                 'worklet'
                 runOnJS(markEnterKeyDone)(capturedKey, capturedCycleId)
+              }
+            } else if (currentlyUpdating) {
+              const capturedKey = key
+              const capturedCycleId = currentUpdateCycleId
+              callback = () => {
+                'worklet'
+                runOnJS(markUpdateKeyDone)(capturedKey, capturedCycleId)
               }
             }
 
@@ -1137,6 +1277,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                     'worklet'
                     runOnJS(markEnterKeyDone)(capturedKey, capturedCycleId)
                   }
+                } else if (currentlyUpdating) {
+                  const capturedKey = `transform:${transformKey}`
+                  const capturedCycleId = currentUpdateCycleId
+                  callback = () => {
+                    'worklet'
+                    runOnJS(markUpdateKeyDone)(capturedKey, capturedCycleId)
+                  }
                 }
 
                 validTransforms.push({
@@ -1172,8 +1319,11 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               exitCycleIdShared,
               isCompletingEnterRef,
               enterCycleIdShared,
+              isUpdatingShared,
+              updateCycleIdShared,
               markExitKeyDone,
               markEnterKeyDone,
+              markUpdateKeyDone,
             ]
           : undefined
       )

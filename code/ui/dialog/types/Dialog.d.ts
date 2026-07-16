@@ -1,4 +1,4 @@
-import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/core';
+import type { GetProps, OnTransition, TamaguiElement, ViewProps } from '@tamagui/core';
 import type { DismissableProps } from '@tamagui/dismissable';
 import type { FocusScopeProps } from '@tamagui/focus-scope';
 import type { YStackProps } from '@tamagui/stacks';
@@ -224,7 +224,7 @@ type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
      */
     onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus'];
     context: DialogContextValue;
-    onDidAnimate?: () => void;
+    onTransition?: OnTransition;
 };
 type DialogContentImplProps = DialogContentFrameProps & DialogContentImplExtraProps;
 declare const DialogTitleFrame: React.FunctionComponent<Omit<import("@tamagui/core").TextNonStyleProps, "size" | keyof import("@tamagui/core").TextStylePropsBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").TextStylePropsBase> & {

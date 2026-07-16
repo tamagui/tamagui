@@ -7,6 +7,7 @@ import {
   isWeb,
   Text,
   useComposedRefs,
+  useIsomorphicLayoutEffect,
   useThemeWithState,
   View,
   type AnimationDriver,
@@ -264,10 +265,42 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
     },
 
     useAnimations: (animationProps) => {
-      const { props, presence, style, componentState } = animationProps
+      const { props, presence, style, componentState, onTransition } = animationProps
       const animationKey = Array.isArray(props.transition)
         ? props.transition[0]
         : props.transition
+
+      // onTransition lifecycle. moti reports completion per-property via its own
+      // completion callback option; we coalesce those into one start/end pair per batch.
+      const onTransitionRef = React.useRef(onTransition)
+      onTransitionRef.current = onTransition
+      const emit = (
+        phase: 'start' | 'end',
+        cause: 'enter' | 'exit' | 'update',
+        finished?: boolean
+      ) => {
+        onTransitionRef.current?.(
+          phase === 'end' ? { phase, cause, finished } : { phase, cause }
+        )
+      }
+      const pendingRef = React.useRef<Set<string>>(new Set())
+      const inFlightRef = React.useRef(false)
+      const batchFinishedRef = React.useRef(true)
+      const causeRef = React.useRef<'enter' | 'exit' | 'update'>('enter')
+      const sigRef = React.useRef<string | null>(null)
+
+      const handleDidAnimate = React.useCallback(
+        (styleProp: string, finished: boolean) => {
+          if (!inFlightRef.current) return
+          if (!finished) batchFinishedRef.current = false
+          pendingRef.current.delete(styleProp)
+          if (pendingRef.current.size === 0) {
+            inFlightRef.current = false
+            emit('end', causeRef.current, batchFinishedRef.current)
+          }
+        },
+        []
+      )
 
       const isHydrating = componentState.unmounted === true
       const disableAnimation = isHydrating || !animationKey
@@ -278,7 +311,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       // this memo is very important for performance, there's a big cost to
       // updating these values every render
-      const { dontAnimate, motiProps } = useMemo(() => {
+      const { dontAnimate, motiProps, animatedKeys } = useMemo(() => {
         let animate = {}
         let dontAnimate = {}
 
@@ -359,12 +392,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
         return {
           dontAnimate,
+          animatedKeys: Object.keys(styles),
           motiProps: {
             animate: isExiting || componentState.unmounted === true ? {} : styles,
             transition: componentState.unmounted ? { duration: 0 } : transition,
             usePresenceValue,
             presenceContext,
             exit: isExiting ? styles : undefined,
+            onDidAnimate: handleDidAnimate,
           } satisfies UseMotiProps,
         }
       }, [
@@ -378,6 +413,31 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       ])
 
       const moti = useMotify(motiProps)
+
+      // begin a transition batch when the animated target changes. supersedes an
+      // in-flight batch with a finished:false end. the paired end comes from moti
+      // via handleDidAnimate once every animated property reports done.
+      const batchCause: 'enter' | 'exit' | 'update' = presence?.[1]
+        ? 'exit'
+        : componentState.unmounted
+          ? 'enter'
+          : 'update'
+      useIsomorphicLayoutEffect(() => {
+        if (!onTransitionRef.current || disableAnimation || animatedKeys.length === 0) {
+          return
+        }
+        const sig = `${batchCause}:${JSON.stringify(animatedKeys)}`
+        if (sigRef.current === sig) return
+        sigRef.current = sig
+        if (inFlightRef.current) {
+          emit('end', causeRef.current, false)
+        }
+        causeRef.current = batchCause
+        batchFinishedRef.current = true
+        pendingRef.current = new Set(animatedKeys)
+        inFlightRef.current = true
+        emit('start', batchCause)
+      })
 
       if (
         process.env.NODE_ENV === 'development' &&

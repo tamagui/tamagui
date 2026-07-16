@@ -9,7 +9,7 @@ import {
 import { Animate } from '@tamagui/animate'
 import { composeRefs, useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { GetProps, TamaguiElement, ViewProps } from '@tamagui/core'
+import type { GetProps, OnTransition, TamaguiElement, ViewProps } from '@tamagui/core'
 import {
   createStyledHOC,
   createStyledContext,
@@ -480,11 +480,16 @@ const DialogContent = createStyledHOC(DialogContentFrame)<DialogContentExtraProp
     const context = useDialogContext(scope)
     const isAdapted = useAdaptIsActive(context.adaptScope)
     const reporter = useDialogAnimationReporter(context)
-    const onDidAnimateProp = props.onDidAnimate
-    const onDidAnimate = React.useCallback(() => {
-      reporter.onEnterComplete()
-      onDidAnimateProp?.()
-    }, [reporter.onEnterComplete, onDidAnimateProp])
+    const onTransitionProp = props.onTransition
+    const onTransition = React.useCallback<OnTransition>(
+      (event) => {
+        if (event.phase === 'end' && event.cause === 'enter') {
+          reporter.onEnterComplete()
+        }
+        onTransitionProp?.(event)
+      },
+      [reporter.onEnterComplete, onTransitionProp]
+    )
     const presence = useDialogPartPresence(context, {
       disabled: isAdapted,
       forceMount: context.forceMount,
@@ -498,14 +503,14 @@ const DialogContent = createStyledHOC(DialogContentFrame)<DialogContentExtraProp
           <DialogContentModal
             context={context}
             {...props}
-            onDidAnimate={onDidAnimate}
+            onTransition={onTransition}
             ref={forwardedRef}
           />
         ) : (
           <DialogContentNonModal
             context={context}
             {...props}
-            onDidAnimate={onDidAnimate}
+            onTransition={onTransition}
             ref={forwardedRef}
           />
         )}
@@ -685,7 +690,7 @@ type DialogContentImplExtraProps = Omit<DismissableProps, 'onDismiss'> & {
   onCloseAutoFocus?: FocusScopeProps['onUnmountAutoFocus']
 
   context: DialogContextValue
-  onDidAnimate?: () => void
+  onTransition?: OnTransition
 }
 
 type DialogContentImplProps = DialogContentFrameProps & DialogContentImplExtraProps
@@ -702,7 +707,7 @@ const DialogContentImpl = createRefComponent<TamaguiElement, DialogContentImplPr
       onFocusOutside,
       onInteractOutside,
       context,
-      onDidAnimate,
+      onTransition,
       ...contentProps
     } = props
 
@@ -738,7 +743,7 @@ const DialogContentImpl = createRefComponent<TamaguiElement, DialogContentImplPr
         data-state={getState(context.open)}
         // allow clicking through content during exit animation
         pointerEvents={context.open ? 'auto' : 'none'}
-        onDidAnimate={onDidAnimate}
+        onTransition={onTransition}
         {...contentProps}
       />
     )

@@ -1071,7 +1071,7 @@ export function createComponent<
       onMouseLeave,
       onFocus,
       onBlur,
-      onDidAnimate,
+      onTransition,
       separator,
       // ignore from here on out
       passThrough,
@@ -1152,7 +1152,7 @@ export function createComponent<
         pseudos: pseudos || null,
         staticConfig,
         stateRef,
-        onDidAnimate,
+        onTransition,
       })
 
       if (animations) {

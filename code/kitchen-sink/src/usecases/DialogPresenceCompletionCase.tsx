@@ -69,12 +69,18 @@ function PresenceScenario({
     [id]
   )
 
-  const handleDidAnimate = useCallback(() => {
-    if (typeof window !== 'undefined') {
-      window.__dialogPresenceUserEvents[id] =
-        (window.__dialogPresenceUserEvents[id] || 0) + 1
-    }
-  }, [id])
+  const handleTransition = useCallback(
+    (event: { phase: 'start' | 'end'; cause: 'enter' | 'exit' | 'update' }) => {
+      // count enter completions only, matching the prior enter-completion semantics
+      if (event.phase === 'end' && event.cause === 'enter') {
+        if (typeof window !== 'undefined') {
+          window.__dialogPresenceUserEvents[id] =
+            (window.__dialogPresenceUserEvents[id] || 0) + 1
+        }
+      }
+    },
+    [id]
+  )
 
   const dialogParts = (
     <>
@@ -99,7 +105,7 @@ function PresenceScenario({
         transition="1000ms"
         enterStyle={{ opacity: 0, y: -20, scale: 0.96 }}
         exitStyle={{ opacity: 0, y: 20, scale: 0.96 }}
-        onDidAnimate={handleDidAnimate}
+        onTransition={handleTransition}
       >
         <Dialog.Title>{label} dialog</Dialog.Title>
         <Dialog.Description>Tracks Dialog onAnimationComplete timing.</Dialog.Description>
