@@ -40,7 +40,7 @@ migration notes so far:
   - remove component themes / remove `name` from `styled()` (or just make not theme-related)
   - component example just show using theme="surface1" for example
   - maybe make theme builder have easy "inverse" option so accent can be something else
-  - `$backgroundActive` no longer exists in v3 themes but is still referenced by checkbox/switch checked states, tabs active, and toggle-group active (silently no-ops). Slider was fixed (track $backgroundPress, fill $color); decide whether to reintroduce backgroundActive or migrate these four to existing tokens.
+  - ~~`$backgroundActive` no longer exists in v3 themes but is still referenced by checkbox/switch checked states, tabs active, and toggle-group active (silently no-ops).~~ resolved: migrated all four to `$backgroundPress` (matching the slider fix), regression-tested in kitchen-sink `ActiveStateBackground.test.tsx`
 - update button a bit to how i do them
 - consider removing or simplifying `ThemeableStack` / `SizableStack`
 - simplify Select/ListItem further where it directly helps perf or API clarity

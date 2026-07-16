@@ -212,7 +212,7 @@ export function createCheckbox<
               {...(isActive && {
                 ...(!unstyled &&
                   !activeStyle && {
-                    backgroundColor: '$backgroundActive',
+                    backgroundColor: '$backgroundPress',
                   }),
                 ...activeStyle,
               })}

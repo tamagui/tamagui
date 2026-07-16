@@ -164,7 +164,7 @@ export function createTabs<
             {...(isSelected && {
               ...(!unstyled &&
                 !activeStyle && {
-                  backgroundColor: '$backgroundActive',
+                  backgroundColor: '$backgroundPress',
                 }),
               ...(activeStyle as object),
             })}

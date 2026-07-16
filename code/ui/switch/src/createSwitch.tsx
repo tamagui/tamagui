@@ -176,7 +176,7 @@ export function createSwitch<
               {...(checked && {
                 ...(!unstyled &&
                   !activeStyle && {
-                    backgroundColor: '$backgroundActive',
+                    backgroundColor: '$backgroundPress',
                   }),
                 ...activeStyle,
               })}
