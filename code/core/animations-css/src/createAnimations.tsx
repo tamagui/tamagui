@@ -61,7 +61,7 @@ function applyDurationOverride(animation: string, durationMs: number): string {
 }
 
 // transform keys that need special handling
-const TRANSFORM_KEYS = [
+const TRANSFORM_KEYS = new Set([
   'x',
   'y',
   'scale',
@@ -73,7 +73,7 @@ const TRANSFORM_KEYS = [
   'rotateZ',
   'skewX',
   'skewY',
-] as const
+])
 
 /**
  * Build a CSS transform string from a style object containing transform properties
@@ -137,8 +137,9 @@ function applyStylesToNode(
   }
 
   // apply non-transform properties
-  for (const [key, value] of Object.entries(style)) {
-    if (TRANSFORM_KEYS.includes(key as any)) continue
+  for (const key in style) {
+    const value = style[key]
+    if (TRANSFORM_KEYS.has(key)) continue
     if (value === undefined) continue
 
     if (key === 'opacity') {
@@ -417,7 +418,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
               1
             )
           }
-          if (TRANSFORM_KEYS.includes(key as any)) {
+          if (TRANSFORM_KEYS.has(key)) {
             return key === 'scale' || key === 'scaleX' || key === 'scaleY' ? 1 : 0
           }
           return enterStyle?.[key]
@@ -651,7 +652,7 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
             transitioningProps.has(eventProp) ||
             eventProp === 'all' ||
             (eventProp === 'transform' &&
-              [...transitioningProps].some((key) => TRANSFORM_KEYS.includes(key as any)))
+              [...transitioningProps].some((key) => TRANSFORM_KEYS.has(key)))
           ) {
             completedCount++
             if (completedCount >= transitioningProps.size) {
