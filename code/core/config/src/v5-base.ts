@@ -9,24 +9,11 @@ import { media, mediaQueryDefaultActive } from './v5-media'
 import type { V5Media } from './v5-media'
 
 export { shorthands } from '@tamagui/shorthands/v4'
-export { createThemes } from '@tamagui/theme-builder'
+// static re-exports only. the v5 theme builder (createV5Theme, adjustPalette,
+// opacify, defaultChildrenThemes, ...) lives in '@tamagui/themes/v5-builder' so
+// this default config entry stays free of @tamagui/theme-builder on native.
 export {
-  adjustPalette,
-  adjustPalettes,
-  createV5Theme,
-  defaultChildrenThemes,
-  defaultDarkPalette,
-  defaultLightPalette,
-  hslToString,
-  // helpers
-  interpolateColor,
-  opacify,
-  parseHSL,
   tokens,
-  type AdjustFn,
-  // types
-  type HSL,
-  type PaletteAdjustments,
   type V5Theme,
   type V5ThemeNames,
   type V5Themes,

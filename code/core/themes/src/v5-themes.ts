@@ -613,14 +613,3 @@ export function createV5Theme<
     },
   })
 }
-
-// Default themes using the createV5Theme function
-export const themes = createV5Theme()
-
-// don't remove this - type sanity checks - these should not cause type errors:
-themes.dark.background0075
-themes.dark_yellow.background0075
-themes.dark.background
-themes.dark.accent1
-// @ts-expect-error
-themes.dark.nonValid

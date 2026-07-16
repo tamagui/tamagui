@@ -17,7 +17,7 @@ describe('generateThemeBuilderCode', () => {
 
     // Should use v5 API
     expect(code).toContain('import { createV5Theme')
-    expect(code).toContain("from '@tamagui/config/v5'")
+    expect(code).toContain("from '@tamagui/themes/v5-builder'")
     expect(code).toContain('createV5Theme({')
   })
 

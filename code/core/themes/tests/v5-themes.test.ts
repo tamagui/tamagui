@@ -1,9 +1,6 @@
 import { describe, expect, test, assertType } from 'vitest'
-import {
-  createV5Theme,
-  themes as defaultThemes,
-  defaultChildrenThemes,
-} from '../src/v5-themes'
+import { createV5Theme, defaultChildrenThemes } from '../src/v5-themes'
+import { themes as defaultThemes } from '../src/v5-themes.generate'
 import { opacify, interpolateColor } from '../src/opacify'
 
 describe('opacify', () => {

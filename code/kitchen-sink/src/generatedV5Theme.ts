@@ -7,8 +7,11 @@
  * 2. Export the generated code and replace this file's contents
  * 3. Run: yarn start:web and open http://localhost:9000/?test=V5ThemeBuilderOutput&generatedV5=true
  */
-import { createV5Theme, defaultChildrenThemes } from '@tamagui/config/v5'
-import { v5ComponentThemes } from '@tamagui/themes/v5'
+import {
+  createV5Theme,
+  defaultChildrenThemes,
+  v5ComponentThemes,
+} from '@tamagui/themes/v5-builder'
 import { yellow, yellowDark, red, redDark, green, greenDark } from '@tamagui/colors'
 
 const darkPalette = [

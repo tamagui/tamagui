@@ -32,7 +32,7 @@ We've also released [Theme](/theme), a free visual tool to create themes.
 The simplest way to get a complete theme suite. Call it with no arguments for production-ready defaults, or pass options to customize.
 
 ```tsx
-import { createV5Theme } from '@tamagui/themes/v5'
+import { createV5Theme } from '@tamagui/themes/v5-builder'
 
 // zero-config - includes light, dark, accent, and color themes
 export const themes = createV5Theme()
@@ -41,7 +41,7 @@ export const themes = createV5Theme()
 ### Customizing
 
 ```tsx
-import { createV5Theme, defaultChildrenThemes } from '@tamagui/themes/v5'
+import { createV5Theme, defaultChildrenThemes } from '@tamagui/themes/v5-builder'
 import { orange, orangeDark } from '@tamagui/colors'
 
 export const themes = createV5Theme({
