@@ -90,8 +90,9 @@ type TabsExtraProps<Tab = string> = TabsScopeProps & {
     /** The direction of navigation between tab triggers. */
     dir?: RovingFocusGroupProps['dir'];
     /**
-     * Whether a tab is activated automatically or manually. Only supported on web.
-     * @defaultValue manual
+     * Whether a tab is activated automatically or manually. Automatic activation is only
+     * supported on web; native tabs always activate manually.
+     * @defaultValue automatic
      */
     activationMode?: 'automatic' | 'manual';
 };
@@ -199,8 +200,9 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
     /** The direction of navigation between tab triggers. */
     dir?: RovingFocusGroupProps["dir"];
     /**
-     * Whether a tab is activated automatically or manually. Only supported on web.
-     * @defaultValue manual
+     * Whether a tab is activated automatically or manually. Automatic activation is only
+     * supported on web; native tabs always activate manually.
+     * @defaultValue automatic
      */
     activationMode?: "automatic" | "manual";
 } & {
@@ -225,8 +227,9 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
     /** The direction of navigation between tab triggers. */
     dir?: RovingFocusGroupProps["dir"];
     /**
-     * Whether a tab is activated automatically or manually. Only supported on web.
-     * @defaultValue manual
+     * Whether a tab is activated automatically or manually. Automatic activation is only
+     * supported on web; native tabs always activate manually.
+     * @defaultValue automatic
      */
     activationMode?: "automatic" | "manual";
 }, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
@@ -247,8 +250,9 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
     /** The direction of navigation between tab triggers. */
     dir?: RovingFocusGroupProps["dir"];
     /**
-     * Whether a tab is activated automatically or manually. Only supported on web.
-     * @defaultValue manual
+     * Whether a tab is activated automatically or manually. Automatic activation is only
+     * supported on web; native tabs always activate manually.
+     * @defaultValue automatic
      */
     activationMode?: "automatic" | "manual";
 }, import("@tamagui/core").StackStyleBase, {
@@ -274,8 +278,9 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
         /** The direction of navigation between tab triggers. */
         dir?: RovingFocusGroupProps["dir"];
         /**
-         * Whether a tab is activated automatically or manually. Only supported on web.
-         * @defaultValue manual
+         * Whether a tab is activated automatically or manually. Automatic activation is only
+         * supported on web; native tabs always activate manually.
+         * @defaultValue automatic
          */
         activationMode?: "automatic" | "manual";
     }, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & TabsScopeProps & {
@@ -296,8 +301,9 @@ export declare const Tabs: React.FunctionComponent<Omit<import("@tamagui/core").
         /** The direction of navigation between tab triggers. */
         dir?: RovingFocusGroupProps["dir"];
         /**
-         * Whether a tab is activated automatically or manually. Only supported on web.
-         * @defaultValue manual
+         * Whether a tab is activated automatically or manually. Automatic activation is only
+         * supported on web; native tabs always activate manually.
+         * @defaultValue automatic
          */
         activationMode?: "automatic" | "manual";
     }, import("@tamagui/core").StackStyleBase, {
