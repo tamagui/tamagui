@@ -1,5 +1,26 @@
 v3 release plan:
 
+## cutting a beta (verified July 2026)
+
+From the v3-beta branch, with a clean tree and CI green on the pushed HEAD:
+
+```
+bun ./scripts/release.ts --beta --force-publish-all
+```
+
+Run it interactively (not `--ci`): coming from stable 2.4.6 the beta base is
+ambiguous, so pick `3.0.0-beta.0 (next major)` at the prompt. `computePublishTag`
+maps `3.0.0-beta.x` to the npm dist-tag `beta` automatically; it cannot land on
+`latest`. `--force-publish-all` matters for the first beta: without it,
+`skipPublishIfUnchanged` packages resolve dep versions via `npm view <pkg>
+dist-tags.beta`, which doesn't exist yet, and dependents would reference
+never-published versions. Preconditions: `git fetch origin --tags` (baseline
+detection picks the newest v* tag vs canary commit), npm login + a 2FA code,
+and nothing uncommitted anywhere (the finish step runs `git add -A`). The
+script runs check/lint/typecheck/tests/build itself, then publishes ~160
+packages, commits the version bump, tags `v3.0.0-beta.0`, and pushes the
+branch + tag. `--dry-run` prints the plan without writing.
+
 ## landed on v3-beta (July 2026)
 
 - deprecated API removals: `focusable` => `tabIndex`, `fullscreen`, `styleable`, forwardRef wrappers, `inlineWhenUnflattened`, ui-kit aliases, true tokens (default size resolves to `$4`), platform style key renames, createSystemFont moved to its own package
