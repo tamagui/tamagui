@@ -3,6 +3,12 @@ import { View, styled } from '@tamagui/core'
 
 export const Separator = styled(View, {
   name: 'Separator',
+  ...(isWeb && {
+    role: 'separator',
+    // @ts-ignore
+    'aria-orientation': 'horizontal',
+    'data-orientation': 'horizontal',
+  }),
 
   variants: {
     unstyled: {
@@ -31,6 +37,11 @@ export const Separator = styled(View, {
         maxWidth: 0,
         borderBottomWidth: 0,
         borderRightWidth: 1,
+        ...(isWeb && {
+          // @ts-ignore
+          'aria-orientation': 'vertical',
+          'data-orientation': 'vertical',
+        }),
       },
     },
   } as const,
