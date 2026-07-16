@@ -4,7 +4,9 @@ import ActionSheet, {
   type ActionSheetRef,
   ScrollView as ActionScrollView,
 } from 'react-native-actions-sheet'
-import { Button, Sheet, Text, YStack, Paragraph } from 'tamagui'
+import { Text, YStack, Paragraph } from 'tamagui'
+import { Button } from '../components/Button'
+import { Sheet } from '../components/Sheet'
 
 /**
  * Test case for Sheet drag resistance behavior
@@ -114,7 +116,7 @@ function NoScrollViewSheet() {
               setLastDragY(0)
             }}
             theme="red"
-            size="$3"
+            size="medium"
           >
             Reset Drag Tracking
           </Button>
@@ -216,7 +218,7 @@ function NonScrollableContentSheet() {
                   setDragEventCount(0)
                 }}
                 theme="red"
-                size="$3"
+                size="medium"
               >
                 Reset Counters
               </Button>
@@ -323,7 +325,7 @@ function ScrollableContentSheet() {
                 testID="scrollable-reset"
                 onPress={() => setMaxDragUp(0)}
                 theme="red"
-                size="$3"
+                size="medium"
               >
                 Reset Drag Tracking
               </Button>

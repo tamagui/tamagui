@@ -2,7 +2,8 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import type { SheetProps } from '@tamagui/sheet'
 import { Sheet } from '@tamagui/sheet'
 import React, { memo } from 'react'
-import { Button, H2, Input, Paragraph, XStack, YStack } from 'tamagui'
+import { H2, Input, Paragraph, XStack, YStack } from 'tamagui'
+import { Button } from './Button'
 
 const spModes = ['percent', 'constant', 'fit', 'mixed'] as const
 
@@ -98,13 +99,13 @@ const SheetContents = memo(
   ({ modal, isPercent, innerOpen, setInnerOpen, setOpen }: any) => {
     return (
       <>
-        <Button size="$6" circular icon={ChevronDown} onPress={() => setOpen(false)} />
+        <Button size="large" circular icon={ChevronDown} onPress={() => setOpen(false)} />
         <Input width={200} />
         {modal && isPercent && (
           <>
             <InnerSheet open={innerOpen} onOpenChange={setInnerOpen} />
             <Button
-              size="$6"
+              size="large"
               circular
               icon={ChevronUp}
               onPress={() => setInnerOpen(true)}
@@ -132,7 +133,7 @@ function InnerSheet(props: SheetProps) {
         <Sheet.ScrollView>
           <YStack p="$5" gap="$8">
             <Button
-              size="$6"
+              size="large"
               circular
               self="center"
               icon={ChevronDown}

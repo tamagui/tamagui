@@ -86,10 +86,7 @@ interface ToastContextValue {
   icons?: ToastIcons
 }
 
-const ToastContext = createStyledContext<ToastContextValue>(
-  {} as ToastContextValue,
-  'Toast__'
-)
+const ToastContext = createStyledContext<ToastContextValue>({}, 'Toast__')
 
 const useToastContextValue = ToastContext.useStyledContext
 
@@ -452,26 +449,15 @@ const ToastRoot = createRefComponent<TamaguiElement, ToastRootProps>(
 
 const ToastViewportFrame = styled(View, {
   name: 'ToastViewport',
-
-  variants: {
-    unstyled: {
-      false: {
-        position: isWeb ? ('fixed' as any) : 'absolute',
-        zIndex: 100000,
-        pointerEvents: 'box-none',
-        maxWidth: '100%',
-        ...(isWeb && { width: 356 }),
-        minHeight: 1,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  position: isWeb ? ('fixed' as any) : 'absolute',
+  zIndex: 100000,
+  pointerEvents: 'box-none',
+  maxWidth: '100%',
+  ...(isWeb && { width: 356 }),
+  minHeight: 1,
 })
 
-export interface ToastViewportProps extends GetProps<typeof ToastViewportFrame> {
+export type ToastViewportProps = GetProps<typeof ToastViewportFrame> & {
   /**
    * Offset from screen edge
    * @default 24
@@ -894,7 +880,7 @@ function DragWrapper({
  * ToastItem (the wrapper with stacking/drag)
  * -----------------------------------------------------------------------------------------------*/
 
-export interface ToastItemProps extends GetProps<typeof ToastItemFrame> {
+export type ToastItemProps = GetProps<typeof ToastItemFrame> & {
   toast: ToastT
   index: number
   children: React.ReactNode
@@ -1255,20 +1241,9 @@ const ToastItemInner = createStyledHOC(ToastItemFrame)<ToastItemProps>(
 
 const ToastTitle = styled(SizableText, {
   name: 'ToastTitle',
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color',
-        fontWeight: '600',
-        size: '$4',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  color: '$color',
+  fontWeight: '600',
+  size: '$4',
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -1277,19 +1252,8 @@ const ToastTitle = styled(SizableText, {
 
 const ToastDescription = styled(SizableText, {
   name: 'ToastDescription',
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color11',
-        size: '$2',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  color: '$color11',
+  size: '$2',
 })
 
 /* -------------------------------------------------------------------------------------------------

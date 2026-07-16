@@ -11,7 +11,8 @@
  */
 
 import { useLayoutEffect, useRef, useState } from 'react'
-import { Button, Text, Theme, XStack, YStack, useThemeName } from 'tamagui'
+import { Text, Theme, XStack, YStack, useThemeName } from 'tamagui'
+import { Button } from '../components/Button'
 
 // simple extracted component - static values only
 function SimpleBox() {
@@ -241,7 +242,7 @@ function PerfBenchmark() {
 
       <XStack gap="$2">
         <Button
-          size="$2"
+          size="small"
           testID="bench-run-opt"
           onPress={runOpt}
           disabled={mode !== 'off'}
@@ -249,14 +250,14 @@ function PerfBenchmark() {
           Run Opt ({optTimes.length}/3)
         </Button>
         <Button
-          size="$2"
+          size="small"
           testID="bench-run-noopt"
           onPress={runNoOpt}
           disabled={mode !== 'off'}
         >
           Run NoOpt ({noOptTimes.length}/3)
         </Button>
-        <Button size="$2" testID="bench-reset" onPress={reset}>
+        <Button size="small" testID="bench-reset" onPress={reset}>
           Reset
         </Button>
       </XStack>
@@ -334,14 +335,14 @@ export function CompilerExtraction() {
         </Text>
 
         <XStack gap="$2" flexWrap="wrap">
-          <Button size="$2" testID="compiler-toggle-mode" onPress={toggleTheme}>
+          <Button size="small" testID="compiler-toggle-mode" onPress={toggleTheme}>
             Toggle Mode
           </Button>
-          <Button size="$2" testID="compiler-cycle-subtheme" onPress={cycleSubTheme}>
+          <Button size="small" testID="compiler-cycle-subtheme" onPress={cycleSubTheme}>
             Cycle Theme
           </Button>
           <Button
-            size="$2"
+            size="small"
             testID="compiler-toggle-bench"
             onPress={() => setShowBenchmark((s) => !s)}
           >

@@ -2,6 +2,15 @@
   "name": "@tamagui/build",
   "version": "2.4.6",
   "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
+  "files": [
+    "babel-plugin-process-env-to-meta.js",
+    "babel-plugin-process-env-to-meta.ts",
+    "esbuild-es5.js",
+    "externalNodePlugin.js",
+    "pretty-print-errors.js",
+    "tamagui-build.js",
+    "teesx.sh"
+  ],
   "bin": {
     "tamagui-build": "tamagui-build.js",
     "teesx": "./teesx.sh"

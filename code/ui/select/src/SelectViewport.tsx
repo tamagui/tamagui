@@ -2,9 +2,9 @@ import { AdaptPortalContents, useAdaptIsActive } from '@tamagui/adapt'
 import { AnimatePresence } from '@tamagui/animate-presence'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import { createStyledHOC, resolveDefaultSizeToken, styled } from '@tamagui/core'
+import { createStyledHOC, styled, View } from '@tamagui/core'
 import { needsPortalRepropagation } from '@tamagui/portal'
-import { ThemeableStack, YStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { startTransition } from '@tamagui/start-transition'
 import * as React from 'react'
 import { VIEWPORT_NAME } from './constants'
@@ -19,37 +19,9 @@ import type { SelectViewportExtraProps } from './types'
  * SelectViewport
  * -----------------------------------------------------------------------------------------------*/
 
-// must extend ThemeableStack (not YStack) so the `elevate` and `bordered`
-// variants used below resolve via stacks/variants instead of leaking to DOM.
-export const SelectViewportFrame = styled(ThemeableStack, {
+export const SelectViewportFrame = styled(View, {
   name: VIEWPORT_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$2',
-        backgroundColor: '$background',
-        elevate: true,
-        bordered: true,
-        userSelect: 'none',
-        outlineWidth: 0,
-      },
-    },
-
-    size: {
-      '...size': (val, { tokens }) => {
-        const sizeToken = resolveDefaultSizeToken(val)
-
-        return {
-          borderRadius: tokens.radius[sizeToken] ?? sizeToken,
-        }
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  position: 'relative',
 })
 
 const needsRepropagation = needsPortalRepropagation()
@@ -99,7 +71,11 @@ export const SelectViewport = createStyledHOC(
   }
 
   if (isAdapted || !isWeb) {
-    let content = children
+    let content = (
+      <SelectViewportFrame {...viewportProps} data-select-viewport="" ref={composedRefs}>
+        {lazyMounted ? children : null}
+      </SelectViewportFrame>
+    )
 
     if (needsRepropagation) {
       content = (
@@ -131,7 +107,7 @@ export const SelectViewport = createStyledHOC(
   // that handles focus trapping and auto-focus
   return (
     <>
-      {!disableScroll && !props.unstyled && (
+      {!disableScroll && (
         <style
           dangerouslySetInnerHTML={{
             __html: selectViewportCSS,
@@ -142,17 +118,15 @@ export const SelectViewport = createStyledHOC(
         {context.open ? (
           <SelectViewportFrame
             key="select-viewport"
-            size={itemContext.size}
             role="presentation"
+            data-select-viewport=""
             {...(isWeb && {
               'data-state': context.open ? 'open' : 'closed',
             })}
             {...viewportProps}
             {...style}
             {...floatingProps}
-            {...(!props.unstyled && {
-              overflowY: disableScroll ? undefined : (style.overflow ?? 'auto'),
-            })}
+            overflowY={disableScroll ? undefined : (style.overflow ?? 'auto')}
             ref={composedRefs}
           >
             {lazyMounted ? children : null}
@@ -170,13 +144,13 @@ export const SelectViewport = createStyledHOC(
 })
 
 const selectViewportCSS = `
-.is_SelectViewport {
+[data-select-viewport] {
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
 }
 
-.is_SelectViewport::-webkit-scrollbar{
+[data-select-viewport]::-webkit-scrollbar{
   display:none
 }
 `

@@ -19,27 +19,47 @@ import { spacedChildren } from '@tamagui/spacer'
 
 type ButtonVariant = 'outlined'
 
+const buttonContextKeys = [
+  'color',
+  'ellipsis',
+  'fontFamily',
+  'fontSize',
+  'fontStyle',
+  'fontWeight',
+  'letterSpacing',
+  'maxFontSizeMultiplier',
+  'size',
+  'textAlign',
+  'variant',
+] as const
+
 export const ButtonContext = createStyledContext<
   Partial<
     TextContextStyles & {
       size: SizeTokens | true
       variant?: ButtonVariant
     }
-  >
->({
-  // keeping these here means they work with styled() passing down color to text
-  color: undefined,
-  ellipsis: undefined,
-  fontFamily: undefined,
-  fontSize: undefined,
-  fontStyle: undefined,
-  fontWeight: undefined,
-  letterSpacing: undefined,
-  maxFontSizeMultiplier: undefined,
-  size: undefined,
-  textAlign: undefined,
-  variant: undefined,
-})
+  >,
+  (typeof buttonContextKeys)[number]
+>(
+  {
+    // keeping these here means they work with styled() passing down color to text
+    color: undefined,
+    ellipsis: undefined,
+    fontFamily: undefined,
+    fontSize: undefined,
+    fontStyle: undefined,
+    fontWeight: undefined,
+    letterSpacing: undefined,
+    maxFontSizeMultiplier: undefined,
+    size: undefined,
+    textAlign: undefined,
+    variant: undefined,
+  },
+  {
+    keys: buttonContextKeys,
+  }
+)
 
 type ButtonIconProps = { color?: any; size?: any }
 type IconProp =
@@ -75,7 +95,6 @@ type ButtonExtraProps = TextParentStyles &
     /**
      * remove default styles
      */
-    unstyled?: boolean
   }
 
 type ButtonProps = ButtonExtraProps & GetProps<typeof ButtonFrame>
@@ -88,36 +107,30 @@ const ButtonFrame = styled(ThemeableStack, {
   context: ButtonContext,
   role: 'button',
   tabIndex: 0,
+  size: true,
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexWrap: 'nowrap',
+  flexDirection: 'row',
+  cursor: 'pointer',
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+    borderColor: '$borderColorHover',
+  },
+  pressStyle: {
+    backgroundColor: '$backgroundPress',
+    borderColor: '$borderColorPress',
+  },
+  backgroundColor: '$background',
+  borderWidth: 1,
+  borderColor: 'transparent',
+  focusVisibleStyle: {
+    outlineColor: '$outlineColor',
+    outlineStyle: 'solid',
+    outlineWidth: 2,
+  },
 
   variants: {
-    unstyled: {
-      true: {
-        // reset browser <button> defaults
-        outlineWidth: 0,
-        borderWidth: 0,
-        backgroundColor: 'transparent',
-      },
-      false: {
-        size: true,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexWrap: 'nowrap',
-        flexDirection: 'row',
-        cursor: 'pointer',
-        hoverTheme: true,
-        pressTheme: true,
-        backgroundColor: '$background',
-        borderWidth: 1,
-        borderColor: 'transparent',
-
-        focusVisibleStyle: {
-          outlineColor: '$outlineColor',
-          outlineStyle: 'solid',
-          outlineWidth: 2,
-        },
-      },
-    },
-
     variant: {
       outlined: {
         backgroundColor: 'transparent',
@@ -142,8 +155,9 @@ const ButtonFrame = styled(ThemeableStack, {
     },
 
     size: {
-      '...size': getButtonSized,
-      ':number': getButtonSized,
+      number: getButtonSized,
+      true: getButtonSized,
+      Size: getButtonSized,
     },
 
     disabled: {
@@ -152,33 +166,18 @@ const ButtonFrame = styled(ThemeableStack, {
       },
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 const ButtonText = styled(SizableText, {
   name: 'Button',
   context: ButtonContext,
-
-  variants: {
-    unstyled: {
-      false: {
-        userSelect: 'none',
-        cursor: 'pointer',
-        // flexGrow 1 leads to inconsistent native style where text pushes to start of view
-        flexGrow: 0,
-        flexShrink: 1,
-        ellipsis: true,
-        color: '$color',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  userSelect: 'none',
+  cursor: 'pointer',
+  // flexGrow 1 leads to inconsistent native style where text pushes to start of view
+  flexGrow: 0,
+  flexShrink: 1,
+  ellipsis: true,
+  color: '$color',
 })
 
 const ButtonIcon = (props: { children: React.ReactNode; scaleIcon?: number }) => {
@@ -244,7 +243,7 @@ function useButton<Props extends ButtonProps>(
     ...restProps
   } = propsActive
 
-  const size = propsActive.size ?? (propsActive.unstyled ? undefined : true)
+  const size = propsActive.size ?? true
 
   const color = propsActive.color as any
 
@@ -277,12 +276,7 @@ function useButton<Props extends ButtonProps>(
           ellipsis,
           maxFontSizeMultiplier,
         },
-        Text === ButtonText && propsActive.unstyled !== true
-          ? {
-              unstyled: process.env.TAMAGUI_HEADLESS === '1',
-              size,
-            }
-          : undefined
+        Text === ButtonText ? { size } : undefined
       )
 
   const inner = spacedChildren({

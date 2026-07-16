@@ -1,6 +1,7 @@
-import { Button, Square, Theme, YStack, Text } from 'tamagui'
+import { Square, Theme, YStack, Text } from 'tamagui'
 
 import { TEST_IDS } from '../constants/test-ids'
+import { Button } from '../components/Button'
 
 export function ThemeReset() {
   return (

@@ -1,7 +1,6 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2'
 import { memo, useEffect, useState } from 'react'
 import {
-  Button,
   Paragraph,
   ScrollView,
   Separator,
@@ -10,6 +9,7 @@ import {
   XGroup,
   XStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Link } from '~/components/Link'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import type { ThemeSuiteItemData } from '~/features/studio/theme/types'
@@ -79,7 +79,13 @@ export const PromoBanner = () => {
           <XStack flex={1} items="center" gap="$4" px="$4" py="$2">
             <XStack items="center" gap="$4">
               <Link href="/">
-                <Button chromeless size="$2" circular icon={HomeIcon} scaleIcon={1.5} />
+                <Button
+                  variant="quiet"
+                  size="small"
+                  circular
+                  icon={HomeIcon}
+                  scaleIcon={1.5}
+                />
               </Link>
 
               <TooltipSimple label="Tamagui 2 is here! It's a massive new release »">
@@ -199,7 +205,7 @@ const BannerThemes = memo(() => {
                     hoverStyle={{
                       bg: '$background02',
                     }}
-                    size="$2.5"
+                    size="small"
                     rounded="$10"
                     borderWidth={0}
                     onPress={() => handleThemeClick(theme)}
@@ -217,7 +223,7 @@ const BannerThemes = memo(() => {
                 <Link href={`/theme/${theme.id}/${theme.slug}`}>
                   <XGroup.Item>
                     <Button
-                      size="$2.5"
+                      size="small"
                       bg="transparent"
                       hoverStyle={{
                         bg: '$background02',

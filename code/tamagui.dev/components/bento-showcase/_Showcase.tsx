@@ -5,7 +5,6 @@ import type { SizeTokens, ThemeName } from 'tamagui'
 
 import useSWR from 'swr'
 import {
-  Button,
   H2,
   Image,
   ScrollView,
@@ -23,6 +22,7 @@ import {
   useEvent,
   useIsomorphicLayoutEffect,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 // @ts-ignore - bento component wildcard import
 import { useCurrentRouteParams } from '@tamagui/bento'
 // @ts-ignore - bento component wildcard import
@@ -138,8 +138,8 @@ const ShowcaseView = forwardRef<any, Props>(
                 title="copy link"
                 id={fileName}
                 circular
-                chromeless
-                size="$3"
+                variant="quiet"
+                size="medium"
                 onPress={() => {
                   navigator?.clipboard?.writeText?.(
                     window.location.href.split('#')[0] + `#${fileName}`
@@ -162,7 +162,7 @@ const ShowcaseView = forwardRef<any, Props>(
                     <XGroup.Item>
                       <Button
                         theme={view === 'preview' ? 'accent' : null}
-                        size="$3"
+                        size="medium"
                         icon={Eye}
                       />
                     </XGroup.Item>
@@ -170,7 +170,7 @@ const ShowcaseView = forwardRef<any, Props>(
                   <ToggleGroup.Item value="code" aria-label="Code" asChild>
                     <XGroup.Item>
                       <Button
-                        size="$3"
+                        size="medium"
                         icon={approved ? <Code size={16} /> : <Lock size={16} />}
                         theme={view === 'code' ? 'accent' : null}
                       >
@@ -586,8 +586,8 @@ export const SizeController = createStyledHOC(XGroup)((props, ref) => {
     >
       <XGroup.Item>
         <Button
-          size="$3"
-          chromeless
+          size="medium"
+          variant="quiet"
           py="$2"
           onPress={() => {
             const index = sizes.indexOf(size)
@@ -602,8 +602,8 @@ export const SizeController = createStyledHOC(XGroup)((props, ref) => {
 
       <XGroup.Item>
         <Button
-          size="$3"
-          chromeless
+          size="medium"
+          variant="quiet"
           py="$2"
           onPress={() => {
             const index = sizes.indexOf(size)

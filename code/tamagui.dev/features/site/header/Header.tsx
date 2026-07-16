@@ -8,7 +8,6 @@ import { useWindowDimensions, type LayoutRectangle } from 'react-native'
 import {
   Adapt,
   AnimatePresence,
-  Button,
   Circle,
   debounce,
   isClient,
@@ -28,6 +27,7 @@ import {
   createStyledHOC,
   type PopoverProps,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { Link } from '~/components/Link'
 import { useBannerHeight } from '~/components/PromoBanner'
 import { GithubIcon } from '~/features/icons/GithubIcon'
@@ -181,12 +181,16 @@ export const HeaderContents = React.memo((props: HeaderProps) => {
         <TooltipGroup delay={tooltipDelay}>
           <XGroup maxH={32} bg="transparent" items="center" size="$4">
             <XGroup.Item>
-              <ThemeToggle borderWidth={0} chromeless />
+              <ThemeToggle borderWidth={0} variant="quiet" />
             </XGroup.Item>
           </XGroup>
         </TooltipGroup>
 
-        <SearchButton size="$2" rounded="$10" elevation="$0.5" />
+        <SearchButton
+          size="small"
+          rounded="$10"
+          boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)"
+        />
 
         <Link target="_blank" href="https://github.com/tamagui/tamagui">
           <XStack group containerType="normal">
@@ -294,7 +298,7 @@ const HeaderMenuButton = () => {
     <Popover.Trigger>
       <SlidingPopoverTarget id="menu">
         <Button
-          size="$5"
+          size="large"
           circular
           my={-1}
           bg="transparent"
@@ -571,7 +575,7 @@ const HeaderLinksPopoverContent = React.memo((props: { active: ID | '' }) => {
       maxH="90vh"
       maxW={360}
       minW={360}
-      elevation="$2"
+      boxShadow="0 4px 12px $shadowColor"
       p={0}
       rounded="$6"
       opacity={1}
@@ -1078,7 +1082,7 @@ const Frame = styled(YStack, {
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     going: {
-      ':number': (going) => ({
+      number: (going) => ({
         enterStyle: {
           x: going > 0 ? 50 : -50,
           opacity: 0,
@@ -1192,7 +1196,7 @@ const CodeModeToggle = React.memo(() => {
     >
       <XGroup.Item>
         <Button
-          size="$2"
+          size="small"
           px="$2"
           bg={!isTailwind ? '$color5' : 'transparent'}
           color={!isTailwind ? '$color12' : '$color8'}
@@ -1207,7 +1211,7 @@ const CodeModeToggle = React.memo(() => {
       </XGroup.Item>
       <XGroup.Item>
         <Button
-          size="$2"
+          size="small"
           px="$2"
           bg={isTailwind ? '$color5' : 'transparent'}
           color={isTailwind ? '$color12' : '$color8'}

@@ -1,7 +1,8 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2'
 import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Tests that deeply nested submenus (3 levels) cascade in the same direction
@@ -19,7 +20,7 @@ export function MenuSubNestedPositionCase() {
       <YStack alignItems="flex-end" paddingRight={100}>
         <Menu placement="bottom-start" offset={4}>
           <Menu.Trigger asChild>
-            <Button id="menu-trigger" size="$3">
+            <Button id="menu-trigger" size="medium">
               Open Menu
             </Button>
           </Menu.Trigger>
@@ -32,7 +33,7 @@ export function MenuSubNestedPositionCase() {
               borderWidth={1}
               borderColor="$borderColor"
               bg="$background"
-              elevation="$3"
+              boxShadow="0 4px 12px $shadowColor"
             >
               <Menu.Item
                 key="item-1"
@@ -64,7 +65,7 @@ export function MenuSubNestedPositionCase() {
                     minWidth={180}
                     borderWidth={1}
                     borderColor="$borderColor"
-                    elevation="$3"
+                    boxShadow="0 4px 12px $shadowColor"
                   >
                     <Menu.Item
                       key="sub-item-1"
@@ -104,7 +105,7 @@ export function MenuSubNestedPositionCase() {
                           minWidth={180}
                           borderWidth={1}
                           borderColor="$borderColor"
-                          elevation="$3"
+                          boxShadow="0 4px 12px $shadowColor"
                         >
                           <Menu.Item
                             key="nested-item-1"

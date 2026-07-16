@@ -40,6 +40,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   ButtonIconColor: () => require('./ButtonIconColor').ButtonIconColor,
   IconFontSizing: () => require('./IconFontSizing').IconFontSizing,
   ButtonInverse: () => require('./ButtonInverse').ButtonInverse,
+  ButtonSkin: () => require('./ButtonSkin').ButtonSkin,
   ButtonUnstyled: () => require('./ButtonUnstyled').ButtonUnstyled,
   CheckboxDisabledOnPress: () =>
     require('./CheckboxDisabledOnPress').CheckboxDisabledOnPress,
@@ -131,7 +132,6 @@ const loaders: Record<string, () => ComponentType<any>> = {
   MultiDriverAnimation: () => require('./MultiDriverAnimation').MultiDriverAnimation,
   MenuSubStyledCase: () => require('./MenuSubStyledCase').MenuSubStyledCase,
   MenuThemeCase: () => require('./MenuThemeCase').MenuThemeCase,
-  MenuUnstyledCase: () => require('./MenuUnstyledCase').MenuUnstyledCase,
   GroupUseCases: () => require('./GroupUseCases').GroupUseCases,
   HeightMediaQueryOverrideCase: () =>
     require('./HeightMediaQueryOverrideCase').HeightMediaQueryOverrideCase,
@@ -197,6 +197,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SelectAndroidOnPress: () => require('./SelectAndroidOnPress').SelectAndroidOnPress,
   SelectFocusScopeCase: () => require('./SelectFocusScopeCase').SelectFocusScopeCase,
   SelectRemount: () => require('./SelectRemount').SelectRemount,
+  SelectSkin: () => require('./SelectSkin').SelectSkin,
   Shadows: () => require('./Shadows').Shadows,
   ShorthandVariables: () => require('./ShorthandVariables').ShorthandVariables,
   SheetAnimationCase: () => require('./SheetAnimationCase').SheetAnimationCase,
@@ -207,6 +208,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
   SheetOverlayStyleCase: () => require('./SheetOverlayStyleCase').SheetOverlayStyleCase,
   SheetScrollableDrag: () => require('./SheetScrollableDrag').SheetScrollableDrag,
   SheetScrollLockCase: () => require('./SheetScrollLockCase').SheetScrollLockCase,
+  SheetSkin: () => require('./SheetSkin').SheetSkin,
   SheetSnapPointsFitCase: () =>
     require('./SheetSnapPointsFitCase').SheetSnapPointsFitCase,
   SheetWebKeyboardCase: () => require('./SheetWebKeyboardCase').SheetWebKeyboardCase,

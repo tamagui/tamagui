@@ -125,9 +125,13 @@ export type SpaceKeys =
   | 'borderInlineStartWidth'
   | 'borderInlineEndWidth'
 
-export type StyledContext<Props extends Record<string, any> = any> = Context<Props> & {
+export type StyledContext<
+  Props extends Record<string, any> = any,
+  ConsumedKeys extends keyof Props & string = keyof Props & string,
+> = Context<Props> & {
   context: Context<Props>
   props: Record<string, any> | undefined
+  propKeys?: readonly ConsumedKeys[]
   Provider: ProviderExoticComponent<
     Partial<Props | undefined> & {
       children?: ReactNode
@@ -136,6 +140,14 @@ export type StyledContext<Props extends Record<string, any> = any> = Context<Pro
   >
 
   useStyledContext: (scope?: string) => Props
+}
+
+export type StyledContextOptions<
+  Props extends Record<string, any>,
+  ConsumedKeys extends keyof Props & string = keyof Props & string,
+> = {
+  keys?: readonly ConsumedKeys[]
+  namespace?: string
 }
 
 export type TamaguiComponentState = {
@@ -260,11 +272,6 @@ export type TamaguiComponentPropsBaseBase = {
    * If given a theme it will only apply to this element, instead of passing down to children
    */
   themeShallow?: boolean
-
-  /**
-   * If true, component themes will not be applied
-   */
-  unstyled?: boolean
 
   /**
    * Same as the web id property for setting a uid on an element
@@ -1079,7 +1086,6 @@ export type UseThemeWithStateProps = ThemeProps & {
   passThrough?: boolean
   disable?: boolean
   needsUpdate?: () => boolean
-  unstyled?: boolean
 }
 
 type ArrayIntersection<A extends any[]> = A[keyof A]
@@ -1113,6 +1119,10 @@ type AllowedStyleValuesSetting =
   | AllowedStyleValuesSettingPerCategory
 
 type AutocompleteSpecificTokensSetting = boolean | 'except-special'
+
+export type DefaultTokenCategory = 'size' | 'space' | 'radius' | 'zIndex' | 'fontSize'
+
+export type DefaultTokens = Partial<Record<Exclude<DefaultTokenCategory, 'size'>, string>>
 
 export interface GenericTamaguiSettings {
   /**
@@ -1261,6 +1271,13 @@ export interface GenericTamaguiSettings {
    * @default '$4'
    */
   defaultSize?: string
+
+  /**
+   * define category-specific defaults for boolean token values.
+   *
+   * categories without an override fall back to `defaultSize`.
+   */
+  defaultTokens?: DefaultTokens
 
   /**
    * Web-only: define CSS text-selection styles
@@ -1778,17 +1795,21 @@ export type SpecificTokensSpecial = TamaguiSettings extends {
     : SpecificTokens
   : SpecificTokens
 
-export type SizeTokens =
+export type Size =
   | SpecificTokensSpecial
   | ThemeValueFallbackSize
   | GetTokenString<keyof Tokens['size']>
   | true
 
-export type SpaceTokens =
+export type SizeTokens = Size
+
+export type Space =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['space']>
   | ThemeValueFallbackSpace
   | true
+
+export type SpaceTokens = Space
 
 // base color token strings (before opacity modifier)
 type ColorTokenBase =
@@ -1800,26 +1821,32 @@ type ColorTokenBase =
 // token names, but large user token/theme unions hit TS2590.
 type TokenWithOpacity = `$${string}/${number}`
 
-export type ColorTokens =
+export type Color =
   | ColorTokenBase
   | CSSColorNames
   // opacity modifier: $token/50 → parsed at runtime in getTokenForKey
   | TokenWithOpacity
 
-export type ZIndexTokens =
+export type ColorTokens = Color
+
+export type ZIndex =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['zIndex']>
   | ThemeValueFallbackZIndex
   | number
   | true
 
-export type RadiusTokens =
+export type ZIndexTokens = ZIndex
+
+export type Radius =
   | SpecificTokensSpecial
   | GetTokenString<keyof Tokens['radius']>
   | ThemeValueFallbackRadius
   | number
   | RemString
   | true
+
+export type RadiusTokens = Radius
 
 export type NonSpecificTokens =
   | GetTokenString<keyof Tokens['radius']>
@@ -1859,11 +1886,13 @@ export type GetTokenFontKeysFor<
 
 export type FontTokens = GetTokenString<keyof TamaguiConfig['fonts']>
 export type FontFamilyTokens = GetTokenString<GetTokenFontKeysFor<'family'>>
-export type FontSizeTokens =
+export type FontSize =
   | GetTokenString<GetTokenFontKeysFor<'size'>>
   | number
   | RemString
   | true
+
+export type FontSizeTokens = FontSize
 export type FontLineHeightTokens =
   | `$${GetTokenFontKeysFor<'lineHeight'>}`
   | number
@@ -2956,14 +2985,32 @@ export type GenericVariantDefinitions = {
   [key: string]: {
     [key: string]:
       | ((a: any, b: any) => any)
+      | StaticStyleInput
       | {
           [key: string]: any
         }
   }
 }
 
+export type CompoundVariantDefinition<
+  MatchProps extends Record<string, any> = Record<string, any>,
+  StyleProps extends Record<string, any> = Record<string, any>,
+> = {
+  [Key in keyof MatchProps]?: MatchProps[Key] | readonly MatchProps[Key][]
+} & {
+  style: StyleProps | StaticStyleInput
+}
+
+export type GenericCompoundVariant = CompoundVariantDefinition<
+  Record<string, any>,
+  Record<string, any>
+>
+
 export type StaticConfigPublic = {
   defaultProps?: Record<string, any>
+
+  /** Static class input supplied to styled(Component, baseClassName, ...). */
+  baseClassName?: StaticStyleInput
 
   /**
    * (compiler) If you need to pass context or something, prevents from ever
@@ -3020,14 +3067,24 @@ export type StaticConfigPublic = {
    * memoizes component, rarely useful except mostly style components that don't take children
    */
   memo?: boolean
+
+  compoundVariants?: readonly GenericCompoundVariant[]
+
+  contextProps?: readonly string[]
 }
 
 type StaticConfigBase = StaticConfigPublic & {
   Component?: FunctionComponent<any> & StaticComponentObject<any, any, any, any, any, any>
 
+  baseStyle?: Record<string, any>
+
   variants?: GenericVariantDefinitions
 
+  compoundVariants?: readonly GenericCompoundVariant[]
+
   context?: StyledContext
+
+  contextProps?: readonly string[]
 
   /**
    * Used for applying sub theme style
@@ -3080,18 +3137,97 @@ export type StylableComponent =
   | ReactComponentWithRef<any, any>
   | (new (props: any) => any)
 
-export type SpreadKeys =
-  | '...fontSize'
-  | '...fontStyle'
-  | '...fontTransform'
-  | '...lineHeight'
-  | '...letterSpacing'
-  | '...size'
-  | '...space'
-  | '...color'
-  | '...zIndex'
-  | '...theme'
-  | '...radius'
+export const variantResolverNames = [
+  'Size',
+  'Space',
+  'Color',
+  'Radius',
+  'ZIndex',
+  'Theme',
+  'FontSize',
+  'FontStyle',
+  'FontTransform',
+  'FontLineHeight',
+  'FontLetterSpacing',
+  'number',
+  'string',
+  'boolean',
+  'any',
+] as const
+
+export type VariantResolverName = (typeof variantResolverNames)[number]
+
+type TrimWhitespace = ' ' | '\n' | '\t' | '\r' | '\v' | '\f'
+
+type Trim<S extends string> = S extends `${TrimWhitespace}${infer Next}`
+  ? Trim<Next>
+  : S extends `${infer Next}${TrimWhitespace}`
+    ? Trim<Next>
+    : S
+
+type ValidateVariantResolverKey<Key extends string> =
+  Trim<Key> extends `${infer Left}|${infer Right}`
+    ? Trim<Left> extends VariantResolverName
+      ? ValidateVariantResolverKey<Right> extends never
+        ? never
+        : Key
+      : never
+    : Trim<Key> extends VariantResolverName
+      ? Key
+      : never
+
+export type VariantResolverKey<Key extends string = string> = Key extends string
+  ? ValidateVariantResolverKey<Key>
+  : never
+
+type VariantResolverValueForName<Name extends string> = Name extends 'Size'
+  ? Size
+  : Name extends 'Space'
+    ? Space
+    : Name extends 'Color'
+      ? Color
+      : Name extends 'Radius'
+        ? Radius
+        : Name extends 'ZIndex'
+          ? ZIndex
+          : Name extends 'Theme'
+            ? ThemeTokens
+            : Name extends 'FontSize'
+              ? FontSize
+              : Name extends 'FontStyle'
+                ? FontStyleTokens
+                : Name extends 'FontTransform'
+                  ? FontTransformTokens
+                  : Name extends 'FontLineHeight'
+                    ? FontLineHeightTokens
+                    : Name extends 'FontLetterSpacing'
+                      ? FontLetterSpacingTokens
+                      : Name extends 'number'
+                        ? number
+                        : Name extends 'string'
+                          ? string
+                          : Name extends 'boolean'
+                            ? boolean
+                            : Name extends 'any'
+                              ? any
+                              : never
+
+export type VariantResolverValue<Key extends string> =
+  Trim<Key> extends `${infer Left}|${infer Right}`
+    ? VariantResolverValueForName<Trim<Left>> | VariantResolverValue<Right>
+    : VariantResolverValueForName<Trim<Key>>
+
+export function createVariantResolver<
+  Key extends string,
+  Props extends PropLike = PropLike,
+  Resolver extends VariantSpreadFunction<Props, VariantResolverValue<Key>> =
+    VariantSpreadFunction<Props, VariantResolverValue<Key>>,
+>(
+  key: string extends Key ? never : Key & VariantResolverKey<Key>,
+  resolver: Resolver
+): Resolver {
+  return resolver
+}
 
 export type VariantDefinitions<
   Parent extends StylableComponent = TamaguiComponent,
@@ -3114,6 +3250,8 @@ export type VariantDefinitions<
 > = VariantDefinitionFromProps<MyProps, Val> & {
   _isEmpty?: 1
 }
+
+export type StaticStyleInput = string
 
 export type GetVariantProps<
   A extends StylableComponent,
@@ -3139,43 +3277,12 @@ export type VariantDefinitionFromProps<MyProps, Val> = MyProps extends object
   ? {
       [propName: string]:
         | VariantSpreadFunction<MyProps, Val>
-        | ({
-            [Key in SpreadKeys]?: Key extends '...fontSize'
-              ? FontSizeVariantSpreadFunction<MyProps>
-              : Key extends '...size'
-                ? SizeVariantSpreadFunction<MyProps>
-                : Key extends '...space'
-                  ? SpaceVariantSpreadFunction<MyProps>
-                  : Key extends '...color'
-                    ? ColorVariantSpreadFunction<MyProps>
-                    : Key extends '...lineHeight'
-                      ? FontLineHeightVariantSpreadFunction<MyProps>
-                      : Key extends '...fontTransform'
-                        ? FontTransformVariantSpreadFunction<MyProps>
-                        : Key extends '...fontStyle'
-                          ? FontStyleVariantSpreadFunction<MyProps>
-                          : Key extends '...letterSpacing'
-                            ? FontLetterSpacingVariantSpreadFunction<MyProps>
-                            : Key extends '...zIndex'
-                              ? ZIndexVariantSpreadFunction<MyProps>
-                              : Key extends '...radius'
-                                ? RadiusVariantSpreadFunction<MyProps>
-                                : Key extends '...theme'
-                                  ? ThemeVariantSpreadFunction<MyProps>
-                                  : never
-          } & {
+        | {
             [Key in string | number | 'true' | 'false']?:
               | MyProps
               | VariantSpreadFunction<MyProps, Val>
-          } & {
-            [Key in VariantTypeKeys]?: Key extends ':number'
-              ? VariantSpreadFunction<MyProps, number>
-              : Key extends ':boolean'
-                ? VariantSpreadFunction<MyProps, boolean>
-                : Key extends ':string'
-                  ? VariantSpreadFunction<MyProps, string>
-                  : never
-          })
+              | StaticStyleInput
+          }
     }
   : {}
 
@@ -3205,20 +3312,6 @@ export type VariantSpreadFunction<Props extends PropLike, Val = any> = (
     }
   | null
   | undefined
-
-export type VariantTypeKeys = ':string' | ':boolean' | ':number'
-
-export type GetVariantValues<Key> = Key extends `...${infer VariantSpread}`
-  ? ThemeValueByCategory<VariantSpread>
-  : Key extends 'true' | 'false'
-    ? boolean
-    : Key extends ':string'
-      ? string
-      : Key extends ':boolean'
-        ? boolean
-        : Key extends ':number'
-          ? number
-          : Key
 
 export type FontSizeVariantSpreadFunction<A extends PropLike> = VariantSpreadFunction<
   A,
@@ -3275,6 +3368,8 @@ export type ResolveVariableAs =
 
 export type SplitStyleProps = {
   styledContext?: Record<string, any>
+  baseProps?: Record<string, any>
+  callerProps?: Record<string, any>
   mediaState?: Record<string, boolean>
   noClass?: boolean
   noExpand?: boolean

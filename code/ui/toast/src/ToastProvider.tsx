@@ -50,7 +50,7 @@ type ScopedProps<P> = Omit<P, 'scope'> & { scope?: ToastScopes }
 const { Provider: ToastProviderProvider, useStyledContext: useToastProviderContext } =
   createStyledContext<ToastProviderContextValue>(
     // since we always provide this we can avoid setting here
-    {} as ToastProviderContextValue,
+    {},
     'Toast__'
   )
 

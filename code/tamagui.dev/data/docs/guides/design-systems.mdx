@@ -159,21 +159,16 @@ export default withPlugins([
 
 ### React Native
 
-In your `babel.config.js`:
+In your `metro.config.js`:
 
 ```js
-export default {
-  plugins: [
-    [
-      '@tamagui/babel-plugin',
-      {
-        exclude: /node_modules/,
-        config: './tamagui.config.ts',
-        components: ['@ourapp/components', 'tamagui'],
-      },
-    ],
-  ],
-}
+const { getDefaultConfig } = require('@react-native/metro-config')
+const { withTamagui } = require('@tamagui/metro-plugin')
+
+module.exports = withTamagui(getDefaultConfig(__dirname), {
+  config: './tamagui.config.ts',
+  components: ['@ourapp/components', 'tamagui'],
+})
 ```
 
 ### Configuration notes

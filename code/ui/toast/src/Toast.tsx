@@ -24,19 +24,8 @@ const TITLE_NAME = 'ToastTitle'
 
 const ToastTitle = styled(SizableText, {
   name: TITLE_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color',
-        size: '$4',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  color: '$color',
+  size: '$4',
 })
 
 type ToastTitleProps = GetProps<typeof ToastTitle>
@@ -49,19 +38,8 @@ const DESCRIPTION_NAME = 'ToastDescription'
 
 const ToastDescription = styled(SizableText, {
   name: DESCRIPTION_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color11',
-        size: '$1',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  color: '$color11',
+  size: '$1',
 })
 
 type ToastDescriptionProps = GetProps<typeof ToastDescription>

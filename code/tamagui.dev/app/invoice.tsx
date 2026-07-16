@@ -300,7 +300,6 @@ export default function InvoicePage() {
 //     }),
 
 //     Input: styled(Input, {
-//       unstyled: true,
 //       fos: '$5',
 //       w: 300,
 //       p: '$4',

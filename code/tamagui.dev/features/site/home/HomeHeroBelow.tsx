@@ -71,7 +71,7 @@ export const HeroBelowContent = memo(() => {
           </XStack>
           <Paragraph opacity={0.7} size="$5">
             All the components you need, cross-platform and composable. Compound Component
-            APIs, styled or unstyled, easy to size, theme, and more.
+            APIs that are easy to style, size, theme, and more.
           </Paragraph>
         </Section>
       </XStack>

@@ -24,7 +24,6 @@ export function PopoverHoverableDelayCase() {
         <Popover.Content
           id="delay-content"
           disableFocusScope
-          unstyled
           transition="200ms"
           animateOnly={['opacity', 'transform']}
           enterStyle={{ opacity: 0, y: -4 }}
@@ -63,7 +62,6 @@ export function PopoverHoverableRestMsCase() {
         <Popover.Content
           id="restms-content"
           disableFocusScope
-          unstyled
           transition="200ms"
           animateOnly={['opacity', 'transform']}
           enterStyle={{ opacity: 0, y: -4 }}
@@ -103,7 +101,6 @@ export function PopoverHoverableSafePolygonCase() {
         <Popover.Content
           id="safepoly-content"
           disableFocusScope
-          unstyled
           transition="200ms"
           animateOnly={['opacity', 'transform']}
           enterStyle={{ opacity: 0, y: -4 }}
@@ -148,7 +145,6 @@ export function PopoverHoverableExitAnimCase() {
         <Popover.Content
           id="exitanim-content"
           disableFocusScope
-          unstyled
           transition="500ms"
           animateOnly={['opacity', 'transform']}
           opacity={1}

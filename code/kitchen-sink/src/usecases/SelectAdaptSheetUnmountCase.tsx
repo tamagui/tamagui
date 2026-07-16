@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Adapt, Button, Select, Sheet, YStack } from 'tamagui'
+import { Adapt, YStack } from 'tamagui'
+import { Button } from '../components/Button'
+import { Select } from '../components/Select'
+import { Sheet } from '../components/Sheet'
 
 /**
  * Select sibling of PopoverAdaptSheetUnmountCase.
@@ -30,6 +33,7 @@ export function SelectAdaptSheetUnmountCase() {
       <Select open={open} onOpenChange={setOpen} value={value} onValueChange={setValue}>
         <Select.Trigger testID="open-select" width={220}>
           <Select.Value placeholder="Select a fruit" />
+          <Select.Icon />
         </Select.Trigger>
 
         <Adapt when={true}>

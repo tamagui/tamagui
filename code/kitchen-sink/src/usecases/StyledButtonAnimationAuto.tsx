@@ -31,7 +31,7 @@ export const ButtonFrame = styled(View, {
 
   variants: {
     size: {
-      '...size': (name, { tokens }) => {
+      Size: (name, { tokens }) => {
         const sizeToken = resolveDefaultSizeToken(name) as Exclude<SizeTokens, true>
 
         return {
@@ -62,7 +62,7 @@ export const ButtonText = styled(Text, {
   userSelect: 'none',
   variants: {
     size: {
-      '...fontSize': (name, { font }) => {
+      FontSize: (name, { font }) => {
         const sizeToken = resolveDefaultSizeToken(name) as Exclude<typeof name, true>
 
         return {

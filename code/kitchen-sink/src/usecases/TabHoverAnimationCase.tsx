@@ -1,7 +1,7 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
+import { Button } from '../components/Button'
 import {
   AnimatePresence,
-  Button,
   Paragraph,
   Popover,
   SizableText,
@@ -89,7 +89,7 @@ export function TabHoverAnimationCase() {
               <Button
                 id={`tab-${tab.replace(' ', '-').toLowerCase()}`}
                 data-testid={`tab-${tab.replace(' ', '-').toLowerCase()}`}
-                size="$3"
+                size="medium"
                 theme={activeTab === tab ? 'blue' : undefined}
               >
                 {tab}
@@ -102,7 +102,6 @@ export function TabHoverAnimationCase() {
           id="hover-content"
           data-testid="hover-content"
           animatePosition
-          unstyled
           disableFocusScope
           animateOnly={['transform', 'opacity']}
           opacity={1}
@@ -160,7 +159,7 @@ const SlideFrame = styled(YStack, {
 
   variants: {
     going: {
-      ':number': (going: number) => ({
+      number: (going: number) => ({
         enterStyle: {
           x: going === 0 ? 0 : going > 0 ? 100 : -100,
           opacity: 0,

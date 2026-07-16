@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from '@tamagui/lucide-icons-2'
 import type React from 'react'
-import { Button, H4, SizableText, XStack, YStack } from 'tamagui'
+import { H4, SizableText, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { useDemoProps } from '../hooks/useDemoProps'
 const weekdays = [
   'sunday',
@@ -54,18 +55,18 @@ export const Calendar = () => {
             px="$4"
           >
             <Button
-              size="$2"
+              size="small"
               icon={ChevronLeft}
               circular
-              chromeless
+              variant="quiet"
               {...demoProps.borderRadiusProps}
             />
             <H4 {...demoProps.headingFontFamilyProps}>September 2023</H4>
             <Button
-              size="$2"
+              size="small"
               icon={ChevronRight}
               circular
-              chromeless
+              variant="quiet"
               {...demoProps.borderRadiusProps}
             />
           </XStack>
@@ -90,7 +91,7 @@ export const Calendar = () => {
       <YStack mt="$4">
         <>
           <Button
-            size="$5"
+            size="large"
             {...demoProps.borderRadiusProps}
             {...demoProps.buttonOutlineProps}
           >

@@ -61,7 +61,6 @@ export function PopoverHoverableDisableClickCase() {
         <Popover.Content
           id="disableclick-content"
           disableFocusScope
-          unstyled
           transition="200ms"
           animateOnly={['opacity', 'transform']}
           enterStyle={{ opacity: 0, y: -4 }}
@@ -92,7 +91,6 @@ export function PopoverHoverableDisableClickCase() {
         <Popover.Content
           id="withclick-content"
           disableFocusScope
-          unstyled
           transition="200ms"
           animateOnly={['opacity', 'transform']}
           enterStyle={{ opacity: 0, y: -4 }}

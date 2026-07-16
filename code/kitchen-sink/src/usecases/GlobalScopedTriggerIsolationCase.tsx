@@ -161,7 +161,7 @@ export function GlobalScopedTriggerIsolationCase() {
               minWidth={180}
               borderWidth={1}
               borderColor="$borderColor"
-              elevation="$3"
+              boxShadow="0 4px 12px $shadowColor"
             >
               <Menu.Item key="alpha" textValue="Alpha">
                 <Menu.ItemTitle>Alpha</Menu.ItemTitle>

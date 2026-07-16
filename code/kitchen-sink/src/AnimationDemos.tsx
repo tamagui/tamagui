@@ -1,5 +1,6 @@
 import React from 'react'
-import { AnimatePresence, Button, Square, styled } from 'tamagui'
+import { AnimatePresence, Square, styled } from 'tamagui'
+import { Button } from './components/Button'
 
 function Demo1() {
   return (
@@ -55,7 +56,7 @@ const GalleryItem = styled(YStack, {
   variants: {
     // 1 = right, 0 = nowhere, -1 = left
     going: {
-      ':number': (going) => ({
+      number: (going) => ({
         enterStyle: {
           x: going > 0 ? 1000 : -1000,
           opacity: 0,
@@ -107,11 +108,11 @@ export function Demo3() {
       <Button
         aria-label="Carousel left"
         icon={ArrowLeft}
-        size="$5"
+        size="large"
         position="absolute"
         left="$4"
         circular
-        elevation="$4"
+        boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
         onPress={() => paginate(-1)}
         z={100}
       />
@@ -119,11 +120,11 @@ export function Demo3() {
       <Button
         aria-label="Carousel right"
         icon={ArrowRight}
-        size="$5"
+        size="large"
         position="absolute"
         right="$4"
         circular
-        elevation="$4"
+        boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
         onPress={() => paginate(1)}
         z={100}
       />

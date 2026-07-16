@@ -1,6 +1,6 @@
 import { composeRefs } from '@tamagui/compose-refs'
-import { isWeb, View, type GetRef, createRefComponent } from '@tamagui/core'
-import type { ScrollViewProps, ScrollViewRef } from '@tamagui/scroll-view'
+import { createStyledHOC, isWeb, View, type GetProps } from '@tamagui/core'
+import type { ScrollViewRef } from '@tamagui/scroll-view'
 import { ScrollView } from '@tamagui/scroll-view'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import React, { useEffect, useRef, useState } from 'react'
@@ -19,10 +19,17 @@ import {
 
 const SHEET_SCROLL_VIEW_NAME = 'SheetScrollView'
 
-export const SheetScrollView = createRefComponent<
-  GetRef<typeof ScrollView>,
-  ScrollViewProps
->(
+type SheetScrollViewBaseProps = GetProps<typeof ScrollView>
+
+type SheetScrollViewProps = SheetScopedProps<
+  SheetScrollViewBaseProps & {
+    h?: SheetScrollViewBaseProps['height']
+    o?: SheetScrollViewBaseProps['opacity']
+    pos?: SheetScrollViewBaseProps['position']
+  }
+>
+
+export const SheetScrollView = createStyledHOC(ScrollView)<SheetScrollViewProps>(
   (
     {
       scope,
@@ -30,7 +37,7 @@ export const SheetScrollView = createRefComponent<
       onScroll,
       scrollEnabled: scrollEnabledProp,
       ...props
-    }: SheetScopedProps<ScrollViewProps>,
+    }: SheetScrollViewProps,
     ref
   ) => {
     const context = useSheetContext(scope)
@@ -363,5 +370,11 @@ export const SheetScrollView = createRefComponent<
         {contentWrapper}
       </ScrollView>
     )
+  },
+  {
+    disableTheme: true,
+    staticConfig: {
+      componentName: SHEET_SCROLL_VIEW_NAME,
+    },
   }
 )

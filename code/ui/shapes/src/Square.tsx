@@ -13,8 +13,8 @@ export const Square = styled(
 
     variants: {
       size: {
-        '...size': getShapeSize,
-        ':number': getShapeSize,
+        number: getShapeSize,
+        Size: getShapeSize,
       },
     } as const,
   },

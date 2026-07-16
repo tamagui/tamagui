@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { ScrollView, type ScrollView as ScrollViewType } from '@tamagui/scroll-view'
-import { Button, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 export function ScrollViewRefCase() {
   const scrollRef = useRef<ScrollViewType>(null)
@@ -47,7 +48,7 @@ export function ScrollViewRefCase() {
         <Button
           id="scroll-to-btn"
           testID="scroll-to-btn"
-          size="$2"
+          size="small"
           onPress={handleScrollTo}
         >
           scrollTo(200)
@@ -55,7 +56,7 @@ export function ScrollViewRefCase() {
         <Button
           id="scroll-to-end-btn"
           testID="scroll-to-end-btn"
-          size="$2"
+          size="small"
           onPress={handleScrollToEnd}
         >
           scrollToEnd
@@ -63,7 +64,7 @@ export function ScrollViewRefCase() {
         <Button
           id="get-node-btn"
           testID="get-node-btn"
-          size="$2"
+          size="small"
           onPress={handleGetScrollableNode}
         >
           getScrollableNode

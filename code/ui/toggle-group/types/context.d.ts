@@ -1,7 +1,7 @@
 export declare const context: import("@tamagui/web").StyledContext<{
     color: string;
     active: boolean;
-}>;
+}, "color" | "active">;
 export declare const useToggleGroupItem: () => {
     color: string;
     active: boolean;

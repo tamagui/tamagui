@@ -5,6 +5,11 @@
   "source": "src/index.ts",
   "type": "module",
   "sideEffects": false,
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
@@ -64,7 +69,8 @@
     "react-native-safe-area-context": "~5.7.0"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": ">=19",
+    "react-native-web": "*"
   },
   "module:jsx": "dist/jsx",
   "removeSideEffects": true

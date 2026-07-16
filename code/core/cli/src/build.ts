@@ -1,9 +1,8 @@
 import {
-  createExtractor,
-  extractToClassNames,
-  extractToNative,
+  CompilerFrontend,
   loadTamagui,
   loadTamaguiBuildConfigSync,
+  type CompilerProject,
 } from '@tamagui/static'
 import type { CLIResolvedOptions, TamaguiOptions } from '@tamagui/types'
 import chokidar from 'chokidar'
@@ -13,6 +12,14 @@ import { basename, dirname, extname, join, relative, resolve } from 'node:path'
 import { tmpdir } from 'node:os'
 import { execSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
+import { createRequire } from 'node:module'
+import {
+  findConfigFile,
+  nodeModuleNameResolver,
+  parseJsonConfigFileContent,
+  readConfigFile,
+  sys,
+} from 'typescript'
 
 export type BuildStats = {
   filesProcessed: number
@@ -97,13 +104,88 @@ export const build = async (
       ? (['web', 'native'] as const)
       : ([options.target] as const)
 
-  // Load tamagui for web first (needed for both targets)
-  const webTamaguiOptions = {
-    ...buildOptions,
-    platform: 'web' as const,
-  } satisfies TamaguiOptions
+  const root = process.cwd()
+  const require = createRequire(
+    typeof __filename === 'string' ? __filename : import.meta.url
+  )
+  const configPath =
+    findConfigFile(root, sys.fileExists, 'tsconfig.json') ||
+    findConfigFile(root, sys.fileExists, 'jsconfig.json')
+  const compilerOptions = configPath
+    ? parseJsonConfigFileContent(
+        (() => {
+          const loaded = readConfigFile(configPath, sys.readFile)
+          if (loaded.error) throw new Error(String(loaded.error.messageText))
+          return loaded.config
+        })(),
+        sys,
+        dirname(configPath)
+      ).options
+    : {}
+  const resolveCompilerId = (specifier: string, importer: string): string | null => {
+    const resolved = nodeModuleNameResolver(specifier, importer, compilerOptions, sys)
+      .resolvedModule?.resolvedFileName
+    if (resolved && !resolved.endsWith('.d.ts')) return resolved
+    try {
+      return require.resolve(specifier, { paths: [dirname(importer), root] })
+    } catch {
+      return null
+    }
+  }
+  const compilerFrontends = new Map<'web' | 'native', CompilerFrontend>()
+  const compilerProjects = new Map<'web' | 'native', CompilerProject>()
 
-  await loadTamagui(webTamaguiOptions)
+  for (const target of targets) {
+    const targetOptions = { ...buildOptions, platform: target } satisfies TamaguiOptions
+    const projectInfo = await loadTamagui(targetOptions)
+    if (!projectInfo) throw new Error(`Unable to load Tamagui for the ${target} build`)
+    const componentModules = [
+      ...new Set(['@tamagui/core', ...(targetOptions.components ?? [])]),
+    ].map((moduleName) => {
+      const id = resolveCompilerId(moduleName, join(root, '__tamagui_cli__.tsx'))
+      if (!id) throw new Error(`Unable to resolve compiler component ${moduleName}`)
+      return { moduleName, id }
+    })
+    compilerProjects.set(target, {
+      projectInfo,
+      componentModules,
+      generation: createHash('sha256')
+        .update(target)
+        .update('\0')
+        .update(buildOptions.config ?? 'tamagui.config.ts')
+        .update('\0')
+        .update(JSON.stringify(targetOptions.components ?? []))
+        .digest('hex'),
+    })
+    compilerFrontends.set(target, new CompilerFrontend())
+  }
+
+  const compileTarget = async (
+    target: 'web' | 'native',
+    sourcePath: string,
+    source: string
+  ) => {
+    const compiler = compilerFrontends.get(target)!
+    const project = compilerProjects.get(target)!
+    return compiler.compile({
+      id: sourcePath,
+      source,
+      root,
+      target,
+      project,
+      resolve: async (specifier, importer) => {
+        const id = resolveCompilerId(specifier, importer)
+        return id ? { id, external: id.includes('/node_modules/') } : null
+      },
+      load: async (id) => {
+        try {
+          return await readFile(id.split(/[?#]/, 1)[0]!, 'utf8')
+        } catch {
+          return null
+        }
+      },
+    })
+  }
 
   // Collect all files first
   const allFiles: string[] = []
@@ -112,6 +194,9 @@ export const build = async (
   const watchPattern = sourceDir.match(/\.(tsx|jsx)$/)
     ? sourceDir // Single file
     : `${sourceDir}/**/*.{tsx,jsx}` // Directory
+  const sourceRoot = sourceDir.match(/\.(tsx|jsx)$/)
+    ? dirname(resolve(sourceDir))
+    : resolve(sourceDir)
 
   await new Promise<void>((res) => {
     const watcher = chokidar.watch(watchPattern, {
@@ -242,39 +327,24 @@ export const build = async (
         // Build web version from original source
         if (filePlatforms.includes('web')) {
           process.env.TAMAGUI_TARGET = 'web'
-          const extractor = createExtractor({
-            platform: 'web',
-          })
+          const out = await compileTarget('web', sourcePath, originalSource)
 
-          const out = await extractToClassNames({
-            extractor,
-            source: originalSource,
-            sourcePath,
-            options: {
-              ...buildOptions,
-              platform: 'web',
-            },
-            shouldPrintDebug: options.debug || false,
-          })
-
-          if (out) {
+          if (out.output.changed || out.plan.stats.found > 0) {
             stats.filesProcessed++
-            stats.optimized += out.stats.optimized
-            stats.flattened += out.stats.flattened
-            stats.styled += out.stats.styled
-            stats.found += out.stats.found
+            stats.optimized += out.plan.stats.lowered - out.plan.stats.flattened
+            stats.flattened += out.plan.stats.flattened
+            stats.styled += out.plan.stats.styled
+            stats.found += out.plan.stats.found
 
             if (isDryRun) {
-              const jsContent =
-                typeof out.js === 'string' ? out.js : out.js.toString('utf-8')
-              if (out.styles) {
-                console.info(`\ncss:\n${out.styles}`)
+              if (out.plan.css) {
+                console.info(`\ncss:\n${out.plan.css}`)
               }
-              console.info(`\njs:\n${jsContent}`)
+              console.info(`\njs:\n${out.output.code}`)
             } else {
               // compute relative path to preserve directory structure in output
               const relPath = outputDir
-                ? relative(resolve(sourceDir), sourcePath)
+                ? relative(sourceRoot, sourcePath)
                 : basename(sourcePath)
               const cssName = '_' + basename(sourcePath, extname(sourcePath))
               const outputBase = outputDir
@@ -288,9 +358,9 @@ export const build = async (
 
               const stylePath = join(outputBase, cssName + '.css')
               const cssImport = `import "./${cssName}.css"`
-              const jsContent =
-                typeof out.js === 'string' ? out.js : out.js.toString('utf-8')
-              const code = insertCssImport(jsContent, cssImport)
+              const code = out.plan.css
+                ? insertCssImport(out.output.code, cssImport)
+                : out.output.code
 
               // Determine output path for JS (preserve directory structure)
               const webOutputPath = outputDir ? join(outputDir, relPath) : sourcePath
@@ -307,8 +377,10 @@ export const build = async (
               }
 
               // CSS file is new, track for cleanup (skip if using output dir)
-              await writeFile(stylePath, out.styles, 'utf-8')
-              if (!outputDir) {
+              if (out.plan.css) {
+                await writeFile(stylePath, out.plan.css, 'utf-8')
+              }
+              if (!outputDir && out.plan.css) {
                 // Note: CSS files are new (generated), we'll delete them on restore
                 trackedFiles.push({
                   path: stylePath,
@@ -325,21 +397,12 @@ export const build = async (
         // Build native version from original source (NOT from the web-optimized version)
         if (filePlatforms.includes('native')) {
           process.env.TAMAGUI_TARGET = 'native'
-          const nativeTamaguiOptions = {
-            ...buildOptions,
-            platform: 'native' as const,
-          } satisfies TamaguiOptions
-
           // Use the ORIGINAL source, not what was just written to disk
-          const nativeOut = extractToNative(
-            sourcePath,
-            originalSource,
-            nativeTamaguiOptions
-          )
+          const nativeOut = await compileTarget('native', sourcePath, originalSource)
 
           if (isDryRun) {
-            if (nativeOut.code) {
-              console.info(`\nnative:\n${nativeOut.code}`)
+            if (nativeOut.output.code) {
+              console.info(`\nnative:\n${nativeOut.output.code}`)
             } else {
               console.info(`  native: no output`)
             }
@@ -369,7 +432,7 @@ export const build = async (
               }
             } else if (outputDir) {
               // preserve directory structure in output
-              const relPath = relative(resolve(sourceDir), sourcePath)
+              const relPath = relative(sourceRoot, sourcePath)
               // add .native suffix when building both targets to avoid overwriting web output
               const outputRelPath = needsNativeSuffix
                 ? relPath.replace(/\.(tsx|jsx)$/, '.native.$1')
@@ -382,18 +445,10 @@ export const build = async (
               nativeOutputPath = sourcePath.replace(/\.(tsx|jsx)$/, '.native.$1')
             }
 
-            if (nativeOut.code) {
-              // check if extraction actually happened by looking for our markers
-              const hasExtraction =
-                nativeOut.code.includes('__ReactNativeStyleSheet') ||
-                nativeOut.code.includes('_withStableStyle')
-              if (hasExtraction) {
+            if (nativeOut.output.code) {
+              if (nativeOut.output.changed) {
                 stats.filesProcessed++
-                // count styled wrappers as flattened (native extraction flattens styles)
-                const wrapperMatches = nativeOut.code.match(/_withStableStyle/g)
-                if (wrapperMatches) {
-                  stats.flattened += wrapperMatches.length
-                }
+                stats.flattened += nativeOut.plan.stats.flattened
               }
 
               // Track original if overwriting existing file (skip if using output dir or outputAround)
@@ -404,7 +459,7 @@ export const build = async (
               ) {
                 await trackFile(nativeOutputPath)
               }
-              await writeFile(nativeOutputPath, nativeOut.code, 'utf-8')
+              await writeFile(nativeOutputPath, nativeOut.output.code, 'utf-8')
               if (!outputDir && !outputAround) {
                 await recordMtime(nativeOutputPath)
               }

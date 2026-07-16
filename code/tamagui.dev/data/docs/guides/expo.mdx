@@ -38,30 +38,28 @@ yarn dlx create-expo-app -t expo-template-blank-typescript
   This guide assumes Expo is configured with TypeScript support.
 </Notice>
 
-The following steps are optional but useful for many apps. They enable the optimizing compiler, Reanimated, and support for `process.env.XYZ` environment variables.
+The following steps enable the optimizing compiler while preserving your existing Expo Babel configuration.
 
-Add `@tamagui/babel-plugin`:
+Add `@tamagui/metro-plugin`:
 
 ```bash
-yarn add @tamagui/babel-plugin
+yarn add @tamagui/metro-plugin
 ```
 
 If you have a `tamagui.build.ts` (recommended — see
 [compiler install docs](/docs/intro/compiler-install#configuration-with-tamaguibuildts)),
 no options are needed:
 
-Update your `babel.config.js` to include the optional `@tamagui/babel-plugin`:
+Wrap the Expo Metro config with `withTamagui`:
 
-```js fileName="babel.config.js"
-module.exports = function (api) {
-  api.cache(true)
-  return {
-    presets: ['babel-preset-expo'],
-    plugins: [
-      '@tamagui/babel-plugin',
-    ],
-  }
-}
+```js fileName="metro.config.js"
+const { getDefaultConfig } = require('expo/metro-config')
+const { withTamagui } = require('@tamagui/metro-plugin')
+
+module.exports = withTamagui(getDefaultConfig(__dirname), {
+  components: ['tamagui'],
+  config: './tamagui.config.ts',
+})
 ```
 
 <Notice>

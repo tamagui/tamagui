@@ -1,174 +1,209 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Text with hoverStyle and conditional spread preserves ternary 1`] = `
-"const _cn2 = "is_Text _cur-pointer _col-0hover-color12";
-const _cn = "is_Text _cur-pointer _col-0hover-color12 _fow-800 _col-color12";
-// debug
-import { Text } from '@tamagui/core';
-export function Test({
-  isActive
-}) {
-  return <span className={isActive ? _cn : _cn2}>
+"// debug
+    import { Text } from '@tamagui/core'
+
+    export function Test({ isActive }) {
+      return (
+        <Text
+          cursor="pointer"
+          hoverStyle={{ color: '$color12' }}
+          {...(isActive && {
+            color: '$color12',
+            fontWeight: '800',
+          })}
+        >
           hello
-        </span>;
-}"
+        </Text>
+      )
+    }
+"
 `;
 
-exports[`bails from non-deterministic values 1`] = `undefined`;
+exports[`bails from non-deterministic values 1`] = `
+"
+    import { Text } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <Text
+          color={Math.random()}
+        />
+      )
+    }
+"
+`;
 
 exports[`className + conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn2 = "_w-10px _bg-red";
-const _cn = "_w-10px _bg-blue";
-import { View } from '@tamagui/core';
-export function Test(props) {
-  return <div className={!props.green ? _cn : props.green ? _cn2 : props.className + " " + "is_View _w-10px"} />;
-}"
+"
+    import { View } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <View width={10} bg={props.green ? 'red' : 'blue'} className={props.className} />
+      )
+    }
+"
 `;
 
-exports[`className + conditional styles get full base styles merged onto + shorthand 2`] = `
-":root ._w-10px{width:10px;}
-:root ._bg-red{background-color:red;}
-:root ._bg-blue{background-color:blue;}"
-`;
+exports[`className + conditional styles get full base styles merged onto + shorthand 2`] = `""`;
 
 exports[`conditional classname keeps base and concats properly 1`] = `
-"import { View } from '@tamagui/core';
-export function Test(props) {
-  return <div className={(isEnabled ? '' : 'disable-all-pointer-events') + " " + "is_View _fg-1 _fs-1 _fb-0px"}>
+"
+    import { View } from '@tamagui/core'
+
+    export function Test(props) {
+      return (
+        <View
+          flex={1}
+          className={isEnabled ? '' : 'disable-all-pointer-events'}
+        >
           {props.child}
-        </div>;
-}"
+        </View>
+      )
+    }
+"
 `;
 
 exports[`conditional specific after generic style overrides 1`] = `
-"const _cn1 = "is_View _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px";
-const _cn0 = "is_View _btlr-5px _bbrr-5px _bblr-5px _pt-t-space-2 _pr-t-space-2 _pl-t-space-2 _btrr-10px _pb-18px";
-const _cn9 = "is_View _btlr-2px _bbrr-2px _bblr-2px _pt-t-space-2 _pr-t-space-2 _pl-t-space-2 _btrr-10px _pb-15px";
-const _cn8 = "is_View _bbrr-5px _bblr-5px _btlr-7px _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px";
-const _cn7 = "is_View _btlr-7px _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px";
-const _cn6 = "is_View _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px";
-const _cn5 = "is_View _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px";
-const _cn4 = "is_View _bbrr-2px _bblr-2px _btlr-7px _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px";
-const _cn3 = "is_View _btlr-7px _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-2px";
-const _cn2 = "is_View _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px";
-const _cn = "is_View _pt-t-space-2 _pr-t-space-2 _pb-t-space-2 _pl-t-space-2 _btrr-10px _mr-1px";
-import { View } from '@tamagui/core';
-export function Test(props) {
-  return <div className={!!floating && floating2 ? _cn : !floating && !floating2 ? _cn2 : !!floating && floating2 ? _cn3 : !floating && floating2 ? _cn4 : !floating && floating2 ? _cn5 : floating && !floating2 ? _cn6 : !floating && floating2 ? _cn7 : floating && floating2 ? _cn8 : !floating ? _cn9 : floating ? _cn0 : _cn1} />;
-}"
+"
+    import { View } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <View
+          p="$2"                              // base padding
+          pb={floating ? 18 : 15}             // should override bottom
+          mr={floating2 ? 2 : 1}              // unrelated ternary
+          borderTopRightRadius={10}           // base tr radius
+          borderRadius={floating ? 5 : 2}     // should override the tr radius always
+          {...floating2 && {
+            borderTopLeftRadius: 7
+          }}
+        />
+      )
+    }
+"
 `;
 
-exports[`conditional specific after generic style overrides 2`] = `
-":root ._pt-t-space-2{padding-top:var(--t-space-2);}
-:root ._pr-t-space-2{padding-right:var(--t-space-2);}
-:root ._pb-t-space-2{padding-bottom:var(--t-space-2);}
-:root ._pl-t-space-2{padding-left:var(--t-space-2);}
-:root ._btrr-10px{border-top-right-radius:10px;}
-:root ._btlr-5px{border-top-left-radius:5px;}
-:root ._bbrr-5px{border-bottom-right-radius:5px;}
-:root ._bblr-5px{border-bottom-left-radius:5px;}
-:root ._pb-18px{padding-bottom:18px;}
-:root ._btlr-2px{border-top-left-radius:2px;}
-:root ._bbrr-2px{border-bottom-right-radius:2px;}
-:root ._bblr-2px{border-bottom-left-radius:2px;}
-:root ._pb-15px{padding-bottom:15px;}
-:root ._btlr-7px{border-top-left-radius:7px;}
-:root ._mr-2px{margin-right:2px;}
-:root ._mr-1px{margin-right:1px;}"
-`;
+exports[`conditional specific after generic style overrides 2`] = `""`;
 
 exports[`conditional spread with hoverStyle preserves ternary 1`] = `
-"const _cn2 = "is_View _bg-red _cur-pointer _bg-0hover-green";
-const _cn = "is_View _cur-pointer _bg-0hover-green _bg-blue";
-import { View } from '@tamagui/core';
-export function Test({
-  isActive
-}) {
-  return <div className={isActive ? _cn : _cn2} />;
-}"
+"
+    import { View } from '@tamagui/core'
+
+    export function Test({ isActive }) {
+      return (
+        <View
+          backgroundColor="red"
+          cursor="pointer"
+          hoverStyle={{ backgroundColor: 'green' }}
+          {...(isActive && {
+            backgroundColor: 'blue',
+          })}
+        />
+      )
+    }
+"
 `;
 
 exports[`conditional spread with local variable preserves ternary 1`] = `
-"const _cn2 = "is_View _bg-red";
-const _cn = "is_View _bg-blue";
-import { View } from '@tamagui/core';
-export function Test({
-  isActive
-}) {
-  return <div className={isActive ? _cn : _cn2} />;
-}"
+"
+    import { View } from '@tamagui/core'
+
+    export function Test({ isActive }) {
+      return (
+        <View
+          backgroundColor="red"
+          {...(isActive && {
+            backgroundColor: 'blue',
+          })}
+        />
+      )
+    }
+"
 `;
 
 exports[`conditional spread with runtime variable preserves ternary 1`] = `
-"const _cn2 = "is_View _bg-red";
-const _cn = "is_View _bg-blue";
-import { View } from '@tamagui/core';
-function usePathname() {
-  return '/blog';
-}
-const navLinks = [{
-  name: 'Blog',
-  href: '/blog'
-}];
-export function Header() {
-  const pathname = usePathname();
-  return <>
-          {navLinks.map(link => {
-      const isActive = pathname.startsWith(link.href);
-      return <div className={isActive ? _cn : _cn2} key={link.name} />;
-    })}
-        </>;
-}"
+"
+    import { View } from '@tamagui/core'
+
+    function usePathname() {
+      return '/blog'
+    }
+
+    const navLinks = [{ name: 'Blog', href: '/blog' }]
+
+    export function Header() {
+      const pathname = usePathname()
+      return (
+        <>
+          {navLinks.map((link) => {
+            const isActive = pathname.startsWith(link.href)
+            return (
+              <View
+                key={link.name}
+                backgroundColor="red"
+                {...(isActive && {
+                  backgroundColor: 'blue',
+                })}
+              />
+            )
+          })}
+        </>
+      )
+    }
+"
 `;
 
 exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
-"const _cn3 = "is_View _w-10px";
-const _cn2 = "is_View _w-10px _bg-red";
-const _cn = "is_View _w-10px _bg-blue";
-import { View } from '@tamagui/core';
-export function Test(props) {
-  return <div className={!props.green ? _cn : props.green ? _cn2 : _cn3} />;
-}"
+"
+import { View } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <View width={10} bg={props.green ? 'red' : 'blue'} />
+      )
+    }
+"
 `;
 
-exports[`conditional styles get full base styles merged onto + shorthand 2`] = `
-":root ._w-10px{width:10px;}
-:root ._bg-red{background-color:red;}
-:root ._bg-blue{background-color:blue;}"
-`;
+exports[`conditional styles get full base styles merged onto + shorthand 2`] = `""`;
 
 exports[`double ternary + spread 1`] = `
-"const _cn7 = "is_View _ai-center";
-const _cn6 = "is_View _ai-center _f-unset";
-const _cn5 = "is_View _ai-center _fg-5 _fs-1 _fb-0px";
-const _cn4 = "is_View _f-unset _ai-flex-start _fd-column";
-const _cn3 = "is_View _ai-flex-start _fd-column";
-const _cn2 = "is_View _fg-5 _fs-1 _fb-0px _ai-flex-start _fd-column";
-const _cn = "is_View _ai-flex-start _fd-column";
-import { View } from '@tamagui/core';
-export function Test({
-  isSettings,
-  isVertical,
-  children
-}) {
-  return <div className={!!(isSettings || isVertical) && isVertical ? _cn : !(isSettings || isVertical) && isVertical ? _cn2 : !(isSettings || isVertical) && isVertical ? _cn3 : (isSettings || isVertical) && isVertical ? _cn4 : !(isSettings || isVertical) ? _cn5 : isSettings || isVertical ? _cn6 : _cn7}>
+"
+    import { View } from '@tamagui/core'
+
+    export function Test({ isSettings, isVertical, children }) {
+      return (
+        <View
+          flex={isSettings || isVertical ? 'unset' : 5}
+          alignItems="center"
+          {...(isVertical && {
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+          })}
+        >
           {children}
-        </div>;
-}"
+        </View>
+      )
+    }
+"
 `;
 
 exports[`flexBasis: 0 with responsive style extracts correctly 1`] = `
-"const _cn = "is_View _fb-1px _fb-_gtXs_0px";
-import { View } from '@tamagui/core';
-export function Test() {
-  return <div className={_cn} />;
-}"
+"
+    import { View } from '@tamagui/core'
+
+    export function Test() {
+      return (
+        <div
+          className="is_View _fb-1px _fb-_gtXs_0px"
+
+        />
+      )
+    }
+"
 `;
 
-exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `
-":root ._fb-1px{flex-basis:1px;}
-@media (min-width: 661px){:root:root:root:root:root:root:root:root ._fb-_gtXs_0px{flex-basis:0px;}}"
-`;
+exports[`flexBasis: 0 with responsive style extracts correctly 2`] = `":root ._fb-1px{flex-basis:1px;}@media (min-width: 661px){:root:root:root:root:root:root:root:root ._fb-_gtXs_0px{flex-basis:0px;}}"`;
 
 exports[`font_body class is present in BOTH ternary branches 1`] = `
 "const _cn2 = "is_Text font_body _dsp-inline _bxs-border-box _ww-break-word _ws-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family ";
@@ -183,81 +218,139 @@ export function Test({
 }"
 `;
 
-exports[`fontFamily shorthand + styled + flatten + ternaries 1`] = `undefined`;
-
-exports[`fontFamily shorthand + styled + flatten works 1`] = `undefined`;
-
-exports[`non-flattened works 1`] = `
-"import { Text } from '@tamagui/core';
-export function Test(props) {
-  return <Text textAlign={inMenu ? props.hello : 'right'} width="100%" hoverStyle={{
-    o: 0.85
-  }} {...active && {
-    fow: '700',
-    opacity: 1
-  }} />;
-}"
+exports[`fontFamily shorthand + styled + flatten + ternaries 1`] = `
+"
+    import { MySizableText } from '@tamagui/test-design-system'
+    export function Test(props) {
+      return (
+        <MySizableText
+          ff="$mono"
+          opacity={active ? 1 : 0.65}
+        />
+      )
+    }
+"
 `;
 
-exports[`specific className + ternary 1`] = `undefined`;
+exports[`fontFamily shorthand + styled + flatten works 1`] = `
+"
+    import { MySizableText } from '@tamagui/test-design-system'
+    export function Test(props) {
+      return (
+        <span
+          className="is_MySizableText is_Text font_mono _bg-green _ff-f-family"
+        />
+      )
+    }
+"
+`;
+
+exports[`non-flattened works 1`] = `
+"
+    import { Text } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <Text
+          textAlign={inMenu ? props.hello : 'right'}
+          width="100%"
+          hoverStyle={{
+            o: 0.85,
+          }}
+          {...(active && {
+            fow: '700',
+            opacity: 1,
+          })}
+        />
+      )
+    }
+"
+`;
+
+exports[`specific className + ternary 1`] = `
+"
+    import { MySizableText } from '@tamagui/test-design-system'
+    export function Test(props) {
+      return (
+        <MySizableText
+          className="test-class-name"
+          ff="$mono"
+          opacity={active ? 1 : 0.65}
+        />
+      )
+    }
+"
+`;
 
 exports[`spread + className 1`] = `
-"const _cn2 = "is_View _bg-00035 _pt-2px _pb-2px _t-0px ease-in-out-top";
-const _cn = "is_View ease-in-out-top _pt-2px _pb-2px _bg-fff35 _t--14px";
-import { View } from '@tamagui/core';
-export function Test(props) {
-  return <div className={props.conditional ? _cn : _cn2}>
+"
+    import { View } from '@tamagui/core'
+
+    export function Test(props) {
+      return (
+        <View
+          className="ease-in-out-top"
+          backgroundColor="#000"
+          paddingVertical={2}
+          top={0}
+          {...(props.conditional && {
+            top: -14,
+            backgroundColor: '#fff',
+          })}
+        >
           {child}
-        </div>;
-}"
+        </View>
+      )
+    }
+"
 `;
 
 exports[`ternaries + font families works 1`] = `
-"const _cn3 = "is_Text";
-const _cn2 = "is_Text font_body _ff-f-family";
-const _cn = "is_Text font_heading _ff-f-family";
-import { Text } from '@tamagui/core';
-export function Test(props) {
-  return <span className={!window ? _cn : window ? _cn2 : _cn3} />;
-}"
+"
+    import { Text } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <Text fontFamily={window ? "$body" : "$heading"} />
+      )
+    }
+"
 `;
 
-exports[`ternaries + font families works 2`] = `":root ._ff-f-family{font-family:var(--f-family);}"`;
+exports[`ternaries + font families works 2`] = `""`;
 
 exports[`ternary with mixed theme-token and non-token values preserves all props 1`] = `
-"const _cn3 = "is_Text _fos-f-size-3";
-const _cn2 = "is_Text _fos-f-size-3 _col-color12 _fow-600";
-const _cn = "is_Text _fos-f-size-3 _col-color11 _fow-400";
-import { Text } from '@tamagui/core';
-export function Test({
-  isActive,
-  label
-}) {
-  return <span className={!isActive ? _cn : isActive ? _cn2 : _cn3}>
+"
+    import { Text } from '@tamagui/core'
+    export function Test({ isActive, label }) {
+      return (
+        <Text
+          fontSize="$3"
+          fontWeight={isActive ? '600' : '400'}
+          color={isActive ? '$color12' : '$color11'}
+        >
           {label}
-        </span>;
-}"
+        </Text>
+      )
+    }
+"
 `;
 
-exports[`ternary with mixed theme-token and non-token values preserves all props 2`] = `
-":root ._fos-f-size-3{font-size:var(--f-size-3);}
-:root ._col-color12{color:var(--color12);}
-:root ._fow-600{font-weight:600;}
-:root ._col-color11{color:var(--color11);}
-:root ._fow-400{font-weight:400;}"
-`;
+exports[`ternary with mixed theme-token and non-token values preserves all props 2`] = `""`;
 
 exports[`theme + media queries + conditionals extract 1`] = `
-"const _cn2 = "is_View _fd-_sm_column";
-const _cn = "is_View _fd-_sm_column _fd-column";
-import { View } from '@tamagui/core';
-export function Test(props) {
-  return <_TamaguiTheme name="surface1"><div className={onlyDemo ? _cn : _cn2} /></_TamaguiTheme>;
-}
-import { Theme as _TamaguiTheme } from "@tamagui/web";"
+"
+    import { View } from '@tamagui/core'
+    export function Test(props) {
+      return (
+        <View
+          theme="surface1"
+          $sm={{ flexDirection: 'column' }}
+          {...(onlyDemo && {
+            flexDirection: 'column',
+          })}
+        />
+      )
+    }
+"
 `;
 
-exports[`theme + media queries + conditionals extract 2`] = `
-"@media (max-width: 800px){:root:root:root:root:root ._fd-_sm_column{flex-direction:column;}}
-:root ._fd-column{flex-direction:column;}"
-`;
+exports[`theme + media queries + conditionals extract 2`] = `""`;

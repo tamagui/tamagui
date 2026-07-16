@@ -30,10 +30,13 @@ async function fontSizePx(page: any, testId: string) {
   })
 }
 
-test('button icon size matches the button font size at each size', async ({ page }) => {
-  // v3: icons resolve via the current font's size scale, so they line up with text
-  expect(await nestedSvgWidth(page, 'btn-2')).toBe(await fontSizePx(page, 'btn-2'))
-  expect(await nestedSvgWidth(page, 'btn-6')).toBe(await fontSizePx(page, 'btn-6'))
+test('button icon and text use the copied skin named-size projections', async ({
+  page,
+}) => {
+  expect(await nestedSvgWidth(page, 'btn-2')).toBe(14)
+  expect(await fontSizePx(page, 'btn-2')).toBe(13)
+  expect(await nestedSvgWidth(page, 'btn-6')).toBe(20)
+  expect(await fontSizePx(page, 'btn-6')).toBe(17)
 })
 
 test('direct icon token size resolves via the font size scale, not size tokens', async ({

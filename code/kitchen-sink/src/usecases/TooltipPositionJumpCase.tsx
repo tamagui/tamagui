@@ -1,12 +1,5 @@
-import {
-  Button,
-  Paragraph,
-  Tooltip,
-  TooltipGroup,
-  XStack,
-  YStack,
-  SizableText,
-} from 'tamagui'
+import { Button } from '../components/Button'
+import { Paragraph, Tooltip, TooltipGroup, XStack, YStack, SizableText } from 'tamagui'
 import { useState } from 'react'
 
 /**
@@ -57,7 +50,7 @@ export function TooltipPositionJumpCase() {
                 asChild
                 onMouseEnter={() => setLabel(btn.label)}
               >
-                <Button data-testid={`tooltip-trigger-${btn.id}`} size="$4">
+                <Button data-testid={`tooltip-trigger-${btn.id}`} size="medium">
                   {btn.id.toUpperCase()}
                 </Button>
               </Tooltip.Trigger>
@@ -69,7 +62,7 @@ export function TooltipPositionJumpCase() {
             animatePosition
             transition="quick"
             bg="$background"
-            elevation="$2"
+            boxShadow="0 4px 12px $shadowColor"
             rounded="$4"
             px="$2.5"
             py="$1"

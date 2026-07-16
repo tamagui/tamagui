@@ -249,52 +249,43 @@ to "true" can fix issues with Tamagui being resolved incorrectly.
 See the [Next.js Guide](/docs/guides/next-js) for more details on setting up
 your app.
 
-### Babel / Metro
+### Metro
 
-Note that the `@tamagui/babel-plugin` is completely optional, and on native
-Tamagui doesn't optimize as much as on web, so leaving it out is actually
-recommended to start. If later on you feel the need for a bit more speed, you
-can try adding it.
+The Metro integration runs the same shared compiler used by the other bundler
+adapters after your configured Babel transformer.
 
 ```bash
-yarn add @tamagui/babel-plugin
+yarn add @tamagui/metro-plugin
 ```
 
-Add to your `babel.config.js`. With a `tamagui.build.ts`, you can pass no
-options:
+Wrap your existing Metro config. With a `tamagui.build.ts`, you can omit the
+inline options:
 
 ```js
-module.exports = {
-  plugins: [
-    // reads from tamagui.build.ts automatically
-    '@tamagui/babel-plugin',
-  ],
-}
+const { getDefaultConfig } = require('expo/metro-config')
+const { withTamagui } = require('@tamagui/metro-plugin')
+
+module.exports = withTamagui(getDefaultConfig(__dirname))
 ```
 
 Or pass options inline:
 
 ```js
-module.exports = {
-  plugins: [
-    [
-      '@tamagui/babel-plugin',
-      {
-        components: ['tamagui'],
-        config: './tamagui.config.ts',
-        importsWhitelist: ['constants.js', 'colors.js'],
-        logTimings: true,
-        disableExtraction: process.env.NODE_ENV === 'development',
-      },
-    ],
-  ],
-}
+const { getDefaultConfig } = require('expo/metro-config')
+const { withTamagui } = require('@tamagui/metro-plugin')
+
+module.exports = withTamagui(getDefaultConfig(__dirname), {
+  components: ['tamagui'],
+  config: './tamagui.config.ts',
+  logTimings: true,
+  disableExtraction: process.env.NODE_ENV === 'development',
+})
 ```
 
 ### Expo
 
 [Check out the Expo guide](/docs/guides/expo) for more information on setting up
-Expo. It's as simple as adding the babel plugin.
+Expo. It uses the same Metro integration shown above.
 
 ### CLI-Based In-Place Compilation
 

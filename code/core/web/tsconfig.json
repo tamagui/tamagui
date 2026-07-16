@@ -21,6 +21,9 @@
       "path": "../normalize-css-color"
     },
     {
+      "path": "../style-grammar"
+    },
+    {
       "path": "../types"
     },
     {

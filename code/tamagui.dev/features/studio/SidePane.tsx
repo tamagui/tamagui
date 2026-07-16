@@ -2,7 +2,8 @@ import { ArrowLeft, X } from '@tamagui/lucide-icons-2'
 import { useStore } from '@tamagui/use-store'
 import type React from 'react'
 import { memo, useEffect } from 'react'
-import { Button, H4, PortalHost, ScrollView, Spacer, XStack, YStack } from 'tamagui'
+import { H4, PortalHost, ScrollView, Spacer, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { SidePaneStore } from './state/SidePaneStore'
 // import { init, redo, sidePaneController, undo } from './actions'
@@ -96,10 +97,10 @@ export const SidePaneHost = memo(() => {
         <Button
           l="$-4"
           t="$4"
-          elevation="$2"
+          boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
           borderWidth={2}
           borderColor="$borderColor"
-          size="$4"
+          size="medium"
           z={1000}
           circular
           icon={sidePane.panes.length > 1 ? ArrowLeft : X}

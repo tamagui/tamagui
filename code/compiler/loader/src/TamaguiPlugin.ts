@@ -1,4 +1,4 @@
-import * as StaticWorker from '@tamagui/static-worker'
+import Static from '@tamagui/static'
 import type { TamaguiOptions } from '@tamagui/types'
 import { existsSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -110,36 +110,21 @@ export class TamaguiPlugin {
   }
 
   apply(compiler: Compiler) {
-    // Filter out non-serializable properties before passing to worker
-    // Functions like shouldExtract, getCSS, etc. are used on the main thread only
-    const serializableOptions = { ...this.options }
-    for (const key in serializableOptions) {
-      const value = serializableOptions[key as keyof typeof serializableOptions]
-      if (typeof value === 'function') {
-        delete serializableOptions[key as keyof typeof serializableOptions]
-      }
-    }
-
-    // Load Tamagui config asynchronously in worker
-    void StaticWorker.loadTamagui({
+    // Prime the same main-process config used by the shared compiler frontend.
+    void Static.loadTamagui({
       components: ['tamagui'],
       platform: 'web',
-      ...serializableOptions,
+      ...this.options,
     })
 
     if (compiler.options.mode === 'development' && !this.options.disableWatchConfig) {
-      void StaticWorker.watchTamaguiConfig(serializableOptions).then((watcher) => {
+      void Static.watchTamaguiConfig(this.options).then((watcher) => {
         // yes this is weirdly done promise...
         process.once('exit', () => {
           watcher?.dispose()
         })
       })
     }
-
-    // Clean up worker pool on exit
-    process.once('exit', () => {
-      void StaticWorker.destroyPool()
-    })
 
     // mark as side effect
     compiler.hooks.normalModuleFactory.tap(this.pluginName, (nmf) => {
@@ -231,7 +216,6 @@ export class TamaguiPlugin {
       loader: requireResolve('tamagui-loader'),
       options: {
         ...this.options,
-        _disableLoadTamagui: true,
       },
     }
 

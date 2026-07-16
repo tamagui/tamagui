@@ -6,11 +6,9 @@ export const SwitchStyledContext = createStyledContext<{
   disabled?: boolean
   frameWidth?: number
   size?: SizeTokens | number | true
-  unstyled?: boolean
 }>({
   active: false,
   disabled: false,
   frameWidth: undefined,
   size: undefined,
-  unstyled: process.env.TAMAGUI_HEADLESS === '1',
 })

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Paragraph, Progress, Slider, Theme, XStack, YStack } from 'tamagui'
+import { Paragraph, Progress, Slider, Theme, XStack, YStack } from 'tamagui'
+import { Button } from './Button'
 import { Play, RotateCcw } from '@tamagui/lucide-icons-2'
 
 export function ProgressDemo() {
@@ -57,12 +58,12 @@ export function ProgressDemo() {
         </Slider> */}
 
         <Button
-          size="$3"
+          size="medium"
           icon={Play}
           onPress={() => setProgress((prev) => (prev + 20) % 100)}
         />
         <Button
-          size="$3"
+          size="medium"
           icon={RotateCcw}
           onPress={() => {
             setKey(Math.random())

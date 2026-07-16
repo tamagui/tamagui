@@ -1,11 +1,7 @@
-import { ContextMenu } from '@tamagui/context-menu'
 import { Calendar, Check, ChevronRight } from '@tamagui/lucide-icons-2'
 import React from 'react'
 import { Text, View, YStack } from 'tamagui'
-
-/**
- * Note: you'll want to use createMenu() to customize further.
- */
+import { ContextMenu } from './MenuSkins'
 
 export function ContextMenuDemo() {
   const [bookmarksChecked, setBookmarksChecked] = React.useState(true)
@@ -41,7 +37,6 @@ export function ContextMenuDemo() {
           transformOrigin="left top"
           enterStyle={{ scale: 0.9, opacity: 0, y: -5 }}
           exitStyle={{ scale: 0.95, opacity: 0, y: -3 }}
-          elevation="$3"
           transition="100ms"
         >
           <ContextMenu.Arrow size="$4" borderWidth={1} borderColor="$borderColor" />
@@ -116,7 +111,6 @@ export function ContextMenuDemo() {
                 exitStyle={{ scale: 0.95, opacity: 0, x: -3 }}
                 transition="100ms"
                 transformOrigin="left top"
-                elevation="$3"
                 minW={160}
                 bg="$background"
                 p="$1.5"

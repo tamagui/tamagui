@@ -1,4 +1,5 @@
 import {
+  getConfig,
   getTokenValue,
   getVariable,
   isWeb,
@@ -7,12 +8,15 @@ import {
   type ResolveVariableAs,
 } from '@tamagui/core'
 import { getFontSize } from '@tamagui/font-size'
-import { SizableContext } from '@tamagui/sizable-context'
+import { SizeContext } from '@tamagui/size'
+import {
+  classifyCandidate,
+  decodeArbitrary,
+  type GrammarConfigView,
+} from '@tamagui/style-grammar'
 
 import type { FC } from 'react'
 import type { IconProps } from './IconProps'
-
-export { SizableContext }
 
 type Options = {
   noClass?: boolean
@@ -20,6 +24,64 @@ type Options = {
   defaultStrokeWidth?: number
   fallbackColor?: string
   resolveValues?: ResolveVariableAs
+}
+
+// styleMode: an icon's color can arrive as a color-* class because the converter turns the
+// color PROP into a class. icons aren't
+// createComponent components, so the styleMode className→prop pass never runs on them —
+// reconstruct color here from the icon's own className. `size-*` is standard Tailwind
+// width+height and must never be reinterpreted as Tamagui's component size variant. cheap early-outs first: a
+// normal icon (no className) or a non-styleMode app pays zero cost.
+export function reconstructIconStyleModeProps(props: IconProps, theme: any): IconProps {
+  const cn = (props as any).className
+  if (typeof cn !== 'string' || cn === '') return props
+  const config = getConfig()
+  const styleMode = config.settings?.styleMode
+  if (styleMode !== 'tailwind' && styleMode !== 'tamagui-and-tailwind') return props
+  if (!cn.includes('color-')) return props
+
+  const colorNames = new Set<string>()
+  for (const key in config.tokensParsed?.color) {
+    colorNames.add(key[0] === '$' ? key.slice(1) : key)
+  }
+  for (const key in theme) colorNames.add(key[0] === '$' ? key.slice(1) : key)
+  const grammarConfig: GrammarConfigView = {
+    shorthands: config.shorthands,
+    tokenNames: { color: colorNames },
+  }
+
+  let color: any
+  const rest: string[] = []
+  for (const cls of cn.split(/\s+/)) {
+    if (!cls) continue
+    const classification = classifyCandidate(cls, grammarConfig)
+    const parsed = classification.kind === 'tamagui' ? classification.parsed : null
+    if (
+      parsed?.kind === 'dynamic' &&
+      parsed.entry?.prop === 'color' &&
+      parsed.modifiers.length === 0 &&
+      parsed.rawValue
+    ) {
+      color =
+        parsed.valueKind === 'arbitrary'
+          ? decodeArbitrary(parsed.rawValue.slice(1, -1))
+          : `$${parsed.rawValue}`
+      continue
+    }
+    rest.push(cls)
+  }
+  if (color === undefined) return props
+
+  const next: any = {}
+  for (const key in props) {
+    if (key === 'className') {
+      next.color = color
+      next.className = rest.length ? rest.join(' ') : undefined
+    } else {
+      next[key] = (props as any)[key]
+    }
+  }
+  return next
 }
 
 export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
@@ -31,9 +93,12 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
     ...optsIn,
   }
 
-  const IconWrapper = (propsIn: IconProps) => {
-    const styledContext = SizableContext.useStyledContext()
+  const IconWrapper = (propsInRaw: IconProps) => {
+    const styledContext = SizeContext.useStyledContext()
     const theme = useTheme()
+
+    // styleMode: reconstruct color/size from the icon's className (cheap no-op otherwise)
+    const propsIn = reconstructIconStyleModeProps(propsInRaw, theme)
 
     const {
       size: sizeProp,
@@ -72,7 +137,7 @@ export function themed(Component: FC<IconProps>, optsIn: Options = {}) {
 
     // v3: icon sizes resolve via the current font's size scale (font.size[token]),
     // so icons visually align with text at each size. raw numbers stay literal.
-    // context size (SizableContext, e.g. from Button/ListItem) resolves the same way.
+    // context size (for example from Button/ListItem) resolves the same way.
     const size =
       typeof sizeProp === 'number'
         ? sizeProp

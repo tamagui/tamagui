@@ -1,6 +1,6 @@
 /**
  * Test case: Tabs onInteraction fires with layout on native
- * Verifies that createTabs TabsTrigger reports layout measurements
+ * Verifies that the public Tabs trigger reports layout measurements
  * via onInteraction when a tab is selected.
  */
 

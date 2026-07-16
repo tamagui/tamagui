@@ -1,15 +1,7 @@
 import { Menu } from '@tamagui/menu'
 import { memo, useRef } from 'react'
-import {
-  Button,
-  Paragraph,
-  Popover,
-  SizableText,
-  Text,
-  View,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Button } from '../components/Button'
+import { Paragraph, Popover, SizableText, Text, View, XStack, YStack } from 'tamagui'
 
 // tracks render count — must be memoized to isolate from parent re-renders
 const RenderCountingPopoverTrigger = memo(function RenderCountingPopoverTrigger({
@@ -94,7 +86,7 @@ export function PopoverAndMenuMultiTriggerCase() {
             <Popover.Arrow scope="shared-pop" />
             <Paragraph data-testid="pop-content-text">Shared popover</Paragraph>
             <Popover.Close scope="shared-pop" asChild>
-              <Button data-testid="pop-close" size="$2" mt="$2">
+              <Button data-testid="pop-close" size="small" mt="$2">
                 Close
               </Button>
             </Popover.Close>
@@ -121,7 +113,7 @@ export function PopoverAndMenuMultiTriggerCase() {
               minWidth={160}
               borderWidth={1}
               borderColor="$borderColor"
-              elevation="$3"
+              boxShadow="0 4px 12px $shadowColor"
             >
               <Menu.Item data-testid="menu-item-a" key="a" textValue="Alpha">
                 <Menu.ItemTitle>Alpha</Menu.ItemTitle>

@@ -34,7 +34,7 @@ export function InputAutoFocusAfterMenuCase() {
             minWidth={200}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
           >
             <Menu.Item
               data-testid="menu-item-show-input"
@@ -77,7 +77,7 @@ export function InputAutoFocusAfterMenuCase() {
             minWidth={200}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
             onCloseAutoFocus={(event) => {
               event.preventDefault()
               // manually focus a custom target instead of the trigger

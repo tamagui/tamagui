@@ -5,7 +5,16 @@ import { Select as TamaguiSelect, YStack, useProps, withStaticProperties } from 
 
 export const SelectItem = ({ children, index, ...props }: SelectItemProps) => {
   return (
-    <TamaguiSelect.Item index={index + 1} borderColor="transparent" {...props}>
+    <TamaguiSelect.Item
+      index={index + 1}
+      minHeight={36}
+      paddingHorizontal="$3"
+      borderRadius="$3"
+      borderColor="transparent"
+      hoverStyle={{ backgroundColor: '$backgroundHover' }}
+      focusStyle={{ backgroundColor: '$backgroundFocus' }}
+      {...props}
+    >
       <TamaguiSelect.ItemText>{children}</TamaguiSelect.ItemText>
     </TamaguiSelect.Item>
   )
@@ -28,7 +37,6 @@ const SelectComponent = (
     children,
     onActiveChange,
     renderValue,
-    variant,
     ...selectTriggerProps
   } = useProps(propsIn)
   const selectProps = {
@@ -46,8 +54,20 @@ const SelectComponent = (
   } as SelectProps
   return (
     <TamaguiSelect {...selectProps} zIndex={1_000_000}>
-      <TamaguiSelect.Trigger iconAfter={ChevronDown} {...selectTriggerProps}>
+      <TamaguiSelect.Trigger
+        height={36}
+        paddingHorizontal="$3"
+        gap="$2"
+        backgroundColor="$background"
+        borderWidth={1}
+        borderColor="$borderColor"
+        borderRadius="$3"
+        {...selectTriggerProps}
+      >
         <TamaguiSelect.Value placeholder={placeholder} />
+        <TamaguiSelect.Icon marginLeft="auto">
+          <ChevronDown size={16} />
+        </TamaguiSelect.Icon>
       </TamaguiSelect.Trigger>
 
       <TamaguiSelect.Content>
@@ -86,6 +106,9 @@ const SelectComponent = (
           className="blur-medium"
           borderWidth={1}
           borderColor="$borderColor"
+          borderRadius="$4"
+          padding="$1"
+          boxShadow="0 12px 28px rgba(0, 0, 0, 0.18)"
         >
           {children}
         </TamaguiSelect.Viewport>

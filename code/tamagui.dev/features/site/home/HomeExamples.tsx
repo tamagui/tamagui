@@ -1,7 +1,8 @@
 import { ThemeTint, useTint } from '@tamagui/logo'
 import { FastForward } from '@tamagui/lucide-icons-2'
 import { memo, useState } from 'react'
-import { Button, Heading, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
+import { Heading, Paragraph, ScrollView, XGroup, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { ContainerLarge } from '~/components/Containers'
 import { CodeDemoPreParsed } from './CodeDemoPreParsed'
@@ -73,11 +74,15 @@ export const HomeExamples = memo(
                       aria-label="See example"
                       onPress={() => setActiveIndex(i)}
                       theme={i === activeIndex ? 'accent' : null}
-                      chromeless={i !== activeIndex}
+                      variant={i !== activeIndex ? 'quiet' : undefined}
                       rounded={0}
-                      size="$3"
+                      size="medium"
                     >
-                      <Button.Text fontFamily="$silkscreen" size="$3" fontWeight="600">
+                      <Button.Text
+                        fontFamily="$silkscreen"
+                        size="medium"
+                        fontWeight="600"
+                      >
                         {example.name}
                       </Button.Text>
                     </Button>
@@ -202,10 +207,10 @@ const CodeExamples = memo(({ examples = [], title }: any) => {
                     aria-label="See example"
                     onPress={() => setActiveIndex(i)}
                     theme={i === activeIndex ? (tint as any) : 'alt1'}
-                    size="$2"
+                    size="small"
                     rounded={0}
                   >
-                    <Button.Text size="$2">{example.name}</Button.Text>
+                    <Button.Text size="small">{example.name}</Button.Text>
                   </Button>
                 </XGroup.Item>
               ))}

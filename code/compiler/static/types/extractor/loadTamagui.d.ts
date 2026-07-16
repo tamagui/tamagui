@@ -1,6 +1,22 @@
 import type { CLIResolvedOptions, CLIUserOptions, TamaguiOptions } from '@tamagui/types';
 import { type TamaguiProjectInfo } from './bundleConfig';
 export declare function loadTamagui(propsIn: Partial<TamaguiOptions>): Promise<TamaguiProjectInfo | null>;
+export type EvaluatedTamaguiModule = {
+    moduleName: string;
+    module: Record<string, unknown>;
+};
+export type EvaluatedTamaguiProject = {
+    config: Record<string, unknown>;
+    components: EvaluatedTamaguiModule[];
+};
+/**
+ * Load a Tamagui project from modules evaluated by the host bundler.
+ *
+ * Bundler adapters with a module runner use this boundary so aliases, package
+ * conditions, and user plugins are identical between application and compiler
+ * evaluation. Adapters without a module runner continue to use loadTamagui().
+ */
+export declare function loadTamaguiFromModules(propsIn: Partial<TamaguiOptions>, evaluated: EvaluatedTamaguiProject): Promise<TamaguiProjectInfo>;
 export declare const generateThemesAndLog: (options: TamaguiOptions, force?: boolean) => Promise<void>;
 /**
  * Load tamagui.build.ts config using esbuild-wasm transform

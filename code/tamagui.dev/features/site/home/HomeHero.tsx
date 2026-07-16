@@ -1,7 +1,6 @@
 import { ThemeTintAlt } from '@tamagui/logo'
 import { memo } from 'react'
 import {
-  Button,
   H1,
   Paragraph,
   SizableText,
@@ -14,6 +13,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { ContainerLarge } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DiscordIcon } from '~/features/icons/DiscordIcon'
@@ -210,14 +210,12 @@ const HeroContents = memo(function HeroContents() {
           <Link asChild href="/docs/intro/introduction">
             <Button
               aria-label="Get started (docs)"
-              size="$5"
+              size="large"
               rounded={1000}
               variant="outlined"
               mx="$2"
-              elevation="$4"
-              pressStyle={{
-                elevation: '$0',
-              }}
+              boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
+              pressStyle={{ boxShadow: 'none' }}
             >
               <Button.Text fontFamily="$silkscreen" fontSize="$6">
                 Start

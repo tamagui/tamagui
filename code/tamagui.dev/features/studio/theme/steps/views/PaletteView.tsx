@@ -15,7 +15,6 @@ import { Store, getStore, useStore } from '@tamagui/use-store'
 import { parseToHsla } from 'color2k'
 import { memo } from 'react'
 import {
-  Button,
   SizableText,
   Theme,
   TooltipGroup,
@@ -24,6 +23,7 @@ import {
   YStack,
   useThemeName,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import type { HSLA } from '~/features/studio/colors/ColorPicker'
 import { ColorPickerContents } from '~/features/studio/colors/ColorPicker'
 import { useDoublePress } from '~/features/studio/hooks/useDoublePress'
@@ -311,8 +311,8 @@ export const PaletteView = memo((props: Props) => {
               labelBottom={
                 <XStack width={50} overflow="hidden" items="center" justify="center">
                   <Button
-                    chromeless
-                    size="$2"
+                    variant="quiet"
+                    size="small"
                     scaleIcon={1.4}
                     circular
                     icon={anchor ? <Anchor /> : <ArrowLeftRight />}
@@ -324,7 +324,7 @@ export const PaletteView = memo((props: Props) => {
               }
             />
 
-            {/* {!anchor && <DataItem top="" bottom={<Button size="$2">Edit</Button>} />} */}
+            {/* {!anchor && <DataItem top="" bottom={<Button size="small">Edit</Button>} />} */}
           </XStack>
         </YStack>
       </XLabeledItem>
@@ -375,7 +375,11 @@ const SyncButtons = memo(
         <Theme name={anchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to last anchor`}>
             <Button
-              size={16}
+              size="small"
+              width={16}
+              height={16}
+              minWidth={16}
+              paddingHorizontal={0}
               scaleIcon={1.4}
               circular
               icon={ArrowLeft}
@@ -407,7 +411,11 @@ const SyncButtons = memo(
         <Theme name={anchor?.[anchorKey].sync ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} light and dark`}>
             <Button
-              size={16}
+              size="small"
+              width={16}
+              height={16}
+              minWidth={16}
+              paddingHorizontal={0}
               scaleIcon={1.4}
               circular
               icon={ArrowUpDown}
@@ -433,7 +441,11 @@ const SyncButtons = memo(
         <Theme name={nextAnchor?.[anchorKey].syncLeft ? 'accent' : null}>
           <TooltipSimple label={`Sync ${anchorKey} to next anchor`}>
             <Button
-              size={16}
+              size="small"
+              width={16}
+              height={16}
+              minWidth={16}
+              paddingHorizontal={0}
               scaleIcon={1.4}
               circular
               icon={ArrowRight}

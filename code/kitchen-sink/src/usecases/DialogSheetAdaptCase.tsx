@@ -149,7 +149,6 @@ const DialogOverlay = styled(Dialog.Overlay, {
 })
 
 const DialogContent = styled(Dialog.Content, {
-  unstyled: true,
   z: 1000000,
   transition: '200ms',
   bg: 'transparent',

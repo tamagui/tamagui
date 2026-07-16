@@ -3,6 +3,9 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
+      "@tamagui/compiler-core": [
+        "code/compiler/compiler-core/src/index.ts"
+      ],
       "tamagui": [
         "code/ui/tamagui"
       ],
@@ -64,7 +67,7 @@
   },
   "references": [
     {
-      "path": "code/compiler/babel-plugin"
+      "path": "code/compiler/compiler-core"
     },
     {
       "path": "code/compiler/loader"
@@ -196,6 +199,9 @@
       "path": "code/core/helpers"
     },
     {
+      "path": "code/core/size"
+    },
+    {
       "path": "code/core/normalize-css-color"
     },
     {
@@ -212,6 +218,9 @@
     },
     {
       "path": "code/core/shorthands"
+    },
+    {
+      "path": "code/core/style-grammar"
     },
     {
       "path": "code/core/simple-hash"

@@ -15,7 +15,6 @@
   "types": "./types/index.d.ts",
   "exports": {
     "./package.json": "./package.json",
-    "./reset.css": "./reset.css",
     ".": {
       "types": "./types/index.d.ts",
       "browser": "./dist/esm/index.mjs",

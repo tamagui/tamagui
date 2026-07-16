@@ -5,7 +5,6 @@ import { useRef, useState } from 'react'
 import type { ScrollViewProps, XStackProps } from 'tamagui'
 import {
   AnimatePresence,
-  Button,
   Paragraph,
   Separator,
   View,
@@ -14,6 +13,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 type PanelProps = XStackProps & {
   title?: React.ReactNode
@@ -92,17 +92,17 @@ export const StudioNotice = ({ children, steps, ...props }: PanelProps) => {
             <Button
               aria-label="Carousel left"
               icon={ChevronLeft}
-              size="$2"
+              size="small"
               circular
-              elevation="$0.5"
+              boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
               onPress={() => paginate(-1)}
             />
             <Button
               aria-label="Carousel left"
               icon={ChevronRight}
-              size="$2"
+              size="small"
               circular
-              elevation="$0.5"
+              boxShadow="0 2px 5px rgba(0, 0, 0, 0.14)"
               onPress={() => paginate(1)}
             />
           </XStack>

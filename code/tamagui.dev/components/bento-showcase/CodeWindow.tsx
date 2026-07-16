@@ -1,7 +1,6 @@
 import { AlertCircle, Copy, File } from '@tamagui/lucide-icons-2'
 import { lazy, useEffect, useMemo, useState } from 'react'
 import {
-  Button,
   Paragraph,
   ScrollView,
   SizableText,
@@ -11,6 +10,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { useClipboard } from './hooks'
 import { useReplaceTokens } from './hooks/useReplaceTokens'
 import useTokenMapper from './hooks/useTokenMapper'
@@ -110,7 +110,6 @@ export function CodeWindow({ code, isLoading }: Props) {
       p={0}
     >
       <Tabs.List
-        unstyled
         aria-label="Manage your account"
         backgroundColor="$background"
         borderColor="$borderColor"
@@ -167,7 +166,7 @@ function CopyCodeButton({ onCopy, hasCopied, oneTabLayout = false }) {
       t={oneTabLayout ? 16 : 48}
       r={0}
       m="$4"
-      size="$3"
+      size="medium"
       onPress={onCopy}
     >
       <Button.Text>{hasCopied ? 'Copied' : 'Copy'}</Button.Text>

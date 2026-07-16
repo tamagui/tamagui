@@ -19,11 +19,13 @@ The remaining fails split into REAL conversion gaps (worth closing) and INHERENT
 6% tolerance lets `rounded-t-*` / `border-t-*` squeak by at small sizes even though they don't
 truly convert — web (1% tol) exposes them.
 
-v6 config (`code/core/config/src/`): `v6-tailwind-palette.ts` (289 colors, generated from TW v4
-oklch→sRGB hex via `gen-palette-v4.ts`), `v6-tailwind-tokens.ts` (v4 radii), `w/h` shorthands.
-Conversion in `code/core/web/src/helpers/getSplitStyles.tsx`: scale (N×0.25rem), palette/named-radii
-via tokens, named utilities (flex-row/col/wrap/1, hidden, relative/absolute, border), min/max
-prefixes, sizing keywords/fractions, align value-aliases.
+v6 config (`code/core/config/src/`): `v6-tailwind-defaults.generated.ts` (palette plus explicit
+spacing, size, radius, z-index, and typography defaults generated from pinned Tailwind v4),
+`v6-tailwind-tokens.ts` (the runtime export seam), and `w/h` shorthands. The sole generator is
+`code/core/config/scripts/generate-v6-tailwind-defaults.ts`.
+Conversion uses the shared token-first `@tamagui/style-grammar` registry: configured category
+tokens resolve at runtime, while named utilities, sizing conveniences, and aliases are finite
+registry data rather than a parallel numeric scale.
 
 ## Harness gotchas (cost real time — read before running)
 
@@ -91,7 +93,7 @@ one core change; everything else is config data. Deferred for now (native alread
 bun code/comparisons/conformance/run.ts                 # web  → report/index.md
 # native prereqs (see gotcha #1): FRESH metro session + cold-launched Expo Go
 bun code/comparisons/conformance/run-native.ts          # native → report-native/index.md
-bun code/comparisons/conformance/gen-palette-v4.ts      # regenerate palette from TW v4
+cd code/core/config && bun run check:v6-tailwind-defaults # verify pinned defaults byte-for-byte
 ```
 
 ## Done

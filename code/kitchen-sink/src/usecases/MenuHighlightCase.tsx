@@ -1,5 +1,6 @@
-import { Menu } from '@tamagui/menu'
-import { Button, YStack, Text } from 'tamagui'
+import { YStack, Text } from 'tamagui'
+import { Button } from '../components/Button'
+import { Menu } from '../components/Menu'
 
 /**
  * Menu highlight test case
@@ -23,7 +24,7 @@ export function MenuHighlightCase() {
             minWidth={200}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
           >
             <Menu.Item data-testid="menu-item-1" key="item-1" textValue="Item One">
               <Menu.ItemTitle>Item One</Menu.ItemTitle>

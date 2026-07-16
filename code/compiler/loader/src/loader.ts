@@ -1,26 +1,21 @@
-import * as StaticWorker from '@tamagui/static-worker'
+import Static from '@tamagui/static'
 import type { TamaguiOptions } from '@tamagui/types'
+import { createHash } from 'node:crypto'
+import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 import type { LoaderContext } from 'webpack'
 import { requireResolve } from './requireResolve'
 
-const { getPragmaOptions } = StaticWorker
+const { getPragmaOptions } = Static
 
 Error.stackTraceLimit = Number.POSITIVE_INFINITY
 
-// pass loader as path
-let CSS_LOADER_PATH = ''
-
-try {
-  CSS_LOADER_PATH = requireResolve('./css.cjs')
-} catch {
-  try {
-    CSS_LOADER_PATH = requireResolve('./css.esm')
-  } catch {
-    CSS_LOADER_PATH = requireResolve('./css.js')
-  }
-}
+// Resolve through the package export so both ESM and CJS entry points select a
+// real, requireable webpack loader artifact.
+const CSS_LOADER_PATH = requireResolve('tamagui-loader/css')
 
 let index = 0
+const compilerFrontends = new Map<string, InstanceType<typeof Static.CompilerFrontend>>()
 
 process.env.TAMAGUI_TARGET = 'web'
 
@@ -55,44 +50,81 @@ export const loader = async function loader(
       console.warn(source)
     }
 
-    if (shouldDisable) {
+    if (options.disableExtraction || shouldDisable) {
       if (shouldPrintDebug) {
-        console.info('Disabling on file via pragma')
+        console.info(
+          options.disableExtraction
+            ? 'Disabling extraction via loader options'
+            : 'Disabling on file via pragma'
+        )
       }
       return callback(null, source)
     }
 
     const cssPath = `${sourcePath}.${index++}.tamagui.css`
 
-    // Filter out non-serializable properties before passing to worker
-    const serializableOptions = { ...options }
-    for (const key in serializableOptions) {
-      const value = serializableOptions[key as keyof typeof serializableOptions]
-      if (typeof value === 'function') {
-        delete serializableOptions[key as keyof typeof serializableOptions]
-      }
+    const root = this.rootContext || process.cwd()
+    const key = createHash('sha256')
+      .update(root)
+      .update('\0')
+      .update(options.config || 'tamagui.config.ts')
+      .update('\0')
+      .update(JSON.stringify(options.components || []))
+      .digest('hex')
+    let compiler = compilerFrontends.get(key)
+    if (!compiler) {
+      compiler = new Static.CompilerFrontend()
+      compilerFrontends.set(key, compiler)
     }
-
-    const extracted = await StaticWorker.extractToClassNames({
+    const projectInfo = await Static.loadTamagui(options)
+    if (!projectInfo) {
+      throw new Error('Unable to load the Tamagui project for webpack compilation')
+    }
+    const webpackResolve = this.getResolve({})
+    const componentModules = await Promise.all(
+      [...new Set(['@tamagui/core', ...(options.components || [])])].map(
+        async (moduleName) => ({
+          moduleName,
+          id: await webpackResolve(path.dirname(sourcePath), moduleName),
+        })
+      )
+    )
+    const extracted = await compiler.compile({
+      id: sourcePath,
       source,
-      sourcePath,
-      options: serializableOptions,
-      shouldPrintDebug,
+      root,
+      target: 'web',
+      project: {
+        projectInfo,
+        componentModules,
+        generation: key,
+      },
+      resolve: async (specifier, importer) => {
+        try {
+          return { id: await webpackResolve(path.dirname(importer), specifier) }
+        } catch {
+          return null
+        }
+      },
+      load: async (id) => {
+        try {
+          return await readFile(id.split(/[?#]/, 1)[0], 'utf8')
+        } catch {
+          return null
+        }
+      },
     })
 
-    if (!extracted) {
-      return callback(null, source)
-    }
-
     // add import to css
-    if (extracted.styles) {
-      const cssQuery = `cssData=${Buffer.from(extracted.styles).toString('base64')}`
+    let code = extracted.output.code
+    if (extracted.plan.css) {
+      const cssQuery = `cssData=${Buffer.from(extracted.plan.css).toString('base64')}`
       const remReq = this.remainingRequest
       const importPath = `${cssPath}!=!${CSS_LOADER_PATH}?${cssQuery}!${remReq}`
-      extracted.js = `${extracted.js}\n\nrequire(${JSON.stringify(importPath)})`
+      code = `${code}\n\nrequire(${JSON.stringify(importPath)})`
     }
 
-    callback(null, extracted.js, extracted.map)
+    callback(null, code, extracted.output.map as any)
   } catch (err) {
     const message = err instanceof Error ? `${err.message}\n${err.stack}` : String(err)
 
@@ -104,6 +136,6 @@ export const loader = async function loader(
       )
     }
 
-    callback(null, source)
+    callback(err instanceof Error ? err : new Error(message))
   }
 }

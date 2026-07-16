@@ -6,9 +6,11 @@
  * This causes Select items to not trigger onValueChange.
  */
 
-import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
+import { Check } from '@tamagui/lucide-icons-2'
 import React from 'react'
-import { Adapt, Select, Sheet, Text, YStack } from 'tamagui'
+import { Adapt, Text, YStack } from 'tamagui'
+import { Select } from '../components/Select'
+import { Sheet } from '../components/Sheet'
 
 const items = [
   { name: 'Apple' },
@@ -49,12 +51,9 @@ export function SelectAndroidOnPress() {
         renderValue={getItemLabel}
         zIndex={200000}
       >
-        <Select.Trigger
-          testID="select-android-trigger"
-          maxWidth={280}
-          iconAfter={ChevronDown}
-        >
+        <Select.Trigger testID="select-android-trigger" maxWidth={280}>
           <Select.Value placeholder="Select a fruit..." />
+          <Select.Icon />
         </Select.Trigger>
 
         <Adapt when="maxMd" platform="touch">

@@ -16,6 +16,6 @@
     "tamagui": "workspace:*"
   },
   "devDependencies": {
-    "@tamagui/babel-plugin": "workspace:*"
+    "@tamagui/metro-plugin": "workspace:*"
   }
 }

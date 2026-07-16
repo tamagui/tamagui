@@ -131,9 +131,5 @@ export const ThemedListItem = () => (
       </ListItem.Icon>
       <ListItem.Text>Child icon inherits ListItem props</ListItem.Text>
     </ListItem>
-
-    <ListItem id="themed-list-item-unstyled" unstyled>
-      Unstyled text
-    </ListItem>
   </View>
 )

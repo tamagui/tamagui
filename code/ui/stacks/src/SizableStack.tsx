@@ -8,13 +8,6 @@ export const SizableStack = styled(ThemeableStack, {
   name: 'SizableStack',
 
   variants: {
-    unstyled: {
-      true: {
-        elevate: false,
-        bordered: false,
-      },
-    },
-
     circular,
     elevate,
 
@@ -23,9 +16,8 @@ export const SizableStack = styled(ThemeableStack, {
     },
 
     size: {
-      '...size': (val, extras) => {
-        return getButtonSized(val, extras)
-      },
+      true: getButtonSized,
+      Size: getButtonSized,
     },
   } as const,
 })

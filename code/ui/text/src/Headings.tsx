@@ -17,101 +17,35 @@ export type HeadingProps = GetProps<typeof Heading>
 export const H1 = styled(Heading, {
   name: 'H1',
   render: 'h1',
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$10',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-  },
+  size: '$10',
 })
 
 export const H2 = styled(Heading, {
   name: 'H2',
   render: 'h2',
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$9',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-  },
+  size: '$9',
 })
 
 export const H3 = styled(Heading, {
   name: 'H3',
   render: 'h3',
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$8',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-  },
+  size: '$8',
 })
 
 export const H4 = styled(Heading, {
   name: 'H4',
   render: 'h4',
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$7',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-  },
+  size: '$7',
 })
 
 export const H5 = styled(Heading, {
   name: 'H5',
   render: 'h5',
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$6',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-  },
+  size: '$6',
 })
 
 export const H6 = styled(Heading, {
   name: 'H6',
   render: 'h6',
-
-  variants: {
-    unstyled: {
-      false: {
-        size: '$5',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-  },
+  size: '$5',
 })

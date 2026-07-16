@@ -2,7 +2,6 @@ import { ThemeTintAlt } from '@tamagui/logo'
 import { Check, Copy, ExternalLink } from '@tamagui/lucide-icons-2'
 import { Suspense, lazy } from 'react'
 import {
-  Button,
   Paragraph,
   SizableText,
   Span,
@@ -12,6 +11,7 @@ import {
   YStack,
   styled,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { ErrorBoundary } from '~/components/ErrorBoundary'
 import { ButtonLink, Link } from '~/components/Link'
@@ -185,7 +185,7 @@ export function TakeoutHeroNew({
           <Link href="https://takeout.tamagui.dev/docs/introduction" target="_blank">
             <ThemeTintAlt>
               <Button
-                size="$4"
+                size="medium"
                 bg="$color5"
                 borderWidth={0.5}
                 borderColor="$color7"
@@ -201,7 +201,7 @@ export function TakeoutHeroNew({
           </Link>
 
           <Link href="https://takeout.tamagui.dev" target="_blank">
-            <Button size="$4" theme="accent">
+            <Button size="medium" theme="accent">
               <Button.Text fontFamily="$mono">Demo (web)</Button.Text>
             </Button>
           </Link>

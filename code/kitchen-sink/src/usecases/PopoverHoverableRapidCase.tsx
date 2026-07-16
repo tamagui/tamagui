@@ -67,7 +67,6 @@ export function PopoverHoverableRapidCase() {
         <Popover.Content
           id="rapid-content"
           scope="rapid"
-          unstyled
           disableFocusScope
           transition="100ms"
           animateOnly={['transform', 'opacity']}

@@ -1,12 +1,6 @@
 import type { GetProps } from '@tamagui/core';
 export declare const themeableVariantStyles: {
     readonly outlined: {
-        backgroundColor?: undefined;
-        borderWidth?: undefined;
-        borderColor?: undefined;
-        hoverStyle?: undefined;
-        pressStyle?: undefined;
-    } | {
         backgroundColor: string;
         borderWidth: number;
         borderColor: string;
@@ -95,13 +89,45 @@ export declare const themeableVariants: {
         };
     };
 };
-export declare const ThemeableStack: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    elevation?: number | import("@tamagui/core").SizeTokens | undefined;
+export declare const ThemeableStack: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "elevate" | "bordered" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    elevation?: number | import("@tamagui/core").Size | undefined;
     transparent?: boolean | undefined;
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-}, import("@tamagui/core").StaticConfigPublic>;
+} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>> & import("@tamagui/core").WithPseudoProps<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
+    elevation?: number | import("@tamagui/core").Size | undefined;
+    transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> & import("@tamagui/core").WithMediaProps<import("@tamagui/core").WithThemeShorthandsAndPseudos<import("@tamagui/core").StackStyleBase, {
+    elevation?: number | import("@tamagui/core").Size | undefined;
+    transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+}>> & {
+    ref?: import("react").Ref<import("@tamagui/core").TamaguiElement> | undefined;
+}> & import("@tamagui/core").StaticComponentObject<import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    elevation?: number | import("@tamagui/core").Size | undefined;
+    transparent?: boolean | undefined;
+    circular?: boolean | undefined;
+    elevate?: boolean | undefined;
+    bordered?: boolean | undefined;
+    chromeless?: boolean | "all" | undefined;
+}, import("@tamagui/core").StaticConfigPublic> & Omit<import("@tamagui/core").StaticConfigPublic, "staticConfig"> & {
+    __tama: [import("@tamagui/core").TamaDefer, import("@tamagui/core").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        elevation?: number | import("@tamagui/core").Size | undefined;
+        transparent?: boolean | undefined;
+        circular?: boolean | undefined;
+        elevate?: boolean | undefined;
+        bordered?: boolean | undefined;
+        chromeless?: boolean | "all" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic];
+};
 export type ThemeableStackProps = GetProps<typeof ThemeableStack>;
 //# sourceMappingURL=ThemeableStack.d.ts.map

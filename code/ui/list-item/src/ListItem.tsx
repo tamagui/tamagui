@@ -4,12 +4,18 @@ import { withStaticProperties } from '@tamagui/helpers'
 import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
 import { themeableVariantStyles, YStack } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
-import type { ColorTokens, FontSizeTokens, GetProps, SizeTokens } from '@tamagui/web'
+import type {
+  ColorTokens,
+  FontSizeTokens,
+  GetProps,
+  SizeTokens,
+  VariantSpreadExtras,
+} from '@tamagui/web'
 import {
   createStyledContext,
   createStyledHOC,
   getVariableValue,
-  resolveDefaultSizeToken,
+  resolveDefaultToken,
   styled,
   useProps,
   View,
@@ -44,54 +50,63 @@ const context = createStyledContext<{
   color: undefined,
 })
 
+const listItemSizeVariant = (
+  val: SizeTokens | true,
+  { tokens }: VariantSpreadExtras<any>
+) => {
+  const sizeToken = resolveDefaultToken(val, 'size')
+  const spaceToken = resolveDefaultToken(val, 'space')
+  const sizeVal = getVariableValue(tokens.size[sizeToken]) as number
+  return {
+    minHeight: tokens.size[sizeToken],
+    paddingHorizontal: tokens.space[spaceToken],
+    paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
+    gap: getThemedIconSize(sizeToken, 0.4),
+  }
+}
+
+const listItemSubtitleSizeVariant = (
+  val: SizeTokens | true,
+  extras: VariantSpreadExtras<any>
+) => {
+  const fontSizeToken = resolveDefaultToken(val, 'fontSize')
+  const oneSmaller = oneSizeTokenSmaller(fontSizeToken)
+  return getFontSized(oneSmaller as FontSizeTokens, extras as any)
+}
+
 const ListItemFrame = styled(View, {
   context,
   name: NAME,
   render: 'li',
   role: 'listitem',
+  size: true,
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  flexWrap: 'nowrap',
+  borderColor: '$borderColor',
+  width: '100%',
+  maxWidth: '100%',
+  overflow: 'hidden',
+  flexDirection: 'row',
+  backgroundColor: '$background',
+  cursor: 'default',
+  hoverStyle: {
+    backgroundColor: '$backgroundHover',
+    borderColor: '$borderColorHover',
+  },
+  pressStyle: {
+    backgroundColor: '$backgroundPress',
+    borderColor: '$borderColorPress',
+  },
 
   variants: {
-    unstyled: {
-      false: {
-        size: true,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexWrap: 'nowrap',
-        borderColor: '$borderColor',
-        width: '100%',
-        maxWidth: '100%',
-        overflow: 'hidden',
-        flexDirection: 'row',
-        backgroundColor: '$background',
-        cursor: 'default',
-
-        hoverStyle: {
-          backgroundColor: '$backgroundHover',
-          borderColor: '$borderColorHover',
-        },
-
-        pressStyle: {
-          backgroundColor: '$backgroundPress',
-          borderColor: '$borderColorPress',
-        },
-      },
-    },
-
     variant: {
       outlined: themeableVariantStyles.outlined,
     },
 
     size: {
-      '...size': (val: SizeTokens, { tokens }) => {
-        const sizeToken = resolveDefaultSizeToken(val)
-        const sizeVal = getVariableValue(tokens.size[sizeToken]) as number
-        return {
-          minHeight: tokens.size[sizeToken],
-          paddingHorizontal: tokens.space[sizeToken],
-          paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
-          gap: getThemedIconSize(resolveDefaultSizeToken(val), 0.4),
-        }
-      },
+      true: listItemSizeVariant,
+      Size: listItemSizeVariant,
     },
 
     active: {
@@ -109,71 +124,36 @@ const ListItemFrame = styled(View, {
       },
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 const ListItemText = styled(SizableText, {
   context,
   name: 'ListItemText',
-
-  variants: {
-    unstyled: {
-      false: {
-        color: '$color',
-        size: true,
-        flexGrow: 1,
-        flexShrink: 1,
-        ellipsis: true,
-        cursor: 'inherit',
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  color: '$color',
+  size: true,
+  flexGrow: 1,
+  flexShrink: 1,
+  ellipsis: true,
+  cursor: 'inherit',
 })
 
 const ListItemSubtitle = styled(ListItemText, {
   name: 'ListItemSubtitle',
   context,
+  opacity: 0.6,
+  maxWidth: '100%',
+  color: '$color',
   variants: {
-    unstyled: {
-      false: {
-        opacity: 0.6,
-        maxWidth: '100%',
-        color: '$color',
-      },
-    },
-
     size: {
-      '...size': (val, extras) => {
-        const oneSmaller = oneSizeTokenSmaller(val)
-        const fontStyle = getFontSized(oneSmaller as FontSizeTokens, extras as any)
-        return fontStyle
-      },
+      true: listItemSubtitleSizeVariant,
+      Size: listItemSubtitleSizeVariant,
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 const ListItemTitle = styled(ListItemText, {
   name: 'ListItemTitle',
   context,
-  variants: {
-    unstyled: {
-      false: {},
-    },
-  } as const,
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 const ListItemIcon = (props: {
@@ -215,7 +195,6 @@ const ListItemComponent = createStyledHOC(ListItemFrame)<ListItemExtraProps>(
       icon,
       iconAfter,
       scaleIcon = 1,
-      unstyled,
       subTitle,
       title,
       iconSize,
@@ -224,11 +203,7 @@ const ListItemComponent = createStyledHOC(ListItemFrame)<ListItemExtraProps>(
     } = processedProps
 
     const styledContext = context.useStyledContext()
-    const isUnstyled = unstyled ?? process.env.TAMAGUI_HEADLESS === '1'
-    const size =
-      rest.size ??
-      propsIn.size ??
-      (isUnstyled ? undefined : (styledContext?.size ?? true))
+    const size = rest.size ?? propsIn.size ?? styledContext?.size ?? true
     const contextColor = color ?? propsIn.color ?? styledContext?.color
     const iconColorProp =
       contextColor === 'unset' || typeof contextColor === 'number'
@@ -243,20 +218,15 @@ const ListItemComponent = createStyledHOC(ListItemFrame)<ListItemExtraProps>(
     const themedIcon = icon ? getThemedIcon(icon) : null
     const themedIconAfter = iconAfter ? getThemedIcon(iconAfter) : null
 
-    const wrappedChildren = wrapChildrenInText(
-      ListItemText,
-      { children },
-      {
-        unstyled: isUnstyled,
-        size,
-      }
-    )
+    const wrappedChildren = wrapChildrenInText(ListItemText, { children }, { size })
 
     const listItemContext = {
       ...styledContext,
       color: contextColor,
-      size,
-      variant: rest.variant ?? propsIn.variant ?? styledContext?.variant,
+      size: size as SizeTokens,
+      variant: (rest.variant ?? propsIn.variant ?? styledContext?.variant) as
+        | ListItemVariant
+        | undefined,
     }
     const frameProps = {
       ...rest,
@@ -266,16 +236,14 @@ const ListItemComponent = createStyledHOC(ListItemFrame)<ListItemExtraProps>(
 
     return (
       <context.Provider {...listItemContext}>
-        <ListItemFrame ref={ref} unstyled={isUnstyled} {...(frameProps as any)}>
+        <ListItemFrame ref={ref} {...(frameProps as any)}>
           <context.Provider {...listItemContext}>
             {themedIcon}
             {title || subTitle ? (
               <YStack flex={1}>
                 {title ? (
                   typeof title === 'string' ? (
-                    <ListItemTitle unstyled={isUnstyled} size={size as any}>
-                      {title}
-                    </ListItemTitle>
+                    <ListItemTitle size={size as any}>{title}</ListItemTitle>
                   ) : (
                     title
                   )
@@ -283,9 +251,7 @@ const ListItemComponent = createStyledHOC(ListItemFrame)<ListItemExtraProps>(
                 {subTitle ? (
                   <>
                     {typeof subTitle === 'string' ? (
-                      <ListItemSubtitle unstyled={isUnstyled} size={size}>
-                        {subTitle}
-                      </ListItemSubtitle>
+                      <ListItemSubtitle size={size}>{subTitle}</ListItemSubtitle>
                     ) : (
                       subTitle
                     )}

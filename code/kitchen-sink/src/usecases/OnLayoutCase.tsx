@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
-import { Button, Text, View, XStack, YStack } from 'tamagui'
+import { Text, View, XStack, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 type LayoutEvent = any
 
@@ -52,23 +53,27 @@ export function OnLayoutCase() {
     <YStack padding="$4" gap="$3">
       {/* controls */}
       <XStack gap="$2" flexWrap="wrap">
-        <Button testID="btn-move" size="$2" onPress={() => setMoved((v) => !v)}>
+        <Button testID="btn-move" size="small" onPress={() => setMoved((v) => !v)}>
           toggle move
         </Button>
-        <Button testID="btn-resize" size="$2" onPress={() => setResized((v) => !v)}>
+        <Button testID="btn-resize" size="small" onPress={() => setResized((v) => !v)}>
           toggle resize
         </Button>
         <Button
           testID="btn-parent-resize"
-          size="$2"
+          size="small"
           onPress={() => setParentResized((v) => !v)}
         >
           toggle parent
         </Button>
-        <Button testID="btn-toggle-mount" size="$2" onPress={() => setMounted((v) => !v)}>
+        <Button
+          testID="btn-toggle-mount"
+          size="small"
+          onPress={() => setMounted((v) => !v)}
+        >
           toggle mount
         </Button>
-        <Button testID="btn-swap" size="$2" onPress={() => setSwapped((v) => !v)}>
+        <Button testID="btn-swap" size="small" onPress={() => setSwapped((v) => !v)}>
           toggle swap
         </Button>
       </XStack>

@@ -1,7 +1,8 @@
 import type { Tokens } from '@tamagui/core'
 import { getConfig } from '@tamagui/core'
 import React from 'react'
-import { Button, H2, H3, H4, Square, XGroup, XStack, YStack } from 'tamagui'
+import { H2, H3, H4, Square, XGroup, XStack, YStack } from 'tamagui'
+import { Button } from './Button'
 
 type Section = 'spaceNegative' | keyof Tokens
 
@@ -34,7 +35,7 @@ export function TokensDemo() {
           return (
             <XGroup.Item key={key}>
               <Button
-                size="$3"
+                size="medium"
                 theme={section === key ? 'accent' : null}
                 onPress={() => setSection(key)}
               >

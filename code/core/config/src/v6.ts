@@ -3,3 +3,5 @@
 
 export * from '@tamagui/themes/v5'
 export * from './v6-base'
+// Resolve the names also exported by the inherited v5 modules to the aligned v6 values.
+export { defaultConfig, fonts, shorthands, tokens } from './v6-base'

@@ -1,7 +1,6 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
 import type { GetProps, TamaguiTextElement } from '@tamagui/core'
-import { createStyledHOC, styled, useIsomorphicLayoutEffect } from '@tamagui/core'
-import { SizableText } from '@tamagui/text'
+import { createStyledHOC, styled, Text, useIsomorphicLayoutEffect } from '@tamagui/core'
 import * as React from 'react'
 
 import { useSelectItemParentContext } from './context'
@@ -14,22 +13,8 @@ import type { SelectScopedProps } from './types'
 
 export const ITEM_TEXT_NAME = 'SelectItemText'
 
-export const SelectItemTextFrame = styled(SizableText, {
+export const SelectItemTextFrame = styled(Text, {
   name: ITEM_TEXT_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        userSelect: 'none',
-        color: '$color',
-        ellipsis: true,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 type SelectItemTextExtraProps = SelectScopedProps<{}>
@@ -53,7 +38,6 @@ export const SelectItemText = createStyledHOC(
   contents.current = (
     <SelectItemTextFrame
       className={className}
-      size={itemParentContext.size as any}
       id={itemContext.textId}
       {...itemTextProps}
       ref={composedRefs}

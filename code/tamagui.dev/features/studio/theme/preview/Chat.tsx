@@ -1,16 +1,7 @@
 import { Info, Send } from '@tamagui/lucide-icons-2'
 import React, { memo, useState } from 'react'
-import {
-  Avatar,
-  Button,
-  Form,
-  H4,
-  Input,
-  Paragraph,
-  ScrollView,
-  XStack,
-  YStack,
-} from 'tamagui'
+import { Avatar, Form, H4, Input, Paragraph, ScrollView, XStack, YStack } from 'tamagui'
+import { Button } from '~/components/Button'
 import { AccentTheme } from '../../components/AccentTheme'
 import { useDemoProps } from '../hooks/useDemoProps'
 
@@ -92,8 +83,8 @@ export const ChatScreen = () => {
           </YStack>
           <Button
             self="center"
-            chromeless
-            size="$5"
+            variant="quiet"
+            size="large"
             scaleIcon={1.4}
             circular
             icon={Info}

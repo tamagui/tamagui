@@ -1,5 +1,6 @@
 import type { SizeTokens } from 'tamagui'
-import { Button, Theme, XStack, YStack } from 'tamagui'
+import { Theme, XStack, YStack } from 'tamagui'
+import { Button } from './Button'
 import { Input, TextArea } from '@tamagui/input'
 
 export function NewInputsDemo() {
@@ -22,7 +23,7 @@ function InputDemo(props: { size: SizeTokens }) {
         size={props.size}
         placeholder={`Size ${props.size}...`}
       />
-      <Button size={props.size}>Go</Button>
+      <Button size={props.size === '$2' ? 'small' : 'medium'}>Go</Button>
     </XStack>
   )
 }

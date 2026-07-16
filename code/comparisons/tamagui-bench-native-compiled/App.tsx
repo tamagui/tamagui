@@ -322,7 +322,7 @@ export function App() {
       const params = Linking.parse(url).queryParams
       caseName = (params?.case as string) ?? null
       // framework override via ?fw=… so the same bundle can report itself as
-      // either "tamagui" (runtime) or "tamagui-compiled" (when babel-plugin has
+      // either "tamagui" (runtime) or "tamagui-compiled" (when the shared compiler has
       // pre-extracted styles). Defaults to "tamagui" for direct use.
       if (params?.fw) framework = String(params.fw)
       profile = params?.profile === '1'

@@ -5,7 +5,7 @@ import { extractForWeb } from './lib/extract'
 
 window['React'] = React
 
-test('theme props get extracted properly', async () => {
+test('theme props with a dynamic sibling bail out transactionally', async () => {
   const output = await extractForWeb(
     `
 import { View } from '@tamagui/core'
@@ -23,7 +23,9 @@ import { View } from '@tamagui/core'
     }
   )
 
-  expect(output?.js).toContain(`<_TamaguiTheme name="green"><div className={`)
+  expect(output?.js).toContain('theme="green"')
+  expect(output?.js).toContain("bg={props.green ? 'red' : 'blue'}")
+  expect(output?.styles).toBe('')
 })
 
 test('theme + media queries + conditionals extract', async () => {
@@ -473,8 +475,7 @@ test('$group- with untilMeasured on the same parent does NOT extract child group
 test('$group- styles on an animated element stay on the runtime path (never extract to CSS)', async () => {
   // Q2 invariant: a static @container class can't drive a JS animation driver's
   // interpolation, so an animated element's $group- style must NOT extract to CSS.
-  // the compiler enforces this via createExtractor's `animation` de-opt (the whole
-  // element drops to runtime), backed by extractToClassNames' animation guard.
+  // the shared compiler enforces this with an all-or-nothing animation bailout.
   const output = await extractForWeb(
     `
     import { View } from '@tamagui/core'
@@ -737,7 +738,7 @@ test('Text with hoverStyle and conditional spread preserves ternary', async () =
   expect(output?.js).toMatchSnapshot()
 })
 
-test('conditional color prop keeps hoverStyle color when flattened', async () => {
+test('conditional color prop keeps hoverStyle on the runtime component', async () => {
   const output = await extractForWeb(
     `
     import { Text } from '@tamagui/core'
@@ -761,15 +762,10 @@ test('conditional color prop keeps hoverStyle color when flattened', async () =>
     }
   )
 
-  expect(output?.styles).toContain('color:var(--color11)')
-  expect(output?.styles).toContain(
-    '._col-0hover-color:hover{color:var(--color) !important;}'
-  )
+  expect(output?.styles).toBe('')
   expect(output?.js).toContain('isActive')
-  expect(output?.js).toContain('!isActive ?')
-  expect(output?.js).toContain('isActive ?')
-  expect(output?.js).toContain('_col-0hover-color _col-color11')
-  expect(output?.js).toContain('_col-0hover-color _col-color')
+  expect(output?.js).toContain("color={isActive ? '$color' : '$color11'}")
+  expect(output?.js).toContain("hoverStyle={{ color: '$color' }}")
 })
 
 // role attribute is passed through during extraction
@@ -820,12 +816,11 @@ test('ternary with mixed theme-token and non-token values preserves all props', 
     }
   )
 
-  // both ternary branches should include fontWeight
-  expect(output?.styles).toContain('font-weight:600')
-  expect(output?.styles).toContain('font-weight:400')
-  // both color values should also be present (as CSS variables for theme tokens)
-  expect(output?.styles).toContain('color:var(--color12')
-  expect(output?.styles).toContain('color:var(--color11')
+  // A candidate with dynamic style values is all-or-nothing. Both expressions stay
+  // on the Tamagui runtime component rather than partially lowering to a DOM tag.
+  expect(output?.styles).toBe('')
+  expect(output?.js).toContain("fontWeight={isActive ? '600' : '400'}")
+  expect(output?.js).toContain("color={isActive ? '$color12' : '$color11'}")
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()
 })

@@ -21,7 +21,11 @@ import { defaultComponentStateMounted } from './defaultComponentState'
 import { getWebEvents, useEvents, wrapWithGestureDetector } from './eventHandling'
 import { getDefaultProps } from './helpers/getDefaultProps'
 import { resolveAnimationDriver } from './helpers/resolveAnimationDriver'
-import { getSplitStyles, useSplitStyles } from './helpers/getSplitStyles'
+import {
+  getSplitStyles,
+  preprocessStyleModeProps,
+  useSplitStyles,
+} from './helpers/getSplitStyles'
 import { log } from './helpers/log'
 import { type GenericProps, mergeComponentProps } from './helpers/mergeProps'
 import { mergeRenderElementProps } from './helpers/mergeRenderElementProps'
@@ -93,6 +97,25 @@ const groupPseudoKeys = [
   'focusVisible',
   'focusWithin',
 ] as const satisfies readonly (keyof PseudoGroupState)[]
+
+function getStyledContextKeys(
+  staticConfig: StaticConfig,
+  styledContextValue: GenericProps | undefined
+) {
+  const propKeys = staticConfig.contextProps || staticConfig.context?.propKeys
+  if (!propKeys) {
+    return styledContextValue
+  }
+
+  const out: GenericProps = {}
+  for (const key of propKeys) {
+    out[key] = true
+  }
+  if (styledContextValue) {
+    Object.assign(out, styledContextValue)
+  }
+  return out
+}
 
 if (process.env.TAMAGUI_TARGET !== 'native' && typeof window !== 'undefined') {
   const cancelPresses = () => {
@@ -348,9 +371,16 @@ export function createComponent<
       styledContextValue,
       propsIn
     )
+    const [baseProps] = mergeComponentProps(defaultProps, styledContextValue, {})
 
     props = nextProps as ViewProps | TextProps
     overriddenContextProps = overrides
+
+    // styleMode single pass (hoisted): tokenize className + flatten props ONCE here, so the
+    // reconstructed enterStyle/exitStyle/size/animation props are in place before the state
+    // machine / variant / animation driver below read them. getSplitStyles then skips its own
+    // preprocess for these (marked) props. No-op with zero cost when styleMode is off.
+    props = preprocessStyleModeProps(props, config) as ViewProps | TextProps
 
     if (process.env.NODE_ENV === 'development' && isClient) {
       React.useEffect(() => {
@@ -612,7 +642,6 @@ export function createComponent<
       disable: disableTheme,
       shallow: props.themeShallow,
       debug: debugProp,
-      unstyled: props.unstyled,
     }
 
     // this is set conditionally if existing in props because we wrap children with
@@ -727,7 +756,9 @@ export function createComponent<
       isExiting,
       isAnimated,
       willBeAnimated,
-      styledContext: styledContextValue,
+      styledContext: getStyledContextKeys(staticConfig, styledContextValue),
+      baseProps,
+      callerProps: propsIn,
     } as const
 
     const themeName = themeState?.name || ''

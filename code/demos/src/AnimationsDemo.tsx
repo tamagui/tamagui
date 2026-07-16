@@ -1,6 +1,7 @@
 import { LogoIcon } from '@tamagui/logo'
 import { Play } from '@tamagui/lucide-icons-2'
-import { Button, isWeb, Square, useControllableState, Image, useEvent } from 'tamagui'
+import { isWeb, Square, useControllableState, Image, useEvent } from 'tamagui'
+import { Button } from './Button'
 
 export function AnimationsDemo(props) {
   const [positionI, setPositionI] = useControllableState({
@@ -43,7 +44,7 @@ export function AnimationsDemo(props) {
         l={20}
         icon={Play}
         theme={props.tint ?? 'surface2'}
-        size="$5"
+        size="large"
         circular
         onPress={onPress}
       />

@@ -13,7 +13,7 @@ exports[`webpack-tests > 1. extracts to a div for simple views, flat transforms 
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _tr-0hover-scale21281 _fd-column _fg-1 _fs-1 _fb-0px _bg-red _bxsh-0px0px10px0946673987 test1"
+          class="is_View _fd-column _fg-1 _fs-1 _fb-0px _bg-red _bxsh-0px0px10px0946673987 _tr-0hover-scale21281 test1"
           rounded="100"
         >
           <span
@@ -47,7 +47,7 @@ exports[`webpack-tests > 2. extracts className for complex views but keeps other
           class="is_View _fd-row _ox-hidden _oy-hidden who"
         />
         <div
-          class="is_View ease-in-out-top _fd-row _pt-2px _pb-2px _bg-fff35 _t--14px"
+          class="is_View _fd-row _bg-fff35 _pt-2px _pb-2px _t--14px ease-in-out-top"
         >
           <span
             class="is_Text _col-color"
@@ -113,7 +113,7 @@ exports[`webpack-tests > 5. spread conditional 1`] = `
           class="is_View _fd-column _ox-hidden _oy-hidden _bg-blue"
         >
           <div
-            class="is_View hello-world _fd-column _ox-hidden _oy-hidden _bg-blue"
+            class="is_View _fd-column _ox-hidden _oy-hidden _bg-blue hello-world"
           />
         </div>
         <div
@@ -203,7 +203,7 @@ exports[`webpack-tests > 7. ternary + data-is 1`] = `
           minw="500"
         >
           <div
-            class="is_View _fd-column _h-10px _w-10px"
+            class="is_View _fd-column _w-10px _h-10px"
           />
         </div>
         <div
@@ -319,7 +319,7 @@ exports[`webpack-tests > 12. ternary multiple on same key 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _fd-column _tr- _o-1"
+          class="is_View _fd-column _o-1 _tr-"
         />
         <div
           style="display: contents;"
@@ -343,7 +343,7 @@ exports[`webpack-tests > 14. extracts pseudo styles and evaluates constants 1`] 
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _bg-0hover-red _bg-0active-blue _fd-column"
+          class="is_View _bg-0active-blue _fd-column _bg-0hover-red"
         />
         <div
           style="display: contents;"
@@ -616,7 +616,7 @@ exports[`webpack-tests > 22. flexWrap with media query conditionals 1`] = `
         class="_dsp_contents  font_body"
       >
         <div
-          class="is_View _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-_sm_nowrap _fwr-wrap _gap-t-space-2 _fd-row"
+          class="is_View _fwr-_sm_nowrap _pt-_sm_t-space-4 _pr-_sm_t-space-4 _pb-_sm_t-space-4 _pl-_sm_t-space-4 _fwr-wrap _fd-row _gap-t-space-2"
         >
           <span
             class="is_Text _col-color"

@@ -147,18 +147,3 @@ test('ListItem re-provides size and color context to child icons', async ({ page
   expect(stroke).not.toBe('none')
   expect(stroke).not.toBe('rgb(0, 0, 0)')
 })
-
-test('ListItem unstyled applies to bare text children', async ({ page }) => {
-  const listItem = page.locator('#themed-list-item-unstyled')
-  const text = listItem.getByText('Unstyled text', { exact: true })
-
-  await expect(listItem).toBeVisible()
-  await expect(text).toBeVisible()
-
-  const listItemStyles = await getStyles(listItem)
-  expect(listItemStyles.backgroundColor).toBe('rgba(0, 0, 0, 0)')
-  expect(listItemStyles.paddingLeft).toBe('0px')
-
-  const textStyles = await getStyles(text)
-  expect(textStyles.textOverflow).not.toBe('ellipsis')
-})

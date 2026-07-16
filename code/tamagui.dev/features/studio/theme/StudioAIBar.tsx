@@ -8,7 +8,6 @@ import { router } from 'one'
 import { memo, useEffect, useLayoutEffect, useOptimistic, useRef, useState } from 'react'
 import useSWR, { mutate } from 'swr'
 import {
-  Button,
   Configuration,
   Paragraph,
   ScrollView,
@@ -19,6 +18,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { authFetch } from '../../api/authFetch'
 import { getAccessToken } from '../../auth/useSupabaseClient'
 import { defaultModel } from '../../api/generateModels'
@@ -251,7 +251,7 @@ export const StudioAIBar = memo(({ initialTheme }: StudioAIBarProps) => {
                     purchaseModal.show = true
                   }
                 }}
-                size="$4"
+                size="medium"
               >
                 {hasAccess ? (active ? 'Refine' : 'Generate') : 'Access'}
               </Button>
@@ -337,7 +337,12 @@ const HistoryButton = ({
 }) => {
   return (
     <XStack group="item" containerType="normal" position="relative">
-      <Button onPress={onPress} size="$3" rounded="$8" theme={active ? 'accent' : null}>
+      <Button
+        onPress={onPress}
+        size="medium"
+        rounded="$8"
+        theme={active ? 'accent' : null}
+      >
         <Button.Icon>{icon}</Button.Icon>
 
         <Button.Text numberOfLines={1} maxW={200} fontFamily="$mono">

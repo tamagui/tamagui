@@ -7,7 +7,9 @@ const compilerFixtures = [
     testFile: 'e2e/CompilerExtraction.test.ts',
     sourceFile: 'src/usecases/CompilerExtraction.tsx',
     nativeFile: 'src/usecases/CompilerExtraction.native.tsx',
-    extraArgs: ['--expect-optimizations', '18'],
+    // calibrated to plan.stats.flattened — the old 18 counted _withStableStyle
+    // wrapper strings, which the plan-based counter replaced
+    extraArgs: ['--expect-optimizations', '8'],
   },
   {
     testFile: 'e2e/CompilerTernaryActive.test.ts',

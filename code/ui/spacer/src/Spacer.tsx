@@ -1,10 +1,7 @@
-import { resolveDefaultSizeToken, styled, View, type SizeTokens } from '@tamagui/web'
+import { resolveDefaultToken, styled, View, type SizeTokens } from '@tamagui/web'
 
 const getSpacerSize = (size: SizeTokens | number | boolean, { tokens }) => {
-  const sizeToken =
-    typeof size === 'boolean' || typeof size === 'string'
-      ? resolveDefaultSizeToken(size)
-      : size
+  const sizeToken = typeof size === 'boolean' ? resolveDefaultToken(size, 'space') : size
   const sizePx = tokens.space[sizeToken as any] ?? sizeToken
   return {
     width: sizePx,
@@ -21,8 +18,9 @@ export const Spacer = styled(View, {
 
   variants: {
     size: {
-      '...size': getSpacerSize,
-      '...': getSpacerSize,
+      true: getSpacerSize,
+      Size: getSpacerSize,
+      any: getSpacerSize,
     },
 
     direction: {

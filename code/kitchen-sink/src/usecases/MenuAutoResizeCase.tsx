@@ -1,5 +1,6 @@
 import { Menu } from '@tamagui/menu'
-import { Button, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu auto-resize test case
@@ -22,7 +23,7 @@ export function MenuAutoResizeCase() {
     >
       <Menu placement="bottom-start">
         <Menu.Trigger asChild>
-          <Button data-testid="menu-trigger" size="$4">
+          <Button data-testid="menu-trigger" size="medium">
             Open Menu
           </Button>
         </Menu.Trigger>
@@ -33,7 +34,7 @@ export function MenuAutoResizeCase() {
             minWidth={200}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
             padding="$2"
           >
             <Menu.ScrollView data-testid="menu-scroll-view">

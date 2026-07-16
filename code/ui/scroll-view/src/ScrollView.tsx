@@ -10,6 +10,7 @@ export const ScrollView = styled(
   },
   {
     acceptsClassName: true,
+    neverFlatten: true,
     accept: {
       contentContainerStyle: 'style',
     } as const,

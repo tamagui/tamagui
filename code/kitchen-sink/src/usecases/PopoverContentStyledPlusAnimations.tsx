@@ -16,8 +16,10 @@ export function PopoverContentStyledPlusAnimations() {
 
 const PopoverStyledContent = styled(Popover.Content, {
   name: 'PopoverContent2',
-  elevate: true,
-  bordered: true,
+  backgroundColor: '$background',
+  borderWidth: 1,
+  borderColor: '$borderColor',
+  boxShadow: '0 4px 12px $shadowColor',
   p: '$3',
   rounded: '$3',
   enterStyle: {

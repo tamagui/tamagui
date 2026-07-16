@@ -1,5 +1,5 @@
 import type { FontSizeTokens, FontTokens, Variable } from '@tamagui/core'
-import { getConfig, isVariable, resolveDefaultSizeToken } from '@tamagui/core'
+import { getConfig, isVariable, resolveDefaultToken } from '@tamagui/core'
 
 type GetFontSizeOpts = {
   relativeSize?: number
@@ -45,7 +45,7 @@ export const getFontSizeToken = (
     font?.size ||
     // fallback to size tokens
     conf.tokensParsed.size
-  const size = resolveDefaultSizeToken(inSize ?? true, conf) as string
+  const size = resolveDefaultToken(inSize ?? true, 'fontSize', conf) as string
 
   const sizeTokens = Object.keys(fontSize)
 

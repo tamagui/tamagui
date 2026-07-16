@@ -7,7 +7,6 @@ import { Link, useParams } from 'one'
 import { startTransition } from 'react'
 import {
   Anchor,
-  Button,
   H1,
   Paragraph,
   SizableText,
@@ -18,6 +17,7 @@ import {
   YStack,
   Theme,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { ContainerBento } from '~/components/Containers'
 import { HeadInfo } from '~/components/HeadInfo'
 import { BentoPageFrame } from '~/features/bento/BentoPageFrame'
@@ -189,7 +189,7 @@ export const DetailHeader = (props: { children: string }) => {
 
               <Button
                 icon={bentoStore.disableTint ? Paintbrush : CircleDashed}
-                size="$3"
+                size="medium"
                 rounded="$6"
                 onPress={() => {
                   startTransition(() => {

@@ -34,9 +34,8 @@ release-staging tree:
    JSX calls, delegates resolution to the host bundler, explains bailouts, and
    works in Vite and Metro. A temporary parity switch may exist on a feature
    branch; no user-facing dual-engine fallback ships.
-7. DOM mode is compile-only: literal DOM tags map to native primitives and
-   literal text is wrapped at compile time. There is no per-render string
-   inspection and no React Strict DOM runtime dependency.
+
+Compile-only DOM support is explicitly out of scope for this v3-beta plan.
 
 ## Locked contracts
 
@@ -65,9 +64,12 @@ Claiming is deterministic:
 - Everything else is passthrough. On web the Tailwind engine sees it; on native
   it is dropped with a deduplicated development warning.
 
-Precedence is also one rule: base styled values, simple variants, and compound
-variants apply in that order; call-site style props override them; call-site
-`className` is last and wins. Attribute order must not change the result.
+Precedence follows existing Tamagui behavior: every contribution participates
+in one forward pass and later output wins per property. Parent styled values are
+encountered before lighter child and call-site values; matched compound variants
+run immediately after their last selector at that authored position. `style` and
+`className` are not privileged tiers. Reordering authored props may therefore
+change the result, including in the Tailwind class pipeline.
 
 The three type modes remain one implementation:
 
@@ -138,8 +140,9 @@ compoundVariants: [
 ```
 
 All matchers must match resolved props/defaults/context. A matcher may be one
-value or a readonly array. Entries apply in array order after simple variants.
-Caller props and caller `className` still win.
+value or a readonly array. Entries apply in array order immediately after the
+last matching selector in the forward pass; any later authored contribution may
+override them.
 
 ### Static class strings in `styled()`
 
@@ -211,22 +214,6 @@ string construction is introduced.
   and writes a content-hash cache read by isolated transform workers.
 - A diagnostics mode reports the exact binding/prop/import that caused bailout.
 
-### DOM mode boundary
-
-- Web literal tags remain literal tags.
-- Native literal tags are rewritten by the compiler to `@tamagui/dom` behavior
-  primitives.
-- Direct literal string/number children of View-backed tags are wrapped at
-  compile time. Dynamic strings and opaque child components are not inspected;
-  invalid native text placement fails exactly as React Native does today.
-- The v1 tag set covers ordinary View-backed structure (`div`, `section`,
-  `main`, `header`, `footer`, `nav`, `ul`, `ol`, `li`), Text-backed tags
-  (`span`, `p`, `h1`-`h6`, `label`, `strong`, `em`, `code`), and the basic
-  interactive/image set (`button`, `a`, `img`, `input`, `textarea`).
-- Structural rewrites for `overflow -> ScrollView`, `select`/`option`, form
-  submission, and broad HTMLElement ref emulation are a later packet, not a
-  hidden requirement of v1.
-
 ## Current baseline and recovery point
 
 - Local `v3-beta` plan baseline: `b5e47829a8`; it is three commits ahead of
@@ -257,7 +244,7 @@ B0 variant engine ─> B1 compound/context/class strings ─> B2 repo migration
 E0 Vite ModuleRunner ─> E1 analyzer decision spike ─> E2 shared IR/graph
                                                  ├─> E3 Vite compiler
                                                  └─> E4 Metro compiler
-                                                      └─> F0 DOM v1
+                                                      └─> E5 remaining adapters/removal
 
 All completed lanes ─> G0 integrated canary ─> G1 release dry run ─> owner publish gate
 ```
@@ -406,8 +393,9 @@ type names. Runtime tests mirror the same matrix.
 inference for both overloads, including `defaultVariants`, invalid variants,
 and a fourth-argument static config. A single integration fixture then
 exercises base object + base class, simple functional/static variants, compound
-matches, context-provided matches, and call-site overrides on
-web/native/extracted web. No attribute order changes precedence.
+matches, context-provided matches, and call-site ordering on
+web/native/extracted web. Results preserve the established parent-to-child,
+single-forward-pass semantics without a separate caller tier.
 
 **Resource class:** medium.
 
@@ -606,6 +594,20 @@ fails, choose `oxc-parser` plus a Tamagui-owned symbol graph. Parser adapters
 target the same ESTree/TS-ESTree interface either way. Record the result in this
 plan and delete the losing spike code.
 
+**Decision (recorded 2026-07-13): yuku.** Evidence in
+`code/compiler/analyzer-spike/evidence/results.json` (Apple M3 Max, Node 24.3,
+`yuku-analyzer@0.6.1` vs `oxc-parser@0.112.0` + owned graph, 1,000-module
+two-branch fixture). All eight binding/re-export/spread/workspace/JSX fixtures
+and the source-map check passed for both candidates, with exact invalidation
+and zero unaffected reparses. yuku through its public API only, no fork. yuku
+won cold link 2.1x (64.7ms vs 136.1ms median), warm p95 (20.6ms vs 25.4ms),
+and memory 2.5x (20.0MiB vs 50.1MiB RSS; the owned graph exceeded the 2x
+memory rule). The owned graph won warm median (1.7ms vs 9.4ms); both sit far
+inside the 50ms warm budget. yuku's one failed gate, warm p95 ≤ 25% of cold
+median (0.318), is an artifact of its faster cold denominator, and it beats
+the alternative on both absolute terms of that ratio. The `oxc-owned` spike
+adapter is deleted; the yuku graph is the E2 starting point.
+
 **Resource class:** light/medium; no full repo build.
 
 ### E2 — shared element IR and project graph
@@ -668,33 +670,6 @@ resolvers. Platform-specific adapters are acceptable; two extractors for the
 same adapter are not. Delete Babel extractor/evaluator dependencies once the
 last supported adapter moves.
 
-### F0 — compile-only DOM v1
-
-**Goal:** author the supported DOM subset once and run it on web/native.
-
-**Owner surfaces:** new `@tamagui/dom` behavior package, compiler IR native
-rewrite, DOM conformance fixtures.
-
-**Implementation:**
-
-1. Encode the locked tag classification and attribute/event map as data shared
-   by compiler tests and runtime behavior primitives.
-2. Leave web tags untouched.
-3. On native, inject imports and rewrite tags; wrap only direct literal text/
-   number children of View-backed tags.
-4. Match React Strict DOM's documented layout defaults and text inheritance
-   semantics where React Native differs, but implement them through Tamagui's
-   own primitives. No RSD dependency and no runtime child inspection.
-5. Warn at compile time for unsupported tags/attributes/nesting when statically
-   knowable. Otherwise bail rather than guess.
-
-**Acceptance:** the same source fixture renders semantic web DOM and native
-View/Text/press/input behavior; direct literal text works; dynamic invalid text
-still fails natively; event/accessibility mappings and layout defaults have
-conformance assertions; no per-render string scan appears in the bundle.
-
-**Resource class:** medium/heavy after E4.
-
 ### G0 — integrated canary
 
 Build one small v6 app that deliberately combines every lane:
@@ -704,8 +679,7 @@ Build one small v6 app that deliberately combines every lane:
   syntax;
 - a copied named-size Button skin and a copied Sheet/Select skin;
 - TS-style + compound + context variants;
-- imported cross-file styled constants compiled through Vite and Metro;
-- a supported DOM-mode subtree.
+- imported cross-file styled constants compiled through Vite and Metro.
 
 Prove web dev/HMR, web production/SSR/hydration, native Metro bundle/runtime,
 typecheck, package exports, and exact style values. This canary is the final
@@ -784,7 +758,7 @@ logical lanes but one heavy machine lane.
 9. **E1/E2:** choose the analyzer and build the shared graph/IR.
 10. **C2/C3** and **E3/E4** proceed on separate owner files, with heavy gates
     serialized.
-11. **C4**, then **F0**, then the integrated **G0/G1** closeout.
+11. **C4**, then **E5**, then the integrated **G0/G1** closeout.
 
 ## Stop conditions
 
@@ -808,7 +782,5 @@ a fallback, compatibility mode, or speculative workaround.
 - `plans/v3-animation-api.md` — public animation hooks, `onTransition`,
   Sheet position exposure and opacity removal (lane H)
 - `plans/compiler-oxc.md` — parser/analyzer and bundler research
-- `plans/dom-mode.md` — DOM mapping semantics and limitations
 - `~/github/chat/src/interface/buttons/` — named-size/user-skin model
 - `~/github/yuku` — analyzer candidate
-- `~/github/react-strict-dom` — semantics reference only

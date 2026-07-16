@@ -150,10 +150,6 @@ describe('Input style props', () => {
   test('accepts size variant', () => {
     expectTypeOf<InputProps>().toHaveProperty('size')
   })
-
-  test('accepts unstyled variant', () => {
-    expectTypeOf<InputProps>().toHaveProperty('unstyled')
-  })
 })
 
 // =============================================================================

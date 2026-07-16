@@ -52,12 +52,9 @@ const TooltipContent = createStyledHOC(PopperContentFrame)<TooltipContentProps>(
       <PopoverContent
         scope={props.scope || TOOLTIP_SCOPE}
         alwaysDisable={ALWAYS_DISABLE_TOOLTIP}
-        {...(!props.unstyled && {
-          backgroundColor: '$background',
-          alignItems: 'center',
-          pointerEvents: 'none',
-          size: true,
-        })}
+        backgroundColor="$background"
+        alignItems="center"
+        pointerEvents="none"
         ref={ref}
         // zIndex from root Tooltip prop flows to portal
         {...(zIndexFromContext !== undefined && { zIndex: zIndexFromContext })}
@@ -91,7 +88,6 @@ const TooltipArrow = createRefComponent<TamaguiElement, PopperArrowProps>(
 export type TooltipProps = ScopedProps<
   PopperProps & {
     open?: boolean
-    unstyled?: boolean
     children?: React.ReactNode
     onOpenChange?: (open: boolean) => void
     focus?: {
@@ -222,7 +218,7 @@ const TooltipComponent = createRefComponent(function Tooltip(
   const onCustomAnchorAdd = React.useCallback(() => setHasCustomAnchor(true), [])
   const onCustomAnchorRemove = React.useCallback(() => setHasCustomAnchor(false), [])
   const contentId = React.useId()
-  const smallerSize = props.unstyled ? null : oneSizeTokenSmaller(true)
+  const smallerSize = oneSizeTokenSmaller(true)
 
   const content = (
     <FloatingOverrideContext.Provider value={floatingContext}>

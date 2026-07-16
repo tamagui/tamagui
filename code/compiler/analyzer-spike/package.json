@@ -1,0 +1,19 @@
+{
+  "name": "@tamagui/analyzer-spike",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "evidence": "bun --expose-gc src/harness/run.ts"
+  },
+  "dependencies": {
+    "@jridgewell/trace-mapping": "0.3.31",
+    "@tamagui/compiler-core": "workspace:*",
+    "magic-string": "0.30.21"
+  },
+  "devDependencies": {
+    "@types/node": "^22.1.0",
+    "typescript": "~5.9.2"
+  }
+}

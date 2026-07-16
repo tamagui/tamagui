@@ -21,7 +21,6 @@ import { useUserScheme } from '@vxrn/color-scheme'
 import { useEffect, useState } from 'react'
 import {
   AnimatePresence,
-  Button,
   Circle,
   H2,
   Image,
@@ -39,6 +38,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { Card3D } from '../../components/Card3D'
 import { SubTitle } from '../../components/SubTitle'
@@ -171,13 +171,13 @@ function ProfileCard() {
           <Card3D.Item translateZ={30}>
             <XStack gap="$2">
               <ThemeTintAlt>
-                <Button size="$2" bg="$color9" flex={1} cursor="pointer">
+                <Button size="small" bg="$color9" flex={1} cursor="pointer">
                   <Button.Text color="white" fontSize={11} fontWeight="600">
                     Message
                   </Button.Text>
                 </Button>
               </ThemeTintAlt>
-              <Button size="$2" flex={1} cursor="pointer">
+              <Button size="small" flex={1} cursor="pointer">
                 <Button.Text fontSize={11} fontWeight="500">
                   Profile
                 </Button.Text>
@@ -251,7 +251,7 @@ function TabsComponent() {
       }}
     >
       <GlassCard p="$1.5" rounded="$5" position="relative">
-        <Tabs.List unstyled flexDirection="row">
+        <Tabs.List flexDirection="row">
           <View
             position="absolute"
             t={0}
@@ -270,7 +270,6 @@ function TabsComponent() {
             const isActive = activeIndex === index
             return (
               <Tabs.Tab
-                unstyled
                 key={tab}
                 value={tab}
                 width={tabWidth}
@@ -327,7 +326,7 @@ function PaginationComponent() {
       <ThemeTintAlt>
         <XStack gap="$3" items="center" rounded="$6" p="$2">
           <Button
-            size="$4"
+            size="medium"
             circular
             icon={ArrowLeft}
             scaleIcon={1.5}
@@ -339,7 +338,7 @@ function PaginationComponent() {
             <IndicatorDot key={idx} isActive={idx === tint.tintIndex} />
           ))}
           <Button
-            size="$4"
+            size="medium"
             circular
             icon={ArrowRight}
             scaleIcon={1.5}
@@ -363,7 +362,7 @@ function InputComponent() {
         placeholder="Search..."
         width={150}
       />
-      <Button theme="surface1" size="$3">
+      <Button theme="surface1" size="medium">
         Go
       </Button>
     </XStack>
@@ -537,7 +536,7 @@ function TooltipBadge() {
   return (
     <Tooltip placement="bottom" offset={12} delay={{ open: 0, close: 150 }}>
       <Tooltip.Trigger asChild>
-        <Button theme="accent" size="$3" cursor="pointer">
+        <Button theme="accent" size="medium" cursor="pointer">
           <Button.Text fontSize={13} color="$color11">
             Hover me
           </Button.Text>
@@ -547,7 +546,7 @@ function TooltipBadge() {
         animatePosition
         transition="quick"
         bg="$background"
-        elevation="$2"
+        boxShadow="0 4px 12px $shadowColor"
         rounded="$4"
         px="$2.5"
         py="$1"
@@ -721,7 +720,7 @@ function DemoMenu() {
           overflow="hidden"
           minW={220}
           p="$1.5"
-          elevation="$4"
+          boxShadow="0 4px 12px $shadowColor"
           enterStyle={{ y: -10, opacity: 0 }}
           exitStyle={{ y: -10, opacity: 0 }}
           transition={['quicker', { opacity: { overshootClamping: true } }]}
@@ -771,7 +770,7 @@ function DemoMenu() {
                 overflow="hidden"
                 minW={180}
                 p="$1.5"
-                elevation="$4"
+                boxShadow="0 4px 12px $shadowColor"
                 enterStyle={{ x: -10, opacity: 0 }}
                 exitStyle={{ x: -10, opacity: 0 }}
                 transition={['quicker', { opacity: { overshootClamping: true } }]}

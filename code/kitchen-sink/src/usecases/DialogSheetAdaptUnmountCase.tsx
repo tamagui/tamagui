@@ -94,7 +94,6 @@ function ThreePunchDialog({
 }
 
 const DialogOverlay = styled(TamaguiDialog.Overlay, {
-  unstyled: true,
   transition: 'quick',
   position: 'absolute',
   inset: 0 as any,
@@ -105,7 +104,6 @@ const DialogOverlay = styled(TamaguiDialog.Overlay, {
 })
 
 const DialogContent = styled(TamaguiDialog.Content, {
-  unstyled: true,
   transition: 'quick',
   zIndex: 1_000_000,
   bg: '$background',

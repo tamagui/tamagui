@@ -7,18 +7,14 @@ import {
   RefreshCw,
   Trash2,
 } from '@tamagui/lucide-icons-2'
-import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button } from 'tamagui'
+import { Button } from './Button'
+import { Menu } from './MenuSkins'
 
 /**
  * Menu Demo using Tamagui Menu component.
  * Automatically uses native menus on iOS/Android, web menus on web.
  * No configuration needed - it just works!
- */
-
-/**
- * Note: you'll want to use createMenu() to customize further.
  */
 
 export function MenuDemo() {
@@ -35,7 +31,7 @@ export function MenuDemo() {
     <>
       <Menu offset={8}>
         <Menu.Trigger asChild>
-          <Button size="$4" icon={Backpack}>
+          <Button size="medium" icon={Backpack}>
             Open
           </Button>
         </Menu.Trigger>
@@ -110,7 +106,7 @@ export function MenuDemo() {
                     boxShadow="0 4px 5px $shadowColor"
                     padding={5}
                   >
-                    <Menu.Label padding={5} color="$color9" size="$3" select="none">
+                    <Menu.Label padding={5} color="$color9" fontSize="$3" select="none">
                       Note settings
                     </Menu.Label>
                     <Menu.Item

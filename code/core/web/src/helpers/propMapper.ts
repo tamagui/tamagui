@@ -1,9 +1,10 @@
 import { isAndroid } from '@tamagui/constants'
 import { tokenCategories } from '@tamagui/helpers'
-import { resolveDefaultSizeToken } from '../config'
+import { resolveDefaultToken } from '../config'
 import { getVariableValue, isVariable } from '../createVariable'
 import type {
   GetStyleState,
+  DefaultTokenCategory,
   PropMapper,
   SplitStyleProps,
   StyleResolver,
@@ -11,6 +12,8 @@ import type {
   Variable,
   VariantSpreadFunction,
 } from '../types'
+import { variantResolverNames } from '../types'
+import { cssColorNames } from '../interfaces/CSSColorNames'
 import { expandStyle } from './expandStyle'
 import {
   getLastFontFamilyToken,
@@ -106,10 +109,11 @@ export const propMapper: PropMapper = (key, value, styleState, disabled, map) =>
   }
 
   if (value != null) {
-    if (value === true && key in defaultSizeTokenKeys) {
+    const defaultTokenCategory = defaultTokenCategories[key]
+    if (value === true && defaultTokenCategory) {
       value = getTokenForKey(
         key,
-        resolveDefaultSizeToken(value, conf),
+        resolveDefaultToken(value, defaultTokenCategory, conf),
         styleProps,
         styleState
       )
@@ -183,10 +187,8 @@ const resolveVariants: StyleResolver = (
   if (!variants) return
 
   const variant = variants[key]
-  if (value === true) {
-    value = resolveVariantSizeValue(variant, value, conf)
-  }
-  let variantValue = getVariantDefinition(variant, value, conf, styleState)
+  const variantMatch = getVariantDefinition(variant, value, conf, styleState)
+  let variantValue = variantMatch?.value
 
   if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
     console.groupCollapsed(`♦️♦️♦️ resolve variant ${key}`)
@@ -217,6 +219,9 @@ const resolveVariants: StyleResolver = (
   if (typeof variantValue === 'function') {
     const fn = variantValue as VariantSpreadFunction<any>
     const extras = getVariantExtras(styleState)
+    if (variantMatch?.resolveDefaultTokenCategory) {
+      value = resolveDefaultToken(value, variantMatch.resolveDefaultTokenCategory, conf)
+    }
     variantValue = fn(value, extras)
 
     if (
@@ -332,7 +337,18 @@ const resolveTokensAndVariants: StyleResolver<object> = (
     if (staticConfig) {
       const contextProps =
         staticConfig.context?.props || staticConfig.parentStaticConfig?.context?.props
-      if (contextProps && subKey in contextProps) {
+      const inheritedContextPropKeys =
+        !staticConfig.context ||
+        staticConfig.context === staticConfig.parentStaticConfig?.context
+          ? staticConfig.parentStaticConfig?.contextProps
+          : undefined
+      const contextPropKeys = staticConfig.contextProps || inheritedContextPropKeys
+      const isContextProp =
+        (contextProps && subKey in contextProps) ||
+        contextPropKeys?.includes(subKey) ||
+        staticConfig.context?.propKeys?.includes(subKey) ||
+        staticConfig.parentStaticConfig?.context?.propKeys?.includes(subKey)
+      if (isContextProp) {
         styleState.overriddenContextProps ||= {}
         styleState.overriddenContextProps[subKey] = val
         // Also track the original token value separately
@@ -395,10 +411,11 @@ const resolveTokensAndVariants: StyleResolver<object> = (
     // boolean token shorthand (borderRadius: true etc) inside variant styles —
     // mirrors the direct-prop gate in map(); without this the raw `true` reaches
     // drivers (rn driver throws constructing Animated.Value(true))
-    if (val === true && subKey in defaultSizeTokenKeys) {
+    const defaultTokenCategory = defaultTokenCategories[subKey]
+    if (val === true && defaultTokenCategory) {
       res[subKey] = getTokenForKey(
         subKey,
-        resolveDefaultSizeToken(val, conf),
+        resolveDefaultToken(val, defaultTokenCategory, conf),
         styleProps,
         styleState
       )
@@ -460,111 +477,402 @@ const resolveTokensAndVariants: StyleResolver<object> = (
   return res
 }
 
-const tokenCats = ['size', 'color', 'radius', 'space', 'zIndex'].map((name) => ({
-  name,
-  spreadName: `...${name}`,
-}))
-
-const defaultSizeTokenKeys: Record<string, boolean> = {
-  ...tokenCategories.size,
-  ...tokenCategories.radius,
-  ...tokenCategories.zIndex,
-  gap: true,
-  rowGap: true,
-  columnGap: true,
-  top: true,
-  right: true,
-  bottom: true,
-  left: true,
-  inset: true,
-  insetBlock: true,
-  insetBlockEnd: true,
-  insetBlockStart: true,
-  insetInline: true,
-  insetInlineEnd: true,
-  insetInlineStart: true,
-  margin: true,
-  marginBlock: true,
-  marginBlockEnd: true,
-  marginBlockStart: true,
-  marginInline: true,
-  marginInlineEnd: true,
-  marginInlineStart: true,
-  marginTop: true,
-  marginRight: true,
-  marginBottom: true,
-  marginEnd: true,
-  marginLeft: true,
-  marginHorizontal: true,
-  marginStart: true,
-  marginVertical: true,
-  padding: true,
-  paddingBlock: true,
-  paddingBlockEnd: true,
-  paddingBlockStart: true,
-  paddingInline: true,
-  paddingInlineEnd: true,
-  paddingInlineStart: true,
-  paddingTop: true,
-  paddingRight: true,
-  paddingBottom: true,
-  paddingEnd: true,
-  paddingLeft: true,
-  paddingHorizontal: true,
-  paddingStart: true,
-  paddingVertical: true,
+function mapDefaultTokenCategory(
+  keys: Record<string, boolean>,
+  category: DefaultTokenCategory
+) {
+  return Object.fromEntries(Object.keys(keys).map((key) => [key, category]))
 }
 
-function resolveVariantSizeValue(variant: any, value: any, conf: TamaguiInternalConfig) {
-  if (!variant || typeof variant === 'function') {
-    return value
-  }
-  if (Object.prototype.hasOwnProperty.call(variant, value)) {
-    return value
-  }
-  if ('...size' in variant || '...space' in variant || '...fontSize' in variant) {
-    return resolveDefaultSizeToken(value, conf)
-  }
-  return value
+const defaultTokenCategories: Record<string, DefaultTokenCategory> = {
+  ...mapDefaultTokenCategory(tokenCategories.size, 'size'),
+  ...mapDefaultTokenCategory(tokenCategories.radius, 'radius'),
+  ...mapDefaultTokenCategory(tokenCategories.zIndex, 'zIndex'),
+  fontSize: 'fontSize',
+  gap: 'space',
+  rowGap: 'space',
+  columnGap: 'space',
+  top: 'space',
+  right: 'space',
+  bottom: 'space',
+  left: 'space',
+  inset: 'space',
+  insetBlock: 'space',
+  insetBlockEnd: 'space',
+  insetBlockStart: 'space',
+  insetInline: 'space',
+  insetInlineEnd: 'space',
+  insetInlineStart: 'space',
+  margin: 'space',
+  marginBlock: 'space',
+  marginBlockEnd: 'space',
+  marginBlockStart: 'space',
+  marginInline: 'space',
+  marginInlineEnd: 'space',
+  marginInlineStart: 'space',
+  marginTop: 'space',
+  marginRight: 'space',
+  marginBottom: 'space',
+  marginEnd: 'space',
+  marginLeft: 'space',
+  marginHorizontal: 'space',
+  marginStart: 'space',
+  marginVertical: 'space',
+  padding: 'space',
+  paddingBlock: 'space',
+  paddingBlockEnd: 'space',
+  paddingBlockStart: 'space',
+  paddingInline: 'space',
+  paddingInlineEnd: 'space',
+  paddingInlineStart: 'space',
+  paddingTop: 'space',
+  paddingRight: 'space',
+  paddingBottom: 'space',
+  paddingEnd: 'space',
+  paddingLeft: 'space',
+  paddingHorizontal: 'space',
+  paddingStart: 'space',
+  paddingVertical: 'space',
 }
 
 // goes through specificity finding best matching variant function
+type VariantDefinitionMatch = {
+  value: any
+  resolveDefaultTokenCategory?: DefaultTokenCategory
+}
+
 function getVariantDefinition(
   variant: any,
   value: any,
   conf: TamaguiInternalConfig,
   { theme }: Partial<GetStyleState>
-) {
+): VariantDefinitionMatch | undefined {
   if (!variant) return
+  if (value === undefined) return
   if (typeof variant === 'function') {
-    return variant
+    return { value: variant }
   }
-  const exact = variant[value]
-  if (exact) {
-    return exact
+  if (Object.prototype.hasOwnProperty.call(variant, value)) {
+    return { value: variant[value] }
   }
-  if (value != null) {
-    const { tokensParsed } = conf
-    for (const { name, spreadName } of tokenCats) {
-      if (spreadName in variant) {
-        // check tokens first
-        if (name in tokensParsed && value in tokensParsed[name]) {
-          return variant[spreadName]
-        }
-        // or check theme (only color lives in theme, others are in tokens)
-        if (name === 'color' && theme && typeof value === 'string' && value[0] === '$') {
-          const themeKey = value.slice(1)
-          if (themeKey in theme) {
-            return variant[spreadName]
-          }
+  for (const { key, parts } of getCompiledVariantResolvers(variant)) {
+    for (const part of parts) {
+      if (matchesVariantResolver(part, value, conf, theme)) {
+        const resolveDefaultTokenCategory =
+          value === true ? defaultTokenCategoryByResolverName[part] : undefined
+        return {
+          value: variant[key],
+          resolveDefaultTokenCategory,
         }
       }
     }
-    const fontSizeVariant = variant['...fontSize']
-    if (fontSizeVariant && conf.fontSizeTokens.has(value)) {
-      return fontSizeVariant
+  }
+
+  return
+}
+
+type VariantResolverName = (typeof variantResolverNames)[number]
+
+const variantResolverNameSet = new Set<string>(variantResolverNames)
+
+const defaultTokenCategoryByResolverName: Partial<
+  Record<VariantResolverName, DefaultTokenCategory>
+> = {
+  Size: 'size',
+  Space: 'space',
+  Radius: 'radius',
+  ZIndex: 'zIndex',
+  FontSize: 'fontSize',
+}
+
+type CompiledVariantResolver = {
+  key: string
+  parts: VariantResolverName[]
+}
+
+const variantResolverCache = new WeakMap<object, readonly CompiledVariantResolver[]>()
+
+function getCompiledVariantResolvers(variant: object) {
+  let cached = variantResolverCache.get(variant)
+  if (cached) {
+    return cached
+  }
+  const compiled: CompiledVariantResolver[] = []
+  for (const key of Object.keys(variant)) {
+    const parts = parseVariantResolverKey(key)
+    if (parts) {
+      compiled.push({ key, parts })
     }
   }
-  // fallback to catch all | size
-  return variant[`:${typeof value}`] || variant['...']
+  variantResolverCache.set(variant, compiled)
+  return compiled
+}
+
+function parseVariantResolverKey(key: string): VariantResolverName[] | null {
+  if (!key) return null
+  const parts = key.split('|').map((part) => part.trim())
+  if (!parts.length) return null
+  for (const part of parts) {
+    if (!variantResolverNameSet.has(part)) {
+      return null
+    }
+  }
+  return parts as VariantResolverName[]
+}
+
+function matchesVariantResolver(
+  resolverName: VariantResolverName,
+  value: any,
+  conf: TamaguiInternalConfig,
+  theme: Partial<GetStyleState>['theme']
+) {
+  switch (resolverName) {
+    case 'Size':
+      return (
+        value === true ||
+        isTokenCategoryValue(conf, 'size', value) ||
+        isSpecificTokenValue(conf, value) ||
+        matchesAllowedStyleValue(conf, 'size', value)
+      )
+    case 'Space':
+      return (
+        value === true ||
+        isTokenCategoryValue(conf, 'space', value) ||
+        isSpecificTokenValue(conf, value) ||
+        isVariable(value) ||
+        matchesAllowedStyleValue(conf, 'space', value)
+      )
+    case 'Color':
+      return (
+        isTokenCategoryValue(conf, 'color', value) ||
+        isThemeValue(theme, value) ||
+        isSpecificTokenValue(conf, value) ||
+        isDollarTokenWithOpacity(value) ||
+        isCSSColorName(value)
+      )
+    case 'Radius':
+      return (
+        value === true ||
+        isTokenCategoryValue(conf, 'radius', value) ||
+        isSpecificTokenValue(conf, value) ||
+        isVariable(value) ||
+        isRemString(value) ||
+        isNumericValue(value) ||
+        matchesAllowedStyleValue(conf, 'radius', value)
+      )
+    case 'ZIndex':
+      return (
+        value === true ||
+        isTokenCategoryValue(conf, 'zIndex', value) ||
+        isSpecificTokenValue(conf, value) ||
+        isVariable(value) ||
+        isNumericValue(value) ||
+        matchesAllowedStyleValue(conf, 'zIndex', value)
+      )
+    case 'Theme':
+      return isThemeValue(theme, value)
+    case 'FontSize':
+      return (
+        value === true ||
+        isBodyFontToken(conf, 'size', value) ||
+        isNumericValue(value) ||
+        isRemString(value)
+      )
+    case 'FontStyle':
+      return (
+        isBodyFontToken(conf, 'style', value) || value === 'normal' || value === 'italic'
+      )
+    case 'FontTransform':
+      return (
+        isBodyFontToken(conf, 'transform', value) ||
+        value === 'none' ||
+        value === 'capitalize' ||
+        value === 'uppercase' ||
+        value === 'lowercase'
+      )
+    case 'FontLineHeight':
+      return (
+        isBodyFontToken(conf, 'lineHeight', value) ||
+        isNumericValue(value) ||
+        isRemString(value)
+      )
+    case 'FontLetterSpacing':
+      return (
+        isBodyFontToken(conf, 'letterSpacing', value) ||
+        isNumericValue(value) ||
+        isRemString(value)
+      )
+    case 'number':
+      return typeof value === 'number'
+    case 'string':
+      return typeof value === 'string'
+    case 'boolean':
+      return typeof value === 'boolean'
+    case 'any':
+      return true
+  }
+}
+
+function isTokenCategoryValue(
+  conf: TamaguiInternalConfig,
+  category: 'size' | 'space' | 'color' | 'radius' | 'zIndex',
+  value: any
+) {
+  return Boolean(
+    value != null && category in conf.tokensParsed && value in conf.tokensParsed[category]
+  )
+}
+
+function isThemeValue(theme: Partial<GetStyleState>['theme'], value: any) {
+  if (!theme || typeof value !== 'string' || value[0] !== '$') {
+    return false
+  }
+  return value.slice(1) in theme
+}
+
+function isNumericValue(value: any) {
+  return typeof value === 'number'
+}
+
+const cssColorNameSet = new Set<string>(cssColorNames)
+
+function isCSSColorName(value: any) {
+  return typeof value === 'string' && cssColorNameSet.has(value)
+}
+
+function isDollarTokenWithOpacity(value: any) {
+  return typeof value === 'string' && tokenWithOpacityPattern.test(value)
+}
+
+function isSpecificTokenValue(conf: TamaguiInternalConfig, value: any) {
+  if (typeof value !== 'string') return false
+  const hasSetting = Object.prototype.hasOwnProperty.call(
+    conf.settings,
+    'autocompleteSpecificTokens'
+  )
+  const setting = conf.settings.autocompleteSpecificTokens
+  if (hasSetting && (setting === undefined || setting === 'except-special')) {
+    return false
+  }
+  return value in conf.specificTokens
+}
+
+type AllowedCategory = 'size' | 'space' | 'radius' | 'zIndex'
+
+function matchesAllowedStyleValue(
+  conf: TamaguiInternalConfig,
+  category: AllowedCategory,
+  value: any
+) {
+  const { setting, isGloballyAbsent } = getAllowedStyleValuesSetting(conf, category)
+  switch (setting) {
+    case 'strict':
+      return false
+    case 'strict-web':
+      return isWebAllowedValue(category, value)
+    case 'somewhat-strict':
+      return isSomewhatStrictValue(category, value)
+    case 'somewhat-strict-web':
+      return isSomewhatStrictValue(category, value) || isWebAllowedValue(category, value)
+    default:
+      return isLooseAllowedValue(category, value, isGloballyAbsent)
+  }
+}
+
+function getAllowedStyleValuesSetting(
+  conf: TamaguiInternalConfig,
+  category: AllowedCategory
+) {
+  const hasSetting = Object.prototype.hasOwnProperty.call(
+    conf.settings,
+    'allowedStyleValues'
+  )
+  if (!hasSetting) {
+    return { setting: undefined, isGloballyAbsent: true }
+  }
+  const setting = conf.settings.allowedStyleValues
+  if (setting && typeof setting === 'object') {
+    return { setting: setting[category], isGloballyAbsent: false }
+  }
+  return { setting, isGloballyAbsent: false }
+}
+
+function isSomewhatStrictValue(category: AllowedCategory, value: any) {
+  switch (category) {
+    case 'size':
+    case 'space':
+      return (
+        value === 'auto' ||
+        isNumericValue(value) ||
+        isRemString(value) ||
+        isPercentString(value)
+      )
+    case 'radius':
+    case 'zIndex':
+      return isNumericValue(value)
+  }
+}
+
+function isLooseAllowedValue(
+  category: AllowedCategory,
+  value: any,
+  isGloballyAbsent: boolean
+) {
+  if (isNumericValue(value)) return true
+  if (typeof value !== 'string') return false
+  if (category === 'radius' || category === 'zIndex') {
+    return isGloballyAbsent
+  }
+  return true
+}
+
+function isWebAllowedValue(category: AllowedCategory, value: any) {
+  return (
+    isWebUniversalValue(value) ||
+    ((category === 'size' || category === 'space') && isWebOnlySizeValue(value))
+  )
+}
+
+function isWebUniversalValue(value: any) {
+  return (
+    value === 'unset' ||
+    value === 'inherit' ||
+    (typeof value === 'string' && /^var\(.*\)$/.test(value))
+  )
+}
+
+function isWebOnlySizeValue(value: any) {
+  return (
+    value === 'max-content' ||
+    value === 'min-content' ||
+    (typeof value === 'string' &&
+      (viewportValuePattern.test(value) || /^(calc|min|max)\(.*\)$/.test(value)))
+  )
+}
+
+const numberStringPattern =
+  /[+-]?(?:(?:\d+\.?\d*)|(?:\.\d+))(?:[eE][+-]?\d+)?|[+-]?0[xX][\da-fA-F]+|[+-]?0[bB][01]+|[+-]?0[oO][0-7]+/
+const tokenWithOpacityPattern = new RegExp(`^\\$.*\\/(?:${numberStringPattern.source})$`)
+const remStringPattern = new RegExp(`^(?:${numberStringPattern.source})rem$`)
+const viewportValuePattern = new RegExp(
+  `^(?:${numberStringPattern.source})(vw|dvw|lvw|svw|vh|dvh|lvh|svh)$`
+)
+
+function isRemString(value: any) {
+  return typeof value === 'string' && remStringPattern.test(value)
+}
+
+function isPercentString(value: any) {
+  return typeof value === 'string' && value.endsWith('%')
+}
+
+function isBodyFontToken(
+  conf: TamaguiInternalConfig,
+  category: 'size' | 'style' | 'transform' | 'lineHeight' | 'letterSpacing',
+  value: any
+) {
+  if (typeof value !== 'string') return false
+  const bodyFont = conf.fontsParsed.$body
+  const fontCategory = bodyFont?.[category]
+  return Boolean(fontCategory && value in fontCategory)
 }

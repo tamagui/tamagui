@@ -1,6 +1,6 @@
 import React from 'react'
-import { Select, H2, Paragraph, YStack } from 'tamagui'
-import { ChevronDown } from '@tamagui/lucide-icons-2'
+import { H2, Paragraph, YStack } from 'tamagui'
+import { Select } from '../components/Select'
 
 const items = [
   { value: 'apple', label: 'Apple' },
@@ -32,8 +32,9 @@ export function RemoveScrollCase() {
         onValueChange={setValue}
         renderValue={(v) => items.find((item) => item.value === v)?.label}
       >
-        <Select.Trigger data-testid="rs-select-trigger" iconAfter={ChevronDown}>
+        <Select.Trigger data-testid="rs-select-trigger">
           <Select.Value placeholder="Pick a fruit" />
+          <Select.Icon />
         </Select.Trigger>
 
         <Select.Content data-testid="rs-select-content">

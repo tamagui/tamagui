@@ -73,14 +73,18 @@ function dceTamaguiTarget(contents, { format, jsx, platform }) {
     return contents
   }
 
-  const result = oxcTransformSync(`tamagui-target.${jsx === 'preserve' ? 'jsx' : 'js'}`, contents, {
-    lang: jsx === 'preserve' ? 'jsx' : 'js',
-    jsx: jsx === 'preserve' ? 'preserve' : undefined,
-    sourceType: format === 'cjs' ? 'commonjs' : 'module',
-    define: {
-      'process.env.TAMAGUI_TARGET': JSON.stringify(platform),
-    },
-  })
+  const result = oxcTransformSync(
+    `tamagui-target.${jsx === 'preserve' ? 'jsx' : 'js'}`,
+    contents,
+    {
+      lang: jsx === 'preserve' ? 'jsx' : 'js',
+      jsx: jsx === 'preserve' ? 'preserve' : undefined,
+      sourceType: format === 'cjs' ? 'commonjs' : 'module',
+      define: {
+        'process.env.TAMAGUI_TARGET': JSON.stringify(platform),
+      },
+    }
+  )
 
   if (result.errors?.length) {
     throw new Error(
@@ -346,9 +350,7 @@ const shouldSkipMJS = hasFlag('--skip-mjs')
 const shouldSkipSourceMaps =
   hasFlag('--skip-sourcemaps') || getEnvFlag('TAMAGUI_BUILD_SKIP_SOURCEMAPS')
 // React Compiler is disabled by default - use --react-compiler to enable
-const shouldEnableCompiler = !!(
-  hasFlag('--react-compiler') || process.env.REACT_COMPILER
-)
+const shouldEnableCompiler = !!(hasFlag('--react-compiler') || process.env.REACT_COMPILER)
 const shouldBundleFlag = hasFlag('--bundle')
 const shouldBundleNodeModules = hasFlag('--bundle-modules')
 const shouldClean = !!process.argv.includes('clean')
@@ -407,9 +409,10 @@ const getJsEntryAliasPath = (entry) => {
   return null
 }
 const cjsMainAliasPath = getJsEntryAliasPath(pkgMain)
-const esmAliasPaths = [getJsEntryAliasPath(pkgModule), getJsEntryAliasPath(pkgModuleJSX)].filter(
-  Boolean
-)
+const esmAliasPaths = [
+  getJsEntryAliasPath(pkgModule),
+  getJsEntryAliasPath(pkgModuleJSX),
+].filter(Boolean)
 
 const replaceRNWeb = {
   esm: (content) =>
@@ -624,7 +627,11 @@ async function build({ skipTypes, cleanOutput = !shouldWatch } = {}) {
     }
 
     const allFiles = (await fastGlob(['src/**/*.(m)?[jt]s(x)?', 'src/**/*.css'])).filter(
-      (x) => !x.includes('.d.ts') && (exclude ? !x.match(exclude) : true)
+      (x) =>
+        !x.includes('.d.ts') &&
+        !/(?:^|\/)(?:__tests__|tests?)(?:\/|$)/.test(x) &&
+        !/\.(?:test-d|test|spec)\.[cm]?[jt]sx?$/.test(x) &&
+        (exclude ? !x.match(exclude) : true)
     )
 
     await Promise.all([

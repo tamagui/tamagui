@@ -48,13 +48,11 @@ export function SelectDemoContents(
       renderValue={getItemLabel}
     >
       {props?.trigger || (
-        <Select.Trigger
-          maxWidth={220}
-          iconAfter={ChevronDown}
-          borderRadius="$4"
-          backgroundColor="$background"
-        >
+        <Select.Trigger maxWidth={220} borderRadius="$4" backgroundColor="$background">
           <Select.Value placeholder="Something" />
+          <Select.Icon>
+            <ChevronDown />
+          </Select.Icon>
         </Select.Trigger>
       )}
 

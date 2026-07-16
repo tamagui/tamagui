@@ -1,7 +1,7 @@
 import { useState } from 'react'
+import { Button } from '../components/Button'
 import {
   Adapt,
-  Button,
   Dialog,
   Paragraph,
   Sheet,
@@ -640,7 +640,7 @@ function DynamicContentSheet() {
           <YStack gap="$2" flexDirection="row" flexWrap="wrap" justifyContent="center">
             <Button
               data-testid="dynamic-content-small"
-              size="$3"
+              size="medium"
               onPress={() => setContentSize('small')}
               theme={contentSize === 'small' ? 'blue' : undefined}
             >
@@ -648,7 +648,7 @@ function DynamicContentSheet() {
             </Button>
             <Button
               data-testid="dynamic-content-medium"
-              size="$3"
+              size="medium"
               onPress={() => setContentSize('medium')}
               theme={contentSize === 'medium' ? 'blue' : undefined}
             >
@@ -656,7 +656,7 @@ function DynamicContentSheet() {
             </Button>
             <Button
               data-testid="dynamic-content-large"
-              size="$3"
+              size="medium"
               onPress={() => setContentSize('large')}
               theme={contentSize === 'large' ? 'blue' : undefined}
             >

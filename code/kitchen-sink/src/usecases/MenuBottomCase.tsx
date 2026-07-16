@@ -1,5 +1,6 @@
 import { Menu } from '@tamagui/menu'
-import { Button, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Menu bottom placement test - menu opens below trigger and stays there
@@ -20,7 +21,7 @@ export function MenuBottomCase() {
     >
       <Menu placement="bottom-start" stayInFrame allowFlip={false}>
         <Menu.Trigger asChild>
-          <Button data-testid="menu-trigger" size="$4">
+          <Button data-testid="menu-trigger" size="medium">
             Open Menu Below
           </Button>
         </Menu.Trigger>
@@ -31,7 +32,7 @@ export function MenuBottomCase() {
             minWidth={200}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
             padding="$2"
           >
             <Menu.ScrollView data-testid="menu-scroll-view">

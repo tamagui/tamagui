@@ -1,15 +1,15 @@
 import { Moon } from '@tamagui/lucide-icons-2'
-import { Button, YStack } from 'tamagui'
+import { YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
-// icons should size to match the button's font size at each size token.
-// the svg width/height should equal the computed font-size of the button text.
+// The copied skin owns independent named text and icon projections.
 export function IconFontSizing() {
   return (
     <YStack gap="$4" padding="$4">
-      <Button size="$2" icon={Moon} testID="btn-2">
+      <Button size="small" icon={Moon} testID="btn-2">
         Small
       </Button>
-      <Button size="$6" icon={Moon} testID="btn-6">
+      <Button size="large" icon={Moon} testID="btn-6">
         Large
       </Button>
       {/* direct icon with a token size resolves via the font size scale */}

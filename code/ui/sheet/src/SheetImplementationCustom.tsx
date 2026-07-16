@@ -1140,6 +1140,25 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
   }
 )
 
+type SheetPartStaticConfig = {
+  componentName?: string
+  parentStaticConfig?: SheetPartStaticConfig
+}
+
+export function isSheetOverlayComponent(type: unknown) {
+  let staticConfig = (type as { staticConfig?: SheetPartStaticConfig } | null)
+    ?.staticConfig
+
+  while (staticConfig) {
+    if (staticConfig.componentName === SHEET_OVERLAY_NAME) {
+      return true
+    }
+    staticConfig = staticConfig.parentStaticConfig
+  }
+
+  return false
+}
+
 function partitionSheetChildren(children: React.ReactNode) {
   const overlayChildren: React.ReactNode[] = []
   const animatedChildren: React.ReactNode[] = []
@@ -1150,13 +1169,7 @@ function partitionSheetChildren(children: React.ReactNode) {
       return
     }
 
-    const childType = child.type as {
-      staticConfig?: {
-        componentName?: string
-      }
-    }
-
-    if (childType.staticConfig?.componentName === SHEET_OVERLAY_NAME) {
+    if (isSheetOverlayComponent(child.type)) {
       overlayChildren.push(child)
       return
     }

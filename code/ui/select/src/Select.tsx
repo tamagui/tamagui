@@ -1,22 +1,18 @@
 import { Adapt, AdaptParent, useAdaptIsActive } from '@tamagui/adapt'
 import { useComposedRefs } from '@tamagui/compose-refs'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
-import type { FontSizeTokens, GetProps, SizeTokens, TamaguiElement } from '@tamagui/core'
+import type { GetProps } from '@tamagui/core'
 import {
   createStyledHOC,
-  createRefComponent,
   createStyledContext,
-  getVariableValue,
-  resolveDefaultSizeToken,
   styled,
+  Text,
   useEvent,
+  View,
 } from '@tamagui/core'
 import { FocusScopeController } from '@tamagui/focus-scope'
 import { registerFocusable } from '@tamagui/focusable'
 import { withStaticProperties } from '@tamagui/helpers'
-import { Separator } from '@tamagui/separator'
-import { XStack, YStack } from '@tamagui/stacks'
-import { Paragraph, SizableText } from '@tamagui/text'
 import { useControllableState } from '@tamagui/use-controllable-state'
 import * as React from 'react'
 import {
@@ -41,9 +37,8 @@ import type { SelectImplProps, SelectProps, SelectScopedProps } from './types'
 
 const VALUE_NAME = 'SelectValue'
 
-const SelectValueFrame = styled(SizableText, {
+export const SelectValueFrame = styled(Text, {
   name: VALUE_NAME,
-  userSelect: 'none',
 })
 
 export type SelectValueExtraProps = SelectScopedProps<{
@@ -52,7 +47,7 @@ export type SelectValueExtraProps = SelectScopedProps<{
 
 export type SelectValueProps = GetProps<typeof SelectValueFrame> & SelectValueExtraProps
 
-const SelectValue = createStyledHOC(SelectValueFrame)<SelectValueExtraProps>(
+export const SelectValue = createStyledHOC(SelectValueFrame)<SelectValueExtraProps>(
   function SelectValue(
     { scope, children: childrenProp, placeholder, ...props },
     forwardedRef
@@ -76,17 +71,7 @@ const SelectValue = createStyledHOC(SelectValueFrame)<SelectValueExtraProps>(
     const selectValueChildren = isEmptyValue ? (placeholder ?? children) : children
 
     return (
-      <SelectValueFrame
-        {...(!props.unstyled && {
-          size: itemParentContext.size as any,
-          ellipsis: true,
-          // we don't want events from the portalled `SelectValue` children to bubble
-          // through the item they came from
-          pointerEvents: 'none',
-        })}
-        ref={composedRefs}
-        {...props}
-      >
+      <SelectValueFrame pointerEvents="none" ref={composedRefs} {...props}>
         {unwrapSelectItem(selectValueChildren)}
       </SelectValueFrame>
     )
@@ -96,7 +81,7 @@ const SelectValue = createStyledHOC(SelectValueFrame)<SelectValueExtraProps>(
 function unwrapSelectItem(selectValueChildren: any) {
   return React.Children.map(selectValueChildren, (child) => {
     if (child) {
-      if (child.type?.staticConfig?.componentName === ITEM_TEXT_NAME) {
+      if (hasStaticConfigName(child.type?.staticConfig, ITEM_TEXT_NAME)) {
         return child.props.children
       }
       if (child.props?.children) {
@@ -107,74 +92,66 @@ function unwrapSelectItem(selectValueChildren: any) {
   })
 }
 
+function hasStaticConfigName(staticConfig: any, name: string): boolean {
+  if (!staticConfig) return false
+  if (staticConfig.componentName === name) return true
+  return hasStaticConfigName(staticConfig.parentStaticConfig, name)
+}
+
 /* -------------------------------------------------------------------------------------------------
  * SelectIcon
  * -----------------------------------------------------------------------------------------------*/
 
-export const SelectIcon = styled(XStack, {
+export const SelectIcon = styled(View, {
   name: 'SelectIcon',
   // @ts-ignore
   'aria-hidden': true,
-  children: <Paragraph>▼</Paragraph>,
 })
 
 /* -------------------------------------------------------------------------------------------------
  * SelectItemIndicator
  * -----------------------------------------------------------------------------------------------*/
 
-const SelectItemIndicatorFrame = styled(XStack, {
+export const SelectItemIndicatorFrame = styled(View, {
   name: 'SelectItemIndicator',
 })
 
-type SelectItemIndicatorProps = SelectScopedProps<
+export type SelectItemIndicatorProps = SelectScopedProps<
   GetProps<typeof SelectItemIndicatorFrame>
 >
 
-const SelectItemIndicator = createRefComponent<TamaguiElement, SelectItemIndicatorProps>(
-  function SelectItemIndicator(props, forwardedRef) {
-    const { scope, ...itemIndicatorProps } = props
-    const context = useSelectItemParentContext(scope)
-    const itemContext = useSelectItemContext(scope)
+export const SelectItemIndicator = createStyledHOC(SelectItemIndicatorFrame)<{
+  scope?: string
+}>(function SelectItemIndicator(props, forwardedRef) {
+  const { scope, ...itemIndicatorProps } = props
+  const context = useSelectItemParentContext(scope)
+  const itemContext = useSelectItemContext(scope)
 
-    if (context.shouldRenderWebNative) {
-      return null
-    }
-
-    return itemContext.isSelected ? (
-      <SelectItemIndicatorFrame aria-hidden {...itemIndicatorProps} ref={forwardedRef} />
-    ) : null
+  if (context.shouldRenderWebNative) {
+    return null
   }
-)
+
+  return itemContext.isSelected ? (
+    <SelectItemIndicatorFrame aria-hidden {...itemIndicatorProps} ref={forwardedRef} />
+  ) : null
+})
 
 /* -------------------------------------------------------------------------------------------------
  * SelectIndicator
  * -----------------------------------------------------------------------------------------------*/
 
-const SelectIndicatorFrame = styled(YStack, {
+export const SelectIndicatorFrame = styled(View, {
   name: 'SelectIndicator',
-
-  variants: {
-    unstyled: {
-      false: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        pointerEvents: 'none',
-        zIndex: 10,
-        backgroundColor: '$background',
-        borderRadius: 0,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  pointerEvents: 'none',
+  zIndex: 10,
 })
 
 export type SelectIndicatorProps = GetProps<typeof SelectIndicatorFrame>
 
-const SelectIndicator = createStyledHOC(SelectIndicatorFrame)<
+export const SelectIndicator = createStyledHOC(SelectIndicatorFrame)<
   SelectScopedProps<SelectIndicatorProps>
 >(function SelectIndicator({ scope, ...props }, forwardedRef) {
   const itemContext = useSelectItemParentContext(scope)
@@ -233,95 +210,42 @@ type SelectGroupContextValue = { id: string }
 const { Provider: SelectGroupContextProvider, useStyledContext: useSelectGroupContext } =
   createStyledContext<SelectGroupContextValue>({ id: '' }, 'SelectGroup')
 
-export const SelectGroupFrame = styled(YStack, {
+export const SelectGroupFrame = styled(View, {
   name: GROUP_NAME,
-  width: '100%',
 })
 
-const NativeSelectTextFrame = styled(SizableText, {
-  render: 'select',
-  backgroundColor: '$background',
-  borderColor: '$borderColor',
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-  },
-})
-
-const NativeSelectFrame = styled(YStack, {
+const NativeSelectFrame = styled(Text, {
   name: 'NativeSelect',
-
-  variants: {
-    size: {
-      '...size': (val, extras) => {
-        const { tokens } = extras
-        const sizeToken = resolveDefaultSizeToken(val)
-        const paddingHorizontal = getVariableValue(tokens.space[sizeToken])
-        const sizeVal = getVariableValue(tokens.size[sizeToken]) as number
-
-        return {
-          borderRadius: tokens.radius[sizeToken] ?? sizeToken,
-          minHeight: tokens.size[sizeToken],
-          paddingRight: paddingHorizontal + 20,
-          paddingLeft: paddingHorizontal,
-          paddingVertical: Math.max(0, Math.round(sizeVal * 0.4 - 8.5)),
-        }
-      },
-    },
-
-    unstyled: {
-      false: {
-        borderWidth: 1,
-        borderColor: '$borderColor',
-        userSelect: 'none',
-        outlineWidth: 0,
-        paddingRight: 10,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    size: '$2',
-    unstyled: process.env.TAMAGUI_HEADLESS === '1' ? true : false,
-  },
+  render: 'select',
 })
 
 type SelectGroupProps = SelectScopedProps<GetProps<typeof SelectGroupFrame>>
 
-const SelectGroup = createRefComponent<TamaguiElement, SelectGroupProps>(
+export const SelectGroup = createStyledHOC(SelectGroupFrame)<{ scope?: string }>(
   (props, forwardedRef) => {
     const { scope, ...groupProps } = props
     const groupId = React.useId()
 
     const context = useSelectContext(scope)
     const itemParentContext = useSelectItemParentContext(scope)
-    const size = itemParentContext.size ?? true
     const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
 
     const content = (() => {
       if (itemParentContext.shouldRenderWebNative) {
         return (
           <NativeSelectFrame
-            asChild
-            size={size}
-            // @ts-expect-error until we support typing based on tag
+            {...groupProps}
+            // @ts-ignore it's ok since render="select"
             value={context.value}
             id={itemParentContext.id}
-          >
-            <NativeSelectTextFrame
-              // @ts-ignore it's ok since render="select"
-              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+            onChange={
+              ((event: React.ChangeEvent<HTMLSelectElement>) => {
                 itemParentContext.onChange(event.currentTarget.value)
-              }}
-              size={size as FontSizeTokens}
-              ref={nativeSelectRef as any}
-              style={{
-                color: 'var(--color)',
-                // @ts-ignore
-                appearance: 'none',
-              }}
-            >
-              {props.children}
-            </NativeSelectTextFrame>
+              }) as any
+            }
+            ref={nativeSelectRef as any}
+          >
+            {props.children}
           </NativeSelectFrame>
         )
       }
@@ -352,40 +276,13 @@ SelectGroup.displayName = GROUP_NAME
 
 const LABEL_NAME = 'SelectLabel'
 
-const SelectLabelFrame = styled(SizableText, {
+export const SelectLabelFrame = styled(Text, {
   name: LABEL_NAME,
-
-  variants: {
-    unstyled: {
-      false: {
-        size: true,
-        ellipsis: true,
-        maxWidth: '100%',
-        cursor: 'default',
-      },
-    },
-
-    size: {
-      '...size': (val: SizeTokens, { tokens }) => {
-        const sizeToken = resolveDefaultSizeToken(val)
-        const sizeVal = getVariableValue(tokens.size[sizeToken]) as number
-
-        return {
-          paddingHorizontal: tokens.space[sizeToken],
-          paddingVertical: Math.max(0, Math.round(sizeVal * 0.36 - 9)),
-        }
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFrame>>
 
-const SelectLabel = createStyledHOC(SelectLabelFrame)<{ scope?: any }>(
+export const SelectLabel = createStyledHOC(SelectLabelFrame)<{ scope?: any }>(
   (props: SelectLabelProps, forwardedRef) => {
     const { scope, ...labelProps } = props
     const context = useSelectItemParentContext(scope)
@@ -399,7 +296,6 @@ const SelectLabel = createStyledHOC(SelectLabelFrame)<{ scope?: any }>(
       <SelectLabelFrame
         render="div"
         id={groupContext.id}
-        size={context.size}
         {...labelProps}
         ref={forwardedRef}
       />
@@ -411,7 +307,7 @@ const SelectLabel = createStyledHOC(SelectLabelFrame)<{ scope?: any }>(
  * SelectSeparator
  * -----------------------------------------------------------------------------------------------*/
 
-export const SelectSeparator = styled(Separator, {
+export const SelectSeparator = styled(View, {
   name: 'SelectSeparator',
 })
 
@@ -423,51 +319,51 @@ const SelectSheetImpl = (props: SelectImplProps) => {
  * Select
  * -----------------------------------------------------------------------------------------------*/
 
-export const Select = withStaticProperties(
-  function Select<Value extends string = string>(
-    props: SelectScopedProps<SelectProps<Value>>
-  ) {
-    const adaptScope = `AdaptSelect${props.scope || ''}`
+export function SelectRoot<Value extends string = string>(
+  props: SelectScopedProps<SelectProps<Value>>
+) {
+  const adaptScope = `AdaptSelect${props.scope || ''}`
 
-    // open state lives here (above AdaptParent) so the Adapt handoff can drive
-    // the adapted Sheet's open/close and unmount timing directly, mirroring Dialog
-    const [open, setOpen] = useControllableState({
-      prop: props.open,
-      defaultProp: props.defaultOpen || false,
-      onChange: props.onOpenChange,
-    })
+  // open state lives here (above AdaptParent) so the Adapt handoff can drive
+  // the adapted Sheet's open/close and unmount timing directly, mirroring Dialog
+  const [open, setOpen] = useControllableState({
+    prop: props.open,
+    defaultProp: props.defaultOpen || false,
+    onChange: props.onOpenChange,
+  })
 
-    return (
-      <AdaptParent scope={adaptScope} open={open} onOpenChange={setOpen}>
-        <SelectInner
-          {...props}
-          scope={props.scope}
-          adaptScope={adaptScope}
-          open={open}
-          setOpen={setOpen}
-        />
-      </AdaptParent>
-    )
-  },
-  {
-    Adapt: Adapt,
-    Content: SelectContent,
-    Group: SelectGroup,
-    Icon: SelectIcon,
-    Item: SelectItem,
-    ItemIndicator: SelectItemIndicator,
-    ItemText: SelectItemText,
-    Label: SelectLabel,
-    ScrollDownButton: SelectScrollDownButton,
-    ScrollUpButton: SelectScrollUpButton,
-    Separator: SelectSeparator,
-    Trigger: SelectTrigger,
-    Value: SelectValue,
-    Viewport: SelectViewport,
-    Indicator: SelectIndicator,
-    FocusScope: FocusScopeController,
-  }
-)
+  return (
+    <AdaptParent scope={adaptScope} open={open} onOpenChange={setOpen}>
+      <SelectInner
+        {...props}
+        scope={props.scope}
+        adaptScope={adaptScope}
+        open={open}
+        setOpen={setOpen}
+      />
+    </AdaptParent>
+  )
+}
+
+export const Select = withStaticProperties(SelectRoot, {
+  Root: SelectRoot,
+  Adapt: Adapt,
+  Content: SelectContent,
+  Group: SelectGroup,
+  Icon: SelectIcon,
+  Item: SelectItem,
+  ItemIndicator: SelectItemIndicator,
+  ItemText: SelectItemText,
+  Label: SelectLabel,
+  ScrollDownButton: SelectScrollDownButton,
+  ScrollUpButton: SelectScrollUpButton,
+  Separator: SelectSeparator,
+  Trigger: SelectTrigger,
+  Value: SelectValue,
+  Viewport: SelectViewport,
+  Indicator: SelectIndicator,
+  FocusScope: FocusScopeController,
+})
 
 function useEmitter<A>() {
   const listenersRef = React.useRef<Set<Function>>(new Set())

@@ -3,12 +3,13 @@
  * Regression test for bug where fontWeight ternary was dropped when combined
  * with a theme-token color ternary on native.
  *
- * The compiler's extractToNative was unconditionally adding plain styles
+ * The former native compiler was unconditionally adding plain styles
  * (fontWeight) from ternary branches instead of wrapping them in the conditional.
  */
 
 import { useState } from 'react'
-import { Button, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
 
 function ActiveText({ isActive, label }: { isActive: boolean; label: string }) {
   return (
@@ -69,7 +70,7 @@ export function CompilerTernaryActive() {
         Active: {isActive ? 'YES' : 'NO'}
       </Text>
 
-      <Button size="$2" testID="toggle-active" onPress={() => setIsActive((a) => !a)}>
+      <Button size="small" testID="toggle-active" onPress={() => setIsActive((a) => !a)}>
         Toggle Active
       </Button>
 

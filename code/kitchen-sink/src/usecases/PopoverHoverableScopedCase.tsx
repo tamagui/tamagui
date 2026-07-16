@@ -18,7 +18,7 @@ const PanelFrame = styled(YStack, {
   x: 0,
   variants: {
     going: {
-      ':number': (going) => ({
+      number: (going) => ({
         enterStyle: { x: going > 0 ? 80 : -80, opacity: 0 },
         exitStyle: { x: going < 0 ? 80 : -80, opacity: 0 },
       }),
@@ -92,7 +92,6 @@ export function PopoverHoverableScopedCase() {
         <Popover.Content
           id="nav-content"
           scope="nav"
-          unstyled
           disableFocusScope
           animatePosition
           transition="500ms"

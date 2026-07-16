@@ -90,29 +90,17 @@ export const styledBody = [
   {
     name: INPUT_NAME,
     render: 'input',
+    ...defaultStyles,
     variants: {
-      unstyled: {
-        true: {
-          // reset browser <input>/<textarea> defaults
-          outlineWidth: 0,
-          borderWidth: 0,
-          backgroundColor: 'transparent',
-        },
-        false: defaultStyles,
-      },
-
       size: {
-        '...size': inputSizeVariant,
+        true: inputSizeVariant,
+        Size: inputSizeVariant,
       },
 
       disabled: {
         true: {},
       },
     } as const,
-
-    defaultVariants: {
-      unstyled: process.env.TAMAGUI_HEADLESS === '1',
-    },
   },
 
   {

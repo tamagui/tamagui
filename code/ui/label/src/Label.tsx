@@ -5,7 +5,12 @@ import { focusFocusable } from '@tamagui/focusable'
 import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { SizableText } from '@tamagui/text'
-import type { FontSizeTokens, GetProps } from '@tamagui/web'
+import type {
+  FontSizeTokens,
+  GetProps,
+  SizeTokens,
+  VariantSpreadExtras,
+} from '@tamagui/web'
 import { createStyledHOC, styled } from '@tamagui/web'
 import * as React from 'react'
 
@@ -21,42 +26,34 @@ const [LabelProvider, useLabelContextImpl] = createContext<LabelContextValue>(NA
   controlRef: { current: null },
 })
 
+const labelSizeVariant = (val: SizeTokens | true, extras: VariantSpreadExtras<any>) => {
+  const buttonStyle = getButtonSized(val, extras)
+  const buttonHeight = buttonStyle?.height
+  const fontStyle = getFontSized(val as FontSizeTokens, extras as any)
+  return {
+    ...fontStyle,
+    lineHeight: buttonHeight ? extras.tokens.size[buttonHeight] : undefined,
+  }
+}
+
 export const LabelFrame = styled(SizableText, {
   name: 'Label',
   render: 'label',
+  size: true,
+  color: '$color',
+  backgroundColor: 'transparent',
+  display: 'flex',
+  alignItems: 'center',
+  userSelect: 'none',
+  cursor: 'default',
+  pressStyle: { color: '$colorPress' },
 
   variants: {
-    unstyled: {
-      false: {
-        size: true,
-        color: '$color',
-        backgroundColor: 'transparent',
-        display: 'flex',
-        alignItems: 'center',
-        userSelect: 'none',
-        cursor: 'default',
-        pressStyle: {
-          color: '$colorPress',
-        },
-      },
-    },
-
     size: {
-      '...size': (val, extras) => {
-        const buttonStyle = getButtonSized(val, extras)
-        const buttonHeight = buttonStyle?.height
-        const fontStyle = getFontSized(val as FontSizeTokens, extras as any)
-        return {
-          ...fontStyle,
-          lineHeight: buttonHeight ? extras.tokens.size[buttonHeight] : undefined,
-        }
-      },
+      true: labelSizeVariant,
+      Size: labelSizeVariant,
     },
   } as const,
-
-  defaultVariants: {
-    unstyled: process.env.TAMAGUI_HEADLESS === '1',
-  },
 })
 
 export type LabelProps = GetProps<typeof LabelFrame> & {

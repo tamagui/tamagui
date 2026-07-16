@@ -1,8 +1,6 @@
 import { type ResolveVariableAs } from '@tamagui/core';
-import { SizableContext } from '@tamagui/sizable-context';
 import type { FC } from 'react';
 import type { IconProps } from './IconProps';
-export { SizableContext };
 type Options = {
     noClass?: boolean;
     defaultThemeColor?: string;
@@ -10,6 +8,7 @@ type Options = {
     fallbackColor?: string;
     resolveValues?: ResolveVariableAs;
 };
+export declare function reconstructIconStyleModeProps(props: IconProps, theme: any): IconProps;
 export declare function themed(Component: FC<IconProps>, optsIn?: Options): {
     (propsIn: IconProps): import("react/jsx-runtime").JSX.Element;
     staticConfig: {
@@ -17,4 +16,5 @@ export declare function themed(Component: FC<IconProps>, optsIn?: Options): {
         acceptsClassName: boolean;
     };
 };
+export {};
 //# sourceMappingURL=themed.d.ts.map

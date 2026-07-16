@@ -15,7 +15,6 @@ import {
   type MenuSubContentProps as BaseMenuSubContentProps,
   type MenuSubTriggerProps as BaseMenuSubTriggerProps,
   createBaseMenu,
-  type CreateBaseMenuProps,
 } from '@tamagui/create-menu'
 import { usePopperContextSlow } from '@tamagui/popper'
 import { ScrollView, type ScrollViewProps } from '@tamagui/scroll-view'
@@ -204,8 +203,8 @@ type MenuScrollViewProps = ScrollViewProps
 
 /* -----------------------------------------------------------------------------------------------*/
 
-export function createNonNativeMenu(params: CreateBaseMenuProps) {
-  const { Menu } = createBaseMenu(params)
+export function createNonNativeMenu() {
+  const { Menu } = createBaseMenu()
 
   /* -------------------------------------------------------------------------------------------------
    * Menu

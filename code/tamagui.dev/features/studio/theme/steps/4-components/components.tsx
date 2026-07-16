@@ -1,13 +1,5 @@
-import {
-  Button,
-  Card,
-  Input,
-  Switch,
-  TextArea,
-  XStack,
-  YStack,
-  SizableText,
-} from 'tamagui'
+import { Card, Input, Switch, TextArea, XStack, YStack, SizableText } from 'tamagui'
+import { Button } from '~/components/Button'
 import type { ReactNode } from 'react'
 
 export type PreviewComponent = {
@@ -23,8 +15,8 @@ export const components: PreviewComponent[] = [
         <Button>Default</Button>
         <Button theme="blue">Active</Button>
         <Button disabled>Disabled</Button>
-        <Button size="$2">Small</Button>
-        <Button size="$5">Large</Button>
+        <Button size="small">Small</Button>
+        <Button size="large">Large</Button>
       </XStack>
     ),
   },
@@ -46,8 +38,8 @@ export const components: PreviewComponent[] = [
         </Card.Header>
         <Card.Footer p="$3">
           <XStack gap="$3" justify="flex-end">
-            <Button size="$3">Cancel</Button>
-            <Button size="$3" theme="blue">
+            <Button size="medium">Cancel</Button>
+            <Button size="medium" theme="blue">
               Save
             </Button>
           </XStack>

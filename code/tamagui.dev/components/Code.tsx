@@ -21,6 +21,7 @@ export const Code = styled(Paragraph, {
   } as const,
 })
 
+// @ts-ignore
 export const CodeInline = styled(Paragraph, {
   name: 'CodeInline',
   render: 'code',
@@ -29,9 +30,7 @@ export const CodeInline = styled(Paragraph, {
   backgroundColor: '$color2',
   cursor: 'inherit',
   rounded: '$3',
-  // @ts-ignore
   fontSize: '90%',
-  // @ts-ignore
   lineHeight: '70%',
   px: '0.6%',
   py: '0.45%',

@@ -1,5 +1,4 @@
 export * from './Sheet'
-export * from './createSheet'
 export * from './SheetController'
 export * from './useSheetController'
 export * from './useSheetOpenState'

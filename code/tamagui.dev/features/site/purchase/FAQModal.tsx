@@ -1,6 +1,5 @@
 import { X } from '@tamagui/lucide-icons-2'
 import {
-  Button,
   Dialog,
   H1,
   H5,
@@ -11,6 +10,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { useTakeoutStore } from './useTakeoutStore'
 
@@ -208,7 +208,7 @@ export const TakeoutFaqModal = () => {
           </ScrollView>
           <Unspaced>
             <Dialog.Close asChild>
-              <Button position="absolute" t="$2" r="$2" size="$2" circular icon={X} />
+              <Button position="absolute" t="$2" r="$2" size="small" circular icon={X} />
             </Dialog.Close>
           </Unspaced>
         </Dialog.Content>

@@ -1,7 +1,8 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2'
-import { Menu } from '@tamagui/menu'
 import React from 'react'
-import { Button, Text, YStack } from 'tamagui'
+import { Text, YStack } from 'tamagui'
+import { Button } from '../components/Button'
+import { Menu } from '../components/Menu'
 
 /**
  * Test case for menu focus leave behavior
@@ -28,7 +29,7 @@ export function MenuFocusLeaveCase() {
             minWidth={220}
             borderWidth={1}
             borderColor="$borderColor"
-            elevation="$3"
+            boxShadow="0 4px 12px $shadowColor"
           >
             <Menu.Item data-testid="menu-item-1" key="item-1" textValue="Item One">
               <Menu.ItemTitle>Item One</Menu.ItemTitle>
@@ -57,7 +58,7 @@ export function MenuFocusLeaveCase() {
                   minWidth={180}
                   borderWidth={1}
                   borderColor="$borderColor"
-                  elevation="$3"
+                  boxShadow="0 4px 12px $shadowColor"
                 >
                   <Menu.Item
                     data-testid="submenu-1-item-1"
@@ -97,7 +98,7 @@ export function MenuFocusLeaveCase() {
                   minWidth={180}
                   borderWidth={1}
                   borderColor="$borderColor"
-                  elevation="$3"
+                  boxShadow="0 4px 12px $shadowColor"
                 >
                   <Menu.Item
                     data-testid="submenu-2-item-1"

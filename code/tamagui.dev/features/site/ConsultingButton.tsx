@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from 'tamagui'
+import { Button, type ButtonProps } from '~/components/Button'
 import { AddEvenBrandIcon } from '~/features/icons/AddEvenBrandIcon'
 
 export const ConsultingButton = (props: ButtonProps) => {
@@ -6,8 +6,8 @@ export const ConsultingButton = (props: ButtonProps) => {
     <Button
       theme="gray"
       borderColor="$color6"
-      elevation="$2"
-      size="$3"
+      boxShadow="0 4px 10px rgba(0, 0, 0, 0.2)"
+      size="medium"
       rounded="$10"
       hoverStyle={{
         z: 100,

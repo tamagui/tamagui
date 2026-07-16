@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
-import { Button, Paragraph, Square, XStack, YStack, View } from 'tamagui'
+import { Paragraph, Square, XStack, YStack, View } from 'tamagui'
+import { Button } from '../components/Button'
 
 /**
  * Test case for verifying animation values through console logging
@@ -89,7 +90,7 @@ function OpacityAnimationTest() {
   return (
     <XStack gap="$4" alignItems="center">
       <Button
-        size="$3"
+        size="medium"
         onPress={() => setFaded(!faded)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -172,7 +173,7 @@ function ScaleAnimationTest() {
   return (
     <XStack gap="$4" alignItems="center">
       <Button
-        size="$3"
+        size="medium"
         onPress={() => setScaled(!scaled)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -257,7 +258,7 @@ function TranslateAnimationTest() {
   return (
     <XStack gap="$4" alignItems="center">
       <Button
-        size="$3"
+        size="medium"
         onPress={() => setMoved(!moved)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -346,7 +347,7 @@ function EnterExitAnimationTest() {
   return (
     <XStack gap="$4" alignItems="center" height={80}>
       <Button
-        size="$3"
+        size="medium"
         onPress={() => setVisible(!visible)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -426,7 +427,7 @@ function ColorAnimationTest() {
   return (
     <XStack gap="$4" alignItems="center">
       <Button
-        size="$3"
+        size="medium"
         onPress={() => setActive(!active)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}
@@ -496,7 +497,7 @@ function AnimationConfigTest() {
   return (
     <XStack gap="$4" alignItems="center">
       <Button
-        size="$3"
+        size="medium"
         onPress={() => setExpanded(!expanded)}
         testID={`${testId}-trigger`}
         data-testid={`${testId}-trigger`}

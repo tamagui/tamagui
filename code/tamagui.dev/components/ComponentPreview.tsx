@@ -12,7 +12,6 @@ import {
 
 import {
   Avatar,
-  Button,
   Checkbox,
   getTokenValue,
   Label,
@@ -23,6 +22,7 @@ import {
   XStack,
   ZStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 import { CardFrame, Text, YStack } from 'tamagui'
 import { BentoIcon } from '~/features/icons/BentoIcon'
 
@@ -316,10 +316,10 @@ const ComponentPreview = {
   Buttons: () => {
     return (
       <ZStack>
-        <Button mb="$-6" mr="$-6" self="center" icon={User} size="$4" theme="accent">
+        <Button mb="$-6" mr="$-6" self="center" icon={User} size="medium" theme="accent">
           Follow
         </Button>
-        <Button mt="$-6" ml="$-6" self="center" icon={Share} size="$4">
+        <Button mt="$-6" ml="$-6" self="center" icon={Share} size="medium">
           Share
         </Button>
       </ZStack>

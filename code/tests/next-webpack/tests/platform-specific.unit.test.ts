@@ -43,7 +43,6 @@ describe('Platform-specific file optimization', () => {
 
       // Should process both web and native targets
       expect(result).toContain('[tamagui]')
-      expect(result).toContain('BaseOnly')
 
       // Web version should be in BaseOnly.tsx
       const webContent = readFileSync(join(FIXTURES_DIR, 'BaseOnly.tsx'), 'utf-8')
@@ -52,9 +51,8 @@ describe('Platform-specific file optimization', () => {
       // CSS import must be FIRST line
       expect(webLines[0]).toMatch(/^import "\.\/[_-]BaseOnly\.css"$/)
 
-      // Should have className usage
-      expect(webContent).toMatch(/_cn\s*=/)
-      expect(webContent).toContain('className={')
+      // Shared lowering writes the static class list directly.
+      expect(webContent).toContain('className="is_View')
 
       // Flattened to div
       expect(webContent).toContain('<div')
@@ -72,11 +70,9 @@ describe('Platform-specific file optimization', () => {
       expect(existsSync(nativePath)).toBe(true)
       const nativeContent = readFileSync(nativePath, 'utf-8')
 
-      // Native imports in file
-      expect(nativeContent).toContain('__ReactNativeView')
-
-      // v2: View is now flattened and wrapped in styled component on native
-      expect(nativeContent).toContain('_ReactNativeViewStyled')
+      // Theme-dependent native styles stay on the runtime path.
+      expect(nativeContent).toContain('<View')
+      expect(nativeContent).toContain('bg="$background"')
       expect(nativeContent).not.toContain('.css')
       expect(nativeContent).not.toContain('className')
     })
@@ -84,15 +80,17 @@ describe('Platform-specific file optimization', () => {
 
   describe('WithWeb.tsx + WithWeb.web.tsx', () => {
     it('should optimize .web.tsx for web and base file for native only', () => {
+      const originalBase = readFileSync(join(FIXTURES_DIR, 'WithWeb.tsx'), 'utf-8')
+
       execSync('bun tamagui build ./packages/app/test-fixtures --include "WithWeb*"', {
         cwd: ROOT_DIR,
         encoding: 'utf-8',
         stdio: 'pipe',
       })
 
-      // Base file should only get native optimization
+      // Base file is selected only for native, where theme-dependent styles bail out.
       const baseContent = readFileSync(join(FIXTURES_DIR, 'WithWeb.tsx'), 'utf-8')
-      expect(baseContent).toContain('__ReactNativeView') // Native optimization
+      expect(baseContent).toBe(originalBase)
       expect(baseContent).not.toContain('.css') // No web CSS import
       expect(baseContent).toContain('>Base<') // Original content preserved
 
@@ -119,6 +117,11 @@ describe('Platform-specific file optimization', () => {
 
   describe('WithNative.tsx + WithNative.native.tsx', () => {
     it('should optimize base file for web only and .native.tsx for native', () => {
+      const originalNative = readFileSync(
+        join(FIXTURES_DIR, 'WithNative.native.tsx'),
+        'utf-8'
+      )
+
       execSync('bun tamagui build ./packages/app/test-fixtures --include "WithNative*"', {
         cwd: ROOT_DIR,
         encoding: 'utf-8',
@@ -146,7 +149,7 @@ describe('Platform-specific file optimization', () => {
         join(FIXTURES_DIR, 'WithNative.native.tsx'),
         'utf-8'
       )
-      expect(nativeContent).toContain('__ReactNativeView') // Native imports
+      expect(nativeContent).toBe(originalNative)
       expect(nativeContent).toContain('>Native<')
       expect(nativeContent).not.toContain('.css')
     })
@@ -155,6 +158,10 @@ describe('Platform-specific file optimization', () => {
   describe('WithBoth.tsx + WithBoth.web.tsx + WithBoth.native.tsx', () => {
     it('should leave base file untouched and optimize platform-specific files', () => {
       const originalBase = readFileSync(join(FIXTURES_DIR, 'WithBoth.tsx'), 'utf-8')
+      const originalNative = readFileSync(
+        join(FIXTURES_DIR, 'WithBoth.native.tsx'),
+        'utf-8'
+      )
 
       execSync('bun tamagui build ./packages/app/test-fixtures --include "WithBoth*"', {
         cwd: ROOT_DIR,
@@ -184,7 +191,7 @@ describe('Platform-specific file optimization', () => {
         join(FIXTURES_DIR, 'WithBoth.native.tsx'),
         'utf-8'
       )
-      expect(nativeContent).toContain('__ReactNativeView') // Native imports
+      expect(nativeContent).toBe(originalNative)
       expect(nativeContent).toContain('>Native<')
       expect(nativeContent).not.toContain('.css')
     })
@@ -192,16 +199,11 @@ describe('Platform-specific file optimization', () => {
 
   describe('WebOnly.web.tsx - web-only file', () => {
     it('should optimize for web only', () => {
-      const result = execSync(
-        'bun tamagui build ./packages/app/test-fixtures --include "WebOnly*"',
-        {
-          cwd: ROOT_DIR,
-          encoding: 'utf-8',
-          stdio: 'pipe',
-        }
-      )
-
-      expect(result).toContain('web')
+      execSync('bun tamagui build ./packages/app/test-fixtures --include "WebOnly*"', {
+        cwd: ROOT_DIR,
+        encoding: 'utf-8',
+        stdio: 'pipe',
+      })
 
       const webContent = readFileSync(join(FIXTURES_DIR, 'WebOnly.web.tsx'), 'utf-8')
       const webLines = webContent.split('\n')
@@ -221,22 +223,22 @@ describe('Platform-specific file optimization', () => {
 
   describe('NativeOnly.native.tsx - native-only file', () => {
     it('should optimize for native only', () => {
-      const result = execSync(
-        'bun tamagui build ./packages/app/test-fixtures --include "NativeOnly*"',
-        {
-          cwd: ROOT_DIR,
-          encoding: 'utf-8',
-          stdio: 'pipe',
-        }
+      const originalNative = readFileSync(
+        join(FIXTURES_DIR, 'NativeOnly.native.tsx'),
+        'utf-8'
       )
 
-      expect(result).toContain('native')
+      execSync('bun tamagui build ./packages/app/test-fixtures --include "NativeOnly*"', {
+        cwd: ROOT_DIR,
+        encoding: 'utf-8',
+        stdio: 'pipe',
+      })
 
       const nativeContent = readFileSync(
         join(FIXTURES_DIR, 'NativeOnly.native.tsx'),
         'utf-8'
       )
-      expect(nativeContent).toContain('__ReactNativeView') // Native imports
+      expect(nativeContent).toBe(originalNative)
       expect(nativeContent).toContain('Native Only File')
       expect(nativeContent).not.toContain('.css')
 

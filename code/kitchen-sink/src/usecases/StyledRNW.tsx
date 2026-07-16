@@ -47,7 +47,6 @@ export const Input = createStyledHOC(TamaguiInput)(function MyInput({ ...props }
   return (
     // @ts-ignore - complex type inference issue with createStyledHOC + styled combination
     <TextInput
-      unstyled
       keyboardAppearance={parentTheme?.includes('dark') ? 'dark' : 'default'}
       {...props}
       focusStyle={{ margin: 0, ...props.focusStyle }}

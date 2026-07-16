@@ -3,7 +3,6 @@ import { Copy, Download } from '@tamagui/lucide-icons-2'
 import { useStore } from '@tamagui/use-store'
 import { useEffect } from 'react'
 import {
-  Button,
   Circle,
   Fieldset,
   Label,
@@ -17,6 +16,7 @@ import {
   XStack,
   YStack,
 } from 'tamagui'
+import { Button } from '~/components/Button'
 
 import { themeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { toastController } from '../../../ToastProvider'
@@ -229,7 +229,6 @@ export const StepExportCodeSidebar = () => {
                           {subStep.files.map((file, i) => (
                             <Tabs.Tab
                               key={i}
-                              unstyled
                               px="$3"
                               pt="$2"
                               mb={-22}
@@ -296,7 +295,7 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           onPress={() => {
             copyText(content)
           }}
-          size="$2"
+          size="small"
           icon={Copy}
         >
           Copy
@@ -305,7 +304,7 @@ const Code = ({ content, downloadable, maxHeight, filename }: FileType) => {
           <Theme name="green">
             <Button
               self="center"
-              size="$2"
+              size="small"
               icon={Download}
               onPress={() => {
                 downloadFile(filename, content)
