@@ -46,8 +46,9 @@ export const getMediaKey = (key: string): IsMediaType => {
   if (key[0] !== '$') return false
   if (mediaKeys.has(key)) return true
   if (platformMediaKeys.has(key)) return 'platform'
-  const match = key.match(mediaKeyRegex)
-  if (match) return match[1] as 'theme' | 'group'
+  // startsWith avoids the regex + match array allocation on this hot path
+  if (key.startsWith('$theme-')) return 'theme'
+  if (key.startsWith('$group-')) return 'group'
   return false
 }
 
@@ -55,16 +56,17 @@ export const getMediaKey = (key: string): IsMediaType => {
 let initState: MediaQueryState
 
 let mediaKeysOrdered: string[]
+let mediaKeyImportance: Record<string, number> = {}
 
 export const getMediaKeyImportance = (key: string) => {
   if (process.env.NODE_ENV === 'development' && key[0] === '$') {
     throw new Error('use short key')
   }
 
-  // + 100 because we set base usedKeys=1, pseudos are 2-N (however many we have)
-  // all media go above all pseudos so we need to pad it based on that
-  // right now theres 5 pseudos but in the future could be a few more
-  return mediaKeysOrdered.indexOf(key) + 100
+  // precomputed in configureMedia: index + 100 because we set base usedKeys=1,
+  // pseudos are 2-N (however many we have), all media go above all pseudos so
+  // we need to pad it based on that
+  return mediaKeyImportance[key] ?? 99
 }
 
 const dispose = new Set<Function>()
@@ -87,6 +89,10 @@ export const configureMedia = (config: TamaguiInternalConfig) => {
   Object.assign(mediaQueryConfig, media)
   initState = { ...getMedia() }
   mediaKeysOrdered = Object.keys(media)
+  mediaKeyImportance = {}
+  for (let i = 0; i < mediaKeysOrdered.length; i++) {
+    mediaKeyImportance[mediaKeysOrdered[i]] = i + 100
+  }
   setupMediaListeners()
 }
 
@@ -459,13 +465,15 @@ export function mediaKeyMatch(
   dimensions: { width: number; height: number }
 ) {
   const mediaQueries = mediaQueryConfig[key]
-  const result = Object.keys(mediaQueries).every((query) => {
+  for (const query in mediaQueries) {
     const expectedVal = +mediaQueries[query]
     const isMax = query.startsWith('max')
     const isWidth = query.endsWith('Width')
     const givenVal = dimensions[isWidth ? 'width' : 'height']
     // if not max then min
-    return isMax ? givenVal < expectedVal : givenVal > expectedVal
-  })
-  return result
+    if (isMax ? givenVal >= expectedVal : givenVal <= expectedVal) {
+      return false
+    }
+  }
+  return true
 }
