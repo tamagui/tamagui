@@ -402,6 +402,13 @@ const tamaConf = createTamagui({
   },
   animations, // default reanimated
 
+  // custom variables for VariablesCase (plans/variables.md)
+  variables: {
+    caseAccent: { light: 'rgb(0, 90, 200)', dark: 'rgb(90, 90, 255)' },
+    caseSurface: '$background',
+    caseRadius: 4,
+  },
+
   defaultProps: {
     Square: {
       backgroundColor: 'violet',

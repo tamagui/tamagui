@@ -44,7 +44,11 @@ export function getThemeCSSRules(props: {
 
     for (const themeKey in theme) {
       const variable = theme[themeKey] as Variable
-      const value = variableCreator(variable.val).variable
+      // needsPx values (px() config variables, "Npx" theme strings) must keep
+      // their unit in CSS while staying numeric for native
+      const value = variableCreator(
+        variable.needsPx ? `${variable.val}px` : variable.val
+      ).variable
       // Hash themeKey in case it has invalid chars too
       vars += `--${process.env.TAMAGUI_CSS_VARIABLE_PREFIX || ''}${simpleHash(
         themeKey,
