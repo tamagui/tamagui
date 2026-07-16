@@ -127,6 +127,9 @@ export const AvatarFallbackFrame = styled(YStack, {
 })
 
 type AvatarFallbackExtraProps = {
+  /** The delay in milliseconds before the fallback renders. */
+  delay?: number
+  /** @deprecated Use `delay` instead. */
   delayMs?: number
 }
 type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & AvatarFallbackExtraProps
@@ -134,16 +137,17 @@ type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & AvatarFallback
 const AvatarFallback = createStyledHOC(AvatarFallbackFrame)<
   ScopedProps<AvatarFallbackExtraProps>
 >((props, forwardedRef) => {
-  const { __scopeAvatar, delayMs, ...fallbackProps } = props
+  const { __scopeAvatar, delay: delayProp, delayMs, ...fallbackProps } = props
   const context = useAvatarContext(FALLBACK_NAME, __scopeAvatar)
-  const [canRender, setCanRender] = React.useState(delayMs === undefined)
+  const delay = delayProp ?? delayMs
+  const [canRender, setCanRender] = React.useState(delay === undefined)
 
   React.useEffect(() => {
-    if (delayMs !== undefined) {
-      const timerId = setTimeout(() => setCanRender(true), delayMs)
+    if (delay !== undefined) {
+      const timerId = setTimeout(() => setCanRender(true), delay)
       return () => clearTimeout(timerId)
     }
-  }, [delayMs])
+  }, [delay])
 
   return canRender && context.imageLoadingStatus !== 'loaded' ? (
     <AvatarFallbackFrame {...fallbackProps} ref={forwardedRef} />
