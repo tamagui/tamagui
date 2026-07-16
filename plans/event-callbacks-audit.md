@@ -300,3 +300,35 @@ inventing a browser Event.
 7. Do we want a public `trigger` reference on details across web and native?
    The proposed `unknown | undefined` is safe, but a first-class cross-platform
    target type would need an explicit ownership and lifetime contract.
+
+## 6. Coordinator decisions (2026-07-16)
+
+Audit accepted, including keeping the preflight interaction props (section 3)
+and the ordered migration plan (section 4). Answers to section 5:
+
+1. `onOpenChangeComplete` fires for every committed component request; the
+   no-animation path completes in a microtask. Matches base-ui semantics.
+2. Ship C4 with a documented notification-only exception for native menus and
+   native AlertDialog: those paths type their details as the non-cancelable
+   `TamaguiEventDetails`, never the cancelable shape. The Zeego/alert bridge
+   (migration item 5) is a follow-up, not a C4 blocker. Honest types over
+   fake veto.
+3. `adapt-morph` as a completion reason is enough. No public
+   `onTargetChange` until a real consumer asks for it.
+4. Sheet position changes are cancelable only at settled snap points, never
+   per drag frame.
+5. Yes: the Field/Form packet changes `Form.onSubmit` to
+   `onSubmit(values, details)` (`plans/field-system.md`). v3 is the breaking
+   window; the zero-argument API does not survive.
+6. Input keeps its React Native compatibility surface exactly. The semantic
+   `onValueChange(value, details)` arrives with Field integration (F3), not
+   before.
+7. `trigger: unknown | undefined` ships as-is for v3. A first-class
+   cross-platform target type needs an ownership/lifetime contract we do not
+   want to invent speculatively.
+
+Execution: migration phases 1 and 2 (core factory + `requestChange` in
+use-controllable-state, then dismissable/focus-scope/roving-focus substrate +
+popup conformance suite) are dispatchable as one packet ahead of C4 and do
+not overlap current lane owner files. Phases 3 and 4 land with C2/C3/C4 as
+planned.
