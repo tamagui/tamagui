@@ -98,6 +98,9 @@ export type {
   MediaPropKeys,
   MediaQueries,
   MediaQueryState,
+  GenericVariables,
+  VariablesProps,
+  VariablesValues,
   RadiusTokens,
   ResolvedFontMetric,
   ResolvedFrameMetric,
@@ -158,6 +161,7 @@ export {
   FontLanguage,
   // components
   Theme,
+  Variables,
   View,
   SizeContext,
   createComponent,

@@ -20,6 +20,7 @@ import {
 import { scanAllSheets } from './helpers/insertStyleRule'
 import { proxyThemesToParents } from './helpers/proxyThemeToParents'
 import { ensureThemeVariable } from './helpers/themes'
+import { mergeConfigVariablesIntoTheme } from './helpers/variables'
 import { configureMedia } from './hooks/useMedia'
 import { parseFont, registerFontVariables } from './insertFont'
 import { Tamagui } from './Tamagui'
@@ -254,7 +255,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
     const cssRuleSets = buildCSSRuleSets(declarations, fontDeclarations, defaultFontSize)
 
     const themesIn = configIn.themes as ThemesLikeObject
-    const dedupedThemes = foundThemes ?? getThemesDeduped(themesIn, tokens.color)
+    const dedupedThemes =
+      foundThemes ??
+      getThemesDeduped(themesIn, tokens.color, configIn.variables, {
+        specificTokens,
+        tokensParsed,
+      })
     const themes = proxyThemesToParents(dedupedThemes)
 
     return {
@@ -385,7 +391,12 @@ export function createTamagui<Conf extends CreateTamaguiProps>(
 // dedupes the themes if given them via JS config
 function getThemesDeduped(
   themes: ThemesLikeObject,
-  colorTokens?: Record<string, any>
+  colorTokens?: Record<string, any>,
+  variables?: CreateTamaguiProps['variables'],
+  variablesCtx?: {
+    specificTokens: Record<string, Variable>
+    tokensParsed: TokensParsed
+  }
 ): DedupedThemes {
   const dedupedThemes: DedupedThemes = []
   const existing = new Map<string, DedupedTheme>()
@@ -424,6 +435,19 @@ function getThemesDeduped(
     for (const key in theme) {
       // make sure properly names theme variables
       ensureThemeVariable(theme, key)
+    }
+
+    // custom variables merge into base themes only; sub-themes inherit them
+    // via proxyThemesToParents (native) and the CSS cascade (web), so a
+    // <Variables> patch survives sub-theme switches below it
+    if (variables && variablesCtx && !themeName.includes('_')) {
+      mergeConfigVariablesIntoTheme(
+        theme as any,
+        themeName,
+        variables,
+        variablesCtx.specificTokens,
+        variablesCtx.tokensParsed
+      )
     }
 
     // set deduped

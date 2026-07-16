@@ -705,6 +705,13 @@ export type ConfigListener = (conf: TamaguiInternalConfig) => void
 export type VariableVal = number | string | Variable | VariableValGeneric | PxValue
 export type VariableColorVal = string | Variable
 
+// values accepted by createTamagui({ variables }) and <Variables>
+export type VariableValIn = string | number | PxValue
+
+export type GenericVariables = {
+  [key: string]: VariableValIn | { light: VariableValIn; dark: VariableValIn }
+}
+
 type GenericKey = string
 
 export type CreateTokens<Val extends VariableVal = VariableVal> = Record<
@@ -906,7 +913,7 @@ type GetLanguagePostfixes<F extends GenericFonts> = GetLanguagePostfix<keyof F>
 //   body_en: any
 // }>['fonts']
 
-type ConfProps<A, B, C, D, E, F, I> = {
+type ConfProps<A, B, C, D, E, F, I, V = undefined> = {
   tokens?: A
   themes?: B
   shorthands?: C
@@ -914,7 +921,24 @@ type ConfProps<A, B, C, D, E, F, I> = {
   animations?: E
   fonts?: F
   settings?: I
+  variables?: V
 }
+
+// config-declared custom variables become keys on every base theme, so they
+// flow into ThemeKeys/ThemeParsed and $-prop autocompletion with no separate
+// augmentation surface
+type VariableValInScheme<V> = V extends { light: infer L } ? L : V
+type ThemesWithVariables<B, V> = [V] extends [undefined]
+  ? B
+  : [keyof V] extends [never]
+    ? B
+    : {
+        [N in keyof B]: B[N] & {
+          [K in keyof V & string]: VariableValInScheme<V[K]> extends PxValue
+            ? number
+            : VariableValInScheme<V[K]>
+        }
+      }
 
 type EmptyTokens = {
   color: {}
@@ -955,10 +979,19 @@ type ExtractAnimationDriverKeys<E> =
       : 'default'
 
 export type InferTamaguiConfig<Conf> =
-  Conf extends ConfProps<infer A, infer B, infer C, infer D, infer E, infer F, infer H>
+  Conf extends ConfProps<
+    infer A,
+    infer B,
+    infer C,
+    infer D,
+    infer E,
+    infer F,
+    infer H,
+    infer V
+  >
     ? TamaguiInternalConfig<
         A extends GenericTokens ? A : EmptyTokens,
-        B extends GenericThemes ? B : EmptyThemes,
+        B extends GenericThemes ? ThemesWithVariables<B, V> : EmptyThemes,
         C extends GenericShorthands ? C : EmptyShorthands,
         D extends GenericMedia ? D : EmptyMedia,
         ExtractAnimationConfig<E>,
@@ -992,6 +1025,20 @@ export type ThemeDefinition = BaseThemeDefinitions extends never
 export type ThemeKeys = keyof ThemeDefinition
 export type ThemeParsed = {
   [key in ThemeKeys]: CoerceToVariable<ThemeDefinition[key]>
+}
+
+// <Variables> — anonymous inline theme patch (see plans/variables.md)
+export type VariablesValues = {
+  [Key in ThemeKeys]?: VariableValIn
+}
+
+export type VariablesProps = {
+  values?: VariablesValues
+  /** applied additionally when the subtree's scheme is dark */
+  dark?: VariablesValues
+  /** applied additionally when the subtree's scheme is light */
+  light?: VariablesValues
+  children?: ReactNode
 }
 
 export type Tokens = TamaguiConfig['tokens']
@@ -1398,6 +1445,15 @@ export type CreateTamaguiProps = {
       [key: string]: string | number | Variable
     }
   }
+
+  /**
+   * Custom variables: merged into every base theme at createTamagui time, so
+   * they resolve like theme keys everywhere ($name in style props, useTheme(),
+   * CSS variable emission) and can be redefined per-subtree via <Variables>.
+   * Values may reference theme keys or tokens ('$borderColor', '$space.4') or
+   * be literals; per-scheme values via { light, dark }.
+   */
+  variables?: GenericVariables
 
   settings?: Partial<GenericTamaguiSettings>
 

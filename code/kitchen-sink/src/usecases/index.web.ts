@@ -8,6 +8,7 @@
 import type { ComponentType } from 'react'
 
 const loaders: Record<string, () => ComponentType<any>> = {
+  VariablesCase: () => require('./VariablesCase').VariablesCase,
   AnimatedByProp: () => require('./AnimatedByProp').AnimatedByProp,
   LogoDotInterruptCase: () => require('./LogoDotInterruptCase').LogoDotInterruptCase,
   MotionSSRHydrationCase: () =>
