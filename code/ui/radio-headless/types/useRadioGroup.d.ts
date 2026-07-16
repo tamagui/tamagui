@@ -16,7 +16,7 @@ interface UseRadioGroupParams {
 export declare function useRadioGroup(params: UseRadioGroupParams): {
     providerValue: {
         value: string;
-        onChange: import("react").Dispatch<import("react").SetStateAction<string>>;
+        onChange: import("@tamagui/use-controllable-state").ControllableStateSetter<string, import("@tamagui/web").TamaguiChangeEventDetails>;
         required: boolean | undefined;
         disabled: boolean | undefined;
         name: string | undefined;

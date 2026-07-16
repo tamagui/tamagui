@@ -1,9 +1,8 @@
-import React from 'react';
 import type { SheetProps } from './types';
 import type { SheetControllerContextValue } from './useSheetController';
 export declare const useSheetOpenState: (props: SheetProps) => {
     open: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setOpen: import("@tamagui/use-controllable-state").ControllableStateSetter<boolean, import("@tamagui/web").TamaguiChangeEventDetails>;
     isHidden: boolean | undefined;
     controller: SheetControllerContextValue | null;
 };
