@@ -1405,6 +1405,7 @@
         "expo-splash-screen": "~55.0.10",
         "react": ">=19",
         "react-dom": "*",
+        "react-hook-form": "^7.51.0",
         "react-native": "0.83.2",
         "react-native-actions-sheet": "^10.1.2",
         "react-native-gesture-handler": "~2.30.0",
@@ -2634,6 +2635,24 @@
         "react": ">=19",
       },
     },
+    "code/ui/field": {
+      "name": "@tamagui/field",
+      "version": "2.4.6",
+      "dependencies": {
+        "@tamagui/core": "workspace:*",
+        "@tamagui/focusable": "workspace:*",
+        "@tamagui/form": "workspace:*",
+      },
+      "devDependencies": {
+        "@tamagui/build": "workspace:*",
+        "react": ">=19",
+        "react-native": "0.83.2",
+        "vitest": "4.0.4",
+      },
+      "peerDependencies": {
+        "react": ">=19",
+      },
+    },
     "code/ui/focus-guard": {
       "name": "@tamagui/focus-guard",
       "version": "2.4.6",
@@ -2688,6 +2707,7 @@
       "version": "2.4.6",
       "dependencies": {
         "@tamagui/core": "workspace:*",
+        "@tamagui/focusable": "workspace:*",
         "@tamagui/helpers": "workspace:*",
       },
       "devDependencies": {
@@ -3329,6 +3349,7 @@
         "@tamagui/element": "workspace:*",
         "@tamagui/elements": "workspace:*",
         "@tamagui/fake-react-native": "workspace:*",
+        "@tamagui/field": "workspace:*",
         "@tamagui/focusable": "workspace:*",
         "@tamagui/font-size": "workspace:*",
         "@tamagui/form": "workspace:*",
@@ -5258,6 +5279,8 @@
     "@tamagui/expo-router-starter": ["@tamagui/expo-router-starter@workspace:code/starters/expo-router"],
 
     "@tamagui/fake-react-native": ["@tamagui/fake-react-native@workspace:code/packages/fake-react-native"],
+
+    "@tamagui/field": ["@tamagui/field@workspace:code/ui/field"],
 
     "@tamagui/floating": ["@tamagui/floating@workspace:code/core/floating"],
 
