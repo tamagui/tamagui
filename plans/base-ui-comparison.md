@@ -340,12 +340,12 @@ the v3 blog post (`code/tamagui.dev/data/blog/version-three.mdx`, drafted
 
 - [ ] Blog: eventDetails callbacks (`onOpenChange(open, details)`, reasons,
       cancel) — headline breaking change, belongs in the migration section.
-- [ ] Blog + `docs/components/tabs`: activationMode now truly defaults to
+- [x] Blog + `docs/components/tabs`: activationMode now truly defaults to
       `automatic` (web-only note).
-- [ ] `docs/components/slider`: `name` now submits real form values (one
+- [x] `docs/components/slider`: `name` now submits real form values (one
       hidden input per thumb, repeated name).
-- [ ] `docs/components/separator`: web `role`/`aria-orientation` semantics.
-- [ ] `docs/components/avatar`: `delay` preferred, `delayMs` deprecated.
+- [x] `docs/components/separator`: web `role`/`aria-orientation` semantics.
+- [x] `docs/components/avatar`: `delay` preferred, `delayMs` deprecated.
 - [ ] Select `multiple` (with C3): blog section + select docs, four-path
       behavior notes per plans/select-v3-improvements.md.
 - [ ] State-attribute vocabulary + grammar modifiers (`open:`, `checked:`,
