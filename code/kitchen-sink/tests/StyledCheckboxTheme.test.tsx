@@ -11,6 +11,7 @@ test(`theme passes through createStyledHOC`, async ({ page }) => {
     return window.getComputedStyle(el)
   })
 
-  // Green theme background from themeDev
-  expect(styles.backgroundColor).toBe(`rgb(232, 242, 235)`)
+  // green theme backgroundPress: the checkbox is defaultChecked so its checked
+  // state applies $backgroundPress (was base background while $backgroundActive no-oped)
+  expect(styles.backgroundColor).toBe(`rgb(184, 209, 194)`)
 })
