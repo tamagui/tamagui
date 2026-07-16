@@ -151,6 +151,9 @@ function assertLowererContract(graph: ProjectGraph): void {
       isStyleProp(name) {
         return name === 'padding'
       },
+      canLowerDynamicStyleProp() {
+        return false
+      },
       lowerCandidate(input: LoweringCandidateInput) {
         const padding = input.element.entries.find(
           (entry) => entry.kind === 'prop' && entry.name === 'padding'

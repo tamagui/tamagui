@@ -86,7 +86,8 @@ function objectStyleProperties(className: string, style: Record<string, unknown>
 function extractedStyleArtifacts(
   split: any,
   props: Record<string, unknown>,
-  config: TamaguiInternalConfig
+  config: TamaguiInternalConfig,
+  includeRuntimeBase = true
 ): { className: string; css: string[] } {
   const callerClassName = typeof props.className === 'string' ? props.className : ''
   const viewClassName =
@@ -153,10 +154,12 @@ function extractedStyleArtifacts(
     ...buckets.media,
   ]
   const orderedSet = new Set(orderedIdentifiers)
-  const baseViewClassName = classNameWithoutCaller
-    .split(/\s+/)
-    .filter((token) => token && !orderedSet.has(token))
-    .join(' ')
+  const baseViewClassName = includeRuntimeBase
+    ? classNameWithoutCaller
+        .split(/\s+/)
+        .filter((token) => token && !orderedSet.has(token))
+        .join(' ')
+    : ''
   const css = orderedIdentifiers.flatMap((identifier) => {
     const identifierRules = cssFromRules(
       Object.fromEntries(
@@ -240,6 +243,7 @@ function compiledPropsContent(
 
 const compilerStyleProps = new Set([
   'className',
+  'style',
   'group',
   'animation',
   'animateOnly',
@@ -247,6 +251,13 @@ const compilerStyleProps = new Set([
   'animatedBy',
   'fontFamily',
   'render',
+])
+
+const runtimeAnimationProps = new Set([
+  'animation',
+  'animateOnly',
+  'animatePresence',
+  'animatedBy',
 ])
 
 const runtimeEventProps = new Set([
@@ -257,6 +268,37 @@ const runtimeEventProps = new Set([
   'onPressIn',
   'onPressOut',
 ])
+
+function styleFamily(name: string): string {
+  if (name.startsWith('padding')) return 'padding'
+  if (name.startsWith('margin')) return 'margin'
+  if (
+    name === 'top' ||
+    name === 'right' ||
+    name === 'bottom' ||
+    name === 'left' ||
+    name.startsWith('inset')
+  ) {
+    return 'inset'
+  }
+  if (name.startsWith('border')) return 'border'
+  if (name.startsWith('transform')) return 'transform'
+  if (name.startsWith('flex')) return 'flex'
+  if (name.startsWith('overflow')) return 'overflow'
+  if (name === 'gap' || name === 'rowGap' || name === 'columnGap') return 'gap'
+  if (name.includes('Shadow')) return 'shadow'
+  if (name.startsWith('background')) return 'background'
+  if (
+    name.startsWith('font') ||
+    name === 'color' ||
+    name === 'lineHeight' ||
+    name === 'letterSpacing' ||
+    name.startsWith('text')
+  ) {
+    return 'text'
+  }
+  return name
+}
 
 function isSerializableNativeStyle(value: unknown): boolean {
   if (value == null || typeof value === 'number' || typeof value === 'boolean') {
@@ -406,9 +448,63 @@ export function createTamaguiCompilerHost(
     )
   }
 
+  const directStyleName = (name: string, component: LoweringComponent): string | null => {
+    if (
+      compilerStyleProps.has(name) ||
+      name.startsWith('$') ||
+      name.endsWith('Style') ||
+      name === 'style'
+    ) {
+      return null
+    }
+    const staticConfig = component.staticConfig as StaticConfig
+    if (staticConfig.variants?.[name]) return null
+    const expanded = options.tamaguiConfig.shorthands?.[name] ?? name
+    return staticConfig.validStyles?.[expanded] ? expanded : null
+  }
+
+  const resolveSplitStyles = (
+    props: Record<string, unknown>,
+    staticConfig: StaticConfig
+  ) => {
+    const previousStatic = process.env.IS_STATIC
+    const previousTarget = process.env.TAMAGUI_TARGET
+    if (platform === 'native') {
+      process.env.IS_STATIC = 'is_static'
+    } else {
+      delete process.env.IS_STATIC
+    }
+    process.env.TAMAGUI_TARGET = platform
+    try {
+      return core.getSplitStyles(
+        props,
+        staticConfig,
+        theme,
+        firstThemeName,
+        componentState,
+        {
+          resolveValues: platform === 'native' ? 'except-theme' : 'variable',
+          noClass: platform === 'native',
+          isAnimated: false,
+        }
+      )
+    } finally {
+      if (previousStatic === undefined) delete process.env.IS_STATIC
+      else process.env.IS_STATIC = previousStatic
+      if (previousTarget === undefined) delete process.env.TAMAGUI_TARGET
+      else process.env.TAMAGUI_TARGET = previousTarget
+    }
+  }
+
   return {
     resolveComponent: resolve,
     isStyleProp,
+    canLowerDynamicStyleProp(name, component) {
+      return (
+        platform === 'web' &&
+        (runtimeAnimationProps.has(name) || !!directStyleName(name, component))
+      )
+    },
     lowerCandidate(input): LoweringCandidateResult {
       const component = input.component as TamaguiLoweringComponent
       if (!component.acceptsClassName) {
@@ -435,6 +531,12 @@ export function createTamaguiCompilerHost(
           props[entry.name] = entry.value.value
         }
       }
+      const dynamicStyleEntries = input.element.entries.filter(
+        (entry) =>
+          entry.kind === 'prop' &&
+          entry.value.kind === 'bailout' &&
+          isStyleProp(entry.name, component)
+      )
       // both platforms: web needs runtime event mapping, and a flattened bare
       // RN View silently ignores onPress/onLongPress (Tamagui wires press via
       // its responder system at runtime)
@@ -481,6 +583,118 @@ export function createTamaguiCompilerHost(
             )
           }
         }
+      }
+      const animationEntry = input.element.entries.find(
+        (entry) => entry.kind === 'prop' && runtimeAnimationProps.has(entry.name)
+      )
+      if (platform === 'web' && (dynamicStyleEntries.length > 0 || animationEntry)) {
+        const hasSpread = input.element.entries.some((entry) => entry.kind === 'spread')
+        const unsupportedRuntimeStyle = input.element.entries.find(
+          (entry) =>
+            entry.kind === 'prop' &&
+            isStyleProp(entry.name, component) &&
+            !runtimeAnimationProps.has(entry.name) &&
+            !directStyleName(entry.name, component)
+        )
+        if (!hasSpread && !unsupportedRuntimeStyle) {
+          const dynamicFamilies = new Set<string>()
+          for (const entry of dynamicStyleEntries) {
+            if (entry.kind !== 'prop') continue
+            const name = directStyleName(entry.name, component)
+            if (name) dynamicFamilies.add(styleFamily(name))
+          }
+          const staticStyleEntries = input.element.entries.filter((entry) => {
+            if (entry.kind !== 'prop' || entry.value.kind !== 'static') return false
+            const name = directStyleName(entry.name, component)
+            return !!name && !dynamicFamilies.has(styleFamily(name))
+          })
+          if (staticStyleEntries.length > 0) {
+            const partialProps: Record<string, unknown> = {}
+            for (const entry of staticStyleEntries) {
+              if (entry.kind === 'prop' && entry.value.kind === 'static') {
+                partialProps[entry.name] = entry.value.value
+              }
+            }
+            const partialStaticConfig: StaticConfig = {
+              ...component.staticConfig,
+              baseStyle: undefined,
+              defaultProps: {},
+              defaultVariants: undefined,
+              compoundVariants: [],
+              variants: {},
+            }
+            const partialSplit = resolveSplitStyles(partialProps, partialStaticConfig)
+            const partialInlineStyle = partialSplit?.viewProps?.style
+            const hasPartialInlineStyle =
+              staticObject(partialInlineStyle) &&
+              !partialInlineStyle['$$css'] &&
+              Object.keys(partialInlineStyle).length > 0
+            if (partialSplit && !hasPartialInlineStyle) {
+              const artifacts = extractedStyleArtifacts(
+                partialSplit,
+                partialProps,
+                options.tamaguiConfig,
+                false
+              )
+              if (artifacts.className) {
+                if (input.element.form !== 'jsx') {
+                  const propsContent = compiledPropsContent(
+                    input,
+                    staticStyleEntries,
+                    objectClassName(artifacts.className)
+                  )
+                  if (propsContent) {
+                    return {
+                      ok: true,
+                      edits: [
+                        {
+                          start: input.element.propsSpan!.start,
+                          end: input.element.propsSpan!.end,
+                          content: propsContent,
+                          origin: input.element.propsSpan!,
+                        },
+                      ],
+                      css: artifacts.css,
+                      imports: [],
+                      flattened: false,
+                    }
+                  }
+                } else {
+                  const [first, ...rest] = staticStyleEntries
+                  return {
+                    ok: true,
+                    edits: [
+                      {
+                        start: first!.span.start,
+                        end: first!.span.end,
+                        content: jsxClassName(artifacts.className),
+                        origin: first!.span,
+                      },
+                      ...rest.map((entry) => ({
+                        start: entry.span.start,
+                        end: entry.span.end,
+                        content: '',
+                        origin: entry.span,
+                      })),
+                    ],
+                    css: artifacts.css,
+                    imports: [],
+                    flattened: false,
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      if (dynamicStyleEntries.length > 0) {
+        const entry = dynamicStyleEntries[0]!
+        return bailout(
+          input,
+          'local/dynamic-style-value',
+          `Style prop ${entry.kind === 'prop' ? entry.name : 'unknown'} could not be safely extracted`,
+          entry.span
+        )
       }
       if (
         'animation' in props ||
@@ -550,36 +764,9 @@ export function createTamaguiCompilerHost(
         )
       }
 
-      const previousStatic = process.env.IS_STATIC
-      const previousTarget = process.env.TAMAGUI_TARGET
-      if (platform === 'native') {
-        process.env.IS_STATIC = 'is_static'
-      } else {
-        delete process.env.IS_STATIC
-      }
-      process.env.TAMAGUI_TARGET = platform
-      let split: any
       const defaultProps = core.getDefaultProps(component.staticConfig) ?? {}
       const completeProps = core.mergeProps(defaultProps, props)
-      try {
-        split = core.getSplitStyles(
-          completeProps,
-          component.staticConfig,
-          theme,
-          firstThemeName,
-          componentState,
-          {
-            resolveValues: platform === 'native' ? 'except-theme' : 'variable',
-            noClass: platform === 'native',
-            isAnimated: false,
-          }
-        )
-      } finally {
-        if (previousStatic === undefined) delete process.env.IS_STATIC
-        else process.env.IS_STATIC = previousStatic
-        if (previousTarget === undefined) delete process.env.TAMAGUI_TARGET
-        else process.env.TAMAGUI_TARGET = previousTarget
-      }
+      const split = resolveSplitStyles(completeProps, component.staticConfig)
       if (!split) {
         return bailout(
           input,
@@ -850,6 +1037,7 @@ function bailout(
   input: LoweringCandidateInput,
   code:
     | 'local/unsupported-target'
+    | 'local/dynamic-style-value'
     | 'local/unsafe-style-spread'
     | 'local/style-resolution-failed',
   message: string,
