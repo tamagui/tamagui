@@ -303,10 +303,13 @@ export const useComponentState = (
 }
 
 function hasAnimatedStyleValue(style: object) {
-  return Object.keys(style).some((k) => {
+  for (const k in style) {
     const val = style[k]
-    return val && typeof val === 'object' && '_animation' in val
-  })
+    if (val && typeof val === 'object' && '_animation' in val) {
+      return true
+    }
+  }
+  return false
 }
 
 const isDisabled = (props: any) => {

@@ -260,7 +260,6 @@ const resolveVariants: StyleResolver = (
     if (process.env.NODE_ENV === 'development' && debug === 'verbose') {
       console.info(`   expanding styles from `, variantValue, `to`, expanded)
     }
-    const next = Object.entries(expanded)
     const originalValues = styleOriginalValues.get(expanded)
 
     // store any changed font family (only support variables for now)
@@ -268,7 +267,11 @@ const resolveVariants: StyleResolver = (
       setLastFontFamilyToken(getVariableValue(fontFamilyResult))
     }
 
-    return next.map(([key, value]) => [key, value, originalValues?.[key]])
+    const next: [string, any, any][] = []
+    for (const key in expanded) {
+      next.push([key, expanded[key], originalValues?.[key]])
+    }
+    return next
   }
 }
 
@@ -359,10 +362,12 @@ const resolveTokensAndVariants: StyleResolver<object> = (
                 Object.assign(res[key], val)
                 const subOriginalValues = styleOriginalValues.get(val)
                 if (subOriginalValues) {
-                  styleOriginalValues.set(res[key], {
-                    ...styleOriginalValues.get(res[key]),
-                    ...subOriginalValues,
-                  })
+                  const existing = styleOriginalValues.get(res[key])
+                  if (existing) {
+                    Object.assign(existing, subOriginalValues)
+                  } else {
+                    styleOriginalValues.set(res[key], { ...subOriginalValues })
+                  }
                 }
               } else {
                 res[key] = val
@@ -422,10 +427,12 @@ const resolveTokensAndVariants: StyleResolver<object> = (
       Object.assign(res[subKey], subObject)
       const subOriginalValues = styleOriginalValues.get(subObject)
       if (subOriginalValues) {
-        styleOriginalValues.set(res[subKey], {
-          ...styleOriginalValues.get(res[subKey]),
-          ...subOriginalValues,
-        })
+        const existing = styleOriginalValues.get(res[subKey])
+        if (existing) {
+          Object.assign(existing, subOriginalValues)
+        } else {
+          styleOriginalValues.set(res[subKey], { ...subOriginalValues })
+        }
       }
     } else {
       // nullish values cant be tokens, need no extra parsing

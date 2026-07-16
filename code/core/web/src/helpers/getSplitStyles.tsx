@@ -2236,7 +2236,11 @@ export const getSplitStyles: StyleSplitter = (
         if (!isText) classList.push('is_View')
         else classList.push('is_Text')
         if (fontFamilyClassName) classList.push(fontFamilyClassName)
-        if (classNames) classList.push(Object.values(classNames).join(' '))
+        if (classNames) {
+          for (const key in classNames) {
+            classList.push(classNames[key])
+          }
+        }
         if (groupClassName) classList.push(groupClassName)
         // use className variable which may have been updated by tailwind preprocessing
         if (className) classList.push(className)
@@ -2319,11 +2323,14 @@ export const getSplitStyles: StyleSplitter = (
 }
 
 function mergeFlatTransforms(target: TextStyle, flatTransforms: Record<string, any>) {
-  Object.entries(flatTransforms)
-    .sort(([a], [b]) => sortString(a, b))
-    .forEach(([key, val]) => {
-      mergeTransform(target, key, val, true)
-    })
+  const keys: string[] = []
+  for (const key in flatTransforms) {
+    keys.push(key)
+  }
+  keys.sort(sortString)
+  for (const key of keys) {
+    mergeTransform(target, key, flatTransforms[key], true)
+  }
 }
 
 function mergeStyle(
@@ -2412,7 +2419,9 @@ export const getSubStyle = (
   let originalValues: Record<string, any> | undefined
   const styleInOriginalValues = styleOriginalValues.get(styleIn)
   const parentProps = styleState.props
-  styleState.props = { ...parentProps, ...styleIn }
+  // prototype-chain view instead of a spread copy: reads fall through to
+  // parentProps, avoiding an O(parentProps) allocation per sub-style
+  styleState.props = Object.assign(Object.create(parentProps), styleIn)
 
   try {
     for (let key in styleIn) {
@@ -2526,7 +2535,9 @@ export const getSubStyle = (
   }
 
   // Store original values in WeakMap instead of on the object itself
-  if (originalValues && Object.keys(originalValues).length) {
+  // (originalValues is only ever created right before a key is set, so
+  // defined implies non-empty)
+  if (originalValues) {
     styleOriginalValues.set(styleOut, originalValues)
   }
 
