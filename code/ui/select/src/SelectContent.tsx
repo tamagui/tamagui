@@ -1,4 +1,5 @@
 import { useAdaptContext, useAdaptIsActive } from '@tamagui/adapt'
+import { createChangeEventDetails } from '@tamagui/core'
 import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
@@ -13,6 +14,7 @@ import {
   useSelectItemParentContext,
 } from './context'
 import type { SelectContentProps } from './types'
+import type { SelectOpenChangeDetails } from './types'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectContent
@@ -55,20 +57,31 @@ export const SelectContent = ({
         <Dismissable
           asChild
           forceUnmount={!context.open}
-          onDismiss={() => itemParentContext.setOpen(false)}
+          onDismiss={(details) =>
+            itemParentContext.requestOpenChange(
+              false,
+              createChangeEventDetails(
+                details.reason === 'escape-key' ? 'escape-key' : 'outside-press',
+                details.event,
+                details.trigger
+              ) as SelectOpenChangeDetails
+            )
+          }
           onEscapeKeyDown={onEscapeKeyDown}
           onInteractOutside={onInteractOutside}
-          // prevent focus-outside and pointer-outside from triggering dismiss:
-          // SelectImpl has its own document pointerdown listener for outside clicks,
-          // and focus changes during open (e.g. FocusScope trapping) shouldn't dismiss.
-          // only escape key should trigger onDismiss here. user handlers run first,
-          // then we always cancel so this layer never auto-dismisses.
+          // focus changes during open should not dismiss the list
           onFocusOutside={composeEventHandlers(onFocusOutside, (e) => e.cancel(), {
             checkDefaultPrevented: false,
           })}
           onPointerDownOutside={composeEventHandlers(
             onPointerDownOutside,
-            (e) => e.cancel(),
+            (details) => {
+              const trigger = context.floatingContext?.refs?.reference?.current
+              const target = details.event?.target
+              if (trigger instanceof HTMLElement && target instanceof Node) {
+                if (trigger.contains(target)) details.cancel()
+              }
+            },
             { checkDefaultPrevented: false }
           )}
         >

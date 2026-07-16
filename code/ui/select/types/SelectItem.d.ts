@@ -3,6 +3,7 @@ import * as React from 'react';
 type SelectItemContextValue = {
     value: string;
     textId: string;
+    textValue?: string;
     isSelected: boolean;
 };
 export declare const SelectItemContextProvider: React.Provider<SelectItemContextValue> & React.ProviderExoticComponent<Partial<SelectItemContextValue> & {
@@ -11,7 +12,8 @@ export declare const SelectItemContextProvider: React.Provider<SelectItemContext
 }>, useSelectItemContext: (scope?: string) => SelectItemContextValue;
 export interface SelectItemExtraProps {
     value: string;
-    index: number;
+    /** @deprecated registry order is authoritative. this prop is accepted but inert. */
+    index?: number;
     disabled?: boolean;
     textValue?: string;
 }

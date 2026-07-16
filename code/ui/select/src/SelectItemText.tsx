@@ -32,6 +32,8 @@ export const SelectItemText = createStyledHOC(
   const composedRefs = useComposedRefs(forwardedRef, ref)
   const itemContext = useSelectItemContext(scope)
   const contents = React.useRef<React.ReactNode>(null)
+  const label = React.useRef(props.children)
+  label.current = props.children
 
   // we portal this to the selected area, which is fine to be a bit unsafe concurrently (mostly? its not changing often)...
   // until react native supports portals this is best i think
@@ -45,18 +47,12 @@ export const SelectItemText = createStyledHOC(
   )
 
   useIsomorphicLayoutEffect(() => {
-    if (itemParentContext.initialValue === itemContext.value) {
-      itemParentContext.setSelectedItem(contents.current)
-    }
-  }, [])
-
-  useIsomorphicLayoutEffect(() => {
-    return itemParentContext.valueSubscribe((val) => {
-      if (val === itemContext.value) {
-        itemParentContext.setSelectedItem(contents.current)
-      }
-    })
-  }, [itemContext.value])
+    return itemParentContext.registry.registerLabel(
+      itemContext.value,
+      label.current,
+      itemContext.textValue
+    )
+  }, [itemContext.textValue, itemContext.value, itemParentContext.registry])
 
   if (itemParentContext.shouldRenderWebNative) {
     return <>{props.children}</>

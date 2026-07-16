@@ -1,10 +1,17 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { createStyledHOC, styled, View, type GetProps } from '@tamagui/core'
+import { isWeb } from '@tamagui/constants'
+import {
+  createChangeEventDetails,
+  createStyledHOC,
+  styled,
+  View,
+  type GetProps,
+} from '@tamagui/core'
 import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
 
 import { useSelectContext, useSelectItemParentContext } from './context'
-import type { SelectScopedProps } from './types'
+import type { SelectOpenChangeDetails, SelectScopedProps } from './types'
 
 const TRIGGER_NAME = 'SelectTrigger'
 
@@ -36,9 +43,19 @@ export const SelectTrigger = createStyledHOC(SelectTriggerFrame)<{ scope?: strin
       return null
     }
 
-    const toggleOpen = () => {
+    const toggleOpen = (
+      event?: any,
+      reason: 'trigger-press' | 'keyboard' = 'trigger-press'
+    ) => {
       if (!disabled) {
-        itemParentContext.setOpen(!context.open)
+        itemParentContext.requestOpenChange(
+          !context.open,
+          createChangeEventDetails(
+            reason,
+            (event?.nativeEvent || event) as Event | undefined,
+            event?.currentTarget
+          ) as SelectOpenChangeDetails
+        )
       }
     }
     const interactionProps =
@@ -52,16 +69,37 @@ export const SelectTrigger = createStyledHOC(SelectTriggerFrame)<{ scope?: strin
               : {
                   onMouseDown: composeEventHandlers(
                     triggerProps.onMouseDown as any,
-                    () => {
+                    (event: any) => {
                       context.floatingContext?.update?.()
-                      toggleOpen()
+                      toggleOpen(event)
                     }
                   ),
                 }),
           } as any)
         : {
             ...triggerProps,
-            onPress: composeEventHandlers(triggerProps.onPress as any, toggleOpen),
+            ...(isWeb
+              ? {
+                  onMouseDown: composeEventHandlers(
+                    triggerProps.onMouseDown as any,
+                    (event: any) => {
+                      event.preventDefault()
+                      toggleOpen(event)
+                    }
+                  ),
+                }
+              : {
+                  onPress: composeEventHandlers(triggerProps.onPress as any, toggleOpen),
+                }),
+            onKeyDown: composeEventHandlers(
+              triggerProps.onKeyDown as any,
+              (event: any) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault()
+                  toggleOpen(event, 'keyboard')
+                }
+              }
+            ),
           }
 
     return (
@@ -75,6 +113,8 @@ export const SelectTrigger = createStyledHOC(SelectTriggerFrame)<{ scope?: strin
           'data-state': context.open ? 'open' : 'closed',
         })}
         aria-autocomplete="none"
+        accessibilityRole={isWeb ? undefined : 'button'}
+        accessibilityState={isWeb ? undefined : { expanded: context.open, disabled }}
         dir={context.dir}
         disabled={disabled}
         data-disabled={disabled ? '' : undefined}

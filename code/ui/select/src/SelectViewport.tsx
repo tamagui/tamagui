@@ -14,6 +14,7 @@ import {
   useSelectItemParentContext,
 } from './context'
 import type { SelectViewportExtraProps } from './types'
+import { getSelectListboxProps } from './selectionController'
 
 /* -------------------------------------------------------------------------------------------------
  * SelectViewport
@@ -47,7 +48,7 @@ export const SelectViewport = createStyledHOC(
   }, [context.lazyMount, context.open, lazyMounted])
 
   const composedRefs = useComposedRefs(
-    // @ts-ignore TODO react 19 type needs fix
+    // @ts-ignore react 19 ref type mismatch
     forwardedRef,
     context.floatingContext?.refs.setFloating as any
   )
@@ -72,7 +73,12 @@ export const SelectViewport = createStyledHOC(
 
   if (isAdapted || !isWeb) {
     let content = (
-      <SelectViewportFrame {...viewportProps} data-select-viewport="" ref={composedRefs}>
+      <SelectViewportFrame
+        {...viewportProps}
+        {...(isWeb ? (getSelectListboxProps(itemContext.mode) as any) : {})}
+        data-select-viewport=""
+        ref={composedRefs}
+      >
         {lazyMounted ? children : null}
       </SelectViewportFrame>
     )
@@ -89,10 +95,6 @@ export const SelectViewport = createStyledHOC(
   }
 
   if (!itemContext.interactions) {
-    if (process.env.NODE_ENV === 'development') {
-      console.warn(`No interactions provided to Select, potentially missing Adapt`)
-    }
-
     return null
   }
 
@@ -118,7 +120,6 @@ export const SelectViewport = createStyledHOC(
         {context.open ? (
           <SelectViewportFrame
             key="select-viewport"
-            role="presentation"
             data-select-viewport=""
             {...(isWeb && {
               'data-state': context.open ? 'open' : 'closed',
@@ -126,6 +127,7 @@ export const SelectViewport = createStyledHOC(
             {...viewportProps}
             {...style}
             {...floatingProps}
+            {...getSelectListboxProps(itemContext.mode)}
             overflowY={disableScroll ? undefined : (style.overflow ?? 'auto')}
             ref={composedRefs}
           >

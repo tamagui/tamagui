@@ -1,4 +1,9 @@
-import { AdaptContext, AdaptPortalContents, useAdaptContext } from '@tamagui/adapt'
+import {
+  AdaptContext,
+  AdaptPortalContents,
+  useAdaptContext,
+  useAdaptIsActive,
+} from '@tamagui/adapt'
 import { createStyledHOC, styled, Theme, useThemeName, View } from '@tamagui/core'
 
 import { VIEWPORT_NAME } from './constants'
@@ -25,6 +30,7 @@ export const SelectViewport = createStyledHOC(
   const itemParentContext = useSelectItemParentContext(scope)
   const themeName = useThemeName()
   const adaptContext = useAdaptContext()
+  const isAdapted = useAdaptIsActive(context.adaptScope)
 
   const contents = (
     <Theme name={themeName}>
@@ -43,7 +49,11 @@ export const SelectViewport = createStyledHOC(
     return <SelectViewportFrame display="none">{contents}</SelectViewportFrame>
   }
 
-  return <AdaptPortalContents scope={context.adaptScope}>{contents}</AdaptPortalContents>
+  return isAdapted ? (
+    <AdaptPortalContents scope={context.adaptScope}>{contents}</AdaptPortalContents>
+  ) : (
+    contents
+  )
 })
 
 SelectViewport.displayName = VIEWPORT_NAME

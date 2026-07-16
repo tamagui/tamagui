@@ -72,18 +72,20 @@ const SelectViewport = styled(SelectBehavior.Viewport, {
   p: 4,
 })
 
-type SelectRootProps<Value extends string> = Omit<
-  SelectScopedProps<SelectBehaviorProps<Value>>,
-  'size'
-> & { size?: SelectSize }
+type SelectRootProps<
+  Value extends string,
+  Multiple extends boolean | undefined = false,
+> = Omit<SelectScopedProps<SelectBehaviorProps<Value, Multiple>>, 'size'> & {
+  size?: SelectSize
+}
 
-function SelectRoot<Value extends string = string>({
-  size = selectSizes.defaultSize,
-  ...props
-}: SelectRootProps<Value>) {
+function SelectRoot<
+  Value extends string = string,
+  Multiple extends boolean | undefined = false,
+>({ size = selectSizes.defaultSize, ...props }: SelectRootProps<Value, Multiple>) {
   return (
     <selectSizes.Context.Provider size={size}>
-      <SelectBehavior.Root {...props} />
+      <SelectBehavior.Root<Value, Multiple> {...props} />
     </selectSizes.Context.Provider>
   )
 }
