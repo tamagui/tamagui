@@ -352,8 +352,9 @@ icons/fonts are lean metadata, not glyph payloads.
   Post-merge fix `d854f8fa1f`: Tab activeStyle must spread after props to beat
   styled() skin base styles. Validation: root build 164 pkgs, core-test 370 native +
   674 web green, kitchen-sink default suite green for everything owned by this lane
-  (600 pass; the 5 remaining Select failures bisect to the later popup
-  interaction-details re-land `af5e1256a2`, reported to that lane).
+  (600 pass; the 5 remaining Select failures bisected to the later popup
+  interaction-details re-land `af5e1256a2` — fixed by that lane in `09a136e996`,
+  cancel() now vetoes the state change only instead of native preventDefault).
 - **Warning for future validation runs**: turbo restored stale dist from cache after
   the merge (dismissable predated its own src) — use `bun run build:js` (--force)
   before trusting playwright results; don't rebuild packages or bun install while a
