@@ -12,12 +12,15 @@ export declare const AvatarFallbackFrame: import("@tamagui/core").TamaguiCompone
     elevation?: number | SizeTokens | undefined;
 }, import("@tamagui/core").StaticConfigPublic>;
 type AvatarFallbackExtraProps = {
+    /** The delay in milliseconds before the fallback renders. */
+    delay?: number;
+    /** @deprecated Use `delay` instead. */
     delayMs?: number;
 };
 type AvatarFallbackProps = GetProps<typeof AvatarFallbackFrame> & AvatarFallbackExtraProps;
 declare const AvatarFallback: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     elevation?: number | SizeTokens | undefined;
-}>, "delayMs" | "__scopeAvatar"> & AvatarFallbackExtraProps & {
+}>, keyof AvatarFallbackExtraProps | "__scopeAvatar"> & AvatarFallbackExtraProps & {
     __scopeAvatar?: Scope;
 }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & AvatarFallbackExtraProps & {
     __scopeAvatar?: Scope;
@@ -82,7 +85,7 @@ declare const Avatar: ((props: Omit<import("@tamagui/core").RNTamaguiViewNonStyl
     Image: import("@tamagui/core").RefComponent<TamaguiElement, AvatarImageProps>;
     Fallback: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         elevation?: number | SizeTokens | undefined;
-    }>, "delayMs" | "__scopeAvatar"> & AvatarFallbackExtraProps & {
+    }>, keyof AvatarFallbackExtraProps | "__scopeAvatar"> & AvatarFallbackExtraProps & {
         __scopeAvatar?: Scope;
     }, TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps & AvatarFallbackExtraProps & {
         __scopeAvatar?: Scope;
