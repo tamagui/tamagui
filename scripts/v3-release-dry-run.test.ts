@@ -11,6 +11,7 @@ import {
   auditExtractedPackage,
   createIsolatedCanaryManifest,
   createTemporaryPackManifest,
+  DEFAULT_DELETED_PACKAGE_REFS,
   discoverPublicWorkspacePackages,
   expandInternalPackageClosure,
   exportSpecifiers,
@@ -180,17 +181,19 @@ describe('G1 temporary manifests', () => {
         '/repo'
       )
     ).toThrow(/unresolved workspace/)
-    expect(() =>
-      createTemporaryPackManifest(
-        {
-          name: 'bad',
-          version: '1.0.0',
-          dependencies: { '@tamagui/sizable-context': '1.0.0' },
-        },
-        new Map(),
-        '/repo'
-      )
-    ).toThrow(/deleted/)
+    for (const deletedPackage of DEFAULT_DELETED_PACKAGE_REFS) {
+      expect(() =>
+        createTemporaryPackManifest(
+          {
+            name: 'bad',
+            version: '1.0.0',
+            dependencies: { [deletedPackage]: '1.0.0' },
+          },
+          new Map(),
+          '/repo'
+        )
+      ).toThrow(/deleted/)
+    }
     expect(() =>
       assertInternalDependenciesArePacked(
         {
@@ -314,11 +317,14 @@ describe('G1 tarball audits', () => {
         {},
         /workspace/,
       ],
-      [
-        { name: 'bad', version: '1.0.0' },
-        { 'dist/index.mjs': `import '@tamagui/sizable-context'` },
-        /deleted/,
-      ],
+      ...DEFAULT_DELETED_PACKAGE_REFS.map(
+        (deletedPackage) =>
+          [
+            { name: 'bad', version: '1.0.0' },
+            { 'dist/index.mjs': `import '${deletedPackage}'` },
+            /deleted/,
+          ] as [PackageManifest, Record<string, string>, RegExp]
+      ),
       [
         { name: 'bad', version: '1.0.0' },
         { 'dist/index.mjs': `import '@tamagui/core/src/config'` },

@@ -25,6 +25,15 @@ npx tamagui check
 Then install the v3 versions with your package manager and make sure your lockfile
 does not contain duplicate `@tamagui/core`, `@tamagui/web`, or `tamagui` copies.
 
+Remove tooling packages that no longer exist in v3:
+
+| Removed package            | Migration                                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `@tamagui/babel-plugin`    | Use `@tamagui/vite-plugin`, `@tamagui/metro-plugin`, or the `tamagui build` precompile command for Turbopack. |
+| `@tamagui/sizable-context` | Use the opt-in primitives from `@tamagui/size`.                                                               |
+| `@tamagui/static-sync`     | Remove direct imports. Compiler sessions are owned by the supported bundler adapters.                         |
+| `@tamagui/static-worker`   | Remove direct imports. Metro owns its graph/cache workers through `@tamagui/metro-plugin`.                    |
+
 In monorepos, keep resolutions/overrides aligned:
 
 ```json

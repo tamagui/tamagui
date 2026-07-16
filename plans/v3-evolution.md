@@ -685,6 +685,10 @@ Prove web dev/HMR, web production/SSR/hydration, native Metro bundle/runtime,
 typecheck, package exports, and exact style values. This canary is the final
 acceptance surface; unit suites cannot substitute for it.
 
+The native gate must run both a real Metro production export and the native runtime
+assertions. Compile-only DOM remains excluded by the plan's scope and is not a G0
+requirement.
+
 ### G1 — release dry run
 
 On the integrated release-staging tree:

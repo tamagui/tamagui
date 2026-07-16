@@ -69,7 +69,13 @@ export const RUNTIME_DEPENDENCY_FIELDS = [
   'optionalDependencies',
 ] as const
 
-export const DEFAULT_DELETED_PACKAGE_REFS = ['@tamagui/sizable-context'] as const
+export const DEFAULT_DELETED_PACKAGE_REFS = [
+  '@tamagui/animations-moti',
+  '@tamagui/babel-plugin',
+  '@tamagui/sizable-context',
+  '@tamagui/static-sync',
+  '@tamagui/static-worker',
+] as const
 
 const forbiddenInventorySegments = new Set([
   '.cache',

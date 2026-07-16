@@ -4,6 +4,8 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "g0:web": "bun run typecheck && bun run test:web",
+    "g0:native": "bun run native:export && bun run test:native",
     "typecheck": "tsc --noEmit",
     "test:native": "TAMAGUI_TARGET=native NODE_ENV=test bun -e \"const path = require('node:path'); await import(path.join(path.dirname(require.resolve('vitest-native/package.json')), 'vitest.mjs'))\" -- --run --config vitest.config.ts tests/native-runtime.test.tsx",
     "web:dev": "NODE_ENV=development vite --host 127.0.0.1 --clearScreen false",
