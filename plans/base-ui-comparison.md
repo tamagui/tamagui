@@ -346,7 +346,7 @@ the v3 blog post (`code/tamagui.dev/data/blog/version-three.mdx`, drafted
       hidden input per thumb, repeated name).
 - [x] `docs/components/separator`: web `role`/`aria-orientation` semantics.
 - [x] `docs/components/avatar`: `delay` preferred, `delayMs` deprecated.
-- [ ] Select `multiple` (with C3): blog section + select docs, four-path
+- [x] Select `multiple` (with C3): blog section + select docs, four-path
       behavior notes per plans/select-v3-improvements.md.
 - [ ] State-attribute vocabulary + grammar modifiers (`open:`, `checked:`,
       `invalid:`) when they land: blog (tailwind-mode section) + a styling

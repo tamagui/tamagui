@@ -24,3 +24,16 @@ Targeted CI: `.github/workflows/test-targeted.yml` (workflow_dispatch, one
 playwright filter on ubuntu). Any `v*` branch push triggers the full Detox
 matrix; `v3-*` also triggers Maestro iOS. Mind the shared 60/hr gh API
 budget: fetch logs once to a file, never `gh run watch`.
+
+## Update (2026-07-16, post select-multiple)
+
+- The `SelectBehavior.Root` typecheck failure is FIXED by the select-multiple
+  packet's C3 behavior controller (integrated on v3-beta).
+- Remaining pre-existing Checks failure: `@tamagui/to-tailwind` missing
+  tsconfig (A lane).
+- Android Detox cannot launch any suite (shared AppCompat theme
+  misconfiguration, 24 suites, repo-wide) — needs an owner for a dedicated
+  fix packet.
+- `test-targeted.yml` workflow_dispatch returns 404 until the workflow file
+  exists on the DEFAULT branch (main) — GitHub requirement. Landing it on
+  main is owner-gated; until then push v3-ci-* branches for full runs.
