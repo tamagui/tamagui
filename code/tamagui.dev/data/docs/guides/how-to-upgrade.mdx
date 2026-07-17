@@ -176,14 +176,14 @@ upgrading, use the size values your components actually expose rather than
 passing a raw space token:
 
 ```tsx
-// styled component — use its own size scale
+// styled component: use its own size scale
 import { Button } from 'tamagui'
 
 <Button size="medium" />
 ```
 
 If you also adopt the unstyled primitives from `@tamagui/ui`, those own no size
-scale at all — you provide sizing yourself or through your copied styles.
+scale at all, so you provide sizing yourself or through your copied styles.
 
 Search both code and config files:
 
@@ -350,7 +350,8 @@ are inert on native.
 
 Removed from `Select` root:
 
-- `autoComplete` — it never drove autofill in the custom Select, so delete it.
+- `autoComplete` was removed. It never drove autofill in the custom Select, so
+  delete it.
 
 Added or expanded:
 
