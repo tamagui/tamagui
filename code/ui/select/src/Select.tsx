@@ -235,63 +235,62 @@ const NativeSelect = NativeSelectFrame as any
 
 type SelectGroupProps = SelectScopedProps<GetProps<typeof SelectGroupFrame>>
 
-export const SelectGroup = createStyledHOC(SelectGroupFrame)<{ scope?: string }>((
-  props,
-  forwardedRef
-) => {
-  const { scope, ...groupProps } = props
-  const groupId = React.useId()
+export const SelectGroup = createStyledHOC(SelectGroupFrame)<{ scope?: string }>(
+  (props, forwardedRef) => {
+    const { scope, ...groupProps } = props
+    const groupId = React.useId()
 
-  const context = useSelectContext(scope)
-  const itemParentContext = useSelectItemParentContext(scope)
-  const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
+    const context = useSelectContext(scope)
+    const itemParentContext = useSelectItemParentContext(scope)
+    const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
 
-  const content = (() => {
-    if (itemParentContext.shouldRenderWebNative) {
+    const content = (() => {
+      if (itemParentContext.shouldRenderWebNative) {
+        return (
+          <NativeSelect
+            {...groupProps}
+            // @ts-ignore it's ok since render="select"
+            value={context.value}
+            multiple={context.mode === 'multiple'}
+            name={itemParentContext.name}
+            form={itemParentContext.form}
+            id={itemParentContext.id}
+            onChange={
+              ((event: React.ChangeEvent<HTMLSelectElement>) => {
+                const value =
+                  context.mode === 'multiple'
+                    ? Array.from(
+                        event.currentTarget.selectedOptions,
+                        (option) => option.value
+                      )
+                    : event.currentTarget.value
+                itemParentContext.changeNativeValue(value, event.nativeEvent)
+              }) as any
+            }
+            ref={nativeSelectRef as any}
+          >
+            {props.children}
+          </NativeSelect>
+        )
+      }
       return (
-        <NativeSelect
+        <SelectGroupFrame
+          // @ts-ignore
+          role="group"
+          aria-labelledby={groupId}
           {...groupProps}
-          // @ts-ignore it's ok since render="select"
-          value={context.value}
-          multiple={context.mode === 'multiple'}
-          name={itemParentContext.name}
-          form={itemParentContext.form}
-          id={itemParentContext.id}
-          onChange={
-            ((event: React.ChangeEvent<HTMLSelectElement>) => {
-              const value =
-                context.mode === 'multiple'
-                  ? Array.from(
-                      event.currentTarget.selectedOptions,
-                      (option) => option.value
-                    )
-                  : event.currentTarget.value
-              itemParentContext.changeNativeValue(value, event.nativeEvent)
-            }) as any
-          }
-          ref={nativeSelectRef as any}
-        >
-          {props.children}
-        </NativeSelect>
+          ref={forwardedRef}
+        />
       )
-    }
-    return (
-      <SelectGroupFrame
-        // @ts-ignore
-        role="group"
-        aria-labelledby={groupId}
-        {...groupProps}
-        ref={forwardedRef}
-      />
-    )
-  })()
+    })()
 
-  return (
-    <SelectGroupContextProvider scope={scope} id={groupId || ''}>
-      {content}
-    </SelectGroupContextProvider>
-  )
-})
+    return (
+      <SelectGroupContextProvider scope={scope} id={groupId || ''}>
+        {content}
+      </SelectGroupContextProvider>
+    )
+  }
+)
 
 SelectGroup.displayName = GROUP_NAME
 
@@ -307,27 +306,26 @@ export const SelectLabelFrame = styled(Text, {
 
 export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFrame>>
 
-export const SelectLabel = createStyledHOC(SelectLabelFrame)<{ scope?: any }>((
-  props: SelectLabelProps,
-  forwardedRef
-) => {
-  const { scope, ...labelProps } = props
-  const context = useSelectItemParentContext(scope)
-  const groupContext = useSelectGroupContext(scope)
+export const SelectLabel = createStyledHOC(SelectLabelFrame)<{ scope?: any }>(
+  (props: SelectLabelProps, forwardedRef) => {
+    const { scope, ...labelProps } = props
+    const context = useSelectItemParentContext(scope)
+    const groupContext = useSelectGroupContext(scope)
 
-  if (context.shouldRenderWebNative) {
-    return null
+    if (context.shouldRenderWebNative) {
+      return null
+    }
+
+    return (
+      <SelectLabelFrame
+        render="div"
+        id={groupContext.id}
+        {...labelProps}
+        ref={forwardedRef}
+      />
+    )
   }
-
-  return (
-    <SelectLabelFrame
-      render="div"
-      id={groupContext.id}
-      {...labelProps}
-      ref={forwardedRef}
-    />
-  )
-})
+)
 
 /* -------------------------------------------------------------------------------------------------
  * SelectSeparator
