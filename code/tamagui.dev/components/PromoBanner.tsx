@@ -1,14 +1,6 @@
 import { ChevronRight } from '@tamagui/lucide-icons-2'
 import { memo, useEffect, useState } from 'react'
-import {
-  Paragraph,
-  ScrollView,
-  Separator,
-  Spacer,
-  TooltipSimple,
-  XGroup,
-  XStack,
-} from 'tamagui'
+import { Paragraph, ScrollView, Spacer, TooltipSimple, XGroup, XStack } from 'tamagui'
 import { Button } from '~/components/Button'
 import { Link } from '~/components/Link'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
@@ -77,7 +69,7 @@ export const PromoBanner = () => {
           }}
         >
           <XStack flex={1} items="center" gap="$4" px="$4" py="$2">
-            <XStack items="center" gap="$4">
+            <XStack items="center" gap="$2">
               <Link href="/">
                 <Button
                   variant="quiet"
@@ -87,38 +79,7 @@ export const PromoBanner = () => {
                   scaleIcon={1.5}
                 />
               </Link>
-
-              <TooltipSimple label="Tamagui 2 is here! It's a massive new release »">
-                <Link href="/blog/version-two">
-                  <Paragraph
-                    size="$2"
-                    color="$color11"
-                    hoverStyle={{ color: '$color12' }}
-                    cursor="pointer"
-                    ellipsis
-                  >
-                    Version 2 is here 🎉
-                  </Paragraph>
-                </Link>
-              </TooltipSimple>
-
-              <Separator vertical height={16} borderColor="$color5" />
-
-              <TooltipSimple label="Ever wished there was a Rails for cross-platform React?">
-                <Link href="/takeout">
-                  <Paragraph
-                    size="$2"
-                    color="$color10"
-                    hoverStyle={{ color: '$color11' }}
-                    cursor="pointer"
-                    ellipsis
-                  >
-                    Takeout 2 is here, too!
-                  </Paragraph>
-                </Link>
-              </TooltipSimple>
-
-              {/* <Separator vertical height={16} borderColor="$color5" /> */}
+              <XStack id="docs-version-picker-slot" items="center" />
             </XStack>
 
             <Spacer flex={1} />
