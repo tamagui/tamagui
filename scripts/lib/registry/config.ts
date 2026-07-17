@@ -24,7 +24,7 @@ export const USE_REAL_SKIN_SOURCE = false
 
 // TODO(W4): real root pending the styled=unstyled+skin extraction mechanism.
 export const skinSourceRoot = USE_REAL_SKIN_SOURCE
-  ? join(repoRoot, 'code/ui/tamagui/src')
+  ? join(repoRoot, 'code/ui/tamagui/src/components')
   : join(repoRoot, 'registry/__fixtures__/skins/src')
 
 // where generated registry artifacts are written (checked in, served in CI)

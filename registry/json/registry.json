@@ -16,14 +16,9 @@
         "controls"
       ],
       "meta": {
-        "native": {
-          "notes": "Icons come from @tamagui/lucide-icons-2; no native config plugin required."
-        },
-        "peerDependencies": {
-          "react": "*",
-          "react-native": "*",
-          "tamagui": "*"
-        },
+        "native": [
+          "no native config plugin required"
+        ],
         "tokens": [
           "$background",
           "$backgroundHover",

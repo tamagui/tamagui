@@ -20,12 +20,5 @@ export const manifest = {
     '$outlineColor',
   ],
   themes: ['accent'],
-  peerDependencies: {
-    react: '*',
-    'react-native': '*',
-    tamagui: '*',
-  },
-  native: {
-    notes: 'Icons come from @tamagui/lucide-icons-2; no native config plugin required.',
-  },
+  native: ['no native config plugin required'],
 } satisfies SkinManifest

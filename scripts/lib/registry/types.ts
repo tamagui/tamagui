@@ -91,18 +91,19 @@ export type SkinManifest = {
   type?: RegistryItemType
   /** human title override. defaults to the skin file basename (e.g. 'Button'). */
   title?: string
-  /** shadcn registry categories (e.g. ['controls', 'form']). */
+  /** shadcn registry categories (e.g. ['form', 'overlay']). */
   categories?: string[]
-  /** native / expo requirements that cannot be derived from imports. */
-  native?: {
-    /** extra expo packages the skin needs at runtime on native. */
-    expo?: string[]
-    /** skin needs a native config plugin / prebuild step to work. */
-    requiresConfigPlugin?: boolean
-    notes?: string
-  }
-  /** peer deps the consumer app must already provide (react, react-native, a tamagui config). */
-  peerDependencies?: Record<string, string>
+  /**
+   * native-platform requirements a consumer must satisfy on React Native,
+   * free-form and human-readable (e.g. "wrap the app in a Portal provider").
+   * cannot be derived from imports.
+   */
+  native?: string[]
+  /**
+   * npm peer dependencies the copied source needs that are NOT inferable from
+   * the skin's imports (e.g. 'react-native-safe-area-context').
+   */
+  peerDependencies?: string[]
   /** token assumptions: tokens the skin references and expects in the theme/config. */
   tokens?: string[]
   /** theme assumptions: named themes/sub-themes the skin expects (e.g. 'accent'). */

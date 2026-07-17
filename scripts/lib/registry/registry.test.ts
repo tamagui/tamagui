@@ -109,14 +109,14 @@ styled(F, { name: 'ComboFrame' })
       description: 'b',
       tokens: ['$background'],
       themes: ['accent'],
-      native: { requiresConfigPlugin: true },
-      peerDependencies: { react: '*' },
+      native: ['requires a Portal provider'],
+      peerDependencies: ['react-native-safe-area-context'],
       categories: ['controls'],
     }
     const item = buildItem(skin, new Set(['B']))
     expect(item.meta).toEqual({
-      native: { requiresConfigPlugin: true },
-      peerDependencies: { react: '*' },
+      native: ['requires a Portal provider'],
+      peerDependencies: ['react-native-safe-area-context'],
       tokens: ['$background'],
       themes: ['accent'],
     })

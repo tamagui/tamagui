@@ -17,11 +17,18 @@ export type Skin = {
   manifest: SkinManifest
 }
 
-// discover every skin: a `<Component>.tsx` in skinSourceRoot (excluding index)
-// paired with a co-located `<Component>.manifest.ts`.
+// discover every skin: a `<Component>.tsx` in skinSourceRoot, paired with a
+// co-located `<Component>.manifest.ts`. excludes the barrel (`index.tsx`), any
+// manifest file (`*.manifest.*`), and the shared type file (`registry-manifest.ts`).
 export function discoverSkins(): string[] {
   return readdirSync(skinSourceRoot)
-    .filter((f) => f.endsWith('.tsx') && f !== 'index.tsx')
+    .filter(
+      (f) =>
+        f.endsWith('.tsx') &&
+        f !== 'index.tsx' &&
+        !f.includes('.manifest.') &&
+        !f.startsWith('registry-manifest.')
+    )
     .map((f) => basename(f, '.tsx'))
     .sort()
 }
