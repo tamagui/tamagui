@@ -32,13 +32,14 @@
     "@tamagui/vite-plugin": "workspace:*",
     "@types/node": "^22.1.0",
     "@types/react": "~19.1.10",
+    "@types/react-dom": "~19.1.7",
     "@vitejs/plugin-react": "^6.0.0",
     "babel-preset-expo": "~55.0.0",
     "react-test-renderer": "^19.0.0",
     "tailwindcss": "4.3.0",
     "typescript": "~5.9.2",
     "vite": "^8.0.3",
-    "vitest": "4.0.4",
+    "vitest": "4.1.0",
     "vitest-native": "npm:vitest@4.1.0"
   }
 }
