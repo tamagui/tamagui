@@ -455,7 +455,9 @@ export function getMergedInlineTheme(
     }
   }
 
-  if (!didOverride && !existingInfo) {
+  // nothing applied: hand back the base unchanged (for a nested layer the
+  // base is the outer merged theme, which is exactly right)
+  if (!didOverride) {
     return parentTheme
   }
 

@@ -346,13 +346,16 @@ const getSnapshotImpl = (r: SnapshotRef): ThemeState => {
   )
 
   // <Variables> inline theme layer: swap in the merged theme so descendants
-  // (which read states.get(parentId).theme) see the patched values. Merged
-  // objects are identity-cached per (parent theme, values, scheme) and the
-  // merge is idempotent, so bailouts stay stable.
+  // (which read states.get(parentId).theme) see the patched values. The base
+  // is always the PARENT state's theme, never this state's own theme —
+  // getNextState can return our previous (already-merged) state, and merging
+  // over own output would keep removed patch keys alive. Merged objects are
+  // identity-cached per (base theme, values, scheme) so bailouts stay stable.
   let next = nextRaw
   if (props.inlineValues && nextRaw?.theme) {
+    const parentTheme = states.get(parentId)?.theme || nextRaw.theme
     const merged = getMergedInlineTheme(
-      nextRaw.theme,
+      parentTheme,
       props.inlineValues,
       nextRaw.scheme,
       getConfig()
