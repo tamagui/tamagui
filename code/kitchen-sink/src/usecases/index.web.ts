@@ -251,6 +251,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   ToggleGroupXGroupCase: () => require('./ToggleGroupXGroupCase').ToggleGroupXGroupCase,
   ToggleGroupFilledActiveCase: () =>
     require('./ToggleGroupFilledActiveCase').ToggleGroupFilledActiveCase,
+  AccordionDefaultOpenCase: () =>
+    require('./AccordionDefaultOpenCase').AccordionDefaultOpenCase,
   TooltipAnimationCase: () => require('./TooltipAnimationCase').TooltipAnimationCase,
   TooltipCase: () => require('./TooltipCase').TooltipCase,
   TooltipGlobalPatternCase: () =>

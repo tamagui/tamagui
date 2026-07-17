@@ -584,21 +584,19 @@ const HeightAnimator = View.styleable((props, ref) => {
   const [measuredHeight, setMeasuredHeight] = React.useState<number>(0)
   const hasMeasured = measuredHeight > 0
 
-  // when open and not measured yet, use auto so SSR shows content
-  // once measured, use numeric height for animations
-  const height = itemContext.open ? (hasMeasured ? measuredHeight : 'auto') : 0
-
-  // for SSR: when open but not yet measured, use static positioning so content
-  // contributes to parent height. after measurement, use absolute for animations.
-  const shouldAbsolutePosition = hasMeasured || !itemContext.open
+  // closed -> 0; open + measured -> the numeric content height (this is what the
+  // animation driver tweens). open before the first measurement (SSR / first client
+  // paint) -> undefined, so the in-flow content shows at its natural height.
+  //
+  // never use 'auto' here: with a transition set, the animation driver writes height
+  // as an inline style and cannot tween out of the non-numeric 'auto', so the wrapper
+  // freezes at height:auto (which collapses to 0 once the content is measured). that
+  // left the item stuck closed with its content spilling below the last item.
+  const height = itemContext.open ? (hasMeasured ? measuredHeight : undefined) : 0
 
   return (
-    <View ref={ref} height={height} position="relative" {...rest}>
+    <View ref={ref} height={height} overflow="hidden" {...rest}>
       <View
-        position={shouldAbsolutePosition ? 'absolute' : 'relative'}
-        top={shouldAbsolutePosition ? 0 : undefined}
-        left={shouldAbsolutePosition ? 0 : undefined}
-        right={shouldAbsolutePosition ? 0 : undefined}
         onLayout={({ nativeEvent }) => {
           if (nativeEvent.layout.height && nativeEvent.layout.height !== measuredHeight) {
             setMeasuredHeight(nativeEvent.layout.height)
