@@ -173,7 +173,7 @@ function HeavyItems({ seed }: { seed: number }) {
   }, [seed])
 }
 
-// ── scenario 5: animated (always deopts — animation prop) ──
+// ── scenario 5: animated (always deopts — transition prop) ──
 
 function AnimatedItems({ seed }: { seed: number }) {
   return useMemo(() => {
@@ -182,7 +182,7 @@ function AnimatedItems({ seed }: { seed: number }) {
       arr.push(
         <View
           key={i + seed * ITEM_COUNT}
-          animation="bouncy"
+          transition="bouncy"
           width={24}
           height={24}
           borderRadius={4}

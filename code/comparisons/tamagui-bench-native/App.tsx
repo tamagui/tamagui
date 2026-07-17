@@ -195,7 +195,7 @@ function AnimatedItems({ seed }: { seed: number }) {
       arr.push(
         <View
           key={i + seed * ITEM_COUNT}
-          animation="bouncy"
+          transition="bouncy"
           width={24}
           height={24}
           borderRadius={4}
