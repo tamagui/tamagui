@@ -249,6 +249,8 @@ const loaders: Record<string, () => ComponentType<any>> = {
   ToggleGroupActiveProps: () =>
     require('./ToggleGroupActiveProps').ToggleGroupActiveProps,
   ToggleGroupXGroupCase: () => require('./ToggleGroupXGroupCase').ToggleGroupXGroupCase,
+  ToggleGroupFilledActiveCase: () =>
+    require('./ToggleGroupFilledActiveCase').ToggleGroupFilledActiveCase,
   TooltipAnimationCase: () => require('./TooltipAnimationCase').TooltipAnimationCase,
   TooltipCase: () => require('./TooltipCase').TooltipCase,
   TooltipGlobalPatternCase: () =>
