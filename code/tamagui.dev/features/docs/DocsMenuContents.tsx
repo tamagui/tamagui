@@ -245,6 +245,7 @@ const AccordionSection = ({
   return (
     <Accordion.Item value={section.title}>
       <Accordion.Trigger
+        padding={0}
         backgroundColor="transparent"
         borderWidth={0}
         hoverStyle={{
@@ -265,7 +266,7 @@ const AccordionSection = ({
               alignItems="center"
               width="100%"
             >
-              <Paragraph size="$5" fontWeight="600" color="$color12">
+              <Paragraph size="$5" fontWeight="500" color="$color11">
                 {section.title}
               </Paragraph>
 
@@ -283,6 +284,7 @@ const AccordionSection = ({
 
       <Accordion.HeightAnimator overflow="hidden" transition="200ms">
         <Accordion.Content
+          padding={0}
           transition="200ms"
           backgroundColor="transparent"
           exitStyle={{ opacity: 0 }}

@@ -8,8 +8,12 @@ export const useDocsMenu = () => {
   const [open, setOpen] = React.useState<boolean | 'press'>(false)
   const pathname = usePathname()
   const router = useRouter()
-  let currentPath = getCanonicalDocsPath(pathname)
-  let documentVersion = ''
+  const canonicalPath = getCanonicalDocsPath(pathname)
+  const versionedComponentPath = canonicalPath.match(
+    /^(\/ui\/[^/]+)\/(\d+\.\d+\.\d+(?:-[^/]+)?)$/
+  )
+  const currentPath = versionedComponentPath?.[1] ?? canonicalPath
+  const documentVersion = versionedComponentPath?.[2] ?? ''
 
   const documentVersionPath = documentVersion ? `/${documentVersion}` : ''
   const currentPageIndex = allNotPending.findIndex((page) => page.route === currentPath)
