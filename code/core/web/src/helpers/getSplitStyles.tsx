@@ -134,6 +134,9 @@ interface FlatParsedProp {
   pseudoKey?: string
   platformKey?: string
   themeKey?: string
+  // verbatim group modifier (e.g. "group-card-hover") — used as the object-form
+  // key, which itself encodes the group name plus optional media/pseudo parts
+  groupKey?: string
   prop: string
   value: any
 }
@@ -224,8 +227,14 @@ function parseFlatModifierProp(
       continue
     }
 
-    // unknown modifier - could be group, handle later
-    // for now skip groups, they're more complex
+    // group: keep the modifier verbatim, it becomes the object-form key
+    // ($group-card-hover:opacity → '$group-card-hover': { opacity })
+    if (mod === 'group' || mod.startsWith('group-')) {
+      result.groupKey = mod
+      continue
+    }
+
+    // unknown modifier
     return null
   }
 
@@ -938,17 +947,23 @@ function preprocessFlatProps(
             pseudoKey,
             platformKey,
             themeKey,
+            groupKey,
             prop,
             value: parsedValue,
           } = flatParsed
 
           // build the style object from innermost to outermost
-          // order: prop → pseudo → theme → platform → media
+          // order: prop → pseudo → group → theme → platform → media
           let styleObj: any = { [prop]: parsedValue }
 
           // wrap with pseudo if present
           if (pseudoKey) {
             styleObj = { [pseudoKey]: styleObj }
+          }
+
+          // wrap with group if present — the key is the object-form group key
+          if (groupKey) {
+            styleObj = { [`$${groupKey}`]: styleObj }
           }
 
           // wrap with theme if present (inside media)
@@ -968,6 +983,11 @@ function preprocessFlatProps(
             result[injectKey] = result[injectKey]
               ? mergeDeep(result[injectKey], styleObj)
               : styleObj
+          } else if (groupKey) {
+            // group (with or without inner pseudo): merge the whole structure
+            for (const k in styleObj) {
+              result[k] = result[k] ? mergeDeep(result[k], styleObj[k]) : styleObj[k]
+            }
           } else if (platformKey && !themeKey) {
             // just platform, no media
             const injectKey = `$${platformKey}`
