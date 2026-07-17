@@ -73,6 +73,8 @@ export type SheetProps = SheetScopedProps<{
 
   /**
    * Adapts the sheet to use native sheet on the given platform (if available)
+   * The iOS system sheet does not expose continuous position, so
+   * `Sheet.useAnimatedPosition` and `onTransition` are unavailable in this mode.
    */
   native?: 'ios'[] | boolean
 
@@ -98,6 +100,7 @@ export type SheetProps = SheetScopedProps<{
    * when moving between snap points while open. On the `end` phase, `finished`
    * is `false` when the transition was interrupted (e.g. a close canceled by a
    * re-open). `position` is the resolved translateY (px from screen top) target.
+   * Available on Tamagui's custom Sheet, not the native iOS system sheet.
    */
   onTransition?: (e: SheetTransitionEvent) => void
 }>

@@ -121,7 +121,7 @@ Contains every component for the sheet.
     {
       name: 'native',
       type: 'boolean | "ios"[]',
-      description: `(iOS only) Render to a native sheet, must install native dependency first.`,
+      description: `(iOS only) Render to the native system sheet; must install the native dependency first. UIKit does not expose continuous position, so Sheet.useAnimatedPosition() and onTransition are unavailable in this mode.`,
     },
     {
       name: 'disableDrag',
@@ -165,7 +165,7 @@ Contains every component for the sheet.
     {
       name: 'onTransition',
       type: `(e: { phase: 'start' | 'end', cause: 'open' | 'close' | 'snap', position: number, finished?: boolean }) => void`,
-      description: `Fires at the start and end of the sheet's position transition. cause is "open" when moving from closed, "close" when moving off screen, and "snap" when moving between snap points while open. On the end phase, finished is false when the transition was interrupted (e.g. a close canceled by a re-open). position is the resolved translateY target in px from the top of the screen. Replaces the old onAnimationComplete prop.`,
+      description: `Fires at the start and end of the custom sheet's position transition. cause is "open" when moving from closed, "close" when moving off screen, and "snap" when moving between snap points while open. On the end phase, finished is false when the transition was interrupted (e.g. a close canceled by a re-open). position is the resolved translateY target in px from the top of the screen. Replaces the old onAnimationComplete prop. The native iOS system sheet does not expose this lifecycle.`,
     },
     {
       name: 'disableHideWhenClosed',
@@ -273,6 +273,11 @@ const { value, screenSize, frameSize, snapOffsets, minY } =
 These are enough to compute any progress mapping inside a `getStyle` worklet.
 There is no separate derived progress value; the recipe lives in docs and the
 canonical skin.
+
+`Sheet.useAnimatedPosition()` and the Sheet `onTransition` callback are available
+on Tamagui's custom Sheet. The native iOS system sheet selected by the `native`
+prop is driven by UIKit, which does not expose a continuous position. Remove the
+`native` prop when you need position-linked effects or transition lifecycle events.
 
 ## Overlay fades
 

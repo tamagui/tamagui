@@ -7,6 +7,7 @@ export declare const SheetProvider: React.Provider<SheetContextValue> & React.Pr
     scope?: string;
 }>, useSheetContext: (scope?: string) => SheetContextValue;
 export declare const SheetOverlayLayerContext: React.Context<boolean>;
+export declare const SheetNativeSystemContext: React.Context<boolean>;
 export type SheetAnimatedPositionContextValue = {
     value: UniversalAnimatedNumber<any>;
     screenSize: number;

@@ -2,7 +2,7 @@ import { YStack } from '@tamagui/stacks'
 import type { FunctionComponent } from 'react'
 import { useEffect, useRef } from 'react'
 import { View } from 'react-native'
-import { SheetProvider } from './SheetContext'
+import { SheetNativeSystemContext, SheetProvider } from './SheetContext'
 import type { SheetProps } from './types'
 import { useSheetOpenState } from './useSheetOpenState'
 import { useSheetProviderProps } from './useSheetProviderProps'
@@ -48,7 +48,7 @@ export function setupNativeSheet(
       }
 
       return (
-        <>
+        <SheetNativeSystemContext.Provider value>
           <SheetProvider
             setHasScrollView={emptyFn}
             keyboardOccludedHeight={0}
@@ -75,7 +75,7 @@ export function setupNativeSheet(
               {props.children}
             </YStack>
           </SheetProvider>
-        </>
+        </SheetNativeSystemContext.Provider>
       )
     }
   }
