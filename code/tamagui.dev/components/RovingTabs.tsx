@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import type { TabLayout, TabsTabProps, ViewProps } from 'tamagui'
 import { SizableText, XStack } from 'tamagui'
 import { AnimatePresence, Tabs, YStack } from 'tamagui'
@@ -21,24 +21,26 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
     prevActiveAt: null,
   })
 
-  const setIntentIndicator = (intentAt: TabLayout | null) =>
-    setTabState((prevTabState) => ({ ...prevTabState, intentAt }))
-  const setActiveIndicator = (activeAt: TabLayout | null) =>
-    setTabState((prevTabState) => ({
-      ...prevTabState,
-      prevActiveAt: tabState.activeAt,
-      activeAt,
-    }))
+  const { activeAt, intentAt } = tabState
 
-  const { activeAt, intentAt, prevActiveAt } = tabState
+  const handleOnInteraction: TabsTabProps['onInteraction'] = useCallback(
+    (type, layout) => {
+      setTabState((previous) => {
+        if (type === 'select') {
+          if (layoutsEqual(previous.activeAt, layout)) return previous
+          return {
+            ...previous,
+            prevActiveAt: previous.activeAt,
+            activeAt: layout,
+          }
+        }
 
-  const handleOnInteraction: TabsTabProps['onInteraction'] = (type, layout) => {
-    if (type === 'select') {
-      setActiveIndicator(layout)
-    } else {
-      setIntentIndicator(layout)
-    }
-  }
+        if (layoutsEqual(previous.intentAt, layout)) return previous
+        return { ...previous, intentAt: layout }
+      })
+    },
+    []
+  )
 
   const codeContent = (
     <ScrollView
@@ -128,6 +130,13 @@ export function RovingTabs({ className, children, code, size, ...rest }) {
         codeContent
       )}
     </>
+  )
+}
+
+function layoutsEqual(a: TabLayout | null, b: TabLayout | null) {
+  return (
+    a === b ||
+    (a?.x === b?.x && a?.y === b?.y && a?.width === b?.width && a?.height === b?.height)
   )
 }
 

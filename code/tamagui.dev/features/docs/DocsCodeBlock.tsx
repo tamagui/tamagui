@@ -121,6 +121,7 @@ export const DocCodeBlock = forwardRef((props: any, ref) => {
               aria-label="Show or hide code"
               icon={Code2}
               size="medium"
+              fontWeight="400"
               z={10}
               onPress={() => setIsCollapsed(!isCollapsed)}
             >
