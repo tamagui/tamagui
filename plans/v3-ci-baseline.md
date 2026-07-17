@@ -33,7 +33,26 @@ budget: fetch logs once to a file, never `gh run watch`.
   tsconfig (A lane).
 - Android Detox cannot launch any suite (shared AppCompat theme
   misconfiguration, 24 suites, repo-wide) — needs an owner for a dedicated
-  fix packet.
+  fix packet. Expected red. PROVENANCE (2026-07-17): this entry was briefly
+  replaced by an "Expo 55 launch race" root cause from a verification
+  agent, then retracted: its evidence (4 suites "launched and passed" on
+  Android) was an artifact — all 4 begin `if (isAndroid()) return` before
+  `safeLaunchApp` (verified first-hand, e.g.
+  code/kitchen-sink/e2e/SheetScrollableDrag.test.ts:30), so they pass
+  trivially without launching. Byte-identical failure counts across two
+  main runs on different days (29477361833 and 29380776033: 19/4/4 suites,
+  72/37/20 tests, 148x AppCompat IllegalStateException) show deterministic
+  total failure, consistent with a static theme misconfiguration; the Expo
+  coroutine frames in the crash are the delivery path, not the cause.
+- METHODOLOGY WARNING: the Android Detox job has continue-on-error: true
+  and its script swallows failures ('|| echo ANDROID_TESTS_FAILED=true'),
+  so the test-native workflow reports SUCCESS while every Android suite
+  burns. Workflow-level green on main says NOTHING about Android. Any
+  baseline claim in this doc that cites a green test-native run covers iOS
+  only. Recommendation: once the Expo race is fixed, remove the
+  greenwashing (or at minimum emit a visible failure annotation) — decision
+  with the owner; a verification agent is iterating on a v3-ci-android-*
+  branch pending owner approval.
 - `test-targeted.yml` workflow_dispatch returns 404 until the workflow file
   exists on the DEFAULT branch (main) — GitHub requirement. Landing it on
   main is owner-gated; until then push v3-ci-* branches for full runs.
