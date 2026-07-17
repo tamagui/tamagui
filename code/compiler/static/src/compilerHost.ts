@@ -7,7 +7,11 @@ import type {
   MaterializedElement,
   MaterializedStyledDefinition,
 } from '@tamagui/compiler-core'
-import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
+import {
+  StyleObjectIdentifier,
+  StyleObjectProperty,
+  StyleObjectRules,
+} from '@tamagui/helpers'
 import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 
 import type { LoadedComponents } from './extractor/bundleConfig'
@@ -28,6 +32,7 @@ export interface TamaguiCompilerHostOptions {
 
 interface TamaguiLoweringComponent extends LoweringComponent {
   staticConfig: StaticConfig
+  partialRuntimeSafe: boolean
 }
 
 const componentState = {
@@ -245,6 +250,7 @@ const compilerStyleProps = new Set([
   'className',
   'style',
   'group',
+  'transition',
   'animation',
   'animateOnly',
   'animatePresence',
@@ -254,6 +260,7 @@ const compilerStyleProps = new Set([
 ])
 
 const runtimeAnimationProps = new Set([
+  'transition',
   'animation',
   'animateOnly',
   'animatePresence',
@@ -268,37 +275,6 @@ const runtimeEventProps = new Set([
   'onPressIn',
   'onPressOut',
 ])
-
-function styleFamily(name: string): string {
-  if (name.startsWith('padding')) return 'padding'
-  if (name.startsWith('margin')) return 'margin'
-  if (
-    name === 'top' ||
-    name === 'right' ||
-    name === 'bottom' ||
-    name === 'left' ||
-    name.startsWith('inset')
-  ) {
-    return 'inset'
-  }
-  if (name.startsWith('border')) return 'border'
-  if (name.startsWith('transform')) return 'transform'
-  if (name.startsWith('flex')) return 'flex'
-  if (name.startsWith('overflow')) return 'overflow'
-  if (name === 'gap' || name === 'rowGap' || name === 'columnGap') return 'gap'
-  if (name.includes('Shadow')) return 'shadow'
-  if (name.startsWith('background')) return 'background'
-  if (
-    name.startsWith('font') ||
-    name === 'color' ||
-    name === 'lineHeight' ||
-    name === 'letterSpacing' ||
-    name.startsWith('text')
-  ) {
-    return 'text'
-  }
-  return name
-}
 
 function isSerializableNativeStyle(value: unknown): boolean {
   if (value == null || typeof value === 'number' || typeof value === 'boolean') {
@@ -424,16 +400,26 @@ export function createTamaguiCompilerHost(
     styledDefinition: MaterializedStyledDefinition | null
   ): TamaguiLoweringComponent | null => {
     const resolved = styledStaticConfig(styledDefinition) ?? directStaticConfig(element)
-    return resolved
-      ? {
-          key: resolved.key,
-          acceptsClassName:
-            resolved.staticConfig.acceptsClassName !== false &&
-            !resolved.staticConfig.neverFlatten &&
-            !resolved.staticConfig.context,
-          staticConfig: resolved.staticConfig,
-        }
-      : null
+    if (!resolved) return null
+    const defaultProps = core.getDefaultProps(resolved.staticConfig) ?? {}
+    return {
+      key: resolved.key,
+      acceptsClassName:
+        resolved.staticConfig.acceptsClassName !== false &&
+        !resolved.staticConfig.neverFlatten &&
+        !resolved.staticConfig.context,
+      staticConfig: resolved.staticConfig,
+      // retaining the component also retains these runtime style sources.
+      // splitting their output into equal-specificity atomic classes would
+      // make stylesheet insertion order decide the winner.
+      partialRuntimeSafe:
+        !styledDefinition &&
+        Object.keys(defaultProps).length === 0 &&
+        !resolved.staticConfig.defaultVariants &&
+        !resolved.staticConfig.baseClassName &&
+        !resolved.staticConfig.baseStyle &&
+        (resolved.staticConfig.compoundVariants?.length ?? 0) === 0,
+    }
   }
 
   const isStyleProp = (name: string, component: LoweringComponent): boolean => {
@@ -496,14 +482,77 @@ export function createTamaguiCompilerHost(
     }
   }
 
+  const partialStaticConfig = (staticConfig: StaticConfig): StaticConfig => ({
+    ...staticConfig,
+    baseStyle: undefined,
+    defaultProps: {},
+    defaultVariants: undefined,
+    compoundVariants: [],
+    variants: {},
+  })
+
+  const styleOwners = (
+    name: string,
+    value: unknown,
+    staticConfig: StaticConfig
+  ): Set<string> | null => {
+    const split = resolveSplitStyles({ [name]: value }, partialStaticConfig(staticConfig))
+    if (!split) return null
+
+    const inlineStyle = split.viewProps?.style
+    if (
+      staticObject(inlineStyle) &&
+      !inlineStyle['$$css'] &&
+      Object.keys(inlineStyle).length > 0
+    ) {
+      return null
+    }
+
+    const owners = new Set<string>(Object.keys(split.classNames ?? {}))
+    for (const styleObject of Object.values(split.rulesToInsert ?? {}) as any[]) {
+      const property = styleObject?.[StyleObjectProperty]
+      if (typeof property === 'string') owners.add(property)
+    }
+    return owners.size > 0 ? owners : null
+  }
+
+  const dynamicStyleOwners = (
+    name: string,
+    staticConfig: StaticConfig
+  ): Set<string> | null => {
+    // most web style normalization depends only on the prop name. these values
+    // exercise the few structured inputs so getSplitStyles can report the
+    // normalized CSS property it would own. flex is value-dependent, so include
+    // every property produced by both its numeric and CSS-shorthand forms.
+    const probeValue =
+      name === 'transform'
+        ? [{ scale: 1 }]
+        : name === 'transformMatrix'
+          ? [1, 0, 0, 1, 0, 0]
+          : name === 'shadowOffset'
+            ? { width: 0, height: 0 }
+            : name === 'shadowColor'
+              ? 'black'
+              : name === 'border' || name === 'outline'
+                ? '0 solid transparent'
+                : name === 'position'
+                  ? 'relative'
+                  : name === 'objectFit'
+                    ? 'contain'
+                    : 0
+    const owners = styleOwners(name, probeValue, staticConfig)
+    if (!owners || name !== 'flex') return owners
+    const shorthandOwners = styleOwners(name, '0 1 auto', staticConfig)
+    if (!shorthandOwners) return null
+    for (const owner of shorthandOwners) owners.add(owner)
+    return owners
+  }
+
   return {
     resolveComponent: resolve,
     isStyleProp,
     canLowerDynamicStyleProp(name, component) {
-      return (
-        platform === 'web' &&
-        (runtimeAnimationProps.has(name) || !!directStyleName(name, component))
-      )
+      return platform === 'web' && !!directStyleName(name, component)
     },
     lowerCandidate(input): LoweringCandidateResult {
       const component = input.component as TamaguiLoweringComponent
@@ -587,7 +636,19 @@ export function createTamaguiCompilerHost(
       const animationEntry = input.element.entries.find(
         (entry) => entry.kind === 'prop' && runtimeAnimationProps.has(entry.name)
       )
-      if (platform === 'web' && (dynamicStyleEntries.length > 0 || animationEntry)) {
+      if (animationEntry || 'enterStyle' in props || 'exitStyle' in props) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'Animated candidates remain on the runtime path',
+          animationEntry?.span
+        )
+      }
+      if (
+        platform === 'web' &&
+        dynamicStyleEntries.length > 0 &&
+        component.partialRuntimeSafe
+      ) {
         const hasSpread = input.element.entries.some((entry) => entry.kind === 'spread')
         const unsupportedRuntimeStyle = input.element.entries.find(
           (entry) =>
@@ -597,17 +658,38 @@ export function createTamaguiCompilerHost(
             !directStyleName(entry.name, component)
         )
         if (!hasSpread && !unsupportedRuntimeStyle) {
-          const dynamicFamilies = new Set<string>()
+          const dynamicOwners = new Set<string>()
+          let canProveDynamicOwnership = true
           for (const entry of dynamicStyleEntries) {
             if (entry.kind !== 'prop') continue
             const name = directStyleName(entry.name, component)
-            if (name) dynamicFamilies.add(styleFamily(name))
+            if (!name) {
+              canProveDynamicOwnership = false
+              break
+            }
+            const owners = dynamicStyleOwners(
+              name,
+              component.staticConfig as StaticConfig
+            )
+            if (!owners) {
+              canProveDynamicOwnership = false
+              break
+            }
+            for (const owner of owners) dynamicOwners.add(owner)
           }
-          const staticStyleEntries = input.element.entries.filter((entry) => {
-            if (entry.kind !== 'prop' || entry.value.kind !== 'static') return false
-            const name = directStyleName(entry.name, component)
-            return !!name && !dynamicFamilies.has(styleFamily(name))
-          })
+          const staticStyleEntries = canProveDynamicOwnership
+            ? input.element.entries.filter((entry) => {
+                if (entry.kind !== 'prop' || entry.value.kind !== 'static') return false
+                const name = directStyleName(entry.name, component)
+                if (!name) return false
+                const owners = styleOwners(
+                  name,
+                  entry.value.value,
+                  component.staticConfig as StaticConfig
+                )
+                return !!owners && ![...owners].some((owner) => dynamicOwners.has(owner))
+              })
+            : []
           if (staticStyleEntries.length > 0) {
             const partialProps: Record<string, unknown> = {}
             for (const entry of staticStyleEntries) {
@@ -615,15 +697,10 @@ export function createTamaguiCompilerHost(
                 partialProps[entry.name] = entry.value.value
               }
             }
-            const partialStaticConfig: StaticConfig = {
-              ...component.staticConfig,
-              baseStyle: undefined,
-              defaultProps: {},
-              defaultVariants: undefined,
-              compoundVariants: [],
-              variants: {},
-            }
-            const partialSplit = resolveSplitStyles(partialProps, partialStaticConfig)
+            const partialSplit = resolveSplitStyles(
+              partialProps,
+              partialStaticConfig(component.staticConfig as StaticConfig)
+            )
             const partialInlineStyle = partialSplit?.viewProps?.style
             const hasPartialInlineStyle =
               staticObject(partialInlineStyle) &&
@@ -694,20 +771,6 @@ export function createTamaguiCompilerHost(
           'local/dynamic-style-value',
           `Style prop ${entry.kind === 'prop' ? entry.name : 'unknown'} could not be safely extracted`,
           entry.span
-        )
-      }
-      if (
-        'animation' in props ||
-        'animateOnly' in props ||
-        'animatePresence' in props ||
-        'animatedBy' in props ||
-        'enterStyle' in props ||
-        'exitStyle' in props
-      ) {
-        return bailout(
-          input,
-          'local/unsupported-target',
-          'Animated candidates remain on the runtime path'
         )
       }
       if ('theme' in props || 'themeInverse' in props) {

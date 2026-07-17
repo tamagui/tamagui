@@ -640,6 +640,18 @@ Vite extractor and any public `engine` switch before merge.
 fixture, compiled JSX input, HMR, SSR, diagnostics, and cold/warm performance
 report. Correct bailout is allowed; output/runtime divergence is not.
 
+**Partial-extraction safety amendment (July 2026):** E3 may retain a runtime
+component and extract static siblings only when the host proves disjointness
+using normalized emitted-property ownership. This includes aliases such as
+`x`/`y` owning `transform` and logical properties such as `inlineSize` owning
+`width`. Styled defaults and runtime overrides must not be split across atomic
+classes whose cascade depends on stylesheet insertion order. Animation
+partial extraction is a separate runtime contract: v3 `transition` candidates
+remain untouched until compiler-owned values are merged into the resolved
+style passed to all four web drivers (CSS, RN Animated, Reanimated, Motion).
+Compiler string-output tests do not satisfy that gate; each driver needs a
+runtime value and transition-completion assertion.
+
 **Resource class:** heavy.
 
 ### E4 — Metro compiler frontend
