@@ -353,7 +353,7 @@ the v3 blog post (`code/tamagui.dev/data/blog/version-three.mdx`, drafted
       guide page.
 - [ ] `data-starting-style`/`data-ending-style` CSS animation path (lane H):
       blog animation section + animations docs.
-- [ ] Field/Form system (F1/F2): new docs pages + blog mention.
+- [x] Field/Form system (F1/F2): new docs pages + blog mention.
 
 Site changes use the `site:` commit prefix and are validated with a real
 render (Playwright or dev-server check), per repo contract.
