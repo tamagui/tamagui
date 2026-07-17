@@ -136,6 +136,7 @@ export const docsRoutes = [
     pages: [
       { title: 'Button', route: '/ui/button' },
       { title: 'Checkbox', route: '/ui/checkbox' },
+      { title: 'Field', route: '/ui/field' },
       { title: 'Form', route: '/ui/form' },
       { title: 'Input & TextArea', route: '/ui/inputs' },
       { title: 'Label', route: '/ui/label' },
