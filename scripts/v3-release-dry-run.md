@@ -71,6 +71,15 @@ bun scripts/v3-release-dry-run.ts \
   --tag beta
 ```
 
+The normal release script invokes this same staging path, passes version overrides for
+packages skipped as unchanged, retains `release-preview.json`, and publishes only the
+requested package tarballs from that report. Dependency-closure tarballs are still packed,
+hashed, audited, and installed into the isolated canary, but are not publish candidates.
+Skipped closure packages are downloaded as the exact `name@version` registry tarballs;
+current workspace bytes are never relabeled as an already-published version.
+If the release cannot resolve a skipped package at the target dist-tag, that package is
+put back into the publish set so every staged dependency version exists.
+
 Use `--packer bun` to repeat the artifact proof through `bun pm pack`. The full run:
 
 `--version` rewrites versions and internal dependency ranges only in temporary staged

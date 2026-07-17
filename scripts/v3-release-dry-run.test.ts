@@ -18,9 +18,11 @@ import {
   hasRuntimeExport,
   packagesForChangedPaths,
   publishCommand,
+  publishCommandsForRequested,
   stableJson,
   topologicalPackageOrder,
   withWorkspaceVersion,
+  withWorkspaceVersionOverrides,
   type PackageManifest,
   type WorkspacePackage,
 } from './v3-release-dry-run-lib'
@@ -133,6 +135,20 @@ describe('G1 package selection', () => {
     expect(packages.every((pkg) => pkg.version === '3.0.0-beta.0')).toBe(true)
     expect(versioned[0]).not.toBe(packages[0])
     expect(versioned[0]?.manifest).not.toBe(packages[0]?.manifest)
+  })
+
+  test('overrides skipped dependency versions without mutating workspace manifests', () => {
+    const versioned = withWorkspaceVersionOverrides(
+      withWorkspaceVersion(packages, '3.0.0-beta.2'),
+      new Map([['@tamagui/style-grammar', '3.0.0-beta.1']])
+    )
+    expect(versioned.find(({ name }) => name === '@tamagui/style-grammar')?.version).toBe(
+      '3.0.0-beta.1'
+    )
+    expect(versioned.find(({ name }) => name === '@tamagui/web')?.version).toBe(
+      '3.0.0-beta.2'
+    )
+    expect(packages.every((pkg) => pkg.version === '3.0.0-beta.0')).toBe(true)
   })
 
   test('discovers a public workspace package whose directory is named types', async () => {
@@ -409,5 +425,15 @@ describe('G1 isolation and preview', () => {
         'beta'
       )
     ).toBe(`npm publish '/tmp/g1 artifacts/core'\\''s.tgz' --access public --tag 'beta'`)
+  })
+
+  test('publishes requested artifacts but retains dependency-closure audit artifacts', () => {
+    const artifacts = [
+      { name: '@tamagui/core', tarball: '/tmp/core.tgz' },
+      { name: '@tamagui/web', tarball: '/tmp/web.tgz' },
+    ]
+    expect(
+      publishCommandsForRequested(artifacts, new Set(['@tamagui/core']), 'beta')
+    ).toEqual(["npm publish '/tmp/core.tgz' --access public --tag 'beta'"])
   })
 })

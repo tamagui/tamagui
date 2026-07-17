@@ -4,7 +4,7 @@
  * - Advanced extraction ($color tokens)
  * - Light/dark mode switching
  * - Sub-theme changes
- * - Performance benchmark (20 views opt vs no-opt)
+ * - Performance benchmark (warmup + shuffled median sampling)
  *
  * Add a "// debug" comment for extraction debug output during build.
  * If extraction is working, the build output will show optimized styles.
@@ -145,12 +145,83 @@ function ThemeInfo() {
   )
 }
 
-// benchmark views - 20 each
+type BenchMode = 'opt' | 'noopt'
+type BenchScenario = 'simple' | 'nested'
+
+const simpleBenchItems = Array.from({ length: 200 }, (_, index) => index)
+const nestedBenchItems = Array.from({ length: 60 }, (_, index) => index)
+
+function OptimizedSimpleBenchItem() {
+  return (
+    <YStack
+      width={16}
+      height={16}
+      backgroundColor="$color4"
+      borderColor="$color8"
+      borderWidth={1}
+      borderRadius={2}
+    />
+  )
+}
+
+function UnoptimizedSimpleBenchItem() {
+  return (
+    <YStack
+      disableOptimization
+      width={16}
+      height={16}
+      backgroundColor="$color4"
+      borderColor="$color8"
+      borderWidth={1}
+      borderRadius={2}
+    />
+  )
+}
+
+function OptimizedNestedBenchItem({ index }: { index: number }) {
+  return (
+    <XStack gap={2} alignItems="center">
+      <YStack
+        width={16}
+        height={16}
+        backgroundColor="$color4"
+        borderColor="$color8"
+        borderWidth={1}
+        borderRadius={2}
+      />
+      <Text color="$color12" fontSize="$2">
+        Row {index}
+      </Text>
+    </XStack>
+  )
+}
+
+function UnoptimizedNestedBenchItem({ index }: { index: number }) {
+  return (
+    <XStack disableOptimization gap={2} alignItems="center">
+      <YStack
+        disableOptimization
+        width={16}
+        height={16}
+        backgroundColor="$color4"
+        borderColor="$color8"
+        borderWidth={1}
+        borderRadius={2}
+      />
+      <Text disableOptimization color="$color12" fontSize="$2">
+        Row {index}
+      </Text>
+    </XStack>
+  )
+}
+
 function BenchViews({
-  optimized,
+  mode,
+  scenario,
   onMeasure,
 }: {
-  optimized: boolean
+  mode: BenchMode
+  scenario: BenchScenario
   onMeasure: (ms: number) => void
 }) {
   const startTime = useRef(performance.now())
@@ -163,143 +234,184 @@ function BenchViews({
     }
   }, [onMeasure])
 
-  if (optimized) {
+  if (scenario === 'simple') {
+    if (mode === 'opt') {
+      return (
+        <YStack testID="bench-views" flexDirection="row" flexWrap="wrap" gap={2}>
+          {simpleBenchItems.map((index) => (
+            <OptimizedSimpleBenchItem key={index} />
+          ))}
+        </YStack>
+      )
+    }
     return (
       <YStack testID="bench-views" flexDirection="row" flexWrap="wrap" gap={2}>
-        {Array.from({ length: 20 }).map((_, i) => (
-          <YStack
-            key={i}
-            width={16}
-            height={16}
-            backgroundColor="$color4"
-            borderColor="$color8"
-            borderWidth={1}
-            borderRadius={2}
-          />
+        {simpleBenchItems.map((index) => (
+          <UnoptimizedSimpleBenchItem key={index} />
+        ))}
+      </YStack>
+    )
+  }
+
+  if (mode === 'opt') {
+    return (
+      <YStack testID="bench-views" gap={2}>
+        {nestedBenchItems.map((index) => (
+          <OptimizedNestedBenchItem key={index} index={index} />
         ))}
       </YStack>
     )
   }
 
   return (
-    <YStack testID="bench-views" flexDirection="row" flexWrap="wrap" gap={2}>
-      {Array.from({ length: 20 }).map((_, i) => (
-        <YStack
-          disableOptimization
-          key={i}
-          width={16}
-          height={16}
-          backgroundColor="$color4"
-          borderColor="$color8"
-          borderWidth={1}
-          borderRadius={2}
-        />
+    <YStack testID="bench-views" gap={2}>
+      {nestedBenchItems.map((index) => (
+        <UnoptimizedNestedBenchItem key={index} index={index} />
       ))}
     </YStack>
   )
 }
 
-type BenchMode = 'off' | 'opt' | 'noopt'
+type BenchSamples = Record<BenchScenario, Record<BenchMode, number[]>>
+
+function emptyBenchSamples(): BenchSamples {
+  return {
+    simple: { opt: [], noopt: [] },
+    nested: { opt: [], noopt: [] },
+  }
+}
+
+function median(values: readonly number[]): number | null {
+  if (values.length === 0) return null
+  const sorted = [...values].sort((left, right) => left - right)
+  const middle = Math.floor(sorted.length / 2)
+  return sorted.length % 2 === 0
+    ? (sorted[middle - 1]! + sorted[middle]!) / 2
+    : sorted[middle]!
+}
 
 function PerfBenchmark() {
-  const [mode, setMode] = useState<BenchMode>('off')
-  const [optTimes, setOptTimes] = useState<number[]>([])
-  const [noOptTimes, setNoOptTimes] = useState<number[]>([])
+  const [active, setActive] = useState<{
+    mode: BenchMode
+    scenario: BenchScenario
+  } | null>(null)
+  const [samples, setSamples] = useState<BenchSamples>(emptyBenchSamples)
   const [runKey, setRunKey] = useState(0)
 
-  const runOpt = () => {
-    setMode('opt')
-    setRunKey((k) => k + 1)
-  }
-  const runNoOpt = () => {
-    setMode('noopt')
+  const run = (scenario: BenchScenario, mode: BenchMode) => {
+    setActive({ scenario, mode })
     setRunKey((k) => k + 1)
   }
   const reset = () => {
-    setMode('off')
-    setOptTimes([])
-    setNoOptTimes([])
+    setActive(null)
+    setSamples(emptyBenchSamples())
   }
 
   const handleMeasure = (ms: number) => {
-    if (mode === 'opt') {
-      setOptTimes((t) => [...t, ms])
-    } else if (mode === 'noopt') {
-      setNoOptTimes((t) => [...t, ms])
-    }
-    setMode('off')
+    if (!active) return
+    const { mode, scenario } = active
+    setSamples((current) => ({
+      ...current,
+      [scenario]: {
+        ...current[scenario],
+        [mode]: [...current[scenario][mode], ms],
+      },
+    }))
+    setActive(null)
   }
-
-  const bestOpt = optTimes.length ? Math.min(...optTimes) : null
-  const bestNoOpt = noOptTimes.length ? Math.min(...noOptTimes) : null
-  const pctDiff = bestOpt && bestNoOpt ? ((bestNoOpt - bestOpt) / bestNoOpt) * 100 : null
 
   return (
     <YStack gap="$2" padding="$2" backgroundColor="$background" borderRadius={8}>
       <Text fontSize="$3" fontWeight="bold">
-        Perf Benchmark (20 views, best of 3)
+        Perf Benchmark (warmup + median of 7)
       </Text>
 
-      <XStack gap="$2">
-        <Button
-          size="small"
-          testID="bench-run-opt"
-          onPress={runOpt}
-          disabled={mode !== 'off'}
-        >
-          Run Opt ({optTimes.length}/3)
-        </Button>
-        <Button
-          size="small"
-          testID="bench-run-noopt"
-          onPress={runNoOpt}
-          disabled={mode !== 'off'}
-        >
-          Run NoOpt ({noOptTimes.length}/3)
-        </Button>
+      <XStack gap="$2" flexWrap="wrap">
+        {(['simple', 'nested'] as const).flatMap((scenario) =>
+          (['opt', 'noopt'] as const).map((mode) => (
+            <Button
+              key={`${scenario}-${mode}`}
+              size="small"
+              testID={`bench-run-${scenario}-${mode}`}
+              onPress={() => run(scenario, mode)}
+              disabled={active !== null}
+            >
+              {scenario} {mode} ({samples[scenario][mode].length})
+            </Button>
+          ))
+        )}
         <Button size="small" testID="bench-reset" onPress={reset}>
           Reset
         </Button>
       </XStack>
 
-      {mode !== 'off' && (
-        <BenchViews key={runKey} optimized={mode === 'opt'} onMeasure={handleMeasure} />
+      {active && (
+        <BenchViews
+          key={runKey}
+          mode={active.mode}
+          scenario={active.scenario}
+          onMeasure={handleMeasure}
+        />
       )}
 
       <YStack gap="$1">
-        <Text
-          testID="bench-opt-result"
-          accessibilityLabel={
-            bestOpt !== null ? `opt:${bestOpt.toFixed(4)}` : 'opt:pending'
-          }
-          fontSize="$2"
-        >
-          Opt best: {bestOpt !== null ? `${bestOpt.toFixed(2)}ms` : '-'} (
-          {optTimes.length} runs)
-        </Text>
-        <Text
-          testID="bench-noopt-result"
-          accessibilityLabel={
-            bestNoOpt !== null ? `noopt:${bestNoOpt.toFixed(4)}` : 'noopt:pending'
-          }
-          fontSize="$2"
-        >
-          NoOpt best: {bestNoOpt !== null ? `${bestNoOpt.toFixed(2)}ms` : '-'} (
-          {noOptTimes.length} runs)
-        </Text>
-        {pctDiff !== null && (
-          <Text
-            testID="bench-pct"
-            accessibilityLabel={`pct:${pctDiff.toFixed(2)}`}
-            fontSize="$2"
-            fontWeight="bold"
-            color={pctDiff > 0 ? '$green10' : '$red10'}
-          >
-            {pctDiff > 0
-              ? `Opt ${pctDiff.toFixed(1)}% faster`
-              : `NoOpt ${Math.abs(pctDiff).toFixed(1)}% faster`}
-          </Text>
-        )}
+        {(['simple', 'nested'] as const).map((scenario) => {
+          const optMedian = median(samples[scenario].opt)
+          const noOptMedian = median(samples[scenario].noopt)
+          const pctDiff =
+            optMedian !== null && noOptMedian !== null
+              ? ((noOptMedian - optMedian) / noOptMedian) * 100
+              : null
+          return (
+            <YStack key={scenario} gap="$1">
+              {(['opt', 'noopt'] as const).map((mode) => {
+                const value = mode === 'opt' ? optMedian : noOptMedian
+                return (
+                  <YStack key={mode} gap="$1">
+                    <Text
+                      testID={`bench-${scenario}-${mode}-result`}
+                      accessibilityLabel={`${scenario}:${mode}:${value?.toFixed(4) ?? 'pending'}`}
+                      fontSize="$2"
+                    >
+                      {scenario} {mode} median:{' '}
+                      {value !== null ? `${value.toFixed(2)}ms` : '-'} (
+                      {samples[scenario][mode].length} samples)
+                    </Text>
+                    <Text
+                      testID={`bench-${scenario}-${mode}-count`}
+                      accessibilityLabel={`count:${samples[scenario][mode].length}`}
+                      fontSize="$2"
+                    >
+                      {scenario} {mode} samples: {samples[scenario][mode].length}
+                    </Text>
+                  </YStack>
+                )
+              })}
+              <Text
+                testID={`bench-${scenario}-count`}
+                accessibilityLabel={`count:${Math.min(samples[scenario].opt.length, samples[scenario].noopt.length)}`}
+                fontSize="$2"
+              >
+                {scenario} paired samples:{' '}
+                {Math.min(samples[scenario].opt.length, samples[scenario].noopt.length)}
+              </Text>
+              {pctDiff !== null && (
+                <Text
+                  testID={`bench-${scenario}-pct`}
+                  accessibilityLabel={`${scenario}:pct:${pctDiff.toFixed(2)}`}
+                  fontSize="$2"
+                  fontWeight="bold"
+                  color={pctDiff > 0 ? '$green10' : '$red10'}
+                >
+                  {scenario}:{' '}
+                  {pctDiff > 0
+                    ? `Opt ${pctDiff.toFixed(1)}% faster`
+                    : `NoOpt ${Math.abs(pctDiff).toFixed(1)}% faster`}
+                </Text>
+              )}
+            </YStack>
+          )
+        })}
       </YStack>
     </YStack>
   )

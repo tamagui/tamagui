@@ -20,12 +20,13 @@ import {
   hasExportCondition,
   installedPackageRealPaths,
   packagesForChangedPaths,
-  publishCommand,
+  publishCommandsForRequested,
   readJson,
   sha256File,
   stableJson,
   topologicalPackageOrder,
   withWorkspaceVersion,
+  withWorkspaceVersionOverrides,
   type PackageManifest,
   type PackedArtifact,
   type ReleasePreviewReport,
@@ -55,6 +56,7 @@ interface CliOptions {
   outDir?: string
   tag: string
   version?: string
+  versionOverrides?: string
   planOnly: boolean
   releasePreview: boolean
   skipBuild: boolean
@@ -84,6 +86,7 @@ Execution:
   --release-preview         Verify everything, write publish commands, and STOP before publish
   --tag <tag>               Preview publish tag (default: beta)
   --version <version>       Temporary staged version; required with --release-preview
+  --version-overrides <json>  Package-to-version map for dependencies skipped by release
 
 This harness has no publish execution path. --release-preview only writes exact commands.
 `
@@ -135,6 +138,8 @@ function parseArgs(argv: readonly string[]): CliOptions {
       options.tag = value(index++, flag)
     } else if (flag === '--version') {
       options.version = value(index++, flag)
+    } else if (flag === '--version-overrides') {
+      options.versionOverrides = value(index++, flag)
     } else if (flag === '--plan-only') {
       options.planOnly = true
     } else if (flag === '--release-preview') {
@@ -149,6 +154,8 @@ function parseArgs(argv: readonly string[]): CliOptions {
   if (options.canary) options.canary = resolve(options.repoRoot, options.canary)
   if (options.packageList)
     options.packageList = resolve(options.repoRoot, options.packageList)
+  if (options.versionOverrides)
+    options.versionOverrides = resolve(options.repoRoot, options.versionOverrides)
   if (options.version && !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(options.version)) {
     throw new Error(`Invalid preview version ${options.version}`)
   }
@@ -227,6 +234,24 @@ async function packageNamesFromFile(file: string): Promise<string[]> {
   throw new Error(`${file} must contain a string array or { "packages": string[] }`)
 }
 
+async function packageVersionsFromFile(file: string): Promise<Map<string, string>> {
+  const value = await readJson<unknown>(file)
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new Error(`${file} must contain { "package": "version" }`)
+  }
+  const versions = new Map<string, string>()
+  for (const [name, version] of Object.entries(value)) {
+    if (
+      typeof version !== 'string' ||
+      !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version)
+    ) {
+      throw new Error(`${file} has invalid version for ${name}`)
+    }
+    versions.set(name, version)
+  }
+  return versions
+}
+
 function safeName(name: string): string {
   return name.replace(/^@/, '').replaceAll('/', '-')
 }
@@ -266,7 +291,7 @@ async function packOne(
   packer: 'npm' | 'bun',
   repoRoot: string,
   packedNames: ReadonlySet<string>
-): Promise<{ artifact: PackedArtifact; extractedPackageDir: string }> {
+): Promise<PackedArtifact> {
   const filename = `${safeName(pkg.name)}-${pkg.version}.tgz`
   const finalTarball = join(artifactDir, filename)
   if (packer === 'bun') {
@@ -297,6 +322,58 @@ async function packOne(
     if (produced !== finalTarball) await rename(produced, finalTarball)
   }
 
+  return await auditPackedTarball(pkg, finalTarball, extractDir, repoRoot, packedNames, {
+    source: 'workspace',
+    packageDir: pkg.dir,
+    stagingDir,
+  })
+}
+
+async function packRegistryOne(
+  pkg: WorkspacePackage,
+  artifactDir: string,
+  extractDir: string,
+  repoRoot: string,
+  packedNames: ReadonlySet<string>
+): Promise<PackedArtifact> {
+  const registrySpecifier = `${pkg.name}@${pkg.version}`
+  const filename = `${safeName(pkg.name)}-${pkg.version}.tgz`
+  const finalTarball = join(artifactDir, filename)
+  const result = await runCommand(
+    'npm',
+    [
+      'pack',
+      registrySpecifier,
+      '--json',
+      '--ignore-scripts',
+      '--pack-destination',
+      artifactDir,
+    ],
+    { cwd: artifactDir, quiet: true }
+  )
+  const packed = JSON.parse(result.stdout) as Array<{ filename: string }>
+  const npmTarball = packed[0]?.filename
+  if (!npmTarball) throw new Error(`npm pack did not download ${registrySpecifier}`)
+  const produced = join(artifactDir, npmTarball)
+  if (produced !== finalTarball) await rename(produced, finalTarball)
+
+  return await auditPackedTarball(pkg, finalTarball, extractDir, repoRoot, packedNames, {
+    source: 'registry',
+    registrySpecifier,
+  })
+}
+
+async function auditPackedTarball(
+  pkg: WorkspacePackage,
+  finalTarball: string,
+  extractDir: string,
+  repoRoot: string,
+  packedNames: ReadonlySet<string>,
+  origin:
+    | { source: 'workspace'; packageDir: string; stagingDir: string }
+    | { source: 'registry'; registrySpecifier: string }
+): Promise<PackedArtifact> {
+  const artifactDir = resolve(finalTarball, '..')
   const inventoryResult = await runCommand('tar', ['-tzf', finalTarball], {
     cwd: artifactDir,
     quiet: true,
@@ -309,13 +386,20 @@ async function packOne(
     quiet: true,
   })
   const extractedPackageDir = join(packageExtractDir, 'package')
+  const extractedManifest = await readJson<PackageManifest>(
+    join(extractedPackageDir, 'package.json')
+  )
+  if (extractedManifest.name !== pkg.name || extractedManifest.version !== pkg.version) {
+    throw new Error(
+      `${origin.source} artifact identity mismatch: expected ${pkg.name}@${pkg.version}, received ${extractedManifest.name}@${extractedManifest.version}`
+    )
+  }
   await auditExtractedPackage(extractedPackageDir, repoRoot, undefined, packedNames)
   const artifact = await artifactMetadata(
     {
       name: pkg.name,
       version: pkg.version,
-      packageDir: pkg.dir,
-      stagingDir,
+      ...origin,
       tarball: finalTarball,
     },
     files
@@ -325,7 +409,7 @@ async function packOne(
     `${artifact.sha256}  ${basename(finalTarball)}\n`
   )
   await writeFile(`${finalTarball}.files.txt`, `${artifact.files.join('\n')}\n`)
-  return { artifact, extractedPackageDir }
+  return artifact
 }
 
 function canaryCopyFilter(canaryRoot: string, source: string): boolean {
@@ -443,11 +527,22 @@ async function resolveCanaryCommands(
 
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2))
-  const packages = withWorkspaceVersion(
-    await discoverPublicWorkspacePackages(options.repoRoot),
-    options.version
+  const versionOverrides = options.versionOverrides
+    ? await packageVersionsFromFile(options.versionOverrides)
+    : new Map<string, string>()
+  const packages = withWorkspaceVersionOverrides(
+    withWorkspaceVersion(
+      await discoverPublicWorkspacePackages(options.repoRoot),
+      options.version
+    ),
+    versionOverrides
   )
   const byName = new Map(packages.map((pkg) => [pkg.name, pkg]))
+  for (const name of versionOverrides.keys()) {
+    if (!byName.has(name)) {
+      throw new Error(`Version override is not a public workspace package: ${name}`)
+    }
+  }
   const requested = new Set(options.packages)
   if (options.packageList) {
     for (const name of await packageNamesFromFile(options.packageList))
@@ -462,6 +557,9 @@ async function main(): Promise<void> {
   for (const name of requested) {
     if (!byName.has(name))
       throw new Error(`Requested package is not a public workspace: ${name}`)
+    if (versionOverrides.has(name)) {
+      throw new Error(`Requested publish package cannot use a registry override: ${name}`)
+    }
   }
   const canarySourceManifest = options.canary
     ? await readJson<PackageManifest>(join(options.canary, 'package.json'))
@@ -518,6 +616,7 @@ async function main(): Promise<void> {
   }
   if (!options.skipBuild) {
     for (const pkg of ordered) {
+      if (versionOverrides.has(pkg.name)) continue
       if (!pkg.manifest.scripts?.build) continue
       console.info(`\n[G1 build] ${pkg.name}`)
       await runCommand('bun', ['run', 'build'], {
@@ -534,24 +633,35 @@ async function main(): Promise<void> {
     if (currentHash !== originalManifestHashes.get(pkg.name)) {
       throw new Error(`Build mutated source package manifest for ${pkg.name}`)
     }
-    const temporaryManifest = createTemporaryPackManifest(
-      pkg.manifest,
-      workspaceVersions,
-      options.repoRoot
-    )
-    assertInternalDependenciesArePacked(temporaryManifest, packedNames)
-    const stagingDir = join(stagingRoot, safeName(pkg.name))
-    await copyPackageToStage(pkg, stagingDir, temporaryManifest)
-    const packed = await packOne(
-      pkg,
-      stagingDir,
-      artifactDir,
-      extractRoot,
-      options.packer,
-      options.repoRoot,
-      packedNames
-    )
-    artifacts.push(packed.artifact)
+    let artifact: PackedArtifact
+    if (versionOverrides.has(pkg.name)) {
+      artifact = await packRegistryOne(
+        pkg,
+        artifactDir,
+        extractRoot,
+        options.repoRoot,
+        packedNames
+      )
+    } else {
+      const temporaryManifest = createTemporaryPackManifest(
+        pkg.manifest,
+        workspaceVersions,
+        options.repoRoot
+      )
+      assertInternalDependenciesArePacked(temporaryManifest, packedNames)
+      const stagingDir = join(stagingRoot, safeName(pkg.name))
+      await copyPackageToStage(pkg, stagingDir, temporaryManifest)
+      artifact = await packOne(
+        pkg,
+        stagingDir,
+        artifactDir,
+        extractRoot,
+        options.packer,
+        options.repoRoot,
+        packedNames
+      )
+    }
+    artifacts.push(artifact)
   }
 
   await cp(options.canary, consumerDir, {
@@ -574,10 +684,12 @@ async function main(): Promise<void> {
     artifacts.map((artifact) => artifact.name)
   )
   assertInstalledPackagesAreIsolated(consumerDir, installed, options.repoRoot)
+  const installedManifests = new Map<string, PackageManifest>()
   for (const artifact of artifacts) {
     const installedManifest = await readJson<PackageManifest>(
       join(installed.get(artifact.name)!, 'package.json')
     )
+    installedManifests.set(artifact.name, installedManifest)
     if (installedManifest.version !== artifact.version) {
       throw new Error(
         `${artifact.name} installed ${installedManifest.version}, expected ${artifact.version}`
@@ -588,11 +700,12 @@ async function main(): Promise<void> {
 
   const probes: ReleasePreviewReport['probes'] = []
   for (const pkg of ordered) {
-    if (!hasRuntimeExport(pkg.manifest)) continue
-    const specifiers = exportSpecifiers(pkg.manifest)
+    const manifest = installedManifests.get(pkg.name)!
+    if (!hasRuntimeExport(manifest)) continue
+    const specifiers = exportSpecifiers(manifest)
     await runProbe(consumerDir, 'esm', pkg.name)
     probes.push({ package: pkg.name, condition: 'esm', specifier: pkg.name })
-    if (!pkg.manifest.main && !hasExportCondition(pkg.manifest.exports, 'require')) {
+    if (!manifest.main && !hasExportCondition(manifest.exports, 'require')) {
       throw new Error(`${pkg.name} has no CommonJS export to probe`)
     }
     await runProbe(consumerDir, 'cjs', pkg.name)
@@ -631,7 +744,7 @@ async function main(): Promise<void> {
     probes,
     canaryCommands: commands,
     publishCommands: options.releasePreview
-      ? artifacts.map((artifact) => publishCommand(artifact, options.tag))
+      ? publishCommandsForRequested(artifacts, requested, options.tag)
       : [],
   }
   const reportPath = join(

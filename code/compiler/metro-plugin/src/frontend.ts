@@ -108,7 +108,7 @@ export class MetroCompilerFrontend {
   #publishedGeneration: string | null = null
   #scanOptions: MetroCompilerScanOptions | null = null
   #scanOptionsHash: string | null = null
-  #updateQueue: Promise<void> = Promise.resolve()
+  #operationQueue: Promise<void> = Promise.resolve()
 
   constructor(readonly config: MetroCompilerFrontendConfig) {
     this.#cacheBaseRoot =
@@ -124,8 +124,8 @@ export class MetroCompilerFrontend {
     return join(this.#cacheBaseRoot, platform ?? 'default')
   }
 
-  async scan(options: MetroCompilerScanOptions): Promise<MetroCompilerGeneration> {
-    return await this.#scan(options)
+  scan(options: MetroCompilerScanOptions): Promise<MetroCompilerGeneration> {
+    return this.#enqueue(() => this.#scan(options))
   }
 
   async #scan(
@@ -211,7 +211,11 @@ export class MetroCompilerFrontend {
     }
   }
 
-  async ensureValidCache(
+  ensureValidCache(options: MetroCompilerScanOptions): Promise<MetroCompilerGeneration> {
+    return this.#enqueue(() => this.#ensureValidCache(options))
+  }
+
+  async #ensureValidCache(
     options: MetroCompilerScanOptions
   ): Promise<MetroCompilerGeneration> {
     const diagnostics: MetroCompilerDiagnostic[] = []
@@ -255,76 +259,83 @@ export class MetroCompilerFrontend {
       affectedIds: [],
       generation: null,
     }
-    const operation = this.#updateQueue
-      .catch(() => {})
-      .then(async () => {
-        const graph = this.#graph
-        const options = this.#scanOptions
-        if (!graph || !options) return
-        let record: CompiledRecord
-        const diagnostics: MetroCompilerDiagnostic[] = []
-        try {
-          record = await this.#compileRecord(path, options, diagnostics)
-        } catch (error) {
-          if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
-            const id = resolvedModuleId(resolve(path))
-            const invalidation = graph.removeModule(id)
-            this.#watchers.get(id)?.close()
-            this.#watchers.delete(id)
-            this.#records.delete(id)
-            this.#entries.delete(id)
-            for (const affected of invalidation.invalidatedIds) {
-              if (affected !== id) this.#refreshEntry(affected)
-            }
-            const generation = await this.#publish(options.platform)
-            result = {
-              changed: invalidation.changed,
-              affectedIds: invalidation.invalidatedIds,
-              generation,
-            }
-            return
+    return this.#enqueue(async () => {
+      const graph = this.#graph
+      const options = this.#scanOptions
+      if (!graph || !options) return result
+      let record: CompiledRecord
+      const diagnostics: MetroCompilerDiagnostic[] = []
+      try {
+        record = await this.#compileRecord(path, options, diagnostics)
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+          const id = resolvedModuleId(resolve(path))
+          const invalidation = graph.removeModule(id)
+          this.#watchers.get(id)?.close()
+          this.#watchers.delete(id)
+          this.#records.delete(id)
+          this.#entries.delete(id)
+          for (const affected of invalidation.invalidatedIds) {
+            if (affected !== id) this.#refreshEntry(affected)
           }
-          const diagnostic = metroDiagnostic(
-            'metro/transform-failed',
-            `Failed to update ${path}: ${error instanceof Error ? error.message : String(error)}`,
-            { moduleId: path }
-          )
-          this.#report(diagnostic)
-          return
+          const generation = await this.#publish(options.platform)
+          result = {
+            changed: invalidation.changed,
+            affectedIds: invalidation.invalidatedIds,
+            generation,
+          }
+          return result
         }
+        const diagnostic = metroDiagnostic(
+          'metro/transform-failed',
+          `Failed to update ${path}: ${error instanceof Error ? error.message : String(error)}`,
+          { moduleId: path }
+        )
+        this.#report(diagnostic)
+        return result
+      }
 
-        for (const dependency of record.input.imports) {
-          if (
-            dependency.external ||
-            !isCompilerSourceFile(dependency.resolvedId) ||
-            this.#records.has(dependency.resolvedId)
-          ) {
-            continue
-          }
-          await this.#addDependency(dependency.resolvedId, options, diagnostics)
+      for (const dependency of record.input.imports) {
+        if (
+          dependency.external ||
+          !isCompilerSourceFile(dependency.resolvedId) ||
+          this.#records.has(dependency.resolvedId)
+        ) {
+          continue
         }
-        this.#records.set(record.input.id, record)
-        const invalidation = graph.updateModule(record.input)
-        for (const affected of invalidation.invalidatedIds) this.#refreshEntry(affected)
-        const generation = invalidation.changed
-          ? await this.#publish(options.platform)
-          : null
-        result = {
-          changed: invalidation.changed,
-          affectedIds: invalidation.invalidatedIds,
-          generation,
-        }
-        if (this.config.watch !== false && retainsLiveGraph(options)) {
-          this.#watchModule(record.input.id)
-        }
-      })
-    this.#updateQueue = operation.catch(() => {})
-    await operation
-    return result
+        await this.#addDependency(dependency.resolvedId, options, diagnostics)
+      }
+      this.#records.set(record.input.id, record)
+      const invalidation = graph.updateModule(record.input)
+      for (const affected of invalidation.invalidatedIds) this.#refreshEntry(affected)
+      const generation = invalidation.changed
+        ? await this.#publish(options.platform)
+        : null
+      result = {
+        changed: invalidation.changed,
+        affectedIds: invalidation.invalidatedIds,
+        generation,
+      }
+      if (this.config.watch !== false && retainsLiveGraph(options)) {
+        this.#watchModule(record.input.id)
+      }
+      return result
+    })
   }
 
-  close(): void {
-    this.#releaseGraph()
+  #enqueue<T>(operation: () => Promise<T>): Promise<T> {
+    const queued = this.#operationQueue.then(operation)
+    this.#operationQueue = queued.then(
+      () => undefined,
+      () => undefined
+    )
+    return queued
+  }
+
+  close(): Promise<void> {
+    return this.#enqueue(async () => {
+      this.#releaseGraph()
+    })
   }
 
   #releaseGraph(): void {

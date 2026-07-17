@@ -159,6 +159,8 @@ export const App = ({ dynamic }) => <>
     }
 
     const resolvedByUser: string[] = []
+    let nextScanGate: Promise<void> | null = null
+    let notifyScanStarted: (() => void) | null = null
     const resolveRequest = (context: any, specifier: string, platform: string) => {
       resolvedByUser.push(`${platform}:${specifier}`)
       if (specifier === '~tokens') return { type: 'sourceFile', filePath: tokensPath }
@@ -173,7 +175,16 @@ export const App = ({ dynamic }) => <>
       cacheRoot,
       watch: false,
       originalBabelTransformerPath: transformerPath,
-      loadCompilerProject: async () => compilerProject,
+      loadCompilerProject: async () => {
+        const gate = nextScanGate
+        if (gate) {
+          nextScanGate = null
+          notifyScanStarted?.()
+          notifyScanStarted = null
+          await gate
+        }
+        return compilerProject
+      },
       resolver: {
         resolveRequest,
         sourceExts: ['js', 'jsx', 'ts', 'tsx'],
@@ -182,6 +193,20 @@ export const App = ({ dynamic }) => <>
     })
 
     try {
+      const productionOptions = {
+        dev: false,
+        entryFiles: [appPath],
+        hot: true,
+        platform: 'ios',
+        transform: {},
+      }
+      const concurrentScans = await Promise.all([
+        frontend.ensureValidCache(productionOptions),
+        frontend.ensureValidCache(productionOptions),
+      ])
+      expect(concurrentScans[0].moduleIds).toContain(appPath)
+      expect(concurrentScans[1].moduleIds).toContain(appPath)
+
       const getTransformOptions = composeMetroGetTransformOptions(frontend, async () => ({
         transform: { experimentalImportSupport: true },
       }))
@@ -205,6 +230,31 @@ export const App = ({ dynamic }) => <>
       expect(resolvedByUser).toEqual(
         expect.arrayContaining(['ios:~tokens', 'ios:@fixture/theme', 'ios:@fixture/ui'])
       )
+
+      let releaseScan!: () => void
+      nextScanGate = new Promise<void>((resolve) => {
+        releaseScan = resolve
+      })
+      const scanStarted = new Promise<void>((resolve) => {
+        notifyScanStarted = resolve
+      })
+      const rescan = frontend.scan({
+        dev: true,
+        entryFiles: [appPath],
+        hot: true,
+        platform: 'ios',
+        transform: returnedOptions.transform,
+      })
+      await scanStarted
+      let updateFinished = false
+      const updateDuringScan = frontend.updateFile(themePath).then((result) => {
+        updateFinished = true
+        return result
+      })
+      await new Promise((resolve) => setTimeout(resolve, 20))
+      expect(updateFinished).toBe(false)
+      releaseScan()
+      await Promise.all([rescan, updateDuringScan])
 
       const args = {
         filename: appPath,
@@ -363,7 +413,7 @@ export const App = ({ dynamic }) => <>
         generation: null,
       })
     } finally {
-      frontend.close()
+      await frontend.close()
     }
   })
 })
