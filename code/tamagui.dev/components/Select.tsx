@@ -3,10 +3,9 @@ import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons-2'
 import type { SelectItemProps, SelectProps, SelectTriggerProps } from 'tamagui'
 import { Select as TamaguiSelect, YStack, useProps, withStaticProperties } from 'tamagui'
 
-export const SelectItem = ({ children, index, ...props }: SelectItemProps) => {
+export const SelectItem = ({ children, ...props }: SelectItemProps) => {
   return (
     <TamaguiSelect.Item
-      index={index + 1}
       minHeight={36}
       paddingHorizontal="$3"
       borderRadius="$3"
