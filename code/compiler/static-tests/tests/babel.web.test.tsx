@@ -485,7 +485,7 @@ test('$group- styles on an animated element stay on the runtime path (never extr
         <View group="card">
           <View
             width={100}
-            animation="bouncy"
+            transition="bouncy"
             $group-card={{ backgroundColor: 'red' }}
           />
         </View>
