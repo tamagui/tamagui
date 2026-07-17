@@ -191,7 +191,7 @@ declare const DialogContent: import("@tamagui/core").TamaguiComponent<Omit<impor
     elevate?: boolean | undefined;
     bordered?: boolean | undefined;
     chromeless?: boolean | "all" | undefined;
-} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> | "disableOutsidePointerEvents" | "branches" | "onEscapeKeyDown" | "onPointerDownOutside" | "onFocusOutside" | "onInteractOutside" | "forceUnmount" | "onBlurCapture" | "onFocusCapture" | "trapFocus" | "onOpenAutoFocus" | "onCloseAutoFocus" | "onTransition"> & Omit<DialogContentTypeProps, "context" | "onPointerDownCapture"> & {
+} & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> | "disableOutsidePointerEvents" | "branches" | "onEscapeKeyDown" | "onPointerDownOutside" | "onFocusOutside" | "onInteractOutside" | "forceUnmount" | "onBlurCapture" | "onFocusCapture" | "trapFocus" | "onOpenAutoFocus" | "onCloseAutoFocus"> & Omit<DialogContentTypeProps, "context" | "onPointerDownCapture"> & {
     scope?: DialogScopes;
 }, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<DialogContentTypeProps, "context" | "onPointerDownCapture"> & {
     scope?: DialogScopes;
@@ -375,7 +375,7 @@ declare const Dialog: ((props: {
         elevate?: boolean | undefined;
         bordered?: boolean | undefined;
         chromeless?: boolean | "all" | undefined;
-    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> | "disableOutsidePointerEvents" | "branches" | "onEscapeKeyDown" | "onPointerDownOutside" | "onFocusOutside" | "onInteractOutside" | "forceUnmount" | "onBlurCapture" | "onFocusCapture" | "trapFocus" | "onOpenAutoFocus" | "onCloseAutoFocus" | "onTransition"> & Omit<DialogContentTypeProps, "context" | "onPointerDownCapture"> & {
+    } & import("@tamagui/core").WithShorthands<import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase>>> | "disableOutsidePointerEvents" | "branches" | "onEscapeKeyDown" | "onPointerDownOutside" | "onFocusOutside" | "onInteractOutside" | "forceUnmount" | "onBlurCapture" | "onFocusCapture" | "trapFocus" | "onOpenAutoFocus" | "onCloseAutoFocus"> & Omit<DialogContentTypeProps, "context" | "onPointerDownCapture"> & {
         scope?: DialogScopes;
     }, (HTMLElement & import("@tamagui/core").TamaguiElementMethods) | import("react-native").View, import("@tamagui/core").RNTamaguiViewNonStyleProps & Omit<DialogContentTypeProps, "context" | "onPointerDownCapture"> & {
         scope?: DialogScopes;
