@@ -36,10 +36,8 @@ export function simplifiedGetSplitStyles(
     : context?.props
   // optionally merge in default/context props like createComponent does
   let mergedProps = props
-  let baseProps: Record<string, any> | undefined
   if (options.mergeDefaultProps) {
     const defaults = getDefaultProps(component.staticConfig, props.componentName)
-    ;[baseProps] = mergeComponentProps(defaults, styledContext, {})
     ;[mergedProps] = mergeComponentProps(defaults, styledContext, props)
   }
 
@@ -47,8 +45,6 @@ export function simplifiedGetSplitStyles(
     mediaState: options.mediaState,
     isAnimated: false,
     resolveValues: 'auto',
-    baseProps,
-    callerProps: props,
     styledContext,
   } satisfies SplitStyleProps
 

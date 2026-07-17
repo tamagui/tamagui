@@ -377,7 +377,6 @@ export function createComponent<
       styledContextValue,
       propsIn
     )
-    const [baseProps] = mergeComponentProps(defaultProps, styledContextValue, {})
 
     props = nextProps as ViewProps | TextProps
     overriddenContextProps = overrides
@@ -768,8 +767,6 @@ export function createComponent<
       isAnimated,
       willBeAnimated,
       styledContext: getStyledContextKeys(staticConfig, styledContextValue),
-      baseProps,
-      callerProps: propsIn,
     } as const
 
     const themeName = themeState?.name || ''
