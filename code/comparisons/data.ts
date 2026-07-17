@@ -1626,7 +1626,7 @@ export const categories: Category[] = [
         name: 'animation',
         description: 'Animation driver / keyframes',
         examples: {
-          tamagui: 'animation="bouncy"',
+          tamagui: 'transition="bouncy"',
           tailwind: 'animate-spin / animate-bounce / animate-pulse',
           nativewind: 'animate-spin / animate-bounce',
         },
@@ -1637,13 +1637,13 @@ export const categories: Category[] = [
           uniwind: 'partial',
         },
         notes:
-          'Tamagui: `animation="..."` plus enter/exit styles, cross-platform via pluggable drivers (CSS on web; Reanimated/Moti/RN-Animated on native). NativeWind v5 `animate-*` is marked experimental on native (it now delegates to Reanimated CSS animations, RN 0.81+ / New Arch only). Uniwind animations are Pro-tier (paid) and Reanimated-backed.',
+          'Tamagui: `transition="..."` plus enter/exit styles, cross-platform via pluggable drivers (CSS on web; Reanimated/Moti/RN-Animated on native). NativeWind v5 `animate-*` is marked experimental on native (it now delegates to Reanimated CSS animations, RN 0.81+ / New Arch only). Uniwind animations are Pro-tier (paid) and Reanimated-backed.',
       },
       {
         name: 'transition-property',
         description: 'Which properties to transition',
         examples: {
-          tamagui: 'animation="quick" (driver animates prop changes)',
+          tamagui: 'transition="quick" (driver animates prop changes)',
           tailwind: 'transition / transition-colors / transition-all',
           nativewind: 'transition / transition-colors / transition-all',
         },
@@ -1654,13 +1654,13 @@ export const categories: Category[] = [
           uniwind: 'partial',
         },
         notes:
-          'Tamagui has no `transition-*` class; instead any prop change on a component with an `animation` driver animates automatically (cross-platform). NativeWind v5 transition-* is experimental on native (Reanimated-backed, RN 0.81+ / New Arch). Uniwind transitions are Pro-tier.',
+          'Tamagui has no `transition-*` class; instead any prop change on a component with a transition driver animates automatically (cross-platform). NativeWind v5 transition-* is experimental on native (Reanimated-backed, RN 0.81+ / New Arch). Uniwind transitions are Pro-tier.',
       },
       {
         name: 'transition-duration',
         description: 'Transition timing',
         examples: {
-          tamagui: 'animation={[{ duration: 300 }]} (per-driver config)',
+          tamagui: "transition={['quick', { duration: 300 }]}",
           tailwind: 'duration-150 / duration-300 / duration-500',
           nativewind: 'duration-150 / duration-300',
         },
