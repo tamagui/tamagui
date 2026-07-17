@@ -60,9 +60,7 @@ describe('Select multiple', () => {
     await testElement('multiple-adapt-blueberry').tap()
     await expect(testElement('multiple-adapt-blueberry')).toBeVisible()
     await expect(testElement('multiple-adapt-blueberry-indicator')).toBeVisible()
-    await expect(testElement('multiple-adapt-blueberry')).toHaveValue(
-      'checkbox, checked'
-    )
+    await expect(testElement('multiple-adapt-blueberry')).toHaveValue('checkbox, checked')
     await expect(testElement('multiple-adapt-value')).toHaveText(
       '["red-delicious","blueberry"]'
     )
