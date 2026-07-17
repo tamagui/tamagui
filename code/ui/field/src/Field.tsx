@@ -283,12 +283,17 @@ function useControlContext(
       disabled,
       ariaProps: {
         id: association.controlId,
-        'aria-labelledby': association.labelId,
-        'aria-describedby': association.messageIds.join(' ') || undefined,
-        'aria-invalid': root.state.valid === false ? true : undefined,
-        accessibilityLabel: association.labelText,
-        accessibilityHint: association.messageTexts.join(' ') || undefined,
-        accessibilityState: disabled ? { disabled: true } : undefined,
+        ...(isWeb
+          ? {
+              'aria-labelledby': association.labelId,
+              'aria-describedby': association.messageIds.join(' ') || undefined,
+              'aria-invalid': root.state.valid === false ? true : undefined,
+            }
+          : {
+              accessibilityLabel: association.labelText,
+              accessibilityHint: association.messageTexts.join(' ') || undefined,
+              accessibilityState: disabled ? { disabled: true } : undefined,
+            }),
       },
       dataProps: getDataProps(root.state, disabled),
       onFocus: root.onFocus,
@@ -952,7 +957,7 @@ const FieldLabel = createStyledHOC(FieldLabelFrame)<FieldLabelProps>(function Fi
       id={id}
       ref={forwardedRef}
       {...(isWeb ? { htmlFor: association.controlId } : undefined)}
-      accessibilityState={disabled ? { disabled: true } : undefined}
+      {...(!isWeb && disabled ? { accessibilityState: { disabled: true } } : undefined)}
       onMouseDown={(event: any) => {
         onMouseDown?.(event)
         if (!event.defaultPrevented && event.detail > 1) {
