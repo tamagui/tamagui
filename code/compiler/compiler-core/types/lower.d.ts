@@ -48,6 +48,8 @@ export type LoweringCandidateResult = {
 export interface CompilerLoweringHost {
     resolveComponent(element: MaterializedElement, styledDefinition: MaterializedStyledDefinition | null): LoweringComponent | null;
     isStyleProp(name: string, component: LoweringComponent): boolean;
+    /** The host can retain this dynamic prop while committing other safe candidate edits. */
+    canLowerDynamicStyleProp?(name: string, component: LoweringComponent): boolean;
     lowerCandidate(input: LoweringCandidateInput): LoweringCandidateResult;
 }
 export interface LowerModuleOptions {

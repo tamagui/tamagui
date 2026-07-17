@@ -135,8 +135,8 @@ By default, dialogs can be dismissed by:
   - Do not enable RemoveScroll while open in v3
 
 In v3, Dialog parts own their presence lifecycle. Overlay and content can finish
-exit animations before unmounting, and `onDidAnimate` completion is reported by
-the animated part rather than by the root alone.
+exit animations before unmounting, and `onTransition` reports completion from
+the animated part rather than from the root alone.
 
 ### Preventing Outside Dismissal
 

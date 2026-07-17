@@ -70,7 +70,13 @@
   },
   "peerDependencies": {
     "react": ">=19",
+    "react-native-safe-area-context": "*",
     "react-native-web": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native-safe-area-context": {
+      "optional": true
+    }
   },
   "module:jsx": "dist/jsx",
   "removeSideEffects": true

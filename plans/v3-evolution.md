@@ -640,6 +640,20 @@ Vite extractor and any public `engine` switch before merge.
 fixture, compiled JSX input, HMR, SSR, diagnostics, and cold/warm performance
 report. Correct bailout is allowed; output/runtime divergence is not.
 
+**Partial-extraction safety amendment (July 2026):** E3 may retain a runtime
+component and extract static siblings only when the host proves disjointness
+using normalized emitted-property ownership. This includes aliases such as
+`x`/`y` owning `transform` and logical properties such as `inlineSize` owning
+`width`, followed by canonical CSS shorthand/longhand and direction-dependent
+logical-property conflict checks. Styled defaults and runtime overrides must
+not be split across atomic classes whose cascade depends on stylesheet
+insertion order. Animation
+partial extraction is a separate runtime contract: v3 `transition` candidates
+remain untouched until compiler-owned values are merged into the resolved
+style passed to all four web drivers (CSS, RN Animated, Reanimated, Motion).
+Compiler string-output tests do not satisfy that gate; each driver needs a
+runtime value and transition-completion assertion.
+
 **Resource class:** heavy.
 
 ### E4 — Metro compiler frontend
@@ -663,12 +677,30 @@ bundle execution, diagnostics, and cache corruption recovery are proven.
 
 **Resource class:** heavy; Metro and native validation run alone.
 
-### E5 — webpack/Next adapters and Babel extractor removal
+### E5 — supported compiler adapters and legacy removal
 
-After Vite/Metro stabilize, adapt the shared engine to webpack/Next using their
-resolvers. Platform-specific adapters are acceptable; two extractors for the
-same adapter are not. Delete Babel extractor/evaluator dependencies once the
-last supported adapter moves.
+The supported v3 compiler matrix is Vite for web, One's Rolldown native pipeline
+through its Vite config provider API, Metro, and the bundler-neutral
+`CompilerSession` API in `@tamagui/compiler-core`. Each adapter supplies
+canonical module ids, resolved imports, source, project generation, and the
+Tamagui lowering host. Compiler core never guesses paths or owns bundler
+resolution.
+
+Turbopack does not expose the graph-aware transform and virtual CSS hooks this
+compiler needs. Its supported path is therefore explicit CLI precompilation:
+`tamagui build --target web <source> -- next dev` (or `next build`). The CLI
+writes real CSS imports for Turbopack and restores the source tree when the
+wrapped process exits. `@tamagui/next-plugin` and `tamagui-loader` remain
+webpack-only compatibility surfaces and are not part of the v3 compiler path.
+
+`@tamagui/static` contains the shared Tamagui frontend and config evaluator but
+has no Babel parser, traversal, generator, or types dependency. Metro may still
+run a user's Babel transformer before handing canonical source to the shared
+compiler; that is a Metro host concern, not a second Tamagui extractor.
+
+**Acceptance:** generic session resolution/invalidation tests, Vite web tests,
+One iOS and Android native production bundles, Metro graph/cache tests, and a
+Next Turbopack production build through the restore-safe CLI wrapper all pass.
 
 ### G0 — integrated canary
 
@@ -684,6 +716,10 @@ Build one small v6 app that deliberately combines every lane:
 Prove web dev/HMR, web production/SSR/hydration, native Metro bundle/runtime,
 typecheck, package exports, and exact style values. This canary is the final
 acceptance surface; unit suites cannot substitute for it.
+
+The native gate must run both a real Metro production export and the native runtime
+assertions. Compile-only DOM remains excluded by the plan's scope and is not a G0
+requirement.
 
 ### G1 — release dry run
 

@@ -23,7 +23,7 @@ import {
   createViteTamaguiLoader,
   TAMAGUI_EVALUATION_ENVIRONMENT,
 } from '../src/loadTamagui'
-import { tamaguiPlugin } from '../src/plugin'
+import { tamaguiNativePlugin, tamaguiPlugin } from '../src/plugin'
 
 const execFileAsync = promisify(execFile)
 const fixtureRoot = path.resolve(__dirname, 'fixtures/module-runner')
@@ -32,6 +32,10 @@ const coreResetPath = fixtureRequire.resolve('@tamagui/core/reset.css')
 const appPath = path.join(fixtureRoot, 'src/App.tsx')
 const resolutionPath = path.join(fixtureRoot, 'packages/workspace/src/resolution.ts')
 const configSpacePath = path.join(fixtureRoot, 'packages/workspace/src/config-space.ts')
+const nativeConfigPath = path.resolve(
+  import.meta.dirname,
+  '../../static-tests/tests/lib/tamagui.config.cjs'
+)
 const componentEntryPath = path.join(fixtureRoot, 'packages/components/src/index.ts')
 const evaluationFixturePackagePath = path.join(fixtureRoot, 'packages/evaluation-fixture')
 const evaluationFixturePhysicalRuntimePath = path.join(
@@ -448,6 +452,142 @@ test('clears loader state when closing an owned environment fails', async () => 
   expect(loader.getTamaguiOptions()).toBeNull()
 })
 
+test('native provider lowers source in One Rolldown for iOS and Android', async () => {
+  const outputCSS = path.join(watchOutputRoot, 'native-output.css')
+  const nativeRoot = path.join(watchOutputRoot, 'native-project')
+  const rootConfigPath = path.join(nativeRoot, 'native-root.config.cjs')
+  const buildConfigPath = path.join(nativeRoot, 'tamagui.build.ts')
+  const buildOptionsPath = path.join(nativeRoot, 'native-build-options.ts')
+  const writeNativeConfig = (space: number) =>
+    writeFile(
+      rootConfigPath,
+      `const { createTamagui } = require('@tamagui/core')
+const { defaultConfig } = require('@tamagui/config/v4')
+module.exports = createTamagui({
+  ...defaultConfig,
+  tokens: {
+    ...defaultConfig.tokens,
+    space: { ...defaultConfig.tokens.space, fixtureNative: ${space} },
+  },
+})
+`
+    )
+  await mkdir(nativeRoot, { recursive: true })
+  await symlink(
+    path.join(fixtureRoot, 'node_modules'),
+    path.join(nativeRoot, 'node_modules'),
+    'dir'
+  )
+  await writeFile(outputCSS, 'keep-web-css')
+  await writeNativeConfig(12)
+  await writeFile(
+    buildConfigPath,
+    `import { compilerOptions } from './native-build-options'
+export default compilerOptions
+`
+  )
+  await writeFile(
+    buildOptionsPath,
+    `export const compilerOptions = {
+  config: './native-root.config.cjs',
+  components: ['tamagui'],
+}
+`
+  )
+  const plugin = tamaguiNativePlugin({
+    buildFile: path.relative(nativeRoot, buildConfigPath),
+    outputCSS,
+  })
+  const createNativePlugin = (plugin.api as any).vxrnNative
+  expect(createNativePlugin).toBeTypeOf('function')
+  const watched = new Set<string>()
+  const transformContext = {
+    addWatchFile(id: string) {
+      watched.add(id)
+    },
+    async resolve(specifier: string) {
+      if (specifier === '@tamagui/core' || specifier === 'tamagui') {
+        return { id: fixtureRequire.resolve(specifier) }
+      }
+      return null
+    },
+  } as any
+  let androidPlugin: Plugin | undefined
+  for (const platform of ['ios', 'android']) {
+    const nativePlugin = createNativePlugin({
+      root: nativeRoot,
+      platform,
+      dev: false,
+    }) as Plugin
+    if (platform === 'android') androidPlugin = nativePlugin
+    const transform =
+      typeof nativePlugin.transform === 'object'
+        ? nativePlugin.transform.handler
+        : nativePlugin.transform
+    const result = await transform?.call(
+      transformContext,
+      `
+import { View } from 'tamagui'
+export function App() {
+  return <View x={12} y={8} testID="native-vite" />
+}
+`,
+      path.join(nativeRoot, `src/NativeApp.${platform}.tsx`)
+    )
+
+    expect(result).toBeTruthy()
+    expect(typeof result === 'object' && result.code).toContain('<__TamaguiNativeView')
+    expect(typeof result === 'object' && result.code).toContain('"translateX":12')
+    expect(typeof result === 'object' && result.code).not.toContain('.tamagui.css')
+  }
+  expect(watched).toContain(rootConfigPath)
+  expect(watched).toContain(buildOptionsPath)
+
+  const transform =
+    typeof androidPlugin!.transform === 'object'
+      ? androidPlugin!.transform.handler
+      : androidPlugin!.transform
+  const source = `
+import { View } from 'tamagui'
+export const App = () => <View padding="$fixtureNative" />
+`
+  const id = path.join(nativeRoot, 'src/NativeConfigReload.android.tsx')
+  const before = await transform?.call(transformContext, source, id)
+  expect(typeof before === 'object' && before.code).toContain('"paddingTop":12')
+
+  await writeNativeConfig(24)
+  if (typeof androidPlugin!.watchChange === 'function') {
+    androidPlugin!.watchChange.call(transformContext, rootConfigPath, { event: 'update' })
+  }
+  const after = await transform?.call(transformContext, source, id)
+  expect(typeof after === 'object' && after.code).toContain('"paddingTop":24')
+
+  await writeFile(buildOptionsPath, `export const compilerOptions = {`)
+  if (typeof androidPlugin!.watchChange === 'function') {
+    androidPlugin!.watchChange.call(transformContext, buildOptionsPath, {
+      event: 'update',
+    })
+  }
+  await expect(transform?.call(transformContext, source, id)).rejects.toThrow()
+
+  await writeFile(
+    buildOptionsPath,
+    `export const compilerOptions = {
+  config: './native-root.config.cjs',
+  components: ['tamagui'],
+}
+`
+  )
+  if (typeof androidPlugin!.watchChange === 'function') {
+    androidPlugin!.watchChange.call(transformContext, buildOptionsPath, {
+      event: 'update',
+    })
+  }
+  const retried = await transform?.call(transformContext, source, id)
+  expect(typeof retried === 'object' && retried.code).toContain('"paddingTop":24')
+  expect(await readFile(outputCSS, 'utf8')).toBe('keep-web-css')
+}, 20_000)
+
 test('optimizes the core singleton with context-bearing Tamagui packages', async () => {
   const server = await createServer({
     configFile: false,
@@ -601,7 +741,6 @@ test('evaluates config and components through the app resolver and invalidates H
   expect(componentResolution?.id).toBe(componentEntryPath)
   expect(clientResolution?.id).toBe(compilerResolution?.id)
   expect(clientResolution?.id).toMatch(/browser\.ts$/)
-
   ;(globalThis as any).__tamaguiFixtureEvaluationOrder = []
   const directConfigResolution = await evaluationEnvironment.pluginContainer.resolveId(
     path.join(fixtureRoot, 'tamagui.config.ts')

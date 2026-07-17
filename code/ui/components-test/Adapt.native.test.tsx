@@ -145,7 +145,7 @@ describe('Adapt native live slot contents', () => {
     expect(unmounts).toEqual([])
 
     await act(async () => {
-      latestTarget!.handoff.onAnimationComplete({ open: false })
+      latestTarget!.handoff.onTransition({ phase: 'end', cause: 'close' })
     })
 
     expect(rendered!.toJSON()).toBe(null)

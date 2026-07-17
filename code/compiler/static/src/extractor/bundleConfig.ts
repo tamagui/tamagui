@@ -1,24 +1,26 @@
-import generate from '@babel/generator'
-import traverse from '@babel/traverse'
-import * as t from '@babel/types'
 import { createHash } from 'node:crypto'
+import { createRequire } from 'node:module'
 import { existsSync, readFileSync, unlinkSync } from 'node:fs'
-import { basename, dirname, extname, join, relative, sep } from 'node:path'
+import { basename, dirname, extname, join, relative, resolve, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 // @ts-ignore why
 import { Color, colorLog } from '@tamagui/cli-color'
 import { type StaticConfig, type TamaguiInternalConfig } from '@tamagui/web'
 import esbuild from 'esbuild'
-import * as FS from 'fs-extra'
+import FS from 'fs-extra'
 import { readFile } from 'node:fs/promises'
 import { registerRequire, setRequireResult } from '../registerRequire'
 import type { TamaguiOptions } from '../types'
-import { babelParse } from './babelParse'
+import { addLocalExports } from './addLocalExports'
 import { esbuildLoaderConfig, esbundleTamaguiConfig } from './bundle'
 import { getTamaguiConfigPathFromOptionsConfig } from './getTamaguiConfigPathFromOptionsConfig'
 import { hasTopLevelAwait } from './hasTopLevelAwait'
 import { requireTamaguiCore } from '../helpers/requireTamaguiCore'
 import { detectModuleFormat } from './detectModuleFormat'
+
+const nodeRequire = createRequire(
+  typeof __filename === 'string' ? __filename : import.meta.url
+)
 
 // track temp files for cleanup on exit
 const activeTempFiles = new Set<string>()
@@ -45,10 +47,10 @@ function getEsbuildStdinLoader(filePath: string): esbuild.Loader {
 
 function resolvePackageEntry(packageName: string, format: 'esm' | 'cjs') {
   if (format === 'cjs') {
-    return require.resolve(packageName)
+    return nodeRequire.resolve(packageName)
   }
 
-  const packageJsonPath = require.resolve(`${packageName}/package.json`)
+  const packageJsonPath = nodeRequire.resolve(`${packageName}/package.json`)
   const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
   const packageRoot = dirname(packageJsonPath)
   const exportEntry = packageJson.exports?.['.']
@@ -63,7 +65,7 @@ function resolvePackageEntry(packageName: string, format: 'esm' | 'cjs') {
     return join(packageRoot, esmEntry)
   }
 
-  return require.resolve(packageName)
+  return nodeRequire.resolve(packageName)
 }
 
 function cleanupTempFiles() {
@@ -104,6 +106,7 @@ export type TamaguiProjectInfo = {
   tamaguiConfig?: TamaguiInternalConfig | null
   nameToPaths?: NameToPaths
   cached?: boolean
+  dependencies?: string[]
 }
 
 const external = [
@@ -236,6 +239,7 @@ export const setLoadedConfig = (config: TamaguiInternalConfig) => {
 
 function getBundleKey(props: TamaguiOptions) {
   return JSON.stringify({
+    root: props.root,
     components: props.components,
     config: props.config,
     platform: props.platform,
@@ -251,7 +255,7 @@ export async function getBundledConfig(props: TamaguiOptions, rebuild = false) {
   }
 
   if (!currentBundle || currentBundleKey !== bundleKey || rebuild) {
-    return await bundleConfig(props)
+    return await bundleConfig(props, rebuild)
   }
 
   return currentBundle
@@ -272,10 +276,11 @@ let hasBundledOnce = false
 // that's acceptable - better than nothing
 let hasLoggedBuild = false
 
-export async function bundleConfig(props: TamaguiOptions) {
+export async function bundleConfig(props: TamaguiOptions, rebuild = false) {
   const bundleKey = getBundleKey(props)
   // webpack is calling this a ton for no reason
   if (
+    !rebuild &&
     global.tamaguiLastBundledConfig &&
     global.tamaguiLastBundledConfigKey === bundleKey &&
     Date.now() - global.tamaguiLastLoaded < 3000
@@ -287,10 +292,11 @@ export async function bundleConfig(props: TamaguiOptions) {
   try {
     isBundling = true
 
+    const root = props.root || process.cwd()
     const configEntry = props.config
-      ? getTamaguiConfigPathFromOptionsConfig(props.config)
+      ? getTamaguiConfigPathFromOptionsConfig(props.config, root)
       : ''
-    const tmpDir = join(process.cwd(), '.tamagui')
+    const tmpDir = join(root, '.tamagui')
     // detect module format from config entry point
     const configFormat = configEntry ? detectModuleFormat(configEntry) : 'cjs'
     const configExt = configFormat === 'esm' ? '.mjs' : '.cjs'
@@ -299,7 +305,7 @@ export async function bundleConfig(props: TamaguiOptions) {
     // detect format per component module
     const componentFormats: Array<'esm' | 'cjs'> = baseComponents.map((mod) => {
       try {
-        const pkgJson = require.resolve(mod + '/package.json')
+        const pkgJson = nodeRequire.resolve(mod + '/package.json')
         const pkg = JSON.parse(readFileSync(pkgJson, 'utf-8'))
         return pkg.type === 'module' ? 'esm' : 'cjs'
       } catch {
@@ -316,6 +322,7 @@ export async function bundleConfig(props: TamaguiOptions) {
           .replace(/[^a-z0-9]+/gi, '')}-components.config${ext}`
       )
     })
+    let compilerDependencies: string[] = currentBundle?.dependencies ?? []
 
     if (
       process.env.NODE_ENV === 'development' &&
@@ -328,8 +335,8 @@ export async function bundleConfig(props: TamaguiOptions) {
     // (built by another worker) - this prevents duplicate builds across worker threads
     // we must check ALL files, not just the config, to avoid a race where another
     // worker has written the config but not yet finished writing component files
-    let shouldBuild = !props.disableInitialBuild
-    if (shouldBuild && props.config) {
+    let shouldBuild = rebuild || !props.disableInitialBuild
+    if (shouldBuild && props.config && !rebuild) {
       const allOutFiles = [configOutPath, ...componentOutPaths]
       try {
         const stats = await Promise.all(
@@ -356,7 +363,7 @@ export async function bundleConfig(props: TamaguiOptions) {
 
       const start = Date.now()
 
-      await Promise.all([
+      const buildResults = await Promise.all([
         props.config
           ? esbundleTamaguiConfig(
               {
@@ -365,6 +372,8 @@ export async function bundleConfig(props: TamaguiOptions) {
                 outfile: configOutPath,
                 target: 'node24',
                 format: configFormat,
+                absWorkingDir: root,
+                metafile: true,
                 ...esbuildExtraOptions,
               },
               props.platform || 'web'
@@ -379,12 +388,20 @@ export async function bundleConfig(props: TamaguiOptions) {
               outfile: componentOutPaths[i],
               target: 'node24',
               format: componentFormats[i],
+              absWorkingDir: root,
+              metafile: true,
               ...esbuildExtraOptions,
             },
             props.platform || 'web'
           )
         }),
       ])
+
+      compilerDependencies = buildResults.flatMap((result) =>
+        result?.metafile
+          ? Object.keys(result.metafile.inputs).map((input) => resolve(root, input))
+          : []
+      )
 
       // only log once per process to avoid duplicate messages
       // also skip if _skipBuildLog is set (used during worker recycle warmup)
@@ -400,8 +417,8 @@ export async function bundleConfig(props: TamaguiOptions) {
           colorLog(
             Color.Dim,
             `
-          Config     .${sep}${relative(process.cwd(), configOutPath)}
-          Components ${componentOutPaths.map((p) => `.${sep}${relative(process.cwd(), p)}`).join('\n             ')}
+          Config     .${sep}${relative(root, configOutPath)}
+          Components ${componentOutPaths.map((p) => `.${sep}${relative(root, p)}`).join('\n             ')}
           `
           )
         }
@@ -413,13 +430,13 @@ export async function bundleConfig(props: TamaguiOptions) {
     // external requires like @tamagui/config/v3 that are externalized in the bundled CJS
     if (hasBundledOnce) {
       try {
-        delete require.cache[require.resolve(configOutPath)]
+        delete nodeRequire.cache[nodeRequire.resolve(configOutPath)]
       } catch {
         // file may not exist yet
       }
       for (const p of componentOutPaths) {
         try {
-          delete require.cache[require.resolve(p)]
+          delete nodeRequire.cache[nodeRequire.resolve(p)]
         } catch {
           // file may not exist yet
         }
@@ -431,9 +448,11 @@ export async function bundleConfig(props: TamaguiOptions) {
     let out: any
     if (configFormat === 'esm') {
       // use file:// URL for proper ESM resolution
-      out = await import(pathToFileURL(configOutPath).href)
+      out = await import(
+        `${pathToFileURL(configOutPath).href}?v=${FS.statSync(configOutPath).mtimeMs}`
+      )
     } else {
-      out = require(configOutPath)
+      out = nodeRequire(configOutPath)
     }
 
     // try and find .config, even if on .default
@@ -465,6 +484,9 @@ export async function bundleConfig(props: TamaguiOptions) {
       await writeTamaguiCSS(props.outputCSS, config)
     }
 
+    if (rebuild) {
+      delete cacheComponents[componentOutPaths.join('\0')]
+    }
     let components = await loadComponents({
       ...props,
       components: componentOutPaths,
@@ -502,6 +524,7 @@ export async function bundleConfig(props: TamaguiOptions) {
       components,
       nameToPaths: {},
       tamaguiConfig: config,
+      dependencies: compilerDependencies,
     }
 
     currentBundle = res
@@ -603,12 +626,12 @@ export async function loadComponentsInner(
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
       let loadModule = name
       let writtenContents = fileContents
-      let didBabel = false
+      let didAddExports = false
 
       const attemptLoad = async ({ forceExports = false } = {}) => {
         if (isDynamic) {
           writtenContents = forceExports
-            ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
+            ? addLocalExports(esbuildit(fileContents, 'modern'), name)
             : fileContents
           loadModule = getDynamicEvalOutfile(name, format, writtenContents)
 
@@ -654,9 +677,11 @@ export async function loadComponentsInner(
         let moduleResult: any
         if (format === 'esm') {
           // use file:// URL for proper ESM resolution
-          moduleResult = await import(pathToFileURL(loadModule).href)
+          moduleResult = await import(
+            `${pathToFileURL(loadModule).href}?v=${FS.statSync(loadModule).mtimeMs}`
+          )
         } else {
-          moduleResult = require(loadModule)
+          moduleResult = nodeRequire(loadModule)
         }
 
         if (!forceExports) {
@@ -685,12 +710,11 @@ export async function loadComponentsInner(
 
       try {
         loaded = await attemptLoad({ forceExports: true })
-        didBabel = true
+        didAddExports = true
       } catch (err) {
-        console.info('babel err', err, writtenContents)
         writtenContents = fileContents
         if (process.env.DEBUG?.startsWith('tamagui')) {
-          console.info(`Error parsing babel likely`, err)
+          console.info(`Error adding local component exports`, err)
         }
 
         try {
@@ -703,7 +727,7 @@ export async function loadComponentsInner(
             console.info(err2)
             console.info(
               `At: ${loadModule}`,
-              `\ndidBabel: ${didBabel}`,
+              `\ndidAddExports: ${didAddExports}`,
               `\nIn:`,
               writtenContents,
               `\nisDynamic: `,
@@ -759,12 +783,12 @@ export function loadComponentsInnerSync(
       const fileContents = isDynamic ? readFileSync(name, 'utf-8') : ''
       let loadModule = name
       let writtenContents = fileContents
-      let didBabel = false
+      let didAddExports = false
 
       function attemptLoad({ forceExports = false } = {}) {
         if (isDynamic) {
           writtenContents = forceExports
-            ? transformAddExports(babelParse(esbuildit(fileContents, 'modern'), name))
+            ? addLocalExports(esbuildit(fileContents, 'modern'), name)
             : fileContents
           loadModule = getDynamicEvalOutfile(name, 'cjs', writtenContents)
 
@@ -803,10 +827,10 @@ export function loadComponentsInnerSync(
         }
 
         if (process.env.DEBUG === 'tamagui') {
-          console.info(`loadModule`, loadModule, require.resolve(loadModule))
+          console.info(`loadModule`, loadModule, nodeRequire.resolve(loadModule))
         }
 
-        const moduleResult = require(loadModule)
+        const moduleResult = nodeRequire(loadModule)
 
         if (!forceExports) {
           setRequireResult(name, moduleResult)
@@ -832,13 +856,12 @@ export function loadComponentsInnerSync(
 
       try {
         const res = attemptLoad({ forceExports: true })
-        didBabel = true
+        didAddExports = true
         return res
       } catch (err) {
-        console.info('babel err', err, writtenContents)
         writtenContents = fileContents
         if (process.env.DEBUG?.startsWith('tamagui')) {
-          console.info(`Error parsing babel likely`, err)
+          console.info(`Error adding local component exports`, err)
         }
       } finally {
         dispose()
@@ -854,7 +877,7 @@ export function loadComponentsInnerSync(
           console.info(err)
           console.info(
             `At: ${loadModule}`,
-            `\ndidBabel: ${didBabel}`,
+            `\ndidAddExports: ${didAddExports}`,
             `\nIn:`,
             writtenContents,
             `\nisDynamic: `,
@@ -933,49 +956,3 @@ function interopDefaultExport(mod: any) {
 }
 
 const cacheComponents: Record<string, LoadedComponents[]> = {}
-
-function transformAddExports(ast: t.File) {
-  const usedNames = new Set<string>()
-
-  // avoid clobbering
-  // @ts-ignore
-  traverse(ast, {
-    ExportNamedDeclaration(nodePath) {
-      if (nodePath.node.specifiers) {
-        for (const spec of nodePath.node.specifiers) {
-          usedNames.add(
-            t.isIdentifier(spec.exported) ? spec.exported.name : spec.exported.value
-          )
-        }
-      }
-    },
-  })
-
-  // @ts-ignore
-  traverse(ast, {
-    VariableDeclaration(nodePath) {
-      // top level only
-      if (!t.isProgram(nodePath.parent)) return
-      const decs = nodePath.node.declarations
-      if (decs.length > 1) return
-      const [dec] = decs
-      if (!t.isIdentifier(dec.id)) return
-      if (!dec.init) return
-      if (usedNames.has(dec.id.name)) return
-      usedNames.add(dec.id.name)
-      nodePath.replaceWith(
-        t.exportNamedDeclaration(t.variableDeclaration('let', [dec]), [
-          t.exportSpecifier(t.identifier(dec.id.name), t.identifier(dec.id.name)),
-        ])
-      )
-    },
-  })
-
-  // @ts-ignore
-  return generate(ast as any, {
-    concise: false,
-    filename: 'test.tsx',
-    retainLines: false,
-    sourceMaps: false,
-  }).code
-}

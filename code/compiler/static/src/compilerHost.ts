@@ -7,7 +7,11 @@ import type {
   MaterializedElement,
   MaterializedStyledDefinition,
 } from '@tamagui/compiler-core'
-import { StyleObjectIdentifier, StyleObjectRules } from '@tamagui/helpers'
+import {
+  StyleObjectIdentifier,
+  StyleObjectProperty,
+  StyleObjectRules,
+} from '@tamagui/helpers'
 import type { StaticConfig, TamaguiInternalConfig } from '@tamagui/web'
 
 import type { LoadedComponents } from './extractor/bundleConfig'
@@ -28,6 +32,7 @@ export interface TamaguiCompilerHostOptions {
 
 interface TamaguiLoweringComponent extends LoweringComponent {
   staticConfig: StaticConfig
+  partialRuntimeSafe: boolean
 }
 
 const componentState = {
@@ -86,7 +91,8 @@ function objectStyleProperties(className: string, style: Record<string, unknown>
 function extractedStyleArtifacts(
   split: any,
   props: Record<string, unknown>,
-  config: TamaguiInternalConfig
+  config: TamaguiInternalConfig,
+  includeRuntimeBase = true
 ): { className: string; css: string[] } {
   const callerClassName = typeof props.className === 'string' ? props.className : ''
   const viewClassName =
@@ -153,10 +159,12 @@ function extractedStyleArtifacts(
     ...buckets.media,
   ]
   const orderedSet = new Set(orderedIdentifiers)
-  const baseViewClassName = classNameWithoutCaller
-    .split(/\s+/)
-    .filter((token) => token && !orderedSet.has(token))
-    .join(' ')
+  const baseViewClassName = includeRuntimeBase
+    ? classNameWithoutCaller
+        .split(/\s+/)
+        .filter((token) => token && !orderedSet.has(token))
+        .join(' ')
+    : ''
   const css = orderedIdentifiers.flatMap((identifier) => {
     const identifierRules = cssFromRules(
       Object.fromEntries(
@@ -240,7 +248,9 @@ function compiledPropsContent(
 
 const compilerStyleProps = new Set([
   'className',
+  'style',
   'group',
+  'transition',
   'animation',
   'animateOnly',
   'animatePresence',
@@ -248,6 +258,246 @@ const compilerStyleProps = new Set([
   'fontFamily',
   'render',
 ])
+
+const runtimeAnimationProps = new Set([
+  'transition',
+  'animation',
+  'animateOnly',
+  'animatePresence',
+  'animatedBy',
+])
+
+const cssShorthandConflicts: Record<string, readonly string[]> = {
+  background: [
+    'backgroundAttachment',
+    'backgroundBlendMode',
+    'backgroundClip',
+    'backgroundColor',
+    'backgroundImage',
+    'backgroundOrigin',
+    'backgroundPosition',
+    'backgroundRepeat',
+    'backgroundSize',
+  ],
+  border: [
+    'borderTop',
+    'borderTopColor',
+    'borderTopStyle',
+    'borderTopWidth',
+    'borderRight',
+    'borderRightColor',
+    'borderRightStyle',
+    'borderRightWidth',
+    'borderBottom',
+    'borderBottomColor',
+    'borderBottomStyle',
+    'borderBottomWidth',
+    'borderLeft',
+    'borderLeftColor',
+    'borderLeftStyle',
+    'borderLeftWidth',
+    'borderColor',
+    'borderStyle',
+    'borderWidth',
+    'borderImage',
+    'borderImageOutset',
+    'borderImageRepeat',
+    'borderImageSlice',
+    'borderImageSource',
+    'borderImageWidth',
+    'borderInlineColor',
+    'borderInlineEndColor',
+    'borderInlineEndStyle',
+    'borderInlineEndWidth',
+    'borderInlineStartColor',
+    'borderInlineStartStyle',
+    'borderInlineStartWidth',
+    'borderInlineStyle',
+    'borderInlineWidth',
+  ],
+  borderTop: ['borderTopColor', 'borderTopStyle', 'borderTopWidth'],
+  borderRight: [
+    'borderRightColor',
+    'borderRightStyle',
+    'borderRightWidth',
+    'borderInlineColor',
+    'borderInlineEndColor',
+    'borderInlineEndStyle',
+    'borderInlineEndWidth',
+    'borderInlineStartColor',
+    'borderInlineStartStyle',
+    'borderInlineStartWidth',
+    'borderInlineStyle',
+    'borderInlineWidth',
+  ],
+  borderBottom: ['borderBottomColor', 'borderBottomStyle', 'borderBottomWidth'],
+  borderLeft: [
+    'borderLeftColor',
+    'borderLeftStyle',
+    'borderLeftWidth',
+    'borderInlineColor',
+    'borderInlineEndColor',
+    'borderInlineEndStyle',
+    'borderInlineEndWidth',
+    'borderInlineStartColor',
+    'borderInlineStartStyle',
+    'borderInlineStartWidth',
+    'borderInlineStyle',
+    'borderInlineWidth',
+  ],
+  borderImage: [
+    'borderImageOutset',
+    'borderImageRepeat',
+    'borderImageSlice',
+    'borderImageSource',
+    'borderImageWidth',
+  ],
+  outline: ['outlineColor', 'outlineStyle', 'outlineWidth'],
+  gap: ['columnGap', 'rowGap'],
+  gridColumn: ['gridColumnEnd', 'gridColumnStart'],
+  gridRow: ['gridRowEnd', 'gridRowStart'],
+  marginInline: [
+    'marginInlineEnd',
+    'marginInlineStart',
+    'marginEnd',
+    'marginStart',
+    'marginLeft',
+    'marginRight',
+  ],
+  paddingInline: [
+    'paddingInlineEnd',
+    'paddingInlineStart',
+    'paddingEnd',
+    'paddingStart',
+    'paddingLeft',
+    'paddingRight',
+  ],
+  insetInline: ['insetInlineEnd', 'insetInlineStart', 'end', 'start', 'left', 'right'],
+  borderInlineColor: [
+    'borderInlineEndColor',
+    'borderInlineStartColor',
+    'borderEndColor',
+    'borderStartColor',
+    'borderLeftColor',
+    'borderRightColor',
+  ],
+  borderInlineStyle: [
+    'borderInlineEndStyle',
+    'borderInlineStartStyle',
+    'borderEndStyle',
+    'borderStartStyle',
+    'borderLeftStyle',
+    'borderRightStyle',
+  ],
+  borderInlineWidth: [
+    'borderInlineEndWidth',
+    'borderInlineStartWidth',
+    'borderEndWidth',
+    'borderStartWidth',
+    'borderLeftWidth',
+    'borderRightWidth',
+  ],
+  mask: [
+    'maskBorder',
+    'maskBorderMode',
+    'maskBorderOutset',
+    'maskBorderRepeat',
+    'maskBorderSlice',
+    'maskBorderSource',
+    'maskBorderWidth',
+    'maskClip',
+    'maskComposite',
+    'maskImage',
+    'maskMode',
+    'maskOrigin',
+    'maskPosition',
+    'maskRepeat',
+    'maskSize',
+  ],
+  maskBorder: [
+    'maskBorderMode',
+    'maskBorderOutset',
+    'maskBorderRepeat',
+    'maskBorderSlice',
+    'maskBorderSource',
+    'maskBorderWidth',
+  ],
+}
+
+const cssConflictFamilies = [
+  new Set([
+    'marginInline',
+    'marginInlineEnd',
+    'marginInlineStart',
+    'marginEnd',
+    'marginStart',
+    'marginLeft',
+    'marginRight',
+  ]),
+  new Set([
+    'paddingInline',
+    'paddingInlineEnd',
+    'paddingInlineStart',
+    'paddingEnd',
+    'paddingStart',
+    'paddingLeft',
+    'paddingRight',
+  ]),
+  new Set([
+    'insetInline',
+    'insetInlineEnd',
+    'insetInlineStart',
+    'end',
+    'start',
+    'left',
+    'right',
+  ]),
+  new Set([
+    'borderInlineColor',
+    'borderInlineEndColor',
+    'borderInlineStartColor',
+    'borderEndColor',
+    'borderStartColor',
+    'borderLeftColor',
+    'borderRightColor',
+  ]),
+  new Set([
+    'borderInlineStyle',
+    'borderInlineEndStyle',
+    'borderInlineStartStyle',
+    'borderEndStyle',
+    'borderStartStyle',
+    'borderLeftStyle',
+    'borderRightStyle',
+  ]),
+  new Set([
+    'borderInlineWidth',
+    'borderInlineEndWidth',
+    'borderInlineStartWidth',
+    'borderEndWidth',
+    'borderStartWidth',
+    'borderLeftWidth',
+    'borderRightWidth',
+  ]),
+]
+
+function cssOwnersConflict(left: Set<string>, right: Set<string>): boolean {
+  for (const leftOwner of left) {
+    for (const rightOwner of right) {
+      if (
+        leftOwner === rightOwner ||
+        cssShorthandConflicts[leftOwner]?.includes(rightOwner) ||
+        cssShorthandConflicts[rightOwner]?.includes(leftOwner) ||
+        cssConflictFamilies.some(
+          (family) => family.has(leftOwner) && family.has(rightOwner)
+        )
+      ) {
+        return true
+      }
+    }
+  }
+  return false
+}
 
 const runtimeEventProps = new Set([
   'onHoverIn',
@@ -382,16 +632,26 @@ export function createTamaguiCompilerHost(
     styledDefinition: MaterializedStyledDefinition | null
   ): TamaguiLoweringComponent | null => {
     const resolved = styledStaticConfig(styledDefinition) ?? directStaticConfig(element)
-    return resolved
-      ? {
-          key: resolved.key,
-          acceptsClassName:
-            resolved.staticConfig.acceptsClassName !== false &&
-            !resolved.staticConfig.neverFlatten &&
-            !resolved.staticConfig.context,
-          staticConfig: resolved.staticConfig,
-        }
-      : null
+    if (!resolved) return null
+    const defaultProps = core.getDefaultProps(resolved.staticConfig) ?? {}
+    return {
+      key: resolved.key,
+      acceptsClassName:
+        resolved.staticConfig.acceptsClassName !== false &&
+        !resolved.staticConfig.neverFlatten &&
+        !resolved.staticConfig.context,
+      staticConfig: resolved.staticConfig,
+      // retaining the component also retains these runtime style sources.
+      // splitting their output into equal-specificity atomic classes would
+      // make stylesheet insertion order decide the winner.
+      partialRuntimeSafe:
+        !styledDefinition &&
+        Object.keys(defaultProps).length === 0 &&
+        !resolved.staticConfig.defaultVariants &&
+        !resolved.staticConfig.baseClassName &&
+        !resolved.staticConfig.baseStyle &&
+        (resolved.staticConfig.compoundVariants?.length ?? 0) === 0,
+    }
   }
 
   const isStyleProp = (name: string, component: LoweringComponent): boolean => {
@@ -406,9 +666,126 @@ export function createTamaguiCompilerHost(
     )
   }
 
+  const directStyleName = (name: string, component: LoweringComponent): string | null => {
+    if (
+      compilerStyleProps.has(name) ||
+      name.startsWith('$') ||
+      name.endsWith('Style') ||
+      name === 'style'
+    ) {
+      return null
+    }
+    const staticConfig = component.staticConfig as StaticConfig
+    if (staticConfig.variants?.[name]) return null
+    const expanded = options.tamaguiConfig.shorthands?.[name] ?? name
+    return staticConfig.validStyles?.[expanded] ? expanded : null
+  }
+
+  const resolveSplitStyles = (
+    props: Record<string, unknown>,
+    staticConfig: StaticConfig
+  ) => {
+    const previousStatic = process.env.IS_STATIC
+    const previousTarget = process.env.TAMAGUI_TARGET
+    if (platform === 'native') {
+      process.env.IS_STATIC = 'is_static'
+    } else {
+      delete process.env.IS_STATIC
+    }
+    process.env.TAMAGUI_TARGET = platform
+    try {
+      return core.getSplitStyles(
+        props,
+        staticConfig,
+        theme,
+        firstThemeName,
+        componentState,
+        {
+          resolveValues: platform === 'native' ? 'except-theme' : 'variable',
+          noClass: platform === 'native',
+          isAnimated: false,
+        }
+      )
+    } finally {
+      if (previousStatic === undefined) delete process.env.IS_STATIC
+      else process.env.IS_STATIC = previousStatic
+      if (previousTarget === undefined) delete process.env.TAMAGUI_TARGET
+      else process.env.TAMAGUI_TARGET = previousTarget
+    }
+  }
+
+  const partialStaticConfig = (staticConfig: StaticConfig): StaticConfig => ({
+    ...staticConfig,
+    baseStyle: undefined,
+    defaultProps: {},
+    defaultVariants: undefined,
+    compoundVariants: [],
+    variants: {},
+  })
+
+  const styleOwners = (
+    name: string,
+    value: unknown,
+    staticConfig: StaticConfig
+  ): Set<string> | null => {
+    const split = resolveSplitStyles({ [name]: value }, partialStaticConfig(staticConfig))
+    if (!split) return null
+
+    const inlineStyle = split.viewProps?.style
+    if (
+      staticObject(inlineStyle) &&
+      !inlineStyle['$$css'] &&
+      Object.keys(inlineStyle).length > 0
+    ) {
+      return null
+    }
+
+    const owners = new Set<string>(Object.keys(split.classNames ?? {}))
+    for (const styleObject of Object.values(split.rulesToInsert ?? {}) as any[]) {
+      const property = styleObject?.[StyleObjectProperty]
+      if (typeof property === 'string') owners.add(property)
+    }
+    return owners.size > 0 ? owners : null
+  }
+
+  const dynamicStyleOwners = (
+    name: string,
+    staticConfig: StaticConfig
+  ): Set<string> | null => {
+    // most web style normalization depends only on the prop name. these values
+    // exercise the few structured inputs so getSplitStyles can report the
+    // normalized CSS property it would own. flex is value-dependent, so include
+    // every property produced by both its numeric and CSS-shorthand forms.
+    const probeValue =
+      name === 'transform'
+        ? [{ scale: 1 }]
+        : name === 'transformMatrix'
+          ? [1, 0, 0, 1, 0, 0]
+          : name === 'shadowOffset'
+            ? { width: 0, height: 0 }
+            : name === 'shadowColor'
+              ? 'black'
+              : name === 'border' || name === 'outline'
+                ? '0 solid transparent'
+                : name === 'position'
+                  ? 'relative'
+                  : name === 'objectFit'
+                    ? 'contain'
+                    : 0
+    const owners = styleOwners(name, probeValue, staticConfig)
+    if (!owners || name !== 'flex') return owners
+    const shorthandOwners = styleOwners(name, '0 1 auto', staticConfig)
+    if (!shorthandOwners) return null
+    for (const owner of shorthandOwners) owners.add(owner)
+    return owners
+  }
+
   return {
     resolveComponent: resolve,
     isStyleProp,
+    canLowerDynamicStyleProp(name, component) {
+      return platform === 'web' && !!directStyleName(name, component)
+    },
     lowerCandidate(input): LoweringCandidateResult {
       const component = input.component as TamaguiLoweringComponent
       if (!component.acceptsClassName) {
@@ -435,6 +812,12 @@ export function createTamaguiCompilerHost(
           props[entry.name] = entry.value.value
         }
       }
+      const dynamicStyleEntries = input.element.entries.filter(
+        (entry) =>
+          entry.kind === 'prop' &&
+          entry.value.kind === 'bailout' &&
+          isStyleProp(entry.name, component)
+      )
       // both platforms: web needs runtime event mapping, and a flattened bare
       // RN View silently ignores onPress/onLongPress (Tamagui wires press via
       // its responder system at runtime)
@@ -482,18 +865,19 @@ export function createTamaguiCompilerHost(
           }
         }
       }
-      if (
-        'animation' in props ||
-        'animateOnly' in props ||
-        'animatePresence' in props ||
-        'animatedBy' in props ||
-        'enterStyle' in props ||
-        'exitStyle' in props
-      ) {
+      const animationEntry = input.element.entries.find(
+        (entry) => entry.kind === 'prop' && runtimeAnimationProps.has(entry.name)
+      )
+      const animationProp =
+        animationEntry?.kind === 'prop'
+          ? animationEntry.name
+          : Object.keys(props).find((name) => runtimeAnimationProps.has(name))
+      if (animationProp || 'enterStyle' in props || 'exitStyle' in props) {
         return bailout(
           input,
           'local/unsupported-target',
-          'Animated candidates remain on the runtime path'
+          'Animated candidates remain on the runtime path',
+          animationEntry?.span
         )
       }
       if ('theme' in props || 'themeInverse' in props) {
@@ -515,6 +899,135 @@ export function createTamaguiCompilerHost(
           input,
           'local/unsupported-target',
           'Nested media inside a theme style remains on the runtime path'
+        )
+      }
+      if (
+        platform === 'web' &&
+        dynamicStyleEntries.length > 0 &&
+        component.partialRuntimeSafe
+      ) {
+        const hasSpread = input.element.entries.some((entry) => entry.kind === 'spread')
+        const unsupportedRuntimeStyle = input.element.entries.find(
+          (entry) =>
+            entry.kind === 'prop' &&
+            isStyleProp(entry.name, component) &&
+            !runtimeAnimationProps.has(entry.name) &&
+            !directStyleName(entry.name, component)
+        )
+        if (!hasSpread && !unsupportedRuntimeStyle) {
+          const dynamicOwners = new Set<string>()
+          let canProveDynamicOwnership = true
+          for (const entry of dynamicStyleEntries) {
+            if (entry.kind !== 'prop') continue
+            const name = directStyleName(entry.name, component)
+            if (!name) {
+              canProveDynamicOwnership = false
+              break
+            }
+            const owners = dynamicStyleOwners(
+              name,
+              component.staticConfig as StaticConfig
+            )
+            if (!owners) {
+              canProveDynamicOwnership = false
+              break
+            }
+            for (const owner of owners) dynamicOwners.add(owner)
+          }
+          const staticStyleEntries = canProveDynamicOwnership
+            ? input.element.entries.filter((entry) => {
+                if (entry.kind !== 'prop' || entry.value.kind !== 'static') return false
+                const name = directStyleName(entry.name, component)
+                if (!name) return false
+                const owners = styleOwners(
+                  name,
+                  entry.value.value,
+                  component.staticConfig as StaticConfig
+                )
+                return !!owners && !cssOwnersConflict(owners, dynamicOwners)
+              })
+            : []
+          if (staticStyleEntries.length > 0) {
+            const partialProps: Record<string, unknown> = {}
+            for (const entry of staticStyleEntries) {
+              if (entry.kind === 'prop' && entry.value.kind === 'static') {
+                partialProps[entry.name] = entry.value.value
+              }
+            }
+            const partialSplit = resolveSplitStyles(
+              partialProps,
+              partialStaticConfig(component.staticConfig as StaticConfig)
+            )
+            const partialInlineStyle = partialSplit?.viewProps?.style
+            const hasPartialInlineStyle =
+              staticObject(partialInlineStyle) &&
+              !partialInlineStyle['$$css'] &&
+              Object.keys(partialInlineStyle).length > 0
+            if (partialSplit && !hasPartialInlineStyle) {
+              const artifacts = extractedStyleArtifacts(
+                partialSplit,
+                partialProps,
+                options.tamaguiConfig,
+                false
+              )
+              if (artifacts.className) {
+                if (input.element.form !== 'jsx') {
+                  const propsContent = compiledPropsContent(
+                    input,
+                    staticStyleEntries,
+                    objectClassName(artifacts.className)
+                  )
+                  if (propsContent) {
+                    return {
+                      ok: true,
+                      edits: [
+                        {
+                          start: input.element.propsSpan!.start,
+                          end: input.element.propsSpan!.end,
+                          content: propsContent,
+                          origin: input.element.propsSpan!,
+                        },
+                      ],
+                      css: artifacts.css,
+                      imports: [],
+                      flattened: false,
+                    }
+                  }
+                } else {
+                  const [first, ...rest] = staticStyleEntries
+                  return {
+                    ok: true,
+                    edits: [
+                      {
+                        start: first!.span.start,
+                        end: first!.span.end,
+                        content: jsxClassName(artifacts.className),
+                        origin: first!.span,
+                      },
+                      ...rest.map((entry) => ({
+                        start: entry.span.start,
+                        end: entry.span.end,
+                        content: '',
+                        origin: entry.span,
+                      })),
+                    ],
+                    css: artifacts.css,
+                    imports: [],
+                    flattened: false,
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      if (dynamicStyleEntries.length > 0) {
+        const entry = dynamicStyleEntries[0]!
+        return bailout(
+          input,
+          'local/dynamic-style-value',
+          `Style prop ${entry.kind === 'prop' ? entry.name : 'unknown'} could not be safely extracted`,
+          entry.span
         )
       }
       if (Object.keys(props).some((name) => name.startsWith('$group-'))) {
@@ -550,36 +1063,9 @@ export function createTamaguiCompilerHost(
         )
       }
 
-      const previousStatic = process.env.IS_STATIC
-      const previousTarget = process.env.TAMAGUI_TARGET
-      if (platform === 'native') {
-        process.env.IS_STATIC = 'is_static'
-      } else {
-        delete process.env.IS_STATIC
-      }
-      process.env.TAMAGUI_TARGET = platform
-      let split: any
       const defaultProps = core.getDefaultProps(component.staticConfig) ?? {}
       const completeProps = core.mergeProps(defaultProps, props)
-      try {
-        split = core.getSplitStyles(
-          completeProps,
-          component.staticConfig,
-          theme,
-          firstThemeName,
-          componentState,
-          {
-            resolveValues: platform === 'native' ? 'except-theme' : 'variable',
-            noClass: platform === 'native',
-            isAnimated: false,
-          }
-        )
-      } finally {
-        if (previousStatic === undefined) delete process.env.IS_STATIC
-        else process.env.IS_STATIC = previousStatic
-        if (previousTarget === undefined) delete process.env.TAMAGUI_TARGET
-        else process.env.TAMAGUI_TARGET = previousTarget
-      }
+      const split = resolveSplitStyles(completeProps, component.staticConfig)
       if (!split) {
         return bailout(
           input,
@@ -850,6 +1336,7 @@ function bailout(
   input: LoweringCandidateInput,
   code:
     | 'local/unsupported-target'
+    | 'local/dynamic-style-value'
     | 'local/unsafe-style-spread'
     | 'local/style-resolution-failed',
   message: string,

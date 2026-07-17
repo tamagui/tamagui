@@ -1,4 +1,7 @@
 export interface TamaguiBuildOptions {
+  /** Project root used to resolve compiler config and component modules. */
+  root?: string
+
   /**
    * module paths you want to compile with tamagui (for example ['tamagui'])
    * */

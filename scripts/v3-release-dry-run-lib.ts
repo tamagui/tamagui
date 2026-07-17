@@ -48,6 +48,7 @@ export interface ReleasePreviewReport {
   canarySource: string
   consumerDir: string
   packer: 'npm' | 'bun'
+  previewVersion?: string
   requestedPackages: string[]
   packedPackages: string[]
   artifacts: PackedArtifact[]
@@ -69,7 +70,25 @@ export const RUNTIME_DEPENDENCY_FIELDS = [
   'optionalDependencies',
 ] as const
 
-export const DEFAULT_DELETED_PACKAGE_REFS = ['@tamagui/sizable-context'] as const
+export const DEFAULT_DELETED_PACKAGE_REFS = [
+  '@tamagui/animations-moti',
+  '@tamagui/babel-plugin',
+  '@tamagui/sizable-context',
+  '@tamagui/static-sync',
+  '@tamagui/static-worker',
+] as const
+
+function containsPackageReference(content: string, packageName: string): boolean {
+  let offset = content.indexOf(packageName)
+  while (offset !== -1) {
+    const next = content[offset + packageName.length]
+    if (next === undefined || next === '/' || !/[A-Za-z0-9._-]/.test(next)) {
+      return true
+    }
+    offset = content.indexOf(packageName, offset + packageName.length)
+  }
+  return false
+}
 
 const forbiddenInventorySegments = new Set([
   '.cache',
@@ -183,6 +202,18 @@ export async function discoverPublicWorkspacePackages(
     })
   }
   return packages.sort((left, right) => left.name.localeCompare(right.name))
+}
+
+export function withWorkspaceVersion(
+  packages: readonly WorkspacePackage[],
+  version?: string
+): WorkspacePackage[] {
+  if (!version) return [...packages]
+  return packages.map((pkg) => ({
+    ...pkg,
+    version,
+    manifest: { ...pkg.manifest, version },
+  }))
 }
 
 export function packagesForChangedPaths(
@@ -318,7 +349,7 @@ export function createTemporaryPackManifest(
   if (serialized.includes(repoRoot))
     throw new Error(`${output.name} manifest contains repo path`)
   for (const deleted of DEFAULT_DELETED_PACKAGE_REFS) {
-    if (serialized.includes(deleted))
+    if (containsPackageReference(serialized, deleted))
       throw new Error(`${output.name} references deleted ${deleted}`)
   }
   return output
@@ -428,7 +459,7 @@ export async function auditExtractedPackage(
   if (serializedManifest.includes(repoRoot))
     throw new Error(`${manifest.name} leaked absolute repo path`)
   for (const deleted of deletedRefs) {
-    if (serializedManifest.includes(deleted))
+    if (containsPackageReference(serializedManifest, deleted))
       throw new Error(`${manifest.name} references deleted ${deleted}`)
   }
   if (packedNames) assertInternalDependenciesArePacked(manifest, packedNames)
@@ -466,7 +497,7 @@ export async function auditExtractedPackage(
     if (relativeFile.endsWith('package.json') && content.includes('workspace:'))
       throw new Error(`${manifest.name} ${relativeFile} retained workspace:*`)
     for (const deleted of deletedRefs) {
-      if (content.includes(deleted))
+      if (containsPackageReference(content, deleted))
         throw new Error(`${manifest.name} ${relativeFile} references deleted ${deleted}`)
     }
     const imports = bareImports(content)

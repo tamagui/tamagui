@@ -1,6 +1,7 @@
 import { type ViewProps } from '@tamagui/core';
 import type { FunctionComponent, Ref } from 'react';
 import type { View as RNView } from 'react-native';
+import { useAnimatedPosition } from './SheetContext';
 import type { SheetProps } from './types';
 export * from './types';
 type SheetStyleShorthandProps = {
@@ -157,7 +158,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
         }>> | undefined;
     }, {}>> & {
         h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-        o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+        o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
         pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
@@ -203,7 +204,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
         }>> | undefined;
     }, {}>> & {
         h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-        o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+        o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
         pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
@@ -226,7 +227,7 @@ export declare const SheetControlled: FunctionComponent<Omit<SheetProps, "open" 
 export declare const Sheet: ((props: Omit<{
     open?: boolean;
     defaultOpen?: boolean;
-    onOpenChange?: import("react").Dispatch<import("react").SetStateAction<boolean>> | ((open: boolean) => void);
+    onOpenChange?: ((open: boolean) => void) | import("react").Dispatch<import("react").SetStateAction<boolean>>;
     position?: number;
     defaultPosition?: number;
     snapPoints?: (string | number)[];
@@ -239,6 +240,7 @@ export declare const Sheet: ((props: Omit<{
     transitionConfig?: import("@tamagui/core").AnimatedNumberStrategy;
     preferAdaptParentOpenState?: boolean;
     unmountChildrenWhenHidden?: boolean;
+    disableHideWhenClosed?: boolean;
     disableTransparencyHide?: boolean;
     native?: "ios"[] | boolean;
     transition?: import("@tamagui/core").TransitionProp;
@@ -249,9 +251,7 @@ export declare const Sheet: ((props: Omit<{
     portalProps?: import("@tamagui/portal").PortalProps;
     moveOnKeyboardChange?: boolean;
     containerComponent?: React.ComponentType<any>;
-    onAnimationComplete?: (info: {
-        open: boolean;
-    }) => void;
+    onTransition?: (e: import("./types").SheetTransitionEvent) => void;
 }, "scope"> & {
     scope?: import("./types").SheetScopes;
 } & import("@tamagui/compose-refs").RefProp<RNView>) => import("react").ReactNode) & {
@@ -348,7 +348,7 @@ export declare const Sheet: ((props: Omit<{
         }>> | undefined;
     }, {}>> & {
         h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-        o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+        o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
         pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
@@ -394,7 +394,7 @@ export declare const Sheet: ((props: Omit<{
         }>> | undefined;
     }, {}>> & {
         h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-        o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+        o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
         pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
     }, "scope"> & {
         scope?: import("./types").SheetScopes;
@@ -507,7 +507,7 @@ export declare const Sheet: ((props: Omit<{
             }>> | undefined;
         }, {}>> & {
             h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-            o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+            o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
             pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
         }, "scope"> & {
             scope?: import("./types").SheetScopes;
@@ -553,7 +553,7 @@ export declare const Sheet: ((props: Omit<{
             }>> | undefined;
         }, {}>> & {
             h?: number | "unset" | import("react-native").Animated.AnimatedNode | import("@tamagui/core").GetThemeValueForKey<"height"> | null | undefined;
-            o?: "unset" | import("@tamagui/core").GetThemeValueForKey<"opacity"> | import("react-native").AnimatableNumericValue | undefined;
+            o?: "unset" | import("react-native").AnimatableNumericValue | import("@tamagui/core").GetThemeValueForKey<"opacity"> | undefined;
             pos?: "fixed" | "absolute" | "unset" | "relative" | "static" | "sticky" | undefined;
         }, "scope"> & {
             scope?: import("./types").SheetScopes;
@@ -573,5 +573,6 @@ export declare const Sheet: ((props: Omit<{
             };
         }>;
     };
+    useAnimatedPosition: typeof useAnimatedPosition;
 };
 //# sourceMappingURL=Sheet.d.ts.map

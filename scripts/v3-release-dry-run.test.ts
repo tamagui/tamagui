@@ -11,6 +11,7 @@ import {
   auditExtractedPackage,
   createIsolatedCanaryManifest,
   createTemporaryPackManifest,
+  DEFAULT_DELETED_PACKAGE_REFS,
   discoverPublicWorkspacePackages,
   expandInternalPackageClosure,
   exportSpecifiers,
@@ -19,6 +20,7 @@ import {
   publishCommand,
   stableJson,
   topologicalPackageOrder,
+  withWorkspaceVersion,
   type PackageManifest,
   type WorkspacePackage,
 } from './v3-release-dry-run-lib'
@@ -124,6 +126,15 @@ describe('G1 package selection', () => {
     ])
   })
 
+  test('applies a preview version without mutating workspace manifests', () => {
+    const versioned = withWorkspaceVersion(packages, '3.0.0-beta.1')
+    expect(versioned.every((pkg) => pkg.version === '3.0.0-beta.1')).toBe(true)
+    expect(versioned.every((pkg) => pkg.manifest.version === '3.0.0-beta.1')).toBe(true)
+    expect(packages.every((pkg) => pkg.version === '3.0.0-beta.0')).toBe(true)
+    expect(versioned[0]).not.toBe(packages[0])
+    expect(versioned[0]?.manifest).not.toBe(packages[0]?.manifest)
+  })
+
   test('discovers a public workspace package whose directory is named types', async () => {
     const root = await mkdtemp(join(tmpdir(), 'g1-discovery-test-'))
     temporaryDirectories.push(root)
@@ -165,6 +176,20 @@ describe('G1 temporary manifests', () => {
     expect(JSON.stringify(output)).not.toContain('workspace:')
   })
 
+  test('does not confuse a removed package with a longer live package name', () => {
+    expect(() =>
+      createTemporaryPackManifest(
+        {
+          name: '@tamagui/example',
+          version: '3.0.0-beta.0',
+          dependencies: { '@tamagui/animations-motion': '2.4.6' },
+        },
+        new Map(),
+        '/repo'
+      )
+    ).not.toThrow()
+  })
+
   test('rejects local paths, unresolved workspaces, deleted packages, and unstaged internals', () => {
     expect(() =>
       createTemporaryPackManifest(
@@ -180,17 +205,19 @@ describe('G1 temporary manifests', () => {
         '/repo'
       )
     ).toThrow(/unresolved workspace/)
-    expect(() =>
-      createTemporaryPackManifest(
-        {
-          name: 'bad',
-          version: '1.0.0',
-          dependencies: { '@tamagui/sizable-context': '1.0.0' },
-        },
-        new Map(),
-        '/repo'
-      )
-    ).toThrow(/deleted/)
+    for (const deletedPackage of DEFAULT_DELETED_PACKAGE_REFS) {
+      expect(() =>
+        createTemporaryPackManifest(
+          {
+            name: 'bad',
+            version: '1.0.0',
+            dependencies: { [deletedPackage]: '1.0.0' },
+          },
+          new Map(),
+          '/repo'
+        )
+      ).toThrow(/deleted/)
+    }
     expect(() =>
       assertInternalDependenciesArePacked(
         {
@@ -307,6 +334,18 @@ describe('G1 tarball audits', () => {
     expect(exportSpecifiers(manifest)).toEqual(['@tamagui/example'])
   })
 
+  test('accepts a live package whose name extends a deleted package name', async () => {
+    const root = await fixturePackage(
+      {
+        name: '@tamagui/example',
+        version: '3.0.0-beta.0',
+        dependencies: { '@tamagui/animations-motion': '2.4.6' },
+      },
+      { 'dist/index.mjs': `import '@tamagui/animations-motion'` }
+    )
+    await expect(auditExtractedPackage(root, '/repo')).resolves.toBeUndefined()
+  })
+
   test('rejects recursive workspace refs, deleted refs, source-only imports, missing exports, and undeclared deps', async () => {
     const cases: Array<[PackageManifest, Record<string, string>, RegExp]> = [
       [
@@ -314,11 +353,14 @@ describe('G1 tarball audits', () => {
         {},
         /workspace/,
       ],
-      [
-        { name: 'bad', version: '1.0.0' },
-        { 'dist/index.mjs': `import '@tamagui/sizable-context'` },
-        /deleted/,
-      ],
+      ...DEFAULT_DELETED_PACKAGE_REFS.map(
+        (deletedPackage) =>
+          [
+            { name: 'bad', version: '1.0.0' },
+            { 'dist/index.mjs': `import '${deletedPackage}'` },
+            /deleted/,
+          ] as [PackageManifest, Record<string, string>, RegExp]
+      ),
       [
         { name: 'bad', version: '1.0.0' },
         { 'dist/index.mjs': `import '@tamagui/core/src/config'` },

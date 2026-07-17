@@ -15,6 +15,7 @@ export type TamaguiProjectInfo = {
     tamaguiConfig?: TamaguiInternalConfig | null;
     nameToPaths?: NameToPaths;
     cached?: boolean;
+    dependencies?: string[];
 };
 export declare const esbuildOptions: {
     define: {
@@ -40,7 +41,7 @@ export declare function hasBundledConfigChanged(): boolean;
 export declare const getLoadedConfig: () => TamaguiInternalConfig | null;
 export declare const setLoadedConfig: (config: TamaguiInternalConfig) => void;
 export declare function getBundledConfig(props: TamaguiOptions, rebuild?: boolean): Promise<any>;
-export declare function bundleConfig(props: TamaguiOptions): Promise<any>;
+export declare function bundleConfig(props: TamaguiOptions, rebuild?: boolean): Promise<any>;
 export declare function writeTamaguiCSS(outputCSS: string, config: TamaguiInternalConfig): Promise<void>;
 export declare function loadComponents(props: TamaguiOptions, forceExports?: boolean): Promise<LoadedComponents[]>;
 export declare function loadComponentsSync(props: TamaguiOptions, forceExports?: boolean): LoadedComponents[];

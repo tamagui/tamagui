@@ -92,7 +92,7 @@ test('conditional specific after generic style overrides', async () => {
   expect(output?.styles).toMatchSnapshot()
 })
 
-test('conditional styles get full base styles merged onto + shorthand', async () => {
+test('conditional styles extract disjoint static siblings', async () => {
   const output = await extractForWeb(
     `
 import { View } from '@tamagui/core'
@@ -110,6 +110,9 @@ import { View } from '@tamagui/core'
     }
   )
 
+  expect(output?.js).toContain('className="_w-10px"')
+  expect(output?.js).toContain("bg={props.green ? 'red' : 'blue'}")
+  expect(output?.styles).toContain('width:10px')
   expect(output?.js).toMatchSnapshot()
   expect(output?.styles).toMatchSnapshot()
 })
@@ -485,7 +488,7 @@ test('$group- styles on an animated element stay on the runtime path (never extr
         <View group="card">
           <View
             width={100}
-            animation="bouncy"
+            transition="bouncy"
             $group-card={{ backgroundColor: 'red' }}
           />
         </View>
@@ -791,8 +794,8 @@ test('role attribute is preserved during extraction', async () => {
   expect(output?.js).toContain('button')
 })
 
-// fontWeight ternary is dropped when combined with theme-token color ternary
-test('ternary with mixed theme-token and non-token values preserves all props', async () => {
+// dynamic font props remain when a disjoint static font prop is extracted
+test('ternary with mixed theme-token and non-token values retains dynamic props', async () => {
   const output = await extractForWeb(
     `
     import { Text } from '@tamagui/core'
@@ -816,9 +819,9 @@ test('ternary with mixed theme-token and non-token values preserves all props', 
     }
   )
 
-  // A candidate with dynamic style values is all-or-nothing. Both expressions stay
-  // on the Tamagui runtime component rather than partially lowering to a DOM tag.
-  expect(output?.styles).toBe('')
+  // the static font size is disjoint, while both expressions stay on the runtime component.
+  expect(output?.styles).toContain('font-size:var(--f-size-3)')
+  expect(output?.js).not.toContain('fontSize="$3"')
   expect(output?.js).toContain("fontWeight={isActive ? '600' : '400'}")
   expect(output?.js).toContain("color={isActive ? '$color12' : '$color11'}")
   expect(output?.js).toMatchSnapshot()

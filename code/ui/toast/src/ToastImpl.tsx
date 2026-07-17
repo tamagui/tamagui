@@ -8,7 +8,9 @@ import {
   Theme,
   createStyledContext,
   styled,
-  useConfiguration,
+  useAnimationDriver,
+  useAnimatedNumber,
+  useAnimatedNumberStyle,
   useEvent,
   useThemeName,
 } from '@tamagui/core'
@@ -263,12 +265,7 @@ const ToastImpl = createRefComponent<TamaguiElement, ToastImplProps>(
       context.swipeDirection
     )
 
-    const { animationDriver } = useConfiguration()
-    if (!animationDriver) {
-      throw new Error('Must set animations in tamagui.config.ts')
-    }
-
-    const { useAnimatedNumber, useAnimatedNumberStyle } = animationDriver
+    const animationDriver = useAnimationDriver()
 
     const animatedNumber = useAnimatedNumber(0)
 

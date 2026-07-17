@@ -25,6 +25,7 @@ import {
   sha256File,
   stableJson,
   topologicalPackageOrder,
+  withWorkspaceVersion,
   type PackageManifest,
   type PackedArtifact,
   type ReleasePreviewReport,
@@ -53,6 +54,7 @@ interface CliOptions {
   packer: 'npm' | 'bun'
   outDir?: string
   tag: string
+  version?: string
   planOnly: boolean
   releasePreview: boolean
   skipBuild: boolean
@@ -81,6 +83,7 @@ Execution:
   --plan-only               Resolve package closure and commands; no writes/build/pack/install
   --release-preview         Verify everything, write publish commands, and STOP before publish
   --tag <tag>               Preview publish tag (default: beta)
+  --version <version>       Temporary staged version; required with --release-preview
 
 This harness has no publish execution path. --release-preview only writes exact commands.
 `
@@ -130,6 +133,8 @@ function parseArgs(argv: readonly string[]): CliOptions {
       options.outDir = value(index++, flag)
     } else if (flag === '--tag') {
       options.tag = value(index++, flag)
+    } else if (flag === '--version') {
+      options.version = value(index++, flag)
     } else if (flag === '--plan-only') {
       options.planOnly = true
     } else if (flag === '--release-preview') {
@@ -144,6 +149,12 @@ function parseArgs(argv: readonly string[]): CliOptions {
   if (options.canary) options.canary = resolve(options.repoRoot, options.canary)
   if (options.packageList)
     options.packageList = resolve(options.repoRoot, options.packageList)
+  if (options.version && !/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(options.version)) {
+    throw new Error(`Invalid preview version ${options.version}`)
+  }
+  if (options.releasePreview && !options.version) {
+    throw new Error('--release-preview requires --version')
+  }
   return options
 }
 
@@ -432,7 +443,10 @@ async function resolveCanaryCommands(
 
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2))
-  const packages = await discoverPublicWorkspacePackages(options.repoRoot)
+  const packages = withWorkspaceVersion(
+    await discoverPublicWorkspacePackages(options.repoRoot),
+    options.version
+  )
   const byName = new Map(packages.map((pkg) => [pkg.name, pkg]))
   const requested = new Set(options.packages)
   if (options.packageList) {
@@ -475,6 +489,7 @@ async function main(): Promise<void> {
         commands,
         packer: options.packer,
         releasePreview: options.releasePreview,
+        version: options.version,
       })
     )
     return
@@ -609,6 +624,7 @@ async function main(): Promise<void> {
     canarySource: options.canary,
     consumerDir,
     packer: options.packer,
+    previewVersion: options.version,
     requestedPackages: [...requested].sort(),
     packedPackages: artifacts.map((artifact) => artifact.name),
     artifacts,

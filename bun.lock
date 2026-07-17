@@ -115,10 +115,6 @@
       "name": "@tamagui/static",
       "version": "2.4.6",
       "dependencies": {
-        "@babel/generator": "^7.25.5",
-        "@babel/parser": "^7.25.4",
-        "@babel/traverse": "^7.25.4",
-        "@babel/types": "^7.25.4",
         "@tamagui/cli-color": "workspace:*",
         "@tamagui/compiler-core": "workspace:*",
         "@tamagui/config-default": "workspace:*",
@@ -137,7 +133,6 @@
         "check-dependency-version-consistency": "^4.1.0",
         "esbuild": "^0.27.2",
         "esbuild-register": "^3.6.0",
-        "esbuild-wasm": "^0.27.2",
         "fast-glob": "^3.2.11",
         "find-cache-dir": "^3.3.2",
         "find-root": "^1.1.0",
@@ -2228,6 +2223,7 @@
         "react": ">=19",
         "react-dom": "*",
         "react-native": "0.83.2",
+        "react-native-safe-area-context": "~5.7.0",
         "tamagui": "workspace:*",
       },
       "devDependencies": {
@@ -2237,13 +2233,13 @@
         "@tamagui/vite-plugin": "workspace:*",
         "@types/node": "^22.1.0",
         "@types/react": "~19.1.10",
+        "@types/react-dom": "~19.1.7",
         "@vitejs/plugin-react": "^6.0.0",
         "babel-preset-expo": "~55.0.0",
         "react-test-renderer": "^19.0.0",
         "tailwindcss": "4.3.0",
         "typescript": "~5.9.2",
         "vite": "^8.0.3",
-        "vitest": "4.0.4",
         "vitest-native": "npm:vitest@4.1.0",
       },
     },
@@ -3173,8 +3169,12 @@
       },
       "peerDependencies": {
         "react": ">=19",
+        "react-native-safe-area-context": "*",
         "react-native-web": "*",
       },
+      "optionalPeers": [
+        "react-native-safe-area-context",
+      ],
     },
     "code/ui/slider": {
       "name": "@tamagui/slider",
@@ -6617,8 +6617,6 @@
     "esbuild-loader": ["esbuild-loader@4.4.2", "", { "dependencies": { "esbuild": "^0.27.1", "get-tsconfig": "^4.10.1", "loader-utils": "^2.0.4", "webpack-sources": "^1.4.3" }, "peerDependencies": { "webpack": "^4.40.0 || ^5.0.0" } }, "sha512-8LdoT9sC7fzfvhxhsIAiWhzLJr9yT3ggmckXxsgvM07wgrRxhuT98XhLn3E7VczU5W5AFsPKv9DdWcZIubbWkQ=="],
 
     "esbuild-register": ["esbuild-register@3.6.0", "", { "dependencies": { "debug": "^4.3.4" }, "peerDependencies": { "esbuild": ">=0.12 <1" } }, "sha512-H2/S7Pm8a9CL1uhp9OvjwrBh5Pvx0H8qVOxNu8Wed9Y7qv56MPtq+GGM8RJpq6glYJn9Wspr8uw7l55uyinNeg=="],
-
-    "esbuild-wasm": ["esbuild-wasm@0.27.4", "", { "bin": { "esbuild": "bin/esbuild" } }, "sha512-3xhVMcJ8Odvb1QjlWnjBGSYVYESsi3/oJYwLyVvbHOb2CiV4mFtD6x8Lk6JFnRxwEE3fUeVuJLbIxyVQWa867g=="],
 
     "escalade": ["escalade@3.2.0", "", {}, "sha512-WUj2qlxaQtO4g6Pq5c29GTcWGDyd8itL8zTlipgECz3JesAiiOKotd8JU6otB3PACgG6xkJUyVhboMS+bje/jA=="],
 

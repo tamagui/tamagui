@@ -152,12 +152,17 @@ export const App = () => (
     expect(compactCss(plan.css)).toBe(legacyHardWebCompactCss)
   })
 
-  test('candidate bailout is all-or-nothing and does not block an independent sibling', () => {
+  test('unsafe candidate bailout is all-or-nothing and does not block a sibling', () => {
     const source = `
 import { View } from '@tamagui/core'
 export const App = () => (
   <>
-    <View animation="fast" padding={12} data-bailed="exact" />
+    <View
+      transition="fast"
+      padding={12}
+      hoverStyle={{ padding: 16 }}
+      data-bailed="exact"
+    />
     <View padding={16} data-lowered="yes" />
   </>
 )
@@ -171,13 +176,372 @@ export const App = () => (
       styled: 0,
       bailed: 1,
     })
-    expect(output.code).toContain(
-      '<View animation="fast" padding={12} data-bailed="exact" />'
-    )
+    expect(output.code).toContain('transition="fast"')
+    expect(output.code).toContain('padding={12}')
+    expect(output.code).toContain('hoverStyle={{ padding: 16 }}')
+    expect(output.code).toContain('data-bailed="exact"')
     expect(output.code).toContain('<div className=')
     expect(output.code).toContain('data-lowered="yes"')
     expect(plan.css).toContain('padding-top:16px')
     expect(plan.css).not.toContain('padding-top:12px')
+  })
+
+  test('extracts static styles while retaining a dynamic style prop on the Tamagui component', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ width }) => (
+  <View width={width} padding={12} data-partial="dynamic" />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toEqual({
+      found: 1,
+      lowered: 1,
+      flattened: 0,
+      styled: 0,
+      bailed: 0,
+    })
+    expect(output.code).toMatch(
+      /<View width=\{width\} className="[^"]+" data-partial="dynamic" \/>/
+    )
+    expect(output.code).not.toContain('padding={12}')
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).not.toContain('width:')
+  })
+
+  test('keeps current transition candidates byte-identical for every animation driver', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = () => (
+  <View
+    transition="fast"
+    animateOnly={['padding']}
+    padding={12}
+    data-runtime="transition"
+  />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual(['local/unsupported-target'])
+    expect(plan.stats).toMatchObject({ lowered: 0, flattened: 0, bailed: 1 })
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+    expect(plan.css).toBe('')
+  })
+
+  test('keeps a dynamic transition candidate byte-identical', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ transition, width }) => (
+  <View transition={transition} width={width} padding={12} />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual(['local/dynamic-style-value'])
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+    expect(plan.css).toBe('')
+  })
+
+  test('retains compiled-jsx runtime props while extracting static siblings', () => {
+    const source = `
+import { View } from '@tamagui/core'
+import { jsx } from 'react/jsx-runtime'
+export const Card = ({ width }) => jsx(View, {
+  width,
+  padding: 12,
+  'data-partial': 'compiled',
+})
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(plan.stats).toMatchObject({ lowered: 1, flattened: 0, bailed: 0 })
+    expect(output.code).toMatch(/jsx\(View, \{\s*width,\s*className: "[^"]+"/)
+    expect(output.code).not.toContain('padding: 12')
+    expect(plan.css).toContain('padding-top:12px')
+  })
+
+  test('leaves native dynamic candidates byte-identical', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ width }) => (
+  <View width={width} padding={12} data-runtime="native" />
+)
+`
+    const { plan, output } = compile(source, 'native')
+
+    expect(codes(plan)).toEqual(['local/dynamic-style-value'])
+    expect(plan.stats).toMatchObject({ lowered: 0, flattened: 0, bailed: 1 })
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+    expect(plan.css).toBe('')
+  })
+
+  test('keeps the complete runtime candidate when a dynamic style can overlap extraction', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ paddingLeft }) => (
+  <View padding={12} paddingLeft={paddingLeft} data-runtime="precedence" />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual(['local/dynamic-style-value'])
+    expect(plan.stats).toEqual({
+      found: 1,
+      lowered: 0,
+      flattened: 0,
+      styled: 0,
+      bailed: 1,
+    })
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+    expect(plan.css).toBe('')
+  })
+
+  test('compares normalized transform ownership before partial extraction', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ x }) => (
+  <View x={x} transform={[{ scale: 2 }]} padding={12} />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(output.code).toContain('x={x}')
+    expect(output.code).toContain('transform={[{ scale: 2 }]}')
+    expect(output.code).not.toContain('padding={12}')
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).not.toContain('transform:')
+  })
+
+  test('compares logical and physical property ownership before partial extraction', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ width }) => (
+  <View width={width} inlineSize={120} opacity={0.5} />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(output.code).toContain('width={width}')
+    expect(output.code).toContain('inlineSize={120}')
+    expect(output.code).not.toContain('opacity={0.5}')
+    expect(plan.css).toContain('opacity:0.5')
+    expect(plan.css).not.toContain('width:120px')
+  })
+
+  test('compares value-dependent flex and normalized shadow ownership', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ flex, shadowColor }) => (
+  <View
+    flex={flex}
+    flexBasis={20}
+    shadowColor={shadowColor}
+    shadowOffset={{ width: 2, height: 3 }}
+    padding={12}
+  />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(output.code).toContain('flex={flex}')
+    expect(output.code).toContain('flexBasis={20}')
+    expect(output.code).toContain('shadowColor={shadowColor}')
+    expect(output.code).toContain('shadowOffset={{ width: 2, height: 3 }}')
+    expect(output.code).not.toContain('padding={12}')
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).not.toContain('flex-basis:')
+    expect(plan.css).not.toContain('box-shadow:')
+  })
+
+  test('uses normalized ownership for compiled jsx props', () => {
+    const source = `
+import { View } from '@tamagui/core'
+import { jsx } from 'react/jsx-runtime'
+export const Card = ({ x }) => jsx(View, {
+  x,
+  transform: [{ scale: 2 }],
+  padding: 12,
+})
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(output.code).toContain('x,')
+    expect(output.code).toContain('transform: [{ scale: 2 }]')
+    expect(output.code).not.toContain('padding: 12')
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).not.toContain('transform:')
+  })
+
+  test('keeps CSS shorthand and longhand collisions on the runtime path', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ border, background, outline, gap }) => (
+  <View
+    border={border}
+    borderTopWidth={2}
+    background={background}
+    backgroundColor="red"
+    outline={outline}
+    outlineColor="blue"
+    gap={gap}
+    rowGap={4}
+    padding={12}
+  />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(output.code).toContain('border={border}')
+    expect(output.code).toContain('borderTopWidth={2}')
+    expect(output.code).toContain('background={background}')
+    expect(output.code).toContain('backgroundColor="red"')
+    expect(output.code).toContain('outline={outline}')
+    expect(output.code).toContain('outlineColor="blue"')
+    expect(output.code).toContain('gap={gap}')
+    expect(output.code).toContain('rowGap={4}')
+    expect(output.code).not.toContain('padding={12}')
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).not.toContain('border-top-width:2px')
+    expect(plan.css).not.toContain('background-color:red')
+    expect(plan.css).not.toContain('outline-color:blue')
+    expect(plan.css).not.toContain('row-gap:4px')
+  })
+
+  test('keeps compiled-jsx shorthand and longhand collisions on the runtime path', () => {
+    const source = `
+import { View } from '@tamagui/core'
+import { jsx } from 'react/jsx-runtime'
+export const Card = ({ border }) => jsx(View, {
+  border,
+  borderLeftColor: 'red',
+  padding: 12,
+})
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(output.code).toContain('border,')
+    expect(output.code).toContain("borderLeftColor: 'red'")
+    expect(output.code).not.toContain('padding: 12')
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).not.toContain('border-left-color:red')
+  })
+
+  test('keeps shorthand aliases and logical properties with physical collisions', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ width, marginLeft }) => (
+  <View
+    w={width}
+    inlineSize={120}
+    marginLeft={marginLeft}
+    marginInlineStart={4}
+    opacity={0.5}
+  />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(output.code).toContain('w={width}')
+    expect(output.code).toContain('inlineSize={120}')
+    expect(output.code).toContain('marginLeft={marginLeft}')
+    expect(output.code).toContain('marginInlineStart={4}')
+    expect(output.code).not.toContain('opacity={0.5}')
+    expect(plan.css).toContain('opacity:0.5')
+    expect(plan.css).not.toContain('width:120px')
+    expect(plan.css).not.toContain('margin-inline-start:4px')
+  })
+
+  test('keeps animation props from static spreads byte-identical', () => {
+    const source = `
+import { View } from '@tamagui/core'
+const animated = { transition: 'fast', padding: 12 }
+export const Card = () => <View {...animated} />
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual(['local/unsupported-target'])
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+    expect(plan.css).toBe('')
+  })
+
+  test('keeps styled defaults and runtime overrides on one runtime path', () => {
+    const source = `
+import { View, styled } from '@tamagui/core'
+const Card = styled(View, { padding: 8 })
+export const App = ({ width }) => (
+  <Card width={width} padding={12} />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual(['local/dynamic-style-value'])
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+    expect(plan.css).toBe('')
+  })
+
+  test('keeps partial extraction source maps tied to the original module', () => {
+    const source = `
+// 🙂 utf-16 sentinel
+import { View } from '@tamagui/core'
+export const Card = ({ width }) => <View width={width} padding={12} />
+`
+    const { output } = compile(source)
+
+    expect(output.changed).toBe(true)
+    expect(output.map?.sourcesContent).toEqual([source])
+  })
+
+  test('keeps an opaque dynamic style object byte-identical', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ style }) => (
+  <View padding={12} style={style} data-runtime="opaque-style" />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual(['local/dynamic-style-value'])
+    expect(plan.stats).toMatchObject({ lowered: 0, flattened: 0, bailed: 1 })
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+    expect(plan.css).toBe('')
+  })
+
+  test('keeps animation and state styles together on the runtime path', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = () => (
+  <View
+    transition="fast"
+    padding={12}
+    hoverStyle={{ padding: 16 }}
+    data-runtime="animated-state"
+  />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual(['local/unsupported-target'])
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+    expect(plan.css).toBe('')
   })
 
   test('materializes local styled definitions before lowering variants and compounds', () => {

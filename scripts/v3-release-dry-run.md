@@ -23,6 +23,11 @@ The canary may define:
 }
 ```
 
+The repository canary's `g0:web` runs typechecking, Vite dev/HMR, production build,
+SSR, and browser hydration. Its `g0:native` first creates a production iOS export
+through Metro, then renders and interacts with the same tree through the native
+runtime. A renderer-only native test is not a substitute for the Metro export.
+
 Alternatively, pass both `--web-command` and `--native-command`. These commands run from
 the isolated copied canary after export probing, with `NODE_PATH` removed and
 `TAMAGUI_PACKED_CANARY=1`.
@@ -62,10 +67,15 @@ bun scripts/v3-release-dry-run.ts \
   --canary <g0-canary-dir> \
   --packer npm \
   --release-preview \
+  --version 3.0.0-beta.0 \
   --tag beta
 ```
 
 Use `--packer bun` to repeat the artifact proof through `bun pm pack`. The full run:
+
+`--version` rewrites versions and internal dependency ranges only in temporary staged
+manifests. Release-preview mode rejects a missing version so it cannot print beta-tagged
+publish commands for the repository's current stable package versions.
 
 1. builds selected packages in dependency order and verifies source package manifests did
    not change;
@@ -82,6 +92,10 @@ Use `--packer bun` to repeat the artifact proof through `bun pm pack`. The full 
    runs the G0 web and native commands from the tarball-only consumer;
 8. writes `release-preview.json` with artifact inventory, probes, commands, versions, and
    exact `npm publish` commands.
+
+The package audit also rejects references to removed v3 packages:
+`@tamagui/animations-moti`, `@tamagui/babel-plugin`, `@tamagui/sizable-context`,
+`@tamagui/static-sync`, and `@tamagui/static-worker`.
 
 The final commands are printed for owner authorization. There is deliberately no code path
 that invokes `npm publish`.

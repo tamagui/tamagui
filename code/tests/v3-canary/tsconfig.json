@@ -13,7 +13,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext",
-    "types": ["node", "react", "vitest/globals"]
+    "types": ["node", "react", "vitest-native/globals"]
   },
   "include": ["./**/*.ts", "./**/*.tsx", "./**/*.js", "./**/*.mts"]
 }

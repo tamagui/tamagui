@@ -25,6 +25,15 @@ npx tamagui check
 Then install the v3 versions with your package manager and make sure your lockfile
 does not contain duplicate `@tamagui/core`, `@tamagui/web`, or `tamagui` copies.
 
+Remove tooling packages that no longer exist in v3:
+
+| Removed package            | Migration                                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `@tamagui/babel-plugin`    | Use `@tamagui/vite-plugin`, `@tamagui/metro-plugin`, or the `tamagui build` precompile command for Turbopack. |
+| `@tamagui/sizable-context` | Use the opt-in primitives from `@tamagui/size`.                                                               |
+| `@tamagui/static-sync`     | Remove direct imports. Compiler sessions are owned by the supported bundler adapters.                         |
+| `@tamagui/static-worker`   | Remove direct imports. Metro owns its graph/cache workers through `@tamagui/metro-plugin`.                    |
+
 In monorepos, keep resolutions/overrides aligned:
 
 ```json
@@ -284,7 +293,8 @@ Component-specific notes:
 - `Dialog.Content` no longer accepts the no-op `size` variant.
 - Non-modal `Dialog.Content` no longer enables RemoveScroll while open.
 - Dialog, Popover, and Select parts own their presence lifecycles.
-- Animation drivers can now complete part-level exits through `onDidAnimate`.
+- Animation drivers can now complete part-level exits through the typed
+  [`onTransition`](#12-update-animation-and-sheet-lifecycle-callbacks) lifecycle.
 - `Popover.Content forceMount` now matches Dialog semantics and disables part
   presence gating.
 - Removed legacy Popover and Select sheet-controller internals. If app code
@@ -392,7 +402,83 @@ Unsupported old lite/RNW props should be replaced:
 - `keyboardDismissMode`
 - any app-specific reliance on RNW's legacy style system
 
-## 12. Optional: adopt Tailwind mode
+## 12. Update animation and sheet lifecycle callbacks
+
+The untyped, enter-only `onDidAnimate` prop is gone. Every animated component now
+takes a typed [`onTransition`](/docs/core/animations#the-ontransition-lifecycle)
+that fires at the start and end of enter, exit, and in-place update transitions.
+
+```tsx
+// before
+<View animation="quick" onDidAnimate={() => {}} />
+```
+
+```tsx
+// after
+<View
+  transition="quick"
+  onTransition={(e) => {
+    // e: { phase: 'start' | 'end', cause: 'enter' | 'exit' | 'update', finished?: boolean }
+    if (e.phase === 'end' && e.cause === 'exit') {
+      // exit finished
+    }
+  }}
+/>
+```
+
+Sheet's bespoke `onAnimationComplete` prop is replaced by a sheet-shaped
+`onTransition`:
+
+```tsx
+// before
+<Sheet onAnimationComplete={() => {}} />
+```
+
+```tsx
+// after
+<Sheet
+  onTransition={(e) => {
+    // e: { phase, cause: 'open' | 'close' | 'snap', position, finished? }
+  }}
+/>
+```
+
+`onPositionChange` is unchanged.
+
+The sheet no longer fades itself. A fully-closed sheet is hidden with
+`display: 'none'` instead of by animating opacity to transparent, and there is no
+overlay fade baked in. If you relied on the built-in fade, drive it yourself with
+one of the two [overlay fade patterns](/ui/sheet#overlay-fades).
+`unmountChildrenWhenHidden` semantics are unchanged.
+
+The stable-2.4.x `disableTransparencyHide` prop is renamed to
+`disableHideWhenClosed` (matching `unmountChildrenWhenHidden`). The old name is
+honored as a deprecated alias through the v3 betas.
+
+`Sheet.Handle` ships no opacity of its own in v3. If you used the default handle
+dim or its fade-in on open, set `opacity` (and an `open`-driven opacity) on your
+own `Sheet.Handle`.
+
+## 13. Update active-state background colors
+
+The `$backgroundActive` theme token was removed from v3 themes. Checkbox and
+Switch checked states, Tabs active tab, and Toggle Group active toggle used to
+default to `$backgroundActive`, which silently did nothing once the token was
+gone. They now default to `$backgroundPress` (the same migration Slider used).
+
+Each of these components applies its default active background only when you do
+not pass `activeStyle`, and a supplied `activeStyle` wins because it is applied
+last. Override the active color per-instance with `activeStyle`:
+
+```tsx
+<Checkbox activeStyle={{ backgroundColor: '$blue9' }} />
+<Tabs.Tab activeStyle={{ backgroundColor: '$blue9' }} />
+```
+
+If a custom theme defined `$backgroundActive` to color these states, move that
+color to `$backgroundPress` or pass it through `activeStyle`.
+
+## 14. Optional: adopt Tailwind mode
 
 Tailwind mode is optional for v3. It lets you write supported Tailwind utilities
 in `className` while Tamagui still handles compilation, tokens, themes, and
@@ -425,7 +511,7 @@ Tamagui props during migration.
 Read [Tailwind mode for Tamagui](/blog/tailwind-mode) for current utility
 coverage and known gaps.
 
-## 13. Migrate createTamagui defaultProps
+## 15. Migrate createTamagui defaultProps
 
 `createTamagui({ defaultProps })` is deprecated in v3 and slated for removal.
 Each of its uses has a more direct replacement:
@@ -454,7 +540,7 @@ createTamagui({
 styled(View, { backgroundColor: '$squareBackground' })
 ```
 
-## 14. Verification checklist
+## 16. Verification checklist
 
 Run validation at the layer your app changed.
 
@@ -478,6 +564,11 @@ Runtime checks:
 - Test `Dialog`, `Popover`, and `Select` at the breakpoints where they Adapt to
   Sheet.
 - Verify close animations complete before content unmounts.
+- Verify any `onDidAnimate` / Sheet `onAnimationComplete` callbacks were moved to
+  `onTransition` and fire as expected.
+- Verify sheet overlays still fade if you depended on the old built-in fade.
+- Verify Checkbox, Switch, Tabs, and Toggle Group active/checked states still
+  read the way you want after the `$backgroundActive` removal.
 - Verify non-modal Dialogs do not lock page scroll.
 - Verify keyboard focus, Escape, outside click, and return focus behavior.
 - Inspect icons next to text at every app size token you use.

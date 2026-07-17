@@ -25,10 +25,12 @@ describe('Sheet public behavior parts', () => {
     const OrdinaryPart = styled(Sheet.Container, {
       name: 'OrdinarySheetPart',
     })
+    const UntypedOptIn = Object.assign(() => null, { isSheetOverlay: true })
 
     expect(isSheetOverlayComponent(Sheet.Overlay)).toBe(true)
     expect(isSheetOverlayComponent(NamedOverlay)).toBe(true)
     expect(isSheetOverlayComponent(NestedNamedOverlay)).toBe(true)
     expect(isSheetOverlayComponent(OrdinaryPart)).toBe(false)
+    expect(isSheetOverlayComponent(UntypedOptIn)).toBe(false)
   })
 })

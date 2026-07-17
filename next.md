@@ -118,13 +118,41 @@ migration notes so far:
 - location: createExtractor.ts ~line 1200-1400 (per-prop static evaluation + batching)
 - estimated improvement: heavy page 148ms → ~25ms
 
+Implementation constraint (July 2026): the shared lowerer may partially extract
+only direct components with no runtime defaults, default variants, compound
+variants, base style, or base atomic class (the normal case is `View`/`Text`),
+and only when normalized emitted CSS properties are disjoint from every
+retained dynamic prop. Ownership is derived through
+`getSplitStyles`, including transform aliases and logical-property expansion;
+canonical CSS shorthand/longhand conflicts and direction-dependent logical
+property conflicts are checked after normalization. Raw prop-name families
+are not sufficient. Styled components remain on the
+runtime path because removing an authored override while retaining styled
+defaults leaves equal-specificity atomic classes whose winner depends on
+stylesheet insertion order. Spreads, `style`, caller `className`, variants,
+pseudos, media, group, and theme-sensitive candidates remain conservative.
+
 **priority 3 - animated spring (was previously highest priority)**:
 
-- compiler bails on `animation` prop, costs 35.5ms (4.9x vs baseline)
+- the previous benchmark reported 35.5ms (4.9x vs baseline), but used the removed
+  `animation` prop; rerun it with v3 `transition` before treating that number as evidence
 - lower priority than group because NativeWind also struggles here (14.5ms, 2x baseline)
   and animated components are less common than group/dynamic in real apps
-- goal: partial extraction of static props even when animation prop present (same approach as priority 2)
+- goal: partial extraction of static props even when the `transition` prop is present
 - estimated improvement: 35.5ms → ~12ms
+
+Blocked on a runtime/compiler handshake. The v3 public prop is `transition`,
+not legacy `animation`. A compiler-only class extraction is safe for the CSS
+driver but is not an input to RN Animated/Reanimated/Motion: those drivers
+consume resolved inline style and can replace the class-backed `viewProps.style`
+after hydration. Until the retained runtime component can import compiler-owned
+style values into every driver's input, all `transition`, `animateOnly`,
+`animatePresence`, `animatedBy`, `enterStyle`, and `exitStyle` candidates stay
+byte-identical on the runtime path. The follow-up must define one driver-neutral
+style payload, merge it before `useAnimations`, and prove CSS, RN Animated,
+Reanimated, and Motion runtime parity before re-enabling partial extraction.
+The comparison benchmark must migrate from `animation` to `transition` before
+it can serve as P3 performance evidence.
 
 coverage note: Tamagui has 79 fully cross-platform utilities vs NativeWind 74
 (group/container queries ARE cross-platform in Tamagui via JS state emitter on native)

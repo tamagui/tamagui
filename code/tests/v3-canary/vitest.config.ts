@@ -1,7 +1,7 @@
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { tamaguiPlugin } from '@tamagui/vite-plugin'
-import { defineConfig } from 'vitest/config'
+import { defineConfig } from 'vitest-native/config'
 
 const nativeExtensions = [
   '.native.tsx',
