@@ -1,4 +1,14 @@
-import './setup'
+// @tamagui/ui — the unstyled, behavior-first primitive surface.
+//
+// This package is the home for "everything unstyled": the same component set
+// `tamagui` exposes, but strictly behavior + structural styles (no theme colors,
+// typography, padding scales, radii, borders, or elevation). `tamagui` layers
+// the default v2-look skins on these primitives (styled default), and
+// `tamagui/unstyled` re-exports this package.
+//
+// It intentionally omits `tamagui`'s app-bootstrap locals (createTamagui,
+// TamaguiProvider, and the Anchor/EnsureFlexed/Fieldset/Text views); import those
+// from `tamagui` itself.
 
 export * from '@tamagui/spacer'
 export * from '@tamagui/accordion'
@@ -22,6 +32,7 @@ export * from '@tamagui/react-native-media-driver'
 export * from '@tamagui/elements'
 export * from '@tamagui/helpers-tamagui'
 export * from '@tamagui/image'
+export * from '@tamagui/input'
 export * from '@tamagui/label'
 export * from '@tamagui/list-item'
 export * from '@tamagui/menu'
@@ -38,6 +49,7 @@ export * from '@tamagui/separator'
 export * from '@tamagui/shapes'
 export * from '@tamagui/sheet'
 export * from '@tamagui/slider'
+export * from '@tamagui/spinner'
 export * from '@tamagui/stacks'
 export * from '@tamagui/switch'
 export * from '@tamagui/tabs'
@@ -52,65 +64,6 @@ export * from '@tamagui/use-force-update'
 export * from '@tamagui/element'
 export * from '@tamagui/use-window-dimensions'
 export * from '@tamagui/visually-hidden'
-
-// styled default components — the unstyled @tamagui/ui primitives + the default
-// v2-look skins (see ./components). These explicitly shadow the unstyled
-// Button/Select/Sheet re-exported above from @tamagui/{button,select,sheet}, so
-// `import { Button } from 'tamagui'` is styled (v2-compatible). The unstyled
-// primitives remain available via `tamagui/unstyled` (= @tamagui/ui). Each skin
-// file is the single definition the shadcn registry item is generated from.
-export {
-  Button,
-  ButtonFrame,
-  ButtonIcon,
-  ButtonText,
-  buttonSizes,
-  type ButtonProps,
-  type ButtonSize,
-} from './components/Button'
-export {
-  Select,
-  SelectGroup,
-  SelectIcon,
-  SelectIndicator,
-  SelectItem,
-  SelectItemIndicator,
-  SelectItemText,
-  SelectLabel,
-  SelectRoot,
-  type SelectRootProps,
-  SelectScrollDownButton,
-  SelectScrollUpButton,
-  SelectSeparator,
-  SelectTrigger,
-  SelectValue,
-  SelectViewport,
-  selectParts,
-  selectSizes,
-  type SelectSize,
-} from './components/Select'
-export {
-  Sheet,
-  SheetBackground,
-  SheetContainer,
-  SheetControlled,
-  SheetHandle,
-  SheetOverlay,
-  SheetRoot,
-  SheetScrollView,
-} from './components/Sheet'
-
-export * from './createTamagui'
-
-export * from './viewTypes'
-export * from './views/TamaguiProvider'
-
-export * from './views/Anchor'
-export * from './views/EnsureFlexed'
-export * from './views/Fieldset'
-export * from '@tamagui/input'
-export * from '@tamagui/spinner'
-export * from './views/Text'
 
 // since we overlap with ViewProps and potentially others
 // lets be explicit on what gets exported

@@ -1,21 +1,23 @@
 {
-  "name": "tamagui",
+  "name": "@tamagui/ui",
   "version": "2.4.6",
-  "gitHead": "a49cc7ea6b93ba384e77a4880ae48ac4a5635c14",
-  "description": "Style and UI for React (web and native) meet an optimizing compiler",
+  "description": "Unstyled, behavior-first UI primitives for Tamagui (web and native)",
   "repository": {
     "type": "git",
     "url": "https://github.com/tamagui/tamagui.git",
-    "directory": "code/ui/tamagui"
+    "directory": "code/ui/ui"
   },
   "source": "src/index.ts",
   "type": "module",
-  "sideEffects": [
-    "setup.*"
-  ],
+  "sideEffects": false,
   "main": "dist/cjs",
   "module": "dist/esm",
   "types": "./types/index.d.ts",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -26,54 +28,16 @@
       "import": "./dist/esm/index.mjs",
       "require": "./dist/cjs/index.cjs",
       "default": "./dist/esm/index.mjs"
-    },
-    "./web": {
-      "types": "./types/index.d.ts",
-      "react-native": "./dist/esm/index.native.js",
-      "browser": "./dist/esm/index.mjs",
-      "module": "./dist/esm/index.mjs",
-      "import": "./dist/esm/index.mjs",
-      "require": "./dist/cjs/index.cjs",
-      "default": "./dist/esm/index.mjs"
-    },
-    "./native": {
-      "types": "./types/index.d.ts",
-      "react-native": "./dist/native.cjs",
-      "require": "./dist/native.cjs",
-      "default": "./dist/native.cjs"
-    },
-    "./native-test": {
-      "types": "./types/index.d.ts",
-      "react-native": "./dist/test.cjs",
-      "require": "./dist/test.cjs",
-      "default": "./dist/test.cjs"
-    },
-    "./linear-gradient": {
-      "types": "./types/linear-gradient.d.ts",
-      "react-native": "./dist/esm/linear-gradient.native.js",
-      "browser": "./dist/esm/linear-gradient.mjs",
-      "module": "./dist/esm/linear-gradient.mjs",
-      "import": "./dist/esm/linear-gradient.mjs",
-      "require": "./dist/cjs/linear-gradient.cjs",
-      "default": "./dist/esm/linear-gradient.mjs"
-    },
-    "./unstyled": {
-      "types": "./types/unstyled.d.ts",
-      "react-native": "./dist/esm/unstyled.native.js",
-      "browser": "./dist/esm/unstyled.mjs",
-      "module": "./dist/esm/unstyled.mjs",
-      "import": "./dist/esm/unstyled.mjs",
-      "require": "./dist/cjs/unstyled.cjs",
-      "default": "./dist/esm/unstyled.mjs"
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tamagui-build",
-    "afterBuild": "node bundle-native.mjs",
     "watch": "tamagui-build --watch",
     "clean": "tamagui-build clean",
     "clean:build": "tamagui-build clean:build",
-    "check": "bun run check-circular-deps",
     "check-circular-deps": "npx madge --circular ./src/index.ts"
   },
   "dependencies": {
@@ -96,9 +60,9 @@
     "@tamagui/dialog": "workspace:*",
     "@tamagui/element": "workspace:*",
     "@tamagui/elements": "workspace:*",
-    "@tamagui/fake-react-native": "workspace:*",
     "@tamagui/field": "workspace:*",
     "@tamagui/focusable": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
     "@tamagui/form": "workspace:*",
     "@tamagui/get-button-sized": "workspace:*",
     "@tamagui/get-font-sized": "workspace:*",
@@ -108,10 +72,8 @@
     "@tamagui/image": "workspace:*",
     "@tamagui/input": "workspace:*",
     "@tamagui/label": "workspace:*",
-    "@tamagui/linear-gradient": "workspace:*",
     "@tamagui/list-item": "workspace:*",
     "@tamagui/menu": "workspace:*",
-    "@tamagui/polyfill-dev": "workspace:*",
     "@tamagui/popover": "workspace:*",
     "@tamagui/popper": "workspace:*",
     "@tamagui/portal": "workspace:*",
@@ -134,13 +96,11 @@
     "@tamagui/toast": "workspace:*",
     "@tamagui/toggle-group": "workspace:*",
     "@tamagui/tooltip": "workspace:*",
-    "@tamagui/ui": "workspace:*",
     "@tamagui/use-controllable-state": "workspace:*",
     "@tamagui/use-debounce": "workspace:*",
     "@tamagui/use-force-update": "workspace:*",
     "@tamagui/use-window-dimensions": "workspace:*",
     "@tamagui/visually-hidden": "workspace:*",
-    "@tamagui/font-size": "workspace:*",
     "@tamagui/z-index-stack": "workspace:*"
   },
   "devDependencies": {
@@ -158,9 +118,5 @@
       "optional": true
     }
   },
-  "alsoPublishAs_disabled": [
-    "@tamagui/ui"
-  ],
-  "module:jsx": "dist/jsx",
-  "removeSideEffects": true
+  "module:jsx": "dist/jsx"
 }
