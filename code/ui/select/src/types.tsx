@@ -45,18 +45,16 @@ export type SelectValueForMode<
     : Value | Value[]
 
 export type SelectValueChangeDetails = TamaguiChangeEventDetails<
-  'item-press' | 'keyboard' | 'native-change',
-  Event
+  'item-press' | 'keyboard' | 'native-change'
 >
 
 export type SelectOpenChangeDetails = TamaguiChangeEventDetails<
-  'trigger-press' | 'keyboard' | 'outside-press' | 'escape-key' | 'item-press',
-  Event
+  'trigger-press' | 'keyboard' | 'outside-press' | 'escape-key' | 'item-press'
 >
 
 export type SelectActiveChangeDetails = TamaguiEventDetails<
   'item-hover' | 'list-navigation' | 'keyboard',
-  Event,
+  unknown,
   { index: number }
 >
 
@@ -155,7 +153,7 @@ export interface SelectItemParentContextValue {
   listRef?: MutableRefObject<Array<HTMLElement | null>>
   requestOpenChange: (open: boolean, details: SelectOpenChangeDetails) => void
   selectValue: (value: string, details: SelectValueChangeDetails) => void
-  changeNativeValue: (value: SelectSelection, event: Event) => void
+  changeNativeValue: (value: SelectSelection, event: unknown) => void
   activeIndexSubscribe: EmitterSubscriber<number>
   activeIndexRef?: MutableRefObject<number | null>
   allowSelectRef?: MutableRefObject<boolean>
@@ -171,8 +169,8 @@ export interface SelectItemParentContextValue {
   size?: SizeTokens | true
   /** fast setter: updates ref + emits to subscribers (no re-render) - use for keyboard navigation */
   setActiveIndexFast?: (index: number | null, details?: SelectActiveChangeDetails) => void
-  moveActive: (direction: 1 | -1, event?: Event) => void
-  search: (text: string, event?: Event) => void
+  moveActive: (direction: 1 | -1, event?: unknown) => void
+  search: (text: string, event?: unknown) => void
 }
 
 export interface SelectContextValue {

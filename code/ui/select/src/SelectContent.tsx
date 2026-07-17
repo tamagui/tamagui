@@ -1,5 +1,4 @@
 import { useAdaptContext, useAdaptIsActive } from '@tamagui/adapt'
-import { createChangeEventDetails } from '@tamagui/core'
 import { Dismissable } from '@tamagui/dismissable'
 import type { FocusScopeProps } from '@tamagui/focus-scope'
 import { FocusScope } from '@tamagui/focus-scope'
@@ -57,16 +56,14 @@ export const SelectContent = ({
         <Dismissable
           asChild
           forceUnmount={!context.open}
-          onDismiss={(details) =>
-            itemParentContext.requestOpenChange(
-              false,
-              createChangeEventDetails(
-                details.reason === 'escape-key' ? 'escape-key' : 'outside-press',
-                details.event,
-                details.trigger
-              ) as SelectOpenChangeDetails
-            )
-          }
+          onDismiss={(details) => {
+            if (details.reason !== 'focus-out') {
+              itemParentContext.requestOpenChange(
+                false,
+                details as SelectOpenChangeDetails
+              )
+            }
+          }}
           onEscapeKeyDown={onEscapeKeyDown}
           onInteractOutside={onInteractOutside}
           // focus changes during open should not dismiss the list

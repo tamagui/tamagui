@@ -29,6 +29,7 @@ describe('Select multiple', () => {
     await testElement('multiple-inline-green-pear').tap()
     await expect(testElement('multiple-inline-green-pear')).toBeVisible()
     await expect(testElement('multiple-inline-green-pear-indicator')).toBeVisible()
+    await expect(testElement('multiple-inline-green-pear')).toHaveToggleValue(true)
     await expect(testElement('multiple-inline-value')).toHaveText(
       '["red-delicious","green-pear"]'
     )
@@ -55,6 +56,7 @@ describe('Select multiple', () => {
     await testElement('multiple-adapt-blueberry').tap()
     await expect(testElement('multiple-adapt-blueberry')).toBeVisible()
     await expect(testElement('multiple-adapt-blueberry-indicator')).toBeVisible()
+    await expect(testElement('multiple-adapt-blueberry')).toHaveToggleValue(true)
     await expect(testElement('multiple-adapt-value')).toHaveText(
       '["red-delicious","blueberry"]'
     )
@@ -63,6 +65,15 @@ describe('Select multiple', () => {
     await waitFor(testElement('multiple-adapt-red-delicious'))
       .not.toBeVisible()
       .withTimeout(5000)
+    await expect(testElement('multiple-adapt-value')).toHaveText(
+      '["red-delicious","blueberry"]'
+    )
+
+    await testElement('multiple-adapt-trigger').tap()
+    await waitFor(testElement('multiple-adapt-red-delicious-indicator'))
+      .toBeVisible()
+      .withTimeout(5000)
+    await expect(testElement('multiple-adapt-blueberry-indicator')).toBeVisible()
     await expect(testElement('multiple-adapt-value')).toHaveText(
       '["red-delicious","blueberry"]'
     )

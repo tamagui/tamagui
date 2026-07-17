@@ -14,30 +14,39 @@ export type SelectRegisteredItem = {
 export type SelectItemRegistration = {
   id: symbol
   update(item: Partial<Omit<SelectRegisteredItem, 'id'>>): void
+  setNode(node: unknown): void
   unregister(): void
 }
 
 export type SelectItemRegistry = ReturnType<typeof createSelectItemRegistry>
 
-function normalizeLabelText(label: ReactNode): string {
+export function getSelectLabelText(label: ReactNode): string {
   if (typeof label === 'string' || typeof label === 'number') {
     return String(label)
   }
   if (Array.isArray(label)) {
-    return label.map(normalizeLabelText).join('')
+    return label.map(getSelectLabelText).join('')
   }
   if (label && typeof label === 'object' && 'props' in label) {
-    return normalizeLabelText((label as any).props?.children)
+    return getSelectLabelText((label as any).props?.children)
   }
   return ''
 }
 
 export function createSelectItemRegistry(onChange?: () => void) {
   const items: SelectRegisteredItem[] = []
-  const pendingLabels = new Map<string, { label: ReactNode; textValue?: string }>()
+  const labelRegistrations = new Map<
+    string,
+    Map<symbol, { label: ReactNode; textValue?: string }>
+  >()
   const explicitTextValues = new Map<symbol, string | undefined>()
+  const itemNodes = new Map<symbol, any>()
+  const listeners = new Set<() => void>()
 
-  const notify = () => onChange?.()
+  const notify = () => {
+    onChange?.()
+    listeners.forEach((listener) => listener())
+  }
 
   const getItems = () => items
 
@@ -45,15 +54,56 @@ export function createSelectItemRegistry(onChange?: () => void) {
 
   const getIndex = (value: string) => items.findIndex((item) => item.value === value)
 
+  const getRegisteredLabel = (value: string) => {
+    const registrations = labelRegistrations.get(value)
+    if (!registrations?.size) return undefined
+    const values = Array.from(registrations.values())
+    return values[values.length - 1]
+  }
+
+  const applyRegisteredLabel = (value: string) => {
+    const registeredLabel = getRegisteredLabel(value)
+    let changed = false
+    for (const item of items) {
+      if (item.value !== value) continue
+      const nextLabel = registeredLabel?.label
+      const nextTextValue = explicitTextValues.get(item.id) || registeredLabel?.textValue
+      if (item.label !== nextLabel || item.textValue !== nextTextValue) {
+        item.label = nextLabel
+        item.textValue = nextTextValue
+        changed = true
+      }
+    }
+    if (changed) notify()
+  }
+
+  const syncNodeOrder = () => {
+    const previousOrder = items.map((item) => item.id)
+    items.sort((a, b) => {
+      const aNode = itemNodes.get(a.id)
+      const bNode = itemNodes.get(b.id)
+      if (!aNode || !bNode || typeof aNode.compareDocumentPosition !== 'function') {
+        return 0
+      }
+      const position = aNode.compareDocumentPosition(bNode)
+      if (position & 4) return -1
+      if (position & 2) return 1
+      return 0
+    })
+    if (items.some((item, index) => item.id !== previousOrder[index])) {
+      notify()
+    }
+  }
+
   const registerItem = (
     item: Omit<SelectRegisteredItem, 'id'>
   ): SelectItemRegistration => {
     const id = Symbol(item.value)
-    const pendingLabel = pendingLabels.get(item.value)
+    const registeredLabel = getRegisteredLabel(item.value)
     const registeredItem: SelectRegisteredItem = {
       ...item,
-      ...pendingLabel,
-      textValue: item.textValue ?? pendingLabel?.textValue,
+      ...registeredLabel,
+      textValue: item.textValue ?? registeredLabel?.textValue,
       id,
     }
     explicitTextValues.set(id, item.textValue)
@@ -71,13 +121,13 @@ export function createSelectItemRegistry(onChange?: () => void) {
         }
         const nextItem = { ...current, ...next }
         if (next.value !== undefined && next.value !== current.value) {
-          const nextLabel = pendingLabels.get(next.value)
+          const nextLabel = getRegisteredLabel(next.value)
           nextItem.label = nextLabel?.label
         }
         const explicitTextValue = explicitTextValues.get(id)
         nextItem.textValue =
           explicitTextValue ||
-          normalizeLabelText(nextItem.label) ||
+          getSelectLabelText(nextItem.label) ||
           (nextItem.label ? nextItem.value : undefined)
         const changed = Object.entries(next).some(
           ([key, value]) => current[key as keyof SelectRegisteredItem] !== value
@@ -87,40 +137,44 @@ export function createSelectItemRegistry(onChange?: () => void) {
         items[index] = nextItem
         notify()
       },
+      setNode(node) {
+        if (node) {
+          itemNodes.set(id, node)
+          syncNodeOrder()
+        } else {
+          itemNodes.delete(id)
+        }
+      },
       unregister() {
         const index = items.findIndex((current) => current.id === id)
         if (index < 0) return
         items.splice(index, 1)
         explicitTextValues.delete(id)
+        itemNodes.delete(id)
         notify()
       },
     }
   }
 
   const registerLabel = (value: string, label: ReactNode, textValue?: string) => {
-    const normalizedTextValue = textValue || normalizeLabelText(label) || value
-    pendingLabels.set(value, { label, textValue: normalizedTextValue })
-    const item = getItem(value)
-    const effectiveTextValue = item
-      ? explicitTextValues.get(item.id) || normalizedTextValue
-      : normalizedTextValue
-    if (item && (item.label !== label || item.textValue !== effectiveTextValue)) {
-      item.label = label
-      item.textValue = effectiveTextValue
-      notify()
-    }
+    const id = Symbol(value)
+    const normalizedTextValue = textValue || getSelectLabelText(label) || value
+    const registrations =
+      labelRegistrations.get(value) ??
+      (() => {
+        const next = new Map<symbol, { label: ReactNode; textValue?: string }>()
+        labelRegistrations.set(value, next)
+        return next
+      })()
+    registrations.set(id, { label, textValue: normalizedTextValue })
+    applyRegisteredLabel(value)
 
     return () => {
-      const pending = pendingLabels.get(value)
-      if (pending?.label === label) {
-        pendingLabels.delete(value)
+      registrations.delete(id)
+      if (!registrations.size) {
+        labelRegistrations.delete(value)
       }
-      const current = getItem(value)
-      if (current && current.label === label) {
-        current.label = undefined
-        current.textValue = explicitTextValues.get(current.id)
-        notify()
-      }
+      applyRegisteredLabel(value)
     }
   }
 
@@ -149,7 +203,7 @@ export function createSelectItemRegistry(onChange?: () => void) {
     for (let offset = 1; offset <= items.length; offset++) {
       const index = (start + offset) % items.length
       const item = items[index]
-      const label = item.textValue || normalizeLabelText(item.label) || item.value
+      const label = item.textValue || getSelectLabelText(item.label) || item.value
       if (!item.disabled && label.toLocaleLowerCase().startsWith(normalizedSearch)) {
         return index
       }
@@ -158,6 +212,12 @@ export function createSelectItemRegistry(onChange?: () => void) {
   }
 
   return {
+    subscribe(listener: () => void) {
+      listeners.add(listener)
+      return () => {
+        listeners.delete(listener)
+      }
+    },
     registerItem,
     registerLabel,
     getItems,
@@ -169,7 +229,7 @@ export function createSelectItemRegistry(onChange?: () => void) {
     getDisabledIndices: () =>
       items.flatMap((item, index) => (item.disabled ? [index] : [])),
     getTypeaheadLabels: () =>
-      items.map((item) => item.textValue || normalizeLabelText(item.label) || item.value),
+      items.map((item) => item.textValue || getSelectLabelText(item.label) || item.value),
   }
 }
 
@@ -254,6 +314,12 @@ export function createSelectSelectionController({
     return anchor ? registry.getIndex(anchor.value) : -1
   }
 
+  const initialActiveIndex = () => {
+    const anchorIndex = selectionAnchorIndex()
+    const anchor = anchorIndex < 0 ? undefined : registry.getItems()[anchorIndex]
+    return anchor && !anchor.disabled ? anchorIndex : registry.firstEnabledIndex()
+  }
+
   const moveActive = (direction: 1 | -1) => {
     const nextIndex = registry.nextEnabledIndex(activeIndex, direction)
     activeIndex = nextIndex < 0 ? null : nextIndex
@@ -283,6 +349,7 @@ export function createSelectSelectionController({
     toggle,
     selectionAnchor,
     selectionAnchorIndex,
+    initialActiveIndex,
     setActiveIndex(index: number | null) {
       activeIndex = index
     },

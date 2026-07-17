@@ -118,5 +118,30 @@ export const InvalidMultipleDefaultValue = () => (
   <Select.Root<Fruit, true> multiple defaultValue="apple" />
 )
 
+export const InvalidMultipleValueCallback = () => (
+  <Select.Root<Fruit, true>
+    multiple
+    // @ts-expect-error multiple callbacks receive arrays
+    onValueChange={(value: Fruit) => void value}
+  />
+)
+
+export const InvalidMultipleRenderValue = () => (
+  <Select.Root<Fruit, true>
+    multiple
+    // @ts-expect-error multiple renderValue callbacks receive arrays
+    renderValue={(value: Fruit) => value}
+  />
+)
+
+export const ActiveDetailsAreNotCancelable = () => (
+  <Select.Root
+    onActiveChange={(_value, details) => {
+      // @ts-expect-error active changes are observations, not state requests
+      details.cancel()
+    }}
+  />
+)
+
 // @ts-expect-error single values stay scalar
 export const InvalidSingleArrayValue = () => <Select.Root<Fruit> value={['apple']} />

@@ -24,11 +24,6 @@ export const SelectTriggerFrame = styled(View, {
 
 export type SelectTriggerProps = SelectScopedProps<GetProps<typeof SelectTriggerFrame>>
 
-const isPointerCoarse =
-  typeof window !== 'undefined' && process.env.TAMAGUI_TARGET === 'web'
-    ? window.matchMedia('(pointer:coarse)').matches
-    : true
-
 export const SelectTrigger = createStyledHOC(SelectTriggerFrame)<{ scope?: string }>(
   function SelectTrigger(props: SelectTriggerProps, forwardedRef) {
     const { scope, disabled = false, ...triggerProps } = props
@@ -52,7 +47,7 @@ export const SelectTrigger = createStyledHOC(SelectTriggerFrame)<{ scope?: strin
           !context.open,
           createChangeEventDetails(
             reason,
-            (event?.nativeEvent || event) as Event | undefined,
+            event?.nativeEvent || event,
             event?.currentTarget
           ) as SelectOpenChangeDetails
         )
@@ -62,19 +57,9 @@ export const SelectTrigger = createStyledHOC(SelectTriggerFrame)<{ scope?: strin
       process.env.TAMAGUI_TARGET === 'web' && itemParentContext.interactions
         ? itemParentContext.interactions.getReferenceProps({
             ...triggerProps,
-            ...(isPointerCoarse
-              ? {
-                  onPress: composeEventHandlers(triggerProps.onPress as any, toggleOpen),
-                }
-              : {
-                  onMouseDown: composeEventHandlers(
-                    triggerProps.onMouseDown as any,
-                    (event: any) => {
-                      context.floatingContext?.update?.()
-                      toggleOpen(event)
-                    }
-                  ),
-                }),
+            onMouseDown: composeEventHandlers(triggerProps.onMouseDown as any, () =>
+              context.floatingContext?.update?.()
+            ),
           } as any)
         : {
             ...triggerProps,

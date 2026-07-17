@@ -1,4 +1,5 @@
 import { useComposedRefs } from '@tamagui/compose-refs'
+import { useAdaptIsActive } from '@tamagui/adapt'
 import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import {
   createChangeEventDetails,
@@ -10,7 +11,7 @@ import {
 import type { GetProps } from '@tamagui/core'
 import { composeEventHandlers } from '@tamagui/helpers'
 import * as React from 'react'
-import { useSelectItemParentContext } from './context'
+import { useSelectContext, useSelectItemParentContext } from './context'
 import { getSelectOptionProps } from './selectionController'
 import type {
   SelectActiveChangeDetails,
@@ -60,13 +61,17 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
     const {
       scope,
       value,
-      disabled = false,
+      disabled: disabledProp,
+      'aria-disabled': ariaDisabled,
       textValue: textValueProp,
       index: _index,
       ...restProps
     } = props
+    const disabled = disabledProp ?? ariaDisabled === true
 
     const context = useSelectItemParentContext(scope)
+    const selectContext = useSelectContext(scope)
+    const isAdapted = useAdaptIsActive(selectContext.adaptScope)
 
     const {
       listRef,
@@ -88,6 +93,8 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
 
     const isSelected = selectedValues.includes(value)
     const pendingMouseUpSelectionRef = React.useRef(false)
+    const itemNodeRef = React.useRef<any>(null)
+    const [, rerenderRegistry] = React.useReducer((version) => version + 1, 0)
     const registrationRef = React.useRef<ReturnType<typeof registry.registerItem> | null>(
       null
     )
@@ -97,10 +104,38 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
       textValue: textValueProp,
     })
 
+    useIsomorphicLayoutEffect(
+      () => registry.subscribe(() => rerenderRegistry()),
+      [registry]
+    )
+
     useIsomorphicLayoutEffect(() => {
       const registration = registry.registerItem(initialRegistration.current)
       registrationRef.current = registration
+      const registeredNode = itemNodeRef.current
+      registration.setNode(registeredNode)
+      const registeredIndex = registry
+        .getItems()
+        .findIndex((item) => item.id === registration.id)
+      if (
+        isWeb &&
+        listRef &&
+        registeredIndex >= 0 &&
+        registeredNode instanceof HTMLElement
+      ) {
+        listRef.current[registeredIndex] = registeredNode
+      }
       return () => {
+        const currentIndex = registry
+          .getItems()
+          .findIndex((item) => item.id === registration.id)
+        if (
+          listRef &&
+          currentIndex >= 0 &&
+          listRef.current[currentIndex] === registeredNode
+        ) {
+          listRef.current[currentIndex] = null
+        }
         registrationRef.current = null
         registration.unregister()
       }
@@ -109,6 +144,10 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
     useIsomorphicLayoutEffect(() => {
       registrationRef.current?.update({ value, disabled, textValue: textValueProp })
     }, [disabled, textValueProp, value])
+
+    useIsomorphicLayoutEffect(() => {
+      registrationRef.current?.setNode(itemNodeRef.current)
+    })
 
     const index = registry.getIndex(value)
 
@@ -138,6 +177,8 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
 
     const refCallback = React.useCallback(
       (node) => {
+        itemNodeRef.current = node
+        registrationRef.current?.setNode(node)
         if (!isWeb) return
         if (listRef && index >= 0) {
           listRef.current[index] = node instanceof HTMLElement ? node : null
@@ -151,7 +192,7 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
     const handleSelect = React.useCallback(
       (event?: any, reason: 'item-press' | 'keyboard' = 'item-press') => {
         if (disabled) return
-        const nativeEvent = (event?.nativeEvent || event) as Event | undefined
+        const nativeEvent = event?.nativeEvent || event
         selectValue(
           value,
           createChangeEventDetails(
@@ -175,10 +216,7 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
         if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
           event.preventDefault()
           event.stopPropagation()
-          moveActive(
-            event.key === 'ArrowDown' ? 1 : -1,
-            (event.nativeEvent || event) as Event
-          )
+          moveActive(event.key === 'ArrowDown' ? 1 : -1, event.nativeEvent || event)
           return
         }
         if (
@@ -187,7 +225,7 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
           !event.metaKey &&
           !event.ctrlKey
         ) {
-          search(event.key, (event.nativeEvent || event) as Event)
+          search(event.key, event.nativeEvent || event)
         }
         if (allowSelectRef) {
           allowSelectRef.current = true
@@ -222,7 +260,7 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
             if (disabled || index < 0) return
             setActiveIndexFast?.(index, {
               reason: 'item-hover',
-              event: (event.nativeEvent || event) as Event,
+              event: event.nativeEvent || event,
               trigger: event.currentTarget,
               index,
             } as SelectActiveChangeDetails)
@@ -300,7 +338,7 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
           if (disabled || index < 0) return
           setActiveIndexFast?.(index, {
             reason: 'item-hover',
-            event: (event.nativeEvent || event) as Event,
+            event: event.nativeEvent || event,
             trigger: event.currentTarget,
             index,
           } as SelectActiveChangeDetails)
@@ -346,7 +384,15 @@ export const SelectItem = createStyledHOC(SelectItemFrame)<SelectItemExtraProps>
             aria-labelledby={textId}
             data-state={isSelected ? 'active' : 'inactive'}
             data-disabled={disabled ? '' : undefined}
-            tabIndex={disabled ? undefined : -1}
+            tabIndex={
+              disabled
+                ? undefined
+                : isWeb && isAdapted
+                  ? index === (selectContext.activeIndex ?? selectContext.selectedIndex)
+                    ? 0
+                    : -1
+                  : -1
+            }
             zIndex={100}
             {...selectItemProps}
             {...accessibilityProps}

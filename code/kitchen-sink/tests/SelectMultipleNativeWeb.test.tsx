@@ -36,7 +36,9 @@ test.describe('Select multiple native web', () => {
       )
     ).toEqual(['red-delicious', 'green-pear'])
 
-    await page.getByTestId('multiple-native-submit').click()
+    await page
+      .getByTestId('multiple-native-form')
+      .evaluate((form: HTMLFormElement) => form.requestSubmit())
     await expect(page.getByTestId('multiple-native-form-data')).toHaveText(
       '["red-delicious","green-pear"]'
     )

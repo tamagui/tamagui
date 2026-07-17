@@ -65,6 +65,17 @@ describe('Select selection controller', () => {
     expect(controller.selectionAnchorIndex()).toBe(2)
   })
 
+  test('uses an enabled item for active focus when the selection anchor is disabled', () => {
+    const controller = createSelectSelectionController({
+      mode: 'multiple',
+      value: ['banana'],
+      registry: createRegistry(),
+    })
+
+    expect(controller.selectionAnchor()?.value).toBe('banana')
+    expect(controller.initialActiveIndex()).toBe(0)
+  })
+
   test('keeps unknown controlled values without inventing registry items', () => {
     const controller = createSelectSelectionController({
       mode: 'multiple',
@@ -107,5 +118,50 @@ describe('Select selection controller', () => {
     unregisterLabel()
     expect(registry.getItem('apple')?.label).toBeUndefined()
     expect(registry.getItem('apple')?.textValue).toBe('Pomme')
+  })
+
+  test('keeps labels registered while old and new item trees overlap', () => {
+    const registry = createSelectItemRegistry()
+    registry.registerItem({ value: 'apple', disabled: false })
+    const unregisterOldLabel = registry.registerLabel('apple', 'Apple')
+    const unregisterNewLabel = registry.registerLabel('apple', 'Apple')
+
+    unregisterOldLabel()
+    expect(registry.getItem('apple')?.label).toBe('Apple')
+    unregisterNewLabel()
+    expect(registry.getItem('apple')?.label).toBeUndefined()
+  })
+
+  test('tracks rendered DOM order after keyed items move', () => {
+    const registry = createSelectItemRegistry()
+    const apple = registry.registerItem({ value: 'apple', disabled: false })
+    const pear = registry.registerItem({ value: 'pear', disabled: false })
+    const orange = registry.registerItem({ value: 'orange', disabled: false })
+    const positions = new Map<object, number>()
+    const node = () => ({
+      compareDocumentPosition(other: object) {
+        return positions.get(this)! < positions.get(other)! ? 4 : 2
+      },
+    })
+    const appleNode = node()
+    const pearNode = node()
+    const orangeNode = node()
+    positions.set(appleNode, 0)
+    positions.set(pearNode, 1)
+    positions.set(orangeNode, 2)
+    apple.setNode(appleNode)
+    pear.setNode(pearNode)
+    orange.setNode(orangeNode)
+
+    positions.set(pearNode, 0)
+    positions.set(orangeNode, 1)
+    positions.set(appleNode, 2)
+    pear.setNode(pearNode)
+
+    expect(registry.getItems().map((item) => item.value)).toEqual([
+      'pear',
+      'orange',
+      'apple',
+    ])
   })
 })

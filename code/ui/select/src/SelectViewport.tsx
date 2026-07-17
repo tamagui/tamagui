@@ -34,6 +34,8 @@ export const SelectViewport = createStyledHOC(
   const context = useSelectContext(scope)
   const itemContext = useSelectItemParentContext(scope)
   const isAdapted = useAdaptIsActive(context.adaptScope)
+  const viewportRef = React.useRef<any>(null)
+  const registeredItemCount = itemContext.registry.getItems().length
 
   // lazy mount: defer mounting children until first open using startTransition
   const [lazyMounted, setLazyMounted] = React.useState(context.lazyMount ? false : true)
@@ -47,9 +49,25 @@ export const SelectViewport = createStyledHOC(
     })
   }, [context.lazyMount, context.open, lazyMounted])
 
+  React.useEffect(() => {
+    if (!isWeb || !isAdapted || !context.open) return
+    const frame = requestAnimationFrame(() => {
+      const index =
+        context.activeIndexRef.current ?? itemContext.registry.firstEnabledIndex()
+      const activeItem =
+        (viewportRef.current?.querySelector(
+          '[role="option"][tabindex="0"]'
+        ) as HTMLElement | null) ??
+        (index >= 0 ? itemContext.listRef?.current[index] : null)
+      activeItem?.focus()
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [context.activeIndex, context.open, isAdapted, registeredItemCount])
+
   const composedRefs = useComposedRefs(
     // @ts-ignore react 19 ref type mismatch
     forwardedRef,
+    viewportRef,
     context.floatingContext?.refs.setFloating as any
   )
 
@@ -61,11 +79,12 @@ export const SelectViewport = createStyledHOC(
 
   // after lazy children mount, force floating-ui to recompute so inner middleware
   // can position using the now-present list items
-  useIsomorphicLayoutEffect(() => {
+  React.useEffect(() => {
     if (context.lazyMount && lazyMounted && context.open && context.update) {
-      context.update()
+      const frame = requestAnimationFrame(context.update)
+      return () => cancelAnimationFrame(frame)
     }
-  }, [lazyMounted])
+  }, [lazyMounted, registeredItemCount])
 
   if (itemContext.shouldRenderWebNative) {
     return <YStack position="relative">{children}</YStack>

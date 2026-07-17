@@ -11,10 +11,13 @@ export type SelectRegisteredItem = {
 export type SelectItemRegistration = {
     id: symbol;
     update(item: Partial<Omit<SelectRegisteredItem, 'id'>>): void;
+    setNode(node: unknown): void;
     unregister(): void;
 };
 export type SelectItemRegistry = ReturnType<typeof createSelectItemRegistry>;
+export declare function getSelectLabelText(label: ReactNode): string;
 export declare function createSelectItemRegistry(onChange?: () => void): {
+    subscribe(listener: () => void): () => void;
     registerItem: (item: Omit<SelectRegisteredItem, "id">) => SelectItemRegistration;
     registerLabel: (value: string, label: ReactNode, textValue?: string) => () => void;
     getItems: () => SelectRegisteredItem[];
@@ -34,6 +37,7 @@ export declare function createSelectSelectionController({ mode: initialMode, val
     registry: SelectItemRegistry;
 }): {
     registry: {
+        subscribe(listener: () => void): () => void;
         registerItem: (item: Omit<SelectRegisteredItem, "id">) => SelectItemRegistration;
         registerLabel: (value: string, label: ReactNode, textValue?: string) => () => void;
         getItems: () => SelectRegisteredItem[];
@@ -56,6 +60,7 @@ export declare function createSelectSelectionController({ mode: initialMode, val
     toggle: (itemValue: string) => SelectSelection;
     selectionAnchor: () => SelectRegisteredItem | undefined;
     selectionAnchorIndex: () => number;
+    initialActiveIndex: () => number;
     setActiveIndex(index: number | null): void;
     moveActive: (direction: 1 | -1) => SelectRegisteredItem | undefined;
 };
