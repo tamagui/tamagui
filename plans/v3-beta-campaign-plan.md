@@ -21,35 +21,35 @@ unstyled, while Dialog, Slider, Toggle, Input, ListItem, Toast, Accordion still
 embed colors/radii/padding/elevation. v2-look skins are duplicated across
 kitchen-sink, demos, and canary. No shadcn registry exists.
 
-Target layers (RESOLVED user direction — STYLED default, unstyled opt-in):
+Target layers (FINAL — STYLED default, unstyled opt-in, KIT dropped):
 
-1. **`tamagui` (base package) — STYLED, v2-compatible (the default).**
+1. **`@tamagui/ui` (new, org-scoped) — UNSTYLED, the single component source.**
+   The behavior/structural-only primitives. Finish the C4 sweep so every
+   primitive is genuinely unstyled behind a reviewed structural-style allowlist
+   (layout, hit targets, positioning, focus, native interaction only). Opt-in via
+   `@tamagui/ui` or the **`tamagui/unstyled` subpath** (re-exports `@tamagui/ui`).
+2. **`tamagui` (base package) — STYLED default, v2-compatible.**
    `import { Button } from 'tamagui'` → the STYLED v2-look component; public API
-   surface stays UNCHANGED from v2. `tamagui` re-exports the KIT styled preset.
-   (Final `tamagui`↔KIT main-export wiring is HELD pending coordinator↔user
-   confirmation; the direction — tamagui = styled — is confirmed.)
-2. **`@tamagui/ui` (new, org-scoped) — UNSTYLED.** One home for "everything
-   unstyled": the behavior/structural-only primitives. Finish the C4 sweep so
-   every primitive is genuinely unstyled behind a reviewed structural-style
-   allowlist (layout, hit targets, positioning, focus, native interaction only).
-   Aesthetics move OUT of these packages and INTO KIT. Opt-in via `@tamagui/ui`
-   or the **`tamagui/unstyled` subpath** (which re-exports `@tamagui/ui`).
-3. **KIT — the single canonical STYLED-preset source.** The one v2-matching
-   styled source; `tamagui` re-exports it (styled default) and kitchen-sink,
-   demos, canary, docs, and starters all consume it — zero duplication.
-4. **Registry — shadcn-compatible, fully DRY.** Generated FROM the KIT source
-   (single source of truth), not hand-duplicated. "The copy-paste thing should
-   be the same thing" = registry items ARE the KIT component source.
+   surface unchanged. The styled components live HERE (no separate package): each
+   = the `@tamagui/ui` unstyled primitive + a default skin layered on top, ONE
+   component definition. Aesthetics stripped from the behavior packages land in
+   this skin layer.
+3. **Registry — shadcn-compatible, fully DRY.** Generated FROM tamagui's styled
+   (unstyled + skin) source — the SAME single skin definition tamagui uses. "The
+   copy-paste thing should be the same thing" = registry items ARE that source,
+   no duplication.
 
-### RESOLVED — Q1 (STYLED default, unstyled opt-in)
+DESIGN DECISION (W4 proposes, lead reviews before the fleet sweep): the exact
+`styled = unstyled + skin` layering mechanism — how the skin is defined once, how
+`tamagui` presents it styled, and how the registry extracts it DRY. Likely
+idiomatic `styled(UiButton, { ...default skin/variants })`.
+
+### RESOLVED — Q1 (STYLED default, unstyled opt-in; KIT dropped)
 
 `import { Button } from 'tamagui'` = STYLED (v2-compatible). Do NOT make
-`tamagui` unstyled. `@tamagui/ui` = unstyled; the `tamagui/unstyled` subpath
-re-exports `@tamagui/ui`. KIT = canonical styled source that `tamagui`
-re-exports. Styled is default everywhere; unstyled is opt-in. HELD: the exact
-`tamagui`↔KIT main-export wiring, pending coordinator↔user confirmation
-(minutes). W4 does all foundational work (C4 sweep, `@tamagui/ui`, KIT
-consolidation, `tamagui/unstyled`) before that last-mile wiring.
+`tamagui` unstyled. `@tamagui/ui` = unstyled single source; `tamagui/unstyled`
+re-exports it. NO separate KIT package — the styled components live in `tamagui`
+= `@tamagui/ui` + default skin (one definition). Styled default, unstyled opt-in.
 
 ### RESOLVED (provisional) — Q2 ("atom one")
 
@@ -139,15 +139,17 @@ START NOW (packaging-agnostic, cannot be invalidated by incoming feedback):
   `scripts`, `code/starters`.
 
 GATED WAVE — NOW LAUNCHING (green light; base `5418244f4a`; each own worktree):
-- **W4 packaging+state** (Opus, xhigh) — `@tamagui/ui` (unstyled) + C4 aesthetic
-  sweep (aesthetics → KIT) + KIT canonical styled source + `tamagui/unstyled`
-  subpath + A1 shared state vocabulary (folded here so ALL component-source
-  mutation stays in one worktree — no cross-worker races on `code/ui/*`). HOLD
-  the final `tamagui`↔KIT main-export wiring pending confirmation. Area:
-  `code/ui/*`, `code/core/style-grammar`, new packages. Checkpoint per sub-phase.
-- **W5 registry** (Opus, high) — DRY shadcn registry generated from KIT +
-  install-into-blank web/Expo CI. Reads KIT (no component mutation → no race).
-  Builds generator + CI harness in parallel; coordinates with lead for KIT shape.
+- **W4 packaging+state** (Opus, xhigh) — `@tamagui/ui` (unstyled single source) +
+  C4 aesthetic sweep (aesthetics → tamagui's skin layer) + styled `tamagui` =
+  `@tamagui/ui` + skin (one definition) + `tamagui/unstyled` subpath + A1 shared
+  state vocabulary (folded here so ALL component-source mutation stays in one
+  worktree — no races on `code/ui/*`). PROPOSE the skin-layering mechanism +
+  pilots to lead before the fleet sweep. Area: `code/ui/*`,
+  `code/core/style-grammar`. Checkpoint per sub-phase.
+- **W5 registry** (Opus, high) — DRY shadcn registry generated from tamagui's
+  styled (unstyled + skin) source + install-into-blank web/Expo CI. Reads the
+  skin source (no component mutation → no race). Builds generator + CI harness in
+  parallel; coordinates with lead for the skin-layering shape.
 - **W6 docs+migration** (Opus, high) — 3-mode toggle (unstyled/styled/tailwind)
   wired into the EXISTING `isTailwindMode`/`syntaxCookie` switcher; D1
   migration-doc fixes with compiled fixtures. Area: `code/tamagui.dev` only
