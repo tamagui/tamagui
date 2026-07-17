@@ -26,7 +26,7 @@ import {
 import { SelectContent } from './SelectContent'
 import { SelectInlineImpl } from './SelectImpl'
 import { SelectItem, useSelectItemContext } from './SelectItem'
-import { ITEM_TEXT_NAME, SelectItemText } from './SelectItemText'
+import { SelectItemText } from './SelectItemText'
 import { SelectScrollDownButton, SelectScrollUpButton } from './SelectScrollButton'
 import { SelectTrigger } from './SelectTrigger'
 import { SelectViewport } from './SelectViewport'
@@ -85,8 +85,6 @@ export const SelectValue = createStyledHOC(SelectValueFrame)<SelectValueExtraPro
     const isEmptyValue = context.selectedValues.length === 0
 
     // renderValue is synchronous for ssr and lazy item mounting
-    const renderedValue =
-      childrenProp === undefined ? context.renderValue?.(context.value) : undefined
     const registeredValue =
       context.mode === 'multiple'
         ? context.selectedValues.map((value, index) => (
@@ -98,36 +96,20 @@ export const SelectValue = createStyledHOC(SelectValueFrame)<SelectValueExtraPro
         : (itemParentContext.registry.getItem(context.selectedValues[0])?.label ??
           context.value)
     const children =
-      childrenProp !== undefined ? childrenProp : (renderedValue ?? registeredValue)
+      childrenProp !== undefined
+        ? childrenProp
+        : context.renderValue
+          ? context.renderValue(context.value)
+          : registeredValue
     const selectValueChildren = isEmptyValue ? (placeholder ?? children) : children
 
     return (
       <SelectValueFrame pointerEvents="none" ref={composedRefs} {...props}>
-        {unwrapSelectItem(selectValueChildren)}
+        {selectValueChildren}
       </SelectValueFrame>
     )
   }
 )
-
-function unwrapSelectItem(selectValueChildren: any) {
-  return React.Children.map(selectValueChildren, (child) => {
-    if (child) {
-      if (hasStaticConfigName(child.type?.staticConfig, ITEM_TEXT_NAME)) {
-        return child.props.children
-      }
-      if (child.props?.children) {
-        return unwrapSelectItem(child.props.children)
-      }
-    }
-    return child
-  })
-}
-
-function hasStaticConfigName(staticConfig: any, name: string): boolean {
-  if (!staticConfig) return false
-  if (staticConfig.componentName === name) return true
-  return hasStaticConfigName(staticConfig.parentStaticConfig, name)
-}
 
 /* -------------------------------------------------------------------------------------------------
  * SelectIcon
@@ -253,62 +235,63 @@ const NativeSelect = NativeSelectFrame as any
 
 type SelectGroupProps = SelectScopedProps<GetProps<typeof SelectGroupFrame>>
 
-export const SelectGroup = createStyledHOC(SelectGroupFrame)<{ scope?: string }>(
-  (props, forwardedRef) => {
-    const { scope, ...groupProps } = props
-    const groupId = React.useId()
+export const SelectGroup = createStyledHOC(SelectGroupFrame)<{ scope?: string }>((
+  props,
+  forwardedRef
+) => {
+  const { scope, ...groupProps } = props
+  const groupId = React.useId()
 
-    const context = useSelectContext(scope)
-    const itemParentContext = useSelectItemParentContext(scope)
-    const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
+  const context = useSelectContext(scope)
+  const itemParentContext = useSelectItemParentContext(scope)
+  const nativeSelectRef = React.useRef<HTMLSelectElement>(null)
 
-    const content = (() => {
-      if (itemParentContext.shouldRenderWebNative) {
-        return (
-          <NativeSelect
-            {...groupProps}
-            // @ts-ignore it's ok since render="select"
-            value={context.value}
-            multiple={context.mode === 'multiple'}
-            name={itemParentContext.name}
-            form={itemParentContext.form}
-            id={itemParentContext.id}
-            onChange={
-              ((event: React.ChangeEvent<HTMLSelectElement>) => {
-                const value =
-                  context.mode === 'multiple'
-                    ? Array.from(
-                        event.currentTarget.selectedOptions,
-                        (option) => option.value
-                      )
-                    : event.currentTarget.value
-                itemParentContext.changeNativeValue(value, event.nativeEvent)
-              }) as any
-            }
-            ref={nativeSelectRef as any}
-          >
-            {props.children}
-          </NativeSelect>
-        )
-      }
+  const content = (() => {
+    if (itemParentContext.shouldRenderWebNative) {
       return (
-        <SelectGroupFrame
-          // @ts-ignore
-          role="group"
-          aria-labelledby={groupId}
+        <NativeSelect
           {...groupProps}
-          ref={forwardedRef}
-        />
+          // @ts-ignore it's ok since render="select"
+          value={context.value}
+          multiple={context.mode === 'multiple'}
+          name={itemParentContext.name}
+          form={itemParentContext.form}
+          id={itemParentContext.id}
+          onChange={
+            ((event: React.ChangeEvent<HTMLSelectElement>) => {
+              const value =
+                context.mode === 'multiple'
+                  ? Array.from(
+                      event.currentTarget.selectedOptions,
+                      (option) => option.value
+                    )
+                  : event.currentTarget.value
+              itemParentContext.changeNativeValue(value, event.nativeEvent)
+            }) as any
+          }
+          ref={nativeSelectRef as any}
+        >
+          {props.children}
+        </NativeSelect>
       )
-    })()
-
+    }
     return (
-      <SelectGroupContextProvider scope={scope} id={groupId || ''}>
-        {content}
-      </SelectGroupContextProvider>
+      <SelectGroupFrame
+        // @ts-ignore
+        role="group"
+        aria-labelledby={groupId}
+        {...groupProps}
+        ref={forwardedRef}
+      />
     )
-  }
-)
+  })()
+
+  return (
+    <SelectGroupContextProvider scope={scope} id={groupId || ''}>
+      {content}
+    </SelectGroupContextProvider>
+  )
+})
 
 SelectGroup.displayName = GROUP_NAME
 
@@ -324,26 +307,27 @@ export const SelectLabelFrame = styled(Text, {
 
 export type SelectLabelProps = SelectScopedProps<GetProps<typeof SelectLabelFrame>>
 
-export const SelectLabel = createStyledHOC(SelectLabelFrame)<{ scope?: any }>(
-  (props: SelectLabelProps, forwardedRef) => {
-    const { scope, ...labelProps } = props
-    const context = useSelectItemParentContext(scope)
-    const groupContext = useSelectGroupContext(scope)
+export const SelectLabel = createStyledHOC(SelectLabelFrame)<{ scope?: any }>((
+  props: SelectLabelProps,
+  forwardedRef
+) => {
+  const { scope, ...labelProps } = props
+  const context = useSelectItemParentContext(scope)
+  const groupContext = useSelectGroupContext(scope)
 
-    if (context.shouldRenderWebNative) {
-      return null
-    }
-
-    return (
-      <SelectLabelFrame
-        render="div"
-        id={groupContext.id}
-        {...labelProps}
-        ref={forwardedRef}
-      />
-    )
+  if (context.shouldRenderWebNative) {
+    return null
   }
-)
+
+  return (
+    <SelectLabelFrame
+      render="div"
+      id={groupContext.id}
+      {...labelProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * SelectSeparator
@@ -596,7 +580,7 @@ function SelectInner(
     (
       reason: SelectActiveChangeDetails['reason'],
       index: number,
-      event?: Event
+      event?: unknown
     ): SelectActiveChangeDetails => ({
       reason,
       event,
@@ -607,7 +591,7 @@ function SelectInner(
   )
 
   const moveActive = React.useCallback(
-    (direction: 1 | -1, event?: Event) => {
+    (direction: 1 | -1, event?: unknown) => {
       const nextIndex = registry.nextEnabledIndex(activeIndexRef.current, direction)
       if (nextIndex >= 0) {
         setActiveIndex(nextIndex, activeDetails('keyboard', nextIndex, event))
@@ -618,7 +602,7 @@ function SelectInner(
 
   const typeaheadRef = React.useRef({ text: '', timeout: null as any })
   const search = React.useCallback(
-    (text: string, event?: Event) => {
+    (text: string, event?: unknown) => {
       clearTimeout(typeaheadRef.current.timeout)
       typeaheadRef.current.text += text
       let nextIndex = registry.findTypeaheadIndex(
@@ -645,10 +629,9 @@ function SelectInner(
 
   React.useEffect(() => {
     if (open) {
-      const anchorIndex = controller.selectionAnchorIndex()
-      const nextIndex = anchorIndex >= 0 ? anchorIndex : registry.firstEnabledIndex()
+      const nextIndex = controller.initialActiveIndex()
       if (nextIndex >= 0) {
-        setActiveIndexFast(nextIndex, activeDetails('list-navigation', nextIndex))
+        setActiveIndex(nextIndex, activeDetails('list-navigation', nextIndex))
       }
     } else {
       setActiveIndexFast(null)
@@ -684,7 +667,7 @@ function SelectInner(
   )
 
   const changeNativeValue = React.useCallback(
-    (nextValue: SelectSelection, event: Event) => {
+    (nextValue: SelectSelection, event: unknown) => {
       const details = createChangeEventDetails(
         'native-change',
         event

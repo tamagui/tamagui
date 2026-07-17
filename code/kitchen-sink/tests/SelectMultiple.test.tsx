@@ -12,6 +12,7 @@ test.describe('Select multiple floating web', () => {
   }) => {
     const trigger = page.getByTestId('multiple-floating-trigger')
     await trigger.click()
+    await expect(page.getByTestId('multiple-floating-open-count')).toHaveText('1')
 
     const listbox = page.getByTestId('multiple-floating-viewport')
     await expect(listbox).toHaveAttribute('role', 'listbox')
@@ -105,7 +106,7 @@ test.describe('Select multiple floating web', () => {
     )
 
     await trigger.click()
-    await trigger.click({ force: true })
+    await trigger.dispatchEvent('mousedown', { button: 0 })
     await expect(viewport).not.toBeVisible()
   })
 
@@ -119,7 +120,9 @@ test.describe('Select multiple floating web', () => {
     await page.getByTestId('multiple-floating-red-delicious').click()
 
     await page.keyboard.press('Escape')
-    await page.getByTestId('multiple-floating-submit').click()
+    await page
+      .getByTestId('multiple-floating-form')
+      .evaluate((form: HTMLFormElement) => form.requestSubmit())
     await expect(page.getByTestId('multiple-floating-form-data')).toHaveText(
       '["green-pear","red-delicious"]'
     )

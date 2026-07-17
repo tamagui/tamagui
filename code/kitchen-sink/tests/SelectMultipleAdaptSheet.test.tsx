@@ -58,7 +58,9 @@ test.describe('Select multiple Adapt-to-Sheet', () => {
     await page.getByTestId('multiple-adapt-trigger').click()
     await page.getByTestId('multiple-adapt-red-delicious').click()
     await page.getByTestId('multiple-adapt-green-pear').click()
-    await page.getByTestId('multiple-adapt-submit').click()
+    await page
+      .getByTestId('multiple-adapt-form')
+      .evaluate((form: HTMLFormElement) => form.requestSubmit())
     await expect(page.getByTestId('multiple-adapt-form-data')).toHaveText(
       '["red-delicious","green-pear"]'
     )

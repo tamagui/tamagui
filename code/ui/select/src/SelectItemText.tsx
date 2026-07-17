@@ -4,6 +4,7 @@ import { createStyledHOC, styled, Text, useIsomorphicLayoutEffect } from '@tamag
 import * as React from 'react'
 
 import { useSelectItemParentContext } from './context'
+import { getSelectLabelText } from './selectionController'
 import { useSelectItemContext } from './SelectItem'
 import type { SelectScopedProps } from './types'
 
@@ -34,6 +35,7 @@ export const SelectItemText = createStyledHOC(
   const contents = React.useRef<React.ReactNode>(null)
   const label = React.useRef(props.children)
   label.current = props.children
+  const labelText = getSelectLabelText(props.children)
 
   // we portal this to the selected area, which is fine to be a bit unsafe concurrently (mostly? its not changing often)...
   // until react native supports portals this is best i think
@@ -52,7 +54,7 @@ export const SelectItemText = createStyledHOC(
       label.current,
       itemContext.textValue
     )
-  }, [itemContext.textValue, itemContext.value, itemParentContext.registry])
+  }, [itemContext.textValue, itemContext.value, itemParentContext.registry, labelText])
 
   if (itemParentContext.shouldRenderWebNative) {
     return <>{props.children}</>

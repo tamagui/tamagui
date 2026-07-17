@@ -54,6 +54,7 @@ function FloatingMultiple() {
   const [valueReason, setValueReason] = React.useState('')
   const [openReason, setOpenReason] = React.useState('')
   const [activeReason, setActiveReason] = React.useState('')
+  const [openChangeCount, setOpenChangeCount] = React.useState(0)
 
   return (
     <YStack gap="$2">
@@ -67,6 +68,7 @@ function FloatingMultiple() {
             open={open}
             onOpenChange={(nextOpen, details) => {
               setOpenReason(details.reason)
+              setOpenChangeCount((count) => count + 1)
               setOpen(nextOpen)
             }}
             value={value}
@@ -108,6 +110,7 @@ function FloatingMultiple() {
       <StateReadout prefix="multiple-floating" value={value} entries={entries} />
       <Text testID="multiple-floating-value-reason">{valueReason}</Text>
       <Text testID="multiple-floating-open-reason">{openReason}</Text>
+      <Text testID="multiple-floating-open-count">{openChangeCount}</Text>
       <Text testID="multiple-floating-active-reason">{activeReason}</Text>
     </YStack>
   )
@@ -117,7 +120,6 @@ function NativeWebMultiple() {
   const [value, setValue] = React.useState<Fruit[]>([])
   const [entries, setEntries] = React.useState<string[]>([])
   const [valueReason, setValueReason] = React.useState('')
-  const formRef = React.useRef<HTMLFormElement>(null)
 
   if (!isWeb) return null
 
@@ -141,13 +143,16 @@ function NativeWebMultiple() {
         </Select.Group>
       </Select>
       <form
-        ref={formRef}
         id="multiple-native-form"
         data-testid="multiple-native-form"
         onSubmit={(event) => {
           event.preventDefault()
-          const form = formRef.current
-          setEntries(form ? new FormData(form).getAll('native-fruit').map(String) : [])
+          requestAnimationFrame(() => {
+            const form = document.getElementById(
+              'multiple-native-form'
+            ) as HTMLFormElement | null
+            setEntries(form ? new FormData(form).getAll('native-fruit').map(String) : [])
+          })
         }}
       >
         <button data-testid="multiple-native-submit" type="submit">

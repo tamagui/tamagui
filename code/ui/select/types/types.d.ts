@@ -22,9 +22,9 @@ export type SelectScopedProps<P> = P & {
     scope?: SelectScopes;
 };
 export type SelectValueForMode<Value extends string = string, Multiple extends boolean | undefined = false> = Multiple extends true ? Value[] : Multiple extends false | undefined ? Value : Value | Value[];
-export type SelectValueChangeDetails = TamaguiChangeEventDetails<'item-press' | 'keyboard' | 'native-change', Event>;
-export type SelectOpenChangeDetails = TamaguiChangeEventDetails<'trigger-press' | 'keyboard' | 'outside-press' | 'escape-key' | 'item-press', Event>;
-export type SelectActiveChangeDetails = TamaguiEventDetails<'item-hover' | 'list-navigation' | 'keyboard', Event, {
+export type SelectValueChangeDetails = TamaguiChangeEventDetails<'item-press' | 'keyboard' | 'native-change'>;
+export type SelectOpenChangeDetails = TamaguiChangeEventDetails<'trigger-press' | 'keyboard' | 'outside-press' | 'escape-key' | 'item-press'>;
+export type SelectActiveChangeDetails = TamaguiEventDetails<'item-hover' | 'list-navigation' | 'keyboard', unknown, {
     index: number;
 }>;
 export type SelectImplProps = SelectScopedProps<SelectProps<string, boolean>> & {
@@ -106,7 +106,7 @@ export interface SelectItemParentContextValue {
     listRef?: MutableRefObject<Array<HTMLElement | null>>;
     requestOpenChange: (open: boolean, details: SelectOpenChangeDetails) => void;
     selectValue: (value: string, details: SelectValueChangeDetails) => void;
-    changeNativeValue: (value: SelectSelection, event: Event) => void;
+    changeNativeValue: (value: SelectSelection, event: unknown) => void;
     activeIndexSubscribe: EmitterSubscriber<number>;
     activeIndexRef?: MutableRefObject<number | null>;
     allowSelectRef?: MutableRefObject<boolean>;
@@ -122,8 +122,8 @@ export interface SelectItemParentContextValue {
     size?: SizeTokens | true;
     /** fast setter: updates ref + emits to subscribers (no re-render) - use for keyboard navigation */
     setActiveIndexFast?: (index: number | null, details?: SelectActiveChangeDetails) => void;
-    moveActive: (direction: 1 | -1, event?: Event) => void;
-    search: (text: string, event?: Event) => void;
+    moveActive: (direction: 1 | -1, event?: unknown) => void;
+    search: (text: string, event?: unknown) => void;
 }
 export interface SelectContextValue {
     dir?: SelectDirection;
