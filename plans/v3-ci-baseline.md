@@ -78,3 +78,14 @@ and fixes, in order:
   upgrading, with the ssr-hydration suite as the gate.
 - integration#test:web failure attribution pending the next run (suspected
   motion float; confirm after the override push).
+
+## Final state (2026-07-17, 5418244f4a)
+
+- Checks: SUCCESS (typecheck, manypkg, unit-tests including
+  integration#test:web — confirming the motion float caused it, and the
+  earlier tailwind-suite reds were fixed by the A-lane commits that rode the
+  merge). Maestro iOS: SUCCESS.
+- Detox: single failure = the known CompilerExtraction benchmark flake
+  (passed on 236b8c11af, failed here; genuinely flaky, release lane owns).
+- Net: origin/v3-beta is green except one known flaky benchmark and the
+  Android situation documented above.
