@@ -15,11 +15,12 @@ const DemoField = styled(Field, {
 })
 
 const DemoLabel = styled(Field.Label, {
-  fontWeight: '600',
+  color: '$color11',
+  fontWeight: '500',
 })
 
 const DemoDescription = styled(Field.Description, {
-  color: '$color10',
+  color: '$color9',
   fontSize: '$2',
 })
 
@@ -32,10 +33,25 @@ const DemoInput = styled(Input, {
   context: FieldStyledContext,
 
   variants: {
+    valid: {
+      true: {},
+    },
     invalid: {
       true: {
         borderColor: '$red9',
       },
+    },
+    touched: {
+      true: {},
+    },
+    dirty: {
+      true: {},
+    },
+    filled: {
+      true: {},
+    },
+    focused: {
+      true: {},
     },
   } as const,
 })
@@ -92,8 +108,9 @@ export function FieldDemo() {
       p="$5"
       borderWidth={1}
       borderColor="$borderColor"
-      rounded="$5"
+      rounded="$7"
       bg="$color2"
+      boxShadow="0 2px 3px rgba(0, 0, 0, 0.06), 0 14px 30px rgba(0, 0, 0, 0.10), 0 36px 72px rgba(0, 0, 0, 0.12)"
       onSubmit={(values) => {
         setStatus(`Welcome, ${String(values.name)}`)
       }}
@@ -118,12 +135,22 @@ export function FieldDemo() {
       </DemoField>
 
       <Form.Trigger asChild>
-        <Button bg="$color12" color="$color1" hoverStyle={{ bg: '$color11' }}>
+        <Button
+          self="flex-end"
+          height={40}
+          px="$5"
+          rounded="$5"
+          bg="$color12"
+          color="$color1"
+          fontSize="$2"
+          fontWeight="500"
+          hoverStyle={{ bg: '$color11' }}
+        >
           Create account
         </Button>
       </Form.Trigger>
 
-      <Paragraph color="$color10" size="$2">
+      <Paragraph color="$color9" size="$2">
         {status}
       </Paragraph>
     </Form>
