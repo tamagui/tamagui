@@ -500,19 +500,44 @@ export const SheetImplementationCustom = createRefComponent<View, SheetProps>(
       const closeTarget = isWeb
         ? Math.max(effScreenSize, getMaxViewportHeight())
         : effScreenSize
-      let toValue = isHidden || position === -1 ? closeTarget : activePositions[position]
+      // dismissOnSnapToBottom appends an offscreen snap point. Gesture release
+      // calls setPosition(dismissIndex) and animateTo(dismissIndex) in the same
+      // event, before React commits open=false and turns the provider position
+      // into -1. Treat that synthetic snap as close here so its in-flight
+      // callback owns display-none hiding and the Adapt presence handoff.
+      const isDismissPosition =
+        dismissOnSnapToBottom && position === activePositions.length - 1
+      const isOpenAnimation = position !== -1 && !isHidden && !isDismissPosition
+      const toValue = isOpenAnimation ? activePositions[position] : closeTarget
 
-      if (at.current === toValue) return
+      if (at.current === toValue) {
+        // a drag can land exactly on the synthetic dismiss point. there is no
+        // remaining distance to animate, but it is still a completed close and
+        // must release the same lifecycle consumers as an animated dismissal.
+        if (isDismissPosition) {
+          if (pendingTransitionRef.current) {
+            emitTransition('end', pendingTransitionRef.current, false)
+            pendingTransitionRef.current = null
+          }
+          stopSpring()
+          const event = { cause: 'close' as const, position: toValue }
+          lastPositionIndexRef.current = -1
+          emitTransition('start', event)
+          syncAnimatedPosition(toValue)
+          setIsFullyClosed(true)
+          emitTransition('end', event, true)
+        }
+        return
+      }
 
       at.current = toValue
 
-      const isOpenAnimation = position !== -1 && !isHidden
       const cause: SheetTransitionCause = !isOpenAnimation
         ? 'close'
         : lastPositionIndexRef.current < 0
           ? 'open'
           : 'snap'
-      lastPositionIndexRef.current = position
+      lastPositionIndexRef.current = isOpenAnimation ? position : -1
       const event = { cause, position: toValue }
 
       // a new move supersedes any in-flight one: report it interrupted

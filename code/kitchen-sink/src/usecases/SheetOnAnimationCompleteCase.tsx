@@ -33,6 +33,7 @@ export function SheetOnAnimationCompleteCase() {
         transition="quick"
         modal
         dismissOnSnapToBottom
+        unmountChildrenWhenHidden
         snapPoints={[40]}
       >
         <Sheet.Overlay
@@ -40,6 +41,7 @@ export function SheetOnAnimationCompleteCase() {
           enterStyle={{ opacity: 0 }}
           exitStyle={{ opacity: 0 }}
         />
+        <Sheet.Handle data-testid="sheet-handle" height={24} />
         <Sheet.Container padding="$4" data-testid="sheet-frame">
           <Sheet.Background bg="$background" />
           <Paragraph>Sheet content</Paragraph>
