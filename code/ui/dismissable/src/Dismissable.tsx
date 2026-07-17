@@ -231,6 +231,10 @@ const Dismissable = createRefComponent<
   }, [forceUnmount])
 
   useEscapeKeydown((event) => {
+    // a higher layer may have consumed this same document event and removed
+    // itself before this listener runs. don't let the newly-highest layer also
+    // dismiss from a single escape press.
+    if (event.defaultPrevented) return
     // skip if this layer is force-unmounted (e.g. dialog closed but still mounted)
     if (forceUnmountRef.current) return
     // Check layers at callback time, not render time, to avoid stale closures
