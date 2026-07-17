@@ -4,9 +4,11 @@ Owner: lead/manager session (branch `v3-kit-restructure`, off `origin/v3-beta`).
 Coordinator: `ab-mrp10baa-67081` (relays user natew). Tracking task `t-mrph1lep-1ike0`.
 Anchor: `docs/reviews/v3-beta-review-2026-07-17.md` (verdict HOLD; user agrees with all issues).
 
-Status: PLAN — reported early to coordinator for incoming user feedback before deep
-package migration begins. Packaging/registry/docs workstreams are GATED on that
-feedback. Packaging-agnostic workstreams (perf, correctness, native-CI) start now.
+Status: EXECUTING — user gave FULL GREEN LIGHT (do the whole plan + every
+review-doc finding/blocker). Q1 RESOLVED (styled default, see below). Campaign
+base CORRECTED to `5418244f4a` (= current `origin/v3-beta` = the exact reviewed
+SHA); the initial worktrees were accidentally cut from a stale local ref 125
+commits behind, now rebased squad-wide onto `5418244f4a`.
 
 ---
 
@@ -19,40 +21,40 @@ unstyled, while Dialog, Slider, Toggle, Input, ListItem, Toast, Accordion still
 embed colors/radii/padding/elevation. v2-look skins are duplicated across
 kitchen-sink, demos, and canary. No shadcn registry exists.
 
-Target three layers (per user direction):
+Target layers (RESOLVED user direction — STYLED default, unstyled opt-in):
 
-1. **`@tamagui/ui` (new) — the unstyled layer.** One home for "everything
+1. **`tamagui` (base package) — STYLED, v2-compatible (the default).**
+   `import { Button } from 'tamagui'` → the STYLED v2-look component; public API
+   surface stays UNCHANGED from v2. `tamagui` re-exports the KIT styled preset.
+   (Final `tamagui`↔KIT main-export wiring is HELD pending coordinator↔user
+   confirmation; the direction — tamagui = styled — is confirmed.)
+2. **`@tamagui/ui` (new, org-scoped) — UNSTYLED.** One home for "everything
    unstyled": the behavior/structural-only primitives. Finish the C4 sweep so
-   every primitive here is genuinely unstyled behind a reviewed structural-style
+   every primitive is genuinely unstyled behind a reviewed structural-style
    allowlist (layout, hit targets, positioning, focus, native interaction only).
-   The official **`tamagui` package API surface stays UNCHANGED** — `tamagui`
-   re-exports from `@tamagui/ui`, so `import { Button } from 'tamagui'` keeps the
-   same names/types; the components merely physically originate in `@tamagui/ui`.
-2. **KIT (`@tamagui/kit`, new) — the styled/preset layer.** A real published
-   package NEXT TO `tamagui` (NOT living in kitchen-sink). The single canonical
-   source of the v2-matching styled components. kitchen-sink, demos, canary,
-   docs, and starters all consume KIT — zero duplication.
-3. **Registry — shadcn-compatible, fully DRY.** Generated FROM the KIT source
+   Aesthetics move OUT of these packages and INTO KIT. Opt-in via `@tamagui/ui`
+   or the **`tamagui/unstyled` subpath** (which re-exports `@tamagui/ui`).
+3. **KIT — the single canonical STYLED-preset source.** The one v2-matching
+   styled source; `tamagui` re-exports it (styled default) and kitchen-sink,
+   demos, canary, docs, and starters all consume it — zero duplication.
+4. **Registry — shadcn-compatible, fully DRY.** Generated FROM the KIT source
    (single source of truth), not hand-duplicated. "The copy-paste thing should
    be the same thing" = registry items ARE the KIT component source.
 
-### OPEN QUESTION 1 (needs user feedback before packaging starts)
+### RESOLVED — Q1 (STYLED default, unstyled opt-in)
 
-Does `import { Button } from 'tamagui'` resolve to the UNSTYLED `@tamagui/ui`
-behavior primitive (v3-beta semantics preserved) or to the STYLED KIT component
-(v2 look)? Lead reading: "API surface unchanged" = tamagui keeps exporting the
-same names/types and continues to export the behavior primitives (re-exported
-from `@tamagui/ui`); KIT is the opt-in v2-look package. This matches the v3 plan
-("components become behavior primitives"). The alternative — `tamagui` stays the
-v2 STYLED experience and unstyled moves to `@tamagui/ui` — is a very different
-migration. Confirm which.
+`import { Button } from 'tamagui'` = STYLED (v2-compatible). Do NOT make
+`tamagui` unstyled. `@tamagui/ui` = unstyled; the `tamagui/unstyled` subpath
+re-exports `@tamagui/ui`. KIT = canonical styled source that `tamagui`
+re-exports. Styled is default everywhere; unstyled is opt-in. HELD: the exact
+`tamagui`↔KIT main-export wiring, pending coordinator↔user confirmation
+(minutes). W4 does all foundational work (C4 sweep, `@tamagui/ui`, KIT
+consolidation, `tamagui/unstyled`) before that last-mile wiring.
 
-### OPEN QUESTION 2
+### RESOLVED (provisional) — Q2 ("atom one")
 
-"Unstyled default = atom one" (user's words). Interpreting as: the unstyled
-docs/default baseline is a single minimal base ("atom one"). Need the concrete
-intent — is "atom one" a named base theme/preset, a design reference, or just
-"a sensible minimal base"? Treating as a sensible minimal base for now.
+Proceed with "atom one" as a sensible MINIMAL BASE default for the unstyled path
+for now. Flagged for the user to refine later; not a blocker.
 
 ---
 
@@ -136,14 +138,20 @@ START NOW (packaging-agnostic, cannot be invalidated by incoming feedback):
   R3 G1-as-release-artifact, R2 starter smokes. Area: `.github/workflows`,
   `scripts`, `code/starters`.
 
-GATED on user feedback (packaging decision):
-- **W4 packaging** (Opus, xhigh) — `@tamagui/ui` + `@tamagui/kit` boundaries;
-  finish C4 aesthetic sweep across the fleet. Area: `code/ui/*`, new packages.
-- **W5 registry** (Opus, high) — DRY shadcn registry generated from KIT + CI
-  install-into-blank-app. Depends on KIT existing.
-- **W6 docs+migration** (Opus, high) — 3-mode toggle + tailwind-switcher
-  integration; D1 migration-doc fixes with compiled fixtures; A1 shared state
-  vocabulary. Area: `code/tamagui.dev`, `code/core/style-grammar`.
+GATED WAVE — NOW LAUNCHING (green light; base `5418244f4a`; each own worktree):
+- **W4 packaging+state** (Opus, xhigh) — `@tamagui/ui` (unstyled) + C4 aesthetic
+  sweep (aesthetics → KIT) + KIT canonical styled source + `tamagui/unstyled`
+  subpath + A1 shared state vocabulary (folded here so ALL component-source
+  mutation stays in one worktree — no cross-worker races on `code/ui/*`). HOLD
+  the final `tamagui`↔KIT main-export wiring pending confirmation. Area:
+  `code/ui/*`, `code/core/style-grammar`, new packages. Checkpoint per sub-phase.
+- **W5 registry** (Opus, high) — DRY shadcn registry generated from KIT +
+  install-into-blank web/Expo CI. Reads KIT (no component mutation → no race).
+  Builds generator + CI harness in parallel; coordinates with lead for KIT shape.
+- **W6 docs+migration** (Opus, high) — 3-mode toggle (unstyled/styled/tailwind)
+  wired into the EXISTING `isTailwindMode`/`syntaxCookie` switcher; D1
+  migration-doc fixes with compiled fixtures. Area: `code/tamagui.dev` only
+  (renders `@tamagui/ui`/KIT, does not mutate them → no race).
 
 De-prioritized to the very end (per user): v2-vs-v3 performance comparison (P1
 benchmark matrix with a v2.4.6 column).
