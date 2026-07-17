@@ -169,7 +169,33 @@ export const useAnimatedNumberStyle: UseAnimatedNumberStyle<RNAnimatedNum> = (
   value,
   getStyle
 ) => {
-  return getStyle(value.getInstance())
+  const instance = value.getInstance()
+  const animatedStyle = getStyle(instance)
+  const usesAnimatedNode = hasAnimatedNode(animatedStyle)
+  const [current, setCurrent] = React.useState(value.getValue())
+
+  // preserve the native animated-node path for direct mappings. callbacks
+  // that do arithmetic require numeric values, so drive those through the
+  // value listener and render the computed style.
+  React.useEffect(() => {
+    if (usesAnimatedNode) return
+
+    const id = instance.addListener(({ value: next }) => {
+      setCurrent(next)
+    })
+    return () => {
+      instance.removeListener(id)
+    }
+  }, [instance, usesAnimatedNode])
+
+  return usesAnimatedNode ? animatedStyle : getStyle(current)
+}
+
+function hasAnimatedNode(value: unknown): boolean {
+  if (!value || typeof value !== 'object') return false
+  if (typeof (value as any).__getValue === 'function') return true
+  if (Array.isArray(value)) return value.some(hasAnimatedNode)
+  return Object.values(value).some(hasAnimatedNode)
 }
 
 export const useAnimatedNumbersStyle = (

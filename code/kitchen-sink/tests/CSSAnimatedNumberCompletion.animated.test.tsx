@@ -8,7 +8,11 @@ import { setupPage } from './test-utils'
  * is false because the value never animates through intermediate frames.
  */
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page }, testInfo) => {
+  test.skip(
+    testInfo.project.metadata?.animationDriver !== 'css',
+    'this is the H3 CSS-driver rAF completion contract'
+  )
   await setupPage(page, { name: 'CSSAnimatedNumberCompletionCase', type: 'useCase' })
 })
 
