@@ -843,8 +843,19 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         autoHeightPrev.current = target
 
         const host = stateRef.current.host as HTMLElement | null
+        // no measurement available (native, or no host, or animation disabled): jump to
+        // the settled state without tweening, but STILL own the height for an
+        // auto-managed dimension so the normal animated loop never tries to tween height
+        // out of a non-numeric `auto` baseline (which snaps/crashes reanimated).
         if (!isWeb || !host || disableAnimation) {
-          autoHeightMode.value = target === 'auto' ? 2 : 0
+          if (target === 'auto') {
+            autoHeightMode.value = 2
+          } else if (prev === 'auto') {
+            autoHeightSV.value = target as number
+            autoHeightMode.value = 3
+          } else {
+            autoHeightMode.value = 0
+          }
           return
         }
 
@@ -864,13 +875,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             if (fin) autoHeightMode.value = 2
           })
         } else if (typeof target === 'number' && prev === 'auto') {
-          // closing: seed measured intrinsic px (numeric baseline), animate to target
+          // closing: seed measured intrinsic px (numeric baseline), animate to target,
+          // then hold the numeric target (mode 3) so height stays owned by the override
           const px = host.scrollHeight
           autoHeightSV.value = px
           autoHeightMode.value = 1
           autoHeightSV.value = runAnim(target, (fin) => {
             'worklet'
-            if (fin) autoHeightMode.value = 0
+            if (fin) autoHeightMode.value = 3
           })
         } else {
           autoHeightMode.value = target === 'auto' ? 2 : 0
@@ -1125,9 +1137,12 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           // emit intrinsic `auto` so the DOM adapts to content. mode 0 leaves the normal
           // path (e.g. a closed height of 0).
           const hMode = autoHeightMode.value
-          if (hMode === 1) {
+          if (hMode === 1 || hMode === 3) {
+            // 1 = animating, 3 = settled at a number (e.g. closed 0): emit the numeric
+            // shared value so height is never tweened from a non-numeric `auto` baseline
             result.height = autoHeightSV.value
           } else if (hMode === 2) {
+            // settled open: emit intrinsic `auto` so the layout adapts to content
             result.height = 'auto'
           }
 
