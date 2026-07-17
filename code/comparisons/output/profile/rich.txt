@@ -1,0 +1,40 @@
+Ran 100.02631578947368 per-type, 3801 total
+                          theme-prep-uses | avg 4.1159168ms | total 411.69999998807907ms
+
+           state-useCreateShallowSetState | avg 0.0099973ms | total 0.9999999403953552ms
+                                use-state | avg 0.0009997ms | total 0.10000002384185791ms
+                              theme-props | avg 0        ms | total 0ms
+                          pre-theme-media | avg 0.0019994ms | total 0.20000004768371582ms
+                                    theme | avg 0.0039989ms | total 0.40000003576278687ms
+                                    media | avg 0.0029992ms | total 0.2999999523162842ms
+                     split-styles-prepare | avg 0.0009997ms | total 0.09999996423721313ms
+                       split-styles-setup | avg 0.0079978ms | total 0.8000000715255737ms
+                              style-state | avg 0.0029992ms | total 0.30000007152557373ms
+                        before-prop-width | avg 0.0029992ms | total 0.2999999523162842ms
+                       before-prop-height | avg 0.0059984ms | total 0.6000000238418579ms
+                 before-prop-borderRadius | avg 0.0019994ms | total 0.20000004768371582ms
+                      before-prop-padding | avg 0.0029992ms | total 0.2999999523162842ms
+                  before-prop-borderWidth | avg 0.0029992ms | total 0.30000001192092896ms
+                  before-prop-borderColor | avg 0.0029992ms | total 0.30000001192092896ms
+              before-prop-backgroundColor | avg 0.0059984ms | total 0.5999997854232788ms
+                       before-prop-margin | avg 0.0009997ms | total 0.10000002384185791ms
+                   before-prop-hoverStyle | avg 0.0049986ms | total 0.5ms
+                   before-prop-pressStyle | avg 0.0129965ms | total 1.300000011920929ms
+                    split-styles-propsend | avg 0.0069981ms | total 0.7000000476837158ms
+                  split-styles-pre-result | avg 0.0299921ms | total 3.0000000596046448ms
+                        split-styles-done | avg 0.0059984ms | total 0.6000000238418579ms
+                             split-styles | avg 0.0029992ms | total 0.30000001192092896ms
+                              destructure | avg 0.0009997ms | total 0.09999996423721313ms
+                             events-hooks | avg 0.0029992ms | total 0.30000001192092896ms
+                             events-setup | avg 0.0009997ms | total 0.09999996423721313ms
+                                   events | avg 0        ms | total 0ms
+                                    hooks | avg 0        ms | total 0ms
+                          spaced-as-child | avg 0        ms | total 0ms
+                             use-children | avg 0.0449881ms | total 4.500000059604645ms
+                           create-element | avg 0.0009997ms | total 0.09999996423721313ms
+                            group-context | avg 0        ms | total 0ms
+                          themed-children | avg 0        ms | total 0ms
+                         context-override | avg 0        ms | total 0ms
+                               style-tags | avg 0        ms | total 0ms
+                                     rest | avg 0        ms | total 0ms
+                                              total 429.10000002384186ms

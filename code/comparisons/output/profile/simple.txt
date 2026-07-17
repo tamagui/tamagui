@@ -1,0 +1,35 @@
+Ran 100.03030303030303 per-type, 3301 total
+                          theme-prep-uses | avg 4.1687367ms | total 417ms
+
+           state-useCreateShallowSetState | avg 0.0119963ms | total 1.199999988079071ms
+                                use-state | avg 0.0039987ms | total 0.3999999761581421ms
+                              theme-props | avg 0        ms | total 0ms
+                          pre-theme-media | avg 0.0009996ms | total 0.10000002384185791ms
+                                    theme | avg 0.0039987ms | total 0.3999999761581421ms
+                                    media | avg 0.0039987ms | total 0.3999999761581421ms
+                     split-styles-prepare | avg 0.0009996ms | total 0.09999996423721313ms
+                       split-styles-setup | avg 0.0079975ms | total 0.800000011920929ms
+                              style-state | avg 0        ms | total 0ms
+                        before-prop-width | avg 0.0019993ms | total 0.19999992847442627ms
+                       before-prop-height | avg 0.0059981ms | total 0.6000000238418579ms
+              before-prop-backgroundColor | avg 0        ms | total 0ms
+                 before-prop-borderRadius | avg 0.0009996ms | total 0.09999996423721313ms
+                       before-prop-margin | avg 0.0049984ms | total 0.4999999403953552ms
+                    split-styles-propsend | avg 0.0019993ms | total 0.20000004768371582ms
+                  split-styles-pre-result | avg 0.0169948ms | total 1.6999999284744263ms
+                        split-styles-done | avg 0.0019993ms | total 0.20000004768371582ms
+                             split-styles | avg 0        ms | total 0ms
+                              destructure | avg 0.0049984ms | total 0.4999999403953552ms
+                             events-hooks | avg 0.0059981ms | total 0.5999999642372131ms
+                             events-setup | avg 0        ms | total 0ms
+                                   events | avg 0        ms | total 0ms
+                                    hooks | avg 0.0009996ms | total 0.10000002384185791ms
+                          spaced-as-child | avg 0        ms | total 0ms
+                             use-children | avg 0.0439866ms | total 4.400000214576721ms
+                           create-element | avg 0        ms | total 0ms
+                            group-context | avg 0        ms | total 0ms
+                          themed-children | avg 0        ms | total 0ms
+                         context-override | avg 0        ms | total 0ms
+                               style-tags | avg 0        ms | total 0ms
+                                     rest | avg 0        ms | total 0ms
+                                              total 429.49999994039536ms
