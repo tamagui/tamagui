@@ -154,20 +154,36 @@ Examples:
 
 ## 4. Remove true token references
 
-The default v3 configs no longer export `$true` token keys. Components still use
-the default size internally, and that default resolves to `$4`.
+The default v3 configs no longer export `$true` token keys. Where you passed
+`$true` to a space, size, radius, or color prop, pass the explicit token that
+`$true` aliased. In the default config that value is `$4`.
 
 ```tsx
 // before
-<Button size="$true" />
-<XStack gap="$true" />
+<XStack gap="$true" p="$true" />
 ```
 
 ```tsx
 // after
-<Button size="$4" />
-<XStack gap="$4" />
+<XStack gap="$4" p="$4" />
 ```
+
+Component `size` is different from a space token. A component's visual `size` is
+defined by its own styled variant, not by a global token, so do not assume the
+`$true` -> `$4` swap changes a component's rendered size. The styled `tamagui`
+components (`import { Button } from 'tamagui'`) carry their own size scale; after
+upgrading, use the size values your components actually expose rather than
+passing a raw space token:
+
+```tsx
+// styled component — use its own size scale
+import { Button } from 'tamagui'
+
+<Button size="medium" />
+```
+
+If you also adopt the unstyled primitives from `@tamagui/ui`, those own no size
+scale at all — you provide sizing yourself or through your copied styles.
 
 Search both code and config files:
 
@@ -196,6 +212,7 @@ const radius = getRadius(radiusToken, { shift: 1 })
 ```tsx
 // after
 import { getVariableValue } from 'tamagui'
+import { getSize, getRadius } from '@tamagui/get-token'
 
 const padding = getVariableValue(getSize(size)) * 0.6
 const radius = getVariableValue(getRadius(radiusToken)) * 1.2
@@ -305,12 +322,35 @@ Component-specific notes:
 
 Select has a few public API changes and parity additions.
 
+Keep your form props. `Select` still accepts `name` on web, and custom Select
+renders hidden `<input>` elements for it, so the selected value(s) submit with a
+surrounding form. `form` associates the control with an external form by id. Both
+are inert on native.
+
+<Notice theme="red">
+  Do not remove `name` during migration. Removing it drops the hidden form inputs
+  and breaks form submission. Earlier drafts of this guide told you to delete
+  `name`; that was wrong.
+</Notice>
+
+```tsx
+<form
+  onSubmit={(e) => {
+    e.preventDefault()
+    const data = new FormData(e.currentTarget)
+    console.log(data.get('fruit')) // the selected value
+  }}
+>
+  <Select name="fruit" defaultValue="apple">
+    {/* ...Select.Trigger, Select.Content, items... */}
+  </Select>
+  <button type="submit">Save</button>
+</form>
+```
+
 Removed from `Select` root:
 
-- `name`
-- `autoComplete`
-
-They did not back real form or autofill behavior in the custom Select.
+- `autoComplete` — it never drove autofill in the custom Select, so delete it.
 
 Added or expanded:
 
