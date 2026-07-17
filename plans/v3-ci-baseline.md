@@ -56,3 +56,25 @@ budget: fetch logs once to a file, never `gh run watch`.
 - `test-targeted.yml` workflow_dispatch returns 404 until the workflow file
   exists on the DEFAULT branch (main) — GitHub requirement. Landing it on
   main is owner-gated; until then push v3-ci-* branches for full runs.
+
+## Update (2026-07-17, post lockfile regen)
+
+The merge-repair lockfile regen (236b8c11af) floated ranged deps; consequences
+and fixes, in order:
+- Detox went FULLY green on 236b8c11af (including the CompilerExtraction
+  shard) and stayed green; Maestro green. The expo float (55.0.6 -> 55.0.28)
+  rode along — relevant context for the Android investigation.
+- supabase-js 2.99 -> 2.110 broke site typecheck; fixed forward in code
+  (6458b5ea09).
+- @playwright/test floated to a nested 1.61.1, breaking the CI browser cache;
+  pinned via root overrides (manypkg-compliant) after an exact-range pin
+  tripped manypkg.
+- motion/framer-motion floated 12.37.0 -> 12.42.2 and broke the
+  v3-ssr-hydration motion-driver tests (11 failures, first run on the merged
+  tree; jobs passed on the pre-merge baseline); @vxrn/mdx-rust floated out of
+  lockstep with one@1.20.4. Both pinned back via root overrides.
+- Root overrides now pin: @playwright/test 1.58.2, motion 12.37.0,
+  framer-motion 12.37.0, @vxrn/mdx-rust 1.20.4. Remove deliberately when
+  upgrading, with the ssr-hydration suite as the gate.
+- integration#test:web failure attribution pending the next run (suspected
+  motion float; confirm after the override push).

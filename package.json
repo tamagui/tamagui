@@ -114,7 +114,7 @@
   },
   "devDependencies": {
     "@manypkg/cli": "^0.23.0",
-    "@playwright/test": "1.58.2",
+    "@playwright/test": "^1.49.1",
     "@take-out/cli": "0.0.65",
     "@testing-library/dom": "^10.4.0",
     "dotenv-cli": "^7.4.2",
@@ -191,7 +191,11 @@
     "websocket-driver": "0.7.5",
     "whatwg-url": "14.1.1",
     "ws": "8.21.0",
-    "yaml": "2.8.3"
+    "yaml": "2.8.3",
+    "@playwright/test": "1.58.2",
+    "motion": "12.37.0",
+    "framer-motion": "12.37.0",
+    "@vxrn/mdx-rust": "1.20.4"
   },
   "packageManager": "bun@1.3.9",
   "manypkg": {

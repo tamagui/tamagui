@@ -103,7 +103,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@expo/fingerprint": "~0.16.6",
-    "@playwright/test": "1.58.2",
+    "@playwright/test": "^1.49.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@tamagui/metro-plugin": "workspace:*",
     "@types/jest": "29.5.14",
