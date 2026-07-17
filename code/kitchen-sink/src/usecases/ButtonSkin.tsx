@@ -35,6 +35,8 @@ const CircleIcon = ({ color, size }: { color?: any; size?: number }) => (
 
 export const ButtonSkin = () => {
   const [presses, setPresses] = useState(0)
+  const [nestedOuterPresses, setNestedOuterPresses] = useState(0)
+  const [nestedInnerPresses, setNestedInnerPresses] = useState(0)
 
   return (
     <YStack gap="$4" padding="$4">
@@ -83,12 +85,27 @@ export const ButtonSkin = () => {
         <Button.Text testID="button-skin-explicit-text">Explicit text part</Button.Text>
       </Button>
 
-      <Button testID="button-skin-nested-outer" variant="outlined">
-        Outer
-        <Button testID="button-skin-nested-inner" size="small" variant="quiet">
-          Inner
+      <XStack gap="$3">
+        <Button testID="button-skin-nested-before">Before</Button>
+        <Button
+          testID="button-skin-nested-outer"
+          variant="outlined"
+          onPress={() => setNestedOuterPresses((value) => value + 1)}
+        >
+          Outer
+          <Button
+            testID="button-skin-nested-inner"
+            size="small"
+            variant="quiet"
+            onPress={() => setNestedInnerPresses((value) => value + 1)}
+          >
+            Inner
+          </Button>
         </Button>
-      </Button>
+        <Button testID="button-skin-nested-after">After</Button>
+      </XStack>
+      <Text testID="button-skin-nested-outer-presses">outer:{nestedOuterPresses}</Text>
+      <Text testID="button-skin-nested-inner-presses">inner:{nestedInnerPresses}</Text>
     </YStack>
   )
 }

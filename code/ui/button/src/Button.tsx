@@ -223,6 +223,24 @@ export function useButton<Props extends ButtonBehaviorProps>(
       tabIndex: -1,
     }),
     ...(resolvedRender === undefined ? null : { render: resolvedRender }),
+    ...(isNested && {
+      // a nested Button is a presentation part, not a control: strip the
+      // interactive semantics so we never place a focusable role=button (with
+      // its own press/keyboard handlers) inside the outer native <button>. that
+      // nesting is invalid html, adds an extra focus stop, and bubbles
+      // activation to the outer control. resolvedRender already makes it a span.
+      role: 'none',
+      tabIndex: -1,
+      'aria-disabled': undefined,
+      disabled: undefined,
+      onPress: undefined,
+      onPressIn: undefined,
+      onPressOut: undefined,
+      onLongPress: undefined,
+      onClick: undefined,
+      onKeyDown: undefined,
+      onKeyUp: undefined,
+    }),
     children: (
       <ButtonNestingContext.Provider value={true}>
         <ButtonContext.Provider {...textContext}>
