@@ -745,5 +745,7 @@ const getPropsKey = ({
   }`
 
 export const hasThemeUpdatingProps = (props: UseThemeWithStateProps) =>
-  'name' in props || 'reset' in props || 'forceClassName' in props ||
+  'name' in props ||
+  'reset' in props ||
+  'forceClassName' in props ||
   'inlineValues' in props

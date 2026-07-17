@@ -51,7 +51,13 @@ export function Variables(props: VariablesProps) {
   const rulesToInsert: RulesToInsert = {}
   if (res && shouldInsertStyleRules(res.identifier)) {
     updateRules(res.identifier, res.rules)
-    rulesToInsert[res.identifier] = ['variables', '', res.identifier, undefined, res.rules]
+    rulesToInsert[res.identifier] = [
+      'variables',
+      '',
+      res.identifier,
+      undefined,
+      res.rules,
+    ]
   }
 
   useInsertEffectCompat(() => {

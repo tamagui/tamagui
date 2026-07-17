@@ -3,12 +3,7 @@ process.env.TAMAGUI_TARGET = 'native'
 import { describe, expect, test } from 'vitest'
 
 import { getDefaultTamaguiConfig } from '../config-default'
-import {
-  createTamagui,
-  getMergedInlineTheme,
-  inlineLayerKey,
-  px,
-} from '../web/src'
+import { createTamagui, getMergedInlineTheme, inlineLayerKey, px } from '../web/src'
 
 const conf = createTamagui({
   ...getDefaultTamaguiConfig('native'),
@@ -41,7 +36,12 @@ describe('getMergedInlineTheme (native inline layer)', () => {
   test('identity-stable per (parent, values, scheme) and idempotent', () => {
     const inline = { values: { surfaceBorder: 'red' } }
     const a = getMergedInlineTheme(lightTheme, inline, 'light', conf)
-    const b = getMergedInlineTheme(lightTheme, { values: { surfaceBorder: 'red' } }, 'light', conf)
+    const b = getMergedInlineTheme(
+      lightTheme,
+      { values: { surfaceBorder: 'red' } },
+      'light',
+      conf
+    )
     expect(a).toBe(b)
     // re-applying the same layer to its own output is a no-op
     expect(getMergedInlineTheme(a as any, inline, 'light', conf)).toBe(a)

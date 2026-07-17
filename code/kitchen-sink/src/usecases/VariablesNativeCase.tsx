@@ -42,7 +42,9 @@ export function VariablesNativeCase() {
         <Text color="#000">toggle patch</Text>
       </View>
       <Variables
-        values={patched ? { caseAccent: 'rgb(200, 0, 0)', caseSurface: '$color' } : undefined}
+        values={
+          patched ? { caseAccent: 'rgb(200, 0, 0)', caseSurface: '$color' } : undefined
+        }
         dark={patched ? { caseAccent: 'rgb(200, 100, 100)' } : undefined}
       >
         <ReadValues />

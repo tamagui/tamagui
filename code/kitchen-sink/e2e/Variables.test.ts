@@ -64,9 +64,7 @@ describe('Variables', () => {
     await expect(element(by.id('vars-native-env'))).toHaveText('env:dark/dark')
     // gate open: config variable pair reports a DynamicColorIOS value
     await expect(element(by.id('vars-native-dynamic'))).toHaveText('dynamic:true')
-    await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText(
-      'refDynamic:true'
-    )
+    await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText('refDynamic:true')
   })
 
   it('patch under dark: dark bucket wins, literal pair stays dynamic, reference deopts', async () => {
@@ -77,9 +75,7 @@ describe('Variables', () => {
     // literal light+dark patch keeps the DynamicColorIOS pair
     await expect(element(by.id('vars-native-dynamic'))).toHaveText('dynamic:true')
     // reference patch ($color) has no pair: deopts to the tracked path
-    await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText(
-      'refDynamic:false'
-    )
+    await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText('refDynamic:false')
   })
 
   it('flip back to light keeps the base patch value', async () => {
@@ -94,8 +90,6 @@ describe('Variables', () => {
     await waitFor(element(by.id('vars-native-val')))
       .toHaveText(CONFIG_LIGHT_ACCENT)
       .withTimeout(10000)
-    await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText(
-      'refDynamic:true'
-    )
+    await expect(element(by.id('vars-native-ref-dynamic'))).toHaveText('refDynamic:true')
   })
 })

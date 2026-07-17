@@ -29,7 +29,9 @@ describe('createTamagui variables', () => {
   test('merges variables into base themes with per-theme reference resolution', () => {
     expect(conf.themes.light.surfaceBorder.val).toBe(conf.themes.light.color.val)
     expect(conf.themes.dark.surfaceBorder.val).toBe(conf.themes.dark.color.val)
-    expect(conf.themes.light.surfaceBorder.val).not.toBe(conf.themes.dark.surfaceBorder.val)
+    expect(conf.themes.light.surfaceBorder.val).not.toBe(
+      conf.themes.dark.surfaceBorder.val
+    )
   })
 
   test('scheme-scoped config values pick per base theme scheme', () => {
