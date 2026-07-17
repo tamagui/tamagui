@@ -965,6 +965,45 @@ export const disableAnimationProps: Set<string> = new Set<string>([
   'userSelect',
 ])
 
+// props equality for the getSplitStyles memo: functions and children can't
+// affect style output (they pass through), so they don't participate
+function motionPropsEqual(a: Record<string, any>, b: Record<string, any>) {
+  for (const key in a) {
+    if (!(key in b)) return false
+  }
+  for (const key in b) {
+    if (key === 'children') continue
+    const av = a[key]
+    const bv = b[key]
+    if (typeof bv === 'function' && typeof av === 'function') continue
+    if (!Object.is(av, bv)) return false
+  }
+  return true
+}
+
+// one-level style object comparison: style arrays are recreated per render
+// with usually-identical contents
+function motionStylesEqual(a: any[], b: any[]) {
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    const sa = a[i]
+    const sb = b[i]
+    if (sa === sb) continue
+    if (!sa || !sb) return false
+    let aCount = 0
+    for (const key in sa) {
+      aCount++
+      if (!Object.is(sa[key], sb[key])) return false
+    }
+    let bCount = 0
+    for (const _key in sb) {
+      bCount++
+    }
+    if (aCount !== bCount) return false
+  }
+  return true
+}
+
 const MotionView = createMotionView('div')
 const MotionText = createMotionView('span')
 
@@ -1103,10 +1142,50 @@ function createMotionView(defaultTag: string) {
       }
     }, [animatedStyle, state?.theme, state?.name])
 
-    const props = getProps({ ...propsRest, style: nonAnimatedStyles })
-    if (resolvedAnimatedStyle) {
-      props.style = { ...props.style, ...resolvedAnimatedStyle.initial }
+    // memoize the full getSplitStyles pass: it costs ~90us per render and its
+    // style-affecting inputs are usually unchanged. functions and children
+    // pass through getSplitStyles untouched, so they refresh on cache hits
+    // without invalidating.
+    const memoRef = useRef<null | {
+      propsRest: any
+      styles: any[]
+      theme: any
+      themeName: string | undefined
+      result: any
+    }>(null)
+
+    let props: any
+    const cached = memoRef.current
+    if (
+      cached &&
+      cached.theme === state?.theme &&
+      cached.themeName === state?.name &&
+      motionStylesEqual(cached.styles, nonAnimatedStyles) &&
+      motionPropsEqual(cached.propsRest, propsRest)
+    ) {
+      props = { ...cached.result }
+      for (const key in propsRest) {
+        const val = propsRest[key]
+        if (key === 'children' || typeof val === 'function') {
+          props[key] = val
+        }
+      }
+    } else {
+      props = getProps({ ...propsRest, style: nonAnimatedStyles })
+      memoRef.current = {
+        propsRest,
+        styles: nonAnimatedStyles,
+        theme: state?.theme,
+        themeName: state?.name,
+        result: props,
+      }
     }
+
+    if (resolvedAnimatedStyle) {
+      // reassign so the animated initial never leaks into the memo cache
+      props = { ...props, style: { ...props.style, ...resolvedAnimatedStyle.initial } }
+    }
+
     const Element = render || 'div'
     const transformedProps = hooks.usePropsTransform?.(render, props, stateRef, false)
 
