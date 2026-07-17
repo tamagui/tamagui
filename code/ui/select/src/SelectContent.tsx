@@ -64,7 +64,11 @@ export const SelectContent = ({
               )
             }
           }}
-          onEscapeKeyDown={onEscapeKeyDown}
+          onEscapeKeyDown={(details) => {
+            const event = details.event as unknown as KeyboardEvent | undefined
+            event?.stopImmediatePropagation()
+            onEscapeKeyDown?.(details)
+          }}
           onInteractOutside={onInteractOutside}
           // focus changes during open should not dismiss the list
           onFocusOutside={composeEventHandlers(onFocusOutside, (e) => e.cancel(), {
