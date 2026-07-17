@@ -359,3 +359,34 @@ icons/fonts are lean metadata, not glyph payloads.
   the merge (dismissable predated its own src) — use `bun run build:js` (--force)
   before trusting playwright results; don't rebuild packages or bun install while a
   playwright webServer is serving.
+
+### 2026-07-16 (evening) — C1 re-scoped and closed, merge perf verdict
+
+- **C1 measured, plan assumption corrected**: the motion driver's per-setValue
+  conversion (`getProps({style})` in the mv change listener) costs ~7us/call
+  (vitest, dev checks off) — NOT a hotspot even at gesture rates; no rewrite.
+  The real duplication was the per-RENDER full-props `getSplitStyles` in
+  MotionView (~90us per animated component per render, on top of
+  createComponent's own pass). Fixed by memoizing on style-affecting inputs
+  (`17926a32d8`); functions/children refresh on hits without invalidating.
+  Contract test: `core-test/motionDriverConversion.web.test.tsx` (also a ~70us
+  ceiling alarm on the per-change conversion). Validation: animated-motion
+  playwright 209/209.
+- **Merge perf verdict**: pure-pipeline A/B (same probe, pre-merge worktree vs
+  HEAD, NODE_ENV=test): full-props getSplitStyles pre ~90-96us vs post ~87-102us
+  — no production regression; Lane B offsets the authored-order/tailwind
+  additions. The dev-mode profile totals ARE ~2.2x higher post-merge (heavy
+  345→753ms) — dev-only overhead (dev guards, group-warn spam through the vite
+  websocket, larger dev graph). Don't panic on dev profiler totals; A/B the
+  vitest probes for pipeline changes.
+- **Found + fixed while measuring**: flat group syntax `$group-x-hover:prop`
+  silently produced no styles (parseFlatModifierProp bailed on group modifiers);
+  now rewrites to object form (`c34b1d097d`) — also kills the per-render
+  "Unknown group prop part" dev warn spam in tailwind mode. Regression test:
+  `core-test/flatGroupSyntax.web.test.tsx`.
+- **theme-prep-uses** (~2ms avg dev / component in heavy) absorbs React
+  between-marks work; dev-only signal, revisit only with a production-mode
+  measurement approach.
+- Remaining open lanes: D1 (RN subpath exports), D2 (pre-stripped prod build),
+  C2 transition-string memo (gated on a measurement that now exists: use the
+  vitest probe pattern).
