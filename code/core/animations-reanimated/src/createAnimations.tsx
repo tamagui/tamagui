@@ -4,7 +4,6 @@ import {
   hooks,
   isWeb,
   Text,
-  useAnimatedAutoDimension,
   useComposedRefs,
   useEvent,
   useIsomorphicLayoutEffect,
@@ -627,22 +626,6 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const disableAnimation = isHydrating || !animationKey
 
       // opt in to generic auto-dimension animation: resolve height/width `auto` to a
-      // measured pixel for the duration of the transition, then release back to `auto`.
-      // reads the authored target from props (web reanimated resolves the DOM node via
-      // stateRef.current.host). must run unconditionally to keep hook order stable.
-      // KNOWN FOLLOW-UP: opening (numeric -> auto) tweens and settles at `auto`, but the
-      // closing tween (auto -> 0) currently snaps near the end here — reanimated's worklet
-      // does not smoothly pick up the height when a key flips from the static `auto` phase
-      // back to an animated numeric. it needs the pinned pixel fed through the shared-value
-      // path rather than a plain re-render. tracked as the reanimated close follow-up.
-      style = useAnimatedAutoDimension({
-        style,
-        targets: props,
-        getHost: () => stateRef.current.host,
-        enabled: !disableAnimation,
-        durationMs: normalized.config?.duration ?? 300,
-      })
-
       // Theme state for dynamic values - use themeName from props instead of hook
       const isDark = themeName?.startsWith('dark') || false
 
@@ -716,6 +699,17 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const transformTargetsRef = useSharedValue<Array<Record<string, unknown>> | null>(
         null
       )
+
+      // generic auto-dimension (height) support. reanimated animates numbers only and
+      // cannot tween out of a non-numeric `auto` baseline, so a plain `auto`<->number
+      // flip snaps. instead we drive a dedicated NUMERIC shared value for the duration of
+      // the transition and only emit static `auto` once fully settled (when height is not
+      // being animated, so no baseline is needed). autoHeightMode: 0 = not auto-managed
+      // (use the normal style path), 1 = animating (use autoHeightSV), 2 = settled open
+      // (emit intrinsic `auto`). the numeric baseline is why the close tweens smoothly.
+      const autoHeightSV = useSharedValue(0)
+      const autoHeightMode = useSharedValue(0)
+      const autoHeightPrev = useRef<any>(undefined)
 
       // Separate styles into animated and static
       const { animatedStyles, staticStyles } = useMemo(() => {
@@ -832,6 +826,56 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           isHydrating,
         }
       }, [baseConfig, propertyConfigs, disableAnimation, isHydrating])
+
+      // drive the auto-dimension shared value from the authored `height` target. web
+      // only (native measure-to-pixel is a separate path); measures intrinsic size with
+      // scrollHeight so the shared value always animates between numbers.
+      useIsomorphicLayoutEffect(() => {
+        const target = props.height
+        // seed prev on first run so mount never animates; settle to the right mode
+        if (autoHeightPrev.current === undefined) {
+          autoHeightPrev.current = target
+          autoHeightMode.value = target === 'auto' ? 2 : 0
+          return
+        }
+        if (target === autoHeightPrev.current) return
+        const prev = autoHeightPrev.current
+        autoHeightPrev.current = target
+
+        const host = stateRef.current.host as HTMLElement | null
+        if (!isWeb || !host || disableAnimation) {
+          autoHeightMode.value = target === 'auto' ? 2 : 0
+          return
+        }
+
+        const cfg = createReanimatedConfig(baseConfig)
+        const runAnim = (to: number, onDone: (fin?: boolean) => void) =>
+          baseConfig.type === 'timing'
+            ? withTiming(to, cfg as WithTimingConfig, onDone)
+            : withSpring(to, cfg as WithSpringConfig, onDone)
+
+        if (target === 'auto' && typeof prev === 'number') {
+          // opening: seed current numeric, animate to measured intrinsic px, then settle auto
+          const px = host.scrollHeight
+          autoHeightSV.value = prev
+          autoHeightMode.value = 1
+          autoHeightSV.value = runAnim(px, (fin) => {
+            'worklet'
+            if (fin) autoHeightMode.value = 2
+          })
+        } else if (typeof target === 'number' && prev === 'auto') {
+          // closing: seed measured intrinsic px (numeric baseline), animate to target
+          const px = host.scrollHeight
+          autoHeightSV.value = px
+          autoHeightMode.value = 1
+          autoHeightSV.value = runAnim(target, (fin) => {
+            'worklet'
+            if (fin) autoHeightMode.value = 0
+          })
+        } else {
+          autoHeightMode.value = target === 'auto' ? 2 : 0
+        }
+      }, [props.height, disableAnimation, baseConfig])
 
       // =========================================================================
       // avoidRerenders: register style emitter callback
@@ -1076,6 +1120,17 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             }
           }
 
+          // auto-dimension height override: while animating (mode 1) emit the numeric
+          // shared value so height tweens frame-by-frame; once settled open (mode 2)
+          // emit intrinsic `auto` so the DOM adapts to content. mode 0 leaves the normal
+          // path (e.g. a closed height of 0).
+          const hMode = autoHeightMode.value
+          if (hMode === 1) {
+            result.height = autoHeightSV.value
+          } else if (hMode === 2) {
+            result.height = 'auto'
+          }
+
           return result
         },
         isWeb
@@ -1090,6 +1145,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               animatedTargetsRef,
               staticTargetsRef,
               transformTargetsRef,
+              autoHeightSV,
+              autoHeightMode,
               isExitingRef,
               exitCycleIdShared,
               markExitKeyDone,
