@@ -12,7 +12,7 @@ export default function TailwindDocsLayout() {
   useEffect(() => {
     setCodeMode('tailwind')
     return () => {
-      setCodeMode('tamagui')
+      setCodeMode('styled')
     }
   }, [])
 

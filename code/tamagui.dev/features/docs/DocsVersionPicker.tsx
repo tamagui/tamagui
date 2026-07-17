@@ -6,13 +6,14 @@ import { Select, XStack } from 'tamagui'
 import {
   docsProductVersions,
   docsSyntaxes,
+  docsSyntaxLabels,
   getDocsVersionHref,
   getDocsVersionState,
   type DocsProductVersion,
   type DocsSyntax,
   type DocsVersionFrontmatter,
 } from './docsVersion'
-import { cookieHasTailwind, writeSyntaxCookie } from './syntaxCookie'
+import { cookieCodeMode, writeSyntaxCookie } from './syntaxCookie'
 
 export function DocsVersionPicker({
   frontmatter,
@@ -30,8 +31,10 @@ export function DocsVersionPicker({
     setHydrated(true)
   }, [])
 
-  const cookieSyntax =
-    hydrated && typeof document !== 'undefined' && cookieHasTailwind(document.cookie)
+  const cookieMode =
+    hydrated && typeof document !== 'undefined'
+      ? cookieCodeMode(document.cookie)
+      : 'styled'
 
   const state = React.useMemo(() => {
     const next = getDocsVersionState({
@@ -40,24 +43,27 @@ export function DocsVersionPicker({
       frontmatter,
     })
     // sticky cookie applies when the url doesn't say otherwise
-    if (cookieSyntax && !new URLSearchParams(searchString).get('syntax')) {
-      next.syntax = 'tailwind'
+    if (cookieMode !== 'styled' && !new URLSearchParams(searchString).get('syntax')) {
+      next.syntax = cookieMode
     }
     return next
-  }, [frontmatter, pathname, searchString, cookieSyntax])
+  }, [frontmatter, pathname, searchString, cookieMode])
 
+  // a non-styled mode (unstyled/tailwind) needs a sticky ?syntax= on the url so
+  // the loader re-runs its transform and each mode gets a distinct cache key.
+  // styled is the default and stays param-free.
   React.useEffect(() => {
-    if (!hydrated || state.syntax !== 'tailwind') return
+    if (!hydrated || state.syntax === 'styled') return
     const params = new URLSearchParams(window.location.search)
     if (params.get('syntax')) return
-    params.set('syntax', 'tailwind')
+    params.set('syntax', state.syntax)
     window.location.replace(
       `${window.location.pathname}?${params.toString()}${window.location.hash}`
     )
   }, [hydrated, pathname, state.syntax])
 
   React.useEffect(() => {
-    if (state.syntax !== 'tailwind') return
+    if (state.syntax === 'styled') return
     const onClick = (event: MouseEvent) => {
       if (
         event.defaultPrevented ||
@@ -77,7 +83,7 @@ export function DocsVersionPicker({
       if (!href || !href.startsWith('/')) return
       const url = new URL(href, window.location.origin)
       if (url.searchParams.get('syntax')) return
-      url.searchParams.set('syntax', 'tailwind')
+      url.searchParams.set('syntax', state.syntax)
       event.preventDefault()
       event.stopPropagation()
       router.push(`${url.pathname}${url.search}${url.hash}` as Href)
@@ -129,10 +135,11 @@ export function DocsVersionPicker({
 
       <PickerSelect
         label="Syntax"
+        testID="docs-syntax"
         value={state.syntax}
         items={docsSyntaxes.map((syntax) => ({
           value: syntax,
-          label: syntax === 'tailwind' ? 'Tailwind' : 'Tamagui',
+          label: docsSyntaxLabels[syntax],
         }))}
         onValueChange={setSyntax}
       />
@@ -157,11 +164,13 @@ function PickerSelect({
   value,
   items,
   onValueChange,
+  testID,
 }: {
   label: string
   value: string
   items: { value: string; label: string }[]
   onValueChange: (value: string) => void
+  testID?: string
 }) {
   return (
     <Select
@@ -171,6 +180,7 @@ function PickerSelect({
       zIndex={200000}
     >
       <Select.Trigger
+        testID={testID}
         height={28}
         paddingHorizontal="$2"
         gap="$1"
@@ -201,7 +211,12 @@ function PickerSelect({
               {label}
             </Select.Label>
             {items.map((item, index) => (
-              <Select.Item index={index} key={item.value} value={item.value}>
+              <Select.Item
+                index={index}
+                key={item.value}
+                value={item.value}
+                testID={testID ? `${testID}-${item.value}` : undefined}
+              >
                 <Select.ItemText fontSize="$2">{item.label}</Select.ItemText>
                 <Select.ItemIndicator marginLeft="auto">
                   <Check size={16} />

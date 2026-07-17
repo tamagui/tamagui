@@ -1,27 +1,33 @@
-import { cookieHasTailwind } from './syntaxCookie'
+import { cookieCodeMode, normalizeCodeMode, type CodeMode } from './syntaxCookie'
+
+function paramMode(search?: string): CodeMode | null {
+  if (!search) return null
+  const param = new URLSearchParams(search).get('syntax')
+  return param == null ? null : normalizeCodeMode(param)
+}
 
 /**
- * detects tailwind syntax mode from loader props.
+ * resolves the docs code mode (styled | unstyled | tailwind) from loader props.
  *
- * production: tailwind.tamagui.dev subdomain
- * development: ?syntax=tailwind search param or /tailwind route aliases
- * both: sticky tamaguiSyntax cookie set by the header toggle, so the mode
- * survives every navigation; an explicit ?syntax= param overrides it
+ * - explicit `?syntax=` param wins in both directions so links can override.
+ * - tailwind additionally has route/subdomain aliases for SEO
+ *   (tailwind.tamagui.dev, /tailwind*); unstyled is param/cookie only.
+ * - otherwise the sticky `tamaguiSyntax` cookie set by the header toggle decides.
  */
-export function isTailwindMode(props: { search?: string; request?: Request }): boolean {
-  // explicit param wins in both directions so links can override the cookie
-  if (props.search?.includes('syntax=tamagui')) return false
-  if (props.search?.includes('syntax=tailwind')) return true
+export function getDocsMode(props: { search?: string; request?: Request }): CodeMode {
+  const fromParam = paramMode(props.search)
+  if (fromParam) return fromParam
 
-  // check subdomain (production: tailwind.tamagui.dev)
   const host = props.request?.headers.get('host') || ''
-  if (host.startsWith('tailwind.')) return true
+  if (host.startsWith('tailwind.')) return 'tailwind'
 
   const pathname = props.request ? new URL(props.request.url).pathname : ''
-  if (pathname.startsWith('/tailwind')) return true
+  if (pathname.startsWith('/tailwind')) return 'tailwind'
 
-  // sticky mode from the header toggle
-  if (cookieHasTailwind(props.request?.headers.get('cookie'))) return true
+  return cookieCodeMode(props.request?.headers.get('cookie'))
+}
 
-  return false
+/** back-compat boolean used by non-docs routes that only care about tailwind */
+export function isTailwindMode(props: { search?: string; request?: Request }): boolean {
+  return getDocsMode(props) === 'tailwind'
 }
