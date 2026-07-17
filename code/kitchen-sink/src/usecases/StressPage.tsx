@@ -39,6 +39,10 @@ const shouldProfile =
   typeof window !== 'undefined' &&
   new URLSearchParams(window.location.search).get('profile') === 'true'
 
+// default number of forced full-tree remounts driven by the profiler test to get a
+// clean per-render allocation + time signal (module eval only happens on first mount)
+const RERENDER_RUNS = 25
+
 // set up the timer globally so createComponent/getSplitStyles checkpoints fire
 // (bypasses the broken require('@tamagui/timer') in the built @tamagui/web dist)
 if (shouldProfile) {
@@ -262,29 +266,78 @@ export function StressPage() {
     performance.mark('stress-render-start')
   }
 
+  // remount the whole subtree on each tick so the profiler test can drive a fixed
+  // batch of deterministic full-tree renders (all ~200 components render every tick,
+  // exercising the createComponent props path exactly once each) inside a heap
+  // sampling window — see StressPagePerf.test.tsx
+  const [tick, setTick] = React.useState(0)
+  const s = React.useRef<{
+    phase: 'mount' | 'rerender' | 'done'
+    total: number
+    times: number[]
+  }>({ phase: 'mount', total: 0, times: [] }).current
+
+  if (shouldProfile && s.phase === 'rerender') {
+    performance.mark('stress-rerender-start')
+  }
+
+  // runs after every render (no dep array) to drive the remount loop
   React.useEffect(() => {
     if (!shouldProfile) return
-    performance.mark('stress-render-end')
-    performance.measure('stress-render', 'stress-render-start', 'stress-render-end')
-    const measure = performance.getEntriesByName('stress-render', 'measure')[0]
 
-    const t = (globalThis as any).__TIMER__
-    const profile = t?.profile()
+    if (s.phase === 'mount') {
+      performance.mark('stress-render-end')
+      performance.measure('stress-render', 'stress-render-start', 'stress-render-end')
+      const measure = performance.getEntriesByName('stress-render', 'measure').pop()!
+      ;(window as any).__STRESS_MOUNT_MS__ = Math.round(measure.duration * 100) / 100
 
-    const result = {
-      renderMs: Math.round(measure.duration * 100) / 100,
-      breakdown: profile?.timings,
-      runs: profile?.runs,
-      timestamp: Date.now(),
+      // profiler test starts heap sampling, then calls this to run the batch
+      ;(window as any).__STRESS_RERENDER__ = (runs: number = RERENDER_RUNS) => {
+        s.phase = 'rerender'
+        s.total = runs
+        s.times = []
+        setTick((t) => t + 1)
+      }
+      ;(window as any).__STRESS_READY__ = true
+      console.log(`[StressPage] mount: ${(window as any).__STRESS_MOUNT_MS__}ms`)
+      return
     }
 
-    ;(window as any).__PERF_RESULT__ = result
-    t?.print()
-    console.log(`[StressPage] render: ${result.renderMs}ms`)
-  }, [])
+    if (s.phase === 'rerender') {
+      performance.mark('stress-rerender-end')
+      performance.measure('stress-rerender', 'stress-rerender-start', 'stress-rerender-end')
+      const measure = performance.getEntriesByName('stress-rerender', 'measure').pop()!
+      s.times.push(Math.round(measure.duration * 100) / 100)
+
+      if (s.times.length < s.total) {
+        setTick((t) => t + 1)
+        return
+      }
+
+      s.phase = 'done'
+      const t = (globalThis as any).__TIMER__
+      const profile = t?.profile()
+      const sorted = [...s.times].sort((a, b) => a - b)
+      const mean =
+        Math.round((s.times.reduce((a, b) => a + b, 0) / s.times.length) * 100) / 100
+
+      ;(window as any).__PERF_RESULT__ = {
+        renderMs: (window as any).__STRESS_MOUNT_MS__,
+        rerenderMedianMs: sorted[Math.floor(sorted.length / 2)] ?? 0,
+        rerenderMeanMs: mean,
+        rerenderMs: s.times,
+        rerenderRuns: s.times.length,
+        breakdown: profile?.timings,
+        runs: profile?.runs,
+        timestamp: Date.now(),
+      }
+      t?.print()
+      console.log(`[StressPage] rerender median: ${sorted[Math.floor(sorted.length / 2)]}ms`)
+    }
+  })
 
   return (
-    <YStack width="100%" maxWidth={900} gap="$4" paddingBottom="$6">
+    <YStack key={tick} width="100%" maxWidth={900} gap="$4" paddingBottom="$6">
       <Header />
       <Separator />
       <StatsRow />

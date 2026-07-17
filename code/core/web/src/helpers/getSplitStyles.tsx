@@ -1330,6 +1330,12 @@ export const getSplitStyles: StyleSplitter = (
       continue
     }
 
+    if (keyInit === 'ref') {
+      // ref is composed and assigned explicitly onto viewProps in createComponent;
+      // never forward the incoming ref through the style split onto the host element
+      continue
+    }
+
     // native: data-* attributes never become native props (they're stripped
     // further down anyway), and the compiler-emitted data-disable-theme/-media
     // flags are already consumed in createComponent. skip them before any per-prop
