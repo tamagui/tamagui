@@ -581,30 +581,17 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
 const HeightAnimator = View.styleable((props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, ...rest } = props
-  const [measuredHeight, setMeasuredHeight] = React.useState<number>(0)
-  const hasMeasured = measuredHeight > 0
 
-  // closed -> 0; open + measured -> the numeric content height (this is what the
-  // animation driver tweens). open before the first measurement (SSR / first client
-  // paint) -> undefined, so the in-flow content shows at its natural height.
-  //
-  // never use 'auto' here: with a transition set, the animation driver writes height
-  // as an inline style and cannot tween out of the non-numeric 'auto', so the wrapper
-  // freezes at height:auto (which collapses to 0 once the content is measured). that
-  // left the item stuck closed with its content spilling below the last item.
-  const height = itemContext.open ? (hasMeasured ? measuredHeight : undefined) : 0
+  // closed -> 0; open -> intrinsic `auto` (the wrapper keeps adapting to its content).
+  // the animation driver's generic auto-dimension support (useAnimatedAutoDimension)
+  // measures the intrinsic pixel and tweens to/from it for the duration of the
+  // transition, then releases back to `auto`. `overflow: hidden` clips the content as
+  // the height animates. no manual measurement needed here.
+  const height = itemContext.open ? 'auto' : 0
 
   return (
     <View ref={ref} height={height} overflow="hidden" {...rest}>
-      <View
-        onLayout={({ nativeEvent }) => {
-          if (nativeEvent.layout.height && nativeEvent.layout.height !== measuredHeight) {
-            setMeasuredHeight(nativeEvent.layout.height)
-          }
-        }}
-      >
-        {children}
-      </View>
+      {children}
     </View>
   )
 })
