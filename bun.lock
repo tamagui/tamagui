@@ -2439,7 +2439,6 @@
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
-        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/focusable": "workspace:*",
         "@tamagui/helpers": "workspace:*",
@@ -2674,6 +2673,7 @@
       "dependencies": {
         "@tamagui/compose-refs": "workspace:*",
         "@tamagui/constants": "workspace:*",
+        "@tamagui/core": "workspace:*",
         "@tamagui/create-context": "workspace:*",
         "@tamagui/start-transition": "workspace:*",
         "@tamagui/use-async": "workspace:*",
