@@ -517,3 +517,28 @@ Deviations from the spec text above, decided during implementation:
    (`TSCONFIG_ERROR: ../to-tailwind/src/transform.ts`) — belongs to the
    A-lane; `code/ui/select/types/Select.d.ts` regenerates with churn on any
    build (stale committed types).
+
+## Simulator validation (2026-07-16, iPhone 17 sim, iOS debug build)
+
+Detox suite `code/kitchen-sink/e2e/Variables.test.ts` against
+`VariablesNativeCase` — 5/5 green on-device:
+
+1. Config variables resolve through `useTheme()` per scheme; OS appearance
+   flips apply dark config values and dark-scoped patch values.
+2. DynamicColorIOS validated live: config-variable pairs and literal-pair
+   patches report dynamic colors once the gate is open; a `$color` reference
+   patch deopts as designed; un-patching restores the config pair.
+3. **Bug found and fixed by this pass** (`6670904f42`): on un-patch, the
+   layer could merge over its own previous merged output (getNextState
+   returns lastState on the no-rerender path), keeping removed patch keys
+   alive. The merge now always bases on the parent state's theme. Regression
+   covered in the web integration test (same hook path both platforms).
+4. Known environment quirk (pre-existing, NOT this branch): kitchen-sink's
+   App.native calls `Appearance.setColorScheme('unspecified')` (RN 0.83
+   Android null workaround), so `Appearance.getColorScheme()` returns
+   'unspecified' at launch and `doesRootSchemeMatchSystem()` is conservatively
+   false — DynamicColorIOS stays off app-wide until the first runtime
+   appearance change. Correctness is unaffected (values re-render normally);
+   the optimization is just dormant at launch in kitchen-sink. Worth a
+   follow-up look at either the app workaround or teaching
+   doesRootSchemeMatchSystem about 'unspecified', owner's call.
