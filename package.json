@@ -85,6 +85,7 @@
     "registry:check": "bun ./scripts/generate-registry.ts check",
     "registry:validate": "bun ./scripts/generate-registry.ts validate",
     "registry:drift": "bun ./scripts/generate-registry.ts drift",
+    "registry:test": "bun test scripts/lib/registry/registry.test.ts",
     "registry:write-consumers": "bun ./scripts/generate-registry.ts write-consumers",
     "repair": "bun ./scripts/repair.ts",
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\"",

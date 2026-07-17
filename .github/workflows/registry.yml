@@ -37,6 +37,9 @@ jobs:
       - name: Install
         uses: ./.github/actions/install
 
+      - name: Unit tests (derivation, drift transform, item build)
+        run: bun run registry:test
+
       - name: Registry artifacts up to date
         run: bun run registry:check
 
