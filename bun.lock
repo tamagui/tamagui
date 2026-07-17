@@ -2222,6 +2222,7 @@
         "react": ">=19",
         "react-dom": "*",
         "react-native": "0.83.2",
+        "react-native-safe-area-context": "~5.7.0",
         "tamagui": "workspace:*",
       },
       "devDependencies": {
@@ -3149,8 +3150,12 @@
       },
       "peerDependencies": {
         "react": ">=19",
+        "react-native-safe-area-context": "*",
         "react-native-web": "*",
       },
+      "optionalPeers": [
+        "react-native-safe-area-context",
+      ],
     },
     "code/ui/slider": {
       "name": "@tamagui/slider",
