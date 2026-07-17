@@ -5,7 +5,7 @@ import { Paragraph, View, XStack, YStack } from 'tamagui'
 import { Container } from '~/components/Containers'
 import { Link } from '~/components/Link'
 import { DocsQuickNav, type Heading } from './DocsQuickNav'
-import { DocsVersionPicker } from './DocsVersionPicker'
+import { DocsVersionPickerPortal } from './DocsVersionPicker'
 import type { DocsVersionFrontmatter } from './docsVersion'
 
 type DocsPageFrameProps = {
@@ -29,13 +29,11 @@ export function DocsPageFrame({
 }: DocsPageFrameProps) {
   return (
     <>
+      <DocsVersionPickerPortal frontmatter={frontmatter} initialSearch={initialSearch} />
       {/* main content */}
       <YStack flex={1} flexBasis="auto" py="$8" px="$4">
         <YStack render="article">
-          <Container position="relative">
-            <DocsVersionPicker frontmatter={frontmatter} initialSearch={initialSearch} />
-            {children}
-          </Container>
+          <Container position="relative">{children}</Container>
 
           <Container>
             {(previous || next) && (

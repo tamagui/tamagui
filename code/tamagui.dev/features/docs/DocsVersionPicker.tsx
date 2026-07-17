@@ -1,7 +1,8 @@
 import { Check, ChevronDown } from '@tamagui/lucide-icons-2'
 import { type Href, router, usePathname, useSearchParams } from 'one'
 import React from 'react'
-import { Select, XStack, YStack, Paragraph } from 'tamagui'
+import { createPortal } from 'react-dom'
+import { Select, XStack } from 'tamagui'
 import {
   docsProductVersions,
   docsSyntaxes,
@@ -45,6 +46,46 @@ export function DocsVersionPicker({
     return next
   }, [frontmatter, pathname, searchString, cookieSyntax])
 
+  React.useEffect(() => {
+    if (!hydrated || state.syntax !== 'tailwind') return
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('syntax')) return
+    params.set('syntax', 'tailwind')
+    window.location.replace(
+      `${window.location.pathname}?${params.toString()}${window.location.hash}`
+    )
+  }, [hydrated, pathname, state.syntax])
+
+  React.useEffect(() => {
+    if (state.syntax !== 'tailwind') return
+    const onClick = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey ||
+        event.button !== 0
+      ) {
+        return
+      }
+      const anchor = (event.target as HTMLElement).closest?.('a')
+      if (!anchor || anchor.target === '_blank' || anchor.hasAttribute('download')) {
+        return
+      }
+      const href = anchor.getAttribute('href')
+      if (!href || !href.startsWith('/')) return
+      const url = new URL(href, window.location.origin)
+      if (url.searchParams.get('syntax')) return
+      url.searchParams.set('syntax', 'tailwind')
+      event.preventDefault()
+      event.stopPropagation()
+      router.push(`${url.pathname}${url.search}${url.hash}` as Href)
+    }
+    document.addEventListener('click', onClick, true)
+    return () => document.removeEventListener('click', onClick, true)
+  }, [state.syntax])
+
   const isDocsPath =
     state.canonicalPath.startsWith('/docs/') || state.canonicalPath.startsWith('/ui/')
 
@@ -74,40 +115,41 @@ export function DocsVersionPicker({
     router.push(href as Href)
   }
 
-  const showArchiveNote = !state.isComponentDoc && !state.hasArchivedContent
-
   return (
-    <YStack gap="$2" mb="$5">
-      <XStack gap="$2" flexWrap="wrap" items="center">
-        <PickerSelect
-          label="Version"
-          value={state.productVersion}
-          items={docsProductVersions.map((version) => ({
-            value: version,
-            label: version,
-          }))}
-          onValueChange={setVersion}
-        />
+    <XStack gap="$2" items="center">
+      <PickerSelect
+        label="Version"
+        value={state.productVersion}
+        items={docsProductVersions.map((version) => ({
+          value: version,
+          label: version,
+        }))}
+        onValueChange={setVersion}
+      />
 
-        <PickerSelect
-          label="Syntax"
-          value={state.syntax}
-          items={docsSyntaxes.map((syntax) => ({
-            value: syntax,
-            label: syntax === 'tailwind' ? 'Tailwind' : 'Tamagui',
-          }))}
-          onValueChange={setSyntax}
-        />
-      </XStack>
-
-      {showArchiveNote && (
-        <Paragraph size="$2" color="$color9" maxW={680}>
-          Archived {state.productVersion} prose for this page was not preserved as a
-          versioned file, so the latest available page is shown.
-        </Paragraph>
-      )}
-    </YStack>
+      <PickerSelect
+        label="Syntax"
+        value={state.syntax}
+        items={docsSyntaxes.map((syntax) => ({
+          value: syntax,
+          label: syntax === 'tailwind' ? 'Tailwind' : 'Tamagui',
+        }))}
+        onValueChange={setSyntax}
+      />
+    </XStack>
   )
+}
+
+export function DocsVersionPickerPortal(
+  props: React.ComponentProps<typeof DocsVersionPicker>
+) {
+  const [target, setTarget] = React.useState<HTMLElement | null>(null)
+
+  React.useEffect(() => {
+    setTarget(document.getElementById('docs-version-picker-slot'))
+  }, [])
+
+  return target ? createPortal(<DocsVersionPicker {...props} />, target) : null
 }
 
 function PickerSelect({
@@ -129,24 +171,24 @@ function PickerSelect({
       zIndex={200000}
     >
       <Select.Trigger
-        height={32}
-        paddingHorizontal="$3"
-        gap="$2"
-        backgroundColor="$background"
+        height={28}
+        paddingHorizontal="$2"
+        gap="$1"
+        backgroundColor="$color2"
         borderWidth={1}
         borderColor="$borderColor"
-        borderRadius="$3"
-        minW={116}
+        borderRadius="$4"
+        minW={label === 'Version' ? 72 : 100}
       >
-        <Select.Value placeholder={label} />
+        <Select.Value placeholder={label} fontSize="$1" />
         <Select.Icon marginLeft="auto">
-          <ChevronDown size={14} />
+          <ChevronDown size={12} color="$color9" />
         </Select.Icon>
       </Select.Trigger>
 
       <Select.Content>
         <Select.Viewport
-          minW={160}
+          minW={140}
           borderWidth={1}
           borderColor="$borderColor"
           borderRadius="$3"
@@ -155,10 +197,12 @@ function PickerSelect({
           boxShadow="0 12px 28px rgba(0, 0, 0, 0.18)"
         >
           <Select.Group>
-            <Select.Label>{label}</Select.Label>
+            <Select.Label fontSize="$2" color="$color9">
+              {label}
+            </Select.Label>
             {items.map((item, index) => (
               <Select.Item index={index} key={item.value} value={item.value}>
-                <Select.ItemText>{item.label}</Select.ItemText>
+                <Select.ItemText fontSize="$2">{item.label}</Select.ItemText>
                 <Select.ItemIndicator marginLeft="auto">
                   <Check size={16} />
                 </Select.ItemIndicator>
