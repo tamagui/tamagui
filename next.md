@@ -124,7 +124,9 @@ variants, base style, or base atomic class (the normal case is `View`/`Text`),
 and only when normalized emitted CSS properties are disjoint from every
 retained dynamic prop. Ownership is derived through
 `getSplitStyles`, including transform aliases and logical-property expansion;
-raw prop-name families are not sufficient. Styled components remain on the
+canonical CSS shorthand/longhand conflicts and direction-dependent logical
+property conflicts are checked after normalization. Raw prop-name families
+are not sufficient. Styled components remain on the
 runtime path because removing an authored override while retaining styled
 defaults leaves equal-specificity atomic classes whose winner depends on
 stylesheet insertion order. Spreads, `style`, caller `className`, variants,

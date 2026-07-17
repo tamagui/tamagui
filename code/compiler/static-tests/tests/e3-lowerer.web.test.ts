@@ -384,6 +384,102 @@ export const Card = ({ x }) => jsx(View, {
     expect(plan.css).not.toContain('transform:')
   })
 
+  test('keeps CSS shorthand and longhand collisions on the runtime path', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ border, background, outline, gap }) => (
+  <View
+    border={border}
+    borderTopWidth={2}
+    background={background}
+    backgroundColor="red"
+    outline={outline}
+    outlineColor="blue"
+    gap={gap}
+    rowGap={4}
+    padding={12}
+  />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(output.code).toContain('border={border}')
+    expect(output.code).toContain('borderTopWidth={2}')
+    expect(output.code).toContain('background={background}')
+    expect(output.code).toContain('backgroundColor="red"')
+    expect(output.code).toContain('outline={outline}')
+    expect(output.code).toContain('outlineColor="blue"')
+    expect(output.code).toContain('gap={gap}')
+    expect(output.code).toContain('rowGap={4}')
+    expect(output.code).not.toContain('padding={12}')
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).not.toContain('border-top-width:2px')
+    expect(plan.css).not.toContain('background-color:red')
+    expect(plan.css).not.toContain('outline-color:blue')
+    expect(plan.css).not.toContain('row-gap:4px')
+  })
+
+  test('keeps compiled-jsx shorthand and longhand collisions on the runtime path', () => {
+    const source = `
+import { View } from '@tamagui/core'
+import { jsx } from 'react/jsx-runtime'
+export const Card = ({ border }) => jsx(View, {
+  border,
+  borderLeftColor: 'red',
+  padding: 12,
+})
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(output.code).toContain('border,')
+    expect(output.code).toContain("borderLeftColor: 'red'")
+    expect(output.code).not.toContain('padding: 12')
+    expect(plan.css).toContain('padding-top:12px')
+    expect(plan.css).not.toContain('border-left-color:red')
+  })
+
+  test('keeps shorthand aliases and logical properties with physical collisions', () => {
+    const source = `
+import { View } from '@tamagui/core'
+export const Card = ({ width, marginLeft }) => (
+  <View
+    w={width}
+    inlineSize={120}
+    marginLeft={marginLeft}
+    marginInlineStart={4}
+    opacity={0.5}
+  />
+)
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual([])
+    expect(output.code).toContain('w={width}')
+    expect(output.code).toContain('inlineSize={120}')
+    expect(output.code).toContain('marginLeft={marginLeft}')
+    expect(output.code).toContain('marginInlineStart={4}')
+    expect(output.code).not.toContain('opacity={0.5}')
+    expect(plan.css).toContain('opacity:0.5')
+    expect(plan.css).not.toContain('width:120px')
+    expect(plan.css).not.toContain('margin-inline-start:4px')
+  })
+
+  test('keeps animation props from static spreads byte-identical', () => {
+    const source = `
+import { View } from '@tamagui/core'
+const animated = { transition: 'fast', padding: 12 }
+export const Card = () => <View {...animated} />
+`
+    const { plan, output } = compile(source)
+
+    expect(codes(plan)).toEqual(['local/unsupported-target'])
+    expect(output.changed).toBe(false)
+    expect(output.code).toBe(source)
+    expect(plan.css).toBe('')
+  })
+
   test('keeps styled defaults and runtime overrides on one runtime path', () => {
     const source = `
 import { View, styled } from '@tamagui/core'

@@ -267,6 +267,238 @@ const runtimeAnimationProps = new Set([
   'animatedBy',
 ])
 
+const cssShorthandConflicts: Record<string, readonly string[]> = {
+  background: [
+    'backgroundAttachment',
+    'backgroundBlendMode',
+    'backgroundClip',
+    'backgroundColor',
+    'backgroundImage',
+    'backgroundOrigin',
+    'backgroundPosition',
+    'backgroundRepeat',
+    'backgroundSize',
+  ],
+  border: [
+    'borderTop',
+    'borderTopColor',
+    'borderTopStyle',
+    'borderTopWidth',
+    'borderRight',
+    'borderRightColor',
+    'borderRightStyle',
+    'borderRightWidth',
+    'borderBottom',
+    'borderBottomColor',
+    'borderBottomStyle',
+    'borderBottomWidth',
+    'borderLeft',
+    'borderLeftColor',
+    'borderLeftStyle',
+    'borderLeftWidth',
+    'borderColor',
+    'borderStyle',
+    'borderWidth',
+    'borderImage',
+    'borderImageOutset',
+    'borderImageRepeat',
+    'borderImageSlice',
+    'borderImageSource',
+    'borderImageWidth',
+    'borderInlineColor',
+    'borderInlineEndColor',
+    'borderInlineEndStyle',
+    'borderInlineEndWidth',
+    'borderInlineStartColor',
+    'borderInlineStartStyle',
+    'borderInlineStartWidth',
+    'borderInlineStyle',
+    'borderInlineWidth',
+  ],
+  borderTop: ['borderTopColor', 'borderTopStyle', 'borderTopWidth'],
+  borderRight: [
+    'borderRightColor',
+    'borderRightStyle',
+    'borderRightWidth',
+    'borderInlineColor',
+    'borderInlineEndColor',
+    'borderInlineEndStyle',
+    'borderInlineEndWidth',
+    'borderInlineStartColor',
+    'borderInlineStartStyle',
+    'borderInlineStartWidth',
+    'borderInlineStyle',
+    'borderInlineWidth',
+  ],
+  borderBottom: ['borderBottomColor', 'borderBottomStyle', 'borderBottomWidth'],
+  borderLeft: [
+    'borderLeftColor',
+    'borderLeftStyle',
+    'borderLeftWidth',
+    'borderInlineColor',
+    'borderInlineEndColor',
+    'borderInlineEndStyle',
+    'borderInlineEndWidth',
+    'borderInlineStartColor',
+    'borderInlineStartStyle',
+    'borderInlineStartWidth',
+    'borderInlineStyle',
+    'borderInlineWidth',
+  ],
+  borderImage: [
+    'borderImageOutset',
+    'borderImageRepeat',
+    'borderImageSlice',
+    'borderImageSource',
+    'borderImageWidth',
+  ],
+  outline: ['outlineColor', 'outlineStyle', 'outlineWidth'],
+  gap: ['columnGap', 'rowGap'],
+  gridColumn: ['gridColumnEnd', 'gridColumnStart'],
+  gridRow: ['gridRowEnd', 'gridRowStart'],
+  marginInline: [
+    'marginInlineEnd',
+    'marginInlineStart',
+    'marginEnd',
+    'marginStart',
+    'marginLeft',
+    'marginRight',
+  ],
+  paddingInline: [
+    'paddingInlineEnd',
+    'paddingInlineStart',
+    'paddingEnd',
+    'paddingStart',
+    'paddingLeft',
+    'paddingRight',
+  ],
+  insetInline: ['insetInlineEnd', 'insetInlineStart', 'end', 'start', 'left', 'right'],
+  borderInlineColor: [
+    'borderInlineEndColor',
+    'borderInlineStartColor',
+    'borderEndColor',
+    'borderStartColor',
+    'borderLeftColor',
+    'borderRightColor',
+  ],
+  borderInlineStyle: [
+    'borderInlineEndStyle',
+    'borderInlineStartStyle',
+    'borderEndStyle',
+    'borderStartStyle',
+    'borderLeftStyle',
+    'borderRightStyle',
+  ],
+  borderInlineWidth: [
+    'borderInlineEndWidth',
+    'borderInlineStartWidth',
+    'borderEndWidth',
+    'borderStartWidth',
+    'borderLeftWidth',
+    'borderRightWidth',
+  ],
+  mask: [
+    'maskBorder',
+    'maskBorderMode',
+    'maskBorderOutset',
+    'maskBorderRepeat',
+    'maskBorderSlice',
+    'maskBorderSource',
+    'maskBorderWidth',
+    'maskClip',
+    'maskComposite',
+    'maskImage',
+    'maskMode',
+    'maskOrigin',
+    'maskPosition',
+    'maskRepeat',
+    'maskSize',
+  ],
+  maskBorder: [
+    'maskBorderMode',
+    'maskBorderOutset',
+    'maskBorderRepeat',
+    'maskBorderSlice',
+    'maskBorderSource',
+    'maskBorderWidth',
+  ],
+}
+
+const cssConflictFamilies = [
+  new Set([
+    'marginInline',
+    'marginInlineEnd',
+    'marginInlineStart',
+    'marginEnd',
+    'marginStart',
+    'marginLeft',
+    'marginRight',
+  ]),
+  new Set([
+    'paddingInline',
+    'paddingInlineEnd',
+    'paddingInlineStart',
+    'paddingEnd',
+    'paddingStart',
+    'paddingLeft',
+    'paddingRight',
+  ]),
+  new Set([
+    'insetInline',
+    'insetInlineEnd',
+    'insetInlineStart',
+    'end',
+    'start',
+    'left',
+    'right',
+  ]),
+  new Set([
+    'borderInlineColor',
+    'borderInlineEndColor',
+    'borderInlineStartColor',
+    'borderEndColor',
+    'borderStartColor',
+    'borderLeftColor',
+    'borderRightColor',
+  ]),
+  new Set([
+    'borderInlineStyle',
+    'borderInlineEndStyle',
+    'borderInlineStartStyle',
+    'borderEndStyle',
+    'borderStartStyle',
+    'borderLeftStyle',
+    'borderRightStyle',
+  ]),
+  new Set([
+    'borderInlineWidth',
+    'borderInlineEndWidth',
+    'borderInlineStartWidth',
+    'borderEndWidth',
+    'borderStartWidth',
+    'borderLeftWidth',
+    'borderRightWidth',
+  ]),
+]
+
+function cssOwnersConflict(left: Set<string>, right: Set<string>): boolean {
+  for (const leftOwner of left) {
+    for (const rightOwner of right) {
+      if (
+        leftOwner === rightOwner ||
+        cssShorthandConflicts[leftOwner]?.includes(rightOwner) ||
+        cssShorthandConflicts[rightOwner]?.includes(leftOwner) ||
+        cssConflictFamilies.some(
+          (family) => family.has(leftOwner) && family.has(rightOwner)
+        )
+      ) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
 const runtimeEventProps = new Set([
   'onHoverIn',
   'onHoverOut',
@@ -636,12 +868,37 @@ export function createTamaguiCompilerHost(
       const animationEntry = input.element.entries.find(
         (entry) => entry.kind === 'prop' && runtimeAnimationProps.has(entry.name)
       )
-      if (animationEntry || 'enterStyle' in props || 'exitStyle' in props) {
+      const animationProp =
+        animationEntry?.kind === 'prop'
+          ? animationEntry.name
+          : Object.keys(props).find((name) => runtimeAnimationProps.has(name))
+      if (animationProp || 'enterStyle' in props || 'exitStyle' in props) {
         return bailout(
           input,
           'local/unsupported-target',
           'Animated candidates remain on the runtime path',
           animationEntry?.span
+        )
+      }
+      if ('theme' in props || 'themeInverse' in props) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'Theme boundary candidates remain on the runtime path'
+        )
+      }
+      if (
+        Object.entries(props).some(
+          ([name, value]) =>
+            name.startsWith('$theme-') &&
+            staticObject(value) &&
+            Object.keys(value).some((nestedName) => nestedName.startsWith('$'))
+        )
+      ) {
+        return bailout(
+          input,
+          'local/unsupported-target',
+          'Nested media inside a theme style remains on the runtime path'
         )
       }
       if (
@@ -687,7 +944,7 @@ export function createTamaguiCompilerHost(
                   entry.value.value,
                   component.staticConfig as StaticConfig
                 )
-                return !!owners && ![...owners].some((owner) => dynamicOwners.has(owner))
+                return !!owners && !cssOwnersConflict(owners, dynamicOwners)
               })
             : []
           if (staticStyleEntries.length > 0) {
@@ -771,27 +1028,6 @@ export function createTamaguiCompilerHost(
           'local/dynamic-style-value',
           `Style prop ${entry.kind === 'prop' ? entry.name : 'unknown'} could not be safely extracted`,
           entry.span
-        )
-      }
-      if ('theme' in props || 'themeInverse' in props) {
-        return bailout(
-          input,
-          'local/unsupported-target',
-          'Theme boundary candidates remain on the runtime path'
-        )
-      }
-      if (
-        Object.entries(props).some(
-          ([name, value]) =>
-            name.startsWith('$theme-') &&
-            staticObject(value) &&
-            Object.keys(value).some((nestedName) => nestedName.startsWith('$'))
-        )
-      ) {
-        return bailout(
-          input,
-          'local/unsupported-target',
-          'Nested media inside a theme style remains on the runtime path'
         )
       }
       if (Object.keys(props).some((name) => name.startsWith('$group-'))) {
