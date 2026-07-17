@@ -1,0 +1,139 @@
+name: Registry
+
+# the DRY shadcn registry is generated from the KIT skin source. this workflow
+# enforces that (a) the checked-in registry artifacts are up to date, (b) the
+# generated items are shadcn-valid, (c) the shipped copies never drift from KIT,
+# and (d) an installed item builds + interacts in a blank web AND a blank Expo
+# app. see registry/README.md.
+
+on:
+  pull_request:
+  push:
+    paths-ignore:
+      - 'assets/**'
+      - '.vscode/**'
+    branches:
+      - main
+      - v3
+      - 'v3-*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: registry-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  # fast, no workspace build needed — pure source reads.
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Registry artifacts up to date
+        run: bun run registry:check
+
+      - name: Registry is shadcn-valid
+        run: bun run registry:validate
+
+      - name: Shipped copies match KIT (blank apps)
+        run: bun ./scripts/generate-registry.ts drift --only-authorized --strict
+
+      - name: Report held-consumer drift (non-fatal)
+        run: bun ./scripts/generate-registry.ts drift || true
+
+  web:
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Get Playwright version
+        id: pw-version
+        run: echo "version=$(bunx playwright --version | awk '{print $2}')" >> $GITHUB_OUTPUT
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw-version.outputs.version }}
+
+      - name: Install playwright chromium
+        run: bunx playwright install --with-deps chromium
+
+      - name: Restore Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
+
+      - name: Build the packages the blank web app consumes
+        run: bun turbo run build --filter=tamagui --filter=@tamagui/config --filter=@tamagui/vite-plugin
+
+      # re-install the item from the generated registry and prove the install
+      # output equals the committed (drift-checked) copy — the install path,
+      # exercised end to end.
+      - name: Install registry item into blank web app
+        run: |
+          bun ./scripts/registry-install.ts button registry/ci/blank-web --registry registry/json
+          git diff --exit-code registry/ci/blank-web/components
+
+      - name: Build + interaction smoke (web)
+        working-directory: registry/ci/blank-web
+        run: bun run smoke
+        timeout-minutes: 15
+
+  expo:
+    runs-on: ubuntu-latest
+    env:
+      NODE_OPTIONS: '--max-old-space-size=6144'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install
+        uses: ./.github/actions/install
+
+      - name: Restore Turbo cache
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
+
+      - name: Build the packages the blank expo app consumes
+        run: bun turbo run build --filter=tamagui --filter=@tamagui/config --filter=@tamagui/metro-plugin
+
+      - name: Install registry item into blank expo app
+        run: |
+          bun ./scripts/registry-install.ts button registry/ci/blank-expo --registry registry/json
+          git diff --exit-code registry/ci/blank-expo/components
+
+      - name: Interaction smoke (native)
+        working-directory: registry/ci/blank-expo
+        run: bun run smoke
+        timeout-minutes: 15
+
+      - name: Build (expo export / Metro bundle)
+        working-directory: registry/ci/blank-expo
+        run: bun run build
+        timeout-minutes: 20

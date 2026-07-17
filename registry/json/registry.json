@@ -1,0 +1,42 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "tamagui",
+  "homepage": "https://tamagui.dev",
+  "items": [
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "A styled, v2-compatible Button with size/variant/circular variants, built on the unstyled @tamagui/ui Button behavior.",
+      "dependencies": [
+        "tamagui"
+      ],
+      "categories": [
+        "controls"
+      ],
+      "meta": {
+        "native": {
+          "notes": "Icons come from @tamagui/lucide-icons-2; no native config plugin required."
+        },
+        "peerDependencies": {
+          "react": "*",
+          "react-native": "*",
+          "tamagui": "*"
+        },
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundPress",
+          "$borderColor",
+          "$borderColorHover",
+          "$color",
+          "$outlineColor"
+        ],
+        "themes": [
+          "accent"
+        ]
+      }
+    }
+  ]
+}

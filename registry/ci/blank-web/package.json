@@ -1,0 +1,28 @@
+{
+  "name": "@tamagui/registry-blank-web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "install:button": "bun ../../../scripts/registry-install.ts button . --registry ../../json",
+    "typecheck": "tsc --noEmit",
+    "build": "NODE_ENV=production vite build",
+    "smoke": "playwright test tests/smoke.spec.ts"
+  },
+  "dependencies": {
+    "@tamagui/config": "workspace:*",
+    "react": ">=19",
+    "react-dom": "*",
+    "react-native": "0.83.2",
+    "tamagui": "workspace:*"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@tamagui/vite-plugin": "workspace:*",
+    "@types/node": "^22.1.0",
+    "@types/react": "~19.1.10",
+    "@types/react-dom": "~19.1.7",
+    "@vitejs/plugin-react": "^6.0.0",
+    "typescript": "~5.9.2",
+    "vite": "^8.0.3"
+  }
+}

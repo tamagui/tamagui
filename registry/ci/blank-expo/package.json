@@ -1,0 +1,31 @@
+{
+  "name": "@tamagui/registry-blank-expo",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "install:button": "bun ../../../scripts/registry-install.ts button . --registry ../../json",
+    "typecheck": "tsc --noEmit",
+    "build": "expo export --platform ios --output-dir dist-native",
+    "smoke": "TAMAGUI_TARGET=native NODE_ENV=test bun -e \"const path=require('node:path'); await import(path.join(path.dirname(require.resolve('vitest-native/package.json')),'vitest.mjs'))\" -- --run --config vitest.config.ts tests/smoke.native.test.tsx"
+  },
+  "dependencies": {
+    "@tamagui/config": "workspace:*",
+    "expo": "~55.0.6",
+    "react": ">=19",
+    "react-dom": "*",
+    "react-native": "0.83.2",
+    "react-native-safe-area-context": "~5.7.0",
+    "tamagui": "workspace:*"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@tamagui/metro-plugin": "workspace:*",
+    "@types/node": "^22.1.0",
+    "@types/react": "~19.1.10",
+    "babel-preset-expo": "~55.0.0",
+    "react-test-renderer": "^19.0.0",
+    "typescript": "~5.9.2",
+    "vitest-native": "npm:vitest@4.1.0"
+  }
+}
