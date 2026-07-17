@@ -51,6 +51,7 @@ export * from './interfaces/GetRef';
 export { getConfig, getSetting, getStyleCompat, getThemes, getToken, getTokens, getTokenValue, loadAnimationDriver, setConfig, setupDev, updateConfig, type StyleCompat, } from './config';
 export { setNonce } from './helpers/insertStyleRule';
 export * from './constants/constants';
+export * from './hooks/useAnimatedAutoDimension';
 export * from './hooks/useIsTouchDevice';
 export { _disableMediaTouch, configureMedia, mediaKeyMatch, updateMediaListeners, useMedia, } from './hooks/useMedia';
 export { mediaObjectToString } from './helpers/mediaObjectToString';

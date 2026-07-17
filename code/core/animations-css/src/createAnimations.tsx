@@ -8,7 +8,7 @@ import {
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
 import type { AnimationDriver, UniversalAnimatedNumber } from '@tamagui/web'
-import { transformsToString } from '@tamagui/web'
+import { transformsToString, useAnimatedAutoDimension } from '@tamagui/web'
 import React, { useState } from 'react' // import { animate } from '@tamagui/cubic-bezier-animator'
 
 const EXTRACT_MS_REGEX = /(\d+(?:\.\d+)?)\s*ms/
@@ -342,6 +342,17 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         // simple string format: 'quick' = animate all
         keys = ['all']
       }
+
+      // opt in to generic auto-dimension animation: resolve height/width `auto` to a
+      // measured pixel for the duration of the transition, then release back to `auto`.
+      // must run unconditionally (before any early return) to keep hook order stable.
+      style = useAnimatedAutoDimension({
+        style,
+        targets: props,
+        getHost: () => stateRef.current.host,
+        enabled: hasNormalizedAnimation(normalized) && !isHydrating,
+        durationMs: defaultAnimation ? extractDuration(defaultAnimation) : 300,
+      })
 
       useIsomorphicLayoutEffect(() => {
         const host = stateRef.current.host

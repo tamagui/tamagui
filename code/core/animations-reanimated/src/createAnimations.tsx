@@ -4,6 +4,7 @@ import {
   hooks,
   isWeb,
   Text,
+  useAnimatedAutoDimension,
   useComposedRefs,
   useEvent,
   useIsomorphicLayoutEffect,
@@ -588,13 +589,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const {
         props,
         presence,
-        style,
         componentState,
         useStyleEmitter,
         themeName,
         stateRef,
         styleState,
       } = animationProps
+      // mutable so the auto-dimension hook below can swap `auto` -> measured pixel
+      let style = animationProps.style
 
       // State flags
       const isHydrating = componentState.unmounted === true
@@ -623,6 +625,23 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const animationKey = getEffectiveAnimation(normalized, animationState)
 
       const disableAnimation = isHydrating || !animationKey
+
+      // opt in to generic auto-dimension animation: resolve height/width `auto` to a
+      // measured pixel for the duration of the transition, then release back to `auto`.
+      // reads the authored target from props (web reanimated resolves the DOM node via
+      // stateRef.current.host). must run unconditionally to keep hook order stable.
+      // KNOWN FOLLOW-UP: opening (numeric -> auto) tweens and settles at `auto`, but the
+      // closing tween (auto -> 0) currently snaps near the end here — reanimated's worklet
+      // does not smoothly pick up the height when a key flips from the static `auto` phase
+      // back to an animated numeric. it needs the pinned pixel fed through the shared-value
+      // path rather than a plain re-render. tracked as the reanimated close follow-up.
+      style = useAnimatedAutoDimension({
+        style,
+        targets: props,
+        getHost: () => stateRef.current.host,
+        enabled: !disableAnimation,
+        durationMs: normalized.config?.duration ?? 300,
+      })
 
       // Theme state for dynamic values - use themeName from props instead of hook
       const isDark = themeName?.startsWith('dark') || false

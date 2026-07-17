@@ -72,6 +72,7 @@ export { setNonce } from './helpers/insertStyleRule'
 
 export * from './constants/constants'
 
+export * from './hooks/useAnimatedAutoDimension'
 export * from './hooks/useIsTouchDevice'
 export {
   _disableMediaTouch,
