@@ -207,6 +207,19 @@ describe('<Variables>', () => {
     // changing the patch updates subscribed readers
     view.rerender(make('rgb(8, 8, 8)'))
     expect(view.getByTestId('read-val').textContent).toBe('rgb(8, 8, 8)')
+
+    // removing the patch restores the config value (regression: the merge
+    // must base on the parent theme, not the provider's own merged output)
+    view.rerender(
+      <TamaguiProvider config={conf} defaultTheme="light">
+        <Variables>
+          <ReadVal />
+        </Variables>
+      </TamaguiProvider>
+    )
+    expect(view.getByTestId('read-val').textContent).toBe(
+      String(conf.themes.light.surfaceBorder.val)
+    )
     view.unmount()
   })
 
