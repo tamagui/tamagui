@@ -154,18 +154,18 @@ exports[`conditional spread with runtime variable preserves ternary 1`] = `
 "
 `;
 
-exports[`conditional styles get full base styles merged onto + shorthand 1`] = `
+exports[`conditional styles extract disjoint static siblings 1`] = `
 "
 import { View } from '@tamagui/core'
     export function Test(props) {
       return (
-        <View width={10} bg={props.green ? 'red' : 'blue'} />
+        <View className="_w-10px" bg={props.green ? 'red' : 'blue'} />
       )
     }
 "
 `;
 
-exports[`conditional styles get full base styles merged onto + shorthand 2`] = `""`;
+exports[`conditional styles extract disjoint static siblings 2`] = `":root ._w-10px{width:10px;}"`;
 
 exports[`double ternary + spread 1`] = `
 "
@@ -317,13 +317,13 @@ exports[`ternaries + font families works 1`] = `
 
 exports[`ternaries + font families works 2`] = `""`;
 
-exports[`ternary with mixed theme-token and non-token values preserves all props 1`] = `
+exports[`ternary with mixed theme-token and non-token values retains dynamic props 1`] = `
 "
     import { Text } from '@tamagui/core'
     export function Test({ isActive, label }) {
       return (
         <Text
-          fontSize="$3"
+          className="_fos-f-size-3"
           fontWeight={isActive ? '600' : '400'}
           color={isActive ? '$color12' : '$color11'}
         >
@@ -334,7 +334,7 @@ exports[`ternary with mixed theme-token and non-token values preserves all props
 "
 `;
 
-exports[`ternary with mixed theme-token and non-token values preserves all props 2`] = `""`;
+exports[`ternary with mixed theme-token and non-token values retains dynamic props 2`] = `":root ._fos-f-size-3{font-size:var(--f-size-3);}"`;
 
 exports[`theme + media queries + conditionals extract 1`] = `
 "
