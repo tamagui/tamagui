@@ -200,6 +200,15 @@ const getRemovedAnimatedKeys = (
   return removedKeys
 }
 
+// implicit start values for style keys that were never painted (e.g. a key
+// introduced by exitStyle with no base value). most numerics default to 0.
+const getImplicitDefault = (key: string): number => {
+  'worklet'
+  return key === 'opacity' || key === 'scale' || key === 'scaleX' || key === 'scaleY'
+    ? 1
+    : 0
+}
+
 const getSeeds = (
   keys: Set<string>,
   previousPainted: Record<string, unknown>
@@ -1122,16 +1131,18 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         const exitKeys: string[] = []
         const animateOnly = props.animateOnly as string[] | undefined
 
-        // regular animated properties. a key fresh to the mapper with no seed
-        // paints its target directly (no animation), so it must not gate exit
-        // completion; a seeded fresh key animates and counts.
+        // regular animated properties. mirror the worklet: during exit every
+        // fresh key with a seed or a numeric target (exitStyle-introduced keys
+        // animate from their implicit default) gates completion; only fresh
+        // non-numeric keys with no seed paint directly and are excluded.
         for (const key in animatedStyles) {
           if (key === 'transform') continue
-          const freshWithoutSeed =
+          const paintsDirectly =
             !committedRenderKeysRef.current.has(key) &&
-            !(key in renderSnapshot.value.seeds)
+            !(key in renderSnapshot.value.seeds) &&
+            typeof animatedStyles[key] !== 'number'
           if (
-            !freshWithoutSeed &&
+            !paintsDirectly &&
             canAnimateProperty(key, animatedStyles[key], animateOnly)
           ) {
             exitKeys.push(key)
@@ -1150,10 +1161,11 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                 continue
               }
               const exitKey = `transform:${tKey}`
-              const freshWithoutSeed =
+              const paintsDirectly =
                 !committedRenderKeysRef.current.has(exitKey) &&
-                !(exitKey in renderSnapshot.value.seeds)
-              if (!freshWithoutSeed) {
+                !(exitKey in renderSnapshot.value.seeds) &&
+                typeof t[tKey] !== 'number'
+              if (!paintsDirectly) {
                 exitKeys.push(exitKey)
               }
             }
@@ -1262,6 +1274,16 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                 callback,
                 snapshot.seeds[key] as number | string
               )
+            } else if (currentlyExiting && typeof targetValue === 'number') {
+              // a key introduced by exitStyle with no painted predecessor must
+              // still animate over the exit (and gate exit completion) — start
+              // it from the property's implicit default
+              result[key] = applyAnimation(
+                targetValue,
+                propConfig,
+                callback,
+                getImplicitDefault(key)
+              )
             } else {
               result[key] = targetValue
             }
@@ -1312,7 +1334,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                           callback,
                           snapshot.seeds[subKey] as number | string
                         )
-                      : targetValue,
+                      : currentlyExiting && typeof targetValue === 'number'
+                        ? applyAnimation(
+                            targetValue,
+                            propConfig,
+                            callback,
+                            getImplicitDefault(transformKey)
+                          )
+                        : targetValue,
                 })
               }
             }
