@@ -35,6 +35,10 @@ const loaders: Record<string, () => ComponentType<any>> = {
   RawAnimatedValueCase: () => require('./RawAnimatedValueCase').RawAnimatedValueCase,
   CSSAnimatedNumberCompletionCase: () =>
     require('./CSSAnimatedNumberCompletionCase').CSSAnimatedNumberCompletionCase,
+  CSSAnimationLifecycleCase: () =>
+    require('./CSSAnimationLifecycleCase').CSSAnimationLifecycleCase,
+  MotionLinkedBenchmarkCase: () =>
+    require('./MotionLinkedBenchmarkCase').MotionLinkedBenchmarkCase,
   AnimationsWithMediaQueriesCase: () =>
     require('./AnimationsWithMediaQueriesCase').AnimationsWithMediaQueriesCase,
   AnimatedDOMPropsCase: () => require('./AnimatedDOMPropsCase').AnimatedDOMPropsCase,

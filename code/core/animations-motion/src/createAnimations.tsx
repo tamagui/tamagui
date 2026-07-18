@@ -7,6 +7,7 @@ import {
   getConfig,
   getSplitStyles,
   hooks,
+  normalizeValueWithProperty,
   type OnTransition,
   styleToCSS,
   Text,
@@ -17,6 +18,7 @@ import {
   useThemeWithState,
   View,
   createRefComponent,
+  transformsToString,
 } from '@tamagui/web'
 import {
   type AnimationOptions,
@@ -966,6 +968,56 @@ export const disableAnimationProps: Set<string> = new Set<string>([
 const MotionView = createMotionView('div')
 const MotionText = createMotionView('span')
 
+const transformAliases: Record<string, string> = {
+  x: 'translateX',
+  y: 'translateY',
+  scale: 'scale',
+  scaleX: 'scaleX',
+  scaleY: 'scaleY',
+  rotate: 'rotate',
+  rotateX: 'rotateX',
+  rotateY: 'rotateY',
+  rotateZ: 'rotateZ',
+  skewX: 'skewX',
+  skewY: 'skewY',
+}
+
+function compileAnimatedStyle(
+  initialSource: Record<string, unknown>,
+  initialResolved: Record<string, unknown>
+) {
+  const shorthands = getConfig().shorthands
+  const entries = Object.keys(initialSource).map((source) => ({
+    source,
+    target: shorthands?.[source] ?? source,
+    tokenValue:
+      typeof initialSource[source] === 'string' && initialSource[source].startsWith('$')
+        ? initialResolved[shorthands?.[source] ?? source]
+        : undefined,
+  }))
+
+  return (sourceStyle: Record<string, unknown>) => {
+    const resolved: Record<string, unknown> = {}
+    const transforms: Record<string, unknown>[] = []
+
+    for (const entry of entries) {
+      const value = sourceStyle[entry.source]
+      if (value === undefined) continue
+      if (entry.source === 'transform' && Array.isArray(value)) {
+        resolved.transform = transformsToString(value)
+      } else if (entry.source in transformAliases) {
+        transforms.push({ [transformAliases[entry.source]]: value })
+      } else {
+        resolved[entry.target] =
+          entry.tokenValue ?? normalizeValueWithProperty(value, entry.target)
+      }
+    }
+
+    if (transforms.length) resolved.transform = transformsToString(transforms)
+    return resolved
+  }
+}
+
 function createMotionView(defaultTag: string) {
   const isText = defaultTag === 'span'
 
@@ -1002,6 +1054,13 @@ function createMotionView(defaultTag: string) {
     })()
 
     function getProps(props: any) {
+      if (
+        process.env.NODE_ENV === 'development' &&
+        propsIn.debug === 'profile' &&
+        typeof performance !== 'undefined'
+      ) {
+        performance.mark('tamagui-motion-style-split')
+      }
       const out = getSplitStyles(
         props,
         isText ? Text.staticConfig : View.staticConfig,
@@ -1029,7 +1088,25 @@ function createMotionView(defaultTag: string) {
       return out.viewProps
     }
 
+    const resolvedAnimatedStyle = useMemo(() => {
+      if (!animatedStyle) return null
+      const currentValues = animatedStyle.motionValues
+        ? animatedStyle.motionValues.map((value) => value.get())
+        : animatedStyle.motionValue
+          ? [animatedStyle.motionValue.get()]
+          : []
+      const initialSource = animatedStyle.getStyle(...currentValues)
+      const initialResolved = getProps({ style: initialSource }).style ?? {}
+      return {
+        initial: initialResolved,
+        resolve: compileAnimatedStyle(initialSource, initialResolved),
+      }
+    }, [animatedStyle, state?.theme, state?.name])
+
     const props = getProps({ ...propsRest, style: nonAnimatedStyles })
+    if (resolvedAnimatedStyle) {
+      props.style = { ...props.style, ...resolvedAnimatedStyle.initial }
+    }
     const Element = render || 'div'
     const transformedProps = hooks.usePropsTransform?.(render, props, stateRef, false)
 
@@ -1046,7 +1123,7 @@ function createMotionView(defaultTag: string) {
             const animationConfig = MotionValueStrategy.get(mv)
             const node = hostRef.current
 
-            const webStyle = getProps({ style: nextStyle }).style
+            const webStyle = resolvedAnimatedStyle?.resolve(nextStyle)
 
             if (webStyle && node instanceof HTMLElement) {
               const motionAnimationConfig =
@@ -1072,7 +1149,7 @@ function createMotionView(defaultTag: string) {
         const animationConfig = MotionValueStrategy.get(animatedStyle.motionValue!)
         const node = hostRef.current
 
-        const webStyle = getProps({ style: nextStyle }).style
+        const webStyle = resolvedAnimatedStyle?.resolve(nextStyle)
 
         if (webStyle && node instanceof HTMLElement) {
           const motionAnimationConfig =
@@ -1092,7 +1169,7 @@ function createMotionView(defaultTag: string) {
           settlePendingMotionOnFinish(animatedStyle.motionValue!, controls)
         }
       })
-    }, [animatedStyle])
+    }, [animatedStyle, resolvedAnimatedStyle])
 
     return <Element {...transformedProps} ref={composedRefs} />
   })

@@ -11,6 +11,14 @@ const chromiumUse = browserChannel
       },
     }
   : undefined
+const animatedChromiumUse =
+  chromiumUse ??
+  ({
+    channel: 'chromium',
+    launchOptions: {
+      args: ['--use-angle=metal'],
+    },
+  } as const)
 
 // Support both single-driver mode (via env var) and multi-driver parallel mode
 const singleDriver = process.env.TAMAGUI_TEST_ANIMATION_DRIVER
@@ -69,7 +77,7 @@ export default defineConfig({
     ...drivers.map((driver) => ({
       name: `animated-${driver}`,
       testMatch: '**/*.animated.test.{ts,tsx}',
-      ...(chromiumUse && { use: chromiumUse }),
+      use: animatedChromiumUse,
       // AnimationsWithMediaQueries only passes with css and motion drivers for now
       ...(driver !== 'motion' &&
         driver !== 'css' && {

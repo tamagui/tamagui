@@ -3,7 +3,6 @@ import {
   getAnimatedProperties,
   hasAnimation as hasNormalizedAnimation,
   getEffectiveAnimation,
-  getAnimationConfigsForKeys,
 } from '@tamagui/animation-helpers'
 import { useIsomorphicLayoutEffect } from '@tamagui/constants'
 import { ResetPresence, usePresence } from '@tamagui/use-presence'
@@ -13,10 +12,8 @@ import type {
   UniversalAnimatedNumber,
 } from '@tamagui/web'
 import { transformsToString } from '@tamagui/web'
-import React, { useState } from 'react' // import { animate } from '@tamagui/cubic-bezier-animator'
-
-const EXTRACT_MS_REGEX = /(\d+(?:\.\d+)?)\s*ms/
-const EXTRACT_S_REGEX = /(\d+(?:\.\d+)?)\s*s/
+import React from 'react'
+import { unstable_batchedUpdates } from 'react-dom'
 
 // rAF-driven animated number is browser-only. read (don't call) at module scope
 // so ssr never touches requestAnimationFrame.
@@ -77,28 +74,6 @@ function waitForAnimations(node: HTMLElement): Promise<boolean> {
   })
 }
 
-/**
- * Helper function to extract duration from CSS animation string
- * Examples: "ease-in 200ms" -> 200, "cubic-bezier(0.215, 0.610, 0.355, 1.000) 400ms" -> 400
- * "ease-in 0.5s" -> 500, "slow 2s" -> 2000
- */
-function extractDuration(animation: string): number {
-  // Try to match milliseconds first
-  const msMatch = animation.match(EXTRACT_MS_REGEX)
-  if (msMatch) {
-    return Number.parseInt(msMatch[1], 10)
-  }
-
-  // Try to match seconds and convert to milliseconds
-  const sMatch = animation.match(EXTRACT_S_REGEX)
-  if (sMatch) {
-    return Math.round(Number.parseFloat(sMatch[1]) * 1000)
-  }
-
-  // Default to 300ms if no duration found
-  return 300
-}
-
 const MS_DURATION_REGEX = /(\d+(?:\.\d+)?)\s*ms/
 const S_DURATION_REGEX = /(\d+(?:\.\d+)?)\s*s(?!tiffness)/
 
@@ -137,6 +112,8 @@ const TRANSFORM_KEYS = new Set([
   'skewX',
   'skewY',
 ])
+
+const getCSSProperty = (key: string) => (TRANSFORM_KEYS.has(key) ? 'transform' : key)
 
 /**
  * Build a CSS transform string from a style object containing transform properties
@@ -218,36 +195,61 @@ function applyStylesToNode(
   }
 }
 
-// force a re-render whenever any of the given animated numbers notifies. used
-// by useAnimatedNumberStyle so a consumer re-reads getValue() on every change.
-function useSubscribeToAnimatedNumbers(
-  reactionListeners: WeakMap<any, Set<Function>>,
-  vals: UniversalAnimatedNumber<Function>[]
-): void {
-  const [, force] = React.useState(0)
-  const instances = vals.map((v) => v.getInstance())
+type CSSAnimatedNumberInstance = {
+  current: number
+  target: number
+  listeners: Set<(value: number) => void>
+  styleHost: object | null
+  raf: number | null
+  finish: (() => void) | null
+  renderTarget: () => void
+  cancel: () => void
+}
+
+type CSSAnimatedNumber = UniversalAnimatedNumber<CSSAnimatedNumberInstance>
+
+function notifyAnimatedNumber(instance: CSSAnimatedNumberInstance, value: number) {
+  instance.current = value
+  if (instance.listeners.size === 0) return
+  unstable_batchedUpdates(() => {
+    for (const listener of instance.listeners) listener(value)
+  })
+}
+
+function useAnimatedNumberStyles(
+  values: CSSAnimatedNumber[],
+  getStyle: (...current: number[]) => any
+) {
+  const token = React.useRef<object>(null)
+  token.current ||= {}
+  const [, renderLinkedValue] = React.useReducer((value) => value + 1, 0)
+  const instances = values.map((value) => value.getInstance())
+  const hostValues = instances.map((instance) => {
+    if (!instance.styleHost) instance.styleHost = token.current
+    return instance.styleHost === token.current
+  })
 
   React.useEffect(() => {
-    const listener = () => force((n) => (n + 1) % 1_000_000)
-    const queues = instances.map((instance) => {
-      let queue = reactionListeners.get(instance)
-      if (!queue) {
-        queue = new Set<Function>()
-        reactionListeners.set(instance, queue)
-      }
-      queue.add(listener)
-      return queue
-    })
-    return () => {
-      for (const queue of queues) queue.delete(listener)
+    const listener = () => renderLinkedValue()
+    for (let index = 0; index < instances.length; index++) {
+      if (!hostValues[index]) instances[index].listeners.add(listener)
     }
-    // re-subscribe only when an underlying instance identity changes
+    return () => {
+      for (const instance of instances) {
+        instance.listeners.delete(listener)
+        if (instance.styleHost === token.current) instance.styleHost = null
+      }
+    }
   }, instances)
+
+  return getStyle(
+    ...instances.map((instance, index) =>
+      hostValues[index] ? instance.target : instance.current
+    )
+  )
 }
 
 export function createAnimations<A extends object>(animations: A): AnimationDriver<A> {
-  const reactionListeners = new WeakMap<any, Set<Function>>()
-
   return {
     animations,
     usePresence,
@@ -255,184 +257,196 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
     inputStyle: 'css',
     outputStyle: 'css',
 
-    useAnimatedNumber(initial): UniversalAnimatedNumber<Function> {
-      // val state is only a re-render trigger; valueRef is the source of truth
-      const [, setVal] = React.useState(initial)
-      const valueRef = React.useRef(initial)
-      const rafRef = React.useRef<number | null>(null)
-      const finishRef = React.useRef<(() => void) | null>(null)
+    useAnimatedNumber(initial): CSSAnimatedNumber {
+      const [, renderTarget] = React.useReducer((value) => value + 1, 0)
+      const instanceRef = React.useRef<CSSAnimatedNumberInstance>(null)
 
-      // notify JS-thread reaction listeners registered against this instance
-      const notify = (value: number) => {
-        const listeners = reactionListeners.get(setVal)
-        if (listeners) {
-          listeners.forEach((listener) => listener(value))
+      if (!instanceRef.current) {
+        instanceRef.current = {
+          current: initial,
+          target: initial,
+          listeners: new Set(),
+          styleHost: null,
+          raf: null,
+          finish: null,
+          renderTarget,
+          cancel() {
+            if (this.raf !== null) cancelAnimationFrame(this.raf)
+            this.raf = null
+            this.finish = null
+          },
         }
       }
 
-      // stop the ticker without firing completion (interruption/stop)
-      const cancelTicker = () => {
-        if (rafRef.current != null) {
-          cancelAnimationFrame(rafRef.current)
-          rafRef.current = null
-        }
-        finishRef.current = null
-      }
+      const instance = instanceRef.current
+      instance.renderTarget = renderTarget
+      React.useEffect(() => () => instance.cancel(), [instance])
 
-      return {
-        getInstance() {
-          return setVal
-        },
-        getValue() {
-          return valueRef.current
-        },
-        setValue(next, config, onFinish) {
-          // any new set supersedes a running animation; the previous onFinish
-          // is dropped (not called), matching the react-native driver where an
-          // interrupted spring reports finished:false and never fires onFinish
-          cancelTicker()
-
-          const strategy = config ?? { type: 'spring' as const }
-          const from = valueRef.current
-
-          // commit the target to react state. the css driver renders by
-          // re-render (useAnimatedNumberStyle reads getValue), and the frame's
-          // CSS transition eases the DOM from `from` to `next`. we set state ONCE
-          // rather than every frame — stepping state per frame re-triggers that
-          // CSS transition each render and the DOM lags hundreds of ms behind.
-          valueRef.current = next
-          setVal(next)
-
-          // direct sets (sheet dragging), non-browser environments, zero-duration
-          // timing, and no-op moves resolve immediately with synchronous completion
-          if (
-            !hasRAF ||
-            strategy.type === 'direct' ||
-            (strategy.type === 'timing' && strategy.duration === 0) ||
-            from === next
-          ) {
-            notify(next)
-            onFinish?.()
-            return
-          }
-
-          finishRef.current = onFinish ?? null
-
-          // drive the JS-thread listener path frame by frame and fire real
-          // completion when the animation's own math settles (spring rest
-          // detection / timing end), not an estimated-duration timer
-          const settle = () => {
-            rafRef.current = null
-            notify(next)
-            const done = finishRef.current
-            finishRef.current = null
-            done?.()
-          }
-
-          if (strategy.type === 'timing') {
-            const duration = strategy.duration
-            const start = nowMs()
-            const tick = () => {
-              const t = Math.min(1, (nowMs() - start) / duration)
-              if (t >= 1) {
-                settle()
-                return
-              }
-              // linear interpolation timing path
-              notify(from + (next - from) * t)
-              rafRef.current = requestAnimationFrame(tick)
-            }
-            rafRef.current = requestAnimationFrame(tick)
-            return
-          }
-
-          // spring: plain semi-implicit euler integrator with rest detection.
-          // substeps at a fixed 1ms dt keep stiff springs stable at the rAF rate.
-          const s = strategy as Extract<AnimatedNumberStrategy, { type: 'spring' }>
-          const stiffness = s.stiffness ?? SPRING_DEFAULTS.stiffness
-          const damping = s.damping ?? SPRING_DEFAULTS.damping
-          const mass = s.mass ?? SPRING_DEFAULTS.mass
-          const overshootClamping =
-            s.overshootClamping ?? SPRING_DEFAULTS.overshootClamping
-          const restSpeed = s.restSpeedThreshold ?? SPRING_DEFAULTS.restSpeedThreshold
-          const restDisplacement =
-            s.restDisplacementThreshold ?? SPRING_DEFAULTS.restDisplacementThreshold
-
-          let velocity = 0
-          let value = from
-          let lastTime = nowMs()
-
-          const tick = () => {
-            const frameNow = nowMs()
-            // cap dt so a backgrounded tab doesn't integrate one giant step
-            let dt = (frameNow - lastTime) / 1000
-            lastTime = frameNow
-            if (dt > 0.064) dt = 0.064
-
-            const steps = Math.max(1, Math.ceil(dt / 0.001))
-            const sdt = dt / steps
-            for (let i = 0; i < steps; i++) {
-              const springForce = -stiffness * (value - next)
-              const dampingForce = -damping * velocity
-              const accel = (springForce + dampingForce) / mass
-              velocity += accel * sdt
-              value += velocity * sdt
-            }
+      return React.useMemo(
+        () => ({
+          getInstance() {
+            return instance
+          },
+          getValue() {
+            return instance.current
+          },
+          setValue(next, config = { type: 'spring' }, onFinish) {
+            instance.cancel()
+            const from = instance.current
+            instance.target = next
+            if (instance.styleHost) instance.renderTarget()
 
             if (
-              overshootClamping &&
-              ((from < next && value > next) || (from > next && value < next))
+              !hasRAF ||
+              config.type === 'direct' ||
+              (config.type === 'timing' && config.duration === 0) ||
+              from === next
             ) {
-              value = next
-              velocity = 0
-            }
-
-            const isVelocityRest = Math.abs(velocity) <= restSpeed
-            const isDisplacementRest = Math.abs(next - value) <= restDisplacement
-            if (isVelocityRest && isDisplacementRest) {
-              settle()
+              notifyAnimatedNumber(instance, next)
+              onFinish?.()
               return
             }
 
-            notify(value)
-            rafRef.current = requestAnimationFrame(tick)
-          }
-          rafRef.current = requestAnimationFrame(tick)
-        },
-        stop() {
-          cancelTicker()
-        },
-      }
+            // css transitions interpolate the host. js only ticks when a
+            // reaction, linked style, or completion callback needs live values.
+            if (instance.listeners.size === 0 && !onFinish) {
+              instance.current = next
+              return
+            }
+
+            instance.finish = onFinish ?? null
+            const settle = () => {
+              instance.raf = null
+              notifyAnimatedNumber(instance, next)
+              const finish = instance.finish
+              instance.finish = null
+              finish?.()
+            }
+
+            if (config.type === 'timing') {
+              const startedAt = nowMs()
+              const tick = () => {
+                const progress = Math.min(1, (nowMs() - startedAt) / config.duration)
+                if (progress === 1) {
+                  settle()
+                  return
+                }
+                notifyAnimatedNumber(instance, from + (next - from) * progress)
+                instance.raf = requestAnimationFrame(tick)
+              }
+              instance.raf = requestAnimationFrame(tick)
+              return
+            }
+
+            const spring = config as Extract<AnimatedNumberStrategy, { type: 'spring' }>
+            const stiffness = spring.stiffness ?? SPRING_DEFAULTS.stiffness
+            const damping = spring.damping ?? SPRING_DEFAULTS.damping
+            const mass = spring.mass ?? SPRING_DEFAULTS.mass
+            const overshootClamping =
+              spring.overshootClamping ?? SPRING_DEFAULTS.overshootClamping
+            const restSpeed =
+              spring.restSpeedThreshold ?? SPRING_DEFAULTS.restSpeedThreshold
+            const restDisplacement =
+              spring.restDisplacementThreshold ??
+              SPRING_DEFAULTS.restDisplacementThreshold
+            const displacement = from - next
+            const decayRate = damping / (2 * mass)
+            const naturalFrequency = Math.sqrt(stiffness / mass)
+            const startedAt = nowMs()
+
+            const getSpringState = (elapsed: number) => {
+              if (decayRate < naturalFrequency) {
+                const dampedFrequency = Math.sqrt(naturalFrequency ** 2 - decayRate ** 2)
+                const b = (decayRate * displacement) / dampedFrequency
+                const decay = Math.exp(-decayRate * elapsed)
+                const cos = Math.cos(dampedFrequency * elapsed)
+                const sin = Math.sin(dampedFrequency * elapsed)
+                return {
+                  value: next + decay * (displacement * cos + b * sin),
+                  velocity:
+                    decay *
+                    ((-decayRate * displacement + b * dampedFrequency) * cos +
+                      (-decayRate * b - displacement * dampedFrequency) * sin),
+                }
+              }
+
+              if (decayRate === naturalFrequency) {
+                const b = decayRate * displacement
+                const decay = Math.exp(-decayRate * elapsed)
+                return {
+                  value: next + (displacement + b * elapsed) * decay,
+                  velocity: (b - decayRate * (displacement + b * elapsed)) * decay,
+                }
+              }
+
+              const frequency = Math.sqrt(decayRate ** 2 - naturalFrequency ** 2)
+              const slowRoot = -decayRate + frequency
+              const fastRoot = -decayRate - frequency
+              const slowCoefficient = (-fastRoot * displacement) / (slowRoot - fastRoot)
+              const fastCoefficient = displacement - slowCoefficient
+              return {
+                value:
+                  next +
+                  slowCoefficient * Math.exp(slowRoot * elapsed) +
+                  fastCoefficient * Math.exp(fastRoot * elapsed),
+                velocity:
+                  slowCoefficient * slowRoot * Math.exp(slowRoot * elapsed) +
+                  fastCoefficient * fastRoot * Math.exp(fastRoot * elapsed),
+              }
+            }
+
+            const tick = () => {
+              const state = getSpringState((nowMs() - startedAt) / 1000)
+              let { value, velocity } = state
+
+              if (
+                overshootClamping &&
+                ((from < next && value > next) || (from > next && value < next))
+              ) {
+                value = next
+                velocity = 0
+              }
+
+              if (
+                Math.abs(velocity) <= restSpeed &&
+                Math.abs(next - value) <= restDisplacement
+              ) {
+                settle()
+                return
+              }
+
+              notifyAnimatedNumber(instance, value)
+              instance.raf = requestAnimationFrame(tick)
+            }
+            instance.raf = requestAnimationFrame(tick)
+          },
+          stop() {
+            instance.cancel()
+          },
+        }),
+        [instance]
+      )
     },
 
     useAnimatedNumberReaction({ value }, onValue) {
+      const onValueRef = React.useRef(onValue)
+      onValueRef.current = onValue
       React.useEffect(() => {
-        const instance = value.getInstance()
-        let queue = reactionListeners.get(instance)
-        if (!queue) {
-          const next = new Set<Function>()
-          reactionListeners.set(instance, next)
-          queue = next!
-        }
-        queue.add(onValue)
+        const instance = value.getInstance() as CSSAnimatedNumberInstance
+        const listener = (current: number) => onValueRef.current(current)
+        instance.listeners.add(listener)
         return () => {
-          queue?.delete(onValue)
+          instance.listeners.delete(listener)
         }
-      }, [])
+      }, [value])
     },
 
     useAnimatedNumberStyle(val, getStyle) {
-      // css has no UI thread, so a consumer of an external animated number
-      // (e.g. a drag-linked overlay reading Sheet.useAnimatedPosition) must
-      // re-render on each value change to recompute the style. subscribe to the
-      // same listener path notify() drives.
-      useSubscribeToAnimatedNumbers(reactionListeners, [val])
-      return getStyle(val.getValue())
+      return useAnimatedNumberStyles([val as CSSAnimatedNumber], getStyle)
     },
 
     useAnimatedNumbersStyle(vals, getStyle) {
-      useSubscribeToAnimatedNumbers(reactionListeners, vals)
-      return getStyle(...vals.map((v) => v.getValue()))
+      return useAnimatedNumberStyles(vals as CSSAnimatedNumber[], getStyle)
     },
 
     // @ts-ignore - styleState is added by createComponent
@@ -506,14 +520,11 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         wasExitingRef.current = isExiting
       })
 
-      useIsomorphicLayoutEffect(() => {
-        const host = stateRef.current.host
-        if (isExiting || !host) return
-        const computedStyle = getComputedStyle(host as HTMLElement)
-        lastNonExitingStyleRef.current = {
-          opacity: computedStyle.opacity,
-        }
-      })
+      if (!isExiting) {
+        lastNonExitingStyleRef.current.opacity = String(
+          style?.opacity ?? props.opacity ?? 1
+        )
+      }
 
       // use effectiveTransition computed by createComponent (single source of truth)
       const effectiveTransition = styleState?.effectiveTransition ?? props.transition
@@ -577,13 +588,13 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         // helper to complete exit with guards. the exit 'end' event fires
         // immediately before presence safeToRemove so users can observe exit
         // completion without reaching into presence internals.
-        const completeExit = () => {
+        const completeExit = (finished = true) => {
           if (cycleId !== exitCycleIdRef.current) return
           if (exitCompletedRef.current) return
           exitCompletedRef.current = true
           if (exitStartedRef.current) {
             exitStartedRef.current = false
-            emit('end', 'exit', true)
+            emit('end', 'exit', finished)
           }
           sendExitCompleteRef.current?.()
         }
@@ -601,9 +612,8 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         // 2. Force reflow
         // 3. Re-apply exit state to trigger transition
         let rafId: number | undefined
+        let disposed = false
         const wasInterrupted = exitInterruptedRef.current
-        // flag to ignore transitioncancel during reset (we intentionally cancel the old transition)
-        let ignoreCancelEvents = wasInterrupted
         // get enter/exit styles for potential restart
         const enterStyle = props.enterStyle as Record<string, unknown> | undefined
         const exitStyle = props.exitStyle as Record<string, unknown> | undefined
@@ -629,7 +639,9 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
             if (animationValue && durationOverride) {
               animationValue = applyDurationOverride(animationValue, durationOverride)
             }
-            return animationValue ? `${key} ${animationValue}${delayStr}` : null
+            return animationValue
+              ? `${getCSSProperty(key)} ${animationValue}${delayStr}`
+              : null
           })
           .filter(Boolean)
           .join(', ')
@@ -637,9 +649,9 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
         const getResetValue = (key: string) => {
           if (key === 'opacity') {
             return (
-              style?.opacity ??
-              props.opacity ??
               lastNonExitingStyleRef.current.opacity ??
+              props.opacity ??
+              style?.opacity ??
               1
             )
           }
@@ -682,7 +694,6 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
           // 3. Use RAF to ensure we're in a new frame
           // 4. Re-enable transition and apply exitStyle
           // This mirrors the interrupted exit handling approach (which also uses RAF).
-          ignoreCancelEvents = true
           node.style.transition = 'none'
 
           // Reset to the active/open state (not enterStyle, which may equal exitStyle).
@@ -710,86 +721,10 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
             void node.offsetHeight
             // Apply exit styles - this triggers the animation
             applyStylesToNode(node, exitStyle)
-            // Re-enable cancel event handling
-            ignoreCancelEvents = false
           })
         }
 
-        /**
-         * Exit animation handling for Dialog/Modal components
-         *
-         * The Challenge: When users close dialogs (via Escape key or clicking outside),
-         * the element can disappear from the DOM before CSS transitions finish, which causes:
-         * 1. Dialogs to stick around on screen
-         * 2. Event handlers to stop working
-         *
-         * Fix: Calculate the MAXIMUM duration across all animated properties, not just
-         * the default. With animateOnly and per-property configs, different properties
-         * can have different durations, and we need to wait for the LONGEST one.
-         */
-
-        // calculate max duration across all animated properties
-        let maxDuration = defaultAnimation ? extractDuration(defaultAnimation) : 200
-
-        // check per-property animation durations using shared helper
-        const animationConfigs = getAnimationConfigsForKeys(
-          normalized,
-          animations as Record<string, string>,
-          keys,
-          defaultAnimation
-        )
-        for (const animationValue of animationConfigs.values()) {
-          if (animationValue) {
-            const duration = extractDuration(animationValue)
-            if (duration > maxDuration) {
-              maxDuration = duration
-            }
-          }
-        }
-
-        const delay = normalized.delay ?? 0
-        const fallbackTimeout = maxDuration + delay
-
-        const timeoutId = setTimeout(() => {
-          completeExit()
-        }, fallbackTimeout)
-
-        // track number of transitioning properties to wait for all to finish
-        // (each property fires its own transitionend event)
-        const transitioningProps = new Set(keys)
-        let completedCount = 0
-
-        const onFinishAnimation = (event: TransitionEvent) => {
-          // only count transitions on THIS element, not bubbled from children
-          if (event.target !== node) return
-
-          // map CSS property names to our key names
-          // e.g., transitionend fires with propertyName 'transform' for scale/x/y
-          const eventProp = event.propertyName
-          if (transitioningProps.has(eventProp) || eventProp === 'all') {
-            completedCount++
-            // wait for all properties to finish
-            if (completedCount >= transitioningProps.size) {
-              clearTimeout(timeoutId)
-              completeExit()
-            }
-          }
-        }
-
-        // on cancel, still complete (element is exiting and animation was interrupted)
-        // the guards prevent duplicate completion if this is a stale cycle
-        const onCancelAnimation = () => {
-          // ignore cancel events during reset phase (we intentionally cancel the old transition)
-          if (ignoreCancelEvents) return
-          clearTimeout(timeoutId)
-          completeExit()
-        }
-
-        node.addEventListener('transitionend', onFinishAnimation)
-        node.addEventListener('transitioncancel', onCancelAnimation)
-
         // For interrupted exits, re-enable transition and re-apply exit styles
-        // This must happen AFTER listeners are set up so we catch the transitionend
         if (wasInterrupted) {
           rafId = requestAnimationFrame(() => {
             if (cycleId !== exitCycleIdRef.current) return
@@ -799,16 +734,19 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
             void node.offsetHeight
             // now apply exit styles - this triggers the transition
             applyStylesToNode(node, exitStyle)
-            // re-enable cancel event handling now that reset is complete
-            ignoreCancelEvents = false
           })
         }
 
+        // wait for the browser's concrete animations. this covers `all`,
+        // transform aliases, delays, and concurrent WAAPI animations without
+        // guessing property names or maintaining a duration timer.
+        void waitForAnimations(node).then((finished) => {
+          if (!disposed) completeExit(finished)
+        })
+
         return () => {
-          clearTimeout(timeoutId)
+          disposed = true
           if (rafId !== undefined) cancelAnimationFrame(rafId)
-          node.removeEventListener('transitionend', onFinishAnimation)
-          node.removeEventListener('transitioncancel', onCancelAnimation)
           // restore transition: the exit handling sets node.style.transition='none'
           // directly on the DOM (bypassing React). if exit is interrupted (e.g. same-key
           // re-entry in AnimatePresence), React won't re-apply its managed transition
@@ -941,7 +879,9 @@ export function createAnimations<A extends object>(animations: A): AnimationDriv
             animationValue = applyDurationOverride(animationValue, durationOverride)
           }
 
-          return animationValue ? `${key} ${animationValue}${delayStr}` : null
+          return animationValue
+            ? `${getCSSProperty(key)} ${animationValue}${delayStr}`
+            : null
         })
         .filter(Boolean)
         .join(', ')
