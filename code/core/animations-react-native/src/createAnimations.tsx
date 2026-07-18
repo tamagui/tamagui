@@ -63,6 +63,29 @@ const colorStyleKey = {
   borderBottomColor: true,
 }
 
+// layout dimension keys. these must run on the JS driver (useNativeDriver:false)
+// because the native animated module can't drive layout props.
+const layoutStyleKey = {
+  height: true,
+  width: true,
+  minHeight: true,
+  maxHeight: true,
+  minWidth: true,
+  maxWidth: true,
+}
+
+// a color string that RN's color interpolation can actually parse. var(...),
+// calc(...) and empty strings reach createInterpolationFromStringOutputRange /
+// mapStringToNumericComponents and throw ('.map of null' / 'outputRange must
+// contain color or value with numeric component'). those must be applied as a
+// static style instead of entering interpolation.
+function isAnimatableColor(value: unknown): value is string {
+  if (typeof value !== 'string') return false
+  if (value === '') return false
+  if (value.includes('var(') || value.includes('calc(')) return false
+  return true
+}
+
 // these style keys are costly to animate and only work with native driver on Fabric
 const costlyToAnimateStyleKey = {
   borderRadius: true,
@@ -295,12 +318,23 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
-          if (animatedStyleKey[key] == null && !costlyToAnimateStyleKey[key]) {
+          if (
+            animatedStyleKey[key] == null &&
+            !costlyToAnimateStyleKey[key] &&
+            !layoutStyleKey[key]
+          ) {
             nonAnimatedStyle[key] = val
             continue
           }
 
           if (hasTransitionOnly && !animateOnly.includes(key)) {
+            nonAnimatedStyle[key] = val
+            continue
+          }
+
+          // unparseable themed colors (var(), calc(), empty) crash RN
+          // interpolation — apply them as a static style instead
+          if (colorStyleKey[key] && !isAnimatableColor(val)) {
             nonAnimatedStyle[key] = val
             continue
           }
@@ -416,7 +450,8 @@ export function createAnimations<A extends AnimationsConfig>(
               function getAnimation() {
                 return Animated[animationConfig.type || 'spring'](value, {
                   toValue: animateToValue,
-                  useNativeDriver: nativeDriver,
+                  // layout dimension keys can't run on the native driver
+                  useNativeDriver: nativeDriver && !layoutStyleKey[key],
                   ...animationConfig,
                 })
               }
@@ -515,7 +550,14 @@ export function createAnimations<A extends AnimationsConfig>(
                 [tkey]: update(tkey, currentTransform, transform[tkey]),
               }
             }
-          } else if (animatedStyleKey[key] != null || costlyToAnimateStyleKey[key]) {
+          } else if (
+            animatedStyleKey[key] != null ||
+            costlyToAnimateStyleKey[key] ||
+            layoutStyleKey[key]
+          ) {
+            // unparseable themed colors can't be interpolated — skip here and
+            // let the next render apply them statically
+            if (colorStyleKey[key] && !isAnimatableColor(val)) continue
             animateStyles.current[key] = update(key, animateStyles.current[key], val)
           }
         }
@@ -572,7 +614,8 @@ export function createAnimations<A extends AnimationsConfig>(
             value.stopAnimation()
             const anim = Animated[animationConfig.type || 'spring'](value, {
               toValue: animateToValue,
-              useNativeDriver: nativeDriver,
+              // layout dimension keys can't run on the native driver
+              useNativeDriver: nativeDriver && !layoutStyleKey[key],
               ...animationConfig,
             })
             ;(animationConfig.delay
