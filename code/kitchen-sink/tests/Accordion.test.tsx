@@ -13,12 +13,17 @@ for (const animationDriver of ['css', 'reanimated']) {
   }) => {
     await page.addInitScript(() => {
       globalThis['__accordionFirstFrames'] = []
-      const startedAt = performance.now()
+      // the sampling window starts at the first frame the accordion exists, not
+      // at script init — under load the page can take longer than any fixed
+      // budget to appear, and a window that expires early would assert on an
+      // empty array (a vacuous pass/fail)
+      let firstSampleAt: number | null = null
       const sample = () => {
         const wrapper = document.getElementById('def-height')
         const content = document.getElementById('def-content')
         const marker = document.getElementById('after-accordion-marker')
         if (wrapper && content && marker) {
+          if (firstSampleAt === null) firstSampleAt = performance.now()
           const wrapperRect = wrapper.getBoundingClientRect()
           const contentRect = content.getBoundingClientRect()
           const markerRect = marker.getBoundingClientRect()
@@ -28,7 +33,9 @@ for (const animationDriver of ['css', 'reanimated']) {
             markerY: markerRect.y,
           })
         }
-        if (performance.now() - startedAt < 2000) requestAnimationFrame(sample)
+        if (firstSampleAt === null || performance.now() - firstSampleAt < 1200) {
+          requestAnimationFrame(sample)
+        }
       }
       requestAnimationFrame(sample)
     })
@@ -38,12 +45,16 @@ for (const animationDriver of ['css', 'reanimated']) {
       type: 'useCase',
       searchParams: { animationDriver },
     })
-    await page.waitForTimeout(100)
+    await page.waitForFunction(
+      () => globalThis['__accordionFirstFrames'].length > 20,
+      undefined,
+      { timeout: 30_000 }
+    )
 
     const frames = await page.evaluate<
       Array<{ wrapperHeight: number; contentBottom: number; markerY: number }>
     >(() => globalThis['__accordionFirstFrames'])
-    expect(frames.length).toBeGreaterThan(1)
+    expect(frames.length).toBeGreaterThan(20)
     expect(
       Math.min(...frames.map(({ wrapperHeight }) => wrapperHeight)),
       JSON.stringify(frames)
