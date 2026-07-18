@@ -44,7 +44,11 @@ export const SheetOverlay = styled(SheetBehavior.Overlay, {
 
 export const SheetContainer = styled(SheetBehavior.Container, {
   name: 'SheetContainer',
-  padding: '$5',
+  // no padding on the Container: the keyboard-avoidance measures this frame, and
+  // in snapPointsMode="fit" any vertical padding here inflates the frame beyond
+  // the preserved fit height, so the keyboard lift is off by exactly the padding
+  // (SheetWebKeyboard geometry). Content inset comes from the ScrollView skin +
+  // the consumer's own content padding, matching the pre-skin baseline.
 })
 
 export const SheetBackground = styled(SheetBehavior.Background, {
