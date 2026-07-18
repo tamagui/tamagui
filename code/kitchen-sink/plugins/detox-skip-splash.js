@@ -23,11 +23,19 @@ module.exports = function withDetoxSkipSplash(config) {
     }
 
     let contents = config.modResults.contents
+    const registration = 'SplashScreenManager.registerOnActivity(this)'
+    if (!contents.includes(registration)) {
+      throw new Error(
+        'detox-skip-splash plugin: could not find SplashScreenManager registration'
+      )
+    }
 
-    // Wrap the SplashScreenManager.registerOnActivity(this) call in a guard.
+    // the splash manager normally replaces Theme.App.SplashScreen with the
+    // AppCompat-based AppTheme before ReactActivity.onCreate; preserve that
+    // theme switch when Detox bypasses the splash listener.
     contents = contents.replace(
-      /SplashScreenManager\.registerOnActivity\(this\)/,
-      'if (!isUnderDetox()) {\n      SplashScreenManager.registerOnActivity(this)\n    }'
+      registration,
+      'if (isUnderDetox()) {\n      setTheme(R.style.AppTheme)\n    } else {\n      SplashScreenManager.registerOnActivity(this)\n    }'
     )
 
     // Insert the isUnderDetox() helper just before the final closing brace of

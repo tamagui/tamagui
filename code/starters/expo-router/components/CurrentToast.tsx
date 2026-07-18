@@ -19,7 +19,9 @@ export function CurrentToast() {
       transition="quick"
     >
       <YStack items="center" p="$2" gap="$2">
-        <Toast.Title fontWeight="bold">{currentToast.title}</Toast.Title>
+        <Toast.Title testID="toast-title" fontWeight="bold">
+          {currentToast.title}
+        </Toast.Title>
         {!!currentToast.message && (
           <Toast.Description>{currentToast.message}</Toast.Description>
         )}
@@ -36,6 +38,7 @@ export function ToastControl() {
       <H4>Toast demo</H4>
       <XStack gap="$2" justify="center">
         <Button
+          testID="toast-show"
           onPress={() => {
             toast.show('Successfully saved!', {
               message: "Don't worry, we've got your data.",
@@ -45,6 +48,7 @@ export function ToastControl() {
           Show
         </Button>
         <Button
+          testID="toast-hide"
           onPress={() => {
             toast.hide()
           }}

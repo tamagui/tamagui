@@ -25,6 +25,7 @@ tmp
 *.tmp.js
 yarn-error.log
 dist
+dist-native
 tsconfig.tsbuildinfo
 node_modules
 **/_

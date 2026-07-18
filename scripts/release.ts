@@ -1,5 +1,7 @@
 import fs, { ensureDir, writeJSON } from 'fs-extra'
 import * as proc from 'node:child_process'
+import { mkdtemp } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
 import path, { join } from 'node:path'
 import { promisify } from 'node:util'
 import pMap from 'p-map'
@@ -7,6 +9,12 @@ import prompts from 'prompts'
 
 import { computePublishTag } from './release-publish-tag'
 import { spawnify } from './spawnify'
+import {
+  publishCommand,
+  sha256File,
+  type PackedArtifact,
+  type ReleasePreviewReport,
+} from './v3-release-dry-run-lib'
 
 process.setMaxListeners(50)
 process.stdout.setMaxListeners(50)
@@ -508,7 +516,7 @@ async function run() {
     }
 
     const lastTag = await getLastReleaseRef()
-    const skippedPackages: typeof packageJsons = []
+    let skippedPackages: typeof packageJsons = []
     let packagesToPublish = packageJsons
 
     if (lastTag && !forcePublishAll) {
@@ -559,6 +567,7 @@ async function run() {
       console.info(
         `Resolving last published versions for skipped packages (tag: ${distTag})...`
       )
+      const forcePublish = new Set<string>()
       await pMap(
         skippedPackages,
         async ({ name }) => {
@@ -569,16 +578,22 @@ async function run() {
               skippedVersions.set(name, lastVersion)
               console.info(`  ${name}: ${lastVersion}`)
             } else {
-              // no published version, will use new version (force publish)
-              skippedVersions.set(name, version)
+              forcePublish.add(name)
             }
           } catch {
-            // never published, use new version
-            skippedVersions.set(name, version)
+            forcePublish.add(name)
           }
         },
         { concurrency: 10 }
       )
+      if (forcePublish.size > 0) {
+        console.info(
+          `Publishing ${[...forcePublish].join(', ')} because no ${distTag} version could be resolved`
+        )
+        skippedPackages = skippedPackages.filter(({ name }) => !forcePublish.has(name))
+        const skippedNames = new Set(skippedPackages.map(({ name }) => name))
+        packagesToPublish = packageJsons.filter(({ name }) => !skippedNames.has(name))
+      }
     }
 
     if (!shouldFinish && dryRun) {
@@ -604,6 +619,74 @@ async function run() {
       return
     }
 
+    const stagedReleaseArtifacts = new Map<string, PackedArtifact>()
+    if (!shouldFinish && !skipPublish) {
+      const g1Root = await mkdtemp(join(tmpdir(), 'tamagui-release-g1-'))
+      const g1Output = join(g1Root, 'preview')
+      const packageList = join(g1Root, 'publish-packages.json')
+      const versionOverrides = join(g1Root, 'version-overrides.json')
+      await writeJSON(
+        packageList,
+        packagesToPublish.map(({ name }) => name),
+        { spaces: 2 }
+      )
+      await writeJSON(versionOverrides, Object.fromEntries(skippedVersions), {
+        spaces: 2,
+      })
+
+      await spawnify(
+        `bun scripts/v3-release-dry-run.ts --package-list ${packageList} --canary code/tests/v3-canary --packer npm --out-dir ${g1Output} --release-preview --version ${version} --version-overrides ${versionOverrides} --tag ${publishTag} --skip-build`
+      )
+
+      const reportPath = join(g1Output, 'release-preview.json')
+      const report = (await fs.readJSON(reportPath)) as ReleasePreviewReport
+      const expectedNames = packagesToPublish.map(({ name }) => name).sort()
+      const requestedNames = [...report.requestedPackages].sort()
+      if (JSON.stringify(requestedNames) !== JSON.stringify(expectedNames)) {
+        throw new Error(
+          `G1 requested package mismatch:\nexpected ${expectedNames.join(', ')}\nreceived ${requestedNames.join(', ')}`
+        )
+      }
+
+      for (const artifact of report.artifacts) {
+        const expectedSource = skippedVersions.has(artifact.name)
+          ? 'registry'
+          : 'workspace'
+        if (artifact.source !== expectedSource) {
+          throw new Error(
+            `G1 staged ${artifact.name} from ${artifact.source}, expected ${expectedSource}`
+          )
+        }
+        if (!expectedNames.includes(artifact.name)) continue
+        if (artifact.version !== version) {
+          throw new Error(
+            `G1 staged ${artifact.name}@${artifact.version}, expected ${version}`
+          )
+        }
+        if (stagedReleaseArtifacts.has(artifact.name)) {
+          throw new Error(`G1 staged duplicate artifact for ${artifact.name}`)
+        }
+        stagedReleaseArtifacts.set(artifact.name, artifact)
+      }
+      for (const name of expectedNames) {
+        if (!stagedReleaseArtifacts.has(name)) {
+          throw new Error(`G1 did not stage publish artifact for ${name}`)
+        }
+      }
+      const expectedPublishCommands = expectedNames
+        .map((name) => publishCommand(stagedReleaseArtifacts.get(name)!, publishTag))
+        .sort()
+      const reportPublishCommands = [...report.publishCommands].sort()
+      if (
+        JSON.stringify(reportPublishCommands) !== JSON.stringify(expectedPublishCommands)
+      ) {
+        throw new Error(
+          `G1 publish command mismatch:\nexpected ${expectedPublishCommands.join('\n')}\nreceived ${reportPublishCommands.join('\n')}`
+        )
+      }
+      console.info(`G1 certified publish bytes: ${reportPath}`)
+    }
+
     if (!shouldFinish && !rePublish) {
       await spawnify(`git diff`)
     }
@@ -623,9 +706,6 @@ async function run() {
     if (!shouldFinish && !skipPublish) {
       const tmpDir = `/tmp/tamagui-publish`
       await ensureDir(tmpDir)
-
-      // publishTag was resolved + validated up front (single source of truth)
-      const publishOptions = `--tag ${publishTag}`
 
       // shared OTP state — set once on first EOTP, then threaded through every
       // subsequent npm publish. single-flight so parallel failures don't
@@ -682,51 +762,17 @@ async function run() {
         cachedOtp = process.env.npm_config_otp || process.env.NPM_CONFIG_OTP
       }
 
-      const publishOne = async ({ name, cwd }: { name: string; cwd: string }) => {
-        // Copy to temp directory and replace workspace:* with versions
-        const tmpPackageDir = join(tmpDir, name.replace('/', '_'))
-        await fs.copy(cwd, tmpPackageDir, {
-          filter: (src) => {
-            // exclude node_modules to avoid symlink issues
-            return !src.includes('node_modules')
-          },
-        })
-
-        // replace workspace:* with version in temp copy
-        const pkgJsonPath = join(tmpPackageDir, 'package.json')
-        const pkgJson = await fs.readJSON(pkgJsonPath)
-        for (const field of [
-          'dependencies',
-          'devDependencies',
-          'optionalDependencies',
-          'peerDependencies',
-        ]) {
-          if (!pkgJson[field]) continue
-          for (const depName in pkgJson[field]) {
-            if (pkgJson[field][depName].startsWith('workspace:')) {
-              // use the skipped package's last published version if it won't be published
-              pkgJson[field][depName] = skippedVersions.get(depName) || version
-            }
-          }
+      const publishOne = async ({ name }: { name: string }) => {
+        const artifact = stagedReleaseArtifacts.get(name)
+        if (!artifact) throw new Error(`Missing G1 artifact for ${name}`)
+        const actualHash = await sha256File(artifact.tarball)
+        if (actualHash !== artifact.sha256) {
+          throw new Error(
+            `G1 artifact changed before publish for ${name}: expected ${artifact.sha256}, received ${actualHash}`
+          )
         }
-        await writeJSON(pkgJsonPath, pkgJson, { spaces: 2 })
 
-        const filename = `${name.replace('/', '_')}-package.tmp.tgz`
-        const absolutePath = `${tmpDir}/${filename}`
-        await spawnify(`npm pack --pack-destination ${tmpDir}`, {
-          cwd: tmpPackageDir,
-          avoidLog: true,
-        })
-
-        // npm pack creates a file with the package name, rename it to our expected name
-        const npmFilename = `${name.replace('@', '').replace('/', '-')}-${version}.tgz`
-        await fs.rename(join(tmpDir, npmFilename), absolutePath)
-
-        const accessOption = name.startsWith('@') ? '--access public' : ''
-        const buildPublishCommand = () =>
-          ['npm publish', absolutePath, publishOptions, accessOption]
-            .filter(Boolean)
-            .join(' ')
+        const buildPublishCommand = () => publishCommand(artifact, publishTag)
 
         console.info(
           `Publishing ${name}: ${redactNpmOtp(

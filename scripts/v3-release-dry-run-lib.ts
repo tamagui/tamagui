@@ -34,8 +34,10 @@ export interface WorkspacePackage {
 export interface PackedArtifact {
   name: string
   version: string
-  packageDir: string
-  stagingDir: string
+  source: 'workspace' | 'registry'
+  packageDir?: string
+  stagingDir?: string
+  registrySpecifier?: string
   tarball: string
   sha256: string
   bytes: number
@@ -214,6 +216,21 @@ export function withWorkspaceVersion(
     version,
     manifest: { ...pkg.manifest, version },
   }))
+}
+
+export function withWorkspaceVersionOverrides(
+  packages: readonly WorkspacePackage[],
+  versions: ReadonlyMap<string, string>
+): WorkspacePackage[] {
+  return packages.map((pkg) => {
+    const version = versions.get(pkg.name)
+    if (!version) return pkg
+    return {
+      ...pkg,
+      version,
+      manifest: { ...pkg.manifest, version },
+    }
+  })
 }
 
 export function packagesForChangedPaths(
@@ -664,6 +681,16 @@ export function publishCommand(
 ): string {
   const access = artifact.name.startsWith('@') ? ' --access public' : ''
   return `npm publish ${shellQuote(artifact.tarball)}${access} --tag ${shellQuote(tag)}`
+}
+
+export function publishCommandsForRequested(
+  artifacts: readonly Pick<PackedArtifact, 'name' | 'tarball'>[],
+  requested: ReadonlySet<string>,
+  tag: string
+): string[] {
+  return artifacts
+    .filter((artifact) => requested.has(artifact.name))
+    .map((artifact) => publishCommand(artifact, tag))
 }
 
 export async function artifactMetadata(
