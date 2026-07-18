@@ -5,7 +5,7 @@
   "scripts": {
     "install:button": "bun ../../../scripts/registry-install.ts button . --registry ../../json",
     "typecheck": "tsc --noEmit",
-    "build": "NODE_ENV=production vite build",
+    "build:app": "NODE_ENV=production vite build",
     "smoke": "playwright test tests/smoke.spec.ts"
   },
   "dependencies": {

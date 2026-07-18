@@ -138,5 +138,5 @@ jobs:
 
       - name: Build (expo export / Metro bundle)
         working-directory: registry/ci/blank-expo
-        run: bun run build
+        run: bun run build:app
         timeout-minutes: 20

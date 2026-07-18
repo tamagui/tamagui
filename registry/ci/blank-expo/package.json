@@ -6,7 +6,7 @@
   "scripts": {
     "install:button": "bun ../../../scripts/registry-install.ts button . --registry ../../json",
     "typecheck": "tsc --noEmit",
-    "build": "expo export --platform ios --output-dir dist-native",
+    "build:app": "expo export --platform ios --output-dir dist-native",
     "smoke": "TAMAGUI_TARGET=native NODE_ENV=test bun -e \"const path=require('node:path'); await import(path.join(path.dirname(require.resolve('vitest-native/package.json')),'vitest.mjs'))\" -- --run --config vitest.config.ts tests/smoke.native.test.tsx"
   },
   "dependencies": {
