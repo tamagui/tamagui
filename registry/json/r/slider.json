@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "slider",
+  "type": "registry:ui",
+  "title": "Slider",
+  "description": "v2-look Slider: track color + radius, active-range fill color + radius, and thumb border/background/hover/press/focus color styling, over the unstyled @tamagui/ui Slider behavior (which keeps fill/clip/positioning + the thumb size mechanism).",
+  "files": [
+    {
+      "path": "components/tamagui/Slider.tsx",
+      "content": "// Styled Slider = the unstyled @tamagui/ui Slider behavior + the default v2-look\n// skin on its Track (track color + radius), TrackActive (fill color + radius),\n// and Thumb (border, background, hover/press/focus color styling). The behavior\n// frames keep fill/clip/positioning + the thumb size mechanism. Single skin\n// definition; the shadcn registry item is generated from this file.\nimport { Slider as UiSlider, styled, withStaticProperties } from '@tamagui/ui'\n\nexport const SliderTrack = styled(UiSlider.Track, {\n  name: 'SliderTrack',\n  backgroundColor: '$backgroundPress',\n  borderRadius: 100_000,\n})\n\nexport const SliderActive = styled(UiSlider.TrackActive, {\n  name: 'SliderTrackActive',\n  backgroundColor: '$color',\n  borderRadius: 100_000,\n})\n\nexport const SliderThumb = styled(UiSlider.Thumb, {\n  name: 'SliderThumb',\n  borderWidth: 2,\n  borderColor: '$borderColor',\n  backgroundColor: '$background',\n  pressStyle: {\n    backgroundColor: '$backgroundPress',\n    borderColor: '$borderColorPress',\n  },\n  hoverStyle: {\n    backgroundColor: '$backgroundHover',\n    borderColor: '$borderColorHover',\n  },\n  focusVisibleStyle: {\n    outlineStyle: 'solid',\n    outlineWidth: 2,\n    outlineColor: '$outlineColor',\n  },\n})\n\nexport const Slider = withStaticProperties(UiSlider, {\n  Track: SliderTrack,\n  TrackActive: SliderActive,\n  Thumb: SliderThumb,\n})\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Slider.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "form"
+  ],
+  "meta": {
+    "tokens": [
+      "$background",
+      "$backgroundHover",
+      "$backgroundPress",
+      "$color",
+      "$borderColor",
+      "$borderColorHover",
+      "$borderColorPress",
+      "$outlineColor"
+    ],
+    "states": [
+      "pressed"
+    ]
+  }
+}

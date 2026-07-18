@@ -20,9 +20,10 @@ export const repoRoot = join(import.meta.dir, '..', '..', '..')
 // changes.
 // ---------------------------------------------------------------------------
 
-export const USE_REAL_SKIN_SOURCE = false
+export const USE_REAL_SKIN_SOURCE = true
 
-// TODO(W4): real root pending the styled=unstyled+skin extraction mechanism.
+// reassembly: W4's styled=unstyled+skin components landed at
+// code/ui/tamagui/src/components (one <Component>.tsx + co-located manifest).
 export const skinSourceRoot = USE_REAL_SKIN_SOURCE
   ? join(repoRoot, 'code/ui/tamagui/src/components')
   : join(repoRoot, 'registry/__fixtures__/skins/src')

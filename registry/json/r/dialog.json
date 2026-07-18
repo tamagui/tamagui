@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dialog",
+  "type": "registry:ui",
+  "title": "Dialog",
+  "description": "v2-look Dialog: scrim background on the Overlay and background/border/padding/radius/elevation on the Content, over the unstyled @tamagui/ui Dialog behavior (which keeps only positioning + pointer-event bookkeeping).",
+  "files": [
+    {
+      "path": "components/tamagui/Dialog.tsx",
+      "content": "// Styled Dialog = the unstyled @tamagui/ui Dialog behavior + the default v2-look\n// skin on its Overlay (scrim background) and Content (background, border,\n// padding, radius, elevation). The behavior frames keep only positioning +\n// pointer-event bookkeeping. Single skin definition; the shadcn registry item is\n// generated from this file.\nimport { Dialog as UiDialog, styled, withStaticProperties } from '@tamagui/ui'\n\nexport const DialogOverlay = styled(UiDialog.Overlay, {\n  name: 'DialogOverlay',\n  backgroundColor: '$background',\n})\n\nexport const DialogContent = styled(UiDialog.Content, {\n  name: 'DialogContent',\n  backgroundColor: '$background',\n  borderWidth: 1,\n  borderColor: '$borderColor',\n  padding: true,\n  borderRadius: true,\n  elevate: true,\n})\n\nexport const Dialog = withStaticProperties(UiDialog, {\n  Overlay: DialogOverlay,\n  Content: DialogContent,\n})\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Dialog.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "overlay"
+  ],
+  "meta": {
+    "native": [
+      "requires a Portal provider at the app root for the dialog to mount above content"
+    ],
+    "tokens": [
+      "$background",
+      "$borderColor"
+    ]
+  }
+}

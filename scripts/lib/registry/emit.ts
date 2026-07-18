@@ -12,13 +12,23 @@ import { discoverSkins, loadSkin, buildItem, renderConsumerCopy, type Skin } fro
 import { validateRegistry } from './validate'
 import type { StateTables } from './states-derive'
 import type { Registry, RegistryItem } from './types'
+import { stateToPseudoProp, stateNames, stateToSelector } from '@tamagui/style-grammar'
 
 const JSON_INDENT = 2
 
-// `stateTables` (A1 vocabulary from @tamagui/style-grammar) is threaded to
-// buildItem so items carry a uniform `meta.states`. undefined until reassembly.
+// the real A1 vocabulary tables from @tamagui/style-grammar (states.ts). wired
+// at reassembly: buildRegistry now defaults to these so build/check/drift/
+// consumers all emit a uniform `meta.states` derived from the skin source.
+const a1StateTables: StateTables = {
+  pseudoProps: stateToPseudoProp,
+  allStates: stateNames,
+  selectors: stateToSelector,
+}
+
+// `stateTables` (A1 vocabulary) is threaded to buildItem so items carry a
+// uniform `meta.states`; defaults to the real style-grammar tables.
 export async function buildRegistry(
-  stateTables?: StateTables
+  stateTables: StateTables = a1StateTables
 ): Promise<{ registry: Registry; skins: Skin[] }> {
   const bases = discoverSkins()
   if (!bases.length) throw new Error(`no skins found in skin source root`)

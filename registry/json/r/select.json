@@ -1,0 +1,41 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "select",
+  "type": "registry:ui",
+  "title": "Select",
+  "description": "v2-look Select: styled trigger/value/icon, viewport with elevation, items with highlight + check indicator, scroll buttons and separators, over the unstyled @tamagui/ui Select behavior. Adapts to a Sheet on native.",
+  "files": [
+    {
+      "path": "components/tamagui/Select.tsx",
+      "content": "// Styled Select = the unstyled @tamagui/ui Select behavior primitive + the\n// default v2-look skin, layered here in `tamagui`. Single skin definition; the\n// shadcn registry item is generated from this file. Default chevron/check icons\n// are dependency-free glyphs (see IconGlyph) so `tamagui` stays lean and native-\n// bundleable — no react-native-svg pulled into the core package. Consumers can\n// pass their own icon components as children of the icon parts.\nimport {\n  createSizeTable,\n  type GetProps,\n  Select as SelectBehavior,\n  type SelectProps as SelectBehaviorProps,\n  type SelectScopedProps,\n  SizableText,\n  styled,\n  withStaticProperties,\n} from '@tamagui/ui'\n\nconst IconGlyph = styled(SizableText, {\n  name: 'SelectIconGlyph',\n  color: '$color',\n  userSelect: 'none',\n})\n\nconst ChevronDown = ({ size = 16 }: { size?: number }) => (\n  <IconGlyph fontSize={size} lineHeight={size}>\n    ▾\n  </IconGlyph>\n)\n\nconst ChevronUp = ({ size = 16 }: { size?: number }) => (\n  <IconGlyph fontSize={size} lineHeight={size}>\n    ▴\n  </IconGlyph>\n)\n\nconst Check = ({ size = 14 }: { size?: number }) => (\n  <IconGlyph fontSize={size} lineHeight={size}>\n    ✓\n  </IconGlyph>\n)\n\nexport const selectSizes = createSizeTable(\n  {\n    small: {\n      frame: { gap: 6, height: 32, paddingHorizontal: 10 },\n      text: { fontSize: 13, lineHeight: 18 },\n      icon: 14,\n    },\n    medium: {\n      frame: { gap: 8, height: 38, paddingHorizontal: 12 },\n      text: { fontSize: 15, lineHeight: 20 },\n      icon: 16,\n    },\n    large: {\n      frame: { gap: 10, height: 46, paddingHorizontal: 16 },\n      text: { fontSize: 17, lineHeight: 24 },\n      icon: 20,\n    },\n  } as const,\n  'medium'\n)\n\nexport type SelectSize = keyof typeof selectSizes.values\n\nexport const SelectTrigger = styled(SelectBehavior.Trigger, {\n  context: selectSizes.Context,\n  name: 'SelectTrigger',\n  backgroundColor: '$background',\n  borderColor: '$borderColor',\n  borderRadius: 8,\n  borderWidth: 1,\n  justifyContent: 'space-between',\n\n  hoverStyle: { backgroundColor: '$backgroundHover', borderColor: '$borderColorHover' },\n  pressStyle: { backgroundColor: '$backgroundPress' },\n  focusVisibleStyle: {\n    outlineColor: '$outlineColor',\n    outlineStyle: 'solid',\n    outlineWidth: 2,\n  },\n\n  variants: { size: selectSizes.frame } as const,\n  defaultVariants: { size: 'medium' },\n})\n\nexport const SelectValue = styled(SelectBehavior.Value, {\n  context: selectSizes.Context,\n  name: 'SelectValue',\n  color: '$color',\n  ellipsis: true,\n  variants: { size: selectSizes.text } as const,\n  defaultVariants: { size: 'medium' },\n})\n\nexport const SelectIcon = styled(SelectBehavior.Icon, {\n  context: selectSizes.Context,\n  name: 'SelectIcon',\n  marginLeft: 'auto',\n  children: <ChevronDown />,\n})\n\nexport const SelectGroup = styled(SelectBehavior.Group, {\n  name: 'SelectGroup',\n  width: '100%',\n})\n\nexport const SelectLabel = styled(SelectBehavior.Label, {\n  context: selectSizes.Context,\n  name: 'SelectLabel',\n  color: '$color10',\n  fontWeight: '600',\n  paddingHorizontal: 10,\n  paddingVertical: 6,\n  variants: { size: selectSizes.text } as const,\n  defaultVariants: { size: 'medium' },\n})\n\nexport const SelectItem = styled(SelectBehavior.Item, {\n  context: selectSizes.Context,\n  name: 'SelectItem',\n  cursor: 'default',\n  outlineOffset: -1,\n  paddingHorizontal: 10,\n  borderRadius: 6,\n\n  hoverStyle: { backgroundColor: '$backgroundHover' },\n  pressStyle: { backgroundColor: '$backgroundPress' },\n  focusStyle: { backgroundColor: '$backgroundFocus' },\n  focusVisibleStyle: {\n    outlineColor: '$outlineColor',\n    outlineStyle: 'solid',\n    outlineWidth: 1,\n  },\n\n  variants: { size: selectSizes.frame } as const,\n  defaultVariants: { size: 'medium' },\n})\n\nexport const SelectItemText = styled(SelectBehavior.ItemText, {\n  context: selectSizes.Context,\n  name: 'SelectItemText',\n  color: '$color',\n  ellipsis: true,\n  userSelect: 'none',\n  variants: { size: selectSizes.text } as const,\n  defaultVariants: { size: 'medium' },\n})\n\nexport const SelectItemIndicator = styled(SelectBehavior.ItemIndicator, {\n  name: 'SelectItemIndicator',\n  alignItems: 'center',\n  justifyContent: 'center',\n  marginLeft: 'auto',\n  children: <Check size={14} />,\n})\n\nexport const SelectIndicator = styled(SelectBehavior.Indicator, {\n  name: 'SelectIndicator',\n  backgroundColor: '$backgroundFocus',\n  borderRadius: 6,\n})\n\nexport const SelectViewport = styled(SelectBehavior.Viewport, {\n  name: 'SelectViewport',\n  backgroundColor: '$background',\n  borderColor: '$borderColor',\n  borderRadius: 10,\n  borderWidth: 1,\n  maxHeight: 300,\n  padding: 4,\n  boxShadow: '0 12px 28px rgba(0, 0, 0, 0.2)',\n})\n\nexport const SelectScrollUpButton = styled(SelectBehavior.ScrollUpButton, {\n  name: 'SelectScrollUpButton',\n  alignItems: 'center',\n  backgroundColor: '$background',\n  height: 28,\n  justifyContent: 'center',\n  children: <ChevronUp size={16} />,\n})\n\nexport const SelectScrollDownButton = styled(SelectBehavior.ScrollDownButton, {\n  name: 'SelectScrollDownButton',\n  alignItems: 'center',\n  backgroundColor: '$background',\n  height: 28,\n  justifyContent: 'center',\n  children: <ChevronDown size={16} />,\n})\n\nexport const SelectSeparator = styled(SelectBehavior.Separator, {\n  name: 'SelectSeparator',\n  backgroundColor: '$borderColor',\n  height: 1,\n  marginVertical: 4,\n})\n\nexport type SelectRootProps<\n  Value extends string,\n  Multiple extends boolean | undefined = false,\n> = Omit<SelectScopedProps<SelectBehaviorProps<Value, Multiple>>, 'size'> & {\n  // accept the discrete skin sizes AND the behavior's token/`true` size so\n  // existing token-sized consumers keep type-checking; resolved to a discrete\n  // size for the size-table context below.\n  size?: SelectSize | SelectBehaviorProps<Value, Multiple>['size']\n}\n\nexport function SelectRoot<\n  Value extends string = string,\n  Multiple extends boolean | undefined = false,\n>({ size, ...props }: SelectRootProps<Value, Multiple>) {\n  const namedSize = (\n    typeof size === 'string' && size in selectSizes.values\n      ? size\n      : selectSizes.defaultSize\n  ) as SelectSize\n  return (\n    <selectSizes.Context.Provider size={namedSize}>\n      <SelectBehavior.Root<Value, Multiple> {...props} />\n    </selectSizes.Context.Provider>\n  )\n}\n\nexport const selectParts = {\n  Adapt: SelectBehavior.Adapt,\n  Content: SelectBehavior.Content,\n  FocusScope: SelectBehavior.FocusScope,\n  Group: SelectGroup,\n  Icon: SelectIcon,\n  Indicator: SelectIndicator,\n  Item: SelectItem,\n  ItemIndicator: SelectItemIndicator,\n  ItemText: SelectItemText,\n  Label: SelectLabel,\n  ScrollDownButton: SelectScrollDownButton,\n  ScrollUpButton: SelectScrollUpButton,\n  Separator: SelectSeparator,\n  Trigger: SelectTrigger,\n  Value: SelectValue,\n  Viewport: SelectViewport,\n}\n\nexport const Select = withStaticProperties(SelectRoot, {\n  Root: SelectRoot,\n  ...selectParts,\n})\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Select.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "form",
+    "overlay"
+  ],
+  "meta": {
+    "native": [
+      "requires a Portal/Adapt provider at the app root; on native the Select adapts to a Sheet, so the Sheet native peer requirements apply when adaptation is used"
+    ],
+    "tokens": [
+      "$background",
+      "$backgroundHover",
+      "$backgroundPress",
+      "$backgroundFocus",
+      "$borderColor",
+      "$borderColorHover",
+      "$outlineColor",
+      "$color",
+      "$color10"
+    ],
+    "states": [
+      "pressed"
+    ]
+  }
+}

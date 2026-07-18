@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "accordion",
+  "type": "registry:ui",
+  "title": "Accordion",
+  "description": "v2-look Accordion: theme background, padding, cursor, and hover/focus/press color styling on the unstyled @tamagui/ui Accordion Trigger and Content. The behavior keeps only the Collapsible trigger/content behavior.",
+  "files": [
+    {
+      "path": "components/tamagui/Accordion.tsx",
+      "content": "// Styled Accordion = the unstyled @tamagui/ui Accordion behavior + the default\n// v2-look skin on its Trigger and Content (theme background, padding, cursor,\n// and hover/focus/press color styling). The behavior frames keep only the\n// Collapsible trigger/content behavior. Single skin definition; the shadcn\n// registry item is generated from this file.\nimport {\n  Accordion as UiAccordion,\n  styled,\n  withStaticProperties,\n} from '@tamagui/ui'\n\nexport const AccordionTrigger = styled(UiAccordion.Trigger, {\n  name: 'AccordionTrigger',\n  cursor: 'pointer',\n  backgroundColor: '$background',\n  padding: true,\n  hoverStyle: { backgroundColor: '$backgroundHover' },\n  focusStyle: { backgroundColor: '$backgroundFocus' },\n  pressStyle: { backgroundColor: '$backgroundPress' },\n})\n\nexport const AccordionContent = styled(UiAccordion.Content, {\n  name: 'AccordionContent',\n  padding: true,\n  backgroundColor: '$background',\n})\n\nexport const Accordion = withStaticProperties(UiAccordion, {\n  Trigger: AccordionTrigger,\n  Content: AccordionContent,\n})\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Accordion.tsx"
+    }
+  ],
+  "dependencies": [
+    "@tamagui/ui"
+  ],
+  "categories": [
+    "disclosure"
+  ],
+  "meta": {
+    "tokens": [
+      "$background",
+      "$backgroundHover",
+      "$backgroundFocus",
+      "$backgroundPress"
+    ],
+    "states": [
+      "pressed"
+    ]
+  }
+}
