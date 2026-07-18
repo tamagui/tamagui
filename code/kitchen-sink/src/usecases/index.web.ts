@@ -71,6 +71,7 @@ const loaders: Record<string, () => ComponentType<any>> = {
     require('./DialogSheetAdaptUnmountCase').DialogSheetAdaptUnmountCase,
   Example: () => require('./Example').Example,
   ExitCompletionCase: () => require('./ExitCompletionCase').ExitCompletionCase,
+  ExitStyleNewKeyCase: () => require('./ExitStyleNewKeyCase').ExitStyleNewKeyCase,
   FocusVisibleButton: () => require('./FocusVisibleButton').FocusVisibleButton,
   FocusVisibleButtonPointer: () =>
     require('./FocusVisibleButtonPointer').FocusVisibleButtonPointer,
