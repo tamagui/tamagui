@@ -95,8 +95,8 @@ test('native driver: settled accordion releases to auto and follows content grow
   await page.waitForTimeout(900)
 
   const settledHeight = await wrapperHeight()
-  // released back to auto: the driver cleared the pinned inline pixel height
-  expect(await wrapperInlineHeight()).toBe('')
+  // released back to auto: no pinned inline pixel height remains
+  expect((await wrapperInlineHeight()).endsWith('px')).toBe(false)
   expect(settledHeight).toBeGreaterThan(10)
 
   // grow the content: an auto wrapper must follow the taller measurement

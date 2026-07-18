@@ -637,13 +637,17 @@ const HeightAnimator = View.styleable((props, ref) => {
     }
   })
 
+  // rest renders an explicit 'auto' rather than removing the height style:
+  // removal makes drivers clear the key themselves (reanimated emits a null
+  // clear-value on native whose yoga semantics are driver-internal), while a
+  // committed 'auto' is deterministic on every driver and platform
   const height = fixed
     ? pinned
       ? lastOuterHeightRef.current
       : open
         ? contentHeight
         : 0
-    : undefined
+    : ('auto' as const)
 
   return (
     <View
