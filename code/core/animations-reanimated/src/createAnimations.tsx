@@ -77,7 +77,15 @@ type AnimationSnapshot = {
   animated: Record<string, unknown>
   statics: Record<string, unknown>
   transforms: Array<Record<string, unknown>>
-  newKeys: Record<string, boolean>
+  /**
+   * for each animated key (transform sub-keys as `transform:key`), the value the
+   * previous committed render painted for it, when one exists and is animatable.
+   * the worklet animates a mapper-fresh key FROM its seed instead of snapping —
+   * this is how an enterStyle value painted statically during mount becomes the
+   * start point once the key turns animated. keys with no seed paint their target
+   * directly (a key appearing from nothing has nothing to animate from).
+   */
+  seeds: Record<string, unknown>
   removedKeys: Record<string, boolean>
   removeTransform: boolean
   clearValue: '' | null
@@ -181,17 +189,6 @@ const getAnimatedKeySet = (
   return keys
 }
 
-const getNewAnimatedKeys = (
-  current: Set<string>,
-  previous: Set<string>
-): Record<string, boolean> => {
-  const newKeys: Record<string, boolean> = {}
-  for (const key of current) {
-    if (!previous.has(key)) newKeys[key] = true
-  }
-  return newKeys
-}
-
 const getRemovedAnimatedKeys = (
   current: Set<string>,
   previous: Set<string>
@@ -201,6 +198,22 @@ const getRemovedAnimatedKeys = (
     if (!current.has(key)) removedKeys[key] = true
   }
   return removedKeys
+}
+
+const getSeeds = (
+  keys: Set<string>,
+  previousPainted: Record<string, unknown>
+): Record<string, unknown> => {
+  const seeds: Record<string, unknown> = {}
+  for (const key of keys) {
+    const prev = previousPainted[key]
+    if (typeof prev !== 'number' && typeof prev !== 'string') continue
+    if (prev === 'auto' || (typeof prev === 'string' && prev.startsWith('calc'))) {
+      continue
+    }
+    seeds[key] = prev
+  }
+  return seeds
 }
 
 const createReanimatedConfig = (config: TransitionConfig): Record<string, unknown> => {
@@ -225,7 +238,8 @@ const createReanimatedConfig = (config: TransitionConfig): Record<string, unknow
 const applyAnimation = (
   targetValue: number | string,
   config: TransitionConfig,
-  callback?: AnimationCallback
+  callback?: AnimationCallback,
+  seedValue?: number | string
 ): number | string => {
   'worklet'
   const delay = config.delay
@@ -246,8 +260,19 @@ const applyAnimation = (
     )
   }
 
+  // reanimated starts a descriptor it has no history for from its own toValue
+  // (an instant snap). `current` is what prepareAnimation reads as the start
+  // point when there is no previous value, so a seeded descriptor animates
+  // from the seed instead.
+  if (seedValue !== undefined) {
+    animatedValue.current = seedValue
+  }
+
   if (delay && delay > 0) {
     animatedValue = withDelay(delay, animatedValue)
+    if (seedValue !== undefined) {
+      animatedValue.current = seedValue
+    }
   }
 
   return animatedValue
@@ -761,6 +786,15 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // =========================================================================
       // avoidRerenders: SharedValues for style updates without re-renders
       // =========================================================================
+      const committedRenderKeysRef = useRef(new Set<string>())
+      // full painted style of the last committed source (render or emitter):
+      // statics + animated targets, transform sub-keys flattened as `transform:key`.
+      // seeds read from it.
+      const lastPaintedRef = useRef<Record<string, unknown>>({})
+      // per-key first-animated values React keeps painting under the mapper —
+      // see the styles memo below
+      const carryRef = useRef<Record<string, unknown>>({})
+
       // Separate styles into animated and static
       const { animatedStyles, staticStyles } = useMemo(() => {
         const animated: Record<string, unknown> = {}
@@ -785,18 +819,29 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           }
         }
 
-        // During mount, include animated values in static to prevent flicker
-        if (isMounting) {
-          for (const key in animated) {
-            staticStyles[key] = cloneAnimationValue(animated[key])
+        // every animated key keeps its FIRST animated value in React's style for
+        // as long as it stays animated. the value never changes across renders,
+        // so React's per-key style diff never touches the key again and the
+        // mapper's inline writes survive every commit — reanimated's Fabric
+        // commit hook provides this guarantee on native, web has no equivalent.
+        // during enter the carry is the enterStyle (the mapper animates over it);
+        // a key appearing post-mount (a just-measured height) paints its value in
+        // the same commit the mapper first sees it, a frame before the mapper's
+        // first write.
+        const carry = carryRef.current
+        for (const key in carry) {
+          if (!(key in animated)) delete carry[key]
+        }
+        for (const key in animated) {
+          if (!(key in carry)) {
+            carry[key] = cloneAnimationValue(animated[key])
           }
+          staticStyles[key] = carry[key]
         }
 
         return { animatedStyles: animated, staticStyles }
       }, [disableAnimation, style, isDark, isMounting, props.animateOnly])
 
-      const committedRenderKeysRef = useRef(new Set<string>())
-      const committedRenderBaselineRef = useRef<Record<string, unknown>>({})
       const renderSnapshot = useMemo(() => {
         const transforms = getAnimatedTransforms(animatedStyles.transform)
         const regularAnimated: Record<string, unknown> = {}
@@ -804,43 +849,30 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           if (key !== 'transform') regularAnimated[key] = animatedStyles[key]
         }
         const keys = getAnimatedKeySet(animatedStyles, transforms)
-        const newKeys = getNewAnimatedKeys(keys, committedRenderKeysRef.current)
         const removedKeys = getRemovedAnimatedKeys(keys, committedRenderKeysRef.current)
-        // keep each key's first React value as a baseline for its active lifetime.
-        // the stable mapper paints over it after seeding, while pre-mapper rerenders
-        // cannot create an ownerless frame. transforms share one top-level baseline.
-        const baseline: Record<string, unknown> = {}
-        for (const key in animatedStyles) {
-          if (key === 'transform') continue
-          baseline[key] = Object.prototype.hasOwnProperty.call(
-            committedRenderBaselineRef.current,
-            key
-          )
-            ? committedRenderBaselineRef.current[key]
-            : animatedStyles[key]
+        const seeds = getSeeds(keys, lastPaintedRef.current)
+        const painted: Record<string, unknown> = { ...staticStyles }
+        for (const key in regularAnimated) {
+          painted[key] = regularAnimated[key]
         }
-        if (transforms.length > 0) {
-          baseline.transform = Object.prototype.hasOwnProperty.call(
-            committedRenderBaselineRef.current,
-            'transform'
-          )
-            ? committedRenderBaselineRef.current.transform
-            : transforms
+        delete painted.transform
+        for (const t of transforms) {
+          const tKey = Object.keys(t)[0]
+          if (tKey) painted[`transform:${tKey}`] = t[tKey]
         }
         return {
           value: {
             animated: cloneStyleRecord(regularAnimated),
             statics: cloneStyleRecord(staticStyles),
             transforms: cloneTransforms(transforms),
-            newKeys: { ...newKeys },
+            seeds: cloneStyleRecord(seeds),
             removedKeys: { ...removedKeys },
             removeTransform: Object.keys(removedKeys).some((key) =>
               key.startsWith('transform:')
             ),
             clearValue: isWeb ? '' : null,
           } satisfies AnimationSnapshot,
-          reactStatics: { ...staticStyles, ...baseline },
-          baseline,
+          painted,
           keys,
         }
       }, [animatedStyles, staticStyles])
@@ -848,7 +880,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         animated: {},
         statics: {},
         transforms: [],
-        newKeys: {},
+        seeds: {},
         removedKeys: {},
         removeTransform: false,
         clearValue: isWeb ? '' : null,
@@ -858,8 +890,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
       useIsomorphicLayoutEffect(() => {
         committedRenderKeysRef.current = renderSnapshot.keys
-        committedRenderBaselineRef.current = renderSnapshot.baseline
+        lastPaintedRef.current = renderSnapshot.painted
       }, [renderSnapshot])
+
 
       // reconcile the emitter latch with real re-renders.
       //
@@ -1039,11 +1072,12 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           const keys = getAnimatedKeySet(animated, transforms)
           const previousKeys = emitterKeysRef.current ?? committedRenderKeysRef.current
           const removedKeys = getRemovedAnimatedKeys(keys, previousKeys)
+          const seeds = getSeeds(keys, lastPaintedRef.current)
           emitterSnapshotRef.value = {
             animated: cloneStyleRecord(animated),
             statics: cloneStyleRecord(statics),
             transforms: cloneTransforms(transforms),
-            newKeys: { ...getNewAnimatedKeys(keys, previousKeys) },
+            seeds: cloneStyleRecord(seeds),
             removedKeys: { ...removedKeys },
             removeTransform: Object.keys(removedKeys).some((key) =>
               key.startsWith('transform:')
@@ -1051,6 +1085,13 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             clearValue: isWeb ? '' : null,
           }
           emitterKeysRef.current = keys
+          const painted: Record<string, unknown> = { ...statics, ...animated }
+          delete painted.transform
+          for (const t of transforms) {
+            const tKey = Object.keys(t)[0]
+            if (tKey) painted[`transform:${tKey}`] = t[tKey]
+          }
+          lastPaintedRef.current = painted
 
           if (
             process.env.NODE_ENV === 'development' &&
@@ -1073,11 +1114,16 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         const exitKeys: string[] = []
         const animateOnly = props.animateOnly as string[] | undefined
 
-        // regular animated properties
+        // regular animated properties. a key fresh to the mapper with no seed
+        // paints its target directly (no animation), so it must not gate exit
+        // completion; a seeded fresh key animates and counts.
         for (const key in animatedStyles) {
           if (key === 'transform') continue
+          const freshWithoutSeed =
+            !committedRenderKeysRef.current.has(key) &&
+            !(key in renderSnapshot.value.seeds)
           if (
-            !renderSnapshot.value.newKeys[key] &&
+            !freshWithoutSeed &&
             canAnimateProperty(key, animatedStyles[key], animateOnly)
           ) {
             exitKeys.push(key)
@@ -1096,7 +1142,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                 continue
               }
               const exitKey = `transform:${tKey}`
-              if (!renderSnapshot.value.newKeys[exitKey]) {
+              const freshWithoutSeed =
+                !committedRenderKeysRef.current.has(exitKey) &&
+                !(exitKey in renderSnapshot.value.seeds)
+              if (!freshWithoutSeed) {
                 exitKeys.push(exitKey)
               }
             }
@@ -1121,15 +1170,32 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
       }, [justStartedExiting, sendExitComplete])
 
+      // the worklet's own record of which animated keys it has emitted (mirrors
+      // reanimated's per-view style history, which resets whenever a key leaves
+      // the output). a key not in here is fresh to the mapper no matter what
+      // React has committed — several renders can coalesce into one mapper run.
+      // mutated in place from the worklet; never watched, so writes don't
+      // retrigger the mapper.
+      const mapperStateRef = useSharedValue<{ emitted: Record<string, boolean> }>({
+        emitted: {},
+      })
+
       // Create animated style
       const animatedStyle = useAnimatedStyle(
         () => {
           'worklet'
 
+          const mapperState = mapperStateRef.value
           const config = configRef.value
           if (config.disableAnimation || config.isHydrating) {
+            // the empty return wipes reanimated's per-key history, so ours
+            // resets with it
+            mapperState.emitted = {}
             return {}
           }
+
+          const previouslyEmitted = mapperState.emitted
+          const emitted: Record<string, boolean> = {}
 
           const result: Record<string, any> = {}
 
@@ -1178,9 +1244,19 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               }
             }
 
-            result[key] = snapshot.newKeys[key]
-              ? targetValue
-              : applyAnimation(targetValue as number, propConfig, callback)
+            emitted[key] = true
+            if (previouslyEmitted[key]) {
+              result[key] = applyAnimation(targetValue as number, propConfig, callback)
+            } else if (key in snapshot.seeds) {
+              result[key] = applyAnimation(
+                targetValue as number,
+                propConfig,
+                callback,
+                snapshot.seeds[key] as number | string
+              )
+            } else {
+              result[key] = targetValue
+            }
           }
 
           // Handle transforms
@@ -1216,10 +1292,19 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                   }
                 }
 
+                const subKey = `transform:${transformKey}`
+                emitted[subKey] = true
                 validTransforms.push({
-                  [transformKey]: snapshot.newKeys[`transform:${transformKey}`]
-                    ? targetValue
-                    : applyAnimation(targetValue as number, propConfig, callback),
+                  [transformKey]: previouslyEmitted[subKey]
+                    ? applyAnimation(targetValue as number, propConfig, callback)
+                    : subKey in snapshot.seeds
+                      ? applyAnimation(
+                          targetValue as number,
+                          propConfig,
+                          callback,
+                          snapshot.seeds[subKey] as number | string
+                        )
+                      : targetValue,
                 })
               }
             }
@@ -1228,6 +1313,8 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               result.transform = validTransforms
             }
           }
+
+          mapperState.emitted = emitted
 
           return result
         },
@@ -1263,11 +1350,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         })
       }
 
-      // paint each animated key's first React value underneath the worklet until the mapper
-      // owns it. reanimated only snapshots its animated handle on the component's first
-      // render, so a later render can drop the previous static value and commit before the
-      // restarted mapper writes anything — a default-open accordion collapses to 0 for those
-      // frames. the baseline sits under animatedStyle, so the mapper still wins once it runs.
+      // staticStyles carries animated keys only while mounting or on a key's
+      // first post-mount appearance; after that the mapper owns them and the
+      // commit bridge above keeps React commits from wiping its inline writes.
       return {
         style: [staticStyles, animatedStyle],
       }
