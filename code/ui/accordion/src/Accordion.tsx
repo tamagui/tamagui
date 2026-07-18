@@ -624,15 +624,19 @@ const HeightAnimator = View.styleable((props, ref) => {
 
   React.useEffect(() => () => clearTimeout(settleTimerRef.current), [])
 
-  // web: measure the just-mounted content synchronously in the same commit so
-  // the open animation retargets immediately instead of waiting a couple of
-  // frames for the ResizeObserver-backed onLayout to report
+  // measure the just-mounted content synchronously in the same commit so the
+  // open animation retargets immediately instead of waiting a layout-event
+  // roundtrip (ResizeObserver on web, an onLayout bridge hop on native — that
+  // hop alone costs a few hundred ms on a dev simulator). getBoundingClientRect
+  // exists on web elements and on Fabric host components; anywhere it doesn't,
+  // the onLayout below still owns measurement.
   useIsomorphicLayoutEffect(() => {
-    if (!isWeb || !fixed || !open) return
-    const el = innerRef.current as HTMLElement | null
-    if (!el) return
-    const naturalHeight = el.offsetHeight
-    if (naturalHeight > 0 && naturalHeight !== contentHeight) {
+    if (!fixed || !open) return
+    const el = innerRef.current as
+      | { getBoundingClientRect?: () => { height: number } }
+      | null
+    const naturalHeight = el?.getBoundingClientRect?.().height
+    if (naturalHeight && naturalHeight > 0 && naturalHeight !== contentHeight) {
       setContentHeight(naturalHeight)
     }
   })
