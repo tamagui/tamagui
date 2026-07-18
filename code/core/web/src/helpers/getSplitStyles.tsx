@@ -2714,8 +2714,12 @@ export const getSubStyle = (
   const styleInOriginalValues = styleOriginalValues.get(styleIn)
   const parentProps = styleState.props
   // prototype-chain view instead of a spread copy: reads fall through to
-  // parentProps, avoiding an O(parentProps) allocation per sub-style
-  styleState.props = Object.assign(Object.create(parentProps), styleIn)
+  // parentProps, avoiding an O(parentProps) allocation per sub-style. define
+  // styleIn as own props (not Object.assign) because parentProps is React's
+  // frozen props object — [[Set]] of a key that exists read-only up the proto
+  // chain (e.g. a base backgroundColor also set in a pseudo/media sub-style)
+  // throws, whereas [[DefineOwnProperty]] via descriptors always writes an own.
+  styleState.props = Object.create(parentProps, Object.getOwnPropertyDescriptors(styleIn))
 
   try {
     for (let key in styleIn) {
