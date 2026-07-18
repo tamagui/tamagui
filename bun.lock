@@ -3622,6 +3622,50 @@
         "react": ">=19",
       },
     },
+    "registry/ci/blank-expo": {
+      "name": "@tamagui/registry-blank-expo",
+      "version": "0.0.0",
+      "dependencies": {
+        "@tamagui/config": "workspace:*",
+        "expo": "~55.0.6",
+        "react": ">=19",
+        "react-dom": "*",
+        "react-native": "0.83.2",
+        "react-native-safe-area-context": "~5.7.0",
+        "tamagui": "workspace:*",
+      },
+      "devDependencies": {
+        "@babel/core": "^7.25.2",
+        "@tamagui/metro-plugin": "workspace:*",
+        "@types/node": "^22.1.0",
+        "@types/react": "~19.1.10",
+        "babel-preset-expo": "~55.0.0",
+        "react-test-renderer": "^19.0.0",
+        "typescript": "~5.9.2",
+        "vitest-native": "npm:vitest@4.1.0",
+      },
+    },
+    "registry/ci/blank-web": {
+      "name": "@tamagui/registry-blank-web",
+      "version": "0.0.0",
+      "dependencies": {
+        "@tamagui/config": "workspace:*",
+        "react": ">=19",
+        "react-dom": "*",
+        "react-native": "0.83.2",
+        "tamagui": "workspace:*",
+      },
+      "devDependencies": {
+        "@playwright/test": "^1.49.1",
+        "@tamagui/vite-plugin": "workspace:*",
+        "@types/node": "^22.1.0",
+        "@types/react": "~19.1.10",
+        "@types/react-dom": "~19.1.7",
+        "@vitejs/plugin-react": "^6.0.0",
+        "typescript": "~5.9.2",
+        "vite": "^8.0.3",
+      },
+    },
   },
   "patchedDependencies": {
     "gray-matter@4.0.3": "patches/gray-matter@4.0.3.patch",
@@ -5433,6 +5477,10 @@
     "@tamagui/react-native-web-internals": ["@tamagui/react-native-web-internals@workspace:code/core/react-native-web-internals"],
 
     "@tamagui/react-native-web-lite": ["@tamagui/react-native-web-lite@workspace:code/packages/react-native-web-lite"],
+
+    "@tamagui/registry-blank-expo": ["@tamagui/registry-blank-expo@workspace:registry/ci/blank-expo"],
+
+    "@tamagui/registry-blank-web": ["@tamagui/registry-blank-web@workspace:registry/ci/blank-web"],
 
     "@tamagui/remix-starter": ["@tamagui/remix-starter@workspace:code/starters/remix"],
 

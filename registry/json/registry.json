@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "tamagui",
+  "homepage": "https://tamagui.dev",
+  "items": [
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "A styled, v2-compatible Button with size/variant/circular variants, built on the unstyled @tamagui/ui Button behavior.",
+      "dependencies": [
+        "tamagui"
+      ],
+      "categories": [
+        "controls"
+      ],
+      "meta": {
+        "native": [
+          "no native config plugin required"
+        ],
+        "tokens": [
+          "$background",
+          "$backgroundHover",
+          "$backgroundPress",
+          "$borderColor",
+          "$borderColorHover",
+          "$color",
+          "$outlineColor"
+        ],
+        "themes": [
+          "accent"
+        ]
+      }
+    }
+  ]
+}

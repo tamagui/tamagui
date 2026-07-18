@@ -17,7 +17,9 @@
     "./code/sandbox",
     "./code/packages/**/*",
     "./code/tamagui.dev",
-    "./code/ui/**/*"
+    "./code/ui/**/*",
+    "./registry/ci/blank-web",
+    "./registry/ci/blank-expo"
   ],
   "scripts": {
     "postinstall": "bun ./scripts/postinstall.ts",
@@ -78,6 +80,13 @@
     "release": "bun ./scripts/release.ts",
     "check:references": "bun ./scripts/check-references.ts",
     "check:references:fix": "bun ./scripts/check-references.ts --fix",
+    "registry": "bun ./scripts/generate-registry.ts build && bun ./scripts/generate-registry.ts write-consumers",
+    "registry:build": "bun ./scripts/generate-registry.ts build",
+    "registry:check": "bun ./scripts/generate-registry.ts check",
+    "registry:validate": "bun ./scripts/generate-registry.ts validate",
+    "registry:drift": "bun ./scripts/generate-registry.ts drift",
+    "registry:test": "bun test scripts/lib/registry/registry.test.ts",
+    "registry:write-consumers": "bun ./scripts/generate-registry.ts write-consumers",
     "repair": "bun ./scripts/repair.ts",
     "reset-package-json": "RESET_PACKAGE_JSON=true node -e \"require('./scripts/multi-react-version-tests.js').resetPackageJson()\"",
     "sandbox": "./scripts/bun-run.sh sandbox dev",

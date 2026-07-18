@@ -1,0 +1,10 @@
+# build + test artifacts from the blank app harnesses
+node_modules
+dist
+dist-native
+dist-ssr
+test-results
+playwright-report
+.playwright-report
+.playwright-results
+*.log

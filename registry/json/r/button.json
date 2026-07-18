@@ -1,0 +1,38 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "button",
+  "type": "registry:ui",
+  "title": "Button",
+  "description": "A styled, v2-compatible Button with size/variant/circular variants, built on the unstyled @tamagui/ui Button behavior.",
+  "files": [
+    {
+      "path": "components/tamagui/Button.tsx",
+      "content": "import {\n  ButtonFrame as ButtonBehaviorFrame,\n  ButtonIcon as ButtonBehaviorIcon,\n  ButtonText as ButtonBehaviorText,\n  type ButtonBehaviorProps,\n  type ButtonIconProps as ButtonBehaviorIconProps,\n  createSizeTable,\n  createStyledHOC,\n  type GetProps,\n  styled,\n  useButton,\n  withStaticProperties,\n} from 'tamagui'\n\nexport const buttonSizes = createSizeTable(\n  {\n    small: {\n      frame: {\n        gap: 6,\n        height: 30,\n        paddingHorizontal: 10,\n      },\n      text: {\n        fontSize: 13,\n        lineHeight: 18,\n      },\n      icon: 14,\n    },\n    medium: {\n      frame: {\n        gap: 8,\n        height: 36,\n        paddingHorizontal: 14,\n      },\n      text: {\n        fontSize: 15,\n        lineHeight: 20,\n      },\n      icon: 16,\n    },\n    large: {\n      frame: {\n        gap: 10,\n        height: 44,\n        paddingHorizontal: 18,\n      },\n      text: {\n        fontSize: 17,\n        lineHeight: 24,\n      },\n      icon: 20,\n    },\n    wide: {\n      frame: {\n        gap: 10,\n        height: 44,\n        minWidth: 180,\n        paddingHorizontal: 24,\n      },\n      text: {\n        fontSize: 16,\n        lineHeight: 22,\n      },\n      icon: 18,\n    },\n  } as const,\n  'medium'\n)\n\nexport type ButtonSize = keyof typeof buttonSizes.values\n\nexport const ButtonFrame = styled(ButtonBehaviorFrame, {\n  context: buttonSizes.Context,\n  name: 'ButtonFrame',\n  backgroundColor: '$background',\n  borderColor: '$borderColor',\n  borderRadius: 8,\n  borderWidth: 1,\n\n  $web: {\n    cursor: 'pointer',\n  },\n\n  hoverStyle: {\n    backgroundColor: '$backgroundHover',\n    borderColor: '$borderColorHover',\n  },\n\n  pressStyle: {\n    backgroundColor: '$backgroundPress',\n    opacity: 0.7,\n  },\n\n  focusVisibleStyle: {\n    outlineColor: '$outlineColor',\n    outlineStyle: 'solid',\n    outlineWidth: 2,\n  },\n\n  variants: {\n    size: buttonSizes.frame,\n\n    circular: {\n      true: {\n        borderRadius: 1000,\n        paddingHorizontal: 0,\n      },\n    },\n\n    disabled: {\n      true: {\n        opacity: 0.35,\n      },\n    },\n\n    variant: {\n      outlined: {\n        backgroundColor: 'transparent',\n        borderColor: '$borderColor',\n      },\n      quiet: {\n        backgroundColor: 'transparent',\n        borderColor: 'transparent',\n      },\n    },\n  } as const,\n\n  defaultVariants: {\n    size: 'medium',\n  },\n\n  compoundVariants: [\n    {\n      size: 'small',\n      circular: true,\n      style: {\n        maxHeight: 30,\n        maxWidth: 30,\n        minWidth: 30,\n        width: 30,\n      },\n    },\n    {\n      size: 'medium',\n      circular: true,\n      style: {\n        maxHeight: 36,\n        maxWidth: 36,\n        minWidth: 36,\n        width: 36,\n      },\n    },\n    {\n      size: 'large',\n      circular: true,\n      style: {\n        maxHeight: 44,\n        maxWidth: 44,\n        minWidth: 44,\n        width: 44,\n      },\n    },\n    {\n      size: 'wide',\n      circular: true,\n      style: {\n        maxHeight: 44,\n        maxWidth: 44,\n        minWidth: 44,\n        width: 44,\n      },\n    },\n  ],\n})\n\nexport const ButtonText = styled(ButtonBehaviorText, {\n  context: buttonSizes.Context,\n  name: 'ButtonText',\n  color: '$color',\n  fontWeight: '600',\n  userSelect: 'none',\n\n  variants: {\n    size: buttonSizes.text,\n  } as const,\n\n  defaultVariants: {\n    size: 'medium',\n  },\n})\n\nexport const ButtonIcon = ({ size, ...props }: ButtonBehaviorIconProps) => {\n  const context = buttonSizes.Context.useStyledContext()\n  const namedSize = context?.size ?? buttonSizes.defaultSize\n\n  return (\n    <ButtonBehaviorIcon {...props} size={size ?? buttonSizes.resolve(namedSize).icon} />\n  )\n}\n\nconst ButtonComponent = createStyledHOC(ButtonFrame)<ButtonBehaviorProps>(\n  function Button(props, ref) {\n    const size = (props.size ?? buttonSizes.defaultSize) as ButtonSize\n    const { props: buttonProps } = useButton(\n      {\n        ...props,\n        size,\n      },\n      {\n        Text: ButtonText,\n        iconSize: buttonSizes.resolve(size).icon,\n      }\n    )\n\n    return (\n      <buttonSizes.Context.Provider size={size}>\n        <ButtonFrame ref={ref} {...buttonProps} />\n      </buttonSizes.Context.Provider>\n    )\n  }\n)\n\nexport const Button = withStaticProperties(ButtonComponent, {\n  Frame: ButtonFrame,\n  Icon: ButtonIcon,\n  Text: ButtonText,\n})\n\nexport type ButtonProps = GetProps<typeof ButtonComponent>\n",
+      "type": "registry:ui",
+      "target": "components/tamagui/Button.tsx"
+    }
+  ],
+  "dependencies": [
+    "tamagui"
+  ],
+  "categories": [
+    "controls"
+  ],
+  "meta": {
+    "native": [
+      "no native config plugin required"
+    ],
+    "tokens": [
+      "$background",
+      "$backgroundHover",
+      "$backgroundPress",
+      "$borderColor",
+      "$borderColorHover",
+      "$color",
+      "$outlineColor"
+    ],
+    "themes": [
+      "accent"
+    ]
+  }
+}
