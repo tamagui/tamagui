@@ -209,6 +209,36 @@ const getImplicitDefault = (key: string): number => {
     : 0
 }
 
+const COLOR_STYLE_KEYS: Record<string, boolean> = {
+  backgroundColor: true,
+  borderColor: true,
+  borderLeftColor: true,
+  borderRightColor: true,
+  borderTopColor: true,
+  borderBottomColor: true,
+  color: true,
+}
+
+// reanimated interpolates only color strings its own parser accepts. anything
+// else falls through to its generic prefix/suffix string handler, which
+// mangles the value into '<letters>NaN' — the browser silently drops that,
+// native processColor throws a redbox. normalize what we can and never build
+// an animation descriptor from a color value that isn't clearly parseable.
+const toReanimatedColor = (value: unknown): unknown => {
+  'worklet'
+  if (typeof value !== 'string') return value
+  const trimmed = value.trim()
+  if (trimmed === 'transparent') return 'rgba(0, 0, 0, 0)'
+  return trimmed
+}
+
+const isInterpolatableColor = (value: unknown): boolean => {
+  'worklet'
+  if (typeof value === 'number') return true
+  if (typeof value !== 'string') return false
+  return /^(#[0-9a-fA-F]{3,8}$|rgba?\(|hsla?\(|hwb\()/.test(value)
+}
+
 const getSeeds = (
   keys: Set<string>,
   previousPainted: Record<string, unknown>
@@ -1135,12 +1165,21 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         // fresh key with a seed or a numeric target (exitStyle-introduced keys
         // animate from their implicit default) gates completion; only fresh
         // non-numeric keys with no seed paint directly and are excluded.
+        const snapshotSeeds = renderSnapshot.value.seeds
         for (const key in animatedStyles) {
           if (key === 'transform') continue
+          // mirror the worklet: color seeds/targets the worklet refuses to
+          // interpolate paint plain and must not gate exit completion
+          const hasUsableSeed =
+            key in snapshotSeeds &&
+            (!COLOR_STYLE_KEYS[key] ||
+              isInterpolatableColor(toReanimatedColor(snapshotSeeds[key])))
           const paintsDirectly =
-            !committedRenderKeysRef.current.has(key) &&
-            !(key in renderSnapshot.value.seeds) &&
-            typeof animatedStyles[key] !== 'number'
+            (!committedRenderKeysRef.current.has(key) &&
+              !hasUsableSeed &&
+              typeof animatedStyles[key] !== 'number') ||
+            (COLOR_STYLE_KEYS[key] &&
+              !isInterpolatableColor(toReanimatedColor(animatedStyles[key])))
           if (
             !paintsDirectly &&
             canAnimateProperty(key, animatedStyles[key], animateOnly)
@@ -1238,7 +1277,9 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
 
           // Include static values from emitter (for hover/press style changes)
           for (const key in staticValues) {
-            result[key] = staticValues[key]
+            result[key] = COLOR_STYLE_KEYS[key]
+              ? toReanimatedColor(staticValues[key])
+              : staticValues[key]
           }
           for (const key in snapshot.removedKeys) {
             if (!key.startsWith('transform:') && !(key in staticValues)) {
@@ -1250,7 +1291,29 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           for (const key in animatedValues) {
             if (key === 'transform') continue
 
-            const targetValue = animatedValues[key]
+            let targetValue = animatedValues[key]
+            let seedValue: unknown = key in snapshot.seeds
+              ? snapshot.seeds[key]
+              : undefined
+            if (COLOR_STYLE_KEYS[key]) {
+              targetValue = toReanimatedColor(targetValue)
+              seedValue = toReanimatedColor(seedValue)
+              if (!isInterpolatableColor(targetValue)) {
+                // interpolating this would corrupt it into '<letters>NaN'
+                // (native processColor throws) — paint it plain instead
+                console.warn(
+                  '[animations-reanimated] non-interpolatable color painted plain:',
+                  key,
+                  JSON.stringify(animatedValues[key])
+                )
+                emitted[key] = true
+                result[key] = targetValue
+                continue
+              }
+              if (seedValue !== undefined && !isInterpolatableColor(seedValue)) {
+                seedValue = undefined
+              }
+            }
             const propConfig = config.propertyConfigs[key] ?? config.baseConfig
 
             // create callback for exit tracking
@@ -1267,12 +1330,12 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             emitted[key] = true
             if (previouslyEmitted[key]) {
               result[key] = applyAnimation(targetValue as number, propConfig, callback)
-            } else if (key in snapshot.seeds) {
+            } else if (seedValue !== undefined) {
               result[key] = applyAnimation(
                 targetValue as number,
                 propConfig,
                 callback,
-                snapshot.seeds[key] as number | string
+                seedValue as number | string
               )
             } else if (currentlyExiting && typeof targetValue === 'number') {
               // a key introduced by exitStyle with no painted predecessor must
