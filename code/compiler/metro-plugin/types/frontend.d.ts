@@ -45,7 +45,7 @@ export declare class MetroCompilerFrontend {
     scan(options: MetroCompilerScanOptions): Promise<MetroCompilerGeneration>;
     ensureValidCache(options: MetroCompilerScanOptions): Promise<MetroCompilerGeneration>;
     updateFile(path: string): Promise<MetroCompilerUpdate>;
-    close(): void;
+    close(): Promise<void>;
 }
 export declare function describeMetroCompilerRoot(projectRoot: string, moduleId: string): string;
 //# sourceMappingURL=frontend.d.ts.map

@@ -49,7 +49,8 @@ async function build() {
 async function check() {
   const { registry } = await buildRegistry()
   const indexPath = join(outDir, 'registry.json')
-  if (!existsSync(indexPath)) fail(`registry not generated yet — run: bun scripts/generate-registry.ts build`)
+  if (!existsSync(indexPath))
+    fail(`registry not generated yet — run: bun scripts/generate-registry.ts build`)
 
   // build to a fresh sandbox and compare byte-for-byte
   const { execSync } = await import('node:child_process')
@@ -60,7 +61,9 @@ async function check() {
   const files = [`registry.json`, ...registry.items.map((i) => `r/${i.name}.json`)]
   for (const f of files) {
     const gen = readFileSync(join(tmp, f), 'utf8')
-    const committed = existsSync(join(outDir, f)) ? readFileSync(join(outDir, f), 'utf8') : ''
+    const committed = existsSync(join(outDir, f))
+      ? readFileSync(join(outDir, f), 'utf8')
+      : ''
     if (gen !== committed) stale.push(f)
   }
   if (stale.length) {
@@ -84,13 +87,20 @@ async function drift() {
   // consumers (demos/kitchen-sink/site/canary) are reported until the campaign
   // flips them to generated copies.
   const onlyAuthorized = flags.has('--only-authorized')
-  const authorizedKeys = new Set(driftConsumers.filter((c) => c.writeAuthorized).map((c) => c.key))
+  const authorizedKeys = new Set(
+    driftConsumers.filter((c) => c.writeAuthorized).map((c) => c.key)
+  )
   const all = await checkDrift()
   const entries = onlyAuthorized ? all.filter((e) => authorizedKeys.has(e.consumer)) : all
   const bad = entries.filter((e) => e.status !== 'ok')
   const skinCache = new Map<string, Awaited<ReturnType<typeof loadSkin>>>()
   for (const e of entries) {
-    const tag = e.status === 'ok' ? '\x1b[32mok\x1b[0m' : e.status === 'missing' ? '\x1b[33mmissing\x1b[0m' : '\x1b[31mdrift\x1b[0m'
+    const tag =
+      e.status === 'ok'
+        ? '\x1b[32mok\x1b[0m'
+        : e.status === 'missing'
+          ? '\x1b[33mmissing\x1b[0m'
+          : '\x1b[31mdrift\x1b[0m'
     console.log(`  [${tag}] ${e.consumer}/${e.skin}  ${e.path}`)
     if (e.status === 'drift') {
       let skin = skinCache.get(e.skin)
@@ -126,5 +136,6 @@ async function writeConsumersCmd() {
 }
 
 const run = { build, check, validate, drift, 'write-consumers': writeConsumersCmd }[cmd]
-if (!run) fail(`unknown command "${cmd}" (build | check | validate | drift | write-consumers)`)
+if (!run)
+  fail(`unknown command "${cmd}" (build | check | validate | drift | write-consumers)`)
 await run()

@@ -34,7 +34,12 @@ function loadItem(registryDir: string, name: string): RegistryItem {
 
 // resolve an item + all its registryDependencies (local names only) into a
 // dependency-ordered, deduped list.
-function resolveItems(registryDir: string, name: string, seen: Set<string>, out: RegistryItem[]) {
+function resolveItems(
+  registryDir: string,
+  name: string,
+  seen: Set<string>,
+  out: RegistryItem[]
+) {
   if (seen.has(name)) return
   seen.add(name)
   const item = loadItem(registryDir, name)

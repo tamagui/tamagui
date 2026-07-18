@@ -242,10 +242,4 @@ Toaster.displayName = 'Toaster'
 // Re-export the non-visual v2 surface so `tamagui/toast` is a drop-in for the
 // styled toast: imperative API, render hooks, and the public types.
 export { toast, useToastItem, useToasts }
-export type {
-  ExternalToast,
-  ToastPosition,
-  ToastT,
-  ToasterPosition,
-  ToasterProps,
-}
+export type { ExternalToast, ToastPosition, ToastT, ToasterPosition, ToasterProps }

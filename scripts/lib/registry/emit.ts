@@ -103,7 +103,12 @@ export async function checkDrift(): Promise<DriftEntry[]> {
       const abs = join(repoRoot, consumer.dir, consumer.filename(skin.base))
       const rel = relative(repoRoot, abs)
       if (!existsSync(abs)) {
-        entries.push({ consumer: consumer.key, skin: skin.base, path: rel, status: 'missing' })
+        entries.push({
+          consumer: consumer.key,
+          skin: skin.base,
+          path: rel,
+          status: 'missing',
+        })
         continue
       }
       const expected = renderConsumerCopy(skin, consumer.namePrefix)

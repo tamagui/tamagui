@@ -329,22 +329,23 @@ export const SliderTrackFrame = styled(SliderFrame, {
 
 // createStyledHOC (not createRefComponent) so the tamagui skin can layer track
 // color/radius via styled(Slider.Track, { ... }); the render body is unchanged.
-const SliderTrack = createStyledHOC(SliderTrackFrame)(
-  function SliderTrack(props: ScopedProps<SliderTrackProps>, forwardedRef) {
-    const { __scopeSlider, ...trackProps } = props
-    const context = useSliderContext(__scopeSlider)
-    return (
-      <SliderTrackFrame
-        data-disabled={context.disabled ? '' : undefined}
-        data-orientation={context.orientation}
-        orientation={context.orientation}
-        size={context.size}
-        {...trackProps}
-        ref={forwardedRef}
-      />
-    )
-  }
-)
+const SliderTrack = createStyledHOC(SliderTrackFrame)(function SliderTrack(
+  props: ScopedProps<SliderTrackProps>,
+  forwardedRef
+) {
+  const { __scopeSlider, ...trackProps } = props
+  const context = useSliderContext(__scopeSlider)
+  return (
+    <SliderTrackFrame
+      data-disabled={context.disabled ? '' : undefined}
+      data-orientation={context.orientation}
+      orientation={context.orientation}
+      size={context.size}
+      {...trackProps}
+      ref={forwardedRef}
+    />
+  )
+})
 
 /* -------------------------------------------------------------------------------------------------
  * SliderActive

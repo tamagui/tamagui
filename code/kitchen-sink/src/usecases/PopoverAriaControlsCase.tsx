@@ -31,7 +31,10 @@ export function PopoverAriaControlsCase() {
           <Paragraph>controlled content</Paragraph>
         </Popover.Content>
       </Popover>
-      <Button id="controlled-external-toggle" onPress={() => setControlledOpen((v) => !v)}>
+      <Button
+        id="controlled-external-toggle"
+        onPress={() => setControlledOpen((v) => !v)}
+      >
         external toggle
       </Button>
 

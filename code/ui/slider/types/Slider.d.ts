@@ -27,15 +27,15 @@ export declare const SliderTrackFrame: React.FunctionComponent<Omit<import("@tam
         orientation?: "horizontal" | "vertical" | undefined;
     }, import("@tamagui/core").StaticConfigPublic];
 };
-declare const SliderTrack: import("@tamagui/compose-refs").RefComponent<TamaguiElement, import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    size?: false | import("@tamagui/core").Size | undefined;
+declare const SliderTrack: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    size?: any;
     elevation?: number | import("@tamagui/core").Size | undefined;
-    transparent?: boolean | undefined;
-    circular?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-}>>;
+    orientation?: "horizontal" | "vertical" | undefined;
+}>, View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
+    size?: any;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 export declare const SliderActiveFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "orientation"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     size?: any;
     elevation?: number | import("@tamagui/core").Size | undefined;
@@ -62,11 +62,15 @@ export declare const SliderActiveFrame: React.FunctionComponent<Omit<import("@ta
     }, import("@tamagui/core").StaticConfigPublic];
 };
 type SliderActiveProps = GetProps<typeof SliderActiveFrame>;
-declare const SliderActive: import("@tamagui/compose-refs").RefComponent<View, import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+declare const SliderActive: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: any;
     elevation?: number | import("@tamagui/core").Size | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
-}>>;
+}>, View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
+    size?: any;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 export declare const SliderThumbFrame: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "size" | "elevation" | keyof import("@tamagui/core").StackStyleBase | "transparent" | "circular" | "elevate" | "bordered" | "chromeless"> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     size?: number | import("@tamagui/core").Size | undefined;
     elevation?: number | import("@tamagui/core").Size | undefined;
@@ -139,20 +143,24 @@ declare const Slider: ((props: SliderProps & {
     displayName?: string;
     propTypes?: any;
 } & {
-    Track: import("@tamagui/compose-refs").RefComponent<TamaguiElement, import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-        size?: false | import("@tamagui/core").Size | undefined;
-        elevation?: number | import("@tamagui/core").Size | undefined;
-        transparent?: boolean | undefined;
-        circular?: boolean | undefined;
-        elevate?: boolean | undefined;
-        bordered?: boolean | undefined;
-        chromeless?: boolean | "all" | undefined;
-    }>>;
-    TrackActive: import("@tamagui/compose-refs").RefComponent<View, import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    Track: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: any;
         elevation?: number | import("@tamagui/core").Size | undefined;
         orientation?: "horizontal" | "vertical" | undefined;
-    }>>;
+    }>, View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
+        size?: any;
+        elevation?: number | import("@tamagui/core").Size | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
+    TrackActive: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+        size?: any;
+        elevation?: number | import("@tamagui/core").Size | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+    }>, View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
+        size?: any;
+        elevation?: number | import("@tamagui/core").Size | undefined;
+        orientation?: "horizontal" | "vertical" | undefined;
+    }, import("@tamagui/core").StaticConfigPublic>;
     Thumb: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
         size?: number | import("@tamagui/core").Size | undefined;
         elevation?: number | import("@tamagui/core").Size | undefined;
@@ -171,20 +179,24 @@ declare const Slider: ((props: SliderProps & {
         chromeless?: boolean | "all" | undefined;
     }, import("@tamagui/core").StaticConfigPublic>;
 };
-declare const Track: import("@tamagui/compose-refs").RefComponent<TamaguiElement, import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
-    size?: false | import("@tamagui/core").Size | undefined;
-    elevation?: number | import("@tamagui/core").Size | undefined;
-    transparent?: boolean | undefined;
-    circular?: boolean | undefined;
-    elevate?: boolean | undefined;
-    bordered?: boolean | undefined;
-    chromeless?: boolean | "all" | undefined;
-}>>;
-declare const Range: import("@tamagui/compose-refs").RefComponent<View, import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+declare const Track: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: any;
     elevation?: number | import("@tamagui/core").Size | undefined;
     orientation?: "horizontal" | "vertical" | undefined;
-}>>;
+}>, View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
+    size?: any;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
+declare const Range: import("@tamagui/core").TamaguiComponent<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
+    size?: any;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
+}>, View | (HTMLElement & import("@tamagui/core").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/core").StackStyleBase, {
+    size?: any;
+    elevation?: number | import("@tamagui/core").Size | undefined;
+    orientation?: "horizontal" | "vertical" | undefined;
+}, import("@tamagui/core").StaticConfigPublic>;
 declare const Thumb: import("@tamagui/core").TamaguiComponent<Omit<import("@tamagui/core").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/core").StackStyleBase, {
     size?: number | import("@tamagui/core").Size | undefined;
     elevation?: number | import("@tamagui/core").Size | undefined;

@@ -35,12 +35,16 @@ function motionGetProps(props: object) {
 
 describe('motion driver getProps conversion', () => {
   test('converts getStyle output shapes to web CSS', () => {
-    expect(motionGetProps({ style: { transform: [{ translateY: 123.45 }] } }).style).toEqual({
+    expect(
+      motionGetProps({ style: { transform: [{ translateY: 123.45 }] } }).style
+    ).toEqual({
       transform: 'translateY(123.45px)',
     })
-    expect(motionGetProps({ style: { transform: [{ translateX: -20 }] } }).style).toEqual({
-      transform: 'translateX(-20px)',
-    })
+    expect(motionGetProps({ style: { transform: [{ translateX: -20 }] } }).style).toEqual(
+      {
+        transform: 'translateX(-20px)',
+      }
+    )
     expect(motionGetProps({ style: { opacity: 0.5 } }).style).toEqual({ opacity: 0.5 })
     expect(motionGetProps({ style: { x: 10, y: 5, scale: 1.2 } }).style).toEqual({
       transform: 'translateX(10px) translateY(5px) scale(1.2)',

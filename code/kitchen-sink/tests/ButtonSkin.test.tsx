@@ -52,13 +52,13 @@ test('nested button is a non-interactive presentation part', async ({ page }) =>
   // keyboard: tab order skips the inner presentation element
   await page.getByTestId('button-skin-nested-before').focus()
   await page.keyboard.press('Tab')
-  expect(await page.evaluate(() => document.activeElement?.getAttribute('data-testid'))).toBe(
-    'button-skin-nested-outer'
-  )
+  expect(
+    await page.evaluate(() => document.activeElement?.getAttribute('data-testid'))
+  ).toBe('button-skin-nested-outer')
   await page.keyboard.press('Tab')
-  expect(await page.evaluate(() => document.activeElement?.getAttribute('data-testid'))).toBe(
-    'button-skin-nested-after'
-  )
+  expect(
+    await page.evaluate(() => document.activeElement?.getAttribute('data-testid'))
+  ).toBe('button-skin-nested-after')
 
   // clicking the inner element does not fire its own (stripped) handler and
   // does not register as a second control - activation goes to the one button

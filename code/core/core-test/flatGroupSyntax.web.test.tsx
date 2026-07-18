@@ -12,9 +12,16 @@ beforeAll(() => {
 const opts = { isAnimated: false, noClass: false, resolveValues: 'auto' } as any
 
 const split = (props: Record<string, any>) =>
-  getSplitStyles(props, View.staticConfig, undefined as any, 'light', {
-    unmounted: false,
-  } as any, opts)
+  getSplitStyles(
+    props,
+    View.staticConfig,
+    undefined as any,
+    'light',
+    {
+      unmounted: false,
+    } as any,
+    opts
+  )
 
 test('flat $group-name-pseudo:prop matches object form output', () => {
   const flat = split({ '$group-card-hover:opacity': 0.5 })

@@ -44,7 +44,12 @@ export function validateItem(item: RegistryItem, where: string): string[] {
   if (!item.type) at('missing `type`')
   else if (!ITEM_TYPES.has(item.type)) at(`invalid type "${item.type}"`)
 
-  const arrays = ['dependencies', 'devDependencies', 'registryDependencies', 'categories'] as const
+  const arrays = [
+    'dependencies',
+    'devDependencies',
+    'registryDependencies',
+    'categories',
+  ] as const
   for (const key of arrays) {
     const v = item[key]
     if (v != null && (!Array.isArray(v) || v.some((x) => typeof x !== 'string')))

@@ -99,12 +99,7 @@ export {
   SheetRoot,
   SheetScrollView,
 } from './components/Sheet'
-export {
-  Input,
-  type InputProps,
-  TextArea,
-  type TextAreaProps,
-} from './components/Input'
+export { Input, type InputProps, TextArea, type TextAreaProps } from './components/Input'
 export { ToggleGroup, type ToggleGroupItemProps } from './components/ToggleGroup'
 export { Accordion } from './components/Accordion'
 export { Dialog, DialogContent, DialogOverlay } from './components/Dialog'

@@ -46,7 +46,12 @@ export const stateVocabulary: readonly StateEntry[] = [
     pseudoProp: 'pressStyle',
     aliases: ['active', 'pressed'],
   },
-  { state: 'disabled', tier: 'pseudo', modifier: 'disabled', pseudoProp: 'disabledStyle' },
+  {
+    state: 'disabled',
+    tier: 'pseudo',
+    modifier: 'disabled',
+    pseudoProp: 'disabledStyle',
+  },
   {
     state: 'starting',
     tier: 'pseudo',
@@ -139,5 +144,7 @@ export const stateToPseudoProp: Readonly<Record<string, string>> = Object.freeze
 )
 
 export const componentStateNames: readonly string[] = Object.freeze(
-  stateVocabulary.filter((entry) => entry.tier === 'component').map((entry) => entry.state)
+  stateVocabulary
+    .filter((entry) => entry.tier === 'component')
+    .map((entry) => entry.state)
 )

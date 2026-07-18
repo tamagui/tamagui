@@ -13,7 +13,11 @@ test('popover trigger aria-controls points at the dialog content', async ({ page
   await setupPage(page, { name: 'PopoverAriaControlsCase', type: 'useCase' })
   await page.waitForLoadState('networkidle')
 
-  async function assertControls(triggerId: string, contentText: string, open: () => Promise<void>) {
+  async function assertControls(
+    triggerId: string,
+    contentText: string,
+    open: () => Promise<void>
+  ) {
     const trigger = page.locator(`#${triggerId}`)
 
     // closed: no dangling aria-controls
@@ -40,7 +44,10 @@ test('popover trigger aria-controls points at the dialog content', async ({ page
     page.locator('#controlled-external-toggle').click()
   )
   await page.keyboard.press('Escape')
-  await expect(page.locator('#controlled-trigger')).not.toHaveAttribute('aria-controls', /.+/)
+  await expect(page.locator('#controlled-trigger')).not.toHaveAttribute(
+    'aria-controls',
+    /.+/
+  )
 
   await assertControls('forcemount-trigger', 'force mounted content', () =>
     page.locator('#forcemount-trigger').click()

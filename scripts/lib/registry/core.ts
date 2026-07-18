@@ -118,7 +118,10 @@ export function buildItem(
     registryDeps.add(registryBaseUrl ? `${registryBaseUrl}/r/${depName}.json` : depName)
   }
 
-  const deps = new Set<string>([...dependencies, ...(skin.manifest.extraDependencies ?? [])])
+  const deps = new Set<string>([
+    ...dependencies,
+    ...(skin.manifest.extraDependencies ?? []),
+  ])
 
   const files: RegistryFile[] = [
     {
@@ -133,7 +136,8 @@ export function buildItem(
   // keys) so registry consumers and docs can surface native/token/theme needs.
   const meta: Record<string, unknown> = {}
   if (skin.manifest.native) meta.native = skin.manifest.native
-  if (skin.manifest.peerDependencies) meta.peerDependencies = skin.manifest.peerDependencies
+  if (skin.manifest.peerDependencies)
+    meta.peerDependencies = skin.manifest.peerDependencies
   if (skin.manifest.tokens) meta.tokens = skin.manifest.tokens
   if (skin.manifest.themes) meta.themes = skin.manifest.themes
   if (stateTables) {

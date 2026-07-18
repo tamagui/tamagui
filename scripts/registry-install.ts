@@ -17,7 +17,9 @@ const registryDir = flags.includes('--registry')
   : outDir
 
 if (!name || !appDir) {
-  console.error('usage: bun scripts/registry-install.ts <item> <appDir> [--registry <dir>]')
+  console.error(
+    'usage: bun scripts/registry-install.ts <item> <appDir> [--registry <dir>]'
+  )
   process.exit(1)
 }
 

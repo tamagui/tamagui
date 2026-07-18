@@ -114,8 +114,7 @@ const tailwindTransform = {
 // re-exports @tamagui/ui's behavior primitives without the default v2-look skins
 // the main `tamagui` entry layers on top. only the exact `tamagui` specifier is
 // rewritten - `tamagui/x` and `@tamagui/x` are already the behavior surface.
-const tamaguiImportRe =
-  /(\bfrom\s+|\bimport\s*\(\s*|\brequire\s*\(\s*)(['"])tamagui\2/g
+const tamaguiImportRe = /(\bfrom\s+|\bimport\s*\(\s*|\brequire\s*\(\s*)(['"])tamagui\2/g
 
 const unstyledTransform = {
   name: 'tamagui-unstyled-transform',

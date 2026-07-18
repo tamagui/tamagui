@@ -98,7 +98,12 @@ export function usePropsAndStyle<A extends PropsLikeObject>(
     state,
     disabled,
     setStateShallow,
-  } = useComponentState(props, componentContext.animationDriver, staticConfig, getConfig())
+  } = useComponentState(
+    props,
+    componentContext.animationDriver,
+    staticConfig,
+    getConfig()
+  )
 
   const mediaStateNow = opts?.noMedia
     ? // not safe to use mediaState but really marginal to hit this

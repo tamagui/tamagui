@@ -16,7 +16,12 @@ const lazy = () => import('@tamagui/lucide-icons-2')
 `
     const specs = extractImportSpecifiers(src).sort()
     expect(specs).toEqual(
-      ['../sibling/Thing', './side-effect.css', '@tamagui/lucide-icons-2', 'tamagui'].sort()
+      [
+        '../sibling/Thing',
+        './side-effect.css',
+        '@tamagui/lucide-icons-2',
+        'tamagui',
+      ].sort()
     )
   })
 })
@@ -78,7 +83,13 @@ describe('reprefixNames', () => {
 })
 
 function fakeSkin(base: string, source: string): Skin {
-  return { base, name: base.toLowerCase(), file: `${base}.tsx`, source, manifest: { description: 'x' } }
+  return {
+    base,
+    name: base.toLowerCase(),
+    file: `${base}.tsx`,
+    source,
+    manifest: { description: 'x' },
+  }
 }
 
 describe('buildItem', () => {
@@ -101,7 +112,9 @@ styled(F, { name: 'ComboFrame' })
 
   test('throws on a non-skin relative import (would silently drop a file)', () => {
     const src = `import { x } from './localHelper'\nstyled(F, { name: 'AFrame' })`
-    expect(() => buildItem(fakeSkin('A', src), new Set(['A']))).toThrow(/non-skin relative/)
+    expect(() => buildItem(fakeSkin('A', src), new Set(['A']))).toThrow(
+      /non-skin relative/
+    )
   })
 
   test('surfaces manifest meta (tokens/themes/native/peers)', () => {
@@ -196,9 +209,9 @@ describe('deriveStates', () => {
   test('ninth `selected` state (Select/RadioGroup) via variant and via data-state=active', () => {
     // component-tier `selected` — no pseudo-prop; derives from the canonical
     // variant key and from the raw [data-state="active"] selector.
-    expect(deriveStates(`styled(F, { variants: { selected: { true: {} } } })`, TABLES)).toEqual([
-      'selected',
-    ])
+    expect(
+      deriveStates(`styled(F, { variants: { selected: { true: {} } } })`, TABLES)
+    ).toEqual(['selected'])
     expect(
       deriveStates(`styled(F, { '[data-state="active"]': { opacity: 1 } })`, TABLES)
     ).toEqual(['selected'])
