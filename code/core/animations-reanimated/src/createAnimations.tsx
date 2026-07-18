@@ -857,7 +857,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         }
 
         return { animatedStyles: animated, staticStyles }
-      }, [disableAnimation, style, isDark, isMounting, props.animateOnly])
+      }, [disableAnimation, style, isDark, props.animateOnly])
 
       const renderSnapshot = useMemo(() => {
         const transforms = getAnimatedTransforms(animatedStyles.transform)
