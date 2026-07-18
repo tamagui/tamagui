@@ -156,10 +156,10 @@ for (const animationDriver of ['css', 'reanimated']) {
       )
     ).toBe(true)
     // at rest the wrapper is auto height: content growth applies immediately
-    // and no inline pixel height lingers
-    expect(result.inlineAfterOpen).toBe('')
+    // and no inline pixel height lingers (drivers paint '' or an explicit auto)
+    expect(result.inlineAfterOpen.endsWith('px')).toBe(false)
     expect(result.openHeight).toBeGreaterThan(result.initialOpenHeight)
-    expect(result.inlineAfterResize).toBe('')
+    expect(result.inlineAfterResize.endsWith('px')).toBe(false)
 
     const beforeReverse = result.closingBeforeReverse.at(-1)?.height ?? 0
     const afterReverse = result.reopening[0]?.height ?? 0

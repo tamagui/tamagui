@@ -340,6 +340,13 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
+          // layout dimension keys only animate numbers — 'auto' (an open
+          // accordion at rest) and percent strings apply as static styles
+          if (layoutStyleKey[key] && typeof val !== 'number') {
+            nonAnimatedStyle[key] = val
+            continue
+          }
+
           // unparseable themed colors (var(), calc(), empty) crash RN
           // interpolation — apply them as a static style instead
           if (colorStyleKey[key] && !isAnimatableColor(val)) {
@@ -582,8 +589,10 @@ export function createAnimations<A extends AnimationsConfig>(
             costlyToAnimateStyleKey[key] ||
             layoutStyleKey[key]
           ) {
-            // unparseable themed colors can't be interpolated — skip here and
+            // layout keys only animate numbers ('auto'/percents are static);
+            // unparseable themed colors can't be interpolated — skip both and
             // let the next render apply them statically
+            if (layoutStyleKey[key] && typeof val !== 'number') continue
             if (colorStyleKey[key] && !isAnimatableColor(val)) continue
             animateStyles.current[key] = update(key, animateStyles.current[key], val)
           }
