@@ -403,8 +403,10 @@ export const PopoverTrigger = React.memo(
       const trigger = (
         <View
           aria-expanded={open}
-          // TODO not matching
-          // aria-controls={context.contentId}
+          // aria-controls is supplied at runtime by floating-ui's useRole
+          // (see useFloatingContext), pointing at the role="dialog" content
+          // element while open - no manual wiring is needed or wanted here
+          // (a manual id would point at the inner frame, not the dialog element)
           data-state={getState(open)}
           {...rest}
           // @ts-ignore

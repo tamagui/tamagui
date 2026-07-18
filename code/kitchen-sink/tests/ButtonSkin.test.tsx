@@ -35,14 +35,41 @@ test('disables press and focus behavior', async ({ page }) => {
   await expect(page.getByTestId('button-skin-press-count')).toHaveText('presses:0')
 })
 
-test('renders nested buttons with valid elements', async ({ page }) => {
+test('nested button is a non-interactive presentation part', async ({ page }) => {
   const outer = page.getByTestId('button-skin-nested-outer')
   const inner = page.getByTestId('button-skin-nested-inner')
 
+  // outer stays a real control
   expect(await outer.evaluate((element) => element.tagName)).toBe('BUTTON')
+  await expect(outer).toHaveAttribute('role', 'button')
+
+  // inner is presentational: a span, no button role, and not a tab stop
   expect(await inner.evaluate((element) => element.tagName)).toBe('SPAN')
-  await expect(inner).toHaveAttribute('role', 'button')
-  await expect(inner).toHaveAttribute('tabindex', '0')
+  await expect(inner).not.toHaveAttribute('role', 'button')
+  const innerTabIndex = await inner.getAttribute('tabindex')
+  expect(innerTabIndex === null || innerTabIndex === '-1').toBe(true)
+
+  // keyboard: tab order skips the inner presentation element
+  await page.getByTestId('button-skin-nested-before').focus()
+  await page.keyboard.press('Tab')
+  expect(await page.evaluate(() => document.activeElement?.getAttribute('data-testid'))).toBe(
+    'button-skin-nested-outer'
+  )
+  await page.keyboard.press('Tab')
+  expect(await page.evaluate(() => document.activeElement?.getAttribute('data-testid'))).toBe(
+    'button-skin-nested-after'
+  )
+
+  // clicking the inner element does not fire its own (stripped) handler and
+  // does not register as a second control - activation goes to the one button
+  await inner.click()
+  await expect(page.getByTestId('button-skin-nested-inner-presses')).toHaveText('inner:0')
+  await expect(page.getByTestId('button-skin-nested-outer-presses')).toHaveText('outer:1')
+
+  // outer still activates via keyboard (it remains a real control)
+  await outer.focus()
+  await page.keyboard.press('Enter')
+  await expect(page.getByTestId('button-skin-nested-outer-presses')).toHaveText('outer:2')
 })
 
 test('plumbs leading and trailing icons around wrapped text', async ({ page }) => {

@@ -69,6 +69,10 @@ const loaders: Record<string, () => ComponentType<any>> = {
   DialogNestedCase: () => require('./DialogNestedCase').DialogNestedCase,
   DismissLayerStackingCase: () =>
     require('./DismissLayerStackingCase').DismissLayerStackingCase,
+  DismissableLayerToggleCase: () =>
+    require('./DismissableLayerToggleCase').DismissableLayerToggleCase,
+  PopoverAriaControlsCase: () =>
+    require('./PopoverAriaControlsCase').PopoverAriaControlsCase,
   DialogOpenControlled: () => require('./DialogOpenControlled').DialogOpenControlled,
   DialogPresenceCompletionCase: () =>
     require('./DialogPresenceCompletionCase').DialogPresenceCompletionCase,

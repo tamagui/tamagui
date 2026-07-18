@@ -253,61 +253,60 @@ const Dismissable = createRefComponent<
     }
   })
 
+  /**
+   * Creation-order layer tracking. This effect only runs on mount/unmount (and
+   * when the node itself changes), NOT when `disableOutsidePointerEvents`
+   * toggles, so a prop change can't remove a layer from the stack and re-add it
+   * at the end - the layering order stays _creation order_.
+   */
   React.useEffect(() => {
     if (!node) return
     // don't add to layers when force-unmounted (dialog closed but still mounted)
     if (forceUnmount) return
-    if (disableOutsidePointerEvents) {
-      if (context.layersWithOutsidePointerEventsDisabled.size === 0) {
-        originalBodyPointerEvents = document.body.style.pointerEvents
-        document.body.style.pointerEvents = 'none'
-      }
-      context.layersWithOutsidePointerEventsDisabled.add(node)
-      layersWithPointerEventsDisabledCount++
-    }
     context.layers.add(node)
     globalLayers.add(node)
-    // only dispatch position update when pointer-events tracking is active
-    if (disableOutsidePointerEvents || layersWithPointerEventsDisabledCount > 0) {
-      dispatchUpdate()
-    }
+    dispatchUpdate()
     notifyLayerChange()
     return () => {
-      if (disableOutsidePointerEvents) {
-        if (context.layersWithOutsidePointerEventsDisabled.size === 1) {
-          document.body.style.pointerEvents = originalBodyPointerEvents
-        }
-        // decrement AFTER dispatch so other layers still re-render
-      }
+      context.layers.delete(node)
+      globalLayers.delete(node)
+      dispatchUpdate()
+      notifyLayerChange()
     }
-  }, [node, disableOutsidePointerEvents, forceUnmount, context])
+  }, [node, forceUnmount, context])
 
   /**
-   * We purposefully prevent combining this effect with the `disableOutsidePointerEvents` effect
-   * because a change to `disableOutsidePointerEvents` would remove this layer from the stack
-   * and add it to the end again so the layering order wouldn't be _creation order_.
-   * We only want them to be removed from context stacks when unmounted.
+   * Pointer-events tracking. This owns SYMMETRIC add/remove of the node from
+   * `layersWithOutsidePointerEventsDisabled`, the module count, and the body
+   * pointer-events style. It reruns on every `disableOutsidePointerEvents`
+   * transition, and the cleanup fully reverses the setup, so a true->false->true
+   * toggle never leaves a stale Set entry or a divergent count.
    */
   React.useEffect(() => {
+    if (!node) return
     if (forceUnmount) return
-    return () => {
-      if (!node) return
-      const hadPointerEventsDisabled =
-        context.layersWithOutsidePointerEventsDisabled.has(node)
-      context.layers.delete(node)
-      context.layersWithOutsidePointerEventsDisabled.delete(node)
-      globalLayers.delete(node)
-      // only dispatch position update when pointer-events tracking is active
-      if (layersWithPointerEventsDisabledCount > 0) {
-        dispatchUpdate()
-      }
-      notifyLayerChange()
-      // decrement count AFTER dispatch so other layers see count > 0 and re-render
-      if (hadPointerEventsDisabled) {
-        layersWithPointerEventsDisabledCount--
-      }
+    if (!disableOutsidePointerEvents) return
+    if (context.layersWithOutsidePointerEventsDisabled.size === 0) {
+      originalBodyPointerEvents = document.body.style.pointerEvents
+      document.body.style.pointerEvents = 'none'
     }
-  }, [node, context, forceUnmount])
+    context.layersWithOutsidePointerEventsDisabled.add(node)
+    layersWithPointerEventsDisabledCount++
+    dispatchUpdate()
+    notifyLayerChange()
+    return () => {
+      context.layersWithOutsidePointerEventsDisabled.delete(node)
+      // restore the body once this was the last pointer-events-disabling layer
+      if (context.layersWithOutsidePointerEventsDisabled.size === 0) {
+        document.body.style.pointerEvents = originalBodyPointerEvents
+      }
+      // dispatch while the count is still > 0 so other layers re-render, then
+      // decrement so they observe the settled count on their next render
+      dispatchUpdate()
+      notifyLayerChange()
+      layersWithPointerEventsDisabledCount--
+    }
+  }, [node, disableOutsidePointerEvents, forceUnmount, context])
 
   React.useEffect(() => {
     const handleUpdate = () => {
