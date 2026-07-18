@@ -317,17 +317,19 @@ const SliderVertical = createRefComponent<View, SliderVerticalProps>(
 
 type SliderTrackElement = TamaguiElement
 
+// Unstyled track frame: fill + clip only. Track color and radius live in the
+// tamagui skin (code/ui/tamagui/src/components/Slider.tsx).
 export const SliderTrackFrame = styled(SliderFrame, {
   name: 'Slider',
   height: '100%',
   width: '100%',
-  backgroundColor: '$backgroundPress',
   position: 'relative',
-  borderRadius: 100_000,
   overflow: 'hidden',
 })
 
-const SliderTrack = createRefComponent<SliderTrackElement, SliderTrackProps>(
+// createStyledHOC (not createRefComponent) so the tamagui skin can layer track
+// color/radius via styled(Slider.Track, { ... }); the render body is unchanged.
+const SliderTrack = createStyledHOC(SliderTrackFrame)(
   function SliderTrack(props: ScopedProps<SliderTrackProps>, forwardedRef) {
     const { __scopeSlider, ...trackProps } = props
     const context = useSliderContext(__scopeSlider)
@@ -348,17 +350,19 @@ const SliderTrack = createRefComponent<SliderTrackElement, SliderTrackProps>(
  * SliderActive
  * -----------------------------------------------------------------------------------------------*/
 
+// Unstyled active-range frame: positioning only. Fill color and radius live in
+// the tamagui skin.
 export const SliderActiveFrame = styled(SliderFrame, {
   name: 'SliderActive',
   position: 'absolute',
   pointerEvents: 'box-none',
-  backgroundColor: '$color',
-  borderRadius: 100_000,
 })
 
 type SliderActiveProps = GetProps<typeof SliderActiveFrame>
 
-const SliderActive = createRefComponent<View, SliderActiveProps>(function SliderActive(
+// createStyledHOC so the tamagui skin can layer active-range color/radius via
+// styled(Slider.TrackActive, { ... }); the render body is unchanged.
+const SliderActive = createStyledHOC(SliderActiveFrame)(function SliderActive(
   props: ScopedProps<SliderActiveProps>,
   forwardedRef
 ) {
@@ -420,25 +424,12 @@ const getThumbSize = (val?: SizeTokens | number | true) => {
   }
 }
 
+// Unstyled thumb frame: positioning + the size mechanism (hit-target
+// dimensions) only. Border, background, and hover/press/focus color styling
+// live in the tamagui skin.
 export const SliderThumbFrame = styled(ThemeableStack, {
   name: 'SliderThumb',
   position: 'absolute',
-  borderWidth: 2,
-  borderColor: '$borderColor',
-  backgroundColor: '$background',
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-    borderColor: '$borderColorPress',
-  },
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    borderColor: '$borderColorHover',
-  },
-  focusVisibleStyle: {
-    outlineStyle: 'solid',
-    outlineWidth: 2,
-    outlineColor: '$outlineColor',
-  },
 
   variants: {
     size: {

@@ -170,6 +170,10 @@ export {
   Theme,
   Variables,
   View,
+  // the raw, unstyled text primitive (no font scale) — the atomic pair for View
+  // on the unstyled surface. Paragraph/SizableText (with the font scale) come
+  // from @tamagui/text above.
+  Text,
   SizeContext,
   createComponent,
   createFont,

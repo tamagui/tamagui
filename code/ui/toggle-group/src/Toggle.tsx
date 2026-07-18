@@ -12,6 +12,13 @@ import { context } from './context'
 
 const NAME = 'Toggle'
 
+// Unstyled Toggle behavior frame: structural layout, the size mechanism
+// (hit-target dimensions), the native button render, and focus reset only. All
+// theme decoration (palette, border, hover/press/focus color styling) and the
+// default "active" appearance live in the tamagui skin
+// (code/ui/tamagui/src/components/ToggleGroup.tsx). The frame still emits the
+// discrete state (aria-pressed / data-state) via the Toggle component below; the
+// skin styles that state through the `activeStyle` prop.
 export const ToggleFrame = styled(
   View,
   {
@@ -22,24 +29,6 @@ export const ToggleFrame = styled(
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex',
-    backgroundColor: '$background',
-    borderColor: '$borderColor',
-    borderWidth: 1,
-    margin: -1,
-    hoverStyle: {
-      backgroundColor: '$backgroundHover',
-      borderColor: '$borderColorHover',
-    },
-    pressStyle: {
-      backgroundColor: '$backgroundPress',
-      borderColor: '$borderColorPress',
-    },
-    focusVisibleStyle: {
-      outlineColor: '$outlineColor',
-      outlineWidth: 2,
-      outlineStyle: 'solid',
-      zIndex: 10,
-    },
 
     variants: {
       size: {
@@ -57,16 +46,10 @@ export const ToggleFrame = styled(
         },
       },
 
+      // structural placeholder for the default-active appearance; the skin fills
+      // it in (or the `activeStyle` prop overrides it).
       defaultActiveStyle: {
-        true: {
-          backgroundColor: '$backgroundPress',
-          hoverStyle: {
-            backgroundColor: '$backgroundPress',
-          },
-          focusStyle: {
-            backgroundColor: '$backgroundPress',
-          },
-        },
+        true: {},
       },
     } as const,
   },
