@@ -1123,6 +1123,14 @@ export function createComponent<
       if (typeof asChild !== 'undefined') {
         viewProps.asChild = asChild
       }
+      // an HOC layer doesn't animate itself (shouldUseAnimation is false for
+      // isHOC); forward the animation lifecycle callback to the inner component
+      // that does, so a user onTransition on a styled/HOC-wrapped animated
+      // component (e.g. a skinned Dialog.Content) still reaches the driver and
+      // composes with the component's own onTransition.
+      if (typeof onTransition !== 'undefined') {
+        viewProps.onTransition = onTransition
+      }
     }
 
     // once you set animation prop don't remove it, you can set to undefined/false
