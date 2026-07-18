@@ -74,29 +74,54 @@ describe('Accordion (auto-height, native)', () => {
   })
 
   it('opens, reverses, and closes through intermediate numeric heights', async () => {
+    // poll instead of fixed offsets: animation start and settle timing vary
+    // with simulator/js-thread speed, so sample against observed motion
+    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+    const pollHeight = async (
+      predicate: (height: number) => boolean,
+      label: string,
+      timeoutMs = 5000
+    ) => {
+      const startedAt = Date.now()
+      let last = await frame('def-height2')
+      while (!predicate(last.height)) {
+        assert.ok(
+          Date.now() - startedAt < timeoutMs,
+          `timed out polling for ${label}, last height ${last.height}`
+        )
+        await sleep(50)
+        last = await frame('def-height2')
+      }
+      return last.height
+    }
+    const pollSettled = async (label: string) => {
+      let previous = await frame('def-height2')
+      for (let i = 0; i < 100; i++) {
+        await sleep(250)
+        const next = await frame('def-height2')
+        if (Math.abs(next.height - previous.height) < 1) {
+          return next.height
+        }
+        previous = next
+      }
+      assert.fail(`height never settled for ${label}`)
+      return 0
+    }
+
     await element(by.id('def-trigger2')).tap()
-    await new Promise((resolve) => setTimeout(resolve, 90))
-
-    const opening = await frame('def-height2')
-    assert.ok(opening.height > 0, `opening height ${opening.height} should be above 0`)
-
-    await new Promise((resolve) => setTimeout(resolve, 300))
-    const initialOpen = await frame('def-height2')
+    const opening = await pollHeight((h) => h > 0, 'open start')
+    const initialOpen = await pollSettled('open settle')
     assert.ok(
-      opening.height < initialOpen.height,
-      `opening height ${opening.height} should be below settled height ${initialOpen.height}`
+      opening < initialOpen,
+      `opening height ${opening} should be an intermediate below settled ${initialOpen}`
     )
 
     await element(by.id('grow-content')).tap()
-    await new Promise((resolve) => setTimeout(resolve, 390))
-    const open = await frame('def-height2')
     // at rest the wrapper is auto height by design, so content growth applies
-    // fluidly (no pinned pixel to animate from) — assert the growth landed,
+    // fluidly (no pinned pixel to animate from) — assert the growth lands,
     // not an intermediate frame
-    assert.ok(
-      open.height > initialOpen.height + 10,
-      `grown height ${open.height} should exceed the settled height ${initialOpen.height}`
-    )
+    await pollHeight((h) => h > initialOpen + 10, 'content growth')
+    const open = await pollSettled('grown settle')
 
     const trigger2 = await frame('def-trigger2')
     const content2 = await frame('def-content2')
@@ -112,41 +137,34 @@ describe('Accordion (auto-height, native)', () => {
     )
 
     await element(by.id('def-trigger2')).tap()
-    await new Promise((resolve) => setTimeout(resolve, 90))
-    const closingBeforeReverse = await frame('def-height2')
-    assert.ok(closingBeforeReverse.height > 0, 'close should have an intermediate height')
-    assert.ok(
-      closingBeforeReverse.height < open.height,
-      'close should move below open height'
+    const closingBeforeReverse = await pollHeight(
+      (h) => h > 1 && h < open - 5,
+      'close intermediate'
     )
 
     await element(by.id('def-trigger2')).tap()
-    await new Promise((resolve) => setTimeout(resolve, 90))
-    const reopening = await frame('def-height2')
-    assert.ok(reopening.height > 0, 'reversal should stay above the closed endpoint')
-    assert.ok(
-      reopening.height < open.height,
-      'reversal should stay below the open endpoint'
+    const reopening = await pollHeight(
+      (h) => h > closingBeforeReverse + 2,
+      'reversal rising'
     )
     assert.ok(
-      reopening.height > closingBeforeReverse.height,
-      `reversal height ${reopening.height} should rise above ${closingBeforeReverse.height}`
+      reopening <= open + 2,
+      `reversal height ${reopening} should stay at or below the open endpoint ${open}`
     )
-
-    await new Promise((resolve) => setTimeout(resolve, 300))
-    const reopened = await frame('def-height2')
+    const reopened = await pollSettled('reopen settle')
     assert.ok(
-      Math.abs(reopened.height - open.height) <= 2,
-      `reopened height ${reopened.height} should settle at ${open.height}`
+      Math.abs(reopened - open) <= 2,
+      `reopened height ${reopened} should settle at ${open}`
     )
 
     await element(by.id('def-trigger2')).tap()
-    await new Promise((resolve) => setTimeout(resolve, 90))
-    const closing = await frame('def-height2')
-    assert.ok(closing.height > 0, 'final close should have an intermediate height')
-    assert.ok(closing.height < open.height, 'final close should move below open height')
+    const closing = await pollHeight(
+      (h) => h > 1 && h < open - 5,
+      'final close intermediate'
+    )
+    assert.ok(closing > 0, 'final close should have an intermediate height')
 
-    await new Promise((resolve) => setTimeout(resolve, 300))
+    await pollHeight((h) => h <= 1, 'final close settle')
     const closed = await frame('def-height2')
     const closedMarker = await frame('after-accordion-marker')
     assert.ok(closed.height <= 1, `closed height ${closed.height} should settle at 0`)
