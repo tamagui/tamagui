@@ -200,15 +200,23 @@ export type SelectRootProps<
   Value extends string,
   Multiple extends boolean | undefined = false,
 > = Omit<SelectScopedProps<SelectBehaviorProps<Value, Multiple>>, 'size'> & {
-  size?: SelectSize
+  // accept the discrete skin sizes AND the behavior's token/`true` size so
+  // existing token-sized consumers keep type-checking; resolved to a discrete
+  // size for the size-table context below.
+  size?: SelectSize | SelectBehaviorProps<Value, Multiple>['size']
 }
 
 export function SelectRoot<
   Value extends string = string,
   Multiple extends boolean | undefined = false,
->({ size = selectSizes.defaultSize, ...props }: SelectRootProps<Value, Multiple>) {
+>({ size, ...props }: SelectRootProps<Value, Multiple>) {
+  const namedSize = (
+    typeof size === 'string' && size in selectSizes.values
+      ? size
+      : selectSizes.defaultSize
+  ) as SelectSize
   return (
-    <selectSizes.Context.Provider size={size}>
+    <selectSizes.Context.Provider size={namedSize}>
       <SelectBehavior.Root<Value, Multiple> {...props} />
     </selectSizes.Context.Provider>
   )

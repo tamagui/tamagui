@@ -239,7 +239,7 @@ export declare const SelectSeparator: import("react").FunctionComponent<Omit<imp
     __tama: [import("@tamagui/web").TamaDefer, import("@tamagui/ui").TamaguiElement, import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {}, import("@tamagui/web").StaticConfigPublic];
 };
 export type SelectRootProps<Value extends string, Multiple extends boolean | undefined = false> = Omit<SelectScopedProps<SelectBehaviorProps<Value, Multiple>>, 'size'> & {
-    size?: SelectSize;
+    size?: SelectSize | SelectBehaviorProps<Value, Multiple>['size'];
 };
 export declare function SelectRoot<Value extends string = string, Multiple extends boolean | undefined = false>({ size, ...props }: SelectRootProps<Value, Multiple>): import("react/jsx-runtime").JSX.Element;
 export declare const selectParts: {
