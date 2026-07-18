@@ -73,6 +73,16 @@ const silenceAnimatedComponentDevCheck = (style: unknown) => {
 
 type ReanimatedAnimatedNumber = SharedValue<number>
 
+type AnimationSnapshot = {
+  animated: Record<string, unknown>
+  statics: Record<string, unknown>
+  transforms: Array<Record<string, unknown>>
+  newKeys: Record<string, boolean>
+  removedKeys: Record<string, boolean>
+  removeTransform: boolean
+  clearValue: '' | null
+}
+
 /** Spring animation configuration */
 type SpringConfig = {
   type?: 'spring'
@@ -130,8 +140,67 @@ const cloneAnimationValue = (value: unknown): unknown => {
   return value
 }
 
+const cloneStyleRecord = (
+  style: Record<string, unknown>
+): Record<string, unknown> => {
+  const next: Record<string, unknown> = {}
+  for (const key in style) {
+    next[key] = cloneAnimationValue(style[key])
+  }
+  return next
+}
+
+const cloneTransforms = (
+  transforms: Array<Record<string, unknown>>
+): Array<Record<string, unknown>> => transforms.map(cloneStyleRecord)
+
 const cloneTransitionConfig = (config: TransitionConfig): TransitionConfig => {
   return cloneAnimationValue(config) as TransitionConfig
+}
+
+const getAnimatedTransforms = (value: unknown): Array<Record<string, unknown>> => {
+  if (!Array.isArray(value)) return []
+  return value.filter(
+    (item): item is Record<string, unknown> =>
+      item !== null && typeof item === 'object' && !Array.isArray(item)
+  )
+}
+
+const getAnimatedKeySet = (
+  animated: Record<string, unknown>,
+  transforms: Array<Record<string, unknown>>
+): Set<string> => {
+  const keys = new Set<string>()
+  for (const key in animated) {
+    if (key !== 'transform') keys.add(key)
+  }
+  for (const transform of transforms) {
+    const key = Object.keys(transform)[0]
+    if (key) keys.add(`transform:${key}`)
+  }
+  return keys
+}
+
+const getNewAnimatedKeys = (
+  current: Set<string>,
+  previous: Set<string>
+): Record<string, boolean> => {
+  const newKeys: Record<string, boolean> = {}
+  for (const key of current) {
+    if (!previous.has(key)) newKeys[key] = true
+  }
+  return newKeys
+}
+
+const getRemovedAnimatedKeys = (
+  current: Set<string>,
+  previous: Set<string>
+): Record<string, boolean> => {
+  const removedKeys: Record<string, boolean> = {}
+  for (const key of previous) {
+    if (!current.has(key)) removedKeys[key] = true
+  }
+  return removedKeys
 }
 
 const createReanimatedConfig = (config: TransitionConfig): Record<string, unknown> => {
@@ -692,12 +761,6 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       // =========================================================================
       // avoidRerenders: SharedValues for style updates without re-renders
       // =========================================================================
-      const animatedTargetsRef = useSharedValue<Record<string, unknown> | null>(null)
-      const staticTargetsRef = useSharedValue<Record<string, unknown> | null>(null)
-      const transformTargetsRef = useSharedValue<Array<Record<string, unknown>> | null>(
-        null
-      )
-
       // Separate styles into animated and static
       const { animatedStyles, staticStyles } = useMemo(() => {
         const animated: Record<string, unknown> = {}
@@ -725,18 +788,84 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         // During mount, include animated values in static to prevent flicker
         if (isMounting) {
           for (const key in animated) {
-            staticStyles[key] = animated[key]
+            staticStyles[key] = cloneAnimationValue(animated[key])
           }
         }
 
         return { animatedStyles: animated, staticStyles }
       }, [disableAnimation, style, isDark, isMounting, props.animateOnly])
 
+      const committedRenderKeysRef = useRef(new Set<string>())
+      const committedRenderBaselineRef = useRef<Record<string, unknown>>({})
+      const renderSnapshot = useMemo(() => {
+        const transforms = getAnimatedTransforms(animatedStyles.transform)
+        const regularAnimated: Record<string, unknown> = {}
+        for (const key in animatedStyles) {
+          if (key !== 'transform') regularAnimated[key] = animatedStyles[key]
+        }
+        const keys = getAnimatedKeySet(animatedStyles, transforms)
+        const newKeys = getNewAnimatedKeys(keys, committedRenderKeysRef.current)
+        const removedKeys = getRemovedAnimatedKeys(keys, committedRenderKeysRef.current)
+        // keep each key's first React value as a baseline for its active lifetime.
+        // the stable mapper paints over it after seeding, while pre-mapper rerenders
+        // cannot create an ownerless frame. transforms share one top-level baseline.
+        const baseline: Record<string, unknown> = {}
+        for (const key in animatedStyles) {
+          if (key === 'transform') continue
+          baseline[key] = Object.prototype.hasOwnProperty.call(
+            committedRenderBaselineRef.current,
+            key
+          )
+            ? committedRenderBaselineRef.current[key]
+            : animatedStyles[key]
+        }
+        if (transforms.length > 0) {
+          baseline.transform = Object.prototype.hasOwnProperty.call(
+            committedRenderBaselineRef.current,
+            'transform'
+          )
+            ? committedRenderBaselineRef.current.transform
+            : transforms
+        }
+        return {
+          value: {
+            animated: cloneStyleRecord(regularAnimated),
+            statics: cloneStyleRecord(staticStyles),
+            transforms: cloneTransforms(transforms),
+            newKeys: { ...newKeys },
+            removedKeys: { ...removedKeys },
+            removeTransform: Object.keys(removedKeys).some((key) =>
+              key.startsWith('transform:')
+            ),
+            clearValue: isWeb ? '' : null,
+          } satisfies AnimationSnapshot,
+          reactStatics: { ...staticStyles, ...baseline },
+          baseline,
+          keys,
+        }
+      }, [animatedStyles, staticStyles])
+      const renderSnapshotRef = useSharedValue<AnimationSnapshot>({
+        animated: {},
+        statics: {},
+        transforms: [],
+        newKeys: {},
+        removedKeys: {},
+        removeTransform: false,
+        clearValue: isWeb ? '' : null,
+      })
+      const emitterSnapshotRef = useSharedValue<AnimationSnapshot | null>(null)
+      const emitterKeysRef = useRef<Set<string> | null>(null)
+
+      useIsomorphicLayoutEffect(() => {
+        committedRenderKeysRef.current = renderSnapshot.keys
+        committedRenderBaselineRef.current = renderSnapshot.baseline
+      }, [renderSnapshot])
+
       // reconcile the emitter latch with real re-renders.
       //
       // the avoidReRenders fast path lets a pure pseudo change (hover/press/focus) push
       // styles straight to the worklet via useStyleEmitter with no React commit — it sets
-      // animatedTargetsRef. the worklet then treats `animatedTargetsRef !== null` as a
+      // emitterSnapshotRef. the worklet then treats `emitterSnapshotRef !== null` as a
       // permanent latch: once the emitter has fired even once, it reads its last-emitted
       // snapshot and IGNORES `animatedStyles` from every subsequent re-render. so a base
       // style that changes through React (e.g. a row's `backgroundColor` flipping with an
@@ -766,11 +895,25 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       useIsomorphicLayoutEffect(() => {
         if (
           (isExiting || !pseudoActiveRef.current) &&
-          animatedTargetsRef.value !== null
+          emitterSnapshotRef.value !== null
         ) {
-          animatedTargetsRef.value = null
-          staticTargetsRef.value = null
-          transformTargetsRef.value = null
+          const emitterKeys = emitterKeysRef.current
+          if (emitterKeys) {
+            const removedKeys = {
+              ...renderSnapshot.value.removedKeys,
+              ...getRemovedAnimatedKeys(renderSnapshot.keys, emitterKeys),
+            }
+            renderSnapshotRef.value = {
+              ...renderSnapshot.value,
+              removedKeys,
+              removeTransform: Object.keys(removedKeys).some((key) =>
+                key.startsWith('transform:')
+              ),
+              clearValue: isWeb ? '' : null,
+            }
+          }
+          emitterSnapshotRef.value = null
+          emitterKeysRef.current = null
         }
       })
 
@@ -882,10 +1025,21 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
             }
           }
 
-          // update shared values - on web, the mapper watches these if passed in dependencies
-          animatedTargetsRef.value = animated
-          staticTargetsRef.value = statics
-          transformTargetsRef.value = transforms
+          const keys = getAnimatedKeySet(animated, transforms)
+          const previousKeys = emitterKeysRef.current ?? committedRenderKeysRef.current
+          const removedKeys = getRemovedAnimatedKeys(keys, previousKeys)
+          emitterSnapshotRef.value = {
+            animated: cloneStyleRecord(animated),
+            statics: cloneStyleRecord(statics),
+            transforms: cloneTransforms(transforms),
+            newKeys: { ...getNewAnimatedKeys(keys, previousKeys) },
+            removedKeys: { ...removedKeys },
+            removeTransform: Object.keys(removedKeys).some((key) =>
+              key.startsWith('transform:')
+            ),
+            clearValue: isWeb ? '' : null,
+          }
+          emitterKeysRef.current = keys
 
           if (
             process.env.NODE_ENV === 'development' &&
@@ -911,7 +1065,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         // regular animated properties
         for (const key in animatedStyles) {
           if (key === 'transform') continue
-          if (canAnimateProperty(key, animatedStyles[key], animateOnly)) {
+          if (
+            !renderSnapshot.value.newKeys[key] &&
+            canAnimateProperty(key, animatedStyles[key], animateOnly)
+          ) {
             exitKeys.push(key)
           }
         }
@@ -927,7 +1084,10 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               if (animateOnly && !animateOnly.includes(tKey)) {
                 continue
               }
-              exitKeys.push(`transform:${tKey}`)
+              const exitKey = `transform:${tKey}`
+              if (!renderSnapshot.value.newKeys[exitKey]) {
+                exitKeys.push(exitKey)
+              }
             }
           }
         }
@@ -951,31 +1111,30 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       }, [justStartedExiting, sendExitComplete])
 
       // Create animated style
-      const animatedStyle = useAnimatedStyle(
+      const animatedStyle = isWeb
+        ? useAnimatedStyle(
         () => {
           'worklet'
 
-          if (disableAnimation || isHydrating) {
+          const config = configRef.value
+          if (config.disableAnimation || config.isHydrating) {
             return {}
           }
 
           const result: Record<string, any> = {}
-          const config = configRef.value
 
           // Check if we have avoidRerenders updates from useStyleEmitter
-          const emitterAnimated = animatedTargetsRef.value
-          const emitterStatic = staticTargetsRef.value
-          const emitterTransforms = transformTargetsRef.value
-          const hasEmitterUpdates = emitterAnimated !== null
+          const emitterSnapshot = emitterSnapshotRef.value
+          const snapshot = emitterSnapshot ?? renderSnapshotRef.value
 
-          // Use emitter values if available, otherwise use React state values.
+          // Use emitter values if available, otherwise use the committed render snapshot.
           // statics must fall back to the render's staticStyles (not {}): once an
           // emitter snapshot has applied static keys, reanimated never unsets
           // them, so after the latch drops a stale emitted value (e.g. a border
           // color that missed animateOnly) would keep painting over the fresh
           // style prop forever
-          const animatedValues = hasEmitterUpdates ? emitterAnimated! : animatedStyles
-          const staticValues = hasEmitterUpdates ? emitterStatic! : staticStyles
+          const animatedValues = snapshot.animated
+          const staticValues = snapshot.statics
 
           // read exit state from shared values
           const currentlyExiting = isExitingRef.value
@@ -984,6 +1143,11 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
           // Include static values from emitter (for hover/press style changes)
           for (const key in staticValues) {
             result[key] = staticValues[key]
+          }
+          for (const key in snapshot.removedKeys) {
+            if (!key.startsWith('transform:') && !(key in staticValues)) {
+              result[key] = snapshot.clearValue
+            }
           }
 
           // Animate regular properties
@@ -1004,16 +1168,16 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               }
             }
 
-            result[key] = applyAnimation(targetValue as number, propConfig, callback)
+            result[key] = snapshot.newKeys[key]
+              ? targetValue
+              : applyAnimation(targetValue as number, propConfig, callback)
           }
 
           // Handle transforms
-          const transforms = hasEmitterUpdates
-            ? emitterTransforms
-            : animatedStyles.transform
+          const transforms = snapshot.transforms
 
           // Animate transform properties with validation
-          if (transforms && Array.isArray(transforms)) {
+          if (transforms.length > 0 || snapshot.removeTransform) {
             const validTransforms: Record<string, unknown>[] = []
 
             for (const t of transforms) {
@@ -1043,16 +1207,14 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
                 }
 
                 validTransforms.push({
-                  [transformKey]: applyAnimation(
-                    targetValue as number,
-                    propConfig,
-                    callback
-                  ),
+                  [transformKey]: snapshot.newKeys[`transform:${transformKey}`]
+                    ? targetValue
+                    : applyAnimation(targetValue as number, propConfig, callback),
                 })
               }
             }
 
-            if (validTransforms.length > 0) {
+            if (validTransforms.length > 0 || !('transform' in staticValues)) {
               result.transform = validTransforms
             }
           }
@@ -1061,22 +1223,17 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         },
         isWeb
           ? [
-              animatedStyles,
-              staticStyles,
-              baseConfig,
-              propertyConfigs,
-              disableAnimation,
-              isHydrating,
-              // pass SharedValues so the mapper watches them on web (no babel plugin)
-              animatedTargetsRef,
-              staticTargetsRef,
-              transformTargetsRef,
+              // pass SharedValues so the stable mapper watches them on web (no babel plugin)
+              renderSnapshotRef,
+              emitterSnapshotRef,
+              configRef,
               isExitingRef,
               exitCycleIdShared,
               markExitKeyDone,
             ]
           : undefined
-      )
+          )
+        : {}
 
       silenceAnimatedComponentDevCheck(animatedStyle)
 

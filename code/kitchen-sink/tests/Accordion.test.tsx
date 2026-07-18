@@ -7,38 +7,73 @@ import { setupPage } from './test-utils'
 // height inline and cannot tween out of 'auto', so the wrapper froze at
 // height:auto -> collapsed to 0. the content (absolutely positioned) then spilled
 // out of layout and rendered below the last item, and nothing animated.
-// the demo drives collapse with the `transition` prop, which is a CSS-transition
-// the default-open layout check runs under css, while the frame-level motion check
-// runs under both css and reanimated so web cannot hide a native-driver snap.
-test('open item reserves height and pushes siblings below its content', async ({
-  page,
-}) => {
-  await setupPage(page, {
-    name: 'AccordionDefaultOpenCase',
-    type: 'useCase',
-    searchParams: { animationDriver: 'css' },
-  })
-  const content = page.locator('#def-content')
-  const marker = page.locator('#after-accordion-marker')
-  await expect(content).toBeVisible()
-
-  const contentBox = await content.boundingBox()
-  const trigger2Box = await page.locator('#def-trigger2').boundingBox()
-  const markerBox = await marker.boundingBox()
-  expect(contentBox).not.toBeNull()
-  expect(trigger2Box).not.toBeNull()
-  expect(markerBox).not.toBeNull()
-
-  // content of the open item has real height (not collapsed to 0)
-  expect(contentBox!.height).toBeGreaterThan(10)
-
-  // the next item's trigger sits at or below the open content bottom (no overlap,
-  // content is not rendering below the last item)
-  expect(trigger2Box!.y).toBeGreaterThanOrEqual(contentBox!.y + contentBox!.height - 2)
-  expect(markerBox!.y).toBeGreaterThanOrEqual(trigger2Box!.y + trigger2Box!.height - 2)
-})
-
 for (const animationDriver of ['css', 'reanimated']) {
+  test(`${animationDriver}: default-open layout never collapses on its first frames`, async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      globalThis['__accordionFirstFrames'] = []
+      const startedAt = performance.now()
+      const sample = () => {
+        const wrapper = document.getElementById('def-height')
+        const content = document.getElementById('def-content')
+        const marker = document.getElementById('after-accordion-marker')
+        if (wrapper && content && marker) {
+          const wrapperRect = wrapper.getBoundingClientRect()
+          const contentRect = content.getBoundingClientRect()
+          const markerRect = marker.getBoundingClientRect()
+          globalThis['__accordionFirstFrames'].push({
+            wrapperHeight: wrapperRect.height,
+            contentBottom: contentRect.y + contentRect.height,
+            markerY: markerRect.y,
+          })
+        }
+        if (performance.now() - startedAt < 2000) requestAnimationFrame(sample)
+      }
+      requestAnimationFrame(sample)
+    })
+
+    await setupPage(page, {
+      name: 'AccordionDefaultOpenCase',
+      type: 'useCase',
+      searchParams: { animationDriver },
+    })
+    await page.waitForTimeout(100)
+
+    const frames = await page.evaluate<
+      Array<{ wrapperHeight: number; contentBottom: number; markerY: number }>
+    >(() => globalThis['__accordionFirstFrames'])
+    expect(frames.length).toBeGreaterThan(1)
+    expect(
+      Math.min(...frames.map(({ wrapperHeight }) => wrapperHeight)),
+      JSON.stringify(frames)
+    ).toBeGreaterThan(10)
+    expect(
+      Math.min(...frames.map(({ markerY, contentBottom }) => markerY - contentBottom))
+    ).toBeGreaterThanOrEqual(-2)
+
+    const closing = await page.evaluate(async () => {
+      const trigger = document.getElementById('def-trigger')
+      const wrapper = document.getElementById('def-height')
+      if (!trigger || !wrapper) throw new Error('default-open accordion nodes missing')
+
+      const openHeight = wrapper.getBoundingClientRect().height
+      trigger.click()
+      const heights: number[] = []
+      const startedAt = performance.now()
+      do {
+        await new Promise(requestAnimationFrame)
+        heights.push(wrapper.getBoundingClientRect().height)
+      } while (performance.now() - startedAt < 450)
+      return { openHeight, heights }
+    })
+
+    expect(
+      closing.heights.some((height) => height > 1 && height < closing.openHeight - 1)
+    ).toBe(true)
+    expect(closing.heights.at(-1)).toBeLessThanOrEqual(1)
+  })
+
   test(`${animationDriver}: toggling and reversing samples numeric wrapper height`, async ({
     page,
   }) => {
@@ -116,7 +151,9 @@ for (const animationDriver of ['css', 'reanimated']) {
     expect(beforeReverse).toBeLessThan(result.openHeight - 1)
     expect(afterReverse).toBeGreaterThan(1)
     expect(afterReverse).toBeLessThan(result.openHeight - 1)
-    expect(Math.abs(afterReverse - beforeReverse)).toBeLessThan(15)
+    expect(Math.abs(afterReverse - beforeReverse)).toBeLessThan(
+      result.openHeight * 0.2
+    )
     expect(result.reopening.at(-1)?.height).toBeCloseTo(result.openHeight, 0)
 
     expect(
@@ -127,3 +164,32 @@ for (const animationDriver of ['css', 'reanimated']) {
     await expect(page.locator('#def-content2')).toHaveCount(0)
   })
 }
+
+test('reanimated clears absent keys and seeds them again on reappearance', async ({
+  page,
+}) => {
+  await setupPage(page, {
+    name: 'AccordionDefaultOpenCase',
+    type: 'useCase',
+    searchParams: { animationDriver: 'reanimated' },
+  })
+
+  const probe = page.locator('#animated-key-probe')
+  const initial = await probe.boundingBox()
+  expect(initial).not.toBeNull()
+  expect(initial!.height).toBeCloseTo(40, 0)
+
+  await page.locator('#toggle-key-probe').click()
+  await page.waitForTimeout(150)
+  const absent = await probe.boundingBox()
+  expect(absent).not.toBeNull()
+  expect(absent!.height).toBeLessThanOrEqual(1)
+  expect(absent!.x).toBeLessThan(initial!.x - 30)
+
+  await page.locator('#toggle-key-probe').click()
+  await page.waitForTimeout(150)
+  const reappeared = await probe.boundingBox()
+  expect(reappeared).not.toBeNull()
+  expect(reappeared!.height).toBeCloseTo(40, 0)
+  expect(reappeared!.x).toBeCloseTo(initial!.x, 0)
+})

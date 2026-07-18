@@ -600,7 +600,7 @@ const HeightAnimator = View.styleable((props, ref) => {
     : 0
 
   return (
-    <View ref={ref} {...rest} position="relative" height={height} overflow="hidden">
+    <View ref={ref} position="relative" {...rest} height={height} overflow="hidden">
       <View
         position={measureInFlow ? 'relative' : 'absolute'}
         top={measureInFlow ? undefined : 0}
