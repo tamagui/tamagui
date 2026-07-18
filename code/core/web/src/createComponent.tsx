@@ -276,7 +276,13 @@ export function createComponent<
   const component = (propsInWithRef: ComponentPropTypes & { ref?: React.Ref<Ref> }) => {
     'use no memo'
 
-    const { ref: forwardedRef, ...propsIn } = propsInWithRef
+    // read the forwarded ref directly off the incoming props — do NOT clone the
+    // whole object every render just to strip `ref`. the original props object is
+    // passed straight through; `ref` is skipped in the getSplitStyles pass (so it
+    // never forwards onto the host) and the composed ref is assigned explicitly
+    // onto viewProps below.
+    const forwardedRef = propsInWithRef.ref
+    const propsIn = propsInWithRef as Omit<typeof propsInWithRef, 'ref'>
 
     config = config || getConfig()
 
@@ -371,7 +377,6 @@ export function createComponent<
       styledContextValue,
       propsIn
     )
-    const [baseProps] = mergeComponentProps(defaultProps, styledContextValue, {})
 
     props = nextProps as ViewProps | TextProps
     overriddenContextProps = overrides
@@ -499,6 +504,11 @@ export function createComponent<
       platformPseudo,
       startedUnhydrated,
     } = componentState
+
+    // adopt the props object useComponentState resolved: on the enter/exit presence
+    // path it injects presence variants onto a fresh copy instead of mutating our
+    // input (which, with no clone above, would be React's own props object)
+    props = componentState.props as typeof props
 
     if (animationDriver?.avoidReRenders) {
       // post-commit reconciliation of `nextState` with the committed React state.
@@ -757,8 +767,6 @@ export function createComponent<
       isAnimated,
       willBeAnimated,
       styledContext: getStyledContextKeys(staticConfig, styledContextValue),
-      baseProps,
-      callerProps: propsIn,
     } as const
 
     const themeName = themeState?.name || ''

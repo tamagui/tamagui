@@ -1,6 +1,7 @@
 import type { ComponentContextI, StaticConfig, TamaguiComponentState, TamaguiComponentStateRef, TamaguiInternalConfig, TextProps } from '../types';
 import type { ViewProps } from '../views/View';
 export declare const useComponentState: (props: ViewProps | TextProps | Record<string, any>, animationDriver: ComponentContextI["animationDriver"], staticConfig: StaticConfig, config: TamaguiInternalConfig) => {
+    props: Record<string, any> | TextProps | ViewProps;
     startedUnhydrated: boolean;
     curStateRef: TamaguiComponentStateRef;
     disabled: any;

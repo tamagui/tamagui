@@ -1899,8 +1899,6 @@ export type ThemeVariantSpreadFunction<A extends PropLike> = VariantSpreadFuncti
 export type ResolveVariableAs = 'auto' | 'value' | 'variable' | 'none' | 'web' | 'except-theme';
 export type SplitStyleProps = {
     styledContext?: Record<string, any>;
-    baseProps?: Record<string, any>;
-    callerProps?: Record<string, any>;
     mediaState?: Record<string, boolean>;
     noClass?: boolean;
     noExpand?: boolean;

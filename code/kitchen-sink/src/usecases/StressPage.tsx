@@ -257,7 +257,12 @@ function Footer() {
 }
 
 export function StressPage() {
-  // render profiling: mark start before React render, measure in effect after commit
+  // render profiling: mark before React render, measure in the post-commit effect.
+  // a single mount renders the whole ~200-component tree once. the profiler test
+  // (StressPagePerf.test.tsx) reloads this page a few times inside one heap-sampling
+  // window to measure per-mount allocation. deliberately NO re-render/remount loop:
+  // repeatedly re-rendering this heavy tree under the profiler OOM-crashes the
+  // renderer, and a full page reload is a clean, deterministic fresh mount.
   if (shouldProfile) {
     performance.mark('stress-render-start')
   }
@@ -266,21 +271,20 @@ export function StressPage() {
     if (!shouldProfile) return
     performance.mark('stress-render-end')
     performance.measure('stress-render', 'stress-render-start', 'stress-render-end')
-    const measure = performance.getEntriesByName('stress-render', 'measure')[0]
+    const measure = performance.getEntriesByName('stress-render', 'measure').pop()!
 
     const t = (globalThis as any).__TIMER__
     const profile = t?.profile()
 
-    const result = {
+    ;(window as any).__PERF_RESULT__ = {
       renderMs: Math.round(measure.duration * 100) / 100,
       breakdown: profile?.timings,
       runs: profile?.runs,
       timestamp: Date.now(),
     }
-
-    ;(window as any).__PERF_RESULT__ = result
+    ;(window as any).__STRESS_READY__ = true
     t?.print()
-    console.log(`[StressPage] render: ${result.renderMs}ms`)
+    console.log(`[StressPage] mount: ${(window as any).__PERF_RESULT__.renderMs}ms`)
   }, [])
 
   return (

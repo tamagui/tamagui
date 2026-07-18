@@ -279,15 +279,27 @@ function getPropEntriesInForwardOrder(
   processedBaseStyle: Record<string, any> | undefined,
   compoundVariants: StaticConfig['compoundVariants']
 ) {
+  // fast path: with no compound variants (the common case) build the forward-ordered
+  // [key, value] list in a single for...in pass — skip the two Object.entries arrays
+  // and the spread that only the compound path needs. base style first, then props.
+  if (!compoundVariants?.length) {
+    const orderedEntries: OrderedPropEntry[] = []
+    if (processedBaseStyle) {
+      for (const key in processedBaseStyle) {
+        orderedEntries.push([key, processedBaseStyle[key]])
+      }
+    }
+    for (const key in processedProps) {
+      orderedEntries.push([key, processedProps[key]])
+    }
+    return orderedEntries
+  }
+
+  // compound path needs indexed prop entries to resolve each compound's anchor
   const propEntries = Object.entries(processedProps) as OrderedPropEntry[]
   const orderedEntries = processedBaseStyle
     ? (Object.entries(processedBaseStyle) as OrderedPropEntry[])
     : []
-
-  if (!compoundVariants?.length) {
-    orderedEntries.push(...propEntries)
-    return orderedEntries
-  }
 
   // Compounds are ordinary contributions in the same authored forward pass. A
   // matching compound runs immediately after its last selector entry, then any
@@ -1327,6 +1339,12 @@ export const getSplitStyles: StyleSplitter = (
 
     if (keyInit === 'children') {
       viewProps[keyInit] = valInit
+      continue
+    }
+
+    if (keyInit === 'ref') {
+      // ref is composed and assigned explicitly onto viewProps in createComponent;
+      // never forward the incoming ref through the style split onto the host element
       continue
     }
 
@@ -2696,8 +2714,12 @@ export const getSubStyle = (
   const styleInOriginalValues = styleOriginalValues.get(styleIn)
   const parentProps = styleState.props
   // prototype-chain view instead of a spread copy: reads fall through to
-  // parentProps, avoiding an O(parentProps) allocation per sub-style
-  styleState.props = Object.assign(Object.create(parentProps), styleIn)
+  // parentProps, avoiding an O(parentProps) allocation per sub-style. define
+  // styleIn as own props (not Object.assign) because parentProps is React's
+  // frozen props object — [[Set]] of a key that exists read-only up the proto
+  // chain (e.g. a base backgroundColor also set in a pseudo/media sub-style)
+  // throws, whereas [[DefineOwnProperty]] via descriptors always writes an own.
+  styleState.props = Object.create(parentProps, Object.getOwnPropertyDescriptors(styleIn))
 
   try {
     for (let key in styleIn) {
