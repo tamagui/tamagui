@@ -4,10 +4,10 @@ import { expect, test } from '@playwright/test'
 // integration with the existing tailwind syntax switcher (cookie + ?syntax=
 // param + route). run against the served prod site (bun run serve, :8081).
 //
-// note: the unstyled code-fence transform lands with W4's @tamagui/ui pilots, so
-// unstyled currently shares the styled source. these tests assert the toggle
-// MECHANISM (options, active state, cookie, url) for all three modes, and the
-// real content transform only for tailwind (which is landed).
+// these tests assert the toggle MECHANISM (options, active state, cookie, url)
+// for all three modes, plus the real content transform for tailwind (rewrites
+// tsx fences to className) and unstyled (rewrites `tamagui` imports to the
+// `tamagui/unstyled` subpath).
 
 const PAGE = '/docs/guides/how-to-upgrade'
 
@@ -57,13 +57,24 @@ test.describe('docs 3-mode code toggle', () => {
     await expect(page.getByTestId('docs-syntax')).toContainText('Tailwind')
   })
 
-  test('selecting Unstyled sets url + cookie', async ({ page, context }) => {
+  test('selecting Unstyled transforms the imports and sets url + cookie', async ({
+    page,
+    context,
+  }) => {
     await page.goto(PAGE)
+    const styled = await codeText(page)
+
     await page.getByTestId('docs-syntax').click()
     await page.getByTestId('docs-syntax-unstyled').click()
 
     await page.waitForURL(/syntax=unstyled/)
     await expect(page.getByTestId('docs-syntax')).toContainText('Unstyled')
+
+    // the unstyled transform rewrites `from 'tamagui'` to `tamagui/unstyled`,
+    // so the code must change and the new subpath must appear
+    const unstyled = await codeText(page)
+    expect(unstyled).not.toEqual(styled)
+    expect(unstyled).toContain('tamagui/unstyled')
 
     const cookie = (await context.cookies()).find((c) => c.name === 'tamaguiSyntax')
     expect(cookie?.value).toBe('unstyled')

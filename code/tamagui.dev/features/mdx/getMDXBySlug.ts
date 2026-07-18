@@ -110,6 +110,50 @@ const tailwindTransform = {
   },
 }
 
+// unstyled swaps the `tamagui` import for the `tamagui/unstyled` subpath, which
+// re-exports @tamagui/ui's behavior primitives without the default v2-look skins
+// the main `tamagui` entry layers on top. only the exact `tamagui` specifier is
+// rewritten - `tamagui/x` and `@tamagui/x` are already the behavior surface.
+const tamaguiImportRe =
+  /(\bfrom\s+|\bimport\s*\(\s*|\brequire\s*\(\s*)(['"])tamagui\2/g
+
+const unstyledTransform = {
+  name: 'tamagui-unstyled-transform',
+  element: {
+    filter: ['code'],
+    visit(node: any, ctx: any) {
+      const className = node.properties?.className
+      if (!className) return
+
+      const classes =
+        typeof className === 'string'
+          ? className.split(/\s+/)
+          : Array.isArray(className)
+            ? className
+            : []
+      const isJsx = classes.some(
+        (c: string) =>
+          c === 'language-tsx' ||
+          c === 'language-jsx' ||
+          c === 'language-ts' ||
+          c === 'language-js'
+      )
+      if (!isJsx) return
+
+      const source = ctx.textContent(node)
+      if (!source) return
+
+      const unstyledCode = source.replace(tamaguiImportRe, '$1$2tamagui/unstyled$2')
+      if (unstyledCode !== source) {
+        ctx.replaceNode(node, {
+          ...node,
+          children: [{ type: 'text', value: unstyledCode }],
+        })
+      }
+    },
+  },
+}
+
 // the docs code toggle: 'styled' (default tamagui look), 'unstyled'
 // (@tamagui/ui primitives), 'tailwind' (unstyled primitive + tailwind).
 type CodeMode = 'styled' | 'unstyled' | 'tailwind'
@@ -134,10 +178,7 @@ export const getMDXBySlug = (
     mdastPlugins: [heroTemplate, ...(mdastPlugins ?? [])],
     hastPlugins: [
       ...(mode === 'tailwind' ? [tailwindTransform] : []),
-      // UNSTYLED renders the @tamagui/ui behavior primitives. the
-      // styled->unstyled code-fence transform lands with W4's @tamagui/ui
-      // pilots and plugs in here, mirroring tailwindTransform above; until then
-      // unstyled shares the styled source so the toggle mechanism is live now.
+      ...(mode === 'unstyled' ? [unstyledTransform] : []),
       highlightPlugin,
       ...(hastPlugins ?? []),
     ],
