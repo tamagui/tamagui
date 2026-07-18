@@ -10,11 +10,16 @@ import {
 } from './config'
 import { discoverSkins, loadSkin, buildItem, renderConsumerCopy, type Skin } from './core'
 import { validateRegistry } from './validate'
+import type { StateTables } from './states-derive'
 import type { Registry, RegistryItem } from './types'
 
 const JSON_INDENT = 2
 
-export async function buildRegistry(): Promise<{ registry: Registry; skins: Skin[] }> {
+// `stateTables` (A1 vocabulary from @tamagui/style-grammar) is threaded to
+// buildItem so items carry a uniform `meta.states`. undefined until reassembly.
+export async function buildRegistry(
+  stateTables?: StateTables
+): Promise<{ registry: Registry; skins: Skin[] }> {
   const bases = discoverSkins()
   if (!bases.length) throw new Error(`no skins found in skin source root`)
   const skinBases = new Set(bases)
@@ -23,7 +28,7 @@ export async function buildRegistry(): Promise<{ registry: Registry; skins: Skin
   for (const base of bases) {
     const skin = await loadSkin(base)
     skins.push(skin)
-    items.push(buildItem(skin, skinBases))
+    items.push(buildItem(skin, skinBases, stateTables))
   }
   const registry: Registry = {
     $schema: 'https://ui.shadcn.com/schema/registry.json',

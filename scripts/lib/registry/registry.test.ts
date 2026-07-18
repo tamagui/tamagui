@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'bun:test'
 import { extractImportSpecifiers, classifyDependencies, packageNameOf } from './deps'
 import { reprefixNames, buildItem, type Skin } from './core'
+import { deriveStates, type StateTables } from './states-derive'
 
 describe('extractImportSpecifiers', () => {
   test('handles multi-line, bare, from, and dynamic imports', () => {
@@ -121,5 +122,77 @@ styled(F, { name: 'ComboFrame' })
       themes: ['accent'],
     })
     expect(item.categories).toEqual(['controls'])
+  })
+
+  test('emits uniform meta.states only when the A1 tables are injected', () => {
+    const src = `styled(F, { name: 'CFrame', pressStyle: {}, variants: { open: { true: {} } } })`
+    // no tables (pre-reassembly): registry unchanged, no states
+    expect(buildItem(fakeSkin('C', src), new Set(['C'])).meta).toBeUndefined()
+    // tables injected (post-reassembly): uniform canonical state names
+    const withStates = buildItem(fakeSkin('C', src), new Set(['C']), TABLES)
+    expect(withStates.meta).toEqual({ states: ['open', 'pressed'] })
+  })
+})
+
+// fixture mirroring @tamagui/style-grammar's states.ts (injected at reassembly).
+// keeping it here proves the derivation without duplicating the canonical table
+// into shipped code — the generator passes the real tables.
+const TABLES: StateTables = {
+  pseudoProps: {
+    pressed: 'pressStyle',
+    disabled: 'disabledStyle',
+    starting: 'enterStyle',
+    ending: 'exitStyle',
+  },
+  allStates: [
+    'pressed',
+    'disabled',
+    'starting',
+    'ending',
+    'open',
+    'checked',
+    'highlighted',
+    'invalid',
+  ],
+  selectors: {
+    open: '[data-state="open"]',
+    checked: '[data-state="checked"]',
+    highlighted: '[data-highlighted]',
+    invalid: '[aria-invalid="true"]',
+  },
+}
+
+describe('deriveStates', () => {
+  test('pseudo-tier: pressStyle + variants.disabled, ignores hover (not in the eight)', () => {
+    // a Button-shaped skin: pressStyle pseudo-prop + disabled authored as a variant
+    const src = `styled(Frame, {
+  hoverStyle: { backgroundColor: '$backgroundHover' },
+  pressStyle: { opacity: 0.7 },
+  variants: {
+    size: sizes,
+    disabled: { true: { opacity: 0.35 } },
+  },
+})`
+    expect(deriveStates(src, TABLES)).toEqual(['disabled', 'pressed'])
+  })
+
+  test('lifecycle pseudo-props map to starting/ending, not enter/exit', () => {
+    const src = `styled(F, { enterStyle: { opacity: 0 }, exitStyle: { opacity: 0 } })`
+    expect(deriveStates(src, TABLES)).toEqual(['ending', 'starting'])
+  })
+
+  test('component-tier authored as a canonical-named variant', () => {
+    const src = `styled(F, { variants: { open: { true: { y: 0 } } } })`
+    expect(deriveStates(src, TABLES)).toEqual(['open'])
+  })
+
+  test('component-tier authored as a raw web attribute selector', () => {
+    const src = `styled(F, { '[data-state="checked"]': { backgroundColor: '$color' } })`
+    expect(deriveStates(src, TABLES)).toEqual(['checked'])
+  })
+
+  test('does not match a state word inside a comment or string', () => {
+    const src = `// open the sheet\nconst label = 'checked out'\nstyled(F, {})`
+    expect(deriveStates(src, TABLES)).toEqual([])
   })
 })

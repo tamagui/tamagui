@@ -7,6 +7,7 @@ import {
   canonicalNamePrefix,
 } from './config'
 import { classifyDependencies } from './deps'
+import { deriveStates, type StateTables } from './states-derive'
 import type { SkinManifest, RegistryItem, RegistryFile } from './types'
 
 export type Skin = {
@@ -89,7 +90,15 @@ function siblingSkinBase(spec: string, skinBases: Set<string>): string | null {
   return skinBases.has(b) ? b : null
 }
 
-export function buildItem(skin: Skin, skinBases: Set<string>): RegistryItem {
+// `stateTables` injects the A1 vocabulary from @tamagui/style-grammar (states.ts)
+// so every item carries a uniform `meta.states` — the canonical A1 state names
+// the skin styles. left undefined until the style-grammar branch merges at
+// reassembly; when absent no states are emitted (registry unchanged).
+export function buildItem(
+  skin: Skin,
+  skinBases: Set<string>,
+  stateTables?: StateTables
+): RegistryItem {
   const { dependencies, relatives } = classifyDependencies(skin.source)
   const type = skin.manifest.type ?? 'registry:ui'
   const target = `${installTargetDir}/${skin.base}.tsx`
@@ -127,6 +136,11 @@ export function buildItem(skin: Skin, skinBases: Set<string>): RegistryItem {
   if (skin.manifest.peerDependencies) meta.peerDependencies = skin.manifest.peerDependencies
   if (skin.manifest.tokens) meta.tokens = skin.manifest.tokens
   if (skin.manifest.themes) meta.themes = skin.manifest.themes
+  if (stateTables) {
+    const derived = new Set(deriveStates(skin.source, stateTables))
+    for (const s of skin.manifest.extraStates ?? []) derived.add(s)
+    if (derived.size) meta.states = [...derived].sort()
+  }
 
   const item: RegistryItem = {
     $schema: 'https://ui.shadcn.com/schema/registry-item.json',

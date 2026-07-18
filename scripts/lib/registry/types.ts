@@ -112,4 +112,11 @@ export type SkinManifest = {
   extraDependencies?: string[]
   /** escape hatch: registry deps a static import scan cannot see. rare. */
   extraRegistryDependencies?: string[]
+  /**
+   * escape hatch: canonical A1 state names (states.ts) a source scan cannot see
+   * — a state a wrapped/behavior component applies that never appears as a
+   * pseudo-prop, named variant, or attribute selector in the skin file. rare;
+   * prefer authoring the state uniformly so it derives.
+   */
+  extraStates?: string[]
 }
