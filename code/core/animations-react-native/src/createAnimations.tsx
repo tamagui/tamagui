@@ -308,6 +308,14 @@ export function createAnimations<A extends AnimationsConfig>(
 
         const nonAnimatedStyle = {}
 
+        // track which animated keys/transforms the incoming style actually
+        // carries this pass, so entries that left the style can be dropped
+        // below (an Animated.Value that persisted forever would keep painting
+        // a stale pixel value, e.g. a released-to-auto accordion height)
+        const seenAnimateKeys = new Set<string>()
+        let sawTransform = false
+        let transformCount = 0
+
         for (const key in style) {
           const rawVal = style[key]
           // Resolve dynamic theme values (like $theme-dark)
@@ -341,6 +349,7 @@ export function createAnimations<A extends AnimationsConfig>(
 
           if (key !== 'transform') {
             animateStyles.current[key] = update(key, animateStyles.current[key], val)
+            seenAnimateKeys.add(key)
             continue
           }
           // key: 'transform'
@@ -351,6 +360,8 @@ export function createAnimations<A extends AnimationsConfig>(
             continue
           }
 
+          sawTransform = true
+          transformCount = val.length
           for (const [index, transform] of val.entries()) {
             if (!transform) continue
             // tkey: e.g: 'translateX'
@@ -360,6 +371,22 @@ export function createAnimations<A extends AnimationsConfig>(
               [tkey]: update(tkey, currentTransform, transform[tkey]),
             }
             animatedTranforms.current = [...animatedTranforms.current]
+          }
+        }
+
+        // drop stale Animated.Values whose keys left the incoming style, so the
+        // key genuinely leaves the rendered style object (a released height goes
+        // back to auto instead of staying pinned at its last pixel value). skip
+        // while exiting (presence still animates the leaving keys) and while
+        // disabled (the loop above intentionally skips every key)
+        if (!isExiting && !isDisabled) {
+          for (const k in animateStyles.current) {
+            if (!seenAnimateKeys.has(k)) delete animateStyles.current[k]
+          }
+          if (!sawTransform) {
+            if (animatedTranforms.current.length) animatedTranforms.current = []
+          } else if (animatedTranforms.current.length > transformCount) {
+            animatedTranforms.current = animatedTranforms.current.slice(0, transformCount)
           }
         }
 

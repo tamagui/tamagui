@@ -68,3 +68,46 @@ test('native driver: accordion height opens through intermediate frames and clos
   ).toBe(true)
   expect(result.closing.at(-1)).toBeLessThanOrEqual(1)
 })
+
+// once an open item settles it releases its measured pixel height back to auto,
+// so later content growth stays fluid. the native driver previously kept the
+// settled height's Animated.Value forever, pinning the wrapper at the old pixel
+// value: released-to-auto never took effect and growing the content stayed
+// clipped. the driver now drops animated keys that left the incoming style.
+test('native driver: settled accordion releases to auto and follows content growth', async ({
+  page,
+}) => {
+  await setupPage(page, {
+    name: 'AccordionDefaultOpenCase',
+    type: 'useCase',
+    searchParams: { animationDriver: 'native' },
+  })
+
+  await page.waitForSelector('#def-trigger2', { timeout: 30_000 })
+
+  const wrapperHeight = () =>
+    page.$eval('#def-height2', (el) => Math.round(el.getBoundingClientRect().height))
+  const wrapperInlineHeight = () =>
+    page.$eval('#def-height2', (el) => (el as HTMLElement).style.height)
+
+  await page.click('#def-trigger2')
+  // open animation (300ms) + the 100ms quiet window before release to auto
+  await page.waitForTimeout(900)
+
+  const settledHeight = await wrapperHeight()
+  // released back to auto: the driver cleared the pinned inline pixel height
+  expect(await wrapperInlineHeight()).toBe('')
+  expect(settledHeight).toBeGreaterThan(10)
+
+  // grow the content: an auto wrapper must follow the taller measurement
+  await page.click('#grow-content')
+  await page.waitForTimeout(700)
+  const grownHeight = await wrapperHeight()
+  expect(grownHeight).toBeGreaterThan(settledHeight + 5)
+
+  // shrink back: the wrapper follows down again
+  await page.click('#grow-content')
+  await page.waitForTimeout(700)
+  const shrunkHeight = await wrapperHeight()
+  expect(shrunkHeight).toBeLessThan(grownHeight - 5)
+})
