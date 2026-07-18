@@ -153,12 +153,14 @@ const TABLES: StateTables = {
     'checked',
     'highlighted',
     'invalid',
+    'selected',
   ],
   selectors: {
     open: '[data-state="open"]',
     checked: '[data-state="checked"]',
     highlighted: '[data-highlighted]',
     invalid: '[aria-invalid="true"]',
+    selected: '[data-state="active"]',
   },
 }
 
@@ -189,6 +191,17 @@ describe('deriveStates', () => {
   test('component-tier authored as a raw web attribute selector', () => {
     const src = `styled(F, { '[data-state="checked"]': { backgroundColor: '$color' } })`
     expect(deriveStates(src, TABLES)).toEqual(['checked'])
+  })
+
+  test('ninth `selected` state (Select/RadioGroup) via variant and via data-state=active', () => {
+    // component-tier `selected` — no pseudo-prop; derives from the canonical
+    // variant key and from the raw [data-state="active"] selector.
+    expect(deriveStates(`styled(F, { variants: { selected: { true: {} } } })`, TABLES)).toEqual([
+      'selected',
+    ])
+    expect(
+      deriveStates(`styled(F, { '[data-state="active"]': { opacity: 1 } })`, TABLES)
+    ).toEqual(['selected'])
   })
 
   test('does not match a state word inside a comment or string', () => {

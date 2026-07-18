@@ -39,7 +39,8 @@ recognizes three uniform authoring forms:
 2. **component tier** — a `variants: { <state>: { … } }` block whose key is a
    canonical state name. This is exactly how the real Button already authors
    `disabled` (`variants: { disabled: { true: {…} } }`), extended to
-   `open`/`checked`/`highlighted`/`invalid`.
+   `open`/`checked`/`highlighted`/`invalid`/`selected` — the blessed convention
+   (see Decisions).
 3. **raw selector** — a style keyed by the web attribute selector literal
    (`'[data-state="checked"]': {…}`). Matched from `stateToSelector`. Rare in
    Tamagui source, recognized so nothing escapes the vocabulary.
@@ -78,39 +79,32 @@ Then regenerate: `registry.json` + `r/*.json` gain `meta.states`, the drift
 check re-baselines the checked-in copies. Add `@tamagui/style-grammar` to the
 generator's dependencies at that point.
 
-## Gaps flagged back to W4
+## Decisions (finalized with W4)
 
-1. **Component-tier authoring convention must be pinned (blocks derivation of
-   open/checked/highlighted/invalid).** W4's open-question #1. Recommendation:
-   adopt the **canonical-named variant** form — `variants: { open: { true: {…} } }`
-   keyed by the A1 state name — as THE authoring convention, mirroring how
-   `disabled` is already authored. It is additive (variants exist), uniformly
-   derivable (key ∈ `stateNames`), and the behavior toggles the variant prop
-   (`open={true}`) it already drives. No new core pseudo-props needed. The web
-   `data-state` selector is bridge metadata for the Tailwind direction only; a
-   pure-Tamagui item styles through the prop on both web and native, so the
-   selector need not appear in the skin source. If W4 prefers core
-   `openStyle`/`checkedStyle` pseudo-props instead, `deriveStates` picks them up
-   for free via `stateToPseudoProp` — but that is a bigger core change; the
-   variant convention is the KISS path.
+1. **Component-tier authoring convention — BLESSED: the canonical-named variant
+   form** `variants: { <A1 state>: { true: {…} } }`, mirroring existing
+   `disabled`. No new core `openStyle`/`checkedStyle` pseudo-props. This is
+   `deriveStates` form #2 and the PRIMARY path for
+   open/checked/highlighted/invalid/selected; the raw-selector (#3) and
+   pseudo-prop (#1) forms stay as fallbacks. The web `data-state` selector is
+   bridge metadata for the Tailwind direction only — a pure-Tamagui item styles
+   through the variant prop on both web and native, so the selector need not
+   appear in the skin source.
 
-2. **Ninth `selected` state for Select/RadioGroup (W4's open-question #3).**
-   Select/radio item selection emits `data-state="active"/"inactive"`, which is
-   not one of the eight. W4's pilots include Select, so its selected-item styling
-   currently has no vocabulary word and would escape `meta.states`. Recommend
-   folding in `selected` (modifier `data-[state=active]`, selector
-   `[data-state="active"]`, alias `data-[state=active]`; native: a `selected`
-   variant). Cheap and it keeps Select fully described. If W4 declines, Select's
-   selected styling needs `extraStates: ['selected']` in its manifest as a
-   documented exception.
+2. **Ninth `selected` state — FOLDED IN.** Select/RadioGroup item selection emits
+   `data-state="active"/"inactive"`. `selected` is component tier: modifier
+   `data-[state=active]`, selector `[data-state="active"]`, native `selected`
+   variant. The bare word `active` is NOT aliased to `selected` — `active` stays
+   an alias of `pressed` (`:active`), avoiding the collision. W4 adds `selected`
+   to `states.ts`; `deriveStates` picks it up automatically at merge (it reads
+   the injected `allStates`/`selectors`, never aliases), so Select is fully
+   described with no per-item `extraStates` exception. Locked by the
+   `deriveStates` selected-state test.
 
-3. **`invalid` and `checked` canonical spellings** (W4 open-questions #2/#3) are
-   fine as-is for W5 — `deriveStates` matches whatever `states.ts` exports
-   (`aria-invalid`, `data-state="checked"`), aliases included via
-   `modifierToState`. No action needed.
+3. **`invalid` spelling — confirmed as-is:** `aria-invalid` canonical,
+   `data-[invalid]` alias. No W5 action — `deriveStates` matches whatever
+   `states.ts` exports.
 
-4. **Tailwind→Tamagui parser wiring (`candidate.ts`, W4 open-question #4)** is a
-   separate path from this registry generator and out of scope for the state
-   contract. The reverse mapping W5 would need for it (`modifierToState`,
-   canonical + aliases) is already exported. If/when the to-tailwind path
-   consumes the registry, W5 wires the new attribute modifiers there.
+4. **Tailwind→Tamagui parser (`candidate.ts`) — out of scope** for this contract
+   and for reassembly. The reverse mapping (`modifierToState`, canonical +
+   aliases) is already exported for that later path.
