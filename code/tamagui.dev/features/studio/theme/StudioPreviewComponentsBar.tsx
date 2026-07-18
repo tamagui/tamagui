@@ -6,13 +6,17 @@ import {
   SizableText,
   Square,
   Switch,
-  ToggleGroup,
   Tooltip,
   TooltipGroup,
   XGroup,
   XStack,
   styled,
 } from 'tamagui'
+// Re-style the UNSTYLED ToggleGroup primitive: the studio fully custom-styles the
+// item, and re-styling the styled tamagui ToggleGroup.Item overflows TS's union
+// limit (TS2590). The tamagui ToggleGroup root is already the unstyled primitive,
+// so this is behavior-preserving at runtime.
+import { ToggleGroup } from 'tamagui/unstyled'
 import { useThemeBuilderStore } from '~/features/studio/theme/store/ThemeBuilderStore'
 import { optionValues } from './demoOptions'
 
