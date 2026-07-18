@@ -56,7 +56,10 @@ export const SheetBackground = styled(SheetBehavior.Background, {
 
 export const SheetScrollView = styled(SheetBehavior.ScrollView, {
   name: 'SheetScrollView',
-  flex: 1,
+  // no flex here: the behavior's fitSizingStyle sets flex per mode (undefined for
+  // snapPointsMode="fit" so the content-sized Container doesn't collapse, 1
+  // otherwise), and consumer props apply AFTER that guard — a skin-level flex:1
+  // would override it and collapse the fit-mode scrollview (SheetWebKeyboard).
   paddingHorizontal: '$2',
 })
 

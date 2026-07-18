@@ -19,7 +19,10 @@ test('slider track and active fill render with visible backgrounds', async ({ pa
 
   const colors = await page.evaluate(() => {
     const active = document.querySelector('.is_SliderActive') as HTMLElement
-    const track = active.parentElement as HTMLElement
+    // walk up to the track: the styled skin wraps the active fill in a
+    // SliderTrackActive component-theme <span>, so the fill's direct parent is
+    // that theme wrapper, not the track element itself.
+    const track = active.closest('.is_SliderTrack') as HTMLElement
     const getBg = (el: HTMLElement) => getComputedStyle(el).backgroundColor
     return { track: getBg(track), active: getBg(active) }
   })
