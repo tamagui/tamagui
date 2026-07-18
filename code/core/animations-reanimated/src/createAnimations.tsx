@@ -892,26 +892,37 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       const pseudoActiveRef = useRef(false)
       const isExitingJSRef = useRef(false)
       isExitingJSRef.current = isExiting
+      // the committed render is the worklet's source of truth whenever the emitter is not
+      // latched, so every render must publish its snapshot — not just the renders that drop
+      // a latch. animated keys live only in this snapshot after mount (staticStyles carries
+      // them during mount only), so a render that never publishes leaves the worklet reading
+      // an empty snapshot and the animated properties never reach the screen at all.
+      const publishedSnapshotRef = useRef<object | null>(null)
       useIsomorphicLayoutEffect(() => {
-        if (
-          (isExiting || !pseudoActiveRef.current) &&
-          emitterSnapshotRef.value !== null
-        ) {
-          const emitterKeys = emitterKeysRef.current
-          if (emitterKeys) {
-            const removedKeys = {
-              ...renderSnapshot.value.removedKeys,
-              ...getRemovedAnimatedKeys(renderSnapshot.keys, emitterKeys),
-            }
-            renderSnapshotRef.value = {
-              ...renderSnapshot.value,
-              removedKeys,
-              removeTransform: Object.keys(removedKeys).some((key) =>
-                key.startsWith('transform:')
-              ),
-              clearValue: isWeb ? '' : null,
-            }
+        const droppingLatch =
+          (isExiting || !pseudoActiveRef.current) && emitterSnapshotRef.value !== null
+        // when the latch drops, keys the emitter owned that this render no longer has must
+        // be cleared too, otherwise reanimated keeps painting the stale emitted value
+        const emitterKeys = droppingLatch ? emitterKeysRef.current : null
+
+        if (droppingLatch || publishedSnapshotRef.current !== renderSnapshot.value) {
+          const removedKeys = emitterKeys
+            ? {
+                ...renderSnapshot.value.removedKeys,
+                ...getRemovedAnimatedKeys(renderSnapshot.keys, emitterKeys),
+              }
+            : renderSnapshot.value.removedKeys
+          renderSnapshotRef.value = {
+            ...renderSnapshot.value,
+            removedKeys,
+            removeTransform: Object.keys(removedKeys).some((key) =>
+              key.startsWith('transform:')
+            ),
           }
+          publishedSnapshotRef.current = renderSnapshot.value
+        }
+
+        if (droppingLatch) {
           emitterSnapshotRef.value = null
           emitterKeysRef.current = null
         }
@@ -1111,8 +1122,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
       }, [justStartedExiting, sendExitComplete])
 
       // Create animated style
-      const animatedStyle = isWeb
-        ? useAnimatedStyle(
+      const animatedStyle = useAnimatedStyle(
         () => {
           'worklet'
 
@@ -1232,8 +1242,7 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
               markExitKeyDone,
             ]
           : undefined
-          )
-        : {}
+      )
 
       silenceAnimatedComponentDevCheck(animatedStyle)
 
@@ -1254,6 +1263,11 @@ export function createAnimations<A extends Record<string, TransitionConfig>>(
         })
       }
 
+      // paint each animated key's first React value underneath the worklet until the mapper
+      // owns it. reanimated only snapshots its animated handle on the component's first
+      // render, so a later render can drop the previous static value and commit before the
+      // restarted mapper writes anything — a default-open accordion collapses to 0 for those
+      // frames. the baseline sits under animatedStyle, so the mapper still wins once it runs.
       return {
         style: [staticStyles, animatedStyle],
       }
