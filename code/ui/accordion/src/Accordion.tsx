@@ -593,6 +593,7 @@ const HeightAnimator = View.styleable((props, ref) => {
   const [pinned, setPinned] = React.useState(false)
   const [contentHeight, setContentHeight] = React.useState(0)
   const outerRef = React.useRef<TamaguiElement | null>(null)
+  const innerRef = React.useRef<TamaguiElement | null>(null)
   const composedRef = useComposedRefs(outerRef, ref)
   const lastOuterHeightRef = React.useRef(0)
   const settleTimerRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -622,6 +623,19 @@ const HeightAnimator = View.styleable((props, ref) => {
   }, [pinned])
 
   React.useEffect(() => () => clearTimeout(settleTimerRef.current), [])
+
+  // web: measure the just-mounted content synchronously in the same commit so
+  // the open animation retargets immediately instead of waiting a couple of
+  // frames for the ResizeObserver-backed onLayout to report
+  useIsomorphicLayoutEffect(() => {
+    if (!isWeb || !fixed || !open) return
+    const el = innerRef.current as HTMLElement | null
+    if (!el) return
+    const naturalHeight = el.offsetHeight
+    if (naturalHeight > 0 && naturalHeight !== contentHeight) {
+      setContentHeight(naturalHeight)
+    }
+  })
 
   const height = fixed
     ? pinned
@@ -654,6 +668,7 @@ const HeightAnimator = View.styleable((props, ref) => {
       }}
     >
       <View
+        ref={innerRef}
         position={fixed ? 'absolute' : 'relative'}
         top={fixed ? 0 : undefined}
         left={fixed ? 0 : undefined}
