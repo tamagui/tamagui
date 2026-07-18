@@ -3366,7 +3366,6 @@
         "@tamagui/label": "workspace:*",
         "@tamagui/linear-gradient": "workspace:*",
         "@tamagui/list-item": "workspace:*",
-        "@tamagui/lucide-icons-2": "workspace:*",
         "@tamagui/menu": "workspace:*",
         "@tamagui/polyfill-dev": "workspace:*",
         "@tamagui/popover": "workspace:*",
