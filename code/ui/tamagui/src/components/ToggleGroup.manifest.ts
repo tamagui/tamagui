@@ -13,4 +13,8 @@ export const manifest = {
     '$borderColorPress',
     '$outlineColor',
   ],
+  // on-state is styled via the Toggle behavior's `activeStyle` prop (emits
+  // data-state="on" = checked), not a canonical `checked` variant — declare it
+  // so W5 covers the state.
+  extraStates: ['checked'],
 } satisfies SkinManifest

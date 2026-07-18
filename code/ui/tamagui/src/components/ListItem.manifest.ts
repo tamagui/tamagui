@@ -13,4 +13,7 @@ export const manifest = {
     '$borderColorPress',
     '$color',
   ],
+  // selection is the v2-compat `active` prop (emits data-state="active"), not a
+  // canonical `selected` variant — declare it so W5 covers the state.
+  extraStates: ['selected'],
 } satisfies SkinManifest

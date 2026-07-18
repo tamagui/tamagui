@@ -21,5 +21,13 @@ export type SkinManifest = {
      * the skin's imports (e.g. react-native-safe-area-context).
      */
     peerDependencies?: string[];
+    /**
+     * A1 component-tier states the skin responds to that W5 CANNOT derive from a
+     * canonical-named variant (see plans/v3-a1-state-vocabulary.md). Use for states
+     * styled through a v2-compat prop or a behavior mechanism instead of a
+     * `variants: { <state>: {...} }` block — e.g. ListItem's `active` prop
+     * (`selected`), ToggleGroup's `activeStyle` (`checked`).
+     */
+    extraStates?: string[];
 };
 //# sourceMappingURL=registry-manifest.d.ts.map
