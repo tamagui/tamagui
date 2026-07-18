@@ -1517,9 +1517,13 @@ export const getSplitStyles: StyleSplitter = (
             viewProps.testID = valInit
           } else {
             viewProps['data-testid'] = valInit
-            // also keep testID when using RN animation driver (Animated.View
-            // from react-native-web only forwards testID, not data-testid)
-            if (styleProps.isAnimated && driver?.isReactNative) {
+            // also keep testID when using the RN animation driver (Animated.View
+            // from react-native-web only forwards testID, not data-testid). isHOC
+            // wrappers don't animate themselves but forward to an inner animated
+            // component, so keep testID for them too — otherwise a styled/HOC
+            // primitive (e.g. a skinned Dialog.Overlay) loses its testID on native
+            // and becomes untestable.
+            if ((styleProps.isAnimated || staticConfig.isHOC) && driver?.isReactNative) {
               viewProps.testID = valInit
             }
           }
