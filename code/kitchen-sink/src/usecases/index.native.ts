@@ -7,6 +7,8 @@
 import type { ComponentType } from 'react'
 
 const loaders: Record<string, () => ComponentType<any>> = {
+  AccordionDefaultOpenCase: () =>
+    require('./AccordionDefaultOpenCase').AccordionDefaultOpenCase,
   ActionsSheetComparison: () =>
     require('./ActionsSheetComparison').ActionsSheetComparison,
   AnimatedByProp: () => require('./AnimatedByProp').AnimatedByProp,

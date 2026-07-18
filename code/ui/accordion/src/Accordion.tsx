@@ -581,27 +581,35 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
 const HeightAnimator = View.styleable((props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, ...rest } = props
-  const [measuredHeight, setMeasuredHeight] = React.useState<number>(0)
-  const hasMeasured = measuredHeight > 0
+  const useInitialNaturalLayout = React.useRef(itemContext.open)
+  const [measuredHeight, setMeasuredHeight] = React.useState<number>()
 
-  // when open and not measured yet, use auto so SSR shows content
-  // once measured, use numeric height for animations
-  const height = itemContext.open ? (hasMeasured ? measuredHeight : 'auto') : 0
+  if (!itemContext.open || measuredHeight !== undefined) {
+    useInitialNaturalLayout.current = false
+  }
+  const measureInFlow = useInitialNaturalLayout.current
 
-  // for SSR: when open but not yet measured, use static positioning so content
-  // contributes to parent height. after measurement, use absolute for animations.
-  const shouldAbsolutePosition = hasMeasured || !itemContext.open
+  // default-open content contributes its intrinsic size until the first measurement,
+  // avoiding a collapsed first paint. initially-closed content stays clipped at zero
+  // until its mounted child reports a numeric height, which gives every animation
+  // driver numeric endpoints. after that first natural pass, the absolute measuring
+  // child is independent of the animated outer height and keeps its last open layout
+  // through close and unmount.
+  const height = itemContext.open
+    ? (measuredHeight ?? (measureInFlow ? undefined : 0))
+    : 0
 
   return (
-    <View ref={ref} height={height} position="relative" {...rest}>
+    <View ref={ref} {...rest} position="relative" height={height} overflow="hidden">
       <View
-        position={shouldAbsolutePosition ? 'absolute' : 'relative'}
-        top={shouldAbsolutePosition ? 0 : undefined}
-        left={shouldAbsolutePosition ? 0 : undefined}
-        right={shouldAbsolutePosition ? 0 : undefined}
+        position={measureInFlow ? 'relative' : 'absolute'}
+        top={measureInFlow ? undefined : 0}
+        left={measureInFlow ? undefined : 0}
+        right={measureInFlow ? undefined : 0}
         onLayout={({ nativeEvent }) => {
-          if (nativeEvent.layout.height && nativeEvent.layout.height !== measuredHeight) {
-            setMeasuredHeight(nativeEvent.layout.height)
+          const nextHeight = nativeEvent.layout.height
+          if (itemContext.open && nextHeight !== measuredHeight) {
+            setMeasuredHeight(nextHeight)
           }
         }}
       >

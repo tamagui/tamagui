@@ -129,13 +129,17 @@ export const Toggle = React.forwardRef<TamaguiElement, ToggleProps>(
           !unstyled && {
             defaultActiveStyle: true,
           })}
+        {...buttonProps}
+        // spread activeStyle after buttonProps so it wins when active: a styled()
+        // variant (e.g. a resting `backgroundColor`) forwards that value as a plain
+        // prop into buttonProps, which would otherwise clobber the activeStyle merge
+        // on overlapping keys and leave the active item stuck at its resting style.
         {...(active &&
           activeStyle && {
             ...(activeStyle as any),
             hoverStyle: activeStyle,
             focusStyle: activeStyle,
           })}
-        {...buttonProps}
         ref={forwardedRef}
         onPress={composeEventHandlers(props.onPress ?? undefined, () => {
           if (!props.disabled) {
