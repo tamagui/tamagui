@@ -115,8 +115,14 @@ const DialogTrigger = createStyledHOC(DialogTriggerFrame)<ScopedProps<{}>>(
     const isInsideButton = React.useContext(ButtonNestingContext)
     const context = useDialogContext(scope)
     const composedTriggerRef = useComposedRefs(forwardedRef, context.triggerRef)
+    // only mark descendants as button-nested when this trigger renders its OWN
+    // <button>. with asChild the child element BECOMES the trigger (it receives
+    // our composed onPress directly), so it is the control, not a decorative
+    // button nested inside one - forcing nesting here would strip its
+    // interactivity (Button's nested branch neutralizes role/tabIndex/press).
+    // preserve whatever nesting the trigger itself sits in. matches Popover.Trigger.
     return (
-      <ButtonNestingContext.Provider value={true}>
+      <ButtonNestingContext.Provider value={props.asChild ? isInsideButton : true}>
         <DialogTriggerFrame
           render={isInsideButton ? 'span' : 'button'}
           aria-haspopup="dialog"
