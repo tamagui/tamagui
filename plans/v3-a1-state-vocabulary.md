@@ -13,7 +13,7 @@ interaction/lifecycle states through `pseudoToModifier` (hover/press/focus/…/
 enter/exit). A1 names the full vocabulary and adds the component/ARIA states that
 had no modifier.
 
-## The eight-state vocabulary
+## The nine-state vocabulary
 
 Two tiers by how the state is applied:
 
@@ -36,9 +36,10 @@ Two tiers by how the state is applied:
 | checked | component | `data-[state=checked]` | — | `[data-state="checked"]` | aliases `data-[state=on]`, `aria-checked`; new |
 | highlighted | component | `data-[highlighted]` | — | `[data-highlighted]` | new |
 | invalid | component | `aria-invalid` | — | `[aria-invalid="true"]` | alias `data-[invalid]`; new |
+| selected | component | `data-[state=active]` | — | `[data-state="active"]` | item selection (Select/RadioGroup/ToggleGroup); NOT aliased by bare `active`; new |
 
 hover / focus / focus-visible / focus-within are pre-existing interaction states
-(in `pseudoToModifier`); not part of the eight, but they compose identically.
+(in `pseudoToModifier`); not part of the nine, but they compose identically.
 
 ## Name reconciliation
 
@@ -53,26 +54,28 @@ as an alias so a `pressed:` / `starting:` / `ending:` class resolves correctly.
 `modifierToState` (canonical + aliases → state), `stateToSelector` (component
 tier), `stateToPseudoProp` (pseudo tier), `componentStateNames`.
 
-## Open questions for the lead / W5
+## Resolved (lead, W5 relayed)
 
-1. **Component-state authoring in tamagui skins.** Tier-1 states have a runtime
-   pseudo-prop; tier-2 (open/checked/highlighted/invalid) do not. Today skins
-   express them ad hoc — a `variant` the behavior toggles (Sheet `open`, ListItem
-   `active`) or a raw data-attribute style. Do we want a uniform authoring form
-   (e.g. core-supported `openStyle`/`checkedStyle` pseudo-props, or a documented
-   `variants: { open: {...} }` convention W5 recognizes)? A1 defines the mapping;
-   the authoring convention is the follow-up W5 needs pinned.
-2. **`invalid` modifier**: `aria-invalid` vs `data-[invalid]` as canonical. Chose
-   `aria-invalid` (matches form a11y); `data-[invalid]` kept as alias.
-3. **`checked` selector** — grounded against the source: checkbox/switch
-   `getState(checked)` emits `data-state` = `checked` / `unchecked` /
-   `indeterminate`; accordion/dialog/popover/collapsible `getState(open)` emits
-   `open` / `closed`; menu/select emit `data-highlighted`; forms emit
-   `aria-invalid` (13 call sites); `data-disabled` is emitted broadly (35 sites).
-   So the canonical selectors match. One divergence to decide: **select/radio
-   item selection uses `data-state="active"/"inactive"`, not `checked`** — that is
-   a separate "selected/active" concept (cf. ToggleGroup's `activeStyle`) and is
-   not one of the eight. Fold it in as a ninth `selected` state, or leave it to
-   per-component variants?
-4. Parser wiring (candidate.ts) to accept the new attribute modifiers is left to
-   W5; A1 stays additive and does not touch the parser.
+1. **Component-state authoring — BLESSED convention.** Tier-2 stateful styles
+   (open/checked/highlighted/invalid/selected) are authored as canonical-named
+   variants `variants: { open: { true: {…} } }` keyed by the A1 state name (same
+   shape as `disabled`). That is what W5's registry derives `meta.states` from.
+   Skins that genuinely can't fit it use W5's `extraStates` escape hatch, but
+   uniform authoring is preferred. (No new core `openStyle`/`checkedStyle`
+   pseudo-props.)
+2. **9th state `selected` added** — component tier, `data-[state=active]`,
+   `[data-state="active"]`. Bare `active` stays an alias of `pressed`, NOT
+   `selected`.
+3. **`invalid` modifier**: `aria-invalid` canonical (matches form a11y);
+   `data-[invalid]` kept as alias.
+4. **Selectors grounded against the source**: checkbox/switch `getState(checked)`
+   emits `data-state` = `checked`/`unchecked`/`indeterminate`;
+   accordion/dialog/popover/collapsible `getState(open)` emits `open`/`closed`;
+   menu/select emit `data-highlighted`; forms emit `aria-invalid` (13 sites);
+   `data-disabled` broad (35 sites); select/radio item selection emits
+   `data-state="active"/"inactive"` → now the `selected` state.
+
+## Still open
+
+- Parser wiring (candidate.ts) to accept the new attribute modifiers is left to
+  W5; A1 stays additive and does not touch the parser.

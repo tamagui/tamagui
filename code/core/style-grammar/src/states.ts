@@ -83,6 +83,15 @@ export const stateVocabulary: readonly StateEntry[] = [
     selector: '[data-highlighted]',
   },
   {
+    // item selection (Select/RadioGroup items, ToggleGroup) — the behavior emits
+    // data-state="active"/"inactive"; distinct from `checked`. The bare word
+    // `active` is NOT an alias here (it stays an alias of `pressed`).
+    state: 'selected',
+    tier: 'component',
+    modifier: 'data-[state=active]',
+    selector: '[data-state="active"]',
+  },
+  {
     state: 'invalid',
     tier: 'component',
     modifier: 'aria-invalid',
