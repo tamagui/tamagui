@@ -1,6 +1,6 @@
 import { ChevronDown } from '@tamagui/lucide-icons-2'
-import { useState } from 'react'
-import { Accordion, Button, Paragraph, Square, YStack } from 'tamagui'
+import { useLayoutEffect, useState } from 'react'
+import { Accordion, Button, Paragraph, Square, View, YStack } from 'tamagui'
 
 // verifies first-paint of a defaultValue-open item shows content at full height
 // (no collapse-to-0 flash), which is the client-side equivalent of the SSR case.
@@ -8,6 +8,12 @@ import { Accordion, Button, Paragraph, Square, YStack } from 'tamagui'
 // elements carry both `id` (web css selectors) and `testID` (native Detox).
 export function AccordionDefaultOpenCase() {
   const [expanded, setExpanded] = useState(false)
+  const [initialLayoutPass, setInitialLayoutPass] = useState(0)
+  const [probeVisible, setProbeVisible] = useState(true)
+
+  useLayoutEffect(() => {
+    if (initialLayoutPass === 1) setInitialLayoutPass(2)
+  }, [initialLayoutPass])
 
   return (
     <YStack testID="accordion-default-root" p="$4">
@@ -38,6 +44,7 @@ export function AccordionDefaultOpenCase() {
             <Accordion.Content
               id="def-content"
               testID="def-content"
+              onLayout={() => setInitialLayoutPass((pass) => (pass === 0 ? 1 : pass))}
               borderWidth={1}
               borderTopWidth={0}
               borderColor="$borderColor"
@@ -100,6 +107,22 @@ export function AccordionDefaultOpenCase() {
       <Paragraph id="after-accordion-marker" testID="after-accordion-marker">
         After accordion
       </Paragraph>
+      <View
+        id="animated-key-probe"
+        testID="animated-key-probe"
+        width={20}
+        height={probeVisible ? 40 : undefined}
+        x={probeVisible ? 40 : undefined}
+        bg="$backgroundHover"
+        transition="300ms"
+      />
+      <Button
+        id="toggle-key-probe"
+        testID="toggle-key-probe"
+        onPress={() => setProbeVisible((visible) => !visible)}
+      >
+        Toggle animated keys
+      </Button>
     </YStack>
   )
 }

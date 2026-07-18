@@ -29,8 +29,8 @@ describe('Accordion (auto-height, native)', () => {
     })
     await waitFor(element(by.id('accordion-default-root')))
       .toExist()
-      .withTimeout(180000)
-  })
+      .withTimeout(10000)
+  }, 15000)
 
   it('default-open item shows content, closed sibling sits below it (no overlap)', async () => {
     await expect(element(by.id('def-content-text'))).toBeVisible()
@@ -51,11 +51,25 @@ describe('Accordion (auto-height, native)', () => {
     )
   })
 
-  it('closes the open item on tap (content hidden)', async () => {
+  it('closes the default-open item through an intermediate height', async () => {
+    const open = await frame('def-height')
     await element(by.id('def-trigger')).tap()
+    await new Promise((resolve) => setTimeout(resolve, 90))
+    const closing = await frame('def-height')
+    assert.ok(closing.height > 0, 'default-open close should stay above 0 mid-flight')
+    assert.ok(
+      closing.height < open.height,
+      `default-open close ${closing.height} should be below ${open.height}`
+    )
     await waitFor(element(by.id('def-content-text')))
       .not.toBeVisible()
       .withTimeout(4000)
+    await new Promise((resolve) => setTimeout(resolve, 300))
+    const closed = await frame('def-height')
+    assert.ok(
+      closed.height <= 1,
+      `default-open height ${closed.height} should settle at 0`
+    )
     await device.takeScreenshot('accordion-after-close')
   })
 
@@ -112,6 +126,10 @@ describe('Accordion (auto-height, native)', () => {
     assert.ok(
       reopening.height < open.height,
       'reversal should stay below the open endpoint'
+    )
+    assert.ok(
+      reopening.height > closingBeforeReverse.height,
+      `reversal height ${reopening.height} should rise above ${closingBeforeReverse.height}`
     )
 
     await new Promise((resolve) => setTimeout(resolve, 300))
