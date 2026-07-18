@@ -1114,6 +1114,15 @@ export function createComponent<
       if (typeof passThrough !== 'undefined') {
         viewProps.passThrough = passThrough
       }
+      // an HOC only wraps another component - its inner render produces the real
+      // styled frame that owns behavior (press handlers, aria/data-state). forward
+      // asChild to that inner frame so IT becomes the slot boundary, instead of the
+      // wrapper consuming asChild here and forwarding only its own (often
+      // behavior-less) props. fixes asChild items whose interaction is injected
+      // below the wrapper (e.g. ToggleGroup.Item asChild -> XGroup.Item -> Button).
+      if (typeof asChild !== 'undefined') {
+        viewProps.asChild = asChild
+      }
     }
 
     // once you set animation prop don't remove it, you can set to undefined/false
@@ -1602,7 +1611,7 @@ export function createComponent<
 
     if (process.env.NODE_ENV === 'development' && time) time`hooks`
 
-    if (asChild) {
+    if (asChild && !isHOC) {
       elementType = Slot
       // on native this is already merged into viewProps in useEvents
       if (process.env.TAMAGUI_TARGET === 'web') {
