@@ -9,9 +9,9 @@ import { components } from '~/features/mdx/MDXComponents'
 
 export async function loader(props) {
   const { getMDXBySlug } = await import('~/features/mdx/getMDXBySlug')
-  const { isTailwindMode } = await import('~/features/docs/isTailwindMode')
-  const tailwind = isTailwindMode(props)
-  const { frontmatter, code } = await getMDXBySlug('data/etc', 'privacy', { tailwind })
+  const { getDocsMode } = await import('~/features/docs/isTailwindMode')
+  const mode = getDocsMode(props)
+  const { frontmatter, code } = await getMDXBySlug('data/etc', 'privacy', { mode })
   return {
     frontmatter,
     code,
