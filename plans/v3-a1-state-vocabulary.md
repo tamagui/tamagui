@@ -75,6 +75,38 @@ tier), `stateToPseudoProp` (pseudo tier), `componentStateNames`.
    `data-disabled` broad (35 sites); select/radio item selection emits
    `data-state="active"/"inactive"` → now the `selected` state.
 
+## Skin audit (C4 sweep) — canonical-variant conformance
+
+Per the blessed convention, component-tier stateful styles should be canonical-
+named variants keyed by the A1 state name. Audit of the ten tamagui skins:
+
+**Already canonical (no change):**
+- `Sheet` — `variants: { open: { true/false } }`. The reference example.
+- `Button` — `variants: { disabled: { true } }`.
+- `ListItem` — `variants: { disabled: { true } }`.
+
+**No component-tier stateful styles (pseudo-only; nothing to convert):**
+- `Accordion`, `Dialog`, `Slider`, `Input`, `Toast`, `Select` — hover/press/focus/
+  focus-visible only. (These components DO have component states — Accordion/Dialog
+  open, Select highlighted/selected — but the skins don't style them today; they
+  rely on the behavior + pseudo states. Out of audit scope.)
+
+**Flagged — can't cleanly fit the variant convention → W5 `extraStates`:**
+- `ListItem` `active` variant = item selection (the v2-compat public `active`
+  prop; canonical would be `selected`). Renaming `active → selected` breaks v2
+  compatibility (the whole point of styled-default), so it stays `active`; W5
+  should map `active → selected` via `extraStates`. (Not a data-attribute state —
+  it's a consumer-set styling prop.)
+- `ToggleGroup` on-state is styled through the Toggle behavior's `activeStyle`
+  prop (behavior emits `data-state="on"` / `aria-pressed`), NOT a variant.
+  `data-state="on"` is A1 `checked` (alias `data-[state=on]`). Converting to
+  `variants: { checked: {...} }` needs a behavior change (Toggle would have to
+  toggle a `checked` variant), so keep `activeStyle`; W5 maps it to `checked` via
+  `extraStates`.
+
+Net: no skin code changes needed; two `extraStates` entries for W5 (ListItem
+`active`→`selected`, ToggleGroup `activeStyle`→`checked`).
+
 ## Still open
 
 - Parser wiring (candidate.ts) to accept the new attribute modifiers is left to
