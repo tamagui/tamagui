@@ -116,12 +116,17 @@ for (const animationDriver of ['css', 'reanimated']) {
       trigger.click()
       const opening = await sampleFor(450)
       const initialOpenHeight = opening.at(-1)?.height ?? 0
+      // once the open animation settles the wrapper releases back to auto
+      // (no inline height), so content and viewport changes stay fluid
+      await new Promise((resolve) => setTimeout(resolve, 300))
+      const inlineAfterOpen = (wrapper as HTMLElement).style.height
 
       const resize = document.getElementById('grow-content')
       if (!resize) throw new Error('accordion resize control missing')
       resize.click()
       const resizing = await sampleFor(450)
       const openHeight = resizing.at(-1)?.height ?? 0
+      const inlineAfterResize = (wrapper as HTMLElement).style.height
 
       trigger.click()
       const closingBeforeReverse = await sampleFor(100)
@@ -134,8 +139,10 @@ for (const animationDriver of ['css', 'reanimated']) {
       return {
         opening,
         initialOpenHeight,
+        inlineAfterOpen,
         resizing,
         openHeight,
+        inlineAfterResize,
         closingBeforeReverse,
         reopening,
         closing,
@@ -148,13 +155,11 @@ for (const animationDriver of ['css', 'reanimated']) {
         ({ height }) => height > 1 && height < result.initialOpenHeight - 1
       )
     ).toBe(true)
+    // at rest the wrapper is auto height: content growth applies immediately
+    // and no inline pixel height lingers
+    expect(result.inlineAfterOpen).toBe('')
     expect(result.openHeight).toBeGreaterThan(result.initialOpenHeight)
-    expect(
-      result.resizing.some(
-        ({ height }) =>
-          height > result.initialOpenHeight + 1 && height < result.openHeight - 1
-      )
-    ).toBe(true)
+    expect(result.inlineAfterResize).toBe('')
 
     const beforeReverse = result.closingBeforeReverse.at(-1)?.height ?? 0
     const afterReverse = result.reopening[0]?.height ?? 0

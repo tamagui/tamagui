@@ -27,6 +27,10 @@ module.exports = {
     minimize: false,
   },
   resolve: {
+    // workspace packages rebuild their dist while the dev server runs; the
+    // default resolver cache pins a failed resolution from mid-rebuild until
+    // restart, so trade a little resolve speed for correctness
+    unsafeCache: false,
     mainFields: ['module:jsx', 'browser', 'module', 'main'],
     extensions: ['.web.tsx', '.web.ts', '.ts', '.tsx', '.js'],
     alias: {
@@ -50,6 +54,12 @@ module.exports = {
       'react-native-web': path.resolve(__dirname, '../../node_modules/react-native-web'),
       'react-native-svg': '@tamagui/react-native-svg',
     },
+  },
+  // workspace package rebuilds delete and rewrite their dist while the dev
+  // server watches; compiling mid-rebuild caches a failed resolution. debounce
+  // long enough that a package rebuild finishes before webpack recompiles.
+  watchOptions: {
+    aggregateTimeout: 1500,
   },
   devServer: {
     client: {
