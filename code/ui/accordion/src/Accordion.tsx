@@ -1,7 +1,7 @@
 import { Collapsible } from '@tamagui/collapsible'
 import { createCollection } from '@tamagui/collection'
 import { useComposedRefs } from '@tamagui/compose-refs'
-import { isWeb } from '@tamagui/constants'
+import { isWeb, useIsomorphicLayoutEffect } from '@tamagui/constants'
 import type { GetProps, GetRef, TamaguiElement } from '@tamagui/core'
 import { View, createStyledContext, styled } from '@tamagui/core'
 import { composeEventHandlers, withStaticProperties } from '@tamagui/helpers'
@@ -581,35 +581,87 @@ const AccordionContent = AccordionContentFrame.styleable(function AccordionConte
 const HeightAnimator = View.styleable((props, ref) => {
   const itemContext = useAccordionItemContext()
   const { children, ...rest } = props
-  const useInitialNaturalLayout = React.useRef(itemContext.open)
-  const [measuredHeight, setMeasuredHeight] = React.useState<number>()
+  const open = !!itemContext.open
 
-  if (!itemContext.open || measuredHeight !== undefined) {
-    useInitialNaturalLayout.current = false
+  // at rest an open item renders auto height with the child in normal flow, so
+  // content and viewport changes stay fluid with no JS involved. any open/close
+  // animation switches to a measured pixel height over an absolutely positioned
+  // child, animates, and releases back to auto once the outer settles at its
+  // target. closing from rest pins the current measured height for one commit
+  // (so drivers see a numeric start value) before targeting 0.
+  const [fixed, setFixed] = React.useState(!open)
+  const [pinned, setPinned] = React.useState(false)
+  const [contentHeight, setContentHeight] = React.useState(0)
+  const outerRef = React.useRef<TamaguiElement | null>(null)
+  const composedRef = useComposedRefs(outerRef, ref)
+  const lastOuterHeightRef = React.useRef(0)
+  const settleTimerRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined
+  )
+  const prevOpenRef = React.useRef(open)
+
+  if (prevOpenRef.current !== open) {
+    prevOpenRef.current = open
+    clearTimeout(settleTimerRef.current)
+    if (!fixed) {
+      setFixed(true)
+      setPinned(true)
+    }
   }
-  const measureInFlow = useInitialNaturalLayout.current
 
-  // default-open content contributes its intrinsic size until the first measurement,
-  // avoiding a collapsed first paint. initially-closed content stays clipped at zero
-  // until its mounted child reports a numeric height, which gives every animation
-  // driver numeric endpoints. after that first natural pass, the absolute measuring
-  // child is independent of the animated outer height and keeps its last open layout
-  // through close and unmount.
-  const height = itemContext.open
-    ? (measuredHeight ?? (measureInFlow ? undefined : 0))
-    : 0
+  // the pin commit paints the current height as a pixel value. flush styles,
+  // then retarget in a second pre-paint commit so drivers animate from the
+  // pinned number instead of jumping out of auto.
+  useIsomorphicLayoutEffect(() => {
+    if (!pinned) return
+    if (isWeb) {
+      // reading layout forces the style flush; the value itself is unused
+      void (outerRef.current as HTMLElement | null)?.offsetHeight
+    }
+    setPinned(false)
+  }, [pinned])
+
+  React.useEffect(() => () => clearTimeout(settleTimerRef.current), [])
+
+  const height = fixed
+    ? pinned
+      ? lastOuterHeightRef.current
+      : open
+        ? contentHeight
+        : 0
+    : undefined
 
   return (
-    <View ref={ref} position="relative" {...rest} height={height} overflow="hidden">
+    <View
+      ref={composedRef}
+      position="relative"
+      {...rest}
+      height={height}
+      overflow="hidden"
+      onLayout={({ nativeEvent }) => {
+        const outerHeight = nativeEvent.layout.height
+        lastOuterHeightRef.current = outerHeight
+        // release to auto shortly after the animated outer stays at the open
+        // target: layout events only fire on change, so a quiet 100ms inside
+        // the target band means the animation settled (an out-of-band event —
+        // a spring overshooting through the target — cancels the release)
+        clearTimeout(settleTimerRef.current)
+        if (fixed && !pinned && open && contentHeight > 0) {
+          if (Math.abs(outerHeight - contentHeight) < 1) {
+            settleTimerRef.current = setTimeout(() => setFixed(false), 100)
+          }
+        }
+      }}
+    >
       <View
-        position={measureInFlow ? 'relative' : 'absolute'}
-        top={measureInFlow ? undefined : 0}
-        left={measureInFlow ? undefined : 0}
-        right={measureInFlow ? undefined : 0}
+        position={fixed ? 'absolute' : 'relative'}
+        top={fixed ? 0 : undefined}
+        left={fixed ? 0 : undefined}
+        right={fixed ? 0 : undefined}
         onLayout={({ nativeEvent }) => {
-          const nextHeight = nativeEvent.layout.height
-          if (itemContext.open && nextHeight !== measuredHeight) {
-            setMeasuredHeight(nextHeight)
+          const naturalHeight = nativeEvent.layout.height
+          if (fixed && open && naturalHeight !== contentHeight) {
+            setContentHeight(naturalHeight)
           }
         }}
       >

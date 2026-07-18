@@ -260,19 +260,27 @@ const applyAnimation = (
     )
   }
 
-  // reanimated starts a descriptor it has no history for from its own toValue
-  // (an instant snap). `current` is what prepareAnimation reads as the start
-  // point when there is no previous value, so a seeded descriptor animates
-  // from the seed instead.
+  // reanimated starts a descriptor from its per-view history for the key — the
+  // key's last output value, or the descriptor's own toValue when there is
+  // none (an instant snap). both are wrong for a key that turns animated with
+  // a painted predecessor: history may hold a stale clear-value ('') from when
+  // the key was last removed, which poisons the start value (NaN frames). the
+  // wrapper substitutes the seed for whatever start value reanimated passes.
   if (seedValue !== undefined) {
-    animatedValue.current = seedValue
+    const innerOnStart = animatedValue.onStart
+    animatedValue.onStart = (
+      animation: unknown,
+      _value: unknown,
+      timestamp: number,
+      previousAnimation: unknown
+    ) => {
+      'worklet'
+      innerOnStart(animation, seedValue, timestamp, previousAnimation)
+    }
   }
 
   if (delay && delay > 0) {
     animatedValue = withDelay(delay, animatedValue)
-    if (seedValue !== undefined) {
-      animatedValue.current = seedValue
-    }
   }
 
   return animatedValue
