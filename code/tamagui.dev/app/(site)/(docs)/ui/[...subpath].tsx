@@ -40,15 +40,15 @@ export async function generateStaticParams() {
 export async function loader(props: LoaderProps) {
   const { getMDXBySlug, getAllVersionsFromPath } =
     await import('~/features/mdx/getMDXBySlug')
-  const { isTailwindMode } = await import('~/features/docs/isTailwindMode')
-  const tailwind = isTailwindMode(props)
+  const { getDocsMode } = await import('~/features/docs/isTailwindMode')
+  const mode = getDocsMode(props)
 
   const subpath = Array.isArray(props.params.subpath)
     ? props.params.subpath.join('/')
     : props.params.subpath
 
   const { frontmatter, code } = await getMDXBySlug('data/docs/components', subpath, {
-    tailwind,
+    mode,
   })
   const [componentName, componentVersion] = subpath.split('/')
   const versions = getAllVersionsFromPath(`data/docs/components/${componentName}`)

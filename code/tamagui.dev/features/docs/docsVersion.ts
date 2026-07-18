@@ -1,8 +1,16 @@
-export type DocsSyntax = 'tamagui' | 'tailwind'
+import type { CodeMode } from './syntaxCookie'
+
+export type DocsSyntax = CodeMode
 export type DocsProductVersion = 'v3' | 'v2' | 'v1'
 
 export const docsProductVersions: DocsProductVersion[] = ['v3', 'v2', 'v1']
-export const docsSyntaxes: DocsSyntax[] = ['tamagui', 'tailwind']
+export const docsSyntaxes: DocsSyntax[] = ['styled', 'unstyled', 'tailwind']
+
+export const docsSyntaxLabels: Record<DocsSyntax, string> = {
+  styled: 'Styled',
+  unstyled: 'Unstyled',
+  tailwind: 'Tailwind',
+}
 
 export type DocsVersionFrontmatter = {
   component?: string
@@ -44,9 +52,12 @@ export function getCanonicalDocsPath(pathname: string) {
 }
 
 export function getDocsSyntax(pathname: string, search: URLSearchParams): DocsSyntax {
-  if (search.get('syntax') === 'tailwind') return 'tailwind'
+  const param = search.get('syntax')
+  if (param === 'tailwind') return 'tailwind'
+  if (param === 'unstyled') return 'unstyled'
+  if (param === 'styled' || param === 'tamagui') return 'styled'
   if (pathname.startsWith('/tailwind')) return 'tailwind'
-  return 'tamagui'
+  return 'styled'
 }
 
 export function getDocsVersionState({
@@ -124,8 +135,9 @@ export function getDocsVersionHref({
     search.set('version', nextProductVersion)
   }
 
-  if (nextSyntax === 'tailwind') {
-    search.set('syntax', 'tailwind')
+  // styled is the default (no param); unstyled and tailwind are explicit
+  if (nextSyntax !== 'styled') {
+    search.set('syntax', nextSyntax)
   }
 
   const query = search.toString()

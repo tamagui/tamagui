@@ -1,18 +1,17 @@
 import { startTransition, useEffect, useState } from 'react'
 import { isClient } from 'tamagui'
+import { clientCodeMode, type CodeMode } from './syntaxCookie'
 
-export type CodeMode = 'tamagui' | 'tailwind'
+export type { CodeMode }
 
-const STORAGE_KEY = 'tamagui-code-mode'
+// in-memory reflection of the active docs code mode for client components.
+// the sticky source of truth is the `tamaguiSyntax` cookie written by the
+// header toggle (see syntaxCookie.ts); this store is initialized from it and
+// from any explicit ?syntax= param.
+let codeMode: CodeMode = 'styled'
 
-let codeMode: CodeMode = 'tamagui'
-
-// restore from localStorage
 if (isClient) {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored === 'tailwind') codeMode = 'tailwind'
-  } catch {}
+  codeMode = clientCodeMode(typeof location !== 'undefined' ? location.search : '')
 }
 
 const listeners = new Set<Function>()
@@ -20,11 +19,6 @@ const listeners = new Set<Function>()
 export const setCodeMode = (next: CodeMode) => {
   codeMode = next
   listeners.forEach((cb) => cb(next))
-  if (isClient) {
-    try {
-      localStorage.setItem(STORAGE_KEY, next)
-    } catch {}
-  }
 }
 
 export const getCodeMode = () => codeMode

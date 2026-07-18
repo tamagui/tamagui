@@ -110,8 +110,12 @@ const tailwindTransform = {
   },
 }
 
+// the docs code toggle: 'styled' (default tamagui look), 'unstyled'
+// (@tamagui/ui primitives), 'tailwind' (unstyled primitive + tailwind).
+type CodeMode = 'styled' | 'unstyled' | 'tailwind'
+
 type TamaguiGetMDXOptions = GetMDXOptions & {
-  tailwind?: boolean
+  mode?: CodeMode
 }
 
 // tamagui.dev keeps its native <DocCodeBlock> (copy button, hero collapse, tabs),
@@ -122,14 +126,18 @@ export const getMDXBySlug = (
   slug: string,
   options: TamaguiGetMDXOptions = {}
 ) => {
-  const { tailwind, mdastPlugins, hastPlugins, ...rest } = options
+  const { mode = 'styled', mdastPlugins, hastPlugins, ...rest } = options
 
   return getMDXBySlugBase(basePath, slug, {
     ...rest,
     expressiveCode: false,
     mdastPlugins: [heroTemplate, ...(mdastPlugins ?? [])],
     hastPlugins: [
-      ...(tailwind ? [tailwindTransform] : []),
+      ...(mode === 'tailwind' ? [tailwindTransform] : []),
+      // UNSTYLED renders the @tamagui/ui behavior primitives. the
+      // styled->unstyled code-fence transform lands with W4's @tamagui/ui
+      // pilots and plugs in here, mirroring tailwindTransform above; until then
+      // unstyled shares the styled source so the toggle mechanism is live now.
       highlightPlugin,
       ...(hastPlugins ?? []),
     ],

@@ -23,10 +23,10 @@ export async function generateStaticParams() {
 export async function loader({ params, search, request }) {
   const { getMDXBySlug, getCompilationExamples } =
     await import('~/features/mdx/getMDXBySlug')
-  const { isTailwindMode } = await import('~/features/docs/isTailwindMode')
-  const tailwind = isTailwindMode({ search, request })
+  const { getDocsMode } = await import('~/features/docs/isTailwindMode')
+  const mode = getDocsMode({ search, request })
   const { frontmatter, code } = await getMDXBySlug(`data/docs/intro`, params.slug, {
-    tailwind,
+    mode,
   })
   return {
     frontmatter,
