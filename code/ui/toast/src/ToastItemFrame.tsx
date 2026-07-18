@@ -1,6 +1,12 @@
 /**
- * Shared visual styled components for toast items.
+ * Structural (unstyled) frames for toast items — the behavior-first primitives.
  * Shared across web and native — imported by ToastComposable.
+ *
+ * These keep ONLY the structural allowlist (layout, hit targets, positioning,
+ * cursor/userSelect, native `render:'button'`). The v2-look skin (background,
+ * border, radius, padding, shadow, hover/press/focus color styling, text color)
+ * lives in the tamagui skin (code/ui/tamagui/src/components/Toast.tsx), which is
+ * also the shadcn registry source.
  */
 
 import { styled } from '@tamagui/core'
@@ -26,8 +32,8 @@ export const ToastPositionWrapper = styled(YStack, {
 })
 
 /* -------------------------------------------------------------------------------------------------
- * ToastItemFrame - visual styling for the toast
- * Shared across web and native — the visual appearance of the toast card.
+ * ToastItemFrame - structural frame for the toast card (the visual skin lives in
+ * the tamagui Toast skin).
  * -----------------------------------------------------------------------------------------------*/
 
 export const ToastItemFrame = styled(YStack, {
@@ -35,24 +41,10 @@ export const ToastItemFrame = styled(YStack, {
   userSelect: 'none',
   cursor: 'default',
   tabIndex: 0,
-  backgroundColor: '$background',
-  borderRadius: '$6',
-  paddingHorizontal: '$4',
-  paddingVertical: '$3',
-  borderWidth: 1,
-  borderColor: '$borderColor',
-  shadowColor: 'rgba(0, 0, 0, 0.15)',
-  shadowOffset: { width: 0, height: 4 },
-  shadowRadius: 12,
-  focusVisibleStyle: {
-    outlineWidth: 2,
-    outlineColor: '$color8',
-    outlineStyle: 'solid',
-  },
 })
 
 /* -------------------------------------------------------------------------------------------------
- * ToastCloseFrame
+ * ToastCloseFrame - structural button (layout + hit target only).
  * -----------------------------------------------------------------------------------------------*/
 
 export const ToastCloseFrame = styled(XStack, {
@@ -63,19 +55,10 @@ export const ToastCloseFrame = styled(XStack, {
   cursor: 'pointer',
   width: 18,
   height: 18,
-  borderRadius: '$10',
-  backgroundColor: '$background',
-  borderWidth: 1,
-  borderColor: '$borderColor',
-  shadowColor: 'rgba(0, 0, 0, 0.08)',
-  shadowOffset: { width: 0, height: 1 },
-  shadowRadius: 3,
-  hoverStyle: { backgroundColor: '$color3' },
-  pressStyle: { backgroundColor: '$color4' },
 })
 
 /* -------------------------------------------------------------------------------------------------
- * ToastActionFrame - for action/cancel buttons with text
+ * ToastActionFrame - structural button for action/cancel buttons with text.
  * -----------------------------------------------------------------------------------------------*/
 
 export const ToastActionFrame = styled(XStack, {
@@ -84,20 +67,11 @@ export const ToastActionFrame = styled(XStack, {
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
-  borderRadius: '$2',
-  paddingHorizontal: '$2',
   height: 24,
-  backgroundColor: '$color5',
-  hoverStyle: { backgroundColor: '$color6' },
-  pressStyle: { backgroundColor: '$color7' },
 })
 
 /* -------------------------------------------------------------------------------------------------
- * DefaultCloseIcon
+ * DefaultCloseIcon - dependency-free glyph (inherits color; the skin sets it).
  * -----------------------------------------------------------------------------------------------*/
 
-export const DefaultCloseIcon = () => (
-  <SizableText size="$1" color="$color11">
-    ✕
-  </SizableText>
-)
+export const DefaultCloseIcon = () => <SizableText size="$1">✕</SizableText>

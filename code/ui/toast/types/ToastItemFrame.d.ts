@@ -1,6 +1,12 @@
 /**
- * Shared visual styled components for toast items.
+ * Structural (unstyled) frames for toast items — the behavior-first primitives.
  * Shared across web and native — imported by ToastComposable.
+ *
+ * These keep ONLY the structural allowlist (layout, hit targets, positioning,
+ * cursor/userSelect, native `render:'button'`). The v2-look skin (background,
+ * border, radius, padding, shadow, hover/press/focus color styling, text color)
+ * lives in the tamagui skin (code/ui/tamagui/src/components/Toast.tsx), which is
+ * also the shadcn registry source.
  */
 export declare const ToastPositionWrapper: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps, "elevation" | keyof import("@tamagui/core").StackStyleBase> & import("@tamagui/core").WithThemeValues<import("@tamagui/core").StackStyleBase> & {
     elevation?: number | import("@tamagui/core").Size | undefined;

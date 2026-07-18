@@ -151,6 +151,7 @@ export declare function useToasts(): {
     toasts: ToastT[];
     expanded: boolean;
     position: ToastPosition;
+    closeButton: boolean;
 };
 export declare function useToastItem(): ToastItemContextValue;
 export declare const Toast: ((props: ToastRootProps & import("@tamagui/core").RefProp<TamaguiElement>) => React.ReactNode) & {

@@ -65,6 +65,15 @@
       "import": "./dist/esm/unstyled.mjs",
       "require": "./dist/cjs/unstyled.cjs",
       "default": "./dist/esm/unstyled.mjs"
+    },
+    "./toast": {
+      "types": "./types/toast.d.ts",
+      "react-native": "./dist/esm/toast.native.js",
+      "browser": "./dist/esm/toast.mjs",
+      "module": "./dist/esm/toast.mjs",
+      "import": "./dist/esm/toast.mjs",
+      "require": "./dist/cjs/toast.cjs",
+      "default": "./dist/esm/toast.mjs"
     }
   },
   "scripts": {
