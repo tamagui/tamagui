@@ -1653,7 +1653,20 @@ export function createComponent<
         )
         if (out) {
           viewProps = out.viewProps
-          elementType = out.elementType
+          if (
+            isAnimatedCustomComponent &&
+            (elementType as any)['acceptRenderProp'] &&
+            typeof out.elementType === 'string'
+          ) {
+            // an animated driver view is active and owns the (possibly array)
+            // style; forward the render tag so the view renders the element
+            // itself (see acceptRenderProp) instead of us swapping in a raw DOM
+            // tag, which would leak the animated style array onto a plain element
+            // (React DOM throws setting an array on a CSSStyleDeclaration).
+            viewProps.render = out.elementType
+          } else {
+            elementType = out.elementType
+          }
         }
       }
 
