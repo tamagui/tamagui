@@ -1152,6 +1152,7 @@ export function createExtractor(
           const deoptProps = new Set([
             // always de-opt animation these
             'animation',
+            'transition',
             'animateOnly',
             'animatePresence',
             'disableOptimization',
