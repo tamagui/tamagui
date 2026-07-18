@@ -53,6 +53,64 @@ export * from '@tamagui/element'
 export * from '@tamagui/use-window-dimensions'
 export * from '@tamagui/visually-hidden'
 
+// styled default components — the unstyled @tamagui/ui primitives + the default
+// v2-look skins (see ./components). These explicitly shadow the unstyled
+// Button/Select/Sheet re-exported above from @tamagui/{button,select,sheet}, so
+// `import { Button } from 'tamagui'` is styled (v2-compatible). The unstyled
+// primitives remain available via `tamagui/unstyled` (= @tamagui/ui). Each skin
+// file is the single definition the shadcn registry item is generated from.
+export {
+  Button,
+  ButtonFrame,
+  ButtonIcon,
+  ButtonText,
+  buttonSizes,
+  type ButtonProps,
+  type ButtonSize,
+} from './components/Button'
+export {
+  Select,
+  SelectGroup,
+  SelectIcon,
+  SelectIndicator,
+  SelectItem,
+  SelectItemIndicator,
+  SelectItemText,
+  SelectLabel,
+  SelectRoot,
+  type SelectRootProps,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+  SelectViewport,
+  selectParts,
+  selectSizes,
+  type SelectSize,
+} from './components/Select'
+export {
+  Sheet,
+  SheetBackground,
+  SheetContainer,
+  SheetControlled,
+  SheetHandle,
+  SheetOverlay,
+  SheetRoot,
+  SheetScrollView,
+} from './components/Sheet'
+export {
+  Input,
+  type InputProps,
+  TextArea,
+  type TextAreaProps,
+} from './components/Input'
+export { ToggleGroup, type ToggleGroupItemProps } from './components/ToggleGroup'
+export { Accordion } from './components/Accordion'
+export { Dialog, DialogContent, DialogOverlay } from './components/Dialog'
+export { Slider, SliderActive, SliderThumb, SliderTrack } from './components/Slider'
+export { ListItem, type ListItemProps } from './components/ListItem'
+
 export * from './createTamagui'
 
 export * from './viewTypes'

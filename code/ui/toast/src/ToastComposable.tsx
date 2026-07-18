@@ -772,22 +772,16 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
           <XStack gap="$2" marginTop="$2">
             {toast.cancel && (
               <ToastActionFrame
-                backgroundColor="transparent"
                 onPress={(e: any) => {
                   toast.cancel?.onClick?.(e)
                   handleClose()
                 }}
               >
-                <SizableText size="$2" color="$color11">
-                  {toast.cancel.label}
-                </SizableText>
+                <SizableText size="$2">{toast.cancel.label}</SizableText>
               </ToastActionFrame>
             )}
             {toast.action && (
               <ToastActionFrame
-                backgroundColor="$color12"
-                hoverStyle={{ backgroundColor: '$color11' }}
-                pressStyle={{ backgroundColor: '$color10' }}
                 onPress={(e: any) => {
                   toast.action?.onClick?.(e)
                   if (!(e as any).defaultPrevented) {
@@ -795,9 +789,7 @@ function DefaultToastContent({ toast }: { toast: ToastT }) {
                   }
                 }}
               >
-                <SizableText size="$2" fontWeight="600" color="$background">
-                  {toast.action.label}
-                </SizableText>
+                <SizableText size="$2">{toast.action.label}</SizableText>
               </ToastActionFrame>
             )}
           </XStack>
@@ -1233,21 +1225,19 @@ const ToastItemInner = createStyledHOC(ToastItemFrame)<ToastItemProps>(
  * ToastTitle
  * -----------------------------------------------------------------------------------------------*/
 
+// Structural (unstyled) — text color/weight/size live in the tamagui skin
+// (code/ui/tamagui/src/components/Toast.tsx).
 const ToastTitle = styled(SizableText, {
   name: 'ToastTitle',
-  color: '$color',
-  fontWeight: '600',
-  size: '$4',
 })
 
 /* -------------------------------------------------------------------------------------------------
  * ToastDescription
  * -----------------------------------------------------------------------------------------------*/
 
+// Structural (unstyled) — text color/size live in the tamagui skin.
 const ToastDescription = styled(SizableText, {
   name: 'ToastDescription',
-  color: '$color11',
-  size: '$2',
 })
 
 /* -------------------------------------------------------------------------------------------------
@@ -1331,6 +1321,7 @@ export function useToasts() {
     toasts: ctx.toasts,
     expanded: ctx.expanded,
     position: ctx.position,
+    closeButton: ctx.closeButton,
   }
 }
 

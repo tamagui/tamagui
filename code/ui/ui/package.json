@@ -1,0 +1,122 @@
+{
+  "name": "@tamagui/ui",
+  "version": "2.4.6",
+  "description": "Unstyled, behavior-first UI primitives for Tamagui (web and native)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamagui/tamagui.git",
+    "directory": "code/ui/ui"
+  },
+  "source": "src/index.ts",
+  "type": "module",
+  "sideEffects": false,
+  "main": "dist/cjs",
+  "module": "dist/esm",
+  "types": "./types/index.d.ts",
+  "files": [
+    "src",
+    "types",
+    "dist"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./types/index.d.ts",
+      "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.mjs",
+      "module": "./dist/esm/index.mjs",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tamagui-build",
+    "watch": "tamagui-build --watch",
+    "clean": "tamagui-build clean",
+    "clean:build": "tamagui-build clean:build",
+    "check-circular-deps": "npx madge --circular ./src/index.ts"
+  },
+  "dependencies": {
+    "@tamagui/accordion": "workspace:*",
+    "@tamagui/adapt": "workspace:*",
+    "@tamagui/alert-dialog": "workspace:*",
+    "@tamagui/animate": "workspace:*",
+    "@tamagui/animate-presence": "workspace:*",
+    "@tamagui/avatar": "workspace:*",
+    "@tamagui/button": "workspace:*",
+    "@tamagui/card": "workspace:*",
+    "@tamagui/checkbox": "workspace:*",
+    "@tamagui/collapsible": "workspace:*",
+    "@tamagui/compose-refs": "workspace:*",
+    "@tamagui/constants": "workspace:*",
+    "@tamagui/context-menu": "workspace:*",
+    "@tamagui/core": "workspace:*",
+    "@tamagui/create-context": "workspace:*",
+    "@tamagui/create-menu": "workspace:*",
+    "@tamagui/dialog": "workspace:*",
+    "@tamagui/element": "workspace:*",
+    "@tamagui/elements": "workspace:*",
+    "@tamagui/field": "workspace:*",
+    "@tamagui/focusable": "workspace:*",
+    "@tamagui/font-size": "workspace:*",
+    "@tamagui/form": "workspace:*",
+    "@tamagui/get-button-sized": "workspace:*",
+    "@tamagui/get-font-sized": "workspace:*",
+    "@tamagui/get-token": "workspace:*",
+    "@tamagui/group": "workspace:*",
+    "@tamagui/helpers-tamagui": "workspace:*",
+    "@tamagui/image": "workspace:*",
+    "@tamagui/input": "workspace:*",
+    "@tamagui/label": "workspace:*",
+    "@tamagui/list-item": "workspace:*",
+    "@tamagui/menu": "workspace:*",
+    "@tamagui/popover": "workspace:*",
+    "@tamagui/popper": "workspace:*",
+    "@tamagui/portal": "workspace:*",
+    "@tamagui/progress": "workspace:*",
+    "@tamagui/radio-group": "workspace:*",
+    "@tamagui/react-native-media-driver": "workspace:*",
+    "@tamagui/scroll-view": "workspace:*",
+    "@tamagui/select": "workspace:*",
+    "@tamagui/separator": "workspace:*",
+    "@tamagui/shapes": "workspace:*",
+    "@tamagui/sheet": "workspace:*",
+    "@tamagui/slider": "workspace:*",
+    "@tamagui/spacer": "workspace:*",
+    "@tamagui/spinner": "workspace:*",
+    "@tamagui/stacks": "workspace:*",
+    "@tamagui/switch": "workspace:*",
+    "@tamagui/tabs": "workspace:*",
+    "@tamagui/text": "workspace:*",
+    "@tamagui/theme": "workspace:*",
+    "@tamagui/toast": "workspace:*",
+    "@tamagui/toggle-group": "workspace:*",
+    "@tamagui/tooltip": "workspace:*",
+    "@tamagui/use-controllable-state": "workspace:*",
+    "@tamagui/use-debounce": "workspace:*",
+    "@tamagui/use-force-update": "workspace:*",
+    "@tamagui/use-window-dimensions": "workspace:*",
+    "@tamagui/visually-hidden": "workspace:*",
+    "@tamagui/z-index-stack": "workspace:*"
+  },
+  "devDependencies": {
+    "@tamagui/build": "workspace:*",
+    "react": ">=19",
+    "react-native": "0.83.2",
+    "react-native-web": "^0.21.0"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-native-safe-area-context": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native-safe-area-context": {
+      "optional": true
+    }
+  },
+  "module:jsx": "dist/jsx"
+}

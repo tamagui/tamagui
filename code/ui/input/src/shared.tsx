@@ -5,33 +5,18 @@ import { getButtonSized } from '@tamagui/get-button-sized'
 import { getFontSized } from '@tamagui/get-font-sized'
 import { getSize } from '@tamagui/get-token'
 
+// Structural-only defaults for the unstyled Input behavior primitive.
+// Theme decoration (palette, border, background, font family, hover/focus color
+// styling) lives in the tamagui skin (code/ui/tamagui/src/components/Input.tsx),
+// NOT here. Kept: the size mechanism (functional dimensions), the native outline
+// reset, tab focusability, and the flex-overflow fix.
 export const defaultStyles = {
   size: true,
-  fontFamily: '$body',
-  borderWidth: 1,
   outlineWidth: 0,
-  color: '$color',
   tabIndex: 0,
-
-  borderColor: '$borderColor',
-  backgroundColor: '$background',
 
   // this fixes a flex bug where it overflows container
   minWidth: 0,
-
-  hoverStyle: {
-    borderColor: '$borderColorHover',
-  },
-
-  focusStyle: {
-    borderColor: '$borderColorFocus',
-  },
-
-  focusVisibleStyle: {
-    outlineColor: '$outlineColor',
-    outlineWidth: 2,
-    outlineStyle: 'solid',
-  },
 } as const
 
 export const inputSizeVariant: SizeVariantSpreadFunction<any> = (val = true, extras) => {

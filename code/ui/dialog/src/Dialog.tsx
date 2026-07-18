@@ -377,12 +377,14 @@ function useDialogPartPresence(
 
 const OVERLAY_NAME = 'DialogOverlay'
 
+// Unstyled overlay frame: positioning + pointer-event bookkeeping only. The
+// dim/scrim background lives in the tamagui skin
+// (code/ui/tamagui/src/components/Dialog.tsx).
 export const DialogOverlayFrame = styled(YStack, {
   name: OVERLAY_NAME,
   zIndex: 1,
   inset: 0,
   position: 'absolute',
-  backgroundColor: '$background',
   pointerEvents: 'auto',
 
   variants: {
@@ -459,16 +461,12 @@ const DialogOverlay = createStyledHOC(DialogOverlayFrame)<DialogOverlayExtraProp
 
 const CONTENT_NAME = 'DialogContent'
 
+// Unstyled content frame: stacking + pointer events only. Background, border,
+// padding, radius, and elevation live in the tamagui skin.
 const DialogContentFrame = styled(ThemeableStack, {
   name: CONTENT_NAME,
   zIndex: 2,
   position: 'relative',
-  backgroundColor: '$background',
-  borderWidth: 1,
-  borderColor: '$borderColor',
-  padding: true,
-  borderRadius: true,
-  elevate: true,
   // Ensure content receives pointer events (fixes React 19 + display:contents inheritance)
   pointerEvents: 'auto',
 })

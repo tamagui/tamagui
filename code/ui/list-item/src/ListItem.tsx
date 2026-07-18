@@ -2,7 +2,7 @@ import { getFontSized } from '@tamagui/get-font-sized'
 import { oneSizeTokenSmaller } from '@tamagui/get-token'
 import { withStaticProperties } from '@tamagui/helpers'
 import { getThemedIconSize, useGetThemedIcon } from '@tamagui/helpers-tamagui'
-import { themeableVariantStyles, YStack } from '@tamagui/stacks'
+import { YStack } from '@tamagui/stacks'
 import { SizableText, wrapChildrenInText } from '@tamagui/text'
 import type {
   ColorTokens,
@@ -74,6 +74,10 @@ const listItemSubtitleSizeVariant = (
   return getFontSized(oneSmaller as FontSizeTokens, extras as any)
 }
 
+// Unstyled ListItem frame: structural layout + the size mechanism + the
+// disabled pointer-event block only. Theme decoration (palette, border, cursor,
+// hover/press color styling, the outlined/active appearance, disabled dimming)
+// lives in the tamagui skin (code/ui/tamagui/src/components/ListItem.tsx).
 const ListItemFrame = styled(View, {
   context,
   name: NAME,
@@ -83,53 +87,31 @@ const ListItemFrame = styled(View, {
   alignItems: 'center',
   justifyContent: 'space-between',
   flexWrap: 'nowrap',
-  borderColor: '$borderColor',
   width: '100%',
   maxWidth: '100%',
   overflow: 'hidden',
   flexDirection: 'row',
-  backgroundColor: '$background',
-  cursor: 'default',
-  hoverStyle: {
-    backgroundColor: '$backgroundHover',
-    borderColor: '$borderColorHover',
-  },
-  pressStyle: {
-    backgroundColor: '$backgroundPress',
-    borderColor: '$borderColorPress',
-  },
 
   variants: {
-    variant: {
-      outlined: themeableVariantStyles.outlined,
-    },
-
     size: {
       true: listItemSizeVariant,
       Size: listItemSizeVariant,
     },
 
-    active: {
-      true: {
-        hoverStyle: {
-          backgroundColor: '$background',
-        },
-      },
-    },
-
     disabled: {
       true: {
-        opacity: 0.5,
         pointerEvents: 'none',
       },
     },
   } as const,
 })
 
+// text color comes from the styled context (the tamagui skin sets a default
+// `color` on ListItem, which flows through as context.color); unstyled it
+// inherits.
 const ListItemText = styled(SizableText, {
   context,
   name: 'ListItemText',
-  color: '$color',
   size: true,
   flexGrow: 1,
   flexShrink: 1,
@@ -142,7 +124,6 @@ const ListItemSubtitle = styled(ListItemText, {
   context,
   opacity: 0.6,
   maxWidth: '100%',
-  color: '$color',
   variants: {
     size: {
       true: listItemSubtitleSizeVariant,
