@@ -214,16 +214,17 @@ export async function extractToClassNames({
       // is isReactNative:false yet still needs JS.
       //
       // in practice createExtractor's deoptProps already de-opts every animated
-      // element upstream (`animation`/`transition`/`animateOnly`/
-      // `animatePresence` always;
-      // enterStyle/exitStyle on RN drivers), so a flattened element reaching here
-      // is normally non-animated and this never fires. it keeps the invariant
-      // local and correct regardless of future deoptProps changes — it only ever
-      // bails the animated case to runtime, never widens what extracts.
+      // element upstream except CSS-only transitions, which lower to ordinary
+      // CSS. it keeps the invariant local and correct regardless of future
+      // deoptProps changes — it only ever bails the animated case to runtime,
+      // never widens what extracts.
+      const hasCSSOnlyAnimationDriver =
+        tamaguiConfig.animations.outputStyle === 'css' && !tamaguiConfig.animationDrivers
       let elementIsAnimated = false
       for (const attr of jsxPath.node.openingElement.attributes) {
         if (!t.isJSXAttribute(attr) || !t.isJSXIdentifier(attr.name)) continue
         const n = attr.name.name
+        if (n === 'transition' && hasCSSOnlyAnimationDriver) continue
         if (
           n === 'animation' ||
           n === 'transition' ||

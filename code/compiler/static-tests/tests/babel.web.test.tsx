@@ -592,6 +592,31 @@ test('$platform-web transition property is preserved', async () => {
   expect(output?.styles).toContain('clip-path')
 })
 
+test('CSS-only named transition stays flattened and emits CSS', async () => {
+  const output = await extractForWeb(`
+    import { View } from '@tamagui/core'
+
+    export function Test(props) {
+      return <View transition="medium" opacity={props.active ? 1 : 0} />
+    }
+  `)
+
+  expect({ js: output?.js, styles: output?.styles }).toMatchInlineSnapshot(`
+    {
+      "js": "const _cn3 = "is_View _transition-all300mscub1822784663";
+    const _cn2 = "is_View _transition-all300mscub1822784663 _o-1";
+    const _cn = "is_View _transition-all300mscub1822784663 _o-0";
+    import { View } from '@tamagui/core';
+    export function Test(props) {
+      return <div className={!props.active ? _cn : props.active ? _cn2 : _cn3} />;
+    }",
+      "styles": ":root ._transition-all300mscub1822784663{transition:all 300ms cubic-bezier(0.25, 0.1, 0.25, 1);}
+    :root ._o-1{opacity:1;}
+    :root ._o-0{opacity:0;}",
+    }
+  `)
+})
+
 // Verifies that conditional spread with runtime variable from hook inside map is correctly extracted
 test('conditional spread with runtime variable preserves ternary', async () => {
   const output = await extractForWeb(

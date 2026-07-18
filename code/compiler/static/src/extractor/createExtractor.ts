@@ -1149,10 +1149,16 @@ export function createExtractor(
             ...(staticConfig.inlineProps || []),
           ])
 
+          const canFlattenTransition =
+            isTargetingHTML &&
+            tamaguiConfig?.animations.outputStyle === 'css' &&
+            !tamaguiConfig.animationDrivers
+
           const deoptProps = new Set([
-            // always de-opt animation these
+            // css-only transitions lower to ordinary css; every runtime driver
+            // needs the component preserved so it can respond to prop changes.
             'animation',
-            'transition',
+            ...(canFlattenTransition ? [] : ['transition']),
             'animateOnly',
             'animatePresence',
             'disableOptimization',
