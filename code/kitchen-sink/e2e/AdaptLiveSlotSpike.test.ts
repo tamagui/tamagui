@@ -99,7 +99,9 @@ describe('AdaptLiveSlotSpike', () => {
       measuredV2StateBaseline.countAfterReturn
     )
 
-    const incrementButton = element(by.label('increment slot')).atIndex(0)
+    // android exposes both the Pressable container and its Text child for the
+    // shallow label matcher; select the unique visible Text node directly
+    const incrementButton = element(by.text('increment slot'))
     await waitFor(incrementButton)
       .toBeVisible()
       .whileElement(by.id('adapt-live-slot-scroll'))
