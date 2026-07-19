@@ -3,7 +3,14 @@
 // and hover/focus/press color styling). The behavior frames keep only the
 // Collapsible trigger/content behavior. Single skin definition; the shadcn
 // registry item is generated from this file.
-import { Accordion as UiAccordion, styled, withStaticProperties } from '@tamagui/ui'
+import {
+  Accordion as UiAccordion,
+  createRefComponent,
+  styled,
+  type TamaguiElement,
+  withStaticProperties,
+} from '@tamagui/ui'
+import type * as React from 'react'
 
 export const AccordionTrigger = styled(UiAccordion.Trigger, {
   name: 'AccordionTrigger',
@@ -21,7 +28,20 @@ export const AccordionContent = styled(UiAccordion.Content, {
   backgroundColor: '$background',
 })
 
-export const Accordion = withStaticProperties(UiAccordion, {
+// see Dialog.tsx: withStaticProperties assigns in place, so composing onto
+// UiAccordion would rewrite @tamagui/ui's own Accordion.Trigger/.Content for every
+// consumer of the unstyled package.
+const AccordionRoot = createRefComponent<
+  TamaguiElement,
+  React.ComponentProps<typeof UiAccordion>
+>(function Accordion(props, ref) {
+  return <UiAccordion {...props} ref={ref} />
+})
+
+export const Accordion = withStaticProperties(AccordionRoot, {
+  Header: UiAccordion.Header,
+  Item: UiAccordion.Item,
+  HeightAnimator: UiAccordion.HeightAnimator,
   Trigger: AccordionTrigger,
   Content: AccordionContent,
 })

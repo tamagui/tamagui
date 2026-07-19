@@ -1,4 +1,6 @@
-export declare const SliderTrack: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & void, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+import { type TamaguiElement } from '@tamagui/ui';
+import type * as React from 'react';
+export declare const SliderTrack: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & void, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").Size | undefined;
     size?: any;
     orientation?: "horizontal" | "vertical" | undefined;
@@ -11,7 +13,7 @@ export declare const SliderTrack: import("react").FunctionComponent<Omit<import(
     size?: any;
     orientation?: "horizontal" | "vertical" | undefined;
 }>> & {
-    ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+    ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("@tamagui/web").Size | undefined;
     size?: any;
@@ -23,7 +25,7 @@ export declare const SliderTrack: import("react").FunctionComponent<Omit<import(
         orientation?: "horizontal" | "vertical" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const SliderActive: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & void, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+export declare const SliderActive: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & void, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").Size | undefined;
     size?: any;
     orientation?: "horizontal" | "vertical" | undefined;
@@ -36,7 +38,7 @@ export declare const SliderActive: import("react").FunctionComponent<Omit<import
     size?: any;
     orientation?: "horizontal" | "vertical" | undefined;
 }>> & {
-    ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+    ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("@tamagui/web").Size | undefined;
     size?: any;
@@ -48,7 +50,7 @@ export declare const SliderActive: import("react").FunctionComponent<Omit<import
         orientation?: "horizontal" | "vertical" | undefined;
     }, import("@tamagui/web").StaticConfigPublic];
 };
-export declare const SliderThumb: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").SliderThumbExtraProps, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "circular" | "elevate"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+export declare const SliderThumb: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").SliderThumbExtraProps, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "circular" | "elevate"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
     elevation?: number | import("@tamagui/web").Size | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
     circular?: boolean | undefined;
@@ -64,7 +66,7 @@ export declare const SliderThumb: import("react").FunctionComponent<Omit<import(
     circular?: boolean | undefined;
     elevate?: boolean | undefined;
 }>> & {
-    ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+    ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
 }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").SliderThumbExtraProps, import("@tamagui/web").StackStyleBase, {
     elevation?: number | import("@tamagui/web").Size | undefined;
     size?: number | import("@tamagui/web").Size | undefined;
@@ -80,41 +82,11 @@ export declare const SliderThumb: import("react").FunctionComponent<Omit<import(
 };
 export declare const Slider: ((props: import("@tamagui/ui").SliderProps & {
     __scopeSlider?: string;
-} & import("@tamagui/ui").RefProp<unknown>) => React.ReactNode) & {
+} & import("@tamagui/ui").RefProp<unknown> & import("@tamagui/ui").RefProp<TamaguiElement>) => React.ReactNode) & {
     displayName?: string;
     propTypes?: any;
 } & {
-    Track: import("@tamagui/ui").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        size?: any;
-        orientation?: "horizontal" | "vertical" | undefined;
-    }>, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        size?: any;
-        orientation?: "horizontal" | "vertical" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    TrackActive: import("@tamagui/ui").TamaguiComponent<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        size?: any;
-        orientation?: "horizontal" | "vertical" | undefined;
-    }>, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        size?: any;
-        orientation?: "horizontal" | "vertical" | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-    Thumb: import("@tamagui/ui").TamaguiComponent<Omit<import("@tamagui/web").GetFinalProps<import("@tamagui/core").RNTamaguiViewNonStyleProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
-        circular?: boolean | undefined;
-        elevate?: boolean | undefined;
-    }>, "index"> & import("@tamagui/ui").SliderThumbExtraProps, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").SliderThumbExtraProps, import("@tamagui/web").StackStyleBase, {
-        elevation?: number | import("@tamagui/web").Size | undefined;
-        size?: number | import("@tamagui/web").Size | undefined;
-        circular?: boolean | undefined;
-        elevate?: boolean | undefined;
-    }, import("@tamagui/web").StaticConfigPublic>;
-} & {
-    Track: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & void, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Track: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & void, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | import("@tamagui/web").Size | undefined;
         size?: any;
         orientation?: "horizontal" | "vertical" | undefined;
@@ -127,7 +99,7 @@ export declare const Slider: ((props: import("@tamagui/ui").SliderProps & {
         size?: any;
         orientation?: "horizontal" | "vertical" | undefined;
     }>> & {
-        ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+        ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("@tamagui/web").Size | undefined;
         size?: any;
@@ -139,7 +111,7 @@ export declare const Slider: ((props: import("@tamagui/ui").SliderProps & {
             orientation?: "horizontal" | "vertical" | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     };
-    TrackActive: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & void, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    TrackActive: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & void, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "orientation"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | import("@tamagui/web").Size | undefined;
         size?: any;
         orientation?: "horizontal" | "vertical" | undefined;
@@ -152,7 +124,7 @@ export declare const Slider: ((props: import("@tamagui/ui").SliderProps & {
         size?: any;
         orientation?: "horizontal" | "vertical" | undefined;
     }>> & {
-        ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+        ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & void, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("@tamagui/web").Size | undefined;
         size?: any;
@@ -164,7 +136,7 @@ export declare const Slider: ((props: import("@tamagui/ui").SliderProps & {
             orientation?: "horizontal" | "vertical" | undefined;
         }, import("@tamagui/web").StaticConfigPublic];
     };
-    Thumb: import("react").FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").SliderThumbExtraProps, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "circular" | "elevate"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
+    Thumb: React.FunctionComponent<Omit<import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").SliderThumbExtraProps, "size" | "elevation" | keyof import("@tamagui/web").StackStyleBase | "circular" | "elevate"> & import("@tamagui/web").WithThemeValues<import("@tamagui/web").StackStyleBase> & {
         elevation?: number | import("@tamagui/web").Size | undefined;
         size?: number | import("@tamagui/web").Size | undefined;
         circular?: boolean | undefined;
@@ -180,7 +152,7 @@ export declare const Slider: ((props: import("@tamagui/ui").SliderProps & {
         circular?: boolean | undefined;
         elevate?: boolean | undefined;
     }>> & {
-        ref?: import("react").Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
+        ref?: React.Ref<import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods)> | undefined;
     }> & import("@tamagui/web").StaticComponentObject<import("@tamagui/web").TamaDefer, import("react-native").View | (HTMLElement & import("@tamagui/web").TamaguiElementMethods), import("@tamagui/core").RNTamaguiViewNonStyleProps & import("@tamagui/ui").SliderThumbExtraProps, import("@tamagui/web").StackStyleBase, {
         elevation?: number | import("@tamagui/web").Size | undefined;
         size?: number | import("@tamagui/web").Size | undefined;

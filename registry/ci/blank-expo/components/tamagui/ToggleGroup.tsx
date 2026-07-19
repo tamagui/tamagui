@@ -4,11 +4,14 @@
 // prop). The behavior frame keeps only structural layout + the size mechanism.
 // Single skin definition; the shadcn registry item is generated from this file.
 import {
+  createRefComponent,
   type GetProps,
   styled,
+  type TamaguiElement,
   ToggleGroup as UiToggleGroup,
   withStaticProperties,
 } from '@tamagui/ui'
+import type * as React from 'react'
 
 // default appearance for an active (pressed-on) item — applied by the Toggle
 // behavior through its `activeStyle` prop when the item is active.
@@ -46,7 +49,17 @@ export const ToggleGroupItem = styled(UiToggleGroup.Item, {
   },
 })
 
-export const ToggleGroup = withStaticProperties(UiToggleGroup, {
+// see Dialog.tsx: withStaticProperties assigns in place, so composing onto
+// UiToggleGroup would rewrite @tamagui/ui's own ToggleGroup.Item for every consumer
+// of the unstyled package.
+const ToggleGroupRoot = createRefComponent<
+  TamaguiElement,
+  React.ComponentProps<typeof UiToggleGroup>
+>(function ToggleGroup(props, ref) {
+  return <UiToggleGroup {...props} ref={ref} />
+})
+
+export const ToggleGroup = withStaticProperties(ToggleGroupRoot, {
   Item: ToggleGroupItem,
 })
 
