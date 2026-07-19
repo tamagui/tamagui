@@ -62,7 +62,7 @@ describe('AdaptLiveSlotSpike', () => {
     // no scroll reset needed: remountDirectUseCase bumps the host's React key
     // (see DirectUseCaseHost in App.native.tsx), so the ScrollView is a fresh
     // instance sitting at offset 0. an explicit scrollTo('top') here is not just
-    // redundant, it wedges the iOS app - see the scrollIntoView note below.
+    // redundant, it wedges the iOS app - see the scrollIntoView note above.
     await remountDirectUseCase('live-slot-content', { skipEnableSync: true })
   })
 
