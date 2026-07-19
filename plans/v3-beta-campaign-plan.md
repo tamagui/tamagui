@@ -67,12 +67,24 @@ registry, state grammar, and the review's correctness fixes were found on
 
 ## Remaining work to beta
 
-Execution started 2026-07-18 (user: "get us all the way"). Assignments:
-T1+T2 → branch `v3/t12-v1-removal-surface` (Opus xhigh);
-T3 → branch `v3/t3-native-ci-truth` (Sol xhigh);
-T4 → branch `v3/t4-state-wiring` (Opus high).
-T5 docs + T7 benchmarks queue behind T1/T2 landing. Integration to v3-beta is
-sequential through the coordinating session after each branch goes green.
+Execution started 2026-07-18 (user: "get us all the way"), fully parallel per
+user 2026-07-19. Assignments:
+T1+T2 → `v3/t12-v1-removal-surface` (Opus xhigh) — DONE, PR #4137;
+T3 → `v3/t3-native-ci-truth` (Sol xhigh) — in progress;
+T4 → `v3/t4-state-wiring` (Opus high) — DONE, merged (`72b550b1b0`);
+T5 → `v3/t5-docs-migration` (Opus high, based on the T12 branch);
+T7 → `v3/t7-benchmarks` (Sol high).
+
+Integration policy (user 2026-07-19): worker branches validate on their own
+PRs in parallel; v3-beta takes BATCHED merges of already-green branches (one
+PR stacking the small ones) so the ~45m full matrix is paid once per batch,
+not per branch. Repo only allows squash merges. Post-merge v3-beta runs are
+confirmations, not gates.
+
+Known issue parked for the perf/Gate-4 lane (found by T12): a variant block on
+a styled() wrapper around an animated node crashes the native Animated
+driver's interpolation — worked around by keeping v2-compat variants on the
+animated behavior frames; the driver fragility itself is unfixed.
 
 T1. **Remove v1 surfaces** (decision 2). Delete `code/ui/button/src/v1` and the
     v1 Toast; the unstyled behavior + skins own the primary export names.
