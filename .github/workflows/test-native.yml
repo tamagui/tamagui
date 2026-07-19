@@ -29,6 +29,52 @@ env:
   android_cache_version: v4
 
 jobs:
+  build-one-native-bundles:
+    name: Build One Production Native Bundles
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 1
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+        with:
+          workspace-focus: sandbox
+
+      - name: Build iOS and Android Production Bundles
+        working-directory: code/sandbox
+        env:
+          NODE_ENV: production
+          ONE_SERVER_URL: https://native-bundle.invalid
+        run: |
+          mkdir -p ../../one-native-bundles
+
+          bun run build:native:ios
+          test -s dist/ios.js
+          mv dist/ios.js ../../one-native-bundles/ios.js
+
+          bun run build:native:android
+          test -s dist/android.js
+          mv dist/android.js ../../one-native-bundles/android.js
+
+          cd ../../one-native-bundles
+          sha256sum ios.js android.js > SHA256SUMS
+          wc -c ios.js android.js > sizes.txt
+          cat SHA256SUMS
+          cat sizes.txt
+
+      - name: Upload One Production Native Bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: one-production-native-bundles-${{ github.sha }}
+          path: one-native-bundles
+          retention-days: 14
+          if-no-files-found: error
+
   # ─────────────────────────────────────────────────────────────────────────────
   # iOS Build & Test
   # ─────────────────────────────────────────────────────────────────────────────
